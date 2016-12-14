@@ -1,0 +1,33 @@
+﻿{
+    "caption": "Contacts",
+    "description": "Contacts directory",
+    "attributes": {
+        "contactTypeID": {
+            "caption": "Contact type"
+        },
+        "value": {
+            "caption": "Contact"
+        },
+        "organizationID": {
+            "caption": "Internal organization"
+        },
+        "departmentID": {
+            "caption": "Internal department"
+        },
+        "employeeID": {
+            "caption": "Internal employee"
+        },
+        "extOrganizationID": {
+            "caption": "External organization"
+        },
+        "extDepartmentID": {
+            "caption": "External department"
+        },
+        "extEmployeeID": {
+            "caption": "External employee"
+        },
+        "personID": {
+            "caption": "Person"
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "autotest",
+  "version": "1.0.0",
+  "description": "Autotest for UnityBase",
+  "main": "index.js",
+  "scripts": {
+    "test": "./tsql3.cmd"
+  },
+  "dependencies": {
+    "@unitybase/base": "^4.0.0",
+    "@unitybase/ub": "^4.0.1",
+    "@unitybase/uba": "^4.0.0",
+    "@unitybase/ub-core": "^4.0.0",
+    "@unitybase/ubs": "^4.0.0",
+    "@unitybase/ubm": "^4.0.0",
+    "@unitybase/adminui-pub": "^4.0.0",
+    "@unitybase/adminui-reg": "^4.0.0"
+  },
+  "devDependencies": {
+    "systemjs": "^0.19.41"
+  },	
+  "keywords": [],
+  "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
+  "license": "ISC"
+}

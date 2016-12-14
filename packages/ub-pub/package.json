@@ -1,0 +1,35 @@
+{
+  "name": "@unitybase/ub-pub",
+  "version": "4.0.1",
+  "description": "UnityBase data layer for Browser client",
+  "main": "index.js",
+  "config": {
+    "ubmodel": "ub-pub",
+    "ubmodelispublic": true
+  },
+  "scripts": {
+    "build": "SET NODE_ENV=production && webpack -p",
+    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
+    "analyse-boundle": "webpack --profile --json > stats.json && webpack-bundle-analyzer ./stats.json",
+    "lint": "eslint source test",
+    "prepublish": "npm run build",
+    "postinstall": "ubcli flow/modelInstalled",
+    "test": "npm run test"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "dependencies": {
+    "@unitybase/base": "^4.0.0",
+    "lodash": "^4",
+    "@unitybase/CryptoJS": "^1.0.0"
+  },
+  "devDependencies": {
+  },
+  "keywords": [
+    "UnityBase"
+  ],
+  "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@unitybase/uba",
+  "version": "4.0.0",
+  "description": "UnityBase Administrative model",
+  "config": {
+    "ubmodel": "UBA"
+  },
+  "scripts": {
+    "test": "ubcli autotest -m UBA -skipModules",
+    "postinstall": "ubcli flow/modelInstalled"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.0.0",
+    "@unitybase/base": "^4.0.0",
+    "@unitybase/ub": "^4.0.0"
+  },
+  "devDependencies": {
+    "@unitybase/stubs": "^4.0.0"
+  },
+  "keywords": [
+    "UnityBase"
+  ],
+  "author": "UnityBase team (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}

@@ -1,0 +1,14 @@
+﻿{
+    "caption": "Administration subjects",
+    "description": "Administration subjects",
+    "attributes": {
+        "name": {
+            "caption": "Login",
+            "description": "Login"
+        },
+        "sType": {
+            "caption": "Subject type",
+            "description": "Subject type"
+        }
+    }
+}

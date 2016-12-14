@@ -1,0 +1,199 @@
+﻿{
+	"httpServer": {
+		"host": "192.168.56.1",
+		//"host": "mash-w8.softline.main",
+		"host": "+",
+		//"port": "80",
+		"port": "888",
+		//"path": "just",
+		"requestQueueLength": 1000,
+		"maxBandwidth": 0,
+		"maxConnections": 0,
+		"allowCORSFrom": "",
+		"inetPub": ".\\inetPub\\",
+		//"headersPostprocessors": ["#include(%UB_HOME%\\defHeadersPostprocessors.json)"],
+		"watchFileChanges": {
+			"enabled": true,
+			"hashingStrategy": "ModifyDate"
+		},
+		"threadPoolSize": 4
+		//,"additionalURLs": ["http://+:889"]
+	},
+	"wsServer": {
+		"host": "+",
+		"port": "888",
+		"path": "ws"
+	},
+	"logging": {
+		"path": ".\\logs",
+		"levels": [
+			"*"
+		],
+		"threadingModel": "IdentifiedInOnFile",
+		"stackTrackDepth": 20,
+		"rotationSizeInMB": 100,
+		"performanceCounters": true
+	},
+	"javascript": {
+		"timeout": -1,
+		"lifetimeInMinutes": 1000,
+		"fullGCPeriod": 100,
+		"maxPerEngineMemory": 512,
+		"maxRecursionDepth": 32
+	},
+	"security": {
+		"authenticationMethods": [
+			"UB"
+		],
+		"ldapCatalogs": [
+			{
+				"name": "MYDOMAIN",
+				"host": "softline.main",
+				"port": "3268",
+				"useTLS": false,
+				"useSSL": false,
+				"useSasl": true
+			}
+		]
+	},
+	"uiSettings": {
+		"adminUI": {
+			"applicationName": "",
+			"applicationTitle": "AdminUI",
+			"defaultPasswordForDebugOnly": "admin",
+			"themeName": "UBGrayTheme",
+			"loginWindowTopLogoURL": "models/TST/UB200.png",
+			"endpoint": "ubadminui",
+			"messenger": {
+				"enabled": true,
+				"checkInterval": 30
+			}
+		},
+		"portalUI": {
+			"applicationName": "UBCore usage"
+		}
+	},
+	"application": {
+		"defaultLang": "uk",
+		"rootHandler": "index.html",
+		"schedulers": {"enabled": false},
+		"domain": {
+			"models": [
+				{
+					"name": "UB",
+					"path": "./node_modules/@unitybase/ub"
+				},
+				{
+					"name": "UBA",
+					"path": "./node_modules/@unitybase/uba"
+				},
+				{
+					"name": "UBS",
+					"path": "./node_modules/@unitybase/ubs"
+				},
+				{
+					"name": "UBM",
+					"path": "./node_modules/@unitybase/ubm"
+				},
+				{
+					"name": "UBQ",
+					"path": "./node_modules/@unitybase/ubq"
+				},
+				{
+					"name": "CDN",
+					"path": "./node_modules/@unitybase/cdn"
+				},
+				{
+					"name": "adminui-pub",
+					"publicPath": "./node_modules/@unitybase/adminui-pub",
+					"path": "_public_only_"
+				},
+				{
+					"name": "adminui-reg",
+					"path": "./node_modules/@unitybase/adminui-reg"				
+				},
+				{
+					"name": "ub-core",
+					"publicPath": "./node_modules/@unitybase/ub-pub",
+					"path": "_public_only_"
+				}/*,
+				{
+					"name": "TST",
+					"path": ".\\models\\TST"
+				}*/
+			],
+			"implicitlyAddedMixins": [
+				"audit"
+			]
+		},
+		"fts": {
+			"enabled": true,
+			"async": false
+		},
+		"connections": [
+			{
+				"name": "main",
+				"driver": "MSSQL2012OleDB",
+				"isDefault": true,
+				"dialect": "MSSQL2012",
+				"serverName": "localhost",
+				"databaseName": "ub_autotest",
+				"userID": "ub_autotest",
+				"password": "ub_autotest",
+				"supportLang": [
+					"uk",
+					"en"
+				]
+			},
+			{
+				"name": "ftsDefault",
+				"driver": "SQLite3",
+				"dialect": "SQLite3",
+				"databaseName": ".\\fts\\autotestFTS.ftsdb",
+				"supportLang": [
+					"uk"
+				],
+				"advSettings": "Synchronous=Off,Tokenizer=stemka"
+			},
+			{
+				"name": "ftsSubjectSearch",
+				"driver": "SQLite3",
+				"dialect": "SQLite3",
+				"databaseName": ".\\fts\\autotestSubjects.ftsdb",
+				"supportLang": [
+					"uk"
+				],
+				"advSettings": "Synchronous=Off,Tokenizer=stemka"
+			}
+		],
+		"blobStores": [
+			{
+				"name": "mdb",
+				"storeType": "Virtual"
+			},
+			{
+				"name": "simple",
+				"path": ".\\documents\\simple\\",
+				"isDefault": true,
+				"historyDepth": 0,
+				"storeSize": "Simple",
+				"keepOriginalFileNames": false
+			},
+			{
+				"name": "avatars",
+				"path": ".\\documents\\avatars\\",
+				"historyDepth": 0,
+				"storeSize": "Simple",
+				"keepOriginalFileNames": false
+			}
+		],
+		"customSettings": {
+			"docuSign": {
+				"userName":"",
+				"password":"",
+				"integratorKey":"",
+				"apiUrl":"https://demo.docusign.net/restapi"
+			}
+		}
+	}
+}

@@ -1,0 +1,75 @@
+﻿{
+	"caption": "tst_dictionary",
+	"description": "ub test dictionary",
+	"connectionName": "",
+	//"idGenerator": "customGenBy1",
+	"sqlAlias": "tdict",
+	"cacheType": "None",
+	"descriptionAttribute": "caption",
+	"attributes": {
+		"code":	{
+			"dataType": "String",
+			"size": 32,
+			"caption": "Code",
+			"description": "Code",
+			"allowNull": false
+		},
+		"caption": {
+			"dataType": "String",
+			"size": 255,
+			"caption": "Caption",
+			"description": "Caption",
+			"allowNull": true,
+			"isMultiLang": true
+		},
+		"filterValue": {
+			"dataType": "BigInt",
+			"caption": "filterValue",
+			"description": "",
+			"allowNull": false
+		},
+		"currencyValue": {
+			"dataType": "Currency",
+			"caption": "Currency Data"
+		},
+		"calculated": {
+			"dataType": "String",
+			"size": 255,
+			"caption": "Назва",
+			"mapping": {
+				"AnsiSql": { "expressionType": "Expression", "expression": "[code] || ' ' || [caption]" },
+				"MSSQL": { "expressionType": "Expression", "expression": "[code] + ' ' + [caption]" } 
+			}
+		},
+		"booleanColumn": {
+			"dataType": "Boolean",
+            "caption": "Test boolean column",
+            "allowNull": true,
+            "defaultValue": "0"
+        }
+	},
+	"mixins": {
+		"mStorage": {
+			"simpleAudit": true,
+			"safeDelete": false
+		}
+	},
+	"dbKeys": {
+		"UIDX_CFV": {
+			"code": {},
+			"filterValue": {}
+		}
+	},
+	"dbExtensions": {
+		"UIDX_CODE": {
+			"MSSQL": {
+				"expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(code, filterValue)",
+				"exprtype": "index"
+			},
+			"Oracle": {
+				"expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(UPPER(code), filterValue)",
+				"exprtype": "index"
+			}
+		}
+	}
+}

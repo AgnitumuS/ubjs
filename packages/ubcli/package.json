@@ -1,0 +1,32 @@
+{
+  "name": "@unitybase/ubcli",
+  "version": "1.0.0",
+  "description": "A simple CLI for scaffolding UnityBase projects",
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "bin": {
+    "ubcli": "bin/ubcli.js"
+  },
+  "engines": {
+    "ub": "~4.0.2"
+  },
+  "scripts": {
+    "test": "ubcli createStore -cfg ./test/testCfg.json",
+    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
+  },
+  "dependencies": {
+    "lodash": "^4.0.0",
+    "@unitybase/base": "^4.0.0"
+  },
+  "devDependencies": {
+    "@unitybase/stubs": "^4.0.0",
+    "mustache": "^2.3.0"
+  },
+  "keywords": [
+    "UnityBase",
+    "CLI"
+  ],
+  "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}

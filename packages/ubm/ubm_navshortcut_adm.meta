@@ -1,0 +1,31 @@
+﻿{
+	"caption": "Administering of navigation panel",
+	"sqlAlias": "admnav",
+	"cacheType": "None",
+	"descriptionAttribute": "ID",
+	"documentation": "This entity used by $.currentUserOrUserGroupInAdmSubtable RLS macro",
+	"attributes": {
+		"instanceID": {
+			"dataType": "Entity",
+			"associatedEntity": "ubm_navshortcut",
+			"caption": "Navshortcut",
+            "cascadeDelete": true,
+			"description": "",
+            "allowNull": false
+		},
+		"admSubjID": {
+			"dataType": "Entity",
+			"associatedEntity": "uba_subject",
+			"caption": "Subject of administration",
+			"description": "",
+            "cascadeDelete": true, // allow delete rights for desktop while uba_role | uba_used deleted
+            "allowNull": false
+		}
+	},
+	"mixins": {
+		"mStorage": {
+			"simpleAudit": false,
+			"safeDelete" : false
+		}
+	}
+}

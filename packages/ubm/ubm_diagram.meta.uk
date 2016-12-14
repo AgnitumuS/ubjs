@@ -1,0 +1,17 @@
+﻿{
+    "caption": "Діаграми",
+    "description": "Діаграми сутностей",
+    "attributes": {
+        "code": {
+            "caption": "Код",
+            "description": "Код"
+        },
+        "name": {
+            "caption": "Назва"
+        },
+        "document": {
+            "caption": "Діаграма",
+            "description": "Діаграма сутностей"
+        }
+    }
+}

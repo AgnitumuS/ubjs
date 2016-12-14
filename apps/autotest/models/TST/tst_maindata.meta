@@ -1,0 +1,104 @@
+﻿{
+	"caption": "ub test main data",
+	"description": "ub test main data",
+	"connectionName": "",
+	"sqlAlias": "tmd",
+	"cacheType": "None",
+	"descriptionAttribute": "caption",
+	"attributes": {
+		"code":
+		{
+			"dataType": "String",
+			"size": 32,
+			"caption": "Code",
+			"allowNull": false
+		},
+		"caption":
+		{
+			"dataType": "String",
+			"size": 255,
+			"caption": "Caption",
+			"allowNull": true,
+			"isMultiLang": true
+		},
+		"complexCaption":
+		{
+			"dataType": "String",
+			"size": 512,
+			"caption": "complexCaption",
+			"allowNull": true,
+			"isMultiLang": false
+		},
+		"nonNullDict_ID":
+		{
+			"dataType": "Entity",
+			"associatedEntity": "tst_dictionary",
+			"caption": "nonNullDict_ID",
+			"allowNull": false
+		},
+		"nullDict_ID":
+		{
+			"dataType": "Entity",
+			"associatedEntity": "tst_dictionary",
+			"caption": "nullDict_ID",
+			"allowNull": true
+		},
+		"enumValue":
+		{
+			"dataType": "Enum",
+			"enumGroup": "TEST_GROUP_1",
+			"caption": "enumValue",
+			"allowNull": false,
+			"defaultValue": "ONE"
+		},
+		"dateTimeValue":
+		{
+			"dataType": "DateTime",
+			"caption": "dateTimeValue",
+			"allowNull": true
+		},
+		"booleanValue":
+		{
+			"dataType": "Boolean",
+			"caption": "booleanValue",
+			"allowNull": false,
+			"defaultValue": "0"
+		},
+		"manyValue":
+		{
+            "dataType": "Many",
+            "associatedEntity": "tst_dictionary",
+            "associationManyData": "tst_maind_dict",
+            "caption": "test many data",
+            "allowNull": true
+		},
+		"manyValue2":
+		{
+            "dataType": "Many",
+            "associatedEntity": "tst_dictionary",
+            "associationManyData": "tst_maind_dict2",
+            "caption": "test 2d many data",
+            "allowNull": true
+		},
+		"bigintValue": {
+		    "dataType": "BigInt",
+            "caption": "BigInt",
+			"defaultValue": "0"
+		}
+	},
+	"mixins": {
+		"mStorage": {
+			"simpleAudit": true,
+			"safeDelete": true
+		},
+		"unity": { 
+			"entity": "tst_mainunity",
+			"attributeList": ["code", "caption"],
+			"defaults": {} 
+		},
+		"rls": {
+			//"expression": "'([ID] > 100) AND ' + tst_maindata.maindataRLS() + ' AND ' + tst_service.serviceRLS()"
+			"expression": "'([mi_owner] = :(' + Session.userID + '):)'"
+		}	
+	}
+}
