@@ -1,23 +1,21 @@
 {
   "name": "@unitybase/stubs",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Definition (stubs) for build-in UnityBase modules & globals",
   "scripts": {
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
   },
-  "public": true,	
+  "public": true,
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "dependencies": {
-  },
-  "devDependencies": {
-  },
+  "dependencies": {},
+  "devDependencies": {},
   "keywords": [
     "UnityBase"
   ],
-  "engines" : {
-    "UnityBase": "4.0.0"	
+  "engines": {
+    "UnityBase": "4.0.0"
   },
   "author": "UnityBase team (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"

@@ -1,26 +1,29 @@
 {
   "name": "@unitybase/mailer",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "UnityBase SMTP/POP3",
-  "scripts": {
-  },
+  "scripts": {},
   "public": true,
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
   "main": "./UBMail.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.0"
+    "@unitybase/stubs": "^4.0.1"
   },
   "keywords": [
-    "UnityBase", "mail", "SMTP", "POP"
+    "UnityBase",
+    "mail",
+    "SMTP",
+    "POP"
   ],
   "author": "Vadim Orel (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
-  "os": ["win32"],
-  "engines" : {
-    "UnityBase": "^4.0"	
+  "os": [
+    "win32"
+  ],
+  "engines": {
+    "UnityBase": "^4.0"
   }
 }

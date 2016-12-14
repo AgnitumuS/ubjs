@@ -1,18 +1,17 @@
 {
   "name": "@unitybase/cryptojs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Temporary solution for cryptography. Clone from CryptoJS lib from google",
-  "scripts": {
-  },
-  "public": true,	
+  "scripts": {},
+  "public": true,
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
   "main": "index.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {},
   "keywords": [
-    "crypto", "UnityBase"
+    "crypto",
+    "UnityBase"
   ]
 }

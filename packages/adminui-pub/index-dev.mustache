@@ -1,0 +1,139 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no">
+        <title>{{uiSettings.adminUI.applicationTitle}}{{^uiSettings.adminUI.applicationTitle}}UnityBase {{/uiSettings.adminUI.applicationTitle}}(debug)</title>
+
+        <link rel="shortcut icon" href="models/UB/img/UBLogo16.ico" />
+        <link rel="icon" href="models/UB/img/UBLogo32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="models/UB/img/UBLogo48.png" type="image/png" sizes="48x48" />
+        <link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
+
+        <script type="text/javascript">
+            window.__ubVersion = {
+                _web: '{{staticVersion}}'
+            {{#modelVersions}}
+            , '{{modelName}}': '{{modelVersion}}'
+            {{/modelVersions}}
+            };
+            window.isDeveloperMode = true;
+            window.IMAGE_PATH = 'res/mxGraph/images';
+            window.UB_API_PATH = '{{{UB_API_PATH}}}';
+            window.mxLoadResources = false;
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-all-debug.css{{/md5template}}" />
+        <link rel="stylesheet" href="{{#md5}}models/adminui-pub/ub-css-all.css{{/md5}}"/>
+        <link rel="stylesheet" href="{{#md5}}models/adminui-pub/node_modules/font-awesome/css/font-awesome.css{{/md5}}"/>
+        <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
+
+
+        <style>
+            .ub-logo-h {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+            }
+            .ub-logo-svg {
+                position: absolute;
+                width: 300px;
+                height: 200px;
+                top: 50%;
+                left: 50%;
+                margin: -150px 0 0 -150px;
+            }
+            .ub-logo-path {
+                fill: #D0E0EC;
+                stroke: #1c75bc;
+                stroke-width: 1px;
+                stroke-dasharray: 650;
+                stroke-dashoffset: 650;
+                animation: ub-logo-animate 8s ease-in-out infinite;
+            }
+            @keyframes ub-logo-animate {
+                0% { stroke-dashoffset: 650; fill: #D0E0EC;}
+                75% { stroke-dashoffset: 0; fill: #D0E0EC; }
+                80% { stroke-dashoffset: 0; fill: #1c75bc; }
+                100% { stroke-dashoffset: 0; fill: #1c75bc; }
+            }
+            .x-body {
+                margin: 0;
+            }
+        </style>
+
+    </head>
+    <body class="x-body">
+        <div id="UBLogo" class="ub-logo-h">
+            <div class="ub-logo-svg">
+            <svg width="300px" height="200px"  >
+                <g transform="scale(2)">
+                    <path class="ub-logo-path" d="m 31.093126,44.607672 15.197597,-7.152209 c 0,0 -17.315918,41.004075 1.222257,43.485045 C 66.9453,83.541387 67.022049,40.979283 89.740267,34.675171 115.18984,27.614102 125.57613,48.325282 125.22308,58.900574 124.58701,78.00479 113.55506,85.416024 109.79523,87.783786 89.272088,100.7038 74.196327,85.414109 74.196327,85.414109 c 0,0 4.257743,-5.779322 6.262859,-10.605033 1.771979,2.30445 5.978881,6.354005 14.303458,6.354005 18.625476,0 25.615546,-33.655194 4.957133,-35.488572 C 86.311429,44.484868 80.758515,61.719244 78.372527,66.327164 73.7694,75.217777 67.803948,94.332542 44.394981,92.349494 15.036875,89.86469 31.093126,44.607672 31.093126,44.607672 M 97.404522,14.060729 93.422127,29.79654 c -10.158921,0.401026 -15.281068,6.633182 -15.281068,6.633182 l 3.779969,-15.080556 z"></path>
+                </g>
+            </svg>
+            </div>
+        </div>
+        <div id ="ubExtensionPageMessageObj"></div>
+
+        <script src="{{#md5}}models/adminui-pub/node_modules/systemjs/dist/system.src.js{{/md5}}" type="text/javascript"></script>
+
+        <!-- TEMP script charset="utf-8" src="{{#md5}}models/adminui/tinymce/tinymce-with-plugin.min.js{{/md5}}"></script-->
+
+        <!-- script charset="utf-8" src="{{#md5}}models/adminui/adminui.min.js{{/md5}}"></script-->
+
+        <!--script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/jszip/dist/jszip.js{{/md5}}"></script>
+        <script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/file-saver/FileSaver.js{{/md5}}"></script>
+        <script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/mustache/mustache.js{{/md5}}"></script -->
+        <!-- script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/tinymce/tinymce.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/lib/codemirror.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/edit/matchbrackets.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/edit/closebrackets.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/edit/trailingspace.js{{/md5}}"></script>
+
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/fold/foldcode.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/fold/foldgutter.js{{/md5}}"></script>
+        <link rel="stylesheet" href="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/fold/foldgutter.css{{/md5}}"/>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/fold/brace-fold.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/fold/xml-fold.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/fold/comment-fold.js{{/md5}}"></script>
+
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/dialog/dialog.js{{/md5}}"></script>
+        <link rel="stylesheet" href="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/dialog/dialog.css{{/md5}}"/>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/mode/javascript/javascript.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/hint/javascript-hint.js{{/md5}}"></script>
+
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/search/search.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/search/searchcursor.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/node_modules/codemirror/addon/search/match-highlighter.js{{/md5}}"></script -->
+
+        <script type="text/javascript">
+            // set our baseURL reference path
+            System.config({
+                baseURL: '/clientRequire',
+                map: {
+                    css: 'systemjs-plugin-css/css.js'
+                },
+                meta: {
+                    '*.css': { loader: 'css' },
+                    'codemirror/*.js': { format: 'cjs' }
+//                    ,'codemirror
+//                    'ext-all-debug-w-comments.js': {
+//                        exports: 'Ext',
+//                        format: 'global'
+//                    } //,'*.js': { format: 'cjs' }
+                }
+            });
+
+            System.import('@unitybase/adminui-pub').then(function(adminUI){
+                return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
+            });
+        </script>
+        <!--script src="{{#md5}}models/adminui/_src/app.js{{/md5}}" type="text/javascript"></script>
+        <script src="{{#md5}}models/adminui/_src/app/core/UBLoader.js{{/md5}}" type="text/javascript"></script>
+
+        <script charset="utf-8" type="text/javascript" src="{{#md5template}}models/adminui/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js{{/md5template}}"></script-->
+    </body>
+</html>
