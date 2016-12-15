@@ -23,7 +23,7 @@
   "dependencies": {
     "@unitybase/base": "^4.0.2",
     "lodash": "^4",
-    "@unitybase/CryptoJS": "^1.0.0"
+    "@unitybase/cryptojs": "^1.0.0"
   },
   "devDependencies": {},
   "keywords": [
