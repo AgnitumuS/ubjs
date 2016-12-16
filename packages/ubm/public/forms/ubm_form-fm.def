@@ -1,0 +1,167 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "true"
+//@entity "ubm_form"
+//@formType "auto"
+//@caption "Form editor"
+//@description "UnityBase form's editor"
+//@code "ubm_form"
+//@ID "100000100404"
+exports.formDef = {
+    requires: ['UB.ux.designer.VisualDesigner'],
+    parentConfig: {
+        layout: 'hbox',
+        align: 'stretch'
+    },
+
+    dockedItems: [{
+        xtype: "toolbar",
+        dock: "top",
+        items: [{
+            text: "CheckSyntax",
+            orderId: 2,
+            handler: function() {
+                this.up("form").checkJS();
+            }
+        }, {
+            orderId: 4,
+            actionId: "save"
+        }, {
+            text: "Beautify",
+            orderId: 3,
+            handler: function() {
+                this.up("form").beautyJS();
+            }
+        }]
+    }],
+    items: [{
+        xtype: "tabpanel",
+        plain: true, // табы просто плавают (без обрямляющего прямоугольника)
+        height: '100%',
+        border: false,
+        flex: 1,
+        items: [{
+            title: UB.i18n('formBaseProperty'),
+            layout: 'vbox',
+            defaults: {
+                labelAlign: "left",
+                width: "100%",
+                labelWidth: 130
+            },
+
+            items: [{
+                xtype: 'commandbuilderentitiescombobox',
+                //labelWidth: 100,
+                // width: "100%",
+                attributeName: "entity"
+            }, {
+                attributeName: "ID",
+                hideLabel: true,
+                disabled: true
+            }, {
+                attributeName: "code"
+            }, {
+                attributeName: "description"
+            }, {
+                attributeName: "caption"
+            }, {
+                attributeName: "formType"
+            }, {
+                attributeName: "isDefault",
+                labelAlign: "left"
+            }, {
+                xtype: 'label',
+                ubID: 'newFormTip',
+                style: {
+                    backgroundColor: 'yellow'
+                },
+                text: 'TIP: In case of new form save it befor going to "' + UB.i18n('formDefinition') + ' or ' + UB.i18n('formModule') + ' tab for definition boilerplate generation'
+            }]
+        }, {
+            title: UB.i18n('formDefinition'),
+            layout: 'hbox',
+            isDefifnition: true,
+            items: [{
+                width: 150,
+                height: "100%",
+                stateful: true,
+                stateId: UB.core.UBLocalStorageManager.getKeyUI("ubm_form_side"),
+                layout: 'vbox',
+                bodyStyle: 'background:white;',
+                items: [{
+                    xtype: "commandbuilderentitytreepanel",
+                    cbID: "1",
+                    //height: "100%",
+                    width: "100%",
+                    //autoScroll: true,
+                    flex: 1
+                }]
+            }, {
+                xtype: "splitter"
+            }, {
+                attributeName: "formDef",
+                expanded: true,
+                bypassCache: true,
+                //forceMIME: "application/def",
+                documentMIME: "application/def",
+                keepCmpOnRefresh: true,
+
+                //anchor: '100%',
+                height: '100%',
+                flex: 1,
+                style: {
+                    background: "white"
+                }
+            }]
+        }, {
+            title: UB.i18n('formModule'),
+            layout: 'hbox',
+            isFormModule: true,
+            items: [{
+                width: 150,
+                height: "100%",
+                stateful: true,
+                stateId: UB.core.UBLocalStorageManager.getKeyUI("ubm_form_side"),
+                layout: 'vbox',
+                bodyStyle: 'background:white;',
+                items: [{
+                    xtype: "commandbuilderentitytreepanel",
+                    cbID: "2",
+                    //height: "100%",
+                    width: "100%",
+                    //autoScroll: true,
+                    flex: 1
+                }]
+            }, {
+                xtype: "splitter"
+            }, {
+                attributeName: "formCode",
+                expanded: true,
+                bypassCache: true,
+                //forceMIME: "application/json",
+                documentMIME: "application/json",
+                keepCmpOnRefresh: true,
+
+                //anchor: '100%',
+                height: '100%',
+                flex: 1,
+                style: {
+                    background: "white"
+                }
+            }]
+        }, {
+            title: UB.i18n('Visual designer'),
+            layout: {
+                type: 'hbox',
+                align: 'stretch'
+            },
+            html: 'The visual designer do not work with type of this form.',
+            //height: '100%',
+            //width: "100%",
+            isDesigner: true,
+            items: {
+                xtype: 'UBVDesigner',
+                flex: 1
+            }
+        }]
+    }]
+};

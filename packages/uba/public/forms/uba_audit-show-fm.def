@@ -1,0 +1,13 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "true"
+//@entity "uba_audit"
+//@formType "auto"
+//@caption "SecurityAudit"
+//@description "Security audit"
+//@code "uba_audit-show"
+//@ID "3000004114413"
+exports.formDef = {
+	items: [
+		/*put your items here*/
+	]
+};

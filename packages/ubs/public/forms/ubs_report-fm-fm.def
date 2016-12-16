@@ -1,0 +1,97 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "false"
+//@entity "ubs_report"
+//@formType "auto"
+//@caption "reportBuilder"
+//@description "reportBuilder"
+//@code "ubs_report-fm"
+//@ID "3000002179604"
+exports.formDef = {
+    parentConfig: {
+        layout: 'fit',
+        hideActions: ['docActioncode', 'docActiontemplate'],
+        size: {
+            wide: 700,
+            height: 500
+        }
+    },    
+    layout: 'fit',
+    dockedItems: [{
+        xtype: "toolbar",
+        dock: "top",
+        items: [{
+            text: UB.i18n("checkSyntaxReport"),
+            orderId: 2,
+            handler: function() {
+                this.up("form").checkJS();
+            }
+        }, {
+            orderId: 5,
+            actionId: "save"
+        }, {
+            text: UB.i18n("beautifyReport"),
+            orderId: 3,
+            handler: function() {
+                this.up("form").beautyJS();
+            }
+        }, {
+            text: UB.i18n("testReport"),
+            orderId: 4,
+            handler: function() {
+                this.up("form").testReport();
+            }
+        }
+
+        ]
+    }],
+	items:[
+		{ 
+            xtype: 'tabpanel',
+            items: [
+                { title: UB.i18n('mainPanelTitle'),
+                  layout: "vbox",
+                  flex: 1,
+                  height: 350,
+                  items: [
+                      { attributeName: "model" },
+                      { attributeName: "report_code" /*Report code*/},
+                      { attributeName: "name" }
+                  ]
+                },{ xtype: 'panel',
+                    layout: { type: 'hbox'},
+                    title: UB.i18n('templatePanelTitle'),
+                    autoScroll: true, 
+                    //height: '100%',
+                    //flex: 1,
+                    items: [
+                          {
+                            attributeName: "template",
+                            expanded: true,
+                            //forceMIME: "application/def",
+                            documentMIME: "application/ubreport",
+                            //keepCmpOnRefresh: true,
+                            height: '100%',
+
+                            //anchor: '100%',
+                            style: {
+                                background: "white"
+                            }
+                          }
+                    ]
+                }, {
+                    title: UB.i18n('codePanelTitle'),
+                    autoScroll: true,
+                    attributeName: "code",
+                    expanded: true,
+                    documentMIME: "application/def",
+                    //keepCmpOnRefresh: true,
+                    //height: '100%',
+                    //flex: 1,
+                    style: {
+                        background: "white"
+                    }
+                }
+            ]
+        }
+	]
+};

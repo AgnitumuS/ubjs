@@ -1,0 +1,39 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "false"
+//@entity "ubm_desktop"
+//@formType "auto"
+//@caption "Desktop"
+//@description "Desktop"
+//@code "ubm_desktop"
+//@ID "11"
+/*global UB, Ext */
+exports.formDef = {
+
+	parentConfig:{
+    	layout: {type: "vbox", align: "stretch"}
+	},
+    size: {
+        width: 500,
+        height: 500
+    },
+items: [
+	{ attributeName: "caption"},
+	{ attributeName: "code"},
+    { attributeName: "isDefault", labelWidth: 200},
+    { attributeName: "url"},
+    {
+        xtype: "ubdetailgrid",
+        flex: 1,
+        height: 300,
+        cmdType: "showList",
+        entityConfig: {
+            entity: "ubm_desktop_adm",
+            method: "select",
+            fieldList: ["instanceID", "admSubjID"]
+        },
+        masterFields: ["ID"],
+        detailFields: ["instanceID"]
+    }
+]
+}
+;

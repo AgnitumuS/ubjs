@@ -1,0 +1,25 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "true"
+//@entity "tst_clob"
+//@formType "auto"
+//@caption "tst_clob"
+//@description "tst_clob"
+//@code "tst_clob"
+//@ID "3000000002802"
+exports.formDef = {
+	parentConfig: {
+        layout: 'vbox'//,        align: 'stratch'
+    },
+    items: [
+        { attributeName: "text100", xtype: "ubhtmleditor", rows: 20},
+        { attributeName: "text2000",  xtype: "textarea" /*, xtype: "ubtextarea", isMultiLang: true*/},
+        //{xtype: 'ubtextarea', isMultiLang: true},
+        { attributeName: "text2",  xtype: "textarea"  },
+        { attributeName: "mi_tr_text2" /*Text2(2..)*/},
+        { attributeName: "mi_tr_text100"},
+        { attributeName: "code" /*Code*/, readonly: true},
+        { xtype: 'label', text: 'aasas'},
+        { attributeName: "textN",  xtype: "textarea"  /**/},
+        { attributeName: "description" /*Description*/}
+	]
+};

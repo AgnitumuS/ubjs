@@ -1,0 +1,85 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "true"
+//@entity "uba_user"
+//@formType "auto"
+//@caption "User"
+//@description "User"
+//@code "uba_user"
+//@ID "2100062037207"
+exports.formDef = {
+	size: {
+		width: 500,
+		height: 300
+	},
+	dockedItems: [{
+		xtype: "toolbar",
+		dock: "top",
+		items: [{
+			orderId: 5,
+			actionId: "ActionChangePasswordID"
+		}]
+	}],
+    parentConfig: {
+        layout: {
+            type: "vbox",
+            align: "stretch"
+        }
+    },
+
+	items: [{
+		layout: 'hbox',
+		items: [{
+			items: [
+				{attributeName: "name"},
+				{attributeName: "firstName"},
+				{attributeName: "lastName"},
+				{attributeName: "gender"},
+				{attributeName: "email"},
+				{attributeName: "phone"}
+			]
+		}, {
+			items: [
+				{attributeName: "description"},
+				{attributeName: "disabled"},
+                {attributeName: "isPending"},
+				{attributeName: "trustedIP"},
+				{attributeName: "uData"}
+			]
+		}, {
+            items: [				
+                {attributeName: "avatar", expanded: true, width: 128, height: 128}
+           ]
+        }]    
+	}, {
+		flex: 1,
+        margin: "10 0 0 0",
+        layout: {
+            type: "hbox",
+            align: "stretch"
+        },    
+		items: [{ 
+            flex: 1,
+            margin: "0 10 0 0",
+            xtype: "ubdetailgrid",
+            entity: "uba_userrole",
+            entityConfig: {
+                entity: "uba_userrole",
+                method: "select",
+                fieldList: ["roleID"]
+            },
+            masterFields: ["ID"],
+            detailFields: ["userID"]
+        }, {
+            flex: 1,
+            xtype: "ubdetailgrid",
+            entity: "uba_usergroup",
+            entityConfig: {
+                entity: "uba_usergroup",
+                method: "select",
+                fieldList: ["groupID"]
+            },
+            masterFields: ["ID"],
+            detailFields: ["userID"]
+        }]
+    }]    
+};

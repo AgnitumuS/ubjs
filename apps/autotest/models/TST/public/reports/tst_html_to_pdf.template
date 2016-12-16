@@ -1,0 +1,100 @@
+<!--@name "HTML to PDF test"-->
+<!--@report_code "tst_html_to_pdf"-->
+<!--@model "TST"-->
+<!--@ID "3000000002223"-->
+
+
+
+<!--%pageOrientation:portrait--><h1>Cell merge</h1>
+<table border="1px" width="772px" cellspacing="0" cellpadding="3px">
+<tbody>
+<tr>
+<td style="cursor: default;">1.1</td>
+<td style="cursor: default;">1.2</td>
+<td style="cursor: default;">1.3</td>
+<td style="cursor: default;">1.4</td>
+</tr>
+<tr>
+<td style="cursor: default;" colspan="3">Horosontal splitted first</td>
+<td style="cursor: default;">2.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">3.1</td>
+<td style="cursor: default;">&nbsp;3.2</td>
+<td style="cursor: default;" colspan="2">Horosontal splitted last</td>
+</tr>
+<tr>
+<td style="cursor: default;">4.1</td>
+<td style="cursor: default;" colspan="2">Horozontal splited&nbsp;middle</td>
+<td style="cursor: default;">4.4</td>
+</tr>
+<tr>
+<td style="cursor: default;" rowspan="3">Vertical splitted first 3 row</td>
+<td style="cursor: default;">&nbsp;5.2&nbsp;</td>
+<td style="cursor: default;">5.3</td>
+<td style="cursor: default;">5.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">&nbsp;6.2</td>
+<td style="cursor: default;">6.3</td>
+<td style="cursor: default;">6.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">&nbsp;7.2</td>
+<td style="cursor: default;">7.3</td>
+<td style="cursor: default;">7.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">8.1</td>
+<td style="cursor: default;" rowspan="2">Vertical splited middle 2 row</td>
+<td style="cursor: default;">8.3</td>
+<td style="cursor: default;">8.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">9.1</td>
+<td style="cursor: default;">9.3</td>
+<td style="cursor: default;">9.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">10.1</td>
+<td style="cursor: default;" colspan="2" rowspan="2">vertical + hotizontal split</td>
+<td style="cursor: default;">10.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">11.1</td>
+<td style="cursor: default;">11.4</td>
+</tr>
+<tr>
+<td style="cursor: default;">12</td>
+<td style="cursor: default;">&nbsp;</td>
+<td style="cursor: default;">&nbsp;</td>
+<td style="cursor: default;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<h1>Header merge</h1>
+<table style="word-break: break-all;" border="1px" width="773" cellspacing="0" cellpadding="3px">
+<tbody>
+<tr>
+<td style="width: 772px; cursor: default; text-align: center;" colspan="2">Merged header 1</td>
+<td style="width: 772px; cursor: default; text-align: center;" colspan="2">Merged header 2</td>
+<td style="width: 772px; cursor: default; text-align: center;" colspan="2">Merged header 3</td>
+</tr>
+<tr>
+<td style="width: 772px;">2.1</td>
+<td style="width: 772px;">2.2</td>
+<td style="width: 772px;">2.3</td>
+<td style="width: 772px;">2.4</td>
+<td style="width: 772px;">2.5</td>
+<td style="width: 772px;">2.6</td>
+</tr>
+<tr>
+<td style="width: 772px;">3.1</td>
+<td style="width: 772px;">&nbsp;</td>
+<td style="width: 772px;">&nbsp;</td>
+<td style="width: 772px;">&nbsp;</td>
+<td style="width: 772px;">&nbsp;</td>
+<td style="width: 772px;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
