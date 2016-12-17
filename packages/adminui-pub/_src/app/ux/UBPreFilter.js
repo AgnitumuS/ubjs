@@ -7,10 +7,11 @@
  *
  * or config `autoFilter: config.options`, there `config.options` is the same as in constructor:
  *
- *      autoFilter: {
-              groups: [{caption: "Limits", fields: ["code", "name", "objType", "objStatus", "docKindID"]}],
-              params: {code: {filterType: 'startWith'},
-              docKindID: {
+ *  autoFilter = {
+        groups: [{caption: "Limits", fields: ["code", "name", "objType", "objStatus", "docKindID"]}],
+        params: {
+            code: {filterType: 'startWith'},
+            docKindID: {
                 whereList: {
                     entity: {
                         expression: '[entity]',
@@ -18,9 +19,12 @@
                         values: {'entity': 'doc_incdoc'}
                     }
                 },
-                fieldList: ["name", "entity"]}
-              }
-            },
+                fieldList: ["name", "entity"],
+                __allowSelectSafeDeleted: true,
+                __mip_recordhistory_all: true
+            }
+        }
+    },
  *
  * WARNING: This class is used by DOC model (doc_document-search-fm.def)
  */
@@ -28,6 +32,9 @@ Ext.define('UB.ux.UBPreFilter', {
     requires: [
         'UB.core.UBStoreManager',
         'UB.core.UBUtil',
+        'UB.core.UBDomainManager',
+       // 'UB.ux.form.field.UBBoolBox',
+       // 'UB.ux.form.field.UBDate',
         'UB.view.BaseWindow'
     ],
 
@@ -822,7 +829,7 @@ Ext.define('UB.ux.UBPreFilter', {
             switch(dt){
                 case 'float':
                 case 'int':
-                    items = me.getNumericFilterInput(entity, attrName, dt === 'float');
+                    items = me.getNumericFilterInput(entity, attrName, (dt === 'float' || dt === 'currency'));
                     break;
                 case 'date':
                     items = me.getDateFilterInput(entity, attrName);

@@ -385,7 +385,7 @@ Ext.define('UB.ux.Multifilter', {
             switch(dt){
                 case 'float':
                 case 'int':
-                    items = me.getNumericFilterInput(entity, attrName, dt === 'int');
+                    items = me.getNumericFilterInput(entity, attrName, (dt === 'float' || dt === 'currency'));
                     break;
                 case 'date':
                     items = me.getDateFilterInput(entity, attrName);
@@ -1669,6 +1669,11 @@ Ext.define('UB.ux.Multifilter', {
          * @param {Object} [options.whereList]
          * @param {Object} [options.orderList]
          * @param {Object} [options.fieldList]
+         * @param {Date} [options.__mip_ondate]
+         * @param {Boolean} [options.__mip_recordhistory]
+         * @param {Boolean} [options.__mip_recordhistory_all]
+         * @param {Boolean} [options.__mip_disablecache]
+         * @param {Boolean} [options.__allowSelectSafeDeleted]
          * @param {{
          *         getFilterPrefix: Function,
          *         getPrevFilter: Function,

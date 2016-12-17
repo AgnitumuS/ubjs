@@ -2,8 +2,8 @@
 //@isDefault "true"
 //@entity "ubm_navshortcut"
 //@formType "auto"
-//@caption "Shortcut"
-//@description "Shortcut"
+//@caption ""
+//@description ""
 //@code "ubm_navshortcut"
 //@ID "100000232003"
 exports.formDef = {

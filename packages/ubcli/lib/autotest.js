@@ -15,12 +15,16 @@ const util = require('util')
 const path = require('path')
 const cmdLineOpt = require('@unitybase/base/options')
 const argv = require('@unitybase/base/argv')
+const http = require('http')
 
 module.exports = function autotest (options) {
   var testResults = []
   var lastModelName
   var realConsoleDebug = console.debug
   var debugOutput = []
+
+  // set timeout 10 min
+  http.setGlobalConnectionDefaults({receiveTimeout: 10 * 60 * 1000});
 
   if (!options) {
     var opts = cmdLineOpt.describe('cmd/autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')

@@ -847,10 +847,17 @@ Ext.define("UB.core.UBUtil", {
      */
     getComponentConfig4Entity: function(entityCode, config){
         var
-            res, entity,
+            res, entity, ubRequest,
             whereList = config ? config.whereList : undefined,
             fieldList = config ? config.fieldList : null,
-            orderList = config ? config.orderList : undefined;
+            orderList = config ? config.orderList : undefined,
+            allowedMiscellaneous = [
+                '__mip_ondate ',
+                '__mip_recordhistory',
+                '__mip_recordhistory_all',
+                '__mip_disablecache',
+                '__allowSelectSafeDeleted'
+            ];
 
         if (typeof(entityCode) === 'string') {
             entity = $App.domainInfo.get(entityCode);
@@ -862,16 +869,25 @@ Ext.define("UB.core.UBUtil", {
         if (fieldList.indexOf('ID') < 0){
             fieldList = ['ID'].concat(fieldList);
         }
-        res = {
-            xtype: 'ubcombobox',
-            store: Ext.create('UB.ux.data.UBStore', {
-                ubRequest: {
+
+        ubRequest = {
                     entity: entity.code,
                     method: UB.core.UBCommand.methodName.SELECT,
                     fieldList: fieldList,
                     whereList: whereList,
                     orderList: orderList || {_asc: {expression: fieldList[1], order: UB.core.UBCommand.order.sqlotAsc}}
-                },
+        };
+
+        _.forEach(allowedMiscellaneous, function(misc) {
+            if (config && config[misc] !== undefined) {
+                ubRequest[misc] = config[misc];
+            }
+        });
+
+        res = {
+            xtype: 'ubcombobox',
+            store: Ext.create('UB.ux.data.UBStore', {
+                ubRequest: ubRequest,
                 autoLoad: false,
                 autoDestroy: true
             }),
