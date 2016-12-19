@@ -155,6 +155,7 @@ class DBAbstract {
   }
   /**
    * Generate code for add language column
+   * TODO rename to addLanguageColumn
    * @abstract
    * @param {TableDefinition} table
    * @param {FieldDefinition} column
@@ -455,7 +456,7 @@ class DBAbstract {
         let defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
         // TEMP
         if (defChanged) {
-          console.log('!CONSTRAINT mustBe "%s" !== asIs "%s" ', mustBeC.defaultValue, asIsC.defaultValue)
+          console.log(`CONSTRAINT changed for ${mustBe.name}.${mustBeC.name} Must be "${mustBeC.defaultValue}" but in database "${asIsC.defaultValue}"`)
         }
         allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
 
@@ -558,22 +559,26 @@ class DBAbstract {
 
   /**
    * Generate a column type DDL part
+   * @override
    * @param {FieldDefinition} column
    * @return {string}
    */
   createTypeDefine (column) {
-    let res = [' ', this.uniTypeToDataBase(column.dataType)]
+    let res = this.uniTypeToDataBase(column.dataType)
     switch (column.dataType) {
       case 'NVARCHAR':
       case 'UVARCHAR':
       case 'VARCHAR':
-        res.push('(', column.size.toString(), ')')
+        res += `(${column.size.toString()})`
         break
       case 'NUMERIC':
-        res.push('(', column.size.toString(), ',', column.prec.toString(), ')')
+        res += `(${column.size.toString()}, ${column.prec.toString()})`
+        break
+      case 'BOOLEAN':
+        res += '(1)'
         break
     }
-    return res.join('')
+    return res
   }
 
   compareDefault (dataType, mustBeDefault, asIsDefault, mustBeConstraintName, asIsConstraintName) {

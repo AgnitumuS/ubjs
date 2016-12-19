@@ -3,14 +3,6 @@
     "description": "Physical persons dictionary",
     "documentation": "The directory stores a list of persons (physical persons)",
     "attributes": {
-        "code": {
-            "caption": "Code",
-            "description": "Internal code"
-        },
-        "userID": {
-            "caption": "User",
-            "description": "User login"
-        },
         "lastName": {
             "caption": "Last name",
             "description": "Last name of the person"

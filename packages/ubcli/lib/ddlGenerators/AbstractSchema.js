@@ -29,7 +29,7 @@ function FieldDefinition (cfg) {
   this.name = cfg.name
   this.dataType = cfg.dataType || 'NVARCHAR'
   this.caption = cfg.description || ''
-  this.allowNull = cfg.allowNull || true
+  this.allowNull = cfg.allowNull !== false
   this.defaultValue = cfg.defaultValue
   this.defaultConstraintName = cfg.defaultConstraintName
   this.size = cfg.size
@@ -219,7 +219,7 @@ class TableDefinition {
 
   getFKByColumnName (name) {
     for (let fkObj of this.foreignKeys) {
-      for (let columnName in fkObj) {
+      for (let columnName of fkObj.keys) {
         if (strIComp(columnName, name)) {
           return [ fkObj ]
         }

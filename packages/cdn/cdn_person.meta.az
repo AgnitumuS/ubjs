@@ -3,14 +3,6 @@
     "description": "Fiziki şəxslər üzrə siyahı",
     "documentation": "Bu sorğu kitabçasında şəxslərin (fiziki şəxslərin) siyahısı saxlanılır",
     "attributes": {
-        "code": {
-            "caption": "Коd",
-            "description": "Daxili kod"
-        },
-        "userID": {
-            "caption": "İstifadəçi",
-            "description": "İstifadəçi logini"
-        },
         "lastName": {
             "caption": "Soyad",
             "description": "Şəxsin soyadı"

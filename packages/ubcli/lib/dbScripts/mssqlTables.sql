@@ -80,11 +80,11 @@ create table dbo.ubs_settings (
 );
 -- Create primary keys
 --#############################################################
-alter table dbo.uba_als add constraint PK_uba_als PRIMARY KEY CLUSTERED( ID);
-alter table dbo.uba_els add constraint PK_uba_els PRIMARY KEY CLUSTERED( ID);
-alter table dbo.uba_role add constraint PK_uba_role PRIMARY KEY CLUSTERED( ID);
-alter table dbo.uba_subject add constraint PK_uba_subject PRIMARY KEY CLUSTERED( ID);
-alter table dbo.uba_user add constraint PK_uba_user PRIMARY KEY CLUSTERED( ID);
-alter table dbo.uba_userrole add constraint PK_uba_userrole PRIMARY KEY CLUSTERED( ID);
-alter table dbo.uba_audit add constraint PK_uba_audit PRIMARY KEY CLUSTERED( ID);
-alter table dbo.ubs_settings add constraint PK_ubs_settings PRIMARY KEY CLUSTERED( ID);
+alter table dbo.uba_als add constraint PK_uba_als PRIMARY KEY CLUSTERED(ID);
+alter table dbo.uba_els add constraint PK_uba_els PRIMARY KEY CLUSTERED(ID);
+alter table dbo.uba_role add constraint PK_uba_role PRIMARY KEY CLUSTERED(ID);
+alter table dbo.uba_subject add constraint PK_uba_subject PRIMARY KEY CLUSTERED(ID);
+alter table dbo.uba_user add constraint PK_uba_user PRIMARY KEY CLUSTERED(ID);
+alter table dbo.uba_userrole add constraint PK_uba_userrole PRIMARY KEY CLUSTERED(ID);
+alter table dbo.uba_audit add constraint PK_uba_audit PRIMARY KEY CLUSTERED(ID);
+alter table dbo.ubs_settings add constraint PK_ubs_settings PRIMARY KEY CLUSTERED(ID);

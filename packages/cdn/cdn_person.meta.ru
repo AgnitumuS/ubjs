@@ -3,14 +3,6 @@
     "description": "Справочник физических лиц",
     "documentation": "В этом справочнике хранится перечень персон (физических лиц)",
     "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Внутренний код"
-        },
-        "userID": {
-            "caption": "Пользователь",
-            "description": "Пользовательский логин"
-        },
         "lastName": {
             "caption": "Фамилия",
             "description": "Фамилия персоны"

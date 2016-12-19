@@ -3,14 +3,6 @@
     "description": "Довідник фізичних осіб",
     "documentation": "У цьому довіднику зберігається перелік персон (фізичних осіб)",
     "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Внутрішній код"
-        },
-        "userID": {
-            "caption": "Користувач",
-            "description": "Логін користувача"
-        },
         "lastName": {
             "caption": "Прізвище",
             "description": "Прізвище персони"

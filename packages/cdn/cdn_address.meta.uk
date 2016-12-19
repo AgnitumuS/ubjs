@@ -8,23 +8,8 @@
         "value": {
             "caption": "Адреса"
         },
-        "organizationID": {
-            "caption": "Внутрішня організація"
-        },
-        "departmentID": {
-            "caption": "Внутрішній департамент"
-        },
-        "employeeID": {
-            "caption": "Внутрішній співробітник"
-        },
-        "extOrganizationID": {
-            "caption": "Зовнішня організація"
-        },
-        "extDepartmentID": {
-            "caption": "Зовнішній департамент"
-        },
-        "extEmployeeID": {
-            "caption": "Зовнішній співробітник"
+        "subjectID": {
+            "caption": "Субект"
         }
     }
 }

@@ -1,6 +1,6 @@
 
 const _ = require('lodash')
-const {TableDefinition, strIComp} = require('../AbstractSchema')
+const {TableDefinition} = require('../AbstractSchema')
 const DBAbstract = require('./DBAbstract')
 
 // MPV: prior to UB 4 we use a `Caption` extended property - this is mistake
@@ -15,8 +15,6 @@ class DBSQL2012 extends DBAbstract {
    * @override
    */
   loadDatabaseMetadata () {
-    console.info(`Loading database metadata for connection ${this.dbConnectionConfig.name} (${this.dbConnectionConfig.dialect})...`)
-
     let mTables = this.refTableDefs
 
     let tablesSQL = `select o.name, cast( eprop.value as nvarchar(2000) ) as caption 
@@ -37,7 +35,7 @@ class DBSQL2012 extends DBAbstract {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { name: dbTab.name }) !== -1)
     }
     for (let tabDef of dbTables) {
-      let refTable = new TableDefinition({
+      let asIsTable = new TableDefinition({
         name: tabDef.name,
         caption: tabDef.caption
       })
@@ -57,15 +55,22 @@ class DBSQL2012 extends DBAbstract {
         LEFT OUTER JOIN sys.schemas du ON du.schema_id = d.schema_id
         LEFT OUTER JOIN sys.default_constraints cm ON cm.object_id = d.object_id
         left outer join sys.extended_properties ep on ep.major_id = tb.object_id and ep.minor_id = c.column_id and ep.class = 1 and ep.name = '${DB_DESCRIPTION_PROPERTY}'
-      where tb.object_id = object_id( :("${refTable._upperName}"):, N'U')`
+      where tb.object_id = object_id( :("${asIsTable._upperName}"):, N'U')`
       let columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
-      console.log(columnsFromDb)
+      // console.log('columnsFromDb', columnsFromDb)
       for (let colDef of columnsFromDb) {
         let physicalTypeLower = colDef['typename'].toLowerCase()
+        let def = colDef['defvalue']
+        // SQL server return default value wrapped in 'A' -> ('A')
+        // numeric & int types wrapped twice 0 -> ((0))
+        if (def) {
+          def = def.replace(/^\((.*)\)$/, '$1')
+          if (['numeric', 'int'].indexOf(physicalTypeLower) !== -1) def = def.replace(/^\((.*)\)$/, '$1')
+        }
         let nObj = {
           name: colDef.name,
           description: colDef.description,
@@ -76,13 +81,13 @@ class DBSQL2012 extends DBAbstract {
             : colDef.prec,
           prec: colDef['scale'],
           // defaultValue: this.parseDefValue( colDef.defvalue ),
-          defaultValue: colDef['defvalue'],
+          defaultValue: def,
           defaultConstraintName: colDef['defname']
         }
         if (physicalTypeLower === 'nvarchar' || physicalTypeLower === 'nchar' || physicalTypeLower === 'ntext') {
           nObj.size = Math.floor(nObj.size / 2)
         }
-        refTable.addColumn(nObj)
+        asIsTable.addColumn(nObj)
       }
 
       // foreign key
@@ -97,14 +102,14 @@ class DBSQL2012 extends DBAbstract {
         FROM sys.foreign_keys AS f
         INNER JOIN sys.foreign_key_columns AS fc
         ON f.object_id = fc.constraint_object_id
-        WHERE f.parent_object_id = OBJECT_ID( :("${refTable._upperName}"):, N'U')`
+        WHERE f.parent_object_id = OBJECT_ID( :("${asIsTable._upperName}"):, N'U')`
       let fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: foreignKeysSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       for (let fkDef of fkFromDb) {
-        refTable.addFK({
+        asIsTable.addFK({
           name: fkDef['foreign_key_name'],
           keys: [fkDef['constraint_column_name'].toUpperCase()],
           references: fkDef['referenced_object'],
@@ -120,7 +125,7 @@ class DBSQL2012 extends DBAbstract {
           INNER JOIN sys.index_columns AS ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id
           INNER JOIN sys.columns AS c ON ic.object_id = c.object_id AND c.column_id = ic.column_id
         WHERE i.is_primary_key = 1
-          AND i.object_id = OBJECT_ID(:("${refTable._upperName}"):, N'U')
+          AND i.object_id = OBJECT_ID(:("${asIsTable._upperName}"):, N'U')
         ORDER BY ic.key_ordinal`
       let pkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
@@ -128,7 +133,7 @@ class DBSQL2012 extends DBAbstract {
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       if (pkFromDb.length) {
-        refTable.primaryKey = {
+        asIsTable.primaryKey = {
           name: pkFromDb[0]['constraint_name'],
           keys: _.map(pkFromDb, 'column_name'),
           autoIncrement: pkFromDb[0]['auto_increment'] === 1
@@ -143,7 +148,7 @@ class DBSQL2012 extends DBAbstract {
             INNER JOIN sys.columns c  ON ic.object_id = c.object_id AND c.column_id = ic.column_id
         WHERE is_hypothetical = 0 AND i.index_id <> 0
             and i.is_primary_key <> 1
-            AND i.object_id = OBJECT_ID(:("${refTable._upperName}"):, N'U')
+            AND i.object_id = OBJECT_ID(:("${asIsTable._upperName}"):, N'U')
         order by ic.index_id, ic.key_ordinal, c.name`
       let indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
@@ -166,20 +171,20 @@ class DBSQL2012 extends DBAbstract {
           indexObj.keys.push(indexesFromDb[i]['column_name'] + (indexesFromDb[i]['is_descending_key'] !== 0 ? ' DESC' : ''))
           i++
         }
-        refTable.addIndex(indexObj)
+        asIsTable.addIndex(indexObj)
       }
 
       // check constraints
       let checkConstraintsSQL = `SELECT ck.name, ck.definition FROM sys.check_constraints ck
-        where ck.parent_object_id = OBJECT_ID(:("${refTable._upperName}"):, N'U')`
+        where ck.parent_object_id = OBJECT_ID(:("${asIsTable._upperName}"):, N'U')`
       let constraintsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: checkConstraintsSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
-      console.log('constraintsFromDb', constraintsFromDb)
+      // console.log('constraintsFromDb', constraintsFromDb)
       for (let constraintDef of constraintsFromDb) {
-        refTable.addCheckConstr({
+        asIsTable.addCheckConstr({
           name: constraintDef['name'],
           definition: constraintDef['definition']
         })
@@ -187,7 +192,7 @@ class DBSQL2012 extends DBAbstract {
 
       // triggers - UB do not add a triggers, so skip it
 
-      this.dbTableDefs.push(refTable)
+      this.dbTableDefs.push(asIsTable)
     }
 
     let sequencesSQL = `SELECT name AS sequence_name FROM sys.sequences WHERE SCHEMA_NAME(schema_id) = 'dbo'`
@@ -222,7 +227,37 @@ class DBSQL2012 extends DBAbstract {
    * @param {Object} [value] optional for updateType updConst
    */
   genCodeUpdate (table, column, updateType, value) {
-    throw new Error('Abstract genCodeUpdate')
+    function quoteIfNeed (v) {
+      return column.isString
+        ? (!column.defaultValue && (column.refTable || column.enumGroup)
+          ? v.replace(/'/g, "''")
+          : "''" + v.replace(/'/g, '') + "''")
+        : v
+      //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
+    }
+    switch (updateType) {
+      case 'updConstComment':
+        this.DDL.updateColumn.statements.push(
+          `-- update dbo.${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null`
+        )
+        break
+      case 'updConst':
+        this.DDL.updateColumn.statements.push(
+          `EXEC('update dbo.${table.name} set ${column.name} = ${quoteIfNeed(value)} where ${column.name} is null')`
+        )
+        break
+      case 'updNull':
+        let possibleDefault = column.defaultValue ? quoteIfNeed(column.defaultValue) : '[Please_set_value_for_notnull_field]'
+        this.DDL.updateColumn.statements.push(
+          `-- update dbo.${table.name} set ${column.name} = ${possibleDefault} where ${column.name} is null`
+        )
+        break
+      case 'updBase':
+        this.DDL.updateColumn.statements.push(
+          `EXEC('update dbo.${table.name} set ${column.name} = ${quoteIfNeed(column.baseName)} where ${column.name} is null')`
+        )
+        break
+    }
   }
 
   /** @override */
@@ -319,14 +354,24 @@ class DBSQL2012 extends DBAbstract {
     }
   }
   /**
-   * Generate code for add language column
-   * @abstract
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param baseColumn
+   * @override
    */
   genCodeAddColumnBase (table, column, baseColumn) {
-    throw new Error('Abstract genCodeAddColumnBase')
+    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    this.DDL.addColumn.statements.push(
+      `alter table dbo.${table.name} add ${column.name} ${this.createTypeDefine(column)}${def}`
+    )
+
+    this.DDL.updateColumn.statements.push(
+      `EXEC('update dbo.${table.name} set ${column.name} = ${baseColumn} where 1 = 1')`
+    )
+
+    if (!column.allowNull) {
+      let nullable = column.allowNull ? ' null' : ' not null'
+      this.DDL.alterColumnNotNull.statements.push(
+        `alter table dbo.${table.name} alter column ${column.name} ${this.createTypeDefine(column)}${nullable}`
+      )
+    }
   }
    /** @override */
   genCodeCreateTable (table) {
@@ -334,7 +379,7 @@ class DBSQL2012 extends DBAbstract {
     let colLen = table.columns.length
 
     table.columns.forEach((column, index) => {
-      res.push('\t', column.name, this.createTypeDefine(column), column.allowNull ? ' null' : ' not null',
+      res.push('\t', column.name, ' ', this.createTypeDefine(column), column.allowNull ? ' null' : ' not null',
         column.defaultValue
           ? (column.defaultConstraintName ? ` CONSTRAINT ${column.defaultConstraintName} ` : '') +
             ' default ' + column.defaultValue
@@ -403,9 +448,9 @@ class DBSQL2012 extends DBAbstract {
 
   /** @override */
   genCodeCreateIndex (table, indexSH, comment) {
-    let idx = comment ? `-- ${comment}\r\n` : ''
+    let commentText = comment ? `-- ${comment} \n` : ''
     this.DDL.createIndex.statements.push(
-      `${idx} create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
+      `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
     )
   }
 
@@ -493,27 +538,6 @@ class DBSQL2012 extends DBAbstract {
     }
   }
 
-  /**
-   * Generate a column type DDL part
-   * @override
-   * @param {FieldDefinition} column
-   * @return {string}
-   */
-  createTypeDefine (column) {
-    let res = ' ' + this.uniTypeToDataBase(column.dataType)
-    switch (column.dataType) {
-      case 'NVARCHAR':
-      case 'UVARCHAR':
-      case 'VARCHAR':
-        res += `(${column.size.toString()})`
-        break
-      case 'NUMERIC':
-        res += `(${column.size.toString()}, ${column.prec.toString()})`
-        break
-    }
-    return res
-  }
-
   /** @override */
   compareDefault (dataType, newValue, oldValue, constraintName, oldConstraintName) {
     if (typeof oldValue === 'string') {
@@ -521,32 +545,6 @@ class DBSQL2012 extends DBAbstract {
       oldValue = oldValue.toString().trim().replace('[datetime]', 'datetime')
     }
     return super.compareDefault(dataType, newValue, oldValue, constraintName, oldConstraintName)
-  }
-
-  /** @override */
-  getColumnValueForUpdate (table, column) {
-    let res
-    let constraint = table.getFKByColumnName(column.name)
-    if (constraint.length > 0) {
-      constraint = constraint[0]
-      return `(select min(id) from ${constraint.references})`
-    }
-    if (column.enumGroup) {
-      return `(select min(code) from ubm_enum where egroup = '${column.enumGroup}')`
-    }
-    switch (column.dataType) {
-      case 'NVARCHAR':
-      case 'VARCHAR':
-      case 'UVARCHAR':
-      case 'INTEGER':
-      case 'BIGINT':
-      case 'FLOAT':
-      case 'CURRENCY':
-      case 'TEXT': res = 'ID'; break
-      case 'BOOLEAN': res = '0'; break
-      case 'DATETIME': res = this.getExpression('currentDate'); break
-    }
-    return res
   }
 }
 

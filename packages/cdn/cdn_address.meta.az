@@ -8,24 +8,6 @@
         "value": {
             "caption": "Ünvan"
         },
-        "organizationID": {
-            "caption": "Daxili təşkilat"
-        },
-        "departmentID": {
-            "caption": "Daxili şöbə"
-        },
-        "employeeID": {
-            "caption": "Daxili əməkdaş"
-        },
-        "extOrganizationID": {
-            "caption": "Kənar təşkilat"
-        },
-        "extDepartmentID": {
-            "caption": "Kənar şöbə"
-        },
-        "extEmployeeID": {
-            "caption": "Kənar əməkdaş"
-        },
         "subjectID": {
             "caption": "Ünvan/Başlıq"
         }

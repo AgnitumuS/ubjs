@@ -10,8 +10,6 @@ const _ = require('lodash')
 class DBSQLite3 extends DBAbstract {
 
   loadDatabaseMetadata () {
-    console.info(`Loading database metadata for ${this.dbConnectionConfig.name}...`)
-
     let mTables = this.refTableDefs
 
     /** @type {Array<Object>} */
@@ -26,14 +24,14 @@ class DBSQLite3 extends DBAbstract {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { name: dbTab.name }) !== -1)
     }
     for (let tabDef of dbTables) {
-      let refTable = new TableDefinition({
+      let asIsTable = new TableDefinition({
         name: tabDef.name,
         caption: tabDef.caption
       })
       let primaryKeyFields = []
 
       // Table Columns
-      let columnSQL = `PRAGMA table_info('${refTable.name}')`
+      let columnSQL = `PRAGMA table_info('${asIsTable.name}')`
       let columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
@@ -65,7 +63,7 @@ class DBSQLite3 extends DBAbstract {
         }
         let dataType = this.dataBaseTypeToUni(fType, fLength, fPrec, fScale)
 
-        refTable.addColumn({
+        asIsTable.addColumn({
           name: colDef[ 'name' ],
           caption: colDef[ 'COMMENTS' ] || '', // TODO COMMENTS is a fake
           allowNull: (colDef[ 'notnull' ] !== 1),
@@ -83,7 +81,7 @@ class DBSQLite3 extends DBAbstract {
       // foreign key
       let fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
-        data: `PRAGMA foreign_key_list('${refTable.name}')`,
+        data: `PRAGMA foreign_key_list('${asIsTable.name}')`,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // id seq  table       from            to    on_update   on_delete  match
@@ -91,7 +89,7 @@ class DBSQLite3 extends DBAbstract {
       // 1  0   uba_user   mi_createuser    null   NO ACTION   NO ACTION  NONE
       // 2  0   uba_user   mi_owner         null   NO ACTION   NO ACTION  NONE
       for (let fkey of fkFromDb) {
-        refTable.addFK({
+        asIsTable.addFK({
           name: `FK_${fkey[ 'table' ]}_${fkey.from}`,
           keys: [ fkey.from ] || [],
           references: fkey[ 'to' ] || 'ID',
@@ -104,8 +102,12 @@ class DBSQLite3 extends DBAbstract {
       // primary keys
       // there is only one primary key (but possible several fields on(sourceID, destID). SQL return field in right order?
       if (primaryKeyFields.length) {
-        refTable.primaryKey = {
-          name: `PK_${refTable.name.toLowerCase()}`, // there is no possibility to set a primary key name in SQLIte3
+        let mustBeTab = _.find(mTables, {_upperName: asIsTable._upperName})
+        let pkNamePart = mustBeTab
+          ? mustBeTab.__entity.sqlAlias ? mustBeTab.__entity.sqlAlias : asIsTable._upperName
+          : asIsTable._upperName
+        asIsTable.primaryKey = {
+          name: `PK_${pkNamePart}`, // there is no possibility to set a primary key name in SQLIte3
           keys: primaryKeyFields.slice(0) // create a copy of array
         }
       }
@@ -113,7 +115,7 @@ class DBSQLite3 extends DBAbstract {
       // indexes. in case of several field - it is ordered by SQL
       let indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
-        data: `PRAGMA index_list('${refTable.name}')`,
+        data: `PRAGMA index_list('${asIsTable.name}')`,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // seq   name                unique  origin    partial
@@ -132,8 +134,8 @@ class DBSQLite3 extends DBAbstract {
         // 0     9    mi_createdate 0  ISO8601   1
         // 1     10   mi_createuser 0  BINARY    1
         // 2     -1                 0  BINARY    0
-        var idxColArr = _(idxCols).filter({ key: 1 }).map((col) => col[ 'desc' ] === 0 ? col.name : col.name + ' DESC').value()
-        refTable.addIndex({
+        let idxColArr = _(idxCols).filter({ key: 1 }).map((col) => col[ 'desc' ] === 0 ? col.name : col.name + ' DESC').value()
+        asIsTable.addIndex({
           name: indexDef.name,
           isUnique: indexDef[ 'unique' ] === 1,
           isDisabled: false,
@@ -141,7 +143,7 @@ class DBSQLite3 extends DBAbstract {
           keys: idxColArr
         })
       }
-      this.dbTableDefs.push(refTable)
+      this.dbTableDefs.push(asIsTable)
     }
   }
 
@@ -244,6 +246,10 @@ class DBSQLite3 extends DBAbstract {
     }
     res.push(')')
     this.DDL.createTable.statements.push(res.join(''))
+  }
+
+  genCodeRename (table, oldName, newName, typeObj) {
+    throw new Error(`try to rename ${typeObj} for ${table.name} ${oldName} -> ${newName}`)
   }
 
   /**
@@ -405,7 +411,6 @@ class DBSQLite3 extends DBAbstract {
   }
 
   genCodeDropDefault (table, column) {
-    debugger
     this.DDL.warnings.statements.push(`Attempt to drop a default for ${table.name}.${column.name}`)
   }
 
