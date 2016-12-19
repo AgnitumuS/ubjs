@@ -68,13 +68,24 @@ class DBAbstract {
    * Load information from a database schema definition into this.dbTableDefs
    * @abstract
    */
-  loadDatabaseMetadata () {}
+  loadDatabaseMetadata () {
+    throw new Error('Abstract loadDatabaseMetadata')
+  }
 
   addWarning (text) {
     this.DDL.warnings.statements.push(text)
   }
 
-  genCodeRename (table, oldName, newName, typeObj) {}
+  /**
+   * @abstract
+   * @param {TableDefinition} table
+   * @param {string} oldName
+   * @param {string} newName
+   * @param {string} typeObj
+   */
+  genCodeRename (table, oldName, newName, typeObj) {
+    throw new Error('Abstract genCodeRename')
+  }
 
   /**
    * @abstract
@@ -83,7 +94,9 @@ class DBAbstract {
    * @param {String} updateType
    * @param {Object} [value] optional for updateType updConst
    */
-  genCodeUpdate (table, column, updateType, value) {}
+  genCodeUpdate (table, column, updateType, value) {
+    throw new Error('Abstract genCodeUpdate')
+  }
 
   /**
    * TODO rename to Annotate
@@ -340,7 +353,7 @@ class DBAbstract {
       // drop check constraint
       for (let asIsChk of asIs.checkConstraints) {
         if (mustBe.existOther(asIsChk.name)) continue
-        let mustBeChk = mustBe.getCheckConstrIndexByName(asIsChk.name)
+        let mustBeChk = mustBe.getCheckConstrByName(asIsChk.name)
         if (!mustBeChk) {
           this.genCodeDropConstraint(asIs.name, asIsChk.name)
         }
@@ -412,7 +425,6 @@ class DBAbstract {
     for (let asIsC of asIs.columns) {
       let sizeChanged = false
       let sizeIsSmaller = false
-      let defChanged = false
       let allowNullChanged = false
 
       let mustBeC = mustBe.columnByName(asIsC.name)
@@ -440,10 +452,10 @@ class DBAbstract {
             sizeIsSmaller = (mustBeC.size < asIsC.size) || (mustBeC.prec < asIsC.prec)
             break
         }
-        defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
+        let defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
         // TEMP
         if (defChanged) {
-          console.debug('!CONSTRAINT %s !== %s ', mustBeC.defaultValue, asIsC.defaultValue)
+          console.log('!CONSTRAINT mustBe "%s" !== asIs "%s" ', mustBeC.defaultValue, asIsC.defaultValue)
         }
         allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
 
@@ -564,9 +576,9 @@ class DBAbstract {
     return res.join('')
   }
 
-  compareDefault (dataType, newValue, oldValue, constraintName, oldConstraintName) {
-    if (!newValue && !oldValue) return false
-    return (newValue !== oldValue) && (newValue !== "'" + oldValue + "'")
+  compareDefault (dataType, mustBeDefault, asIsDefault, mustBeConstraintName, asIsConstraintName) {
+    if (!mustBeDefault && !asIsDefault) return false
+    return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) && (`(${mustBeDefault}'` !== asIsDefault)
   }
 
   /**

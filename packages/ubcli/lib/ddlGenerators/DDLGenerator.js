@@ -183,8 +183,8 @@ class DDLGenerator {
         /** @type DBAbstract */
         let Maker = require(`./db/${dbConnCfg.dialect}`)
         let maker = new Maker(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
-        maker.loadDatabaseMetadata()
         debugger
+        maker.loadDatabaseMetadata()
         maker.compare()
         result[dbConnCfg.name] = maker.generateStatements()
       }

@@ -3,24 +3,26 @@ const _ = require('lodash')
 const {TableDefinition, strIComp} = require('../AbstractSchema')
 const DBAbstract = require('./DBAbstract')
 
+// MPV: prior to UB 4 we use a `Caption` extended property - this is mistake
+const DB_DESCRIPTION_PROPERTY = 'MS_Description'
+
 /**
  * Created by pavel.mash on 10.12.2016.
  */
-
 class DBSQL2012 extends DBAbstract {
   /**
    * Load information from a database schema definition into this.dbTableDefs
-   * @abstract
+   * @override
    */
   loadDatabaseMetadata () {
-    console.info(`Loading database metadata for ${this.dbConnectionConfig.name}...`)
+    console.info(`Loading database metadata for connection ${this.dbConnectionConfig.name} (${this.dbConnectionConfig.dialect})...`)
 
     let mTables = this.refTableDefs
 
-    let tablesSQL = `select o.name, cast( eprop.value as nvarchar(2000) )  as caption 
+    let tablesSQL = `select o.name, cast( eprop.value as nvarchar(2000) ) as caption 
       from  sys.tables o
        left outer join sys.extended_properties eprop 
-         on eprop.major_id = o.object_id and eprop.minor_id = 0 and eprop.class = 1 and eprop.name = 'Caption'
+         on eprop.major_id = o.object_id and eprop.minor_id = 0 and eprop.class = 1 and eprop.name = '${DB_DESCRIPTION_PROPERTY}'
       where o.type = 'U'
       order by o.name`
     /** @type {Array<Object>} */
@@ -45,7 +47,7 @@ class DBSQL2012 extends DBAbstract {
       let columnSQL = `SELECT c.name, c.column_id AS colid, c.is_ansi_padded, c.is_nullable,
         c.is_identity, c.is_xml_document, c.is_computed, t.name AS typename, st.name AS systpname,
         c.max_length AS len, c.precision AS prec, c.scale, d.name AS defname, du.name AS defowner, 
-        cast( ep.value as nvarchar(2000) ) as caption, cm.definition  AS defvalue
+        cast( ep.value as nvarchar(2000) ) as description, cm.definition  AS defvalue
       FROM sys.all_columns c INNER JOIN sys.types t ON c.user_type_id = t.user_type_id
         INNER JOIN sys.schemas tu ON tu.schema_id = t.schema_id
         LEFT OUTER JOIN sys.types st ON c.system_type_id = st.user_type_id
@@ -54,23 +56,23 @@ class DBSQL2012 extends DBAbstract {
         LEFT OUTER JOIN sys.objects d ON d.object_id = c.default_object_id
         LEFT OUTER JOIN sys.schemas du ON du.schema_id = d.schema_id
         LEFT OUTER JOIN sys.default_constraints cm ON cm.object_id = d.object_id
-        left outer join sys.extended_properties ep on ep.major_id = tb.object_id and ep.minor_id = c.column_id and ep.class = 1 and ep.name = 'Caption'
+        left outer join sys.extended_properties ep on ep.major_id = tb.object_id and ep.minor_id = c.column_id and ep.class = 1 and ep.name = '${DB_DESCRIPTION_PROPERTY}'
       where tb.object_id = object_id( :("${refTable._upperName}"):, N'U')`
       let columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
-
+      console.log(columnsFromDb)
       for (let colDef of columnsFromDb) {
         let physicalTypeLower = colDef['typename'].toLowerCase()
         let nObj = {
           name: colDef.name,
-          caption: colDef.caption,
+          description: colDef.description,
           allowNull: (colDef['is_nullable'] !== 0),
           dataType: this.dataBaseTypeToUni(colDef['typename'], colDef['len'], colDef['prec'], colDef['scale']),
           size: (['nvarchar', 'varchar', 'char', 'nchar', 'text', 'ntext'].indexOf(physicalTypeLower) !== -1)
-            ? colDef.length
+            ? colDef['len']
             : colDef.prec,
           prec: colDef['scale'],
           // defaultValue: this.parseDefValue( colDef.defvalue ),
@@ -84,8 +86,7 @@ class DBSQL2012 extends DBAbstract {
       }
 
       // foreign key
-      let foreignKeysSQL = `SELECT
-        f.name AS foreign_key_name
+      let foreignKeysSQL = `SELECT f.name AS foreign_key_name
         ,OBJECT_NAME(f.parent_object_id) AS table_name
         ,COL_NAME(fc.parent_object_id, fc.parent_column_id) AS constraint_column_name
         ,OBJECT_NAME (f.referenced_object_id) AS referenced_object
@@ -96,7 +97,7 @@ class DBSQL2012 extends DBAbstract {
         FROM sys.foreign_keys AS f
         INNER JOIN sys.foreign_key_columns AS fc
         ON f.object_id = fc.constraint_object_id
-        WHERE f.parent_object_id = OBJECT_ID(:("${refTable._upperName}"):, N'U')`
+        WHERE f.parent_object_id = OBJECT_ID( :("${refTable._upperName}"):, N'U')`
       let fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: foreignKeysSQL,
@@ -105,7 +106,7 @@ class DBSQL2012 extends DBAbstract {
       for (let fkDef of fkFromDb) {
         refTable.addFK({
           name: fkDef['foreign_key_name'],
-          keys: [fkDef['constraint_column_name']],
+          keys: [fkDef['constraint_column_name'].toUpperCase()],
           references: fkDef['referenced_object'],
           isDisabled: fkDef['is_disabled'] !== 0,
           deleteAction: fkDef['delete_referential_action_desc'], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
@@ -176,6 +177,7 @@ class DBSQL2012 extends DBAbstract {
         data: checkConstraintsSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
+      console.log('constraintsFromDb', constraintsFromDb)
       for (let constraintDef of constraintsFromDb) {
         refTable.addCheckConstr({
           name: constraintDef['name'],
@@ -184,6 +186,8 @@ class DBSQL2012 extends DBAbstract {
       }
 
       // triggers - UB do not add a triggers, so skip it
+
+      this.dbTableDefs.push(refTable)
     }
 
     let sequencesSQL = `SELECT name AS sequence_name FROM sys.sequences WHERE SCHEMA_NAME(schema_id) = 'dbo'`
@@ -197,35 +201,40 @@ class DBSQL2012 extends DBAbstract {
     }
   }
 
-  addWarning (text) {
-    this.DDL.warnings.statements.push(text)
+  /** @override */
+  genCodeRename (table, oldName, newName, typeObj) {
+    let fType = 'OBJECT'
+    let oldNameR = oldName
+    if (typeObj === 'INDEX') {
+      fType = 'INDEX'
+      oldNameR = table.name + '.' + oldName
+    }
+    this.DDL.rename.statements.push(
+      `EXEC sp_rename '${oldNameR}', '${newName}', '${fType}'`
+    )
   }
 
-  genCodeRename (table, oldName, newName, typeObj) {}
-
   /**
-   * @abstract
+   * @override
    * @param {Object} table
    * @param {Object} column
    * @param {String} updateType
    * @param {Object} [value] optional for updateType updConst
    */
-  genCodeUpdate (table, column, updateType, value) {}
+  genCodeUpdate (table, column, updateType, value) {
+    throw new Error('Abstract genCodeUpdate')
+  }
 
-  /**
-   *
-   */
+  /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace("'", "''", 'g')
-    let proc = (oldValue === null) ? 'sp_addextendedproperty' : 'sp_updateextendedproperty'
-    let result = `EXEC ${proc} @name = N'Caption', @value = N'${value === null ? (column || tableName) : value}',@level0type = N'SCHEMA',  @level0name= N'dbo', @level1type = N'TABLE',  @level1name = N'${tableName}'`
+    let proc = oldValue ? 'sp_updateextendedproperty' : 'sp_addextendedproperty'
+    let result = `EXEC ${proc} @name = N'${DB_DESCRIPTION_PROPERTY}', @value = N'${value === null ? (column || tableName) : value}',@level0type = N'SCHEMA',  @level0name= N'dbo', @level1type = N'TABLE',  @level1name = N'${tableName}'`
     if (column) result += `, @level2type = N'Column', @level2name = '${column}'`
     this.DDL.caption.statements.push(result)
   }
 
-  /**
-   *
-   */
+  /** @override */
   genCodeCreateCheckC (table, checkConstr) {
     switch (checkConstr.type) {
       case 'bool':
@@ -241,44 +250,73 @@ class DBSQL2012 extends DBAbstract {
     }
   }
 
-  /**
-   * @abstract
-   */
+  /** @override */
   genCodeDropColumn (tableDB, columnDB) {
     throw new Error('Abstract genCodeDropColumn')
   }
 
-  /**
-   * @abstract
-   */
+  /** @override */
   genCodeSetDefault (table, column) {
-    throw new Error('Abstract genCodeSetDefault')
+    this.DDL.setDefault.statements.push(
+      `alter table dbo.${table.name} ADD CONSTRAINT ${column.defaultConstraintName} default ${column.defaultValue} for ${column.name}`
+    )
   }
 
-  /**
-   * @abstract
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   */
+  /** @override */
   genCodeDropDefault (table, column) {
-    throw new Error('Abstract genCodeDropDefault')
+    this.DDL.dropDefault.statements.push(
+      `EXECUTE dbo.ub_dropColumnConstraints '${table.name}','${column.name}'`
+    )
   }
 
-  /**
-   * @abstract
-   */
+  /** @override */
   genCodeAlterColumn (table, tableDB, column, columnDB, typeChanged, sizeChanged, allowNullChanged) {
-    throw new Error('Abstract genCodeAlterColumn')
+    if (typeChanged && column.dataType === 'NTEXT') {
+      // todo сделать автоматом
+      this.addWarning(`Converting to NTEXT type is not supported. Create a new field manually and copy the data into it
+      \tField ${table.name}.${column.name}`)
+    }
+
+    // in case of not null added - recreate index
+    // if (allowNullChanged && !column.allowNull ){
+
+    let objects = tableDB.getIndexesByColumnName(column.name)
+    for (let colIndex of objects) {
+      colIndex.isForDelete = true
+      colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`
+    }
+
+    if (allowNullChanged && !column.allowNull) {
+      if (typeChanged || sizeChanged) {
+        this.DDL.alterColumn.statements.push(
+          `alter table dbo.${table.name} alter column ${column.name} ${this.createTypeDefine(column)}`
+        )
+      }
+      this.DDL.alterColumnNotNull.statements.push(
+        `alter table dbo.${table.name} alter column ${column.name} ${this.createTypeDefine(column)} ${column.allowNull ? ' null' : ' not null'}`
+      )
+    } else {
+      this.DDL.alterColumn.statements.push(
+        `alter table dbo.${table.name} alter column ${column.name} ${this.createTypeDefine(column)} ${column.allowNull ? ' null' : ''}`
+      )
+    }
   }
 
   /**
-   * @abstract
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @param {boolean} [delayedNotNull] optional true to set not null in alter
+   * @override
    */
   genCodeAddColumn (table, column, delayedNotNull) {
-    throw new Error('Abstract genCodeAddColumn')
+    let typeDef = this.createTypeDefine(column)
+    let nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
+    let def = column.defaultValue ? ' default ' + column.defaultValue : ''
+    this.DDL.addColumn.statements.push(
+      `alter table dbo.${table.name} add ${column.name} ${typeDef}${nullable}${def}`
+    )
+    if (delayedNotNull && !column.allowNull) {
+      this.DDL.alterColumnNotNull.statements.push(
+        `alter table dbo.${table.name} alter column ${column.name} ${typeDef} not null`
+      )
+    }
   }
   /**
    * Generate code for add language column
@@ -290,9 +328,7 @@ class DBSQL2012 extends DBAbstract {
   genCodeAddColumnBase (table, column, baseColumn) {
     throw new Error('Abstract genCodeAddColumnBase')
   }
-  /**
-   * @param {TableDefinition} table
-   */
+   /** @override */
   genCodeCreateTable (table) {
     let res = [`create table dbo.${table.name}(\r\n`]
     let colLen = table.columns.length
@@ -308,18 +344,15 @@ class DBSQL2012 extends DBAbstract {
     res.push(')')
     this.DDL.createTable.statements.push(res.join(''))
   }
-  /**
-   * @param {TableDefinition} table
-   */
+
+  /** @override */
   genCodeCreatePK (table) {
     this.DDL.createPK.statements.push(
       `alter table dbo.${table.name} add constraint ${table.primaryKey.name} PRIMARY KEY CLUSTERED(${table.primaryKey.keys.join(',')})`
     )
   }
-  /**
-   * @param {TableDefinition} table
-   * @param {Object} constraintFK
-   */
+
+  /** @override */
   genCodeCreateFK (table, constraintFK) {
     if (!constraintFK.generateFK) return
 
@@ -327,7 +360,7 @@ class DBSQL2012 extends DBAbstract {
     let refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
 
     this.DDL.createFK.statements.push(
-      `alter table dbo.${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')} references dbo.${constraintFK.references}(${refKeys})`
+      `alter table dbo.${table.name} add constraint ${constraintFK.name} foreign key (${constraintFK.keys.join(',')}) references dbo.${constraintFK.references}(${refKeys})`
     )
   }
   /**
@@ -348,12 +381,12 @@ class DBSQL2012 extends DBAbstract {
     throw new Error('Abstract genCodeDropPK')
   }
   /**
-   * @abstract
-   * @param {string} tableName
-   * @param {string} constraintName
+   * @override
    */
   genCodeDropConstraint (tableName, constraintName) {
-    throw new Error('Abstract genCodeDropConstraint')
+    this.DDL.dropFK.statements.push(
+      `alter table dbo.${tableName} drop constraint ${constraintName}`
+    )
   }
   /**
    * @abstract
@@ -367,15 +400,19 @@ class DBSQL2012 extends DBAbstract {
   genCodeDropSequence (sequenceName) {
     throw new Error('Abstract genCodeDropSequence')
   }
+
+  /** @override */
   genCodeCreateIndex (table, indexSH, comment) {
     let idx = comment ? `-- ${comment}\r\n` : ''
     this.DDL.createIndex.statements.push(
       `${idx} create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on dbo.${table.name}(${indexSH.keys.join(',')})`
     )
   }
+
   /**
    * Return a database-specific value for default expression.
    * Can parse UB macros (maxDate, currentDate etc)
+   * @override
    * @param {string} macro
    * @param {FieldDefinition} [column]
    */
@@ -399,6 +436,7 @@ class DBSQL2012 extends DBAbstract {
 
   /**
    * Convert universal types to database type
+   * @override
    * @param {string} dataType
    * @return {string}
    */
@@ -422,6 +460,7 @@ class DBSQL2012 extends DBAbstract {
   }
   /**
    * Convert database types to universal
+   * @override
    * @param dataType
    * @param {number} len
    * @param {number}  prec
@@ -453,300 +492,10 @@ class DBSQL2012 extends DBAbstract {
       default: return dataType
     }
   }
-  /**
-   * Decode a default values for a attributes to a database-specific values
-   * "maxDate", "currentDate", quoter strings
-   * @param {TableDefinition} table
-   */
-  normalizeDefaults (table) {
-    for (let column of table.columns) {
-      if (column.defaultValue) {
-        column.defaultValue = this.getExpression(column.defaultValue, column)
-      }
-    }
-  }
-
-  /** compare referenced tables with database metadata */
-  compare () {
-    for (let mustBe of this.refTableDefs) {
-      if (!mustBe.doComparision) continue
-      this.normalizeDefaults(mustBe)
-      let asIs = _.find(this.dbTableDefs, {_upperName: mustBe._upperName})
-      this.compareTableDefinitions(mustBe, asIs)
-    }
-  }
-
-  /**
-   * Compare the "Must Be" (as defined by entity metadata) table definition with database table definition
-   * @param {TableDefinition} mustBe
-   * @param {TableDefinition} asIs
-   */
-  compareTableDefinitions (mustBe, asIs) {
-    let notEqualPK = false
-    if (!asIs) { // table in database does not exists
-      this.genCodeCreateTable(mustBe)
-
-      // todo rename genCodeSetCaption -> addDBObjectDescription
-      this.genCodeSetCaption(mustBe.name, null, mustBe.caption, null)
-      for (let col of mustBe.columns) {
-        this.genCodeSetCaption(mustBe.name, col.name, col.caption, null)
-      }
-    } else {
-      if (asIs.caption !== mustBe.caption && mustBe.caption) {
-        this.genCodeSetCaption(mustBe.name, null, mustBe.caption, asIs.caption)
-      }
-
-      this.compareColumns(mustBe, asIs)
-
-      // drop PK if not equals or not exist in schema
-      if (asIs.primaryKey && !mustBe.existOther(asIs.primaryKey.name) &&
-         (!mustBe.primaryKey || !_.isEqual(asIs.primaryKey.keys, mustBe.primaryKey.keys))
-      ) {
-        this.genCodeDropPK(asIs.name, asIs.primaryKey.name)
-      } else {
-        if (asIs.primaryKey && mustBe.primaryKey && !strIComp(asIs.primaryKey.name, mustBe.primaryKey.name)) {
-          this.genCodeRename(mustBe, asIs.primaryKey.name, mustBe.primaryKey.name, 'PK')
-        }
-      }
-
-      // drop FK if not found in schema by name or not equal
-      for (let asIsFK of asIs.foreignKeys) {
-        if (mustBe.existOther(asIsFK.name)) continue
-        let mustBeFK = mustBe.getFKByName(asIsFK.name)
-        if (mustBeFK && mustBeFK.isDeleted) continue
-        if (!mustBeFK || !_.isEqual(asIsFK.keys, mustBeFK.keys) || !strIComp(mustBeFK.references, asIsFK.references) ||
-            asIsFK.updateAction !== 'NO_ACTION' || asIsFK.deleteAction !== 'NO_ACTION') {
-          this.genCodeDropConstraint(asIs.name, asIsFK.name)
-          if (mustBeFK) mustBeFK.isDeleted = true
-        }
-      }
-
-      // drop indexes
-      for (let asIsIndex of asIs.indexes) {
-        if (mustBe.existOther(asIsIndex.name)) continue
-        let mustBeIndex = mustBe.indexByName(asIsIndex.name)
-        if (!mustBeIndex || asIsIndex.isForDelete ||
-          !_.isEqual(mustBeIndex.keys, asIsIndex.keys) ||
-          (mustBeIndex.isUnique !== mustBeIndex.isUnique) ||
-          asIsIndex.isDisabled
-        ) {
-          if (!asIsIndex.isDeleted) {
-            this.genCodeDropIndex(asIs, mustBe, asIsIndex,
-              asIsIndex.isForDelete && !asIsIndex.isForDeleteMsg ? asIsIndex.isForDeleteMsg : null)
-          }
-          if (mustBeIndex) mustBeIndex.isDeleted = true
-        }
-      }
-
-      // drop check constraint
-      for (let asIsChk of asIs.checkConstraints) {
-        if (mustBe.existOther(asIsChk.name)) continue
-        let mustBeChk = mustBe.getCheckConstrIndexByName(asIsChk.name)
-        if (!mustBeChk) {
-          this.genCodeDropConstraint(asIs.name, asIsChk.name)
-        }
-      }
-
-      // sequence
-      // TODO - increase sequence value to indicate physical structure is changed
-      // if (me.schema.sequences['S_' + asIs.name.toUpperCase()]){
-      //    me.genCodeDropSequence('S_' + asIs.name.toUpperCase());
-      // }
-    }
-
-    // create PK
-    if (mustBe.primaryKey && ((asIs && !asIs.primaryKey) || notEqualPK || !asIs)) {
-      this.genCodeCreatePK(mustBe)
-    }
-
-    // create fk
-    for (let mustBeFK of mustBe.foreignKeys) {
-      let asIsFK = asIs && asIs.getFKByName(mustBeFK.name)
-      // && !constrFK.isRenamed
-      if ((mustBeFK.isDeleted || !asIsFK) && !mustBeFK.isRenamed) {
-        this.genCodeCreateFK(mustBe, mustBeFK)
-      }
-    }
-
-    // create index
-    for (let mustBeIndex of mustBe.indexes) {
-      let asIsIndex = asIs && asIs.indexByName(mustBeIndex.name)
-      if ((mustBeIndex.isDeleted || !asIsIndex) && !mustBeIndex.isRenamed) {
-        this.genCodeCreateIndex(mustBe, mustBeIndex)
-      }
-    }
-
-    // create check constraint
-    for (let mustBeChk of mustBe.checkConstraints) {
-      let asIsChk = asIs && asIs.getCheckConstrByName(mustBeChk.name)
-      if (!asIsChk) {
-        this.genCodeCreateCheckC(mustBe, mustBeChk)
-      }
-    }
-
-    // TODO sequences must be on the schema level
-    // mustBe.sequences.forEach(function (sequenceObj) {
-    //   obj = me.schema.sequences[sequenceObj.name.toUpperCase()]
-    //   if (!obj) {
-    //     me.genCodeAddSequence(mustBe, sequenceObj)
-    //   }
-    // })
-
-    // others
-    _.forEach(mustBe.othersNames, (otherObj) => {
-      if (!otherObj.expression && _.isString(otherObj.expression)) {
-        if (!otherObj.existInDB) {
-          this.DDL.others.statements.push(otherObj.expression)
-        }
-      }
-    })
-  }
-
-  /**
-   * Compare columns of Must Be - as in metadata and asIs - as in database TableDefinition definition adn generate a DDL statements
-   * @param {TableDefinition} mustBe
-   * @param {TableDefinition} asIs
-   */
-  compareColumns (mustBe, asIs) {
-    let delayedNotNull
-    // compare columns
-    for (let asIsC of asIs.columns) {
-      let sizeChanged = false
-      let sizeIsSmaller = false
-      let defChanged = false
-      let allowNullChanged = false
-
-      let mustBeC = mustBe.columnByName(asIsC.name)
-      if (mustBeC) { // alter
-        // caption
-        if (mustBeC.caption !== asIsC.caption) {
-          this.genCodeSetCaption(mustBe.name, mustBeC.name, mustBeC.caption, asIsC.caption)
-        }
-        // mustBeC exists in schema
-        let typeChanged = !strIComp(mustBeC.dataType, asIsC.dataType)
-        if (typeChanged && (asIsC.dataType === 'UVARCHAR' &&
-          (mustBeC.dataType === 'NVARCHAR' || mustBeC.dataType === 'VARCHAR'))) {
-          typeChanged = false
-        }
-        // noinspection FallthroughInSwitchStatementJS
-        switch (asIsC.dataType) {
-          case 'NVARCHAR':
-          case 'UVARCHAR':
-          case 'VARCHAR':
-            sizeChanged = mustBeC.size !== asIsC.size
-            sizeIsSmaller = (mustBeC.size < asIsC.size)
-            break
-          case 'NUMERIC':
-            sizeChanged = mustBeC.size !== asIsC.size || mustBeC.prec !== asIsC.prec
-            sizeIsSmaller = (mustBeC.size < asIsC.size) || (mustBeC.prec < asIsC.prec)
-            break
-        }
-        defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
-        // TEMP
-        if (defChanged) {
-          console.debug('!CONSTRAINT %s !== %s ', mustBeC.defaultValue, asIsC.defaultValue)
-        }
-        allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
-
-        let asIsType = this.createTypeDefine(asIsC)
-        let mustBeType = this.createTypeDefine(mustBeC)
-        let mustBeColumn = `${mustBe.name}.${mustBeC.name}`
-        if (typeChanged &&
-          (mustBeC.dataType === 'INTEGER' || mustBeC.dataType === 'BIGINT' || mustBeC.dataType === 'NUMBER') &&
-          (asIsC.dataType === 'NVARCHAR' || asIsC.dataType === 'VARCHAR' || asIsC.dataType === 'UVARCHAR' ||
-          asIsC.dataType === 'NTEXT' || asIsC.dataType === 'NCHAR' || mustBeC.dataType === 'CHAR')) {
-          this.addWarning(`Altering type for ${mustBeColumn} from ${asIsType} to ${mustBeType} may be wrong`)
-        }
-        if (typeChanged && (
-            (asIsC.dataType === 'NTEXT') || (mustBeC.dataType === 'NTEXT') ||
-            (asIsC.dataType === 'DATETIME') || (mustBeC.dataType === 'DATETIME') ||
-            ((asIsC.dataType === 'BIGINT') && (mustBeC.dataType === 'INTEGER')) ||
-            ((asIsC.dataType === 'NUMERIC') && (mustBeC.size > 10) && (mustBeC.dataType === 'INTEGER')) ||
-            ((asIsC.dataType === 'NUMERIC') && (mustBeC.size > 19) && (mustBeC.dataType === 'BIGINT')) ||
-            ((asIsC.dataType === 'NUMERIC') && (mustBeC.prec !== 0) && (mustBeC.dataType === 'BIGINT' || mustBeC.dataType === 'INTEGER'))
-          )
-        ) {
-          this.addWarning(`Altering type for ${mustBeColumn} from ${asIsType} to ${mustBeType} may be wrong`)
-        }
-
-        if (sizeChanged && sizeIsSmaller) {
-          this.addWarning(`The size or precision for field ${mustBeColumn} was reduced potential loss of data: ${asIsType} -> ${mustBeType}`)
-        }
-        if (defChanged && (asIsC.defaultValue != null)) {
-          this.genCodeDropDefault(mustBe, asIsC)
-        }
-        if (defChanged && mustBeC.defaultValue) {
-          this.genCodeSetDefault(mustBe, mustBeC)
-        }
-        if (!defChanged && (allowNullChanged || typeChanged)) {
-          if (asIsC.defaultValue && this.dbConnectionConfig.dialect.startsWith('MSSQL')) {
-            this.genCodeDropDefault(mustBe, asIsC)
-          }
-          if (mustBeC.defaultValue) {
-            this.genCodeSetDefault(mustBe, mustBeC)
-          }
-        }
-        if (typeChanged || sizeChanged || allowNullChanged) {
-          this.genCodeAlterColumn(mustBe, asIs, mustBeC, asIsC, typeChanged, sizeChanged, allowNullChanged)
-        }
-
-        if (allowNullChanged && !mustBeC.allowNull) {
-          delayedNotNull = false
-          if (!mustBeC.allowNull) {
-            delayedNotNull = true
-            this.genCodeUpdate(mustBe, mustBeC, this.isUnsafe || mustBeC.defaultValue ? 'updConst' : 'updConstComment',
-              mustBeC.defaultValue ? mustBeC.defaultValue : this.getColumnValueForUpdate(mustBe, mustBeC))
-          }
-          if (!delayedNotNull) {
-            this.genCodeUpdate(mustBe, mustBeC, 'updNull')
-          }
-        }
-        mustBeC.existInDB = true
-      } else { // drop column
-        if (asIsC.defaultValue) {
-          this.genCodeDropDefault(asIs, asIsC)
-        }
-        this.addWarning(`Will drop field ${asIs.name}.${asIsC.name} ${this.createTypeDefine(asIsC.dataType)}. Check may be there is useful data!!!`)
-        this.genCodeDropColumn(asIs, asIsC)
-        asIsC.isDeleted = true
-      }
-    }
-
-    // new columns
-    for (let mustBeCol of mustBe.columns) {
-      if (mustBeCol.existInDB || mustBeCol.name === 'rowid') continue // special case for sqlite3
-      delayedNotNull = false
-      // update by base mustBeCol
-      if (mustBeCol.baseName) { // multi language column
-        let lang = this.dbConnectionConfig.supportLang[0]
-        var columnBase = ''
-        if (lang === this.defaultLang) {
-          columnBase = mustBeCol.baseName
-        } else {
-          columnBase = mustBeCol.baseName + '_' + lang
-        }
-        if (asIs.columnByName(columnBase)) {
-          this.genCodeAddColumnBase(mustBe, mustBeCol, columnBase)
-        } else {
-          this.addWarning(`--  mustBeCol ${mustBe.name}.${columnBase} for base language not exists. Data for column ${mustBeCol.name} may not be initialized`)
-          this.genCodeAddColumn(mustBe, mustBeCol)
-        }
-      } else {
-        delayedNotNull = false
-        if (!mustBeCol.defaultValue && !mustBeCol.allowNull) {
-          delayedNotNull = true
-          this.genCodeUpdate(mustBe, mustBeCol, this.isUnsafe ? 'updConst' : 'updConstComment', this.getColumnValueForUpdate(mustBe, mustBeCol))
-        }
-
-        this.genCodeAddColumn(mustBe, mustBeCol, delayedNotNull)
-      }
-      // caption
-      this.genCodeSetCaption(mustBe.name, mustBeCol.name, mustBeCol.caption, null)
-    }
-  }
 
   /**
    * Generate a column type DDL part
+   * @override
    * @param {FieldDefinition} column
    * @return {string}
    */
@@ -765,16 +514,16 @@ class DBSQL2012 extends DBAbstract {
     return res
   }
 
+  /** @override */
   compareDefault (dataType, newValue, oldValue, constraintName, oldConstraintName) {
-    if (!newValue && !oldValue) return false
-    return (newValue !== oldValue) && (newValue !== "'" + oldValue + "'")
+    if (typeof oldValue === 'string') {
+      // special case for MS SQL datetime function: CONVERT(datetime,''31.12.9999'',(104)) but DB return CONVERT([datetime],''31.12.9999'',(104))
+      oldValue = oldValue.toString().trim().replace('[datetime]', 'datetime')
+    }
+    return super.compareDefault(dataType, newValue, oldValue, constraintName, oldConstraintName)
   }
 
-  /**
-   * @param {TableDefinition} table
-   * @param {FieldDefinition} column
-   * @return {*}
-   */
+  /** @override */
   getColumnValueForUpdate (table, column) {
     let res
     let constraint = table.getFKByColumnName(column.name)
@@ -798,9 +547,6 @@ class DBSQL2012 extends DBAbstract {
       case 'DATETIME': res = this.getExpression('currentDate'); break
     }
     return res
-  }
-  generateStatements () {
-    return this.DDL
   }
 }
 

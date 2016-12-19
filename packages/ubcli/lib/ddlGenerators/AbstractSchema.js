@@ -251,10 +251,6 @@ class TableDefinition {
     return obj
   }
 
-  getCheckConstrIndexByName (name) {
-    return _.findIndex(this.checkConstraints, {_upperName: name.toUpperCase()})
-  }
-
   getCheckConstrByName (name) {
     return _.find(this.checkConstraints, {_upperName: name.toUpperCase()})
   }
