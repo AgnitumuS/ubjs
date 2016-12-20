@@ -153,7 +153,7 @@ class DBSQLite3 extends DBAbstract {
    * @param {FieldDefinition} column
    */
   columnDDL (table, column) {
-    let res = column.name +
+    let res = column.name + ' ' +
       this.createTypeDefine(column) +
       (column.defaultValue ? ` DEFAULT (${column.defaultValue})` : '') +
       (column.allowNull ? ' NULL' : ' NOT NULL') +
