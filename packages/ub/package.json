@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "Build-in UnityBase model",
   "config": {
     "ubmodel": "UB"
@@ -17,13 +17,13 @@
   },
   "main": "0_init.js",
   "dependencies": {
-    "@unitybase/base": "^4.0.4",
+    "@unitybase/base": "^4.0.5",
     "lodash": "^4.0.0",
     "mime-types": "^2.1.12"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.4",
-    "systemjs": "^0.20.3"
+    "@unitybase/stubs": "^4.0.5",
+    "systemjs": "^0.20.4"
   },
   "keywords": [
     "UnityBase"

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-reg",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "UnityBase admin UI (server part)",
   "main": "index.js",
   "config": {
@@ -20,7 +20,7 @@
     "mustache": "^2.3.0"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.4"
+    "@unitybase/stubs": "^4.0.5"
   },
   "keywords": [
     "UnityBase"
