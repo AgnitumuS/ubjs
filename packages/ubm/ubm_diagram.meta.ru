@@ -2,9 +2,9 @@
     "caption": "Диаграммы",
     "description": "Диаграммы сущностей",
     "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Код"
+        "model": {
+            "caption": "Модель",
+            "description": "Модель"
         },
         "name": {
             "caption": "Название"

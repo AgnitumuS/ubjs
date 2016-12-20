@@ -32,7 +32,7 @@ Ext.define('UB.ux.UBPreFilter', {
     requires: [
         'UB.core.UBStoreManager',
         'UB.core.UBUtil',
-        'UB.core.UBDomainManager',
+       // 'UB.core.UBDomainManager',
        // 'UB.ux.form.field.UBBoolBox',
        // 'UB.ux.form.field.UBDate',
         'UB.view.BaseWindow'

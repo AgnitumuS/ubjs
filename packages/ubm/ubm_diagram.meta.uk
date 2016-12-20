@@ -2,9 +2,9 @@
     "caption": "Діаграми",
     "description": "Діаграми сутностей",
     "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Код"
+        "model": {
+            "caption": "Модель",
+            "description": "Модель"
         },
         "name": {
             "caption": "Назва"

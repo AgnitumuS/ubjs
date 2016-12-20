@@ -2,9 +2,9 @@
     "caption": "Diaqramlar",
     "description": "Maddələrin diaqramları",
     "attributes": {
-        "code": {
-            "caption": "Коd",
-            "description": "Коd"
+        "model": {
+            "caption": "Model",
+            "description": "Model"
         },
         "name": {
             "caption": "Ad"

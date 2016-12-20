@@ -2,9 +2,9 @@
     "caption": "EntityDiagrams",
     "description": "Entity relation diagrams",
     "attributes": {
-        "code": {
-            "caption": "Code",
-            "description": "Code"
+        "model": {
+            "caption": "Model",
+            "description": "Model"
         },
         "name": {
             "caption": "Name"
