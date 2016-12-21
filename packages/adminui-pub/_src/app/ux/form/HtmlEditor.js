@@ -1,4 +1,4 @@
-/* global tinymce */
+/* global PDF */
 /**
  * This control render html with the ability to edit it. Html rendered with fixed width (parameter pageWidth).
  * When html more then control space it render scroll bar. Also implemented the ability to call a full-fledged
@@ -99,8 +99,9 @@ Ext.define('UB.ux.form.HtmlEditor', {
   ],
 
   afterRender: function () {
-    var me = this, input, frame, parent,
-      size = Ext.getBody().getSize(), height
+    var me = this
+    var size = Ext.getBody().getSize()
+    var input, frame, parent, height
 
     me.callParent(arguments)
 
@@ -173,8 +174,9 @@ Ext.define('UB.ux.form.HtmlEditor', {
   },
 
   onsetup: function (ed) {
-    var me = this, ifr,
-      size = Ext.getBody().getSize()
+    var me = this
+    var size = Ext.getBody().getSize()
+    var ifr
     ed.on('init', function () {
       me.iframe = ifr = Ext.get(me.getInputId() + '_ifr')
       me.iframe.dom.tabindex = 0
@@ -190,8 +192,9 @@ Ext.define('UB.ux.form.HtmlEditor', {
   },
 
   editContent: function () {
-    var me = this, editorWnd, pnl,
-      size = Ext.getBody().getSize()
+    var me = this
+    var size = Ext.getBody().getSize()
+    var editorWnd, pnl
 
     function showInPDF (blobUrl) {
       var adobePdfPanel, form, pObj
@@ -281,7 +284,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
       stateful: true,
       stateId: 'HtmlEditorForm',
             // layout: { type: 'fit', align: 'stretch' },
-      layout: {type: 'hbox', pack: 'center', align: 'stretch' },
+      layout: {type: 'hbox', pack: 'center', align: 'stretch'},
       items: [
         pnl = Ext.create('UB.ux.UBTinyMCETextArea', {
                    // flex: 1,
