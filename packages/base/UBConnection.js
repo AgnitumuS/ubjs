@@ -121,57 +121,57 @@ function UBConnection (options) {
     return _domain
   }
 
-    /**
-     * Endpoint name for query (`runList` before 1.12, `ubql` after 1.12)
-     * @type {string}
-     */
+  /**
+   * Endpoint name for query (`runList` before 1.12, `ubql` after 1.12)
+   * @type {string}
+   */
   this.queryMethod = appInfo.serverVersion.startsWith('1.9.') || appInfo.serverVersion.startsWith('1.10.') ? 'runList' : 'ubql'
 
-    /** Is server require content encryption
-     * @type {Boolean}
-     * @readonly
-     */
+  /** Is server require content encryption
+   * @type {Boolean}
+   * @readonly
+   */
   this.encryptContent = appInfo.encryptContent || false
 
-    /** `base64` encoded server certificate used for cryptographic operation
-     * @type {Boolean}
-     * @readonly
-     */
+  /** `base64` encoded server certificate used for cryptographic operation
+   * @type {Boolean}
+   * @readonly
+   */
   this.serverCertificate = appInfo.serverCertificate || ''
 
-    /** Lifetime (in second) of session encryption
-     * @type {Number}
-     * @readonly
-     */
+  /** Lifetime (in second) of session encryption
+   * @type {Number}
+   * @readonly
+   */
   this.sessionKeyLifeTime = appInfo.sessionKeyLifeTime || 0
 
-    /**
-     * Possible server authentication method
-     * @type {Array.<string>}
-     * @readonly
-     */
+  /**
+   * Possible server authentication method
+   * @type {Array.<string>}
+   * @readonly
+   */
   this.authMethods = appInfo.authMethods
 
-    /**
-     * Is UnityBase server require authorization
-     * @type {Boolean}
-     * @readonly
-     */
+  /**
+   * Is UnityBase server require authorization
+   * @type {Boolean}
+   * @readonly
+   */
   this.authNeed = me.authMethods && (me.authMethods.length > 0)
 
-    // noinspection JSUnusedGlobalSymbols
-    /**
-     * AdminUI settings
-     * @type {Object}
-     */
+  // noinspection JSUnusedGlobalSymbols
+  /**
+   * AdminUI settings
+   * @type {Object}
+   */
   this.appConfig = appInfo['adminUI']
 
-    /**
-     *
-     * @param {Boolean} isRepeat
-     * @private
-     * @return {UBSession}
-     */
+  /**
+   *
+   * @param {Boolean} isRepeat
+   * @private
+   * @return {UBSession}
+   */
   this.authorize = function (isRepeat) {
     let resp, serverNonce, secretWord, pwdHash
     if (!ubSession || isRepeat) {
@@ -235,67 +235,67 @@ function UBConnection (options) {
     return ubSession
   }
 
-    /**
-     * Check is current connection already perform authentication request
-     * @returns {boolean}
-     */
+  /**
+   * Check is current connection already perform authentication request
+   * @returns {boolean}
+   */
   this.isAuthorized = function () {
     return Boolean(ubSession)
   }
 
-    /**
-     * Return current user logon or 'anonymous' in case not logged in
-     * @returns {String}
-     */
+  /**
+   * Return current user logon or 'anonymous' in case not logged in
+   * @returns {String}
+   */
   this.userLogin = function () {
     return this.isAuthorized() ? ubSession.logonname : 'anonymous'
   }
 
-    /**
-     * Return current user language or 'en' in case not logged in
-     * @returns {String}
-     */
+  /**
+   * Return current user language or 'en' in case not logged in
+   * @returns {String}
+   */
   this.userLang = function () {
     return this.userData('lang')
   }
 
-    /**
-     * Return custom data for logged in user, or {lang: 'en'} in case not logged in
-     *
-     * If key is provided - return only key part of user data:
-     *
-     *      $App.connection.userData('lang');
-     *      // or the same but dedicated alias
-     *      $App.connection.userLang()
-     *
-     * @param {String} [key] Optional key
-     * @returns {*}
-     */
+  /**
+   * Return custom data for logged in user, or {lang: 'en'} in case not logged in
+   *
+   * If key is provided - return only key part of user data:
+   *
+   *      $App.connection.userData('lang');
+   *      // or the same but dedicated alias
+   *      $App.connection.userLang()
+   *
+   * @param {String} [key] Optional key
+   * @returns {*}
+   */
   this.userData = function (key) {
     let uData = this.isAuthorized() ? ubSession.userData : userDataDefault
     return key ? uData[key] : uData
   }
 
-    /**
-     * Lookup value in entity using aCondition.
-     *
-     *      // create condition using Repository
-     *      var myID = conn.lookup('ubm_enum', 'ID',
-     *           conn.Repository('ubm_enum').where('eGroup', '=', 'UBA_RULETYPE').where('code', '=', 'A').ubql().whereList
-     *          );
-     *      // or pass condition directly
-     *      var adminID = conn.lookup('uba_user', 'ID', {
-     *             expression: 'name', condition: 'equal', values: {nameVal: 'admin'}
-     *          });
-     *
-     * @param {String} aEntity - entity to lookup
-     * @param {String} lookupAttribute - attribute to lookup
-     * @param {String|Object} aCondition - lookup condition. String in case of custom expression,
-     *      or whereListItem {expression: condition: values: },
-     *      or whereList {condition1: {expression: condition: values: }, condition2: {}, ....}
-     * @param {Boolean} [doNotUseCache=false]
-     * @return {*} `lookupAttribute` value of first result row or null if not found.
-     */
+  /**
+   * Lookup value in entity using aCondition.
+   *
+   *      // create condition using Repository
+   *      var myID = conn.lookup('ubm_enum', 'ID',
+   *           conn.Repository('ubm_enum').where('eGroup', '=', 'UBA_RULETYPE').where('code', '=', 'A').ubql().whereList
+   *          );
+   *      // or pass condition directly
+   *      var adminID = conn.lookup('uba_user', 'ID', {
+   *             expression: 'name', condition: 'equal', values: {nameVal: 'admin'}
+   *          });
+   *
+   * @param {String} aEntity - entity to lookup
+   * @param {String} lookupAttribute - attribute to lookup
+   * @param {String|Object} aCondition - lookup condition. String in case of custom expression,
+   *      or whereListItem {expression: condition: values: },
+   *      or whereList {condition1: {expression: condition: values: }, condition2: {}, ....}
+   * @param {Boolean} [doNotUseCache=false]
+   * @return {*} `lookupAttribute` value of first result row or null if not found.
+   */
   this.lookup = function (aEntity, lookupAttribute, aCondition, doNotUseCache) {
     let me = this
     let cKey = aEntity + JSON.stringify(aCondition) + lookupAttribute

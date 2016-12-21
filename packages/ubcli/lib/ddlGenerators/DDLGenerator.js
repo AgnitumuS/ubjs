@@ -183,7 +183,7 @@ class DDLGenerator {
         /** @type DBAbstract */
         let Maker = require(`./db/${dbConnCfg.dialect}`)
         let maker = new Maker(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
-        console.info(`Loading database metadata for connection ${maker.dbConnectionConfig.name} (${maker.dbConnectionConfig.dialect})...`)
+        console.debug(`Loading database metadata for connection ${maker.dbConnectionConfig.name} (${maker.dbConnectionConfig.dialect})...`)
         console.time('Loaded in')
         maker.loadDatabaseMetadata()
         console.timeEnd('Loaded in')

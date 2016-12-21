@@ -305,7 +305,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
           me.syncEditorHeight(me.lastHeight);
         }
         
-        me.focus(); 
+        me.focus();
     },
     //-----------------------------------------------------------------
     hideEditor: function () {
@@ -471,7 +471,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
         if (ed && !ed.isHidden()) {
             me.callParent(arguments);
 
-            ed.focus();
+            ed.focus(true); //MPV
         }
         else {
             return me.callParent(arguments);

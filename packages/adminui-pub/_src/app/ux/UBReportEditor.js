@@ -343,17 +343,17 @@ Ext.define('UB.ux.UBReportEditor', {
         //me.elementStyle = me.elementStyle || '' + 'width: ' + me.pageWidth + 'px;';
 
         me.tinyMCEConfig = Ext.apply({
-            language_url : $App.connection.baseURL + 'models/adminui/tinymce/langs/' +  $App.connection.userLang() + '.js',
-            skin_url: $App.connection.baseURL + 'models/adminui/tinymce/skins/lightgray',
-            content_css : $App.connection.baseURL + "models/adminui/tini-mce-content.css",
-            table_default_attributes: {
-                cellpadding: '3px',
-                cellspacing: '0',
-                border: '1px',
-                width: me.width && me.width > 20 ? me.width - 20: 20,
-                style: { wordBreak: "break-all"}
-            },
-            browser_spellcheck : true,
+            // language_url : $App.connection.baseURL + 'models/adminui/tinymce/langs/' +  $App.connection.userLang() + '.js',
+            // skin_url: $App.connection.baseURL + 'models/adminui/tinymce/skins/lightgray',
+            // content_css : $App.connection.baseURL + "models/adminui/tini-mce-content.css",
+            // table_default_attributes: {
+            //     cellpadding: '3px',
+            //     cellspacing: '0',
+            //     border: '1px',
+            //     width: me.width && me.width > 20 ? me.width - 20: 20,
+            //     style: { wordBreak: "break-all"}
+            // },
+            // browser_spellcheck : true,
             convert_urls: false,
             object_resizing: "img,table,p[class=isTopColontitle],p[class=isBottomColontitle]",
             // not exists plugins in new version   'style,advhr,advimage,advlink,iespell,xhtmlxtras,inlinepopups'
@@ -363,7 +363,7 @@ Ext.define('UB.ux.UBReportEditor', {
                 "advlist autolink lists charmap print preview hr anchor pagebreak", //link image
                 "searchreplace wordcount visualblocks visualchars code ", //fullscreen
                 "insertdatetime nonbreaking table contextmenu directionality", //save
-                "emoticons template textcolor colorpicker templateEditor image paste"  //paste
+                "emoticons template textcolor colorpicker image paste"  //templateEditor paste
             ],
             toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | formatselect fontsizeselect | pageOrientation | Colontitle | borderL borderR borderT borderB borderE borderA | forecolor | bullist numlist outdent indent |",
             contextmenu: 'link image inserttable | cell row column deletetable | rowTemplate',

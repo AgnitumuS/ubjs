@@ -78,7 +78,9 @@ require('codemirror/addon/search/match-highlighter')
 require('@unitybase/adminui-pub/_src/css/CodeMirror-match.css')
 require('codemirror/addon/comment/comment')
 
-  // <script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/file-saver/FileSaver.js{{/md5}}"></script>
+window.tinymce = require('tinymce/tinymce.js')
+
+// <script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/file-saver/FileSaver.js{{/md5}}"></script>
   // <script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/mustache/mustache.js{{/md5}}"></script>
   // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/tinymce/tinymce.js{{/md5}}"></script>
   // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/lib/codemirror.js{{/md5}}"></script>
