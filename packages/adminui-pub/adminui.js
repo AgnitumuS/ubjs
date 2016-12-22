@@ -49,10 +49,8 @@ if (!Promise.prototype.done) {
   Promise.prototype.done = Promise.prototype.then
 }
 
-window.Ext = require('./ext-all-debug-w-comments.js')
-
 window.JSZip = require('jszip/dist/jszip.min.js')
-window.FileSaver = require('file-saver/FileSaver.js')
+window.saveAs = require('file-saver/FileSaver.js').saveAs
 window.Mustacthe = require('mustache')
 window.CodeMirror = require('codemirror/lib/codemirror')
 require('codemirror/addon/edit/matchbrackets')
@@ -75,38 +73,12 @@ require('codemirror/addon/search/searchcursor')
 require('codemirror/addon/scroll/annotatescrollbar')
 require('codemirror/addon/search/matchesonscrollbar')
 require('codemirror/addon/search/match-highlighter')
-require('@unitybase/adminui-pub/_src/css/CodeMirror-match.css')
+require('./_src/css/CodeMirror-match.css')
 require('codemirror/addon/comment/comment')
 
 window.tinymce = require('tinymce/tinymce.js')
 
-// <script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/file-saver/FileSaver.js{{/md5}}"></script>
-  // <script defer charset="utf-8" src="{{#md5}}models/adminui/node_modules/mustache/mustache.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/tinymce/tinymce.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/lib/codemirror.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/edit/matchbrackets.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/edit/closebrackets.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/edit/trailingspace.js{{/md5}}"></script>
-  //
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/fold/foldcode.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/fold/foldgutter.js{{/md5}}"></script>
-  // <link rel="stylesheet" href="{{#md5}}models/adminui/node_modules/codemirror/addon/fold/foldgutter.css{{/md5}}"/>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/fold/brace-fold.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/fold/xml-fold.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/fold/comment-fold.js{{/md5}}"></script>
-  //
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/dialog/dialog.js{{/md5}}"></script>
-  // <link rel="stylesheet" href="{{#md5}}models/adminui/node_modules/codemirror/addon/dialog/dialog.css{{/md5}}"/>
-  //
-  //
-  // <!-- script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/hint/simple-hint.js{{/md5}}" -->
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/mode/javascript/javascript.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/hint/javascript-hint.js{{/md5}}"></script>
-  //
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/search/search.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/search/searchcursor.js{{/md5}}"></script>
-  // <script charset="utf-8" src="{{#md5}}models/adminui/node_modules/codemirror/addon/search/match-highlighter.js{{/md5}}"></script>
-  //
+// require('./ub-css-all.css') TODO - add icons to this module
 
 Ext.Loader.setConfig({
   enabled: true,
@@ -117,7 +89,8 @@ Ext.Loader.setConfig({
   }
 })
 
-require('./_src/app.js')
+let launcher = require('./_src/app.js')
+launcher()
 
 module.exports = {
   UB: UB

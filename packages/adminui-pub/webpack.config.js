@@ -34,25 +34,32 @@ module.exports = {
       query: {
         presets: ['es2015']
       }
+    }, { 
+      test: /\.css$/, 
+      loader: "style-loader!css-loader" 
+      //loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' 
     }]
   },
-  devtool: 'source-map',
+  //devtool: 'eval',
+  //devtool: 'source-map',
+  devtool: 'cheap-module-source-map',
 
   plugins: [
         // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
-    new webpack.optimize.CommonsChunkPlugin({
+    /*new webpack.optimize.CommonsChunkPlugin({
 	  name: 'vendor', filename: 'q-lodash-crypto.min.js',
 	  minChunks: function (module) {
       		return isExternal(module)
     	  }
-  	}),
+  	}),*/
 
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
-	    'screw-ie8': true,
-            // compress: false
+     'screw-ie8': true,
+      // compress: false
       compress: {
         sequences: true,
         booleans: true,

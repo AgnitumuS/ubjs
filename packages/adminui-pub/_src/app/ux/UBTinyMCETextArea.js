@@ -30,18 +30,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
         style: { wordBreak: 'break-all'}
       },
       browser_spellcheck: true,
-            /*
-            plugins: [
-                //"autosave layer noneditable",
-                //disabled - " media"
-                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-                "searchreplace wordcount visualblocks visualchars code fullscreen",
-                "insertdatetime nonbreaking save table contextmenu directionality",
-                "emoticons template paste textcolor"
-            ],
-            */
       toolbar1: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect | print',
-
       plugins: [
                 // "autosave layer noneditable",
                 // disabled - " media"
@@ -56,17 +45,6 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
             // content_css : "contents.css",
       statusbar: false,
       menubar: 'edit insert view format table tools',
-            // menubar: true,
-            /*
-            menu : {
-                //file   : {title : 'File'  , items : 'newdocument'},
-                edit   : {title : 'Edit'  , items : 'undo redo | cut copy paste pastetext | selectall'},
-                insert : {title : 'Insert', items : 'link media | template hr'},
-                view   : {title : 'View'  , items : 'visualaid'},
-                format : {title : 'Format', items : 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
-                table  : {title : 'Table' , items : 'inserttable tableprops deletetable | cell row column'},
-                tools  : {title : 'Tools' , items : 'spellchecker code'}
-            }, */
       toolbar_items_size: 'small',
       setup: me.onStartSetup.bind(me)
     }, me.tinyMCEConfig)
@@ -116,77 +94,19 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
     return !this.readOnly
   },
 
-    /*
-    syncEditorHeight: function (height) {
-        var me = this, input;
-
-        me.lastHeight = height;
-
-        if (!me.wysiwygIntialized || !me.rendered) { return; }
-
-        var ed = tinymce.get(me.getInputId());
-
-        // if the editor is hidden, we do not syncronize
-        // because the size values of the hidden editor
-        // are calculated wrong.
-
-        if (ed.isHidden()) { return; }
-
-        input =  Ext.get(me.getInputId());
-
-        var edIframe = Ext.get(me.getInputId() + "_ifr");
-        var parent;
-        if (edIframe){
-           parent = edIframe.up(".mce-edit-area");
-        }
-        if (parent){
-           parent = parent.up(".mce-container-body");
-        }
-
-        var newHeight = height;
-
-        if (parent) {
-            var edToolbar = parent.down(".mce-toolbar-grp");
-            if(edToolbar){
-                newHeight -= edToolbar.getHeight();
-            }
-
-            var edMenubar = parent.down(".mce-menubar");
-            if(edMenubar){
-                newHeight -= edMenubar.getHeight();
-            }
-
-            var edStatusbar = parent.down(".mce-statusbar");
-            if(edStatusbar){
-                newHeight -= edStatusbar.getHeight();
-            }
-        }
-
-        me.lastFrameHeight = newHeight - 3;
-
-        if (edIframe){
-           edIframe.setHeight(newHeight - 3);
-        } else {
-            input.setHeight(newHeight - 3);
-        }
-
-        return newHeight - 3;
-    },
-    */
-
-    /**
-     *
-     * @param {Object} cfg
-     * @param {Blob|File} [cfg.blobData]
-     * @param {String} [cfg.rawValue]
-     * @param {Boolean} [cfg.resetOriginalValue=true] Reset original value if true.
-     * @param {Object} [cfg.params] The parameters necessary to obtain the document
-     * @returns {Promise}
-     */
+  /**
+   *
+   * @param {Object} cfg
+   * @param {Blob|File} [cfg.blobData]
+   * @param {String} [cfg.rawValue]
+   * @param {Boolean} [cfg.resetOriginalValue=true] Reset original value if true.
+   * @param {Object} [cfg.params] The parameters necessary to obtain the document
+   * @returns {Promise}
+   */
   setSrc: function (cfg) {
-    var me = this,
-      blobData = cfg.blobData,
-      resetOriginalValue = cfg.resetOriginalValue
+    var me = this
+    var blobData = cfg.blobData
+    var resetOriginalValue = cfg.resetOriginalValue
 
     function onDataReady (response) {
       me.suspendCheckChange = true

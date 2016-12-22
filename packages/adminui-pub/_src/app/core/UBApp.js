@@ -22,7 +22,7 @@
  * @author UnityBase core team
  */
 Ext.define('UB.core.UBApp', {
-/*globals ClientRepository, UBNativeScanner, UBNativeDocEdit, UBNativePDFSign, UBConnection*/
+/*globals ClientRe  pository, UBNativeScanner, UBNativeDocEdit, UBNativePDFSign, UBConnection*/
     singleton: true,
 
     requires: [
@@ -1000,17 +1000,18 @@ Ext.define('UB.core.UBApp', {
     logout: function(){
         if(this.connection) {
             this.connection.logout().fin(function(){
-                if (UB.isSecureBrowser) {
-                    var remote = require('electron').remote;
-                    var window = remote.getCurrentWindow();
-                    window.destroy();
-                } else {
+                // MPV TODO Secure browser
+                // if (UB.isSecureBrowser) {
+                //     var remote = require('electron').remote;
+                //     var window = remote.getCurrentWindow();
+                //     window.destroy();
+                // } else {
                     if (document.location && document.location.href && document.location.href.indexOf('#') > 0) {
                         document.location.href = document.location.href.split('#')[0];
                     } else {
                         document.location.href = document.location.href;
                     }
-                }
+                // }
                 //reload page without cache revalidation. instead of window.location.reload() what does.
             });
         }

@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 	    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no">
-<title>{{uiSettings.adminUI.applicationTitle}}{{^uiSettings.adminUI.applicationTitle}}UnityBase {{/uiSettings.adminUI.applicationTitle}}</title>
+        <title>{{uiSettings.adminUI.applicationTitle}}{{^uiSettings.adminUI.applicationTitle}}UnityBase {{/uiSettings.adminUI.applicationTitle}}</title>
 
 		<link rel="shortcut icon" href="models/UB/img/UBLogo16.ico" />
 		<link rel="icon" href="models/UB/img/UBLogo32.png" type="image/png" sizes="32x32" />
@@ -23,11 +23,11 @@
             window.UB_API_PATH = '{{{UB_API_PATH}}}';
             window.mxLoadResources = false;
         </script>
-		
-		<link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-all.css{{/md5template}}" />
-        <link rel="stylesheet" href="{{#md5}}models/adminui/ub-css-all.css{{/md5}}"/>
-		<link rel="stylesheet" href="{{#md5}}models/adminui/fonts/font-awesome.css{{/md5}}"/>
-        <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
+
+        <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-all-debug.css{{/md5template}}" />
+        <link rel="stylesheet" href="{{#md5}}models/adminui-pub/ub-css-all.css{{/md5}}"/>
+        <link rel="stylesheet" href="{{#md5}}models/adminui-pub/node_modules/font-awesome/css/font-awesome.css{{/md5}}"/>
+        <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
 
 
         <style>
@@ -76,13 +76,9 @@
             </div>
         </div>
         <div id ="ubExtensionPageMessageObj"></div>
-		<script charset="utf-8" src="{{#md5}}models/ub-core/dist/q-lodash-crypto.min.js{{/md5}}"></script>
-		<script charset="utf-8" src="{{#md5}}models/ub-core/dist/ub-core.min.js{{/md5}}"></script>	
-		
-		<script charset="utf-8" src="{{#md5}}models/adminui/tinymce/tinymce-with-plugin.min.js{{/md5}}"></script>
-    	<script charset="utf-8" src="{{#md5}}models/adminui/dist/ext-all.min.js{{/md5}}"></script> 
-	<script charset="utf-8" src="{{#md5}}models/adminui/dist/jszip-cmr-mustache.min.js{{/md5}}"></script> 
-    	<script charset="utf-8" src="{{#md5}}models/adminui/dist/adminui.min.js{{/md5}}"></script>
-        <script charset="utf-8" type="text/javascript" src="{{#md5template}}models/adminui/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js{{/md5template}}"></script>
+
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/adminui.min.js{{/md5}}"></script>
+        <script charset="utf-8" type="text/javascript" src="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js{{/md5template}}"></script>
     </body>
 </html>
