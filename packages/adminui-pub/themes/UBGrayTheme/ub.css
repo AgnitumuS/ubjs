@@ -313,13 +313,13 @@
 }
 
 div.CodeMirror span.CodeMirror-matchingbracket {
-    color: black;
+    color: black !important;
     background-color: #2f2;
     font-weight: bold;
 }
 
 div.CodeMirror span.CodeMirror-nonmatchingbracket {
-    color: #f22;
+    color: #f22 !important;
     font-weight: bold;
 }
 

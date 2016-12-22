@@ -53,6 +53,7 @@ window.JSZip = require('jszip/dist/jszip.min.js')
 window.saveAs = require('file-saver/FileSaver.js').saveAs
 window.Mustacthe = require('mustache')
 window.CodeMirror = require('codemirror/lib/codemirror')
+require('codemirror/lib/codemirror.css')
 require('codemirror/addon/edit/matchbrackets')
 require('codemirror/addon/edit/closebrackets')
 require('codemirror/addon/edit/trailingspace')
