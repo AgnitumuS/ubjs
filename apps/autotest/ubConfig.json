@@ -81,41 +81,55 @@
 			"models": [
 				{
 					"name": "UB",
-					"path": "./node_modules/@unitybase/ub"
+					"path": "./node_modules/@unitybase/ub",
+					"moduleName": "@unitybase/ub"
 				},
 				{
 					"name": "UBA",
-					"path": "./node_modules/@unitybase/uba"
+					"path": "./node_modules/@unitybase/uba",
+					"moduleName": "@unitybase/uba"
 				},
 				{
 					"name": "UBS",
-					"path": "./node_modules/@unitybase/ubs"
+					"path": "./node_modules/@unitybase/ubs",
+					"moduleName": "@unitybase/ubs"
 				},
 				{
 					"name": "UBM",
-					"path": "./node_modules/@unitybase/ubm"
+					"path": "./node_modules/@unitybase/ubm",
+					"moduleName": "@unitybase/ubm"
 				},
 				{
 					"name": "UBQ",
-					"path": "./node_modules/@unitybase/ubq"
+					"path": "./node_modules/@unitybase/ubq",
+					"moduleName": "@unitybase/ubq"
 				},
 				{
 					"name": "CDN",
-					"path": "./node_modules/@unitybase/cdn"
+					"path": "./node_modules/@unitybase/cdn",
+					"moduleName": "@unitybase/cdn"
 				},
 				{
 					"name": "adminui-pub",
 					"publicPath": "./node_modules/@unitybase/adminui-pub",
-					"path": "_public_only_"
+					"path": "_public_only_",
+					"moduleName": "@unitybase/adminui-pub"
 				},
 				{
 					"name": "adminui-reg",
-					"path": "./node_modules/@unitybase/adminui-reg"				
+					"path": "./node_modules/@unitybase/adminui-reg",
+					"moduleName": "@unitybase/adminui-reg"
 				},
 				{
 					"name": "ub-core",
 					"publicPath": "./node_modules/@unitybase/ub-pub",
-					"path": "_public_only_"
+					"path": "_public_only_",
+					"moduleName": "@unitybase/ub-pub"
+				},
+                                {
+					"name": "DSES",
+					"path": "./node_modules/@ub-e/dses",
+					"moduleName": "@ub-e/dses"
 				}/*,
 				{
 					"name": "TST",

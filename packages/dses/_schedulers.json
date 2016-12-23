@@ -1,0 +1,32 @@
+[
+  {
+    "name": "dses.send",
+    "schedulingCondition": "App.serverConfig.application.customSettings && App.serverConfig.application.customSettings.docuSign",
+    "cron": "0 */1 * * * *",
+    "description": "Send dses envelopes from queue every minute",
+    "command": "dses_envelope.createQueueEnvelopes",
+    "singleton": true,
+    "runAs": "admin",
+    "logSuccessful": false
+  },
+  {
+    "name": "dses.nitification",
+    "schedulingCondition": "App.serverConfig.application.customSettings && App.serverConfig.application.customSettings.docuSign",
+    "cron": "0 */1 * * * *",
+    "description": "DS",
+    "command": "dses_envelope.notificationQueue",
+    "singleton": true,
+    "runAs": "admin",
+    "logSuccessful": false
+  },
+  {
+    "name": "dses.updateDocuments",
+    "schedulingCondition": "App.serverConfig.application.customSettings && App.serverConfig.application.customSettings.docuSign",
+    "cron": "0 */1 * * * *",
+    "description": "Send dses envelopes from queue every minute",
+    "command": "dses_envelope.updateQueueDocuments",
+    "singleton": true,
+    "runAs": "admin",
+    "logSuccessful": false
+  }
+]

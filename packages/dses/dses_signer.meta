@@ -1,0 +1,47 @@
+{
+  "caption": "Docusing signer",
+  "description": "Docusing signer",
+  "sqlAlias": "dsessign",
+  "cacheType": "None",
+  "descriptionAttribute": "ID",
+  "documentation": "",
+  "attributes": {
+    "envelope": {
+      "dataType": "Entity",
+      "caption": "Envelope",
+      "description": "Envelope",
+      "allowNull": false,
+      "associatedEntity": "dses_envelope"
+    },
+    "docusign_ID": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "Docusign ID",
+      "description": "Docusign ID of signer in envelop",
+      "allowNull": false,
+      "isUnique": false
+    },
+    "name": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "Signer name",
+      "description": "Signer name",
+      "allowNull": false,
+      "isUnique": false
+    },
+    "email": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "Signer email",
+      "description": "Signer email",
+      "allowNull": false,
+      "isUnique": false
+    }
+  },
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
+}

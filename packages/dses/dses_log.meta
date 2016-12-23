@@ -1,0 +1,30 @@
+{
+  "caption": "Docusing log",
+  "description": "Docusing log",
+  "sqlAlias": "dseslog",
+  "cacheType": "None",
+  "descriptionAttribute": "ID",
+  "documentation": "",
+  "attributes": {
+    "envelope": {
+      "dataType": "Entity",
+      "caption": "Envelope",
+      "description": "Envelope",
+      "allowNull": false,
+      "associatedEntity": "dses_envelope"
+    },
+    "data": {
+      "dataType": "Text",
+      "caption": "Log data",
+      "description": "Log data",
+      "allowNull": false,
+      "isUnique": false
+    }
+  },
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
+}

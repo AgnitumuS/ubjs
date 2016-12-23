@@ -1,0 +1,2 @@
+code;entityMask;methodMask;ruleType;ruleRole;description
+DSES_ALLOW_EVENT_NOTIFICATION;dses_envelope;eventNotification;A;Anonymous;Allow Anonymous call dses_envelope.eventNotification method

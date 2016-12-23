@@ -1,0 +1,39 @@
+{
+  "caption": "Docusing envelope",
+  "description": "Docusing envelope",
+  "sqlAlias": "dsesenv",
+  "cacheType": "None",
+  "descriptionAttribute": "envelopeID",
+  "documentation": "",
+  "attributes": {
+    "envelopeID": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "envelopeID",
+      "description": "Internal Docusing envelopeID",
+      "allowNull": true,
+      "isUnique": true
+    },
+    "entity": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "entity",
+      "description": "entity than initialized this envelop and receive emited events",
+      "allowNull": false,
+      "isUnique": false
+    },
+    "entityID": {
+      "dataType": "ID",
+      "caption": "entity ID",
+      "description": "entity ID",
+      "allowNull": false,
+      "isUnique": false
+    }
+  },
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
+}

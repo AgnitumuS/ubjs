@@ -1,0 +1,34 @@
+{
+  "name": "@ub-e/dses",
+  "version": "1.0.00",
+  "description": "DocuSign ESign integration",
+  "config": {
+    "ubmodel": "DSES"
+  },
+  "scripts": {
+    "test": "ubcli autotest -m DSES -skipModules",
+    "postinstall": "ubcli flow/modelInstalled"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "docusign-esign": "^2.0.3",
+    "xml2js":"^0.4.17",
+    "@unitybase/base": "^4.0.5",
+    "@unitybase/ub": "^4.0.6",
+    "@unitybase/uba": "^4.0.5",
+    "@unitybase/ubs": "^4.0.5",
+    "@unitybase/ubq": "^4.0.5"	
+  },
+  "devDependencies": {
+    "@unitybase/ubcli": "^1.0.5",
+    "@unitybase/stubs": "^4.0.5"
+  },
+  "keywords": ["UnityBase", "docusign","signature"],
+  "author": "Vadim.Orel",
+  "license": "(GPL-3.0)",
+  "homepage": "https://unitybase.info"
+}

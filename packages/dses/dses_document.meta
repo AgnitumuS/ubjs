@@ -1,0 +1,54 @@
+{
+  "caption": "Docusing document",
+  "description": "Docusing document",
+  "sqlAlias": "dsesdoc",
+  "cacheType": "None",
+  "descriptionAttribute": "ID",
+  "documentation": "",
+  "attributes": {
+    "envelope": {
+      "dataType": "Entity",
+      "caption": "Envelope",
+      "description": "Envelope",
+      "allowNull": false,
+      "associatedEntity": "dses_envelope"
+    },
+    "docusign_ID": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "Docusign ID",
+      "description": "Docusign ID of document in envelop",
+      "allowNull": false,
+      "isUnique": false
+    },
+    "document_entity": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "Document entity",
+      "description": "Entity from witch this document is getted",
+      "allowNull": false,
+      "isUnique": false
+    },
+    "document_attribute": {
+      "dataType": "String",
+      "size": 50,
+      "caption": "Document attribute",
+      "description": "Attribute of entity from witch this document is getted",
+      "allowNull": false,
+      "isUnique": false
+    },
+    "document_ID": {
+      "dataType": "ID",
+      "caption": "Document ID",
+      "description": "ID of entity from witch this document is getted",
+      "allowNull": false,
+      "isUnique": false
+    }
+  },
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
+}
