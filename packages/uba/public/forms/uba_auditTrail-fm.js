@@ -513,10 +513,10 @@ if the field "Entity" gets the value of this
             return Q.resolve(null);
         }
         
-        if (!window.$App.core.domain.isEntityMethodsAccessible(associatedEntity, 'select')) {
+        if (!window.$App.domainInfo.isEntityMethodsAccessible(associatedEntity, 'select')) {
             return Q.resolve('');
         }
-        var fieldDesc = descriptionAttribute || window.$App.core.domain.get(associatedEntity).descriptionAttribute || 'ID';
+        var fieldDesc = descriptionAttribute || window.$App.domainInfo.get(associatedEntity).descriptionAttribute || 'ID';
         
         return UB.Repository(associatedEntity)
         .attrs(['ID', fieldDesc])
@@ -535,7 +535,7 @@ if the field "Entity" gets the value of this
         var
             me = this;
 
-        if (window.$App.core.domain.isEntityMethodsAccessible('org_employee', 'select')) {
+        if (window.$App.domainInfo.isEntityMethodsAccessible('org_employee', 'select')) {
             return me.getEntityOrgInfoByUserId(value);
         } else {
             return Q.resolve(null);
@@ -544,10 +544,10 @@ if the field "Entity" gets the value of this
 
     getEntityOrgInfoByUserId: function (userID) {
         var entityInfo;
-        if (!window.$App.core.domain.isEntityMethodsAccessible('org_employee', 'select')) {
+        if (!window.$App.domainInfo.isEntityMethodsAccessible('org_employee', 'select')) {
             return Q.resolve(null);
         }
-        entityInfo = window.$App.core.domain.get('org_employee');
+        entityInfo = window.$App.domainInfo.get('org_employee');
         if (entityInfo && entityInfo.entityMethods.select) {
             return UB.Repository('org_employee')
             .attrs(['ID', 'userID', entityInfo.descriptionAttribute])

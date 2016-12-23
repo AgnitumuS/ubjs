@@ -35,7 +35,7 @@ exports.formDef = {
         {
             xtype: "textfield",
             name: "entityField",
-            fieldLabel: UB.core.UBDomainManager.domainEntities['uba_auditTrail'].attributes['entity'].caption,
+            fieldLabel: $App.domainInfo.entities['uba_auditTrail'].attributes['entity'].caption,
             readOnly: true,
             width: "50%"
         },
@@ -43,7 +43,7 @@ exports.formDef = {
         {
             xtype: "textfield",
             name: "actionUserField",
-            fieldLabel: UB.core.UBDomainManager.domainEntities['uba_auditTrail'].attributes['actionUser'].caption,
+            fieldLabel: $App.domainInfo.entities['uba_auditTrail'].attributes['actionUser'].caption,
             readOnly: true,
             width: "50%"
         },
@@ -51,7 +51,7 @@ exports.formDef = {
         {
             xtype: "datefield",
             name: "actionTimeField",
-            fieldLabel: UB.core.UBDomainManager.domainEntities['uba_auditTrail'].attributes['actionTime'].caption,
+            fieldLabel: $App.domainInfo.entities['uba_auditTrail'].attributes['actionTime'].caption,
             format: 'd.m.Y H:i:s',
             readOnly: true
         },
