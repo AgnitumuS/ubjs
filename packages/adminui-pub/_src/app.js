@@ -103,6 +103,16 @@ function launchApp () {
 
   Ext.Loader.loadScriptFileBase = Ext.Loader.loadScriptFile
   Ext.Loader.loadScriptFile = function (url, onLoad, onError, scope, synchronous) {
+    // debugger
+    // Ext.Loader.isLoading = true
+    // System.import(url).then(
+    //   function () {
+    //     return onLoad.call(scope)
+    //   },
+    //   function () {
+    //     return onError.call(scope)
+    //   }
+    // )
     var config = this.getConfig()
     if (!config.disableCaching) {
       url = addResourceVersion(url)
@@ -116,6 +126,7 @@ function launchApp () {
     'UB.view.ErrorWindow',
     'Ext.AbstractManager'
   ])
+  Ext.onReady(extLoaded)
   /**
    * !!!
    * Patch for correct work with timezones
@@ -139,7 +150,8 @@ function launchApp () {
     }
   }
 
-  Ext.onReady(function () {
+  //Ext.onReady(function () {
+  function extLoaded() {
     // this override is just for set separate mask for modal windows & loading mask
     // one line of code changed compared to original: cls: Ext.baseCSSPrefix + 'modal-mask', //mpv
     Ext.override(Ext.ZIndexManager, {
@@ -290,7 +302,7 @@ function launchApp () {
     document.addEventListener('contextmenu', function (e) {
       e.preventDefault()
     }, false)
-  })
+  }
 }
 
 module.exports = launchApp

@@ -87,7 +87,7 @@ function UBDomain (domainInfo) {
   let modelCodes = Object.keys(domainInfo.models)
   modelCodes.forEach(function (modelCode) {
     let m = domainInfo.models[modelCode]
-    me.models[modelCode] = new UBModel(m.path, m.needInit, m.needLocalize, m.order)
+    me.models[modelCode] = new UBModel(m.path, m.needInit, m.needLocalize, m.order, m.moduleName, m.moduleSuffix)
   })
 
     /**
@@ -320,8 +320,10 @@ UBDomain.getPhysicalDataType = function (dataType) {
  * @param needInit
  * @param needLocalize
  * @param order
+ * @param {string} moduleName
+ * @param {string} moduleSuffix
  */
-function UBModel (path, needInit, needLocalize, order) {
+function UBModel (path, needInit, needLocalize, order, moduleName, moduleSuffix) {
   this.path = path
   if (needInit) {
     /**
@@ -342,6 +344,13 @@ function UBModel (path, needInit, needLocalize, order) {
    * @type {number}
    */
   this.order = order
+  /**
+   * Module name for `require`
+   */
+  this.moduleName = moduleName
+  if (moduleSuffix) {
+    this.moduleName = this.moduleName + '/' + moduleSuffix
+  }
 }
 UBModel.prototype.needInit = false
 UBModel.prototype.needLocalize = false

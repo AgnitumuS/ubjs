@@ -480,15 +480,11 @@
         Mustache = require('mustache');
         module.exports = definition(Q, fUB, Mustache);
     } else { //noinspection JSUnresolvedVariable
-        if (typeof define === 'function' && define.amd) {
-            //noinspection JSUnresolvedFunction
-            define(['q', 'UB', 'Mustache'], definition);
-        } else {
-            //noinspection JSUnresolvedVariable
-            Q = window.Q;
-            fUB = window.UB;
-            Mustache = window.Mustache; // require('mustache');
-            window.UBS.UBReport = definition(Q, fUB, Mustache);
-        }
+        //noinspection JSUnresolvedVariable
+        Q = window.Q;
+        fUB = window.UB;
+        Mustache = window.Mustache; // require('mustache');
+        window.UBS = window.UBS || {}	
+        window.UBS.UBReport = definition(Q, fUB, Mustache);
     }
 })();
