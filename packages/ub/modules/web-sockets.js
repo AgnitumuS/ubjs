@@ -1,7 +1,7 @@
 /**
  * HI-level WebSocket protocols implementation
  *
- * @module WebSocketProtocols
+ * @module @unitybase/ub/web-sockets
  * @author pavel.mash
  */
 var
