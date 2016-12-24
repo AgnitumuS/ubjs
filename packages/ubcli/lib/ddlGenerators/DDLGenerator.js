@@ -155,11 +155,11 @@ class DDLGenerator {
       return false
     })
 
+    debugger
     for (let entity of forGeneration) {
       alreadyTraversed.add(entity)
       this.createReference(conn, entity)
     }
-
     // load referenced object for comparator
     this.relatedEntities.forEach((entityName) => {
       let entity = domain.get(entityName)
@@ -349,16 +349,13 @@ class DDLGenerator {
         isUnique: false,
         keys: keys
       })
-    }
-
-    if (entity.mixins.dataHistory) {
       tableDef.addCheckConstr({
         name: 'CHK_' + sqlAlias + '_HIST',
         expression: 'mi_dateFrom <= mi_dateTo',
         type: 'custom'
       })
-      let keys = ['mi_dateFrom', 'mi_data_id']
 
+      keys = ['mi_dateFrom', 'mi_data_id']
       if (entity.mixins.mStorage && entity.mixins.mStorage.simpleAudit) {
         keys.push('mi_deleteDate')
         tableDef.addIndex({
@@ -556,6 +553,7 @@ class DDLGenerator {
       name: attribute.associationManyData,
       caption: ''
     })
+    tableDef.__entity = entity.domain.get(attribute.associationManyData)
     tableDef.addColumn({
       name: 'sourceID',
       dataType: 'BIGINT',
