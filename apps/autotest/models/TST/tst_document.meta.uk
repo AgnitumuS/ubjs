@@ -1,7 +1,6 @@
 ﻿{
 	"caption": "ТестДокументів",
 	"description": "Тестування adtDocument атрибуту",
-	"connectionName": "",
 	"descriptionAttribute": "code",
 	"documentation": "",
 	"attributes": {
