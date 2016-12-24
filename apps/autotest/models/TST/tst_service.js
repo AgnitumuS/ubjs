@@ -1,6 +1,6 @@
 'use strict'
 
-var tstm1 = require('tstm'),
+var tstm1 = require('./modules/tstm'),
   assert = require('assert')
 
 var me = tst_service

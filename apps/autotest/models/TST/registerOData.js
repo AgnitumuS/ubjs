@@ -2,7 +2,7 @@
  * Created by pavel.mash on 26.12.2015.
  */
 
-var OData = require('OData')
+var OData = require('@ub-e/odata')
 
 var endpoint = OData.registerEndpoint({
   endpointName: 'ODataV4',

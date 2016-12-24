@@ -1,7 +1,7 @@
 ﻿/**
  * OpenIDConnect client for UnityBase 
  *
- *      var oID = require('@unitybase/ub/openid-connect'),
+ *      var oID = require('@unitybase/ub/modules/openid-connect'),
  *      oIdEndPoint = oID.registerEndpoint('openIDConnect');
  *      oIdEndPoint.registerProvider('Google',{
  *           authUrl: 'https://accounts.google.com/o/oauth2/auth',
