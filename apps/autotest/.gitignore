@@ -3,3 +3,5 @@ fts/
 main.sql
 fts*.sql
 domainDocumentation.html
+_autotestResults.json
+

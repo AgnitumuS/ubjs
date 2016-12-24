@@ -8,7 +8,7 @@
  * @author xmax
  * @created 25.09.2015
  */
-var Worker = require('worker')
+var Worker = require('@unitybase/base').Worker
 var workers = []
 
 var
