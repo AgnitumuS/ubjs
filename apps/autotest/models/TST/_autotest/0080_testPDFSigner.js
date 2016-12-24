@@ -8,7 +8,7 @@
  * @author mpv
  * @created 04.11.2015
  */
-var Worker = require('worker')
+var Worker = require('@unitybase/base').Worker
 var workers = []
 
 var

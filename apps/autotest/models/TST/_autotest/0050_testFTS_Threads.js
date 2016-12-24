@@ -8,7 +8,7 @@
  * @author pavel.mash
  * @created 25.04.2015
  */
-var Worker = require('worker')
+var Worker = require('@unitybase/base').Worker
 var workers = []
 
 // we can't start server from worker thread try to start it here
