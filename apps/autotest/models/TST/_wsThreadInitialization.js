@@ -3,7 +3,7 @@
 // For client-side usage sample go to http://127.0.0.1:888/autotest/models/TST/wsClient/index.html
 //
 
-const WebSockets = require('WebSockets')
+const WebSockets = require('@unitybase/ub/modules/web-sockets')
 var wsNotifier = WebSockets.getWSNotifier()
 if (wsNotifier) {
   var connCount = 0

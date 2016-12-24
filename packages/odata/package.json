@@ -1,0 +1,26 @@
+{
+  "name": "@ub-e/odata",
+  "version": "1.0.0",
+  "description": "OData(v4) provider for UnityBase. After call to OData.registerEndpoint UB entities are accessible via OData protocol",
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "main": "OData.js",
+  "dependencies": {
+    "methods": "^1.1.1",
+    "odatav4-parser": "^1.3.0",
+    "path-to-regexp": "^1.0.3",
+    "xmlbuilder": "^2.5.0",
+    "@unitybase/base": "^4.0.5",
+    "@unitybase/ub": "^4.0.6"
+  },
+  "devDependencies": {
+    "@unitybase/ubcli": "^1.0.5",
+    "@unitybase/stubs": "^4.0.5"
+  },
+  "keywords": ["OData", "OData4"],
+  "author": "pavel.mash",
+  "license": "(GPL-3.0)",
+  "homepage": "https://unitybase.info"
+}
