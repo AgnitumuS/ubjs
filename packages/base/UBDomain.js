@@ -404,11 +404,11 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
     _.merge(entityInfo, i18n)
   }
   /**
-   * @type {UBDomain}
+   * Non enumerable (to prevent JSON.stringify circular ref) read only domain
+   * @property {UBDomain} domain
    * @readonly
    */
-  this.domain = domain
-
+  Object.defineProperty(this, 'domain', {enumerable: false, value: domain})
   /**
    * @type {String}
    * @readonly
@@ -1023,123 +1023,121 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   * @readonly
   */
   this.name = attributeInfo.name
-    /**
-     * @type {UBEntity}
-     * @readonly
-     */
-  this.entity = entity
-    /**
-     * Data type
-     * @type {UBDomain.ubDataTypes}
-     * @readonly
-     */
+  /**
+   * Non enumerable (to prevent JSON.stringify circular ref) read only entity reference
+   * @property {UBEntity} entity
+   * @readonly
+   */
+  Object.defineProperty(this, 'entity', {enumerable: false, value: entity})
+  /**
+   * Data type
+   * @type {UBDomain.ubDataTypes}
+   * @readonly
+   */
   this.dataType = attributeInfo.dataType || 'String'
-    /**
-     * Название сущности, на которую ссылаемся (для adtMany сущность, на которую ссылаемся из AssociationManyData)
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Name of entity referenced by the attribute (for attributes of type `Many` - entity name from the AssociationManyData)
+   * @type {String}
+   * @readonly
+   */
   this.associatedEntity = attributeInfo.associatedEntity
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.associationAttr = attributeInfo.associationAttr
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.caption = attributeInfo.caption || ''
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.description = attributeInfo.description || ''
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.documentation = attributeInfo.documentation || ''
-    /**
-     * @property {Number} size
-     * size
-     * @readonly
-     */
+  /**
+   * @type {Number}
+   * @readonly
+   */
   this.size = attributeInfo.size || 0
-    /**
-     * Attribute value can be empty or null
-     * @type {boolean}
-     * @readonly
-     */
+  /**
+   * Attribute value can be empty or null
+   * @type {boolean}
+   * @readonly
+   */
   this.allowNull = (attributeInfo.allowNull !== false)
-      /**
-     * Allow order by clause by this attribute
-     * @type {boolean}
-     * @readonly
-     */
+  /**
+   * Allow order by clause by this attribute
+   * @type {boolean}
+   * @readonly
+   */
   this.allowSort = (attributeInfo.allowSort !== false)
-    /**
-     * @type {boolean}
-     * @readonly
-     */
+  /**
+   * @type {boolean}
+   * @readonly
+   */
   this.isUnique = (attributeInfo.isUnique === true)
-    /**
-     * @type{String}
-     * @readonly
-     */
+  /**
+   * @type{String}
+   * @readonly
+   */
   this.defaultValue = attributeInfo.defaultValue
-    /**
-     * Allow edit
-     * @type {Boolean}
-     * @readonly
-     */
+  /**
+   * Allow edit
+   * @type {Boolean}
+   * @readonly
+   */
   this.readOnly = (attributeInfo.readOnly === true)
-    /**
-     * @property {Boolean}
-     * @readonly
-     */
+  /**
+   * @property {Boolean}
+   * @readonly
+   */
   this.isMultiLang = (attributeInfo.isMultiLang === true)
-    /**
-     * Possible for dataType=Entity - enable cascade delete on application serve level (not on database level)
-     * @type {Boolean}
-     * @readonly
-     */
+  /**
+   * Possible for dataType=Entity - enable cascade delete on application serve level (not on database level)
+   * @type {Boolean}
+   * @readonly
+   */
   this.cascadeDelete = (attributeInfo.cascadeDelete === true)
-    /**
-     * Required for dataType=Enum - Group code from ubm_enum.eGroup
-     * @property {String} enumGroup
-     * @readonly
-     */
+  /**
+   * Required for dataType=Enum - Group code from ubm_enum.eGroup
+   * @property {String} enumGroup
+   * @readonly
+   */
   this.enumGroup = attributeInfo.enumGroup
-    /**
-     * @type {Object}
-     * @readonly
-     */
+  /**
+   * @type {Object}
+   * @readonly
+   */
   this.customSettings = attributeInfo.customSettings || {}
-    /**
-     * Required for dataType=Many - name of the many-to-many table. UB create system entity with this name and generate table during DDL generation
-     * @property {String}
-     * @readonly
-     */
+  /**
+   * Required for dataType=Many - name of the many-to-many table. UB create system entity with this name and generate table during DDL generation
+   * @property {String}
+   * @readonly
+   */
   this.associationManyData = attributeInfo.associationManyData
-    /**
-     * Applicable to attribute with dataType=Document - name of store from storeConfig application config section. If emtpy - store with isDefault=true will be used
-     * @type{String}
-     * @readonly
-     */
+  /**
+   * Applicable to attribute with dataType=Document - name of store from storeConfig application config section. If emtpy - store with isDefault=true will be used
+   * @type{String}
+   * @readonly
+   */
   this.storeName = attributeInfo.storeName
   /**
    * Applicable for dataType=Entity. If false DDL generator will bypass foreign key generation on the database level
    * @type {boolean}
    */
   this.generateFK = attributeInfo.generateFK !== false
-
   /**
    * If true - client should shows this attribute in auto-build forms and in '*' select fields
    * @type {boolean}
    */
   this.defaultView = attributeInfo.defaultView !== false
-
   /**
    * Optional mapping of atribute to phisical data (for extended domain info only).
    * Calculated from a entity mapping collection in accordance with application connection confiduration
