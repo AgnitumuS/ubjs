@@ -1,0 +1,21 @@
+﻿{
+    "caption": "Діаграми",
+    "description": "Діаграми",
+    "attributes": {
+        "orgunitID": {
+            "caption": "Корінь"
+        },
+        "caption": {
+            "caption": "Назва",
+            "description": "Назва"
+        },
+        "isdefault": {
+            "caption": "По замовченню",
+            "description": "По замовченню"
+        },
+        "document": {
+            "caption": "Органограма",
+            "description": "Органограма"
+        }
+    }
+}

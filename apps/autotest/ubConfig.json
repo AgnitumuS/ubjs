@@ -110,10 +110,21 @@
 					"moduleName": "@unitybase/cdn"
 				},
 				{
+					"name": "ORG",
+					"path": "./node_modules/@unitybase/org",
+					"moduleName": "@unitybase/org"
+				},
+				{
 					"name": "adminui-pub",
 					"publicPath": "./node_modules/@unitybase/adminui-pub",
 					"path": "_public_only_",
 					"moduleName": "@unitybase/adminui-pub"
+				},
+				{
+					"name": "UBE",
+					"publicPath": "./node_modules/@ub-e/ube-pub",
+					"path": "_public_only_",
+					"moduleName": "@ub-e/ube-pub"
 				},
 				{
 					"name": "adminui-reg",
