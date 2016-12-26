@@ -38,7 +38,7 @@ st.runSQL('select id from uba_user where :name2: = :(\'testinline\'): and name =
 assert.equal(st.rowCount, 1, `Mix un-named named and inlined parameters v2. Expect 1 row, got ${st.rowCount}`);
 
 
-st.runSQL(`select id from uba_user where id in (:(${JSON.stringify([UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID])}):)`, {})
+st.runSQL(`select id from uba_user where id in (select id from :(${JSON.stringify([UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID])}):)`, {})
 assert.equal(st.rowCount, 2, `Named array binding. Expect 2 row, got ${st.rowCount}`);
 
 

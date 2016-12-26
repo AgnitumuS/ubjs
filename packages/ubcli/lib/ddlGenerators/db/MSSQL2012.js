@@ -287,7 +287,9 @@ class DBSQL2012 extends DBAbstract {
 
   /** @override */
   genCodeDropColumn (tableDB, columnDB) {
-    throw new Error('Abstract genCodeDropColumn')
+    this.DDL.dropColumn.statements.push(
+      `alter table dbo.${tableDB.name} drop column ${columnDB.name}`
+    )
   }
 
   /** @override */
@@ -417,7 +419,13 @@ class DBSQL2012 extends DBAbstract {
    * @param {Array} [objCollect]
    */
   genCodeDropIndex (tableDB, table, indexDB, comment, objCollect) {
-    throw new Error('Abstract genCodeDropIndex')
+    let cObj = objCollect || this.DDL.dropIndex.statements
+    if (comment) cObj.push(`-- ${comment}\r\n`)
+    if (indexDB.isConstraint) {
+      cObj.push(`ALTER TABLE ${tableDB.name} DROP CONSTRAINT ${indexDB.name}`)
+    } else {
+      cObj.push(`drop index ${indexDB.name} on dbo.${tableDB.name}`)
+    }
   }
   /**
    * @abstract

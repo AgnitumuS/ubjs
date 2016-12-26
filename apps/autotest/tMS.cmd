@@ -7,6 +7,7 @@ del /Q .\fts\*.*
 
 SET TESTCASE=init database
 SET UB_CFG=ubConfigMS4.json
+SET UB_DEV=true
 
 call ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
