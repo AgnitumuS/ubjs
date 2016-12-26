@@ -1,0 +1,10 @@
+﻿{
+    "caption": "Border units",
+    "description": "Border unit of organization structure",
+    "attributes": {
+        "orgUnitID": {
+            "caption": "Unit",
+            "description": "Unit"
+        }
+    }
+}

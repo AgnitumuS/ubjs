@@ -1,0 +1,9 @@
+﻿{
+    "caption": "Граничні вузли",
+    "description": "Граничні вузли",
+    "attributes": {
+        "orgUnitID": {
+            "caption": "Вузол"
+        }
+    }
+}

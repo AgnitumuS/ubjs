@@ -1,0 +1,10 @@
+﻿{
+    "caption": "unit perbatasan",
+    "description": "Unit perbatasan struktur organisasi",
+    "attributes": {
+        "orgUnitID": {
+            "caption": "Satuan",
+            "description": "Satuan"
+        }
+    }
+}
