@@ -284,7 +284,6 @@ class DBAbstract {
       if (!mustBe.doComparision) continue
       this.normalizeDefaults(mustBe)
       let asIs = _.find(this.dbTableDefs, {_upperName: mustBe._upperName})
-      debugger
       this.compareTableDefinitions(mustBe, asIs)
     }
   }
@@ -322,7 +321,8 @@ class DBAbstract {
         }
       }
 
-      // drop FK if not found in schema by name or not equal
+      // drop FK if not found in schema by name or not equal by columnus
+      debugger
       for (let asIsFK of asIs.foreignKeys) {
         if (mustBe.existOther(asIsFK.name)) continue
         let mustBeFK = mustBe.getFKByName(asIsFK.name)
@@ -426,9 +426,8 @@ class DBAbstract {
     for (let asIsC of asIs.columns) {
       let sizeChanged = false
       let sizeIsSmaller = false
-      let allowNullChanged = false
-
       let mustBeC = mustBe.columnByName(asIsC.name)
+
       if (mustBeC) { // alter
         // caption
         if (mustBeC.caption !== asIsC.caption) {
@@ -453,12 +452,8 @@ class DBAbstract {
             sizeIsSmaller = (mustBeC.size < asIsC.size) || (mustBeC.prec < asIsC.prec)
             break
         }
-        let defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
-        // TEMP
-        if (defChanged) {
-          console.log(`CONSTRAINT changed for ${mustBe.name}.${mustBeC.name} Must be "${mustBeC.defaultValue}" but in database "${asIsC.defaultValue}"`)
-        }
-        allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
+
+        let allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
 
         let asIsType = this.createTypeDefine(asIsC)
         let mustBeType = this.createTypeDefine(mustBeC)
@@ -480,9 +475,15 @@ class DBAbstract {
         ) {
           this.addWarning(`Altering type for ${mustBeColumn} from ${asIsType} to ${mustBeType} may be wrong`)
         }
-
         if (sizeChanged && sizeIsSmaller) {
           this.addWarning(`The size or precision for field ${mustBeColumn} was reduced potential loss of data: ${asIsType} -> ${mustBeType}`)
+        }
+        if (mustBeC.name === 'bigintValue')
+          debugger
+        let defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
+        // TEMP
+        if (defChanged) {
+          console.log(`CONSTRAINT changed for ${mustBe.name}.${mustBeC.name} Must be "${mustBeC.defaultValue}" but in database "${asIsC.defaultValue}"`)
         }
         if (defChanged && (asIsC.defaultValue != null)) {
           this.genCodeDropDefault(mustBe, asIsC)
@@ -572,6 +573,7 @@ class DBAbstract {
         res += `(${column.size.toString()})`
         break
       case 'NUMERIC':
+      case 'CURRENCY':
         res += `(${column.size.toString()}, ${column.prec.toString()})`
         break
       case 'BOOLEAN':
@@ -583,7 +585,7 @@ class DBAbstract {
 
   compareDefault (dataType, mustBeDefault, asIsDefault, mustBeConstraintName, asIsConstraintName) {
     if (!mustBeDefault && !asIsDefault) return false
-    return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) && (`(${mustBeDefault}'` !== asIsDefault)
+    return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) && (`(${mustBeDefault})` !== asIsDefault)
   }
 
   /**

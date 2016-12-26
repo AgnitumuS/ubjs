@@ -83,7 +83,7 @@
 		"fileStoreSimple": {
 			"dataType": "Document",
 			"caption": "Simple",
-			"description": "Documnet stored to simple store",
+			"description": "Document stored to simple store",
 			"storeName": "simple"
 			//"storeName": "pdf"
 		},

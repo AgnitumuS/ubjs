@@ -8,15 +8,6 @@ var
     argv = require('@unitybase/base').argv,
     session, conn;
 
-if (argv.findCmdLineSwitch('help') !== -1){
-    console.info([
-        'Test DDL generator',
-        'Usage: ',
-            '>UB ' + __fileName + ' ' + argv.establishConnectionFromCmdLineAttributesUsageInfo
-    ].join('\r\n'));
-    return;
-}
-
 session = argv.establishConnectionFromCmdLineAttributes();
 conn = session.connection;
 

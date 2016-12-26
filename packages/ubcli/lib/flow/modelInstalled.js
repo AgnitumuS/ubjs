@@ -18,7 +18,7 @@ const packageNameParts = packageName.split('/')
 // console.log('packageNameParts', packageNameParts)
 
 // process.cwd() is actually a package folder.
-var cfgPath = process.cwd()
+let cfgPath = process.cwd()
 for (let k = 0; k < packageNameParts.length + 1; k++) {  // +1 for node_modules folder
   cfgPath = path.join(cfgPath, '..')
 }
@@ -54,5 +54,5 @@ if (fs.existsSync(cfgPath)) {
   }
 } else {
   console.warn('ubConfig.json not found on', cfgPath)
-  console.warn(`To use a installed model in four application add the model "${modelName}" to the config application.domain.models collection manually`)
+  console.warn(`To use a installed model in your application add the model "${modelName}" to the config application.domain.models collection manually`)
 }

@@ -567,19 +567,19 @@ class DDLGenerator {
     tableDef.primaryKey = {name: 'PK_' + attribute.associationManyData, keys: [ 'sourceID', 'destID' ]}
     tableDef.addFK({
       name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias),
-      keys: [ 'sourceID' ],
+      keys: [ 'sourceID'.toUpperCase() ],
       references: getTableDBName(entity),
       generateFK: true
     })
     tableDef.addFK({
       name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias),
-      keys: [ 'destID' ],
+      keys: [ 'destID'.toUpperCase() ],
       references: getTableDBName(associatedEntity),
       generateFK: true
     })
     tableDef.addIndex({
       name: formatName('IDX_', attribute.associationManyData, '_DESTID'),
-      keys: [ 'destID' ]
+      keys: [ 'destID'.toUpperCase() ]
     })
     tableDef.isIndexOrganized = true
     this.referenceTableDefs.push(tableDef)
