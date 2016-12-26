@@ -217,7 +217,7 @@ UBDomain.prototype.ubDataTypes = UBDomain.ubDataTypes
  */
 UBDomain.ExpressionType = {
   Field: 'Field',
-  Expression: 'Expresion'
+  Expression: 'Expression'
 }
 
 /**
