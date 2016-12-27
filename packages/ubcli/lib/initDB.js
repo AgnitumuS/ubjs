@@ -24,7 +24,7 @@
  */
 
 const {options, argv} = require('@unitybase/base')
-const UBA_COMMON = require('@unitybase/uba/modules/uba_common')
+const UBA_COMMON = require('@unitybase/base').uba_common
 const _ = require('lodash')
 const fs = require('fs')
 const http = require('http')
