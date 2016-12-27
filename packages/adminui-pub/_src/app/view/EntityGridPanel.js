@@ -3004,26 +3004,23 @@ Ext.define('UB.view.EntityGridPanel', {
     }
     fTitle = fTitle || this.title || 'export to excel'
 
-    Ext.ux.exporter.Exporter.exportAny(this, 'xlsx',
-      {
-        stripeRows: true,
-        title: fTitle,
-        entityName: this.entityName,
-        metaobject: mobj,
-        scope: me,
-        callback: function (rData) {
-          fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
-          var sLength = rData.length
-          var sArray = new Uint8Array(new ArrayBuffer(sLength))
-          for (var i = 0; i < sLength; i++) {
-            sArray[i] = rData.charCodeAt(i)
-          }
-          dBlob = new Blob([sArray], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}) // data:  ;base64
-          saveAs(dBlob, fTitle + '.xlsx')
+    Ext.ux.exporter.Exporter.exportAny(this, 'xlsx', {
+      stripeRows: true,
+      title: fTitle,
+      entityName: this.entityName,
+      metaobject: mobj,
+      scope: me,
+      callback: function (rData) {
+        fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
+        var sLength = rData.length
+        var sArray = new Uint8Array(new ArrayBuffer(sLength))
+        for (var i = 0; i < sLength; i++) {
+          sArray[i] = rData.charCodeAt(i)
         }
+        dBlob = new Blob([sArray], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}) // data:  ;base64
+        saveAs(dBlob, fTitle + '.xlsx')
       }
-
-        )
+    })
   },
 
   onExportXlsOld: function () {

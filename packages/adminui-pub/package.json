@@ -9,7 +9,10 @@
   },
   "scripts": {
     "build:old": "build.cmd",
-    "build": "minify-ext.cmd && buildCss.cmd && SET NODE_ENV=production && webpack",
+    "build": "npm run build:ext && npm run build:css && npm run build:adminui",
+    "build:ext": "uglifyjs ext-all-debug-w-comments.js -o ./dist/ext-all.min.js --source-map ./dist/ext-all.min.js.map --source-map-include-sources --screw-ie8 --prefix relative --compress --mangle",
+    "build:css": "uglifycss ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css > ./ub-css-all.css",
+    "build:adminui": "SET NODE_ENV=production && webpack",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
