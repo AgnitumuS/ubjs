@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/cryptojs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Temporary solution for cryptography. Clone from CryptoJS lib from google",
   "scripts": {},
   "public": true,
@@ -10,7 +10,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-     "babel-loader": "^6.2.9"
+    "babel-loader": "^6.2.9"
   },
   "keywords": [
     "crypto",
