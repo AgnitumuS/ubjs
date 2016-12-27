@@ -1,10 +1,10 @@
 {
-  "name": "@ub-e/ube-pub",
+  "name": "@ub-e/xlsx-pub",
   "version": "4.0.1",
-  "description": "UnityBase admin UI enterprise components",
-  "main": "adminui.js",
+  "description": "UnityBase enterprise Excel exporter",
+  "main": "initModel.js",
   "config": {
-    "ubmodel": "UBE",
+    "ubmodel": "XLSX",
     "ubmodelispublic": true
   },
   "scripts": {

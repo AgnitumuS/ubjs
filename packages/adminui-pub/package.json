@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "config": {
@@ -25,9 +25,9 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.0.5",
-    "@unitybase/ub-pub": "^4.0.6",
-    "@unitybase/adminui-reg": "^4.0.5",
+    "@unitybase/base": "^4.0.6",
+    "@unitybase/ub-pub": "^4.0.7",
+    "@unitybase/adminui-reg": "^4.0.6",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.20.2",
