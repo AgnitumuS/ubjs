@@ -41,9 +41,10 @@
             res.push(r.receive(i));
         }
  *
- * @module UBMail
+ * @module @unitybase/mailer-ssl
  */
-const binding = require('./UBMail_openssl.dll')
+const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'
+const binding = require(archPath + '/UBMail.dll')
 var UBMail = module.exports;
 
 /**

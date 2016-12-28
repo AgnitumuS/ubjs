@@ -43,7 +43,8 @@
  *
  * @module UBMail
  */
-const binding = require('./UBMail.dll')
+const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'
+const binding = require(archPath + '/UBMail.dll')
 var UBMail = module.exports;
 
 /**

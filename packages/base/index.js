@@ -14,6 +14,7 @@ const csv1 = require('./csv1')
 const dataLoader = require('./dataLoader')
 const FileBasedStoreLoader = require('./FileBasedStoreLoader')
 const Worker = require('./worker') 
+const uba_common = require('./uba_common') 
 
 module.exports = {
   /**
@@ -69,5 +70,7 @@ module.exports = {
 
   FileBasedStoreLoader,  
 
-  Worker
+  Worker,
+
+  uba_common
 }
