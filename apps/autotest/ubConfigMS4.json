@@ -1,8 +1,6 @@
 ﻿{
 	"httpServer": {
-		"host": "192.168.56.1",
-		//"host": "mash-w8.softline.main",
-		"host": "+",
+		"host": "localhost",
 		//"port": "80",
 		"port": "888",
 		//"path": "just",
@@ -168,7 +166,7 @@
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\fts\\autotestFTS.ftsdb",
+				"databaseName": ".\\autotestFTS.sqlite3",
 				"supportLang": [
 					"uk"
 				],
@@ -178,13 +176,12 @@
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\fts\\autotestSubjects.ftsdb",
+				"databaseName": ".\\autotestSubjectsFTS.sqlite3",
 				"supportLang": [
 					"uk"
 				],
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			}
-
 		],
 		"blobStores": [
 			{

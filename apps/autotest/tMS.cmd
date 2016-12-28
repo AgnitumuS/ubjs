@@ -2,8 +2,7 @@ del .\_autotestResults.json
 del .\last_result.log
 
 SET TESTCASE=drop database
-del /Q .\fts\*.*
-
+del /Q .\*FTS.sqlite3
 
 SET TESTCASE=init database
 SET UB_CFG=ubConfigMS4.json
