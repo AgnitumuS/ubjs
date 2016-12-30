@@ -348,7 +348,7 @@ function UBModel (path, needInit, needLocalize, order, moduleName, moduleSuffix)
    * Module name for `require`
    */
   this.moduleName = moduleName
-  if (moduleSuffix) {
+  if (moduleSuffix && moduleName) {
     this.moduleName = this.moduleName + '/' + moduleSuffix
   }
 }

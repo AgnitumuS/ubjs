@@ -1,6 +1,6 @@
 ﻿var me = uba_user
 
-var UBA_COMMON = require('./modules/uba_common')
+var UBA_COMMON = require('@unitybase/base').uba_common
 const http = require('http')
 
 me.entity.addMethod('changeLanguage')
@@ -493,7 +493,7 @@ function processRegistrationStep2 (resp, otp, login) {
 }
 
 const mailQueue = require('@unitybase/ubq/modules/mail-queue')
-const UBReport = require('@unitybase/ubs/public/UBReport.js')
+const UBReport = require('@unitybase/ubs/modules/UBServerReport')
 
 /**
  * 2-step new user public registration rest endpoint.

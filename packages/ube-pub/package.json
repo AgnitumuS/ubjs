@@ -9,10 +9,8 @@
   },
   "scripts": {
     "build": "SET NODE_ENV=production && call ./bin/compile.cmd",
-    "build:watch": "webpack --progress --colors --watch",
-    "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
-    "prepublish": "rem npm run build",
+    "prepublish": "npm run build",
     "test": "npm run test"
   },
   "public": true,
