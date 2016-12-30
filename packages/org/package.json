@@ -6,8 +6,7 @@
     "ubmodel": "ORG"
   },
   "scripts": {
-    "test": "ubcli autotest -m ORG -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m ORG -skipModules"
   },
   "public": true,
   "publishConfig": {

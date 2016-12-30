@@ -8,13 +8,11 @@
     "ubmodelispublic": true
   },
   "scripts": {
-    "build:old": "build.cmd",
-    "build": "NODE_ENV=production && webpack",
+    "build": "SET NODE_ENV=production && call ./bin/compile.cmd",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
     "prepublish": "rem npm run build",
-    "postinstall": "ubcli flow/modelInstalled",
     "test": "npm run test"
   },
   "public": true,

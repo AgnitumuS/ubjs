@@ -6,8 +6,7 @@
     "ubmodel": "CDN"
   },
   "scripts": {
-    "test": "ubcli autotest -m CDN -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m CDN -skipModules"
   },
   "public": true,
   "publishConfig": {

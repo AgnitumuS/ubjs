@@ -6,8 +6,7 @@
     "ubmodel": "UBA"
   },
   "scripts": {
-    "test": "ubcli autotest -m UBA -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m UBA -skipModules"
   },
   "public": true,
   "publishConfig": {

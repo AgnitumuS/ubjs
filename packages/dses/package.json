@@ -6,8 +6,7 @@
     "ubmodel": "DSES"
   },
   "scripts": {
-    "test": "ubcli autotest -m DSES -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m DSES -skipModules"
   },
   "public": true,
   "publishConfig": {
