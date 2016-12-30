@@ -465,8 +465,7 @@ var
   SubPartsObj: PJSObject;
 //  SubPartsVals: PjsRVVector;
   Part: TMimePart;
-  cnt, i: Integer;
-  jsv: jsval;
+  cnt: Integer;
   SubPartsVal: jsval;
   this: PJSObject;
 begin
