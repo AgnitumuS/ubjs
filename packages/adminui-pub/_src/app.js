@@ -150,8 +150,8 @@ function launchApp () {
     }
   }
 
-  //Ext.onReady(function () {
-  function extLoaded() {
+  // Ext.onReady(function () {
+  function extLoaded () {
     // this override is just for set separate mask for modal windows & loading mask
     // one line of code changed compared to original: cls: Ext.baseCSSPrefix + 'modal-mask', //mpv
     Ext.override(Ext.ZIndexManager, {
@@ -202,12 +202,12 @@ function launchApp () {
         // MPV - bug in webpack, so I copypaste realization from Ext instead of callParent
         // return me.callParent(arguments)
         return me.maskEl || (me.maskEl = me.el.insertSibling({
-            role: 'presentation',
-            cls: me.maskCls,
-            style: {
-              zIndex: me.el.getStyle('zIndex') - 2
-            }
-          }, 'before'))
+          role: 'presentation',
+          cls: me.maskCls,
+          style: {
+            zIndex: me.el.getStyle('zIndex') - 2
+          }
+        }, 'before'))
       }
     })
 

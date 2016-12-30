@@ -344,6 +344,7 @@ Ext.define('UB.core.UBApp', {
             // }
       _.forEach(models, function (item, key) { item.key = key }) // move names inside elements
       models = _.sortBy(models, 'order') // sort models by order
+      debugger
       _.forEach(models, function (model) {
         if (model.path && model.key !== 'UB') {
           Ext.Loader.setPath(model.key, model.path);
@@ -353,7 +354,8 @@ Ext.define('UB.core.UBApp', {
           localeScriptForLoad.push(UB.inject(model.path + '/locale/lang-' + myLocale + '.js'))
         }
         if (model.needInit) {
-          initScriptForLoad.push(model.path + '/initModel.js')
+          // initScriptForLoad.push(model.path + '/initModel.js')
+          initScriptForLoad.push((model.moduleName || model.path) + '/initModel.js')
         }
       })
             // load models initialization script in order they passed
@@ -361,7 +363,8 @@ Ext.define('UB.core.UBApp', {
         var promise = Promise.resolve(true)
         initScriptForLoad.forEach(function (script) {
           promise = promise.then(function () {
-            return UB.inject(script)
+            // return UB.inject(script)
+            return window.System.import(script)
           })
         })
         return promise

@@ -34,26 +34,15 @@ function notFound (resp, reason) {
 }
 
 /**
- * The `models` endpoint. Responsible for return a static files content from a model/publicPath folders
  *
- * For example request `GET http://host:port/models/modelName/fileName`
- * will return a file from a public folder of a model `modelName`
- *
- * @param {THTTPRequest} req
+ * @param {string} pathToFile
  * @param {THTTPResponse} resp
  */
-function models (req, resp) {
+function resolveModelFile (reqPath, resp) {
   let entry = {
     fullPath: ''
   }
-  if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
-    return badRequest(resp, 'invalid request method ' + req.method)
-  }
-  let reqPath = req.decodedUri
-  if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
-    return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
-  }
-    // cache actual file path & type for success models/* request
+  // cache actual file path & type for success models/* request
   let cached = App.globalCacheGet(`UB_MODELS_REQ${reqPath}`)
   if (!cached) {
     let parts = reqPath.replace(/\\/g, '/').split('/')
@@ -89,7 +78,26 @@ function models (req, resp) {
     resp.writeHead(entry.mimeHead)
   }
   resp.statusCode = 200
-    // cache forever - do not cache index*.html
+}
+/**
+ * The `models` endpoint. Responsible for return a static files content from a model/publicPath folders
+ *
+ * For example request `GET http://host:port/models/modelName/fileName`
+ * will return a file from a public folder of a model `modelName`
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function models (req, resp) {
+  if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
+    return badRequest(resp, 'invalid request method ' + req.method)
+  }
+  let reqPath = req.decodedUri
+  if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
+    return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
+  }
+  resolveModelFile(reqPath, resp)
+  // cache forever - do not cache index*.html
     // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
 }
 
@@ -108,6 +116,12 @@ function clientRequire (req, resp) {
   if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
     return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
   }
+
+  if (reqPath.startsWith('models/')) {
+    resolveModelFile(reqPath.slice('models/'.length), resp)
+    return
+  }
+
   let resolvedPath
   try {
     console.log(`Try to resolve ${reqPath}`)
