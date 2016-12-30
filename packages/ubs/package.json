@@ -6,8 +6,7 @@
     "ubmodel": "UBS"
   },
   "scripts": {
-    "test": "ubcli autotest -m UBS -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m UBS -skipModules"
   },
   "public": true,
   "publishConfig": {

@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "npm link lodash @unitybase/CryptoJS @unitybase/base @unitybase/adminui",
     "lint": "eslint source test",
-    "postinstall": "ubcli flow/modelInstalled",
     "test": "npm run test"
   },
   "public": true,

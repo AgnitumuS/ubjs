@@ -42,7 +42,7 @@
 				},
 				{
 					"name": "adminui",
-					"publicPath": "./node_modules/@unitybase/adminui",
+					"publicPath": "./node_modules/@unitybase/adminui-pub",
 					"path": "_public_only_"
 				},
 				{

@@ -6,8 +6,7 @@
     "ubmodel": "UBM"
   },
   "scripts": {
-    "test": "ubcli autotest -m UBM -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m UBM -skipModules"
   },
   "public": true,
   "publishConfig": {

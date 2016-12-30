@@ -6,8 +6,7 @@
     "ubmodel": "UBQ"
   },
   "scripts": {
-    "test": "ubcli autotest -m UBQ -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m UBQ -skipModules"
   },
   "public": true,
   "publishConfig": {
