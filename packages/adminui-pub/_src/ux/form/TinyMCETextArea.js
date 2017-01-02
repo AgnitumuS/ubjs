@@ -125,6 +125,8 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
         if (ed.isHidden()) { return; }
         
         var edIframe = Ext.get(me.getInputId() + "_ifr");
+        //MPV
+        if (!edIframe) return
         
         var parent = edIframe.up(".mce-edit-area");
         parent = parent.up(".mce-container-body");
@@ -263,7 +265,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
         tinymce.init(me.tinyMCEConfig);
         
         me.intializationInProgress = false;
-        me.wysiwygIntialized = true;
+        // MPV me.wysiwygIntialized = true;
     },
     //-----------------------------------------------------------------
     getEditor: function () {

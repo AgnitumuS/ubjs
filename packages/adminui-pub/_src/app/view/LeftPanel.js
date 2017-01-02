@@ -2,8 +2,9 @@ Ext.define('UB.view.LeftPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.ubleftpanel',
     requires: [
-        'UB.core.UBApp', 'UB.core.UBAppConfig', 'UB.core.UBStoreManager', 'UB.core.UBUtilTree', 'UB.view.NavigationPanel'
+        'UB.core.UBAppConfig', 'UB.core.UBStoreManager', 'UB.core.UBUtilTree', 'UB.view.NavigationPanel'
     ],
+  uses: ['UB.core.UBApp'],
     layout: {
         type: 'vbox',
         align: 'stretch'

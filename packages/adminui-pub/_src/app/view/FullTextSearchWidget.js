@@ -19,13 +19,13 @@ Ext.define('UB.view.FullTextSearchWidget', {
     extend: 'UB.view.ToolbarWidget',
     alias: 'widget.ubfulltextsearchwidget',
     requires: [
-        'UB.core.UBApp',
         'Ext.form.field.Text',
         'UB.ux.data.UBStore',
         'Ext.data.Store',
         'Ext.button.Button',
         'UB.view.SelectPeriodDialog'
     ],
+  uses: ['UB.core.UBApp'],
 
     selectPeriod: function(){
         var me = this;

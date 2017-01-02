@@ -2,12 +2,12 @@ Ext.define('UB.view.NavAccordion', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.navaccordion',
     requires: [
-        'UB.core.UBApp',
         'UB.core.UBAppConfig',
         'UB.core.UBStoreManager',
         'UB.core.UBUtilTree',
         'UB.view.NavigationPanel'
     ],
+  uses: ['UB.core.UBApp'],
     layout: {
         // layout-specific configs go here
         type: 'accordion',
