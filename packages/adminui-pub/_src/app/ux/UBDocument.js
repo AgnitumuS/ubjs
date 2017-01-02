@@ -42,7 +42,6 @@ Ext.define('UB.ux.UBDocument', {
 
     requires: [
         'UB.core.UBService',
-        'UB.core.UBApp',
         'UB.ux.UBObject',
         'UB.ux.PDFComponent',
         'UB.ux.UBImg',
@@ -53,6 +52,7 @@ Ext.define('UB.ux.UBDocument', {
         'UB.ux.EnterpriseEditorMock',
         'UB.ux.UBReportEditor'
     ],
+  uses: ['UB.core.UBApp'],
     autoEl: 'div',
     statics: {
         editors: {

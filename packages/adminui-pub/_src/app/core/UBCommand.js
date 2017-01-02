@@ -6,7 +6,6 @@
  */
 Ext.define('UB.core.UBCommand', {
     requires: [
-        'UB.core.UBApp',
         'UB.core.UBAppConfig',
         'UB.core.UBStoreManager',
         'UB.core.UBUtil',
@@ -15,10 +14,11 @@ Ext.define('UB.core.UBCommand', {
     ],
 
     uses: [
-        'UB.view.ErrorWindow',
-        'UB.core.UBFormLoader',
-        'UB.view.BasePanel',
-        'UB.view.EntityGridPanel'
+      'UB.core.UBApp',
+      'UB.view.ErrorWindow',
+      'UB.core.UBFormLoader',
+      'UB.view.BasePanel',
+      'UB.view.EntityGridPanel'
     ],
 
     statics: {

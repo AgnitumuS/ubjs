@@ -12,9 +12,9 @@ function isExternal (module) {
 
 //  console.log(userRequest);
   return userRequest.indexOf('bluebird') >= 0 ||
-         // userRequest.indexOf('/bluebird-q/') >= 0 ||
-         userRequest.indexOf('lodash') >= 0 ||
-	 userRequest.indexOf('CryptoJS') >= 0
+    // userRequest.indexOf('/bluebird-q/') >= 0 ||
+    userRequest.indexOf('lodash') >= 0 ||
+    userRequest.indexOf('CryptoJS') >= 0
 }
 
 module.exports = {
@@ -41,8 +41,8 @@ module.exports = {
     }]
   },
   //devtool: 'eval',
-  //devtool: 'source-map',
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
+  //devtool: 'cheap-module-source-map',
 
   plugins: [
         // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
