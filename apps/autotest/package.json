@@ -17,6 +17,7 @@
     "@unitybase/ubs": "^4.0.0",
     "@ub-e/dses": "^4.0.0",
     "@ub-e/odata": "^1.0.0",
+    "@ub-e/xlsx-pub": "^4.0.0",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.22.0",
