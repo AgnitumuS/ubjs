@@ -3,6 +3,8 @@ var
     Worker = require('@unitybase/base/worker'),
 	w;
 
+if (App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) return
+
 if (process.startupMode === "CmdLine") {
     console.debug('SCHEDULER: disabled for command line startup');
 } else if (App.serverConfig.application.schedulers && (App.serverConfig.application.schedulers.enabled === false) ) {
