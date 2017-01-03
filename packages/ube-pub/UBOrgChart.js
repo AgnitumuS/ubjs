@@ -11,7 +11,7 @@ Ext.define('UBE.UBOrgChart', {
 
 
     loadData: function(collback) {
-        var itemsStores, me = this, basepanel, diagramId;
+        var me = this, basepanel, diagramId;
         basepanel = me.up('basepanel');
         if (basepanel && basepanel.record){
             //me.rootElementID = basepanel.record.get('orgunitID');
@@ -211,7 +211,7 @@ Ext.define('UBE.UBOrgChart', {
     },
 
     initComponent: function(){
-        var me = this, id, html, toolbarHtml, outlineHtml;
+        var me = this, id, html, outlineHtml;
         me.layout = 'fit';
 
         me.initMetaInfo();
@@ -317,8 +317,8 @@ Ext.define('UBE.UBOrgChart', {
     },
 
     initGraph: function(){
-        var me = this, container, f4, graph, tb, outline, toolbar, outln, style, keyHandler, layout,
-            layoutMgr, mainWin, baseZIndex;
+        var me = this, container, f4, graph, outline, style, keyHandler, layout,
+            mainWin, baseZIndex;
         me.graphDivEl = Ext.get(me.containerId);
         mainWin = me.up('basewindow');
         if (!mainWin){
@@ -944,29 +944,28 @@ Ext.define('UBE.UBOrgChart', {
                     handler: function(){
                         //var pageCount = mxUtils.prompt('Enter maximum page count', '1');
 
-                        var pmt = Ext.Msg.prompt(
-                            {msg: UB.i18n('Enter maximum page count'),
-                                prompt: true,
-                                title: '',
-                                minWidth: Ext.Msg.minPromptWidth,
-                                buttons: Ext.Msg.OKCANCEL,
-                                callback: function(btn, value){
-                                    if ('ok' !== btn){
-                                        return;
-                                    }
-                                    var pageCount = value;
-                                    if (pageCount !== null)
-                                    {
-                                        var scale = mxUtils.getScaleForPageCount(pageCount, me.graph);
-                                        var preview = new mxPrintPreview(me.graph, scale, me.printerFormat || null);
-                                        preview.open();
-                                    }
-                                },
-                                scope: me,
-                                multiline: false,
-                                value: '1'
-                            });
-
+                        Ext.Msg.prompt({
+                            msg: UB.i18n('Enter maximum page count'),
+                            prompt: true,
+                            title: '',
+                            minWidth: Ext.Msg.minPromptWidth,
+                            buttons: Ext.Msg.OKCANCEL,
+                            callback: function(btn, value){
+                                if ('ok' !== btn){
+                                    return;
+                                }
+                                var pageCount = value;
+                                if (pageCount !== null)
+                                {
+                                    var scale = mxUtils.getScaleForPageCount(pageCount, me.graph);
+                                    var preview = new mxPrintPreview(me.graph, scale, me.printerFormat || null);
+                                    preview.open();
+                                }
+                            },
+                            scope: me,
+                            multiline: false,
+                            value: '1'
+                        });
                     },
                     scope: me
                 },{
@@ -1329,8 +1328,8 @@ Ext.define('UBE.UBOrgChart', {
         var me = this,
             ID = cell.getAttribute('ID'),
             element = me.allData[ID],
-            minEdges = cell.isRoot ? 0 : 1,
-            edgeCnt = cell.getEdgeCount(),
+            // minEdges = cell.isRoot ? 0 : 1,
+            // edgeCnt = cell.getEdgeCount(),
             model =  me.graph.getModel(),
             expandOverlay,
             existsCell, eID, pt,
@@ -1391,7 +1390,7 @@ Ext.define('UBE.UBOrgChart', {
         var me = this,
             ID = cell.getAttribute('ID'),
             element = me.allData[ID],
-            show, child;
+            child;
 
 
         if (element){
@@ -1894,8 +1893,8 @@ Ext.define('UBE.UBOrgChart', {
     },
 
     validateDiagram: function(isUpdateMode){
-        var me = this, cell, model = me.graph.getModel(), ID, hasItem = false,
-            cellToDel = [], isRoot, dAll = [], dTree = [], parentCell, parentID, elmTree, cellNaChild = {}, cellChParent = [],
+        var me = this, model = me.graph.getModel(), ID, hasItem = false,
+            cellToDel = [], isRoot, parentCell, parentID, elmTree, cellChParent = [],
             dCells = {}, elm;
 
         me.rootVarex = null;
@@ -2136,7 +2135,7 @@ Ext.define('UBE.UBOrgChart', {
      * @param parentCell
      */
     checkElementId: function(ID, parentCell){
-        var me = this, overlay, item, parentItem, childCells, record, newcell, pcellSt, model;
+        var me = this, overlay, item, parentItem, childCells, record, newcell, model;
         me.loadBy('org_unit', ["ID","parentID","code","caption","unitType"], "ID", ID,
             function(store){
                  if (store.getCount() === 0 ){

@@ -82,8 +82,7 @@ Ext.define('UBE.GraphViewer', {
     setSrc: function(cfg) {
         var
             me = this,
-            data = cfg.url,
-            urlArr, elm;
+            data = cfg.url;
 
         me.dataUrl = data;
         if(me.editor) {
@@ -132,7 +131,7 @@ Ext.define('UBE.GraphViewer', {
         //graph.setEnabled(false);
 
         // Enables rubberband selection
-        var rb00 = new mxRubberband(graph);
+        new mxRubberband(graph);
         graph.setPanning(true);
         graph.setTooltips(true);
 
@@ -155,7 +154,7 @@ Ext.define('UBE.GraphViewer', {
     editDiagram: function(sender){
         var enc = new mxCodec();
         var model = enc.encode(this.editor.graph.getModel());
-        var fm =  Ext.create('UB.view.Workflow', {
+        Ext.create('UB.view.Workflow', {
             incomeModel: model,
             resultCallBack: Ext.bind(this.onEndEdit, this),
             constrain: true,
@@ -169,7 +168,7 @@ Ext.define('UBE.GraphViewer', {
     },
 
     onEndEdit: function(isChanged, data){
-        var params, saveUrl, me = this,
+        var params, me = this,
             mainPnl, docContainer, document, baseDoc;
 
         //me.dataUrl

@@ -78,6 +78,7 @@
         <div id ="ubExtensionPageMessageObj"></div>
 
         <script src="{{#md5}}clientRequire/systemjs/dist/system.src.js{{/md5}}" type="text/javascript"></script>
+        <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
         <script type="text/javascript">
             // set our baseURL reference path
             System.config({
@@ -92,9 +93,11 @@
                     'file-saver/*.js': { format: 'cjs' }
                 }
             });
+            //System.import('@unitybase/adminui-pub').then(function(adminUI){
+            //    return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
+            //});
         </script>
 
-        <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
         <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/adminui.min.js{{/md5}}"></script>
         <script charset="utf-8" type="text/javascript" src="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js{{/md5template}}"></script>
     </body>

@@ -554,7 +554,7 @@ Ext.define('UBE.UBMetaDiagram', {
   initMXEditor: function () {
     var
       config = mxUtils.load('models/UBE/resources/config/ubmetaeditor.xml').getDocumentElement(),
-      me = this, editor, graph, tdom, div, mainWin
+      me = this, editor, graph, div, mainWin
         // workfloweditor.xml
 
     mainWin = me.getContainer()
@@ -1157,9 +1157,9 @@ Ext.define('UBE.UBMetaDiagram', {
   },
 
   hideProperties: function () {
-    var
-      me = this,
-      editor = me.editor, cell
+    var me = this
+    var editor = me.editor
+
     if (editor.properties !== null) {
       editor.properties.close()
       editor.properties = null
