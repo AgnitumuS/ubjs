@@ -131,12 +131,6 @@
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
 				},
-				{
-					"name": "ub-core",
-					"publicPath": "./node_modules/@unitybase/ub-pub",
-					"path": "_public_only_",
-					"moduleName": "@unitybase/ub-pub"
-				},
                                 {
 					"name": "DSES",
 					"path": "./node_modules/@ub-e/dses",

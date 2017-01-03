@@ -1,6 +1,8 @@
 ﻿{
 	"httpServer": {
-		"host": "localhost",
+		"host": "192.168.56.1",
+		//"host": "mash-w8.softline.main",
+		"host": "+",
 		//"port": "80",
 		"port": "888",
 		//"path": "just",
@@ -119,20 +121,26 @@
 					"moduleName": "@unitybase/adminui-pub"
 				},
 				{
+					"name": "UBE",
+					"publicPath": "./node_modules/@ub-e/ube-pub",
+					"path": "_public_only_",
+					"moduleName": "@ub-e/ube-pub"
+				},
+				{
 					"name": "adminui-reg",
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
 				},
 				{
-					"name": "ub-core",
-					"publicPath": "./node_modules/@unitybase/ub-pub",
-					"path": "_public_only_",
-					"moduleName": "@unitybase/ub-pub"
-				},
-                                {
 					"name": "DSES",
 					"path": "./node_modules/@ub-e/dses",
 					"moduleName": "@ub-e/dses"
+				},
+				{
+					"name": "XLSX",
+					"publicPath": "./node_modules/@ub-e/xlsx-pub",
+					"path": "_public_only_",
+					"moduleName": "@ub-e/xlsx-pub"
 				},
 				{
 					"name": "TST",

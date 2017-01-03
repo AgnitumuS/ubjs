@@ -69,7 +69,8 @@ module.exports = {
         drop_console: false, // true,
         unsafe: true
       }
-    })
+    }) 
+
         // new webpack.optimize.CommonsChunkPlugin({
         //     children: true,
         //     async: true,
