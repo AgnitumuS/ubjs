@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubcli",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple CLI for scaffolding UnityBase projects",
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "lodash": "^4.0.0",
-    "@unitybase/base": "^4.0.6"
+    "@unitybase/base": "^4.0.7"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.0.6",
