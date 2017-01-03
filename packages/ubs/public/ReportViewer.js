@@ -71,8 +71,8 @@ Ext.define('UBS.ReportViewer', {
                         "insertdatetime nonbreaking table contextmenu directionality",
                         "emoticons template paste textcolor"],
                         toolbar: false,
-                        toolbar1: false,
-                        content_css : "/models/adminui/tinymce/skins/lightgray/content_preview.min.css"
+                        toolbar1: false
+                        //MPV content_css : "/models/adminui/tinymce/skins/lightgray/content_preview.min.css"
                     }
                 });
                 container = Ext.create('Ext.panel.Panel', {
@@ -119,7 +119,7 @@ Ext.define('UBS.ReportViewer', {
 
                 control.on('setup', function(editor){
                     editor.on('init', function() {
-                        editor.dom.loadCSS('/models/adminui/css/print-report.css');
+                        editor.dom.loadCSS('/models/adminui-pub/css/print-report.css');
                             //editor.baseURI.toAbsolute("plugins/templateEditor/css/templateEditor.css"));
                     });
                 }, me, {single: true});
@@ -228,19 +228,19 @@ Ext.define('UBS.ReportViewer', {
                 me.reportControl.show();
                 me.reportControl.setValue(data);
                 var ed = me.reportControl.getEditor();
-                if (ed){
+                if (ed && ed.dom){
                     if (me.reportControl.orientation === 'landscape'){
-                        ed.dom.loadCSS('/models/adminui/css/print-landscape.css');
+                        ed.dom.loadCSS('/models/adminui-pub/css/print-landscape.css');
                     } else {
-                        ed.dom.loadCSS('/models/adminui/css/print-portrait.css');
+                        ed.dom.loadCSS('/models/adminui-pub/css/print-portrait.css');
                     }
                 } else {
                     me.reportControl.on('setup', function(editor){
                         editor.on('init', function() {
                             if (me.reportControl.orientation === 'landscape'){
-                                editor.dom.loadCSS('/models/adminui/css/print-landscape.css');
+                                editor.dom.loadCSS('/models/adminui-pub/css/print-landscape.css');
                             } else {
-                                editor.dom.loadCSS('/models/adminui/css/print-portrait.css');
+                                editor.dom.loadCSS('/models/adminui-pub/css/print-portrait.css');
                             }
                         });
                     }, me, {single: true});

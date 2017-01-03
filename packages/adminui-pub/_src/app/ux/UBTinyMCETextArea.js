@@ -21,7 +21,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
     me.tinyMCEConfig = Ext.apply({
           // language: UB.core.UBApp.getUiLanguage(),
       language_url: $App.connection.baseURL + 'models/adminui-pub/locale/tinymce/' + $App.connection.userLang() + '.js',
-      skin_url: $App.connection.baseURL + 'clientRequire/tinymce/skins/lightgray/',
+      //skin_url: $App.connection.baseURL + 'clientRequire/tinymce/skins/lightgray/',
       table_default_attributes: {
         cellpadding: '3px',
         cellspacing: '0',
