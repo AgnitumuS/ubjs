@@ -5,29 +5,29 @@
 const binding = process.binding('ub_dbConnection')
 const bindingDatabases = binding.databases
 const QueryString = require('querystring')
-var databases = {}
-var dbIndexSymbol = Symbol('dbIndex')
-var chDblQuote = 34
-var chQuote = 39
-var chColon = 58
-var chLRoundBrac = 40
-var chRRoundBrac = 41
-var chLBrac = 91
-var chRBrac = 93
-var chZero = 48
-var chNine = 57
-var chPlus = 43
-var chMinus = 45
-var chQuestionMark = 63
-var chPoint = 46
-var chN = 110
-var chU = 117
-var chL = 108
-var chEGr = 69
-var chELw = 101
-var chSpace = 32
-var chLF = 10
-var chCR = 13
+const databases = {}
+const dbIndexSymbol = Symbol('dbIndex')
+const chDblQuote = 34
+const chQuote = 39
+const chColon = 58
+const chLRoundBrac = 40
+const chRRoundBrac = 41
+const chLBrac = 91
+// const chRBrac = 93
+const chZero = 48
+const chNine = 57
+const chPlus = 43
+const chMinus = 45
+const chQuestionMark = 63
+const chPoint = 46
+const chN = 110
+const chU = 117
+const chL = 108
+const chEGr = 69
+const chELw = 101
+const chSpace = 32
+const chLF = 10
+const chCR = 13
 //
     //    ;
 class TubDatabase_ {
@@ -58,8 +58,7 @@ class TubDatabase_ {
     return binding.genID(entity)
   }
   parseSQL (sql, params) {
-    return {parsedSql: sql, parsedParams: []}
-        // 1. see all characters and mark param places
+    // return {parsedSql: sql, parsedParams: []}
     let parsedSql = []
     const parsedParams = []
     const paramPositions = []
