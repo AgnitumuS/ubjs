@@ -1,5 +1,5 @@
 /**
- * Created by v.orel on 29.12.2016.
+ * Created by v.orel on 05.01.2017.
  */
 // const {MSSQLBuilder} = require('DMLGenerator')
 
