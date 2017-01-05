@@ -60,7 +60,6 @@ class Field {
     }
     // todo disable complex expressions in external call
     if (reOneBracketField.test(fieldExpr)) {
-
       this.initInternal(builder, reOneBracketField.exec(fieldExpr)[1], withAlias)
     } else {
       if (notHandleNonBracket) {
@@ -74,7 +73,7 @@ class Field {
    * @param {String} fieldExpr
    * @param {Boolean} withAlias
    */
-  initInternal(builder, fieldExpr, withAlias = false) {
+  initInternal (builder, fieldExpr, withAlias = false) {
     const fieldParts = fieldExpr.split('.')
     let curEntity = builder.entity
     let curAttr = ''
@@ -88,12 +87,12 @@ class Field {
       if (curEntity) {
         const prevDS = ds
         curAttr = curAttr ? curAttr + '.' + part : part
-        const alias = curEntity.sqlAlias
-        let curAlias = alias
+        const dsAlias = curEntity.sqlAlias
+        let curAlias = dsAlias
         ds = builder.knownDS[curAlias]
-        let i = 1
+        let iDsAlias = 1
         while (ds && (ds.attribute !== curAttr)) {
-          curAlias = alias + (++i)
+          curAlias = dsAlias + (++iDsAlias)
           ds = builder.knownDS[curAlias]
         }
         if (!ds) {
@@ -109,15 +108,15 @@ class Field {
       }
     }
     const fieldName = fieldParts[fieldParts.length - 1]
-    let i = 1
-    let alias = fieldName
+    let iFieldAlias = 1
+    let fieldAlias = fieldName
     if (withAlias) {
-      while (builder.fieldsAliases[alias]) {
-        alias = fieldName + ++i
+      while (builder.fieldsAliases[fieldAlias]) {
+        fieldAlias = fieldName + ++iFieldAlias
       }
-      builder.fieldsAliases[alias] = 1
+      builder.fieldsAliases[fieldAlias] = 1
     }
-    this.expression `${ds.alias}.${alias === fieldName ? fieldName : fieldName + ' AS ' + alias}`
+    this.expression = `${ds.alias}.${fieldAlias === fieldName ? fieldName : fieldName + ' AS ' + fieldAlias}`
   }
 }
 
@@ -132,6 +131,7 @@ class WhereItemCustom extends WhereItem {
    * @param {String} expression
    */
   constructor (expression) {
+    super()
     this.expression = expression
   }
 }
@@ -149,7 +149,12 @@ class WhereItemCompare extends WhereItem {
    * @param {String} expression
    * @param {String} condition
    */
-  constructor (builder, {expression, condition/*, values*/}) {
+  constructor (builder, {
+    expression,
+    condition
+    // , values
+    }) {
+    super()
     this.expression = `${builder.addFieldItem(expression).expression}${conditionsCompare[condition]}${builder.preparePositionParameterText()}'`
   }
 }
@@ -159,7 +164,10 @@ class WhereItemBetween extends WhereItem {
    * @param {CustomSQLBuilder} builder
    * @param {String} expression
    */
-  constructor (builder, {expression/*, values*/}) {
+  constructor (builder, {
+    expression
+    //, values
+    }) {
     let expressions = []
     let res
     do {
@@ -168,11 +176,14 @@ class WhereItemBetween extends WhereItem {
         expressions.push(res[1])
       }
     } while (res)
+    super()
     switch (expressions.length) {
       case 1:
         this.expression = `(${builder.addFieldItem(expressions[0])} BETWEEN ${builder.preparePositionParameterText()} AND ${builder.preparePositionParameterText()} )`
+        break
       case 2:
         this.expression = `(${builder.preparePositionParameterText()} BETWEEN ${builder.addFieldItem(expressions[0])} AND ${builder.addFieldItem(expressions[1])} )`
+        break
       default :
         throw new Error(`Invalid expression "${expression}" for "between attributes" condition`)
     }
@@ -191,6 +202,7 @@ class WhereItemIn extends WhereItem {
    */
   constructor (builder, {expression, condition, values}) {
     const val = values[0]
+    super()
     // todo replace JSON.stringify to normal parsing
     this.expression = `${builder.addFieldItem(expression).expression} ${conditionsIn[condition]} (${JSON.stringify(val)})`
   }
@@ -205,7 +217,12 @@ class WhereItemNull extends WhereItem {
    * @param {String} expression
    * @param {String} condition
    */
-  constructor (builder, {expression, condition/*, values*/}) {
+  constructor (builder, {
+    expression,
+    condition
+    // , values
+    }) {
+    super()
     this.expression = `${builder.addFieldItem(expression).expression} ${conditionsNull[condition]}`
   }
 }
@@ -221,19 +238,28 @@ class WhereItemLike extends WhereItem {
    * @param {String} expression
    * @param {String} condition
    */
-  constructor (builder, {expression, condition/*, values*/}) {
+  constructor (builder, {
+    expression,
+    condition
+    //, values
+    }) {
     // todo add % to begin or end of value if needed
+    super()
     this.expression = `${builder.addFieldItem(expression)} ${conditionsLike[condition]} ${builder.likePredicate} (?)`
   }
 }
 class WhereItemMatch extends WhereItem {
   /**
-   * @param {CustomSQLBuilder} builder
-   * @param {String} expression
-   * @param {String} condition
+/   * @param {CustomSQLBuilder} builder
+/   * @param {String} expression
+/   * @param {String} condition
    */
-  constructor (builder, {expression, condition/*, values*/}) {
+  constructor (
+  // builder, {expression, condition, values}
+  ) {
+    super()
     // todo
+    this.a = 1
   }
 }
 const reLogicalPredicate = /\[([^\]]*)]/g
@@ -306,7 +332,7 @@ class CustomSQLBuilder {
   buildBaseSelectQuery () {
     const parts = ['SELECT ']
     if (this.fieldsPrefix) {
-      parts.push(sql.fieldsPrefix)
+      parts.push(this.fieldsPrefix)
       parts.push(' ')
     }
     if (this.fields.length === 0) {
@@ -323,11 +349,6 @@ class CustomSQLBuilder {
     parts.push.apply(parts, this.datasources)
     // todo assign where and whereAddCond
     let isFirstWhere = true
-    // todo logicalPredicates
-    const logicalPredicatesConditions = {}
-    if (this.logicalPredicates) {
-
-    }
 
     for (let condition in this.where) {
       const whereItem = this.where[condition]
@@ -349,7 +370,7 @@ class CustomSQLBuilder {
       }
       parts.push(logicalPredicate.expression)
     }
-    
+
     // todo assign groupby
     if (this.groupby) {
       parts.push(' GROUP BY ')
@@ -362,8 +383,8 @@ class CustomSQLBuilder {
     }
     return parts.join('')
   }
-  buildSelectQuery() {
-    return buildBaseSelectQuery()
+  buildSelectQuery () {
+    return this.buildBaseSelectQuery()
   }
   /**
    * @param {String} fieldExpr
@@ -411,7 +432,7 @@ class CustomSQLBuilder {
         throw new Error(`Unknown condition: ${condition}`)
     }
   }
-  preparePositionParameterText() {
+  preparePositionParameterText () {
     return '?'
   }
   get likePredicate () {

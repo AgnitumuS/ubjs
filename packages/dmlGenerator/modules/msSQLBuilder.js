@@ -3,7 +3,7 @@
  */
 const CustomSQLBuilder = require('./CustomSQLBuilder')
 class MSSQLBuilder extends CustomSQLBuilder {
-  buildSelectQuery() {
+  buildSelectQuery () {
     if (!this.options.start && !this.options.limit) {
       /*
        SELECT A.a, A.b
@@ -65,16 +65,16 @@ class MSSQLBuilder extends CustomSQLBuilder {
              ORDER BY A.a
              OFFSET start ROWS FETCH NEXT limit ROWS ONLY
              */
-            if (sql.orderList.length === 0) {
-              if (sql.columnList.idColumn) {
-                sql.orderby = this.columnList.idColumn.expression
+            if (this.orderList.length === 0) {
+              if (this.idColumn) {
+                this.orderby = this.idColumn.expression
               } else {
                 throw new Error('Error on build select SQL: income fields must have "ID" attribute for paging on MSSQL')
               }
             }
             return [
-              this.buildBaseSelectQuery(sql),
-              ` OFFSET ${sql.options.start} ROWS FETCH NEXT ${sql.options.limit} ROWS ONLY`
+              this.buildBaseSelectQuery(),
+              ` OFFSET ${this.options.start} ROWS FETCH NEXT ${this.options.limit} ROWS ONLY`
             ].join('')
         }
       }
