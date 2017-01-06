@@ -11,8 +11,9 @@
  5. order
  6. groupBy
  7. distinct
- 8. joinAs
+ +8. joinAs
  9. options(limit etc)
+ 10. Complex fiel parsing
  */
 
 /*
@@ -74,40 +75,8 @@ class Field {
    * @param {Boolean} withAlias
    */
   initInternal (builder, fieldExpr, withAlias = false) {
-    const fieldParts = fieldExpr.split('.')
-    let curEntity = builder.entity
-    let curAttr = ''
-    let ds = {
-      alias: curEntity.sqlAlias
-    }
-    for (let i = 0; i < fieldParts.length - 1; i++) {
-      const part = fieldParts[i]
-      const attr = curEntity.attributes[part]
-      curEntity = attr.getAssociatedEntity()
-      if (curEntity) {
-        const prevDS = ds
-        curAttr = curAttr ? curAttr + '.' + part : part
-        const dsAlias = curEntity.sqlAlias
-        let curAlias = dsAlias
-        ds = builder.knownDS[curAlias]
-        let iDsAlias = 1
-        while (ds && (ds.attribute !== curAttr)) {
-          curAlias = dsAlias + (++iDsAlias)
-          ds = builder.knownDS[curAlias]
-        }
-        if (!ds) {
-          ds = builder.knownDS[curAlias] = {
-            attribute: curAttr,
-            alias: curAlias,
-            allowNull: attr.allowNull || prevDS.allowNull
-          }
-          builder.datasources.push(` ${ds.allowNull ? 'LEFT JOIN' : 'INNER JOIN'} ${curEntity.code} ${ds.alias} ON ${ds.alias}.ID=${prevDS.alias}.${attr.code}`)
-        }
-      } else {
-        throw new Error(`Association entity in attribute "${part}" of object "${curEntity}" is empty`)
-      }
-    }
-    const fieldName = fieldParts[fieldParts.length - 1]
+    const {ds, fieldName} = builder.datasources.parseAttribute(fieldExpr)
+//
     let iFieldAlias = 1
     let fieldAlias = fieldName
     if (withAlias) {
@@ -116,12 +85,16 @@ class Field {
       }
       builder.fieldsAliases[fieldAlias] = 1
     }
+    this.ds = ds
     this.expression = `${ds.alias}.${fieldAlias === fieldName ? fieldName : fieldName + ' AS ' + fieldAlias}`
   }
 }
 
 class WhereItem {
-  constructor () {
+  /**
+   * @param {String} expression
+   */
+  constructor (expression) {
     this.expression = null
   }
 }
@@ -135,6 +108,12 @@ class WhereItemCustom extends WhereItem {
     this.expression = expression
   }
 }
+class WhereItemWithField extends WhereItem {
+  constructor (builder, expression) {
+    super()
+    this.field = builder.addFieldItem(expression)
+  }
+}
 const conditionsCompare = {
   Equal: '=',
   NotEqual: '<>',
@@ -143,19 +122,15 @@ const conditionsCompare = {
   Less: '<',
   LessEqual: '<='
 }
-class WhereItemCompare extends WhereItem {
+class WhereItemCompare extends WhereItemWithField {
   /**
    * @param {CustomSQLBuilder} builder
    * @param {String} expression
    * @param {String} condition
    */
-  constructor (builder, {
-    expression,
-    condition
-    // , values
-    }) {
-    super()
-    this.expression = `${builder.addFieldItem(expression).expression}${conditionsCompare[condition]}${builder.preparePositionParameterText()}'`
+  constructor (builder, {expression, condition}) {
+    super(builder, expression)
+    this.expression = `${this.field.expression}${conditionsCompare[condition]}${builder.preparePositionParameterText()}'`
   }
 }
 const reBracketField = /\[([^\]]*)]/g
@@ -164,10 +139,7 @@ class WhereItemBetween extends WhereItem {
    * @param {CustomSQLBuilder} builder
    * @param {String} expression
    */
-  constructor (builder, {
-    expression
-    //, values
-    }) {
+  constructor (builder, {expression}) {
     let expressions = []
     let res
     do {
@@ -179,10 +151,13 @@ class WhereItemBetween extends WhereItem {
     super()
     switch (expressions.length) {
       case 1:
-        this.expression = `(${builder.addFieldItem(expressions[0])} BETWEEN ${builder.preparePositionParameterText()} AND ${builder.preparePositionParameterText()} )`
+        this.field = builder.addFieldItem(expressions[0])
+        this.expression = `(${this.field.expression} BETWEEN ${builder.preparePositionParameterText()} AND ${builder.preparePositionParameterText()} )`
         break
       case 2:
-        this.expression = `(${builder.preparePositionParameterText()} BETWEEN ${builder.addFieldItem(expressions[0])} AND ${builder.addFieldItem(expressions[1])} )`
+        this.field = builder.addFieldItem(expressions[0])
+        this.field2 = builder.addFieldItem(expressions[1])
+        this.expression = `(${builder.preparePositionParameterText()} BETWEEN ${this.field.expression} AND ${this.field2.expression} )`
         break
       default :
         throw new Error(`Invalid expression "${expression}" for "between attributes" condition`)
@@ -193,7 +168,7 @@ const conditionsIn = {
   In: 'IN',
   NotIn: 'NOT IN'
 }
-class WhereItemIn extends WhereItem {
+class WhereItemIn extends WhereItemWithField {
   /**
    * @param {CustomSQLBuilder} builder
    * @param {String} expression
@@ -202,7 +177,7 @@ class WhereItemIn extends WhereItem {
    */
   constructor (builder, {expression, condition, values}) {
     const val = values[0]
-    super()
+    super(builder, expression)
     // todo replace JSON.stringify to normal parsing
     this.expression = `${builder.addFieldItem(expression).expression} ${conditionsIn[condition]} (${JSON.stringify(val)})`
   }
@@ -211,18 +186,14 @@ const conditionsNull = {
   IsNull: 'IS NULL',
   NotIsNull: 'IS NOT NULL'
 }
-class WhereItemNull extends WhereItem {
+class WhereItemNull extends WhereItemWithField {
   /**
    * @param {CustomSQLBuilder} builder
    * @param {String} expression
    * @param {String} condition
    */
-  constructor (builder, {
-    expression,
-    condition
-    // , values
-    }) {
-    super()
+  constructor (builder, {expression, condition}) {
+    super(builder, expression)
     this.expression = `${builder.addFieldItem(expression).expression} ${conditionsNull[condition]}`
   }
 }
@@ -232,19 +203,15 @@ const conditionsLike = {
   StartWith: '',
   NotStartWith: 'NOT'
 }
-class WhereItemLike extends WhereItem {
+class WhereItemLike extends WhereItemWithField {
   /**
    * @param {CustomSQLBuilder} builder
    * @param {String} expression
    * @param {String} condition
    */
-  constructor (builder, {
-    expression,
-    condition
-    //, values
-    }) {
+  constructor (builder, {expression, condition}) {
     // todo add % to begin or end of value if needed
-    super()
+    super(builder, expression)
     this.expression = `${builder.addFieldItem(expression)} ${conditionsLike[condition]} ${builder.likePredicate} (?)`
   }
 }
@@ -274,6 +241,9 @@ class LogicalPredicate {
         if (!knownPredicates[predicate[1]]) {
           const whereItem = builder.where[predicate[1]]
           if (whereItem) {
+            if (whereItem.inJoinAsPredicate) {
+              throw new Error(`Logical predicate with name "${predicate}" already used in "joinAs" predicates`)
+            }
             whereItem.inLogicalPredicate = true
             const re = new RegExp('(\\' + predicate[0] + ')', 'g')
             this.expression = this.expression.replace(re, whereItem.expression, 'g')
@@ -287,19 +257,85 @@ class LogicalPredicate {
   }
 }
 
+class DataSource {
+  constructor (entity) {
+    this.entity = entity
+    this.alias = entity.sqlAlias
+  }
+  get expression () {
+    return `${this.prefix} ${this.entity.code} ${this.alias} ${this.sufix} ${this.where.count === 0 ? '' : ' AND ' + this.where.join(' AND ')}`
+  }
+}
+class DataSourceJoin extends DataSource {
+  constructor (entity, alias, allowNull, parent, parentAttr) {
+    super(entity)
+    this.alias = alias
+    this.allowNull = allowNull
+    this.prefix = this.allowNull ? 'LEFT JOIN' : 'INNER JOIN'
+    this.sufix = `ON ${this.alias}.ID=${parent.alias}.${parentAttr}`
+    this.where = []
+  }
+}
+
+class DataSources {
+  constructor (builder) {
+    this.entity = builder.entity
+    this.datasources = [new DataSource(this.entity)]
+    this.datasources.byAlias = {}
+    this.datasources.byAttribute = {}
+  }
+  parseAttribute (attribute) {
+    const fieldParts = attribute.split('.')
+    let curEntity = this.entity
+    let curAttr = ''
+    let ds = this.datasources[0]
+
+    for (let i = 0; i < fieldParts.length - 1; i++) {
+      const part = fieldParts[i]
+      const attr = curEntity.attributes[part]
+      curEntity = attr.getAssociatedEntity()
+      if (curEntity) {
+        const prevDS = ds
+        curAttr = curAttr ? curAttr + '.' + part : part
+        ds = this.datasources.byAttribute[curAttr]
+        if (!ds) {
+          const dsAlias = curEntity.sqlAlias
+          let curAlias = dsAlias
+          let dsAliasIndex = 1
+          while (this.datasources.byAlias[curAlias]) {
+            curAlias = dsAlias + (++dsAliasIndex)
+          }
+          ds = this.datasources.byAlias[curAlias] = this.datasources.byAttribute[curAttr] =
+            new DataSourceJoin(curEntity, curAlias, attr.allowNull || prevDS.allowNull, prevDS, part)
+        }
+      } else {
+        throw new Error(`Association entity in attribute "${part}" of object "${curEntity}" is empty`)
+      }
+    }
+    const fieldName = fieldParts[fieldParts.length - 1]
+
+    return {ds, fieldName}
+  }
+  get expression () {
+    const res = []
+    for (let datasource of this.datasources) {
+      res.push(datasource.expression)
+    }
+    return res.join(' ')
+  }
+}
+
 class CustomSQLBuilder {
-  constructor ({entity, method, fieldList, whereList, logicalPredicates}) {
+  constructor ({entity, fieldList, whereList, logicalPredicates, joinAs, options}) {
     // todo dialect from entity connection
-    this.options = {}
     this.entity = App.domain_.get(entity)
-    this.method = method
+    // this.method = method
     this.fields = []
     this.fieldsAliases = {}
-    this.datasources = [this.entity.code + ' ' + this.entity.sqlAlias]
-    this.knownDS = {}
+    this.datasources = new DataSources(this)
 
     // todo handle start, limit
-    this.options = {}
+    this.options = options || {}
     // todo handle custom sql
     // todo handle execFieldList
     // todo handle als ???
@@ -318,6 +354,12 @@ class CustomSQLBuilder {
       this.where[condition] = this.addWhereItem(whereItem)
     }
 
+    if (joinAs) {
+      for (let joinAsPredicate of joinAs) {
+        this.addJoinAsPredicate(joinAsPredicate)
+      }
+    }
+
     this.logicalPredicates = []
     if (logicalPredicates) {
       for (let logicalPredicate of logicalPredicates) {
@@ -325,7 +367,6 @@ class CustomSQLBuilder {
       }
     }
   }
-
   /**
    * @returns {string}
    */
@@ -346,19 +387,19 @@ class CustomSQLBuilder {
       parts.push(this.fieldsSuffix)
     }
     parts.push(' FROM ')
-    parts.push.apply(parts, this.datasources)
+    parts.push(this.datasources.expression)
     // todo assign where and whereAddCond
     let isFirstWhere = true
 
     for (let condition in this.where) {
       const whereItem = this.where[condition]
-      if (!whereItem.inLogicalPredicate) {
+      if (!whereItem.inLogicalPredicate && !whereItem.inJoinAsPredicate) {
         if (isFirstWhere) {
           parts.push(' WHERE ')
         } else {
           parts.push(' AND ')
         }
-        parts.push(whereItem)
+        parts.push(whereItem.expression)
       }
     }
 
@@ -432,6 +473,15 @@ class CustomSQLBuilder {
         throw new Error(`Unknown condition: ${condition}`)
     }
   }
+  addJoinAsPredicate (expression) {
+    const whereItem = this.where[expression]
+    if (whereItem) {
+      whereItem.inJoinAsPredicate = true
+      if (whereItem.field && whereItem.field.ds) {
+        whereItem.field.ds.where.push(whereItem)
+      }
+    }
+  }
   preparePositionParameterText () {
     return '?'
   }
@@ -450,11 +500,11 @@ module.exports = CustomSQLBuilder
 // * @property {Boolean} alsNeed
 // * @property {String} __alsCurrState
 // * @property {String} __alsCurrRoles
-// * @property {String} entity
-// * @property {Array<String>} fieldList
-// * @property {Array<WhereItem>} whereList
-// * @property {Array<String>} logicalPredicates
-// * @property {Array<String>} joinAs
+// * @property {String} entity +
+// * @property {Array<String>} fieldList +
+// * @property {Array<WhereItem>} whereList +
+// * @property {Array<String>} logicalPredicates +
+// * @property {Array<String>} joinAs +
 // * @property {Array<OrderItem>} orderList
 // * @property {Array<String>} groupList
 // * @property {Options} options
