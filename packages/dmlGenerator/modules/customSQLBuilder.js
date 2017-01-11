@@ -44,239 +44,8 @@
 /**
  * Created by v.orel on 05.01.2017.
  */
-const UB_ID = 'ID'
-const UB_BRACKET_ID = '[ID]'
-const UB_SFN_AllFields = '*'
+
 const reOneBracketField = /^\[(.*)]$/
-const deniedNotSimpleExpr = true
-const chars = {
-  opBracket: '['.charCodeAt(0),
-  clBracket: ']'.charCodeAt(0),
-  lang: '^'.charCodeAt(0),
-  namedParam: ':'.charCodeAt(0),
-  nativeSQL: '#'.charCodeAt(0),
-  dot: '.'.charCodeAt(0),
-  coma: ','.charCodeAt(0),
-  opRBracket: '('.charCodeAt(0),
-  clRBracket: ')'.charCodeAt(0),
-  param: '?'.charCodeAt(0),
-  opFBracket: '{'.charCodeAt(0),
-  clFBracket: '}'.charCodeAt(0),
-  gt: '>'.charCodeAt(0),
-  lt: '<'.charCodeAt(0),
-  eq: '='.charCodeAt(0),
-  space: '='.charCodeAt(0),
-  chA: 'A'.charCodeAt(0),
-  chZ: 'Z'.charCodeAt(0),
-  cha: 'a'.charCodeAt(0),
-  chz: 'z'.charCodeAt(0),
-  ch0: '0'.charCodeAt(0),
-  ch9: '9'.charCodeAt(0),
-  ch_: '_'.charCodeAt(0),
-  chAmp: '@'.charCodeAt(0),
-  upperDelta: 'a'.charCodeAt(0) - 'A'.charCodeAt(0),
-  isIdentifier: function (ch) {
-    return ((ch >= chars.ch0) && (ch <= chars.ch9)) ||
-      ((ch >= chars.chA) && (ch <= chars.chZ)) ||
-      ((ch >= chars.cha) && (ch <= chars.chz)) ||
-      (ch === chars.ch_)
-  }
-}
-const dbFieldServiceFuncs = {
-  'SUM': true,
-  'COUNT': true,
-  'AVG': true,
-  'MAX': true,
-  'MIN': true,
-  'CAST': true,
-  'COALESCE': true,
-  'LENGTH': true,
-  'LOWER': true,
-  'UPPER': true,
-  'DAY': true,
-  'MONTH': true,
-  'YEAR': true,
-  'ROUND': true,
-  'FLOOR': true,
-  'CEILING': true,
-  'MASTER': true,
-  'SELF': true
-}
-const reBracketField = /\[([^\]]*)]/g
-const reExprWithDot = /([^.]*)\./
-const parserUtils = {
-  extractExpressionProps: function (expression, {onlyDot = false, onlyOpenBracket = false}) {
-    const res = {
-      isAttributeExpression: true,
-      simpleExpression: true
-    }
-    let ch
-    let expr = {
-      expression,
-      length: expression.length,
-      curPos: 0
-    }
-    let insideAttrExpr = false
-    let servExprBrCounter = 0
-    // let subQueryExprBrCounter = 0
-    let insideSubQueryExpr = false
-    while (expr.curPos < expr.length) {
-      ch = expression.charCodeAt(expr.curPos)
-      if (ch === chars.opBracket) {
-        res.existOpenBracket = true
-        if (onlyOpenBracket) {
-          break
-        }
-        insideAttrExpr = true
-      } else if (ch === chars.clBracket) {
-        res.existCloseBracket = true
-        insideAttrExpr = false
-      } else if (ch === chars.lang) {
-        res.existLangPointer = true
-      } else if (ch === chars.namedParam) {
-        res.existNamedParam = true
-      } else if (ch === chars.nativeSQL) {
-        res.existNativeSQL = true
-      } else if (ch === chars.dot) {
-        res.existDot = true
-        if (onlyDot) {
-          break
-        }
-      } else if ((ch === chars.coma) || (ch === chars.opRBracket) || (ch === chars.clRBracket) || (ch === chars.param)) {
-        res.isAttributeExpression = false
-        if (!insideAttrExpr || !res.existOpenBracket) {
-          if (ch === chars.opRBracket) {
-            servExprBrCounter++
-            if (!parserUtils._findServiceExprBackFrom(expr)) {
-              res.simpleExpression = false
-            } else {
-              res.existServiceExpr = true
-            }
-          } else if (ch === chars.clRBracket) {
-            if (servExprBrCounter <= 0) {
-              res.simpleExpression = false
-            }
-            servExprBrCounter--
-          } else {
-            res.simpleExpression = false
-          }
-        }
-      } else if ((ch === chars.opFBracket) || (ch === chars.clFBracket)) {
-        if (ch === chars.clFBracket) {
-          // subQueryExprBrCounter--
-          if (!parserUtils._findServiceExprBackFrom(expr)) {
-            res.simpleExpression = false
-          } else {
-            res.existServiceExpr = true
-          }
-          insideSubQueryExpr = false
-        } else {
-          insideSubQueryExpr = true
-          // subQueryExprBrCounter++
-        }
-      } else if ((ch === chars.gt) || (ch === chars.lt) || (ch === chars.eq)) {
-        res.isAttributeExpression = false
-        if (!res.existOpenBracket) {
-          res.simpleExpression = false
-        }
-      } else if (ch === chars.space) {
-        res.isAttributeExpression = false
-      } else if (chars.isIdentifier(ch)) {
-        if (!insideAttrExpr && !insideSubQueryExpr && res.existOpenBracket) {
-          res.simpleExpression = false
-        }
-      } else {
-        if (!parserUtils._isExprLink(expr)) {
-          res.simpleExpression = false
-        }
-      }
-    }
-    return res
-  },
-  bracketExpr (expression) {
-    const props = parserUtils.extractExpressionProps(expression)
-    const expr = ['', expression, '']
-    if (props.isAttributeExpression && !props.existNativeSQL && !props.existOpenBracket) {
-      expr[0] = '['
-      props.existOpenBracket = true
-    }
-    if (props.isAttributeExpression && !props.existNativeSQL && !props.existCloseBracket) {
-      expr[2] = ']'
-      props.existCloseBracket = true
-    }
-    return {props, expression: expr.join('')}
-  },
-  splitBracketExpressions: function (expression, withBracket) {
-    const expressions = []
-    let res
-    do {
-      res = reBracketField.exec(expression)
-      if (res) {
-        expressions.push(res[withBracket ? 0 : 1])
-      }
-    } while (res)
-    return expressions
-  },
-  expressionFirstWord: function (expression) {
-    const res = reExprWithDot.exec(expression)
-    return res ? res[1] : expression
-  },
-  extractOneExprLink: function (expression) {
-    let existLink = false
-    let expr = {
-      expression,
-      length: expression.length,
-      curPos: 0
-    }
-    while (expr.curPos < expr.length) {
-      if (parserUtils._isExprLink(expr)) {
-        existLink = true
-        break
-      }
-      expr.curPos++
-    }
-    if (existLink) {
-      return {
-        existLink,
-        expression: expression.substr(expr.curPos),
-        essLink: expression.substr(0, expr.curPos - 2)
-      }
-    } else {
-      return {existLink, expression}
-    }
-  },
-  extractAttrAndLang: function (expression) {
-    // todo
-    return 1
-  },
-  _isExprLink: function (expr) {
-    if (expr.expression.charCodeAt(expr.curPos) === chars.chAmp) {
-      if (chars.isIdentifier(expr.expression.charCodeAt(expr.curPos - 1))) {
-        return true
-      }
-      chars.chAmp++
-    }
-    return false
-  },
-  _findServiceExprBackFrom: function (expr) {
-    let pos = expr.curPos
-    if (pos === 0) {
-      return false
-    }
-    let haveData = false
-    let ch
-    while (pos >= 0) {
-      ch = expr.expression.charCodeAt(pos--)
-      if (chars.isIdentifier(ch)) {
-        haveData = true
-      } else break
-    }
-    if (!haveData) {
-      return false
-    }
-    return !!dbFieldServiceFuncs[expr.subStr(pos + 1, expr.curPos - pos).toUpperCase()]
-  }
-}
 
 class Expression {
 
@@ -301,62 +70,19 @@ class Expression {
     this.expression = this.prepareSQLExpression(expression, 'root')
   }
   prepareSQLExpression (expression, level, manyAttrExprCollapsed) {
-    if (expression === UB_SFN_AllFields) {
-      this.fieldName = ''
-      return UB_SFN_AllFields
-    }
-    // todo may be check that entity is from correct db
-    // let originalExpression = expression
-    let {expression: inExpression, props: exprProps} = parserUtils.bracketExpr(expression)
-
-    if (exprProps.existOpenBracket && !exprProps.existCloseBracket) {
-      throw new Error(`Error in expression "${expression}": "]" expected but "[" found`)
-    } else if (!exprProps.existOpenBracket && exprProps.existCloseBracket) {
-      throw new Error(`Error in expression "${expression}": "[" expected but "]" found`)
-    }
-
-    // todo EntityList.AddEntity(aProcessEntity);
-
     if (!exprProps.existNativeSQL) {
       const exprList = parserUtils.splitBracketExpressions(inExpression, false)
       if (exprList.length === 0) {
-        // there is no open and close brackets so left all as is
-        builder.expressions.add({
-          attrEntityName: '',
-          attributeName: '',
-          isMultiLang: false,
-          lang: builder.langPrefix,
-          existLangPointer: false,
-          expression: inExpression,
-          nonPrefixExpression: inExpression
-        })
-        // todo ??? fPreparedExpression.SetExpressionType(sqletExpression, aExpressionList);
-        return inExpression
       } else {
         for (let expr of exprList) {
-          exprProps = parserUtils.extractExpressionProps(expr, false)
-          let partExpr = parserUtils.expressionFirstWord(expr)
-          let exprLinkProps = parserUtils.extractOneExprLink(partExpr)
-          partExpr = exprLinkProps.expression
-          if (exprLinkProps.existLink && (level === 'root')) {
-            // before registration of link-attribute we must register ID of parent entity, but only for root level
-            // todo
-            this.registerSimpleExpression({
-              expression: UB_ID,
-              fullExpr: UB_ID,
-              level,
-              /* parentAssocExpr: '',
-              exprProps: {},
-              exprLinkProps: */
-              manyAttrExprCollapsed
-            })
-          }
+
+
           // todo
           this.registerSimpleExpression()
           // may bymove unity logic to mixin
           // if there is link to other entity by UNITY then create JOIN here
           // but only for root level because for non-root level link is already created
-          if (exprLinkProps.existLink (level === 'root')) {
+          if (exprLinkProps.existLink && (level === 'root')) {
             // todo
             this.registerSimpleExpression()
           }
@@ -366,11 +92,26 @@ class Expression {
           if (!exprProps.existDot || (fAttrItem.dataType === 'Many')) {
             // todo
           } else {
+            let entity
             if (fAttrItem.dataType !== 'Enum') {
-
+              // todo entity from attr
+              entity = {}
             } else {
-
+              // ubm_enum
+              entity = {}
             }
+            // todo check els - may be
+            // EntityList.AddEntity(fAssociatedEntityRef);
+            const nextLevel = `${level}.[${entity.name}.${partExpr}]`
+            let nextExpr = {}
+            // todo
+            if (exprLinkProps.existLink) {
+              // todo nextExpr = DelStartStr(fExprList[I], fPartExpr + '.')
+            } else {
+              // todo nextExpr = DelStartStr(fExprList[I], fPartExpr + '.')
+            }
+            exprProps = parserUtils.extractExpressionProps(nextExpr, false)
+            // todo
           }
         }
       }
@@ -379,38 +120,7 @@ class Expression {
     return 1
   }
   registerSimpleExpression ({expression, fullExpr, level, exprProps, exprLinkProps, manyAttrExprCollapsed, entity}) {
-    // todo
-    let simpleExpr
-    let attrEntity
-    // out params
-    let attribute
-    let langPrefix
-    // aBldExprItem
-    // aBldDSItem
-    // aBldFieldData
-    // aBldDSData
 
-    if (!exprProps || !exprProps.existLangPointer) {
-      langPrefix = ''
-      simpleExpr = expression
-    } else {
-      const res = parserUtils.extractAttrAndLang(expression)
-      simpleExpr = res.noLangExpr
-      langPrefix = res.langPrefix
-    }
-    if (!exprLinkProps || !exprLinkProps.existLink) {
-      attrEntity = entity
-      attribute = attrEntity.attributes[simpleExpr]
-    } else {
-      attrEntity = App.domain_.get(exprLinkProps.essLink)
-      // todo check entity exists
-      // todo check entity has UNITY mixin - may be move to mixin
-      // todo check  attrEntity.mixins.unity.entity is entity.name
-      attribute = attrEntity.attributes[simpleExpr]
-    }
-    if (!attribute) {
-      throw new Error(`Attribute ${attrEntity.name}.${simpleExpr} not exist`)
-    }
 
     // todo create ds
     // todo create field
@@ -458,15 +168,6 @@ class Expression {
     }
     this.ds = ds
     this.expression = `${ds.alias}.${fieldAlias === fieldName ? fieldName : fieldName + ' AS ' + fieldAlias}`
-  }
-}
-
-class ExpressionList {
-  constructor () {
-    this.items = []
-  }
-  add (item) {
-    this.items.push(item)
   }
 }
 
@@ -786,7 +487,7 @@ class DataSources {
   }
 }
 
-class CustomSQLBuilder {
+class CustomSQLBuilder1 {
   constructor ({entity, fieldList, whereList, logicalPredicates, joinAs, options}) {
     // todo dialect from entity connection
     this.entity = App.domain_.get(entity)

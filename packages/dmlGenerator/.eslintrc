@@ -2,6 +2,7 @@
   "extends": ["standard"],
   "globals": {
     "App": true,
+    "Session": true,
     "UB": true
   }
 } 
