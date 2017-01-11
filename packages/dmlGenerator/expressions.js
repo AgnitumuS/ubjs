@@ -89,13 +89,13 @@ class ExprBldData {
 }
 
 class Expression {
-  constructor (builder) {
-    this.builder = builder
-  }
+//  constructor (builder) {
+//     this.builder = builder
+//  }
 }
 class AllFieldsExpression extends Expression {
-  constructor (builder) {
-    super(builder)
+  constructor () {
+    super()
     this.fieldName = ''
   }
   get expression () {
@@ -103,8 +103,8 @@ class AllFieldsExpression extends Expression {
   }
 }
 class SimpleExpression extends Expression {
-  constructor (builder, expression, lang) {
-    super(builder)
+  constructor (expression, lang) {
+    super()
     this.attrEntityName = ''
     this.attributeName = ''
     this.isMultiLang = false
@@ -128,7 +128,7 @@ class ExpressionList {
   add (originalExpression, expressionList, attrExpression, lang, entity, level, manyAttrExprCollapsed, whereItem, parentJoin) {
     let expression
     if (originalExpression === ubSFNAllFields) {
-      expression = new AllFieldsExpression(this.builder)
+      expression = new AllFieldsExpression()
     } else {
       if (entity.connectionName !== this.builder.entity.connectionName) {
         // todo EMetabaseException
@@ -150,7 +150,7 @@ class ExpressionList {
         const exprList = parserUtils.splitBracketExpressions(inExpression, false)
         if (exprList.length === 0) {
           // there is no open and close brackets so left all as is
-          expression = new SimpleExpression(this.builder, inExpression, lang)
+          expression = new SimpleExpression(inExpression, lang)
         } else {
           for (let expr of exprList) {
             exprProps = parserUtils.extractExpressionProps(expr, {})
@@ -325,7 +325,7 @@ class ExpressionList {
     let bldExprItem = this.items[bldExprItemName]
     const exprItemAdded = !bldExprItem
     if (exprItemAdded) {
-      bldExprItem = this.items[bldExprItemName] = new ExprBldData(this.builder, fieldData, bldParams)
+      bldExprItem = this.items[bldExprItemName] = new ExprBldData(fieldData, bldParams)
     }
 
     if (exprItemAdded || dsItemAdded) {
