@@ -56,7 +56,8 @@ const dbFieldServiceFunctions = {
   'SELF': true
 }
 const reBracketField = /\[([^\]]*)]/g
-const reExprWithDot = /([^.]*)\./
+const reGetFirstWord = /([^.]*)\./
+const reGetLastWord = /\.([^.]*)/
 
 const parserUtils = {
   rootLevel: 'Root',
@@ -176,7 +177,11 @@ const parserUtils = {
     return expressions
   },
   expressionFirstWord: function (expression) {
-    const res = reExprWithDot.exec(expression)
+    const res = reGetFirstWord.exec(expression)
+    return res ? res[1] : expression
+  },
+  expressionLastWord: function (expression) {
+    const res = reGetLastWord.exec(expression)
     return res ? res[1] : expression
   },
   extractOneExprLink: function (expression) {
@@ -206,6 +211,9 @@ const parserUtils = {
   extractAttrAndLang: function (expression) {
     // todo
     return 1
+  },
+  delStartStr(str, subStr) {
+    return str.startsWith(subStr) ? str.substr(subStr.length) : str
   },
   _isExprLink: function (expr) {
     if (expr.expression.charCodeAt(expr.curPos) === chars.chAmp) {

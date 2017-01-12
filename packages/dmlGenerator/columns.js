@@ -43,6 +43,10 @@ class ColumnList {
     // todo ?
     return column
   }
+  registerName (nonPrefixExpression, baseName, notFoundResultAsEmptyStr, useBaseName) {
+    // todo
+    return 'todo'
+  }
 }
 
 module.exports = ColumnList
