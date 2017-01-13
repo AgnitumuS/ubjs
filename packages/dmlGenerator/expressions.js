@@ -121,25 +121,17 @@ class NonBracketExpression extends Expression {
     this.expr = expression
   }
 }
-class ManyOrSimpleExpression extends Expression {
+class AttributeExpression extends Expression {
   constructor ({entity, attrItem, lang, exprProps, fieldData, exprItem, level, expression, complexAttrExpression}) {
     super()
     this.attrEntityName = entity.name
     this.attributeName = attrItem.name
     this.isMultiLang = attrItem.isMultiLang
-/* todo
- if fAttrItem.isMultiLang then
-  aExpressionList.HaveMultiLang := True;
- if fExprProps.ExistLangPointer then
-  aExpressionList.HaveLangPointer := True;
- if (fBldFieldData.AttrDataType = adtMany) then
-  aExpressionList.HaveManyDataType := True;
- */
     this.lang = lang
     this.existLangPointer = exprProps.existLangPointer
     this.dataType = fieldData.attrDataType
     this.expression = exprItem.sqlExpression
-    this.nonPrefixSQLExpression = exprItem.nonPrefixSQLExpression
+    this.nonPrefixExpression = exprItem.nonPrefixSQLExpression
     this.level = level
     // todo fPreparedExpression.SetExpressionType(fBldFieldData.AttrSQLExprType, aExpressionList);
     this.mapped = fieldData.mapped
@@ -156,7 +148,7 @@ class ManyOrSimpleExpression extends Expression {
     }
   }
 }
-class ManyExpression extends ManyOrSimpleExpression {
+class AttributeManyExpression extends AttributeExpression {
   constructor ({builder, originalExpression, entity, attrItem, lang, exprProps, fieldData, exprItem, level, expression, complexAttrExpression, registerInColumnList}) {
     super({entity, attrItem, lang, exprProps, fieldData, exprItem, level, expression, complexAttrExpression})
     this.expr = parserUtils.bracketExpr(originalExpression).expression.replace(new RegExp(this.complexExpression, 'g'), `(${exprItem.sqlExpression})`)
@@ -166,7 +158,7 @@ class ManyExpression extends ManyOrSimpleExpression {
     }
   }
 }
-class SimpleExpression extends ManyOrSimpleExpression {
+class AttributeSimpleExpression extends AttributeExpression {
   constructor ({builder, originalExpression, entity, attrItem, lang, exprProps, fieldData, exprItem, level, expression, complexAttrExpression, registerInColumnList, expressionList}) {
     super({entity, attrItem, lang, exprProps, fieldData, exprItem, level, expression, complexAttrExpression})
     this.expr = parserUtils.bracketExpr(originalExpression).expression.replace(new RegExp(this.complexExpression, 'g'), exprItem.sqlExpression)
@@ -258,9 +250,16 @@ class ExpressionList {
               // if this is simple expression or many-attribute(all dots handled by creator SQL for this attribute)
               // then it goes to result
               if (attrItem.dataType === 'Many') {
-                expression = new ManyExpression({builder: this.builder, entity, attrItem, lang, exprProps, fieldData, exprItem, level, expr, complexAttrExpression, registerInColumnList})
+                expression = new AttributeManyExpression({builder: this.builder, entity, attrItem, lang, exprProps, fieldData, exprItem, level, expr, complexAttrExpression, registerInColumnList})
+                expressionList.haveManyDataType = true
               } else {
-                expression = new SimpleExpression({builder: this.builder, entity, attrItem, lang, exprProps, fieldData, exprItem, level, expr, complexAttrExpression, registerInColumnList, expressionList})
+                expression = new AttributeSimpleExpression({builder: this.builder, entity, attrItem, lang, exprProps, fieldData, exprItem, level, expr, complexAttrExpression, registerInColumnList, expressionList})
+              }
+              if (attrItem.isMultiLang) {
+                expressionList.haveMultiLang = true
+              }
+              if (exprProps.existLangPointer) {
+                expressionList.haveLangPointer = true
               }
             } else {
               // complex expression, need check associations
