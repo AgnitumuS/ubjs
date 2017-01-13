@@ -4,6 +4,8 @@
 const ColumnList = require('./columns')
 const ExpressionList = require('./expressions')
 const DataSourceList = require('./datasources')
+const WhereList = require('./where')
+
 class CustomSQLBuilder {
   constructor ({entity, method, fieldList, execFieldList, fieldListType, execType, whereList, logicalPredicates, joinAs, options, isExternalCall = true}) {
     this.entity = App.domain_.get(entity)
@@ -15,6 +17,9 @@ class CustomSQLBuilder {
     this.columns = new ColumnList(this)
     this.expressions = new ExpressionList(this)
     this.datasources = new DataSourceList(this)
+    this.whereList = new WhereList(this)
+    this.execType = execType
+    this.execparams = {}
     if (options.start < 0) {
       // todo EMetabaseException
       throw new Error('Parameter "options.start" value is invalid')
@@ -35,52 +40,111 @@ class CustomSQLBuilder {
     // todo
     //   aPrepareContext.ProcessAlsData.InitBy(aSQL.alsNeed, aSQL.alsCurrState, aSQL.alsCurrRoles);
 
+// ***** start block
+// todo move this block to ColumnList constructor
     if (doFieldList) {
-      if (execType === 'insert') {
-        this.userLang = App.defaultLang
+      if (this.execType === 'insert') {
+        this.lang = App.defaultLang
       } else {
-        this.userLang = Session.userLang ? Session.userLang : App.defaultLang
+        this.lang = Session.userLang ? Session.userLang : App.defaultLang
       }
       for (let fieldItem of doFieldList) {
+        // todo is external
         this.columns.add(fieldItem, false)
       }
-    }
-
-/*    this.fields = []
-    this.fieldsAliases = {}
-//    this.expressions = new ExpressionList(this)
-//    this.datasources = new DataSources(this)
-
-    // todo handle start, limit
-
-    // todo handle custom sql
-    // todo handle execFieldList
-    // todo handle als ???
-    // todo handle insert
-    // todo handle multilang
-
-    for (let fieldExpr of fieldList) {
-      //this.fields.push(this.addFieldItem(fieldExpr, false, true))
-      // todo handle for update disable using [name] and [name^]
-    }
-    // todo handle insert multilang
-    this.whereItems = new WhereItems()
-
-    for (let itemName in whereList) {
-      this.whereItems.add(itemName, whereList[itemName])
-    }
-
-    if (joinAs) {
-      for (let joinAsPredicate of joinAs) {
-        this.whereItems.addJoinAsPredicate(joinAsPredicate)
+      // For update operation deny use the same attr with and without lang pointer "[name]" and "[name^]" in the same time
+      if (this.execType === 'update') {
+        for (let langAttrName in this.langAttributeList) {
+          const langAttrForUpdate = this.langAttributeList[langAttrName]
+          if (langAttrForUpdate.existLangPointer && langAttrForUpdate.noLangPointer) {
+            // todo EMetabaseException
+            throw new Error(`Invalid using lang pointer in attribute "${langAttrForUpdate.attributeName}" for update operation`)
+          }
+        }
       }
     }
-    if (logicalPredicates) {
-      for (let logicalPredicate of logicalPredicates) {
-        this.whereItems.addLogicalPredicate(logicalPredicate)
+    if ((this.execType === 'insert') && !isDataSourceCusomSQL) {
+      const storedLang = this.lang
+      for (let langAttrName in this.langAttributeList) {
+        const langAttrForInsert = this.langAttributeList[langAttrName]
+        for (let lang of this.entity.connectionConfig.supportLang) {
+          if (lang !== this.lang) {
+            if (langAttrForInsert.lang.includes(lang)) {
+              this.lang = lang
+              const column = this.columns.add(langAttrForInsert.attributeName, false)
+              this.lang = storedLang
+              if ((Object.keys(langAttrForInsert.defaultLangValues).length > 0) && (column.PreparedExpressions.length > 0)) {
+                this.execParams[column.PreparedExpressions[0].nonPrefixSQLExpression] = langAttrForInsert.defaultLangValues[Object.keys(langAttrForInsert.defaultLangValues)[0]]
+              }
+            }
+          }
+        }
       }
     }
-*/
+// **** end block
+    // whereList
+    if (!isDataSourceCusomSQL && whereList && (whereList.length > 0)) {
+// todo aPrepareContext.ProcessAlsData.Init;
+      let i = 0
+      const l = whereList.length
+      let needRePrepare = false
+      let whereItem
+      while (i < l) {
+        const item = whereList[i]
+        if (!needRePrepare) {
+          whereItem = this.whereList.add(item)
+        }
+        needRePrepare = false
+        // todo const
+        if ((whereItem.name !== 'logicalPredicates') || (whereItem.name !== 'joinAs')) {
+          if (whereItem.condition === 'Select') {
+            if (execType !== 'Select') {
+              // todo EMetabaseException
+              throw new Error(`Cannot use subquery in where item if main query NOT SELECT`)
+            }
+            whereItem.createSubQueryBuilder(this.entity)
+            // todo
+            const whereItemQueryEntity = App.domain_.get(whereItem.query.entityName)
+            if (!whereItemQueryEntity) {
+              // todo EMetabaseException
+              throw new Error(`Entity "${whereItem.query.entityName}" not exist in Domain`)
+            }
+            // todo
+            whereItem.query.alsNeed = false
+/* todo
+           {$IFDEF FRIENDLYSQLALIAS}
+           DSList.PrepareInForbiddenAlias(fBldWhereItem.fSubQueryBuilder.DSList.inForbiddenAlias);
+           {$ENDIF}
+           {$IFNDEF FRIENDLYSQLALIAS}
+           fBldWhereItem.fSubQueryBuilder.AliasCounter := AliasCounter;
+           {$ENDIF}
+           {$IFDEF FRIENDLYSQLALIAS}
+           DSList.PrepareInForbiddenAlias(fBldWhereItem.fSubQueryBuilder.DSList.inForbiddenAlias);
+           {$ENDIF}
+           {$IFNDEF FRIENDLYSQLALIAS}
+           fBldWhereItem.fSubQueryBuilder.AliasCounter := AliasCounter;
+           {$ENDIF}
+           fBldWhereItem.fSubQueryBuilder.PrepareQuery(aPrepareContext, fWhereItemQueryEntity, fSQLWhereItem.query, Self);
+           {$IFDEF FRIENDLYSQLALIAS}
+           fBldWhereItem.fSubQueryBuilder.DSList.PrepareOutForbiddenAlias;
+           DSList.IncAllForbiddenAlias(fBldWhereItem.fSubQueryBuilder.DSList.outForbiddenAlias);
+           {$ENDIF}
+           {$IFNDEF FRIENDLYSQLALIAS}
+           AliasCounter := fBldWhereItem.fSubQueryBuilder.AliasCounter;
+           {$ENDIF}
+ */
+          }
+          // todo move to "where" modele
+          needRePrepare = this._prepareSQLWhereItem(item, whereItem)
+        }
+        if (!needRePrepare) {
+          i++
+        }
+      }
+      // todo handle logicalPredicates and joinAsPredicates
+    }
+    // todo orderBy items
+    // todo пкщгзBy items
   }
   get dialect () {
     return ['AnsiSQL']
@@ -95,8 +159,9 @@ class CustomSQLBuilder {
   getManyExpression () {
     return ''
   }
-  prepareSQLColumn () {
-    return 1
+  _prepareSQLWhereItem (item, whereItem) {
+    // todo move in
+    return false
   }
 }
 
