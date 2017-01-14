@@ -2,10 +2,82 @@
  * Created by v.orel on 11.01.2017.
  */
 const parserUtils = require('./parserUtils')
+class LangAttribute {
+  constructor (builder, expression) {
+    this.attributeName = expression.attributeName
+    this.lang = []
+    this.existLangPointer = expression.existLangPointer
+    this.noLangPointer = !expression.existLangPointer
+
+    const lang = (expression.lang || App.defaultLang).toLowerCase()
+
+    if (!this.lang.includes(lang)) {
+      this.lang.push(lang)
+      if (lang === builder.lang) {
+        let langAttrValueName
+        if (!expression.existLangPointer) {
+          langAttrValueName = expression.attributeName
+        } else {
+          if (lang === App.defaultLang) {
+            langAttrValueName = `${expression.attributeName}^`
+          } else {
+            langAttrValueName = `${expression.attributeName}_${lang}^`
+          }
+        }
+        if (builder.execParams[langAttrValueName]) {
+          this.defaultLangValues = builder.execParams[langAttrValueName]
+        }
+      }
+    }
+  }
+}
+
+class LangAttributeList {
+  constructor () {
+    this.items = {}
+  }
+  register (builder, preparedExpressions) {
+    for (let expression of preparedExpressions) {
+      const langAttrName = `${parserUtils.rootLevel}.${expression.attributeName}`
+      if (!this.items[langAttrName]) {
+        this.items[langAttrName] = new LangAttribute(builder, expression)
+      }
+    }
+  }
+  checkUsingForUpdate () {
+    for (let langAttrName in this.items) {
+      const langAttrForUpdate = this.items[langAttrName]
+      if (langAttrForUpdate.existLangPointer && langAttrForUpdate.noLangPointer) {
+        // todo EMetabaseException
+        throw new Error(`Invalid using lang pointer in attribute "${langAttrForUpdate.attributeName}" for update operation`)
+      }
+    }
+  }
+  addFieldsForInsert (builder, columns) {
+    const storedLang = builder.lang
+    for (let langAttrName in this.items) {
+      const langAttrForInsert = this.items[langAttrName]
+      for (let lang of builder.entity.connectionConfig.supportLang) {
+        if (lang !== builder.lang) {
+          if (langAttrForInsert.lang.includes(lang)) {
+            builder.lang = lang
+            const column = columns._add(langAttrForInsert.attributeName, false)
+            builder.lang = storedLang
+            if ((Object.keys(langAttrForInsert.defaultLangValues).length > 0) && (column.PreparedExpressions.length > 0)) {
+              builder.execParams[column.PreparedExpressions[0].nonPrefixSQLExpression] = langAttrForInsert.defaultLangValues[Object.keys(langAttrForInsert.defaultLangValues)[0]]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 class Column {
-  constructor (builder, expression, isExternal) {
-    let exprProps
+  constructor (builder, langAttributeList, expression, isExternal) {
+    this.builder = builder
     this.preparedExpressions = []
+    let exprProps
     if (parserUtils.deniedNotSimpleExpr && isExternal) {
       exprProps = parserUtils.extractExpressionProps(expression, {})
       if ((!exprProps.isAttributeExpression && !exprProps.existServiceExpr) || !exprProps.simpleExpression) {
@@ -30,7 +102,7 @@ class Column {
     this.fieldName = expr.fieldName
     this._establishResultName(builder.columns)
     if (((this.builder.execType === 'insert') || (this.builder.execType === 'update')) && this.preparedExpressions.haveMultiLang) {
-      this._registerLangAttr()
+      langAttributeList.register(builder, this.preparedExpressions)
     }
     exprProps = parserUtils.extractExpressionProps(this.expression, {onlyOpenBracket: true})
     while (exprProps.existOpenBracket) {
@@ -67,7 +139,7 @@ class Column {
         registerInColumnList: false
       }).expr
       if ((this.builder.execType === 'insert') && (this.preparedExpressions.haveMultiLang)) {
-        this._registerLangAttr()
+        langAttributeList.register(builder, this.preparedExpressions)
       }
       exprProps = parserUtils.extractExpressionProps(this.expression, {onlyOpenBracket: true})
     }
@@ -88,53 +160,31 @@ class Column {
       }
     }
   }
-  _registerLangAttr () {
-    for (let expression of this.preparedExpressions) {
-      const langAttrName = `${parserUtils.rootLevel}.${expression.attributeName}`
-      let attribute = this.builder.langAttributeList[langAttrName]
-      if (!attribute) {
-        // todo may be to separate module and class
-        attribute = this.builder.langAttributeList[langAttrName] = {
-          root: parserUtils.rootLevel,
-          attributeName: expression.attributeName,
-          lang: []
-        }
-        if (expression.existLangPointer) {
-          attribute.existLangPointer = true
-        } else {
-          attribute.noLangPointer = true
-        }
-        const lang = (expression.lang || App.defaultLang).toLowerCase()
-        if (!attribute.lang.includes(lang)) {
-          attribute.lang.push(lang)
-          if (lang === this.builder.lang) {
-            let langAttrValueName
-            if (!expression.existLangPointer) {
-              langAttrValueName = expression.attributeName
-            } else {
-              if (lang === App.defaultLang) {
-                langAttrValueName = `${expression.attributeName}^`
-              } else {
-                langAttrValueName = `${expression.attributeName}_${lang}^`
-              }
-            }
-            if (this.builder.execParams[langAttrValueName]) {
-              attribute.defaultLangValues = this.builder.execParams[langAttrValueName]
-            }
-          }
-        }
-      }
-    }
-  }
 }
 class ColumnList {
   /**
    * List of columns for builder
    * @param {CustomSQLBuilder} builder
+   * @param {Array} fieldList
    */
-  constructor (builder) {
+  constructor (builder, fieldList) {
     this.items = []
     this.builder = builder
+    this.langAttributeList = new LangAttributeList()
+
+    for (let fieldItem of fieldList) {
+      // todo is external
+      const isExternal = false
+      this._add(fieldItem, isExternal)
+    }
+
+    // For update operation deny use the same attr with and without lang pointer "[name]" and "[name^]" in the same time
+    if (builder.execType === 'update') {
+      this.langAttributeList.checkUsingForUpdate()
+    }
+    if ((builder.execType === 'insert') && !builder.isDataSourceCusomSQL) {
+      this.langAttributeList.addFieldsForInsert(builder, this)
+    }
   }
 
   /**
@@ -143,8 +193,8 @@ class ColumnList {
    * @param {Boolean} isExternal
    * @returns {Column}
    */
-  add (expression, isExternal = false) {
-    const column = new Column(this.builder, expression, isExternal)
+  _add (expression, isExternal = false) {
+    const column = new Column(this.builder, this.langAttributeList, expression, isExternal)
     this.items.push(column)
     if ((expression === parserUtils.ubID) || (expression === parserUtils.ubBracketID)) {
       this.idColumn = column
@@ -152,8 +202,20 @@ class ColumnList {
     return column
   }
   registerName (nonPrefixExpression, baseName, notFoundResultAsEmptyStr, useBaseName) {
-    // todo
-    return 'todo'
+    let res
+    if (!this.items[nonPrefixExpression]) {
+      this.items[nonPrefixExpression] = true
+      res = notFoundResultAsEmptyStr ? '' : (useBaseName ? baseName : nonPrefixExpression)
+    } else {
+      for (let i = 2; i < Number.MAX_SAFE_INTEGER; i++) {
+        res = `${useBaseName ? baseName : nonPrefixExpression}${i}`
+        if (!this.items[res]) {
+          this.items[res] = true
+          break
+        }
+      }
+    }
+    return res
   }
 }
 

@@ -117,6 +117,7 @@ class NonBracketExpression extends Expression {
     this.expression = expression
     this.nonPrefixExpression = expression
     this.dataType = 'unknown'
+    // todo separate class for fPreparedExpressions
     // todo fPreparedExpression.SetExpressionType(sqletExpression, aExpressionList);
     this.expr = expression
   }
@@ -165,7 +166,7 @@ class AttributeSimpleExpression extends AttributeExpression {
     if (registerInColumnList) {
       if ((expressionList.length > 1) || expressionList.haveNotFieldSQLExpr) {
         this.fieldName = builder.columns.registerName(exprItem.nonPrefixSQLExpression, attrItem.name, false, true)
-      } else if (expressionList.length === 1) { // and (fPreparedExpression.ExpressionType = sqletField
+      } else if (expressionList.length === 1) { // todo and (fPreparedExpression.ExpressionType = sqletField
         this.fieldName = builder.columns.registerName(exprItem.nonPrefixSQLExpression, attrItem.name, true, false)
       }
     }
@@ -468,7 +469,7 @@ class ExpressionList {
       langPrefix = ''
     } else {
       // todo extractAttrAndLang
-      const res = parserUtils.extractAttrAndLang(simpleExpr)
+      const res = parserUtils.extractAttrAndLang(simpleExpr, entity.connectionConfig.supportLang)
       simpleExpression = res.expr
       langPrefix = res.langPrefix
       originalExpr = res.noLangExpr
