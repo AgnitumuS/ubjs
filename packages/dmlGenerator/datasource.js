@@ -26,14 +26,30 @@ class DataSourceList {
   }
   getItem (dsData, level) {
     // todo
+    // todo FRIENDLYSQLALIAS forbiden aliases
     // todo if not added set visible from dsData
-    return {
-      item: {
-        uniqCalcShortName: '',
-        joinList: new JoinList()
-      },
-      added: false
+    const joinList = new JoinList()
+    const item = {
+      uniqCalcShortName: '',
+      joinList: joinList
     }
+    this.items.push(item)
+    return {item, added: true}
+  }
+  findFirstMainDSItem () {
+    return this.items.lenhth > 0 ? this.items[0] : null
+  }
+  prepareInForbiddenAlias (inForbiddenAlias) {
+    // todo
+    return inForbiddenAlias
+  }
+  prepareOutForbiddenAlias () {
+    // todo
+    return {}
+  }
+  incAllForbiddenAlias (aliases) {
+    // todo
+    return {}
   }
 }
 

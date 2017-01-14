@@ -64,6 +64,13 @@ const parserUtils = {
   deniedNotSimpleExpr: true,
   ubID: 'ID',
   ubBracketID: '[ID]',
+  macros: {
+    parentDSValue: '{master}'
+  },
+  serviceFields: {
+    sourceBr: '[sourceID]',
+    destBr: '[destID]'
+  },
   extractExpressionProps: function (expression, {onlyDot = false, onlyOpenBracket = false}) {
     const res = {
       isAttributeExpression: true,
@@ -167,13 +174,17 @@ const parserUtils = {
   },
   splitBracketExpressions: function (expression, withBracket) {
     const expressions = []
-    let res
-    do {
-      res = reBracketField.exec(expression)
+    while (true) {
+      const res = reBracketField.exec(expression)
       if (res) {
-        expressions.push(res[withBracket ? 0 : 1])
+        const resForPush = res[withBracket ? 0 : 1]
+        if (!expressions.includes(resForPush)) {
+          expressions.push(resForPush)
+        }
+      } else {
+        break
       }
-    } while (res)
+    }
     return expressions
   },
   expressionFirstWord: function (expression) {
@@ -208,11 +219,28 @@ const parserUtils = {
       return {existLink, expression}
     }
   },
-  extractAttrAndLang: function (expression) {
-    // todo
-    return 1
+  extractAttrAndLang: function (expression, supportLang) {
+    const noLangExpr = expression.endsWith('^') ? expression.substr(0, expression.length - 1) : expression
+    const pos = expression.lastIndexOf('_')
+    let expr, langPrefix
+    if (pos > 0) {
+      expr = expression.substr(0, pos)
+      langPrefix = expression.substr(pos + 1).toLocaleLowerCase()
+      if (!supportLang.includes(langPrefix)) {
+        expr = noLangExpr
+        langPrefix = ''
+      }
+    } else {
+      expr = noLangExpr
+      langPrefix = ''
+    }
+    return {
+      expr,
+      langPrefix,
+      noLangExpr
+    }
   },
-  delStartStr(str, subStr) {
+  delStartStr (str, subStr) {
     return str.startsWith(subStr) ? str.substr(subStr.length) : str
   },
   _isExprLink: function (expr) {
