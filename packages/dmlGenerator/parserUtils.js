@@ -65,9 +65,12 @@ const parserUtils = {
   ubID: 'ID',
   ubBracketID: '[ID]',
   macros: {
-    parentDSValue: '{master}'
+    parentDSValue: '{master}',
+    maxdate: '#maxdate',
+    currentdate: '#currentdate'
   },
   serviceFields: {
+    allFields: '*',
     sourceBr: '[sourceID]',
     destBr: '[destID]'
   },
@@ -243,6 +246,10 @@ const parserUtils = {
   delStartStr (str, subStr) {
     return str.startsWith(subStr) ? str.substr(subStr.length) : str
   },
+  isHaveOpenCloseRoundBracket (expr) {
+    return parserUtils._reHaveOpenCloseRoundBracket.test(expr)
+  },
+  _reHaveOpenCloseRoundBracket: /^\(.*\)$/,
   _isExprLink: function (expr) {
     if (expr.expression.charCodeAt(expr.curPos) === chars.chAmp) {
       if (chars.isIdentifier(expr.expression.charCodeAt(expr.curPos - 1))) {

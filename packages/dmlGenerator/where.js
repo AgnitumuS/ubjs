@@ -2,6 +2,7 @@
  * Created by v.orel on 13.01.2017.
  */
 const parserUtils = require('./parserUtils')
+const ColumnList = require('./column')
 const reParentDS = new RegExp(parserUtils.macros.parentDSValue, 'g')
 class WhereItem {
   constructor (builder, item) {
@@ -22,7 +23,7 @@ class WhereItem {
 
     if (parentBuilder && reParentDS.test(item.expression)) {
       // todo may be optimize
-      const mainDSItem = parentBuilder.datasources.findFirstMainDSItem()
+      const mainDSItem = parentBuilder.datasources.mainDsItem
       if (mainDSItem) {
         const exprList = parserUtils.splitBracketExpressions(item.expression, false)
         for (let parseExpr of exprList) {
@@ -31,9 +32,9 @@ class WhereItem {
             item.expression = new RegExp(`[${parseExpr}]`, newExpr)
           }
         }
-      }
-      if (reParentDS.test(item.expression)) {
-        item.expression = item.expression.replace(reParentDS, mainDSItem.uniqCalcShortName)
+        if (reParentDS.test(item.expression)) {
+          item.expression = item.expression.replace(reParentDS, mainDSItem.uniqCalcShortName)
+        }
       }
     }
 
@@ -54,7 +55,7 @@ class WhereItem {
         whereItem: this,
         // parentJoin,
         registerInColumnList: true
-      }).expression
+      }).expr
       /*
        //Внимание! Построитель НЕ БУДЕТ поддерживать сложные условия, в которых участвуют "adtMany" атрибуты!
        //Проблема в том, что нужно переделать текст выражения с "Many" атрибутом, и построитель этого НЕ сможет сделать, если выражение сложное.
@@ -114,11 +115,51 @@ class WhereItem {
           whereItem: this,
           // parentJoin,
           registerInColumnList: false
-        }).expression
+        }).expr
         exprProps = parserUtils.extractExpressionProps(this.expression, {onlyOpenBracket: true})
       }
       this.params = item.values
     }
+  }
+  getSQL () {
+    if (this._sqlExpression) {
+      return this._sqlExpression
+    }
+    this._sqlExpression = this._getSqlExpression()
+    for (let paramName in this.params) {
+      const paramVal = this.params[paramName]
+      if (paramVal !== undefined) {
+        let i = 2
+        let paramUniqName = paramName
+        while (this.builder.params[paramUniqName] !== undefined) {
+          paramUniqName = `${paramName}_${i++}`
+        }
+        this.builder.params[paramUniqName] = paramVal
+      }
+    }
+  }
+  _getSqlExpression () {
+    let res = this.expression
+    for (let paramName in this.params) {
+      const paramVal = this.params[paramName]
+      if (paramVal && (typeof paramVal === 'string')) {
+        if (paramVal === parserUtils.macros.maxdate) {
+          this.params[paramName] = new Date('9999-12-31T00:00:00Z')
+        } else if (paramVal === parserUtils.macros.currentdate) {
+          this.params[paramName] = new Date()
+        } else {
+          const macrosValue = this._isValueMacros(res, paramVal)
+          if (macrosValue) {
+            res = macrosValue
+            delete this.params[paramName]
+          }
+        }
+      }
+    }
+    return res
+  }
+  _isValueMacros (expression, paramVal) {
+    // todo
   }
   _prepareSQLWhereItemExpressionText (item) {
     // in childs
@@ -164,6 +205,22 @@ class WhereItemSubQuery extends WhereItem {
       isExternalCall: builder.isExternalCall
     })
     item.values.alsNeed = false
+  }
+  _getSqlExpression () {
+    if ((this.subQueryType === 'Exists') || (this.subQueryType === 'NotExists')) {
+      this.subQueryBuilder.columns = new ColumnList(this, ['1'])
+    }
+    const subQueryText = this.subQueryBuilder.buildSelectQuery()
+    if (this.subQueryType === 'In') {
+      return `${this.expression} IN (${subQueryText})`
+    } else if (this.subQueryType === 'NotIn') {
+      return `${this.expression} NOT IN (${subQueryText})`
+    } else if (this.subQueryType === 'Exists') {
+      return `EXISTS (${subQueryText})`
+    } else if (this.subQueryType === 'NotExists') {
+      return `NOT EXISTS (${subQueryText})`
+    }
+    return ''
   }
   _prepareSQLWhereItemExpressionText (item) {
     return item.expression
@@ -281,17 +338,17 @@ class LogicalPredicate {
     this.expression = expression
     const knownPredicates = {}
     let predicateRes
-    while (predicateRes = reLogicalPredicate.exec(expression)) {
+    while ((predicateRes = reLogicalPredicate.exec(expression))) {
       const predicateName = predicateRes[1]
       if (!knownPredicates[predicateName]) {
-        const whereItem = whereItems[predicateName]
+        const whereItem = whereItems.get(predicateName)
         if (whereItem) {
           if (whereItem.inJoinAsPredicate) {
             throw new Error(`Logical predicate with name "${predicateName}" already used in "joinAs" predicates`)
           }
           whereItem.inLogicalPredicate = true
           const re = new RegExp(`(\\[${predicateName}])`, 'g')
-          this.expression = this.expression.replace(re, whereItem.expression, 'g')
+          this.expression = this.expression.replace(re, whereItem.getSQL(), 'g')
         } else {
           throw new Error(`Condition ${predicateName} not found`)
         }
@@ -313,12 +370,12 @@ class WhereList {
     this.builder = builder
 // todo aPrepareContext.ProcessAlsData.Init;
     const itemNames = Object.keys(itemsList)
-    this.items = {}
+    this.items = new Map()
 
     for (let itemName of itemNames) {
       const item = itemsList[itemName]
       // const whereItem = this.items[itemName] = new WhereItem(item)
-      this.items[itemName] = this._add(item)
+      this.items.set(itemName, this._add(item))
     }
     if (joinAs) {
       for (let joinAsPredicate of joinAs) {
@@ -328,6 +385,16 @@ class WhereList {
     if (logicalPredicates) {
       this.logicalPredicates = new LogicalPredicateList(this.items, logicalPredicates)
     }
+  }
+  getSQL () {
+    const res = []
+    for (let [, item] of this.items) {
+      // todo may be resolve by class
+      if (!item.expression && (item.condition !== 'SubQuery') && !item.inLogicalPredicate && !item.inJoinAsPredicate) {
+        res.push(item.getSQL())
+      }
+    }
+    return res.join(' AND ')
   }
   _add (item) {
     let whereItem
