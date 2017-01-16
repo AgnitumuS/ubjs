@@ -209,7 +209,6 @@ class WhereItemBetween extends WhereItem {
     }
   }
 }
-
 class WhereItemIn extends WhereItem {
   _prepareSQLWhereItemExpressionText (item) {
     const valuesNames = Object.keys(item.values)
@@ -230,7 +229,6 @@ class WhereItemIn extends WhereItem {
     return true
   }
 }
-
 class WhereItemNull extends WhereItem {
   _getSubQueryType () {
     return this.condition === 'IsNull' ? 'NotExists' : 'Exists'
@@ -239,7 +237,6 @@ class WhereItemNull extends WhereItem {
     return `${item.expression} ${item.condition === 'IsNull' ? 'IS NULL' : 'IS NOT NULL'}`
   }
 }
-
 const conditionsLike = {
   Like: '',
   NotLike: 'NOT',
@@ -258,7 +255,6 @@ class WhereItemMatch extends WhereItem {
     return ``
   }
 }
-
 const whereItemClassesByCondition = {
   'Custom': WhereItemCustom,
   'Equal': WhereItemEqual,
@@ -279,12 +275,39 @@ const whereItemClassesByCondition = {
   'NotStartWith': WhereItemLike,
   'Match': WhereItemMatch
 }
-/*
 const reLogicalPredicate = /\[([^\]]*)]/g
 class LogicalPredicate {
-  // todo
+  constructor (whereItems, expression) {
+    this.expression = expression
+    const knownPredicates = {}
+    let predicateRes
+    while (predicateRes = reLogicalPredicate.exec(expression)) {
+      const predicateName = predicateRes[1]
+      if (!knownPredicates[predicateName]) {
+        const whereItem = whereItems[predicateName]
+        if (whereItem) {
+          if (whereItem.inJoinAsPredicate) {
+            throw new Error(`Logical predicate with name "${predicateName}" already used in "joinAs" predicates`)
+          }
+          whereItem.inLogicalPredicate = true
+          const re = new RegExp(`(\\[${predicateName}])`, 'g')
+          this.expression = this.expression.replace(re, whereItem.expression, 'g')
+        } else {
+          throw new Error(`Condition ${predicateName} not found`)
+        }
+        knownPredicates[predicateName] = true
+      }
+    }
+  }
 }
-*/
+class LogicalPredicateList {
+  constructor (whereItems, logicalPredicates) {
+    this.items = []
+    for (let logicalPredicateExpression of logicalPredicates) {
+      this.items.push(new LogicalPredicate(whereItems, logicalPredicateExpression))
+    }
+  }
+}
 class WhereList {
   constructor (builder, itemsList, logicalPredicates, joinAs) {
     this.builder = builder
@@ -303,9 +326,7 @@ class WhereList {
       }
     }
     if (logicalPredicates) {
-      for (let logicalPredicate of logicalPredicates) {
-        this._addLogicalPredicate(logicalPredicate)
-      }
+      this.logicalPredicates = new LogicalPredicateList(this.items, logicalPredicates)
     }
   }
   _add (item) {
@@ -318,9 +339,5 @@ class WhereList {
   _addJoinAsPredicate (expression) {
     // todo
   }
-  _addLogicalPredicate (predicate) {
-    // todo
-  }
 }
-
 module.exports = WhereList
