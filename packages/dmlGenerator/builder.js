@@ -8,41 +8,21 @@ const WhereList = require('./where')
 const OrderByList = require('./orderBy')
 const GroupByList = require('./groupBy')
 
-class AliasCounter {
-  constructor () {
-    this._counter = 1
-  }
-  get counter () {
-    if (this._counter < 100) {
-      return this._counter++
-    } else {
-      throw new Error('Too many table in query')
-    }
-  }
-}
-
 class CustomSQLBuilder {
   constructor ({entity, method, fieldList, execFieldList, fieldListType, execType, whereList, logicalPredicates, joinAs, orderByList, groupByList, options, parentBuilder, isExternalCall = true}) {
     this.entity = App.domain_.get(entity)
     // this.dialect = entity.connectionConfig.dialect
     this.method = method
     this.options = options || {}
-    this.isExternalCall = isExternalCall
-    this.expressions = new ExpressionList(this)
-    this.datasources = new DataSourceList(this)
-    this.orderByList = new OrderByList(this)
-    this.groupByList = new GroupByList(this)
     this.execType = execType
     this.execparams = {}
-    this.friendlySqlAliases = process.isDebug
-    this.isDataSourceCusomSQL = this._isDataSourceCusomSQL(this.entity)
+    this.isExternalCall = isExternalCall
     this.parentBuilder = parentBuilder
-    if (!this.friendlySqlAliases) {
-      this.aliasCounter = parentBuilder ? parentBuilder.aliasCounter : new AliasCounter()
-    } else {
-      this.forbiddenAlias = parentBuilder ? parentBuilder.forbiddenAlias : []
-      // todo ForbiddenAlias
-    }
+    this.params = parentBuilder ? parentBuilder.params : {}
+    this.expressions = new ExpressionList(this)
+    this.datasources = new DataSourceList(this)
+    this.isDataSourceCusomSQL = this._isDataSourceCusomSQL(this.entity)
+
     if (options.start < 0) {
       // todo EMetabaseException
       throw new Error('Parameter "options.start" value is invalid')
@@ -65,14 +45,12 @@ class CustomSQLBuilder {
       this.whereList = new WhereList(this, whereList, logicalPredicates, joinAs)
     }
     // orderBy items
-    // todo move to "orderBy" module
-    for (let item in orderByList) {
-      this.orderByList.add(item)
+    if (orderByList) {
+      this.orderByList = new OrderByList(this, orderByList)
     }
     // groupBy items
-    // todo move to "groupBy" module
-    for (let item in groupByList) {
-      this.groupByList.add(item)
+    if (groupByList) {
+      this.groupByList = new GroupByList(this, groupByList)
     }
   }
   get dialect () {
@@ -87,6 +65,48 @@ class CustomSQLBuilder {
   }
   getManyExpression () {
     return ''
+  }
+  buildSelectQuery () {
+    return this.buildBaseSelectQuery()
+  }
+  /**
+   * @returns {string}
+   */
+  buildBaseSelectQuery () {
+    const parts = ['SELECT ']
+    if (this.fieldsPrefix) {
+      parts.push(this.fieldsPrefix)
+      parts.push(' ')
+    }
+    if (this.fields.length === 0) {
+      parts.push('null')
+    } else {
+      for (let field of this.fields) {
+        parts.push(field.expression)
+      }
+    }
+    if (this.fieldsSuffix) {
+      parts.push(this.fieldsSuffix)
+    }
+    parts.push(' FROM ')
+    parts.push(this.datasources.expression)
+
+    parts.push(this.whereItems.expression)
+
+    // todo assign groupby
+    if (this.groupby) {
+      parts.push(' GROUP BY ')
+      parts.push(this.groupby)
+    }
+    // todo assign orderby
+    if (this.orderby) {
+      parts.push(' ORDER BY ')
+      parts.push(this.orderby)
+    }
+    return parts.join('')
+  }
+  getJoinText (stageIsWhere) {
+    return 'CustomSQLBuilder cannot generate join SQL expression'
   }
 }
 

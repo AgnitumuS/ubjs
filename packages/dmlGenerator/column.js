@@ -63,8 +63,8 @@ class LangAttributeList {
             builder.lang = lang
             const column = columns._add(langAttrForInsert.attributeName, false)
             builder.lang = storedLang
-            if ((Object.keys(langAttrForInsert.defaultLangValues).length > 0) && (column.PreparedExpressions.length > 0)) {
-              builder.execParams[column.PreparedExpressions[0].nonPrefixSQLExpression] = langAttrForInsert.defaultLangValues[Object.keys(langAttrForInsert.defaultLangValues)[0]]
+            if ((Object.keys(langAttrForInsert.defaultLangValues).length > 0) && (column.preparedExpressions.length > 0)) {
+              builder.execParams[column.preparedExpressions[0].nonPrefixSQLExpression] = langAttrForInsert.defaultLangValues[Object.keys(langAttrForInsert.defaultLangValues)[0]]
             }
           }
         }
@@ -186,7 +186,6 @@ class ColumnList {
       this.langAttributeList.addFieldsForInsert(builder, this)
     }
   }
-
   /**
    * Add column to list
    * @param {String} expression
@@ -216,6 +215,28 @@ class ColumnList {
       }
     }
     return res
+  }
+  getSQL (withFieldsNames) {
+    const resFields = []
+    const resFieldsNames = []
+    for (let column of this.items) {
+      if (column.expression === parserUtils.serviceFields.allFields) {
+        continue
+      }
+      if (column.fieldName) {
+        const needRoundBracket = column.preparedExpressions.haveNotFieldSQLExpr && parserUtils.isHaveOpenCloseRoundBracket(column.expression)
+        resFields.push(`${needRoundBracket ? '(' : ''}${column.expression}${needRoundBracket ? ')' : ''} AS ${column.fieldName}`)
+        if (withFieldsNames) {
+          resFieldsNames.push(column.fieldName)
+        }
+      } else {
+        resFields.push(column.expression)
+        if (withFieldsNames) {
+          resFieldsNames.push(column.resultName)
+        }
+      }
+    }
+    return {fields: resFields.join(','), fieldsNames: resFieldsNames.join(',')}
   }
 }
 

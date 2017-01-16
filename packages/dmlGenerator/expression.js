@@ -2,7 +2,6 @@
  * Created by v.orel on 11.01.2017.
  */
 const parserUtils = require('./parserUtils')
-const ubSFNAllFields = '*'
 const ubMixinUnity = 'unity'
 const ubEntityEnum = 'ubm_enum'
 const ubSelfDSValue = '{self}'
@@ -97,7 +96,7 @@ class AllFieldsExpression extends Expression {
   constructor () {
     super()
     this.fieldName = ''
-    this.expr = ubSFNAllFields
+    this.expr = parserUtils.serviceFields.allFields
   }
 }
 class NonBracketExpression extends Expression {
@@ -117,7 +116,7 @@ class NonBracketExpression extends Expression {
     this.expression = expression
     this.nonPrefixExpression = expression
     this.dataType = 'unknown'
-    // todo separate class for fPreparedExpressions
+    // todo separate class for fPreparedExpressions haveNotFieldSQLExpr
     // todo fPreparedExpression.SetExpressionType(sqletExpression, aExpressionList);
     this.expr = expression
   }
@@ -201,7 +200,7 @@ class ExpressionList {
   }
   add ({originalExpression, expressionList, attrExpression, lang, entity, level, manyAttrExprCollapsed, complexAttrExpression, whereItem, parentJoin, registerInColumnList}) {
     let expression
-    if (originalExpression === ubSFNAllFields) {
+    if (originalExpression === parserUtils.serviceFields.allFields) {
       expression = new AllFieldsExpression()
     } else {
       if (entity.connectionName !== this.builder.entity.connectionName) {
@@ -245,7 +244,6 @@ class ExpressionList {
               })
             }
             const {attribute: attrItem, bldFieldData: fieldData, bldExprItem: exprItem, bldDSItem: dsItem} = data
-//            return {attribute, langPrefix, bldFieldData, bldDSData, bldExprItem, bldDSItem}
 
             if (!exprProps.existDot || (attrItem.dataType = 'Many')) {
               // if this is simple expression or many-attribute(all dots handled by creator SQL for this attribute)
@@ -320,7 +318,7 @@ class ExpressionList {
                   }).bldExprItem
                 }
                 addedJoin = dsItem.joinList.add({
-                  exprItem: exprItem,
+                  joinFromItem: exprItem,
                   joinToExprItem,
                   joinToDSItem,
                   associatedEntity,
@@ -431,7 +429,7 @@ class ExpressionList {
         level: parserUtils.rootLevel
       })
     const addedJoin = outBldDSItem.joinList.add({
-      exprItem: outBldExprItem,
+      joinFromItem: outBldExprItem,
       joinToExprItem,
       joinToDSItem,
       associatedEntity,
