@@ -24,6 +24,16 @@ function showPasswordChangeDialog () {
 }
 
 exports.formCode = {
+  dataBind: {
+    fullName: {
+      value: '({lastName} || "?") + " " + ({firstName} || "?")'
+    }
+  },
+
+  initUBComponent: function () {
+    UBS.dataBinder.applyBinding(this)
+  },
+
   addBaseActions: function () {
     this.callParent(arguments)
     this.actions.ActionChangePasswordID = new Ext.Action({

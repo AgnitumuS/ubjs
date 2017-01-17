@@ -15,6 +15,9 @@
         "lastName": {
             "caption": "Last Name"
         },
+        "fullName": {
+            "caption": "Full Name"
+        },
         "gender": {
             "caption": "User gender"
         },

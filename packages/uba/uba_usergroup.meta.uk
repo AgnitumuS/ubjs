@@ -1,8 +1,12 @@
 ﻿{
-	"userID": {
-		"caption": "Користувач"
-	},
-	"groupID": {
-		"caption": "Група"
-	}
+   "caption": "Групи користувачів",
+   "description": "Входження користувачів в групи",
+   "attributes": {
+        "userID": {
+            "caption": "Користувач"
+        },
+        "groupID": {
+            "caption": "Група"
+        }
+   }
 }
