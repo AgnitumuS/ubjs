@@ -4,8 +4,8 @@
  * @module
  */
 
-var ubqMessagesStore,
-    UBMail = require('@unitybase/mailer');
+const UBMail = require('@unitybase/mailer')
+let ubqMessagesStore
 
 /**
  * @typedef {Object} mailAttachmentReference
@@ -25,28 +25,26 @@ var ubqMessagesStore,
  * @param {UBMail.TubSendMailBodyType} [config.bodyType=UBMail.TubSendMailBodyType.HTML] A mail body type
  * @param {Array<mailAttachmentReference>} [config.attachments] The references to documents, stored in the entities. Will be attached to EMail during sending
  */
-module.exports.queueMail = function(config){
-    var msgCmd = {
-            from: config.from || JSON.parse(App.customSettings)['mailerConfig'].fromAddr,
-            to: Array.isArray(config.to) ? config.to : [config.to],
-            bodyType: config.bodyType || UBMail.TubSendMailBodyType.HTML,
-            subject: config.subject
-        };
-    if (config.attachments){
-        msgCmd.attaches = config.attachments;
-    }
+module.exports.queueMail = function (config) {
+  let msgCmd = {
+    from: config.from || JSON.parse(App.customSettings)['mailerConfig'].fromAddr,
+    to: Array.isArray(config.to) ? config.to : [config.to],
+    bodyType: config.bodyType || UBMail.TubSendMailBodyType.HTML,
+    subject: config.subject
+  }
+  if (config.attachments) {
+    msgCmd.attaches = config.attachments
+  }
     // create store here - in case of initialization entity ubq_messages may not exists
-    if (!ubqMessagesStore) ubqMessagesStore = new TubDataStore('ubq_messages');
-    ubqMessagesStore.run('insert', {
-        fieldList: ['ID'],
-        execParams: {
-            queueCode: "mail",
-            msgCmd: JSON.stringify(msgCmd),
-            msgData: config.body,
-            msgPriority: 0
-        }
-    });
-};
-
-
+  if (!ubqMessagesStore) ubqMessagesStore = new TubDataStore('ubq_messages')
+  ubqMessagesStore.run('insert', {
+    fieldList: ['ID'],
+    execParams: {
+      queueCode: 'mail',
+      msgCmd: JSON.stringify(msgCmd),
+      msgData: config.body,
+      msgPriority: 0
+    }
+  })
+}
 
