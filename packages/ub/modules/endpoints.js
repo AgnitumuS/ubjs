@@ -6,6 +6,8 @@
 
 const {relToAbs} = process.binding('fs')
 const fs = require('fs')
+const path = require('path')
+const _ = require('lodash')
 const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
 
@@ -17,7 +19,7 @@ const WebSockets = require('./web-sockets')
 function badRequest (resp, reason) {
   resp.statusCode = 400
   resp.writeEnd('Bad request')
-  if (reason) console.error('Bad request', reason)
+  if (reason) console.error('Bad request.', reason)
   return false
 }
 
@@ -80,7 +82,7 @@ function resolveModelFile (reqPath, resp) {
   resp.statusCode = 200
 }
 /**
- * The `models` endpoint. Responsible for return a static files content from a model/publicPath folders
+ * The `models` endpoint. Responsible for return a static files content from a model publicPath folders
  *
  * For example request `GET http://host:port/models/modelName/fileName`
  * will return a file from a public folder of a model `modelName`
@@ -101,8 +103,18 @@ function models (req, resp) {
     // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
 }
 
+const MODULES_ROOT = path.join(process.configPath, 'node_modules')
+let MODULE_PUBLICS
 /**
- * The `clientRequire` endpoint. Used by client side loaders (SystemJS for example) to emulate nodJs require
+ * The `clientRequire` endpoint. Used by client side loaders (SystemJS for example) to emulate commonJS require
+ *
+ * **Security note**: It is __very important__ to prevent loading a server-side logic to the client - server-side logic MUST be hidden from clients
+ *
+ * To do this `clientRequire` endpoint:
+ *
+ *   - allow access only to modules inside application `node_modules` folder
+ *   - restrict access to files inside **scoped** (module name start from @) modules if resolved file path is not inside of any model publicPath folder
+ *   - all files inside non-scoped modules are accessible to client (since non-scoped modules are public)
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
@@ -122,18 +134,33 @@ function clientRequire (req, resp) {
     return
   }
 
+  if (reqPath.indexOf('..') !== -1) { // prevent clientRequire/../../../secret.txt attack
+    return badRequest(resp, `Relative path (${reqPath}) not allowed`)
+  }
+  if (path.isAbsolute(reqPath)) { // prevent clientRequire/d:/secret.txt attack
+    return badRequest(resp, `Absolute path (${reqPath}) not allowed`)
+  }
   let resolvedPath
   try {
-    console.log(`Try to resolve ${reqPath}`)
+    console.debug(`Try to resolve ${reqPath}`)
     resolvedPath = require.resolve(reqPath)
   } catch (e) {
     resolvedPath = undefined
   }
   if (!resolvedPath) {
-    console.log(`Package ${reqPath} not found`)
+    console.error(`Package ${reqPath} not found`)
     return notFound(resp, `"${reqPath}"`)
   }
-  console.log(`Resolve ${reqPath} -> ${resolvedPath}`)
+  if (!resolvedPath.startsWith(MODULES_ROOT)) {
+    return badRequest(resp, `Path (${reqPath}) must be inside modules root folder but instead resolved to ${resolvedPath}`)
+  }
+
+  if (!MODULE_PUBLICS) MODULE_PUBLICS = _(App.domainInfo.models).map('realPublicPath').filter((x) => !!x).value()
+  if (MODULE_PUBLICS.findIndex((modulePublic) => resolvedPath.startsWith(modulePublic)) === -1) {
+    return badRequest(resp, `${reqPath} resolved to (${resolvedPath}) which is not inside any of module public folder`)
+  }
+
+  console.debug(`Resolve ${reqPath} -> ${resolvedPath}`)
   if (resolvedPath.endsWith('css')) {
     resp.writeHead('Content-Type: !STATICFILE\r\nContent-Type: text/css; charset=UTF-8')
   } else {

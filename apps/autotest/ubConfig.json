@@ -16,7 +16,7 @@
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 4
+		"threadPoolSize": 12
 		//,"additionalURLs": ["http://+:889"]
 	},
 	"wsServer": {

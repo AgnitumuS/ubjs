@@ -13,6 +13,7 @@
     "@ub-e/xlsx-pub": "^4.0.0",
     "@unitybase/adminui-pub": "^4.0.0",
     "@unitybase/adminui-reg": "^4.0.0",
+    "@unitybase/cryptojs": "^4.0.0",	
     "@unitybase/base": "^4.0.0",
     "@unitybase/cdn": "^4.0.1",
     "@unitybase/org": "^4.0.1",

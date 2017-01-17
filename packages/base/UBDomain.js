@@ -87,7 +87,7 @@ function UBDomain (domainInfo) {
   let modelCodes = Object.keys(domainInfo.models)
   modelCodes.forEach(function (modelCode) {
     let m = domainInfo.models[modelCode]
-    me.models[modelCode] = new UBModel(m.path, m.needInit, m.needLocalize, m.order, m.moduleName, m.moduleSuffix)
+    me.models[modelCode] = new UBModel(m)
   })
 
     /**
@@ -316,44 +316,54 @@ UBDomain.getPhysicalDataType = function (dataType) {
 /**
  * Model (logical group of entities)
  * @class
- * @param path
- * @param needInit
- * @param needLocalize
- * @param order
- * @param {string} moduleName
- * @param {string} moduleSuffix
+ * @param cfg
+ * @param cfg.path
+ * @param cfg.needInit
+ * @param cfg.needLocalize
+ * @param cfg.order
+ * @param {string} [cfg.moduleName]
+ * @param {string} [cfg.moduleSuffix]
+ * @param {string} [cfg.realPublicPath]
  */
-function UBModel (path, needInit, needLocalize, order, moduleName, moduleSuffix) {
-  this.path = path
-  if (needInit) {
+function UBModel (cfg) {
+  this.path = cfg.path
+  if (cfg.needInit) {
     /**
      * `initModel.js` script is available in the public folder (should be injected by client)
      * @type {boolean}
      */
-    this.needInit = needInit
+    this.needInit = cfg.needInit
   }
-  if (needLocalize) {
+  if (cfg.needLocalize) {
     /**
      * `locale-Lang.js` script is available in the public folder (should be injected by client)
      * @type {boolean}
      */
-    this.needLocalize = needLocalize
+    this.needLocalize = cfg.needLocalize
   }
   /**
    * An odred of model initialization (as it is provided in server domain config)
    * @type {number}
    */
-  this.order = order
+  this.order = cfg.order
   /**
    * Module name for `require`
    */
-  this.moduleName = moduleName
-  if (moduleSuffix && moduleName) {
-    this.moduleName = this.moduleName + '/' + moduleSuffix
+  this.moduleName = cfg.moduleName
+  if (cfg.moduleSuffix && cfg.moduleName) {
+    this.moduleName = this.moduleName + '/' + cfg.moduleSuffix
+  }
+  if (cfg.realPublicPath) {
+    /**
+     * Server-side domain only - the full path to model public folder (if any)
+     * @type {string}
+     */
+    this.realPublicPath = cfg.realPublicPath
   }
 }
 UBModel.prototype.needInit = false
 UBModel.prototype.needLocalize = false
+UBModel.prototype.realPublicPath = ''
 
 /**
  * Collection of attributes
