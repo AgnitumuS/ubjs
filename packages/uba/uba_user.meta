@@ -40,6 +40,11 @@
 			"caption": "Last Name"
 		},
 		{
+			"name": "fullName",
+			"dataType": "String", "size": 128,
+			"caption": "Full Name"
+		},
+		{
 			"name": "gender",
 			"dataType": "Enum",	"enumGroup": "UBA_USER_GENDER",
 			"caption": "User gender",

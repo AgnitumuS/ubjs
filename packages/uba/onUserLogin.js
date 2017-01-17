@@ -1,7 +1,7 @@
-UB.ns('UBA')
+let UBA = UB.ns('UBA')
 
-var auditEntityUba = App.domain.byName('uba_audit')
-var auditStore
+let auditEntityUba = App.domain.byName('uba_audit')
+let auditStore
 
 if (auditEntityUba) {
   auditStore = new TubDataStore(auditEntityUba)
