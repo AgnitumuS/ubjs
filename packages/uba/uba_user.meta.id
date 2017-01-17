@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "pengguna",
-    "description": "pengguna",
+    "caption": "Pengguna",
+    "description": "Pengguna",
     "attributes": {
         "name": {
             "caption": "Masuk",
@@ -10,7 +10,7 @@
             "caption": "Deskripsi"
         },
         "uPasswordHashHexa": {
-            "caption": "hash password",
+            "caption": "Password hash",
             "description": "hash password"
         },
         "disabled": {

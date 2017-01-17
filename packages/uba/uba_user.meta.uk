@@ -9,10 +9,10 @@
             "caption": "Опис"
         },
         "firstName": {
-            "caption": "Им'я"
+            "caption": "Ім'я"
         },
         "lastName": {
-            "caption": "Призвище"
+            "caption": "Прізвище"
         },
         "gender": {
             "caption": "Стать"
