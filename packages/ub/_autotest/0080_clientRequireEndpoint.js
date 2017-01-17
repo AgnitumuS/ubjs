@@ -26,6 +26,16 @@ function testClientRequireEndpoint () {
   )
 
   assert.throws(
+    () => conn.get(`clientRequire/@unitybase/ub/../../../ubConfig.json`),
+    /Not Found/, 'Endpoint clientRequire must restrict access folder up from resolved'
+  )
+
+  assert.throws(
+    () => conn.get(`clientRequire/@unitybase/ub/../../ubConfig.json`),
+    /Not Found/, 'Endpoint clientRequire must restrict access folder up from resolved'
+  )
+
+  assert.throws(
     () => conn.get(`clientRequire/lerna`),
     /Bad Request/, 'Endpoint clientRequire must restrict access to modules outside app node_modules folder'
   )
@@ -34,6 +44,8 @@ function testClientRequireEndpoint () {
     () => conn.get(`clientRequire/@unitybase/ub/_autotest/0080_clientRequireEndpoint.js`),
     /Bad Request/, 'Endpoint clientRequire must restrict access to non-public model folders'
   )
+
+  ok(conn.get(`clientRequire/@unitybase/ub/public/locale/lang-en.js`))
 }
 
 try {
