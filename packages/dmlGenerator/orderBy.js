@@ -1,60 +1,25 @@
 /**
  * Created by v.orel on 14.01.2017.
  */
-const parserUtils = require('./parserUtils')
-const maxSQLBuilderCyclingRef = 32
-class OrderByItem {
+const CustomItem = require('./customItem')
+const reRoundBr = /^\(.*\)$/
+class OrderByItem extends CustomItem {
   constructor (builder, item) {
-    this.orderByType = item.order
+    super(builder)
+
+    this.orderByType = item.order.toUpperCase || 'ASC'
     this.isExternal = item.isExternal
-    this.preparedExpressions = []
     const expressionIndexInFrom = builder.fieldList && builder.fieldList.indexOf(item.expression)
     if (expressionIndexInFrom >= 0) {
       this.expression = expressionIndexInFrom
     } else {
-      this.expression = builder.expressions.add({
-        originalExpression: item.expression,
-        expressionList: this.preparedExpressions,
-        attrExpression: item.expression,
-        lang: builder.lang,
-        entity: builder.entity,
-        level: parserUtils.rootLevel,
-        manyAttrExprCollapsed: true,
-        complexAttrExpression: item.expression,
-        // whereItem,
-        // parentJoin,
-        registerInColumnList: true
-      }).expr
-      let runCounter = 0
-      let exprProps = parserUtils.extractExpressionProps(this.expression)
-      while (exprProps.existNamedParam || (exprProps.existOpenBracket && exprProps.existCloseBracket)) {
-        if (runCounter++ >= maxSQLBuilderCyclingRef) {
-          throw new Error(`Circular reference after ${maxSQLBuilderCyclingRef} steps on expression: ${this.expression}`)
-        }
-        let entity, level
-        if ((this.preparedExpressions.length === 1) && (this.preparedExpressions[0].attrEntityName)) {
-          entity = App.domain_.get(this.preparedExpressions[0].attrEntityName)
-          level = this.preparedExpressions[0].level
-        } else {
-          entity = this.builder.entity
-          level = parserUtils.rootLevel
-        }
-        this.expression = builder.expressions.add({
-          originalExpression: this.expression,
-          expressionList: this.preparedExpressions,
-          attrExpression: this.expression,
-          lang: builder.lang,
-          entity,
-          level,
-          manyAttrExprCollapsed: true,
-          complexAttrExpression: this.expression,
-          // whereItem,
-          // parentJoin,
-          registerInColumnList: true
-        }).expr
-        exprProps = parserUtils.extractExpressionProps(this.expression)
-      }
+      this.addexpression({expression: item.expression})
+      this.loopExpression({condition: (exprProps) => (exprProps.existNamedParam || (exprProps.existOpenBracket && exprProps.existCloseBracket))})
     }
+  }
+  getSQL () {
+    return this.preparedExpressions.haveNotFieldSQLExpr && !reRoundBr.test(this.expression)
+      ? `(${this.expression}) ${this.orderByType}` : `${this.expression} ${this.orderByType}`
   }
 }
 class OrderByList {
@@ -69,6 +34,16 @@ class OrderByList {
       }
       this.items.push(new OrderByItem(item))
     }
+  }
+  getSQL () {
+    if (this.items.length === 0) {
+      return ''
+    }
+    const res = []
+    for (let item of this.items) {
+      res.push(item.getSQL())
+    }
+    return `ORDER BY ${res.join(',')}`
   }
 }
 module.exports = OrderByList
