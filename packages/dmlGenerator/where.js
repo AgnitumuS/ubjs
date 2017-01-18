@@ -3,14 +3,14 @@
  */
 const parserUtils = require('./parserUtils')
 const ColumnList = require('./column')
+const CustomItem = require('./customItem')
 const reParentDS = new RegExp(parserUtils.macros.parentDSValue, 'g')
-class WhereItem {
+class WhereItem  extends CustomItem {
   constructor (builder, item) {
-    this.builder = builder
+    super(builder)
     this.condition = item.condition
     this.subQueryType = item.subQueryType
     this.isExternal = item.isExternal
-    this.preparedExpressions = []
 
     if (parserUtils.deniedNotSimpleExpr && item.isExternal) {
       if (!parserUtils.extractExpressionProps(item.expression).simpleExpression) {
@@ -20,7 +20,6 @@ class WhereItem {
     }
 
     const parentBuilder = builder.parentBuilder
-
     if (parentBuilder && reParentDS.test(item.expression)) {
       // todo may be optimize
       const mainDSItem = parentBuilder.datasources.mainDsItem
@@ -43,31 +42,19 @@ class WhereItem {
       // if ((this.condition === 'Match') && (item.condition !== 'Match')) {
       //   this.condition = item.condition
       // }
-      this.expression = builder.expressions.add({
-        originalExpression: parseExpr,
-        expressionList: this.preparedExpressions,
-        attrExpression: parseExpr,
-        lang: builder.lang,
-        entity: builder.entity,
-        level: parserUtils.rootLevel,
-        manyAttrExprCollapsed: false,
-        complexAttrExpression: parseExpr,
-        whereItem: this,
-        // parentJoin,
-        registerInColumnList: true
-      }).expr
+      this.addexpression({expression: parseExpr, manyAttrExprCollapsed: false})
       /*
        //Внимание! Построитель НЕ БУДЕТ поддерживать сложные условия, в которых участвуют "adtMany" атрибуты!
        //Проблема в том, что нужно переделать текст выражения с "Many" атрибутом, и построитель этого НЕ сможет сделать, если выражение сложное.
        //Поэтому с 23.11.2015 вводится ограничение на использование "Many" атрибутов в where-выражениях
        */
-      if (this.preparedExpressions.haveManyDataType && (this.preparedExpressions.length > 0)) {
-        if (this.preparedExpressions.length > 1) {
+      if (this.preparedExpressions.haveManyDataType && (this.preparedExpressions.items.length > 0)) {
+        if (this.preparedExpressions.items.length > 1) {
           // todo EMetabaseException
           throw new Error(`Complex expression for "Many" type attributes not supported: ${item.expression}`)
         }
-        const {attrEntityName: manyAttrEntityName, attributeName: manyAttrName} = this.preparedExpressions[0]
-        const manyAttr = App.domain_.get(manyAttrEntityName).attrs(manyAttrName)
+        const {attrEntity: manyAttrEntity, attributeName: manyAttrName} = this.preparedExpressions.items[0]
+        const manyAttr = manyAttrEntity.attrs(manyAttrName)
         if (manyAttr.dataType === 'Many') {
           item.subQueryType = this._getSubQueryType()
           if (!item.subQueryType) {
@@ -98,26 +85,13 @@ class WhereItem {
           return
         }
       }
-      let exprProps = parserUtils.extractExpressionProps(this.expression, {onlyOpenBracket: true})
-      while (exprProps.existOpenBracket) {
-        const {entity, level} = (this.preparedExpressions.length === 1) && (this.preparedExpressions[0].attrEntityName)
-          ? {entity: App.domain_.get(this.preparedExpressions[0].attrEntityName), level: this.preparedExpressions[0].level}
-          : {entity: builder.entity, level: parserUtils.rootLevel}
-        this.expression = builder.expressions.add({
-          originalExpression: this.expression,
-          expressionList: this.preparedExpressions,
-          attrExpression: this.expression,
-          lang: builder.lang,
-          entity,
-          level,
-          manyAttrExprCollapsed: false,
-          complexAttrExpression: this.expression,
-          whereItem: this,
-          // parentJoin,
-          registerInColumnList: false
-        }).expr
-        exprProps = parserUtils.extractExpressionProps(this.expression, {onlyOpenBracket: true})
-      }
+
+      this.loopExpression({
+        exprPropsParams: {onlyOpenBracket: true},
+        condition: (exprProps) => exprProps.existOpenBracket,
+        registerInColumnList: false,
+        manyAttrExprCollapsed: false
+      })
       this.params = item.values
     }
   }
@@ -364,6 +338,13 @@ class LogicalPredicateList {
       this.items.push(new LogicalPredicate(whereItems, logicalPredicateExpression))
     }
   }
+  getSQL () {
+    const res = []
+    for (let item of this.items) {
+      res.push(item.expression)
+    }
+    return res
+  }
 }
 class WhereList {
   constructor (builder, itemsList, logicalPredicates, joinAs) {
@@ -379,7 +360,10 @@ class WhereList {
     }
     if (joinAs) {
       for (let joinAsPredicate of joinAs) {
-        this._addJoinAsPredicate(joinAsPredicate)
+        const item = this.items.get(joinAsPredicate)
+        if (item) {
+          item.inJoinAsPredicate = true
+        }
       }
     }
     if (logicalPredicates) {
@@ -394,7 +378,8 @@ class WhereList {
         res.push(item.getSQL())
       }
     }
-    return res.join(' AND ')
+    this.logicalPredicates && res.push.apply(res, this.logicalPredicates.getSQL())
+    return (res.length > 0) ? `WHERE ${res.join(' AND ')}` : ''
   }
   _add (item) {
     let whereItem
@@ -402,9 +387,6 @@ class WhereList {
       whereItem = new whereItemClassesByCondition[item.condition](this.builder, item)
     } while (whereItem.needRePrepare)
     return whereItem
-  }
-  _addJoinAsPredicate (expression) {
-    // todo
   }
 }
 module.exports = WhereList

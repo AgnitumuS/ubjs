@@ -2,6 +2,7 @@
  * Created by v.orel on 11.01.2017.
  */
 const parserUtils = require('./parserUtils')
+const CustomItem = require('./customItem')
 class LangAttribute {
   constructor (builder, expression) {
     this.attributeName = expression.attributeName
@@ -37,7 +38,7 @@ class LangAttributeList {
     this.items = {}
   }
   register (builder, preparedExpressions) {
-    for (let expression of preparedExpressions) {
+    for (let expression of preparedExpressions.items) {
       const langAttrName = `${parserUtils.rootLevel}.${expression.attributeName}`
       if (!this.items[langAttrName]) {
         this.items[langAttrName] = new LangAttribute(builder, expression)
@@ -63,8 +64,8 @@ class LangAttributeList {
             builder.lang = lang
             const column = columns._add(langAttrForInsert.attributeName, false)
             builder.lang = storedLang
-            if ((Object.keys(langAttrForInsert.defaultLangValues).length > 0) && (column.preparedExpressions.length > 0)) {
-              builder.execParams[column.preparedExpressions[0].nonPrefixSQLExpression] = langAttrForInsert.defaultLangValues[Object.keys(langAttrForInsert.defaultLangValues)[0]]
+            if ((Object.keys(langAttrForInsert.defaultLangValues).length > 0) && (column.preparedExpressions.items.length > 0)) {
+              builder.execParams[column.preparedExpressions.items[0].nonPrefixSQLExpression] = langAttrForInsert.defaultLangValues[Object.keys(langAttrForInsert.defaultLangValues)[0]]
             }
           }
         }
@@ -73,10 +74,10 @@ class LangAttributeList {
   }
 }
 
-class Column {
-  constructor (builder, langAttributeList, expression, isExternal) {
-    this.builder = builder
-    this.preparedExpressions = []
+class Column extends CustomItem {
+  constructor (builder, columns, langAttributeList, expression, isExternal) {
+    super(builder)
+
     let exprProps
     if (parserUtils.deniedNotSimpleExpr && isExternal) {
       exprProps = parserUtils.extractExpressionProps(expression, {})
@@ -85,74 +86,33 @@ class Column {
         throw new Error(`Invalid expression ${expression} from external call. In this mode server support only simple attribute expressions`)
       }
     }
-    const expr = builder.expressions.add({
-      originalExpression: expression,
-      expressionList: this.preparedExpressions,
-      attrExpression: expression,
-      lang: this.builder.lang,
-      entity: builder.entity,
-      level: parserUtils.rootLevel,
-      manyAttrExprCollapsed: true,
-      complexAttrExpression: expression,
-      // whereItem,
-      // parentJoin,
-      registerInColumnList: true
-    })
-    this.expression = expr.expr
-    this.fieldName = expr.fieldName
-    this._establishResultName(builder.columns)
+
+    this.fieldName = this.addexpression({expression})
+    this._establishResultName(columns)
     if (((this.builder.execType === 'insert') || (this.builder.execType === 'update')) && this.preparedExpressions.haveMultiLang) {
       langAttributeList.register(builder, this.preparedExpressions)
     }
-    exprProps = parserUtils.extractExpressionProps(this.expression, {onlyOpenBracket: true})
-    while (exprProps.existOpenBracket) {
-      expression = this.expression
-      /*
-      { Внимание! Важный момент! Выражение AddedColumn.Expression может быть сложным и состоять из многих атрибутов,
-        в том числе и атрибутов разных сущностей. Поэтому 2-й параметр в PrepareSQLExpression нужна сущность,
-        которая является родной к выражению AddedColumn.Expression:
-        например: выше выражение было b_id.caption, соотв. параметром должнв пойти сущность B, к которой принадлежит caption,
-        а не сущность A, которая является контекстов вызова (у нас это AEntity).
-        А теперь представим что выражение имеет вид b_id.caption + c_id.caption ...
-        Проблема в том, что пока не могу понять, как передать туда список сущностей, а не ПЕРВУЮ }
-      // Felix TODO
-      */
-      let entity, level
-      if ((this.preparedExpressions.length === 1) && (this.preparedExpressions[0].attrEntityName)) {
-        entity = App.domain_.get(this.preparedExpressions[0].attrEntityName)
-        level = this.preparedExpressions[0].level
-      } else {
-        entity = this.builder.entity
-        level = parserUtils.rootLevel
+    const me = this
+    this.loopExpression({
+      exprPropsParams: {onlyOpenBracket: true},
+      condition: (exprProps) => exprProps.existOpenBracket,
+      registerInColumnList: false,
+      doAfterRegister: () => {
+        if ((me.builder.execType === 'insert') && (me.preparedExpressions.haveMultiLang)) {
+          langAttributeList.register(builder, me.preparedExpressions)
+        }
       }
-      this.expression = builder.expressions.add({
-        originalExpression: expression,
-        expressionList: this.preparedExpressions,
-        attrExpression: expression,
-        lang: this.builder.lang,
-        entity,
-        level,
-        manyAttrExprCollapsed: true,
-        complexAttrExpression: expression,
-        // whereItem,
-        // parentJoin,
-        registerInColumnList: false
-      }).expr
-      if ((this.builder.execType === 'insert') && (this.preparedExpressions.haveMultiLang)) {
-        langAttributeList.register(builder, this.preparedExpressions)
-      }
-      exprProps = parserUtils.extractExpressionProps(this.expression, {onlyOpenBracket: true})
-    }
+    })
   }
   _establishResultName (columns) {
     if (this.fieldName) {
       this.resultName = this.fieldName
     } else {
-      if (this.preparedExpressions.length === 1) {
-        this.resultName = this.preparedExpressions[0].nonPrefixExpression
+      if (this.preparedExpressions.items.length === 1) {
+        this.resultName = this.preparedExpressions.items[0].nonPrefixExpression
       } else {
-        const {nonPrefixExpression, attributeName} = this.preparedExpressions[0]
-        this.resultName = columns.registerName(nonPrefixExpression, attributeName, false, true)
+        const {attributeName} = this.preparedExpressions.items[0]
+        this.resultName = columns.registerName(attributeName, attributeName, false, true)
       }
       if (!this.resultName) {
         // todo may be optimize
@@ -171,6 +131,7 @@ class ColumnList {
     this.items = []
     this.builder = builder
     this.langAttributeList = new LangAttributeList()
+    builder.columns = this
 
     for (let fieldItem of fieldList) {
       // todo is external
@@ -193,7 +154,7 @@ class ColumnList {
    * @returns {Column}
    */
   _add (expression, isExternal = false) {
-    const column = new Column(this.builder, this.langAttributeList, expression, isExternal)
+    const column = new Column(this.builder, this, this.langAttributeList, expression, isExternal)
     this.items.push(column)
     if ((expression === parserUtils.ubID) || (expression === parserUtils.ubBracketID)) {
       this.idColumn = column
@@ -217,6 +178,9 @@ class ColumnList {
     return res
   }
   getSQL (withFieldsNames) {
+    if (this.items.length === 0) {
+      return {fields: 'null'}
+    }
     const resFields = []
     const resFieldsNames = []
     for (let column of this.items) {

@@ -65,19 +65,27 @@ const parserUtils = {
   ubID: 'ID',
   ubBracketID: '[ID]',
   macros: {
-    parentDSValue: '{master}',
     maxdate: '#maxdate',
-    currentdate: '#currentdate'
+    currentdate: '#currentdate',
+    selfDSValue: '{self}',
+    parentDSValue: '{master}'
+  },
+  mixins: {
+    unity: 'unity'
+  },
+  entities: {
+    enum: 'ubm_enum'
   },
   serviceFields: {
     allFields: '*',
     sourceBr: '[sourceID]',
     destBr: '[destID]'
   },
-  extractExpressionProps: function (expression, {onlyDot = false, onlyOpenBracket = false}) {
+  extractExpressionProps: function (expression, {onlyDot: onlyDot = false, onlyOpenBracket: onlyOpenBracket = false} = {}) {
     const res = {
       isAttributeExpression: true,
-      simpleExpression: true
+      simpleExpression: true,
+      expression
     }
     let ch
     let expr = {
@@ -90,7 +98,7 @@ const parserUtils = {
     // let subQueryExprBrCounter = 0
     let insideSubQueryExpr = false
     while (expr.curPos < expr.length) {
-      ch = expression.charCodeAt(expr.curPos)
+      ch = expression.charCodeAt(expr.curPos++)
       if (ch === chars.opBracket) {
         res.existOpenBracket = true
         if (onlyOpenBracket) {
@@ -225,21 +233,20 @@ const parserUtils = {
   extractAttrAndLang: function (expression, supportLang) {
     const noLangExpr = expression.endsWith('^') ? expression.substr(0, expression.length - 1) : expression
     const pos = expression.lastIndexOf('_')
-    let expr, langPrefix
+    let expr, lang
     if (pos > 0) {
       expr = expression.substr(0, pos)
-      langPrefix = expression.substr(pos + 1).toLocaleLowerCase()
-      if (!supportLang.includes(langPrefix)) {
+      lang = expression.substr(pos + 1).toLocaleLowerCase()
+      if (!supportLang.includes(lang)) {
         expr = noLangExpr
-        langPrefix = ''
+        lang = undefined
       }
     } else {
       expr = noLangExpr
-      langPrefix = ''
     }
     return {
-      expr,
-      langPrefix,
+      expression: expr,
+      lang,
       noLangExpr
     }
   },

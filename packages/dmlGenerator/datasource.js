@@ -15,25 +15,25 @@ class AliasCounter {
 }
 
 class JoinItem {
-  constructor (builder, joinFromItem, joinToExprItem, joinToDSItem, associatedEntity, enumJoinToExprItem, enumGroup) {
-    this.joinFromItem = joinFromItem
-    this.joinToExprItem = joinToExprItem
-    this.joinToDSItem = joinToDSItem
-    this.associatedEntity = associatedEntity
-    this.enumJoinToExprItem = enumJoinToExprItem
-    this.enumGroup = enumGroup
+// (this.datasource.builder, fromAttr, toAttr, ds, entity, enumExpr, enumGroup)
+  constructor (builder, fromAttr, fromDs, toAttr, toDs, joinType) {
+    this.fromAttr = fromAttr
+    this.toAttr = toAttr
+    this.fromDs = fromDs
+    this.toDs = toDs
+    this.joinType = (joinType || this.establishJoinType()).toUpperCase()
 
     this.whereItems = new Set()
     this.builder = builder
     this.getJoinText = builder.getJoinText
   }
   establishJoinType () {
-    this.joinType = (!this.joinFromItem.AllowNull && !this.enumJoinToExprItem) ? 'INNER' : 'LEFT'
+    return (this.fromAttr.AllowNull || this.toAttr.dataType === 'Enum') ? 'LEFT' : 'INNER'
   }
   getSQL () {
     const res = [this.getJoinText()]
-    if (this.enumJoinToExprItem) {
-      res.push(`AND ${this.enumJoinToExprItem.sqlExpression}="this.enumGroup"`)
+    if (this.toAttr.enumGroup) {
+      res.push(`AND ${this.toDs.uniqCalcShortName}.${this.toAttr.name}="${this.toAttr.enumGroup}"`)
     }
     for (let whereItem of this.whereItems) {
       if (whereItem.inJoinAsPredicate) {
@@ -46,26 +46,26 @@ class JoinItem {
 class JoinList {
   constructor (dataSource) {
     this.dataSource = dataSource
-    this.structuredItems = new Map() // of Map of map of JoinItem
+    this.structuredItems = new Map() // of Map of Map of Map JoinItem (ds, from, to)
     this.items = []
   }
-  add ({joinFromItem, joinToExprItem, joinToDSItem, associatedEntity, enumJoinToExprItem, enumGroup, whereItem, isLastJoin}) {
-    if (joinFromItem && joinToExprItem && joinToDSItem) {
-      let ds = this.structuredItems.get(joinToDSItem)
+  add ({fromAttr, toAttr, dsTo, enumExpr, enumGroup, whereItem, joinType, isLastJoin}) {
+    if (fromAttr && toAttr && dsTo) {
+      let ds = this.structuredItems.get(dsTo)
       if (!ds) {
         ds = new Map()
-        this.structuredItems.set(joinToDSItem, ds)
+        this.structuredItems.set(dsTo, ds)
       }
-      let fromItem = ds.get(joinFromItem)
+      let fromItem = ds.get(fromAttr)
       if (!fromItem) {
         fromItem = new Map()
-        ds.set(joinFromItem, fromItem)
+        ds.set(fromAttr, fromItem)
       }
-      let item = ds.get(joinToExprItem)
+      let item = fromItem.get(toAttr)
       if (!item) {
-        item = new JoinItem(this.datasource.builder, joinFromItem, joinToExprItem, joinToDSItem, associatedEntity, enumJoinToExprItem, enumGroup)
+        item = new JoinItem(this.dataSource.builder, fromAttr, this.dataSource, toAttr, dsTo, enumExpr, enumGroup, joinType)
         this.items.push(item)
-        ds.set(joinToExprItem, item)
+        fromItem.set(toAttr, item)
       }
       if (isLastJoin) {
         item.whereItems.add(whereItem)
@@ -76,57 +76,68 @@ class JoinList {
   getSQL () {
     const res = []
     for (let item of this.items) {
-      res.concat(item.getSql())
+      res.push.apply(res, item.getSQL())
     }
     return res
   }
 }
-const shortNames = []
+const preparedShortNames = []
 for (let i = 'A'.charCodeAt(0); i <= 'Z'.charCodeAt(0); i++) {
-  shortNames.push(`DS${String.fromCharCode(i)}`)
+  preparedShortNames.push(`DS${String.fromCharCode(i)}`)
 }
 for (let i = 0; i < 1000; i++) {
-  shortNames.push(`DS${i}`)
+  preparedShortNames.push(`DS${i}`)
 }
 const friendlySqlAliases = process.isDebug
 class DataSource {
-  constructor (dsList, dsData, level) {
+  constructor (dsList, entity, level) {
+    // this.ownerEntityName = entity.name
+    const mapping = entity.mapping
+    if (mapping && mapping.selectName) {
+      this.selectName = mapping.selectName
+      this.execName = mapping.execName
+    } else {
+      this.selectName = entity.name
+      this.execName = entity.name
+    }
+    this.joinList = new JoinList(this)
+    // todo is level parameter needed
+    this.level = level
+    this.entity = entity
+
     this.builder = dsList.builder
     if (friendlySqlAliases) {
-      this.shortName = dsList.shortNames[dsData.selectName]
+      this.shortName = dsList.shortNames[this.selectName]
       if (!this.shortName) {
-        if (dsData.proposedSelectShortName && !dsList.registeredShortNames.includes(dsData.proposedSelectShortName)) {
-          this.shortName = dsData.proposedSelectShortName
+        if (entity.sqlAlias && !dsList.registeredShortNames.includes(entity.sqlAlias)) {
+          this.shortName = entity.sqlAlias
         } else {
-          for (let shortName of shortNames) {
-            if (dsList.registeredShortNames.includes(shortName)) {
-              this.shortName = shortName
+          for (let preparedShortName of preparedShortNames) {
+            if (dsList.registeredShortNames.includes(preparedShortName)) {
+              this.shortName = preparedShortName
               break
             }
           }
         }
+        dsList.shortNames[this.selectName] = this.shortName
+        dsList.registeredShortNames.push(this.shortName)
       }
       this.uniqCalcShortName = this.shortName
       let i = 2
       while (dsList.forbiddenAlias.includes(this.uniqCalcShortName)) {
-        this.forbiddenAlias.push(this.uniqCalcShortName = `${this.shortName}${i++}`)
+        this.uniqCalcShortName = `${this.shortName}${i++}`
       }
+      dsList.forbiddenAlias.push(this.uniqCalcShortName)
     } else {
-      this.uniqCalcShortName = `A${builder.aliasCounter.counter}`
+      this.uniqCalcShortName = `A${dsList.builder.aliasCounter.counter}`
     }
-    this.ownerEntityName = dsData.ownerEntityName
-    this.selectName = dsData.selectName
-    this.execName = dsData.execName
-    this.visible = dsData.visible
-    this.joinList = new JoinList()
-    // todo is level parameter needed
-    this.level = level
   }
 }
 class DataSourceList {
   constructor (builder) {
     this.builder = builder
-    this.items = {}
+    this.items = new Map()
+    this.itemsArray = []
     this.shortNames = {}
     this.registeredShortNames = []
     this.getJoinText = builder.getJoinText
@@ -136,28 +147,30 @@ class DataSourceList {
       this.aliasCounter = builder.parentBuilder ? builder.parentBuilder.datasources.aliasCounter : new AliasCounter()
     }
   }
-  getItem (dsData, level) {
-    const levelItem = (this.items[level]) || (this.items[level] = {})
-    let added = false
-    const item = (levelItem[dsData.selectName]) || ((added = true) && (levelItem[dsData.selectName] = new DataSource(this, dsData, level)))
-    if (!added) {
-      item.visible = item.visible || dsData.visible
-    } else if (!this.mainDsItem) {
-      this.mainDsItem = item
+  getItem (entity, level) {
+    let levelItem = (this.items.get(level))
+    if (!levelItem) {
+      levelItem = new Map()
+      this.items.set(level, levelItem)
     }
-    return {item, added}
+    const selectName = (entity.mapping && entity.mapping.selectName) || entity.name
+    let item = levelItem.get(selectName)
+    if (!item) {
+      levelItem.set(selectName, item = new DataSource(this, entity, level))
+      this.itemsArray.push(item)
+      if (!this.mainDsItem) {
+        this.mainDsItem = item
+      }
+    }
+    return item
   }
   getSQL () {
     const res = []
-    const itemNames = Object.keys(this.items)
-    for (let itemName of itemNames) {
-      const item = this.items[itemName]
-      if (item.visible) {
-        if (res.length === 0) {
-          res.push(`${item.selectName} ${item.uniqCalcShortName}`)
-        }
-        res.concat(item.joinList.getSQL())
+    for (let item of this.itemsArray) {
+      if (item === this.mainDsItem) {
+        res.push(` FROM ${item.selectName} ${item.uniqCalcShortName}`)
       }
+      res.push.apply(res, item.joinList.getSQL())
     }
     return res.join(' ')
   }
