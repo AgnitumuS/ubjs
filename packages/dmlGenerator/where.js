@@ -36,7 +36,6 @@ class WhereItem  extends CustomItem {
         }
       }
     }
-
     let parseExpr = this._prepareSQLWhereItemExpressionText(item)
     if (parseExpr) {
       // if ((this.condition === 'Match') && (item.condition !== 'Match')) {
@@ -96,21 +95,21 @@ class WhereItem  extends CustomItem {
     }
   }
   getSQL () {
-    if (this._sqlExpression) {
-      return this._sqlExpression
-    }
-    this._sqlExpression = this._getSqlExpression()
-    for (let paramName in this.params) {
-      const paramVal = this.params[paramName]
-      if (paramVal !== undefined) {
-        let i = 2
-        let paramUniqName = paramName
-        while (this.builder.params[paramUniqName] !== undefined) {
-          paramUniqName = `${paramName}_${i++}`
+    if (!this._sqlExpression) {
+      this._sqlExpression = this._getSqlExpression()
+      for (let paramName in this.params) {
+        const paramVal = this.params[paramName]
+        if (paramVal !== undefined) {
+          let i = 2
+          let paramUniqName = paramName
+          while (this.builder.params[paramUniqName] !== undefined) {
+            paramUniqName = `${paramName}_${i++}`
+          }
+          this.builder.params[paramUniqName] = paramVal
         }
-        this.builder.params[paramUniqName] = paramVal
       }
     }
+    return this._sqlExpression
   }
   _getSqlExpression () {
     let res = this.expression
@@ -374,12 +373,12 @@ class WhereList {
     const res = []
     for (let [, item] of this.items) {
       // todo may be resolve by class
-      if (!item.expression && (item.condition !== 'SubQuery') && !item.inLogicalPredicate && !item.inJoinAsPredicate) {
+      if (item.expression && (item.condition !== 'SubQuery') && !item.inLogicalPredicate && !item.inJoinAsPredicate) {
         res.push(item.getSQL())
       }
     }
     this.logicalPredicates && res.push.apply(res, this.logicalPredicates.getSQL())
-    return (res.length > 0) ? `WHERE ${res.join(' AND ')}` : ''
+    return (res.length > 0) ? ` WHERE ${res.join(' AND ')}` : ''
   }
   _add (item) {
     let whereItem

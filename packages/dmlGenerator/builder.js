@@ -41,7 +41,7 @@ class CustomSQLBuilder {
       this.columns = new ColumnList(this, doFieldList)
     }
     // whereList
-    if (!this.isDataSourceCusomSQL && whereList && (whereList.length > 0)) {
+    if (!this.isDataSourceCusomSQL && whereList) {
       this.whereList = new WhereList(this, whereList, logicalPredicates, joinAs)
     }
     // orderBy items

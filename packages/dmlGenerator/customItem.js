@@ -76,7 +76,7 @@ class AttributeExpression extends PreparedExpression {
 
     let attrSQLExpression = this.getSqlExpression(noLangExpr)
 
-    this.expr = (
+    this.sqlExpression = (
       this.expressionType === 'Expression'
         ? attrSQLExpression
         : `${dsItem.uniqCalcShortName}.${attrSQLExpression}`
@@ -85,7 +85,7 @@ class AttributeExpression extends PreparedExpression {
   }
 }
 class AttributeSimpleExpression extends AttributeExpression {
-  constructor ({preparedExpressions, dsItem, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr, registerInColumnList}) {
+  constructor ({originalExpression, preparedExpressions, dsItem, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr, registerInColumnList}) {
     super({dsItem, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr})
 
     const mapping = attribute.mapping
@@ -95,6 +95,7 @@ class AttributeSimpleExpression extends AttributeExpression {
     } else {
       this.expressionType = 'Field'
     }
+    this.expr = parserUtils.bracketExpr(originalExpression).expression.replace(this.complexExpression, this.sqlExpression, 'g')
     if (registerInColumnList) {
       if ((preparedExpressions.items.length > 0) || preparedExpressions.items.haveNotFieldSQLExpr) {
         this.fieldName = preparedExpressions.builder.columns.registerName(this.nonPrefixSQLExpression, attribute.name, false, true)
@@ -112,16 +113,19 @@ class AttributeSimpleExpression extends AttributeExpression {
   }
 }
 class AttributeManyExpression extends AttributeExpression {
-  constructor ({exprList, dsItem, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr, manyAttrExprCollapsed, registerInColumnList}) {
+  constructor ({originalExpression, exprList, dsItem, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr, manyAttrExprCollapsed, registerInColumnList}) {
     super({dsItem, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr, manyAttrExprCollapsed})
     this.manyAttrExprCollapsed = manyAttrExprCollapsed
     this.expressionType = this.builder.getManyExpressionType
-    this.getSqlExpression = this.builder.getManyExpression
-
+    this.expr = parserUtils.bracketExpr(originalExpression).expression.replace(this.complexExpression, `(${this.sqlExpression})`, 'g')
     if (registerInColumnList) {
       const lastWord = parserUtils.expressionLastWord(exprProps.expression)
       this.fieldName = exprList.builder.columns.registerName(lastWord, lastWord, false, true)
     }
+  }
+  getSqlExpression () {
+    // todo
+    return this.builder.getManyExpression.bind(this)
   }
 }
 
@@ -194,7 +198,7 @@ class PreparedExpressions {
               // then it goes to result
               expression =
                 new (attribute.dataType === 'Many' ? AttributeManyExpression : AttributeSimpleExpression)(
-                  {preparedExpressions: this, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr, dsItem, manyAttrExprCollapsed, registerInColumnList}
+                  {originalExpression, preparedExpressions: this, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr, dsItem, manyAttrExprCollapsed, registerInColumnList}
                 )
             } else {
               // complex expression, need check associations
