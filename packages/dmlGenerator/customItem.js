@@ -16,6 +16,7 @@ class AllFieldsExpression extends PreparedExpression {
     this.expr = parserUtils.serviceFields.allFields
   }
 }
+
 class SQLExpression extends PreparedExpression {
   constructor (expression, lang, id) {
     super()
@@ -31,6 +32,7 @@ class SQLExpression extends PreparedExpression {
     this.expressionType = 'Expression'
   }
 }
+
 class NonBracketExpression extends PreparedExpression {
   /**
    * Expression without brackets
@@ -51,6 +53,7 @@ class NonBracketExpression extends PreparedExpression {
     this.expressionType = 'Expression'
   }
 }
+
 class AttributeExpression extends PreparedExpression {
   constructor ({dsItem, entity, attribute, lang, level, exprProps, exprLinkProps, complexAttrExpression, noLangExpr}) {
     super()

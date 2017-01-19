@@ -18,7 +18,7 @@ class CustomSQLBuilder {
     this.fieldList = fieldList
     this.isExternalCall = isExternalCall
     this.parentBuilder = parentBuilder
-    this.params = parentBuilder ? parentBuilder.params : {}
+    this.params = parentBuilder ? parentBuilder.params : []
     this.localUniqID = 1
     this.datasources = new DataSourceList(this)
     this.isDataSourceCusomSQL = this._isDataSourceCusomSQL(this.entity)

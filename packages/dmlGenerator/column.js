@@ -92,14 +92,13 @@ class Column extends CustomItem {
     if (((this.builder.execType === 'insert') || (this.builder.execType === 'update')) && this.preparedExpressions.haveMultiLang) {
       langAttributeList.register(builder, this.preparedExpressions)
     }
-    const me = this
     this.loopExpression({
       exprPropsParams: {onlyOpenBracket: true},
       condition: (exprProps) => exprProps.existOpenBracket,
       registerInColumnList: false,
       doAfterRegister: () => {
-        if ((me.builder.execType === 'insert') && (me.preparedExpressions.haveMultiLang)) {
-          langAttributeList.register(builder, me.preparedExpressions)
+        if ((this.builder.execType === 'insert') && (this.preparedExpressions.haveMultiLang)) {
+          langAttributeList.register(builder, this.preparedExpressions)
         }
       }
     })

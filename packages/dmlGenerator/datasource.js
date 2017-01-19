@@ -83,10 +83,10 @@ class JoinList {
 }
 const preparedShortNames = []
 for (let i = 'A'.charCodeAt(0); i <= 'Z'.charCodeAt(0); i++) {
-  preparedShortNames.push(`DS${String.fromCharCode(i)}`)
+  preparedShortNames.push(String.fromCharCode(i))
 }
 for (let i = 0; i < 1000; i++) {
-  preparedShortNames.push(`DS${i}`)
+  preparedShortNames.push(`${i}`)
 }
 const friendlySqlAliases = process.isDebug
 class DataSource {
@@ -113,7 +113,7 @@ class DataSource {
           this.shortName = entity.sqlAlias
         } else {
           for (let preparedShortName of preparedShortNames) {
-            if (dsList.registeredShortNames.includes(preparedShortName)) {
+            if (!dsList.registeredShortNames.includes(preparedShortName)) {
               this.shortName = preparedShortName
               break
             }
@@ -129,7 +129,7 @@ class DataSource {
       }
       dsList.forbiddenAlias.push(this.uniqCalcShortName)
     } else {
-      this.uniqCalcShortName = `A${dsList.builder.aliasCounter.counter}`
+      this.uniqCalcShortName = `A${dsList.aliasCounter.counter}`
     }
   }
 }
