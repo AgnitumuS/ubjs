@@ -61,17 +61,17 @@ class WhereItem  extends CustomItem {
             throw new Error('"Many" type attribute support only next conditions: "Equal", "In", "NotEqual", "NotIn", "IsNull", "NotIsNull"')
           }
           item.expression = ''
-          item.condition = 'SubQuery'
+          item.condition = 'subquery'
           const whereItems = {
             cond1: {
               expression: `${parserUtils.serviceFields.sourceBr}=${parserUtils.macros.parentDSValue}.id`,
-              condition: 'Custom'
+              condition: 'custom'
             }
           }
           if (this._canAddClientConditions()) {
             whereItems.cond2 = {
               expression: parserUtils.serviceFields.destBr,
-              condition: 'In',
+              condition: 'in',
               values: item.values
             }
           }
@@ -100,12 +100,14 @@ class WhereItem  extends CustomItem {
       for (let paramName in this.params) {
         const paramVal = this.params[paramName]
         if (paramVal !== undefined) {
+          this.builder.params.push(paramVal)
+          /*
           let i = 2
           let paramUniqName = paramName
           while (this.builder.params[paramUniqName] !== undefined) {
             paramUniqName = `${paramName}_${i++}`
           }
-          this.builder.params[paramUniqName] = paramVal
+          this.builder.params[paramUniqName] = paramVal */
         }
       }
     }
@@ -205,21 +207,21 @@ class WhereItemCustom extends WhereItem {
   }
 }
 const conditionsCompare = {
-  Equal: '=',
-  NotEqual: '<>',
-  More: '>',
-  MoreEqual: '>=',
-  Less: '<',
-  LessEqual: '<='
+  equal: '=',
+  notequal: '<>',
+  more: '>',
+  moreequal: '>=',
+  less: '<',
+  lessequal: '<='
 }
 class WhereItemCompare extends WhereItem {
   _prepareSQLWhereItemExpressionText (item) {
-    return `${item.expression}${conditionsCompare[item.condition]}${this._preparePositionParameterText()}'`
+    return `${item.expression}${conditionsCompare[item.condition]}${this._preparePositionParameterText()}`
   }
 }
 class WhereItemEqual extends WhereItemCompare {
   _getSubQueryType () {
-    return this.condition === 'Equal' ? 'Exists' : 'NotExists'
+    return this.condition === 'equal' ? 'Exists' : 'NotExists'
   }
   _canAddClientConditions () {
     return true
@@ -231,9 +233,9 @@ class WhereItemBetween extends WhereItem {
     switch (exprList) {
       // todo think about parameters format
       case 1:
-        return `(${item.expression} BETWEEN ${this.preparePositionParameterText()} AND ${this.preparePositionParameterText()} )`
+        return `(${item.expression} BETWEEN ${this._preparePositionParameterText()} AND ${this._preparePositionParameterText()})`
       case 2:
-        return `(${this.preparePositionParameterText()} BETWEEN ${exprList[0].expression} AND ${exprList[1].expression} )`
+        return `(${this._preparePositionParameterText()} BETWEEN ${exprList[0].expression} AND ${exprList[1].expression})`
       default:
         throw new Error(`Invalid expression "${item.expression}" for "between attributes" condition`)
     }
@@ -250,10 +252,10 @@ class WhereItemIn extends WhereItem {
     if (!Array.isArray(val)) {
       throw new Error('in or not in parameter must be no empty string or integer array')
     }
-    return `${item.expression} ${this.condition === 'In' ? 'IN' : 'NOT IN'} (${JSON.stringify(val)})`
+    return `${item.expression} ${this.condition === 'in' ? 'IN' : 'NOT IN'} (${JSON.stringify(val)})`
   }
   _getSubQueryType () {
-    return this.condition === 'In' ? 'Exists' : 'NotExists'
+    return this.condition === 'in' ? 'Exists' : 'NotExists'
   }
   _canAddClientConditions () {
     return true
@@ -261,17 +263,17 @@ class WhereItemIn extends WhereItem {
 }
 class WhereItemNull extends WhereItem {
   _getSubQueryType () {
-    return this.condition === 'IsNull' ? 'NotExists' : 'Exists'
+    return this.condition === 'isnull' ? 'NotExists' : 'Exists'
   }
   _prepareSQLWhereItemExpressionText (item) {
     return `${item.expression} ${item.condition === 'IsNull' ? 'IS NULL' : 'IS NOT NULL'}`
   }
 }
 const conditionsLike = {
-  Like: '',
-  NotLike: 'NOT',
-  StartWith: '',
-  NotStartWith: 'NOT'
+  like: '',
+  notlike: 'NOT',
+  startwith: '',
+  notstartwith: 'NOT'
 }
 class WhereItemLike extends WhereItem {
   _prepareSQLWhereItemExpressionText (item) {
@@ -286,24 +288,24 @@ class WhereItemMatch extends WhereItem {
   }
 }
 const whereItemClassesByCondition = {
-  'Custom': WhereItemCustom,
-  'Equal': WhereItemEqual,
-  'NotEqual': WhereItemEqual,
-  'More': WhereItemCompare,
-  'MoreEqual': WhereItemCompare,
-  'Less': WhereItemCompare,
-  'LessEqual': WhereItemCompare,
-  'Between': WhereItemBetween,
-  'In': WhereItemIn,
-  'NotIn': WhereItemIn,
-  'SubQuery': WhereItemSubQuery,
-  'IsNull': WhereItemNull,
-  'NotIsNull': WhereItemNull,
-  'Like': WhereItemLike,
-  'NotLike': WhereItemLike,
-  'StartWith': WhereItemLike,
-  'NotStartWith': WhereItemLike,
-  'Match': WhereItemMatch
+  'custom': WhereItemCustom,
+  'equal': WhereItemEqual,
+  'notequal': WhereItemEqual,
+  'more': WhereItemCompare,
+  'moreequal': WhereItemCompare,
+  'less': WhereItemCompare,
+  'lesslqual': WhereItemCompare,
+  'between': WhereItemBetween,
+  'in': WhereItemIn,
+  'notin': WhereItemIn,
+  'subquery': WhereItemSubQuery,
+  'isnull': WhereItemNull,
+  'notisnull': WhereItemNull,
+  'like': WhereItemLike,
+  'notlike': WhereItemLike,
+  'startwith': WhereItemLike,
+  'notstartwith': WhereItemLike,
+  'match': WhereItemMatch
 }
 const reLogicalPredicate = /\[([^\]]*)]/g
 class LogicalPredicate {
@@ -373,7 +375,7 @@ class WhereList {
     const res = []
     for (let [, item] of this.items) {
       // todo may be resolve by class
-      if (item.expression && (item.condition !== 'SubQuery') && !item.inLogicalPredicate && !item.inJoinAsPredicate) {
+      if (item.expression && (item.condition !== 'subquery') && !item.inLogicalPredicate && !item.inJoinAsPredicate) {
         res.push(item.getSQL())
       }
     }
@@ -383,7 +385,7 @@ class WhereList {
   _add (item) {
     let whereItem
     do {
-      whereItem = new whereItemClassesByCondition[item.condition](this.builder, item)
+      whereItem = new whereItemClassesByCondition[item.condition.toLowerCase()](this.builder, item)
     } while (whereItem.needRePrepare)
     return whereItem
   }

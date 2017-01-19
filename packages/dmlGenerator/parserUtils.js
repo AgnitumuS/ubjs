@@ -210,7 +210,7 @@ const parserUtils = {
     let existLink = false
     let expr = {
       expression,
-      length: expression.length,
+      length: expression.length, // TODO rename length
       curPos: 0
     }
     while (expr.curPos < expr.length) {
