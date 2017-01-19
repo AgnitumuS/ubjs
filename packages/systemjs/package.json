@@ -36,7 +36,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "scripts": {
-    "build": "make",
+    "build": "rem make",
     "perf": "node bench/normalize-perf.js",
     "test": "npm run test:babel && npm run test:traceur && npm run test:typescript",
     "test:babel": "qunit -c s:./index.js -t ./test/test-babel.js",
@@ -44,5 +44,5 @@
     "test:traceur": "qunit -c s:./index.js -t ./test/test-traceur.js",
     "test:typescript": "qunit -c s:./index.js -t ./test/test-typescript.js"
   },
-  "version": "0.20.4"
+  "version": "0.20.5"
 }

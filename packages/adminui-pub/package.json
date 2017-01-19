@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.0.6",
+  "version": "4.0.8",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "config": {
@@ -8,16 +8,14 @@
     "ubmodelispublic": true
   },
   "scripts": {
-    "build:old": "build.cmd",
     "build": "npm run build:ext && npm run build:css && npm run build:adminui",
-    "build:ext": "uglifyjs ext-all-debug-w-comments.js -o ./dist/ext-all.min.js --source-map ./dist/ext-all.min.js.map --source-map-include-sources --screw-ie8 --prefix relative --compress --mangle",
+    "build:ext": "call ./bin/buildExt.cmd",
     "build:css": "uglifycss ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css > ./ub-css-all.css",
     "build:adminui": "SET NODE_ENV=production && webpack",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
     "prepublish": "rem npm run build",
-    "postinstall": "ubcli flow/modelInstalled",
     "test": "npm run test"
   },
   "public": true,
@@ -25,9 +23,9 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.0.6",
-    "@unitybase/ub-pub": "^4.0.7",
-    "@unitybase/adminui-reg": "^4.0.6",
+    "@unitybase/base": "^4.0.7",
+    "@unitybase/ub-pub": "^4.0.8",
+    "@unitybase/adminui-reg": "^4.0.7",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.20.2",
@@ -44,8 +42,13 @@
     "babel-preset-es2015": "^6.18.0",
     "css-loader": "^0.26.1",
     "style-loader": "^0.13.1",
-    "systemjs": "^0.20.4",
+    "systemjs": "^0.20.5",
     "systemjs-plugin-css": "^0.1.32"
+  },
+  "peerDependencies": {
+    "webpack": "^1.14.0",
+    "uglify-js": "^2.7.4",
+    "uglifycss": "*"
   },
   "keywords": [
     "UnityBase"

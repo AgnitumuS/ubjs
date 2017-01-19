@@ -22,11 +22,12 @@
  * @author UnityBase core team
  */
 Ext.define('UB.core.UBApp', {
-/* globals ClientRe  pository, UBNativeScanner, UBNativeDocEdit, UBNativePDFSign, UBConnection */
+/* globals UBNativeScanner, UBNativeDocEdit, UBNativePDFSign */
   singleton: true,
 
   requires: [
     'Ext.Loader',
+    // 'UB.view.Viewport',
     'UB.view.LoginWindow',
     'Ext.ux.window.Notification'
   ],
@@ -66,106 +67,105 @@ Ext.define('UB.core.UBApp', {
   core: null,
 
   constructor: function () {
-    var
-            me = this
+    var me = this
 
     me.requireEncription = false
     me.mixins.observable.constructor.call(me)
 
-        /**
-         * Connection for authorized and (optionally) encrypted communication with UnityBase server
-         * @property {UBConnection} connection
-         * @type {UBConnection}
-         * @readonly
-         */
+    /**
+     * Connection for authorized and (optionally) encrypted communication with UnityBase server
+     * @property {UBConnection} connection
+     * @type {UBConnection}
+     * @readonly
+     */
     me.connection = null
 
-        /**
-         * Instance of ubNotifier WebSocket connection to server
-         * @property  {UBNotifierWSProtocol} ubNotifier
-         * @type {UBNotifierWSProtocol}
-         */
+    /**
+     * Instance of ubNotifier WebSocket connection to server
+     * @property  {UBNotifierWSProtocol} ubNotifier
+     * @type {UBNotifierWSProtocol}
+     */
     me.ubNotifier = null
 
-        /**
-         * Deprecated. Use $App.domainInfo or $App.connection.domain instead of this one.
-         * @deprecated
-         */
+    /**
+     * Deprecated. Use $App.domainInfo or $App.connection.domain instead of this one.
+     * @deprecated
+     */
     me.domain = null
 
-        /**
-         * Instance of UBDomain. It will be defined on launch application and before emit event appInitialize.
-         * @property {UBDomain} domainInfo
-         */
+    /**
+     * Instance of UBDomain. It will be defined on launch application and before emit event appInitialize.
+     * @property {UBDomain} domainInfo
+     */
     me.domainInfo = null
+    /**
+     * UnityBase application instance short alias reference. Use it instead of UB.core.UBApp singleton
+     * @property {UB.core.UBApp} $App
+     * @type {UB.core.UBApp}
+     * @member window
+     * @global
+     */
+    window.$App = me
 
     me.addEvents(
-            /**
-             * Fires then user change active desktop
-             * @event desktopChanged
-             */
-            'desktopChanged',
-            /**
-             * Fires then application start initialization.
-             * @event appInitialize
-             */
-            'appInitialize',
-            /**
-             * Fires then application initialization finished. This mean:
-             *
-             *  - user is logged in
-             *  - all user locales are loaded
-             *  - entities data for UI (ubm_*) are loaded
-             *  - Viewport are created
-             *  - active desktop is changed
-             *
-             * @event applicationReady
-             */
-            'applicationReady',
-            /**
-             * Fires then Domain information loaded from server.
-             * @event getDomainInfo
-             * @deprecated
-             */
-            'getDomainInfo',
-            'updateCenterPanel',
-            /**
-             * Fires then window ( descendants of UB.view.BaseWindow ) activated (not tab)
-             * @event windowActivated
-             * @param {Ext.window.Window} win
-             */
-            'windowActivated',
-            /**
-             * Fires then window ( descendants of UB.view.BaseWindow ) destroyed
-             * @event windowDestroyed
-             * @param {Ext.window.Window} win
-             */
-            'windowDestroyed',
-            /**
-             * @event buildMainMenu
-             * Fires when application ready to build main menu
-             * @param {*} items Collection of {@link UB.view.ToolbarWidget}.
-             *
-             * For example in initModels.js you can write:
-             *
-             *        $App.on('buildMainMenu', function(items){
-             *            items.push(
-             *                Ext.create('UB.view.ToolbarMenu'),
-             *                "->",
-             *                Ext.create('UB.view.ToolbarUser')
-             *            );
-             *       });
-             */
-            'buildMainMenu'
-        )
-        /**
-         * UnityBase application instance short alias reference. Use it instead of UB.core.UBApp singleton
-         * @property {UB.core.UBApp} $App
-         * @type {UB.core.UBApp}
-         * @member window
-         * @global
-         */
-    window.$App = me
+      /**
+       * Fires then user change active desktop
+       * @event desktopChanged
+       */
+      'desktopChanged',
+      /**
+       * Fires then application start initialization.
+       * @event appInitialize
+       */
+      'appInitialize',
+      /**
+       * Fires then application initialization finished. This mean:
+       *
+       *  - user is logged in
+       *  - all user locales are loaded
+       *  - entities data for UI (ubm_*) are loaded
+       *  - Viewport are created
+       *  - active desktop is changed
+       *
+       * @event applicationReady
+       */
+      'applicationReady',
+      /**
+       * Fires then Domain information loaded from server.
+       * @event getDomainInfo
+       * @deprecated
+       */
+      'getDomainInfo',
+      'updateCenterPanel',
+      /**
+       * Fires then window ( descendants of UB.view.BaseWindow ) activated (not tab)
+       * @event windowActivated
+       * @param {Ext.window.Window} win
+       */
+      'windowActivated',
+      /**
+       * Fires then window ( descendants of UB.view.BaseWindow ) destroyed
+       * @event windowDestroyed
+       * @param {Ext.window.Window} win
+       */
+      'windowDestroyed',
+      /**
+       * @event buildMainMenu
+       * Fires when application ready to build main menu
+       * @param {*} items Collection of {@link UB.view.ToolbarWidget}.
+       *
+       * For example in initModels.js you can write:
+       *
+       *        $App.on('buildMainMenu', function(items){
+       *            items.push(
+       *                Ext.create('UB.view.ToolbarMenu'),
+       *                "->",
+       *                Ext.create('UB.view.ToolbarUser')
+       *            );
+       *       });
+       */
+      'buildMainMenu'
+    )
     return me
   },
 
@@ -309,17 +309,17 @@ Ext.define('UB.core.UBApp', {
           browserExtensionNMHostAppKey: 'com.inbase.ubmessagehost'
         })
 
-                // UB 1.12 compatibility
+        // UB 1.12 compatibility
         UB.appConfig = connection.appConfig
-                // TODO - remove because mutation of other objects is bad idea
-                // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
-                // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
+        // TODO - remove because mutation of other objects is bad idea
+        // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
+        // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
         return UB.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js')
       },
       onGotApplicationDomain: function (domainInfo, domain) {
-                // todo delete this callBack when delete UBDomainManager
-                // UB.core.UBDomainManager.init(domainInfo, domain);
-                // me.domain = UB.core.UBDomainManager;
+        // todo delete this callBack when delete UBDomainManager
+        // UB.core.UBDomainManager.init(domainInfo, domain);
+        // me.domain = UB.core.UBDomainManager;
       }
     }).then(function (connection) {
       var myLocale,
@@ -335,13 +335,13 @@ Ext.define('UB.core.UBApp', {
       UB.Repository = function (entityCode) {
         return new UB.ClientRepository(connection, entityCode)
       }
-            // for each model:
-            // - configure Ext.loader
-            // - if model need localization - load localization script
-            // - if model need initialization - shedule initModel.js script
-            // if (myLocale !== preferredLocale){
-            //    localeScriptForLoad.push(UB.inject('models/adminui/locale/ext-lang-' + myLocale + '.js'));
-            // }
+      // for each model:
+      // - configure Ext.loader
+      // - if model need localization - load localization script
+      // - if model need initialization - shedule initModel.js script
+      // if (myLocale !== preferredLocale){
+      //    localeScriptForLoad.push(UB.inject('models/adminui/locale/ext-lang-' + myLocale + '.js'));
+      // }
       _.forEach(models, function (item, key) { item.key = key }) // move names inside elements
       models = _.sortBy(models, 'order') // sort models by order
       _.forEach(models, function (model) {
@@ -353,7 +353,8 @@ Ext.define('UB.core.UBApp', {
           localeScriptForLoad.push(UB.inject(model.path + '/locale/lang-' + myLocale + '.js'))
         }
         if (model.needInit) {
-          initScriptForLoad.push(model.path + '/initModel.js')
+          // initScriptForLoad.push(model.path + '/initModel.js')
+          initScriptForLoad.push((model.moduleName || model.path) + '/initModel.js')
         }
       })
             // load models initialization script in order they passed
@@ -361,7 +362,8 @@ Ext.define('UB.core.UBApp', {
         var promise = Promise.resolve(true)
         initScriptForLoad.forEach(function (script) {
           promise = promise.then(function () {
-            return UB.inject(script)
+            // return UB.inject(script)
+            return window.System.import(script)
           })
         })
         return promise
@@ -402,35 +404,37 @@ Ext.define('UB.core.UBApp', {
     }).then(function () { // clear form's def/js cache if ubm_form version changed
             // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
       var realFormsVersion = $App.connection.cachedSessionEntityRequested[
-                    $App.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())],
+          $App.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
+        ],
         storedFormsVersion
+
       if (realFormsVersion) {
-        storedFormsVersion = +localStorage.getItem('ubm_form_cache_version')
+        storedFormsVersion = +window.localStorage.getItem('ubm_form_cache_version')
         if (storedFormsVersion !== realFormsVersion) {
           UB.core.UBFormLoader.clearFormCache()
-          localStorage.setItem('ubm_form_cache_version', realFormsVersion)
+          window.localStorage.setItem('ubm_form_cache_version', realFormsVersion)
         }
       }
       return true
     })
-        .then(function () {
-          me.setLocalStorageProviderPrefix(me.connection.userLogin())
-            /**
-             * Main application window
-             * @property {UB.view.Viewport} viewport
-             */
-          me.viewport = Ext.create('UB.view.Viewport')
-          me.viewport.show()
-          me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop)
-          me.fireEvent('applicationReady')
-          me.checkQueryString()
-          me.hideLogo()
-        })
-        .catch(function (reason) {
-          me.hideLogo()
-          UB.logError('Got error from getAppInfo %o', reason)
-          throw reason // global window.onerror handler show error to user
-        })
+    .then(function () {
+      me.setLocalStorageProviderPrefix(me.connection.userLogin())
+      /**
+       * Main application window
+       * @property {UB.view.Viewport} viewport
+       */
+      me.viewport = Ext.create('UB.view.Viewport')
+      me.viewport.show()
+      me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop)
+      me.fireEvent('applicationReady')
+      me.checkQueryString()
+      me.hideLogo()
+    })
+    .catch(function (reason) {
+      me.hideLogo()
+      UB.logError('Got error from getAppInfo %o', reason)
+      throw reason // global window.onerror handler show error to user
+    })
   },
 
     /**

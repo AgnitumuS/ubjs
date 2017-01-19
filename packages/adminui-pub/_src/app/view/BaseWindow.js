@@ -16,9 +16,9 @@ Ext.define('UB.view.BaseWindow', {
     requires: [
         'UB.core.UBUtil',
         'UB.core.UBLocalStorageManager',
-        'UB.core.UBAppConfig',
-        'UB.core.UBApp'
+        'UB.core.UBAppConfig'
     ],
+  uses: ['UB.core.UBApp'],
 
     //padding: 1,
     constrain: true,

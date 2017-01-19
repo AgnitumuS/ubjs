@@ -9,13 +9,16 @@
             "caption": "Опис"
         },
         "firstName": {
-            "caption": "Им'я"
+            "caption": "Ім'я"
         },
         "lastName": {
-            "caption": "Призвище"
+            "caption": "Прізвище"
+        },
+        "fullName": {
+            "caption": "ПІБ"
         },
         "gender": {
-            "caption": "Пол"
+            "caption": "Стать"
         },
         "email": {
             "caption": "Email",

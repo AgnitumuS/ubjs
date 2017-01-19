@@ -1,13 +1,12 @@
 {
   "name": "@unitybase/ubq",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "description": "UnityBase queue",
   "config": {
     "ubmodel": "UBQ"
   },
   "scripts": {
-    "test": "ubcli autotest -m UBQ -skipModules",
-    "postinstall": "ubcli flow/modelInstalled"
+    "test": "ubcli autotest -m UBQ -skipModules"
   },
   "public": true,
   "publishConfig": {
@@ -16,11 +15,11 @@
   "main": "index.js",
   "dependencies": {
     "lodash": "^4.0.0",
-    "@unitybase/base": "^4.0.6",
-    "@unitybase/ub": "^4.0.7",
-    "@unitybase/uba": "^4.0.6",
-    "@unitybase/mailer": "^4.0.6",
-    "@unitybase/mailer-ssl": "^4.0.6"
+    "@unitybase/base": "^4.0.7",
+    "@unitybase/ub": "^4.0.8",
+    "@unitybase/uba": "^4.0.7",
+    "@unitybase/mailer": "^4.0.7",
+    "@unitybase/mailer-ssl": "^4.0.7"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.0.6"

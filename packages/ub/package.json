@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "description": "Build-in UnityBase model",
   "config": {
     "ubmodel": "UB"
@@ -8,8 +8,7 @@
   "scripts": {
     "test": "ubcli autotest -m UB -skipModules",
     "dev": "npm link lodash @unitybase/base @unitybase/ubcli",
-    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
-    "postinstall": "ubcli flow/modelInstalled"
+    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
   },
   "public": true,
   "publishConfig": {
@@ -17,13 +16,13 @@
   },
   "main": "0_init.js",
   "dependencies": {
-    "@unitybase/base": "^4.0.6",
+    "@unitybase/base": "^4.0.7",
     "lodash": "^4.0.0",
     "mime-types": "^2.1.12"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.0.6",
-    "systemjs": "^0.20.4"
+    "systemjs": "^0.20.5"
   },
   "keywords": [
     "UnityBase"

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/mailer",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "description": "UnityBase SMTP/POP3",
   "scripts": {
     "build": "call ./bin/compile.cmd"

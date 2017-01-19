@@ -14,6 +14,9 @@
         "lastName": {
             "caption": "Фамилия"
         },
+        "fullName": {
+            "caption": "ФИО"
+        },
         "gender": {
             "caption": "Пол"
         },

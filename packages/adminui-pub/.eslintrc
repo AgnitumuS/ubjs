@@ -2,6 +2,7 @@
   "extends": ["standard"],
   "globals": {
     "Ext": true,
-    "UB": true
+    "UB": true,
+    "$App": true
   }
 } 
