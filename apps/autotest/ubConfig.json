@@ -9,14 +9,14 @@
 		"requestQueueLength": 1000,
 		"maxBandwidth": 0,
 		"maxConnections": 0,
-		"allowCORSFrom": "",
+		"allowCORSFrom": "*",
 		"inetPub": ".\\inetPub\\",
 		//"headersPostprocessors": ["#include(%UB_HOME%\\defHeadersPostprocessors.json)"],
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 12
+		"threadPoolSize": 8
 		//,"additionalURLs": ["http://+:889"]
 	},
 	"wsServer": {
@@ -113,6 +113,12 @@
 					"name": "ORG",
 					"path": "./node_modules/@unitybase/org",
 					"moduleName": "@unitybase/org"
+				},
+				{
+					"name": "ub-pub",
+					"publicPath": "./node_modules/@unitybase/ub-pub",
+					"path": "_public_only_",
+					"moduleName": "@unitybase/ub-pub"
 				},
 				{
 					"name": "adminui-pub",

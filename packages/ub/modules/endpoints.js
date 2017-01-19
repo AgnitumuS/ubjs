@@ -104,7 +104,7 @@ function models (req, resp) {
 }
 
 const MODULES_ROOT = path.join(process.configPath, 'node_modules')
-let MODULE_PUBLICS
+
 /**
  * The `clientRequire` endpoint. Used by client side loaders (SystemJS for example) to emulate commonJS require
  *
@@ -113,8 +113,10 @@ let MODULE_PUBLICS
  * To do this `clientRequire` endpoint:
  *
  *   - allow access only to modules inside application `node_modules` folder
- *   - restrict access to files inside **scoped** (module name start from @) modules if resolved file path is not inside of any model publicPath folder
- *   - all files inside non-scoped modules are accessible to client (since non-scoped modules are public)
+ *   - in case requested module is a UnityBase model (present in ubConfig.json) then restrict access to non-public part of such model
+ *
+ * So developer MUST listen all modules what contains a sensitive server-side business logic in the application
+ * config and set a `moduleName` parameter correctly for such models
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
@@ -152,12 +154,24 @@ function clientRequire (req, resp) {
     return notFound(resp, `"${reqPath}"`)
   }
   if (!resolvedPath.startsWith(MODULES_ROOT)) {
-    return badRequest(resp, `Path (${reqPath}) must be inside modules root folder but instead resolved to ${resolvedPath}`)
+    return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
   }
 
-  if (!MODULE_PUBLICS) MODULE_PUBLICS = _(App.domainInfo.models).map('realPublicPath').filter((x) => !!x).value()
-  if (MODULE_PUBLICS.findIndex((modulePublic) => resolvedPath.startsWith(modulePublic)) === -1) {
-    return badRequest(resp, `${reqPath} resolved to (${resolvedPath}) which is not inside any of module public folder`)
+  // in case this is request to UnityBase model - check resolved file is inside model public folder
+  let models = App.domainInfo.models
+  let restrictAccess = false
+  _.forEach(models, (model) => {
+    if (model.moduleName &&
+      // do not compare req @unitybase/ub-pub with module @unitybase/ub
+      ((reqPath === model.moduleName) || reqPath.startsWith(model.moduleName + '/')) &&
+      !resolvedPath.startsWith(model.realPublicPath)
+    ) {
+      restrictAccess = true
+      return false
+    }
+  })
+  if (restrictAccess) {
+    return badRequest(resp, `Request to UnityBase model ${reqPath} resolved to (${resolvedPath}) which is not inside any of public models folder`)
   }
 
   console.debug(`Resolve ${reqPath} -> ${resolvedPath}`)

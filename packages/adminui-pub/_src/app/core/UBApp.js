@@ -354,10 +354,11 @@ Ext.define('UB.core.UBApp', {
         }
         if (model.needInit) {
           // initScriptForLoad.push(model.path + '/initModel.js')
-          initScriptForLoad.push((model.moduleName || model.path) + '/initModel.js')
+          initScriptForLoad.push(model.clientRequirePath + '/initModel.js')
+          // initScriptForLoad.push((model.moduleName || model.path) + '/initModel.js')
         }
       })
-            // load models initialization script in order they passed
+      // load models initialization script in order they passed
       return Promise.all(localeScriptForLoad).then(function () {
         var promise = Promise.resolve(true)
         initScriptForLoad.forEach(function (script) {
