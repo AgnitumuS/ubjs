@@ -23,7 +23,7 @@ if (window.Q && window.Q.getBluebirdPromise) {
 
 UB.connect({
   host: window.location.origin,
-  path: window.location.pathname,
+  // path: window.location.pathname,
   onCredentialRequired: function (conn, isRepeat) {
     return isRepeat
       ? Promise.reject(new UB.UBAbortError('invalid password for user admin'))

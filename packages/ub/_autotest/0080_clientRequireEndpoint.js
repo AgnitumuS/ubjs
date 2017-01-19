@@ -45,7 +45,18 @@ function testClientRequireEndpoint () {
     /Bad Request/, 'Endpoint clientRequire must restrict access to non-public model folders'
   )
 
-  ok(conn.get(`clientRequire/@unitybase/ub/public/locale/lang-en.js`))
+  assert.throws(
+    () => conn.get(`clientRequire/@ub-e/dses/dses_log.js`),
+    /Bad Request/, 'Endpoint clientRequire must restrict access to model without public folders'
+  )
+
+  assert.throws(
+    () => conn.get(`clientRequire/@unitybase/ub`),
+    /Bad Request/, 'Endpoint clientRequire must restrict access to non-public root of model'
+  )
+
+  ok(conn.get(`clientRequire/@unitybase/ub/public/locale/lang-en.js`), 'Access to public model folder must be allowed')
+  ok(conn.get(`clientRequire/@unitybase/base/LocalDataStore`), 'Access module not defined as model be allowed')
 }
 
 try {

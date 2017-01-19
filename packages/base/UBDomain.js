@@ -342,7 +342,7 @@ function UBModel (cfg) {
     this.needLocalize = cfg.needLocalize
   }
   /**
-   * An odred of model initialization (as it is provided in server domain config)
+   * An order of model initialization (as it is provided in server domain config)
    * @type {number}
    */
   this.order = cfg.order
@@ -350,9 +350,18 @@ function UBModel (cfg) {
    * Module name for `require`
    */
   this.moduleName = cfg.moduleName
-  if (cfg.moduleSuffix && cfg.moduleName) {
-    this.moduleName = this.moduleName + '/' + cfg.moduleSuffix
-  }
+  // if (cfg.moduleSuffix && cfg.moduleName) {
+  //   this.moduleName = this.moduleName + '/' + cfg.moduleSuffix
+  // }
+  /**
+   * The path for retrieve a model public accessible files (using clientRequire endpoint)
+   *
+   * @type {string}
+   */
+  this.clientRequirePath = (cfg.moduleSuffix && cfg.moduleName)
+    ? this.moduleName + '/' + cfg.moduleSuffix
+    : (this.moduleName || this.path)
+
   if (cfg.realPublicPath) {
     /**
      * Server-side domain only - the full path to model public folder (if any)
