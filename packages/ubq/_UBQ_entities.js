@@ -8,88 +8,88 @@
 * @mixes RequiredModule
 */
 var ubq_messages = {
-  /** 
+  /**
    * Reference to entity metadata
-   * @type {TubEntity} 
+   * @type {TubEntity}
    */
   entity: null
-};
+}
 
 /**
 * Attributes of "Message queue"
 * @class
 */
-function ubq_messages_object()  {
+function ubq_messages_object () {
     /**
-    *  
-    * 
+    *
+    *
     * @type {Number}
     */
-    this.ID = 0;
+  this.ID = 0
     /**
-    * Queue code 
+    * Queue code
     * Consumer determinate handler by this code. for each queCode must be consumer which handle it
     * @type {String}
     */
-    this.queueCode = '';
+  this.queueCode = ''
     /**
-    * Command 
+    * Command
     * Command for receiver. Contain JSON serialized object with command parameters. Command must contain attributes receiver understand
     * @type {String}
     */
-    this.msgCmd = '';
+  this.msgCmd = ''
     /**
-    * Message data 
+    * Message data
     * Additional data for message. May contain Base64 encoded binary data
     * @type {String}
     */
-    this.msgData = '';
+  this.msgData = ''
     /**
-    * Priority 
+    * Priority
     * Priority of messages. 1&#x3D;High, 0&#x3D;Low, default 0
     * @type {Number}
     */
-    this.msgPriority = 0;
+  this.msgPriority = 0
     /**
-    * Complete date 
+    * Complete date
     * @type {Date}
     */
-    this.completeDate = new Date();
+  this.completeDate = new Date()
     /**
     *  (ref -> uba_user)
     * Row owner
-    * 
+    *
     * @type {Number}
     */
-    this.mi_owner = 0;
+  this.mi_owner = 0
     /**
-    *  
+    *
     * Creation date
-    * 
+    *
     * @type {Date}
     */
-    this.mi_createDate = new Date();
+  this.mi_createDate = new Date()
     /**
     *  (ref -> uba_user)
     * User who create row
-    * 
+    *
     * @type {Number}
     */
-    this.mi_createUser = 0;
+  this.mi_createUser = 0
     /**
-    *  
+    *
     * Modification date
-    * 
+    *
     * @type {Date}
     */
-    this.mi_modifyDate = new Date();
+  this.mi_modifyDate = new Date()
     /**
     *  (ref -> uba_user)
     * User who modify row
-    * 
+    *
     * @type {Number}
     */
-    this.mi_modifyUser = 0;
+  this.mi_modifyUser = 0
 }
 
 /**
@@ -98,62 +98,62 @@ function ubq_messages_object()  {
 * @mixes RequiredModule
 */
 var ubq_runstat = {
-  /** 
+  /**
    * Reference to entity metadata
-   * @type {TubEntity} 
+   * @type {TubEntity}
    */
   entity: null
-};
+}
 
 /**
 * Attributes of "Scheduler run statistic"
 * @class
 */
-function ubq_runstat_object()  {
+function ubq_runstat_object () {
     /**
-    *  
-    * 
+    *
+    *
     * @type {Number}
     */
-    this.ID = 0;
+  this.ID = 0
     /**
-    * Application name 
+    * Application name
     * @type {String}
     */
-    this.appName = '';
+  this.appName = ''
     /**
-    * Scheduler name 
+    * Scheduler name
     * @type {String}
     */
-    this.schedulerName = '';
+  this.schedulerName = ''
     /**
-    * Time of start scheduler item 
+    * Time of start scheduler item
     * Time of start scheduler item
     * @type {Date}
     */
-    this.startTime = new Date();
+  this.startTime = new Date()
     /**
-    * Time of end scheduler item 
+    * Time of end scheduler item
     * Time of end scheduler item
     * @type {Date}
     */
-    this.endTime = new Date();
+  this.endTime = new Date()
     /**
-    * Log from runned script about all actions 
+    * Log from runned script about all actions
     * Log from runned script about all actions
     * @type {String}
     */
-    this.logText = '';
+  this.logText = ''
     /**
-    * Result error code. 0&#x3D;No error 
+    * Result error code. 0&#x3D;No error
     * @type {Number}
     */
-    this.resultError = 0;
+  this.resultError = 0
     /**
-    * Error text message if resultError &gt; 0 
+    * Error text message if resultError &gt; 0
     * @type {String}
     */
-    this.resultErrorMsg = '';
+  this.resultErrorMsg = ''
 }
 
 /**
@@ -162,89 +162,89 @@ function ubq_runstat_object()  {
 * @mixes RequiredModule
 */
 var ubq_scheduler = {
-  /** 
+  /**
    * Reference to entity metadata
-   * @type {TubEntity} 
+   * @type {TubEntity}
    */
   entity: null
-};
+}
 
 /**
 * Attributes of "Schedulers"
 * @class
 */
-function ubq_scheduler_object()  {
+function ubq_scheduler_object () {
     /**
-    *  
+    *
     * crc32(name)
     * @type {Number}
     */
-    this.ID = 0;
+  this.ID = 0
     /**
-    * Job name 
+    * Job name
     * Unique job name. Models will override a jobs with the same name in order models are listen in server configuration
     * @type {String}
     */
-    this.name = '';
+  this.name = ''
     /**
-    * Condition to schedule a job 
+    * Condition to schedule a job
     * Expression to be evaluated during server startup. In case result is empty or evaluated to &#x60;true&#x60; job will be scheduled
     * @type {String}
     */
-    this.schedulingCondition = '';
+  this.schedulingCondition = ''
     /**
-    * Cron record 
+    * Cron record
     * A cron for job as in unix systems. Format: &#39;Seconds(0-59) Minutes(0-59) Hours(0-23) DayOfMonth(1-31) Months(0-11) DayOfWeek(0-6)&#39;
     * @type {String}
     */
-    this.cron = '';
+  this.cron = ''
     /**
-    * Description 
+    * Description
     * Job description
     * @type {String}
     */
-    this.description = '';
+  this.description = ''
     /**
-    * Command 
+    * Command
     * Name of function to be executed in a server context
     * @type {String}
     */
-    this.command = '';
+  this.command = ''
     /**
-    * Singleton 
+    * Singleton
     * If &#x60;1&#x60; - only single instance of a running job is allowed
     * @type {Boolean}
     */
-    this.singleton = undefined;
+  this.singleton = undefined
     /**
-    * runAs 
+    * runAs
     * A user name for a job execution
     * @type {String}
     */
-    this.runAs = '';
+  this.runAs = ''
     /**
-    * Log a Successful execution 
+    * Log a Successful execution
     * If 1 (default) then successful job execution result will be logged into &#x60;ubq_runstat&#x60;, otherwise - only errors
     * @type {Boolean}
     */
-    this.logSuccessful = undefined;
+  this.logSuccessful = undefined
     /**
-    * Overridden 
+    * Overridden
     * Indicate original job is overridden by other models
     * @type {Boolean}
     */
-    this.overridden = undefined;
+  this.overridden = undefined
     /**
-    * OriginalModel 
+    * OriginalModel
     * A model name where original job definition file is stored
     * @type {String}
     */
-    this.originalModel = '';
+  this.originalModel = ''
     /**
-    * Actual model 
+    * Actual model
     * A name of model where actual job definition file is stored. Can de not equal to &#x60;originalModel&#x60; if someone overrides the job
     * @type {String}
     */
-    this.actualModel = '';
+  this.actualModel = ''
 }
 

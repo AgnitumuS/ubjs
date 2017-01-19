@@ -1,6 +1,6 @@
 ﻿var me = uba_user
 
-var UBA_COMMON = require('./modules/uba_common')
+var UBA_COMMON = require('@unitybase/base').uba_common
 const http = require('http')
 
 me.entity.addMethod('changeLanguage')
@@ -23,24 +23,35 @@ Session.on('registration', function (registrationParams) {
  * @param {ubMethodParams} ctxt
  */
 function checkDuplicateUser (ctxt) {
-  'use strict'
   var params = ctxt.mParams.execParams,
     newName = params.name,
     ID = params.ID
   if (newName) {
-    var repo = UB.Repository('uba_user').attrs('ID').where('name', '=', newName.toLowerCase())
+    let repo = UB.Repository('uba_user').attrs('ID').where('name', '=', newName.toLowerCase())
     if (ID) {
       repo = repo.where('ID', '<>', ID)
     }
-    var store = repo.select()
+    let store = repo.select()
     if (!store.eof) {
       throw new UB.UBAbort('<<<Duplicate user name (may be in different case)>>>')
     }
-	    params.name = newName.toLowerCase() // convert user name to lower case
+    params.name = newName.toLowerCase() // convert user name to lower case
   }
 }
 me.on('insert:before', checkDuplicateUser)
 me.on('update:before', checkDuplicateUser)
+
+/**
+ * Set fullName = name in case fullName is missing
+ * @param {ubMethodParams} ctxt
+ */
+function fillFullNameIfMissing (ctxt) {
+  let params = ctxt.mParams.execParams
+  if (!params.fullName) {
+    params.fullName = params.name
+  }
+}
+me.on('insert:before', fillFullNameIfMissing)
 
 /**
  * @param {Number} userID
@@ -197,8 +208,9 @@ App.registerEndpoint('changePassword',
           oldPwd = store.get('uPasswordHashHexa')
         }
             // checkPrevPwd
-        if (pwd !== oldPwd)
-              { throw new UB.UBAbort('<<<Incorrect old password>>>') }
+        if (pwd !== oldPwd) {
+          throw new UB.UBAbort('<<<Incorrect old password>>>')
+        }
       }
       me.changePassword(userID, forUser, newPwd, needChangePassword, oldPwd)
 
@@ -261,8 +273,9 @@ function ubaAuditNewUser (ctx) {
   if (!App.domain.byName('uba_audit')) {
     return
   }
-  var params = ctx.mParams.execParams
-  var store = new TubDataStore('uba_audit')
+
+  let params = ctx.mParams.execParams
+  let store = new TubDataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_user',
@@ -493,7 +506,7 @@ function processRegistrationStep2 (resp, otp, login) {
 }
 
 const mailQueue = require('@unitybase/ubq/modules/mail-queue')
-const UBReport = require('@unitybase/ubs/public/UBReport.js')
+const UBReport = require('@unitybase/ubs/modules/UBServerReport')
 
 /**
  * 2-step new user public registration rest endpoint.

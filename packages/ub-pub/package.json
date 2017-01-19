@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "description": "UnityBase data layer for Browser client",
   "main": "index.js",
   "config": {
@@ -13,7 +13,6 @@
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
     "prepublish": "npm run build",
-    "postinstall": "ubcli flow/modelInstalled",
     "test": "npm run test"
   },
   "public": true,
@@ -21,7 +20,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.0.6",
+    "@unitybase/base": "^4.0.7",
     "lodash": "^4",
     "@unitybase/cryptojs": "^1.0.5"
   },

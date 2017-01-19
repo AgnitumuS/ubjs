@@ -272,8 +272,10 @@ function UBConnection (connectionParams) {
     let me = this
     if (currentSession) return Promise.resolve(currentSession)
 
+    if (this._perningAuthPromise) return this._perningAuthPromise
+
     this.exchangeKeysPromise = null
-    return requestAuthParams(this, isRepeat)
+    let pendedAuth = this._perningAuthPromise = requestAuthParams(this, isRepeat)
       .then(function (authParams) {
         return me.doAuth(authParams).then(function (session) {
           currentSession = session
@@ -282,6 +284,7 @@ function UBConnection (connectionParams) {
            * @event authorized
            */
           me.emit('authorized', me, session, authParams)
+          me._perningAuthPromise = null
           return session
         }).catch(function (reason) {
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
@@ -291,9 +294,11 @@ function UBConnection (connectionParams) {
              */
             me.emit('authorizationFail', reason)
           }
+          me._perningAuthPromise = null
           return me.authorize(true)
         })
       })
+    return pendedAuth
   }
 
     /**
@@ -736,7 +741,7 @@ UBConnection.prototype.cacheClearAll = function () {
  */
 UBConnection.prototype.pki = function () {
   let me = this
-  return new Promise(function(resolve, reject){
+  return new Promise(function (resolve, reject) {
     if (!me._pki) {
       me._pki = new UBNativeIITCrypto()
       me._pkiInit = me._pki.init()

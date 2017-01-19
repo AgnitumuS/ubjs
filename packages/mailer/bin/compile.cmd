@@ -1,34 +1,11 @@
+@echo off
 if not defined SRC (
-  SET SRC=\SVN\M3\trunk\06-Source
-  SET DELPHI_XE2=d:\delphixe2
-  SET DELPHI_7=d:\delphi7
-  SET INNO_SETUP=d:\Inno Setup 5\
-)
-set DCC="%DELPHI_XE2%\bin\dcc32.exe"
-set DCC64="%DELPHI_XE2%\bin\dcc64.exe"
-
-set BRCC="%DELPHI_XE2%\bin\brcc32.exe"
-set DCC7="%DELPHI_7%\bin\dcc32.exe"
-set BRCC7="%DELPHI_7%\bin\brcc32.exe"
-set LIB=%SRC%\libs
-set LIB_VENDOR=%SRC%\libs_vendor
-set UB_CORE=%SRC%\core
-set SYN_LIB=%LIB%\Synopse;%LIB%\Synopse\SQLite3;%LIB%\Synopse\SyNode
-set ZEOS_LIB=%LIB%\Zeos\src;%LIB%\Zeos\src\core;%LIB%\Zeos\src\component;%LIB%\Zeos\src\plain;%LIB%\Zeos\src\parsesql;%LIB%\Zeos\src\dbc
-
-set DCU_PATH=%SRC%\.dcu
-set DCU7_PATH=%SRC%\.dcu\7
-if defined BuildX64 (
-set DCUX64_PATH=%SRC%\.dcu\x64
+  echo SRC environment variable must be defined
+  exit 1
 )
 
-set EXE_PATH=%SRC%
-
-set UNIT_PATH=%SYN_LIB%;%LIB%\FastMM;%ZEOS_LIB%;^
-%LIB%\synapse40\source\lib;^
-%LIB_VENDOR%\Bitis\novalibv3dcudex2;%LIB_VENDOR%\Bitis\novalibv3extdcudex2;^
-%LIB%\Stemka\library
-
+call %SRC%\bin\setCompilerEnv.cmd
+if not exist %~dp0x32 mkdir %~dp0x32
 cd %~dp0..\src
 %DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\bin\x32 ^
   -I%SYN_LIB% ^
@@ -37,6 +14,7 @@ cd %~dp0..\src
   -N%DCU7_PATH% ^
   UBMail.dpr
 
+if not exist %~dp0x64 mkdir %~dp0x64
 %DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\bin\x64 ^
   -NSSystem;Winapi;System.Win; ^
   -I%SYN_LIB% ^

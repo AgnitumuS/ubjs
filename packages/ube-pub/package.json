@@ -1,6 +1,6 @@
 {
   "name": "@ub-e/ube-pub",
-  "version": "4.0.1",
+  "version": "4.0.3",
   "description": "UnityBase admin UI enterprise components",
   "main": "adminui.js",
   "config": {
@@ -8,13 +8,9 @@
     "ubmodelispublic": true
   },
   "scripts": {
-    "build:old": "build.cmd",
-    "build": "NODE_ENV=production && webpack",
-    "build:watch": "webpack --progress --colors --watch",
-    "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "build": "SET NODE_ENV=production && call ./bin/compile.cmd",
     "lint": "eslint source test",
-    "prepublish": "rem npm run build",
-    "postinstall": "ubcli flow/modelInstalled",
+    "prepublish": "npm run build",
     "test": "npm run test"
   },
   "public": true,
@@ -22,9 +18,9 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.0.6",
-    "@unitybase/ub-pub": "^4.0.7",
-    "@unitybase/adminui-pub": "^4.0.6"
+    "@unitybase/base": "^4.0.7",
+    "@unitybase/ub-pub": "^4.0.8",
+    "@unitybase/adminui-pub": "^4.0.8"
   },
   "devDependencies": {},
   "keywords": [

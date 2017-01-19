@@ -5,12 +5,14 @@
 Ext.define('UBE.WorkflowViewer', {
     extend: 'UB.view.BaseWindow', // 'Ext.Window',
     alias: 'widget.workflow',
-    requires: [
+    // IMPORTANT! UB.core.UBApp must be in uses not in requires
+    uses: [
         'UB.core.UBApp',
         'UB.core.UBStoreManager',
         'UB.view.NavigationPanel',
         'Ext.ux.window.Notification'
     ],
+
     //maximized: true,
     layout: 'border',
     title: 'Workflow',
@@ -19,11 +21,9 @@ Ext.define('UBE.WorkflowViewer', {
 
     initComponent: function(){
         var
-            me = this, editor;
+            me = this;
 
         me.idPrefix  = Ext.id();
-
-
         var
             id =  me.idPrefix + 'graph',
             html = '<div id="' + id+'" class="graph-editor-holder"></div>';
@@ -66,7 +66,7 @@ Ext.define('UBE.WorkflowViewer', {
 
         var
             config = mxUtils.load(window.mxBasePath + '/resources/config/workfloweditor.xml').getDocumentElement(),
-            me = this, editor, graph, el;
+            me = this, editor, graph;
 
         me.editor = editor = new mxEditor(config);
         graph = editor.graph;
@@ -152,8 +152,7 @@ Ext.define('UBE.WorkflowViewer', {
         editor.hideProperties = Ext.Function.bind(me.hideProperties, me);
 
 
-        editor.addAction('toggleOutline', function(editor)
-        {
+        editor.addAction('toggleOutline', function(editor) {
             if (editor.outline === null) {
                 editor.showOutline();
             } else {
@@ -353,11 +352,13 @@ Ext.define('UBE.WorkflowViewer', {
             // graph and computes the location of the dialog
             editor.graph.stopEditing(true);
 
+            /*
             var offset = mxUtils.getOffset(editor.graph.container);
+
             var x = offset.x+10;
             var y = offset.y;
 
-            /*
+
             // Avoids moving the dialog if it is alredy open
             if (editor.properties !== null && !editor.movePropertiesDialog)
             {
@@ -420,11 +421,9 @@ Ext.define('UBE.WorkflowViewer', {
     },
 
 
-    hideProperties:  function ()
-    {
-        var
-            me = this,
-            editor = me.editor, cell;
+    hideProperties: function () {
+        var me = this
+        var editor = me.editor
         if (editor.properties !== null)
         {
             editor.properties.close();

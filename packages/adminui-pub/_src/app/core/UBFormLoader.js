@@ -4,12 +4,12 @@
  */
 Ext.define('UB.core.UBFormLoader', {
     requires: [
-        'UB.core.UBApp',
         'UB.core.UBAppConfig',
         'UB.core.UBService',
         'UB.core.UBUtil',
         'UB.core.UBCommand'
     ],
+    uses: ['UB.core.UBApp'],
 
     singleton: true,
     formType: {

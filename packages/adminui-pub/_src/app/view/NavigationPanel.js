@@ -13,7 +13,8 @@ Ext.define('UB.view.NavigationPanel', {
     ],
 
     uses: [
-        'UB.view.Viewport'
+      'UB.core.UBApp',
+      'UB.view.Viewport'
     ],
     cls: 'tree_wrap',
     //singleExpand: true,

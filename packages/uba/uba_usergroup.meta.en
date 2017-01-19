@@ -1,8 +1,12 @@
 ﻿{
-	"userID": {
-		"caption": "User"
-	},
-	"groupID": {
-		"caption": "Group"
-	}
+   "caption": "User Groups",
+   "description": "User memberships in groups",
+   "attributes": {
+        "userID": {
+            "caption": "User"
+        },
+        "groupID": {
+            "caption": "Group"
+        }
+   }
 }
