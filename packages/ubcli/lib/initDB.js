@@ -44,7 +44,7 @@ module.exports = function initDB (cfg) {
   if (!cfg) {
     var opts = options.describe('initDB', 'Prepare a new database for a UB ORM', 'ubcli')
           .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-          .add({short: 'c', long: 'clientIdentifier', param: 'clientIdentifier', defaultValue: 3, searchInEnv: false, help: 'Identifier of the client'})
+          .add({short: 'c', long: 'clientIdentifier', param: 'clientIdentifier', defaultValue: 3, searchInEnv: false, help: 'Identifier of the client. Must be between 2 and 8999. \n\t1 is for UnityBase developer, 3 for test. \n\tNumbers > 100 is for real installations'})
           .add({short: 'drop', long: 'dropDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Drop a database/schema first'})
           .add({short: 'create', long: 'createDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Create a new database/schema'})
           .add({short: 'dba', long: 'dba', param: 'DBA_user_name', defaultValue: '', searchInEnv: false, help: 'A DBA name. Used in case `createDatabase=true`'})
@@ -52,10 +52,12 @@ module.exports = function initDB (cfg) {
     cfg = opts.parseVerbose({}, true)
   }
   if (!cfg) return
-  var session, conn, defaultDB, generator
-
-  var originalConfigFileName = argv.getConfigFileName()
-  var config = argv.getServerConfiguration()
+  let session, conn, defaultDB, generator
+  if (cfg.clientIdentifier > 8998) {
+    throw new Error('clientIdentifier (-c parameter) must be between 1 and 8999')
+  }
+  let originalConfigFileName = argv.getConfigFileName()
+  let config = argv.getServerConfiguration()
   cfg.host = argv.serverURLFromConfig(config)
 
     // database are slow :( Increase timeout to 2 minutes
@@ -71,7 +73,7 @@ module.exports = function initDB (cfg) {
     cfg.forceStartServer = true
     session = argv.establishConnectionFromCmdLineAttributes(cfg)
     conn = session.connection
-    var dbDriverName = defaultDB.driver.toLowerCase()
+    let dbDriverName = defaultDB.driver.toLowerCase()
     if (dbDriverName.startsWith('mssql')) {
       dbDriverName = 'mssql'
     }
@@ -98,9 +100,9 @@ module.exports = function initDB (cfg) {
      * Return a default database driver name
      */
   function createFakeConfig () {
-    var defaultDB = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
-    var newConfig = _.cloneDeep(config)
-    var dbaConn
+    let defaultDB = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+    let newConfig = _.cloneDeep(config)
+    let dbaConn
 
     newConfig.security = {}
     newConfig.application.domain = { models: _.filter(config.application.domain.models, {name: 'UB'}) }
@@ -131,8 +133,8 @@ module.exports = function initDB (cfg) {
  * @param {String} dbDriverName
  */
 function fillBuildInRoles (conn, dbDriverName) {
-  var initSecurity = []
-  var isoDate, auditTailColumns, auditTailValues
+  let initSecurity = []
+  let isoDate, auditTailColumns, auditTailValues
 
   if (dbDriverName === 'sqlite3') {
     isoDate = "'" + new Date().toISOString().slice(0, -5) + "Z'"
