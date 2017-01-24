@@ -12,10 +12,11 @@ Ext.define("UB.core.UBLocalStorageManager", {
     singleton: true,
 
     requires: [
-        "UB.core.UBApp",
         "UB.core.UBAppConfig",
         "UB.core.UBUtil"
     ],
+
+  uses: ["UB.core.UBApp"],
 
     separator: ":",
 
