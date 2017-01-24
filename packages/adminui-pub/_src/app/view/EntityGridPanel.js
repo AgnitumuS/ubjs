@@ -1,4 +1,5 @@
 require('../core/UBStoreManager')
+require('../core/UBEnumManager')
 require('../ux/Multifilter')
 require('./PagingToolbar')
 require('../../ux/exporter/Exporter')
