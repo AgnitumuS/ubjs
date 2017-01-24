@@ -1,4 +1,4 @@
-require('../core/UBApp')
+//cyclic require('../core/UBApp')
 require('../core/UBAppConfig')
 require('../core/UBUtil')
 require('../core/UBLocalStorageManager')

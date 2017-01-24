@@ -1,5 +1,5 @@
 require('./ToolbarWidget')
-require('../core/UBApp')
+// cyclic require('../core/UBApp')
 require('../core/UBStoreManager')
 require('../core/UBUtil')
 /**

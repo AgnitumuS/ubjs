@@ -3,6 +3,8 @@
  */
 var webpack = require('webpack')
 
+//var CircularDependencyPlugin = require('circular-dependency-plugin')
+
 function isExternal (module) {
   var userRequest = module.userRequest
 
@@ -53,6 +55,12 @@ module.exports = {
     	  }
   	}),*/
 
+//    new CircularDependencyPlugin({
+      // exclude detection of files based on a RegExp 
+      //exclude: /a\.js/,
+      // add errors to webpack instead of warnings 
+//      failOnError: true
+//    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
