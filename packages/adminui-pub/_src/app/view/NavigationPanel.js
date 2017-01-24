@@ -1,16 +1,21 @@
-﻿/**
+﻿require('../core/UBApp')
+require('../core/UBAppConfig')
+require('../core/UBStoreManager')
+require('../core/UBUtilTree')
+require('../ux/tree/Column')
+/**
  * Реализует функционал панели навигации приложения
  */
 Ext.define('UB.view.NavigationPanel', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.navigationpanel',
-    requires: [
-        'UB.core.UBApp',
-        'UB.core.UBAppConfig',
-        'UB.core.UBStoreManager',
-        'UB.core.UBUtilTree',
-        'UB.ux.tree.Column'
-    ],
+    // requires: [
+    //     'UB.core.UBApp',
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBStoreManager',
+    //     'UB.core.UBUtilTree',
+    //     'UB.ux.tree.Column'
+    // ],
 
     uses: [
       'UB.core.UBApp',

@@ -1,3 +1,7 @@
+require('./app/core/UBApp')
+require('./app/view/UBDropZone')
+require('./app/view/ErrorWindow')
+
 /**
  * Main UnityBase Ext-based client file
  */
@@ -104,28 +108,33 @@ function launchApp () {
   Ext.Loader.loadScriptFileBase = Ext.Loader.loadScriptFile
   Ext.Loader.loadScriptFile = function (url, onLoad, onError, scope, synchronous) {
     // debugger
-    // Ext.Loader.isLoading = true
-    // System.import(url).then(
-    //   function () {
-    //     return onLoad.call(scope)
-    //   },
-    //   function () {
-    //     return onError.call(scope)
-    //   }
-    // )
-    var config = this.getConfig()
-    if (!config.disableCaching) {
-      url = addResourceVersion(url)
+    try {
+      throw new Error('Component "' + url + '" is loaded directly using Ext.require or inderectly by one of Ext.create({"requires":.., "extend": ..., "mixins": ...}) directive) - in UB4 use require() instead')
+    } catch (e) {
+      console.warn(e)
     }
-    this.loadScriptFileBase(url, onLoad, onError, scope, synchronous)
+    Ext.Loader.isLoading = true
+    System.import(url).then(
+      function () {
+        return onLoad.call(scope)
+      },
+      function () {
+        return onError.call(scope)
+      }
+    )
+    // var config = this.getConfig()
+    // if (!config.disableCaching) {
+    //   url = addResourceVersion(url)
+    // }
+    // this.loadScriptFileBase(url, onLoad, onError, scope, synchronous)
   }
 
-  Ext.require([
-    'UB.core.UBApp',
-    'UB.view.UBDropZone',
-    'UB.view.ErrorWindow',
-    'Ext.AbstractManager'
-  ])
+  // Ext.require([
+  //   'UB.core.UBApp',
+  //   'UB.view.UBDropZone',
+  //   'UB.view.ErrorWindow',
+  //   'Ext.AbstractManager'
+  // ])
   Ext.onReady(extLoaded)
   /**
    * !!!

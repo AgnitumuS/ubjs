@@ -1,3 +1,4 @@
+require('./UBObject.js')
 /**
  * Class for visualise PDF filed
  */

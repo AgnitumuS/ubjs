@@ -1,3 +1,7 @@
+require('../ux/data/UBStore')
+require('../view/SelectPeriodDialog')
+require('../view/ToolbarWidget')
+
 /**
  *  Widget for MainToolbar. This widget is showing controls in toolbar for start full text search.
  *
@@ -20,10 +24,10 @@ Ext.define('UB.view.FullTextSearchWidget', {
     alias: 'widget.ubfulltextsearchwidget',
     requires: [
         'Ext.form.field.Text',
-        'UB.ux.data.UBStore',
+        // 'UB.ux.data.UBStore',
         'Ext.data.Store',
-        'Ext.button.Button',
-        'UB.view.SelectPeriodDialog'
+        'Ext.button.Button'
+        // 'UB.view.SelectPeriodDialog'
     ],
   uses: ['UB.core.UBApp'],
 

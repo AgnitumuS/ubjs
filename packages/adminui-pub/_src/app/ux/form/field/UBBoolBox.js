@@ -1,3 +1,4 @@
+require('./UBBaseComboBox')
 /**
  * ComboBox to select values true, false and optional blank
  */

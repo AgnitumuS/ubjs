@@ -1,4 +1,35 @@
-﻿/*global saveAs, UBDomain  */
+﻿require('../ux/form/field/UBText')
+require('../ux/form/field/UBTextArea')
+require('../ux/form/field/UBBoxSelect')
+require('../ux/form/field/ComboExtraButtons')
+require('./FormDataBinder')
+require('../ux/UBDocument')
+require('../ux/UBDetailGrid')
+require('../ux/UBDetailTree')
+require('../ux/form/field/UBDictComboBox')
+require('../ux/form/field/UBComboBox')
+require('../ux/form/field/UBDate')
+require('../ux/form/field/UBDateTime')
+require('../ux/form/field/UBBoolBox')
+require('../ux/form/UBFieldSet')
+require('../core/UBDataLoader')
+require('./ErrorWindow')
+require('./DocumentVersions')
+require('../ux/LockManager')
+require('./UBForm')
+require('../ux/form/HtmlEditor')
+require('./UploadFileAjax')
+require('../ux/UBTinyMCETextArea')
+require('../core/UBPanelMixin')
+require('../ux/form/UBPlanFactContainer')
+  // TODO - move CommandBuilder requires to shortcut editor
+require('./CommandBuilder/CommandTypeComboBox')
+require('./CommandBuilder/FormsComboBox')
+require('./CommandBuilder/EntityTreePanel')
+require('./CommandBuilder/AttributesGridPanel')
+require('../ux/form/field/AdvancedTextArea')
+
+/*global saveAs, UBDomain  */
 /**
  * BasePanel provides a standard container for Entity-based forms. It is essentially a standard {@link Ext.form.Panel} which
  * creates his inner layout based on form definition file (`formCode`-fm.def) - a form View, and add behaviors based on
@@ -82,42 +113,42 @@ Ext.define('UB.view.BasePanel', {
     alias: 'widget.basepanel',
     border: false,
 
-    requires: [
-        'Ext.ux.form.field.BoxSelect',
-        'UB.ux.form.field.UBText',
-        'UB.ux.form.field.UBTextArea',
-        'UB.ux.form.field.UBBoxSelect',
-        'UB.ux.form.field.ComboExtraButtons',
-        'UB.view.FormDataBinder',
-        'UB.ux.UBDocument',
-        'UB.ux.UBDetailGrid',
-        'UB.ux.UBDetailTree',
-        'UB.ux.form.field.UBDictComboBox',
-        'UB.ux.form.field.UBComboBox',
-        'UB.ux.form.field.UBDate',
-        'UB.ux.form.field.UBDateTime',
-        'UB.ux.form.field.UBBoolBox',
-        'UB.ux.form.UBFieldSet',
-        'UB.core.UBDataLoader',
-        'UB.view.ErrorWindow',
-        'UB.view.DocumentVersions',
-        'UB.ux.LockManager',
-        'UB.view.UBForm',
-        'Ext.ux.form.TinyMCETextArea',
-        'UB.ux.form.HtmlEditor',
-        'UB.view.UploadFileAjax',
-        'UB.ux.UBTinyMCETextArea',
-        'UB.core.UBPanelMixin',
-        'UB.ux.form.UBPlanFactContainer',
-      // TODO - move CommandBuilder requires to shortcut editor
-          "UB.view.CommandBuilder.EntitiesComboBox",
-          "UB.view.CommandBuilder.CommandTypeComboBox",
-          "UB.view.CommandBuilder.FormsComboBox",
-          "UB.view.CommandBuilder.EntityTreePanel",
-          "UB.view.CommandBuilder.AttributesGridPanel",
-          "UB.ux.form.field.AdvancedTextArea"
-
-    ],
+    // requires: [
+    //     'Ext.ux.form.field.BoxSelect',
+    //     'UB.ux.form.field.UBText',
+    //     'UB.ux.form.field.UBTextArea',
+    //     'UB.ux.form.field.UBBoxSelect',
+    //     'UB.ux.form.field.ComboExtraButtons',
+    //     'UB.view.FormDataBinder',
+    //     'UB.ux.UBDocument',
+    //     'UB.ux.UBDetailGrid',
+    //     'UB.ux.UBDetailTree',
+    //     'UB.ux.form.field.UBDictComboBox',
+    //     'UB.ux.form.field.UBComboBox',
+    //     'UB.ux.form.field.UBDate',
+    //     'UB.ux.form.field.UBDateTime',
+    //     'UB.ux.form.field.UBBoolBox',
+    //     'UB.ux.form.UBFieldSet',
+    //     'UB.core.UBDataLoader',
+    //     'UB.view.ErrorWindow',
+    //     'UB.view.DocumentVersions',
+    //     'UB.ux.LockManager',
+    //     'UB.view.UBForm',
+    //     'Ext.ux.form.TinyMCETextArea',
+    //     'UB.ux.form.HtmlEditor',
+    //     'UB.view.UploadFileAjax',
+    //     'UB.ux.UBTinyMCETextArea',
+    //     'UB.core.UBPanelMixin',
+    //     'UB.ux.form.UBPlanFactContainer',
+    //   // TODO - move CommandBuilder requires to shortcut editor
+    //       "UB.view.CommandBuilder.EntitiesComboBox",
+    //       "UB.view.CommandBuilder.CommandTypeComboBox",
+    //       "UB.view.CommandBuilder.FormsComboBox",
+    //       "UB.view.CommandBuilder.EntityTreePanel",
+    //       "UB.view.CommandBuilder.AttributesGridPanel",
+    //       "UB.ux.form.field.AdvancedTextArea"
+    //
+    // ],
 
     uses: [
         'UB.core.UBAppConfig',

@@ -1,4 +1,5 @@
-﻿/**
+﻿require('./UBAppConfig')
+/**
  * Файл: UB.core.UBUtil.js
  * Автор: Игорь Ноженко
  * 
@@ -8,9 +9,9 @@
 Ext.define("UB.core.UBUtil", {
     singleton: true,
 
-    requires: [
-        "UB.core.UBAppConfig"
-    ],
+    // requires: [
+    //     "UB.core.UBAppConfig"
+    // ],
 
     /**
      * Dictionary of system glyph for font icons. Values is a number or FontAwesome character

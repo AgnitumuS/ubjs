@@ -1,19 +1,28 @@
+require('./OverflowSelect') // MPV Important for rolluped version
+require('./UBBar')
+require('../core/UBStoreManager')
+require('./MainToolbar')
+require('./NavigationPanel')
+require('./LeftPanel')
+require('../../ux/window/Notification')
+require('../../ux/form/CheckboxGroupFix')
+require('../ux/UBToolTipOverride')
 /**
  * UnityBase Ext-based client main viewport
  */
 Ext.define('UB.view.Viewport', {
   extend: 'Ext.container.Viewport',
-  requires: [
-    'UB.view.OverflowSelect', // MPV Important for rolluped version
-    'UB.view.UBBar',
-    'UB.core.UBStoreManager',
-    'UB.view.MainToolbar',
-    'UB.view.NavigationPanel',
-    'UB.view.LeftPanel',
-    'Ext.ux.window.Notification',
-    'Ext.ux.form.CheckboxGroupFix',
-    'UB.ux.UBToolTipOverride'
-  ],
+  // requires: [
+  //   'UB.view.OverflowSelect', // MPV Important for rolluped version
+  //   'UB.view.UBBar',
+  //   'UB.core.UBStoreManager',
+  //   'UB.view.MainToolbar',
+  //   'UB.view.NavigationPanel',
+  //   'UB.view.LeftPanel',
+  //   'Ext.ux.window.Notification',
+  //   'Ext.ux.form.CheckboxGroupFix',
+  //   'UB.ux.UBToolTipOverride'
+  // ],
   uses: ['UB.core.UBApp'],
 
   initComponent: function () {

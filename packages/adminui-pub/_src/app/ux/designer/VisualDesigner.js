@@ -1,3 +1,5 @@
+require('./ComponentInfo')
+require('./PropertyGrid')
 /*global js_beautify */
 /**
  * Visual form designer
@@ -6,8 +8,8 @@ Ext.define('UB.ux.designer.VisualDesigner', {
     extend: 'Ext.Panel',
     alias: 'widget.UBVDesigner',
     requires: [
-        'UB.ux.designer.ComponentInfo',
-        'UB.ux.designer.PropertyGrid',
+        // 'UB.ux.designer.ComponentInfo',
+        // 'UB.ux.designer.PropertyGrid',
         "Ext.tree.Panel",
         "Ext.data.TreeStore"
     ],

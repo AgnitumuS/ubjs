@@ -1,12 +1,17 @@
+require('../core/UBAppConfig')
+require('../core/UBStoreManager')
+require('../core/UBUtilTree')
+require('./NavigationPanel')
+
 Ext.define('UB.view.NavAccordion', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.navaccordion',
-    requires: [
-        'UB.core.UBAppConfig',
-        'UB.core.UBStoreManager',
-        'UB.core.UBUtilTree',
-        'UB.view.NavigationPanel'
-    ],
+    // requires: [
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBStoreManager',
+    //     'UB.core.UBUtilTree',
+    //     'UB.view.NavigationPanel'
+    // ],
   uses: ['UB.core.UBApp'],
     layout: {
         // layout-specific configs go here

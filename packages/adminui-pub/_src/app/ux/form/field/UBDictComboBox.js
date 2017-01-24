@@ -1,3 +1,4 @@
+require('./UBComboBox')
 /**
  * UBComboBox descendant with ability to add new row to lookup entity in "silence" mode.
  *

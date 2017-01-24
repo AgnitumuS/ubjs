@@ -1,3 +1,7 @@
+require('./ToolbarWidget')
+require('../core/UBApp')
+require('../core/UBStoreManager')
+require('../core/UBUtil')
 /**
  *  Widget for MainToolbar. Put Desktop(s) as main menu items inside MainToolbar.
  *  Desktop Shortcut(s) a created as a child items for each desktop.
@@ -8,10 +12,10 @@ Ext.define('UB.view.ToolbarMenu', {
     extend: 'UB.view.ToolbarWidget',
     alias: "widget.ubtoolbarmenu",
     requires: [
-        "UB.core.UBApp",
-        "UB.core.UBStoreManager",
-        "Ext.menu.Menu",
-        "UB.core.UBUtil"
+        // "UB.core.UBApp",
+        // "UB.core.UBStoreManager",
+        "Ext.menu.Menu"
+        // "UB.core.UBUtil"
     ],
 
     border: 0,

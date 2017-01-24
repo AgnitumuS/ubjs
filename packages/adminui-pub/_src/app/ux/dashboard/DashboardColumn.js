@@ -1,8 +1,9 @@
+require('./Portlet')
 Ext.define('UB.ux.dashboard.DashboardColumn', {
     extend: 'Ext.container.Container',
     alias: 'widget.dashboardcolumn',
 
-    requires: ['UB.ux.dashboard.Portlet'],
+    // requires: ['UB.ux.dashboard.Portlet'],
 
     layout: 'anchor',
     defaultType: 'portlet',

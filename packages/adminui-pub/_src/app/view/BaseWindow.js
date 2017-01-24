@@ -1,4 +1,7 @@
-﻿/**
+﻿require('../core/UBUtil')
+require('../core/UBLocalStorageManager')
+require('../core/UBAppConfig')
+/**
  * Container for elements, showed in separate window
  * Tasks solved:
  *
@@ -13,11 +16,11 @@
 Ext.define('UB.view.BaseWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.basewindow',
-    requires: [
-        'UB.core.UBUtil',
-        'UB.core.UBLocalStorageManager',
-        'UB.core.UBAppConfig'
-    ],
+    // requires: [
+    //     'UB.core.UBUtil',
+    //     'UB.core.UBLocalStorageManager',
+    //     'UB.core.UBAppConfig'
+    // ],
   uses: ['UB.core.UBApp'],
 
     //padding: 1,

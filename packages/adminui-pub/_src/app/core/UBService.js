@@ -1,4 +1,6 @@
-﻿/**
+﻿require('./UBApp')
+require('./UBAppConfig')
+/**
  * Файл: UB.core.UBService.js
  * Автор: Игорь Ноженко
  * 
@@ -10,10 +12,10 @@ Ext.define("UB.core.UBService", {
 
     TRANSACTION_ID: 0,
 
-    requires: [
-        "UB.core.UBApp",
-        "UB.core.UBAppConfig"
-    ],
+    // requires: [
+    //     "UB.core.UBApp",
+    //     "UB.core.UBAppConfig"
+    // ],
 
     method: {
         runList: "runList",
