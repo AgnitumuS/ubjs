@@ -81,6 +81,7 @@ function resolveModelFile (reqPath, resp) {
   }
   resp.statusCode = 200
 }
+// const modelFilesRequired = []
 /**
  * The `models` endpoint. Responsible for return a static files content from a model publicPath folders
  *
@@ -99,6 +100,12 @@ function models (req, resp) {
     return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
   }
   resolveModelFile(reqPath, resp)
+
+  // lines below is to create the ExtJS based file list for minification
+  // do not forgot to uncomment a line const modelFilesRequired = []
+  // modelFilesRequired.push(reqPath)
+  // fs.writeFileSync('d://req.txt', modelFilesRequired.join('\r'))
+
   // cache forever - do not cache index*.html
     // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
 }
