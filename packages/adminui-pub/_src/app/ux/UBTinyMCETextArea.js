@@ -120,8 +120,8 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
     }
 
     if (blobData) {
-      return new Promise((resolve, reject) => {
-        let reader = new FileReader()
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader()
         reader.addEventListener('loadend', function () {
           resolve(onDataReady(reader.result))
         })
@@ -132,7 +132,9 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
       })
     } else if (cfg.params) {
       return UB.core.UBService.getDocument(cfg.params)
-        .then((response) => onDataReady(response))
+        .then(function(response) {
+          return onDataReady(response)
+        })
     } else {
       return Promise.resolve(onDataReady(cfg.rawValue))
     }

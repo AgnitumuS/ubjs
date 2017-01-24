@@ -590,7 +590,7 @@ Ext.define('UB.core.UBApp', {
      * @param {String} [title] Default is 'error'
      */
   dialogError: function (msg, title) {
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
         title: UB.i18n(title || 'error'),
@@ -944,8 +944,8 @@ Ext.define('UB.core.UBApp', {
      * @returns {Promise}
      */
   showModal: function (config) {
-    return new Promise((resolve, reject) => {
-      cmdConfig = {
+    return new Promise(function (resolve, reject) {
+      var cmdConfig = {
         cmdType: 'showForm',
         isModal: true,
         isResizable: false,
@@ -955,7 +955,7 @@ Ext.define('UB.core.UBApp', {
         description: config.description,
         formCode: config.formCode,
         customParams: config.customParams,
-        deferred: {resolve, reject}// result form MUST resolve or reject this deffer
+        deferred: {resolve: resolve, reject: reject} // result form MUST resolve or reject this deffer
       }
       if (!cmdConfig.formCode) {
         reject(new Error('invalid config for showModal. formCode if undefined'))

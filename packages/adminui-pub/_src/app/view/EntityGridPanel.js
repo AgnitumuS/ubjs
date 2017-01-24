@@ -601,7 +601,8 @@ Ext.define('UB.view.EntityGridPanel', {
     var me = this, fields = {}, columnParam,
       columnNew = {}, fullSize = 0, delta = 0, allDelta = 0,
       charWidth, headerCharWidth, maxChars, boxWidth, columnLeft, minSize = 0,
-      columnParams = UB.view.EntityGridPanel.columnParams
+      columnParams = UB.view.EntityGridPanel.columnParams,
+      entity
     boxWidth = me.getEl().getWidth()
     if (me.stateLoadedFromStore && !force) {
       return
@@ -610,7 +611,7 @@ Ext.define('UB.view.EntityGridPanel', {
       fields[item.name] = item
     })
 
-    let entity = $App.domainInfo.get(me.entityName)
+    entity = $App.domainInfo.get(me.entityName)
     _.forEach(me.columns, function (column) {
       columnParam = {}
       if (!column.dataIndex) {
