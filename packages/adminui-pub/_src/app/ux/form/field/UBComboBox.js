@@ -1,4 +1,5 @@
-﻿/**
+﻿require('./UBBaseComboBox')
+/**
  * Combobox, based on ubRequest. If ubRequest passed - store created automatically.
  * If valueField is missing in cfg - use first attribute from ubRequest.fieldList for value
  * If displayField is missing in cfg - use second attribute from ubRequest.fieldList for displayField

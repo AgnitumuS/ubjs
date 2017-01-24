@@ -1,3 +1,7 @@
+require('../view/LoginWindow.js')
+require('../../ux/window/Notification')
+require('../view/Viewport')
+require('../core/UBDataLoader.js')
 /**
  * UnityBase adminUI application.
  * Accessible via alias $App.
@@ -26,10 +30,9 @@ Ext.define('UB.core.UBApp', {
   singleton: true,
 
   requires: [
-    'Ext.Loader',
-    // 'UB.view.Viewport',
-    'UB.view.LoginWindow',
-    'Ext.ux.window.Notification'
+    'Ext.Loader'
+    //'UB.view.LoginWindow',
+    //'Ext.ux.window.Notification'
   ],
   uses: [
     'UB.core.UBCommand'

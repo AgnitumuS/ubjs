@@ -1,3 +1,4 @@
+require('./BaseWindow')
 /**
  * Window for display revision history of `Document` type attribute.
  * Must be created from form, already contain {UB.ux.UBDocument} since we need to obtain configuration (`docContainerBase` parameter)

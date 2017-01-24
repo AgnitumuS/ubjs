@@ -1,13 +1,15 @@
+require('../core/UBUtil')
+require('./BaseWindow')
 /**
  * Button to show quick information in modal form.
  */
 Ext.define('UB.view.InfoButton', {
     extend : 'Ext.button.Button',
     alias: 'widget.ubinfobutton',
-    requires: [
-        'UB.core.UBUtil',
-        'UB.view.BaseWindow'
-    ],
+    // requires: [
+    //     'UB.core.UBUtil',
+    //     'UB.view.BaseWindow'
+    // ],
 
     initComponent: function(){
         var me = this;

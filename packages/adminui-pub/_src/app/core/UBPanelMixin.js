@@ -1,4 +1,5 @@
-﻿/**
+﻿require('./UBUtil')
+/**
  * Файл: UB.core.UBPanelMixin.js
  * Автор: Игорь Ноженко
  *
@@ -9,9 +10,9 @@
  */
 
 Ext.define('UB.core.UBPanelMixin', {
-    requires: [
-        'UB.core.UBUtil'
-    ],
+    // requires: [
+    //     'UB.core.UBUtil'
+    // ],
 
     statics: {
         orderIdAttributeName: 'orderId',

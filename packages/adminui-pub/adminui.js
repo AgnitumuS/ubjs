@@ -78,7 +78,7 @@ require('./_src/css/CodeMirror-match.css')
 require('codemirror/addon/comment/comment')
 
 window.tinymce = require('tinymce/tinymce.js')
-require('./dist/adminui-classes.min.js')
+//require('./dist/adminui-classes.min.js')
 
 // require('./ub-css-all.css') TODO - add icons to this module
 
@@ -86,8 +86,10 @@ Ext.Loader.setConfig({
   enabled: true,
   disableCaching: false,
   paths: {
-    'Ext.ux': 'models/adminui-pub/_src/ux',
-    'UB': 'models/adminui-pub/_src/app'
+    // 'Ext.ux': 'models/adminui-pub/_src/ux',
+    // 'UB': 'models/adminui-pub/_src/app'
+    'Ext.ux': '@unitybase/adminui-pub/_src/ux',
+    'UB': '@unitybase/adminui-pub/_src/app'
   }
 })
 

@@ -1,4 +1,8 @@
-﻿/**
+﻿require('../ux/data/UBStore')
+require('./UBCommand')
+require('./UBAppConfig')
+require('./UBUtil')
+/**
  * Файл: UB.core.UBDataLoader.js
  * Автор: Игорь Ноженко
  * 
@@ -12,12 +16,12 @@
 Ext.define('UB.core.UBDataLoader', {
     singleton: true,
 
-    requires: [
-        'UB.ux.data.UBStore',
-        'UB.core.UBCommand',
-        'UB.core.UBAppConfig',
-        'UB.core.UBUtil'
-    ],
+    // requires: [
+    //     'UB.ux.data.UBStore',
+    //     'UB.core.UBCommand',
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBUtil'
+    // ],
 
     /**
      * Load single instance by ID.

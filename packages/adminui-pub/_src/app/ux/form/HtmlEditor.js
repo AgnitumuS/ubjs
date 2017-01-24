@@ -1,3 +1,4 @@
+require('../UBTinyMCETextArea')
 /* global PDF */
 /**
  * This control render html with the ability to edit it. Html rendered with fixed width (parameter pageWidth).

@@ -1,3 +1,4 @@
+require('../../ux/form/TinyMCETextArea')
 /* global tinymce */
 // @require ..\..\ux\form\TinyMCETextArea.js
 /**
@@ -10,7 +11,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
   extend: 'Ext.ux.form.TinyMCETextArea',
   alias: 'widget.ubtinymcetextarea',
 
-  requires: ['Ext.ux.form.TinyMCETextArea'],
+  // requires: ['Ext.ux.form.TinyMCETextArea'],
 
   initComponent: function () {
     var me = this

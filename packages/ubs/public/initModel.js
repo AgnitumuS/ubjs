@@ -1,6 +1,9 @@
-Ext.require('UBS.dataBinder');
-Ext.require('UBS.csCommonUtils');
-Ext.require('UBS.cliUtils');
+require('./dataBinder')
+require('./csCommonUtils')
+require('./cliUtils')
+// Ext.require('UBS.dataBinder');
+// Ext.require('UBS.csCommonUtils');
+// Ext.require('UBS.cliUtils');
 
 // var mustLoad = [
 //     'models/UBS/css/ubs.css',
@@ -13,11 +16,17 @@ Ext.require('UBS.cliUtils');
 //
 // Promise.all(mustLoad.map(UB.inject));
 
-require('@unitybase/ubs/public/css/ubs.css')
-require('@unitybase/ubs/public/settings.js')
-require('@unitybase/ubs/public/UBReport.js')
-require('@unitybase/ubs/public/ReportParamForm.js')
-require('@unitybase/ubs/public/ReportViewer.js')
+// require('@unitybase/ubs/public/css/ubs.css')
+// require('@unitybase/ubs/public/settings.js')
+// require('@unitybase/ubs/public/UBReport.js')
+// require('@unitybase/ubs/public/ReportParamForm.js')
+// require('@unitybase/ubs/public/ReportViewer.js')
+
+require('./css/ubs.css')
+require('./settings.js')
+require('./UBReport.js')
+require('./ReportParamForm.js')
+require('./ReportViewer.js')
 
 /*
 $App.on('buildMainMenu', function (items) {

@@ -1,4 +1,7 @@
-﻿/**
+﻿require('./UBAppConfig')
+require('./UBUtil')
+
+/**
  * Файл: UB.core.UBLocalStorageManager.js
  * Автор: Игорь Ноженко
  * 
@@ -11,10 +14,10 @@
 Ext.define("UB.core.UBLocalStorageManager", {
     singleton: true,
 
-    requires: [
-        "UB.core.UBAppConfig",
-        "UB.core.UBUtil"
-    ],
+    // requires: [
+    //     "UB.core.UBAppConfig",
+    //     "UB.core.UBUtil"
+    // ],
 
   uses: ["UB.core.UBApp"],
 

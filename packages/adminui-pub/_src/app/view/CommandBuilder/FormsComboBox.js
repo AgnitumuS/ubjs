@@ -1,4 +1,6 @@
-﻿/**
+﻿require('../../core/UBStoreManager')
+require('../../core/UBAppConfig')
+/**
  * Файл: UB.view.CommandBuilder.FormsComboBox.js
  * Автор: Игорь Ноженко
  * 
@@ -10,10 +12,10 @@
 Ext.define("UB.view.CommandBuilder.FormsComboBox", {
     extend: "Ext.form.field.ComboBox",
     alias: "widget.commandbuilderformscombobox",
-    requires: [
-        "UB.core.UBStoreManager",
-        "UB.core.UBAppConfig"
-    ],
+    // requires: [
+    //     "UB.core.UBStoreManager",
+    //     "UB.core.UBAppConfig"
+    // ],
 
     initComponent: function() {
         this.valueField = this.displayField = "Code";

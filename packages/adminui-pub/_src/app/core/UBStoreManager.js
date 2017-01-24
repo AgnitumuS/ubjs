@@ -1,4 +1,6 @@
-﻿/**
+﻿require('./UBAppConfig')
+require('./UBUtil')
+/**
  * Файл: UB.core.UBStoreManager.js
  * Автор: Игорь Ноженко
  * 
@@ -8,10 +10,10 @@
 Ext.define('UB.core.UBStoreManager', {
     singleton: true,
 
-    requires: [
-        'UB.core.UBAppConfig',
-        'UB.core.UBUtil'
-    ],
+    // requires: [
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBUtil'
+    // ],
 
     /**
      * 

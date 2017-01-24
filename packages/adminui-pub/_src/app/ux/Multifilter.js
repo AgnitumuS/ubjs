@@ -1,3 +1,8 @@
+require('../core/UBStoreManager')
+require('../core/UBUtil')
+require('./form/field/UBBoolBox')
+require('./form/field/UBBoxSelect')
+require('./form/field/UBMultiSelectBox')
 /**
  * Widget for grid filtration. Used in UB.view.EntityGridPanel toolbar.
  * This mixin will create toolbar on grid. When user select cell in grid the mixin will show a context filter in toolbar.
@@ -18,13 +23,13 @@
 
 Ext.define('UB.ux.Multifilter', {
     extend: 'Ext.toolbar.Toolbar', //Ext.toolbar.Toolbar Ext.form.Panel
-    requires: [
-        'UB.core.UBStoreManager',
-        'UB.core.UBUtil',
-        'UB.ux.form.field.UBBoolBox',
-        'UB.ux.form.field.UBBoxSelect',
-        'UB.ux.form.field.UBMultiSelectBox'
-    ],
+    // requires: [
+    //     'UB.core.UBStoreManager',
+    //     'UB.core.UBUtil',
+    //     'UB.ux.form.field.UBBoolBox',
+    //     'UB.ux.form.field.UBBoxSelect',
+    //     'UB.ux.form.field.UBMultiSelectBox'
+    // ],
 
     //height: 40,
     alias: 'plugin.multifilter',

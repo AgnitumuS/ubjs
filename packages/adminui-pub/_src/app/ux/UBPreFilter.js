@@ -1,3 +1,6 @@
+require('../core/UBStoreManager')
+require('../core/UBUtil')
+require('../view/BaseWindow')
 /**
  * Prefatory data filter for "showList" command. If used in navigation shortcut for `showList` command type will display pre-filtration form before the grid is display.
  *
@@ -29,14 +32,11 @@
  * WARNING: This class is used by DOC model (doc_document-search-fm.def)
  */
 Ext.define('UB.ux.UBPreFilter', {
-    requires: [
-        'UB.core.UBStoreManager',
-        'UB.core.UBUtil',
-       // 'UB.core.UBDomainManager',
-       // 'UB.ux.form.field.UBBoolBox',
-       // 'UB.ux.form.field.UBDate',
-        'UB.view.BaseWindow'
-    ],
+    // requires: [
+    //     'UB.core.UBStoreManager',
+    //     'UB.core.UBUtil',
+    //     'UB.view.BaseWindow'
+    // ],
 
     uses: [
         'UB.view.ErrorWindow',

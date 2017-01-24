@@ -1,17 +1,24 @@
-﻿/**
+﻿require('./UBAppConfig')
+require('./UBStoreManager')
+require('./UBUtil')
+require('../view/BaseWindow')
+require('../view/BasePanel')
+require('../ux/UBPreFilter')
+require('../view/EntityGridPanel')
+/**
  * @author UnityBase team
  *
  * Обеспечивает выполнение комад
  * Содержит сервисные функции для работы с командами/параметрами команд
  */
 Ext.define('UB.core.UBCommand', {
-    requires: [
-        'UB.core.UBAppConfig',
-        'UB.core.UBStoreManager',
-        'UB.core.UBUtil',
-        'UB.view.BaseWindow',
-        'UB.ux.UBPreFilter'
-    ],
+    // requires: [
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBStoreManager',
+    //     'UB.core.UBUtil',
+    //     'UB.view.BaseWindow',
+    //     'UB.ux.UBPreFilter'
+    // ],
 
     uses: [
       'UB.core.UBApp',

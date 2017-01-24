@@ -1,16 +1,21 @@
+require('../core/UBApp')
+require('../core/UBAppConfig')
+require('../core/UBUtil')
+require('../core/UBLocalStorageManager')
+require('../core/UBFormLoader')
 /**
  *  Widget for MainToolbar. Create "user" menu.
  */
 Ext.define('UB.view.ToolbarUser', {
     extend: 'UB.view.ToolbarWidget',
     alias: "widget.ubtoolbaruser",
-    requires: [
-        "UB.core.UBApp",
-        "UB.core.UBAppConfig",
-        "UB.core.UBUtil",
-        "UB.core.UBLocalStorageManager",
-        "UB.core.UBFormLoader"
-    ],
+    // requires: [
+    //     "UB.core.UBApp",
+    //     "UB.core.UBAppConfig",
+    //     "UB.core.UBUtil",
+    //     "UB.core.UBLocalStorageManager",
+    //     "UB.core.UBFormLoader"
+    // ],
 
     initComponent: function(){
         this.items = [{

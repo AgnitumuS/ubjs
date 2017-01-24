@@ -1,14 +1,18 @@
-﻿/**
+﻿require('./UBAppConfig')
+require('./UBService')
+require('./UBUtil')
+require('./UBCommand')
+/**
  * Load form View (formCode.def) and from controller (formCode*.js) if any from local cache or from model `public/forms` folder.
  * Evaluate both & return evaluation result. Used in $App.doCommand in case command type is `showForm`.
  */
 Ext.define('UB.core.UBFormLoader', {
-    requires: [
-        'UB.core.UBAppConfig',
-        'UB.core.UBService',
-        'UB.core.UBUtil',
-        'UB.core.UBCommand'
-    ],
+    // requires: [
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBService',
+    //     'UB.core.UBUtil',
+    //     'UB.core.UBCommand'
+    // ],
     uses: ['UB.core.UBApp'],
 
     singleton: true,

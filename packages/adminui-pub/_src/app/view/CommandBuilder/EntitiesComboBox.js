@@ -1,4 +1,5 @@
-﻿/**
+﻿require('../../core/UBUtil')
+/**
  * ComboBox able to display all Domain entities. Used, for example, in ubm_form form.
  *
  * @authors UnityBase core team, Nozhenko Igor
@@ -7,7 +8,7 @@ Ext.define("UB.view.CommandBuilder.EntitiesComboBox", {
     extend: 'UB.ux.form.field.UBBaseComboBox',
     alias: "widget.commandbuilderentitiescombobox",
     requires: [
-        "UB.core.UBUtil",
+        // "UB.core.UBUtil",
         "Ext.data.ArrayStore"
     ],
 

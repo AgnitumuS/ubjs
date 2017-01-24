@@ -1,3 +1,13 @@
+require('../core/UBStoreManager')
+require('../ux/Multifilter')
+require('./PagingToolbar')
+require('../../ux/exporter/Exporter')
+require('./GridSummary')
+require('./ColumnFavorites')
+require('./ColumnCategories')
+require('../view/Table')
+require('../core/UBPanelMixin')
+
 /* global saveAs */
 /**
  * Display a grid based on entity content. Usually created as a result of `showList` command.
@@ -27,17 +37,17 @@ Ext.define('UB.view.EntityGridPanel', {
   selType: 'cellmodel',
   disableSearchBar: false,
   rowHeight: 28,
-  requires: [
-    'UB.core.UBStoreManager',
-    'Ext.grid.plugin.BufferedRenderer',
-    'UB.ux.Multifilter',
-    'UB.view.PagingToolbar',
-    'Ext.ux.exporter.Exporter',
-    'UB.view.GridSummary',
-    'UB.view.ColumnFavorites',
-    'UB.view.ColumnCategories',
-    'UB.view.Table'
-  ],
+  // requires: [
+  //   'UB.core.UBStoreManager',
+  //   'Ext.grid.plugin.BufferedRenderer',
+  //   'UB.ux.Multifilter',
+  //   'UB.view.PagingToolbar',
+  //   'Ext.ux.exporter.Exporter',
+  //   'UB.view.GridSummary',
+  //   'UB.view.ColumnFavorites',
+  //   'UB.view.ColumnCategories',
+  //   'UB.view.Table'
+  // ],
 
   uses: [
     'UB.core.UBCommand',
