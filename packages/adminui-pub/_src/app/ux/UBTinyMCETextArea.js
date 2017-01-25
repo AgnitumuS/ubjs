@@ -1,6 +1,4 @@
 require('../../ux/form/TinyMCETextArea')
-/* global tinymce */
-// @require ..\..\ux\form\TinyMCETextArea.js
 /**
  * Файл: UB.ux.UBTinyMCETextArea.js
  * Автор: Игорь Ноженко
@@ -18,6 +16,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
     if (me.tinyMCEConfig) {
       me.userSetup = me.tinyMCEConfig.setup
     }
+    this.ensureTinyMCELoaded()
     tinyMCE.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
     me.tinyMCEConfig = Ext.apply({
           // language: UB.core.UBApp.getUiLanguage(),
@@ -121,7 +120,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
     }
 
     if (blobData) {
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
         var reader = new FileReader()
         reader.addEventListener('loadend', function () {
           resolve(onDataReady(reader.result))
@@ -133,7 +132,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
       })
     } else if (cfg.params) {
       return UB.core.UBService.getDocument(cfg.params)
-        .then(function(response) {
+        .then(function (response) {
           return onDataReady(response)
         })
     } else {

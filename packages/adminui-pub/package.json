@@ -25,6 +25,7 @@
   "dependencies": {
     "@unitybase/base": "^4.0.7",
     "@unitybase/ub-pub": "^4.0.8",
+    "@unitybase/tinymce-with-plugins": "^1.0.0",
     "@unitybase/adminui-reg": "^4.0.7",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
