@@ -11,6 +11,7 @@
     "@ub-e/odata": "^1.0.0",
     "@ub-e/ube-pub": "^4.0.0",
     "@ub-e/xlsx-pub": "^4.0.0",
+    "@unitybase/tinymce-with-plugins": "^1.0.0",
     "@unitybase/adminui-pub": "^4.0.0",
     "@unitybase/adminui-reg": "^4.0.0",
     "@unitybase/cryptojs": "^1.0.0",	

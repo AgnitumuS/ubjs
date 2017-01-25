@@ -77,9 +77,6 @@ require('codemirror/addon/search/match-highlighter')
 require('./_src/css/CodeMirror-match.css')
 require('codemirror/addon/comment/comment')
 
-window.tinymce = require('tinymce/tinymce.js')
-//require('./dist/adminui-classes.min.js')
-
 // require('./ub-css-all.css') TODO - add icons to this module
 
 Ext.Loader.setConfig({
