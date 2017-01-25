@@ -34,7 +34,10 @@ module.exports = {
       loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
-        presets: ['es2015']
+        //presets: ['es2015']
+ 	//MPV - IMPORTANT to remove a 'use strict' in boundle, in other case Ext.callParent not work, 
+	// because in strict mode Fintion.calle in undefined, but this technic in used internalty by Ext.callParent
+	presets: ['es2015-without-strict'] 
       }
     }, { 
       test: /\.css$/, 
@@ -77,7 +80,7 @@ module.exports = {
         drop_console: false, // true,
         unsafe: true
       }
-    }) 
+    })
 
         // new webpack.optimize.CommonsChunkPlugin({
         //     children: true,
