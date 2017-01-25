@@ -90,10 +90,11 @@
                     '*.css': { loader: 'css' },
                     'codemirror/*.js': { format: 'cjs' },
                     'tinymce/*.js': { format: 'cjs' },
-                    'file-saver/*.js': { format: 'cjs' }
+                    'file-saver/*.js': { format: 'cjs' },
+                    '*/adminui.min.js': { format: 'global' } // important because adminui.min.js dose not define anything
                 }
             });
-            System.import('models/adminui-pub/dist/adminui.min.js').then(function(adminUI){
+            System.import('@unitybase/adminui-pub/dist/adminui.min.js').then(function(adminUI){
                 return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
             });
         </script>

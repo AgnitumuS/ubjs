@@ -381,9 +381,9 @@ Ext.define('UB.core.UBApp', {
           if (item === 'ubm_desktop') {
             res.orderList = {
               ord: {
-                  expression: 'caption',
-                  order: 'asc'
-                }
+                expression: 'caption',
+                order: 'asc'
+              }
             }
           }
           if (item === 'ubm_navshortcut') {
@@ -391,22 +391,22 @@ Ext.define('UB.core.UBApp', {
               expression: 'desktopID',
               order: 'asc'
             }, {
-                expression: 'parentID',
-                order: 'asc'
-              }, {
-                  expression: 'displayOrder',
-                  order: 'asc'
-                }, {
-                  expression: 'caption',
-                  order: 'asc'
-                }]
+              expression: 'parentID',
+              order: 'asc'
+            }, {
+              expression: 'displayOrder',
+              order: 'asc'
+            }, {
+              expression: 'caption',
+              order: 'asc'
+            }]
           }
           return res
         }),
         setStoreId: true
       })
     }).then(function () { // clear form's def/js cache if ubm_form version changed
-            // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
+      // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
       var realFormsVersion = $App.connection.cachedSessionEntityRequested[
           $App.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
         ],
@@ -947,7 +947,7 @@ Ext.define('UB.core.UBApp', {
      * @returns {Promise}
      */
   showModal: function (config) {
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
       var cmdConfig = {
         cmdType: 'showForm',
         isModal: true,
@@ -1007,19 +1007,19 @@ Ext.define('UB.core.UBApp', {
   logout: function () {
     if (this.connection) {
       this.connection.logout().fin(function () {
-                // MPV TODO Secure browser
-                // if (UB.isSecureBrowser) {
-                //     var remote = require('electron').remote;
-                //     var window = remote.getCurrentWindow();
-                //     window.destroy();
-                // } else {
+        // MPV TODO Secure browser
+        // if (UB.isSecureBrowser) {
+        //     var remote = require('electron').remote;
+        //     var window = remote.getCurrentWindow();
+        //     window.destroy();
+        // } else {
         if (document.location && document.location.href && document.location.href.indexOf('#') > 0) {
           document.location.href = document.location.href.split('#')[0]
         } else {
           document.location.href = document.location.href
         }
-                // }
-                // reload page without cache revalidation. instead of window.location.reload() what does.
+        // }
+        // reload page without cache re-validation. instead of window.location.reload() what does.
       })
     }
   },
