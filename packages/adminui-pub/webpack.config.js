@@ -71,7 +71,7 @@ module.exports = {
 //    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
-/*    new webpack.optimize.UglifyJsPlugin({
+    new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
       'screw-ie8': true,
@@ -85,7 +85,7 @@ module.exports = {
         drop_console: false, // true,
         unsafe: true
       }
-    })*/
+    })
 
         // new webpack.optimize.CommonsChunkPlugin({
         //     children: true,
