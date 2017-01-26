@@ -15,6 +15,10 @@ Ext.define('UB.ux.UBCodeMirror', {
 
   ensureCodemirrorLoaded: function () {
     return new Promise((resolve, reject) => {
+      if (window.CodeMirror) {
+        resolve(true)
+        return
+      }
       window.BOUNDLED_BY_WEBPACK = false
       // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
       // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
@@ -139,10 +143,6 @@ Ext.define('UB.ux.UBCodeMirror', {
     render: function () {
       var myElm = this.getEl().dom
       var me = this
-
-      // patch default CodeMirror style
-      var css = Ext.util.CSS.getRule('.CodeMirror')
-      if (css) css.style.height = '100%'
 
       this.ensureCodemirrorLoaded().then(() => {
         this.codeMirrorInstance = CodeMirror(myElm, {

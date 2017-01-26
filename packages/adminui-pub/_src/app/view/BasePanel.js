@@ -23,6 +23,7 @@ require('../ux/UBTinyMCETextArea')
 require('../core/UBPanelMixin')
 require('../ux/form/UBPlanFactContainer')
   // TODO - move CommandBuilder requires to shortcut editor
+require('./CommandBuilder/EntitiesComboBox')
 require('./CommandBuilder/CommandTypeComboBox')
 require('./CommandBuilder/FormsComboBox')
 require('./CommandBuilder/EntityTreePanel')
