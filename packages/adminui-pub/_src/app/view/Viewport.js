@@ -89,7 +89,7 @@ Ext.define('UB.view.Viewport', {
       layout: 'fit',
       maxTabWidth: 200,
       border: false,
-      margin: '5, 0, 0, 5',
+      margin: '3, 0, 0, 0',
       loader: { autoLoad: false },
       listeners: {
         boxready: function () {
