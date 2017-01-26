@@ -60,9 +60,18 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
   tinyMCEConfig: {},
 
   ensureTinyMCELoaded: function () {
-    if (!window.BOUNDLED_BY_WEBPACK) window.BOUNDLED_BY_WEBPACK = false
-    if (!BOUNDLED_BY_WEBPACK) require('@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js')
-    if (BOUNDLED_BY_WEBPACK) require.ensure(['@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js'], function(){})
+    return new Promise((resolve, reject) => {
+      window.BOUNDLED_BY_WEBPACK = false
+      // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
+      // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
+      if (!BOUNDLED_BY_WEBPACK) { require('@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js'); resolve(true) }
+      //if (BOUNDLED_BY_WEBPACK) require.ensure(['@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js'], function(){})
+      if (BOUNDLED_BY_WEBPACK) require.ensure(['@unitybase/tinymce-with-plugins'], function () {
+        var re = require
+        if (BOUNDLED_BY_WEBPACK) re('@unitybase/tinymce-with-plugins')
+        resolve(true)
+      })
+    })
   },
 
     // -----------------------------------------------------------------
@@ -259,10 +268,10 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
     }
     // END: setup
 
-    this.ensureTinyMCELoaded()
-    window.tinymce.init(me.tinyMCEConfig)
-
-    me.intializationInProgress = false
+    this.ensureTinyMCELoaded().then(() => {
+      window.tinymce.init(me.tinyMCEConfig)
+      me.intializationInProgress = false
+    })
     // MPV me.wysiwygIntialized = true;
   },
     // -----------------------------------------------------------------

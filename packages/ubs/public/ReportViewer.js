@@ -1,6 +1,6 @@
 require('./UBReport')
-require('@unitybase/adminui-pub/_src/app/ux/PDFComponent.js')
-require('@unitybase/adminui-pub/_src/app/ux/UBTinyMCETextArea.js')
+//require('@unitybase/adminui-pub/_src/app/ux/PDFComponent.js')
+//require('@unitybase/adminui-pub/_src/app/ux/UBTinyMCETextArea.js')
 /**
  * Displays a report.
  * Example:
@@ -20,10 +20,11 @@ require('@unitybase/adminui-pub/_src/app/ux/UBTinyMCETextArea.js')
  */
 Ext.define('UBS.ReportViewer', {
     extend: 'Ext.form.Panel',
-    // requires: [
-    //     'UBS.UBReport',
-    //     'UB.ux.PDFComponent',
-    //     'UB.ux.UBTinyMCETextArea'],
+    requires: [
+         'UBS.UBReport',
+         'UB.ux.PDFComponent',
+         'UB.ux.UBTinyMCETextArea'
+    ],
     layout: { type: 'vbox', align: 'stretch'},
     width: 700,
     height: 500,
