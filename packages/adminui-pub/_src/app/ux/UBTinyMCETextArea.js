@@ -17,7 +17,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
       me.userSetup = me.tinyMCEConfig.setup
     }
     this.ensureTinyMCELoaded()
-    tinyMCE.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
+    //tinyMCE.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
     me.tinyMCEConfig = Ext.apply({
           // language: UB.core.UBApp.getUiLanguage(),
       language_url: $App.connection.baseURL + 'models/adminui-pub/locale/tinymce/' + $App.connection.userLang() + '.js',
@@ -76,6 +76,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
   onStartSetup: function (ed) {
     var me = this
         // ed.baseURI = $App.connection.serverUrl + 'jslibs/tinymce1/';
+    tinymce.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
     this.fireEvent('setup', ed)
     if (this.userSetup) {
       this.userSetup(ed)

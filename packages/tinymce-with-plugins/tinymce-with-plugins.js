@@ -1,4 +1,4 @@
-module.exports = require('tinymce/tinymce.js')
+module.exports = require('tinymce')
 require('tinymce/plugins/advlist')
 require('tinymce/plugins/autolink')
 require('tinymce/plugins/lists')
@@ -26,3 +26,4 @@ require('tinymce/plugins/colorpicker')
 require('tinymce/plugins/paste')
 require('tinymce/themes/modern')
 
+window.tinymce = window.tinyMCE = module.exports
