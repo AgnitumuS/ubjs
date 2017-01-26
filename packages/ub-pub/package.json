@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "description": "UnityBase data layer for Browser client",
   "main": "index.js",
   "config": {
@@ -20,7 +20,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.0.7",
+    "@unitybase/base": "^4.0.8",
     "lodash": "^4",
     "@unitybase/cryptojs": "^1.0.5"
   },
