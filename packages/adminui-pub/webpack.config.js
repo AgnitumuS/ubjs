@@ -1,31 +1,18 @@
 /**
  * Created by pavel.mash on 04.09.2016.
  */
-var webpack = require('webpack')
+const webpack = require('webpack')
+const path = require('path')
 
 // var CircularDependencyPlugin = require('circular-dependency-plugin')
-
-function isExternal (module) {
-  var userRequest = module.userRequest
-
-  if (typeof userRequest !== 'string') {
-    return false
-  }
-
-  return userRequest.indexOf('tinymce') >= 0
-  // return userRequest.indexOf('bluebird') >= 0 ||
-  //   // userRequest.indexOf('/bluebird-q/') >= 0 ||
-  //   userRequest.indexOf('lodash') >= 0 ||
-  //   userRequest.indexOf('CryptoJS') >= 0
-}
 
 module.exports = {
   entry: {
     app: './adminui.js'
-	//, vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
+    // vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
   },
   output: {
-    path: __dirname + '/dist',
+    path: path.join(__dirname, 'dist'),
     filename: 'adminui.min.js',
     publicPath: '/clientRequire/@unitybase/adminui-pub/dist/'
   },
@@ -42,6 +29,18 @@ module.exports = {
     }, {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
+    }, {
+      test: require.resolve('tinymce/tinymce'),
+      loaders: [
+        'imports?this=>window',
+        'exports?window.tinymce'
+      ]
+    }, {
+      // this option is required for toneMCE, see https://github.com/tinymce/tinymce/issues/2836
+      test: /tinymce[\\/](themes|plugins)[\\/]/,
+      loaders: [
+        'imports?this=>window'
+      ]
     }]
   },
   // devtool: 'eval',
@@ -50,12 +49,9 @@ module.exports = {
 
   plugins: [
     new webpack.DefinePlugin({
-        BOUNDLED_BY_WEBPACK: true
+      BOUNDLED_BY_WEBPACK: true
     }),
-    /*new webpack.ProvidePlugin({
-      'tinymce': '@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js',
-      'tinyMCE': '@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js'
-    }),*/
+
     // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: 'tinymce-boundle',
@@ -84,12 +80,10 @@ module.exports = {
         warnings: true, // false,
         drop_console: false, // true,
         unsafe: true
+      },
+      output: {
+        ascii_only: true // for TinyMCE
       }
     })
-
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     children: true,
-        //     async: true,
-        // })
   ]
 }

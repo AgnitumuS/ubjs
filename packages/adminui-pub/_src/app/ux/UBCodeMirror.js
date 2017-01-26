@@ -1,4 +1,4 @@
-/* global FileReader, CodeMirror */
+/* global FileReader, CodeMirror, BOUNDLED_BY_WEBPACK */
 /**
  * Thin wrapper around CodeMirror for JS editing.
  * @author UnityBase core team (pavel.mash) on 12.2016
@@ -14,7 +14,7 @@ Ext.define('UB.ux.UBCodeMirror', {
   codeMirrorInstance: undefined,
 
   ensureCodemirrorLoaded: function () {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (window.CodeMirror) {
         resolve(true)
         return
@@ -50,36 +50,38 @@ Ext.define('UB.ux.UBCodeMirror', {
         resolve(true)
       }
 
-      if (BOUNDLED_BY_WEBPACK) require.ensure(['codemirror/lib/codemirror', 'codemirror/lib/codemirror.css'], function () {
-        var re = require
-        if (BOUNDLED_BY_WEBPACK) {
-          window.CodeMirror = re('codemirror/lib/codemirror')
-          re('codemirror/lib/codemirror.css')
-          re('codemirror/addon/edit/matchbrackets')
-          re('codemirror/addon/edit/closebrackets')
-          re('codemirror/addon/edit/trailingspace')
-          re('codemirror/addon/fold/foldcode')
-          re('codemirror/addon/fold/foldgutter')
-          re('codemirror/addon/fold/foldgutter.css')
-          re('codemirror/addon/fold/brace-fold')
-          re('codemirror/addon/fold/xml-fold')
-          re('codemirror/addon/fold/comment-fold')
-          re('codemirror/addon/dialog/dialog')
-          re('codemirror/addon/dialog/dialog.css')
-          re('codemirror/mode/javascript/javascript')
-          re('codemirror/addon/hint/show-hint')
-          re('codemirror/addon/hint/show-hint.css')
-          re('codemirror/addon/hint/javascript-hint')
-          re('codemirror/addon/search/search')
-          re('codemirror/addon/search/searchcursor')
-          re('codemirror/addon/scroll/annotatescrollbar')
-          re('codemirror/addon/search/matchesonscrollbar')
-          re('codemirror/addon/search/match-highlighter')
-          re('../../css/CodeMirror-match.css')
-          re('codemirror/addon/comment/comment')
-        }
-        resolve(true)
-      })
+      if (BOUNDLED_BY_WEBPACK) {
+        require.ensure(['codemirror/lib/codemirror'], function () {
+          let re = require
+          if (BOUNDLED_BY_WEBPACK) {
+            window.CodeMirror = re('codemirror/lib/codemirror')
+            re('codemirror/lib/codemirror.css')
+            re('codemirror/addon/edit/matchbrackets')
+            re('codemirror/addon/edit/closebrackets')
+            re('codemirror/addon/edit/trailingspace')
+            re('codemirror/addon/fold/foldcode')
+            re('codemirror/addon/fold/foldgutter')
+            re('codemirror/addon/fold/foldgutter.css')
+            re('codemirror/addon/fold/brace-fold')
+            re('codemirror/addon/fold/xml-fold')
+            re('codemirror/addon/fold/comment-fold')
+            re('codemirror/addon/dialog/dialog')
+            re('codemirror/addon/dialog/dialog.css')
+            re('codemirror/mode/javascript/javascript')
+            re('codemirror/addon/hint/show-hint')
+            re('codemirror/addon/hint/show-hint.css')
+            re('codemirror/addon/hint/javascript-hint')
+            re('codemirror/addon/search/search')
+            re('codemirror/addon/search/searchcursor')
+            re('codemirror/addon/scroll/annotatescrollbar')
+            re('codemirror/addon/search/matchesonscrollbar')
+            re('codemirror/addon/search/match-highlighter')
+            re('../../css/CodeMirror-match.css')
+            re('codemirror/addon/comment/comment')
+          }
+          resolve(true)
+        })
+      }
     })
   },
 
@@ -127,7 +129,7 @@ Ext.define('UB.ux.UBCodeMirror', {
       })
     } else if (cfg.params) {
       return UB.core.UBService.getDocument(cfg.params)
-        .then(function(response) {
+        .then(function (response) {
           return onDataReady(response)
         })
     } else {
@@ -157,11 +159,10 @@ Ext.define('UB.ux.UBCodeMirror', {
           gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
           extraKeys: { 'Ctrl-Space': 'autocomplete' }
         })
-        this.codeMirrorInstance.on('change', function (editor, tc) {
+        this.codeMirrorInstance.on('change', function () {
           me.checkChange()
         })
       })
-
     }
   }
 })
