@@ -1,6 +1,6 @@
 {
   "name": "@ub-e/xlsx-pub",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "UnityBase Enterprise Excel exporter",
   "main": "index.js",
   "config": {
@@ -21,7 +21,7 @@
   "dependencies": {
     "@unitybase/base": "^4.0.8",
     "@unitybase/ub-pub": "^4.0.9",
-    "@unitybase/adminui-pub": "^4.0.9"
+    "@unitybase/adminui-pub": "^4.0.10"
   },
   "devDependencies": {},
   "keywords": [

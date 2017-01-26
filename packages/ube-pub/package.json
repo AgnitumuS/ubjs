@@ -1,6 +1,6 @@
 {
   "name": "@ub-e/ube-pub",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "UnityBase admin UI enterprise components",
   "main": "adminui.js",
   "config": {
@@ -20,7 +20,7 @@
   "dependencies": {
     "@unitybase/base": "^4.0.8",
     "@unitybase/ub-pub": "^4.0.9",
-    "@unitybase/adminui-pub": "^4.0.9"
+    "@unitybase/adminui-pub": "^4.0.10"
   },
   "devDependencies": {},
   "keywords": [
