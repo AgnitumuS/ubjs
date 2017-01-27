@@ -2,6 +2,11 @@ require('../view/LoginWindow.js')
 require('../../ux/window/Notification')
 require('../view/Viewport')
 require('../core/UBDataLoader.js')
+
+var reLetters = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
+var reEn = /[A-Za-z]/
+var reCaps = /[A-ZА-ЯЁІЇҐ]/
+
 /**
  * UnityBase adminUI application.
  * Accessible via alias $App.
@@ -172,6 +177,33 @@ Ext.define('UB.core.UBApp', {
     return me
   },
 
+  /**
+   * Check field input and set a class in cace letters is english or CAPS
+   * @param {Ext.field.Field} textField
+   */
+  passwordKeyUpHandler: function (textField) {
+    var t, n, s = textField.getValue() || ''
+    if (!s) {
+      textField.removeCls('ub-pwd-keyboard-caps')
+      textField.removeCls('ub-pwd-keyboard-en')
+    } else {
+      n = s.length
+      t = s.substr(n - 1, 1)
+      if (reLetters.test(t)) {
+        if (reEn.test(t)) {
+          textField.addClass('ub-pwd-keyboard-en')
+        } else {
+          textField.removeCls('ub-pwd-keyboard-en')
+        }
+        if (reCaps.test(t)) {
+          textField.addClass('ub-pwd-keyboard-caps')
+        } else {
+          textField.removeCls('ub-pwd-keyboard-caps')
+        }
+      }
+    }
+  },
+
   onPasswordChange: function (reason) {
     var wind = new Ext.Window({
       extend: 'Ext.form.Panel',
@@ -187,7 +219,7 @@ Ext.define('UB.core.UBApp', {
         inputType: 'password',
         listeners: {
           keyup: {
-            fn: UB.passwordKeyUpHandler
+            fn: $App.passwordKeyUpHandler
           }
         },
         enableKeyEvents: true,
@@ -204,7 +236,7 @@ Ext.define('UB.core.UBApp', {
         inputType: 'password',
         listeners: {
           keyup: {
-            fn: UB.passwordKeyUpHandler
+            fn: $App.passwordKeyUpHandler
           }
         },
         enableKeyEvents: true,
@@ -225,7 +257,7 @@ Ext.define('UB.core.UBApp', {
         inputType: 'password',
         listeners: {
           keyup: {
-            fn: UB.passwordKeyUpHandler
+            fn: $App.passwordKeyUpHandler
           }
         },
         enableKeyEvents: true,
