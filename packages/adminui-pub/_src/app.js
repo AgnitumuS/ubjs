@@ -23,7 +23,7 @@ function launchApp () {
     let promise = e.detail ? e.detail.promise : e.promise
     // See Promise.onPossiblyUnhandledRejection for parameter documentation
     if (window.onerror) window.onerror.apply(this, [ '', '', '', '', reason ])
-    console.error('UNHANDLED', reason, promise);
+    console.error('UNHANDLED', reason, promise)
   })
 
   window.onerror = function (msg, file, line, column, errorObj) {
