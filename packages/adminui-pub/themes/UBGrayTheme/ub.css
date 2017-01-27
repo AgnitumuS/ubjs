@@ -586,6 +586,29 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     background-color: white; !important;
 }
 
+.x-tab-default-top {
+ border-bottom: 0 solid white;
+ background-color: white;
+}
+
+.x-tab-default-top-active {
+    /* active elm color = Acent pink200*/
+    border-bottom: 3px solid #41b772;
+    background-color: #f0f3f3;
+}
+
+.x-tab-default .x-tab-close-btn {
+    opacity: 0.5;
+}
+
+.x-tab-default-active  .x-tab-close-btn {
+    opacity: 1;
+}
+
+.x-tab-bar-body {
+  background-color: white; 
+}
+
 .ub-login-window .x-window-body-default{
     background-color: white; !important;
 }
@@ -869,7 +892,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .ub-menu-button .x-btn-glyph {
     /* color: #ffffff !important; */
-    /*font-size: 28px;*/
+    font-size: 28px;
     padding: 1px;
 }
 

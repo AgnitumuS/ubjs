@@ -712,14 +712,14 @@ at http://www.sencha.com/contact.
 
 Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
-Ext.define('ExtThemeNeptune.tab.Tab', {
-    override: 'Ext.tab.Tab',
-    border: false
-});
+// Ext.define('ExtThemeNeptune.tab.Tab', {
+//     override: 'Ext.tab.Tab',
+//     border: false
+// });
 
 Ext.define('ExtThemeNeptune.tab.Tab', {
-    override: 'Ext.tab.Tab'
-    ,border: '0 0 3 0'
+  override: 'Ext.tab.Tab',
+  border: '1 1 3 0'
 });
 
 /*
