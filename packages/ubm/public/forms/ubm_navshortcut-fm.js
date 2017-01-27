@@ -1,4 +1,4 @@
-var entityRe = /"entity".*:.*"(\w*)"/;
+var entityRe = /"entity"\s*:\s*"(\w*)"/;
 
 exports.formCode = {
 	initUBComponent: function () {
