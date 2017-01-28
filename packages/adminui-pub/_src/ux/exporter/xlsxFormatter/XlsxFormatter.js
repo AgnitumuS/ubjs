@@ -16,28 +16,12 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
 
   sharedStrings: {item: [], count: 0},
 
-  formatN: function (store, config, fn, scope) {
-    if (!store.buffered) {
-      this.formatStart(store, config)
-    }
-      // debugger;
-    var request = Ext.apply(Ext.clone(store.ubRequest), {requestName: 'exportToXLSX'})
-    UB.core.UBDataLoader.loadStores({
-      ubRequests: [request],
-      setStoreId: true,
-      callback: function (stores) {
-        this.formatStart(stores.exportToXLSX, config)
-      },
-      scope: this
-    })
-  },
-
-    /**
-     * Make export
-      * @param {Object} store
-     * @param {Object} config
-     * @param {Function} callback
-     */
+  /**
+   * Make export
+   * @param {Object} store
+   * @param {Object} config
+   * @param {Function} callback
+   */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
       XLSX.init().done(function () {

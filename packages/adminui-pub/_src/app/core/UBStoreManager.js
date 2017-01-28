@@ -3,20 +3,14 @@ require('./UBUtil')
 /**
  * Файл: UB.core.UBStoreManager.js
  * Автор: Игорь Ноженко
- * 
+ *
  * Менеджер store'ов уровня приложения
  */
-
 Ext.define('UB.core.UBStoreManager', {
     singleton: true,
 
-    // requires: [
-    //     'UB.core.UBAppConfig',
-    //     'UB.core.UBUtil'
-    // ],
-
     /**
-     * 
+     *
      * @param {String} entityName
      * @param {String[]} fieldList (optional)
      * @param {Object} [whereList] (optional)
@@ -28,7 +22,7 @@ Ext.define('UB.core.UBStoreManager', {
 
     /**
      * 
-     * @param {String} entityName
+     * @param {String} systemEntity
      * @return {String}
      */
     getSystemEntityStoreGetterName: function(systemEntity) {

@@ -126,18 +126,6 @@
     background-image: url(./ubimages/yellow_bookmark.png) ! important;
 }
 
-.icon-pencil {
-    background-image: url(./ubimages/pencil.png) ! important;
-}
-
-.icon-folder-add {
-    background-image: url(./ubimages/folder_add.png) ! important;
-}
-
-.icon-tag-blue-add {
-    background-image: url(./ubimages/tag_blue_add.png) ! important;
-}
-
 .iconDelete {
     background-image: url(./ubimages/delete.png) ! important;
 }
@@ -839,7 +827,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     padding: 0.3em 0 0.5em 0.2em;             	
     z-index: 7;
     /* box-shadow: rgba(0, 0, 0, 0.298039) 0 3px 3px 0; */
-    box-shadow: rgba(0, 0, 0, 0.298039) 0 0px 1px 0
 }
 
 #ubCenterViewport .x-tab-bar-strip-default {
@@ -1550,7 +1537,7 @@ input.x-form-field-text{
 }
 
 .add-new-action .x-btn-icon-el{
-    color: #eb4d5c;
+    color: #049540;
 }
 
 .filter-action .x-btn-icon-el{
