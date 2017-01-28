@@ -223,17 +223,8 @@
     background-image: url(./ubimages/tick.png) ! important;
 }
 
-.iconFilter {
-    background-image: url(./ubimages/filter.png) ! important;
-    background-size: 16px 16px;
-}
-
 .iconExportXls {
     background-image: url(./ubimages/excel.png) ! important;
-}
-
-.iconExportHtml {
-    background-image: url(./ubimages/html.png) ! important;
 }
 
 .iconPrinter {
@@ -779,18 +770,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 #app-options .portlet-content {
     padding: 5px;
     font-size: 12px;
-}
-
-.settings {
-    background-image: url(./ubimages/folder_wrench.png);
-}
-
-.nav {
-    background-image: url(./ubimages/folder_go.png);
-}
-
-.info {
-    background-image: url(./ubimages/information.png);
 }
 
 .ux-desktop-shortcut {
