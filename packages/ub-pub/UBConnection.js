@@ -621,22 +621,20 @@ function UBConnection (connectionParams) {
  * @returns {Promise}
  */
 UBConnection.prototype.initCache = function (userDbVersion) {
-  let me = this
-    /**
-     * @property {UBCache} cache
-     * @readonly
-     * @type {UBCache}
-     */
-  me.cache = new UBCache(me.baseURL, userDbVersion)
-    /**
-     * List of keys, requested in the current user session.
-     * Cleared each time login done
-     * @protected
-     * @property {Object} cachedSessionEntityRequested
-     */
-  me.cachedSessionEntityRequested = {}
+  /**
+   * @property {UBCache} cache
+   * @readonly
+   * @type {UBCache}
+   */
+  this.cache = new UBCache(this.baseURL, userDbVersion)
+  /**
+   * List of keys, requested in the current user session.
+   * Cleared each time login done
+   * @property {Object} cachedSessionEntityRequested
+   */
+  this.cachedSessionEntityRequested = {}
     // clear use session store
-  return me.cache.clear(UBCache.SESSION)
+  return this.cache.clear(UBCache.SESSION)
 }
 
 /**

@@ -58,17 +58,15 @@ Ext.define('UB.view.EntityGridPanel', {
     'UB.ux.UBPreFilter'
   ],
   statics: {
-        /**
-         * List of possible actions in "All actions" list menu
-         */
+    /**
+     * List of possible actions in "All actions" list menu
+     */
     actionId: {
       addNew: 'addNew',
       addNewByCurrent: 'addNewByCurrent',
       prefilter: 'prefilter',
       edit: 'edit',
       del: 'del',
-            // find: 'find',
-            // clearFind: 'clearFind',
       newVersion: 'newVersion',
       refresh: 'refresh',
       history: 'history',
@@ -1164,15 +1162,15 @@ Ext.define('UB.view.EntityGridPanel', {
         me.updateVisibleBBar()
       }
     })
-        /**
-         * @cfg {Array.<{entityName: String, property: String, [command]: Object, [autoShow]: Boolean, caption: string}>} details
-         * Array of detail config object:
-         *  {String} entityName
-         *  {String} property
-         *  {Object} [command] params for UB.core.UBApp.doCommand
-         *  {Boolean} [autoShow] if true detail automatically show when form show
-         *  {String} [caption]
-         */
+    /**
+     * @cfg {Array.<{entityName: String, property: String, [command]: Object, [autoShow]: Boolean, caption: string}>} details
+     * Array of detail config object:
+     *  {String} entityName
+     *  {String} property
+     *  {Object} [command] params for UB.core.UBApp.doCommand
+     *  {Boolean} [autoShow] if true detail automatically show when form show
+     *  {String} [caption]
+     */
     if (me.details) {
       me.store.on('load', function () {
         me.details.forEach(function (detail) {
@@ -1400,7 +1398,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.addNew] = new Ext.Action({
       actionId: actions.addNew,
-            // iconCls: 'iconAdd',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-new-action',
@@ -1414,8 +1411,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.addNewByCurrent] = new Ext.Action({
       actionId: actions.addNewByCurrent,
-            // iconCls: 'iconAddByCurrent',
-
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-currect-action',
@@ -1429,11 +1424,9 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.edit] = new Ext.Action({
       actionId: actions.edit,
-            // iconCls: 'iconEdit',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faEdit,
       cls: 'edit-action',
-
       text: UB.i18n('redaktirovat') + hotKeys[actions.edit].text,
       eventId: events.edit,
       handler: me.onAction,
@@ -1443,7 +1436,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.del] = new Ext.Action({
       actionId: actions.del,
-            // iconCls: 'iconDelete',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faTrashO,
       cls: 'delete-action',
@@ -1454,26 +1446,6 @@ Ext.define('UB.view.EntityGridPanel', {
       disabled: !me.entity.haveAccessToMethod(methodNames.DELETE),
       scope: me
     })
-        /*
-        me.actions[actions.find] = new Ext.Action({
-            actionId: actions.find,
-            iconCls: 'iconFind',
-            text: UB.i18n('poisk'),
-            eventId: UB.view.EntityGridPanel.eventId.find,
-            handler: me.onAction,
-            scope: me
-        });
-
-        me.actions[actions.clearFind] = new Ext.Action({
-            actionId: actions.clearFind,
-            iconCls: 'iconClear',
-            text: UB.i18n('ochistitPoisk'),
-            eventId: events.clearfind,
-            handler: me.onAction,
-            disabled: true,
-            scope: me
-        });
-         */
     me.actions[actions.showPreview] = new Ext.Action({
       actionId: actions.showPreview,
             // iconCls: 'iconView',
@@ -1539,12 +1511,9 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.refresh] = new Ext.Action({
       actionId: actions.refresh,
-            // iconCls: 'iconRefresh',
-            // iconCls: 'fa',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faRefresh,
       cls: 'refresh-action',
-            // glyph: 0xf021,//@FontAwesome
       text: UB.i18n('obnovit') + hotKeys[actions.refresh].text,
       eventId: events.refresh,
       handler: me.onAction,
@@ -1554,7 +1523,6 @@ Ext.define('UB.view.EntityGridPanel', {
     if (me.isModal) {
       me.actions[actions.itemSelect] = new Ext.Action({
         actionId: actions.itemSelect,
-                // iconCls: 'iconOk',
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faCheck,
 
@@ -1568,7 +1536,6 @@ Ext.define('UB.view.EntityGridPanel', {
     if (me.autoFilter) {
       me.actions[actions.prefilter] = new Ext.Action({
         actionId: actions.prefilter,
-                // iconCls: 'iconFilter',
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faFilter,
         text: UB.i18n('showPreFilter') + hotKeys[actions.prefilter].text,
@@ -1580,7 +1547,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.lock] = new Ext.Action({
       actionId: actions.lock,
-            // iconCls: "iconRefresh",
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faLock,
       text: UB.i18n('lockBtn'),
@@ -1591,7 +1557,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.unLock] = new Ext.Action({
       actionId: actions.unLock,
-            // iconCls: "iconRefresh",
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faUnLock,
       text: UB.i18n('unLockBtn'),
@@ -1602,7 +1567,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.exportXls] = new Ext.Action({
       actionId: actions.exportXls,
-      iconCls: 'iconExportXls',
+      glyph: UB.core.UBUtil.glyphs.faFileExcelO,
       text: UB.i18n('exportXls'),
       eventId: events.exportXls,
       disabled: !Boolean(window.XLSX),
@@ -1620,7 +1585,7 @@ Ext.define('UB.view.EntityGridPanel', {
     })
     me.actions[actions.exportHtml] = new Ext.Action({
       actionId: actions.exportHtml,
-            // iconCls: 'iconExportHtml',
+      glyph: UB.core.UBUtil.glyphs.faTable,
       text: UB.i18n('exportHtml'),
       eventId: events.exportHtml,
       handler: me.onAction,
@@ -2029,9 +1994,6 @@ Ext.define('UB.view.EntityGridPanel', {
         config.cmpInitConfig = formParam.cmpInitConfig
       }
 
-            // if(me.parent && me.parentID || me.up('ubdetailgrid')){
-            //    config.isModal = true;
-            // }
       $App.doCommand(config)
     })
   },
@@ -2749,7 +2711,6 @@ Ext.define('UB.view.EntityGridPanel', {
       entity: config.entityName,
       detailAttribute: config.attribute,
       parentID: parentID,
-            // target: panel,
       target: me.detailTabPanel,
       isDetail: true,
       filters: coll,
