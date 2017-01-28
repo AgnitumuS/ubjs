@@ -314,6 +314,7 @@ UB.i18nExtend({
     UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
     //search form (UBPreFilter)
     search: 'Search',
+    'Filter by': 'Filter by',
     filterForm: 'Search form',
     main: 'Main',
     other: 'Other',

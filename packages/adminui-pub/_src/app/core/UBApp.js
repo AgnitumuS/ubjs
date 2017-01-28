@@ -764,7 +764,6 @@ Ext.define('UB.core.UBApp', {
           }
           if (btn === 'cancel') {
             throw new UB.UBAbortError()
-                            // return false;
           }
         })
       }
@@ -845,10 +844,8 @@ Ext.define('UB.core.UBApp', {
   },
 
   getDefaultDesktop: function () {
-    var record,
-      store = UB.core.UBStoreManager.getDesktopStore()
-
-    record = store.findRecord('isDefault', true) || store.getAt(0)
+    var store = UB.core.UBStoreManager.getDesktopStore()
+    var record = store.findRecord('isDefault', true) || store.getAt(0)
     return record ? record.get('ID') : null
   },
 
@@ -858,7 +855,7 @@ Ext.define('UB.core.UBApp', {
   },
 
   checkQueryString: function () {
-    this.runLink(location.search)
+    this.runLink(window.location.search)
   },
 
   runLink: function (link) {

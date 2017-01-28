@@ -320,6 +320,7 @@ UB.i18nExtend({
     UserWithoutOrgEmployeeNotAllowed: 'Користувач не перебуває в штаті організації (не співставлений з жодною штатною одиницею). Вхід заборонено.',
     //search form (UBPreFilter)
     search: 'Пошук',
+    'Filter by': 'Фильтрувати по',
     //cancel: 'Відміна',
     filterForm: 'Форма пошуку',
     main: 'Основне',

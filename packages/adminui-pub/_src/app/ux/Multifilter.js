@@ -99,14 +99,11 @@ Ext.define('UB.ux.Multifilter', {
             //ownerCt: owner, // To enable the Menu to ascertain a valid zIndexManager owner in the same tree
             //ownerLayout: layout,
             //ui: owner instanceof Ext.toolbar.Toolbar ? 'default-toolbar' : 'default',
-            tooltip: UB.i18n('search'),
+            tooltip: UB.i18n('Filter by'),
             glyph: UB.core.UBUtil.glyphs.faFilter,
             handler: function(){
                 menu.showBy(me.buttonSelectFilter.el, me.menuAlign);
             }
-
-            //menu:
-
         });
         me.add(this.buttonSelectFilter);
     },
