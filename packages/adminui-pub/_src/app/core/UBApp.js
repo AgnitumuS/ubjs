@@ -4,9 +4,9 @@ require('../view/Viewport')
 require('../core/UBDataLoader.js')
 
 const UBCore = require('@unitybase/ub-pub')
-var reLetters = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
-var reEn = /[A-Za-z]/
-var reCaps = /[A-ZА-ЯЁІЇҐ]/
+var RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
+var RE_ENGLISH = /[A-Za-z]/
+var RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
 
 /**
  * UnityBase adminUI application.
@@ -48,31 +48,31 @@ Ext.define('UB.core.UBApp', {
     observable: 'Ext.util.Observable'
   },
 
-    /**
-     * Instance of UBNativePDFSign. Do not use directly - use $App.pdfSigner().then(function(signer){...});
-     * @private
-     * @type {UBNativePDFSign}
-     */
+  /**
+   * Instance of UBNativePDFSign. Do not use directly - use $App.pdfSigner().then(function(signer){...});
+   * @private
+   * @type {UBNativePDFSign}
+   */
   __pdfSigner: null,
 
-    /**
-     * Instance of UBNativeScanner. Do not use directly - use $App.scanService().then(function(scanner){...});
-     * @private
-     * @type {UBNativeScanner}
-     */
+  /**
+   * Instance of UBNativeScanner. Do not use directly - use $App.scanService().then(function(scanner){...});
+   * @private
+   * @type {UBNativeScanner}
+   */
   __scanService: null,
 
-    /**
-     * Instance of UBNativeDocEdit. Do not use directly - use $App.docEdit().then(function(docedit){...});
-     * @private
-     * @type {UBNativeDocEdit}
-     */
+  /**
+   * Instance of UBNativeDocEdit. Do not use directly - use $App.docEdit().then(function(docedit){...});
+   * @private
+   * @type {UBNativeDocEdit}
+   */
   __docEdit: null,
 
-    /**
-     * The core instance. Initialized after launch()
-     * @type Core
-     */
+  /**
+   * The core instance. Initialized after launch()
+   * @type Core
+   */
   core: null,
 
   constructor: function () {
@@ -191,13 +191,13 @@ Ext.define('UB.core.UBApp', {
     } else {
       n = s.length
       t = s.substr(n - 1, 1)
-      if (reLetters.test(t)) {
-        if (reEn.test(t)) {
+      if (RE_LETTERS.test(t)) {
+        if (RE_ENGLISH.test(t)) {
           textField.addClass('ub-pwd-keyboard-en')
         } else {
           textField.removeCls('ub-pwd-keyboard-en')
         }
-        if (reCaps.test(t)) {
+        if (RE_CAPS.test(t)) {
           textField.addClass('ub-pwd-keyboard-caps')
         } else {
           textField.removeCls('ub-pwd-keyboard-caps')
@@ -206,7 +206,7 @@ Ext.define('UB.core.UBApp', {
     }
   },
 
-  onPasswordChange: function (reason) {
+  onPasswordChange: function () {
     var wind = new Ext.Window({
       extend: 'Ext.form.Panel',
       layout: 'vbox',
@@ -300,12 +300,11 @@ Ext.define('UB.core.UBApp', {
     wind.show()
   },
 
-    /**
-     * The main entry point of UnityBase Ext-based application.
-     * @returns {Promise} resolved then viewport is created
-     */
+  /**
+   * The main entry point of UnityBase Ext-based application.
+   * @returns {Promise} resolved then viewport is created
+   */
   launch: function () {
-        // return;
     var me = this
     return UBCore.connect({
       host: window.location.origin,
@@ -352,11 +351,6 @@ Ext.define('UB.core.UBApp', {
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
         return UBCore.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js')
-      },
-      onGotApplicationDomain: function (domainInfo, domain) {
-        // todo delete this callBack when delete UBDomainManager
-        // UB.core.UBDomainManager.init(domainInfo, domain);
-        // me.domain = UB.core.UBDomainManager;
       }
     }).then(function (connection) {
       var localeScriptForLoad = []
@@ -389,9 +383,7 @@ Ext.define('UB.core.UBApp', {
           localeScriptForLoad.push(UBCore.inject(model.path + '/locale/lang-' + myLocale + '.js'))
         }
         if (model.needInit) {
-          // initScriptForLoad.push(model.path + '/initModel.js')
           initScriptForLoad.push(model.clientRequirePath + '/initModel.js')
-          // initScriptForLoad.push((model.moduleName || model.path) + '/initModel.js')
         }
       })
       // load models initialization script in order they passed
@@ -470,34 +462,34 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     * Return path of image from current theme
-     * @param {string} imageName
-     * @returns {string}
-     */
+  /**
+   * Return path of image from current theme
+   * @param {string} imageName
+   * @returns {string}
+   */
   getImagePath: function (imageName) {
     return 'models/adminui/themes/' + this.connection.appConfig.themeName + '/ubimages/' + imageName
   },
 
-    /**
-     * Show confirmation dialog. Title & message are translated using UB.i18n
-     * Example:
-     *
-     *      $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfulody')
-     *      .then(function(btn){
-     *           if (btn === 'yes'){
-     *               me.openDocument();
-     *               me.closeWindow(true);
-     *           }
-     *       });
-     *
-     * @param {String} title
-     * @param {String} msg
-     * @param {Object} [config]
-     * @param {Number} [config.buttons] OK: 1, YES: 2, NO: 4, CANCEL: 8.  Default YESNOCANCEL: 14
-     * @param {String} [config.icon] Possible values: QUESTION, ERROR, WARNING, INFO. Default QUESTION
-     * @returns {Promise} resolved pressed button name ['ok', 'yes', 'no', 'cancel']
-     */
+  /**
+   * Show confirmation dialog. Title & message are translated using UB.i18n
+   * Example:
+   *
+   *      $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfulody')
+   *      .then(function(btn){
+   *           if (btn === 'yes'){
+   *               me.openDocument();
+   *               me.closeWindow(true);
+   *           }
+   *       });
+   *
+   * @param {String} title
+   * @param {String} msg
+   * @param {Object} [config]
+   * @param {Number} [config.buttons] OK: 1, YES: 2, NO: 4, CANCEL: 8.  Default YESNOCANCEL: 14
+   * @param {String} [config.icon] Possible values: QUESTION, ERROR, WARNING, INFO. Default QUESTION
+   * @returns {Promise} resolved pressed button name ['ok', 'yes', 'no', 'cancel']
+   */
   dialog: function (title, msg, config) {
     var icon
     config = config || {}
@@ -521,22 +513,22 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     * Show confirmation dialog. Title & message are translated using UB.i18n
-     * Example:
-     *
-     *      $App.dialogYesNo('makeChangesSuccessfullTitle', 'makeChangesSuccessfullBody')
-     *      .then(function(choice){
-     *           if (choice){
-     *               me.openDocument();
-     *               me.closeWindow(true);
-     *           }
-     *       });
-     *
-     * @param {String} title
-     * @param {String} msg
-     * @returns {Promise} resolved to true | false depending on user choice
-     */
+  /**
+   * Show confirmation dialog. Title & message are translated using UB.i18n
+   * Example:
+   *
+   *      $App.dialogYesNo('makeChangesSuccessfullTitle', 'makeChangesSuccessfullBody')
+   *      .then(function(choice){
+   *           if (choice){
+   *               me.openDocument();
+   *               me.closeWindow(true);
+   *           }
+   *       });
+   *
+   * @param {String} title
+   * @param {String} msg
+   * @returns {Promise} resolved to true | false depending on user choice
+   */
   dialogYesNo: function (title, msg) {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
@@ -552,24 +544,24 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     * Show information dialog. msg is translated using UB.i18n
-     * Example:
-     *
-     *      $App.connection.post('myAction', {myData: ...})
-     *      .then(function(response){
-     *          //do something here ....
-     *          ....
-     *          // notify user
-     *          return $App.dialogInfo('documentWasSuccessfullyApproved');
-     *      }).then(function(){
-     *         // we reach this code after user read information dialog and press OK
-     *      });
-     *
-     * @param {string} msg
-     * @param {String} [title] Optional title
-     * @returns {Promise} resolved to true then user click OK
-     */
+  /**
+   * Show information dialog. msg is translated using UB.i18n
+   * Example:
+   *
+   *      $App.connection.post('myAction', {myData: ...})
+   *      .then(function(response){
+   *          //do something here ....
+   *          ....
+   *          // notify user
+   *          return $App.dialogInfo('documentWasSuccessfullyApproved');
+   *      }).then(function(){
+   *         // we reach this code after user read information dialog and press OK
+   *      });
+   *
+   * @param {string} msg
+   * @param {String} [title] Optional title
+   * @returns {Promise} resolved to true then user click OK
+   */
   dialogInfo: function (msg, title) {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
@@ -585,12 +577,12 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     * Display notification message
-     * @param {String} msg message
-     * @param {String} [title]
-     * @param {Number} [slideInDuration] Animate time in ms. by default 800 ms
-     */
+  /**
+   * Display notification message
+   * @param {String} msg message
+   * @param {String} [title]
+   * @param {Number} [slideInDuration] Animate time in ms. by default 800 ms
+   */
   notify: function (msg, title, slideInDuration) {
     Ext.create('widget.uxNotification', {
       title: UBCore.i18n(title),
@@ -611,18 +603,18 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     * Show error dialog. msg is translated using UB.i18n
-     * Example:
-     *
-     *      $App.dialogError('recordNotExistsOrDontHaveRights')
-     *          .done(me.closeWindow.bind(me));
-     *
-     * @param {String} msg
-     * @param {String} [title] Default is 'error'
-     */
+  /**
+   * Show error dialog. msg is translated using UB.i18n
+   * Example:
+   *
+   *      $App.dialogError('recordNotExistsOrDontHaveRights')
+   *          .done(me.closeWindow.bind(me));
+   *
+   * @param {String} msg
+   * @param {String} [title] Default is 'error'
+   */
   dialogError: function (msg, title) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       Ext.MessageBox.show({
         modal: true,
         title: UBCore.i18n(title || 'error'),
@@ -634,58 +626,54 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     * Return instance of {@link UBNativePDFSign} for PDF signing operations
-     * @returns {Promise} resolved to initialized UBNativePDFSign instance
-     */
+  /**
+   * Return instance of {@link UBNativePDFSign} for PDF signing operations
+   * @returns {Promise} resolved to initialized UBNativePDFSign instance
+   */
   pdfSigner: function () {
-    var me = this
-
-    if (!me.__pdfSigner) {
-      me.__pdfSigner = new UBNativePDFSign()
+    if (!this.__pdfSigner) {
+      this.__pdfSigner = new UBNativePDFSign()
     }
-    return me.__pdfSigner.init()
+    return this.__pdfSigner.init()
   },
 
-    /**
-     * Return instance of {@link UBNativeDocEdit} for edit document content
-     * @returns {Promise} resolved to initialized UBNativeDocEdit instance
-     */
+  /**
+   * Return instance of {@link UBNativeDocEdit} for edit document content
+   * @returns {Promise} resolved to initialized UBNativeDocEdit instance
+   */
   docEdit: function () {
-    var me = this
-
-    if (!me.__docEdit) {
-      me.__docEdit = new UBNativeDocEdit()
+    if (!this.__docEdit) {
+      this.__docEdit = new UBNativeDocEdit()
     }
-    return me.__docEdit.init()
+    return this.__docEdit.init()
   },
 
-    /**
-     * Do edit office document
-     * @param {String} path Path to document
-     * @returns {Promise} resolved to true or rejected if error or incorrect path.
-     */
+  /**
+   * Do edit office document
+   * @param {String} path Path to document
+   * @returns {Promise} resolved to true or rejected if error or incorrect path.
+   */
   editDocument: function (path) {
-    return $App.docEdit().then(function (docedit) { return docedit.editDocument(path) })
+    return this.docEdit().then(function (docedit) {
+      return docedit.editDocument(path)
+    })
   },
 
-    /**
-     * Return promise, resolved to instance of {@link UBNativeScanner} for scanner direct manipulation
-     * @method
-     * @return {Promise}
-     */
+  /**
+   * Return promise, resolved to instance of {@link UBNativeScanner} for scanner direct manipulation
+   * @method
+   * @return {Promise}
+   */
   scanService: function () {
-    var me = this
-
-    if (!me.__scanService) {
-      me.__scanService = new UBNativeScanner()
+    if (!this.__scanService) {
+      this.__scanService = new UBNativeScanner()
     }
-    return me.__scanService.init()
+    return this.__scanService.init()
   },
 
-    /**
-     * Show scanner settings
-     */
+  /**
+   * Show scanner settings
+   */
   scannerSettings: function () {
     $App.scanService().then(function (scanner) {
       return scanner.getDefaultSettings()
@@ -705,23 +693,23 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     * Run scan process.
-     * @param {String} header Caption of the scanning progress window
-     * @param {Object} [config={}] Scanner settings. If passed - will merge config with UBNativeScanner.getDefaultSettings() result
-     * @param {String} [documentMIME] Mime type of scanned image. If passed will override scanSettings.UBScan.OutputFormat
-     * @returns {Promise} resolved to base64 data or false in case user press cancel.
-     */
+  /**
+   * Run scan process.
+   * @param {String} header Caption of the scanning progress window
+   * @param {Object} [config={}] Scanner settings. If passed - will merge config with UBNativeScanner.getDefaultSettings() result
+   * @param {String} [documentMIME] Mime type of scanned image. If passed will override scanSettings.UBScan.OutputFormat
+   * @returns {Promise} resolved to base64 data or false in case user press cancel.
+   */
   scan: function (header, config, documentMIME) {
     var me = this
     var mimeToOutputFormat = {
-        'image/jpeg': 'JPEG',
-        'application/jpg': 'JPEG'
-      }
+      'image/jpeg': 'JPEG',
+      'application/jpg': 'JPEG'
+    }
     var outputFormat = mimeToOutputFormat[documentMIME]
     return $App.scanService().then(function (scanner) {
-      var AllowAddPages = false,
-        statusWindow
+      var AllowAddPages = false
+      var statusWindow
 
       statusWindow = Ext.create('UB.view.StatusWindow', {
         title: header
@@ -785,7 +773,6 @@ Ext.define('UB.core.UBApp', {
         var scanSettings = _.merge(defaultParams, config || {})
         if (!scanSettings) {
           throw new UB.UBError(UB.format(UBCore.i18n('setScannerSettings'), '$App.scannerSettings(); '))
-                    // $App.dialogInfo()
         }
 
         if (scanSettings.CurrentScanType !== 'UnityBase' && scanSettings.FRScan && scanSettings.FRScan.LastUsedScanner) {
@@ -815,48 +802,40 @@ Ext.define('UB.core.UBApp', {
         me.__scanService.lastScanedFormat = scanSettings.UBScan.OutputFormat
         return scanner.startScan(scanSettings)
       })
-            .then(onScan, null, onNotify)
-            .fin(function () {
-              statusWindow.close()
-            })
-            .catch(function (error) {
-              return scanner.cancelScan().then(function () {
-                statusWindow.close()
-                throw error
-              })
-            })
+        .then(onScan, null, onNotify)
+        .fin(function () {
+          statusWindow.close()
+        })
+        .catch(function (error) {
+          return scanner.cancelScan().then(function () {
+            statusWindow.close()
+            throw error
+          })
+        })
     })
   },
 
-    /**
-     * @deprecated
-     */
-  getSessionSignature: function () {
-    throw new Error('$App.getSessionSignature is DEPRECATED. Use $App.connection.authorize().then(function(session){ return \'sessin_signature=\' + session.signature()});')
-  },
-
-    /**
-     * Application viewport
-     * @return {UB.view.Viewport}
-     */
+  /**
+   * Application viewport
+   * @return {UB.view.Viewport}
+   */
   getViewport: function () {
     return this.viewport
   },
 
-    /**
-     * Return last user login name
-     * @deprecated 1.7 Use {@link UB.core.UBApp.connection#userLogin $App.connection.userLogin()} instead
-     * @returns {String}
-     */
+  /**
+   * Return last user login name
+   * @deprecated 1.7 Use {@link UB.core.UBApp.connection#userLogin $App.connection.userLogin()} instead
+   * @returns {String}
+   */
   getLogin: function () {
     UB.logDebug('UB.core.UBApp.getLogin is deprecated. Use $App.connection.userLogin() instead)')
     return this.connection.userLogin()
   },
 
   getDesktop: function () {
-    varscan
-      ubAppConfig = UB.core.UBAppConfig,
-      tmpDesktop = UB.core.UBLocalStorageManager.getItem('desktop', true)
+    var ubAppConfig = UB.core.UBAppConfig
+    var tmpDesktop = UB.core.UBLocalStorageManager.getItem('desktop', true)
 
     if (!ubAppConfig.desktop) {
       ubAppConfig.desktop = UB.core.UBStoreManager.getDesktopStore().getById(tmpDesktop) ? tmpDesktop : this.getDefaultDesktop()
@@ -883,8 +862,7 @@ Ext.define('UB.core.UBApp', {
   },
 
   runLink: function (link) {
-    var
-            query = Ext.isString(link) ? Ext.Object.fromQueryString(link.toLowerCase()) : link
+    var query = Ext.isString(link) ? Ext.Object.fromQueryString(link.toLowerCase()) : link
 
     if (query && (query.command && query.command.length || query.cmdData)) {
       this.doCommand({
@@ -898,61 +876,61 @@ Ext.define('UB.core.UBApp', {
     }
   },
 
-    /**
-     * Can run any client-side command (showForm/showList/showReport).
-     *
-     *      @example
-     *      // show City dictionary with all attributes in dedicated window
-     *      $App.doCommand({
-     *           cmdType: 'showList',
-     *           cmdData: { params: [
-     *               { entity: 'cdn_city', method: 'select', fieldList: '*'}
-     *           ]}
-     *       });
-     *
-     *       // show City name and region name inside main viewport tab
-     *      $App.doCommand({
-     *           cmdType: 'showList',
-     *           cmdData: { params: [
-     *               { entity: 'cdn_city', method: 'select', fieldList: ['name', 'parentAdminUnitID.name']}
-     *           ]},
-     *           target: $App.getViewport().getCenterPanel(),
-     *           tabId: 'city_name_parent'
-     *       });
-     *
-     *       // show default edit form for currency with code='USD'
-     *       $App.connection.select({
-     *          entity: 'cdn_currency',
-     *          fieldList: ['ID', 'code3'],
-     *          whereList: {byCode3: {
-     *              expression: '[code3]', condition: 'equal', values: {code3: 'USD'}
-     *          }}
-     *       }).done(function(result){
-     *          if (result.resultData.data.length === 1){
-     *             $App.doCommand({
-     *                 cmdType: 'showForm',
-     *                 entity: 'cdn_currency',
-     *                 instanceID: result.resultData.data[0][0]
-     *             });
-     *          } else {
-     *              $App.dialogError('USD currency not found');
-     *          }
-     *       });laun
-     *
-     *       // show report
-     *       $App.doCommand({
-                 cmdType: 'showReport',
-                 cmdData: {
-                    reportCode: 'test',
-                    reportType: 'html', // must be one of 'html'/'pdf'
-                    reportParams: {'reportParam1': 1}
-                 }
-             });
-     *
-     * @param {String/Object} config
-     * @param {Object} [config.cmpInitConfig] Configuration, applied to Component created by command
-     * @param {Boolean} [config.openInBackgroundTab] true if you want to set form/list to tab without setActiveTab. Default undefined.
-     */
+  /**
+   * Can run any client-side command (showForm/showList/showReport).
+   *
+   *      @example
+   *      // show City dictionary with all attributes in dedicated window
+   *      $App.doCommand({
+   *           cmdType: 'showList',
+   *           cmdData: { params: [
+   *               { entity: 'cdn_city', method: 'select', fieldList: '*'}
+   *           ]}
+   *       });
+   *
+   *       // show City name and region name inside main viewport tab
+   *      $App.doCommand({
+   *           cmdType: 'showList',
+   *           cmdData: { params: [
+   *               { entity: 'cdn_city', method: 'select', fieldList: ['name', 'parentAdminUnitID.name']}
+   *           ]},
+   *           target: $App.getViewport().getCenterPanel(),
+   *           tabId: 'city_name_parent'
+   *       });
+   *
+   *       // show default edit form for currency with code='USD'
+   *       $App.connection.select({
+   *          entity: 'cdn_currency',
+   *          fieldList: ['ID', 'code3'],
+   *          whereList: {byCode3: {
+   *              expression: '[code3]', condition: 'equal', values: {code3: 'USD'}
+   *          }}
+   *       }).done(function(result){
+   *          if (result.resultData.data.length === 1){
+   *             $App.doCommand({
+   *                 cmdType: 'showForm',
+   *                 entity: 'cdn_currency',
+   *                 instanceID: result.resultData.data[0][0]
+   *             });
+   *          } else {
+   *              $App.dialogError('USD currency not found');
+   *          }
+   *       });
+   *
+   *       // show report
+   *       $App.doCommand({
+               cmdType: 'showReport',
+               cmdData: {
+                  reportCode: 'test',
+                  reportType: 'html', // must be one of 'html'/'pdf'
+                  reportParams: {'reportParam1': 1}
+               }
+           });
+   *
+   * @param {String/Object} config
+   * @param {Object} [config.cmpInitConfig] Configuration, applied to Component created by command
+   * @param {Boolean} [config.openInBackgroundTab] true if you want to set form/list to tab without setActiveTab. Default undefined.
+   */
   doCommand: function (config) {
     if (Ext.isString(config)) {
       config = Ext.JSON.decode(config)
@@ -965,18 +943,18 @@ Ext.define('UB.core.UBApp', {
     Ext.create('UB.core.UBCommand', config)
   },
 
-    /**
-     * Show form in "modal" mode. Return Promise.
-     * The task of form is to resolve or reject `deferred`, passed to form config.
-     *
-     * @param {Object} config
-     * @param {String} config.formCode code of form from ubm_form
-     * @param {String} [config.description] form caption
-     * @param {Boolean} [config.isClosable] if true she form show close button
-     * @param {*} [config.customParams] Any parameters passed to executed form
-     *
-     * @returns {Promise}
-     */
+  /**
+   * Show form in "modal" mode. Return Promise.
+   * The task of form is to resolve or reject `deferred`, passed to form config.
+   *
+   * @param {Object} config
+   * @param {String} config.formCode code of form from ubm_form
+   * @param {String} [config.description] form caption
+   * @param {Boolean} [config.isClosable] if true she form show close button
+   * @param {*} [config.customParams] Any parameters passed to executed form
+   *
+   * @returns {Promise}
+   */
   showModal: function (config) {
     return new Promise((resolve, reject) => {
       var cmdConfig = {
@@ -998,13 +976,12 @@ Ext.define('UB.core.UBApp', {
     })
   },
 
-    /**
-     *
-     * @param {String} prefix
-     */
+  /**
+   *
+   * @param {String} prefix
+   */
   setLocalStorageProviderPrefix: function (prefix) {
-    var
-            provider = Ext.state.Manager.getProvider()
+    var provider = Ext.state.Manager.getProvider()
 
     prefix += UB.core.UBLocalStorageManager.separator
 
@@ -1014,30 +991,32 @@ Ext.define('UB.core.UBApp', {
     }
   },
 
-    /**
-     * @deprecated 1.7.0 Use {@link UB.core.UBApp.connection#userData $App.connection.userData()} instead
-     * @return {Object}
-     */
+  /**
+   * @deprecated 1.7.0 Use {@link UB.core.UBApp.connection#userData $App.connection.userData()} instead
+   * @return {Object}
+   */
   getUserData: function () {
     UB.logDebug('UB.core.UBApp.getUserData is deprecated. Use connection.userData() instead')
     return this.connection.userData()
   },
 
-    /**
-     * @deprecated 1.7.0 Use {@link UB.core.UBApp.connection#userLang $App.connection.userLang()} instead
-     * @return {String}
-     */
+  /**
+   * @deprecated 1.7.0 Use {@link UB.core.UBApp.connection#userLang $App.connection.userLang()} instead
+   * @return {String}
+   */
   getUiLanguage: function () {
     UB.logDebug('$App.getUiLanguage is DEPRECATED. Use $App.connection.userLang()')
     return this.connection.userLang()
   },
 
-    /**
-     * Logout active user. Reload page.
-     */
+  /**
+   * Logout active user. Reload page.
+   */
   logout: function () {
     if (this.connection) {
-      this.connection.logout().fin(function () {
+      this.connection.logout()
+      .catch(e => true)
+      .then(function () {
         // MPV TODO Secure browser
         // if (UB.isSecureBrowser) {
         //     var remote = require('electron').remote;
@@ -1067,10 +1046,5 @@ Ext.define('UB.core.UBApp', {
   hideLogo: function () {
     var domEl = document.getElementById('UBLogo')
     domEl.style.display = 'none'
-  },
-
-  showLogo: function () {
-    var domEl = document.getElementById('UBLogo')
-    domEl.style.display = 'inline'
   }
 })
