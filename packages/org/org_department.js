@@ -11,7 +11,11 @@ me.setCaption = function (ctxt, mode) {
     if (mode === 'INS') {
         sLang.forEach(function (lang) {
             var suffix = '_' + lang + '^';
-            execParams['caption' + suffix] = execParams.code + ' - ' + execParams['name' + suffix];
+            if (execParams['name' + suffix]) {
+	      execParams['caption' + suffix] = execParams.code + ' - ' + execParams['name' + suffix];
+	    } else {
+	      execParams['caption' + suffix] = execParams.code + ' - ' + execParams['name'];
+   	    }
         });
     } else if (mode === 'UPD') {
         var fieldList = ['code'];
