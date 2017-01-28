@@ -12,17 +12,6 @@ require('../ux/UBToolTipOverride')
  */
 Ext.define('UB.view.Viewport', {
   extend: 'Ext.container.Viewport',
-  // requires: [
-  //   'UB.view.OverflowSelect', // MPV Important for rolluped version
-  //   'UB.view.UBBar',
-  //   'UB.core.UBStoreManager',
-  //   'UB.view.MainToolbar',
-  //   'UB.view.NavigationPanel',
-  //   'UB.view.LeftPanel',
-  //   'Ext.ux.window.Notification',
-  //   'Ext.ux.form.CheckboxGroupFix',
-  //   'UB.ux.UBToolTipOverride'
-  // ],
   uses: ['UB.core.UBApp'],
 
   initComponent: function () {
@@ -36,7 +25,6 @@ Ext.define('UB.view.Viewport', {
     me.topPanel = Ext.create('UB.view.MainToolbar', {
       region: 'north',
       collapsible: false,
-            // height: 46,
       border: false,
       margin: '0, 0, 0, 0'
     })
@@ -44,10 +32,8 @@ Ext.define('UB.view.Viewport', {
       header: false,
       region: 'west',
       width: 225, // 280
-      margin: '0, 5, 0, 0',
+      margin: '3, 5, 0, 0',
       border: false
-//    ,stateful: true,
-//    stateId: UB.core.UBLocalStorageManager.getKeyUI('viewportWest')
     })
     me.contextMenu = Ext.create('Ext.menu.Menu', {items: [
       {
