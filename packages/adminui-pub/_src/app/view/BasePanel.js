@@ -3601,17 +3601,22 @@ Ext.define('UB.view.BasePanel', {
             id = instanceID;
 
 
+      function prepareFileName() {
+        var dateString = (new Date()).toLocaleString().replace(/[/\:.]/g,'-');
+        return 'Scaned at ' + dateString + '.'+ $App.__scanService.lastScanedFormat;
+      }
         ctrl.fireEvent('change');
 
         $App.scan(title, {}, this.documents[action.attribute].documentMIME)
             .then(function(result){
+              var fName = prepareFileName();
                 return $App.connection.post('setDocument', UB.base64toArrayBuffer(result), {
                     params: {
                         entity: entityName,
                         attribute: attribute,
                         id: id,
-                        origName: 'Scaned at ' + (new Date()).toLocaleString() + '.PDF',
-                        filename: 'Scaned at ' + (new Date()).toLocaleString() + '.PDF'
+                      origName: fName,
+                      filename: fName
                     },
                     headers: {
                         "Content-Type": "application/octet-stream"

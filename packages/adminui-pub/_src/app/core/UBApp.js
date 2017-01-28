@@ -3,6 +3,7 @@ require('../../ux/window/Notification')
 require('../view/Viewport')
 require('../core/UBDataLoader.js')
 
+const UBCore = require('@unitybase/ub-pub')
 var reLetters = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
 var reEn = /[A-Za-z]/
 var reCaps = /[A-ZА-ЯЁІЇҐ]/
@@ -35,9 +36,9 @@ Ext.define('UB.core.UBApp', {
   singleton: true,
 
   requires: [
-    'Ext.Loader'
-    //'UB.view.LoginWindow',
-    //'Ext.ux.window.Notification'
+    'Ext.Loader',
+    'UB.view.LoginWindow',
+    'Ext.ux.window.Notification'
   ],
   uses: [
     'UB.core.UBCommand'
@@ -182,7 +183,8 @@ Ext.define('UB.core.UBApp', {
    * @param {Ext.field.Field} textField
    */
   passwordKeyUpHandler: function (textField) {
-    var t, n, s = textField.getValue() || ''
+    var s = textField.getValue() || ''
+    var t, n
     if (!s) {
       textField.removeCls('ub-pwd-keyboard-caps')
       textField.removeCls('ub-pwd-keyboard-en')
@@ -213,7 +215,7 @@ Ext.define('UB.core.UBApp', {
       items: [{
         xtype: 'label',
         width: '100%',
-        text: UB.i18n('Your password is expired. Please change password')
+        text: UBCore.i18n('Your password is expired. Please change password')
       }, {
         xtype: 'textfield',
         inputType: 'password',
@@ -223,8 +225,8 @@ Ext.define('UB.core.UBApp', {
           }
         },
         enableKeyEvents: true,
-        emptyText: UB.i18n('EnterOldPassword'),
-        fieldLabel: UB.i18n('OldPassword'),
+        emptyText: UBCore.i18n('EnterOldPassword'),
+        fieldLabel: UBCore.i18n('OldPassword'),
         labelWidth: 100,
         name: 'oldPwd',
         margins: 10,
@@ -240,16 +242,16 @@ Ext.define('UB.core.UBApp', {
           }
         },
         enableKeyEvents: true,
-        emptyText: UB.i18n('EnterNewPassword'),
-        fieldLabel: UB.i18n('NewPassword'),
+        emptyText: UBCore.i18n('EnterNewPassword'),
+        fieldLabel: UBCore.i18n('NewPassword'),
         labelWidth: 100,
         name: 'newPwd',
         margins: 10,
         width: '100%',
         allowBlank: false,
         afterLabelTextTpl: [
-          '<b data-qtitle="', UB.i18n('HowToCreatePassword'),
-          '" data-qtip="', UB.i18n('passwordRecommendation'),
+          '<b data-qtitle="', UBCore.i18n('HowToCreatePassword'),
+          '" data-qtip="', UBCore.i18n('passwordRecommendation'),
           '" style="color: red;">?</b>'
         ]
       }, {
@@ -261,8 +263,8 @@ Ext.define('UB.core.UBApp', {
           }
         },
         enableKeyEvents: true,
-        emptyText: UB.i18n('RetypePassword'),
-        fieldLabel: UB.i18n('RetypePassword'),
+        emptyText: UBCore.i18n('RetypePassword'),
+        fieldLabel: UBCore.i18n('RetypePassword'),
         labelWidth: 100,
         name: 'newPwdRetyped',
         margins: 10,
@@ -276,7 +278,7 @@ Ext.define('UB.core.UBApp', {
       }],
       buttons: [{
         ubID: 'btnOK',
-        text: UB.i18n('Change'),
+        text: UBCore.i18n('Change'),
         glyph: UB.core.UBUtil.glyphs.faSave,
         disabled: true
       }]
@@ -305,7 +307,7 @@ Ext.define('UB.core.UBApp', {
   launch: function () {
         // return;
     var me = this
-    return UB.connect({
+    return UBCore.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
       onCredentialRequired: UB.view.LoginWindow.DoLogon,
@@ -349,7 +351,7 @@ Ext.define('UB.core.UBApp', {
         // TODO - remove because mutation of other objects is bad idea
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
-        return UB.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js')
+        return UBCore.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js')
       },
       onGotApplicationDomain: function (domainInfo, domain) {
         // todo delete this callBack when delete UBDomainManager
@@ -357,9 +359,9 @@ Ext.define('UB.core.UBApp', {
         // me.domain = UB.core.UBDomainManager;
       }
     }).then(function (connection) {
-      var myLocale,
-        models,
-        localeScriptForLoad = [], initScriptForLoad = []
+      var localeScriptForLoad = []
+      var initScriptForLoad = []
+      var myLocale, models
 
       me.connection = connection
       me.ubNotifier = UB.ubNotifier
@@ -381,11 +383,10 @@ Ext.define('UB.core.UBApp', {
       models = _.sortBy(models, 'order') // sort models by order
       _.forEach(models, function (model) {
         if (model.path && model.key !== 'UB') {
-          Ext.Loader.setPath(model.key, model.path);
-          // Ext.Loader.setPath(model.key, model.moduleName)
+          Ext.Loader.setPath(model.key, model.path)
         }
         if (model.needLocalize) {
-          localeScriptForLoad.push(UB.inject(model.path + '/locale/lang-' + myLocale + '.js'))
+          localeScriptForLoad.push(UBCore.inject(model.path + '/locale/lang-' + myLocale + '.js'))
         }
         if (model.needInit) {
           // initScriptForLoad.push(model.path + '/initModel.js')
@@ -398,7 +399,6 @@ Ext.define('UB.core.UBApp', {
         var promise = Promise.resolve(true)
         initScriptForLoad.forEach(function (script) {
           promise = promise.then(function () {
-            // return UB.inject(script)
             return window.System.import(script)
           })
         })
@@ -409,7 +409,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
         ubRequests: ['ubm_desktop', 'ubm_navshortcut', 'ubm_form', 'ubm_enum'].map(function (item) {
-          var res = {entity: item, method: 'select', fieldList: $App.domainInfo.get(item).getAttributeNames() }
+          var res = {entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
           if (item === 'ubm_desktop') {
             res.orderList = {
               ord: {
@@ -439,21 +439,18 @@ Ext.define('UB.core.UBApp', {
       })
     }).then(function () { // clear form's def/js cache if ubm_form version changed
       // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
-      var realFormsVersion = $App.connection.cachedSessionEntityRequested[
-          $App.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
-        ],
-        storedFormsVersion
+      let cacheKey = me.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
+      let realFormsVersion = me.connection.cachedSessionEntityRequested[cacheKey]
 
       if (realFormsVersion) {
-        storedFormsVersion = +window.localStorage.getItem('ubm_form_cache_version')
+        let storedFormsVersion = +window.localStorage.getItem('ubm_form_cache_version')
         if (storedFormsVersion !== realFormsVersion) {
           UB.core.UBFormLoader.clearFormCache()
           window.localStorage.setItem('ubm_form_cache_version', realFormsVersion)
         }
       }
       return true
-    })
-    .then(function () {
+    }).then(function () {
       me.setLocalStorageProviderPrefix(me.connection.userLogin())
       /**
        * Main application window
@@ -513,8 +510,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
-        title: UB.i18n(title),
-        msg: UB.i18n(msg),
+        title: UBCore.i18n(title),
+        msg: UBCore.i18n(msg),
         buttons: config.buttons || Ext.MessageBox.YESNOCANCEL,
         icon: icon,
         fn: function (buttonId) {
@@ -544,8 +541,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
-        title: UB.i18n(title),
-        msg: UB.i18n(msg),
+        title: UBCore.i18n(title),
+        msg: UBCore.i18n(msg),
         buttons: Ext.MessageBox.YESNO,
         icon: Ext.MessageBox.QUESTION,
         fn: function (buttonId) {
@@ -577,8 +574,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
-        title: UB.i18n(title || 'info'),
-        msg: UB.i18n(msg),
+        title: UBCore.i18n(title || 'info'),
+        msg: UBCore.i18n(msg),
         icon: Ext.MessageBox.INFO,
         buttons: Ext.MessageBox.OK,
         fn: function (buttonId) {
@@ -596,7 +593,7 @@ Ext.define('UB.core.UBApp', {
      */
   notify: function (msg, title, slideInDuration) {
     Ext.create('widget.uxNotification', {
-      title: UB.i18n(title),
+      title: UBCore.i18n(title),
       position: 't',
       slideInDuration: slideInDuration || 800,
       useXAxis: true,
@@ -608,7 +605,7 @@ Ext.define('UB.core.UBApp', {
         xtype: 'component',
         autoEl: {
           tag: 'div',
-          html: UB.i18n(msg)
+          html: UBCore.i18n(msg)
         }
       }]
     })
@@ -628,8 +625,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
-        title: UB.i18n(title || 'error'),
-        msg: UB.i18n(msg),
+        title: UBCore.i18n(title || 'error'),
+        msg: UBCore.i18n(msg),
         icon: Ext.MessageBox.ERROR,
         buttons: Ext.MessageBox.OK,
         fn: function () { resolve(true) }
@@ -695,7 +692,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function (settings) {
       $App.showModal({
         formCode: 'ubm_desktop-scanerSettings',
-        description: UB.i18n('nastroykiSkanera'),
+        description: UBCore.i18n('nastroykiSkanera'),
         isClosable: true,
         customParams: settings
       }).then(function (result) {
@@ -716,11 +713,12 @@ Ext.define('UB.core.UBApp', {
      * @returns {Promise} resolved to base64 data or false in case user press cancel.
      */
   scan: function (header, config, documentMIME) {
+    var me = this
     var mimeToOutputFormat = {
         'image/jpeg': 'JPEG',
         'application/jpg': 'JPEG'
-      },
-      outputFormat = mimeToOutputFormat[documentMIME]
+      }
+    var outputFormat = mimeToOutputFormat[documentMIME]
     return $App.scanService().then(function (scanner) {
       var AllowAddPages = false,
         statusWindow
@@ -731,19 +729,19 @@ Ext.define('UB.core.UBApp', {
 
       function onNotify (progress) {
         if (progress && (progress.action === 'scan') && (progress.pageNum >= 0)) {
-          statusWindow.setStatus(UB.format(UB.i18n('doScanPages'), progress.pageNum + 1))
+          statusWindow.setStatus(UB.format(UBCore.i18n('doScanPages'), progress.pageNum + 1))
         } else if (progress && (progress.action === 'recognize') && (progress.pageNum >= 0)) {
-          statusWindow.setStatus(UB.format(UB.i18n('doRecognizePages'), progress.pageNum + 1))
+          statusWindow.setStatus(UB.format(UBCore.i18n('doRecognizePages'), progress.pageNum + 1))
         }
       }
 
       function onScan (pageCount) {
         if (pageCount > 0) {
-          statusWindow.setStatus(UB.format(UB.i18n('doScanPages'), pageCount))
+          statusWindow.setStatus(UB.format(UBCore.i18n('doScanPages'), pageCount))
           if (AllowAddPages) {
             return checkContinue()
           } else {
-            statusWindow.setStatus(UB.i18n('doFinishScan'))
+            statusWindow.setStatus(UBCore.i18n('doFinishScan'))
             return scanner.finishScan().then(null, null, onNotify)
           }
         } else {
@@ -752,7 +750,7 @@ Ext.define('UB.core.UBApp', {
       }
 
       function doContinue () {
-        statusWindow.setStatus(UB.i18n('doStartScan'))
+        statusWindow.setStatus(UBCore.i18n('doStartScan'))
         return scanner.continueScan().then(onScan, null, onNotify)
       }
 
@@ -773,7 +771,7 @@ Ext.define('UB.core.UBApp', {
             return doContinue()
           }
           if (btn === 'no') {
-            statusWindow.setStatus(UB.i18n('doFinishScan'))
+            statusWindow.setStatus(UBCore.i18n('doFinishScan'))
             return scanner.finishScan().then(null, null, onNotify)
           }
           if (btn === 'cancel') {
@@ -786,7 +784,7 @@ Ext.define('UB.core.UBApp', {
       return scanner.getDefaultSettings().then(function (defaultParams) {
         var scanSettings = _.merge(defaultParams, config || {})
         if (!scanSettings) {
-          throw new UB.UBError(UB.format(UB.i18n('setScannerSettings'), '$App.scannerSettings(); '))
+          throw new UB.UBError(UB.format(UBCore.i18n('setScannerSettings'), '$App.scannerSettings(); '))
                     // $App.dialogInfo()
         }
 
@@ -813,7 +811,8 @@ Ext.define('UB.core.UBApp', {
           }
         }
 
-        statusWindow.setStatus(UB.i18n('doStartScan'))
+        statusWindow.setStatus(UBCore.i18n('doStartScan'))
+        me.__scanService.lastScanedFormat = scanSettings.UBScan.OutputFormat
         return scanner.startScan(scanSettings)
       })
             .then(onScan, null, onNotify)
@@ -855,7 +854,7 @@ Ext.define('UB.core.UBApp', {
   },
 
   getDesktop: function () {
-    var
+    varscan
       ubAppConfig = UB.core.UBAppConfig,
       tmpDesktop = UB.core.UBLocalStorageManager.getItem('desktop', true)
 
