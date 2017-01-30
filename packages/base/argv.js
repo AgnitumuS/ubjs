@@ -219,11 +219,11 @@ function replaceIncludeVariables (content) {
   return content.replace(/"#include\((.*)\)"/gm, function replacer (match, p1) {
     let filePath
     try {
-      filePath = JSON.parse('{"f": "' + p1 + '"}')
+      filePath = JSON.parse('{"f": "' + p1 + '"}').f
     } catch (e) {
       return 'INVALID INCLUDE ' + p1
     }
-    filePath = path.join(process.configPath, filePath['f'])
+    if (!path.isAbsolute(filePath)) filePath = path.join(process.configPath, filePath)
     if (!fs.statSync(filePath)) {
       return 'INVALID INCLUDE ' + filePath
     }
@@ -295,7 +295,7 @@ function serverURLFromConfig (config) {
 function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
   let content = removeCommentsFromJSON(fs.readFileSync(fileName))
   if (allowMultiLineString) {
-    content = content.replace(/[\n\r\t]/gm, ' ') // replace(/[\n\r\t]/gm, ' ', 'gm').replace('\r', ' ', 'gm').replace('\t', ' ', 'gm')
+    content = content.replace(/[\n\r\t]/gm, ' ')
   }
   if (preprocessor) content = preprocessor(content)
   try {
