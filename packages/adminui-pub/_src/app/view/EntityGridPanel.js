@@ -2925,11 +2925,7 @@ Ext.define('UB.view.EntityGridPanel', {
       }]
     })
   },
-    /**
-     *
-     * @param {Ext.panel.Table} grid
-     * @param {Object} eOpts
-     */
+
   selectDefaultRow: function () {
     if (!this.getStore().getCount()) {
       return
@@ -2996,25 +2992,8 @@ Ext.define('UB.view.EntityGridPanel', {
     })
   },
 
-  onExportXlsOld: function () {
-    var v, rData, fTitle = 'export to excel', dBlob
-    v = this.up('window')
-    if (Ext.isDefined(v)) {
-      fTitle = v.title
-    } else {
-      fTitle = this.entity.caption || 'caption'
-    }
-    rData = Ext.ux.exporter.Exporter.exportAny(this, 'excel', {
-      stripeRows: true,
-      title: fTitle
-    })
-
-    dBlob = new Blob([rData], {type: 'application/vnd.ms-excel'})
-    saveAs(dBlob, fTitle + '.xls')
-  },
-
   onExportCsv: function () {
-    var v, rData, fTitle = 'export to excel', dBlob, me = this, mobj
+    var v, fTitle = 'export to CSV', dBlob, me = this, mobj
     v = this.up('window')
     mobj = this.entity
     if (Ext.isDefined(mobj)) {
@@ -3026,9 +3005,9 @@ Ext.define('UB.view.EntityGridPanel', {
         fTitle = v.title
       }
     }
-    fTitle = fTitle || this.title || 'export to csv'
+    fTitle = fTitle || this.title
 
-    rData = Ext.ux.exporter.Exporter.exportAny(this, 'csv', {
+    Ext.ux.exporter.Exporter.exportAny(this, 'csv', {
       stripeRows: true,
       title: fTitle,
       entityName: this.entityName,
@@ -3037,10 +3016,7 @@ Ext.define('UB.view.EntityGridPanel', {
       callback: function (rData) {
         fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
 
-        dBlob = new Blob(
-                    [rData],
-                    {type: 'text/csv'}
-                )
+        dBlob = new Blob([rData], {type: 'text/csv'})
         saveAs(dBlob, fTitle + '.csv')
       }
     })
@@ -3058,7 +3034,7 @@ Ext.define('UB.view.EntityGridPanel', {
         fTitle = v.title
       }
     }
-    fTitle = fTitle || this.title || 'export to html'
+    fTitle = fTitle || this.title
 
     Ext.ux.exporter.Exporter.exportAny(this, 'html', {
       stripeRows: true,
@@ -3068,11 +3044,7 @@ Ext.define('UB.view.EntityGridPanel', {
       scope: me,
       callback: function (rData) {
         fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
-
-        dBlob = new Blob(
-                    [rData],
-                    {type: 'text/html'}
-                )
+        dBlob = new Blob([rData], {type: 'text/html'})
         saveAs(dBlob, fTitle + '.html')
       }
 
@@ -3089,12 +3061,6 @@ Ext.define('UB.view.EntityGridPanel', {
       me.mainEntityGridPanel.un('parentchange', me.onParentChange, me)
     }
     var store = me.getStore()
-
-        /* xmax вызывает лищний запрос на сервер надо узнать зачем стояло. Возможно для кешируемых сущностей
-        if(store.filters && store.filters.length > 0) {
-            store.clearFilter();
-        }
-        */
 
     if (store) {
       store.un('load', me.onLoadStore, me)
@@ -3177,12 +3143,11 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: baseEntity,
         ID: baseID
       })
+    }).done(function (result) {
+      if (result.resultLock && result.resultLock.success) {
+        $App.dialogInfo('lockSuccessCreated')
+      }
     })
-        .done(function (result) {
-          if (result.resultLock && result.resultLock.success) {
-            $App.dialogInfo('lockSuccessCreated')
-          }
-        })
   },
 
   onItemLink: function () {

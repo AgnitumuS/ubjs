@@ -209,15 +209,7 @@ function launchApp () {
         if (me.maskEl || me.el) {
           (me.maskEl || me.el).setVisibilityMode(Ext.Element.DISPLAY)
         }
-        // MPV - bug in webpack, so I copypaste realization from Ext instead of callParent
         return me.callParent(arguments)
-        // return me.maskEl || (me.maskEl = me.el.insertSibling({
-        //   role: 'presentation',
-        //   cls: me.maskCls,
-        //   style: {
-        //     zIndex: me.el.getStyle('zIndex') - 2
-        //   }
-        // }, 'before'))
       }
     })
 

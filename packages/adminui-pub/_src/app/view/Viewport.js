@@ -35,33 +35,29 @@ Ext.define('UB.view.Viewport', {
       margin: '3, 5, 0, 0',
       border: false
     })
-    me.contextMenu = Ext.create('Ext.menu.Menu', {items: [
-      {
-        text: UB.i18n('close'),
-        scope: me,
-        handler: function (item) {
-          me.centralPanel.remove(me.centralPanel.items.getAt(me.contextMenu.itemPos))
-        }
-      },
-      {
-        text: UB.i18n('closeOther'),
-        scope: me,
-        handler: function (item) {
-          me.centralPanel.items.each(function (cmp, index) {
-            if (index !== me.contextMenu.itemPos) {
-              me.centralPanel.remove(cmp)
-            }
-          })
-        }
-      },
-      {
-        text: UB.i18n('closeAll'),
-        scope: me,
-        handler: function (item) {
-          me.centralPanel.removeAll()
-        }
+    me.contextMenu = Ext.create('Ext.menu.Menu', {items: [{
+      text: UB.i18n('close'),
+      scope: me,
+      handler: function () {
+        me.centralPanel.remove(me.centralPanel.items.getAt(me.contextMenu.itemPos))
       }
-    ]})
+    }, {
+      text: UB.i18n('closeOther'),
+      scope: me,
+      handler: function () {
+        me.centralPanel.items.each(function (cmp, index) {
+          if (index !== me.contextMenu.itemPos) {
+            me.centralPanel.remove(cmp)
+          }
+        })
+      }
+    }, {
+      text: UB.i18n('closeAll'),
+      scope: me,
+      handler: function () {
+        me.centralPanel.removeAll()
+      }
+    }]})
 
     /**
      * Central panel instance - this is a place where other components opens
@@ -79,7 +75,6 @@ Ext.define('UB.view.Viewport', {
       loader: { autoLoad: false },
       listeners: {
         boxready: function () {
-          UB.view.Viewport.centerPanel = me.getCenterPanel()
           if (window.location.href && window.location.href.indexOf('#') > 0) {
             var command = UB.core.UBCommand.getCommandByUrl(window.location.href, me.getCenterPanel())
             if (command) {
@@ -90,7 +85,7 @@ Ext.define('UB.view.Viewport', {
         add: function (sender, container, pos) {
           var barItm = me.centralPanel.tabBar.items.getAt(pos)
           barItm.on('boxready', function (sender) {
-            sender.getEl().on('contextmenu', function (e, el) {
+            sender.getEl().on('contextmenu', function (e) {
               me.contextMenu.itemPos = pos
               me.contextMenu.showAt(e.getXY())
             }, me)
@@ -141,9 +136,9 @@ Ext.define('UB.view.Viewport', {
   },
 
   onDesktopChanged: function (desktop) {
-    var url,
-      desktopId = parseInt(desktop, 10),
-      record = UB.core.UBStoreManager.getDesktopStore().getById(desktopId)
+    var desktopId = parseInt(desktop, 10)
+    var record = UB.core.UBStoreManager.getDesktopStore().getById(desktopId)
+    var url
 
     if (!record || !(url = record.get('Url'))) {
       return
