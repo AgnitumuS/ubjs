@@ -14,7 +14,7 @@ if (['-?', '/?', '-help', '/help'].indexOf(command) !== -1) {
       console.log('\t', cmd.replace(/\.js$/, ''))
     }
   }
-  console.log('\r\nRun ubcli commandName -? for a help')
+  console.log('\r\nRun ubcli commandName -? for a command help')
 } else {
   const cmdModule = require(`../lib/${command}`)
   if (typeof cmdModule === 'function') cmdModule()
