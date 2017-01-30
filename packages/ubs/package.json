@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "description": "UnityBase Service model",
   "config": {
     "ubmodel": "UBS"
@@ -14,9 +14,9 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.0.8",
-    "@unitybase/ub": "^4.0.9",
-    "@unitybase/uba": "^4.0.8",
+    "@unitybase/base": "^4.0.9",
+    "@unitybase/ub": "^4.0.10",
+    "@unitybase/uba": "^4.0.9",
     "lodash": "^4.0.0",
     "mustache": "^2.3.0",
     "when": "1.8.1"
