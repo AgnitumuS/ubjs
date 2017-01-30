@@ -4,6 +4,10 @@
  * Class providing a common way of downloading data in .xls or .csv format
  */
 //@require ../../../../../file-saver/FileSaver.js
+require('./Formatter')
+require('./csvFormatter/CsvFormatter')
+require('./htmlFormatter/HtmlFormatter')
+require('./xlsxFormatter/XlsxFormatter')
 Ext.define("Ext.ux.exporter.Exporter", {
     uses: [
         "Ext.ux.exporter.Base64",
@@ -108,7 +112,6 @@ Ext.define("Ext.ux.exporter.Exporter", {
                     rawData.ubRequest = store.ubRequest;
                     rawData.model = store.model;
                     formatter.format(rawData, config);
-
                 });
             } else {
                formatter.format(store, config);
