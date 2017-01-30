@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.0.10",
+  "version": "4.0.11",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "config": {
@@ -23,8 +23,8 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.0.8",
-    "@unitybase/ub-pub": "^4.0.9",
+    "@unitybase/base": "^4.0.9",
+    "@unitybase/ub-pub": "^4.0.10",
     "@unitybase/adminui-reg": "^4.0.7",
     "systemjs": "^0.20.5",
     "systemjs-plugin-css": "^0.1.32",
