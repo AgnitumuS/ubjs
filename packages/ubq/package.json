@@ -14,12 +14,13 @@
   },
   "main": "index.js",
   "dependencies": {
-    "lodash": "^4.0.0",
     "@unitybase/base": "^4.0.8",
+    "@unitybase/mailer": "^4.0.7",
+    "@unitybase/mailer-ssl": "^4.0.7",
     "@unitybase/ub": "^4.0.9",
     "@unitybase/uba": "^4.0.8",
-    "@unitybase/mailer": "^4.0.7",
-    "@unitybase/mailer-ssl": "^4.0.7"
+    "lodash": "^4.0.0",
+    "node-cron": "^1.1.2"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.0.6"
