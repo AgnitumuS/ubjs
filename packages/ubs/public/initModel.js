@@ -23,10 +23,10 @@ require('./cliUtils')
 // require('@unitybase/ubs/public/ReportViewer.js')
 
 require('./css/ubs.css')
-require('./settings.js')
-require('./UBReport.js')
-require('./ReportParamForm.js')
-require('./ReportViewer.js')
+require('./settings')
+require('./UBReport')
+require('./ReportParamForm')
+require('./ReportViewer')
 
 /*
 $App.on('buildMainMenu', function (items) {
