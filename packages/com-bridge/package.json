@@ -1,7 +1,7 @@
 {
   "name": "@unitybase/com-bridge",
   "version": "1.0.0",
-  "description": "Aloow usage of COM objects directly from UnityBase",
+  "description": "Use a COM objects directly from UnityBase",
   "scripts": {
     "build": "call ./bin/compile.cmd",
     "test": "ub ./_autotest/comBridgeTest.js"
