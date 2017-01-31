@@ -220,7 +220,7 @@ Ext.define('UB.core.UBCommand', {
       }
 
       url = url.split('#')[1]
-      if (!url) { // Bug in EXT when hide grid column add to url symbol #
+      if (!url) { // Bug in EXT when hidden grid column add to url symbol #
         return
       }
 
