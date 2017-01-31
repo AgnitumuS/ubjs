@@ -133,7 +133,8 @@ Ext.define('UBE.WorkflowViewer', {
         }
         */
         // Enables rubberband selection
-        var rb = new mxRubberband(graph);
+        /* var rb = */
+ 	new mxRubberband(graph);
         graph.setPanning(true);
         graph.setTooltips(true);
         editor._showOutline = editor.showOutline;
