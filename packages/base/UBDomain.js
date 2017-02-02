@@ -9,7 +9,7 @@
  *
  *  - database generation
  *  - documentation generation
- *  - forms genetarion
+ *  - forms generation
  *  - views generation etc.
  *
  * @module @unitybase/base/UBDomain
@@ -48,10 +48,10 @@ function UBDomain (domainInfo) {
   let me = this
   let entityCodes = Object.keys(domainInfo.domain)
   let isV4API = (typeof domainInfo.entityMethods === 'undefined')
-    /**
-     * Hash of entities. Keys is entity name, value is UBEntity
-     * @type {Object<String, UBEntity>}
-     */
+  /**
+   * Hash of entities. Keys is entity name, value is UBEntity
+   * @type {Object<String, UBEntity>}
+   */
   this.entities = {}
   /**
    * Connection collection (for extended domain info only).
@@ -323,6 +323,7 @@ UBDomain.getPhysicalDataType = function (dataType) {
  * @param cfg.order
  * @param {string} [cfg.moduleName]
  * @param {string} [cfg.moduleSuffix]
+ * @param {string} [cfg.clientRequirePath] if passed are used instead of moduleName + moduleSuffix
  * @param {string} [cfg.realPublicPath]
  */
 function UBModel (cfg) {
@@ -358,9 +359,11 @@ function UBModel (cfg) {
    *
    * @type {string}
    */
-  this.clientRequirePath = (cfg.moduleSuffix && cfg.moduleName)
-    ? this.moduleName + '/' + cfg.moduleSuffix
-    : (this.moduleName || this.path)
+  this.clientRequirePath = /* cfg.clientRequirePath
+    ? cfg.clientRequirePath
+    : */(cfg.moduleSuffix && cfg.moduleName)
+      ? this.moduleName + '/' + cfg.moduleSuffix
+      : (this.moduleName || this.path)
 
   if (cfg.realPublicPath) {
     /**
@@ -381,7 +384,7 @@ UBModel.prototype.realPublicPath = ''
 function UBEntityAttributes () {}
 /**
  * Return a JSON representation of all entity attributes
- * @returns {{}}
+ * @returns {Object}
  */
 UBEntityAttributes.prototype.asJSON = function () {
   let result = {}
@@ -683,7 +686,9 @@ UBEntity.prototype.asJSON = function () {
  * @returns {Boolean}
  */
 UBEntity.prototype.haveAccessToMethod = function (methodCode) {
-  return this.entityMethods[methodCode] === 1
+  return (UB.isServer && process.isServer)
+    ? App.els(this.code, methodCode)
+    : this.entityMethods[methodCode] === 1
 }
 
 /**
@@ -723,7 +728,11 @@ UBEntity.prototype.haveAccessToAnyMethods = function (methods) {
   let result = false
 
   fMethods.forEach(function (methodCode) {
-    result = result || me.entityMethods[methodCode] === 1
+    if (UB.isServer && process.isServer) {
+      result = result || App.els(me.code, methodCode)
+    } else {
+      result = result || me.entityMethods[ methodCode ] === 1
+    }
   })
   return result
 }
@@ -739,7 +748,11 @@ UBEntity.prototype.haveAccessToMethods = function (methods) {
   let fMethods = methods || []
 
   fMethods.forEach(function (methodCode) {
-    result = result && (me.entityMethods[methodCode] === 1)
+    if (UB.isServer && process.isServer) {
+      result = result && App.els(me.code, methodCode)
+    } else {
+      result = result && (me.entityMethods[ methodCode ] === 1)
+    }
   })
   return result
 }
@@ -786,7 +799,7 @@ function booleanParse (v) {
 }
 
 /**
- * return array of conversion rules for raw server response data
+ * Return array of conversion rules for raw server response data
  * @param {Array<String>} fieldList
  * @returns {Array<{index: number, convertFn: function}>}
  */
@@ -1331,4 +1344,8 @@ UBEntityAlsMixin.prototype.constructor = UBEntityAlsMixin
  */
 UBEntityAlsMixin.prototype.alsOptimistic = true
 
+UBDomain.UBEntity = UBEntity
+UBDomain.UBModel = UBModel
+UBDomain.UBEntity.UBEntityAttribute = UBEntityAttribute
 module.exports = UBDomain
+
