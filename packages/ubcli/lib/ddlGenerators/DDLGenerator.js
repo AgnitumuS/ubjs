@@ -155,7 +155,6 @@ class DDLGenerator {
       return false
     })
 
-    debugger
     for (let entity of forGeneration) {
       alreadyTraversed.add(entity)
       this.createReference(conn, entity)
