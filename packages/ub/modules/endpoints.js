@@ -10,6 +10,7 @@ const path = require('path')
 const _ = require('lodash')
 const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
+const UBDomain = require('@unitybase/base/UBDomain')
 
 /**
  * @param {THTTPResponse} resp
@@ -81,7 +82,7 @@ function resolveModelFile (reqPath, resp) {
   }
   resp.statusCode = 200
 }
-// const modelFilesRequired = []
+
 /**
  * The `models` endpoint. Responsible for return a static files content from a model publicPath folders
  *
@@ -100,11 +101,6 @@ function models (req, resp) {
     return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
   }
   resolveModelFile(reqPath, resp)
-
-  // lines below is to create the ExtJS based file list for minification
-  // do not forgot to uncomment a line const modelFilesRequired = []
-  // modelFilesRequired.push(reqPath)
-  // fs.writeFileSync('d://req.txt', modelFilesRequired.join('\r'))
 
   // cache forever - do not cache index*.html
     // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
@@ -226,8 +222,70 @@ function getAppInfo (req, resp) {
   resp.validateETag()
 }
 
+// const RESTRICTED_ENTITY_PROPS = ['connectionConfig', 'dbExtensions', 'mapping'] // adv allow mapping
+// const RESTRICTED_ATTRIBUTES_PROPS = ['physicalDataType', 'generateFK', 'mapping'] // adv allow mapping
+// const RESTRICTED_MODEL_PROPS = ['realPublicPath'] // adv allow realPublicPath
+// const advancedDomainInfoEntityProps = []
+//
+// function domainReplacer (key, val) {
+//   if (!this) return undefined
+//   if (this instanceof UBDomain.UBEntity) {
+//     // at last one of entity method is accessible
+//     if (!this.haveAccessToAnyMethods(Object.keys(this.entityMethods))) return undefined
+//     // serialize only allowed properties
+//     return RESTRICTED_ENTITY_PROPS.find(elm => elm === key) ? undefined : val
+//   } else if (this instanceof UBDomain.UBEntity.UBEntityAttribute) {
+//     // skip empty string
+//     if ((typeof val === 'string') && !val) return undefined
+//     if ((key === 'customSettings') && !Object.keys(val).length) return undefined
+//     return RESTRICTED_ATTRIBUTES_PROPS.find(elm => elm === key) ? undefined : val
+//   } else if (this instanceof UBDomain.UBModel) {
+//     return RESTRICTED_MODEL_PROPS.find(elm => elm === key) ? undefined : val
+//   } else {
+//     return val
+//   }
+// }
+
+const UBA_COMMON = require('@unitybase/base').uba_common
+const queryString = require('querystring')
+const appBinding = process.binding('ub_app')
+const authenticationHandled = appBinding.handleAuthentication
+const nativeGetDomainInfo = appBinding.getDomainInfo
+/**
+ * The `getDomainInfo` endpoint.
+ * Return JSON representation of application Domain according to caller rights
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function getDomainInfo (req, resp) {
+  // implementation below is SLOW. The bottlenack is JSON.stringify() for huge JSON
+  // let restrictedDomain = {
+  //   domain: App.domainInfo.entities, // _.filter(App.domainInfo.entities, (e) => e.code.startsWith('ubm')),
+  //   models: App.domainInfo.models
+  // }
+  // let res = JSON.stringify(restrictedDomain, domainReplacer)
+
+  let params = queryString.parse(req.decodedParameters)
+  let isExtended = (params['extended'] === 'true')
+  if (isExtended && authenticationHandled && !UBA_COMMON.isSuperUser()) {
+    return badRequest(resp, 'Extended domain info allowed only for member of admin group of if authentication is disabled')
+  }
+  if (!params['userName'] || params['userName'] !== Session.uData.login) {
+    return badRequest(resp, 'userName=login parameter is required')
+  }
+
+  let res = nativeGetDomainInfo(isExtended)
+  // let res = nativeGetDomainInfo(false)
+
+  resp.writeEnd(res)
+  resp.statusCode = 200
+  resp.validateETag()
+}
+
 module.exports = {
   models,
   getAppInfo,
-  clientRequire
+  clientRequire,
+  getDomainInfo
 }
