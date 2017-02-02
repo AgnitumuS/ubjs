@@ -2254,7 +2254,7 @@ Ext.define('UB.view.BasePanel', {
         text: UB.i18n('showAudit'),
         eventId: events.audit,
         handler: me.onAction,
-        disabled: !$App.domainInfo.isEntityMethodsAccessible('ubs_audit', 'select'),
+        disabled: !$App.domainInfo.isEntityMethodsAccessible('uba_auditTrail', 'select'),
         scope: me
       })
     }
@@ -3730,7 +3730,7 @@ Ext.define('UB.view.BasePanel', {
       hideActions: ['addNew', 'addNewByCurrent', 'edit', 'del', 'newVersion'],
       cmdData: {
         params: [
-          UB.Repository('ubs_audit')
+          UB.Repository('uba_auditTrail')
           .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
           .where('[entity]', '=', me.entityName)
           .where('[entityinfo_id]', '=', me.instanceID)
