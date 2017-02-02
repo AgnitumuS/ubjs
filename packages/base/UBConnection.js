@@ -108,7 +108,7 @@ function UBConnection (options) {
    */
   this.getDomainInfo = function (isExtended) {
     if (!_domain) {
-            // authorize connection to get a valid user name
+      // authorize connection to get a valid user name
       if (this.authNeed) this.authorize(false)
 
       let domainData = this.get('getDomainInfo', {
