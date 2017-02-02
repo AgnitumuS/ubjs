@@ -275,7 +275,7 @@ function UBConnection (connectionParams) {
     if (this._perningAuthPromise) return this._perningAuthPromise
 
     this.exchangeKeysPromise = null
-    let pendedAuth = this._perningAuthPromise = requestAuthParams(this, isRepeat)
+    this._perningAuthPromise = requestAuthParams(this, isRepeat)
       .then(function (authParams) {
         return me.doAuth(authParams).then(function (session) {
           currentSession = session
@@ -298,7 +298,7 @@ function UBConnection (connectionParams) {
           return me.authorize(true)
         })
       })
-    return pendedAuth
+    return this._perningAuthPromise
   }
 
     /**
@@ -985,22 +985,18 @@ UBConnection.prototype.getAppInfo = function () {
 
 /**
  * Retrieve domain information from server. Promise resolve instance of UBDomain.
- * @param {Function} [callBack] This parameter will be deleted in next version
  * @returns {Promise}
  */
-UBConnection.prototype.getDomainInfo = function (callBack) {
+UBConnection.prototype.getDomainInfo = function () {
   let me = this
   return me.get('getDomainInfo', {params: {
     v: 4, userName: this.userLogin()}
-    }).then(function (response) {
-      let result = response.data
-      let domain = new UBDomain(result)
-      me.domain = domain
-      if (callBack) {
-        callBack(result, domain)
-      }
-      return domain
-    })
+  }).then(function (response) {
+    let result = response.data
+    let domain = new UBDomain(result)
+    me.domain = domain
+    return domain
+  })
 }
 
 /**
@@ -1771,7 +1767,10 @@ function connect (cfg) {
     // create ubNotifier after retrieve appInfo (we need to know supported WS protocols)
     connection.ubNotifier = new UBNotifierWSProtocol(connection)
     // try to determinate default user language
-    let preferredLocale = LDS && LDS.getItem(connection.appName + 'preferredLocale')
+    let preferredLocale = null
+    if (LDS) {
+      preferredLocale = LDS.getItem(connection.appName + 'preferredLocale')
+    }
     if (!preferredLocale) {
       preferredLocale = connection.appConfig.defaultLang
     }
@@ -1792,7 +1791,11 @@ function connect (cfg) {
     let myLocale = connection.userData('lang')
     LDS && LDS.setItem(connection.appName + 'preferredLocale', myLocale)
     connection.preferredLocale = myLocale
-    return connection.getDomainInfo(config.onGotApplicationDomain)
+    let domainPromise = connection.getDomainInfo()
+    if (config.onGotApplicationDomain) {
+      domainPromise.then((domain) => config.onGotApplicationDomain(domain))
+    }
+    return domainPromise
   }).then(function (domain) {
     connection.domain = domain
     return connection
