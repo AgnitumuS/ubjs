@@ -1398,11 +1398,10 @@ Ext.define('UB.view.EntityGridPanel', {
     if (me.hasAuditMixin) {
       me.actions[actions.audit] = new Ext.Action({
         actionId: actions.audit,
-                // iconCls: 'iconNewVersion',
         text: UB.i18n('showAudit'),
         eventId: events.audit,
         handler: me.onAction,
-        disabled: !$App.domainInfo.isEntityMethodsAccessible('ubs_audit', 'select'),
+        disabled: !$App.domainInfo.isEntityMethodsAccessible('uba_auditTrail', 'select'),
         scope: me
       })
     }
@@ -2308,7 +2307,7 @@ Ext.define('UB.view.EntityGridPanel', {
       cmdData: {
         params: [
           {
-            entity: 'ubs_audit',
+            entity: 'uba_auditTrail',
             method: UB.core.UBCommand.methodName.SELECT,
             fieldList: fieldList,
             whereList: whereList,
