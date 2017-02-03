@@ -284,10 +284,10 @@ Ext.define('UB.view.BasePanel', {
      * Entity BasePanel created for
      * @property {UBEntity} domainEntity
      */
-    me.domainEntity = $App.domainInfo.get(me.entityName) // domain.domainEntities[me.entityName];
-    me.entityMethods = me.domainEntity.entityMethods // domain.entityMethods[me.entityName];
+    me.domainEntity = $App.domainInfo.get(me.entityName)
+    me.entityMethods = me.domainEntity.entityMethods
 
-    me.isNewInstance = me.instanceID && !me.addByCurrent ? false : true
+    me.isNewInstance = !(me.instanceID && !me.addByCurrent)
     /**
      * Is form opened for editing, equal to !me.isNewInstance
      * @property {boolean} isEditMode
@@ -2622,12 +2622,12 @@ Ext.define('UB.view.BasePanel', {
   },
 
   /**
-   *
-   * @param {Object[]} items
+   * @param {Array} items
+   * @param {Boolean} isMainForm
    */
   prepareDfmItems: function (items, isMainForm) {
     var me = this,
-      entity = $App.domainInfo.get(me.entityName),
+      entity = me.domainEntity,
       ubCommand = UB.core.UBCommand,
       item, currentIsMainForm = false
 
@@ -2686,6 +2686,8 @@ Ext.define('UB.view.BasePanel', {
 
       if (Ext.isArray(item.items)) {
         this.prepareDfmItems(item.items, currentIsMainForm)
+      } else if (Ext.isObject(item.items)) { // Ext allow to for 1 element pass a items: {attributeName: 'caption'}
+        this.prepareDfmItems([item.items], currentIsMainForm)
       }
     }
   },
