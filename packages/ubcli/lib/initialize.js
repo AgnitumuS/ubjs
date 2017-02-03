@@ -42,27 +42,25 @@ module.exports = function initialize (cfg) {
       throw new Error('Domain.models configuration MUST be an array on object')
     }
     _.forEach(domainConfig['models'], function (modelConfig) {
-      var folderName = path.join(configDir, modelConfig.path, '_initialData')
+      let folderName = path.join(configDir, modelConfig.path, '_initialData')
 
       if ((!oneModel || (modelConfig.name === oneModel)) && fs.isDir(folderName)) {
-        var files = fs.readdirSync(folderName)
+        let files = fs.readdirSync(folderName)
         files = _.filter(files, function (item) { return /\.js$/.test(item) }).sort()
         if (files.length) {
           files.forEach(function (file) {
             requireAndRun(folderName, modelConfig.name, file)
           })
         }
-                // check localization
-
-        if (fs.isDir(folderName + 'locale')) {
-          var allLocalefiles = fs.readdirSync(folderName + 'locale')
+        // check localization
+        let localeFolderName = path.join(folderName, 'locale')
+        if (fs.isDir(localeFolderName)) {
+          let allLocalefiles = fs.readdirSync(localeFolderName)
           _.forEach(session.appInfo.supportedLanguages, function (lang) {
-            var langFileRe = new RegExp(lang + '\\^.*\\.js$')
-            files = _.filter(allLocalefiles, function (item) { return langFileRe.test(item) }).sort()
+            let langFileRe = new RegExp(lang + '\\^.*\\.js$')
+            files = _.filter(allLocalefiles, (item) => langFileRe.test(item)).sort()
             if (files.length) {
-              files.forEach(function (file) {
-                requireAndRun(folderName + 'locale\\', modelConfig.name, file)
-              })
+              files.forEach((file) => requireAndRun(localeFolderName, modelConfig.name, file))
             }
           })
         }
@@ -75,9 +73,8 @@ module.exports = function initialize (cfg) {
   }
 
   function requireAndRun (folderName, modelName, file) {
-    var filler
     if (file.charAt(0) !== '_') {
-      filler = require(path.join(folderName, file))
+      let filler = require(path.join(folderName, file))
       if (typeof filler === 'function') {
         console.info('\tmodel:', modelName, 'file:', file)
         filler(session)
