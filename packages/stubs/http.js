@@ -24,7 +24,7 @@
  // set global proxy settings
  http.setGlobalProxyConfiguration('proxy.main:3249', 'localhost');
  var resp = http.get('http://www.google.com/');
- assert.ok(resp.headers('via').startsWith('1.1 proxy.main'), 'proxy used');
+ assert.ok(resp.headers['via'].startsWith('1.1 proxy.main'), 'proxy used');
  var index = resp.read();
  var doc = new DOMParser().parseFromString(index);
  assert.ok(doc.documentElement.textContent.startsWith('Google'), 'got Google from google');
