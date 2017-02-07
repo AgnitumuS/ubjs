@@ -458,7 +458,7 @@ Ext.define('UB.core.UBCommand', {
 
   showList: function () {
     var me = this
-    var showListParam = UB.core.UBUtil.getByPropertyValue(me.commandData.params, 'entity', me.entity)
+    var showListParam = _.find(me.commandData.params, ['entity', me.entity])
     var errMsg, config
 
     me.showListParam = showListParam

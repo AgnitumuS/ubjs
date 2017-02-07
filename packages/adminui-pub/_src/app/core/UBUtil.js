@@ -1,4 +1,5 @@
 require('./UBAppConfig')
+const UBDomain = require('@unitybase/base/UBDomain')
 /**
  * Файл: UB.core.UBUtil.js
  * Автор: Игорь Ноженко
@@ -9,14 +10,10 @@ require('./UBAppConfig')
 Ext.define('UB.core.UBUtil', {
   singleton: true,
 
-    // requires: [
-    //     "UB.core.UBAppConfig"
-    // ],
-
-    /**
-     * Dictionary of system glyph for font icons. Values is a number or FontAwesome character
-     * @property glyphs
-     */
+  /**
+   * Dictionary of system glyph for font icons. Values is a number or FontAwesome character
+   * @property glyphs
+   */
   glyphs: {
     faBars: 0xf0c9,
     faFilter: 0xf0b0,
@@ -73,48 +70,43 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   *
    * @return {String[]}
    */
   getLocalStorageKeys: function () {
-    var keys = []
-
-    if (window.localStorage) {
-      for (var i = 0, len = localStorage.length; i < len; ++i) {
-        keys.push(localStorage.key(i))
+    let keys = []
+    let ls = window.localStorage
+    if (ls) {
+      for (var i = 0, len = ls.length; i < len; ++i) {
+        keys.push(ls.key(i))
       }
     }
-
     return keys
   },
 
   /**
-   *
    * @param {String} key
-   * @return {String}
+   * @return {String|undefined}
    */
   getLocalStorageItem: function (key) {
-    return window.localStorage ? localStorage.getItem(key) : undefined
+    return window.localStorage ? window.localStorage.getItem(key) : undefined
   },
 
   /**
-   *
    * @param {String} key
    * @param {String} data
    */
   setLocalStorageItem: function (key, data) {
     if (window.localStorage) {
-      localStorage.setItem(key, data)
+      window.localStorage.setItem(key, data)
     }
   },
 
   /**
-   *
    * @param {String} key
    */
   removeLocalStorageItem: function (key) {
     if (window.localStorage) {
-      localStorage.removeItem(key)
+      window.localStorage.removeItem(key)
     }
   },
 
@@ -123,52 +115,37 @@ Ext.define('UB.core.UBUtil', {
    */
   clearLocalStorage: function () {
     if (window.localStorage) {
-      localStorage.clear()
+      window.localStorage.clear()
     }
   },
 
   /**
-   *
-   * @param {String/Array} val
-   * @return {String}
-   */
-  enclosedInBrackets: function (val) {
-    if (Ext.isArray(val)) {
-      val = val.join(',')
-    }
-
-    return typeof val === 'string' ? val.replace(/\b([^,]+)\b([,]*)/g, '[$1]$2') : val
-  },
-
-  /**
-   *
    * @param {String/Array} val
    * @return {String}
    */
   extractfromBrackets: function (val) {
-    if (Ext.isArray(val)) {
+    if (Array.isArray(val)) {
       val = val.join(',')
     }
 
     return typeof val === 'string' ? val.replace(/\[([^\]]*?)\]/g, '$1') : val
   },
 
-    /**
-     *
-     * @param {String} val
-     * @return {String}
-     */
+  /**
+   * @param {String} val
+   * @return {String}
+   */
   removeWhitespaces: function (val) {
     return typeof val === 'string' ? val.replace(/\s/g, '') : val
   },
 
-    /**
-     *
-     * @param {String} strBegin
-     * @param {String} strEnd
-     * @param {String} [separator] (optional)
-     * @return {String}
-     */
+  /**
+   * Concatenate two string with separator (in case both string !== '')
+   * @param {String} strBegin
+   * @param {String} strEnd
+   * @param {String} [separator] (optional)
+   * @return {String}
+   */
   gatherStr: function (strBegin, separator, strEnd) {
     strBegin = strBegin || ''
     separator = separator || ''
@@ -183,20 +160,22 @@ Ext.define('UB.core.UBUtil', {
     }
   },
 
-    /**
-     *
-     * @return {Number}
-     */
+  /**
+   *
+   * @return {Number}
+   */
   getWindowHeight: function () {
-    return (window.innerHeight ? window.innerHeight :
-            (document.documentElement && document.documentElement.clientHeight ? document.documentElement.clientHeight :
-                (document.body.clientHeight ? document.body.clientHeight : 400))) - 200
+    return (window.innerHeight
+        ? window.innerHeight
+        : (document.documentElement && document.documentElement.clientHeight
+          ? document.documentElement.clientHeight
+          : (document.body.clientHeight ? document.body.clientHeight : 400))) - 200
   },
 
-    /**
-     *
-     * @return {Number}
-     */
+  /**
+   *
+   * @return {Number}
+   */
   getWindowWidth: function () {
     return (window.innerWidth
         ? window.innerWidth
@@ -205,12 +184,11 @@ Ext.define('UB.core.UBUtil', {
           : (document.body.clientWidth ? document.body.clientWidth : 800))) - 200
   },
 
-    /**
-     *
-     * @param {Object} objLeft
-     * @param {Object} objRight
-     * @return {Boolean}
-     */
+  /**
+   * @param {Object} objLeft
+   * @param {Object} objRight
+   * @return {Boolean}
+   */
   allPropsEqual: function (objLeft, objRight) {
     for (var p in objRight) {
       if (objRight.hasOwnProperty(p) && (objLeft[p] !== objRight[p])) {
@@ -245,20 +223,12 @@ Ext.define('UB.core.UBUtil', {
     return this.gatherStr(name, '_', addStr && addStr.length ? UB.MD5(addStr).toString() : '')
   },
 
-  getNameMd5WithSuffix: function () {
-    if (arguments.length < 3) {
-      return undefined
-    }
-
-    return this.getNameMd5.apply(this, [this.gatherStr(arguments[0], '_', arguments[1])].concat(Ext.Array.toArray(arguments, 2)))
-  },
-
   /**
    *
    * @param {String} str
    * @param {RegExp} regexp
    * @param {Number} groupNo
-   * @return {String}
+   * @return {String|undefined}
    */
   getRegExpGroup: function (str, regexp, groupNo) {
     var m = regexp.exec(str)
@@ -267,50 +237,14 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   *
-   * @param {Array} array
-   * @param {Function} fn
-   * @return {Number}
-   */
-  findIndexByFn: function (array, fn) {
-    for (var i = 0, len = array.length; i < len; ++i) {
-      if (fn(array[i])) {
-        return i
-      }
-    }
-    return -1
-  },
-
-  /**
-   *
-   * @param {Object[]} array
-   * @param {String} propertyName
-   * @param {Boolean|Number|String} propertyValue
-   * @return {Number}
-   */
-  findIndexByPropertyValue: function (array, propertyName, propertyValue) {
-    return this.findIndexByFn(array, function (item) {
-      return item[propertyName] === propertyValue
-    })
-  },
-
-  /**
-   *
+   * @deprecated OBSOLETTE since UB4. Use _.find(array, [propertyName, propertyValue])
    * @param {Object[]} array
    * @param {String} propertyName
    * @param {Boolean/Number/String} propertyValue
    * @return {Object}
    */
   getByPropertyValue: function (array, propertyName, propertyValue) {
-    var
-      result,
-      idx
-
-    if ((idx = this.findIndexByPropertyValue(array, propertyName, propertyValue)) !== -1) {
-      result = array[idx]
-    }
-
-    return result
+    throw new Error('UBUtils.getByPropertyValue is obsolete. Use _.find(array, [propertyName, propertyValue])')
   },
 
   /**
@@ -323,24 +257,6 @@ Ext.define('UB.core.UBUtil', {
     var tmpObj = Ext.isString(src) ? Ext.JSON.decode(src, true) : src
 
     return tmpObj ? tmpObj[propertyName] : undefined
-  },
-
-  /**
-   *
-   * @param {Array[Array]} data
-   * @param {Number} valueIdx
-   * @param {Boolean/Date/Number/String} value
-   * @return {Array}
-   */
-  getFromArrayByValue: function (data, valueIdx, value) {
-    var _data_
-    for (var i = 0, len = data.length; i < len; ++i) {
-      _data_ = data[i]
-      if (valueIdx < _data_.length && this.isEqual(_data_[valueIdx], value)) {
-        return _data_
-      }
-    }
-    return undefined
   },
 
   /**
@@ -377,7 +293,7 @@ Ext.define('UB.core.UBUtil', {
   addPrefix: function (arr, prefix, separator) {
     var result = []
 
-    if (!Ext.isArray(arr)) {
+    if (!Array.isArray(arr)) {
       return result
     }
 
@@ -389,145 +305,35 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   *
+   * @deprecated This function is OBSOLETE since UB4
    * @param {Object} l
    * @param {Object} r
    * @return {Boolean}
    */
   isObjectEqual: function (l, r) {
-    var
-      p,
-      result = false
-
-    if (l === undefined && r === undefined) {
-      return true
-    }
-
-    if (Ext.isObject(l) && Ext.isObject(r)) {
-      if (l === r) {
-        return true
-      }
-
-      result = true
-      for (p in l) {
-        if (l.hasOwnProperty(p)) {
-          if (_.isFunction(l[p]) && _.isFunction(r[p]) &&
-              this.removeWhitespaces(l[p].toString()) === this.removeWhitespaces(r[p].toString())) {
-            continue
-          }
-
-          if (Ext.isDate(l[p]) && Ext.isDate(r[p]) && Ext.Date.isEqual(l[p], r[p])) {
-            continue
-          }
-
-          if (l[p] === r[p]) {
-            continue
-          }
-
-          if (Ext.isArray(l[p]) && Ext.isArray(r[p]) && this.isArrayEqual(l[p], r[p])) {
-            continue
-          }
-
-          if (Ext.isObject(l[p]) && Ext.isObject(r[p]) && arguments.callee(l[p], r[p])) {
-            continue
-          }
-
-          result = false
-        } else {
-          return false
-        }
-      }
-
-      for (p in r) {
-        if (!l.hasOwnProperty(p)) {
-          return false
-        }
-      }
-    }
-
-    return result
+    throw new Error('UBUtils.isObjectEqual is obsolete')
   },
 
   /**
-   *
+   * @deprecated This function is OBSOLETE since UB4
    * @param {Array} l
    * @param {Array} r
    * @return {Boolean}
    */
   isArrayEqual: function (l, r) {
-    var
-      len,
-      result = false
-
-    if (l === undefined && r === undefined) {
-      return true
-    }
-
-    if (_.isArray(l) && _.isArray(r) && (len = l.length) === r.length) {
-      result = true
-      for (var i = 0; i < len; ++i) {
-        if (_.isFunction(l[i]) && _.isFunction(r[i]) &&
-          this.removeWhitespaces(l[i].toString()) === this.removeWhitespaces(r[i].toString())) {
-          continue
-        }
-
-        if (Ext.isDate(l[i]) && Ext.isDate(r[i]) && Ext.Date.isEqual(l[i], r[i])) {
-          continue
-        }
-
-        if (l[i] === r[i]) {
-          continue
-        }
-
-        if (_.isArray(l[i]) && _.isArray(r[i]) && arguments.callee(l[i], r[i])) {
-          continue
-        }
-
-        if (Ext.isObject(l[i]) && Ext.isObject(r[i]) && this.isObjectEqual(l[i], r[i])) {
-          continue
-        }
-
-        result = false
-      }
-    }
-
-    return result
-  },
-
-  /**
-   *
-   * @param {Ext.data.Store} store
-   * @param {String[]} fields
-   * @return {Array[]}
-   */
-  getArrayData: function (store, fields) {
-    var
-      data = [],
-      i,
-      len = fields.length
-
-    store.each(function (record) {
-      var
-                recordData = []
-
-      for (i = 0; i < len; ++i) {
-        recordData.push(record.get(fields[i]))
-      }
-
-      data.push(recordData)
-    })
-
-    return data
+    throw new Error('UBUtils.isArrayEqual is obsolete')
   },
 
   base64String: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
 
+  /**
+   * @deprecated Since UB1.12 use UB.base64fromAny
+   */
   base64fromArrayBuffer: function () {
     throw new Error('UB.core.UBUtil.base64fromArrayBuffer deprecated. Use UB.base64fromArrayBuffer')
   },
 
   /**
-   *
    * @param {String} base64
    * @returns {Array}
    */
@@ -544,7 +350,6 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   *
    * @param {Date} value
    * @returns {Date}
    */
@@ -559,8 +364,7 @@ Ext.define('UB.core.UBUtil', {
   truncTime: function (value) {
     if (!value) return value
 
-    var result = new Date(value.getFullYear(), value.getMonth(), value.getDate())
-    return result
+    return new Date(value.getFullYear(), value.getMonth(), value.getDate())
   },
 
   /**
@@ -570,9 +374,8 @@ Ext.define('UB.core.UBUtil', {
    * @returns {Date}
    */
   addDays: function (inDate, countDay) {
-    if (!inDate) {
-      return inDate
-    }
+    if (!inDate) return inDate
+
     var result = new Date()
     result.setTime(inDate.getTime())
     result.setDate(inDate.getDate() + countDay)
@@ -580,8 +383,8 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   * convert date to UB format
-    * @param {Date} value
+   * Convert date to UB format
+   * @param {Date} value
    * @param {String} dataType
    * @returns {Date}
    */
@@ -601,14 +404,11 @@ Ext.define('UB.core.UBUtil', {
    * @returns {String}
    */
   escapeForRegexp: function (text) {
-    if (text && Ext.isString(text)) {
-      return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
-    } else {
-      return ''
-    }
+    return typeof text === 'string' ? text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') : ''
   },
+
   /**
-   * Takes fieldList configuratiuon and prerare it to using in query to DB
+   * Takes fieldList configuration and prepare it to using in query to DB
    * @param {Array<String|Object>} fieldList
    * @param {Boolean} [onlyVisibleFields] return only visible (field.visibility !== false) fields. Default False mean return all
    * @returns {Array<String>} fieldList
@@ -626,42 +426,18 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-	 * Takes fieldList configuratiuon and prerare it to drawing in grid
-   * @param {Array<String|Object>} fieldList
-   * @returns {Array<Object>} fieldList
-   */
+  * Takes fieldList configuration and prepare it to drawing in grid
+  * @param {Array<String|Object>} fieldList
+  * @returns {Array<Object>} fieldList
+  */
   convertFieldListToExtended: function (fieldList) {
-    return Ext.Array.map(fieldList, function (field) {
-      if (typeof field === 'string') {
-        return {name: field}
-      } else {
-        return field
-      }
+    return fieldList.map(function (field) {
+      return (typeof field === 'string') ? {name: field} : field
     })
   },
 
   /**
-   * db nabe to Camel case
-   * @param dbName
-   * @returns {*}
-   */
-  dbNameCamelCase: function (dbName) {
-    var arrNames, i, name
-    if (!dbName) {
-      return dbName
-    }
-    arrNames = dbName.toLowerCase().split('_')
-    for (i = 1; i < arrNames.length; i++) {
-      name = arrNames[i]
-      if (name && name.length > 0) {
-        arrNames[i] = name[0].toUpperCase() + name.substr(1)
-      }
-    }
-    return arrNames.join('')
-  },
-
-  /**
-   * Create {@link Ext.Component#Configs } configuration based on entity attribute defenition
+   * Create {@link Ext.Component#Configs } configuration based on entity attribute definition
    * @param {String|UBEntity} entityName
    * @param {Object} attributeDefinition
    * @return {Object}
@@ -759,8 +535,10 @@ Ext.define('UB.core.UBUtil', {
         ext = { xtype: 'ubdatetimefield', fieldType: ubDataTypes.DateTime /*, format: Ext.util.Format.date Format */}
         break
       case ubDataTypes.Currency:
-        ext = { xtype: 'numberfield',
-          maxLength: 17, enforceMaxLength: true,
+        ext = {
+          xtype: 'numberfield',
+          maxLength: 17,
+          enforceMaxLength: true,
           validator: function (val) {
             if (Number(val.replace(/[^0-9]/, '')) < 8999000000000000) {
               var rv = val.match(/[0-9]*[^0-9]{1}([0-9]+)/)
@@ -770,7 +548,9 @@ Ext.define('UB.core.UBUtil', {
             }
             return UB.i18n('numberOfSignificantDigits')
           },
-          maxValue: 8999000000000000, minValue: -8999000000000000}
+          maxValue: 8999000000000000,
+          minValue: -8999000000000000
+        }
         break
       default:
         ext = this.getComponentConfigByDataType(attribute.dataType, attribute.size)
@@ -780,7 +560,7 @@ Ext.define('UB.core.UBUtil', {
   },
 
   /**
-   * create component config by data type
+   * Create component config by data type
    * @param {String} dataType
    * @param {Number} [size] (optional) in case dataType = String - length of attribute
    */
@@ -887,8 +667,6 @@ Ext.define('UB.core.UBUtil', {
    */
   getComponentConfig4Enum: function (enumGroup, config) {
     var
-        // enumCfg = UB.core.UBAppConfig.systemEntities._enum_,
-        // filters = config ? config.filters : [],
       store,
       whereList = config && config.whereList ? config.whereList : {},
       orderList = config && config.orderList ? config.orderList : {byName: {expression: 'name', order: 'asc'}}
@@ -896,7 +674,7 @@ Ext.define('UB.core.UBUtil', {
     whereList.enumGroupFilter = {
       expression: '[eGroup]',
       condition: 'equal',
-      values: {eGroup: enumGroup }
+      values: { eGroup: enumGroup }
     }
 
     store = Ext.create('UB.ux.data.UBStore', {
