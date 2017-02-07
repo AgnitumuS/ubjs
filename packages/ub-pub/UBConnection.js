@@ -197,6 +197,18 @@ function UBConnection (connectionParams) {
   this.cache = null
 
   /**
+   * Store a cached entities request.
+   *  - keys is calculated from attributes using this.cacheKeyCalculate
+   *  - values is a xhr promise
+   *  UBConnection use this map internally to prevent duplicate requests to server for cached entities data,
+   *  for example in case we put several combobox on form with the same cached entity
+   * TODO - rewrite to WeekMap when IE 11 become popular
+   * @private
+   * @type {Object<string, Promise>}
+   */
+  this._pendingCachedEntityRequests = {}
+
+  /**
    * Last successful login name. Filled AFTER first 401 response
    * @type {String}
    */
@@ -876,7 +888,7 @@ UBConnection.prototype.xhr = function (config) {
         if (me.isAuthorized()) {
           me.authorizationClear()
         }
-                // reason.config.url: "/bla-bla/logout"
+        // reason.config.url: "/bla-bla/logout"
         if (reason.config.url && /\/logout/.test(reason.config.url)) {
           me.lastLoginName = ''
         } else {
@@ -892,10 +904,10 @@ UBConnection.prototype.xhr = function (config) {
         if (/<<<.*>>>/.test(errMsg)) { // this is custom error
           errMsg = i18n(errMsg.match(/<<<(.*)>>>/)[1]) // extract rear message and translate
         }
-                /**
-                 * Fired for {@link UBConnection} instance in case user password is expired. The only valid endpoint after this is `changePassword`
-                 * @event passwordExpired
-                 */
+        /**
+         * Fired for {@link UBConnection} instance in case user password is expired. The only valid endpoint after this is `changePassword`
+         * @event passwordExpired
+         */
         if ((errCode === 72) && me.emit('passwordExpired')) {
           throw new ubUtils.UBAbortError()
         }
@@ -1375,25 +1387,24 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
   /**
    *
    * @param {Object} serverResponse
-   * @param {Object} serverResponse.resultData       miscmimi
+   * @param {Object} serverResponse.resultData
    * @param {Boolean} [serverResponse.resultData.notModified]
    * @param {String} storeName
    * @returns {*}
    */
-  let processVersionedResponse = function (serverResponse, storeName) {
+  let cacheVersionedResponse = function (serverResponse, storeName) {
     if (serverResponse.resultData.notModified) {
-              // in case we refresh cachedSessionEntityRequested or just after login - put version to cachedSessionEntityRequested
+      // in case we refresh cachedSessionEntityRequested or just after login - put version to cachedSessionEntityRequested
       me.cachedSessionEntityRequested[cKey] = serverResponse.version
       return me.cache.get(cKey, storeName)
     } else {
       return me.cache.put([
-                  {key: cKey + ':v', value: serverResponse.version},
-                  {key: cKey, value: serverResponse.resultData}
-      ], storeName)
-                  .then(function () {
-                    me.cachedSessionEntityRequested[cKey] = serverResponse.version
-                    return serverResponse.resultData
-                  })
+        {key: cKey + ':v', value: serverResponse.version},
+        {key: cKey, value: serverResponse.resultData}
+      ], storeName).then(function () {
+        me.cachedSessionEntityRequested[cKey] = serverResponse.version
+        return serverResponse.resultData
+      })
     }
   }
 
@@ -1425,23 +1436,23 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
             let opt = serverRequest.options || {}
             let start = opt.start ? opt.start : 0
             let limit = opt.limit || 0
-                  // in case we fetch less data then requested - this is last page and we know total
+            // in case we fetch less data then requested - this is last page and we know total
             responseWithTotal.total = (resRowCount < limit) ? start + resRowCount : -1
           }
         }
         return responseWithTotal
       })
   } else { // where & order is done by client side
-        // TODO check all filtered attribute is present in whereList - rewrite me.checkFieldList(operation);
+    // TODO check all filtered attribute is present in whereList - rewrite me.checkFieldList(operation);
     cKey = me.cacheKeyCalculate(serverRequest.entity, serverRequest.fieldList)
     cacheStoreName = (cacheType === cacheTypes.Session) ? UBCache.SESSION : UBCache.PERMANENT
-        // retrieve data either from cache or from server
+    // retrieve data either from cache or from server
     dataPromise = me.cache.get(cKey + ':v', cacheStoreName).then(function (version) {
       let cachedPromise
       if (!version || // no data in cache or invalid version
           // or must re-validate version
           (version && cacheType === cacheTypes.Entity) ||
-          // or SessionEntity cached not this current cache version
+          // or SessionEntity cached not for current cache version
           (version && cacheType === cacheTypes.SessionEntity && me.cachedSessionEntityRequested[cKey] !== version)
       ) {
         ubUtils.apply(serverRequestWOLimits, serverRequest)
@@ -1449,17 +1460,30 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
         delete serverRequestWOLimits.orderList
         delete serverRequestWOLimits.options
         serverRequestWOLimits.version = version || '-1'
-        cachedPromise = me.query(serverRequestWOLimits, true)
+        let pendingCachedEntityRequest = me._pendingCachedEntityRequests[cKey]
+          ? me._pendingCachedEntityRequests[cKey]
+          : me._pendingCachedEntityRequests[cKey] = me.query(serverRequestWOLimits, true)
+        cachedPromise = pendingCachedEntityRequest
+          .then(  // delete pending request in any case
+            (data) => {
+              delete me._pendingCachedEntityRequests[cKey]
+              return data
+            },
+            (reason) => {
+              delete me._pendingCachedEntityRequests[cKey]
+              throw reason
+            }
+          )
           .then(me.convertResponseDataToJsTypes.bind(me))
           .then(function (response) {
-            return processVersionedResponse(response, cacheStoreName)
+            return cacheVersionedResponse(response, cacheStoreName)
           })
       } else { // retrieve data from cache
         cachedPromise = me.cache.get(cKey, cacheStoreName)
       }
       return cachedPromise
     }).then(function (cacheResponse) {
-           // noinspection JSCheckFunctionSignatures
+       // noinspection JSCheckFunctionSignatures
       return me.doFilterAndSort(cacheResponse, serverRequest)
     })
   }
