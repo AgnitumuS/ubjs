@@ -48,7 +48,7 @@ Ext.define('UB.view.ToolbarUser', {
                         $App.showModal({
                             formCode: 'uba_user-changeUserPassword',
                             description: UB.i18n('changePassword'),
-                            customParams: 'self' 
+                            customParams: 'self'
                         }).done(function (result) {
                             if (result.action === 'ok') {
                                 $App.connection.xhr({
