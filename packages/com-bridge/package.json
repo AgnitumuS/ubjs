@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/com-bridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use a COM objects directly from UnityBase",
   "scripts": {
     "build": "call ./bin/compile.cmd",
@@ -12,8 +12,7 @@
   },
   "main": "./UBComBridge.js",
   "dependencies": {},
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "keywords": [
     "UnityBase",
     "COM",
