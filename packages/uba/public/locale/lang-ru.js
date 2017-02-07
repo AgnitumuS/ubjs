@@ -16,6 +16,8 @@ UB.i18nExtend({
   toValue: 'Стало значение',
   SecurityAudit: 'Аудит безопасности',
   'Record modified by another user': 'Пока Вы просматривали запись она была изменена другим пользщователем. Необходимо обновить данные',
+  needChangePassword: 'Пользователь должен изменить пароль при следующем входе',
+
     // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 })

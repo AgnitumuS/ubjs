@@ -16,6 +16,7 @@ UB.i18nExtend({
   toValue: 'Nilai baru',
   SecurityAudit: 'Secutity audit',
   'Record modified by another user': 'Record modified by another user',
+  needChangePassword: 'User need to change password on next logon',
 
     // !!!  Jangan mengubah item terakhir ini. Masukan item baru Anda sebelum EOF untuk SVN alasan auto merge.
   EOF: 'EOF'
