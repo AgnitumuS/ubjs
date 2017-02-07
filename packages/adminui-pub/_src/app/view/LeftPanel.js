@@ -6,24 +6,22 @@ require('./NavigationPanel')
 Ext.define('UB.view.LeftPanel', {
   extend: 'Ext.panel.Panel',
   alias: 'widget.ubleftpanel',
-    // requires: [
-    //     'UB.core.UBAppConfig', 'UB.core.UBStoreManager', 'UB.core.UBUtilTree', 'UB.view.NavigationPanel'
-    // ],
   uses: ['UB.core.UBApp'],
   layout: {
     type: 'vbox',
     align: 'stretch'
   },
   cls: 'ub-left-panel',
-    // height: 28,
 
   initComponent: function () {
-    var me = this, storeDS, dsRow
+    var me = this
+    var storeDS
+    var dsRow
+    var desktopMenu = []
+    var defaultDT, onItemClick, mainButton, menu, dsCurrent, dsCurrentID
 
     me.items = me.items || []
     me.desktopStore = storeDS = UB.core.UBStoreManager.getDesktopStore()
-
-    var desktopMenu = [], defaultDT, onItemClick, mainButton, menu, dsCurrent, dsCurrentID
 
     dsCurrentID = UB.core.UBApp.getDesktop()
 
