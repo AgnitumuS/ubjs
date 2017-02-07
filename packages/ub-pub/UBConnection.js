@@ -863,7 +863,7 @@ UBConnection.prototype.xhr = function (config) {
       })
     }
     promise = promise.then(function () {
-            // we must repeat authorize to obtain new session key ( because key exchange may happens before)
+      // we must repeat authorize to obtain new session key ( because key exchange may happens before)
       return me.authorize().then(/** @param {UBSession} session */ function (session) {
         let head = session.authHeader()
         if (head) cfg.headers.Authorization = head // do not add header for anonymous session
