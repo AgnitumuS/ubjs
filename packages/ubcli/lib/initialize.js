@@ -18,9 +18,10 @@ module.exports = function initialize (cfg) {
   let session
 
   if (!cfg) {
-    var opts = options.describe('initialize', 'Fill domain entities by it initial values using scripts from models `_initialData` folders', 'ubcli')
-            .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-            .add({short: 'm', long: 'model', param: 'modelName', defaultValue: '*', help: 'Name of model to initialize'})
+    let opts = options
+      .describe('initialize', 'Fill domain entities by it initial values using scripts from models `_initialData` folders', 'ubcli')
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({short: 'm', long: 'model', param: 'modelName', defaultValue: '*', help: 'Name of model to initialize'})
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
