@@ -275,7 +275,7 @@ function doProviderAuthHandshake(resp, code, state, provider, redirect_url, orig
             }
         }
     } else {
-        console.error('OpenIDConnect provider return invalid response', response.statusCode, '. Headers:', response.headers());
+        console.error('OpenIDConnect provider return invalid response', response.statusCode, '. Headers:', response.headers);
         notifyProviderError(resp, provider);
     }
 }
