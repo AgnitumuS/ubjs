@@ -513,7 +513,7 @@ UB.i18nExtend({
     "selectElements": "Select items",
     "selectAll": "Select all",
     "selectAllOnPage": "Select all on page",
-    "preViewInPDF": "ПPreview in PDF",
+    "preViewInPDF": "Preview in PDF",
     "ubErrTheServerHasExceededMaximumNumberOfConnections": "Server has exceed  maximum number of connections",
     "ubErrFtsForAppDisabled": "fts for application is disabled",
     UbPreFilterMainGroup: 'by attributes',
