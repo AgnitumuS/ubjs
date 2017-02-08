@@ -439,7 +439,7 @@ function UBConnection (connectionParams) {
 
     return me.pki().then(function (pkiInit) {
       pki = pkiInit
-            // noinspection JSCheckFunctionSignatures
+      // noinspection JSCheckFunctionSignatures
       return pki.readPK(me)
     }).then(function (certInfo) {
       let reqData = certInfo.ownIITCert
@@ -617,7 +617,7 @@ function UBConnection (connectionParams) {
 
   this.recordedXHRs = []
     /**
-     * Set this to `true` to memorize all requests to this.recordedXHRs array (for debug only!).
+     * Set it to `true` for memorize all requests to recordedXHRs array (for debug only!).
      * @type {Boolean}
      */
   this.recorderEnabled = false
@@ -645,7 +645,7 @@ UBConnection.prototype.initCache = function (userDbVersion) {
    * @property {Object} cachedSessionEntityRequested
    */
   this.cachedSessionEntityRequested = {}
-    // clear use session store
+  // clear use session store
   return this.cache.clear(UBCache.SESSION)
 }
 
@@ -656,8 +656,7 @@ UBConnection.prototype.initCache = function (userDbVersion) {
  * @returns {String}
  */
 UBConnection.prototype.cacheKeyCalculate = function (root, attributes) {
-  let me = this
-  let keyPart = [me.userLogin().toLowerCase(), me.userLang(), root]
+  let keyPart = [this.userLogin().toLowerCase(), this.userLang(), root]
   if (Array.isArray(attributes)) {
     keyPart.push(MD5(JSON.stringify(attributes)).toString())
   }
@@ -676,24 +675,22 @@ UBConnection.prototype.cacheKeyCalculate = function (root, attributes) {
  */
 UBConnection.prototype.cacheOccurrenceRefresh = function (root, cacheType) {
   let me = this
-  let cacheKey, machKeys, machRe
   let promise = Promise.resolve(true)
-  let domain, mixin, domainMixin
 
   if (cacheType === UBCache.cacheTypes.Session || cacheType === UBCache.cacheTypes.SessionEntity) {
-    domain = this.domain.get(root)
+    let domain = this.domain.get(root)
     if (domain && domain.hasMixin('unity')) {
-      mixin = domain.mixin('unity')
-      domainMixin = this.domain.get(mixin.entity)
+      let mixin = domain.mixin('unity')
+      let domainMixin = this.domain.get(mixin.entity)
       if (domainMixin && (mixin.entity !== root) && (domainMixin.cacheType !== UBCache.cacheTypes.None)) {
-        promise = promise.then(function () {
-          me.cacheOccurrenceRefresh(mixin.entity, domainMixin.cacheType)
-        })
+        promise = promise.then(
+          () => me.cacheOccurrenceRefresh(mixin.entity, domainMixin.cacheType)
+        )
       }
     }
-    cacheKey = me.cacheKeyCalculate(root)
-    machRe = new RegExp('^' + cacheKey)
-    machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
+    let cacheKey = me.cacheKeyCalculate(root)
+    let machRe = new RegExp('^' + cacheKey)
+    let machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
       return machRe.test(item)
     })
     machKeys.forEach(function (key) {
@@ -775,7 +772,7 @@ UBConnection.prototype.exchangeKeys = function (session) {
   if (!me.exchangeKeysPromise) {
     me.exchangeKeysPromise = this.doKeyExchange(session)
   } else {
-        // check session key is near to expire. do key exchange if yes
+    // check session key is near to expire. do key exchange if yes
     if (me.exchangeKeysPromise.isFulfilled() && me.encryptionKeyLifetime > 0) {
       doneAt = me.exchangeKeysPromise.valueOf().doneTime
       now = (new Date()).getTime()
@@ -1076,22 +1073,24 @@ UBConnection.prototype.doKeyExchange = function (session) {
  * @private
  */
 UBConnection.prototype.processBuffer = function processBuffer () {
-  let me = this
-  let bufferCopy = me._bufferedRequests
+  let bufferCopy = this._bufferedRequests
   // get ready to new buffer queue
-  me._bufferTimeoutID = 0
-  me._bufferedRequests = []
+  this._bufferTimeoutID = 0
+  this._bufferedRequests = []
 
-  me.post('ubql', _.map(bufferCopy, 'request')).then(function (responses) {
-    // we expect responses in order we send requests to server
-    bufferCopy.forEach(function (bufferedRequest, num) {
-      bufferedRequest.deferred.resolve(responses.data[num])
-    })
-  }, function (failReason) {
-    bufferCopy.forEach(function (bufferedRequest) {
-      bufferedRequest.deferred.reject(failReason)
-    })
-  })
+  this.post('ubql', _.map(bufferCopy, 'request')).then(
+    (responses) => {
+      // we expect responses in order we send requests to server
+      bufferCopy.forEach(function (bufferedRequest, num) {
+        bufferedRequest.deferred.resolve(responses.data[num])
+      })
+    },
+    (failReason) => {
+      bufferCopy.forEach(function (bufferedRequest) {
+        bufferedRequest.deferred.reject(failReason)
+      })
+    }
+  )
 }
 
 /**
@@ -1163,21 +1162,19 @@ UBConnection.prototype.run = UBConnection.prototype.query
  * @returns {*}
  */
 UBConnection.prototype.convertResponseDataToJsTypes = function (serverResponse) {
-  let convertRules, rulesLen, dataLen, data, d, r, column
   if (serverResponse.entity && // fieldList &&  serverResponse.fieldList
       serverResponse.resultData &&
       !serverResponse.resultData.notModified &&
       serverResponse.resultData.fields &&
       serverResponse.resultData.data && serverResponse.resultData.data.length
   ) {
-    convertRules = this.domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
-    rulesLen = convertRules.length
-    data = serverResponse.resultData.data
-    dataLen = data.length
+    let convertRules = this.domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
+    let rulesLen = convertRules.length
+    let data = serverResponse.resultData.data
     if (rulesLen) {
-      for (d = 0; d < dataLen; d++) {
-        for (r = 0; r < rulesLen; r++) {
-          column = convertRules[r].index
+      for (let d = 0, dataLen = data.length; d < dataLen; d++) {
+        for (let r = 0; r < rulesLen; r++) {
+          let column = convertRules[r].index
           data[d][column] = convertRules[r].convertFn(data[d][column])
         }
       }
@@ -1475,17 +1472,12 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
             }
           )
           .then(me.convertResponseDataToJsTypes.bind(me))
-          .then(function (response) {
-            return cacheVersionedResponse(response, cacheStoreName)
-          })
+          .then(response => cacheVersionedResponse(response, cacheStoreName))
       } else { // retrieve data from cache
         cachedPromise = me.cache.get(cKey, cacheStoreName)
       }
       return cachedPromise
-    }).then(function (cacheResponse) {
-       // noinspection JSCheckFunctionSignatures
-      return me.doFilterAndSort(cacheResponse, serverRequest)
-    })
+    }).then(cacheResponse => this.doFilterAndSort(cacheResponse, serverRequest))
   }
   return dataPromise
 }
@@ -1513,10 +1505,7 @@ UBConnection.selectResultToArrayOfObjects = LocalDataStore.selectResultToArrayOf
  * @returns {Promise} Resolved to response.data
  */
 UBConnection.prototype.runTrans = function run (ubRequestArray) {
-  let me = this
-  return me.post('ubql', ubRequestArray).then(function (response) {
-    return response.data
-  })
+  return this.post('ubql', ubRequestArray).then((response) => response.data)
 }
 
 const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty', 'forceMime', 'fileName', 'store', 'revision']
@@ -1586,10 +1575,7 @@ UBConnection.prototype.getDocument = function (params, options) {
   } else {
     reqParams.params = params
   }
-  return this.xhr(reqParams)
-        .then(function (response) {
-          return response.data
-        })
+  return this.xhr(reqParams).then((response) => response.data)
 }
 
 /**
@@ -1610,22 +1596,16 @@ UBConnection.prototype.crc32 = UBSession.prototype.crc32
  * Log out user from server
  */
 UBConnection.prototype.logout = function () {
-  let me = this
-  if (me.isAuthorized()) {
-    return me.post('logout', {})
-            .then(function () {
-              return new Promise(function (resolve) {
-                setTimeout(function () {
-                  if (me._pki) {
-                    me._pki.closePK()
-                  }
-                  resolve(true)
-                }, 20)
-              })
-            })
-  } else {
-    return Promise.resolve(true)
+  if (!this.isAuthorized()) return Promise.resolve(true)
+
+  let logoutPromise = this.post('logout', {})
+  if (this._pki) { // unload encryption private key
+    let me = this
+    logoutPromise.then(
+      () => new Promise((resolve) => { setTimeout(() => { me._pki.closePK(); resolve(true) }, 20) })
+    )
   }
+  return logoutPromise
 }
 
 /**
