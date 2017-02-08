@@ -19,92 +19,90 @@
  * @protected
  */
 function UBSession (authResponse, secretWord, authSchema) {
-  var data = authResponse
-  var hexa8ID = hexa8(data.result.split('+')[ 0 ])
-  var userData = data.uData ? JSON.parse(data.uData) : { lang: 'en', login: 'anonymous' }
-  var sessionWord = data.result
-  var sessionPwdHash = secretWord || ''
-  var sessionSaltCRC = (typeof window === 'undefined') ? ncrc32(0, sessionWord + sessionPwdHash) : null
+  let data = authResponse
+  let hexa8ID = hexa8(data.result.split('+')[ 0 ])
+  let userData = data.uData ? JSON.parse(data.uData) : { lang: 'en', login: 'anonymous' }
+  let sessionWord = data.result
+  let sessionPwdHash = secretWord || ''
+  let sessionSaltCRC = (typeof window === 'undefined') ? ncrc32(0, sessionWord + sessionPwdHash) : null
 
   if (!userData.login) {
     userData.login = data.logonname
   }
 
-    /** @property {String} sessionID user session id converted to {@link UBSession#hexa8}
-     * @protected
-     * @readonly
-     */
+  /** @property {String} sessionID user session id converted to {@link UBSession#hexa8}
+   * @protected
+   * @readonly
+   */
   Object.defineProperty(this, 'sessionID', {enumerable: true, writable: false, value: hexa8ID})
-    /**
-     * User logon name. Better to access this value using {@link UBConnection#userLogin UBConnection.userLogin()} method.
-     * @type {String}
-     * @private
-     * @readonly
-     */
+  /**
+   * User logon name. Better to access this value using {@link UBConnection#userLogin UBConnection.userLogin()} method.
+   * @type {String}
+   * @private
+   * @readonly
+   */
   this.logonname = data.logonname
 
-    /** Contain custom user data. Usually filled inside **server** `onUserLogon` event handlers
-     *
-     * Do not use it directly, instead use helper method {@link UBConnection#userData UBConnection.userData()} instead.
-     *
-     * @type {Object}
-     * @protected
-     * @readonly
-     */
+  /** Contain custom user data. Usually filled inside **server** `onUserLogon` event handlers
+   *
+   * Do not use it directly, instead use helper method {@link UBConnection#userData UBConnection.userData()} instead.
+   *
+   * @type {Object}
+   * @protected
+   * @readonly
+   */
   this.userData = userData
 
-    /**
-     * Name of authentication schema
-     * @type {String}
-     * @protected
-     * @readonly
-     */
+  /**
+   * Name of authentication schema
+   * @type {String}
+   * @protected
+   * @readonly
+   */
   this.authSchema = authSchema || 'UB'
 
-    /**
-     * Session signature for authorized request. Can be added as LAST parameter in url, or to Authorization header (preferred way)
-     *
-     *      $App.connection.authorize().then(function(session){
-     *          // for URL
-     *          return 'session_signature=' + session.signature()
-     *          //for header
-     *          return {Authorization: session.authSchema + ' ' + session.signature()}
-     *      });
-     *
-     * @returns {string}
-     */
+  /**
+   * Session signature for authorized request. Can be added as LAST parameter in url, or to Authorization header (preferred way)
+   *
+   *      $App.connection.authorize().then(function(session){
+   *          // for URL
+   *          return 'session_signature=' + session.signature()
+   *          //for header
+   *          return {Authorization: session.authSchema + ' ' + session.signature()}
+   *      });
+   *
+   * @returns {string}
+   */
   this.signature = function () {
-    var timeStampI, hexaTime
     switch (this.authSchema) {
       case 'None':
         return ''
       case 'UBIP':
         return this.logonname
       default:
-        timeStampI = Math.floor((new Date()).getTime() / 1000)
-        hexaTime = hexa8(timeStampI)
+        let timeStampI = Math.floor((new Date()).getTime() / 1000)
+        let hexaTime = hexa8(timeStampI)
         return hexa8ID + hexaTime + hexa8((typeof window === 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + sessionPwdHash + hexaTime)) // + url?
     }
-        // 1.7 return  hexa8ID + hexa8(timeStampI) + hexa8(crc32(timeStampI + '' + crc32SessionWord ));
   }
 
-    /**
-     * Current session is anonymous session
-     * @returns {boolean}
-     */
+  /**
+   * Current session is anonymous session
+   * @returns {boolean}
+   */
   this.isAnonymous = function () {
     return (this.authSchema === 'None')
   }
 
-    /**
-     * Return authorization header
-     *
-     *      $App.connection.authorize().then(function(session){
-     *          return {Authorization: session.authHeader()}
-     *      });
-     *
-     * @returns {string}
-     */
+  /**
+   * Return authorization header
+   *
+   *      $App.connection.authorize().then(function(session){
+   *          return {Authorization: session.authHeader()}
+   *      });
+   *
+   * @returns {string}
+   */
   this.authHeader = function () {
     return this.isAnonymous() ? '' : (this.authSchema + ' ' + this.signature())
   }
@@ -116,16 +114,16 @@ function UBSession (authResponse, secretWord, authSchema) {
  * @returns {String}
  */
 UBSession.prototype.hexa8 = function hexa8 (value) {
-  var num = parseInt(value, 10)
-  var res = isNaN(num) ? '00000000' : num.toString(16)
+  let num = parseInt(value, 10)
+  let res = isNaN(num) ? '00000000' : num.toString(16)
   while (res.length < 8) {
     res = '0' + res
   }
   return res
 }
-var hexa8 = UBSession.prototype.hexa8
+const hexa8 = UBSession.prototype.hexa8
 
-var CRC32_POLYTABLES = {}
+const CRC32_POLYTABLES = {}
 /* jslint bitwise: true */
 /**
  * Calculate CRC32 checksum for string
@@ -136,20 +134,19 @@ var CRC32_POLYTABLES = {}
  * @returns {Number}
  */
 UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXORValue) {
-  var table, i, j, c, crc
   s = String(s)
   polynomial = polynomial || 0x04C11DB7
   initialValue = initialValue || 0xFFFFFFFF
   finalXORValue = finalXORValue || 0xFFFFFFFF
-  crc = initialValue
+  let crc = initialValue
 
-  table = CRC32_POLYTABLES[polynomial]
+  let table = CRC32_POLYTABLES[polynomial]
   if (!table) {
     table = CRC32_POLYTABLES[polynomial] = (function build () {
-      var i, j, c
-      var table = []
-      var reverse = function (x, n) {
-        var b = 0
+      let i, j, c
+      let table = []
+      let reverse = function (x, n) {
+        let b = 0
         while (n) {
           b = b * 2 + x % 2
           x /= 2
@@ -171,16 +168,16 @@ UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXO
     })()
   }
 
-  for (i = 0; i < s.length; i++) {
-    c = s.charCodeAt(i)
+  for (let i = 0, l = s.length; i < l; i++) {
+    let c = s.charCodeAt(i)
     if (c > 255) {
       throw new RangeError()
     }
-    j = (crc % 256) ^ c
+    let j = (crc % 256) ^ c
     crc = ((crc / 256) ^ table[j]) >>> 0
   }
   return (crc ^ finalXORValue) >>> 0
 }
-var crc32 = UBSession.prototype.crc32
+const crc32 = UBSession.prototype.crc32
 
 module.exports = UBSession
