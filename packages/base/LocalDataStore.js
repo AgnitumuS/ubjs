@@ -181,8 +181,9 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
 function whereListToFunctions (request, fieldList) {
   let propIdx, fValue, filterFabricFn
   let filters = []
-  let escapeForRegexp = function (text) {  // TODO - do we need this?
-    return text && typeof text === 'string' ? text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') : ''
+  let escapeForRegexp = function (text) {
+    // convert text to string
+    return ('' + text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
   }
   let whereList = request.whereList
 
