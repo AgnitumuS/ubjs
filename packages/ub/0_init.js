@@ -26,11 +26,11 @@ UB.Repository = function (entityName, cfg, connection) {
 }
 
 if (process.isServer || process.isWebSocketServer) {
-   /**
-     * Server configuration (result of argv.getServerConfiguration() execution)
-     * @type {Object}
-     * @memberOf App
-     */
+ /**
+   * Server configuration (result of argv.getServerConfiguration() execution)
+   * @type {Object}
+   * @memberOf App
+   */
   App.serverConfig = undefined
   try {
     App.serverConfig = argv.getServerConfiguration()
@@ -38,7 +38,7 @@ if (process.isServer || process.isWebSocketServer) {
     console.error(e)
   }
 
-    // TODO - this hack is required for register UB.getWSNotifier. Must be rewrited
-  var ws = require('./modules/web-sockets')
+  // TODO - this hack is required for register UB.getWSNotifier. Must be rewrited
+  const ws = require('./modules/web-sockets')
   UB.getWSNotifier = ws.getWSNotifier
 }
