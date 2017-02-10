@@ -219,6 +219,15 @@
 				"password":"",
 				"integratorKey":"",
 				"apiUrl":"https://demo.docusign.net/restapi"
+			},
+			"mailerConfig": {
+				"targetHost": "mail.softline.main",
+				"targetPort": "25",
+				"fromAddr": "no-reply@softline.kiev.ua",
+				"user": "",
+				"password": "",
+				"autoTLS": false,
+				"auth": false 
 			}
 		}
 	}
