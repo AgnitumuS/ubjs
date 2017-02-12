@@ -180,7 +180,7 @@ Ext.define('UB.view.LoginWindow', {
         inputType: 'password',
         name: 'password',
         anchor: '100%',
-        value: UB.appConfig.defaultPasswordForDebugOnly
+        value: UB.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly
       })
 
       me.chkFirstLogin = Ext.create('Ext.form.field.Checkbox', {
@@ -246,7 +246,7 @@ Ext.define('UB.view.LoginWindow', {
         labelWidth: 40,
         inputType: 'password',
         anchor: '100%',
-        value: UB.appConfig.defaultPasswordForDebugOnly,
+        value: UB.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly,
         listeners: {
           keyup: {
             fn: $App.passwordKeyUpHandler

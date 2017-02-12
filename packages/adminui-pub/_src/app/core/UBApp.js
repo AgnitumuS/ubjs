@@ -315,17 +315,7 @@ Ext.define('UB.core.UBApp', {
       },
       onNeedChangePassword: $App.onPasswordChange.bind($App),
       onGotApplicationConfig: function (/** @type {UBConnection} */connection) {
-        _.defaults(connection.appConfig, {
-          applicationName: 'UnityBase',
-          applicationTitle: 'UnityBase',
-          loginWindowTopLogoURL: '', // 'images/UBLogo128.png',
-          loginWindowBottomLogoURL: '',
-          themeName: 'UBtheme',
-
-          userDbVersion: null,
-          defaultLang: 'en',
-          supportedLanguages: ['en'],
-          defaultPasswordForDebugOnly: '',
+        _.defaultsDeep(connection.appConfig, {
           comboPageSize: 30,
           maxMainWindowTabOpened: 10,
           storeDefaultPageSize: 100,
@@ -342,7 +332,12 @@ Ext.define('UB.core.UBApp', {
 
           scanRecognizeProgressInterval: 1000,
           maxSearchLength: 62,
-          browserExtensionNMHostAppKey: 'com.inbase.ubmessagehost'
+          browserExtensionNMHostAppKey: 'com.inbase.ubmessagehost',
+          uiSettings: {
+            adminUI: {
+              defaultPasswordForDebugOnly: ''
+            }
+          }
         })
 
         // UB 1.12 compatibility
