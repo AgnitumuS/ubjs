@@ -1,0 +1,39 @@
+{
+  "name": "@unitybase/pdf",
+  "version": "1.0.0",
+  "description": "PDF cretion library",
+  "main": "index.js",
+  "scripts": {
+    "build": "SET NODE_ENV=production && call ./bin/compile.cmd",
+    "build:watch": "webpack --progress --colors --watch",
+    "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "lint": "eslint source test",
+    "test": "npm run test"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "dependencies": {
+    "file-saver": "^1.3.3",
+    "adler32cs": "github:chick307/adler32cs.js",
+    "cf-blob.js": "0.0.1",
+    "lodash": "^4.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "json-loader": "^0.5.4"
+  },
+  "peerDependencies": {
+    "webpack": "^1.14.0",
+    "uglify-js": "^2.7.4",
+    "uglifycss": "*"
+  },
+  "keywords": [
+    "UnityBase"
+  ],
+  "author": "UnityBase team (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}
