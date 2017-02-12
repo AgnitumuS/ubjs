@@ -1766,7 +1766,8 @@ function connect (cfg) {
       themeName: 'UBGrayTheme',
       userDbVersion: null,
       defaultLang: 'en',
-      supportedLanguages: ['en']
+      supportedLanguages: ['en'],
+      uiSettings: {}
     })
     // create ubNotifier after retrieve appInfo (we need to know supported WS protocols)
     connection.ubNotifier = new UBNotifierWSProtocol(connection)
