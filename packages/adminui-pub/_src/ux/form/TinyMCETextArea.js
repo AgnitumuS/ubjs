@@ -66,7 +66,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
         return
       }
       window.BOUNDLED_BY_WEBPACK = false
-      // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
+      // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` condition variable
       // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
       if (!BOUNDLED_BY_WEBPACK) {
         require('tinymce')

@@ -90,10 +90,11 @@
                     css: 'systemjs-plugin-css/css.js'
                 },
                 meta: {
-                    '*.css': { loader: 'css' },
-                    'codemirror/*.js': { format: 'cjs' },
-                    'tinymce*': { format: 'global' },
-                    'file-saver/*.js': { format: 'cjs' }
+                  'tinymce*': { format: 'global' },
+                  '*.css': { loader: 'css' },
+                  '*.min.js':   { format: 'cjs' },
+                  'codemirror/*.js': { format: 'cjs' },
+                  'file-saver/*.js': { format: 'cjs' }
                 }
             });
 
