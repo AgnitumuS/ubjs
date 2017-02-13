@@ -22,6 +22,7 @@
     "@unitybase/ub-pub": "^4.0.0",
     "@unitybase/uba": "^4.0.0",
     "@unitybase/ubm": "^4.0.0",
+    "@unitybase/pdf": "^1.0.0",
     "@unitybase/ubs": "^4.0.0",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",

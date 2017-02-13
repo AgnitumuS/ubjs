@@ -36,7 +36,7 @@ module.exports = {
         'exports?window.tinymce'
       ]
     }, {
-      // this option is required for toneMCE, see https://github.com/tinymce/tinymce/issues/2836
+      // this option is required for tinyMCE, see https://github.com/tinymce/tinymce/issues/2836
       test: /tinymce[\\/](themes|plugins)[\\/]/,
       loaders: [
         'imports?this=>window'

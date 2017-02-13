@@ -17,6 +17,7 @@
     "@unitybase/base": "^4.0.10",
     "@unitybase/ub": "^4.0.11",
     "@unitybase/uba": "^4.0.10",
+    "@unitybase/pdf": "^1.0.0",	
     "lodash": "^4.0.0",
     "mustache": "^2.3.0",
     "when": "1.8.1"
