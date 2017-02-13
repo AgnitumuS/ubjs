@@ -1263,14 +1263,7 @@
 
         var p, index;
         if (options.isXml) {
-            // on server side use an xmldom lib
-	          if (typeof DOMParser === 'undefined') {
-                var re = require
-	              var xmldom = re('xmldom');
-                parser = new xmldom.DOMParser();
-            } else {
-                parser = new window.DOMParser();
-            }
+	          parser = new DOMParser(); // do not use window.DOMParser here because of server-side (fallback to xmldom)
 
             if (typeof(text) === 'string'){
                 var htmlText = removeEntities(text);
