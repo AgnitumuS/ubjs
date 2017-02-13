@@ -3,7 +3,7 @@
 // ./jsPDF/jspdf.plugin.standard_fonts_metrics.js,./jsPDF/jspdf.plugin.split_text_to_size.js,./jsPDF/jspdf.unicodeText.js,
 // ./jsPDF/jspdf.plugin.addimage.js,./jsPDF/jspdf.plugin.png_support.js
 
-const jsPDF = require('./libs/jsPDF/jspdf')
+const jsPDF = require('./libs/jsPDF/jspdf.js')
 let to = (typeof window === 'undefined') ? global : window
 to.jsPDF = jsPDF
 require('./libs/jsPDF/plugins/standard_fonts_metrics')

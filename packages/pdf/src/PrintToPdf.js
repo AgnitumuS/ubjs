@@ -1,6 +1,6 @@
 /* global Blob, gc */
 const _ = require('lodash')
-const JsPDF = require('../libs/jsPDF/jspdf')
+const JsPDF = require('../libs/jsPDF/jspdf.js') // important to require .js (for webpack)
 const PdfDataGrid = require('./PdfDataGrid')
 const PdfTextBox = require('./PdfTextBox')
 const HtmlToPdf = require('./HtmlToPdf')
@@ -159,10 +159,10 @@ PrintToPdf.requireFonts = function (config) {
       notLoadedFonts.push(`fonts/${font.fontName}${font.fontStyle}.json`)
     }
   }
-  if (typeof window === 'undefined') { // server side - use require
-    const re = require
+  if (typeof window === 'undefined') { // server side - read file from disk
     for (let i = 0, l = notLoadedFonts.length; i < l; i++) {
-      let fontData = re('../' + notLoadedFonts[i])
+      const realPath = path.join(__dirname, '..', notLoadedFonts[i])
+      let fontData = JSON.parse(fs.readfileSync(realPath))
       JsPDF.API.addRawFontData(fontData)
     }
     return true
@@ -297,11 +297,11 @@ PrintToPdf.isNumberValid = function (value) {
 /**
  * @deprecated Use pdfUtils.checkNumberValid
  * @param value
- * @param require
+ * @param {Boolean} required
  * @param messageContext
  */
-PrintToPdf.checkNumberValid = function (value, require, messageContext) {
-  return pfdUtils.checkNumberValid(value, require, messageContext)
+PrintToPdf.checkNumberValid = function (value, required, messageContext) {
+  return pfdUtils.checkNumberValid(value, required, messageContext)
 }
 
 PrintToPdf.units = {

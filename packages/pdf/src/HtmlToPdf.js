@@ -12,30 +12,8 @@ const PdfTextBox = require('./PdfTextBox')
  */
 function HtmlToPdf (pdf) {
   this.pdf = pdf
-  if (typeof window !== 'undefined') { // browser
-    this.parser = new window.DOMParser()
-    this.serializer = new window.XMLSerializer()
-  } else { //server
-    let re = require
-    const xmldom = re('xmldom')
-    this.parser = new xmldom.DOMParser()
-    this.serializer = new xmldom.XMLSerializer()
-  }
-  // if (!BOUNDLED_BY_WEBPACK) {
-  //   if (typeof DOMParser === 'undefined') { // unboundled server
-  //
-  //     const xmldom = require('xmldom')
-  //     this.parser = new xmldom.DOMParser()
-  //     this.serializer = new xmldom.XMLSerializer()
-  //   } else {
-  //     this.parser = new window.DOMParser()
-  //     this.serializer = new window.XMLSerializer()
-  //   }
-  // }
-  // if (BOUNDLED_BY_WEBPACK) {
-  //   this.parser = new window.DOMParser()
-  //   this.serializer = new window.XMLSerializer()
-  // }
+  this.parser = new DOMParser() // do not use window.DOMParser for server-side compatibility
+  this.serializer = new XMLSerializer()
   this.reserveTopHeight = 0
 }
 
