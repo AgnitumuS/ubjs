@@ -804,8 +804,8 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     /* background-color: #343945; */
     background-color: #f3f3f4;
     padding: 0.3em 0 0.5em 0.2em;             	
-    z-index: 7;
-    /* box-shadow: rgba(0, 0, 0, 0.298039) 0 3px 3px 0; */
+    /* z-index: 7; */
+    box-shadow: rgba(0, 0, 0, 0.298039) 0 2px 3px 0;
 }
 
 #ubCenterViewport .x-tab-bar-strip-default {

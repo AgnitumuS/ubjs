@@ -60,78 +60,15 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
   tinyMCEConfig: {},
 
   ensureTinyMCELoaded: function () {
-    return new Promise((resolve, reject) => {
-      if (window.tinymce) {
-        resolve(true)
-        return
-      }
-      window.BOUNDLED_BY_WEBPACK = false
-      // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` condition variable
-      // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
-      if (!BOUNDLED_BY_WEBPACK) {
-        require('tinymce')
-        require('tinymce/plugins/advlist/plugin.js')
-        require('tinymce/plugins/autolink/plugin.js')
-        require('tinymce/plugins/lists/plugin.js')
-        require('tinymce/plugins/charmap/plugin.js')
-        require('tinymce/plugins/print/plugin.js')
-        require('tinymce/plugins/preview/plugin.js')
-        require('tinymce/plugins/hr/plugin.js')
-        require('tinymce/plugins/anchor/plugin.js')
-        require('tinymce/plugins/pagebreak/plugin.js')
-        require('tinymce/plugins/searchreplace/plugin.js')
-        require('tinymce/plugins/wordcount/plugin.js')
-        require('tinymce/plugins/visualblocks/plugin.js')
-        require('tinymce/plugins/visualchars/plugin.js')
-        require('tinymce/plugins/code/plugin.js')
-        require('tinymce/plugins/insertdatetime/plugin.js')
-        require('tinymce/plugins/nonbreaking/plugin.js')
-        require('tinymce/plugins/table/plugin.js')
-        require('tinymce/plugins/contextmenu/plugin.js')
-        require('tinymce/plugins/directionality/plugin.js')
-        require('tinymce/plugins/emoticons/plugin.js')
-        require('tinymce/plugins/template/plugin.js')
-        require('tinymce/plugins/textcolor/plugin.js')
-        require('tinymce/plugins/image/plugin.js')
-        require('tinymce/plugins/colorpicker/plugin.js')
-        require('tinymce/plugins/paste/plugin.js')
-        require('tinymce/themes/modern/theme.js')
-      }
-      //require('@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js'); resolve(true) }
-      //if (BOUNDLED_BY_WEBPACK) require.ensure(['@unitybase/tinymce-with-plugins/dist/tinymce-with-plugins.min.js'], function(){})
-      if (BOUNDLED_BY_WEBPACK) require.ensure(['tinymce/tinymce', 'tinymce/plugins/table'], function () {
-        var re = require
-        //if (BOUNDLED_BY_WEBPACK) re('@unitybase/tinymce-with-plugins')
-        re('tinymce/tinymce')
-        re('tinymce/plugins/advlist')
-        re('tinymce/plugins/autolink')
-        re('tinymce/plugins/lists')
-        re('tinymce/plugins/charmap')
-        re('tinymce/plugins/print')
-        re('tinymce/plugins/preview')
-        re('tinymce/plugins/hr')
-        re('tinymce/plugins/anchor')
-        re('tinymce/plugins/pagebreak')
-        re('tinymce/plugins/searchreplace')
-        re('tinymce/plugins/wordcount')
-        re('tinymce/plugins/visualblocks')
-        re('tinymce/plugins/visualchars')
-        re('tinymce/plugins/code')
-        re('tinymce/plugins/insertdatetime')
-        re('tinymce/plugins/nonbreaking')
-        re('tinymce/plugins/table')
-        re('tinymce/plugins/contextmenu')
-        re('tinymce/plugins/directionality')
-        re('tinymce/plugins/emoticons')
-        re('tinymce/plugins/template')
-        re('tinymce/plugins/textcolor')
-        re('tinymce/plugins/image')
-        re('tinymce/plugins/colorpicker')
-        re('tinymce/plugins/paste')
-        re('tinymce/themes/modern')
-        resolve(true)
-      })
-    })
+    // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
+    // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
+    window.BOUNDLED_BY_WEBPACK = false
+    if (BOUNDLED_BY_WEBPACK) {
+      return System.import('./tinyMCE-async-all')
+    }
+    if (!BOUNDLED_BY_WEBPACK) {
+      return System.import('@unitybase/adminui-pub/_src/ux/form/tinyMCE-async-all')
+    }
   },
 
     // -----------------------------------------------------------------

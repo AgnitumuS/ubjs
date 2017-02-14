@@ -4,9 +4,7 @@
 var webpack = require('webpack')
 
 module.exports = {
-  entry: {
-    app: './app.js'
-  },
+  entry: './app.js',
   output: {
     path: './',
     filename: 'app.min.js'
@@ -24,12 +22,10 @@ module.exports = {
   devtool: 'source-map',
 
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
-	    'screw-ie8': true,
-            // compress: false
+      'screw-ie8': true,
       compress: {
         sequences: true,
         booleans: true,
