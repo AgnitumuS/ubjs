@@ -14,75 +14,16 @@ Ext.define('UB.ux.UBCodeMirror', {
   codeMirrorInstance: undefined,
 
   ensureCodemirrorLoaded: function () {
-    return new Promise((resolve) => {
-      if (window.CodeMirror) {
-        resolve(true)
-        return
-      }
-      window.BOUNDLED_BY_WEBPACK = false
-      // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
-      // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
-      if (!BOUNDLED_BY_WEBPACK) {
-        window.CodeMirror = require('codemirror/lib/codemirror')
-        require('codemirror/lib/codemirror.css')
-        require('codemirror/addon/edit/matchbrackets')
-        require('codemirror/addon/edit/closebrackets')
-        require('codemirror/addon/edit/trailingspace')
-        require('codemirror/addon/fold/foldcode')
-        require('codemirror/addon/fold/foldgutter')
-        require('codemirror/addon/fold/foldgutter.css')
-        require('codemirror/addon/fold/brace-fold')
-        require('codemirror/addon/fold/xml-fold')
-        require('codemirror/addon/fold/comment-fold')
-        require('codemirror/addon/dialog/dialog')
-        require('codemirror/addon/dialog/dialog.css')
-        require('codemirror/mode/javascript/javascript')
-        require('codemirror/addon/hint/show-hint')
-        require('codemirror/addon/hint/show-hint.css')
-        require('codemirror/addon/hint/javascript-hint')
-        require('codemirror/addon/search/search')
-        require('codemirror/addon/search/searchcursor')
-        require('codemirror/addon/scroll/annotatescrollbar')
-        require('codemirror/addon/search/matchesonscrollbar')
-        require('codemirror/addon/search/match-highlighter')
-        require('../../css/CodeMirror-match.css')
-        require('codemirror/addon/comment/comment')
-        resolve(true)
-      }
-
-      if (BOUNDLED_BY_WEBPACK) {
-        require.ensure(['codemirror/lib/codemirror'], function () {
-          let re = require
-          if (BOUNDLED_BY_WEBPACK) {
-            window.CodeMirror = re('codemirror/lib/codemirror')
-            re('codemirror/lib/codemirror.css')
-            re('codemirror/addon/edit/matchbrackets')
-            re('codemirror/addon/edit/closebrackets')
-            re('codemirror/addon/edit/trailingspace')
-            re('codemirror/addon/fold/foldcode')
-            re('codemirror/addon/fold/foldgutter')
-            re('codemirror/addon/fold/foldgutter.css')
-            re('codemirror/addon/fold/brace-fold')
-            re('codemirror/addon/fold/xml-fold')
-            re('codemirror/addon/fold/comment-fold')
-            re('codemirror/addon/dialog/dialog')
-            re('codemirror/addon/dialog/dialog.css')
-            re('codemirror/mode/javascript/javascript')
-            re('codemirror/addon/hint/show-hint')
-            re('codemirror/addon/hint/show-hint.css')
-            re('codemirror/addon/hint/javascript-hint')
-            re('codemirror/addon/search/search')
-            re('codemirror/addon/search/searchcursor')
-            re('codemirror/addon/scroll/annotatescrollbar')
-            re('codemirror/addon/search/matchesonscrollbar')
-            re('codemirror/addon/search/match-highlighter')
-            re('../../css/CodeMirror-match.css')
-            re('codemirror/addon/comment/comment')
-          }
-          resolve(true)
-        })
-      }
-    })
+    window.BOUNDLED_BY_WEBPACK = false
+    // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
+    // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
+    window.BOUNDLED_BY_WEBPACK = false
+    if (BOUNDLED_BY_WEBPACK) {
+      return System.import('./codemirror-async-all.js')
+    }
+    if (!BOUNDLED_BY_WEBPACK) {
+      return System.import('@unitybase/adminui-pub/_src/app/ux/codemirror-async-all')
+    }
   },
 
   getValue: function () {
@@ -146,7 +87,8 @@ Ext.define('UB.ux.UBCodeMirror', {
       var myElm = this.getEl().dom
       var me = this
 
-      this.ensureCodemirrorLoaded().then(() => {
+      this.ensureCodemirrorLoaded().then((CodeMirror) => {
+        window.CodeMirror = CodeMirror
         this.codeMirrorInstance = CodeMirror(myElm, {
           mode: 'javascript',
           value: this.rawValue || '',

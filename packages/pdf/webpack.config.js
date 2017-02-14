@@ -4,20 +4,27 @@
 const webpack = require('webpack')
 const path = require('path')
 
-// var CircularDependencyPlugin = require('circular-dependency-plugin')
-
 module.exports = {
   entry: {
     app: './index.js'
-    // vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'pdf.min.js',
-    publicPath: '/clientRequire/@unitybase/pdf/dist/'
+    publicPath: '/clientRequire/@unitybase/pdf/dist/',
+    library: 'PDF',
+    libraryTarget: 'umd'
+  },
+  externals: {
+    'lodash': {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: 'lodash',
+      root: '_'
+    }
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
@@ -26,19 +33,15 @@ module.exports = {
       }
     }, {
       test: /\.css$/,
-      loader: 'style-loader!css-loader'
+      use: ['style-loader', 'css-loader']
     }]
   },
-  // devtool: 'eval',
   devtool: 'source-map',
-  // devtool: 'cheap-module-source-map',
 
   plugins: [
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true
     }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin()/*,
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
@@ -53,6 +56,6 @@ module.exports = {
         drop_console: false, // true,
         unsafe: true
       }
-    }) */
+    })
   ]
 }

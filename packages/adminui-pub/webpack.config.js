@@ -9,18 +9,28 @@ const path = require('path')
 module.exports = {
   entry: {
     app: './adminui.js'
-    // vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
+    //,   tinymce: ['tinyMCE-dyn-all']
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'adminui.min.js',
+    //filename: 'adminui.min.js',
+    //filename: '[name].[hash].js',
+    filename: 'adminui.[name].min.js',
     publicPath: '/clientRequire/@unitybase/adminui-pub/dist/'
   },
+/*  externals: {
+        "lodash": {
+            commonjs: "lodash",
+            commonjs2: "lodash",
+            amd: "lodash",
+            root: "_"
+        }
+    },*/
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/,
+      exclude: [/node_modules/],
       query: {
         // MPV - IMPORTANT to remove a 'use strict' in boundle, in other case Ext.callParent not work,
         // because in strict mode Fintion.calle in undefined, but this technic in used internalty by Ext.callParent
@@ -28,23 +38,23 @@ module.exports = {
       }
     }, {
       test: /\.css$/,
-      loader: 'style-loader!css-loader'
+      use: ['style-loader', 'css-loader']
     }, {
       test: require.resolve('tinymce/tinymce'),
-      loaders: [
-        'imports?this=>window',
-        'exports?window.tinymce'
+      use: [
+        'imports-loader?this=>window',
+        'exports-loader?window.tinymce'
       ]
     }, {
       // this option is required for tinyMCE, see https://github.com/tinymce/tinymce/issues/2836
       test: /tinymce[\\/](themes|plugins)[\\/]/,
-      loaders: [
-        'imports?this=>window'
+      use: [
+        'imports-loader?this=>window'
       ]
     }]
   },
   // devtool: 'eval',
-  devtool: 'source-map',
+  //devtool: 'source-map',
   // devtool: 'cheap-module-source-map',
 
   plugins: [
@@ -53,11 +63,11 @@ module.exports = {
     }),
 
     // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'tinymce-boundle',
-    //   filename: 'tinymce-boundle.min.js',
-    //   minChunks: module => isExternal(module)
-    // }),
+/*    new webpack.optimize.CommonsChunkPlugin({
+       name: 'libs',
+        minChunks: Infinity
+        //,filename: '[name].js',
+    }),*/
 
 //    new CircularDependencyPlugin({
       // exclude detection of files based on a RegExp
@@ -65,13 +75,11 @@ module.exports = {
       // add errors to webpack instead of warnings
 //      failOnError: true
 //    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
       'screw-ie8': true,
-      // compress: false
+      // compress: false,
       compress: {
         sequences: true,
         booleans: true,

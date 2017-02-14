@@ -161,27 +161,27 @@ UBReport.prototype.buildHTML = function (reportData) {
 */
 UBReport.prototype.transformToPdf = function (html, options) {
   options = options || {}
-  let PDF, pdfPromise
 
-  pdfPromise = new Promise((resolve, reject) => {
-    if (window.PDF) {
-      resolve(PDF)
-      return
-    }
-    window.BOUNDLED_BY_WEBPACK = false
-    if (!BOUNDLED_BY_WEBPACK) {
-      //PDF = require('@unitybase/pdf/dist/pdf.min.js')
-      PDF = require('@unitybase/pdf')
-      resolve(PDF)
-    }
-    if (BOUNDLED_BY_WEBPACK) {
-      require.ensure(['@unitybase/pdf/dist/pdf.min.js'], function () {
-        let re = require
-        PDF = re('@unitybase/pdf/dist/pdf.min.js')
-        resolve(PDF)
-      })
-    }
-  })
+  // pdfPromise = new Promise((resolve, reject) => {
+  //   if (window.PDF) {
+  //     resolve(PDF)
+  //     return
+  //   }
+  //   window.BOUNDLED_BY_WEBPACK = false
+  //   if (!BOUNDLED_BY_WEBPACK) {
+  //     //PDF = require('@unitybase/pdf/dist/pdf.min.js')
+  //     PDF = require('@unitybase/pdf')
+  //     resolve(PDF)
+  //   }
+  //   if (BOUNDLED_BY_WEBPACK) {
+  //     require.ensure(['@unitybase/pdf/dist/pdf.min.js'], function () {
+  //       let re = require
+  //       PDF = re('@unitybase/pdf/dist/pdf.min.js')
+  //       resolve(PDF)
+  //     })
+  //   }
+  // })
+  let pdfPromise = window.isDeveloperMode ? System.import('@unitybase/pdf') : System.import('@unitybase/pdf/dist/pdf.min.js')
 
   return pdfPromise.then((PDF) => {
     return PDF.PrintToPdf.requireFonts({
