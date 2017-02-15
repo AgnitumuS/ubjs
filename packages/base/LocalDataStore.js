@@ -183,7 +183,7 @@ function whereListToFunctions (request, fieldList) {
   let filters = []
   let escapeForRegexp = function (text) {
     // convert text to string
-    return ('' + text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+    return text ? ('' + text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') : ''
   }
   let whereList = request.whereList
 
