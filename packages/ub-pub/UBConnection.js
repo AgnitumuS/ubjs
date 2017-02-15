@@ -284,10 +284,10 @@ function UBConnection (connectionParams) {
     let me = this
     if (currentSession) return Promise.resolve(currentSession)
 
-    if (this._perningAuthPromise) return this._perningAuthPromise
+    if (this._pendingAuthPromise) return this._pendingAuthPromise
 
     this.exchangeKeysPromise = null
-    this._perningAuthPromise = requestAuthParams(this, isRepeat)
+    this._pendingAuthPromise = requestAuthParams(this, isRepeat)
       .then(function (authParams) {
         return me.doAuth(authParams).then(function (session) {
           currentSession = session
@@ -296,7 +296,7 @@ function UBConnection (connectionParams) {
            * @event authorized
            */
           me.emit('authorized', me, session, authParams)
-          me._perningAuthPromise = null
+          me._pendingAuthPromise = null
           return session
         }).catch(function (reason) {
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
@@ -306,11 +306,11 @@ function UBConnection (connectionParams) {
              */
             me.emit('authorizationFail', reason)
           }
-          me._perningAuthPromise = null
+          me._pendingAuthPromise = null
           return me.authorize(true)
         })
       })
-    return this._perningAuthPromise
+    return this._pendingAuthPromise
   }
 
     /**
