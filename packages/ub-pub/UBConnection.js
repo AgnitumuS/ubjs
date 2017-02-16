@@ -698,7 +698,7 @@ UBConnection.prototype.cacheOccurrenceRefresh = function (root, cacheType) {
     })
     if (cacheType === UBCache.cacheTypes.Session) {
       promise = promise.then(function () {
-        me.cache.removeIfMach(machRe, UBCache.SESSION)
+        return me.cache.removeIfMach(machRe, UBCache.SESSION)
       })
     }
   }
