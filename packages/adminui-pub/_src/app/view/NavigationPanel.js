@@ -51,7 +51,7 @@ Ext.define('UB.view.NavigationPanel', {
       cls: 'no_expand_icon no-leaf-icons no-parent-icons nav-shortcut leftMenu'
     })
 
-    var storeDS = UB.core.UBStoreManager.getDesktopStore()
+    let storeDS = UB.core.UBStoreManager.getDesktopStore()
     storeDS.each(function (dsItem) {
       me.store.setRootNode(UB.core.UBUtilTree.arrayToTreeRootNode(me.getData(dsItem.get('ID'))))
       _.forEach(me.store.tree.root.childNodes, function (item, index) {
@@ -94,21 +94,20 @@ Ext.define('UB.view.NavigationPanel', {
   },
 
   initContextMenu: function () {
-    var
-      me = this, navShortcutEntity,
-      navFields = UB.core.UBAppConfig.systemEntities.navigationShortcut.fields,
-      entityName = me.storeNavigationShortcut.ubRequest.entity,
-      updateStore = function (store, record, operation) {
-        if (me.desktopID && (!operation || Ext.data.Model.COMMIT === operation)) {
-          me.onDesktopChanged(me.desktopID)
-          return
-        }
-        if (me.currentDesktop && (!operation || Ext.data.Model.COMMIT === operation)) {
-          me.onDesktopChanged(me.currentDesktop)
-        }
+    let me = this
+    let navFields = UB.core.UBAppConfig.systemEntities.navigationShortcut.fields
+    let entityName = me.storeNavigationShortcut.ubRequest.entity
+    let updateStore = function (store, record, operation) {
+      if (me.desktopID && (!operation || Ext.data.Model.COMMIT === operation)) {
+        me.onDesktopChanged(me.desktopID)
+        return
       }
+      if (me.currentDesktop && (!operation || Ext.data.Model.COMMIT === operation)) {
+        me.onDesktopChanged(me.currentDesktop)
+      }
+    }
 
-    navShortcutEntity = $App.domainInfo.get('ubm_navshortcut')
+    let navShortcutEntity = $App.domainInfo.get('ubm_navshortcut')
 
     me.storeNavigationShortcut.on({
       datachanged: updateStore,
@@ -124,14 +123,13 @@ Ext.define('UB.view.NavigationPanel', {
           $App.dialogError('Right click on item and when select "Edit"')
           return
         }
-        var
-          rec = me.contextMenu.currentRecord,
-          cmdConfig = {
-            cmdType: UB.core.UBCommand.commandType.showForm,
-            entity: me.storeNavigationShortcut.ubRequest.entity,
-            instanceID: rec.get('ID'),
-            store: me.storeNavigationShortcut
-          }
+        let rec = me.contextMenu.currentRecord
+        let cmdConfig = {
+          cmdType: UB.core.UBCommand.commandType.showForm,
+          entity: me.storeNavigationShortcut.ubRequest.entity,
+          instanceID: rec.get('ID'),
+          store: me.storeNavigationShortcut
+        }
         UB.core.UBApp.doCommand(cmdConfig)
       },
       scope: this
@@ -233,7 +231,6 @@ Ext.define('UB.view.NavigationPanel', {
       me.contextMenu.showAt(e.getXY())
       return false
     }, this)
-
   },
 
   onItemClick: function (view, record, item, index, event, eOpts) {
@@ -275,10 +272,10 @@ Ext.define('UB.view.NavigationPanel', {
       throw e
     }
 
-    commandConfig.commandContext = {menuButton: item, event: event }
+    commandConfig.commandContext = { menuButton: item, event: event }
     if (!shortcut.get(navFields.inWindow)) {
       commandConfig.tabId = 'navigator' + recordId
-      commandConfig.target = $App.getViewport().getCenterPanel()
+      commandConfig.target = $App.viewport.centralPanel
     }
 
     $App.doCommand(commandConfig)
@@ -322,7 +319,7 @@ Ext.define('UB.view.NavigationPanel', {
           expanded: (isFirst && level === 1 || level > 1) && !record.get(navFields.isCollapsed),
           iconCls: record.get('iconCls') || 'fa fa-space',
           cls: 'ub_navpnl_item' + (level < 4 ? ' ub_navpnl_item_l' + level : '')  // record.get('cls')
-                    // iconCls: record.get(navFields.isFolder) === 1 ?  'fa fa-folder-o' : 'fa fa-leaf'
+          // iconCls: record.get(navFields.isFolder) === 1 ?  'fa fa-folder-o' : 'fa fa-leaf'
         })
         isFirst = false
       }
