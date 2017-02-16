@@ -68,7 +68,7 @@ exports.formCode = {
                     itemdblclick: {
                         fn: function(grid, record, item, index, e, eOpts) {
                             var
-                            edtr = me.codeTabs.getActiveTab().down('ubcodemirror').editor;
+                            edtr = me.codeTabs.getActiveTab().down('ubcodemirror').codeMirrorInstance;
                             console.log("%o", edtr);
                             edtr.setCursor({
                                 line: record.get('line'),
@@ -185,6 +185,7 @@ exports.formCode = {
     onEntityTreePanelItemDblClick: function(tree, record) {
         var
             aTab = this.codeTabs.getActiveTab(),
+            aCodeMirror,
             textToInsert = '';
         if (record) {
             if (aTab.isDefifnition) { // definition === this.codeTabs.items.getAt(1)
@@ -192,7 +193,9 @@ exports.formCode = {
             } else { // module
                 textToInsert = "this.getField('" + record.get('id') + "')";
             }
-            aTab.down('ubcodemirror').editor.replaceSelection(textToInsert);
+            aCodeMirror = aTab.down('ubcodemirror').codeMirrorInstance
+            aCodeMirror.replaceSelection(textToInsert)
+            aCodeMirror.getInputField().focus()
         }
     },
 
