@@ -21,6 +21,13 @@ items: [
 	{ attributeName: "code"},
     { attributeName: "isDefault", labelWidth: 200},
     { attributeName: "url"},
+  	{
+        xtype: "label",
+        style: {
+            color: "red"
+        },
+        text: "Warning: Changes to Desktop's will be applied to the top navbar after relogon"
+    }, 
     {
         xtype: "ubdetailgrid",
         flex: 1,
