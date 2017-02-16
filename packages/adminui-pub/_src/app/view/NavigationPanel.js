@@ -79,6 +79,15 @@ Ext.define('UB.view.NavigationPanel', {
     me.addEvents('itemclickstart')
     me.initContextMenu()
 
+    me.on('afterrender', function () {
+      me.getEl().addListener('contextmenu', function (e, t, eOpts) {
+        e.stopEvent()
+        me.contextMenu.currentRecord = null
+        me.contextMenu.showAt(e.getXY())
+        return false
+      })
+    })
+
     if (me.desktopID) {
       me.onDesktopChanged(me.desktopID)
     }
@@ -86,10 +95,10 @@ Ext.define('UB.view.NavigationPanel', {
 
   initContextMenu: function () {
     var
-      me = this, entity,
+      me = this, navShortcutEntity,
       navFields = UB.core.UBAppConfig.systemEntities.navigationShortcut.fields,
       entityName = me.storeNavigationShortcut.ubRequest.entity,
-      updateStore = function (store, record, operation, modifiedFieldNames, eOpts) {
+      updateStore = function (store, record, operation) {
         if (me.desktopID && (!operation || Ext.data.Model.COMMIT === operation)) {
           me.onDesktopChanged(me.desktopID)
           return
@@ -99,7 +108,7 @@ Ext.define('UB.view.NavigationPanel', {
         }
       }
 
-    entity = $App.domainInfo.get('ubm_navshortcut')
+    navShortcutEntity = $App.domainInfo.get('ubm_navshortcut')
 
     me.storeNavigationShortcut.on({
       datachanged: updateStore,
@@ -109,8 +118,12 @@ Ext.define('UB.view.NavigationPanel', {
     var editAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faEdit,
       text: UB.i18n('redactirovat'),
-      disabled: !entity.haveAccessToMethod('update'),
+      disabled: !navShortcutEntity.haveAccessToMethod('update'),
       handler: function () {
+        if (!me.contextMenu.currentRecord) {
+          $App.dialogError('Right click on item and when select "Edit"')
+          return
+        }
         var
           rec = me.contextMenu.currentRecord,
           cmdConfig = {
@@ -127,22 +140,25 @@ Ext.define('UB.view.NavigationPanel', {
     var addShortcutAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faLink,
       text: UB.i18n('dobavitYarlik'),
-      disabled: !entity.haveAccessToMethod('insert'),
+      disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
-        var
-          rec = me.contextMenu.currentRecord,
-          instanceID = rec.get('ID'),
-          parentID = rec.get(navFields.folderID),
-          item = !parentID ? me.storeNavigationShortcut.findRecord(navFields.folderID, instanceID) : null,
-          cmdConfig
-        rec = item || rec
-        instanceID = rec.get('ID')
-        cmdConfig = {
+        let rec = me.contextMenu.currentRecord
+        let instanceID
+        if (rec) {
+          instanceID = rec.get('ID')
+          let parentID = rec.get(navFields.folderID)
+          let item = !parentID ? me.storeNavigationShortcut.findRecord(navFields.folderID, instanceID) : null
+          rec = item || rec
+          instanceID = rec.get('ID')
+        }
+        let cmdConfig = {
           cmdType: UB.core.UBCommand.commandType.showForm,
           entity: entityName,
-          addByCurrent: true,
-          store: me.storeNavigationShortcut,
-          instanceID: instanceID
+          store: me.storeNavigationShortcut
+        }
+        if (instanceID) {
+          cmdConfig.instanceID = instanceID
+          cmdConfig.addByCurrent = true
         }
         UB.core.UBApp.doCommand(cmdConfig)
       },
@@ -152,20 +168,23 @@ Ext.define('UB.view.NavigationPanel', {
     var addFolderAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faFolder,
       text: UB.i18n('dobavitDirectoriu'),
-      disabled: !entity.haveAccessToMethod('insert'),
+      disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
-        var
-          rec = me.contextMenu.currentRecord,
-          parentID = rec.get(navFields.folderID),
-          parent = parentID ? me.storeNavigationShortcut.findRecord('ID', parentID) : parentID,
-          cmdConfig
-        rec = parent || rec
-        cmdConfig = {
+        let rec = me.contextMenu.currentRecord
+        if (rec) {
+          let parentID = rec.get(navFields.folderID)
+          let parent = parentID ? me.storeNavigationShortcut.findRecord('ID', parentID) : parentID
+          rec = parent || rec
+        }
+        let cmdConfig = {
           cmdType: UB.core.UBCommand.commandType.showForm,
           entity: entityName,
-          addByCurrent: true,
           store: me.storeNavigationShortcut,
-          instanceID: rec.get('ID')
+          isFolder: true
+        }
+        if (rec) {
+          cmdConfig.addByCurrent = true
+          cmdConfig.instanceID = rec.get('ID')
         }
         UB.core.UBApp.doCommand(cmdConfig)
       },
@@ -176,11 +195,14 @@ Ext.define('UB.view.NavigationPanel', {
       text: UB.i18n('Delete'),
       glyph: UB.core.UBUtil.glyphs.faTrashO,
       scope: this,
-      disabled: !entity.haveAccessToMethod('delete'),
+      disabled: !navShortcutEntity.haveAccessToMethod('delete'),
       handler: function () {
-        var
-          rec = me.contextMenu.currentRecord,
-          instanceID = rec.get('ID')
+        let rec = me.contextMenu.currentRecord
+        if (!me.contextMenu.currentRecord) {
+          $App.dialogError('Right click on item and when select "Delete" from popup menu')
+          return
+        }
+        let instanceID = rec.get('ID')
         $App.dialogYesNo('podtverditUdalenije', 'vyUvereny')
         .then(function (choice) {
           if (choice) {
@@ -200,7 +222,7 @@ Ext.define('UB.view.NavigationPanel', {
         editAction,
         addShortcutAction,
         addFolderAction,
-                 {xtype: 'menuseparator' },
+        {xtype: 'menuseparator'},
         deleteShortcutAction
       ]
     })
@@ -211,6 +233,7 @@ Ext.define('UB.view.NavigationPanel', {
       me.contextMenu.showAt(e.getXY())
       return false
     }, this)
+
   },
 
   onItemClick: function (view, record, item, index, event, eOpts) {

@@ -32,7 +32,7 @@ Ext.define('UB.ux.UBCodeMirror', {
 
   setValue: function (value) {
     this.rawValue = value
-    if (this.codeMirrorInstance) this.codeMirrorInstance.setValue(value)
+    if (this.codeMirrorInstance) this.codeMirrorInstance.setValue('' + value)
   },
 
   /**
@@ -89,7 +89,7 @@ Ext.define('UB.ux.UBCodeMirror', {
 
       this.ensureCodemirrorLoaded().then((CodeMirror) => {
         window.CodeMirror = CodeMirror
-        this.codeMirrorInstance = CodeMirror(myElm, {
+        this.codeMirrorInstance = this.editor = CodeMirror(myElm, {
           mode: 'javascript',
           value: this.rawValue || '',
           // theme: theme,

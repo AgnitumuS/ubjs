@@ -3,13 +3,31 @@ var entityRe = /"entity"\s*:\s*"(\w*)"/;
 exports.formCode = {
 	initUBComponent: function () {
 		var
-            me = this;
+        me = this;
         me.attributeGrid = this.down('commandbuilderentitytreepanel');
-
         me.getField('cmdCode').addListener('change', me.onCmdCodeChanged, me);
         me.onCmdCodeChanged(null, me.getField('cmdCode').getValue()); // initial data
 
-        me.attributeGrid.addListener('itemdblclick', me.onEntityAttributeGridClick, me);
+    if (me.commandConfig.isFolder){
+      me.getField('isFolder').setValue(true)
+      if (!me.getField('cmdCode').getValue()) {
+        me.getField('cmdCode').setValue('')
+      }
+    } else {
+      me.attributeGrid.addListener('itemdblclick', me.onEntityAttributeGridClick, me);
+      if (!me.commandConfig.instanceID) { // new shortcut
+        me.getField('cmdCode').setValue(JSON.stringify({
+          "cmdType": "showList",
+          "cmdData": {
+            "params": [ {
+              "entity": "yourEntityCode",
+              "fieldList": []
+            }
+            ]
+          }
+        }, null, ' '))
+      }
+    }
 	},
 
     onCmdCodeChanged : function(field, newValue){
@@ -23,11 +41,13 @@ exports.formCode = {
     },
 
     onEntityAttributeGridClick: function(tree, record) {
-        var
-            textToInsert;
+        var textToInsert;
+        var aCodeMirror;
         if (record) {
-            textToInsert = '"' + record.get("id") + '"';
-            this.down('ubcodemirror').editor.replaceSelection(textToInsert);
+          textToInsert = '"' + record.get("id") + '"';
+          aCodeMirror = this.down('ubcodemirror').codeMirrorInstance;
+          aCodeMirror.replaceSelection(textToInsert);
+          aCodeMirror.getInputField().focus()
         }
     },
 
