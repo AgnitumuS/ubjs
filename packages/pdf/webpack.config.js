@@ -12,7 +12,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'pdf.min.js',
     publicPath: '/clientRequire/@unitybase/pdf/dist/',
-    library: 'PDF',
+    library: '@unitybase/pdf',
     libraryTarget: 'umd'
   },
   externals: {

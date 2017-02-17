@@ -6,7 +6,10 @@
     "ubmodel": "UBS"
   },
   "scripts": {
-    "test": "ubcli autotest -m UBS -skipModules"
+    "test": "ubcli autotest -m UBS -skipModules",
+    "build": "SET NODE_ENV=production && cd ./public && webpack",
+    "build:watch": "cd ./public && webpack --progress --colors --watch",
+    "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
   },
   "public": true,
   "publishConfig": {
@@ -17,13 +20,19 @@
     "@unitybase/base": "^4.0.10",
     "@unitybase/ub": "^4.0.11",
     "@unitybase/uba": "^4.0.10",
-    "@unitybase/pdf": "^1.0.0",	
+    "@unitybase/pdf": "^1.0.0",
     "lodash": "^4.0.0",
     "mustache": "^2.3.0",
     "when": "1.8.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.7"
+    "@unitybase/stubs": "^4.0.7",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015-without-strict": "0.0.4",
+    "css-loader": "^0.26.1",
+    "exports-loader": "^0.6.3",
+    "style-loader": "^0.13.1"
   },
   "keywords": [
     "UnityBase"
