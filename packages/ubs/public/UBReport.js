@@ -181,7 +181,9 @@ UBReport.prototype.transformToPdf = function (html, options) {
   //     })
   //   }
   // })
-  let pdfPromise = window.isDeveloperMode ? System.import('@unitybase/pdf') : System.import('@unitybase/pdf/dist/pdf.min.js')
+  // let pdfPromise = window.isDeveloperMode ? System.import('@unitybase/pdf') : System.import('@unitybase/pdf/dist/pdf.min.js')
+  // window.BOUNDLED_BY_WEBPACK = false
+  let pdfPromise = System.import('@unitybase/pdf')
 
   return pdfPromise.then((PDF) => {
     return PDF.PrintToPdf.requireFonts({

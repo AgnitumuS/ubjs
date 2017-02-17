@@ -24,6 +24,9 @@
     "@unitybase/adminui-pub": "^4.0.12"
   },
   "devDependencies": {},
+  "peerDependencies": {
+    "webpack": "^2.2.0"
+  },
   "keywords": [
     "UnityBase"
   ],

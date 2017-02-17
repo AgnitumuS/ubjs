@@ -49,9 +49,9 @@ if (!Promise.prototype.done) {
   Promise.prototype.done = Promise.prototype.then
 }
 
-window.JSZip = require('jszip/dist/jszip.min.js')
-window.saveAs = require('file-saver/FileSaver.js').saveAs
-window.Mustacthe = require('mustache')
+window.JSZip = require('jszip/dist/jszip.js') // for xlsx-pub. require('jszip') dose not work
+window.saveAs = require('file-saver/FileSaver.js').saveAs //not work require('file-saver').saveAs
+//window.Mustacthe = require('mustache')
 
 // require('./ub-css-all.css') TODO - add icons to this module
 

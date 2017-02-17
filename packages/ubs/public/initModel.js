@@ -1,7 +1,5 @@
-require('./dataBinder')
-require('./cliUtils')
-require('./css/ubs.css')
-require('./settings')
-require('./UBReport')
-require('./ReportParamForm')
-require('./ReportViewer')
+if (window.isDeveloperMode) {
+  System.import('@unitybase/ubs/public/index.js')
+} else {
+  UB.inject('clientRequire/@unitybase/ubs/public/dist/ubs.main.min.js')
+}

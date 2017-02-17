@@ -24,17 +24,17 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
    */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
-      XLSX.init().done(function () {
+      System.import('@ub-e/xlsx-pub').then(() => {
         Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded = true
         this.format(store, config)
-      }.bind(this))
+      })
       return
     }
     var
       wb, defFont, fstyle, ws, stmodel, columnTemplate, fields, nrowData, colParam = [],
       borderFull, fldtitle, datestyleCol, entity, headerStyle, rowHeaderStyle, stl,
       styleWrapCol, styleCol, floatstyleCol, sumstyleCol, intstyleCol, entityName,
-      result, eAttributes, modelFields
+      eAttributes, modelFields
     wb = Ext.create(XLSX.csWorkbook)
     wb.useSharedString = true
     entity = config.metaobject
