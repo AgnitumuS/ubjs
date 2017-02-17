@@ -24,7 +24,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
    */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
-      System.import('@ub-e/xlsx-pub').then(() => {
+      System.import('@unitybase/xlsx').then(() => {
         Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded = true
         this.format(store, config)
       })
