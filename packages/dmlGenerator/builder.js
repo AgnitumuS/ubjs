@@ -1,104 +1,56 @@
 /**
- * Created by v.orel on 11.01.2017.
+ * Created by v.orel on 20.01.2017.
  */
+/**
+ * @typedef {string[]} ubqlFieldList
+ */
+/**
+ * @class ubqlWhere
+ * @property {string} expression
+ * @property {string} condition
+ * @property {*} value
+ * @property {*} values
+ */
+/**
+ * @typedef {Object.<string, string>} ubqlOrder
+ */
+/**
+ * @class ubqlOptions
+ * @property {number} start
+ * @property {number} limit
+ */
+/**
+ * @class ubqlSelect
+ * @property {ubqlFieldList} fieldList
+ * @property {Object.<string, ubqlWhere>} whereList
+ * @property {string[]} logicalPredicates
+ * @property {string[]} joinAs
+ * @property {ubqlOrder[]} orderBy
+ * @property {string[]} groupBy
+ * @property {ubqlOptions} options
+ */
+const DataSource = require('./datasource')
 const ColumnList = require('./column')
-const DataSourceList = require('./datasource')
 const WhereList = require('./where')
-const OrderByList = require('./orderBy')
-const GroupByList = require('./groupBy')
 
-class CustomSQLBuilder {
-  constructor ({entity, method, fieldList, execFieldList, fieldListType, execType, whereList, logicalPredicates, joinAs, orderByList, groupByList, options, parentBuilder, isExternalCall: isExternalCall = true}) {
-    this.entity = App.domain_.get(entity)
-    // this.dialect = entity.connectionConfig.dialect
-    this.method = method
-    this.options = options || {}
-    this.execType = execType
-    this.execparams = {}
-    this.fieldList = fieldList
-    this.isExternalCall = isExternalCall
-    this.parentBuilder = parentBuilder
-    this.params = parentBuilder ? parentBuilder.params : []
-    this.localUniqID = 1
-    this.datasources = new DataSourceList(this)
-    this.isDataSourceCusomSQL = this._isDataSourceCusomSQL(this.entity)
-
-    if (this.options.start < 0) {
-      // todo EMetabaseException
-      throw new Error('Parameter "options.start" value is invalid')
-    }
-    if (this.options.limit < 0) {
-      // todo EMetabaseException
-      throw new Error('Parameter "options.start" value is invalid')
-    }
-
-    let doFieldList = !this.isDataSourceCusomSQL && (fieldListType === 'exec' ? execFieldList : fieldList)
-    // todo ProcessAlsData
-    //   aPrepareContext.ProcessAlsData.InitBy(aSQL.alsNeed, aSQL.alsCurrState, aSQL.alsCurrRoles);
-
-    if (doFieldList) {
-      this.lang = this.builder === 'insert' ? App.defaultLang : Session.userLang || App.defaultLang
-      this.columns = new ColumnList(this, doFieldList)
-    }
-    // whereList
-    if (!this.isDataSourceCusomSQL && whereList) {
-      this.whereList = new WhereList(this, whereList, logicalPredicates, joinAs)
-    }
-    // orderBy items
-    if (orderByList) {
-      this.orderByList = new OrderByList(this, orderByList)
-    }
-    // groupBy items
-    if (groupByList) {
-      this.groupByList = new GroupByList(this, groupByList)
-    }
-  }
-  get dialect () {
-    return ['AnsiSQL']
-  }
-  _isDataSourceCusomSQL (entity) {
-    const mapping = entity.mapping
-    return !!(mapping && mapping.customSQL)
-  }
-  getManyExpressionType () {
-    return 'Field'
-  }
-  getManyExpression () {
-    return ''
-  }
-  buildSelectQuery () {
-    return this.buildBaseSelectQuery()
-  }
+class SqlBuilder {
   /**
-   * @returns {string}
+   * Build SQL for select and returns it's parameters
+   * @param {string} entity
+   * @param {ubqlSelect} ubql
+   * @param {boolean} isExternal
+   * @returns {{sql: string, params: Array}}
    */
-  buildBaseSelectQuery () {
-    const parts = ['SELECT ']
-    this.fieldsPrefix && parts.push(`${this.fieldsPrefix} `)
-    parts.push(this.columns.getSQL().fields)
+  static biuldSelectSql (entity, ubql, isExternal) {
+    const params = []
+    const dataSource = new DataSource(entity)
+    const {fieldList, whereList} = ubql
+    const columns = new ColumnList(fieldList, dataSource, isExternal)
+    const where = new WhereList(whereList, dataSource, isExternal, params)
 
-    this.fieldsSuffix && parts.push(this.fieldsSuffix)
-
-    parts.push(this.datasources.getSQL())
-
-    this.whereList && parts.push(this.whereList.getSQL())
-
-    // todo assign groupby
-    if (this.groupby) {
-      parts.push(' GROUP BY ')
-      parts.push(this.groupby)
-    }
-    // todo assign orderby
-    if (this.orderby) {
-      parts.push(' ORDER BY ')
-      parts.push(this.orderby)
-    }
-    return parts.join('')
-  }
-  getJoinText (stageIsWhere) {
-    return `${this.joinType} JOIN ${this.toDs.selectName} ${this.toDs.uniqCalcShortName} ON ${this.toDs.uniqCalcShortName}.${this.toAttr.name}=${this.fromDs.uniqCalcShortName}.${this.fromAttr.name}`
-//    return 'CustomSQLBuilder cannot generate join SQL expression'
+    return {sql: columns.sql + dataSource.sql + where.sql, params: params}
   }
 }
+module.exports = SqlBuilder
 
-module.exports = CustomSQLBuilder
+// todo link attribute documentation [a1.a2.a3@e1.a4.a5@e2.a6.a7] => e2(e1(a1.a2).a3.a4).a5.a6.a7

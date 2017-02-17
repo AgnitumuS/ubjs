@@ -7,13 +7,13 @@
     "test": "./tsql3.cmd"
   },
   "dependencies": {
-    "@ub-e/dses": "^4.0.0",
+    "@ub-e/dses": "^1.0.2",
     "@ub-e/odata": "^1.0.0",
     "@ub-e/ube-pub": "^4.0.0",
     "@ub-e/xlsx-pub": "^4.0.0",
     "@unitybase/adminui-pub": "^4.0.0",
     "@unitybase/adminui-reg": "^4.0.0",
-    "@unitybase/cryptojs": "^4.0.0",	
+    "@unitybase/cryptojs": "^1.0.5",	
     "@unitybase/base": "^4.0.0",
     "@unitybase/cdn": "^4.0.1",
     "@unitybase/org": "^4.0.1",
