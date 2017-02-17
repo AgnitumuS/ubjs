@@ -8,7 +8,7 @@
     "ubmodelispublic": true
   },
   "scripts": {
-    "build": "SET NODE_ENV=production && webpack -p",
+    "build": "SET NODE_ENV=production && webpack",
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
