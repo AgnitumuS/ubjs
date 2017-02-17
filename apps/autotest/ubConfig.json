@@ -143,12 +143,6 @@
 					"moduleName": "@ub-e/dses"
 				},
 				{
-					"name": "XLSX",
-					"publicPath": "./node_modules/@ub-e/xlsx-pub",
-					"path": "_public_only_",
-					"moduleName": "@ub-e/xlsx-pub"
-				},
-				{
 					"name": "TST",
 					"path": ".\\models\\TST"
 				}
