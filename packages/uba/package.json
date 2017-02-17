@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/uba",
-  "version": "4.0.10",
+  "version": "4.0.11",
   "description": "UnityBase Administrative model",
   "config": {
     "ubmodel": "UBA"
@@ -15,8 +15,8 @@
   "main": "index.js",
   "dependencies": {
     "lodash": "^4.0.0",
-    "@unitybase/base": "^4.0.10",
-    "@unitybase/ub": "^4.0.11"
+    "@unitybase/base": "^4.0.11",
+    "@unitybase/ub": "^4.0.12"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.0.7"
