@@ -724,5 +724,4 @@ performs "select" to "Entity" attribute value and takes it
     bindEvent: function (cmp, eventName, handler) {
         this.getUBCmp(cmp).on(eventName, handler, this);
     }
-
 };
