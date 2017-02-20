@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "description": "Build-in UnityBase model",
   "config": {
     "ubmodel": "UB"
