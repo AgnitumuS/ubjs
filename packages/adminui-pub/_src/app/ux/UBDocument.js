@@ -167,7 +167,7 @@ Ext.define('UB.ux.UBDocument', {
      */
 
     /**
-     * 
+     *
      * @param {String} contentType
      */
     createComponent: function(contentType) {
