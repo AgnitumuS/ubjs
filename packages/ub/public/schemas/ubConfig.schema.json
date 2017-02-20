@@ -759,7 +759,7 @@
             "applicationName": {
               "type": "string",
               "description": "Name of application for show on the login form. In case explicity defined as empty string - not shown in login form",
-	      "default": "UnityBase"
+              "default": "UnityBase"
             },
             "applicationTitle": {
               "type": "string",
@@ -796,6 +796,10 @@
                   "description": "Long pooling time (in seconds)"
                 }
               }
+            },
+            "linter": {
+              "type": "object",
+              "description": "JavaScript linter options - used in adminUI form editor & shortcut editor. See <a href=\"http://jshint.com/docs/options/\">JSHINT documentation</a> for full options list"
             }
           }
         },
