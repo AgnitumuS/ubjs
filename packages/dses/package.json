@@ -23,7 +23,6 @@
     "@unitybase/ubq": "^4.0.12"
   },
   "devDependencies": {
-    "@unitybase/ubcli": "^1.0.11",
     "@unitybase/stubs": "^4.0.7"
   },
   "keywords": [
