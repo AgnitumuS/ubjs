@@ -13,19 +13,6 @@ Ext.define('UB.ux.UBCodeMirror', {
   // html: '<textarea></textarea>',
   codeMirrorInstance: undefined,
 
-  ensureCodemirrorLoaded: function () {
-    window.BOUNDLED_BY_WEBPACK = false
-    // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
-    // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
-    window.BOUNDLED_BY_WEBPACK = false
-    if (BOUNDLED_BY_WEBPACK) {
-      return System.import('./codemirror-async-all.js')
-    }
-    if (!BOUNDLED_BY_WEBPACK) {
-      return System.import('@unitybase/adminui-pub/_src/app/ux/codemirror-async-all')
-    }
-  },
-
   getValue: function () {
     return this.codeMirrorInstance ? this.codeMirrorInstance.getValue() : undefined
   },
@@ -87,18 +74,18 @@ Ext.define('UB.ux.UBCodeMirror', {
       var myElm = this.getEl().dom
       var me = this
 
-      this.ensureCodemirrorLoaded().then((CodeMirror) => {
+      System.import('@unitybase/codemirror-full').then((CodeMirror) => {
         window.CodeMirror = CodeMirror
         this.codeMirrorInstance = this.editor = CodeMirror(myElm, {
           mode: 'javascript',
           value: this.rawValue || '',
-          // theme: theme,
           lineNumbers: true,
+          lint: true,
           readOnly: false,
           highlightSelectionMatches: {annotateScrollbar: true},
           matchBrackets: true,
           foldGutter: true,
-          gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+          gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
           extraKeys: { 'Ctrl-Space': 'autocomplete' }
         })
         this.codeMirrorInstance.on('change', function () {

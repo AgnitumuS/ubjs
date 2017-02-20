@@ -114,7 +114,7 @@ function launchApp () {
       console.warn(e)
     }
     Ext.Loader.isLoading = true
-    System.import(url).then(
+    SystemJS.import(url).then(
       function () {
         return onLoad.call(scope)
       },

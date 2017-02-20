@@ -1,0 +1,41 @@
+{
+  "name": "@unitybase/codemirror-full",
+  "version": "1.0.0",
+  "description": "CodeMirror + plugins",
+  "main": "./dist/codemirror-all.min.js",
+  "scripts": {
+    "build": "SET NODE_ENV=production && webpack",
+    "build:watch": "webpack --progress --colors --watch",
+    "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "test": "npm run test"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "dependencies": {
+    "codemirror": "^5.20.2",
+    "jshint": "^2.9.4",
+    "lodash": "^4.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015-without-strict": "0.0.4",
+    "css-loader": "^0.26.1",
+    "exports-loader": "^0.6.3",
+    "imports-loader": "^0.7.0",
+    "style-loader": "^0.13.1"
+  },
+  "peerDependencies": {
+    "webpack": "^2.2.0",
+    "uglify-js": "^2.7.4",
+    "uglifycss": "*"
+  },
+  "keywords": [
+    "UnityBase",
+    "CodeMirror"
+  ],
+  "author": "UnityBase team (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}

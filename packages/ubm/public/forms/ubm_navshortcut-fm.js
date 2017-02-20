@@ -1,34 +1,39 @@
 var entityRe = /"entity"\s*:\s*"(\w*)"/;
 
 exports.formCode = {
-	initUBComponent: function () {
-		var
-        me = this;
-        me.attributeGrid = this.down('commandbuilderentitytreepanel');
-        me.getField('cmdCode').addListener('change', me.onCmdCodeChanged, me);
-        me.onCmdCodeChanged(null, me.getField('cmdCode').getValue()); // initial data
+  initUBComponent: function () {
+    var
+      me = this;
+    me.attributeGrid = this.down('commandbuilderentitytreepanel');
+    me.getField('cmdCode').addListener('change', me.onCmdCodeChanged, me);
+    me.onCmdCodeChanged(null, me.getField('cmdCode').getValue()); // initial data
 
-    if (me.commandConfig.isFolder){
-      me.getField('isFolder').setValue(true)
-      if (!me.getField('cmdCode').getValue()) {
-        me.getField('cmdCode').setValue('')
-      }
-    } else {
-      me.attributeGrid.addListener('itemdblclick', me.onEntityAttributeGridClick, me);
-      if (!me.commandConfig.instanceID) { // new shortcut
-        me.getField('cmdCode').setValue(JSON.stringify({
-          "cmdType": "showList",
-          "cmdData": {
-            "params": [ {
-              "entity": "yourEntityCode",
-              "fieldList": []
-            }
-            ]
+    me.attributeGrid.addListener('itemdblclick', me.onEntityAttributeGridClick, me);
+
+    if (me.commandConfig.instanceID) return // edit mode
+
+    if (!me.commandConfig.isFolder) {
+      me.getField('cmdCode').setValue(JSON.stringify({
+        "cmdType": "showList",
+        "cmdData": {
+          "params": [ {
+            "entity": "yourEntityCode",
+            "fieldList": []
           }
-        }, null, ' '))
-      }
+          ]
+        }
+      }, null, ' '))
+    } else {
+      me.getField('isFolder').setValue(true)
     }
-	},
+    var ds = me.commandConfig.desktopID || $App.getDesktop()
+    if (ds) {
+      me.getField('desktopID').setValueById(ds)
+    }
+    if (me.commandConfig.parentID) {
+      me.getField('parentID').setValueById(me.commandConfig.parentID)
+    }
+  },
 
     onCmdCodeChanged : function(field, newValue){
         var res;

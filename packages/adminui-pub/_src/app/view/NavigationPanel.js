@@ -116,7 +116,7 @@ Ext.define('UB.view.NavigationPanel', {
 
     var editAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faEdit,
-      text: UB.i18n('redactirovat'),
+      text: UB.i18n('Edit'),
       disabled: !navShortcutEntity.haveAccessToMethod('update'),
       handler: function () {
         if (!me.contextMenu.currentRecord) {
@@ -141,22 +141,14 @@ Ext.define('UB.view.NavigationPanel', {
       disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
         let rec = me.contextMenu.currentRecord
-        let instanceID
-        if (rec) {
-          instanceID = rec.get('ID')
-          let parentID = rec.get(navFields.folderID)
-          let item = !parentID ? me.storeNavigationShortcut.findRecord(navFields.folderID, instanceID) : null
-          rec = item || rec
-          instanceID = rec.get('ID')
-        }
         let cmdConfig = {
           cmdType: UB.core.UBCommand.commandType.showForm,
           entity: entityName,
           store: me.storeNavigationShortcut
         }
-        if (instanceID) {
-          cmdConfig.instanceID = instanceID
-          cmdConfig.addByCurrent = true
+        if (rec) {
+          cmdConfig.parentID = rec.get('isFolder') ? rec.get('ID') : rec.get('parentID')
+          cmdConfig.desktopID = rec.get('desktopID')
         }
         UB.core.UBApp.doCommand(cmdConfig)
       },
@@ -169,11 +161,6 @@ Ext.define('UB.view.NavigationPanel', {
       disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
         let rec = me.contextMenu.currentRecord
-        if (rec) {
-          let parentID = rec.get(navFields.folderID)
-          let parent = parentID ? me.storeNavigationShortcut.findRecord('ID', parentID) : parentID
-          rec = parent || rec
-        }
         let cmdConfig = {
           cmdType: UB.core.UBCommand.commandType.showForm,
           entity: entityName,
@@ -181,8 +168,8 @@ Ext.define('UB.view.NavigationPanel', {
           isFolder: true
         }
         if (rec) {
-          cmdConfig.addByCurrent = true
-          cmdConfig.instanceID = rec.get('ID')
+          cmdConfig.parentID = rec.get('isFolder') ? rec.get('ID') : rec.get('parentID')
+          cmdConfig.desktopID = rec.get('desktopID')
         }
         UB.core.UBApp.doCommand(cmdConfig)
       },
