@@ -14,7 +14,7 @@ Ext.define('UB.ux.UBCodeMirror', {
   codeMirrorInstance: undefined,
 
   getValue: function () {
-    return this.codeMirrorInstance ? this.codeMirrorInstance.getValue() : undefined
+    return this.codeMirrorInstance ? this.codeMirrorInstance.getValue() : this.rawValue
   },
 
   setValue: function (value) {
