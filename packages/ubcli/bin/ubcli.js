@@ -6,7 +6,7 @@ const path = require('path')
 const command = process.argv[2]
 
 // commands help
-if (['-?', '/?', '-help', '/help'].indexOf(command) !== -1) {
+if (!command || (['-?', '/?', '-help', '/help'].indexOf(command) !== -1)) {
   let commands = fs.readdirSync(path.join(__dirname, '..', 'lib'))
   console.info('Possible commands:')
   for (let cmd of commands) {
