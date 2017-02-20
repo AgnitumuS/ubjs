@@ -4,12 +4,9 @@
 const webpack = require('webpack')
 const path = require('path')
 
-// var CircularDependencyPlugin = require('circular-dependency-plugin')
-
 module.exports = {
   entry: {
     app: './adminui.js'
-    //,   tinymce: ['tinyMCE-dyn-all']
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -18,14 +15,6 @@ module.exports = {
     filename: 'adminui.[name].min.js',
     publicPath: '/clientRequire/@unitybase/adminui-pub/dist/'
   },
-/*  externals: {
-        "lodash": {
-            commonjs: "lodash",
-            commonjs2: "lodash",
-            amd: "lodash",
-            root: "_"
-        }
-    },*/
   module: {
     rules: [{
       test: /\.js$/,
@@ -62,19 +51,6 @@ module.exports = {
       BOUNDLED_BY_WEBPACK: true
     }),
 
-    // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
-/*    new webpack.optimize.CommonsChunkPlugin({
-       name: 'libs',
-        minChunks: Infinity
-        //,filename: '[name].js',
-    }),*/
-
-//    new CircularDependencyPlugin({
-      // exclude detection of files based on a RegExp
-      // exclude: /a\.js/,
-      // add errors to webpack instead of warnings
-//      failOnError: true
-//    }),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
