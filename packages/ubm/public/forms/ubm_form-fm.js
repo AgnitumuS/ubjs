@@ -56,27 +56,20 @@ exports.formCode = {
         var
             me = this,
             res = true,
-            text,
-			className, 
-            codeTabs = this.down('tabpanel'),
-            i;
+			      className;
+
         if (!this.formDefEditor){
             this.formDefEditor = this.down('ubcodemirror[name="formDef"]');
         }
-//        console.log('onSave');
-//        for (i = 0; i < 2; ++i) {
-//            text = this.STRICT_CHECK + this.formDefEditor.getValue();
-///                //codeTabs.items.getAt(0).down('ubcodemirror').getValue();
-//            if (text) {
-///                res = res && JSLINT(text, this.JSLINT_OPTIONS);
-//            }
-//        }
+
         if (res) {
             UB.core.UBFormLoader.clearFormCache(me.record.get('code'));
-			// undefine ExtJS based form (remove class)
+			      // undefine ExtJS based form (remove class)
             if (me.record.get('formType') === 'custom'){
-				className = UB.core.UBFormLoader.getComponentClassName(this.formDefEditor.getValue());
-                className && UB.core.UBFormLoader.undefineExtClass(className);
+				      className = UB.core.UBFormLoader.getComponentClassName(this.formDefEditor.getValue());
+              if (className) {
+                UB.core.UBFormLoader.undefineExtClass(className);
+              }
             }
             this.callParent([action]);
         } else {
