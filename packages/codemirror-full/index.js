@@ -23,7 +23,8 @@ require('codemirror/addon/hint/show-hint.css')
 require('codemirror/addon/hint/javascript-hint')
 
 require('codemirror/addon/lint/lint')
-require('codemirror/addon/lint/lint.css')
+// require('codemirror/addon/lint/lint.css') 
+require('./CodeMirror-lint.css') // override a tooltip z-index to be on top of modal forms
 require('codemirror/addon/lint/javascript-lint')
 
 require('codemirror/addon/search/search')

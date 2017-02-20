@@ -80,7 +80,7 @@ Ext.define('UB.ux.UBCodeMirror', {
           mode: 'javascript',
           value: this.rawValue || '',
           lineNumbers: true,
-          lint: true,
+          lint: _.assign({asi: true}, $App.connection.appConfig.uiSettings.adminUI.linter),
           readOnly: false,
           highlightSelectionMatches: {annotateScrollbar: true},
           matchBrackets: true,
