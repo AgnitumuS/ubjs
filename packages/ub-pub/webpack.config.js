@@ -2,30 +2,24 @@
  * Created by pavel.mash on 04.09.2016.
  */
 var webpack = require('webpack')
-
-function isExternal (module) {
-  var userRequest = module.userRequest
-
-  if (typeof userRequest !== 'string') {
-    return false
-  }
-
-//  console.log(userRequest);
-  return userRequest.indexOf('bluebird') >= 0 ||
-         // userRequest.indexOf('/bluebird-q/') >= 0 ||
-         userRequest.indexOf('lodash') >= 0 ||
-	 userRequest.indexOf('cryptojs') >= 0
-}
+const path = require('path')
 
 module.exports = {
-  entry: {
-    app: './index.js'
-	//, vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
-  },
+  entry: './index.js',
   output: {
-    path: './dist',
-    filename: 'ub-core.min.js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'ub-pub.min.js',
+    library: 'UB',
+    libraryTarget: 'umd'
   },
+  externals: {
+        "lodash": {
+            commonjs: "lodash",
+            commonjs2: "lodash",
+            amd: "lodash",
+            root: "_"
+        }
+    },
   module: {
     loaders: [{
       test: /\.js$/,
@@ -35,24 +29,15 @@ module.exports = {
         presets: ['es2015']
       }
     }]
-  },
+  },  
   devtool: 'source-map',
 
   plugins: [
-        // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
-    new webpack.optimize.CommonsChunkPlugin({
-	  name: 'vendor', filename: 'q-lodash-crypto.min.js',
-	  minChunks: function (module) {
-      		return isExternal(module)
-    	  }
-  	}),
-
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
-	    'screw-ie8': true,
-            // compress: false
+      'screw-ie8': true,
+      // compress: false
       compress: {
         sequences: true,
         booleans: true,
@@ -63,9 +48,5 @@ module.exports = {
         unsafe: true
       }
     })
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     children: true,
-        //     async: true,
-        // })
   ]
 }

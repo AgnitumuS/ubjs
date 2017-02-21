@@ -1,3 +1,4 @@
+require('./UBText')
 /**
  * Text area field implementing specific logic of UB
  */

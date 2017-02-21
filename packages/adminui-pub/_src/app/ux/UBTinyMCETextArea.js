@@ -1,5 +1,4 @@
-/* global tinymce */
-// @require ..\..\ux\form\TinyMCETextArea.js
+require('../../ux/form/TinyMCETextArea')
 /**
  * Файл: UB.ux.UBTinyMCETextArea.js
  * Автор: Игорь Ноженко
@@ -10,14 +9,15 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
   extend: 'Ext.ux.form.TinyMCETextArea',
   alias: 'widget.ubtinymcetextarea',
 
-  requires: ['Ext.ux.form.TinyMCETextArea'],
+  // requires: ['Ext.ux.form.TinyMCETextArea'],
 
   initComponent: function () {
     var me = this
     if (me.tinyMCEConfig) {
       me.userSetup = me.tinyMCEConfig.setup
     }
-    tinyMCE.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
+    this.ensureTinyMCELoaded()
+    //tinyMCE.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
     me.tinyMCEConfig = Ext.apply({
           // language: UB.core.UBApp.getUiLanguage(),
       language_url: $App.connection.baseURL + 'models/adminui-pub/locale/tinymce/' + $App.connection.userLang() + '.js',
@@ -76,6 +76,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
   onStartSetup: function (ed) {
     var me = this
         // ed.baseURI = $App.connection.serverUrl + 'jslibs/tinymce1/';
+    tinymce.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
     this.fireEvent('setup', ed)
     if (this.userSetup) {
       this.userSetup(ed)
@@ -121,7 +122,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
 
     if (blobData) {
       return new Promise((resolve, reject) => {
-        let reader = new FileReader()
+        var reader = new FileReader()
         reader.addEventListener('loadend', function () {
           resolve(onDataReady(reader.result))
         })
@@ -132,7 +133,9 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
       })
     } else if (cfg.params) {
       return UB.core.UBService.getDocument(cfg.params)
-        .then((response) => onDataReady(response))
+        .then(function (response) {
+          return onDataReady(response)
+        })
     } else {
       return Promise.resolve(onDataReady(cfg.rawValue))
     }

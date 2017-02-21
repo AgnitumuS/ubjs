@@ -49,35 +49,9 @@ if (!Promise.prototype.done) {
   Promise.prototype.done = Promise.prototype.then
 }
 
-window.JSZip = require('jszip/dist/jszip.min.js')
-window.saveAs = require('file-saver/FileSaver.js').saveAs
-window.Mustacthe = require('mustache')
-window.CodeMirror = require('codemirror/lib/codemirror')
-require('codemirror/lib/codemirror.css')
-require('codemirror/addon/edit/matchbrackets')
-require('codemirror/addon/edit/closebrackets')
-require('codemirror/addon/edit/trailingspace')
-require('codemirror/addon/fold/foldcode')
-require('codemirror/addon/fold/foldgutter')
-require('codemirror/addon/fold/foldgutter.css')
-require('codemirror/addon/fold/brace-fold')
-require('codemirror/addon/fold/xml-fold')
-require('codemirror/addon/fold/comment-fold')
-require('codemirror/addon/dialog/dialog')
-require('codemirror/addon/dialog/dialog.css')
-require('codemirror/mode/javascript/javascript')
-require('codemirror/addon/hint/show-hint')
-require('codemirror/addon/hint/show-hint.css')
-require('codemirror/addon/hint/javascript-hint')
-require('codemirror/addon/search/search')
-require('codemirror/addon/search/searchcursor')
-require('codemirror/addon/scroll/annotatescrollbar')
-require('codemirror/addon/search/matchesonscrollbar')
-require('codemirror/addon/search/match-highlighter')
-require('./_src/css/CodeMirror-match.css')
-require('codemirror/addon/comment/comment')
-
-window.tinymce = require('tinymce/tinymce.js')
+window.JSZip = require('jszip/dist/jszip.js') // for xlsx-pub. require('jszip') dose not work
+window.saveAs = require('file-saver/FileSaver.js').saveAs //not work require('file-saver').saveAs
+//window.Mustacthe = require('mustache')
 
 // require('./ub-css-all.css') TODO - add icons to this module
 
@@ -85,8 +59,10 @@ Ext.Loader.setConfig({
   enabled: true,
   disableCaching: false,
   paths: {
-    'Ext.ux': 'models/adminui-pub/_src/ux',
-    'UB': 'models/adminui-pub/_src/app'
+    // 'Ext.ux': 'models/adminui-pub/_src/ux',
+    // 'UB': 'models/adminui-pub/_src/app'
+    'Ext.ux': '@unitybase/adminui-pub/_src/ux',
+    'UB': '@unitybase/adminui-pub/_src/app'
   }
 })
 

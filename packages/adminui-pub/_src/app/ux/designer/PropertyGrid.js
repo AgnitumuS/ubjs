@@ -33,7 +33,6 @@ Ext.define('UB.ux.designer.PropertyGrid', {
     constructor: function(){
         var me = this;
         UB.inject("models/UBS/js_beautify.js");
-        //UB.inject("models/UBS/jslint.js");
         me.convertStringToObject = true;
         me.callParent(arguments);
     },

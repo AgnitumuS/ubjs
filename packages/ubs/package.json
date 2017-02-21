@@ -1,12 +1,15 @@
 {
   "name": "@unitybase/ubs",
-  "version": "4.0.7",
+  "version": "4.0.12",
   "description": "UnityBase Service model",
   "config": {
     "ubmodel": "UBS"
   },
   "scripts": {
-    "test": "ubcli autotest -m UBS -skipModules"
+    "test": "ubcli autotest -m UBS -skipModules",
+    "build": "SET NODE_ENV=production && cd ./public && webpack",
+    "build:watch": "cd ./public && webpack --progress --colors --watch",
+    "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
   },
   "public": true,
   "publishConfig": {
@@ -14,15 +17,22 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.0.7",
-    "@unitybase/ub": "^4.0.8",
-    "@unitybase/uba": "^4.0.7",
+    "@unitybase/base": "^4.0.11",
+    "@unitybase/ub": "^4.0.13",
+    "@unitybase/uba": "^4.0.12",
+    "@unitybase/pdf": "^1.0.2",
     "lodash": "^4.0.0",
     "mustache": "^2.3.0",
     "when": "1.8.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.6"
+    "@unitybase/stubs": "^4.0.7",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015-without-strict": "0.0.4",
+    "css-loader": "^0.26.1",
+    "exports-loader": "^0.6.3",
+    "style-loader": "^0.13.1"
   },
   "keywords": [
     "UnityBase"

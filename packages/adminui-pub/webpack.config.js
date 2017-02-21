@@ -1,65 +1,61 @@
 /**
  * Created by pavel.mash on 04.09.2016.
  */
-var webpack = require('webpack')
-
-function isExternal (module) {
-  var userRequest = module.userRequest
-
-  if (typeof userRequest !== 'string') {
-    return false
-  }
-
-//  console.log(userRequest);
-  return userRequest.indexOf('bluebird') >= 0 ||
-    // userRequest.indexOf('/bluebird-q/') >= 0 ||
-    userRequest.indexOf('lodash') >= 0 ||
-    userRequest.indexOf('CryptoJS') >= 0
-}
+const webpack = require('webpack')
+const path = require('path')
 
 module.exports = {
   entry: {
     app: './adminui.js'
-	//, vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
   },
   output: {
-    path: './dist',
-    filename: 'adminui.min.js'
+    path: path.join(__dirname, 'dist'),
+    //filename: 'adminui.min.js',
+    //filename: '[name].[hash].js',
+    filename: 'adminui.[name].min.js',
+    publicPath: '/clientRequire/@unitybase/adminui-pub/dist/'
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/,
+      exclude: [/node_modules/],
       query: {
-        presets: ['es2015']
+        // MPV - IMPORTANT to remove a 'use strict' in boundle, in other case Ext.callParent not work,
+        // because in strict mode Fintion.calle in undefined, but this technic in used internalty by Ext.callParent
+        presets: ['es2015-without-strict']
       }
-    }, { 
-      test: /\.css$/, 
-      loader: "style-loader!css-loader" 
-      //loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' 
+    }, {
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader']
+    }, {
+      test: require.resolve('tinymce/tinymce'),
+      use: [
+        'imports-loader?this=>window',
+        'exports-loader?window.tinymce'
+      ]
+    }, {
+      // this option is required for tinyMCE, see https://github.com/tinymce/tinymce/issues/2836
+      test: /tinymce[\\/](themes|plugins)[\\/]/,
+      use: [
+        'imports-loader?this=>window'
+      ]
     }]
   },
-  //devtool: 'eval',
-  devtool: 'source-map',
-  //devtool: 'cheap-module-source-map',
+  // devtool: 'eval',
+  //devtool: 'source-map',
+  // devtool: 'cheap-module-source-map',
 
   plugins: [
-        // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
-    /*new webpack.optimize.CommonsChunkPlugin({
-	  name: 'vendor', filename: 'q-lodash-crypto.min.js',
-	  minChunks: function (module) {
-      		return isExternal(module)
-    	  }
-  	}),*/
+    new webpack.DefinePlugin({
+      BOUNDLED_BY_WEBPACK: true
+    }),
 
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
-     'screw-ie8': true,
-      // compress: false
+      'screw-ie8': true,
+      // compress: false,
       compress: {
         sequences: true,
         booleans: true,
@@ -68,12 +64,10 @@ module.exports = {
         warnings: true, // false,
         drop_console: false, // true,
         unsafe: true
+      },
+      output: {
+        ascii_only: true // for TinyMCE
       }
-    }) 
-
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     children: true,
-        //     async: true,
-        // })
+    })
   ]
 }

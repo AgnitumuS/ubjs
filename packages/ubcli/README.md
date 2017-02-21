@@ -1,7 +1,7 @@
 A simple CLI for scaffolding UnityBase projects
 
 	npm install -g @unitybase/ubcli --registry http://registry.unitybase.info
-	ubcli -h
+	ubcli -?
 
 
 

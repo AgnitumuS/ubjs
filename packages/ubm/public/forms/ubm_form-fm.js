@@ -1,11 +1,6 @@
-/*global JSLINT, js_beautify*/
-UB.inject('models/UBS/js_beautify.js').done(function(){
-    UB.inject('models/UBS/jslint.js');
-});
 exports.formCode = {
     propTree: null,
     codeTabs: null,
-    debugWindow: null,
 
     initUBComponent: function() {
         var
@@ -50,77 +45,6 @@ exports.formCode = {
             me.getUBCmp("attrFormDef").setValue("{\"store\":\"mdb\",\"fName\":\"" + (fn = code.length > 0 ? code + ".def" : "") + "\",\"origName\":\"" + fn + "\",\"ct\":\"application/def\",\"size\":0,\"isDirty\":true}", this.instanceID);
             me.getUBCmp("attrFormCode").setValue("{\"store\":\"mdb\",\"fName\":\"" + (fn = code.length > 0 ? code + ".js" : "") + "\",\"origName\":\"" + fn + "\",\"ct\":\"application/javascript\",\"size\":0,\"isDirty\":true}", this.instanceID);
         }
-
-        me.debugWindow = new Ext.Window({
-            title: UB.i18n('konsolOshibok'),
-            width: 500,
-            layout: 'border',
-            closeAction: 'hide',
-            height: 160,
-            items: [new Ext.grid.GridPanel({
-                layout: 'fit',
-                region: 'center',
-                border: false,
-                viewConfig: {
-                    forceFit: true
-                },
-                listeners: {
-                    itemdblclick: {
-                        fn: function(grid, record, item, index, e, eOpts) {
-                            var
-                            edtr = me.codeTabs.getActiveTab().down('ubcodemirror').editor;
-                            console.log("%o", edtr);
-                            edtr.setCursor({
-                                line: record.get('line'),
-                                ch: record.get('character') - 1
-                            });
-                            /*var pos = edtr.cursorPosition(true);
-                            edtr.selectLines(pos.line, 0, pos.line, record.get('character') - 1);*/
-                        }
-                    }
-                },
-                store: new Ext.data.ArrayStore({
-                    fields: [{
-                        name: 'line'
-                    }, {
-                        name: 'character'
-                    }, {
-                        name: 'reason'
-                    }]
-                }),
-                columns: [{
-                    id: 'line',
-                    header: UB.i18n('err_line'),
-                    width: 40,
-                    fixed: true,
-                    menuDisabled: true,
-                    dataIndex: 'line'
-                }, {
-                    id: 'character',
-                    header: UB.i18n('err_character'),
-                    width: 70,
-                    fixed: true,
-                    menuDisabled: true,
-                    dataIndex: 'character'
-                }, {
-                    header: UB.i18n('err_description'),
-                    menuDisabled: true,
-                    dataIndex: 'reason'
-                }],
-                stripeRows: true
-            })]
-        });
-    },
-
-
-
-    beforeDestroy: function(){
-        var
-            me = this;
-
-        if (me.debugWindow) { me.debugWindow.destroy(); }
-
-        me.callParent(arguments);
     },
 
     onCodeChanged: function(field, newValue, oldValue, eOpts) {
@@ -132,27 +56,20 @@ exports.formCode = {
         var
             me = this,
             res = true,
-            text,
-			className, 
-            codeTabs = this.down('tabpanel'),
-            i;
+			      className;
+
         if (!this.formDefEditor){
             this.formDefEditor = this.down('ubcodemirror[name="formDef"]');
         }
-//        console.log('onSave');
-//        for (i = 0; i < 2; ++i) {
-//            text = this.STRICT_CHECK + this.formDefEditor.getValue();
-///                //codeTabs.items.getAt(0).down('ubcodemirror').getValue();
-//            if (text) {
-///                res = res && JSLINT(text, this.JSLINT_OPTIONS);
-//            }
-//        }
+
         if (res) {
             UB.core.UBFormLoader.clearFormCache(me.record.get('code'));
-			// undefine ExtJS based form (remove class)
+			      // undefine ExtJS based form (remove class)
             if (me.record.get('formType') === 'custom'){
-				className = UB.core.UBFormLoader.getComponentClassName(this.formDefEditor.getValue());
-                className && UB.core.UBFormLoader.undefineExtClass(className);
+				      className = UB.core.UBFormLoader.getComponentClassName(this.formDefEditor.getValue());
+              if (className) {
+                UB.core.UBFormLoader.undefineExtClass(className);
+              }
             }
             this.callParent([action]);
         } else {
@@ -185,6 +102,7 @@ exports.formCode = {
     onEntityTreePanelItemDblClick: function(tree, record) {
         var
             aTab = this.codeTabs.getActiveTab(),
+            aCodeMirror,
             textToInsert = '';
         if (record) {
             if (aTab.isDefifnition) { // definition === this.codeTabs.items.getAt(1)
@@ -192,32 +110,9 @@ exports.formCode = {
             } else { // module
                 textToInsert = "this.getField('" + record.get('id') + "')";
             }
-            aTab.down('ubcodemirror').editor.replaceSelection(textToInsert);
-        }
-    },
-
-    checkJS: function() {
-        var
-        aTab = this.codeTabs.getActiveTab(),
-            lintRes,
-            errStore,
-            aErrorData = [],
-            err;
-
-         lintRes = JSLINT(this.STRICT_CHECK + aTab.down('ubcodemirror').getValue(), this.JSLINT_OPTIONS);
-        errStore = this.debugWindow.down('grid').getStore();
-        if (!lintRes) {
-            for (err in JSLINT.errors) {
-                if (JSLINT.errors.hasOwnProperty(err) && (JSLINT.errors[err] !== null)) {
-                    aErrorData.push([JSLINT.errors[err].line, JSLINT.errors[err].character, JSLINT.errors[err].reason]);
-                }
-            }
-            errStore.loadData(aErrorData, false);
-            this.debugWindow.show();
-        } else {
-            errStore.loadData([
-                [1, 1, UB.i18n('err_noErrors')]
-            ], false);
+            aCodeMirror = aTab.down('ubcodemirror').codeMirrorInstance
+            aCodeMirror.replaceSelection(textToInsert)
+            aCodeMirror.getInputField().focus()
         }
     },
 
@@ -226,9 +121,14 @@ exports.formCode = {
             aTab = this.codeTabs.getActiveTab(),
             editor = aTab.down('ubdocument').ubCmp,
             txt = editor.getValue();
-        txt = js_beautify(txt);
-        editor.setValue(txt);
-        aTab.down('ubdocument').checkContentChange();
+        UB.inject('models/UBS/js_beautify.js').then(function() {
+            txt = js_beautify(txt, {
+              'indent_size': 2,
+              'indent_char': ' '
+            })
+            editor.setValue(txt);
+            aTab.down('ubdocument').checkContentChange();
+        })
     },
 
     JSLINT_OPTIONS: {

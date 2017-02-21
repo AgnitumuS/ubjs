@@ -12,7 +12,7 @@ module.exports = function(session){
             keyAttribute: 'settingKey',
             localization: [
                 // UBS_MESSAGE_TYPE
-                {keyValue: 'UBA.passwordPolicy.maxDurationDays',  execParams: {name: 'Password duration term', description: 'Period (number of days), at the end of which System will requires to change the password'}},
+                {keyValue: 'UBA.passwordPolicy.maxDurationDays',  execParams: {name: 'Password duration term', description: 'Period (number of days), at the end of which System will requires to change the password. 0 for unlimited'}},
                 {keyValue: 'UBA.passwordPolicy.checkPrevPwdNum',  execParams: {name: "Don't repeat... previous passwords", description: 'Number of previous passwords which not allowed to use as the new password'}},
                 {keyValue: 'UBA.passwordPolicy.minLength',  execParams: {name: 'Minimum length of password', description: 'Minimum of symbol number in password'}},
                 {keyValue: 'UBA.passwordPolicy.checkCmplexity',  execParams: {name: 'Complex password', description: 'Presence in password uppercase and lowercase characters, numbers, special characters is necessary'}},

@@ -2,3 +2,5 @@
 node_modules
 *.log
 wp_stats.json
+*.map 
+*-rtl*.css 

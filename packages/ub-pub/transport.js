@@ -466,34 +466,6 @@ function post (url, data, config) {
   }))
 }
 
-// TODO - move to adminUI
-// var reLetters = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/,
-//   reEn = /[A-Za-z]/,
-//   reCaps = /[A-ZА-ЯЁІЇҐ]/
-//
-// UB.passwordKeyUpHandler = function (textfield) {
-//   var t, n, s = textfield.getValue() || ''
-//   if (!s) {
-//     textfield.removeCls('ub-pwd-keyboard-caps')
-//     textfield.removeCls('ub-pwd-keyboard-en')
-//   } else {
-//     n = s.length
-//     t = s.substr(n - 1, 1)
-//     if (reLetters.test(t)) {
-//       if (reEn.test(t)) {
-//         textfield.addClass('ub-pwd-keyboard-en')
-//       } else {
-//         textfield.removeCls('ub-pwd-keyboard-en')
-//       }
-//       if (reCaps.test(t)) {
-//         textfield.addClass('ub-pwd-keyboard-caps')
-//       } else {
-//         textfield.removeCls('ub-pwd-keyboard-caps')
-//       }
-//     }
-//   }
-// }
-
 module.exports = {
   interceptors,
   pendingRequests,

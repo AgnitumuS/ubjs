@@ -1,29 +1,26 @@
 {
-  "name": "@ub-e/xlsx-pub",
-  "version": "4.0.4",
-  "description": "UnityBase Enterprise Excel exporter",
+  "name": "@unitybase/xlsx",
+  "version": "4.0.9",
+  "description": "UnityBase Excel exporter",
   "main": "index.js",
-  "config": {
-    "ubmodel": "XLSX",
-    "ubmodelispublic": true
-  },
   "scripts": {
     "build": "SET NODE_ENV=production && call ./bin/compile.cmd",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
-    "test": "npm run test"
+    "test": ""
   },
   "public": true,
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.0.7",
-    "@unitybase/ub-pub": "^4.0.8",
-    "@unitybase/adminui-pub": "^4.0.8"
+    "@unitybase/base": "^4.0.11"
   },
   "devDependencies": {},
+  "peerDependencies": {
+    "webpack": "^2.2.0"
+  },
   "keywords": [
     "UnityBase"
   ],

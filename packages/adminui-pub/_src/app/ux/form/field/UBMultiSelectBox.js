@@ -1,3 +1,4 @@
+require('./UBBaseComboBox')
 /**
  * The control to select many items from dictionary.
  * Selected elements displayed in one line separated by comma. To edit selected elements, user must press trigger button.

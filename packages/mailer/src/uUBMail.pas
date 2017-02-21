@@ -17,7 +17,7 @@ uses
   mimemess, mimepart, synautil, synachar, smtpsend, pop3send, {$IFDEF openssl}ssl_openssl,{$ENDIF}
   SpiderMonkey, SyNodeProto, SyNodeSimpleProto,
   Classes, SysUtils, Windows,
-  SynCommons, mORMOt, DateUtils, ubSMReadWrite;
+  SynCommons, mORMOt, DateUtils, SyNodeReadWrite;
 
 type
   TubSendMailBodyType = (smbtText, smbtHTML, smbtCalendar);

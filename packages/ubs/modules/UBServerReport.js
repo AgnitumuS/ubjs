@@ -21,6 +21,11 @@
  */
 const Mustache = require('mustache')
 const Q = require('when')
+
+const xmldom = require('xmldom');
+global.DOMParser = xmldom.DOMParser
+global.XMLSerializer = xmldom.XMLSerializer
+
 /**
 * @constructor
 * @param {String|Object} reportCode

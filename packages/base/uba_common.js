@@ -1,4 +1,5 @@
 /**
+ * Constants for administrative security model
  * Created by pavel.mash on 15.09.2016.
  */
 
@@ -67,17 +68,19 @@ const ROLES = {
 }
 
 module.exports = {
-    /** Build-in users */
+  /** Build-in users */
   USERS: USERS,
-    /** Build-in roles */
+  /** Build-in roles */
   ROLES: ROLES,
-    /**
-     * Do not allow assign of Everyone & Anonymous preudo-roles.
-     * Allow assign `admins` role only by `admins` member.
-     *
-     *
-     * @param {ubMethodParams} ctxt
-     */
+  /** Name of Audit Trail entity */
+  AUDIT_TRAIL_ENTITY: 'uba_auditTrail',
+  /**
+   * Do not allow assign of Everyone & Anonymous preudo-roles.
+   * Allow assign `admins` role only by `admins` member.
+   *
+   *
+   * @param {ubMethodParams} ctxt
+   */
   denyBuildInRoleAssignmentAndAdminsOnlyForAdmins: function (ctxt) {
     var params = ctxt.mParams.execParams,
       role = params.roleID
@@ -95,10 +98,10 @@ module.exports = {
       throw new Error(`<<<Only members with ${ROLES.ADMIN.NAME} role are allowed for assign a ${ROLES.ADMIN.NAME} role to other members>>>`)
     }
   },
-    /**
-     * Check logged in user is superuser (have a Admin role)
-     * @returns {boolean}
-     */
+  /**
+   * Check logged in user is superuser (have a Admin role)
+   * @returns {boolean}
+   */
   isSuperUser: function () {
     return Session.uData.roleIDs.indexOf(ROLES.ADMIN.ID) > -1
   }

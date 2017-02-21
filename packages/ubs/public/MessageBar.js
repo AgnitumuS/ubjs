@@ -7,10 +7,6 @@
 Ext.define('UBS.MessageBar', {
     extend: 'UB.view.ToolbarWidget',
     alias: 'widget.ubsmessagebar',
-    requires: [
-        'UBS.UBReport',
-        'UB.ux.PDFComponent',
-        'UB.ux.UBTinyMCETextArea'],
 
     statics: {
         /**

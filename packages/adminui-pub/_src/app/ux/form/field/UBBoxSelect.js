@@ -1,4 +1,5 @@
-﻿/**
+﻿require('../../../../ux/form/field/BoxSelect')
+/**
  * Allows user to select multiple values. This class adds the specific for UB behavior of the user interface.
  */
 Ext.define("UB.ux.form.field.UBBoxSelect", {

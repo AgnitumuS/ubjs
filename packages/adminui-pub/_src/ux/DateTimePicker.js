@@ -3,12 +3,12 @@
 //    todayText: "Now",
 //    timeLabel: 'Time'
 //  });
-
+require('./form/TimePickerField')
 Ext.define('Ext.ux.DateTimePicker', {
       extend: 'Ext.picker.Date',
       alias: 'widget.datetimepicker',
-      todayText: '现在',
-      timeLabel: '时间',
+      todayText: 'Today',
+      timeLabel: 'Time',
       requires: ['Ext.ux.form.TimePickerField'],
 
       initComponent: function() {

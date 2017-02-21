@@ -1,3 +1,4 @@
+require('./UBTinyMCETextArea')
 /*global tinymce */
 /**
  * Report template editor.

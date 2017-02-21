@@ -17,12 +17,6 @@ exports.formDef = {
         xtype: "toolbar",
         dock: "top",
         items: [{
-            text: "CheckSyntax",
-            orderId: 2,
-            handler: function() {
-                this.up("form").checkJS();
-            }
-        }, {
             orderId: 4,
             actionId: "save"
         }, {

@@ -16,41 +16,25 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
 
   sharedStrings: {item: [], count: 0},
 
-  formatN: function (store, config, fn, scope) {
-    if (!store.buffered) {
-      this.formatStart(store, config)
-    }
-      // debugger;
-    var request = Ext.apply(Ext.clone(store.ubRequest), {requestName: 'exportToXLSX'})
-    UB.core.UBDataLoader.loadStores({
-      ubRequests: [request],
-      setStoreId: true,
-      callback: function (stores) {
-        this.formatStart(stores.exportToXLSX, config)
-      },
-      scope: this
-    })
-  },
-
-    /**
-     * Make export
-      * @param {Object} store
-     * @param {Object} config
-     * @param {Function} callback
-     */
+  /**
+   * Make export
+   * @param {Object} store
+   * @param {Object} config
+   * @param {Function} callback
+   */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
-      XLSX.init().done(function () {
+      System.import('@unitybase/xlsx').then(() => {
         Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded = true
         this.format(store, config)
-      }.bind(this))
+      })
       return
     }
     var
       wb, defFont, fstyle, ws, stmodel, columnTemplate, fields, nrowData, colParam = [],
       borderFull, fldtitle, datestyleCol, entity, headerStyle, rowHeaderStyle, stl,
       styleWrapCol, styleCol, floatstyleCol, sumstyleCol, intstyleCol, entityName,
-      result, eAttributes, modelFields
+      eAttributes, modelFields
     wb = Ext.create(XLSX.csWorkbook)
     wb.useSharedString = true
     entity = config.metaobject

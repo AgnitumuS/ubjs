@@ -1,13 +1,16 @@
-﻿/**
+﻿require('./UBAppConfig')
+require('./UBStoreManager')
+
+/**
  * Файл: UB.core.UBEnumManager.js
  */
 Ext.define('UB.core.UBEnumManager', {
     singleton: true,
 
-    requires: [
-        'UB.core.UBAppConfig',
-        'UB.core.UBStoreManager'
-    ],
+    // requires: [
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBStoreManager'
+    // ],
 
     uses: [
     ],

@@ -1,3 +1,14 @@
+require('../core/UBStoreManager')
+require('../core/UBEnumManager')
+require('../ux/Multifilter')
+require('./PagingToolbar')
+require('../../ux/exporter/Exporter')
+require('./GridSummary')
+require('./ColumnFavorites')
+require('./ColumnCategories')
+require('../view/Table')
+require('../core/UBPanelMixin')
+
 /* global saveAs */
 /**
  * Display a grid based on entity content. Usually created as a result of `showList` command.
@@ -5,14 +16,14 @@
  *
  * Configuration sample:
  *
- *          {
-                xtype: "entitygridpanel",
-                entityConfig: {
-                        entity: "uba_userrole",
-                        method: "select",
-                        fieldList: ['ID', {name: 'docID', visibility: false}, {name: 'name', description: 'ShowThisAsCaption}, "code", "actionType"]
-                }
-            }
+        {
+          xtype: "entitygridpanel",
+          entityConfig: {
+              entity: "uba_userrole",
+              method: "select",
+              fieldList: ['ID', {name: 'docID', visibility: false}, {name: 'name', description: 'ShowThisAsCaption}, "code", "actionType"]
+          }
+        }
  *
  * @author  Unity base core team, Nozhenko Igor
  */
@@ -27,17 +38,6 @@ Ext.define('UB.view.EntityGridPanel', {
   selType: 'cellmodel',
   disableSearchBar: false,
   rowHeight: 28,
-  requires: [
-    'UB.core.UBStoreManager',
-    'Ext.grid.plugin.BufferedRenderer',
-    'UB.ux.Multifilter',
-    'UB.view.PagingToolbar',
-    'Ext.ux.exporter.Exporter',
-    'UB.view.GridSummary',
-    'UB.view.ColumnFavorites',
-    'UB.view.ColumnCategories',
-    'UB.view.Table'
-  ],
 
   uses: [
     'UB.core.UBCommand',
@@ -47,17 +47,15 @@ Ext.define('UB.view.EntityGridPanel', {
     'UB.ux.UBPreFilter'
   ],
   statics: {
-        /**
-         * List of possible actions in "All actions" list menu
-         */
+    /**
+     * List of possible actions in "All actions" list menu
+     */
     actionId: {
       addNew: 'addNew',
       addNewByCurrent: 'addNewByCurrent',
       prefilter: 'prefilter',
       edit: 'edit',
       del: 'del',
-            // find: 'find',
-            // clearFind: 'clearFind',
       newVersion: 'newVersion',
       refresh: 'refresh',
       history: 'history',
@@ -80,8 +78,6 @@ Ext.define('UB.view.EntityGridPanel', {
       prefilter: 'prefilter',
       edit: 'edit',
       del: 'del',
-            // find: 'find',
-            // clearfind: 'clearfind',
       filtered: 'filtered',
       newversion: 'newversion',
       accessRight: 'accessRight',
@@ -143,9 +139,9 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     },
 
-        /**
-         * default parameters for columns view
-         */
+    /**
+     * default parameters for columns view
+     */
     columnParams: {
       String: {
         minSize: 20,
@@ -193,7 +189,6 @@ Ext.define('UB.view.EntityGridPanel', {
       var me = this
       if (!me.gridCharWidth) {
         var eDiv = document.createElement('div')
-                // eDiv.style.left = document.body.offsetWidth + 100 + 'px';
         eDiv.style.width = 'auto'
         eDiv.style.height = 'auto'
         eDiv.style.border = 0
@@ -202,10 +197,7 @@ Ext.define('UB.view.EntityGridPanel', {
         eDiv.className = 'x-grid-cell'
         eDiv.innerHTML = 'pppppppppp'
         eDiv.style.position = 'absolute'
-                // ломается сборка если сделать через точку
-                /* jshint -W069 */
         eDiv.style['float'] = 'left'
-                /* jshint +W069 */
         eDiv.style.whiteSpace = 'nowrap'
         eDiv.style.visibility = 'hidden'
         document.body.appendChild(eDiv)
@@ -214,17 +206,14 @@ Ext.define('UB.view.EntityGridPanel', {
       }
       return me.gridCharWidth
     },
-        /**
-         * Calc one char width for header cell
-         * @param text
-         * @returns {number}
-         */
-
+    /**
+     * Calc one char width for header cell
+     * @returns {number}
+     */
     getGridHeaderCharWidth: function () {
       var me = this, eDiv
       if (!me.gridHeaderCharWidth) {
         eDiv = document.createElement('div')
-                // eDiv.style.left = document.body.offsetWidth + 100 + 'px';
         eDiv.style.width = 'auto'
         eDiv.style.height = 'auto'
         eDiv.style.border = 0
@@ -233,10 +222,7 @@ Ext.define('UB.view.EntityGridPanel', {
         eDiv.className = 'x-column-header'
         eDiv.innerHTML = 'pppppppppp'
         eDiv.style.position = 'absolute'
-                // ломается сборка если сделать через точку
-                /* jshint -W069 */
         eDiv.style['float'] = 'left'
-                /* jshint +W069 */
         eDiv.style.whiteSpace = 'nowrap'
         eDiv.style.visibility = 'hidden'
         document.body.appendChild(eDiv)
@@ -246,13 +232,12 @@ Ext.define('UB.view.EntityGridPanel', {
       return me.gridHeaderCharWidth
     },
 
-        /**
-         *
-         * @param {String} entityName
-         * @param {String[]} fieldList
-         * @param {Object} stores
-         * @return {Object[]}
-         */
+    /**
+     * @param {String} entityName
+     * @param {String[]} fieldList
+     * @param {Object} stores
+     * @return {Object[]}
+     */
     getEntityColumns: function (entityName, fieldList, stores) {
       var
         columns = [], col,
@@ -260,7 +245,7 @@ Ext.define('UB.view.EntityGridPanel', {
         metaColumn
 
       fieldList = fieldList || UB.Utils.convertFieldListToExtended(entity.filterAttribute({defaultView: true}))
-            // UIGridColumnClass
+      // UIGridColumnClass
       for (var i = 0, len = fieldList.length; i < len; ++i) {
         metaColumn = entity.getEntityAttributeInfo(fieldList[i].name, -1)
         if (metaColumn.attribute && metaColumn.attribute.customSettings && metaColumn.attribute.customSettings.UIGridColumnClass) { // === 'Favorites'
@@ -277,14 +262,14 @@ Ext.define('UB.view.EntityGridPanel', {
         }
         col = UB.view.EntityGridPanel.getEntityColumn(entityName, fieldList[i], stores)
         if (col) {
-                    /* TODO GRID EDITOR col.editor = {
-                     xtype: 'textfield',
-                     allowBlank: false
-                     }; */
+          /* TODO GRID EDITOR col.editor = {
+           xtype: 'textfield',
+           allowBlank: false
+           }; */
           columns.push(col)
         }
       }
-            // auto fit columnus in case count 1 or 2
+      // auto fit columns in case count 1 or 2
       if (columns.length < 3) {
         columns.forEach(function (column) {
           if (!column.flex) {
@@ -293,7 +278,6 @@ Ext.define('UB.view.EntityGridPanel', {
           }
         })
       }
-
       return columns
     },
 
@@ -336,7 +320,7 @@ Ext.define('UB.view.EntityGridPanel', {
       column = { stateId: fieldName, fieldName: fieldName }
 
       fieldNameParts = fieldName.split('.')
-            // create column caption
+      // create column caption
       entityNameInn = entityName
       _.forEach(fieldNameParts, function (partName, idx) {
         entityInn = domain.get(entityNameInn)
@@ -357,8 +341,9 @@ Ext.define('UB.view.EntityGridPanel', {
 
       column.dataIndex = fieldName
       column.header = field.description || columnCaption
-      column.sortable = field.hasOwnProperty('sortable') ? field.sortable && (metaAttribute.dataType !== 'Text') :
-                 (metaAttribute.dataType !== 'Text') && metaAttribute.allowSort
+      column.sortable = field.hasOwnProperty('sortable')
+        ? field.sortable && (metaAttribute.dataType !== 'Text')
+        : (metaAttribute.dataType !== 'Text') && metaAttribute.allowSort
 
       column.simpleFilter = field.simpleFilter
       column.filterCaption = field.filterCaption
@@ -371,18 +356,10 @@ Ext.define('UB.view.EntityGridPanel', {
             return enumDict[value]
           }
 
-                    // xmax проверить где используется
-          column.filter = {
-            type: 'list',
-            dataIndex: column.dataIndex,
-            options: Object.keys(enumDict).map(function (v) { return [v] })
-          }
           break
         case ubDataTypes.Entity:
-          associatedEntityDisplayField =
-                        domain.get(metaAttribute.associatedEntity).descriptionAttribute || 'caption'
-          associatedEntityStore =
-                        stores[UB.core.UBUtil.getNameMd5(metaAttribute.associatedEntity, [ 'ID', associatedEntityDisplayField ])]
+          associatedEntityDisplayField = domain.get(metaAttribute.associatedEntity).descriptionAttribute || 'caption'
+          associatedEntityStore = stores[UB.core.UBUtil.getNameMd5(metaAttribute.associatedEntity, [ 'ID', associatedEntityDisplayField ])]
 
           column.renderer = function (value /*, metaData, record, rowIndex, colIndex, store, view */) {
             var item = associatedEntityStore.getById(value)
@@ -398,17 +375,14 @@ Ext.define('UB.view.EntityGridPanel', {
           column.filter = { type: 'date', dataIndex: column.dataIndex, dateFormat: Ext.util.Format.dateFormat }
           break
         case ubDataTypes.Float :
-                    // column.summaryType = "sum";
           column.align = 'right'
           column.renderer = Ext.util.Format.numberRenderer(formatC || '0,000.0000')
           break
         case ubDataTypes.Currency :
-                    // column.summaryType = "sum";
           column.align = 'right'
           column.renderer = Ext.util.Format.numberRenderer(formatC || '0.00')
           break
         case ubDataTypes.Int :
-                    // column.summaryType = "sum";
           column.renderer = Ext.util.Format.numberRenderer(formatC || '0,000')
           column.align = 'right'
           break
@@ -420,7 +394,7 @@ Ext.define('UB.view.EntityGridPanel', {
         case ubDataTypes.String:
         case ubDataTypes.Text:
           column.renderer = function (value, metadata) {
-                        // we must check metadata - Ext.ux.exporter.Formatter descendant call render w/o metadata
+            // we must check metadata - Ext.ux.exporter.Formatter descendant call render w/o metadata
             var val = Ext.String.htmlEncode(value)
             if (metadata && Ext.isString(value) && (value.length > 15)) {
               metadata.tdAttr = 'data-qtip="' + Ext.String.htmlEncode(val) + '"'
@@ -430,7 +404,7 @@ Ext.define('UB.view.EntityGridPanel', {
           break
       }
 
-      column.filterable = field.filterable === false ? false : true
+      column.filterable = field.filterable !== false
 
       if (field.format && _.isFunction(field.format)) {
         column.renderer = field.format
@@ -444,11 +418,10 @@ Ext.define('UB.view.EntityGridPanel', {
       return column
     },
 
-        /**
-         *
-         * @param {Object} params
-         * @return {Object}  {store1_md5: {UB.ux.data.UBStore}, store2_md5: ...}
-         */
+    /**
+     * @param {Object} params
+     * @return {Object}  {store1_md5: {UB.ux.data.UBStore}, store2_md5: ...}
+     */
     loadRunListParamsRequirementsStores: function (params) {
       var
         requirements,
@@ -459,8 +432,8 @@ Ext.define('UB.view.EntityGridPanel', {
         entity
 
       requirements = $App.domainInfo.get(params.entity).getEntityRequirements(
-                UB.core.UBUtil.convertFieldListToNameList(params.fieldList, true)
-            )
+        UB.core.UBUtil.convertFieldListToNameList(params.fieldList, true)
+      )
       for (j = 0, len = requirements.length; j < len; ++j) {
         entity = $App.domainInfo.get(requirements[j])
         cachType = entity.cacheType
@@ -482,8 +455,6 @@ Ext.define('UB.view.EntityGridPanel', {
             autoDestroy: true,
             createIndexByID: true
           })
-                    // if (cachType === 'None'){
-                        /* jshint -W083 */
           store.lookUpEntity = params.entity
           store.lookUpField = requirements[j]
           store.on('load', function (st, records, success) {
@@ -492,13 +463,10 @@ Ext.define('UB.view.EntityGridPanel', {
                                     st.lookUpField + '". Look up entity ' + st.ubRequest.entity + ' Record count =' + records.length)
             }
           }, store, {single: true })
-                        /* jshint +W083 */
-                    // }
         }
       }
       return stores
     }
-
   },
 
   mixins: {
@@ -511,77 +479,77 @@ Ext.define('UB.view.EntityGridPanel', {
 
   hidePagingBar: false,
 
-    /**
-     * @cfg {Boolean} hideMenuAllActions
-     * Hide button AllActions. Default value is false.
-     */
+  /**
+   * @cfg {Boolean} hideMenuAllActions
+   * Hide button AllActions. Default value is false.
+   */
   hideMenuAllActions: false,
 
-    /**
-     * @cfg {Number} minRowsPagingBarVisibled
-     * The pagingBar is visible if  rows is more than value. Default value is 11
-     */
+  /**
+   * @cfg {Number} minRowsPagingBarVisibled
+   * The pagingBar is visible if  rows is more than value. Default value is 11
+   */
   minRowsPagingBarVisibled: 11,
 
-    /**
-     * @cfg {Boolean} hideActionToolbar
-     * To hide action toolbar set it "true".
-     */
+  /**
+   * @cfg {Boolean} hideActionToolbar
+   * To hide action toolbar set it "true".
+   */
   hideActionToolbar: false,
 
-    /**
-     * @cfg {Object} toolbarActionList
-     * Set of action buttons that will be displayed in the topToolbar of a grid.
-     *
-     *  - null — default value, only Refresh and AddNew will be present
-     *  - [] — empty array to hide tBar
-     *  - ['addNew',...] — array of actions name (see {@link UB.view.EntityGridPanel.statics#actionId}) to show in tBar
-     */
+  /**
+   * @cfg {Object} toolbarActionList
+   * Set of action buttons that will be displayed in the topToolbar of a grid.
+   *
+   *  - null — default value, only Refresh and AddNew will be present
+   *  - [] — empty array to hide tBar
+   *  - ['addNew',...] — array of actions name (see {@link UB.view.EntityGridPanel.statics#actionId}) to show in tBar
+   */
   toolbarActionList: null,
 
-    /**
-     * @cfg {Boolean} readOnly
-     * Read only grid do not show actions: addNew,  addNewByCurrent, del, edit, newVersion.
-     */
+  /**
+   * @cfg {Boolean} readOnly
+   * Read only grid do not show actions: addNew,  addNewByCurrent, del, edit, newVersion.
+   */
   readOnly: false,
 
-    /**
-     * @cfg {Object} menuAllActionsActionList
-     * Set of action buttons that will be displayed in the menuAllActions of a grid.
-     * See <a href="https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=66978487"> this BLOG article</a>
-     *
-     *  - null — default value, all buttons will be added to the menuAllActions
-     *  - [] — empty array
-     *  - ['addNew',...] — array of actions name (see {@link UB.view.EntityGridPanel.statics#actionId}) to show in menuAllActions
-     */
+  /**
+   * @cfg {Object} menuAllActionsActionList
+   * Set of action buttons that will be displayed in the menuAllActions of a grid.
+   * See <a href="https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=66978487"> this BLOG article</a>
+   *
+   *  - null — default value, all buttons will be added to the menuAllActions
+   *  - [] — empty array
+   *  - ['addNew',...] — array of actions name (see {@link UB.view.EntityGridPanel.statics#actionId}) to show in menuAllActions
+   */
   menuAllActionsActionList: null,
 
-    /**
-     * In case store configuration is not defined directly, this config will be used
-     * to create grid store. Configuration transmitted directly to {@link UB.ux.data.UBStore#ubRequest UBStore.ubRequest} during store creation.
-     *
-     * Can optionally configure grid columns caption and visibility. In this case pass to `fieldList` item object:
-     *
-     *      {name: 'attributeName', visibility: false, description: 'grid column caption'}
-     *
-     * @cfg {Object} entityConfig
-     * @cfg {String} entityConfig.entity Entity name we create store for
-     * @cfg {Array.<String>|Array.<Object>} entityConfig.fieldList Attributes for store. If exist complex attribute and its base column in field list context filter for complex attribute work by base column.
-     * For example you have attribute userID.name. By default filter for it work by "name" attribute of "userID" aggregate.
-     * If field list contains attribute userID filter for column "userID.name" work same as filer by "userID" attribute.
-     * For disable this behavior you can add simpleFilter: false for column config {@link UB.view.EntityGridPanel#getEntityColumn}
-     * @cfg {Object} [entityConfig.whereList] Conditions to restrict store content
-     */
+  /**
+   * In case store configuration is not defined directly, this config will be used
+   * to create grid store. Configuration transmitted directly to {@link UB.ux.data.UBStore#ubRequest UBStore.ubRequest} during store creation.
+   *
+   * Can optionally configure grid columns caption and visibility. In this case pass to `fieldList` item object:
+   *
+   *      {name: 'attributeName', visibility: false, description: 'grid column caption'}
+   *
+   * @cfg {Object} entityConfig
+   * @cfg {String} entityConfig.entity Entity name we create store for
+   * @cfg {Array.<String>|Array.<Object>} entityConfig.fieldList Attributes for store. If exist complex attribute and its base column in field list context filter for complex attribute work by base column.
+   * For example you have attribute userID.name. By default filter for it work by "name" attribute of "userID" aggregate.
+   * If field list contains attribute userID filter for column "userID.name" work same as filer by "userID" attribute.
+   * For disable this behavior you can add simpleFilter: false for column config {@link UB.view.EntityGridPanel#getEntityColumn}
+   * @cfg {Object} [entityConfig.whereList] Conditions to restrict store content
+   */
 
-    /**
-     * @cfg {Boolean} disableAutoLoadStore
-     * If true store will not load automatically.
-     */
+  /**
+   * @cfg {Boolean} disableAutoLoadStore
+   * If true store will not load automatically.
+   */
 
-    /**
-     * @cfg {String[]} hideActions List of action names to make them hidden.
-     *
-     */
+  /**
+   * @cfg {String[]} hideActions List of action names to make them hidden.
+   *
+   */
 
   applyState: function () {
     var me = this
@@ -593,15 +561,16 @@ Ext.define('UB.view.EntityGridPanel', {
     this.optimizeColumnWidth(true)
   },
 
-    /**
-     * Set optimal width for grid columnsbased on current gerin width & attribute types
-     * @param {Boolean} [force=false] If false column width already loaded from local store -  do nothing.
-     */
+  /**
+   * Set optimal width for grid columnsbased on current gerin width & attribute types
+   * @param {Boolean} [force=false] If false column width already loaded from local store -  do nothing.
+   */
   optimizeColumnWidth: function (force) {
     var me = this, fields = {}, columnParam,
       columnNew = {}, fullSize = 0, delta = 0, allDelta = 0,
       charWidth, headerCharWidth, maxChars, boxWidth, columnLeft, minSize = 0,
-      columnParams = UB.view.EntityGridPanel.columnParams
+      columnParams = UB.view.EntityGridPanel.columnParams,
+      entity
     boxWidth = me.getEl().getWidth()
     if (me.stateLoadedFromStore && !force) {
       return
@@ -610,7 +579,7 @@ Ext.define('UB.view.EntityGridPanel', {
       fields[item.name] = item
     })
 
-    let entity = $App.domainInfo.get(me.entityName)
+    entity = $App.domainInfo.get(me.entityName)
     _.forEach(me.columns, function (column) {
       columnParam = {}
       if (!column.dataIndex) {
@@ -663,7 +632,7 @@ Ext.define('UB.view.EntityGridPanel', {
     boxWidth -= me.columns.length * 8 // padding
     boxWidth -= 12 // scrollBar
     maxChars = boxWidth / charWidth
-        // уменьшаем на сколько можно
+    // minimize as far as possible
     if (fullSize > maxChars) {
       allDelta = 0
       if (maxChars > minSize) {
@@ -690,23 +659,17 @@ Ext.define('UB.view.EntityGridPanel', {
     }
 
     fullSize = getAllWidth()
-        // Расширяем на максимум
+    // extend to maximum
     if (fullSize < maxChars) {
       headerCharWidth = UB.view.EntityGridPanel.getGridHeaderCharWidth()
-            /*
-            _.forEachRight(me.columns, function(column){
-                columnParam = columnNew[column.dataIndex];
-                columnParam.headerWidth = (column.text.length > 20 ? 20: column.text.length) * headerCharWidth / charWidth;
-                fullSizeHeader += columnParam.minSize > columnParam.headerWidth? columnParam.minSize: columnParam.headerWidth;
-            });
-            */
       allDelta = maxChars - fullSize
       columnLeft = me.columns.length
       _.forEach(me.columns, function (column) {
         columnParam = columnNew[column.dataIndex]
         if (!columnParam) {
           return
-        } delta = Math.round(allDelta / columnLeft) || 1
+        }
+        delta = Math.round(allDelta / columnLeft) || 1
         columnParam.headerWidth = (column.text.length > 20 ? 20 : column.text.length) * headerCharWidth / charWidth
         if (columnParam.headerWidth > columnParam.size + delta) {
           allDelta -= columnParam.headerWidth - columnParam.size
@@ -731,9 +694,10 @@ Ext.define('UB.view.EntityGridPanel', {
     })
   },
 
-    /**
-     * @private create main store
-     */
+  /**
+   * Create main store
+   * @private
+   */
   createStoreByConfig: function () {
     var me = this,
       linkedItemsLoadList,
@@ -746,10 +710,10 @@ Ext.define('UB.view.EntityGridPanel', {
       ubRequest: cfg,
       autoLoad: false,
       linkedItemsLoadList: linkedItemsLoadList,
-            /**
-             * @cfg {Number} pageSize
-             * Pagination page size. Default is UB.appConfig#storeDefaultPageSize
-             */
+      /**
+       * @cfg {Number} pageSize
+       * Pagination page size. Default is UB.appConfig#storeDefaultPageSize
+       */
       pageSize: me.pageSize || UB.appConfig.storeDefaultPageSize,
       autoDestroy: true
     })
@@ -759,9 +723,9 @@ Ext.define('UB.view.EntityGridPanel', {
         me.filters = me.filters.items
       }
       me.store.filters.addAll(me.filters)
-            // important to use filters.addAll instead of
-            // me.store.addFilter(me.filters);
-            // to prevent sending a query twice
+      // important to use filters.addAll instead of
+      // me.store.addFilter(me.filters);
+      // to prevent sending a query twice
     }
 
     me.entityName = cfg.entity
@@ -789,7 +753,7 @@ Ext.define('UB.view.EntityGridPanel', {
           me.store.filterFormId = filterFormId
         }
         me.autoFilterActive = false
-        if (me.rendered || me.store.isLoading()) { // !me.disableAutoLoadStore
+        if (me.rendered || me.store.isLoading()) {
           me.store.load()
         }
         if (win) {
@@ -814,8 +778,9 @@ Ext.define('UB.view.EntityGridPanel', {
         metaColumn,
         cls
       metaColumn = $App.domainInfo.get(me.entityConfig.entity).getEntityAttributeInfo(attrName, -1)
-      cls = metaColumn.attribute && metaColumn.attribute.customSettings &&
-                metaColumn.attribute.customSettings.UIGridColumnClass ? metaColumn.attribute.customSettings.UIGridColumnClass : null
+      cls = metaColumn.attribute && metaColumn.attribute.customSettings && metaColumn.attribute.customSettings.UIGridColumnClass
+        ? metaColumn.attribute.customSettings.UIGridColumnClass
+        : null
 
       if (cls && UB.view['Column' + cls] && UB.view['Column' + cls].prepareConditions) { // === 'Favorites'
         UB.view['Column' + cls].prepareConditions(me.entityConfig, attrName, metaColumn)
@@ -885,8 +850,8 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   initComponent: function () {
-    var
-            me = this, colCfg
+    var me = this
+    var colCfg
 
     if (!me.extendedFieldList && me.entityConfig) {
       me.extendedFieldList = UB.core.UBUtil.convertFieldListToExtended(me.entityConfig.fieldList)
@@ -923,15 +888,12 @@ Ext.define('UB.view.EntityGridPanel', {
       me.createAutoFilter()
     }
 
-        // if (!me.columns && me.entityConfig){
-        //    UB.view.EntityGridPanel.getEntityColumns(me.entityName, me.entityConfig.fieldList, {} );
-        // }
     me.columns = me.columns || UB.view.EntityGridPanel.getEntityColumns(me.entityName, me.getVisibleColumns(), me.stores)
 
-        /**
-         * @cfg {[]} extendedColumns Extended column configuration. If column with fieldName exists in default column config
-         * then extended config merged with default column configuration otherwise it is added to column list.
-         */
+    /**
+     * @cfg {[]} extendedColumns Extended column configuration. If column with fieldName exists in default column config
+     * then extended config merged with default column configuration otherwise it is added to column list.
+     */
     if (me.extendedColumns) {
       colCfg = {}
       _.forEach(me.columns, function (col) {
@@ -948,7 +910,6 @@ Ext.define('UB.view.EntityGridPanel', {
       })
     }
 
-         // DomainManager.getEntityColumns( me.entityName, me.getVisibleColumns(), me.stores);
     me.getRowClass = me.getRowClass || Ext.emptyFn
     Ext.apply(me, {
       viewConfig: {
@@ -960,26 +921,26 @@ Ext.define('UB.view.EntityGridPanel', {
         },
         getRowClass: me.getRowClass
       }
-            /* TODO GRID EDITOR plugins: [Ext.create('Ext.grid.plugin.RowEditing', {
-                clicksToEdit: 1,
-                clicksToMoveEditor: 2,
-                autoCancel: false
-            })], */
-            // plugins: []
-           /* plugins: [{
-                rowHeight: 28,
-                variableRowHeight: true,
-                ptype: 'bufferedrenderer'
-            */
-            /*  Grouping works incorrect now
-            features: [{
-                id: 'group',
-                ftype: 'groupingsummary',
+      /* TODO GRID EDITOR plugins: [Ext.create('Ext.grid.plugin.RowEditing', {
+          clicksToEdit: 1,
+          clicksToMoveEditor: 2,
+          autoCancel: false
+      })], */
+      // plugins: []
+     /* plugins: [{
+          rowHeight: 28,
+          variableRowHeight: true,
+          ptype: 'bufferedrenderer'
+      */
+      /*  Grouping works incorrect now
+      features: [{
+          id: 'group',
+          ftype: 'groupingsummary',
 //                groupHeaderTpl: '', //'{name}',
-                hideGroupedHeader: false,
-                enableGroupingMenu: true
-            }]
-            */
+          hideGroupedHeader: false,
+          enableGroupingMenu: true
+      }]
+      */
     })
     if (!me.plugins) {
       me.plugins = [] // we can push to plugins later
@@ -989,11 +950,11 @@ Ext.define('UB.view.EntityGridPanel', {
       me.dockedItems = []
     }
 
-        /**
-         * @cfg {Object}  summary
-         * Associative array where key is field name and value is aggregate function name.
-         * Details in {@link UB.view.GridSummary 'UB.view.GridSummary}.
-         */
+    /**
+     * @cfg {Object}  summary
+     * Associative array where key is field name and value is aggregate function name.
+     * Details in {@link UB.view.GridSummary 'UB.view.GridSummary}.
+     */
     if (me.summary) {
       if (Ext.isObject(me.summary)) {
         _.forEach(me.summary, function (summaryType, fieldName) {
@@ -1009,19 +970,16 @@ Ext.define('UB.view.EntityGridPanel', {
       me.dockedItems.push(me.GridSummary)
     }
 
-        // Ext.grid.plugin.BufferedRenderer
     if (!me.disableSearchBar) {
       me.plugins.push({
         ptype: 'multifilter'
-
       })
     }
     if (me.isDetail) {
       me.target.ownerCt.mainEntityGridPanel.on('parentchange', me.onParentChange, me)
       me.mainEntityGridPanel = me.target.ownerCt.mainEntityGridPanel
       me.on('close', function () {
-        var
-                    tabPanel = me.up('tabpanel')
+        var tabPanel = me.up('tabpanel')
 
         if (tabPanel && tabPanel.items.getCount() === 1) {
           tabPanel.relatedSplitter.hide()
@@ -1056,9 +1014,9 @@ Ext.define('UB.view.EntityGridPanel', {
       viewready: me.onViewReady,
       boxready: function (ctrl, width, height) {
         me.optimizeColumnWidth()
-                /**
-                 * @cfg {Boolean} disableAutoSelectRow If value is true grid does not automatically select first row
-                 */
+        /**
+         * @cfg {Boolean} disableAutoSelectRow If value is true grid does not automatically select first row
+         */
         if (!me.disableAutoSelectRow || me.selectedRecordID) {
           me.selectDefaultRow()
         }
@@ -1082,15 +1040,14 @@ Ext.define('UB.view.EntityGridPanel', {
       scope: me
     })
 
-        /**
-         * @event beforeClose
-         * Fires before close panel.
-         */
-        /**
-         * @event parentchange
-         * Fires when grid in detail mode and parent selection change.
-         */
-
+    /**
+     * @event beforeClose
+     * Fires before close panel.
+     */
+    /**
+     * @event parentchange
+     * Fires when grid in detail mode and parent selection change.
+     */
     me.addEvents('parentchange')
 
     me.on('afterlayout', function () {
@@ -1107,43 +1064,14 @@ Ext.define('UB.view.EntityGridPanel', {
       cls: 'ub-grid-info-panel',
       style: 'border-top-width: 1px !important;',
       hidden: true,
-            // overflowX: 'auto',
-            // style: 'background-color: #fcf8e3 !important; background-image: none !important; padding: 3px 5px;',
       items: [
         me.filterBar = Ext.create('Ext.toolbar.Toolbar', {
           cls: 'ub-grid-info-panel',
           border: 0,
           margin: 0,
           padding: 0,
-          flex: 1})
-                // me.pagingSeparator = Ext.widget('tbseparator')
-            /**
-             * @property {UB.view.PagingToolbar} pagingBar
-             * @readonly
-             * Paging tool bal.
-             */
-//                me.pagingBar = Ext.create( 'UB.view.PagingToolbar', {//xtype: 'pagingtoolbar', 'Ext.toolbar.Paging'
-//                    isPagingBar: true,
-//                    cls: 'ub-grid-info-panel',
-//                    border: 0,
-//                    margin: 0,
-//                    padding: '0 0 0 5',
-//                    //width: 180,
-//                    //width: 280,
-//                    /**
-//                     * @cfg {Boolean} autoCalcTotal default false
-//                     * If it is true show total row count in paging toolbar.
-//                     *
-//                     * To set this parameter in  {@link UB.core.UBCommand command} config use:
-//                     *
-//                     *       cmpInitConfig: {
-//                     *           autoCalcTotal: true
-//                     *       }
-//                     *
-//                     */
-//                    autoCalcTotal: me.autoCalcTotal,
-//                    store: me.store   // same store GridPanel is using
-//                })
+          flex: 1
+        })
       ]
     })
 
@@ -1152,15 +1080,15 @@ Ext.define('UB.view.EntityGridPanel', {
         me.updateVisibleBBar()
       }
     })
-        /**
-         * @cfg {Array.<{entityName: String, property: String, [command]: Object, [autoShow]: Boolean, caption: string}>} details
-         * Array of detail config object:
-         *  {String} entityName
-         *  {String} property
-         *  {Object} [command] params for UB.core.UBApp.doCommand
-         *  {Boolean} [autoShow] if true detail automatically show when form show
-         *  {String} [caption]
-         */
+    /**
+     * @cfg {Array.<{entityName: String, property: String, [command]: Object, [autoShow]: Boolean, caption: string}>} details
+     * Array of detail config object:
+     *  {String} entityName
+     *  {String} property
+     *  {Object} [command] params for UB.core.UBApp.doCommand
+     *  {Boolean} [autoShow] if true detail automatically show when form show
+     *  {String} [caption]
+     */
     if (me.details) {
       me.store.on('load', function () {
         me.details.forEach(function (detail) {
@@ -1179,40 +1107,40 @@ Ext.define('UB.view.EntityGridPanel', {
       me.pagingBar.hide()
     }
 
-        /**
-         * @cfg {Function} [afterInit] Will be called when initComponent done.
-         */
+    /**
+     * @cfg {Function} [afterInit] Will be called when initComponent done.
+     */
     if (_.isFunction(this.afterInit)) {
       this.afterInit()
     }
   },
 
   initPagingToolbar: function () {
-    var me = this,
-      el = me.getEl(),
-      size = el.getSize()
+    var me = this
+    var el = me.getEl()
+    var size = el.getSize()
 
     me.floatToolbarEl = Ext.DomHelper.append(el, {
       tag: 'div',
       cls: 'ub-float-toolbar',
       style: 'top: ' + (size.height - 30 - 20) + 'px; left: ' + (size.width - 300 - 20) + 'px; ' // width: 300px; height: 30px;
     }, true)
-    me.pagingBar = Ext.create('UB.view.PagingToolbar', {// xtype: 'pagingtoolbar', 'Ext.toolbar.Paging'
+    me.pagingBar = Ext.create('UB.view.PagingToolbar', {
       renderTo: me.floatToolbarEl,
       isPagingBar: true,
       cls: 'ub-grid-info-panel-tb',
       padding: '0 0 0 5',
-            /**
-             * @cfg {Boolean} autoCalcTotal default false
-             * If it is true show total row count in paging toolbar.
-             *
-             * To set this parameter in  {@link UB.core.UBCommand command} config use:
-             *
-             *       cmpInitConfig: {
-             *                      autoCalcTotal: true
-             *       }
-             *
-             */
+      /**
+       * @cfg {Boolean} autoCalcTotal default false
+       * If it is true show total row count in paging toolbar.
+       *
+       * To set this parameter in  {@link UB.core.UBCommand command} config use:
+       *
+       *       cmpInitConfig: {
+       *                      autoCalcTotal: true
+       *       }
+       *
+       */
       autoCalcTotal: me.autoCalcTotal,
       store: me.store   // same store GridPanel is using
     })
@@ -1262,10 +1190,11 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   realignFloatPanel: function () {
-    var me = this,
-      pos, posMe,
-      size,
-      gridview = me.down(me.viewType) // 'gridview'
+    var me = this
+    var gridview = me.down(me.viewType)
+    var pos
+    var posMe
+    var size
 
     if (!me.floatToolbarEl) {
       return
@@ -1278,14 +1207,15 @@ Ext.define('UB.view.EntityGridPanel', {
     me.floatToolbarEl.dom.style.top = (gridview.el.dom.clientHeight + (pos[1] - posMe[1]) - size.height) + 'px'
   },
 
-    /**
-     * Show or hide bBar
-     */
+  /**
+   * Show or hide bBar
+   */
   updateVisibleBBar: function () {
-    var me = this, barVisibled, canHide
+    var me = this
+    var barVisibled, canHide
+
     barVisibled = me.bBar.isVisible()
-    canHide = // (me.store.currentPage === 1) && (me.store.pageSize > me.store.getCount()) &&
-            (me.filterBar.items.length === 0 || !me.filterBar.items.getAt(0).mustBeVisibled)
+    canHide = (me.filterBar.items.length === 0 || !me.filterBar.items.getAt(0).mustBeVisibled)
     if (canHide && barVisibled) {
       me.bBar.setVisible(false)
     } else {
@@ -1295,10 +1225,9 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    /**
-     *
-     * @param view
-     */
+  /**
+   * @param view
+   */
   onViewRefreshed: function (view) {
     var
       store = this.getStore(),
@@ -1323,10 +1252,9 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    /**
-     *
-     * @return {String[]}
-     */
+  /**
+   * @return {String[]}
+   */
   getVisibleColumns: function () {
     var me = this
     return this.extendedFieldList.filter(function (field) {
@@ -1335,9 +1263,8 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   initState: function () {
-    var me = this,
-      id = me.stateful && me.getStateId(),
-      state
+    var id = this.stateful && this.getStateId()
+    var state
 
     if (id && (state = Ext.state.Manager.get(id))) {
       delete state.sort
@@ -1347,10 +1274,10 @@ Ext.define('UB.view.EntityGridPanel', {
     this.callParent(arguments)
   },
 
-    /**
-     * Create sore with all columns
-     * @private
-     */
+  /**
+   * Create sore with all columns
+   * @private
+   */
   createComboBoxAttributesStore: function () {
     var
       comboProperties = UB.view.EntityGridPanel.comboBoxAttributesStoreField,
@@ -1379,16 +1306,14 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   addBaseActions: function () {
-    var
-      me = this,
-      actions = UB.view.EntityGridPanel.actionId,
-      events = UB.view.EntityGridPanel.eventId,
-      hotKeys = UB.view.EntityGridPanel.hotKeys,
-      methodNames = UB.core.UBCommand.methodName
+    var me = this
+    var actions = UB.view.EntityGridPanel.actionId
+    var events = UB.view.EntityGridPanel.eventId
+    var hotKeys = UB.view.EntityGridPanel.hotKeys
+    var methodNames = UB.core.UBCommand.methodName
 
     me.actions[actions.addNew] = new Ext.Action({
       actionId: actions.addNew,
-            // iconCls: 'iconAdd',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-new-action',
@@ -1402,8 +1327,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.addNewByCurrent] = new Ext.Action({
       actionId: actions.addNewByCurrent,
-            // iconCls: 'iconAddByCurrent',
-
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-currect-action',
@@ -1417,11 +1340,9 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.edit] = new Ext.Action({
       actionId: actions.edit,
-            // iconCls: 'iconEdit',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faEdit,
       cls: 'edit-action',
-
       text: UB.i18n('redaktirovat') + hotKeys[actions.edit].text,
       eventId: events.edit,
       handler: me.onAction,
@@ -1431,7 +1352,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.del] = new Ext.Action({
       actionId: actions.del,
-            // iconCls: 'iconDelete',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faTrashO,
       cls: 'delete-action',
@@ -1442,26 +1362,6 @@ Ext.define('UB.view.EntityGridPanel', {
       disabled: !me.entity.haveAccessToMethod(methodNames.DELETE),
       scope: me
     })
-        /*
-        me.actions[actions.find] = new Ext.Action({
-            actionId: actions.find,
-            iconCls: 'iconFind',
-            text: UB.i18n('poisk'),
-            eventId: UB.view.EntityGridPanel.eventId.find,
-            handler: me.onAction,
-            scope: me
-        });
-
-        me.actions[actions.clearFind] = new Ext.Action({
-            actionId: actions.clearFind,
-            iconCls: 'iconClear',
-            text: UB.i18n('ochistitPoisk'),
-            eventId: events.clearfind,
-            handler: me.onAction,
-            disabled: true,
-            scope: me
-        });
-         */
     me.actions[actions.showPreview] = new Ext.Action({
       actionId: actions.showPreview,
             // iconCls: 'iconView',
@@ -1498,11 +1398,10 @@ Ext.define('UB.view.EntityGridPanel', {
     if (me.hasAuditMixin) {
       me.actions[actions.audit] = new Ext.Action({
         actionId: actions.audit,
-                // iconCls: 'iconNewVersion',
         text: UB.i18n('showAudit'),
         eventId: events.audit,
         handler: me.onAction,
-        disabled: !$App.domainInfo.isEntityMethodsAccessible('ubs_audit', 'select'),
+        disabled: !$App.domainInfo.isEntityMethodsAccessible('uba_auditTrail', 'select'),
         scope: me
       })
     }
@@ -1516,7 +1415,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
       me.actions[actions.accessRight] = new Ext.Action({
         actionId: actions.accessRight,
-                // iconCls: 'iconNewVersion',
+        // iconCls: 'iconNewVersion',
         text: UB.i18n('accessRight'),
         eventId: events.accessRight,
         handler: me.onAction,
@@ -1527,12 +1426,9 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.refresh] = new Ext.Action({
       actionId: actions.refresh,
-            // iconCls: 'iconRefresh',
-            // iconCls: 'fa',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faRefresh,
       cls: 'refresh-action',
-            // glyph: 0xf021,//@FontAwesome
       text: UB.i18n('obnovit') + hotKeys[actions.refresh].text,
       eventId: events.refresh,
       handler: me.onAction,
@@ -1542,10 +1438,8 @@ Ext.define('UB.view.EntityGridPanel', {
     if (me.isModal) {
       me.actions[actions.itemSelect] = new Ext.Action({
         actionId: actions.itemSelect,
-                // iconCls: 'iconOk',
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faCheck,
-
         text: UB.i18n('vybrat'),
         eventId: events.itemselect,
         handler: me.onAction,
@@ -1556,7 +1450,6 @@ Ext.define('UB.view.EntityGridPanel', {
     if (me.autoFilter) {
       me.actions[actions.prefilter] = new Ext.Action({
         actionId: actions.prefilter,
-                // iconCls: 'iconFilter',
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faFilter,
         text: UB.i18n('showPreFilter') + hotKeys[actions.prefilter].text,
@@ -1568,7 +1461,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.lock] = new Ext.Action({
       actionId: actions.lock,
-            // iconCls: "iconRefresh",
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faLock,
       text: UB.i18n('lockBtn'),
@@ -1579,7 +1471,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.unLock] = new Ext.Action({
       actionId: actions.unLock,
-            // iconCls: "iconRefresh",
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faUnLock,
       text: UB.i18n('unLockBtn'),
@@ -1590,17 +1481,16 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.exportXls] = new Ext.Action({
       actionId: actions.exportXls,
-      iconCls: 'iconExportXls',
+      glyph: UB.core.UBUtil.glyphs.faFileExcelO,
       text: UB.i18n('exportXls'),
       eventId: events.exportXls,
-      disabled: !Boolean(window.XLSX),
+      disabled: !$App.domainInfo.models.UBE,
       handler: me.onAction,
       scope: me
     })
 
     me.actions[actions.exportCsv] = new Ext.Action({
       actionId: actions.exportCsv,
-            // iconCls: 'iconExport',
       text: UB.i18n('exportCsv'),
       eventId: events.exportCsv,
       handler: me.onAction,
@@ -1608,7 +1498,7 @@ Ext.define('UB.view.EntityGridPanel', {
     })
     me.actions[actions.exportHtml] = new Ext.Action({
       actionId: actions.exportHtml,
-            // iconCls: 'iconExportHtml',
+      glyph: UB.core.UBUtil.glyphs.faTable,
       text: UB.i18n('exportHtml'),
       eventId: events.exportHtml,
       handler: me.onAction,
@@ -1617,7 +1507,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.itemLink] = new Ext.Action({
       actionId: actions.itemLink,
-            // iconCls: 'iconExportHtml',
       text: UB.i18n('gridItemLink'),
       eventId: events.itemLink,
       handler: me.onAction,
@@ -1626,7 +1515,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.optimizeWidth] = new Ext.Action({
       actionId: actions.optimizeWidth,
-            // iconCls: 'iconExportHtml',
       text: UB.i18n('gridPptimizeWidth'),
       eventId: events.optimizeWidth,
       handler: me.onAction,
@@ -1641,7 +1529,7 @@ Ext.define('UB.view.EntityGridPanel', {
       hasCustomAction = Ext.isArray(me.customActions) && me.customActions.length,
       hideToolbar = Ext.isArray(me.toolbarActionList) && me.toolbarActionList.length === 0 && !hasCustomAction,
       hideMenuAllActions = me.hideMenuAllActions,
-            // get items from menuAllActionsActionList property. If it is not defined - get from standard config
+      // get items from menuAllActionsActionList property. If it is not defined - get from standard config
       menuAllActionsItems = me.menuAllActionsActionList || [
         actions.itemSelect,
         actions.refresh,
@@ -1649,17 +1537,14 @@ Ext.define('UB.view.EntityGridPanel', {
         actions.addNew,
         actions.addNewByCurrent,
         actions.del,
-                // me.actions[actions.find],
-                // me.actions[actions.clearFind],
         actions.showPreview,
         actions.prefilter,
-                // this.actions[actions.exportXls],
         '-',
         me.createMenuItemLink()
       ], i, len, arr,
       menuAllActions = []
 
-        // add to menuAllActions actions from menuAllActionsItems
+    // add to menuAllActions actions from menuAllActionsItems
     Ext.Array.each(menuAllActionsItems, function (val) {
       var action = me.actions[val]
       if (action) {
@@ -1667,7 +1552,7 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     })
 
-        // add link's block
+    // add link's block
     menuAllActions.push('-')
     menuAllActions.push(me.createMenuItemLink())
 
@@ -1749,15 +1634,15 @@ Ext.define('UB.view.EntityGridPanel', {
       xtype: 'toolbar',
       dock: 'top',
       items: items,
-            // enableOverflow: true,
       hidden: hideToolbar || me.hideActionToolbar
     })
     me.menuAllActions = menuAllActions
   },
 
   createMenuExport: function () {
-    var items = [],
-      actions = UB.view.EntityGridPanel.actionId
+    var items = []
+    var actions = UB.view.EntityGridPanel.actionId
+
     items.push(this.actions[actions.exportXls])
     items.push(this.actions[actions.exportCsv])
     items.push(this.actions[actions.exportHtml])
@@ -1765,7 +1650,6 @@ Ext.define('UB.view.EntityGridPanel', {
     return Ext.create('Ext.menu.Item', {
       text: UB.i18n('export'),
       hideOnClick: false,
-            // iconCls: 'iconExport',
       glyph: UB.core.UBUtil.glyphs.faShareSquare,
       menu: {
         items: items
@@ -1774,9 +1658,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   addBaseListeners: function () {
-    var
-      me = this,
-      events = UB.view.EntityGridPanel.eventId
+    var me = this
+    var events = UB.view.EntityGridPanel.eventId
+
     me.on(events.exportXls, me.onExportXls, me)
     me.on(events.exportCsv, me.onExportCsv, me)
     me.on(events.exportHtml, me.onExportHtml, me)
@@ -1786,8 +1670,6 @@ Ext.define('UB.view.EntityGridPanel', {
     me.on(events.addnewbycurrent, me.onAddNewByCurrent, me)
     me.on(events.edit, me.onEdit, me)
     me.on(events.del, me.onDel, me)
-        // me.on(events.find, me.onFind, me);
-        // me.on(events.clearfind, me.onClearFind, me);
     me.on(events.showPreview, me.onShowPreview, me)
     me.on(events.filtered, me.onFiltered, me)
     me.on(events.lock, me.onLock, me)
@@ -1823,14 +1705,15 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    /**
-     * @private
-     * @param {String} actionName
-     * @param {Boolean} [force]
-     */
+  /**
+   * @private
+   * @param {String} actionName
+   * @param {Boolean} [force]
+   */
   hideAction: function (actionName, force) {
-    var me = this, action
-    action = me.actions[actionName]
+    var me = this
+    var action = me.actions[actionName]
+
     if (action) {
       action.blocked = true
       action.disable()
@@ -1846,14 +1729,14 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    /**
-     * @private
-     * @param {String} actionName
-     * @param {Boolean} [force]
-     */
+  /**
+   * @private
+   * @param {String} actionName
+   * @param {Boolean} [force]
+   */
   showAction: function (actionName, force) {
-    var me = this, action
-    action = me.actions[actionName]
+    var me = this
+    var action = me.actions[actionName]
     if (action) {
       if (action.forceHidden && !force) {
         return
@@ -1872,13 +1755,13 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    /**
-     *
-     * @param actionName
-     */
+  /**
+   * @param actionName
+   */
   disableAction: function (actionName) {
-    var me = this, action
-    action = me.actions[actionName]
+    var me = this
+    var action = me.actions[actionName]
+
     if (action) {
       if (action.forceHidden) {
         return
@@ -1899,8 +1782,9 @@ Ext.define('UB.view.EntityGridPanel', {
      * @param actionName
      */
   enableAction: function (actionName) {
-    var me = this, action
-    action = me.actions[actionName]
+    var me = this
+    var action = me.actions[actionName]
+
     if (action) {
       if (action.forceHidden) {
         return
@@ -1963,7 +1847,6 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    // Кеширование формы
   openForm: function (eOpts) {
     var
       me = this,
@@ -1981,7 +1864,7 @@ Ext.define('UB.view.EntityGridPanel', {
         return
       }
     } else {
-      savePromise = Q.resolve(0)
+      savePromise = Promise.resolve(0)
     }
     savePromise.done(function (saveStatus) {
       if (saveStatus === -1) {
@@ -1997,7 +1880,7 @@ Ext.define('UB.view.EntityGridPanel', {
         description: formParam ? formParam.description : formParam,
         entity: formParam && formParam.entityName ? formParam.entityName : me.entityName,
         instanceID: formParam && formParam.instanceID ? formParam.instanceID : (eOpts && eOpts.instanceID),
-        isModal: (parentForm || me.isModal) ? true : false,
+        isModal: !!(parentForm || me.isModal),
         store: store,
         isModalDialog: modal,
         addByCurrent: eOpts && eOpts.addByCurrent,
@@ -2007,7 +1890,7 @@ Ext.define('UB.view.EntityGridPanel', {
         parentID: me.parentID,
         sender: me.getView() || me
       }
-            // open form in modal mode only if grid is in modal mode
+      // open form in modal mode only if grid is in modal mode
       if (!config.isModal && !(wnd && wnd.modal)) {
         config.target = $App.viewport.centralPanel
         config.tabId = ((formParam ? formParam.entityName : null) || me.entityName) + (config.instanceID || ('ext' + Ext.id(null, 'addNew')))
@@ -2017,9 +1900,6 @@ Ext.define('UB.view.EntityGridPanel', {
         config.cmpInitConfig = formParam.cmpInitConfig
       }
 
-            // if(me.parent && me.parentID || me.up('ubdetailgrid')){
-            //    config.isModal = true;
-            // }
       $App.doCommand(config)
     })
   },
@@ -2032,16 +1912,14 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    /**
-     *
-     * @return {Object}
-     */
+  /**
+   *
+   * @return {Object}
+   */
   getFormParam: function () {
-    var
-      me = this,
-      commandData,
-      sysEntities = UB.core.UBAppConfig.systemEntities,
-      form
+    var me = this
+    var sysEntities = UB.core.UBAppConfig.systemEntities
+    var form
 
     if (_.isFunction(me.onDeterminateForm)) {
       me.formParam = me.onDeterminateForm(me)
@@ -2070,8 +1948,7 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   getFormParamFromCommandData: function (commandData) {
-    var
-            formParam
+    var formParam
 
     if (Ext.isObject(commandData)) {
       if (Ext.isDefined(commandData.formCode)) {
@@ -2094,7 +1971,7 @@ Ext.define('UB.view.EntityGridPanel', {
   onAddNew: function () {
     var me = this
     if (this.isHistory) {
-           // this.onHistory();
+       // this.onHistory();
       Ext.create('UB.view.InputDateWindow', {
         callback: function (date) {
           me.openForm({ __mip_ondate: date, instanceID: me.miDataID })
@@ -2107,44 +1984,28 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onAddNewByCurrent: function () {
-    var
-      me = this,
-      selection = me.getSelectionModel().getSelection(),
-      eOpt = {
-        addByCurrent: true
-      }
+    var me = this
+    var selection = me.getSelectionModel().getSelection()
+    var eOpt = {
+      addByCurrent: true
+    }
 
     if (selection.length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
     }
-
     eOpt.instanceID = selection[0].get('ID')
-
-        /*
-        if(me.hasDataHistoryMixin){
-            Ext.create('UB.view.InputDateWindow', {
-                callback: function (date) {
-                    eOpt.__mip_ondate = date;
-                    me.openForm(eOpt);
-                },
-                scope: me
-            });
-        } else {
-            me.openForm(eOpt);
-        } */
     me.openForm(eOpt)
   },
 
   onEdit: function () {
-        // TODO GRID EDITOR this.getStore().sync();
+    // TODO GRID EDITOR this.getStore().sync();
     this.doOnEdit()
   },
 
   doOnEdit: function (eOpt) {
-    var
-      me = this,
-      selection = me.getSelectionModel().getSelection()
+    var me = this
+    var selection = me.getSelectionModel().getSelection()
 
     eOpt = eOpt || {}
 
@@ -2157,12 +2018,12 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   getFormTitle: function () {
-    var me = this,
-      placeholder = me.placeholder
+    var me = this
+    var placeholder = me.placeholder
     return me.title ||
-            (placeholder ? placeholder.title : null) ||
-            ((placeholder = me.up('')) ? placeholder.title : null) ||
-            me.entity.caption
+      (placeholder ? placeholder.title : null) ||
+      ((placeholder = me.up('')) ? placeholder.title : null) ||
+      me.entity.caption
   },
 
   onDel: function () {
@@ -2173,89 +2034,95 @@ Ext.define('UB.view.EntityGridPanel', {
     }
 
     $App.dialogYesNo('podtverditUdalenije', UB.format(UB.i18n('deleteConfirmation'), me.getFormTitle()))
-            .done(function (res) {
-              if (!res) { return }
-              var commandList = [],
-                sel = me.getSelectionModel().getSelection(),
-                hasUnity = sel.length && sel[0].get('mi_unityEntity'),
-                entityName
+      .then(function (res) {
+        if (!res) { return }
+        var commandList = [],
+          sel = me.getSelectionModel().getSelection(),
+          hasUnity = sel.length && sel[0].get('mi_unityEntity'),
+          entityName
 
-              for (var i = 0, len = sel.length; i < len; ++i) {
-                entityName = hasUnity ? sel[i].get('mi_unityEntity') : me.entityName
-                commandList.push({
-                  entity: entityName,
-                  method: 'delete',
-                  execParams: {ID: sel[i].get('ID')}
-                })
-              }
+        for (var i = 0, len = sel.length; i < len; ++i) {
+          entityName = hasUnity ? sel[i].get('mi_unityEntity') : me.entityName
+          commandList.push({
+            entity: entityName,
+            method: 'delete',
+            execParams: {ID: sel[i].get('ID')}
+          })
+        }
 
-              $App.connection.runTrans(commandList)
-                    .then(function (transResult) {
-                      var waitList = []
-                      _.forEach(transResult, function (resp) {
-                        waitList.push($App.connection.invalidateCache(resp))
-                      })
-                      return Q.all(waitList).then(function () {
-                        return transResult
-                      })
-                    })
-                    .done(function (transResult) {
-                      var store = me.store, idx = null
-                      _.forEach(transResult, function (resp) {
-                        var rRow = store.getById(resp.ID)
-                        idx = store.indexOf(rRow)
-                            // nRow = store.getAt(idx);
-                        store.remove(rRow)
-                        if (UB.core.UBAppConfig.systemEntities.hasOwnProperty(entityName)) {
-                          var systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[entityName].name)
-                          systemEntityStore.remove(systemEntityStore.getById(resp.ID))
-                        }
-                      })
-                      if (me.store && me.store.fireModifyEvent) {
-                        me.store.fireModifyEvent(commandList, transResult)
-                      }
-
-                      if (idx !== null) {
-                        me.getView().on('itemremove', function () {
-                          if (store.getCount() <= idx) {
-                            idx = store.getCount() - 1
-                          }
-                          me.getSelectionModel().select(store.getAt(idx))
-                        }, me, {single: true})
-                      }
-                      me.fireEvent('afterdel')
-                      if (me.pagingBar) {
-                        me.pagingBar.decreaseTotal()
-                      }
-                    })
+        $App.connection.runTrans(commandList)
+          .then(function (transResult) {
+            var waitList = []
+            _.forEach(transResult, function (resp) {
+              waitList.push($App.connection.invalidateCache(resp))
             })
+            return Q.all(waitList).then(function () {
+              return transResult
+            })
+          })
+          .done(function (transResult) {
+            var store = me.store, idx = null
+            _.forEach(transResult, function (resp) {
+              var rRow = store.getById(resp.ID)
+              idx = store.indexOf(rRow)
+                  // nRow = store.getAt(idx);
+              store.remove(rRow)
+              if (UB.core.UBAppConfig.systemEntities.hasOwnProperty(entityName)) {
+                var systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[entityName].name)
+                systemEntityStore.remove(systemEntityStore.getById(resp.ID))
+              }
+            })
+            if (me.store && me.store.fireModifyEvent) {
+              me.store.fireModifyEvent(commandList, transResult)
+            }
+
+            if (idx !== null) {
+              me.getView().on('itemremove', function () {
+                if (store.getCount() <= idx) {
+                  idx = store.getCount() - 1
+                }
+                me.getSelectionModel().select(store.getAt(idx))
+              }, me, {single: true})
+            }
+            me.fireEvent('afterdel')
+            if (me.pagingBar) {
+              me.pagingBar.decreaseTotal()
+            }
+          })
+      })
   },
 
-    /**
-     * show auto filter form
-     */
+  /**
+   * show auto filter form
+   */
   onPrefilter: function () {
     var me = this
     if (me.autoFilter) {
-      UB.ux.UBPreFilter.makeFilters({ options: me.autoFilter, entityCode: me.entityName, store: me.getStore(),
-                onFilterReady: function () {
-                  if (me.filtersDescription) {
-                    me.filtersDescription()
-                  }
-                }
-            })
+      UB.ux.UBPreFilter.makeFilters({
+        options: me.autoFilter,
+        entityCode: me.entityName,
+        store: me.getStore(),
+        onFilterReady: function () {
+          if (me.filtersDescription) {
+            me.filtersDescription()
+          }
+        }
+      })
     }
   },
 
   showFilter: function (options) {
     var me = this
-    UB.ux.UBPreFilter.makeFilters({ options: me.autoFilter || options || {}, entityCode: me.entityName, store: me.getStore(),
-                onFilterReady: function () {
-                  if (me.filtersDescription) {
-                    me.filtersDescription()
-                  }
-                }
-            })
+    UB.ux.UBPreFilter.makeFilters({
+      options: me.autoFilter || options || {},
+      entityCode: me.entityName,
+      store: me.getStore(),
+          onFilterReady: function () {
+            if (me.filtersDescription) {
+              me.filtersDescription()
+            }
+          }
+      })
   },
 
   onItemContextMenu: function (grid, record, item, index, event, eOpts) {
@@ -2267,10 +2134,10 @@ Ext.define('UB.view.EntityGridPanel', {
     if (!sm) {
       return
     }
-        /**
-         * forbid select row when fire event contextMenu
-         * @cfg {Boolean} forbidSelectOnContextMenu
-         */
+    /**
+     * forbid row selecting when fire event contextMenu
+     * @cfg {Boolean} forbidSelectOnContextMenu
+     */
     if (!this.forbidSelectOnContextMenu) {
       sm.select(record)
     }
@@ -2278,9 +2145,8 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onNewVersionDataRequest: function () {
-    var
-      sel,
-      me = this
+    var sel
+    var me = this
     if ((sel = me.getSelectionModel().getSelection()).length < 1) {
       return
     }
@@ -2341,19 +2207,19 @@ Ext.define('UB.view.EntityGridPanel', {
     }
 
     $App.connection.select({
-      entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: ['ID', 'mi_data_id'],
+      entity: me.entityName,
+      fieldList: ['ID', 'mi_data_id'],
       ID: me.isInHistory ? me.miDataID : sel[0].get('ID')
     }).done(function (response) {
       var rows = UB.core.UBCommand.resultDataRow2Object(response)
       $App.doCommand({
-        cmdType: 'showList', // this.commandCode || 'showList',
-        cmdData: { params: [
-                    { entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList }
-        ]},
+        cmdType: 'showList',
+        cmdData: { params: [{
+          entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
+        }]},
         cmpInitConfig: {
           extendedFieldList: extendedFieldList
         },
-                // onDesktop: this.onDesktop,
         isModalDialog: true,
         instanceID: rows.mi_data_id,
         __mip_recordhistory: true
@@ -2362,10 +2228,10 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onAccessRight: function () {
-    var
-      me = this,
-      sel = this.getSelectionModel().getSelection(),
-      entityM, aclEntityName, aclFields = []
+    var me = this
+    var sel = this.getSelectionModel().getSelection()
+    var entityM, aclEntityName
+    var aclFields = []
 
     if (sel.length < 1) {
       return
@@ -2409,10 +2275,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onAudit: function () {
-    var
-      me = this,
-      sel = this.getSelectionModel().getSelection(),
-      fieldList = ['actionTime', 'actionType', 'actionUser', 'remoteIP']
+    var me = this
+    var sel = this.getSelectionModel().getSelection()
+    var fieldList = ['actionTime', 'actionType', 'actionUser', 'remoteIP']
 
     if (sel.length < 1) {
       return
@@ -2442,7 +2307,7 @@ Ext.define('UB.view.EntityGridPanel', {
       cmdData: {
         params: [
           {
-            entity: 'ubs_audit',
+            entity: 'uba_auditTrail',
             method: UB.core.UBCommand.methodName.SELECT,
             fieldList: fieldList,
             whereList: whereList,
@@ -2460,7 +2325,8 @@ Ext.define('UB.view.EntityGridPanel', {
           this.doOnEdit(eOpts)
         },
         afterInit: function () {
-          var grid = this, grouper
+          var grid = this
+          var grouper
 
           grid.store.oldGroup = grid.store.group
           grid.store.group = function (groupers, direction, suppressEvent) {
@@ -2479,15 +2345,15 @@ Ext.define('UB.view.EntityGridPanel', {
 
               if (!grouper) {
                 grouper = {
-                    property: groupers,
-                    direction: direction || 'ASC'
-                  }
+                  property: groupers,
+                  direction: direction || 'ASC'
+                }
                 newGroupers = [grouper]
               } else if (direction === undefined) {
-                  grouper.toggle()
-                } else {
-                  grouper.setDirection(direction)
-                }
+                grouper.toggle()
+              } else {
+                grouper.setDirection(direction)
+              }
             }
 
             _.forEeach(newGroupers, function (item) {
@@ -2561,16 +2427,10 @@ Ext.define('UB.view.EntityGridPanel', {
     if ((sel = selModel.getSelection()).length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
-//            selModel.selectRange(0, 0, true);
-//            sel = selModel.getSelection();
     }
     eOpts.instanceID = sel[0].get('ID')
-        // me.openForm(eOpt);
     formParam.formCode = form.get('code')
     formParam.description = UB.i18n(form.get(UB.core.UBAppConfig.systemEntities.form.fields.description))
-        // if(!cmd){
-        //    throw Ext.String.format('Can\'t get command with type "{0}" for entity "{1}"', showFormCommand, me.entityName);
-        // }
     var regEx = new RegExp('(.*?)(_grid_UI)')
     var stateId = me.stateId.replace(regEx, UB.format('$1_{0}_{0}$2', me.entityName))
 
@@ -2672,7 +2532,6 @@ Ext.define('UB.view.EntityGridPanel', {
     if (owner) {
       owner.doLayout()
     }
-        // me.mainPanel.doLayout();
   },
 
   onShowDetail: function (action) {
@@ -2686,12 +2545,6 @@ Ext.define('UB.view.EntityGridPanel', {
     if ((sel = selModel.getSelection()).length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
-//            selModel.setCurrentPosition({
-//                row: 0,
-//                column: 0,
-//                view: selModel.primaryView
-//            });
-//            sel = selModel.getSelection();
     }
 
     if (!cmd) {
@@ -2702,13 +2555,13 @@ Ext.define('UB.view.EntityGridPanel', {
     action.disable()
   },
 
-    /**
-     * Show detail panel.
-     * @param {Object} config
-     * @param {String} config.entityName
-     * @param {Syting} config.attribute
-     * @param {Object} [config.command] params for UB.core.UBApp.doCommand
-     */
+  /**
+   * Show detail panel.
+   * @param {Object} config
+   * @param {String} config.entityName
+   * @param {Syting} config.attribute
+   * @param {Object} [config.command] params for UB.core.UBApp.doCommand
+   */
   doShowDetail: function (config) {
     var me = this,
       selModel = me.getSelectionModel(),
@@ -2737,28 +2590,26 @@ Ext.define('UB.view.EntityGridPanel', {
       entity: config.entityName,
       detailAttribute: config.attribute,
       parentID: parentID,
-            // target: panel,
       target: me.detailTabPanel,
       isDetail: true,
       filters: coll,
       tabId: Ext.id(),
-      title: (wnd ? wnd : me).title + '->' + $App.domainInfo.get(config.entityName).caption
+      title: (wnd || me).title + '->' + $App.domainInfo.get(config.entityName).caption
     }, (config.command || {})))
     if (wnd) {
       wnd.doLayout()
     }
   },
 
-    /**
-     *
-     * @param {Ext.selection.Model} selectionModel
-     * @param {Ext.data.Model[]} selected
-     * @param {Object} eOpts
-     */
+  /**
+   *
+   * @param {Ext.selection.Model} selectionModel
+   * @param {Ext.data.Model[]} selected
+   * @param {Object} eOpts
+   */
   onSelectionChange: function (selectionModel, selected, eOpts) {
-    var
-      me = this,
-      parentID
+    var me = this
+    var parentID
     if (selected.length === 0) {
       return
     }
@@ -2778,10 +2629,10 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-    /**
-     *
-     * @param {Number} parentID
-     */
+  /**
+   *
+   * @param {Number} parentID
+   */
   onParentChange: function (parentID) {
     this.parentID = parentID
 
@@ -2797,29 +2648,21 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onViewReady: function () {
-    var me = this, view = me.getView(), store = view ? view.getStore() : null
+    var me = this
+    var view = me.getView()
+    var store = view ? view.getStore() : null
     if (store && view && view.storeListeners && view.storeListeners.update) {
       store.on('update', view.storeListeners.update, view)
     }
   },
 
-    /*
-     onViewReady1: function(){
-     //var form = this.up('form'); //BVV
-     this.bindHotkeys();
-     this.selectDefaultRow();
-     // if (form && !form.isReady) { //Когда грид сразу виден на форме, фокус остается на нем
-     //     form.isReady = true;
-     //     form.focusFirst(form);
-     // }
-
-     },
-     */
   setupActions: function () {
     var
       me = this,
       form = me.up('form'),
-      readOnly = _.isFunction(me.isEditable) ? !me.isEditable() : form && _.isFunction(form.isEditable) ? !form.isEditable() : false
+      readOnly = _.isFunction(me.isEditable)
+        ? !me.isEditable()
+        : form && _.isFunction(form.isEditable) ? !form.isEditable() : false
     if (readOnly) {
       me.actions[UB.view.EntityGridPanel.actionId.addNew].setDisabled(true)
       me.actions[UB.view.EntityGridPanel.actionId.addNewByCurrent].setDisabled(true)
@@ -2952,11 +2795,7 @@ Ext.define('UB.view.EntityGridPanel', {
       }]
     })
   },
-    /**
-     *
-     * @param {Ext.panel.Table} grid
-     * @param {Object} eOpts
-     */
+
   selectDefaultRow: function () {
     if (!this.getStore().getCount()) {
       return
@@ -2984,13 +2823,12 @@ Ext.define('UB.view.EntityGridPanel', {
         selModel.select(record)
       }
       view.focusRow(record.index)
-    } catch (e) {
-
-    }
+    } catch (e) {}
   },
 
   onExportXls: function () {
-    var v, fTitle, dBlob, mobj, me = this
+    var v, fTitle, dBlob, mobj
+    var me = this
 
     mobj = me.entity
     if (Ext.isDefined(mobj)) {
@@ -3023,25 +2861,8 @@ Ext.define('UB.view.EntityGridPanel', {
     })
   },
 
-  onExportXlsOld: function () {
-    var v, rData, fTitle = 'export to excel', dBlob
-    v = this.up('window')
-    if (Ext.isDefined(v)) {
-      fTitle = v.title
-    } else {
-      fTitle = this.entity.caption || 'caption'
-    }
-    rData = Ext.ux.exporter.Exporter.exportAny(this, 'excel', {
-      stripeRows: true,
-      title: fTitle
-    })
-
-    dBlob = new Blob([rData], {type: 'application/vnd.ms-excel'})
-    saveAs(dBlob, fTitle + '.xls')
-  },
-
   onExportCsv: function () {
-    var v, rData, fTitle = 'export to excel', dBlob, me = this, mobj
+    var v, fTitle = 'export to CSV', dBlob, me = this, mobj
     v = this.up('window')
     mobj = this.entity
     if (Ext.isDefined(mobj)) {
@@ -3053,9 +2874,9 @@ Ext.define('UB.view.EntityGridPanel', {
         fTitle = v.title
       }
     }
-    fTitle = fTitle || this.title || 'export to csv'
+    fTitle = fTitle || this.title
 
-    rData = Ext.ux.exporter.Exporter.exportAny(this, 'csv', {
+    Ext.ux.exporter.Exporter.exportAny(this, 'csv', {
       stripeRows: true,
       title: fTitle,
       entityName: this.entityName,
@@ -3064,10 +2885,7 @@ Ext.define('UB.view.EntityGridPanel', {
       callback: function (rData) {
         fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
 
-        dBlob = new Blob(
-                    [rData],
-                    {type: 'text/csv'}
-                )
+        dBlob = new Blob([rData], {type: 'text/csv'})
         saveAs(dBlob, fTitle + '.csv')
       }
     })
@@ -3085,7 +2903,7 @@ Ext.define('UB.view.EntityGridPanel', {
         fTitle = v.title
       }
     }
-    fTitle = fTitle || this.title || 'export to html'
+    fTitle = fTitle || this.title
 
     Ext.ux.exporter.Exporter.exportAny(this, 'html', {
       stripeRows: true,
@@ -3095,33 +2913,22 @@ Ext.define('UB.view.EntityGridPanel', {
       scope: me,
       callback: function (rData) {
         fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
-
-        dBlob = new Blob(
-                    [rData],
-                    {type: 'text/html'}
-                )
+        dBlob = new Blob([rData], {type: 'text/html'})
         saveAs(dBlob, fTitle + '.html')
       }
-
     })
   },
-    /**
-     *
-     * @param {Ext.Component} grid
-     * @param {Object} eOpts
-     */
+  /**
+   *
+   * @param {Ext.Component} grid
+   * @param {Object} eOpts
+   */
   beforeDestroy: function (grid, eOpts) {
     var me = this
     if (me.mainEntityGridPanel) {
       me.mainEntityGridPanel.un('parentchange', me.onParentChange, me)
     }
     var store = me.getStore()
-
-        /* xmax вызывает лищний запрос на сервер надо узнать зачем стояло. Возможно для кешируемых сущностей
-        if(store.filters && store.filters.length > 0) {
-            store.clearFilter();
-        }
-        */
 
     if (store) {
       store.un('load', me.onLoadStore, me)
@@ -3136,9 +2943,8 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onItemSelect: function () {
-    var
-      selection = this.getSelectionModel().getSelection(),
-      wnd = this.up('window')
+    var selection = this.getSelectionModel().getSelection()
+    var wnd = this.up('window')
     if (selection.length < 1) {
       return
     }
@@ -3147,10 +2953,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onDetailClose: function (entityName) {
-    var
-      me = this,
-      showDetail = UB.core.UBPanelMixin.actionId.showDetail
-    function EnableShowDetailMenuItem (item) {
+    var me = this
+    var showDetail = UB.core.UBPanelMixin.actionId.showDetail
+    function enableShowDetailMenuItem (item) {
       if (item && item.actionId === showDetail) {
         item.menu.items.each(function (action) {
           if (action.actionId === showDetail && action.entityName === entityName) {
@@ -3159,9 +2964,8 @@ Ext.define('UB.view.EntityGridPanel', {
         })
       }
     }
-
-    Ext.Array.each(me.popupMenuItems, EnableShowDetailMenuItem)
-    Ext.Array.each(me.menuAllActions, EnableShowDetailMenuItem)
+    Ext.Array.each(me.popupMenuItems, enableShowDetailMenuItem)
+    Ext.Array.each(me.menuAllActions, enableShowDetailMenuItem)
   },
 
   onLock: function () {
@@ -3179,7 +2983,7 @@ Ext.define('UB.view.EntityGridPanel', {
       return
     }
 
-    $App.connection.run({
+    $App.connection.query({
       method: 'isLocked',
       entity: baseEntity,
       ID: baseID
@@ -3204,12 +3008,11 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: baseEntity,
         ID: baseID
       })
+    }).done(function (result) {
+      if (result.resultLock && result.resultLock.success) {
+        $App.dialogInfo('lockSuccessCreated')
+      }
     })
-        .done(function (result) {
-          if (result.resultLock && result.resultLock.success) {
-            $App.dialogInfo('lockSuccessCreated')
-          }
-        })
   },
 
   onItemLink: function () {
@@ -3253,7 +3056,6 @@ Ext.define('UB.view.EntityGridPanel', {
 
     win = Ext.Msg.show({
       prompt: true,
-            // title: UB.i18n('title'),
       minWidth: 400,
       msg: UB.i18n('gridItemLink'),
       buttons: Ext.Msg.OK,
@@ -3300,12 +3102,10 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: baseEntity,
         ID: baseID
       })
+    }).done(function (result) {
+      if (result.resultLock && result.resultLock.success) {
+        $App.dialogInfo('lockSuccessDeleted')
+      }
     })
-        .done(function (result) {
-          if (result.resultLock && result.resultLock.success) {
-            $App.dialogInfo('lockSuccessDeleted')
-          }
-        })
   }
-
 })

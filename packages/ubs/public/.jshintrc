@@ -1,6 +1,0 @@
-{
-  "browser": true,
-  "node": false,
-  "globals": "Ext,$App"
-}
-

@@ -1,4 +1,14 @@
-﻿    //noinspection JSUnusedGlobalSymbols
+﻿require('../core/UBService')
+require('./UBObject')
+require('./PDFComponent')
+require('./UBImg')
+require('./UBLink')
+require('./UBLabel')
+require('./UBTinyMCETextArea')
+require('./UBCodeMirror')
+require('./EnterpriseEditorMock')
+require('./UBReportEditor')
+//noinspection JSUnusedGlobalSymbols
 /**
  * Container for display `Document` type attribute value.
  * During panel creation there is no internal component inside, so the with and height is undefined.
@@ -40,18 +50,18 @@ Ext.define('UB.ux.UBDocument', {
     },
     alias: 'widget.ubdocument',
 
-    requires: [
-        'UB.core.UBService',
-        'UB.ux.UBObject',
-        'UB.ux.PDFComponent',
-        'UB.ux.UBImg',
-        'UB.ux.UBLink',
-        'UB.ux.UBLabel',
-        'UB.ux.UBTinyMCETextArea',
-        'UB.ux.UBCodeMirror',
-        'UB.ux.EnterpriseEditorMock',
-        'UB.ux.UBReportEditor'
-    ],
+    // requires: [
+    //     'UB.core.UBService',
+    //     'UB.ux.UBObject',
+    //     'UB.ux.PDFComponent',
+    //     'UB.ux.UBImg',
+    //     'UB.ux.UBLink',
+    //     'UB.ux.UBLabel',
+    //     'UB.ux.UBTinyMCETextArea',
+    //     'UB.ux.UBCodeMirror',
+    //     'UB.ux.EnterpriseEditorMock',
+    //     'UB.ux.UBReportEditor'
+    // ],
   uses: ['UB.core.UBApp'],
     autoEl: 'div',
     statics: {
@@ -157,7 +167,7 @@ Ext.define('UB.ux.UBDocument', {
      */
 
     /**
-     * 
+     *
      * @param {String} contentType
      */
     createComponent: function(contentType) {

@@ -1,4 +1,6 @@
-﻿/**
+﻿require('../../core/UBCommand')
+require('./proxy/UBProxy')
+/**
  * Extend {@link Ext.data.Store} to easy use with UnityBase server:
  *
  * - add ubRequest & entity properties
@@ -12,10 +14,10 @@ Ext.define('UB.ux.data.UBStore', {
     alias: 'store.ubstore',
     totalRequired: false,
 
-    requires: [
-        'UB.core.UBCommand',
-        'UB.ux.data.proxy.UBProxy'
-    ],
+    // requires: [
+    //     'UB.core.UBCommand',
+    //     'UB.ux.data.proxy.UBProxy'
+    // ],
 
     uses: [
         "UB.core.UBStoreManager",

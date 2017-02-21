@@ -1,3 +1,4 @@
+require('./UBDetailTreeColumn')
 /**
  * Container for detail tree.
  * TODO - describe usage
@@ -5,9 +6,9 @@
  */
 Ext.define('UB.ux.UBDetailTree', {
     extend: 'Ext.tree.Panel',
-    requires: [
-        'UB.ux.UBDetailTreeColumn'
-    ],
+    // requires: [
+    //     'UB.ux.UBDetailTreeColumn'
+    // ],
     alias: 'widget.ubdetailtree',
     cls: 'ub-tree',
     useArrows: true,

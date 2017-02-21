@@ -1,8 +1,9 @@
+require('./DashboardColumn')
 Ext.define('UB.ux.dashboard.DashboardPanel', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.dashboardpanel',
 
-    requires: ['UB.ux.dashboard.DashboardColumn'],
+    // requires: ['UB.ux.dashboard.DashboardColumn'],
 
     cls: 'x-dashboard',
     bodyCls: 'x-dashboard-body',

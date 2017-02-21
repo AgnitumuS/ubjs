@@ -1,4 +1,8 @@
-﻿/**
+﻿require('../ux/data/UBStore')
+require('./UBCommand')
+require('./UBAppConfig')
+require('./UBUtil')
+/**
  * Файл: UB.core.UBDataLoader.js
  * Автор: Игорь Ноженко
  * 
@@ -12,15 +16,16 @@
 Ext.define('UB.core.UBDataLoader', {
     singleton: true,
 
-    requires: [
-        'UB.ux.data.UBStore',
-        'UB.core.UBCommand',
-        'UB.core.UBAppConfig',
-        'UB.core.UBUtil'
-    ],
+    // requires: [
+    //     'UB.ux.data.UBStore',
+    //     'UB.core.UBCommand',
+    //     'UB.core.UBAppConfig',
+    //     'UB.core.UBUtil'
+    // ],
 
     /**
      * Load single instance by ID.
+     * @deprecated Use UB.Repository.selectById or UB.Repository.selectSingle instead
      * @param {Object} cfg
      * @param {String} cfg.entityName name of entity to load from
      * @param {Array.<string>} cfg.fieldList list of attribute name's
@@ -104,7 +109,7 @@ Ext.define('UB.core.UBDataLoader', {
                 stores[storeMd5] = Ext.create('UB.ux.data.UBStore', config);
                 storesToLoad.push(stores[storeMd5].load());
             }
-            return Q.all(storesToLoad).then(function (storeArray) {
+            return Promise.all(storesToLoad).then(function (storeArray) {
                 if (params.callback) {
                     UB.logDebug('callback style of UBDataLoader.loadStores is deprecated. loadStores().then(...) or UBConnection methods or store.load().then(...)');
                     Ext.callback(params.callback, params.scope || this, [stores]);
@@ -118,6 +123,7 @@ Ext.define('UB.core.UBDataLoader', {
     },
 
     /**
+     * @deprecated
      * xmax  Get result data ignore UB Domain. Return all fields in fieldlist
      */
     loadStoresSimple: function(params) {
