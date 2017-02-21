@@ -31,22 +31,32 @@ var
  * @return {boolean}
  */
 function postProcessing(loader, fullFilePath, content, row){
-    var val, parts, fileName, jsFilePath, jsFileStat,
+    var val, parts, fileName, jsFilePath, jsFileStat, refEntity,
         // we fill relPath in form "modelName"|"path inside model public folder" as expected by mdb virtual store
-        relPath = loader.processingRootFolder.model.name + '|' + REL_PATH_TAIL;
+        relPath;
 
     //check entity exist in domain
     val = row.entity;
-    if (!App.domain.byName(val)) {
+    refEntity = App.domain.byName(val)
+    if (!refEntity) {
         console.error('ubm_form: Invalid //@entity attribute "' + val + '". File ' + fullFilePath + ' ignored');
         return false;
     }
     // check fileName = entity code + "-fm.def"
     parts = fullFilePath.split('\\');
     fileName = parts[parts.length-1];
-    if (row.code !== fileName.substring(0, fileName.length - 7)){
-        console.error('ubm_form: Invalid file name. Must be //@code attribute value (' + row.code + ') + "-fm.def" for ', fullFilePath)
-    }
+    if (row.code)
+      console.warn(`Please, remove a row //@code "${row.code}" from a file ${fileName}. In UB4 form code = file name without -fm.def`);
+
+    row.code = fileName.substring(0, fileName.length - 7)
+    // if (row.code !== fileName.substring(0, fileName.length - 7)){
+    //     console.error('ubm_form: Invalid file name. Must be //@code attribute value (' + row.code + ') + "-fm.def" for ', fullFilePath)
+    // }
+    if (row.ID) console.warn(`Please, remove a row "//@ID ${row.ID}" from a file ${fileName}. In UB4 form ID is generated automatically as crc32(code)`)
+    row.ID = ncrc32(0, row.code)
+
+    // form can be stored in other model than entity
+    relPath = (row.model || loader.processingRootFolder.model.name) + '|' + REL_PATH_TAIL
     // fill formDef attribute value
     row.formDef = JSON.stringify({
         fName: fileName,
@@ -56,7 +66,9 @@ function postProcessing(loader, fullFilePath, content, row){
         md5: "fb6a51668017be0950bd18c2fb0474a0",
         relPath: relPath
     });
-
+    if (!row.model) {
+      row.model = loader.processingRootFolder.model.name
+    }
     // in case form js exist - fill formCode
     fileName = fileName.substring(0, fileName.length - DEF_FILE_TAIL.length) + JS_FILE_TAIL;
     parts[parts.length-1] = fileName;
@@ -210,13 +222,14 @@ function getFormBodyTpl(fileName, defaultBody){
  *
  * @param {ubMethodParams} ctxt
  * @param {Object} storedValue
+ * @param {boolean} isInsert
  * @return {boolean}
  */
 function doUpdateInsert(ctxt, storedValue, isInsert){
     var
         mP = ctxt.mParams,
         newValues,
-        newFormCodeMeta, newFormDefMeta,
+        newFormCodeMeta, newFormDefMeta, codeOfModelToStore,
         ID, j,
         docHandler, docReq, ct, docBody, attrCnt, attr, attrName,
         formEntity,
@@ -238,6 +251,7 @@ function doUpdateInsert(ctxt, storedValue, isInsert){
     });
 
     formEntity = App.domain.byName(storedValue.entity);
+    codeOfModelToStore = storedValue.model || formEntity.modelName
     // check form -fm.js
     docReq = new TubDocumentRequest();
     docReq.entity = entity.name;
@@ -256,7 +270,7 @@ function doUpdateInsert(ctxt, storedValue, isInsert){
     }
     ct = docHandler.content;
     ct.fName = storedValue.code + JS_FILE_TAIL;
-    ct.relPath = formEntity.modelName + '|' + REL_PATH_TAIL;
+    ct.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL;
     ct.ct = JSON_CONTENT_TYPE;
     docReq.isDirty = true;
     docHandler.saveContentToTempStore();
@@ -288,18 +302,19 @@ function doUpdateInsert(ctxt, storedValue, isInsert){
         docBody = docBody.replace(clearAttrReg, ''); // remove all old entity attributes
     }
 
+    var addedAttr = ''
     for (j = 0, attrCnt = attributes.count; j<attrCnt; j++){
         attr = attributes.items[j];
         attrName = attr.name;
-        if( attr.dataType !== TubAttrDataType.Document && (attr.defaultView || attrName==='ID')){
-            docBody = '//@' + attrName +  ' "' + storedValue[attrName] + '"\r\n' + docBody;
+        if( attr.dataType !== TubAttrDataType.Document && attr.defaultView && attrName !=='ID' && attrName !== 'code'){
+          addedAttr = '//@' + attrName +  ' "' + storedValue[attrName] + '"\r\n' + addedAttr;
         }
     }
-    docBody = '//@! "do not remove comments below unless you know what you do!"\r\n' + docBody;
+    docBody = '//@! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + docBody;
     docHandler.request.setBodyAsUnicodeString(docBody);
     ct = docHandler.content;
     ct.fName = storedValue.code + DEF_FILE_TAIL;
-    ct.relPath = formEntity.modelName + '|' + REL_PATH_TAIL;
+    ct.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL;
     ct.ct = JSON_CONTENT_TYPE;
     storedValue.formDef = JSON.stringify(ct);
 
@@ -361,7 +376,7 @@ me.insert = function(ctxt) {
     validateInput(aID, inParams.code, inParams.entity);
     row = LocalDataStore.byID(cachedData, aID);
     if (row.total) {
-        throw new Error('Form with ID ' + aID + 'already exist in domain');
+        throw new UB.UBAbort('<<<Form with ID ' + aID + 'already exist in domain>>>');
     }
 
     doUpdateInsert(ctxt, oldValue, true);

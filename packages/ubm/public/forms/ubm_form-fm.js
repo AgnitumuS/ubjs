@@ -8,7 +8,7 @@ exports.formCode = {
             code = this.getField('code').getValue(),
             fn;
 
-		me.down('label[ubID="newFormTip"]').setVisible(me.isNewInstance);
+		    me.down('label[ubID="newFormTip"]').setVisible(me.isNewInstance);
         me.getField('code').addListener('change', me.onCodeChanged, me);
         me.getField('entity').addListener('change', me.onEntityChanged, me);
 
@@ -38,16 +38,23 @@ exports.formCode = {
                 }
             }
         });
-
-
-
-        if (!me.isEditMode) {
+        if (!me.isEditMode) { //new form
+            me.record.set('ID', null); // ID will be calculated as crc32(code)
             me.getUBCmp("attrFormDef").setValue("{\"store\":\"mdb\",\"fName\":\"" + (fn = code.length > 0 ? code + ".def" : "") + "\",\"origName\":\"" + fn + "\",\"ct\":\"application/def\",\"size\":0,\"isDirty\":true}", this.instanceID);
             me.getUBCmp("attrFormCode").setValue("{\"store\":\"mdb\",\"fName\":\"" + (fn = code.length > 0 ? code + ".js" : "") + "\",\"origName\":\"" + fn + "\",\"ct\":\"application/javascript\",\"size\":0,\"isDirty\":true}", this.instanceID);
+        } else {
+          me.getUBCmp("attrCode").setReadOnly(true)
+          me.getUBCmp("attrModel").setReadOnly(true)
+          me.getUBCmp("attrEntity").setReadOnly(true)
         }
+        $App.connection.authorize().then(function(session){me.CRC32 = session.crc32})
     },
 
     onCodeChanged: function(field, newValue, oldValue, eOpts) {
+        if (this.isEditMode) {
+          throw new UB.UBError('To change form code rename both *-fm.js and *-fm.def files in folder "yourModel\\public\\forms"')
+        }
+        this.record.set('ID', this.CRC32(newValue))
         this.getUBCmp("attrFormDef").setOrigName(newValue.length > 0 ? newValue + ".def" : newValue);
         this.getUBCmp("attrFormCode").setOrigName(newValue.length > 0 ? newValue + ".js" : newValue);
     },
@@ -95,6 +102,7 @@ exports.formCode = {
            if (newCode !== me.getField('code').getValue()){
                me.getField('code').setValue(newCode);
            }
+           me.record.set('model', $App.connection.domain.entities[newValue].modelName)
            //field.nextSibling('commandbuilderentitytreepanel').setEntity(newValue);
        }
     },
@@ -130,32 +138,4 @@ exports.formCode = {
             aTab.down('ubdocument').checkContentChange();
         })
     },
-
-    JSLINT_OPTIONS: {
-        node: true,
-        bitwise: true,
-        "continue": true,
-        debug: true,
-        eqeq: true,
-        es5: true,
-        evil: true,
-        forin: true,
-        newcap: true,
-        nomen: true,
-        plusplus: true,
-        regexp: true,
-        undef: true,
-        unparam: true,
-        stupid: true,
-        todo: true,
-        vars: true,
-        white: true,
-        css: true,
-        cap: true,
-        on: true,
-        fragment: true,
-        browser: false,
-        passfail: false
-    },
-    STRICT_CHECK: '"use strict";\r\n/*global UB, Ext*/\r\n'
 };

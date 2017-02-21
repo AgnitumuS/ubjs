@@ -23,6 +23,9 @@
             "caption": "Form script",
             "description": "JS worm client logic"
         },
+	"model": {
+	  "caption": "Model"
+	},
         "entity": {
             "caption": "Entity",
             "description": "Entity code"

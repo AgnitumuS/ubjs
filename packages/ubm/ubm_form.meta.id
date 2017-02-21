@@ -22,6 +22,9 @@
             "caption": "Script Form",
             "description": "JS logika worm klien"
         },
+	"model": {
+	  "caption": "Model"
+	},
         "entity": {
             "caption": "Kesatuan",
             "description": "kode entitas"
