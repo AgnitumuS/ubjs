@@ -8,7 +8,7 @@ uses
   SpiderMonkey,
   SyNodePluginIntf,
   uUBMail in 'uUBMail.pas',
-  ubSMReadWrite,
+  SyNodeReadWrite,
   mORMot,
   SynCommons;
 

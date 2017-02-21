@@ -320,6 +320,7 @@ UB.i18nExtend({
     UserWithoutOrgEmployeeNotAllowed: 'İstifadəçinin ştat vahidi mövcud deyildir (ştat vahidi göstərilməyib). Giriş qadağandır.',
     //search form (UBPreFilter) 'Axtarış forması'
     search: 'Axtarış',
+    'Filter by': 'Filtr',
     //cancel: 'Ləğv et',
     filterForm: 'Axtarış forması',
     main: 'Əsas',

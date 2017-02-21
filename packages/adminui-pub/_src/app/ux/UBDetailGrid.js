@@ -1,4 +1,5 @@
-﻿/**
+﻿require('../view/EntityGridPanel')
+/**
  * Container for detail grid. Create grid, based on passed `cmdData` (the same as for showList) and add to `whereList`
  * condition `detailFields` values = `masterFields` values.
  *

@@ -119,5 +119,10 @@ App.registerEndpoint(adminUIEndpointName, function (req, resp) {
  * @param {THTTPResponse} resp
  */
 App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
-  generateIndexPage(req, resp, 'index-dev.mustache')
+  if (process.isDebug) {
+    generateIndexPage(req, resp, 'index-dev.mustache')
+  } else {
+    resp.writeEnd('Server working in production mode')
+	resp.statusCode = 404
+  }	
 }, false)

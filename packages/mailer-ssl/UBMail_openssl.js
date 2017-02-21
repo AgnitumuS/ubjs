@@ -43,8 +43,11 @@
  *
  * @module @unitybase/mailer-ssl
  */
+const dllName = 'UBMail.dll'
 const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'
-const binding = require(archPath + '/UBMail.dll')
+const path = require('path')
+const moduleName = path.join(__dirname, archPath, dllName)
+const binding = require(moduleName)
 var UBMail = module.exports;
 
 /**

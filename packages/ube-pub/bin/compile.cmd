@@ -1,3 +1,4 @@
+if not exist dist (mkdir dist) else (del .\dist\*.min.* /Q)
 cd "%~dp0.."
 uglifyjs GraphViewer.js UBMetaDiagram.js UBOrgChart.js Workflow.js ^
   -o ./dist/ube.min.js ^

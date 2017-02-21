@@ -1,4 +1,9 @@
-﻿/**
+﻿require('../../../core/UBCommand')
+require('../../../core/UBService')
+require('../reader/UBArray')
+require('../../../core/UBUtil')
+require('../../../core/UBAppConfig')
+/**
  * Файл: UB.ux.data.proxy.UBProxy.js
  * Автор: Игорь Ноженко
  * 
@@ -13,13 +18,13 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
 //extend: 'Ext.data.proxy.Ajax',
     alias: 'proxy.ubproxy',
 
-    requires: [
-        'UB.core.UBCommand',
-        'UB.core.UBService',
-        'UB.ux.data.reader.UBArray',
-        'UB.core.UBUtil',
-        'UB.core.UBAppConfig'
-    ],
+    // requires: [
+    //     'UB.core.UBCommand',
+    //     'UB.core.UBService',
+    //     'UB.ux.data.reader.UBArray',
+    //     'UB.core.UBUtil',
+    //     'UB.core.UBAppConfig'
+    // ],
 	
 	uses: [
 		'UB.view.ErrorWindow'

@@ -1,4 +1,4 @@
-/* global FileReader, CodeMirror */
+/* global FileReader, CodeMirror, BOUNDLED_BY_WEBPACK */
 /**
  * Thin wrapper around CodeMirror for JS editing.
  * @author UnityBase core team (pavel.mash) on 12.2016
@@ -14,12 +14,12 @@ Ext.define('UB.ux.UBCodeMirror', {
   codeMirrorInstance: undefined,
 
   getValue: function () {
-    return this.codeMirrorInstance ? this.codeMirrorInstance.getValue() : undefined
+    return this.codeMirrorInstance ? this.codeMirrorInstance.getValue() : this.rawValue
   },
 
   setValue: function (value) {
     this.rawValue = value
-    if (this.codeMirrorInstance) this.codeMirrorInstance.setValue(value)
+    if (this.codeMirrorInstance) this.codeMirrorInstance.setValue('' + value)
   },
 
   /**
@@ -45,8 +45,8 @@ Ext.define('UB.ux.UBCodeMirror', {
     }
 
     if (blobData) {
-      return new Promise((resolve, reject) => {
-        let reader = new FileReader()
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader()
         reader.addEventListener('loadend', function () {
           resolve(onDataReady(reader.result))
         })
@@ -57,7 +57,9 @@ Ext.define('UB.ux.UBCodeMirror', {
       })
     } else if (cfg.params) {
       return UB.core.UBService.getDocument(cfg.params)
-        .then((response) => onDataReady(response))
+        .then(function (response) {
+          return onDataReady(response)
+        })
     } else {
       return Promise.resolve(onDataReady(cfg.rawValue))
     }
@@ -72,28 +74,23 @@ Ext.define('UB.ux.UBCodeMirror', {
       var myElm = this.getEl().dom
       var me = this
 
-      // patch default CodeMirror style
-      var css = Ext.util.CSS.getRule('.CodeMirror')
-      if (css) css.style.height = '100%'
-      // var css = Ext.util.CSS.getRule('.CodeMirror-Scroll');
-      // if(css){
-      //     css.style.height = '100%';
-      // }
-
-      this.codeMirrorInstance = CodeMirror(myElm, {
-        mode: 'javascript',
-        value: this.rawValue || '',
-        // theme: theme,
-        lineNumbers: true,
-        readOnly: false,
-        highlightSelectionMatches: {annotateScrollbar: true},
-        matchBrackets: true,
-        foldGutter: true,
-        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-        extraKeys: { 'Ctrl-Space': 'autocomplete' }
-      })
-      this.codeMirrorInstance.on('change', function (editor, tc) {
-        me.checkChange()
+      System.import('@unitybase/codemirror-full').then((CodeMirror) => {
+        window.CodeMirror = CodeMirror
+        this.codeMirrorInstance = this.editor = CodeMirror(myElm, {
+          mode: 'javascript',
+          value: this.rawValue || '',
+          lineNumbers: true,
+          lint: _.assign({asi: true}, $App.connection.appConfig.uiSettings.adminUI.linter),
+          readOnly: false,
+          highlightSelectionMatches: {annotateScrollbar: true},
+          matchBrackets: true,
+          foldGutter: true,
+          gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+          extraKeys: { 'Ctrl-Space': 'autocomplete' }
+        })
+        this.codeMirrorInstance.on('change', function () {
+          me.checkChange()
+        })
       })
     }
   }

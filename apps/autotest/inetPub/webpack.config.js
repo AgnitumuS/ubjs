@@ -2,11 +2,10 @@
  * Created by pavel.mash on 04.09.2016.
  */
 var webpack = require('webpack')
+const path = require('path')
 
 module.exports = {
-  entry: {
-    app: './app.js'
-  },
+  entry: './app.js',
   output: {
     path: './',
     filename: 'app.min.js'
@@ -15,21 +14,21 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/,
+      // exclude: /node_modules/,
+      include: [/(@|ub)/],
       query: {
         presets: ['es2015']
       }
     }]
   },
-  devtool: 'source-map',
+  devtool: 'source-map'
+,
 
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
-	    'screw-ie8': true,
-            // compress: false
+      'screw-ie8': true,
       compress: {
         sequences: true,
         booleans: true,

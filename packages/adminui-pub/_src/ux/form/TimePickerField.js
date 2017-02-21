@@ -1,5 +1,5 @@
+require('./field/PadNumber')
 /**
- * 时间输入框, 三个整数框分别输入时,分,秒.
  * @author wangzilong
  * update Ext - 4.1 2012/04/27
  * update Ext - 4.2 2013/03/18 change alias name, change default value
@@ -13,7 +13,6 @@ Ext.define('Ext.ux.form.TimePickerField', {
                 'Ext.ux.form.field.PadNumber'
       ],
 
-      // 隐藏BaseField的输入框 , hidden basefield's input
       inputType: 'hidden',
 
       style: 'padding:4px 0 0 0;margin-bottom:0px',

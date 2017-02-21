@@ -1,4 +1,6 @@
-/**
+require('../ux/form/field/UBDate')
+require('./BaseWindow')
+  /**
  * Show dialog for user friendly select period.
  * Example:
  *
@@ -22,8 +24,8 @@ Ext.define('UB.view.SelectPeriodDialog', {
 
     requires: [
         'Ext.form.RadioGroup',
-        'UB.ux.form.field.UBDate',
-        'UB.view.BaseWindow',
+        // 'UB.ux.form.field.UBDate',
+        // 'UB.view.BaseWindow',
         'Ext.panel.Panel',
         'Ext.form.field.Checkbox',
         'Ext.form.field.ComboBox',

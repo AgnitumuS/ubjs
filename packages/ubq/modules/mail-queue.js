@@ -32,6 +32,7 @@ module.exports.queueMail = function (config) {
     bodyType: config.bodyType || UBMail.TubSendMailBodyType.HTML,
     subject: config.subject
   }
+  if (config.attaches) console.warn('Invalid parameter "attaches" for queueMail. Use "attachments" instead')
   if (config.attachments) {
     msgCmd.attaches = config.attachments
   }

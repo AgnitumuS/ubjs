@@ -1,3 +1,4 @@
+require('@unitybase/ubs/public/MessageBar.js')
 $App.on('buildMainMenu', function (items) {
   // items.length = 0;
   items.push(

@@ -108,7 +108,7 @@ function UBConnection (options) {
    */
   this.getDomainInfo = function (isExtended) {
     if (!_domain) {
-            // authorize connection to get a valid user name
+      // authorize connection to get a valid user name
       if (this.authNeed) this.authorize(false)
 
       let domainData = this.get('getDomainInfo', {
@@ -401,7 +401,7 @@ UBConnection.prototype.xhr = function (options) {
   if (status >= 200 && status < 300) {
     if (options.responseType === 'arraybuffer') {
       result = resp.read('bin')
-    } else if (((resp.headers('content-type') || '').indexOf('json') >= 0) && !options.simpleTextResult) {
+    } else if (((resp.headers['content-type'] || '').indexOf('json') >= 0) && !options.simpleTextResult) {
       result = JSON.parse(resp.read())
     } else {
       result = resp.read() // return string readed as UTF-8
@@ -419,7 +419,7 @@ UBConnection.prototype.xhr = function (options) {
       me._inRelogin = false
     }
   } else {
-    if ((status === 500) && ((resp.headers('content-type') || '').indexOf('json') >= 0)) { // server report error and body is JSON
+    if ((status === 500) && ((resp.headers['content-type'] || '').indexOf('json') >= 0)) { // server report error and body is JSON
       let respObj = JSON.parse(resp.read())
       if (respObj.errMsg) {
         throw new Error('Server error: "' + respObj.errMsg)

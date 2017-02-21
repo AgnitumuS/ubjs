@@ -7,7 +7,7 @@ if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
     console.debug('SCHEDULER: disabled for command line startup')
   } else if (App.serverConfig.application.schedulers && (App.serverConfig.application.schedulers.enabled === false)) {
     App.globalCachePut(GLOBAL_CACHE_INITIALIZED_ENTRY, 'yes')
-    console.warn('SCHEDULER: disabled in config')
+    console.warn('SCHEDULER: disabled in application config (application.schedulers.enabled === false)')
   } else {
     App.once('domainIsLoaded', startSchedulers)
   }
@@ -93,7 +93,21 @@ function onWorkerError (message, exception) {
  * reference from this function to anything from a module is NOT ALLOWED
  */
 function runSchedulersCircle (message) {
-  const UBConnection = require('UBConnection')
+  // boilerplate to stop debuger inside Worker 
+  // put breakpoint on line  let p = 0 and change a value of i to 2 to go forward
+  /* let i = 1
+  while (i===1) { 
+    let p = 0
+  }
+  */
+  var Module = require('module')
+  var parent = new Module('internal/preload', null)
+  // TODO this hack is temporary solution for require.resolve. 
+  // The problem here: we lost a folder for where runSchedulersCircle and replace it with process.cwd(), 
+  // so all modules what required inside worker must be either global or in application node_modules folder
+  parent.paths = Module._nodeModulePaths(process.cwd())
+  const UBConnection = parent.require('@unitybase/base/UBConnection')
+  const cron = parent.require('node-cron')
   const serverURL = message.serverURL
   const config = message.config
   let jobs = [], job
@@ -124,17 +138,15 @@ function runSchedulersCircle (message) {
 
   console.debug('SCHEDULER: start initializeSchedulers..')
 
-  const CronJob = require('node-cron').CronJob
-
   console.debug('SCHEDULER: Got a init config %j', config)
   for (let i = 0, l = config.length; i < l; i++) {
     console.debug('SCHEDULER: add a job for', config[i].name, 'scheduled as', config[i].cron)
-    job = new CronJob(
+    job = cron.schedule(
             config[i].cron,
             safeSendAsyncRequest.bind(null, i),
-            cronJobStopped.bind(null, i),
-            true, /* Start the job right now */
-            '' /* local timezone */
+            // OBSOLETE cronJobStopped.bind(null, i),
+            true /* Start the job right now */
+            // OBSOLETE '' /* local timezone */
         )
     jobs.push(job)
   }

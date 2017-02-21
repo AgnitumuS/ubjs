@@ -1,6 +1,6 @@
 {
   "name": "@ub-e/dses",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "description": "DocuSign ESign integration",
   "config": {
     "ubmodel": "DSES"
@@ -16,15 +16,14 @@
   "dependencies": {
     "docusign-esign": "^2.0.3",
     "xml2js": "^0.4.17",
-    "@unitybase/base": "^4.0.7",
-    "@unitybase/ub": "^4.0.8",
-    "@unitybase/uba": "^4.0.7",
-    "@unitybase/ubs": "^4.0.7",
-    "@unitybase/ubq": "^4.0.7"
+    "@unitybase/base": "^4.0.11",
+    "@unitybase/ub": "^4.0.13",
+    "@unitybase/uba": "^4.0.12",
+    "@unitybase/ubs": "^4.0.12",
+    "@unitybase/ubq": "^4.0.12"
   },
   "devDependencies": {
-    "@unitybase/ubcli": "^1.0.7",
-    "@unitybase/stubs": "^4.0.6"
+    "@unitybase/stubs": "^4.0.7"
   },
   "keywords": [
     "UnityBase",

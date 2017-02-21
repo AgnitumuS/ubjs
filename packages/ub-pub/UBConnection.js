@@ -197,6 +197,18 @@ function UBConnection (connectionParams) {
   this.cache = null
 
   /**
+   * Store a cached entities request.
+   *  - keys is calculated from attributes using this.cacheKeyCalculate
+   *  - values is a xhr promise
+   *  UBConnection use this map internally to prevent duplicate requests to server for cached entities data,
+   *  for example in case we put several combobox on form with the same cached entity
+   * TODO - rewrite to WeekMap when IE 11 become popular
+   * @private
+   * @type {Object<string, Promise>}
+   */
+  this._pendingCachedEntityRequests = {}
+
+  /**
    * Last successful login name. Filled AFTER first 401 response
    * @type {String}
    */
@@ -272,10 +284,10 @@ function UBConnection (connectionParams) {
     let me = this
     if (currentSession) return Promise.resolve(currentSession)
 
-    if (this._perningAuthPromise) return this._perningAuthPromise
+    if (this._pendingAuthPromise) return this._pendingAuthPromise
 
     this.exchangeKeysPromise = null
-    let pendedAuth = this._perningAuthPromise = requestAuthParams(this, isRepeat)
+    this._pendingAuthPromise = requestAuthParams(this, isRepeat)
       .then(function (authParams) {
         return me.doAuth(authParams).then(function (session) {
           currentSession = session
@@ -284,7 +296,7 @@ function UBConnection (connectionParams) {
            * @event authorized
            */
           me.emit('authorized', me, session, authParams)
-          me._perningAuthPromise = null
+          me._pendingAuthPromise = null
           return session
         }).catch(function (reason) {
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
@@ -294,11 +306,11 @@ function UBConnection (connectionParams) {
              */
             me.emit('authorizationFail', reason)
           }
-          me._perningAuthPromise = null
+          me._pendingAuthPromise = null
           return me.authorize(true)
         })
       })
-    return pendedAuth
+    return this._pendingAuthPromise
   }
 
     /**
@@ -427,7 +439,7 @@ function UBConnection (connectionParams) {
 
     return me.pki().then(function (pkiInit) {
       pki = pkiInit
-            // noinspection JSCheckFunctionSignatures
+      // noinspection JSCheckFunctionSignatures
       return pki.readPK(me)
     }).then(function (certInfo) {
       let reqData = certInfo.ownIITCert
@@ -605,14 +617,14 @@ function UBConnection (connectionParams) {
 
   this.recordedXHRs = []
     /**
-     * Set this to `true` to memorize all requests to this.recordedXHRs array (for debug only!).
+     * Set it to `true` for memorize all requests to recordedXHRs array (for debug only!).
      * @type {Boolean}
      */
   this.recorderEnabled = false
 }
 
 /**
- * Initialize client cache. Called from application after obtain userDbVersion (in case of Ext-based client called from {@link UB.core.UBApp#launch}.
+ * Initialize client cache. Called from application after obtain userDbVersion
  *
  * - recreate Indexed Db database if version changed
  * - create instance of UBCache (accessible via {@link UBConnection#cache UBConnection.cache} property) and clear UBCache.SESSION store.
@@ -621,22 +633,20 @@ function UBConnection (connectionParams) {
  * @returns {Promise}
  */
 UBConnection.prototype.initCache = function (userDbVersion) {
-  let me = this
-    /**
-     * @property {UBCache} cache
-     * @readonly
-     * @type {UBCache}
-     */
-  me.cache = new UBCache(me.baseURL, userDbVersion)
-    /**
-     * List of keys, requested in the current user session.
-     * Cleared each time login done
-     * @protected
-     * @property {Object} cachedSessionEntityRequested
-     */
-  me.cachedSessionEntityRequested = {}
-    // clear use session store
-  return me.cache.clear(UBCache.SESSION)
+  /**
+   * @property {UBCache} cache
+   * @readonly
+   * @type {UBCache}
+   */
+  this.cache = new UBCache(this.baseURL, userDbVersion)
+  /**
+   * List of keys, requested in the current user session.
+   * Cleared each time login done
+   * @property {Object} cachedSessionEntityRequested
+   */
+  this.cachedSessionEntityRequested = {}
+  // clear use session store
+  return this.cache.clear(UBCache.SESSION)
 }
 
 /**
@@ -646,8 +656,7 @@ UBConnection.prototype.initCache = function (userDbVersion) {
  * @returns {String}
  */
 UBConnection.prototype.cacheKeyCalculate = function (root, attributes) {
-  let me = this
-  let keyPart = [me.userLogin().toLowerCase(), me.userLang(), root]
+  let keyPart = [this.userLogin().toLowerCase(), this.userLang(), root]
   if (Array.isArray(attributes)) {
     keyPart.push(MD5(JSON.stringify(attributes)).toString())
   }
@@ -666,24 +675,22 @@ UBConnection.prototype.cacheKeyCalculate = function (root, attributes) {
  */
 UBConnection.prototype.cacheOccurrenceRefresh = function (root, cacheType) {
   let me = this
-  let cacheKey, machKeys, machRe
   let promise = Promise.resolve(true)
-  let domain, mixin, domainMixin
 
   if (cacheType === UBCache.cacheTypes.Session || cacheType === UBCache.cacheTypes.SessionEntity) {
-    domain = this.domain.get(root)
-    if (domain && domain.hasMixin('unity')) {
-      mixin = domain.mixin('unity')
-      domainMixin = this.domain.get(mixin.entity)
-      if (domainMixin && (mixin.entity !== root) && (domainMixin.cacheType !== UBCache.cacheTypes.None)) {
-        promise = promise.then(function () {
-          me.cacheOccurrenceRefresh(mixin.entity, domainMixin.cacheType)
-        })
+    let entity = this.domain.get(root)
+    if (entity && entity.hasMixin('unity')) {
+      let unityMixin = entity.mixin('unity')
+      let unityEntity = this.domain.get(unityMixin.entity)
+      if (unityEntity && (unityMixin.entity !== root) && (unityEntity.cacheType !== UBCache.cacheTypes.None)) {
+        promise = promise.then(
+          () => me.cacheOccurrenceRefresh(unityMixin.entity, unityEntity.cacheType)
+        )
       }
     }
-    cacheKey = me.cacheKeyCalculate(root)
-    machRe = new RegExp('^' + cacheKey)
-    machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
+    let cacheKey = me.cacheKeyCalculate(root)
+    let machRe = new RegExp('^' + cacheKey)
+    let machKeys = Object.keys(me.cachedSessionEntityRequested).filter(function (item) {
       return machRe.test(item)
     })
     machKeys.forEach(function (key) {
@@ -691,7 +698,7 @@ UBConnection.prototype.cacheOccurrenceRefresh = function (root, cacheType) {
     })
     if (cacheType === UBCache.cacheTypes.Session) {
       promise = promise.then(function () {
-        me.cache.removeIfMach(machRe, UBCache.SESSION)
+        return me.cache.removeIfMach(machRe, UBCache.SESSION)
       })
     }
   }
@@ -765,7 +772,7 @@ UBConnection.prototype.exchangeKeys = function (session) {
   if (!me.exchangeKeysPromise) {
     me.exchangeKeysPromise = this.doKeyExchange(session)
   } else {
-        // check session key is near to expire. do key exchange if yes
+    // check session key is near to expire. do key exchange if yes
     if (me.exchangeKeysPromise.isFulfilled() && me.encryptionKeyLifetime > 0) {
       doneAt = me.exchangeKeysPromise.valueOf().doneTime
       now = (new Date()).getTime()
@@ -865,7 +872,7 @@ UBConnection.prototype.xhr = function (config) {
       })
     }
     promise = promise.then(function () {
-            // we must repeat authorize to obtain new session key ( because key exchange may happens before)
+      // we must repeat authorize to obtain new session key ( because key exchange may happens before)
       return me.authorize().then(/** @param {UBSession} session */ function (session) {
         let head = session.authHeader()
         if (head) cfg.headers.Authorization = head // do not add header for anonymous session
@@ -878,7 +885,7 @@ UBConnection.prototype.xhr = function (config) {
         if (me.isAuthorized()) {
           me.authorizationClear()
         }
-                // reason.config.url: "/bla-bla/logout"
+        // reason.config.url: "/bla-bla/logout"
         if (reason.config.url && /\/logout/.test(reason.config.url)) {
           me.lastLoginName = ''
         } else {
@@ -894,10 +901,10 @@ UBConnection.prototype.xhr = function (config) {
         if (/<<<.*>>>/.test(errMsg)) { // this is custom error
           errMsg = i18n(errMsg.match(/<<<(.*)>>>/)[1]) // extract rear message and translate
         }
-                /**
-                 * Fired for {@link UBConnection} instance in case user password is expired. The only valid endpoint after this is `changePassword`
-                 * @event passwordExpired
-                 */
+        /**
+         * Fired for {@link UBConnection} instance in case user password is expired. The only valid endpoint after this is `changePassword`
+         * @event passwordExpired
+         */
         if ((errCode === 72) && me.emit('passwordExpired')) {
           throw new ubUtils.UBAbortError()
         }
@@ -987,22 +994,18 @@ UBConnection.prototype.getAppInfo = function () {
 
 /**
  * Retrieve domain information from server. Promise resolve instance of UBDomain.
- * @param {Function} [callBack] This parameter will be deleted in next version
  * @returns {Promise}
  */
-UBConnection.prototype.getDomainInfo = function (callBack) {
+UBConnection.prototype.getDomainInfo = function () {
   let me = this
   return me.get('getDomainInfo', {params: {
     v: 4, userName: this.userLogin()}
-    }).then(function (response) {
-      let result = response.data
-      let domain = new UBDomain(result)
-      me.domain = domain
-      if (callBack) {
-        callBack(result, domain)
-      }
-      return domain
-    })
+  }).then(function (response) {
+    let result = response.data
+    let domain = new UBDomain(result)
+    me.domain = domain
+    return domain
+  })
 }
 
 /**
@@ -1070,22 +1073,24 @@ UBConnection.prototype.doKeyExchange = function (session) {
  * @private
  */
 UBConnection.prototype.processBuffer = function processBuffer () {
-  let me = this
-  let bufferCopy = me._bufferedRequests
+  let bufferCopy = this._bufferedRequests
   // get ready to new buffer queue
-  me._bufferTimeoutID = 0
-  me._bufferedRequests = []
+  this._bufferTimeoutID = 0
+  this._bufferedRequests = []
 
-  me.post('ubql', _.map(bufferCopy, 'request')).then(function (responses) {
-    // we expect responses in order we send requests to server
-    bufferCopy.forEach(function (bufferedRequest, num) {
-      bufferedRequest.deferred.resolve(responses.data[num])
-    })
-  }, function (failReason) {
-    bufferCopy.forEach(function (bufferedRequest) {
-      bufferedRequest.deferred.reject(failReason)
-    })
-  })
+  this.post('ubql', _.map(bufferCopy, 'request')).then(
+    (responses) => {
+      // we expect responses in order we send requests to server
+      bufferCopy.forEach(function (bufferedRequest, num) {
+        bufferedRequest.deferred.resolve(responses.data[num])
+      })
+    },
+    (failReason) => {
+      bufferCopy.forEach(function (bufferedRequest) {
+        bufferedRequest.deferred.reject(failReason)
+      })
+    }
+  )
 }
 
 /**
@@ -1122,7 +1127,7 @@ UBConnection.prototype.processBuffer = function processBuffer () {
  */
 UBConnection.prototype.query = function query (ubq, allowBuffer) {
   let me = this
-  if (allowBuffer === undefined || allowBuffer === false || !BUFFERED_DELAY) {
+  if (!allowBuffer || !BUFFERED_DELAY) {
     return me.post('ubql', [ubq]).then(function (response) {
       return response.data[0]
     })
@@ -1157,21 +1162,19 @@ UBConnection.prototype.run = UBConnection.prototype.query
  * @returns {*}
  */
 UBConnection.prototype.convertResponseDataToJsTypes = function (serverResponse) {
-  let convertRules, rulesLen, dataLen, data, d, r, column
   if (serverResponse.entity && // fieldList &&  serverResponse.fieldList
       serverResponse.resultData &&
       !serverResponse.resultData.notModified &&
       serverResponse.resultData.fields &&
       serverResponse.resultData.data && serverResponse.resultData.data.length
   ) {
-    convertRules = this.domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
-    rulesLen = convertRules.length
-    data = serverResponse.resultData.data
-    dataLen = data.length
+    let convertRules = this.domain.get(serverResponse.entity).getConvertRules(serverResponse.resultData.fields)
+    let rulesLen = convertRules.length
+    let data = serverResponse.resultData.data
     if (rulesLen) {
-      for (d = 0; d < dataLen; d++) {
-        for (r = 0; r < rulesLen; r++) {
-          column = convertRules[r].index
+      for (let d = 0, dataLen = data.length; d < dataLen; d++) {
+        for (let r = 0; r < rulesLen; r++) {
+          let column = convertRules[r].index
           data[d][column] = convertRules[r].convertFn(data[d][column])
         }
       }
@@ -1375,33 +1378,7 @@ UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
  */
 UBConnection.prototype.select = function (serverRequest, bypassCache) {
   let me = this
-  let cacheTypes = UBCache.cacheTypes
-  let serverRequestWOLimits = {}
-  let dataPromise, cKey, cacheStoreName
-  /**
-   *
-   * @param {Object} serverResponse
-   * @param {Object} serverResponse.resultData       miscmimi
-   * @param {Boolean} [serverResponse.resultData.notModified]
-   * @param {String} storeName
-   * @returns {*}
-   */
-  let processVersionedResponse = function (serverResponse, storeName) {
-    if (serverResponse.resultData.notModified) {
-              // in case we refresh cachedSessionEntityRequested or just after login - put version to cachedSessionEntityRequested
-      me.cachedSessionEntityRequested[cKey] = serverResponse.version
-      return me.cache.get(cKey, storeName)
-    } else {
-      return me.cache.put([
-                  {key: cKey + ':v', value: serverResponse.version},
-                  {key: cKey, value: serverResponse.resultData}
-      ], storeName)
-                  .then(function () {
-                    me.cachedSessionEntityRequested[cKey] = serverResponse.version
-                    return serverResponse.resultData
-                  })
-    }
-  }
+  let dataPromise
 
   bypassCache = bypassCache || (serverRequest.__mip_disablecache === true)
   let cacheType = bypassCache || serverRequest.ID || serverRequest.bypassCache
@@ -1415,10 +1392,10 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
 //        if (idInWhere(serverRequest.whereList)){
 //            cacheType = cacheTypes.None;
 //        }
-  if (cacheType === cacheTypes.None) { // where & order is done by server side
-    dataPromise = me.query(serverRequest, true)
-      .then(me.convertResponseDataToJsTypes.bind(me))
-      .then(function (response) {
+  if (cacheType === UBCache.cacheTypes.None) { // where & order is done by server side
+    dataPromise = this.query(serverRequest, true)
+      .then(this.convertResponseDataToJsTypes.bind(this))
+      .then(response => {
         let responseWithTotal = {}
         ubUtils.apply(responseWithTotal, response)
         if (response.__totalRecCount) {
@@ -1431,47 +1408,94 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
             let opt = serverRequest.options || {}
             let start = opt.start ? opt.start : 0
             let limit = opt.limit || 0
-                  // in case we fetch less data then requested - this is last page and we know total
+            // in case we fetch less data then requested - this is last page and we know total
             responseWithTotal.total = (resRowCount < limit) ? start + resRowCount : -1
           }
         }
         return responseWithTotal
       })
   } else { // where & order is done by client side
-        // TODO check all filtered attribute is present in whereList - rewrite me.checkFieldList(operation);
-    cKey = me.cacheKeyCalculate(serverRequest.entity, serverRequest.fieldList)
-    cacheStoreName = (cacheType === cacheTypes.Session) ? UBCache.SESSION : UBCache.PERMANENT
-        // retrieve data either from cache or from server
-    dataPromise = me.cache.get(cKey + ':v', cacheStoreName).then(function (version) {
-      let cachedPromise
-      if (!version || // no data in cache or invalid version
-          // or must re-validate version
-          (version && cacheType === cacheTypes.Entity) ||
-          // or SessionEntity cached not this current cache version
-          (version && cacheType === cacheTypes.SessionEntity && me.cachedSessionEntityRequested[cKey] !== version)
-      ) {
-        ubUtils.apply(serverRequestWOLimits, serverRequest)
-        delete serverRequestWOLimits.whereList
-        delete serverRequestWOLimits.orderList
-        delete serverRequestWOLimits.options
-        serverRequestWOLimits.version = version || '-1'
-        cachedPromise = me.query(serverRequestWOLimits, true)
-          .then(me.convertResponseDataToJsTypes.bind(me))
-          .then(function (response) {
-            return processVersionedResponse(response, cacheStoreName)
-          })
-      } else { // retrieve data from cache
-        cachedPromise = me.cache.get(cKey, cacheStoreName)
-      }
-      return cachedPromise
-    }).then(function (cacheResponse) {
-           // noinspection JSCheckFunctionSignatures
-      return me.doFilterAndSort(cacheResponse, serverRequest)
-    })
+    return this._doSelectForCacheableEntity(serverRequest, cacheType)
   }
   return dataPromise
 }
 
+/**
+ * @private
+ * @param {Object} serverRequest    Request to execute
+ * @param {UBCache.cacheTypes} cacheType
+ */
+UBConnection.prototype._doSelectForCacheableEntity = function (serverRequest, cacheType) {
+// TODO check all filtered attribute is present in whereList - rewrite me.checkFieldList(operation);
+  let cKey = this.cacheKeyCalculate(serverRequest.entity, serverRequest.fieldList)
+  let cacheStoreName = (cacheType === UBCache.cacheTypes.Session) ? UBCache.SESSION : UBCache.PERMANENT
+  // retrieve data either from cache or from server
+  return this.cache.get(cKey + ':v', cacheStoreName).then((version) => {
+    let cachedPromise
+    if (!version || // no data in cache or invalid version
+      // or must re-validate version
+      (version && cacheType === UBCache.cacheTypes.Entity) ||
+      // or SessionEntity cached not for current cache version
+      (version && cacheType === UBCache.cacheTypes.SessionEntity && this.cachedSessionEntityRequested[cKey] !== version)
+    ) {
+      // remove where order & limits
+      let serverRequestWOLimits = {}
+      Object.keys(serverRequest).forEach(function (key) {
+        if (['whereList', 'orderList', 'options'].indexOf(key) === -1) {
+          serverRequestWOLimits[key] = serverRequest[key]
+        }
+      })
+      serverRequestWOLimits.version = version || '-1'
+      let pendingCachedEntityRequest = this._pendingCachedEntityRequests[cKey]
+        ? this._pendingCachedEntityRequests[cKey]
+        : this._pendingCachedEntityRequests[cKey] = this.query(serverRequestWOLimits, true)
+      cachedPromise = pendingCachedEntityRequest
+        .then(  // delete pending request in any case
+          (data) => {
+            delete this._pendingCachedEntityRequests[cKey]
+            return data
+          },
+          (reason) => {
+            delete this._pendingCachedEntityRequests[cKey]
+            throw reason
+          }
+        )
+        .then(this.convertResponseDataToJsTypes.bind(this))
+        .then(response => this._cacheVersionedResponse(response, cacheStoreName, cKey))
+    } else { // retrieve data from cache
+      cachedPromise = this.cache.get(cKey, cacheStoreName)
+    }
+    return cachedPromise
+  }).then(cacheResponse => {
+    return this.doFilterAndSort(cacheResponse, serverRequest)
+  })
+}
+
+/**
+ * Put response to cache
+ * @private
+ * @param {Object} serverResponse
+ * @param {Object} serverResponse.resultData
+ * @param {Boolean} [serverResponse.resultData.notModified]
+ * @param {String} storeName
+ * @param {String} cKey Cache key
+ * @returns {*}
+ */
+UBConnection.prototype._cacheVersionedResponse = function (serverResponse, storeName, cKey) {
+  if (serverResponse.resultData.notModified) {
+    // in case we refresh cachedSessionEntityRequested or just after login - put version to cachedSessionEntityRequested
+    this.cachedSessionEntityRequested[cKey] = serverResponse.version
+    return this.cache.get(cKey, storeName)
+  } else {
+    return this.cache.put([
+      {key: cKey + ':v', value: serverResponse.version},
+      {key: cKey, value: serverResponse.resultData}
+    ], storeName).then(() => {
+      this.cachedSessionEntityRequested[cKey] = serverResponse.version
+      return serverResponse.resultData
+    })
+  }
+}
 /**
  * Alias to {@link LocalDataStore#selectResultToArrayOfObjects LocalDataStore.selectResultToArrayOfObjects}
  *
@@ -1495,10 +1519,7 @@ UBConnection.selectResultToArrayOfObjects = LocalDataStore.selectResultToArrayOf
  * @returns {Promise} Resolved to response.data
  */
 UBConnection.prototype.runTrans = function run (ubRequestArray) {
-  let me = this
-  return me.post('ubql', ubRequestArray).then(function (response) {
-    return response.data
-  })
+  return this.post('ubql', ubRequestArray).then((response) => response.data)
 }
 
 const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty', 'forceMime', 'fileName', 'store', 'revision']
@@ -1568,10 +1589,7 @@ UBConnection.prototype.getDocument = function (params, options) {
   } else {
     reqParams.params = params
   }
-  return this.xhr(reqParams)
-        .then(function (response) {
-          return response.data
-        })
+  return this.xhr(reqParams).then((response) => response.data)
 }
 
 /**
@@ -1592,22 +1610,16 @@ UBConnection.prototype.crc32 = UBSession.prototype.crc32
  * Log out user from server
  */
 UBConnection.prototype.logout = function () {
-  let me = this
-  if (me.isAuthorized()) {
-    return me.post('logout', {})
-            .then(function () {
-              return new Promise(function (resolve) {
-                setTimeout(function () {
-                  if (me._pki) {
-                    me._pki.closePK()
-                  }
-                  resolve(true)
-                }, 20)
-              })
-            })
-  } else {
-    return Promise.resolve(true)
+  if (!this.isAuthorized()) return Promise.resolve(true)
+
+  let logoutPromise = this.post('logout', {})
+  if (this._pki) { // unload encryption private key
+    let me = this
+    logoutPromise.then(
+      () => new Promise((resolve) => { setTimeout(() => { me._pki.closePK(); resolve(true) }, 20) })
+    )
   }
+  return logoutPromise
 }
 
 /**
@@ -1768,12 +1780,16 @@ function connect (cfg) {
       themeName: 'UBGrayTheme',
       userDbVersion: null,
       defaultLang: 'en',
-      supportedLanguages: ['en']
+      supportedLanguages: ['en'],
+      uiSettings: {}
     })
     // create ubNotifier after retrieve appInfo (we need to know supported WS protocols)
     connection.ubNotifier = new UBNotifierWSProtocol(connection)
     // try to determinate default user language
-    let preferredLocale = LDS && LDS.getItem(connection.appName + 'preferredLocale')
+    let preferredLocale = null
+    if (LDS) {
+      preferredLocale = LDS.getItem(connection.appName + 'preferredLocale')
+    }
     if (!preferredLocale) {
       preferredLocale = connection.appConfig.defaultLang
     }
@@ -1794,7 +1810,11 @@ function connect (cfg) {
     let myLocale = connection.userData('lang')
     LDS && LDS.setItem(connection.appName + 'preferredLocale', myLocale)
     connection.preferredLocale = myLocale
-    return connection.getDomainInfo(config.onGotApplicationDomain)
+    let domainPromise = connection.getDomainInfo()
+    if (config.onGotApplicationDomain) {
+      domainPromise.then((domain) => config.onGotApplicationDomain(domain))
+    }
+    return domainPromise
   }).then(function (domain) {
     connection.domain = domain
     return connection

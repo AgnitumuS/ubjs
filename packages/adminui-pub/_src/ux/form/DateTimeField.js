@@ -1,3 +1,5 @@
+require('../DateTimePicker')
+
 Ext.define('Ext.ux.form.DateTimeField', {
       extend: 'Ext.form.field.Date',
       alias: 'widget.datetimefield',

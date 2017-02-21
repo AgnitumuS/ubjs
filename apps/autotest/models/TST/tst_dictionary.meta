@@ -4,7 +4,7 @@
 	"connectionName": "",
 	//"idGenerator": "customGenBy1",
 	"sqlAlias": "tdict",
-	"cacheType": "None",
+	"cacheType": "Session",
 	"descriptionAttribute": "caption",
 	"attributes": {
 		"code":	{

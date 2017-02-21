@@ -314,6 +314,7 @@ UB.i18nExtend({
     UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
     //search form (UBPreFilter)
     search: 'Search',
+    'Filter by': 'Filter by',
     filterForm: 'Search form',
     main: 'Main',
     other: 'Other',
@@ -513,7 +514,7 @@ UB.i18nExtend({
     "selectElements": "Select items",
     "selectAll": "Select all",
     "selectAllOnPage": "Select all on page",
-    "preViewInPDF": "ПPreview in PDF",
+    "preViewInPDF": "Preview in PDF",
     "ubErrTheServerHasExceededMaximumNumberOfConnections": "Server has exceed  maximum number of connections",
     "ubErrFtsForAppDisabled": "fts for application is disabled",
     UbPreFilterMainGroup: 'by attributes',

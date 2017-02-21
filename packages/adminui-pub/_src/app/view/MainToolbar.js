@@ -1,4 +1,13 @@
-﻿/**
+﻿require('../core/UBAppConfig')
+require('../core/UBUtil')
+require('../core/UBLocalStorageManager')
+require('./ToolbarWidget')
+require('./ToolbarMenu')
+require('./ToolbarUser')
+require('./ToolbarMenuButton')
+require('./FullTextSearchWidget')
+
+/**
  * Main window toolbar container.
  * Content of toolbar is added inside `buildMainMenu` event handler(s).
  * Default toolbar content created in UBM/public/initModel.js
@@ -8,17 +17,17 @@
 Ext.define("UB.view.MainToolbar", {
     extend: "Ext.toolbar.Toolbar",
     alias: "widget.maintoolbar",
-    requires: [
-        "UB.core.UBApp",
-        "UB.core.UBAppConfig",
-        "UB.core.UBUtil",
-        "UB.core.UBLocalStorageManager",
-        'UB.view.ToolbarWidget',
-        'UB.view.ToolbarMenu',
-        'UB.view.ToolbarUser',
-        'UB.view.ToolbarMenuButton',
-        'UB.view.FullTextSearchWidget'
-    ],
+    // requires: [
+    //     "UB.core.UBApp",
+    //     "UB.core.UBAppConfig",
+    //     "UB.core.UBUtil",
+    //     "UB.core.UBLocalStorageManager",
+    //     'UB.view.ToolbarWidget',
+    //     'UB.view.ToolbarMenu',
+    //     'UB.view.ToolbarUser',
+    //     'UB.view.ToolbarMenuButton',
+    //     'UB.view.FullTextSearchWidget'
+    // ],
     cls: 'ub-header-menu-container',
 
     initComponent: function() {
