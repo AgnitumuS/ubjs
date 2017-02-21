@@ -26,6 +26,10 @@
             "caption": "Forma skripti",
             "description": "Formanın müştəri mlogikası ilə JS"
         },
+	"model":
+	{
+	  "caption": "Model"
+	},
         "entity": {
             "caption": "Maddə",
             "description": "Maddənin kodu",
