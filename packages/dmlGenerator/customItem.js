@@ -27,6 +27,10 @@ class CustomItem {
      * @class CustomItem
      * @property {boolean} isSimple
      */
+    /**
+     * @class CustomItem
+     * @property {DataSource} dataSource
+     */
     // todo
     this.isSimple = reSimpleExpression.test(expression)
     this.expression = expression
@@ -37,7 +41,7 @@ class CustomItem {
       /**
        * @type {DataSource}
        */
-      let curDs = dataSource
+      this.dataSource = dataSource
       // todo check isAlready parsed
       const predicates = expressionPart.split('.')
       /**
@@ -47,22 +51,21 @@ class CustomItem {
       let i
       for (i = 0; i < predicates.length - 1; i++) {
         const predicate = predicates[i]
-        // todo curDs cache
+        // todo this.dataSource cache
         if (predicate.indexOf('@') !== -1) {
           // todo @
           break
         } else {
-          attribute = curDs.entity.attributes[predicate]
+          attribute = this.dataSource.entity.attributes[predicate]
         }
         if (attribute.dataType === App.domainInfo.ubDataTypes.Many) {
           // todo many atribute
         } else {
-          curDs = curDs.addChild(attribute)
+          this.dataSource = this.dataSource.addChild(attribute)
         }
       }
-      expressionParts[expressionPartIndex] = `${curDs.alias}.${predicates[i]}`
+      expressionParts[expressionPartIndex] = `${this.dataSource.alias}.${predicates[i]}`
     }
-    this.childDS = {}
     /**
      * @class CustomItem
      * @public
