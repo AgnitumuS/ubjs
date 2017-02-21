@@ -44,9 +44,8 @@ class SqlBuilder {
   static biuldSelectSql (entity, ubql, isExternal) {
     const params = []
     const dataSource = new DataSource(entity)
-    const {fieldList, whereList} = ubql
-    const columns = new ColumnList(fieldList, dataSource, isExternal)
-    const where = new WhereList(whereList, dataSource, isExternal, params)
+    const columns = new ColumnList(ubql, dataSource, isExternal)
+    const where = new WhereList(ubql, dataSource, isExternal, params)
 
     return {sql: columns.sql + dataSource.sql + where.sql, params: params}
   }

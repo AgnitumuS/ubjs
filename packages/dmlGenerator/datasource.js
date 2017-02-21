@@ -86,7 +86,7 @@ class DataSource {
      * @property {string} _sql
      */
     if (!this._sql) {
-      const res = [this.ownSQL]
+      const res = [this._sqlInternal]
       for (let child of this.childDS.values()) {
         res.push(child.sql)
       }
@@ -94,7 +94,7 @@ class DataSource {
     }
     return this._sql
   }
-  get ownSQL () {
+  get _sqlInternal () {
     return ` FROM ${this.entity.name} AS ${this.alias}`
   }
   /**
@@ -137,12 +137,27 @@ class JoinDS extends DataSource {
      */
     // todo
     this.joinType = 'INNER'
+    /**
+     * @class JoinDS
+     * @public
+     * @property {WhereItem[]} whereItems
+     */
+    this.whereItems = []
   }
-  get ownSQL () {
+  get _sqlInternal () {
     const associationAttr = this.attribute.dataType === App.domainInfo.ubDataTypes.Enum ? enumCodeAttr
       : (this.attribute.associationAttr || idAttr)
-    return `${this.joinType} JOIN ${this.entityName} ${this.alias} ON ${this.alias}.${associationAttr}=${this.parent.alias}.${this.attribute.name}` +
-      (this.attribute.enumGroup ? ` AND ${this.alias}.${enumGroupAttr}="${this.attribute.enumGroup}"` : '')
+
+    const res = [`${this.joinType} JOIN ${this.entityName} ${this.alias} ON ${this.alias}.${associationAttr}=${this.parent.alias}.${this.attribute.name}`]
+    if (this.attribute.enumGroup) {
+      res.push(` AND ${this.alias}.${enumGroupAttr}="${this.attribute.enumGroup}"`)
+    }
+    for (let whereItem of this.whereItems) {
+      if (whereItem.inJoinAsPredicate) {
+        res.push(` AND ${whereItem.sql}`)
+      }
+    }
+    return res.join('')
   }
 }
 

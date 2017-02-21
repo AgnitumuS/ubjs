@@ -13,10 +13,11 @@ class ColumnItem extends CustomItem {
  */
 class ColumnList {
   /**
-   * @param {ubqlFieldList} fieldList
+   * @param {ubqlSelect} ubql
    * @param {DataSource} dataSource
    */
-  constructor (fieldList, dataSource) {
+  constructor (ubql, dataSource) {
+    const {fieldList} = ubql
     /**
      * @class ColumnList
      * @property {ColumnItem[]} items
