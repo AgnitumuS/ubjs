@@ -42,7 +42,7 @@ function runTest () {
   res = JSON.parse(db.run(`select id from uba_user where id in (select id from :(${JSON.stringify([UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID])}):)`, {}))
   assert.equal(res.length, 2, `Named array binding. Expect 2 row, got ${res.length}`)
 
-  // return
+  return
 
 // below is fails
   res = JSON.parse(db.run('select id from uba_user where :name2: = \'testinline\' and name = ?', {name2: 'testinline', 0: 'anonymous'}))

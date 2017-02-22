@@ -23,6 +23,7 @@ try {
   tests.forEach(function (test) {
     if (!test.endsWith('.js')) return
     content = fs.readFileSync(folder + '/serverSide/' + test)
+    console.debug('Eval a ' + test)
     res = conn.post('evaluateScript', content)
     assert.deepEqual(res, {res: true})
   })
