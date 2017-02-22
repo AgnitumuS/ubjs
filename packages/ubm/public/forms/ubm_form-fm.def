@@ -73,7 +73,7 @@ exports.formDef = {
                 style: {
                     backgroundColor: 'yellow'
                 },
-                text: 'TIP: In case of new form save it befor going to "' + UB.i18n('formDefinition') + ' or ' + UB.i18n('formModule') + ' tab for definition boilerplate generation'
+                text: 'TIP: In case of new form save it before going to "' + UB.i18n('formDefinition') + ' or ' + UB.i18n('formModule') + ' tab for definition boilerplate generation'
             }]
         }, {
             title: UB.i18n('formDefinition'),
