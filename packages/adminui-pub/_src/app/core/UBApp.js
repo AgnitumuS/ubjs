@@ -91,6 +91,7 @@ Ext.define('UB.core.UBApp', {
 
     /**
      * Instance of ubNotifier WebSocket connection to server
+     * @deprecated In UB>=4 use a $App.connection.ubNotifier instead
      * @property  {UBNotifierWSProtocol} ubNotifier
      * @type {UBNotifierWSProtocol}
      */
@@ -353,7 +354,7 @@ Ext.define('UB.core.UBApp', {
       var myLocale, models
 
       me.connection = connection
-      me.ubNotifier = UB.ubNotifier
+      me.ubNotifier = connection.ubNotifier
       myLocale = connection.preferredLocale
       me.domainInfo = connection.domain
       models = me.domainInfo.models
