@@ -13,13 +13,13 @@
 			"caption": "Role",
 			"description": "",
 			"allowNull": false,
-            "isUnique": true
+            		"isUnique": true
 		},
 		"description": {
 			"dataType": "String",
 			"size": 256,
 			"caption": "Description",
-			"description": ""
+			"allowNull": false
 		},
 		"sessionTimeout": {
 			"dataType": "Int",
@@ -43,7 +43,11 @@
 		},
 		"unity": {
 			"entity": "uba_subject",
-			"attributeList": ["name"],
+			"attributeList": ["code", "name"],
+			"mapping": {
+			  "name": "code",
+			  "description": "name"
+			},
 			"defaults": {
 				"sType": "R"
 			}

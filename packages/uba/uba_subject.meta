@@ -7,18 +7,22 @@
 	"descriptionAttribute": "name",
 	"documentation": "",
 	"attributes": {
+		"code":	{
+			"dataType": "String",
+			"size": 128,
+			"caption": "Subject code",
+			"allowNull": false
+		},
 		"name":	{
 			"dataType": "String",
 			"size": 128,
 			"caption": "Login",
-			"description": "",
 			"allowNull": false
 		},
 		"sType": {
 			"dataType": "String",
 			"size": 1,
 			"caption": "Subject type",
-			"description": "",
 			"allowNull": false
 		}
 	},

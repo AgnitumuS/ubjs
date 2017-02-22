@@ -8,13 +8,13 @@
 	"descriptionAttribute": "name",
 
 	"mixins": {
-		"mStorage":	{
+		"mStorage": {
 			"simpleAudit": true,
 			"safeDelete": false
 		},
 		"unity": {
 			"entity": "uba_subject",
-			"attributeList": ["name"],
+			"attributeList": ["code", "name"],
 			"defaults": {
 				"sType": "G"
 			}
@@ -27,7 +27,8 @@
 			"caption": "Code",
 			"description": "Group code. Used by APIs and scripts",
 			"documentation": "Unique group code. Used by APIs and scripts",
-			"isUnique": true
+			"isUnique": true,
+			"allowNull": false
 		},
 		"name":	{
 			"dataType": "String", "size": 128,
