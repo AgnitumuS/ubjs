@@ -21,8 +21,7 @@
     "mime-types": "^2.1.12"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.7",
-    "systemjs": "^0.20.5"
+    "@unitybase/stubs": "^4.0.7"
   },
   "keywords": [
     "UnityBase"
