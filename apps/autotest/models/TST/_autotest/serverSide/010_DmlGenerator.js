@@ -58,3 +58,6 @@
 - als
 - els
  */
+
+// server - side test MUST return a result in form {res: true|false}
+return {res: true};
