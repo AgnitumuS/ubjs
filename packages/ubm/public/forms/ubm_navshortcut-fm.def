@@ -1,11 +1,10 @@
 //@! "do not remove comments below unless you know what you do!"
 //@isDefault "true"
 //@entity "ubm_navshortcut"
+//@model "UBM"
 //@formType "auto"
 //@caption " "
 //@description ""
-//@code "ubm_navshortcut"
-//@ID "100000232003"
 exports.formDef = {
     //requiredFields: ['desktopID.code', 'parentID.code'],
     requiredFields: ['mi_treePath'],
@@ -52,7 +51,11 @@ exports.formDef = {
     }, {
         attributeName: "code"
     }, {
-        attributeName: "iconCls"
+      layout: 'hbox',
+      items: [
+        {attributeName: "iconCls"},
+        {html: 'Use build-in <a href="http://fontawesome.io/icons/" target="blank">FontAwersome</a> for icon classes. Example: fa fa-circle', margin: '15px 0 0 0'}
+      ]
     }, {
         layout: "hbox",
         items: [{
@@ -88,7 +91,30 @@ exports.formDef = {
                 labelAlign: "top",
                 hideLabel: true,
                 flex: 1,
-                height: "100%"
+                height: "100%",
+                codeSnippetsGetter: function () {
+                  return [{
+                      displayText: 'showList', text: JSON.stringify(
+                      {
+                        "cmdType": "showList",
+                        "cmdData": {
+                          "params": [{
+                              "entity": "TYPE-ENTITY-CODE",
+                              "method": "select",
+                              "fieldList": ["Dbl-CLICK on left prop panel to add attribute"]
+                            }]
+                        }
+                      }, null, ' ')
+                  }, {
+                    displayText: 'showForm', text: JSON.stringify(
+                      {
+                        "cmdType": "showForm",
+                        "formCode": "TYPE HERE A FORM CODE FROM UBM_FORM",
+                        "entity": "TYPE HERE A ENTITY CODE",
+                        "instanceID": "REPLACE IT by ID value (to edit element) or remove this line"
+                      }, null, ' ')
+                  }]
+                }
             }]
         }, {
             title: UB.i18n('navShortcutRights'),
