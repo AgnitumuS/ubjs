@@ -33,7 +33,7 @@ function getConfigFileName () {
   let cfgFile = options.switchValue('cfg')
 
   if (cfgFile) {
-    cfgFile = path.join(process.cwd(), cfgFile)
+    if (!path.isAbsolute(cfgFile)) cfgFile = path.join(process.cwd(), cfgFile)
     if (!fs.isFile(cfgFile)) {
       console.warn('passed -cfg file not exist ' + cfgFile)
       cfgFile = ''
