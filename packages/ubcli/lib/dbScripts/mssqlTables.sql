@@ -24,13 +24,14 @@ create table dbo.uba_els (
 create table dbo.uba_role (
 	ID BIGINT not null,
 	name NVARCHAR(128) not null,
-	description NVARCHAR(256) null,
+	description NVARCHAR(256) not null,
 	sessionTimeout INT not null default 30,
 	allowedAppMethods NVARCHAR(2000) null
 );
 -- drop table uba_subject
 create table dbo.uba_subject (
 	ID BIGINT not null,
+	code NVARCHAR(128) not null,
 	name NVARCHAR(128) not null,
 	sType NVARCHAR(1) not null,
 	mi_unityEntity NVARCHAR(64) not null

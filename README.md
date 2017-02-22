@@ -59,6 +59,12 @@ Install all other required modules
 	
 	npm install
 
+## Build UntyBase packages with lerna
+
+  Current implementation require a Delphi7 & Delphi XE2 || XE4 to be installed
+
+	%ub_home%\bin\setEnv.cmd && lerna run build --concurrency 1
+
 **Warning** Pathed cversion of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
 
 ## Developer environment 

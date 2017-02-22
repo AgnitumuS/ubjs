@@ -30,6 +30,18 @@ function ubaAuditNewRole (ctx) {
 me.on('insert:after', ubaAuditNewRole)
 
 /**
+ * Set description = name in case it missing
+ * @param {ubMethodParams} ctxt
+ */
+function fillRoleDescriptionIfMissing (ctxt) {
+  let params = ctxt.mParams.execParams
+  if (!params.description) {
+    params.description = params.name
+  }
+}
+me.on('insert:before', fillRoleDescriptionIfMissing)
+
+/**
  * After updating user - log event to uba_audit
  * @param {ubMethodParams} ctx
  */

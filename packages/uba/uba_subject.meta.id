@@ -2,6 +2,9 @@
     "caption": "subyek administrasi",
     "description": "subyek administrasi",
     "attributes": {
+	"code":	{
+	  "caption": "Kode"
+	},
         "name": {
             "caption": "Masuk",
             "description": "Masuk"

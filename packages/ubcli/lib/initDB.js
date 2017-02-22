@@ -149,7 +149,7 @@ function fillBuildInRoles (conn, dbDriverName) {
   for (let roleName in UBA_COMMON.ROLES) {
     let aRole = UBA_COMMON.ROLES[roleName]
     initSecurity.push(
-            `insert into uba_subject (ID,name,sType,mi_unityentity) values(${aRole.ID}, '${aRole.NAME}', 'R', 'UBA_SUBJECT')`,
+            `insert into uba_subject (ID,code,name,sType,mi_unityentity) values(${aRole.ID}, '${aRole.NAME}', '${aRole.DESCR}', 'R', 'UBA_SUBJECT')`,
             `insert into uba_role (ID,name,description,sessionTimeout,allowedAppMethods${auditTailColumns}) 
              values(${aRole.ID},'${aRole.NAME}','${aRole.DESCR}',${aRole.TIMEOUT},'${aRole.ENDPOINTS}'${auditTailValues})`
         )
@@ -158,7 +158,7 @@ function fillBuildInRoles (conn, dbDriverName) {
   for (let userName in UBA_COMMON.USERS) {
     let aUser = UBA_COMMON.USERS[userName]
     initSecurity.push(
-            `insert into uba_subject (ID,name,sType,mi_unityentity) values(${aUser.ID},'${aUser.NAME}', 'U', 'UBA_USER')`,
+            `insert into uba_subject (ID,code,name,sType,mi_unityentity) values(${aUser.ID}, '${aUser.NAME}', '${aUser.NAME}', 'U', 'UBA_USER')`,
             `insert into uba_user (ID, name, description, upasswordhashhexa, disabled, udata${auditTailColumns}) 
              values (${aUser.ID}, '${aUser.NAME}', '${aUser.NAME}', '${aUser.HASH}', 0, ''${auditTailValues})`
         )

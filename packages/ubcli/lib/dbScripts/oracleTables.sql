@@ -14,7 +14,7 @@ create table uba_els (
 create table uba_role (
 	ID NUMBER(19) not null,
 	name NVARCHAR2(128) not null,
-	description NVARCHAR2(256) null,
+	description NVARCHAR2(256) not null,
 	sessionTimeout INTEGER default 30 not null,
 	allowedAppMethods NVARCHAR2(2000) null
 );
@@ -22,6 +22,7 @@ create table uba_role (
 --
 create table uba_subject (
 	ID NUMBER(19) not null,
+	code NVARCHAR2(128) not null,
 	name NVARCHAR2(128) not null,
 	sType NVARCHAR2(1) not null,
 	mi_unityEntity NVARCHAR2(64) not null

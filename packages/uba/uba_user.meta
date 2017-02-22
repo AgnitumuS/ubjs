@@ -14,7 +14,11 @@
 		},
 		"unity": {
 			"entity": "uba_subject",
-			"attributeList": ["name"],
+			"attributeList": ["code", "name"],
+			"mapping": {
+			  "name": "code",
+			  "fullName": "name"
+			},
 			"defaults": {
 				"sType": "U"
 			}

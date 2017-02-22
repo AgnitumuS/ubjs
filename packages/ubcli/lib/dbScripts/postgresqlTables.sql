@@ -15,13 +15,14 @@ create table uba_els (
 create table uba_role (
 	ID BIGINT not null,
 	name VARCHAR(128) not null,
-	description VARCHAR(256) null,
+	description VARCHAR(256) not null,
 	sessionTimeout INTEGER default 30 not null,
 	allowedAppMethods VARCHAR(2000) null
 );
 -- drop table uba_subject
 create table uba_subject (
 	ID BIGINT not null,
+	code VARCHAR(128) not null,
 	name VARCHAR(128) not null,
 	sType VARCHAR(1) not null,
 	mi_unityEntity VARCHAR(64) not null

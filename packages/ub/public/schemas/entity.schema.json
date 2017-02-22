@@ -337,7 +337,7 @@
                     },
                     "attributeList": {
                       "type": "array",
-                      "description": "List of attributes to keep in sync between parent entity and this entity",
+                      "description": "List of parent entity attribute names to keep in sync with this entity",
                       "_format": "table",
                       "items": {
                         "type": "string"
@@ -345,7 +345,7 @@
                     },
                     "mapping": {
                       "type": "object",
-                      "description": "If this entity attribute names differ from parent entity attribute names you can specify mapping of parent entity attributes (from `attributeList') - `mapping.keys`, and this entity attributes `mapping.values`"
+                      "description": "If this entity attribute names differ from parent you can specify mapping from self attributes to parent attributes in form `\"mapping\": {\"thisAttrName\": \"parentAttrName\", ....}"
                     },
                     "defaults": {
                       "type": "object",

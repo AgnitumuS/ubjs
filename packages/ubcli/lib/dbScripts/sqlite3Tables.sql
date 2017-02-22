@@ -21,7 +21,7 @@ create table uba_user (
 create table uba_role (
 	ID BIGINT not null PRIMARY KEY,
 	name VARCHAR(128) not null, -- Role
-	description VARCHAR(256) null, -- Description
+	description VARCHAR(256) not null, -- Description
 	sessionTimeout INTEGER default 30 not null, -- Time after which the session is deleted by timeout (in minutes)
 	allowedAppMethods VARCHAR(2000) null,  -- Which application level methods are allowed (comma separated list)
     mi_owner bigint NOT NULL, -- Row owner
@@ -55,6 +55,7 @@ create table uba_els (
 --next
 create table uba_subject (
 	ID BIGINT not null PRIMARY KEY,
+	code VARCHAR(128) not null, -- Code
 	name VARCHAR(128) not null, -- Login
 	sType VARCHAR(1) not null, -- Subject type
 	mi_unityEntity VARCHAR(64) not null
