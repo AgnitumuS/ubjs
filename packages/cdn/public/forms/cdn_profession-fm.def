@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Професії"
 //@description "Професії"
-//@code "cdn_profession"
-//@ID "2100010029514"
 exports.formDef = {
 
 size: {

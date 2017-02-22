@@ -4,8 +4,6 @@
 //@formType "custom"
 //@caption "UserSettings"
 //@description "UserSettings"
-//@code "ubm_desktop-userSettings"
-//@ID "100000100405"
 /*global UB, Ext, window*/
 Ext.define("UBM.userSettings", {
     extend: "Ext.form.Panel",

@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "reportBuilder"
 //@description "reportBuilder"
-//@code "ubs_report-fm"
-//@ID "3000002179604"
 exports.formDef = {
     parentConfig: {
         layout: 'fit',

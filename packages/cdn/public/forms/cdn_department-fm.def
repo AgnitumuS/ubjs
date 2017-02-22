@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Департамент внешней организации"
 //@description "Департамент внешней организации"
-//@code "cdn_department"
-//@ID "3000000146002"
 exports.formDef = {
 
     size: {

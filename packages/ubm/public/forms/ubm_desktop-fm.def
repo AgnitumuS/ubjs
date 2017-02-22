@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Desktop"
 //@description "Desktop"
-//@code "ubm_desktop"
-//@ID "11"
 /*global UB, Ext */
 exports.formDef = {
 

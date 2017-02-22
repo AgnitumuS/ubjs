@@ -3,8 +3,6 @@
 //@formType "auto"
 //@caption "orgDepartment"
 //@description "orgDepartment"
-//@code "org_department"
-//@ID "100000361000"
 /*global UB, Ext */
 exports.formDef = {
 

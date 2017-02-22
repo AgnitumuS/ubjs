@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Organizational chart"
 //@description "Organizational chart"
-//@code "org_diagram-main"
-//@ID "2100046801002"
 /*global UB, Ext */
 exports.formDef = {
     size: {

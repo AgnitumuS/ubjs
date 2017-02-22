@@ -4,8 +4,6 @@
 //@formType "custom"
 //@caption "Security dashboard"
 //@description "Security dashboard"
-//@code "uba_audit-securityDashboard"
-//@ID "329611636408321"
 Ext.define('UBA.securityDashboard', {
     extend: 'Ext.form.Panel',
     autoScroll: true,

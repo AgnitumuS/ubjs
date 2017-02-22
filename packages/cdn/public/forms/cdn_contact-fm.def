@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Контакт"
 //@description "Контакт"
-//@code "cdn_contact"
-//@ID "3000000047203"
 exports.formDef = {
 
     size: {

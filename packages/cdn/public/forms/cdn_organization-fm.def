@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "externalOrganizations"
 //@description "externalOrganizations"
-//@code "cdn_organization"
-//@ID "2100010031201"
 exports.formDef = {
     requiredFields: ['caption'],
     size: {

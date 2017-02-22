@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Group"
 //@description "Group"
-//@code "uba_group"
-//@ID "3000000002499"
 exports.formDef = {
 	size: {
 		width: 500,

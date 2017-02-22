@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "ER diagram"
 //@description "ER diagram"
-//@code "ubm_diagram"
-//@ID "1000000586808"
 /*global UB, Ext */
 exports.formDef = {
     size: {

@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Регионы"
 //@description "Справочник регионов"
-//@code "cdn_region-1"
-//@ID "2000010029806"
 exports.formDef = {
 
     size: {

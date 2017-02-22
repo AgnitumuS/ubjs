@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "tst_docusign"
 //@description "tst_docusign"
-//@code "tst_docusign"
-//@ID "329455237758977"
 exports.formDef = {
 	dockedItems: [{
 		xtype: "toolbar",
