@@ -4,8 +4,6 @@
 //@formType "custom"
 //@caption "ScanerSettings"
 //@description "ScanerSettings"
-//@code "ubm_desktop-scanerSettings"
-//@ID "3000000004301"
 
 //do not remove this. It's a dirty hack for get class with regexp from UBFormLoader.js
 //Ext.define('UBM.scanerSettings', {

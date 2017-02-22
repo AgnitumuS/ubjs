@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption ""
 //@description ""
-//@code "ubs_message_edit"
-//@ID "3000003971402"
 exports.formDef = {
     parentConfig: {
         /*layout: { 

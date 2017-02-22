@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Method rights"
 //@description "Method rights"
-//@code "uba_els"
-//@ID "1000000518800"
 /*global UB, Ext */
 exports.formDef = {
     size: {

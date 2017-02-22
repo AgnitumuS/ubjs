@@ -4,13 +4,11 @@
 //@formType "auto"
 //@caption "Audit"
 //@description "Audit"
-//@code "uba_auditTrail"
-//@ID "2100046776103"
 /*global UB, Ext */
 exports.formDef = {
     requiredFields: ['entity','actionUser','actionTime','fromValue','toValue'],
     parentConfig: {
-        //autoScroll: true,
+        // autoScroll: true,
         layout: {
             type: "vbox",
             align: "stretch" //max

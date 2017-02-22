@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "orgEmployee"
 //@description "orgEmployee"
-//@code "org_employee"
-//@ID "2100010014209"
 /*global UB, Ext, DMP */
 
 exports.formDef = {

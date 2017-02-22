@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Населенные пункты"
 //@description "Справочник населенных пунктов"
-//@code "cdn_city-1"
-//@ID "2000010029800"
 exports.formDef = {
 
     size: {

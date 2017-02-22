@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Сотрудник внешней организации"
 //@description "Сотрудник внешней организации"
-//@code "cdn_employee"
-//@ID "3000000145809"
 exports.formDef = {
 
     size: {

@@ -1,6 +1,7 @@
 //@! "do not remove comments below unless you know what you do!"
 //@isDefault "true"
 //@entity "ubm_form"
+//@model "UBM"
 //@formType "auto"
 //@caption "Form editor"
 //@description "UnityBase form's editor"
@@ -53,7 +54,8 @@ exports.formDef = {
                   attributeName: "code"
               	}, {xtype: 'ublabel',
                   ubID: 'howToChangeCode',
-                  text: "To change existing form code rename both *-fm.js and *-fm.def files in folder 'yourModel\\public\\forms'"
+                  text: "To change existing form code rename both *-fm.js and *-fm.def files in folder 'yourModel\\public\\forms'",
+                  margins: '10px 0 0 0'  
                 }
               ]
             }, {

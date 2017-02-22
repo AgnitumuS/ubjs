@@ -4,8 +4,6 @@
 //@formType "custom"
 //@caption "Test IIT Sign"
 //@description "Test IIT Sign"
-//@code "tst_service-IITSign"
-//@ID "3000000004904"
 Ext.define('TST.IITSign', {
     extend: "Ext.form.Panel",
     

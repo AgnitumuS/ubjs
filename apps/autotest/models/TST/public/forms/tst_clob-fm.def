@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "tst_clob"
 //@description "tst_clob"
-//@code "tst_clob"
-//@ID "3000000002802"
 exports.formDef = {
 	parentConfig: {
         layout: 'vbox'//,        align: 'stratch'

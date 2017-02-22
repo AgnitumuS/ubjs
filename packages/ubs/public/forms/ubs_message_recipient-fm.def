@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "Получатель"
 //@description "ubs_message_recipient"
-//@code "ubs_message_recipient"
-//@ID "3000003971832"
 exports.formDef = {
 	items: [
 		{ attributeName: "userID" /*Пользователь*/}

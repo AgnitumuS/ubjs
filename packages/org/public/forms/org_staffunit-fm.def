@@ -4,8 +4,6 @@
 //@formType "auto"
 //@caption "orgStaffUnit"
 //@description "orgStaffUnit"
-//@code "org_staffunit"
-//@ID "2100010027000"
 exports.formDef = {
     size: {
         width: 400,
