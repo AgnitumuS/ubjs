@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "description": "UnityBase Service model",
   "config": {
     "ubmodel": "UBS"
@@ -17,10 +17,10 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.0.11",
-    "@unitybase/ub": "^4.0.13",
-    "@unitybase/uba": "^4.0.12",
-    "@unitybase/pdf": "^1.0.2",
+    "@unitybase/base": "^4.0.12",
+    "@unitybase/ub": "^4.0.14",
+    "@unitybase/uba": "^4.1.0",
+    "@unitybase/pdf": "^1.0.3",
     "lodash": "^4.0.0",
     "mustache": "^2.3.0",
     "when": "1.8.1"

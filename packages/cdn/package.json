@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/cdn",
-  "version": "4.0.12",
+  "version": "4.0.13",
   "description": "Set of dictionaries, common for most enterprise systems",
   "config": {
     "ubmodel": "CDN"
@@ -15,10 +15,10 @@
   "main": "index.js",
   "dependencies": {
     "lodash": "^4.0.0",
-    "@unitybase/base": "^4.0.11",
-    "@unitybase/ub": "^4.0.13",
-    "@unitybase/uba": "^4.0.12",
-    "@unitybase/ubs": "^4.0.12"
+    "@unitybase/base": "^4.0.12",
+    "@unitybase/ub": "^4.0.14",
+    "@unitybase/uba": "^4.1.0",
+    "@unitybase/ubs": "^4.0.13"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.0.7"
