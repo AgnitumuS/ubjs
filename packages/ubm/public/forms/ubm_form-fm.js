@@ -68,6 +68,7 @@ exports.formCode = {
         if (!this.formDefEditor){
             this.formDefEditor = this.down('ubcodemirror[name="formDef"]');
         }
+        var codeEditor = this.down('ubcodemirror[name="formCode"]');
 
         if (res) {
             UB.core.UBFormLoader.clearFormCache(me.record.get('code'));
@@ -77,6 +78,8 @@ exports.formCode = {
               if (className) {
                 UB.core.UBFormLoader.undefineExtClass(className);
               }
+            } else {
+              UB.core.UBFormLoader.reloadModule(codeEditor.getValue(), this.formDefEditor.getValue(), me.record.get('code'))
             }
             this.callParent([action]);
         } else {
@@ -137,5 +140,5 @@ exports.formCode = {
             editor.setValue(txt);
             aTab.down('ubdocument').checkContentChange();
         })
-    },
+    }
 };

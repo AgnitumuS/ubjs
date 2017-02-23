@@ -184,9 +184,40 @@ Ext.define('UB.core.UBFormLoader', {
             });
             this.definedClasses = [];
         }
+        this.unloadModule(formCode)
         UB.logDebug('Forms data was cleared ' + (formCode ? ('for form ' + formCode) : 'for all forms'));
     },
 
+    unloadModule: function (moduleName) {
+       if (moduleName) {
+         delete this.evaluatedNames[moduleName]
+       } else {
+         this.evaluatedNames = {}
+       }
+    },
+
+    reloadModule (source, sourceTail, fileName) {
+      this.unloadModule(fileName)
+      this.evaluateModule(source, sourceTail, fileName)
+    },
+
+    evaluateModule (source, sourceTail, fileName){
+      var
+        exports, fn, fullSrc
+
+      fullSrc = source
+      if (sourceTail) fullSrc +=  '\n/**** UBFormLoader splitting point ****/\n' + sourceTail
+      if (this.evaluatedNames[fileName]) {
+        exports = this.evaluatedNames[fileName]
+      } else {
+        exports = {}
+        fullSrc = '(function (exports) { ' + fullSrc + '\n});' + '\n//# sourceURL=forms/' + fileName + '.js'
+        fn = eval(fullSrc)
+        fn(exports)
+        this.evaluatedNames[fileName] = exports
+      }
+      return exports
+    },
     /**
      * Retrieve form view `def` and form module. Look in the localStore first and if not found - go to server.
      *
@@ -206,11 +237,11 @@ Ext.define('UB.core.UBFormLoader', {
         function getLocalOrRemote(id, code, attr, reference){
             var data;
             if (!reference || !reference.length){
-                return Q.resolve('');
+                return Promise.resolve('');
             }
             data = localStorage.getItem(UB.core.UBFormLoader.getFormCacheKey(code, attr));
             if (data){
-                return Q.resolve(data);
+                return Promise.resolve(data);
             } else {
                 return UB.core.UBService.getDocument({
                         id: id,
@@ -223,27 +254,6 @@ Ext.define('UB.core.UBFormLoader', {
                     return data;
                 });
             }
-        }
-
-        function evalAsModule(source, fileName){
-            var
-                exports = {},
-                evalFileName = fileName;
-            if(source && source.length){
-                //MPV - move to module pattern!
-                if (fileName) {
-                    if (me.evaluatedNames[fileName]){
-                        me.evaluatedNames[fileName]++;
-                        evalFileName = evalFileName + 'VM' + me.evaluatedNames[fileName];
-                    } else {
-                        me.evaluatedNames[fileName] = 1;
-                    }
-                    (new Function('exports', source + '\n//# sourceURL=' + evalFileName + '.js'))(exports);
-                } else {
-                    (new Function('exports', source))(exports);
-                }
-            }
-            return exports;
         }
 
         record = formStore.findRecord('code', config.formCode, 0, false, true, true);
@@ -259,7 +269,7 @@ Ext.define('UB.core.UBFormLoader', {
             throw new Error('Form definition is empty for form with code ' + config.formCode);
         }
         formID = record.get('ID');
-        return Q.all([
+        return Promise.all([
             getLocalOrRemote(formID, config.formCode, 'formDef', formDefReference),
             getLocalOrRemote(formID, config.formCode, 'formCode', formJSReference)
         ]).then(function(arr){
@@ -267,12 +277,14 @@ Ext.define('UB.core.UBFormLoader', {
                 formViewStr = arr[0],
                 formControllerStr = arr[1],
                 parsed = {formType: formType},
+                fullModule,
                 deffer;
             switch (formType){
                 case 'auto':
-                    parsed.formView  = evalAsModule(formViewStr).formDef;
-                    parsed.formController = evalAsModule(formControllerStr, config.formCode).formCode;
-                    if (parsed.formView.requires && parsed.formView.requires.length){
+                    fullModule = me.evaluateModule(formControllerStr, formViewStr, config.formCode)
+                    parsed.formView = fullModule.formDef;
+                    parsed.formController = fullModule.formCode;
+                    if (parsed.formView && parsed.formView.requires && parsed.formView.requires.length){
                         deffer = Q.defer();
                         Ext.require(parsed.formView.requires, function(){
                             return deffer.resolve(parsed);
@@ -285,7 +297,7 @@ Ext.define('UB.core.UBFormLoader', {
                     return UB.core.UBFormLoader.createExtClass(formViewStr, config.formCode);
                 case 'vue':
                     parsed.formView = formViewStr;
-                    parsed.formController = evalAsModule(formControllerStr, config.formCode).formCode;
+                    parsed.formController = me.evaluateModule(formControllerStr, null, config.formCode).formCode;
                     return parsed;
                 default:
                    throw new Error('Unknown form type ' + formType + ' for form ' + config.formCode);
