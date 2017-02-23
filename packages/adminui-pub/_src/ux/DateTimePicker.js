@@ -31,7 +31,8 @@ Ext.define('Ext.ux.DateTimePicker', {
           this.callParent(arguments);
 
           var table = Ext.get(Ext.DomQuery.selectNode('table', this.el.dom));
-          var tfEl = Ext.core.DomHelper.insertAfter(table, {
+          // var tfEl = Ext.core.DomHelper.insertAfter(table, {
+          var tfEl = Ext.core.DomHelper.insertBefore(table, {
                 tag: 'div',
                 style: 'border:0px;',
                 children: [{
