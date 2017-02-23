@@ -134,7 +134,7 @@ Ext.define('UB.view.UBDropZone', {
         });
         zone.addEventListener('drop', function(e){
             var res = false;
-            event.stopPropagation(); // do not pass to parent container
+            e.stopPropagation(); // do not pass to parent container
             if (!config.dropHandler){
                 UB.logError('no handler passed to UBDropZone config: ' + JSON.stringify(config));
                 return false;
