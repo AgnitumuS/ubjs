@@ -6,6 +6,7 @@ Ext.define('UB.ux.form.field.UBDateTime', {
   extend: 'Ext.ux.form.DateTimeField',
   alias: 'widget.ubdatetimefield',
   minWidth: 160,
+  showToday: false,
   // the minimum date value server handle correctly is 1900-01-01
   minValue: new Date(1901, 1, 1),
   constructor: function (config) {
