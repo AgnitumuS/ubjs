@@ -2703,6 +2703,8 @@ Ext.define('UB.view.BasePanel', {
 
     if (Ext.isString(me.dfm)) {
       me.dfm = Ext.decode(me.dfm)
+    } else {
+      me.dfm = _.cloneDeep(me.dfm)
     }
     me.baseFieldList = []
     me.prepareDfmItems(me.dfm.items, true)
