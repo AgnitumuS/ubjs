@@ -18,10 +18,10 @@ const argv = require('@unitybase/base/argv')
 const http = require('http')
 
 module.exports = function autotest (options) {
-  var testResults = []
-  var lastModelName
-  var realConsoleDebug = console.debug
-  var debugOutput = []
+  let testResults = []
+  let lastModelName
+  let realConsoleDebug = console.debug
+  let debugOutput = []
 
   // set timeout 10 min
   http.setGlobalConnectionDefaults({receiveTimeout: 10 * 60 * 1000});
@@ -42,43 +42,40 @@ module.exports = function autotest (options) {
 
   argv.serverSessionFromCmdLineAttributes(options)
 
-  let configFileName, configDir, config, appConfig, domainConfig
-
-  configFileName = argv.getConfigFileName()
-  configDir = path.dirname(configFileName)
-  config = argv.getServerConfiguration()
-  appConfig = config.application
-  domainConfig = appConfig.domain
-
-  let modulesRoot = path.join(process.binPath, 'node_modules')
-  let moduleFolders = fs.readdirSync(modulesRoot)
-  let folderName
-  let skipModules = options.skipModules
-  let inModels = options.models
-  let models
+  let configFileName = argv.getConfigFileName()
+  let configDir = path.dirname(configFileName)
+  let config = argv.getServerConfiguration()
+  let appConfig = config.application
+  let domainConfig = appConfig.domain
 
   console.time('Total time')
-  if (!skipModules) {
-    console.info('Scan modules `_autotest` folders')
-    moduleFolders.forEach(function (moduleFolder) {
-      folderName = modulesRoot + moduleFolder + '\\_autotest\\'
-      if (fs.isDir(folderName)) {
-        var files = fs.readdirSync(folderName)
-        files = _.filter(files, function (item) {
-          return /\.js$/.test(item)
-        }).sort()
-        if (files.length) {
-          files.forEach(function (file) {
-            requireAndRun(folderName, moduleFolder, file)
-          })
-        }
-      }
-    })
-  }
+  // MPV - todo 1) How to test only modules (not a model)? Check a package.json config.ubmodel? 2) @unitybase - recutrsion
+  // let modulesRoot = path.join(process.configPath, 'node_modules')
+  // let testModules = !options.skipModules && fs.isDir(modulesRoot)
+  //
+  // if (testModules) {
+  //   console.info('Scan modules `_autotest` folders')
+  //   let modulesFolder = fs.readdirSync(modulesRoot)
+  //   modulesFolder.forEach(function (moduleFolder) {
+  //     let folderName = path.join(modulesRoot, moduleFolder, '_autotest')
+  //     if (fs.isDir(folderName)) {
+  //       var files = fs.readdirSync(folderName)
+  //       files = _.filter(files, function (item) {
+  //         return /\.js$/.test(item)
+  //       }).sort()
+  //       if (files.length) {
+  //         files.forEach(function (file) {
+  //           requireAndRun(folderName, moduleFolder, file)
+  //         })
+  //       }
+  //     }
+  //   })
+  // }
 
   console.info('Scan models `_autotest` folders')
 
-  models = domainConfig['models']
+  let inModels = options.models
+  let models = domainConfig['models']
   if (!_.isArray(models)) {
     throw new Error('models configuration MUST be an array on object')
   }
@@ -88,10 +85,10 @@ module.exports = function autotest (options) {
   }
 
   _.forEach(models, function (modelConfig) {
-    folderName = path.join(configDir, modelConfig.path, '_autotest')
+    let folderName = path.join(configDir, modelConfig.path, '_autotest')
 
     if (fs.isDir(folderName)) {
-      var files = fs.readdirSync(folderName)
+      let files = fs.readdirSync(folderName)
       files = _.filter(files, function (item) { return /\.js$/.test(item) }).sort()
       if (files.length) {
         files.forEach(function (file) {
@@ -105,7 +102,7 @@ module.exports = function autotest (options) {
     // return console.debug back
   console.debug = realConsoleDebug
 
-  var failed = _.filter(testResults, {result: false})
+  let failed = _.filter(testResults, {result: false})
   global._timerLoop.setTimeoutWithPriority(
         function () {
           process.on('exit', function () {
