@@ -1,6 +1,7 @@
 //@! "do not remove comments below unless you know what you do!"
 //@isDefault "false"
 //@entity "ubs_report"
+//@model "UBS"
 //@formType "auto"
 //@caption "reportBuilder"
 //@description "reportBuilder"
@@ -18,23 +19,17 @@ exports.formDef = {
         xtype: "toolbar",
         dock: "top",
         items: [{
-            text: UB.i18n("checkSyntaxReport"),
-            orderId: 2,
-            handler: function() {
-                this.up("form").checkJS();
-            }
-        }, {
             orderId: 5,
             actionId: "save"
         }, {
             text: UB.i18n("beautifyReport"),
-            orderId: 3,
+            orderId: 8,
             handler: function() {
                 this.up("form").beautyJS();
             }
         }, {
             text: UB.i18n("testReport"),
-            orderId: 4,
+            orderId: 9,
             handler: function() {
                 this.up("form").testReport();
             }
