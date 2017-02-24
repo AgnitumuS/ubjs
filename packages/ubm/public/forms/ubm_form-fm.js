@@ -82,6 +82,7 @@ exports.formCode = {
               UB.core.UBFormLoader.reloadModule(codeEditor.getValue(), this.formDefEditor.getValue(), me.record.get('code'))
             }
             this.callParent([action]);
+            UB.core.UBStoreManager.getFormStore().reload()
         } else {
             $App.dialogError('Errors', 'There is errors in script. Check for errors. Save is not performed').done();
             return false;
