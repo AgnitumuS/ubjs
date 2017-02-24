@@ -24,7 +24,6 @@ exports.formCode = {
                             var
                                 codeTabs = me.down('tabpanel'),
                                 edtr = codeTabs.getActiveTab().down('ubcodemirror').editor;
-                            console.log("%o", edtr);
                             edtr.setCursor({
                                 line: record.get('line'),
                                 ch: record.get('character') - 1
@@ -133,84 +132,8 @@ exports.formCode = {
 
                     }
                 ]
-               /*,
-                items: [
-                    {
-                        xtype: 'combobox',
-                        fieldLabel: UB.i18n('reportType'),
-                        displayField: 'name',
-                        valueField: 'name',
-                        value: 'html',
-                        store: Ext.create('Ext.data.Store', {
-                            fields: ['name'],
-                            data : [
-                                {"name":"html"},
-                                {"name":"pdf"}
-                            ]})
-                    }
-                ]*/
            });
         win.show();
-    },
-    JSLINT_OPTIONS: {
-        node: true,
-        bitwise: true,
-        "continue": true,
-        debug: true,
-        eqeq: true,
-        es5: true,
-        evil: true,
-        forin: true,
-        newcap: true,
-        nomen: true,
-        plusplus: true,
-        regexp: true,
-        undef: true,
-        unparam: true,
-        stupid: true,
-        todo: true,
-        vars: true,
-        white: true,
-        css: true,
-        cap: true,
-        on: true,
-        fragment: true,
-        browser: true,
-        passfail: false
-    },
-    STRICT_CHECK: '"use strict";',
-    checkJS: function() {
-        var
-            codeTabs = this.down('tabpanel'),
-            aTab = codeTabs.getActiveTab(),
-            lintRes,
-            errStore,
-            aErrorData = [],
-            err,
-            ctrl;
-
-        ctrl = aTab ? aTab.down('ubcodemirror'): null;
-        if (!ctrl) {
-            return;
-        }
-
-        lintRes = JSLINT(this.STRICT_CHECK + aTab.down('ubcodemirror').getValue(), this.JSLINT_OPTIONS);
-        errStore = this.debugWindow.down('grid').getStore();
-        if (!lintRes) {
-            for (err in JSLINT.errors) {
-                if (JSLINT.errors.hasOwnProperty(err) && (JSLINT.errors[err] !== null)) {
-                    aErrorData.push([JSLINT.errors[err].line, JSLINT.errors[err].character, JSLINT.errors[err].reason]);
-                }
-            }
-            errStore.loadData(aErrorData, false);
-            this.debugWindow.show();
-        } else {
-            errStore.loadData([
-                [1, 1, UB.i18n('err_noErrors')]
-            ], false);
-        }
-
-
     },
     beautyJS: function() {
         var
