@@ -5,7 +5,7 @@ Packages inside this repository is under `lenra` control
 To prevent packages duplication we remove some tools from a devDependencies of each packages,
 so install it globaly
 
-	npm install -g standard babel-core babel-loader webpack webpack-bundle-analyzer jsdoc lerna@latest babel-preset-es2015 babel-preset-es2015-without-strict
+	npm install -g standard babel-core babel-loader webpack webpack-bundle-analyzer jsdoc lerna@latest babel-preset-es2015 babel-preset-es2015-without-strict uglifyjs uglifycss
 
 
 # UnityBase modules repository

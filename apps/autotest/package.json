@@ -4,13 +4,13 @@
   "description": "Autotest for UnityBase",
   "main": "index.js",
   "scripts": {
-    "test": "./tsql3.cmd"
+    "test": ".\\tsql3.cmd"
   },
   "dependencies": {
     "@ub-e/dses": "^1.0.0",
     "@ub-e/odata": "^1.0.0",
     "@ub-e/ube-pub": "^4.0.0",
-    "@ub-e/xlsx-pub": "^4.0.0",
+    "@unitybase/xlsx": "^4.0.0",
     "@unitybase/adminui-pub": "^4.0.0",
     "@unitybase/adminui-reg": "^4.0.0",
     "@unitybase/codemirror-full": "^1.0.0",
