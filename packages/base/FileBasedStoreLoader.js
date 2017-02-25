@@ -8,6 +8,8 @@
  */
 
 const lds = require('./LocalDataStore');
+const path = require('path')
+const UBDomain = require('./UBDomain')
 
 module.exports = FileBasedStoreLoader;
 /**
@@ -23,7 +25,7 @@ module.exports = FileBasedStoreLoader;
 
  * @class
  * @param {Object}    config
- * @param {TubEntity} config.entity
+ * @param {TubEntity|UBEntity} config.entity
  * @param {Array.<{path: string}>} config.foldersConfig   Array of folder configuration to scan for files.
  *                                              Necessary param is path - path to folder. You can also pass additional information
  *                                              for use in  `onBeforeRowAdd` and `onNewFolder` callbacks.
@@ -41,8 +43,12 @@ module.exports = FileBasedStoreLoader;
  *                          Called with args (this: FileBasedStoreLoader, fullFolderPath: string, recursionLevel: integer);
  */
 function FileBasedStoreLoader(config) {
-    var entityAttributes = config.entity.attributes,
-        i, l;
+    var entityAttributes;
+    if (config.entity instanceof UBDomain.UBEntity) {
+      entityAttributes = config.entity.attributes
+    } else {
+      entityAttributes = App.domainInfo.get(config.entity.name).attributes
+    }
 
     /**
      * Configuration
@@ -65,12 +71,13 @@ function FileBasedStoreLoader(config) {
      * @readonly
      */
     this.attributes = [];
-    for (i = 0, l = entityAttributes.count; i < l; i++) {
-        this.attributes.push({
-            name: entityAttributes.items[i].name,
-            dataType: entityAttributes.items[i].dataType,
-            defaultValue: entityAttributes.items[i].defaultValue,
-            defaultView: entityAttributes.items[i].defaultView
+    for (let attrName in entityAttributes) {
+      let attr = entityAttributes[attrName]
+      this.attributes.push({
+            name: attr.name,
+            dataType: attr.dataType,
+            defaultValue: attr.defaultValue,
+            defaultView: attr.defaultView
         });
     }
     /**
@@ -156,7 +163,7 @@ FileBasedStoreLoader.prototype.parseFolder = function(folderPath, recursionLevel
 
     folderFiles.forEach(function(fileName){
         var oneRow,
-            fullPath = folderPath + fileName,
+            fullPath = path.join(folderPath, fileName),
             stat = fs.statSync(fullPath),
             newFolderCheck, content, canAdd;
 
@@ -230,30 +237,29 @@ FileBasedStoreLoader.prototype.extractAttributesValues = function(content){
         var attr = _.find(me.attributes, {name: attribute}),
             toType;
         if (!attr){ return; }
-        toType = attr.dataType;
-        switch (+toType) {
-            case TubAttrDataType.Int:
-            case TubAttrDataType.BigInt:
-            case TubAttrDataType.ID:
-            case TubAttrDataType.Float:
-            case TubAttrDataType.Currency:
-            case TubAttrDataType.Entity:
-            case TubAttrDataType.TimeLog:
+        switch (attr.dataType) {
+            case UBDomain.ubDataTypes.Int:
+            case UBDomain.ubDataTypes.BigInt:
+            case UBDomain.ubDataTypes.ID:
+            case UBDomain.ubDataTypes.Float:
+            case UBDomain.ubDataTypes.Currency:
+            case UBDomain.ubDataTypes.Entity:
+            case UBDomain.ubDataTypes.TimeLog:
                 result[attribute] = +value;
                 break;
-            case TubAttrDataType.Boolean:
+            case UBDomain.ubDataTypes.Boolean:
                 result[attribute] = (value === true) || (value === 'true') || (value === '1');
                 break;
-            case TubAttrDataType.DateTime:
+            case UBDomain.ubDataTypes.DateTime:
                 result[attribute] = _.isDate(value) ? value : new Date(value);
                 break;
-            case TubAttrDataType.Unknown:
-            case TubAttrDataType.String:
-            case TubAttrDataType.Text:
-            case TubAttrDataType.Many:
-            case TubAttrDataType.Document:
-            case TubAttrDataType.Enum:
-            case TubAttrDataType.BLOB:
+            case UBDomain.ubDataTypes.Unknown:
+            case UBDomain.ubDataTypes.String:
+            case UBDomain.ubDataTypes.Text:
+            case UBDomain.ubDataTypes.Many:
+            case UBDomain.ubDataTypes.Document:
+            case UBDomain.ubDataTypes.Enum:
+            case UBDomain.ubDataTypes.BLOB:
                 break; // just to be sure we handle all types
             default:
                 throw "Unknown attribute type " + toType;

@@ -145,7 +145,7 @@ class ServerRepository extends CustomRepository {
  * Create new instance of ServerRepository
  *
  *      const Repository = require('@unitybase.base/ServerRepository').fabric;
- *      var req = Repository(conn, 'uba_user').attrs('*').ubql();
+ *      var req = Repository('uba_user').attrs('*').ubql();
  *
  * @param {String} entityName name of Entity for which we create repository
  * @param {UBConnection} [connection] The remote server connection. For internal server thread can be empty

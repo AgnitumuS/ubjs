@@ -146,8 +146,6 @@ Ext.define('UBS.ReportViewer', {
         ];
         me.reportControl = control;
 
-        //me.report = new UBS.UBReport({code: me.reportCode, type: me.reportType, params: me.reportParams });
-
         me.report.init().then(function(){
             if (me.report.onParamPanelConfig){
                 var onParamForm = me.report.onParamPanelConfig();
