@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubm",
-  "version": "4.0.13",
+  "version": "4.0.14",
   "description": "Set of entites to construct a dynamic UnityBase UI",
   "config": {
     "ubmodel": "UBM"
@@ -14,14 +14,14 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.0.12",
-    "@unitybase/ub": "^4.0.14",
-    "@unitybase/uba": "^4.1.0",
-    "@unitybase/ubs": "^4.0.13",
+    "@unitybase/base": "^4.1.0",
+    "@unitybase/ub": "^4.0.15",
+    "@unitybase/uba": "^4.1.1",
+    "@unitybase/ubs": "^4.1.0",
     "lodash": "^4.0.0"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.7"
+    "@unitybase/stubs": "^4.1.0"
   },
   "keywords": [
     "UnityBase"
