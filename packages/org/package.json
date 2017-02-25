@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/org",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "description": "Organisation structure",
   "config": {
     "ubmodel": "ORG"
@@ -15,14 +15,14 @@
   "main": "index.js",
   "dependencies": {
     "lodash": "^4.0.0",
-    "@unitybase/base": "^4.0.12",
-    "@unitybase/ub": "^4.0.14",
-    "@unitybase/uba": "^4.1.0",
-    "@unitybase/ubs": "^4.0.13",
-    "@unitybase/cdn": "^4.0.13"
+    "@unitybase/base": "^4.1.0",
+    "@unitybase/ub": "^4.0.15",
+    "@unitybase/uba": "^4.1.1",
+    "@unitybase/ubs": "^4.1.0",
+    "@unitybase/cdn": "^4.0.14"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.0.7"
+    "@unitybase/stubs": "^4.1.0"
   },
   "keywords": [
     "UnityBase"
