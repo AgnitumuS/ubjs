@@ -18,7 +18,7 @@ exports.reportCode = {
         var 
           me = this, limit = reportParams.limitation || 1000,
             promise,
-            LocalDataStore = UB.isServer ? require('LocalDataStore.js') : UB.LocalDataStore,
+            LocalDataStore = UB.isServer ? require('@unitybase/base/LocalDataStore') : UB.LocalDataStore,
             QWhen = UB.isServer ? require('when') : Q;
         //debugger;
         promise = UB.Repository('cdn_country').attrs(['code', 'name', 'fullName', 'currencyID.name']).limit(limit);

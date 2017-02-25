@@ -87,7 +87,7 @@ function UBDomain (domainInfo) {
   let modelCodes = Object.keys(domainInfo.models)
   modelCodes.forEach(function (modelCode) {
     let m = domainInfo.models[modelCode]
-    me.models[modelCode] = new UBModel(m)
+    me.models[modelCode] = new UBModel(m, modelCode)
   })
 
     /**
@@ -325,8 +325,14 @@ UBDomain.getPhysicalDataType = function (dataType) {
  * @param {string} [cfg.moduleSuffix]
  * @param {string} [cfg.clientRequirePath] if passed are used instead of moduleName + moduleSuffix
  * @param {string} [cfg.realPublicPath]
+ * @param {string} modelCode
  */
-function UBModel (cfg) {
+function UBModel (cfg, modelCode) {
+  /**
+   * Model name as specified in application config
+   * @type {string}
+   */
+  this.name = modelCode
   this.path = cfg.path
   if (cfg.needInit) {
     /**

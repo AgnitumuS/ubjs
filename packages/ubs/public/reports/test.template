@@ -5,7 +5,14 @@
 
 
 
-<!--%pageOrientation:landscape--><h1 style="text-align: center;">Report <br />builder manual</h1>
+<!--%pageOrientation:landscape-->
+
+
+
+
+
+
+<h1 style="text-align: center;">Report <br />builder manual</h1>
 <p><span style="font-size: 10pt;">In UnityBase <strong>report is&nbsp;simply a <a href="https://github.com/janl/mustache.js">Mustache</a>! </strong>So you can use <strong>everything must</strong>ache is support.</span></p>
 <h2 style="text-align: left;">Define template</h2>
 <p>&nbsp; <span style="font-size: 10pt;">Here is we define report template. Depending of report type (PDF or HTML) &nbsp;you can use different subset of HTML tags and properties. &nbsp;</span></p>

@@ -127,10 +127,15 @@ var App = {
   folderChecksum: function (pathToFolder) { return '' },
     /**
      * Current application Domain
+     * @deprecated UB >=4 use a App.domainInfo - a pure JS domain representation
      * @type {TubDomain}
      * @readonly
      */
   domain: new TubDomain(),
+  /**
+   * @type {UBDomain}
+   */
+  domainInfo: new UBDomain(),
 
     /**
      * Default database connection
@@ -478,33 +483,33 @@ TubConnectionConfig.prototype = {
  * @extends {TubNamedCollection}
  */
 function TubEntityAttributeList () {}
-TubDomain.prototype = {
-    /**
-     * @override
-     * @param {String} name
-     * @return {TubEntityAttribute}
-     */
-  byName: function (name) {},
-
-    /**
-     * Create a new attribute for entity. Accessible only iside mixin initializetion methods.
-     * jsonString is a JSON representation of a newly created attribute (with name),
-     * optional position is a position in attribte list to be inserted into.
-     *
-            var entity = App.domain.byName('uba_user');
-            var attrs = entity.attributes;
-            var attr = attrs.newFromJSON(JSON.stringify({name: 'custom1', dataType: 'String', size: 10}), -1);
-
-     * @param {String} jsonString
-     * @param {Number} [position]
-     */
-  newFromJSON: function (jsonString, position) {},
-    /**
-     * @override
-     * @type {Array<TubEntityAttribute>}
-     */
-  items: []
-}
+// TubDomain.prototype = {
+//     /**
+//      * @override
+//      * @param {String} name
+//      * @return {TubEntityAttribute}
+//      */
+//   byName: function (name) {},
+//
+//     /**
+//      * Create a new attribute for entity. Accessible only iside mixin initializetion methods.
+//      * jsonString is a JSON representation of a newly created attribute (with name),
+//      * optional position is a position in attribte list to be inserted into.
+//      *
+//             var entity = App.domain.byName('uba_user');
+//             var attrs = entity.attributes;
+//             var attr = attrs.newFromJSON(JSON.stringify({name: 'custom1', dataType: 'String', size: 10}), -1);
+//
+//      * @param {String} jsonString
+//      * @param {Number} [position]
+//      */
+//   newFromJSON: function (jsonString, position) {},
+//     /**
+//      * @override
+//      * @type {Array<TubEntityAttribute>}
+//      */
+//   items: []
+// }
 
 /**
  * @classdesc
@@ -975,7 +980,9 @@ THTTPRequest.prototype = {
      * @readonly
      */
   decodedParameters: 'params',
-    /** @inheritdoc */
+  /** @inheritdoc 
+   * @param {String} [encoding]
+   */
   read: function (encoding) {},
     /** HTTP request body
      * @type {String}
@@ -1007,9 +1014,12 @@ THTTPRequest.prototype = {
  */
 function THTTPResponse () {}
 THTTPResponse.prototype = {
-    /** add response header(s). Can be called several times for DIFFERENT header
-     * @param {String} header one header or #13#10 separated headers
-     */
+  /** Add response header(s). Can be called several times for DIFFERENT header
+   * 
+   *    resp.writeHead('Content-Type: text/css; charset=UTF-8\r\nOther-header: value')
+   *    
+   * @param {String} header one header or #13#10 separated headers
+   */
   writeHead: function (header) {},
     /**
      * @inheritdoc
@@ -1232,77 +1242,77 @@ WebSocketConnection.prototype = {
   close: function (reason) {}
 }
 
-/**
- * UnityBase Domain definition.
- * @class
- * @extends {TubNamedCollection}
- */
-function TubDomain () {}
-TubDomain.prototype = {
-    /**
-     * Domain name
-     */
-  name: '',
-    /**
-     * Entity collection
-     * @type {Array}
-     */
-  items: [],
-    /**
-     * Domain configuration
-     * @type {TubDomainConfig}
-     */
-  config: '',
-    /**
-     * @override
-     * @param {String} name
-     * @return {TubEntity}
-     */
-  byName: function (name) {}
-}
+// /**
+//  * UnityBase Domain definition.
+//  * @class
+//  * @extends {TubNamedCollection}
+//  */
+// function TubDomain () {}
+// TubDomain.prototype = {
+//     /**
+//      * Domain name
+//      */
+//   name: '',
+//     /**
+//      * Entity collection
+//      * @type {Array}
+//      */
+//   items: [],
+//     /**
+//      * Domain configuration
+//      * @type {TubDomainConfig}
+//      */
+//   config: '',
+//     /**
+//      * @override
+//      * @param {String} name
+//      * @return {TubEntity}
+//      */
+//   byName: function (name) {}
+// }
 
-/**
- * UnityBase Domain configuration.
- * @interface
- * @extends {TubNamedCollection}
- */
-var TubDomainConfig = {
-    /**
-     * Model collection
-     * @type {TubModelsConfig}
-     */
-  models: null
-}
+// /**
+//  * UnityBase Domain configuration.
+//  * @interface
+//  * @extends {TubNamedCollection}
+//  */
+// var TubDomainConfig = {
+//     /**
+//      * Model collection
+//      * @type {TubModelsConfig}
+//      */
+//   models: null
+// }
 
-/**
- * UnityBase Domain models collection.
- * @class
- * @extends {TubNamedCollection}
- */
-var TubModelsConfig = {
-    /**
-     * @override
-     * @param {String} name
-     * @return {TubModelConfig}
-     */
-  byName: function (name) {}
-}
-
-/**
- * UnityBase Models configuration.
- * @interface
- * @extends {TubNamedCollection}
- */
-var TubModelConfig = {
-    /**
-     * Path to model folder
-     */
-  path: 'pathToModelFolder',
-    /**
-     * Path to public model folder
-     */
-  publicPath: 'pathToPublicModelFolder'
-}
+// /**
+//  * UnityBase Domain models collection.
+//  * @class
+//  * @extends {TubNamedCollection}
+//  */
+// var TubModelsConfig = {
+//     /**
+//      * @override
+//      * @param {String} name
+//      * @return {TubModelConfig}
+//      */
+//   byName: function (name) {}
+// }
+//
+// /**
+//  * UnityBase Models configuration.
+//  * @interface
+//  * @extends {TubNamedCollection}
+//  */
+// var TubModelConfig = {
+//     /**
+//      * Path to model folder
+//      */
+//   path: 'pathToModelFolder',
+//     /**
+//      * Path to public model folder
+//      */
+//   publicPath: 'pathToPublicModelFolder'
+// }
 
 /**
  * Entity attributes data type

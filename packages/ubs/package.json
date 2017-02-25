@@ -18,10 +18,11 @@
   "main": "index.js",
   "dependencies": {
     "@unitybase/base": "^4.0.12",
+    "@unitybase/pdf": "^1.0.3",
     "@unitybase/ub": "^4.0.14",
     "@unitybase/uba": "^4.1.0",
-    "@unitybase/pdf": "^1.0.3",
     "lodash": "^4.0.0",
+    "mime-types": "^2.1.14",
     "mustache": "^2.3.0",
     "when": "1.8.1"
   },

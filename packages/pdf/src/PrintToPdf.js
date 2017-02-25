@@ -160,9 +160,17 @@ PrintToPdf.requireFonts = function (config) {
     }
   }
   if (typeof window === 'undefined') { // server side - read file from disk
+    // hack for SystemJS. If bundled - will be stripped by webpack DefinePlugin
+    // noinspection Eslint
+    global.BOUNDLED_BY_WEBPACK = false
+    if (!BOUNDLED_BY_WEBPACK) {
+      var re = require
+      var path = re('path')
+      var fs = re('fs')
+    }
     for (let i = 0, l = notLoadedFonts.length; i < l; i++) {
       const realPath = path.join(__dirname, '..', notLoadedFonts[i])
-      let fontData = JSON.parse(fs.readfileSync(realPath))
+      let fontData = JSON.parse(fs.readFileSync(realPath))
       JsPDF.API.addRawFontData(fontData)
     }
     return true
