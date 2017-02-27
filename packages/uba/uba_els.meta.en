@@ -16,8 +16,7 @@
             "description": "Rule is disabled"
         },
         "entityMask": {
-            "caption": "Entity mask",
-            "description": "Entity mask"
+            "caption": "Entity mask"
         },
         "methodMask": {
             "caption": "Method mask",
