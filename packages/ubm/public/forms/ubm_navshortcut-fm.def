@@ -54,7 +54,7 @@ exports.formDef = {
       layout: 'hbox',
       items: [
         {attributeName: "iconCls"},
-        {html: 'Use build-in <a href="http://fontawesome.io/icons/" target="blank">FontAwersome</a> for icon classes. Example: fa fa-circle', margin: '15px 0 0 0'}
+        {html: 'Use build-in <a href="http://fontawesome.io/icons/" target="blank">Font Awersome</a> for icon classes. Example: fa fa-circle', margin: '15px 0 0 0'}
       ]
     }, {
         layout: "hbox",
@@ -91,30 +91,7 @@ exports.formDef = {
                 labelAlign: "top",
                 hideLabel: true,
                 flex: 1,
-                height: "100%",
-                codeSnippetsGetter: function () {
-                  return [{
-                      displayText: 'showList', text: JSON.stringify(
-                      {
-                        "cmdType": "showList",
-                        "cmdData": {
-                          "params": [{
-                              "entity": "TYPE-ENTITY-CODE",
-                              "method": "select",
-                              "fieldList": ["Dbl-CLICK on left prop panel to add attribute"]
-                            }]
-                        }
-                      }, null, ' ')
-                  }, {
-                    displayText: 'showForm', text: JSON.stringify(
-                      {
-                        "cmdType": "showForm",
-                        "formCode": "TYPE HERE A FORM CODE FROM UBM_FORM",
-                        "entity": "TYPE HERE A ENTITY CODE",
-                        "instanceID": "REPLACE IT by ID value (to edit element) or remove this line"
-                      }, null, ' ')
-                  }]
-                }
+                height: "100%"
             }]
         }, {
             title: UB.i18n('navShortcutRights'),
@@ -130,4 +107,4 @@ exports.formDef = {
             detailFields: ["instanceID"]
         }]
     }]
-};
+}

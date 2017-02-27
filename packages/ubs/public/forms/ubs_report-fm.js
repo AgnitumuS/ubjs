@@ -48,22 +48,5 @@ exports.formCode = {
           })
       }
     })
-  },
-
-  beautyJS: function () {
-    var codeTabs = this.down('tabpanel')
-    var aTab = codeTabs.getActiveTab()
-    var ctrl = aTab ? aTab.down('ubcodemirror') : null
-    if (!ctrl) return
-
-    var txt = ctrl.getValue()
-
-    UB.inject('models/UBS/js_beautify.js').then(function () {
-      txt = js_beautify(txt, {
-        'indent_size': 2,
-        'indent_char': ' '
-      })
-      ctrl.setValue(txt)
-    })
   }
 }
