@@ -519,7 +519,7 @@ if the field "Entity" gets the value of this
         var fieldDesc = descriptionAttribute || window.$App.domainInfo.get(associatedEntity).descriptionAttribute || 'ID';
         
         return UB.Repository(associatedEntity)
-        .attrs(['ID', fieldDesc])
+        .attrs(_.union(['ID', fieldDesc])) // in case of mapping it is possible what fieldDesc === 'ID'
         .where('ID', '=', id)
         .selectAsObject().then(function(items) {
             if (items.length) {
