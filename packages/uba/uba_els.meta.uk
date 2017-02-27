@@ -17,8 +17,7 @@
         },
         "entityMask": {
             "caption": "Маска сутності",
-            "description": "",
-            "documentation": ""
+            "description": ""
         },
         "methodMask": {
             "caption": "Маска методів",

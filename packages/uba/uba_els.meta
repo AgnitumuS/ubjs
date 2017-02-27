@@ -42,14 +42,16 @@
 			"size": 128,
 			"caption": "Entity mask",
 			"description": "",
-			"documentation": "Entity mask. Used wildchars:
-							- ?	   	Matches any single characer
-							- *	   	Matches any contiguous characters
-							- [abc]  	Matches a or b or c at that position
-							- [^abc]	Matches anything but a or b or c at that position
-							- [!abc]	Matches anything but a or b or c at that position
-							- [a-e]  	Matches a through e at that position
-							- [abcx-z]  Matches a or b or c or x or y or or z, as does [a-cx-z]",
+			"documentation": "<h4>Masks wildchars:</h4> <ul>
+					<li>*	   	Matches any contiguous characters</li>
+					<li>?	   	Matches any single characer</li>
+					<li>[abc]  	Matches a or b or c at that position</li>
+					<li>[^abc]	Matches anything but a or b or c at that position</li>
+					<li>[!abc]	Matches anything but a or b or c at that position</li>
+					<li>[a-e]  	Matches a through e at that position</li>
+					<li>[abcx-z]  Matches a or b or c or x or y or or z, as does [a-cx-z]</li>
+				</ul>
+				Example: [iu]* match any string start from either 'i' or 'u' like: 'insetr', 'inner', 'update',...",
 			"allowNull": false
 		},
 		"methodMask": {

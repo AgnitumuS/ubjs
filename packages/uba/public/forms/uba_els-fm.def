@@ -1,6 +1,7 @@
 //@! "do not remove comments below unless you know what you do!"
 //@isDefault "false"
 //@entity "uba_els"
+//@model "UBA"
 //@formType "auto"
 //@caption "Method rights"
 //@description "Method rights"
@@ -13,9 +14,8 @@ exports.formDef = {
 
     parentConfig: {
         layout: {
-            type: 'anchor'
-            // layout-specific configs go here
-            //itemCls: 'x-abs-layout-item',
+            type: "vbox",
+            align: "stretch"
         }
     },
 
@@ -45,6 +45,9 @@ exports.formDef = {
             color: "green"
         },
         text: " Deny entries take precedence over allow entries. This mean that if a user is a member of two groups, one that is allowed a permission and another that is a denied the same permission, then user is denied that permission"
+    }, {
+      xtype: "label",
+      html: $App.domainInfo.entities.uba_els.attributes.entityMask.documentation
     }]
 
 

@@ -16,8 +16,7 @@
             "description": "Qayda de-aktiv edilmişdir"
         },
         "entityMask": {
-            "caption": "Maddənin maskası",
-            "description": ""
+            "caption": "Maddənin maskası"
         },
         "methodMask": {
             "caption": "Üsullar maskası",
