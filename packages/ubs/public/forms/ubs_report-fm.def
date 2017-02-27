@@ -22,12 +22,6 @@ exports.formDef = {
       orderId: 5,
       actionId: 'save'
     }, {
-      text: UB.i18n('beautifyReport'),
-      orderId: 8,
-      handler: function () {
-        this.up('form').beautyJS()
-      }
-    }, {
       xtype: 'tbseparator',
       orderId: 9
     }, {

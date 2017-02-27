@@ -28,7 +28,7 @@ exports.formCode = {
         me.codeTabs = me.down('tabpanel');
         me.designer = me.down('UBVDesigner');
         me.designer.setEntityCode(me.entityCode);
-        me.codeTabs.on('tabchange', function( tabPanel, newCard, oldCard ){
+        me.codeTabs.on('tabchange', function() {
             if (me.codeTabs.getActiveTab().isDesigner){
                 if (me.record.get('formType') === 'auto' ){
                     me.designer.setVisible(true);
@@ -128,18 +128,60 @@ exports.formCode = {
         }
     },
 
-    beautyJS: function() {
-        var
-            aTab = this.codeTabs.getActiveTab(),
-            editor = aTab.down('ubdocument').ubCmp,
-            txt = editor.getValue();
-        UB.inject('models/UBS/js_beautify.js').then(function() {
-            txt = js_beautify(txt, {
-              'indent_size': 2,
-              'indent_char': ' '
-            })
-            editor.setValue(txt);
-            aTab.down('ubdocument').checkContentChange();
-        })
+    doOnGetSnipped: function(type, multilinePrefix) {
+      if (type === 'formDef') {
+        return this.doOnGetFormDefSnippets(multilinePrefix)
+      } else {
+        return this.doOnGetFormScriptSnippets(multilinePrefix)
+      }
+    },
+
+    doOnGetFormDefSnippets: function (multilinePrefix) {
+      return [{
+        displayText: 'layout:vertical', text: [
+          "layout: {type: 'vbox', align: 'stretch'},",
+          "items: [",
+          "\t// place your items here",
+          "]"
+        ].join('\n'+multilinePrefix)
+      }, {
+        displayText: 'layout:horizontal', text:[
+          "layout: {type: 'hbox'},",
+          "items: [",
+          "\t// place your items here",
+          "]"
+        ].join('\n'+multilinePrefix)
+      }, {
+        displayText: 'components:details', text:[
+          "{",
+          "\txtype: 'ubdetailgrid',",
+          "\tentityConfig: {",
+          "\t\tentity: 'REPLACE-BY-DETAIL-ENTITY-CODE',",
+          "\t\tfieldList: ['REPLACE-BY-DETAIL-ENTITY-ATTRIBUTES']",
+          "\t},",
+          "\tmasterFields: ['ID'],",
+          "\tdetailFields: ['REPLACE-BY-DETAIL-ENTITY-ATTRIBUTE-WHAT-REF-TO-THIS-ENTITY']",
+          "}"
+        ].join('\n'+multilinePrefix)
+      }, {
+        displayText: 'components:tabs', text:[
+          "{",
+          "\txtype: 'tabpanel',",
+          "\tlayout: 'fit',",
+          "\tflex: 1,",
+          "\titems: [{",
+          "\t\ttitle: UB.i18n('1stTabTitle')",
+          "\t}, {",
+          "\t\ttitle: UB.i18n('2ndTabTitle')",
+          "\t}]",
+          "}"
+        ].join('\n'+multilinePrefix)
+      }]
+    },
+
+    doOnGetFormScriptSnippets: function () {
+      return [{
+        displayText: 'base:record', text: "this.record.get('ARRTIBUTE-CODE')"
+      }]
     }
-};
+}

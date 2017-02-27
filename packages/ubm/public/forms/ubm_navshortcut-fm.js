@@ -2,13 +2,13 @@ var entityRe = /"entity"\s*:\s*"(\w*)"/;
 
 exports.formCode = {
   initUBComponent: function () {
-    var
-      me = this;
+    var me = this
     me.attributeGrid = this.down('commandbuilderentitytreepanel');
     me.getField('cmdCode').addListener('change', me.onCmdCodeChanged, me);
     me.onCmdCodeChanged(null, me.getField('cmdCode').getValue()); // initial data
-
     me.attributeGrid.addListener('itemdblclick', me.onEntityAttributeGridClick, me);
+
+    me.getField('cmdCode').codeSnippetsGetter = this.codeSnippetsGetter.bind(this)
 
     if (me.commandConfig.instanceID) return // edit mode
 
@@ -26,6 +26,7 @@ exports.formCode = {
     } else {
       me.getField('isFolder').setValue(true)
     }
+
     var ds = me.commandConfig.desktopID || $App.getDesktop()
     if (ds) {
       me.getField('desktopID').setValueById(ds)
@@ -33,6 +34,30 @@ exports.formCode = {
     if (me.commandConfig.parentID) {
       me.getField('parentID').setValueById(me.commandConfig.parentID)
     }
+  },
+
+  codeSnippetsGetter: function () {
+    return [{
+      displayText: 'showList', text: JSON.stringify(
+        {
+          "cmdType": "showList",
+          "cmdData": {
+            "params": [{
+              "entity": "TYPE-ENTITY-CODE",
+              "method": "select",
+              "fieldList": ["Dbl-CLICK on left prop panel to add attribute"]
+            }]
+          }
+        }, null, ' ')
+    }, {
+      displayText: 'showForm', text: JSON.stringify(
+        {
+          "cmdType": "showForm",
+          "formCode": "TYPE HERE A FORM CODE FROM UBM_FORM",
+          "entity": "TYPE HERE A ENTITY CODE",
+          "instanceID": "REPLACE IT by ID value (to edit element) or remove this line"
+        }, null, ' ')
+    }]
   },
 
     onCmdCodeChanged : function(field, newValue){
