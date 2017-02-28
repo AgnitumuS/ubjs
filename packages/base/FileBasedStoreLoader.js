@@ -101,7 +101,7 @@ function FileBasedStoreLoader(config) {
     this.processingRootFolder = null;
 }
 
-FileBasedStoreLoader.JSON_ATTRIBURE_REGEXP = '^\\/\\/@(\\w+)\\s"(.*?)"';
+FileBasedStoreLoader.JSON_ATTRIBURE_REGEXP = '^\\/\\/[ \t]?@(\\w+)\\s"(.*?)"';
 FileBasedStoreLoader.XML_ATTRIBURE_REGEXP = '<!--@(\\w+)\\s*"(.+)"\\s*-->';
 
 /**
