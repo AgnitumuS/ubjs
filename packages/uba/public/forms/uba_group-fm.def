@@ -1,6 +1,7 @@
 //@! "do not remove comments below unless you know what you do!"
 //@isDefault "true"
 //@entity "uba_group"
+//@model "UBA"
 //@formType "auto"
 //@caption "Group"
 //@description "Group"
@@ -48,4 +49,4 @@ exports.formDef = {
 		masterFields: ["ID"],
 		detailFields: ["groupID"]
 	}]
-};
+}
