@@ -1,6 +1,6 @@
 // @! "do not remove comments below unless you know what you do!"
 // @isDefault "false"
-// @entity "uba_auditTrail"
+// @entity "uba_audit"
 // @formType "custom"
 // @caption "Security dashboard"
 // @description "Supervisor security dashboard"
