@@ -30,10 +30,8 @@ items: [
         xtype: "ubdetailgrid",
         flex: 1,
         height: 300,
-        cmdType: "showList",
         entityConfig: {
             entity: "ubm_desktop_adm",
-            method: "select",
             fieldList: ["instanceID", "admSubjID"]
         },
         masterFields: ["ID"],
