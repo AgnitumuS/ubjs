@@ -188,7 +188,7 @@ Ext.define('UB.view.NavigationPanel', {
           return
         }
         let instanceID = rec.get('ID')
-        $App.dialogYesNo('podtverditUdalenije', 'vyUvereny')
+        $App.dialogYesNo('deletionDialogConfirmCaption', 'vyUvereny')
         .then(function (choice) {
           if (choice) {
             $App.connection.doDelete({
