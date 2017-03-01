@@ -11,8 +11,7 @@
             "description": ""
         },
         "caption": {
-            "caption": "Formanın başlığı",
-            "description": ""
+            "caption": "Formanın başlığı"
         },
         "formType": {
             "caption": "Formanın tipi",
