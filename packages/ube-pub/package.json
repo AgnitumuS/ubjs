@@ -1,6 +1,6 @@
 {
   "name": "@ub-e/ube-pub",
-  "version": "4.0.12",
+  "version": "4.1.0",
   "description": "UnityBase admin UI enterprise components",
   "main": "adminui.js",
   "config": {
