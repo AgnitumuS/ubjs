@@ -3,7 +3,7 @@
 //@entity "ubm_navshortcut"
 //@model "UBM"
 //@formType "auto"
-//@caption " "
+//@caption ""
 //@description ""
 exports.formDef = {
     //requiredFields: ['desktopID.code', 'parentID.code'],
