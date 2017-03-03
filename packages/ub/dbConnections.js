@@ -28,35 +28,90 @@ const chELw = 101
 const chSpace = 32
 const chLF = 10
 const chCR = 13
-//
-    //    ;
+/**
+ * @typedef {Object} parseSQLResult
+ * @property {string} parsedSql
+ * @property {Array} parsedParams
+ */
+
+/**
+ * Class for database access
+ */
 class TubDatabase_ {
+  /**
+   * @private
+   * @param index
+   */
   constructor (index) {
+    /**
+     * @private
+     * @property dbIndexSymbol
+     */
     Object.defineProperty(this, dbIndexSymbol, {value: index})
   }
+  /**
+   * Is database in transaction
+   * @returns {boolean}
+   */
   get inTransaction () {
     return binding.inTransaction(this[dbIndexSymbol])
   }
+  /**
+   * Start transaction. If transaction is already started return false
+   * @returns {boolean}
+   */
   startTransaction () {
     return binding.startTransaction(this[dbIndexSymbol])
   }
+  /**
+   * Commit transaction. If transaction is not started return false
+   * @returns {boolean}
+   */
   commit () {
     return binding.commit(this[dbIndexSymbol])
   }
+  /**
+   * Rollback transaction. If transaction is not started return false
+   * @returns {boolean}
+   */
   rollback () {
     return binding.rollback(this[dbIndexSymbol])
   }
+  /**
+   * Run select sql and return result
+   * @param {string} sql
+   * @param {Object} params
+   * @returns {string}
+   */
   run (sql, params) {
     const {parsedSql, parsedParams} = this.parseSQL(sql, params)
     return binding.run(this[dbIndexSymbol], parsedSql, parsedParams)
   }
+  /**
+   * Execute sql
+   * @param {string} sql
+   * @param {Object} params
+   * @returns {boolean}
+   */
   exec (sql, params) {
     const {parsedSql, parsedParams} = this.parseSQL(sql, params)
     return binding.exec(this[dbIndexSymbol], parsedSql, parsedParams)
   }
+  /**
+   * Generate ID for entity
+   * @param entity
+   * @returns {*}
+   */
   genID (entity) {
     return binding.genID(entity)
   }
+
+  /**
+   * @private
+   * @param {string} sql
+   * @param {Object} params
+   * @returns {parseSQLResult}
+   */
   parseSQL (sql, params) {
     // return {parsedSql: sql, parsedParams: []}
     let parsedSql = []
@@ -200,12 +255,26 @@ class TubDatabase_ {
 for (let index in bindingDatabases) {
   Object.defineProperty(databases, bindingDatabases[index], {value: new TubDatabase_(Number.parseInt(index)), enumerable: true})
 }
-
+/**
+ * Databases of application
+ * @type {Object<string,TubDatabase_>}
+ */
 Object.defineProperty(App, 'databases_', {value: databases})
+/**
+ * Default database
+ * @type {TubDatabase_}
+ */
 Object.defineProperty(App, 'defaultDatabase_', {value: databases[binding.defaultDb]})
 
 /**
- *
+ * Run sql on server side
+ * Allowed from localIP
+ * Connection name is in `connection` uri parameter (or default connection if not set)
+ * If HTTP method is GET then allowed inline parameters only
+ *   sql is in `sql` uri parameter
+ * If Http method is not GET then
+ *   sql is in request body
+ *   parameters is uri parameters except `connection`
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @private
