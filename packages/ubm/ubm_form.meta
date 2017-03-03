@@ -31,8 +31,7 @@
 			"dataType": "String",
 			"size": 128,
 			"caption": "Form caption",
-			"description": "",
-			"allowNull": false
+			"description": "Keep it empty to use entity name as form caption"
 		},
 		"formType": {
 			"dataType": "Enum",

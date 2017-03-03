@@ -441,7 +441,7 @@ Ext.define('UB.ux.UBDetailTree', {
         }
 
         Ext.Msg.confirm({
-            title: UB.i18n('podtverditUdalenije'),
+            title: UB.i18n('deletionDialogConfirmCaption'),
             msg: UB.i18n('vyUvereny'),
             buttons: Ext.Msg.YESNO,
             icon: Ext.Msg.QUESTION,

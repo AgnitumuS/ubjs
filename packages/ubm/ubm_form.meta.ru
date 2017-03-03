@@ -7,12 +7,10 @@
             "description": ""
         },
         "description": {
-            "caption": "Описание",
-            "description": ""
+            "caption": "Описание"
         },
         "caption": {
-            "caption": "Заголовок формы",
-            "description": ""
+            "caption": "Заголовок формы"
         },
         "formType": {
             "caption": "Тип формы",

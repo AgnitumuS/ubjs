@@ -313,10 +313,10 @@ function UBConnection (connectionParams) {
     return this._pendingAuthPromise
   }
 
-    /**
-     * Clear current user authorization promise. Next request repeat authorization
-     * @private
-     */
+  /**
+   * Clear current user authorization promise. Next request repeat authorization
+   * @private
+   */
   this.authorizationClear = function () {
     this.lastLoginName = this.userLogin()
     currentSession = undefined
@@ -616,10 +616,10 @@ function UBConnection (connectionParams) {
   }
 
   this.recordedXHRs = []
-    /**
-     * Set it to `true` for memorize all requests to recordedXHRs array (for debug only!).
-     * @type {Boolean}
-     */
+  /**
+   * Set it to `true` for memorize all requests to recordedXHRs array (for debug only!).
+   * @type {Boolean}
+   */
   this.recorderEnabled = false
 }
 
@@ -1710,6 +1710,13 @@ UBConnection.prototype.serverErrorByCode = function (errorNum) {
 UBConnection.prototype.Repository = function (entityName) {
   return new ClientRepository(this, entityName)
 }
+
+/**
+ * Calc SHA256 from string
+ *
+ *    var shaAsSting = SHA256('something').toString()
+ */
+UBConnection.prototype.SHA256 = SHA256
 
 const LDS = (window && window.localStorage)
 /**

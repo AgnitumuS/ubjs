@@ -287,7 +287,7 @@ function doUpdateInsert(ctxt, storedValue, isInsert){
     docHandler = docReq.createHandlerObject(false);
     docHandler.loadContent(TubLoadContentBody.Yes /*with body */);
     docBody = docHandler.request.getBodyAsUnicodeString();
-    var clearAttrReg = /^\/\/@(.+) "(.*)"[ \t]*\r?\n/gm; // seek for //@ "bla bla" CRLF
+    var clearAttrReg = /^\/\/[ \t]?@(.+) "(.*)"[ \t]*\r?\n/gm; // seek for //@ "bla bla" CRLF
     if (!docBody){
         if (storedValue.formType === 'auto') {
             docBody = getFormBodyTpl('new_autoFormDef.mustache', 'exports.formDef = {\r\n\titems:[\r\n\t\t/*put your items here*/\r\n\t]\r\n};');
@@ -307,10 +307,10 @@ function doUpdateInsert(ctxt, storedValue, isInsert){
         attr = attributes.items[j];
         attrName = attr.name;
         if( attr.dataType !== TubAttrDataType.Document && attr.defaultView && attrName !=='ID' && attrName !== 'code'){
-          addedAttr = '//@' + attrName +  ' "' + storedValue[attrName] + '"\r\n' + addedAttr;
+          addedAttr = '// @' + attrName +  ' "' + storedValue[attrName] + '"\r\n' + addedAttr;
         }
     }
-    docBody = '//@! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + docBody;
+    docBody = '// @! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + docBody;
     docHandler.request.setBodyAsUnicodeString(docBody);
     ct = docHandler.content;
     ct.fName = storedValue.code + DEF_FILE_TAIL;

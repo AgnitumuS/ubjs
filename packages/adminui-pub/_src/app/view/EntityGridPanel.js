@@ -2033,20 +2033,29 @@ Ext.define('UB.view.EntityGridPanel', {
       return
     }
 
-    $App.dialogYesNo('podtverditUdalenije', UB.format(UB.i18n('deleteConfirmation'), me.getFormTitle()))
+    var entityCaptionsToDelete = ''
+    var gridSelection = me.getSelectionModel().getSelection()
+    if (gridSelection.length === 1) {
+      if (me.entity.descriptionAttribute) {
+        try {
+          entityCaptionsToDelete = gridSelection[0].get(me.entity.descriptionAttribute)
+        } catch(e){}
+        if (entityCaptionsToDelete) entityCaptionsToDelete = '[' + entityCaptionsToDelete + ']'
+      }
+    }
+    $App.dialogYesNo('deletionDialogConfirmCaption', UB.format(UB.i18n('deleteConfirmationWithCaption'), me.getFormTitle(), entityCaptionsToDelete))
       .then(function (res) {
         if (!res) { return }
         var commandList = [],
-          sel = me.getSelectionModel().getSelection(),
-          hasUnity = sel.length && sel[0].get('mi_unityEntity'),
+          hasUnity = gridSelection.length && gridSelection[0].get('mi_unityEntity'),
           entityName
 
-        for (var i = 0, len = sel.length; i < len; ++i) {
-          entityName = hasUnity ? sel[i].get('mi_unityEntity') : me.entityName
+        for (var i = 0, len = gridSelection.length; i < len; ++i) {
+          entityName = hasUnity ? gridSelection[i].get('mi_unityEntity') : me.entityName
           commandList.push({
             entity: entityName,
             method: 'delete',
-            execParams: {ID: sel[i].get('ID')}
+            execParams: {ID: gridSelection[i].get('ID')}
           })
         }
 
