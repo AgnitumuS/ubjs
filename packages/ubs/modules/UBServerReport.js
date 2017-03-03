@@ -30,12 +30,22 @@ global.XMLSerializer = xmldom.XMLSerializer
 
 // PDF unicode-text require atob & btoa to be in global
 // MPV TODO - fix issue in buffer and switch to Buffer
-const browserLikebase64 = require('./base64')
-global.atob = browserLikebase64.atob
-/*global.atob = function (text) {
+// const browserLikebase64 = require('./base64')
+// global.atob = browserLikebase64.atob
+global.atob = function (text) {
   let buf = Buffer.from(text, 'base64')
   return buf.toString('binary') // buffer.toString('utf-8')
-}*/
+}
+
+/**
+ * Report generation result
+ * @typedef {Object} ReportResult
+ * @property {string} reportCode
+ * @property {string} reportType
+ * @property {Object} incomeParams
+ * @property {Object} reportOptions
+ * @property {String|ArrayBuffer|*} reportData Result of buildReport function execution
+ */
 
 /**
 * @constructor
@@ -76,8 +86,7 @@ function UBServerReport (reportCode, reportType, params) {
 }
 
 /**
-* @returns {Promise|String} If code run in server function return report data as String else return Promise.
-* Promise.resolve function get parameter report data as String.
+* @returns {ReportResult}
 */
 UBServerReport.makeReport = function (reportCode, reportType, params) {
   let report = new UBServerReport(reportCode, reportType, params)
@@ -86,7 +95,6 @@ UBServerReport.makeReport = function (reportCode, reportType, params) {
 
 /**
 * Load report template and code.
-* @returns {Promise|Boolean}
 */
 UBServerReport.prototype.init = function () {
   let reportInfo = queryBuilder('ubs_report').attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
@@ -128,10 +136,8 @@ UBServerReport.prototype.prepareTemplate = function () {
 }
 
 /**
- * @param {{key: value}} [params]
- * @returns {Promise}
- * Promise resolve object {reportCode: {String}, reportType: {String}, incomeParams: {Object}, reportOptions: {Object}, reportData: {String|ArrayBuffer}}
-     }.
+ * @param {Object} [params]
+ * @returns {ReportResult}
  */
 UBServerReport.prototype.makeReport = function (params) {
   let prm = _.clone(this.incomeParams)
@@ -139,13 +145,15 @@ UBServerReport.prototype.makeReport = function (params) {
     prm = _.assign(prm, params)
   }
   this.init()
-  let reportData = this.buildReport(prm)
-  if (!Q.isPromise(reportData)) {
-    reportData = Q.resolve(reportData)
+  let promiseOrData = this.buildReport(prm)
+  let report
+  // convert to value
+  if (Q.isPromise(promiseOrData)) {
+    promiseOrData.then(data => { report = data })
+  } else {
+    report = promiseOrData
   }
-  return reportData.then(
-    data => this.makeResult(data)
-  )
+  return this.makeResult(report)
 }
 
 /**
