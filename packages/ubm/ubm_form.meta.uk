@@ -11,8 +11,7 @@
             "description": ""
         },
         "caption": {
-            "caption": "Заголовок форми",
-            "description": ""
+            "caption": "Заголовок форми"
         },
         "formType": {
             "caption": "Тип форми",

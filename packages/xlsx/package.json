@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/xlsx",
-  "version": "4.0.11",
+  "version": "4.0.12",
   "description": "UnityBase Excel exporter",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.1.0"
+    "@unitybase/base": "^4.2.0"
   },
   "devDependencies": {},
   "peerDependencies": {
