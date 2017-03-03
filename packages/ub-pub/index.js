@@ -8,6 +8,7 @@ const transport = require('./transport')
 const conn = require('./UBConnection')
 const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
+const LocalDataStore = require('@unitybase/base/LocalDataStore')
 const SHA256 = require('@unitybase/CryptoJS/sha256')
 const MD5 = require('@unitybase/CryptoJS/md5')
 
@@ -34,6 +35,7 @@ module.exports = {
 
   connect: conn.connect,
   ClientRepository: ClientRepository,
+  LocalDataStore: LocalDataStore,
 
   log: utils.log,
   logError: utils.logError,
