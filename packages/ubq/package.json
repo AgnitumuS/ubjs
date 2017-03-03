@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubq",
-  "version": "4.0.16",
+  "version": "4.1.0",
   "description": "UnityBase queue",
   "config": {
     "ubmodel": "UBQ"
@@ -17,8 +17,8 @@
     "@unitybase/base": "^4.2.0",
     "@unitybase/mailer": "^4.0.9",
     "@unitybase/mailer-ssl": "^4.0.9",
-    "@unitybase/ub": "^4.0.17",
-    "@unitybase/uba": "^4.1.3",
+    "@unitybase/ub": "^4.0.18",
+    "@unitybase/uba": "^4.1.4",
     "lodash": "^4.0.0",
     "node-cron": "^1.1.2"
   },
