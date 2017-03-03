@@ -4,18 +4,19 @@
   },
   "source": {
     "include": [
-      "./base",
-      "./ub",
-      "./ub/modules"
+      "./packages/base",
+      "./packages/stubs",
+      "./packages/ub",
+      "./packages/ub/modules"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
   "plugins": [
     "plugins/markdown",
-    "./ub-jsdocs/plugins/sripPFromDescription"
+    "./packages/ub-jsdocs/plugins/sripPFromDescription"
   ],
   "opts": {
-    "template": "./ub-jsdocs",
+    "template": "./packages/ub-jsdocs",
     "readme": "./readme.md",
     "encoding": "utf8",
     "destination": "../Docs/new_all"

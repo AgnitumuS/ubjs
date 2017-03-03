@@ -7,5 +7,8 @@
     "webpack-bundle-analyzer": "^1.5.3",
     "jsdoc": "~3.4.0",
     "lerna": "2.0.0-beta.30"
+  },
+  "scripts": {
+    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
   }
 }
