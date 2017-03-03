@@ -35,12 +35,12 @@ const chCR = 13
  */
 
 /**
- * Class for database access
+ * Class for database access. Databases are defined in config file
  */
 class TubDatabase_ {
   /**
    * @private
-   * @param index
+   * @param {number} index
    */
   constructor (index) {
     /**
@@ -99,8 +99,8 @@ class TubDatabase_ {
   }
   /**
    * Generate ID for entity
-   * @param entity
-   * @returns {*}
+   * @param {string} entity
+   * @returns {number}
    */
   genID (entity) {
     return binding.genID(entity)
@@ -257,14 +257,19 @@ for (let index in bindingDatabases) {
 }
 /**
  * Databases of application
+ * @memberOf App
+ * @property databases_
  * @type {Object<string,TubDatabase_>}
  */
-Object.defineProperty(App, 'databases_', {value: databases})
+App.databases_ = databases
+
 /**
- * Default database
+ * Default database of application
+ * @memberOf App
+ * @property defaultDatabase_
  * @type {TubDatabase_}
  */
-Object.defineProperty(App, 'defaultDatabase_', {value: databases[binding.defaultDb]})
+App.defaultDatabase_ = databases[binding.defaultDb]
 
 /**
  * Run sql on server side
