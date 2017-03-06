@@ -30,7 +30,7 @@ const UBConnection = require('./UBConnection')
  * @return {String}
  */
 function getConfigFileName () {
-  let cfgFile = options.switchValue('cfg')
+  let cfgFile = options.switchValue('cfg') || process.env.UB_CFG
 
   if (cfgFile) {
     if (!path.isAbsolute(cfgFile)) cfgFile = path.join(process.cwd(), cfgFile)
@@ -179,7 +179,7 @@ establishConnectionFromCmdLineAttributes._cmdLineParams = [
     {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:888', searchInEnv: true, help: 'Server URL to connect, including protocol'},
     {short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name'},
     {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password'},
-    {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: false, help: 'Path to server config'}
+    {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to server config'}
 ]
 
 /**

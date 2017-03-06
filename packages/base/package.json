@@ -11,7 +11,7 @@
   },
   "main": "index.js",
   "dependencies": {
-    "lodash": "^4.0.0",
+    "lodash": "^4",
     "@unitybase/cryptojs": "^1.0.5"
   },
   "devDependencies": {
