@@ -32,16 +32,16 @@ Install `lerna` (> 2.0 required for scoped packages support)
 
 	npm install -g lerna@latest
 
-Set cross-dependency between modules
-
-    cd /dev/ubjs
-    lerna bootstrap
-    
 Install a required dev-dependencies
 
     cd /dev/ubjs
     npm install
 
+Set cross-dependency between modules
+
+    cd /dev/ubjs
+    lerna bootstrap
+    
 Link all UB modules to the global NPM storage. 
 This command also will build all UB modules
 
