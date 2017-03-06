@@ -20,7 +20,7 @@ let modelLoadDate
 
 const TEMPLATE_CONTENT_TYPE = 'application/ubreport'
 const CODE_BEHIND_CONTENT_TYPE = 'application/def'
-const REL_PATH_TAIL = 'public\\reports\\'
+const REL_PATH_TAIL = 'reports'
 const TEMPLATE_EXTENSION = '.template'
 const CODE_BEHIND_EXTENSION = '.js'
 
@@ -112,7 +112,7 @@ function loadAll () {
 
     for (let modelCode in models) {
       let model = models[modelCode]
-      let mPath = path.join(model.realPublicPath, 'reports') // REL_PATH_TAIL
+      let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
         path: mPath,
         model: model // used for fill Document content for `mdb` store in postProcessing
@@ -127,16 +127,6 @@ function loadAll () {
     })
     resultDataCache = loader.load()
 
-    resultDataCache.version = 0
-    let l = resultDataCache.fields.indexOf('mi_modifyDate')
-    if (l !== -1) {
-      resultDataCache.data.forEach(function (row) {
-        if (resultDataCache.version < row[l]) {
-          resultDataCache.version = row[l]
-        }
-      })
-      resultDataCache.version = new Date(resultDataCache.version).getTime()
-    }
     modelLoadDate = modelLastDate
   } else {
     console.debug('ubs_report: resultDataCache already loaded')

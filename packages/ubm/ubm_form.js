@@ -2,9 +2,10 @@
 /*global TubAttrDataType, ubm_form, require*/
 var me = ubm_form;
 
-var fs = require('fs'),
-    FileBasedStoreLoader = require('@unitybase/base/FileBasedStoreLoader'),
-    LocalDataStore = require('@unitybase/base').LocalDataStore;
+const fs = require('fs')
+const FileBasedStoreLoader = require('@unitybase/base/FileBasedStoreLoader')
+const LocalDataStore = require('@unitybase/base').LocalDataStore
+const path = require('path')
 
 me.entity.addMethod('select');
 me.entity.addMethod('update');
@@ -18,7 +19,7 @@ var
     modelLoadDate,
     JSON_CONTENT_TYPE =  'application/json; charset=UTF-8',
     DFM_CONTENT_TYPE =  'text/javascript; charset=UTF-8',
-    REL_PATH_TAIL = 'public\\forms\\',
+    REL_PATH_TAIL = 'forms',
     DEF_FILE_TAIL = '-fm.def',
     JS_FILE_TAIL = '-fm.js';
 
@@ -104,7 +105,7 @@ function loadAllForms(){
         resultDataCache = [];
         for (i = 0, l = models.count; i < l; i++) {
             model = models.items[i];
-            mPath = model.path + REL_PATH_TAIL;
+            mPath = path.join(model.publicPath, REL_PATH_TAIL);
             folders.push({
                 path: mPath,
                 model: model // used for fill Document content for `mdb` store in postProcessing
@@ -118,16 +119,6 @@ function loadAllForms(){
        });
        resultDataCache = loader.load();
 
-       resultDataCache.version = 0;
-       l = resultDataCache.fields.indexOf('mi_modifyDate');
-       if (l !== -1){
-           resultDataCache.data.forEach(function(row){
-               if (resultDataCache.version < row[l]){
-                   resultDataCache.version = row[l]
-               }
-           });
-           resultDataCache.version = new Date(resultDataCache.version).getTime();
-       }
        modelLoadDate = modelLastDate;
    }else{
         console.debug('ubm_form: resultDataCache already loaded');
@@ -214,9 +205,8 @@ function validateInput(aID, formCode, formEntity){
  * @param {String} [defaultBody]
  */
 function getFormBodyTpl(fileName, defaultBody){
-    "use strict";
-    var path = App.domain.config.models.byName('UBM').path + '_templates\\' + fileName;
-    return fs.isFile(path) ? fs.readFileSync(path) : defaultBody;
+    let filePath = path.join(App.domain.config.models.byName('UBM').publicPath, '_templates', fileName);
+    return fs.isFile(filePath) ? fs.readFileSync(filePath) : defaultBody;
 }
 /**
  *
