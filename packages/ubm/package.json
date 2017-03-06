@@ -17,8 +17,7 @@
     "@unitybase/base": "^4.2.0",
     "@unitybase/ub": "^4.0.18",
     "@unitybase/uba": "^4.1.4",
-    "@unitybase/ubs": "^4.1.3",
-    "lodash": "^4.0.0"
+    "@unitybase/ubs": "^4.1.3"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.1.0"
