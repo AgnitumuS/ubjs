@@ -133,6 +133,17 @@ FileBasedStoreLoader.prototype.load = function () {
     result.fields = _.map(me.attributes, 'name')
     result.data = lds.arrayOfObjectsToSelectResult(me.resultCollection, result.fields)
     result.rowCount = result.data.length
+    let l = result.fields.indexOf('mi_modifyDate')
+    if (l !== -1) {
+      let dataVersion = 0
+      result.data.forEach((row) => {
+        if (dataVersion < row[l]) {
+          dataVersion = row[l]
+        }
+      })
+      // add a row count for case when some row are deleted or added with old date
+      result.version = new Date(dataVersion).getTime() + result.data.length
+    }
   } else {
     result = me.resultCollection
   }
