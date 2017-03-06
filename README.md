@@ -32,7 +32,18 @@ Install `lerna` (> 2.0 required for scoped packages support)
 
 	npm install -g lerna@latest
 
-Link all UB modules to the global NPM storage
+Set cross-dependency between modules
+
+    cd /dev/ubjs
+    lerna bootstrap
+    
+Install a required dev-dependencies
+
+    cd /dev/ubjs
+    npm install
+
+Link all UB modules to the global NPM storage. 
+This command also will build all UB modules
 
 	cd /dev/ubjs
 	lerna exec -- npm link
@@ -147,7 +158,7 @@ This is slow and non-scailable way. Below we describe a "unix way" of remote ser
 
 #### Both server and client are in the same domain
 
-  In case both your computer and remote server are in the same domain, no additional såteps is required. 
+  In case both your computer and remote server are in the same domain, no additional sÃ¥teps is required. 
 
 #### Server and client are in re different domain (or no domain at all)
 
