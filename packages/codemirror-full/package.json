@@ -16,7 +16,7 @@
   "dependencies": {
     "codemirror": "^5.20.2",
     "jshint": "^2.9.4",
-    "lodash": "^4.1"
+    "lodash": "^4"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",

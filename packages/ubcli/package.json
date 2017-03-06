@@ -16,7 +16,6 @@
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
   },
   "dependencies": {
-    "lodash": "^4.0.0",
     "@unitybase/base": "^4.2.0"
   },
   "devDependencies": {

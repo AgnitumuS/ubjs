@@ -21,7 +21,6 @@
     "@unitybase/pdf": "^1.1.3",
     "@unitybase/ub": "^4.0.18",
     "@unitybase/uba": "^4.1.4",
-    "lodash": "^4.0.0",
     "mime-types": "^2.1.14",
     "mustache": "^2.3.0",
     "when": "1.8.1"
