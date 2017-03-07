@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/uba",
-  "version": "4.1.5",
+  "version": "4.1.6",
   "description": "UnityBase Administrative model",
   "config": {
     "ubmodel": "UBA"

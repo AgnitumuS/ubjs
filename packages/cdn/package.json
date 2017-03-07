@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/cdn",
-  "version": "4.0.18",
+  "version": "4.0.19",
   "description": "Set of dictionaries, common for most enterprise systems",
   "config": {
     "ubmodel": "CDN"
@@ -16,8 +16,8 @@
   "dependencies": {
     "@unitybase/base": "^4.2.1",
     "@unitybase/ub": "^4.0.19",
-    "@unitybase/uba": "^4.1.5",
-    "@unitybase/ubs": "^4.1.4"
+    "@unitybase/uba": "^4.1.6",
+    "@unitybase/ubs": "^4.1.5"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.1.0"

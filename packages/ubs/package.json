@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "4.1.4",
+  "version": "4.1.5",
   "description": "UnityBase Service model",
   "config": {
     "ubmodel": "UBS"
@@ -18,9 +18,9 @@
   "main": "index.js",
   "dependencies": {
     "@unitybase/base": "^4.2.1",
-    "@unitybase/pdf": "^1.1.4",
+    "@unitybase/pdf": "^1.1.5",
     "@unitybase/ub": "^4.0.19",
-    "@unitybase/uba": "^4.1.5",
+    "@unitybase/uba": "^4.1.6",
     "mime-types": "^2.1.14",
     "mustache": "^2.3.0",
     "when": "1.8.1"
