@@ -10,8 +10,8 @@
             "description": "Назва"
         },
         "isdefault": {
-            "caption": "По замовченню",
-            "description": "По замовченню"
+            "caption": "За замовченням",
+            "description": "За замовченням"
         },
         "document": {
             "caption": "Органограма",
