@@ -1757,6 +1757,7 @@ const LDS = (window && window.localStorage)
  * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
  * @param cfg.onCredentialRequired Callback for requesting a user creadentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
  * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
+ * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
  * @param [cfg.onNeedChangePassword] Callback for a password exparition. See {@link passwordExpired} event
  * @param [cfg.onGotApplicationConfig]
  * @param [cfg.onGotApplicationDomain]
@@ -1775,6 +1776,9 @@ function connect (cfg) {
   }
   if (config.onNeedChangePassword) {
     connection.on('passwordExpired', config.onNeedChangePassword)
+  }
+  if (config.onAuthorized) {
+    connection.on('authorized', config.onAuthorized)
   }
 
   return connection.getAppInfo().then(function (appInfo) {
