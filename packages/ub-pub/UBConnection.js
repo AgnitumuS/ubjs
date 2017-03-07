@@ -1752,13 +1752,19 @@ const LDS = (window && window.localStorage)
     });
  });
 
+ * Preferred locale tip: to set a connection preferredLocale parameter to, for example 'uk', use
+
+    localStorage.setItem((path || '/') + 'preferredLocale', 'uk')
+
+ * **before** call to UBConnection.connect
+ *
  * @param cfg
  * @param {string} cfg.host Server host
  * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
- * @param cfg.onCredentialRequired Callback for requesting a user creadentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+ * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
  * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
  * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
- * @param [cfg.onNeedChangePassword] Callback for a password exparition. See {@link passwordExpired} event
+ * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
  * @param [cfg.onGotApplicationConfig]
  * @param [cfg.onGotApplicationDomain]
  * @return Promise<UBConnection>
