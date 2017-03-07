@@ -60,7 +60,8 @@ class CustomRepository {
     this.options = {}
 
     /**
-     * Name of entity method used for data retrieve. Default is 'select'. The correct way to set method is `.using('mySelect')`
+     * Name of entity method used for data retrieve.
+     * Default is 'select'. The correct way to set method is `.using('mySelect')`
      * @type {string}
      * @private
      */
@@ -106,7 +107,8 @@ class CustomRepository {
      *
      * Example:
      *
-     *      UB.Repository('tri_srf_reg').attrs('SUM([payment])').where('documentID', '=', value); //will calculate sum of document payments
+     *      UB.Repository('tri_srf_reg').attrs('SUM([payment])').where('documentID', '=', value);
+     *      //will calculate sum of document payments
      *
      * If case of server-side execution any valid SQL expression is accepted:
      *
@@ -136,19 +138,26 @@ class CustomRepository {
      *
      * @example
      *        UB.Repository('my_entity').attrs('id')
-     *           .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
-     *           .where('code', 'in', UB.Repository('my_codes').attr('code').where('ID', '<', 10)  // code in (select code from my_codes where id = 10)
-     *           .where('[name]', 'contains', 'Homer'). // name like '%homer%'
-     *           .where('[birtday]', 'geq', new Date()).where('birtday', 'leq', new Date() + 10) //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
-     *           .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
+     *           // code in ('1', '2', '3')
+     *           .where('code', 'in', ['1', '2', '3'])
+     *           // code in (select code from my_codes where id = 10)
+     *           .where('code', 'in', UB.Repository('my_codes').attr('code').where('ID', '<', 10)
+     *           // name like '%homer%'
+     *           .where('[name]', 'contains', 'Homer').
+     *           //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
+     *           .where('[birtday]', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
+     *           // (age + 10 >= 15)
+     *           .where('[age] -10', '>=', {age: 15}, 'byAge')
      *           .where('LENGTH([code]), '<', 5)
-     *           .where('', 'match', 'myvalue') // for condition match expression not need
+     *           // for condition match expression not need
+     *           .where('', 'match', 'myvalue')
      *
      * @param {String} expression   Attribute name (with or without []) or valid expression with attributes in [].
      * @param {WhereCondition|String} condition    Any value from WhereCondition list.
      * @param {*} [values]          Condition value. In case expression is complex can take {Object} as value.
      *                              In case values === undefined no values property passed to where list
-     * @param {String} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}. If not passed where will generate unique clause named 'c1', 'c2', ......
+     * @param {String} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}.
+     *   If not passed where will generate unique clause named 'c1', 'c2', ......
      * @return {CustomRepository}
      */
   where (expression, condition, values, clauseName) {
@@ -295,11 +304,16 @@ class CustomRepository {
      * Arrange where expressions in logical order. By default where expressions is joined by AND logical predicate. Here is possible to  join it in custom order.
      *
      *      UB.Repository('my_entity').attrs('id')
-     *          .where('code', 'in', ['1', '2', '3'], 'byCode')  // code in ('1', '2', '3')
-     *          .where('name', 'contains', 'Homer', 'byName') // name like '%homer%'
-     *          .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10) //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
-     *          .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
-     *          .logic('(([byCode]) OR ([byName]))') // (byCode OR byName) AND (all where items, not included in logic)
+     *        // code in ('1', '2', '3')
+     *        .where('code', 'in', ['1', '2', '3'], 'byCode')
+     *        // name like '%homer%'
+     *        .where('name', 'contains', 'Homer', 'byName')
+     *        //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
+     *        .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
+     *        // (age + 10 >= 15)
+     *        .where('[age] -10', '>=', {age: 15}, 'byAge')
+     *        // (byCode OR byName) AND (all where items, not included in logic)
+     *        .logic('(([byCode]) OR ([byName]))')
      *
      * @param {String} predicate logical predicate.
      * @return {CustomRepository}
@@ -313,9 +327,12 @@ class CustomRepository {
    * Force where expressions to be used in join SQL statement instead of where. Applicable only for not cached entities.
    *
    *      // will generate
-   *      // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B ON (B.instanceID = A.ID and B.ubUser = 10)
+   *      // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
+   *      //    ON (B.instanceID = A.ID and B.ubUser = 10)
    *      // instead of
-   *      // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B ON B.instanceID = A.ID WHERE B.ubUser = 10
+   *      // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
+   *      //    ON B.instanceID = A.ID
+   *      //    WHERE B.ubUser = 10
    *      UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
    *          .where('[caregory.ubUser]', '=', 10, 'wantInJoin')
    *          .join('wantInJoin')
@@ -372,7 +389,9 @@ class CustomRepository {
   /**
    * Add desc sorting. The same as orderBy(attr, 'desc')
    *
-   *      UB.Repository('my_entity').attrs('ID').orderBy('code').orderByDesc('date_create') // ORDER BY code, date_create DESC
+   *      UB.Repository('my_entity').attrs('ID')
+   *        // ORDER BY code, date_create DESC
+   *        .orderBy('code').orderByDesc('date_create')
    *
    * @param {String} attr
    * @return {CustomRepository}
@@ -389,9 +408,12 @@ class CustomRepository {
    * Add grouping
    * Can take one attribute name as string or array of attributes name
    *
-   *      UB.Repository('my_entity').attrs('ID').groupBy('code')
-   *      UB.Repository('uba_user').attrs('disabled').groupBy('disabled').select()
-   *      UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])']).groupBy(['disabled','uPassword']).select()
+   *      UB.Repository('my_entity').attrs('ID')
+   *        .groupBy('code')
+   *      UB.Repository('uba_user').attrs('disabled')
+   *        .groupBy('disabled').select()
+   *      UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
+   *        .groupBy(['disabled','uPassword']).select()
    *
    * @param attr  Grouped attribute
    * @return {CustomRepository}
@@ -408,7 +430,9 @@ class CustomRepository {
     /**
      * Add options.start value to retrieve first `start` rows
      *
-     *      var store = UB.Repository('my_entity').attrs('id').start(15).limit(10).select() //will return ID's from 15 to 25
+     *      var store = UB.Repository('my_entity').attrs('id')
+     *        //will return ID's from 15 to 25
+     *        .start(15).limit(10).select()
      *
      * @param {Number} start
      * @return {CustomRepository}
@@ -574,8 +598,9 @@ class CustomRepository {
     /**
      * Apply miscellaneous options to resulting ubRequest:
      *
-     *          // this server-side call will select all currency, including deleted
-     *          UB.Repository('cdn_currency').attrs(['ID']).misc({__allowSelectSafeDeleted: true}).selectAsArray();
+     *       // this server-side call will select all currency, including deleted
+     *       UB.Repository('cdn_currency').attrs(['ID'])
+     *         .misc({__allowSelectSafeDeleted: true}).selectAsArray();
      *
      * @param {Object} flags
      * @param {Date} [flags.__mip_ondate] Specify date on which to select data for entities with `dataHistory` mixin. Default to Now()
@@ -601,13 +626,15 @@ class CustomRepository {
      *
      * Result of calculation is returned in __totalRecCount parameter value in case `selectAsArray()` client call:
      *
-     *          var result = UB.Repository('uba_user').attrs(['ID', 'description']).withTotal().selectAsArray();
-                console.log('Total count is:', result.__totalRecCount)
+          var result = UB.Repository('uba_user').attrs(['ID', 'description'])
+             .withTotal().selectAsArray();
+          console.log('Total count is:', result.__totalRecCount)
      *
      * Or into TubDataStore.totalRowCount in case of server side `selectAsStore()` call:
      *
-     *          var store = UB.Repository('uba_user').attrs(['ID', 'description']).withTotal().selectAsStore();
-                console.log('Total count is:', store.totalRowCount);
+           var store = UB.Repository('uba_user').attrs(['ID', 'description'])
+             .withTotal().selectAsStore();
+           console.log('Total count is:', store.totalRowCount);
      *
      * @return {CustomRepository}
      */
