@@ -271,7 +271,7 @@ ClientRequest.prototype.end = function(data, encoding) {
         rUlr;
     _http.writeEnd(data, encoding);
     _http.method = this.options.method;
-    _http.headers = makeRequestHeaders(this);
+    _http.headers = this.options.rawHeaders ? this.options.rawHeaders : makeRequestHeaders(this);
     try {
         _http.doRequest(this.options.path);
     } catch(e){
@@ -317,6 +317,14 @@ ClientRequest.prototype.setHeader = function(name, value){
 };
 
 /**
+ * Set prepared headers. not compatible with "setHeader"
+ * @param {String} value
+ */
+ClientRequest.prototype.setRawHeader = function(value){
+    this.options.rawHeaders = value;
+};
+
+/**
  * Reads out a header that's already been queued but not sent to the client.
  * @param {String} name
  * @returns {String}
@@ -326,6 +334,14 @@ ClientRequest.prototype.getHeader = function(name) {
         throw new Error('`name` is required for getHeader().');
     }
     return this.options.headers[name];
+};
+
+/**
+ * Return raw response headers
+ * @returns {String}
+ */
+IncomingMessage.prototype.rawHeaders = function() {
+    return this._http.responseHeaders;
 };
 
 /**
