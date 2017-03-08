@@ -19,7 +19,7 @@ me.on('insert:after',
                 envelopeID = ds.get(2),
                 status = data.DocuSignEnvelopeInformation.EnvelopeStatus.Status;
 
-            global[entity].emit('dses:'+status, entityID, envelopeID);
+            global[entity].emit('dses:'+status, entityID, envelopeID, envelope);
         }
     });
 
