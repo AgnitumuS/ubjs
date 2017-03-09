@@ -2,14 +2,24 @@ $(document).ready(function () {
     var frm = $('#registration-form');
     frm.validator();
 
-    var $core = new UB.Core({
-        host: window.location.origin,
-        path: '/',
-    });
-
-    $core.initialize().then(function($core){
-        if ($core.connection.domain.has('utm_campaign')) {
-            UB.Repository('utm_campaign')
+  UB.connect({
+    host: window.location.origin
+    //path: window.location.pathname,
+    /*
+    onCredentialRequired: function(conn, isRepeat){
+      return null;
+    },
+    onAuthorizationFail:  function(reason){
+      UB.showErrorWindow(reason);
+    },
+    onGotApplicationConfig:  function(connection) {
+      return UB.inject('models/mmp/locale/lang-' + connection.preferredLocale + '.js' + '?' + (new Date()).getTime() );
+    }
+    */
+  }).then(function(conn){
+        if (conn.domain.has('utm_campaign')) {
+            (new UB.ClientRepository(conn, 'utm_campaign'))
+            //UB.Repository('utm_campaign')
                 .attrs(['code', 'name', 'sourceRequired', 'sourceLabel'])
                 .selectAsObject().then(function (data) {
                     var cmpSelect = $('#utm_campaign');
@@ -34,7 +44,10 @@ $(document).ready(function () {
                     })
                 });
         }
-    }).done();
+  
+  });
+
+  
 
     $('#utm_campaign').on('change', function() {
         var sourceLabel = $(this).find(':selected').data('sourcelabel');
