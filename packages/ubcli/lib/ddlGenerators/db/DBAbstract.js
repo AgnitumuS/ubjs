@@ -573,6 +573,7 @@ class DBAbstract {
         res += `(${column.size.toString()})`
         break
       case 'NUMERIC':
+      case 'FLOAT':
       case 'CURRENCY':
         res += `(${column.size.toString()}, ${column.prec.toString()})`
         break
