@@ -14,7 +14,7 @@ require('./libs/jsPDF/plugins/png_support')
 require('./plugins/unicode-text')
 
 jsPDF.adler32cs = require('adler32cs')
-require('./libs/jsPDF/libs/deflate')
+require('./libs/deflate')
 const PNG = require('./libs/png')
 to.PNG = PNG
 const zlib = require('./libs/zlib')
