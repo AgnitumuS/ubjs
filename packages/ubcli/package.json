@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubcli",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A simple CLI for scaffolding UnityBase projects",
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
@@ -16,10 +16,10 @@
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
   },
   "dependencies": {
-    "@unitybase/base": "^4.2.1"
+    "@unitybase/base": "^4.2.2"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.0",
+    "@unitybase/stubs": "^4.1.1",
     "mustache": "^2.3.0"
   },
   "keywords": [
