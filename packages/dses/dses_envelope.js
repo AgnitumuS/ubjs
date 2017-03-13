@@ -5,6 +5,7 @@
  * @module ub_model_dses/dses_envelope
  */
 
+const http = require('http');
 const me = dses_envelope;
 const docusign = require('docusign-esign');
 const {parseString} = require('xml2js');
@@ -124,13 +125,15 @@ function docusignLogin(){
  * @returns {Number}
  */
 addEnvelope = function({
-    emailSubject: emailSubject = 'Please Sign my Node SDK Envelope',
-    emailBlurb: emailBlurb = 'Hello, Please sign my Node SDK Envelope.',
-    entity: entity = null,
-    entityID: entityID = null,
-    documents: documents = [],
-    signers: signers = []
-    }, accountId = docusignLogin()) {
+        emailSubject: emailSubject = 'Please Sign my Node SDK Envelope',
+        emailBlurb: emailBlurb = 'Hello, Please sign my Node SDK Envelope.',
+        entity: entity = null,
+        entityID: entityID = null,
+        documents: documents = [],
+        signers: signers = [],
+        envID: envID = null
+    },
+    accountId = docusignLogin()) {
 
     const docRequest = new TubDocumentRequest()
         envDef = new docusign.EnvelopeDefinition(),
@@ -244,6 +247,9 @@ addEnvelope = function({
 
     let envelopeID;
 
+	// todo set local timeout
+    http.setGlobalConnectionDefaults({sendTimeout: 240000, receiveTimeout: 240000});
+	
     envelopesApi.createEnvelope(accountId, envDef, null, function (error, envelopeSummary, response) {
         if (error) {
             throw error;
@@ -255,9 +261,14 @@ addEnvelope = function({
         }
     });
 
+    if (!envID) {
+        envID = ds.generateID()
+    }
+
     ds.run('insert', {
         entity: 'dses_envelope',
         execParams: {
+            ID: envID,
             entity: entity,
             entityID: entityID,
             envelopeID: envelopeID
@@ -265,7 +276,7 @@ addEnvelope = function({
         fieldList: ['ID']
     });
 
-    const envID = ds.get(0);
+    //const envID = ds.get(0);
 
     ds.run('insert', {
         entity: 'dses_log',
@@ -491,7 +502,7 @@ me.updateDocuments = function(envelopeID, accountId = docusignLogin()) {
     UB.Repository('dses_envelope').attrs('envelopeID').where(envelopeID * 1 == envelopeID ? 'ID' : 'envelopeID', '=', envelopeID).select(ds);
     if (!ds.eof) {
         const envelope_ID = ds.get(0);
-            docs = me.getDocumentList(envelope_ID),
+        var  docs = me.getDocumentList(envelope_ID),
             docRequest = new TubDocumentRequest();
 
         for (let {

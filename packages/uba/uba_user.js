@@ -5,18 +5,6 @@ const http = require('http')
 
 me.entity.addMethod('changeLanguage')
 
-Session.on('registration', function (registrationParams) {
-  let params
-  try {
-    params = JSON.parse(registrationParams)
-  } catch (e) {
-    params = {}
-  }
-
-  if (params && params.authType === 'CERT') {
-    throw new Error('<UBInformation><<<registrationPassed>>>')
-  }
-})
 
 /**
  * Do not allow user with same name but in different case
@@ -568,6 +556,11 @@ me.publicRegistration = function (fake, req, resp) {
     if (!validateRecaptcha(recaptcha)) {
       throw new UB.UBAbort('reCAPTCTA check fail')
     }
+    Session.emit('registrationStart', {
+            authType: 'UB',
+            publicRegistration: true,
+            params: {email, phone, utmSource, utmCampaign, recaptcha}
+        });
     Session.runAsAdmin(function () {
       store.run('insert', {
         execParams: {
@@ -587,14 +580,15 @@ me.publicRegistration = function (fake, req, resp) {
       const registrationAddress = `${App.serverURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
       let mailBody = null
-      UBReport.makeReport(publicRegistrationReportCode, 'html', {
+      let reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
         login: email,
         password: password,
         activateUrl: registrationAddress,
         appConfig: App.serverConfig
-      }).done(function (result) {
-        mailBody = result.reportData
-      })
+      });
+      //.done(function (result) {
+        mailBody = reportResult.reportData;
+      //})
 
       mailQueue.queueMail({
         to: email,

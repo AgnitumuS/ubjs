@@ -23,7 +23,7 @@
     },
     "name": {
       "dataType": "String",
-      "size": 50,
+      "size": 500,
       "caption": "Signer name",
       "description": "Signer name",
       "allowNull": false,
@@ -31,7 +31,7 @@
     },
     "email": {
       "dataType": "String",
-      "size": 50,
+      "size": 250,
       "caption": "Signer email",
       "description": "Signer email",
       "allowNull": false,

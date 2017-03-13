@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- parameter `onAuthorized` adedd to `UBConnection.connect` - Callback for authorization success. See authorized event
+- parameter `onAuthorized` added to `UBConnection.connect` - Callback for authorization success. See `authorized` event
 
 ### Fixed
 
