@@ -253,7 +253,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   docReq.attribute = 'code'
   docReq.id = ID
     // if passed new form definition - load from temp store, else - from permanent
-  docReq.isDirty = !!newDocument // !!newDocument Boolean(newDocument);
+  docReq.isDirty = !!newDocument || isInsert // !!newDocument Boolean(newDocument);
   docHandler = docReq.createHandlerObject(false)
   docHandler.loadContent(TubLoadContentBody.Yes /* with body */)
   docBody = docHandler.request.getBodyAsUnicodeString()

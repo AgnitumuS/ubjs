@@ -219,7 +219,7 @@ function replaceIncludeVariables (content) {
   return content.replace(/"#include\((.*)\)"/gm, function replacer (match, p1) {
     let filePath
     try {
-      filePath = JSON.parse('{"f": "' + p1 + '"}').f
+      filePath = JSON.parse('{"f": "' + p1 + '"}')['f'] // hack to decode JSON string
     } catch (e) {
       return 'INVALID INCLUDE ' + p1
     }
