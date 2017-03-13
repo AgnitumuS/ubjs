@@ -580,14 +580,15 @@ me.publicRegistration = function (fake, req, resp) {
       const registrationAddress = `${App.serverURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
       let mailBody = null
-      UBReport.makeReport(publicRegistrationReportCode, 'html', {
+      let reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
         login: email,
         password: password,
         activateUrl: registrationAddress,
         appConfig: App.serverConfig
-      }).done(function (result) {
-        mailBody = result.reportData
-      })
+      });
+      //.done(function (result) {
+        mailBody = reportResult.reportData;
+      //})
 
       mailQueue.queueMail({
         to: email,
