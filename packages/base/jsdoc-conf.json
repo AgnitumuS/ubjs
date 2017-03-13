@@ -14,7 +14,7 @@
     "template": "../ub-jsdocs",
     "readme": "./readme.md",
     "encoding": "utf8",
-    "destination": "./doc-html"
+    "destination": "../doc-html"
   },
   "templates": {
     "cleverLinks": true,
