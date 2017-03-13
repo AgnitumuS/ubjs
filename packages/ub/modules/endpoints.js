@@ -266,7 +266,7 @@ function getDomainInfo (req, resp) {
   // }
   // let res = JSON.stringify(restrictedDomain, domainReplacer)
 
-  let params = queryString.parse(req.decodedParameters)
+  let params = queryString.parse(req.parameters);
   let isExtended = (params['extended'] === 'true')
   if (isExtended && authenticationHandled && !UBA_COMMON.isSuperUser()) {
     return badRequest(resp, 'Extended domain info allowed only for member of admin group of if authentication is disabled')
