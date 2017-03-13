@@ -313,10 +313,10 @@ function UBConnection (connectionParams) {
     return this._pendingAuthPromise
   }
 
-    /**
-     * Clear current user authorization promise. Next request repeat authorization
-     * @private
-     */
+  /**
+   * Clear current user authorization promise. Next request repeat authorization
+   * @private
+   */
   this.authorizationClear = function () {
     this.lastLoginName = this.userLogin()
     currentSession = undefined
@@ -616,10 +616,10 @@ function UBConnection (connectionParams) {
   }
 
   this.recordedXHRs = []
-    /**
-     * Set it to `true` for memorize all requests to recordedXHRs array (for debug only!).
-     * @type {Boolean}
-     */
+  /**
+   * Set it to `true` for memorize all requests to recordedXHRs array (for debug only!).
+   * @type {Boolean}
+   */
   this.recorderEnabled = false
 }
 
@@ -1711,6 +1711,13 @@ UBConnection.prototype.Repository = function (entityName) {
   return new ClientRepository(this, entityName)
 }
 
+/**
+ * Calc SHA256 from string
+ *
+ *    var shaAsSting = SHA256('something').toString()
+ */
+UBConnection.prototype.SHA256 = SHA256
+
 const LDS = (window && window.localStorage)
 /**
  * Connect to UnityBase server
@@ -1745,12 +1752,19 @@ const LDS = (window && window.localStorage)
     });
  });
 
+ * Preferred locale tip: to set a connection preferredLocale parameter to, for example 'uk', use
+
+    localStorage.setItem((path || '/') + 'preferredLocale', 'uk')
+
+ * **before** call to UBConnection.connect
+ *
  * @param cfg
  * @param {string} cfg.host Server host
  * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
- * @param cfg.onCredentialRequired Callback for requesting a user creadentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+ * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
  * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
- * @param [cfg.onNeedChangePassword] Callback for a password exparition. See {@link passwordExpired} event
+ * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
+ * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
  * @param [cfg.onGotApplicationConfig]
  * @param [cfg.onGotApplicationDomain]
  * @return Promise<UBConnection>
@@ -1768,6 +1782,9 @@ function connect (cfg) {
   }
   if (config.onNeedChangePassword) {
     connection.on('passwordExpired', config.onNeedChangePassword)
+  }
+  if (config.onAuthorized) {
+    connection.on('authorized', config.onAuthorized)
   }
 
   return connection.getAppInfo().then(function (appInfo) {

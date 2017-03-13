@@ -1,4 +1,4 @@
-﻿/**
+/**
  * UnityBase file-system based virtual store **select**. Able to load files & transform it content to {@link TubCachedData} format.
  *
  * Good sample of usage can be found in `ubm_form.loadAllForm`
@@ -7,11 +7,12 @@
  * @module FileBasedStoreLoader
  */
 
-const lds = require('./LocalDataStore');
+const lds = require('./LocalDataStore')
 const path = require('path')
 const UBDomain = require('./UBDomain')
+const _ = require('lodash')
 
-module.exports = FileBasedStoreLoader;
+module.exports = FileBasedStoreLoader
 /**
  * @example
 
@@ -42,102 +43,113 @@ module.exports = FileBasedStoreLoader;
  *                          In case callback return false or not defined - folder not processed.
  *                          Called with args (this: FileBasedStoreLoader, fullFolderPath: string, recursionLevel: integer);
  */
-function FileBasedStoreLoader(config) {
-    var entityAttributes;
-    if (config.entity instanceof UBDomain.UBEntity) {
-      entityAttributes = config.entity.attributes
-    } else {
-      entityAttributes = App.domainInfo.get(config.entity.name).attributes
-    }
+function FileBasedStoreLoader (config) {
+  let entityAttributes
+  if (config.entity instanceof UBDomain.UBEntity) {
+    entityAttributes = config.entity.attributes
+  } else {
+    entityAttributes = App.domainInfo.get(config.entity.name).attributes
+  }
 
-    /**
-     * Configuration
-     * @type {Object}
-     */
-    this.config = _.clone(config);
-    if (!Array.isArray(config.foldersConfig)){
-        throw new Error('config.foldersConfig must be array');
-    }
-    if (config.attributeRegExpString !== '') {
-        this.config.attributeRegExpString = config.attributeRegExpString || FileBasedStoreLoader.JSON_ATTRIBURE_REGEXP;
-    }
+  /**
+   * Configuration
+   * @type {Object}
+   */
+  this.config = _.clone(config)
+  if (!Array.isArray(config.foldersConfig)) {
+    throw new Error('config.foldersConfig must be array')
+  }
+  if (config.attributeRegExpString !== '') {
+    this.config.attributeRegExpString = config.attributeRegExpString || FileBasedStoreLoader.JSON_ATTRIBURE_REGEXP
+  }
 
-    if (!this.config.hasOwnProperty('uniqueID')){ this.config.uniqueID = true; }
-    if (!this.config.hasOwnProperty('zipToArray')){ this.config.zipToArray = true; }
+  if (!this.config.hasOwnProperty('uniqueID')) { this.config.uniqueID = true }
+  if (!this.config.hasOwnProperty('zipToArray')) { this.config.zipToArray = true }
 
-    /**
-     * Entity attributes array
-     * @type {Array.<Object>}
-     * @readonly
-     */
-    this.attributes = [];
-    for (let attrName in entityAttributes) {
-      let attr = entityAttributes[attrName]
-      this.attributes.push({
-            name: attr.name,
-            dataType: attr.dataType,
-            defaultValue: attr.defaultValue,
-            defaultView: attr.defaultView
-        });
-    }
-    /**
-     * Is `mStore.simpleAudit` enabled for current entity (exist `mi_modifyDate` attribute)
-     * @type {Boolean}
-     * @readonly
-     */
-    this.haveModifyDate = Boolean(_.find(this.attributes, {name: 'mi_modifyDate'}));
-    /**
-     * Is `mStore.simpleAudit` enabled for current entity (exist `mi_createDate` attribute)
-     * @type {Boolean}
-     * @readonly
-     */
-    this.haveCreateDate = Boolean(_.find(this.attributes, {name: 'mi_createDate'}));
+  /**
+   * Entity attributes array
+   * @type {Array.<Object>}
+   * @readonly
+   */
+  this.attributes = []
+  for (let attrName in entityAttributes) {
+    let attr = entityAttributes[attrName]
+    this.attributes.push({
+      name: attr.name,
+      dataType: attr.dataType,
+      defaultValue: attr.defaultValue,
+      defaultView: attr.defaultView
+    })
+  }
+  /**
+   * Is `mStore.simpleAudit` enabled for current entity (exist `mi_modifyDate` attribute)
+   * @type {Boolean}
+   * @readonly
+   */
+  this.haveModifyDate = Boolean(_.find(this.attributes, {name: 'mi_modifyDate'}))
+  /**
+   * Is `mStore.simpleAudit` enabled for current entity (exist `mi_createDate` attribute)
+   * @type {Boolean}
+   * @readonly
+   */
+  this.haveCreateDate = Boolean(_.find(this.attributes, {name: 'mi_createDate'}))
 
-    /**
-     * Currently processed root folder
-     * @type {*}
-     * @readonly
-     */
-    this.processingRootFolder = null;
+  /**
+   * Currently processed root folder
+   * @type {*}
+   * @readonly
+   */
+  this.processingRootFolder = null
 }
 
-FileBasedStoreLoader.JSON_ATTRIBURE_REGEXP = '^\\/\\/@(\\w+)\\s"(.*?)"';
-FileBasedStoreLoader.XML_ATTRIBURE_REGEXP = '<!--@(\\w+)\\s*"(.+)"\\s*-->';
+FileBasedStoreLoader.JSON_ATTRIBURE_REGEXP = '^\\/\\/[ \t]?@(\\w+)\\s"(.*?)"'
+FileBasedStoreLoader.XML_ATTRIBURE_REGEXP = '<!--@(\\w+)\\s*"(.+)"\\s*-->'
 
 /**
  * Perform actual loading.
  * @return {TubCachedData}
  */
-FileBasedStoreLoader.prototype.load = function(){
-    var me = this,
-        result;
+FileBasedStoreLoader.prototype.load = function () {
+  let me = this
+  let result
 
-    /**
-     * Array of Object representing dirty result
-     * @type {Array.<Object>}
-     * @protected
-     */
-    this.resultCollection = [];
-    me.config.foldersConfig.forEach(function(folderConfig){
-        me.processingRootFolder = folderConfig;
-        me.parseFolder(folderConfig.path, 0);
-    });
+  /**
+   * Array of Object representing dirty result
+   * @type {Array.<Object>}
+   * @protected
+   */
+  this.resultCollection = []
+  me.config.foldersConfig.forEach(function (folderConfig) {
+    me.processingRootFolder = folderConfig
+    me.parseFolder(folderConfig.path, 0)
+  })
     // transformation to array=of=array
-    if (me.config.zipToArray){
-        result = {
-            data: [],
-            fields: [],
-            rowCount: 0
-        };
-        result.fields = _.map(me.attributes, 'name');
-        result.data = lds.arrayOfObjectsToSelectResult(me.resultCollection, result.fields);
-        result.rowCount = result.data.length;
-    } else {
-        result = me.resultCollection;
+  if (me.config.zipToArray) {
+    result = {
+      data: [],
+      fields: [],
+      rowCount: 0
     }
-    me.resultCollection = [];
-    return result;
-};
+    result.fields = _.map(me.attributes, 'name')
+    result.data = lds.arrayOfObjectsToSelectResult(me.resultCollection, result.fields)
+    result.rowCount = result.data.length
+    let l = result.fields.indexOf('mi_modifyDate')
+    if (l !== -1) {
+      let dataVersion = 0
+      result.data.forEach((row) => {
+        if (dataVersion < row[l]) {
+          dataVersion = row[l]
+        }
+      })
+      // add a row count for case when some row are deleted or added with old date
+      result.version = new Date(dataVersion).getTime() + result.data.length
+    }
+  } else {
+    result = me.resultCollection
+  }
+  me.resultCollection = []
+  return result
+}
 
 /**
  * @method parseFolder
@@ -145,62 +157,57 @@ FileBasedStoreLoader.prototype.load = function(){
  * @param {String} folderPath Folder to parse
  * @param {Number} recursionLevel current level of folder recursion
  */
-FileBasedStoreLoader.prototype.parseFolder = function(folderPath, recursionLevel){
-    var
-        me = this,
-        fs = require('fs'),
-        config = me.config,
-        folderFiles;
+FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLevel) {
+  const fs = require('fs')
+  const config = this.config
 
-    if (!fs.existsSync(folderPath)) {
-        return;
-    }
+  if (!fs.existsSync(folderPath)) {
+    return
+  }
 
-    if (config.onNewFolder) {
-        if (config.onNewFolder(me, folderPath, recursionLevel) === false) return;
-    }
-    folderFiles = fs.readdirSync(folderPath);
+  if (config.onNewFolder) {
+    if (config.onNewFolder(this, folderPath, recursionLevel) === false) return
+  }
+  let folderFiles = fs.readdirSync(folderPath)
 
-    folderFiles.forEach(function(fileName){
-        var oneRow,
-            fullPath = path.join(folderPath, fileName),
-            stat = fs.statSync(fullPath),
-            newFolderCheck, content, canAdd;
+  folderFiles.forEach((fileName) => {
+    let fullPath = path.join(folderPath, fileName)
+    let stat = fs.statSync(fullPath)
 
-        if (stat.isDirectory()){
-            if (config.onNewFolder){
-                newFolderCheck = config.onNewFolder(me, folderPath + fileName, recursionLevel + 1);
-                if (newFolderCheck !== false){
-                    me.parseFolder(fullPath + '\\', recursionLevel + 1);
-                }
-            }
-        } else if (!me.config.fileMask || me.config.fileMask.test(fileName)) { // filtration by mask
-            content = fs.readFileSync(fullPath);
-            oneRow = me.extractAttributesValues(content);
-
-            if (me.haveModifyDate) {
-                oneRow['mi_modifyDate'] = stat.mtime;
-            }
-            if (me.haveCreateDate) {
-                oneRow['mi_createDate'] = stat.ctime;
-            }
-            canAdd = me.config.onBeforeRowAdd ? me.config.onBeforeRowAdd(me, fullPath, content, oneRow) : true;
-            //check unique ID
-            if (canAdd && config.uniqueID) {
-                if (!oneRow.ID) {
-                    console.error('Parameter ID not set. File "%" ignored', fullPath);
-                    canAdd = false
-                } else if (_.find(me.resultCollection, {ID: oneRow.ID})) {
-                    console.error('Record with ID "' + oneRow.ID + '" already exist. File ignored ', fullPath);
-                    canAdd = false
-                }
-            }
-            if (canAdd) {
-                me.resultCollection.push(oneRow);
-            }
+    if (stat.isDirectory()) {
+      if (config.onNewFolder) {
+        let newFolderCheck = config.onNewFolder(this, folderPath + fileName, recursionLevel + 1)
+        if (newFolderCheck !== false) {
+          this.parseFolder(fullPath + '\\', recursionLevel + 1)
         }
-    });
-};
+      }
+    } else if (!this.config.fileMask || this.config.fileMask.test(fileName)) { // filtration by mask
+      let content = fs.readFileSync(fullPath)
+      let oneRow = this.extractAttributesValues(content)
+
+      if (this.haveModifyDate) {
+        oneRow['mi_modifyDate'] = stat.mtime
+      }
+      if (this.haveCreateDate) {
+        oneRow['mi_createDate'] = stat.ctime
+      }
+      let canAdd = this.config.onBeforeRowAdd ? this.config.onBeforeRowAdd(this, fullPath, content, oneRow) : true
+      // check unique ID
+      if (canAdd && config.uniqueID) {
+        if (!oneRow.ID) {
+          console.error('Parameter ID not set. File "%" ignored', fullPath)
+          canAdd = false
+        } else if (_.find(this.resultCollection, {ID: oneRow.ID})) {
+          console.error('Record with ID "' + oneRow.ID + '" already exist. File ignored ', fullPath)
+          canAdd = false
+        }
+      }
+      if (canAdd) {
+        this.resultCollection.push(oneRow)
+      }
+    }
+  })
+}
 
 /**
  * Extract attribute values from content using regular expression passed in the config.attributeRegExpString.
@@ -213,57 +220,57 @@ FileBasedStoreLoader.prototype.parseFolder = function(folderPath, recursionLevel
  * @param {String} content
  * @result {Object} dictionary looking like {attrbuteName: "value"}
  */
-FileBasedStoreLoader.prototype.extractAttributesValues = function(content){
-    var me = this,
-        regexp = me.config.attributeRegExpString ? new RegExp(me.config.attributeRegExpString, 'gm') : false,
-        attrVal, result = {};
+FileBasedStoreLoader.prototype.extractAttributesValues = function (content) {
+  const me = this
+  let regexp = me.config.attributeRegExpString ? new RegExp(me.config.attributeRegExpString, 'gm') : false
+  let result = {}
 
-    //extraction block
-    if (regexp !== false) {
-        attrVal = regexp.exec(content);
-        while (attrVal !== null) {
-            result[attrVal[1]] = attrVal[2];
-            attrVal = regexp.exec(content);
-        }
+    // extraction block
+  if (regexp !== false) {
+    let attrVal = regexp.exec(content)
+    while (attrVal !== null) {
+      result[attrVal[1]] = attrVal[2]
+      attrVal = regexp.exec(content)
     }
-    //default block
-    me.attributes.forEach(function(attribute){
-        if (attribute.defaultValue !== '' && !result[attribute.name]){
-            result[attribute.name] = attribute.defaultValue;
-        }
-    });
-    //transformation block
-    _.forEach(result, function(value, attribute) {
-        var attr = _.find(me.attributes, {name: attribute}),
-            toType;
-        if (!attr){ return; }
-        switch (attr.dataType) {
-            case UBDomain.ubDataTypes.Int:
-            case UBDomain.ubDataTypes.BigInt:
-            case UBDomain.ubDataTypes.ID:
-            case UBDomain.ubDataTypes.Float:
-            case UBDomain.ubDataTypes.Currency:
-            case UBDomain.ubDataTypes.Entity:
-            case UBDomain.ubDataTypes.TimeLog:
-                result[attribute] = +value;
-                break;
-            case UBDomain.ubDataTypes.Boolean:
-                result[attribute] = (value === true) || (value === 'true') || (value === '1');
-                break;
-            case UBDomain.ubDataTypes.DateTime:
-                result[attribute] = _.isDate(value) ? value : new Date(value);
-                break;
-            case UBDomain.ubDataTypes.Unknown:
-            case UBDomain.ubDataTypes.String:
-            case UBDomain.ubDataTypes.Text:
-            case UBDomain.ubDataTypes.Many:
-            case UBDomain.ubDataTypes.Document:
-            case UBDomain.ubDataTypes.Enum:
-            case UBDomain.ubDataTypes.BLOB:
-                break; // just to be sure we handle all types
-            default:
-                throw "Unknown attribute type " + toType;
-        }
-    });
-    return result;
-};
+  }
+    // default block
+  me.attributes.forEach(function (attribute) {
+    if (attribute.defaultValue !== '' && !result[attribute.name]) {
+      result[attribute.name] = attribute.defaultValue
+    }
+  })
+    // transformation block
+  _.forEach(result, function (value, attribute) {
+    let attr = _.find(me.attributes, {name: attribute})
+
+    if (!attr) { return }
+    switch (attr.dataType) {
+      case UBDomain.ubDataTypes.Int:
+      case UBDomain.ubDataTypes.BigInt:
+      case UBDomain.ubDataTypes.ID:
+      case UBDomain.ubDataTypes.Float:
+      case UBDomain.ubDataTypes.Currency:
+      case UBDomain.ubDataTypes.Entity:
+      case UBDomain.ubDataTypes.TimeLog:
+        result[attribute] = +value
+        break
+      case UBDomain.ubDataTypes.Boolean:
+        result[attribute] = (value === true) || (value === 'true') || (value === '1')
+        break
+      case UBDomain.ubDataTypes.DateTime:
+        result[attribute] = _.isDate(value) ? value : new Date(value)
+        break
+      case UBDomain.ubDataTypes.Unknown:
+      case UBDomain.ubDataTypes.String:
+      case UBDomain.ubDataTypes.Text:
+      case UBDomain.ubDataTypes.Many:
+      case UBDomain.ubDataTypes.Document:
+      case UBDomain.ubDataTypes.Enum:
+      case UBDomain.ubDataTypes.BLOB:
+        break // just to be sure we handle all types
+      default:
+        throw new Error('Unknown attribute type ' + attr.dataType)
+    }
+  })
+  return result
+}

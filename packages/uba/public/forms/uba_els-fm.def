@@ -49,6 +49,4 @@ exports.formDef = {
       xtype: "label",
       html: $App.domainInfo.entities.uba_els.attributes.entityMask.documentation
     }]
-
-
-};
+}

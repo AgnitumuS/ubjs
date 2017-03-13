@@ -100,8 +100,8 @@ function runSchedulersCircle (message) {
     let p = 0
   }
   */
-  var Module = require('module')
-  var parent = new Module('internal/preload', null)
+  const Module = require('module')
+  let parent = new Module('internal/preload', null)
   // TODO this hack is temporary solution for require.resolve. 
   // The problem here: we lost a folder for where runSchedulersCircle and replace it with process.cwd(), 
   // so all modules what required inside worker must be either global or in application node_modules folder
@@ -125,7 +125,7 @@ function runSchedulersCircle (message) {
         endpoint: 'rest/ubq_messages/executeSchedulerTask',
         method: 'POST',
         URLParams: {async: true},
-        data: {schedulerName: cfg.name, command: cfg.command, singleton: cfg.singleton == 1, logSuccessful: cfg.logSuccessful == 1} // jshint ignore:line
+        data: {schedulerName: cfg.name, command: cfg.command, module: cfg.module, singleton: cfg.singleton == 1, logSuccessful: cfg.logSuccessful == 1}
       })
     } catch (e) {
       console.error(e)

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/codemirror-full",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "CodeMirror + plugins + linter",
   "main": "./dist/codemirror-all.min.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "dependencies": {
     "codemirror": "^5.20.2",
     "jshint": "^2.9.4",
-    "lodash": "^4.1"
+    "lodash": "^4"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",

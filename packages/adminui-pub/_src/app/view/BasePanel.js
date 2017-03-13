@@ -2910,7 +2910,7 @@ Ext.define('UB.view.BasePanel', {
       throw err
     }
     Promise.all(deletePromise).then(function () {
-      return $App.dialogYesNo('podtverditUdalenije', UB.format(UB.i18n('deleteFormConfirmCaption'), me.getFormTitle()))
+      return $App.dialogYesNo('deletionDialogConfirmCaption', UB.format(UB.i18n('deleteFormConfirmCaption'), me.getFormTitle()))
     }).then(function (res) {
       if (!res) { return }
       me.maskForm(2000)

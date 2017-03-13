@@ -12,7 +12,7 @@
         },
         "name": {
             "caption": "Назва",
-            "description": "Назва валюты"
+            "description": "Назва валюти"
         }
     }
 }

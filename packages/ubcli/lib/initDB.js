@@ -47,8 +47,8 @@ module.exports = function initDB (cfg) {
           .add({short: 'c', long: 'clientIdentifier', param: 'clientIdentifier', defaultValue: 3, searchInEnv: false, help: 'Identifier of the client. Must be between 2 and 8999. \n\t1 is for UnityBase developer, 3 for test. \n\tNumbers > 100 is for real installations'})
           .add({short: 'drop', long: 'dropDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Drop a database/schema first'})
           .add({short: 'create', long: 'createDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Create a new database/schema'})
-          .add({short: 'dba', long: 'dba', param: 'DBA_user_name', defaultValue: '', searchInEnv: false, help: 'A DBA name. Used in case `createDatabase=true`'})
-          .add({short: 'dbaPwd', long: 'dbaPwd', param: 'DBA_password', defaultValue: '', searchInEnv: false, help: 'A DBA password. Used in case `createDatabase=true`'})
+          .add({short: 'dba', long: 'dba', param: 'DBA_user_name', defaultValue: '', searchInEnv: true, help: 'A DBA name. Used in case `createDatabase=true`'})
+          .add({short: 'dbaPwd', long: 'dbaPwd', param: 'DBA_password', defaultValue: '', searchInEnv: true, help: 'A DBA password. Used in case `createDatabase=true`'})
     cfg = opts.parseVerbose({}, true)
   }
   if (!cfg) return
