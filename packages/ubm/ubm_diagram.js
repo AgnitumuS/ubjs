@@ -1,9 +1,10 @@
 /*jshint multistr:true */
 var me = ubm_diagram;
 
-var fs = require('fs'),
-    FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader,
-    LocalDataStore = require('@unitybase/base').LocalDataStore;
+const fs = require('fs')
+const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
+const LocalDataStore = require('@unitybase/base').LocalDataStore
+const path = require('path')
 
 me.entity.addMethod('select');
 me.entity.addMethod('update');
@@ -17,7 +18,7 @@ var
     resultDataCache = null,
     modelLoadDate,
     DIAGRAM_CONTENT_TYPE =  'application/m3metadiag',
-    REL_PATH_TAIL = 'public\\erdiagrams\\',
+    REL_PATH_TAIL = 'erdiagrams',
     XML_EXTENSION = '.xml';
 
 /**
@@ -66,7 +67,7 @@ function loadAllDiagrams(){
         resultDataCache = [];
         for (i = 0, l = models.count; i < l; i++) {
             model = models.items[i];
-            mPath = model.path + REL_PATH_TAIL;
+            mPath = path.join(model.publicPath, REL_PATH_TAIL);
             folders.push({
                 path: mPath,
                 model: model // used for fill Document content for `mdb` store in postProcessing
@@ -81,16 +82,6 @@ function loadAllDiagrams(){
         });
         resultDataCache = loader.load();
 
-        resultDataCache.version = 0;
-        l = resultDataCache.fields.indexOf('mi_modifyDate');
-        if (l !== -1){
-            resultDataCache.data.forEach(function(row){
-                if (resultDataCache.version < row[l]){
-                    resultDataCache.version = row[l]
-                }
-            });
-            resultDataCache.version = new Date(resultDataCache.version).getTime();
-        }
         modelLoadDate = modelLastDate;
     }else{
         console.debug('ubm_diagram: resultDataCache already loaded');

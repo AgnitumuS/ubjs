@@ -153,7 +153,7 @@ function testDocHandler (req, resp) {
   docReq.entity = 'tst_document'
   docReq.attribute = 'fileStoreSimple'
   docReq.id = 3000000003738
-  docHandler = docReq.createHandlerObject(true)
+  let docHandler = docReq.createHandlerObject(true)
   docHandler.loadContent(TubLoadContentBody.Yes)
 //    var content = docReq.getBodyAsBase64String();
 //    console.log(content.length);

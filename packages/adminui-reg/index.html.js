@@ -17,11 +17,6 @@ function generateIndexPage (req, resp, indexName) {
   let indexTpl, compiledIndex, compiledIndexKey
   let models, mCnt, mName, i, uiSettings
 
-  if (!App.staticPath) {
-    resp.statusCode = 404
-    return
-  }
-
   function md5 (fileName) {
     let realPath = App.resolveStatic(fileName)
     if (!realPath) {
@@ -34,7 +29,7 @@ function generateIndexPage (req, resp, indexName) {
       : fileName
   }
 
-  compiledIndexKey = 'UB_STATIC.compiled_index_' + App.staticPath + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
+  compiledIndexKey = 'UB_STATIC.compiled_index_' + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
   compiledIndex = App.globalCacheGet(compiledIndexKey)
   if (!compiledIndex) {
     uiSettings = JSON.parse(App.getUISettings() || '{}')
@@ -51,7 +46,7 @@ function generateIndexPage (req, resp, indexName) {
     let view = {
       uiSettings: uiSettings,
       modelVersions: [],
-      staticVersion: App.folderChecksum(App.staticPath),
+      staticVersion: App.globalCacheGet('UB_STATIC.modelsModifyDate'), // prev. App.folderChecksum(App.staticPath),
       UB_API_PATH: App.serverConfig.httpServer.path || '/', //  serverURL.replace(/\/$/, ''),
       md5template: function () {
         return function (template) {
@@ -78,7 +73,7 @@ function generateIndexPage (req, resp, indexName) {
     if (compiledIndex) {
       App.globalCachePut(compiledIndexKey, compiledIndex)
     }
-    console.log('generate %s from template %s', indexName, App.staticPath + indexName)
+    console.log(`Generate ${indexName} from template ${path.join(adminUIPath, indexName)}`)
   } else {
     console.debug('Use compiled %s', indexName)
   }
@@ -123,6 +118,6 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
     generateIndexPage(req, resp, 'index-dev.mustache')
   } else {
     resp.writeEnd('Server working in production mode')
-	resp.statusCode = 404
-  }	
+    resp.statusCode = 404
+  }
 }, false)

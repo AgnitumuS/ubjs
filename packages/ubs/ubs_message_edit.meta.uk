@@ -16,7 +16,7 @@
             "caption": "Дійсне з"
         },
         "expireDate": {
-            "caption": "Дійсне по"
+            "caption": "Дійсне до"
         }
     }
 }

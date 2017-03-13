@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubq",
-  "version": "4.0.14",
+  "version": "4.1.2",
   "description": "UnityBase queue",
   "config": {
     "ubmodel": "UBQ"
@@ -14,12 +14,11 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.1.0",
+    "@unitybase/base": "^4.2.1",
     "@unitybase/mailer": "^4.0.9",
     "@unitybase/mailer-ssl": "^4.0.9",
-    "@unitybase/ub": "^4.0.15",
-    "@unitybase/uba": "^4.1.1",
-    "lodash": "^4.0.0",
+    "@unitybase/ub": "^4.0.19",
+    "@unitybase/uba": "^4.1.6",
     "node-cron": "^1.1.2"
   },
   "devDependencies": {

@@ -82,9 +82,11 @@ function getFnFromNS (path) {
  * Queue worker will sent the tasks in async mode to this endpoint according to a schedulers.
  * Endpoint wait a POST requests from a local IP with JSON:
  *
- *      {schedulerName: cfg.name, command: cfg.command, singleton: cfg.singleton !== false, logSuccessful: cfg.logSuccessful}
+ *      {schedulerName: cfg.name, command: cfg.command, module: cfg.module, singleton: cfg.singleton !== false, logSuccessful: cfg.logSuccessful}
   *
  * `command` must be a function name (may including namespace), for example `UB.UBQ.sendQueueMail` or `ubs_message_edit.notifyAllRecipients`
+ * in case `command` not passed `module` must be a module what export default a function, for example module: '@unitybase/myModule/schedTask'
+ * and  in schedTask.js `module exports = function() {...}`
  *
  * In case `singleton` parameter is missing or === false scheduler can run a multiple instances of the same task,
  * otherwise - if previous task with the same name not finished yet current task will not be executed
@@ -120,12 +122,18 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
   try {
     console.debug('SCHEDULER: got a task %j', task)
     let startTime = new Date()
-    let func = getFnFromNS(task.command)
-    if (!func) {
-      err = 'SCHEDULER: invalid command (function ' + task.command + ' not found)'
+    let entryPoint
+    if (task.command) {
+      entryPoint = getFnFromNS(task.command)
+    } else if (task.module) {
+      entryPoint = require(task.module)
+    }
+
+    if (!entryPoint) {
+      err = `SCHEDULER: invalid command (function ${task.command || task.module} not found)`
     } else {
       try {
-        logText = func()
+        logText = entryPoint()
         App.dbCommit()
       } catch (e) {
         err = e.toString()

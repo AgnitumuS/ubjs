@@ -24,7 +24,7 @@
         },
         "remoteIP": {
             "caption": "IP адреса",
-            "description": "IP адреса визиваючої сторони"
+            "description": "IP адреса сторони, з якої здійснено виклик"
         },
         "fromValue": {
             "caption": "Було значення"

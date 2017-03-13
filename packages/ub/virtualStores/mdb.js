@@ -22,19 +22,21 @@ UB.virtualStores.mdb = Object.create(UB.virtualStores.Custom)
  * @private
  */
 UB.virtualStores.mdb.fileTempInfoExt = '.fti'
+
+const path = require('path')
 /**
  * @private
  * @param {TubDocumentHandlerCustom} handler
  */
 UB.virtualStores.mdb.getPermanentFileName = function (handler) {
   var
-    pathPart, filePath,
+    filePath,
     content = handler.content
   if (content.isDirty) {
     filePath = this.getTempFileName(handler)
   } else {
-    pathPart = content.relPath.split('|')
-    filePath = (pathPart.length === 2) ? App.domain.config.models.byName(pathPart[0]).path + pathPart[1] + content.fName : ''
+    let pathPart = content.relPath.split('|')
+    filePath = (pathPart.length === 2) ? path.join(App.domain.config.models.byName(pathPart[0]).publicPath, pathPart[1], content.fName) : ''
   }
   return filePath
 }
@@ -154,11 +156,11 @@ UB.virtualStores.mdb.moveToPermanentStore = function (handler, aPrevRelPath) {
   if (pathPart.length !== 2) {
     throw new Error('MDB store expect relPath in form modelName|pathRelativeToModelPublicFolder but got: ' + content.relPath)
   } else {
-    newFilePath = App.domain.config.models.byName(pathPart[0]).path + pathPart[1]
+    newFilePath = path.join(App.domain.config.models.byName(pathPart[0]).publicPath, pathPart[1])
     if (!fs.isDir(newFilePath)) {
       fs.mkdirSync(newFilePath)
     }
-    newFilePath = newFilePath + content.fName
+    newFilePath = path.join(newFilePath, content.fName)
   }
   console.debug('move from ' + oldFilePath + ' to ' + newFilePath)
   if (!moveFile(oldFilePath, newFilePath)) {

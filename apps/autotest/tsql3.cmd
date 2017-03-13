@@ -6,13 +6,15 @@ del /Q .\*FTS.sqlite3
 
 
 SET TESTCASE=init database
-SET UB_CFG=ubConfig.json
+if [%UB_CFG%]==[] (
+  SET UB_CFG=ubConfig.json
+)
 SET UB_DEV=true
 
 call ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
 
-call ubcli initDB -host http://localhost:888 -cfg %UB_CFG% -dba nop -dbaPwd nop -u admin -p admin -drop -create
+call ubcli initDB -host http://localhost:888 -cfg %UB_CFG% -u admin -p admin -drop -create
 @if errorlevel 1 goto err
 
 SET TESTCASE=generateDDL

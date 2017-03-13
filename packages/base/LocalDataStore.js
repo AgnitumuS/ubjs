@@ -44,6 +44,7 @@ const _ = require('lodash')
  * @property {Array<Array>} data
  * @property {Array<String>} fields
  * @property {Number} rowCount
+ * @property {Number} [version] A data version in case `mi_modifyDate` is in fields
  */
 
 /**
@@ -179,6 +180,7 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
  * @returns {Array}
  */
 function whereListToFunctions (request, fieldList) {
+  Object.keys(request) // FIX BUG WITH TubList TODO - rewrite to native
   let propIdx, fValue, filterFabricFn
   let filters = []
   let escapeForRegexp = function (text) {
@@ -276,8 +278,9 @@ function whereListToFunctions (request, fieldList) {
     filters.push(filterFabricFn(propIdx, clause.condition, fValue))
   }
     // check for top level ID  - in this case add condition for filter by ID
-  if (request.ID) {
-    transformClause({expression: '[ID]', condition: 'equal', values: {ID: request.ID}})
+  const reqID = request.ID
+  if (reqID) {
+    transformClause({expression: '[ID]', condition: 'equal', values: {ID: reqID}})
   }
   _.forEach(whereList, transformClause)
   return filters
