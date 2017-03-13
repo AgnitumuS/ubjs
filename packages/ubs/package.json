@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "4.1.5",
+  "version": "4.1.6",
   "description": "UnityBase Service model",
   "config": {
     "ubmodel": "UBS"
@@ -17,16 +17,16 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.1",
-    "@unitybase/pdf": "^1.1.5",
-    "@unitybase/ub": "^4.0.19",
-    "@unitybase/uba": "^4.1.6",
+    "@unitybase/base": "^4.2.2",
+    "@unitybase/pdf": "^1.1.6",
+    "@unitybase/ub": "^4.0.20",
+    "@unitybase/uba": "^4.1.7",
     "mime-types": "^2.1.14",
     "mustache": "^2.3.0",
     "when": "1.8.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.0",
+    "@unitybase/stubs": "^4.1.1",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "babel-preset-es2015-without-strict": "0.0.4",

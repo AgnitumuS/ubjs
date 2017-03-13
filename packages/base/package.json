@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/base",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Build-in UnityBase model",
   "scripts": {
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
@@ -15,7 +15,7 @@
     "@unitybase/cryptojs": "^1.0.5"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.0"
+    "@unitybase/stubs": "^4.1.1"
   },
   "keywords": [
     "UnityBase"

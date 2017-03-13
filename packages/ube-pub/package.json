@@ -1,6 +1,6 @@
 {
   "name": "@ub-e/ube-pub",
-  "version": "4.1.3",
+  "version": "4.1.4",
   "description": "UnityBase admin UI enterprise components",
   "main": "adminui.js",
   "config": {
@@ -18,10 +18,10 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.2.1",
-    "@unitybase/ub-pub": "^4.1.2",
-    "@unitybase/adminui-pub": "^4.1.5",
-    "@unitybase/xlsx": "^4.0.13"
+    "@unitybase/base": "^4.2.2",
+    "@unitybase/ub-pub": "^4.1.3",
+    "@unitybase/adminui-pub": "^4.1.6",
+    "@unitybase/xlsx": "^4.0.14"
   },
   "devDependencies": {},
   "keywords": [
