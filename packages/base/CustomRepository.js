@@ -585,7 +585,13 @@ class CustomRepository {
   }
 
     /**
-     * Select a single row by ID. If ubql result is empty - return {undefined}.
+     * Select a single row by ID. If ubql result is empty - return {undefined}
+     * 
+     * If result not empty - return a object 
+     * 
+     *    {attr1: val1, arrt2: val2} 
+     *    
+     * for server side or Promise resolved to object for client 
      *
      * @abstract
      * @param {Number} ID Row identifier
