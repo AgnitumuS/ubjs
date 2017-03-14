@@ -339,21 +339,15 @@ me.testServerRendering = function (ctxt, req, resp) {
   let body = req.read()
   let params = JSON.parse(body)
   const UBServerReport = require('./modules/UBServerReport')
-  let report = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
-  report.then(
-    result => {
-      if (result.reportType === 'pdf') {
-        console.debug('Generate a PDF report of size=', result.reportData.byteLength)
-      } else {
-        console.debug('Generate a HTML report of size=', result.reportData.length)
-      }
-      resp.writeEnd(result.reportData)
-      resp.writeHead(resp.writeHead('Content-Type: ' + mime.lookup(result.reportType)))
-      resp.statusCode = 200
-    },
-    reason => {
-      console.error(reason.toString())
-      throw reason
-    }
-  )
+  let result = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
+
+  if (result.reportType === 'pdf') {
+    console.debug('Generate a PDF report of size=', result.reportData.byteLength)
+  } else {
+    console.debug('Generate a HTML report of size=', result.reportData.length)
+  }
+  resp.writeEnd(result.reportData)
+  resp.writeHead(resp.writeHead('Content-Type: ' + mime.lookup(result.reportType)))
+  resp.statusCode = 200
+
 }
