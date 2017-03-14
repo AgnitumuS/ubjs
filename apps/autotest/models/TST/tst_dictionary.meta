@@ -32,6 +32,10 @@
 			"dataType": "Currency",
 			"caption": "Currency Data"
 		},
+		"floatValue": {
+			"dataType": "Float",
+			"caption": "Float Data"
+		},
 		"calculated": {
 			"dataType": "String",
 			"size": 255,

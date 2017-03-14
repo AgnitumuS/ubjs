@@ -13,7 +13,7 @@ module.exports = function (session) {
   csvLoader.loadSimpleCSVData(conn, __dirname + '/ubm_enum-TST.csv', 'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3], 1)
 
   console.info('\tFill TST model dictionary')
-  csvLoader.loadSimpleCSVData(conn, __dirname + '/tst_dictionary-TST.csv', 'tst_dictionary', 'ID;code;caption;filterValue;booleanColumn'.split(';'), [0, 1, 2, 3, 4], 1)
+  csvLoader.loadSimpleCSVData(conn, __dirname + '/tst_dictionary-TST.csv', 'tst_dictionary', 'ID;code;caption;filterValue;booleanColumn;currencyValue;floatValue'.split(';'), [0, 1, 2, 3, 4], 1)
 
   console.info('\tFill TST model OData dictionary')
   csvLoader.loadSimpleCSVData(conn, __dirname + '/tst_dictionary-TST.csv', 'tst_ODataSimple', 'ID;code;caption;filterValue;booleanColumn'.split(';'), [0, 1, 2, 3, 4], 1)
