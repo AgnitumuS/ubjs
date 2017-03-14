@@ -193,8 +193,8 @@ Options.prototype.usage = function usage () {
  options = opts.parseVerbose({}, true);
 
  * @param {String} commandName Name of a command then executed from a command line
- * @param {String} commandDescription Command description for help (-help switch)
- * @param {String} cli Command line interpretator
+ * @param {String} [commandDescription] Command description for help (-help switch)
+ * @param {String} [cli] Command line interpretator
  * @return {Options}
  */
 exports.describe = function describe (commandName = '', commandDescription = '', cli = 'ub') {
