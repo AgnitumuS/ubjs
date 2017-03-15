@@ -26,14 +26,13 @@ me.doTest = function (ctx) {
  * @param {String} ctx.mParams.location
  */
 function testTubList (ctx) {
-  var path = require('path'),
-    assert = require('assert'),
+  var
     threadObj,
     params = ctx.mParams,
     threadNum = params.threadNum
 
   console.time('Create & destroy 10 ThreadClass ' + threadNum)
-  for (var i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i++) {
     threadObj = new TubList()
     threadObj.freeNative()
   }
@@ -48,15 +47,14 @@ function testTubList (ctx) {
  * @param {String} ctx.mParams.location
  */
 function testUBMail (ctx) {
-  var path = require('path'),
-    assert = require('assert'),
-    UBMail = require('UBMail'),
+  var
+    UBMail = require('@unitybase/mailer'),
     threadObj,
     params = ctx.mParams,
     threadNum = params.threadNum
 
   console.time('Create & destroy 10 ThreadClass ' + threadNum)
-  for (var i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i++) {
     threadObj = new UBMail.TubMailSender({
       host: 'mail.softline.kiev.ua',
       port: '25',
@@ -75,9 +73,7 @@ function testUBMail (ctx) {
  * @param {String} ctx.mParams.location
  */
 function testThreadClass (ctx) {
-  var fs = require('fs'),
-    path = require('path'),
-    assert = require('assert'),
+  var
     ThreadTest = require('ThreadTest'),
     TubThreadClass = ThreadTest.TubThreadClass,
     threadObj,
@@ -85,7 +81,7 @@ function testThreadClass (ctx) {
     threadNum = params.threadNum
 
   console.time('Create & destroy 10 ThreadClass ' + threadNum)
-  for (var i = 0; i < 100; i++) {
+  for (let i = 0; i < 100; i++) {
     if (ThreadTest.verifyData(i, i) !== i + i) {
       throw new Error('wrong verifyData result')
     }
@@ -106,23 +102,20 @@ function testThreadClass (ctx) {
  * @param {String} ctx.mParams.location
  */
 function testCanvas (ctx) {
-  var fs = require('fs'),
-    path = require('path'),
-    assert = require('assert'),
-    UBCanvas = require('UBCanvas'),
+  var
+    UBCanvas = require('@unitybase/canvas'),
     params = ctx.mParams,
     threadNum = params.threadNum,
     canvasWidth = 100,
     canvasHeight = 80,
-    canvas,
-    prm
+    canvas
 
   console.time('Creating 10 canvas in thread ' + threadNum)
-  for (var i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i++) {
     canvas = new UBCanvas(canvasWidth, canvasHeight)
     canvas.setFont('Times New Roman', {r: 84, g: 141, b: 212}, 8)
     canvas.drawText(1, 1, '№–' + new Date().toString(), canvasWidth, canvasHeight)
-    prm = canvas.getContent('bin2base64')
+    canvas.getContent('bin2base64')
     canvas.freeNative()
   }
   console.timeEnd('Creating 10 canvas in thread ' + threadNum)
@@ -135,13 +128,11 @@ function testCanvas (ctx) {
  * @param {String} ctx.mParams.location
  */
 function testSigner (ctx) {
-  var fs = require('fs'),
-    assert = require('assert'),
-    params = ctx.mParams,
-    threadNum = params.threadNum
+  let params = ctx.mParams
+  let threadNum = params.threadNum
 
   console.time('Signing 10 docs in thread ' + threadNum)
-  var signTest = require('PDFSign/_autotest/test_TubSigner.js')
+  let signTest = require('PDFSign/_autotest/test_TubSigner.js')
   signTest()
   console.timeEnd('Signing 10 docs in thread ' + threadNum)
 }
