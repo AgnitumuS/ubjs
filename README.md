@@ -76,7 +76,7 @@ Install all other required modules
 
 	%ub_home%\bin\setEnv.cmd && lerna run build --concurrency 1
 
-**Warning** Pathed cversion of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
+**Warning** Pathed version of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
 
 ## Developer environment 
 
@@ -109,6 +109,8 @@ Create a link from global npm storage to a application node_modules folder
 
 Ensure you set a `publishConfig` parameter in `package.json`. 
 
+## Manual publishing
+
 Bump a module version using (file:///C:/nodejs/node_modules/npm/html/doc/cli/npm-version.html)[npm version] command.
 For initial publication this step can be omitted. For example the command below will increase a patch version of module `ub_model_ub`:   
 
@@ -123,8 +125,27 @@ To publish to a UnityBase repository you must authorize your requests
       
       npm adduser --registry http://registry.unitybase.info
 
+## Publishing using lerna
 
- 
+ For a monorepo controlled by lerna 
+
+	lerna updated
+
+ will list a modules updated from a last `lerna publish` run - see [lerna update](https://github.com/staltz/lerna/blob/master/README.md#updated) for details
+
+ 	lerna publish 
+
+ will publish all updated modules and create a new git commit/tag
+
+ In case monorepo contains many modules (as ubjs) with cross-dependencies and you _SHURE_ you 
+make a minor update to one of them then recommended way is to use `--only-explicit-updates` option during publishing.
+This option allows only the packages that have been explicitly updated to make a new version.
+
+	lerna updated --only-explicit-updates
+	lerna publish --only-explicit-updates
+
+ See [only-explicit-updates options explanation](https://github.com/staltz/lerna/blob/master/README.md#--only-explicit-updates)
+
 # Installing packages
 
     npm set registry http://registry.unitybase.info
