@@ -1,0 +1,31 @@
+{
+  "name": "@unitybase/canvas",
+  "version": "4.0.00",
+  "description": "Server-side canvas (draw text/pictures on png)",
+  "scripts": {
+    "build": "call ./bin/compile.cmd"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "main": "./UBCanvas.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@unitybase/stubs": "^4.1.1"
+  },
+  "keywords": [
+    "UnityBase",
+    "canvas",
+    "draw",
+    "png"
+  ],
+  "author": "felix.zemlyakov (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
+  "os": [
+    "win32"
+  ],
+  "engines": {
+    "UnityBase": "^4.0"
+  }
+}
