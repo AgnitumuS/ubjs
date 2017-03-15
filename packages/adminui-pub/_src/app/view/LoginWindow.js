@@ -24,12 +24,12 @@ Ext.define('UB.view.LoginWindow', {
      */
     DoLogon: function (connection, isRepeat) {
       var loginWindow,
-        silenceKerberosLogin = JSON.parse(localStorage.getItem('silenceKerberosLogin') || 'false'),
-        userDidLogout = JSON.parse(localStorage.getItem('userDidLogout') || 'false'),
+        silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false'),
+        userDidLogout = JSON.parse(window.localStorage.getItem('userDidLogout') || 'false'),
         loginPromise
 
       if (userDidLogout) {
-        localStorage.setItem('userDidLogout', 'false')
+        window.localStorage.setItem('userDidLogout', 'false')
       }
 
       if (!connection.authMethods.length) {
@@ -116,10 +116,10 @@ Ext.define('UB.view.LoginWindow', {
       authItems = [],
       firstLogin, silenceKerberosLogin,
       minAuthTabsHeight = 265,
-      lastSavedLogin = localStorage.getItem('lastLogin')
+      lastSavedLogin = window.localStorage.getItem('lastLogin')
 
-    firstLogin = JSON.parse(localStorage.getItem('firstLogin') || 'false')
-    silenceKerberosLogin = JSON.parse(localStorage.getItem('silenceKerberosLogin') || 'false')
+    firstLogin = JSON.parse(window.localStorage.getItem('firstLogin') || 'false')
+    silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false')
 
     me.items = []
     me.buttons = [{
@@ -387,7 +387,7 @@ Ext.define('UB.view.LoginWindow', {
 
     var authPanel
     if (me.authTabs) {
-      var lastAuthType = localStorage.getItem('lastAuthType')
+      var lastAuthType = window.localStorage.getItem('lastAuthType')
       authPanel = me.query('panel[authType="' + lastAuthType + '"]')[0] || authItems[0]
       me.authTabs.setActiveTab(authPanel)
     } else {
@@ -425,7 +425,7 @@ Ext.define('UB.view.LoginWindow', {
       if (!password || password === '' || !login || login === '') {
         return
       }
-      localStorage.setItem('firstLogin', me.chkFirstLogin.checked)
+      window.localStorage.setItem('firstLogin', me.chkFirstLogin.checked)
       UB.inject('models/UBA/BigInteger.js').done(function () {
         /**
          * Build password hash as in ERC
@@ -489,7 +489,7 @@ Ext.define('UB.view.LoginWindow', {
         }
       }
       window.addEventListener('message', loginListener)
-      localStorage.setItem('lastAuthType', authType)
+      window.localStorage.setItem('lastAuthType', authType)
       return
     } else {
       me.deferred.resolve({
@@ -499,11 +499,11 @@ Ext.define('UB.view.LoginWindow', {
         registration: 0 // me.chkFirstLogin.checked ? 1: 0
       })
     }
-    localStorage.setItem('lastAuthType', authType)
-    localStorage.setItem('lastLogin', login)
+    window.localStorage.setItem('lastAuthType', authType)
+    window.localStorage.setItem('lastLogin', login)
 
     if (authType === 'Negotiate') {
-      localStorage.setItem('silenceKerberosLogin', me.chkSilenceLogint.getValue())
+      window.localStorage.setItem('silenceKerberosLogin', me.chkSilenceLogint.getValue())
     }
 
     me.close()
