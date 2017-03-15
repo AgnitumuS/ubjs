@@ -9,7 +9,7 @@ echo %UB_CORE%
 call %SRC%\bin\setCompilerEnv.cmd
 if not exist %~dp0x32 mkdir %~dp0x32
 cd %~dp0..\src
-%DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\bin\x32 ^
+%DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE%SM52DEF% -E..\bin\x32 ^
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^
   -U%LIB%\FastMM;%SYN_LIB%;%UB_CORE%;"%DELPHI_7%\Lib" ^
@@ -17,7 +17,7 @@ cd %~dp0..\src
   UBCanvas.dpr
 
 if not exist %~dp0x64 mkdir %~dp0x64
-%DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\bin\x64 ^
+%DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE%SM52DEF% -E..\bin\x64 ^
   -NSSystem;Winapi;System.Win;Vcl; ^
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^
