@@ -133,20 +133,20 @@ Ext.define('UB.view.LoginWindow', {
     }]
 
         // Image
-    if (UB.appConfig.loginWindowTopLogoURL) {
+    if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.loginWindowTopLogoURL) {
       me.items.push(Ext.create('Ext.Img', {
-        src: UB.appConfig.loginWindowTopLogoURL, // 'images/logo-top.png',
+        src: UB.appConfig.uiSettings.adminUI.loginWindowTopLogoURL, // 'images/logo-top.png',
         autoEl: 'div',
         cls: 'logo-top'
       }))
     }
         // form caption
-    if (UB.appConfig.applicationName) {
+    if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.applicationName) {
       me.items.push({
         xtype: 'component',
         autoEl: {
           tag: 'h2',
-          html: UB.appConfig.applicationName
+          html: UB.appConfig.uiSettings.adminUI.applicationName
         }
       })
     }
@@ -360,9 +360,9 @@ Ext.define('UB.view.LoginWindow', {
       me.items.push(authItems[0])
     }
 
-    if (UB.appConfig.loginWindowBottomLogoURL) {
+    if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.loginWindowBottomLogoURL) {
       me.items.push(Ext.create('Ext.Img', {
-        src: UB.appConfig.loginWindowBottomLogoURL,
+        src: UB.appConfig.uiSettings.adminUI.loginWindowBottomLogoURL,
         cls: 'logo-bottom'
       }))
     }
