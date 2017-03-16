@@ -801,7 +801,7 @@ function booleanParse (v) {
   if ((v === undefined || v === null || v === '')) {
     return null
   }
-  return v === 1
+  return (v === 1) || (v === '1')
 }
 
 /**
