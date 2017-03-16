@@ -43,7 +43,7 @@
 		},
         "rls": {
             "expression": "([$.currentOwner()] OR
-                    [$.currentUserInGroup(ubm_desktop,'admins')] OR
+                    [$.currentUserInGroup(ubm_desktop,'Admin')] OR
                     [$.currentUserOrUserGroupInAdmSubtable(ubm_desktop)])"
 }
 	}
