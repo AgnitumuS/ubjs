@@ -83,7 +83,8 @@ Ext.define('UBS.MessageBar', {
 
     initComponent: function(){
         var me = this;
-        me.hidden = me.hidden || !UB.appConfig.messenger || !UB.appConfig.messenger.enabled;
+        debugger
+        me.hidden = me.hidden || !UB.appConfig.uiSettings.adminUI.messenger || !UB.appConfig.uiSettings.adminUI.messenger.enabled;
 
         var btnMenuItems = [{
             text: UB.i18n('messageHistory'),
