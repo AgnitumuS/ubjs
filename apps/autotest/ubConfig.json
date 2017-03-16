@@ -58,7 +58,7 @@
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": "",
+			"applicationName": "Autotest UB SQLITE",
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
