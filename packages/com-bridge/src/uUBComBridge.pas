@@ -20,8 +20,29 @@ function COM_ResolveObject(cx: PJSContext; var obj: PJSObject; var id: jsid; out
 function COM_GetProperty(cx: PJSContext; var obj: PJSObject; var id: jsid; out vp: jsval):Boolean;cdecl; forward;
 function COM_SetProperty(cx: PJSContext; var obj: PJSObject; var id: jsid; var vp: jsval; out res: JS_ObjectOpResult):Boolean; cdecl; forward;
 function COM_Enumerate(cx: PJSContext; var obj: PJSObject): Boolean; cdecl; forward;
+{$IFDEF SM52}
+procedure COM_Finalize(var fop: JSFreeOp; obj: PJSObject); cdecl;  forward;
+{$ELSE}
 procedure COM_Finalize(var rt: PJSRuntime; obj: PJSObject); cdecl;  forward;
+{$ENDIF}
 const
+{$IFDEF SM52}
+  jsCOM_classOps: JSClassOps = (
+//    addProperty:        JS_PropertyStub;
+//    delProperty:        JS_DeletePropertyStub;
+    getProperty:        COM_GetProperty;
+    setProperty:        COM_SetProperty;
+    enumerate:          COM_Enumerate; 
+    resolve:            COM_ResolveObject;
+//    convert:            JS_ConvertStub;
+    finalize:           COM_Finalize;
+    );
+
+  jsCOM_class: JSClass = (name: 'COM';
+    flags: JSCLASS_HAS_PRIVATE ;
+    );
+
+{$ELSE}
   jsCOM_class: JSClass = (name: 'COM';
     flags: JSCLASS_HAS_PRIVATE ;
 //    addProperty:        JS_PropertyStub;
@@ -33,6 +54,7 @@ const
 //    convert:            JS_ConvertStub;
     finalize:           COM_Finalize;
     );
+{$ENDIF}
 type
   TOleVariantRecord = object
     magic: integer;
@@ -322,7 +344,11 @@ begin
   end;
 end;
 
+{$IFDEF SM52}
+procedure COM_Finalize(var fop: JSFreeOp; obj: PJSObject); cdecl;
+{$ELSE}
 procedure COM_Finalize(var rt: PJSRuntime; obj: PJSObject); cdecl;
+{$ENDIF}
 var
   privateData: POleVariantRecord;
 begin
