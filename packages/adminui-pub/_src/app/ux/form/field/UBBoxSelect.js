@@ -75,6 +75,13 @@ Ext.define("UB.ux.form.field.UBBoxSelect", {
         }
 
         store = me.getStore();
+        if (!store && me.ubRequest){
+          store = me.store = Ext.create('UB.ux.data.UBStore', {
+            ubRequest: me.ubRequest,
+            autoLoad: false,
+            autoDestroy: true
+          });
+        }
         store.pageSize = me.pageSize;
 
         fnReplace = function(m){
