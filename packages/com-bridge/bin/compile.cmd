@@ -7,7 +7,7 @@ if not defined SRC (
 call %SRC%\bin\setCompilerEnv.cmd
 if not exist %~dp0x32 mkdir %~dp0x32
 cd %~dp0..\src
-%DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\bin\x32 ^
+%DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE%SM52DEF% -E..\bin\x32 ^
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^
   -U%LIB%\FastMM;%SYN_LIB%;%UB_CORE%;%LIB%\synapse40\source\lib;"%DELPHI_7%\lib\Win32\release" ^
@@ -15,7 +15,7 @@ cd %~dp0..\src
   UBComBridge.dpr
 
 if not exist %~dp0x64 mkdir %~dp0x64
-%DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\bin\x64 ^
+%DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE%SM52DEF% -E..\bin\x64 ^
   -NSSystem;Winapi;System.Win; ^
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^
