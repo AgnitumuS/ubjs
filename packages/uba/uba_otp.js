@@ -121,7 +121,7 @@ me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
  */
 me.authAndExecute = function (otp, otpKind, callBack) {
   const store = UB.Repository('uba_otp').attrs(['userID', 'ID', 'uData'])
-        .where('[otp]', '=', otp).where('[otpKind]', '=', otpKind).where('[expiredDate]', '>=', new Date()).select()
+        .where('[otp]', '=', otp).where('[otpKind]', '=', otpKind).where('[userID.disabled]', '=', 0).where('[expiredDate]', '>=', new Date()).select()
   if (store.eof) {
     return false
   } else {
