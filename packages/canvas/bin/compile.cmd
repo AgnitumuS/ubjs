@@ -1,4 +1,4 @@
-@echo on
+@echo off
 if not defined SRC (
   echo SRC environment variable must be defined
   exit 1

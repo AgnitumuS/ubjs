@@ -5,8 +5,9 @@
   "description": "PDF Document creation from JavaScript",
   "main": "dist/jspdf.debug.js",
   "files": [
-    "dist/jspdf.debug.js",
-    "dist/jspdf.min.js",
+    "libs/",
+    "plugins/",
+    "jspdf.js",
     "README.md"
   ],
   "keywords": [
