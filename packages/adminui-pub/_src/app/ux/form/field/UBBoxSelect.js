@@ -36,9 +36,9 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
   * @cfg {Object} [ubRequest]
   */
   initComponent: function () {
-    var me = this,
-      fnReplace,
-      store
+    var me = this
+    var fnReplace
+    var store
 
     me.grow = !me.disableGrow
 
@@ -87,16 +87,16 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
             if (!me.highlightSearch || !me.searchRegExp) {
               return
             }
-            var el = view.getEl(), list, itmEl
+            var el = view.getEl()
             if (!el) {
               return
             }
-            list = el.down('.x-list-plain')
+            var list = el.down('.x-list-plain')
             if (!list) {
               return
             }
 
-            itmEl = list.down('.x-boundlist-item')
+            var itmEl = list.down('.x-boundlist-item')
             while (itmEl) {
               if (itmEl.dom.innerHTML) {
                 itmEl.dom.innerHTML = itmEl.dom.innerHTML.replace(me.searchRegExp, fnReplace)
@@ -239,7 +239,8 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
    * @returns {Array}
    */
   getValueArray: function () {
-    var obj = this.getValue(true), result = []
+    var obj = this.getValue(true)
+    var result = []
     _.forEach(obj, function (elm) {
       result.push(elm)
     })
@@ -268,9 +269,8 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
    *
    */
   setValueById: function (id, isDefault, onLoadValue, scope) {
-    var
-      me = this,
-      originalReq, ids
+    var me = this
+    var originalReq, ids
     if (!id) {
       if (isDefault) {
         me.resetOriginalValue()
@@ -364,9 +364,9 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
    * @protected
    */
   onItemListClick: function (evt, el, o) {
-    var me = this,
-      itemEl = evt.getTarget('.x-boxselect-item'),
-      closeEl = itemEl ? evt.getTarget('.x-boxselect-item-close') : false
+    var me = this
+    var itemEl = evt.getTarget('.x-boxselect-item')
+    var closeEl = itemEl ? evt.getTarget('.x-boxselect-item-close') : false
 
     if (me.readOnly || me.disabled) {
       return
@@ -393,9 +393,9 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
   },
 
   alignPicker: function () {
-    var me = this,
-      picker = me.picker,
-      pickerScrollPos = picker.getTargetEl().dom.scrollTop
+    var me = this
+    var picker = me.picker
+    var pickerScrollPos = picker.getTargetEl().dom.scrollTop
 
     me.callSuper(arguments)
 
@@ -410,8 +410,10 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
     }
   },
 
-  onDataLoaded: function (sender, records, successful, eOpts) {
-    var me = this, dataLen = me.store.getCount(), strLength
+  onDataLoaded: function (/* sender, records, successful, eOpts */) {
+    var me = this
+    var dataLen = me.store.getCount()
+    var strLength
     if (me.pagingToolbar) {
       if (me.pageSize > dataLen || (me.lastRowIndex && ((me.lastRowIndex + 1 + me.pageSize) > dataLen))) {
         me.pagingToolbar.setHeight(0)
@@ -430,25 +432,28 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
   },
 
   onDataRefreshed: function () {
-    var me = this, store = this.getStore(),
-      storeLen = store.getCount(),
-      picker = me.getPicker(),
-      lestRow = me.lastRowIndex
-    if (lestRow) {
+    var me = this
+    var store = this.getStore()
+    var storeLen = store.getCount()
+    var picker = me.getPicker()
+    var lastRow = me.lastRowIndex
+
+    if (lastRow) {
       me.lastRowIndex = null
-      if (storeLen > lestRow + 8) {
-        lestRow = lestRow + 8
+      if (storeLen > lastRow + 8) {
+        lastRow = lastRow + 8
       }
-      lestRow = store.getAt(lestRow)
-      if (lestRow) {
-        picker.focusNode(lestRow)
+      lastRow = store.getAt(lastRow)
+      if (lastRow) {
+        picker.focusNode(lastRow)
       }
     }
   },
 
   readMoreData: function () {
-    var me = this, store = this.getStore(), storeLen
-    storeLen = store.getCount()
+    var me = this
+    var store = this.getStore()
+    var storeLen = store.getCount()
     me.lastRowIndex = null
     if (storeLen > 0) {
       me.lastRowIndex = storeLen - 1// store.getAt(storeLen - 1);
