@@ -24,4 +24,4 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
 
 ## Get Started
 
-Check out UnityBase's quick [**Get Started**](https://webpack.js.org/get-started/) guide and the [other guides](https://webpack.js.org/guides/).
+Check out UnityBase's quick [**Get Started**](https://gitlab.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v4) guide and the [other guides](https://gitlab.intecracy.com/unitybase/samples).
