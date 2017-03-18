@@ -211,8 +211,8 @@ Ext.define('UB.view.EntityGridPanel', {
      * @returns {number}
      */
     getGridHeaderCharWidth: function () {
-      var me = this, eDiv
-      if (!me.gridHeaderCharWidth) {
+      var eDiv
+      if (!this.gridHeaderCharWidth) {
         eDiv = document.createElement('div')
         eDiv.style.width = 'auto'
         eDiv.style.height = 'auto'
@@ -226,10 +226,10 @@ Ext.define('UB.view.EntityGridPanel', {
         eDiv.style.whiteSpace = 'nowrap'
         eDiv.style.visibility = 'hidden'
         document.body.appendChild(eDiv)
-        me.gridHeaderCharWidth = eDiv.clientWidth / 10
+        this.gridHeaderCharWidth = eDiv.clientWidth / 10
         document.body.removeChild(eDiv)
       }
-      return me.gridHeaderCharWidth
+      return this.gridHeaderCharWidth
     },
 
     /**
@@ -239,10 +239,9 @@ Ext.define('UB.view.EntityGridPanel', {
      * @return {Object[]}
      */
     getEntityColumns: function (entityName, fieldList, stores) {
-      var
-        columns = [], col,
-        entity = $App.domainInfo.get(entityName),
-        metaColumn
+      var columns = []
+      var entity = $App.domainInfo.get(entityName)
+      var col, metaColumn
 
       fieldList = fieldList || UB.Utils.convertFieldListToExtended(entity.filterAttribute({defaultView: true}))
       // UIGridColumnClass
@@ -300,16 +299,15 @@ Ext.define('UB.view.EntityGridPanel', {
      * @return {Object}
      */
     getEntityColumn: function (entityName, field, stores) {
-      var
-        domain = $App.domainInfo,
-        fieldName = field.name,
-        formatC = field.format && !_.isFunction(field.format) ? field.format : null,
-        ubDataTypes = domain.ubDataTypes,
-        domainEntity = domain.get(entityName),
-        fieldNameParts, columnCaption = '',
-        column,
-        associatedEntityDisplayField, associatedEntityStore, enumDict,
-        entityNameInn, entityInn, attr, metaAttribute
+      var domain = $App.domainInfo
+      var fieldName = field.name
+      var formatC = field.format && !_.isFunction(field.format) ? field.format : null
+      var ubDataTypes = domain.ubDataTypes
+      var domainEntity = domain.get(entityName)
+      var columnCaption = ''
+      var column, fieldNameParts,
+          associatedEntityDisplayField, associatedEntityStore, enumDict,
+          entityNameInn, entityInn, attr, metaAttribute
 
       metaAttribute = domainEntity.getEntityAttributeInfo(fieldName)
       if (!domainEntity || !metaAttribute || !metaAttribute.attribute) {
@@ -423,13 +421,9 @@ Ext.define('UB.view.EntityGridPanel', {
      * @return {Object}  {store1_md5: {UB.ux.data.UBStore}, store2_md5: ...}
      */
     loadRunListParamsRequirementsStores: function (params) {
-      var
-        requirements,
-        fieldList, descriptionAttr,
-        stores = {},
-        storeMd5, j, len,
-        store, cachType,
-        entity
+      var stores = {}
+      var requirements, fieldList, descriptionAttr,
+        storeMd5, j, len, store, cachType, entity
 
       requirements = $App.domainInfo.get(params.entity).getEntityRequirements(
         UB.core.UBUtil.convertFieldListToNameList(params.fieldList, true)
@@ -462,7 +456,7 @@ Ext.define('UB.view.EntityGridPanel', {
               console.error('Too large look up field for entity "' +
                                     st.lookUpField + '". Look up entity ' + st.ubRequest.entity + ' Record count =' + records.length)
             }
-          }, store, {single: true })
+          }, store, { single: true })
         }
       }
       return stores
@@ -566,12 +560,12 @@ Ext.define('UB.view.EntityGridPanel', {
    * @param {Boolean} [force=false] If false column width already loaded from local store -  do nothing.
    */
   optimizeColumnWidth: function (force) {
-    var me = this, fields = {}, columnParam,
+    let me = this, fields = {}, columnParam,
       columnNew = {}, fullSize = 0, delta = 0, allDelta = 0,
-      charWidth, headerCharWidth, maxChars, boxWidth, columnLeft, minSize = 0,
-      columnParams = UB.view.EntityGridPanel.columnParams,
-      entity
-    boxWidth = me.getEl().getWidth()
+      charWidth, headerCharWidth, maxChars, columnLeft, minSize = 0,
+      columnParams = UB.view.EntityGridPanel.columnParams
+
+    let boxWidth = me.getEl().getWidth()
     if (me.stateLoadedFromStore && !force) {
       return
     }
@@ -579,7 +573,7 @@ Ext.define('UB.view.EntityGridPanel', {
       fields[item.name] = item
     })
 
-    entity = $App.domainInfo.get(me.entityName)
+    let entity = $App.domainInfo.get(me.entityName)
     _.forEach(me.columns, function (column) {
       columnParam = {}
       if (!column.dataIndex) {
