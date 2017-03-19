@@ -1,4 +1,4 @@
-<img width="200" height="200" href="assets/ub-logo.svg"></a>
+![UBLogo](img/assets/ub-logo.svg)
 
 # UnityBase
 
