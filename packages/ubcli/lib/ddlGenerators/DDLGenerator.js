@@ -340,7 +340,7 @@ class DDLGenerator {
 
     if (entity.mixins.dataHistory) {
       let keys = ['mi_dateTo']
-      if (entity.mixins.mStorage && entity.mixins.mStorage.simpleAudit) {
+      if (entity.mixins.mStorage && entity.mixins.mStorage.safeDelete) {
         keys.push('mi_deleteDate')
       }
       tableDef.addIndex({
@@ -355,7 +355,7 @@ class DDLGenerator {
       })
 
       keys = ['mi_dateFrom', 'mi_data_id']
-      if (entity.mixins.mStorage && entity.mixins.mStorage.simpleAudit) {
+      if (entity.mixins.mStorage && entity.mixins.mStorage.safeDelete) {
         keys.push('mi_deleteDate')
         tableDef.addIndex({
           name: formatName('UIDX_', sqlAlias, '_HIST'),
