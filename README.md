@@ -1,4 +1,4 @@
-<a width="200" height="200" href="assets/ub-logo.svg"></a>
+<img width="200" height="200" href="assets/ub-logo.svg"></a>
 
 # UnityBase
 
