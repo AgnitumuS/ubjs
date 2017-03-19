@@ -1,5 +1,5 @@
-<a href="https://unitybase.info/">
-  <img src="https://unitybase.info/ub-logo.svg" width="100%" height="200">
+<a href="https://unitybase.info/" >
+  <img src="https://unitybase.info/ub-logo-c.svg" height="200">
 </a>
 
 # UnityBase
