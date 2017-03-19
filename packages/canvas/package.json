@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/canvas",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Server-side canvas (draw text/pictures on png)",
   "scripts": {
     "build": "call ./bin/compile.cmd"
