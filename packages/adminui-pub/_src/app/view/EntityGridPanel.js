@@ -469,7 +469,18 @@ Ext.define('UB.view.EntityGridPanel', {
   selectedRecordID: null,
 
   viewType: 'ubtableview',
-  customActions: null,
+  /**
+   * @cfg {Array} customActions
+   * Add action on toolbar. Default value [].
+   *
+      customActions: [{
+        text: 'new Action...',
+        glyph: 0xf040,
+        handler: function (btn) {}
+      }]
+
+   */
+  customActions: [],
 
   hidePagingBar: false,
 
@@ -1581,7 +1592,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
       arr = me.customActions
       for (i = 0, len = arr.length; i < len; ++i) {
-        menuAllActions.push(arr[i])
+        menuAllActions.push(new Ext.Action(arr[i]))
       }
     }
     menuAllActions.push('-')
@@ -1603,8 +1614,8 @@ Ext.define('UB.view.EntityGridPanel', {
       items.push(me.createButtonWOText(me.actions[val]))
     })
 
-    Ext.Array.each(me.customActions, function (val) {
-      items.push(me.createButtonWOText(val))
+    Ext.Array.each(me.customActions, function (actionConfig) {
+      items.push(me.createButtonWOText(new Ext.Action(actionConfig)))
     })
 
     if (me.isModal) {
