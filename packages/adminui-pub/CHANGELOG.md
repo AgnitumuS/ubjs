@@ -9,4 +9,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - UBBoxSelect now accept ubRequest as a config parameter (for store creation)
 
 ### Fixed
-
+- since form definitian now evaluated only once (HMR) both `EntityGridPanel` & `ubdetailgrid` now accept `customActionas` as a Ext.Action config (not a class instance)
