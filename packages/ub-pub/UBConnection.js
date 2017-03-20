@@ -213,14 +213,6 @@ function UBConnection (connectionParams) {
    * @type {String}
    */
   this.lastLoginName = ''
-  /**
-   * Cache flag to enable a hack appending the current timestamp
-   * to your requests to prevent IE from caching them and always returning the same result.
-   * If "true", will set the param with the name "_"
-   * If a string, will use it as the param name
-   * @type {Boolean|String}
-   */
-  this.useCacheForXHR = window && (window.ActiveXObject || 'ActiveXObject' in window)
 
   this._bufferedRequests = []
   this._bufferTimeoutID = 0
