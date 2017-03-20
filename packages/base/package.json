@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/base",
-  "version": "4.2.4",
+  "version": "4.2.5",
   "description": "Build-in UnityBase model",
   "scripts": {
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
