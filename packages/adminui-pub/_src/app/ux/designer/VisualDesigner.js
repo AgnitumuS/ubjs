@@ -1,6 +1,6 @@
 require('./ComponentInfo')
 require('./PropertyGrid')
-/*global js_beautify */
+
 /**
  * Visual form designer
  */
@@ -61,9 +61,10 @@ Ext.define('UB.ux.designer.VisualDesigner', {
                         scope: this,
                         handler:function() {
                             var rValue = me.getValue();
-                            if (rValue) {
-                                rValue = js_beautify(rValue);
-                            }
+                            // MPV - TODO beautify it
+                            // if (rValue) {
+                            //     rValue = JSON.stringify(rValue);
+                            // }
                             var window = Ext.create('UB.view.BaseWindow', {
                                 title: UB.i18n('showResultConfig'),
                                 height: 600,

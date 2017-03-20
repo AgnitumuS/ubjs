@@ -125,9 +125,10 @@ Ext.define('UB.ux.UBCodeMirror', {
   doBeautify: function() {
     var me = this
     if (!this.codeMirrorInstance) return
-    UB.inject('models/UBS/js_beautify.js').then(function() {
+    //UB.inject('models/UBS/js_beautify.js').
+    System.import('js-beautify/js/lib/beautify').then(function (beautify) {
       var txt = me.codeMirrorInstance.getValue()
-      txt = js_beautify(txt, {
+      txt = beautify.js_beautify(txt, {
         'indent_size': 2,
         'indent_char': ' '
       })
