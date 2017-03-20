@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/codemirror-full",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "CodeMirror + plugins + linter",
   "main": "./dist/codemirror-all.min.js",
   "scripts": {
