@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "UnityBase data layer for Browser & nodeJS client",
   "main": "./index.js",
   "config": {
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@unitybase/base": "^4.2.5",
-    "@unitybase/cryptojs": "^1.0.5"
+    "@unitybase/cryptojs": "^1.0.6"
   },
   "keywords": [
     "UnityBase",
