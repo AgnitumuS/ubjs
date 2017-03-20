@@ -18,9 +18,6 @@
     "@unitybase/base": "^4.2.3"
   },
   "devDependencies": {},
-  "peerDependencies": {
-    "webpack": "^2.2.0"
-  },
   "keywords": [
     "UnityBase"
   ],
