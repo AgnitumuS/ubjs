@@ -13,7 +13,7 @@ require('./libs/jsPDF/plugins/png_support')
 
 require('./plugins/unicode-text')
 
-jsPDF.adler32cs = require('adler32cs')
+jsPDF.adler32cs = require('./libs/adler32cs.js')
 require('./libs/jsPDF/libs/deflate')
 // MPV - in case of compression we need to modify /libs/jsPDF/libs/deflate to expose Deflater and uncoment lines below
 // const Deflater = require('./libs/jsPDF/libs/deflate')
