@@ -1,4 +1,3 @@
-/*global UB, js_beautify */
 Ext.define('UB.ux.designer.Properties', {
     extend: 'Ext.data.Model',
     fields: [
@@ -32,7 +31,7 @@ Ext.define('UB.ux.designer.PropertyGrid', {
 
     constructor: function(){
         var me = this;
-        UB.inject("models/UBS/js_beautify.js");
+
         me.convertStringToObject = true;
         me.callParent(arguments);
     },
@@ -135,7 +134,7 @@ Ext.define('UB.ux.designer.PropertyGrid', {
        Ext.Object.each(config, function(propertyName, property){
             if (Ext.isObject(property)) {
                 try {
-                    var ec = JSON.stringify(property);  //js_beautify(
+                    var ec = JSON.stringify(property);
                     config[propertyName] = ec;
                 } catch(e) {}
             }
@@ -255,7 +254,7 @@ Ext.define('UB.ux.designer.PropertyGrid', {
                                             try {
                                                 var res = pg.getSource();
                                                 me.updatePropToObject(res);
-                                                res = JSON.stringify(res); //js_beautify(
+                                                res = JSON.stringify(res);
                                                 me.setProperty(attrName, res);
                                             } catch (e) {}
                                             wnd.close();
