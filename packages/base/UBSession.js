@@ -24,7 +24,7 @@ function UBSession (authResponse, secretWord, authSchema) {
   let userData = data.uData ? JSON.parse(data.uData) : { lang: 'en', login: 'anonymous' }
   let sessionWord = data.result
   let sessionPwdHash = secretWord || ''
-  let sessionSaltCRC = (typeof window === 'undefined') ? ncrc32(0, sessionWord + sessionPwdHash) : null
+  let sessionSaltCRC = (typeof ncrc32 !== 'undefined') ? ncrc32(0, sessionWord + sessionPwdHash) : null
 
   if (!userData.login) {
     userData.login = data.logonname
@@ -82,7 +82,7 @@ function UBSession (authResponse, secretWord, authSchema) {
       default:
         let timeStampI = Math.floor((new Date()).getTime() / 1000)
         let hexaTime = hexa8(timeStampI)
-        return hexa8ID + hexaTime + hexa8((typeof window === 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + sessionPwdHash + hexaTime)) // + url?
+        return hexa8ID + hexaTime + hexa8((typeof ncrc32 !== 'undefined') ? ncrc32(sessionSaltCRC, hexaTime) : crc32(sessionWord + sessionPwdHash + hexaTime)) // + url?
     }
   }
 

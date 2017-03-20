@@ -150,7 +150,7 @@ function UBConnection (connectionParams) {
      * @readonly
      */
   this.serverUrl = serverURL
-  baseURL = (window.location.origin === host) ? appName : serverURL
+  baseURL = ((typeof window !== 'undefined') && (window.location.origin === host)) ? appName : serverURL
   if (baseURL.charAt(baseURL.length - 1) !== '/') baseURL = baseURL + '/'
     /**
      * The base of all urls of your requests. Will be prepend to all urls while call UB.xhr
@@ -817,7 +817,7 @@ UBConnection.prototype.post = function (url, data, config) {
  *
  *  - add Authorization header for non-anonymous sessions
  *  - add {@link UBConnection#baseURL} to config.url
- *  - call {@link ub-core.xhr}
+ *  - call {@link transport.xhr}
  *  - in case server return 401 clear current authorization,
  *  call {UBConnection#authorize) and repeat the request
  *
@@ -1718,7 +1718,7 @@ UBConnection.prototype.Repository = function (entityName) {
  */
 UBConnection.prototype.SHA256 = SHA256
 
-const LDS = (window && window.localStorage)
+const LDS = (typeof window !== 'undefined') && window.localStorage
 /**
  * Connect to UnityBase server
  *

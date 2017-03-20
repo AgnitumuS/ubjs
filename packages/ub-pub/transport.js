@@ -139,7 +139,7 @@ let __lastRequestURL
  *          console.log('this is appInfo: %o', resp.data)
  *      });
  *
- *      //The same, but in more short form via {@link UB#get UB.get} shorthand:
+ *      //The same, but in more short form via {@link UB.get UB.get} shorthand:
  *      UB.get('getAppInfo').then(function(resp) {
  *          console.log('this is appInfo: %o', resp.data)
  *      });
@@ -176,7 +176,7 @@ let __lastRequestURL
  * @param {function(data, function)|Array.<function(data, function)>} [requestConfig.transformResponse]
  *      Transform function or an array of such functions. The transform function takes the http
  *      response body and headers and returns its transformed (typically deserialized) version.
- * @param  {Number|Promise} [requestConfig.timeout] timeout in milliseconds, or {@link Q promise}
+ * @param  {Number|Promise} [requestConfig.timeout] timeout in milliseconds, or {Promise}
  *      that should abort the request when resolved. Default to {UB.xhrDefaults.timeout}
  * @param  {Boolean} [requestConfig.withCredentials] whether to to set the `withCredentials` flag on the
  *      XHR object. See <a href="https://developer.mozilla.org/en/http_access_control#section_5">requests with credentials</a>

@@ -261,9 +261,9 @@ module.exports.logWarn = function logWarn (msg) {
  */
 module.exports.logDebug = console.info.bind(console)
 
-const userAgent = (navigator && navigator.userAgent) ? navigator.userAgent.toLowerCase() : ''
+const userAgent = (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent.toLowerCase() : 'nodeJS'
 /** @type {String} */
-module.exports.userAgent = navigator.userAgent.toLowerCase()
+module.exports.userAgent = userAgent.toLowerCase()
 /** @type {Boolean} */
 module.exports.isChrome = /\bchrome\b/.test(userAgent)
 /** @type {Boolean} */
