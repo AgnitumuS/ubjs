@@ -2,10 +2,11 @@ UnityBase packages monorepo
 
 Packages inside this repository is under `lenra` control
 
-To prevent packages duplication we remove some tools from a devDependencies of each packages,
-so install it globaly
+To prevent packages duplication we do not list a tools in packages devDependencies of each packages,
+insdead install it in the root of monorepo
 
-	npm install -g standard babel-core babel-loader webpack webpack-bundle-analyzer jsdoc lerna@latest babel-preset-es2015 babel-preset-es2015-without-strict uglifyjs uglifycss
+	cd ubjs
+	npm install
 
 # Develop a modules for UnityBase
 
