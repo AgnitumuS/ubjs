@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "4.1.5",
+  "version": "4.2.0",
   "description": "UnityBase data layer for Browser & nodeJS client",
   "main": "./index.js",
   "config": {
@@ -20,7 +20,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.2.4",
+    "@unitybase/base": "^4.2.5",
     "@unitybase/cryptojs": "^1.0.5"
   },
   "devDependencies": {
@@ -32,7 +32,8 @@
     "webpack": "^2.2"
   },
   "keywords": [
-    "UnityBase", "nodeJS"
+    "UnityBase",
+    "nodeJS"
   ],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0 OR MIT)"
