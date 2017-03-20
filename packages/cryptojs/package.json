@@ -9,9 +9,6 @@
   },
   "main": "index.js",
   "dependencies": {},
-  "devDependencies": {
-    "babel-loader": "^6.2.9"
-  },
   "keywords": [
     "crypto",
     "UnityBase"
