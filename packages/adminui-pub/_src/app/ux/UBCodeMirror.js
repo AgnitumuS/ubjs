@@ -80,7 +80,7 @@ Ext.define('UB.ux.UBCodeMirror', {
 
     if (blobData) {
       return new Promise(function (resolve, reject) {
-        var reader = new FileReader()
+        var reader = new window.FileReader()
         reader.addEventListener('loadend', function () {
           resolve(onDataReady(reader.result))
         })
@@ -122,17 +122,17 @@ Ext.define('UB.ux.UBCodeMirror', {
     }
   },
 
-  doBeautify: function() {
+  doBeautify: function () {
     var me = this
     if (!this.codeMirrorInstance) return
-    //UB.inject('models/UBS/js_beautify.js').
+
     System.import('js-beautify/js/lib/beautify').then(function (beautify) {
       var txt = me.codeMirrorInstance.getValue()
       txt = beautify.js_beautify(txt, {
         'indent_size': 2,
         'indent_char': ' '
       })
-      me.codeMirrorInstance.setValue(txt);
+      me.codeMirrorInstance.setValue(txt)
     })
   },
 
