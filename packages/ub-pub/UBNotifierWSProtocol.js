@@ -50,12 +50,12 @@ const MAX_BUFFERED_COMMANDS = 100
  */
 function UBNotifierWSProtocol (connection) {
   var notifier = this
-  var supported = (connection.supportedWSProtocols.indexOf(WS_PROTOCOL) !== -1)
-    /**
-     * Indicate `ubNotifier` protocol is supported by server.
-     * If not supported all calls to send() will be ignored.
-     * @type {boolean}
-     */
+  var supported = (connection.supportedWSProtocols.indexOf(WS_PROTOCOL) !== -1) && (typeof WebSocket !== 'undefined')
+  /**
+   * Indicate `ubNotifier` protocol is supported by server.
+   * If not supported all calls to send() will be ignored.
+   * @type {boolean}
+   */
   this.supported = supported
 
   EventEmitter.call(this)
@@ -120,10 +120,10 @@ function UBNotifierWSProtocol (connection) {
               notifier.sendCommand(delayedCmd.command, delayedCmd.params)
             }
             bufferedCommands = []
-                        /**
-                         * If server accept a ubNotifier WS connection this event will be emitted for {@link UBNotifierWSProtocol} with `connectionID` parameter
-                         * @event accepted
-                         */
+            /**
+             * If server accept a ubNotifier WS connection this event will be emitted for {@link UBNotifierWSProtocol} with `connectionID` parameter
+             * @event accepted
+             */
             notifier.emit('accepted', params.connectionID)
             break
           case 'error':

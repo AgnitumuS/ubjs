@@ -1,5 +1,5 @@
 let __loadedScript = {}
-let __head = document.getElementsByTagName('head')[0]
+let __head = (typeof document !== 'undefined') && document.getElementsByTagName('head')[0]
 
 /**
  * Inject external script or css to DOM and return a promise to be resolved when script is loaded.
@@ -98,7 +98,7 @@ function inject (url, charset) {
  *
  *  @private
  */
-const __ubVersion = window.__ubVersion
+const __ubVersion = (typeof window !== 'undefined') && window.__ubVersion
 const MODEL_RE = new RegExp('models/(.+?)/') // speculative search. w/o ? found maximum string length
 
 /**

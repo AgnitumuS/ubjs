@@ -1,7 +1,7 @@
 {
   "name": "@unitybase/ub-pub",
   "version": "4.1.5",
-  "description": "UnityBase data layer for Browser client",
+  "description": "UnityBase data layer for Browser & nodeJS client",
   "main": "./index.js",
   "config": {
     "ubmodel": "ub-pub",
@@ -32,8 +32,8 @@
     "webpack": "^2.2"
   },
   "keywords": [
-    "UnityBase"
+    "UnityBase", "nodeJS"
   ],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
-  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0 OR MIT)"
 }

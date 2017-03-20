@@ -5,10 +5,7 @@ let dbInfo = {
   version: 1
 }
 
-// Initialize IndexedDB; fall back to vendor-prefixed versions if needed.
-// noinspection JSUnresolvedVariable
-const iDB = window.indexedDB || window.webkitIndexedDB ||
-    window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB
+const iDB = (typeof window !== 'undefined') && window.indexedDB
 
 /**
  * @classdesc
@@ -51,10 +48,13 @@ function UBCache (dbName, version) {
    */
   this.dbName = dbName.toLowerCase()
 
+  if (!iDB) {
+    /* {storeType: {values...}} */
+    this.__inMemoryCache = {}
+    return this
+  }
+
   let _dbPromise = new Promise((resolve, reject) => {
-    if (!iDB) {
-      reject({errMsg: 'unsupportedBrowser', errDetails: 'indexedDB not found'})
-    }
     let openRequest = iDB.open(this.dbName, version || 1)
     openRequest.onerror = function withStoreOnError (e) {
       reject(e) // openRequest.error.name
@@ -197,6 +197,11 @@ UBCache.prototype.onTransactionError = function (e) {
  * @returns {Promise} resolved to key value.
  */
 UBCache.prototype.get = function (key, storeName = 'userData') {
+  if (!iDB) {
+    let store = this.__inMemoryCache[storeName]
+    return Promise.resolve(store ? store[key] : undefined)
+  }
+
   let me = this
   return this.ready().then(function (db) {
     let trans = db.transaction([storeName], 'readwrite')
@@ -221,6 +226,17 @@ UBCache.prototype.get = function (key, storeName = 'userData') {
  * @returns {Promise} resolved to Array of store keys
  */
 UBCache.prototype.getAllKeys = function (storeName = 'userData') {
+  if (!iDB) {
+    let store = this.__inMemoryCache[storeName]
+    let res = []
+    if (store) {
+      for (let prop in store) {
+        res.push(store[prop])
+      }
+    }
+    return Promise.resolve(res)
+  }
+
   let me = this
   return this.ready().then(function (db) {
     let trans = db.transaction([storeName], 'readwrite')
@@ -256,6 +272,18 @@ UBCache.prototype.getAllKeys = function (storeName = 'userData') {
  * @returns {Promise}
  */
 UBCache.prototype.put = function (data, storeName = 'userData') {
+  if (!iDB) {
+    let store = this.__inMemoryCache[storeName]
+    if (!store) {
+      store = this.__inMemoryCache[storeName] = {}
+    }
+    if (!Array.isArray(data)) data = [data]
+    data.forEach(function (item) {
+      store[item.key] = item.value === undefined ? null : item.value
+    })
+    return Promise.resolve(true)
+  }
+
   let me = this
   return this.ready().then(function (db) {
     let trans = db.transaction([storeName], 'readwrite')
@@ -293,6 +321,11 @@ UBCache.prototype.put = function (data, storeName = 'userData') {
  * @returns {Promise}
  */
 UBCache.prototype.clear = function (storeName = 'userData') {
+  if (!iDB) {
+    this.__inMemoryCache[storeName] = {}
+    return Promise.resolve(true)
+  }
+
   let me = this
   return this.ready().then(function (db) {
     let trans = db.transaction([storeName], 'readwrite')
@@ -331,6 +364,20 @@ $App.cache.remove(['key1', 'key2'], UBCache.SESSION).then();
  * @returns {Promise}
  */
 UBCache.prototype.remove = function (key, storeName = 'userData') {
+  if (!iDB) {
+    let store = this.__inMemoryCache[storeName]
+    if (store) {
+      if (Array.isArray(key)) {
+        delete store[key]
+      } else {
+        key.forEach(function (item) {
+          delete store[item]
+        })
+      }
+    }
+    return Promise.resolve(true)
+  }
+
   let me = this
   return this.ready().then(function (db) {
     let trans = db.transaction([storeName], 'readwrite')
