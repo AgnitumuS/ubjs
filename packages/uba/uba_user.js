@@ -93,7 +93,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   }
     // checkDictionary
   if (passwordPolicy.checkDictionary) {
-        // todo
+    // todo - check password from dictionary
     if (false) {
       throw new Error('<<<Password is dictionary word>>>')
     }
@@ -136,9 +136,9 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
     // store.execSQL('insert into uba_prevPasswordsHash (userID, uPasswordHashHexa) values (:userID:, :uPasswordHashHexa:)', {userID: userID, uPasswordHashHexa: oldPwd});
 
     // make uba_audit record
-  if (App.domain.byName('uba_audit')) {
-        // var store = new TubDataStore('uba_audit');
-        /** @type uba_user_object */
+  if (App.domainInfo.has('uba_audit')) {
+    // var store = new TubDataStore('uba_audit');
+    /** @type uba_user_object */
     store.run('insert', {
       entity: 'uba_audit',
       execParams: {
@@ -282,7 +282,7 @@ me.on('insert:after', ubaAuditNewUser)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyUser (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var
@@ -350,15 +350,13 @@ me.on('update:after', ubaAuditModifyUser)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUser (ctx) {
-  if (!App.domainInfo.has('uba_audit')) {
-    return
-  }
-  var
-    params = ctx.mParams.execParams,
-    store = new TubDataStore('uba_audit'),
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, oldName
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let params = ctx.mParams.execParams
+  let store = new TubDataStore('uba_audit')
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let oldValues, oldName
 
   try {
     origStore.currentDataName = 'selectBeforeDelete'
