@@ -87,7 +87,7 @@ var
             desktopID:  desktopID,
             parentID:   folderID,
             code:       'cdn_city',
-            caption:    'Cityes',
+            caption:    'Cities',
 			iconCls:    'fa fa-group', //'fa fa-institution' - where is this icon??
             displayOrder: 20,
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'cdn_city', method: 'select', fieldList: '*'}]}}, null, '\t')

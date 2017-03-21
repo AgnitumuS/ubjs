@@ -271,7 +271,7 @@ function whereListToFunctions (request, fieldList) {
     property = (property.replace(/(\[)|(])/ig, '') || '').trim()
     propIdx = fieldList.indexOf(property)
     if (propIdx === -1) {
-      throw new Error('Filtering by field ' + property + ' is not allowed, because it is not pressing in fieldList')
+      throw new Error('Filtering by field ' + property + ' is not allowed, because it is not in fieldList')
     }
 
     fValue = _.values(clause.values)[0]
