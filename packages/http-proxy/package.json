@@ -1,18 +1,18 @@
 {
   "name": "@unitybase/http-proxy",
-  "version": "1.0.0",
-  "description": "Proxy a HTTP(s) requests to UB to enother HTTP server with optional UB authentication",
+  "version": "1.0.1",
+  "description": "Proxy a HTTP(s) requests to enother HTTP server with optional UB authentication",
   "public": true,
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
   "main": "HttpProxy.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.3"
+    "@unitybase/base": "^4.2.6"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.1",
-    "@unitybase/ub": "^4.0"	
+    "@unitybase/stubs": "^4.1.2",
+    "@unitybase/ub": "^4.0.22"
   },
   "keywords": [
     "Proxy",

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/stubs",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "Definition (stubs) for build-in UnityBase modules & globals",
   "scripts": {
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"

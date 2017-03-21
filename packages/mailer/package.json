@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/mailer",
-  "version": "4.0.11",
+  "version": "4.0.12",
   "description": "UnityBase SMTP/POP3",
   "scripts": {
     "build": "call ./bin/compile.cmd"
@@ -12,7 +12,7 @@
   "main": "./UBMail.js",
   "dependencies": {},
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.1"
+    "@unitybase/stubs": "^4.1.2"
   },
   "keywords": [
     "UnityBase",
