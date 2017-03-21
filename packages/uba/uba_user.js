@@ -1,10 +1,9 @@
 ﻿var me = uba_user
 
-var UBA_COMMON = require('@unitybase/base').uba_common
+const UBA_COMMON = require('@unitybase/base').uba_common
 const http = require('http')
 
 me.entity.addMethod('changeLanguage')
-
 
 /**
  * Do not allow user with same name but in different case
@@ -215,25 +214,24 @@ App.registerEndpoint('changePassword',
  *
  */
 function changeLanguage (ctxt) {
-  var
-    params = ctxt.mParams,
-    newLang = params.newLang,
-    user, userID, uData
+  let params = ctxt.mParams
+  const newLang = params.newLang
 
   if (!newLang) {
     throw new Error('newLang parameter is required')
   }
-  userID = Session.userID
-  user = UB.Repository('uba_user').attrs(['name', 'uData', 'mi_modifyDate']).where('ID', '=', userID).select()
+  let userID = Session.userID
+  let user = UB.Repository('uba_user').attrs(['name', 'uData', 'mi_modifyDate']).where('ID', '=', userID).select()
   if (user.eof) {
     throw new Error('user is unknown or not logged in')
   }
 
-  var supportedLangs = user.entity.connectionConfig.supportLang
+  let supportedLangs = user.entity.connectionConfig.supportLang
   if (_.indexOf(supportedLangs, newLang) < 0) {
     throw new Error('Language "' + newLang + '" not supported')
   }
 
+  let uData
   try {
     uData = JSON.parse(user.get('uData'))
   } catch (e) {
@@ -258,7 +256,7 @@ me.changeLanguage = changeLanguage
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewUser (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
 
@@ -352,7 +350,7 @@ me.on('update:after', ubaAuditModifyUser)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUser (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var
@@ -426,7 +424,8 @@ function validateRecaptcha (recaptcha) {
   resp = http.request({
     URL: 'https://www.google.com/recaptcha/api/siteverify' + '?' + 'secret=' + RECAPTCHA_SECRET_KEY + '&response=' + recaptcha,
     method: 'POST',
-    sendTimeout: 30000, receiveTimeout: 30000,
+    sendTimeout: 30000,
+    receiveTimeout: 30000,
     keepAlive: true,
     compressionEnable: true
   }).end('')
@@ -493,9 +492,6 @@ function processRegistrationStep2 (resp, otp, login) {
   resp.statusCode = 302
 }
 
-const mailQueue = require('@unitybase/ubq/modules/mail-queue')
-const UBReport = require('@unitybase/ubs/modules/UBServerReport')
-
 /**
  * 2-step new user public registration rest endpoint.
  *
@@ -539,6 +535,10 @@ me.publicRegistration = function (fake, req, resp) {
 3. get redirect page address
 4. answer redirect
 */
+
+  const mailQueue = require('@unitybase/ubq/modules/mail-queue')
+  const UBReport = require('@unitybase/ubs/modules/UBServerReport')
+
   const publicRegistrationSubject = ubs_settings.loadKey('uba.user.publicRegistrationSubject'),
     publicRegistrationReportCode = ubs_settings.loadKey('uba.user.publicRegistrationReportCode')
 
@@ -572,23 +572,20 @@ me.publicRegistration = function (fake, req, resp) {
         },
         fieldList: ['ID']
       })
-      const userID = store.get(0),
-        password = (Math.random() * 100000000000 >>> 0).toString(24)
+      const userID = store.get(0)
+      const password = (Math.random() * 100000000000 >>> 0).toString(24)
       me.changePassword(userID, email, password)
       const userOtp = uba_otp.generateOtp('EMail', userID, {utmSource, utmCampaign})
 
       const registrationAddress = `${App.serverURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
-      let mailBody = null
       let reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
         login: email,
         password: password,
         activateUrl: registrationAddress,
         appConfig: App.serverConfig
-      });
-      //.done(function (result) {
-        mailBody = reportResult.reportData;
-      //})
+      })
+      let mailBody = reportResult.reportData;
 
       mailQueue.queueMail({
         to: email,
