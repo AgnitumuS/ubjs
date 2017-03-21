@@ -1,4 +1,4 @@
-/* eslint-disable require-buffer*/
+/* eslint-disable require-buffer */
 /** 
  * @module buffer
  */
