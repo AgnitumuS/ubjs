@@ -1,0 +1,24 @@
+{
+  "name": "@unitybase/http-proxy",
+  "version": "1.0.0",
+  "description": "Proxy a HTTP(s) requests to UB to enother HTTP server with optional UB authentication",
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "main": "HttpProxy.js",
+  "dependencies": {
+    "@unitybase/base": "^4.2.3"
+  },
+  "devDependencies": {
+    "@unitybase/stubs": "^4.1.1",
+    "@unitybase/ub": "^4.0"	
+  },
+  "keywords": [
+    "Proxy",
+    "UnityBase"
+  ],
+  "author": "xmax",
+  "license": "MIT",
+  "homepage": "https://unitybase.info"
+}
