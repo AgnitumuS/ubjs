@@ -73,9 +73,9 @@ class HttpProxy extends EventEmitter {
       resp.statusCode = 401
       resp.writeEnd('')
       return false
+    } else {
+      return true
     }
-
-    return true
   }
 
   /**

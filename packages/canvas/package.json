@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/canvas",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Server-side canvas (draw text/pictures on png)",
   "scripts": {
     "build": "call ./bin/compile.cmd"
@@ -12,7 +12,7 @@
   "main": "./UBCanvas.js",
   "dependencies": {},
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.1"
+    "@unitybase/stubs": "^4.1.2"
   },
   "keywords": [
     "UnityBase",

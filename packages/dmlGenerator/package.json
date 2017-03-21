@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/dmlGenerator",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "UnityBase DML Generator",
   "scripts": {
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
@@ -11,10 +11,10 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.3"
+    "@unitybase/base": "^4.2.6"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.1"
+    "@unitybase/stubs": "^4.1.2"
   },
   "keywords": [
     "UnityBase",
