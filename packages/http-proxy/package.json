@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/http-proxy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Proxy a HTTP(s) requests to enother HTTP server with optional UB authentication",
   "public": true,
   "publishConfig": {
