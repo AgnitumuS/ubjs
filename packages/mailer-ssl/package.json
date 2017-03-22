@@ -4,7 +4,8 @@
   "description": "UnityBase SMTP/POP3 with SSL support",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer-ssl",
   "scripts": {
-    "build": "call ./bin/compile.cmd"
+    "build": "call ./bin/compile.cmd",
+    "prepublish": "npm run build"
   },
   "public": true,
   "publishConfig": {
