@@ -9,7 +9,7 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
 
 ## Install (Windows)
 
-> The README reflects UnityBase v4.x, UnityBase v1.x [documentation can be found here](https://gitlab.intecracy.com/unitybase/samples/tree/master/courses/tutorial).
+> The README reflects UnityBase v4.x, UnityBase v1.x [documentation can be found here](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial).
 
   - Download and install [node.js & npm](https://nodejs.org/en/download/)
   - Download and install [UnityBase 4](https://unitybase.info/downloads/UnityBaseSetup-v4.exe)
@@ -28,4 +28,5 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
 
 ## Get Started
 
-Check out UnityBase's quick [**Get Started**](https://gitlab.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v4) guide and the [other guides](https://gitlab.intecracy.com/unitybase/samples).
+Check out UnityBase's quick [**Get Started**](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v4) guide 
+and the [other guides](https://git-pub.intecracy.com/unitybase/samples).
