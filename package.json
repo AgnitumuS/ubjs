@@ -1,4 +1,6 @@
 {
+  "name": "ubjs",
+  "private": true,
   "devDependencies": {
     "lodash": "^4",
     "standard": "*",
