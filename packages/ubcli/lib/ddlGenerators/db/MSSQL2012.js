@@ -262,7 +262,7 @@ class DBSQL2012 extends DBAbstract {
 
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
-    if (value) value = value.replace("'", "''", 'g')
+    if (value) value = value.replace(/'/g, "''")
     let proc = oldValue ? 'sp_updateextendedproperty' : 'sp_addextendedproperty'
     let result = `EXEC ${proc} @name = N'${DB_DESCRIPTION_PROPERTY}', @value = N'${value === null ? (column || tableName) : value}',@level0type = N'SCHEMA',  @level0name= N'dbo', @level1type = N'TABLE',  @level1name = N'${tableName}'`
     if (column) result += `, @level2type = N'Column', @level2name = '${column}'`
