@@ -2,6 +2,7 @@
   "name": "@unitybase/com-bridge",
   "version": "1.0.2",
   "description": "Use a COM objects directly from UnityBase",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/com-bridge",
   "scripts": {
     "build": "call ./bin/compile.cmd",
     "test": "ub ./_autotest/comBridgeTest.js"

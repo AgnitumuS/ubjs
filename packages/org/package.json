@@ -2,6 +2,7 @@
   "name": "@unitybase/org",
   "version": "4.0.17",
   "description": "Organisation structure",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/org",
   "config": {
     "ubmodel": "ORG"
   },

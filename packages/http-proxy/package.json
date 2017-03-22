@@ -2,6 +2,7 @@
   "name": "@unitybase/http-proxy",
   "version": "1.0.2",
   "description": "Proxy a HTTP(s) requests to enother HTTP server with optional UB authentication",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/http-proxy",
   "public": true,
   "publishConfig": {
     "registry": "http://registry.unitybase.info"

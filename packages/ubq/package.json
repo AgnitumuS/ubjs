@@ -2,6 +2,7 @@
   "name": "@unitybase/ubq",
   "version": "4.1.5",
   "description": "UnityBase queue",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubq",
   "config": {
     "ubmodel": "UBQ"
   },

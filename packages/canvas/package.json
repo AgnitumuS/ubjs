@@ -2,6 +2,7 @@
   "name": "@unitybase/canvas",
   "version": "4.0.2",
   "description": "Server-side canvas (draw text/pictures on png)",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/canvas",
   "scripts": {
     "build": "call ./bin/compile.cmd"
   },

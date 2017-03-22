@@ -2,6 +2,7 @@
   "name": "@unitybase/mailer",
   "version": "4.0.12",
   "description": "UnityBase SMTP/POP3",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer",
   "scripts": {
     "build": "call ./bin/compile.cmd"
   },
