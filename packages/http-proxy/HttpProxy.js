@@ -13,7 +13,7 @@
  new HttpProxy({
     endpoint: 'cms',
     targetURL: 'http://localhost:3030'
-    nonAuthorizedURLs: [///ubcms/]
+    nonAuthorizedURLs: [/\/ubcms/]
  })
 
  */
