@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "4.1.10",
+  "version": "4.1.11",
   "description": "UnityBase Service model",
   "config": {
     "ubmodel": "UBS"
