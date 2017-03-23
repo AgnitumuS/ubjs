@@ -69,8 +69,7 @@ function UBCache (dbName, version) {
       // First time setup: create an empty object stores
       let db = e.target.result
       let tx = e.target.transaction
-      console.log('upgrading database "' + db.name + '" from version ' + e.oldVersion +
-        ' to version ' + e.newVersion + '...')
+      console.debug(`upgrading database "${db.name}" from version ${e['oldVersion']} to version ${e['newVersion']}...`)
       dbInfo.stores.forEach(function (storeName) {
         // noinspection JSUnresolvedVariable
         if (!db.objectStoreNames.contains(storeName)) {
@@ -158,7 +157,7 @@ UBCache.cacheTypes = {
  * Predefined callback functions, called when indexedDB transaction complete.
  * Can be customized after UBCache is created.
  * Default implementation will do nothing
- * @type {function(e)}
+ * @type {function}
  */
 UBCache.prototype.onTransactionComplete = function (e) {
     // if (e.target.mode !== 'readonly'){
@@ -170,7 +169,7 @@ UBCache.prototype.onTransactionComplete = function (e) {
  * Predefined callback functions, called when indexedDB transaction aborted.
  * Can be customized after UBCache is created.
  * Default implementation will put error to log
- * @type {function(e)}
+ * @type {function}
  */
 UBCache.prototype.onTransactionAbort = function (e) {
   if (window.console) {
@@ -181,7 +180,7 @@ UBCache.prototype.onTransactionAbort = function (e) {
  * Predefined callback functions, called when error occurred during indexedDB transaction.
  * Can be customized after UBCache is created.
  * Default implementation will put error to log
- * @type {function(e)}
+ * @type {function}
  */
 UBCache.prototype.onTransactionError = function (e) {
   if (window.console) {
@@ -231,6 +230,7 @@ UBCache.prototype.getAllKeys = function (storeName = 'userData') {
     let res = []
     if (store) {
       for (let prop in store) {
+        // noinspection JSUnfilteredForInLoop
         res.push(store[prop])
       }
     }

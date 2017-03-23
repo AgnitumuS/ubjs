@@ -9,8 +9,8 @@ const conn = require('./UBConnection')
 const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
 const LocalDataStore = require('@unitybase/base/LocalDataStore')
-const SHA256 = require('@unitybase/CryptoJS/sha256')
-const MD5 = require('@unitybase/CryptoJS/md5')
+const SHA256 = require('@unitybase/cryptojs/sha256')
+const MD5 = require('@unitybase/cryptojs/md5')
 
 module.exports = {
   i18n: localization.i18n,
