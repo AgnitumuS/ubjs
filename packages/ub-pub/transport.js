@@ -139,7 +139,7 @@ let __lastRequestURL
  *          console.log('this is appInfo: %o', resp.data)
  *      });
  *
- *      //The same, but in more short form via {@link UB.get UB.get} shorthand:
+ *      //The same, but in more short form via {@link get UB.get} shorthand:
  *      UB.get('getAppInfo').then(function(resp) {
  *          console.log('this is appInfo: %o', resp.data)
  *      });
@@ -169,7 +169,7 @@ let __lastRequestURL
  * @param {String|Object} [requestConfig.data] Data to be sent as the request message data
  * @param {Object} [requestConfig.headers]  Map of strings or functions which return strings representing
  *      HTTP headers to send to the server. If the return value of a function is null, the
- *      header will not be sent. Merged with {@link UB#xhrDefaults UB.xhrDefaults.headers}
+ *      header will not be sent. Merged with {@link xhrDefaults UB.xhrDefaults.headers}
  * @param {function(data, function)|Array.<function(data, function)>} [requestConfig.transformRequest]
  *      Transform function or an array of such functions. The transform function takes the http
  *      request body and headers and returns its transformed (typically serialized) version.
@@ -357,7 +357,7 @@ const pendingRequests = []
 const XHR = XMLHttpRequest
 function sendReq (config, reqData, reqHeaders) {
   let url = buildUrl(config.url, config.params)
-  let promise = new Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     let xhr = new XHR()
     let aborted = -1
     let status, timeoutId
@@ -432,15 +432,13 @@ function sendReq (config, reqData, reqHeaders) {
       }, config.timeout)
     }
   })
-
-  return promise
 }
 
 /**
- * Shortcut for {@link UB.xhr} to perform a `GET` request.
+ * Shortcut for {@link xhr} to perform a `GET` request.
  * @method
  * @param {string} url Relative or absolute URL specifying the destination of the request
- * @param {Object=} [config] Optional configuration object as in {@link UB#xhr UB.xhr}
+ * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
  * @returns {Promise} Future object
  */
 function get (url, config) {
@@ -451,11 +449,11 @@ function get (url, config) {
 }
 
 /**
- * Shortcut for {@link UB.xhr} to perform a `POST` request.
+ * Shortcut for {@link xhr} to perform a `POST` request.
  * @method
  * @param {string} url Relative or absolute URL specifying the destination of the request
  * @param {*} data Request content
- * @param {Object=} [config] Optional configuration object as in {@link UB#xhr UB.xhr}
+ * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
  * @returns {Promise} Future object
  */
 function post (url, data, config) {

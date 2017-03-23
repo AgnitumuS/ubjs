@@ -21,7 +21,7 @@ module.exports.apply = function (objectTo, objectsFrom) {
   return objectTo
 }
 
-const FORMAT_RE = /\{(\d+)}/g
+const FORMAT_RE = /{(\d+)}/g
 /**
  * Allows you to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
  * token must be unique, and must increment in the format {0}, {1}, etc.  Example usage:
@@ -34,7 +34,7 @@ const FORMAT_RE = /\{(\d+)}/g
  * @return {String} The formatted string.
  */
 module.exports.format = function (stringToFormat, values) {
-  var args = _.toArray(arguments).slice(1)
+  let args = _.toArray(arguments).slice(1)
   return stringToFormat.replace(FORMAT_RE, function (m, i) {
     return args[i]
   })
@@ -169,7 +169,7 @@ module.exports.base64toArrayBuffer = function (base64) {
 
 /**
  * UnityBase client-side exception.
- * Such exceptions are will not be showed as unknown error in {@link UB#showErrorWindow}
+ * Such exceptions are will not be showed as unknown error in {@link UB.showErrorWindow}
  *
  * message Can be either localized message or locale identifier - in this case UB#showErrorWindow translate message using {@link UB#i18n}
  *

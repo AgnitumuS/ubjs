@@ -36,7 +36,7 @@ const CustomRepository = require('@unitybase/base/CustomRepository')
  */
 class ClientRepository extends CustomRepository {
   constructor (connection, entityName) {
-    super(entityName)  // noinspection JSUnresolvedFunction
+    super(entityName)
     this.connection = connection
   }
 
@@ -121,7 +121,8 @@ class ClientRepository extends CustomRepository {
    * Select a single row. If ubql result is empty - return {undefined}.
    *
    * WARNING method do not check repository contains the single row and always return a first row from result.
-   * @param {{field: alias}} [fieldAliases] Optional object to change attribute names during transform array to object
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
+   *   during transform array to object. See {@link selectAsObject}
    * @return {Promise} Promise, resolved to {Object|undefined}
    */
   selectSingle (fieldAliases) {
@@ -146,7 +147,8 @@ class ClientRepository extends CustomRepository {
    * Select a single row by ID. If ubql result is empty - return {undefined}.
    *
    * @param {Number} ID Row identifier
-   * @param {{field: alias}} [fieldAliases] Optional object to change attribute names during transform result to object
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
+   *   during transform array to object. See {@link selectAsObject}
    * @return {Promise} Promise, resolved to {Object|undefined}
    */
   selectById (ID, fieldAliases) {
