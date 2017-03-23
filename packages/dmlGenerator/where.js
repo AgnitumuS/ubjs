@@ -184,8 +184,11 @@ class WhereList {
    */
   constructor (ubql, dataSource, isExternal, params) {
     const {whereList, logicalPredicates, joinAs} = ubql
-    const itemNames = Object.keys(whereList)
     this.items = new Map()
+    if (!whereList) {
+      return
+    }
+    const itemNames = Object.keys(whereList)
     for (let itemName of itemNames) {
       const item = whereList[itemName]
       // const whereItem = this.items[itemName] = new WhereItem(item)

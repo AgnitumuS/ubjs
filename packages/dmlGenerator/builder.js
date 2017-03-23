@@ -38,12 +38,13 @@ class SqlBuilder {
    * Build SQL for select and returns it's parameters
    * @param {string} entity
    * @param {ubqlSelect} ubql
+   * @param {DataSource} parentDS
    * @param {boolean} isExternal
    * @returns {{sql: string, params: Array}}
    */
-  static biuldSelectSql (entity, ubql, isExternal) {
+  static biuldSelectSql (entity, ubql, parentDS, isExternal) {
     const params = []
-    const dataSource = new DataSource(entity)
+    const dataSource = new DataSource(entity, parentDS)
     const columns = new ColumnList(ubql, dataSource, isExternal)
     const where = new WhereList(ubql, dataSource, isExternal, params)
 

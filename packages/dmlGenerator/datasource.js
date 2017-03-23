@@ -71,7 +71,7 @@ class DataSource {
     /**
      * @class DataSource
      * @private
-     * @property {Map.<UBEntityAttribute, JoinDS>} childDS Child items
+     * @property {Map.<UBEntityAttribute|UBEntity, JoinDS>} childDS Child items
      */
     this.childDS = new Map()
   }
@@ -103,10 +103,27 @@ class DataSource {
    * @returns {JoinDS}
    */
   addChild (attribute) {
+    const associatedEntityName = attribute.dataType === App.domainInfo.ubDataTypes.Enum ? enumEntity : attribute.associatedEntity
     let res = this.childDS.get(attribute)
     if (!res) {
-      res = new JoinDS(attribute, this)
+      res = new JoinDS(associatedEntityName, attribute, this)
       this.childDS.set(attribute, res)
+    }
+    return res
+  }
+
+  /**
+   *
+   * @param {string} entityName
+   * @returns {JoinDS}
+   */
+  addLink (entityName) {
+    const entity = App.domainInfo.get(entityName)
+    const attribute = entity.getAttribute(idAttr)
+    let res = this.childDS.get(entity)
+    if (!res) {
+      res = new JoinDS(entityName, attribute, this, true)
+      this.childDS.set(entity, res)
     }
     return res
   }
@@ -115,11 +132,13 @@ class DataSource {
 class JoinDS extends DataSource {
   /**
    *
+   * @param {string} associatedEntityName
    * @param {UBEntityAttribute} attribute
    * @param {DataSource} parent
+   * @param {boolean} [isLeft]
    */
-  constructor (attribute, parent) {
-    const associatedEntityName = attribute.dataType === App.domainInfo.ubDataTypes.Enum ? enumEntity : attribute.associatedEntity
+  constructor (associatedEntityName, attribute, parent, isLeft) {
+    // const associatedEntityName = attribute.dataType === App.domainInfo.ubDataTypes.Enum ? enumEntity : attribute.associatedEntity
     if (!App.domainInfo.has(associatedEntityName)) {
       throw new Error(`Association entity in attribute "${attribute.name}" of object "${attribute.entity.name}" is empty`)
     }
@@ -135,8 +154,9 @@ class JoinDS extends DataSource {
      * @public
      * @property {string} joinType
      */
-    // todo
-    this.joinType = 'INNER'
+    this.joinType = isLeft || (this.parent.joinType === 'LEFT') ||
+      (this.attribute.allowNull) || (this.attribute.dataType === App.domainInfo.ubDataTypes.Enum) /* ||
+      ((this.attribute.associationAttr || idAttr) === idAttr) */ ? 'LEFT' : 'INNER'
     /**
      * @class JoinDS
      * @public

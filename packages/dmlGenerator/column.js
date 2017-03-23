@@ -5,7 +5,11 @@ const CustomItem = require('./customItem')
 class ColumnItem extends CustomItem {
   constructor (fieldItem, dataSource) {
     super(fieldItem, dataSource)
-    this.sql = `${this.expression} AS F${dataSource.getColumnIndex()}`
+    if (dataSource.parent) {
+      this.sql = `${this.expression}`
+    } else {
+      this.sql = `${this.expression} AS F${dataSource.getColumnIndex()}`
+    }
   }
 }
 /**
