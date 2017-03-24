@@ -103,9 +103,10 @@ function runSchedulersCircle (message) {
   const Module = require('module')
   let parent = new Module('internal/preload', null)
   // TODO this hack is temporary solution for require.resolve. 
-  // The problem here: we lost a folder for where runSchedulersCircle and replace it with process.cwd(), 
+  // The problem here: we lost a folder for where runSchedulersCircle and replace it with process.configPath
+  // process.cwd() not work for case server started as a service
   // so all modules what required inside worker must be either global or in application node_modules folder
-  parent.paths = Module._nodeModulePaths(process.cwd())
+  parent.paths = Module._nodeModulePaths(process.configPath)
   const UBConnection = parent.require('@unitybase/base/UBConnection')
   const cron = parent.require('node-cron')
   const serverURL = message.serverURL
