@@ -1,21 +1,8 @@
 /**
  * Created by pavel.mash on 04.09.2016.
  */
-var webpack = require('webpack')
-
-function isExternal (module) {
-  var userRequest = module.userRequest
-
-  if (typeof userRequest !== 'string') {
-    return false
-  }
-
-//  console.log(userRequest);
-  return userRequest.indexOf('bluebird') >= 0 ||
-         // userRequest.indexOf('/bluebird-q/') >= 0 ||
-         userRequest.indexOf('lodash') >= 0 ||
-	 userRequest.indexOf('CryptoJS') >= 0
-}
+const webpack = require('webpack')
+const path = require('path')
 
 module.exports = {
   entry: {
@@ -23,7 +10,7 @@ module.exports = {
 	//, vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
   },
   output: {
-    path: './dist',
+    path: path.join(__dirname, 'dist'),
     filename: 'xlsx-all.min.js'
   },
   module: {
@@ -53,8 +40,6 @@ module.exports = {
     	  }
   	}),*/
 
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,

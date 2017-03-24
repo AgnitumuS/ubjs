@@ -15,6 +15,11 @@ module.exports = {
     filename: 'adminui.[name].min.js',
     publicPath: '/clientRequire/@unitybase/adminui-pub/dist/'
   },
+  resolve: {
+    alias: {
+      lodash: require.resolve('lodash')
+    }
+  },
   module: {
     rules: [{
       test: /\.js$/,
@@ -51,6 +56,9 @@ module.exports = {
       BOUNDLED_BY_WEBPACK: true
     }),
 
+    new webpack.optimize.CommonsChunkPlugin({
+      children: true
+    }),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
