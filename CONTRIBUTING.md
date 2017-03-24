@@ -1,14 +1,14 @@
-UnityBase packages monorepo
+# Setup
 
-Packages inside this repository is under `lenra` control
+Follow [UnityBase setup instruction](https://git-pub.intecracy.com/unitybase/ubjs#install-windows)
 
-To prevent packages duplication we do not list a tools in packages devDependencies of each packages,
-insdead install it in the root of monorepo
+```
+> git clone https://git-pub.intecracy.com/unitybase/ubjs.git
+> cd ubjs
+> npm run bootstrap
+```
 
-	cd ubjs
-	npm install
-
-# Develop a modules for UnityBase
+# Adding new packages to UnityBase package repository
 
 ## package.json
 
@@ -72,7 +72,7 @@ Install all other required modules
 
 	%ub_home%\bin\setEnv.cmd && lerna run build --concurrency 1
 
-**Warning** Pathed version of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
+**Warning** Patched version of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
 
 ## Developer environment 
 
