@@ -15,7 +15,7 @@ I.e. `GET /cms/some/path&p1=true` will be proxies to `GET http://localhost:3030/
 const HttpProxy = require('@unitybase/http-proxy')
 new HttpProxy({
     endpoint: 'cms',
-    targetURL: 'http://localhost:3030'
+    targetURL: 'http://localhost:3030',
     nonAuthorizedURLs: [///ubcms/]
 })
 ```
