@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/mailer-ssl",
-  "version": "4.0.11",
+  "version": "4.0.12",
   "description": "UnityBase SMTP/POP3 with SSL support",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer-ssl",
   "scripts": {
@@ -13,8 +13,8 @@
   "main": "./UBMail_openssl.js",
   "dependencies": {},
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.2",
-    "@unitybase/mailer": "^4.0.12"
+    "@unitybase/stubs": "^4.1.3",
+    "@unitybase/mailer": "^4.0.13"
   },
   "keywords": [
     "UnityBase",

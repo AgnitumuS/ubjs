@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "4.1.11",
+  "version": "4.1.12",
   "description": "UnityBase Service model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubs",
   "config": {
@@ -19,16 +19,16 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.6",
-    "@unitybase/pdf": "^1.1.10",
-    "@unitybase/ub": "^4.0.22",
-    "@unitybase/uba": "^4.1.10",
+    "@unitybase/base": "^4.2.7",
+    "@unitybase/pdf": "^1.1.11",
+    "@unitybase/ub": "^4.0.23",
+    "@unitybase/uba": "^4.1.11",
     "mime-types": "^2.1.14",
     "mustache": "^2.3.0",
     "when": "1.8.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.2"
+    "@unitybase/stubs": "^4.1.3"
   },
   "keywords": [
     "UnityBase"
