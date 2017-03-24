@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.2.6",
+  "version": "4.2.7",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-pub",
@@ -39,7 +39,7 @@
     "jszip": "^3.1.3",
     "lodash": "^4",
     "mustache": "^2.3.0",
-    "systemjs": "^0.20.8-scoped",
+    "systemjs": "^0.20.10-scoped",
     "systemjs-plugin-css": "^0.1.32",
     "tinymce": "^4.4.3"
   },

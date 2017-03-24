@@ -44,5 +44,5 @@
     "test:traceur": "qunit -c s:./index.js -t ./test/test-traceur.js",
     "test:typescript": "qunit -c s:./index.js -t ./test/test-typescript.js"
   },
-  "version": "0.20.8-scoped"
+  "version": "0.20.10-scoped"
 }
