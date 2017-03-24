@@ -127,12 +127,13 @@ Ext.define('UB.view.LoginWindow', {
       cls: 'ub-login-btn',
       scope: this,
       minWidth: 150,
+      margins: '0 0 10 0',
       handler: function () {
         this.submitLogin()
       }
     }]
 
-        // Image
+    // Image
     if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.loginWindowTopLogoURL) {
       me.items.push(Ext.create('Ext.Img', {
         src: UB.appConfig.uiSettings.adminUI.loginWindowTopLogoURL, // 'images/logo-top.png',
@@ -140,7 +141,7 @@ Ext.define('UB.view.LoginWindow', {
         cls: 'logo-top'
       }))
     }
-        // form caption
+    // form caption
     if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.applicationName) {
       me.items.push({
         xtype: 'component',
@@ -151,7 +152,7 @@ Ext.define('UB.view.LoginWindow', {
       })
     }
 
-        // create auth tabs
+    // create auth tabs
     var haveCERT = (authMethods.indexOf('CERT') >= 0)
     if (haveCERT) {
       minAuthTabsHeight = 265 + 80
@@ -188,7 +189,7 @@ Ext.define('UB.view.LoginWindow', {
         xtype: 'checkbox',
         labelAlign: 'left',
         labelCls: 'ub-login-label',
-                // boxLabelAlign: 'before',
+        // boxLabelAlign: 'before',
         labelWidth: 80,
         checked: !!firstLogin,
         boxLabel: UB.i18n('isFirstLogin')
