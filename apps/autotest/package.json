@@ -42,7 +42,7 @@
     "lodash": "^4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.0",
+    "@unitybase/stubs": "^4.1.0"
   },
   "keywords": [],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
