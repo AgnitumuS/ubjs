@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "4.2.2",
+  "version": "4.2.4",
   "description": "UnityBase data layer for Browser & nodeJS client",
   "main": "./index.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub-pub",
@@ -22,11 +22,12 @@
   },
   "dependencies": {
     "lodash": "^4",
-    "@unitybase/base": "^4.2.6",
-    "@unitybase/cryptojs": "^1.0.6"
+    "@unitybase/base": "^4.2.8",
+    "@unitybase/cryptojs": "^1.0.7"
   },
   "keywords": [
     "UnityBase",
+    "UB4",
     "nodeJS"
   ],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
