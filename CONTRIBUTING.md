@@ -14,6 +14,8 @@ In case `yarn` is installed, use a `yarn install` `yarn run ...` instead of `npm
 > cd apps\autotest
 > npm i
 > tsql3.cmd
+> ub -dev
+go to http://localhost:888/ubadminui
 ```
 
 # Adding new packages to UnityBase package repository
@@ -30,84 +32,19 @@ We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Sta
            "standard": "*"
        }
 
-## Lerna 
-
-Install `lerna` (> 2.0 required for scoped packages support)
-
-	npm install -g lerna@latest
-
-Install a required dev-dependencies
-
-    cd /dev/ubjs
-    npm install
-
-Set cross-dependency between modules
-
-    cd /dev/ubjs
-    lerna bootstrap
-    
-Link all UB modules to the global NPM storage. 
-This command also will build all UB modules
-
-	cd /dev/ubjs
-	lerna exec -- npm link
-
-Create your test application 
-
-	mkdir my-app
-	cd my-app
-	npm init
-
-Link a unitybase modules required by your project
-
-	npm link @unitybase/stubs 
-	npm link @unitybase/ub 
-	npm link @unitybase/uba 
-	npm link @unitybase/ub-pub
-	npm link @unitybase/ubs 
-	npm link @unitybase/ubm 
-	npm link @unitybase/ubq	
-	npm link @unitybase/adminui-pub 
-	npm link @unitybase/adminui-reg
-
-Install all other required modules
-	
-	npm install
-
 ## Build UntyBase packages with lerna
 
-  Current implementation require a Delphi7 & Delphi XE2 || XE4 to be installed
+    lerna run build --concurrency 1
+  
+  Compiling native modules. Current implementation require a Delphi7 & Delphi XE2 || XE4 to be installed
 
-	%ub_home%\bin\setEnv.cmd && lerna run build --concurrency 1
+	%ub_home%\bin\setEnv.cmd && lerna run build:native --concurrency 1
 
 **Warning** Patched version of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
 
 ## Developer environment 
 
-Set up your IDE to use a (http://standardjs.com/index.html)[JavaScript Standard Style]. For WebStorm users  (http://standardjs.com/webstorm.html)[see this link]. 
-
-For debugging your modules use a (https://docs.npmjs.com/cli/link)[npm link] command. 
-This command will create a symlink from your module folder to your test application folder   
-
-**WARNING** `npm link` command will install (hard copy) all dependencies to the `node_modules`. 
-If your package depends on some module, link it BEFORE linking current module to the global NPM folder.
-
-For example, if your module depends on `@unitybase/uba` run
-
-    npm link @unitybase/uba
-    
-before commands below. All UnityBAse packages have a `npm run dev` script for this purpose.
-   
-Create a link from a development folder to a global npm storage
-      
-      cd X:\pathToSource\ub_model_ub
-      npm link 
-      
-Create a link from global npm storage to a application node_modules folder
-
-      cd pathToYourTestProject
-      npm link ub_model_ub
-
+See [WebStorm configuration instruction](https://git-pub.intecracy.com/unitybase/ubjs/wikis/configuring-webstorm)
 
 # Publishing module to UnityBase repository
 
