@@ -32,6 +32,7 @@ class HttpProxy extends EventEmitter {
    * @param {Number} [config.receiveTimeout=30000] Receive timeout in ms.
    * @param {Number} [config.connectTimeout=30000] Connect timeout in ms.
    * @param {Array<RegExp>} [config.nonAuthorizedURLs] Array of regular expression for URL what not require a authentication
+   * @param {Array<RegExp>} [config.authorizedURLs] Array of regular expression for URL what require a authentication. If set this parameter will be ignored parameter nonAuthorizedURLs
    */
   constructor (config) {
     super()
@@ -53,6 +54,10 @@ class HttpProxy extends EventEmitter {
     }
 
     this.nonAuthorizedURLs = config.nonAuthorizedURLs || []
+    this.authorizedURLs = config.authorizedURLs || []
+    if (config.authorizedURLs){
+        this.nonAuthorizedURLs = null;
+    }
 
     this.reverseRequest = http.request(requestParams)
     if (this.reverseRequest.options.path && this.reverseRequest.options.path !== '/') {
@@ -65,11 +70,22 @@ class HttpProxy extends EventEmitter {
   }
 
   checkRequestIsAuthorized (path, resp) {
-    for (let urlRegexp of this.nonAuthorizedURLs) {
-      if (urlRegexp.test(path)) return true
+    if (this.nonAuthorizedURLs) {
+        for (let urlRegexp of this.nonAuthorizedURLs) {
+            if (urlRegexp.test(path)) return true
+        }
+    } else {
+        let needAuth = false;
+        for (let urlRegexp of this.authorizedURLs) {
+            if (urlRegexp.test(path)) {
+                needAuth = true;
+                break;
+            }
+        }
+        if (!needAuth) return true;
     }
 
-    if (!App.authFromRequest() || (Session.userID === UBA_COMMON.ROLES.ANONYMOUS.ID)) {
+    if (!App.authFromRequest() || (Session.userID === UBA_COMMON.USERS.ANONYMOUS.ID)) {
       resp.statusCode = 401
       resp.writeEnd('')
       return false
