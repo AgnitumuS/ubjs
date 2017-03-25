@@ -16,7 +16,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "codemirror": "^5.20.2",
+    "codemirror": "^5.25.0",
     "jshint": "^2.9.4",
     "lodash": "^4"
   },
