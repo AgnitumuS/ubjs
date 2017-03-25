@@ -28,9 +28,6 @@ class CustomItem {
      * @class CustomItem
      * @property {boolean} isSimple
      */
-    /**
-     * @class CustomItem
-c     */
     // todo
     this.isSimple = reSimpleExpression.test(expression)
     if (this.isSimple && reAttrExpression.test(expression)) {
@@ -53,7 +50,8 @@ c     */
         continue
       }
       /**
-       * @type {DataSource}
+       * @class CustomItem
+       * @type {DataSource} dataSource
        */
       this.dataSource = dataSource
       // todo check isAlready parsed
@@ -75,23 +73,31 @@ c     */
           attribute = this.dataSource.entity.attributes[predicate]
         }
         if (attribute.dataType === App.domainInfo.ubDataTypes.Many) {
-          // debugger
-          const b = require('@unitybase/dmlGenerator')
-          const sub = predicates.slice(i + 1, predicates.length)
-          const subQ = b.biuldSelectSql(attribute.associationManyData, {
-            // fieldList: [`substr(extract(xmlagg(xmlelement("X", ','||nvl([destID], '-1'))), 'X/text()').getstringval(), 2)`],
+          /**
+           * @class CustomItem
+           * @property {boolean} isMany
+           */
+          this.isMany = true
+          /**
+           * @class CustomItem
+           * @property {[]} manySubPart
+           */
+          this.manySubPart = predicates.slice(i + 1, predicates.length)
+          /**
+           * @class CustomItem
+           * @type {UBEntityAttribute} manyAttribute
+           */
+          this.manyAttribute = attribute
+/*          const subQ = dataSource.builder.biuldSelectSql(attribute.associationManyData, {
             fieldList: [`',' + Cast([destID${sub.length === 0 ? '' : '.' + sub.join('.')}] as varchar)`],
             whereList: {c: {
               expression: `[sourceID]=${this.dataSource.alias}.ID`,
               condition: 'custom'
             }}
           }, dataSource)
-          console.log(subQ)
-//          expressionParts[expressionPartIndex] = subQ.sql
           this.expression = `stuff((${subQ.sql} for xml path('')), 1, 1, '')`
+*/
           return
-          // throw new Error('todo')
-          // todo many atribute
         } else {
           this.dataSource = this.dataSource.addChild(attribute)
           if (linkEntity) {

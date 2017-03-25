@@ -1,5 +1,5 @@
 {
-  "name": "@unitybase/dmlGenerator",
+  "name": "@unitybase/dml-generator",
   "version": "1.0.7",
   "description": "UnityBase DML Generator",
   "scripts": {

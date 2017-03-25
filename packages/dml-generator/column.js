@@ -5,6 +5,20 @@ const CustomItem = require('./customItem')
 class ColumnItem extends CustomItem {
   constructor (fieldItem, dataSource) {
     super(fieldItem, dataSource)
+    if (this.isMany) {
+      const column = `[destID${this.manySubPart.length === 0 ? '' : '.' + this.manySubPart.join('.')}]`
+      /**
+       * @type {{sql: string, params: Array}}
+       */
+      const subQuery = this.dataSource.builder.biuldSelectSql(this.manyAttribute.associationManyData, {
+        fieldList: [this.dataSource.builder.buildManyColumnFiled(column)],
+        whereList: {c: {
+          expression: `[sourceID]=${this.dataSource.alias}.ID`,
+          condition: 'custom'
+        }}
+      }, dataSource)
+      this.expression = this.dataSource.builder.buildManyColumnExpression(subQuery.sql)
+    }
     if (dataSource.parent) {
       this.sql = `${this.expression}`
     } else {

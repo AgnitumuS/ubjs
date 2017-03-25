@@ -17,8 +17,15 @@ class DataSource {
   /**
    * @param {string} entity
    * @param {DataSource} parent
+   * @param {SqlBuilder} builder
    */
-  constructor (entity, parent) {
+  constructor (entity, parent, builder) {
+    /**
+     * @class DataSource
+     * @protected
+     * @property {SqlBuilder} builder
+     */
+    this.builder = parent ? parent.builder : builder
     /**
      * @class DataSource
      * @protected

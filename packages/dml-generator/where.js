@@ -57,6 +57,25 @@ class WhereItemCompare extends WhereItem {
     if (valuesNames.length > 0) {
       this.value = this.values[valuesNames[0]]
     }
+    if (this.isMany) {
+      const column = `[destID${this.manySubPart.length === 0 ? '' : '.' + this.manySubPart.join('.')}]`
+      const subQuery = this.dataSource.builder.biuldSelectSql(this.manyAttribute.associationManyData, {
+        // space because non attr expression
+        fieldList: [' 1'],
+        whereList: {
+          c: {
+            expression: `[sourceID]=${this.dataSource.alias}.ID`,
+            condition: 'custom'
+          },
+          c2: {
+            expression: column,
+            condition: this.condition,
+            values: this.values
+          }
+        }
+      }, this.dataSource)
+      return `EXISTS (${subQuery.sql})`
+    }
     return `${this.expression}${conditionsCompare[this.condition]}${this._preparePositionParameterText()}`
   }
 }

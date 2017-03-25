@@ -2,7 +2,11 @@
  * Created by v.orel on 05.01.2017.
  * @module
  */
-module.exports = require('./builder')
+// module.exports = require('./builder')
+const mssql = require('./mssql')
+module.exports = {
+  mssql
+}
 /*
 const MSSQLBuilder = require('msSQLBuilder')
 
