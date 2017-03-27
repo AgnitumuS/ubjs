@@ -33,6 +33,7 @@ class HttpProxy extends EventEmitter {
    * @param {Number} [config.connectTimeout=30000] Connect timeout in ms.
    * @param {Array<RegExp>} [config.nonAuthorizedURLs] Array of regular expression for URL what not require a authentication
    * @param {Array<RegExp>} [config.authorizedURLs] Array of regular expression for URL what require a authentication. If set this parameter will be ignored parameter nonAuthorizedURLs
+   * @param {string|Array} [config.authorizedRole] Authorize only user with role(s)
    */
   constructor (config) {
     super()
@@ -53,6 +54,7 @@ class HttpProxy extends EventEmitter {
       requestParams.sendTimeout = config.sendTimeout
     }
 
+    this.authorizedRole = config.authorizedRole;
     this.nonAuthorizedURLs = config.nonAuthorizedURLs || []
     this.authorizedURLs = config.authorizedURLs || []
     if (config.authorizedURLs){
@@ -67,6 +69,15 @@ class HttpProxy extends EventEmitter {
     App.registerEndpoint(this.endpoint, (req, resp) => {
       this.processRequest(req, resp)
     }, false)
+  }
+
+  userHasRoles (){
+     if (!this.authorizedRole) return true
+     let roleList = Session.userRoleNames.split(',')
+     if (Array.isArray(this.authorizedRole)){
+         return !this.authorizedRole.every(role => !roleList.includes(role))
+     }
+     return roleList.includes(this.authorizedRole)
   }
 
   checkRequestIsAuthorized (path, resp) {
@@ -85,7 +96,8 @@ class HttpProxy extends EventEmitter {
         if (!needAuth) return true;
     }
 
-    if (!App.authFromRequest() || (Session.userID === UBA_COMMON.USERS.ANONYMOUS.ID)) {
+    if (!App.authFromRequest() || (Session.userID === UBA_COMMON.USERS.ANONYMOUS.ID) ||
+      !this.userHasRoles() ) {
       resp.statusCode = 401
       resp.writeEnd('')
       return false
