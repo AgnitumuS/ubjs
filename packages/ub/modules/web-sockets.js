@@ -1,5 +1,5 @@
 /**
- * HI-level WebSocket protocols implementation
+ * High level WebSocket protocols implementation
  *
  * @module @unitybase/ub/web-sockets
  * @author pavel.mash
@@ -11,10 +11,10 @@ var
 
 /**
  * @classdesc
- *  Internal Server-side WebSocket transport layer. Will communicate with clients using low-level binding classes.
- *  Usually you do not need to use this class directly, better to use a instance of {@link JsonMessagesProtocol} from {@link UB.wsNotifier}
+ *  Internal server-side WebSocket transport layer, which communicates with clients using low-level binding classes.
+ *  Usually there is no need to use this class directly, it is better to use an instance of {@link JsonMessagesProtocol} from {@link UB.wsNotifier}
  *
- *  Server emmit three type of event on the protocol level:
+ *  Server emits three types of event on the protocol level:
  *
  *   - `connect`, parameters are: ({WebSocketConnection} wsConn)
  *   - `disconnect`, parameters are: ({WebSocketConnection} wsConn, {String} closeReason, {Number} closeStatus) http://tools.ietf.org/html/rfc6455#section-7.4
@@ -57,7 +57,7 @@ function WebSocketTransport(props){
             };
             /**
              * Send a data package to specified session ID.
-             * Return true on success, false in case WS connection for specified session is lost or closed/closing
+             * Return true on success, false in case WS connection for the specified session is lost or closed/closing
              *
              * @param {Number} sessionID
              * @param {String|Object|ArrayBuffer} data
@@ -98,7 +98,7 @@ function WebSocketTransport(props){
  *
  *      {command: {String}, params: {*}}
  *
- * Inside a WebSocket threads you can subscribe to a messages, arrived from a clients
+ * Inside WebSocket threads, the class can be used to subscribe to messages arrived from clients
  * and assign handlers to it (if you need to receive web socket messages in server):
 
         const WebSockets = require('@unitybase/ub/modules/web-sockets');
@@ -112,7 +112,7 @@ function WebSocketTransport(props){
             });
         }
 
- * Inside a http threads can be used as such:
+ * Inside http threads it can be used as the following:
  *
         const WebSockets = require('@unitybase/ub/modules/web-sockets');
         function notifyAboutNewRecord(rowID){
@@ -142,7 +142,7 @@ function JsonMessagesProtocol(namedAs){
     var _jsonProtocol = new WebSocketTransport({name: namedAs, handledAs: 'Json'});
 
     /**
-     * Send a specified command to recipient. Return `true` if data has been successfully sent (no guaranty it is received by client)
+     * Send specified command to recipient. Return `true` if data has been successfully sent (no guaranty it is received by client)
      * @param {String} command Command to send
      * @param {Number} recipient User Session identifier
      * @param {*} params Any value
@@ -163,7 +163,7 @@ function JsonMessagesProtocol(namedAs){
     };
 
     /**
-     * Send a specified command to all user sessions connected using this protocol
+     * Send specified command to all user sessions connected using this protocol
      *
      * @param {String} command Command to send
      * @param {*} params Any value
@@ -249,7 +249,7 @@ function registeredProtocols() {
 var _ubNotifierInstance = process.isWebSocketEnabled ? undefined : null;
 
 /**
- * Return a instance of {@link JsonMessagesProtocol} named `ubNotifier` for Server<->Client communication using WebSocket
+ * Return an instance of {@link JsonMessagesProtocol} named `ubNotifier` for Server<->Client communication using WebSocket
  *
  * In case `ubNotifier` protocol is not registered during WebSocket thread initialization
  * or not configured in config - will return `null`

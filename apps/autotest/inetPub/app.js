@@ -23,6 +23,7 @@ if (window.Q && window.Q.getBluebirdPromise) {
 
 UB.connect({
   host: window.location.origin,
+  allowSessionPersistent: true,
   // path: window.location.pathname,
   onCredentialRequired: function (conn, isRepeat) {
     return isRepeat

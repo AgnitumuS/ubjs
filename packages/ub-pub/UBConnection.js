@@ -98,6 +98,7 @@ function anonymousRequestAuthParams (conn, isRepeat) {
  *
  *      For Anonymous requests can be either omitted, or return promise, resolved to  `{authSchema: 'None'}`
  * @param {String} [connectionParams.protocol] either 'https' or 'http' (default)
+ * @param {boolean} [connectionParams.allowSessionPersistent=false] See {@link connect} for details
  */
 function UBConnection (connectionParams) {
   let host = connectionParams.host || 'http://localhost:888'
@@ -163,6 +164,9 @@ function UBConnection (connectionParams) {
      * @readonly
      */
   this.appName = appName
+
+  this.allowSessionPersistent = connectionParams.allowSessionPersistent && (typeof localStorage !== 'undefined')
+  if (this.allowSessionPersistent) this.__sessionPersistKey = this.serverUrl + ':storedSession'
 
     /** Result of last key agreement. Resolved to object,
      * contain time when it was done inside
@@ -276,6 +280,19 @@ function UBConnection (connectionParams) {
     let me = this
     if (currentSession) return Promise.resolve(currentSession)
 
+    if (this.allowSessionPersistent && !isRepeat) {
+      let storedSession = localStorage.getItem(this.__sessionPersistKey)
+      if (storedSession) {
+        try {
+          let parsed = JSON.parse(storedSession)
+          currentSession = new UBSession(parsed.data, parsed.secretWord, parsed.authSchema)
+          return Promise.resolve(currentSession)
+        } catch(e) {
+          localStorage.removeItem(this.__sessionPersistKey) // wrong session persistent data
+        }
+      }
+    }
+
     if (this._pendingAuthPromise) return this._pendingAuthPromise
 
     this.exchangeKeysPromise = null
@@ -381,7 +398,7 @@ function UBConnection (connectionParams) {
         }
         if (resp.data.useSasl) {
           pwdHash = MD5(authParams.login.split('\\')[1].toUpperCase() + ':' + realm + ':' + authParams.password)
-                    // we must calculate md5(login + ':' + realm + ':' + password) in binary format
+          // we must calculate md5(login + ':' + realm + ':' + password) in binary format
           pwdHash.concat(CryptoJSCore.enc.Utf8.parse(':' + serverNonce + ':' + clientNonce))
           pwdForAuth = MD5(pwdHash).toString()
           secretWord = pwdForAuth // :( medium unsecured
@@ -562,48 +579,58 @@ function UBConnection (connectionParams) {
         promise = Promise.reject({errMsg: 'invalid authentication schema ' + authParams.authSchema})
         break
     }
-    promise = promise.then(function (authResponse) {
-      let ubSession = new UBSession(authResponse.data, authResponse.secretWord, authParams.authSchema)
-      let userData = ubSession.userData
-      if (!userData.lang || me.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
-        userData.lang = me.appConfig.supportedLanguages[0]
-      }
-      return ubSession
-    }, function (rejectReason) {
-      let errInfo = {}
-      if (!(rejectReason instanceof Error)) {
-        if (rejectReason.data) {
-          errInfo = {
-            errMsg: rejectReason.data.errMsg,
-            errCode: rejectReason.data.errCode,
-            errDetails: rejectReason.data.errMsg
-          }
+    promise = promise.then(
+      (authResponse) => {
+        let ubSession = new UBSession(authResponse.data, authResponse.secretWord, authParams.authSchema)
+        let userData = ubSession.userData
+        if (!userData.lang || me.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
+          userData.lang = me.appConfig.supportedLanguages[0]
         }
-        if (rejectReason.status === 403) {
-          errInfo.errMsg = (authParams.authSchema === 'UB') ? 'msgInvalidUBAuth' : 'msgInvalidCertAuth'
+        if (this.allowSessionPersistent) {
+          localStorage.setItem(
+            this.__sessionPersistKey,
+            JSON.stringify({data: authResponse.data, secretWord: authResponse.secretWord, authSchema: authResponse.authSchema})
+          )
+        }
+        return ubSession
+      },
+
+      (rejectReason) => {
+        let errInfo = {}
+        if (!(rejectReason instanceof Error)) {
+          if (rejectReason.data) {
+            errInfo = {
+              errMsg: rejectReason.data.errMsg,
+              errCode: rejectReason.data.errCode,
+              errDetails: rejectReason.data.errMsg
+            }
+          }
+          if (rejectReason.status === 403) {
+            errInfo.errMsg = (authParams.authSchema === 'UB') ? 'msgInvalidUBAuth' : 'msgInvalidCertAuth'
+          } else {
+            if (!errInfo.errMsg) { errInfo.errMsg = 'unknownError' } // internalServerError
+          }
+          if (rejectReason.status === 0) {
+            errInfo.errDetails = 'network error'
+          }
+          if (/<<<.*>>>/.test(errInfo.errMsg)) {
+            errInfo.errMsg = errInfo.errMsg.match(/<<<(.*)>>>/)[1]
+          }
+
+          let codeMsg = me.serverErrorByCode(errInfo.errCode)
+          if (codeMsg) {
+            errInfo.errDetails = codeMsg + ' ' + errInfo.errDetails
+            if (i18n(codeMsg) !== codeMsg) {
+              errInfo.errMsg = codeMsg
+            }
+          }
+          if (this.allowSessionPersistent) localStorage.removeItem(this.__sessionPersistKey)
+          throw new ubUtils.UBError(errInfo.errMsg, errInfo.errDetails, errInfo.errCode)
         } else {
-          if (!errInfo.errMsg) { errInfo.errMsg = 'unknownError' } // internalServerError
+          throw rejectReason // rethrow error
         }
-        if (rejectReason.status === 0) {
-          errInfo.errDetails = 'network error'
-        }
-        if (/<<<.*>>>/.test(errInfo.errMsg)) {
-          errInfo.errMsg = errInfo.errMsg.match(/<<<(.*)>>>/)[1]
-        }
-
-        let codeMsg = me.serverErrorByCode(errInfo.errCode)
-        if (codeMsg) {
-          errInfo.errDetails = codeMsg + ' ' + errInfo.errDetails
-          if (i18n(codeMsg) !== codeMsg) {
-            errInfo.errMsg = codeMsg
-          }
-        }
-
-        throw new ubUtils.UBError(errInfo.errMsg, errInfo.errDetails, errInfo.errCode)
-      } else {
-        throw rejectReason // rethrow error
       }
-    })
+    )
     return promise
   }
 
@@ -872,6 +899,7 @@ UBConnection.prototype.xhr = function (config) {
       })
     }).catch(function (reason) {  // in case of 401 - do auth and repeat request
       let errMsg = ''
+      if (me.allowSessionPersistent) localStorage.removeItem(me.__sessionPersistKey) // addled session persisted data
       if (reason.status === 401) {
         ubUtils.logDebug('unauth: %o', reason)
         if (me.isAuthorized()) {
@@ -1602,6 +1630,7 @@ UBConnection.prototype.crc32 = UBSession.prototype.crc32
  * Log out user from server
  */
 UBConnection.prototype.logout = function () {
+  if (this.allowSessionPersistent) localStorage.removeItem(this.__sessionPersistKey)
   if (!this.isAuthorized()) return Promise.resolve(true)
 
   let logoutPromise = this.post('logout', {})
@@ -1754,6 +1783,9 @@ const LDS = (typeof window !== 'undefined') && window.localStorage
  * @param {string} cfg.host Server host
  * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
  * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+ * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
+ *  In case user logged out by server side this type persistent not work and UBConnection will call onCredentialRequired handler,
+ *  so user will be prompted for credentials
  * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
  * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
  * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
@@ -1767,7 +1799,8 @@ function connect (cfg) {
   let connection = new UBConnection({
     host: config.host,
     appName: config.path || '/',
-    requestAuthParams: config.onCredentialRequired
+    requestAuthParams: config.onCredentialRequired,
+    allowSessionPersistent: cfg.allowSessionPersistent
   })
   if (config.onAuthorizationFail) {
     connection.on('authorizationFail', config.onAuthorizationFail)

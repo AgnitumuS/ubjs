@@ -20,7 +20,7 @@
     "@unitybase/org": "^4.0.1",
     "@unitybase/pdf": "^1.0.0",
     "@unitybase/ub": "^4.0.1",
-    "@unitybase/ub-pub": "^4.0.0",
+    "@unitybase/ub-pub": "^4.3.0",
     "@unitybase/uba": "^4.0.0",
     "@unitybase/ubs": "^4.0.0",
     "@unitybase/ubq": "^4.0.0",

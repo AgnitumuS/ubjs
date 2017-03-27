@@ -7,7 +7,6 @@ const path = require('path')
 module.exports = {
   entry: {
     app: './index.js'
-	//, vendor: ['bluebird', 'bluebird-q', 'lodash', 'CryptoJS'],
   },
   output: {
     path: path.join(__dirname, 'dist'),

@@ -60,6 +60,7 @@ function startSchedulers () {
       name: item.name,
       cron: item.cron,
       command: item.command,
+      module: item.module,
       singleton: item.singleton,
       runAs: item.runAs,
       apiKey: usersApiKeys[item.runAs],

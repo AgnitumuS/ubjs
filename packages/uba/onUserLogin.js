@@ -14,24 +14,25 @@ if (auditEntityUba) {
  */
 UBA.onUserLogin = function () {
   console.debug('Call JS method: UBA.onUserLogin')
-  var
-    data = Session.uData,
-    repo = null, tmpArr = [], roleIDs = []
+  let data = Session.uData
+  let repo = null
 
-  var userInfo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).selectAsObject()[0]
+  let userInfo = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
   data.login = userInfo.name || Session.userID
   try {
     repo = UB.Repository('uba_userrole')
-            .attrs(['ID', 'roleID.name', 'roleID'])
-            .where('[userID]', '=', Session.userID)
-            .select()
+      .attrs(['ID', 'roleID.name', 'roleID'])
+      .where('[userID]', '=', Session.userID)
+      .select()
   } catch (ex) {
-        // this possible if we connect to empty database without uba_* tables
+    // this possible if we connect to empty database without uba_* tables
     console.error('Error getting userroles:', ex.toString())
   }
 
+  let tmpArr = []
+  let roleIDs = []
   while (!repo.eof) {
-    var currentRole = repo.get('roleID.name')
+    let currentRole = repo.get('roleID.name')
     tmpArr.push(currentRole)
     roleIDs.push(repo.get('roleID'))
     repo.next()
@@ -51,13 +52,12 @@ UBA.onUserLogin = function () {
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: data.login
-                        // toValue: data.roles
+          // toValue: data.roles
         }
-      }
-            )
+      })
       App.dbCommit(auditStore.entity.connectionName)
     } catch (ex) {
-            // this possible if we connect to empty database without ubs_* tables
+      // this possible if we connect to empty database without ubs_* tables
       console.error('Error access audit entity:', ex.toString())
     }
   }
@@ -67,11 +67,10 @@ Session.on('login', UBA.onUserLogin)
 UBA.onUserLoginFailed = function (isLocked) {
   console.debug('Call JS method: UBA.onUserLoginFailef')
 
-  var obj, user
   if (auditEntityUba) { // uba_audit exists
     try {
-      obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
-      user = obj.eof ? Session.userID : obj.get('name')
+      let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
+      let user = obj ? obj.name : Session.userID
 
       auditStore.run('insert', {
         execParams: {
@@ -83,8 +82,7 @@ UBA.onUserLoginFailed = function (isLocked) {
           remoteIP: Session.callerIP,
           targetUser: user
         }
-      }
-            )
+      })
       App.dbCommit(auditStore.entity.connectionName)
     } catch (ex) {
             // this possible if we connect to empty database without ubs_* tables
@@ -98,15 +96,12 @@ Session.on('loginFailed', UBA.onUserLoginFailed)
 UBA.securityViolation = function (reason) {
   console.debug('Call JS method: UBA.securityViolation')
 
-  var obj, user
   if (auditEntityUba) { // uba_audit exists
+    let user = '?'
     if (Session.userID && (Session.userID > 0)) {
-      obj = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
-      user = obj.eof ? Session.userID : obj.get('name')
-    } else {
-      user = '?'
+      let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
+      user = obj ? obj.name : Session.userID
     }
-
     try {
       auditStore.run('insert', {
         execParams: {
@@ -118,11 +113,10 @@ UBA.securityViolation = function (reason) {
           remoteIP: Session.callerIP,
           fromValue: reason
         }
-      }
-            )
+      })
       App.dbCommit(auditStore.entity.connectionName)
     } catch (ex) {
-            // this possible if we connect to empty database without ubs_* tables
+      // this possible if we connect to empty database without ubs_* tables
       console.error('Error access audit entity:', ex.toString())
     }
   }

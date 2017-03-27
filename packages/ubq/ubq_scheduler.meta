@@ -45,8 +45,13 @@
       "dataType": "String",
       "size": 256,
       "caption": "Command",
-      "description": "Name of function to be executed in a server context",
-      "allowNull": false
+      "description": "Name of function to be executed in a server context"
+    },
+    "module": {
+      "dataType": "String",
+      "size": 256,
+      "caption": "Module",
+      "description": "Name of module to require with scheduler job function as a default export"
     },
     "singleton": {
       "dataType": "Boolean",
