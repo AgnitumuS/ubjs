@@ -58,6 +58,9 @@
 - als
 - els
  */
-
+var generator = require('@unitybase/dml-generator')
+console.log(generator.mssql.biuldSelectSql('tst_maindata',{fieldList: ['parent1@tst_maindata.manyValue.mi_modifyUser.name'],whereList:{c1: {
+expression:'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition : 'equal', values: {c1: 'admin'}
+}}}))
 // server - side test MUST return a result in form {res: true|false}
 return {res: true};

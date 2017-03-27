@@ -43,6 +43,20 @@
 			"caption": "nullDict_ID",
 			"allowNull": true
 		},
+		"parent":
+		{
+			"dataType": "Entity",
+			"associatedEntity": "tst_maindata",
+			"caption": "parent",
+			"allowNull": true
+		},
+		"parent1":
+		{
+			"dataType": "Entity",
+			"associatedEntity": "tst_mainunity",
+			"caption": "parent",
+			"allowNull": true
+		},
 		"enumValue":
 		{
 			"dataType": "Enum",
