@@ -34,7 +34,7 @@ We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Sta
 
 ## Build UntyBase packages with lerna
 
-    lerna run build --concurrency 1
+    lerna run build
   
   Compiling native modules. Current implementation require a Delphi7 & Delphi XE2 || XE4 to be installed
 
