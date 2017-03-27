@@ -265,6 +265,21 @@ function UBConnection (connectionParams) {
   }
 
   /**
+   *
+   * @param data
+   * @param secretWord
+   * @param authSchema
+   * @return {UBSession}
+   */
+  function doCreateNewSession (data, secretWord, authSchema) {
+    let ubSession = new UBSession(data, secretWord, authSchema)
+    let userData = ubSession.userData
+    if (!userData.lang || this.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
+      userData.lang = this.appConfig.supportedLanguages[0]
+    }
+    return ubSession
+  }
+  /**
    * The starter method for all authorized requests to UB server. Return authorization promise resolved to {@link UBSession}.
    * In case unauthorized:
    *
@@ -285,7 +300,7 @@ function UBConnection (connectionParams) {
       if (storedSession) {
         try {
           let parsed = JSON.parse(storedSession)
-          currentSession = new UBSession(parsed.data, parsed.secretWord, parsed.authSchema)
+          currentSession = doCreateNewSession.call(this, parsed.data, parsed.secretWord, parsed.authSchema)
           return Promise.resolve(currentSession)
         } catch(e) {
           localStorage.removeItem(this.__sessionPersistKey) // wrong session persistent data
@@ -581,11 +596,7 @@ function UBConnection (connectionParams) {
     }
     promise = promise.then(
       (authResponse) => {
-        let ubSession = new UBSession(authResponse.data, authResponse.secretWord, authParams.authSchema)
-        let userData = ubSession.userData
-        if (!userData.lang || me.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
-          userData.lang = me.appConfig.supportedLanguages[0]
-        }
+        let ubSession = doCreateNewSession.call(this, authResponse.data, authResponse.secretWord, authParams.authSchema)
         if (this.allowSessionPersistent) {
           localStorage.setItem(
             this.__sessionPersistKey,

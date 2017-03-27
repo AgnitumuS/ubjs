@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.1]
+### Fixed
+ - correclty restore connsection.userLang() in case persisted session is used
+
 ## [4.3.0]
 ### Added
  - ability to persist session for `UBConnection` ( `allowSessionPersistent` connect config parameter) - for 
