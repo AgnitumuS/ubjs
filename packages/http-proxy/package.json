@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/http-proxy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Proxy a HTTP(s) requests to enother HTTP server with optional UB authentication",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/http-proxy",
   "public": true,
@@ -9,11 +9,11 @@
   },
   "main": "HttpProxy.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.8"
+    "@unitybase/base": "^4.2.9"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.1.3",
-    "@unitybase/ub": "^4.0.24"
+    "@unitybase/ub": "^4.0.25"
   },
   "keywords": [
     "Proxy",
