@@ -2,7 +2,6 @@
 	"httpServer": {
 		"host": "+",
 		"port": "888",
-		"inetPub": ".\\img\\",
 		"watchFileChanges": {
 			"enabled": false,
 			"hashingStrategy": "ModifyDate"
@@ -21,7 +20,6 @@
 	},
 	"application": {
 		"defaultLang": "en",
-		"rootHandler": "index.html",
 		"domain": {
 			"models": [
 				{
@@ -29,34 +27,8 @@
 					"path": "./node_modules/@unitybase/ub"
 				},
 				{
-					"name": "UBA",
-					"path": "./node_modules/@unitybase/uba"
-				},
-				{
-					"name": "UBS",
-					"path": "./node_modules/@unitybase/ubs"
-				},
-				{
-					"name": "UBM",
-					"path": "./node_modules/@unitybase/ubm"
-				},
-				{
-					"name": "adminui",
-					"publicPath": "./node_modules/@unitybase/adminui-pub",
-					"path": "_public_only_"
-				},
-				{
-					"name": "adminui-reg",
-					"path": "./node_modules/@unitybase/adminui-reg"				
-				},
-				{
 					"name": "TPW",
 					"path": "./models/tpw"
-				},
-				{
-					"name": "ub-pub",
-					"publicPath": "./node_modules/@unitybase/ub-pub",
-					"path": "_public_only_"
 				}
 			]
 		},

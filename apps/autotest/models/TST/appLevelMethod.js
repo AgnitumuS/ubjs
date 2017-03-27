@@ -12,9 +12,9 @@ if (global.ORG && ORG.checkOrgUnitRequired) {
   ORG.checkOrgUnitRequired = false
 }
 
-var
-  GS_path = App.domain.config.models.byName('TST').path,
-  FIXTURES = GS_path + '_autotest\\fixtures\\'
+const path = require('path')
+const GS_PATH = App.domain.config.models.byName('TST').path
+const FIXTURES = path.join(GS_PATH, '_autotest', 'fixtures')
 /**
  * write custom request body to file FIXTURES/req and echo file back to client
  * @param {THTTPRequest} req
@@ -22,9 +22,9 @@ var
  */
 function echoToFile (req, resp) {
   var fs = require('fs')
-  fs.writeFileSync(FIXTURES + 'req', req.read('bin'))
+  fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
   resp.statusCode = 200
-  resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}))
+  resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), {encoding: 'bin'}))
 }
 
 /**
@@ -34,7 +34,7 @@ function echoToFile (req, resp) {
  */
 function echoFromFile (req, resp) {
   var fs = require('fs')
-  var str = fs.readFileSync(FIXTURES + 'respD.txt')
+  var str = fs.readFileSync(path.join(FIXTURES, 'respD.txt'))
   resp.statusCode = 200
   resp.writeEnd(str)
 }
@@ -118,8 +118,8 @@ oIdEndPoint.registerProvider('Google', {
     return 'opener.UB.view.LoginWindow.onFinishOpenIDAuth'
   },
   getUserID: function (userInfo) {
-    var inst = UB.Repository('uba_user').attrs(['ID'])
-            .where('[name]', '=', userInfo.id).select()
+    let inst = UB.Repository('uba_user').attrs(['ID'])
+      .where('[name]', '=', userInfo.id).select()
     return inst.eof ? null : inst.get('ID')
   }
 })
@@ -163,3 +163,10 @@ function testDocHandler (req, resp) {
   resp.writeEnd('OK')
 }
 App.registerEndpoint('testDocHandler', testDocHandler, false)
+
+const HttpProxy = require('@unitybase/http-proxy')
+let proxy = new HttpProxy({
+  endpoint: 'cms',
+  targetURL: 'http://localhost:889/',
+  nonAuthorizedURLs: [/./]
+})
