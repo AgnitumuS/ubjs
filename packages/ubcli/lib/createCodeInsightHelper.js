@@ -176,7 +176,8 @@ module.exports = function createCodeInsightHelper (cfg) {
   models.forEach(function processModel (modelCfg) {
     let currentPath = path.join(configPath, modelCfg.path)
     entities = []
-    _.forEach(realDomain.domain, function (entityDef, entityName) {
+
+    _.forEach(realDomain.entities, function (entityDef, entityName) {
       if (entityDef.modelName === modelCfg.name) {
         entityDef.attributes = namedCollection2Array(entityDef.attributes)
         entities.push({name: entityName, meta: entityDef})
