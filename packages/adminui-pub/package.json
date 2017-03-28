@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.2.9",
+  "version": "4.2.10",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-pub",
@@ -27,7 +27,7 @@
     "@unitybase/adminui-reg": "^4.1.5",
     "@unitybase/base": "^4.2.9",
     "@unitybase/codemirror-full": "^1.2.5",
-    "@unitybase/ub-pub": "^4.2.5",
+    "@unitybase/ub-pub": "^4.3.2",
     "@unitybase/ubm": "^4.0.25",
     "@unitybase/xlsx": "^4.0.21",
     "bluebird": "^3.4.6",
