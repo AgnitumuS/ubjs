@@ -1,4 +1,5 @@
 require('../../ux/form/TinyMCETextArea')
+/* global tinymce */
 /**
  * Файл: UB.ux.UBTinyMCETextArea.js
  * Автор: Игорь Ноженко
@@ -9,31 +10,25 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
   extend: 'Ext.ux.form.TinyMCETextArea',
   alias: 'widget.ubtinymcetextarea',
 
-  // requires: ['Ext.ux.form.TinyMCETextArea'],
-
   initComponent: function () {
-    var me = this
-    if (me.tinyMCEConfig) {
-      me.userSetup = me.tinyMCEConfig.setup
+    if (this.tinyMCEConfig) {
+      this.userSetup = this.tinyMCEConfig.setup
     }
     this.ensureTinyMCELoaded()
-    //tinyMCE.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
-    me.tinyMCEConfig = Ext.apply({
-          // language: UB.core.UBApp.getUiLanguage(),
+    // tinyMCE.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
+    this.tinyMCEConfig = Ext.apply({
       language_url: $App.connection.baseURL + 'models/adminui-pub/locale/tinymce/' + $App.connection.userLang() + '.js',
-      //skin_url: $App.connection.baseURL + 'clientRequire/tinymce/skins/lightgray/',
+      // skin_url: $App.connection.baseURL + 'clientRequire/tinymce/skins/lightgray/',
       table_default_attributes: {
         cellpadding: '3px',
         cellspacing: '0',
         border: '1px',
-        width: me.pageWidth && me.pageWidth > 20 ? me.pageWidth - 20 : 20,
-        style: { wordBreak: 'break-all'}
+        width: this.pageWidth && this.pageWidth > 20 ? this.pageWidth - 20 : 20,
+        style: {wordBreak: 'break-all'}
       },
       browser_spellcheck: true,
       toolbar1: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect | print',
       plugins: [
-                // "autosave layer noneditable",
-                // disabled - " media"
         'advlist autolink lists charmap print preview hr anchor pagebreak', // link image
         'searchreplace wordcount visualblocks visualchars code ', // fullscreen
         'insertdatetime nonbreaking table contextmenu directionality', // save
@@ -41,55 +36,49 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
       ],
       contextmenu: 'link image inserttable | cell row column deletetable',
       paste_data_images: true,
-
-            // content_css : "contents.css",
       statusbar: false,
       menubar: 'edit insert view format table tools',
       toolbar_items_size: 'small',
-      setup: me.onStartSetup.bind(me)
-    }, me.tinyMCEConfig)
-        // me.tinyMCEConfig.document_base_url = $App.connection.serverUrl + 'jslibs/tinymce/';
-        // me.tinyMCEConfig.relative_urls = true;
+      setup: this.onStartSetup.bind(this)
+    }, this.tinyMCEConfig)
 
-    me.tinyMCEConfig.setup = me.onStartSetup.bind(me)
+    this.tinyMCEConfig.setup = this.onStartSetup.bind(this)
 
-        /**
-         * @event setOriginalValue
-         * @param {String} originalValue
-         * @param {Object} self
-         * fire when initialize original value
-         */
-    me.addEvents('setup', 'setOriginalValue')
+    /**
+     * @event setOriginalValue
+     * @param {String} originalValue
+     * @param {Object} self
+     * fire when initialize original value
+     */
+    this.addEvents('setup', 'setOriginalValue')
 
     this.callParent(arguments)
   },
 
   afterRender: function () {
-    var me = this
-
-    me.callParent(arguments)
-    if (!me.wysiwygIntialized) {
-      me.updateLayout()
+    this.callParent(arguments)
+    if (!this.wysiwygIntialized) {
+      this.updateLayout()
     }
   },
 
   onStartSetup: function (ed) {
-    var me = this
-        // ed.baseURI = $App.connection.serverUrl + 'jslibs/tinymce1/';
+    let me = this
+
     tinymce.baseURL = $App.connection.baseURL + 'clientRequire/tinymce/'
     this.fireEvent('setup', ed)
     if (this.userSetup) {
       this.userSetup(ed)
     }
-        // todo Update layout when frame ready. Perhaps there is a better solution.
-    ed.on('init', function (e) {
+    // todo Update layout when frame ready. Perhaps there is a better solution.
+    ed.on('init', function () {
       if (me.ownerLayout) {
         me.ownerLayout.onContentChange()
       }
     })
   },
 
-    // for get focus in BasePanel
+  // for get focus in BasePanel
   isFocusableField: true,
   isFocusable: function () {
     return !this.readOnly
@@ -105,14 +94,12 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
    * @returns {Promise}
    */
   setSrc: function (cfg) {
-    var me = this
-    var blobData = cfg.blobData
-    var resetOriginalValue = cfg.resetOriginalValue
+    let me = this
 
     function onDataReady (response) {
       me.suspendCheckChange = true
       me.setValue(response)
-      if (resetOriginalValue) {
+      if (cfg.resetOriginalValue) {
         me.resetOriginalValue()
         me.fireEvent('setOriginalValue', response, me)
       }
@@ -120,9 +107,10 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
       return response
     }
 
+    let blobData = cfg.blobData
     if (blobData) {
       return new Promise((resolve, reject) => {
-        var reader = new FileReader()
+        let reader = new window.FileReader()
         reader.addEventListener('loadend', function () {
           resolve(onDataReady(reader.result))
         })
