@@ -4,9 +4,9 @@
  * @singleton
  */
 
-const UBMail = require('@unitybase/mailer')
 let me = UB.ns('UB.UBQ')
 let mailerParams = JSON.parse(App.customSettings)['mailerConfig']
+const UBMail = mailerParams.autoTLS ? require('@unitybase/mailer-ssl') : require('@unitybase/mailer'); 
 
 /**
  * @private

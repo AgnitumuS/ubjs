@@ -8,4 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - ability to pass a module to scheduler instead of function from global
 
+## [4.2.1]
+### Fixed
+ - allow use mail over SSL
 
