@@ -83,8 +83,8 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       if (me.wysiwygIntialized) {
         var ed = tinymce.get(me.getInputId())
 
-                // In the HTML text modus, the contents should be
-                // synchronized upon the blur event.
+        // In the HTML text modus, the contents should be
+        // synchronized upon the blur event.
         if (ed && ed.isHidden()) {
           if (ctrl) {
             me.positionBeforeBlur = { start: ctrl.selectionStart, end: ctrl.selectionEnd }
@@ -99,15 +99,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       }
     }, me)
 
-    me.on('resize', function (elm, width, height, oldWidth, oldHeight, eOpts) {
-            /*
-             alert('width:' + width + '\n' +
-             'height:' + height + '\n' +
-             'oldWidth:' + oldWidth + '\n' +
-             'oldHeight:' + oldHeight
-             );
-             */
-
+    me.on('resize', function (elm, width, height /* , oldWidth, oldHeight, eOpts */) {
       if (!me.noWysiwyg && !me.wysiwygIntialized) {
         me.initEditor(height)
       } else {
@@ -115,7 +107,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       }
     }, me)
   },
-    // -----------------------------------------------------------------
+
   syncEditorHeight: function (height) {
     var me = this
 

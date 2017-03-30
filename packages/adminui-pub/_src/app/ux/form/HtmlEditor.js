@@ -23,9 +23,9 @@ Ext.define('UB.ux.form.HtmlEditor', {
   overflowY: 'auto',
   minHeight: 65,
 
-    /**
-     * @cfg Fixed page width.
-     */
+  /**
+   * @cfg Fixed page width.
+   */
   pageWidth: 793,
 
   initComponent: function () {
@@ -34,29 +34,8 @@ Ext.define('UB.ux.form.HtmlEditor', {
 
     me.elementStyle = me.elementStyle || '' + 'width: ' + me.pageWidth + 'px;'
 
-    me.tinyMCEEditorConfig = Ext.apply({
-            // not exists plugins in new version   'style,advhr,advimage,advlink,iespell,xhtmlxtras,inlinepopups'
-      plugins: [
-                // "autosave layer noneditable",
-                // disabled - " media"
-        'advlist autolink lists charmap print preview hr anchor pagebreak', // link image
-        'searchreplace wordcount visualblocks visualchars code ', // fullscreen
-        'insertdatetime nonbreaking table contextmenu directionality ', // save
-        'emoticons template paste textcolor colorpicker image' // templateEditor
-      ],
-      toolbar1: 'undo redo | bold italic underline | alignleftTe aligncenterTe alignrightTe alignjustifyTe | formatselect fontsizeselect | borderL borderR borderT borderB borderE borderA | forecolor | bullist numlist outdent indent |',
-      contextmenu: 'link image inserttable | cell row column deletetable | rowTemplate',
-
-      paste_data_images: true,
-      paste_postprocess: UB.ux.UBReportEditor.paste_postprocess,
-
-            // content_css : "contents.css",
-      statusbar: false,
-      menubar: 'edit insert view format table tools',
-      toolbar_items_size: 'small'
-    }, me.tinyMCEEditorConfig || {})
-
     me.tinyMCEConfig = Ext.apply({
+      paste_postprocess: UB.ux.UBReportEditor.paste_postprocess,
       statusbar: false,
       menubar: false,
       toolbar: false,
@@ -64,14 +43,8 @@ Ext.define('UB.ux.form.HtmlEditor', {
       toolbar2: false,
       toolbar3: false,
 
-      plugins: ['paste'],
-
-      paste_data_images: true,
-      paste_postprocess: UB.ux.UBReportEditor.paste_postprocess,
-
       setup: me.onsetup.bind(me)
     }, me.tinyMCEConfig || {})
-
     me.callParent(arguments)
   },
 
