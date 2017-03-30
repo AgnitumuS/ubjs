@@ -337,7 +337,7 @@ Ext.define('UB.view.LoginWindow', {
         title: UB.i18n('OpenIDConnect'),
         header: false,
         authType: 'OpenIDConnect',
-        padding: '20 150 50 50'//,
+        padding: '20 150 50 50'
       })
       authItems.push(me.pnlOID)
     }
@@ -386,15 +386,15 @@ Ext.define('UB.view.LoginWindow', {
 
     me.callParent(arguments)
 
-    var authPanel
+    let authPanel
     if (me.authTabs) {
-      var lastAuthType = window.localStorage.getItem('lastAuthType')
+      let lastAuthType = window.localStorage.getItem('lastAuthType') || authMethods[0] // activate first auth method by default
       authPanel = me.query('panel[authType="' + lastAuthType + '"]')[0] || authItems[0]
       me.authTabs.setActiveTab(authPanel)
     } else {
       authPanel = authItems[0]
     }
-    var panelInputs = authPanel.query('textfield')
+    let panelInputs = authPanel.query('textfield')
     if (panelInputs[0] && panelInputs[0].getValue()) { // user name is defined - focus password
       me.defaultFocus = panelInputs[1]
     } else {
