@@ -6,7 +6,6 @@ node_modules/
 .deploy*/
 .idea/
 _logs/
-logs/
 doc-html/
 # SQLite3 DBs
 *.sqlite3 
