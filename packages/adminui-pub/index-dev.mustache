@@ -33,32 +33,10 @@
         <style>
             .ub-logo-h {
                 position: absolute;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-            }
-            .ub-logo-svg {
-                position: absolute;
-                width: 300px;
-                height: 200px;
-                top: 50%;
-                left: 50%;
-                margin: -150px 0 0 -150px;
-            }
-            .ub-logo-path {
-                fill: #D0E0EC;
-                stroke: #1c75bc;
-                stroke-width: 1px;
-                stroke-dasharray: 650;
-                stroke-dashoffset: 650;
-                animation: ub-logo-animate 8s ease-in-out infinite;
-            }
-            @keyframes ub-logo-animate {
-                0% { stroke-dashoffset: 650; fill: #D0E0EC;}
-                75% { stroke-dashoffset: 0; fill: #D0E0EC; }
-                80% { stroke-dashoffset: 0; fill: #1c75bc; }
-                100% { stroke-dashoffset: 0; fill: #1c75bc; }
+                top: 47%;
+                left: 47%;
+		color: rgb(100, 149, 237);
+                font-size: 10em;
             }
             .x-body {
                 margin: 0;
@@ -68,13 +46,8 @@
     </head>
     <body class="x-body">
         <div id="UBLogo" class="ub-logo-h">
-            <div class="ub-logo-svg">
-            <svg width="300px" height="200px"  >
-                <g transform="scale(2)">
-                    <path class="ub-logo-path" d="m 31.093126,44.607672 15.197597,-7.152209 c 0,0 -17.315918,41.004075 1.222257,43.485045 C 66.9453,83.541387 67.022049,40.979283 89.740267,34.675171 115.18984,27.614102 125.57613,48.325282 125.22308,58.900574 124.58701,78.00479 113.55506,85.416024 109.79523,87.783786 89.272088,100.7038 74.196327,85.414109 74.196327,85.414109 c 0,0 4.257743,-5.779322 6.262859,-10.605033 1.771979,2.30445 5.978881,6.354005 14.303458,6.354005 18.625476,0 25.615546,-33.655194 4.957133,-35.488572 C 86.311429,44.484868 80.758515,61.719244 78.372527,66.327164 73.7694,75.217777 67.803948,94.332542 44.394981,92.349494 15.036875,89.86469 31.093126,44.607672 31.093126,44.607672 M 97.404522,14.060729 93.422127,29.79654 c -10.158921,0.401026 -15.281068,6.633182 -15.281068,6.633182 l 3.779969,-15.080556 z"></path>
-                </g>
-            </svg>
-            </div>
+	    <i class="fa fa-spinner fa-pulse"></i>
+	    <span class="sr-only">Loading...</span>
         </div>
         <div id ="ubExtensionPageMessageObj"></div>
 
