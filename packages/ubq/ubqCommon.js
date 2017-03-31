@@ -5,8 +5,8 @@
  */
 
 let me = UB.ns('UB.UBQ')
-let mailerParams = JSON.parse(App.customSettings)['mailerConfig']
-const UBMail = mailerParams.autoTLS ? require('@unitybase/mailer-ssl') : require('@unitybase/mailer'); 
+let mailerParams = App.serverConfig.application.customSettings['mailerConfig']
+const UBMail = (mailerParams && mailerParams.autoTLS) ? require('@unitybase/mailer-ssl') : require('@unitybase/mailer');
 
 /**
  * @private

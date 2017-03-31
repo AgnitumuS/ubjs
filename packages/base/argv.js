@@ -268,6 +268,9 @@ function getServerConfiguration () {
       result.application.domain.supportedLanguages = [result.application.defaultLang]
     }
   }
+  if (!result.application.customSettings) {
+    result.application.customSettings = {}
+  }
   return result
 }
 
