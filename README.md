@@ -1,8 +1,5 @@
-<a href="https://unitybase.info/" >
-  <img src="https://unitybase.info/ub-logo-c.svg" height="200">
-</a>
 
-# UnityBase
+# <a href="https://unitybase.info/"> <img src="https://unitybase.info/ub-logo-c.svg" height="50"></a> UnityBase
 
 Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose is to provide a set of modules for rapid development of RMS / EDRMS class software
 
