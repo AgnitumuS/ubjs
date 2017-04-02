@@ -409,6 +409,11 @@
           "default": true,
           "description": "Will force a NTLM usage for Negotiate authentication method. If false - Kerberos will be used in most case"
         },
+	"simpleCertAuth": {          
+	  "type": "boolean",
+          "default": false,
+          "description": "If `true` will not require password for CERT authentication (only secret key passrord is required)"
+        },
         "ldapCatalogs": {
           "type": "array",
           "description": "If `userName` passed to `auth` in form `DOMAIN\\domainUser` and `UBLDAP` is present in `authenticationMethods` user credentials will be checked by request to LDAP catalog",

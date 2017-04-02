@@ -144,12 +144,12 @@ function runSchedulersCircle (message) {
   for (let i = 0, l = config.length; i < l; i++) {
     console.debug('SCHEDULER: add a job for', config[i].name, 'scheduled as', config[i].cron)
     job = cron.schedule(
-            config[i].cron,
-            safeSendAsyncRequest.bind(null, i),
-            // OBSOLETE cronJobStopped.bind(null, i),
-            true /* Start the job right now */
-            // OBSOLETE '' /* local timezone */
-        )
+      config[i].cron,
+      safeSendAsyncRequest.bind(null, i),
+      // OBSOLETE cronJobStopped.bind(null, i),
+      true /* Start the job right now */
+      // OBSOLETE '' /* local timezone */
+    )
     jobs.push(job)
   }
   global._timerLoop.setTimeoutWithPriority(
