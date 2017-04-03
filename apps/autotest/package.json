@@ -27,6 +27,7 @@
     "@unitybase/ubm": "^4.0.0",
     "@unitybase/canvas": "^4.0.0",
     "@unitybase/mailer": "^4.0.0",
+    "@unitybase/http-proxy": "^1.0.7",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.22.0",
