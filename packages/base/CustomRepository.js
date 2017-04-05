@@ -13,6 +13,11 @@ const bracketsRe = /\[.*]/
 // If condition not in conditionInCaseValueIsNull object keys we raise error
 const conditionInCaseValueIsNull = {equal: 'isNull', notEqual: 'notIsNull', custom: 'custom'}
 
+const cNames = []
+for (let i = 0; i < 100; i++) {
+  cNames.push(`c${i}`)
+}
+
 /**
  * Base data access class for server-side, client(browser)-side and client(console) side Repositories.
  * Usually used via UB.Repository fabric function.
@@ -39,6 +44,12 @@ class CustomRepository {
      * @type {{}}
      */
     this.whereList = {}
+    /**
+     * Used internaly to avoid Object.keys(whereList) call
+     * @type {number}
+     * @private
+     */
+    this._whereLength = 0
     /**
      * @private
      * @type {Array}
@@ -118,8 +129,11 @@ class CustomRepository {
      * @return {CustomRepository}
      */
   attrs (attr) {
-    let fields = _.flatten(Array.prototype.slice.call(arguments))
-    this.fieldList = this.fieldList.concat(fields)
+    if (Array.isArray(attr)) {
+      this.fieldList = this.fieldList.concat(attr)
+    } else {
+      this.fieldList.push(attr)
+    }
     return this
   }
 
@@ -163,7 +177,7 @@ class CustomRepository {
   where (expression, condition, values, clauseName) {
     let subQueryType
     if (!clauseName) { // generate unique clause name
-      clauseName = 'c' + Object.keys(this.whereList).length + 1
+      clauseName = cNames[++this._whereLength]
       while (this.whereList[clauseName]) {
         clauseName += '_'
       }
@@ -358,7 +372,7 @@ class CustomRepository {
      */
   joinCondition (expression, condition, values, clauseName) {
     if (!clauseName) { // generate unique clause name
-      clauseName = 'c' + Object.keys(this.whereList).length + 1
+      clauseName = cNames[++this._whereLength]
       while (this.whereList[clauseName]) {
         clauseName += '_'
       }
@@ -419,7 +433,7 @@ class CustomRepository {
    * @return {CustomRepository}
    */
   groupBy (attr) {
-    if (_.isArray(attr)) {
+    if (Array.isArray(attr)) {
       this.groupList = this.groupList.concat(attr)
     } else if (_.isString(attr)) {
       this.groupList.push(attr)
@@ -430,7 +444,7 @@ class CustomRepository {
     /**
      * Add options.start value to retrieve first `start` rows
      *
-     *      var store = UB.Repository('my_entity').attrs('id')
+     *      let store = UB.Repository('my_entity').attrs('id')
      *        //will return ID's from 15 to 25
      *        .start(15).limit(10).select()
      *
@@ -446,7 +460,7 @@ class CustomRepository {
    * Add options.limit value. Can be combined with start.
    *
       // will return first two ID's from my_entity
-      var store = UB.Repository('my_entity').attrs('id').limit(2).select()
+      let store = UB.Repository('my_entity').attrs('id').limit(2).select()
    *
    * @param {number} rowsLimit
    * @return {CustomRepository}
@@ -461,7 +475,7 @@ class CustomRepository {
      *
      * If set, in GUI mode will put this description into log before query execution
      *
-     *      var store = UB.Repository('my_entity').attrs('ID').describe('Select all record for "my_entity"').select()
+     *      let store = UB.Repository('my_entity').attrs('ID').describe('Select all record for "my_entity"').select()
      *
      * @param {String} value
      * @return {CustomRepository}
@@ -474,8 +488,8 @@ class CustomRepository {
     /**
      * Construct a UBQL JSON request. Used in {@link CustomRepository#select}
      *
-     *       var repo = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a')
-     *       var inst = new TubDataStore(my_entity);
+     *       let repo = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a')
+     *       let inst = new TubDataStore(my_entity);
      *       inst.run('select', repo.ubql());
      *
      * @return {Object}
@@ -586,12 +600,12 @@ class CustomRepository {
 
     /**
      * Select a single row by ID. If ubql result is empty - return {undefined}
-     * 
-     * If result not empty - return a object 
-     * 
-     *    {attr1: val1, arrt2: val2} 
-     *    
-     * for server side or Promise resolved to object for client 
+     *
+     * If result not empty - return a object
+     *
+     *    {attr1: val1, arrt2: val2}
+     *
+     * for server side or Promise resolved to object for client
      *
      * @abstract
      * @param {Number} ID Row identifier
@@ -632,13 +646,13 @@ class CustomRepository {
      *
      * Result of calculation is returned in __totalRecCount parameter value in case `selectAsArray()` client call:
      *
-          var result = UB.Repository('uba_user').attrs(['ID', 'description'])
+          let result = UB.Repository('uba_user').attrs(['ID', 'description'])
              .withTotal().selectAsArray();
           console.log('Total count is:', result.__totalRecCount)
      *
      * Or into TubDataStore.totalRowCount in case of server side `selectAsStore()` call:
      *
-           var store = UB.Repository('uba_user').attrs(['ID', 'description'])
+           let store = UB.Repository('uba_user').attrs(['ID', 'description'])
              .withTotal().selectAsStore();
            console.log('Total count is:', store.totalRowCount);
      *
