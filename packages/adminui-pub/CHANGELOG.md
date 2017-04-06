@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - AdminUI: In case of first login attempt LoginWindow will activate a tab for a first auth method from server config `security.authenticationMethods` array
 
 ### Fixed
-
+- fix systemjs version to `0.20.10-scoped` - pathced vwrsion what allow scoped modules loading without map configuration
 
 ## [4.2.11]
 ### Added

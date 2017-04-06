@@ -37,17 +37,16 @@ Ext.define('UB.ux.UBReportEditor', {
     },
 
     filter_node: function (node) {
-      let me = this
       let resStyle = []
       let i, y, attr, style, styleElm, stylePair, detail, subDetail, isInline, newNode
 
-      if (node.nodeName.toLowerCase() === 'table') {
-        me.filter_table(node)
+      if (node.nodeNathis.toLowerCase() === 'table') {
+        this.filter_table(node)
       }
       if (node.attributes) {
         for (i = node.attributes.length - 1; i >= 0; i--) {
           attr = node.attributes[i]
-          if (me.possibleElement.attributes.indexOf(attr.name.toLowerCase()) < 0) {
+          if (this.possibleElement.attributes.indexOf(attr.nathis.toLowerCase()) < 0) {
             node.removeAttribute(attr.name)
           }
         }
@@ -60,7 +59,7 @@ Ext.define('UB.ux.UBReportEditor', {
               stylePair = styleElm.split(':')
             }
             if (stylePair.length === 2 && (typeof (stylePair[0]) === 'string') &&
-              (me.possibleElement.style.indexOf(stylePair[0].toLowerCase()) >= 0)
+              (this.possibleElement.style.indexOf(stylePair[0].toLowerCase()) >= 0)
             ) {
               resStyle.push(styleElm)
             }
@@ -71,23 +70,23 @@ Ext.define('UB.ux.UBReportEditor', {
       if (node.childNodes) {
         for (i = 0; i < node.childNodes.length; i++) {
           detail = node.childNodes[i]
-          if (me.possibleElement.node.indexOf(detail.nodeName.toLowerCase()) < 0) {
+          if (this.possibleElement.node.indexOf(detail.nodeNathis.toLowerCase()) < 0) {
             isInline = true
             if (detail.childNodes) {
               for (y = 0; y < detail.childNodes.length; y++) {
-                subDetail = detail.childNodes[y].nodeName.toLowerCase()
-                if (me.possibleElement.inlineInnerNode.indexOf(subDetail) < 0) {
+                subDetail = detail.childNodes[y].nodeNathis.toLowerCase()
+                if (this.possibleElement.inlineInnerNode.indexOf(subDetail) < 0) {
                   isInline = false
                   break
                 }
               }
             }
             newNode = document.createElement(isInline ? 'SPAN' : 'DIV')
-            me.copyNodeParams(detail, newNode)
+            this.copyNodeParams(detail, newNode)
             node.replaceChild(newNode, detail)
             detail = newNode
           }
-          me.filter_node(detail)
+          this.filter_node(detail)
         }
       }
     },
@@ -106,7 +105,7 @@ Ext.define('UB.ux.UBReportEditor', {
 
     filter_table: function (table) {
       let styles = []
-      var tbody, attrWidth, styleWith
+      let attrWidth, styleWith
 
       let val = table.attributes.getNamedItem('width')
       if (val) {
@@ -133,6 +132,7 @@ Ext.define('UB.ux.UBReportEditor', {
         val.value = styles.join(';')
       }
 
+      let tbody
       _.forEach(table.childNodes, function (child) {
         if (child.nodeName.toLowerCase() === 'tbody') {
           tbody = child
@@ -159,7 +159,8 @@ Ext.define('UB.ux.UBReportEditor', {
     createSpanTableMap: function (tbody, rowSpan, colSpan) {
       let colCount = 0
       let row, q, qi, qq, i, ii, y, cCnt, len, cell, cellLast, rowCount, rowCountR, cCntR,
-        cSpan, rSpan, calc = false, fRow
+        cSpan, rSpan, fRow
+      let calc = false
 
       function getAttribute (node, name, defaultValue) {
         if (!node.attributes) return defaultValue
@@ -282,7 +283,7 @@ Ext.define('UB.ux.UBReportEditor', {
             }
           }
           if (rSpan > 1) {
-            for (var r = p + 1; r < p + rSpan; r++) {
+            for (let r = p + 1; r < p + rSpan; r++) {
               rowSpan[r][q] = 1
               if (cSpan > 1) {
                 for (qq = q + 1; qq < q + cSpan; qq++) {
@@ -327,23 +328,22 @@ Ext.define('UB.ux.UBReportEditor', {
   },
 
   initComponent: function () {
-    var me = this
-
     Ext.getBody().getSize()
 
-    me.width = UB.ux.UBReportEditor.portrait.width
-    me.orientation = 'portrait'
+    this.width = UB.ux.UBReportEditor.portrait.width
+    this.orientation = 'portrait'
 
-    me.tinyMCEConfig = Ext.apply({
+    this.tinyMCEConfig = Ext.apply({
       convert_urls: false,
       object_resizing: 'img,table,p[class=isTopColontitle],p[class=isBottomColontitle]',
       toolbar1: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | formatselect fontsizeselect | pageOrientation | Colontitle | borderL borderR borderT borderB borderE borderA | forecolor | bullist numlist outdent indent |',
       paste_postprocess: UB.ux.UBReportEditor.paste_postprocess
-    }, me.tinyMCEConfig || {})
-    me.tinyMCEConfig.reportEditor = me
-    me.lastFrameHeight = '100%'
-    me.callParent(arguments)
-    me.tinyMCEConfig.plugins.push('paste') // add ability to paste MS Word, for example
+      // font_formats:
+    }, this.tinyMCEConfig || {})
+    this.tinyMCEConfig.reportEditor = this
+    this.lastFrameHeight = '100%'
+    this.callParent(arguments)
+    this.tinyMCEConfig.plugins.push('paste') // add ability to paste MS Word, for example
   },
 
   onStartSetup: function (ed) {
@@ -374,12 +374,12 @@ Ext.define('UB.ux.UBReportEditor', {
   },
 
   setValue: function (value) {
-    var me = this
-    var reOptions = /(<!--%\w+?:(.+?)-->)/gi
+    let me = this
 
     me.valuesSpecialComments = null
     if (value && typeof (value) === 'string') {
-      var re = /(<!--@\w+?\s*".+?"-->)/gi
+      const re = /(<!--@\w+?\s*".+?"-->)/gi
+      const reOptions = /(<!--%\w+?:(.+?)-->)/gi
       let matches = value.match(re)
       if (matches && matches.length > 0) {
         me.valuesSpecialComments = matches.join('\r\n')
