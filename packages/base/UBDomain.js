@@ -11,6 +11,8 @@
  *  - documentation generation
  *  - forms generation
  *  - views generation etc.
+ *  - transform UBQL -> SQL
+ *  - etc
  *
  * @module @unitybase/base/UBDomain
  */

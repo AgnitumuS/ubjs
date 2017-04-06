@@ -82,8 +82,8 @@ module.exports = {
    * @param {ubMethodParams} ctxt
    */
   denyBuildInRoleAssignmentAndAdminsOnlyForAdmins: function (ctxt) {
-    var params = ctxt.mParams.execParams,
-      role = params.roleID
+    let params = ctxt.mParams.execParams
+    let role = params.roleID
 
     if (role === ROLES.EVERYONE.ID) {
       throw new Error(`<<<${ROLES.EVERYONE.ID} pseudo-role is assigned automatically>>>`)

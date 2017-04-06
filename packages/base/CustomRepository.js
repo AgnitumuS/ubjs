@@ -129,10 +129,14 @@ class CustomRepository {
      * @return {CustomRepository}
      */
   attrs (attr) {
-    if (Array.isArray(attr)) {
-      this.fieldList = this.fieldList.concat(attr)
-    } else {
-      this.fieldList.push(attr)
+    const L = arguments.length
+    for (let i = 0; i < L; i++) {
+      let attrI = arguments[i]
+      if (Array.isArray(attrI)) {
+        this.fieldList = this.fieldList.concat(attrI)
+      } else {
+        this.fieldList.push(attrI)
+      }
     }
     return this
   }
