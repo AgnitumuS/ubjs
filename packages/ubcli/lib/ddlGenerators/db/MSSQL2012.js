@@ -221,8 +221,8 @@ class DBSQL2012 extends DBAbstract {
 
   /**
    * @override
-   * @param {Object} table
-   * @param {Object} column
+   * @param {TableDefinition} table
+   * @param {FieldDefinition} column
    * @param {String} updateType
    * @param {Object} [value] optional for updateType updConst
    */

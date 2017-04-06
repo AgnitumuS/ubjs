@@ -89,18 +89,18 @@ class DBAbstract {
 
   /**
    * @abstract
-   * @param {Object} table
-   * @param {Object} column
+   * @param {TableDefinition} table
+   * @param {FieldDefinition} column
    * @param {String} updateType
    * @param {Object} [value] optional for updateType updConst
    */
   genCodeUpdate (table, column, updateType, value) {
-    throw new Error('Abstract genCodeUpdate')
+    throw new Error(`Abstract genCodeUpdate(${table.name}, ${column.name}, ${updateType}, ${value})`)
   }
 
   /**
    * TODO rename to Annotate
-   * Implemenattion must generate a annotation for a table / column
+   * Implemenation must generate a annotation for a table / column
    * @abstract
    */
   genCodeSetCaption (tableName, column, value, oldValue) {
