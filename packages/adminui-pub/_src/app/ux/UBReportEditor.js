@@ -344,6 +344,7 @@ Ext.define('UB.ux.UBReportEditor', {
     this.lastFrameHeight = '100%'
     this.callParent(arguments)
     this.tinyMCEConfig.plugins.push('paste') // add ability to paste MS Word, for example
+    this.tinyMCEConfig.plugins.push('templateEditor') // add row template in ReportBuilder
   },
 
   onStartSetup: function (ed) {

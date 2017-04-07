@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.13]
+### Added
+
+### Fixed
+- UBReportEditor now draw a dashed border around sections (both paragraph and table row)
+
 ## [4.2.12]
 ### Added
 - AdminUI: In case of first login attempt LoginWindow will activate a tab for a first auth method from server config `security.authenticationMethods` array

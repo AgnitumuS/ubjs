@@ -34,7 +34,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
         'insertdatetime nonbreaking table contextmenu directionality', // save
         'emoticons template textcolor colorpicker image imagetools'  // paste
       ],
-      contextmenu: 'link image inserttable | cell row column deletetable | rowTemplate',
+      contextmenu: 'link image inserttable | cell row column deletetable',
       paste_data_images: true,
       statusbar: false,
       menubar: 'edit insert view format table tools',

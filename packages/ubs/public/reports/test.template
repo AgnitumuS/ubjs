@@ -5,15 +5,42 @@
 
 
 
-<!--%pageOrientation:landscape-->
-
-
-
-
-
-
-<h1 style="text-align: center;">Report <br />builder manual</h1>
+<!--%pageOrientation:landscape--><h1 style="text-align: center;">Report <br />builder manual</h1>
 <p><span style="font-size: 10pt;">In UnityBase <strong>report is&nbsp;simply a <a href="https://github.com/janl/mustache.js">Mustache</a>! </strong>So you can use <strong>everything must</strong>ache is support.</span></p>
+<table style="word-break: break-all;" border="1px" width="773" cellspacing="0" cellpadding="3px">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="tinymce-templated">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
 <h2 style="text-align: left;">Define template</h2>
 <p>&nbsp; <span style="font-size: 10pt;">Here is we define report template. Depending of report type (PDF or HTML) &nbsp;you can use different subset of HTML tags and properties. &nbsp;</span></p>
 <p><span style="font-size: 10pt;">&nbsp; Everything accessible from visual menu is handled by PDF rendering, but if you need to change HTML manually you can use Tools-&gt; Source code menu and change HTML directly. In this case there is no guaranty to correct PDF rendering, but you can try :)</span></p>
@@ -46,32 +73,31 @@
 <td style="width: 245px; border: 1px solid black;">Currency 1</td>
 </tr>
 <!--{{#countries}}-->
-<tr>
-<td class="tinymce_templated_td" style="width: 96px; border: 1px solid black; cursor: default; background-color: gray;">{{code}}</td>
+<tr class="tinymce_templated" data-iterate-over="countries">
+<td class="tinymce_templated" style="width: 96px; border: 1px solid black; cursor: default; background-color: gray;">{{code}}</td>
 <td style="width: 248px; border: 1px solid black;">
-<p><strong>{{name}}</strong></p>
 <p><strong>{{name}}</strong></p>
 <p><strong>{{name}}</strong></p>
 </td>
 <td style="width: 261px; border: 1px solid black;">&nbsp;{{currencyName}}</td>
 </tr>
-<!--{{/countries}}--> <!--{{#area}}-->
-<tr>
-<td style="cursor: default;">Площадь</td>
+<!--{{/countries}}-->
+<tr data-iterate-over="">
+<td style="cursor: default;">Площад ь</td>
 <td style="cursor: default;" colspan="2">{{area}}</td>
 </tr>
-<!--{{/area}}--></tbody>
+</tbody>
 </table>
 <p>&nbsp;</p>
 <p>Roles:&nbsp;</p>
-<!--{{#userrole}}-->
-<p class=" tinymce_templated">{{index}}. {{roleIDname}} от {{userIDname}} для {{ID}}</p>
-<!--{{/userrole}}-->
+<!--{{#roles}}-->
+<p class="tinymce_templated" data-iterate-over="roles">{{index}}. {{roleIDname}} от {{userIDname}} <br />для {{ID}}</p>
+<!--{{/roles}}-->
 <p>&nbsp;<!-- pagebreak --></p>
 <p>My birthday is: {{myBirthday}}</p>
 <p>&nbsp;</p>
 <!--{{#myArray}}-->
-<p class=" tinymce_templated">{{.}}</p>
+<p class="tinymce_templated">{{.}}</p>
 <!--{{/myArray}}-->
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAABSCAIAAABIThTMAAACG0lEQVR42u2ZQXLEIAwE4/8/2jnk4go7okfgHMLotGWDpJZlYMfXfd9f59kV7IMs2CdZsE+yYP+6cV3QxY8HNf559xlrHD/6GcfXsVT0YDPs+hUYUyGQo88aQ43nuQXbwa4b0m08AqMKR+IqD8Heh/2cpfB46itzg/1XTc43sxFMRd/1SIK9bwNzkxuxSREJEsot2B+mESMN/8ZvnluwZ9h7rW5aPmtXtsHWIZ9XekYWKlIgcmgd4wZ7hl0bbzkuP/QWKrI1BnuGvbKpuCPrgvKjLocP9sx6op8ar5alugS8QNve7YOwXSGB+6n9c5mxHtls8uOw3cbjkrCL1FtQJ48h2DaeSlSh1lfqpPlhNtg+9mSa+QeAy/1k1hjLFZ6CPcMjd3slICVWkCrKxGewjcDq7piK+xHP/czEPQSbCcbuJx5VIIWtfI7j6yt1uYO9JiHuAlOprz+GYDPsXipu+VaWJRIl2Ay7J82pVHoFcktv5BbsSRJEvneXMVUgdwNzSxDsWSq1O37wGAtEhOe9L2OwZ+74BxplK83ce8WCzbBd4xJfXawVuep1CfHfYpOmeqbiLjxc7u/Nmrxuwf6QaG+JcoUkF6/OYfQTbAebt6gyLhu4x+HR/4Z9O9gGdk8AVv5rAFXKYL+JrcJz2Wj9uLrtTH40tjLeuu4mRF6cOmKwfWxivdbd5af3VyrYJ1mwT7Jgn2TBPskOxf4GNT2XxoCubcMAAAAASUVORK5CYII=" alt="" width="82" height="82" /></p>
 <table style="word-break: break-all; height: 100px; width: 1027px; border-collapse: collapse; border: 2px dashed gray;" border="1px" width="632px" cellspacing="0" cellpadding="3px">

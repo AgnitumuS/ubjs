@@ -1,6 +1,4 @@
 require('./UBReport')
-//require('@unitybase/adminui-pub/_src/app/ux/PDFComponent.js')
-//require('@unitybase/adminui-pub/_src/app/ux/UBTinyMCETextArea.js')
 /**
  * Displays a report.
  * Example:
@@ -35,20 +33,6 @@ Ext.define('UBS.ReportViewer', {
     initComponent: function () {
         var me = this, container, control;
 
-        /*
-        me.paramsPanel = Ext.widget('panel', {
-            buttons: [{
-                caption: UB.i18n('BuildReport'),
-                handler: function(){
-                    me.getEl().mask(UB.i18n('pozhaluystaPodozhdite'));
-                    me.report.makeReport().done(function(data){
-                        me.showReport(data);
-                    });
-                }
-            }]
-        });
-        */
-
         if (me.report && !me.reportType){
             me.reportType = me.report.reportType;
         }
@@ -63,20 +47,16 @@ Ext.define('UBS.ReportViewer', {
                 });
                 break;
             case 'html':
-                control = Ext.create('UB.ux.UBReportEditor', {
+                //control = Ext.create('UB.ux.UBReportEditor', {
+              control = Ext.create('UB.ux.UBTinyMCETextArea', {
                     readOnly: true,
                     hidden: true,
-                    //flex: 1,
-                    tinyMCEEditorConfig: {
+                    flex: 1,
+                    tinyMCEConfig: {
                         menubar: false,
                         contextmenu: false,
-                        plugins: ["advlist autolink lists charmap print preview hr anchor pagebreak",
-                        "searchreplace wordcount visualblocks visualchars code ",
-                        "insertdatetime nonbreaking table contextmenu directionality",
-                        "emoticons template paste textcolor"],
                         toolbar: false,
                         toolbar1: false
-                        //MPV content_css : "/models/adminui/tinymce/skins/lightgray/content_preview.min.css"
                     }
                 });
                 container = Ext.create('Ext.panel.Panel', {
@@ -88,9 +68,6 @@ Ext.define('UBS.ReportViewer', {
                      items : [{
                          flex: 1,
                          autoScroll: true,
-                         //overflowX: 'auto',
-                         //overflowY: 'auto',
-
                          layout: {
                              type: 'hbox',
                              pack: 'center',
@@ -247,18 +224,6 @@ Ext.define('UBS.ReportViewer', {
                         });
                     }, me, {single: true});
                 }
-
-
-                /*
-                me.reportControl.rpHtml = data;
-                if (me.reportControl.getEl()){
-                    me.reportControl.getEl().setHTML(data);
-                } else {
-                    me.reportControl.on('afterrender', function(){
-                        me.reportControl.getEl().setHTML(data);
-                    }, me, {single: true});
-                }
-                */
                 break;
         }
         if (me.getEl()){
@@ -267,11 +232,9 @@ Ext.define('UBS.ReportViewer', {
     },
 
     afterRender: function() {
-        var me = this;
-        me.callParent();
-        if (!me.reportDone){
-            me.getEl().mask(UB.i18n('pleaseWait'));
+        this.callParent();
+        if (!this.reportDone){
+            this.getEl().mask(UB.i18n('pleaseWait'));
         }
     }
-
 });
