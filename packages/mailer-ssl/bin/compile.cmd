@@ -2,8 +2,7 @@ call %SRC%\bin\setCompilerEnv.cmd
 
 if not exist %~dp0x32 mkdir %~dp0x32
 cd %~dp0..\..\mailer\src
-%DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\..\mailer-ssl\bin\x32 ^
-  -Dopenssl ^
+%DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE;openssl%SM52DEF% -E..\..\mailer-ssl\bin\x32 ^
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^
   -U%LIB%\FastMM;%SYN_LIB%;%UB_CORE%;%LIB%\synapse40\source\lib;"%DELPHI_7%\lib\Win32\release" ^
@@ -11,8 +10,7 @@ cd %~dp0..\..\mailer\src
   UBMail.dpr
 
 if not exist %~dp0x64 mkdir %~dp0x64
-%DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE -E..\..\mailer-ssl\bin\x64 ^
-  -Dopenssl ^
+%DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE;openssl%SM52DEF% -E..\..\mailer-ssl\bin\x64 ^
   -NSSystem;Winapi;System.Win; ^
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^

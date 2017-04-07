@@ -40,7 +40,6 @@ class CustomItem {
     }
     this.expression = expression
     const expressionParts = expression.split(reBrackedExpression)
-    console.log(expressionParts)
     let expressionPart
     for (let expressionPartIndex = 0; expressionPartIndex < expressionParts.length; expressionPartIndex++) {
       expressionPart = expressionParts[expressionPartIndex]
@@ -61,7 +60,8 @@ class CustomItem {
        */
       let attribute
       let i
-      for (i = 0; i < predicates.length - 1; i++) {
+      let L = predicates.length
+      for (i = 0; i < L - 1; i++) {
         const predicate = predicates[i]
         // todo this.dataSource cache
         let linkEntity
@@ -82,7 +82,7 @@ class CustomItem {
            * @class CustomItem
            * @property {[]} manySubPart
            */
-          this.manySubPart = predicates.slice(i + 1, predicates.length)
+          this.manySubPart = predicates.slice(i + 1, L)
           /**
            * @class CustomItem
            * @type {UBEntityAttribute} manyAttribute

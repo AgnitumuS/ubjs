@@ -467,7 +467,7 @@ function UBConnection (connectionParams) {
       return pki.readPK(me)
     }).then(function (certInfo) {
       let reqData = certInfo.ownIITCert
-            // in case we have different certificates for signing and encryption - pass them all
+      // in case we have different certificates for signing and encryption - pass them all
       if (certInfo.ownIITEncryptCert && certInfo.ownIITEncryptCert !== '') {
         reqData = [certInfo.ownIITCert, certInfo.ownIITEncryptCert, certInfo.ownIITEncryptSignature].join(' ')
       }

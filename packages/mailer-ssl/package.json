@@ -11,10 +11,11 @@
     "registry": "http://registry.unitybase.info"
   },
   "main": "./UBMail_openssl.js",
-  "dependencies": {},
+  "dependencies": {
+     "@unitybase/mailer": "^4.0.13"
+  },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.3",
-    "@unitybase/mailer": "^4.0.13"
+    "@unitybase/stubs": "^4.1.3"
   },
   "keywords": [
     "UnityBase",

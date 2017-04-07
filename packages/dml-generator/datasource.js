@@ -2,7 +2,7 @@
  * Created by v.orel on 20.01.2017.
  */
 const dsNames = []
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
   dsNames.push(`DS${i}`)
 }
 
