@@ -133,26 +133,6 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
       }
     })
   }
-    // store.execSQL('insert into uba_prevPasswordsHash (userID, uPasswordHashHexa) values (:userID:, :uPasswordHashHexa:)', {userID: userID, uPasswordHashHexa: oldPwd});
-
-    // make uba_audit record
-  if (App.domainInfo.has('uba_audit')) {
-    // var store = new TubDataStore('uba_audit');
-    /** @type uba_user_object */
-    store.run('insert', {
-      entity: 'uba_audit',
-      execParams: {
-        entity: 'uba_user',
-        entityinfo_id: userID, // Session.userID,
-        actionType: 'UPDATE',
-        actionUser: Session.uData.login,
-        actionTime: new Date(),
-        remoteIP: Session.callerIP,
-        targetUser: userName.toLowerCase(),
-        toValue: JSON.stringify({action: 'changePassword'})
-      }
-    })
-  }
 }
 
 App.registerEndpoint('changePassword',
@@ -175,32 +155,59 @@ App.registerEndpoint('changePassword',
       if (!newPwd) {
         throw new Error('newPwd parameter is required')
       }
-        // var user;
-      if (forUser) {
-        roles = (Session.userRoleNames || '').split(',')
-        if ((roles.indexOf(UBA_COMMON.ROLES.ADMIN.NAME) === -1) && (roles.indexOf('accountAdmins') === -1)) {
-          throw new Error(`Change password for other users allowed only for "${UBA_COMMON.ROLES.ADMIN.NAME}" or "accountAdmins" group members`)
-        }
-        UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)
-        if (store.eof) {
-          throw new Error('User not found')
-        }
-        userID = store.get('ID')
-        oldPwd = store.get('uPasswordHashHexa')
-      } else {
-        userID = Session.userID
-        UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
-        if (!store.eof) {
-          forUser = store.get('name')
-          oldPwd = store.get('uPasswordHashHexa')
-        }
-            // checkPrevPwd
-        if (pwd !== oldPwd) {
-          throw new UB.UBAbort('<<<Incorrect old password>>>')
-        }
-      }
-      me.changePassword(userID, forUser, newPwd, needChangePassword, oldPwd)
 
+      let failException = null
+      try {
+        if (forUser) {
+          roles = (Session.userRoleNames || '').split(',')
+          if ((roles.indexOf(UBA_COMMON.ROLES.ADMIN.NAME) === -1) && (roles.indexOf('accountAdmins') === -1)) {
+            throw new Error(`Change password for other users allowed only for "${UBA_COMMON.ROLES.ADMIN.NAME}" or "accountAdmins" group members`)
+          }
+          UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)
+          if (store.eof) {
+            throw new Error('User not found')
+          }
+          userID = store.get('ID')
+          oldPwd = store.get('uPasswordHashHexa')
+        } else {
+          userID = Session.userID
+          UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
+          if (!store.eof) {
+            forUser = store.get('name')
+            oldPwd = store.get('uPasswordHashHexa')
+          }
+              // checkPrevPwd
+          if (pwd !== oldPwd) {
+            throw new UB.UBAbort('<<<Incorrect old password>>>')
+          }
+        }
+        me.changePassword(userID, forUser, newPwd, needChangePassword, oldPwd)
+      } catch (e) {
+        failException = e
+      }
+
+      // make uba_audit record
+      if (App.domainInfo.has('uba_audit')) {
+        // var store = new TubDataStore('uba_audit');
+        /** @type uba_user_object */
+        store.run('insert', {
+          entity: 'uba_audit',
+          execParams: {
+            entity: 'uba_user',
+            entityinfo_id: userID, // Session.userID,
+            actionType: failException  ? 'SECURITY_VIOLATION' : 'UPDATE',
+            actionUser: Session.uData.login,
+            actionTime: new Date(),
+            remoteIP: Session.callerIP,
+            targetUser: forUser.toLowerCase(),
+            toValue: failException
+              ? JSON.stringify({action: 'changePassword', reason: failException.message})
+              : JSON.stringify({action: 'changePassword'})
+          }
+        })
+        App.dbCommit()
+      }
+      if (failException) throw failException
       resp.statusCode = 200
     }
 )
