@@ -1,3 +1,4 @@
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 # <a href="https://unitybase.info/"> <img src="https://unitybase.info/ub-logo-c.svg" height="50"></a> UnityBase
 
