@@ -40,13 +40,13 @@ Ext.define('UB.ux.UBReportEditor', {
       let resStyle = []
       let i, y, attr, style, styleElm, stylePair, detail, subDetail, isInline, newNode
 
-      if (node.nodeNathis.toLowerCase() === 'table') {
+      if (node.nodeName.toLowerCase() === 'table') {
         this.filter_table(node)
       }
       if (node.attributes) {
         for (i = node.attributes.length - 1; i >= 0; i--) {
           attr = node.attributes[i]
-          if (this.possibleElement.attributes.indexOf(attr.nathis.toLowerCase()) < 0) {
+          if (this.possibleElement.attributes.indexOf(attr.name.toLowerCase()) < 0) {
             node.removeAttribute(attr.name)
           }
         }
@@ -70,11 +70,11 @@ Ext.define('UB.ux.UBReportEditor', {
       if (node.childNodes) {
         for (i = 0; i < node.childNodes.length; i++) {
           detail = node.childNodes[i]
-          if (this.possibleElement.node.indexOf(detail.nodeNathis.toLowerCase()) < 0) {
+          if (this.possibleElement.node.indexOf(detail.nodeName.toLowerCase()) < 0) {
             isInline = true
             if (detail.childNodes) {
               for (y = 0; y < detail.childNodes.length; y++) {
-                subDetail = detail.childNodes[y].nodeNathis.toLowerCase()
+                subDetail = detail.childNodes[y].nodeName.toLowerCase()
                 if (this.possibleElement.inlineInnerNode.indexOf(subDetail) < 0) {
                   isInline = false
                   break
