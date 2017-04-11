@@ -195,7 +195,8 @@ UBServerReport.prototype.transformToPdf = function (html, options = {}) {
     fonts: options.fonts ? options.fonts : [
       {fontName: 'TimesNewRoman', fontStyle: 'Normal'},
       {fontName: 'TimesNewRoman', fontStyle: 'Bold'},
-      {fontName: 'TimesNewRoman', fontStyle: 'Italic'}
+      {fontName: 'TimesNewRoman', fontStyle: 'Italic'},
+      {fontName: 'TimesNewRoman', fontStyle: 'BoldItalic'}
     ]
   })
 

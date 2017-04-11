@@ -39,6 +39,52 @@
         return false;
     };
 
+    /**
+     *
+     * @param {String} name
+     * @param {String} htmlName
+     */
+    jsPDFAPI.addHtmlFontName = function (name, htmlName) {
+        if (!name || !htmlName){
+            return;
+        }
+        if (!this.fontHmlNames) {
+            this.fontHmlNames = {};
+        }
+        if (!this.fontHmlNames[htmlName]){
+            this.fontHmlNames[htmlName] = name;
+        }
+    }
+
+    /**
+     *
+     * @param {String} htmlName
+     * @returns {String}
+     */
+    jsPDFAPI.getFontNameByHtmlName = function (htmlName) {
+        if (!htmlName){
+            return htmlName
+        }
+        var res = null, me = this
+        htmlName.toLowerCase().split(',').every(function(name){
+            let xName = name.trim();
+            if (xName[0] === '"'){
+                xName = xName.substring(1, xName.length - 1)
+            }
+            if (!me.fontHmlNames){
+                if (me.fontNames){
+                    res = me.fontNames[xName];
+                    return !res;
+                }
+                return true;
+            }
+            res = me.fontHmlNames[xName];
+            return !res;
+        })
+        return res || htmlName;
+    }
+
+
     jsPDFAPI.parseFont = function (data) {
         var res;
         data.data = atob(data.data);
@@ -69,6 +115,15 @@
         }
 
         data.fontMetric.ascentDelta = data.ascentDelta || 0;
+        if (data.fontHtmlName) {
+            if (!this.fontHmlNames) {
+                this.fontHmlNames = {};
+            }
+            if (!this.fontHmlNames[data.fontHtmlName]){
+                this.fontHmlNames[data.fontHtmlName] = data.fontName;
+            }
+        }
+
         //descriptor : "<</Type/FontDescriptor/Ascent 750/CapHeight 631/Descent -250/FontBBox
 
 
@@ -100,6 +155,10 @@
         if ((!data.fontName || (typeof data.fontName) !== 'string') || (!data.fontStyle || (typeof data.fontStyle) !== 'string')) {
             throw new Error('Invalid font data');
         }
+        if (!this.fontNames) {
+            this.fontNames = {};
+        }
+        this.fontNames[data.fontName.toLowerCase()] = data.fontName;
         l = jsPDF.UnicodeFonts.length;
         for (var i = 0; i < l; i++) {
             f = jsPDF.UnicodeFonts[i];
@@ -603,8 +662,16 @@
         defaultFontSize = ctx.internal.getFontSize();
         defaultColor = ctx.internal.textColorExt || '0 g';
 
+
         if (fontStyle && fontStyle.length > 0){
-            fontStyle = fontStyle[0].toUpperCase() + fontStyle.substr(1);
+            switch (fontStyle){
+                case 'Bolditalic':
+                case 'bolditalic':
+                    fontStyle = 'BoldItalic'
+                    break;
+                default:
+                    fontStyle = fontStyle[0].toUpperCase() + fontStyle.substr(1)
+            }
         }
 
         if (fontName || fontStyle) {
@@ -1034,6 +1101,7 @@
             return result;
         }
 
+
         function parseStyle(node) {
             var styleStr, result = {}, res = {}, tmp;
             if (!node || !node.attributes) {
@@ -1057,17 +1125,26 @@
             res.font = {};
             if (result["font-family"]) {
                 res.font.name = result["font-family"];
+                res.font.name = me.getFontNameByHtmlName(res.font.name) || res.font.name;
             }
             if (result["font-weight"]) {
                 tmp = result["font-weight"];
-                if (tmp && tmp.toLowerCase() !== 'normal') {
-                    res.font.type = 'bold';
+                if (tmp){
+                    tmp = _.capitalize(tmp);
+                    res.font.weight = tmp;
+                    if (tmp !== 'Normal') {
+                        res.font.type = 'Bold';
+                    }
                 }
             }
             if (result["font-style"]) {
                 tmp = result["font-style"];
-                if (tmp && tmp.toLowerCase() !== 'normal') {
-                    res.font.type = 'italic';
+                if (tmp) {
+                    tmp = _.capitalize(tmp);
+                    res.font.style = tmp;
+                    if (tmp.toLowerCase() !== 'Normal') {
+                        res.font.type = (res.font.type || '') + 'Italic';
+                    }
                 }
             }
             if (result.color) {
@@ -1105,6 +1182,19 @@
         }
 
 
+        function mixFontType(parentType, type, font){
+            let fixType = font && (font.weight === 'Normal' || font.style === 'Normal');
+            if (parentType && type && !fixType && (parentType !== type) && (
+                (parentType === 'Italic' && type === 'Bold') ||
+                (parentType === 'BoldItalic') ||
+                (type === 'BoldItalic') ||
+                (parentType === 'Bold' && type === 'Italic')
+              ) ){
+               return 'BoldItalic'
+            }
+            return type || parentType;
+        }
+
         /**
          *
          * @param {Object} parent
@@ -1118,7 +1208,8 @@
                     case 'STRONG':
                     case 'B':
                         block = paragraph.checkBlock(me, block, node.nodeValue,
-                            pBlock.font.fontName || options.font.name, "Bold",
+                            pBlock.font.fontName || options.font.name,
+                            mixFontType(pBlock.font.fontStyle, "Bold"),
                             pBlock.font.size || options.font.size,
                             pBlock.font.color || options.font.color,
                             pBlock.align
@@ -1129,7 +1220,8 @@
                     case 'EM':
                     case 'I':
                         block = paragraph.checkBlock(me, block, node.nodeValue,
-                            pBlock.font.fontName || options.font.name, "Italic",
+                            pBlock.font.fontName || options.font.name,
+                            mixFontType(pBlock.font.fontStyle, "Italic"),
                             pBlock.font.size || options.font.size,
                             pBlock.font.color || options.font.color,
                             pBlock.align
@@ -1153,7 +1245,7 @@
                         var v, cfg = {};
                         v = node.attributes.getNamedItem('name');
                         if (v) {
-                            cfg.name = v.value;
+                            cfg.name = me.getFontNameByHtmlName(v.value) || v.value;
                         }
                         v = node.attributes.getNamedItem('style');
                         if (v) {
@@ -1172,7 +1264,7 @@
                         if (v) {
                             cfg.color = jsPDFAPI.formatColor(v.value);
                         }
-                        block = paragraph.checkBlock(me, block, node.nodeValue, cfg.name || pBlock.font.fontName, cfg.type || pBlock.font.fontStyle, cfg.size || pBlock.font.size, cfg.color || pBlock.font.color, pBlock.align);
+                        block = paragraph.checkBlock(me, block, node.nodeValue, cfg.name || pBlock.font.fontName, mixFontType(pBlock.font.fontStyle, cfg.type) , cfg.size || pBlock.font.size, cfg.color || pBlock.font.color, pBlock.align);
                         parseNodes(node);
                         block = paragraph.newBlock(me, '', pBlock.font.fontName, pBlock.font.fontStyle, pBlock.font.size, pBlock.font.color, pBlock.align);
                         break;
@@ -1214,7 +1306,7 @@
                         break;
                     case 'SPAN':
                         cfg = parseStyle(node);
-                        block = paragraph.checkBlock(me, block, '', cfg.font.name || pBlock.font.fontName, cfg.font.type || pBlock.font.fontStyle, cfg.font.size || pBlock.font.size, cfg.font.color || pBlock.font.color, cfg.align || pBlock.align);
+                        block = paragraph.checkBlock(me, block, '', cfg.font.name || pBlock.font.fontName, mixFontType(pBlock.font.fontStyle, cfg.font.type, cfg.font) , cfg.font.size || pBlock.font.size, cfg.font.color || pBlock.font.color, cfg.align || pBlock.align);
                         parseNodes(node);
                         block = paragraph.newBlock(me, '', pBlock.font.fontName, pBlock.font.fontStyle, pBlock.font.size, pBlock.font.color, pBlock.align);
                         break;
@@ -1226,7 +1318,7 @@
                             paragraph = textInfo.newParagraph();
                         }
                         paragraph.textIndent = cfg.textIndent;
-                        block = paragraph.newBlock(me, '', cfg.font.name || pBlock.font.fontName, cfg.font.type || pBlock.font.fontStyle, cfg.font.size || pBlock.font.size, cfg.font.color || pBlock.font.color, cfg.align || pBlock.align);
+                        block = paragraph.newBlock(me, '', cfg.font.name || pBlock.font.fontName, mixFontType(pBlock.font.fontStyle, cfg.font.type, cfg.font), cfg.font.size || pBlock.font.size, cfg.font.color || pBlock.font.color, cfg.align || pBlock.align);
                         parseNodes(node);
                         paragraph = textInfo.newParagraph();
                         paragraph.isAutoCreated = true;
@@ -1774,12 +1866,13 @@
 
 
             if (lineAlign === 'justify') {
-                var n, isEndParagraph, allWordLen, lastItem, allWn, wn, notEmptyCnt = 0, realWidth, wSpace;
+                var n, isEndParagraph, allWordLen, lastItem, allWn, wn, notEmptyCnt = 0, realWidth, wSpace,
+                  blockEndSpace, cntWord;
 
                 lastItem = lineScope.items[lineScope.items.length - 1];
                 isEndParagraph = (lastItem.paragraph.blocks.length - 1 === parseInt(lastItem.blockNum, 10)) && (lastItem.block.endLineNum === parseInt(lineScope.lineNum, 10));
                 allWordLen = lineScope.allWordLen;
-                if ( !forceIsNotEndParagraph && ((lastItem.line.words.length <= 1) || isEndParagraph)) { // не надо ничего выравнивать
+                if ( !forceIsNotEndParagraph && ((lastItem.line.words.length <= 1 && lineScope.items.length === 1) || isEndParagraph)) { // не надо ничего выравнивать
                     for( i = 0; i < lineScope.items.length; i++ ){
                         item = lineScope.items[i];
                         putBlockInfo(item.block, ctx);
@@ -1787,31 +1880,62 @@
                     }
                 } else {
                     realWidth = maxWidth - allWordLen - textIndent;
+                    blockEndSpace = true; // last block end space
                     for( i = 0; i < lineScope.items.length; i++ ){
                         item = lineScope.items[i];
+                        cntWord = 0;
                         for ( wn = 0; wn < item.line.words.length; wn++) {
-                             if (item.line.words[wn] !== ''){
-                                 notEmptyCnt++;
-                             }
+                            if (item.line.words[wn] !== ''){
+                                if (blockEndSpace || wn > 0) { // only for first word
+                                    notEmptyCnt++;
+                                }
+                                cntWord++;
+                            }
+                            blockEndSpace = false;
                         }
+                        blockEndSpace = item.line.words.length > 0 && cntWord > 0 && (item.line.words[item.line.words.length - 1] === '');
                     }
 
                     wSpace = realWidth / (notEmptyCnt - 1); //lineScope.wordCount
                     allWn = 0;
+                    blockEndSpace = false;
                     for( i = 0; i < lineScope.items.length; i++ ){
                         item = lineScope.items[i];
                         justifyArray = [];
-                        for ( wn = 0; wn < item.line.words.length; wn++) {
-                            justifyArray.push('(', ctx.pdfEscapeExt(item.line.words[wn], flags), ')');
-                            if (allWn + 1 !== notEmptyCnt && item.line.words[wn] !== '') {
-                                justifyArray.push(wSpace * -1 * ( item.block.options.widths.fof || 1) /    //item.block.font.font.metadata.Unicode.widths.fof
-                                        item.block.font.size);
-                                allWn++;
-                            }
-
+                        cntWord = 0;
+                        if (blockEndSpace){ // previous block has space
+                            justifyArray.push(wSpace * -1 * ( item.block.options.widths.fof || 1) /    //item.block.font.font.metadata.Unicode.widths.fof
+                            item.block.font.size);
                         }
-                        putBlockInfo(item.block, ctx);
-                        rawStringArr.push(' [' , justifyArray.join('') , ']  TJ\n');
+                        var lastNotEmptyWord = item.line.words.length - 1;
+                        for ( wn = item.line.words.length - 1; wn >= 0 ; wn--) {
+                            if (item.line.words[wn] === '') {
+                                lastNotEmptyWord = wn - 1;
+                            } else {
+                                lastNotEmptyWord = wn;
+                                break;
+                            }
+                        }
+                        for ( wn = 0; wn < item.line.words.length; wn++) {
+                            if (item.line.words[wn] !== '') {
+                                cntWord++;
+                                justifyArray.push('(', ctx.pdfEscapeExt(item.line.words[wn], flags), ')');
+                                // set space if it is not end word in block
+                                if ((wn < lastNotEmptyWord) && (item.line.words[wn] !== '')) {
+                                    justifyArray.push(wSpace * -1 * ( item.block.options.widths.fof || 1) /    //item.block.font.font.metadata.Unicode.widths.fof
+                                    item.block.font.size);
+                                    allWn++;
+                                }
+                                blockEndSpace = false;
+                            }
+                        }
+                        if (cntWord > 0) { // all word is empty
+                            putBlockInfo(item.block, ctx);
+                            rawStringArr.push(' [', justifyArray.join(''), ']  TJ\n');
+                        }
+                        // if exists more ten one block in line the line is HTML and parser separate end space as empty word
+                        blockEndSpace = item.line.words.length > 0 && (cntWord > 0) &&
+                        (item.line.words[item.line.words.length - 1] === '');
                     }
                 }
             } else {
