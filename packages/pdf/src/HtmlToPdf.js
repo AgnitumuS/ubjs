@@ -2090,7 +2090,7 @@ PDFContainerElement.prototype.write = function (converter) {
      */
 }
 
-readBytes = function(data, offset) {
+function readBytes(data, offset) {
   return data.subarray(offset, offset+ 5);
 }
 
