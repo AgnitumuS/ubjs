@@ -2090,6 +2090,10 @@ PDFContainerElement.prototype.write = function (converter) {
      */
 }
 
+readBytes = function(data, offset) {
+  return data.subarray(offset, offset+ 5);
+}
+
 // takes a string imgData containing the raw bytes of
 // a jpeg image and returns [width, height]
 function getJpegSizeFromBytes (data) {
