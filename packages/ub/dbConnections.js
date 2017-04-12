@@ -13,7 +13,6 @@ const chColon = 58
 const chLRoundBrac = 40
 const chRRoundBrac = 41
 const chLBrac = 91
-// const chRBrac = 93
 const chZero = 48
 const chNine = 57
 const chPlus = 43
@@ -113,21 +112,19 @@ class TubDatabase_ {
    * @returns {parseSQLResult}
    */
   parseSQL (sql, params) {
-    // return {parsedSql: sql, parsedParams: []}
-    let parsedSql = []
     const parsedParams = []
     const paramPositions = []
     let unnamedParamsCount = 0
     params = params || {}
-    for (let i = 0, ch = sql.charCodeAt(0); i < sql.length; ch = sql.charCodeAt(++i)) {
+    for (let i = 0, ch = sql.charCodeAt(0), L = sql.length; i < L; ch = sql.charCodeAt(++i)) {
       if (ch === chDblQuote) {
-        while ((i < sql.length) && (sql.charCodeAt(++i) !== chDblQuote)) {}
+        while ((i < L) && (sql.charCodeAt(++i) !== chDblQuote)) {}
       } else if (ch === chQuote) {
-        while ((i < sql.length) && (sql.charCodeAt(++i) !== chQuote)) {}
+        while ((i < L) && (sql.charCodeAt(++i) !== chQuote)) {}
       } else if (ch === chColon) {
-                // while ((i< sql.length) && (sql.charCodeAt(++i) !== chQuote)) {}
+        // while ((i< L) && (sql.charCodeAt(++i) !== chQuote)) {}
         if ((ch = sql.charCodeAt(++i)) === chColon) {
-                    // MSSQL ALTER AUTHORIZATION ON database::testdb
+        // MSSQL ALTER AUTHORIZATION ON database::testdb
         } else if (ch === chLRoundBrac) {
           // syn inline :(value):
           let inlineParamValue, paramStart, paramEnd
@@ -137,7 +134,7 @@ class TubDatabase_ {
             const quote = ch
             let curPosition = i + 1
             inlineParamValue = []
-            while (i < sql.length) {
+            while (i < L) {
               ch = sql.charCodeAt(++i)
               if (ch === quote) {
                 inlineParamValue.push(sql.slice(curPosition, i))
@@ -165,7 +162,7 @@ class TubDatabase_ {
             inlineParamValue = Number.parseFloat(sql.slice(paramStart, paramEnd))
           } else if (ch === chLBrac) {
             let arraySearchPosition = paramStart
-            while (i < sql.length) {
+            while (i < L) {
               i = sql.indexOf(']):', arraySearchPosition)
               i++
               try {
@@ -232,23 +229,24 @@ class TubDatabase_ {
       } else if (ch === chMinus) {
         if ((ch = sql.charCodeAt(++i)) === chMinus) {
         // comments
-          while ((i < sql.length) && ((ch = sql.charCodeAt(++i)) !== chLF) && (ch !== chCR)) {}
+          while ((i < L) && ((ch = sql.charCodeAt(++i)) !== chLF) && (ch !== chCR)) {}
         }
       }
     }
     let startPos = 0
-    for (let curParam = 0; curParam < paramPositions.length; curParam++) {
-      parsedSql.push(sql.slice(startPos, paramPositions[curParam].paramStart))
-      parsedSql.push('?')
+    let sqlParts = []
+    for (let curParam = 0, L = paramPositions.length; curParam < L; curParam++) {
+      sqlParts.push(sql.slice(startPos, paramPositions[curParam].paramStart))
+      sqlParts.push('?')
       startPos = paramPositions[curParam].paramEnd
     }
-    if (parsedSql.length === 0) {
-      parsedSql = sql
+    if (sqlParts.length === 0) {
+      return {parsedSql: sql, parsedParams: parsedParams}
     } else {
-      parsedSql.push(sql.slice(startPos, sql.length))
-      parsedSql = parsedSql.join('')
+      sqlParts.push(sql.slice(startPos, sql.length))
+      return {parsedSql: sqlParts.join(''), parsedParams: parsedParams}
     }
-    return {parsedSql, parsedParams}
+
   }
 }
 
@@ -298,14 +296,14 @@ function runSQL_ (req, resp) {
   }
 
   const parameters = QueryString.parse(req.parameters, null, null)
-  const connectionName = parameters.connection
+  const connectionName = parameters.connection || parameters.CONNECTION
   if (connectionName) {
     database = App.databases_[connectionName]
   } else {
     database = App.defaultDatabase_
   }
 
-  if (!database) { throw new Error('unknown connection name') }
+  if (!database) { throw new Error('Unknown connection name') }
 
   if (req.method === 'GET') {
     sql = parameters.sql
@@ -316,9 +314,16 @@ function runSQL_ (req, resp) {
     sqlParams = parameters
   }
 
-  if (!sql) { throw new Error('no SQL statement passed') }
+  if (!sql) { throw new Error('Empty SQL statement passed') }
 
-  resp.writeEnd(database.run(sql, sqlParams))
+  let upperStmt = sql.toUpperCase()
+  if (upperStmt.startsWith('SELECT') || upperStmt.startsWith('PRAGMA')) {
+    let result = database.run(sql, sqlParams)
+    resp.writeEnd(result)
+  } else {
+    database.exec(sql, sqlParams)
+    resp.writeEnd('[]')
+  }
   resp.statusCode = 200
 }
 
