@@ -3,10 +3,12 @@
  * Refactored for ES6 by pavel.mash on 10.02.2017
  */
 
+/* global DOMParser, XMLSerializer */
+
 const _ = require('lodash')
 const pdfUtils = require('./pdfUtils')
 const PdfTextBox = require('./PdfTextBox')
-
+const PNG = require('../libs/png')
 /**
  * @param {Object} pdf
  */
@@ -88,7 +90,7 @@ HtmlToPdf.prototype.getStyleProp = function (style) {
   if (style['font-weight']) {
     tmp = style['font-weight']
     if (tmp) {
-      res.font.weight = tmp;
+      res.font.weight = tmp
       if (tmp !== 'normal') {
         res.font.type = 'bold'
       }
@@ -97,7 +99,7 @@ HtmlToPdf.prototype.getStyleProp = function (style) {
   if (style['font-style']) {
     tmp = style['font-style']
     if (tmp) {
-      res.font.style = tmp;
+      res.font.style = tmp
       if (tmp !== 'normal') {
         res.font.type = (res.font.type || '') + 'italic'
       }
@@ -252,54 +254,52 @@ function removeEntities (htmlText) {
  * @param {Object} n Node
  * @returns {{}}
  */
-HtmlToPdf.prototype.getImageInfo = function(n){
-  var img = {}, me = this,
-    inmgParams, initHeight, initWidth,
-    baseWidth, baseHeight, imgData;
-  img.imgData = n.attributes.getNamedItem('src').nodeValue;
-  img.imgType = img.imgData.match(/^data:image\/(.*);/);
-  if (img.imgType && img.imgType.length > 1){
-    img.imgType = (img.imgType[1] || '').toUpperCase();
-  } else {
-    img.imgType = 'JPEG';
+HtmlToPdf.prototype.getImageInfo = function (n) {
+  let img = {
+    imgData: n.attributes.getNamedItem('src').nodeValue
   }
 
-  img.nodeHeight = initHeight = n.attributes.getNamedItem('height') ? Number(n.attributes.getNamedItem('height').nodeValue) * me.kWidth : null;
-  img.nodeWidth = initWidth = n.attributes.getNamedItem('width') ? Number(n.attributes.getNamedItem('width').nodeValue)* me.kWidth: null;
-  if ((initHeight === null) || (initWidth === null)){
-    imgData = img.imgData.split(',')[1];
-    switch(img.imgType){
+  img.imgType = img.imgData.match(/^data:image\/(.*);/)
+  if (img.imgType && img.imgType.length > 1) {
+    img.imgType = (img.imgType[1] || '').toUpperCase()
+  } else {
+    img.imgType = 'JPEG'
+  }
+
+  let initHeight = img.nodeHeight = n.attributes.getNamedItem('height') ? Number(n.attributes.getNamedItem('height').nodeValue) * this.kWidth : null
+  let initWidth = img.nodeWidth = n.attributes.getNamedItem('width') ? Number(n.attributes.getNamedItem('width').nodeValue) * this.kWidth : null
+  if ((initHeight === null) || (initWidth === null)) {
+    let imgData = img.imgData.split(',')[1]
+    let imgParams, baseWidth, baseHeight
+    switch (img.imgType) {
       case 'JPEG':
-        inmgParams =  getJpegSizeFromBytes(base64toArrayBuffer(imgData));
-        baseWidth = inmgParams.width;
-        baseHeight = inmgParams.height;
-        //baseWidth = inmgParams[0];
-        //baseHeight = inmgParams[1];
-        break;
+        imgParams = getJpegSizeFromBytes(base64toArrayBuffer(imgData))
+        baseWidth = imgParams.width
+        baseHeight = imgParams.height
+        break
       case 'PNG':
-        inmgParams = new PNG(base64toArrayBuffer(imgData));
-        baseWidth = inmgParams.width;
-        baseHeight = inmgParams.height;
-        break;
+        imgParams = new PNG(base64toArrayBuffer(imgData))
+        baseWidth = imgParams.width
+        baseHeight = imgParams.height
+        break
       default:
-        throw new Error('Unknown image format');
+        throw new Error('Unknown image format')
     }
     if (!img.nodeWidth) {
-      img.nodeWidth = baseWidth;
-      if (initHeight && (initHeight !== baseHeight)){
-        img.nodeWidth = img.nodeWidth * (baseHeight/ initHeight);
+      img.nodeWidth = baseWidth
+      if (initHeight && (initHeight !== baseHeight)) {
+        img.nodeWidth = img.nodeWidth * (baseHeight / initHeight)
       }
     }
     if (!img.nodeHeight) {
-      img.nodeHeight = baseHeight * me.kWidth;
-      if (initWidth && (initWidth !== baseWidth)){
-        img.nodeHeight = img.nodeHeight * (baseWidth/ initWidth);
+      img.nodeHeight = baseHeight * this.kWidth
+      if (initWidth && (initWidth !== baseWidth)) {
+        img.nodeHeight = img.nodeHeight * (baseWidth / initWidth)
       }
     }
   }
-  return img;
-};
-
+  return img
+}
 
 function parseComplex (value, onValue) {
   let result = {}
@@ -628,29 +628,29 @@ function getEmptyInfo () {
  * @param {Object} node
  * @returns {Object}
  */
-HtmlToPdf.prototype.getTagInfo = function(node){
-  var me = this, info, nodeName = node.nodeName.toLowerCase();
-  info = tagInfo[nodeName];
-  if (info){
-    info = _.cloneDeep(info, true);
+HtmlToPdf.prototype.getTagInfo = function (node) {
+  let nodeName = node.nodeName.toLowerCase()
+  let info = tagInfo[nodeName]
+  if (info) {
+    info = _.cloneDeep(info)
   }
-  info = info || { text: true, inline: true};
+  info = info || {text: true, inline: true}
   if (nodeName === '#comment') {
     if (node.data && (node.data.trim() === 'pagebreak')) {
-      info.inline = false;
+      info.inline = false
     }
   }
-  _.defaults(info, getEmptyInfo());
+  _.defaults(info, getEmptyInfo())
 
-  if (!info.skip && !info.text ){
-    info.styleProps = me.parseStyle(node);
-    info.style = me.getStyleProp(info.styleProps);
-    info.border = me.getBorderInfo(info.styleProps);
-    info.padding = me.getPaddingInfo(info.styleProps);
-    info.margin = me.getMarginInfo(info.styleProps);
+  if (!info.skip && !info.text) {
+    info.styleProps = this.parseStyle(node)
+    info.style = this.getStyleProp(info.styleProps)
+    info.border = this.getBorderInfo(info.styleProps)
+    info.padding = this.getPaddingInfo(info.styleProps)
+    info.margin = this.getMarginInfo(info.styleProps)
   }
-  return info;
-};
+  return info
+}
 
 HtmlToPdf.prototype.afterWriteMarked = function (component, ctxt) {
   this.config.onPositionDetermine({
@@ -696,7 +696,7 @@ HtmlToPdf.prototype.writeInlineBlock = function (items, noWrite) {
   let tb = new PdfTextBox(_.defaults({
     top: calcParams.top,
     reserveTopHeight: this.reserveTopHeight,
-    //font: parent.info.style.font,
+    // font: parent.info.style.font,
     // align: parent.info.style.align,
     // verticalAlign: parent.info.style.verticalAlign,
     // textIndent: parent.info.style.textIndent,
@@ -812,10 +812,10 @@ HtmlToPdf.prototype.writeSpecial = function (context, noWrite) {
       break
     case '#COMMENT':
       if (node.data && node.data.trim() === 'pagebreak') {
-        context.info.inline = false;
-        result = 2;
-        context.parent.setTopPosition(this.pdf.getPageTop(), context.parent.getTopPageNumber() + 1 );
-        break;
+        context.info.inline = false
+        result = 2
+        context.parent.setTopPosition(this.pdf.getPageTop(), context.parent.getTopPageNumber() + 1)
+        break
       } else {
         result = 1
       }
@@ -832,7 +832,7 @@ HtmlToPdf.prototype.writeSpecial = function (context, noWrite) {
  * @returns {number} 2 - processed break parent 1 - processed; 0 - unknown tag or empty node
  */
 HtmlToPdf.prototype.parseNodes = function (context, noWrite, items) {
-  var me = this;
+  var me = this
   var writeRes
   let itemList = []
   let result = 0
@@ -871,10 +871,10 @@ HtmlToPdf.prototype.parseNodes = function (context, noWrite, items) {
       }
     } else {
       if (ctx.info.comment) {
-        writeRes = me.writeSpecial(ctx, noWrite);
-        if (writeRes === 2){
-          writeInline();
-          result = 1;
+        writeRes = me.writeSpecial(ctx, noWrite)
+        if (writeRes === 2) {
+          writeInline()
+          result = 1
         }
       } else {
         itemList.push(ctx)
@@ -2090,78 +2090,76 @@ PDFContainerElement.prototype.write = function (converter) {
      */
 }
 
+// takes a string imgData containing the raw bytes of
+// a jpeg image and returns [width, height]
+function getJpegSizeFromBytes (data) {
+  var hdr = (data[0] << 8) | data[1]
 
-//takes a string imgData containing the raw bytes of
-//a jpeg image and returns [width, height]
-getJpegSizeFromBytes = function(data) {
-
-  var hdr = (data[0] << 8) | data[1];
-
-  if(hdr !== 0xFFD8)
-    throw new Error('Supplied data is not a JPEG');
+  if (hdr !== 0xFFD8) {
+    throw new Error('Supplied data is not a JPEG')
+  }
 
   var len = data.length,
     block = (data[4] << 8) + data[5],
     pos = 4,
-    bytes, width, height, numcomponents;
+    bytes, width, height, numcomponents
 
-  while(pos < len) {
-    pos += block;
-    bytes = readBytes(data, pos);
-    block = (bytes[2] << 8) + bytes[3];
-    if((bytes[1] === 0xC0 || bytes[1] === 0xC2) && bytes[0] === 0xFF && block > 7) {
-      bytes = readBytes(data, pos + 5);
-      width = (bytes[2] << 8) + bytes[3];
-      height = (bytes[0] << 8) + bytes[1];
-      numcomponents = bytes[4];
-      return {width:width, height:height, numcomponents: numcomponents};
+  while (pos < len) {
+    pos += block
+    bytes = readBytes(data, pos)
+    block = (bytes[2] << 8) + bytes[3]
+    if ((bytes[1] === 0xC0 || bytes[1] === 0xC2) && bytes[0] === 0xFF && block > 7) {
+      bytes = readBytes(data, pos + 5)
+      width = (bytes[2] << 8) + bytes[3]
+      height = (bytes[0] << 8) + bytes[1]
+      numcomponents = bytes[4]
+      return {width: width, height: height, numcomponents: numcomponents}
     }
 
-    pos+=2;
+    pos += 2
   }
 
-  throw new Error('getJpegSizeFromBytes could not find the size of the image');
+  throw new Error('getJpegSizeFromBytes could not find the size of the image')
 }
 
-//todo use node buffer to convert
-var BASE64STRING = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+// todo use node buffer to convert
+var BASE64STRING = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 
-var BASE64DECODELOOKUP = new Uint8Array( 256 );
-(function(){
-  for( var i = 0, l=BASE64STRING.length; i < l; i ++ ) {
-    BASE64DECODELOOKUP[BASE64STRING[i].charCodeAt(0)] = i;
+var BASE64DECODELOOKUP = new Uint8Array(256);
+(function () {
+  for (var i = 0, l = BASE64STRING.length; i < l; i++) {
+    BASE64DECODELOOKUP[BASE64STRING[i].charCodeAt(0)] = i
   }
-})();
+})()
 
-function base64toArrayBuffer(base64) {
+function base64toArrayBuffer (base64) {
   var bufferLength = base64.length * 0.75,
     len = base64.length, i, p = 0,
-    encoded1, encoded2, encoded3, encoded4;
+    encoded1, encoded2, encoded3, encoded4
 
-  if (base64[base64.length - 1] === "=") {
-    bufferLength--;
-    if (base64[base64.length - 2] === "=") {
-      bufferLength--;
+  if (base64[base64.length - 1] === '=') {
+    bufferLength--
+    if (base64[base64.length - 2] === '=') {
+      bufferLength--
     }
   }
 
   var arrayBuffer = new ArrayBuffer(bufferLength),
-    bytes = new Uint8Array(arrayBuffer);
+    bytes = new Uint8Array(arrayBuffer)
 
-  for (i = 0; i < len; i+=4) {
-    encoded1 = BASE64DECODELOOKUP[base64.charCodeAt(i)];
-    encoded2 = BASE64DECODELOOKUP[base64.charCodeAt(i+1)];
-    encoded3 = BASE64DECODELOOKUP[base64.charCodeAt(i+2)];
-    encoded4 = BASE64DECODELOOKUP[base64.charCodeAt(i+3)];
+  for (i = 0; i < len; i += 4) {
+    encoded1 = BASE64DECODELOOKUP[base64.charCodeAt(i)]
+    encoded2 = BASE64DECODELOOKUP[base64.charCodeAt(i + 1)]
+    encoded3 = BASE64DECODELOOKUP[base64.charCodeAt(i + 2)]
+    encoded4 = BASE64DECODELOOKUP[base64.charCodeAt(i + 3)]
 
-    bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
-    bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
-    bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63);
+    bytes[p++] = (encoded1 << 2) | (encoded2 >> 4)
+    bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2)
+    bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63)
   }
 
-  return arrayBuffer;
+  return arrayBuffer
 }
-
 
 module.exports = HtmlToPdf
 
