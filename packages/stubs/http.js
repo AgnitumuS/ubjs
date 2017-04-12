@@ -234,7 +234,7 @@ exports.get = function get (options, URLParams) {
  */
 function ClientRequest (options) {
   this.options = Object.assign({}, options)
-  var _http = this.connection = new THTTPClient()
+  const _http = this.connection = new THTTPClient()
   _http.initialize(options.host, options.port, options.useHTTPS, options.useCompression,
         proxyConfig.proxy, proxyConfig.bypass, options.connectTimeout, options.sendTimeout, options.receiveTimeout
     )
@@ -260,17 +260,17 @@ ClientRequest.prototype.write = function (data, encoding) {
 
 /**
  * Set all headers delimited by CRLF by once
- * @param {String} value
+ * @param {String} allHeaders
  */
 ClientRequest.prototype.setHeadersAsString = function (allHeaders) {
   this.options._headersAsString = allHeaders
 }
 
 function makeRequestHeaders (request) {
-  if (this.options._headersAsString) return this.options._headersAsString
+  if (request.options._headersAsString) return request.options._headersAsString
   
   let arr = []
-  let head = request.options.headers,
+  let head = request.options.headers
   for (let prop in head) {
     arr.push(prop + ': ' + head[prop])
   }
@@ -296,7 +296,7 @@ ClientRequest.prototype.end = function (data, encoding) {
   }
   let msg = new IncomingMessage(_http)
   if (!this.emit('response', msg) ||
-        !msg.emit('data', new Buffer(msg.read(msg.encoding == 'binary' ? 'bin' : msg.encoding == 'utf8' ? 'utf-8' : msg.encoding)).toString(msg.encoding)) ||
+        !msg.emit('data', new Buffer(msg.read(msg.encoding === 'binary' ? 'bin' : msg.encoding === 'utf8' ? 'utf-8' : msg.encoding)).toString(msg.encoding)) ||
         !msg.emit('end')) {
     return msg
   }
