@@ -2046,50 +2046,6 @@ HtmlContext.prototype.getBorderRectangle = function () {
   return result
 }
 
-// td tag
-function HtmlContextTd (parent, node, tagInfo, config) {
-  HtmlContext.call(this, parent, node, tagInfo, config)
-  this.top = this.parent.top + dNum(this.parent.info.margin.top) + dNum(this.parent.info.border.borderWidth.top) + dNum(this.parent.info.padding.top)
-  // this.parent.top;
-  this.resetTopPosition()
-}
-
-HtmlContextTd.prototype = Object.create(HtmlContext.prototype, {})
-HtmlContextTd.prototype.constructor = HtmlContextTd
-
-HtmlContextTd.prototype.resetTopPosition = function () {
-  this.currentTop = this.top
-  this.currentTopPageNumber = this.pageNumber
-}
-
-function PDFContainerElement (context, config) {
-  _.defaults(this, config)
-  this.context = context
-    // HtmlToPdf
-}
-
-PDFContainerElement.prototype.write = function (converter) {
-    // converter.writeSpecial(this.context);
-  var me = this, pdf = converter.pdf,
-    context = me.context,
-    rect = context.getBorderRectangle(),
-    border = context.info.border
-     /*
-     if (border.borderWidth.top){
-         if (me.border.color && !colorWrited){
-             colorWrited = true;
-             me.context.setDrawColor(me.border.color, me.pageNumber);
-         }
-         me.pdf.setLineWidthOnPage(rW(me.border.bottom), me.pageNumber);
-         me.pdf.lineOnPage(me.left + me.margin.left, //+ me.border.left
-             me.bottom - me.margin.bottom,
-             me.right - me.margin.right, //- me.border.right
-             me.bottom - me.margin.bottom, me.pageNumber);
-
-     }
-     */
-}
-
 function readBytes(data, offset) {
   return data.subarray(offset, offset+ 5);
 }
