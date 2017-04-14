@@ -157,7 +157,7 @@ Ext.define('UB.view.ToolbarMenu', {
 
 
         if(!shortcut.get('inWindow')){ //inWindow
-            commandConfig.tabId = shortcut.get('ID'); // recordId;
+            commandConfig.tabId = 'navigator' + shortcut.get('ID'); // recordId;
             commandConfig.target = $App.viewport.centralPanel;
         }
 
