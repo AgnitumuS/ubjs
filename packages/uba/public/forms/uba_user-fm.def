@@ -64,6 +64,9 @@ exports.formDef = {
                 attributeName: "trustedIP"
             }, {
                 attributeName: "uData"
+            }, {
+                attributeName: "lastPasswordChangeDate",
+                readOnly: true
             }]
         }, {
             items: [{
