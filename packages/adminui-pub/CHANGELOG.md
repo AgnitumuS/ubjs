@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.15]
+### Added
+
+### Fixed
+-  prevent open the same command in separate tabs in case it opened from left or top menu
+
+
 ## [4.2.13]
 ### Added
 
