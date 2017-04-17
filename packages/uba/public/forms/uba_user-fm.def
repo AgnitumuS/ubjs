@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "uba_user"
-//@formType "auto"
-//@caption "User"
-//@description "User"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "uba_user"
+// @model "UBA"
+// @formType "auto"
+// @caption "User"
+// @description "User"
 exports.formDef = {
     size: {
         width: 500,
@@ -64,9 +65,6 @@ exports.formDef = {
                 attributeName: "trustedIP"
             }, {
                 attributeName: "uData"
-            }, {
-                attributeName: "lastPasswordChangeDate",
-                readOnly: true
             }]
         }, {
             items: [{
