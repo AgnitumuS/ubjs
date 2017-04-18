@@ -1,8 +1,8 @@
 /*
-  Rewrited to ES6 from UB 1.12sources by pavel.mash on 12.2016
+  Rewritten to ES6 from UB 1.12 sources by pavel.mash on 12.2016
  */
 
-/* global Blob */
+/* global Blob, localStorage */
 const _ = require('lodash')
 const EventEmitter = require('./events')
 const ubUtils = require('./utils')
@@ -302,7 +302,7 @@ function UBConnection (connectionParams) {
           let parsed = JSON.parse(storedSession)
           currentSession = doCreateNewSession.call(this, parsed.data, parsed.secretWord, parsed.authSchema)
           return Promise.resolve(currentSession)
-        } catch(e) {
+        } catch (e) {
           localStorage.removeItem(this.__sessionPersistKey) // wrong session persistent data
         }
       }
@@ -511,7 +511,16 @@ function UBConnection (connectionParams) {
       aValues = authData.split(' ')
       if (aValues.length !== 3) throw new Error('invalidCertAuthResponse')
       urlParams.CONNECTIONID = aValues[1]
-      return pki.setRecipientCertificate(aValues[2]).then(function () {
+      let lastFP, lastKeyMediaName
+      return pki.fp().then(function (fp) {
+        lastFP = fp
+      }).then(function () {
+        return pki.keyMediaName().then(function (kmn) {
+          lastKeyMediaName = encodeURIComponent(kmn)
+        })
+      }).then(function () {
+        return pki.setRecipientCertificate(aValues[2])
+      }).then(function () {
         return ubUtils.base64FromAny(resp.data)
       }).then(function (envelop) {
         if (!envelop || (envelop === '')) { throw new Error('invalidCertAuthEnvelop') }
@@ -525,6 +534,9 @@ function UBConnection (connectionParams) {
       }).then(function (encryptEnvelopeRes) {
         let envelop = ubUtils.base64toArrayBuffer(encryptEnvelopeRes)
         if (envelop.byteLength === 0) { throw new Error('invalidCertAuthEnvelopOut') }
+        // add fingerprint
+        urlParams.FP = lastFP
+        urlParams.KMN = lastKeyMediaName
         // repeat request with encrypted secret word
         return me.xhr({
           url: AUTH_METHOD_URL,
@@ -690,7 +702,7 @@ UBConnection.prototype.cacheKeyCalculate = function (root, attributes) {
   if (Array.isArray(attributes)) {
     keyPart.push(MD5(JSON.stringify(attributes)).toString())
   }
-  return keyPart.join('#').replace(/[\\:\.]/g, '#') // replace all :, \ -> #;
+  return keyPart.join('#').replace(/[\\:.]/g, '#') // replace all :, \ -> #;
 }
 
 /**

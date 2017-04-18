@@ -103,6 +103,21 @@ module.exports = function (session) {
     }
   })
 
+  console.log('\t\t\tcreate `Advanced security')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      parentID: folderID,
+      code: 'uba_advSecurity',
+      caption: 'Advanced security',
+      displayOrder: 15,
+      iconCls: 'fa fa-user-secret',
+      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'uba_advSecurity', method: 'select', fieldList: ['*'] }]}}, null, '\t')
+    }
+  })
+
   console.log('\t\t\tcreate `User groups` shortcut')
   conn.insert({
     fieldList: ['ID'],
