@@ -252,6 +252,6 @@ Ext.define("UB.core.UBService", {
      * @deprecated
      */
     setUserData: function(/*params, callback, scope*/) {
-        throw new Error('deprecated. Use setLanguage'); //TODO - create setLanguage method
+        throw new Error('deprecated. Use uba_user.changeLanguage')
     }
 });
