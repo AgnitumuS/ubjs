@@ -655,14 +655,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     background-image: url(./ubimages/help.png) !important;
 }
 
-.mx-graph-editor {
-    background: #ffffff;
-}
-
-.mx-graph-editor .x-panel-body {
-    background: url('./ubimages/grid.gif') !important;
-}
-
 .mx-graph-editor .graph-editor-holder {
     width: 100% !important;
     height: 100% !important;
