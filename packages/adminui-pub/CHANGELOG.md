@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - remove ER diagram background image (not background is white )
+- ignore attributes with property `defaultView: false` for automatically generated forms
 
 ## [4.2.13]
 ### Added
