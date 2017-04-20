@@ -21,7 +21,7 @@ const UBNotifierWSProtocol = require('./UBNotifierWSProtocol')
 const ClientRepository = require('./ClientRepository')
 
 // regular expression for URLs server not require authorization.
-const NON_AUTH_URLS_RE = /(\/|^)(models|auth|getAppInfo|downloads)(\/|\?|$)/
+const NON_AUTH_URLS_RE = /(\/|^)(auth|getAppInfo)(\/|\?|$)/
 // regular expression for URLs server not require encryption. Note - all non-auth method not require encryption also
 const NON_ENCRYPTED_URLS_RE = /(\/|^)(initEncryption)(\/|\?|$)/
 // all request passed in this timeout to run will be send into one runList server method execution
