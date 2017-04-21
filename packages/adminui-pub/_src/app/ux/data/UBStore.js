@@ -415,6 +415,7 @@ Ext.define('UB.ux.data.UBStore', {
             };
         me.fireEvent('beforereload');
 
+		me.loading = true;
         me.indexByID = null;
         me.clearCache().done(function(){
             if (!me.isDestroyed){ // when cache is clear user close form and store is destroyed

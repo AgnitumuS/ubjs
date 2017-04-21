@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 -  prevent open the same command in separate tabs in case it opened from left or top menu
+-  set `UBStore.loading = true` in method **UBStore.reload** before call **UBStore.clearCache()**.
 
 ### Changed
 - remove ER diagram background image (not background is white )
