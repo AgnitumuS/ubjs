@@ -85,7 +85,7 @@ Ext.define('UB.core.UBCommand', {
         throw new Error('invalid entity ' + entityName)
       }
       _.forEach(entity.attributes, function (attribute, attrName) {
-        if (!privateRe.test(attrName) && (!parentContext || !parentContext.hasOwnProperty(attrName))) {
+        if (attribute.defaultView !== false && !privateRe.test(attrName) && (!parentContext || !parentContext.hasOwnProperty(attrName))) {
           items.push({ attributeName: attrName, anchor: '100%' })
         }
       })
