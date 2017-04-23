@@ -31,7 +31,7 @@ Security
     - OpenIDConnect (OAuth2) **(E)**
     - Negotiate (Kerberos, NTLM) **(E)**
     - private/public keys  **(D)**
-    - JWT **(UB 4.2)**
+    - JWT **(UB 4.3)**
  - Access restriction by 
     - custom rules
     - user IP
