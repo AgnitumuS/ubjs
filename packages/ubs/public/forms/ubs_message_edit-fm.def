@@ -32,15 +32,11 @@ exports.formDef = {
                     {
                         xtype: 'ubcombobox',
                         itemId: 'roleCombo',
-                        store: Ext.create('UB.ux.data.UBStore', {
-                            ubRequest: {
+                        ubRequest: {
                                 entity: 'uba_role',
                                 method: 'select',
                                 fieldList: ['ID','name']
-                            },
-                            autoLoad: false,
-                            autoDestroy: true
-                        }),
+                        },
                         valueField: 'ID',
                         displayField: 'name',
                         fieldLabel: UB.i18n('forAllRoleUsers'),
