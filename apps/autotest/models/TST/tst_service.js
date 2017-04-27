@@ -1,7 +1,8 @@
 'use strict'
 
-var tstm1 = require('./modules/tstm'),
-  assert = require('assert')
+const tstm1 = require('./modules/tstm')
+const assert = require('assert')
+const _ = require('lodash')
 
 var me = tst_service
 
@@ -127,3 +128,30 @@ me.handledExceptionTest = function (ctx) {
   throw new UB.UBAbort('<<<HelloFromHandledError>>>')
 }
 me.entity.addMethod('handledExceptionTest')
+
+/**
+ * Test Session.runAsAdmin
+ * @param {ubMethodParams} ctx
+ */
+me.runAsAdminTest = function (ctx) {
+  let uDataBefore = _.cloneDeep(Session.uData)
+  Session.runAsAdmin(function(){
+    //uParam.ID = userID;
+    //uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
+    let store = new TubDataStore('uba_user')
+    store.run('update', {
+        fieldList: ['ID'],
+        "__skipOptimisticLock": true,
+        //execParams: uParam
+        execParams: {ID: 10, name: 'admin'}
+        //execParams: {ID: 1, name: 'Admin'}
+      }
+    )
+  })
+  let uDataAfter = Session.uData
+  ctx.mParams.runAsAdminUData = {
+    before: uDataBefore,
+    after: uDataAfter
+  }
+}
+me.entity.addMethod('runAsAdminTest')

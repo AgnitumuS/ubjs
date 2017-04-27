@@ -9,3 +9,4 @@ UBA_AUDIT_SELECT_ONLY;uba_audit;[^s]*;D;Everyone;Deny direct security audit oper
 UBA_AUDIT_SECURE_EVENT;uba_audit;secureBrowserEvent;A;User;Allow insert secureBrowserEvent for authorized user
 UBA_SUBJECT_DENY;uba_subject;[iuda]*;D;Everyone;Deny direct modification of UNITY uba_subject
 UBA_AUDITTRAIL_SEL_ONLY;uba_auditTrail;[iuda]*;D;Everyone;Deny direct audit operation even for all roles
+UBA_ADVSEC_EDIT_SUPERVISOR;uba_advSecurity;[iuda]*;A;Supervisor;Allow CUD operations on advanced security for supervisor

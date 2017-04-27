@@ -5,101 +5,102 @@
 	"sqlAlias": "tmd",
 	"cacheType": "None",
 	"descriptionAttribute": "caption",
-	"attributes": {
-		"code":
+	"attributes": [
 		{
+			"name": "code",
 			"dataType": "String",
 			"size": 32,
 			"caption": "Code",
 			"allowNull": false
 		},
-		"caption":
 		{
+			"name": "caption",
 			"dataType": "String",
 			"size": 255,
 			"caption": "Caption",
 			"allowNull": true,
 			"isMultiLang": true
 		},
-		"complexCaption":
 		{
+			"name": "complexCaption",
 			"dataType": "String",
 			"size": 512,
 			"caption": "complexCaption",
 			"allowNull": true,
 			"isMultiLang": false
 		},
-		"nonNullDict_ID":
 		{
+			"name": "nonNullDict_ID",
 			"dataType": "Entity",
 			"associatedEntity": "tst_dictionary",
 			"caption": "nonNullDict_ID",
 			"allowNull": false
 		},
-		"nullDict_ID":
 		{
+			"name": "nullDict_ID",
 			"dataType": "Entity",
 			"associatedEntity": "tst_dictionary",
 			"caption": "nullDict_ID",
 			"allowNull": true
 		},
-		"parent":
 		{
+			"name": "parent",
 			"dataType": "Entity",
 			"associatedEntity": "tst_maindata",
 			"caption": "parent",
 			"allowNull": true
 		},
-		"parent1":
 		{
+			"name": "parent1",
 			"dataType": "Entity",
 			"associatedEntity": "tst_mainunity",
 			"caption": "parent",
 			"allowNull": true
 		},
-		"enumValue":
 		{
+			"name": "enumValue",
 			"dataType": "Enum",
 			"enumGroup": "TEST_GROUP_1",
 			"caption": "enumValue",
 			"allowNull": false,
 			"defaultValue": "ONE"
 		},
-		"dateTimeValue":
 		{
+			"name": "dateTimeValue",
 			"dataType": "DateTime",
 			"caption": "dateTimeValue",
 			"allowNull": true
 		},
-		"booleanValue":
 		{
+			"name": "booleanValue",
 			"dataType": "Boolean",
 			"caption": "booleanValue",
 			"allowNull": false,
 			"defaultValue": "0"
 		},
-		"manyValue":
 		{
+			"name": "manyValue",
             "dataType": "Many",
             "associatedEntity": "tst_dictionary",
             "associationManyData": "tst_maind_dict",
             "caption": "test many data",
             "allowNull": true
 		},
-		"manyValue2":
 		{
+			"name": "manyValue2",
             "dataType": "Many",
             "associatedEntity": "tst_dictionary",
             "associationManyData": "tst_maind_dict2",
             "caption": "test 2d many data",
             "allowNull": true
 		},
-		"bigintValue": {
+		{
+			"name": "bigintValue",
 		    "dataType": "BigInt",
             "caption": "BigInt",
 			"defaultValue": "0"
 		}
-	},
+	],
 	"mixins": {
 		"mStorage": {
 			"simpleAudit": true,

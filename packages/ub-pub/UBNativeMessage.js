@@ -14,10 +14,10 @@ UBNativeMessage.features = {
     host: 'none', UIName: 'NMUBExtension', minVersion: '1.0.0', installer: 'pgffhmifenmomiabibdpnceahangimdi' // downloads/UBBrowserNativeMessagesHostApp.exe
   },
   dstu: {
-    host: 'com.inbase.dstu', UIName: 'NMFeatureDSTU', minVersion: '1.0.0.5', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostDSTU.dll'
+    host: 'com.inbase.dstu', UIName: 'NMFeatureDSTU', minVersion: '1.0.0.7', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostDSTU.dll'
   },
   iit: {
-    host: 'com.inbase.iit', UIName: 'NMFeatureIIT', minVersion: '1.0.0.5', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostIIT.dll'
+    host: 'com.inbase.iit', UIName: 'NMFeatureIIT', minVersion: '1.0.0.7', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostIIT.dll'
   },
   pdfsigner: {
     host: 'com.inbase.pdfsigner', UIName: 'NMFeaturePDFSigner', minVersion: '1.0.0.3', installer: 'models/PDF/ub-extension/UBHostPdfSignSetup{0}.' + (ubUtils.isMac ? 'pkg' : 'exe'), libraryName: 'SET _LIB_NAME_IN_UBNATIVENMESSAGES.dll'

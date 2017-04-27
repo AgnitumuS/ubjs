@@ -338,10 +338,11 @@ var Session = {
      * No parameter is passed to this event handler. Example below add `someCustomProperty` to Session.uData
      * and this value is accessible on client via $App.connection.userData(`someCustomProperty`):
      *
-     *      Session.on('login', function(){
-     *          var uData = Session.uData;
-     *          uData.someCustomProperty = 'Hello!';
-     *      });
+     *      // @param {THTTPRequest} req 
+     *      Session.on('login', function (req) {
+     *          var uData = Session.uData
+     *          uData.someCustomProperty = 'Hello!'
+     *      })
      *
      * See real life example inside `\models\ORG\org.js`.
      * @event login

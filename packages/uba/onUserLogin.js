@@ -2,23 +2,101 @@ let UBA = UB.ns('UBA')
 
 let auditEntityUba = App.domain.byName('uba_audit')
 let auditStore
+const queryString = require('querystring')
 
 if (auditEntityUba) {
   auditStore = new TubDataStore(auditEntityUba)
 }
+
+
+/**
+ * Checking of user IP and device fingerpriont based on settings from `uba_advSecurity`
+ * @param {THTTPRequest} req
+ */
+function checkAdvancedSecurity(req) {
+  let advData
+
+  try {
+    advData = UB.Repository('uba_advSecurity')
+      .attrs(['ID', 'allowedIP', 'refreshIP', 'fp', 'refreshFp', 'keyMediaName', 'refreshKeyMedia', 'mi_modifyDate' ])
+      .where('[userID]', '=', Session.userID)
+      .selectAsObject()[ 0 ];
+  } catch (e) {
+    // nothing to do - table uba_advSecurity not exists
+    console.warn('Advanced security is disabled because table uba_advSecurity does not exists')
+    doCheckAdvancedSecurity = function(){}
+  }
+  if (!advData) return // no adv. settings for current user
+  let updateParams = {}
+  let needUpdate = false
+  if (advData.refreshIP) {
+    updateParams.allowedIP = Session.callerIP
+    updateParams.refreshIP = 0
+    needUpdate = true
+  } else if (advData.allowedIP) {
+    if (Session.callerIP !== advData.allowedIP) throw new Error('Allowed IP ' + advData.allowedIP + ' <> actual ' + Session.callerIP)
+  }
+  let fp = ''
+  let urlParams
+  if (advData.refreshFp || advData.fp || advData.refreshKeyMedia || advData.keyMediaName) { // fp required
+    urlParams = queryString.parse(req.parameters);
+  }
+
+  if (advData.refreshFp || advData.fp) { // fp required
+    fp = urlParams.FP;
+    if (!fp) throw new Error('Fingerprint requred but not passed in FP URL params')
+  }
+  if (advData.refreshFp) {
+    updateParams.fp = fp
+    updateParams.refreshFp = 0
+    needUpdate = true
+  } else if (advData.fp && (advData.fp !== fp)) {
+    throw new Error('Allowed FP ' + advData.fp + ' <> actual ' + fp)
+  }
+  let keyMediaName = '';
+  if (advData.refreshKeyMedia || advData.keyMediaName) { // keyMediaName required
+    keyMediaName = urlParams.KMN;
+    if (!keyMediaName) throw new Error('keyMediaName requred but not passed in KMN URL params')
+  }
+  if (advData.refreshKeyMedia) {
+    updateParams.keyMediaName = keyMediaName
+    updateParams.refreshKeyMedia = 0
+    needUpdate = true
+  } else if (advData.keyMediaName && (advData.keyMediaName !== keyMediaName)) {
+    throw new Error('Allowed KeyMedia ' + advData.keyMediaName + ' <> actual ' + keyMediaName)
+  }
+  if (needUpdate) {
+    updateParams.ID = advData.ID
+    updateParams.mi_modifyDate = advData.mi_modifyDate
+    let advStore = new TubDataStore('uba_advSecurity')
+    advStore.run('update', {
+      execParams: updateParams
+    })
+    advStore.freeNative()
+  }
+}
+
+let doCheckAdvancedSecurity = null // calculate later
 /**
  * Add Session 'login' event listener
  * Session 'login' event occurred every time new user logged in
  * here we calculate logged-in user's roles,
  * result we put in Session.uData - only one session-depended server object
+ * @param {THTTPRequest} req
  */
-UBA.onUserLogin = function () {
+UBA.onUserLogin = function (req) {
   console.debug('Call JS method: UBA.onUserLogin')
   let data = Session.uData
   let repo = null
 
   let userInfo = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
   data.login = userInfo.name || Session.userID
+
+  if (!doCheckAdvancedSecurity) {
+    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity') ? checkAdvancedSecurity : function(){}
+  }
+  doCheckAdvancedSecurity(req)
+
   try {
     repo = UB.Repository('uba_userrole')
       .attrs(['ID', 'roleID.name', 'roleID'])
@@ -51,8 +129,8 @@ UBA.onUserLogin = function () {
           actionUser: Session.userID,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
-          targetUser: data.login
-          // toValue: data.roles
+          targetUser: data.login,
+          fromValue: req.headers
         }
       })
       App.dbCommit(auditStore.entity.connectionName)

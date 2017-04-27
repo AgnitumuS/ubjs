@@ -25,6 +25,7 @@ module.exports = function (session) {
             {keyValue: 'adm_folder_users', execParams: {caption: 'Користувачі'}},
                 {keyValue: 'uba_user', execParams: {caption: 'Список користувачів'}},
                 {keyValue: 'uba_userrole', execParams: {caption: 'Ролі користувачів'}},
+		{keyValue: 'uba_advSecurity', execParams: {caption: 'Додаткова безпека'}},
                 {keyValue: 'uba_group', execParams: {caption: 'Список груп'}},
                 {keyValue: 'uba_usergroup', execParams: {caption: 'Групи користувачів'}},
                 {keyValue: 'uba_usercertificate', execParams: {caption: 'Сертифікати'}},
