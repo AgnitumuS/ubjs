@@ -198,6 +198,12 @@ function getAttributeInt (node, name) {
   return parseInt(getAttribute(node, name, 0), 10)
 }
 
+/**
+ * Set attribute value. If attribute not exist create it.
+ * @param {xmldom.Node} node
+ * @param {String} name
+ * @param {Int} value
+ */
 function updateAttributeInt (node, name, value) {
   if (!node.attributes) return
 
@@ -205,11 +211,10 @@ function updateAttributeInt (node, name, value) {
   if (val) {
     val.value = value
   } else {
-    val = document.createAttribute(name)
+    val = node.ownerDocument.createAttribute(name)
     val.value = value
     node.attributes.setNamedItem(val)
   }
-  // node.setAttribute(name, value);
 }
 
 const htmlBaseEntity = {'&lt;': 1, '&gt;': 1, '&amp;': 1, '&apos;': 1, '&quot;': 1}
