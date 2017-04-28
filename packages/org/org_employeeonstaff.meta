@@ -56,10 +56,7 @@
 		"mStorage": {
 			"simpleAudit":true,
 			"safeDelete":true
-        },
-		"rls": {
-			 "expression": "org_employeeonstaff.limitByBorderUnit()"
-		},
+        	},
 		"dataHistory":{}
 	}
 }

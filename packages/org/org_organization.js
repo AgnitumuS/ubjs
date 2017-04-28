@@ -45,9 +45,3 @@ me.addnew = function(ctxt) {
     svc.setassociatedEntityValueByCode(ctxt, 'orgBusinessTypeID','03' );
     svc.setassociatedEntityValueByCode(ctxt, 'orgOwnershipTypeID','01' );
 };
-
-me.limitByBorderUnit = function(){
-    var borderUnit = org_borderunit.getBorderUnitRead();
-    return !borderUnit || (borderUnit === '-1') ? '(1=1)':
-    'exists( select 1 from org_unit rlsOU where rlsOU.id = [ID] and rlsOU.mi_treePath like :(\'' + borderUnit + '%\'): )';
-};

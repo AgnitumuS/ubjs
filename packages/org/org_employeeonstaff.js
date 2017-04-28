@@ -278,9 +278,3 @@ me.assignCaptions = function (ctxt) {
         execParams['caption' + suffix] = empName + ' (' + tabNo + ',' + depName + ')' + eosType;
     });
 };
-
-me.limitByBorderUnit = function () {
-    var borderUnit = org_borderunit.getBorderUnitRead();
-    return !borderUnit || (borderUnit === '-1') ? '(1=1)' :
-    'exists( select 1 from org_unit rlsOU where rlsOU.id = [staffUnitID] and rlsOU.mi_treePath like :(\'' + borderUnit + '%\'): )'
-};

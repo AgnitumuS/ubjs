@@ -120,9 +120,6 @@
 			"defaults":{ 
 				"unitType": "DEP" 
 			} 
-		},
-		"rls": {
-			 "expression": "org_department.limitByBorderUnit()"
 		}
 	}
 }
