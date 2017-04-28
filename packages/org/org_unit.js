@@ -70,9 +70,3 @@ me.updatestaffunitcaption = function(ctxt) {
         staffUnits.next();
     }
 };
-
-me.limitByBorderUnit = function(){
-    var borderUnit = org_borderunit.getBorderUnitRead();
-    return !borderUnit || (borderUnit === '-1') ? '(1=1)':
-    '([mi_treePath] like :(\'' + borderUnit + '%\'): )'
-};

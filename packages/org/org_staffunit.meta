@@ -129,9 +129,6 @@
 			"safeDelete": true
 		},
 		"dataHistory": {},
-		"rls": {
-			 "expression": "org_staffunit.limitByBorderUnit()"
-		},
 		"unity": {
 			"entity": "org_unit",
 			"attributeList": ["parentID","code","caption"],

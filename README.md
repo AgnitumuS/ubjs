@@ -13,11 +13,11 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
   - Download and install [UnityBase 4](https://unitybase.info/downloads/UnityBaseSetup-v4.exe)
   - _(optional step)_ To debug server-side JavaScript [install a FireFox](https://www.mozilla.org/ru/firefox/new/)
 
-  - Configure a NPM to use a unitybase registry
+  - Configure NPM to use a unitybase registry
 ```
   npm set registry http://registry.unitybase.info 
 ```
-  - Install a UnityBase command line tool globaly
+  - Install UnityBase command line tool globaly
 ```
   npm i -g @unitybase/ubcli
 ```
@@ -29,4 +29,4 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
 Check out UnityBase's quick [**Get Started**](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v4) guide 
 and the [other guides](https://git-pub.intecracy.com/unitybase/samples)
 
-Explore a [this project WiKi](https://git-pub.intecracy.com/unitybase/ubjs/wikis/home)
+Explore [this project WiKi](https://git-pub.intecracy.com/unitybase/ubjs/wikis/home)

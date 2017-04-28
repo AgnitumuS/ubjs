@@ -53,10 +53,3 @@ me.beforeinsert = function (ctxt) {
 me.addnew = function (ctxt) {
     svc.setassociatedEntityValueByCode(ctxt, 'depTypeID', '02');
 };
-
-me.limitByBorderUnit = function () {
-    var borderUnit = org_borderunit.getBorderUnitRead();
-    return !borderUnit || (borderUnit === '-1') ? '(1=1)' :
-    'exists( select 1 from org_unit rlsOU where rlsOU.id = [ID] and rlsOU.mi_treePath like :(\'' + borderUnit + '%\'): )'
-};
-

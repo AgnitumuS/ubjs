@@ -59,9 +59,6 @@
 			"safeDelete":true
         },
 		"dataHistory":{},
-		"rls": {
-			 "expression": "org_unit.limitByBorderUnit()"
-		},
 		"tree": {
 			"parentAttr": "parentID"
 		},

@@ -166,8 +166,6 @@ ORG.onUserLogin = function () {
         tempPositionsArray = _.union(tempPositionsArray, assistantPositionsArray);
         tempPositionsArray.push({staffUnitID: staffUnitID, employeeOnStaffID: employeeOnStaffID});
         data.allPositions = JSON.stringify(tempPositionsArray); //stringifying array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
-        //cdn_contact.entity
-        org_borderunit.getBorderUnitRead();
     }
 };
 Session.on('login', ORG.onUserLogin);
