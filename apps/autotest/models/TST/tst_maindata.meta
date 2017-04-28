@@ -99,6 +99,17 @@
 		    "dataType": "BigInt",
             "caption": "BigInt",
 			"defaultValue": "0"
+		}, {
+			"name": "mappedToSelf",
+            "caption": "mappedToSelf",
+			"dataType": "Entity",
+			"associatedEntity": "uba_user",
+            "documentation": "For testing DDL Generator - this attribute must be ignored, since it mapped to existed attribute",
+            "mapping": [{
+              "name": "AnsiSQL",
+              "expressionType": "Field",
+              "expression": "mi_modifyDate"
+            }]
 		}
 	],
 	"mixins": {

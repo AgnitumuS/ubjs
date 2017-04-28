@@ -235,6 +235,7 @@ class DDLGenerator {
           if (!strIComp(attrCode, m.expression) && addedAttributes.has(m.expression.toUpperCase())) {
             return // use a original attribute
           }
+          if (!strIComp(attrCode, m.expression) && entity.attributes[m.expression]) return // Entity attribute mapped to other attribute
           attrCode = m.expression // use a field name from mapping
           if (tableDef.columnByName(attrCode)) return  // already added
         }
@@ -270,7 +271,7 @@ class DDLGenerator {
         if ((attribute.dataType === UBDomain.ubDataTypes.Entity) && (attribute.name !== 'ID')) {
           this.relatedEntities.push(attribute.associatedEntity)
           let associatedEntity = attribute.getAssociatedEntity()
-          if (associatedEntity.connectionName === entity.connectionName) { // referential constraitn between different connection not supported
+          if (associatedEntity.connectionName === entity.connectionName) { // referential constraint between different connection not supported
             tableDef.addFK({
               name: genFKName(sqlAlias, attrNameF, (associatedEntity.sqlAlias || associatedEntity.name || '')),
               keys: [attribute.name.toUpperCase()],
@@ -278,7 +279,7 @@ class DDLGenerator {
               generateFK: attribute.generateFK
             })
           }
-        // indexing
+          // indexing
           if (!attribute.isUnique) {
             tableDef.addIndex({
               name: formatName('IDX_', sqlAlias, '_' + attrNameF),
@@ -307,7 +308,8 @@ class DDLGenerator {
             }
           }
         }
-      })
+      }
+    )
 
     if (entity.cacheType === UBDomain.EntityCacheTypes.Entity || entity.cacheType === UBDomain.EntityCacheTypes.SessionEntity) {
       tableDef.addSequence({ name: 'S_' + tableDef.name.toUpperCase(), randomStart: true })
