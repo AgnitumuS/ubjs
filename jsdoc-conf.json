@@ -19,7 +19,7 @@
     "template": "./packages/ub-jsdocs",
     "readme": "./readme.md",
     "encoding": "utf8",
-    "destination": "../Docs/new_all"
+    "destination": "./docs"
   },
   "templates": {
     "cleverLinks": true,
