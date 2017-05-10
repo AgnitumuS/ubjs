@@ -13,13 +13,12 @@ const UBSession = require('./UBSession')
 const csv1 = require('./csv1')
 const dataLoader = require('./dataLoader')
 const FileBasedStoreLoader = require('./FileBasedStoreLoader')
-const Worker = require('./worker') 
-const uba_common = require('./uba_common') 
+const Worker = require('./worker')
+const uba_common = require('./uba_common')
 
 module.exports = {
   /**
    * Command line utils
-   * @type {argv}
    */
   argv,
   /**
@@ -68,7 +67,7 @@ module.exports = {
    */
   dataLoader: dataLoader,
 
-  FileBasedStoreLoader,  
+  FileBasedStoreLoader,
 
   Worker,
 

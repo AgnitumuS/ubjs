@@ -305,6 +305,8 @@ function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
     return JSON.parse(content)
   } catch (e) {
     console.error('Error parsing JSON file', fileName, e.message)
+    fs.writeFileSync(fileName + '.bak', content)
+    console.error('Processed file is saved to "' + fileName + '.bak"')
     throw e
   }
 }
