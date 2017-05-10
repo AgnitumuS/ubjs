@@ -21,5 +21,8 @@
     "@unitybase/ub": "^4.0.1",
     "@unitybase/ub-pub": "^4.0.1",
     "mustache": "^2.3.0"
+  },
+  "devDependencies": {
+    "@unitybase/stubs": "^4.1.0"
   }
 }
