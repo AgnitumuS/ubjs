@@ -669,7 +669,7 @@ Ext.define('UB.core.UBUtil', {
     var
       store,
       whereList = config && config.whereList ? config.whereList : {},
-      orderList = config && config.orderList ? config.orderList : {byName: {expression: 'name', order: 'asc'}}
+      orderList = config && config.orderList ? config.orderList : {byOrder: {expression: 'sortOrder', order: 'asc'}}
 
     whereList.enumGroupFilter = {
       expression: '[eGroup]',
