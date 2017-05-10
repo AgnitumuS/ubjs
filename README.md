@@ -1,6 +1,6 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-# <a href="https://unitybase.info/"> <img src="https://unitybase.info/ub-logo-c.svg" height="50"></a> UnityBase
+# <a href="https://unitybase.info/"> <img src="/img/ub-logo-c.png" height="50"></a> UnityBase
 
 Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose is to provide a set of modules for rapid development of RMS / EDRMS class software
 
@@ -10,7 +10,7 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
 > The README reflects UnityBase v4.x, UnityBase v1.x [documentation can be found here](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial).
 
   - Download and install [node.js & npm](https://nodejs.org/en/download/)
-  - Download and install [UnityBase 4](https://unitybase.info/downloads/UnityBaseSetup-v4.exe)
+  - Download and install [OpenUB v4](https://unitybase.info/downloads/OpenUBv4.exe)
   - _(optional step)_ To debug server-side JavaScript [install a FireFox](https://www.mozilla.org/ru/firefox/new/)
 
   - Configure NPM to use a unitybase registry
