@@ -1,7 +1,7 @@
 /**
  * @author v.orel
  * Enumeration localization to Azeri for TRS model
- * Used by cmd\initialize command
+ * Used by `ubcli initialize` command
  * @param {cmd.argv.serverSession} session
  */
 module.exports = function(session){

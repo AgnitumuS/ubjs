@@ -1,7 +1,7 @@
 ﻿/**
  * @author pavel.mash
  * Enumeration localization to English for CDN model
- * Used by cmd\initialize command
+ * Used by `ubcli initialize` command
  * @param {cmd.argv.serverSession} session
  */
 module.exports = function(session){

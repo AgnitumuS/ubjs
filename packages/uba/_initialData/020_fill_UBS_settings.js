@@ -2,7 +2,7 @@ const csvLoader = require('@unitybase/base').dataLoader
 const path = require('path')
 /**
  * Fill UBS model settings
- * Used by cmd\initialize command
+ * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
 module.exports = function (session) {
