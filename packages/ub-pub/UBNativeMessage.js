@@ -14,10 +14,10 @@ UBNativeMessage.features = {
     host: 'none', UIName: 'NMUBExtension', minVersion: '1.0.0', installer: 'pgffhmifenmomiabibdpnceahangimdi' // downloads/UBBrowserNativeMessagesHostApp.exe
   },
   dstu: {
-    host: 'com.inbase.dstu', UIName: 'NMFeatureDSTU', minVersion: '1.0.0.7', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostDSTU.dll'
+    host: 'com.inbase.dstu', UIName: 'NMFeatureDSTU', minVersion: '1.0.0.8', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostDSTU.dll'
   },
   iit: {
-    host: 'com.inbase.iit', UIName: 'NMFeatureIIT', minVersion: '1.0.0.7', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostIIT.dll'
+    host: 'com.inbase.iit', UIName: 'NMFeatureIIT', minVersion: '1.0.0.8', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostIIT.dll'
   },
   pdfsigner: {
     host: 'com.inbase.pdfsigner', UIName: 'NMFeaturePDFSigner', minVersion: '1.0.0.3', installer: 'models/PDF/ub-extension/UBHostPdfSignSetup{0}.' + (ubUtils.isMac ? 'pkg' : 'exe'), libraryName: 'SET _LIB_NAME_IN_UBNATIVENMESSAGES.dll'
@@ -66,9 +66,8 @@ UBNativeMessage.features.iit.minVersion = UBNativeMessage.features.dstu.minVersi
  * @param {String} [feature] Feature we want from plugin. Feature<->application decoding is accessible via {@link UBNativeMessage#features} object
  */
 function UBNativeMessage (feature) {
-  var
-    me = this,
-    __messageCounter = 0
+  let me = this
+  let __messageCounter = 0
 
   me.getMessageId = function () {
     return 'm' + (++__messageCounter)
@@ -92,6 +91,10 @@ function UBNativeMessage (feature) {
   if (!me.hostAppName) {
     throw new Error('unknown feature ' + feature + ' for UBNativeMessage')
   }
+
+  EventEmitter.call(me)
+  _.assign(me, EventEmitter.prototype)
+
 
     /**
      * Feature version. Defined after success connect() call.
@@ -146,7 +149,12 @@ function UBNativeMessage (feature) {
           me.onMessage.call(me, data)
         } else { // notification to request. Increase timeout
           pending.timerID = setTimeout(function () { me.onMsgTimeOut(messageID) }, pending.timeoutValue)
-          pending.deffer.notify(data)
+          /**
+           * Fired for {@link UBNativeMessage} instance on get notify message. Accept 2 args (data: {], messageID: number)
+           * @event notify
+           */
+          me.emit('notify', me, data, messageID)
+          // pending.deffer.notify(data)
         }
       } else if (!pending) {
         console.error('UBNativeMessage. unknown messageID:' + messageID)

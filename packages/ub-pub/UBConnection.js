@@ -1877,7 +1877,7 @@ function connect (cfg) {
     connection.preferredLocale = myLocale
     let domainPromise = connection.getDomainInfo()
     if (config.onGotApplicationDomain) {
-      domainPromise.then((domain) => config.onGotApplicationDomain(domain))
+      domainPromise = domainPromise.then((domain) => config.onGotApplicationDomain(domain));
     }
     return domainPromise
   }).then(function (domain) {
