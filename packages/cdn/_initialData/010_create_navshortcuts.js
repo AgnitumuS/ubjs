@@ -6,7 +6,7 @@
 var UBA_COMMON = require('@unitybase/uba/modules/uba_common');
 /**
  * Initial script for create UnityBase Common Dictionaries desktop navigation short-cuts (CDN model)
- * Used by cmd\initialize command
+ * Used by ubcli initialize command
  * @param {cmd.argv.serverSession} session
  */
 module.exports = function(session){

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -  set `UBStore.loading = true` in method **UBStore.reload** before call **UBStore.clearCache()**.
 
 ### Changed
+- enum combobox now sort enum captions by `orderNum` attribute (instead of name)
 - remove ER diagram background image (not background is white )
 - ignore attributes with property `defaultView: false` for automatically generated forms
 

@@ -619,14 +619,12 @@ function UBConnection (connectionParams) {
       },
 
       (rejectReason) => {
-        let errInfo = {}
         if (!(rejectReason instanceof Error)) {
-          if (rejectReason.data) {
-            errInfo = {
-              errMsg: rejectReason.data.errMsg,
-              errCode: rejectReason.data.errCode,
-              errDetails: rejectReason.data.errMsg
-            }
+          let errDescription = rejectReason.data || rejectReason // in case of server-side error we got a {data: {errMsg: ..}..}
+          let errInfo = {
+            errMsg: errDescription.errMsg,
+            errCode: errDescription.errCode,
+            errDetails: errDescription.errMsg
           }
           if (rejectReason.status === 403) {
             errInfo.errMsg = (authParams.authSchema === 'UB') ? 'msgInvalidUBAuth' : 'msgInvalidCertAuth'

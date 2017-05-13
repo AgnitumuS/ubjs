@@ -5,7 +5,7 @@
 
 /**
  * Initial script for create UnityBase Administration desktop navigation shortcuts for UBQ model
- * Used by cmd\initialize command
+ * Used by `ubcli initialize` command
  * @param {cmd.argv.serverSession} session
  */
 module.exports = function (session) {

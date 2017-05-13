@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.3.4]
+### Fixed
+- throw correct exception text in case of clien-side auth handshake error in UBConnection
+
 ### Changed
 - only `auth` & `getAppInfo` endpoint are "unauthorized" for UBConnection (remove `models` & `downloads`)
 

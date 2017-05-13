@@ -5,7 +5,7 @@
 
 /**
  * Initial script for Set Entity level security basic rules for UBS model
- * Used by cmd\initialize command
+ * Used by `ubcli initialize` command
  * @param {cmd.argv.serverSession} session
  */
 module.exports = function(session) {

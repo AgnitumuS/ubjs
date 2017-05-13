@@ -1,7 +1,7 @@
 ﻿/**
  * @author pavel.mash
  * Country localization to Ukrainian for CDN model
- * Used by cmd\initialize command
+ * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
 module.exports = function(session){
