@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.5]
+### Fixed
+- New event "notify" in UBNativeMessage instead of promise.notify
+
 ## [4.3.4]
 ### Fixed
 - throw correct exception text in case of clien-side auth handshake error in UBConnection
