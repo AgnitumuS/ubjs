@@ -69,7 +69,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      */
 
     /**
-     * @cfg
+     * @cfg {Boolean}
      * @inheritdoc
      *
      * When {@link #forceSelection} is `false`, new records can be created by the user as they
@@ -615,6 +615,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     // Only react to selection if it is not called from setValue, and if our list is
     // expanded (ignores changes to the selection model triggered elsewhere)
     if ((me.ignoreSelection <= 0) && me.isExpanded) {
+      if (!selectedRecords.length) return false
       // Pull forward records that were already selected or are now filtered out of the store
       valueStore.each(function (rec) {
         if (Ext.Array.contains(selectedRecords, rec) || me.isFilteredRecord(rec)) {
