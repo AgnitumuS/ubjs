@@ -138,6 +138,11 @@
 					"moduleName": "@ub-e/dses"
 				},
 				{
+					"name": "nm-dstu",
+					"path": "./node_modules/@ub-d/nm-dstu",
+					"moduleName": "@ub-d/nm-dstu"
+				},
+				{
 					"name": "TST",
 					"path": ".\\models\\TST"
 				}

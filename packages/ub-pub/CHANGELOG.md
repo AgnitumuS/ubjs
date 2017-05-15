@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - New event "notify" in UBNativeMessage instead of promise.notify
 
+### Changed
+- simplify a UBNativeMessages.features by **removing a `dstu`** feature (for UB Defence @ub-d/nm-dstu model must be added to domain)
+
 ## [4.3.4]
 ### Fixed
 - throw correct exception text in case of clien-side auth handshake error in UBConnection

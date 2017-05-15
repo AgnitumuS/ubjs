@@ -7,6 +7,7 @@ const i18n = require('./i18n').i18n
 const EventEmitter = require('./events')
 /**
  * Registered features.
+ * Other models can add his own features here using script in initModel.js
  * @type {Object}
  */
 UBNativeMessage.features = {
@@ -14,10 +15,7 @@ UBNativeMessage.features = {
     host: 'none', UIName: 'NMUBExtension', minVersion: '1.0.0', installer: 'pgffhmifenmomiabibdpnceahangimdi' // downloads/UBBrowserNativeMessagesHostApp.exe
   },
   dstu: {
-    host: 'com.inbase.dstu', UIName: 'NMFeatureDSTU', minVersion: '1.0.0.8', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostDSTU.dll'
-  },
-  iit: {
-    host: 'com.inbase.iit', UIName: 'NMFeatureIIT', minVersion: '1.0.0.8', installer: 'models/DSTU/ub-extension/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostIIT.dll'
+    host: 'com.inbase.dstu', UIName: 'NMFeatureDSTU', minVersion: '1.0.0.8', installer: 'models/nm-dstu/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostDSTU.dll'
   },
   pdfsigner: {
     host: 'com.inbase.pdfsigner', UIName: 'NMFeaturePDFSigner', minVersion: '1.0.0.3', installer: 'models/PDF/ub-extension/UBHostPdfSignSetup{0}.' + (ubUtils.isMac ? 'pkg' : 'exe'), libraryName: 'SET _LIB_NAME_IN_UBNATIVENMESSAGES.dll'
@@ -29,8 +27,6 @@ UBNativeMessage.features = {
     host: 'com.inbase.docedit', UIName: 'NMFeatureDocEdit', minVersion: '1.0.0.1', installer: 'models/UB/ub-extension/UBHostDocEditSetup{0}.exe', libraryName: 'UBHostDocEdit.dll'
   }
 }
-
-UBNativeMessage.features.iit.minVersion = UBNativeMessage.features.dstu.minVersion
 
 /**
  * @classdesc
