@@ -6,6 +6,7 @@ if not defined SRC (
 
 echo %UB_CORE%
 
+call %SRC%\bin\setEnv.cmd
 call %SRC%\bin\setCompilerEnv.cmd
 if not exist %~dp0x32 mkdir %~dp0x32
 cd %~dp0..\src

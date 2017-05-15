@@ -3,6 +3,7 @@ if not defined SRC (
   echo SRC environment variable must be defined
   exit 1
 )
+call %SRC%\bin\setEnv.cmd
 call %SRC%\bin\setCompilerEnv.cmd
 if not exist %~dp0x32 mkdir %~dp0x32
 cd %~dp0..\src
