@@ -2,6 +2,7 @@ if exist .\node_modules rmdir /s /q .\node_modules
 
 if exist .\apps\autotest\node_modules\@unitybase rmdir /s /q .\apps\autotest\node_modules\@unitybase
 if exist .\apps\autotest\node_modules\@ub-e rmdir /s /q .\apps\autotest\node_modules\@ub-e
+if exist .\apps\autotest\node_modules\@ub-d rmdir /s /q .\apps\autotest\node_modules\@ub-d
 
 if exist .\packages\adminui-pub\node_modules rmdir /s /q .\packages\adminui-pub\node_modules
 if exist .\packages\adminui-reg\node_modules rmdir /s /q .\packages\adminui-reg\node_modules
@@ -26,3 +27,5 @@ if exist .\packages\pdf\node_modules rmdir /s /q .\packages\pdf\node_modules
 if exist ..\ub-e\packages\odata\node_modules rmdir /s /q ..\ub-e\packages\odata\node_modules
 if exist ..\ub-e\packages\dses\node_modules rmdir /s /q ..\ub-e\packages\dses\node_modules
 if exist ..\ub-e\packages\ube-pub\node_modules rmdir /s /q ..\ub-e\packages\ube-pub\node_modules 
+
+rem if exist ..\ub-d\packages\nm-dstu\node_modules rmdir /s /q ..\ub-d\packages\nm-dstu\node_modules 

@@ -34,3 +34,12 @@ if exist ..\ub-e\packages\ube-pub (
   echo If you have access to https://gitlab.intecracy.com/unitybase/ub-e.git - clone it
   echo otherwise remove all @ub-e/* models from .\apps\autotest\ubConfig*.json 
 )
+
+if exist ..\ub-d\packages (
+  if not exist .\apps\autotest\node_modules\@ub-d mkdir .\apps\autotest\node_modules\@ub-d
+  mklink /J .\apps\autotest\node_modules\@ub-d\nm-dstu ..\ub-d\packages\nm-dstu 
+) else (
+  echo UnityBase Defense repository not found
+  echo If you have access to https://gitlab.intecracy.com/unitybase/ub-d.git - clone it
+  echo otherwise remove all @ub-d/* models from .\apps\autotest\ubConfig*.json 
+)
