@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/base",
-  "version": "4.2.10",
+  "version": "4.2.11",
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/base",
   "scripts": {
@@ -16,7 +16,7 @@
     "@unitybase/cryptojs": "^1.0.7"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.3"
+    "@unitybase/stubs": "^4.1.5"
   },
   "keywords": [
     "UnityBase",

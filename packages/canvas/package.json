@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/canvas",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Server-side canvas (draw text/pictures on png)",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/canvas",
   "scripts": {
@@ -13,7 +13,7 @@
   "main": "./UBCanvas.js",
   "dependencies": {},
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.3"
+    "@unitybase/stubs": "^4.1.5"
   },
   "keywords": [
     "UnityBase",
