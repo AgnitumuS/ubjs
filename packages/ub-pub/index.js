@@ -11,6 +11,7 @@ const ClientRepository = require('./ClientRepository')
 const LocalDataStore = require('@unitybase/base/LocalDataStore')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
+const UBNativeMessage = require('./UBNativeMessage')
 
 module.exports = {
   i18n: localization.i18n,
@@ -32,6 +33,8 @@ module.exports = {
   xhr: transport.xhr,
   get: transport.get,
   post: transport.post,
+
+  UBNativeMessage: UBNativeMessage,
 
   connect: conn.connect,
   ClientRepository: ClientRepository,
