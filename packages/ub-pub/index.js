@@ -35,6 +35,7 @@ module.exports = {
   post: transport.post,
 
   UBNativeMessage: UBNativeMessage,
+  UBConnection: conn,
 
   connect: conn.connect,
   ClientRepository: ClientRepository,

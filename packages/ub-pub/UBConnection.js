@@ -2,7 +2,7 @@
   Rewritten to ES6 from UB 1.12 sources by pavel.mash on 12.2016
  */
 
-/* global Blob, localStorage */
+/* global localStorage */
 const _ = require('lodash')
 const EventEmitter = require('./events')
 const ubUtils = require('./utils')
@@ -15,15 +15,10 @@ const UBCache = require('./UBCache')
 const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
-const UBNativeDSTUCrypto = require('./UBNativeDSTUCrypto')
-const UBNativeIITCrypto = require('./UBNativeIITCrypto')
 const UBNotifierWSProtocol = require('./UBNotifierWSProtocol')
 const ClientRepository = require('./ClientRepository')
-
 // regular expression for URLs server not require authorization.
 const NON_AUTH_URLS_RE = /(\/|^)(auth|getAppInfo)(\/|\?|$)/
-// regular expression for URLs server not require encryption. Note - all non-auth method not require encryption also
-const NON_ENCRYPTED_URLS_RE = /(\/|^)(initEncryption)(\/|\?|$)/
 // all request passed in this timeout to run will be send into one runList server method execution
 const BUFFERED_DELAY = 20
 
@@ -146,57 +141,27 @@ function UBConnection (connectionParams) {
     requestAuthParams = anonymousRequestAuthParams
   }
   serverURL = host + appName
-    /** UB Server URL with protocol and host.
-     * @type {string}
-     * @readonly
-     */
+  /** UB Server URL with protocol and host.
+   * @type {string}
+   * @readonly
+   */
   this.serverUrl = serverURL
   baseURL = ((typeof window !== 'undefined') && (window.location.origin === host)) ? appName : serverURL
   if (baseURL.charAt(baseURL.length - 1) !== '/') baseURL = baseURL + '/'
-    /**
-     * The base of all urls of your requests. Will be prepend to all urls while call UB.xhr
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * The base of all urls of your requests. Will be prepend to all urls while call UB.xhr
+   * @type {String}
+   * @readonly
+   */
   this.baseURL = baseURL
-    /** UB application name
-     * @type {String}
-     * @readonly
-     */
+  /** UB application name
+   * @type {String}
+   * @readonly
+   */
   this.appName = appName
 
   this.allowSessionPersistent = connectionParams.allowSessionPersistent && (typeof localStorage !== 'undefined')
   if (this.allowSessionPersistent) this.__sessionPersistKey = this.serverUrl + ':storedSession'
-
-    /** Result of last key agreement. Resolved to object,
-     * contain time when it was done inside
-     * - **doneTime** property
-     *  Usually this is result of UBConnection.doKeyExchange method call
-     * @private
-     * @type {Promise}
-     */
-  this.exchangeKeysPromise = null
-
-    /** UBNativeDSTUCrypto instance used for encryption
-     * @type {UBNativeDSTUCrypto}
-     */
-  this.channelEncryptor = null
-
-    /** UBNativeIITCrypto instance used for PKI relative operations (read keys / signatures)
-     * @private
-     * @readonly
-     * @type {UBNativeIITCrypto}
-     */
-  this._pki = null
-
-    /**
-     * Check current connection use PKI
-     * @protected
-     * @returns {boolean}
-     */
-  this.isPKIReady = function () {
-    return this._pki !== null
-  }
 
   this.cache = null
 
@@ -441,120 +406,11 @@ function UBConnection (connectionParams) {
 
   /**
    * CERT auth schema implementation
-   * @param authParams
    * @returns {Promise}
    */
-  this.authHandshakeCERT = function (authParams) {
-    let me = this
-    let pki, secretWord
-    let urlParams = {
-      AUTHTYPE: authParams.authSchema
-    }
-
-    if (authParams.login) {
-      urlParams.userName = authParams.login
-    }
-    if (authParams.password) {
-      urlParams.password = authParams.password
-    }
-    if (authParams.registration) {
-      urlParams.registration = authParams.registration
-    }
-
-    return me.pki().then(function (pkiInit) {
-      pki = pkiInit
-      // noinspection JSCheckFunctionSignatures
-      return pki.readPK(me)
-    }).then(function (certInfo) {
-      let reqData = certInfo.ownIITCert
-      // in case we have different certificates for signing and encryption - pass them all
-      if (certInfo.ownIITEncryptCert && certInfo.ownIITEncryptCert !== '') {
-        reqData = [certInfo.ownIITCert, certInfo.ownIITEncryptCert, certInfo.ownIITEncryptSignature].join(' ')
-      }
-      return me.xhr({
-        url: AUTH_METHOD_URL,
-        method: 'POST',
-        headers: {'Content-Type': 'application/octet-stream'},
-        params: urlParams,
-        responseType: 'arraybuffer',
-        data: reqData
-      })
-    }).then(function () {
-      throw new ubUtils.UBError('msgInvalidCertAuth')
-    }, function (resp) {
-      let aValues, authData, serverMessage
-
-      if ((resp instanceof Error) || (resp instanceof ubUtils.UBError)) {
-        throw resp
-      }
-      if (resp.status !== 401) {
-        if (resp.data && resp.data instanceof ArrayBuffer && resp.data.byteLength > 1) {
-          try {
-            // noinspection JSCheckFunctionSignatures
-            let respObj = JSON.parse(String.fromCharCode.apply(null, new Uint8Array(resp.data)))
-            if ((respObj.errCode === 65 || respObj.errCode === 0) && respObj.errMsg && /<<<.*>>>/.test(respObj.errMsg)) {
-              serverMessage = respObj.errMsg.match(/<<<(.*)>>>/)[1]
-            }
-          } catch (err) {}
-          if (serverMessage) throw new ubUtils.UBError(serverMessage)
-        }
-        throw new ubUtils.UBError('msgInvalidCertAuth')
-      }
-
-      // begin phrase 2 of auth.
-      // wait for response WWW-Authenticate: CERT connectionId server_certificate
-      // and encrypted by client certificate secret word in body
-      authData = resp.headers('WWW-Authenticate')
-      if (!authData && (authData.substr(0, 5) !== 'CERT ')) {
-        throw new Error('invalidCertAuthRespAuthType')
-      }
-      aValues = authData.split(' ')
-      if (aValues.length !== 3) throw new Error('invalidCertAuthResponse')
-      urlParams.CONNECTIONID = aValues[1]
-      let lastFP, lastKeyMediaName
-      return pki.fp().then(function (fp) {
-        lastFP = fp
-      }).then(function () {
-        return pki.keyMediaName().then(function (kmn) {
-          lastKeyMediaName = encodeURIComponent(kmn)
-        })
-      }).then(function () {
-        return pki.setRecipientCertificate(aValues[2])
-      }).then(function () {
-        return ubUtils.base64FromAny(resp.data)
-      }).then(function (envelop) {
-        if (!envelop || (envelop === '')) { throw new Error('invalidCertAuthEnvelop') }
-        // decrypt secret word using client private key
-        return pki.decryptEnvelope(envelop, true)
-      }).then(function (secretWordB64) {
-        // memorize it
-        secretWord = window.atob(secretWordB64)
-        // encrypt secret word with server public key
-        return pki.encryptEnvelope(secretWordB64, true)
-      }).then(function (encryptEnvelopeRes) {
-        let envelop = ubUtils.base64toArrayBuffer(encryptEnvelopeRes)
-        if (envelop.byteLength === 0) { throw new Error('invalidCertAuthEnvelopOut') }
-        // add fingerprint
-        urlParams.FP = lastFP
-        urlParams.KMN = lastKeyMediaName
-        // repeat request with encrypted secret word
-        return me.xhr({
-          url: AUTH_METHOD_URL,
-          method: 'POST',
-          headers: {'Content-Type': 'application/octet-stream'},
-          params: urlParams,
-          data: envelop
-        })
-      }).then(function (response) {
-        response.secretWord = secretWord
-        return response
-      })
-    }).then( // a-la fin
-      function () { if (pki) pki.closePK() },
-      function () { if (pki) pki.closePK() }
-    )
+  this.authHandshakeCERT = function () {
+    throw new Error('authHandshakeCERT should be injected by "nm-dstu" model')
   }
-
   /**
    * Do authentication in UnityBase server. Usually called from UBConnection #authorize method in case authorization expire or user not authorized.
    * Resolve to {@link UBSession} session object.
@@ -567,32 +423,31 @@ function UBConnection (connectionParams) {
    * @returns {Promise} Authentication promise. Resolved to {@link UBSession} is auth success or rejected to {errMsg: string, errCode: number, errDetails: string} if fail
    */
   this.doAuth = function (authParams) {
-    let me = this
-    let promise
-
     authParams.authSchema = authParams.authSchema || 'UB'
-    if (me.isAuthorized()) {
+
+    if (this.isAuthorized()) {
       return Promise.reject({errMsg: 'invalid auth call', errDetails: 'contact developers'})
     }
 
+    let promise
     switch (authParams.authSchema) {
       case AUTH_SCHEMA_FOR_ANONYMOUS:
         promise = Promise.resolve({data: {result: '0+0', uData: JSON.stringify({login: ANONYMOUS_USER})}, secretWord: ''})
         break
       case 'UB':
-        promise = me.authHandshakeUB(authParams)
+        promise = this.authHandshakeUB(authParams)
         break
       case 'CERT':
-        promise = me.authHandshakeCERT(authParams)
+        promise = this.authHandshakeCERT(authParams)
         break
       case 'UBIP':
-        promise = me.authHandshakeUBIP(authParams)
+        promise = this.authHandshakeUBIP(authParams)
         break
       case 'OpenIDConnect':
-        promise = me.authHandshakeOpenIDConnect(authParams)
+        promise = this.authHandshakeOpenIDConnect(authParams)
         break
       case 'Negotiate':
-        promise = me.post(AUTH_METHOD_URL, '', {
+        promise = this.post(AUTH_METHOD_URL, '', {
           params: {
             USERNAME: '',
             AUTHTYPE: authParams.authSchema
@@ -638,7 +493,7 @@ function UBConnection (connectionParams) {
             errInfo.errMsg = errInfo.errMsg.match(/<<<(.*)>>>/)[1]
           }
 
-          let codeMsg = me.serverErrorByCode(errInfo.errCode)
+          let codeMsg = this.serverErrorByCode(errInfo.errCode)
           if (codeMsg) {
             errInfo.errDetails = codeMsg + ' ' + errInfo.errDetails
             if (i18n(codeMsg) !== codeMsg) {
@@ -783,47 +638,6 @@ UBConnection.prototype.cacheClearAll = function () {
 }
 
 /**
- * Return instance of UBNativeIITCrypto for PKI operation
- * @returns {Promise<UBNativeIITCrypto>}
- */
-UBConnection.prototype.pki = function () {
-  let me = this
-  return new Promise(function (resolve, reject) {
-    if (!me._pki) {
-      me._pki = new UBNativeIITCrypto()
-      me._pkiInit = me._pki.init()
-    }
-    me._pkiInit.then(function () {
-      resolve(me._pki)
-    }, function (reason) {
-      reject(reason)
-    })
-  })
-}
-
-/**
- * Perform key exchange in case of encrypted communication
- * @param session
- * @returns {Promise}
- */
-UBConnection.prototype.exchangeKeys = function (session) {
-  let doneAt, now
-  let me = this
-  if (!me.exchangeKeysPromise) {
-    me.exchangeKeysPromise = this.doKeyExchange(session)
-  } else {
-    // check session key is near to expire. do key exchange if yes
-    if (me.exchangeKeysPromise.isFulfilled() && me.encryptionKeyLifetime > 0) {
-      doneAt = me.exchangeKeysPromise.valueOf().doneTime
-      now = (new Date()).getTime()
-      if ((now - doneAt) / 1000 > this.encryptionKeyLifetime - 10) {
-        me.exchangeKeysPromise = me.doKeyExchange(session)
-      }
-    }
-  }
-  return me.exchangeKeysPromise
-}
-/**
  * Shortcut method to perform authorized `GET` request to application we connected
  * @param {string} url Relative or absolute URL specifying the destination of the request
  * @param {Object=} [config] Optional configuration object as in {xhr}
@@ -852,6 +666,15 @@ UBConnection.prototype.post = function (url, data, config) {
 }
 
 /**
+ *
+ * @param {UBSession} session
+ * @param {Object} cfg
+ * @return {boolean}
+ */
+UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
+  return true
+}
+/**
  * Shortcut method to perform authorized/encrypted request to application we connected.
  * Will:
  *
@@ -868,7 +691,6 @@ UBConnection.prototype.xhr = function (config) {
   let me = this
   let cfg = _.assign({headers: {}}, config)
   let url = cfg.url
-  let isBase64 = false
   let promise
 
   if (me.recorderEnabled) {
@@ -882,35 +704,8 @@ UBConnection.prototype.xhr = function (config) {
   if (NON_AUTH_URLS_RE.test(url)) { // request not require authentication - pass is as is
     promise = transport.xhr(cfg)
   } else {
-    promise = me.authorize()
-    if (me.trafficEncryption && !NON_ENCRYPTED_URLS_RE.test(url)) {
-      promise = promise.then(function (session) {
-        return me.exchangeKeys(session)
-      }).then(function () {
-        let dataType = typeof cfg.data
-        // string and stringified objects is not need to be base64 encoded. Anything else - must
-        if ((dataType === 'string') || ((dataType === 'object') && !(cfg.data instanceof Blob) && !(cfg.data.byteLength))) {
-          return JSON.stringify(cfg.data)
-        } else {
-          isBase64 = true
-          return ubUtils.base64FromAny(cfg.data)
-        }
-      }).then(function (sendData) {
-        cfg.transformResponse = decryptResponse
-        cfg.responseType = 'arraybuffer'
-        cfg.transformRequest = function (data) { return data } // NOP
-        if (sendData) {
-          let compress = (sendData.length > 1000)
-          return me.channelEncryptor.encryptToArray(sendData, isBase64, compress)
-            .then(function (encryptToArrayRes) {
-              cfg.headers['Content-Encoding'] = compress ? 'UBEZ' : 'UBE'
-              cfg.data = new Uint8Array(encryptToArrayRes)
-            })
-        } else {
-          return true
-        }
-      })
-    }
+    promise = me.authorize().then((session) => me.checkChannelEncryption(session, cfg))
+
     promise = promise.then(function () {
       // we must repeat authorize to obtain new session key ( because key exchange may happens before)
       return me.authorize().then(/** @param {UBSession} session */ function (session) {
@@ -956,36 +751,8 @@ UBConnection.prototype.xhr = function (config) {
     })
   }
   return promise
-
-  function decryptResponse (data, headers) {
-    let encoding = (headers('content-encoding') || '').toUpperCase()
-    let compressed = encoding === 'UBEZ'
-    let encrypted = compressed || (encoding === 'UBE')
-    let jsonContent = (headers('content-type') || '').indexOf('json') >= 0
-    let resAsBase64 = (config.responseType === 'arraybuffer')
-
-    let promise = Promise.resolve(data)
-    if (encrypted) {
-      promise = promise.then(function (dataPromise) {
-        return me.channelEncryptor.decryptArr(dataPromise, resAsBase64, compressed)
-      })
-    }
-    return promise.then(function (dataPromise) {
-      if (config.responseType === 'arraybuffer') {
-        dataPromise = ubUtils.base64toArrayBuffer(dataPromise)
-      }
-      if (typeof dataPromise === 'string' && jsonContent) {
-        try {
-          dataPromise = JSON.parse(dataPromise)
-        } catch (err) {
-          console.log(dataPromise)
-          throw err
-        }
-      }
-      return dataPromise
-    })
-  }
 }
+
 /**
  * Base64 encoded server certificate
  * @property {String} serverCertificate
@@ -1047,66 +814,6 @@ UBConnection.prototype.getDomainInfo = function () {
     me.domain = domain
     return domain
   })
-}
-
-/**
- * If connection require encryption then initialize UBConnection.channelEncryptor
- * @return {Promise}
- */
-UBConnection.prototype.initEncriptionIfNeed = function () {
-  let me = this
-  if (me.trafficEncryption && !me.channelEncryptor) {
-    if (!me.serverCertificate) {
-      me.channelEncryptor = null
-      return Promise.reject(new Error('During call to getAppInfo server not return certificate required for encrypted communication'))
-    } else {
-      me.channelEncryptor = new UBNativeDSTUCrypto()
-      return me.channelEncryptor.init(me.serverCertificate)
-    }
-  } else {
-    return Promise.resolve(true)
-  }
-}
-
-/**
- * Generate session encryption key and send it to server inside envelope.
- * Must be called for encrypted communication AFTER call to
- *  {@link UBConnection#getAppInfo getAppInfo} and authenticate user
- * @returns {Promise}
- * @private
- */
-UBConnection.prototype.doKeyExchange = function (session) {
-  let me = this
-  if (!me.trafficEncryption) {
-    return Promise.resolve({
-      doneTime: 0,
-      trafficEncryption: me.trafficEncryption
-    })
-  }
-  if (!me.isAuthorized()) {
-    return Promise.reject({errMsg: 'must be authorized before do key agreement'})
-  }
-    // TODO - wait for pending requests before call to getEnvelopeWithKey
-    // let envelope =
-  return me.channelEncryptor.getEnvelopeWithKey()
-    .then(function (envelope) {
-      let initEncryptionRequest = {
-        url: 'initEncryption',
-        method: 'POST',
-        data: envelope,
-        headers: {
-          'Content-Type': 'application/octet-stream',
-          'Authorization': 'UB ' + session.signature()
-        }
-      }
-      return me.xhr(initEncryptionRequest)
-    })
-    .then(function () {
-      return {
-        doneTime: new Date().getTime(),
-        trafficEncryption: me.trafficEncryption
-      }
-    })
 }
 
 /**
@@ -1657,7 +1364,7 @@ UBConnection.prototype.logout = function () {
   let logoutPromise = this.post('logout', {})
   if (this._pki) { // unload encryption private key
     let me = this
-    logoutPromise.then(
+    logoutPromise = logoutPromise.then(
       () => new Promise((resolve) => { setTimeout(() => { me._pki.closePK(); resolve(true) }, 20) })
     )
   }
@@ -1810,7 +1517,10 @@ const LDS = (typeof window !== 'undefined') && window.localStorage
  * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
  * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
  * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
- * @param [cfg.onGotApplicationConfig]
+ * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
+ *  Accept one parameter - connection: UBConnection
+ *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
+ *  Should return a promise then done
  * @param [cfg.onGotApplicationDomain]
  * @return Promise<UBConnection>
  */
@@ -1863,8 +1573,6 @@ function connect (cfg) {
     connection.preferredLocale = preferredLocale
     return config.onGotApplicationConfig ? config.onGotApplicationConfig(connection) : true
   }).then(function () {
-    return connection.initEncriptionIfNeed()
-  }).then(function () {
     return connection.initCache(connection.appConfig.userDbVersion)
   }).then(function () {
     return connection.authorize()
@@ -1875,7 +1583,7 @@ function connect (cfg) {
     connection.preferredLocale = myLocale
     let domainPromise = connection.getDomainInfo()
     if (config.onGotApplicationDomain) {
-      domainPromise = domainPromise.then((domain) => config.onGotApplicationDomain(domain));
+      domainPromise = domainPromise.then((domain) => config.onGotApplicationDomain(domain))
     }
     return domainPromise
   }).then(function (domain) {

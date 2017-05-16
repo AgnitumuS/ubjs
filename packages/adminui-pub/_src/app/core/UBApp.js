@@ -333,7 +333,7 @@ Ext.define('UB.core.UBApp', {
 
           scanRecognizeProgressInterval: 1000,
           maxSearchLength: 62,
-          browserExtensionNMHostAppKey: 'com.inbase.ubmessagehost',
+          // MPV - deprecated browserExtensionNMHostAppKey: 'com.inbase.ubmessagehost',
           uiSettings: {
             adminUI: {
               defaultPasswordForDebugOnly: ''
@@ -346,7 +346,18 @@ Ext.define('UB.core.UBApp', {
         // TODO - remove because mutation of other objects is bad idea
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
-        return UBCore.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js')
+        return UBCore.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
+          if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
+            return UBCore.inject('clientRequire/@ub-d/nm-dstu/dist/nm-dstu.min.js').then(() => {
+              window[ 'nm-dstu' ].addEncryptionToConnection(connection)
+            })
+          } else {
+            return true
+          }
+          // for debug purpose
+          // let nmDstu = require(@ub-d/nm-dstu)
+          // return nmDstu.addEncryptionToConnection(connection)
+        })
       }
     }).then(function (connection) {
       var localeScriptForLoad = []
@@ -397,7 +408,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
         ubRequests: ['ubm_desktop', 'ubm_navshortcut', 'ubm_form', 'ubm_enum'].map(function (item) {
-          var res = {entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
+          var res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
           if (item === 'ubm_desktop') {
             res.orderList = {
               ord: {

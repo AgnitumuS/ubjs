@@ -139,7 +139,8 @@
 				},
 				{
 					"name": "nm-dstu",
-					"path": "./node_modules/@ub-d/nm-dstu",
+					"publicPath": "./node_modules/@ub-d/nm-dstu",
+					"path": "_public_only_",
 					"moduleName": "@ub-d/nm-dstu"
 				},
 				{

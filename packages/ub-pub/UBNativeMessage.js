@@ -14,9 +14,6 @@ UBNativeMessage.features = {
   extension: {
     host: 'none', UIName: 'NMUBExtension', minVersion: '1.0.0', installer: 'pgffhmifenmomiabibdpnceahangimdi' // downloads/UBBrowserNativeMessagesHostApp.exe
   },
-  dstu: {
-    host: 'com.inbase.dstu', UIName: 'NMFeatureDSTU', minVersion: '1.0.0.8', installer: 'models/nm-dstu/UBHostDSTUIITSetup{0}.exe', libraryName: 'UBHostDSTU.dll'
-  },
   pdfsigner: {
     host: 'com.inbase.pdfsigner', UIName: 'NMFeaturePDFSigner', minVersion: '1.0.0.3', installer: 'models/PDF/ub-extension/UBHostPdfSignSetup{0}.' + (ubUtils.isMac ? 'pkg' : 'exe'), libraryName: 'SET _LIB_NAME_IN_UBNATIVENMESSAGES.dll'
   },
@@ -73,15 +70,15 @@ function UBNativeMessage (feature) {
   me.id = 'UBPlugin' + UBNativeMessage.prototype.idCounter
 
   me.pendingMessages = {}
-    /**
-     * @readonly
-     * @property {String} Feature native messages registered for
-     */
+  /**
+   * @readonly
+   * @property {String} Feature native messages registered for
+   */
   me.feature = feature || 'extension'
-    /**
-     * Name of plugin interface in host application.
-     * @type {string}
-     */
+  /**
+   * Name of plugin interface in host application.
+   * @type {string}
+   */
   me.pluginName = feature
   me.hostAppName = UBNativeMessage.features[feature].host
   if (!me.hostAppName) {
@@ -91,16 +88,15 @@ function UBNativeMessage (feature) {
   EventEmitter.call(me)
   _.assign(me, EventEmitter.prototype)
 
-
-    /**
-     * Feature version. Defined after success connect() call.
-     * @property {string} featureVersion
-     */
+  /**
+   * Feature version. Defined after success connect() call.
+   * @property {string} featureVersion
+   */
   me.featureVersion = ''
-    /**
-     * Default operation timeout
-     * @property {number} callTimeOut
-     */
+  /**
+   * Default operation timeout
+   * @property {number} callTimeOut
+   */
   me.callTimeOut = 30000
   if (ubUtils.isSecureBrowser) {
     me.eventElm = {}
@@ -142,7 +138,7 @@ function UBNativeMessage (feature) {
     } else {
       if (msgType === 'notify') {
         if (!pending && me.onMessage) { // notification from plugin without messageID
-          me.onMessage.call(me, data)
+          me.onMessage(data)
         } else { // notification to request. Increase timeout
           pending.timerID = setTimeout(function () { me.onMsgTimeOut(messageID) }, pending.timeoutValue)
           /**
@@ -150,7 +146,6 @@ function UBNativeMessage (feature) {
            * @event notify
            */
           me.emit('notify', me, data, messageID)
-          // pending.deffer.notify(data)
         }
       } else if (!pending) {
         console.error('UBNativeMessage. unknown messageID:' + messageID)
@@ -198,7 +193,7 @@ function UBNativeMessage (feature) {
         } else {
           err = new ubUtils.UBError('unknownError', data)
         }
-//                pending.deffer.reject(new Error(data));
+        // pending.deffer.reject(new Error(data));
         pending.deffer.reject(err)
       } else {
         throw new Error('UBNativeMessage. Invalid msgType type in: ' + msg)
@@ -219,8 +214,7 @@ function UBNativeMessage (feature) {
 }
 
 UBNativeMessage.versionToNumber = function (versionStr) {
-  var
-        arr = versionStr.split('.'), mutliplier = 1, i, l = arr.length, res = 0
+  var arr = versionStr.split('.'), mutliplier = 1, i, l = arr.length, res = 0
   if (arr.length > 4) {
     throw new Error('Invalid version number ' + versionStr)
   }
@@ -312,7 +306,6 @@ UBNativeMessage.extensionExists = function () {
   e = document.getElementById('ubExtensionPageMessageObj')
   if (window.parent && (window.parent !== window)) {
     return true // check in connect
-		// e = window.parent.document.getElementById('ubExtensionPageMessageObj');
   }
 
   return !!e && (e.getAttribute('data-extensionAttached') === 'YES')
@@ -435,12 +428,10 @@ UBNativeMessage.prototype.disconnect = function () {
 }
 
 UBNativeMessage.prototype.onMsgTimeOut = function (msgID) {
-  var me = this,
-    pending
-  pending = me.pendingMessages[msgID]
+  var pending = this.pendingMessages[msgID]
   if (pending) {
     pending.timerID = null
-    delete me.pendingMessages[msgID]
+    delete this.pendingMessages[msgID]
     pending.deffer.reject(new ubUtils.UBError('unknownError', 'pluginMethodCallTimedOut'))
   }
 }
