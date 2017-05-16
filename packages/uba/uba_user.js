@@ -30,12 +30,16 @@ me.on('update:before', checkDuplicateUser)
 
 /**
  * Set fullName = name in case fullName is missing
+ * Set lastPasswordChangeDate = maxDate in case user is domainUser
  * @param {ubMethodParams} ctxt
  */
 function fillFullNameIfMissing (ctxt) {
   let params = ctxt.mParams.execParams
   if (!params.fullName) {
     params.fullName = params.name
+  };
+  if (params.name && params.name.indexOf('\\') !== -1) {
+      params.lastPasswordChangeDate = new Date(2099,12,31);
   }
 }
 me.on('insert:before', fillFullNameIfMissing)
