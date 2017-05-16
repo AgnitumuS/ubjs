@@ -13,3 +13,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - store a request headers during uba_audit LOGIN event
 
 ### Fixed
+--set **uba_user.lastPasswordChangeDate = maxDate** in case create domain users.
