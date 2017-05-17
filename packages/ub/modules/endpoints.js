@@ -38,7 +38,7 @@ function notFound (resp, reason) {
 
 /**
  *
- * @param {string} pathToFile
+ * @param {string} reqPath
  * @param {THTTPResponse} resp
  */
 function resolveModelFile (reqPath, resp) {
@@ -53,16 +53,16 @@ function resolveModelFile (reqPath, resp) {
     if (!modelName) {
       return badRequest(resp, 'first part of path must be model name')
     }
-    let model = App.domain.models.byName(modelName)
+    let model = App.domainInfo.models[modelName]
     if (!model) {
       return badRequest(resp, 'no such model ' + modelName)
     }
-    entry.fullPath = relToAbs(model.publicPath, parts.join('\\'))
+    entry.fullPath = relToAbs(model.realPublicPath, parts.join('\\'))
     if (!entry.fullPath) {
       return badRequest(resp, 'cant resolve relative path')
     }
-    if (!entry.fullPath.startsWith(model.publicPath)) {
-      return badRequest(resp, `resolved path "${entry.fullPath}" is not inside model folder ${model.publicPath}`)
+    if (!entry.fullPath.startsWith(model.realPublicPath)) {
+      return badRequest(resp, `resolved path "${entry.fullPath}" is not inside model folder ${model.realPublicPath}`)
     }
     if (!fs.existsSync(entry.fullPath)) {
       return notFound(resp, `"${entry.fullPath}"`)
@@ -130,63 +130,74 @@ function clientRequire (req, resp) {
     return badRequest(resp, 'invalid request method ' + req.method)
   }
   let reqPath = req.decodedUri
-  if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
-    return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
+  // cache actual file path & type for success clientRequire/* request
+  let cached = App.globalCacheGet(`UB_CLIENT_REQ${reqPath}`)
+  let entry = {
+    fullPath: ''
   }
-
-  if (reqPath.startsWith('models/')) {
-    resolveModelFile(reqPath.slice('models/'.length), resp)
-    return
-  }
-
-  if (reqPath.indexOf('..') !== -1) { // prevent clientRequire/../../../secret.txt attack
-    return badRequest(resp, `Relative path (${reqPath}) not allowed`)
-  }
-  if (path.isAbsolute(reqPath)) { // prevent clientRequire/d:/secret.txt attack
-    return badRequest(resp, `Absolute path (${reqPath}) not allowed`)
-  }
-  let resolvedPath
-  try {
-    console.debug(`Try to resolve ${reqPath}`)
-    resolvedPath = require.resolve(reqPath)
-  } catch (e) {
-    resolvedPath = undefined
-  }
-  if (!resolvedPath) {
-    console.error(`Package ${reqPath} not found`)
-    return notFound(resp, `"${reqPath}"`)
-  }
-  if (!resolvedPath.startsWith(MODULES_ROOT)) {
-    return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
-  }
-
-  // in case this is request to UnityBase model - check resolved file is inside model public folder
-  let models = App.domainInfo.models
-  let restrictAccess = false
-  _.forEach(models, (model) => {
-    if (model.moduleName &&
-      // do not compare req @unitybase/ub-pub with module @unitybase/ub
-      ((reqPath === model.moduleName) || reqPath.startsWith(model.moduleName + '/')) &&
-      !resolvedPath.startsWith(model.realPublicPath)
-    ) {
-      restrictAccess = true
-      return false
+  if (!cached) {
+    if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
+      return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
     }
-  })
-  if (restrictAccess) {
-    return badRequest(resp, `Request to UnityBase model ${reqPath} resolved to (${resolvedPath}) which is not inside any of public models folder`)
-  }
 
-  console.debug(`Resolve ${reqPath} -> ${resolvedPath}`)
-  if (resolvedPath.endsWith('css')) {
-    resp.writeHead('Content-Type: !STATICFILE\r\nContent-Type: text/css; charset=UTF-8')
+    if (reqPath.startsWith('models/')) {
+      resolveModelFile(reqPath.slice('models/'.length), resp)
+      return
+    }
+
+    if (reqPath.indexOf('..') !== -1) { // prevent clientRequire/../../../secret.txt attack
+      return badRequest(resp, `Relative path (${reqPath}) not allowed`)
+    }
+    if (path.isAbsolute(reqPath)) { // prevent clientRequire/d:/secret.txt attack
+      return badRequest(resp, `Absolute path (${reqPath}) not allowed`)
+    }
+    let resolvedPath
+    try {
+      console.debug(`Try to resolve ${reqPath}`)
+      resolvedPath = require.resolve(reqPath)
+    } catch (e) {
+      resolvedPath = undefined
+    }
+    if (!resolvedPath) {
+      console.error(`Package ${reqPath} not found`)
+      return notFound(resp, `"${reqPath}"`)
+    }
+    if (!resolvedPath.startsWith(MODULES_ROOT)) {
+      return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
+    }
+
+    // in case this is request to UnityBase model - check resolved file is inside model public folder
+    let models = App.domainInfo.models
+    let restrictAccess = false
+    _.forEach(models, (model) => {
+      if (model.moduleName &&
+        // do not compare req @unitybase/ub-pub with module @unitybase/ub
+        ((reqPath === model.moduleName) || reqPath.startsWith(model.moduleName + '/')) &&
+        !resolvedPath.startsWith(model.realPublicPath)
+      ) {
+        restrictAccess = true
+        return false
+      }
+    })
+    if (restrictAccess) {
+      return badRequest(resp, `Request to UnityBase model ${reqPath} resolved to (${resolvedPath}) which is not inside any of public models folder`)
+    }
+    entry.fullPath = resolvedPath
+    let ct = mime.contentType(path.extname(resolvedPath))
+    if (ct) {
+      entry.mimeHead = 'Content-Type: ' + ct
+    }
+    App.globalCachePut(`UB_CLIENT_REQ${reqPath}`, JSON.stringify(entry))
+    console.debug(`Resolve ${reqPath} -> ${resolvedPath}`)
   } else {
-    resp.writeHead('Content-Type: !STATICFILE\r\nContent-Type: application/javascript')
+    entry = JSON.parse(cached)
+    console.debug(`Retrieve cached ${reqPath} -> ${entry.fullPath}`)
   }
-  resp.writeEnd(resolvedPath)
-  // if (entry.mimeHead) {
-  //   resp.writeHead(entry.mimeHead)
-  // }
+  resp.writeEnd(entry.fullPath)
+  resp.writeHead('Content-Type: !STATICFILE')
+  if (entry.mimeHead) {
+    resp.writeHead(entry.mimeHead)
+  }
   resp.statusCode = 200
 }
 
