@@ -124,7 +124,7 @@ Ext.define('TST.IITSign', {
         : window[ 'nm-dstu' ].addEncryptionToConnection($App.connection)
     }).then(function() {
       return $App.connection.pki().then(function (pki) {
-        return pki.readPK().then(function () {
+        return pki.readPK($App.connection).then(function () {
           return UB.base64FromAny(f)
         }).then(function (b64) {
           return {pki: pki, data: b64}
