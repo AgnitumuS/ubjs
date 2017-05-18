@@ -3,8 +3,10 @@
 // For client-side usage sample go to http://127.0.0.1:888/autotest/models/TST/wsClient/index.html
 //
 
+const _ = require('lodash')
 const WebSockets = require('@unitybase/ub/modules/web-sockets')
-var wsNotifier = WebSockets.getWSNotifier()
+const wsNotifier = WebSockets.getWSNotifier()
+
 if (wsNotifier) {
   var connCount = 0
   console.debug('Start subscribing to wsNotifier tsts_* events')
