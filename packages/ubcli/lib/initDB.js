@@ -23,7 +23,8 @@
  * @module @unitybase/ubcli/initDB
  */
 
-const {options, argv} = require('@unitybase/base')
+const options = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 const UBA_COMMON = require('@unitybase/base').uba_common
 const _ = require('lodash')
 const fs = require('fs')
@@ -41,6 +42,7 @@ const http = require('http')
  * @param {String} [cfg.dbaPwd] A DBA password. Used in case `createDatabase=true`
  */
 module.exports = function initDB (cfg) {
+  debugger
   if (!cfg) {
     var opts = options.describe('initDB', 'Prepare a new database for a UB ORM', 'ubcli')
           .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
@@ -49,10 +51,11 @@ module.exports = function initDB (cfg) {
           .add({short: 'create', long: 'createDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Create a new database/schema'})
           .add({short: 'dba', long: 'dba', param: 'DBA_user_name', defaultValue: '', searchInEnv: true, help: 'A DBA name. Used in case `createDatabase=true`'})
           .add({short: 'dbaPwd', long: 'dbaPwd', param: 'DBA_password', defaultValue: '', searchInEnv: true, help: 'A DBA password. Used in case `createDatabase=true`'})
+          .add({short: 'conn', long: 'connectionName', param: 'additional connection name', defaultValue: '', searchInEnv: false, help: 'Create a empty database for secondary connection with specified name'})
     cfg = opts.parseVerbose({}, true)
   }
   if (!cfg) return
-  let session, conn, defaultDB, generator
+  let session, conn, generator
   if (cfg.clientIdentifier > 8998) {
     throw new Error('clientIdentifier (-c parameter) must be between 1 and 8999')
   }
@@ -60,7 +63,7 @@ module.exports = function initDB (cfg) {
   let config = argv.getServerConfiguration()
   cfg.host = argv.serverURLFromConfig(config)
 
-    // database are slow :( Increase timeout to 2 minutes
+  // database are slow :( Increase timeout to 2 minutes
   http.setGlobalConnectionDefaults({receiveTimeout: 2 * 60 * 1000})
 
   if (argv.checkServerStarted(cfg.host)) {
@@ -69,27 +72,31 @@ module.exports = function initDB (cfg) {
 
   fs.renameSync(originalConfigFileName, originalConfigFileName + '.bak')
   try {
-    defaultDB = createFakeConfig(config, originalConfigFileName)
+    let connectionToCreateDB = createFakeConfig(config, originalConfigFileName, cfg.connectionName)
     cfg.forceStartServer = true
     session = argv.establishConnectionFromCmdLineAttributes(cfg)
     conn = session.connection
-    let dbDriverName = defaultDB.driver.toLowerCase()
+    let dbDriverName = connectionToCreateDB.driver.toLowerCase()
     if (dbDriverName.startsWith('mssql')) {
       dbDriverName = 'mssql'
     }
     generator = require(`./dbScripts/${dbDriverName}`)
     if (cfg.dropDatabase) {
-      console.info('Dropping a database...')
-      generator.dropDatabase(session, defaultDB)
+      console.info(`Dropping a database ${connectionToCreateDB.name}...`)
+      generator.dropDatabase(session, connectionToCreateDB)
     }
     if (cfg.createDatabase) {
-      console.info('Creating a database...')
-      generator.createDatabase(conn, defaultDB)
+      console.info(`Creating a database ${connectionToCreateDB.name}...`)
+      generator.createDatabase(conn, connectionToCreateDB)
     }
-    console.info('Creating a minimal set of database objects...')
-    generator.createMinSchema(conn, cfg.clientIdentifier, defaultDB)
-    console.info('Creating a superuser..')
-    fillBuildInRoles(conn, dbDriverName)
+    if (cfg.connectionName) {
+      console.info('Skip creating additional objects for non-default connection...')
+    } else {
+      console.info('Creating a minimal set of database objects...')
+      generator.createMinSchema(conn, cfg.clientIdentifier, connectionToCreateDB)
+      console.info('Creating a superuser..')
+      fillBuildInRoles(conn, dbDriverName)
+    }
     console.info('Database is ready. Run a `ubcli generateDDL` command to create a database tables for a domain')
   } finally {
     fs.renameSync(originalConfigFileName + '.bak', originalConfigFileName)
@@ -99,10 +106,17 @@ module.exports = function initDB (cfg) {
      * Create a fake config with authentication disabled & empty domain.
      * Return a default database driver name
      */
-  function createFakeConfig () {
-    let defaultDB = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+  function createFakeConfig (config, originalConfigFileName, connectionName = '') {
     let newConfig = _.cloneDeep(config)
     let dbaConn
+    let defaultDB = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+
+    if (connectionName) {
+      defaultDB = _.find(config.application.connections, {name: connectionName})
+      if (!defaultDB) throw new Error(`Database connection @${connectionName} not found in application.connections`)
+    } else {
+      defaultDB = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+    }
 
     newConfig.security = {}
     newConfig.application.domain = { models: _.filter(config.application.domain.models, {name: 'UB'}) }
@@ -121,8 +135,8 @@ module.exports = function initDB (cfg) {
       newConfig.application.connections.push(dbaConn)
     }
     fs.writeFileSync(originalConfigFileName, newConfig)
-        // uncomment for debug purpose
-        // fs.writeFileSync(originalConfigFileName + '.fake', JSON.stringify(newConfig, null, '\t'));
+    // uncomment for debug purpose
+    // fs.writeFileSync(originalConfigFileName + '.fake', JSON.stringify(newConfig, null, '\t'));
     return defaultDB
   }
 }

@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@unitybase/base": "^4.2.11",
-    "mustache": "^2.3.0"
+    "mustache": "^2.3.0",
+    "lodash": "^4"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.1.5"
