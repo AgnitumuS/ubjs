@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.4.1]
+### Fixed
+- allow reconnect even if exception is occurred inside UBConnection 'authorized' / 'authorizationFail' event handlers 
+
+authorizationFail
+
 ## [4.4.0]
 ### Changed
  - all DSTU cryptography routines are moved to `@ub-d/mn-dstu` package

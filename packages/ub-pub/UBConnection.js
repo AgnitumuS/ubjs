@@ -279,15 +279,16 @@ function UBConnection (connectionParams) {
     this._pendingAuthPromise = requestAuthParams(this, isRepeat)
       .then(function (authParams) {
         return me.doAuth(authParams).then(function (session) {
+          me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
           currentSession = session
           /**
            * Fired for {@link UBConnection} instance after success authorization. Accept 3 args (conn: UBConnection, session: UBSession, authParams)
            * @event authorized
            */
           me.emit('authorized', me, session, authParams)
-          me._pendingAuthPromise = null
           return session
         }).catch(function (reason) {
+          me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
             /**
              * Fired for {@link UBConnection} instance in case of bad authorization Accept 1 args (reason)
@@ -295,7 +296,6 @@ function UBConnection (connectionParams) {
              */
             me.emit('authorizationFail', reason)
           }
-          me._pendingAuthPromise = null
           return me.authorize(true)
         })
       })
