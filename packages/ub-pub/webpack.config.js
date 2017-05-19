@@ -30,10 +30,10 @@ module.exports = {
       }
     }]
   },  
-  //devtool: 'cheap-source-map',
+  devtool: 'cheap-source-map',
 
   plugins: [
-    /*new webpack.optimize.UglifyJsPlugin({
+    new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
       'screw-ie8': true,
@@ -48,6 +48,6 @@ module.exports = {
         drop_console: false, // true,
         unsafe: true
       }
-    })*/
+    })
   ]
 }
