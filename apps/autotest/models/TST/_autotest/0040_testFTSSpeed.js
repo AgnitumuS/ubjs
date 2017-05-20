@@ -2,55 +2,48 @@
  * Created by pavel.mash on 23.04.2015.
  * >ub ./0030_testFTS.js -cfg D:\projects\Autotest\ubConfig.json -app autotest -u admin -p admin  -n 100 -t 10
  */
+const assert = require('assert')
+const fs = require('fs')
+const cmdLineOpt = require('@unitybase/base/options')
+const argv = require('@unitybase/base/argv')
+const path = require('path')
+const _ = require('lodash')
+const __FILE_NAME = 'СonstitutionUkr.txt'
 
-var
-  argv = require('@unitybase/base').argv,
-  session,
-  __FILE_NAME = 'СonstitutionUkr.txt',
-  _conn,
-  iterationCnt, transLen
+module.exports = function runFTSSpeedTest (options) {
+  if (!options) {
+    let opts = cmdLineOpt.describe('', 'FTS test')
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({short: 'n', long: 'iterationCnt', param: 'iterationCnt', defaultValue: 100, help: 'Iteration count'})
+      .add({short: 't', long: 'transLen', param: 'transLen', defaultValue: 10, help: 'Transaction length'})
 
-session = argv.establishConnectionFromCmdLineAttributes()
-_conn = session.connection
-iterationCnt = parseInt(argv.findCmdLineSwitchValue('n') || '100', 10)
-transLen = parseInt(argv.findCmdLineSwitchValue('t') || '10', 10)
-
-try {
-  __dirname
-} catch (e) {
-  global.__dirname = 'D:\\projects\\Autotest\\models\\TST\\_autotest'
-}
-
-try {
-  console.debug('\tFTS test')
-  testFTS(_conn)
-} finally {
-  if (session) session.logout()
-}
-if (global.__dirname) delete global.__dirname
-
-function testFTS (connection) {
-  var fs = require('fs'),
-    path = require('path'),
-    bibleArr, bibleLen, rndIdx, trans = [], curTrLen
-
-  debugger
-  bibleArr = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME)).split('\r\n')
-  bibleArr.splice(0, 72) // remove Table of content
-  bibleLen = bibleArr.length
-
-  function rnd (x) {
-    return Math.floor(Math.random() * x) + 1
+    options = opts.parseVerbose({}, true)
+    if (!options) return
   }
 
-  var
-    descrMaxLen = 2000,
-    d = new Date(2015, 1, 1),
-    i, k, n, descr
+  let session = argv.establishConnectionFromCmdLineAttributes(options)
+  let _conn = session.connection
+
+  console.debug('\tFTS speed test')
+  testFTSSpeed(_conn, options)
+}
+
+function testFTSSpeed (connection, options) {
+  let trans = []
+  let curTrLen
+  let iterationCnt = parseInt(options.iterationCnt, 10)
+  let transLen = parseInt(options.transLen, 10)
+
+  let bibleArr = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME)).split('\r\n')
+  bibleArr.splice(0, 72) // remove Table of content
+
+  let descrMaxLen = 2000
+  let d = new Date(2015, 1, 1)
+  let n, descr
 
   console.time('FTSSpeed')
   curTrLen = 0
-  for (i = 0; i < iterationCnt; i++) {
+  for (let i = 0; i < iterationCnt; i++) {
     d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)
     descr = bibleArr[i].slice(0, descrMaxLen)
     trans.push({
@@ -64,7 +57,9 @@ function testFTS (connection) {
     })
     curTrLen++
     if (curTrLen = transLen || i === iterationCnt - 1) {
-      connection.runList(trans); trans = []; curTrLen = 0
+      connection.query(trans)
+      trans = []
+      curTrLen = 0
     }
   }
   console.timeEnd('FTSSpeed')

@@ -8,19 +8,37 @@
  * @author mpv
  * @created 04.11.2015
  */
-var Worker = require('@unitybase/base').Worker
-var workers = []
 
-var
-  argv = require('@unitybase/base').argv,
-  session = argv.establishConnectionFromCmdLineAttributes(),
-  numThreads = parseInt(argv.findCmdLineSwitchValue('t') || '2', 10),
-  i
+const Worker = require('@unitybase/base').Worker
+const assert = require('assert')
+const fs = require('fs')
+const cmdLineOpt = require('@unitybase/base/options')
+const argv = require('@unitybase/base/argv')
+const path = require('path')
+const TEST_NAME = 'PDF signing thread test'
 
-try {
+module.exports = function runIITCryptoTest (options) {
+  if (!options) {
+    let opts = cmdLineOpt.describe('', TEST_NAME)
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({short: 't', long: 'numThreads', param: 'numThreads', defaultValue: 2, help: 'Thread count'})
+    options = opts.parseVerbose({}, true)
+    if (!options) return
+  } else {
+    options.numThreads = 2
+  }
+
+  // start a server for workers (if stopped)
+  argv.establishConnectionFromCmdLineAttributes(options)
+
+  let numThreads = parseInt(options.numThreads, 10)
+  console.debug('start ', numThreads, TEST_NAME)
+
+  let workers = []
+
   console.log('start ', numThreads, 'thread')
     // create threads
-  for (i = 0; i < numThreads; i++) {
+  for (let i = 0; i < numThreads; i++) {
     workers.push(new Worker({
       onmessage: onProcessWorker,
       onterminate: onTerminateWorker,
@@ -29,7 +47,7 @@ try {
     console.log('Create worker ', i)
   }
 
-  i = 0
+  let i = 0
   workers.forEach(function (worker) {
     worker.postMessage({signal: 'start', thread: i})
     console.log('Worker ', i, 'started')
@@ -37,18 +55,17 @@ try {
   })
     // wait for done
   workers.forEach(function (worker) {
-    console.log(worker.waitMessage(100000))
+    let workerMessage = worker.waitMessage(100000)
+    assert.ok(workerMessage.signal !== 'error', workerMessage.message)
   })
-} finally {
-  session.logout()
 }
 
 function onTerminateWorker () {
-  postMessage('Worker terminated')
+  postMessage({signal: 'terminated'})
 }
 
 function onWorkerError (message, exception) {
-  postMessage('Worker exception: ' + exception + ' during handle message ' + message)
+  postMessage({signal: 'error', message: exception + ' during handle message ' + message})
 }
 
 function onProcessWorker (message) {

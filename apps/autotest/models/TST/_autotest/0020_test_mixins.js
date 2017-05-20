@@ -20,18 +20,14 @@ module.exports = function runELSTest (options) {
   let session = argv.establishConnectionFromCmdLineAttributes(options)
   let conn = session.connection
 
-  try {
-    console.debug('testClobTruncate')
-    testClobTruncate(conn)
-    console.debug('testDateTime')
-    testDateTime(conn)
-    console.debug('test param macros')
-    testParamMacros(conn)
-    console.debug('test float & currency attributes')
-    testFloatAndCurrency(conn)
-  } finally {
-    session.logout()
-  }
+  console.debug('testClobTruncate')
+  testClobTruncate(conn)
+  console.debug('testDateTime')
+  testDateTime(conn)
+  console.debug('test param macros')
+  testParamMacros(conn)
+  console.debug('test float & currency attributes')
+  testFloatAndCurrency(conn)
 }
 
 /**
@@ -142,10 +138,8 @@ function testDateTime (conn) {
  */
 function testFloatAndCurrency (conn) {
   let firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
-
   assert.equal(firstDictRow.currencyValue, 1.11, 'Expect currency value to be 1.11')
   assert.equal(firstDictRow.floatValue, 1.1111, 'Expect float value to be 1.1111')
-
 }
 
 /**
@@ -155,7 +149,6 @@ function testFloatAndCurrency (conn) {
 function testParamMacros (conn) {
   // Этот тест проверяет, насколько корректно построитель запросов обрабатывает символ '#', на который начинаются некоторые макросы
   // Тест начался еще на этапе заполнения таблицы 'tst_maindata', где в 2 записи добавлены макросы
-  console.debug('Проверка кол-ва записей в таблице, где значение атрибута "code" начинается с символа "#"')
   let selected = conn.query({
     entity: 'tst_maindata',
     method: 'select',
@@ -168,10 +161,9 @@ function testParamMacros (conn) {
       }
     }
   })
-  // Должно быть 2 записи
-  assert.equal(selected.resultData.rowCount, 2)
+  assert.equal(selected.resultData.rowCount, 2, 'Must be 2 rew what start with #')
 
-  console.debug('Проверка кол-ва записей в таблице, у которых на этапе заполнения данных проставилось значение "максимальной даты" в атрибут "dateTimeValue" макросом "#maxdate"')
+  console.debug('Check MAX date DDL macros "#maxdate" is valid')
   selected = conn.query({
     entity: 'tst_maindata',
     method: 'select',

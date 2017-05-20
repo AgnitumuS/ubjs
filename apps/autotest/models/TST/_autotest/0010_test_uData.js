@@ -16,15 +16,14 @@ module.exports = function runUDataTest (options) {
     if (!options) return
   }
 
-  console.log('orig options:', options)
+  // console.log('orig options:', options)
   let session = argv.establishConnectionFromCmdLineAttributes(options)
   let conn = session.connection
 
   function relogon (credential) {
     let opts = _.merge({}, options, {forceStartServer: true}, credential)
-    debugger
     session.logout() // shut down server
-    console.log('new options:', opts)
+    // console.log('new options:', opts)
     session = argv.establishConnectionFromCmdLineAttributes(opts)
     conn = session.connection
   }
@@ -42,17 +41,12 @@ module.exports = function runUDataTest (options) {
     assert.deepEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal');
   }
 
-
-  try {
-    console.debug('test_uData')
-    testUData(conn)
-    console.debug('test_uData persistance')
-    testUDataPersistence()
-    // console.debug('test data store')
-    // testDataStore(conn)
-  } finally {
-    session.logout()
-  }
+  console.debug('test_uData')
+  testUData(conn)
+  console.debug('test_uData persistance')
+  testUDataPersistence()
+  // console.debug('test data store')
+  // testDataStore(conn)
 }
 
 /**

@@ -8,15 +8,14 @@
  * @author pavel.mash
  * @created 25.04.2015
  */
-var Worker = require('@unitybase/base').Worker
-var workers = []
+const Worker = require('@unitybase/base').Worker
+let workers = []
 
 // we can't start server from worker thread try to start it here
-var
-  argv = require('@unitybase/base').argv,
-  session = argv.establishConnectionFromCmdLineAttributes(),
-  numThreads = parseInt(argv.findCmdLineSwitchValue('t') || '2', 10),
-  i
+const argv = require('@unitybase/base').argv
+let session = argv.establishConnectionFromCmdLineAttributes()
+let numThreads = parseInt(argv.findCmdLineSwitchValue('t') || '2', 10)
+let i
 
 try {
   console.log('start ', numThreads, 'thread')
@@ -67,6 +66,7 @@ function onWorkerError (message, exception) {
 }
 
 function onProcessWorker (message) {
+  // MUST BE HERE - this is worker function
   var
     argv = require('@unitybase/base').argv,
     session,

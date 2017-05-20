@@ -27,10 +27,10 @@ module.exports = function autotest (options) {
   http.setGlobalConnectionDefaults({receiveTimeout: 10 * 60 * 1000});
 
   if (!options) {
-    var opts = cmdLineOpt.describe('cmd/autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')
-            .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-            .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names list for run autotest'})
-            .add({short: 'skipModules', long: 'skipModules', defaultValue: false, help: 'Do not run autotest for a build-in modules'})
+    let opts = cmdLineOpt.describe('cmd/autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names list for run autotest'})
+      .add({short: 'skipModules', long: 'skipModules', defaultValue: false, help: 'Do not run autotest for a build-in modules'})
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
@@ -40,7 +40,7 @@ module.exports = function autotest (options) {
     debugOutput.push(util.format.apply(this, arguments))
   }
 
-  argv.serverSessionFromCmdLineAttributes(options)
+  let session = argv.serverSessionFromCmdLineAttributes(options)
 
   let configFileName = argv.getConfigFileName()
   let configDir = path.dirname(configFileName)
@@ -98,8 +98,13 @@ module.exports = function autotest (options) {
     }
   })
   console.timeEnd('Total time')
+  try {
+    stopServer()
+  } catch (e) {
+    console.error(e.toString())
+  }
 
-    // return console.debug back
+  // return console.debug back
   console.debug = realConsoleDebug
 
   let failed = _.filter(testResults, {result: false})
@@ -132,10 +137,9 @@ module.exports = function autotest (options) {
       }
       debugOutput = []
       try {
-        console.info('\t + run ' + file)
+        console.info(`\t run ${file} from ${modelName}`)
         testModule = require(path.join(folderName, file))
         if (typeof testModule === 'function') {
-          console.info('\tfolder:', modelName, 'file:', file)
           testModule(options)
         }
         res = {folder: modelName, file: file, result: true}

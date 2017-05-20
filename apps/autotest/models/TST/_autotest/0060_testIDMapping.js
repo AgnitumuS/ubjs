@@ -2,47 +2,44 @@
  * Created by pavel.mash on 28.08.2015.
  */
 
-var
-    assert = require('assert'),
-    fs = require('fs'),
-    argv = require('@unitybase/base').argv,
-    session, conn;
+const assert = require('assert')
+const fs = require('fs')
+const cmdLineOpt = require('@unitybase/base/options')
+const argv = require('@unitybase/base/argv')
+const path = require('path')
+const TEST_NAME = 'ID mapping'
 
-if (argv.findCmdLineSwitch('help') !== -1){
-    console.info([
-        'Test clobTruncate mixin. tst_clob entity require',
-        'Usage: ',
-            '>UB ' + __fileName + ' ' + argv.establishConnectionFromCmdLineAttributesUsageInfo
-    ].join('\r\n'));
-    return;
-}
+module.exports = function runFTSTest (options) {
+  if (!options) {
+    let opts = cmdLineOpt.describe('', TEST_NAME)
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+    options = opts.parseVerbose({}, true)
+    if (!options) return
+  }
 
-session = argv.establishConnectionFromCmdLineAttributes();
-conn = session.connection;
+  let session = argv.establishConnectionFromCmdLineAttributes(options)
+  let conn = session.connection
 
-try {
-    console.debug('test ID mapping');
-    testIDMapping(conn);
-} finally {
-    session.logout();
+  console.debug('Start ' + TEST_NAME)
+  testIDMapping(conn)
 }
 
 /**
- * Issue UB-1219: Ошибка при удалении, если для ID используется mapping
+ * Issue UB-1219: Error during delete operation in case ID attribute is mapped
  * @param {UBConnection} conn
  */
-function testIDMapping(conn){
-    // add new
-    var ID = conn.insert({
-        entity: 'tst_IDMapping',
-        fieldList: ['ID'],
-        execParams: { code: 'testIDMap'}
-    });
-    // delete it
-    conn.run({
-        entity: 'tst_IDMapping',
-        method: 'delete',
-        execParams: {ID: ID}
-    });
+function testIDMapping (conn) {
+  // add new
+  let ID = conn.insert({
+    entity: 'tst_IDMapping',
+    fieldList: ['ID'],
+    execParams: { code: 'testIDMap'}
+  })
+  // delete it
+  conn.query({
+    entity: 'tst_IDMapping',
+    method: 'delete',
+    execParams: {ID: ID}
+  })
 }
 

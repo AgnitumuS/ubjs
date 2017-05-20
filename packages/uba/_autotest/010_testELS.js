@@ -4,58 +4,57 @@
  * Entity Level Security (ELS) rules test
  */
 
-var _ = require('lodash')
-var UBA_COMMON = require('@unitybase/uba/modules/uba_common')
+const _ = require('lodash')
+const UBA_COMMON = require('@unitybase/base').uba_common
+const assert = require('assert')
+const ok = assert.ok
+const fs = require('fs')
+const cmdLineOpt = require('@unitybase/base/options')
+const argv = require('@unitybase/base/argv')
+const TEST_NAME = 'Entity Level Security (ELS) test'
 
 module.exports = function runELSTest (options) {
-  var
-    assert = require('assert'),
-    ok = assert.ok,
-    fs = require('fs'),
-    cmdLineOpt = require('@unitybase/base/options'),
-    argv = require('@unitybase/base/argv'),
-    session, conn
+  let session, conn
 
   if (!options) {
-    var opts = cmdLineOpt.describe('', 'Entity Level Security (ELS) test')
-            .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+    let opts = cmdLineOpt.describe('', TEST_NAME)
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
 
   session = argv.establishConnectionFromCmdLineAttributes(options)
-  if (!session.__serverStartedByMe) {
-    throw new Error('Shut down server before run this test')
-  }
+  // if (!session.__serverStartedByMe) {
+  //   throw new Error('Shut down server before run this test')
+  // }
   conn = session.connection
 
   try {
-    console.debug('Start ELS subsystem test')
+    console.debug('Start ' + TEST_NAME)
     testELS()
   } finally {
-    session.logout()
+    // session.logout()
   }
 
   function testELS () {
-    var
-      domainInfo = conn.getDomainInfo(),
-      addedArray = []
+    let domainInfo = conn.getDomainInfo()
+    let addedArray = []
 
     function relogon (credential) {
-      var opts = _.merge({}, options, {forceStartServer: true}, credential)
+      let opts = _.merge({}, options, {forceStartServer: true}, credential)
       session.logout() // shut down server
       session = argv.establishConnectionFromCmdLineAttributes(opts)
       conn = session.connection
     }
 
-    var testUserID = conn.lookup('uba_user', 'ID', {expression: 'name', condition: 'equal', values: { name: 'testelsuser'}})
+    let testUserID = conn.lookup('uba_user', 'ID', {expression: 'name', condition: 'equal', values: { name: 'testelsuser'}})
 
     if (testUserID) {
       console.warn('\t\tSkip ELS test - uba_user "testelsuser" already exists. Test can be run only once after app initialization')
       return
     }
 
-    var TEST_ENTITY = 'uba_role'
+    const TEST_ENTITY = 'uba_role'
 
     assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'update', 'addnew', 'delete'].sort(), 'must be 5 permission for ' + TEST_ENTITY + ' methods but got: ' + JSON.stringify(domainInfo.get(TEST_ENTITY).entityMethods))
 
@@ -75,7 +74,7 @@ module.exports = function runELSTest (options) {
         forUser: 'testelsuser'
       }
     })
-    var testRole1 = conn.insert({
+    let testRole1 = conn.insert({
       entity: 'uba_role',
       fieldList: ['ID', 'mi_modifyDate'],
       execParams: {
@@ -100,12 +99,12 @@ module.exports = function runELSTest (options) {
     console.debug('Start re-logon using testelsuser user')
     relogon({user: 'testelsuser', pwd: 'testElsPwd'})
 
-        /* deprecated since 1.8. Now Everyone role add getDomainInfo rights
-         assert.throws(function(){
-         domainInfo = conn.getDomainInfo();
-         }, /405:/, 'getDomainInfo app level method is forbidden');
+    /* deprecated since 1.8. Now Everyone role add getDomainInfo rights
+     assert.throws(function(){
+     domainInfo = conn.getDomainInfo();
+     }, /405:/, 'getDomainInfo app level method is forbidden');
 
-         */
+     */
     domainInfo = conn.getDomainInfo()
     assert.ok(domainInfo)
     relogon()
@@ -132,7 +131,7 @@ module.exports = function runELSTest (options) {
     assert.throws(function () { conn.Repository(TEST_ENTITY).attrs('ID').select() }, /Access deny/, 'must deny select permission for testelsuser ' + TEST_ENTITY)
 
     function addUBSAuditPermission (method, rule) {
-      var res = conn.insert({
+      let res = conn.insert({
         entity: 'uba_els',
         fieldList: ['ID'],
         execParams: {
@@ -146,7 +145,7 @@ module.exports = function runELSTest (options) {
       addedArray.push(res)
       return res
     }
-    var accessDenyRe = /Access deny/
+    let accessDenyRe = /Access deny/
     assert.throws(function () { conn.Repository(TEST_ENTITY).attrs('ID').select() }, accessDenyRe, 'must deny select permission for testelsuser ' + TEST_ENTITY)
     assert.throws(addUBSAuditPermission.bind(null, 'select', 'A'), accessDenyRe, 'must deny insert permission for testelsuser to ' + TEST_ENTITY)
 
@@ -182,7 +181,7 @@ module.exports = function runELSTest (options) {
 
     console.debug('Add', UBA_COMMON.ROLES.ADMIN.NAME, 'role for testelsuser and verify addnew method, complimented for role testElsRole is accessible via admin allow role')
     relogon()
-    var adminRoleID = conn.lookup('uba_role', 'ID', {expression: 'name', condition: 'equal', values: {nameVal: UBA_COMMON.ROLES.ADMIN.NAME}})
+    let adminRoleID = conn.lookup('uba_role', 'ID', {expression: 'name', condition: 'equal', values: {nameVal: UBA_COMMON.ROLES.ADMIN.NAME}})
     ok(adminRoleID, `role "${UBA_COMMON.ROLES.ADMIN.NAME}" not found in uba_role`)
     ok(grantRoleToUser(adminRoleID, testUserID), `role "${UBA_COMMON.ROLES.ADMIN.NAME}" not added for user testelsuser`)
     relogon({user: 'testelsuser', pwd: 'testElsPwd'})
@@ -209,7 +208,7 @@ module.exports = function runELSTest (options) {
     domainInfo = conn.getDomainInfo()
     assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), +TEST_ENTITY + ' permission do not have addnew for testelsuser')
 
-        // cleanup
+    // cleanup
     relogon()
     addedArray.forEach(function (permissionID) {
       conn.query({

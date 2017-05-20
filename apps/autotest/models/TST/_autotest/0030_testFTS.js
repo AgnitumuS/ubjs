@@ -2,25 +2,26 @@
  * Created by pavel.mash on 23.04.2015.
  * >ub ./0030_testFTS.js -cfg D:\projects\Autotest\ubConfig.json -app autotest -u admin -p admin
  */
+const assert = require('assert')
+const fs = require('fs')
+const cmdLineOpt = require('@unitybase/base/options')
+const argv = require('@unitybase/base/argv')
+const path = require('path')
+const _ = require('lodash')
+const __FILE_NAME = 'СonstitutionUkr.txt'
 
-var
-  argv = require('@unitybase/base').argv,
-  assert = require('assert'),
-  _ = require('lodash'),
-  session,
-  __FILE_NAME = 'СonstitutionUkr.txt',
-  _conn
+module.exports = function runFTSTest (options) {
+  if (!options) {
+    let opts = cmdLineOpt.describe('', 'FTS test')
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+    options = opts.parseVerbose({}, true)
+    if (!options) return
+  }
 
-session = argv.establishConnectionFromCmdLineAttributes()
-_conn = session.connection
+  let session = argv.establishConnectionFromCmdLineAttributes(options)
+  let _conn = session.connection
 
-try {
-  __dirname
-} catch (e) {
-  global.__dirname = 'D:\\projects\\Autotest\\models\\TST\\_autotest'
-}
-
-var expectations = [
+  let expectations = [
     /* 0 */{condition: 'республіка', cnt: 1}, // code016; стаття 5. україна є республікою.
     /* 1 */{condition: 'БоГу', cnt: 1}, // 006 усвідомлюючи відповідальність перед богом, власною совістю,
     /* 2 */{condition: 'територія', cnt: 5}, // територія, територію, території
@@ -40,36 +41,25 @@ var expectations = [
     /* 12 */{condition: 'громадянин OR бог', cnt: 6}, // god expected once :)
     /* 13 */{condition: '"громадян України" OR бог', cnt: 2}
     //   громадян -України !!!
-]
+  ]
 
-try {
-	// MPV - TEMPORARY
-    // console.debug('\tTEMPORARY SKIP FTS test');
-  if (true) {
-    console.debug('\tFTS test')
-    insertFirst50Article(_conn)
-    testReadFTSGlobalAndEntity(_conn)
-    expectationTest(_conn, expectations)
-    modifyData(_conn, expectations)
-    expectationTest(_conn, expectations)
-  }
-} finally {
-  if (session) session.logout()
+  console.debug('\tFTS test')
+  insertFirst50Article(_conn)
+  testReadFTSGlobalAndEntity(_conn)
+  expectationTest(_conn, expectations)
+  modifyData(_conn, expectations)
+  expectationTest(_conn, expectations)
 }
-if (global.__dirname) delete global.__dirname
 
 function insertFirst50Article (connection) {
-  var fs = require('fs'),
-    path = require('path'),
-    testArr,
-    descrMaxLen = 2000,
-    d = new Date(2015, 1, 1),
-    i, n, descr
+  let descrMaxLen = 2000
+  let d = new Date(2015, 1, 1)
+  let n, descr
 
-  testArr = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME)).split('\r\n')
+  let testArr = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME)).split('\r\n')
 
   console.time('FTS')
-  for (i = 0; i < 50; i++) {
+  for (let i = 0; i < 50; i++) {
     d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)
     descr = testArr[i].slice(0, descrMaxLen)
     connection.insert({
@@ -85,8 +75,7 @@ function insertFirst50Article (connection) {
 }
 
 function testReadFTSGlobalAndEntity (connection) {
-  var
-        res, dataFTS, res2, dataEntity
+  let res, dataFTS, res2, dataEntity
 
   res = connection.run({
     entity: 'fts_ftsDefault',
@@ -110,11 +99,10 @@ function testReadFTSGlobalAndEntity (connection) {
 }
 
 function expectationTest (connection, matches) {
-  var
-        res, i, l, dataFTS
+  let res, dataFTS
 
-  l = matches.length
-  for (i = 0; i < l; i++) {
+  let l = matches.length
+  for (let i = 0; i < l; i++) {
     res = connection.run({
       entity: 'fts_ftsDefault',
       method: 'fts',
@@ -135,13 +123,12 @@ function expectationTest (connection, matches) {
  * @param {Array<Object>} expectations
  */
 function modifyData (connection, expectations) {
-  var
-        modification = {
-          code: 'code016',
-          description: 'Стаття 5. Україна є монархією.'
-        }
+  let modification = {
+    code: 'code016',
+    description: 'Стаття 5. Україна є монархією.'
+  }
 
-  var row = connection.Repository('tst_document').attrs(['ID', 'mi_modifyDate']).where('code', '=', modification.code).selectAsObject()
+  let row = connection.Repository('tst_document').attrs(['ID', 'mi_modifyDate']).where('code', '=', modification.code).selectAsObject()
   connection.query({entity: 'tst_document', method: 'select', ID: row[0].ID, lockType: 'ltTemp', fieldList: ['ID']})
   connection.query({
     alsNeed: false,
@@ -158,7 +145,7 @@ function modifyData (connection, expectations) {
   expectations.push({condition: 'монархія', cnt: 1})
   connection.query({entity: 'tst_document', method: 'unlock', ID: row[0].ID})
 
-  var ID = connection.lookup('tst_document', 'ID', {expression: 'code', condition: 'equal', values: {nameVal: 'code006'}})
+  let ID = connection.lookup('tst_document', 'ID', {expression: 'code', condition: 'equal', values: {nameVal: 'code006'}})
   connection.query({
     entity: 'tst_document',
     method: 'delete',
