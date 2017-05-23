@@ -15,7 +15,7 @@ In case `yarn` is installed, use a `yarn install` `yarn run ...` instead of `npm
 > npm i
 > tsql3.cmd
 > ub -dev
-go to http://localhost:888/ubadminui
+go to http://localhost:888/ubadminui-dev
 ```
 
 # Adding new packages to UnityBase package repository
