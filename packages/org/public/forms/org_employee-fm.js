@@ -1,4 +1,4 @@
-﻿/*global UB, UB, Ext, DMP */
+/*global UB, UB, Ext, DMP */
 exports.formCode = {
     dataBind: {
         fullFIO: {

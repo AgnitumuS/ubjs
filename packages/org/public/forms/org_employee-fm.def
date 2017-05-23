@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "org_employee"
-//@formType "auto"
-//@caption "orgEmployee"
-//@description "orgEmployee"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "org_employee"
+// @model "ORG"
+// @formType "auto"
+// @caption "orgEmployee"
+// @description "orgEmployee"
 /*global UB, Ext, DMP */
 
 exports.formDef = {
@@ -75,7 +76,7 @@ exports.formDef = {
                        xtype: "tabpanel",
                        height: 300,
                        items: [{
-                            title: $App.domain.domainEntities.cdn_contact.caption,
+                            title: $App.domainInfo.entities.cdn_contact.caption,
                             items: [{
                                 xtype: "ubdetailgrid",
                                 flex: 1,
@@ -89,7 +90,7 @@ exports.formDef = {
                                 detailFields: ["subjectID"]
                             }]    
                   		}, {
-                            title: $App.domain.domainEntities.org_employeeonstaff.caption.split(' ')[0],
+                            title: $App.domainInfo.entities.org_employeeonstaff.caption.split(' ')[0],
                             items: [{
                                 xtype: "ubdetailgrid",
                                 flex: 1,
