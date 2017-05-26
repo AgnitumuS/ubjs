@@ -4,7 +4,10 @@
   "description": "Autotest for UnityBase",
   "main": "index.js",
   "scripts": {
-    "test": ".\\tsql3.cmd"
+    "test": ".\\tsql3.cmd",
+    "wdio": "wdio",
+    "selser": "selenium-standalone",
+    "test-start": "wdio _ui-autotests\\wdio.conf.js"
   },
   "dependencies": {
     "@ub-e/dses": "^1.0.0",
@@ -40,13 +43,23 @@
     "systemjs-plugin-css": "^0.1.32",
     "tinymce": "^4.5.1",
     "when": "^3.7.7",
-    "lodash": "^4"
+    "lodash": "^4",
+    "gh-pages": "",
+    "http-server": ""
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.0"
+    "@unitybase/stubs": "^4.1.0",
+    "chai": "^3.5.0",
+    "selenium-standalone": "^5.11.2",
+    "wdio-allure-reporter": "^0.1.2",
+    "wdio-junit-reporter": "^0.3.0",
+    "wdio-mocha-framework": "^0.5.9",
+    "wdio-selenium-standalone-service": "0.0.8",
+    "wdio-spec-reporter": "^0.1.0",
+    "webdriverio": "^4.8.0"
   },
-  "engines": { 
-    "ub": "4.1.0-beta.5" 
+  "engines": {
+    "ub": "4.1.0-beta.5"
   },
   "keywords": [],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
