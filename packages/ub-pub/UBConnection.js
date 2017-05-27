@@ -291,10 +291,10 @@ function UBConnection (connectionParams) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
             /**
-             * Fired for {@link UBConnection} instance in case of bad authorization Accept 1 args (reason)
+             * Fired for {@link UBConnection} instance in case of bad authorization Accept 2 args (reason, connection)
              * @event authorizationFail
              */
-            me.emit('authorizationFail', reason)
+            me.emit('authorizationFail', reason, me)
           }
           return me.authorize(true)
         })
@@ -738,10 +738,12 @@ UBConnection.prototype.xhr = function (config) {
           errMsg = i18n(errMsg.match(/<<<(.*)>>>/)[1]) // extract rear message and translate
         }
         /**
-         * Fired for {@link UBConnection} instance in case user password is expired. The only valid endpoint after this is `changePassword`
+         * Fired for {@link UBConnection} instance in case user password is expired.
+         * The only valid endpoint after this is `changePassword`
+         * Accept 1 arg (connection)
          * @event passwordExpired
          */
-        if ((errCode === 72) && me.emit('passwordExpired')) {
+        if ((errCode === 72) && me.emit('passwordExpired', me)) {
           throw new ubUtils.UBAbortError()
         }
         throw new ubUtils.UBError(errMsg, errDetails, errCode)

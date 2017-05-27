@@ -5,10 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.4.1]
-### Fixed
-- allow reconnect even if exception is occurred inside UBConnection 'authorized' / 'authorizationFail' event handlers 
+### Changed
+- UBConnection.on('passwordExpired') callback now accept connecton as a argument
 
-authorizationFail
+### Fixed
+- allow reconnect even if exception is occurred inside UBConnection 'authorized' / 'authorizationFail' event handlers
+
 
 ## [4.4.0]
 ### Changed
