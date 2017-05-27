@@ -38,6 +38,7 @@ if exist ..\ub-e\packages\ube-pub (
 if exist ..\ub-d\packages (
   if not exist .\apps\autotest\node_modules\@ub-d mkdir .\apps\autotest\node_modules\@ub-d
   mklink /J .\apps\autotest\node_modules\@ub-d\nm-dstu ..\ub-d\packages\nm-dstu 
+  mklink /J .\apps\autotest\node_modules\@ub-d\iit-crypto ..\ub-d\packages\iit-crypto  
 ) else (
   echo UnityBase Defense repository not found
   echo If you have access to https://gitlab.intecracy.com/unitybase/ub-d.git - clone it
