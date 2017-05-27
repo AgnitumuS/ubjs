@@ -240,7 +240,7 @@ function UBConnection (connectionParams) {
     let ubSession = new UBSession(data, secretWord, authSchema)
     let userData = ubSession.userData
     if (!userData.lang || this.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
-      userData.lang = this.appConfig.supportedLanguages[0]
+      userData.lang = this.appConfig.defaultLang
     }
     return ubSession
   }

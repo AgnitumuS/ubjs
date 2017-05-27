@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - allow reconnect even if exception is occurred inside UBConnection 'authorized' / 'authorizationFail' event handlers
-
+- in case language for user not stored in uba_user.uData will set a 
+`UBConnection.userLang=appConfig.defaultLang` instead of `appConfig.supportedLanguages[0]` 
+witch depends on how languages configured for database connections
 
 ## [4.4.0]
 ### Changed
