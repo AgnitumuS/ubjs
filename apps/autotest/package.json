@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": ".\\tsql3.cmd",
-    "wdio": "wdio",
     "selser": "selenium-standalone",
-    "test-start": "wdio _ui-autotests\\wdio.conf.js"
+    "test-start": "wdio _ui-autotests\\wdio.conf.js",
+	"selser_install": "selenium-standalone install --config=_ui-autotests\\autotest-sel-config.js",
+    "selser_start_separate": "start /D .\\ selenium-standalone start --config=./_ui-autotests/autotest-sel-config.js",
+	"test-with-selenium": "npm run selser_start_separate & npm run test-start",
+    "test": "npm run demo & npm run test-with-selenium"
   },
   "dependencies": {
     "@ub-e/dses": "^1.0.0",
