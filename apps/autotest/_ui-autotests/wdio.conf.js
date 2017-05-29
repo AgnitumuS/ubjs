@@ -138,10 +138,10 @@ exports.config = {
     reporters: ['dot', 'spec', 'junit', 'allure'],
     reporterOptions: {
         junit: {
-            outputDir: './junit-reports'
+            outputDir: './_ui-autotests/junit-reports'
         },
         allure: {
-            outputDir: './allure-reports'
+            outputDir: './_ui-autotests/allure-reports'
         }
     },
     //
