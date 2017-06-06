@@ -1,7 +1,5 @@
-WHERE yarn
-IF %ERRORLEVEL% NEQ 0 (set NPM_CLI=npm) else (set NPM_CLI=yarn)
-call %NPM_CLI% install
-call .\node_modules\.bin\lerna bootstrap --npm-client=%NPM_CLI%
+call npm i
+call .\node_modules\.bin\lerna bootstrap
 
 cd .\packages\ubcli
 call npm link
@@ -9,8 +7,8 @@ cd ..\..
 
 if exist ..\ub-e\packages (
   cd ..\ub-e
-  call %NPM_CLI% install
-  call .\node_modules\.bin\lerna bootstrap --npm-client=%NPM_CLI%
+  call npm install
+  call .\node_modules\.bin\lerna bootstrap
   cd ..\ubjs
 ) else (
   echo UnityBase enterprise repository not found
@@ -20,11 +18,13 @@ if exist ..\ub-e\packages (
 
 if exist ..\ub-d\packages (
   cd ..\ub-d
-  call %NPM_CLI% install
-  call .\node_modules\.bin\lerna bootstrap --npm-client=%NPM_CLI%
+  call npm install
+  call .\node_modules\.bin\lerna bootstrap
   cd ..\ubjs
 ) else (
   echo UnityBase Defense repository not found
   echo If you have access to https://gitlab.intecracy.com/unitybase/ub-d.git - clone it
   echo otherwise remove all @ub-d/* models from .\apps\autotest\ubConfig*.json 
 )
+
+
