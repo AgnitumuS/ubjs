@@ -29,4 +29,5 @@ if exist ..\ub-e\packages\odata\node_modules rmdir /s /q ..\ub-e\packages\odata\
 if exist ..\ub-e\packages\dses\node_modules rmdir /s /q ..\ub-e\packages\dses\node_modules
 if exist ..\ub-e\packages\ube-pub\node_modules rmdir /s /q ..\ub-e\packages\ube-pub\node_modules 
 
-rem if exist ..\ub-d\packages\nm-dstu\node_modules rmdir /s /q ..\ub-d\packages\nm-dstu\node_modules 
+if exist ..\ub-d\node_modules rmdir /s /q ..\ub-d\node_modules
+if exist ..\ub-d\packages\nm-dstu\node_modules rmdir /s /q ..\ub-d\packages\nm-dstu\node_modules 
