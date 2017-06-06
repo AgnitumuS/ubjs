@@ -9,6 +9,7 @@ In case `yarn` is installed, use a `yarn install` `yarn run ...` instead of `npm
 ```
 > git clone https://git-pub.intecracy.com/unitybase/ubjs.git
 > [For UB Enterprise] git clone https://gitlab.intecracy.com/unitybase/ub-e.git
+> [For UB Defense] git clone https://gitlab.intecracy.com/unitybase/ub-d.git
 > cd ubjs
 > npm run bootstrap
 > cd apps\autotest
