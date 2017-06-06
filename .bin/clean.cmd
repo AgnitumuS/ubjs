@@ -24,6 +24,7 @@ if exist .\packages\ubs\node_modules rmdir /s /q .\packages\ubs\node_modules
 if exist .\packages\xlsx\node_modules rmdir /s /q .\packages\xlsx\node_modules
 if exist .\packages\pdf\node_modules rmdir /s /q .\packages\pdf\node_modules 
 
+if exist ..\ub-e\node_modules rmdir /s /q ..\ub-e\node_modules
 if exist ..\ub-e\packages\odata\node_modules rmdir /s /q ..\ub-e\packages\odata\node_modules
 if exist ..\ub-e\packages\dses\node_modules rmdir /s /q ..\ub-e\packages\dses\node_modules
 if exist ..\ub-e\packages\ube-pub\node_modules rmdir /s /q ..\ub-e\packages\ube-pub\node_modules 
