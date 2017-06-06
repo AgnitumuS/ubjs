@@ -2,6 +2,7 @@
   "name": "autotest",
   "version": "1.0.0",
   "description": "Autotest for UnityBase",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "main": "index.js",
   "scripts": {
     "test": ".\\tsql3.cmd"

@@ -1,6 +1,7 @@
 {
   "name": "ubjs",
   "private": true,
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs",
   "devDependencies": {
     "lodash": "^4",
     "standard": "*",
