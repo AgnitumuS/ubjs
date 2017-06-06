@@ -5,7 +5,8 @@
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "main": "index.js",
   "scripts": {
-    "test": ".\\tsql3.cmd"
+    "test": ".\\tsql3.cmd",
+    "replace-native": "npm i @unitybase/canvas@latest @unitybase/com-bridge@latest @unitybase/mailer-ssl@latest @unitybase/mailer@latest --no-save -f"
   },
   "dependencies": {
     "@ub-e/dses": "file:..\\..\\..\\ub-e\\packages\\dses",
