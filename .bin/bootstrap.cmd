@@ -1,4 +1,5 @@
-call npm i --prefer-offline
+call npm set prefer-offline true
+call npm i
 call .\node_modules\.bin\lerna bootstrap
 
 cd .\packages\ubcli
@@ -18,7 +19,7 @@ if exist ..\ub-e\packages (
 
 if exist ..\ub-d\packages (
   cd ..\ub-d
-  call npm i --prefer-offline
+  call npm i
   call .\node_modules\.bin\lerna bootstrap
   cd ..\ubjs
 ) else (
@@ -27,19 +28,22 @@ if exist ..\ub-d\packages (
   echo otherwise remove all @ub-d/* models from .\apps\autotest\ubConfig*.json 
 )
 
+cd .\apps\autotest
+call npm i
 if not defined SRC (
+  echo on
   echo To compile a native modules you need:
   echo  - checkout a UnityBase server sources 
   echo  - set environment variable SRC to Source folder location
   echo  - execute command `npm run build:native`
-  echo
   echo Compilation use a Delphi@XE2-sp4 Delphi@7 and InnoSetup@5.5.9 - all of them MUST be installed
-  echo
-  echo In case you do not have access to Server Sources or compilers - run a `npm run replace-native` in autotest folder
-  echo this command will install latest compiled packages from registry
+  echo In case you do not have access to Server Sources or compilers - run a 
+  echo   `npm run replace-native` in autotest folder
+  echo This will install latest compiled packages from registry
   exit 1
 )
 
+cd ..\..
 call npm run build:native
 
 
