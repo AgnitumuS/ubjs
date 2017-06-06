@@ -475,7 +475,7 @@ Ext.define('UB.core.UBApp', {
    * @returns {string}
    */
   getImagePath: function (imageName) {
-    return 'models/adminui/themes/' + UB.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
+    return 'models/adminui-pub/themes/' + UB.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
   },
 
   /**
