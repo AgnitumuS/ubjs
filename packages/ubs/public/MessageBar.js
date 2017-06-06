@@ -31,7 +31,9 @@ Ext.define('UBS.MessageBar', {
       return new Promise((resolve) => {
         let win = new Ext.Window({
           modal: true,
+          autoScroll: true,
           width: 600,
+          height: 400,
           closeAction: 'destroy',
           stateful: true,
           stateId: 'messageWin',
@@ -185,6 +187,8 @@ Ext.define('UBS.MessageBar', {
     let win = new Ext.Window({
       modal: true,
       width: 700,
+      autoScroll: true,
+      height: 600,
       closeAction: 'destroy',
       stateful: true,
       stateId: 'messageHistoryWin',

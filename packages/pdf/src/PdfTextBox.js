@@ -384,6 +384,7 @@ PdfTextBox.prototype.calcMetrics = function () {
     oldFont,
     tbConfig,
     addDetail,
+    newTB,
     splitItems = [], requreDetail = false, tbPage,
     oldLineHeight, options, textInfo,
     requireHeight = Math.max(me.minHeight, me.heightIn, me.height)
@@ -444,6 +445,7 @@ PdfTextBox.prototype.calcMetrics = function () {
     tbConfig.pageNumber = tbPage
     tbConfig = new PdfTextBox(tbConfig)
     splitItems.push(tbConfig)
+    return tbConfig
   }
 
   tbPage = me.pageNumber || me.context.getPageNumber()
@@ -461,16 +463,21 @@ PdfTextBox.prototype.calcMetrics = function () {
       if (addHF + currentHeight + metrics.lineHeights[line] > me.context.getInnerPageBottomPos()) {
         isFirstLine = false
         if (requreDetail) {
-          addDetail()
+          newTB = addDetail()
+          fullHeight += newTB.height
         } else {
           // for first page text
           if (!hasText /* currentText === '' */) { // первая строка не влазит
             isFirstLine = true
             me.updateTextInfo('')
             me.tbMetrics = me.pdf.textCalcMetricsByInfo(me.textInfo, options)
-            me.fullHeight = me.tbMetrics.height
+            // me.fullHeight = me.tbMetrics.height
+            // me.height = 0
+            // real height
+            me.height = me.context.getInnerPageBottomPos() - me.top
+            me.fullHeight = me.height
+            // -
             me.firstRowBreaked = true
-            me.height = 0
             me.innerBox.height = 0
           } else {
             deltaText = textInfo.getLineSource(stline, line - 1, me.isXml)
@@ -481,6 +488,7 @@ PdfTextBox.prototype.calcMetrics = function () {
             me.tbMetrics = me.pdf.textCalcMetricsByInfo(me.textInfo, options)
             me.fullHeight = me.tbMetrics.height
           }
+          fullHeight += me.height
           addHF = me.context.getInnerPageTopPos() + addH
         }
         currentHeight = 0
@@ -496,7 +504,8 @@ PdfTextBox.prototype.calcMetrics = function () {
       line++
     }
     if (requreDetail && hasText /* currentText !== '' */ /* textLen > 0 */) {
-      addDetail()
+      newTB = addDetail()
+      fullHeight += newTB.height
     }
     if (fullHeight < requireHeight) {
       let deltaH = requireHeight - fullHeight
