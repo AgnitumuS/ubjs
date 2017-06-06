@@ -1,4 +1,4 @@
-call npm i
+call npm i --prefer-offline
 call .\node_modules\.bin\lerna bootstrap
 
 cd .\packages\ubcli
@@ -7,7 +7,7 @@ cd ..\..
 
 if exist ..\ub-e\packages (
   cd ..\ub-e
-  call npm install
+  call npm i --prefer-offline
   call .\node_modules\.bin\lerna bootstrap
   cd ..\ubjs
 ) else (
@@ -18,7 +18,7 @@ if exist ..\ub-e\packages (
 
 if exist ..\ub-d\packages (
   cd ..\ub-d
-  call npm install
+  call npm i --prefer-offline
   call .\node_modules\.bin\lerna bootstrap
   cd ..\ubjs
 ) else (
