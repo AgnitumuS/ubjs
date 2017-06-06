@@ -42,12 +42,13 @@ if exist ..\ub-e\packages (
   rmdir /s /q .\packages\dses\node_modules\@unitybase
   mklink /J .\packages\dses\node_modules\@unitybase ..\ubjs\packages
 
+  cd ..\ubjs
+
   if not exist .\apps\autotest\node_modules\@ub-e mkdir .\apps\autotest\node_modules\@ub-e
   mklink /J .\apps\autotest\node_modules\@ub-e\dses ..\ub-e\packages\dses
   mklink /J .\apps\autotest\node_modules\@ub-e\odata  ..\ub-e\packages\odata 
   mklink /J .\apps\autotest\node_modules\@ub-e\ube-pub ..\ub-e\packages\ube-pub
 
-  cd ..\ubjs
 ) else (
   echo UnityBase enterprise repository not found
   echo If you have access to https://gitlab.intecracy.com/unitybase/ub-e.git - clone it
