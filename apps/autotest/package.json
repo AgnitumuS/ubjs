@@ -45,8 +45,8 @@
   "devDependencies": {
     "@unitybase/stubs": "^4.1.0"
   },
-  "engines": { 
-    "ub": "4.1.0-beta.5" 
+  "engines": {
+    "ub": "4.1.0-beta.5"
   },
   "keywords": [],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
