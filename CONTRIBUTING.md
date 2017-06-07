@@ -13,7 +13,7 @@ Follow [UnityBase setup instruction](https://git-pub.intecracy.com/unitybase/ubj
 > npm i
 > tsql3.cmd
 > ub -dev
-go to http://localhost:888/ubadminui-dev
+Point ypour browser (Chrome or FireFox) to http://localhost:888/ubadminui-dev
 ```
 
 # Adding new packages to UnityBase package repository
