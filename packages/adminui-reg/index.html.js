@@ -106,6 +106,11 @@ adminUIEndpointName = adminUIEndpointName || App.serverConfig.application.rootHa
  * @param {THTTPResponse} resp
  */
 App.registerEndpoint(adminUIEndpointName, function (req, resp) {
+  if (req.url.endsWith('/')) {
+    resp.statusCode = 301 // HTTP_MOVEDPERMANENTLY
+    resp.writeHead(`Location: ${App.serverURL}${adminUIEndpointName}`)
+    return
+  }
   generateIndexPage(req, resp, 'index.mustache')
 }, false)
 
@@ -115,6 +120,11 @@ App.registerEndpoint(adminUIEndpointName, function (req, resp) {
  */
 App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
   if (process.isDebug) {
+    if (req.url.endsWith('/')) {
+      resp.statusCode = 301 // HTTP_MOVEDPERMANENTLY
+      resp.writeHead(`Location: ${App.serverURL}${adminUIEndpointName}`)
+      return
+    }
     generateIndexPage(req, resp, 'index-dev.mustache')
   } else {
     resp.writeEnd('Server working in production mode')
