@@ -2,8 +2,6 @@
 
 Follow [UnityBase setup instruction](https://git-pub.intecracy.com/unitybase/ubjs#install-windows)
 
-We recomend to use a Yarn instead of npm. Can be [installed from here](https://yarnpkg.com/en/docs/install).
-
 In case `yarn` is installed, use a `yarn install` `yarn run ...` instead of `npm i` & `npm run ...`
 
 ```
