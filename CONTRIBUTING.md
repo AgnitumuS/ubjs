@@ -2,9 +2,8 @@
 
 Follow [UnityBase setup instruction](https://git-pub.intecracy.com/unitybase/ubjs#install-windows)
 
-In case `yarn` is installed, use a `yarn install` `yarn run ...` instead of `npm i` & `npm run ...`
-
 ```
+> mkdir dev && cd dev
 > git clone https://git-pub.intecracy.com/unitybase/ubjs.git
 > [For UB Enterprise] git clone https://gitlab.intecracy.com/unitybase/ub-e.git
 > [For UB Defense] git clone https://gitlab.intecracy.com/unitybase/ub-d.git
