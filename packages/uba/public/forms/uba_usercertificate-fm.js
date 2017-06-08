@@ -31,7 +31,6 @@ var typeNames = {
 
 exports.formCode = {
     initUBComponent: function () {
-        debugger;
         var me = this, uploadCertBtn, downloadCertBtn;
         if (me.parentContext.userID){
             me.getField('userID').hide();
@@ -60,8 +59,7 @@ exports.formCode = {
                     var reader = new FileReader();
                     reader.onloadend = function () {
                         var certBuff = reader.result; 
-                        //debugger;
-                        Q.all([
+                        Promise.all([
                          SystemJS.import( '/clientRequire/asn1js/build/asn1.js' ),
                          SystemJS.import( '/clientRequire/pkijs/build/Certificate.js' )])
                          .then(function(res){
@@ -73,8 +71,6 @@ exports.formCode = {
                                   el.valueBlock.value[2].valueDec = 64;
                                 });                          
                                var certificate = new Certificate({ schema: asn1.result });
-                                //var serial = certificate.subject.typesAndValues.find(function(el){ return el.type === "2.5.4.5" });
-                                //serial = serial ? serial.value.valueBlock.value : ''; 
                                 var subject = certificate.subject.typesAndValues.map(
                                   function(e){ return typeNames[e.type] + '=' + e.value.valueBlock.value; })
                                   .join(';');
@@ -96,33 +92,16 @@ exports.formCode = {
                       
                     }
                     reader.readAsArrayBuffer(ffile);
-                    
-                    var reader1 = new FileReader();
-                    reader1.onloadend = function () {
-                        var certBase64 = reader1.result.split(',')[1];
+
+                    UB.base64FromAny(ffile)
+                    .then(function (certBase64) {
                         me.addExtendedDataForSave({'certificate': certBase64});
                         me.updateActions();
                         rComplete++;
                         if (rComplete > 1){
                             w.close();
                         }
-                        
-                      
-                        /*
-                        $App.connection.pki().then(function(pkiInit){
-                            return pkiInit.parseCertificate(certBase64);
-                        }).done(function(certInfo){
-                            if (certInfo.KeyUsage !== "ЕЦП, Неспростовність"){
-                                throw new UB.UBError("Сертифікат повинен бути з призначенням ЕЦП.")
-                            }
-                            debugger;
-                            me.record.set('issuer_serial', certInfo.Issuer );
-                            me.record.set('serial', certInfo.Serial );
-                            me.record.set('description', certInfo.Subj );
-                        }); 
-                        */
-                    }  
-                    reader1.readAsDataURL(ffile);
+                    });  
                     
                 }
             });
