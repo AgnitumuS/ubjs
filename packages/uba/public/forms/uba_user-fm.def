@@ -24,7 +24,6 @@ exports.formDef = {
             align: "stretch"
         }
     },
-
     items: [{
         layout: {
             type: "hbox",
@@ -76,17 +75,10 @@ exports.formDef = {
         }]
     }, {
         flex: 1,
-        margin: "10 0 0 0",
         xtype: 'tabpanel',
-        /*  
-        layout: {
-            type: "hbox",
-            align: "stretch"
-        },*/
         items: [{
             flex: 1,
             title: 'Role',
-            margin: "0 10 0 0",
             xtype: "ubdetailgrid",
             entity: "uba_userrole",
             entityConfig: {
@@ -111,7 +103,6 @@ exports.formDef = {
         },{
             flex: 1,
             title: 'Certificate',
-            margin: "0 10 0 0",
             xtype: "ubdetailgrid",
             entity: "uba_usercertificate",
             entityConfig: {
