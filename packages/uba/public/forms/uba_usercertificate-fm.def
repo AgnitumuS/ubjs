@@ -1,0 +1,46 @@
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "uba_usercertificate"
+// @model "UBA"
+// @formType "auto"
+// @caption "uba_usercertificate"
+// @description "uba_usercertificate"
+exports.formDef = {
+     //requiredFields: ['certificate'],
+    parentConfig: {
+        layout: {
+            type: 'vbox',
+             align: 'stretch'
+         }
+    },
+	items: [
+		{ attributeName: "userID"},
+        { attributeName: "issuer_serial", readOnly: true, },
+        { attributeName: "serial", readOnly: true},
+        { attributeName: "description"},
+        { attributeName: "disabled"},
+        { attributeName: "revoked" , readOnly: true},
+        {
+           xtype: 'container',
+           layout: {
+               type: 'hbox',
+               pack: 'end',
+               align: 'right'
+           },
+           padding: '2 15',  
+           items: [{
+                margin: '0 5',  
+                itemId: 'uploadCertBtn',
+                xtype: 'button',
+                glyph: UB.core.UBUtil.glyphs.faUpload,
+                text: UB.i18n('Upload certificate')
+            },{
+                margin: '0 5',  
+                itemId: 'downloadCertBtn',
+                xtype: 'button',
+                glyph: UB.core.UBUtil.glyphs.faDownload,
+                text: UB.i18n('Download certificate')
+            }]
+         }
+	] 
+};

@@ -77,12 +77,15 @@ exports.formDef = {
     }, {
         flex: 1,
         margin: "10 0 0 0",
+        xtype: 'tabpanel',
+        /*  
         layout: {
             type: "hbox",
             align: "stretch"
-        },
+        },*/
         items: [{
             flex: 1,
+            title: 'Role',
             margin: "0 10 0 0",
             xtype: "ubdetailgrid",
             entity: "uba_userrole",
@@ -96,6 +99,7 @@ exports.formDef = {
         }, {
             flex: 1,
             xtype: "ubdetailgrid",
+            title: 'Group',
             entity: "uba_usergroup",
             entityConfig: {
                 entity: "uba_usergroup",
@@ -104,6 +108,19 @@ exports.formDef = {
             },
             masterFields: ["ID"],
             detailFields: ["userID"]
-        }]
+        },{
+            flex: 1,
+            title: 'Certificate',
+            margin: "0 10 0 0",
+            xtype: "ubdetailgrid",
+            entity: "uba_usercertificate",
+            entityConfig: {
+                entity: "uba_usercertificate",
+                method: "select",
+                fieldList: ["issuer_serial", "serial", "description", "disabled", "revoked"]
+            },
+            masterFields: ["ID"],
+            detailFields: ["userID"]
+         }]
     }]
 };
