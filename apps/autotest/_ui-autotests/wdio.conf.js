@@ -89,7 +89,7 @@ exports.config = {
     //
     // Set a base URL in order to shorten url command calls. If your url parameter starts
     // with "/", then the base url gets prepended.
-    baseUrl: 'http://91.214.180.229:33568/',
+    baseUrl: 'http://10.8.24.85:888/ubadminui',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -138,10 +138,10 @@ exports.config = {
     reporters: ['dot', 'spec', 'junit', 'allure'],
     reporterOptions: {
         junit: {
-            outputDir: './_ui-autotests/junit-reports'
+            outputDir: './junit-reports'
         },
         allure: {
-            outputDir: './_ui-autotests/allure-reports'
+            outputDir: './allure-reports'
         }
     },
     //
