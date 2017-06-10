@@ -5,7 +5,8 @@
 
 
 
-<!--%pageOrientation:portrait--><h1>Cell merge</h1>
+<!--%pageOrientation:landscape--><h1>Cell merge</h1>
+<p style="margin-left: 20mm;">Moved left to 20mm</p>
 <table border="1px" width="772px" cellspacing="0" cellpadding="3px">
 <tbody>
 <tr>
