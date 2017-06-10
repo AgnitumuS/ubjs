@@ -1,0 +1,21 @@
+﻿{
+	"caption": "Active sessions",
+	"description": "Active user sessions (in-memory store)",
+	"connectionName": "inmemory",
+	"descriptionAttribute": "",
+	"documentation": "",
+	"attributes": [
+		{
+			"name": "uData",	
+			"dataType": "String",
+			"size": 255,
+			"caption": "uData"
+		}
+	],
+	"mixins": {
+		"mStorage":	{
+			"simpleAudit": false,
+			"safeDelete" : false
+		}
+	}
+}

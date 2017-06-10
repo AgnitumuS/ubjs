@@ -167,6 +167,15 @@
 				"advSettings": "Synchronous=Off"
 			},
 			{
+				"name": "inmemory",
+				"driver": "SQLite3",
+				"isDefault": false,
+				"dialect": "SQLite3",
+				"databaseName": ":memory:",
+				"supportLang": ["uk"],
+				"advSettings": "Synchronous=Off"
+			},
+			{
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
