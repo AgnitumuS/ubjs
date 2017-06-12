@@ -1,4 +1,7 @@
-/* global UB, mxEvent, mxUtils, mxEditor, mxRubberband, mxCodec, mxBasePath, mxVertexHandler, mxCellRenderer, mxCell, mxGeometry, mxPoint, console, isDeveloperMode, mxRubberband */
+/* global UB, Q, Blob, mxEvent, mxUtils, mxEditor, mxRubberband, mxCodec, mxBasePath, mxVertexHandler, mxCellRenderer, mxCell, mxGeometry, mxPoint, console, isDeveloperMode, mxRubberband */
+/* eslint one-var: "off" */
+/* eslint new-cap: ["error", { "newIsCap": false }] */
+/* eslint no-unused-vars: "off" */
 /**
  * Metadata ER diagram editor.
  */
@@ -45,9 +48,9 @@ Ext.define('UB.ux.UBMetaDiagram', {
       html: html,
       listeners: {
         boxready: function (/* sender */) {
-            require('../../ux/form/mxGraph').initAndCall(function() {
-                me.initMXEditor();
-            });
+          require('../../ux/form/mxGraph').initAndCall(function () {
+            me.initMXEditor()
+          })
         },
         resize: function () {
           if (this.editor && this.editor.graph) {
@@ -210,8 +213,11 @@ Ext.define('UB.ux.UBMetaDiagram', {
         if (!lnk) {
           objLinks[attr.associatedEntity] = lnk = []
         }
-        lnk.push({ linkType: 'relation', srcObj: objCode,
-          srcProp: attrCode, destObj: attr.associatedEntity, destProp: 'ID' })
+        lnk.push({ linkType: 'relation',
+          srcObj: objCode,
+          srcProp: attrCode,
+          destObj: attr.associatedEntity,
+          destProp: 'ID' })
       }
     })
 
@@ -220,8 +226,11 @@ Ext.define('UB.ux.UBMetaDiagram', {
       if (!lnk) {
         objLinks[metaObj.mixins.unity.entity] = lnk = []
       }
-      lnk.push({ linkType: 'inheritage', srcObj: objCode,
-        srcProp: 'ID', destObj: metaObj.mixins.unity.entity, destProp: 'ID' })
+      lnk.push({ linkType: 'inheritage',
+        srcObj: objCode,
+        srcProp: 'ID',
+        destObj: metaObj.mixins.unity.entity,
+        destProp: 'ID' })
     }
 
     Ext.Object.each(me.editor.graph.model.cells, function (id, cell) {
@@ -237,8 +246,11 @@ Ext.define('UB.ux.UBMetaDiagram', {
             // other objects inherited from me
       if (linkmetaObj.mixins && linkmetaObj.mixins.unity && /* linkmetaObj.mixins.unity.enabled && */
                 linkmetaObj.mixins.unity.entity === objCode) {
-        lnkType = { linkType: 'inheritage', srcObj: objectCode,
-          srcProp: 'ID', destObj: objCode, destProp: 'ID' }
+        lnkType = { linkType: 'inheritage',
+          srcObj: objectCode,
+          srcProp: 'ID',
+          destObj: objCode,
+          destProp: 'ID' }
         me.editor.graph.addEdge(me.createEdge(lnkType), null, cell, vertex)
       }
 
@@ -255,8 +267,11 @@ Ext.define('UB.ux.UBMetaDiagram', {
             return true
           }
           if (attr.dataType === 'Entity' && attrCode.toUpperCase() !== 'ID' && attr.associatedEntity === objCode) {
-            lnkType = { linkType: 'relation', srcObj: objectCode,
-              srcProp: attrCode, destObj: objCode, destProp: 'ID' }
+            lnkType = { linkType: 'relation',
+              srcObj: objectCode,
+              srcProp: attrCode,
+              destObj: objCode,
+              destProp: 'ID' }
             me.editor.graph.addEdge(me.createEdge(lnkType), null, cell, vertex)
           }
         })
@@ -339,7 +354,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
             dragE.setHeight(itemE.getHeight())
             fXY = e.getXY()
             dragE.position('absolute', basewindow.dom.style.zIndex + 2, fXY[0], fXY[1])
-            me.dragDropObj = {objectName: record.get('text'), dragElm: dragElm }
+            me.dragDropObj = {objectName: record.get('text'), dragElm: dragElm}
           }
         },
         scope: me
@@ -652,6 +667,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
 
     // Enables rubberband selection
     /* jshint nonew: false */
+    /* eslint no-new: "off" */
     new mxRubberband(graph)
     graph.setPanning(true)
     graph.setTooltips(true)
@@ -718,9 +734,9 @@ Ext.define('UB.ux.UBMetaDiagram', {
                       width: 200,
                       listeners: {
                         change: {
-                            fn: function () { onTextFieldChange(this) },
-                            buffer: 100
-                          }
+                          fn: function () { onTextFieldChange(this) },
+                          buffer: 100
+                        }
                       }
                     }
                     ],
@@ -746,8 +762,8 @@ Ext.define('UB.ux.UBMetaDiagram', {
                       select: function (grd, record/*, index, eOpts */) {
                         var prop = me.editEntityFrmEditor.selEntity.attributes[record.get('code')]
 
-                        edtAttr.setValue(record.get('code') + ' =\n'
-                          + JSON.stringify(prop, null, '\t')
+                        edtAttr.setValue(record.get('code') + ' =\n' +
+                          JSON.stringify(prop, null, '\t')
                         )
                       },
                       scope: me
@@ -783,8 +799,8 @@ Ext.define('UB.ux.UBMetaDiagram', {
                       ],
                       listeners: {
                         select: function (grd, record/*, index, eOpts */) {
-                          edtMixin.setValue(record.get('code') + ' =\n'
-                            + JSON.stringify(
+                          edtMixin.setValue(record.get('code') + ' =\n' +
+                            JSON.stringify(
                                 me.editEntityFrmEditor.selEntity.mixins[record.get('code')], null, '\t')
                           )
                         },
@@ -905,15 +921,14 @@ Ext.define('UB.ux.UBMetaDiagram', {
     return false
   },
 
-
   getTooltipForCell: function (cell) {
     var attr, obj
     if ((attr = cell.getAttribute('objectCode'))) {
       try {
-          obj = $App.domainInfo.get(attr)
-          return obj.caption + ': ' + obj.description
-      } catch(e) {
-          return 'Unknown entity "' + attr + '"'
+        obj = $App.domainInfo.get(attr)
+        return obj.caption + ': ' + obj.description
+      } catch (e) {
+        return 'Unknown entity "' + attr + '"'
       }
     }
     if ((attr = cell.getAttribute('srcProp'))) {
@@ -1009,28 +1024,28 @@ Ext.define('UB.ux.UBMetaDiagram', {
       '<tr><td colspan="2" style="text-align:center; background:#C1D3F5;padding:2px;">', objectCode, '</td></tr>'
     ]
     try {
-        ubObj = $App.domainInfo.get(objectCode)
-        ubObj.eachAttribute(function (attr, attrCode) {
-            if (Ext.String.startsWith(attrCode, 'mi_', true)) {
-                return true
-            }
-            isEntity = attr.dataType === 'Entity'
-            ftype = attr.dataType === 'Enum' ? 'Enum ' + attr.enumGroup + '' :
-                (isEntity ? '<B>' + attr.associatedEntity + '</B>' : attr.dataType)
-            htmlt.push('<tr><td>', attrCode, '</td><td style="padding:2px;">', ftype, '</td></tr>')
-        })
-        // Add mixins images
-        var cellMixinImages = []
-        _.forEach(ubObj.mixins, function (mixinConfig, mixinName) {
-            if (mixinConfig.enabled) {
-                cellMixinImages.push(UB.ux.UBMetaDiagram.mixinPictures[mixinName] || mixinName)
-            }
-        })
-        if (cellMixinImages.length) {
-            htmlt.push('<tr><td colspan="2" style="text-align:center; background:#C1D3F5;padding:2px;">' + cellMixinImages.join('&nbsp') + '</td></tr>')
+      ubObj = $App.domainInfo.get(objectCode)
+      ubObj.eachAttribute(function (attr, attrCode) {
+        if (Ext.String.startsWith(attrCode, 'mi_', true)) {
+          return true
         }
-    } catch(e) {
-        htmlt.push('<tr><td colspan="2">Unknown entity "'+objectCode+'"</td></tr>')
+        isEntity = attr.dataType === 'Entity'
+        ftype = attr.dataType === 'Enum' ? 'Enum ' + attr.enumGroup + ''
+                : (isEntity ? '<B>' + attr.associatedEntity + '</B>' : attr.dataType)
+        htmlt.push('<tr><td>', attrCode, '</td><td style="padding:2px;">', ftype, '</td></tr>')
+      })
+        // Add mixins images
+      var cellMixinImages = []
+      _.forEach(ubObj.mixins, function (mixinConfig, mixinName) {
+        if (mixinConfig.enabled) {
+          cellMixinImages.push(UB.ux.UBMetaDiagram.mixinPictures[mixinName] || mixinName)
+        }
+      })
+      if (cellMixinImages.length) {
+        htmlt.push('<tr><td colspan="2" style="text-align:center; background:#C1D3F5;padding:2px;">' + cellMixinImages.join('&nbsp') + '</td></tr>')
+      }
+    } catch (e) {
+      htmlt.push('<tr><td colspan="2">Unknown entity "' + objectCode + '"</td></tr>')
     }
 
     htmlt.push('</table></div></td></tr></table>')
