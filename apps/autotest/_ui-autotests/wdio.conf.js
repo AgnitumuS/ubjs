@@ -60,7 +60,7 @@ exports.config = {
         maxInstances: 1,
         //
         browserName: 'chrome',
-        screenResolution: "600x480"
+        //screenResolution: "600x480"
     }],
     //
     // ===================
