@@ -1671,6 +1671,7 @@ Ext.define('UB.ux.UBOrgChart', {
       // возможно гдето понадобиться знать о завершении загрузки
       me.loadDataDefer = Q.defer()
       result = me.loadDataDefer.promise
+      me.loadDataDefer.resolve(true)
     }
     me.changeFired = false
     return result
