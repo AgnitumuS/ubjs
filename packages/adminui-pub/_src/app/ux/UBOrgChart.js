@@ -67,12 +67,11 @@ Ext.define('UB.ux.UBOrgChart', {
     UB.core.UBDataLoader.loadStores({
       ubRequests: itemsStores,
       setStoreId: true,
-      callback: function (stores) {
-        me.makeTree(stores.org_unit)
-        // me.showTree();
-        collback.call(me)
-      },
       scope: this
+    }).then(function (stores) {
+      me.makeTree(_.find(stores, {entityName: 'org_unit'}))
+      // me.showTree();
+      collback.call(me)
     })
   },
 
@@ -1916,34 +1915,27 @@ Ext.define('UB.ux.UBOrgChart', {
   createNewDiagram: function (parentID, caption, callback) {
     var me = this
 
-    UB.core.UBService.runList([
-      {
-        entity: 'org_diagram',
-        method: UB.core.UBCommand.methodName.ADDNEW,
-        fieldList: ['ID'],
-        execParams: {}
-      }
-    ], function (result) {
-      var _result, resultData, ID
-      if (result && (_result = _.find(result, 'entity', 'org_diagram'))) {
-        resultData = _result.resultData
+    $App.connection.addNew({
+      entity: 'org_diagram',
+      fieldList: ['ID'],
+      execParams: {}
+    }).then(function (result) {
+      var resultData, ID
+      if (result) {
+        resultData = result.resultData
         ID = resultData.data[0][0]
-        UB.core.UBService.runList([
-          {
-            fieldList: ['ID', 'orgunitID', 'caption'],
-            entity: 'org_diagram',
-            method: UB.core.UBCommand.methodName.INSERT,
-            execParams: {'ID': ID, 'orgunitID': parentID, 'caption': caption}
-          }
-        ], function (result) {
+        $App.connection.insert({
+          fieldList: ['ID', 'orgunitID', 'caption'],
+          entity: 'org_diagram',
+          execParams: {'ID': ID, 'orgunitID': parentID, 'caption': caption}
+        }).then(function (result) {
           if (result.serverFailure) {
             return
           }
           callback.call(me, ID)
-          // debugger;
-        }, me)
+        })
       }
-    }, me)
+    })
 
     /*
      if (result[0] && !result[0].success) {
@@ -2070,10 +2062,9 @@ Ext.define('UB.ux.UBOrgChart', {
     UB.core.UBDataLoader.loadStores({
       ubRequests: itemsStores,
       setStoreId: true,
-      callback: function (stores) {
-        collback.call(me, stores[entity])
-      },
       scope: this
+    }).then(function (stores) {
+      collback.call(me, _.find(stores, {entityName: entity}))
     })
   },
 
