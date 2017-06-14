@@ -28,7 +28,7 @@ Ext.define('UBS.MessageBar', {
     },
     showMessage: function (ctx, row, allowNext) {
       let me = this
-      return new Promise((resolve) => {
+      return new Promise(function(resolve){
         let win = new Ext.Window({
           modal: true,
           autoScroll: true,
