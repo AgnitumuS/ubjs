@@ -15,7 +15,7 @@ describe("Preconditions", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000)
+        browser.pause(3000)
     });
     it("Switch language to Ukrainian", function () {
         var UBMenuUA = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Меню"]');
@@ -34,7 +34,7 @@ describe("Preconditions", function () {
         browser.setValue(ExtLocator.getCss('textfield[requireText=Login]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
-        browser.pause(1000);
+        browser.pause(3000);
         var UBMenuEn = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Menu"]');
         UBMenuEn.should.equal('Menu');
 
