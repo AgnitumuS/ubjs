@@ -218,7 +218,7 @@ Ext.define('UB.ux.UBOrgChart', {
     outlineHtml = '<div id="' + id + '" style="width: 100%; height: 100%; overflow: scroll;" ></div>'
 
     me.outlineWnd = Ext.create('Ext.Window', {
-      title: 'Overview',
+      title: UB.i18n('Overview'),
       width: 200,
       height: 200,
       closable: false,
@@ -651,7 +651,7 @@ Ext.define('UB.ux.UBOrgChart', {
     try {
       doc = mxUtils.createXmlDocument()
       node = doc.createElement('ubOrgChart')
-      node.setAttribute('label', 'Organization')
+      node.setAttribute('label', UB.i18n('Organization'))
       node.setAttribute('unitType', 'ORG')
       node.setAttribute('isRoot', true)
 
@@ -845,10 +845,10 @@ Ext.define('UB.ux.UBOrgChart', {
           store: Ext.create('Ext.data.Store', {
             model: 'SelectPrinterFmt',
             data: [
-              {ID: 'A4P', Caption: 'A4 portrait'},
-              {ID: 'A4L', Caption: 'A4 landscape'},
-              {ID: 'A5P', Caption: 'A5 portrait'},
-              {ID: 'A5L', Caption: 'A5 landscape'}
+              {ID: 'A4P', Caption: UB.i18n('A4 portrait')},
+              {ID: 'A4L', Caption: UB.i18n('A4 landscape')},
+              {ID: 'A5P', Caption: UB.i18n('A5 portrait')},
+              {ID: 'A5L', Caption: UB.i18n('A5 landscape')}
             ]
           }),
           forceSelection: true,
@@ -1071,23 +1071,23 @@ Ext.define('UB.ux.UBOrgChart', {
       menu.addSeparator()
     }
 
-    menu.addItem('Fit', 'models/adminui-pub/themes/UBGrayTheme/ubimages/zoom_in.png' /* $App.getImagePath('zoom_in.png') */, function () {
+    menu.addItem(UB.i18n('Fit'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/zoom_in.png' /* $App.getImagePath('zoom_in.png') */, function () {
       graph.fit()
     })
 
-    menu.addItem('Actual', 'models/adminui-pub/themes/UBGrayTheme/ubimages/view_1_1.png' /* $App.getImagePath('view_1_1.png') */, function () {
+    menu.addItem(UB.i18n('Actual Size'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/view_1_1.png' /* $App.getImagePath('view_1_1.png') */, function () {
       graph.zoomActual()
     })
 
     menu.addSeparator()
 
-    menu.addItem('Print', 'models/adminui-pub/themes/UBGrayTheme/ubimages/print.png' /* $App.getImagePath('print.png') */, function () {
+    menu.addItem(UB.i18n('Print'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/print.png' /* $App.getImagePath('print.png') */, function () {
       var preview = new mxPrintPreview(graph, 1)
       preview.open()
     })
 
-    menu.addItem('Poster Print', 'models/adminui-pub/themes/UBGrayTheme/ubimages/print.png' /* $App.getImagePath('print.png') */, function () {
-      var pageCount = mxUtils.prompt('Enter maximum page count', '1')
+    menu.addItem(UB.i18n('Poster Print'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/print.png' /* $App.getImagePath('print.png') */, function () {
+      var pageCount = mxUtils.prompt(UB.i18n('Enter maximum page count'), '1')
 
       if (pageCount !== null) {
         var scale = mxUtils.getScaleForPageCount(pageCount, graph)
@@ -1147,7 +1147,7 @@ Ext.define('UB.ux.UBOrgChart', {
   appendImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/download.png', // $App.getImagePath('download.png'),
 
   addExpandOverlay: function (graph, cell, expanded) {
-    var me = this, overlay = new mxCellOverlay(new mxImage(expanded ? me.collapseImage : me.expandImage, 24, 24), 'Expande')
+    var me = this, overlay = new mxCellOverlay(new mxImage(expanded ? me.collapseImage : me.expandImage, 24, 24), expanded ? UB.i18n('Collapse') : UB.i18n('Expand'))
     overlay.cursor = 'hand'
     overlay.align = mxConstants.ALIGN_CENTER
 
@@ -1163,7 +1163,7 @@ Ext.define('UB.ux.UBOrgChart', {
   addAddOverlay: function (graph, cell) {
     var me = this, addOverlay
 
-    addOverlay = new mxCellOverlay(new mxImage(me.appendImage, 24, 24), 'Append element')
+    addOverlay = new mxCellOverlay(new mxImage(me.appendImage, 24, 24), UB.i18n('Append element'))
     addOverlay.cursor = 'hand'
     addOverlay.offset = new mxPoint(-4, 8)
     addOverlay.align = mxConstants.ALIGN_RIGHT
@@ -1325,6 +1325,7 @@ Ext.define('UB.ux.UBOrgChart', {
       // overlay.expanded = show;
       overlay.expanded = !overlay.expanded
       overlay.image.src = !overlay.expanded ? me.collapseImage : me.expandImage
+      overlay.tooltip = !overlay.expanded ? UB.i18n('Collapse') : UB.i18n('Expand')
     }
 
     me.updateCell(cell)
@@ -1875,7 +1876,7 @@ Ext.define('UB.ux.UBOrgChart', {
     me.undoManager.clear()
 
     if (!me.rootVarex) {
-      Ext.Msg.alert('', 'Root is not found')
+      Ext.Msg.alert('', UB.i18n('Root is not found'))
       return
     }
 
