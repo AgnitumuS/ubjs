@@ -49,6 +49,7 @@ module.exports = {
           window.mxRectangle = mxgraph.mxRectangle
           window.mxCellOverlay = mxgraph.mxCellOverlay
           window.mxImage = mxgraph.mxImage
+          window.mxPrintPreview = mxgraph.mxPrintPreview
 
           if (_.isFunction(func)) { func() }
         })
