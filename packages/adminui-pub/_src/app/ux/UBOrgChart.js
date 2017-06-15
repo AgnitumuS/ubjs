@@ -643,6 +643,9 @@ Ext.define('UB.ux.UBOrgChart', {
     // is normally the first child of the root (ie. layer 0).
     parent = graph.getDefaultParent()
 
+    if (!graph || !graph.container)
+      return
+
     // Adds the root vertex of the tree
     graph.getModel().beginUpdate()
     try {
@@ -1263,7 +1266,7 @@ Ext.define('UB.ux.UBOrgChart', {
       existIDCount++
     })
 
-    if (element.child.length > 0) {
+    if (element && element.child.length > 0) {
       model.beginUpdate()
       try {
         pt = {x: cell.geometry.x, y: cell.geometry.y + 120}
