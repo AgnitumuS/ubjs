@@ -18,8 +18,8 @@ describe("Preconditions", function () {
         browser.pause(1000)
     });
     it("Switch language to Ukrainian", function () {
-        var UBMenuEn = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Menu"]');
-        UBMenuEn.should.equal('Menu');
+        var UBMenuUA = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Меню"]');
+        UBMenuUA.should.equal('Меню');
         browser.click(ExtLocator.getCss('ubtoolbaruser'));
         browser.moveToObject(ExtLocator.getCss('menuitem[text=Змінити мову]'));
         browser.pause(1000);
