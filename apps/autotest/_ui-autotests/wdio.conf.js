@@ -18,11 +18,17 @@ exports.config = {
 	// define specific suites   $ wdio wdio.conf.js --suite login 
 	// run multiple suites at once   $ wdio wdio.conf.js --suite login,otherFeature
 	suites: {
+        Preconditions: [
+            './_ui-autotests/test/**/Preconditions.js',
+        ],
         Shortcut: [
             './_ui-autotests/test/**/Shortcut.js',
         ],
         Folder: [
             './_ui-autotests/test/**/Folder.js',
+        ],
+        Desktop: [
+            './_ui-autotests/test/**/Desktop.js',
         ],
 		TestMainData: [
             './_ui-autotests/test/**/TestMainData.js',

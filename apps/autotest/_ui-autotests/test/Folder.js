@@ -19,8 +19,8 @@ describe("Login to the system", function () {
         browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
-        browser.pause(3000);//temporary solution before bug fixing
-        browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
+        // browser.pause(3000);//temporary solution before bug fixing
+        // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
         browser.pause(1000)
 
     });
