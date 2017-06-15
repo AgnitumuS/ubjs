@@ -1139,9 +1139,9 @@ Ext.define('UB.ux.UBOrgChart', {
     }
   },
 
-  expandImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png', // $App.getImagePath('expandLG.png'),
-  collapseImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png', // $App.getImagePath('collapseLG.png'),
-  appendImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png', // $App.getImagePath('download.png'),
+  expandImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/expandLG.png', // $App.getImagePath('expandLG.png'),
+  collapseImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/collapseLG.png', // $App.getImagePath('collapseLG.png'),
+  appendImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/download.png', // $App.getImagePath('download.png'),
 
   addExpandOverlay: function (graph, cell, expanded) {
     var me = this, overlay = new mxCellOverlay(new mxImage(expanded ? me.collapseImage : me.expandImage, 24, 24), 'Expande')
