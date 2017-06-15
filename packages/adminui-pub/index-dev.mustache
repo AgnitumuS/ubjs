@@ -51,6 +51,9 @@
         </div>
         <div id ="ubExtensionPageMessageObj"></div>
 
+        <!-- add promises to IE-->
+        <script src="/clientRequire/when/es6-shim/Promise.js"></script>
+
         <script charset="utf-8" src="{{#md5}}models/adminui-pub/ext-all-debug-w-comments.js{{/md5}}"></script>
         <script src="{{#md5}}clientRequire/systemjs/dist/system.src.js{{/md5}}" type="text/javascript"></script>
 
@@ -68,7 +71,8 @@
                   '*.min.js':   { format: 'cjs' },
                   'codemirror/*.js': { format: 'cjs' },
                   'file-saver/*.js': { format: 'cjs' }
-                }
+                },
+                packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });
 
             System.import('@unitybase/adminui-pub').then(function(adminUI){
