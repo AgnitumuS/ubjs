@@ -856,8 +856,8 @@ Ext.define('UB.ux.UBOrgChart', {
           allowBlank: false,
           displayField: 'Caption',
           valueField: 'Caption',
-          value: 'A4 portrait',
-          width: 100,
+          value: UB.i18n('A4 portrait'),
+          width: 150,
           labelWidth: 0,
           queryMode: 'local',
           listeners: {
