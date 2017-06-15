@@ -657,7 +657,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
       w = graph.container.offsetWidth
       v1 = graph.insertVertex(parent, 'treeRoot',
-        node, w / 2 - 30, 20, 140, 60, 'image=' + 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png'/* $App.getImagePath('office.png') */)
+        node, w / 2 - 30, 20, 140, 60)// , 'image=' + 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png'/* $App.getImagePath('office.png') */)
 
       graph.updateCellSize(v1)
 
