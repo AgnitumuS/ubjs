@@ -6,12 +6,13 @@
   "main": "index.js",
   "scripts": {
     "test": ".\\tsql3.cmd",
-    "replace-native": "npm i @unitybase/canvas@latest @unitybase/com-bridge@latest @unitybase/mailer-ssl@latest @unitybase/mailer@latest --no-save -f,"
+    "replace-native": "npm i @unitybase/canvas@latest @unitybase/com-bridge@latest @unitybase/mailer-ssl@latest @unitybase/mailer@latest --no-save -f",
     "selser": "selenium-standalone",
-    "test-start": "wdio _ui-autotests\\wdio.conf.js --suite Preconditions,Shortcut,Folder,Desktop,TestMainData",
-	"selser_install": "selenium-standalone install --config=_ui-autotests\\autotest-sel-config.js",
+    "test-start": "wdio _ui-autotests\\wdio.conf.js",
+    "selser_install": "selenium-standalone install --config=_ui-autotests\\autotest-sel-config.js",
     "selser_start_separate": "start /D .\\ selenium-standalone start --config=./_ui-autotests/autotest-sel-config.js",
-	"test-with-selenium": "npm run selser_start_separate & npm run test-start"
+    "test-with-selenium": "npm run selser_start_separate & npm run test-start",
+    "test2": "npm run demo & npm run test-with-selenium"
   },
   "dependencies": {
     "@ub-e/dses": "file:..\\..\\..\\ub-e\\packages\\dses",
@@ -50,13 +51,11 @@
     "systemjs-plugin-css": "^0.1.32",
     "tinymce": "^4.5.1",
     "when": "^3.7.7",
-    "lodash": "^4",
     "gh-pages": "",
     "http-server": ""
-    "when": "^3.7.7"
   },
   "devDependencies": {
-    "@unitybase/stubs": "file:..\\..\\packages\\stubs"
+    "@unitybase/stubs": "file:..\\..\\packages\\stubs",
     "chai": "^3.5.0",
     "selenium-standalone": "^5.11.2",
     "wdio-allure-reporter": "^0.1.2",
