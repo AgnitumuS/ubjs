@@ -27,7 +27,7 @@ module.exports = function autotest (options) {
   http.setGlobalConnectionDefaults({receiveTimeout: 10 * 60 * 1000});
 
   if (!options) {
-    let opts = cmdLineOpt.describe('cmd/autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')
+    let opts = cmdLineOpt.describe('autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
       .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names list for run autotest'})
       .add({short: 'skipModules', long: 'skipModules', defaultValue: false, help: 'Do not run autotest for a build-in modules'})

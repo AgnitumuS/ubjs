@@ -2,20 +2,20 @@
 
 Follow [UnityBase setup instruction](https://git-pub.intecracy.com/unitybase/ubjs#install-windows)
 
-We recomend to use a Yarn instead of npm. Can be [installed from here](https://yarnpkg.com/en/docs/install).
-
-In case `yarn` is installed, use a `yarn install` `yarn run ...` instead of `npm i` & `npm run ...`
-
 ```
+> mkdir dev && cd dev
 > git clone https://git-pub.intecracy.com/unitybase/ubjs.git
-> [For UB Enterprise] git clone https://gitlab.intecracy.com/unitybase/ub-e.git
+rem In case you have access to UB Enterprise - clone it
+> git clone https://gitlab.intecracy.com/unitybase/ub-e.git
+rem In case you have access to UB Defense - clone it
+> git clone https://gitlab.intecracy.com/unitybase/ub-d.git
 > cd ubjs
 > npm run bootstrap
 > cd apps\autotest
 > npm i
 > tsql3.cmd
 > ub -dev
-go to http://localhost:888/ubadminui-dev
+Point ypour browser (Chrome or FireFox) to http://localhost:888/ubadminui-dev
 ```
 
 # Adding new packages to UnityBase package repository

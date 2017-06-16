@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Session.on('logon') event now take a req: THTTPRequest input param
 - grant rights to uba_advSecurity for Supervisor role
 - store a request headers during uba_audit LOGIN event
+- user can upload certificate in user form 
 
 ### Fixed
 --set **uba_user.lastPasswordChangeDate = maxDate** in case create domain users.

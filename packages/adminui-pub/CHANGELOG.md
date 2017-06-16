@@ -4,11 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+##  [4.2.17]
+### Fixed
+- allow UBComboBox.setValueById to use `valueField` instead of hardcoded 'ID'
+- "Remember me" feature for Negotiate authentication now don't hung a app
+- "unable to change password at first logon" issue fixed 
+
 ## [4.2.15]
 ### Added
 
 ### Fixed
--  prevent open the same command in separate tabs in case it opened from left or top menu
+-  prevent open the same command in separate tabs in case it's opened from left or top menu
 -  set `UBStore.loading = true` in method **UBStore.reload** before call **UBStore.clearCache()**.
 
 ### Changed

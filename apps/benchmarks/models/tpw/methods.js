@@ -57,7 +57,8 @@ function dbUbql (req, resp) {
 }
 App.registerEndpoint('dbUbql', dbUbql, false)
 
-let PureQ = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '=', 0).ubql()
+const CustomRepository = require('@unitybase/base').CustomRepository
+let PureQ = new CustomRepository('World').attrs(['ID', 'randomNumber']).where('ID', '=', 0).ubql()
 
 /**
  * TechemPower Test type 2: Single database query (ORM)
@@ -65,7 +66,7 @@ let PureQ = UB.Repository('World').attrs(['ID', 'randomNumber']).where('ID', '='
  * @param {THTTPResponse} resp
  */
 function dbUbqlPure (req, resp) {
-  PureQ.whereList.c01.values.c01 = rnd10000()
+  PureQ.whereList.c1.values.c1 = rnd10000()
   let {sql, params} = dml.mssql.biuldSelectSql('World', PureQ)
 
   let data = JSON.parse(App.defaultDatabase_.run(sql, params))[0]
@@ -74,7 +75,6 @@ function dbUbqlPure (req, resp) {
   resp.writeEnd({ID: data['F0'], randomNumber: data['F1']})
 }
 App.registerEndpoint('dbUbqlPure', dbUbqlPure, false)
-
 
 const SQL = 'select id, randomNUmber from World where id = ?'
 const dataStore = new TubDataStore('World')
