@@ -50,9 +50,9 @@
     "systemjs": "file:..\\..\\packages\\systemjs",
     "systemjs-plugin-css": "^0.1.32",
     "tinymce": "^4.5.1",
-    "when": "^3.7.7",
     "gh-pages": "",
-    "http-server": ""
+    "http-server": "",
+    "when": "^3.7.7"
   },
   "devDependencies": {
     "@unitybase/stubs": "file:..\\..\\packages\\stubs",
