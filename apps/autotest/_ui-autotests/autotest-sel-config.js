@@ -3,7 +3,7 @@ module.exports = {
   version: '2.53.1',
   drivers: {
     chrome: {
-      version: '2.29',
+      version: '2.30',
       arch: process.arch,
       baseURL: 'https://chromedriver.storage.googleapis.com'
     },
@@ -19,3 +19,4 @@ module.exports = {
     }
   }
 };
+//
