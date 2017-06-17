@@ -38,7 +38,9 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
 }
 
 function splitAndExec (stmts, ubConnection, dbConnectionName) {
-  var statements = stmts.split('--next\r\n')
+  // git can replace \r\n by \n on windows
+  let delimRe = /\r\n/.test(stmts) ? '--next\r\n' : '--next\n'
+  var statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement)
             { ubConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement}) }

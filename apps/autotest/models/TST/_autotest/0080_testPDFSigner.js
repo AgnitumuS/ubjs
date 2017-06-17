@@ -17,7 +17,7 @@ const argv = require('@unitybase/base/argv')
 const path = require('path')
 const TEST_NAME = 'PDF signing thread test'
 
-module.exports = function runIITCryptoTest (options) {
+module.exports = function runPDFSignTest (options) {
   if (!options) {
     let opts = cmdLineOpt.describe('', TEST_NAME)
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)

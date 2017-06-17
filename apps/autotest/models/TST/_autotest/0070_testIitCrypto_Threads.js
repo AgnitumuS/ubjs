@@ -87,7 +87,7 @@ function onProcessWorker (message) {
       }
     }])
   } finally {
-    session.  logout()
+    session.logout()
   }
   postMessage({signal: 'done', thread: message.thread, timeSpend: Date.now() - startTime, result: result})
   terminate()

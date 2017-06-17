@@ -166,19 +166,23 @@ function clientRequire (req, resp) {
       return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
     }
 
-    // in case this is request to UnityBase model - check resolved file is inside model public folder
     let models = App.domainInfo.models
     let restrictAccess = false
-    _.forEach(models, (model) => {
-      if (model.moduleName &&
-        // do not compare req @unitybase/ub-pub with module @unitybase/ub
-        ((reqPath === model.moduleName) || reqPath.startsWith(model.moduleName + '/')) &&
-        !resolvedPath.startsWith(model.realPublicPath)
-      ) {
-        restrictAccess = true
-        return false
-      }
-    })
+    // allow access to package.json for dynamically load a module from UI
+    if (! reqPath.endsWith('/package.json')) {
+      // in case this is request to UnityBase model - check resolved file is inside model public folder
+      _.forEach(models, (model) => {
+        if (model.moduleName &&
+          // do not compare req @unitybase/ub-pub with module @unitybase/ub
+          ((reqPath === model.moduleName) || reqPath.startsWith(model.moduleName + '/')) &&
+          !resolvedPath.startsWith(model.realPublicPath)
+        ) {
+          restrictAccess = true
+          return false
+        }
+      })
+    }
+
     if (restrictAccess) {
       return badRequest(resp, `Request to UnityBase model ${reqPath} resolved to (${resolvedPath}) which is not inside any of public models folder`)
     }

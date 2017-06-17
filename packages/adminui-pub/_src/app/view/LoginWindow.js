@@ -39,7 +39,7 @@ Ext.define('UB.view.LoginWindow', {
         })
       }
 
-      if (silenceKerberosLogin && !isRepeat && !userDidLogout && ($App.connection.authMethods.indexOf('Negotiate') >= 0)) {
+      if (silenceKerberosLogin && !isRepeat && !userDidLogout && (connection.authMethods.indexOf('Negotiate') >= 0)) {
         return Promise.resolve({
           authSchema: 'Negotiate',
           login: '',

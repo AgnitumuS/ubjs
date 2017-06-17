@@ -109,14 +109,15 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
   })
 
   var createObjectSQL = fs.readFileSync(path.join(__dirname, 'oracleObjects.sql'))
-  var statements = createObjectSQL.split('/\r\n--')
+  let delimRe = /\r\n/.test(createObjectSQL) ? '/\r\n' : '/\n' // git can remove \r\n
+  var statements = createObjectSQL.split(delimRe)
   statements.forEach(function (statement) {
     if (statement)
             { conn.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: databaseConfig.name}, data: statement}) }
   })
 
   var initialData = fs.readFileSync(path.join(__dirname, 'oracleTables.sql'))
-  statements = initialData.split('/\r\n--')
+  statements = initialData.split(delimRe)
   statements.forEach(function (statement) {
     if (statement)
             { conn.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: 'main'}, data: statement}) }

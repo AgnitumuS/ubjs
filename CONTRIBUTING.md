@@ -2,20 +2,20 @@
 
 Follow [UnityBase setup instruction](https://git-pub.intecracy.com/unitybase/ubjs#install-windows)
 
-We recomend to use a Yarn instead of npm. Can be [installed from here](https://yarnpkg.com/en/docs/install).
-
-In case `yarn` is installed, use a `yarn install` `yarn run ...` instead of `npm i` & `npm run ...`
-
 ```
+> mkdir dev && cd dev
 > git clone https://git-pub.intecracy.com/unitybase/ubjs.git
-> [For UB Enterprise] git clone https://gitlab.intecracy.com/unitybase/ub-e.git
+rem In case you have access to UB Enterprise - clone it
+> git clone https://gitlab.intecracy.com/unitybase/ub-e.git
+rem In case you have access to UB Defense - clone it
+> git clone https://gitlab.intecracy.com/unitybase/ub-d.git
 > cd ubjs
 > npm run bootstrap
 > cd apps\autotest
 > npm i
 > tsql3.cmd
 > ub -dev
-go to http://localhost:888/ubadminui-dev
+Point ypour browser (Chrome or FireFox) to http://localhost:888/ubadminui-dev
 ```
 
 # Adding new packages to UnityBase package repository
@@ -204,9 +204,14 @@ For a production environment all operations below must be performed under user w
       
 
  - [create a scheduled task](https://technet.microsoft.com/en-us/library/cc748993(v=ws.11).aspx) for run a pm2 on system startup
-  
-        schtasks /Create /RU ub-service /RP adminub /SC ONSTART /TN PM2 /TR "C:\Users\ub-service\AppData\Roaming\npm\pm2.cmd resurrect" /V1 /F
+    
+**Under admin commad prompt** run
+
+```    
+schtasks /Create /RU ub-service /RP adminub /SC ONSTART /TN PM2 /TR "C:\Users\ub-service\AppData\Roaming\npm\pm2.cmd resurrect" /V1 /F
+```
+where ub-service is a service account name, and adminub is a password for a service account
         
-   admin rights is required. /V1 switch is **IMPORTANT** - it set a valid working folder for the command (pm2.cmd inside use a %~dp0 - a cwd() analog in cmd)
+   **TIP** /V1 switch is **IMPORTANT** - it set a valid working folder for the command (pm2.cmd inside use a %~dp0 - a cwd() analog in cmd)
  
 

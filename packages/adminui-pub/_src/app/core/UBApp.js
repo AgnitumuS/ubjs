@@ -207,7 +207,7 @@ Ext.define('UB.core.UBApp', {
     }
   },
 
-  onPasswordChange: function () {
+  onPasswordChange: function (connection) {
     var wind = new Ext.Window({
       extend: 'Ext.form.Panel',
       layout: 'vbox',
@@ -286,7 +286,7 @@ Ext.define('UB.core.UBApp', {
 
     })
     wind.down('component[ubID="btnOK"]').handler = function () {
-      $App.connection.xhr({
+      connection.xhr({
         url: 'changePassword',
         method: 'POST',
         data: {
@@ -475,7 +475,7 @@ Ext.define('UB.core.UBApp', {
    * @returns {string}
    */
   getImagePath: function (imageName) {
-    return 'models/adminui/themes/' + UB.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
+    return 'models/adminui-pub/themes/' + UB.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
   },
 
   /**
@@ -1017,25 +1017,23 @@ Ext.define('UB.core.UBApp', {
    * Logout active user. Reload page.
    */
   logout: function () {
-    if (this.connection) {
-      this.connection.logout()
-      .catch(e => true)
-      .then(function () {
-        // MPV TODO Secure browser
-        // if (UB.isSecureBrowser) {
-        //     var remote = require('electron').remote;
-        //     var window = remote.getCurrentWindow();
-        //     window.destroy();
-        // } else {
-        if (document.location && document.location.href && document.location.href.indexOf('#') > 0) {
-          document.location.href = document.location.href.split('#')[0]
-        } else {
-          document.location.href = document.location.href
-        }
-        // }
-        // reload page without cache re-validation. instead of window.location.reload() what does.
-      })
-    }
+    let p = this.connection ? this.connection.logout() : Promise.resolve(true)
+    p.catch(e => true)
+    .then(function () {
+      // MPV TODO Secure browser
+      // if (UB.isSecureBrowser) {
+      //     var remote = require('electron').remote;
+      //     var window = remote.getCurrentWindow();
+      //     window.destroy();
+      // } else {
+      if (document.location && document.location.href && document.location.href.indexOf('#') > 0) {
+        document.location.href = document.location.href.split('#')[0]
+      } else {
+        document.location.href = document.location.href
+      }
+      // }
+      // reload page without cache re-validation. instead of window.location.reload() what does.
+    })
   },
 
   locationHashChanged: function () {

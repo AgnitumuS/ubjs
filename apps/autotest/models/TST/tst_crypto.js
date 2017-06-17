@@ -9,7 +9,7 @@ me.entity.addMethod('doTest')
  */
 me.doTest = function (ctx) {
   var signature, signInfo, cert, certInfo, rStat, dat,
-    iitCrypto = require('iitCrypto'),
+    iitCrypto = require('@ub-d/iit-crypto'),
     fs = require('fs'),
     path = require('path'),
     thCode = ctx.mParams.execParams.code
@@ -20,9 +20,9 @@ me.doTest = function (ctx) {
     return fs.readFileSync(path.join(__dirname, '_autotest', 'fixtures', fileName), {encoding: 'bin'})
   })
   try {
-    rStat = iitCrypto.init('')
+    rStat = iitCrypto.init()
     console.log(thCode, 'init IIT', rStat)
-    rStat = iitCrypto.readPkFromFile(path.join(__dirname, '_autotest', 'iitKey', 'Key-6.dat'), '12345677')
+    rStat = iitCrypto.readPkFromFile(path.join(__dirname, '_autotest', 'iitKey', 'Key-6.pfx'), '12345678')
     console.log(thCode, 'init readPkFromFile', rStat)
         // console.log(iitCrypto.getStatus());
     fixtures.forEach(function (fileDat) {

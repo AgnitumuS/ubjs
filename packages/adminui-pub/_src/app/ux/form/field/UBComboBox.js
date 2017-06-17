@@ -636,7 +636,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         store.filter(new Ext.util.Filter({
             id: me.userFilterId,
             root: 'data',
-            property: 'ID',
+            property: this.valueField || 'ID',
             condition: id && _.isArray(id) ? 'in' : 'equal',
             value: id
         }));

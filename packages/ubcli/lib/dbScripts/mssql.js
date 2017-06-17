@@ -32,7 +32,8 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
 }
 
 function splitAndExec (stmts, ubConnection, dbConnectionName) {
-  let statements = stmts.split('GO\r\n')
+  let delimRe = /\r\n/.test(stmts) ? 'GO\r\n' : 'GO\n' // git can remove \r\n
+  let statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement && statement !== 'GO') {
       ubConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
