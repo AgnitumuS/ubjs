@@ -6,7 +6,6 @@ require('./UBLink')
 require('./UBLabel')
 require('./UBTinyMCETextArea')
 require('./UBCodeMirror')
-require('./EnterpriseEditorMock')
 require('./UBReportEditor')
 require('./UBMetaDiagram')
 //require('./GraphViewer')
@@ -62,7 +61,6 @@ Ext.define('UB.ux.UBDocument', {
     //     'UB.ux.UBLabel',
     //     'UB.ux.UBTinyMCETextArea',
     //     'UB.ux.UBCodeMirror',
-    //     'UB.ux.EnterpriseEditorMock',
     //     'UB.ux.UBReportEditor'
     // ],
   uses: ['UB.core.UBApp'],
