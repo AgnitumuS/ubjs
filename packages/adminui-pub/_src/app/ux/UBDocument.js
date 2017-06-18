@@ -106,6 +106,7 @@ Ext.define('UB.ux.UBDocument', {
             'application/def':'UB.ux.UBCodeMirror',
             'application/javascript':'UB.ux.UBCodeMirror',
 
+            'text/x-yaml':'UB.ux.UBCodeMirror',
             'text/xml':'UB.ux.UBCodeMirror',
             'application/xml':'UB.ux.UBCodeMirror',
             'application/ubWorkFlow': 'UB.ux.GraphViewer',
