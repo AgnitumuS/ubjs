@@ -2,6 +2,9 @@
 /* eslint one-var: "off" */
 /* eslint new-cap: ["error", { "newIsCap": false }] */
 /* eslint no-unused-vars: "off" */
+
+const mxLoader = require('../../ux/form/mxGraph.js')
+
 /**
  * Metadata ER diagram editor.
  */
@@ -41,14 +44,14 @@ Ext.define('UB.ux.UBMetaDiagram', {
     html = '<div id="' + id + '" class="graph-editor-holder" style="width: 100%; height: 100%;-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" tabindex="0"></div>'
 
     me.editPnl = Ext.create('Ext.panel.Panel', {
-            // layout: 'fit',
+      // layout: 'fit',
       region: 'center',
       cls: 'mx-graph-editor',
       flex: 1,
       html: html,
       listeners: {
         boxready: function (/* sender */) {
-          require('../../ux/form/mxGraph').initAndCall(function () {
+          mxLoader.initAndCall().then(function () {
             me.initMXEditor()
           })
         },

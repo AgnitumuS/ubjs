@@ -2,6 +2,9 @@
 /* eslint one-var: "off" */
 /* eslint new-cap: ["error", { "newIsCap": false }] */
 /* eslint no-unused-vars: "off" */
+
+const mxLoader = require('../../ux/form/mxGraph.js')
+
 /**
  * Organization Chart Diagram
  */
@@ -13,29 +16,32 @@ Ext.define('UB.ux.UBOrgChart', {
   layout: 'fit',
 
   loadData: function (collback) {
-    var me = this, basepanel, diagramId
-    basepanel = me.up('basepanel')
-    if (basepanel && basepanel.record) {
-      // me.rootElementID = basepanel.record.get('orgunitID');
-      diagramId = basepanel.record.get('ID')
-    }
-    if (diagramId) {
-      me.loadBy('org_diagram', ['ID', 'orgunitID'], 'ID', diagramId, function (store) {
-        if (store.getCount() > 0) {
-          me.rootElementID = store.getAt(0).get('orgunitID')
-        }
-        if (me.rootElementID) {
-          me.loadBy('org_unit', ['ID', 'mi_treePath'], 'ID', me.rootElementID, function (store) {
-            if (store.getCount() > 0) {
-              me.rootTreePath = store.getAt(0).get('mi_treePath')
-            }
+    var me = this
+    this.xmInitPromise.then(() => {
+      var basepanel, diagramId
+      basepanel = me.up('basepanel')
+      if (basepanel && basepanel.record) {
+        // me.rootElementID = basepanel.record.get('orgunitID');
+        diagramId = basepanel.record.get('ID')
+      }
+      if (diagramId) {
+        me.loadBy('org_diagram', ['ID', 'orgunitID'], 'ID', diagramId, function (store) {
+          if (store.getCount() > 0) {
+            me.rootElementID = store.getAt(0).get('orgunitID')
+          }
+          if (me.rootElementID) {
+            me.loadBy('org_unit', ['ID', 'mi_treePath'], 'ID', me.rootElementID, function (store) {
+              if (store.getCount() > 0) {
+                me.rootTreePath = store.getAt(0).get('mi_treePath')
+              }
+              me.doLoadData(collback)
+            })
+          } else {
             me.doLoadData(collback)
-          })
-        } else {
-          me.doLoadData(collback)
-        }
-      })
-    }
+          }
+        })
+      }
+    })
   },
 
   doLoadData: function (collback) {
@@ -245,30 +251,34 @@ Ext.define('UB.ux.UBOrgChart', {
      });
      */
 
-    me.mainPnl = Ext.create('Ext.panel.Panel', {
-      flex: 1,
-      html: html,
-      items: [
-        me.outlineWnd,
-        {
-          xtype: 'text',
-          text: 'text',
-          degrees: 90
-        }
-      ],
-      listeners: {
-        boxready: function (sender) {
-          require('../../ux/form/mxGraph').initAndCall(function () {
-            me.initGraph()
-          })
-        },
-        resize: function (sender, width, height, oldWidth, oldHeight) {
-          if (me.graph) {
-            me.graph.sizeDidChange()
+    me.xmInitPromise = new Promise((resolve, reject) => {
+      me.mainPnl = Ext.create('Ext.panel.Panel', {
+        flex: 1,
+        html: html,
+        items: [
+          me.outlineWnd,
+          {
+            xtype: 'text',
+            text: 'text',
+            degrees: 90
           }
-        },
-        scope: me
-      }
+        ],
+        listeners: {
+          boxready: function (sender) {
+            mxLoader.initAndCall().then(
+              () => { me.initGraph(); resolve(me) }
+            ).catch(
+              (reason) => reject(reason)
+            )
+          },
+          resize: function (sender, width, height, oldWidth, oldHeight) {
+            if (me.graph) {
+              me.graph.sizeDidChange()
+            }
+          },
+          scope: me
+        }
+      })
     })
 
     if (!me.items) {

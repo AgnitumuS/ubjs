@@ -39,7 +39,7 @@
     "jszip": "^3.1.3",
     "lodash": "^4",
     "mustache": "^2.3.0",
-    "mxgraph": "^3.7.2-2",
+    "mxgraph-js": "^1.0.1",
     "systemjs": "^0.20.13",
     "systemjs-plugin-css": "^0.1.32",
     "tinymce": "^4.4.3"
@@ -49,5 +49,8 @@
     "UB4"
   ],
   "author": "UnityBase team (https://unitybase.info)",
-  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
+  "devDependencies": {
+    "uglifycss": "0.0.27"
+  }
 }

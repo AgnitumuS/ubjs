@@ -1,18 +1,18 @@
-/* global BOUNDLED_BY_WEBPACK */
-require('lodash')
-
 module.exports = {
-  initAndCall: function (func) {
-    window.BOUNDLED_BY_WEBPACK = false
-    if (BOUNDLED_BY_WEBPACK) {
-      System.import('mxgraph/javascript/dist/build')
-        .then(function (init) {
-          const mxgraph =
+  initAndCall: function () {
+    //window.BOUNDLED_BY_WEBPACK = false
+    //if (BOUNDLED_BY_WEBPACK) {
+      //System.import('mxgraph/javascript/dist/build')
+    window.mxImageBasePath = 'models/adminui-pub/resources/images'
+    window.mxBasePath = 'models/adminui-pub/resources'
+    return System.import('mxgraph-js')
+        .then(function (mxgraph) {
+          /*const mxgraph =
             init({
               mxImageBasePath: 'clientrequire/mxgraph/javascript/src/images',
               mxBasePath: 'clientrequire/mxgraph/javascript/src'
             })
-
+          */
           // TODO: next code block should be neutralized by webpack configuration:
           window.mxGraph = mxgraph.mxGraph
           window.mxShape = mxgraph.mxShape
@@ -50,11 +50,10 @@ module.exports = {
           window.mxCellOverlay = mxgraph.mxCellOverlay
           window.mxImage = mxgraph.mxImage
           window.mxPrintPreview = mxgraph.mxPrintPreview
-
-          if (_.isFunction(func)) { func() }
+          return mxgraph
         })
-    } else {
-      $App.dialogInfo('mxGraph is unavailable in DEV mode')
-    }
+    //} else {
+    //  $App.dialogInfo('mxGraph is unavailable in DEV mode')
+    //}
   }
 }
