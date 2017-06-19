@@ -474,7 +474,7 @@ UBConnection.prototype.runList = function (runListData) {
  * @returns {*} body of HTTP request result. If !simpleTextResult and response type is json - then parsed to object
  */
 UBConnection.prototype.runCustom = function (endpoint, aBody, aURLParams, simpleTextResult, aHTTPMethod) {
-  return this.xhr({HTTPMethod: aHTTPMethod || 'POST', endpoint: endpoint, data: aBody, simpleTextResult: simpleTextResult})
+  return this.xhr({HTTPMethod: aHTTPMethod || 'POST', endpoint: endpoint, URLParams: aURLParams, data: aBody, simpleTextResult: simpleTextResult})
     // throw new Error ('Use one of runList/run/post/xhr UBConnection methods');
 }
 
