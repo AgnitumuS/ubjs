@@ -10,31 +10,28 @@ Ext.define('UB.ux.UBOrgChart', {
   height: '100%',
   layout: 'fit',
 
-  loadData: function (collback) {
+  loadData: function (cb) {
     var me = this
     this.xmInitPromise.then(() => {
       var basepanel, diagramId
       basepanel = me.up('basepanel')
       if (basepanel && basepanel.record) {
-        // me.rootElementID = basepanel.record.get('orgunitID');
         diagramId = basepanel.record.get('ID')
       }
       if (diagramId) {
-        me.loadBy('org_diagram', ['ID', 'orgunitID'], 'ID', diagramId, function (store) {
-          if (store.getCount() > 0) {
-            me.rootElementID = store.getAt(0).get('orgunitID')
-          }
-          if (me.rootElementID) {
-            me.loadBy('org_unit', ['ID', 'mi_treePath'], 'ID', me.rootElementID, function (store) {
-              if (store.getCount() > 0) {
-                me.rootTreePath = store.getAt(0).get('mi_treePath')
-              }
-              me.doLoadData(collback)
-            })
-          } else {
-            me.doLoadData(collback)
-          }
-        })
+        UB.Repository('org_diagram').attrs(['ID', 'orgunitID']).selectById(diagramId)
+          .then((diagramData) => {
+            if (diagramData) me.rootElementID = diagramData.orgunitID
+            if (!me.rootElementID) {
+              me.doLoadData(cb)
+            } else {
+              UB.Repository('org_unit').attrs(['ID', 'mi_treePath']).selectById(me.rootElementID)
+                .then((orgUnitData) => {
+                  if (orgUnitData) me.rootTreePath = orgUnitData.mi_treePath
+                  me.doLoadData(cb)
+                })
+            }
+          })
       }
     })
   },
@@ -116,10 +113,6 @@ Ext.define('UB.ux.UBOrgChart', {
         if (expandChild && (!deep || (deep > level))) {
           me.showChild(cell, item, deep, level + 1)
         }
-        /*
-         if (index > 2){
-         return false;
-         } */
       }, me)
     } finally {
       if (!expandChild) {
@@ -150,17 +143,11 @@ Ext.define('UB.ux.UBOrgChart', {
           if (expandChild && (!deep || (deep > level))) {
             me.showChild(cell, expandChild, true, deep, level)
           }
-          /*
-           if (index > 2){
-           return false;
-           }
-           */
         }, me)
       }
     } finally {
       model.endUpdate()
     }
-    // me.horisontalLayout.execute(me.graph.getDefaultParent(), me.rootVarex);
     me.autoLayout(me.rootVarex, me.defaultLayout)
     me.setGraphVisiblePoint(me.rootVarex.geometry.x, me.rootVarex.geometry.y)
     me.changeFired = false
@@ -194,8 +181,6 @@ Ext.define('UB.ux.UBOrgChart', {
     me.containerId = id = me.idPrefix + 'graph'
     html = '<div id="' + id + '" class="graph-editor-holder" style="width: 100%; height: 100%; background-color: white; overflow: scroll; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" tabindex="0"></div>'
 
-    // me.toolbarId = id =  me.idPrefix + 'toolbar';
-    // toolbarHtml = '<div id="' + id+'" tabindex="0"></div>';
     me.outlineId = id = me.idPrefix + 'outline'
     outlineHtml = '<div id="' + id + '" style="width: 100%; height: 100%; overflow: scroll;" ></div>'
 
@@ -211,22 +196,6 @@ Ext.define('UB.ux.UBOrgChart', {
       }]
     })
 
-    /*
-     me.toolbarWnd = Ext.create('Ext.Window', {
-     title: 'Toolbar',
-     width: 80,
-     height: 200,
-     closable: false,
-     layout: 'fit',
-     constrain: true,
-     items:[
-     {
-     html:  toolbarHtml
-     }
-     ]
-     });
-     */
-
     me.xmInitPromise = new Promise((resolve, reject) => {
       me.mainPnl = Ext.create('Ext.panel.Panel', {
         flex: 1,
@@ -240,14 +209,14 @@ Ext.define('UB.ux.UBOrgChart', {
           }
         ],
         listeners: {
-          boxready: function (sender) {
+          boxready: function () {
             mxLoader.initAndCall().then(
               () => { me.initGraph(); resolve(me) }
             ).catch(
               (reason) => reject(reason)
             )
           },
-          resize: function (sender, width, height, oldWidth, oldHeight) {
+          resize: function () {
             if (me.graph) {
               me.graph.sizeDidChange()
             }
@@ -269,9 +238,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   beforeDestroy: function () {
-    var
-      me = this
-    // if (me.editor) { me.editor.destroy();}
+    var me = this
 
     if (me.outlineWnd) { me.outlineWnd.destroy() }
     if (me.toolbarWnd) { me.toolbarWnd.destroy() }
@@ -315,8 +282,8 @@ Ext.define('UB.ux.UBOrgChart', {
 
     mxEvent.disableContextMenu(container)
 
-    f4 = new mxDivResizer(container)
-    f4 = new mxDivResizer(outline)
+    new mxDivResizer(container)
+    new mxDivResizer(outline)
 
     // Creates the graph inside the given container
     me.graph = graph = new mxGraph(container)
@@ -419,23 +386,13 @@ Ext.define('UB.ux.UBOrgChart', {
     style = graph.getStylesheet().getDefaultEdgeStyle()
     style[mxConstants.STYLE_ROUNDED] = true
     style[mxConstants.STYLE_STROKEWIDTH] = 3
-    // style[mxConstants.STYLE_EXIT_X] = 0.5; // center
-    // style[mxConstants.STYLE_EXIT_Y] = 1.0; // bottom
-    // style[mxConstants.STYLE_EXIT_X] = 1.0; // right
-    // style[mxConstants.STYLE_EXIT_Y] = 0.5; // center
-    // style[mxConstants.STYLE_EXIT_PERIMETER] = 0; // disabled
-    // style[mxConstants.STYLE_ENTRY_X] = 0.5; // center
-    // style[mxConstants.STYLE_ENTRY_Y] = 0; // top
-    // style[mxConstants.STYLE_ENTRY_X] = 0; // left
-    // style[mxConstants.STYLE_ENTRY_Y] = 0.5; // center
-    // style[mxConstants.STYLE_ENTRY_PERIMETER] = 0; // disabled
 
     // Disable the following for straight lines
     // style[mxConstants.STYLE_EDGE] = mxEdgeStyle.TopToBottom;
     style[mxConstants.STYLE_EDGE] = mxEdgeStyle.OrthConnector // SideToSide ElbowConnector EntityRelation SegmentConnector
 
     // Stops editing on enter or escape keypress
-    me.keyHandler = keyHandler = new mxKeyHandler(graph)
+    me.keyHandler = new mxKeyHandler(graph)
 
     // Enables automatic layout on the graph and installs
     // a tree layout for all groups who's children are
@@ -466,22 +423,9 @@ Ext.define('UB.ux.UBOrgChart', {
       return true
     }
 
-    // layout = new mxHierarchicalLayout(graph);
     me.horisontalLayout = layout
 
-    /*
-     layoutMgr = new mxLayoutManager(graph);
-
-     layoutMgr.getLayout = function(cell)
-     {
-     if (cell.getChildCount() > 0)
-     {
-     return layout;
-     }
-     };
-     */
-
-    // Installs a popupmenu handler using local function (see below).
+    // Installs a popup menu handler using local function (see below).
     graph.popupMenuHandler.factoryMethod = function (menu, cell, evt) {
       var frmDom = mainWin.getEl().dom,
         baseZ = frmDom.style.zIndex || 9999999999999
@@ -508,30 +452,6 @@ Ext.define('UB.ux.UBOrgChart', {
       return Math.min(1, state.view.scale)
     }
 
-    /*
-     // Dynamically adds text to the label as we zoom in
-     // (without affecting the preferred size for new cells)
-     graph.cellRenderer.getLabelValue = function(state)
-     {
-     var result = state.cell.value;
-
-     if (state.view.graph.getModel().isVertex(state.cell))
-     {
-     if (state.view.scale > 1)
-     {
-     result += '\nDetails 1';
-     }
-
-     if (state.view.scale > 1.3)
-     {
-     result += '\nDetails 2';
-     }
-     }
-
-     return result;
-     };
-     */
-
     graph.convertValueToString = function (cell) {
       if (Ext.isString(cell.value)) {
         return cell.value
@@ -541,57 +461,6 @@ Ext.define('UB.ux.UBOrgChart', {
     }
 
     graph.getPreferredSizeForCell = Ext.bind(me.getPreferredSizeForCell, graph)
-
-    /*
-     toolbar = document.getElementById(me.toolbarId);
-     toolbar.style.padding = '4px';
-     me.toolbar = tb = new mxToolbar(toolbar);
-
-     tb.addItem('Zoom In', 'images/zoom_in32.png',function(evt)
-     {
-     graph.zoomIn();
-     });
-
-     tb.addItem('Zoom Out', 'images/zoom_out32.png',function(evt)
-     {
-     graph.zoomOut();
-     });
-
-     tb.addItem('Actual Size', 'images/view_1_132.png',function(evt)
-     {
-     graph.zoomActual();
-     });
-
-     tb.addItem('Print', 'images/print32.png',function(evt)
-     {
-     var preview = new mxPrintPreview(graph, 1);
-     preview.open();
-     });
-
-     tb.addItem('Poster Print', 'images/press32.png',function(evt)
-     {
-     var pageCount = mxUtils.prompt('Enter maximum page count', '1');
-
-     if (pageCount !== null)
-     {
-     var scale = mxUtils.getScaleForPageCount(pageCount, graph);
-     var preview = new mxPrintPreview(graph, scale);
-     preview.open();
-     }
-     });
-
-     tb.addItem('select', 'resources/mxGraph/images/select.gif',function(evt)
-     {
-     graph.panningHandler.useLeftButtonForPanning = false;
-     graph.setConnectable(false);
-     });
-
-     tb.addItem('pan', 'resources/mxGraph/images/pan.gif',function(evt)
-     {
-     graph.panningHandler.useLeftButtonForPanning = true;
-     graph.setConnectable(false);
-     });
-     */
 
     if (me.graph && me.dataUrl && !me.isActulData) {
       me.startLoadData().done(function (result) {
@@ -649,12 +518,9 @@ Ext.define('UB.ux.UBOrgChart', {
 
       me.addExpandOverlay(graph, v1, true)
       me.addIconOverlay(v1)
-      // me.addAddOverlay(graph, vertex);
-      // me.addOverlays(graph, v1, false);
 
       v1.isRoot = true
       me.rootVarex = v1
-      // me.rootVarex.item = { child: me.treeData };
     } finally {
       // Updates the display
       graph.getModel().endUpdate()
@@ -666,9 +532,7 @@ Ext.define('UB.ux.UBOrgChart', {
       mxUtils.bind(this, function (sender, evt) {
         var cell = evt.getProperty('cell')
 
-        if (cell &&
-          graph.isEnabled() &&
-          this.dblClickAction !== null) {
+        if (cell && graph.isEnabled() && this.dblClickAction !== null) {
           this.dblClickAction(cell, evt)
           graph.tooltipHandler.hide()
           evt.consume()
@@ -691,34 +555,17 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   getEntityByUnitType: function (unitType) {
-    /*
-     var result = '';
-     switch (unitType){
-     case 'STAFF':
-     result = 'org_staffunit';
-     break;
-     case 'ORG':
-     result = 'org_organization';
-     break;
-     case 'DEP':
-     result = 'org_department';
-     break;
-     }
-     return result;
-     */
-
-    var mObj = this.orgUnity[unitType]
+    let mObj = this.orgUnity[unitType]
     return mObj ? mObj.code : ''
   },
 
   openForm: function (entityCode, instanceID, initialFieldValues, onClose) {
-    this.openFormC(
-      {
-        entityCode: entityCode,
-        instanceID: instanceID,
-        initialFieldValues: initialFieldValues,
-        onClose: onClose
-      })
+    this.openFormC({
+      entityCode: entityCode,
+      instanceID: instanceID,
+      initialFieldValues: initialFieldValues,
+      onClose: onClose
+    })
   },
 
   openFormC: function (config) {
@@ -753,19 +600,8 @@ Ext.define('UB.ux.UBOrgChart', {
               scope: me
             })
           }
-          // results.addListener("beforeclose", onClose, me);
         }
-        // debugger;
       }
-      // store: store,
-      // addByCurrent: true,
-      // __mip_ondate: isHistory ? new Date() : undefined !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! как работеает?
-      // parent: me.parent,
-      // parentID: me.parentID,
-      // sender: me.getView() || me,
-      // isModal: this.isModal,
-      // additionalWhereList: me.additionalWhereList
-
     }
 
     UB.core.UBApp.doCommand(cfg)
@@ -783,8 +619,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
     return {
       xtype: 'toolbar',
-      items: [
-        {
+      items: [{
           xtype: 'button',
           text: UB.i18n('Undo'),
           iconCls: 'icon-undo',
@@ -792,8 +627,7 @@ Ext.define('UB.ux.UBOrgChart', {
             me.undoManager.undo()
           },
           scope: me
-        },
-        {
+        }, {
           xtype: 'button',
           text: UB.i18n('Redo'),
           iconCls: 'icon-redo',
@@ -801,8 +635,7 @@ Ext.define('UB.ux.UBOrgChart', {
             me.undoManager.redo()
           },
           scope: me
-        },
-        {
+        }, {
           xtype: 'button',
           text: UB.i18n('Zoom'),
           iconCls: 'icon-zoom-in',
@@ -882,7 +715,6 @@ Ext.define('UB.ux.UBOrgChart', {
           text: UB.i18n('Poster Print'),
           iconCls: 'icon-print',
           handler: function () {
-            // var pageCount = mxUtils.prompt('Enter maximum page count', '1');
 
             Ext.Msg.prompt({
               msg: UB.i18n('Enter maximum page count'),
@@ -952,36 +784,12 @@ Ext.define('UB.ux.UBOrgChart', {
 
     if (cell !== null) {
       if (model.isVertex(cell)) {
-        /*
-         menu.addItem('Add child', 'editors/images/overlays/check.png', function()
-         {
-         me.addChild(graph, cell);
-         });
-         */
-
         // {code: metaObjName, unitType: unitType, caption: metaObj.caption }
         Ext.Object.each(me.orgUnity, function (unitType, mObj) {
           menu.addItem(UB.i18n('Create child') + ' ' + mObj.caption, '', function () {
             me.createChildElement(cell, unitType)
           })
         }, me)
-
-        /*
-         menu.addItem(UB.i18n('Create child') + ' organization', '', function()
-         {
-         me.createChildElement(cell, 'ORG');
-         });
-
-         menu.addItem(UB.i18n('Create child') + ' department', '', function()
-         {
-         me.createChildElement(cell, 'DEP');
-         });
-
-         menu.addItem(UB.i18n('Create child') + ' position', '', function()
-         {
-         me.createChildElement(cell, 'STAFF');
-         });
-         */
 
         menu.addSeparator()
 
@@ -1005,10 +813,6 @@ Ext.define('UB.ux.UBOrgChart', {
         menu.addSeparator()
 
         menu.addItem(UB.i18n('Align child to right'), '', function () {
-          // if (cell.isRoot){
-          // var w = me.graph.container.offsetWidth;
-          // w/2 - 30, 20
-          // }
           me.autoLayout(cell, 'H')
           me.selectAllChild(cell)
           me.setGraphVisiblePoint(cell.geometry.x, cell.geometry.y)
@@ -1037,23 +841,6 @@ Ext.define('UB.ux.UBOrgChart', {
           })
         }
       }
-      /*
-       menu.addItem('Edit label', 'editors/images/text.gif', function()
-       {
-       graph.startEditingAtCell(cell);
-       });
-       */
-      /*
-       if (cell.id !== 'treeRoot' &&
-       model.isVertex(cell))
-       {
-       menu.addItem('Delete', 'editors/images/delete.gif', function()
-       {
-       me.deleteSubtree(graph, cell);
-       });
-       }
-       */
-
       menu.addSeparator()
     }
 
@@ -1100,18 +887,7 @@ Ext.define('UB.ux.UBOrgChart', {
       return true
     })
 
-    /*
-     Ext.Array.each(cell.edges, function(edge,index){
-     if (edge.fromID !== cell.item.ID){
-     edges.push(edge);
-     }
-     });
-     */
     me.graph.setCellStyle('edgeStyle=' + style + ';', edges)
-    // me.horisontalLayout.execute(graph.getDefaultParent(), cell); //graph.getDefaultParent()
-    // me.setGraphVisiblePoint(cell.geometry.x, cell.geometry.y );
-    // graph.setCellStyle('edgeStyle=topToBottomEdgeStyle;', edges );
-    // me.verticalLayout.execute(graph.getDefaultParent(), cell);
   },
 
   autoLayout: function (cell, type) {
@@ -1138,7 +914,6 @@ Ext.define('UB.ux.UBOrgChart', {
     overlay.align = mxConstants.ALIGN_CENTER
 
     overlay.addListener(mxEvent.CLICK, mxUtils.bind(this, function (sender, evt) {
-      // me.addChild(graph, cell);
       me.expandORCollapse(cell, overlay)
     }))
     overlay.isExpandOvelay = true
@@ -1168,19 +943,6 @@ Ext.define('UB.ux.UBOrgChart', {
 
     orgUnity = me.orgUnity[unitType]
     image = orgUnity ? orgUnity.image : 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png'/* $App.getImagePath('office.png') */
-    /*
-     switch (unitType){
-     case 'ORG':
-     image = 'images/office.png';
-     break;
-     case 'DEP':
-     image = 'images/user-group.png';
-     break;
-     default:
-     image = 'images/person.png';
-     break;
-     }
-     */
     addOverlay = new mxCellOverlay(new mxImage(image, 24, 24), name)
     // addOverlay.cursor = 'hand';
     addOverlay.offset = new mxPoint(4, 8)
@@ -1191,13 +953,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   updateCell: function (cell) {
-    var me = this
-    //, state = me.graph.view.getState(cell);
-    // if (state)
-    // {
-    //    me.graph.cellRenderer.redraw(state);
-    // }
-    me.graph.refresh(cell)
+    this.graph.refresh(cell)
   },
 
   getAddOvelay: function (cell) {
@@ -1449,14 +1205,9 @@ Ext.define('UB.ux.UBOrgChart', {
     // Configures the edge label "in-place" to reside
     // at the end of the edge (x = 1) and with an offset
     // of 20 pixels in negative, vertical direction.
-    // edge.geometry.x = 1;
-    // edge.geometry.y = 0;
     edge.geometry.setTerminalPoint(new mxPoint(0, 0), true)
     edge.geometry.setTerminalPoint(new mxPoint(80, 0), true)
     edge.geometry.setTerminalPoint(new mxPoint(160, 0), false)
-
-    // edge.geometry.offset = new mxPoint(0, -20);
-    // edge.geometry.offset = new mxPoint(10, 10);
   },
 
   selectAllChild: function (cell) {
@@ -1466,7 +1217,6 @@ Ext.define('UB.ux.UBOrgChart', {
       if (cell !== vertex) {
         cells.push(vertex)
       }
-
       return true
     })
 
@@ -1480,10 +1230,8 @@ Ext.define('UB.ux.UBOrgChart', {
       if (cell !== vertex) {
         cells.push(vertex)
       }
-
       return true
     })
-
     graph.removeCells(cells)
   },
 
@@ -1578,8 +1326,6 @@ Ext.define('UB.ux.UBOrgChart', {
     var me = this, enc = new mxCodec(),
       data = enc.encode(me.graph.getModel())
     return mxUtils.getXml(data)
-
-    // return this.initialValue;
   },
 
   resetOriginalValue: function () {
@@ -1609,7 +1355,6 @@ Ext.define('UB.ux.UBOrgChart', {
     if (!me.useBlobForData) {
       Ext.Error.raise('object does not use Blob')
     }
-    // debugger;
     if (me.dataBlob && !Ext.isEmpty(this.objUrl)) {
       window.URL.revokeObjectURL(this.objUrl)
     }
@@ -1785,9 +1530,6 @@ Ext.define('UB.ux.UBOrgChart', {
           cell.isRoot = true
         }
         if (!ID) { // теоритически кроме рута без нашей ид не должно быть элементов
-          // if (!isRoot){
-          //   cellToDel.push(cell);
-          // }
           return true
         }
         parentCell = me.findParentCell(cell)
@@ -1902,78 +1644,45 @@ Ext.define('UB.ux.UBOrgChart', {
     }
   },
 
-  createNewDiagram: function (parentID, caption, callback) {
-    var me = this
-
-    $App.connection.addNew({
+  createNewDiagram: function (parentID, caption) {
+    return $App.connection.insert({
+      fieldList: ['ID', 'orgunitID', 'caption'],
       entity: 'org_diagram',
-      fieldList: ['ID'],
-      execParams: {}
+      execParams: {orgunitID: parentID, caption: caption}
     }).then(function (result) {
-      var resultData, ID
-      if (result) {
-        resultData = result.resultData
-        ID = resultData.data[0][0]
-        $App.connection.insert({
-          fieldList: ['ID', 'orgunitID', 'caption'],
-          entity: 'org_diagram',
-          execParams: {'ID': ID, 'orgunitID': parentID, 'caption': caption}
-        }).then(function (result) {
-          if (result.serverFailure) {
-            return
-          }
-          callback.call(me, ID)
-        })
+      if (result.serverFailure) {
+        return null
+      } else {
+        return result.resultData.data[0][0]
       }
     })
-
-    /*
-     if (result[0] && !result[0].success) {
-     Ext.MessageBox.alert('', result[0].errMsg);
-     }
-     */
   },
 
   openDiagram: function (cell) {
-    var me = this, ID, caption, diagramID
+    var me = this, ID, caption
     ID = cell.getAttribute('ID') * 1
     caption = cell.getAttribute('label')
 
-    me.loadBy('org_diagram', ['ID', 'orgunitID', 'caption'], 'orgunitID', ID, function (store) {
-      if (store.getCount() === 0) {
-        Ext.Msg.show(
-          {
-            msg: UB.i18n('Chart for this item does not exist. Create a new one?'),
-            prompt: false,
-            title: '',
-            minWidth: Ext.Msg.minPromptWidth,
-            buttons: Ext.Msg.OKCANCEL,
-            callback: function (btn, value) {
-              if (btn !== 'ok') {
-                return
-              }
-              me.createNewDiagram(ID, caption, function (nID) {
-                diagramID = nID
-                this.openFormC({
-                  entityCode: 'org_diagram',
-                  instanceID: diagramID,
-                  isModal: false
-                })
-              })
-            },
-            scope: me,
-            multiline: false
-          })
-      } else {
-        diagramID = store.getAt(0).get('ID')
-        this.openFormC(
-          {
+    UB.Repository('org_diagram').attrs(['ID', 'orgunitID', 'caption']).where('orgunitID', '=', ID)
+      .selectSingle()
+      .then((diagramData) => {
+        if (!diagramData) {
+          return $App.dialogYesNo('', 'Chart for this item does not exist. Create a new one?')
+            .then((choice) => {
+              if (choice) return me.createNewDiagram(ID, caption)
+            })
+        } else {
+          return diagramData.ID
+        }
+      }).then((diagramID) => {
+        if (diagramID) {
+          this.openFormC({
             entityCode: 'org_diagram',
             instanceID: diagramID,
             isModal: false
           })
-      }
-    })
+        }
+      })
   },
 
   createChildElement: function (cell, unitType) {
@@ -1981,10 +1690,8 @@ Ext.define('UB.ux.UBOrgChart', {
     entity = me.getEntityByUnitType(unitType)
     ID = cell.getAttribute('ID')
     ID = ID ? ID * 1 : null
-    // initialFieldValues = {}
     if (entity) {
       me.openForm(entity, null, {parentID: ID}, function (sender) {
-        // debugger;
         var panel = sender.down('basepanel')
         if (panel && panel.record) {
           me.checkElementId(panel.record.get('ID'), cell)
@@ -1999,63 +1706,33 @@ Ext.define('UB.ux.UBOrgChart', {
    * @param parentCell
    */
   checkElementId: function (ID, parentCell) {
-    var me = this, overlay, item, parentItem, childCells, record, newcell, model
-    me.loadBy('org_unit', ['ID', 'parentID', 'code', 'caption', 'unitType'], 'ID', ID,
-      function (store) {
-        if (store.getCount() === 0) {
-          return
-        }
-        record = store.getAt(0)
+    let me = this
+    UB.Repository('org_unit').attrs(['ID', 'parentID', 'code', 'caption', 'unitType'])
+      .selectById(ID)
+      .then((orgUnit) => {
+        if (!orgUnit) return
         me.refreshDiagram(function () {
-          parentItem = me.allData[parentCell.getAttribute('ID') * 1]
-          item = me.allData[ID]
-          childCells = me.findChildCell(parentCell)
+          let parentItem = me.allData[parentCell.getAttribute('ID') * 1]
+          let item = me.allData[ID]
+          let childCells = me.findChildCell(parentCell)
 
-          overlay = me.getAddOvelay(parentCell)
+          let overlay = me.getAddOvelay(parentCell)
           if (parentItem.child.length === childCells.length + 1) {
             // var pt = mxUtils.convertPoint( me.graph.container, x, y);
-            var pt = {x: parentCell.geometry.x, y: parentCell.geometry.y + 120}
-            model = me.graph.getModel()
+            let pt = {x: parentCell.geometry.x, y: parentCell.geometry.y + 120}
+            let model = me.graph.getModel()
             model.beginUpdate()
             try {
-              newcell = me.showElement(parentCell, item, pt)
+              me.showElement(parentCell, item, pt)
               if (overlay) {
                 me.graph.removeCellOverlay(parentCell, overlay)
               }
             } finally {
               model.endUpdate()
             }
-            // pcellSt = me.graph.view.getState(parentCell);
-            // me.graph.moveCells(newcell, parentCell.geometry.x, parentCell.geometry.y + 20);
           }
         })
       })
-  },
-
-  loadBy: function (entity, fieldList, field, value, collback) {
-    var itemsStores, me = this
-
-    itemsStores = [{
-      entity: entity,
-      requestName: entity,
-      method: 'select',
-      fieldList: fieldList,
-      whereList: {
-        By: {
-          expression: '[' + field + ']',
-          condition: 'equal',
-          values: {field: value}
-        }
-      }
-    }]
-
-    UB.core.UBDataLoader.loadStores({
-      ubRequests: itemsStores,
-      setStoreId: true,
-      scope: this
-    }).then(function (stores) {
-      collback.call(me, _.find(stores, {entityName: entity}))
-    })
   },
 
   initMetaInfo: function () {
@@ -2068,7 +1745,6 @@ Ext.define('UB.ux.UBOrgChart', {
         unity.entity && (unity.entity.toLowerCase() === 'org_unit') &&
         unity.defaults) {
         unitType = unity.defaults.unitType
-        // me.orgUnity[unitType] = metaObj;
         me.orgUnity[unitType] = orgUnity = {code: metaObjName, unitType: unitType, caption: metaObj.caption}
         switch (unitType) {
           case 'ORG':
