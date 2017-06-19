@@ -47,13 +47,23 @@ Ext.define('UB.ux.UBCodeMirror', {
    */
   codeSnippetsGetter: null,
 
+  /**
+   * CodeMirror editor mode ( `javascript` or `yaml` in current implementation)
+   */
+  editorMode: 'javascript',
+
   getValue: function () {
     return this.codeMirrorInstance ? this.codeMirrorInstance.getValue() : this.rawValue
   },
 
   setValue: function (value) {
     this.rawValue = value
-    if (this.codeMirrorInstance) this.codeMirrorInstance.setValue('' + value)
+    if (this.codeMirrorInstance) {
+      this.codeMirrorInstance.setValue('' + value)
+      if (this.editorMode !== this.codeMirrorInstance.getOption('mode')) {
+        this.codeMirrorInstance.setOption('mode', this.editorMode)
+      }
+    }
   },
 
   /**
@@ -76,6 +86,12 @@ Ext.define('UB.ux.UBCodeMirror', {
         me.fireEvent('setOriginalValue', response, me)
       }
       return response
+    }
+
+    if (cfg.contentType && cfg.contentType.endsWith('yaml')) {
+      this.editorMode = 'yaml'
+    } else {
+      this.editorMode = 'javascript'
     }
 
     if (blobData) {
@@ -145,7 +161,7 @@ Ext.define('UB.ux.UBCodeMirror', {
         window.CodeMirror = CodeMirror
         CodeMirror.commands.codeSnippets = CodeMirror.showHint
         this.codeMirrorInstance = this.editor = CodeMirror(myElm, {
-          mode: 'javascript',
+          mode: this.editorMode,
           value: this.rawValue || '',
           lineNumbers: true,
           lint: _.assign({asi: true}, $App.connection.appConfig.uiSettings.adminUI.linter),
