@@ -176,12 +176,12 @@ UB.i18nExtend({
     NMInstallExtensionChrome: '<p>Для продовження роботи необхідно встановити розширення <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Натисніть на посилання <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">ВСТАНОВИТИ РОЗШИРЕННЯ</a> ' +
         ' для переходу до магазину Google</p>' +
-        '<p> У вікні магазину натисніть кнопку <img src="models/adminui/ub-extension/ChromePlusFreeEn.png"/> (може бути <b>+БЕСПЛАТНО</b> або <b>+БЕСКОШТОВНО</b>)</p>' +
+        '<p> У вікні магазину натисніть кнопку <img src="models/adminui-pub/ub-extension/ChromePlusFreeEn.png"/> (може бути <b>+БЕСПЛАТНО</b> або <b>+БЕСКОШТОВНО</b>)</p>' +
         '<p>З`явиться вікно з підтвердженням встановлення розширення - натисніть "Додати" (Add).</p>' +
-        '<p>Розширення буде встановлено й кнопка <b>+FREE</b> змінить свій колір на зелений: <img src="models/adminui/ub-extension/ChromeAddedEn.png"/> ' +
+        '<p>Розширення буде встановлено й кнопка <b>+FREE</b> змінить свій колір на зелений: <img src="models/adminui-pub/ub-extension/ChromeAddedEn.png"/> ' +
         '<p>Після встановлення розширення <b>перезапустіть браузер!</b></p>',
     NMInstallExtensionOpera: '<p>Для продовження роботи необхідно встановити розширення <b>"UBExtension"</b> для браузера Opera.</p> ' +
-        '<p>Натисніть на посилання <a href="models/adminui/ub-extension/UBExtension.crx" target="_blank">ВСТАНОВИТИ РОЗШИРЕННЯ</a>.</p>' +
+        '<p>Натисніть на посилання <a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank">ВСТАНОВИТИ РОЗШИРЕННЯ</a>.</p>' +
         '<p>Браузер завантажить розширення та видасть Вам попередження в верхній частині екрану. ' +
         'На панелі з попередженням натисніть кнопку "Go"(перейти) - Opera відкриє сторінку з встановленими розширеннями. Знайдіть там "UBExtension" на натисніть "Install"(встановити)</p> ' +
         '<p>На цьому встановлення закінчено й Вам варто перезапустити браузер.</p>',
@@ -190,7 +190,7 @@ UB.i18nExtend({
         ' Для ручного оновлення перейдіть до магазину Google <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">по цьому посиланню</a> </p>',
     NMUpdateExtensionOpera: '<p>Для продовження роботи необхідно оновити <b>{0}</b> до версії <i>{2}</i>.</p> ' +
         '<p>Зазвичай браузер Opera здійснює такі оновлення автоматично протягом кількох годин. Спробуйте закрити/відкрити браузер. ' +
-        ' Для ручного оновлення перейдіть <a href="models/adminui/ub-extension/UBExtension.crx" target="_blank">по цьому посиланню</a> </p>',
+        ' Для ручного оновлення перейдіть <a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank">по цьому посиланню</a> </p>',
     NMInstallFeature: '<p>Для використання цього функціоналу необхідно встановити <b>{0}</b>.</p> ' +
         '<p>Натисніть на посилання <a href="{3}" target="_blank">ЗАВАНТАЖИТИ ІНСТАЛЯЦІЮ</a>. Запустіть інсталяцію, що завантажилася, й слідуйте підказкам.</p>' +
         '<p>По закінченню інсталяції Вам варто перезапустити браузер.</p>',

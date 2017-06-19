@@ -170,12 +170,12 @@ UB.i18nExtend({
     // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
     NMInstallExtensionChrome: '<p>İşi davam etdirmək üçün "Google Chrome" brauzeri üçün <b>"UBExtension"</b> genişlənməsini quraşdırmaq lazımdır.</p> ' +
         '<p> "Google" mağazasına keçmək üçün <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>' +
-        '<p> Mağaza pəncərəsində <img src="models/adminui/ub-extension/ChromePlusFreeEn.png"/> düyməsini(ola bilər ki, <b>+ÖDƏNİŞSİZ</b>) sıxın </p>' +
+        '<p> Mağaza pəncərəsində <img src="models/adminui-pub/ub-extension/ChromePlusFreeEn.png"/> düyməsini(ola bilər ki, <b>+ÖDƏNİŞSİZ</b>) sıxın </p>' +
         '<p>Genişlənmənin quraşdırıldığını təsdiq edən pəncərə açıldıqda "Əlavə et" (Add) üzərində vurun.</p>' +
-        '<p>Genişlənmə quraşdırılacaq və <b>+FREE</b> düyməsi yaşıl rəng alacaq: <img src="models/adminui/ub-extension/ChromeAddedEn.png"/> ' +
+        '<p>Genişlənmə quraşdırılacaq və <b>+FREE</b> düyməsi yaşıl rəng alacaq: <img src="models/adminui-pub/ub-extension/ChromeAddedEn.png"/> ' +
         '<p>Genişlənməni quraşdırdıqdan sonra <b>brauzeri söndürüb yandırın!</b></p>',
     NMInstallExtensionOpera: '<p>İşi davam etdirmək üçün "Opera" brauzeri üçün <b>"UBExtension"</b> genişlənməsini quraşdırmaq lazımdır.</p> ' +
-        '<p><a href="models/adminui/ub-extension/UBExtension.crx" target="_blank">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun.</p>' +
+        '<p><a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun.</p>' +
         '<p>Brauzer genişlənməni yükləyəcək və ekranın yuxarı hissəsində ismarış görsənəcək. ' +
         'Xəbərdarlığın əks olunduğu paneldə "Go"(keçid) düyməsini sıxın, bu zaman "Opera" quraşdırılmış genişlənmələrin əks olunduğu səhifəni açacaq. Burada "UBExtension" tapıb "Install"(Quraşdır) əmri üzərində vurun</p> ' +
         '<p>Artıq quraşdırma başa çatmışdır və brauzeri söndürüb yandırmaq olar.</p>',
@@ -184,7 +184,7 @@ UB.i18nExtend({
         ' Əllə yeniləmək üçün <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank"> keçidindən istifadə edərək "Google" mağazasına keçin</a> </p>',
     NMUpdateExtensionOpera: '<p>İşi davam etdirmək üçün <b>{0}</b>ni <i>{2}</i> versiyasınadək yeniləmək lazımdır.</p> ' +
         '<p>Adətən "Opera" brauzeri genişlənmələri avtomatik olaraq yeniləyir. Brauzeri bağlamağa/açmağa cəhd edin. ' +
-        ' Əllə yeniləmək üçün <a href="models/adminui/ub-extension/UBExtension.crx" target="_blank"> keçidindən istifadə edərək "Google" mağazasına keçin</a> </p>',
+        ' Əllə yeniləmək üçün <a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank"> keçidindən istifadə edərək "Google" mağazasına keçin</a> </p>',
     NMInstallFeature: '<p>Bu funksionaldan istifadə etmək üçün <b>{0}</b> quraşdırmaq lazımır.</p> ' +
         '<p><a href="{3}" target="_blank">QURAŞDIRMANI YÜKLƏ</a> keçidi üzərində vurun. Yüklənmə başa çatdıqdan sonra quraşdırmanı işə salıb yarımçı məsləhətlərə riayət edin.</p>' +
         '<p>Quraşdırma başa çatdıqdan sonra brauzeri söndürüb yandırmaq lazımdır.</p>',
@@ -375,7 +375,7 @@ UB.i18nExtend({
         '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
     IITCertCanceledByUser: 'Canceled by user',
     msgInvalidPlugin: 'Plaginin versiyası köhnəlib. Quraşdırılmış versiya {0}, tələb olnur {1}. Avtomatik yenilənmə 2 saatdan bir baş verir.' +
-        ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +
+        ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +
         ' Əgər yenilənmədən sonra mesaj yenədə qalıbsa, administratorun köməyindən istifadə edin.' ,
     msgInvalidCertAuth: "Girişə icazə verilmədi. Yanlış sertifikat, yaxud bağlı açar.",
     navShortcutCode: "Yarlık kodu",

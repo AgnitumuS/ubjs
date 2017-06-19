@@ -176,12 +176,12 @@ UB.i18nExtend({
     NMInstallExtensionChrome: '<p>To use this application Chrome extension <b>"UBExtension"</b> must be installed.</p> ' +
         '<p>Follow <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">ADD EXTENSION</a> ' +
         ' to go to the Google store</p>' +
-        '<p> At the store windows click button <img src="models/adminui/ub-extension/ChromePlusFreeEn.png"/> (may be <b>+FREE</b>)</p>' +
+        '<p> At the store windows click button <img src="models/adminui-pub/ub-extension/ChromePlusFreeEn.png"/> (may be <b>+FREE</b>)</p>' +
         '<p>When window with confirmation for extension installation - click "Add".</p>' +
-        '<p>Extension will be installed and button <b>+FREE</b> changes his color to green: <img src="models/adminui/ub-extension/ChromeAddedEn.png"/> ' +
+        '<p>Extension will be installed and button <b>+FREE</b> changes his color to green: <img src="models/adminui-pub/ub-extension/ChromeAddedEn.png"/> ' +
         '<p>After installing the extension <b>restart your browser!</b></p>',
     NMInstallExtensionOpera: '<p>To use this application Opera extension <b>"UBExtension"</b> must be installed.</p> ' +
-        '<p>Follow <a href="models/adminui/ub-extension/UBExtension.crx" target="_blank">DOWNLOAD EXTENSION</a> link.</p>' +
+        '<p>Follow <a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank">DOWNLOAD EXTENSION</a> link.</p>' +
         '<p>After extension is downloaded you can see "unknown source" warning in the upper part of your Opera browser. ' +
         'Press "Go" button on the message bar - Opera open extension page. On this page you must found "UBExtension" and press "Install" button twice</p> ' +
         '<p>After this installation is complete and better to restart your browser.</p>',
@@ -189,7 +189,7 @@ UB.i18nExtend({
         '<p>Usually Google Chrome updating extensions automatically. Try to close/open browser. ' +
         ' For manually updating go to the Google store<a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">and follow this link</a> </p>',
     NMUpdateExtensionOpera: '<p>The new version <i>{2}</i> of the <b>{0}</b> is available and should be installed.</p> ' +
-        'Read <a href="models/adminui/ub-extension/extensionUpdateInstructionOpera.html" target="_blank">update instruction</a> ' +
+        'Read <a href="models/adminui-pub/ub-extension/extensionUpdateInstructionOpera.html" target="_blank">update instruction</a> ' +
         ' and follow <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">UPDATE</a>. <p>After update is complete - restart your browser.</p>',
     NMInstallFeature: '<p>To use this feature <b>{0}</b> must be installed.</p> ' +
         '<p>Follow <a href="{3}" target="_blank">DOWNLOAD SETUP</a>. After the download is complete, run the install and follow the prompts.</p>' +

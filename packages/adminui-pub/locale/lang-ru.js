@@ -166,12 +166,12 @@ UB.i18nExtend({
     NMInstallExtensionChrome: '<p>Для продолжения работы необходима установка расширения <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Нажмите на ссылку <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a> ' +
         ' для перехода в магазин Google</p>' +
-        '<p> В окне магазина нажмите кнопку <img src="models/adminui/ub-extension/ChromePlusFreeEn.png"/> (может быть <b>+БЕСПЛАТНО</b>)</p>' +
+        '<p> В окне магазина нажмите кнопку <img src="models/adminui-pub/ub-extension/ChromePlusFreeEn.png"/> (может быть <b>+БЕСПЛАТНО</b>)</p>' +
         '<p>Появится окно с подтверждением установки расширения - нажмите "Добавить" (Add).</p>' +
-        '<p>Расширение будет установлено и кнопка <b>+FREE</b> изменит свой цвет на зелёный: <img src="models/adminui/ub-extension/ChromeAddedEn.png"/> ' +
+        '<p>Расширение будет установлено и кнопка <b>+FREE</b> изменит свой цвет на зелёный: <img src="models/adminui-pub/ub-extension/ChromeAddedEn.png"/> ' +
         '<p>После установки расширения <b>перезапустите браузер!</b></p>',
     NMInstallExtensionOpera: '<p>Для продолжения работы необходима установка расширения <b>"UBExtension"</b> для браузера Opera.</p> ' +
-        '<p>Нажмите на ссылку <a href="models/adminui/ub-extension/UBExtension.crx" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a>.</p>' +
+        '<p>Нажмите на ссылку <a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a>.</p>' +
         '<p>Браузер загрузит расширение и выдаст Вам сообщение в верхней части єкрана. ' +
         'На панели с предупреждением нажмите кнопку "Go"(перейти)- Opera откроет страницу с установленными расширениями. Найдите там "UBExtension" и нажмите "Install"(Установить)</p> ' +
         '<p>После этого установка закончена и необходимо перезапустить браузер.</p>',
@@ -180,7 +180,7 @@ UB.i18nExtend({
         ' Для ручного обновления перейдите в магазин Google <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">по этой ссылке</a> </p>',
     NMUpdateExtensionOpera: '<p>Для продолжения работы необходимо обновить <b>{0}</b> до версии <i>{2}</i>.</p> ' +
         '<p>Обычно браузер Opera обновляет расширения автоматически. Попробуйте закрыть/открыть браузер. ' +
-        ' Для ручного обновления перейдите <a href="models/adminui/ub-extension/UBExtension.crx" target="_blank">по этой ссылке</a> </p>',
+        ' Для ручного обновления перейдите <a href="models/adminui-pub/ub-extension/UBExtension.crx" target="_blank">по этой ссылке</a> </p>',
     NMInstallFeature: '<p>Для использования этого функционала необходимо установить <b>{0}</b>.</p> ' +
         '<p>Нажмите на ссылку <a href="{3}" target="_blank">ЗАГРУЗИТЬ ИНСТАЛЛЯЦИЮ</a>. После завершения загрузки запустите инсталляцию и следуйте подсказкам.</p>' +
         '<p>После завершения инсталляции необходимо перезапустить браузер.</p>',
@@ -390,7 +390,7 @@ UB.i18nExtend({
         '<li>В диалоговом окне выберите месторасположение ключа, <br>укажите пароль и нажмите "Ок"</li></ol>',
     IITCertCanceledByUser: 'Считывание ключа отменено пользователем',
     msgInvalidPlugin: 'Версия плагина устарела. Установлена версия {0}, требуется {1}. Автоматическое обновление происходит раз в 2 часа.' +
-        ' Для ручного запуска воспользуйтесь <a href="models/adminui/ub-extension/pluginUpdateInstruction_ru.html" target="_blank">инструкцией</a>. ' +
+        ' Для ручного запуска воспользуйтесь <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_ru.html" target="_blank">инструкцией</a>. ' +
         ' Если после обновления сообщение осталось, обратитесь к администратору.' ,
     moreThanOneUserWithPassedCertificate: 'Этот сертификат используется несколькими пользователями. Укажите имя пользователя.',
     useUBAuthenticatinInfo: 'Введите имя пользователя, пароль и нажмите "Войти".',
