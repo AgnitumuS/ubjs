@@ -10,33 +10,31 @@ Ext.define('UB.ux.UBOrgChart', {
   height: '100%',
   layout: 'fit',
 
-  loadData: function (cb) {
+  loadData: function () {
     var me = this
-    this.xmInitPromise.then(() => {
-      var basepanel, diagramId
-      basepanel = me.up('basepanel')
+    return this.xmInitPromise.then(() => {
+      let diagramId
+      let basepanel = me.up('basepanel')
       if (basepanel && basepanel.record) {
         diagramId = basepanel.record.get('ID')
       }
       if (diagramId) {
-        UB.Repository('org_diagram').attrs(['ID', 'orgunitID']).selectById(diagramId)
+        return UB.Repository('org_diagram').attrs(['ID', 'orgunitID']).selectById(diagramId)
           .then((diagramData) => {
             if (diagramData) me.rootElementID = diagramData.orgunitID
-            if (!me.rootElementID) {
-              me.doLoadData(cb)
-            } else {
-              UB.Repository('org_unit').attrs(['ID', 'mi_treePath']).selectById(me.rootElementID)
-                .then((orgUnitData) => {
-                  if (orgUnitData) me.rootTreePath = orgUnitData.mi_treePath
-                  me.doLoadData(cb)
-                })
-            }
+            return me.rootElementID
+              ? UB.Repository('org_unit').attrs(['ID', 'mi_treePath']).selectById(me.rootElementID)
+                  .then((orgUnitData) => {
+                    if (orgUnitData) me.rootTreePath = orgUnitData.mi_treePath
+                    return true
+                  })
+              : true
           })
       }
-    })
+    }).then(me.doLoadData.bind(me))
   },
 
-  doLoadData: function (collback) {
+  doLoadData: function () {
     let me = this
     let query = UB.Repository('org_unit')
       .attrs(['ID', 'parentID', 'code', 'caption', 'unitType', 'mi_treePath'])
@@ -46,12 +44,7 @@ Ext.define('UB.ux.UBOrgChart', {
       query = query.where('[mi_treePath]', 'startWith', me.rootTreePath)
     }
 
-    query.selectAsStore().then(
-      (store) => {
-        me.makeTree(store)
-        collback.call(me)
-      }
-    )
+    return query.selectAsStore().then(me.makeTree.bind(me))
   },
 
   treeData: [],
@@ -230,7 +223,6 @@ Ext.define('UB.ux.UBOrgChart', {
       me.items = []
     }
 
-    // me.items.push(
     me.items.push(me.mainPnl)
     me.callParent(arguments)
 
@@ -238,28 +230,24 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   beforeDestroy: function () {
-    var me = this
+    if (this.outlineWnd) { this.outlineWnd.destroy() }
+    if (this.toolbarWnd) { this.toolbarWnd.destroy() }
+    if (this.rubberband) { this.rubberband.destroy() }
 
-    if (me.outlineWnd) { me.outlineWnd.destroy() }
-    if (me.toolbarWnd) { me.toolbarWnd.destroy() }
-    if (me.rubberband) { me.rubberband.destroy() }
+    if (this.keyHandler) { this.keyHandler.destroy() }
+    if (this.toolbar) { this.toolbar.destroy() }
+    if (this.outline) { this.outline.destroy() }
+    if (this.graph) { this.graph.destroy() }
 
-    if (me.keyHandler) { me.keyHandler.destroy() }
-    if (me.toolbar) { me.toolbar.destroy() }
-    if (me.outline) { me.outline.destroy() }
-    if (me.graph) { me.graph.destroy() }
-
-    me.callParent(arguments)
+    this.callParent(arguments)
   },
 
   initGraph: function () {
-    var me = this, container, f4, graph, outline, style, keyHandler, layout,
+    var me = this, container, graph, outline, style, layout,
       mainWin, baseZIndex
     me.graphDivEl = Ext.get(me.containerId)
-    mainWin = me.up('basewindow')
-    if (!mainWin) {
-      mainWin = $App.getViewport()
-    }
+    mainWin = me.up('basewindow') || $App.getViewport()
+
     baseZIndex = mainWin.getEl().dom.style.zIndex || 1
 
     container = me.graphDivEl.dom
@@ -775,7 +763,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
     if (!me.isLoadContent) {
       menu.addItem(UB.i18n('New organizational chart'), '', function () {
-        me.loadData(function () {
+        me.loadData().then(() => {
           me.showTree()
           me.isLoadContent = true
         })
@@ -1028,9 +1016,6 @@ Ext.define('UB.ux.UBOrgChart', {
         me.autoLayout(cell, me.defaultLayout)
       }
       me.graph.removeCellOverlay(cell, overlay)
-      // if (cell.overlays.length > 0){
-      //  cell.overlays[0].image.src = me.collapseImage;
-      // }
       expandOverlay = me.getExpandOvelay(cell)
       if (!expandOverlay) {
         me.addExpandOverlay(me.graph, cell, true)
@@ -1061,10 +1046,7 @@ Ext.define('UB.ux.UBOrgChart', {
     }
 
     if (child.length > 0) {
-      // show = me.hideOrShowCells(me.graph, cell, null );
       me.hideOrShowCells(me.graph, cell, overlay.expanded)
-      // overlay.image.src = show ? me.collapseImage : me.expandImage;
-      // overlay.expanded = show;
       overlay.expanded = !overlay.expanded
       overlay.image.src = !overlay.expanded ? me.collapseImage : me.expandImage
       overlay.tooltip = !overlay.expanded ? UB.i18n('Collapse') : UB.i18n('Expand')
@@ -1083,7 +1065,6 @@ Ext.define('UB.ux.UBOrgChart', {
         cells.push(vertex)
         hasInvisible = hasInvisible || !vertex.isVisible()
       }
-
       return true
     })
     if (show === null) {
@@ -1100,16 +1081,15 @@ Ext.define('UB.ux.UBOrgChart', {
         }
       })
     }
-
     return show
   },
 
   changeElementParent: function (cell, newParent, item) {
     var me = this, model = me.graph.getModel(), edgeCount, e, src
     edgeCount = model.getEdgeCount(cell)
-    // удаляем старую связь
+    // remove old link
     if (edgeCount > 0) {
-      for (var i = 0; i < edgeCount; i++) {
+      for (let i = 0; i < edgeCount; i++) {
         e = model.getEdgeAt(cell, i)
         src = model.getTerminal(e, true)
         if (src !== cell) {
@@ -1440,7 +1420,7 @@ Ext.define('UB.ux.UBOrgChart', {
       return true
     }).done(function () {
       try {
-        me.loadData(function () {
+        me.loadData().then(() => {
           try {
             me.validateDiagram()
             defer.resolve()
@@ -1463,7 +1443,7 @@ Ext.define('UB.ux.UBOrgChart', {
   // инициация нового документа
   initNewSrc: function () {
     var me = this
-    me.loadData(function () {
+    me.loadData().then(() => {
       me.showTree()
       me.isLoadContent = true
       me.isLoadComlete = true
@@ -1501,14 +1481,9 @@ Ext.define('UB.ux.UBOrgChart', {
     return result
   },
 
-  refreshDiagram: function (callback) {
+  refreshDiagram: function () {
     var me = this
-    me.loadData(function () {
-      me.validateDiagram(true)
-      if (callback) {
-        callback.call(me)
-      }
-    })
+    return me.loadData().then(() => me.validateDiagram(true))
   },
 
   validateDiagram: function (isUpdateMode) {
@@ -1711,7 +1686,7 @@ Ext.define('UB.ux.UBOrgChart', {
       .selectById(ID)
       .then((orgUnit) => {
         if (!orgUnit) return
-        me.refreshDiagram(function () {
+        me.refreshDiagram().then(() => {
           let parentItem = me.allData[parentCell.getAttribute('ID') * 1]
           let item = me.allData[ID]
           let childCells = me.findChildCell(parentCell)
