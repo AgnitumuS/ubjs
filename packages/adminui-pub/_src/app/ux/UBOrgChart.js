@@ -1,8 +1,3 @@
-/* global UB, Q, DOMParser, mxConstants, mxGraph, mxUndoManager, mxLabel, mxEvent, mxRectangle, mxClient, mxImage, mxCellOverlay, mxPrintPreview, mxOutline, mxEdgeStyle, mxDivResizer, mxPrintPreview, mxCompactTreeLayout, mxKeyHandler, mxUtils, mxRubberband, mxCodec, mxGeometry, mxPoint, console */
-/* eslint one-var: "off" */
-/* eslint new-cap: ["error", { "newIsCap": false }] */
-/* eslint no-unused-vars: "off" */
-
 const mxLoader = require('../../ux/form/mxGraph.js')
 
 /**
@@ -45,40 +40,21 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   doLoadData: function (collback) {
-    var itemsStores, me = this
-
-    itemsStores = [{
-      entity: 'org_unit',
-      requestName: 'org_unit',
-      method: 'select',
-      fieldList: ['ID', 'parentID', 'code', 'caption', 'unitType', 'mi_treePath'],
-      orderList: {
-        orderByID: {
-          'expression': 'mi_treePath',
-          'order': 'asc'
-        }
-      }
-    }]
+    let me = this
+    let query = UB.Repository('org_unit')
+      .attrs(['ID', 'parentID', 'code', 'caption', 'unitType', 'mi_treePath'])
+      .orderBy('mi_treePath')
 
     if (me.rootTreePath) { // rootElementID
-      itemsStores[0].whereList = {
-        byTree: {
-          expression: '[mi_treePath]',
-          condition: 'startWith',
-          values: {mi_treePath: me.rootTreePath}
-        }
-      }
+      query = query.where('[mi_treePath]', 'startWith', me.rootTreePath)
     }
 
-    UB.core.UBDataLoader.loadStores({
-      ubRequests: itemsStores,
-      setStoreId: true,
-      scope: this
-    }).then(function (stores) {
-      me.makeTree(_.find(stores, {entityName: 'org_unit'}))
-      // me.showTree();
-      collback.call(me)
-    })
+    query.selectAsStore().then(
+      (store) => {
+        me.makeTree(store)
+        collback.call(me)
+      }
+    )
   },
 
   treeData: [],
