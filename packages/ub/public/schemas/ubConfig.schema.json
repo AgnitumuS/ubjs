@@ -80,33 +80,41 @@
           "description": "Rules, applied to static-files responses. Response headers can be overrated here",
 
           "items": {
-            "type": "object",
-            "properties": {
-              "name": {
+            "anyOf": [
+              {
                 "type": "string",
-                "description": "Rule name"
+                "pattern": "#include\\(.+\\)"
               },
-              "location": {
-                "type": "string",
-                "description": "Regular expression. If static file response file name much this regExp, rule is applied"
-              },
-              "useETag": {
-                "type": "boolean",
-                "description": "FileAge will be used as ETag header value. Also Last-Modified header will be added to work correctly with HTTP 1.0 based proxy (squid <= 3.2)"
-              },
-              "expires": {
-                "type": "number",
-                "description": "Values in seconds for adding `Expires: ServerStartDate + expires` header. Do not set this value to more than one year (HTTP protocol not allow this).<br> Google recomendation: We prefer Expires over Cache-Control: max-age because it is is more widely supported see it <a href=\"https://developers.google.com/speed/docs/best-practices/caching\">here</a>"
-              },
-              "addHeader": {
-                "type": "string",
-                "description": "Add any header(s) to response. Example: `\"Cache-Control: max-age=7776000\"` (space after **:** is IMPORTANT!)"
-              },
-              "usePreparedGzip": {
-                "type": "boolean",
-                "description": "If `true` and request header contain Accept-Encoding: *gzip*, then server seek for file with name fileName + '.gz' and if present - send content of this file,together with header  \"Content-Encoding: gzip\". See also `ub cmp/prepareGZIP` command"
+              {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Rule name"
+                  },
+                  "location": {
+                    "type": "string",
+                    "description": "Regular expression. If static file response file name much this regExp, rule is applied"
+                  },
+                  "useETag": {
+                    "type": "boolean",
+                    "description": "FileAge will be used as ETag header value. Also Last-Modified header will be added to work correctly with HTTP 1.0 based proxy (squid <= 3.2)"
+                  },
+                  "expires": {
+                    "type": "number",
+                    "description": "Values in seconds for adding `Expires: ServerStartDate + expires` header. Do not set this value to more than one year (HTTP protocol not allow this).<br> Google recomendation: We prefer Expires over Cache-Control: max-age because it is is more widely supported see it <a href=\"https://developers.google.com/speed/docs/best-practices/caching\">here</a>"
+                  },
+                  "addHeader": {
+                    "type": "string",
+                    "description": "Add any header(s) to response. Example: `\"Cache-Control: max-age=7776000\"` (space after **:** is IMPORTANT!)"
+                  },
+                  "usePreparedGzip": {
+                    "type": "boolean",
+                    "description": "If `true` and request header contain Accept-Encoding: *gzip*, then server seek for file with name fileName + '.gz' and if present - send content of this file,together with header  \"Content-Encoding: gzip\". See also `ub cmp/prepareGZIP` command"
+                  }
+                }
               }
-            }
+            ]
           }
         },
         "watchFileChanges": {
@@ -382,7 +390,7 @@
 			"type": "string",
 			"default": "6000",
 			"description": "[IP_Adress:]port whre remote debugger is listen on. If IP_Adress is omitted - 0.0.0.0 will be used. Debuger enabled only in -dev mode"
-		}	
+		}
       }
     },
     "security": {
@@ -409,7 +417,7 @@
           "default": true,
           "description": "Will force a NTLM usage for Negotiate authentication method. If false - Kerberos will be used in most case"
         },
-	"simpleCertAuth": {          
+	"simpleCertAuth": {
 	  "type": "boolean",
           "default": false,
           "description": "If `true` will not require password for CERT authentication (only secret key passrord is required)"
