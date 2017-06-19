@@ -152,6 +152,10 @@ Ext.define('UB.ux.UBOrgChart', {
     var me = this, id, html, outlineHtml
     me.layout = 'fit'
 
+    this.expandImage = $App.getImagePath('expandLG.png')
+    this.collapseImage = $App.getImagePath('collapseLG.png')
+    this.appendImage = $App.getImagePath('download.png')
+
     me.initMetaInfo()
     me.tbar = me.createToolBar()
 
@@ -871,10 +875,6 @@ Ext.define('UB.ux.UBOrgChart', {
         break
     }
   },
-
-  expandImage: $App.getImagePath('expandLG.png'),
-  collapseImage: $App.getImagePath('collapseLG.png'),
-  appendImage: $App.getImagePath('download.png'),
 
   addExpandOverlay: function (graph, cell, expanded) {
     var me = this, overlay = new mxCellOverlay(new mxImage(expanded ? me.collapseImage : me.expandImage, 24, 24), expanded ? UB.i18n('Collapse') : UB.i18n('Expand'))
