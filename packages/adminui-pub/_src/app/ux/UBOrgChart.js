@@ -1,3 +1,6 @@
+/* eslint-disable new-cap,no-new */
+/* global mxConstants, mxEvent, mxDivResizer, mxGraph, mxRubberband, mxOutline, mxUndoManager, mxClient, mxCompactTreeLayout, mxKeyHandler, mxEdgeStyle, mxUtils */
+/* global mxPrintPreview, mxCellOverlay, mxImage, mxPoint, mxGeometry, mxGeometry */
 const mxLoader = require('../../ux/form/mxGraph.js')
 
 /**
@@ -50,11 +53,11 @@ Ext.define('UB.ux.UBOrgChart', {
   treeData: [],
 
   makeTree: function (store) {
-    var me = this, data = {}, id, parentID, parentEl, idEl, assignF
+    var me = this, data = {}, id, parentID, parentEl, idEl
 
     me.treeData = []
 
-    assignF = function (row, obj) {
+    let assignF = function (row, obj) {
       obj.ID = row.get('ID')
       obj.parentID = row.get('parentID')
       obj.caption = row.get('caption')
@@ -89,9 +92,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   showElement: function (parentCell, element, pt) {
-    var me = this, cell
-    cell = me.addChild(me.graph, parentCell, element, true, pt)
-    return cell
+    return this.addChild(this.graph, parentCell, element, true, pt)
   },
 
   showChild: function (parentCell, element, expandChild, deep, level) {
@@ -142,25 +143,9 @@ Ext.define('UB.ux.UBOrgChart', {
       model.endUpdate()
     }
     me.autoLayout(me.rootVarex, me.defaultLayout)
-    me.setGraphVisiblePoint(me.rootVarex.geometry.x, me.rootVarex.geometry.y)
     me.changeFired = false
     me.undoManager.clear()
     // me.isGraphChanged = false;
-  },
-
-  setGraphVisiblePoint: function (x, y) {
-    /*
-     var me = this,
-     fx = me.graph.container.offsetWidth,
-     fy = me.graph.container.offsetHeight,
-     px = me.graph.panDx,
-     py = me.graph.panDy;
-
-     //me.graph.scrollCellToVisible(me.rootVarex);
-     //me.graph.panningManager.panTo()
-     //me.graph.scrollPointToVisible(me.rootVarex.geometry.x, me.rootVarex.geometry.y );
-     me.graph.panGraph( x - fx, y - fy);
-     */
   },
 
   initComponent: function () {
@@ -486,8 +471,7 @@ Ext.define('UB.ux.UBOrgChart', {
     // is normally the first child of the root (ie. layer 0).
     parent = graph.getDefaultParent()
 
-    if (!graph || !graph.container)
-      return
+    if (!graph || !graph.container) { return }
 
     // Adds the root vertex of the tree
     graph.getModel().beginUpdate()
@@ -608,157 +592,155 @@ Ext.define('UB.ux.UBOrgChart', {
     return {
       xtype: 'toolbar',
       items: [{
-          xtype: 'button',
-          text: UB.i18n('Undo'),
-          iconCls: 'icon-undo',
-          handler: function () {
-            me.undoManager.undo()
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Redo'),
-          iconCls: 'icon-redo',
-          handler: function () {
-            me.undoManager.redo()
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Zoom'),
-          iconCls: 'icon-zoom-in',
-          handler: function () {
-            me.graph.zoomIn()
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Zoom Out'),
-          iconCls: 'icon-zoom-out',
-          handler: function () {
-            me.graph.zoomOut()
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Actual Size'),
-          iconCls: 'icon-view11',
-          handler: function () {
-            me.graph.zoomActual()
-          },
-          scope: me
-        }, {
-          xtype: 'combobox',
-          store: Ext.create('Ext.data.Store', {
-            model: 'SelectPrinterFmt',
-            data: [
-              {ID: 'A4P', Caption: UB.i18n('A4 portrait')},
-              {ID: 'A4L', Caption: UB.i18n('A4 landscape')},
-              {ID: 'A5P', Caption: UB.i18n('A5 portrait')},
-              {ID: 'A5L', Caption: UB.i18n('A5 landscape')}
-            ]
-          }),
-          forceSelection: true,
-          editable: false,
-          allowBlank: false,
-          displayField: 'Caption',
-          valueField: 'Caption',
-          value: UB.i18n('A4 portrait'),
-          width: 150,
-          labelWidth: 0,
-          queryMode: 'local',
-          listeners: {
-            select: function (combo, records) {
-              if (records.length > 0) {
-                switch (records[0].get('ID')) {
-                  case 'A4P':
-                    me.printerFormat = mxConstants.PAGE_FORMAT_A4_PORTRAIT
-                    break
-                  case 'A4L':
-                    me.printerFormat = mxConstants.PAGE_FORMAT_A4_LANDSCAPE
-                    break
-                  case 'A5P':
-                    me.printerFormat = new mxRectangle(0, 0, 1652, 1169)
-                    break
-                  case 'A5L':
-                    me.printerFormat = new mxRectangle(0, 0, 1169, 1652)
-                    break
-                }
+        xtype: 'button',
+        text: UB.i18n('Undo'),
+        iconCls: 'icon-undo',
+        handler: function () {
+          me.undoManager.undo()
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Redo'),
+        iconCls: 'icon-redo',
+        handler: function () {
+          me.undoManager.redo()
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Zoom'),
+        iconCls: 'icon-zoom-in',
+        handler: function () {
+          me.graph.zoomIn()
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Zoom Out'),
+        iconCls: 'icon-zoom-out',
+        handler: function () {
+          me.graph.zoomOut()
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Actual Size'),
+        iconCls: 'icon-view11',
+        handler: function () {
+          me.graph.zoomActual()
+        },
+        scope: me
+      }, {
+        xtype: 'combobox',
+        store: Ext.create('Ext.data.Store', {
+          model: 'SelectPrinterFmt',
+          data: [
+            {ID: 'A4P', Caption: UB.i18n('A4 portrait')},
+            {ID: 'A4L', Caption: UB.i18n('A4 landscape')},
+            {ID: 'A5P', Caption: UB.i18n('A5 portrait')},
+            {ID: 'A5L', Caption: UB.i18n('A5 landscape')}
+          ]
+        }),
+        forceSelection: true,
+        editable: false,
+        allowBlank: false,
+        displayField: 'Caption',
+        valueField: 'Caption',
+        value: UB.i18n('A4 portrait'),
+        width: 150,
+        labelWidth: 0,
+        queryMode: 'local',
+        listeners: {
+          select: function (combo, records) {
+            if (records.length > 0) {
+              switch (records[0].get('ID')) {
+                case 'A4P':
+                  me.printerFormat = mxConstants.PAGE_FORMAT_A4_PORTRAIT
+                  break
+                case 'A4L':
+                  me.printerFormat = mxConstants.PAGE_FORMAT_A4_LANDSCAPE
+                  break
+                case 'A5P':
+                  me.printerFormat = new mxRectangle(0, 0, 1652, 1169)
+                  break
+                case 'A5L':
+                  me.printerFormat = new mxRectangle(0, 0, 1169, 1652)
+                  break
               }
-            },
-            scope: me
-          }
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Print'),
-          iconCls: 'icon-printer',
-          handler: function () {
-            // 1652, 1169
-            var preview = new mxPrintPreview(me.graph, 1, me.printerFormat || null)
-            preview.open()
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Poster Print'),
-          iconCls: 'icon-print',
-          handler: function () {
-
-            Ext.Msg.prompt({
-              msg: UB.i18n('Enter maximum page count'),
-              prompt: true,
-              title: '',
-              minWidth: Ext.Msg.minPromptWidth,
-              buttons: Ext.Msg.OKCANCEL,
-              callback: function (btn, value) {
-                if (btn !== 'ok') {
-                  return
-                }
-                var pageCount = value
-                if (pageCount !== null) {
-                  var scale = mxUtils.getScaleForPageCount(pageCount, me.graph)
-                  var preview = new mxPrintPreview(me.graph, scale, me.printerFormat || null)
-                  preview.open()
-                }
-              },
-              scope: me,
-              multiline: false,
-              value: '1'
-            })
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Select'),
-          icon: 'models/adminui-pub/resources/images/select.gif',
-          handler: function () {
-            me.graph.panningHandler.useLeftButtonForPanning = false
-            me.graph.setConnectable(false)
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Pan'),
-          icon: 'models/adminui-pub/resources/images/pan.gif',
-          handler: function () {
-            me.graph.panningHandler.useLeftButtonForPanning = true
-            me.graph.setConnectable(false)
-          },
-          scope: me
-        }, {
-          xtype: 'button',
-          text: UB.i18n('Select all'),
-          handler: function () {
-            me.graph.selectAll()
+            }
           },
           scope: me
         }
-      ]
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Print'),
+        iconCls: 'icon-printer',
+        handler: function () {
+          // 1652, 1169
+          var preview = new mxPrintPreview(me.graph, 1, me.printerFormat || null)
+          preview.open()
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Poster Print'),
+        iconCls: 'icon-print',
+        handler: function () {
+          Ext.Msg.prompt({
+            msg: UB.i18n('Enter maximum page count'),
+            prompt: true,
+            title: '',
+            minWidth: Ext.Msg.minPromptWidth,
+            buttons: Ext.Msg.OKCANCEL,
+            callback: function (btn, value) {
+              if (btn !== 'ok') {
+                return
+              }
+              var pageCount = value
+              if (pageCount !== null) {
+                var scale = mxUtils.getScaleForPageCount(pageCount, me.graph)
+                var preview = new mxPrintPreview(me.graph, scale, me.printerFormat || null)
+                preview.open()
+              }
+            },
+            scope: me,
+            multiline: false,
+            value: '1'
+          })
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Select'),
+        icon: 'models/adminui-pub/resources/images/select.gif',
+        handler: function () {
+          me.graph.panningHandler.useLeftButtonForPanning = false
+          me.graph.setConnectable(false)
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Pan'),
+        icon: 'models/adminui-pub/resources/images/pan.gif',
+        handler: function () {
+          me.graph.panningHandler.useLeftButtonForPanning = true
+          me.graph.setConnectable(false)
+        },
+        scope: me
+      }, {
+        xtype: 'button',
+        text: UB.i18n('Select all'),
+        handler: function () {
+          me.graph.selectAll()
+        },
+        scope: me
+      }]
     }
   },
 
   // Function to create the entries in the popupmenu
-  createPopupMenu: function (graph, menu, cell, evt) {
+  createPopupMenu: function (graph, menu, cell) {
     var me = this, model = graph.getModel()
 
     if (!me.isLoadContent) {
@@ -803,13 +785,11 @@ Ext.define('UB.ux.UBOrgChart', {
         menu.addItem(UB.i18n('Align child to right'), '', function () {
           me.autoLayout(cell, 'H')
           me.selectAllChild(cell)
-          me.setGraphVisiblePoint(cell.geometry.x, cell.geometry.y)
         })
 
         menu.addItem(UB.i18n('Align child down me'), '', function () {
           me.autoLayout(cell, 'V')
           me.selectAllChild(cell)
-          me.setGraphVisiblePoint(cell.geometry.x, cell.geometry.y)
         })
       } else {
         var cstyle = cell.getStyle() || 'edgeStyle=orthogonalEdgeStyle;'
@@ -832,22 +812,22 @@ Ext.define('UB.ux.UBOrgChart', {
       menu.addSeparator()
     }
 
-    menu.addItem(UB.i18n('Fit'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/zoom_in.png' /* $App.getImagePath('zoom_in.png') */, function () {
+    menu.addItem(UB.i18n('Fit'), $App.getImagePath('zoom_in.png'), function () {
       graph.fit()
     })
 
-    menu.addItem(UB.i18n('Actual Size'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/view_1_1.png' /* $App.getImagePath('view_1_1.png') */, function () {
+    menu.addItem(UB.i18n('Actual Size'), $App.getImagePath('view_1_1.png'), function () {
       graph.zoomActual()
     })
 
     menu.addSeparator()
 
-    menu.addItem(UB.i18n('Print'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/print.png' /* $App.getImagePath('print.png') */, function () {
+    menu.addItem(UB.i18n('Print'), $App.getImagePath('print.png'), function () {
       var preview = new mxPrintPreview(graph, 1)
       preview.open()
     })
 
-    menu.addItem(UB.i18n('Poster Print'), 'models/adminui-pub/themes/UBGrayTheme/ubimages/print.png' /* $App.getImagePath('print.png') */, function () {
+    menu.addItem(UB.i18n('Poster Print'), $App.getImagePath('print.png'), function () {
       var pageCount = mxUtils.prompt(UB.i18n('Enter maximum page count'), '1')
 
       if (pageCount !== null) {
@@ -892,9 +872,9 @@ Ext.define('UB.ux.UBOrgChart', {
     }
   },
 
-  expandImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/expandLG.png', // $App.getImagePath('expandLG.png'),
-  collapseImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/collapseLG.png', // $App.getImagePath('collapseLG.png'),
-  appendImage: 'models/adminui-pub/themes/UBGrayTheme/ubimages/download.png', // $App.getImagePath('download.png'),
+  expandImage: $App.getImagePath('expandLG.png'),
+  collapseImage: $App.getImagePath('collapseLG.png'),
+  appendImage: $App.getImagePath('download.png'),
 
   addExpandOverlay: function (graph, cell, expanded) {
     var me = this, overlay = new mxCellOverlay(new mxImage(expanded ? me.collapseImage : me.expandImage, 24, 24), expanded ? UB.i18n('Collapse') : UB.i18n('Expand'))
@@ -930,7 +910,7 @@ Ext.define('UB.ux.UBOrgChart', {
     name = cell.getAttribute('label')
 
     orgUnity = me.orgUnity[unitType]
-    image = orgUnity ? orgUnity.image : 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png'/* $App.getImagePath('office.png') */
+    image = orgUnity ? orgUnity.image : $App.getImagePath('office.png')
     addOverlay = new mxCellOverlay(new mxImage(image, 24, 24), name)
     // addOverlay.cursor = 'hand';
     addOverlay.offset = new mxPoint(4, 8)
@@ -1723,13 +1703,13 @@ Ext.define('UB.ux.UBOrgChart', {
         me.orgUnity[unitType] = orgUnity = {code: metaObjName, unitType: unitType, caption: metaObj.caption}
         switch (unitType) {
           case 'ORG':
-            orgUnity.image = 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png'/* $App.getImagePath('office.png') */
+            orgUnity.image = $App.getImagePath('office.png')
             break
           case 'DEP':
-            orgUnity.image = 'models/adminui-pub/themes/UBGrayTheme/ubimages/user-group.png'/* $App.getImagePath('user-group.png') */
+            orgUnity.image = $App.getImagePath('user-group.png')
             break
           default:
-            orgUnity.image = 'models/adminui-pub/themes/UBGrayTheme/ubimages/person.png'/* $App.getImagePath('person.png') */
+            orgUnity.image = $App.getImagePath('person.png')
             break
         }
       }
