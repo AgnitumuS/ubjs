@@ -273,7 +273,7 @@ function doProviderAuthHandshake(resp, code, state, provider, redirect_url, orig
                 resp.writeHead('Content-Type: text/html');
                 resp.writeHead('Access-Control-Allow-Credentials:true');
                 resp.writeHead('Access-Control-Allow-Methods:GET, OPTIONS');
-                resp.writeHead('Access-Control-Allow-Origin:' + orign ? orign : 'null');
+                resp.writeHead('Access-Control-Allow-Origin:' + orign ? orign.trim() : 'null');
             }
         }
     } else {
