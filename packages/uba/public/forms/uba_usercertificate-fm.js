@@ -44,7 +44,7 @@ exports.formCode = {
         scope: this,
         upLoad: function (btn) {
           var
-            w = btn.up('window'), inputDom, ffile, pBar
+            w = btn.up('window'), inputDom, ffile
 
           inputDom = this.fieldFile.fileInputEl.dom // getEl()
 
@@ -59,35 +59,38 @@ exports.formCode = {
           reader.onloadend = function () {
             var certBuff = reader.result
             Promise.all([
-              SystemJS.import('/clientRequire/asn1js/build/asn1.js'),
-              SystemJS.import('/clientRequire/pkijs/build/Certificate.js')])
-              .then(function (res) {
-                var asn1js = res[0], Certificate = res[1].default
-                var asn1 = asn1js.fromBER(certBuff)
-                // skip PrivateKeyUsagePeriod 2.5.29.16
-                walk(asn1.result, '2.5.29.16', function (el) {
-                  console.log(el)
-                  el.valueBlock.value[2].valueDec = 64
-                })
-                var certificate = new Certificate({schema: asn1.result})
-                var subject = certificate.subject.typesAndValues.map(
-                  function (e) { return typeNames[e.type] + '=' + e.value.valueBlock.value })
-                  .join(';')
-                var issuer = certificate.issuer.typesAndValues.map(
-                  function (e) { return typeNames[e.type] + '=' + e.value.valueBlock.value })
-                issuer = issuer.join(';')
-
-                var serial = '';
-                (new Uint8Array(certificate.serialNumber.valueBlock.valueHex))
-                  .forEach(function (e) { serial += parseInt(e).toString(16).toUpperCase() })
-                me.record.set('issuer_serial', issuer)
-                me.record.set('serial', serial)
-                me.record.set('description', subject)
-                rComplete++
-                if (rComplete > 1) {
-                  w.close()
-                }
+              System.import('asn1js/build/asn1.js'),
+              System.import('pkijs/build/Certificate.js')
+            ]).then(function (res) {
+              var asn1js = res[0], Certificate = res[1].default
+              var asn1 = asn1js.fromBER(certBuff)
+              // skip PrivateKeyUsagePeriod 2.5.29.16
+              walk(asn1.result, '2.5.29.16', function (el) {
+                //console.debug(el)
+                el.valueBlock.value[2].valueDec = 64
               })
+              var certificate = new Certificate({schema: asn1.result})
+              var subject = certificate.subject.typesAndValues.map(function (e) {
+                return typeNames[e.type] + '=' + e.value.valueBlock.value
+              }).join(';')
+              var issuer = certificate.issuer.typesAndValues.map(function (e) {
+                return typeNames[e.type] + '=' + e.value.valueBlock.value
+              })
+              issuer = issuer.join(';')
+
+              var serial = '';
+              var bytesArr = new Uint8Array(certificate.serialNumber.valueBlock.valueHex)
+              bytesArr.forEach(function (e) {
+                let n = Number(e).toString(16).toUpperCase()
+                if (n.length === 1) n = '0' + n
+                serial += n
+              })
+              me.record.set('issuer_serial', issuer)
+              me.record.set('serial', serial)
+              me.record.set('description', subject)
+              rComplete++
+              if (rComplete > 1) w.close()
+            })
           }
           reader.readAsArrayBuffer(ffile)
 
