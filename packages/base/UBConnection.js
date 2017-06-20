@@ -515,8 +515,13 @@ UBConnection.prototype.logout = function () {
  * @return {string}
  *
  * @example
+ * const myObj = conn.Repository(entityName)
+ *     .attrs('ID', 'mi_modifyDate')
+ *     .where('code', '=', code)
+ *     .selectSingle();
+ * const {ID, mi_modifyDate} = myObj;
  * const data = fs.readFileSync(fileName, {encoding: 'bin'});
- * const tempStoreResult = conn.setDocument(entityName, 'configuration', id, data, fn);
+ * const tempStoreResult = conn.setDocument(entityName, 'configuration', ID, data, fn);
  * conn.query({
  *      entity: entityName,
  *		method: 'update',
