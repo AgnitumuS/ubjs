@@ -190,21 +190,20 @@ function redirectToProviderAuth (req, resp, providerConfig, redirect_url, reques
 
   resp.statusCode = 302
   resp.writeEnd('')
-  // TODO - get it from global cache
-  resp.writeHead(`Location: ${providerConfig.authUrl}
-    ?state=${btoa('fakestate') } 
-    ${providerConfig.scope ? '&scope=' + providerConfig.scope : ''}
-    ${providerConfig.nonce ? '&nonce=' + providerConfig.nonce : ''}
-    &redirect_uri=${redirect_url}
-    &response_type=${ providerConfig.response_type}
-    &client_id=${providerConfig.client_id}
-    &response_mode=${form_post}
-    &referer=${redirect_url}
-    ${customHeaders}
-    `
-//  + '&referer=BACK_REDIRECT_URL'
-    
+  resp.writeHead('Location: ' + providerConfig.authUrl
+    + '?state=' + btoa('fakestate')  //TODO - get it from global cache
+    + (providerConfig.scope ? '&scope=' + providerConfig.scope: '')
+    + (providerConfig.nonce ? '&nonce=' + providerConfig.nonce : '')
+    + '&redirect_uri=' + redirect_url
+    + '&response_type=' + providerConfig.response_type
+    + '&client_id=' + providerConfig.client_id
+    + '&response_mode=form_post'
+    + '&referer=' + redirect_url
+
+//        + '&referer=BACK_REDIRECT_URL'
+    + customHeaders
   )
+
 }
 
 /**
