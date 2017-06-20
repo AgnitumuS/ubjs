@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/com-bridge",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Use a COM objects directly from UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/com-bridge",
   "scripts": {
@@ -12,8 +12,6 @@
     "registry": "http://registry.unitybase.info"
   },
   "main": "./UBComBridge.js",
-  "dependencies": {},
-  "devDependencies": {},
   "keywords": [
     "UnityBase",
     "COM",
