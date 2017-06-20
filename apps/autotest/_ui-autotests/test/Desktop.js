@@ -72,6 +72,7 @@ describe("Add Desktop", function () {
         createdDesktopOnLeftSideBar.should.equal(true);
         browser.click(ExtLocator.getCss('button[cls=ub-desktop-button]'));
     });
+});
 
     // it("Preparing data for Move folder and shortcut to Desktop test", function () {
     //     //======Add folder======
@@ -101,4 +102,45 @@ describe("Add Desktop", function () {
     //
     //
     // });
-});
+
+ describe("Open Desktop details", function () {
+     it("Open top navbar menu Administrator / UI / Desktops", function () {
+         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+         browser.pause(1000);
+         browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
+         browser.pause(1000);
+     });
+     it("Select on existing Desktop and select menu All action / Detail / Shourtcut (Desktop)", function () {
+         browser.rightClick('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Test"]');
+         browser.pause(1000);
+         browser.moveToObject(ExtLocator.getCss('menuitem[text=Details][el][hidden=false]'));
+         browser.pause(1000);
+         browser.click(ExtLocator.getCss('menuitem[text=Shortcut (Desktop)][el][hidden=false]'));
+         browser.pause(1000);
+     });
+     it("Check the details of the selected desktop", function () {
+         var check_tst_document = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_document"]');
+         check_tst_document.should.equal(true);
+         var check_tst_clob = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_clob"]');
+         check_tst_clob.should.equal(true);
+         var check_tst_IITSign = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_IITSign"]');
+         check_tst_IITSign.should.equal(true);
+     });
+     it("Check the details of the another selected desktop", function () {
+         browser.click('//*[@id="' + ExtLocator.getId('panel[title=Desktop][entityName=ubm_desktop] tableview') + '"]//td[.="Administrator"]');
+         browser.pause(1000);
+         var check_adm_folder_users = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="adm_folder_users"]');
+         check_adm_folder_users.should.equal(true);
+         var check_uba_user = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="uba_user"]');
+         check_uba_user.should.equal(true);
+         var check_uba_userrole = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="uba_userrole"]');
+         check_uba_userrole.should.equal(true);
+
+
+     });
+
+ });
+
+
+
