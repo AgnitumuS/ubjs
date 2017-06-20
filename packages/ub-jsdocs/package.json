@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "private": false,
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UnityBaseJS/ub-jsdoc.git"
