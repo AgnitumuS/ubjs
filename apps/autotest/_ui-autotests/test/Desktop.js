@@ -2,6 +2,7 @@ require('chai').should();
 
 var ExtLocator = require("./ExtJSlocatorHelper.js");
 
+
 //Data for "Preparing data for Move folder and shortcut to Desktop test"
 //======Add folder======
 var timestamp = + new Date();
@@ -141,6 +142,53 @@ describe("Add Desktop", function () {
      });
 
  });
+describe("Delete Desktop", function () {
+    it("Open top navbar menu Administrator / UI / Desktops", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
+        browser.pause(1000);
+    });
+    it("Find Desktop in the grid and delete", function () {
+        var DesktopForDelete = ('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="test_desktop_name"]');
+        browser.rightClick(DesktopForDelete);
+        browser.click(ExtLocator.getCss('menuitem[text=Delete (Ctrl+Delete)][el][hidden=false]'));
+        var deleteMessageBox = browser.getText('//*[@id="' + ExtLocator.getId('messagebox') + '"]//span[.="Confirm delete"]');
+        deleteMessageBox.should.equal('Confirm delete');
+        console.log('Tab is ' + deleteMessageBox);
+        browser.click('//*[@id="' + ExtLocator.getId('messagebox') + '"]//span[.="No"]');
+        browser.rightClick(DesktopForDelete);
+        browser.click(ExtLocator.getCss('menuitem[text=Delete (Ctrl+Delete)][el][hidden=false]'));
+        deleteMessageBox.should.equal('Confirm delete');
+        console.log('Tab is ' + deleteMessageBox);
+        browser.click('//*[@id="' + ExtLocator.getId('messagebox') + '"]//span[.="Yes"]');
+        browser.pause(1000);
+
+
+    });
+
+    it("Reload page and login to the system", function () {
+        browser.url('/ubadminui');
+        browser.waitForExist('//h2');
+        var title = browser.getText('//h2');
+        title.should.equal('Autotest UB SQLITE');
+        console.log('Title is: ' + title);
+        browser.setValue(ExtLocator.getCss('textfield[requireText=Login]') + '-inputEl', 'admin');
+        browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
+        browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
+        // browser.pause(3000);//temporary solution before bug fixing
+        // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
+        browser.pause(1000)
+
+    });
+
+    it("Check deleted Desktop on the Top Menu", function () {
+        var deletedDesktopOnTopMenu = browser.isExisting('//*[contains(@id, "ubtoolbarmenu")]//span[.="test_desktop_name"]'); //In the future, make a more reliable method of verification
+        deletedDesktopOnTopMenu.should.equal(false);
+    });
+
+});
 
 
 
