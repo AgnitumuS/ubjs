@@ -139,7 +139,7 @@ describe("Delete Shortcut", function () {
     it("Open in the top menu: Administrator- UI- Shortcuts", function () {
         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
-        browser.pause(1000);
+        browser.pause(3000);
         browser.click(ExtLocator.getCss('menuitem[text=Shortcuts]'));
         browser.pause(1000);
     });

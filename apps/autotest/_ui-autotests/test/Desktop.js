@@ -154,9 +154,8 @@ describe("Delete Desktop", function () {
         var deleteMessageBox = browser.getText('//*[@id="' + ExtLocator.getId('messagebox') + '"]//span[.="Confirm delete"]');
         deleteMessageBox.should.equal('Confirm delete');
         console.log('Tab is ' + deleteMessageBox);
-        browser.pause(1000);
         browser.click('//*[@id="' + ExtLocator.getId('messagebox') + '"]//span[.="No"]');
-        browser.rightClick(DesktopForDelete);
+        browser.rightClick(desktopForDelete);
         browser.click(ExtLocator.getCss('menuitem[text=Delete (Ctrl+Delete)][el][hidden=false]'));
         deleteMessageBox.should.equal('Confirm delete');
         console.log('Tab is ' + deleteMessageBox);
