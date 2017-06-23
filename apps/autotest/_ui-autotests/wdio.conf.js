@@ -35,6 +35,9 @@ exports.config = {
         ],
         TestMainData: [
             './_ui-autotests/test/**/TestMainData.js',
+        ],
+        Reports: [
+            './_ui-autotests/test/**/Reports.js'
         ]
     },
     exclude: [
