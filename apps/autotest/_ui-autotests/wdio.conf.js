@@ -30,6 +30,9 @@ exports.config = {
         Desktop: [
             './_ui-autotests/test/**/Desktop.js',
         ],
+        Form: [
+            './_ui-autotests/test/**/Form.js',
+        ],
         TestMainData: [
             './_ui-autotests/test/**/TestMainData.js',
         ]

@@ -8,8 +8,8 @@
     "test": ".\\tsql3.cmd",
     "replace-native": "npm i @unitybase/canvas@latest @unitybase/com-bridge@latest @unitybase/mailer-ssl@latest @unitybase/mailer@latest --no-save -f",
     "selser": "selenium-standalone",
-    "test-start": "wdio _ui-autotests\\wdio.conf.js --suite Preconditions,Shortcut,Folder,Desktop,TestMainData",
-    "test-single": "wdio _ui-autotests\\wdio.conf.js --suite Desktop",
+    "test-start": "wdio _ui-autotests\\wdio.conf.js --suite Preconditions,Shortcut,Folder,Desktop,Form,TestMainData",
+    "test-single": "wdio _ui-autotests\\wdio.conf.js --suite Form",
     "selser_install": "selenium-standalone install --config=_ui-autotests\\autotest-sel-config.js",
     "selser_start_separate": "start /D .\\ selenium-standalone start --config=./_ui-autotests/autotest-sel-config.js",
     "test-with-selenium": "npm run selser_start_separate & npm run test-start"

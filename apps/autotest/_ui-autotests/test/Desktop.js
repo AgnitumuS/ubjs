@@ -137,10 +137,7 @@ describe("Add Desktop", function () {
          check_uba_user.should.equal(true);
          var check_uba_userrole = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="uba_userrole"]');
          check_uba_userrole.should.equal(true);
-
-
      });
-
  });
 describe("Delete Desktop", function () {
     it("Open top navbar menu Administrator / UI / Desktops", function () {
@@ -151,8 +148,8 @@ describe("Delete Desktop", function () {
         browser.pause(1000);
     });
     it("Find Desktop in the grid and delete", function () {
-        var DesktopForDelete = ('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="test_desktop_name"]');
-        browser.rightClick(DesktopForDelete);
+        var desktopForDelete = ('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="test_desktop_name"]');
+        browser.rightClick(desktopForDelete);
         browser.click(ExtLocator.getCss('menuitem[text=Delete (Ctrl+Delete)][el][hidden=false]'));
         var deleteMessageBox = browser.getText('//*[@id="' + ExtLocator.getId('messagebox') + '"]//span[.="Confirm delete"]');
         deleteMessageBox.should.equal('Confirm delete');
@@ -164,10 +161,7 @@ describe("Delete Desktop", function () {
         console.log('Tab is ' + deleteMessageBox);
         browser.click('//*[@id="' + ExtLocator.getId('messagebox') + '"]//span[.="Yes"]');
         browser.pause(1000);
-
-
     });
-
     it("Reload page and login to the system", function () {
         browser.url('/ubadminui');
         browser.waitForExist('//h2');
@@ -182,7 +176,6 @@ describe("Delete Desktop", function () {
         browser.pause(1000)
 
     });
-
     it("Check deleted Desktop on the Top Menu", function () {
         var deletedDesktopOnTopMenu = browser.isExisting('//*[contains(@id, "ubtoolbarmenu")]//span[.="test_desktop_name"]'); //In the future, make a more reliable method of verification
         deletedDesktopOnTopMenu.should.equal(false);
