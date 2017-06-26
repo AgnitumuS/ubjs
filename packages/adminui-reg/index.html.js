@@ -12,8 +12,9 @@ const path = require('path')
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @param {String} indexName
+ * @param {boolean} [addCSP=true] Add a CSP header
  */
-function generateIndexPage (req, resp, indexName) {
+function generateIndexPage (req, resp, indexName, addCSP=true) {
   let indexTpl, compiledIndex, compiledIndexKey
   let models, mCnt, mName, i, uiSettings
 
@@ -22,7 +23,7 @@ function generateIndexPage (req, resp, indexName) {
     if (!realPath) {
       console.error('invalid path %s', fileName)
     }
-         // realMD5 = App.globalCacheGet('UB_STATIC.fileMD5_' + realPath);
+    // realMD5 = App.globalCacheGet('UB_STATIC.fileMD5_' + realPath);
     let checksum = App.fileChecksum(realPath)
     return checksum
       ? fileName + '?ver=' + checksum
@@ -41,8 +42,8 @@ function generateIndexPage (req, resp, indexName) {
     let adminUIPath = path.dirname(require.resolve('@unitybase/adminui-pub'))
     indexTpl = fs.readFileSync(path.join(adminUIPath, indexName))
 
-        // create view for mustache
-        // noinspection JSUnusedGlobalSymbols
+    // create view for mustache
+    // noinspection JSUnusedGlobalSymbols
     let view = {
       uiSettings: uiSettings,
       modelVersions: [],
@@ -79,17 +80,20 @@ function generateIndexPage (req, resp, indexName) {
   }
   if (compiledIndex) {
     resp.writeEnd(compiledIndex)
-        // resp.writeEnd(index_tpl);
+    // resp.writeEnd(index_tpl);
     resp.statusCode = 200
-        // cache forever - do not cache index*.html
-    let wsSrc = 'ws' + App.serverURL.slice(4)
-    let cspHeaders =
-    // "default-src * data: blob:;" +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval';" +
-    "style-src data: 'unsafe-inline' *;" +
-    "connect-src 'self' " + wsSrc + ' blob:;' +
-    'plugin-types application/pdf'
-    let cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
+    // cache forever - do not cache index*.html
+    let cspHeader = ''
+    if (addCSP) {
+      let wsSrc = 'ws' + App.serverURL.slice(4)
+      let cspHeaders =
+        // "default-src * data: blob:;" +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval';" +
+        "style-src data: 'unsafe-inline' *;" +
+        "connect-src 'self' " + wsSrc + ' blob:;' +
+        'plugin-types application/pdf'
+      cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
+    }
     resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT' + cspHeader)
   } else {
     resp.statusCode = 404
@@ -125,7 +129,7 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
       resp.writeHead(`Location: ${App.serverURL}${adminUIEndpointName}`)
       return
     }
-    generateIndexPage(req, resp, 'index-dev.mustache')
+    generateIndexPage(req, resp, 'index-dev.mustache', false)
   } else {
     resp.writeEnd('Server working in production mode')
     resp.statusCode = 404
