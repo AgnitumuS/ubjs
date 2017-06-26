@@ -112,7 +112,7 @@ describe("Add Desktop", function () {
          browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
          browser.pause(1000);
      });
-     it("Select on existing Desktop and select menu All action / Detail / Shourtcut (Desktop)", function () {
+     it("Click on existing Desktop and select menu All action / Detail / Shourtcut (Desktop)", function () {
          browser.rightClick('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Test"]');
          browser.pause(1000);
          browser.moveToObject(ExtLocator.getCss('menuitem[text=Details][el][hidden=false]'));
