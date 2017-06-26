@@ -118,7 +118,7 @@ describe("Add Desktop", function () {
          browser.moveToObject(ExtLocator.getCss('menuitem[text=Details][el][hidden=false]'));
          browser.pause(1000);
          browser.click(ExtLocator.getCss('menuitem[text=Shortcut (Desktop)][el][hidden=false]'));
-         browser.pause(1000);
+         browser.pause(3000);
      });
      it("Check the details of the selected desktop", function () {
          var check_tst_document = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_document"]');

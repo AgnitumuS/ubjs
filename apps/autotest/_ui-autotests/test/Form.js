@@ -32,7 +32,7 @@ describe("Check Pure ExtJS Form", function () {
         var existingFormInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="ubm_desktop-scanerSettings"]';
         browser.waitForVisible(existingFormInGrid);
         browser.doubleClick(existingFormInGrid);
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Check Base Property tab", function () {
         var entity = browser.isExisting('//*[@id="' + ExtLocator.getId('field[entityName=ubm_form][attributeName=entity]') + '"]');
@@ -94,7 +94,7 @@ describe("Check UB Form", function () {
         var existingFormInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="ubm_desktop"]';
         browser.waitForVisible(existingFormInGrid);
         browser.doubleClick(existingFormInGrid);
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Check Base Property tab", function () {
         var entity = browser.isExisting('//*[@id="' + ExtLocator.getId('field[entityName=ubm_form][attributeName=entity]') + '"]');
@@ -111,10 +111,11 @@ describe("Check UB Form", function () {
         formType.should.equal(true);
         var byDefault = browser.isExisting('//*[@id="' + ExtLocator.getId('checkboxfield[attributeName=isDefault]') + '"]');
         byDefault.should.equal(true);
+        browser.pause(1000);
     });
     it("Check Interface's definition tab", function () {
         browser.click(ExtLocator.getCss("tab[el][text=Interface's definition]"));
-        browser.pause(1000);
+        browser.pause(3000);
         var codemirrorText = browser.getText('//*[@id="' + ExtLocator.getId('ubdocument[attributeName=formDef]') + '"]');
         var searchInCodemirrorText = (codemirrorText.indexOf("ubm_desktop_adm"));  //Return of the position on which the substring is found or -1, if nothing is found
         console.log(searchInCodemirrorText);
@@ -129,6 +130,7 @@ describe("Check UB Form", function () {
         console.log(searchInCodemirrorText);
         var codemirrorOk = (searchInCodemirrorText >= 0);
         codemirrorOk.should.equal(true);
+        browser.pause(3000);
     });
     it("Check Visual designer tab", function () {
         browser.click(ExtLocator.getCss("tab[el][text=Visual designer]"));
