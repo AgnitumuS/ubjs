@@ -149,45 +149,4 @@ describe("Check UB Form", function () {
     });
 });
 
-// describe("Edit Form", function () {
-//     it("Open top navbar menu Administrator / UI / Desktops", function () {
-//         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
-//         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
-//         browser.pause(1000);
-//         browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
-//         browser.pause(1000);
-//     });
-//     it("Select existing Desktop and open Edit Desktop tab", function () {
-//         var existingDesktop = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="cdn_desktop"]';
-//         browser.doubleClick(existingDesktop);
-//         browser.pause(1000);
-//     });
-//     it("Check of existence of the URL field", function () {
-//         var urlField = browser.isExisting('//*[@id="' + ExtLocator.getId('ubtextfield[fieldLabel=URL]') + '"]');
-//         urlField.should.equal(true);
-//         browser.click(ExtLocator.getCss("tab[text=Desktop]") + '-closeEl');
-//         browser.click(ExtLocator.getCss("tab[text=Desktop]") + '-closeEl');
-//     });
-//     it("Open top navbar menuAdministrator / UI / Forms", function () {
-//         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
-//         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
-//         browser.pause(1000);
-//         browser.click(ExtLocator.getCss('menuitem[text=Forms]'));
-//         browser.pause(1000);
-//     });
-//     it("Open ubm_desktop form", function () {
-//         var ubmDesktopForm = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="ubm_desktop"]';
-//         browser.rightClick(ubmDesktopForm);
-//         browser.click(ExtLocator.getCss('menu[el][hidden=false] menuitem[text=Edit (Ctrl+E)][el][hidden=false]'));
-//         browser.pause(1000);
-//     });
-//     it("Edit source code in Interface's Definition tab ", function () {
-//         browser.click(ExtLocator.getCss("tab[el][text=Interface's definition]"));
-//         browser.pause(1000);
-//
-//     });
-//
-//
-// });
-
 
