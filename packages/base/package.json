@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/base",
-  "version": "4.2.12",
+  "version": "4.2.13",
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/base",
   "scripts": {
