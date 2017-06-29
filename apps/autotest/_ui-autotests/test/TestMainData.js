@@ -51,3 +51,55 @@ describe("Open 'Test main data'", function () {
         browser.pause(1000);
     })
 });
+
+describe("Open item in Test Main data", function () {
+    it("Select item in grid and open tab with edit form of item ", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Заголовок 100"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    })
+    it("Select item in grid and open tab with edit form of item ", function () {
+        var code = browser.isExisting('//*[@id="' + ExtLocator.getId('ubtextfield[attributeName=code]') + '"]');
+        code.should.equal(true);
+        var caption = browser.isExisting('//*[@id="' + ExtLocator.getId('ubtextfield[attributeName=caption]') + '"]');
+        caption.should.equal(true);
+        var complexCaption = browser.isExisting('//*[@id="' + ExtLocator.getId('ubtextfield[attributeName=complexCaption]') + '"]');
+        complexCaption.should.equal(true);
+        var nonNullDictID =browser.isExisting('//*[@id="' + ExtLocator.getId('ubcombobox[attributeName=nonNullDict_ID]') + '"]');
+        nonNullDictID.should.equal(true);
+        var nullDictID =browser.isExisting('//*[@id="' + ExtLocator.getId('ubcombobox[attributeName=nullDict_ID]') + '"]');
+        nullDictID.should.equal(true);
+        var parent =browser.isExisting('//*[@id="' + ExtLocator.getId('ubcombobox[attributeName=parent]') + '"]');
+        parent.should.equal(true);
+        var parent1 =browser.isExisting('//*[@id="' + ExtLocator.getId('ubcombobox[attributeName=parent1]') + '"]');
+        parent.should.equal(true);
+        var parent1 =browser.isExisting('//*[@id="' + ExtLocator.getId('ubcombobox[attributeName=parent1]') + '"]');
+        parent.should.equal(true);
+        var enumValue =browser.isExisting('//*[@id="' + ExtLocator.getId('ubbasebox[attributeName=enumValue]') + '"]');
+        enumValue.should.equal(true);
+        var dateTimeValue =browser.isExisting('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '"]');
+        dateTimeValue.should.equal(true);
+        var booleanValue =browser.isExisting('//*[@id="' + ExtLocator.getId('checkboxfield[attributeName=booleanValue]') + '"]');
+        booleanValue.should.equal(true);
+        var testManyData =browser.isExisting('//*[@id="' + ExtLocator.getId('ubboxselect[attributeName=manyValue]') + '"]');
+        testManyData.should.equal(true);
+        var caption10IntestManyData =browser.isExisting('//*[@id="' + ExtLocator.getId('ubboxselect[attributeName=manyValue]') + '"]//div[.="caption 10"]');
+        caption10IntestManyData.should.equal(true);
+        var caption20IntestManyData =browser.isExisting('//*[@id="' + ExtLocator.getId('ubboxselect[attributeName=manyValue]') + '"]//div[.="caption 20"]');
+        caption20IntestManyData.should.equal(true);
+        var test2dManyData =browser.isExisting('//*[@id="' + ExtLocator.getId('ubboxselect[attributeName=manyValue2]') + '"]');
+        test2dManyData.should.equal(true);
+        var bigint =browser.isExisting('//*[@id="' + ExtLocator.getId('numberfield[attributeName=bigintValue]') + '"]');
+        bigint.should.equal(true);
+        var mappedToSelf =browser.isExisting('//*[@id="' + ExtLocator.getId('ubcombobox[attributeName=mappedToSelf]') + '"]');
+        mappedToSelf.should.equal(true);
+    })
+});
+
+// describe("Edit 'Code'", function () {
+//     it("Select item for editing in grid and open tab with edit form of item ", function () {
+//         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код2"]';
+//         browser.doubleClick(itemInGrid);
+//         browser.pause(3000);
+//     })
+// });
