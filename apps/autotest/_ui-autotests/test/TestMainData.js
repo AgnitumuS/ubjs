@@ -1,6 +1,7 @@
 require('chai').should()
 
 var ExtLocator = require("./ExtJSlocatorHelper.js");
+var newCode = 'Код777';
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -96,10 +97,25 @@ describe("Open item in Test Main data", function () {
     })
 });
 
-// describe("Edit 'Code'", function () {
-//     it("Select item for editing in grid and open tab with edit form of item ", function () {
-//         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код2"]';
-//         browser.doubleClick(itemInGrid);
-//         browser.pause(3000);
-//     })
-// });
+describe("Edit 'Code'", function () {
+    it("Select item for editing in grid and open tab with edit form of item ", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код2"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Get content of the 'Code' text field before editing", function () {
+        var textInTextAreaBeforeEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl');
+        textInTextAreaBeforeEditing.should.equal('Код2');
+    });
+    it("Edit 'Code' text field", function () {
+        browser.setValue((ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl'),newCode);
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(1000);
+    });
+    it("Check edited item and 'Code' text field", function () {
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+newCode+'"]';
+        browser.doubleClick(editedItemInGrid);
+        var textInTextAreaAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl');
+        textInTextAreaAfterEditing.should.equal(newCode);
+    });
+});
