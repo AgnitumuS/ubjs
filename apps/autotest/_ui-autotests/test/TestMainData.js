@@ -4,6 +4,7 @@ var ExtLocator = require("./ExtJSlocatorHelper.js");
 var newCode = 'Код777';
 var engLoc = 'Caption Test ENG';
 var uaLoc = 'Caption Test UA';
+var complexCaption = "Test complexCaption";
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -29,7 +30,7 @@ describe("Open 'Test main data'", function () {
         browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
         browser.pause(1000);
     });
-    it("Check displayed columns ", function () {
+    it("Check displayed columns", function () {
         var tab = browser.getText(ExtLocator.getCss('tab[tooltip=ub test main data]'));
         tab.should.equal('UB TEST MAIN DATA');
         console.log('Tab is ' + tab);
@@ -101,7 +102,7 @@ describe("Open item in Test Main data", function () {
 });
 
 describe("Edit 'Code'", function () {
-    it("Select item for editing 'Code' in grid and open tab with edit form of item ", function () {
+    it("Select item for editing 'Code' in grid and open tab with edit form of item", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код2"]';
         browser.doubleClick(itemInGrid);
         browser.pause(3000);
@@ -116,6 +117,8 @@ describe("Edit 'Code'", function () {
         browser.pause(1000);
     });
     it("Check edited item and 'Code' text field", function () {
+        var textInCode = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+newCode+'"]');
+        textInCode.should.equal(newCode);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+newCode+'"]';
         browser.doubleClick(editedItemInGrid);
         var textInTextAreaAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl');
@@ -138,8 +141,11 @@ describe("Edit 'Caption' localization", function () {
         browser.setValue((ExtLocator.getCss('ubtextfield[fieldLabel=Ukrainian]') + '-inputEl'),uaLoc);
         browser.click(ExtLocator.getCss('button[text=Change]'));
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(1000);
     });
     it("Check edited item and 'Caption' localization text field after editing ENG", function () {
+        var textInCaptionEng = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+engLoc+'"]');
+        textInCaptionEng.should.equal(engLoc);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+engLoc+'"]';
         browser.doubleClick(editedItemInGrid);
         var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl');
@@ -171,6 +177,8 @@ describe("Edit 'Caption' localization", function () {
         browser.click(ExtLocator.getCss('button[text=Test][ui=default-toolbar-small]'));
         browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
         browser.pause(1000);
+        var textInCaptionUa = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+uaLoc+'"]');
+        textInCaptionUa.should.equal(uaLoc);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+uaLoc+'"]';
         browser.doubleClick(editedItemInGrid);
         var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl');
@@ -203,11 +211,34 @@ describe("Edit 'Caption' localization", function () {
         browser.click(ExtLocator.getCss('button[text=Test][ui=default-toolbar-small]'));
         browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
         browser.pause(1000);
+        var textInCaptionEng = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+engLoc+'"]');
+        textInCaptionEng.should.equal(engLoc);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+engLoc+'"]';
         browser.doubleClick(editedItemInGrid);
         var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl');
         textInCaptionAfterEditing.should.equal(engLoc);
-        browser.click(ExtLocator.getCss("tab[text=ub test main data]") + '-closeEl');
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+});
+describe("Edit 'complexCaption'", function () {
+    it("Select item for editing 'Code' in grid and open tab with edit form of item", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код4"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Edit 'complexCaption' text field", function () {
+        browser.setValue((ExtLocator.getCss('ubtextfield[attributeName=complexCaption]') + '-inputEl'),complexCaption);
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check edited item and 'complexCaption' text field", function () {
+        var textInComplexCaption = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+complexCaption+'"]');
+        textInComplexCaption.should.equal(complexCaption);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+complexCaption+'"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=complexCaption]') + '-inputEl');
+        textInCaptionAfterEditing.should.equal(complexCaption);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
 });
