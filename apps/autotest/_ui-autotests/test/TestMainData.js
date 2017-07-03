@@ -5,6 +5,7 @@ var newCode = 'Код777';
 var engLoc = 'Caption Test ENG';
 var uaLoc = 'Caption Test UA';
 var complexCaption = "Test complexCaption";
+var nonNullDict_ID = "caption 70";
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -239,6 +240,37 @@ describe("Edit 'complexCaption'", function () {
         browser.pause(1000);
         var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=complexCaption]') + '-inputEl');
         textInCaptionAfterEditing.should.equal(complexCaption);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+});
+
+describe("Select 'nonNullDict_ID' from list", function () {
+    it("Select item for Select 'nonNullDict_ID' from list", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Get content of the 'nonNullDict_ID' text field before editing", function () {
+        var textInnonNullDictID = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textInnonNullDictID.should.equal('caption 30');
+    });
+    it("Select element of 'nonNullDict_ID' from drop-down list", function () {
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//li[.="'+nonNullDict_ID+'"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check edited item and 'nonNullDict_ID' text field", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var textInNonNullDictId = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="caption 70"]');
+        textInNonNullDictId.should.equal(nonNullDict_ID);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+nonNullDict_ID+'"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var textInNonNullDictIdAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textInNonNullDictIdAfterEditing.should.equal(nonNullDict_ID);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
 });

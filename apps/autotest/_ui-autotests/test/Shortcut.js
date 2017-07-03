@@ -188,7 +188,7 @@ describe("Edit existing Shortcut", function () {
     it("Find shortcut in the grid and open edit window", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Filter by]') + '-btnEl');
         browser.click(ExtLocator.getCss('menu[el][hidden=false] menuitem[text=Shortcut caption][el]')); // or ('menuitem[text=Code][el][activated!=false]')
-        browser.click('//*[@id="' + ExtLocator.getId('combobox') + '"]//td[@class=" x-trigger-cell x-unselectable"]');
+        browser.click(ExtLocator.getCss('button[tooltip=Filter by]'));
         browser.click('//*[@id="' + ExtLocator.getId('boundlist') + '"]//li[.="Contains"]');
         browser.setValue(ExtLocator.getCss('textfield[el][hidden=false][labelCls=ub-overflow-elips]') + '-inputEl', caption1);
         browser.click('//*[@id="' + ExtLocator.getId('toolbar[el][hidden=false][ptype=multifilter]') + '"]//a[@data-qtip="Search"]');
