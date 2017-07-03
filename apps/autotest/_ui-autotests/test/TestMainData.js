@@ -264,7 +264,7 @@ describe("Select 'nonNullDict_ID' from list", function () {
     it("Check edited item and 'nonNullDict_ID' text field", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(1000);
-        var textInNonNullDictId = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="caption 70"]');
+        var textInNonNullDictId = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+nonNullDict_ID+'"]');
         textInNonNullDictId.should.equal(nonNullDict_ID);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+nonNullDict_ID+'"]';
         browser.doubleClick(editedItemInGrid);
@@ -272,5 +272,24 @@ describe("Select 'nonNullDict_ID' from list", function () {
         var textInNonNullDictIdAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
         textInNonNullDictIdAfterEditing.should.equal(nonNullDict_ID);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+});
+
+describe("'nonNullDict_ID' empty area ", function () {
+    it("Select item for Select 'nonNullDict_ID' from list", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Clear 'nonNullDict_ID' text field", function () {
+        browser.clearElement(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+    });
+    it("Displaying the Error message", function () {
+        var errorMessage =browser.isExisting(ExtLocator.getCss('uxNotification'));
+        errorMessage.should.equal(true);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss("button[text=Don't Save]"));
     });
 });
