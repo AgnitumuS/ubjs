@@ -11,6 +11,7 @@ var captionEngCodeNewNonNullDict_ID = 'caption 80 ENG';
 var captionUkrCodeNewNonNullDict_ID = 'caption 80 UKR';
 var filterValue = '25';
 var captionUkrCodeNewNonNullDictID_Edit = 'caption 80 Edited';
+var nonNullDictIdElementFromDictionary = 'caption 10';
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -25,8 +26,7 @@ describe("Login to the system", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000)
-
+        browser.pause(1000);
     });
 });
 
@@ -429,13 +429,42 @@ describe("Edit 'nonNullDict_ID' element", function () {
         browser.pause(3000);
     });
     it("Check edited 'nonNullDict_ID' element", function () {
-        var EditedCaptionEngInNonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDictID_Edit+'"]');
-        EditedCaptionEngInNonNullDict_ID.should.equal(captionUkrCodeNewNonNullDictID_Edit);
+        var editedCaptionEngInNonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDictID_Edit+'"]');
+        editedCaptionEngInNonNullDict_ID.should.equal(captionUkrCodeNewNonNullDictID_Edit);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDictID_Edit+'"]';
         browser.doubleClick(editedItemInGrid);
         browser.pause(1000);
-        var textCaptionInInNonNullDictIdAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
-        textCaptionInInNonNullDictIdAfterEditing.should.equal(captionUkrCodeNewNonNullDictID_Edit);
+        var editedCaptionInInNonNullDictId_editForm = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        editedCaptionInInNonNullDictId_editForm.should.equal(captionUkrCodeNewNonNullDictID_Edit);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+});
+
+describe("Select from dictionary 'nonNullDict_ID' element ", function () {
+    it("Select item from list for select from dictionary 'nonNullDict_ID'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Select 'nonNullDict_ID' element from dictionary", function () {
+        browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]'));
+        browser.click(ExtLocator.getCss("menuitem[el][text=Select from dictionary (F9)]"));
+        browser.pause(1000);
+        browser.click('//*[@id="' + ExtLocator.getId('entitygridpanel[entityName=tst_dictionary]') + '"]//div[.="'+nonNullDictIdElementFromDictionary+'"]');
+        browser.click(ExtLocator.getCss("button[actionId=itemSelect]"));
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+    });
+    it("Check selected 'nonNullDict_ID' element from dictionary", function () {
+        var selectedNonNullDictIdElementFromDictionary = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[3]');
+        selectedNonNullDictIdElementFromDictionary.should.equal(nonNullDictIdElementFromDictionary);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+nonNullDictIdElementFromDictionary+'"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var selectedNonNullDictIdElementFromDictionary_EditForm = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        selectedNonNullDictIdElementFromDictionary_EditForm.should.equal(nonNullDictIdElementFromDictionary);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
     });
 });
