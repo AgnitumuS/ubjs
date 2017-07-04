@@ -10,6 +10,7 @@ var codeNewNonNullDict_ID = 'caption 80';
 var captionEngCodeNewNonNullDict_ID = 'caption 80 ENG';
 var captionUkrCodeNewNonNullDict_ID = 'caption 80 UKR';
 var filterValue = '25';
+var captionUkrCodeNewNonNullDictID_Edit = 'caption 80 Edited';
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -103,6 +104,7 @@ describe("Open item in Test Main data", function () {
         var mappedToSelf =browser.isExisting('//*[@id="' + ExtLocator.getId('ubcombobox[attributeName=mappedToSelf]') + '"]');
         mappedToSelf.should.equal(true);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
     });
 });
 
@@ -280,7 +282,7 @@ describe("Select 'nonNullDict_ID' from list", function () {
 });
 
 describe("'nonNullDict_ID' empty area", function () {
-    it("Select item for Select 'nonNullDict_ID' from list", function () {
+    it("Select item from list for empty 'nonNullDict_ID' ", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
         browser.pause(3000);
@@ -317,6 +319,7 @@ describe("Add 'nonNullDict_ID' element", function () {
         browser.click(ExtLocator.getCss('button[text=Change]'));
         browser.setValue((ExtLocator.getCss('numberfield[attributeName=filterValue]') + '-inputEl'),filterValue);
         browser.click('//*[@id="' + ExtLocator.getId('basepanel[entityName=tst_dictionary]') + '"]//a[@data-qtip="Save and close (Ctrl+Enter)"]');
+        browser.pause(1000);
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
         browser.pause(3000);
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
@@ -328,8 +331,8 @@ describe("Add 'nonNullDict_ID' element", function () {
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]';
         browser.doubleClick(editedItemInGrid);
         browser.pause(1000);
-        var textEngInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
-        textEngInCaptionAfterEditing.should.equal(captionEngCodeNewNonNullDict_ID);
+        var textEngInCaption = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textEngInCaption.should.equal(captionEngCodeNewNonNullDict_ID);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
     it("Change the interface language English to Ukrainian", function () {
@@ -360,12 +363,12 @@ describe("Add 'nonNullDict_ID' element", function () {
         browser.pause(1000);
         browser.click(ExtLocator.getCss('button[tooltip=Оновити (Ctrl+R)]'));
         browser.pause(3000);
-        var textUkrInnonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDict_ID+'"]');
-        textUkrInnonNullDict_ID.should.equal(captionUkrCodeNewNonNullDict_ID);
+        var textUkrInNonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDict_ID+'"]');
+        textUkrInNonNullDict_ID.should.equal(captionUkrCodeNewNonNullDict_ID);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDict_ID+'"]';
         browser.doubleClick(editedItemInGrid);
-        var textUKRInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
-        textUKRInCaptionAfterEditing.should.equal(captionUkrCodeNewNonNullDict_ID);
+        var textUKRInNonNullDictID_EditForm = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textUKRInNonNullDictID_EditForm.should.equal(captionUkrCodeNewNonNullDict_ID);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
     it("Change the interface language Ukrainian to English", function () {
@@ -395,14 +398,44 @@ describe("Add 'nonNullDict_ID' element", function () {
         browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(3000);
-        var textEngInnonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]');
-        textEngInnonNullDict_ID.should.equal(captionEngCodeNewNonNullDict_ID);
+        var textEngInNonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]');
+        textEngInNonNullDict_ID.should.equal(captionEngCodeNewNonNullDict_ID);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]';
         browser.doubleClick(editedItemInGrid);
         browser.pause(1000);
-        var textEngInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
-        textEngInCaptionAfterEditing.should.equal(captionEngCodeNewNonNullDict_ID);
+        var textEngInNonNullDictID_EditForm = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textEngInNonNullDictID_EditForm.should.equal(captionEngCodeNewNonNullDict_ID);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
 });
 
+describe("Edit 'nonNullDict_ID' element", function () {
+    it("Select item from list for edit 'nonNullDict_ID element'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Edit Selected Element", function () {
+        var textEngInnonNullDict_ID = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textEngInnonNullDict_ID.should.equal(captionEngCodeNewNonNullDict_ID);
+        browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]'));
+        browser.click(ExtLocator.getCss("menuitem[el][text=Edit selected element (Ctrl+E)]"));
+        browser.pause(1000);
+        browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=caption][entityName=tst_dictionary]') + '-inputEl',captionUkrCodeNewNonNullDictID_Edit);
+        browser.click('//*[@id="' + ExtLocator.getId('basepanel[entityName=tst_dictionary]') + '"]//a[@data-qtip="Save and close (Ctrl+Enter)"]');
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(3000);
+    });
+    it("Check edited 'nonNullDict_ID' element", function () {
+        var EditedCaptionEngInNonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDictID_Edit+'"]');
+        EditedCaptionEngInNonNullDict_ID.should.equal(captionUkrCodeNewNonNullDictID_Edit);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDictID_Edit+'"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var textCaptionInInNonNullDictIdAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textCaptionInInNonNullDictIdAfterEditing.should.equal(captionUkrCodeNewNonNullDictID_Edit);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+});
