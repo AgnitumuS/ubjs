@@ -6,6 +6,10 @@ var engLoc = 'Caption Test ENG';
 var uaLoc = 'Caption Test UA';
 var complexCaption = "Test complexCaption";
 var nonNullDict_ID = "caption 70";
+var codeNewNonNullDict_ID = 'caption 80';
+var captionEngCodeNewNonNullDict_ID = 'caption 80 ENG';
+var captionUkrCodeNewNonNullDict_ID = 'caption 80 UKR';
+var filterValue = '25';
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -245,7 +249,7 @@ describe("Edit 'complexCaption'", function () {
 });
 
 describe("Select 'nonNullDict_ID' from list", function () {
-    it("Select item for Select 'nonNullDict_ID' from list", function () {
+    it("Select item from list for Select 'nonNullDict_ID'", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
         browser.pause(3000);
@@ -275,7 +279,7 @@ describe("Select 'nonNullDict_ID' from list", function () {
     });
 });
 
-describe("'nonNullDict_ID' empty area ", function () {
+describe("'nonNullDict_ID' empty area", function () {
     it("Select item for Select 'nonNullDict_ID' from list", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
@@ -288,8 +292,117 @@ describe("'nonNullDict_ID' empty area ", function () {
     it("Displaying the Error message", function () {
         var errorMessage =browser.isExisting(ExtLocator.getCss('uxNotification'));
         errorMessage.should.equal(true);
+        browser.pause(10000); //Wait for the disappearance of the Error message
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(1000);
         browser.click(ExtLocator.getCss("button[text=Don't Save]"));
     });
 });
+
+describe("Add 'nonNullDict_ID' element", function () {
+    it("Select item from list for add 'nonNullDict_ID'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Add new element", function () {
+        browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[el][text=Add new element]'));
+        browser.pause(1000);
+        browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=code][entityName=tst_dictionary]') + '-inputEl',codeNewNonNullDict_ID);
+        browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=caption][entityName=tst_dictionary]') + '-inputEl',captionEngCodeNewNonNullDict_ID);
+        browser.click('//*[@id="' + ExtLocator.getId('ubtextfield[attributeName=caption][entityName=tst_dictionary]') + '"]//div[@data-qtip="Values for other languages"]');
+        browser.setValue((ExtLocator.getCss('ubtextfield[fieldLabel=Ukrainian]') + '-inputEl'),captionUkrCodeNewNonNullDict_ID);
+        browser.click(ExtLocator.getCss('button[text=Change]'));
+        browser.setValue((ExtLocator.getCss('numberfield[attributeName=filterValue]') + '-inputEl'),filterValue);
+        browser.click('//*[@id="' + ExtLocator.getId('basepanel[entityName=tst_dictionary]') + '"]//a[@data-qtip="Save and close (Ctrl+Enter)"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(3000);
+    });
+    it("Check added 'nonNullDict_ID' element ENG", function () {
+        var textEngInnonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]');
+        textEngInnonNullDict_ID.should.equal(captionEngCodeNewNonNullDict_ID);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var textEngInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textEngInCaptionAfterEditing.should.equal(captionEngCodeNewNonNullDict_ID);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+    it("Change the interface language English to Ukrainian", function () {
+        var UBMenuUA = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Menu"]');
+        UBMenuUA.should.equal('Menu');
+        browser.click(ExtLocator.getCss('ubtoolbaruser'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Change language]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Ukrainian]'));
+        browser.waitForExist(ExtLocator.getCss('button[text=Yes]'));
+        browser.click(ExtLocator.getCss('button[text=Yes]'));
+        browser.pause(1000);
+        browser.waitForExist('//h2');
+        var title = browser.getText('//h2');
+        title.should.equal('Autotest UB SQLITE');
+        console.log('Title is: ' + title);
+        browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
+        browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
+        browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
+        browser.pause(3000);
+        var UBMenuEn = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Меню"]');
+        UBMenuEn.should.equal('Меню');
+        browser.pause(3000);
+    });
+    it("Check added 'nonNullDict_ID' element UKR", function () {
+        browser.click(ExtLocator.getCss('button[text=Test][ui=default-toolbar-small]'));
+        browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[tooltip=Оновити (Ctrl+R)]'));
+        browser.pause(3000);
+        var textUkrInnonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDict_ID+'"]');
+        textUkrInnonNullDict_ID.should.equal(captionUkrCodeNewNonNullDict_ID);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDict_ID+'"]';
+        browser.doubleClick(editedItemInGrid);
+        var textUKRInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textUKRInCaptionAfterEditing.should.equal(captionUkrCodeNewNonNullDict_ID);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+    it("Change the interface language Ukrainian to English", function () {
+        var UBMenuUA = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Меню"]');
+        UBMenuUA.should.equal('Меню');
+        browser.click(ExtLocator.getCss('ubtoolbaruser'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Змінити мову]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Англійська]'));
+        browser.waitForExist(ExtLocator.getCss('button[text=Так]'));
+        browser.click(ExtLocator.getCss('button[text=Так]'));
+        browser.pause(1000);
+        browser.waitForExist('//h2');
+        var title = browser.getText('//h2');
+        title.should.equal('Autotest UB SQLITE');
+        console.log('Title is: ' + title);
+        browser.setValue(ExtLocator.getCss('textfield[requireText=Login]') + '-inputEl', 'admin');
+        browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
+        browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
+        browser.pause(3000);
+        var UBMenuEn = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Menu"]');
+        UBMenuEn.should.equal('Menu');
+        browser.pause(3000);
+    });
+    it("Recheck added 'nonNullDict_ID' element ENG", function () {
+        browser.click(ExtLocator.getCss('button[text=Test][ui=default-toolbar-small]'));
+        browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(3000);
+        var textEngInnonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]');
+        textEngInnonNullDict_ID.should.equal(captionEngCodeNewNonNullDict_ID);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionEngCodeNewNonNullDict_ID+'"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var textEngInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        textEngInCaptionAfterEditing.should.equal(captionEngCodeNewNonNullDict_ID);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+    });
+});
+
