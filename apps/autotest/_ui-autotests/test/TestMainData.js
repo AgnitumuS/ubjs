@@ -288,7 +288,8 @@ describe("'nonNullDict_ID' empty area", function () {
         browser.pause(3000);
     });
     it("Clear 'nonNullDict_ID' text field", function () {
-        browser.clearElement(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]'));
+        browser.click(ExtLocator.getCss("menuitem[el][text=Clear selection (Ctrl+BackSpace)]"));
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
     });
     it("Displaying the Error message", function () {
