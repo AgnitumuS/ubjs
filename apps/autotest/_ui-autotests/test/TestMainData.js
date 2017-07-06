@@ -65,7 +65,7 @@ describe("Open 'Test main data'", function () {
         tabTestManyData.should.equal(true);
         var tabBigInt = browser.isExisting('.x-column-header-text=BigInt');
         tabBigInt.should.equal(true);
-        browser.pause(1000);
+        browser.pause(3000);
     })
 });
 
@@ -128,7 +128,7 @@ describe("Edit 'Code'", function () {
     it("Edit 'Code' text field", function () {
         browser.setValue((ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl'),newCode);
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Check edited item and 'Code' text field", function () {
         var textInCode = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+newCode+'"]');
