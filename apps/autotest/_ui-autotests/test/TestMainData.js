@@ -20,7 +20,7 @@ var filterValueNewNullDict_ID = '35';
 var captionEngCodeNullDictID_Edit = 'caption 90 Edited';
 var nullDictIdElementFromDictionary = 'caption 40';
 var enumValue = 'Long enumeration caption for test must be last in order';
-
+var testManyData = 'caption 70';
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
         browser.windowHandleMaximize();
@@ -732,3 +732,34 @@ describe("Select 'enumValue'", function () {
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
 });
+
+describe("Add 'test many data'", function () {
+    it("Select item from list for Add 'test many data'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Add 'test many data' element", function () {
+        browser.setValue(ExtLocator.getCss('ubboxselect[attributeName="manyValue"]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//li[.="'+testManyData+'"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check added element in 'test many data'", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var textEnumValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[10]');
+        textEnumValue.should.equal('2,4,7');
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="caption 70"]');
+        addedElementTestManyData_EditForm.should.equal(true);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+    });
+});
+
+
+
