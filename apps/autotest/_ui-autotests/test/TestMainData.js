@@ -19,6 +19,7 @@ var captionUkrCodeNewNullDict_ID = 'caption 90 UKR';
 var filterValueNewNullDict_ID = '35';
 var captionEngCodeNullDictID_Edit = 'caption 90 Edited';
 var nullDictIdElementFromDictionary = 'caption 40';
+var enumValue = 'Long enumeration caption for test must be last in order';
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -274,7 +275,7 @@ describe("Select 'nonNullDict_ID' from list", function () {
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
         browser.pause(3000);
     });
-    it("Check edited item and 'nonNullDict_ID' text field", function () {
+    it("Check selected item in 'nonNullDict_ID' text field", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(1000);
         var textInNonNullDictId = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+nonNullDict_ID+'"]');
@@ -494,7 +495,7 @@ describe("Select 'nullDict_ID ' from list", function () {
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
         browser.pause(3000);
     });
-    it("Check edited item and 'nullDict_ID' text field", function () {
+    it("Check selected item in 'nullDict_ID' text field", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(1000);
         var textInNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[4]');
@@ -518,12 +519,12 @@ describe("'nullDict_ID' empty area", function () {
         browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nullDict_ID]'));
         browser.click(ExtLocator.getCss("menuitem[el][text=Clear selection (Ctrl+BackSpace)]"));
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
     });
     it("Check cleared selection 'nullDict_ID' text field", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(1000);
         var textInNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[4]');
-        console.log(textInNullDict_ID.charCodeAt(0));
         textInNullDict_ID.should.equal(String.fromCharCode(32));
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
         browser.doubleClick(editedItemInGrid);
@@ -536,7 +537,7 @@ describe("'nullDict_ID' empty area", function () {
 });
 
 describe("Add 'nullDict_ID' element", function () {
-    it("Select item from list for add 'nonNullDict_ID'", function () {
+    it("Select item from list for add 'nullDict_ID'", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
         browser.pause(3000);
@@ -644,7 +645,7 @@ describe("Add 'nullDict_ID' element", function () {
 });
 
 describe("Edit 'nullDict_ID' element", function () {
-    it("Select item from list for edit 'nonNullDict_ID element'", function () {
+    it("Select item from list for edit 'nullDict_ID element'", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
         browser.pause(1000);
@@ -674,8 +675,8 @@ describe("Edit 'nullDict_ID' element", function () {
     });
 });
 
-describe("Select from dictionary 'nullDict_ID' element ", function () {
-    it("Select item from list for select from dictionary 'nonNullDict_ID'", function () {
+describe("Select from dictionary 'nullDict_ID' element", function () {
+    it("Select item from list for select from dictionary 'nullDict_ID'", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
         browser.pause(1000);
@@ -700,5 +701,34 @@ describe("Select from dictionary 'nullDict_ID' element ", function () {
         selectedNullDictIdElementFromDictionary_EditForm.should.equal(nullDictIdElementFromDictionary);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(1000);
+    });
+});
+
+describe("Select 'enumValue'", function () {
+    it("Select item from list for select 'nullDict_ID'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Select element of 'enumValue' from drop-down list", function () {
+        var valueInEnumValue = browser.getValue(ExtLocator.getCss('ubbasebox[attributeName=enumValue]') + '-inputEl');
+        valueInEnumValue.should.equal('Test1');
+        browser.click(ExtLocator.getCss('ubbasebox[attributeName=enumValue]') + '-inputEl');
+        browser.pause(3000);
+        browser.click('//li[.="'+enumValue+'"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check selected item in 'enumValue'", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var textEnumValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[7]');
+        textEnumValue.should.equal(enumValue);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var textEnumValue_EditForm = browser.getValue(ExtLocator.getCss('ubbasebox[attributeName=enumValue]') + '-inputEl');
+        textEnumValue_EditForm.should.equal(enumValue);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
 });
