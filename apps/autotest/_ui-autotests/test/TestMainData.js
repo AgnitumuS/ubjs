@@ -21,6 +21,7 @@ var captionEngCodeNullDictID_Edit = 'caption 90 Edited';
 var nullDictIdElementFromDictionary = 'caption 40';
 var enumValue = 'Long enumeration caption for test must be last in order';
 var testManyData = 'caption 70';
+
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
         browser.windowHandleMaximize();
@@ -34,7 +35,7 @@ describe("Login to the system", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000);
+        browser.pause(3000);
     });
 });
 
@@ -42,7 +43,7 @@ describe("Open 'Test main data'", function () {
     it("Open 'Test main data' on top menu", function () {
         browser.click(ExtLocator.getCss('button[text=Test][ui=default-toolbar-small]'));
         browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Check displayed columns", function () {
         var tab = browser.getText(ExtLocator.getCss('tab[tooltip=ub test main data]'));
@@ -761,5 +762,27 @@ describe("Add 'test many data'", function () {
     });
 });
 
-
+describe("Delete 'test many data'", function () {
+    it("Select item from list for delete 'test many data'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Delete element from 'test many data'", function () {
+        browser.click ('//li[@qtip="caption"]//div[.="caption 70"]/following-sibling::div[contains(@class,"x-tab-close-btn")]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check deleted element in 'test many data'", function () {
+        var valueManyData = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[10]');
+        valueManyData.should.equal('2,4');
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="caption 70"]');
+        addedElementTestManyData_EditForm.should.equal(false);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+    });
+});
 
