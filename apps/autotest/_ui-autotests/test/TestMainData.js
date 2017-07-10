@@ -21,6 +21,7 @@ var captionEngCodeNullDictID_Edit = 'caption 90 Edited';
 var nullDictIdElementFromDictionary = 'caption 40';
 var enumValue = 'Long enumeration caption for test must be last in order';
 var testManyData = 'caption 70';
+var test2dManyData = 'caption 70';
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -755,7 +756,7 @@ describe("Add 'test many data'", function () {
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
         browser.doubleClick(editedItemInGrid);
         browser.pause(1000);
-        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="caption 70"]');
+        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="'+testManyData+'"]');
         addedElementTestManyData_EditForm.should.equal(true);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(1000);
@@ -769,7 +770,7 @@ describe("Delete 'test many data'", function () {
         browser.pause(1000);
     });
     it("Delete element from 'test many data'", function () {
-        browser.click ('//li[@qtip="caption"]//div[.="caption 70"]/following-sibling::div[contains(@class,"x-tab-close-btn")]');
+        browser.click ('//li[@qtip="caption"]//div[.="'+testManyData+'"]/following-sibling::div[contains(@class,"x-tab-close-btn")]');
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
         browser.pause(3000);
     });
@@ -779,7 +780,59 @@ describe("Delete 'test many data'", function () {
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
         browser.doubleClick(editedItemInGrid);
         browser.pause(1000);
-        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="caption 70"]');
+        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="'+testManyData+'"]');
+        addedElementTestManyData_EditForm.should.equal(false);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
+    });
+});
+
+describe("Add 'test 2d many data'", function () {
+    it("Select item from list for Add 'test 2d many data'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Add 'test 2d many data' element", function () {
+        browser.setValue(ExtLocator.getCss('ubboxselect[attributeName="manyValue2"]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//li[.="'+test2dManyData+'"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check added element in 'test 2d many data'", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var textEnumValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[11]');
+        textEnumValue.should.equal('7');
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="'+test2dManyData+'"]');
+        addedElementTestManyData_EditForm.should.equal(true);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+    });
+});
+
+describe("Delete 'test 2d many data'", function () {
+    it("Select item from list for delete 'test 2d many data'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Delete element from 'test 2d many data'", function () {
+        browser.click ('//li[@qtip="caption"]//div[.="'+test2dManyData+'"]/following-sibling::div[contains(@class,"x-tab-close-btn")]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check deleted element in 'test 2d many data'", function () {
+        var valueManyData = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[11]');
+        valueManyData.should.equal(String.fromCharCode(32));
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var addedElementTestManyData_EditForm = browser.isExisting('//div[.="'+test2dManyData+'"]');
         addedElementTestManyData_EditForm.should.equal(false);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(1000);
