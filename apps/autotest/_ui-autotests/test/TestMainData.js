@@ -23,6 +23,7 @@ var enumValue = 'Long enumeration caption for test must be last in order';
 var testManyData = 'caption 70';
 var test2dManyData = 'caption 70';
 
+
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
         browser.windowHandleMaximize();
@@ -835,7 +836,51 @@ describe("Delete 'test 2d many data'", function () {
         var addedElementTestManyData_EditForm = browser.isExisting('//div[.="'+test2dManyData+'"]');
         addedElementTestManyData_EditForm.should.equal(false);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
+    });
+});
+
+describe("booleanValue", function () {
+    it("Select item from list for activate 'booleanValue'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
         browser.pause(1000);
+    });
+    it("Activate 'booleanValue' checkbox", function () {
+        var deactivatedBooleanValue = browser.isExisting(ExtLocator.getCss('checkboxfield[attributeName=booleanValue][checked=false]'));
+        deactivatedBooleanValue.should.equal(true);
+        browser.click('//*[@id="' + ExtLocator.getId('checkboxfield[attributeName=booleanValue]') + '"]//input[@role="checkbox"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check activated 'booleanValue' checkbox", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var valueBooleanValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[9]');
+        valueBooleanValue.should.equal('Yes');
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var activatedBooleanValue = browser.isExisting(ExtLocator.getCss('checkboxfield[attributeName=booleanValue][checked=true]'));
+        activatedBooleanValue.should.equal(true);
+    });
+    it("deactivate 'booleanValue' checkbox", function () {
+        browser.click('//*[@id="' + ExtLocator.getId('checkboxfield[attributeName=booleanValue]') + '"]//input[@role="checkbox"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check deactivated 'booleanValue' checkbox", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var valueBooleanValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[9]');
+        valueBooleanValue.should.equal('No');
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var deactivatedBooleanValue = browser.isExisting(ExtLocator.getCss('checkboxfield[attributeName=booleanValue][checked=false]'));
+        deactivatedBooleanValue.should.equal(true);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
     });
 });
 
