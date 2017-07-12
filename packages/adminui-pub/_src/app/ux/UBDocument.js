@@ -10,6 +10,7 @@ require('./UBReportEditor')
 require('./UBMetaDiagram')
 //require('./GraphViewer')
 require('./UBOrgChart')
+require('./UBOnlyOffice')
 //noinspection JSUnusedGlobalSymbols
 /**
  * Container for display `Document` type attribute value.
@@ -19,7 +20,7 @@ require('./UBOrgChart')
  * After call to setValue component will analyse contentType attribute of document data and create
  * a internal editor/viewer according to {UB.ux.UBDocument#contentTypeMapping} rules.
  *
- * If {UB.ux.UBDocument#expanded} is set to false internal component is a hyperlink for documnet content download.
+ * If {UB.ux.UBDocument#expanded} is set to false internal component is a hyperlink for document content download.
  *
         {....
             layout: {
@@ -68,6 +69,7 @@ Ext.define('UB.ux.UBDocument', {
     statics: {
         editors: {
             tinyMCE: 'UB.ux.UBTinyMCETextArea',
+            onlyOffice: 'UB.ux.UBOnlyOffice',
             codeMirror: 'UB.ux.UBCodeMirror',
             ubDiagram: 'UB.ux.UBMetaDiagram',
             ubOrgChart: 'UB.ux.UBOrgChart',
@@ -98,6 +100,8 @@ Ext.define('UB.ux.UBDocument', {
             'text/html': 'UB.ux.UBTinyMCETextArea',
             'application/txt': 'UB.ux.UBTinyMCETextArea',
             'application/ubreport' : 'UB.ux.UBReportEditor',
+            'application/word' : 'UB.ux.UBOnlyOffice',
+            'application/excel': 'UB.ux.UBOnlyOffice',
 
             'text/plain': 'UB.ux.UBCodeMirror',
             'application/json':'UB.ux.UBCodeMirror',

@@ -83,11 +83,14 @@ function generateIndexPage (req, resp, indexName) {
     resp.statusCode = 200
         // cache forever - do not cache index*.html
     let wsSrc = 'ws' + App.serverURL.slice(4)
+    if (!uiSettings) uiSettings = JSON.parse(App.getUISettings() || '{}')
+    let onlyOfficeServer = (uiSettings.adminUI && uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
+    console.log(onlyOfficeServer)
     let cspHeaders =
     // "default-src * data: blob:;" +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval';" +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' " + onlyOfficeServer + ';' +
     "style-src data: 'unsafe-inline' *;" +
-    "connect-src 'self' " + wsSrc + ' blob:;' +
+    "connect-src 'self' " + wsSrc + ' blob: ' + onlyOfficeServer + ';' +
     'plugin-types application/pdf'
     let cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
     resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT' + cspHeader)
