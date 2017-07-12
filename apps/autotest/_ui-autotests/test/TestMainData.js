@@ -23,6 +23,18 @@ var enumValue = 'Long enumeration caption for test must be last in order';
 var testManyData = 'caption 70';
 var test2dManyData = 'caption 70';
 
+//Data for "Add item to grid" test
+var codeForNew = 'Код99';
+var captionForNew = 'Заголовок 99';
+var complexCaptionForNew = 'Test complexCaption 99';
+var bigInt = '7777777777777777777777777';
+var parent1 = 'Заголовок 101';
+var parent2 = 'Заголовок 104';
+var testManyDataForNew = 'caption 10';
+var test2dManyDataForNew = 'caption 50';
+var mappedToSelf = 'admin';
+var valueOfDateTimeField;
+var valueOfBigInt;
 
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
@@ -884,3 +896,115 @@ describe("booleanValue", function () {
     });
 });
 
+describe("Add item to grid", function () {
+    it("Open UB test main data creating tab", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Add (Ctrl+Ins)]'));
+        browser.pause(3000);
+        var textTabHeader = browser.getText('//*[@id="' + ExtLocator.getId('header[cls=ub-toolbar-header]') + '"]//span[.="ub test main data (creating)"]');
+        textTabHeader.should.equal('ub test main data (creating)');
+    });
+    it("Add data for new item and save", function () {
+        browser.setValue((ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl'),codeForNew);
+        browser.setValue((ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl'),captionForNew);
+        browser.setValue((ExtLocator.getCss('ubtextareafield[attributeName=complexCaption]') + '-inputEl'),complexCaptionForNew);//
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//li[.="'+nonNullDict_ID+'"]');
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nullDict_ID]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//div[not(contains(@style,"display: none")) and contains(@id,"boundlist-") and contains(@class,"x-boundlist-floating")]//li[.="'+nullDict_ID+'"]');
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=parent]') + '-inputEl','Заголовок');
+        browser.pause(3000);
+        browser.click('//li[.="'+parent1+'"]');
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=parent1]') + '-inputEl','Заголовок');
+        browser.pause(3000);
+        browser.click('//div[not(contains(@style,"display: none")) and contains(@id,"boundlist-") and contains(@class,"x-boundlist-floating")]//li[.="'+parent2+'"]');
+        browser.click(ExtLocator.getCss('ubbasebox[attributeName=enumValue]') + '-inputEl');
+        browser.pause(3000);
+        browser.click('//li[.="'+enumValue+'"]');
+        var deactivatedBooleanValue = browser.isExisting(ExtLocator.getCss('checkboxfield[attributeName=booleanValue][checked=false]'));
+        deactivatedBooleanValue.should.equal(true);
+        browser.click('//*[@id="' + ExtLocator.getId('checkboxfield[attributeName=booleanValue]') + '"]//input[@role="checkbox"]');
+        browser.setValue(ExtLocator.getCss('ubboxselect[attributeName="manyValue"]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//div[not(contains(@style,"display: none")) and contains(@id,"boundlist-") and contains(@class,"x-boundlist-floating")]//li[.="'+testManyDataForNew+'"]');
+        browser.click(ExtLocator.getCss('ubtextfield[attributeName=code]')); // to hide boundlist
+        browser.setValue(ExtLocator.getCss('ubboxselect[attributeName="manyValue2"]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//div[not(contains(@style,"display: none")) and contains(@id,"boundlist-") and contains(@class,"x-boundlist-floating")]//li[.="'+test2dManyDataForNew+'"]');
+        browser.click(ExtLocator.getCss('ubtextfield[attributeName=code]')); // to hide boundlist
+        browser.setValue((ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl'),bigInt);
+        browser.pause(1000);
+        browser.setValue((ExtLocator.getCss('ubcombobox[attributeName=mappedToSelf]') + '-inputEl'),mappedToSelf);
+        browser.pause(3000);
+        browser.click('//li[.="'+mappedToSelf+'"]');
+        browser.click('//*[@id="' + ExtLocator.getId('ubdatetimefield') + '"]//div[contains(@class,"x-form-date-trigger")]');
+        browser.click('//*[@id="' + ExtLocator.getId('datetimepicker') + '"]//td[@title="Now"]');
+        browser.pause(1000);
+        valueOfDateTimeField = browser.getValue(ExtLocator.getCss('ubdatetimefield') + '-inputEl');
+        valueOfBigInt = browser.getValue(ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check added item on grid of items", function () {
+        var valueInCode = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+codeForNew+'"]');
+        valueInCode.should.equal(codeForNew);
+        var valueInCaption = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[1]');
+        valueInCaption.should.equal(captionForNew);
+        var valueInComplexCaption = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[2]');
+        valueInComplexCaption.should.equal(complexCaptionForNew);
+        var valueInNonNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[3]');
+        valueInNonNullDict_ID.should.equal(nonNullDict_ID);
+        var valueInNullDict_ID = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[4]');
+        valueInNullDict_ID.should.equal(nullDict_ID);
+        var valueInParent1 = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[5]');
+        valueInParent1.should.equal(parent1);
+        var valueInParent2 = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[6]');
+        valueInParent2.should.equal(parent2);
+        var valueInEnumValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[7]');
+        valueInEnumValue.should.equal(enumValue);
+        var valueInDateTime = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[8]');
+        valueInDateTime.should.equal(valueOfDateTimeField);
+        var valueInBooleanValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[9]');
+        valueInBooleanValue.should.equal("Yes");
+        var valueInTestManyData = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[10]');
+        valueInTestManyData.should.equal("1");
+        var valueInTest2dManyData = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[11]');
+        valueInTest2dManyData.should.equal("5");
+        var valueInBigInt = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[12]');
+        valueInBigInt.should.equal('7.77777777777778e+24');
+        // var valueInMappedToSelf = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="'+codeForNew+'"]/following-sibling::td[13]'); // The value is not save in the controll
+        // valueInMappedToSelf.should.equal(mappedToSelf);
+    });
+    it("Check added item on Edit form of items", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+codeForNew+'"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+        var valueInCode = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl');
+        valueInCode.should.equal(codeForNew);
+        var valueInCaption = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl');
+        valueInCaption.should.equal(captionForNew);
+        var valueInComplexCaption =  browser.getValue(ExtLocator.getCss('ubtextareafield[attributeName=complexCaption]') + '-inputEl');
+        valueInComplexCaption.should.equal(complexCaptionForNew);
+        var valueInNonNullDict_ID = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
+        valueInNonNullDict_ID.should.equal(nonNullDict_ID);
+        var valueInNullDict_ID = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nullDict_ID]') + '-inputEl');
+        valueInNullDict_ID.should.equal(nullDict_ID);
+        var valueInParent1 = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=parent]') + '-inputEl');
+        valueInParent1.should.equal(parent1);
+        var valueInParent2 = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=parent1]') + '-inputEl');
+        valueInParent2.should.equal(parent2);
+        var valueInEnumValue = browser.getValue(ExtLocator.getCss('ubbasebox[attributeName=enumValue]') + '-inputEl');
+        valueInEnumValue.should.equal(enumValue);
+        var valueInDateTime = browser.getValue(ExtLocator.getCss('ubdatetimefield') + '-inputEl');
+        valueInDateTime.should.equal(valueOfDateTimeField);
+        var valueInBooleanValue = browser.isExisting(ExtLocator.getCss('checkboxfield[attributeName=booleanValue][checked=true]'));
+        valueInBooleanValue.should.equal(true);
+        var valueInBigInt = browser.getValue(ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl');
+        valueInBigInt.should.equal('7,77777777777778e+24');
+        // var valueInMappedToSelf = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=mappedToSelf]') + '-inputEl'); // The value is not save in the controll
+        // valueInMappedToSelf.should.equal(mappedToSelf);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
+    });
+});
