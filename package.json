@@ -29,5 +29,8 @@
   },
   "engines": {
     "npm": "^5"
+  },
+  "dependencies": {
+    "systemjs": "^0.20.13"
   }
 }

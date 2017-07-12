@@ -6,8 +6,10 @@ require('./UBLink')
 require('./UBLabel')
 require('./UBTinyMCETextArea')
 require('./UBCodeMirror')
-require('./EnterpriseEditorMock')
 require('./UBReportEditor')
+require('./UBMetaDiagram')
+//require('./GraphViewer')
+require('./UBOrgChart')
 //noinspection JSUnusedGlobalSymbols
 /**
  * Container for display `Document` type attribute value.
@@ -59,7 +61,6 @@ Ext.define('UB.ux.UBDocument', {
     //     'UB.ux.UBLabel',
     //     'UB.ux.UBTinyMCETextArea',
     //     'UB.ux.UBCodeMirror',
-    //     'UB.ux.EnterpriseEditorMock',
     //     'UB.ux.UBReportEditor'
     // ],
   uses: ['UB.core.UBApp'],
@@ -68,8 +69,8 @@ Ext.define('UB.ux.UBDocument', {
         editors: {
             tinyMCE: 'UB.ux.UBTinyMCETextArea',
             codeMirror: 'UB.ux.UBCodeMirror',
-            ubDiagram: 'UB.ux.EnterpriseEditorMock', // changed by UBE model to UBE.UBMetaDiagram,
-            ubOrgChart: 'UB.ux.EnterpriseEditorMock', //changed by UBE model to UBE.UBOrgChart,
+            ubDiagram: 'UB.ux.UBMetaDiagram',
+            ubOrgChart: 'UB.ux.UBOrgChart',
             ubReport: 'UB.ux.UBReportEditor'
         },
 
@@ -103,14 +104,16 @@ Ext.define('UB.ux.UBDocument', {
             'application/def':'UB.ux.UBCodeMirror',
             'application/javascript':'UB.ux.UBCodeMirror',
 
+            'text/x-yaml':'UB.ux.UBCodeMirror',
+            'application/yaml':'UB.ux.UBCodeMirror',
             'text/xml':'UB.ux.UBCodeMirror',
             'application/xml':'UB.ux.UBCodeMirror',
-            'application/ubWorkFlow': 'UB.ux.EnterpriseEditorMock', //changed by UBE model to UBE.GraphViewer,
-            'application/ubworkflow': 'UB.ux.EnterpriseEditorMock', //changed by UBE model to UBE.GraphViewer,
-            'application/ubMetaDiagram': 'UB.ux.EnterpriseEditorMock', //changed by UBE model to UBE.UBMetaDiagram
-            'application/ubmetadiagram': 'UB.ux.EnterpriseEditorMock', //changed by UBE model to UBE.UBMetaDiagram
-            'application/uborgchart': 'UB.ux.EnterpriseEditorMock', //changed by UBE model to UBE.UBOrgChart,
-            'application/UBOrgChart': 'UB.ux.EnterpriseEditorMock' //changed by UBE model to UBE.UBOrgChart,
+            'application/ubWorkFlow': 'UB.ux.GraphViewer',
+            'application/ubworkflow': 'UB.ux.GraphViewer',
+            'application/ubMetaDiagram': 'UB.ux.UBMetaDiagram',
+            'application/ubmetadiagram': 'UB.ux.UBMetaDiagram',
+            'application/uborgchart': 'UB.ux.UBOrgChart',
+            'application/UBOrgChart': 'UB.ux.UBOrgChart'
         }
     },
     layout: 'fit',

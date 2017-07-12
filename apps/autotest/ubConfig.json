@@ -122,12 +122,6 @@
 					"moduleName": "@unitybase/adminui-pub"
 				},
 				{
-					"name": "UBE",
-					"publicPath": "./node_modules/@ub-e/ube-pub",
-					"path": "_public_only_",
-					"moduleName": "@ub-e/ube-pub"
-				},
-				{
 					"name": "adminui-reg",
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
@@ -202,7 +196,7 @@
 			},
 			{
 				"name": "avatars",
-				"path": ".\\documents\\avatars\\",
+					"path": ".\\documents\\avatars\\",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false
