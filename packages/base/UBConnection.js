@@ -474,7 +474,7 @@ UBConnection.prototype.runList = function (runListData) {
  * @returns {*} body of HTTP request result. If !simpleTextResult and response type is json - then parsed to object
  */
 UBConnection.prototype.runCustom = function (endpoint, aBody, aURLParams, simpleTextResult, aHTTPMethod) {
-  return this.xhr({HTTPMethod: aHTTPMethod || 'POST', endpoint: endpoint, data: aBody, simpleTextResult: simpleTextResult})
+  return this.xhr({HTTPMethod: aHTTPMethod || 'POST', endpoint: endpoint, URLParams: aURLParams, data: aBody, simpleTextResult: simpleTextResult})
     // throw new Error ('Use one of runList/run/post/xhr UBConnection methods');
 }
 
@@ -499,6 +499,47 @@ UBConnection.prototype.logout = function () {
     } catch (e) {
     }
   }
+}
+
+/**
+ * Set document method saves a file content as a potential value of the specified entity instance attribute,
+ * the value is saved to temp store.
+ * Call this function before entity insert of update. Result of this function is what shall be assigned to the
+ * attribute value, to "execParams".
+ * @param {string} entity Entity name
+ * @param {string} attribute Entity attribute name
+ * @param {number} id ID of the record
+ * @param {ArrayBuffer} data File content
+ * @param {string} origName
+ * @param {string} [fileName] If not specified, origName will be used.
+ * @return {string}
+ *
+ * @example
+ * const myObj = conn.Repository(entityName)
+ *     .attrs('ID', 'mi_modifyDate')
+ *     .where('code', '=', code)
+ *     .selectSingle();
+ * const {ID, mi_modifyDate} = myObj;
+ * const data = fs.readFileSync(fileName, {encoding: 'bin'});
+ * const tempStoreResult = conn.setDocument(entityName, 'configuration', ID, data, fn);
+ * conn.query({
+ *      entity: entityName,
+ *		method: 'update',
+ *		execParams: {ID, configuration: tempStoreResult, mi_modifyDate}
+ *	});
+ */
+UBConnection.prototype.setDocument = function (entity, attribute, id, data, origName, fileName) {
+	const setDocumentResponse = this.xhr({
+		HTTPMethod: 'POST',
+		endpoint: 'setDocument',
+		data,
+		URLParams: {
+			entity, attribute, id,
+			origName: origName || fileName,
+			filename: fileName || origName
+		}
+	})
+	return JSON.stringify(setDocumentResponse.result)
 }
 
 /**

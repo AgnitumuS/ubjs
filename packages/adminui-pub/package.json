@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.2.17",
+  "version": "4.2.19",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-pub",
@@ -24,12 +24,12 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/adminui-reg": "^4.1.6",
-    "@unitybase/base": "^4.2.11",
-    "@unitybase/codemirror-full": "^1.2.5",
-    "@unitybase/ub-pub": "^4.4.1",
-    "@unitybase/ubm": "^4.0.28",
-    "@unitybase/xlsx": "^4.0.24",
+    "@unitybase/adminui-reg": "^4.1.8",
+    "@unitybase/base": "^4.2.13",
+    "@unitybase/codemirror-full": "^1.2.6",
+    "@unitybase/ub-pub": "^4.4.3",
+    "@unitybase/ubm": "^4.0.30",
+    "@unitybase/xlsx": "^4.0.26",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.20.2",
@@ -39,7 +39,8 @@
     "jszip": "^3.1.3",
     "lodash": "^4",
     "mustache": "^2.3.0",
-    "systemjs": "0.20.10-scoped",
+    "mxgraph-js": "^1.0.1",
+    "systemjs": "^0.20.13",
     "systemjs-plugin-css": "^0.1.32",
     "tinymce": "^4.4.3"
   },
@@ -48,5 +49,8 @@
     "UB4"
   ],
   "author": "UnityBase team (https://unitybase.info)",
-  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
+  "devDependencies": {
+    "uglifycss": "0.0.27"
+  }
 }

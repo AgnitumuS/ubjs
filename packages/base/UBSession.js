@@ -104,7 +104,7 @@ function UBSession (authResponse, secretWord, authSchema) {
    * @returns {string}
    */
   this.authHeader = function () {
-    return this.isAnonymous() ? '' : (this.authSchema + ' ' + this.signature())
+    return this.isAnonymous() ? '' : ((this.authSchema === 'Negotiate' ? 'UB' : this.authSchema) + ' ' + this.signature())
   }
 }
 

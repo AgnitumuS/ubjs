@@ -470,7 +470,7 @@ Ext.define('UB.core.UBApp', {
   },
 
   /**
-   * Return path of image from current theme
+   * Return images path for current UI theme
    * @param {string} imageName
    * @returns {string}
    */
