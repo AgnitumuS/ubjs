@@ -7,6 +7,9 @@ function escapeRegExp(string){
     return string.replace(/([.*+?^${}()|\[\]\/\\])/g, "\\$1");
 }
 
+var maskLocator = '//div[contains(@class,"x-mask-fixed")]';
+var loadingDivLocator = '//div[@id="UBLogo" and not(contains(@style,"display: none"))]/span[.="Loading..."]';
+
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
         browser.windowHandleMaximize();
@@ -20,7 +23,8 @@ describe("Login to the system", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000)
+        browser.waitForExist(maskLocator, 30000, true);
+        browser.waitForExist(loadingDivLocator, 30000, true);
     });
 });
 
@@ -28,20 +32,24 @@ describe("Build Report in HTML", function () {
     it("Open 'adm - ui - Report' on top menu", function () {
         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
-        browser.pause(1000);
-        browser.click(ExtLocator.getCss('menuitem[text=Reports]'));
-        browser.pause(1000);
+        var reportsMenuItemLocator = ExtLocator.getCss('menuitem[text=Reports]');
+        browser.waitForVisible(reportsMenuItemLocator, 30000);
+        browser.click(reportsMenuItemLocator);
     });
     it("Open UBS test report", function () {
-        browser.doubleClick('//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="UBS"]/following-sibling::td[.="test"]');
-        browser.pause(1000);
-        browser.isExisting(ExtLocator.getCss('tab[tooltip=Report builder]')).should.equal(true);
-        browser.pause(1000);
+        var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="UBS"]/following-sibling::td[.="test"]';
+        browser.waitForExist(testReportLocator);
+        browser.doubleClick(testReportLocator);
+        browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
     });
     it("Check mustache link on 'Template' tab", function () {
-        browser.click(ExtLocator.getCss('tab[text=Template]'));
+        var templateTabLocator = ExtLocator.getCss('tab[text=Template]');
+        browser.waitForVisible(templateTabLocator);
+        browser.click(templateTabLocator);
         browser.pause(3000);
-        var frameId = browser.getAttribute('//*[@id="' + ExtLocator.getId('ubreporteditor') + '"]//iframe', 'id');
+        var frameLocator = '//*[@id="' + ExtLocator.getId('ubreporteditor') + '"]//iframe';
+        browser.waitForExist(frameLocator);
+        var frameId = browser.getAttribute(frameLocator, 'id');
         console.log(frameId);
         browser.frame(frameId);
         var mustacheHref = browser.getAttribute('//a[.="Mustache"]', 'href');
@@ -59,7 +67,7 @@ describe("Build Report in HTML", function () {
         var sampleFilePath = browser.options.mochaOpts.files[0]
             .replace(/\\test.+\.js/i, "\\ExpectedOriginalReport.htm");
         var sampleBefore = fs.readFileSync(sampleFilePath, 'utf8');
-        var myRegExp = new RegExp('blob:'+ escapeRegExp(browser.options.baseUrl) +'[0-9a-f-]+', 'ig');
+        var myRegExp = new RegExp('blob:'+ escapeRegExp(browser.options.baseUrl) +'/[0-9a-f-]+', 'ig');
         sampleBefore =                     sampleBefore.replace(myRegExp, 'XXXX');
         var reportHtmlSourceReplaced = reportHtmlSource.replace(myRegExp, 'XXXX');
         var compareResult = sampleBefore.localeCompare(reportHtmlSourceReplaced);
@@ -109,7 +117,7 @@ describe("Build Report in HTML", function () {
         var sampleAfterFilePath = browser.options.mochaOpts.files[0]
             .replace(/\\test.+\.js/i, "\\ExpectedEditedReport.htm");
         var sampleAfter = fs.readFileSync(sampleAfterFilePath, 'utf8');
-        var myRegExp = new RegExp('blob:'+ escapeRegExp(browser.options.baseUrl) +'[0-9a-f-]+', 'ig');
+        var myRegExp = new RegExp('blob:'+ escapeRegExp(browser.options.baseUrl) +'/[0-9a-f-]+', 'ig');
         sampleAfter =                     sampleAfter.replace(myRegExp, 'XXXX');
         var BuiltReportHtmlReplaced = BuiltReportHtml.replace(myRegExp, 'XXXX');
         var compareResultAfter = sampleAfter.localeCompare(BuiltReportHtmlReplaced);
