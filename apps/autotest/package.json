@@ -9,6 +9,7 @@
     "replace-native": "npm i @unitybase/canvas@latest @unitybase/com-bridge@latest @unitybase/mailer-ssl@latest @unitybase/mailer@latest --no-save -f"
   },
   "dependencies": {
+    "@ub-d/iit-crypto": "file:..\\..\\..\\ub-d\\packages\\iit-crypto",
     "@ub-e/dses": "file:..\\..\\..\\ub-e\\packages\\dses",
     "@ub-e/odata": "file:..\\..\\..\\ub-e\\packages\\odata",
     "@ub-e/ube-pub": "file:..\\..\\..\\ub-e\\packages\\ube-pub",
