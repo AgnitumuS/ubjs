@@ -1001,10 +1001,35 @@ describe("Add item to grid", function () {
         var valueInBooleanValue = browser.isExisting(ExtLocator.getCss('checkboxfield[attributeName=booleanValue][checked=true]'));
         valueInBooleanValue.should.equal(true);
         var valueInBigInt = browser.getValue(ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl');
-        valueInBigInt.should.equal('7,77777777777778e+24');
+        valueInBigInt.should.equal('7.77777777777778e+24');
         // var valueInMappedToSelf = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=mappedToSelf]') + '-inputEl'); // The value is not save in the controll
         // valueInMappedToSelf.should.equal(mappedToSelf);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(3000);
     });
 });
+
+describe("Delete item from grid", function () {
+    it("Select and open Edit form of item for deleting", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+codeForNew+'"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Deleting item", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Delete (Ctrl+DELETE)]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[text=Yes]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(3000);
+    });
+    it("Check deleting item", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+codeForNew+'"]';
+        var itemPresence = browser.isExisting(itemInGrid);
+        console.log(itemPresence);
+        itemPresence.should.equal(false);
+        browser.pause(1000);
+    });
+});
+
+
