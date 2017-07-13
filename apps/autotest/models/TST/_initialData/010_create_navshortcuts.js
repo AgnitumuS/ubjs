@@ -81,7 +81,49 @@ module.exports = function (session) {
       cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_docusign', method: 'select', fieldList: ['name', 'envelope']}]}}, null, '\t')
     }
   })
+  
+  console.log('\t\t\tcreate `ui_tst_move` shortcut for UI tests')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'ui_tst_move',
+      caption: 'Move Shortcut to Folder',
+      displayOrder: 32,
+      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_maindata', method: 'select', fieldList: ['*']}]}}, null, '\t')
+    }
+  })
 
+  console.log('\t\t\tcreate `ui_tst_folder` shortcut folder for UI tests')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+	  isFolder: true,
+      code: 'ui_tst_folder',
+      caption: 'Folder for moved Shortcuts',
+      displayOrder: 34,
+      cmdCode: ''
+    }
+  })
+  
+  var ui_tst_folder_id = conn.lookup('ubm_navshortcut', 'ID', {expression: 'code', condition: 'equal', values: {code: 'ui_tst_folder'}})
+  console.log('\t\t\tcreate `ui_tst_in_folder` shortcut inside folder for UI tests')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+	  parentID: ui_tst_folder_id,
+      code: 'ui_tst_in_folder',
+      caption: 'Shortcut inside Folder',
+      displayOrder: 10,
+      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_maindata', method: 'select', fieldList: ['*']}]}}, null, '\t')
+    }
+  })
+  
   var displayOrder = 40;
   ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_ODataSimple', 'tst_ODataRef'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
