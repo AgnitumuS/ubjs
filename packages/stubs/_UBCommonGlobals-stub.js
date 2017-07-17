@@ -208,6 +208,7 @@ function UBReader () {}
  *          If 'bin' - return ArrayBuffer source representation without any conversion.
  *          If 'base64' - transform base64 encoded content of source to ArrayBuffer
  *          If 'bin2base64' - transform content to base64 encoded string
+ *          If 'Windows-1251' - transform content form RUSSIAN/UKRAINIAN charset to string
  * @returns {ArrayBuffer|String} Return String in case no encoding passed or ArrayBuffer
  */
 UBReader.prototype.read = function (encoding) {}
