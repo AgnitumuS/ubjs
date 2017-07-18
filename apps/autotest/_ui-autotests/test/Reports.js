@@ -137,10 +137,12 @@ describe("Build Report in HTML", function () {
         browser.frame(null);
         browser.pause(1000);
     });
-    it("Close HTML report window", function () {
+    it("Close HTML report window and Report builder tab", function () {
         var reportInWindowLocator = ExtLocator.getCss('ubtinymcetextarea[name!=template][readOnly=true]');
         browser.click('//*[@id="' + ExtLocator.getId('window[hidden=false]') + '"]//img[contains(@class,"x-tool-close")]');
         browser.waitForExist(reportInWindowLocator, 5000, true);
+        browser.click(ExtLocator.getCss('tab[text=Report builder]') + '-closeEl');
+        browser.waitForExist(reportInWindowLocator, 3000, true);
     })
 });
 
@@ -152,7 +154,7 @@ describe("Build Report in PDF", function () {
         browser.waitForVisible(reportsMenuItemLocator, 30000);
         browser.click(reportsMenuItemLocator);
     });
-    it("Open UBS test report", function () {
+    it("Open TST test2 report", function () {
         var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="TST"]/following-sibling::td[.="test2"]';
         browser.waitForExist(testReportLocator);
         browser.doubleClick(testReportLocator);
@@ -160,6 +162,7 @@ describe("Build Report in PDF", function () {
         browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
     });
     it("Build PDF report client side", function () {
+        browser.waitForVisible(ExtLocator.getCss('button[text=Test(pdf)]'));
         browser.click(ExtLocator.getCss('button[text=Test(pdf)]'));
         browser.pause(1000);
 
@@ -215,9 +218,11 @@ describe("Build Report in PDF", function () {
         console.log(binaryDocPdfHashMd5);
         binaryDocPdfHashMd5.should.equal('313d4a8d6f5b644ea9e0113daeed844a');
     });
-    it("Close PDF report window", function () {
+    it("Close PDF report window and Report builder tab", function () {
         var reportInWindowLocator = '//*[@id="' + ExtLocator.getId('ubpdf') + '"]/iframe';
         browser.click('//*[@id="' + ExtLocator.getId('window[hidden=false]') + '"]//img[contains(@class,"x-tool-close")]');
         browser.waitForExist(reportInWindowLocator, 5000, true);
+        browser.click(ExtLocator.getCss('tab[text=Report builder]') + '-closeEl');
+        browser.waitForExist(reportInWindowLocator, 3000, true);
     })
 });
