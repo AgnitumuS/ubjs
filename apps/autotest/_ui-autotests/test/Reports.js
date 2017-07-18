@@ -2,6 +2,7 @@ require('chai').should();
 
 var ExtLocator = require("./ExtJSlocatorHelper.js");
 var fs = require('fs');
+const crypto = require('crypto');
 
 function escapeRegExp(string){
     return string.replace(/([.*+?^${}()|\[\]\/\\])/g, "\\$1");
@@ -40,6 +41,7 @@ describe("Build Report in HTML", function () {
         var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="UBS"]/following-sibling::td[.="test"]';
         browser.waitForExist(testReportLocator);
         browser.doubleClick(testReportLocator);
+        browser.pause(3000);
         browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
     });
     it("Check mustache link on 'Template' tab", function () {
@@ -137,6 +139,84 @@ describe("Build Report in HTML", function () {
     });
     it("Close HTML report window", function () {
         var reportInWindowLocator = ExtLocator.getCss('ubtinymcetextarea[name!=template][readOnly=true]');
+        browser.click('//*[@id="' + ExtLocator.getId('window[hidden=false]') + '"]//img[contains(@class,"x-tool-close")]');
+        browser.waitForExist(reportInWindowLocator, 5000, true);
+    })
+});
+
+describe("Build Report in PDF", function () {
+    it("Open 'adm - ui - Report' on top menu", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        var reportsMenuItemLocator = ExtLocator.getCss('menuitem[text=Reports]');
+        browser.waitForVisible(reportsMenuItemLocator, 30000);
+        browser.click(reportsMenuItemLocator);
+    });
+    it("Open UBS test report", function () {
+        var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="TST"]/following-sibling::td[.="test2"]';
+        browser.waitForExist(testReportLocator);
+        browser.doubleClick(testReportLocator);
+        browser.pause(3000);
+        browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
+    });
+    it("Build PDF report client side", function () {
+        browser.click(ExtLocator.getCss('button[text=Test(pdf)]'));
+        browser.pause(1000);
+
+        browser.setValue(ExtLocator.getCss('datefield[fieldLabel=Birthday]')+ '-inputEl', '01/02/2017');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[el][text=Build]'));
+        browser.pause(5000);
+        var pdfIframeLocator = '//*[@id="' + ExtLocator.getId('ubpdf') + '"]/iframe';
+        browser.waitForExist(pdfIframeLocator);
+    });
+    it("Download PDF report and compare MD5 hash with a sample", function () {
+        var pdfIframeLocator = '//*[@id="' + ExtLocator.getId('ubpdf') + '"]/iframe';
+        var blobLink = browser.getAttribute(pdfIframeLocator, 'src');
+        console.log(blobLink);
+
+        // get PDF content from blob URL via hack
+        browser.execute(function(url) {
+            function abToB64(buf) {
+             var binary = "";
+             var bytes = new Uint8Array(buf);
+             var len = bytes.byteLength;
+             for (var i = 0; i < len; i++){
+              binary += String.fromCharCode( bytes[i] );
+             }
+             return window.btoa(binary);
+            }
+            var oReq = new XMLHttpRequest();
+            oReq.open("GET", url, true);
+            oReq.responseType = "arraybuffer";
+            oReq.onload = function(e){
+             var tmpDiv = document.createElement("div");
+             tmpDiv.id = "tmpBufferDiv_id";
+             tmpDiv.textContent = abToB64(oReq.response);
+            document.body.appendChild(tmpDiv);
+            };
+            oReq.send();
+        }, blobLink);
+        browser.waitForExist('#tmpBufferDiv_id');
+        var base64DocText = browser.getText('#tmpBufferDiv_id');
+        var binaryDocPdf = Buffer.from(base64DocText, 'base64');
+        var actualPdfLength = binaryDocPdf.byteLength;
+        actualPdfLength.should.equal(1125163);
+
+        // replace date fragment with '1' symbols
+        for(var offset = 0x1123c0; offset <= 0x1123c0 + 21; offset++){
+            binaryDocPdf[offset] = 0x30;
+        }
+
+        // compare hash
+        const hash = crypto.createHash('md5');
+        hash.update(binaryDocPdf);
+        var binaryDocPdfHashMd5 = hash.digest('hex');
+        console.log(binaryDocPdfHashMd5);
+        binaryDocPdfHashMd5.should.equal('313d4a8d6f5b644ea9e0113daeed844a');
+    });
+    it("Close PDF report window", function () {
+        var reportInWindowLocator = '//*[@id="' + ExtLocator.getId('ubpdf') + '"]/iframe';
         browser.click('//*[@id="' + ExtLocator.getId('window[hidden=false]') + '"]//img[contains(@class,"x-tool-close")]');
         browser.waitForExist(reportInWindowLocator, 5000, true);
     })
