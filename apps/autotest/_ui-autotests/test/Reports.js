@@ -71,6 +71,7 @@ describe("Build Report in HTML", function () {
         var sampleBefore = fs.readFileSync(sampleFilePath, 'utf8');
         var myRegExp = new RegExp('blob:'+ escapeRegExp(browser.options.baseUrl) +'/[0-9a-f-]+', 'ig');
         sampleBefore =                     sampleBefore.replace(myRegExp, 'XXXX');
+        sampleBefore =                     sampleBefore.replace(/\r\n/g,'\n');
         var reportHtmlSourceReplaced = reportHtmlSource.replace(myRegExp, 'XXXX');
         var compareResult = sampleBefore.localeCompare(reportHtmlSourceReplaced);
         console.log('compareResult=' + compareResult);
