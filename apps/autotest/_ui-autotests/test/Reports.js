@@ -162,6 +162,25 @@ describe("Build Report in PDF", function () {
         browser.pause(3000);
         browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
     });
+    it("Edit template source code", function () {
+        var templateTabLocator = ExtLocator.getCss('tab[text=Template]');
+        browser.waitForVisible(templateTabLocator);
+        browser.click(templateTabLocator);
+        browser.pause(3000);
+        browser.click('//button[starts-with(@id,"mceu_") and contains(.,"Tools")]');
+        browser.pause(3000);
+        browser.click('//span[starts-with(@id,"mceu_") and contains(.,"Source code")]');
+        browser.pause(3000);
+        var reportHtmlSource = browser.getValue('//textarea[starts-with(@id,"mceu_")]');
+        var reportHtmlSourceEdited;
+        reportHtmlSourceEdited = reportHtmlSource.replace('builder manual - mofified for PDF check in uiautotest', 'builder manual - mofified for edited PDF check in uiautotest');
+        browser.setValue('//textarea[starts-with(@id,"mceu_")]', reportHtmlSourceEdited);
+        browser.pause(1000);
+        browser.click('//div[starts-with(@id,"mceu_")]/button[.="Ok"]');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[cls=save-action][el]'));
+        browser.pause(3000);
+    });
     it("Build PDF report client side", function () {
         browser.waitForVisible(ExtLocator.getCss('button[text=Test(pdf)]'));
         browser.click(ExtLocator.getCss('button[text=Test(pdf)]'));
@@ -205,10 +224,10 @@ describe("Build Report in PDF", function () {
         var base64DocText = browser.getText('#tmpBufferDiv_id');
         var binaryDocPdf = Buffer.from(base64DocText, 'base64');
         var actualPdfLength = binaryDocPdf.byteLength;
-        actualPdfLength.should.equal(1125163);
+        actualPdfLength.should.equal(1124680);
 
         // replace date fragment with '1' symbols
-        for(var offset = 0x1123c0; offset <= 0x1123c0 + 21; offset++){
+        for(var offset = 0x1121dd; offset <= 0x1121dd + 21; offset++){
             binaryDocPdf[offset] = 0x30;
         }
 
@@ -217,7 +236,7 @@ describe("Build Report in PDF", function () {
         hash.update(binaryDocPdf);
         var binaryDocPdfHashMd5 = hash.digest('hex');
         console.log(binaryDocPdfHashMd5);
-        binaryDocPdfHashMd5.should.equal('313d4a8d6f5b644ea9e0113daeed844a');
+        binaryDocPdfHashMd5.should.equal('7f35def76e2e48048fb5154368550ee1');
     });
     it("Close PDF report window and Report builder tab", function () {
         var reportInWindowLocator = '//*[@id="' + ExtLocator.getId('ubpdf') + '"]/iframe';
