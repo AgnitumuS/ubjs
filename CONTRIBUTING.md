@@ -191,12 +191,12 @@ For a production environment all operations below must be performed under user w
  
  For CMS
  
-        pm2 start --name ub-cms C:\mmcms-server\server.js
+        pm2 start --name ub-cms --max-restarts 5 C:\mmcms-server\server.js
         
  For a UnityBase application
          
          SET UB_HOME=<PathToYourUB>
-         pm2 start --name ub-app %UB_HOME%\ub -- -cfg C:\<pathToApplication>\ubConfig.json 
+         pm2 start --name ub-app --max-restarts 5 %UB_HOME%\ub -- -cfg C:\<pathToApplication>\ubConfig.json 
         
  - Save pm2 tasks
       
