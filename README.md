@@ -12,11 +12,6 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
   - Download and install [node.js & npm](https://nodejs.org/en/download/)
   - Download and install [OpenUB v4](https://unitybase.info/media/files/OpenUBv4.exe)
   - _(optional step)_ To debug server-side JavaScript [install a FireFox](https://www.mozilla.org/ru/firefox/new/)
-
-  - Configure NPM to use a unitybase registry
-```
-  npm set registry http://registry.unitybase.info 
-```
   - Install UnityBase command line tool globaly
 ```
   npm i -g @unitybase/ubcli
