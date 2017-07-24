@@ -896,6 +896,56 @@ describe("booleanValue", function () {
     });
 });
 
+describe("Set dateTimeValue by date picker, ENG language", function () {
+    it("Select item from testMainData list", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Click date picker", function () {
+        browser.click('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '"]//td/div[contains(@class,"x-form-date-trigger")]');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('splitbutton[tooltip*=Choose month]'));
+        browser.pause(1000);
+        browser.click('//*[@id="' + ExtLocator.getId('monthpicker') + '"]//a[.="Jan"]');
+        var yearPresent = false;
+        for(var searchYear=0; searchYear<5; searchYear++) {
+            yearPresent = browser.isExisting('//*[@id="' + ExtLocator.getId('monthpicker') + '"]//div/a[.="1993"]');
+            if(yearPresent) break;
+            browser.click('//*[@id="' + ExtLocator.getId('monthpicker') + '-prevEl"]');
+            browser.pause(500);
+        }
+        yearPresent.should.equal(true);
+        browser.click('//*[@id="' + ExtLocator.getId('monthpicker') + '"]//div/a[.="1993"]');
+        browser.click(ExtLocator.getCss('button[text=&#160;OK&#160;]'));
+        browser.pause(1000);
+        browser.setValue('//*[@id="' + ExtLocator.getId('padnumberfield:first') + '-inputEl"]', '22');
+        browser.setValue('//*[@id="' + ExtLocator.getId('padnumberfield:last') + '-inputEl"]', '58');
+        browser.click('//*[@id="' + ExtLocator.getId('datetimepicker') + '"]//td[contains(@class,"x-datepicker-active")]/a[.=31]');
+        browser.pause(1000);
+        var fieldValue = browser.getAttribute('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '-inputEl"]', 'value');
+        fieldValue.should.equal('01/31/1993 22:58');
+        browser.click(ExtLocator.getCss('button[eventId=save][actionId=saveAndClose]'));
+        browser.pause(1000);
+    });
+    it("Check datetime value in grid column", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var datetimeGridValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[8]');
+        datetimeGridValue.should.equal('01/31/1993 22:58');
+    });
+    it("open item and check saved value", function () {
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var fieldValue = browser.getAttribute('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '-inputEl"]', 'value');
+        fieldValue.should.equal('01/31/1993 22:58');
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+    });
+});
+
+
 describe("Add item to grid", function () {
     it("Open UB test main data creating tab", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Add (Ctrl+Ins)]'));
