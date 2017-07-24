@@ -37,8 +37,17 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB", "Negotiate"
+			"UB", "Negotiate", "CERT"
 		],
+		"simpleCertAuth": true,
+		"dstu": {
+			"find	CertificateBySerial": true,
+			"iit": {
+				"libraryPath": "D:\\SVN\\M3\\trunk\\06-Source\\libs_vendor\\iit",
+				"keyPath": ".\\models\\TST\\_autotest\\iitKey\\Key-6.pfx",
+				"password": "12345678"
+			}
+		},
 		"ldapCatalogs": [
 			{
 				"name": "MYDOMAIN",
@@ -153,17 +162,12 @@
 		"connections": [
 			{
 				"name": "main",
-				"driver": "MSSQL2012OleDB",
+				"driver": "SQLite3",
 				"isDefault": true,
-				"dialect": "MSSQL2012",
-				"serverName": "MASH-W10\\SQLEXPRESS",
-				"databaseName": "ub_autotest",
-				"userID": "ub_autotest",
-				"password": "ub_autotest",
-				"supportLang": [
-					"uk",
-					"en"
-				]
+				"dialect": "SQLite3",
+				"databaseName": ".\\autotestDB.sqlite3",
+				"supportLang": ["en", "uk"],
+				"advSettings": "Synchronous=Off"
 			},
 			{
 				"name": "ftsDefault",

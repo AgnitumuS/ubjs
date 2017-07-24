@@ -166,6 +166,19 @@
 				]
 			},
 			{
+				"name": "second",
+				"driver": "MSSQL2012OleDB",
+				"dialect": "MSSQL2012",
+				"serverName": "MASH-W10\\SQLEXPRESS",
+				"databaseName": "ub_autotest2",
+				"userID": "ub_autotest",
+				"password": "ub_autotest",
+				"supportLang": [
+					"uk",
+					"en"
+				]
+			},
+			{
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
