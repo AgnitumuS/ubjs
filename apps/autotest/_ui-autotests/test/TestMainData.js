@@ -945,6 +945,108 @@ describe("Set dateTimeValue by date picker, ENG language", function () {
     });
 });
 
+describe("Set dateTimeValue by date picker, UA language", function () {
+    it("Change the interface language English to Ukrainian", function () {
+        var UBMenuUA = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Menu"]');
+        UBMenuUA.should.equal('Menu');
+        browser.click(ExtLocator.getCss('ubtoolbaruser'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Change language]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Ukrainian]'));
+        browser.waitForExist(ExtLocator.getCss('button[text=Yes]'));
+        browser.click(ExtLocator.getCss('button[text=Yes]'));
+        browser.pause(1000);
+        browser.waitForExist('//h2');
+        var title = browser.getText('//h2');
+        title.should.equal('Autotest UB SQLITE');
+        console.log('Title is: ' + title);
+        browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
+        browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
+        browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
+        browser.pause(3000);
+        var UBMenuEn = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Меню"]');
+        UBMenuEn.should.equal('Меню');
+    });
+    it("Open 'Test main data' on top menu", function () {
+        browser.click(ExtLocator.getCss('button[text=Test][ui=default-toolbar-small]'));
+        browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
+        browser.pause(3000);
+    });
+    it("Select item from testMainData list", function () {
+        browser.pause(3000);
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+    it("Click date picker", function () {
+        browser.click('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '"]//td/div[contains(@class,"x-form-date-trigger")]');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('splitbutton[tooltip*=Вибір місяця]'));
+        browser.pause(1000);
+        browser.click('//*[@id="' + ExtLocator.getId('monthpicker') + '"]//a[.="Лют"]');
+        var yearPresent = false;
+        for(var searchYear=0; searchYear<5; searchYear++) {
+            yearPresent = browser.isExisting('//*[@id="' + ExtLocator.getId('monthpicker') + '"]//div/a[.="1994"]');
+            if(yearPresent) break;
+            browser.click('//*[@id="' + ExtLocator.getId('monthpicker') + '-prevEl"]');
+            browser.pause(500);
+        }
+        yearPresent.should.equal(true);
+        browser.click('//*[@id="' + ExtLocator.getId('monthpicker') + '"]//div/a[.="1994"]');
+        browser.click(ExtLocator.getCss('button[text=&#160;OK&#160;]'));
+        browser.pause(1000);
+        browser.setValue('//*[@id="' + ExtLocator.getId('padnumberfield:first') + '-inputEl"]', '21');
+        browser.setValue('//*[@id="' + ExtLocator.getId('padnumberfield:last') + '-inputEl"]', '57');
+        browser.click('//*[@id="' + ExtLocator.getId('datetimepicker') + '"]//td[contains(@class,"x-datepicker-active")]/a[.=26]');
+        browser.pause(1000);
+        var fieldValue = browser.getAttribute('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '-inputEl"]', 'value');
+        fieldValue.should.equal('26.02.1994 21:57');
+        browser.click(ExtLocator.getCss('button[eventId=save][actionId=saveAndClose]'));
+        browser.pause(1000);
+    });
+    it("Check datetime value in grid column", function () {
+        browser.click(ExtLocator.getCss('button[eventId=refresh][actionId=refresh]'));
+        browser.pause(1000);
+        var datetimeGridValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[8]');
+        datetimeGridValue.should.equal('26.02.1994 21:57');
+    });
+    it("open item and check saved value", function () {
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var fieldValue = browser.getAttribute('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '-inputEl"]', 'value');
+        fieldValue.should.equal('26.02.1994 21:57');
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+    });
+    it("Change the interface language Ukrainian to English", function () {
+        var UBMenuUA = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Меню"]');
+        UBMenuUA.should.equal('Меню');
+        browser.click(ExtLocator.getCss('ubtoolbaruser'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Змінити мову]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Англійська]'));
+        browser.waitForExist(ExtLocator.getCss('button[text=Так]'));
+        browser.click(ExtLocator.getCss('button[text=Так]'));
+        browser.pause(1000);
+        browser.waitForExist('//h2');
+        var title = browser.getText('//h2');
+        title.should.equal('Autotest UB SQLITE');
+        console.log('Title is: ' + title);
+        browser.setValue(ExtLocator.getCss('textfield[requireText=Login]') + '-inputEl', 'admin');
+        browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
+        browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
+        browser.pause(3000);
+        var UBMenuEn = browser.getText('//*[@id="' + ExtLocator.getId('ubtoolbarmenubutton') + '"]//label[.="Menu"]');
+        UBMenuEn.should.equal('Menu');
+        browser.pause(1000);
+    });
+    it("Open 'Test main data' on top menu", function () {
+        browser.click(ExtLocator.getCss('button[text=Test][ui=default-toolbar-small]'));
+        browser.click(ExtLocator.getCss('menuitem[text=tst_maindata]'));
+        browser.pause(3000);
+    });
+});
 
 describe("Add item to grid", function () {
     it("Open UB test main data creating tab", function () {
