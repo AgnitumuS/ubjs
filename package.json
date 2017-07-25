@@ -21,7 +21,7 @@
     "webpack-bundle-analyzer": "^2.8.3"
   },
   "scripts": {
-    "clean": "call ./.bin/clean.cmd",
+    "clean": "lerna clean --yes",
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
     "build:js": "lerna run build",
     "build:native": "lerna run build:native --concurrency 1",
