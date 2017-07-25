@@ -1,4 +1,4 @@
-require('../ux/form/field/UBText')
+﻿require('../ux/form/field/UBText')
 require('../ux/form/field/UBTextArea')
 require('../ux/form/field/UBBoxSelect')
 require('../ux/form/field/ComboExtraButtons')
@@ -488,7 +488,7 @@ Ext.define('UB.view.BasePanel', {
       }
 
       if (!me.isDestroyed) {
-	var el = me.getEl();
+	var el = me.getEl()
         el && el.unmask()
       }
     })
