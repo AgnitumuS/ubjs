@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ##  [4.2.18]
 ### Added
  - Editors for OrgChart available in UB EE is moved into standard edition (this package)
-  
+
+###Fixed
+- fix bag in cyclical opening of modal forms.(`org_staffunit` -> `org_employeeinstaff` -> `org_staffunit`)
 
 ##  [4.2.17]
 ### Fixed

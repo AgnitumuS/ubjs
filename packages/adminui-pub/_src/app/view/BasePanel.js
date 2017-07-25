@@ -488,7 +488,8 @@ Ext.define('UB.view.BasePanel', {
       }
 
       if (!me.isDestroyed) {
-        me.getEl().unmask()
+		var el = me.getEl();
+        el && el.unmask()
       }
     })
 
