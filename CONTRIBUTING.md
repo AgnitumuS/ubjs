@@ -12,7 +12,6 @@ rem In case you have access to UB Defense - clone it
 > cd ubjs
 > npm run bootstrap
 > cd apps\autotest
-> npm i
 > tsql3.cmd
 > ub -dev
 Point ypour browser (Chrome or FireFox) to http://localhost:888/ubadminui-dev
