@@ -1,6 +1,7 @@
-call npm set prefer-offline true
 call npm i
+@if errorlevel 1 goto err
 call npx lerna bootstrap
+@if errorlevel 1 goto err
 
 cd .\packages\ubcli
 call npm link
@@ -8,8 +9,9 @@ cd ..\..
 
 if exist ..\ub-e\packages (
   cd ..\ub-e
-  call npm i --prefer-offline
-  call .\node_modules\.bin\lerna bootstrap
+  call npm i
+  call npx lerna bootstrap
+  @if errorlevel 1 goto err
   cd ..\ubjs
 ) else (
   echo UnityBase enterprise repository not found
@@ -20,7 +22,8 @@ if exist ..\ub-e\packages (
 if exist ..\ub-d\packages (
   cd ..\ub-d
   call npm i
-  call .\node_modules\.bin\lerna bootstrap
+  call npx lerna bootstrap
+  @if errorlevel 1 goto err
   cd ..\ubjs
 ) else (
   echo UnityBase Defense repository not found
@@ -28,8 +31,6 @@ if exist ..\ub-d\packages (
   echo otherwise remove all @ub-d/* models from .\apps\autotest\ubConfig*.json 
 )
 
-cd .\apps\autotest
-call npm i
 if not defined SRC (
   echo on
   echo To compile a native modules you need:
@@ -43,7 +44,13 @@ if not defined SRC (
   exit 1
 )
 
-cd ..\..
 call npm run build:native
+@if errorlevel 1 goto err
 
+@goto end
 
+:err
+@echo Bootstrap failed
+EXIT /B 1
+
+:end
