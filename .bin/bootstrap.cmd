@@ -1,6 +1,6 @@
 call npm set prefer-offline true
 call npm i
-call .\node_modules\.bin\lerna bootstrap
+call npx lerna bootstrap
 
 cd .\packages\ubcli
 call npm link
