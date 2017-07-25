@@ -41,7 +41,7 @@ if not defined SRC (
   echo In case you do not have access to Server Sources or compilers - run a 
   echo   `npm run replace-native` in autotest folder
   echo This will install latest compiled packages from registry
-  exit 1
+  goto end
 )
 
 call npm run build:native
