@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.2.20",
+  "version": "4.2.21",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-pub",
