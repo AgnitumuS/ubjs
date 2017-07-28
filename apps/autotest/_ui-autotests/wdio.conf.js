@@ -73,6 +73,11 @@ exports.config = {
         //
         browserName: 'chrome',
         //screenResolution: "600x480"
+        chromeOptions: {
+            prefs: {
+                "download.default_directory": "C:\\Workaround_folder_for_SelSer\\testdownloads"
+            }
+        }
     }],
     //
     // ===================
