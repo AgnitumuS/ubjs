@@ -1,4 +1,5 @@
-require('chai').should()
+require('chai').should();
+var fs = require('fs');
 
 var ExtLocator = require("./ExtJSlocatorHelper.js");
 var newCode = 'Код777';
@@ -1183,5 +1184,36 @@ describe("Delete item from grid", function () {
         browser.pause(1000);
     });
 });
+
+describe("Export to HTML", function () {
+    it("Download HTML file", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[tooltip=All actions]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Export]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Export to Html]'));
+        browser.pause(3000);
+    });
+    it("Comparison of the downloaded HTML file with the sample", function () {
+        var sampleHTML = fs.readFileSync('C:\\Workaround_folder_for_SelSer\\sampleHTML\\sampleHTML.html', 'utf8');
+        var files = fs.readdirSync('C:\\Workaround_folder_for_SelSer\\testdownloads');
+        var fileForThisTest;
+        for(index = 0; index < files.length; index++) {
+            var currentFile = files[index];
+            var offsetOfPrefix = (currentFile.indexOf("ub test main data"));
+            var offsetOfExtension = (currentFile.indexOf(".html"));
+            if((offsetOfPrefix === 0) && (offsetOfExtension > 0)) {
+                fileForThisTest = currentFile;
+                break;
+            }
+        }
+        var downloadedHTML = fs.readFileSync("C:\\Workaround_folder_for_SelSer\\testdownloads\\"+fileForThisTest, "utf8");
+        console.log(downloadedHTML);
+        var comparison = sampleHTML===downloadedHTML;
+        comparison.should.equal(true);
+    });
+});
+
 
 
