@@ -1186,6 +1186,15 @@ describe("Delete item from grid", function () {
 });
 
 describe("Export to HTML", function () {
+    it("Temporary preconditions. Clear dateTimeValue field", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="#Код16"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+        browser.clearElement('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '-inputEl"]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+
+    });
     it("Download HTML file", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(1000);
@@ -1214,6 +1223,7 @@ describe("Export to HTML", function () {
         comparison.should.equal(true);
     });
 });
+
 
 
 
