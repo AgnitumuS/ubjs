@@ -1053,6 +1053,32 @@ describe("Set dateTimeValue by date picker, UA language", function () {
     });
 });
 
+describe("Biglnt (16 digits)", function () {
+    it("Select item from list for add 'Biglnt(16 digits)'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+
+    it("Add 'Biglnt (16 digits)'", function () {
+        browser.setValue((ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl'),bigInt16);
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check added value (16 digits) in 'bigInt'", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var textEnumValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[12]');
+        textEnumValue.should.equal(bigInt16);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var valueOfBigInt16 = browser.getValue(ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl');
+        valueOfBigInt16.should.equal(bigInt16);
+        browser.pause(1000);
+    });
+});
 
 describe("Add item to grid", function () {
     it("Open UB test main data creating tab", function () {
