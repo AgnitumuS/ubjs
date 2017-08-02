@@ -1076,7 +1076,8 @@ describe("Biglnt (16 digits)", function () {
         browser.pause(1000);
         var valueOfBigInt16 = browser.getValue(ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl');
         valueOfBigInt16.should.equal(bigInt16);
-        browser.pause(1000);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
     });
 });
 
