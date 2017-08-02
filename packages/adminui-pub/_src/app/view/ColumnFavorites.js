@@ -16,6 +16,7 @@ Ext.define('UB.view.ColumnFavorites', {
     tdCls: 'ub-favorites-td',
 
     disableExport: true,
+    allowedCategoryCount: 2,
     /**
      * @cfg {String} filterCaption Caption for ub filters
      */
@@ -85,6 +86,8 @@ Ext.define('UB.view.ColumnFavorites', {
     initComponent: function(){
         var me = this;
         me.timers = {};
+        var settings = UBS.Settings.findByKey('adminUI.favoriteCategory.count');
+        me.allowedCategoryCount = settings && parseInt(settings.settingValue) || me.allowedCategoryCount;
         me.callParent(arguments);
     },
 
@@ -111,12 +114,10 @@ Ext.define('UB.view.ColumnFavorites', {
             throw new Error('You must add column "' + idColumn + '" to fieldList' );
         }
 
-        switch (value){
-            case '1': newValue = '0'; break;
-            //case '2': newValue = '3'; break;
-            //case '3': newValue = '0'; break;
-            default: newValue = '1';
-        }
+        var val0 = parseInt(value && value[0], 10) || 0;
+        var val1 = value && value[1] || '0';
+        var newVal0 = (val0+1) % me.allowedCategoryCount;
+        newValue =  newVal0 + val1;
 
         if (me.timers[itemID]){
             clearTimeout(me.timers[itemID]);
@@ -140,7 +141,7 @@ Ext.define('UB.view.ColumnFavorites', {
     },
 
     getCls: function(value){
-        switch (value){
+        switch (value && value[0]){
             case '1': return 'ub-favorites-img-yellow';
             case '2': return 'ub-favorites-img-green';
             case '3': return 'ub-favorites-img-red';
@@ -174,7 +175,7 @@ Ext.define('UB.view.ColumnFavorites', {
             execParams.ubUser = $App.connection.userData('userID'); //  $App.userID;  $App.connection.userData()
 
             request  = {entity: associatedEntity,
-                method: (execParams.code === '0' ? 'delete': (value && execParams.ID ? 'update': 'insert')),
+                method: (execParams.code === '00' ? 'delete': (value && execParams.ID ? 'update': 'insert')),
                 execParams: execParams
             };
             return $App.connection.run(request).catch(function(){
