@@ -23,6 +23,10 @@ var nullDictIdElementFromDictionary = 'caption 40';
 var enumValue = 'Long enumeration caption for test must be last in order';
 var testManyData = 'caption 70';
 var test2dManyData = 'caption 70';
+var bigInt16 = '1234567899999999';
+var bigIntRounding = '12345678999999999';
+var valueOfBigIntRoundingfromField;
+
 
 //Data for "Add item to grid" test
 var codeForNew = 'Код99';
@@ -526,7 +530,7 @@ describe("Select 'nullDict_ID ' from list", function () {
 });
 
 describe("'nullDict_ID' empty area", function () {
-    it("Select item from list for empty 'nullDict_ID' ", function () {
+    it("Select item from list for empty 'nullDict_ID'", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
         browser.pause(3000);
@@ -1049,6 +1053,7 @@ describe("Set dateTimeValue by date picker, UA language", function () {
     });
 });
 
+
 describe("Add item to grid", function () {
     it("Open UB test main data creating tab", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Add (Ctrl+Ins)]'));
@@ -1205,7 +1210,7 @@ describe("Export to HTML", function () {
         browser.pause(3000);
     });
     it("Comparison of the downloaded HTML file with the sample", function () {
-        var sampleHTML = fs.readFileSync('C:\\Workaround_folder_for_SelSer\\sampleHTML\\sampleHTML.html', 'utf8');
+        var sampleHTML = fs.readFileSync('C:\\Workaround_folder_for_SelSer\\samples\\sampleHTML.html', 'utf8');
         var files = fs.readdirSync('C:\\Workaround_folder_for_SelSer\\testdownloads');
         var fileForThisTest;
         for(index = 0; index < files.length; index++) {
@@ -1221,9 +1226,37 @@ describe("Export to HTML", function () {
         console.log(downloadedHTML);
         var comparison = sampleHTML===downloadedHTML;
         comparison.should.equal(true);
+        browser.pause(3000);
     });
 });
 
-
-
-
+describe("Export to CSV", function () {
+    it("Download CSV file", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[tooltip=All actions]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Export]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Export to CSV]'));
+        browser.pause(3000);
+    });
+    it("Comparison of the downloaded CSV file with the sample", function () {
+        var sampleCSV = fs.readFileSync('C:\\Workaround_folder_for_SelSer\\samples\\sampleCSV.csv', 'utf8');
+        var files = fs.readdirSync('C:\\Workaround_folder_for_SelSer\\testdownloads');
+        var fileForThisTest;
+        for(index = 0; index < files.length; index++) {
+            var currentFile = files[index];
+            var offsetOfPrefix = (currentFile.indexOf("ub test main data"));
+            var offsetOfExtension = (currentFile.indexOf(".csv"));
+            if((offsetOfPrefix === 0) && (offsetOfExtension > 0)) {
+                fileForThisTest = currentFile;
+                break;
+            }
+        }
+        var downloadedCSV = fs.readFileSync("C:\\Workaround_folder_for_SelSer\\testdownloads\\"+fileForThisTest, "utf8");
+        console.log(downloadedCSV);
+        var comparison = sampleCSV===downloadedCSV;
+        comparison.should.equal(true);
+        browser.pause(3000);
+    });
+});
