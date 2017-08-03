@@ -1,7 +1,16 @@
-/* global TubDocumentRequest */
-/* global TubLoadContentBody */
+/* global TubDocumentRequest, TubLoadContentBody */
+/* global Session, App */
 /* global _ */
-/* global Session */
+
+/**
+ * @type {{notifyDocumentSaved: notifyDocumentSaved, getDocumentOffice: getDocumentOffice, getOnlyOfficeConfiguration: getOnlyOfficeConfiguration}}
+ */
+module.exports = {
+  notifyDocumentSaved,
+  getDocumentOffice,
+  getOnlyOfficeConfiguration,
+  setOnlyOfficeDocumentToTempStore
+}
 
 const qs = require('querystring')
 const uiSettings = JSON.parse(App.getUISettings() || '{}')
@@ -18,6 +27,40 @@ function onlyOfficeOnUserLogin () {
       onlyOfficeServer: configuration.serverIP
     })
   }
+}
+
+function setOnlyOfficeDocumentToTempStore (req, resp) {
+  /** @type {t_setOnlyOfficeDocument_params} */
+  const params = qs.parse(req.parameters)
+  const requestString = req.read()
+
+  const http = require('http')
+  const requestParams = {
+    URL: requestString,
+    method: 'GET',
+    sendTimeout: 30000,
+    receiveTimeout: 60000,
+    keepAlive: true,
+    compressionEnable: true
+  }
+  /** @type{ClientRequest} */
+  const request = http.request(requestParams)
+  request.setHeader('accept', 'application/octet-stream')
+  /** @type {THTTPRequest} */
+  const response = request.end()
+  const docContent = response.read('bin')
+
+  const resultDocDS = new TubDocumentRequest()
+  resultDocDS.entity = params.entity
+  resultDocDS.attribute = params.attribute
+  resultDocDS.id = parseInt(params.ID)
+  resultDocDS.fileName = params.filename
+  resultDocDS.setContent(docContent)
+  const docInfo = resultDocDS.writeToTemp()
+
+  resp.statusCode = 200
+  const result = {result: docInfo}
+  resp.writeEnd(result)
 }
 
 /**
@@ -47,46 +90,7 @@ function getOnlyOfficeConfiguration () {
  * @param {THTTPResponse} resp
  */
 function notifyDocumentSaved (req, resp) {
-  // const requestString = req.read()
-  //
-  // /** @type {t_notifyDocumentSaved_req_body} */
-  // const requestObj = JSON.parse(requestString)
-  //
-  // if (requestObj.status === 2 && !requestObj.notmodified) {
-  //   /** @type {t_getDocumentOffice_req_params} */
-  //     // const fileInfo = qs.parse('{"entity":"vp_dfInDocumentAttachment","attribute":"document","ID":5000034595094,"store":"vp_attachments","origName":"healthcheck.docx","filename":"vp_dfInDocumentAttachment5000034595094document"}');
-  //   const fileInfo = JSON.parse('{"entity":"vp_dfInDocumentAttachment","attribute":"document","ID":5000034595094,"store":"vp_attachments","origName":"healthcheck.docx","filename":"vp_dfInDocumentAttachment5000034595094document"}')
-  //
-  //   const http = require('http')
-  //   const request = http.request({
-  //     URL: requestObj.url,
-  //     method: 'GET',
-  //     sendTimeout: 30000,
-  //     receiveTimeout: 60000,
-  //     keepAlive: true,
-  //     compressionEnable: true
-  //   })
-  //
-  //   /** @type {THTTPRequest} */
-  //   const response = request.end()
-  //   const docContent = response.read()
-  //
-  //   const resultDocDS = new TubDocumentRequest()
-  //   resultDocDS.entity = fileInfo.entity
-  //   resultDocDS.attribute = fileInfo.attribute
-  //   resultDocDS.id = parseInt(fileInfo.ID)
-  //   // resultDocDS.fileName  = docID.toString() + '.pdf';
-  //   resultDocDS.setContent(docContent)
-  //   const docInfo = resultDocDS.writeToTemp()
-  //
-  //   const documentStore = new TubDataStore(fileInfo.entity)
-  //   const params = {__skipSelectAfterUpdate: true, execParams: {ID: fileInfo.ID}}
-  //   params[fileInfo.attribute] = docInfo
-  //
-  //   documentStore.run('update', params)
-  // }
-
-  // used to notify document server as everything ok
+  // used to notify document server that everything is ok
   // indeed ok we don't do anything here
   const noErrorsResponse = {error: 0}
   resp.statusCode = 200
@@ -94,13 +98,21 @@ function notifyDocumentSaved (req, resp) {
 }
 
 /**
- *
+ * Returns requested document for OnlyOffice server
+ * Used to bypass security and must be changed
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
 function getDocumentOffice (req, resp) {
   /** @type {t_getDocumentOffice_req_params} */
   const params = qs.parse(req.parameters)
+  const callerIP = Session.callerIP
+  const config = getOnlyOfficeConfiguration()
+
+  if (!config.isConfigured || !config.serverIP.startsWith(callerIP)) {
+    resp.statusCode = 404
+    return
+  }
 
   const resultDocDS = new TubDocumentRequest()
   resultDocDS.id = parseInt(params.ID)
@@ -130,17 +142,15 @@ function getDocumentOffice (req, resp) {
  * @property {string} key - document identifier
  * @property {number} status - editing result
  * @property {string} url - link to resulting document
- * @property {string=} userdata - custom information (information about document)
+ * @property {string} userdata - custom information (information about document)
  * @property {string[]} users - list of users responsible for changes
- * @property {boolean=} notmodified - document were actually changed
+ * @property {boolean} notmodified - document were actually changed
  */
 
 /**
- *
- * @type {{notifyDocumentSaved: notifyDocumentSaved, getDocumentOffice: getDocumentOffice, getOnlyOfficeConfiguration: getOnlyOfficeConfiguration}}
+ * @typedef {object} t_setOnlyOfficeDocument_params
+ * @property {string} entity - name of "Entity"
+ * @property {string} attribute - name of the "Attribute" in "Entity"
+ * @property {string} ID - of the "Entity"
+ * @property {string} filename - name of file in storage
  */
-module.exports = {
-  notifyDocumentSaved,
-  getDocumentOffice,
-  getOnlyOfficeConfiguration
-}

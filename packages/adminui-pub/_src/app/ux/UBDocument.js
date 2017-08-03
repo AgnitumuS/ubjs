@@ -1,4 +1,7 @@
-﻿require('../core/UBService')
+﻿/* global Blob File */
+/* global Ext Q */
+
+require('../core/UBService')
 require('./UBObject')
 require('./PDFComponent')
 require('./UBImg')
@@ -69,11 +72,11 @@ Ext.define('UB.ux.UBDocument', {
     statics: {
         editors: {
             tinyMCE: 'UB.ux.UBTinyMCETextArea',
-            onlyOffice: 'UB.ux.UBOnlyOffice',
             codeMirror: 'UB.ux.UBCodeMirror',
             ubDiagram: 'UB.ux.UBMetaDiagram',
             ubOrgChart: 'UB.ux.UBOrgChart',
-            ubReport: 'UB.ux.UBReportEditor'
+            ubReport: 'UB.ux.UBReportEditor',
+            onlyOffice: 'UB.ux.UBOnlyOffice'
         },
 
         valueProperties: {
@@ -100,8 +103,6 @@ Ext.define('UB.ux.UBDocument', {
             'text/html': 'UB.ux.UBTinyMCETextArea',
             'application/txt': 'UB.ux.UBTinyMCETextArea',
             'application/ubreport' : 'UB.ux.UBReportEditor',
-            'application/word' : 'UB.ux.UBOnlyOffice',
-            'application/excel': 'UB.ux.UBOnlyOffice',
 
             'text/plain': 'UB.ux.UBCodeMirror',
             'application/json':'UB.ux.UBCodeMirror',
@@ -117,7 +118,9 @@ Ext.define('UB.ux.UBDocument', {
             'application/ubMetaDiagram': 'UB.ux.UBMetaDiagram',
             'application/ubmetadiagram': 'UB.ux.UBMetaDiagram',
             'application/uborgchart': 'UB.ux.UBOrgChart',
-            'application/UBOrgChart': 'UB.ux.UBOrgChart'
+            'application/UBOrgChart': 'UB.ux.UBOrgChart',
+            'application/word' : 'UB.ux.UBOnlyOffice',
+            'application/excel': 'UB.ux.UBOnlyOffice'
         }
     },
     layout: 'fit',
@@ -219,41 +222,46 @@ Ext.define('UB.ux.UBDocument', {
         }
     },
 
-    checkContentChange: function(){
-        if (!this.suspendCheckChange && !this.readOnly){
-            var me = this,
-                newVal = me.ubCmp.getValue(),
-                oldVal = me.lastCmpValue,
-                cValue = me.getValue(),
-                nValue;
-            /*
-            if (!me.isInitCheckContentChange){
-                me.lastCmpValue = newVal;
-                me.isInitCheckContentChange = true;
-                return;
-            }*/
-            if ( ((me.ubCmp.isDirty ? me.ubCmp.isDirty() : !me.isEqual(newVal, oldVal)) ) && !me.isDestroyed) {
-                me.lastCmpValue = newVal;
-                if (cValue){
-                    nValue = JSON.parse(cValue);
-                } else {
-                    nValue = {};
-                }
-                nValue.md5 = 'changedAt' + (new Date()).getTime();
-                me.value = nValue = JSON.stringify(nValue);
+  checkContentChange: function () {
+    const me = this
+    if (!!me.suspendCheckChange || !!me.readOnly) {
+      return
+    }
 
-                me.fireEvent('change', me, nValue, cValue);
-                me.onChange(newVal, oldVal);
-            } else {
-                me.lastCmpValue = newVal;
-                me.value = nValue = me.originalValue;
-                me.fireEvent('change', me, nValue, cValue);
-                me.onChange(newVal, oldVal);
-            }
+    switch (me.ubCmp.xtype) {
+      case 'UBOnlyOffice':
+        // we can't get value from onlyOffice document server in easy way
+        // cause it's returns in async and don't have CORS headers
+        // so believe component in that question
+        if (me.ubCmp.checkDirty()) {
+          me.fireEvent('change', me, '', '')
+          me.onChange('', '')
         }
-    },
+        break
+      default:
+        const newVal = me.ubCmp.getValue()
+        const oldVal = me.lastCmpValue
+        const cValue = me.getValue()
+        const isContentChanged = !me.isDestroyed && (me.ubCmp.isDirty ? me.ubCmp.isDirty() : !me.isEqual(newVal, oldVal))
 
-    checkDirty: function() {
+        if (isContentChanged) {
+          me.lastCmpValue = newVal
+          let nValue = cValue ? JSON.parse(cValue) : {}
+          nValue.md5 = 'changedAt' + (new Date()).getTime()
+          me.value = nValue = JSON.stringify(nValue)
+          me.fireEvent('change', me, nValue, cValue)
+          me.onChange(newVal, oldVal)
+        } else {
+          let nValue
+          me.lastCmpValue = newVal
+          me.value = nValue = me.originalValue
+          me.fireEvent('change', me, nValue, cValue)
+          me.onChange(newVal, oldVal)
+        }
+    }
+  },
+
+    checkDirty: function () {
         var me = this,
             isDirty;
 
@@ -433,45 +441,41 @@ Ext.define('UB.ux.UBDocument', {
 
     },
 
-
-
-
-    /**
-     * Set value of document content directly to component. This method does not call setDocument method on server/
-     * @param {*} value
-     * @param {Boolean} [resetOriginalValue=true]
-     * @returns {Promise}
-     */
-    setContent: function(value, resetOriginalValue){
-        var me = this;
-        if (!me.documentMIME){
-            throw new Error('This method support only  if "documentMIME" property has value true.');
+  /**
+   * Set value of document content directly to component. This method does not call setDocument method on server/
+   * @param {*} value
+   * @param {Boolean} [resetOriginalValue=true]
+   * @returns {Promise}
+   */
+  setContent: function (value, resetOriginalValue) {
+    const me = this
+    if (!me.documentMIME) {
+      throw new Error('This method support only  if "documentMIME" property has value true.')
+    }
+    if (resetOriginalValue !== false) {
+      resetOriginalValue = true
+    }
+    if (!me.ubCmp) {
+      me.createComponent(me.documentMIME)
+      resetOriginalValue = true
+    }
+    if (value && _.isObject(value) && ((value instanceof Blob) || (value instanceof File))) {
+      return me.ubCmp.setSrc({
+        blobData: value,
+        resetOriginalValue: resetOriginalValue
+      }).then(function (res) {
+        if (value instanceof File) {
+          me.setOrigName(value.name)
         }
-        if (resetOriginalValue !== false){
-            resetOriginalValue = true;
-        }
-        if (!me.ubCmp) {
-            me.createComponent(me.documentMIME);
-            resetOriginalValue = true;
-        }
-        if (value && _.isObject(value) && ((value instanceof Blob) || (value instanceof File)) ){
-            return me.ubCmp.setSrc({
-                blobData: value,
-                resetOriginalValue: resetOriginalValue
-            }).then(function(res){
-                if (value instanceof File){
-                    me.setOrigName(value.name);
-                }
-                return res;
-            });
-        } else {
-            return me.ubCmp.setSrc({
-                rawValue: value,
-                resetOriginalValue: resetOriginalValue
-            }) || Q.resolve(true);
-        }
-
-    },
+        return res
+      })
+    } else {
+      return me.ubCmp.setSrc({
+        rawValue: value,
+        resetOriginalValue: resetOriginalValue
+      }) || Q.resolve(true)
+    }
+  },
 
 
     /**
@@ -482,159 +486,182 @@ Ext.define('UB.ux.UBDocument', {
      * @param {Blob} [blobValue] (optional) for update blob source
      * @returns {Promise} The promise resolve inner control object
      */
-    setValue: function(valueStr, instanceID, suspendEvents, blobValue) {
-        var
-            xtype, ct,
-            val = {},
-            url,
-            params,
-            defer = Q.defer(),
-            me = this,
-            hasError = false,
-            isString = Ext.isString(valueStr),
-            isObject = Ext.isObject(valueStr);
+    setValue: function (valueStr, instanceID, suspendEvents, blobValue) {
+      const me = this
+      const defer = Q.defer()
+      let xtype, ct, url, params
+      let val = {}
+      let hasError = false
+      let isString = Ext.isString(valueStr)
+      let isObject = Ext.isObject(valueStr)
 
-        me.lastNotEmptyValue = valueStr || me.lastNotEmptyValue;
-        me.lastOriginalValue = valueStr;
-        me.instanceID = instanceID;
+      me.lastNotEmptyValue = valueStr || me.lastNotEmptyValue
+      me.lastOriginalValue = valueStr
+      me.instanceID = instanceID
 
+      val = isString ? Ext.JSON.decode(valueStr) : valueStr
 
-        val = isString ? Ext.JSON.decode(valueStr) : valueStr;
+      if ((!isString && !isObject) ||
+        (isString && valueStr.length === 0) ||
+        (isObject && (!valueStr.ct || !valueStr.origName || valueStr.deleting))) {
 
-        if((!isString && !isObject) ||
-            (isString && valueStr.length===0) ||
-            (isObject && (!valueStr.ct || !valueStr.origName || valueStr.deleting))){
+        hasError = true
+        if (me.documentMIME) {
+          xtype = me.documentMIME
+        } else {
+          xtype = 'UB.ux.UBLabel'
+          url = UB.i18n('emptyContent')
+        }
+      } else {
+        xtype = me.expanded ? val.ct : 'UB.ux.UBLink'
+        params = {
+          entity: me.entityName,
+          attribute: me.attributeName,
+          ID: me.instanceID
+        }
 
-            hasError = true;
-            if (me.documentMIME){
-                xtype = me.documentMIME;
+        if (val.store) {
+          params.store = val.store
+        }
+
+        if (val.filename) {
+          params.filename = val.filename
+        }
+        if (val.origName) {
+          params.origName = val.origName
+        }
+        if (val.isDirty) {
+          params.isDirty = val.isDirty
+        }
+        if (me.useRevision && !Ext.isEmpty(val.revision)) {
+          params.revision = val.revision
+        }
+        if (!params.filename) {
+          params.filename = me.entityName + me.instanceID + me.attributeName
+        }
+
+        url = Ext.String.urlAppend(
+          $App.connection.baseURL + 'getDocument',
+          Ext.Object.toQueryString(params)
+        )
+      }
+      me.originalMIME = me.originalMIME || xtype
+      xtype = me.documentMIME || xtype
+
+      me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined
+
+      me.checkChange()
+
+      function onContentLoad (blob, baseUrl, baseCt) {
+        me.sourceBlob = blob
+        me.loadUrl = baseUrl
+
+        if (me.ubCmp.isHidden()) {
+          me.ubCmp.show()
+        }
+        if (me.errorLabel) {
+          me.errorLabel.hide()
+        }
+
+        //me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined;
+        /* исходный конфииг
+        var src = {
+            url: url,
+            contentType: val.ct,
+            onContentNotFound: me.onContentNotFound.bind(me),
+            html: val.deleting ? url : val.origName || url,
+            blobValue: blobValue,
+            params: params
+        };
+        */
+        let src = {
+          url: baseUrl,
+          contentType: baseCt,
+          html: !val || val.deleting ? url : val.origName || url,
+          blobData: blob
+        }
+        // Возможно стоит сравнить md5. Пока не везде честный md5.
+        if (me.forceReload || !me.editorInited || !me.isEditor()) {
+          me.ubCmp.setSrc(src).then(function (r) {
+            defer.resolve(r)
+          }, function (r) {
+            defer.reject(r)
+          })
+          me.editorInited = me.isEditor()
+          /*
+          me.ubCmp.on('afterrender', function(){
+              me.updateLayout();
+          }, me, {single: true});
+          */
+        } else {
+          defer.resolve(null)
+        }
+      }
+
+      if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
+        me.createComponent(xtype)
+        onContentLoad(null, url, xtype)
+      } else if (Ext.Object.getSize(val) === 0) {
+        me.createComponent(xtype)
+        // xmax событие для инициализации нового документа где такое необходимо
+        if (me.ubCmp.initNewSrc) {
+          me.value = me.ubCmp.initNewSrc()
+        }
+        defer.resolve(null)
+      } else if (blobValue && !val.deleting) {
+        me.createComponent(blobValue.type)
+        onContentLoad(blobValue, url, xtype)
+      } else {
+        if (me.getEl()) {
+          me.getEl().mask(UB.i18n('loadingData'))
+        }
+
+        if (xtype === 'application/word' || xtype === 'application/excel') {
+          // <-- onlyOffice
+          // to prevent double loading of document from store
+          // onlyOffice has it's own block
+          me.createComponent(xtype)
+          me.ubCmp.setSrc({
+            url: url,
+            contentType: xtype,
+            html: !val || val.deleting ? url : val.origName || url,
+            blobData: null
+          }).then(function () {
+            defer.resolve(null)
+          }, function (reason) {
+            if (reason && !(reason instanceof UB.UBAbortError)) {
+              defer.reject(reason)
             } else {
-                xtype = 'UB.ux.UBLabel';
-                url = UB.i18n('emptyContent');
+              defer.resolve(null)
             }
+          }).finally(function () {
+            if (me.getEl()) {
+              me.getEl().unmask()
+            }
+          })
+          // --> /onlyOffice
         } else {
-            xtype = me.expanded ? val.ct : 'UB.ux.UBLink';
-            params = {
-                entity: me.entityName,
-                attribute: me.attributeName,
-                ID: me.instanceID
-            };
-
-            if(val.store){
-                params.store = val.store;
+          me.loadContent(url, xtype).then(function (blob) {
+            ct = blob.type
+            me.createComponent(ct)
+            onContentLoad(blob, url, ct)
+            if (me.getEl()) {
+              me.getEl().unmask()
             }
-
-            if(val.filename){
-                params.filename = val.filename;
+          }, function (reason) {
+            if (me.getEl()) {
+              me.getEl().unmask()
             }
-            if(val.origName){
-                params.origName = val.origName;
+            if (reason && !(reason instanceof UB.UBAbortError)) {
+              defer.reject(reason)
+            } else {
+              defer.resolve(null)
             }
-            if(val.isDirty){
-                params.isDirty = val.isDirty;
-            }
-            if(me.useRevision && !Ext.isEmpty(val.revision) ){
-                params.revision = val.revision;
-            }
-            if (!params.filename){
-                params.filename = me.entityName + me.instanceID +  me.attributeName;
-            }
-
-            url =  Ext.String.urlAppend(
-                $App.connection.baseURL + 'getDocument',
-                Ext.Object.toQueryString(params)
-            );
+          })
         }
-        me.originalMIME = me.originalMIME || xtype;
-        xtype = me.documentMIME || xtype;
+      }
 
-        me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined;
-
-        me.checkChange();
-
-        function onContentLoad(blob, baseUrl, baseCt){
-            me.sourceBlob = blob;
-            me.loadUrl = baseUrl;
-
-            if (me.ubCmp.isHidden()){
-                me.ubCmp.show();
-            }
-            if (me.errorLabel){
-                me.errorLabel.hide();
-            }
-
-            //me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined;
-                /* исходный конфииг
-                var src = {
-                    url: url,
-                    contentType: val.ct,
-                    onContentNotFound: me.onContentNotFound.bind(me),
-                    html: val.deleting ? url : val.origName || url,
-                    blobValue: blobValue,
-                    params: params
-                };
-                */
-                var src = {
-                    url: baseUrl,
-                    contentType: baseCt,
-                    html: !val || val.deleting ? url : val.origName || url,
-                    blobData: blob
-                };
-                // Возможно стоит сравнить md5. Пока не везде честный md5.
-                if (me.forceReload || !me.editorInited || !me.isEditor()){
-                    me.ubCmp.setSrc(src).then(function(r){
-                        defer.resolve(r);
-                    },function(r){
-                        defer.reject(r);
-                    });
-                    me.editorInited = me.isEditor();
-                    /*
-                    me.ubCmp.on('afterrender', function(){
-                        me.updateLayout();
-                    }, me, {single: true});
-                    */
-                } else {
-                    defer.resolve(null);
-                }
-        }
-
-        if (xtype === 'UB.ux.UBLink' ||  (hasError && Ext.Object.getSize(val) !== 0) ){
-            me.createComponent(xtype);
-            onContentLoad(null, url, xtype);
-        } else if( Ext.Object.getSize(val) === 0 ){
-            me.createComponent(xtype);
-            // xmax событие для инициализации нового документа где такое необходимо
-            if (me.ubCmp.initNewSrc){
-                me.value =  me.ubCmp.initNewSrc();
-            }
-            defer.resolve(null);
-        } else if(blobValue && !val.deleting){
-            me.createComponent(blobValue.type);
-            onContentLoad(blobValue, url, xtype);
-        } else {
-            if (me.getEl()){
-                me.getEl().mask(UB.i18n('loadingData'));
-            }
-            me.loadContent(url, xtype).then(function(blob){
-                ct = blob.type;
-                me.createComponent(ct);
-                onContentLoad(blob, url, ct);
-                if (me.getEl()){
-                    me.getEl().unmask();
-                }
-            },function(reason){
-                if (me.getEl()){
-                    me.getEl().unmask();
-                }
-                if (reason && !(reason instanceof UB.UBAbortError)){
-                    defer.reject(reason);
-                } else {
-                    defer.resolve(null);
-                }
-            });
-        }
-
-        return defer.promise;
+      return defer.promise
     },
 
     /**
@@ -732,60 +759,56 @@ Ext.define('UB.ux.UBDocument', {
      * @param {Boolean} force
      * @returns {Promise}
      */
-    save: function(force) {
-        var
-            val, me = this, content, promise;
+    save: function (force) {
+      const me = this
+      let val, content, promise
 
-        //callback if (callback) { throw new Error('UBDocument.save must be called in promise way'); }
-        if(!force && (!me.isEditor() || !me.isDirty())) {
-//            Ext.callback(callback, scope, [true], 0 );
-            return Q.resolve(true);
+      if (!force && (!me.isEditor() || !me.isDirty())) {
+        return Q.resolve(true)
+      }
+
+      val = me.getValue() || me.lastNotEmptyValue
+      if (val) {
+        val = JSON.parse(val)
+      }
+
+      if (me.ubCmp.getValue) {
+        content = me.ubCmp.getValue('UBDocument')
+      } else if (me.sourceBlob) {
+        content = me.sourceBlob.data
+      }
+
+      if (!content && me.loadUrl) {
+        promise = me.loadContent(me.loadUrl, null, true)
+      } else {
+        promise = Q.resolve(content)
+      }
+
+      /**
+       * Fixed file name.
+       * @cfg {String} me.documentFileName
+       */
+      return promise.then(function (contentData) {
+        const endpointUrl = me.ubCmp.xtype === 'UBOnlyOffice' ? 'setOnlyOfficeDocumentToTempStore' : 'setDocument'
+        return $App.connection.post(endpointUrl, contentData, {
+          params: {
+            entity: me.entityName,
+            attribute: me.attributeName,
+            ID: me.instanceID,
+            filename: me.documentFileName || (val && val.origName ? val.origName :
+              (me.documentMIME && (me.documentMIME.indexOf('/') < me.documentMIME.length - 1) ?
+                'newfile.' + me.documentMIME.substr(me.documentMIME.indexOf('/')+1) : '' ))
+          },
+          headers: {'Content-Type': 'application/octet-stream'}
+        })
+      }).then(function (response) {
+        const resultValue = response.data
+        if (me.ubCmp.resetOriginalValue) {
+          me.ubCmp.resetOriginalValue()
         }
-
-        val = me.getValue() || me.lastNotEmptyValue;
-        if (val) {
-            val = JSON.parse(val);
-        }
-
-        if (me.ubCmp.getValue){
-            content = me.ubCmp.getValue('UBDocument');
-        } else if (me.sourceBlob){
-            content = me.sourceBlob.data;
-        }
-
-        if (!content && me.loadUrl){
-            promise =  me.loadContent(me.loadUrl, null, true);
-        } else {
-            promise = Q.resolve(content);
-        }
-
-
-        /**
-         * Fixed file name.
-         * @cfg {String} me.documentFileName
-         */
-        return promise.then(function(contentData){
-          return $App.connection.post('setDocument', contentData, {
-            params: {
-                entity: me.entityName,
-                attribute: me.attributeName,
-                ID: me.instanceID,
-                filename: me.documentFileName ||  (val && val.origName ? val.origName :
-                    (me.documentMIME && (me.documentMIME.indexOf('/') < me.documentMIME.length - 1) ?
-                        'newfile.' + me.documentMIME.substr(me.documentMIME.indexOf('/')+1) : '' ))
-            },
-            headers: {"Content-Type": "application/octet-stream"}
-           });
-        }).then(function(response){
-            var
-                resultValue = response.data;
-            if (me.ubCmp.resetOriginalValue){
-               me.ubCmp.resetOriginalValue();
-            }
-            me.value = JSON.stringify(resultValue.result);
-            return true;
-//            Ext.callback(callback, scope, [resultValue.success] );
-        });
+        me.value = Ext.isObject(resultValue.result) ? JSON.stringify(resultValue.result) : resultValue.result
+        return true
+      })
     },
 
     onSave: function(result, callback, scope){
