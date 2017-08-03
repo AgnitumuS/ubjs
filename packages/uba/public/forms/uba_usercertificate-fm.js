@@ -20,14 +20,22 @@ var typeNames = {
   '2.5.4.12': 'T',
   '2.5.4.3': 'CN',
   '2.5.4.4': 'SN',
+  '2.5.4.41': 'NAME',
+  '2.5.4.31': 'MEMBER',
   '2.5.4.42': 'G',
   '2.5.4.43': 'I',
-  '2.5.4.5': 'Serial',
+  '2.5.4.5': 'SERIALNUMBER',
+  '2.5.4.20': 'TELEPHONENUMBER',
   '2.5.4.6': 'C',
   '2.5.4.7': 'L',
   '2.5.4.8': 'S',
-  '2.5.4.9': 'Street'
+  '2.5.4.9': 'STREET',
+  '1.2.840.113549.1.9.1': 'E-MAIL',
+  '2.5.4.16': 'POSTALADDRESS',
+  '2.5.4.17': 'POSTALCODE',
+  '2.5.4.26': 'REGISTEREDADDRESS'
 }
+
 
 exports.formCode = {
   initUBComponent: function () {
@@ -71,12 +79,12 @@ exports.formCode = {
               })
               var certificate = new Certificate({schema: asn1.result})
               var subject = certificate.subject.typesAndValues.map(function (e) {
-                return typeNames[e.type] + '=' + e.value.valueBlock.value
-              }).join(';')
+                return (typeNames[e.type] || e.type) + '=' + e.value.valueBlock.value
+              }).join(', ')
               var issuer = certificate.issuer.typesAndValues.map(function (e) {
-                return typeNames[e.type] + '=' + e.value.valueBlock.value
+                return (typeNames[e.type] || e.type) + '=' + e.value.valueBlock.value
               })
-              issuer = issuer.join(';')
+              issuer = issuer.join(', ')
 
               var serial = '';
               var bytesArr = new Uint8Array(certificate.serialNumber.valueBlock.valueHex)

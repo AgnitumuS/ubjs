@@ -60,6 +60,12 @@
 			"description": "Revoked",
 			"allowNull": false,
 			"defaultValue": "0"
+		},
+		"revocationDate": {
+			"dataType": "DateTime",
+			"caption": "Revocation date",
+			"description": "Revocation date",
+			"allowNull": true
 		}
 	},
 	"dbKeys": { 
