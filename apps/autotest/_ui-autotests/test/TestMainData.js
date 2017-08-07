@@ -1081,6 +1081,37 @@ describe("Biglnt (16 digits)", function () {
     });
 });
 
+describe("Biglnt (Rounding)", function () {
+    it("Select item from list for add 'Biglnt(Rounding)'", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(1000);
+    });
+
+    it("Add 'Biglnt (Rounding)'", function () {
+        browser.setValue((ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl'),bigIntRounding);
+        browser.click(ExtLocator.getCss('ubcombobox[attributeName=mappedToSelf]') + '-inputEl');
+        browser.pause(3000);
+        valueOfBigIntRoundingfromField = browser.getValue(ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
+    });
+    it("Check added value (Rounding) in 'bigInt'", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var textEnumValue = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]/following-sibling::td[12]');
+        textEnumValue.should.equal(valueOfBigIntRoundingfromField);
+        var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Код9"]';
+        browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
+        var valueInBigIntRoundingfromField = browser.getValue(ExtLocator.getCss('numberfield[attributeName=bigintValue]') + '-inputEl');
+        valueInBigIntRoundingfromField.should.equal(valueOfBigIntRoundingfromField);
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(3000);
+    });
+});
+
 describe("Add item to grid", function () {
     it("Open UB test main data creating tab", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Add (Ctrl+Ins)]'));
