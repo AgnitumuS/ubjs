@@ -158,8 +158,11 @@ Ext.define('UB.view.ColumnFavorites', {
         //event.target
 
         if (value){
-            promise = UB.Repository(associatedEntity).attrs(['ID', associationAttr, 'ubUser', 'code']) //'mi_modifyDate'
-                .where(associationAttr, '=', itemID).select();
+            promise = UB.Repository(associatedEntity)
+                .attrs(['ID', associationAttr, 'ubUser', 'code'])
+                .where(associationAttr, '=', itemID)
+                .where('ubUser', '=', $App.connection.userData('userID'))
+                .select();
         } else {
             promise = $App.connection.addNew({
                 entity: associatedEntity,
