@@ -87,7 +87,7 @@ Ext.define('UB.view.ColumnFavorites', {
         var me = this;
         me.timers = {};
         var settings = UBS.Settings.findByKey('adminUI.favoriteCategory.count');
-        me.allowedCategoryCount = settings && parseInt(settings.settingValue) || me.allowedCategoryCount;
+        me.allowedCategoryCount = UB.appConfig && UB.appConfig.favoriteCategoryCount || me.allowedCategoryCount,
         me.callParent(arguments);
     },
 
