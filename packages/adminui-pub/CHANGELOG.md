@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+##  [4.2.20]
+### Fixed
+ - UB.ux.form.field.UBDateTime. Prevent exception when picker opened and button TAB pressed. [UB-1862]
+
 ##  [4.2.18]
 ### Added
  - Editors for OrgChart available in UB EE is moved into standard edition (this package)
