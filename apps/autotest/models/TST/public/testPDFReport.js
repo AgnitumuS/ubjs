@@ -75,7 +75,7 @@ Ext.define('PDF.cstestReport', {
       this.requireChecked = true
       PDF.init().done(function () {
         PDF.csPrintToPdf.requireFonts(
-                    {fonts: [
+          {fonts: [
                         { fontName: 'CalibriImp', fontStyle: 'Normal'},
                         { fontName: 'CalibriImp', fontStyle: 'Bold'},
                         { fontName: 'CalibriImp', fontStyle: 'Italic'},
@@ -84,10 +84,10 @@ Ext.define('PDF.cstestReport', {
                         { fontName: 'TimesNewRoman', fontStyle: 'Normal'},
                         { fontName: 'TimesNewRoman', fontStyle: 'Bold'},
                         { fontName: 'TimesNewRoman', fontStyle: 'Italic'}
-                    ],
-                        onLoad: this.pdfDoc2,
-                        scope: this
-                    })
+          ],
+            onLoad: this.pdfDoc2,
+            scope: this
+          })
       }.bind(this))
       return
     }
@@ -252,7 +252,7 @@ Ext.define('PDF.cstestReport', {
       this.requireChecked = true
       PDF.init().done(function () {
         PDF.csPrintToPdf.requireFonts(
-                  {fonts: [
+          {fonts: [
                       { fontName: 'CalibriImp', fontStyle: 'Normal'},
                       { fontName: 'CalibriImp', fontStyle: 'Bold'},
                       { fontName: 'CalibriImp', fontStyle: 'Italic'},
@@ -261,10 +261,10 @@ Ext.define('PDF.cstestReport', {
                       { fontName: 'TimesNewRoman', fontStyle: 'Normal'},
                       { fontName: 'TimesNewRoman', fontStyle: 'Bold'},
                       { fontName: 'TimesNewRoman', fontStyle: 'Italic'}
-                  ],
-                      onLoad: this.pdfDoc,
-                      scope: this
-                  })
+          ],
+            onLoad: this.pdfDoc,
+            scope: this
+          })
       }.bind(this))
       return
     }
@@ -314,7 +314,11 @@ Ext.define('PDF.cstestReport', {
 
     pdf.setFontColor('green')
     pdf.writeSimpleText({text: 'Test wordWrap ssssssssssssssssss 11111111111111111111111111111 5555555555555555555555 777777' +
-          testText4, wordWrap: false, splitOnPage: false, align: 'left', width: 150})
+          testText4,
+      wordWrap: false,
+      splitOnPage: false,
+      align: 'left',
+      width: 150})
 
     pdf.setFontColor('pink')
 
@@ -337,12 +341,17 @@ Ext.define('PDF.cstestReport', {
       // textw =  pdf.getTextWidth('test');
 
     pdf.writeSimpleText({text: 'Test wordWrap ssssssssssssssssss 11111111111111111111111111111 5555555555555555555555 777777' +
-          testText4, wordWrap: false, splitOnPage: false, align: 'left', width: 150})
+          testText4,
+      wordWrap: false,
+      splitOnPage: false,
+      align: 'left',
+      width: 150})
 
     pdf.writeSimpleText({text: 'This is <b>bold text</b>and this is <i>italic</i><br/>on new line. Colors: ' +
           '<font color="red">R</font><font color="orange">A</font><font color="yellow">I</font>' +
           '<font color="green">N</font><font color="#6495ed">B</font><font color="blue">O</font>' +
-          '<font color="#9370db">W</font>', isXml: true})
+          '<font color="#9370db">W</font>',
+      isXml: true})
 
     for (var x = 7; x < 42; x++) {
       pdf.writeSimpleText({text: tesrText5, align: 'left', font: {size: x } })

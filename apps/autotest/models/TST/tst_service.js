@@ -135,17 +135,17 @@ me.entity.addMethod('handledExceptionTest')
  */
 me.runAsAdminTest = function (ctx) {
   let uDataBefore = _.cloneDeep(Session.uData)
-  Session.runAsAdmin(function(){
-    //uParam.ID = userID;
-    //uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
+  Session.runAsAdmin(function () {
+    // uParam.ID = userID;
+    // uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
     let store = new TubDataStore('uba_user')
     store.run('update', {
-        fieldList: ['ID'],
-        "__skipOptimisticLock": true,
-        //execParams: uParam
-        execParams: {ID: 10, name: 'admin'}
-        //execParams: {ID: 1, name: 'Admin'}
-      }
+      fieldList: ['ID'],
+      '__skipOptimisticLock': true,
+        // execParams: uParam
+      execParams: {ID: 10, name: 'admin'}
+        // execParams: {ID: 1, name: 'Admin'}
+    }
     )
   })
   let uDataAfter = Session.uData

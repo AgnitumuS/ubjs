@@ -16,7 +16,7 @@ UB.connect({
   window.$UBConnection = conn
 })
 
-window.createLowLevelConnection = function() {
+window.createLowLevelConnection = function () {
   $UBConnection.authorize().then(function (session) {
     $ws = new WebSocket('ws://' + location.host + '/ws?SESSION_SIGNATURE=' + session.signature(), 'ubNotifier')
     $ws.onmessage = function (e) {
@@ -84,7 +84,7 @@ window.loadTest = function (strLen) {
           row.insertCell(0).innerHTML = '' + params.connCount
           row.insertCell(1).innerHTML = '' + time
           row = null
-          //!!! $ws.close()
+          //! !! $ws.close()
         }
         console.log('New message. ', params.from, 'said:', params.message)
       } else if (command === 'error') {
@@ -99,4 +99,3 @@ window.loadTest = function (strLen) {
     }
   })
 }
-

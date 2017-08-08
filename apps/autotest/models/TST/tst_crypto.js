@@ -12,10 +12,8 @@ me.doTest = function (ctx) {
   let thCode = ctx.mParams.execParams.code
   let mParams = ctx.mParams
   let outParamNum = 1
-  if (!DSTU_CONFIG || !DSTU_CONFIG.iit)
-    throw new Error('serverConfig.security.dstu.iit section in server config')
-  if (!DSTU_CONFIG.iit.libraryPath)
-    throw new Error('empty serverConfig.security.dstu.iit.libraryPath in server config')
+  if (!DSTU_CONFIG || !DSTU_CONFIG.iit) { throw new Error('serverConfig.security.dstu.iit section in server config') }
+  if (!DSTU_CONFIG.iit.libraryPath) { throw new Error('empty serverConfig.security.dstu.iit.libraryPath in server config') }
   let fixtures = ['file1.pdf', 'file2.pdf', 'file3.pdf'].map(function (fileName) {
     return fs.readFileSync(path.join(__dirname, '_autotest', 'fixtures', fileName), {encoding: 'bin'})
   })
