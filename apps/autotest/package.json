@@ -14,6 +14,7 @@
     "@ub-e/dses": "file:..\\..\\..\\ub-e\\packages\\dses",
     "@ub-e/odata": "file:..\\..\\..\\ub-e\\packages\\odata",
     "@ub-e/ube-pub": "file:..\\..\\..\\ub-e\\packages\\ube-pub",
+    "@unitybase/dml-generator": "latest",
     "@unitybase/adminui-pub": "latest",
     "@unitybase/adminui-reg": "latest",
     "@unitybase/base": "latest",
