@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/UnityBaseJS/benchmarks#readme",
   "dependencies": {
-    "@unitybase/base": "latest",
+    "@unitybase/base": "^4.2.14",
     "@unitybase/dml-generator": "^1.0.13",
     "@unitybase/ub": "^4.0.34",
     "@unitybase/ub-pub": "^4.4.4",
