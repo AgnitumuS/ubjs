@@ -155,3 +155,12 @@ me.runAsAdminTest = function (ctx) {
   }
 }
 me.entity.addMethod('runAsAdminTest')
+
+me.dmlGeneratorTest = function(ctx) {
+  var generator = require('@unitybase/dml-generator')
+  ctx.mParams.resultSQL = generator.mssql.biuldSelectSql('tst_maindata',{fieldList: ['parent1@tst_maindata.manyValue.mi_modifyUser.name'],whereList:{c1: {
+  expression:'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition : 'equal', values: {c1: 'admin'}
+  }}})
+  ctx.mParams.sql2 = generator.mssql.biuldSelectSql('tst_maindata', UB.Repository('tst_maindata').attrs('[nonNullDict_ID.caption]', '[nonNullDict_ID.caption_en^]', 'nonNullDict_ID.filterValue', 'nonNullDict_ID.floatValue').ubql())
+}
+me.entity.addMethod('dmlGeneratorTest')
