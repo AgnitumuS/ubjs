@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+##  [4.2.22]
+### Fixed
+ - Show unhandled Promise rejection messages in dialog box (replace when->es6-promise Promise polufill)
+
 ##  [4.2.20]
 ### Fixed
  - UB.ux.form.field.UBDateTime. Prevent exception when picker opened and button TAB pressed. [UB-1862]
