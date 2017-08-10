@@ -22,7 +22,7 @@ describe("Login to the system", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000)
+        browser.pause(3000)
 
     });
 });
@@ -37,7 +37,7 @@ describe("Add Desktop", function () {
     it("Open Folder creation window", function () {
         browser.waitForExist(ExtLocator.getCss('button[tooltip=Add (Ctrl+Ins)]') + '-btnEl');
         browser.click(ExtLocator.getCss('button[tooltip=Add (Ctrl+Ins)]') + '-btnEl');
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Set data for a new Desktop and 'save and close'", function () {
         browser.waitForExist(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl');
@@ -61,7 +61,7 @@ describe("Add Desktop", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000)
+        browser.pause(3000)
     });
     it("Check added Desktop on the top menu", function () {
         var createdDesktopOnTopMenu = browser.isExisting(ExtLocator.getCss('button[text=test_desktop_name][ui=default-toolbar-small]'));
@@ -74,7 +74,7 @@ describe("Add Desktop", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-desktop-button]'));
     });
 });
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // it("Preparing data for Move folder and shortcut to Desktop test", function () {
     //     //======Add folder======
     //     browser.click(getIdByExtjs('button[cls=ub-desktop-button]'));
@@ -103,7 +103,7 @@ describe("Add Desktop", function () {
     //
     //
     // });
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  describe("Open Desktop details", function () {
      it("Open top navbar menu Administrator / UI / Desktops", function () {
          browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
@@ -139,6 +139,7 @@ describe("Add Desktop", function () {
          check_uba_userrole.should.equal(true);
      });
  });
+
 describe("Delete Desktop", function () {
     it("Open top navbar menu Administrator / UI / Desktops", function () {
         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
@@ -180,8 +181,32 @@ describe("Delete Desktop", function () {
         var deletedDesktopOnTopMenu = browser.isExisting('//*[contains(@id, "ubtoolbarmenu")]//span[.="test_desktop_name"]'); //In the future, make a more reliable method of verification
         deletedDesktopOnTopMenu.should.equal(false);
     });
-
 });
 
-
+describe("Details (Not selected item)", function () {
+    it("Open top navbar menu Administrator / UI / Desktops", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
+        browser.pause(1000);
+    });
+    it("Click 'All actions' and select 'Details' - 'Shortcut(Desktop)'", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=All actions]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Details]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Shortcut (Desktop)]'));
+        browser.pause(3000);
+    });
+    it("Check Information message", function () {
+        var windowTitle = browser.getText(ExtLocator.getCss('messagebox[title=Information]') + '_header_hd-textEl');
+        windowTitle.should.equal('Information');
+        var meaasgeText = browser.getText(ExtLocator.getCss('messagebox[title=Information]') + '-displayfield-inputEl');
+        meaasgeText.should.equal('Select row in grid first');
+        browser.click(ExtLocator.getCss('button[text=OK]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss("tab[text=Desktop][active=true]") + '-closeEl');
+        browser.pause(1000);
+    });
+});
 
