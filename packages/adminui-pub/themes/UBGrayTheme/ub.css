@@ -1594,3 +1594,7 @@ input.x-form-field-text{
 .ub-pwd-keyboard-en , .ub-pwd-keyboard-caps {
 	position: relative;
 }
+
+.x-grid-row-bold .x-grid-cell{
+    font-weight: bold;
+}

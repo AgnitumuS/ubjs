@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ##  [4.2.18]
 ### Added
  - Editors for OrgChart available in UB EE is moved into standard edition (this package)
+ - Add `.x-grid-row-bold` css class for mark grid rows as **bold**
+ - Add property `UB.view.ColumnFavorites.allowedCategoryCount` for configure allowed values count in favorite column.
 
 ###Fixed
 - fix bag in cyclical opening of modal forms.(`org_staffunit` -> `org_employeeinstaff` -> `org_staffunit`)
