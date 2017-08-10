@@ -1,5 +1,6 @@
 /**
- * Favorites grid column. See {@link https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=90148338 this WiKi article} for usage samples.
+ * Favorites grid column. See {@link https://dev.intecracy.com/confluence/pages/viewpage.action?pageId=90148338 this WiKi article} for usage samples.
+ * Can store both "favorites" and "is viewed" marks - in this case first char contains favorite code, and second - 0/1 viewed mark
  *
  * @author xmax 23.02.15
  */
@@ -16,6 +17,9 @@ Ext.define('UB.view.ColumnFavorites', {
     tdCls: 'ub-favorites-td',
 
     disableExport: true,
+    /**
+     * @cfg {String} allowedCategoryCount favorites categories count (1-4)
+     */
     allowedCategoryCount: 2,
     /**
      * @cfg {String} filterCaption Caption for ub filters
@@ -83,12 +87,11 @@ Ext.define('UB.view.ColumnFavorites', {
         me.callParent([config]);
     },
 
-    initComponent: function(){
-        var me = this;
-        me.timers = {};
-        var settings = UBS.Settings.findByKey('adminUI.favoriteCategory.count');
-        me.allowedCategoryCount = UB.appConfig && UB.appConfig.favoriteCategoryCount || me.allowedCategoryCount,
-        me.callParent(arguments);
+    initComponent: function () {
+        this.timers = {}
+        let favCnt = $App.connection.appConfig.uiSettings.adminUI.favoriteCategoryCount
+        if (favCnt) this.allowedCategoryCount = favCnt
+        this.callParent(arguments)
     },
 
     onFavoritesClick: function(grid, rowIndex, colIndex, cfg, event ) {
@@ -114,10 +117,10 @@ Ext.define('UB.view.ColumnFavorites', {
             throw new Error('You must add column "' + idColumn + '" to fieldList' );
         }
 
-        var val0 = parseInt(value && value[0], 10) || 0;
-        var val1 = value && value[1] || '0';
-        var newVal0 = (val0+1) % me.allowedCategoryCount;
-        newValue =  newVal0 + val1;
+        var val0 = parseInt(value && value[0], 10) || 0
+        var val1 = value && value[1] || '0'
+        var newVal0 = (val0 + 1) % me.allowedCategoryCount
+        newValue =  newVal0 + val1
 
         if (me.timers[itemID]){
             clearTimeout(me.timers[itemID]);
@@ -177,9 +180,10 @@ Ext.define('UB.view.ColumnFavorites', {
             execParams.instanceID = itemID;
             execParams.ubUser = $App.connection.userData('userID'); //  $App.userID;  $App.connection.userData()
 
-            request  = {entity: associatedEntity,
-                method: (execParams.code === '00' ? 'delete': (value && execParams.ID ? 'update': 'insert')),
-                execParams: execParams
+            request  = {
+              entity: associatedEntity,
+              method: (execParams.code === '00' ? 'delete': (value && execParams.ID ? 'update': 'insert')),
+              execParams: execParams
             };
             return $App.connection.run(request).catch(function(){
                 //target.src = me.getImage(value);
