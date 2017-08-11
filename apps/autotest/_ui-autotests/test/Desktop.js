@@ -183,7 +183,7 @@ describe("Delete Desktop", function () {
     });
 });
 
-describe("Details (Not selected item)", function () {
+describe("All actions - Details (Not selected item)", function () {
     it("Open top navbar menu Administrator / UI / Desktops", function () {
         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
@@ -210,7 +210,7 @@ describe("Details (Not selected item)", function () {
     });
 });
 
-describe("Details", function () {
+describe("All actions - Details", function () {
     it("Open top navbar menu Administrator / UI / Desktops", function () {
         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
