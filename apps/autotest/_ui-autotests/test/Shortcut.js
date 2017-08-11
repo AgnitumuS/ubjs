@@ -271,3 +271,4 @@ describe("Checking of edited Shortcut", function () {
         console.log('Code is: ' + renamedCode);
     });
 });
+

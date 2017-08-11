@@ -210,3 +210,40 @@ describe("Details (Not selected item)", function () {
     });
 });
 
+describe("Details", function () {
+    it("Open top navbar menu Administrator / UI / Desktops", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
+        browser.pause(3000);
+    });
+    it("Select item ans click 'All actions' and select 'Details' - 'Shortcut(Desktop)", function () {
+        browser.click('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Test"]');
+        browser.click(ExtLocator.getCss('button[tooltip=All actions]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=Details][activeUI=default]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Shortcut (Desktop)][activeUI=default]'));
+        browser.pause(3000);
+    });
+    it("Check 'Details' - 'Shortcut(Desktop)' of the selected item", function () {
+        var tabTitle = browser.getText(ExtLocator.getCss('tab[text=Desktop->Shortcut]'));
+        tabTitle.should.equal('DESKTOP->SHORTCUT');
+        var check_tst_document = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_document"]');
+        check_tst_document.should.equal(true);
+        var check_tst_clob = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_clob"]');
+        check_tst_clob.should.equal(true);
+        var check_tst_IITSign = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_IITSign"]');
+        check_tst_IITSign.should.equal(true);
+    });
+    it("Select another item and check 'Details' - 'Shortcut(Desktop)'", function () {
+        browser.click('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Administrator"]');
+        browser.pause(3000);
+        var adm_folder_users = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="adm_folder_users"]');
+        adm_folder_users.should.equal(true);
+        var uba_user = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="uba_user"]');
+        uba_user.should.equal(true);
+        var uba_userrole = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="uba_userrole"]');
+        uba_userrole.should.equal(true);
+    });
+});
