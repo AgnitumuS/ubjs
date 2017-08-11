@@ -41,7 +41,7 @@ describe("Login to the system", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000)
+        browser.pause(3000)
     });
 });
 

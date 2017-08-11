@@ -210,25 +210,3 @@ describe("Details (Not selected item)", function () {
     });
 });
 
-describe("Details", function () {
-    it("Open top navbar menu Administrator / UI / Desktops", function () {
-        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
-        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
-        browser.pause(1000);
-        browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
-        browser.pause(3000);
-    });
-    it("Select item ans click 'All actions' and select 'Details' - 'Shortcut(Desktop)", function () {
-        browser.click('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Test"]')
-        browser.click(ExtLocator.getCss('button[tooltip=All actions]'));
-        browser.moveToObject(ExtLocator.getCss('menuitem[text=Details][activeUI=default]'));
-        browser.pause(1000);
-        browser.click(ExtLocator.getCss('menuitem[text=Shortcut (Desktop)]'));
-        browser.pause(3000);
-    });
-    it("Check 'Details' - 'Shortcut(Desktop) of the selected item ", function () {
-        var tabTitle = browser.getText(ExtLocator.getCss('tab[text=Desktop->Shortcut]'));
-        tabTitle.should.equal('DESKTOP->SHORTCUT');
-
-    });
-});
