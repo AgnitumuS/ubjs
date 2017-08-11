@@ -20,7 +20,6 @@ function GetTextFromCodeMirrorByLocator(locator){
 }
 
 
-
 describe("Login to the system", function () {
     it("Login to the system as admin/admin", function () {
         browser.windowHandleMaximize();

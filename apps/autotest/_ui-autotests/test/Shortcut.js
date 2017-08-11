@@ -110,6 +110,7 @@ describe("Add Shortcut", function () {
     it("Open and check added Shortcut", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-desktop-button]'));
         browser.click(ExtLocator.getCss('menuitem[text=Test]'));
+        browser.pause(1000);
         var createdchortcut = '//*[@id="' + ExtLocator.getId('ubleftpanel') + '"]//tr[.="'+caption2+'"]';
         browser.click(createdchortcut);
         browser.pause(1000);
