@@ -72,63 +72,140 @@ describe("Add Desktop", function () {
         var createdDesktopOnLeftSideBar = browser.isExisting(ExtLocator.getCss('menuitem[text=test_desktop_name]'));
         createdDesktopOnLeftSideBar.should.equal(true);
         browser.click(ExtLocator.getCss('button[cls=ub-desktop-button]'));
+        browser.pause(3000);
+
     });
 });
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // it("Preparing data for Move folder and shortcut to Desktop test", function () {
-    //     //======Add folder======
-    //     browser.click(getIdByExtjs('button[cls=ub-desktop-button]'));
-    //     browser.click(getIdByExtjs('menuitem[text=Test]'));
-    //     browser.rightClick(getIdByExtjs('navigationpanel'));
-    //     browser.waitForVisible(getIdByExtjs('menuitem[text=Add shortcut]'));
-    //     browser.click(getIdByExtjs('menuitem[text=Add folder]'));
-    //     browser.pause(1000);
-    //     var checkboxIsFolderChecked = browser.isExisting(getIdByExtjs('checkboxfield[name=isFolder][checked=true]'));  // Checking the activity of the checkbox "Is folder?"
-    //     checkboxIsFolderChecked.should.equal(true);
-    //     browser.waitForVisible(getIdByExtjs('ubtextfield[attributeName=caption]') + '-inputEl');
-    //     browser.setValue(getIdByExtjs('ubtextfield[attributeName=caption]') + '-inputEl', folderCaption);
-    //     browser.waitForVisible(getIdByExtjs('ubtextfield[attributeName=code]') + '-inputEl');
-    //     browser.setValue(getIdByExtjs('ubtextfield[attributeName=code]') + '-inputEl', folderCode);
-    //     browser.click(getIdByExtjs('button[cls=save-and-close-action]'));
-    //     console.log(folderCaption);
-    //     browser.waitForVisible('//*[@id="' + getIdByExtjsRAW('ubleftpanel') + '"]//tr[.="'+folderCaption+'"]');
-    //     var createdFolder = browser.isExisting('//*[@id="' + getIdByExtjsRAW('ubleftpanel') + '"]//tr[.="'+folderCaption+'"]');
-    //     createdFolder.should.equal(true);
-    //     //======Add folder======
-    //
-    //
-    // });
-    //
-    // it("Move folder and shortcut to Desktop test", function () {
-    //
-    //
-    // });
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- describe("Open Desktop details", function () {
-     it("Open top navbar menu Administrator / UI / Desktops", function () {
+
+describe("Move folder and shortcut to Desktop", function () {
+    it("Select existing Desktop with Shortcut in Folder on sidebar menu", function () {
+        browser.click(ExtLocator.getCss('button[cls=ub-desktop-button]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Test]'));
+        browser.pause(3000);
+    });
+    it("Select existing Folder with Shortcut and click 'Edit'", function (){
+        var folderOnSidebar = '//*[@id="' + ExtLocator.getId('treeview') + '"]//span[.="Folder for moved Shortcuts"]';
+        browser.rightClick(folderOnSidebar);
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Edit]'));
+        browser.pause(3000);
+    });
+    it("Сhange Desktop on 'Desktop drop-down menu'", function (){
+        var desktopCombobox = '//table[@id="' + ExtLocator.getId('ubcombobox[attributeName=desktopID]') + '"]//div[contains(@class, "x-form-arrow-trigger")]';
+        browser.click(desktopCombobox);
+        browser.click('//ul[@class="x-list-plain"]//li[contains(.,"Administrator")]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(1000);
+    });
+    it("Reload page and login to the system", function () {
+        browser.url('/ubadminui');
+        browser.waitForExist('//h2');
+        var title = browser.getText('//h2');
+        title.should.equal('Autotest UB SQLITE');
+        console.log('Title is: ' + title);
+        browser.setValue(ExtLocator.getCss('textfield[requireText=Login]') + '-inputEl', 'admin');
+        browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
+        browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
+        // browser.pause(3000);//temporary solution before bug fixing
+        // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
+        browser.pause(3000);
+    });
+    it("Switch Desktop to which the folder was moved", function () {
+        browser.click(ExtLocator.getCss('button[cls=ub-desktop-button]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Administrator]'));
+        browser.pause(1000);
+    });
+    it("Check the Folder move on sidebar", function () {
+        var movedFolderOnSidebar = browser.isExisting('//*[@id="' + ExtLocator.getId('treeview') + '"]//span[.="Folder for moved Shortcuts"]');
+        movedFolderOnSidebar.should.equal(true);
+    });
+    it("Check the Folder move on top navbar", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.pause(1000);
+        var movedFolderOnTopNavbar = browser.isExisting('//*[@id="' + ExtLocator.getId('menuitem[text=Folder for moved Shortcuts]') + '"]');
+        movedFolderOnTopNavbar.should.equal(true);
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.pause(1000);
+    });
+    it("Open Administrator / UI / Shortcuts", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        browser.pause(3000);
+        browser.click(ExtLocator.getCss('menuitem[text=Shortcuts]'));
+        browser.pause(1000);
+    });
+    it("Select Shortcut and open edit tab", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Filter by]') + '-btnEl');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('menuitem[text=Shortcut caption]'));
+        browser.pause(1000);
+        browser.click('//*[@id="' + ExtLocator.getId('combobox') + '"]//td[@class=" x-trigger-cell x-unselectable"]');
+        browser.click('//*[@id="' + ExtLocator.getId('boundlist') + '"]//li[.="Contains"]');
+        browser.setValue(ExtLocator.getCss('textfield[el][hidden=false][labelCls=ub-overflow-elips]') + '-inputEl', 'Shortcut inside Folder');
+        browser.click('//*[@id="' + ExtLocator.getId('toolbar[ptype=multifilter]') + '"]//a[@data-qtip="Search"]');
+        var shortcutInTab = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Shortcut inside Folder"]';
+        browser.waitForVisible(shortcutInTab);
+        browser.rightClick(shortcutInTab);
+        browser.click(ExtLocator.getCss('menuitem[text=Edit (Ctrl+E)]'));
+        browser.pause(1000);
+    });
+    it("Сhange Desktop on 'Desktop drop-down menu'", function (){
+        var desktopCombobox = '//table[@id="' + ExtLocator.getId('ubcombobox[attributeName=desktopID]') + '"]//div[contains(@class, "x-form-arrow-trigger")]';
+        browser.click(desktopCombobox);
+        browser.click('//ul[@class="x-list-plain"]//li[contains(.,"Administrator")]');
+        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(1000);
+    });
+    it("Reload page and login to the system", function () {
+        browser.url('/ubadminui');
+        browser.waitForExist('//h2');
+        var title = browser.getText('//h2');
+        title.should.equal('Autotest UB SQLITE');
+        console.log('Title is: ' + title);
+        browser.setValue(ExtLocator.getCss('textfield[requireText=Login]') + '-inputEl', 'admin');
+        browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
+        browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
+        // browser.pause(3000);//temporary solution before bug fixing
+        // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
+        browser.pause(3000);
+    });
+    it("Check the Shortcut move in Folder on sidebar", function (){
+        var movedFolderOnSidebar = '//*[@id="' + ExtLocator.getId('treeview') + '"]//span[.="Folder for moved Shortcuts"]';
+        browser.click(movedFolderOnSidebar);
+        browser.pause(1000);
+        var movedShortcutOnSidebar = browser.isExisting('//*[@id="' + ExtLocator.getId('treeview') + '"]//span[.="Shortcut inside Folder"]');
+        movedShortcutOnSidebar.should.equal(true);
+        browser.click(movedFolderOnSidebar);
+    });
+});
+
+describe("Open Desktop details", function () {
+    it("Open top navbar menu Administrator / UI / Desktops", function () {
          browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
          browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
          browser.pause(1000);
          browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
-         browser.pause(1000);
-     });
-     it("Select on existing Desktop and select menu All action / Detail / Shourtcut (Desktop)", function () {
+         browser.pause(3000);
+    });
+    it("Select on existing Desktop and select menu All action / Detail / Shourtcut (Desktop)", function () {
          browser.rightClick('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="Test"]');
          browser.pause(1000);
          browser.moveToObject(ExtLocator.getCss('menuitem[text=Details][el][hidden=false]'));
          browser.pause(1000);
          browser.click(ExtLocator.getCss('menuitem[text=Shortcut (Desktop)][el][hidden=false]'));
          browser.pause(3000);
-     });
-     it("Check the details of the selected desktop", function () {
+    });
+    it("Check the details of the selected desktop", function () {
          var check_tst_document = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_document"]');
          check_tst_document.should.equal(true);
          var check_tst_clob = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_clob"]');
          check_tst_clob.should.equal(true);
          var check_tst_IITSign = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="tst_IITSign"]');
          check_tst_IITSign.should.equal(true);
-     });
-     it("Check the details of the another selected desktop", function () {
+    });
+    it("Check the details of the another selected desktop", function () {
          browser.click('//*[@id="' + ExtLocator.getId('panel[title=Desktop][entityName=ubm_desktop] tableview') + '"]//td[.="Administrator"]');
          browser.pause(1000);
          var check_adm_folder_users = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="adm_folder_users"]');
@@ -137,8 +214,8 @@ describe("Add Desktop", function () {
          check_uba_user.should.equal(true);
          var check_uba_userrole = browser.isExisting('//*[@id="' + ExtLocator.getId('tab[text=Desktop->Shortcut] ^ tabpanel[isMainTabPanel!=true] tableview') + '"]//td[.="uba_userrole"]');
          check_uba_userrole.should.equal(true);
-     });
- });
+    });
+});
 
 describe("Delete Desktop", function () {
     it("Open top navbar menu Administrator / UI / Desktops", function () {
@@ -175,7 +252,6 @@ describe("Delete Desktop", function () {
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
         browser.pause(1000)
-
     });
     it("Check deleted Desktop on the Top Menu", function () {
         var deletedDesktopOnTopMenu = browser.isExisting('//*[contains(@id, "ubtoolbarmenu")]//span[.="test_desktop_name"]'); //In the future, make a more reliable method of verification
