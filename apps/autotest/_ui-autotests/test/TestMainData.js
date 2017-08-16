@@ -708,6 +708,7 @@ describe("Select from dictionary 'nullDict_ID' element", function () {
         browser.click('//*[@id="' + ExtLocator.getId('entitygridpanel[entityName=tst_dictionary]') + '"]//div[.="'+nullDictIdElementFromDictionary+'"]');
         browser.click(ExtLocator.getCss("button[actionId=itemSelect]"));
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(1000);
     });
@@ -728,7 +729,7 @@ describe("Select 'enumValue'", function () {
     it("Select item from list for select 'nullDict_ID'", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Select element of 'enumValue' from drop-down list", function () {
         var valueInEnumValue = browser.getValue(ExtLocator.getCss('ubbasebox[attributeName=enumValue]') + '-inputEl');

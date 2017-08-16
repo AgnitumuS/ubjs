@@ -62,6 +62,7 @@ describe("Add Shortcut base on existing Shortcut", function () {
         browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl', code1);
         SetTextToCodeMirrorByLocator('ubcodemirror[attributeName=cmdCode]', '{\r\n	"cmdType": "showList",\r\n	"cmdData": {\r\n		"params": [\r\n			{\r\n				"entity": "tst_document",\r\n				"method": "select",\r\n				"fieldList": [\r\n					"favorites.code",\r\n					"docDate",\r\n					"code",\r\n					"description",\r\n					"fileStoreSimple"\r\n				]\r\n			}\r\n		]\r\n	}\r\n}');
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(3000);
     });
     it("Open and check added Shortcut base on existing Shortcut", function () {
         browser.waitForVisible(maskToDisappearLocator, 10000, true);
@@ -85,8 +86,6 @@ describe("Add Shortcut base on existing Shortcut", function () {
         browser.pause(1000);
         console.log(ExtLocator.getCss('tab[text=DocumentTest]') + '-closeEl');
         browser.click(ExtLocator.getCss('tab[text=DocumentTest]') + '-closeEl');
-
-
     });
 });
 
