@@ -1,10 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "ubs_report"
-//@model "UBS"
-//@formType "auto"
-//@caption "reportBuilder"
-//@description "reportBuilder"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "ubs_report"
+// @model "UBS"
+// @formType "auto"
+// @caption "reportBuilder"
+// @description "reportBuilder"
 exports.formDef = {
   parentConfig: {
     layout: 'fit',
@@ -63,6 +63,7 @@ exports.formDef = {
             {
               attributeName: 'template',
               expanded: true,
+              bypassCache: true,
               // forceMIME: "application/def",
               documentMIME: 'application/ubreport',
               // keepCmpOnRefresh: true,
@@ -78,6 +79,7 @@ exports.formDef = {
           autoScroll: true,
           attributeName: 'code',
           expanded: true,
+          bypassCache: true,
           documentMIME: 'application/def',
           style: {
             background: 'white'
