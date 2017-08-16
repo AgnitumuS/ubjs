@@ -678,6 +678,7 @@ describe("Edit 'nullDict_ID' element", function () {
         browser.pause(1000);
         browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=caption][entityName=tst_dictionary]') + '-inputEl',captionEngCodeNullDictID_Edit);
         browser.click('//*[@id="' + ExtLocator.getId('basepanel[entityName=tst_dictionary]') + '"]//a[@data-qtip="Save and close (Ctrl+Enter)"]');
+        browser.pause(1000);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(3000);
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
@@ -1236,7 +1237,7 @@ describe("Delete item from grid", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Delete (Ctrl+DELETE)]'));
         browser.pause(1000);
         browser.click(ExtLocator.getCss('button[text=Yes]'));
-        browser.pause(1000);
+        browser.pause(3000);
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(3000);
     });
