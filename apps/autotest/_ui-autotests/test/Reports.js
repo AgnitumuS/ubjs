@@ -8,6 +8,23 @@ function escapeRegExp(string){
     return string.replace(/([.*+?^${}()|\[\]\/\\])/g, "\\$1");
 }
 
+function SetTextToCodeMirrorByLocator (locator, text) {
+    browser.execute(function(locator, text) {
+        var element = Ext.ComponentQuery.query(locator)[0];
+        element.setValue(text);
+    }, locator, text);
+    return;
+}
+
+function GetTextFromCodeMirrorByLocator(locator){
+    var codeMirrorValue = browser.execute(function(locator) {
+        var element = Ext.ComponentQuery.query(locator)[0];
+        var value = element.getValue();
+        return (value);
+    },locator);
+    return codeMirrorValue.value;
+}
+
 var maskLocator = '//div[contains(@class,"x-mask-fixed")]';
 var loadingDivLocator = '//div[@id="UBLogo" and not(contains(@style,"display: none"))]/span[.="Loading..."]';
 
@@ -30,7 +47,7 @@ describe("Login to the system", function () {
 });
 
 describe("Build Report in HTML", function () {
-    it("Open 'adm - ui - Report' on top menu", function () {
+    it("Open Administrator / UI / Reports on top menu", function () {
         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
         var reportsMenuItemLocator = ExtLocator.getCss('menuitem[text=Reports]');
@@ -144,11 +161,12 @@ describe("Build Report in HTML", function () {
         browser.waitForExist(reportInWindowLocator, 5000, true);
         browser.click(ExtLocator.getCss('tab[text=Report builder]') + '-closeEl');
         browser.waitForExist(reportInWindowLocator, 3000, true);
+        browser.click(ExtLocator.getCss("tab[text=Report templates][active=true]") + '-closeEl');
     })
 });
 
 describe("Build Report in PDF", function () {
-    it("Open 'adm - ui - Report' on top menu", function () {
+    it("Open Administrator / UI / Reports on top menu", function () {
         browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
         var reportsMenuItemLocator = ExtLocator.getCss('menuitem[text=Reports]');
@@ -185,7 +203,6 @@ describe("Build Report in PDF", function () {
         browser.waitForVisible(ExtLocator.getCss('button[text=Test(pdf)]'));
         browser.click(ExtLocator.getCss('button[text=Test(pdf)]'));
         browser.pause(1000);
-
         browser.setValue(ExtLocator.getCss('datefield[fieldLabel=Birthday]')+ '-inputEl', '01/02/2017');
         browser.pause(1000);
         browser.click(ExtLocator.getCss('button[el][text=Build]'));
@@ -197,7 +214,6 @@ describe("Build Report in PDF", function () {
         var pdfIframeLocator = '//*[@id="' + ExtLocator.getId('ubpdf') + '"]/iframe';
         var blobLink = browser.getAttribute(pdfIframeLocator, 'src');
         console.log(blobLink);
-
         // get PDF content from blob URL via hack
         browser.execute(function(url) {
             function abToB64(buf) {
@@ -225,12 +241,10 @@ describe("Build Report in PDF", function () {
         var binaryDocPdf = Buffer.from(base64DocText, 'base64');
         var actualPdfLength = binaryDocPdf.byteLength;
         actualPdfLength.should.equal(1124680);
-
         // replace date fragment with '1' symbols
         for(var offset = 0x1121dd; offset <= 0x1121dd + 21; offset++){
             binaryDocPdf[offset] = 0x30;
         }
-
         // compare hash
         const hash = crypto.createHash('md5');
         hash.update(binaryDocPdf);
@@ -244,5 +258,7 @@ describe("Build Report in PDF", function () {
         browser.waitForExist(reportInWindowLocator, 5000, true);
         browser.click(ExtLocator.getCss('tab[text=Report builder]') + '-closeEl');
         browser.waitForExist(reportInWindowLocator, 3000, true);
+        browser.click(ExtLocator.getCss("tab[text=Report templates][active=true]") + '-closeEl');
     })
 });
+
