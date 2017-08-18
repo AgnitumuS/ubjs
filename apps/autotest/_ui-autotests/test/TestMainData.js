@@ -183,6 +183,7 @@ describe("Edit 'Caption' localization", function () {
         textInCaptionEng.should.equal(engLoc);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+engLoc+'"]';
         browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
         var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl');
         textInCaptionAfterEditing.should.equal(engLoc);
         browser.click(ExtLocator.getCss("tab[text=ub test main data]") + '-closeEl');
@@ -216,6 +217,7 @@ describe("Edit 'Caption' localization", function () {
         textInCaptionUa.should.equal(uaLoc);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+uaLoc+'"]';
         browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
         var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl');
         textInCaptionAfterEditing.should.equal(uaLoc);
         browser.click(ExtLocator.getCss("tab[text=ub test main data]") + '-closeEl');
@@ -267,11 +269,13 @@ describe("Edit 'complexCaption'", function () {
         browser.pause(3000);
     });
     it("Check edited item and 'complexCaption' text field", function () {
+        browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
         var textInComplexCaption = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+complexCaption+'"]');
         textInComplexCaption.should.equal(complexCaption);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+complexCaption+'"]';
         browser.doubleClick(editedItemInGrid);
-        browser.pause(1000);
+        browser.pause(3000);
         var textInCaptionAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=complexCaption]') + '-inputEl');
         textInCaptionAfterEditing.should.equal(complexCaption);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
@@ -288,7 +292,7 @@ describe("Select 'nonNullDict_ID' from list", function () {
         var textInnonNullDictID = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
         textInnonNullDictID.should.equal('caption 30');
     });
-    it("Select element of 'nonNullDict_ID' from drop-down list", function () {
+    it("Select element of 'NonNullDict_ID' from drop-down list", function () {
         browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl','caption');
         browser.pause(3000);
         browser.click('//li[.="'+nonNullDict_ID+'"]');
@@ -340,7 +344,7 @@ describe("Add 'nonNullDict_ID' element", function () {
         browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
         browser.pause(1000);
         browser.click(ExtLocator.getCss('menuitem[el][text=Add new element]'));
-        browser.pause(1000);
+        browser.pause(3000);
         browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=code][entityName=tst_dictionary]') + '-inputEl',codeNewNonNullDict_ID);
         browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=caption][entityName=tst_dictionary]') + '-inputEl',captionEngCodeNewNonNullDict_ID);
         browser.click('//*[@id="' + ExtLocator.getId('ubtextfield[attributeName=caption][entityName=tst_dictionary]') + '"]//div[@data-qtip="Values for other languages"]');
@@ -490,11 +494,52 @@ describe("Select from dictionary 'nonNullDict_ID' element ", function () {
         selectedNonNullDictIdElementFromDictionary.should.equal(nonNullDictIdElementFromDictionary);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+nonNullDictIdElementFromDictionary+'"]';
         browser.doubleClick(editedItemInGrid);
-        browser.pause(1000);
+        browser.pause(3000);
         var selectedNonNullDictIdElementFromDictionary_EditForm = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
         selectedNonNullDictIdElementFromDictionary_EditForm.should.equal(nonNullDictIdElementFromDictionary);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(1000);
+    });
+});
+
+describe("Delete element 'nonNullDict_ID' from list", function () {
+    it("Select item from list for deleting 'NonNullDict_ID' element", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Deleting 'NonNullDict_ID' from drop-down list", function () {
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//li[.="'+captionEngCodeNewNonNullDictID_Edit+'"]');
+        browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]'));
+        browser.click(ExtLocator.getCss("menuitem[el][text=Edit selected element (Ctrl+E)]"));
+        browser.pause(1000);
+        browser.click('//*[@id="' + ExtLocator.getId('basepanel[entityName=tst_dictionary]') + '"]//a[@data-qtip="Delete (Ctrl+DELETE)"]');
+        browser.pause(1000);
+        var confirmDeleteHeader = browser.getText(ExtLocator.getCss('messagebox[title=Confirm delete]') + '_header_hd-textEl');
+        confirmDeleteHeader.should.equal('Confirm delete');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[text=Yes]'));
+        browser.pause(3000);
+        browser.click(ExtLocator.getCss('panel[hidden=false][entityName=tst_maindata] button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var messageText = browser.getText(ExtLocator.getCss('messagebox') + '-displayfield-inputEl');
+        messageText.should.equal('Form was changed. Are you sure want to refresh and discard changes?');
+        browser.click(ExtLocator.getCss('button[text=Yes]'));
+        browser.pause(3000);
+    });
+    it("Check deleting 'NonNullDict_ID' from drop-down list", function () {
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl','caption');
+        browser.pause(3000);
+        var deletedNonNullDictIDElement = browser.isExisting('//li[.="'+captionEngCodeNewNonNullDictID_Edit+'"]');
+        deletedNonNullDictIDElement.should.equal(false);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+        var messageText = browser.getText(ExtLocator.getCss('messagebox') + '-displayfield-inputEl');
+        messageText.should.equal('Do you want to save changes?');
+        browser.click(ExtLocator.getCss("button[text=Don't Save]"));
+        browser.pause(3000);
     });
 });
 
@@ -622,6 +667,7 @@ describe("Add 'nullDict_ID' element", function () {
         textUkrInNonNullDict_ID.should.equal(captionUkrCodeNewNullDict_ID);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNullDict_ID+'"]';
         browser.doubleClick(editedItemInGrid);
+        browser.pause(3000);
         var textUKRInNonNullDictID_EditForm = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nullDict_ID]') + '-inputEl');
         textUKRInNonNullDictID_EditForm.should.equal(captionUkrCodeNewNullDict_ID);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
@@ -1244,7 +1290,6 @@ describe("Delete item from grid", function () {
     it("Check deleting item", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+codeForNew+'"]';
         var itemPresence = browser.isExisting(itemInGrid);
-        console.log(itemPresence);
         itemPresence.should.equal(false);
         browser.pause(1000);
     });
@@ -1283,7 +1328,6 @@ describe("Export to HTML", function () {
             }
         }
         var downloadedHTML = fs.readFileSync("C:\\Workaround_folder_for_SelSer\\testdownloads\\"+fileForThisTest, "utf8");
-        console.log(downloadedHTML);
         var comparison = sampleHTML===downloadedHTML;
         comparison.should.equal(true);
         browser.pause(3000);
@@ -1314,7 +1358,6 @@ describe("Export to CSV", function () {
             }
         }
         var downloadedCSV = fs.readFileSync("C:\\Workaround_folder_for_SelSer\\testdownloads\\"+fileForThisTest, "utf8");
-        console.log(downloadedCSV);
         var comparison = sampleCSV===downloadedCSV;
         comparison.should.equal(true);
         browser.pause(3000);
