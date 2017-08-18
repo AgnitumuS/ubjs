@@ -30,8 +30,8 @@ module.exports = function runOTPTest (options) {
   testServerSide()
 
   function testServerSide () {
-   let folder = path.dirname(__filename)
-   let tests = fs.readdirSync(path.join(folder, 'serverSide'))
+    let folder = path.dirname(__filename)
+    let tests = fs.readdirSync(path.join(folder, 'serverSide'))
 
     console.debug('test Server-side js')
     tests.forEach((test) => {
@@ -48,4 +48,3 @@ module.exports = function runOTPTest (options) {
     })
   }
 }
-

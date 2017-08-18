@@ -29,6 +29,10 @@ module.exports = function runIITCryptoTest (options) {
   let numThreads = parseInt(options.numThreads, 10)
   console.debug('start ', numThreads, TEST_NAME)
 
+  for (let i = 0; i < numThreads; i++) {
+    onProcessWorker({signal: 'start', thread: i})
+  }
+  return // TODO - MPV  require not work inside worker onProcessWorker
   let workers = []
   // create threads
   for (let i = 0; i < numThreads; i++) {
@@ -89,6 +93,8 @@ function onProcessWorker (message) {
   } finally {
     session.logout()
   }
-  postMessage({signal: 'done', thread: message.thread, timeSpend: Date.now() - startTime, result: result})
-  terminate()
+  if (global.postMessage) { // we are in worker
+    postMessage({signal: 'done', thread: message.thread, timeSpend: Date.now() - startTime, result: result})
+    terminate()
+  }
 }

@@ -37,6 +37,11 @@ module.exports = function runPDFSignTest (options) {
   let workers = []
 
   console.log('start ', numThreads, 'thread')
+  for (let i = 0; i < numThreads; i++) {
+    onProcessWorker({signal: 'start', thread: i})
+  }
+  return // TODO - MPV  require not work inside worker onProcessWorker
+
     // create threads
   for (let i = 0; i < numThreads; i++) {
     workers.push(new Worker({
@@ -84,7 +89,7 @@ function onProcessWorker (message) {
   connection = session.connection
   startTime = Date.now()
   try {
-    result = connection.run({
+    result = connection.query({
       entity: 'tst_pdfSign',
       method: 'doTest',
       threadNum: message.thread,
@@ -95,6 +100,8 @@ function onProcessWorker (message) {
       session.logout()
     }
   }
-  postMessage({signal: 'done', thread: message.thread, timeSpend: Date.now() - startTime, result: result})
-  terminate()
+  if (global.postMessage) { // we are in worker
+    postMessage({signal: 'done', thread: message.thread, timeSpend: Date.now() - startTime, result: result})
+    terminate()
+  }
 }
