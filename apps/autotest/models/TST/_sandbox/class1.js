@@ -3,12 +3,12 @@
 */
 
 class Class1 {
-  constructor() {
+  constructor () {
     this.prop1 = 10
   }
-  testMethod(){
-    console.log('class1 testMethod');
-    console.log('class1 testMethod 2-d run');
+  testMethod () {
+    console.log('class1 testMethod')
+    console.log('class1 testMethod 2-d run')
   }
 }
 

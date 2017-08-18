@@ -6,6 +6,10 @@
 // @caption "uba_usercertificate"
 // @description "uba_usercertificate"
 exports.formDef = {
+    size: {
+            width: 600,
+            height: 400
+        },
     parentConfig: {
         layout: {
             type: 'vbox',
@@ -19,6 +23,7 @@ exports.formDef = {
     { attributeName: "description"},
     { attributeName: "disabled"},
     { attributeName: "revoked" , readOnly: true},
+    { attributeName: "revocationDate" , readOnly: true},
     {
       layout: {
         type: 'hbox'

@@ -24,3 +24,25 @@ Ext.define('UB.ux.form.field.UBDateTime', {
   }
 
 })
+
+// Patch for date picker. User get exception message when picker opened and button TAB pressed.
+Ext.override(Ext.picker.Date, {
+  handleTabClick: function (e) {
+    var me = this,
+      t = me.getSelectedDate(me.activeDate),
+      handler = me.handler
+
+    // The following code is like handleDateClick without the e.stopEvent()
+    // xmax add check "&& t"
+    if (!me.disabled && t && t.dateValue && !Ext.fly(t.parentNode).hasCls(me.disabledCellCls)) {
+      me.doCancelFocus = me.focusOnSelect === false
+      me.setValue(new Date(t.dateValue))
+      delete me.doCancelFocus
+      me.fireEvent('select', me, me.value)
+      if (handler) {
+        handler.call(me.scope || me, me, me.value)
+      }
+      me.onSelect()
+    }
+  }
+})

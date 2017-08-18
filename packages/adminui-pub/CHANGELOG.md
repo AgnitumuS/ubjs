@@ -4,10 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+##  [4.2.22]
+### Added
+ - new `uiSettings.adminUI.favoriteCategoryCount` config property allow to set up to three favotite column (star) colors
+
+### Fixed
+ - Show unhandled Promise rejection messages in dialog box (replace when->es6-promise Promise polufill)
+
+##  [4.2.20]
+### Fixed
+ - UB.ux.form.field.UBDateTime. Prevent exception when picker opened and button TAB pressed. [UB-1862]
+
 ##  [4.2.18]
 ### Added
  - Editors for OrgChart available in UB EE is moved into standard edition (this package)
-  
+ - Add `.x-grid-row-bold` css class for mark grid rows as **bold**
+ - Add property `UB.view.ColumnFavorites.allowedCategoryCount` for configure allowed values count in favorite column.
+
+###Fixed
+- fix bag in cyclical opening of modal forms.(`org_staffunit` -> `org_employeeinstaff` -> `org_staffunit`)
 
 ##  [4.2.17]
 ### Fixed

@@ -84,8 +84,8 @@ It's best to generate load from a completely separate machine from the server if
 Techempower use the [wrk](https://github.com/wg/wrk) load generation tool to generate the load for our benchmark runs. 
 It's the best tool we've found for the job and supports HTTP pipelining (used by the plaintext scenario) via its scripting interface. 
 
-Wrk will only run from a Linux machine however, so if you must use Windows, we recomment a [Go boom](https://github.com/rakyll/boom).
-If you have a Go you can compile it, if not - you can [dowload Go Boom for Windows from our site](https://unitybase.info/downloads/boom.exe)
+Wrk will only run from a Linux machine however, so if you must use Windows, we recomment a [Go hey](https://github.com/rakyll/hey).
+If you have a Go you can compile it.
 
 You can also try using [ab](https://httpd.apache.org/docs/2.2/programs/ab.html) (Apache Bench). 
 You can [dowload ab for Windows from here](http://download.nextag.com/apache/httpd/binaries/win32/#down). 

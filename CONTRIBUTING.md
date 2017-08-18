@@ -3,20 +3,34 @@
 Follow [UnityBase setup instruction](https://git-pub.intecracy.com/unitybase/ubjs#install-windows)
 
 ```
-> mkdir dev && cd dev
-> git clone https://git-pub.intecracy.com/unitybase/ubjs.git
+mkdir dev && cd dev
+git clone https://git-pub.intecracy.com/unitybase/ubjs.git
 rem In case you have access to UB Enterprise - clone it
-> git clone https://gitlab.intecracy.com/unitybase/ub-e.git
+git clone https://gitlab.intecracy.com/unitybase/ub-e.git
 rem In case you have access to UB Defense - clone it
-> git clone https://gitlab.intecracy.com/unitybase/ub-d.git
-> cd ubjs
-> npm run bootstrap
-> cd apps\autotest
-> npm i
-> tsql3.cmd
-> ub -dev
-Point ypour browser (Chrome or FireFox) to http://localhost:888/ubadminui-dev
+git clone https://gitlab.intecracy.com/unitybase/ub-d.git
+cd ubjs
+npm run bootstrap
 ```
+
+To execute a autotest
+```
+cd apps\autotest
+tsql3.cmd
+ub -dev
+```
+Point your browser (Chrome or FireFox) to http://localhost:888/ubadminui-dev to access AuminUI (admin/admin)
+
+
+To run a [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/)
+
+```
+cd apps\benchmarks
+prepare.cmd
+ub -c
+```
+
+See benchmarking instruction in [benchmarks/README.md](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/apps/benchmarks/README.md)
 
 # Adding new packages to UnityBase package repository
 
@@ -191,12 +205,12 @@ For a production environment all operations below must be performed under user w
  
  For CMS
  
-        pm2 start --name ub-cms C:\mmcms-server\server.js
+        pm2 start --name ub-cms --max-restarts 5 C:\mmcms-server\server.js
         
  For a UnityBase application
          
          SET UB_HOME=<PathToYourUB>
-         pm2 start --name ub-app %UB_HOME%\ub -- -cfg C:\<pathToApplication>\ubConfig.json 
+         pm2 start --name ub-app --max-restarts 5 %UB_HOME%\ub -- -cfg C:\<pathToApplication>\ubConfig.json 
         
  - Save pm2 tasks
       
