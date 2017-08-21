@@ -542,6 +542,7 @@ describe("Delete element 'nonNullDict_ID' from list", function () {
         browser.pause(3000);
     });
 });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 describe("Select 'nullDict_ID ' from list", function () {
     it("Select item from list for Select 'nullDict_ID'", function () {
@@ -769,6 +770,47 @@ describe("Select from dictionary 'nullDict_ID' element", function () {
         selectedNullDictIdElementFromDictionary_EditForm.should.equal(nullDictIdElementFromDictionary);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
         browser.pause(1000);
+    });
+});
+
+describe("Delete element 'nullDict_ID' from list", function () {
+    it("Select item from list for deleting 'nullDict_ID' element", function () {
+        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
+        browser.doubleClick(itemInGrid);
+        browser.pause(3000);
+    });
+    it("Deleting 'nullDict_ID' from drop-down list", function () {
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nullDict_ID]') + '-inputEl','caption');
+        browser.pause(3000);
+        browser.click('//li[.="'+captionEngCodeNullDictID_Edit+'"]');
+        browser.rightClick(ExtLocator.getCss('ubcombobox[attributeName=nullDict_ID]'));
+        browser.click(ExtLocator.getCss("menuitem[el][text=Edit selected element (Ctrl+E)]"));
+        browser.pause(1000);
+        browser.click('//*[@id="' + ExtLocator.getId('basepanel[entityName=tst_dictionary]') + '"]//a[@data-qtip="Delete (Ctrl+DELETE)"]');
+        browser.pause(1000);
+        var confirmDeleteHeader = browser.getText(ExtLocator.getCss('messagebox[title=Confirm delete]') + '_header_hd-textEl');
+        confirmDeleteHeader.should.equal('Confirm delete');
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[text=Yes]'));
+        browser.pause(3000);
+        browser.click(ExtLocator.getCss('panel[hidden=false][entityName=tst_maindata] button[tooltip=Refresh (Ctrl+R)]'));
+        browser.pause(1000);
+        var messageText = browser.getText(ExtLocator.getCss('messagebox') + '-displayfield-inputEl');
+        messageText.should.equal('Form was changed. Are you sure want to refresh and discard changes?');
+        browser.click(ExtLocator.getCss('button[text=Yes]'));
+        browser.pause(3000);
+    });
+    it("Check deleting 'nullDict_ID' from drop-down list", function () {
+        browser.setValue(ExtLocator.getCss('ubcombobox[attributeName=nullDict_ID]') + '-inputEl','caption');
+        browser.pause(3000);
+        var deletedNullDictIDElement = browser.isExisting('//li[.="'+captionEngCodeNullDictID_Edit+'"]');
+        deletedNullDictIDElement.should.equal(false);
+        browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
+        browser.pause(1000);
+        var messageText = browser.getText(ExtLocator.getCss('messagebox') + '-displayfield-inputEl');
+        messageText.should.equal('Do you want to save changes?');
+        browser.click(ExtLocator.getCss("button[text=Don't Save]"));
+        browser.pause(3000);
     });
 });
 
