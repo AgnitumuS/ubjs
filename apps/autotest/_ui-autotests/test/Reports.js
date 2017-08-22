@@ -262,3 +262,53 @@ describe("Build Report in PDF", function () {
     })
 });
 
+describe("Negative build Report scenario", function () {
+    it("Open Administrator / UI / Reports on top menu", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        var reportsMenuItemLocator = ExtLocator.getCss('menuitem[text=Reports]');
+        browser.waitForVisible(reportsMenuItemLocator, 30000);
+        browser.click(reportsMenuItemLocator);
+    });
+    it("Open UBS test report", function () {
+        var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="TST"]/following-sibling::td[.="test2"]';
+        browser.waitForExist(testReportLocator);
+        browser.doubleClick(testReportLocator);
+        browser.pause(3000);
+        browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
+    });
+    it("Corrupt code on 'Code' tab", function () {
+        browser.pause(1000);
+        browser.moveToObject(ExtLocator.getCss('tab[text=Code]'));
+        browser.pause(1000);
+        browser.moveToObject(ExtLocator.getCss('tab[text=Code]'));
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('tab[text=Code]'));
+        browser.pause(1000);
+        reportCodeOriginal = GetTextFromCodeMirrorByLocator('ubcodemirror[name=code]');
+        var reportCodeModified = reportCodeOriginal;
+        reportCodeModified = reportCodeModified.replace('exports.reportCode = {','exports.reportCode = {!');
+        SetTextToCodeMirrorByLocator('ubcodemirror[name=code]', reportCodeModified);
+        browser.pause(1000);
+        browser.click(ExtLocator.getCss('button[cls=save-action][el]'));
+        browser.pause(3000);
+    });
+    it("Check Error message", function () {
+        browser.click(ExtLocator.getCss('button[text=Test(html)]'));
+        browser.pause(3000);
+        var ErrorMessageText = browser.getText('//div[@class="ub-error-win-c-item"]//div[contains(.,"Unknown error")]');
+        ErrorMessageText.should.equal('Unknown error. Please, contact your system administrator.');
+        browser.rightClick('//div[@class="ub-error-win-c-item"]//div[contains(.,"Unknown error")]');
+        browser.pause(1000);
+        browser.click('//button[.="Details for developer"]');
+        browser.pause(1000);
+        var detailsForDeveloper = browser.getText('//div[@class="ub-error-win-c-detail"]');
+        var searchInDetailsForDeveloper = (detailsForDeveloper.indexOf("SyntaxError: Unexpected token !")); //Return of the position on which the substring is found or -1, if nothing is found
+        var detailsForDeveloperOk = (searchInDetailsForDeveloper >=0);
+        detailsForDeveloperOk.should.equal(true);
+        browser.click('//div[@class="ub-error-win-footer"]//button[.="Ok"]');
+        browser.click(ExtLocator.getCss("tab[text=Report builder][active=true]") + '-closeEl');
+        browser.click(ExtLocator.getCss("tab[text=Report templates][active=true]") + '-closeEl');
+    });
+});
+
