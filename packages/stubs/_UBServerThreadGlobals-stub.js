@@ -389,6 +389,143 @@ var Session = {
      * @event registration
      */
 
+  /**
+     * Fires in case new user registered in system and authentication schema support
+     * "registration" feature.
+     *
+     * Currently only CERT schemas
+     *
+     * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
+     *
+     * Called before start event "registration" and before starting check the user. You can create new user inside this event.
+     *
+     * Parameter is look like
+     *
+     *      {
+     *          "authType": 'CERT',
+     *          "serialSign": '<serialSign>',
+     *          "name": '<user name>',
+     *          "additional": '',
+     *          "issuer": '<issuer>',
+     *          "serial": '<serial>',
+     *          "certification_b64": '<certification_b64>'
+     *      }
+     *
+     * Below is a sample code for CERT schema:
+     *
+     *      var iitCrypto = require('iitCrypto');
+     *      iitCrypto.init();
+     *
+     *      Session.on('newUserRegistration', function(registrationParams){
+     *          var params = JSON.parse(registrationParams);
+     *          Session.runAsAdmin(function () {
+     *              var
+     *                  storeCert, certData, certInfo,
+     *                  certID, userID, request, certJson, handler,
+     *                  certParams, connectionName, roleStore,
+     *                  storeUser = UB.Repository('uba_user')
+     *                      .attrs(['ID','name','mi_modifyDate'])
+     *                      .where('name', '=', params.name).select(),
+     *                  userExist, certExist;
+     *
+     *              userExist = !storeUser.eof;
+     *              if (userExist) {
+     *                  userID = storeUser.get('ID');
+     *              }
+     *              storeCert = UB.Repository('uba_usercertificate').attrs(['ID', 'userID.name', 'disabled', 'revoked'])
+     *                  .where('serial', '=', params.serialSign);
+     *              try {
+     *                  if (!App.serverConfig.security.dstu.findCertificateBySerial) {
+     *                      storeCert = storeCert.where('issuer_serial', '=', params.issuer);
+     *                  }
+     *                  storeCert = storeCert.select();
+     *                  certExist = !storeCert.eof;
+     *                  if (certExist && ((storeCert.get('disabled') === 1) || (storeCert.get('revoked') === 1))) {
+     *                      throw new Error('Certificate is disabled');
+     *                  }
+     *                  if (!userExist && certExist) {
+     *                      throw new Error('Certificate already registered by another user');
+     *                  }
+     *
+     *                  if (certExist) {
+     *                      throw new Error('Certificate already registered');
+     *                      //throw new Error('User ' + params.name + ' already registred');
+     *                  }
+     *              } finally {
+     *                  storeUser.freeNative();
+     *                  storeCert.freeNative();
+     *              }
+     *
+     *              certData = Buffer.from(params.certificationB64, 'base64');
+     *              certInfo = iitCrypto.parseCertificate(certData.buffer);
+     *
+     *              if (!userExist) {
+     *                  storeUser = new TubDataStore('uba_user');
+     *                  storeUser.run('insert', {
+     *                          fieldList: ['ID'],
+     *                          execParams: {
+     *                              name: params.name,
+     *                              email: certInfo.SubjEMail,
+     *                              disabled: 0,
+     *                              isPending: 0,
+     *                              // random
+     *                              uPasswordHashHexa: (new Date()).getTime().toString(27) + Math.round(Math.random() * 10000000000000000).toString(28),
+     *                              //phone
+     *                              //description:
+     *                              firstName: certInfo.SubjFullName //certInfo.SubjOrg
+     *                          }
+     *                      }
+     *                  );
+     *                  userID = storeUser.get('ID');
+     *
+     *                  roleStore = UB.Repository('uba_role')
+     *                      .attrs(['ID','name'])
+     *                      .where('name', 'in', ['Admin']).select();
+     *                  while (!roleStore.eof){
+     *                      storeUser.run('insert', {
+     *                              entity: 'uba_userrole',
+     *                              execParams: {
+     *                                  userID: userID,
+     *                                  roleID: roleStore.get('ID')
+     *                              }
+     *                          }
+     *                      );
+     *
+     *                      roleStore.next();
+     *                  }
+     *              }
+     *              storeCert  = new TubDataStore('uba_usercertificate');
+     *              certID = storeCert.generateID();
+     *
+     *              certParams = new TubList();
+     *              certParams.ID = certID;
+     *              certParams.userID = userID;
+     *              certParams.issuer_serial = params.issuer;
+     *              certParams.serial = params.serialSign;
+     *              certParams.setBLOBValue('certificate', params.certificationB64);
+     *              //issuer_cn: certInfo.issuerCapt,
+     *              certParams.disabled = 0;
+     *              certParams.revoked = 0;
+     *
+     *              storeCert.run('insert', {
+     *                      fieldList: ['ID'],
+     *                      execParams: certParams
+     *                  }
+     *              );
+     *
+     *              connectionName = App.domain.byName('uba_user').connectionName;
+     *              if (App.dbInTransaction(connectionName)) {
+     *                  App.dbCommit(connectionName);
+     *              }
+     *              throw new Error('<UBInformation><<<Регистрация прошла успешно.>>>');
+     *
+     *          });
+     *      });
+     *
+     * @event newUserRegistration
+     */
+
+
     /**
      * Fires in case `auth` endpoint is called with authentication schema UB and userName is founded in database,
      * but password is incorrect.

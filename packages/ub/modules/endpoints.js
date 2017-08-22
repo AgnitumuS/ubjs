@@ -219,6 +219,7 @@ function getAppInfo (req, resp) {
   let appInfo = {
     serverVersion: process.version,
     defaultLang: serverConfig.application.defaultLang || 'en',
+    simpleCertAuth: !!serverConfig.security.simpleCertAuth,
 
     trafficEncryption: DSTU ? DSTU.trafficEncryption : false,
     serverCertificate: (DSTU && DSTU.trafficEncryption) ? App.serverPublicCert : '',

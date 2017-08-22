@@ -787,6 +787,8 @@ UBConnection.prototype.getAppInfo = function () {
       Object.defineProperty(me, 'serverCertificate', {enumerable: true, writable: false, value: appInfo.serverCertificate || ''})
       Object.defineProperty(me, 'encryptionKeyLifetime', {enumerable: true, writable: false, value: appInfo.encryptionKeyLifetime || 0})
       Object.defineProperty(me, 'authMethods', {enumerable: true, writable: false, value: appInfo.authMethods})
+      Object.defineProperty(me, 'simpleCertAuth', {enumerable: true, writable: false, value: appInfo.simpleCertAuth || false})
+
       /**
        * An array of WebSocket protocol names supported by server
        * @property {Array<String>} supportedWSProtocols
