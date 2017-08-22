@@ -22,10 +22,10 @@ App.on('domainIsLoaded', function () {
 /**
  * Deny login for user admin2
  */
-function denyAdmin2(){
-  if (Session.uData.login === 'admin2'){
-      //throw new Error('Deny login for admin2')
-	throw new UB.UBAbort('<<<Deny login for admin2>>>')
+function denyAdmin2 () {
+  if (Session.uData.login === 'admin2') {
+      // throw new Error('Deny login for admin2')
+    throw new UB.UBAbort('<<<Deny login for admin2>>>')
   }
 }
-Session.on('login', denyAdmin2);
+Session.on('login', denyAdmin2)

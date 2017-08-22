@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-reg",
-  "version": "4.1.8",
+  "version": "4.1.9",
   "description": "UnityBase admin UI (server part)",
   "main": "index.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-reg",

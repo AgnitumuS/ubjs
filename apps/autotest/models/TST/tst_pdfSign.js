@@ -136,4 +136,3 @@ function testSigner (ctx) {
   signTest()
   console.timeEnd('Signing 10 docs in thread ' + threadNum)
 }
-

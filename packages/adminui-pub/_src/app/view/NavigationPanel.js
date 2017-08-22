@@ -88,8 +88,11 @@ Ext.define('UB.view.NavigationPanel', {
       })
     })
 
+
     if (me.desktopID) {
       me.onDesktopChanged(me.desktopID)
+    } else {
+      me.onDesktopChanged(UB.core.UBApp.getDesktop())
     }
   },
 

@@ -834,6 +834,11 @@
               "type": "object",
               "description": "JavaScript linter options - used in adminUI form editor & shortcut editor. See <a href=\"http://jshint.com/docs/options/\">JSHINT documentation</a> for full options list"
             }
+			"favoriteCategoryCount": {
+			  "type": "number",
+              "description": "Number of categories (up to 4) for a favorites columnus",
+              "default": 2
+			}
           }
         },
         "portalUI": {

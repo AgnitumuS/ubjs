@@ -135,17 +135,17 @@ me.entity.addMethod('handledExceptionTest')
  */
 me.runAsAdminTest = function (ctx) {
   let uDataBefore = _.cloneDeep(Session.uData)
-  Session.runAsAdmin(function(){
-    //uParam.ID = userID;
-    //uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
+  Session.runAsAdmin(function () {
+    // uParam.ID = userID;
+    // uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
     let store = new TubDataStore('uba_user')
     store.run('update', {
-        fieldList: ['ID'],
-        "__skipOptimisticLock": true,
-        //execParams: uParam
-        execParams: {ID: 10, name: 'admin'}
-        //execParams: {ID: 1, name: 'Admin'}
-      }
+      fieldList: ['ID'],
+      '__skipOptimisticLock': true,
+        // execParams: uParam
+      execParams: {ID: 10, name: 'admin'}
+        // execParams: {ID: 1, name: 'Admin'}
+    }
     )
   })
   let uDataAfter = Session.uData
@@ -155,3 +155,12 @@ me.runAsAdminTest = function (ctx) {
   }
 }
 me.entity.addMethod('runAsAdminTest')
+
+me.dmlGeneratorTest = function(ctx) {
+  var generator = require('@unitybase/dml-generator')
+  ctx.mParams.resultSQL = generator.mssql.biuldSelectSql('tst_maindata',{fieldList: ['parent1@tst_maindata.manyValue.mi_modifyUser.name'],whereList:{c1: {
+  expression:'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition : 'equal', values: {c1: 'admin'}
+  }}})
+  ctx.mParams.sql2 = generator.mssql.biuldSelectSql('tst_maindata', UB.Repository('tst_maindata').attrs('[nonNullDict_ID.caption]', '[nonNullDict_ID.caption_en^]', 'nonNullDict_ID.filterValue', 'nonNullDict_ID.floatValue').ubql())
+}
+me.entity.addMethod('dmlGeneratorTest')

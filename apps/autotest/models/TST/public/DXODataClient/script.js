@@ -42,9 +42,11 @@ $(function () {
       columns: attributes4Select,
       filterRow: {
         visible: true, applyFilter: 'auto'
-      }, searchPanel: {
+      },
+      searchPanel: {
         visible: true, width: 240, placeholder: 'Search...'
-      }, headerFilter: {
+      },
+      headerFilter: {
         visible: true
       },
       editing: {

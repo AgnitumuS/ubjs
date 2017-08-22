@@ -38,7 +38,7 @@ module.exports = function runPDFSignTest (options) {
 
   console.log('start ', numThreads, 'thread')
   for (let i = 0; i < numThreads; i++) {
-    onProcessWorker ({signal: 'start', thread: i})
+    onProcessWorker({signal: 'start', thread: i})
   }
   return // TODO - MPV  require not work inside worker onProcessWorker
 
