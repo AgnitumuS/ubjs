@@ -6,6 +6,9 @@ Copyright (c) 2014 InBase
  * English translation
  */
 UB.i18nExtend({
+  SelectPKAndPassMsg: 'Select a file and fill out the password',
+  ReadPkTitle: 'Зчитування приватного ключа',
+  'Select private key file': 'Виберіть файл приватного ключа',
   setScannerSettings: 'You must set scanner settings, before use it. Scanner settings are <a href="/" onclick="{0} return false;">here</a>.',
   showResultConfig: 'Show configuration',
   chkSilenceLogin: 'Always login by domain',
@@ -352,6 +355,8 @@ UB.i18nExtend({
   useUBAuthenticationTitle: 'User&password',
   useCertificateTitle: 'Using certificate',
   useCertificateInfo: 'Authorization using electronic signature',
+  useCertificateInfoSimple: 'Authorization using electronic signature',
+  useCertificateInfoSimpleUserName: 'Authorization using electronic signature',
   IITCertCanceledByUser: 'Canceled by user',
   navShortcutCode: 'Shortcut source code',
   navShortcutRights: 'Shortcut rights',

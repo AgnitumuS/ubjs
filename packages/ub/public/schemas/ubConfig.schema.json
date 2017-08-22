@@ -804,6 +804,32 @@
                 }
               }
             },
+            "encryptionImplementation" : {
+              "type": "string",
+              "description": "Define encryption implementation for authentication CERT. By default @ub-d/nm-dstu/injectEncription.js"
+            },
+            "authenticationCert": {
+              "type": "object",
+              "description": "Config for authentication CERT",
+              "properties": {
+                "requireUserName": {
+                  "type": "boolean",
+                  "description": "Show user name field when enabled simpleCerAuth"
+                },
+                "userNameRE": {
+                  "type": "String",
+                  "description": "Regular expression for user name validation"
+                },
+                "userNameREMessage": {
+                  "type": "String",
+                  "description": "Message for user name validation"
+                },
+                "description": {
+                  "type": "String",
+                  "description": "Description that show below username and password"
+                }
+              }
+            },
             "linter": {
               "type": "object",
               "description": "JavaScript linter options - used in adminUI form editor & shortcut editor. See <a href=\"http://jshint.com/docs/options/\">JSHINT documentation</a> for full options list"
