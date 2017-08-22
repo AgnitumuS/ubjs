@@ -804,6 +804,10 @@
                 }
               }
             },
+            "encryptionImplementation" : {
+              "type": "string",
+              "description": "Define encryption implementation for authentication CERT. By default @ub-d/nm-dstu/injectEncription.js"
+            },
             "authenticationCert": {
               "type": "object",
               "description": "Config for authentication CERT",

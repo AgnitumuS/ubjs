@@ -111,6 +111,14 @@ function UBConnection (connectionParams) {
   _.assign(this, EventEmitter.prototype)
 
   /**
+   * Fired for {@link UBConnection} instance in case authenticaion type CERT and simpleCertAuth is true.
+   * Here you can extract user name from certificate. By default it EDPOU or DRFO or email.
+   * Accept 3 args (conn: UBConnection, urlParams: Object, certInfo: Object)
+   * @event defineLoginName
+   */
+
+
+  /**
    * WebSocket `ubNotifier` protocol instance
    * @type {UBNotifierWSProtocol}
    */
