@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-##  [4.2.23]
+##  [4.2.24]
 ### Added
  - Simple certificate authentication support in adminui. Password is not needed. The user name is extracted from the certificate or entered by the user.
+
 ### Changed
  - The ability to use different libraries for certificate authorization.
 
