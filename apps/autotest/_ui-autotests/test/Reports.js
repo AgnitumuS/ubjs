@@ -270,8 +270,8 @@ describe("Negative build Report scenario", function () {
         browser.waitForVisible(reportsMenuItemLocator, 30000);
         browser.click(reportsMenuItemLocator);
     });
-    it("Open UBS test report", function () {
-        var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="TST"]/following-sibling::td[.="test2"]';
+    it("Open test3 report", function () {
+        var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="TST"]/following-sibling::td[.="test3"]';
         browser.waitForExist(testReportLocator);
         browser.doubleClick(testReportLocator);
         browser.pause(3000);
