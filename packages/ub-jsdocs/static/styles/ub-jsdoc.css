@@ -343,6 +343,7 @@ h4.name {
   padding: 1rem;
   margin-top: 3rem;
   background-color: #eee;
+  margin-bottom: 0.5rem;
 }
 .name a {
   color: rgb(55,94,171);

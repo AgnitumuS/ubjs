@@ -133,6 +133,7 @@ var App = {
      */
   domain: new TubDomain(),
   /**
+   * A domain model (metadata) definition for current application
    * @type {UBDomain}
    */
   domainInfo: new UBDomain(),
