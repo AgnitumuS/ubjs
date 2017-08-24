@@ -1,6 +1,7 @@
 
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
+  margin: 0;
 }
 
 html, body {
@@ -385,7 +386,7 @@ h4.name {
 }
 
 .description {
-   /* margin: 1em */
+   margin: 0.5rem
 }
 
 .code-caption {
