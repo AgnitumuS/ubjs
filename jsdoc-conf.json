@@ -7,7 +7,8 @@
       "./packages/base",
       "./packages/stubs",
       "./packages/ub",
-      "./packages/ub/modules"
+      "./packages/ub/modules",
+      "./packages/ub/virtualStores"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
