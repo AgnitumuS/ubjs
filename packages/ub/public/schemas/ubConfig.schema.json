@@ -754,14 +754,12 @@
     "uiSettings": {
       "type": "object",
       "description": "Settings, passed to UI in getAppInfo method. We recommend to place here ONLY parameters, necessary for UI initialization",
-      "additionalProperties": true,
+      "additionalProperties": false,
       "properties": {
         "adminUI": {
           "type": "object",
           "description": "Settings for admin UI",
-          "additionalProperties": {
-            "type": "object"
-          },
+          "additionalProperties": false,
           "properties": {
             "applicationName": {
               "type": "string",
@@ -833,7 +831,7 @@
             "linter": {
               "type": "object",
               "description": "JavaScript linter options - used in adminUI form editor & shortcut editor. See <a href=\"http://jshint.com/docs/options/\">JSHINT documentation</a> for full options list"
-            }
+            },
 			"favoriteCategoryCount": {
 			  "type": "number",
               "description": "Number of categories (up to 4) for a favorites columnus",
@@ -851,12 +849,12 @@
           "description": "Settings for Android/iOS client",
           "additionalProperties": true
         }
-      },
-      "licenseFilePath": {
-        "type": "string",
-        "description": "For commercial version - path to license file",
-        "default": ".\\UB.lic"
       }
+    },
+    "licenseFilePath": {
+      "type": "string",
+      "description": "For EE/DE editions - path to license file",
+      "default": "./UB.lic"
     }
   }
 }
