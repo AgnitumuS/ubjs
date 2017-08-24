@@ -19,7 +19,9 @@
     "template": "./packages/ub-jsdocs",
     "readme": "./readme.md",
     "encoding": "utf8",
-    "destination": "./docs"
+    "destination": "./docs",
+    "recurse": false,
+    "tutorials": "tutorials"
   },
   "templates": {
     "cleverLinks": true,
@@ -57,6 +59,7 @@
     "default": {
       "outputSourceFiles": true,
       "staticFiles": {
+	"include": ["./tutorials"],
         "excludePattern": "\\.md$"
       }
     }
