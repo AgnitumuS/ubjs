@@ -11,6 +11,7 @@
       "./packages/ub/virtualStores",
       "./packages/ubcli/lib",
       "./packages/http-proxy",
+      "./packages/canvas/UBCanvas.js",
       "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
