@@ -10,7 +10,8 @@
  */
 
 const http = require('http')
-const {options, argv} = require('@unitybase/base')
+const options = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 
 module.exports = function ftsReindex (cfg) {
   if (!cfg) {
@@ -19,9 +20,9 @@ module.exports = function ftsReindex (cfg) {
       )
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
       .add({short: 'e', long: 'entity', param: 'entityCode', defaultValue: '*', help: 'Entity code to rebuild index for. If FTS scope for entity = "Connection" then the same as -c'})
-      .add({short: 'c', long: 'connection', param: 'ftsConnectionName', defaultValue: 'ftsDefault', help: 'Name of connection for index rebuild. ALL entity with this fts.connection will be reindexed'})
+      .add({short: 'c', long: 'connection', param: 'ftsConnectionName', defaultValue: 'ftsDefault', help: 'Name of connection for index rebuild. ALL entity with this fts.connection will be re-indexed'})
       .add({short: 'chunk', long: 'chunk', param: 'chunkLength', defaultValue: 10000, help: 'The number of records that can be selected and committed at once'})
-      .add({short: 'limit', long: 'limit', param: 'limitCount', defaultValue: -1, help: 'Limit of reindexed records for developer or debug purpose. Do not set "limit" in other cases'})
+      .add({short: 'limit', long: 'limit', param: 'limitCount', defaultValue: -1, help: 'Limit of re-indexed records for developer or debug purpose. Do not set "limit" in other cases'})
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
