@@ -1,21 +1,24 @@
 /**
- * Reverse proxy with authentication
+ * Reverse proxy with UnityBase based authentication.
  *
- * Code below will check UB authentication header is valid (if not - return 401)
- * and after this proxy all requests for `cms` endpoint to the `http://localhost:3030`.
+ * Use it to authorize a requests using UB and when bypass it to other services
+ *
+ * Example below will check validity of UB authentication header (if not - return 401)
+ * and proxy all requests for `cms` endpoint to the `http://localhost:3030`.
  *
  * For requests what start from `/ubcms` authentication not checked
  *
  * I.e. GET /cms/some/path&p1=true will be proxied to GET http://localhost:3030/some/path&p1=true
  *
 
- const HttpProxy = require('@unitybase/http-proxy')
- new HttpProxy({
-    endpoint: 'cms',
-    targetURL: 'http://localhost:3030'
-    nonAuthorizedURLs: [/\/ubcms/]
- })
+     const HttpProxy = require('@unitybase/http-proxy')
+     new HttpProxy({
+        endpoint: 'cms',
+        targetURL: 'http://localhost:3030'
+        nonAuthorizedURLs: [/\/ubcms/]
+     })
 
+ * @module @unitybase/http-proxy
  */
 
 const http = require('http')

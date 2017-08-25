@@ -29,7 +29,8 @@ const argv = require('@unitybase/base').argv
 module.exports = function createCodeInsightHelper (cfg) {
   if (!cfg) {
     let opts = options.describe('createCodeInsightHelper',
-      'create service scripts containing entity definition for code insight in WebStorm or other IDE work well', 'ubcli'
+      'create service scripts containing entity definition for code insight in WebStorm or other IDE work well',
+      'ubcli'
     ).add(
       argv.establishConnectionFromCmdLineAttributes._cmdLineParams
     ).add({

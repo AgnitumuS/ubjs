@@ -22,7 +22,7 @@ const gzipFile = require('UBCompressors').gzipFile
 
 module.exports = function prepareGZIP (cfg) {
   if (!cfg) {
-    let opts = options.describe('cmd/prepareGZIP', 'GZIP `staticFolder` files according to `usePreparedGzip` `staticRules` for specified application')
+    let opts = options.describe('prepareGZIP', 'GZIP `staticFolder` files according to `usePreparedGzip` `staticRules` for specified application', 'ubcli')
       .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: false, help: 'Path to server config'})
       .add({short: 'd', long: 'deleteOriginals', defaultValue: false, help: 'Delete source files we compress(not recommended if you have a client what not support compression'})
       .add({short: 'largeWhen', long: 'largeWhen', param: 'size', defaultValue: 3 * 1024, help: 'ompress only files with size > largeWhen bytes'})

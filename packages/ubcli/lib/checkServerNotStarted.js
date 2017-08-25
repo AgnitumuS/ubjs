@@ -9,7 +9,7 @@ const argv = require('@unitybase/base').argv
 
 module.exports = function initialize (cfg) {
   if (!cfg) {
-    let opts = options.describe('cmd/checkServerNotStarted', 'This command throw error in case server is started')
+    let opts = options.describe('checkServerNotStarted', 'This command throw error in case server is started', 'ubcli')
       .add({short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:888', searchInEnv: true, help: 'Server URL to connect, including protocol'})
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return

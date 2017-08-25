@@ -33,7 +33,10 @@ const argv = require('@unitybase/base').argv
 
 module.exports = function generateDDL (cgf) {
   if (!cgf) {
-    let opts = options.describe('cmd/generateDDL', 'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it')
+    let opts = options.describe('generateDDL',
+      'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it',
+      'ubcli'
+    )
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
       .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'})
       .add({short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation'})

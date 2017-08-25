@@ -24,7 +24,10 @@ module.exports = function generateDoc (cfg) {
 
   console.time('Generate documentation')
   if (!cfg) {
-    let opts = options.describe('cmd/generateDoc', 'This command generate domain documentation into single HTML file\nDocumentation generated using default language for user, specified in -u')
+    let opts = options.describe('generateDoc',
+      'Generate domain documentation into single HTML file\nDocumentation generated using default language for user, specified in -u',
+      'ubcli'
+    )
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
       .add({
         short: 'out',

@@ -114,38 +114,22 @@ function moveFile (fileNameFrom, fileNameTo) {}
  * @returns {string} GUID
  */
 function createGuid () { return '' }
-/**
- * Run script in separate thread (experimental). Returns thread ID.
- *
- * Thread creates in suspended state. When we post new worker message thread resumes and call *onmessage* handler.
- * When thread terminates and Terminate handler assigned worker thread call *onterminate* handler.
- * In handlers you can use 2 methods:
- *
- * *postMessage(message)* for posting messages from worker thread. You can get this message by function getMessage of worker object
- *
- * *terminate()* for terminating current worker thread
- *
- * @param {Object} paramsObj parameters object
- * @param {String|Function} paramsObj.onmessage Message handler. Has 1 parameter - message. Before call
- * @param {String|Function} paramsObj.onterminate Terminate handler. Has no parameters
- * @returns {Number} threadID
- */
-function worker (paramsObj) {}
-/**
+
+/*
  * Post message to worker thread. Worker call *onmessage* handler with parameter *message*
  * @param {Number} threadID
  * @param  {String} message
  */
 function postWorkerMessage (threadID, message) {}
 
-/**
+/*
  * Get message from worker thread. If worker thread didn't post any message then return undefined
  * @param {Number} threadID
  * @returns {String|undefuned}
  */
 function getWorkerMessage (threadID) {}
 
-/**
+/*
  * Terminate worker thread.
  * @param {Number} threadID
  */

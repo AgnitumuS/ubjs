@@ -36,7 +36,7 @@ const _ = require('lodash')
  * @class
  * @param commandName
  * @param commandDescription
- * @param cli
+ * @param {String} [cli='ub'] An executable used to execute a command `commandName`. For example: `ubcli`
  * @constructor
  */
 function Options (commandName, commandDescription, cli) {

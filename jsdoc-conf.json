@@ -9,7 +9,8 @@
       "./packages/ub",
       "./packages/ub/modules",
       "./packages/ub/virtualStores",
-      "./packages/ubcli/lib"
+      "./packages/ubcli/lib",
+      "./packages/http-proxy"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
