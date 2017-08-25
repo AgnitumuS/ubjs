@@ -10,7 +10,8 @@
       "./packages/ub/modules",
       "./packages/ub/virtualStores",
       "./packages/ubcli/lib",
-      "./packages/http-proxy"
+      "./packages/http-proxy",
+      "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },

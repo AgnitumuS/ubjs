@@ -1,7 +1,7 @@
 ﻿  [OData] is a protocol for build RESTfull API. Developed by Microsoft, it give you all pros & contras of Microsoft
 products. The most big contras is size of [OData specification]  - 70 pages just for protocol.
 
-  In UnityBase OData implemented as a provider, so it is possible to use the UnityBase `ubql` protocol
+  In UnityBase EE OData implemented as a provider, so it is possible to use the UnityBase `ubql` protocol
 and OData at the same time. Below is a protocols comparison
 
 
