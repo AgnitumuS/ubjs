@@ -312,3 +312,110 @@ describe("Negative build Report scenario", function () {
     });
 });
 
+describe("Build Report in HTML server-side", function () {
+    it("Open Administrator / UI / Reports on top menu", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        var reportsMenuItemLocator = ExtLocator.getCss('menuitem[text=Reports]');
+        browser.waitForVisible(reportsMenuItemLocator, 30000);
+        browser.click(reportsMenuItemLocator);
+    });
+    it("Open TST test4 report", function () {
+        var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="TST"]/following-sibling::td[.="test4_html_serv"]';
+        browser.waitForExist(testReportLocator);
+        browser.doubleClick(testReportLocator);
+        browser.pause(3000);
+        browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
+    });
+    it("Check mustache link on 'Template' tab", function () {
+        var templateTabLocator = ExtLocator.getCss('tab[text=Template]');
+        browser.waitForVisible(templateTabLocator);
+        browser.click(templateTabLocator);
+        browser.pause(3000);
+        var frameLocator = '//*[@id="' + ExtLocator.getId('ubreporteditor') + '"]//iframe';
+        browser.waitForExist(frameLocator);
+        var frameId = browser.getAttribute(frameLocator, 'id');
+        console.log(frameId);
+        browser.frame(frameId);
+        var mustacheHref = browser.getAttribute('//a[.="Mustache"]', 'href');
+        mustacheHref.should.equal('https://github.com/janl/mustache.js');
+        console.log(mustacheHref);
+        browser.frame(null);
+    });
+    it("Build HTML report server side", function () {
+        browser.click(ExtLocator.getCss('button[text=Test(server html)]'));
+        browser.pause(10000);
+    });
+    it("Compare HTML report source code with a sample", function () {
+        var arHTML = fs.readFileSync(
+            browser.options.desiredCapabilities.chromeOptions.prefs['download.default_directory']
+            + '\\test4_html_serv.html', 'utf8');
+        var sampleHtmlPath = browser.options.mochaOpts.files[0]
+            .replace(/\\test.+\.js/i, "\\test4_sample.html");
+        var sampleHTML = fs.readFileSync(sampleHtmlPath, 'utf8');
+        var compareResult = sampleHTML.localeCompare(arHTML);
+        compareResult.should.equal(0);
+    });
+    it("Close Report builder tab", function () {
+        browser.pause(3000);
+        browser.click(ExtLocator.getCss('tab[text=Report builder]') + '-closeEl');
+        browser.click(ExtLocator.getCss("tab[text=Report templates][active=true]") + '-closeEl');
+    })
+});
+
+describe("Build Report in PDF server-side", function () {
+    it("Open Administrator / UI / Reports on top menu", function () {
+        browser.click(ExtLocator.getCss('button[text=Administrator][ui=default-toolbar-small]'));
+        browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
+        var reportsMenuItemLocator = ExtLocator.getCss('menuitem[text=Reports]');
+        browser.waitForVisible(reportsMenuItemLocator, 30000);
+        browser.click(reportsMenuItemLocator);
+    });
+    it("Open TST test5 report", function () {
+        var testReportLocator = '//*[@id="' + ExtLocator.getId('ubtableview') + '-table"]//td[.="TST"]/following-sibling::td[.="test5_pdf_serv"]';
+        browser.waitForExist(testReportLocator);
+        browser.doubleClick(testReportLocator);
+        browser.pause(3000);
+        browser.waitForVisible(ExtLocator.getCss('tab[tooltip=Report builder]'));
+    });
+    it("Check mustache link on 'Template' tab", function () {
+        var templateTabLocator = ExtLocator.getCss('tab[text=Template]');
+        browser.waitForVisible(templateTabLocator);
+        browser.click(templateTabLocator);
+        browser.pause(3000);
+        var frameLocator = '//*[@id="' + ExtLocator.getId('ubreporteditor') + '"]//iframe';
+        browser.waitForExist(frameLocator);
+        var frameId = browser.getAttribute(frameLocator, 'id');
+        console.log(frameId);
+        browser.frame(frameId);
+        var mustacheHref = browser.getAttribute('//a[.="Mustache"]', 'href');
+        mustacheHref.should.equal('https://github.com/janl/mustache.js');
+        console.log(mustacheHref);
+        browser.frame(null);
+    });
+    it("Build PDF report server side", function () {
+        browser.click(ExtLocator.getCss('button[text=Test(server pdf)]'));
+        browser.pause(10000);
+    });
+    it("Compare PDF report hash with a sample", function () {
+        var binaryDocPdf = fs.readFileSync(
+            browser.options.desiredCapabilities.chromeOptions.prefs['download.default_directory']
+            + '\\test5_pdf_serv.pdf');
+
+        // replace date fragment with '1' symbols
+        for(var offset = 0x112201; offset <= 0x112201 + 21; offset++){
+            binaryDocPdf[offset] = 0x30;
+        }
+        // compare hash
+        const hash = crypto.createHash('md5');
+        hash.update(binaryDocPdf);
+        var binaryDocPdfHashMd5 = hash.digest('hex');
+        console.log(binaryDocPdfHashMd5);
+        binaryDocPdfHashMd5.should.equal('888e34ce90d1420523bdacfbf3f99ba5');
+    });
+    it("Close Report builder tab", function () {
+        browser.pause(3000);
+        browser.click(ExtLocator.getCss('tab[text=Report builder]') + '-closeEl');
+        browser.click(ExtLocator.getCss("tab[text=Report templates][active=true]") + '-closeEl');
+    })
+});
