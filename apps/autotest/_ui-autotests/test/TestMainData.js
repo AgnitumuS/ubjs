@@ -28,6 +28,7 @@ var bigIntRounding = '12345678999999999';
 var valueOfBigIntRoundingfromField;
 
 
+
 //Data for "Add item to grid" test
 var codeForNew = 'Код99';
 var captionForNew = 'Заголовок 99';
@@ -257,6 +258,7 @@ describe("Edit 'Caption' localization", function () {
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
     });
 });
+
 describe("Edit 'complexCaption'", function () {
     it("Select item for editing 'Code' in grid and open tab with edit form of item", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код4"]';
@@ -542,7 +544,6 @@ describe("Delete element 'nonNullDict_ID' from list", function () {
         browser.pause(3000);
     });
 });
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 describe("Select 'nullDict_ID ' from list", function () {
     it("Select item from list for Select 'nullDict_ID'", function () {
@@ -1338,15 +1339,6 @@ describe("Delete item from grid", function () {
 });
 
 describe("Export to HTML", function () {
-    it("Temporary preconditions. Clear dateTimeValue field", function () {
-        var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="#Код16"]';
-        browser.doubleClick(itemInGrid);
-        browser.pause(3000);
-        browser.clearElement('//*[@id="' + ExtLocator.getId('ubdatetimefield[attributeName=dateTimeValue]') + '-inputEl"]');
-        browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
-        browser.pause(3000);
-
-    });
     it("Download HTML file", function () {
         browser.click(ExtLocator.getCss('button[tooltip=Refresh (Ctrl+R)]'));
         browser.pause(1000);
@@ -1357,6 +1349,7 @@ describe("Export to HTML", function () {
         browser.pause(3000);
     });
     it("Comparison of the downloaded HTML file with the sample", function () {
+        var dynamicDataTimeValueFromItem = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="#Код16"]/following-sibling::td[8]'); //Get a dynamic DataTimeValue value from item in the grid
         var sampleHTML = fs.readFileSync('C:\\Workaround_folder_for_SelSer\\samples\\sampleHTML.html', 'utf8');
         var files = fs.readdirSync('C:\\Workaround_folder_for_SelSer\\testdownloads');
         var fileForThisTest;
@@ -1370,7 +1363,8 @@ describe("Export to HTML", function () {
             }
         }
         var downloadedHTML = fs.readFileSync("C:\\Workaround_folder_for_SelSer\\testdownloads\\"+fileForThisTest, "utf8");
-        var comparison = sampleHTML===downloadedHTML;
+        var ReplacedDownloadedHTML = downloadedHTML.replace(dynamicDataTimeValueFromItem, '01/01/1970 02:00'); // Replace of dynamic DataTimeValue value in downloaded HTML file
+        var comparison = sampleHTML===ReplacedDownloadedHTML ;
         comparison.should.equal(true);
         browser.pause(3000);
     });
@@ -1387,6 +1381,7 @@ describe("Export to CSV", function () {
         browser.pause(3000);
     });
     it("Comparison of the downloaded CSV file with the sample", function () {
+        var dynamicDataTimeValueFromItem = browser.getText('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="#Код16"]/following-sibling::td[8]'); //Get a dynamic DataTimeValue value from item in the grid
         var sampleCSV = fs.readFileSync('C:\\Workaround_folder_for_SelSer\\samples\\sampleCSV.csv', 'utf8');
         var files = fs.readdirSync('C:\\Workaround_folder_for_SelSer\\testdownloads');
         var fileForThisTest;
@@ -1400,7 +1395,8 @@ describe("Export to CSV", function () {
             }
         }
         var downloadedCSV = fs.readFileSync("C:\\Workaround_folder_for_SelSer\\testdownloads\\"+fileForThisTest, "utf8");
-        var comparison = sampleCSV===downloadedCSV;
+        var ReplacedDownloadedCSV = downloadedCSV.replace(dynamicDataTimeValueFromItem, '01/01/1970 02:00'); // Replace of dynamic DataTimeValue value in downloaded HTML file
+        var comparison = sampleCSV===ReplacedDownloadedCSV;
         comparison.should.equal(true);
         browser.pause(3000);
     });
