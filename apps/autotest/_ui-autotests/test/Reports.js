@@ -353,6 +353,7 @@ describe("Build Report in HTML server-side", function () {
         var sampleHtmlPath = browser.options.mochaOpts.files[0]
             .replace(/\\test.+\.js/i, "\\test4_sample.html");
         var sampleHTML = fs.readFileSync(sampleHtmlPath, 'utf8');
+        sampleHTML = sampleHTML.replace(/\r\n/g,'\n');
         var compareResult = sampleHTML.localeCompare(arHTML);
         compareResult.should.equal(0);
     });
