@@ -411,7 +411,7 @@ describe("Build Report in PDF server-side", function () {
         hash.update(binaryDocPdf);
         var binaryDocPdfHashMd5 = hash.digest('hex');
         console.log(binaryDocPdfHashMd5);
-        binaryDocPdfHashMd5.should.equal('888e34ce90d1420523bdacfbf3f99ba5');
+        binaryDocPdfHashMd5.should.equal('d71d610df85fe5db5c0c5dd4d4d4af07');
     });
     it("Close Report builder tab", function () {
         browser.pause(3000);
