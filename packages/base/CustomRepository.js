@@ -257,8 +257,7 @@ class CustomRepository {
      *  - {master} will be replaced by master entity alias
      *  - {self}  will be replaced by sub-query entity alias
      *
-     *      //select users
-     *      UB.Repository('uba_user').attrs(['ID', 'name'])
+     *      UB.Repository('uba_user').attrs(['ID', 'name']) //select users
      *        // who are not disabled
      *        .where('disabled', '=', 0)
      *        // which allowed access from Kiev

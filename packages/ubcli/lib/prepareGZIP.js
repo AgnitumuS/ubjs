@@ -1,53 +1,47 @@
 /**
- * Command line module.
- *
  * GZIP `staticFolder` files according to `usePreparedGzip` `headersPostprocessors` for specified application
  *
  * Usage:
  *
- *	    >ub.exe cmd/prepareGZIP -help
+     ubcli prepareGZIP -?
  *
  * For example during deploy UnityBase documentation to {@link https://unitybase.info/api/server/} we execute:
- *
- *      > ub cmd/prepareGZIP -cfg pathToDocumentationConfig.json
- *
+
+     ubcli prepareGZIP -cfg pathToDocumentationConfig.json
+
  * @author pavel.mash
- * @module cmd/prepareGZIP
+ * @module @unitybase/ubcli/prepareGZIP
  */
 const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
-const {options, argv} = require('@unitybase/base')
+const options = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 const util = require('util')
 const gzipFile = require('UBCompressors').gzipFile
 
 module.exports = function prepareGZIP (cfg) {
-  var
-    configFileName = argv.getConfigFileName(),
-    configPath,
-    config, inetPub
-
   if (!cfg) {
-    var opts = options.describe('cmd/prepareGZIP', 'GZIP `staticFolder` files according to `usePreparedGzip` `staticRules` for specified application')
-            .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: false, help: 'Path to server config'})
-            .add({short: 'd', long: 'deleteOriginals', defaultValue: false, help: 'Delete source files we compress(not recommended if you have a client what not support compression'})
-            .add({short: 'largeWhen', long: 'largeWhen', param: 'size', defaultValue: 3 * 1024, help: 'ompress only files with size > largeWhen bytes'})
+    let opts = options.describe('cmd/prepareGZIP', 'GZIP `staticFolder` files according to `usePreparedGzip` `staticRules` for specified application')
+      .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: false, help: 'Path to server config'})
+      .add({short: 'd', long: 'deleteOriginals', defaultValue: false, help: 'Delete source files we compress(not recommended if you have a client what not support compression'})
+      .add({short: 'largeWhen', long: 'largeWhen', param: 'size', defaultValue: 3 * 1024, help: 'ompress only files with size > largeWhen bytes'})
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  var deleteOriginals = cfg.deleteOriginals
-  var largeWhen = cfg.largeWhen
+  let deleteOriginals = cfg.deleteOriginals
+  let largeWhen = cfg.largeWhen
 
-  config = argv.getServerConfiguration()
+  let config = argv.getServerConfiguration()
 
   if (!config.httpServer || !config.httpServer.inetPub) {
     console.warn('config.httpServer.inetPub not configured')
     return
   }
-  inetPub = config.httpServer.inetPub
-  var headersPostprocessors = config.httpServer.headersPostprocessors
+  let inetPub = config.httpServer.inetPub
+  let headersPostprocessors = config.httpServer.headersPostprocessors
 
-  var gzipRules = _.filter(headersPostprocessors, {usePreparedGzip: true})
+  let gzipRules = _.filter(headersPostprocessors, {usePreparedGzip: true})
   if (!gzipRules.length) {
     console.warn('header post-processors with `usePreparedGzip: true` option not found')
     return
@@ -59,9 +53,10 @@ module.exports = function prepareGZIP (cfg) {
     rule.re = new RegExp(rule.location)
   })
 
-  configPath = path.dirname(configFileName)
-  var startFrom = relToAbs(configPath, inetPub)
-  var endWith = startFrom.charAt(startFrom.length - 1)
+  let configFileName = argv.getConfigFileName()
+  let configPath = path.dirname(configFileName)
+  let startFrom = relToAbs(configPath, inetPub)
+  let endWith = startFrom.charAt(startFrom.length - 1)
   if ((endWith !== '\\') && (endWith !== '/')) {
     startFrom += '/'
   }
@@ -72,11 +67,13 @@ module.exports = function prepareGZIP (cfg) {
     console.debug('Start scanning folder', startFrom)
   }
 
-  var totalSize = 0, totalGZSize = 0, totalCount = 0, totalGZCount = 0
+  let totalSize = 0
+  let totalGZSize = 0
+  let totalCount = 0
+  let totalGZCount = 0
 
   function gzipFolder (startFromPath) {
-    var
-            fullFileName, folderContent, sz
+    let fullFileName, folderContent, sz
 
     folderContent = fs.readdirSync(startFromPath)
 
@@ -104,5 +101,7 @@ module.exports = function prepareGZIP (cfg) {
 
   gzipFolder(startFrom)
   util.print('\n')
-  console.log('Compress %d of %d files from %d to %d bytes (%d bytes traffic savings)', totalGZCount, totalCount, totalSize, totalGZSize, totalGZSize ? totalGZSize - totalSize : 0)
+  console.log('Compress %d of %d files from %d to %d bytes (%d bytes traffic savings)',
+    totalGZCount, totalCount, totalSize, totalGZSize, totalGZSize ? totalGZSize - totalSize : 0
+  )
 }

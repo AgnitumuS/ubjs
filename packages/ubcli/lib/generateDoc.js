@@ -1,21 +1,22 @@
 /**
  * Command line module. Generate domain documentation into single HTML file.
- * Usage:
- *
- *     >ub.exe cmd/generateDoc -help
- *
+ * Command line usage:
+
+       ubcli generateDoc -?
+
  * @author pavel.mash 04.02.14
- * @module cmd/generateDoc
+ * @module @unitybase/ubcli/generateDoc
  */
 const fs = require('fs')
-const {argv, options} = require('@unitybase/base')
+const argv = require('@unitybase/base').argv
+const options = require('@unitybase/base').options
 const _ = require('lodash')
 const http = require('http')
 const path = require('path')
 const mustache = require('mustache')
 
 module.exports = function generateDoc (cfg) {
-  var
+  let
     session, conn,
     outputFileName, userLang,
     domainI18n,
@@ -23,15 +24,15 @@ module.exports = function generateDoc (cfg) {
 
   console.time('Generate documentation')
   if (!cfg) {
-    var opts = options.describe('cmd/generateDoc', 'This command generate domain documentation into single HTML file\nDocumentation generated using default language for user, specified in -u')
-            .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-            .add({
-              short: 'out',
-              long: 'out',
-              param: 'outputFileName',
-              defaultValue: './domainDocumentation.html',
-              help: 'Output file path'
-            })
+    let opts = options.describe('cmd/generateDoc', 'This command generate domain documentation into single HTML file\nDocumentation generated using default language for user, specified in -u')
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({
+        short: 'out',
+        long: 'out',
+        param: 'outputFileName',
+        defaultValue: './domainDocumentation.html',
+        help: 'Output file path'
+      })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
@@ -91,7 +92,7 @@ module.exports = function generateDoc (cfg) {
       domain: domainAsArray,
       i18n: function () {
         return function (word) {
-                    // console.log('translate for ', word, 'to', userLang);
+          // console.log('translate for ', word, 'to', userLang);
           return UB.i18n(word, userLang)
         }
       }

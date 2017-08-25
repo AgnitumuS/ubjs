@@ -231,30 +231,31 @@ function localizeEntity (session, config, locale) {
 /**
  * A helper for dataLoader.  Resolves code to ID.
  * Supports combined keys, in that case, both "attributeName" and "colIndex" parameters shall be arrays.
+ *
+ * @example
+
+  loader.loadArrayData(
+    conn,
+    [
+      ['employee1@example.com', 'users'],
+      ['employee2@example.com', 'users'],
+      ['manager1@example.com', 'users'],
+      ['manager2@example.com', 'users']
+    ],
+    'uba_userrole',
+    ['userID', 'roleID'],
+    [
+      lookup(conn, 'uba_user', 'name', 0),
+      lookup(conn, 'uba_role', 'name', 1)
+    ],
+    1000
+  )
+
  * @param {UBConnection} conn
  * @param {string} entityName
  * @param {string|Array<string>} attributeName  Attribute name or array of names
  * @param {number|Array<number>} colIndex      Column index or indexes
  * @returns {Function}
- *
- * @example
- * Example of usage:
- * loader.loadArrayData(
- *     conn,
- *     [
- *         ['employee1@example.com', 'users'],
- *         ['employee2@example.com', 'users'],
- *         ['manager1@example.com', 'users'],
- *         ['manager2@example.com', 'users']
- *     ],
- *     'uba_userrole',
- *     ['userID', 'roleID'],
- *     [
- *         lookup(conn, 'uba_user', 'name', 0),
- *         lookup(conn, 'uba_role', 'name', 1)
- *     ],
- *     1000
- * );
  */
 function lookup (conn, entityName, attributeName, colIndex) {
   /**

@@ -8,7 +8,8 @@
       "./packages/stubs",
       "./packages/ub",
       "./packages/ub/modules",
-      "./packages/ub/virtualStores"
+      "./packages/ub/virtualStores",
+      "./packages/ubcli/lib"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },

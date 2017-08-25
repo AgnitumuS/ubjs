@@ -1,22 +1,23 @@
 /**
- * Created by pavel.mash on 22.12.2015.
  * Command line tool for converting UnityBase config from version <=1.11 to version 1.11
  * Usage:
  *
- *    >ub.exe cmd/upgradeConfig -help
+ *    ubcli upgradeConfig -help
  *
- * @module cmd/upgradeConfig
+ * @author pavel.mash on 22.12.2015.
+ * @module @unitybase/ubcli/upgradeConfig
  */
 const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
-const {options, argv} = require('@unitybase/base')
+const argv = require('@unitybase/base').argv
+const options = require('@unitybase/base').options
 
 module.exports = function upgradeConfig (cfg) {
   if (!cfg) {
-    var opts = options.describe('upgradeConfig', 'Convert UnityBase config to up-to-date version', 'ubcli')
-            .add({short: 'cfg', long: 'cfg', param: 'oldFormatConfigFileName', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'UnityBase config in old format'})
-            .add({short: 'app', long: 'app', param: 'NameOfApplicationForNewConfig', help: 'For config from version <=1.11 - application name to be converted'})
+    let opts = options.describe('upgradeConfig', 'Convert UnityBase config to up-to-date version', 'ubcli')
+      .add({short: 'cfg', long: 'cfg', param: 'oldFormatConfigFileName', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'UnityBase config in old format'})
+      .add({short: 'app', long: 'app', param: 'NameOfApplicationForNewConfig', help: 'For config from version <=1.11 - application name to be converted'})
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
@@ -32,7 +33,7 @@ module.exports = function upgradeConfig (cfg) {
     return
   }
 
-  var oldContent = fs.readFileSync(path.join(process.cwd(), cfgFile))
+  let oldContent = fs.readFileSync(path.join(process.cwd(), cfgFile))
   fs.writeFileSync(path.join(process.cwd(), cfgFile + '.old'), oldContent)
   fs.writeFileSync(path.join(process.cwd(), cfgFile), JSON.stringify(n, null, '\t'))
 }
@@ -41,6 +42,7 @@ module.exports = function upgradeConfig (cfg) {
  * Convert named collection - {name1: {}, name2: {}} to array -> [{name: name1, ...}, ...]
  * Will mutate original!
  * @param namedCollection
+ * @private
  */
 function namedCollection2Array (namedCollection) {
   let result = []
@@ -54,7 +56,7 @@ function namedCollection2Array (namedCollection) {
 }
 
 function convert110To111 (old) {
-  var n = {
+  let n = {
     httpServer: {
     },
     logging: {
@@ -76,7 +78,7 @@ function convert110To111 (old) {
   } else {
     appName = oldApps[0]
   }
-  var oApp = old.appConfigs[appName]
+  let oApp = old.appConfigs[appName]
   if (!oApp) throw new Error('App with name ' + appName + ' not found in old config')
   n.httpServer.path = appName // old config always contain app
   if (old.threadPoolSize) n.httpServer.threadPoolSize = old.threadPoolSize
@@ -219,4 +221,3 @@ function convert110To111 (old) {
 
   return n
 }
-

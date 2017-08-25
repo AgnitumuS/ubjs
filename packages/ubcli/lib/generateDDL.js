@@ -1,25 +1,25 @@
 /**
- * Command line module.
+ * Compare database structure with application domain and generate SQL script for create missing objects and alter modified objects.
+ * Can optionally execute generated SQL scripts (for local server only).
  *
- * Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it
+ * **WARNING: do not run this command on production database in automatic mode - always review SQL script manually before run**
  *
- * WARNING: do not run this command on production database in automatic mode - always review SQL script manually before run
- * @example
+ * Usage from a command line:
 
- /from a command line
- >ubcli generateDDL -u admin -p admin -autorun -optimistic
+    ubcli generateDDL -?
 
- //from a script
- var DDLGenerator = require('@unitybase/ubcli/generateDDL');
- var options = {
-      host: "http://localhost:888",
-      user: "admin",
-      pwd:  "admin",
-      out:  process.cwd(),
-      autorun: true,
-      optimistic: false
- };
- DDLGenerator(options);
+ * Usage from code:
+
+     const DDLGenerator = require('@unitybase/ubcli/generateDDL')
+     var options = {
+          host: 'http://localhost:888',
+          user: "admin",
+          pwd:  "admin",
+          out:  process.cwd(),
+          autorun: true,
+          optimistic: false
+     }
+     DDLGenerator(options)
 
  * @author pavel.mash
  * @module @unitybase/ubcli/generateDDL
@@ -28,17 +28,18 @@ const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
 const http = require('http')
-const {options, argv} = require('@unitybase/base')
+const options = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 
 module.exports = function generateDDL (cgf) {
   if (!cgf) {
     let opts = options.describe('cmd/generateDDL', 'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it')
-            .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-            .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'})
-            .add({short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation'})
-            .add({short: 'out', long: 'out', param: 'outputPath', defaultValue: process.cwd(), help: 'Folder to output generated DDLs (one file per connection)'})
-            .add({short: 'autorun', long: 'autorun', defaultValue: false, help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'})
-            .add({short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION'})
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'})
+      .add({short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation'})
+      .add({short: 'out', long: 'out', param: 'outputPath', defaultValue: process.cwd(), help: 'Folder to output generated DDLs (one file per connection)'})
+      .add({short: 'autorun', long: 'autorun', defaultValue: false, help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'})
+      .add({short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION'})
     cgf = opts.parseVerbose({}, true)
     if (!cgf) return
   }
@@ -62,6 +63,7 @@ module.exports = function generateDDL (cgf) {
  *  @param {String} inModelsCSV
  *  @param {String} outputPath
  *  @param {String} [optimistic = false]
+ *  @private
  */
 function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, optimistic) {
   let txtRes
@@ -136,14 +138,17 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
  *  @param {String} connectionName
  *  @param {Object<string, object>} connDDLs See DBAbstract.DDL for content
  *  @param {string} warnings
+ *  @private
  */
 function formatAsText (connectionName, connDDLs, warnings) {
   let txtRes = []
 
   if (warnings) {
-    txtRes.push('/*\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n Attantion! Achtung! Vnimanie! ',
-            '\r\n', warnings,
-            '\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n*/\r\n')
+    txtRes.push(
+      '/*\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n Attantion! Achtung! Vnimanie! ',
+      '\r\n', warnings,
+      '\r\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ \r\n*/\r\n'
+    )
   }
 
   for (let res of connDDLs) {

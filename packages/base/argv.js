@@ -1,18 +1,20 @@
 /**
- * Command line utils for connect to local UnityBase server
+ * Utils for connecting to a local UnityBase server
  *
  * In case you need to work with command line use a {@link module:@unitybase/base/options @unitybase/base.options} module
  *
  * @example
- var argv = require('@unitybase/base').argv;
- // connect to server
- var session = argv.establishConnectionFromCmdLineAttributes();
- console.log('Session.uData: ', session.uData, typeof session.uData, session.uData.lang);
 
- userLang = session.uData.lang || 'en';
- conn = session.connection;
- // obtain domain information
- var domainInfo = conn.getDomainInfo();
+  const argv = require('@unitybase/base').argv
+  // connect to server
+  let session = argv.establishConnectionFromCmdLineAttributes()
+  console.log('Session.uData:', session.uData, typeof session.uData, session.uData.lang)
+
+  let userLang = session.uData.lang
+  let conn = session.connection
+  // obtain domain information
+  const domainInfo = conn.getDomainInfo()
+
  * @module @unitybase/base/argv
  */
 /* global removeCommentsFromJSON, startServer, stopServer */
