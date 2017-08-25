@@ -1,5 +1,5 @@
 /**
- * HTTPS client.
+ * HTTPS client. See {@link module:http} for details
  * @module https
  */
  

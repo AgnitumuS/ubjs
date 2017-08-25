@@ -82,7 +82,7 @@ In case of HTTP thread do not try to obtain a protocol instance during thread in
 both HTTP & WebSocket thread pool are initialized in parallel.
 So you must obtain a protocol instance inside entity methods:
 
-    const WebSockets = require('WebSockets');
+    const WebSockets = require('@unitybase/ub/modules/web-sockets');
     function SomeMethod(ctx){
         var notifier = WebSockets.getWSNotifier();
         if (notifier) {
