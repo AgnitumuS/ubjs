@@ -115,7 +115,7 @@ nav input[type=checkbox]:checked + label:before {
 nav {
     float: left;
     display: block;
-    width: 300px;
+    /* width: 300px; */
     overflow: auto;
     position: fixed;
     height: 100%;
