@@ -1,4 +1,7 @@
 {
+  "server-architecture": {
+    "title": "00 Server architecture"
+  },
   "http_server": {
     "title": "01 Build-in HTTP server",
     "children": {
