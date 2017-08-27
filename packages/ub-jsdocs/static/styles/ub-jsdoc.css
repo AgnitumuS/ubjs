@@ -585,7 +585,7 @@ dl.param-type {
 
   nav {
     background: #FFF;
-    width: 300px;
+    /*width: 300px;*/
     height: 100%;
     position: fixed;
     top: 0;
