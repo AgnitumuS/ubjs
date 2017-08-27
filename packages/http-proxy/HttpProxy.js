@@ -25,6 +25,9 @@ const http = require('http')
 const EventEmitter = require('events').EventEmitter
 const UBA_COMMON = require('@unitybase/base').uba_common
 
+/**
+ * @class
+ */
 class HttpProxy extends EventEmitter {
   /**
    * @param {Object} config
@@ -166,4 +169,3 @@ class HttpProxy extends EventEmitter {
 }
 
 module.exports = HttpProxy
-
