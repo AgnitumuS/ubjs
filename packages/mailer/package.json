@@ -27,5 +27,10 @@
   ],
   "engines": {
     "UnityBase": "^4.0"
+  },
+  "eslintConfig": {
+    "extends": ["standard"],
+    "globals": {
+    }
   }
 }

@@ -1,46 +1,9 @@
 /**
- * Module for send and receive mail.
- * ssl is not supported. If you need SSL connection - use {@link UBMail_openssl}
+ * Implementation of UBMail with openssl. This module loading time is more then 2 seconds. So if you not need use ssl use UBMail.
  *
- * WARNING - do not send a mail directly from a HTTP thread. Mailer can fail or work slowly.
- * The rigth way is to put a mail messages in the queue and send it via scheduler.
+ * You need OpenSSL libraries version >= 0.9.7 to be installed and libraries libssl32.dll, libeay32.dll, ssleay32.dll must be in the PATH
  *
- * UBQ model already have:
- *
- *  - a module 'modules/mail-queue` for addint EMails to queue
- *  - a `mail` scheduler job for sending a mail from queue (once a minute by default)
- *
- *
- * Usage sample:
- *
- *      var UBMail = require('@unitybase/mailer');
- *      sender = new UBMail.TubMailSender({
-            host: 'mail.host.name',
-            port: '25',
-            tls: false
-        });
-        sender.sendMail({
-            subject: "subject 1",
-            bodyType: UBMail.TubSendMailBodyType.Text,
-            body: "body\r\n 1",
-            fromAddr: mailAddr1,
-            toAddr: [mailAddr1, mailAddr2]
-        });
-
-        var receiver = new UBMail.TubMailReceiver({
-            host: mailHost,
-            port: '110',
-            tls: false,
-            auth: true,
-            user: 'mpv',
-            password: "myPassword"
-        });
-        receiver.reconnect();
-        var cnt = r.getMessagesCount(), res = [], i;
-        for ( i = 1; i <= cnt; i++ ) {
-            res.push(r.receive(i));
-        }
- *
+ * See {@link @module:@unitybase/mailer @unitybase/mailer} for details
  * @module @unitybase/mailer-ssl
  */
 const dllName = 'UBMail.dll'

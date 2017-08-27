@@ -13,6 +13,7 @@
       "./packages/http-proxy",
       "./packages/canvas/UBCanvas.js",
       "./packages/com-bridge/UBComBridge.js",
+      "./packages/mailer",
       "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
