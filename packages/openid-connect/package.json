@@ -24,5 +24,17 @@
     "@unitybase/ub": "^4.0.35",
     "btoa": "^1.1.2"
   },
-  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+  "eslintConfig": {
+    "extends": [
+      "standard"
+    ],
+    "globals": {
+      "App": true,
+      "Session": true
+    }
+  },
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
+  "devDependencies": {
+    "@unitybase/stubs": "^4.1.6"
+  }
 }

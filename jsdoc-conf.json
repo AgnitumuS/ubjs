@@ -14,6 +14,7 @@
       "./packages/canvas/UBCanvas.js",
       "./packages/com-bridge/UBComBridge.js",
       "./packages/mailer",
+      "./packages/openid-connect/openIDConnect.js",
       "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
