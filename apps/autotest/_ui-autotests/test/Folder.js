@@ -22,7 +22,6 @@ describe("Login to the system", function () {
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
         browser.pause(1000)
-
     });
 });
 
@@ -67,6 +66,7 @@ describe("Move Shortcut to Folder", function () {
         browser.waitForVisible('//ul[@class="x-list-plain"]//li[contains(.,"test")]');
         browser.click('//ul[@class="x-list-plain"]//li[contains(.,"'+folderCaption+'")]');
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
+        browser.pause(1000);
     });
     it("Check move of the Shortcut to the Folder", function () {
         var shortcutToMoved = browser.isExisting('//*[@id="' + ExtLocator.getId('ubleftpanel') + '"]//tr[.="tst_ODataRef"]');
@@ -90,6 +90,7 @@ describe("Move Shortcut from Folder", function () {
     });
     it("Clear 'Shortcut folder' field and 'save and close' ", function () {
         var parentIdFieldLoc = ExtLocator.getCss('ubcombobox[attributeName=parentID]') + '-inputEl';
+        browser.pause(1000);
         browser.waitForEnabled(parentIdFieldLoc);
         browser.clearElement(parentIdFieldLoc);
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
