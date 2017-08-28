@@ -116,7 +116,9 @@ Ext.define('UB.view.LoginWindow', {
       authItems = [],
       firstLogin, silenceKerberosLogin,
       minAuthTabsHeight = 265,
-      lastSavedLogin = window.localStorage.getItem('lastLogin')
+      lastSavedLogin = window.localStorage.getItem('lastLogin'),
+      locale = this.connection.preferredLocale,
+      applicationName
     var cfgAdminUI = UB.appConfig.uiSettings.adminUI
     firstLogin = JSON.parse(window.localStorage.getItem('firstLogin') || 'false')
     silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false')
@@ -143,11 +145,17 @@ Ext.define('UB.view.LoginWindow', {
     }
     // form caption
     if (cfgAdminUI && cfgAdminUI.applicationName) {
+      if (typeof(cfgAdminUI.applicationName) === 'string')
+        applicationName = cfgAdminUI.applicationName
+      else if (_.isObject(cfgAdminUI.applicationName))
+        applicationName = cfgAdminUI.applicationName[locale]
+    }
+    if (applicationName) {
       me.items.push({
         xtype: 'component',
         autoEl: {
           tag: 'h2',
-          html: UB.appConfig.uiSettings.adminUI.applicationName
+          html: applicationName
         }
       })
     }
