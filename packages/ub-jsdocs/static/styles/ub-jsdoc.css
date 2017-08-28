@@ -252,10 +252,10 @@ section {
 
 footer {
   color: hsl(0, 0%, 28%);
-  margin-left: 300px;
   display: block;
   padding: 15px;
   font-size: 70%;
+  text-align: right;
 }
 
 dd {
