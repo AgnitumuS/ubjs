@@ -33,6 +33,7 @@
     "@unitybase/ubq": "^4.2.7",
     "@unitybase/ubs": "^4.1.25",
     "@unitybase/xlsx": "^4.0.27",
+    "@unitybase/openid-connect": "^1.0.3",
     "asn1js": "^2.0.14",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
@@ -51,7 +52,8 @@
     "tinymce": "^4.5.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.6"
+    "@unitybase/stubs": "^4.1.6",
+    "@unitybase/ubcli": "^1.0.33"
   },
   "engines": {
     "ub": "4.1.0-beta.5"
