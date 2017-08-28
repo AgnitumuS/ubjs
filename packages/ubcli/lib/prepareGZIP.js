@@ -18,7 +18,7 @@ const path = require('path')
 const options = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const util = require('util')
-const gzipFile = require('UBCompressors').gzipFile
+const gzipFile = require('@unitybase/compressors').gzipFile
 
 module.exports = function prepareGZIP (cfg) {
   if (!cfg) {

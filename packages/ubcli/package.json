@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@unitybase/base": "^4.2.14",
+    "@unitybase/compressors": "^1.0.0",
     "lodash": "^4",
     "mustache": "^2.3.0"
   },
