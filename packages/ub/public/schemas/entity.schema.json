@@ -132,7 +132,7 @@
                         "default": "ID"
                     },
                     "generateFK": {
-                        "dataType": "boolean",
+                        "type": "boolean",
                         "default": true,
                         "description": "Possible for `dataType=Entity` - set this to `false` to bypass foreign key generation on the database level"
                     },
@@ -145,12 +145,12 @@
                         "description": "Required for `dataType=Enum` - Group code from ubm_enum.eGroup"
                     },
                     "cascadeDelete": {
-                        "dataType": "boolean",
+                        "type": "boolean",
                         "default": false,
                         "description": "Possible for `dataType=Entity` - enable cascade delete on application serve level (not on database level)"
                     },
                     "storeName": {
-                        "dataType": "string",
+                        "type": "string",
                         "default": "",
                         "description": "Possible for `dataType=Document` - name of store from `storeConfig` application config section. If emtpy - store with `isDefault=true` will be used"
                     },
