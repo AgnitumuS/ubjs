@@ -78,7 +78,7 @@ Options.prototype.add = function add (otherOptions) {
  * @param {Array} [errors] If passed will bw filled by a errors in passed parameters
  */
 Options.prototype.parse = function parse (defaults, errors) {
-  let result = _.defaults({}, defaults)
+  let result = Object.assign({}, defaults)
   // [{short: 'u', long: 'user', param: 'userName', defaultValue: true, searchInEnv: true, help: 'A user name for server connection'}]
   let valid = true
   this.options.forEach(function (option) {

@@ -55,7 +55,9 @@ module.exports = function prepareGZIP (cfg) {
 
   let configFileName = argv.getConfigFileName()
   let configPath = path.dirname(configFileName)
-  let startFrom = relToAbs(configPath, inetPub)
+  let startFrom = path.isAbsolute(inetPub)
+    ? inetPub
+    : path.join(configPath, inetPub)
   let endWith = startFrom.charAt(startFrom.length - 1)
   if ((endWith !== '\\') && (endWith !== '/')) {
     startFrom += '/'
