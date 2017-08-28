@@ -32,7 +32,6 @@
      }
      App.on('getDocument:before', doSomethingBeforeGetDocumentCall);
 
-
      const querystring = require('querystring')
      //
      //After getDocument requests
@@ -413,118 +412,114 @@ const Session = {
    *
    * Below is a sample code for CERT schema:
    *
-   *      var iitCrypto = require('iitCrypto');
-   *      iitCrypto.init();
-   *
-   *      Session.on('newUserRegistration', function(registrationParams){
-   *          var params = JSON.parse(registrationParams);
-   *          Session.runAsAdmin(function () {
-   *              var
-   *                  storeCert, certData, certInfo,
-   *                  certID, userID, request, certJson, handler,
-   *                  certParams, connectionName, roleStore,
-   *                  storeUser = UB.Repository('uba_user')
-   *                      .attrs(['ID','name','mi_modifyDate'])
-   *                      .where('name', '=', params.name).select(),
-   *                  userExist, certExist;
-   *
-   *              userExist = !storeUser.eof;
-   *              if (userExist) {
-   *                  userID = storeUser.get('ID');
-   *              }
-   *              storeCert = UB.Repository('uba_usercertificate').attrs(['ID', 'userID.name', 'disabled', 'revoked'])
-   *                  .where('serial', '=', params.serialSign);
-   *              try {
-   *                  if (!App.serverConfig.security.dstu.findCertificateBySerial) {
-   *                      storeCert = storeCert.where('issuer_serial', '=', params.issuer);
-   *                  }
-   *                  storeCert = storeCert.select();
-   *                  certExist = !storeCert.eof;
-   *                  if (certExist && ((storeCert.get('disabled') === 1) || (storeCert.get('revoked') === 1))) {
-   *                      throw new Error('Certificate is disabled');
-   *                  }
-   *                  if (!userExist && certExist) {
-   *                      throw new Error('Certificate already registered by another user');
-   *                  }
-   *
-   *                  if (certExist) {
-   *                      throw new Error('Certificate already registered');
-   *                      //throw new Error('User ' + params.name + ' already registred');
-   *                  }
-   *              } finally {
-   *                  storeUser.freeNative();
-   *                  storeCert.freeNative();
-   *              }
-   *
-   *              certData = Buffer.from(params.certificationB64, 'base64');
-   *              certInfo = iitCrypto.parseCertificate(certData.buffer);
-   *
-   *              if (!userExist) {
-   *                  storeUser = new TubDataStore('uba_user');
-   *                  storeUser.run('insert', {
-   *                          fieldList: ['ID'],
-   *                          execParams: {
-   *                              name: params.name,
-   *                              email: certInfo.SubjEMail,
-   *                              disabled: 0,
-   *                              isPending: 0,
-   *                              // random
-   *                              uPasswordHashHexa: (new Date()).getTime().toString(27) + Math.round(Math.random() * 10000000000000000).toString(28),
-   *                              //phone
-   *                              //description:
-   *                              firstName: certInfo.SubjFullName //certInfo.SubjOrg
-   *                          }
-   *                      }
-   *                  );
-   *                  userID = storeUser.get('ID');
-   *
-   *                  roleStore = UB.Repository('uba_role')
-   *                      .attrs(['ID','name'])
-   *                      .where('name', 'in', ['Admin']).select();
-   *                  while (!roleStore.eof){
-   *                      storeUser.run('insert', {
-   *                              entity: 'uba_userrole',
-   *                              execParams: {
-   *                                  userID: userID,
-   *                                  roleID: roleStore.get('ID')
-   *                              }
-   *                          }
-   *                      );
-   *
-   *                      roleStore.next();
-   *                  }
-   *              }
-   *              storeCert  = new TubDataStore('uba_usercertificate');
-   *              certID = storeCert.generateID();
-   *
-   *              certParams = new TubList();
-   *              certParams.ID = certID;
-   *              certParams.userID = userID;
-   *              certParams.issuer_serial = params.issuer;
-   *              certParams.serial = params.serialSign;
-   *              certParams.setBLOBValue('certificate', params.certificationB64);
-   *              //issuer_cn: certInfo.issuerCapt,
-   *              certParams.disabled = 0;
-   *              certParams.revoked = 0;
-   *
-   *              storeCert.run('insert', {
-   *                      fieldList: ['ID'],
-   *                      execParams: certParams
-   *                  }
-   *              );
-   *
-   *              connectionName = App.domain.byName('uba_user').connectionName;
-   *              if (App.dbInTransaction(connectionName)) {
-   *                  App.dbCommit(connectionName);
-   *              }
-   *              throw new Error('<UBInformation><<<Регистрация прошла успешно.>>>');
-   *
-   *          });
-   *      });
+      const iitCrypto = require('iitCrypto')
+      iitCrypto.init()
+
+      Session.on('newUserRegistration', function (registrationParams) {
+        let params = JSON.parse(registrationParams)
+        Session.runAsAdmin(function () {
+          var
+            storeCert, certData, certInfo,
+            certID, userID,
+            certParams, connectionName, roleStore,
+            certExist
+
+          let storeUser = UB.Repository('uba_user')
+            .attrs(['ID', 'name', 'mi_modifyDate'])
+            .where('name', '=', params.name).select()
+          let userExist = !storeUser.eof
+
+          if (userExist) {
+            userID = storeUser.get('ID')
+          }
+          storeCert = UB.Repository('uba_usercertificate')
+            .attrs(['ID', 'userID.name', 'disabled', 'revoked'])
+            .where('serial', '=', params.serialSign)
+          try {
+            if (!App.serverConfig.security.dstu.findCertificateBySerial) {
+              storeCert = storeCert.where('issuer_serial', '=', params.issuer)
+            }
+            storeCert = storeCert.select()
+            certExist = !storeCert.eof
+            if (certExist && ((storeCert.get('disabled') === 1) || (storeCert.get('revoked') === 1))) {
+              throw new Error('Certificate is disabled')
+            }
+            if (!userExist && certExist) {
+              throw new Error('Certificate already registered by another user')
+            }
+
+            if (certExist) {
+              throw new Error('Certificate already registered')
+              // throw new Error('User ' + params.name + ' already registred');
+            }
+          } finally {
+            storeUser.freeNative()
+            storeCert.freeNative()
+          }
+
+          certData = Buffer.from(params.certificationB64, 'base64')
+          certInfo = iitCrypto.parseCertificate(certData.buffer)
+
+          if (!userExist) {
+            storeUser = new TubDataStore('uba_user')
+            storeUser.run('insert', {
+              fieldList: ['ID'],
+              execParams: {
+                name: params.name,
+                email: certInfo.SubjEMail,
+                disabled: 0,
+                isPending: 0,
+                // random
+                uPasswordHashHexa: (new Date()).getTime().toString(27) + Math.round(Math.random() * 10000000000000000).toString(28),
+                // phone
+                // description:
+                firstName: certInfo.SubjFullName // certInfo.SubjOrg
+              }
+            })
+            userID = storeUser.get('ID')
+
+            roleStore = UB.Repository('uba_role')
+              .attrs(['ID', 'name'])
+              .where('name', 'in', ['Admin']).select()
+            while (!roleStore.eof) {
+              storeUser.run('insert', {
+                entity: 'uba_userrole',
+                execParams: {
+                  userID: userID,
+                  roleID: roleStore.get('ID')
+                }
+              })
+              roleStore.next()
+            }
+          }
+          storeCert = new TubDataStore('uba_usercertificate')
+          certID = storeCert.generateID()
+
+          certParams = new TubList()
+          certParams.ID = certID
+          certParams.userID = userID
+          certParams.issuer_serial = params.issuer
+          certParams.serial = params.serialSign
+          certParams.setBLOBValue('certificate', params.certificationB64)
+          // issuer_cn: certInfo.issuerCapt,
+          certParams.disabled = 0
+          certParams.revoked = 0
+
+          storeCert.run('insert', {
+            fieldList: ['ID'],
+            execParams: certParams
+          })
+
+          connectionName = App.byName('uba_user').connectionName
+          if (App.dbInTransaction(connectionName)) {
+            App.dbCommit(connectionName)
+          }
+          throw new Error('<UBInformation><<<Регистрация прошла успешно.>>>')
+        })
+      })
    *
    * @event newUserRegistration
    */
-
 
   /**
    * Fires in case `auth` endpoint is called with authentication schema UB and userName is founded in database,
@@ -1121,7 +1116,7 @@ THTTPRequest.prototype = {
    * @readonly
    */
   decodedParameters: 'params',
-  /** @inheritdoc 
+  /** @inheritdoc
    * @param {String} [encoding]
    */
   read: function (encoding) {},
@@ -1156,9 +1151,9 @@ THTTPRequest.prototype = {
 function THTTPResponse () {}
 THTTPResponse.prototype = {
   /** Add response header(s). Can be called several times for DIFFERENT header
-   * 
+   *
    *    resp.writeHead('Content-Type: text/css; charset=UTF-8\r\nOther-header: value')
-   *    
+   *
    * @param {String} header one header or #13#10 separated headers
    */
   writeHead: function (header) {},
@@ -1388,8 +1383,23 @@ WebSocketConnection.prototype = {
  * @enum {Number}
  * @readonly
  */
-TubAttrDataType = {Unknown: 0, String: 1, Int: 2, BigInt: 3, Float: 4, Currency: 5, Boolean: 6, DateTime: 7,
-    Text: 8, ID: 9, Entity: 10, Document: 11, Many: 12, TimeLog: 13, Enum: 14, BLOB: 15, Date: 16}
+TubAttrDataType = {Unknown: 0,
+  String: 1,
+  Int: 2,
+  BigInt: 3,
+  Float: 4,
+  Currency: 5,
+  Boolean: 6,
+  DateTime: 7,
+  Text: 8,
+  ID: 9,
+  Entity: 10,
+  Document: 11,
+  Many: 12,
+  TimeLog: 13,
+  Enum: 14,
+  BLOB: 15,
+  Date: 16}
 
 /**
  * Entity cache type
@@ -1403,8 +1413,17 @@ TubCacheType = {None: 0, SessionEntity: 1, Entity: 2, Session: 3}
  * @enum {Number}
  * @readonly
  */
-TubSQLDialect = {AnsiSQL: 0, Oracle: 1, Oracle9: 2, Oracle10: 3, Oracle11: 4, MSSQL: 5,
-    MSSQL2008: 6, MSSQL2012: 7, SQLite3: 8, PostgreSQL: 9, Firebird: 10}
+TubSQLDialect = {AnsiSQL: 0,
+  Oracle: 1,
+  Oracle9: 2,
+  Oracle10: 3,
+  Oracle11: 4,
+  MSSQL: 5,
+  MSSQL2008: 6,
+  MSSQL2012: 7,
+  SQLite3: 8,
+  PostgreSQL: 9,
+  Firebird: 10}
 
 /**
  * Entity dataSource types
