@@ -762,8 +762,8 @@
           "additionalProperties": false,
           "properties": {
             "applicationName": {
-              "type": "string",
-              "description": "Name of application for show on the login form. In case explicity defined as empty string - not shown in login form",
+              "type": ["string", "object"],
+              "description": "Name of application for show on the login form. In case explicity defined as empty string - not shown in login form. For localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"miy dodatok\"}",
               "default": "UnityBase"
             },
             "applicationTitle": {
