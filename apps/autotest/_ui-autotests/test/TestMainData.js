@@ -157,6 +157,7 @@ describe("Edit 'Code'", function () {
         textInCode.should.equal(newCode);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+newCode+'"]';
         browser.doubleClick(editedItemInGrid);
+        browser.pause(3000);
         var textInTextAreaAfterEditing = browser.getValue(ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl');
         textInTextAreaAfterEditing.should.equal(newCode);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
@@ -402,6 +403,7 @@ describe("Add 'nonNullDict_ID' element", function () {
         textUkrInNonNullDict_ID.should.equal(captionUkrCodeNewNonNullDict_ID);
         var editedItemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="'+captionUkrCodeNewNonNullDict_ID+'"]';
         browser.doubleClick(editedItemInGrid);
+        browser.pause(1000);
         var textUKRInNonNullDictID_EditForm = browser.getValue(ExtLocator.getCss('ubcombobox[attributeName=nonNullDict_ID]') + '-inputEl');
         textUKRInNonNullDictID_EditForm.should.equal(captionUkrCodeNewNonNullDict_ID);
         browser.click(ExtLocator.getCss("tab[text=ub test main data][active=true]") + '-closeEl');
@@ -848,7 +850,7 @@ describe("Add 'test many data'", function () {
     it("Select item from list for Add 'test many data'", function () {
         var itemInGrid = '//*[@id="' + ExtLocator.getId('ubtableview') + '"]//div[.="Код9"]';
         browser.doubleClick(itemInGrid);
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Add 'test many data' element", function () {
         browser.setValue(ExtLocator.getCss('ubboxselect[attributeName="manyValue"]') + '-inputEl','caption');
