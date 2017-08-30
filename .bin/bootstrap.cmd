@@ -1,12 +1,3 @@
-call npm i
-@if errorlevel 1 goto err
-call npx lerna bootstrap
-@if errorlevel 1 goto err
-
-cd .\packages\ubcli
-call npm link
-cd ..\..
-
 if exist ..\ub-e\packages (
   cd ..\ub-e
   call npm i
@@ -31,6 +22,15 @@ if exist ..\ub-d\packages (
   echo otherwise remove all @ub-d/* models from .\apps\autotest\ubConfig*.json 
 )
 
+call npm i
+@if errorlevel 1 goto err
+call npx lerna bootstrap
+@if errorlevel 1 goto err
+
+cd .\packages\ubcli
+call npm link
+cd ..\..
+
 if not defined SRC (
   echo on
   echo To compile a native modules you need:
@@ -41,7 +41,7 @@ if not defined SRC (
   echo In case you do not have access to Server Sources or compilers - run a 
   echo   `npm run replace-native` in autotest folder
   echo This will install latest compiled packages from registry
-  goto end
+  exit 0
 )
 
 call npm run build:native
