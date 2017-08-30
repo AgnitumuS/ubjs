@@ -580,7 +580,11 @@ class CustomRepository {
   }
 
     /**
-     * Select a single row. If ubql result is empty - return {undefined}.
+     * Select a single row. If ubql result is empty - return {undefined}
+     *
+     *    UB.Repository('uba_user').attrs('name', 'ID').where('ID', '=', 10)
+     *      .selectSingle().then(UB.logDebug)
+     *    // will output: {name: "admin", ID: 10}
      *
      * WARNING method do not check repository contains the single row and always return a first row from result.
      * @abstract
@@ -592,6 +596,11 @@ class CustomRepository {
 
     /**
      * Perform select and return a value of the first attribute from the first row
+     *
+     *    UB.Repository('uba_user')
+     *    .attrs('name')
+     *    .where('ID', '=', 10)
+     *    .selectScalar().then(UB.logDebug) // will output `admin`
      *
      * WARNING method do not check repository contains the single row
      * @abstract
@@ -606,7 +615,8 @@ class CustomRepository {
      *
      * If result not empty - return a object
      *
-     *    {attr1: val1, arrt2: val2}
+     *    UB.Repository('uba_user').attrs('name', 'ID').selectById(10).then(UB.logDebug)
+     *    // will output: {name: "admin", ID: 10}
      *
      * for server side or Promise resolved to object for client
      *
