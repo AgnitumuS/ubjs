@@ -44,7 +44,7 @@ describe("Add Desktop", function () {
         browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=caption]') + '-inputEl', 'test_desktop_name');
         browser.setValue(ExtLocator.getCss('ubtextfield[attributeName=code]') + '-inputEl', 'test_desktop_code');
         browser.click(ExtLocator.getCss('button[cls=save-and-close-action]'));
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Check added Desktop in the grid of Desktops", function () {
         var createdDesktopInTab = browser.isExisting('//*[@id="' + ExtLocator.getId('ubtableview') + '"]//td[.="test_desktop_name"]');
