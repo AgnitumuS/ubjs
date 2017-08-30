@@ -1,5 +1,6 @@
 npm i -g npm
-npm i -g lerna npx webpack
+npm i -g lerna npx
+npm i -g webpack
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\Users\QA\Documents\UBStandard4.1.0-beta.6.zip", "C:\UnityBase")
@@ -62,11 +63,25 @@ cmd /c mklink /D uba C:\ubjs\packages\uba
 
 # workaround to install @ub-d/iit-crypto
 Remove-Item -Recurse C:\ubjs\apps\autotest\node_modules\@ub-d\iit-crypto -Force
+Remove-Item -Recurse C:\ubjs\apps\autotest\node_modules\@unitybase\openid-connect -Force
 New-Item -ItemType Directory "C:\dummy"
 cd C:\dummy
 npm i @ub-d/iit-crypto --save --registry=http://registry.unitybase.info
+npm i @unitybase/openid-connect@^1.0.5 --save --registry=http://registry.unitybase.info
+
 copy-item -Recurse C:\dummy\node_modules\@ub-d\iit-crypto -destination C:\ubjs\apps\autotest\node_modules\@ub-d
 copy-item -Recurse C:\dummy\node_modules\@ub-d\iit-libbin -destination C:\ubjs\apps\autotest\node_modules\@ub-d
+
+copy-item -Recurse C:\dummy\node_modules\@unitybase\openid-connect -destination C:\ubjs\apps\autotest\node_modules\@unitybase
+
+copy-item C:\ub-e\.npmrc -destination C:\ubjs\apps\autotest\node_modules\@unitybase\openid-connect
+cd C:\ubjs\apps\autotest\node_modules\@unitybase\openid-connect
+npm i
+
+# fix / workaround for ubcli 
+$c = Get-Content C:\ubjs\apps\autotest\node_modules\.bin\ubcli.cmd
+$cx = $c -replace [Regex]::Escape('%UB_HOME%\ub  "%~dp0\..\..\..\..\packages\ubcli\bin\ubcli.js" %*'), '%UB_HOME%\ub  "%~dp0\..\..\..\..\..\packages\ubcli\bin\ubcli.js" %*'
+set-content -Path C:\ubjs\apps\autotest\node_modules\.bin\ubcli.cmd $cx 
 
 cd C:\ubjs\apps\autotest
 npm run test
