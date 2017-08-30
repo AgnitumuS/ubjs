@@ -16,6 +16,7 @@ const UBDomain = require('@unitybase/base/UBDomain')
  * @param {THTTPResponse} resp
  * @param {string} reason
  * @return {boolean}
+ * @private
  */
 function badRequest (resp, reason) {
   resp.statusCode = 400
@@ -28,6 +29,7 @@ function badRequest (resp, reason) {
  * @param {THTTPResponse} resp
  * @param {string} reason
  * @return {boolean}
+ * @private
  */
 function notFound (resp, reason) {
   resp.statusCode = 404
@@ -40,6 +42,7 @@ function notFound (resp, reason) {
  *
  * @param {string} reqPath
  * @param {THTTPResponse} resp
+ * @private
  */
 function resolveModelFile (reqPath, resp) {
   let entry = {
@@ -91,6 +94,7 @@ function resolveModelFile (reqPath, resp) {
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @member {App}
  */
 function models (req, resp) {
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
@@ -219,6 +223,7 @@ function getAppInfo (req, resp) {
   let appInfo = {
     serverVersion: process.version,
     defaultLang: serverConfig.application.defaultLang || 'en',
+    simpleCertAuth: !!serverConfig.security.simpleCertAuth,
 
     trafficEncryption: DSTU ? DSTU.trafficEncryption : false,
     serverCertificate: (DSTU && DSTU.trafficEncryption) ? App.serverPublicCert : '',

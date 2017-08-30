@@ -23,16 +23,18 @@ UB.isServer = true; //Object.defineProperty(UB, 'isServer', {enumerable: true, v
 
     // process & module function is documented inside _UBCommonGlobals.js
     function startup() {
-        let require = global.require,
-            module = require('module'),
-            path = require('path');
-
-        /**
+        let require = global.require
+	/**
          * Put something to log with log levels depending on method
          * @global
          * @type {Console}
          */
         console = require('console');
+
+        let module = require('module')
+        let path = require('path')
+
+        
         process.emitWarning = console.warn;
 
 
@@ -55,15 +57,31 @@ UB.isServer = true; //Object.defineProperty(UB, 'isServer', {enumerable: true, v
         * @param {String} [message] Message
         * @extends {Error}
         */
-        UB.UBAbort = function UBAbort(message) {
+        //UB.UBAbort = Error
+	
+	//For SM<=45 we use a "exception class" inherit pattern below, but it stop working in SM52, so fallback to Error
+	UB.UBAbort = function UBAbort(message) {
             this.name = 'UBAbort';
             this.code = 'UBAbort';
             this.message = message || 'UBAbortError';
-            this.stack = (new Error()).stack;
+            if (Error.captureStackTrace) {
+    		// Chrome and NodeJS
+    		Error.captureStackTrace(this, stackStartFunction);
+  	    } else {
+     		// FF, IE 10+ and Safari 6+. Fallback for others
+     		let tmp_stack = (new Error).stack.split("\n").slice(1),
+         	re = /^(.*?)@(.*?):(.*?)$/.exec(tmp_stack[1]); //[undef, undef, this.fileName, this.lineNumber] = re
+     		this.fileName = re[2];
+     		this.lineNumber = re[3];
+     		this.stack = tmp_stack.join("\n");
+ 	    }
+            // originat FF version:
+	    // this.stack = (new Error()).stack;
         };
-        UB.UBAbort.prototype = new Error();
+        UB.UBAbort.prototype = Object.create(Error.prototype) // new Error();
+        //UB.UBAbort.prototype = new Error();
         UB.UBAbort.prototype.constructor = UB.UBAbort;
-
+        
         if (process.isServer || process.isWebSocketServer){
             if (process.isServer) {
 
@@ -98,13 +116,6 @@ UB.isServer = true; //Object.defineProperty(UB, 'isServer', {enumerable: true, v
                         __preventDefault = true;
                     };
 
-                  /**
-                   * Enit event `endpointName + ':before'` and if  `App.preventDefault` not called inside event handlers,
-                   * launch endpoint with (req, reps) and when emit `endpointName + ':after'`
-                   * @param {string} endpointName
-                   * @param {THTTPRequest} req
-                   * @param {THTTPResponse} resp
-                   */
                     App.launchEndpoint = function(endpointName, req, resp){
                         __preventDefault = false;
                         this.emit(endpointName + ':before', req, resp);

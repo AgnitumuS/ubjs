@@ -1,22 +1,22 @@
 /**
- * Command line module.
+ * Create internal BLOB store structure (folders) for specifies FileSystem store.
  *
- * Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed
- * ( remote server connection is not supported).
+ * Must be used on the same computer where UnityBase server installed ( remote server connection is not supported).
  *
- * @example
- //from a command line
- >ub cmd/createStore -help
+ * Usage from a command line:
 
- //form a script
- var storeCreator = require('cmd/createStore');
- var options = {
-    store: "*"
- };
- storeCreator(options);
+    ubcli createStore -?
+
+ * Usage from a script:
+
+     const storeCreator = require('@unitybase/ubcli/createStore')
+     let options = {
+        store: "*"
+     };
+     storeCreator(options)
 
  * @author pavel.mash
- * @module cmd/createStore
+ * @module @unitybase/ubcli/createStore
  */
 
 const _ = require('lodash')
@@ -26,7 +26,7 @@ const cmdLineOpt = require('@unitybase/base/options')
 const argv = require('@unitybase/base/argv')
 
 module.exports = function createStore (options) {
-  var
+  let
     configFileName,
     configPath,
     config,
@@ -35,12 +35,12 @@ module.exports = function createStore (options) {
     selectedStores
 
   if (!options) {
-    var opts = cmdLineOpt.describe('cmd/createStore',
-                'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
-                'ubcli'
-            )
-            .add({short: 'cfg', long: 'cfg', param: 'serverConfig', defaultValue: 'ubConfig.json', help: 'Server config'})
-            .add({short: 'store', long: 'store', param: 'storesList', defaultValue: '*', help: 'Comma separated blob stores list'})
+    let opts = cmdLineOpt.describe('createStore',
+          'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
+          'ubcli'
+      )
+      .add({short: 'cfg', long: 'cfg', param: 'serverConfig', defaultValue: 'ubConfig.json', help: 'Server config'})
+      .add({short: 'store', long: 'store', param: 'storesList', defaultValue: '*', help: 'Comma separated blob stores list'})
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
@@ -76,16 +76,14 @@ module.exports = function createStore (options) {
   configPath = path.dirname(configFileName)
 
   function createOneStore (cStore) {
-    var
+    let
       cStorePath,
       tmp
 
     function createSubFolders (startFromPath, level) {
-      var
-        i, fld
       if (level) {
-        for (i = 100; i < 501; i++) {
-          fld = startFromPath + i.toString(10) + '\\'
+        for (let i = 100; i < 501; i++) {
+          let fld = startFromPath + i.toString(10) + '\\'
           if (!fs.isDir(fld)) {
             fs.mkdirSync(fld)
           }

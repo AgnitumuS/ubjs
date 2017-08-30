@@ -1,13 +1,15 @@
 /**
  * Run automatic test by enumerating all *models* & *modules* `_autotest` folders and execute all *.js from there.
  *
- * Application must be initialized before autotest call (run `createNewApp.cmd` from your application folder)
+ * Application must be initialized before call this module
  *
- *      >ub cmd/autotest
- *
+ * Command line usage:
+
+     ubcli autotest -?
+
  * Warning! Some autotest may be designed to run only once after application initialization
  *
- * @module cmd/autotest
+ * @module @unitybase/ubcli/autotest
  */
 const _ = require('lodash')
 const fs = require('fs')
@@ -109,19 +111,19 @@ module.exports = function autotest (options) {
 
   let failed = _.filter(testResults, {result: false})
   global._timerLoop.setTimeoutWithPriority(
-        function () {
-          process.on('exit', function () {
-            console.info((testResults.length - failed.length) + ' of ' + testResults.length + ' tests passed')
-            if (failed.length) {
-              fs.writeFileSync(process.cwd() + '_autotestResults.json', JSON.stringify(failed, null, '\t'))
-              console.error(failed.length + ' tests fail. See ' + process.cwd() + '_autotestResults.json for details')
-              throw new Error('Autotest complete with errors')
-            }
-          })
-        },
-        0,
-        1000
-    )
+    function () {
+      process.on('exit', function () {
+        console.info((testResults.length - failed.length) + ' of ' + testResults.length + ' tests passed')
+        if (failed.length) {
+          fs.writeFileSync(process.cwd() + '_autotestResults.json', JSON.stringify(failed, null, '\t'))
+          console.error(failed.length + ' tests fail. See ' + process.cwd() + '_autotestResults.json for details')
+          throw new Error('Autotest complete with errors')
+        }
+      })
+    },
+    0,
+    1000
+  )
 
   function requireAndRun (folderName, modelName, file) {
     let testModule

@@ -1,38 +1,47 @@
+// All classes here are implemented inside UBMail.dll
+// This unit contains a DOCUMENTATION
+
+/**
+ * @module @unitybase/mailer
+ */
+
 /**
  * @class
  * Mail body type
  * @enum {Number}
  */
-UBMail.TubSendMailBodyType = {Text: 0, HTML: 1, Calendar: 2};
+const TubSendMailBodyTypeBind = {Text: 0, HTML: 1, Calendar: 2}
 
 /**
  * @class
  * Mail attach kind
  * @enum {Number}
  */
-UBMail.TubSendMailAttachKind = {File: 0, Text: 1, Buffer: 2};
+const TubSendMailAttachKindBind = {File: 0, Text: 1, Buffer: 2}
 
 /**
  * @class
- * Mail POP3 receiver object
+ * Binding to a native implementation of POP3 receiver.
+ *
+ * Should be created using {@link TubMailReceiver} method of {@link module:@unitybase/mailer} module
  * @constructor
  * @param {Object} paramsObj parameters object
  * @param {String} paramsObj.host host of mail server
  * @param {String} paramsObj.port port of mail server
  * @param {String} [paramsObj.user = ''] user login on mail server
  * @param {String} [paramsObj.password = ''] user password on mail server
- * @param {Boolean} [paramsObj.tls = false] use tls. In {@link UBMail} tls is
- * not implemented so you will get an exception when set this value true.
- * For using tls use {@link UBMail_openssl} class
+ * @param {Boolean} [paramsObj.tls = false] use tls. In {@link module:@unitybase/mailer} tls is
+ *   not implemented so you will get an exception when set this value true.
+ *   For using tls use {@link module:@unitybase/mailer-ssl} class
  */
-UBMail.TubMailReceiver = function(paramsObj) {};
+function TubMailReceiverBind (paramsObj) {}
 
 /**
  * Count of messages on server
  *
  * @returns {Number}
  */
-UBMail.TubMailReceiver.getMessagesCount = function() {};
+TubMailReceiverBind.getMessagesCount = function () {}
 
 /**
  * Get size of message
@@ -40,24 +49,24 @@ UBMail.TubMailReceiver.getMessagesCount = function() {};
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {Number}
  */
-UBMail.TubMailReceiver.getMessageSize = function(index) {};
+TubMailReceiverBind.getMessageSize = function (index) {}
 
 /**
  * Receive message from server
  *
  * @param {Number} index Index of mail message on server. Indexes starts from 1
- * @returns {UBMail.TUBMimeMess}
+ * @returns {TubMimeMessBind}
  */
-UBMail.TubMailReceiver.receive = function(index) {};
+TubMailReceiverBind.receive = function (index) {}
 
 /**
  * Receive message headers and first maxLines strings of message
  *
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @param {Number} maxLines Count of message lines to receive
- * @returns {UBMail.TUBMimeMess}
+ * @returns {TubMimeMessBind}
  */
-UBMail.TubMailReceiver.top = function(index, maxLines) {};
+TubMailReceiverBind.top = function (index, maxLines) {}
 
 /**
  * Mark the message to delete. The message will be removed indeed, when reconnect to the server
@@ -67,15 +76,14 @@ UBMail.TubMailReceiver.top = function(index, maxLines) {};
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {Boolean} True if successfully, in opposite case raise exception
  */
-UBMail.TubMailReceiver.deleteMessage = function(index) {};
+TubMailReceiverBind.deleteMessage = function (index) {}
 
 /**
- * @method reconnect
  * Reconnect to mail server. Get new messages from server, delete marked for delete messages.
  *
  * @returns {Boolean} True if successfully, in opposite case raise exception
  */
-UBMail.TubMailReceiver.reconnect = function() {};
+TubMailReceiverBind.reconnect = function () {}
 
 /**
  * @class UBMail.TubMailAttach
@@ -134,7 +142,7 @@ UBMail.TubMailReceiver.reconnect = function() {};
  *    For using tls use {@link UBMail_openssl} class
  * @param {Boolean} [paramsObj.auth = false] is need user authentication
  */
-UBMail.TubMailSender = function(paramsObj) {};
+function TubMailSenderBind (paramsObj) {}
 
 /**
  * Last error when last sendMail failed. Empty string last sendMail finished successfully.
@@ -142,7 +150,7 @@ UBMail.TubMailSender = function(paramsObj) {};
  * @property lastError
  * @type {String}
  */
- 
+
 /**
  * send a email message
  *
@@ -155,187 +163,181 @@ UBMail.TubMailSender = function(paramsObj) {};
  * @param {Array.<UBMail.TubMailAttach>} [mailObj.attaches = []] array of attaches. Ignoreg when bodyType is Calendar.
  * @returns {Boolean} True if successfully
  */
-UBMail.TubMailSender.sendMail = function(mailObj) {};
+TubMailSenderBind.sendMail = function (mailObj) {}
 
 /**
- * @class UBMail.TUBMimeMess
+ * @class
  * Received message
  */
-    UBMail.TUBMimeMess = function () {};
+function TubMimeMessBind () {}
 
 /**
  * Main mime part of message
- *
- * @type {UBMail.TMimePart}
- */
-    UBMail.TUBMimeMess.messagePart = {};
+  */
+TubMimeMessBind.messagePart = {}
 /**
  * Full text of message
  *
- * @type UBMail.StringCollection
+ * @type StringCollectionBind
  */
-    UBMail.TUBMimeMess.fullText = {};
+TubMimeMessBind.fullText = {}
 
 /**
  * Header of message
  *
- * @type UBMail.TMessHeader
+ * @type TMessHeaderBind
  */
-    UBMail.TUBMimeMess.header = {};
+TubMimeMessBind.header = {}
 
 /**
  * class for storing strings list
  *
- * @class UBMail.StringCollection
+ * @class StringCollectionBind
  * @implements {UBReader}
  */
-    UBMail.StringCollection = function () {};
+function StringCollectionBind () {}
 /**
  * Length content in bytes
  *
  * @type {Number}
  */
-    UBMail.StringCollection.byteLength = 0;
+StringCollectionBind.byteLength = 0
 
 /**
  * Count of lines in list
  *
  * @type {Number}
  */
-    UBMail.StringCollection.linesCount = 0;
+StringCollectionBind.linesCount = 0
 
 /**
- * @method readLn
  * Get string with custom index from list as String or ArrayBuffer
  *
  * @param {Number} index Index of string
  * @param {String} [encoding] Optional encoding of source. Default to 'utf-8'.
- *						        If 'bin' - return ArrayBuffer source representation without any conversion.
- *							  	If 'base64' - transform base64 encoded content of source to ArrayBuffer
+ *  If 'bin' - return ArrayBuffer source representation without any conversion.
+ *  If 'base64' - transform base64 encoded content of source to ArrayBuffer
  * @returns {ArrayBuffer|String} Return String in case no encoding passed or ArrayBuffer
  */
-    UBMail.StringCollection.readLn = function(index, encoding) {};
+StringCollectionBind.readLn = function (index, encoding) {}
 
 /**
- * @method read
- * @inheritdoc UBReader#read
- * @inheritDoc {UBReader#read}
+ * Implements a {@link UBReader} interface
  */
-
-    UBMail.StringCollection.read = function(encoding) {};
+StringCollectionBind.read = function (encoding) {}
 
 /**
- * @class UBMail.TMessHeader
+ * @class TMessHeaderBind
  */
-    UBMail.TMessHeader = function () {};
+function TMessHeaderBind () {}
 
 /**
  * Sender of message
  *
  * @type {String}
  */
-    UBMail.TMessHeader.from = '';
+TMessHeaderBind.from = ''
 
 /**
  * Receivers of message (one per line)
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMessHeader.toList = {};
+TMessHeaderBind.toList = {}
 
 /**
  * Carbon Copy receivers of message (one per line)
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMessHeader.cCList = {};
+TMessHeaderBind.cCList = {}
 
 /**
  * Subject of message
  *
  * @type {String}
  */
-    UBMail.TMessHeader.subject = '';
+TMessHeaderBind.subject = ''
 
 /**
  * Organization string
  *
  * @type {String}
  */
-    UBMail.TMessHeader.organization = '';
+TMessHeaderBind.organization = ''
 
 /**
  * After decoding contains all headers lines witch not have parsed to any
  * other structures in this object
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMessHeader.customHeaders = {};
+TMessHeaderBind.customHeaders = {}
 
 /**
  * Date and time of message
  *
  * @type {Date}
  */
-    UBMail.TMessHeader.date = new Date();
+TMessHeaderBind.date = new Date()
 
 /**
  * Mailer identification
  *
  * @type {String}
  */
-    UBMail.TMessHeader.xMailer = '';
+TMessHeaderBind.xMailer = ''
 
 /**
  * Address for replies
  *
  * @type {String}
  */
-    UBMail.TMessHeader.replyTo = '';
+TMessHeaderBind.replyTo = ''
 
 /**
  * Message indetifier
  *
  * @type {String}
  */
-    UBMail.TMessHeader.messageID = '';
+TMessHeaderBind.messageID = ''
 
 /**
  * Message priority
  *
- * Can take the values​​: MP_unknown, MP_low, MP_normal, MP_high
+ * Can take values: MP_unknown, MP_low, MP_normal, MP_high
  *
  * @type {String}
  */
-    UBMail.TMessHeader.priority = '';
+TMessHeaderBind.priority = ''
 
 /**
  * Specify base charset. By default is used system charset
  *
  * @type {String}
  */
-    UBMail.TMessHeader.charsetCode = '';
+TMessHeaderBind.charsetCode = ''
 
 /**
  * Mime part of message
  *
- * @class UBMail.TMimePart
+ * @class TMimePartBind
  */
-    UBMail.TMimePart = function() {};
+function TMimePartBind () {}
 
 /**
  * Primary Mime type of part. (i.e. 'application')
  *
  * @type {String}
  */
-    UBMail.TMimePart.primary = '';
+TMimePartBind.primary = ''
 
 /**
  * String representation of used Mime encoding in part. (i.e. 'base64')
  *
  * @type {String}
  */
-    UBMail.TMimePart.encoding = '';
+TMimePartBind.encoding = ''
 
 /**
  * String representation of used Mime charset in part. (i.e. 'iso-8859-1')
@@ -344,7 +346,7 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {String}
  */
-    UBMail.TMimePart.charset = '';
+TMimePartBind.charset = ''
 
 /**
  * Define default charset for decoding text MIME parts without charset
@@ -355,7 +357,7 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {String}
  */
-    UBMail.TMimePart.defaultCharset = '';
+TMimePartBind.defaultCharset = ''
 
 /**
  * Decoded primary type. Possible values are: MP_TEXT, MP_MULTIPART,
@@ -363,7 +365,7 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {String}
  */
-    UBMail.TMimePart.primaryCode = '';
+TMimePartBind.primaryCode = ''
 
 /**
  * Decoded encoding type. Possible values are: ME_7BIT, ME_8BIT,
@@ -372,14 +374,14 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {String}
  */
-    UBMail.TMimePart.encodingCode = '';
+TMimePartBind.encodingCode = ''
 
 /**
  * Decoded charset type.
  *
  * @type {String}
  */
-    UBMail.TMimePart.charsetCode = '';
+TMimePartBind.charsetCode = ''
 
 /**
  * System charset type. Default value is charset used by default in your
@@ -387,7 +389,7 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {String}
  */
-    UBMail.TMimePart.targetCharset = '';
+TMimePartBind.targetCharset = ''
 
 /**
  * If True, then do internal charset translation of part content between CharsetCode
@@ -395,7 +397,7 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {Boolean}
  */
-    UBMail.TMimePart.convertCharset = '';
+TMimePartBind.convertCharset = ''
 
 /**
  * If True, then allways do internal charset translation of HTML parts
@@ -403,85 +405,85 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {Boolean}
  */
-    UBMail.TMimePart.forcedHTMLConvert = '';
+TMimePartBind.forcedHTMLConvert = ''
 
 /**
  * Secondary Mime type of part. (i.e. 'mixed')
  *
  * @type {String}
  */
-    UBMail.TMimePart.secondary = '';
+TMimePartBind.secondary = ''
 
 /**
  * Description of Mime part.
  *
  * @type {String}
  */
-    UBMail.TMimePart.description = '';
+TMimePartBind.description = ''
 
 /**
  * Value of content disposition field. (i.e. 'INLINE' or 'ATTACHMENT')
  *
  * @type {String}
  */
-    UBMail.TMimePart.disposition = '';
+TMimePartBind.disposition = ''
 
 /**
  * Content ID.
  *
  * @type {String}
  */
-    UBMail.TMimePart.contentID = '';
+TMimePartBind.contentID = ''
 
 /**
  * Boundary delimiter of multipart Mime part. Used only in multipart part.
  *
  * @type {String}
  */
-    UBMail.TMimePart.boundary = '';
+TMimePartBind.boundary = ''
 
 /**
  * Filename of file in binary part.
  * @type {String}
  */
-    UBMail.TMimePart.fileName = '';
+TMimePartBind.fileName = ''
 
 /**
  * String list with lines contains mime part (It can be a full message).
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMimePart.lines = {};
+TMimePartBind.lines = {}
 
 /**
  * Encoded form of MIME part data.
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMimePart.partBody = {};
+TMimePartBind.partBody = {}
 
 /**
  * All header lines of MIME part.
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMimePart.headers = {};
+TMimePartBind.headers = {}
 
 /**
  * On multipart this contains part of message between first line of message
  * and first boundary.
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMimePart.prePart = {};
+TMimePartBind.prePart = {}
 
 /**
  * On multipart this contains part of message between last boundary and end
  * of message.
  *
- * @type {UBMail.StringCollection}
+ * @type {StringCollectionBind}
  */
-    UBMail.TMimePart.postPart = {};
+TMimePartBind.postPart = {}
 
 /**
  * Show nested level in subpart tree. Value 0 means root part. 1 means
@@ -489,14 +491,14 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {Number}
  */
-    UBMail.TMimePart.subLevel = 0;
+TMimePartBind.subLevel = 0
 
 /**
  * Specify maximum sublevel value for decomposing.
  *
  * @type {Number}
  */
-    UBMail.TMimePart.maxSubLevel = 0;
+TMimePartBind.maxSubLevel = 0
 
 /**
  * When is True, then this part maybe(!) have included some uuencoded binary
@@ -504,7 +506,7 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {Boolean}
  */
-    UBMail.TMimePart.attachInside = false;
+TMimePartBind.attachInside = false
 
 /**
  * Here you can specify maximum line length for encoding of MIME part.
@@ -513,23 +515,11 @@ UBMail.TubMailSender.sendMail = function(mailObj) {};
  *
  * @type {Boolean}
  */
-    UBMail.TMimePart.maxLineLength = 0;
+TMimePartBind.maxLineLength = 0
 
 /**
  * Subparts of MimePart
  *
- * @type {Array.<UBMail.TMimePart>}
+ * @type {Array.<TMimePartBind>}
  */
-    UBMail.TMimePart.subPart = [];
-
-/**
- * Implementation of UBMail with openssl. This module loading time is more then 2 seconds. So if you not need use ssl use UBMail.
- *
- * You need OpenSSL libraries version >= 0.9.7 to be installed and libraries libssl32.dll, libeay32.dll, ssleay32.dll must be in the PATH
- *
- * See {@link UBMail} for details
- *
- * @class UBMail_openssl
- */
-UBMail_openssl = UBMail
-
+TMimePartBind.subPart = []

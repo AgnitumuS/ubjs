@@ -67,9 +67,19 @@ module.exports = {
    */
   dataLoader: dataLoader,
 
+  /**
+   * File-system based virtual store **select**.
+   * Able to load files & transform it content to {@link TubCachedData} format
+   */
   FileBasedStoreLoader,
 
+  /**
+   * Execute a script in a dedicated thread
+   * @type {Worker}
+   */
   Worker,
-
+  /**
+   * Constants for administrative security model
+   */
   uba_common
 }

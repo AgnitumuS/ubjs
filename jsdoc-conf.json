@@ -7,7 +7,16 @@
       "./packages/base",
       "./packages/stubs",
       "./packages/ub",
-      "./packages/ub/modules"
+      "./packages/ub/modules",
+      "./packages/ub/virtualStores",
+      "./packages/ubcli/lib",
+      "./packages/http-proxy",
+      "./packages/canvas/UBCanvas.js",
+      "./packages/com-bridge/UBComBridge.js",
+      "./packages/mailer",
+      "./packages/openid-connect/openIDConnect.js",
+      "./packages/compressors/UBCompressors.js",
+      "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
@@ -19,7 +28,9 @@
     "template": "./packages/ub-jsdocs",
     "readme": "./readme.md",
     "encoding": "utf8",
-    "destination": "./docs"
+    "destination": "./docs",
+    "recurse": false,
+    "tutorials": "tutorials"
   },
   "templates": {
     "cleverLinks": true,
@@ -57,6 +68,7 @@
     "default": {
       "outputSourceFiles": true,
       "staticFiles": {
+	"include": ["./tutorials"],
         "excludePattern": "\\.md$"
       }
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * Created by xmax on 16.09.2016.
  */
 const fs = require('fs')
@@ -14,11 +14,11 @@ module.exports = function generateModels (cfg) {
 
   console.log('generate Models')
   if (!cfg) {
-    var opts = options.describe('generateModels', 'Generate models from database', 'ubcli')
-            .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-            .add({short: 'tdb', long: 'targetDB', param: 'targetDB', defaultValue: '*', help: 'Database name as it defined in ubConfig.json'})
-            .add({short: 'ftr', long: 'tableFilter', param: 'tableFilter', defaultValue: '%', help: 'Filter for tables'})
-            .add({short: 'mn', long: 'modelName', param: 'modelName', defaultValue: 'newModel', help: 'New model name'})
+    let opts = options.describe('generateModels', 'Generate models from database', 'ubcli')
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({short: 'tdb', long: 'targetDB', param: 'targetDB', defaultValue: '*', help: 'Database name as it defined in ubConfig.json'})
+      .add({short: 'ftr', long: 'tableFilter', param: 'tableFilter', defaultValue: '%', help: 'Filter for tables'})
+      .add({short: 'mn', long: 'modelName', param: 'modelName', defaultValue: 'newModel', help: 'New model name'})
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }

@@ -1,9 +1,11 @@
 /**
- * UnityBase domain object model.
- * The main class {@link UBDomain}:
+ * UnityBase domain object model (metadata) - in-memory representation of all *.meta files included in the application config.
  *
- *  - for the server & CLI it is a result of {@link UBConnection.getDomainInfo connection.getDomainInfo} call
- *  - for browser side instance of UBDomain is a `domain` property of connection object
+ * Developer should never create {@link UBDomain} class directly, but instead use a:
+ *
+ *  - inside server-side methods - {@link App.domainInfo App.domainInfo} property
+ *  - inside CLI scripts - using {@link UBConnection.getDomainInfo UBConnection.getDomainInfo} method
+ *  - inside a browser - `UBConnection.domain` property
  *
  * Information about domain is used in many aspects of UnityBase:
  *

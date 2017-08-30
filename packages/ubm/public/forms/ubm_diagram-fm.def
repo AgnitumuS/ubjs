@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "ubm_diagram"
-//@formType "auto"
-//@caption "ER diagram"
-//@description "ER diagram"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "ubm_diagram"
+// @model "UBM"
+// @formType "auto"
+// @caption "ER diagram"
+// @description "ER diagram"
 /*global UB, Ext */
 exports.formDef = {
     size: {
@@ -34,18 +35,10 @@ exports.formDef = {
     }, {
 			layout: 'fit',
 			flex: 1,
-        	margins: '10 0 0 0',
-        	expanded: true,
-            attributeName: "document",
-            forceMIME: "application/ubMetaDiagram",
-            documentMIME: "application/ubMetaDiagram"
-        }
-           /* {
-        layout: 'fit',
-        xtype: 'panel',
-        flex: 1,
-        title: UB.i18n('obrazDocumenta'),
-        items: []
-
-    } */]
-};
+      margins: '10 0 0 0',
+      expanded: true,
+      attributeName: "document",
+      forceMIME: "application/ubMetaDiagram",
+      documentMIME: "application/ubMetaDiagram"
+    }]
+}

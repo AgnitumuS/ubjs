@@ -125,7 +125,7 @@ module.exports = function (session) {
   })
   
   var displayOrder = 40;
-  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_ODataSimple', 'tst_ODataRef'].forEach(function (entityCode) {
+  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_ODataSimple', 'tst_ODataRef', 'tst_histDict'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
     conn.insert({
       fieldList: ['ID'],

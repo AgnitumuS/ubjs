@@ -2,6 +2,9 @@
  * Translation into Azerbaijani
  */
 UB.i18nExtend({
+  SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
+  ReadPkTitle: 'Зчитування приватного ключа',
+  'Select private key file': 'Виберіть файл приватного ключа',
   emptyBarcodeSettings: 'You must set barcode settings, before use it.',
   setScannerSettings: 'Skanerdən istifadə etmək üçün öncə, onu sazlama lazımdır. Sazlamaq mümkündür <a href="/" onclick="{0} return false;">burada</a>.',
   showResultConfig: 'Konfiqurasiyaya baxış',
@@ -372,6 +375,15 @@ UB.i18nExtend({
         '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
         '"Daxil ol"</li> sıxın<li>' +
         '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
+  useCertificateInfoSimple: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
+  '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
+  '"Daxil ol"</li> sıxın<li>' +
+  '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
+  useCertificateInfoSimpleUserName: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
+  '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
+  '"Daxil ol"</li> sıxın<li>' +
+  '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
+
   IITCertCanceledByUser: 'Canceled by user',
   msgInvalidPlugin: 'Plaginin versiyası köhnəlib. Quraşdırılmış versiya {0}, tələb olnur {1}. Avtomatik yenilənmə 2 saatdan bir baş verir.' +
         ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +

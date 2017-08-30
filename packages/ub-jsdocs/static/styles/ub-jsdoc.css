@@ -1,6 +1,6 @@
 
 * {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 html, body {
@@ -115,7 +115,7 @@ nav input[type=checkbox]:checked + label:before {
 nav {
     float: left;
     display: block;
-    width: 300px;
+    /* width: 300px; */
     overflow: auto;
     position: fixed;
     height: 100%;
@@ -252,10 +252,10 @@ section {
 
 footer {
   color: hsl(0, 0%, 28%);
-  margin-left: 300px;
   display: block;
   padding: 15px;
   font-size: 70%;
+  text-align: right;
 }
 
 dd {
@@ -343,6 +343,7 @@ h4.name {
   padding: 1rem;
   margin-top: 3rem;
   background-color: #eee;
+  margin-bottom: 0.5rem;
 }
 .name a {
   color: rgb(55,94,171);
@@ -384,7 +385,7 @@ h4.name {
 }
 
 .description {
-   /* margin: 1em */
+   margin: 0.5rem
 }
 
 .code-caption {
@@ -584,7 +585,7 @@ dl.param-type {
 
   nav {
     background: #FFF;
-    width: 300px;
+    /*width: 300px;*/
     height: 100%;
     position: fixed;
     top: 0;

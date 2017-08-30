@@ -2,6 +2,8 @@ require('../view/LoginWindow.js')
 require('../../ux/window/Notification')
 require('../view/Viewport')
 require('../core/UBDataLoader.js')
+require('../view/cryptoUI/ReadPK')
+require('../view/cryptoUI/SelectCert')
 
 const UBCore = require('@unitybase/ub-pub')
 var RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
@@ -38,6 +40,7 @@ Ext.define('UB.core.UBApp', {
   requires: [
     'Ext.Loader',
     'UB.view.LoginWindow',
+    'UB.view.cryptoUI.ReadPK',
     'Ext.ux.window.Notification'
   ],
   uses: [
@@ -348,9 +351,21 @@ Ext.define('UB.core.UBApp', {
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
         return UBCore.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
-            return UBCore.inject('clientRequire/@ub-d/nm-dstu/dist/nm-dstu.min.js').then(() => {
-              window[ 'nm-dstu' ].addEncryptionToConnection(connection)
+            var pkiForAuth = UB.appConfig.uiSettings.adminUI.encryptionImplementation || '@ub-d/nm-dstu/injectEncription.js'
+            var advParam = {
+               getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
+               getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
+            }
+            return System.import(pkiForAuth)
+              .then(function(lib){
+                lib.addEncryptionToConnection(connection, advParam)
+              })
+
+/*
+            return UBCore.inject(injectPath).then(() => {
+              window[ libraryName ].addEncryptionToConnection(connection, advParam)
             })
+*/
           } else {
             return true
           }
