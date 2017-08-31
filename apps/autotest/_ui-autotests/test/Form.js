@@ -151,6 +151,7 @@ describe("Check UB Form", function () {
     });
     it("Check Visual designer tab", function () {
         browser.click(ExtLocator.getCss("tab[el][text=Visual designer]"));
+        browser.pause(3000);
         var desktopName = browser.isExisting('//*[@id="' + ExtLocator.getId('ubtextfield[fieldLabel=Desktop name]') + '"]');
         desktopName.should.equal(true);
         var code = browser.isExisting('//*[@id="' + ExtLocator.getId('ubtextfield[fieldLabel=Code]') + '"]');
