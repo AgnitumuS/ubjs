@@ -3,10 +3,10 @@
  *
  * The flow:
  *
-        var Worker = require('@unitybase/base/worker');
+        const Worker = require('@unitybase/base').Worker
         // create a new thread in suspended state.
         // Evaluate a body of a function runSomething into newly created JavaScript context
-        var w =  new Worker({name: 'WorkerName', onmessage: runSomething});
+        let w =  new Worker({name: 'WorkerName', onmessage: runSomething});
         // resume the thread and call a `onmessage` function with parameter, passed to postMessage
         w.postMessage({action: 'start', param: 'bla-bla'}); // wake up the thread and call a
 
