@@ -10,7 +10,7 @@ const path = require('path')
 const _ = require('lodash')
 const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
-const UBDomain = require('@unitybase/base/UBDomain')
+const UBDomain = require('@unitybase/base').UBDomain
 
 /**
  * @param {THTTPResponse} resp

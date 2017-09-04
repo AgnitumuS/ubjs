@@ -1,5 +1,5 @@
 require('./UBAppConfig')
-const UBDomain = require('@unitybase/base/UBDomain')
+const UBDomain = require('@unitybase/base').UBDomain
 /**
  * Файл: UB.core.UBUtil.js
  * Автор: Игорь Ноженко

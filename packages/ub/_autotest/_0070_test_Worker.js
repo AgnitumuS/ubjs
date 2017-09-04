@@ -4,7 +4,7 @@
 console.log('Worker test started');
 var
     assert = require('assert'),
-    Worker = require('@unitybase/base/worker');
+    Worker = require('@unitybase/base').Worker;
 
 function job1(message) {
     sleep(200);

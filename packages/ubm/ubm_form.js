@@ -3,7 +3,7 @@
 var me = ubm_form;
 
 const fs = require('fs')
-const FileBasedStoreLoader = require('@unitybase/base/FileBasedStoreLoader')
+const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
 const LocalDataStore = require('@unitybase/base').LocalDataStore
 const path = require('path')
 

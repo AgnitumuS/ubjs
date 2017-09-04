@@ -4,7 +4,7 @@
  */
 const MAX_DB_IDENTIFIER_LENGTH = 30
 const _ = require('lodash')
-const UBDomain = require('@unitybase/base/UBDomain')
+const UBDomain = require('@unitybase/base').UBDomain
 const {TableDefinition, strIComp} = require('./AbstractSchema')
 
 /**

@@ -138,7 +138,7 @@ UB.virtualStores.fileVirtualWritePDF.saveContentToTempStore = function (handler)
     moveFile(fn, origFn)
     moveFile(fnUbfti, origFnUbfti)
     var
-      Worker = require('@unitybase/base/worker'),
+      Worker = require('@unitybase/base').Worker,
       w = new Worker({
         onmessage: convertor,
         onerror: function (message, error) { postMessage({convertFailed: true}); terminate() },

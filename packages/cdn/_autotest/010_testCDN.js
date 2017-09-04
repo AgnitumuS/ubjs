@@ -7,7 +7,7 @@ var
     assert = require('assert'),
     ok = assert.ok,
     fs = require('fs'),
-    argv = require('@unitybase/base/argv'),
+    argv = require('@unitybase/base').argv,
     session, conn;
 
 session = argv.establishConnectionFromCmdLineAttributes();

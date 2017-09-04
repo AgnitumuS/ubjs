@@ -15,8 +15,8 @@ const _ = require('lodash')
 const fs = require('fs')
 const util = require('util')
 const path = require('path')
-const cmdLineOpt = require('@unitybase/base/options')
-const argv = require('@unitybase/base/argv')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 const http = require('http')
 
 module.exports = function autotest (options) {

@@ -22,8 +22,8 @@
 const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
-const cmdLineOpt = require('@unitybase/base/options')
-const argv = require('@unitybase/base/argv')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 
 module.exports = function createStore (options) {
   let
