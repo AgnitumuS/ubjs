@@ -30,53 +30,12 @@ git clone https://ubautomation:w5M3h7g2xfuK@gitlab.intecracy.com/unitybase/ub-d.
 git clone https://ubautomation:w5M3h7g2xfuK@gitlab.intecracy.com/unitybase/ub-e.git 
 
 # ----- after clonning repositories
-
-copy-item C:\ub-e\.npmrc -destination C:\ub-e\packages\dses
-copy-item C:\ub-e\.npmrc -destination C:\ub-e\packages\odata
-copy-item C:\ub-e\.npmrc -destination C:\ubjs\packages\ubq
-
-cd C:\ub-e\packages\dses
-npm i
-cd C:\ub-e\packages\odata
-npm i odatav4-parser@^1.3.3 --registry=http://registry.unitybase.info
-npm i
-cd C:\ub-e\packages\odata\node_modules\odatav4-parser
-npm i 
 cd C:\ub-e\packages\ube-pub
 npm i systemjs@0.20.10-scoped --registry=http://registry.unitybase.info
 npm i
 
-cd C:\ub-d\packages\crl-monitor
-npm i
-
 cd c:\ubjs
 npm run bootstrap
-
-cd C:\ubjs\packages\ubq\
-npm i @unitybase/mailer
-
-# workaround to add links, removed by previous npm install (probably bug https://github.com/npm/npm/issues/17929)
-cd C:\ubjs\packages\ubq\node_modules\@unitybase
-cmd /c mklink /D base C:\ubjs\packages\base
-cmd /c mklink /D ub C:\ubjs\packages\ub
-cmd /c mklink /D uba C:\ubjs\packages\uba
-
-# workaround to install @ub-d/iit-crypto
-Remove-Item -Recurse C:\ubjs\apps\autotest\node_modules\@ub-d\iit-crypto -Force
-Remove-Item -Recurse C:\ubjs\apps\autotest\node_modules\@unitybase\openid-connect -Force
-New-Item -ItemType Directory "C:\dummy"
-cd C:\dummy
-npm i @ub-d/iit-crypto --save --registry=http://registry.unitybase.info
-npm i @unitybase/openid-connect@^1.0.5 --save --registry=http://registry.unitybase.info
-
-copy-item -Recurse C:\dummy\node_modules\@ub-d\iit-crypto -destination C:\ubjs\apps\autotest\node_modules\@ub-d
-copy-item -Recurse C:\dummy\node_modules\@ub-d\iit-libbin -destination C:\ubjs\apps\autotest\node_modules\@ub-d
-
-copy-item -Recurse C:\dummy\node_modules\@unitybase\openid-connect -destination C:\ubjs\apps\autotest\node_modules\@unitybase
-
-copy-item C:\ub-e\.npmrc -destination C:\ubjs\apps\autotest\node_modules\@unitybase\openid-connect
-cd C:\ubjs\apps\autotest\node_modules\@unitybase\openid-connect
-npm i
 
 # fix / workaround for ubcli 
 $c = Get-Content C:\ubjs\apps\autotest\node_modules\.bin\ubcli.cmd
