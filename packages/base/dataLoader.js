@@ -152,7 +152,7 @@ function loadArrayData (conn, dataArray, entityName, ettAttributes, mapping, tra
 /**
  * Perform localization of entities data based on config & locale. See *.js in models `_initialData/locale` folder for usage samples.
  *
-       const loader = require('@unitybase/base'.dataLoader
+       const loader = require('@unitybase/base').dataLoader
        let localizationConfig = {
           entity: 'ubm_enum',
           keyAttribute: 'eGroup;code',
