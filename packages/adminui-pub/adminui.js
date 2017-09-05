@@ -5,8 +5,8 @@
 const UB = require('@unitybase/ub-pub')
 const Q = require('bluebird-q')
 const _ = require('lodash')
-const UBDomain = require('@unitybase/base').UBDomain
-const LocalDataStore = require('@unitybase/base').LocalDataStore
+const UBDomain = require('@unitybase/base/UBDomain')
+const LocalDataStore = require('@unitybase/base/LocalDataStore')
 
 // const ClientRepository = require('./../ClientRepository')
 // const UBConnection = require('./../UBConnection')

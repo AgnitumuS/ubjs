@@ -1,10 +1,10 @@
 require('./UBAppConfig')
-const UBDomain = require('@unitybase/base').UBDomain
+const UBDomain = require('@unitybase/base/UBDomain')
 /**
- * Файл: UB.core.UBUtil.js
- * Автор: Игорь Ноженко
+ * File: UB.core.UBUtil.js
+ * Author Nozhenko Igor
  *
- * Общефункциональные системные функции
+ * General functions
  */
 
 Ext.define('UB.core.UBUtil', {
