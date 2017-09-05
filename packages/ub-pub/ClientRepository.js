@@ -1,5 +1,5 @@
-const LocalDataStore = require('@unitybase/base').LocalDataStore
-const CustomRepository = require('@unitybase/base').CustomRepository
+const LocalDataStore = require('@unitybase/base/LocalDataStore')
+const CustomRepository = require('@unitybase/base/CustomRepository')
 
 /**
  * Repository for client-side data retrieve.
