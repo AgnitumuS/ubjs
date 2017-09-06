@@ -6,8 +6,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": ".\\tsql3.cmd",
-    "replace-native": "npm i @unitybase/canvas@latest @unitybase/com-bridge@latest @unitybase/mailer-ssl@latest @unitybase/mailer@latest --no-save -f"
+    "test": "echo Manually run a .\\tsql3.cmd for test"
   },
   "dependencies": {
     "@ub-d/iit-crypto": "*",
