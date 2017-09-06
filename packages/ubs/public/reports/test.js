@@ -31,7 +31,7 @@ exports.reportCode = {
    */
   buildReportOnServer: function (reportParams) {
     let limit = reportParams.limitation || 1000
-    const LocalDataStore = require('@unitybase/base/LocalDataStore')
+    const LocalDataStore = require('@unitybase/base').LocalDataStore
     let countries = UB.Repository('cdn_country')
       .attrs(['code', 'name', 'fullName', 'currencyID.name'])
       .limit(limit)

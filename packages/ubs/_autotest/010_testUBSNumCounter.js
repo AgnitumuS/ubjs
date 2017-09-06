@@ -12,7 +12,7 @@ const _ = require('lodash')
 const Worker = require('@unitybase/base').Worker
 var workers = [];
 var
-    argv = require('@unitybase/base/argv'),
+    argv = require('@unitybase/base').argv,
     session = argv.establishConnectionFromCmdLineAttributes(),
     connection = session.connection,
     numThreads = parseInt(argv.findCmdLineSwitchValue('t') || '2', 10),
