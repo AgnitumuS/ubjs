@@ -52,22 +52,19 @@
  */
 const App = {
   /**
-   * Fires for a `App` just after all domain entites (all *.meta) is in server memory, and all server-side js is evaluated.
-   * On this stage you can subscruibe/add cross-model handles.
+   * Fires for an {@link App App} just after all domain entities (all *.meta) are in server memory, and all server-side js are evaluated.
+   *
+   * On this stage you can subscribe on a cross-model handles.
+   *
+   * Example:
    *
        App.once('domainIsLoaded', function(){
-         var
-            domain = App.domain,
-            ettCnt = domain.count,
-            entityMeta, entityObj;
-
-         // all models are evaluated into memory, so we can enumerate enitties here
-         for (var i = 0; i < ettCnt; i++) {
-           entityMeta = domain.items[i];
-           if (entityMeta.attributes.byName('mi_fedUnit')) {
-             entityObj = global[entityMeta.name];
-             entityObj.on('insert:before', fedBeforeInsert); // add before insert handler
-           }
+         for (eName in App.domainInfo.entities) {
+            // if entity have attribute mi_fedUnit
+            if (App.domainInfo.entities[eName].attributes.mi_fedUnit) {
+              let entityObj = global[eName]
+              entityObj.on('insert:before', fedBeforeInsert) // add before insert handler
+            }
          }
        })
    *

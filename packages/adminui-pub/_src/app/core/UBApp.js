@@ -356,7 +356,8 @@ Ext.define('UB.core.UBApp', {
                getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
                getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
             }
-            return System.import(pkiForAuth)
+	    const I = System.import // required for WebPack to skip using dynamic module as a splitting point
+            return I(pkiForAuth)
               .then(function(lib){
                 lib.addEncryptionToConnection(connection, advParam)
               })

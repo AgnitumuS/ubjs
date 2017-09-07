@@ -19,11 +19,8 @@
  */
 /* global removeCommentsFromJSON, startServer, stopServer */
 const _ = require('lodash')
-const assert = require('assert')
-const ok = assert.ok
-const fs = require('fs')
-const http = require('http')
 const options = require('./options')
+const fs = require('fs')
 const path = require('path')
 const UBConnection = require('./UBConnection')
 
@@ -144,7 +141,11 @@ function establishConnectionFromCmdLineAttributes (config) {
     // if ((hostStart === 'localhost') || (hostStart === '127') || (hostStart === '10')) {
   if (config.forceStartServer) {
     console.info('Force server starting')
-    ok(startServer(), 'Local server started')
+    if (startServer()) {
+      console.log('Local server started')
+    } else {
+      throw new Error('Can\'t start server')
+    }
     serverSession.__serverStartedByMe = true
   } else {
     let serverStarted = checkServerStarted(serverSession.HOST)
@@ -152,7 +153,11 @@ function establishConnectionFromCmdLineAttributes (config) {
       if (verboseMode) console.info('Server is running - use started server instance')
     } else {
       if (verboseMode) console.info('Server not started - start local server instance')
-      ok(startServer(), 'Local server started')
+      if (startServer()) {
+        console.log('Local server started')
+      } else {
+        throw new Error('Can\'t start server')
+      }
       serverSession.__serverStartedByMe = true
     }
   }
@@ -190,6 +195,7 @@ establishConnectionFromCmdLineAttributes._cmdLineParams = [
  * @return {boolean}
  */
 function checkServerStarted (URL) {
+  const http = require('http')
   if (verboseMode) console.info('Check server is running...')
   try {
     let resp = http.get({URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000}) // dummy

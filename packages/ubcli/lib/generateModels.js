@@ -4,7 +4,7 @@
 const fs = require('fs')
 const http = require('http')
 const path = require('path')
-const {options, argv} = require('@unitybase/base/options')
+const {options, argv} = require('@unitybase/base').options
 
 module.exports = function generateModels (cfg) {
   let session

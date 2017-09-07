@@ -13,16 +13,7 @@ exports.formCode = {
     if (me.commandConfig.instanceID) return // edit mode
 
     if (!me.commandConfig.isFolder) {
-      me.getField('cmdCode').setValue(JSON.stringify({
-        "cmdType": "showList",
-        "cmdData": {
-          "params": [ {
-            "entity": "yourEntityCode",
-            "fieldList": []
-          }
-          ]
-        }
-      }, null, ' '))
+      me.getField('cmdCode').setValue('//remove this line and when press Ctrl+Q for code templates')
     } else {
       me.getField('isFolder').setValue(true)
     }
@@ -38,25 +29,39 @@ exports.formCode = {
 
   codeSnippetsGetter: function () {
     return [{
-      displayText: 'showList', text: JSON.stringify(
-        {
-          "cmdType": "showList",
-          "cmdData": {
-            "params": [{
-              "entity": "TYPE-ENTITY-CODE",
-              "method": "select",
-              "fieldList": ["Dbl-CLICK on left prop panel to add attribute"]
-            }]
-          }
-        }, null, ' ')
+      displayText: 'showList',
+      text: JSON.stringify({
+        "cmdType": "showList",
+        "cmdData": {
+          "params": [{
+            "entity": "TYPE-ENTITY-CODE",
+            "method": "select",
+            "fieldList": ["Dbl-CLICK on left prop panel to add attribute"]
+          }]
+        }
+      }, null, '  ')
     }, {
-      displayText: 'showForm', text: JSON.stringify(
-        {
-          "cmdType": "showForm",
-          "formCode": "TYPE HERE A FORM CODE FROM UBM_FORM",
-          "entity": "TYPE HERE A ENTITY CODE",
-          "instanceID": "REPLACE IT by ID value (to edit element) or remove this line"
-        }, null, ' ')
+      displayText: 'showForm',
+      text: JSON.stringify({
+        "cmdType": "showForm",
+        "formCode": "TYPE HERE A FORM CODE FROM UBM_FORM or remove this line to use a default form for entity",
+        "entity": "TYPE HERE A ENTITY CODE",
+        "instanceID": "REPLACE IT by ID value (to edit element) or remove this line"
+      }, null, '  ')
+    }, {
+      displayText: 'showReport',
+      text: JSON.stringify({
+        cmdType: "showReport",
+        description : "OPTIONAL report form caption",
+        entity: "TYPE HERE A ENTITY CODE",
+        cmdData: {
+          reportCode: "type here report code",
+          reportType: "html or pdf",
+          reportParams: {
+            paramName: "param value" 
+          }  
+        }
+      }, null, '  ')
     }]
   },
 

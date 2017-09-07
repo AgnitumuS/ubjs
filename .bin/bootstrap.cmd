@@ -1,12 +1,3 @@
-call npm i
-@if errorlevel 1 goto err
-call npx lerna bootstrap
-@if errorlevel 1 goto err
-
-cd .\packages\ubcli
-call npm link
-cd ..\..
-
 if exist ..\ub-e\packages (
   cd ..\ub-e
   call npm i
@@ -31,21 +22,30 @@ if exist ..\ub-d\packages (
   echo otherwise remove all @ub-d/* models from .\apps\autotest\ubConfig*.json 
 )
 
-if not defined SRC (
-  echo on
-  echo To compile a native modules you need:
-  echo  - checkout a UnityBase server sources 
-  echo  - set environment variable SRC to Source folder location
-  echo  - execute command `npm run build:native`
-  echo Compilation use a Delphi@XE2-sp4 Delphi@7 and InnoSetup@5.5.9 - all of them MUST be installed
-  echo In case you do not have access to Server Sources or compilers - run a 
-  echo   `npm run replace-native` in autotest folder
-  echo This will install latest compiled packages from registry
-  goto end
-)
-
-call npm run build:native
+call npm i
 @if errorlevel 1 goto err
+call npx lerna bootstrap
+@if errorlevel 1 goto err
+
+cd .\packages\ubcli
+call npm link
+cd ..\..
+
+if not defined SRC (
+ echo get a compiled DLL from a unitybase registry
+ mkdir %temp%\ub-bootstrap
+ cd /d %temp%\ub-bootstrap
+ call npm init -y
+ set NODE_ENV=production
+ call npm i @unitybase/mailer @ub-d/iit-crypto --registry http://registry.unitybase.info
+ xcopy /I /E /Q /Y  %temp%\ub-bootstrap\node_modules\@unitybase\mailer\bin %~dp0\..\apps\autotest\node_modules\@unitybase\mailer\bin
+ xcopy /I /E /Q /Y  %temp%\ub-bootstrap\node_modules\@ub-d\iit-crypto\bin %~dp0\..\apps\autotest\node_modules\@ub-d\iit-crypto\bin
+ cd /d %~dp0
+ rmdir /S /Q %temp%\ub-bootstrap
+) else (
+ call npm run build:native
+ @if errorlevel 1 goto err
+)
 
 @goto end
 

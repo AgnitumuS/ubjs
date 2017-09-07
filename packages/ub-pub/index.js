@@ -8,6 +8,7 @@ const transport = require('./transport')
 const conn = require('./UBConnection')
 const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
+const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/base/LocalDataStore')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
@@ -36,6 +37,7 @@ module.exports = {
 
   UBNativeMessage: UBNativeMessage,
   UBConnection: conn,
+  UBCache: UBCache,
 
   connect: conn.connect,
   ClientRepository: ClientRepository,
