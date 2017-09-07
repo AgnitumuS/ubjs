@@ -30,7 +30,7 @@ git merge origin/uiautotest -s recursive -Xours -v
 cd C:\ub-all
 npm run bootstrap
 
-cd C:\u-all\ubjs\apps\autotest
+cd C:\ub-all\ubjs\apps\autotest
 .\tsql3.cmd
 
 ub
