@@ -48,7 +48,7 @@ describe("Login to the system", function () {
         browser.url('/ubadminui');
         browser.waitForExist('//h2');
         var title = browser.getText('//h2');
-        title.should.equal('Autotest UB SQLITE');
+        title.should.equal('Автотест UB SQLITE');
         console.log('Title is: ' + title);
         browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
@@ -202,7 +202,7 @@ describe("Edit 'Caption' localization", function () {
         browser.pause(1000);
         browser.waitForExist('//h2');
         var title = browser.getText('//h2');
-        title.should.equal('Autotest UB SQLITE');
+        title.should.equal('Автотест UB SQLITE');
         console.log('Title is: ' + title);
         browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
@@ -383,7 +383,7 @@ describe("Add 'nonNullDict_ID' element", function () {
         browser.pause(1000);
         browser.waitForExist('//h2');
         var title = browser.getText('//h2');
-        title.should.equal('Autotest UB SQLITE');
+        title.should.equal('Автотест UB SQLITE');
         console.log('Title is: ' + title);
         browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
@@ -651,7 +651,7 @@ describe("Add 'nullDict_ID' element", function () {
         browser.pause(1000);
         browser.waitForExist('//h2');
         var title = browser.getText('//h2');
-        title.should.equal('Autotest UB SQLITE');
+        title.should.equal('Автотест UB SQLITE');
         console.log('Title is: ' + title);
         browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
@@ -1056,7 +1056,7 @@ describe("Set dateTimeValue by date picker, UA language", function () {
         browser.pause(1000);
         browser.waitForExist('//h2');
         var title = browser.getText('//h2');
-        title.should.equal('Autotest UB SQLITE');
+        title.should.equal('Автотест UB SQLITE');
         console.log('Title is: ' + title);
         browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');

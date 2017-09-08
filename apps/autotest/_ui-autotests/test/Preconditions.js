@@ -8,7 +8,7 @@ describe("Preconditions", function () {
         browser.url('/ubadminui');
         browser.waitForExist('//h2');
         var title = browser.getText('//h2');
-        title.should.equal('Autotest UB SQLITE');
+        title.should.equal('Автотест UB SQLITE');
         console.log('Title is: ' + title);
         browser.setValue(ExtLocator.getCss('textfield[requireText=Користувач]') + '-inputEl', 'admin');
         browser.setValue(ExtLocator.getCss('textfield[inputType=password]') + '-inputEl', 'admin');
