@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/base",
-  "version": "4.2.15",
+  "version": "4.2.16",
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/base",
   "scripts": {
@@ -16,7 +16,7 @@
     "lodash": "^4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.7"
+    "@unitybase/stubs": "^4.1.8"
   },
   "keywords": [
     "UnityBase",

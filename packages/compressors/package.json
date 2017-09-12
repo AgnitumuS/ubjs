@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/compressors",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "gzip/gunzip/bzip(m2) implementation",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/compressors",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "main": "./UBCompressors.js",
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.7"
+    "@unitybase/stubs": "^4.1.8"
   },
   "keywords": [
     "UnityBase",
