@@ -182,7 +182,7 @@ me.getEmployeeList = function(staffUnitID, supportLang) {
     }
     staffs = UB.Repository('org_employeeonstaff').
         attrs(staffsFieldList).
-        where('[employeeOnStaffType]', '<>', 'ASSISTANT').
+        where('[employeeOnStaffType]', 'in', ['PERMANENT', 'TEMPORARY']).
         where('[staffUnitID]', '=', staffUnitID).
         orderBy('[employeeOnStaffType]').
         select();

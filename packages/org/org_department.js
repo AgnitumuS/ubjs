@@ -29,6 +29,8 @@ me.setCaption = function (ctxt, mode) {
         var inst = UB.Repository('org_department')
             .attrs(fieldList)
             .where('ID', '=', execParams.ID)
+            .misc({__allowSelectSafeDeleted: true})
+            .misc({__mip_recordhistory_all: true})
             .selectAsObject();
         sLang.forEach(function (lang) {
             var suffix = '_' + lang + '^';
