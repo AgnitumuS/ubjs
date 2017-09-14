@@ -115,32 +115,6 @@ Ext.define('UB.view.BasePanel', {
   border: false,
 
     // requires: [
-    //     'Ext.ux.form.field.BoxSelect',
-    //     'UB.ux.form.field.UBText',
-    //     'UB.ux.form.field.UBTextArea',
-    //     'UB.ux.form.field.UBBoxSelect',
-    //     'UB.ux.form.field.ComboExtraButtons',
-    //     'UB.view.FormDataBinder',
-    //     'UB.ux.UBDocument',
-    //     'UB.ux.UBDetailGrid',
-    //     'UB.ux.UBDetailTree',
-    //     'UB.ux.form.field.UBDictComboBox',
-    //     'UB.ux.form.field.UBComboBox',
-    //     'UB.ux.form.field.UBDate',
-    //     'UB.ux.form.field.UBDateTime',
-    //     'UB.ux.form.field.UBBoolBox',
-    //     'UB.ux.form.UBFieldSet',
-    //     'UB.core.UBDataLoader',
-    //     'UB.view.ErrorWindow',
-    //     'UB.view.DocumentVersions',
-    //     'UB.ux.LockManager',
-    //     'UB.view.UBForm',
-    //     'Ext.ux.form.TinyMCETextArea',
-    //     'UB.ux.form.HtmlEditor',
-    //     'UB.view.UploadFileAjax',
-    //     'UB.ux.UBTinyMCETextArea',
-    //     'UB.core.UBPanelMixin',
-    //     'UB.ux.form.UBPlanFactContainer',
     //   // TODO - move CommandBuilder requires to shortcut editor
     //       "UB.view.CommandBuilder.EntitiesComboBox",
     //       "UB.view.CommandBuilder.CommandTypeComboBox",
@@ -266,6 +240,21 @@ Ext.define('UB.view.BasePanel', {
    * @property {Ext.data.Model} record
    */
   record: null,
+
+  /**
+   * @cfg {Boolean} [postOnlySimpleAttributes=false]
+   * If `true` form will post only values of modified attributes
+   * which do not contain a dot.
+   * Exapmle: if form def is
+   *    items:[
+   *      { attributeName: "nullDict_ID"},
+   *      { attributeName: "nullDict_ID.code", readOnly: true},
+   *      { attributeName: "nullDict_ID.caption", readOnly: true}
+   *    ]
+   *
+   *  Values of nullDict_ID.code &  nullDict_ID.caption will not be send to update/insert execParams
+   */
+  postOnlySimpleAttributes: false,
 
   initComponent: function () {
     var
@@ -552,9 +541,8 @@ Ext.define('UB.view.BasePanel', {
    * @returns {boolean}
    */
   isFormDirty: function (ignoreNewInstance) {
-    var me = this
-    return me.record.dirty ||
-            (me.extendedDataForSave && Object.keys(me.extendedDataForSave).length > 0)
+    return this.record.dirty ||
+      (this.extendedDataForSave && Object.keys(this.extendedDataForSave).length > 0)
   },
 
   onRecordUpdate: function (store, record) {
@@ -1788,7 +1776,7 @@ Ext.define('UB.view.BasePanel', {
 
     if (me.isEntityLockable) {
       requests.push(
-          $App.connection.run({
+          $App.connection.query({
             method: 'isLocked',
             entity: me.entityName,
             ID: me.getInstanceID()
@@ -3113,12 +3101,12 @@ Ext.define('UB.view.BasePanel', {
        */
       if (_.isFunction(me.onBeforeSave)) {
         return Q.resolve(me.onBeforeSave())
-                    .then(function (onBeforeSaveResult) {
-                      if (onBeforeSaveResult !== false) {
-                        return me.saveInstance()
-                      }
-                      return Q.resolve(-1)
-                    })
+          .then(function (onBeforeSaveResult) {
+            if (onBeforeSaveResult !== false) {
+              return me.saveInstance()
+            }
+            return Q.resolve(-1)
+          })
       } else {
         return me.saveInstance()
       }
@@ -3146,7 +3134,7 @@ Ext.define('UB.view.BasePanel', {
       values,
       params
 
-    // Check attributes of 'documnet' type.
+    // Check attributes of 'document' type.
     // We must save content of such attributes before update main record
     _.forEach(me.documents, function (documentAttribute, attributeCode) {
       var cmp = me.getField(attributeCode) // ubNameMap[me.attrName(attributeCode)];
@@ -3186,7 +3174,17 @@ Ext.define('UB.view.BasePanel', {
       me.binder.releaseAutoBind()
       values = me.record.getChanges()
 
-            // fill necessary values
+      // remove complex attributes like `countryID.name`
+      if (me.postOnlySimpleAttributes) {
+        let attrs = Object.keys(values)
+        attrs.forEach((attrName) => {
+          if (attrName.indexOf('.') !== -1) {
+            delete values[attrName]
+          }
+        })
+      }
+
+      // fill necessary values
       if (typeof values.ID === 'undefined') {
         values.ID = me.instanceID ? me.instanceID : me.record.get('ID')
       }
