@@ -118,7 +118,7 @@ exports.formCode = {
             textToInsert = '';
         if (record) {
             if (aTab.isDefifnition) { // definition === this.codeTabs.items.getAt(1)
-                textToInsert = "{ attributeName: \"" + record.get("id") + "\" /*" + record.get("text").replace(/\[[^\)]+\]/gi, "") + "*/}";
+                textToInsert = "{ attributeName: \"" + record.get("id") + "\"}";
             } else { // module
                 textToInsert = "this.getField('" + record.get('id') + "')";
             }

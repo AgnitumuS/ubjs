@@ -1,10 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "ubm_form"
-//@model "UBM"
-//@formType "auto"
-//@caption "Form editor"
-//@description "UnityBase form's editor"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "ubm_form"
+// @model "UBM"
+// @formType "auto"
+// @caption "Form editor"
+// @description "UnityBase form's editor"
 exports.formDef = {
     requires: ['UB.ux.designer.VisualDesigner'],
 
