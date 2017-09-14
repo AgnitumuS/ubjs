@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+##  [4.2.29]
+### Added
+ - new BasePanel.postOnlySimpleAttributes property 
+   
+   If `true` form will post only values of modified attributes
+   which do not contain a dot.
+   
+   Exapmle: in case def is
+   ```
+   items:[
+     { attributeName: "nullDict_ID"},
+     { attributeName: "nullDict_ID.code", readOnly: true},
+     { attributeName: "nullDict_ID.caption", readOnly: true}
+   ]
+   ```
+   
+   Values of nullDict_ID.code &  nullDict_ID.caption will not be send to update/insert execParams
+
+### Changed
+ - Not-null attributes in the form builder now displayed as bold
+
+
 ##  [4.2.25]
 ### Added
  - Allow localizing application name on `adminUI` login form by specifying `applicationName` in `ubConfig` as an object with keys=locale instead of string. Thanks to Sergey.Severyn for contribution
