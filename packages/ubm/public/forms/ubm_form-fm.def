@@ -4,7 +4,7 @@
 // @model "UBM"
 // @formType "auto"
 // @caption "Form editor"
-// @description "UnityBase form's editor"
+// @description "Form editor"
 exports.formDef = {
     requires: ['UB.ux.designer.VisualDesigner'],
 
@@ -138,6 +138,11 @@ exports.formDef = {
                 flex: 1,
                 style: {
                     background: "white"
+                },
+                cmpConfig: {
+                  codeSnippetsGetter: function(multilinePrefix) {
+                    return this.up('basepanel').doOnGetSnipped('formCode', multilinePrefix)
+                  }
                 }
             }]
         }, {

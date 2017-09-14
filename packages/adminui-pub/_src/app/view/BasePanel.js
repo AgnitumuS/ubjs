@@ -73,7 +73,7 @@ require('../ux/form/field/AdvancedTextArea')
  *
  *     initUBComponent: function(){
  *         var me = this;
- *         me.on('beforeClose': function(){
+ *         me.on('beforeClose', function(){
  *            var me = this;
  *            if (me.record.dirty) {
  *                // if form changed do anything

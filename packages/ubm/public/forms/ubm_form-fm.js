@@ -5,14 +5,14 @@ exports.formCode = {
     initUBComponent: function() {
         var
             me = this,
-            code = this.getField('code').getValue(),
+            code = this.record.get('code'),
             fn;
 
 		    me.down('label[ubID="newFormTip"]').setVisible(me.isNewInstance);
         me.getField('code').addListener('change', me.onCodeChanged, me);
         me.getField('entity').addListener('change', me.onEntityChanged, me);
 
-        me.entityCode = me.getField('entity').getValue();
+        me.entityCode = me.record.get('entity')
         me.propTree = me.down('commandbuilderentitytreepanel[cbID="1"]');
         me.propTree.addListener("itemdblclick", me.onEntityTreePanelItemDblClick, me);
 
@@ -135,45 +135,76 @@ exports.formCode = {
         return this.doOnGetFormScriptSnippets(multilinePrefix)
       }
     },
-
     doOnGetFormDefSnippets: function (multilinePrefix) {
       return [{
-        displayText: 'layout:vertical', text: [
-          "layout: {type: 'vbox', align: 'stretch'},",
-          "items: [",
-          "\t// place your items here",
-          "]"
-        ].join('\n'+multilinePrefix)
-      }, {
-        displayText: 'layout:horizontal', text:[
-          "layout: {type: 'hbox'},",
-          "items: [",
-          "\t// place your items here",
-          "]"
-        ].join('\n'+multilinePrefix)
-      }, {
-        displayText: 'components:details', text:[
-          "{",
-          "\txtype: 'ubdetailgrid',",
-          "\tentityConfig: {",
-          "\t\tentity: 'REPLACE-BY-DETAIL-ENTITY-CODE',",
-          "\t\tfieldList: ['REPLACE-BY-DETAIL-ENTITY-ATTRIBUTES']",
-          "\t},",
-          "\tmasterFields: ['ID'],",
-          "\tdetailFields: ['REPLACE-BY-DETAIL-ENTITY-ATTRIBUTE-WHAT-REF-TO-THIS-ENTITY']",
+        displayText: 'parent:configure \t Configure a BasePanel we created in', text: [
+          "parentConfig: {",
+          "  postOnlySimpleAttributes: true,",
+          "  layout: {",
+          "    type: \"vbox\",",
+          "    align: \"stretch\"",
+          "  }",
           "}"
         ].join('\n'+multilinePrefix)
       }, {
-        displayText: 'components:tabs', text:[
+        displayText: 'layout:vertical \t layout a set of components vertiacally', text: [
           "{",
-          "\txtype: 'tabpanel',",
-          "\tlayout: 'fit',",
-          "\tflex: 1,",
-          "\titems: [{",
-          "\t\ttitle: UB.i18n('1stTabTitle')",
-          "\t}, {",
-          "\t\ttitle: UB.i18n('2ndTabTitle')",
-          "\t}]",
+          "  layout: {type: 'vbox', align: 'stretch'},",
+          "  items: [",
+          "    // place your items here",
+          "  ]",
+          "}"
+        ].join('\n'+multilinePrefix)
+      }, {
+        displayText: 'layout:horizontal \t layout a set of components horisintally', text:[
+          "{",
+          "  layout: {type: 'hbox'},",
+          "  items: [",
+          "    // place your items here",
+          "  ]",
+          "}"
+        ].join('\n'+multilinePrefix)
+      }, {
+        displayText: 'components:fieldset \t A container for grouping sets of fields with optional title & collapse button', text:[
+          "{",
+          "  xtype: 'ubfieldset',",
+          "  title: UB.i18n('optional title'),",
+          "  collapsible: false,",
+          "  items: [{",
+          "     // place your items here",
+          "  }]",
+          "}"
+        ].join('\n'+multilinePrefix)  
+      }, {
+        displayText: 'components:label \t Just a static text ', text:[
+          "{",
+          "  xtype: 'ublabel',",
+          "  ext: UB.i18n('label text')",
+          "}"
+        ].join('\n'+multilinePrefix)  
+      }, {
+        displayText: 'components:detailGrid \t Master-detail grid', text:[
+          "{",
+          "  xtype: 'ubdetailgrid',",
+          "  entityConfig: {",
+          "    entity: 'REPLACE-BY-DETAIL-ENTITY-CODE',",
+          "    fieldList: ['REPLACE-BY-DETAIL-ENTITY-ATTRIBUTES']",
+          "  },",
+          "  masterFields: ['ID'],",
+          "  detailFields: ['REPLACE-BY-DETAIL-ENTITY-ATTRIBUTE-WHAT-REF-TO-THIS-ENTITY']",
+          "}"
+        ].join('\n'+multilinePrefix)
+      }, {
+        displayText: 'components:tabs \t Tab panels', text:[
+          "{",
+          "  xtype: 'tabpanel',",
+          "  layout: 'fit',",
+          "  flex: 1,",
+          "  items: [{",
+          "    title: UB.i18n('1stTabTitle')",
+          "  }, {",
+          "    title: UB.i18n('2ndTabTitle')",
+          "  }]",
           "}"
         ].join('\n'+multilinePrefix)
       }]
@@ -181,7 +212,25 @@ exports.formCode = {
 
     doOnGetFormScriptSnippets: function () {
       return [{
-        displayText: 'base:record', text: "this.record.get('ARRTIBUTE-CODE')"
+        displayText: 'base:getValue \t Get a value from a entity attribute', text: "this.record.get(/*'ARRTIBUTE-CODE'*/)"
+      }, {
+        displayText: 'base:setValue \t Set a value for entity attribute', text: "this.record.set(/*'ARRTIBUTE-CODE'*/, /*value*/)"
+      }, {
+        displayText: 'cmp:onChange \t Component onChange event handler', text: "this.getField('attribute name').addListener('change', /*yourHandler*/, this)"
+      }, {
+        displayText: 'lifecircle:beforeInit \t Here is possible to change form config', text:[
+          "  initComponentStart: function() {",
+          "    var me = this",
+          "    // replace this comment by a real code",
+          "  }"
+        ].join('\n'+multilinePrefix)
+      }, {
+        displayText: 'lifecircle:init \t All controls are ready here', text:[
+          "  initUBComponent: function() {",
+          "    var me = this",
+          "    // replace this comment by a real code",
+          "  }"
+        ].join('\n'+multilinePrefix)
       }]
     }
 }
