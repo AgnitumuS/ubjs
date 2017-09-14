@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/pdf",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "PDF cretion library",
   "main": "index.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/pdf",

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/xlsx",
-  "version": "4.0.31",
+  "version": "4.0.32",
   "description": "UnityBase Excel exporter",
   "main": "index.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/xlsx",
@@ -17,7 +17,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.2.18"
+    "@unitybase/base": "^4.2.19"
   },
   "keywords": [
     "UnityBase",
