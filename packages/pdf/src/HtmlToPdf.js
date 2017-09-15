@@ -245,7 +245,7 @@ function removeEntities (htmlText) {
     return htmlText
   }
 
-  return htmlText.replace(/&([A-Za-z]{2,20})?;/g, function (c) {
+  return htmlText.replace(/&([A-Za-z0-9]{2,20})?;/g, function (c) {
     if (htmlBaseEntity[c]) {
       return c
     }
