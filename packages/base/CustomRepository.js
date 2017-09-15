@@ -610,7 +610,7 @@ class CustomRepository {
      *
      * WARNING method do not check repository contains the single row
      * @abstract
-     * @return {Object|undefined}
+     * @return {Number|String|undefined}
      */
   selectScalar () {
     throw new Error('abstract')

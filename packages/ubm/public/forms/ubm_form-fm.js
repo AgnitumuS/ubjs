@@ -8,7 +8,12 @@ exports.formCode = {
             code = this.record.get('code'),
             fn;
 
-		    me.down('label[ubID="newFormTip"]').setVisible(me.isNewInstance);
+		    // remove document-menu buttons
+        var tbar = this.query('[ubID=mainToolbar]')[0]
+        tbar.remove(tbar.items.getAt(2))
+        tbar.remove(tbar.items.getAt(2))
+
+        me.down('label[ubID="newFormTip"]').setVisible(me.isNewInstance);
         me.getField('code').addListener('change', me.onCodeChanged, me);
         me.getField('entity').addListener('change', me.onEntityChanged, me);
 
@@ -179,7 +184,7 @@ exports.formCode = {
         displayText: 'components:label \t Just a static text ', text:[
           "{",
           "  xtype: 'ublabel',",
-          "  ext: UB.i18n('label text')",
+          "  text: UB.i18n('label text')",
           "}"
         ].join('\n'+multilinePrefix)  
       }, {
