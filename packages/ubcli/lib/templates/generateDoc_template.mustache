@@ -62,10 +62,6 @@
 </div>
 <br> 
 {{documentation}}
-
-{{#mixins}}
-   {{mixinCode}} 
-{{/mixins}}
 <table class = "attribute-table">
     <thead class = "attribute-table-header">
 	    <td>{{#i18n}}Attribute{{/i18n}}</td> <td>{{#i18n}}Type{{/i18n}}</td> <td>{{#i18n}}Caption{{/i18n}}</td> <td>{{#i18n}}Description{{/i18n}}</td>
@@ -82,6 +78,7 @@
     {{/attributes}}
     </tbody>
 </table>
+<br>Mixins:{{#mixins}} {{mixinCode}} {{/mixins}}
 <br>
 {{/entities}}
 {{/domain}}

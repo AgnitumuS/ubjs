@@ -28,7 +28,9 @@ call npx lerna bootstrap
 @if errorlevel 1 goto err
 
 cd .\packages\ubcli
+set NODE_ENV=production
 call npm link
+set NODE_ENV=dev
 cd ..\..
 
 if not defined SRC (

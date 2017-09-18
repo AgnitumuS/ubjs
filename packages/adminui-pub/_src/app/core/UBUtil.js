@@ -748,9 +748,12 @@ Ext.define('UB.core.UBUtil', {
     entity.eachAttribute(function (attr, attrName) {
       node = {
         id: UB.core.UBUtil.gatherStr(parentEntityName, '.', attrName),
-        text: attr.caption + '[' + attrName + ']' || attrName,
-        leaf: attr.dataType !== Entity,
+        text: (attr.caption ? attr.caption + '[' + attrName + ']' : attrName),
+        leaf: attr.dataType !== UBDomain.ubDataTypes.Entity,
         parentId: parentEntityName || entityName
+      }
+      if (!attr.allowNull) {
+        node.text = '<b>' + node.text + '<b>'
       }
 
       if ((attr.dataType === Entity) &&

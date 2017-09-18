@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "4.2.25",
+  "version": "4.2.29",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-pub",
@@ -24,12 +24,12 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/adminui-reg": "^4.1.10",
-    "@unitybase/base": "^4.2.15",
-    "@unitybase/codemirror-full": "^1.2.7",
-    "@unitybase/ub-pub": "^4.4.5",
-    "@unitybase/ubm": "^4.0.35",
-    "@unitybase/xlsx": "^4.0.28",
+    "@unitybase/adminui-reg": "^4.1.14",
+    "@unitybase/base": "^4.2.19",
+    "@unitybase/codemirror-full": "^1.2.10",
+    "@unitybase/ub-pub": "^4.4.9",
+    "@unitybase/ubm": "^4.0.39",
+    "@unitybase/xlsx": "^4.0.32",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.20.2",

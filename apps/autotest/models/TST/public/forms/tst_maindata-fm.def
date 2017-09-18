@@ -1,0 +1,32 @@
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "tst_maindata"
+// @model "TST"
+// @formType "auto"
+// @caption "main data trest"
+// @description "main data test"
+exports.formDef = {
+	parentConfig: {
+    postOnlySimpleAttributes: true,
+    layout: {
+      type: "vbox",
+      align: "stretch"
+    }
+  },
+  items:[
+    { attributeName: "code"},
+		{ attributeName: "nonNullDict_ID"},
+    { attributeName: "enumValue"},
+    { attributeName: "dateTimeValue"},
+    { attributeName: "booleanValue"},
+    { attributeName: "nullDict_ID"},
+    {
+		  layout: {type: 'hbox'},
+		  items: [
+		    { attributeName: "nullDict_ID.code", readOnly: true, flex: 1},
+        { attributeName: "nullDict_ID.caption", readOnly: true, flex: 3},
+        { attributeName: "nullDict_ID.currencyValue", readOnly: true, flex: 1}
+		  ]
+		}
+	]
+};

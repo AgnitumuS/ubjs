@@ -204,6 +204,12 @@ class CustomRepository {
       if (values instanceof CustomRepository) {
         values = values.ubql() // get a subquery definition from a sub-repository
       }
+    } else if ((condition === 'in' || condition === 'notIn') && (values === null || values === undefined)) {
+      // prevent ORA-00932 error - in case value is undefined instead of array
+      console.warn('Condition "in" is passed to CustomRepository.where but values is null or undefined -> condition transformed to (0=1). Check your logic')
+      expression = '0'
+      condition = WhereCondition.equal
+      values = {a: 1}
     } else if (condition === 'in' && (!Array.isArray(values))) {
       console.debug('Condition "in" is passed to CustomRepository.where but values is not an array -> condition transformed to equal. Check your logic')
       condition = WhereCondition.equal
@@ -604,7 +610,7 @@ class CustomRepository {
      *
      * WARNING method do not check repository contains the single row
      * @abstract
-     * @return {Object|undefined}
+     * @return {Number|String|undefined}
      */
   selectScalar () {
     throw new Error('abstract')
