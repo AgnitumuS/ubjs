@@ -6,6 +6,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "ddl": "ubcli generateDDL -u admin -p admin -autorun",
     "selser": "selenium-standalone",
     "test-start": "wdio _ui-autotests\\wdio.conf.js --suite Preconditions,Shortcut,Folder,Desktop,Form,TestMainData",
     "test-single": "wdio _ui-autotests\\wdio.conf.js --suite Form",
