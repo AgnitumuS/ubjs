@@ -6,7 +6,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "echo Manually run a .\\tsql3.cmd for test"
+    "test": "echo Manually run a .\\tsql3.cmd for test",
+    "ddl": "ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
     "@ub-d/iit-crypto": "^1.0.6",

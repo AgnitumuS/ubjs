@@ -69,7 +69,7 @@ Ext.define('UB.ux.designer.VisualDesigner', {
                 title: UB.i18n('AsJSON'),
                 flex: 1,
                 height: '100%',
-                value: rValue,
+                rawValue: rValue,
                 style: {
                   background: 'white'
                 },
@@ -1070,7 +1070,7 @@ Ext.define('UB.ux.designer.VisualDesigner', {
         return value.toString()
       }
       return value
-    })
+    }, '  ')
     return this.formPrefix + '\r\nexports.formDef = ' + config
   },
 
