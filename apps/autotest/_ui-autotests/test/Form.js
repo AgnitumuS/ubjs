@@ -94,7 +94,7 @@ describe("Check Pure ExtJS Form", function () {
         codemirrorOk.should.equal(true);
     });
     it("Close UnityBase form's editor tab", function () {
-        browser.click(ExtLocator.getCss("tab[text=UnityBase form's editor]") + '-closeEl');
+        browser.click(ExtLocator.getCss("tab[text=Form editor]") + '-closeEl');
         browser.click(ExtLocator.getCss("tab[text=Form]") + '-closeEl');
     });
 });
@@ -164,7 +164,7 @@ describe("Check UB Form", function () {
         userBuildInRole.should.equal(true);
     });
     it("Close UnityBase form's editor tab", function () {
-        browser.click(ExtLocator.getCss("tab[text=UnityBase form's editor]") + '-closeEl');
+        browser.click(ExtLocator.getCss("tab[text=Form editor]") + '-closeEl');
         browser.click(ExtLocator.getCss("tab[text=Form]") + '-closeEl');
     });
 });
