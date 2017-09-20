@@ -251,7 +251,7 @@ describe("Delete Desktop", function () {
         browser.click(ExtLocator.getCss('button[cls=ub-login-btn]'));
         // browser.pause(3000);//temporary solution before bug fixing
         // browser.click('.ub-error-win-btn.ub-error-win-btn-ok'); //temporary solution before bug fixing
-        browser.pause(1000)
+        browser.pause(3000)
     });
     it("Check deleted Desktop on the Top Menu", function () {
         var deletedDesktopOnTopMenu = browser.isExisting('//*[contains(@id, "ubtoolbarmenu")]//span[.="test_desktop_name"]'); //In the future, make a more reliable method of verification
@@ -265,7 +265,7 @@ describe("All actions - Details (Not selected item)", function () {
         browser.moveToObject(ExtLocator.getCss('menuitem[text=UI]'));
         browser.pause(1000);
         browser.click(ExtLocator.getCss('menuitem[text=Desktops]'));
-        browser.pause(1000);
+        browser.pause(3000);
     });
     it("Click 'All actions' and select 'Details' - 'Shortcut(Desktop)'", function () {
         browser.click(ExtLocator.getCss('button[tooltip=All actions]'));
