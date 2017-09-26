@@ -563,7 +563,7 @@ Ext.define('UB.ux.UBDocument', {
           me.errorLabel.hide()
         }
 
-        //me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined;
+        // me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined;
         /* исходный конфииг
         var src = {
             url: url,
@@ -574,6 +574,7 @@ Ext.define('UB.ux.UBDocument', {
             params: params
         };
         */
+
         let src = {
           url: baseUrl,
           contentType: baseCt,
@@ -598,6 +599,32 @@ Ext.define('UB.ux.UBDocument', {
         }
       }
 
+      if (xtype === 'application/word' || xtype === 'application/excel') {
+        // <-- onlyOffice
+        // to prevent double loading of document from store
+        // onlyOffice has it's own block
+        me.createComponent(xtype)
+        me.ubCmp.setSrc({
+          url: url,
+          contentType: xtype,
+          html: !val || val.deleting ? url : val.origName || url,
+          blobData: null
+        }).then(function () {
+          defer.resolve(null)
+        }, function (reason) {
+          if (reason && !(reason instanceof UB.UBAbortError)) {
+            defer.reject(reason)
+          } else {
+            defer.resolve(null)
+          }
+        }).finally(function () {
+          if (me.getEl()) {
+            me.getEl().unmask()
+          }
+        })
+        return
+      } // --> /onlyOffice
+
       if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
         me.createComponent(xtype)
         onContentLoad(null, url, xtype)
@@ -616,49 +643,24 @@ Ext.define('UB.ux.UBDocument', {
           me.getEl().mask(UB.i18n('loadingData'))
         }
 
-        if (xtype === 'application/word' || xtype === 'application/excel') {
-          // <-- onlyOffice
-          // to prevent double loading of document from store
-          // onlyOffice has it's own block
-          me.createComponent(xtype)
-          me.ubCmp.setSrc({
-            url: url,
-            contentType: xtype,
-            html: !val || val.deleting ? url : val.origName || url,
-            blobData: null
-          }).then(function () {
+        me.loadContent(url, xtype).then(function (blob) {
+          ct = blob.type
+          me.createComponent(ct)
+          onContentLoad(blob, url, ct)
+          if (me.getEl()) {
+            me.getEl().unmask()
+          }
+        }, function (reason) {
+          if (me.getEl()) {
+            me.getEl().unmask()
+          }
+          if (reason && !(reason instanceof UB.UBAbortError)) {
+            defer.reject(reason)
+          } else {
             defer.resolve(null)
-          }, function (reason) {
-            if (reason && !(reason instanceof UB.UBAbortError)) {
-              defer.reject(reason)
-            } else {
-              defer.resolve(null)
-            }
-          }).finally(function () {
-            if (me.getEl()) {
-              me.getEl().unmask()
-            }
-          })
-          // --> /onlyOffice
-        } else {
-          me.loadContent(url, xtype).then(function (blob) {
-            ct = blob.type
-            me.createComponent(ct)
-            onContentLoad(blob, url, ct)
-            if (me.getEl()) {
-              me.getEl().unmask()
-            }
-          }, function (reason) {
-            if (me.getEl()) {
-              me.getEl().unmask()
-            }
-            if (reason && !(reason instanceof UB.UBAbortError)) {
-              defer.reject(reason)
-            } else {
-              defer.resolve(null)
-            }
-          })
-        }
+          }
+        })
+
       }
 
       return defer.promise

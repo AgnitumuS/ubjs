@@ -34,6 +34,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     'application/excel': 'spreadsheet'
   },
 
+  _documentKey: null,
   _onlyOfficeObject: null,
   _onlyOfficeGetValueDefer: null,
   _onlyOfficeGetValuePromise: null,
@@ -124,14 +125,11 @@ Ext.define('UB.ux.UBOnlyOffice', {
    */
   setSrc: function (cfg) {
     const me = this
-    if (!cfg.url) {
-      return me._initializationPromise
-    }
-
     return me._initializationPromise
       .then(() => {
         const documentType = me._mapContentTypeToDocumentType(cfg.contentType)
         const configuration = me._getControlConfiguration(documentType, cfg.url, cfg.html)
+        me._documentKey = configuration.document.key
         me._onlyOfficeObject = new DocsAPI.DocEditor(me._placeholderID, configuration)
       })
   },
@@ -175,11 +173,11 @@ Ext.define('UB.ux.UBOnlyOffice', {
    */
   _getControlConfiguration: function (fileType, fileUrl, title) {
     const me = this
-    const serverFileUrl = $App.connection.serverUrl + fileUrl.replace('/getDocument', 'getDocumentOffice')
+    const serverFileUrl = $App.connection.serverUrl + (!fileUrl ? 'getDocumentOffice' : fileUrl.replace('/getDocument', 'getDocumentOffice'))
     // Server remembers keys and urls.
     // So if document with "key" were saved then "key" can't be reused - "onOutdatedVersion" will be called
     const key = UB.MD5((new Date()).toString() + '||' + serverFileUrl).toString().substr(20)
-    const lang = '1058' // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
+    const lang = 'UK' // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
     const callbackUrl = $App.connection.serverUrl + 'notifyDocumentSaved'
     const editorMode = me.readOnly ? 'view' : 'edit'
     return {
@@ -195,13 +193,12 @@ Ext.define('UB.ux.UBOnlyOffice', {
         'callbackUrl': callbackUrl,
         'customization': {
           'autosave': true,
-          'forcesave': false
+          'forcesave': true
         }
       },
       'events': {
         'onDocumentStateChange': function onDocumentStateChange (e) {
           // fires instantly, currently only usefull variant "e.data === true" - document content changed
-          console.log('onDocumentStateChange')
           if (e.data === true) {
             me._isModified = true
             console.log('Changes in document detected. Current document marked as dirty')
