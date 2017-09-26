@@ -1,6 +1,5 @@
 /* global TubDocumentRequest, TubLoadContentBody */
 /* global Session, App */
-/* global _ */
 
 /**
  * @type {{notifyDocumentSaved: notifyDocumentSaved, getDocumentOffice: getDocumentOffice, getOnlyOfficeConfiguration: getOnlyOfficeConfiguration}}
@@ -13,6 +12,7 @@ module.exports = {
 }
 
 const qs = require('querystring')
+const _ = require('lodash')
 const uiSettings = JSON.parse(App.getUISettings() || '{}')
 
 Session.on('login', onlyOfficeOnUserLogin)
@@ -111,6 +111,13 @@ function getDocumentOffice (req, resp) {
 
   if (!config.isConfigured || !config.serverIP.startsWith(callerIP)) {
     resp.statusCode = 404
+    return
+  }
+
+  if (!params.ID) {
+    resp.statusCode = 200
+    resp.writeHead('Content-Type: text/plain')
+    resp.writeEnd(' ', 'utf-8')
     return
   }
 
