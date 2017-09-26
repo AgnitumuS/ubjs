@@ -69,11 +69,9 @@ describe("Build Report in HTML", function () {
         var frameLocator = '//*[@id="' + ExtLocator.getId('ubreporteditor') + '"]//iframe';
         browser.waitForExist(frameLocator);
         var frameId = browser.getAttribute(frameLocator, 'id');
-        console.log(frameId);
         browser.frame(frameId);
         var mustacheHref = browser.getAttribute('//a[.="Mustache"]', 'href');
         mustacheHref.should.equal('https://github.com/janl/mustache.js');
-        console.log(mustacheHref);
         browser.frame(null);
     });
     it("Complare template source code with a sample", function () {
@@ -82,7 +80,6 @@ describe("Build Report in HTML", function () {
         browser.click('//span[starts-with(@id,"mceu_") and contains(.,"Source code")]');
         browser.pause(3000);
         var reportHtmlSource = browser.getValue('//textarea[starts-with(@id,"mceu_")]');
-        console.log(reportHtmlSource);
         var sampleFilePath = browser.options.mochaOpts.files[0]
             .replace(/\\test.+\.js/i, "\\ExpectedOriginalReport.htm");
         var sampleBefore = fs.readFileSync(sampleFilePath, 'utf8');
@@ -130,10 +127,8 @@ describe("Build Report in HTML", function () {
     });
     it("Compare HTML report source code with a sample", function () {
         var frameId = browser.getAttribute('//*[@id="' + ExtLocator.getId('window[hidden=false] ubtinymcetextarea') + '"]//iframe', 'id');
-        console.log(frameId);
         browser.frame(frameId);
         var BuiltReportHtml = browser.getAttribute('//body', 'innerHTML');
-        console.log(BuiltReportHtml);
         var sampleAfterFilePath = browser.options.mochaOpts.files[0]
             .replace(/\\test.+\.js/i, "\\ExpectedEditedReport.htm");
         var sampleAfter = fs.readFileSync(sampleAfterFilePath, 'utf8');
@@ -147,11 +142,9 @@ describe("Build Report in HTML", function () {
     });
     it("Check presence of mustache link in HTML report", function () {
         var frameId = browser.getAttribute('//*[@id="' + ExtLocator.getId('window[hidden=false] ubtinymcetextarea') + '"]//iframe', 'id');
-        console.log(frameId);
         browser.frame(frameId);
         var mustacheHref = browser.getAttribute('//a[.="Mustache"]', 'href');
         mustacheHref.should.equal('https://github.com/janl/mustache.js');
-        console.log(mustacheHref);
         browser.frame(null);
         browser.pause(1000);
     });
@@ -213,7 +206,6 @@ describe("Build Report in PDF", function () {
     it("Download PDF report and compare MD5 hash with a sample", function () {
         var pdfIframeLocator = '//*[@id="' + ExtLocator.getId('ubpdf') + '"]/iframe';
         var blobLink = browser.getAttribute(pdfIframeLocator, 'src');
-        console.log(blobLink);
         // get PDF content from blob URL via hack
         browser.execute(function(url) {
             function abToB64(buf) {
@@ -335,11 +327,9 @@ describe("Build Report in HTML server-side", function () {
         var frameLocator = '//*[@id="' + ExtLocator.getId('ubreporteditor') + '"]//iframe';
         browser.waitForExist(frameLocator);
         var frameId = browser.getAttribute(frameLocator, 'id');
-        console.log(frameId);
         browser.frame(frameId);
         var mustacheHref = browser.getAttribute('//a[.="Mustache"]', 'href');
         mustacheHref.should.equal('https://github.com/janl/mustache.js');
-        console.log(mustacheHref);
         browser.frame(null);
     });
     it("Build HTML report server side", function () {
@@ -387,11 +377,9 @@ describe("Build Report in PDF server-side", function () {
         var frameLocator = '//*[@id="' + ExtLocator.getId('ubreporteditor') + '"]//iframe';
         browser.waitForExist(frameLocator);
         var frameId = browser.getAttribute(frameLocator, 'id');
-        console.log(frameId);
         browser.frame(frameId);
         var mustacheHref = browser.getAttribute('//a[.="Mustache"]', 'href');
         mustacheHref.should.equal('https://github.com/janl/mustache.js');
-        console.log(mustacheHref);
         browser.frame(null);
     });
     it("Build PDF report server side", function () {
