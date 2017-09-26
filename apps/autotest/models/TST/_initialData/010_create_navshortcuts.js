@@ -98,4 +98,17 @@ module.exports = function (session) {
     })
     displayOrder = displayOrder + 10
   })
+  
+  console.log('\t\t\tcreate `tst_onlyOffice` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_onlyOffice',
+      caption: 'tst_onlyOffice',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_onlyOffice', method: 'select', fieldList: ['ID', 'caption']}]}}, null, '\t')
+    }
+  })
 }
