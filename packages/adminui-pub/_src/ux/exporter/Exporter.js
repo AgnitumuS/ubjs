@@ -50,6 +50,9 @@ Ext.define("Ext.ux.exporter.Exporter", {
           var columns = Ext.Array.filter(grid.columns, function(col) {
               return !col.hidden && !col.disableExport; // && (!col.xtype || col.xtype != "actioncolumn");
           });
+          columns = columns.sort(function(a, b){
+            return (a.getIndex() < b.getIndex()) ? -1: 1
+          })
 
           Ext.applyIf(config, {
             title  : grid.title,
@@ -98,7 +101,23 @@ Ext.define("Ext.ux.exporter.Exporter", {
                 filterItemWhereList = UB.ux.data.proxy.UBProxy.ubFilterToWhereList(store.filters.getRange(), entityName);
                 request.whereList = request.whereList || {};
                 Ext.Object.merge(request.whereList, filterItemWhereList);
-                //request.limit = 65000;
+
+              var sorterItem;
+              var start = 100;
+              var len;
+              if(store.sorters && (len=store.sorters.length) > 0) {
+                request.orderList = {};
+                for(i = 0; i < len; ++i){
+                  sorterItem = store.sorters.get(i)
+                  request.orderList['x' + start++] = {
+                    expression: sorterItem.property,
+                    order: sorterItem.direction === 'ASC' ?  'asc' : 'desc'
+                  };
+                }
+              }
+
+
+              //request.limit = 65000;
                 delete request.limit;
 
                 $App.connection.select(request).done(function(result){

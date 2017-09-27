@@ -60,4 +60,3 @@ if (wsNotifier) {
 } else {
   console.error(' wsNotifier is ', wsNotifier)
 }
-

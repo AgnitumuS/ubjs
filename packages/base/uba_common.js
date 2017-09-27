@@ -1,4 +1,4 @@
-/**
+/*
  * Constants for administrative security model
  * Created by pavel.mash on 15.09.2016.
  */

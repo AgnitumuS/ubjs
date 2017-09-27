@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.4.6]
+### Added
+- ub-pub now export a `UBCache` class, so instead of 
+```
+UBCache = require('@unitybase/ub-pub/UBCache')
+```
+better use a 
+```
+UBCache = require('@unitybase/ub-pub').UBCache
+```
+
+
 ## [4.4.1]
 ### Changed
 - UBConnection.on('passwordExpired') callback now accept connecton as a argument

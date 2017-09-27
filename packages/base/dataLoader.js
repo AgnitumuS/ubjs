@@ -3,11 +3,11 @@
  *
  * Sample:
  *
-         csvLoader = require('@unitybase/base/dataLoader'),
+         const csvLoader = require('@unitybase/base').dataLoader
          conn = session.connection;
-         csvLoader.loadSimpleCSVData(conn, __dirname + '/ubm_enum-CDN.csv',
-            'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3]
-         );
+         csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-CDN.csv'),
+           'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3]
+         )
 
  * Sample with data transformation - in this case we pass transformation function to mapping
  * array instead of CSV column index:
@@ -152,19 +152,18 @@ function loadArrayData (conn, dataArray, entityName, ettAttributes, mapping, tra
 /**
  * Perform localization of entities data based on config & locale. See *.js in models `_initialData/locale` folder for usage samples.
  *
-       var
-         loader = require('@unitybase/base/dataLoader'),
-         localizationConfig = {
-                entity: 'ubm_enum',
-                keyAttribute: 'eGroup;code',
-                localization: [
-                     {keyValue: 'UBS_MESSAGE_TYPE;user',  execParams: {name: 'Користувачів'}},
-                    {keyValue: 'UBS_MESSAGE_TYPE;system',  execParams: {name: 'Система'}},
-                    {keyValue: 'UBS_MESSAGE_TYPE;warning',  execParams: {name: 'Попереждення'}},
-                    {keyValue: 'UBS_MESSAGE_TYPE;information',  execParams: {name: 'Інформація'}}
-                ]
-            };
-         loader.localizeEntity(session, localizationConfig, __filename);
+       const loader = require('@unitybase/base').dataLoader
+       let localizationConfig = {
+          entity: 'ubm_enum',
+          keyAttribute: 'eGroup;code',
+          localization: [
+            {keyValue: 'UBS_MESSAGE_TYPE;user',  execParams: {name: 'Користувачів'}},
+            {keyValue: 'UBS_MESSAGE_TYPE;system',  execParams: {name: 'Система'}},
+            {keyValue: 'UBS_MESSAGE_TYPE;warning',  execParams: {name: 'Попереждення'}},
+            {keyValue: 'UBS_MESSAGE_TYPE;information',  execParams: {name: 'Інформація'}}
+          ]
+       }
+       loader.localizeEntity(session, localizationConfig, __filename);
 
  * @param {ServerSession} session
  * @param {Object} config
@@ -231,30 +230,31 @@ function localizeEntity (session, config, locale) {
 /**
  * A helper for dataLoader.  Resolves code to ID.
  * Supports combined keys, in that case, both "attributeName" and "colIndex" parameters shall be arrays.
+ *
+ * @example
+
+  loader.loadArrayData(
+    conn,
+    [
+      ['employee1@example.com', 'users'],
+      ['employee2@example.com', 'users'],
+      ['manager1@example.com', 'users'],
+      ['manager2@example.com', 'users']
+    ],
+    'uba_userrole',
+    ['userID', 'roleID'],
+    [
+      lookup(conn, 'uba_user', 'name', 0),
+      lookup(conn, 'uba_role', 'name', 1)
+    ],
+    1000
+  )
+
  * @param {UBConnection} conn
  * @param {string} entityName
  * @param {string|Array<string>} attributeName  Attribute name or array of names
  * @param {number|Array<number>} colIndex      Column index or indexes
  * @returns {Function}
- *
- * @example
- * Example of usage:
- * loader.loadArrayData(
- *     conn,
- *     [
- *         ['employee1@example.com', 'users'],
- *         ['employee2@example.com', 'users'],
- *         ['manager1@example.com', 'users'],
- *         ['manager2@example.com', 'users']
- *     ],
- *     'uba_userrole',
- *     ['userID', 'roleID'],
- *     [
- *         lookup(conn, 'uba_user', 'name', 0),
- *         lookup(conn, 'uba_role', 'name', 1)
- *     ],
- *     1000
- * );
  */
 function lookup (conn, entityName, attributeName, colIndex) {
   /**

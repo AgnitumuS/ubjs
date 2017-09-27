@@ -4,6 +4,13 @@
 const webpack = require('webpack')
 const path = require('path')
 
+/**
+Set NODE_ENV=production for production build
+in windows set NODE_ENV=production && webpack reate a "production " var value
+*/
+if (process.env.NODE_ENV) process.env.NODE_ENV = process.env.NODE_ENV.trim()
+var PRODUCTION = (process.env.NODE_ENV === 'production')
+
 module.exports = {
   entry: {
     app: './adminui.js'
@@ -50,6 +57,7 @@ module.exports = {
   // devtool: 'eval',
   //devtool: 'source-map',
   // devtool: 'cheap-module-source-map',
+  devtool: PRODUCTION ? 'cheap-source-map' : 'eval',
 
   plugins: [
     new webpack.DefinePlugin({
@@ -63,16 +71,18 @@ module.exports = {
       beautify: false,
       comments: false,
       'screw-ie8': true,
-      // compress: false,
-      compress: {
-        sequences: true,
-        booleans: true,
-        loops: true,
-        unused: false, // true
-        warnings: true, // false,
-        drop_console: false, // true,
-        unsafe: true
-      },
+      sourceMap: !PRODUCTION,
+      compress: PRODUCTION
+          ? {
+            sequences: true,
+            booleans: true,
+            loops: true,
+            unused: false, // true
+            warnings: !PRODUCTION, // false,
+            drop_console: false, // true,
+            unsafe: true
+          }
+          : false,
       output: {
         ascii_only: true // for TinyMCE
       }

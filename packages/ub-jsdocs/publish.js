@@ -737,6 +737,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     Object.keys(helper.longnameToUrl).forEach(function(longname) {
         var myModules = helper.find(modules, {longname: longname});
+    	myModules.sort((a, b) => a.longname > b.longname)
         if (myModules.length) {
             generate('Module', myModules[0].name, myModules, helper.longnameToUrl[longname]);
 			generatePartial('Module', myModules[0].name, myModules, helper.longnameToUrl[longname]);

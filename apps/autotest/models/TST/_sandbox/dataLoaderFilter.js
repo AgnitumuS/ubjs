@@ -28,5 +28,3 @@ let notExisted = csvData.filter(
 dataLoader.loadArrayData(conn, notExisted, 'tst_dictionary',
   'ID;code;caption;filterValue;booleanColumn;currencyValue;floatValue'.split(';')
 )
-
-

@@ -12,7 +12,6 @@ module.exports = function (session) {
   var
     desktopID, folderID, conn = session.connection
 
-  'use strict'
   desktopID = conn.lookup('ubm_desktop', 'ID', {expression: 'code', condition: 'equal', values: {code: 'tst_desktop'}})
   console.info('\tFill `Test` desktop')
   if (!desktopID) {
@@ -83,7 +82,7 @@ module.exports = function (session) {
   })
 
   var displayOrder = 40;
-  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_ODataSimple', 'tst_ODataRef'].forEach(function (entityCode) {
+  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_ODataSimple', 'tst_ODataRef', 'tst_histDict'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
     conn.insert({
       fieldList: ['ID'],
@@ -98,7 +97,7 @@ module.exports = function (session) {
     })
     displayOrder = displayOrder + 10
   })
-  
+
   console.log('\t\t\tcreate `tst_onlyOffice` shortcut')
   conn.insert({
     fieldList: ['ID'],

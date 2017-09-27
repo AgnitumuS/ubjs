@@ -111,6 +111,14 @@ function UBConnection (connectionParams) {
   _.assign(this, EventEmitter.prototype)
 
   /**
+   * Fired for {@link UBConnection} instance in case authenticaion type CERT and simpleCertAuth is true.
+   * Here you can extract user name from certificate. By default it EDPOU or DRFO or email.
+   * Accept 3 args (conn: UBConnection, urlParams: Object, certInfo: Object)
+   * @event defineLoginName
+   */
+
+
+  /**
    * WebSocket `ubNotifier` protocol instance
    * @type {UBNotifierWSProtocol}
    */
@@ -787,6 +795,8 @@ UBConnection.prototype.getAppInfo = function () {
       Object.defineProperty(me, 'serverCertificate', {enumerable: true, writable: false, value: appInfo.serverCertificate || ''})
       Object.defineProperty(me, 'encryptionKeyLifetime', {enumerable: true, writable: false, value: appInfo.encryptionKeyLifetime || 0})
       Object.defineProperty(me, 'authMethods', {enumerable: true, writable: false, value: appInfo.authMethods})
+      Object.defineProperty(me, 'simpleCertAuth', {enumerable: true, writable: false, value: appInfo.simpleCertAuth || false})
+
       /**
        * An array of WebSocket protocol names supported by server
        * @property {Array<String>} supportedWSProtocols

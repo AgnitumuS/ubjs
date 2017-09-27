@@ -9,8 +9,8 @@ const UBA_COMMON = require('@unitybase/base').uba_common
 const assert = require('assert')
 const ok = assert.ok
 const fs = require('fs')
-const cmdLineOpt = require('@unitybase/base/options')
-const argv = require('@unitybase/base/argv')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 const TEST_NAME = 'Entity Level Security (ELS) test'
 
 module.exports = function runELSTest (options) {

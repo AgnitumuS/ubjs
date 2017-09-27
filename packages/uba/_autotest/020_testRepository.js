@@ -7,8 +7,8 @@ const _ = require('lodash')
 const assert = require('assert')
 const ok = assert.ok
 const fs = require('fs')
-const cmdLineOpt = require('@unitybase/base/options')
-const argv = require('@unitybase/base/argv')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 const TEST_NAME = 'UB.Repository test'
 
 module.exports = function runRepositoryTest (options) {

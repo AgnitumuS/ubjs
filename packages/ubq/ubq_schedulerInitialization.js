@@ -1,5 +1,5 @@
 const GLOBAL_CACHE_INITIALIZED_ENTRY = 'UBQ.schedulersInitialized'
-const Worker = require('@unitybase/base/worker')
+const Worker = require('@unitybase/base').Worker
 
 if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
   if (process.startupMode === 'CmdLine') {
@@ -108,7 +108,7 @@ function runSchedulersCircle (message) {
   // process.cwd() not work for case server started as a service
   // so all modules what required inside worker must be either global or in application node_modules folder
   parent.paths = Module._nodeModulePaths(process.configPath)
-  const UBConnection = parent.require('@unitybase/base/UBConnection')
+  const UBConnection = parent.require('@unitybase/base').UBConnection
   const cron = parent.require('node-cron')
   const serverURL = message.serverURL
   const config = message.config

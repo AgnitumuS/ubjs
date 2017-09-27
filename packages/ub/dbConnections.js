@@ -1,7 +1,6 @@
-/**
+/*
  * Created by v.orel on 22.12.2016.
  */
-
 const binding = process.binding('ub_dbConnection')
 const bindingDatabases = binding.databases
 const QueryString = require('querystring')

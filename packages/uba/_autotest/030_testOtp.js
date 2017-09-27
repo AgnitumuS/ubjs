@@ -3,8 +3,8 @@ const _ = require('lodash')
 const assert = require('assert')
 const ok = assert.ok
 const fs = require('fs')
-const cmdLineOpt = require('@unitybase/base/options')
-const argv = require('@unitybase/base/argv')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 
 module.exports = function runOTPTest (options) {
   let session, conn

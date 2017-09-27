@@ -5,7 +5,7 @@
  */
 _ = require('lodash')
 
-const argv = require('@unitybase/base/argv')
+const argv = require('@unitybase/base').argv
 
 const {ServerRepository} = require('@unitybase/base').ServerRepository // for backward compatibility with UB 1.7
 /**

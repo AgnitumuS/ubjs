@@ -81,7 +81,7 @@ App.on('timeStamp:before',
 App.on('timeStamp:after', function (req, resp) { console.log('timeStamp after!') })
 
 // require('http').setGlobalProxyConfiguration('proxy3.softline.main:3249', 'localhost');
-var oID = require('@unitybase/ub/modules/openid-connect'),
+var oID = require('@unitybase/openid-connect'),
   oIdEndPoint = oID.registerEndpoint('openIDConnect')
 
 oIdEndPoint.registerProvider('IdentityServer', {

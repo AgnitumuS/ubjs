@@ -6,32 +6,41 @@
 // @caption "uba_usercertificate"
 // @description "uba_usercertificate"
 exports.formDef = {
+    size: {
+            width: 600,
+            height: 400
+        },
     parentConfig: {
         layout: {
             type: 'vbox',
              align: 'stretch'
-         },
-        buttons: [
-                {
-                    itemId: 'uploadCertBtn',
-                    xtype: 'button',
-                    glyph: UB.core.UBUtil.glyphs.faUpload,
-                    text: UB.i18n('Upload certificate')
-                },{
-                    itemId: 'downloadCertBtn',
-                    xtype: 'button',
-                    glyph: UB.core.UBUtil.glyphs.faDownload,
-                    text: UB.i18n('Download certificate')
-                }
-        ]
+         }
     },
 	items: [
 		{ attributeName: "userID"},
-        { attributeName: "issuer_serial", readOnly: true, },
-        { attributeName: "serial", readOnly: true},
-        { attributeName: "description"},
-        { attributeName: "disabled"},
-        { attributeName: "revoked" , readOnly: true}
+    { attributeName: "issuer_serial", readOnly: true, },
+    { attributeName: "serial", readOnly: true},
+    { attributeName: "description"},
+    { attributeName: "disabled"},
+    { attributeName: "revoked" , readOnly: true},
+    { attributeName: "revocationDate" , readOnly: true},
+    {
+      layout: {
+        type: 'hbox'
+      },
+      items: [
+        {
+          itemId: 'uploadCertBtn',
+          xtype: 'button',
+          glyph: UB.core.UBUtil.glyphs.faUpload,
+          text: UB.i18n('Upload certificate')
+        },{
+          itemId: 'downloadCertBtn',
+          xtype: 'button',
+          glyph: UB.core.UBUtil.glyphs.faDownload,
+          text: UB.i18n('Download certificate')
+        }
+     ]
+    }   
 	]
-
-};
+}

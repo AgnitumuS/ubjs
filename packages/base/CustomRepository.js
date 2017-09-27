@@ -204,6 +204,12 @@ class CustomRepository {
       if (values instanceof CustomRepository) {
         values = values.ubql() // get a subquery definition from a sub-repository
       }
+    } else if ((condition === 'in' || condition === 'notIn') && (values === null || values === undefined)) {
+      // prevent ORA-00932 error - in case value is undefined instead of array
+      console.warn('Condition "in" is passed to CustomRepository.where but values is null or undefined -> condition transformed to (0=1). Check your logic')
+      expression = '0'
+      condition = WhereCondition.equal
+      values = {a: 1}
     } else if (condition === 'in' && (!Array.isArray(values))) {
       console.debug('Condition "in" is passed to CustomRepository.where but values is not an array -> condition transformed to equal. Check your logic')
       condition = WhereCondition.equal
@@ -257,8 +263,7 @@ class CustomRepository {
      *  - {master} will be replaced by master entity alias
      *  - {self}  will be replaced by sub-query entity alias
      *
-     *      //select users
-     *      UB.Repository('uba_user').attrs(['ID', 'name'])
+     *      UB.Repository('uba_user').attrs(['ID', 'name']) //select users
      *        // who are not disabled
      *        .where('disabled', '=', 0)
      *        // which allowed access from Kiev
@@ -581,7 +586,11 @@ class CustomRepository {
   }
 
     /**
-     * Select a single row. If ubql result is empty - return {undefined}.
+     * Select a single row. If ubql result is empty - return {undefined}
+     *
+     *    UB.Repository('uba_user').attrs('name', 'ID').where('ID', '=', 10)
+     *      .selectSingle().then(UB.logDebug)
+     *    // will output: {name: "admin", ID: 10}
      *
      * WARNING method do not check repository contains the single row and always return a first row from result.
      * @abstract
@@ -594,9 +603,14 @@ class CustomRepository {
     /**
      * Perform select and return a value of the first attribute from the first row
      *
+     *    UB.Repository('uba_user')
+     *    .attrs('name')
+     *    .where('ID', '=', 10)
+     *    .selectScalar().then(UB.logDebug) // will output `admin`
+     *
      * WARNING method do not check repository contains the single row
      * @abstract
-     * @return {Object|undefined}
+     * @return {Number|String|undefined}
      */
   selectScalar () {
     throw new Error('abstract')
@@ -607,7 +621,8 @@ class CustomRepository {
      *
      * If result not empty - return a object
      *
-     *    {attr1: val1, arrt2: val2}
+     *    UB.Repository('uba_user').attrs('name', 'ID').selectById(10).then(UB.logDebug)
+     *    // will output: {name: "admin", ID: 10}
      *
      * for server side or Promise resolved to object for client
      *

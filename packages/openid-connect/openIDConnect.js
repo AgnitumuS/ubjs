@@ -1,46 +1,52 @@
 /**
  * OpenIDConnect client for UnityBase
  *
- *      var oID = require('openIDConnect'),
- *      oIdEndPoint = oID.registerEndpoint('openIDConnect');
- *      oIdEndPoint.registerProvider('Google',{
- *           authUrl: 'https://accounts.google.com/o/oauth2/auth',
- *          tokenUrl: 'https://accounts.google.com/o/oauth2/token',
- *           userInfoUrl: 'https://www.googleapis.com/oauth2/v1/userinfo',
- *           userInfoHTTPMethod: 'GET',
- *           scope: 'openid',
- *           nonce: '123',
- *           response_type: 'code',
- *           client_id: '350085411136-lpj0qvr87ce0r0ae0a3imcm25joj2t2o.apps.googleusercontent.com',
- *           client_secret: 'dF4qmUxhHoBAj-E1R8YZUCqA',
- *           getOnFinishAction: function (response) {
- *              return 'opener.UB.view.LoginWindow.onFinishOpenIDAuth(' + JSON.stringify(response) + '); close();'
- *           },
- *           getUserID: function(userInfo) {
- *               var inst = UB.Repository('uba_user').attrs(['ID'])
- *                   .where('[name]', '=', userInfo.id).select();
- *               return inst.eof ? null : inst.get('ID');
- *           }
- *      });
+      const openID = require('@unitybase/openid-connect')
+      let oIdEndPoint = openID.registerEndpoint('openIDConnect')
+      oIdEndPoint.registerProvider('Google', {
+        authUrl: 'https://accounts.google.com/o/oauth2/auth',
+        tokenUrl: 'https://accounts.google.com/o/oauth2/token',
+        userInfoUrl: 'https://www.googleapis.com/oauth2/v1/userinfo',
+        userInfoHTTPMethod: 'GET',
+        scope: 'openid',
+        nonce: '123',
+        response_type: 'code',
+        client_id: '350085411136-lpj0qvr87ce0r0ae0a3imcm25joj2t2o.apps.googleusercontent.com',
+        client_secret: 'dF4qmUxhHoBAj-E1R8YZUCqA',
+        getOnFinishAction: function (response) {
+          return 'opener.UB.view.LoginWindow.onFinishOpenIDAuth(' + JSON.stringify(response) + '); close();'
+        },
+        getUserID: function(userInfo) {
+          let inst = UB.Repository('uba_user').attrs(['ID'])
+             .where('[name]', '=', userInfo.id).select()
+          return inst.eof ? null : inst.get('ID')
+        }
+      })
  *
- * @module openIDConnect
+ * @module @unitybase/openid-connect
  * @tutorial security_openidconnect
  */
-/* global App:false */
 
 const btoa = require('btoa')
 
-module.exports = openIDConnect
+module.exports.registerEndpoint = registerOpenIDEndpoint
 
 let endpoints = {}
 const queryString = require('querystring')
 
 /**
- * Register openID connect endpoint
- * @param {String} endpointName
- * @returns {Object} endpoint
+ * OpenID endpoint. Able to register providers
+ * @typedef {Object} openIDEndpoint
+ * @propety {function} registerProvider
  */
-openIDConnect.registerEndpoint = function (endpointName) {
+
+/**
+ * Register openID connect endpoint
+ * @method
+ * @param {String} endpointName
+ * @returns {openIDEndpoint} endpoint
+ */
+function registerOpenIDEndpoint (endpointName) {
   let providers = {}
   if (endpoints[endpointName]) {
     throw new Error('Endpoints already registered')
@@ -48,7 +54,7 @@ openIDConnect.registerEndpoint = function (endpointName) {
 
   App.registerEndpoint(endpointName, openIDConnect, false)
 
-  return endpoints[endpointName] = {
+  endpoints[endpointName] = {
     /**
      * Add provider to endpoint
      * @param {String} name
@@ -66,6 +72,7 @@ openIDConnect.registerEndpoint = function (endpointName) {
      *  For example: `opener.$App.onFinishOpenIDAuth`. In case of success will be called with `{success: true, data: userData, secretWord: secretWord}`
      *  In case of fail `{success: false}`
      * @param {Function} providerConfig.getUserID Called with one 1 parameter - provider's response for userInfo request. Must return user ID from uba_user entity if user is authorised or null else
+     * @memberOf openIDEndpoint
      */
     registerProvider: function (name, providerConfig) {
       // todo: check all parameters and add documentation for class
@@ -84,72 +91,72 @@ openIDConnect.registerEndpoint = function (endpointName) {
       return providers[providerName]
     }
   }
+  return endpoints[endpointName]
 }
 
 /**
+ * OpenID endpoint implementation
  * If called as host:port[/app]/endpoint - return a list of registered openIDConnect providers,
  * If called as host:port[/app]/endpoint/provider without parameters - redirect to provider `authUrl`
  * If called as host:port[/app]/endpoint/provider with parameters `code` and `state` - call doProviderAuthHandshake method
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @protected
  */
 function openIDConnect (req, resp) {
-  let paramStr
-  let params
   let providerName = req.uri
-  let provider
   let url = req.url.split('?')[0]
   let endpointUrl = providerName ? url.substr(0, url.length - providerName.length - 1) : url
   let endpointName = endpointUrl.substr(endpointUrl.lastIndexOf('/') - endpointUrl.length + 1)
   let endpoint = endpoints[endpointName]
-  let redirect_url
 
   if (!endpoint) {
     returnInvalidRequest(resp, 'Endpoint is not registered')
-  } else {
-    if (!providerName) {
-      returnProviderList(resp, endpoint)
-    } else {
-      provider = endpoint.getProvider(providerName)
-      if (!provider) {
-        returnInvalidRequest(resp, 'Provider not registered')
-      } else {
-        // TODO - check Refer (if any) is starts from  App.serverURL
-        // redirect_url = getValueFromHeaders(req, 'Referer');
-        // if (redirect_url) {
-        //    redirect_url = redirect_url.substr(0, redirect_url.lastIndexOf('/')) + '/' + endpointName + '/' + providerName;
-        // }
-        redirect_url = App.serverURL + (App.serverURL[App.serverURL.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
+    return
+  }
+  if (!providerName) {
+    returnProviderList(resp, endpoint)
+    return
+  }
 
-        paramStr = (req.method === 'GET') ? req.parameters : req.read()
+  let provider = endpoint.getProvider(providerName)
+  if (!provider) {
+    returnInvalidRequest(resp, 'Provider not registered')
+    return
+  }
 
-        params = paramStr ? queryString.parse(paramStr) : null
+  // TODO - check Refer (if any) is starts from  App.serverURL
+  // redirectUrl = getValueFromHeaders(req, 'Referer');
+  // if (redirectUrl) {
+  //    redirectUrl = redirectUrl.substr(0, redirectUrl.lastIndexOf('/')) + '/' + endpointName + '/' + providerName;
+  // }
+  let redirectUrl = App.serverURL + (App.serverURL[App.serverURL.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
+  let paramStr = (req.method === 'GET') ? req.parameters : req.read()
+  let params = paramStr ? queryString.parse(paramStr) : null
 
-        if (!paramStr || params.mode === 'auth') {
-          redirectToProviderAuth(req, resp, provider, redirect_url, params)
-        } else {
-          params = queryString.parse(paramStr)
-          if (params.code && params.state) {
-            // if (!redirect_url)
-            //    redirect_url = atob(params.state);
-            let origin = '',
-              headers = (req.headers || '').split('\r\n')
-            if (headers) {
-              headers.forEach(function (v) {
-                if (v && v.substring(0, 7) === 'Origin:') {
-                  origin = v.substring(7)
-                  return false
-                }
-              })
-            }
-            doProviderAuthHandshake(resp, params.code, params.state, provider, redirect_url, origin)
-          } else {
-            notifyProviderError(resp, provider)
-          }
+  if (!paramStr || params.mode === 'auth') {
+    redirectToProviderAuth(req, resp, provider, redirectUrl, params)
+    return
+  }
+
+  params = queryString.parse(paramStr)
+  if (params.code && params.state) {
+    // if (!redirectUrl)
+    //    redirectUrl = atob(params.state);
+    let origin = ''
+    let headers = (req.headers || '').split('\r\n')
+    if (headers) {
+      headers.forEach(function (v) {
+        if (v && v.substring(0, 7) === 'Origin:') {
+          origin = v.substring(7)
+          return false
         }
-      }
+      })
     }
+    doProviderAuthHandshake(resp, params.code, params.state, provider, redirectUrl, origin)
+  } else {
+    notifyProviderError(resp, provider)
   }
 }
 
@@ -161,6 +168,7 @@ function returnProviderList (resp, endpoint) {
  *
  * @param {Object} customHeaders
  * @returns {string}
+ * @private
  */
 function getAuthCustomHeadersString (customHeaders) {
   if (customHeaders === null) {
@@ -179,37 +187,33 @@ function getAuthCustomHeadersString (customHeaders) {
   return '&' + headerStringArray.join('&')
 }
 
-function redirectToProviderAuth (req, resp, providerConfig, redirect_url, requestParams) {
+function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, requestParams) {
   resp.statusCode = 302
-
   let customHeaders = ''
 
   if (typeof providerConfig.getAuthCustomHeaders === 'function') {
     customHeaders = getAuthCustomHeadersString(providerConfig.getAuthCustomHeaders(requestParams))
   }
-
   resp.statusCode = 302
   resp.writeEnd('')
-  resp.writeHead('Location: ' + providerConfig.authUrl
-    + '?state=' + btoa('fakestate')  //TODO - get it from global cache
-    + (providerConfig.scope ? '&scope=' + providerConfig.scope: '')
-    + (providerConfig.nonce ? '&nonce=' + providerConfig.nonce : '')
-    + '&redirect_uri=' + redirect_url
-    + '&response_type=' + providerConfig.response_type
-    + '&client_id=' + providerConfig.client_id
-    + '&response_mode=form_post'
-    + '&referer=' + redirect_url
-
-//        + '&referer=BACK_REDIRECT_URL'
-    + customHeaders
+  resp.writeHead('Location: ' + providerConfig.authUrl +
+    '?state=' + btoa('fakestate') +  //TODO - get it from global cache
+    (providerConfig.scope ? '&scope=' + providerConfig.scope : '') +
+    (providerConfig.nonce ? '&nonce=' + providerConfig.nonce : '') +
+    '&redirect_uri=' + redirectUrl +
+    '&response_type=' + providerConfig.response_type +
+    '&client_id=' + providerConfig.client_id +
+    '&response_mode=form_post' +
+    '&referer=' + redirectUrl +
+    // '&referer=BACK_REDIRECT_URL' +
+    customHeaders
   )
-
 }
 
 /**
- *
  * @param {THTTPResponse} resp
  * @param provider
+ * @private
  */
 function notifyProviderError (resp, provider) {
   resp.statusCode = 200
@@ -222,7 +226,7 @@ function notifyProviderError (resp, provider) {
   resp.writeHead('Content-Type: text/html')
 }
 
-function doProviderAuthHandshake (resp, code, state, provider, redirect_url, orign) {
+function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orign) {
   let http = require('http')
   let request
   let response
@@ -236,12 +240,12 @@ function doProviderAuthHandshake (resp, code, state, provider, redirect_url, ori
   request.write('&code=' + code)
   request.write('&client_id=' + provider.client_id)
   request.write('&client_secret=' + provider.client_secret)
-  request.write('&redirect_uri=' + redirect_url)
+  request.write('&redirect_uri=' + redirectUrl)
   response = request.end()
 
   if (response.statusCode === 200) {
     responseData = JSON.parse(response.read()) // response._http.responseText
-    if (provider.userInfoHTTPMethod == 'POST') {
+    if (provider.userInfoHTTPMethod === 'POST') {
       request = http.request(provider.userInfoUrl)
       request.options.method = 'POST'
       request.write('access_token=' + responseData.access_token)
@@ -252,22 +256,22 @@ function doProviderAuthHandshake (resp, code, state, provider, redirect_url, ori
       request = http.request(provider.userInfoUrl + '?access_token=' + responseData.access_token)
     }
     response = request.end()
-    if (response.statusCode == 200) {
+    if (response.statusCode === 200) {
       responseData = JSON.parse(response._http.responseText)
       userID = provider.getUserID(responseData)
 
       if (!userID) {
         notifyProviderError(resp, provider)
       } else {
-        var loginResp = Session.switchUser(userID, code)
-        var objConnectParam = {success: true, data: JSON.parse(loginResp), secretWord: code}
+        let loginResp = Session.switchUser(userID, code)
+        let objConnectParam = {success: true, data: JSON.parse(loginResp), secretWord: code}
         resp.statusCode = 200
         resp.write('<!DOCTYPE html><html>')
         resp.write('<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
         resp.write('<body>')
         resp.write('<div style="display: none;"  id="connectParam" >')
         resp.write(JSON.stringify(objConnectParam))
-        resp.write('</div><div id="mainElm" onClick="javascript: window.close();" style="width: 100%; height:100vh" ></div><script>')
+        resp.write('</div><div id="mainElm" onClick="javascript: window.close();" style="width:100%; height:100vh" ></div><script>')
         resp.write(provider.getOnFinishAction(objConnectParam))
         resp.write('</script></body>')
         resp.writeEnd('</html>')
@@ -291,7 +295,7 @@ function returnInvalidRequest (resp, message) {
 function getValueFromHeaders (req, headerName) {
   let result = null
   req.headers.split('\r\n').forEach(function (value) {
-    var pair = value.split(': ')
+    let pair = value.split(': ')
     if (pair[0].toLowerCase() === headerName.toLowerCase()) {
       result = pair[1]
     }

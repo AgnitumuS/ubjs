@@ -1,5 +1,5 @@
 exports.formCode = {
-	initUBComponent: function () {
+  initUBComponent: function () {
 		/* put initialization code here */
-	}
-};
+  }
+}

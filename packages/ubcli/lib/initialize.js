@@ -1,13 +1,17 @@
 /**
- * Command line module.
- *
  * Fill domain entities by it initial values: enumerate all (or specified in -m switch) models `_initialData` folders  and execute all `*.js` from there.
- * Database itself and all necessary tables must exist before call this command.
- *  - use `>ub cmd/initDB' to create a new database
- *  - use `>ub cmd/generateDDL` to create a tables
  *
+ * Requirements:
+ *
+ *  - database must exist - see {@link module:@unitybase/ubcli/initDB initDB}
+ *  - all tables must exist - see {@link module:@unitybase/ubcli/generateDDL generateDDL}
+ *
+ * Usage:
+
+      ubcli initialize -?
+
  * @author pavel.mash
- * @module cmd/initialize
+ * @module @unitybase/ubcli/initialize
 */
 const _ = require('lodash')
 const fs = require('fs')
