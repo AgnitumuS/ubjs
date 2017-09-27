@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ##  [4.2.20]
-### Chcnged
+### Changed
  - `showForm` command will use a `ubm_form.caption` as a form caption (instead of description as in prev. version) 
 
 ##  [4.2.18]
