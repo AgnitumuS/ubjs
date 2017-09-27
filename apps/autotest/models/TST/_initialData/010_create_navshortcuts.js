@@ -107,7 +107,7 @@ module.exports = function (session) {
       code: 'tst_onlyOffice',
       caption: 'tst_onlyOffice',
       displayOrder: displayOrder,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_onlyOffice', method: 'select', fieldList: ['ID', 'caption']}]}}, null, '\t')
+      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_onlyoffice', method: 'select', fieldList: ['ID', 'caption']}]}}, null, '\t')
     }
   })
 }
