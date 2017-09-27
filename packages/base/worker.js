@@ -1,12 +1,12 @@
 /**
  * Execute a script in a dedicated thread.
  *
- * The flow is following:
+ * The flow:
  *
-        var Worker = require('@unitybase/base/worker');
+        const Worker = require('@unitybase/base').Worker
         // create a new thread in suspended state.
         // Evaluate a body of a function runSomething into newly created JavaScript context
-        var w =  new Worker({name: 'WorkerName', onmessage: runSomething});
+        let w =  new Worker({name: 'WorkerName', onmessage: runSomething});
         // resume the thread and call a `onmessage` function with parameter, passed to postMessage
         w.postMessage({action: 'start', param: 'bla-bla'}); // wake up the thread and call a
 
@@ -21,8 +21,9 @@
  * @module @unitybase/base/worker
  */
 
- let bindings = process.binding('worker'),
-     {sleep} = process.binding('syNode');
+const bindings = process.binding('worker')
+const {sleep} = process.binding('syNode')
+
 /**
  * @class
  * Worker implementation.
@@ -34,31 +35,31 @@
  * @param {String|Function} paramsObj.onerror Error handler. Accept 2 parameters - message and exception
  * @param paramsObj.message Message. If assigned then post this message after start thread
  */
-function Worker(paramsObj) {
-    if (typeof(paramsObj) === "object") { 
-        if (!paramsObj.name) paramsObj.name = 'Worker';
-        this.workerID = bindings.createThread(paramsObj);
-    } else if (typeof(paramsObj) === "number") { 
-        this.workerID = paramsObj;
-    }
-    if (paramsObj.hasOwnProperty('message')) {
-        this.postMessage(paramsObj.message);
-    }
+function Worker (paramsObj) {
+  if (typeof (paramsObj) === 'object') {
+    if (!paramsObj.name) paramsObj.name = 'Worker'
+    this.workerID = bindings.createThread(paramsObj)
+  } else if (typeof (paramsObj) === 'number') {
+    this.workerID = paramsObj
+  }
+  if (paramsObj.hasOwnProperty('message')) {
+    this.postMessage(paramsObj.message)
+  }
 }
-module.exports = Worker;
+module.exports = Worker
 
 /**
  * Get message from the worker thread
  * @return {*}
  */
-Worker.prototype.getMessage = function() {
-    var mes = bindings.getMessage(this.workerID);
-    if (mes) {
-        return JSON.parse(mes);
-    } else {
-        return mes;
-    }
-};
+Worker.prototype.getMessage = function () {
+  let mes = bindings.getMessage(this.workerID)
+  if (mes) {
+    return JSON.parse(mes)
+  } else {
+    return mes
+  }
+}
 
 /**
  * Try get message from worker thread. Wait until message received or timeout expired
@@ -66,29 +67,27 @@ Worker.prototype.getMessage = function() {
  * @param {Number} [checkEveryMS=10] Sleep duration before next try get message
  * @return {*}
  */
-Worker.prototype.waitMessage = function(timeout, checkEveryMS) {
-    var mes,
-        start = new Date().getTime();
-    if (!checkEveryMS) checkEveryMS = 10;
-    while ((!(mes = this.getMessage()))&&(new Date().getTime() - start < timeout))
-    {
-        sleep(checkEveryMS);
-    }
-
-    return mes;
-};
+Worker.prototype.waitMessage = function (timeout, checkEveryMS) {
+  let mes
+  let start = new Date().getTime()
+  if (!checkEveryMS) checkEveryMS = 10
+  while ((!(mes = this.getMessage())) && (new Date().getTime() - start < timeout)) {
+    sleep(checkEveryMS)
+  }
+  return mes
+}
 
 /**
  * Terminate worker thread
  */
-Worker.prototype.terminate = function() {
-    bindings.terminate(this.workerID);
-};
+Worker.prototype.terminate = function () {
+  bindings.terminate(this.workerID)
+}
 
 /**
  * Post message to worker thread. Message are stringified before send
  * @param {*} message
 */
-Worker.prototype.postMessage = function(message) {
-    bindings.postMessage(this.workerID, JSON.stringify(message));
-};
+Worker.prototype.postMessage = function (message) {
+  bindings.postMessage(this.workerID, JSON.stringify(message))
+}

@@ -1,17 +1,28 @@
 /**
  * Parse a command line options & environment variables and create a configuration object.
  *
-         var
-            cmdLineOpt = require('cmd/options'),
-            argv = require('cmd/argv');
+     const cmdLineOpt = require('cmd/options')
+     const argv = require('cmd/argv')
 
-         var opts = cmdLineOpt.describe('cmd/generateDDL', 'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it')
-            .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-            .add({short: 'm',  long: 'models', param: 'modelsList', defaultValue: '*',  help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'})
-            .add({short: 'e',  long: 'entities', param: 'entitiesList', defaultValue: '*',  help: 'Comma separated entity names list for DDL generation'})
-            .add({short: 'out',  long: 'out', param: 'outputPath', defaultValue: process.cwd(),  help: 'Folder to output generated DDLs (one file per connection)'})
-            .add({short: 'autorun',  long: 'autorun', defaultValue: false,  help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'});
-         options = opts.parseVerbose({}, true);
+     let paramsDescription = cmdLineOpt.describe('cmd/generateDDL',
+      'Check database structure for application domain. ' +
+      'Generate DDL (both create and alter) if need and optionally run it'
+     ).add(
+        argv.establishConnectionFromCmdLineAttributes._cmdLineParams
+     ).add({
+       short: 'm',  long: 'models', param: 'modelsList', defaultValue: '*',
+       help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'
+     }).add({
+       short: 'e',  long: 'entities', param: 'entitiesList', defaultValue: '*',
+       help: 'Comma separated entity names list for DDL generation'
+     }).add({
+       short: 'out',  long: 'out', param: 'outputPath', defaultValue: process.cwd(),
+       help: 'Folder to output generated DDLs (one file per connection)'
+     }).add({
+       short: 'autorun',  long: 'autorun', defaultValue: false,
+       help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'
+     })
+     let passedOptions = paramsDescription.parseVerbose({}, true)
 
  *
  * @author pavel.mash
@@ -25,7 +36,7 @@ const _ = require('lodash')
  * @class
  * @param commandName
  * @param commandDescription
- * @param cli
+ * @param {String} [cli='ub'] An executable used to execute a command `commandName`. For example: `ubcli`
  * @constructor
  */
 function Options (commandName, commandDescription, cli) {
@@ -67,7 +78,7 @@ Options.prototype.add = function add (otherOptions) {
  * @param {Array} [errors] If passed will bw filled by a errors in passed parameters
  */
 Options.prototype.parse = function parse (defaults, errors) {
-  let result = _.defaults({}, defaults)
+  let result = Object.assign({}, defaults)
   // [{short: 'u', long: 'user', param: 'userName', defaultValue: true, searchInEnv: true, help: 'A user name for server connection'}]
   let valid = true
   this.options.forEach(function (option) {
@@ -184,13 +195,17 @@ Options.prototype.usage = function usage () {
  * Create a new options definition.
  * @example
 
- var cmdLineOpt = require('cmd/options');
- var opts = cmdLineOpt.describe('cmd/createStore',
-        'Create internal store structure (folders) for specifies FileSystem store'
-     )
-     .add({short: 'cfg',  long: 'cfg', param: 'serverConfig', defaultValue: 'ubConfig.json',  help: 'Server config'})
-     .add({short: 'store',  long: 'store', param: 'storesList', defaultValue: '*',  help: 'Comma separated blob stores list'});
- options = opts.parseVerbose({}, true);
+ const cmdLineOpt = require('cmd/options')
+ let paramsDescription = cmdLineOpt.describe('cmd/createStore',
+   'Create internal store structure (folders) for specifies FileSystem store'
+ ).add({
+   short: 'cfg',  long: 'cfg', param: 'serverConfig', defaultValue: 'ubConfig.json',
+   help: 'Server config'
+ }).add({
+   short: 'store',  long: 'store', param: 'storesList', defaultValue: '*',
+   help: 'Comma separated blob stores list'
+ })
+ let options = paramsDescription.parseVerbose({}, true);
 
  * @param {String} commandName Name of a command then executed from a command line
  * @param {String} [commandDescription] Command description for help (-help switch)

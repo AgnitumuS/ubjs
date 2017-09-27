@@ -39,9 +39,9 @@ const
     );
 
   jsCOM_class: JSClass = (name: 'COM';
-    flags: JSCLASS_HAS_PRIVATE ;
-    );
-
+    flags: JSCLASS_HAS_PRIVATE;
+    cOps: @jsCOM_classOps
+  );
 {$ELSE}
   jsCOM_class: JSClass = (name: 'COM';
     flags: JSCLASS_HAS_PRIVATE ;

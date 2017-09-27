@@ -7,6 +7,7 @@ require('./GridSummary')
 require('./ColumnFavorites')
 require('./ColumnCategories')
 require('../view/Table')
+require('../view/InputDateWindow')
 require('../core/UBPanelMixin')
 
 /* global saveAs */

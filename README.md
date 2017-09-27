@@ -10,19 +10,14 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
 > The README reflects UnityBase v4.x, UnityBase v1.x [documentation can be found here](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial).
 
   - Download and install [node.js & npm](https://nodejs.org/en/download/)
-  - Download and install [OpenUB v4](https://unitybase.info/media/files/OpenUBv4.exe)
+  - Download and install [OpenUB v4](https://unitybase.info/download-files.html)
   - _(optional step)_ To debug server-side JavaScript [install a FireFox](https://www.mozilla.org/ru/firefox/new/)
-
-  - Configure NPM to use a unitybase registry
-```
-  npm set registry http://registry.unitybase.info 
-```
   - Install UnityBase command line tool globaly
 ```
-  npm i -g @unitybase/ubcli
+  npm i -g @unitybase/ubcli --registry=http://registry.unitybase.info
 ```
 
-> In case you develop a module for UnityBase see [Contribution Guide](CONTRIBUTING.md)
+> In case you develop a module for UnityBase see [Contribution Guide](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/CONTRIBUTING.md)
 
 ## Get Started
 

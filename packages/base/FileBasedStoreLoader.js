@@ -4,7 +4,7 @@
  * Good sample of usage can be found in `ubm_form.loadAllForm`
  *
  * For work with data, loaded by FileBasedStoreLoader you can use {@link LocalDataStore} class.
- * @module FileBasedStoreLoader
+ * @module @unitybase/base/FileBasedStoreLoader
  */
 
 const lds = require('./LocalDataStore')
@@ -16,13 +16,14 @@ module.exports = FileBasedStoreLoader
 /**
  * @example
 
-    var loader = new FileBasedStoreLoader({
-         entity: me.entity,
-           foldersConfig: folders,
-           fileMask: /-fm\.def$/,
-           onBeforeRowAdd: postProcessing
-        });
-    resultDataCache = loader.load();
+    const FileBasedStoreLoader = require('@unitybase/base')FileBasedStoreLoader
+    let loader = new FileBasedStoreLoader({
+      entity: me.entity,
+      foldersConfig: folders,
+      fileMask: /-fm\.def$/,
+      onBeforeRowAdd: postProcessing
+    });
+    let resultDataCache = loader.load()
 
  * @class
  * @param {Object}    config

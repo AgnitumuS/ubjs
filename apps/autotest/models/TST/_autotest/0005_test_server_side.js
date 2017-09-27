@@ -6,8 +6,8 @@
 const assert = require('assert')
 const path = require('path')
 const fs = require('fs')
-const cmdLineOpt = require('@unitybase/base/options')
-const argv = require('@unitybase/base/argv')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 const TEST_NAME = 'Server-side tests'
 
 module.exports = function runOTPTest (options) {
@@ -30,8 +30,8 @@ module.exports = function runOTPTest (options) {
   testServerSide()
 
   function testServerSide () {
-   let folder = path.dirname(__filename)
-   let tests = fs.readdirSync(path.join(folder, 'serverSide'))
+    let folder = path.dirname(__filename)
+    let tests = fs.readdirSync(path.join(folder, 'serverSide'))
 
     console.debug('test Server-side js')
     tests.forEach((test) => {
@@ -48,4 +48,3 @@ module.exports = function runOTPTest (options) {
     })
   }
 }
-

@@ -18,12 +18,14 @@
        word.CheckLanguage = false
        word.Options.CheckSpellingAsYouType = false
 
+       // pass a unnamed parameter
        let doc = word.Documents.Open(fullTestFilePath)
 
+       // pass a named parameters
        doc.ExportAsFixedFormat({
-        ExportFormat: wdExportFormatPDF,
-        OutputFileName: fullPDFFilePath
-      })
+         ExportFormat: wdExportFormatPDF,
+         OutputFileName: fullPDFFilePath
+       })
        doc.close({SaveChanges: false})
        doc = null
        word.Quit()
@@ -38,14 +40,15 @@ const path = require('path')
 const moduleName = path.join(__dirname, archPath, dllName)
 const binding = require(moduleName)
 /**
- * Create new object - implementation of OLE object.
+ * Create JavaScript wrapper around a COM/OLE object. COM must implement IDispatch interface.
  *
- * Returning object has the same properties and methods like original COM object.
- * Names of methods and properties are case-insensitive. If com-object has get-properties with parameters
- * they implements in JS-object as functions.
+ * Returning object has the same properties and methods as in original COM object.
+ *
+ * Names of methods and properties are **case-insensitive**. If COM object has get-properties with parameters
+ * they implemented as a functions in JS-object.
  *
  * Method can take unnamed parameters(normal usage), you must use the correct order of the parameters,
- * or named parameters(in this case you use 1 object parameter with property name as parameter names and property values as parameter values)
+ * or named parameters(in this case functioin take a {Object} with keys = parameter name and values is a parameter values)
  *
  * @param {String} objectName
  * @return {Object}

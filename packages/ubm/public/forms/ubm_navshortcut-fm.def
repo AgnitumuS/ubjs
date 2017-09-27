@@ -1,10 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "ubm_navshortcut"
-//@model "UBM"
-//@formType "auto"
-//@caption ""
-//@description ""
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "ubm_navshortcut"
+// @model "UBM"
+// @formType "auto"
+// @caption ""
+// @description ""
 exports.formDef = {
     //requiredFields: ['desktopID.code', 'parentID.code'],
     requiredFields: ['mi_treePath'],

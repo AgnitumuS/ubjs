@@ -16,7 +16,7 @@
  *        )
  *        let base64Content = canvas.getContent('bin2base64'); // PNG image encoded as base64
  *
- * @module UBCanvas
+ * @module @unitybase/canvas
  */
 const dllName = 'UBCanvas.dll'
 const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'

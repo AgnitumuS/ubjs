@@ -2,9 +2,8 @@
  created by xmax 05.04.2013
  rewrite to ES6 & ubcli by pavel.mash 08.2016
  */
-const MAX_DB_IDENTIFIER_LENGTH = 30
 const _ = require('lodash')
-const UBDomain = require('@unitybase/base/UBDomain')
+const UBDomain = require('@unitybase/base').UBDomain
 const {TableDefinition, strIComp} = require('./AbstractSchema')
 
 /**
@@ -21,35 +20,37 @@ function getTableDBName (entity) {
  * @param {string} sourceTableName
  * @param {string} sourceColumnName
  * @param {string} destTableName
+ * @param {DDLGenerator.dbDialectes} dialect
  * @return {string}
  */
-function genFKName (sourceTableName, sourceColumnName, destTableName) {
+function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
+  const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
   let prefix = 'FK_' + sourceTableName.toUpperCase() + '_'
   let colName = sourceColumnName.toUpperCase()
   let suffix = '_REF'
   let delta
   let baseLen = prefix.length + destTableName.length + 1
 
-  if ((baseLen + colName.length + suffix.length > MAX_DB_IDENTIFIER_LENGTH)) {
-    delta = MAX_DB_IDENTIFIER_LENGTH - baseLen - colName.length
+  if ((baseLen + colName.length + suffix.length > MAX_IDENTIFIER_LEN)) {
+    delta = MAX_IDENTIFIER_LEN - baseLen - colName.length
     if (delta >= 0) {
       suffix = suffix.substring(0, delta)
     } else {
       suffix = ''
-      delta = MAX_DB_IDENTIFIER_LENGTH - baseLen
+      delta = MAX_IDENTIFIER_LEN - baseLen
       if ((delta < colName.length) && (delta > 2)) {
         colName = colName.substring(0, delta)
       } else {
         colName = colName.substring(0, 3)
         baseLen = prefix.length + 1 + colName.length
-        delta = MAX_DB_IDENTIFIER_LENGTH - baseLen
+        delta = MAX_IDENTIFIER_LEN - baseLen
         if (delta < destTableName.length) {
           destTableName = destTableName.substring(0, delta)
         } else {
           destTableName = destTableName.substring(0, 3)
           baseLen = 4 + destTableName.length + 1 + colName.length
-          if (MAX_DB_IDENTIFIER_LENGTH - baseLen > 4) {
-            sourceTableName = sourceTableName.substring(0, MAX_DB_IDENTIFIER_LENGTH - baseLen)
+          if (MAX_IDENTIFIER_LEN - baseLen > 4) {
+            sourceTableName = sourceTableName.substring(0, MAX_IDENTIFIER_LEN - baseLen)
             prefix = 'FK_' + sourceTableName.toUpperCase() + '_'
           }
         }
@@ -80,7 +81,7 @@ function getAttributeDBName (entity, attributeCode) {
 function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory, storage) {
   var xDef = {
     isUnique: true,
-    name: formatName('UIDX_', sqlAlias, '_' + attrName.toUpperCase()),
+    name: formatName('UIDX_', sqlAlias, `_${attrName.toUpperCase()}`, dialect),
     keys: [ attrName ]
   }
   if (isHistory) {
@@ -101,11 +102,20 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
   tableDef.addIndex(xDef)
 }
 
-function formatName (prefix, root, suffix) {
+/**
+ * Create a shorten name based on DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS for a given DB dialect
+ * @param prefix
+ * @param root
+ * @param suffix
+ * @param {DDLGenerator.dbDialectes} dialect
+ * @returns {*}
+ */
+function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
+  const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
   let totalLen = prefix.length + root.length + suffix.length
   let deltaLen
-  if (totalLen > MAX_DB_IDENTIFIER_LENGTH) {
-    deltaLen = totalLen - MAX_DB_IDENTIFIER_LENGTH
+  if (totalLen > MAX_IDENTIFIER_LEN) {
+    deltaLen = totalLen - MAX_IDENTIFIER_LEN
     if (deltaLen < suffix.length - 1) {
       suffix = suffix.substring(0, suffix.length - deltaLen)
     } else {
@@ -260,7 +270,7 @@ class DDLGenerator {
         }
 
         if (attribute.dataType === UBDomain.ubDataTypes.Boolean) {
-          let fName = formatName(`CHK_${sqlAlias}_`, attrCode, '_BOOL')
+          let fName = formatName(`CHK_${sqlAlias}_`, attrCode, '_BOOL', entity.connectionConfig.dialect)
           tableDef.addCheckConstr({
             name: fName,
             column: attrCode,
@@ -273,7 +283,7 @@ class DDLGenerator {
           let associatedEntity = attribute.getAssociatedEntity()
           if (associatedEntity.connectionName === entity.connectionName) { // referential constraint between different connection not supported
             tableDef.addFK({
-              name: genFKName(sqlAlias, attrNameF, (associatedEntity.sqlAlias || associatedEntity.name || '')),
+              name: genFKName(sqlAlias, attrNameF, (associatedEntity.sqlAlias || associatedEntity.name || ''), entity.connectionConfig.dialect),
               keys: [attribute.name.toUpperCase()],
               references: associatedEntity.name,
               generateFK: attribute.generateFK
@@ -282,7 +292,7 @@ class DDLGenerator {
           // indexing
           if (!attribute.isUnique) {
             tableDef.addIndex({
-              name: formatName('IDX_', sqlAlias, '_' + attrNameF),
+              name: formatName('IDX_', sqlAlias, `_${attrNameF}`, entity.connectionConfig.dialect),
               isUnique: false,
               keys: [ attrName ]
             })
@@ -290,7 +300,7 @@ class DDLGenerator {
               for (lang of supportLang) {
                 if (lang !== defaultLang) {
                   tableDef.addIndex({
-                    name: formatName('IDX_', sqlAlias, '_' + attrNameF + '_' + lang),
+                    name: formatName('IDX_', sqlAlias, `_${attrNameF}_${lang}`, entity.connectionConfig.dialect),
                     isUnique: false,
                     keys: [attrName]
                   })
@@ -322,7 +332,7 @@ class DDLGenerator {
 
     if (entity.mixins.tree) {
       tableDef.addIndex({
-        name: formatName('IDX_', sqlAlias, '_TREEPATH'),
+        name: formatName('IDX_', sqlAlias, '_TREEPATH', entity.connectionConfig.dialect),
         isUnique: false,
         keys: [ 'mi_treePath' ]
       })
@@ -333,7 +343,7 @@ class DDLGenerator {
       this.relatedEntities.push(u.entity)
       let refTo = entity.domain.get(u.entity)
       tableDef.addFK({
-        name: genFKName(sqlAlias, 'id', (refTo.sqlAlias || refTo.name || '')),
+        name: genFKName(sqlAlias, 'id', (refTo.sqlAlias || refTo.name || ''), entity.connectionConfig.dialect),
         keys: [ 'ID' ],
         references: refTo.name,
         generateFK: true
@@ -346,7 +356,7 @@ class DDLGenerator {
         keys.push('mi_deleteDate')
       }
       tableDef.addIndex({
-        name: formatName('IDX_', sqlAlias, '_DTODD'),
+        name: formatName('IDX_', sqlAlias, '_DTODD', entity.connectionConfig.dialect),
         isUnique: false,
         keys: keys
       })
@@ -360,7 +370,7 @@ class DDLGenerator {
       if (entity.mixins.mStorage && entity.mixins.mStorage.safeDelete) {
         keys.push('mi_deleteDate')
         tableDef.addIndex({
-          name: formatName('UIDX_', sqlAlias, '_HIST'),
+          name: formatName('UIDX_', sqlAlias, '_HIST', entity.connectionConfig.dialect),
           isUnique: true,
           keys
         })
@@ -533,7 +543,9 @@ class DDLGenerator {
       description: attribute.description || attribute.caption,
       allowNull,
       defaultValue: (attribute.defaultValue ? attribute.defaultValue : undefined),
-      defaultConstraintName: (attribute.defaultValue ? formatName(attribute.entity.sqlAlias || attribute.entity.name, '_' + fieldName.toUpperCase(), '_DEF') : ''),
+      defaultConstraintName: attribute.defaultValue
+        ? formatName(attribute.entity.sqlAlias || attribute.entity.name, `_${fieldName.toUpperCase()}`, '_DEF', attribute.entity.connectionConfig.dialect)
+        : '',
       size,
       prec,
       enumGroup,
@@ -567,19 +579,19 @@ class DDLGenerator {
     })
     tableDef.primaryKey = {name: 'PK_' + attribute.associationManyData, keys: [ 'sourceID', 'destID' ]}
     tableDef.addFK({
-      name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias),
+      name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
       keys: [ 'sourceID'.toUpperCase() ],
       references: getTableDBName(entity),
       generateFK: true
     })
     tableDef.addFK({
-      name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias),
+      name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias, entity.connectionConfig.dialect),
       keys: [ 'destID'.toUpperCase() ],
       references: getTableDBName(associatedEntity),
       generateFK: true
     })
     tableDef.addIndex({
-      name: formatName('IDX_', attribute.associationManyData, '_DESTID'),
+      name: formatName('IDX_', attribute.associationManyData, '_DESTID', entity.connectionConfig.dialect),
       keys: [ 'destID'.toUpperCase() ]
     })
     tableDef.isIndexOrganized = true
@@ -652,6 +664,21 @@ DDLGenerator.dbDialectes = {
   SQLite3: 'SQLite3',
   PostgreSQL: 'PostgreSQL',
   Firebird: 'Firebird'
+}
+
+DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS = {
+  AnsiSQL: 30,
+  Oracle: 30,
+  MSSQL: 116,
+  MSSQL2008: 116,
+  MSSQL2012: 116,
+  Oracle9: 30,
+  Oracle10: 30,
+  Oracle11: 30,
+  Oracle12: 116,
+  SQLite3: 128,
+  PostgreSQL: 63,
+  Firebird: 30
 }
 
 module.exports = DDLGenerator

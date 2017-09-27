@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.2.0]
+## [4.1.22]
+### Added
+- new attribute `uba_usercertificate.revocationDate` - not null in case certificate is revoked
+
+## [4.1.21]
 ### Added
 - new entity uba_advSecurity: advanced security (Associating a user with a keyMedia, IP address & device fingerprint) + new version 1.0.0.7 of IITCrypto feature [UB-1817] [UB-1818] [UB-1819]
 - new shortcut `Advanced security`

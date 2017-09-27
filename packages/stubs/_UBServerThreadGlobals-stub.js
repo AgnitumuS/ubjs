@@ -11,12 +11,11 @@
 /**
  * UnityBase application. Accessible via singleton instance App.
  *
- * All `public` method (application-level methods) of this class is accessible from clients via HTTP request to `\appName\methodName\` URI.
- *
  * This documentation describe `native` (implemented inside ub.exe) methods,
- * but developer can add his own (custom) application level methods using App.registerEndpoint and take a full control on HTTP request & response.
+ * but developer can add his own (custom) application level methods using {@link App.registerEndpoint App.registerEndpoint}
+ * and take a full control on HTTP request & response.
  *
- * Mixes EventEmitter, and in case App.emitterEnabled is set to `true` server will emit:
+ * Mixes EventEmitter, and server will emit:
  *
  *  - `endpointName + ':before'` event before endpoint handler  execution
  *  - `endpointName + ':after'` event after success (no exception is raised, no App.preventDefault() is called) endpoint handler execution
@@ -25,24 +24,23 @@
  *
  * @Example:
  *
-     App.emitterEnabled = true; // enable application level event emitter.
-     //
      //Before getDocument requests
      //@param {THTTPRequest} req
      //@param {THTTPResponse} resp
      function doSomethingBeforeGetDocumentCall(req, resp){
-                console.log('User with ID', Session.userID, 'try to get document');
-            }
+        console.log('User with ID', Session.userID, 'try to get document');
+     }
      App.on('getDocument:before', doSomethingBeforeGetDocumentCall);
+
+     const querystring = require('querystring')
      //
      //After getDocument requests
      //@param {THTTPRequest} req
      //@param {THTTPResponse} resp
      function doSomethingAfterGetDocumentCall(req, resp){
-                   var querystring = require('querystring'),
-                       params = querystring.parse(req.parameters);
-                   console.log('User with ID', Session.userID, 'obtain document using params',  params);
-            }
+       params = querystring.parse(req.parameters)
+       console.log('User with ID', Session.userID, 'obtain document using params',  params)
+     }
      App.on('getDocument:after', doSomethingAfterGetDocumentCall);
 
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
@@ -52,211 +50,209 @@
  * @type {Object}
  * @mixes EventEmitter
  */
-var App = {
-    /**
-     * Fires for a `App` just after all domain entites (all *.meta) is in server memory, and all server-side js is evaluated.
-     * On this stage you can subscruibe/add cross-model handles.
-     *
-           App.once('domainIsLoaded', function(){
-               var
-                    domain = App.domain,
-                    ettCnt = domain.count,
-                    entityMeta, entityObj;
+const App = {
+  /**
+   * Fires for an {@link App App} just after all domain entities (all *.meta) are in server memory, and all server-side js are evaluated.
+   *
+   * On this stage you can subscribe on a cross-model handles.
+   *
+   * Example:
+   *
+       App.once('domainIsLoaded', function(){
+         for (eName in App.domainInfo.entities) {
+            // if entity have attribute mi_fedUnit
+            if (App.domainInfo.entities[eName].attributes.mi_fedUnit) {
+              let entityObj = global[eName]
+              entityObj.on('insert:before', fedBeforeInsert) // add before insert handler
+            }
+         }
+       })
+   *
+   * @event domainIsLoaded
+   */
 
-               // all models are evaluated into memory, so we can enumerate enitties here
-               for (var i = 0; i < ettCnt; i++) {
-                    entityMeta = domain.items[i];
-                    if (entityMeta.attributes.byName('mi_fedUnit')) {
-                        entityObj = global[entityMeta.name];
-                        entityObj.on('insert:before', fedBeforeInsert); // add before insert handler
-                    }
-               }
-     *     });
-     *
-     * @event domainIsLoaded
-     */
-
-    /**
-     * Application name
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Application name
+   * @type {String}
+   * @readonly
+   */
   name: 'appName',
-    /**
-     * Full path to application static folder if any, '' if static folder not set
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Full path to application static folder if any, '' if static folder not set
+   * @type {String}
+   * @readonly
+   */
   staticPath: 'fullPathToStaticFolder',
 
-    /**
-     * Full URl HTTP server is listen on (if HTTP server enabled, else - empty string)
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Full URl HTTP server is listen on (if HTTP server enabled, else - empty string)
+   * @type {String}
+   * @readonly
+   */
   serverURL: 'http://myserver:myPort/myPath',
-    /**
-     * List of a local server IP addresses CRLF (or CR for non-windows) separated
-     */
+  /**
+   * List of a local server IP addresses CRLF (or CR for non-windows) separated
+   */
   localIPs: '127.0.0.1\r\n::1',
-    /**
-     *  Resolve aRequestedFile to real file path.
-     *  Internally analyse request and if it start with `model/` - resolve it to model public folder
-     *  else - to `inetPub` folder.
-     *  Will return '' in case of error (filePath not under `inetPub` or `model/`) to prevent ../../ attack
-     * @param {String} aRequestedFile
-     * @returns {String}
-     * @protected
-     */
+  /**
+   *  Resolve aRequestedFile to real file path.
+   *  Internally analyse request and if it start with `model/` - resolve it to model public folder
+   *  else - to `inetPub` folder.
+   *  Will return '' in case of error (filePath not under `inetPub` or `model/`) to prevent ../../ attack
+   * @param {String} aRequestedFile
+   * @returns {String}
+   * @protected
+   */
   resolveStatic: function (aRequestedFile) { return '' },
-    /**
-     * First check in global cache for a entry "UB_GLOBAL_CACHE_CHECKSUM + filePath"
-     * and if not exists - calculate a checksum using algorithm defined in
-     * CONTROLLER.serverConfig.HTTPServer.watchFileChanges.hashingStrategy
-     * if server in dev mode always return current timestamp
-     * values from cache will be cleared in directoryNotifiers
-     * @param {String} pathToFile
-     * @returns {string}
-     */
+  /**
+   * First check in global cache for a entry "UB_GLOBAL_CACHE_CHECKSUM + filePath"
+   * and if not exists - calculate a checksum using algorithm defined in
+   * CONTROLLER.serverConfig.HTTPServer.watchFileChanges.hashingStrategy
+   * if server in dev mode always return current timestamp
+   * values from cache will be cleared in directoryNotifiers
+   * @param {String} pathToFile
+   * @returns {string}
+   */
   fileChecksum: function (pathToFile) { return '' },
-    /**
-     * A folder checksum (see fileChecksum for algorithm details)
-     * @param pathToFolder
-     * @returns {string}
-     */
+  /**
+   * A folder checksum (see fileChecksum for algorithm details)
+   * @param pathToFolder
+   * @returns {string}
+   */
   folderChecksum: function (pathToFolder) { return '' },
-    /**
-     * Current application Domain
-     * @deprecated UB >=4 use a App.domainInfo - a pure JS domain representation
-     * @type {TubDomain}
-     * @readonly
-     */
+  /**
+   * Current application Domain
+   * @deprecated UB >=4 use a App.domainInfo - a pure JS domain representation
+   * @type {TubDomain}
+   * @readonly
+   */
   domain: new TubDomain(),
   /**
+   * A domain model (metadata) definition for current application
    * @type {UBDomain}
    */
   domainInfo: new UBDomain(),
 
-    /**
-     * Default database connection
-     * @type {TubDatabase}
-     */
+  /**
+   * Default database connection
+   * @type {TubDatabase}
+   */
   defaultDatabase: null,
-    /**
-     * Get value from global cache. Global cache shared between all threads.
-     *
-     * Return '' (empty string) in case key not present in cache.
-     *
-     * @param {String} key Key to retrive
-     * @return {String}
-     */
+  /**
+   * Get value from global cache. Global cache shared between all threads.
+   *
+   * Return '' (empty string) in case key not present in cache.
+   *
+   * @param {String} key Key to retrive
+   * @return {String}
+   */
   globalCacheGet: function (key) {},
-    /**
-     * Put value to global cache.
-     * @param {String} key  Key to put into
-     * @param {String} value Value To put into this key
-     */
+  /**
+   * Put value to global cache.
+   * @param {String} key  Key to put into
+   * @param {String} value Value To put into this key
+   */
   globalCachePut: function (key, value) {},
 
-    /**
-     * Try retrieve  or create new session from request header
-     *
-     * Return true if success
-     *
-     * @return {Boolean}
-     */
+  /**
+   * Try retrieve  or create new session from request header
+   *
+   * Return true if success
+   *
+   * @return {Boolean}
+   */
   authFromRequest: function () {},
 
-    /**
-     * Check Entity-Level-Security for specified entity/method
-     *
-     *      if App.els('uba_user', 'insert'){
-     *          // do something
-     *      }
-     *
-     * @param {String} entityCode
-     * @param {String} methodCode
-     * @return {boolean}
-     */
+  /**
+   * Check Entity-Level-Security for specified entity/method
+   *
+   *      if App.els('uba_user', 'insert'){
+   *          // do something
+   *      }
+   *
+   * @param {String} entityCode
+   * @param {String} methodCode
+   * @return {boolean}
+   */
   els: function (entityCode, methodCode) { return false },
 
-    /**
-     * Return JSON specified in serverConfig.uiSettings
-     * @return {string}
-     */
+  /**
+   * Return JSON specified in serverConfig.uiSettings
+   * @return {string}
+   */
   getUISettings: function () { return '{}' },
 
-    /**
-     * Custom settings for application from ubConfig.app.customSettings
-     * @type {String}
-     */
+  /**
+   * Custom settings for application from ubConfig.app.customSettings
+   * @type {String}
+   */
   customSettings: '',
-    /**
-     * Is event emitter enabled for App singleton. Default is false
-     * @deprecated Starting from 1.11 this property ignored (always TRUE)
-     * @type {Boolean}
-     */
+  /**
+   * Is event emitter enabled for App singleton. Default is false
+   * @deprecated Starting from 1.11 this property ignored (always TRUE)
+   * @type {Boolean}
+   */
   emitterEnabled: true,
 
-    /**
-     * Delete row from FTS index for exemplar with `instanceID` of entity `entityName` (mixin `fts` must be enabled for entity)
-     * @param {String} entityName
-     * @param {Number} instanceID
-     */
+  /**
+   * Delete row from FTS index for exemplar with `instanceID` of entity `entityName` (mixin `fts` must be enabled for entity)
+   * @param {String} entityName
+   * @param {Number} instanceID
+   */
   deleteFromFTSIndex: function (entityName, instanceID) {},
-    /**
-     * Update FTS index for for exemplar with `instanceID` of entity `entityName` (mixin `fts` must be enabled for entity).
-     * In case row dose not exist in FTS perform insert action automatically.
-     *
-     * @param {String} entityName
-     * @param {Number} instanceID
-     */
+  /**
+   * Update FTS index for for exemplar with `instanceID` of entity `entityName` (mixin `fts` must be enabled for entity).
+   * In case row dose not exist in FTS perform insert action automatically.
+   *
+   * @param {String} entityName
+   * @param {Number} instanceID
+   */
   updateFTSIndex: function (entityName, instanceID) {},
 
-    /**
-     * Check database are used in current endpoint context and DB transaction is already active
-     * @param {String} connectionName
-     * @return {Boolean}
-     */
+  /**
+   * Check database are used in current endpoint context and DB transaction is already active
+   * @param {String} connectionName
+   * @return {Boolean}
+   */
   dbInTransaction: function (connectionName) {},
-    /**
-     * Commit active database transaction if any.
-     * In case `connectionName` is not passed will commit all active transactions for all connections.
-     * Return `true` if transaction is comitted, or `false` if database not in use or no active transaction.
-     * @param {String} [connectionName]
-     * @return {Boolean}
-     */
+  /**
+   * Commit active database transaction if any.
+   * In case `connectionName` is not passed will commit all active transactions for all connections.
+   * Return `true` if transaction is comitted, or `false` if database not in use or no active transaction.
+   * @param {String} [connectionName]
+   * @return {Boolean}
+   */
   dbCommit: function (connectionName) {},
-    /**
-     * Rollback active database transaction if any.
-     * In case `connectionName` is not passed will rollback all active transactions for all connections.
-     * Return `true` if transaction is rollback'ed, or `false` if database not in use or no active transaction.
-     * @param {String} [connectionName]
-     * @return {Boolean}
-     */
+  /**
+   * Rollback active database transaction if any.
+   * In case `connectionName` is not passed will rollback all active transactions for all connections.
+   * Return `true` if transaction is rollback'ed, or `false` if database not in use or no active transaction.
+   * @param {String} [connectionName]
+   * @return {Boolean}
+   */
   dbRollback: function (connectionName) {},
-    /**
-     * Start a transaction for a specified database. If database is not used in this context will
-     * create a connection to the database and start transaction.
-     *
-     * For Oracle with DBLink first statement to DBLink'ed table must be
-     * either update/insert/delete or you MUST manually start transaction
-     * to prevent "ORA-01453: SET TRANSACTION be first statement"
-     *
-     * @param {String} connectionName
-     * @return {Boolean}
-     */
+  /**
+   * Start a transaction for a specified database. If database is not used in this context will
+   * create a connection to the database and start transaction.
+   *
+   * For Oracle with DBLink first statement to DBLink'ed table must be
+   * either update/insert/delete or you MUST manually start transaction
+   * to prevent "ORA-01453: SET TRANSACTION be first statement"
+   *
+   * @param {String} connectionName
+   * @return {Boolean}
+   */
   dbStartTransaction: function (connectionName) {},
 
-    /**
-     * Defense edition only,
-     * Base64 encoded public server certificate
-     *
-     * Contains non empty value in case security.dstu.trafficEncryption === true and
-     * key name defined in security.dstu.novaLib.keyName
-     *
-     * @type {string}
-     */
+  /**
+   * Defense edition only,
+   * Base64 encoded public server certificate
+   *
+   * Contains non empty value in case security.dstu.trafficEncryption === true and
+   * key name defined in security.dstu.novaLib.keyName
+   *
+   * @type {string}
+   */
   serverPublicCert: ''
 }
 
@@ -278,159 +274,293 @@ const TubLoadContentBody = {
  * @global
  * @mixes EventEmitter
  */
-var Session = {
-    /**
-     * Current session identifier. === 0 if session not started, ===1 in case authentication not used, >1 in case user authorized
-     * @type {Number}
-     * @readonly
-     */
+const Session = {
+  /**
+   * Current session identifier. === 0 if session not started, ===1 in case authentication not used, >1 in case user authorized
+   * @type {Number}
+   * @readonly
+   */
   id: 0,
-    /**
-     * Logged-in user identifier (from uba_user.ID). Undefined if Session.id is 0 or 1 (no authentication running)
-     * @type {Number}
-     * @readonly
-     */
+  /**
+   * Logged-in user identifier (from uba_user.ID). Undefined if Session.id is 0 or 1 (no authentication running)
+   * @type {Number}
+   * @readonly
+   */
   userID: 12,
-    /**
-     * Logged-in user role IDs in CSV format. ==="" if no authentication running
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Logged-in user role IDs in CSV format. ==="" if no authentication running
+   * @type {String}
+   * @readonly
+   */
   userRoles: '1,2,3',
-    /**
-     * Logged-in user role names in CSV format. ==="" if no authentication running
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Logged-in user role names in CSV format. ==="" if no authentication running
+   * @type {String}
+   * @readonly
+   */
   userRoleNames: 'admins,operators',
-    /**
-     * Logged-in user language. ==="" if no authentication running
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Logged-in user language. ==="" if no authentication running
+   * @type {String}
+   * @readonly
+   */
   userLang: 'en',
-    /**
-     * Custom properties, defined in {@link Session.login Session.on('login')} handlers for logged-in user.
-     *
-     * Starting from UB 1.9.13 this is a JavaScript object (before is {TubList} ).
-     *
-     * If modified inside Session.on('login'), value of this object is persisted into global server Sessions (via JSON.stringify)
-     * and restored for each call (via JSON.parse).
-     *
-     * Never override it using `Session.uData = {...}`, in this case you delete uData properties, defined in other application models.
-     * Instead define or remove properties using `Session.uData.myProperty = ...` or `delete Session.uData.myProperty`;
-     *
-     * We strongly recommend to **not modify** value of uData outside the `Session.on('login')` handler.
-     * Such modification is not persisted between calls.
-     * @type {Object}
-     * @readonly
-     */
+  /**
+   * Custom properties, defined in {@link Session.login Session.on('login')} handlers for logged-in user.
+   *
+   * Starting from UB 1.9.13 this is a JavaScript object (before is {TubList} ).
+   *
+   * If modified inside Session.on('login'), value of this object is persisted into global server Sessions (via JSON.stringify)
+   * and restored for each call (via JSON.parse).
+   *
+   * Never override it using `Session.uData = {...}`, in this case you delete uData properties, defined in other application models.
+   * Instead define or remove properties using `Session.uData.myProperty = ...` or `delete Session.uData.myProperty`;
+   *
+   * We strongly recommend to **not modify** value of uData outside the `Session.on('login')` handler.
+   * Such modification is not persisted between calls.
+   * @type {Object}
+   * @readonly
+   */
   uData: {},
-    /**
-     * IP address of a user. May differ from IP address current user login from. May be empty if request come from localhost.
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * IP address of a user. May differ from IP address current user login from. May be empty if request come from localhost.
+   * @type {String}
+   * @readonly
+   */
   callerIP: ''
-    /**
-     * Fires just after user successfully logged-in but before auth response is written to client.
-     * Inside models initialization script you can subscribe to this event and add some data to Session.uData.
-     * No parameter is passed to this event handler. Example below add `someCustomProperty` to Session.uData
-     * and this value is accessible on client via $App.connection.userData(`someCustomProperty`):
-     *
-     *      // @param {THTTPRequest} req 
-     *      Session.on('login', function (req) {
-     *          var uData = Session.uData
-     *          uData.someCustomProperty = 'Hello!'
-     *      })
-     *
-     * See real life example inside `\models\ORG\org.js`.
-     * @event login
-     */
+  /**
+   * Fires just after user successfully logged-in but before auth response is written to client.
+   * Inside models initialization script you can subscribe to this event and add some data to Session.uData.
+   * No parameter is passed to this event handler. Example below add `someCustomProperty` to Session.uData
+   * and this value is accessible on client via $App.connection.userData(`someCustomProperty`):
+   *
+   *      // @param {THTTPRequest} req
+   *      Session.on('login', function (req) {
+   *          var uData = Session.uData
+   *          uData.someCustomProperty = 'Hello!'
+   *      })
+   *
+   * See real life example inside `\models\ORG\org.js`.
+   * @event login
+   */
 
-    /**
-     * Fires in case new user registered in system and authentication schema support
-     * "registration" feature.
-     *
-     * Currently only CERT and UB schemas support this feature
-     *
-     * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
-     *
-     * For UB schema user registered means 'publicRegistration' endpoint has been called and user confirmed
-     * registration by email otp
-     *
-     * Inside event handler server-side Session object is in INCONSISTENT state and you must not use it!!
-     * Only parameter (stringified object), passed to event is valid user-relative information.
-     *
-     * For CERT schema parameter is look like
-     *      {
-     *          "authType": 'CERT',
-     *          "id_cert": '<id_cert>',
-     *          "user_name": '<user_name>',
-     *          "additional": '',
-     *          "certification_b64": '<certification_b64>'
-     *      }
-     *
-     * For UB schema parameter is look like
-     *      {
-     *          "authType": 'UB',
-     *          "publicRegistration": true,
-     *          userID,
-                userOtpData
-     *      }
-     *
-     * Each AUTH schema can pass his own object as a event parameter, but all schema add `authType`.
-     * Below is a sample code for CERT schema:
-     *
-     *      Session.on('registration', function(registrationParams){
-     *
-     *      }
-     *
-     * @event registration
-     */
+  /**
+   * Fires in case new user registered in system and authentication schema support
+   * "registration" feature.
+   *
+   * Currently only CERT and UB schemas support this feature
+   *
+   * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
+   *
+   * For UB schema user registered means 'publicRegistration' endpoint has been called and user confirmed
+   * registration by email otp
+   *
+   * Inside event handler server-side Session object is in INCONSISTENT state and you must not use it!!
+   * Only parameter (stringified object), passed to event is valid user-relative information.
+   *
+   * For CERT schema parameter is look like
+   *      {
+   *          "authType": 'CERT',
+   *          "id_cert": '<id_cert>',
+   *          "user_name": '<user_name>',
+   *          "additional": '',
+   *          "certification_b64": '<certification_b64>'
+   *      }
+   *
+   * For UB schema parameter is look like
+   *      {
+   *          "authType": 'UB',
+   *          "publicRegistration": true,
+   *          userID,
+              userOtpData
+   *      }
+   *
+   * Each AUTH schema can pass his own object as a event parameter, but all schema add `authType`.
+   * Below is a sample code for CERT schema:
+   *
+   *      Session.on('registration', function(registrationParams){
+   *
+   *      }
+   *
+   * @event registration
+   */
 
-    /**
-     * Fires in case `auth` endpoint is called with authentication schema UB and userName is founded in database,
-     * but password is incorrect.
-     *
-     * If wrong passord is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
-     * user will be locked
-     *
-     * 2 parameters passes to this event userID(Number) and isUserLocked(Boolean)
-     *
-     *      Session.on('loginFailed', function(userID, isLocked){
-     *          if (isLocked)
-     *              console.log('User with id ', userID, 'entered wrong password and locked');
-     *          else
-     *              console.log('User with id ', userID, 'entered wrong password');
-     *      })
-     *
-     * @event loginFailed
-     */
+  /**
+   * Fires in case new user registered in system and authentication schema support
+   * "registration" feature.
+   *
+   * Currently only CERT schemas
+   *
+   * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
+   *
+   * Called before start event "registration" and before starting check the user. You can create new user inside this event.
+   *
+   * Parameter is look like
+   *
+   *      {
+   *          "authType": 'CERT',
+   *          "serialSign": '<serialSign>',
+   *          "name": '<user name>',
+   *          "additional": '',
+   *          "issuer": '<issuer>',
+   *          "serial": '<serial>',
+   *          "certification_b64": '<certification_b64>'
+   *      }
+   *
+   * Below is a sample code for CERT schema:
+   *
+      const iitCrypto = require('iitCrypto')
+      iitCrypto.init()
 
-    /**
-     * Fires in case of any security violation:
-     *
-     *  - user is blocked or not exists (in uba_user)
-     *  - user provide wrong credential (password, domain, encripted secret key, certificate etc)
-     *  - for 2-factor auth schemas - too many sessions in pending state (max is 128)
-     *  - access to endpoint "%" deny for user (endpoint name not present in uba_role.allowedAppMethods for eny user roles)
-     *  - password for user is expired (see ubs_settings UBA.passwordPolicy.maxDurationDays key)
-     *  - entity method access deny by ELS (see rules in uba_els)
-     *
-     * 1 parameter passes to this event `reason: string`
-     *
-     *      Session.on('securityViolation', function(reason){
-     *          console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
-     *      })
-     *
-     * @event securityViolation
-     */
+      Session.on('newUserRegistration', function (registrationParams) {
+        let params = JSON.parse(registrationParams)
+        Session.runAsAdmin(function () {
+          var
+            storeCert, certData, certInfo,
+            certID, userID,
+            certParams, connectionName, roleStore,
+            certExist
+
+          let storeUser = UB.Repository('uba_user')
+            .attrs(['ID', 'name', 'mi_modifyDate'])
+            .where('name', '=', params.name).select()
+          let userExist = !storeUser.eof
+
+          if (userExist) {
+            userID = storeUser.get('ID')
+          }
+          storeCert = UB.Repository('uba_usercertificate')
+            .attrs(['ID', 'userID.name', 'disabled', 'revoked'])
+            .where('serial', '=', params.serialSign)
+          try {
+            if (!App.serverConfig.security.dstu.findCertificateBySerial) {
+              storeCert = storeCert.where('issuer_serial', '=', params.issuer)
+            }
+            storeCert = storeCert.select()
+            certExist = !storeCert.eof
+            if (certExist && ((storeCert.get('disabled') === 1) || (storeCert.get('revoked') === 1))) {
+              throw new Error('Certificate is disabled')
+            }
+            if (!userExist && certExist) {
+              throw new Error('Certificate already registered by another user')
+            }
+
+            if (certExist) {
+              throw new Error('Certificate already registered')
+              // throw new Error('User ' + params.name + ' already registred');
+            }
+          } finally {
+            storeUser.freeNative()
+            storeCert.freeNative()
+          }
+
+          certData = Buffer.from(params.certificationB64, 'base64')
+          certInfo = iitCrypto.parseCertificate(certData.buffer)
+
+          if (!userExist) {
+            storeUser = new TubDataStore('uba_user')
+            storeUser.run('insert', {
+              fieldList: ['ID'],
+              execParams: {
+                name: params.name,
+                email: certInfo.SubjEMail,
+                disabled: 0,
+                isPending: 0,
+                // random
+                uPasswordHashHexa: (new Date()).getTime().toString(27) + Math.round(Math.random() * 10000000000000000).toString(28),
+                // phone
+                // description:
+                firstName: certInfo.SubjFullName // certInfo.SubjOrg
+              }
+            })
+            userID = storeUser.get('ID')
+
+            roleStore = UB.Repository('uba_role')
+              .attrs(['ID', 'name'])
+              .where('name', 'in', ['Admin']).select()
+            while (!roleStore.eof) {
+              storeUser.run('insert', {
+                entity: 'uba_userrole',
+                execParams: {
+                  userID: userID,
+                  roleID: roleStore.get('ID')
+                }
+              })
+              roleStore.next()
+            }
+          }
+          storeCert = new TubDataStore('uba_usercertificate')
+          certID = storeCert.generateID()
+
+          certParams = new TubList()
+          certParams.ID = certID
+          certParams.userID = userID
+          certParams.issuer_serial = params.issuer
+          certParams.serial = params.serialSign
+          certParams.setBLOBValue('certificate', params.certificationB64)
+          // issuer_cn: certInfo.issuerCapt,
+          certParams.disabled = 0
+          certParams.revoked = 0
+
+          storeCert.run('insert', {
+            fieldList: ['ID'],
+            execParams: certParams
+          })
+
+          connectionName = App.byName('uba_user').connectionName
+          if (App.dbInTransaction(connectionName)) {
+            App.dbCommit(connectionName)
+          }
+          throw new Error('<UBInformation><<<Регистрация прошла успешно.>>>')
+        })
+      })
+   *
+   * @event newUserRegistration
+   */
+
+  /**
+   * Fires in case `auth` endpoint is called with authentication schema UB and userName is founded in database,
+   * but password is incorrect.
+   *
+   * If wrong passord is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
+   * user will be locked
+   *
+   * 2 parameters passes to this event userID(Number) and isUserLocked(Boolean)
+   *
+   *      Session.on('loginFailed', function(userID, isLocked){
+   *          if (isLocked)
+   *              console.log('User with id ', userID, 'entered wrong password and locked');
+   *          else
+   *              console.log('User with id ', userID, 'entered wrong password');
+   *      })
+   *
+   * @event loginFailed
+   */
+
+  /**
+   * Fires in case of any security violation:
+   *
+   *  - user is blocked or not exists (in uba_user)
+   *  - user provide wrong credential (password, domain, encripted secret key, certificate etc)
+   *  - for 2-factor auth schemas - too many sessions in pending state (max is 128)
+   *  - access to endpoint "%" deny for user (endpoint name not present in uba_role.allowedAppMethods for eny user roles)
+   *  - password for user is expired (see ubs_settings UBA.passwordPolicy.maxDurationDays key)
+   *  - entity method access deny by ELS (see rules in uba_els)
+   *
+   * 1 parameter passes to this event `reason: string`
+   *
+   *      Session.on('securityViolation', function(reason){
+   *          console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
+   *      })
+   *
+   * @event securityViolation
+   */
 }
 
 /**
  * @classdesc Properties of a database connection
  * @class TubConnectionConfig
+ * @deprecated
  */
 function TubConnectionConfig () {}
 TubConnectionConfig.prototype = {
@@ -454,7 +584,7 @@ TubConnectionConfig.prototype = {
   executeWhenConnected: ''
 }
 
-/**
+/*
  * Entity attribute definition
  * @class TubEntityAttribute
  * @property {TubAttrDataType} dataType Attribute data type
@@ -482,6 +612,7 @@ TubConnectionConfig.prototype = {
  * UnityBase Domain definition.
  * @class
  * @extends {TubNamedCollection}
+ * @deprecated
  */
 function TubEntityAttributeList () {}
 // TubDomain.prototype = {
@@ -523,6 +654,7 @@ function TubEntityAttributeList () {}
  *
  * @class TubEntity
  * @aside guide entities
+ * @deprecated Startuing from UB4 use a pure JS version {@link module:@unitybase/base/UBDomain UBDomain}
  */
 function TubEntity () {}
 TubEntity.prototype = {
@@ -820,25 +952,25 @@ TubDataStore.prototype = {
    * @type {String}
    */
   currentDataName: '',
-    /**
-     * Record count. If DataStore is not initialized or empty will return 0.
-     * @type {Number}
-     */
+  /**
+   * Record count. If DataStore is not initialized or empty will return 0.
+   * @type {Number}
+   */
   rowCount: 0,
-    /**
-     * Total record count if store are filled with withTotal() option.
-     * If DataStore is not initialized or empty or inited without withTotal() will return -1.
-     * @type {Number}
-     */
+  /**
+   * Total record count if store are filled with withTotal() option.
+   * If DataStore is not initialized or empty or inited without withTotal() will return -1.
+   * @type {Number}
+   */
   totalRowCount: 0,
-    /**
-     * Row position inside currentDataName dataset. Read/write
-     * @type {Number}
-     */
+  /**
+   * Row position inside currentDataName dataset. Read/write
+   * @type {Number}
+   */
   rowPos: 0,
-    /**
-     * Release all internal resources. Store became unusable after call to `freeNative()`
-     */
+  /**
+   * Release all internal resources. Store became unusable after call to `freeNative()`
+   */
   freeNative: function () {}
 }
 
@@ -848,32 +980,32 @@ TubDataStore.prototype = {
  */
 function TubNamedCollection () {}
 TubNamedCollection.prototype = {
-    /**
-     * Get list element by name
-     * @param name
-     * @returns {Number|String|TubList}
-     */
+  /**
+   * Get list element by name
+   * @param name
+   * @returns {Number|String|TubList}
+   */
   byName: function (name) {},
 
-    /**
-     * Stringified JSON representation of named collection
-     * @type {String}
-     */
+  /**
+   * Stringified JSON representation of named collection
+   * @type {String}
+   */
   asJSON: '',
-    /**
-     * Number of named collection items
-     * @type {Number}
-     */
+  /**
+   * Number of named collection items
+   * @type {Number}
+   */
   count: 0,
-    /**
-     * Array of collection items
-     * @type {Array}
-     */
+  /**
+   * Array of collection items
+   * @type {Array}
+   */
   items: [],
-    /**
-     * Array of collection item names
-     * @type {Array}
-     */
+  /**
+   * Array of collection item names
+   * @type {Array}
+   */
   strings: []
 }
 
@@ -884,40 +1016,40 @@ TubNamedCollection.prototype = {
  */
 function ubMethodParams () {}
 ubMethodParams.prototype = {
-    /**
-     * Do not call methods of other mixins with <b>the same method name</b>.
-     * This mean if preventDefault() is called in the overridden `beforeselect`, only `beforeselect` of mixin method will not be called.
-     * Useful if we want to override original method implementation by our own implementation.
-     *
-     * See ubm_form.update implementation for usage sample.
-     */
+  /**
+   * Do not call methods of other mixins with <b>the same method name</b>.
+   * This mean if preventDefault() is called in the overridden `beforeselect`, only `beforeselect` of mixin method will not be called.
+   * Useful if we want to override original method implementation by our own implementation.
+   *
+   * See ubm_form.update implementation for usage sample.
+   */
   preventDefault: function () {},
-    /**
-     * Do not check row modification date while execute statement.
-     * @type {Boolean}
-     */
+  /**
+   * Do not check row modification date while execute statement.
+   * @type {Boolean}
+   */
   skipOptimisticLock: false,
-    /**
-     * Data Store associated with current method execution context. If initialized - will be added to client response
-     * @type {TubDataStore}
-     * @readonly
-     */
+  /**
+   * Data Store associated with current method execution context. If initialized - will be added to client response
+   * @type {TubDataStore}
+   * @readonly
+   */
   dataStore: new TubDataStore(),
-    /**
-     * Params caller pass to HTTP request.
-     * @type {TubList}
-     */
+  /**
+   * Params caller pass to HTTP request.
+   * @type {TubList}
+   */
   originalParams: null,
-    /**
-     * In/Out method parameters. All parameters added or modified in this object is passed back to client
-     * @type {TubList}
-     */
+  /**
+   * In/Out method parameters. All parameters added or modified in this object is passed back to client
+   * @type {TubList}
+   */
   mParams: null,
-    /**
-     * Indicate current method execution initiated by external caller (client). If false - this method is called from server.
-     * @type {Boolean}
-     * @readonly
-     */
+  /**
+   * Indicate current method execution initiated by external caller (client). If false - this method is called from server.
+   * @type {Boolean}
+   * @readonly
+   */
   externalCall: true
 }
 
@@ -928,67 +1060,67 @@ ubMethodParams.prototype = {
  */
 function THTTPRequest () {}
 THTTPRequest.prototype = {
-    /** HTTP request headers
-     * @type {String}
-     * @readonly
-     */
+  /** HTTP request headers
+   * @type {String}
+   * @readonly
+   */
   headers: '{header:value\\n\\r}',
-    /** HTTP request method GET|POST|PUT......
-     * @type {String}
-     * @readonly
-     */
+  /** HTTP request method GET|POST|PUT......
+   * @type {String}
+   * @readonly
+   */
   method: 'POST',
-    /** full request URL with app name, method name and parameters
-     * for request http://host:port/ub/rest/doc_document/report?id=1&param2=asdas
-     * - return ub/rest/doc_document/report?id=1&param2=asdas
-     * @type {String}
-     * @readonly
-     */
+  /** full request URL with app name, method name and parameters
+   * for request http://host:port/ub/rest/doc_document/report?id=1&param2=asdas
+   * - return ub/rest/doc_document/report?id=1&param2=asdas
+   * @type {String}
+   * @readonly
+   */
   url: 'URL',
 
-    /** request URI - URL WITHOUT appName and method name
-     * - return doc_document/report
-     * @type {String}
-     * @readonly
-     */
+  /** request URI - URL WITHOUT appName and method name
+   * - return doc_document/report
+   * @type {String}
+   * @readonly
+   */
   uri: 'uri',
-    /**
-     * The same as uri, but URLDecode'd
-     *
-     *      req.uri === "TripPinServiceRW/My%20People"
-     *      //
-     *      req.decodedUri === "TripPinServiceRW/My People"
-     *
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * The same as uri, but URLDecode'd
+   *
+   *      req.uri === "TripPinServiceRW/My%20People"
+   *      //
+   *      req.decodedUri === "TripPinServiceRW/My People"
+   *
+   * @type {String}
+   * @readonly
+   */
   decodedUri: 'URLDEcoded uri',
 
-    /** request parameters if any
-     * - return id=1&param2=asdas
-     * @type {String}
-     * @readonly
-     */
+  /** request parameters if any
+   * - return id=1&param2=asdas
+   * @type {String}
+   * @readonly
+   */
   parameters: '',
-    /**
-     * URLDecoded request parameters if any
-     *
-     *      req.parameters === "$filter=Name%20eq%20%27John%27"
-     *      //
-     *      req.decodedParameters === "$filter=Name eq 'John'"
-     *
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * URLDecoded request parameters if any
+   *
+   *      req.parameters === "$filter=Name%20eq%20%27John%27"
+   *      //
+   *      req.decodedParameters === "$filter=Name eq 'John'"
+   *
+   * @type {String}
+   * @readonly
+   */
   decodedParameters: 'params',
-  /** @inheritdoc 
+  /** @inheritdoc
    * @param {String} [encoding]
    */
   read: function (encoding) {},
-    /** HTTP request body
-     * @type {String}
-     * @deprecated Since 1.8 use {@link THTTPRequest#read} instead
-     */
+  /** HTTP request body
+   * @type {String}
+   * @deprecated Since 1.8 use {@link THTTPRequest#read} instead
+   */
   body: ''
 }
 
@@ -1016,39 +1148,39 @@ THTTPRequest.prototype = {
 function THTTPResponse () {}
 THTTPResponse.prototype = {
   /** Add response header(s). Can be called several times for DIFFERENT header
-   * 
+   *
    *    resp.writeHead('Content-Type: text/css; charset=UTF-8\r\nOther-header: value')
-   *    
+   *
    * @param {String} header one header or #13#10 separated headers
    */
   writeHead: function (header) {},
-    /**
-     * @inheritdoc
-     */
+  /**
+   * @inheritdoc
+   */
   write: function (data, encoding) {},
-    /**
-     * Write base64 encoded data as a binary representation (will decode from base64 to binary before write to response)
-     * @param {String} base64Data
-     */
+  /**
+   * Write base64 encoded data as a binary representation (will decode from base64 to binary before write to response)
+   * @param {String} base64Data
+   */
   writeBinaryBase64: function (base64Data) {},
-    /** Write to internal buffer and set buffer content as HTTP response.
-     * See {UBWriter.wrote} for parameter details
-     * @param {ArrayBuffer|Object|String} data
-     * @param {String} [encoding]
-     */
+  /** Write to internal buffer and set buffer content as HTTP response.
+   * See {UBWriter.wrote} for parameter details
+   * @param {ArrayBuffer|Object|String} data
+   * @param {String} [encoding]
+   */
   writeEnd: function (data, encoding) {},
-     /** response HTTP status code
-     * @type {Number} */
+   /** response HTTP status code
+   * @type {Number} */
   statusCode: 400,
-    /**
-     * Perform a ETag based HTTP response caching.
-     * Must be called after writeEnd called and and statusCode is defined.
-     *
-     * In case statusCode === 2000 and response body length > 64 will
-     *  - if request contains a IF-NONE-MATCH header, and it value equal to response crc32
-     * will mutate a statusCode to 304 (not modified) and clear the response body
-     *  - in other case will add a ETag header with value = hex representation of crc32(responseBody).
-     */
+  /**
+   * Perform a ETag based HTTP response caching.
+   * Must be called after writeEnd called and and statusCode is defined.
+   *
+   * In case statusCode === 2000 and response body length > 64 will
+   *  - if request contains a IF-NONE-MATCH header, and it value equal to response crc32
+   * will mutate a statusCode to 304 (not modified) and clear the response body
+   *  - in other case will add a ETag header with value = hex representation of crc32(responseBody).
+   */
   validateETag: function () {}
 }
 
@@ -1076,110 +1208,110 @@ THTTPResponse.prototype = {
  */
 function TubDocumentRequest (httpReq) {}
 TubDocumentRequest.prototype = {
-    /**
-     * Entity code
-     * @type {String}
-     */
+  /**
+   * Entity code
+   * @type {String}
+   */
   entity: '',
-    /**
-     * Entity attribute code
-     * @type {String}
-     */
+  /**
+   * Entity attribute code
+   * @type {String}
+   */
   attribute: '',
-    /**
-     * @type {Number}
-     */
+  /**
+   * @type {Number}
+   */
   id: 0,
-    /**
-     * If `true` - content is stored in the temporary store
-     * @type {Boolean}
-     */
+  /**
+   * If `true` - content is stored in the temporary store
+   * @type {Boolean}
+   */
   isDirty: false,
-    /**
-     * MIME type to force convertion to (in case blob store sonfigured to support MIME convetration)
-     * @type {String}
-     */
+  /**
+   * MIME type to force convertion to (in case blob store sonfigured to support MIME convetration)
+   * @type {String}
+   */
   forceMime: '',
-    /**
-     * Name of file as it in the store
-     * @type {String}
-     */
+  /**
+   * Name of file as it in the store
+   * @type {String}
+   */
   fileName: '',
 
-    /**
-     * @param {boolean} AEstablishStoreFromAttribute
-     * @returns TubDocumentHandlerCustom
-     */
+  /**
+   * @param {boolean} AEstablishStoreFromAttribute
+   * @returns TubDocumentHandlerCustom
+   */
   createHandlerObject: function (AEstablishStoreFromAttribute) {},
-    /**
-     * Save request body to file
-     * @param {String} fileName name of file to save request body to
-     * @returns {boolean}
-     */
+  /**
+   * Save request body to file
+   * @param {String} fileName name of file to save request body to
+   * @returns {boolean}
+   */
   saveBodyToFile: function (fileName) { return true },
-    /**
-     * @param {String} fileName
-     * @return {boolean}
-     */
+  /**
+   * @param {String} fileName
+   * @return {boolean}
+   */
   loadBodyFromFile: function (fileName) { return true },
-    /**
-     * @return {string}
-     */
+  /**
+   * @return {string}
+   */
   getBodyAsUnicodeString: function () { return '' },
-    /**
-     * Transform unicode string to internal UFT8 buffer
-     * @param {String} bodyAsString
-     */
+  /**
+   * Transform unicode string to internal UFT8 buffer
+   * @param {String} bodyAsString
+   */
   setBodyAsUnicodeString: function (bodyAsString) {},
-    /**
-     * Read request body from array buffer and call TubDocumentRequest.writeToTemp method.
-     * @param {ArrayBuffer} buffer
-     * @returns {String} Document content (JSON, contain meta information about file) to be stored to Document type attribute
-     */
+  /**
+   * Read request body from array buffer and call TubDocumentRequest.writeToTemp method.
+   * @param {ArrayBuffer} buffer
+   * @returns {String} Document content (JSON, contain meta information about file) to be stored to Document type attribute
+   */
   setBodyFromArrayBuffer: function (buffer) {},
-    /**
-     * @returns {String} base64 encoded body representation
-     */
+  /**
+   * @returns {String} base64 encoded body representation
+   */
   getBodyAsBase64String: function () { return '' },
-    /**
-     * @returns {boolean}
-     */
+  /**
+   * @returns {boolean}
+   */
   getIsBodyLoaded: function () { return false },
 
-    /**
-     * Set document content to internal request buffer (in-memory). Function implement {@link UBWriter#write}
-     * Call to this function not perform actual writing of document to store,
-     * to save document to store call {@link TubDocumentRequest#writeToTemp}
-     */
+  /**
+   * Set document content to internal request buffer (in-memory). Function implement {@link UBWriter#write}
+   * Call to this function not perform actual writing of document to store,
+   * to save document to store call {@link TubDocumentRequest#writeToTemp}
+   */
   setContent: function (data, encoding) {},
 
-    /**
-     * Read document content. Content must be previously loaded. Function implement {@link UBReader#read}
-     */
+  /**
+   * Read document content. Content must be previously loaded. Function implement {@link UBReader#read}
+   */
   getContent: function () {},
 
-    /**
-     * Write passed body to temporary store. If body is loaded it is possible to call writeToTemp without parameters.
-     *
-     * @example
-     *
-     *      var
-     *          pdfRequest = new TubDocumentRequest(),
-     *          docContent;
-     *      pdfRequest.entity = "rep_reportResult";
-     *      pdfRequest.attribute = 'generatedDocument';
-     *      pdfRequest.id = reportResultID;
-     *      pdfRequest.fileName = reportResultID.toString() + '.pdf';
-     *
-     *      docHandler = docReq.createHandlerObject(true);
-     *      docHandler.loadContent(TubLoadContentBody.Yes);
-     *
-     *      docContent = pdfRequest.writeToTemp(pdfDocument.pdf.output(), 'bin');
-     *
-     * @param {TubDocumentRequest|String} [body] Body to write. Can be copied from existing TubDocumentRequest or from string. In case body is loaded using TubDocumentRequest#write, it can be omitted
-     * @param {String} [encoding] Optional. In case parameter exist and first parameter type is string - perform decode of body before write to store. Possible values: "bin", "base64"
-     * @returns {String} Document content (JSON, contain meta information about file) to be stored to Document type attribute
-     */
+  /**
+   * Write passed body to temporary store. If body is loaded it is possible to call writeToTemp without parameters.
+   *
+   * @example
+   *
+   *      var
+   *          pdfRequest = new TubDocumentRequest(),
+   *          docContent;
+   *      pdfRequest.entity = "rep_reportResult";
+   *      pdfRequest.attribute = 'generatedDocument';
+   *      pdfRequest.id = reportResultID;
+   *      pdfRequest.fileName = reportResultID.toString() + '.pdf';
+   *
+   *      docHandler = docReq.createHandlerObject(true);
+   *      docHandler.loadContent(TubLoadContentBody.Yes);
+   *
+   *      docContent = pdfRequest.writeToTemp(pdfDocument.pdf.output(), 'bin');
+   *
+   * @param {TubDocumentRequest|String} [body] Body to write. Can be copied from existing TubDocumentRequest or from string. In case body is loaded using TubDocumentRequest#write, it can be omitted
+   * @param {String} [encoding] Optional. In case parameter exist and first parameter type is string - perform decode of body before write to store. Possible values: "bin", "base64"
+   * @returns {String} Document content (JSON, contain meta information about file) to be stored to Document type attribute
+   */
   writeToTemp: function (body, encoding) { return '' }
 }
 
@@ -1190,32 +1322,32 @@ TubDocumentRequest.prototype = {
  */
 function TubDocumentHandlerCustom () {}
 TubDocumentHandlerCustom.prototype = {
-    /**
-     * Load file/BLOB into memory
-     * @param {TubLoadContentBody} loaderType
-     */
+  /**
+   * Load file/BLOB into memory
+   * @param {TubLoadContentBody} loaderType
+   */
   loadContent: function (loaderType) {},
 
-    /**
-     * Reference to attribute definition
-     * @type {TubEntityAttribute}
-     * @readonly
-     */
+  /**
+   * Reference to attribute definition
+   * @type {TubEntityAttribute}
+   * @readonly
+   */
   attribute: null,
-    /**
-     * @type {TubDocumentRequest}
-     */
+  /**
+   * @type {TubDocumentRequest}
+   */
   request: null,
-    /**
-     * @type {TubStoreConfig}
-     * @readonly
-     */
+  /**
+   * @type {TubStoreConfig}
+   * @readonly
+   */
   storeConfig: null,
 
-    /**
-     * Actual content
-     * @type {TubDocumentContent}
-     */
+  /**
+   * Actual content
+   * @type {TubDocumentContent}
+   */
   content: null
 }
 
@@ -1225,103 +1357,46 @@ TubDocumentHandlerCustom.prototype = {
  */
 function WebSocketConnection () {}
 WebSocketConnection.prototype = {
-    /**
-     * Current logged in user session
-     * @type {Session}
-     * @readonly
-     */
+  /**
+   * Current logged in user session
+   * @type {Session}
+   * @readonly
+   */
   session: null,
-    /**
-     * Send message to caller
-     * @param {String|Object|ArrayBuffer} data
-     */
+  /**
+   * Send message to caller
+   * @param {String|Object|ArrayBuffer} data
+   */
   send: function (data) {},
-    /**
-     * Close caller connection
-     * @param {String} [reason]
-     */
+  /**
+   * Close caller connection
+   * @param {String} [reason]
+   */
   close: function (reason) {}
 }
-
-// /**
-//  * UnityBase Domain definition.
-//  * @class
-//  * @extends {TubNamedCollection}
-//  */
-// function TubDomain () {}
-// TubDomain.prototype = {
-//     /**
-//      * Domain name
-//      */
-//   name: '',
-//     /**
-//      * Entity collection
-//      * @type {Array}
-//      */
-//   items: [],
-//     /**
-//      * Domain configuration
-//      * @type {TubDomainConfig}
-//      */
-//   config: '',
-//     /**
-//      * @override
-//      * @param {String} name
-//      * @return {TubEntity}
-//      */
-//   byName: function (name) {}
-// }
-
-// /**
-//  * UnityBase Domain configuration.
-//  * @interface
-//  * @extends {TubNamedCollection}
-//  */
-// var TubDomainConfig = {
-//     /**
-//      * Model collection
-//      * @type {TubModelsConfig}
-//      */
-//   models: null
-// }
-
-// /**
-//  * UnityBase Domain models collection.
-//  * @class
-//  * @extends {TubNamedCollection}
-//  */
-// var TubModelsConfig = {
-//     /**
-//      * @override
-//      * @param {String} name
-//      * @return {TubModelConfig}
-//      */
-//   byName: function (name) {}
-// }
-//
-// /**
-//  * UnityBase Models configuration.
-//  * @interface
-//  * @extends {TubNamedCollection}
-//  */
-// var TubModelConfig = {
-//     /**
-//      * Path to model folder
-//      */
-//   path: 'pathToModelFolder',
-//     /**
-//      * Path to public model folder
-//      */
-//   publicPath: 'pathToPublicModelFolder'
-// }
 
 /**
  * Entity attributes data type
  * @enum {Number}
  * @readonly
  */
-TubAttrDataType = {Unknown: 0, String: 1, Int: 2, BigInt: 3, Float: 4, Currency: 5, Boolean: 6, DateTime: 7,
-    Text: 8, ID: 9, Entity: 10, Document: 11, Many: 12, TimeLog: 13, Enum: 14, BLOB: 15, Date: 16}
+TubAttrDataType = {Unknown: 0,
+  String: 1,
+  Int: 2,
+  BigInt: 3,
+  Float: 4,
+  Currency: 5,
+  Boolean: 6,
+  DateTime: 7,
+  Text: 8,
+  ID: 9,
+  Entity: 10,
+  Document: 11,
+  Many: 12,
+  TimeLog: 13,
+  Enum: 14,
+  BLOB: 15,
+  Date: 16}
 
 /**
  * Entity cache type
@@ -1335,8 +1410,17 @@ TubCacheType = {None: 0, SessionEntity: 1, Entity: 2, Session: 3}
  * @enum {Number}
  * @readonly
  */
-TubSQLDialect = {AnsiSQL: 0, Oracle: 1, Oracle9: 2, Oracle10: 3, Oracle11: 4, MSSQL: 5,
-    MSSQL2008: 6, MSSQL2012: 7, SQLite3: 8, PostgreSQL: 9, Firebird: 10}
+TubSQLDialect = {AnsiSQL: 0,
+  Oracle: 1,
+  Oracle9: 2,
+  Oracle10: 3,
+  Oracle11: 4,
+  MSSQL: 5,
+  MSSQL2008: 6,
+  MSSQL2012: 7,
+  SQLite3: 8,
+  PostgreSQL: 9,
+  Firebird: 10}
 
 /**
  * Entity dataSource types

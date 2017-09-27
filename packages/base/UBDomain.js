@@ -1,9 +1,11 @@
 /**
- * UnityBase domain object model.
- * The main class {@link UBDomain}:
+ * UnityBase domain object model (metadata) - in-memory representation of all *.meta files included in the application config.
  *
- *  - for the server & CLI it is a result of {@link UBConnection.getDomainInfo connection.getDomainInfo} call
- *  - for browser side instance of UBDomain is a `domain` property of connection object
+ * Developer should never create {@link UBDomain} class directly, but instead use a:
+ *
+ *  - inside server-side methods - {@link App.domainInfo App.domainInfo} property
+ *  - inside CLI scripts - using {@link UBConnection.getDomainInfo UBConnection.getDomainInfo} method
+ *  - inside a browser - `UBConnection.domain` property
  *
  * Information about domain is used in many aspects of UnityBase:
  *
@@ -64,27 +66,27 @@ function UBDomain (domainInfo) {
     if (isV4API) {
       let entity = domainInfo.domain[entityCode]
       me.entities[entityCode] = new UBEntity(
-                entity,
-                entity.entityMethods || {},
-                entity.i18n,
-                entityCode,
-                me
-            )
+        entity,
+        entity.entityMethods || {},
+        entity.i18n,
+        entityCode,
+        me
+      )
     } else {
       me.entities[entityCode] = new UBEntity(
-                domainInfo.domain[entityCode],
-                domainInfo.entityMethods[entityCode] || {},
-                domainInfo.i18n[entityCode],
-                entityCode,
-                me
-            )
+        domainInfo.domain[entityCode],
+        domainInfo.entityMethods[entityCode] || {},
+        domainInfo.i18n[entityCode],
+        entityCode,
+        me
+      )
     }
   })
 
-    /**
-     * Models collection
-     * @type {Object<String, UBModel>}
-     */
+  /**
+   * Models collection
+   * @type {Object<String, UBModel>}
+   */
   this.models = {}
   let modelCodes = Object.keys(domainInfo.models)
   modelCodes.forEach(function (modelCode) {
@@ -92,11 +94,11 @@ function UBDomain (domainInfo) {
     me.models[modelCode] = new UBModel(m, modelCode)
   })
 
-    /**
-     *
-     * @type {Object}
-     * @readonly
-     */
+  /**
+   *
+   * @type {Object}
+   * @readonly
+   */
   this.forceMIMEConvertors = domainInfo.forceMIMEConvertors
 }
 
@@ -137,12 +139,19 @@ UBDomain.prototype.has = function (entityCode) {
 }
 
 /**
+* @callback domainEntitiesIteratorCallback
+* @param {UBEntity} entity
+* @param {String} entityCode
+* @param {Object<String, UBEntity>} entities
+*/
+
+/**
  * Iterates over domain entities and invokes `callBack` for each entity.
  * The iteratee is invoked with three arguments: (UBEntity, entityName, UBDomain.entities)
- * @param {Function} callBack
+ * @param {domainEntitiesIteratorCallback} cb
  */
-UBDomain.prototype.eachEntity = function (callBack) {
-  return _.forEach(this.entities, callBack)
+UBDomain.prototype.eachEntity = function (cb) {
+  return _.forEach(this.entities, cb)
 }
 
 /**
@@ -634,8 +643,16 @@ UBEntity.prototype.getAttribute = function (attributeCode) {
 }
 
 /**
- * Call callBack function for each attribute.
- * @param {Function} callBack
+ * @callback entityAttributesIteratorCallback
+ * @param {UBEntityAttribute} attribute
+ * @param {String} [attributeName]
+ * @param {UBEntityAttributes} [attributes]
+ */
+
+/**
+ * Iterates over entity attributes.
+ * The iteratee is invoked with three arguments: (UBEntityAttribute, attributeName, UBEntityAttributes)
+ * @param {entityAttributesIteratorCallback} callBack
  */
 UBEntity.prototype.eachAttribute = function (callBack) {
   return _.forEach(this.attributes, callBack)

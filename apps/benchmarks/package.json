@@ -1,11 +1,12 @@
 {
   "name": "benchmarks",
-  "version": "1.0.0",
+  "version": "1.0.9",
   "description": "Benchmarks for UnityBase for a scenarios from the [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/).",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/UnityBaseJS/benchmarks.git"
@@ -18,12 +19,13 @@
   },
   "homepage": "https://github.com/UnityBaseJS/benchmarks#readme",
   "dependencies": {
-    "@unitybase/dml-generator": "^1.0.10",
-    "@unitybase/ub": "^4.0.31",
-    "@unitybase/ub-pub": "^4.0.1",
+    "@unitybase/base": "^4.2.19",
+    "@unitybase/dml-generator": "^1.0.18",
+    "@unitybase/ub": "^4.0.41",
+    "@unitybase/ub-pub": "^4.4.9",
     "mustache": "^2.3.0"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.0"
+    "@unitybase/stubs": "^4.1.11"
   }
 }

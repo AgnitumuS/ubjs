@@ -116,8 +116,10 @@ Ext.define('UB.view.LoginWindow', {
       authItems = [],
       firstLogin, silenceKerberosLogin,
       minAuthTabsHeight = 265,
-      lastSavedLogin = window.localStorage.getItem('lastLogin')
-
+      lastSavedLogin = window.localStorage.getItem('lastLogin'),
+      locale = this.connection.preferredLocale,
+      applicationName
+    var cfgAdminUI = UB.appConfig.uiSettings.adminUI
     firstLogin = JSON.parse(window.localStorage.getItem('firstLogin') || 'false')
     silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false')
 
@@ -134,20 +136,26 @@ Ext.define('UB.view.LoginWindow', {
     }]
 
     // Image
-    if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.loginWindowTopLogoURL) {
+    if (cfgAdminUI && cfgAdminUI.loginWindowTopLogoURL) {
       me.items.push(Ext.create('Ext.Img', {
-        src: UB.appConfig.uiSettings.adminUI.loginWindowTopLogoURL, // 'images/logo-top.png',
+        src: cfgAdminUI.loginWindowTopLogoURL, // 'images/logo-top.png',
         autoEl: 'div',
         cls: 'logo-top'
       }))
     }
     // form caption
-    if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.applicationName) {
+    if (cfgAdminUI && cfgAdminUI.applicationName) {
+      if (typeof(cfgAdminUI.applicationName) === 'string')
+        applicationName = cfgAdminUI.applicationName
+      else if (_.isObject(cfgAdminUI.applicationName))
+        applicationName = cfgAdminUI.applicationName[locale]
+    }
+    if (applicationName) {
       me.items.push({
         xtype: 'component',
         autoEl: {
           tag: 'h2',
-          html: UB.appConfig.uiSettings.adminUI.applicationName
+          html: applicationName
         }
       })
     }
@@ -155,6 +163,8 @@ Ext.define('UB.view.LoginWindow', {
     // create auth tabs
     var haveCERT = (authMethods.indexOf('CERT') >= 0)
     if (haveCERT) {
+      var authenticationCert = cfgAdminUI.authenticationCert || {}
+
       minAuthTabsHeight = 265 + 80
       me.textFieldLoginCert = Ext.create('Ext.form.field.Text', {
         margin: '0 80 0 80',
@@ -164,6 +174,8 @@ Ext.define('UB.view.LoginWindow', {
         requireText: UB.i18n('login'),
         fieldLabel: ' ',
         labelSeparator: '',
+        regex: authenticationCert.userNameRE ? new RegExp(authenticationCert.userNameRE) : null,
+        regexText: authenticationCert.userNameREMessage ? UB.i18n(authenticationCert.userNameREMessage): null,
         labelWidth: 40,
         value: me.connection.lastLoginName || lastSavedLogin
       })
@@ -181,7 +193,7 @@ Ext.define('UB.view.LoginWindow', {
         inputType: 'password',
         name: 'password',
         anchor: '100%',
-        value: UB.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly
+        value: cfgAdminUI.defaultPasswordForDebugOnly
       })
 
       me.chkFirstLogin = Ext.create('Ext.form.field.Checkbox', {
@@ -195,6 +207,33 @@ Ext.define('UB.view.LoginWindow', {
         boxLabel: UB.i18n('isFirstLogin')
       })
 
+
+      var certItem = []
+      var useCertificateInfo = 'useCertificateInfoSimple'
+      if (!me.connection.simpleCertAuth){
+        useCertificateInfo = 'useCertificateInfo'
+        certItem.push(
+          me.textFieldLoginCert,
+          me.textFieldPasswordCert
+        )
+      } else if (authenticationCert.requireUserName){
+        useCertificateInfo = 'useCertificateInfoSimpleUserName'
+        certItem.push(me.textFieldLoginCert)
+      }
+      if (authenticationCert.description) {
+        useCertificateInfo = authenticationCert.description
+      }
+      certItem.push(
+        me.chkFirstLogin,
+        {
+          xtype: 'component',
+          padding: '20 0 0 0',
+          autoEl: {
+            tag: 'div',
+            html: UB.i18n(useCertificateInfo)
+          }
+        }
+      )
       me.pnlCert = Ext.create('Ext.panel.Panel', {
         title: UB.i18n('useCertificateTitle'),
         header: false,
@@ -205,19 +244,7 @@ Ext.define('UB.view.LoginWindow', {
           type: 'vbox',
           align: 'stretch'
         },
-        items: [
-          me.textFieldLoginCert,
-          me.textFieldPasswordCert,
-          me.chkFirstLogin,
-          {
-            xtype: 'component',
-            padding: '20 0 0 0',
-            autoEl: {
-              tag: 'div',
-              html: UB.i18n('useCertificateInfo')
-            }
-          }
-        ]
+        items: certItem
       })
       authItems.push(me.pnlCert)
     }
@@ -418,14 +445,19 @@ Ext.define('UB.view.LoginWindow', {
       }
     }
     if (authType === 'CERT') {
-      login = Ext.String.trim(me.textFieldLoginCert.getValue())
-
       me.textFieldLoginCert.validate()
       me.textFieldPasswordCert.validate()
-      password = Ext.String.trim(me.textFieldPasswordCert.getValue())
-      if (!password || password === '' || !login || login === '') {
+      var authenticationCert = UB.appConfig.uiSettings.adminUI.authenticationCert || {}
+      if ((!me.connection.simpleCertAuth || authenticationCert.requireUserName) &&
+         !me.textFieldLoginCert.validate() ){
+         return
+      }
+      if (!me.connection.simpleCertAuth &&
+         !me.textFieldPasswordCert.validate() ){
         return
       }
+      login = Ext.String.trim(me.textFieldLoginCert.getValue() || '')
+      password = Ext.String.trim(me.textFieldPasswordCert.getValue() || '')
       window.localStorage.setItem('firstLogin', me.chkFirstLogin.checked)
       UB.inject('models/UBA/BigInteger.js').done(function () {
         /**

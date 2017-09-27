@@ -5,8 +5,8 @@
  */
 const assert = require('assert')
 const fs = require('fs')
-const cmdLineOpt = require('@unitybase/base/options')
-const argv = require('@unitybase/base/argv')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
 const TEST_NAME = 'SQL builder test'
 
 module.exports = function runTest (options) {

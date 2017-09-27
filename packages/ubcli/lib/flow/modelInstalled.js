@@ -5,7 +5,7 @@
  */
 const path = require('path')
 const fs = require('fs')
-const argv = require('@unitybase/base/argv')
+const argv = require('@unitybase/base').argv
 const _ = require('lodash')
 
 // package.json contains a config: {ubmodel: ...}} section

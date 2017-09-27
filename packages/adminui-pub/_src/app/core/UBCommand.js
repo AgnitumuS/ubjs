@@ -772,11 +772,11 @@ Ext.define('UB.core.UBCommand', {
         config.resizable = me.isResizable
         config.maximizable = me.isMaximizable
         config.closable = me.isClosable
-        if (!config.minWidth){
-            config.minWidth = 300;
+        if (!config.minWidth) {
+          config.minWidth = 300
         }
-        if (!config.minHeight){
-            config.minHeight = 200;
+        if (!config.minHeight) {
+          config.minHeight = 200
         }
 
         result.window = Ext.create('UB.view.BaseWindow', config)

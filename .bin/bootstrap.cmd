@@ -1,15 +1,8 @@
-call npm set prefer-offline true
-call npm i
-call .\node_modules\.bin\lerna bootstrap
-
-cd .\packages\ubcli
-call npm link
-cd ..\..
-
 if exist ..\ub-e\packages (
   cd ..\ub-e
-  call npm i --prefer-offline
-  call .\node_modules\.bin\lerna bootstrap
+  call npm i
+  call npx lerna bootstrap
+  @if errorlevel 1 goto err
   cd ..\ubjs
 ) else (
   echo UnityBase enterprise repository not found
@@ -20,7 +13,8 @@ if exist ..\ub-e\packages (
 if exist ..\ub-d\packages (
   cd ..\ub-d
   call npm i
-  call .\node_modules\.bin\lerna bootstrap
+  call npx lerna bootstrap
+  @if errorlevel 1 goto err
   cd ..\ubjs
 ) else (
   echo UnityBase Defense repository not found
@@ -28,22 +22,37 @@ if exist ..\ub-d\packages (
   echo otherwise remove all @ub-d/* models from .\apps\autotest\ubConfig*.json 
 )
 
-cd .\apps\autotest
 call npm i
+@if errorlevel 1 goto err
+call npx lerna bootstrap
+@if errorlevel 1 goto err
+
+cd .\packages\ubcli
+set NODE_ENV=production
+call npm link
+set NODE_ENV=dev
+cd ..\..
+
 if not defined SRC (
-  echo on
-  echo To compile a native modules you need:
-  echo  - checkout a UnityBase server sources 
-  echo  - set environment variable SRC to Source folder location
-  echo  - execute command `npm run build:native`
-  echo Compilation use a Delphi@XE2-sp4 Delphi@7 and InnoSetup@5.5.9 - all of them MUST be installed
-  echo In case you do not have access to Server Sources or compilers - run a 
-  echo   `npm run replace-native` in autotest folder
-  echo This will install latest compiled packages from registry
-  exit 1
+ echo get a compiled DLL from a unitybase registry
+ mkdir %temp%\ub-bootstrap
+ cd /d %temp%\ub-bootstrap
+ call npm init -y
+ set NODE_ENV=production
+ call npm i @unitybase/mailer @ub-d/iit-crypto --registry http://registry.unitybase.info
+ xcopy /I /E /Q /Y  %temp%\ub-bootstrap\node_modules\@unitybase\mailer\bin %~dp0\..\apps\autotest\node_modules\@unitybase\mailer\bin
+ xcopy /I /E /Q /Y  %temp%\ub-bootstrap\node_modules\@ub-d\iit-crypto\bin %~dp0\..\apps\autotest\node_modules\@ub-d\iit-crypto\bin
+ cd /d %~dp0
+ rmdir /S /Q %temp%\ub-bootstrap
+) else (
+ call npm run build:native
+ @if errorlevel 1 goto err
 )
 
-cd ..\..
-call npm run build:native
+@goto end
 
+:err
+@echo Bootstrap failed
+EXIT /B 1
 
+:end
