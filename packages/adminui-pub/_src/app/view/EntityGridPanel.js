@@ -6,8 +6,8 @@ require('../../ux/exporter/Exporter')
 require('./GridSummary')
 require('./ColumnFavorites')
 require('./ColumnCategories')
-require('../view/Table')
-require('../view/InputDateWindow')
+require('./Table')
+require('./InputDateWindow')
 require('../core/UBPanelMixin')
 
 /* global saveAs */
