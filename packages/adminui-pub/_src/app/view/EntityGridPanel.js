@@ -2403,14 +2403,13 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onShowPreview: function (action) {
-    let me = this
-    let form = me.getPreviewForm()
+    let form = this.getPreviewForm()
     if (!form) {
       UB.logError('No preview form')
       return
     }
 
-    let sel = me.getSelectionModel().getSelection()
+    let sel = this.getSelectionModel().getSelection()
     if (sel.length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
@@ -2423,22 +2422,23 @@ Ext.define('UB.view.EntityGridPanel', {
       description: UB.i18n(form.get(UB.core.UBAppConfig.systemEntities.form.fields.description))
     }
     let regEx = new RegExp('(.*?)(_grid_UI)')
-    let stateId = me.stateId.replace(regEx, UB.format('$1_{0}_{0}$2', me.entityName))
-
-    me.setMainPanel(stateId)
+    let stateId = this.stateId
+      ? this.stateId.replace(regEx, UB.format('$1_{0}_{0}$2', this.entityName))
+      : undefined
+    this.setMainPanel(stateId)
     let config = {
       cmdType: 'showForm',
       formCode: formParam ? formParam.formCode : formParam,
       description: formParam ? formParam.description : formParam,
-      entity: me.entityName,
+      entity: this.entityName,
       instanceID: eOpts && eOpts.instanceID,
-      store: me.getStore(),
+      store: this.getStore(),
       addByCurrent: false,
       __mip_ondate: false, // eOpts && eOpts.__mip_ondate,
-      detailAttribute: me.detailAttribute,
-      parentID: me.parentID,
-      sender: me.getView() || me,
-      target: me.detailTabPanel,
+      detailAttribute: this.detailAttribute,
+      parentID: this.parentID,
+      sender: this.getView() || this,
+      target: this.detailTabPanel,
       tabId: Ext.id(),
       isDetail: true
     }
