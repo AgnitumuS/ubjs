@@ -266,6 +266,9 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
     // -----------------------------------------------------------------
   getEditor: function () {
     var me = this
+
+    if (!me.wysiwygIntialized) { return }
+
     return tinymce.get(me.getInputId())
   },
     // -----------------------------------------------------------------
