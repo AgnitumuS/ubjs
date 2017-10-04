@@ -117,7 +117,6 @@ function UBConnection (connectionParams) {
    * @event defineLoginName
    */
 
-
   /**
    * WebSocket `ubNotifier` protocol instance
    * @type {UBNotifierWSProtocol}
@@ -704,7 +703,7 @@ UBConnection.prototype.xhr = function (config) {
   if (me.recorderEnabled) {
     me.recordedXHRs.push(config)
   }
-    // prepend baseURl only if not already prepended
+  // prepend baseURl only if not already prepended
   if (url.length < me.baseURL.length || url.substring(0, me.baseURL.length) !== me.baseURL) {
     cfg.url = me.baseURL + cfg.url
   }
@@ -721,10 +720,10 @@ UBConnection.prototype.xhr = function (config) {
         if (head) cfg.headers.Authorization = head // do not add header for anonymous session
         return transport.xhr(cfg)
       })
-    }).catch(function (reason) {  // in case of 401 - do auth and repeat request
+    }).catch(function (reason) { // in case of 401 - do auth and repeat request
       let errMsg = ''
-      if (me.allowSessionPersistent) localStorage.removeItem(me.__sessionPersistKey) // addled session persisted data
       if (reason.status === 401) {
+        if (me.allowSessionPersistent) localStorage.removeItem(me.__sessionPersistKey) // addled session persisted data
         ubUtils.logDebug('unauth: %o', reason)
         if (me.isAuthorized()) {
           me.authorizationClear()
@@ -1148,10 +1147,10 @@ UBConnection.prototype.select = function (serverRequest, bypassCache) {
   if (!serverRequest.method) {
     serverRequest.method = 'select'
   }
-    // if exist expression where ID = ... bypass cache
-//        if (idInWhere(serverRequest.whereList)){
-//            cacheType = cacheTypes.None;
-//        }
+  // if exist expression where ID = ... bypass cache
+  //        if (idInWhere(serverRequest.whereList)){
+  //            cacheType = cacheTypes.None;
+  //        }
   if (cacheType === UBCache.cacheTypes.None) { // where & order is done by server side
     dataPromise = this.query(serverRequest, true)
       .then(this.convertResponseDataToJsTypes.bind(this))
@@ -1210,7 +1209,7 @@ UBConnection.prototype._doSelectForCacheableEntity = function (serverRequest, ca
         ? this._pendingCachedEntityRequests[cKey]
         : this._pendingCachedEntityRequests[cKey] = this.query(serverRequestWOLimits, true)
       cachedPromise = pendingCachedEntityRequest
-        .then(  // delete pending request in any case
+        .then( // delete pending request in any case
           (data) => {
             delete this._pendingCachedEntityRequests[cKey]
             return data
@@ -1446,7 +1445,7 @@ UBConnection.prototype.serverErrorCodes = {
   56: 'ubErrElsAccessDenyEntity',
   57: 'ubErrAlsAccessDenyEntityattr',
   58: 'ubErrDatastoreEmptyentity',
-    // 59: "ubErrCustomerror"
+  // 59: "ubErrCustomerror"
   67: 'ubErrTheServerHasExceededMaximumNumberOfConnections',
   69: 'ubErrFtsForAppDisabled',
   72: 'ubErrElsPwdIsExpired',
