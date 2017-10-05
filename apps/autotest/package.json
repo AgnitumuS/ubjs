@@ -1,4 +1,5 @@
 {
+  "id": "Server",
   "name": "autotest",
   "version": "1.0.11",
   "description": "Autotest for UnityBase",

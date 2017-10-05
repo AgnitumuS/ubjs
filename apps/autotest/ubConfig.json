@@ -13,11 +13,11 @@
 		},
 		"threadPoolSize": 8
 	},
-	"wsServer": {
+	/*"wsServer": {
 		"host": "+",
 		"port": "888",
 		"path": "ws"
-	},
+	},*/
 	"logging": {
 		"path": ".\\logs",
 		"levels": [

@@ -4,6 +4,8 @@
     "Ext": true,
     "UB": true,
     "$App": true,
-    "_": true
+    "Q": true,
+    "_": true,
+    "Blob": true
   }
 } 
