@@ -1,5 +1,5 @@
 /**
- * UnityBase Russian translation. PTNPNX
+ * UnityBase Tajik translation. PTNPNX
  */
 UB.i18nExtend({
   SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
@@ -27,9 +27,9 @@ UB.i18nExtend({
   detail: 'Детально',
   uk: 'Украинский',
   en: 'Английский',
-  ru: 'Русский',
+  ru: 'Русӣ',
   az: 'Азербайджанский',
-  tg: 'Таджикский',
+  tg: 'Тоҷикӣ',
   id: 'Индонезийский',
   neizvestnajaOshibkaServera: 'Неизвестная ошибка сервера',
   nevozmozhnoDecodirovat: 'Невозможно декодировать',
@@ -156,7 +156,7 @@ UB.i18nExtend({
   ot: ' от ',
   do: ' до ',
   document: 'Документ',
-  enter: 'Вход',
+  enter: 'Даромад',
   sign: 'Войти',
 
   NMUBExtension: 'расширение "UBExtension"',
@@ -406,7 +406,7 @@ UB.i18nExtend({
         ' Для ручного запуска воспользуйтесь <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_ru.html" target="_blank">инструкцией</a>. ' +
         ' Если после обновления сообщение осталось, обратитесь к администратору.',
   moreThanOneUserWithPassedCertificate: 'Этот сертификат используется несколькими пользователями. Укажите имя пользователя.',
-  useUBAuthenticatinInfo: 'Введите имя пользователя, пароль и нажмите "Вход".',
+  useUBAuthenticatinInfo: 'Номи корбар, паролро ворид кунед ва тугмаи "Даромад" -ро пахш кунед.',
   msgInvalidCertAuth: 'В доступе отказано. Некорректный сертификат, закрытый ключ или ошибочное имя пользователя.',
   msgInvalidUBAuth: 'В доступе отказано. Проверьте имя пользователя и пароль.',
   ubErrElsInvalidUserOrPwd: 'В доступе отказано. Проверьте имя пользователя и пароль.',
