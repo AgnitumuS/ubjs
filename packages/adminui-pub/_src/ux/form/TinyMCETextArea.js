@@ -32,46 +32,46 @@
  - Storing and restoring cursor position by inserting of a place holder over a popup window.
  ------------------------------------------------------------------- */
 
+/* global tinymce */
 Ext.define('Ext.ux.form.TinyMCETextArea', {
 
   extend: 'Ext.form.field.TextArea',
   alias: ['widget.tinymce_textarea', 'widget.tinymce_field'],
 
-    // -----------------------------------------------------------------
-
-    /*
-     Flag for tracking the initialization state
-     */
+  /*
+   Flag for tracking the initialization state
+   */
   wysiwygIntialized: false,
   intializationInProgress: false,
 
   lastHeight: null,
   lastFrameHeight: null,
 
-    /*
-     This properties enables starting without WYSIWYG editor.
-     The user can activate it later if he wants.
-     */
+  /*
+   This properties enables starting without WYSIWYG editor.
+   The user can activate it later if he wants.
+   */
   noWysiwyg: false,
 
-    /*
-     Config object for the TinyMCE configuration options
-     */
+  /*
+   Config object for the TinyMCE configuration options
+   */
   tinyMCEConfig: {},
 
   ensureTinyMCELoaded: function () {
     // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
     // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
     window.BOUNDLED_BY_WEBPACK = false
+    // eslint-disable-next-line no-undef
     if (BOUNDLED_BY_WEBPACK) {
       return System.import('./tinyMCE-async-all')
     }
+    // eslint-disable-next-line no-undef
     if (!BOUNDLED_BY_WEBPACK) {
       return System.import('@unitybase/adminui-pub/_src/ux/form/tinyMCE-async-all')
     }
   },
 
-    // -----------------------------------------------------------------
   afterRender: function () {
     var me = this
 
@@ -117,14 +117,14 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     var ed = tinymce.get(me.getInputId())
 
-        // if the editor is hidden, we do not syncronize
-        // because the size values of the hidden editor
-        // are calculated wrong.
+    // if the editor is hidden, we do not syncronize
+    // because the size values of the hidden editor
+    // are calculated wrong.
     if (!ed) { return }
     if (ed.isHidden()) { return }
 
     var edIframe = Ext.get(me.getInputId() + '_ifr')
-        // MPV
+    // MPV
     if (!edIframe) return
 
     var parent = edIframe.up('.mce-edit-area')
@@ -153,7 +153,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return newHeight - 3
   },
-    // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
   initEditor: function (height) {
     var me = this
 
@@ -169,9 +169,9 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       // many editor instances. Through cloning, we prevent
       // side effects on other editors upon internal modifications
       // of the tinyMCEConfig
-      var tmp_cfg = me.tinyMCEConfig
+      var tmpCfg = me.tinyMCEConfig
       me.tinyMCEConfig = {}
-      Ext.Object.merge(me.tinyMCEConfig, tmp_cfg)
+      Ext.Object.merge(me.tinyMCEConfig, tmpCfg)
     }
 
     me.tinyMCEConfig.mode = 'exact'
@@ -204,9 +204,9 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
     // We have to override the setup method of the TinyMCE.
     // If the user has define own one, we shall not loose it.
     // Store it and call it after our specific actions.
-    var user_setup = null
+    var userSetup = null
 
-    if (me.tinyMCEConfig.setup) { user_setup = me.tinyMCEConfig.setup }
+    if (me.tinyMCEConfig.setup) { userSetup = me.tinyMCEConfig.setup }
 
     // BEGIN: setup
     me.tinyMCEConfig.setup = function (ed) {
@@ -230,8 +230,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
         }
       })
 
-            // Catch and propagate the change event
-
+      // Catch and propagate the change event
       ed.on('change', function (e) {
         var oldval = me.getValue()
         var newval = ed.getContent()
@@ -245,15 +244,14 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
         }
       })
 
-            // This ensures that the focusing the editor
-            // bring the parent window to front
-
+      // This ensures that the focusing the editor
+      // bring the parent window to front
       ed.on('focus', function (e) {
         var w = me.findParentByType('window')
         if (w) w.toFront(true)
       })
 
-      if (user_setup) { user_setup(ed) }
+      if (userSetup) { userSetup(ed) }
     }
     // END: setup
 
@@ -263,7 +261,6 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
     })
     // MPV me.wysiwygIntialized = true;
   },
-    // -----------------------------------------------------------------
   getEditor: function () {
     var me = this
 
@@ -271,7 +268,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return tinymce.get(me.getInputId())
   },
-    // -----------------------------------------------------------------
+
   isEditorHidden: function () {
     var me = this
 
@@ -282,7 +279,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return ed.isHidden()
   },
-    // -----------------------------------------------------------------
+
   showEditor: function () {
     var me = this
 
@@ -307,7 +304,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     me.focus()
   },
-    // -----------------------------------------------------------------
+
   hideEditor: function () {
     var me = this
 
@@ -324,8 +321,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       return
     }
 
-        // otherwise try to position the cursor
-
+    // otherwise try to position the cursor
     var marker = '<a id="_____sys__11223___"></a>'
     ed.selection.collapse(true)
     ed.execCommand('mceInsertContent', 0, marker)
@@ -353,7 +349,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       }
     }
   },
-    // -----------------------------------------------------------------
+
   toggleEditor: function () {
     var me = this
 
@@ -370,7 +366,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       me.hideEditor()
     }
   },
-    // -----------------------------------------------------------------
+
   removeEditor: function () {
     var me = this
 
@@ -388,14 +384,14 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return me
   }, // removeEditor
-    // -----------------------------------------------------------------
-    // Sometimes, the editor should be reinitilized on the fly, e.g.
-    // if the body css has been changed (in a CMS the user changed
-    // the design template of a page opened in the editor).
-    // This method removes the editor from the textarea, adds the
-    // changed properties to the base config object and initializes
-    // the editor again.
-    // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
+  // Sometimes, the editor should be reinitilized on the fly, e.g.
+  // if the body css has been changed (in a CMS the user changed
+  // the design template of a page opened in the editor).
+  // This method removes the editor from the textarea, adds the
+  // changed properties to the base config object and initializes
+  // the editor again.
+  // -----------------------------------------------------------------
   reinitEditor: function (cfg) {
     var me = this
 
@@ -423,7 +419,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return me
   },
-    // -----------------------------------------------------------------
+
   setValue: function (v) {
     var me = this
 
@@ -445,7 +441,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return res
   },
-    // -----------------------------------------------------------------
+
   focus: function (selectText, delay) {
     var me = this
 
@@ -455,7 +451,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       if (isNaN(delay)) { delay = 10 }
 
       setTimeout(function () {
-        me.focus.call(me, selectText, false)
+        me.focus(selectText, false)
       }, delay)
       return me
     }
@@ -476,7 +472,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return me
   },
-    // -----------------------------------------------------------------
+
   enable: function (silent) {
     var me = this
     var result = me.callParent(arguments)
@@ -491,7 +487,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return result
   },
-    // -----------------------------------------------------------------
+
   disable: function (silent) {
     var me = this
     var result = me.callParent(arguments)
@@ -506,7 +502,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return result
   },
-    // -----------------------------------------------------------------
+
   setReadOnly: function (readOnly) {
     var me = this
 
@@ -520,27 +516,27 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     return result
   }, // setReadOnly
-    // -----------------------------------------------------------------
+
   storeCurrentSelection: function () {
     var me = this
 
-    var wwg_mode = false
+    var wwgMode = false
 
     var ed = tinymce.get(me.getInputId())
 
     if (me.wysiwygIntialized) {
-      if (ed && !ed.isHidden()) { wwg_mode = true }
+      if (ed && !ed.isHidden()) { wwgMode = true }
     }
 
     var ctrl = document.getElementById(me.getInputId())
 
-    if (wwg_mode) {
+    if (wwgMode) {
       me.storedCursorPosition = ed.selection.getBookmark('simple')
     } else if (ctrl) {
       me.storedCursorPosition = me.positionBeforeBlur
     }
-  }, // storeCurrentSelection
-    // -----------------------------------------------------------------
+  },
+
   restoreCurrentSelection: function () {
     var me = this
 
@@ -548,41 +544,41 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       return
     }
 
-    var wwg_mode = false
+    var wwgMode = false
 
     var ed = tinymce.get(me.getInputId())
 
     if (me.wysiwygIntialized) {
       if (ed && !ed.isHidden()) {
-        wwg_mode = true
+        wwgMode = true
       }
     }
 
     var ctrl = document.getElementById(me.getInputId())
 
-    if (wwg_mode) {
+    if (wwgMode) {
       ed.selection.moveToBookmark(me.storedCursorPosition)
     } else if (ctrl) {
       ctrl.setSelectionRange(me.storedCursorPosition.start, me.storedCursorPosition.end)
     }
-  }, // restoreCurrentSelection
-    // -----------------------------------------------------------------
+  },
+
   insertText: function (txt) {
     var me = this
 
-    var wwg_mode = false
+    var wwgMode = false
 
     var ed = tinymce.get(me.getInputId())
 
     if (me.wysiwygIntialized) {
       if (ed && !ed.isHidden()) {
-        wwg_mode = true
+        wwgMode = true
       }
     }
 
     var ctrl = document.getElementById(me.getInputId())
 
-    if (wwg_mode) {
+    if (wwgMode) {
       ed.focus()
       ed.execCommand('mceInsertContent', 0, txt)
     } else if (ctrl) {
@@ -594,8 +590,8 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
       ctrl.setSelectionRange(start, start)
     }
-  }, // insertText
-    // -----------------------------------------------------------------
+  },
+
   beforeDestroy: function () {
     var me = this
 
@@ -603,11 +599,11 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     if (ed) ed.destroy(false)
   },
-    // -----------------------------------------------------------------
+
   renderActiveError: function () {
-    var me = this,
-      activeError = me.getActiveError(),
-      hasError = !!activeError
+    var me = this
+    var activeError = me.getActiveError()
+    var hasError = !!activeError
 
     var edIframe = Ext.get(me.getInputId() + '_ifr')
     if (!edIframe) { return me.callParent(arguments) }
@@ -628,22 +624,17 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       var evHandler = function (args) {
         me.clearInvalid()
       }
-
-            // Add/remove invalid class
+      // Add/remove invalid class
       if (hasError) {
         parent.addCls('tinymce-error-field')
-
         ed.on('keydown', evHandler)
         ed.on('change', evHandler)
       } else {
         parent.removeCls('tinymce-error-field')
-
         ed.off('keydown', evHandler)
         ed.off('change', evHandler)
       }
     }
-
     return me.callParent(arguments)
   }
-    // -----------------------------------------------------------------
 })
