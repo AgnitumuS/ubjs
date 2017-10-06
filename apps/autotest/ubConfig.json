@@ -1,6 +1,6 @@
 ﻿{ 
 	"httpServer": {
-		"host": "kolesnikov",
+		"host": "%COMPUTERNAME%",
 		"port": "888",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
@@ -12,11 +12,11 @@
 		},
 		"threadPoolSize": 8
 	},
-	"wsServer": {
+	/*"wsServer": {
 		"host": "+",
 		"port": "888",
 		"path": "ws"
-	},
+	},*/
 	"logging": {
 		"path": ".\\logs",
 		"levels": [
@@ -71,7 +71,7 @@
 			},
 			"linter": { "asi": true, "sub": true },
 			"onlyOffice": {
-				"serverIP": "10.8.17.6:32771"
+				"serverIP": "%COMPUTERNAME%:32771"
 			}
 		},
 		"portalUI": {
