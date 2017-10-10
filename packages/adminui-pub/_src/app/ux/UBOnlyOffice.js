@@ -1,24 +1,24 @@
 /* eslint-disable new-cap,no-new */
 /* global Ext, $App, UB */
-/* global Q */
+/* global Q, _ */
 /* global DocsAPI */
 /**
  * Control to show document using OnlyOffice document server
  *
-  {....
-    layout: {
-    type: 'vbox',
-    align: 'stretch'
-  },
-  items: [{
-    attributeName: 'resume', // in *.meta has to be of 'Document' type
-    expanded: true, // or will be collapsed to link
-    readOnly: true, // true|false
-    documentMIME: 'application/word', // 'application/word'|'application/excel'
-    height: 500,
-    width: 800
-    }]
-  }
+ {....
+   layout: {
+   type: 'vbox',
+   align: 'stretch'
+ },
+ items: [{
+   attributeName: 'resume', // in *.meta has to be of 'Document' type
+   expanded: true, // or will be collapsed to link
+   readOnly: true, // true|false
+   documentMIME: 'application/word', // 'application/word'|'application/excel'
+   height: 500,
+   width: 800
+   }]
+ }
  *
  */
 
@@ -28,10 +28,9 @@ Ext.define('UB.ux.UBOnlyOffice', {
   width: '100%',
   height: '100%',
   layout: 'fit',
-  autoEl: 'div',
   contentTypeMap: { // 'text' | 'spreadsheet' | 'presentation',
-    'application/word': 'text',
-    'application/excel': 'spreadsheet'
+    'application/msword': 'text',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'spreadsheet'
   },
 
   _documentKey: null,
@@ -40,9 +39,30 @@ Ext.define('UB.ux.UBOnlyOffice', {
   _onlyOfficeGetValuePromise: null,
   _initializationPromise: null,
   _placeholderID: null,
+  _placeholderComponent: null,
+  _params: null,
 
   _isModified: false,
   readOnly: true,
+
+  listeners: {
+    boxready: function (me, width, height) {
+      console.log('boxready')
+      console.log(width)
+      console.log(height)
+    },
+    resize: function (me, width, height, oldWidth, oldHeight) {
+      console.log('resize')
+      console.log(width)
+      console.log(height)
+      console.log(oldWidth)
+      console.log(oldHeight)
+    },
+    render: function (me) {
+      me._placeholderComponent = me.body.dom
+      me._placeholderID = me._placeholderComponent.id
+    }
+  },
 
   // region Inherited from Ext control
   /**
@@ -59,9 +79,6 @@ Ext.define('UB.ux.UBOnlyOffice', {
       return
     }
 
-    me._placeholderID = me.id + '_placeholder'
-    me.html = ['<div style="width: 100%; height: 100%;" id="' + me._placeholderID + '"></div>']
-
     const url = 'http://' + configuration.serverIP + '/web-apps/apps/api/documents/api.js'
     me._initializationPromise = me._loadScript(url)
     me.callParent(arguments)
@@ -71,6 +88,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
   // region Inherited from UBDocument.js
   /**
    * Used by UBDocument to get value from component
+   * After call to downloadAs() callback 'onDownloadAs' will be triggered and deferred resolved
    * @param {any} requestedValue - ignored
    * @return {Promise<string>} - resolves to an URL on onlyOffice server with modified document
    */
@@ -88,8 +106,8 @@ Ext.define('UB.ux.UBOnlyOffice', {
   setReadOnly: function (readOnly) {
     const me = this
     me.readOnly = readOnly
-    if (readOnly) {
-      console.log('UB.ux.UBOnlyOffice control set to readonly state')
+    if (readOnly && me._onlyOfficeObject) {
+      console.log('UB.ux.UBOnlyOffice control set to readonly state. But object already created')
     }
   },
 
@@ -114,21 +132,20 @@ Ext.define('UB.ux.UBOnlyOffice', {
   /**
    * Used by UBDocument to set value to component.
    * @param {Object} cfg
-   * @param {Blob|File} [cfg.blobData]
-   * @param {String} [cfg.contentType]
-   * @param {String} [cfg.url]
-   * @param {String} [cfg.html]
-   * @param {String} [cfg.rawValue]
-   * @param {Boolean} [cfg.resetOriginalValue=false] Reset original value if true.
+   * @param {String} [cfg.contentType] type of document
+   * @param {String} [cfg.html] contains name of file
    * @param {Object} [cfg.params] The parameters necessary to obtain the document
    * @returns {Promise}
    */
   setSrc: function (cfg) {
     const me = this
+    me._params = cfg.params
+    me._params.user = $App.getUserData().userID
+
     return me._initializationPromise
       .then(() => {
         const documentType = me._mapContentTypeToDocumentType(cfg.contentType)
-        const configuration = me._getControlConfiguration(documentType, cfg.url, cfg.html)
+        const configuration = me._getControlConfiguration(documentType, cfg.params, cfg.html)
         me._documentKey = configuration.document.key
         me._onlyOfficeObject = new DocsAPI.DocEditor(me._placeholderID, configuration)
       })
@@ -173,7 +190,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
    */
   _getControlConfiguration: function (fileType, fileUrl, title) {
     const me = this
-    const serverFileUrl = $App.connection.serverUrl + (!fileUrl ? 'getDocumentOffice' : fileUrl.replace('/getDocument', 'getDocumentOffice'))
+    const serverFileUrl = Ext.String.urlAppend($App.connection.serverUrl + 'getDocumentOffice', Ext.Object.toQueryString(me._params))
     // Server remembers keys and urls.
     // So if document with "key" were saved then "key" can't be reused - "onOutdatedVersion" will be called
     const key = UB.MD5((new Date()).toString() + '||' + serverFileUrl).toString().substr(20)
@@ -208,7 +225,12 @@ Ext.define('UB.ux.UBOnlyOffice', {
         'onDownloadAs': function onDownloadAs (e) {
           // fired after call to DocsAPI.DocEditor.downloadAs
           // e.data - url of the modified document
-          me._onlyOfficeGetValueDefer.resolve(e.data)
+          const config = {
+            params: me._params,
+            headers: {'Content-Type': 'application/octet-stream'}
+          }
+          const request = $App.connection.post('setOnlyOfficeDocumentToTempStore', e.data, config)
+          me._onlyOfficeGetValueDefer.resolve(request)
         },
         'onCollaborativeChanges': function onCollaborativeChanges (e) {
           console.log('onCollaborativeChanges')
