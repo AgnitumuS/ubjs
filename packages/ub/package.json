@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub",
-  "version": "4.0.42",
+  "version": "4.0.44",
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub",
   "config": {
@@ -17,11 +17,11 @@
   },
   "main": "0_init.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.20",
+    "@unitybase/base": "^4.2.22",
     "mime-types": "^2.1.12"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.11"
+    "@unitybase/stubs": "^4.1.13"
   },
   "keywords": [
     "UnityBase",
