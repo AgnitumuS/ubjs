@@ -1,12 +1,11 @@
 ﻿{ 
 	"httpServer": {
-		"host": "+",
+		"host": "kolesnikov",
 		"port": "888",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": ".\\inetPub\\",
-		"headersPostprocessors": ["#include(%UB_HOME%\\defHeadersPostprocessors.json)"],
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
@@ -70,7 +69,10 @@
 				"enabled": true,
 				"checkInterval": 30
 			},
-			"linter": { "asi": true, "sub": true }
+			"linter": { "asi": true, "sub": true },
+			"onlyOffice": {
+				"serverIP": "10.8.17.6:32771"
+			}
 		},
 		"portalUI": {
 			"applicationName": "UBCore usage"
