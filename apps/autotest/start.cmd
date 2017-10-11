@@ -1,9 +1,21 @@
+@echo off
+
 cd /d %~dp0
 
-call start_docker_image.bat
+docker start onlyoffice > docker.result
+set /p docerresult=<docker.result
+del .\docker.result
 
+@echo on
+
+IF %docerresult% == onlyoffice goto startUB
+
+docker pull onlyoffice/documentserver
+docker run -i -t -d -p 32771:80 --name onlyoffice onlyoffice/documentserver 
+
+:startUB
 SET ub=E:\UnityBase\ub.exe
-SET ConfigFile=E:\Git\ubjs\apps\autotest\ubConfig.json
+SET ConfigFile=ubConfig.json
 %ub% -dev -cfg %ConfigFile%
 
 rem ub -calcIntegrity
