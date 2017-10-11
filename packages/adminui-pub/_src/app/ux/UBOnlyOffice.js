@@ -197,6 +197,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     const lang = 'UK' // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
     const callbackUrl = $App.connection.serverUrl + 'notifyDocumentSaved'
     const editorMode = me.readOnly ? 'view' : 'edit'
+    const type = me.readOnly ? 'embedded' : 'desktop'
     return {
       'document': {
         'key': key,
@@ -204,13 +205,17 @@ Ext.define('UB.ux.UBOnlyOffice', {
         'url': serverFileUrl
       },
       'documentType': fileType || 'text',
+      'type': type,
       'editorConfig': {
         'mode': editorMode,
         'lang': lang,
         'callbackUrl': callbackUrl,
         'customization': {
           'autosave': true,
-          'forcesave': true
+          'forcesave': true,
+          'chat': false,
+          'compactToolbar': true,
+          'comments': false
         }
       },
       'events': {
