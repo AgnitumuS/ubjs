@@ -1,6 +1,9 @@
-npm i -g npm@5.3.0
-npm i -g lerna npx
-npm i -g webpack
+# npm i -g npm@5.3.0
+# npm i -g lerna npx
+# npm i -g webpack
+
+$startDate = get-date
+write-host $startDate
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\Users\QA\Documents\UBStandard4.1.0-beta.6.zip", "C:\UnityBase")
@@ -30,7 +33,14 @@ git merge origin/uiautotest -s recursive -Xours -v
 cd C:\ub-all
 npm run bootstrap
 
+get-date
 cd C:\ub-all\ubjs\apps\autotest
 .\tsql3.cmd
+
+$finishDate = get-date
+write-host $finishDate
+$deploymentDuration = new-timespan -start $startDate -end $finishDate
+write-host $deploymentDuration
+write-host ("Deployment duration, seconds: " + $deploymentDuration.TotalSeconds)
 
 ub
