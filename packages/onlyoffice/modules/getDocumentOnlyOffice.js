@@ -22,14 +22,6 @@ function getDocumentOffice (req, resp) {
   /** @type {t_getDocumentOffice_req_params} */
   const params = qs.parse(req.parameters)
 
-  // const callerIP = Session.callerIP
-  // const config = getOnlyOfficeConfiguration()
-  // will fail in case of UB configured to listen on %COMPUTERNAME%
-  // if (!config.isConfigured || !config.serverIP.startsWith(callerIP)) {
-  //   resp.statusCode = 404
-  //   return
-  // }
-
   if (!params.ID) {
     resp.statusCode = 200
     resp.writeHead('Content-Type: text/plain')

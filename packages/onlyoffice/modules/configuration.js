@@ -19,9 +19,62 @@ function getOnlyOfficeConfiguration () {
   if (isConfigured) {
     configuration.isConfigured = true
     configuration.serverIP = onlyOfficeServer.serverIP
+    _checkServerIsRunning(configuration.serverIP)
   }
 
   return configuration
+}
+
+/**
+ * Try to get version from onlyoffice server to check it's running
+ * @param {string} serverIP
+ * @return {boolean}
+ * @private
+ */
+function _checkServerIsRunning (serverIP) {
+  const http = require('http')
+  const payload = JSON.stringify({ 'c': 'version' }) // command to service
+  const servicePath = 'http://' + serverIP + '/coauthoring/CommandService.ashx' // service address
+  console.log('Querying onlyoffice server on ' + servicePath)
+
+  const request = http.request({
+    URL: servicePath,
+    method: 'POST',
+    sendTimeout: 5000,
+    receiveTimeout: 10000,
+    keepAlive: true,
+    compressionEnable: true
+  })
+  request.setHeader('Content-Type', 'application/json')
+  request.write(payload)
+
+  try {
+    const response = request.end()
+    const responsePayload = response.read()
+    console.log('OnlyOffice responded with status:' + response.statusCode + ' payload: ' + responsePayload)
+
+    // response expected to be like { "error": 0, "version": "4.3.1.4" }
+    if (lodash.isString(responsePayload)) {
+      const result = JSON.parse(responsePayload)
+      const isExpectedResponse = !lodash.isUndefined(result.error) && !lodash.isUndefined(result.version)
+
+      if (!isExpectedResponse) {
+        _writeInfoToConsole(serverIP, servicePath)
+      }
+      return isExpectedResponse
+    }
+  } catch (exc) {
+    _writeInfoToConsole(serverIP, servicePath)
+  }
+
+  return false
+}
+
+function _writeInfoToConsole (serverIP, servicePath) {
+  console.warn('OnlyOffice configured to listen on "' + serverIP + '" but call to command service at "' + servicePath + '" were unsuccessful.')
+  console.warn('If it\'s running in docker container - it may still be booting.')
+  console.warn('Please check that server address is correct (usually found in uiSettings->adminUI->onlyOffice->serverIP).')
+  console.warn('And that server is running (if you using docker image - type "docker ps" in console to list running containers)')
 }
 
 module.exports = getOnlyOfficeConfiguration

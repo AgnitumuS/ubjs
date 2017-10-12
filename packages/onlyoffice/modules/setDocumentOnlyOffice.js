@@ -2,6 +2,12 @@
 
 const qs = require('querystring')
 
+/**
+ * Get document from onlyOffice server and places it in temp store
+ * Returns document location inside temp store
+ * @param req
+ * @param resp
+ */
 function setDocumentOnlyOffice (req, resp) {
   /** @type {t_setOnlyOfficeDocument_params} */
   const params = qs.parse(req.parameters)
