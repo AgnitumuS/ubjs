@@ -23,27 +23,88 @@
  */
 
 Ext.define('UB.ux.UBOnlyOffice', {
-  extend: 'Ext.Panel',
+  extend: 'Ext.panel.Panel',
   alias: 'widget.UBOnlyOffice',
+  minHeight: 500,
+  minWidth: 500,
   width: '100%',
   height: '100%',
   layout: 'fit',
-  contentTypeMap: { // 'text' | 'spreadsheet' | 'presentation',
-    'application/msword': 'text',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'spreadsheet'
+  statics: {
+    /**
+     * Maps MIMEType to editor type ('application/msword' -> 'text')
+     */
+    contentTypeMap: { // 'text' | 'spreadsheet' | 'presentation',
+      'application/msword': 'text',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'spreadsheet'
+    },
+    /**
+     * returns component configuration
+     * @return {{isConfigured: boolean, serverIP: string}}
+     */
+    getConfiguration: function () {
+      const serverAddress = $App.connection.userData('onlyOfficeServer')
+      const configuration = {
+        isConfigured: _.isString(serverAddress),
+        serverIP: serverAddress || ''
+      }
+      return configuration
+    },
+    /**
+     * Returns true - if configuration available
+     * @return {boolean}
+     */
+    isAvailable: function () {
+      return this.getConfiguration().isConfigured
+    }
   },
 
+  // region Private variables
+  /**
+   * Stores "key" of the document used by onlyOffice server to identify document
+   * @private
+   */
   _documentKey: null,
+  /**
+   * Stores instance of DocsAPI.DocEditor class
+   * @private
+   */
   _onlyOfficeObject: null,
-  _onlyOfficeGetValueDefer: null,
-  _onlyOfficeGetValuePromise: null,
+  /**
+   * Stores Promise, that will be resolved after successful client script load from onlyOffice server
+   * @private
+   */
   _initializationPromise: null,
+  /**
+   * Defer that will be resolved in "render" listener
+   * @see _placeholderID
+   * @private
+   */
+  _domReadyDefer: null,
+  /**
+   * Element id where onlyOffice will render it's view.
+   * Value filled in "render" listener. As it may not be available earlier.
+   * After value set control is ready to show and @see {@link _domReadyDefer} resolved
+   * @private
+   */
   _placeholderID: null,
-  _placeholderComponent: null,
+
+  /**
+   * Created during call to GetValue. It's Promise returned from GetValue.
+   * Resolved in "onDownloadAs" with location of document in temp store
+   * @private
+   */
+  _onlyOfficeGetValueDefer: null,
+  /**
+   * Stores params received in SetSrc method as they later will be used in {@link _getControlConfiguration} and {@link onDownloadAs} event
+   * @type {object}
+   * @private
+   */
   _params: null,
 
   _isModified: false,
   readOnly: true,
+  // endregion
 
   listeners: {
     boxready: function (me, width, height) {
@@ -59,8 +120,9 @@ Ext.define('UB.ux.UBOnlyOffice', {
       console.log(oldHeight)
     },
     render: function (me) {
-      me._placeholderComponent = me.body.dom
-      me._placeholderID = me._placeholderComponent.id
+      // me.body may be not available before render
+      me._placeholderID = me.body.dom.id
+      me._domReadyDefer.resolve()
     }
   },
 
@@ -72,7 +134,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
    */
   initComponent: function () {
     const me = this
-    const configuration = me._getServerConfiguration()
+    const configuration = UB.ux.UBOnlyOffice.getConfiguration()
     if (!configuration.isConfigured) {
       console.warn('OnlyOffice configuration is missed. Yet control were tried to bootstrap')
       me.callParent(arguments)
@@ -81,6 +143,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
 
     const url = 'http://' + configuration.serverIP + '/web-apps/apps/api/documents/api.js'
     me._initializationPromise = me._loadScript(url)
+    me._domReadyDefer = Q.defer()
     me.callParent(arguments)
   },
   // endregion
@@ -142,17 +205,20 @@ Ext.define('UB.ux.UBOnlyOffice', {
     me._params = cfg.params
     me._params.user = $App.getUserData().userID
 
-    return me._initializationPromise
+    Q.all([me._initializationPromise, me._domReadyDefer.promise])
       .then(() => {
         const documentType = me._mapContentTypeToDocumentType(cfg.contentType)
         const configuration = me._getControlConfiguration(documentType, cfg.params, cfg.html)
         me._documentKey = configuration.document.key
         me._onlyOfficeObject = new DocsAPI.DocEditor(me._placeholderID, configuration)
       })
+
+    return Q.resolve(true)
   },
+
   // endregion
 
-  // region Control protected methods
+  // region Private methods
   /**
    * For onlyOffice client component to work, we need to load it's client script from it's server
    * @param {string} url - onlyOffice client bootstrap script
@@ -163,21 +229,6 @@ Ext.define('UB.ux.UBOnlyOffice', {
     return Q.Promise((resolve, reject) => {
       Ext.Loader.loadScript({url: url, onLoad: resolve, onError: reject})
     })
-  },
-
-  /**
-   * Reads onlyOffice configuration stored in userData.
-   * Filled in ubjs\packages\ub\modules\onlyOfficeEndpoints.js
-   * @return {{isConfigured: boolean, serverIP: (*|string)}}
-   * @private
-   */
-  _getServerConfiguration: function () {
-    const serverAddress = $App.connection.userData('onlyOfficeServer')
-    const configuration = {
-      isConfigured: _.isString(serverAddress),
-      serverIP: serverAddress || ''
-    }
-    return configuration
   },
 
   /**
@@ -194,7 +245,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     // Server remembers keys and urls.
     // So if document with "key" were saved then "key" can't be reused - "onOutdatedVersion" will be called
     const key = UB.MD5((new Date()).toString() + '||' + serverFileUrl).toString().substr(20)
-    const lang = 'UK' // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
+    const lang = 'ua' // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
     const callbackUrl = $App.connection.serverUrl + 'notifyDocumentSaved'
     const editorMode = me.readOnly ? 'view' : 'edit'
     const type = me.readOnly ? 'embedded' : 'desktop'
@@ -269,9 +320,14 @@ Ext.define('UB.ux.UBOnlyOffice', {
     }
   },
 
+  /**
+   * Transforms document MIME type to editor type e.g. 'application/msword' -> 'text'
+   * @param {string} contentType
+   * @return {string}
+   * @private
+   */
   _mapContentTypeToDocumentType: function (contentType) {
-    const me = this
-    const documentType = me.contentTypeMap[contentType]
+    const documentType = UB.ux.UBOnlyOffice.contentTypeMap[contentType]
     if (!documentType) {
       console.warn('"UBOnlyOffice.js" - contentType passed in control is "' + contentType + '" and don\'t have corresponding mapping to onlyOffice type. So default type "text" will be used')
       return 'text'
@@ -281,13 +337,3 @@ Ext.define('UB.ux.UBOnlyOffice', {
   // endregion
 
 })
-
-/**
- * @typedef {object} UB.ux.UBOnlyOffice Integration with OnlyOffice document server
- * @property {bool} [_isModified=false] tracks changes to document. Calculated as result of DocsAPI.DocEditor "onDocumentStateChange" event
- * @property {object} _onlyOfficeObject DocsAPI.DocEditor. Client side onlyOffice object
- * @property {Promise} _initializationPromise - resolves when loading of onlyOffice client side script competed and '_onlyOfficeObject' initialized
- * @property {string} _placeholderID - id of html element to place onlyOffice documentViewer
- * @property {Deferred} _onlyOfficeGetValueDefer - used during the call to getValue. To get url of the modified document from onlyOffice server
- * @property {Promise} _onlyOfficeGetValuePromise - returned from getValue. Resolves to url of the modified document from onlyOffice server
- */
