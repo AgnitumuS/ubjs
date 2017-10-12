@@ -1,6 +1,6 @@
 ﻿{ 
 	"httpServer": {
-		"host": "kolesnikov",
+		"host": "+",
 		"port": "888",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
