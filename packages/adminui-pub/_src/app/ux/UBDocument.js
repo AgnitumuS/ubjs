@@ -307,7 +307,14 @@ Ext.define('UB.ux.UBDocument', {
 
     if (this.expanded) {
       normContentType = this.getNormalizeContentType(contentType)
-      xtype = UB.ux.UBDocument.contentTypeMapping[normContentType]
+      const derivedXtype = UB.ux.UBDocument.contentTypeMapping[normContentType]
+
+      if (derivedXtype === 'UB.ux.UBOnlyOffice' && UB.ux.UBOnlyOffice.isAvailable()) {
+        // component must be available only if it's configured
+        xtype = derivedXtype
+      } else {
+        xtype = derivedXtype
+      }
     }
     xtype = xtype || 'UB.ux.UBLink'
 
