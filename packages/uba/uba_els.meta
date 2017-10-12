@@ -15,7 +15,7 @@
 	"attributes": {
 		"code": {
             "dataType": "String",
-            "size": 32,
+            "size": 128,
             "caption": "Rule code",
             "description": "Code for ELS rule",
             "documentation": "This field is used by migrations for automatically update rules. It recommended to use your model code as rule prefix.

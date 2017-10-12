@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - Not-null attributes in the form builder now displayed as bold
+ - `showForm` command will use a `ubm_form.caption` as a form caption (instead of description as in prev. version) 
 
 
 ##  [4.2.25]
@@ -47,6 +48,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ##  [4.2.20]
 ### Fixed
  - UB.ux.form.field.UBDateTime. Prevent exception when picker opened and button TAB pressed. [UB-1862]
+
 
 ##  [4.2.18]
 ### Added

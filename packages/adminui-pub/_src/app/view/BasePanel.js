@@ -3078,10 +3078,8 @@ Ext.define('UB.view.BasePanel', {
               fieldLabel: item.fieldLabel,
               callback: function () {
                 if (me) {
-                  var wnd = me.getFormWin()
-                  if (wnd) {
-                    wnd.toFront()
-                  }
+                  let wnd = me.getFormWin()
+                  if (wnd) wnd.toFront()
                   Ext.callback(item.focus, item, [], 100)
                 }
               }

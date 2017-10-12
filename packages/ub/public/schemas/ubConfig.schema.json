@@ -832,6 +832,16 @@
               "type": "object",
               "description": "JavaScript linter options - used in adminUI form editor & shortcut editor. See <a href=\"http://jshint.com/docs/options/\">JSHINT documentation</a> for full options list"
             },
+            "onlyOffice": {
+              "type": "object",
+              "description": "Configuration options for OnlyOffice ",
+              "properties": {
+                "serverIP": {
+                  "type": "string",
+                  "description": "IP address and port where OnlyOffice document server can be found in format 'ip:port'"
+                }
+              }
+            },
 			"favoriteCategoryCount": {
 			  "type": "number",
               "description": "Number of categories (up to 4) for a favorites columnus",

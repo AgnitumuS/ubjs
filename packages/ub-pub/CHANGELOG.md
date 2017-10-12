@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.4.11]
+### Changed
+ - In case of session persistent clear the session key only for 401 response status (instead of all > 300)
+ 
 ## [4.4.6]
 ### Added
 - ub-pub now export a `UBCache` class, so instead of 

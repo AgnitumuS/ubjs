@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubq",
-  "version": "4.2.13",
+  "version": "4.2.16",
   "description": "UnityBase queue",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubq",
   "config": {
@@ -15,15 +15,15 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.19",
-    "@unitybase/mailer": "^4.0.20",
-    "@unitybase/mailer-ssl": "^4.0.20",
-    "@unitybase/ub": "^4.0.41",
-    "@unitybase/uba": "^4.1.29",
+    "@unitybase/base": "^4.2.22",
+    "@unitybase/mailer": "^4.0.22",
+    "@unitybase/mailer-ssl": "^4.0.22",
+    "@unitybase/ub": "^4.0.44",
+    "@unitybase/uba": "^4.1.32",
     "node-cron": "^1.1.2"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.11"
+    "@unitybase/stubs": "^4.1.13"
   },
   "keywords": [
     "UnityBase",

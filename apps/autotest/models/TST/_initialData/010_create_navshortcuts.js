@@ -12,7 +12,6 @@ module.exports = function (session) {
   var
     desktopID, folderID, conn = session.connection
 
-  'use strict'
   desktopID = conn.lookup('ubm_desktop', 'ID', {expression: 'code', condition: 'equal', values: {code: 'tst_desktop'}})
   console.info('\tFill `Test` desktop')
   if (!desktopID) {
@@ -139,5 +138,18 @@ module.exports = function (session) {
       }
     })
     displayOrder = displayOrder + 10
+  })
+
+  console.log('\t\t\tcreate `tst_onlyOffice` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_onlyOffice',
+      caption: 'tst_onlyOffice',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_onlyoffice', method: 'select', fieldList: ['ID', 'caption']}]}}, null, '\t')
+    }
   })
 }

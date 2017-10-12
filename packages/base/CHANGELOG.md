@@ -4,9 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.21]
+### Added
+- `argv.establishConnectionFromCmdLineAttributes` can accept a `-timeout` command line which
+ set a connection receive timeout. By default timeout increased to 120 set to
+ allow a long-live script execution
+
+## [4.2.20]
+### Added
+- UBDoman iterator callbacks described as @callback for better code insight
+
 ## [4.2.17]
 ### Fixed
-- prevent ORA-00932 error - in case `Repository.where(attr, 'in', undefined)` -> replace it by (0=1) SQL statement  
+- prevent ORA-00932 error - in case `Repository.where(attr, 'in', undefined)` -> replace it by (0=1) SQL statement
 
 ## [4.1]
 ### Added

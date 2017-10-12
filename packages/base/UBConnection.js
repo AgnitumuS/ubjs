@@ -46,12 +46,12 @@ function UBConnection (options) {
   let userDataDefault = { lang: 'en' }
   let appInfo = {}
 
-   /**
-   * Internal instance of HTTP client
-   * @type {ClientRequest}
-   * @protected
-   * @readonly
-   */
+  /**
+  * Internal instance of HTTP client
+  * @type {ClientRequest}
+  * @protected
+  * @readonly
+  */
   this.clientRequest = client
   let appName = client.options.path
   let servicePath = client.options.path
@@ -207,7 +207,7 @@ function UBConnection (options) {
           }
           if (resp['useSasl']) {
             pwdHash = CryptoJS.MD5(authParams.login.split('\\')[1].toUpperCase() + ':' + resp.realm + ':' + authParams.password)
-                        // we must calculate md5(login + ':' + realm + ':' + password) in binary format
+            // we must calculate md5(login + ':' + realm + ':' + password) in binary format
             pwdHash.concat(CryptoJS.enc.Utf8.parse(':' + serverNonce + ':' + clientNonce))
             request2.password = CryptoJS.MD5(pwdHash).toString()
             secretWord = request2.password // todo - must be pwdHash but UB server do not know it :( medium unsecured
@@ -299,7 +299,6 @@ function UBConnection (options) {
   this.lookup = function (aEntity, lookupAttribute, aCondition, doNotUseCache) {
     let me = this
     let cKey = aEntity + JSON.stringify(aCondition) + lookupAttribute
-    let resData
     let request
 
     if (!doNotUseCache && lookupCache.hasOwnProperty(cKey)) {
@@ -315,7 +314,7 @@ function UBConnection (options) {
         request.whereList = aCondition
       }
 
-      resData = me.query(request).resultData.data
+      let resData = me.query(request).resultData.data
       if ((resData.length === 1) && (resData[0][0] != null)) { // `!= null` is equal to (not null && not undefined)
         if (!doNotUseCache) {
           lookupCache[cKey] = resData[0][0]
@@ -475,7 +474,7 @@ UBConnection.prototype.runList = function (runListData) {
  */
 UBConnection.prototype.runCustom = function (endpoint, aBody, aURLParams, simpleTextResult, aHTTPMethod) {
   return this.xhr({HTTPMethod: aHTTPMethod || 'POST', endpoint: endpoint, URLParams: aURLParams, data: aBody, simpleTextResult: simpleTextResult})
-    // throw new Error ('Use one of runList/run/post/xhr UBConnection methods');
+  // throw new Error ('Use one of runList/run/post/xhr UBConnection methods');
 }
 
 /**
@@ -515,31 +514,33 @@ UBConnection.prototype.logout = function () {
  * @return {string}
  *
  * @example
- * const myObj = conn.Repository(entityName)
- *     .attrs('ID', 'mi_modifyDate')
- *     .where('code', '=', code)
- *     .selectSingle();
- * const {ID, mi_modifyDate} = myObj;
- * const data = fs.readFileSync(fileName, {encoding: 'bin'});
- * const tempStoreResult = conn.setDocument(entityName, 'configuration', ID, data, fn);
- * conn.query({
- *      entity: entityName,
- *		method: 'update',
- *		execParams: {ID, configuration: tempStoreResult, mi_modifyDate}
- *	});
+    const myObj = conn.Repository(entityName)
+      .attrs('ID', 'mi_modifyDate')
+      .where('code', '=', code)
+      .selectSingle()
+    const {ID, mi_modifyDate} = myObj
+    const data = fs.readFileSync(fileName, {encoding: 'bin'})
+    const tempStoreResult = conn.setDocument(entityName, 'configuration', ID, data, fn)
+    conn.query({
+      entity: entityName,
+      method: 'update',
+      execParams: {ID, configuration: tempStoreResult, mi_modifyDate}
+    })
  */
 UBConnection.prototype.setDocument = function (entity, attribute, id, data, origName, fileName) {
-	const setDocumentResponse = this.xhr({
-		HTTPMethod: 'POST',
-		endpoint: 'setDocument',
-		data,
-		URLParams: {
-			entity, attribute, id,
-			origName: origName || fileName,
-			filename: fileName || origName
-		}
-	})
-	return JSON.stringify(setDocumentResponse.result)
+  const setDocumentResponse = this.xhr({
+    HTTPMethod: 'POST',
+    endpoint: 'setDocument',
+    data,
+    URLParams: {
+      entity,
+      attribute,
+      id,
+      origName: origName || fileName,
+      filename: fileName || origName
+    }
+  })
+  return JSON.stringify(setDocumentResponse.result)
 }
 
 /**

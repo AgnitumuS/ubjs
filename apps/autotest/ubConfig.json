@@ -6,18 +6,17 @@
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": ".\\inetPub\\",
-		"headersPostprocessors": ["#include(%UB_HOME%\\defHeadersPostprocessors.json)"],
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
 		"threadPoolSize": 8
 	},
-	"wsServer": {
+	/*"wsServer": {
 		"host": "+",
 		"port": "888",
 		"path": "ws"
-	},
+	},*/
 	"logging": {
 		"path": ".\\logs",
 		"levels": [
@@ -70,7 +69,10 @@
 				"enabled": true,
 				"checkInterval": 30
 			},
-			"linter": { "asi": true, "sub": true }
+			"linter": { "asi": true, "sub": true },
+			"onlyOffice": {
+				"serverIP": "10.8.17.6:32771"
+			}
 		},
 		"portalUI": {
 			"applicationName": "UBCore usage"

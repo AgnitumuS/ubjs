@@ -353,12 +353,13 @@ Ext.define('UB.core.UBApp', {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
             var pkiForAuth = UB.appConfig.uiSettings.adminUI.encryptionImplementation || '@ub-d/nm-dstu/injectEncription.js'
             var advParam = {
-               getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
-               getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
+              getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
+              getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
             }
-	    const I = System.import // required for WebPack to skip using dynamic module as a splitting point
+            let I = System.import // required for WebPack to skip using dynamic module as a splitting point
+            I = I.bind(System)
             return I(pkiForAuth)
-              .then(function(lib){
+              .then(function (lib) {
                 lib.addEncryptionToConnection(connection, advParam)
               })
 

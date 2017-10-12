@@ -86,11 +86,15 @@ function generateIndexPage (req, resp, indexName, addCSP=true) {
     let cspHeader = ''
     if (addCSP) {
       let wsSrc = 'ws' + App.serverURL.slice(4)
+      if (!uiSettings) {
+        uiSettings = JSON.parse(App.getUISettings() || '{}')
+      }
+      let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
       let cspHeaders =
         // "default-src * data: blob:;" +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval';" +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' " + onlyOfficeServer + ';' +
         "style-src data: 'unsafe-inline' *;" +
-        "connect-src 'self' " + wsSrc + ' blob:;' +
+        "connect-src 'self' " + wsSrc + ' blob: ' + onlyOfficeServer + ';' +
         'plugin-types application/pdf'
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
     }
