@@ -41,6 +41,10 @@ function anonymousRequestAuthParams (conn, isRepeat) {
   }
 }
 
+function parseUBErrorMessage(errMsg) {
+  return JSON.parse('"' + errMsg.match(/<<<(.*)>>>/)[1] + '"')
+}
+
 /**
  * @classdesc
  *
@@ -497,7 +501,7 @@ function UBConnection (connectionParams) {
             errInfo.errDetails = 'network error'
           }
           if (/<<<.*>>>/.test(errInfo.errMsg)) {
-            errInfo.errMsg = errInfo.errMsg.match(/<<<(.*)>>>/)[1]
+            errInfo.errMsg = parseUBErrorMessage(errInfo.errMsg)
           }
 
           let codeMsg = this.serverErrorByCode(errInfo.errCode)
@@ -742,7 +746,7 @@ UBConnection.prototype.xhr = function (config) {
         let errDetails = errMsg = reason.data.errMsg
 
         if (/<<<.*>>>/.test(errMsg)) { // this is custom error
-          errMsg = i18n(errMsg.match(/<<<(.*)>>>/)[1]) // extract rear message and translate
+          errMsg = i18n(parseUBErrorMessage(errMsg)) // extract rear message and translate
         }
         /**
          * Fired for {@link UBConnection} instance in case user password is expired.
