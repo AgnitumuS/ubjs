@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.33]
+### Added
+
+- UBBadge control, pulled and adopted code originally developed for "bpm" subsystem.
+
+  Display an enum attribute as a badge on a form:
+
+	```
+	{attributeName: 'status', xtype: 'ub-badge'}
+	```
+
+  When need to use badge as a static label, not linked to attribute and / or enum,
+  use configuration like the following:
+
+	```
+ 	{
+		xtype: 'ub-badge',
+		itemId: 'overdueBadge',
+		text: UB.i18n('bpm_Task_overdue'),
+		invert: true,
+		cssClass: 'red'
+	}
+	```
+
 ##  [4.2.29]
 ### Added
  - new BasePanel.postOnlySimpleAttributes property 
