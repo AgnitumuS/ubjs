@@ -245,7 +245,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     // Server remembers keys and urls.
     // So if document with "key" were saved then "key" can't be reused - "onOutdatedVersion" will be called
     const key = UB.MD5((new Date()).toString() + '||' + serverFileUrl).toString().substr(20)
-    const lang = 'ua' // ToDo: find out how to set language (variants with 'uk-UA'|'UA' looks not working)
+    const lang = 'ru' // ToDo: find out how to set language (variants with 'uk-UA'|'UA'|'uk'|'U' looks not working)
     const callbackUrl = $App.connection.serverUrl + 'notifyDocumentSaved'
     const editorMode = me.readOnly ? 'view' : 'edit'
     const type = me.readOnly ? 'embedded' : 'desktop'
