@@ -10,7 +10,9 @@ const __i18n = {
 
 /**
  * Return locale-specific resource from it identifier.
- * localeString must be previously defined dy call to {i18nExtend}
+ * localeString must be either previously defined dy call to {i18nExtend} or
+ * or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
+ * or `UB.i18n('uba_role.description')` would be resolved to localized entity caption or entity attribute caption
  * @param {String} localeString
  * @returns {*}
  */
@@ -18,22 +20,21 @@ function i18n (localeString) {
   let res = __i18n[localeString]
   if (res !== undefined || localeString == null) return res
 
-  if ($App.domainInfo == null) {
+  // $App is accessible only inside adminUI
+  if (!$App || $App.domainInfo == null) {
     // Domain is not loaded yet, cannot resolve string to entity or entity attribute's name
     return localeString
   }
 
   // Try to resolve string as entity name or entity attribute name
-  let entity,
-      attr,
-      parts = localeString.split('.')
+  let parts = localeString.split('.')
 
   if (parts.length > 2) {
     // String contain more than one dots, that is not what can be resolved to entity or entity attribute name
     return localeString
   }
 
-  entity = $App.domainInfo.entities[parts[0]]
+  let entity = $App.domainInfo.entities[parts[0]]
   if (!entity) {
     // First part shall be a valid entity name
     return localeString
@@ -46,7 +47,7 @@ function i18n (localeString) {
     return entity.caption
   }
 
-  attr = entity.attributes[parts[1]];
+  let attr = entity.attributes[parts[1]]
   if (!attr) {
     // Expecting the second part to be a valid entity attribute name
     return localeString

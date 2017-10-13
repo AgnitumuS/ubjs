@@ -8,10 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - i18n now recognizes entity and attribute names so that `UB.i18n('uba_user')` or `UB.i18n('uba_role.description')` would be resolved
    to localized entity caption or entity attribute caption
-
-## [4.4.11]
-### Changed
- - In case of session persistent clear the session key only for 401 response status (instead of all > 300)
+ - In case of session persistent clear the session key only for 
+   401 response status (instead of all > 300)
  
 ## [4.4.6]
 ### Added
