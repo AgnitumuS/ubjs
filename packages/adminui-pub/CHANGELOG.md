@@ -40,6 +40,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 		true
  	);
 	```
+   To use it in grid:
+
+	```
+	initComponent: function () {
+		var myGridComponent = this.items[5];
+		var fieldList = UB.Utils.convertFieldListToExtended(myGridComponent.fieldList);
+		UB.bpm.ux.UBBadge.setupRenderer(fieldList, 'status', 'MY_ENTITY_STATUS');
+		this.callParent(arguments);
+	},
+	```
+
 
 ##  [4.2.29]
 ### Added

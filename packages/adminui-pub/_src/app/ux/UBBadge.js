@@ -43,15 +43,23 @@ Ext.define('UB.ux.UBBadge', {
 	statics: {
 		/**
 		 * Replace a field into field description and put in the list "format" function, which will draw the badge.
+		 *
 		 * @param {Array<string|object>} fieldList
 		 * @param {string} fieldName
 		 * @param {string} enumGroup
 		 * @param {boolean} [invert]
 		 * @param {object.<string,string>} [map]  Optional
 		 *
+		 * This "patches" the "fieldList" config of grid, so it shall be done before initComponent call or inside it,
+		 * but before callParent execution.
+		 *
 		 * @example
-		 * UB.ux.UBBadge.setupRenderer(this.fieldList, 'status', 'MY_ENTITY_STATUS');
-		 * UB.ux.UBBadge.setupRenderer(this.fieldList, 'action', 'MY_ACTIONS', true);
+		 * 	initComponent: function () {
+		 *		var myGridComponent = this.items[5];
+		 *		var fieldList = UB.Utils.convertFieldListToExtended(myGridComponent.fieldList);
+		 *		UB.bpm.ux.UBBadge.setupRenderer(fieldList, 'status', 'MY_ENTITY_STATUS');
+		 *		this.callParent(arguments);
+		 *	},
 		 */
 		setupRenderer: function (fieldList, fieldName, enumGroup, invert, map) {
 			var field = _.find(fieldList, ['name', fieldName]);
