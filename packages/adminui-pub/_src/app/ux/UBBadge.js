@@ -9,6 +9,21 @@
  * Display an enum attribute as a badge on a form:
  * {attributeName: 'status', xtype: 'ub-badge'}
  *
+ * For this to work, an `initModel.js` file (there must be one for your model) shall contain the following initializaiton code:
+ * 	```
+ * 	UB.ux.UBBadge.setCssMap(
+ *		'MY_ENTITY_STATUS',
+ *		{
+ *			'pending': 'blue',
+ *			'in-progress': 'yellow',
+ *			'error': 'red',
+ *		},
+ * 		// Use invert style
+ *		true
+ * 	);
+ *	```
+ * This will let the control know which stype to apply to each enumeration value.
+ *
  * @example
  * When need to use badge as a static label, not linked to attribute and / or enum,
  * use configuration like the following:
@@ -35,8 +50,8 @@ Ext.define('UB.ux.UBBadge', {
 		 * @param {object.<string,string>} [map]  Optional
 		 *
 		 * @example
-		 * UB.ux.UBBadge.setupRenderer(this.fieldList, 'status', 'BPM_TASK_STATUS');
-		 * UB.ux.UBBadge.setupRenderer(this.fieldList, 'completeAction', 'BPM_TASK_COMPLETE_ACTION', true);
+		 * UB.ux.UBBadge.setupRenderer(this.fieldList, 'status', 'MY_ENTITY_STATUS');
+		 * UB.ux.UBBadge.setupRenderer(this.fieldList, 'action', 'MY_ACTIONS', true);
 		 */
 		setupRenderer: function (fieldList, fieldName, enumGroup, invert, map) {
 			var field = _.find(fieldList, ['name', fieldName]);
@@ -122,6 +137,18 @@ Ext.define('UB.ux.UBBadge', {
 		 * @param {string} enumGroup
 		 * @param {object.<string, string>} maps
 		 * @param {boolean} invert                Should the badge be displayed in inverted mode.
+		 * @example
+		 * 	```
+		 * 	UB.ux.UBBadge.setCssMap(
+		 *		'MY_ENTITY_STATUS',
+		 *		{
+		 *			'pending': 'blue',
+		 *			'in-progress': 'yellow',
+		 *			'error': 'red',
+		 *		},
+		 *		true
+		 * 	);
+		 *	```
 		 */
 		setCssMap: function (enumGroup, maps, invert) {
 			UB.ux.UBBadge._enumClasses[enumGroup] = maps;

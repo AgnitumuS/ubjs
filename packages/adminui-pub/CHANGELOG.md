@@ -27,6 +27,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 		cssClass: 'red'
 	}
 	```
+   For this to work, an `initModel.js` file (there must be one for your model) shall contain the following initializaiton code:
+ 	```
+ 	UB.ux.UBBadge.setCssMap(
+		'MY_ENTITY_STATUS',
+		{
+			'pending': 'blue',
+			'in-progress': 'yellow',
+			'error': 'red',
+		},
+ 		// Use invert style
+		true
+ 	);
+	```
 
 ##  [4.2.29]
 ### Added
