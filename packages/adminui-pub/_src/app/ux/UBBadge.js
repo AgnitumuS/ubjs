@@ -12,7 +12,7 @@
  * @example
  * When need to use badge as a static label, not linked to attribute and / or enum,
  * use configuration like the following:
- * {
+ * 	{
  *		xtype: 'ub-badge',
  *		itemId: 'overdueBadge',
  *		text: UB.i18n('bpm_Task_overdue'),
