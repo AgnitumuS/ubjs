@@ -175,6 +175,5 @@ function UBNotifierWSProtocol (connection) {
     }
   }
   connection.on('authorized', _onUBConnectionAuthorized)
-  connection.on('restoreSession', _onUBConnectionAuthorized)
 }
 module.exports = UBNotifierWSProtocol

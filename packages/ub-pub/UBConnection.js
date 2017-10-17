@@ -273,13 +273,7 @@ function UBConnection (connectionParams) {
         try {
           let parsed = JSON.parse(storedSession)
           currentSession = doCreateNewSession.call(this, parsed.data, parsed.secretWord, parsed.authSchema)
-          /**
-           * Fired for {@link UBConnection} instance after success restore session.
-           * Session can be restored when configuration parameter allowSessionPersistent = true.
-           * Accept 2 args (conn: UBConnection, session: UBSession)
-           * @event restoreSession
-           */
-          me.emit('restoreSession', me, currentSession)
+          me.emit('authorized', me, currentSession)
           return Promise.resolve(currentSession)
         } catch (e) {
           localStorage.removeItem(this.__sessionPersistKey) // wrong session persistent data
