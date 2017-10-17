@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 /**
  * @class Display a value as a badge.
  * The class plays well with BasePanel and enum attribute type. It also has static methods, which helps displaying
@@ -54,19 +56,19 @@ Ext.define('UB.ux.UBBadge', {
      * but before callParent execution.
      *
      * @example
-     *  initComponent: function () {
-     *  var myGridComponent = this.items[5];
-     *  var fieldList = UB.Utils.convertFieldListToExtended(myGridComponent.fieldList);
-     *  UB.bpm.ux.UBBadge.setupRenderer(fieldList, 'status', 'MY_ENTITY_STATUS');
-     *  this.callParent(arguments);
-     * },
+     *   initComponent: function () {
+     *     var myGridComponent = this.items[5]
+     *     var fieldList = UB.Utils.convertFieldListToExtended(myGridComponent.fieldList)
+     *     UB.ux.UBBadge.setupRenderer(fieldList, 'status', 'MY_ENTITY_STATUS')
+     *     this.callParent(arguments)
+     *   },
      */
     setupRenderer: function (fieldList, fieldName, enumGroup, invert, map) {
-      var field = _.find(fieldList, ['name', fieldName])
+      let field = _.find(fieldList, ['name', fieldName])
       if (!field) return
 
       if (!map) map = UB.ux.UBBadge.getCssMap(enumGroup)
-      var invertValue = invert == null ? UB.ux.UBBadge._invertedEnums[enumGroup] : invert
+      let invertValue = invert == null ? UB.ux.UBBadge._invertedEnums[enumGroup] : invert
       field.format = UB.ux.UBBadge.formatEnum(enumGroup, map, invertValue)
     },
 
@@ -85,7 +87,6 @@ Ext.define('UB.ux.UBBadge', {
 
         UB.ux.UBBadge.styleBadgeColumn(columnInstance)
 
-        var enumMember = enumGroup ? UB.core.UBEnumManager.getById(enumGroup, text) : null
         return UB.ux.UBBadge.renderEnum(enumGroup, text, map, invert)
       }
     },
@@ -101,10 +102,10 @@ Ext.define('UB.ux.UBBadge', {
     },
 
     renderEnum: function (enumGroup, text, map, invert) {
-      var enumMember = enumGroup ? UB.core.UBEnumManager.getById(enumGroup, text) : null
+      let enumMember = enumGroup ? UB.core.UBEnumManager.getById(enumGroup, text) : null
       return UB.ux.UBBadge.renderBadge(
         enumMember ? enumMember.data.name : text,
-        map && map[text] || 'default',
+        (map && map[text]) ? map[text] : 'default',
         invert
       )
     },
@@ -113,7 +114,7 @@ Ext.define('UB.ux.UBBadge', {
       if (text == null) return null
       return Ext.String.format(
         '<span style="margin-left: 3px; " class="ub-badge-component {2}ub-badge-{0}">{1}</span>',
-        style, _.escape(UB.i18n(text)), invertStyle = invert ? 'ub-badge-invert ' : ''
+        style, _.escape(UB.i18n(text)), invert ? 'ub-badge-invert ' : ''
       )
     },
 
@@ -256,8 +257,8 @@ Ext.define('UB.ux.UBBadge', {
       this.invert = !!UB.ux.UBBadge._invertedEnums[this.enumGroup]
     }
 
-    var enumItem = this.enumGroup ? UB.core.UBEnumManager.getById(this.enumGroup, newValue) : null,
-      cssMap = this.cssMap || this.enumGroup ? UB.ux.UBBadge.getCssMap(this.enumGroup) : {}
+    let enumItem = this.enumGroup ? UB.core.UBEnumManager.getById(this.enumGroup, newValue) : null
+    let cssMap = this.cssMap || this.enumGroup ? UB.ux.UBBadge.getCssMap(this.enumGroup) : {}
 
     this.update({
       cssClass: cssMap[newValue] || this.defaultCssClass,
@@ -273,16 +274,15 @@ Ext.define('UB.ux.UBBadge', {
    * @returns {string|null}
    */
   _determineEnumGroup: function () {
-    var basePanel = this.up('basepanel'),
-      entityAttribute
+    let basePanel = this.up('basepanel')
 
     if (!basePanel || !basePanel.domainEntity) {
       console.warn('Impossible to determine enumGroup, because control is not inside basepanel or the panel' +
-    'does not have entity set.')
+        'does not have entity set.')
       return null
     }
 
-    entityAttribute = basePanel.domainEntity.attributes[this.attributeName]
+    let entityAttribute = basePanel.domainEntity.attributes[this.attributeName]
     if (!entityAttribute) {
       console.warn('Impossible to determine enumGroup, because entity does not have attribute ' + this.attributeName)
       return null
@@ -343,7 +343,7 @@ Ext.define('UB.ux.UBBadgeField', {
     this.callParent(arguments)
 
     if (!this.map && this.enumGroup) this.map = UB.ux.UBBadge.getCssMap(this.enumGroup)
-    if (this.invert == null) this.invert = this.enumGroup && UB.ux.UBBadge.isEnumInverted(this.enumGroup)
+    if (this.invert === null) this.invert = this.enumGroup && UB.ux.UBBadge.isEnumInverted(this.enumGroup)
 
     this.on('afterrender', function () {
       this._node = this.inputEl.dom.parentNode
