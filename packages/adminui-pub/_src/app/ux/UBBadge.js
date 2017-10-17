@@ -11,31 +11,33 @@ const _ = require('lodash')
  * Display an enum attribute as a badge on a form:
  * {attributeName: 'status', xtype: 'ub-badge'}
  *
- * For this to work, an `initModel.js` file (there must be one for your model) shall contain the following initializaiton code:
+ * For this to work, an `initModel.js` file (there must be one for your model) shall contain the following initialization code:
  *  ```
  *  UB.ux.UBBadge.setCssMap(
- *  'MY_ENTITY_STATUS',
- *  {
- *   'pending': 'blue',
- *   'in-progress': 'yellow',
- *   'error': 'red',
- *  },
- *   // Use invert style
- *  true
+ *    'MY_ENTITY_STATUS',
+ *    {
+ *      'pending': 'blue',
+ *      'in-progress': 'yellow',
+ *      'error': 'red',
+ *    },
+ *    // Use invert style
+ *    true
  *  )
  * ```
- * This will let the control know which stype to apply to each enumeration value.
+ * This will let the control know which style to apply to each enumeration value.
  *
  * @example
  * When need to use badge as a static label, not linked to attribute and / or enum,
  * use configuration like the following:
  *  {
- *  xtype: 'ub-badge',
- *  itemId: 'overdueBadge',
- *  text: UB.i18n('bpm_Task_overdue'),
- *  invert: true,
- *  cssClass: 'red'
- * }
+ *    xtype: 'ub-badge',
+ *    itemId: 'overdueBadge',
+ *    text: UB.i18n('bpm_Task_overdue'),
+ *    invert: true,
+ *    cssClass: 'red'
+ *  }
+ *
+ *  The possible cssClass is listed in TODO
  */
 Ext.define('UB.ux.UBBadge', {
   extend: Ext.Component,
@@ -146,18 +148,18 @@ Ext.define('UB.ux.UBBadge', {
      * to determine styles for badges.
      * @param {string} enumGroup
      * @param {object.<string, string>} maps
-     * @param {boolean} invert                Should the badge be displayed in inverted mode.
+     * @param {boolean} invert  Should the badge be displayed in inverted mode.
      * @example
      *  ```
      *  UB.ux.UBBadge.setCssMap(
-     *  'MY_ENTITY_STATUS',
-     *  {
-     *   'pending': 'blue',
-     *   'in-progress': 'yellow',
-     *   'error': 'red',
-     *  },
-     *  true
-     *  );
+     *    'MY_ENTITY_STATUS', // enum group
+     *    {
+     *     'pending': 'blue',
+     *     'in-progress': 'yellow',
+     *     'error': 'red',
+     *    },
+     *    true
+     *  )
      * ```
      */
     setCssMap: function (enumGroup, maps, invert) {
