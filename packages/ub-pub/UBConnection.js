@@ -277,6 +277,7 @@ function UBConnection (connectionParams) {
         try {
           let parsed = JSON.parse(storedSession)
           currentSession = doCreateNewSession.call(this, parsed.data, parsed.secretWord, parsed.authSchema)
+          me.emit('authorized', me, currentSession)
           return Promise.resolve(currentSession)
         } catch (e) {
           localStorage.removeItem(this.__sessionPersistKey) // wrong session persistent data
