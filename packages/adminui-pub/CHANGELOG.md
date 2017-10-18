@@ -4,6 +4,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.33]
+### Added
+
+- UBBadge control, pulled and adopted code originally developed for "bpm" subsystem.
+
+  Display an enum attribute as a badge on a form:
+
+	```
+	{attributeName: 'status', xtype: 'ub-badge'}
+	```
+
+  When need to use badge as a static label, not linked to attribute and / or enum,
+  use configuration like the following:
+
+	```
+ 	{
+	  xtype: 'ub-badge',
+	  itemId: 'overdueBadge',
+	  text: UB.i18n('bpm_Task_overdue'),
+	  invert: true,
+	  cssClass: 'red'
+	}
+	```
+   For this to work, an `initModel.js` file (there must be one for your model) shall contain the following initializaiton code:
+ 	```
+ 	UB.ux.UBBadge.setCssMap(
+	  'MY_ENTITY_STATUS',
+	  {
+	    'pending': 'blue',
+	    'in-progress': 'yellow',
+	    'error': 'red',
+	  },
+ 	  // Use invert style
+	  true
+ 	)
+	```
+   To use it in grid:
+
+	```
+	initComponent: function () {
+	  var myGridComponent = this.items[5] // reference to grid
+	  var fieldList = UB.Utils.convertFieldListToExtended(myGridComponent.fieldList)
+	  UB.ux.UBBadge.setupRenderer(fieldList, 'status', 'MY_ENTITY_STATUS')
+	  this.callParent(arguments)
+	},
+	```
+
+
 ##  [4.2.29]
 ### Added
  - new BasePanel.postOnlySimpleAttributes property 

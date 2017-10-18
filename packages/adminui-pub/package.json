@@ -11,7 +11,7 @@
   "scripts": {
     "build": "npm run build:ext && npm run build:css && npm run build:adminui",
     "build:ext": "call ./bin/buildExt.cmd",
-    "build:css": "uglifycss ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css > ./ub-css-all.css",
+    "build:css": "uglifycss ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css ./_src/css/ub-badge.css > ./ub-css-all.css",
     "build:adminui": "SET NODE_ENV=production&& webpack",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
