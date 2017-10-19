@@ -322,7 +322,6 @@ class DBAbstract {
       }
 
       // drop FK if not found in schema by name or not equal by columnus
-      debugger
       for (let asIsFK of asIs.foreignKeys) {
         if (mustBe.existOther(asIsFK.name)) continue
         let mustBeFK = mustBe.getFKByName(asIsFK.name)
@@ -340,7 +339,7 @@ class DBAbstract {
         let mustBeIndex = mustBe.indexByName(asIsIndex.name)
         if (!mustBeIndex || asIsIndex.isForDelete ||
           !_.isEqual(mustBeIndex.keys, asIsIndex.keys) ||
-          (mustBeIndex.isUnique !== mustBeIndex.isUnique) ||
+          (mustBeIndex.isUnique !== asIsIndex.isUnique) ||
           asIsIndex.isDisabled
         ) {
           if (!asIsIndex.isDeleted) {
@@ -465,21 +464,18 @@ class DBAbstract {
           this.addWarning(`Altering type for ${mustBeColumn} from ${asIsType} to ${mustBeType} may be wrong`)
         }
         if (typeChanged && (
-            (asIsC.dataType === 'NTEXT') || (mustBeC.dataType === 'NTEXT') ||
-            (asIsC.dataType === 'DATETIME') || (mustBeC.dataType === 'DATETIME') ||
-            ((asIsC.dataType === 'BIGINT') && (mustBeC.dataType === 'INTEGER')) ||
-            ((asIsC.dataType === 'NUMERIC') && (mustBeC.size > 10) && (mustBeC.dataType === 'INTEGER')) ||
-            ((asIsC.dataType === 'NUMERIC') && (mustBeC.size > 19) && (mustBeC.dataType === 'BIGINT')) ||
-            ((asIsC.dataType === 'NUMERIC') && (mustBeC.prec !== 0) && (mustBeC.dataType === 'BIGINT' || mustBeC.dataType === 'INTEGER'))
-          )
-        ) {
+          (asIsC.dataType === 'NTEXT') || (mustBeC.dataType === 'NTEXT') ||
+          (asIsC.dataType === 'DATETIME') || (mustBeC.dataType === 'DATETIME') ||
+          ((asIsC.dataType === 'BIGINT') && (mustBeC.dataType === 'INTEGER')) ||
+          ((asIsC.dataType === 'NUMERIC') && (mustBeC.size > 10) && (mustBeC.dataType === 'INTEGER')) ||
+          ((asIsC.dataType === 'NUMERIC') && (mustBeC.size > 19) && (mustBeC.dataType === 'BIGINT')) ||
+          ((asIsC.dataType === 'NUMERIC') && (mustBeC.prec !== 0) && (mustBeC.dataType === 'BIGINT' || mustBeC.dataType === 'INTEGER'))
+        )) {
           this.addWarning(`Altering type for ${mustBeColumn} from ${asIsType} to ${mustBeType} may be wrong`)
         }
         if (sizeChanged && sizeIsSmaller) {
           this.addWarning(`The size or precision for field ${mustBeColumn} was reduced potential loss of data: ${asIsType} -> ${mustBeType}`)
         }
-        if (mustBeC.name === 'bigintValue')
-          debugger
         let defChanged = this.compareDefault(mustBeC.dataType, mustBeC.defaultValue, asIsC.defaultValue, mustBeC.defaultConstraintName, asIsC.defaultConstraintName)
         // TEMP
         if (defChanged) {
@@ -560,7 +556,6 @@ class DBAbstract {
 
   /**
    * Generate a column type DDL part
-   * @override
    * @param {FieldDefinition} column
    * @return {string}
    */

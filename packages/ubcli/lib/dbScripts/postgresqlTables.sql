@@ -82,11 +82,11 @@ create table ubs_settings (
 
 -- Create primary keys
 --#############################################################
-alter table uba_els add constraint PK_uba_els PRIMARY KEY ( ID);
-alter table uba_role add constraint PK_uba_role PRIMARY KEY ( ID);
-alter table uba_subject add constraint PK_uba_subject PRIMARY KEY ( ID);
-alter table uba_user add constraint PK_uba_user PRIMARY KEY ( ID);
-alter table uba_userrole add constraint PK_uba_userrole PRIMARY KEY ( ID);
-alter table uba_als add constraint PK_uba_als PRIMARY KEY ( ID );
-alter table uba_audit add constraint PK_uba_audit PRIMARY KEY ( ID );
-alter table ubs_settings add constraint PK_ubs_settings PRIMARY KEY ( ID );
+alter table uba_els add constraint PK_ELS PRIMARY KEY (ID);
+alter table uba_role add constraint PK_ROLE PRIMARY KEY (ID);
+alter table uba_subject add constraint PK_SUBJ PRIMARY KEY (ID);
+alter table uba_user add constraint PK_USR PRIMARY KEY (ID);
+alter table uba_userrole add constraint PK_USROLE PRIMARY KEY (ID);
+alter table uba_als add constraint PK_ALS PRIMARY KEY (ID);
+alter table uba_audit add constraint PK_SAUD PRIMARY KEY (ID);
+alter table ubs_settings add constraint PK_STNGS PRIMARY KEY (ID);

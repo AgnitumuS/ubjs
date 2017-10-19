@@ -3,7 +3,9 @@
  * @module cmd/initDB/postgreSQL
  */
 
-var DBA_FAKE = '__dba'
+const DBA_FAKE = '__dba'
+const path = require('path')
+const fs = require('fs')
 
 /**
  * Drop a specified schema & role (databaseName)
@@ -11,11 +13,11 @@ var DBA_FAKE = '__dba'
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  var conn = session.connection
+  let conn = session.connection
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: DBA_FAKE},
-    data: UB.format('DROP SCHEMA IF EXISTS {0} CASCADE; DROP USER IF EXISTS {0};', databaseConfig.userID)
+    data: `DROP SCHEMA IF EXISTS ${databaseConfig.userID} CASCADE; DROP USER IF EXISTS ${databaseConfig.userID};`
   })
 }
 
@@ -28,7 +30,7 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: DBA_FAKE},
-    data: UB.format("CREATE ROLE {0} LOGIN PASSWORD '{1}' VALID UNTIL 'infinity'; CREATE SCHEMA {0} AUTHORIZATION {0};", databaseConfig.userID, databaseConfig.password)
+    data: `CREATE ROLE ${databaseConfig.userID} LOGIN PASSWORD '${databaseConfig.password}' VALID UNTIL 'infinity'; CREATE SCHEMA ${databaseConfig.userID} AUTHORIZATION ${databaseConfig.userID};`
   })
 }
 
@@ -39,17 +41,13 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createMinSchema = function createMinSchema (conn, clientNum, databaseConfig) {
-  var
-    path = require('path'),
-    fs = require('fs'),
-    sequences = 'CREATE SEQUENCE SEQ_UBMAIN INCREMENT 1 MAXVALUE   {0}4999999999 START   {0}0000000000 CYCLE; CREATE SEQUENCE SEQ_UBMAIN_BY1 INCREMENT 1 MAXVALUE {0}999999999999 START {0}500000000000 CYCLE;',
-    script
+  let sequences = 'CREATE SEQUENCE SEQ_UBMAIN INCREMENT 1 MAXVALUE   {0}4999999999 START   {0}0000000000 CYCLE CACHE 1; CREATE SEQUENCE SEQ_UBMAIN_BY1 INCREMENT 1 MAXVALUE {0}999999999999 START {0}500000000000 CYCLE CACHE 1;'
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: databaseConfig.name},
     data: UB.format(sequences, clientNum)
   })
-  script = fs.readFileSync(path.join(__dirname, 'postgreSQLObjects.sql'))
+  let script = fs.readFileSync(path.join(__dirname, 'postgreSQLObjects.sql'))
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: databaseConfig.name},

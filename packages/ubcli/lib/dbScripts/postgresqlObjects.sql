@@ -1,28 +1,3 @@
-CREATE OR REPLACE FUNCTION f_arridx (
-  arr smallint [],
-  value smallint
-)
-RETURNS integer AS
-$body$
-DECLARE
-  i INTEGER;
-  ind INTEGER;
-BEGIN
-  ind := -1;
-  -- Attention! Must start from 0 and to array_length (not to array_length - 1)
-  FOR i IN 0..array_length(arr, 1) LOOP
-    IF (arr[i] = value) THEN
-      ind := i;
-      EXIT;
-    END IF;
-  END LOOP;
-  RETURN ind;
-END;
-$body$
-LANGUAGE 'plpgsql'
-COST 1;
---
-
 CREATE OR REPLACE FUNCTION f_get100ids()
   RETURNS bigint AS
 $BODY$

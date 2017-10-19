@@ -80,7 +80,7 @@ module.exports = function initDB (cfg) {
   http.setGlobalConnectionDefaults({receiveTimeout: 2 * 60 * 1000})
 
   if (argv.checkServerStarted(cfg.host)) {
-    //    throw new Error('Please, shutdown a server on ' + cfg.host + ' before run this command');
+    // throw new Error('Please, shutdown a server on ' + cfg.host + ' before run this command');
   }
 
   fs.renameSync(originalConfigFileName, originalConfigFileName + '.bak')
