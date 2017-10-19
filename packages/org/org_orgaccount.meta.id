@@ -18,6 +18,9 @@
             "caption": "Kode",
             "description": "Kode akun"
         },
+        "description": {
+            "caption": "Komentar"
+        },
         "acctype": {
             "caption": "Mengetik",
             "description": "Jenis account"
