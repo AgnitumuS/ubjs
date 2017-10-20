@@ -1,3 +1,11 @@
+/*
+ * PostgreSQL system tables notes
+ *  - [Postgre catalog documentation](https://www.postgresql.org/docs/9.5/static/catalogs-overview.html)
+ *  - all names inside system tables are in lower case
+ *  - object oid can be retrieved by 'objectName'::regclass expression
+ *  - default value appended by type: 'A'::character varying
+ *
+ */
 
 const _ = require('lodash')
 const {TableDefinition} = require('../AbstractSchema')
@@ -32,7 +40,7 @@ class DBPostgreSQL extends DBAbstract {
 
     // filter tables from a metadata if any
     if (mTables.length) {
-      dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { name: dbTab.name }) !== -1)
+      dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, {_upperName: dbTab.name.toUpperCase()}) !== -1)
     }
     for (let tabDef of dbTables) {
       let asIsTable = new TableDefinition({
@@ -43,13 +51,13 @@ class DBPostgreSQL extends DBAbstract {
       // Table Columns
       // TODO - rewrite using parameters in query (after rewriting runSQL using JS)
       let columnSQL = `select c.column_name as name, c.data_type as typename,
-        c.character_maximum_length as length, c.character_maximum_length as char_length,
+        c.character_maximum_length as len,
         COALESCE(c.numeric_precision, 0) as prec, COALESCE(c.numeric_scale, 0) as scale, substr(c.is_nullable, 1, 1) as is_nullable,
         'NO' as is_computed, c.column_default as defvalue,
           (select description from pg_description
           where objoid =
             (select typrelid from pg_type where typname = LOWER(c.table_name) and typowner = (select oid from pg_roles where rolname = current_user))
-            and objsubid = c.ordinal_position) as comments
+            and objsubid = c.ordinal_position) as description
         from information_schema.columns c
         where c.table_schema = current_user
         and c.table_name = LOWER(:('${asIsTable._upperName}'):)
@@ -64,24 +72,22 @@ class DBPostgreSQL extends DBAbstract {
       for (let colDef of columnsFromDb) {
         let physicalTypeLower = colDef['typename'].toLowerCase()
         let def = colDef['defvalue']
-        // SQL server return default value wrapped in 'A' -> ('A')
-        // numeric & int types wrapped twice 0 -> ((0))
+        // Postgre prepend default by data type: 'A'::character varying
         if (def) {
-          def = def.replace(/^\((.*)\)$/, '$1')
-          if (['numeric', 'int'].indexOf(physicalTypeLower) !== -1) def = def.replace(/^\((.*)\)$/, '$1')
+          def = def.replace(/::character varying/, '')
         }
         let nObj = {
           name: colDef.name,
           description: colDef.description,
-          allowNull: (colDef['is_nullable'] !== 0),
+          allowNull: (colDef['is_nullable'] === 'Y'),
           dataType: this.dataBaseTypeToUni(colDef['typename'], colDef['len'], colDef['prec'], colDef['scale']),
-          size: (['nvarchar', 'varchar', 'char', 'nchar', 'text', 'ntext'].indexOf(physicalTypeLower) !== -1)
+          size: (['character varying', 'nvarchar', 'varchar', 'char', 'nchar', 'text', 'ntext'].indexOf(physicalTypeLower) !== -1)
             ? colDef['len']
             : colDef.prec,
           prec: colDef['scale'],
           // defaultValue: this.parseDefValue( colDef.defvalue ),
-          defaultValue: def
-          // defaultConstraintName: colDef['defname']
+          defaultValue: def,
+          defaultConstraintName: null // no name for default constraint in Postgre
         }
         if (physicalTypeLower === 'nvarchar' || physicalTypeLower === 'nchar' || physicalTypeLower === 'ntext') {
           nObj.size = Math.floor(nObj.size / 2)
@@ -90,28 +96,41 @@ class DBPostgreSQL extends DBAbstract {
       }
 
       // foreign key
-      let foreignKeysSQL = `select tc.constraint_name as foreign_key_name, UPPER(tc.table_name) as table_name, UPPER(a.table_name) as referensed,
-        'NO_ACTION' as delete_rule, 'ENABLED' as status 
-        from information_schema.table_constraints tc, information_schema.constraint_table_usage a 
-        where tc.constraint_schema = current_user 
-        and tc.table_schema = current_user 
-        and tc.table_name = LOWER(:('${asIsTable._upperName}'):) 
-        and tc.constraint_type in ('FOREIGN KEY') 
-        and a.constraint_name = tc.constraint_name`
+      let foreignKeysSQL =
+`SELECT 
+  ct.conname as foreign_key_name,
+  ct.condeferred as is_disabled,
+  (SELECT a.attname FROM pg_attribute a WHERE a.attnum = ct.conkey[1] AND a.attrelid = ct.conrelid) as constraint_column_name,
+  (SELECT tc.relname from pg_class tc where tc.oid = ct.confrelid) as referenced_object,
+  ct.confdeltype as delete_referential_action_desc, -- a = no action, r = restrict, c = cascade, n = set null, d = set default
+  ct.confupdtype as update_referential_action_desc -- a = no action, r = restrict, c = cascade, n = set null, d = set default
+FROM 
+  pg_constraint ct
+WHERE 
+  conrelid = '${asIsTable.name}'::regclass 
+  AND contype = 'f'`
 
       let fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: foreignKeysSQL,
         URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
+      const C_ACTIONS = {
+        a: 'NO_ACTION',
+        r: 'RESTRICT',
+        c: 'CASCADE',
+        n: 'SET_NULL',
+        d: 'SET_DEFAULT'
+      }
+
       for (let fkDef of fkFromDb) {
         asIsTable.addFK({
           name: fkDef['foreign_key_name'],
           keys: [fkDef['constraint_column_name'].toUpperCase()],
           references: fkDef['referenced_object'],
           isDisabled: fkDef['is_disabled'] !== 0,
-          deleteAction: fkDef['delete_referential_action_desc'], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
-          updateAction: fkDef['update_referential_action_desc']
+          deleteAction: C_ACTIONS[fkDef['delete_referential_action_desc']], // NO_ACTION, CASCADE, SET_NULL,  SET_DEFAULT
+          updateAction: C_ACTIONS[fkDef['update_referential_action_desc']]
         })
       }
 
@@ -152,11 +171,10 @@ class DBPostgreSQL extends DBAbstract {
 `SELECT 
   i.indexrelid as index_id,
   UPPER(c.relname) as index_name,
-  i.indisunique as is_unique, 
+  CASE WHEN i.indisunique THEN 1 ELSE 0 END as is_unique, 
   UPPER(a.attname) AS column_name,
   array_position(i.indkey, a.attnum) as column_position,
-  CASE WHEN position(a.attname || ' DESC' in pg_get_indexdef(i.indexrelid)) > 0 THEN 1 ELSE 0 END as is_descending_key,
-  CASE WHEN i.indisunique THEN 1 ELSE 0 END as is_unique
+  CASE WHEN position(a.attname || ' DESC' in pg_get_indexdef(i.indexrelid)) > 0 THEN 1 ELSE 0 END as is_descending_key
 FROM pg_index i
   JOIN pg_class c ON c.oid = i.indexrelid 
   JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
@@ -174,8 +192,8 @@ ORDER BY index_id, column_position`
       let idxCnt = indexesFromDb.length
       while (i < idxCnt) {
         let indexObj = {
-          name: indexesFromDb[i][ 'index_name' ],
-          isUnique: indexesFromDb[i][ 'is_unique' ] !== 0,
+          name: indexesFromDb[i]['index_name'],
+          isUnique: indexesFromDb[i]['is_unique'] !== 0,
           isDisabled: false, // indexesFromDb[i][ 'is_disabled' ] !== 0,
           isConstraint: false, // indexesFromDb[i][ 'is_unique_constraint' ] !== 0,
           keys: []
@@ -280,6 +298,7 @@ ORDER BY index_id, column_position`
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
+    if (!value && !oldValue) return // prevent create empty comments
     let result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
     this.DDL.caption.statements.push(result)
   }
@@ -368,7 +387,7 @@ ORDER BY index_id, column_position`
     )
     if (delayedNotNull && !column.allowNull) {
       this.DDL.alterColumnNotNull.statements.push(
-        `alter table dbo.${table.name} alter column ${column.name} set not null`
+        `alter table ${table.name} alter column ${column.name} set not null`
       )
     }
   }
@@ -400,8 +419,7 @@ ORDER BY index_id, column_position`
     table.columns.forEach((column, index) => {
       res.push('\t', column.name, ' ', this.createTypeDefine(column),
         column.defaultValue
-          ? (column.defaultConstraintName ? ` CONSTRAINT ${column.defaultConstraintName} ` : '') +
-            ' default ' + column.defaultValue
+          ? ' default ' + column.defaultValue // do not need def name in postgre (column.defaultConstraintName ? ` CONSTRAINT ${column.defaultConstraintName} ` : '') +
           : '',
         column.allowNull ? ' null' : ' not null',
         index < colLen - 1 ? ',\r\n' : '\r\n')
@@ -453,7 +471,6 @@ ORDER BY index_id, column_position`
    * @abstract
    */
   genCodeDropPK (tableName, constraintName) {
-    debugger
     this.DDL.dropPK.statements.push(
       `alter table ${tableName} drop constraint ${constraintName}`
     )
@@ -500,7 +517,7 @@ ORDER BY index_id, column_position`
       if (!val) return val
       switch (val) {
         case 'currentDate': return `timezone('utc'::text, now())`
-        case 'maxDate': return "'9999-12-31Z'"
+        case 'maxDate': return "'9999-12-31 00:00:00'::timestamp without time zone"
         default: throw new Error('Unknown expression with code ' + val)
       }
     }
@@ -528,8 +545,8 @@ ORDER BY index_id, column_position`
       case 'CURRENCY': return 'NUMERIC'
       case 'BOOLEAN': return 'SMALLINT'
       case 'DATETIME': return 'TIMESTAMP' // 'TIMESTAMP WITH TIME ZONE'
-      case 'TEXT': return 'NVARCHAR(MAX)'
-      case 'DOCUMENT': return 'TEXT'
+      case 'TEXT': return 'TEXT'
+      case 'DOCUMENT': return 'VARCHAR'
       case 'BLOB': return 'BYTEA'
       default: return dataType
     }
@@ -561,8 +578,8 @@ ORDER BY index_id, column_position`
       case 'TIMESTAMP WITH TIME ZONE': return 'TIMESTAMP WITH TIME ZONE'
       case 'TIMESTAMP WITHOUT TIME ZONE': return 'DATETIME' // OLD - TIMESTAMP WITHOUT TIME ZONE and this unknown comment: Не будет совпадать с типом DATETIME и сгенерится ALTER
       case 'DATE': return 'DATE' // Не будет совпадать с типом DATETIME и сгенерится ALTER
-      case 'CHARACTER VARYING': return 'UVARCHAR'
-      case 'VARCHAR': return 'UVARCHAR'
+      case 'CHARACTER VARYING': return 'NVARCHAR'
+      case 'VARCHAR': return 'NVARCHAR'
       case 'TEXT': return 'TEXT'
       case 'BYTEA': return 'BLOB'
       default: return dataType
