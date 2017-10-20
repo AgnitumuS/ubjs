@@ -312,7 +312,9 @@ class DBAbstract {
 
       // drop PK if not equals or not exist in schema
       if (asIs.primaryKey && !mustBe.existOther(asIs.primaryKey.name) &&
-         (!mustBe.primaryKey || !_.isEqual(asIs.primaryKey.keys, mustBe.primaryKey.keys))
+         (!mustBe.primaryKey ||
+           !_.isEqual(asIs.primaryKey.keys.map((v) => v.toUpperCase()), mustBe.primaryKey.keys.map((v) => v.toUpperCase()))
+         )
       ) {
         this.genCodeDropPK(asIs.name, asIs.primaryKey.name)
       } else {
