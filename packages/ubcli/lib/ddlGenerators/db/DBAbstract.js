@@ -202,7 +202,7 @@ class DBAbstract {
    * @abstract
    */
   genCodeDropPK (tableName, constraintName) {
-    throw new Error('Abstract genCodeDropPK')
+    throw new Error(`Abstract genCodeDropPK ${constraintName} for table ${tableName}`)
   }
   /**
    * @abstract

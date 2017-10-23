@@ -525,7 +525,7 @@ class DDLGenerator {
         refTable = getTableDBName(attribute.entity.domain.get(attribute.associatedEntity))
         break
       case UBDomain.ubDataTypes.Document:
-        dataType = 'VARCHAR'
+        dataType = 'NVARCHAR'
         size = 4000
         break
       case UBDomain.ubDataTypes.TimeLog:
