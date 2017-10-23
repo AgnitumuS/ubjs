@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0]
+### Added
+- DDL generation for PostgreSQL including latest PostgreSQL 10 release. Required UB >= 4.1.0beta.8
+
 ## [1.0.41]
 ### Changed
 - ublci `createCodeInsightHelper` command now generate entities stubs using **stanrard JS** code style
