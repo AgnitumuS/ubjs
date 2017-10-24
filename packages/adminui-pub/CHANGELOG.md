@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.34]
+### Added
+ - Developer can intercept data, returned from server as a result to select method, executed by BasePanel.
+ 
+ To do this `BasePanel.on('recordloaded')` event handler now called with 2 parameters `(record, data)`, where 
+ **record** is instance of Ext.data.Model for current form and **data** is a raw server result  
+ 
+ - Developer can intercept data, passed by `BasePanel` to entity insert/update method 
+ just before it's going to server by subscribe to `BasePanel.on('beforesave')` event.
+ Event handler accept 2 parameters `(me: BasePanel, request: UBQL)`. Developer can modify `request` inside handler.    
+  
+
 ## [4.2.33]
 ### Added
 
@@ -27,7 +39,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 	  cssClass: 'red'
 	}
 	```
-   For this to work, an `initModel.js` file (there must be one for your model) shall contain the following initializaiton code:
+   For this to work, an `initModel.js` file (there must be one for your model) shall contain the following initialization code:
  	```
  	UB.ux.UBBadge.setCssMap(
 	  'MY_ENTITY_STATUS',
