@@ -6,9 +6,9 @@ require('../view/cryptoUI/ReadPK')
 require('../view/cryptoUI/SelectCert')
 
 const UBCore = require('@unitybase/ub-pub')
-var RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
-var RE_ENGLISH = /[A-Za-z]/
-var RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
+const RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
+const RE_ENGLISH = /[A-Za-z]/
+const RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
 
 /**
  * UnityBase adminUI application.
@@ -471,8 +471,7 @@ Ext.define('UB.core.UBApp', {
       me.fireEvent('applicationReady')
       me.checkQueryString()
       me.hideLogo()
-    })
-    .catch(function (reason) {
+    }).catch(function (reason) {
       me.hideLogo()
       UB.logError('Got error from getAppInfo %o', reason)
       throw reason // global window.onerror handler show error to user
