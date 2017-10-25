@@ -5,7 +5,9 @@ require('../core/UBDataLoader.js')
 require('../view/cryptoUI/ReadPK')
 require('../view/cryptoUI/SelectCert')
 
-const UBCore = require('@unitybase/ub-pub')
+const _ = require('lodash')
+const UB = require('@unitybase/ub-pub')
+
 const RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
 const RE_ENGLISH = /[A-Za-z]/
 const RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
@@ -79,10 +81,8 @@ Ext.define('UB.core.UBApp', {
   core: null,
 
   constructor: function () {
-    var me = this
-
-    me.requireEncription = false
-    me.mixins.observable.constructor.call(me)
+    this.requireEncription = false
+    this.mixins.observable.constructor.call(this)
 
     /**
      * Connection for authorized and (optionally) encrypted communication with UnityBase server
@@ -90,7 +90,7 @@ Ext.define('UB.core.UBApp', {
      * @type {UBConnection}
      * @readonly
      */
-    me.connection = null
+    this.connection = null
 
     /**
      * Instance of ubNotifier WebSocket connection to server
@@ -98,19 +98,19 @@ Ext.define('UB.core.UBApp', {
      * @property  {UBNotifierWSProtocol} ubNotifier
      * @type {UBNotifierWSProtocol}
      */
-    me.ubNotifier = null
+    this.ubNotifier = null
 
     /**
      * Deprecated. Use $App.domainInfo or $App.connection.domain instead of this one.
      * @deprecated
      */
-    me.domain = null
+    this.domain = null
 
     /**
      * Instance of UBDomain. It will be defined on launch application and before emit event appInitialize.
      * @property {UBDomain} domainInfo
      */
-    me.domainInfo = null
+    this.domainInfo = null
     /**
      * UnityBase application instance short alias reference. Use it instead of UB.core.UBApp singleton
      * @property {UB.core.UBApp} $App
@@ -118,9 +118,9 @@ Ext.define('UB.core.UBApp', {
      * @member window
      * @global
      */
-    window.$App = me
+    window.$App = this
 
-    me.addEvents(
+    this.addEvents(
       /**
        * Fires then user change active desktop
        * @event desktopChanged
@@ -179,7 +179,7 @@ Ext.define('UB.core.UBApp', {
        */
       'buildMainMenu'
     )
-    return me
+    return this
   },
 
   /**
@@ -187,14 +187,13 @@ Ext.define('UB.core.UBApp', {
    * @param {Ext.field.Field} textField
    */
   passwordKeyUpHandler: function (textField) {
-    var s = textField.getValue() || ''
-    var t, n
+    let s = textField.getValue() || ''
     if (!s) {
       textField.removeCls('ub-pwd-keyboard-caps')
       textField.removeCls('ub-pwd-keyboard-en')
     } else {
-      n = s.length
-      t = s.substr(n - 1, 1)
+      let n = s.length
+      let t = s.substr(n - 1, 1)
       if (RE_LETTERS.test(t)) {
         if (RE_ENGLISH.test(t)) {
           textField.addClass('ub-pwd-keyboard-en')
@@ -219,7 +218,7 @@ Ext.define('UB.core.UBApp', {
       items: [{
         xtype: 'label',
         width: '100%',
-        text: UBCore.i18n('Your password is expired. Please change password')
+        text: UB.i18n('Your password is expired. Please change password')
       }, {
         xtype: 'textfield',
         inputType: 'password',
@@ -229,8 +228,8 @@ Ext.define('UB.core.UBApp', {
           }
         },
         enableKeyEvents: true,
-        emptyText: UBCore.i18n('EnterOldPassword'),
-        fieldLabel: UBCore.i18n('OldPassword'),
+        emptyText: UB.i18n('EnterOldPassword'),
+        fieldLabel: UB.i18n('OldPassword'),
         labelWidth: 100,
         name: 'oldPwd',
         margins: 10,
@@ -246,16 +245,16 @@ Ext.define('UB.core.UBApp', {
           }
         },
         enableKeyEvents: true,
-        emptyText: UBCore.i18n('EnterNewPassword'),
-        fieldLabel: UBCore.i18n('NewPassword'),
+        emptyText: UB.i18n('EnterNewPassword'),
+        fieldLabel: UB.i18n('NewPassword'),
         labelWidth: 100,
         name: 'newPwd',
         margins: 10,
         width: '100%',
         allowBlank: false,
         afterLabelTextTpl: [
-          '<b data-qtitle="', UBCore.i18n('HowToCreatePassword'),
-          '" data-qtip="', UBCore.i18n('passwordRecommendation'),
+          '<b data-qtitle="', UB.i18n('HowToCreatePassword'),
+          '" data-qtip="', UB.i18n('passwordRecommendation'),
           '" style="color: red;">?</b>'
         ]
       }, {
@@ -267,22 +266,22 @@ Ext.define('UB.core.UBApp', {
           }
         },
         enableKeyEvents: true,
-        emptyText: UBCore.i18n('RetypePassword'),
-        fieldLabel: UBCore.i18n('RetypePassword'),
+        emptyText: UB.i18n('RetypePassword'),
+        fieldLabel: UB.i18n('RetypePassword'),
         labelWidth: 100,
         name: 'newPwdRetyped',
         margins: 10,
         width: '100%',
         allowBlank: false,
         validator: function (value) {
-          var valid = this.up('panel').down('textfield[name=newPwd]').getValue() === value
+          let valid = this.up('panel').down('textfield[name=newPwd]').getValue() === value
           this.up('window').down('button[ubID=btnOK]')[valid ? 'enable' : 'disable']()
           return (valid)
         }
       }],
       buttons: [{
         ubID: 'btnOK',
-        text: UBCore.i18n('Change'),
+        text: UB.i18n('Change'),
         glyph: UB.core.UBUtil.glyphs.faSave,
         disabled: true
       }]
@@ -310,7 +309,7 @@ Ext.define('UB.core.UBApp', {
    */
   launch: function () {
     var me = this
-    return UBCore.connect({
+    return UB.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
       onCredentialRequired: UB.view.LoginWindow.DoLogon,
@@ -349,7 +348,7 @@ Ext.define('UB.core.UBApp', {
         // TODO - remove because mutation of other objects is bad idea
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
-        return UBCore.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
+        return UB.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
             const pkiForAuth = UB.appConfig.uiSettings.adminUI.encryptionImplementation || 'clientRequire/@ub-d/nm-dstu/injectEncription.js'
             const libraryName = pkiForAuth.split('/')[2]
@@ -358,7 +357,7 @@ Ext.define('UB.core.UBApp', {
               getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
             }
 
-            return UBCore.inject(pkiForAuth).then(() => {
+            return UB.inject(pkiForAuth).then(() => {
               window[ libraryName ].addEncryptionToConnection(connection, advParam)
             })
           } else {
@@ -397,7 +396,7 @@ Ext.define('UB.core.UBApp', {
           Ext.Loader.setPath(model.key, model.path)
         }
         if (model.needLocalize) {
-          localeScriptForLoad.push(UBCore.inject(model.path + '/locale/lang-' + myLocale + '.js'))
+          localeScriptForLoad.push(UB.inject(model.path + '/locale/lang-' + myLocale + '.js'))
         }
         if (model.needInit) {
           initScriptForLoad.push(model.clientRequirePath + '/initModel.js')
@@ -518,8 +517,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
-        title: UBCore.i18n(title),
-        msg: UBCore.i18n(msg),
+        title: UB.i18n(title),
+        msg: UB.i18n(msg),
         buttons: config.buttons || Ext.MessageBox.YESNOCANCEL,
         icon: icon,
         fn: function (buttonId) {
@@ -549,8 +548,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
-        title: UBCore.i18n(title),
-        msg: UBCore.i18n(msg),
+        title: UB.i18n(title),
+        msg: UB.i18n(msg),
         buttons: Ext.MessageBox.YESNO,
         icon: Ext.MessageBox.QUESTION,
         fn: function (buttonId) {
@@ -582,8 +581,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
         modal: true,
-        title: UBCore.i18n(title || 'info'),
-        msg: UBCore.i18n(msg),
+        title: UB.i18n(title || 'info'),
+        msg: UB.i18n(msg),
         icon: Ext.MessageBox.INFO,
         buttons: Ext.MessageBox.OK,
         fn: function (buttonId) {
@@ -601,19 +600,19 @@ Ext.define('UB.core.UBApp', {
    */
   notify: function (msg, title, slideInDuration) {
     Ext.create('widget.uxNotification', {
-      title: UBCore.i18n(title),
+      title: UB.i18n(title),
       position: 't',
       slideInDuration: slideInDuration || 800,
       useXAxis: true,
       autoShow: true,
       cls: 'ux-notification-light',
-            // iconCls: 'ux-notification-icon-error',
+      // iconCls: 'ux-notification-icon-error',
       bodyPadding: 5,
       items: [{
         xtype: 'component',
         autoEl: {
           tag: 'div',
-          html: UBCore.i18n(msg)
+          html: UB.i18n(msg)
         }
       }]
     })
@@ -633,8 +632,8 @@ Ext.define('UB.core.UBApp', {
     return new Promise(function (resolve) {
       Ext.MessageBox.show({
         modal: true,
-        title: UBCore.i18n(title || 'error'),
-        msg: UBCore.i18n(msg),
+        title: UB.i18n(title || 'error'),
+        msg: UB.i18n(msg),
         icon: Ext.MessageBox.ERROR,
         buttons: Ext.MessageBox.OK,
         fn: function () { resolve(true) }
@@ -696,7 +695,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function (settings) {
       $App.showModal({
         formCode: 'ubm_desktop-scanerSettings',
-        description: UBCore.i18n('nastroykiSkanera'),
+        description: UB.i18n('nastroykiSkanera'),
         isClosable: true,
         customParams: settings
       }).then(function (result) {
@@ -733,19 +732,19 @@ Ext.define('UB.core.UBApp', {
 
       function onNotify (progress) {
         if (progress && (progress.action === 'scan') && (progress.pageNum >= 0)) {
-          statusWindow.setStatus(UB.format(UBCore.i18n('doScanPages'), progress.pageNum + 1))
+          statusWindow.setStatus(UB.format(UB.i18n('doScanPages'), progress.pageNum + 1))
         } else if (progress && (progress.action === 'recognize') && (progress.pageNum >= 0)) {
-          statusWindow.setStatus(UB.format(UBCore.i18n('doRecognizePages'), progress.pageNum + 1))
+          statusWindow.setStatus(UB.format(UB.i18n('doRecognizePages'), progress.pageNum + 1))
         }
       }
 
       function onScan (pageCount) {
         if (pageCount > 0) {
-          statusWindow.setStatus(UB.format(UBCore.i18n('doScanPages'), pageCount))
+          statusWindow.setStatus(UB.format(UB.i18n('doScanPages'), pageCount))
           if (AllowAddPages) {
             return checkContinue()
           } else {
-            statusWindow.setStatus(UBCore.i18n('doFinishScan'))
+            statusWindow.setStatus(UB.i18n('doFinishScan'))
             return scanner.finishScan().then(null, null, onNotify)
           }
         } else {
@@ -754,16 +753,15 @@ Ext.define('UB.core.UBApp', {
       }
 
       function doContinue () {
-        statusWindow.setStatus(UBCore.i18n('doStartScan'))
+        statusWindow.setStatus(UB.i18n('doStartScan'))
         return scanner.continueScan().then(onScan, null, onNotify)
       }
 
       function askInsertPaper () {
-        return $App.dialog('scan', 'noPaperInScanner', {buttons: 9, icon: 'INFO' }).then(function (btn) {
+        return $App.dialog('scan', 'noPaperInScanner', {buttons: 9, icon: 'INFO'}).then(function (btn) {
           if (btn === 'ok') {
             return doContinue()
-          }
-          if (btn === 'cancel') {
+          } else if (btn === 'cancel') {
             throw new UB.UBAbortError()
           }
         })
@@ -775,7 +773,7 @@ Ext.define('UB.core.UBApp', {
             return doContinue()
           }
           if (btn === 'no') {
-            statusWindow.setStatus(UBCore.i18n('doFinishScan'))
+            statusWindow.setStatus(UB.i18n('doFinishScan'))
             return scanner.finishScan().then(null, null, onNotify)
           }
           if (btn === 'cancel') {
@@ -787,7 +785,7 @@ Ext.define('UB.core.UBApp', {
       return scanner.getDefaultSettings().then(function (defaultParams) {
         var scanSettings = _.merge(defaultParams, config || {})
         if (!scanSettings) {
-          throw new UB.UBError(UB.format(UBCore.i18n('setScannerSettings'), '$App.scannerSettings(); '))
+          throw new UB.UBError(UB.format(UB.i18n('setScannerSettings'), '$App.scannerSettings(); '))
         }
 
         if (scanSettings.CurrentScanType !== 'UnityBase' && scanSettings.FRScan && scanSettings.FRScan.LastUsedScanner) {
@@ -813,7 +811,7 @@ Ext.define('UB.core.UBApp', {
           }
         }
 
-        statusWindow.setStatus(UBCore.i18n('doStartScan'))
+        statusWindow.setStatus(UB.i18n('doStartScan'))
         me.__scanService.lastScanedFormat = scanSettings.UBScan.OutputFormat
         return scanner.startScan(scanSettings)
       })
@@ -877,7 +875,7 @@ Ext.define('UB.core.UBApp', {
   runLink: function (link) {
     var query = Ext.isString(link) ? Ext.Object.fromQueryString(link.toLowerCase()) : link
 
-    if (query && (query.command && query.command.length || query.cmdData)) {
+    if (query && ((query.command && query.command.length) || query.cmdData)) {
       this.doCommand({
         commandCode: query.command,
         cmdData: query.cmdData,
@@ -1027,8 +1025,7 @@ Ext.define('UB.core.UBApp', {
    */
   logout: function () {
     let p = this.connection ? this.connection.logout() : Promise.resolve(true)
-    p.catch(e => true)
-    .then(function () {
+    p.catch(e => true).then(function () {
       // MPV TODO Secure browser
       // if (UB.isSecureBrowser) {
       //     var remote = require('electron').remote;
@@ -1055,7 +1052,6 @@ Ext.define('UB.core.UBApp', {
   },
 
   hideLogo: function () {
-    var domEl = document.getElementById('UBLogo')
-    domEl.style.display = 'none'
+    document.getElementById('UBLogo').style.display = 'none'
   }
 })
