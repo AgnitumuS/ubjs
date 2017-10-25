@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.35]
+### Added
+ - `BasePanel.on('manualsaving')` events added.
+ Fires just after **USER** manually call `save` action (press save button or Ctrl+S shortcut)
+ but **before** data passed to a server for update/insert.
+
 ## [4.2.34]
 ### Added
  - Developer can intercept data, returned from server as a result to select method, executed by BasePanel.

@@ -346,6 +346,13 @@ Ext.define('UB.view.BasePanel', {
      * @param {Ext.data.Model} rec Loaded record
      */
     /**
+     * @event manualsaving
+     * Fires just **after** USER call `save` action (press save button or Ctrl+S shortcut)
+     * but **before** data passed to a server for update/insert
+     * @param {UB.view.BasePanel} sender BasePanel where save was happened
+     * @param {Object} request  Update/insert ubql (can be modified)
+     */
+    /**
      * @event beforesave
      * Fires just before data passed to a server for update/insert
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
@@ -402,7 +409,7 @@ Ext.define('UB.view.BasePanel', {
      * @param {Ext.data.Model} record
      * Fired when data is bound.
      */
-    me.addEvents('recordloaded', 'beforesave', 'aftersave', 'afterdelete', 'formDataReady',
+    me.addEvents('recordloaded', 'beforesave', 'manualsaving', 'aftersave', 'afterdelete', 'formDataReady',
       'beforeSaveForm', 'beforeDelete', 'beforeClose', 'updateFields',
       'controlChanged', 'initComponentDone', 'dataBind')
 
@@ -2720,6 +2727,8 @@ Ext.define('UB.view.BasePanel', {
       this.bindHotKeys()
     }, me)
     me.on(events.save, function () {
+      // fire event for manually saving form
+      me.fireEvent('manualsaving', me)
       me.onSave.apply(me, arguments)
     }, me)
     me.on(events.refresh, me.onRefresh, me)
