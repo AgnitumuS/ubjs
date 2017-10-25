@@ -148,6 +148,12 @@
 					"moduleName": "@ub-d/nm-dstu"
 				},
 				{
+					"name": "onlyoffice",
+					"publicPath": "./node_modules/@unitybase/onlyoffice/public",
+					"path": "./node_modules/@unitybase/onlyoffice",
+					"moduleName": "@unitybase/onlyoffice"
+				},
+				{
 					"name": "TST",
 					"path": ".\\models\\TST"
 				}
