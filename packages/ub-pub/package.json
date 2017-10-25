@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "4.4.13",
+  "version": "4.4.14",
   "description": "UnityBase data layer for Browser & nodeJS client",
   "main": "./index.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub-pub",
