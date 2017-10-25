@@ -20,10 +20,10 @@ function i18n (localeString) {
   let res = __i18n[localeString]
   if (res !== undefined || localeString == null) return res
 
-  const $App = global['$App']
-
   // $App is accessible only inside adminUI
-  if (!$App || $App.domainInfo == null) {
+  if (typeof $App === 'undefined') return localeString
+
+  if ($App.domainInfo == null) {
     // Domain is not loaded yet, cannot resolve string to entity or entity attribute's name
     return localeString
   }
