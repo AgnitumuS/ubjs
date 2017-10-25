@@ -627,7 +627,8 @@
                   "SQLite3",
                   "PostgreSQL",
                   "PostgreSQLODBC",
-                  "Firebird"
+                  "Firebird",
+                  "MySQL"
                 ],
                 "description": "Database driver used for connection"
               },
@@ -639,7 +640,10 @@
                   "Oracle11",
                   "MSSQL2008",
                   "MSSQL2012",
-                  "SQLite3"
+                  "SQLite3",
+                  "PostgreSQL",
+                  "Firebird",
+                  "MySQL"
                 ],
                 "description": "Database dialect. We need it to properly optimize ORM for new database features",
                 "default": "AnsiSQL"

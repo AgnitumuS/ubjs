@@ -166,7 +166,7 @@ function UBNotifierWSProtocol (connection) {
     }
   }
 
-  function _onUBConnectionAuthorized (ubConnection, session, authParams) {
+  function _onUBConnectionAuthorized (ubConnection, session) {
     isConnectionAccepted = false
     if (connection.supportedWSProtocols.indexOf(WS_PROTOCOL) !== -1) {
       _createWSConnection(session)

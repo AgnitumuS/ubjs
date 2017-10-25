@@ -4,7 +4,7 @@
   "connectionName": "",
   "sqlAlias": "uorgacc",
   "cacheType": "Entity",
-  "descriptionAttribute": "",
+  "descriptionAttribute": "description",
   "attributes": [
     {
       "name": "organizationID",
@@ -37,6 +37,14 @@
       "caption": "КодСчета",
       "description": "Код счета (Номер счета)",
       "allowNull": false
+    },
+    {
+      "name": "description",
+      "dataType": "String",
+      "size": 64,
+      "caption": "Название",
+      "description": "Название (для выбора из списка)",
+      "allowNull": true
     },
     {
       "name": "acctype",

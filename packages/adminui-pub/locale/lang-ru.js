@@ -29,6 +29,7 @@ UB.i18nExtend({
   en: 'Английский',
   ru: 'Русский',
   az: 'Азербайджанский',
+  tg: 'Таджикский',
   id: 'Индонезийский',
   neizvestnajaOshibkaServera: 'Неизвестная ошибка сервера',
   nevozmozhnoDecodirovat: 'Невозможно декодировать',

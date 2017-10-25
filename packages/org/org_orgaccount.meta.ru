@@ -18,6 +18,10 @@
             "caption": "Код счета",
             "description": "Код счета (номер счета)"
         },
+        "description": {
+            "caption": "Описание",
+            "description": "Описание"
+        },
         "acctype": {
             "caption": "Тип счета",
             "description": "Тип счета"

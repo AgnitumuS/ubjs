@@ -16,11 +16,11 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
   let conn = session.connection
   let checkDB = conn.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: DBA_FAKE}, data: `select DB_ID (N'${databaseConfig.databaseName}') as DBID`})
   if (checkDB[0]['DBID']) {
-        // conn.xhr({
-        //    endpoint: 'runSQL',
-        //    URLParams: {CONNECTION: DBA_FAKE},
-        //    data: UB.format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", databaseConfig.databaseName)
-        // });
+    // conn.xhr({
+    //    endpoint: 'runSQL',
+    //    URLParams: {CONNECTION: DBA_FAKE},
+    //    data: UB.format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", databaseConfig.databaseName)
+    // });
     conn.xhr({
       endpoint: 'runSQL',
       URLParams: {CONNECTION: DBA_FAKE},

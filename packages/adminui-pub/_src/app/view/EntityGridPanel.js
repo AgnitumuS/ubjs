@@ -6,9 +6,11 @@ require('../../ux/exporter/Exporter')
 require('./GridSummary')
 require('./ColumnFavorites')
 require('./ColumnCategories')
-require('../view/Table')
-require('../view/InputDateWindow')
+require('./Table')
+require('./InputDateWindow')
 require('../core/UBPanelMixin')
+
+const _ = require('lodash')
 
 /* global saveAs */
 /**
@@ -187,9 +189,8 @@ Ext.define('UB.view.EntityGridPanel', {
      * @returns {Number}
      */
     getGridCharWidth: function () {
-      var me = this
-      if (!me.gridCharWidth) {
-        var eDiv = document.createElement('div')
+      if (!this.gridCharWidth) {
+        let eDiv = document.createElement('div')
         eDiv.style.width = 'auto'
         eDiv.style.height = 'auto'
         eDiv.style.border = 0
@@ -202,19 +203,18 @@ Ext.define('UB.view.EntityGridPanel', {
         eDiv.style.whiteSpace = 'nowrap'
         eDiv.style.visibility = 'hidden'
         document.body.appendChild(eDiv)
-        me.gridCharWidth = eDiv.clientWidth / 10
+        this.gridCharWidth = eDiv.clientWidth / 10
         document.body.removeChild(eDiv)
       }
-      return me.gridCharWidth
+      return this.gridCharWidth
     },
     /**
      * Calc one char width for header cell
      * @returns {number}
      */
     getGridHeaderCharWidth: function () {
-      var eDiv
       if (!this.gridHeaderCharWidth) {
-        eDiv = document.createElement('div')
+        let eDiv = document.createElement('div')
         eDiv.style.width = 'auto'
         eDiv.style.height = 'auto'
         eDiv.style.border = 0
@@ -240,14 +240,13 @@ Ext.define('UB.view.EntityGridPanel', {
      * @return {Object[]}
      */
     getEntityColumns: function (entityName, fieldList, stores) {
-      var columns = []
-      var entity = $App.domainInfo.get(entityName)
-      var col, metaColumn
+      let columns = []
+      let entity = $App.domainInfo.get(entityName)
 
       fieldList = fieldList || UB.Utils.convertFieldListToExtended(entity.filterAttribute({defaultView: true}))
       // UIGridColumnClass
-      for (var i = 0, len = fieldList.length; i < len; ++i) {
-        metaColumn = entity.getEntityAttributeInfo(fieldList[i].name, -1)
+      for (let i = 0, len = fieldList.length; i < len; ++i) {
+        let metaColumn = entity.getEntityAttributeInfo(fieldList[i].name, -1)
         if (metaColumn.attribute && metaColumn.attribute.customSettings && metaColumn.attribute.customSettings.UIGridColumnClass) { // === 'Favorites'
           columns.push({
             xtype: 'column' + metaColumn.attribute.customSettings.UIGridColumnClass.toLowerCase(), // columnfavorites
@@ -255,12 +254,12 @@ Ext.define('UB.view.EntityGridPanel', {
             menuText: UB.i18n(metaColumn.attribute.customSettings.UIGridColumnClass.toLowerCase()),
             dataIndex: fieldList[i].name,
             stateId: metaColumn.attribute.customSettings.UIGridColumnClass.toLowerCase() + fieldList[i].name,
-                        // stateful: true,
+            // stateful: true,
             fieldName: fieldList[i].name
           })
           continue
         }
-        col = UB.view.EntityGridPanel.getEntityColumn(entityName, fieldList[i], stores)
+        let col = UB.view.EntityGridPanel.getEntityColumn(entityName, fieldList[i], stores)
         if (col) {
           /* TODO GRID EDITOR col.editor = {
            xtype: 'textfield',
@@ -300,36 +299,26 @@ Ext.define('UB.view.EntityGridPanel', {
      * @return {Object}
      */
     getEntityColumn: function (entityName, field, stores) {
-      var domain = $App.domainInfo
-      var fieldName = field.name
-      var formatC = field.format && !_.isFunction(field.format) ? field.format : null
-      var ubDataTypes = domain.ubDataTypes
-      var domainEntity = domain.get(entityName)
-      var columnCaption = ''
-      var column, fieldNameParts,
-          associatedEntityDisplayField, associatedEntityStore, enumDict,
-          entityNameInn, entityInn, attr, metaAttribute
+      let domain = $App.domainInfo
+      let fieldName = field.name
+      let formatC = field.format && !_.isFunction(field.format) ? field.format : null
+      let domainEntity = domain.get(entityName)
 
-      metaAttribute = domainEntity.getEntityAttributeInfo(fieldName)
+      let metaAttribute = domainEntity.getEntityAttributeInfo(fieldName)
       if (!domainEntity || !metaAttribute || !metaAttribute.attribute) {
         return null
       }
       metaAttribute = metaAttribute.attribute
 
-      column = { stateId: fieldName, fieldName: fieldName }
-
-      fieldNameParts = fieldName.split('.')
+      let fieldNameParts = fieldName.split('.')
       // create column caption
-      entityNameInn = entityName
+      let entityNameInn = entityName
+      let columnCaption = ''
       _.forEach(fieldNameParts, function (partName, idx) {
-        entityInn = domain.get(entityNameInn)
-        if (!entityInn) {
-          return
-        }
-        attr = entityInn.attributes[partName]
-        if (!attr) {
-          return
-        }
+        let entityInn = domain.get(entityNameInn)
+        if (!entityInn) return
+        let attr = entityInn.attributes[partName]
+        if (!attr) return
         entityNameInn = attr.associatedEntity
         columnCaption += (columnCaption ? '.' : '') + attr.caption
       })
@@ -338,6 +327,7 @@ Ext.define('UB.view.EntityGridPanel', {
         return null
       }
 
+      let column = {stateId: fieldName, fieldName: fieldName}
       column.dataIndex = fieldName
       column.header = field.description || columnCaption
       column.sortable = field.hasOwnProperty('sortable')
@@ -347,21 +337,20 @@ Ext.define('UB.view.EntityGridPanel', {
       column.simpleFilter = field.simpleFilter
       column.filterCaption = field.filterCaption
 
+      let ubDataTypes = domain.ubDataTypes
       switch (metaAttribute.dataType) {
         case ubDataTypes.Enum:
-          enumDict = UB.core.UBEnumManager.getDictionary(metaAttribute.enumGroup, 'name')
-
+          let enumDict = UB.core.UBEnumManager.getDictionary(metaAttribute.enumGroup, 'name')
           column.renderer = function (value) {
             return enumDict[value]
           }
-
           break
         case ubDataTypes.Entity:
-          associatedEntityDisplayField = domain.get(metaAttribute.associatedEntity).descriptionAttribute || 'caption'
-          associatedEntityStore = stores[UB.core.UBUtil.getNameMd5(metaAttribute.associatedEntity, [ 'ID', associatedEntityDisplayField ])]
+          let associatedEntityDisplayField = domain.get(metaAttribute.associatedEntity).descriptionAttribute || 'caption'
+          let associatedEntityStore = stores[UB.core.UBUtil.getNameMd5(metaAttribute.associatedEntity, [ 'ID', associatedEntityDisplayField ])]
 
           column.renderer = function (value /*, metaData, record, rowIndex, colIndex, store, view */) {
-            var item = associatedEntityStore.getById(value)
+            let item = associatedEntityStore.getById(value)
             return item ? item.get(associatedEntityDisplayField) : ''
           }
           break
@@ -394,7 +383,7 @@ Ext.define('UB.view.EntityGridPanel', {
         case ubDataTypes.Text:
           column.renderer = function (value, metadata) {
             // we must check metadata - Ext.ux.exporter.Formatter descendant call render w/o metadata
-            var val = Ext.String.htmlEncode(value)
+            let val = Ext.String.htmlEncode(value)
             if (metadata && Ext.isString(value) && (value.length > 15)) {
               metadata.tdAttr = 'data-qtip="' + Ext.String.htmlEncode(val) + '"'
             }
@@ -422,24 +411,21 @@ Ext.define('UB.view.EntityGridPanel', {
      * @return {Object}  {store1_md5: {UB.ux.data.UBStore}, store2_md5: ...}
      */
     loadRunListParamsRequirementsStores: function (params) {
-      var stores = {}
-      var requirements, fieldList, descriptionAttr,
-        storeMd5, j, len, store, cachType, entity
+      let stores = {}
 
-      requirements = $App.domainInfo.get(params.entity).getEntityRequirements(
+      let requirements = $App.domainInfo.get(params.entity).getEntityRequirements(
         UB.core.UBUtil.convertFieldListToNameList(params.fieldList, true)
       )
-      for (j = 0, len = requirements.length; j < len; ++j) {
-        entity = $App.domainInfo.get(requirements[j])
-        cachType = entity.cacheType
-        descriptionAttr = entity.descriptionAttribute
-        fieldList = ['ID']
+      for (let j = 0, len = requirements.length; j < len; ++j) {
+        let entity = $App.domainInfo.get(requirements[j])
+        let descriptionAttr = entity.descriptionAttribute
+        let fieldList = ['ID']
         if (descriptionAttr !== 'ID') {
           fieldList.push(descriptionAttr)
         }
-        storeMd5 = UB.core.UBUtil.getNameMd5(requirements[j], fieldList)
+        let storeMd5 = UB.core.UBUtil.getNameMd5(requirements[j], fieldList)
         if (!stores[storeMd5]) {
-          stores[storeMd5] = store = Ext.create('UB.ux.data.UBStore', {
+          let store = Ext.create('UB.ux.data.UBStore', {
             ubRequest: {
               entity: requirements[j],
               method: 'select',
@@ -455,9 +441,10 @@ Ext.define('UB.view.EntityGridPanel', {
           store.on('load', function (st, records, success) {
             if (success && records && records.length > 1000) {
               console.error('Too large look up field for entity "' +
-                                    st.lookUpField + '". Look up entity ' + st.ubRequest.entity + ' Record count =' + records.length)
+                st.lookUpField + '". Look up entity ' + st.ubRequest.entity + ' Record count =' + records.length)
             }
           }, store, { single: true })
+          stores[storeMd5] = store
         }
       }
       return stores
@@ -558,9 +545,8 @@ Ext.define('UB.view.EntityGridPanel', {
    */
 
   applyState: function () {
-    var me = this
-    me.callParent(arguments)
-    me.stateLoadedFromStore = true
+    this.callParent(arguments)
+    this.stateLoadedFromStore = true
   },
 
   onOptimizeWidth: function () {
@@ -572,10 +558,15 @@ Ext.define('UB.view.EntityGridPanel', {
    * @param {Boolean} [force=false] If false column width already loaded from local store -  do nothing.
    */
   optimizeColumnWidth: function (force) {
-    let me = this, fields = {}, columnParam,
-      columnNew = {}, fullSize = 0, delta = 0, allDelta = 0,
-      charWidth, headerCharWidth, maxChars, columnLeft, minSize = 0,
-      columnParams = UB.view.EntityGridPanel.columnParams
+    let me = this
+    let fields = {}
+    let fullSize = 0
+    let delta = 0
+    let allDelta = 0
+    let columnNew = {}
+    let minSize = 0
+    let charWidth, columnParam, headerCharWidth, maxChars, columnLeft
+    let columnParams = UB.view.EntityGridPanel.columnParams
 
     let boxWidth = me.getEl().getWidth()
     if (me.stateLoadedFromStore && !force) {
@@ -588,13 +579,11 @@ Ext.define('UB.view.EntityGridPanel', {
     let entity = $App.domainInfo.get(me.entityName)
     _.forEach(me.columns, function (column) {
       columnParam = {}
-      if (!column.dataIndex) {
-        return
-      }
-      var attr = entity.attr(column.dataIndex)
-      if (!attr && !fields[column.dataIndex]) {
-        return
-      }
+      if (!column.dataIndex) return
+
+      let attr = entity.attr(column.dataIndex)
+      if (!attr && !fields[column.dataIndex]) return
+
       if (attr) {
         columnParam.type = attr.dataType
         columnParam.size = attr.size
@@ -627,7 +616,7 @@ Ext.define('UB.view.EntityGridPanel', {
       columnNew[column.dataIndex] = columnParam
     })
     function getAllWidth () {
-      var result = 0
+      let result = 0
       _.forEach(columnNew, function (col) {
         result += col.size || col.minSize
       })
@@ -705,9 +694,9 @@ Ext.define('UB.view.EntityGridPanel', {
    * @private
    */
   createStoreByConfig: function () {
-    var me = this,
-      linkedItemsLoadList,
-      cfg = Ext.clone(me.entityConfig)
+    let me = this
+    let cfg = Ext.clone(me.entityConfig)
+    let linkedItemsLoadList
 
     me.stores = linkedItemsLoadList = UB.view.EntityGridPanel.loadRunListParamsRequirementsStores(cfg)
 
@@ -741,7 +730,7 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   createAutoFilter: function () {
-    var me = this
+    let me = this
     me.autoFilterActive = true
     me.disableAutoShow = true
     me.preFilterForm = UB.ux.UBPreFilter.makeFilters({
@@ -750,8 +739,6 @@ Ext.define('UB.view.EntityGridPanel', {
       filters: me.baseFilters,
       onFilterReady: function (newFilters, filterFormId) {
         me.preFilterForm = null
-        var win = me.up('window')
-
         if (newFilters && newFilters.length > 0) {
           me.store.addFilter(newFilters, false)
         }
@@ -762,9 +749,8 @@ Ext.define('UB.view.EntityGridPanel', {
         if (me.rendered || me.store.isLoading()) {
           me.store.load()
         }
-        if (win) {
-          win.show()
-        }
+        let win = me.up('window')
+        if (win) win.show()
       },
       onCancel: function () {
         me.preFilterForm = null
@@ -775,16 +761,13 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   createSystemConditions: function () {
-    var me = this
-    if (!me.entityConfig || !me.entityConfig.fieldList) {
-      return
-    }
+    let me = this
+    if (!me.entityConfig || !me.entityConfig.fieldList) return
+
     _.forEach(me.entityConfig.fieldList, function (attributeName) {
-      var attrName = typeof (attributeName) === 'object' ? attributeName.name : attributeName,
-        metaColumn,
-        cls
-      metaColumn = $App.domainInfo.get(me.entityConfig.entity).getEntityAttributeInfo(attrName, -1)
-      cls = metaColumn.attribute && metaColumn.attribute.customSettings && metaColumn.attribute.customSettings.UIGridColumnClass
+      let attrName = typeof (attributeName) === 'object' ? attributeName.name : attributeName
+      let metaColumn = $App.domainInfo.get(me.entityConfig.entity).getEntityAttributeInfo(attrName, -1)
+      let cls = metaColumn.attribute && metaColumn.attribute.customSettings && metaColumn.attribute.customSettings.UIGridColumnClass
         ? metaColumn.attribute.customSettings.UIGridColumnClass
         : null
 
@@ -795,31 +778,28 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onLoadStore: function (store, records, success) {
-    var me = this
-
     if (!success || records.length === 0) {
-      me.disableAction('edit')
-      me.disableAction('del')
-      me.disableAction('showPreview')
-      me.disableAction('lock')
-      me.disableAction('unLock')
-      me.disableAction('itemLink')
+      this.disableAction('edit')
+      this.disableAction('del')
+      this.disableAction('showPreview')
+      this.disableAction('lock')
+      this.disableAction('unLock')
+      this.disableAction('itemLink')
     } else {
-      me.enableAction('edit')
-      me.enableAction('del')
-      me.enableAction('showPreview')
-      me.enableAction('lock')
-      me.enableAction('unLock')
-      me.enableAction('itemLink')
+      this.enableAction('edit')
+      this.enableAction('del')
+      this.enableAction('showPreview')
+      this.enableAction('lock')
+      this.enableAction('unLock')
+      this.enableAction('itemLink')
     }
   },
 
   createPopupMenu: function () {
-    var me = this,
-      popupMenuItems,
-      actions = UB.view.EntityGridPanel.actionId
+    let me = this
+    let actions = UB.view.EntityGridPanel.actionId
 
-    popupMenuItems = [
+    let popupMenuItems = [
       me.actions[actions.edit],
       me.actions[actions.addNewByCurrent],
       me.actions[actions.del]
@@ -856,8 +836,7 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   initComponent: function () {
-    var me = this
-    var colCfg
+    let me = this
 
     if (!me.extendedFieldList && me.entityConfig) {
       me.extendedFieldList = UB.core.UBUtil.convertFieldListToExtended(me.entityConfig.fieldList)
@@ -901,7 +880,7 @@ Ext.define('UB.view.EntityGridPanel', {
      * then extended config merged with default column configuration otherwise it is added to column list.
      */
     if (me.extendedColumns) {
-      colCfg = {}
+      let colCfg = {}
       _.forEach(me.columns, function (col) {
         if (col.dataIndex) {
           colCfg[col.dataIndex] = col
@@ -923,7 +902,7 @@ Ext.define('UB.view.EntityGridPanel', {
         blockRefresh: false,
         listeners: {
           itemcontextmenu: { fn: me.onItemContextMenu, scope: me },
-          refresh: { fn: me.onViewRefreshed, scope: me}
+          refresh: {fn: me.onViewRefreshed, scope: me}
         },
         getRowClass: me.getRowClass
       }
@@ -933,11 +912,10 @@ Ext.define('UB.view.EntityGridPanel', {
           autoCancel: false
       })], */
       // plugins: []
-     /* plugins: [{
-          rowHeight: 28,
-          variableRowHeight: true,
-          ptype: 'bufferedrenderer'
-      */
+      // plugins: [{
+      //     rowHeight: 28,
+      //     variableRowHeight: true,
+      //     ptype: 'bufferedrenderer'
       /*  Grouping works incorrect now
       features: [{
           id: 'group',
@@ -985,7 +963,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.target.ownerCt.mainEntityGridPanel.on('parentchange', me.onParentChange, me)
       me.mainEntityGridPanel = me.target.ownerCt.mainEntityGridPanel
       me.on('close', function () {
-        var tabPanel = me.up('tabpanel')
+        let tabPanel = me.up('tabpanel')
 
         if (tabPanel && tabPanel.items.getCount() === 1) {
           tabPanel.relatedSplitter.hide()
@@ -1018,7 +996,7 @@ Ext.define('UB.view.EntityGridPanel', {
     me.on({
       selectionchange: me.onSelectionChange,
       viewready: me.onViewReady,
-      boxready: function (ctrl, width, height) {
+      boxready: function () {
         me.optimizeColumnWidth()
         /**
          * @cfg {Boolean} disableAutoSelectRow If value is true grid does not automatically select first row
@@ -1032,15 +1010,15 @@ Ext.define('UB.view.EntityGridPanel', {
         if (!me.store.isLoading() && !me.autoFilterActive) {
           me.store.load()
         }
-        var win = me.getFormWin()
+        let win = me.getFormWin()
         if (win) {
           me.mon(win, 'close', me.onPanelClose, me)
         }
       },
-      deselect: function (grid, record, index, eOpts) {
+      deselect: function (grid, record, index) {
         me.getView().removeRowCls(index, 'ub-grid-row-selected')
       },
-      select: function (grid, record, index, eOpts) {
+      select: function (grid, record, index) {
         me.getView().addRowCls(index, 'ub-grid-row-selected')
       },
       scope: me
@@ -1122,9 +1100,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   initPagingToolbar: function () {
-    var me = this
-    var el = me.getEl()
-    var size = el.getSize()
+    let me = this
+    let el = me.getEl()
+    let size = el.getSize()
 
     me.floatToolbarEl = Ext.DomHelper.append(el, {
       tag: 'div',
@@ -1148,7 +1126,7 @@ Ext.define('UB.view.EntityGridPanel', {
        *
        */
       autoCalcTotal: me.autoCalcTotal,
-      store: me.store   // same store GridPanel is using
+      store: me.store // same store GridPanel is using
     })
 
     me.on('activate', function () {
@@ -1183,8 +1161,7 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onPanelClose: function () {
-    var
-            me = this
+    let me = this
     if (me.onClose && typeof me.onClose === 'function') {
       if (me.isDeleted) {
         me.onClose(null, me.store)
@@ -1196,37 +1173,29 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   realignFloatPanel: function () {
-    var me = this
-    var gridview = me.down(me.viewType)
-    var pos
-    var posMe
-    var size
-
-    if (!me.floatToolbarEl) {
+    if (!this.floatToolbarEl) {
       return
     }
-    size = me.floatToolbarEl.getSize()
-    pos = gridview.getXY()
-    posMe = me.getXY()
+    let size = this.floatToolbarEl.getSize()
+    let gridView = this.down(this.viewType)
+    let pos = gridView.getXY()
+    let posMe = this.getXY()
 
-    me.floatToolbarEl.dom.style.left = (gridview.el.dom.clientWidth + (pos[0] - posMe[0]) - size.width) + 'px'
-    me.floatToolbarEl.dom.style.top = (gridview.el.dom.clientHeight + (pos[1] - posMe[1]) - size.height) + 'px'
+    this.floatToolbarEl.dom.style.left = (gridView.el.dom.clientWidth + (pos[0] - posMe[0]) - size.width) + 'px'
+    this.floatToolbarEl.dom.style.top = (gridView.el.dom.clientHeight + (pos[1] - posMe[1]) - size.height) + 'px'
   },
 
   /**
    * Show or hide bBar
    */
   updateVisibleBBar: function () {
-    var me = this
-    var barVisibled, canHide
-
-    barVisibled = me.bBar.isVisible()
-    canHide = (me.filterBar.items.length === 0 || !me.filterBar.items.getAt(0).mustBeVisibled)
-    if (canHide && barVisibled) {
-      me.bBar.setVisible(false)
+    let barVisible = this.bBar.isVisible()
+    let canHide = (this.filterBar.items.length === 0 || !this.filterBar.items.getAt(0).mustBeVisibled)
+    if (canHide && barVisible) {
+      this.bBar.setVisible(false)
     } else {
-      if (!barVisibled && !canHide) {
-        me.bBar.setVisible(true)
+      if (!barVisible && !canHide) {
+        this.bBar.setVisible(true)
       }
     }
   },
@@ -1235,15 +1204,16 @@ Ext.define('UB.view.EntityGridPanel', {
    * @param view
    */
   onViewRefreshed: function (view) {
-    var
-      store = this.getStore(),
-      parentView,
-      focusOnUpdate = (this.focusOnUpdate === null || this.focusOnUpdate === undefined) ? true : this.focusOnUpdate
+    let store = this.getStore()
+    let focusOnUpdate = (this.focusOnUpdate === null || this.focusOnUpdate === undefined)
+      ? true
+      : this.focusOnUpdate
+
     if (focusOnUpdate && store.getCount() > 0 && !this.disableAutoSelectRow) {
       view.focusRow(store.getAt(0))
     }
     if (this.mainEntityGridPanel) {
-      parentView = this.mainEntityGridPanel.getView()
+      let parentView = this.mainEntityGridPanel.getView()
       if (parentView) {
         parentView.focus()
       }
@@ -1251,10 +1221,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   clearBBar: function () {
-    var me = this, i, item
-    for (i = me.bBar.items.getCount() - 1; i >= 0; i--) {
-      item = me.bBar.items.getAt(i)
-      me.bBar.remove(item, !item.isPagingBar)
+    for (let i = this.bBar.items.getCount() - 1; i >= 0; i--) {
+      let item = this.bBar.items.getAt(i)
+      this.bBar.remove(item, !item.isPagingBar)
     }
   },
 
@@ -1262,15 +1231,15 @@ Ext.define('UB.view.EntityGridPanel', {
    * @return {String[]}
    */
   getVisibleColumns: function () {
-    var me = this
+    let me = this
     return this.extendedFieldList.filter(function (field) {
       return (field.name !== me.detailAttribute && field.visibility !== false)
     })
   },
 
   initState: function () {
-    var id = this.stateful && this.getStateId()
-    var state
+    let id = this.stateful && this.getStateId()
+    let state
 
     if (id && (state = Ext.state.Manager.get(id))) {
       delete state.sort
@@ -1285,19 +1254,16 @@ Ext.define('UB.view.EntityGridPanel', {
    * @private
    */
   createComboBoxAttributesStore: function () {
-    var
-      comboProperties = UB.view.EntityGridPanel.comboBoxAttributesStoreField,
-      idProperty = comboProperties.idProperty,
-      header = comboProperties.header,
-      dataIndex = comboProperties.dataIndex,
-      data = [],
-      column,
-      rec
+    let comboProperties = UB.view.EntityGridPanel.comboBoxAttributesStoreField
+    let idProperty = comboProperties.idProperty
+    let header = comboProperties.header
+    let dataIndex = comboProperties.dataIndex
+    let data = []
 
-    for (var i = 0, len = this.columns.length; i < len; ++i) {
-      column = this.columns[i]
+    for (let i = 0, len = this.columns.length; i < len; ++i) {
+      let column = this.columns[i]
+      let rec = {}
 
-      rec = {}
       rec[idProperty] = column[dataIndex]
       rec[header] = column[header]
       data.push(rec)
@@ -1312,11 +1278,11 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   addBaseActions: function () {
-    var me = this
-    var actions = UB.view.EntityGridPanel.actionId
-    var events = UB.view.EntityGridPanel.eventId
-    var hotKeys = UB.view.EntityGridPanel.hotKeys
-    var methodNames = UB.core.UBCommand.methodName
+    let me = this
+    let actions = UB.view.EntityGridPanel.actionId
+    let events = UB.view.EntityGridPanel.eventId
+    let hotKeys = UB.view.EntityGridPanel.hotKeys
+    let methodNames = UB.core.UBCommand.methodName
 
     me.actions[actions.addNew] = new Ext.Action({
       actionId: actions.addNew,
@@ -1370,7 +1336,7 @@ Ext.define('UB.view.EntityGridPanel', {
     })
     me.actions[actions.showPreview] = new Ext.Action({
       actionId: actions.showPreview,
-            // iconCls: 'iconView',
+      // iconCls: 'iconView',
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faEye,
 
@@ -1413,12 +1379,6 @@ Ext.define('UB.view.EntityGridPanel', {
     }
 
     if (me.hasHardSecurityMixin) {
-      var aclEntityName = me.entityName + '_acl'
-      var entityM = $App.domainInfo.get(me.entityName)
-      if (entityM.mixins && entityM.mixins.aclRls && entityM.mixins.aclRls.useUnityName) {
-        aclEntityName = entityM.mixins.unity.entity + '_acl'
-      }
-
       me.actions[actions.accessRight] = new Ext.Action({
         actionId: actions.accessRight,
         // iconCls: 'iconNewVersion',
@@ -1529,30 +1489,29 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   addBaseDockedItems: function () {
-    var
-      me = this,
-      actions = UB.view.EntityGridPanel.actionId,
-      hasCustomAction = Ext.isArray(me.customActions) && me.customActions.length,
-      hideToolbar = Ext.isArray(me.toolbarActionList) && me.toolbarActionList.length === 0 && !hasCustomAction,
-      hideMenuAllActions = me.hideMenuAllActions,
-      // get items from menuAllActionsActionList property. If it is not defined - get from standard config
-      menuAllActionsItems = me.menuAllActionsActionList || [
-        actions.itemSelect,
-        actions.refresh,
-        actions.edit,
-        actions.addNew,
-        actions.addNewByCurrent,
-        actions.del,
-        actions.showPreview,
-        actions.prefilter,
-        '-',
-        me.createMenuItemLink()
-      ], i, len, arr,
-      menuAllActions = []
+    let me = this
+    let actions = UB.view.EntityGridPanel.actionId
+    let hasCustomAction = Ext.isArray(me.customActions) && me.customActions.length
+    let hideToolbar = Ext.isArray(me.toolbarActionList) && me.toolbarActionList.length === 0 && !hasCustomAction
+    let hideMenuAllActions = me.hideMenuAllActions
+    // get items from menuAllActionsActionList property. If it is not defined - get from standard config
+    let menuAllActionsItems = me.menuAllActionsActionList || [
+      actions.itemSelect,
+      actions.refresh,
+      actions.edit,
+      actions.addNew,
+      actions.addNewByCurrent,
+      actions.del,
+      actions.showPreview,
+      actions.prefilter,
+      '-',
+      me.createMenuItemLink()
+    ]
+    let menuAllActions = []
 
     // add to menuAllActions actions from menuAllActionsItems
     Ext.Array.each(menuAllActionsItems, function (val) {
-      var action = me.actions[val]
+      let action = me.actions[val]
       if (action) {
         menuAllActions.push(action)
       }
@@ -1591,8 +1550,8 @@ Ext.define('UB.view.EntityGridPanel', {
     if (hasCustomAction) {
       menuAllActions.push('-')
 
-      arr = me.customActions
-      for (i = 0, len = arr.length; i < len; ++i) {
+      let arr = me.customActions
+      for (let i = 0, len = arr.length; i < len; ++i) {
         menuAllActions.push(new Ext.Action(arr[i]))
       }
     }
@@ -1604,13 +1563,11 @@ Ext.define('UB.view.EntityGridPanel', {
       me.menuItemDetails = me.createMenuItemDetails()
       menuAllActions.push(me.menuItemDetails)
     }
-    var toolItems = me.toolbarActionList || [
+    let toolItems = me.toolbarActionList || [
       actions.refresh,
       actions.addNew
     ]
-    var items = [
-
-    ]
+    let items = []
     Ext.Array.each(toolItems, function (val) {
       items.push(me.createButtonWOText(me.actions[val]))
     })
@@ -1646,8 +1603,8 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   createMenuExport: function () {
-    var items = []
-    var actions = UB.view.EntityGridPanel.actionId
+    let items = []
+    let actions = UB.view.EntityGridPanel.actionId
 
     items.push(this.actions[actions.exportXls])
     items.push(this.actions[actions.exportCsv])
@@ -1664,8 +1621,8 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   addBaseListeners: function () {
-    var me = this
-    var events = UB.view.EntityGridPanel.eventId
+    let me = this
+    let events = UB.view.EntityGridPanel.eventId
 
     me.on(events.exportXls, me.onExportXls, me)
     me.on(events.exportCsv, me.onExportCsv, me)
@@ -1717,8 +1674,7 @@ Ext.define('UB.view.EntityGridPanel', {
    * @param {Boolean} [force]
    */
   hideAction: function (actionName, force) {
-    var me = this
-    var action = me.actions[actionName]
+    let action = this.actions[actionName]
 
     if (action) {
       action.blocked = true
@@ -1726,10 +1682,10 @@ Ext.define('UB.view.EntityGridPanel', {
       action.hide()
       action.forceHidden = action.forceHidden || !!force
     }
-    if (!me.actionsKeyMap) {
+    if (!this.actionsKeyMap) {
       return
     }
-    action = me.actionsKeyMap[actionName]
+    action = this.actionsKeyMap[actionName]
     if (action) {
       action.disable()
     }
@@ -1741,8 +1697,7 @@ Ext.define('UB.view.EntityGridPanel', {
    * @param {Boolean} [force]
    */
   showAction: function (actionName, force) {
-    var me = this
-    var action = me.actions[actionName]
+    let action = this.actions[actionName]
     if (action) {
       if (action.forceHidden && !force) {
         return
@@ -1752,10 +1707,10 @@ Ext.define('UB.view.EntityGridPanel', {
       action.show()
       action.forceHidden = false
     }
-    if (!me.actionsKeyMap) {
+    if (!this.actionsKeyMap) {
       return
     }
-    action = me.actionsKeyMap[actionName]
+    action = this.actionsKeyMap[actionName]
     if (action) {
       action.setDisabled(false)
     }
@@ -1765,107 +1720,85 @@ Ext.define('UB.view.EntityGridPanel', {
    * @param actionName
    */
   disableAction: function (actionName) {
-    var me = this
-    var action = me.actions[actionName]
-
+    let action = this.actions[actionName]
     if (action) {
-      if (action.forceHidden) {
-        return
-      }
+      if (action.forceHidden) return
       action.disable()
     }
-    if (!me.actionsKeyMap) {
-      return
-    }
-    action = me.actionsKeyMap[actionName]
-    if (action) {
-      action.disable()
-    }
+    if (!this.actionsKeyMap) return
+    action = this.actionsKeyMap[actionName]
+    if (action) action.disable()
   },
 
-    /**
-     *
-     * @param actionName
-     */
+  /**
+   *
+   * @param actionName
+   */
   enableAction: function (actionName) {
-    var me = this
-    var action = me.actions[actionName]
+    let me = this
+    let action = me.actions[actionName]
 
     if (action) {
-      if (action.forceHidden) {
-        return
-      }
+      if (action.forceHidden) return
       action.setDisabled(false)
       action.forceHidden = false
     }
-    if (!me.actionsKeyMap) {
-      return
-    }
+    if (!me.actionsKeyMap) return
     action = me.actionsKeyMap[actionName]
     if (action) {
       action.setDisabled(false)
     }
   },
 
-    /**
-     * @cfg  {Boolean} readOnly
-     * When true disable all action which potentially change data
-     */
+  /**
+   * @cfg  {Boolean} readOnly
+   * When true disable all action which potentially change data
+   */
 
-    /**
-     * @param {Boolean} value
-     * Disable or enable all action which potentially change data.
-     */
+  /**
+   * @param {Boolean} value
+   * Disable or enable all action which potentially change data.
+   */
   setReadOnly: function (value) {
-    var me = this
-    me.readOnly = value
-    if (me.rendered) {
-      me.setReadOnlyInner(value)
+    this.readOnly = value
+    if (this.rendered) {
+      this.setReadOnlyInner(value)
     }
   },
-    /**
-     * @private
-     * @param {Boolean} value
-     */
+  /**
+   * @private
+   * @param {Boolean} value
+   */
   setReadOnlyInner: function (value) {
-    var me = this
     if (value) {
-      me.hideAction('addNew')
-      me.hideAction('addNewByCurrent')
-      me.hideAction('del')
-      me.hideAction('edit')
-      me.hideAction('newVersion')
+      this.hideAction('addNew')
+      this.hideAction('addNewByCurrent')
+      this.hideAction('del')
+      this.hideAction('edit')
+      this.hideAction('newVersion')
     } else {
-      me.showAction('addNew')
-      me.showAction('addNewByCurrent')
-      me.showAction('del')
-      me.showAction('edit')
-      me.showAction('newVersion')
+      this.showAction('addNew')
+      this.showAction('addNewByCurrent')
+      this.showAction('del')
+      this.showAction('edit')
+      this.showAction('newVersion')
     }
   },
 
   afterRender: function () {
-    var me = this
-    me.callParent()
-    me.bindHotkeys()
-    if (me.readOnly) {
-      me.setReadOnlyInner(true)
+    this.callParent()
+    this.bindHotkeys()
+    if (this.readOnly) {
+      this.setReadOnlyInner(true)
     }
   },
 
   openForm: function (eOpts) {
-    var
-      me = this,
-      formParam = me.getFormParam(),
-      store = me.getStore(),
-      context,
-      wnd = me.up('window'),
-      modal = wnd ? wnd.modal : false,
-      parentForm = me.up('basepanel'),
-      savePromise
-
+    let me = this
+    let savePromise
+    let parentForm = me.up('basepanel')
     if (parentForm) {
-      savePromise = parentForm.saveForm(false)
+      savePromise = parentForm.saveForm()
       if (!savePromise) {
         return
       }
@@ -1873,14 +1806,17 @@ Ext.define('UB.view.EntityGridPanel', {
       savePromise = Promise.resolve(0)
     }
     savePromise.done(function (saveStatus) {
-      if (saveStatus === -1) {
-        return
-      }
-      context = me.parentContext ? Ext.clone(me.parentContext) : {}
+      if (saveStatus === -1) return
+
+      let context = me.parentContext ? Ext.clone(me.parentContext) : {}
       if (me.detailAttribute && me.parentID) {
         context[me.detailAttribute] = me.parentID
       }
-      var config = {
+      let store = me.getStore()
+      let wnd = me.up('window')
+      let modal = wnd ? wnd.modal : false
+      let formParam = me.getFormParam()
+      let config = {
         cmdType: 'showForm',
         formCode: formParam ? formParam.formCode : formParam,
         description: formParam ? formParam.description : formParam,
@@ -1897,7 +1833,7 @@ Ext.define('UB.view.EntityGridPanel', {
         sender: me.getView() || me
       }
       // open form in modal mode only if grid is in modal mode
-      if (!config.isModal && !(wnd && wnd.modal)) {
+      if (!config.isModal && !modal) {
         config.target = $App.viewport.centralPanel
         config.tabId = ((formParam ? formParam.entityName : null) || me.entityName) + (config.instanceID || ('ext' + Ext.id(null, 'addNew')))
       }
@@ -1923,18 +1859,14 @@ Ext.define('UB.view.EntityGridPanel', {
    * @return {Object}
    */
   getFormParam: function () {
-    var me = this
-    var sysEntities = UB.core.UBAppConfig.systemEntities
-    var form
+    let me = this
 
     if (_.isFunction(me.onDeterminateForm)) {
       me.formParam = me.onDeterminateForm(me)
       return me.formParam
     }
 
-    if (me.formParam) {
-      return me.formParam
-    }
+    if (me.formParam) return me.formParam
 
     if (Ext.isDefined(me.commandData)) {
       me.formParam = me.getFormParamFromCommandData(me.commandData)
@@ -1943,18 +1875,18 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     }
 
-    form = UB.core.UBFormLoader.getFormByEntity(me.entityName)
+    let form = UB.core.UBFormLoader.getFormByEntity(me.entityName)
     if (form) {
       me.formParam = {
-        formCode: form.get(sysEntities.form.fields.code),
-        description: UB.i18n(form.get(sysEntities.form.fields.description))
+        formCode: form.get('code'),
+        description: UB.i18n(form.get('description'))
       }
       return me.formParam
     }
   },
 
   getFormParamFromCommandData: function (commandData) {
-    var formParam
+    let formParam
 
     if (Ext.isObject(commandData)) {
       if (Ext.isDefined(commandData.formCode)) {
@@ -1962,7 +1894,6 @@ Ext.define('UB.view.EntityGridPanel', {
           formCode: commandData.formCode
         }
       }
-
       if (Ext.isDefined(commandData.formTitle)) {
         if (!Ext.isObject(formParam)) {
           formParam = {}
@@ -1970,14 +1901,13 @@ Ext.define('UB.view.EntityGridPanel', {
         formParam.description = commandData.formTitle
       }
     }
-
     return formParam
   },
 
   onAddNew: function () {
-    var me = this
+    let me = this
     if (this.isHistory) {
-       // this.onHistory();
+      // this.onHistory();
       Ext.create('UB.view.InputDateWindow', {
         callback: function (date) {
           me.openForm({ __mip_ondate: date, instanceID: me.miDataID })
@@ -1990,18 +1920,16 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onAddNewByCurrent: function () {
-    var me = this
-    var selection = me.getSelectionModel().getSelection()
-    var eOpt = {
-      addByCurrent: true
-    }
-
+    let selection = this.getSelectionModel().getSelection()
     if (selection.length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
     }
-    eOpt.instanceID = selection[0].get('ID')
-    me.openForm(eOpt)
+    let eOpt = {
+      addByCurrent: true,
+      instanceID: selection[0].get('ID')
+    }
+    this.openForm(eOpt)
   },
 
   onEdit: function () {
@@ -2010,108 +1938,100 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   doOnEdit: function (eOpt) {
-    var me = this
-    var selection = me.getSelectionModel().getSelection()
+    let selection = this.getSelectionModel().getSelection()
+    if (selection.length < 1) return
 
     eOpt = eOpt || {}
-
-    if (selection.length < 1) {
-      return
-    }
-
     eOpt.instanceID = selection[0].get('ID')
-    me.openForm(eOpt)
+    this.openForm(eOpt)
   },
 
   getFormTitle: function () {
-    var me = this
-    var placeholder = me.placeholder
-    return me.title ||
+    let placeholder = this.placeholder
+    return this.title ||
       (placeholder ? placeholder.title : null) ||
-      ((placeholder = me.up('')) ? placeholder.title : null) ||
-      me.entity.caption
+      ((placeholder = this.up('')) ? placeholder.title : null) ||
+      this.entity.caption
   },
 
   onDel: function () {
-    var me = this
+    let gridSelection = this.getSelectionModel().getSelection()
+    if (gridSelection.length < 1) return
 
-    if (me.getSelectionModel().getSelection().length < 1) {
-      return
-    }
+    let me = this
+    let entityCaptionsToDelete = ''
 
-    var entityCaptionsToDelete = ''
-    var gridSelection = me.getSelectionModel().getSelection()
     if (gridSelection.length === 1) {
       if (me.entity.descriptionAttribute) {
         try {
           entityCaptionsToDelete = gridSelection[0].get(me.entity.descriptionAttribute)
-        } catch(e){}
+        } catch (e) {}
         if (entityCaptionsToDelete) entityCaptionsToDelete = '[' + entityCaptionsToDelete + ']'
       }
     }
-    $App.dialogYesNo('deletionDialogConfirmCaption', UB.format(UB.i18n('deleteConfirmationWithCaption'), me.getFormTitle(), entityCaptionsToDelete))
-      .then(function (res) {
-        if (!res) { return }
-        var commandList = [],
-          hasUnity = gridSelection.length && gridSelection[0].get('mi_unityEntity'),
-          entityName
+    $App.dialogYesNo('deletionDialogConfirmCaption',
+      UB.format(UB.i18n('deleteConfirmationWithCaption'), me.getFormTitle(), entityCaptionsToDelete)
+    ).then(function (res) {
+      if (!res) return
+      let commandList = []
+      let hasUnity = gridSelection.length && gridSelection[0].get('mi_unityEntity')
+      let entityName
 
-        for (var i = 0, len = gridSelection.length; i < len; ++i) {
-          entityName = hasUnity ? gridSelection[i].get('mi_unityEntity') : me.entityName
-          commandList.push({
-            entity: entityName,
-            method: 'delete',
-            execParams: {ID: gridSelection[i].get('ID')}
-          })
+      for (let i = 0, len = gridSelection.length; i < len; ++i) {
+        entityName = hasUnity ? gridSelection[i].get('mi_unityEntity') : me.entityName
+        commandList.push({
+          entity: entityName,
+          method: 'delete',
+          execParams: {ID: gridSelection[i].get('ID')}
+        })
+      }
+
+      $App.connection.runTrans(commandList).then(function (transResult) {
+        let waitList = []
+        _.forEach(transResult, function (resp) {
+          waitList.push($App.connection.invalidateCache(resp))
+        })
+        return Q.all(waitList).then(function () {
+          return transResult
+        })
+      }).done(function (transResult) {
+        let store = me.store
+        let idx = null
+        _.forEach(transResult, function (resp) {
+          let rRow = store.getById(resp.ID)
+          idx = store.indexOf(rRow)
+          // nRow = store.getAt(idx);
+          store.remove(rRow)
+          if (UB.core.UBAppConfig.systemEntities.hasOwnProperty(entityName)) {
+            let systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[entityName].name)
+            systemEntityStore.remove(systemEntityStore.getById(resp.ID))
+          }
+        })
+        if (me.store && me.store.fireModifyEvent) {
+          me.store.fireModifyEvent(commandList, transResult)
         }
 
-        $App.connection.runTrans(commandList)
-          .then(function (transResult) {
-            var waitList = []
-            _.forEach(transResult, function (resp) {
-              waitList.push($App.connection.invalidateCache(resp))
-            })
-            return Q.all(waitList).then(function () {
-              return transResult
-            })
-          })
-          .done(function (transResult) {
-            var store = me.store, idx = null
-            _.forEach(transResult, function (resp) {
-              var rRow = store.getById(resp.ID)
-              idx = store.indexOf(rRow)
-                  // nRow = store.getAt(idx);
-              store.remove(rRow)
-              if (UB.core.UBAppConfig.systemEntities.hasOwnProperty(entityName)) {
-                var systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[entityName].name)
-                systemEntityStore.remove(systemEntityStore.getById(resp.ID))
-              }
-            })
-            if (me.store && me.store.fireModifyEvent) {
-              me.store.fireModifyEvent(commandList, transResult)
+        if (idx !== null) {
+          me.getView().on('itemremove', function () {
+            if (store.getCount() <= idx) {
+              idx = store.getCount() - 1
             }
-
-            if (idx !== null) {
-              me.getView().on('itemremove', function () {
-                if (store.getCount() <= idx) {
-                  idx = store.getCount() - 1
-                }
-                me.getSelectionModel().select(store.getAt(idx))
-              }, me, {single: true})
-            }
-            me.fireEvent('afterdel')
-            if (me.pagingBar) {
-              me.pagingBar.decreaseTotal()
-            }
-          })
+            me.getSelectionModel().select(store.getAt(idx))
+          }, me, {single: true})
+        }
+        me.fireEvent('afterdel')
+        if (me.pagingBar) {
+          me.pagingBar.decreaseTotal()
+        }
       })
+    })
   },
 
   /**
    * show auto filter form
    */
   onPrefilter: function () {
-    var me = this
+    let me = this
     if (me.autoFilter) {
       UB.ux.UBPreFilter.makeFilters({
         options: me.autoFilter,
@@ -2127,28 +2047,25 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   showFilter: function (options) {
-    var me = this
+    let me = this
     UB.ux.UBPreFilter.makeFilters({
       options: me.autoFilter || options || {},
       entityCode: me.entityName,
       store: me.getStore(),
-          onFilterReady: function () {
-            if (me.filtersDescription) {
-              me.filtersDescription()
-            }
-          }
-      })
+      onFilterReady: function () {
+        if (me.filtersDescription) {
+          me.filtersDescription()
+        }
+      }
+    })
   },
 
-  onItemContextMenu: function (grid, record, item, index, event, eOpts) {
+  onItemContextMenu: function (grid, record, item, index, event) {
     event.stopEvent()
-    if (!grid || !record) {
-      return
-    }
-    var sm = grid.getSelectionModel()
-    if (!sm) {
-      return
-    }
+    if (!grid || !record) return
+
+    let sm = grid.getSelectionModel()
+    if (!sm) return
     /**
      * forbid row selecting when fire event contextMenu
      * @cfg {Boolean} forbidSelectOnContextMenu
@@ -2160,11 +2077,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onNewVersionDataRequest: function () {
-    var sel
-    var me = this
-    if ((sel = me.getSelectionModel().getSelection()).length < 1) {
-      return
-    }
+    let me = this
+    let sel = me.getSelectionModel().getSelection()
+    if (sel.length < 1) return
 
     Ext.create('UB.view.InputDateWindow', {
       callback: function (date) {
@@ -2179,11 +2094,10 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onRefresh: function () {
-    var
-      me = this,
-      actionRefresh = me.actions[UB.view.EntityGridPanel.actionId.refresh],
-      mainStore = me.store,
-      cmdRefresh = []
+    let me = this
+    let actionRefresh = me.actions[UB.view.EntityGridPanel.actionId.refresh]
+    let mainStore = me.store
+    let cmdRefresh = []
 
     actionRefresh.disable()
     Ext.iterate(me.stores, function (item, store) {
@@ -2200,13 +2114,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onHistory: function () {
-    var
-      me = this,
-      sel = this.getSelectionModel().getSelection(),
-      fieldList, extendedFieldList
-
-    fieldList = me.entityConfig.fieldList.concat()
-    extendedFieldList = me.extendedFieldList.concat()
+    let me = this
+    let fieldList = me.entityConfig.fieldList.concat()
+    let extendedFieldList = me.extendedFieldList.concat()
 
     if (fieldList.indexOf('mi_dateTo') < 0) {
       fieldList = ['mi_dateTo'].concat(fieldList)
@@ -2217,6 +2127,7 @@ Ext.define('UB.view.EntityGridPanel', {
       extendedFieldList = [{name: 'mi_dateFrom', visibility: true, description: UB.i18n('mi_dateFrom')}].concat(extendedFieldList)
     }
 
+    let sel = this.getSelectionModel().getSelection()
     if (!me.isInHistory && sel.length < 1) {
       return
     }
@@ -2226,7 +2137,7 @@ Ext.define('UB.view.EntityGridPanel', {
       fieldList: ['ID', 'mi_data_id'],
       ID: me.isInHistory ? me.miDataID : sel[0].get('ID')
     }).done(function (response) {
-      var rows = UB.core.UBCommand.resultDataRow2Object(response)
+      let rows = UB.core.UBCommand.resultDataRow2Object(response)
       $App.doCommand({
         cmdType: 'showList',
         cmdData: { params: [{
@@ -2243,25 +2154,21 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onAccessRight: function () {
-    var me = this
-    var sel = this.getSelectionModel().getSelection()
-    var entityM, aclEntityName
-    var aclFields = []
+    let sel = this.getSelectionModel().getSelection()
+    if (sel.length < 1) return
 
-    if (sel.length < 1) {
-      return
-    }
-
-    aclEntityName = me.entityName + '_acl'
-    entityM = me.entity
+    let me = this
+    let aclEntityName = me.entityName + '_acl'
+    let entityM = me.entity
     if (!entityM || !entityM.mixins || !entityM.mixins.aclRls) {
       return
     }
     if (entityM.mixins.aclRls.useUnityName) {
       aclEntityName = entityM.mixins.unity.entity + '_acl'
     }
+    let aclFields = []
     _.forEach(entityM.mixins.aclRls.onEntities, function (attrEntity) {
-      var e = $App.domainInfo.get(attrEntity)
+      let e = $App.domainInfo.get(attrEntity)
       aclFields.push(e.sqlAlias + 'ID' + (e.descriptionAttribute ? '.' + e.descriptionAttribute : ''))
     })
 
@@ -2411,10 +2318,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   getPreviewForm: function () {
-    var me = this,
-      result = null,
-      forms
-    forms = UB.core.UBFormLoader.getFormByEntity(me.entityName, true)
+    let me = this
+    let result = null
+    let forms = UB.core.UBFormLoader.getFormByEntity(me.entityName, true)
     _.forEach(forms, function (item) {
       if (item.get('code').toLowerCase().indexOf('preview') !== -1) {
         result = item
@@ -2425,87 +2331,83 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onShowPreview: function (action) {
-    var
-      me = this,
-      store = me.getStore(),
-      selModel = me.getSelectionModel(),
-      formParam = {},
-      form,
-      eOpts = {},
-      sel
-
-    if (!(form = me.getPreviewForm())) {
+    let form = this.getPreviewForm()
+    if (!form) {
       UB.logError('No preview form')
       return
     }
 
-    if ((sel = selModel.getSelection()).length < 1) {
+    let sel = this.getSelectionModel().getSelection()
+    if (sel.length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
     }
-    eOpts.instanceID = sel[0].get('ID')
-    formParam.formCode = form.get('code')
-    formParam.description = UB.i18n(form.get(UB.core.UBAppConfig.systemEntities.form.fields.description))
-    var regEx = new RegExp('(.*?)(_grid_UI)')
-    var stateId = me.stateId.replace(regEx, UB.format('$1_{0}_{0}$2', me.entityName))
-
-    me.setMainPanel(stateId)
-    var config = {
+    let eOpts = {
+      instanceID: sel[0].get('ID')
+    }
+    let formParam = {
+      formCode: form.get('code'),
+      description: UB.i18n(form.get(UB.core.UBAppConfig.systemEntities.form.fields.description))
+    }
+    let regEx = new RegExp('(.*?)(_grid_UI)')
+    let stateId = this.stateId
+      ? this.stateId.replace(regEx, UB.format('$1_{0}_{0}$2', this.entityName))
+      : undefined
+    this.setMainPanel(stateId)
+    let config = {
       cmdType: 'showForm',
       formCode: formParam ? formParam.formCode : formParam,
       description: formParam ? formParam.description : formParam,
-      entity: me.entityName,
+      entity: this.entityName,
       instanceID: eOpts && eOpts.instanceID,
-      store: store,
+      store: this.getStore(),
       addByCurrent: false,
       __mip_ondate: false, // eOpts && eOpts.__mip_ondate,
-      detailAttribute: me.detailAttribute,
-      parentID: me.parentID,
-      sender: me.getView() || me,
-      target: me.detailTabPanel,
+      detailAttribute: this.detailAttribute,
+      parentID: this.parentID,
+      sender: this.getView() || this,
+      target: this.detailTabPanel,
       tabId: Ext.id(),
       isDetail: true
     }
     UB.core.UBApp.doCommand(config)
-        /* if(wnd){
-            wnd.doLayout();
-        } */
+    /* if(wnd){
+        wnd.doLayout();
+    } */
     action.disable()
   },
 
-    /**
-     * Return main container for the grid.
-     * @returns {Ext.Component}
-     */
+  /**
+   * Return main container for the grid.
+   * @returns {Ext.Component}
+   */
   getMainContainer: function () {
     return this.mainPanel || this
   },
 
-    /**
-     * @collback activateByCommand It is called when user again presses shortcut
-     */
+  /**
+   * @callback activateByCommand It is called when user again presses shortcut
+   */
   activateByCommand: function (commandConfig) {
-    var me = this
-    if (me.autoFilter) {
-      me.onPrefilter()
-            // me.createAutoFilter();
+    if (this.autoFilter) {
+      this.onPrefilter()
     }
   },
 
   setMainPanel: function (stateId) {
-    var me = this, owner, closable = false
+    let me = this
 
     if (!me.mainPanel) {
-      var splitter = Ext.create('Ext.resizer.Splitter')
-      var tabPanel = Ext.create('Ext.tab.Panel', {
+      let splitter = Ext.create('Ext.resizer.Splitter')
+      let tabPanel = Ext.create('Ext.tab.Panel', {
         stateful: true,
         border: false,
         layout: 'fit',
         stateId: stateId
       })
 
-      owner = me.ownerCt
-      closable = !!me.closable
+      let owner = me.ownerCt
+      let closable = !!me.closable
       owner.remove(me, false)
       me.mainPanel = Ext.create('Ext.panel.Panel', {
         xtype: 'panel',
@@ -2544,20 +2446,16 @@ Ext.define('UB.view.EntityGridPanel', {
     me.detailTabPanel.show()
     me.mainPanel.show()
     me.show()
-    if (owner) {
-      owner.doLayout()
+    if (me.ownerCt) {
+      me.ownerCt.doLayout()
     }
   },
 
   onShowDetail: function (action) {
-    var
-      me = this,
-      selModel = me.getSelectionModel(),
-      showListCommand = UB.core.UBCommand.commandType.showList,
-      cmd = UB.core.UBCommand.getCommandByEntityAndType(action.entityName, showListCommand, true),
-      sel
+    let showListCommand = UB.core.UBCommand.commandType.showList
+    let cmd = UB.core.UBCommand.getCommandByEntityAndType(action.entityName, showListCommand, true)
 
-    if ((sel = selModel.getSelection()).length < 1) {
+    if (this.getSelectionModel().getSelection().length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
     }
@@ -2566,7 +2464,7 @@ Ext.define('UB.view.EntityGridPanel', {
       throw new Error(UB.format('Can\'t get command with type "{0}" for entity "{1}"', showListCommand, action.entityName))
     }
 
-    me.doShowDetail(action)
+    this.doShowDetail(action)
     action.disable()
   },
 
@@ -2574,24 +2472,23 @@ Ext.define('UB.view.EntityGridPanel', {
    * Show detail panel.
    * @param {Object} config
    * @param {String} config.entityName
-   * @param {Syting} config.attribute
+   * @param {String} config.attribute
    * @param {Object} [config.command] params for UB.core.UBApp.doCommand
    */
   doShowDetail: function (config) {
-    var me = this,
-      selModel = me.getSelectionModel(),
-      sel = selModel.getSelection(),
-      wnd = me.up('window'),
-      showListCommand = UB.core.UBCommand.commandType.showList,
-      cmd = UB.core.UBCommand.getCommandByEntityAndType(config.entityName, showListCommand, true)
+    let me = this
+    let wnd = me.up('window')
+    let showListCommand = UB.core.UBCommand.commandType.showList
+    let cmd = UB.core.UBCommand.getCommandByEntityAndType(config.entityName, showListCommand, true)
 
-    var regEx = new RegExp('(.*?)(_grid_UI)')
-    var stateId = me.stateId.replace(regEx, UB.format('$1_{0}_{1}$2', config.entityName, config.attribute))
+    let regEx = new RegExp('(.*?)(_grid_UI)')
+    let stateId = me.stateId.replace(regEx, UB.format('$1_{0}_{1}$2', config.entityName, config.attribute))
 
     me.setMainPanel(stateId)
 
-    var parentID = sel.length > 0 ? sel[0].get('ID') : null
-    var coll = new Ext.util.MixedCollection()
+    let sel = this.getSelectionModel().getSelection()
+    let parentID = sel.length > 0 ? sel[0].get('ID') : null
+    let coll = new Ext.util.MixedCollection()
     coll.add(UB.core.UBCommand.whereListParentID, new Ext.util.Filter({
       id: UB.core.UBCommand.whereListParentID,
       property: config.attribute,
@@ -2663,21 +2560,19 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onViewReady: function () {
-    var me = this
-    var view = me.getView()
-    var store = view ? view.getStore() : null
+    let view = this.getView()
+    let store = view ? view.getStore() : null
     if (store && view && view.storeListeners && view.storeListeners.update) {
       store.on('update', view.storeListeners.update, view)
     }
   },
 
   setupActions: function () {
-    var
-      me = this,
-      form = me.up('form'),
-      readOnly = _.isFunction(me.isEditable)
-        ? !me.isEditable()
-        : form && _.isFunction(form.isEditable) ? !form.isEditable() : false
+    let me = this
+    let form = me.up('form')
+    let readOnly = _.isFunction(me.isEditable)
+      ? !me.isEditable()
+      : form && _.isFunction(form.isEditable) ? !form.isEditable() : false
     if (readOnly) {
       me.actions[UB.view.EntityGridPanel.actionId.addNew].setDisabled(true)
       me.actions[UB.view.EntityGridPanel.actionId.addNewByCurrent].setDisabled(true)
@@ -2701,10 +2596,9 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   bindHotkeys: function () {
-    var
-      me = this,
-      actions = UB.view.EntityGridPanel.actionId,
-      hotKeys = UB.view.EntityGridPanel.hotKeys
+    let me = this
+    let actions = UB.view.EntityGridPanel.actionId
+    let hotKeys = UB.view.EntityGridPanel.hotKeys
     me.actionsKeyMap = {}
     me.actionsKeyMap[actions.edit] = new Ext.util.KeyMap({
       target: me.getEl(),
@@ -2782,27 +2676,26 @@ Ext.define('UB.view.EntityGridPanel', {
         ctrl: true,
         key: Ext.EventObject.Q,
         fn: function (keyCode, e) {
-          var form
           e.stopEvent()
 
-          var tabpanel = me.up('tabpanel')
+          let tabpanel = me.up('tabpanel')
           if (e.shiftKey) {
             if (tabpanel) {
-              form = tabpanel.up('form')
+              let form = tabpanel.up('form')
               form.frameControl(form.focusFirst(form))
             }
             return
           }
           if (tabpanel) {
-            var tab = tabpanel.getActiveTab(),
-              index = tabpanel.items.indexOf(tab) + 1
+            let tab = tabpanel.getActiveTab()
+            let index = tabpanel.items.indexOf(tab) + 1
             if (index >= tabpanel.items.length) {
               index = 0
             }
             tabpanel.setActiveTab(index)
             tab = tabpanel.getActiveTab()
             if (tab) {
-              form = tab.up('form')
+              let form = tab.up('form')
               form.frameControl(form.focusFirst(tab) || tab)
             }
           }
@@ -2816,10 +2709,8 @@ Ext.define('UB.view.EntityGridPanel', {
       return
     }
 
-    var me = this,
-      selModel = me.getSelectionModel(),
-      view = me.getView(),
-      record
+    let me = this
+    let record
 
     if (me.selectedRecordID) {
       record = me.store.getById(me.selectedRecordID)
@@ -2827,6 +2718,8 @@ Ext.define('UB.view.EntityGridPanel', {
       record = me.store.getAt(0)
     }
     try {
+      let selModel = me.getSelectionModel()
+      let view = me.getView()
       view.focus()
       if (selModel.setCurrentPosition) {
         selModel.setCurrentPosition({
@@ -2841,94 +2734,71 @@ Ext.define('UB.view.EntityGridPanel', {
     } catch (e) {}
   },
 
-  onExportXls: function () {
-    var v, fTitle, dBlob, mobj
-    var me = this
-
-    mobj = me.entity
+  getExportTitle: function (defaultTitle) {
+    let fTitle
+    let mobj = this.entity
     if (Ext.isDefined(mobj)) {
       fTitle = mobj.description || mobj.caption
     }
     if (!Ext.isDefined(fTitle)) {
-      v = this.up('window')
+      let v = this.up('window')
       if (Ext.isDefined(v)) {
         fTitle = v.title
       }
     }
-    fTitle = fTitle || this.title || 'export to excel'
+    fTitle = fTitle || this.title || defaultTitle
+    return fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
+  },
 
+  onExportXls: function () {
+    let me = this
+    let fTitle = this.getExportTitle('export to excel')
     Ext.ux.exporter.Exporter.exportAny(this, 'xlsx', {
       stripeRows: true,
       title: fTitle,
       entityName: this.entityName,
-      metaobject: mobj,
+      metaobject: me.entity,
       scope: me,
       callback: function (rData) {
-        fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
-        var sLength = rData.length
-        var sArray = new Uint8Array(new ArrayBuffer(sLength))
-        for (var i = 0; i < sLength; i++) {
+        let sLength = rData.length
+        let sArray = new Uint8Array(new ArrayBuffer(sLength))
+        for (let i = 0; i < sLength; i++) {
           sArray[i] = rData.charCodeAt(i)
         }
-        dBlob = new Blob([sArray], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}) // data:  ;base64
+        let dBlob = new Blob([sArray], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}) // data:  ;base64
         saveAs(dBlob, fTitle + '.xlsx')
       }
     })
   },
 
   onExportCsv: function () {
-    var v, fTitle = 'export to CSV', dBlob, me = this, mobj
-    v = this.up('window')
-    mobj = this.entity
-    if (Ext.isDefined(mobj)) {
-      fTitle = mobj.description || mobj.caption
-    }
-    if (!Ext.isDefined(fTitle)) {
-      v = this.up('window')
-      if (Ext.isDefined(v)) {
-        fTitle = v.title
-      }
-    }
-    fTitle = fTitle || this.title
-
+    let me = this
+    let fTitle = this.getExportTitle('export to CSV')
     Ext.ux.exporter.Exporter.exportAny(this, 'csv', {
       stripeRows: true,
       title: fTitle,
       entityName: this.entityName,
-      metaobject: mobj,
+      metaobject: me.entity,
       scope: me,
       callback: function (rData) {
-        fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
-
-        dBlob = new Blob([rData], {type: 'text/csv'})
+        let dBlob = new Blob([rData], {type: 'text/csv'})
         saveAs(dBlob, fTitle + '.csv')
       }
     })
   },
 
   onExportHtml: function () {
-    var v, fTitle = 'export to html', dBlob, mobj, me = this
-    mobj = this.entity
-    if (Ext.isDefined(mobj)) {
-      fTitle = mobj.description || mobj.caption
-    }
-    if (!Ext.isDefined(fTitle)) {
-      v = this.up('window')
-      if (Ext.isDefined(v)) {
-        fTitle = v.title
-      }
-    }
-    fTitle = fTitle || this.title
+    let me = this
+    let fTitle = this.getExportTitle('export to html')
 
     Ext.ux.exporter.Exporter.exportAny(this, 'html', {
       stripeRows: true,
       title: fTitle,
       entityName: this.entityName,
-      metaobject: mobj,
+      metaobject: me.entity,
       scope: me,
       callback: function (rData) {
-        fTitle = fTitle + ' ' + Ext.Date.format((new Date()), 'Y m d  H:i:s')
-        dBlob = new Blob([rData], {type: 'text/html'})
+        let dBlob = new Blob([rData], {type: 'text/html'})
         saveAs(dBlob, fTitle + '.html')
       }
     })
@@ -2939,37 +2809,33 @@ Ext.define('UB.view.EntityGridPanel', {
    * @param {Object} eOpts
    */
   beforeDestroy: function (grid, eOpts) {
-    var me = this
+    let me = this
     if (me.mainEntityGridPanel) {
       me.mainEntityGridPanel.un('parentchange', me.onParentChange, me)
     }
-    var store = me.getStore()
 
+    let store = me.getStore()
     if (store) {
       store.un('load', me.onLoadStore, me)
+      if (store.groupers && store.groupers.length > 0) {
+        store.clearGrouping()
+      }
+      store.clearListeners()
     }
-
-    if (store.groupers && store.groupers.length > 0) {
-      store.clearGrouping()
-    }
-    store.clearListeners()
-
     me.callParent(arguments)
   },
 
   onItemSelect: function () {
-    var selection = this.getSelectionModel().getSelection()
-    var wnd = this.up('window')
-    if (selection.length < 1) {
-      return
-    }
+    let selection = this.getSelectionModel().getSelection()
+    if (selection.length < 1) return
+
     this.onItemSelected(selection[0])
-    wnd.close()
+    this.up('window').close()
   },
 
   onDetailClose: function (entityName) {
-    var me = this
-    var showDetail = UB.core.UBPanelMixin.actionId.showDetail
+    let me = this
+    let showDetail = UB.core.UBPanelMixin.actionId.showDetail
     function enableShowDetailMenuItem (item) {
       if (item && item.actionId === showDetail) {
         item.menu.items.each(function (action) {
@@ -2984,20 +2850,16 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onLock: function () {
-    var me = this,
-      selection = this.getSelectionModel().getSelection(),
-      baseID, baseEntity = me.entityName
+    if (!this.isEntityLockable) return
 
-    if (!me.isEntityLockable) {
-      return
-    }
+    let selection = this.getSelectionModel().getSelection()
+    let baseID
     if (selection.length && selection[0]) {
       baseID = selection[0].get('ID')
     }
-    if (!baseID) {
-      return
-    }
+    if (!baseID) return
 
+    let baseEntity = this.entityName
     $App.connection.query({
       method: 'isLocked',
       entity: baseEntity,
@@ -3017,7 +2879,7 @@ Ext.define('UB.view.EntityGridPanel', {
           throw new UB.UBError('recordLockedThisUser')
         }
       }
-      return $App.connection.run({
+      return $App.connection.query({
         method: 'lock',
         lockType: 'ltPersist',
         entity: baseEntity,
@@ -3031,28 +2893,24 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onItemLink: function () {
-    var win, me = this,
-      formParam = me.getFormParam(),
-      formCode,
-      prm = [], prmDet, instanceID, url,
-      selection = me.getSelectionModel().getSelection()
-
+    let selection = this.getSelectionModel().getSelection()
     if (selection.length < 1) {
       $App.dialogInfo('gridEmptySelection')
       return
     }
 
-    instanceID = selection[0].get('ID')
-
-    prm.push('cmdType=showForm')
+    let instanceID = selection[0].get('ID')
+    let me = this
+    let formParam = me.getFormParam()
+    let prm = ['cmdType=showForm']
     prm.push('entity=' + (formParam && formParam.entityName ? formParam.entityName : me.entityName))
-    formCode = (formParam && formParam.formCode ? formParam.formCode : formParam)
+    let formCode = (formParam && formParam.formCode ? formParam.formCode : formParam)
     if (formCode) {
       prm.push('formCode=' + formCode)
     }
     prm.push('instanceID=' + instanceID)
 
-    prmDet = []
+    let prmDet = []
     _.forEach(me.parentContext, function (value, param) {
       if (value) {
         prmDet.push(param + '=' + value)
@@ -3067,36 +2925,32 @@ Ext.define('UB.view.EntityGridPanel', {
       prm.push('parentID=' + me.parentID)
     }
 
-    url = prm.join('&')
-
-    win = Ext.Msg.show({
+    let url = prm.join('&')
+    let win = Ext.Msg.show({
       prompt: true,
       minWidth: 400,
       msg: UB.i18n('gridItemLink'),
       buttons: Ext.Msg.OK,
       multiline: false,
-      value: location.origin + location.pathname + '#' + url // $App.connection.serverUrl
+      value: window.location.origin + window.location.pathname + '#' + url // $App.connection.serverUrl
     })
 
     win.textField.selectOnFocus = true
   },
 
   onUnLock: function () {
-    var me = this,
-      selection = this.getSelectionModel().getSelection(),
-      baseID, baseEntity = me.entityName
-
-    if (!me.isEntityLockable) {
+    if (!this.isEntityLockable) {
       return
     }
+    let selection = this.getSelectionModel().getSelection()
+    let baseID
     if (selection.length && selection[0]) {
       baseID = selection[0].get('ID')
     }
-    if (!baseID) {
-      return
-    }
+    if (!baseID) return
 
-    $App.connection.run({
+    let baseEntity = this.entityName
+    $App.connection.query({
       method: 'isLocked',
       entity: baseEntity,
       ID: baseID
@@ -3111,7 +2965,7 @@ Ext.define('UB.view.EntityGridPanel', {
       } else {
         throw new UB.UBError('recordNotLocked')
       }
-      return $App.connection.run({
+      return $App.connection.query({
         method: 'unlock',
         lockType: 'ltPersist',
         entity: baseEntity,

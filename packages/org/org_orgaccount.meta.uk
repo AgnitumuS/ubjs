@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Розрахункові коди",
-    "description": "Довідник розрахункових кодів організації",
+    "description": "Довідник розрахункових рахунків організації",
     "attributes": {
         "organizationID": {
             "caption": "Организація",
@@ -17,6 +17,10 @@
         "code": {
             "caption": "Код рахунку",
             "description": "Код рахунку (номер рахунку)"
+        },
+        "description": {
+            "caption": "Назва",
+            "description": "Назва (для вибору зі списку)"
         },
         "acctype": {
             "caption": "Тип рахунку",

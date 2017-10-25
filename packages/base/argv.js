@@ -22,6 +22,7 @@ const _ = require('lodash')
 const options = require('./options')
 const fs = require('fs')
 const path = require('path')
+const http = require('http')
 const UBConnection = require('./UBConnection')
 
 /**
@@ -138,7 +139,7 @@ function establishConnectionFromCmdLineAttributes (config) {
   }
   let serverSession = serverSessionFromCmdLineAttributes(config)
 
-    // if ((hostStart === 'localhost') || (hostStart === '127') || (hostStart === '10')) {
+  // if ((hostStart === 'localhost') || (hostStart === '127') || (hostStart === '10')) {
   if (config.forceStartServer) {
     console.info('Force server starting')
     if (startServer()) {
@@ -162,9 +163,12 @@ function establishConnectionFromCmdLineAttributes (config) {
     }
   }
 
+  if (config.timeout) {
+    http.setGlobalConnectionDefaults({receiveTimeout: parseInt(config.timeout, 10)})
+  }
   let conn = serverSession.connection = new UBConnection({ URL: serverSession.HOST })
   let appInfo = conn.getAppInfo()
-    // allow anonymous login in case no UB auth method for application
+  // allow anonymous login in case no UB auth method for application
   if (appInfo.authMethods.indexOf('UB') !== -1) {
     conn.onRequestAuthParams = function () {
       return {login: serverSession.USER, password: serverSession.PWD}
@@ -183,10 +187,11 @@ function establishConnectionFromCmdLineAttributes (config) {
  * @type {Array<Object>}
  */
 establishConnectionFromCmdLineAttributes._cmdLineParams = [
-    {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:888', searchInEnv: true, help: 'Server URL to connect, including protocol'},
-    {short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name'},
-    {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password'},
-    {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to server config'}
+  {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:888', searchInEnv: true, help: 'Server URL to connect, including protocol'},
+  {short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name'},
+  {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password'},
+  {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to server config'},
+  {short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms'}
 ]
 
 /**

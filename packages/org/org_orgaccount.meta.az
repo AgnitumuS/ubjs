@@ -18,6 +18,10 @@
             "caption": "Hesab kodu",
             "description": "Hesab kodu (hesabın nömrəsi)"
         },
+        "description": {
+            "caption": "Təsvir",
+            "description": "Təyinatın təsviri"
+        },
         "acctype": {
             "caption": "Hesab tipi",
             "description": "Hesab tipi"

@@ -1,12 +1,39 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "tst_document"
-//@formType "auto"
-//@caption "tst_document.meta"
-//@description "Document type attribute test"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "tst_document"
+// @model "TST"
+// @formType "auto"
+// @caption "tst_document.meta"
+// @description "Document type attribute test"
 exports.formDef = {
 	items:[
-		{ attributeName: "code" /*Code*/},
+    {
+		  layout: {type: 'hbox'},
+		  items: [
+		    {
+          xtype: 'ub-badge',
+          text: UB.i18n('red inverted'),
+          invert: true,
+          cssClass: 'red'
+        }, {
+          xtype: 'ub-badge',
+          text: UB.i18n('red'),
+          invert: false,
+          cssClass: 'red'
+        }, {
+          xtype: 'ub-badge',
+          text: UB.i18n('green inverted'),
+          invert: true,
+          cssClass: 'green'
+        }, {
+          xtype: 'ub-badge',
+          text: UB.i18n('green'),
+          invert: false,
+          cssClass: 'green'
+        }
+		  ]
+		},
+    { attributeName: "code" /*Code*/},
         { attributeName: "description",width: 800},
 		{ xtype: 'ubfieldset', 
           text: 'Grouped data',
