@@ -6,6 +6,7 @@ require('./FormDataBinder')
 require('../ux/UBDocument')
 require('../ux/UBDetailGrid')
 require('../ux/UBDetailTree')
+require('../ux/UBBadge')
 require('../ux/form/field/UBDictComboBox')
 require('../ux/form/field/UBComboBox')
 require('../ux/form/field/UBDate')
@@ -22,13 +23,14 @@ require('./UploadFileAjax')
 require('../ux/UBTinyMCETextArea')
 require('../core/UBPanelMixin')
 require('../ux/form/UBPlanFactContainer')
-  // TODO - move CommandBuilder requires to shortcut editor
+// TODO - move CommandBuilder requires to shortcut editor (after adding forms parsing via SystemJS)
 require('./CommandBuilder/EntitiesComboBox')
 require('./CommandBuilder/CommandTypeComboBox')
 require('./CommandBuilder/FormsComboBox')
 require('./CommandBuilder/EntityTreePanel')
 require('./CommandBuilder/AttributesGridPanel')
 require('../ux/form/field/AdvancedTextArea')
+const _ = require('lodash')
 
 /* global saveAs */
 /**
@@ -113,17 +115,6 @@ Ext.define('UB.view.BasePanel', {
   extend: 'Ext.form.Panel',
   alias: 'widget.basepanel',
   border: false,
-
-    // requires: [
-    //   // TODO - move CommandBuilder requires to shortcut editor
-    //       "UB.view.CommandBuilder.EntitiesComboBox",
-    //       "UB.view.CommandBuilder.CommandTypeComboBox",
-    //       "UB.view.CommandBuilder.FormsComboBox",
-    //       "UB.view.CommandBuilder.EntityTreePanel",
-    //       "UB.view.CommandBuilder.AttributesGridPanel",
-    //       "UB.ux.form.field.AdvancedTextArea"
-    //
-    // ],
 
   uses: [
     'UB.core.UBAppConfig',
@@ -355,6 +346,12 @@ Ext.define('UB.view.BasePanel', {
      * @param {Ext.data.Model} rec Loaded record
      */
     /**
+     * @event beforesave
+     * Fires just before data passed to a server for update/insert
+     * @param {UB.view.BasePanel} sender BasePanel where save was happened
+     * @param {Object} request  Update/insert ubql (can be modified)
+     */
+    /**
      * @event aftersave
      * Fires when record saved
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
@@ -405,8 +402,9 @@ Ext.define('UB.view.BasePanel', {
      * @param {Ext.data.Model} record
      * Fired when data is bound.
      */
-    me.addEvents('recordloaded', 'aftersave', 'afterdelete', 'formDataReady', 'beforeSaveForm', 'beforeDelete',
-            'beforeClose', 'updateFields', 'controlChanged', 'initComponentDone', 'dataBind')
+    me.addEvents('recordloaded', 'beforesave', 'aftersave', 'afterdelete', 'formDataReady',
+      'beforeSaveForm', 'beforeDelete', 'beforeClose', 'updateFields',
+      'controlChanged', 'initComponentDone', 'dataBind')
 
     me.on('destroy', me.onFormDestroy, me)
     me.on('close', me.onPanelClose, me)
@@ -796,7 +794,7 @@ Ext.define('UB.view.BasePanel', {
           entity: me.entityName,
           execParams: execParams,
           fieldList: me.fieldList,
-                    // alsNeed: me.hasEntityALS,
+          // alsNeed: me.hasEntityALS,
           lockType: 'ltTemp'
         }
         promise = $App.connection.addNew(ubRequest)
@@ -804,7 +802,7 @@ Ext.define('UB.view.BasePanel', {
         ubRequest = {
           entity: me.entityName,
           fieldList: ['ID', 'mi_modifyDate'],
-                    // alsNeed: me.hasEntityALS,
+          // alsNeed: me.hasEntityALS,
           lockType: 'ltTemp',
           ID: me.instanceID
         }
@@ -875,14 +873,14 @@ Ext.define('UB.view.BasePanel', {
       }
       if (me.headerPanel) header = me.headerPanel
       if (header) {
-        me.lockButton = header.insert(1, {xtype: 'label', style: {fontWeight: 'bold'}, text: UB.i18n('entityLockedOwn') })
+        me.lockButton = header.insert(1, { xtype: 'label', style: {fontWeight: 'bold'}, text: UB.i18n('entityLockedOwn') })
       }
     }
     me.lockButton.removeCls('ub-persistlockinfo')
     if (me.hasPersistLock) {
       me.lockButton.addCls('ub-persistlockinfo')
       me.lockButton.setText(UB.format(UB.i18n('persistLockInfo'),
-                me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+      me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
       me.lockButton.show()
     } else if (me.entityLocked) {
       me.lockButton.setText(UB.i18n('entityLockedOwn'))
@@ -891,12 +889,12 @@ Ext.define('UB.view.BasePanel', {
       // show message only if not in this session
       if (!UB.ux.LockManager.existLock(me.entityName, me.record.lockInfo.lockValue)) {
         me.lockButton.setText(UB.format(UB.i18n('tempSoftLockInfo'),
-                    me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+        me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
         me.lockButton.show()
       }
     } else if (me.record.lockInfo && me.record.lockInfo.lockExists && me.record.lockInfo.lockType === 'Persist') {
       me.lockButton.setText(UB.format(UB.i18n('softLockInfo'),
-                me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+      me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
       me.lockButton.show()
     } else {
       if (me.lockButton.isVisible()) {
@@ -1719,8 +1717,7 @@ Ext.define('UB.view.BasePanel', {
     }
     $App.connection.addNew(params).then(function (result) {
       me.initFormData(result)
-    })
-    .catch(function (err) {
+    }).catch(function (err) {
       me.unmaskForm()
       UB.showErrorWindow(err)
       me.closeWindow(true)
@@ -1776,16 +1773,16 @@ Ext.define('UB.view.BasePanel', {
 
     if (me.isEntityLockable) {
       requests.push(
-          $App.connection.query({
-            method: 'isLocked',
-            entity: me.entityName,
-            ID: me.getInstanceID()
-          })
+        $App.connection.query({
+          method: 'isLocked',
+          entity: me.entityName,
+          ID: me.getInstanceID()
+        })
       )
     }
 
-    Q.all(requests).done(function (res) {
-      var result = res[0]
+    Promise.all(requests).done(function (res) {
+      var result = res[0], lockInfo = res[1]
 
       if (me.isDestroyed) {
         return
@@ -1799,7 +1796,7 @@ Ext.define('UB.view.BasePanel', {
             fieldList: me.fieldList,
             alsNeed: me.hasEntityALS,
             execParams: UB.core.UBCommand.resultDataRow2Object(result, 0,
-               me.getFieldListWithoutAdtDocument(me.fieldList)
+              me.getFieldListWithoutAdtDocument(me.fieldList)
             )
           }).done(me.initFormData.bind(me))
         } else {
@@ -1808,14 +1805,14 @@ Ext.define('UB.view.BasePanel', {
           me.record.resultData = result.resultData
           me.record.resultAls = result.resultAls
           UB.ux.data.UBStore.resetRecord(me.record)
-          if (me.isEntityLockable && res[1] && res[1].lockInfo) {
-            me.onGetLockInfo(res[1])
+          if (me.isEntityLockable && lockInfo && lockInfo.lockInfo) {
+            me.onGetLockInfo(lockInfo)
           }
           me.enableBinder()
           me.isNewInstance = false
           me.initFormData()
         }
-        me.fireEvent('recordloaded', me.record)
+        me.fireEvent('recordloaded', me.record, result)
       } else {
         me.closeWindow(true)
         $App.dialogError('recordNotExistsOrDontHaveRights')
@@ -1845,7 +1842,7 @@ Ext.define('UB.view.BasePanel', {
         UB.ux.data.UBStore.resetRecord(me.record)
       }
       me.enableBinder()
-      me.fireEvent('recordloaded', me.record)
+      me.fireEvent('recordloaded', me.record, result)
     }
 
     function doInit () {
@@ -1869,13 +1866,13 @@ Ext.define('UB.view.BasePanel', {
        (me.domainEntity.mixins.softLock.lockIdentifier !== 'ID')
     ) {
       me.setEntityLocked()
-      .done(function onSuccess () {
-        doInit()
-      }, function onError (error) {
-        me.closeForce = true
-        me.closeWindow(true)
-        throw error
-      })
+        .done(function onSuccess () {
+          doInit()
+        }, function onError (error) {
+          me.closeForce = true
+          me.closeWindow(true)
+          throw error
+        })
     } else {
       doInit()
     }
@@ -2723,9 +2720,6 @@ Ext.define('UB.view.BasePanel', {
       this.bindHotKeys()
     }, me)
     me.on(events.save, function () {
-      // me.filterFields();
-      // todo remove this call
-      me.fireEvent('beforesave', me)
       me.onSave.apply(me, arguments)
     }, me)
     me.on(events.refresh, me.onRefresh, me)
@@ -2984,7 +2978,7 @@ Ext.define('UB.view.BasePanel', {
     }))]
 
     if (me.isEntityLockable) {
-      request.push($App.connection.run({
+      request.push($App.connection.query({
         method: 'isLocked',
         entity: me.entityName,
         ID: me.getInstanceID()
@@ -3009,7 +3003,7 @@ Ext.define('UB.view.BasePanel', {
       me.setDetails(me.record, true)
       me.fireDirty = false
       me.updateActions()
-      me.fireEvent('recordloaded', me.record)
+      me.fireEvent('recordloaded', me.record, result)
     })
   },
 
@@ -3018,15 +3012,14 @@ Ext.define('UB.view.BasePanel', {
    * @param {Ext.Action} action
    */
   onSave: function (action) {
-    var me = this,
-      close
+    let me = this
     if (action && action.length) {
       // some form use basepanel.callBase(array)
       // throw new Error('Invalid parameters. You must call onSave with on parameter Ext.Action!');
       action = action[0]
     }
 
-    close = (action && action.actionId === UB.view.BasePanel.actionId.saveAndClose) || false
+    let close = (action && action.actionId === UB.view.BasePanel.actionId.saveAndClose) || false
     me.lockInterface()
     me.saveForm().fin(function () {
       me.unmaskForm()
@@ -3078,10 +3071,8 @@ Ext.define('UB.view.BasePanel', {
               fieldLabel: item.fieldLabel,
               callback: function () {
                 if (me) {
-                  var wnd = me.getFormWin()
-                  if (wnd) {
-                    wnd.toFront()
-                  }
+                  let wnd = me.getFormWin()
+                  if (wnd) wnd.toFront()
                   Ext.callback(item.focus, item, [], 100)
                 }
               }
@@ -3159,15 +3150,13 @@ Ext.define('UB.view.BasePanel', {
       return cmp.save(!!me.__mip_ondate)
     })).then(function () {
       // add document type attributes
-      var langFields = []
       me.binder.suspendAutoBind()
       me.disableBinder()
       _.forEach(me.documents, function (docAttribute, attributeCode) {
-        var fval,
-          cmp = me.getField(attributeCode) // me.getUBCmp(me.attrName(attributeCode));
+        let cmp = me.getField(attributeCode) // me.getUBCmp(me.attrName(attributeCode));
         if (cmp && cmp.isDirty()) {
-          fval = cmp.getValue()
-          me.record.set(attributeCode, fval)
+          let fVal = cmp.getValue()
+          me.record.set(attributeCode, fVal)
         }
       })
       me.enableBinder()
@@ -3193,6 +3182,7 @@ Ext.define('UB.view.BasePanel', {
         values.mi_modifyDate = me.record.get('mi_modifyDate')
       }
 
+      let langFields = []
       if (me.extendedDataForSave) {
         _.forEach(me.extendedDataForSave, function (value, property) {
           var matchRes = property.match(/(\w+)_\w\w\^/)
@@ -3220,12 +3210,13 @@ Ext.define('UB.view.BasePanel', {
       }
       params.__mip_ondate = me.__mip_ondate
       params = me.formRequestConfig('save', params)
+      me.fireEvent('beforesave', me, params)
 
       return $App.connection.update(params)
         .then(function (result) {
           return me.deleteLock().then(function () {
             if (me.isEntityLockable) {
-              return $App.connection.run({
+              return $App.connection.query({
                 method: 'isLocked',
                 entity: me.entityName,
                 ID: me.getInstanceID()
@@ -3424,8 +3415,9 @@ Ext.define('UB.view.BasePanel', {
     }
     ctrl.fireEvent('change')
 
-    $App.scan(title, {}, this.documents[action.attribute].documentMIME)
-    .then(function (result) {
+    $App.scan(
+      title, {}, this.documents[action.attribute].documentMIME
+    ).then(function (result) {
       var fName = prepareFileName()
       return $App.connection.post('setDocument', UB.base64toArrayBuffer(result), {
         params: {
@@ -3439,8 +3431,7 @@ Ext.define('UB.view.BasePanel', {
           'Content-Type': 'application/octet-stream'
         }
       })
-    })
-    .then(function (serverResponse) {
+    }).then(function (serverResponse) {
       ctrl.setValue(serverResponse.data.result, id)
     })
   },
@@ -3449,7 +3440,7 @@ Ext.define('UB.view.BasePanel', {
     var me = this, ctrl = me.getField(action.attribute),
       uploadData = !(ctrl.isEditor && ctrl.isEditor() && ctrl.documentMIME),
       id = this.getInstanceID()
-    ctrl.fireEvent('change')// shatunov: событие о изменении в данном случае надо отправлять до изменения, а не после
+    ctrl.fireEvent('change')
     Ext.create('UB.view.UploadFileAjax', {
       entityName: this.entityName,
       instanceID: id,
@@ -3457,8 +3448,7 @@ Ext.define('UB.view.BasePanel', {
       scope: this,
       uploadData: uploadData,
       callback: function (result) {
-        var
-                    newValue
+        var newValue
         if (!uploadData) {
           ctrl.setContent(result, false).done(function () {
             newValue = null

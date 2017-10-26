@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.4.13]
+### Fixed
+ - UBNotifierWSProtocol do not connect with server after UBConnection restore session. The session can be restored when configuration parameter allowSessionPersistent = true.
+ - Bug with parsing message of UBError: string caught by regexp is caught from JSON representation, not from original error message, therefore, the error message is JSON encoded string,
+   which means the double-quotes would be encoded with backslashes, which does not look good
+ - i18n now recognizes entity and attribute names so that `UB.i18n('uba_user')` or `UB.i18n('uba_role.description')` would be resolved
+   to localized entity caption or entity attribute caption
+
+## [4.4.11]
+### Changed
+ - In case of session persistent clear the session key only for 
+   401 response status (instead of all > 300)
+ 
 ## [4.4.6]
 ### Added
 - ub-pub now export a `UBCache` class, so instead of 

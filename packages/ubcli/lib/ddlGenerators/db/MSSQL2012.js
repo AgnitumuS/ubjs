@@ -375,7 +375,7 @@ class DBSQL2012 extends DBAbstract {
       )
     }
   }
-   /** @override */
+  /** @override */
   genCodeCreateTable (table) {
     let res = [`create table dbo.${table.name}(\r\n`]
     let colLen = table.columns.length

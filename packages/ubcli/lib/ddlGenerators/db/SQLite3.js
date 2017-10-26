@@ -8,7 +8,6 @@ const {TableDefinition} = require('../AbstractSchema')
 const _ = require('lodash')
 
 class DBSQLite3 extends DBAbstract {
-
   loadDatabaseMetadata () {
     let mTables = this.refTableDefs
 
@@ -73,7 +72,7 @@ class DBSQLite3 extends DBAbstract {
           isComputed: false,
           defaultValue: colDef[ 'dflt_value' ]
         })
-        if (colDef[ 'pk' ] === 1) {
+        if (colDef[ 'pk' ]) {
           primaryKeyFields.push(colDef.name)
         }
       }

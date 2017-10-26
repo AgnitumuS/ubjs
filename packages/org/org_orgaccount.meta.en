@@ -18,6 +18,10 @@
             "caption": "Code",
             "description": "Code of the account"
         },
+	"description": {
+            "caption": "Description",
+            "description": "Description"
+        },
         "acctype": {
             "caption": "Type",
             "description": "Type of the account"

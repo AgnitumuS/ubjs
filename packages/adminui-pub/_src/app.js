@@ -1,6 +1,8 @@
+/* global SystemJS */
 require('./app/core/UBApp')
 require('./app/view/UBDropZone')
 require('./app/view/ErrorWindow')
+const UB = require('@unitybase/ub-pub')
 
 /**
  * Main UnityBase Ext-based client file
@@ -13,7 +15,7 @@ function launchApp () {
       window.onerror.apply(this, [ '', '', '', '', error ])
     }
   }
-// for unhandled rejection in bluebird/native promises (IE 10+)
+  // for unhandled rejection in bluebird/native promises (IE 10+)
   window.addEventListener('unhandledrejection', function (e) {
     // NOTE: e.preventDefault() must be manually called to prevent the default
     // action which is currently to log the stack trace to console.warn
@@ -27,13 +29,14 @@ function launchApp () {
   })
 
   window.onerror = function (msg, file, line, column, errorObj) {
-    var message, detail = '', strace, isHandled
+    let message
+    let detail = ''
 
     if (errorObj && UB.UBAbortError && errorObj instanceof UB.UBAbortError) {
       console.log(errorObj)
       return
     }
-    isHandled = errorObj && UB.UBError && errorObj instanceof UB.UBError
+    let isHandled = errorObj && UB.UBError && errorObj instanceof UB.UBError
 
     if (errorObj && Error && errorObj instanceof Error) {
       message = errorObj.message
@@ -41,9 +44,9 @@ function launchApp () {
       if (/q\.js/.test(file) === false) {
         detail += 'file: "' + file + '" line: ' + line
       }
-      strace = errorObj.stack || ''
+      let strace = errorObj.stack || ''
       detail += strace.replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
-      detail = detail.replace(new RegExp(window.location.origin.replace(/\:/g, '\\$&'), 'g'), '') // remove address if same as origin
+      detail = detail.replace(new RegExp(window.location.origin.replace(/:/g, '\\$&'), 'g'), '') // remove address if same as origin
       detail = detail.replace(/\/[\w-]+\.js:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
       detail = detail.replace(/\n/g, '<br>&nbsp;&nbsp;')
     } else if (errorObj && errorObj.data && errorObj.data.errMsg) {
@@ -77,24 +80,23 @@ function launchApp () {
       if (UB.showErrorWindow) {
         UB.showErrorWindow(message, '', '', detail)
       } else {
-        alert(message)
+        window.alert(message)
       }
     } catch (err) {
-      alert(message)
+      window.alert(message)
     }
   }
 
-// disable shadow for all floating window
+  // disable shadow for all floating window
   Ext.Window.prototype.floating = { shadow: false }
 
-  var core = require('@unitybase/ub-pub')
-  var addResourceVersion = core.addResourceVersion
+  let addResourceVersion = UB.addResourceVersion
   Ext.Loader.loadScriptBase = Ext.Loader.loadScript
   Ext.Loader.loadScript = function (options) {
-    var config = this.getConfig(),
-      isString = typeof options === 'string',
-      opt = options
+    let config = this.getConfig()
+    let opt = options
     if (!config.disableCaching) {
+      let isString = typeof options === 'string'
       if (!isString) {
         opt = Ext.clone(options)
         opt.url = addResourceVersion(opt.url)
@@ -109,6 +111,8 @@ function launchApp () {
   Ext.Loader.loadScriptFile = function (url, onLoad, onError, scope, synchronous) {
     // debugger
     try {
+      // throw below required to log a stack trace to console
+      // noinspection ExceptionCaughtLocallyJS
       throw new Error('Component "' + url + '" is loaded directly using Ext.require or inderectly by one of Ext.create({"requires":.., "extend": ..., "mixins": ...}) directive) - in UB4 use require() instead')
     } catch (e) {
       console.warn(e)
@@ -166,7 +170,10 @@ function launchApp () {
     // one line of code changed compared to original: cls: Ext.baseCSSPrefix + 'modal-mask', //mpv
     Ext.override(Ext.ZIndexManager, {
       _showModalMask: function (comp) {
-        var me = this, zIndex = comp.el.getStyle('zIndex') - 4, maskTarget = comp.floatParent ? comp.floatParent.getTargetEl() : comp.container, mask = me.mask
+        let me = this
+        let zIndex = comp.el.getStyle('zIndex') - 4
+        let maskTarget = comp.floatParent ? comp.floatParent.getTargetEl() : comp.container
+        let mask = me.mask
 
         if (!mask) {
           // Create the mask at zero size so that it does not affect upcoming target measurements.
@@ -202,25 +209,22 @@ function launchApp () {
       }
     })
 
-// Patch for "skip" form. When "Ext.LoadMask" use "visibility" for hide mask element and element extends beyond the screen the "viewPort" is expanding.
+    // Patch for "skip" form. When "Ext.LoadMask" use "visibility" for hide mask element and element extends beyond the screen the "viewPort" is expanding.
     Ext.override(Ext.LoadMask, {
       getMaskEl: function () {
-        var me = this
-        if (me.maskEl || me.el) {
-          (me.maskEl || me.el).setVisibilityMode(Ext.Element.DISPLAY)
+        if (this.maskEl || this.el) {
+          (this.maskEl || this.el).setVisibilityMode(Ext.Element.DISPLAY)
         }
-        return me.callParent(arguments)
+        return this.callParent(arguments)
       }
     })
 
     // fix hide submenu (in chrome 43)
     Ext.override(Ext.menu.Menu, {
       onMouseLeave: function (e) {
-        var me = this
-
         // BEGIN FIX
-        var visibleSubmenu = false
-        me.items.each(function (item) {
+        let visibleSubmenu = false
+        this.items.each(function (item) {
           if (item.menu && item.menu.isVisible()) {
             visibleSubmenu = true
           }
@@ -231,22 +235,19 @@ function launchApp () {
         }
         // END FIX
 
-        me.deactivateActiveItem()
+        this.deactivateActiveItem()
+        if (this.disabled) return
 
-        if (me.disabled) {
-          return
-        }
-
-        me.fireEvent('mouseleave', me, e)
+        this.fireEvent('mouseleave', this, e)
       }
     })
 
     /* solutions for problems with a narrow field of chromium */
     Ext.override(Ext.layout.component.field.Field, {
       beginLayoutFixed: function (ownerContext, width, suffix) {
-        var owner = ownerContext.target,
-          inputEl = owner.inputEl,
-          inputWidth = owner.inputWidth
+        let owner = ownerContext.target
+        let inputEl = owner.inputEl
+        let inputWidth = owner.inputWidth
 
         owner.el.setStyle('table-layout', 'fixed')
         if (width !== 100 && suffix !== '%') {
@@ -266,18 +267,14 @@ function launchApp () {
      */
     Ext.override(Ext.form.field.Text, {
       initComponent: function () {
-        var me = this
-        me.requiredCls = 'ub-require-control-u'
-        me.callParent(arguments)
+        this.requiredCls = 'ub-require-control-u'
+        this.callParent(arguments)
       },
 
       afterRender: function () {
-        var me = this
-
-        me.callParent(arguments)
-
-        if (!me.allowBlank) {
-          me.setAllowBlank(me.allowBlank)
+        this.callParent(arguments)
+        if (!this.allowBlank) {
+          this.setAllowBlank(this.allowBlank)
         }
       },
 
@@ -292,7 +289,7 @@ function launchApp () {
         '<tpl if="disabled"> disabled="disabled"</tpl>',
         '<tpl if="tabIdx"> tabIndex="{tabIdx}"</tpl>',
         '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>',
-        ' class="{fieldCls} {typeCls} {editableCls} {inputCls} x-form-field-text" />',  // autocomplete="off"
+        ' class="{fieldCls} {typeCls} {editableCls} {inputCls} x-form-field-text" />', // autocomplete="off"
         {
           disableFormats: true
         }
@@ -307,18 +304,17 @@ function launchApp () {
        * @param allowBlank
        */
       setAllowBlank: function (allowBlank) {
-        var me = this
-        me.allowBlank = allowBlank
-        if (!me.inputEl) {
+        this.allowBlank = allowBlank
+        if (!this.inputEl) {
           return
         }
         if (allowBlank) {
-          me.inputEl.removeCls(me.requiredCls)
-          me.inputEl.dom.removeAttribute('placeholder')
+          this.inputEl.removeCls(this.requiredCls)
+          this.inputEl.dom.removeAttribute('placeholder')
         } else {
-          me.inputEl.addCls(me.requiredCls)
-          if (me.requireText) {
-            me.inputEl.dom.setAttribute('placeholder', UB.i18n(me.requireText))
+          this.inputEl.addCls(this.requiredCls)
+          if (this.requireText) {
+            this.inputEl.dom.setAttribute('placeholder', UB.i18n(this.requireText))
           }
         }
       }
@@ -336,15 +332,13 @@ function launchApp () {
       /**
        * @cfg withoutIndent Disable all field indent when true. Default true.
        */
-      margin: '3 15 2 15',  // 9 15 9 15
+      margin: '3 15 2 15',
       withoutIndent: true,
       getLabelableRenderData: function () {
-        var me = this, data
-
-        data = me.callParent(arguments)
-        if (!me.withoutIndent) {
-          data.leftIndent = me.leftIndent
-          data.rightIndent = me.rightIndent
+        let data = this.callParent(arguments)
+        if (!this.withoutIndent) {
+          data.leftIndent = this.leftIndent
+          data.rightIndent = this.rightIndent
         }
         return data
       },
@@ -436,18 +430,16 @@ function launchApp () {
 
     Ext.override(Ext.layout.container.Accordion, {
       beforeRenderItems: function (items) {
-        var me = this, i, comp
-        for (i = 0; i < items.length; i++) {
-          comp = items[i]
-          comp.simpleCollapse = true
+        for (let i = 0, l = items.length; i < l; i++) {
+          items[i].simpleCollapse = true
         }
-        me.callParent([items])
+        this.callParent([items])
       }
     })
 
     Ext.override(Ext.panel.Panel, {
       initTools: function () {
-        var me = this, vertical
+        let me = this
         if (me.simpleCollapse) {
           me.tools = []
 
@@ -472,7 +464,7 @@ function launchApp () {
             me.toggleCmp.addCls(['fa', 'fa-angle-right'])
           }
 
-          vertical = me.headerPosition === 'left' || me.headerPosition === 'right'
+          let vertical = me.headerPosition === 'left' || me.headerPosition === 'right'
           me.header = Ext.widget(Ext.apply({
             xtype: 'header',
             title: me.title,
@@ -510,35 +502,31 @@ function launchApp () {
       },
 
       toggleC: function () {
-        var me = this
-        if (!me.toggleCmp) {
+        if (!this.toggleCmp) {
           return
         }
-        if (!me.collapsed) {
-          me.toggleCmp.removeCls('fa-angle-right')
-          me.toggleCmp.addCls('fa-angle-down')
+        if (!this.collapsed) {
+          this.toggleCmp.removeCls('fa-angle-right')
+          this.toggleCmp.addCls('fa-angle-down')
         } else {
-          me.toggleCmp.removeCls('fa-angle-down')
-          me.toggleCmp.addCls('fa-angle-right')
+          this.toggleCmp.removeCls('fa-angle-down')
+          this.toggleCmp.addCls('fa-angle-right')
         }
       },
 
       expand: function (animate) {
-        var me = this
-        me.callParent(arguments)
-        me.toggleC()
+        this.callParent(arguments)
+        this.toggleC()
       },
 
       collapse: function (direction, animate) {
-        var me = this
-        me.callParent(arguments)
-        me.toggleC()
+        this.callParent(arguments)
+        this.toggleC()
       },
 
       updateCollapseTool: function () {
-        var me = this
-        if (!me.simpleCollapse) {
-          me.callParent(arguments)
+        if (!this.simpleCollapse) {
+          this.callParent(arguments)
         }
       }
     })
@@ -563,6 +551,8 @@ function launchApp () {
     })
 
     // Cancel the default behavior Ctrl+R to of the user input is not lost
+
+    // eslint-disable-next-line
     new Ext.util.KeyMap({
       target: window.document.body,
       binding: [ {
@@ -578,13 +568,11 @@ function launchApp () {
 
     // Stop the backspace key from going to the previous page in your extjs app
     Ext.EventManager.addListener(Ext.getBody(), 'keydown', function (e) {
-      var
-        type = (e.getTarget().tagName || '').toLocaleLowerCase(),
-        eKey = e.getKey()
+      let type = (e.getTarget().tagName || '').toLocaleLowerCase()
+      let eKey = e.getKey()
       if (eKey === Ext.EventObject.BACKSPACE && 'textarea|input'.indexOf(type) < 0) {
         e.preventDefault()
       }
-
       if (e.getKey() === Ext.EventObject.C && e.ctrlKey && e.altKey) {
         UB.core.UBFormLoader.clearFormCache()
       }

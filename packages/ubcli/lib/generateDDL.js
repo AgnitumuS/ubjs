@@ -46,7 +46,7 @@ module.exports = function generateDDL (cgf) {
     cgf = opts.parseVerbose({}, true)
     if (!cgf) return
   }
-    // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
+  // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({receiveTimeout: 120000})
   let session = argv.establishConnectionFromCmdLineAttributes(cgf)
   let conn = session.connection
