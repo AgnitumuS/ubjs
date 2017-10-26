@@ -119,7 +119,8 @@ Ext.define('UB.ux.UBDocument', {
       'application/uborgchart': 'UB.ux.UBOrgChart',
       'application/UBOrgChart': 'UB.ux.UBOrgChart',
       'application/msword': 'UB.ux.UBOnlyOffice',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'UB.ux.UBOnlyOffice'
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'UB.ux.UBOnlyOffice',
+      'application/rtf': 'UB.ux.UBOnlyOffice'
     }
   },
   layout: 'fit',
@@ -183,23 +184,25 @@ Ext.define('UB.ux.UBDocument', {
   /**
    * Creates component based on contentType.
    * When no component found for contentType default 'UB.ux.UBLink' component created
-   * @param {String} contentType
+   * @param {String} contentMIME MIME type of document
+   * @param {String?} xtype type of component
    */
-  createComponent: function (contentType) {
+  createComponent: function (contentMIME, xtype) {
     const me = this
-    if (!me.ubCmp || (me.keepCmpOnRefresh === false) || (contentType !== me.cmpContentType)) {
-      me.cmpContentType = contentType
+    if (!me.ubCmp || (me.keepCmpOnRefresh === false) || (contentMIME !== me.cmpContentType)) {
       if (me.items && me.items.length > 0) {
         me.removeAll()
       }
 
-      me.contentXType = me.getExtXType(contentType)
+      me.cmpContentType = contentMIME
+      me.contentXType = !xtype ? me.getExtXType(contentMIME) : xtype
       me.ubCmp = Ext.create(me.contentXType, Ext.apply({
         name: me.name,
         useBlobForData: true,
-        mode: me.getNormalizeContentType(contentType),
+        mode: me.getNormalizeContentType(contentMIME),
         readOnly: me.readOnly
       }, me.cmpConfig || {}))
+
       me.add(me.ubCmp)
       me.ubCmp.on('change', me.checkContentChange, me)
       me.ubCmp.on('setOriginalValue', function (originalValue) {
@@ -284,6 +287,8 @@ Ext.define('UB.ux.UBDocument', {
    * @return {String}
    */
   getNormalizeContentType: function (contentType) {
+    if (!contentType) return contentType
+
     const pos = contentType.indexOf(';')
     if (pos !== -1) {
       return contentType.substring(0, pos)
@@ -305,7 +310,7 @@ Ext.define('UB.ux.UBDocument', {
       return contentType
     }
 
-    if (this.expanded) {
+    if (!!contentType && this.expanded) {
       normContentType = this.getNormalizeContentType(contentType)
       const derivedXtype = UB.ux.UBDocument.contentTypeMapping[normContentType]
 
@@ -492,7 +497,6 @@ Ext.define('UB.ux.UBDocument', {
     const me = this
     const defer = Q.defer()
     let xtype, contentMIME, url, params
-    let val = {}
     let hasError = false
     let isString = Ext.isString(valueStr)
     let isObject = Ext.isObject(valueStr)
@@ -501,10 +505,10 @@ Ext.define('UB.ux.UBDocument', {
     me.lastOriginalValue = valueStr
     me.instanceID = instanceID
 
-    val = isString ? Ext.JSON.decode(valueStr) : valueStr
+    const val = isString ? Ext.JSON.decode(valueStr) : valueStr
 
-    const isValueCorrectString = !isString || valueStr.length === 0
-    const isValueCorrectObject = !isObject || !valueStr.ct || !valueStr.origName || valueStr.deleting
+    const isValueCorrectString = isString && valueStr.length !== 0
+    const isValueCorrectObject = isObject && !!valueStr.ct && !!valueStr.origName && !valueStr.deleting
 
     if (!isValueCorrectString && !isValueCorrectObject) {
       hasError = true
@@ -513,11 +517,12 @@ Ext.define('UB.ux.UBDocument', {
         contentMIME = me.documentMIME
       } else {
         xtype = 'UB.ux.UBLabel'
+        contentMIME = ''
         url = UB.i18n('emptyContent')
       }
     } else {
-      xtype = me.expanded ? me.getExtXType(val.ct) : 'UB.ux.UBLink'
-      contentMIME = val.ct
+      contentMIME = !me.documentMIME ? val.ct : me.documentMIME
+      xtype = me.expanded ? me.getExtXType(contentMIME) : 'UB.ux.UBLink'
 
       params = {
         entity: me.entityName,
@@ -552,7 +557,6 @@ Ext.define('UB.ux.UBDocument', {
     }
 
     me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined
-
     me.checkChange()
 
     function onContentLoad (blob, baseUrl, baseCt) {
@@ -589,7 +593,7 @@ Ext.define('UB.ux.UBDocument', {
       // <-- onlyOffice
       // to prevent double loading of document from store
       // onlyOffice has it's own block
-      me.createComponent(contentMIME)
+      me.createComponent(contentMIME, xtype)
       me.ubCmp.setSrc({
         contentType: contentMIME,
         params: params,
@@ -602,17 +606,13 @@ Ext.define('UB.ux.UBDocument', {
         } else {
           defer.resolve(null)
         }
-      }).finally(function () {
-        if (me.getEl()) {
-          me.getEl().unmask()
-        }
       })
       // --> /onlyOffice
     } else if (xtype === 'UB.ux.UBLink' || (hasError && Ext.Object.getSize(val) !== 0)) {
-      me.createComponent(contentMIME)
+      me.createComponent(contentMIME, xtype)
       onContentLoad(null, url, contentMIME)
     } else if (Ext.Object.getSize(val) === 0) {
-      me.createComponent(xtype)
+      me.createComponent(contentMIME, xtype)
       // xmax событие для инициализации нового документа где такое необходимо
       if (me.ubCmp.initNewSrc) {
         me.value = me.ubCmp.initNewSrc()
@@ -626,14 +626,14 @@ Ext.define('UB.ux.UBDocument', {
         me.getEl().mask(UB.i18n('loadingData'))
       }
 
-      me.loadContent(url, contentMIME).then(function (blob) {
+      me.loadContent(url, contentMIME).then((blob) => {
         contentMIME = blob.type
         me.createComponent(contentMIME)
         onContentLoad(blob, url, contentMIME)
         if (me.getEl()) {
           me.getEl().unmask()
         }
-      }, function (reason) {
+      }, (reason) => {
         if (me.getEl()) {
           me.getEl().unmask()
         }
