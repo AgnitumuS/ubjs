@@ -137,13 +137,24 @@ FileBasedStoreLoader.prototype.load = function () {
     let l = result.fields.indexOf('mi_modifyDate')
     if (l !== -1) {
       let dataVersion = 0
-      result.data.forEach((row) => {
-        if (dataVersion < row[l]) {
-          dataVersion = row[l]
-        }
-      })
-      // add a row count for case when some row are deleted or added with old date
-      result.version = new Date(dataVersion).getTime() + result.data.length
+      // for UnityBase calculate accum of crc32(prev, fileDate.toString()) and forms count
+      if (typeof ncrc32 === 'function') {
+        result.data.forEach((row) => {
+          dataVersion = ncrc32(dataVersion, '' + row[l])
+        })
+        result.version = ncrc32(dataVersion, '' + result.data.length)
+      } else {
+        // for NodeJS - max date
+        // we can update one model earlier than other, so max date of file changes is a bad choice
+        result.data.forEach((row) => {
+          if (dataVersion < row[l]) {
+            dataVersion = row[l]
+          }
+        })
+        // add a row count for case when some row are deleted or added with old date
+        result.version = new Date(dataVersion).getTime() + result.data.length
+      }
+
     }
   } else {
     result = me.resultCollection

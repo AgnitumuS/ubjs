@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.23]
+- `FileBaseStoreLoader` now use a `CRC32(fileDate.toString())` to calculate a cache version (UB only).
+Prev. implementataion based on max file modification date fails in 
+case we updated something backwards
+
 ## [4.2.21]
 ### Added
 - `argv.establishConnectionFromCmdLineAttributes` can accept a `-timeout` command line which
