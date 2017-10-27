@@ -118,8 +118,10 @@ Ext.define('UB.ux.UBDocument', {
       'application/ubmetadiagram': 'UB.ux.UBMetaDiagram',
       'application/uborgchart': 'UB.ux.UBOrgChart',
       'application/UBOrgChart': 'UB.ux.UBOrgChart',
-      'application/msword': 'UB.ux.UBOnlyOffice',
+      // 'application/msword': 'UB.ux.UBOnlyOffice',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'UB.ux.UBOnlyOffice',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'UB.ux.UBOnlyOffice',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'UB.ux.UBOnlyOffice',
       'application/rtf': 'UB.ux.UBOnlyOffice'
     }
   },
@@ -771,7 +773,15 @@ Ext.define('UB.ux.UBDocument', {
           ? val.origName
           : me.documentMIME && (me.documentMIME.indexOf('/') < me.documentMIME.length - 1) ? 'newfile.' + me.documentMIME.substr(me.documentMIME.indexOf('/') + 1) : ''
 
-        return $App.connection.setDocument(me.entityName, me.attributeName, me.instanceID, contentData, fileName)
+        return $App.connection.post('setDocument', contentData, {
+          params: {
+            entity: me.entityName,
+            attribute: me.attributeName,
+            ID: me.instanceID,
+            filename: fileName
+          },
+          headers: {'Content-Type': 'application/octet-stream'}
+        })
       })
     }
 
