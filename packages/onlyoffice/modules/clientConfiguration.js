@@ -9,7 +9,7 @@ const lodash = require('lodash')
 function onlyOfficeOnUserLogin () {
   const configuration = getOnlyOfficeConfiguration()
   if (configuration.isConfigured) {
-    lodash.defaults(Session.uData, { onlyOfficeServer: configuration.serverIP })
+    lodash.defaults(Session.uData, { onlyOfficeServer: configuration.documentServerURL })
   }
 }
 

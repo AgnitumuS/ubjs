@@ -36,13 +36,13 @@ Ext.define('UB.ux.UBOnlyOffice', {
     },
     /**
      * returns component configuration
-     * @return {{isConfigured: boolean, serverIP: string}}
+     * @return {{isConfigured: boolean, documentServerURL: string}}
      */
     getConfiguration: function () {
       const serverAddress = $App.connection.userData('onlyOfficeServer')
       const configuration = {
         isConfigured: !!serverAddress,
-        serverIP: serverAddress || ''
+        documentServerURL: serverAddress || ''
       }
       return configuration
     },
@@ -137,7 +137,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
       return
     }
 
-    const url = 'http://' + configuration.serverIP + '/web-apps/apps/api/documents/api.js'
+    const url = configuration.documentServerURL + '/web-apps/apps/api/documents/api.js'
     me._initializationPromise = me._loadScript(url)
     me._domReadyDefer = Q.defer()
     me.callParent(arguments)

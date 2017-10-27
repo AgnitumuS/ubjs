@@ -71,7 +71,7 @@
 			},
 			"linter": { "asi": true, "sub": true },
 			"onlyOffice": {
-				"serverIP": "%COMPUTERNAME%:32771"
+				"documentServerURL": "http://%COMPUTERNAME%:32771"
 			}
 		},
 		"portalUI": {

@@ -89,7 +89,9 @@ function generateIndexPage (req, resp, indexName, addCSP=true) {
       if (!uiSettings) {
         uiSettings = JSON.parse(App.getUISettings() || '{}')
       }
-      let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
+      let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.documentServerURL)
+        ? uiSettings.adminUI.onlyOffice.documentServerURL.toLowerCase()
+        : ''
       let cspHeaders =
         // "default-src * data: blob:;" +
         "script-src 'self' 'unsafe-inline' 'unsafe-eval' " + onlyOfficeServer + ';' +
