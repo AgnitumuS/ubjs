@@ -6,15 +6,24 @@
 // @caption "test form for only office"
 // @description "test form for only office"
 exports.formDef = {
+  parentConfig: {
+    postOnlySimpleAttributes: true,
+    layout: {
+      type: "vbox",
+      align: "stretch"
+    }
+  },
   items: [
-    { attributeName: 'caption' },
+    { 
+      attributeName: 'caption',
+      hideLabel: true,
+      rows: 2
+    },
     {
+      flex: 1,
       attributeName: 'content',
       expanded: true,
-      readOnly: false,
-      documentMIME: 'application/word',
-      height: 600,
-      width: 1200
+      readOnly: false
     }
   ]
 }
