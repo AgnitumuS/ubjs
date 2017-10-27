@@ -13,7 +13,6 @@ require('./UBReportEditor')
 require('./UBMetaDiagram')
 // require('./GraphViewer')
 require('./UBOrgChart')
-require('./UBOnlyOffice')
 // noinspection JSUnusedGlobalSymbols
 /**
  * Container for display `Document` type attribute value.
@@ -55,17 +54,6 @@ Ext.define('UB.ux.UBDocument', {
   },
   alias: 'widget.ubdocument',
 
-  // requires: [
-  //     'UB.core.UBService',
-  //     'UB.ux.UBObject',
-  //     'UB.ux.PDFComponent',
-  //     'UB.ux.UBImg',
-  //     'UB.ux.UBLink',
-  //     'UB.ux.UBLabel',
-  //     'UB.ux.UBTinyMCETextArea',
-  //     'UB.ux.UBCodeMirror',
-  //     'UB.ux.UBReportEditor'
-  // ],
   uses: ['UB.core.UBApp'],
   autoEl: 'div',
   statics: {
@@ -74,8 +62,7 @@ Ext.define('UB.ux.UBDocument', {
       codeMirror: 'UB.ux.UBCodeMirror',
       ubDiagram: 'UB.ux.UBMetaDiagram',
       ubOrgChart: 'UB.ux.UBOrgChart',
-      ubReport: 'UB.ux.UBReportEditor',
-      onlyOffice: 'UB.ux.UBOnlyOffice'
+      ubReport: 'UB.ux.UBReportEditor'
     },
 
     valueProperties: {
@@ -117,12 +104,7 @@ Ext.define('UB.ux.UBDocument', {
       'application/ubMetaDiagram': 'UB.ux.UBMetaDiagram',
       'application/ubmetadiagram': 'UB.ux.UBMetaDiagram',
       'application/uborgchart': 'UB.ux.UBOrgChart',
-      'application/UBOrgChart': 'UB.ux.UBOrgChart',
-      // 'application/msword': 'UB.ux.UBOnlyOffice',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'UB.ux.UBOnlyOffice',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'UB.ux.UBOnlyOffice',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'UB.ux.UBOnlyOffice',
-      'application/rtf': 'UB.ux.UBOnlyOffice'
+      'application/UBOrgChart': 'UB.ux.UBOrgChart'
     }
   },
   layout: 'fit',

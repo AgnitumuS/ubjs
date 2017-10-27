@@ -7,16 +7,14 @@
  *
  {....
    layout: {
-   type: 'vbox',
-   align: 'stretch'
- },
- items: [{
-   attributeName: 'resume', // in *.meta has to be of 'Document' type
-   expanded: true, // or will be collapsed to link
-   readOnly: true, // true|false
-   documentMIME: 'application/word', // 'application/word'|'application/excel'
-   height: 500,
-   width: 800
+     type: 'vbox',
+     align: 'stretch'
+   },
+   items: [{
+     flex: 1,
+     attributeName: 'resume', // in *.meta has to be of 'Document' type
+     expanded: true, // or will be collapsed to link
+     readOnly: true, // true|false
    }]
  }
  *
@@ -25,11 +23,6 @@
 Ext.define('UB.ux.UBOnlyOffice', {
   extend: 'Ext.Component',
   alias: 'widget.UBOnlyOffice',
-  minHeight: 500,
-  minWidth: 500,
-  width: '100%',
-  height: '100%',
-  layout: 'fit',
   statics: {
     /**
      * Maps MIMEType to editor type ('application/msword' -> 'text')
@@ -172,7 +165,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     const me = this
     me.readOnly = readOnly
     if (readOnly && me._onlyOfficeObject) {
-      console.log('UB.ux.UBOnlyOffice control set to readonly state. But object already created')
+      console.warn('UB.ux.UBOnlyOffice control set to readonly state. But object already created')
     }
   },
 
@@ -207,13 +200,12 @@ Ext.define('UB.ux.UBOnlyOffice', {
     me._params = cfg.params
     me._params.user = $App.connection.userData('userID')
 
-    Q.all([me._initializationPromise, me._domReadyDefer.promise])
-      .then(() => {
-        const documentType = me._mapContentTypeToDocumentType(cfg.contentType)
-        const configuration = me._getControlConfiguration(documentType, cfg.params, cfg.html)
-        me._documentKey = configuration.document.key
-        me._onlyOfficeObject = new DocsAPI.DocEditor(me._placeholderID, configuration)
-      })
+    Promise.all([me._initializationPromise, me._domReadyDefer.promise]).then(function () {
+      const documentType = me._mapContentTypeToDocumentType(cfg.contentType)
+      const configuration = me._getControlConfiguration(documentType, cfg.params, cfg.html)
+      me._documentKey = configuration.document.key
+      me._onlyOfficeObject = new DocsAPI.DocEditor(me._placeholderID, configuration)
+    })
 
     return Q.resolve(true)
   },
@@ -268,7 +260,8 @@ Ext.define('UB.ux.UBOnlyOffice', {
           'forcesave': true,
           'chat': false,
           'compactToolbar': true,
-          'comments': false
+          'comments': false,
+          header: false
         }
       },
       'events': {
