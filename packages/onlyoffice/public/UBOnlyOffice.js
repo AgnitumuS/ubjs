@@ -21,7 +21,8 @@
  */
 
 Ext.define('UB.ux.UBOnlyOffice', {
-  extend: 'Ext.Component',
+  // extend: 'Ext.Component', resize not work
+  extend: 'Ext.panel.Panel',
   alias: 'widget.UBOnlyOffice',
   statics: {
     /**
@@ -102,21 +103,21 @@ Ext.define('UB.ux.UBOnlyOffice', {
   // endregion
 
   listeners: {
-    boxready: function (me, width, height) {
-      console.log('boxready')
-      console.log(width)
-      console.log(height)
-    },
-    resize: function (me, width, height, oldWidth, oldHeight) {
-      console.log('resize')
-      console.log(width)
-      console.log(height)
-      console.log(oldWidth)
-      console.log(oldHeight)
-    },
+    // boxready: function (me, width, height) {
+    //   console.log('boxready')
+    //   console.log(width)
+    //   console.log(height)
+    // },
+    // resize: function (me, width, height, oldWidth, oldHeight) {
+    //   console.log('resize')
+    //   console.log(width)
+    //   console.log(height)
+    //   console.log(oldWidth)
+    //   console.log(oldHeight)
+    // },
     render: function (me) {
       // me.body may be not available before render
-      me._placeholderID = me.getId()
+      me._placeholderID = me.body.dom.id
       me._domReadyDefer.resolve()
     }
   },
