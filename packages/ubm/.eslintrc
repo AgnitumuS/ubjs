@@ -1,3 +1,7 @@
 {
-  "extends": ["standard"]
+  "extends": ["standard"],
+  "globals": {
+    "App": true,
+    "ncrc32": true
+  }
 } 

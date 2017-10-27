@@ -557,8 +557,8 @@ Ext.define('UB.core.UBCommand', {
       me.formCode(me.entity, me.instanceID, me.onFormCodeRun, me)
     } else {
       me.formParam = me.getFormParam()
-     // me.description = me.description || (me.formParam ? me.formParam.description : undefined)
-	 me.caption = me.caption || (me.formParam ? me.formParam.caption : undefined)
+      // me.description = me.description || (me.formParam ? me.formParam.description : undefined)
+      me.caption = me.caption || (me.formParam ? me.formParam.caption : undefined)
       if (!Ext.isDefined(me.formCode)) {
         me.windowCommandCode = UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), defaultItems = UB.core.UBCommand.createDefaultItems(me.entity, me.parentContext))
         me.description = $App.domainInfo.get(me.entity).caption
