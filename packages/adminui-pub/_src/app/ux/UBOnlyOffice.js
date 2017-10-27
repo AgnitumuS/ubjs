@@ -23,7 +23,7 @@
  */
 
 Ext.define('UB.ux.UBOnlyOffice', {
-  extend: 'Ext.panel.Panel',
+  extend: 'Ext.Component',
   alias: 'widget.UBOnlyOffice',
   minHeight: 500,
   minWidth: 500,
@@ -36,7 +36,9 @@ Ext.define('UB.ux.UBOnlyOffice', {
      */
     contentTypeMap: { // 'text' | 'spreadsheet' | 'presentation',
       'application/msword': 'text',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'spreadsheet'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'text',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'spreadsheet',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'presentation'
     },
     /**
      * returns component configuration
@@ -45,7 +47,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     getConfiguration: function () {
       const serverAddress = $App.connection.userData('onlyOfficeServer')
       const configuration = {
-        isConfigured: _.isString(serverAddress),
+        isConfigured: !!serverAddress,
         serverIP: serverAddress || ''
       }
       return configuration
@@ -121,7 +123,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
     },
     render: function (me) {
       // me.body may be not available before render
-      me._placeholderID = me.body.dom.id
+      me._placeholderID = me.getId()
       me._domReadyDefer.resolve()
     }
   },
@@ -203,7 +205,7 @@ Ext.define('UB.ux.UBOnlyOffice', {
   setSrc: function (cfg) {
     const me = this
     me._params = cfg.params
-    me._params.user = $App.getUserData().userID
+    me._params.user = $App.connection.userData('userID')
 
     Q.all([me._initializationPromise, me._domReadyDefer.promise])
       .then(() => {
