@@ -9,7 +9,7 @@ if (getOnlyOfficeConfiguration().isConfigured) {
 
   // endpoint used by onlyOffice to notify about document modifications and end of editing
   const notifyDocumentSaved = require('./modules/notifyOnlyOffice')
-  App.registerEndpoint('onlyoffice/notifyDocumentSaved', notifyDocumentSaved, false)
+  App.registerEndpoint('notifyDocumentSaved', notifyDocumentSaved, false)
 
   // endpoint called from component UB.ux.UBOnlyOffice (adminui-pub/_src/app/ux/UBOnlyOffice.js)
   // places document to temp store
