@@ -76,7 +76,7 @@ Ext.define('UB.ux.UBDocument', {
      * @static
      */
     contentTypeMapping: {
-      'application/pdf': 'UB.ux.PDFCompon ent',
+      'application/pdf': 'UB.ux.PDFComponent',
       'application/edi': 'UB.ux.PDFComponent',
       'image/png': 'UB.ux.UBImg', // Ext.Img
       'image/gif': 'UB.ux.UBImg',
