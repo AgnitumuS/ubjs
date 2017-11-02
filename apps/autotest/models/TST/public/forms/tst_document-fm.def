@@ -34,14 +34,40 @@ exports.formDef = {
 		  ]
 		},
     { attributeName: "code" /*Code*/},
-        { attributeName: "description",width: 800},
+    { attributeName: "description",width: 800},
 		{ xtype: 'ubfieldset', 
-          text: 'Grouped data',
-          items: [
-        	{ attributeName: "docDate"},
-			{ attributeName: "docDateTime"}
-          ]
-        },
-        { attributeName: "fileStoreSimple", expanded: true, height: 500}
+      text: 'Grouped data',
+      items: [
+      	{ attributeName: "docDate"},
+				{ attributeName: "docDateTime"}
+      ]
+    },
+    {
+      xtype: "grid", 
+      store: new UB.ux.data.UBStore({
+        ubRequest: UB.Repository('tst_document').attrs(['ID', 'docDate', 'code', 'description']).ubql()
+      }),
+      columns: [{
+        text     : 'ID',
+        width    : 100,
+        sortable : false,
+        dataIndex: 'ID'
+      }, {
+        text: 'Other attrs',
+        columns: [{
+          text     : 'docDate',
+          width    : 250,
+          sortable : true,
+          dataIndex: 'docDate'
+        }, {
+          text     : 'code',
+          width    : 180,
+          sortable : true,
+          dataIndex: 'code'
+        }]
+      }],  
+      height: 200
+    },
+    { attributeName: "fileStoreSimple", expanded: true, height: 500}
 	]
 };
