@@ -62,12 +62,15 @@ function registerOpenIDEndpoint (endpointName) {
      * @param {String} providerConfig.authUrl Provider's authorisation url
      * @param {String} providerConfig.tokenUrl Provider's token url
      * @param {String} providerConfig.userInfoUrl provider's userinfo url
+     * @param {String} [providerConfig.logoutUrl] Logout url
      * @param {String} [providerConfig.userInfoHTTPMethod='GET'] Http method for userinfo request. Default GET
      * @param {String} providerConfig.scope requested scopes delimited by '+' symbol
      * @param {String} [providerConfig.nonce] nonce  TODO - generate random and cache in GlobalCache with expire
      * @param {String} providerConfig.response_type response type. Must contain code. This module use code responce type.
      * @param {String} providerConfig.client_id client_id. Get it from provider
      * @param {String} providerConfig.client_secret client_secret. Get it from provider
+     * @param {Function} providerConfig.getCustomFABody Function, that returns custom text included to final html success/fail response
+     * @param {String} providerConfig.response_mode One of: form_post, fragment, query
      * @param {Function} providerConfig.getOnFinishAction Function, that returns client-side code to be run after success/fail response from OpenID provider.
      *  For example: `opener.$App.onFinishOpenIDAuth`. In case of success will be called with `{success: true, data: userData, secretWord: secretWord}`
      *  In case of fail `{success: false}`
@@ -99,6 +102,7 @@ function registerOpenIDEndpoint (endpointName) {
  * If called as host:port[/app]/endpoint - return a list of registered openIDConnect providers,
  * If called as host:port[/app]/endpoint/provider without parameters - redirect to provider `authUrl`
  * If called as host:port[/app]/endpoint/provider with parameters `code` and `state` - call doProviderAuthHandshake method
+ * If called as host:port[/app]/endpoint/provider with parameters `logout` - redirect to logout url
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
@@ -155,6 +159,8 @@ function openIDConnect (req, resp) {
       })
     }
     doProviderAuthHandshake(resp, params.code, params.state, provider, redirectUrl, origin)
+  } else if (params.logout) {
+    redirectToProviderLogout(req, resp, provider, params)
   } else {
     notifyProviderError(resp, provider)
   }
@@ -187,6 +193,12 @@ function getAuthCustomHeadersString (customHeaders) {
   return '&' + headerStringArray.join('&')
 }
 
+function redirectToProviderLogout (req, resp, providerConfig, requestParams) {
+  resp.statusCode = 302
+  resp.writeEnd('')
+  resp.writeHead('Location: ' + providerConfig.logoutUrl)
+}
+
 function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, requestParams) {
   resp.statusCode = 302
   let customHeaders = ''
@@ -203,7 +215,7 @@ function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, request
     '&redirect_uri=' + redirectUrl +
     '&response_type=' + providerConfig.response_type +
     '&client_id=' + providerConfig.client_id +
-    '&response_mode=form_post' +
+    '&response_mode=' + providerConfig.response_mode || 'form_post' +
     '&referer=' + redirectUrl +
     // '&referer=BACK_REDIRECT_URL' +
     customHeaders
@@ -219,7 +231,14 @@ function notifyProviderError (resp, provider) {
   resp.statusCode = 200
   resp.write('<!DOCTYPE html><html>')
   resp.write('<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
-  resp.write('<body><script>')
+  resp.write('<body>')
+  if (provider.getCustomFABody) {
+    let customFABody = provider.getCustomFABody({success: false})
+    if (customFABody) {
+      resp.write(customFABody)
+    }
+  }
+  resp.write('<script>')
   resp.write(provider.getOnFinishAction({success: false}))
   resp.write('</script></body>')
   resp.writeEnd('</html>')
@@ -263,12 +282,18 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
       if (!userID) {
         notifyProviderError(resp, provider)
       } else {
-        let loginResp = Session.switchUser(userID, code)
+        let loginResp = Session.setUser(userID, code)
         let objConnectParam = {success: true, data: JSON.parse(loginResp), secretWord: code}
         resp.statusCode = 200
         resp.write('<!DOCTYPE html><html>')
         resp.write('<head><meta http-equiv="X-UA-Compatible" content="IE=edge" /></head>')
         resp.write('<body>')
+        if (provider.getCustomFABody) {
+          let customFABody = provider.getCustomFABody(objConnectParam)
+          if (customFABody) {
+            resp.write(customFABody)
+          }
+        }
         resp.write('<div style="display: none;"  id="connectParam" >')
         resp.write(JSON.stringify(objConnectParam))
         resp.write('</div><div id="mainElm" onClick="javascript: window.close();" style="width:100%; height:100vh" ></div><script>')
