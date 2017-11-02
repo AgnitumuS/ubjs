@@ -240,8 +240,7 @@ var
   obj: PJSObject;
   prop_ids: JSIdArray;
   PropNameVal: jsval;
-  propVal: jsval;
-
+ 
   NamedPropsCount: integer;
   PropsCount: integer;
   Names: POleStrList;
@@ -459,6 +458,7 @@ begin
 //    end;
 //  end;
 //  Result := JS_TRUE;
+  Result := true;
 end;
 
 function COM_GetProperty(cx: PJSContext; var obj: PJSObject; var id: jsid; out vp: jsval): Boolean; cdecl; 
@@ -585,7 +585,6 @@ end;
 
 function nsm_createCOMObject(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 var
-  val: jsval;
   params: PjsvalVector;
   str: string;
   obj: PJSObject;
