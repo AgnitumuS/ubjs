@@ -6,7 +6,7 @@ cd %~dp0..\..\mailer\src
 %DCC7% -$D- -$L- -$Y- -B -Q -DRELEASE;openssl%SM52DEF% -E..\..\mailer-ssl\bin\x32 ^
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^
-  -U%LIB%\FastMM;%SYN_LIB%;%UB_CORE%;%LIB%\synapse40\source\lib;"%DELPHI_7%\lib\Win32\release" ^
+  -U%UNIT_PATH%;"%DELPHI_7%\lib\Win32\release" ^
   -N%DCU7_PATH% ^
   UBMail.dpr
 
@@ -16,6 +16,6 @@ if not exist %~dp0x64 mkdir %~dp0x64
   -I%SYN_LIB% ^
   -R%SYN_LIB% ^
   -R%LIB%\Synopse ^
-  -U%LIB%\FastMM;%SYN_LIB%;%UB_CORE%;%LIB%\synapse40\source\lib;"%DELPHI_XE2%\lib\Win64\release" ^
+  -U%UNIT_PATH%;"%DELPHI_XE2%\lib\Win64\release" ^
   -N%DCUX64_PATH% ^
   UBMail.dpr

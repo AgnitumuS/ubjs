@@ -1,4 +1,4 @@
-﻿{ 
+{ 
 	"httpServer": {
 		"host": "+",
 		"port": "888",
@@ -38,14 +38,6 @@
 		"authenticationMethods": [
 			"UB", "Negotiate"
 		],
-		"dstu": {
-			"findCertificateBySerial": true,
-			"iit": {
-				"libraryPath": "D:\\SVN\\M3\\trunk\\06-Source\\libs_vendor\\iit",
-				"keyPath": ".\\models\\TST\\_autotest\\iitKey\\Key-6.pfx",
-				"password": "12345678"
-			}
-		},
 		"ldapCatalogs": [
 			{
 				"name": "MYDOMAIN",
