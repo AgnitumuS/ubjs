@@ -141,7 +141,7 @@
 				},
 				{
 					"name": "TST",
-					"path": ".\\models\\TST"
+					"path": "./models/TST"
 				}
 			],
 			"implicitlyAddedMixins": [
