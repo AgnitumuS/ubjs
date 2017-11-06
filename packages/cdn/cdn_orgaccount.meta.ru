@@ -21,6 +21,10 @@
         "acctype": {
             "caption": "Тип счета",
             "description": "Тип счета"
+        },
+        "description": {
+            "caption": "Описание",
+            "description": "Описание"
         }
     }
 }
