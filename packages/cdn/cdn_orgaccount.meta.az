@@ -21,6 +21,10 @@
         "acctype": {
             "caption": "Hesab tipi",
             "description": "Hesab tipi"
+        },
+        "description": {
+            "caption": "Təsvir",
+             "description": "Təyinatın təsviri"
         }
     }
 }

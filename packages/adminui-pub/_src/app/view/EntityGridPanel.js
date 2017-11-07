@@ -19,14 +19,14 @@ const _ = require('lodash')
  *
  * Configuration sample:
  *
-        {
-          xtype: "entitygridpanel",
-          entityConfig: {
-              entity: "uba_userrole",
-              method: "select",
-              fieldList: ['ID', {name: 'docID', visibility: false}, {name: 'name', description: 'ShowThisAsCaption}, "code", "actionType"]
-          }
-        }
+ {
+   xtype: "entitygridpanel",
+   entityConfig: {
+       entity: "uba_userrole",
+       method: "select",
+       fieldList: ['ID', {name: 'docID', visibility: false}, {name: 'name', description: 'ShowThisAsCaption}, "code", "actionType"]
+   }
+ }
  *
  * @author  Unity base core team, Nozhenko Igor
  */
@@ -237,12 +237,12 @@ Ext.define('UB.view.EntityGridPanel', {
      * @param {String} entityName
      * @param {String[]} fieldList
      * @param {Object} stores
+     * @param {Boolean} rowEditing
      * @return {Object[]}
      */
-    getEntityColumns: function (entityName, fieldList, stores) {
+    getEntityColumns: function (entityName, fieldList, stores, rowEditing) {
       let columns = []
       let entity = $App.domainInfo.get(entityName)
-
       fieldList = fieldList || UB.Utils.convertFieldListToExtended(entity.filterAttribute({defaultView: true}))
       // UIGridColumnClass
       for (let i = 0, len = fieldList.length; i < len; ++i) {
@@ -260,14 +260,38 @@ Ext.define('UB.view.EntityGridPanel', {
           continue
         }
         let col = UB.view.EntityGridPanel.getEntityColumn(entityName, fieldList[i], stores)
+
         if (col) {
-          /* TODO GRID EDITOR col.editor = {
-           xtype: 'textfield',
-           allowBlank: false
-           }; */
+          if (rowEditing) {
+            let attributeName = (fieldList[i].name.indexOf('.') + 1 ? fieldList[i].name.substring(0, fieldList[i].name.indexOf('.')) : fieldList[i].name)
+            let entityAttribute = entity.attributes[attributeName]
+            let attributeDefinition = {}
+
+            if (_.includes([UBDomain.ubDataTypes.Entity], entityAttribute.dataType)) {
+              if (fieldList[i].name.indexOf('.') + 1) {
+                attributeDefinition.fieldList = ['ID', fieldList[i].name.substring(fieldList[i].name.indexOf('.') + 1)]
+              } else {
+                attributeDefinition.fieldList = ['ID', $App.domainInfo.get(entityAttribute.associatedEntity).getDescriptionAttribute()]
+              }
+
+              col.editor = UB.core.UBUtil.ubDt2Ext(entityAttribute, attributeDefinition)
+              col.editor.valueField = col.editor.displayField
+              col.editor.storeAttributeValueField = attributeName
+              if (entityAttribute.allowNull === false) {
+                col.editor.allowBlank = false
+              }
+            } else {
+              col.editor = UB.core.UBUtil.ubDt2Ext(entityAttribute, attributeDefinition)
+            }
+            col.editor.margin = '0 1 0 1'
+            if (fieldList[i].editor) {
+              _.extend(col.editor, fieldList[i].editor)
+            }
+          }
           columns.push(col)
         }
       }
+
       // auto fit columns in case count 1 or 2
       if (columns.length < 3) {
         columns.forEach(function (column) {
@@ -287,7 +311,9 @@ Ext.define('UB.view.EntityGridPanel', {
      * @param {String|function} [field.format]
      * @param {Boolean} [field.visibility]
      * @param {String} [field.description]
+     * @param {String} [field.tooltip]
      * @param {Object} [field.config]
+     * @param {Object} [field.editor]
      * @param {Boolean} [field.sortable] For disable sorting in column set false. By default true.
      * @param {Boolean} [field.filterable] When true than allow filter by this column. By default true
      * @param {Boolean} [field.simpleFilter] When true than disable creating filter by base dictionary.
@@ -330,6 +356,7 @@ Ext.define('UB.view.EntityGridPanel', {
       let column = {stateId: fieldName, fieldName: fieldName}
       column.dataIndex = fieldName
       column.header = field.description || columnCaption
+      column.tooltip = field.tooltip || field.description || columnCaption
       column.sortable = field.hasOwnProperty('sortable')
         ? field.sortable && (metaAttribute.dataType !== 'Text')
         : (metaAttribute.dataType !== 'Text') && metaAttribute.allowSort
@@ -461,7 +488,7 @@ Ext.define('UB.view.EntityGridPanel', {
    * @cfg {Array} customActions
    * Add action on toolbar. Default value [].
    *
-      customActions: [{
+   customActions: [{
         text: 'new Action...',
         glyph: 0xf040,
         handler: function (btn) {}
@@ -701,6 +728,19 @@ Ext.define('UB.view.EntityGridPanel', {
     me.stores = linkedItemsLoadList = UB.view.EntityGridPanel.loadRunListParamsRequirementsStores(cfg)
 
     cfg.fieldList = UB.core.UBUtil.convertFieldListToNameList(cfg.fieldList)
+
+    if (me.rowEditing) {
+      cfg.fieldList.forEach(function (item) {
+        let entity = $App.domainInfo.get(cfg.entity)
+        let attributeName = (item.indexOf('.') + 1 ? item.substring(0, item.indexOf('.')) : item)
+        let entityAttribute = entity.attributes[attributeName]
+        if (_.includes([UBDomain.ubDataTypes.Entity], entityAttribute.dataType)) {
+          if (item.indexOf('.') + 1) {
+            cfg.fieldList.push(attributeName)
+          }
+        }
+      })
+    }
     me.store = Ext.create('UB.ux.data.UBStore', {
       ubRequest: cfg,
       autoLoad: false,
@@ -869,11 +909,11 @@ Ext.define('UB.view.EntityGridPanel', {
       me.miDataID = me.store.ubRequest.id || me.store.ubRequest.ID
     }
 
-    if (me.autoFilter) {
+    if (me.autoFilter && !me.autoFilter.notShowBefore) {
       me.createAutoFilter()
     }
 
-    me.columns = me.columns || UB.view.EntityGridPanel.getEntityColumns(me.entityName, me.getVisibleColumns(), me.stores)
+    me.columns = me.columns || UB.view.EntityGridPanel.getEntityColumns(me.entityName, me.getVisibleColumns(), me.stores, me.rowEditing)
 
     /**
      * @cfg {[]} extendedColumns Extended column configuration. If column with fieldName exists in default column config
@@ -906,11 +946,6 @@ Ext.define('UB.view.EntityGridPanel', {
         },
         getRowClass: me.getRowClass
       }
-      /* TODO GRID EDITOR plugins: [Ext.create('Ext.grid.plugin.RowEditing', {
-          clicksToEdit: 1,
-          clicksToMoveEditor: 2,
-          autoCancel: false
-      })], */
       // plugins: []
       // plugins: [{
       //     rowHeight: 28,
@@ -926,6 +961,54 @@ Ext.define('UB.view.EntityGridPanel', {
       }]
       */
     })
+    /* RowEditing */
+    if (me.rowEditing) {
+      let rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+        clicksToEdit: 1,
+        clicksToMoveEditor: 2,
+        saveBtnText: UB.i18n('save'),
+        cancelBtnText: UB.i18n('actionCancel'),
+        autoCancel: false,
+        errorSummary: false
+      })
+      rowEditing.on('canceledit', function (editor, context) {
+        if (!context.record.get('ID')) {
+          context.store.remove(context.record)
+        }
+      })
+      rowEditing.on('beforeedit', function (editor, context) {
+        if (me.editingPlugin.editing || me.readOnly || !me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.UPDATE)) {
+          return false
+        }
+        if (_.isFunction(me.onBeforeEdit)) {
+          let result = me.onBeforeEdit(editor, context)
+          if (result === false) {
+            return false
+          }
+        }
+
+        let columnCombobox = _.filter(context.grid.columns, function (item) {
+          return item.getEditor() && item.getEditor().xtype === 'ubcombobox'
+        })
+        columnCombobox.forEach(function (item) {
+          item.field.clearValue()
+          item.field.getStore().reload().then(function () { item.field.clearInvalid() })
+        })
+      })
+      rowEditing.on('validateedit', function (editor, context) {
+        if (_.isFunction(me.onValidateEdit)) {
+          let result = me.onValidateEdit(editor, context)
+          if (result === false) {
+            return false
+          }
+        }
+      })
+      if (!me.plugins) {
+        me.plugins = [rowEditing]
+      } else {
+        me.plugins.push(rowEditing)
+      }
+    }
     if (!me.plugins) {
       me.plugins = [] // we can push to plugins later
     }
@@ -1309,19 +1392,19 @@ Ext.define('UB.view.EntityGridPanel', {
       disabled: !me.entity.haveAccessToMethod(methodNames.ADDNEW),
       scope: me
     })
-
-    me.actions[actions.edit] = new Ext.Action({
-      actionId: actions.edit,
-      scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faEdit,
-      cls: 'edit-action',
-      text: UB.i18n('redaktirovat') + hotKeys[actions.edit].text,
-      eventId: events.edit,
-      handler: me.onAction,
-      disabled: !me.entity.haveAccessToMethod(methodNames.UPDATE),
-      scope: me
-    })
-
+    if (!me.rowEditing) {
+      me.actions[actions.edit] = new Ext.Action({
+        actionId: actions.edit,
+        scale: 'medium',
+        glyph: UB.core.UBUtil.glyphs.faEdit,
+        cls: 'edit-action',
+        text: UB.i18n('redaktirovat') + hotKeys[actions.edit].text,
+        eventId: events.edit,
+        handler: me.onAction,
+        disabled: !me.entity.haveAccessToMethod(methodNames.UPDATE),
+        scope: me
+      })
+    }
     me.actions[actions.del] = new Ext.Action({
       actionId: actions.del,
       scale: 'medium',
@@ -1627,8 +1710,9 @@ Ext.define('UB.view.EntityGridPanel', {
     me.on(events.exportXls, me.onExportXls, me)
     me.on(events.exportCsv, me.onExportCsv, me)
     me.on(events.exportHtml, me.onExportHtml, me)
-
-    me.on('itemdblclick', me.onItemDblClick, me)
+    if (!me.rowEditing) {
+      me.on('itemdblclick', me.onItemDblClick, me)
+    }
     me.on(events.addnew, me.onAddNew, me)
     me.on(events.addnewbycurrent, me.onAddNewByCurrent, me)
     me.on(events.edit, me.onEdit, me)
@@ -1853,7 +1937,107 @@ Ext.define('UB.view.EntityGridPanel', {
       this.doOnEdit(eOpts)
     }
   },
+  insertRecord: function (context) {
+    let me = this
+    let fieldList = []
+    context.grid.columns.forEach(function (col) {
+      if (col.field && col.field.storeAttributeValueField) {
+        if (!col.field.getValue() && col.field.getValue() !== context.record[col.field.storeAttributeValueField]) {
+          context.record.set(col.field.storeAttributeValueField, col.field.getValue())
+        } else if (col.field.getValue() && context.record.modified[col.dataIndex] !== undefined) {
+          context.record.set(col.field.storeAttributeValueField, col.field.lastSelection[0].get('ID'))
+        }
+      }
+      if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
+        context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
+        context.record.set(col.dataIndex, null)
+      }
+    })
+    let execParams = context.record.getData()
 
+    for (let name in execParams) {
+      if ((name.indexOf('.') + 1) || _.includes(['ID', 'mi_modifyDate'], name)) {
+        delete execParams[name]
+      } else {
+        fieldList.push(name)
+      }
+    }
+    if (context.grid.detailFields && context.grid.detailFields.length) {
+      context.grid.detailFields.forEach(function (fieldName) {
+        fieldList.push(fieldName)
+        execParams[fieldName] = context.grid.parentContext[fieldName]
+      })
+    }
+
+    $App.connection.run({
+      entity: this.entityName,
+      method: 'insert',
+      fieldList: fieldList,
+      execParams: execParams
+    }).then(function (response) {
+      context.record.set('ID', response.execParams.ID)
+      if (response.execParams.mi_modifyDate) {
+        context.record.set('mi_modifyDate', new Date(response.execParams.mi_modifyDate))
+      }
+      context.record.commit()
+      if (me.gridSummary) {
+        me.gridSummary.dataBind()
+      }
+    })
+  },
+  updateRecord: function (context) {
+    let me = this
+    let fieldList = []
+    context.grid.columns.forEach(function (col) {
+      if (col.field && col.field.storeAttributeValueField && context.record.modified[col.dataIndex] !== undefined) {
+        if (!col.field.getValue() && col.field.getValue() !== context.record[storeAttributeValueField]) {
+          context.record.set(col.field.storeAttributeValueField, col.field.getValue())
+        } else if (col.field.getValue()) {
+          context.record.set(col.field.storeAttributeValueField, col.field.lastSelection[0].get('ID'))
+        }
+      }
+      if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
+        context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
+        context.record.set(col.dataIndex, null)
+      }
+    })
+    let execParams = context.record.getData()
+
+    for (let name in execParams) {
+      if (((name.indexOf('.') + 1) || context.record.modified[name] === undefined) &&
+        !_.includes(['ID', 'mi_modifyDate'], name)) {
+        delete execParams[name]
+      } else {
+        fieldList.push(name)
+      }
+    }
+    $App.connection.run({
+      entity: me.entityName,
+      method: 'update',
+      fieldList: fieldList,
+      execParams: execParams
+    }).then(function (response) {
+      if (response.execParams.mi_modifyDate) {
+        context.record.set('mi_modifyDate', new Date(response.execParams.mi_modifyDate))
+      }
+      context.record.commit()
+      if (me.gridSummary) {
+        me.gridSummary.dataBind()
+      }
+    })
+  },
+  addNewRecord: function (data) {
+    if (!data) {
+      data = {}
+      this.store.ubRequest.fieldList.forEach(function (field) {
+        data[field] = null
+      })
+    }
+    delete data.ID
+    delete data.mi_modifyDate
+    this.store.insert(this.store.data.length, data)
+    this.editingPlugin.startEdit(this.store.data.length - 1, 0)
+  },
   /**
    *
    * @return {Object}
@@ -1906,16 +2090,31 @@ Ext.define('UB.view.EntityGridPanel', {
 
   onAddNew: function () {
     let me = this
-    if (this.isHistory) {
-      // this.onHistory();
-      Ext.create('UB.view.InputDateWindow', {
-        callback: function (date) {
-          me.openForm({ __mip_ondate: date, instanceID: me.miDataID })
-        },
-        scope: me
-      })
+    if (!me.rowEditing) {
+      if (this.isHistory) {
+        // this.onHistory();
+        Ext.create('UB.view.InputDateWindow', {
+          callback: function (date) {
+            me.openForm({__mip_ondate: date, instanceID: me.miDataID})
+          },
+          scope: me
+        })
+      } else {
+        me.openForm()
+      }
     } else {
-      me.openForm()
+      if (!me.editingPlugin.editing) {
+        let parentForm = me.up('basepanel')
+        if (parentForm && (parentForm.isDirty() || parentForm.isNewInstance)) {
+          parentForm.saveForm().then(function (result) {
+            if (result !== -1) {
+              me.addNewRecord()
+            }
+          })
+        } else {
+          me.addNewRecord()
+        }
+      }
     }
   },
 
@@ -1925,18 +2124,30 @@ Ext.define('UB.view.EntityGridPanel', {
       $App.dialogInfo('selectRowFirst')
       return
     }
-    let eOpt = {
-      addByCurrent: true,
-      instanceID: selection[0].get('ID')
+    if (!this.rowEditing) {
+      let eOpt = {
+        addByCurrent: true,
+        instanceID: selection[0].get('ID')
+      }
+      this.openForm(eOpt)
+    } else {
+      if (!this.editingPlugin.editing) {
+        this.addNewRecord(selection[0].getData())
+      }
     }
-    this.openForm(eOpt)
   },
 
-  onEdit: function () {
-    // TODO GRID EDITOR this.getStore().sync();
-    this.doOnEdit()
+  onEdit: function (editor, context) {
+    if (!this.rowEditing) {
+      this.doOnEdit()
+    } else {
+      if (context.record.get('ID')) {
+        this.updateRecord(context)
+      } else {
+        this.insertRecord(context)
+      }
+    }
   },
-
   doOnEdit: function (eOpt) {
     let selection = this.getSelectionModel().getSelection()
     if (selection.length < 1) return
@@ -2018,6 +2229,9 @@ Ext.define('UB.view.EntityGridPanel', {
             }
             me.getSelectionModel().select(store.getAt(idx))
           }, me, {single: true})
+        }
+        if (me.GridSummary) {
+          me.GridSummary.dataBind()
         }
         me.fireEvent('afterdel')
         if (me.pagingBar) {
