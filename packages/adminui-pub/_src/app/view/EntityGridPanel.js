@@ -2105,7 +2105,7 @@ Ext.define('UB.view.EntityGridPanel', {
     } else {
       if (!me.editingPlugin.editing) {
         let parentForm = me.up('basepanel')
-        if (parentForm && parentForm.isDirty()) {
+        if (parentForm && (parentForm.isDirty() || parentForm.isNewInstance)) {
           parentForm.saveForm().then(function (result) {
             if (result !== -1) {
               me.addNewRecord()
