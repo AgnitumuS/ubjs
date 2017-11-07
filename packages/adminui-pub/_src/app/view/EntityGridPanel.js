@@ -532,7 +532,11 @@ Ext.define('UB.view.EntityGridPanel', {
    * Read only grid do not show actions: addNew,  addNewByCurrent, del, edit, newVersion.
    */
   readOnly: false,
-
+  /**
+   * @cfg {Boolean} rowEditing
+   * Allow editing at a row level for a Grid
+   */
+  rowEditing: false,
   /**
    * @cfg {Object} menuAllActionsActionList
    * Set of action buttons that will be displayed in the menuAllActions of a grid.

@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.35]
 ### Added
+  - `EntityGridPanled` can be configured to allow editing at a row level for a Grid 
+  by setting `rowEditing: true` configuration property. Or in the showList or navigation shortcut:
+  
+  ```
+  {
+  	"cmdType": "showList",
+    "cmpInitConfig": {"rowEditing": true},
+  	"cmdData": {    
+  		"params": [
+  			{
+  				"entity": "tst_document",
+  ```
+  
+## [4.2.35]
+### Added
  - `BasePanel.on('manualsaving')` events added.
  Fires just after **USER** manually call `save` action (press save button or Ctrl+S shortcut)
  but **before** data passed to a server for update/insert.
