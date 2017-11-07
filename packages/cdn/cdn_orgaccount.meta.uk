@@ -21,6 +21,10 @@
         "acctype": {
             "caption": "Тип рахунку",
             "description": "Тип рахунку"
+        },
+        "description": {
+            "caption": "Назва",
+            "description": "Назва (для вибору зі списку)"
         }
     }
 }

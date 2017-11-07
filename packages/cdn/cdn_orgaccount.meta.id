@@ -21,6 +21,10 @@
         "acctype": {
             "caption": "Mengetik",
             "description": "Jenis account"
+        },
+        "description": {
+            "caption": "Komentar"
+            "description": "Komentar"
         }
     }
 }

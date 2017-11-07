@@ -21,6 +21,10 @@
         "acctype": {
             "caption": "Type",
             "description": "Type of the account"
+        },
+        "description": {
+            "caption": "Description",
+            "description": "Description"
         }
     }
 }
