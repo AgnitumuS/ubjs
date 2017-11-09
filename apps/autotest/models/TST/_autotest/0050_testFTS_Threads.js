@@ -24,6 +24,7 @@ try {
 
   for (i = 0; i < numThreads; i++) {
     workers.push(new Worker({
+      name: 'ftsWriter' + i,
       onmessage: onProcessWorker,
       onterminate: onTerminateWorker,
       onerror: onWorkerError
@@ -32,18 +33,13 @@ try {
   }
     // add reader thread
   workers.push(new Worker({
+    name: 'ftsReader' + i,
     onmessage: onProcessReaderWorker,
     onterminate: onTerminateWorker,
     onerror: onWorkerError
   }))
 
-  try {
-    __dirname
-  } catch (e) {
-    global.__dirname = 'D:\\projects\\Autotest\\models\\TST\\_autotest'
-  }
-
-  i = 0
+   i = 0
   workers.forEach(function (worker) {
     worker.postMessage({signal: 'start', folder: __dirname, thread: i, beginFrom: i * 100 * 0, insertCount: 99})
     console.log('Worker ', i, 'started')
@@ -66,11 +62,10 @@ function onWorkerError (message, exception) {
 }
 
 function onProcessWorker (message) {
-  // MUST BE HERE - this is worker function
   var
     argv = require('@unitybase/base').argv,
     session,
-    __FILE_NAME = 'СonstitutionUkr.txt',
+    FILE_NAME = 'ConstitutionUkr.txt',
     folder,
     _conn,
     transLen, command, startTime
@@ -98,15 +93,15 @@ function onProcessWorker (message) {
   terminate()
 
   function testFTS (connection, folder) {
+    const CRLF = String.fromCharCode(13) + String.fromCharCode(10)
     var fs = require('fs'),
       path = require('path'),
       testArr, trans = [], curTrLen,
       descrMaxLen = 2000,
       d = new Date(2015, 1, 1),
-      i, n, descr
+      i, n, descr;
 
-    testArr = fs.readFileSync(path.join(folder, 'fixtures', __FILE_NAME)).split('\r\n')
-
+    testArr = fs.readFileSync(path.join(folder, 'fixtures', FILE_NAME)).split(CRLF)
     curTrLen = 0
     for (i = command.beginFrom; i < command.beginFrom + command.insertCount; i++) {
       d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)

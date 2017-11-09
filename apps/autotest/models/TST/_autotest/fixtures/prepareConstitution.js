@@ -1,4 +1,4 @@
-// ub prepareConstitution.js -fn D:\projects\Autotest\models\TST\_autotest\fixtures\СonstitutionUkr.txt
+// ub prepareConstitution.js -fn D:\projects\Autotest\models\TST\_autotest\fixtures\ConstitutionUkr.txt
 
 var
   fs = require('fs'),

@@ -8,7 +8,7 @@ const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const path = require('path')
 const _ = require('lodash')
-const __FILE_NAME = 'СonstitutionUkr.txt'
+const __FILE_NAME = 'ConstitutionUkr.txt'
 
 module.exports = function runFTSTest (options) {
   if (!options) {
