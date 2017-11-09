@@ -783,6 +783,40 @@ UBEntity.prototype.haveAccessToMethods = function (methods) {
 }
 
 /**
+ * Add entity level method.
+ *
+ * Method itself must be a function type property of entity with single parameter of type {ubMethodParams}
+ * Client able to call such methods remotely. Also such methods is a subject of ELS security.
+ *
+ * You do not need to add methods what do not called from client using {TubEntity#addMethod}
+ *
+ * Warning: do not call entity.addMethod from inside function or conditions. This code evaluated during thread initialization and each thread must add method in the same manner.
+ *
+ * @example
+ *
+ * //consider we have entity my_entity. Code below is inside my_entity.js file):
+  var me = my_entity;
+  me.entity.addMethod('externalMethod');
+  // @param {ubMethodParams} ctx <- here must be JSDoc comment format
+  me.externalMethod = function (ctx) {
+    let params = ctx.mParams
+    let a = params.a || 1
+    let b = params.b || 1
+    params.multiplyResult = a*b
+  }
+
+  // now from client side you can call
+  $App.connection.query({entity: 'my_entity', method: 'externalMethod', a: 10, b:20}).then(function(result){
+    console.log(' 10 * 20 = ', result.multiplyResult); // will put to log "10 * 20 = 200"
+  })
+ *
+ * @param {String} methodName
+ */
+UBEntity.prototype.addMethod = function (methodName) {
+  throw new Error('UBEntity.addMethod implemented only in HTTP worker thread')
+}
+
+/**
  * Convert UnityBase server dateTime response to Date object
  * @private
  * @param value

@@ -9,7 +9,7 @@ me.on('update:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmin
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewUserRole (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var params = ctx.mParams.execParams
@@ -46,7 +46,7 @@ me.on('insert:after', ubaAuditNewUserRole)
  */
 function ubaAuditModifyUserRole (ctx) {
   'use strict'
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var
@@ -113,15 +113,13 @@ function ubaAuditModifyUserRole (ctx) {
 me.on('update:after', ubaAuditModifyUserRole)
 
 me.on('delete:before', function (ctxt) {
-  'use strict'
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
-  var
-        store, execParams = ctxt.mParams.execParams
+  let execParams = ctxt.mParams.execParams
 
-  store = UB.Repository('uba_userrole').attrs(['userID', 'roleID'])
-            .where('[ID]', '=', execParams.ID).select()
+  let store = UB.Repository('uba_userrole').attrs(['userID', 'roleID'])
+    .where('[ID]', '=', execParams.ID).select()
   ctxt.mParams.delUserID = store.get('userID')
   ctxt.mParams.delRoleID = store.get('roleID')
 })
@@ -131,7 +129,7 @@ me.on('delete:before', function (ctxt) {
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUserRole (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var

@@ -41,14 +41,10 @@ function postProcessing (loader, fullFilePath, content, row) {
     return false
   }
   // check fileName = entity code + "-fm.def"
-  let parts = fullFilePath.split('\\')
-  let fileName = parts[parts.length - 1]
+  let fileName = path.basename(fullFilePath)
   if (row.code) { console.warn(`Please, remove a row //@code "${row.code}" from a file ${fileName}. In UB4 form code = file name without -fm.def`) }
 
   row.code = fileName.substring(0, fileName.length - 7)
-  // if (row.code !== fileName.substring(0, fileName.length - 7)){
-  //     console.error('ubm_form: Invalid file name. Must be //@code attribute value (' + row.code + ') + "-fm.def" for ', fullFilePath)
-  // }
   if (row.ID) console.warn(`Please, remove a row "//@ID ${row.ID}" from a file ${fileName}. In UB4 form ID is generated automatically as crc32(code)`)
   row.ID = ncrc32(0, row.code)
 
@@ -69,8 +65,7 @@ function postProcessing (loader, fullFilePath, content, row) {
   }
   // in case form js exist - fill formCode
   fileName = fileName.substring(0, fileName.length - DEF_FILE_TAIL.length) + JS_FILE_TAIL
-  parts[parts.length - 1] = fileName
-  jsFilePath = parts.join('\\')
+  jsFilePath = path.join(path.dirname(fullFilePath), fileName)
   jsFileStat = fs.statSync(jsFilePath)
   if (jsFileStat) { // file exists
     row.formCode = JSON.stringify({
@@ -90,19 +85,19 @@ function postProcessing (loader, fullFilePath, content, row) {
 }
 
 function loadAllForms () {
-  var models = App.domain.config.models,
-    folders = [],
-    model, mPath,
-    modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
+  let modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
 
   console.debug('modelLastDate = ', modelLastDate)
+  let models = App.domainInfo.models
+  let folders = []
+
   if (!resultDataCache || modelLoadDate < modelLastDate) {
     console.debug('load ubm_forms from models directory structure')
 
     resultDataCache = []
-    for (let i = 0, l = models.count; i < l; i++) {
-      model = models.items[i]
-      mPath = path.join(model.publicPath, REL_PATH_TAIL)
+    for (let modelName in models) {
+      let model = models[modelName]
+      let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
         path: mPath,
         model: model // used for fill Document content for `mdb` store in postProcessing
@@ -201,7 +196,7 @@ function validateInput (aID, formCode, formEntity) {
  * @param {String} [defaultBody]
  */
 function getFormBodyTpl (fileName, defaultBody) {
-  let filePath = path.join(App.domain.config.models.byName('UBM').publicPath, '_templates', fileName)
+  let filePath = path.join(App.domainInfo.models['UBM'].realPublicPath, '_templates', fileName)
   return fs.isFile(filePath) ? fs.readFileSync(filePath) : defaultBody
 }
 /**
@@ -230,13 +225,13 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   newFormCodeMeta = newValues.formCode
   newFormDefMeta = newValues.formDef
   _.forEach(newValues, function (val, key) {
-    attr = attributes.byName(key)
+    attr = attributes[key]
     if (attr && (attr.dataType !== TubAttrDataType.Document)) {
       storedValue[key] = val
     }
   })
 
-  formEntity = App.domain.byName(storedValue.entity)
+  formEntity = App.domainInfo.get(storedValue.entity)
   codeOfModelToStore = storedValue.model || formEntity.modelName
   // check form -fm.js
   docReq = new TubDocumentRequest()

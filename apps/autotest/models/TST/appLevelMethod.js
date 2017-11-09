@@ -13,7 +13,7 @@ if (global.ORG && ORG.checkOrgUnitRequired) {
 }
 
 const path = require('path')
-const GS_PATH = App.domain.config.models.byName('TST').path
+const GS_PATH = App.domainInfo.models['TST'].path
 const FIXTURES = path.join(GS_PATH, '_autotest', 'fixtures')
 /**
  * write custom request body to file FIXTURES/req and echo file back to client
@@ -68,15 +68,15 @@ App.on('getDocument:before', function (req, resp) { console.log('User with ID', 
 App.on('getDocument:after', getDocumentLog)
 
 App.on('timeStamp:before',
-    /**
-     * @param {THTTPRequest} req
-     * @param {THTTPResponse} resp
-     */
-    function (req, resp) {
-      console.log('timeStamp!')
-      App.preventDefault()
-      resp.statusCode = 200
-    }
+  /**
+   * @param {THTTPRequest} req
+   * @param {THTTPResponse} resp
+   */
+  function (req, resp) {
+    console.log('timeStamp!')
+    App.preventDefault()
+    resp.statusCode = 200
+  }
 )
 App.on('timeStamp:after', function (req, resp) { console.log('timeStamp after!') })
 
@@ -99,7 +99,7 @@ oIdEndPoint.registerProvider('IdentityServer', {
   },
   getUserID: function (userInfo) {
     var inst = UB.Repository('uba_user').attrs(['ID'])
-            .where('[name]', '=', userInfo.id).select()
+      .where('[name]', '=', userInfo.id).select()
     return inst.eof ? null : inst.get('ID')
   }
 })
@@ -155,8 +155,8 @@ function testDocHandler (req, resp) {
   docReq.id = 3000000003738
   let docHandler = docReq.createHandlerObject(true)
   docHandler.loadContent(TubLoadContentBody.Yes)
-//    var content = docReq.getBodyAsBase64String();
-//    console.log(content.length);
+  // var content = docReq.getBodyAsBase64String();
+  // console.log(content.length);
   docHandler.freeNative()
   docReq.freeNative()
   resp.statusCode = 200

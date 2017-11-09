@@ -8,7 +8,7 @@ var UBA_COMMON = require('./modules/uba_common')
  */
 function ubaAuditNewRole (ctx) {
   'use strict'
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var params = ctx.mParams.execParams
@@ -46,7 +46,7 @@ me.on('insert:before', fillRoleDescriptionIfMissing)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyRole (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var
@@ -115,7 +115,7 @@ me.on('update:after', ubaAuditModifyRole)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteRole (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var

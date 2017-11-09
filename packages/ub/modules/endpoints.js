@@ -107,7 +107,7 @@ function models (req, resp) {
   resolveModelFile(reqPath, resp)
 
   // cache forever - do not cache index*.html
-    // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
+  // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
 }
 
 const MODULES_ROOT = path.join(process.configPath, 'node_modules')
@@ -278,7 +278,7 @@ const nativeGetDomainInfo = appBinding.getDomainInfo
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
-function getDomainInfo (req, resp) {
+function getDomainInfoEp (req, resp) {
   // implementation below is SLOW. The bottlenack is JSON.stringify() for huge JSON
   // let restrictedDomain = {
   //   domain: App.domainInfo.entities, // _.filter(App.domainInfo.entities, (e) => e.code.startsWith('ubm')),
@@ -307,5 +307,5 @@ module.exports = {
   models,
   getAppInfo,
   clientRequire,
-  getDomainInfo
+  getDomainInfoEp
 }

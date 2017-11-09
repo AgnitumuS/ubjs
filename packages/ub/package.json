@@ -15,7 +15,7 @@
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "main": "0_init.js",
+  "main": "index.js",
   "dependencies": {
     "@unitybase/base": "^4.2.23",
     "mime-types": "^2.1.12"

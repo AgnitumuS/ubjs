@@ -11,7 +11,7 @@ me.on('update:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmin
 //  */
 // function ubaAuditNewGroupRole(ctx){
 //     "use strict";
-//     if (!App.domain.byName('uba_audit')){
+//     if (!App.domainInfo.has('uba_audit')){
 //         return;
 //     }
 //     var params = ctx.mParams.execParams;
@@ -48,7 +48,7 @@ me.on('update:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmin
 //  */
 // function ubaAuditModifyUserRole(ctx){
 //     "use strict";
-//     if (!App.domain.byName('uba_audit')){
+//     if (!App.domainInfo.has('uba_audit')){
 //         return;
 //     }
 //     var
@@ -115,7 +115,7 @@ me.on('update:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmin
 //
 //
 // me.on('delete:before', function(ctxt){
-//     if (!App.domain.byName('uba_audit')){
+//     if (!App.domainInfo.has('uba_audit')){
 //         return;
 //     }
 //     var
@@ -132,7 +132,7 @@ me.on('update:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmin
 //  * @param {ubMethodParams} ctx
 //  */
 // function ubaAuditDeleteUserRole(ctx){
-//     if (!App.domain.byName('uba_audit')){
+//     if (!App.domainInfo.has('uba_audit')){
 //         return;
 //     }
 //     var

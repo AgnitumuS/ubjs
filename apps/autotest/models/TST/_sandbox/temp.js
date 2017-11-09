@@ -46,7 +46,7 @@ console.log(JSON.stringify(conn.lastResponse));
  *
  * To execute code below select it and press **Ctrl+F9** to run code in server thread context
  */   
-console.log(App.domain.byName('uba_user').attributes.count);
+console.log(Object.keys(App.domainInfo.get('uba_user').attributes).length);
 
 /*
  * low level server side data retrieve (select lines below and press Ctrl+F9 for exec in server thread)

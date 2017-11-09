@@ -1,4 +1,4 @@
-﻿_.merge(global.i18nData, {
+﻿UB.i18nExtend({
     "en": {
 
         notAssigned: 'Not assigned',

@@ -60,7 +60,7 @@ me.updatestaffunitcaption = function(ctxt) {
  */
 function ubaAuditLinkUser(ctx){
     "use strict";
-    if (!App.domain.byName('uba_audit')){
+    if (!App.domainInfo.has('uba_audit')){
         return;
     }
     var store, actionUserRepo, linkUser, params = ctx.mParams.execParams;
@@ -91,7 +91,7 @@ me.on('insert:after', ubaAuditLinkUser);
  */
 function ubaAuditLinkUserModify(ctx){
     "use strict";
-    if (!App.domain.byName('uba_audit')){
+    if (!App.domainInfo.has('uba_audit')){
         return;
     }
     var
@@ -157,7 +157,7 @@ me.on('update:after', ubaAuditLinkUserModify);
  */
 function ubaAuditLinkUserDelete(ctx){
     "use strict";
-    if (!App.domain.byName('uba_audit')){
+    if (!App.domainInfo.has('uba_audit')){
         return;
     }
     var

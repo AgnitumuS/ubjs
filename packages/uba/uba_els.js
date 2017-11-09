@@ -5,7 +5,7 @@ var me = uba_els
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewEls (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var params = ctx.mParams.execParams
@@ -36,7 +36,7 @@ me.on('insert:after', ubaAuditNewEls)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyEls (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var
@@ -115,7 +115,7 @@ me.on('update:after', ubaAuditModifyEls)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteEls (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
   var

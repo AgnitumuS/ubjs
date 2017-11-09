@@ -60,13 +60,13 @@ function generateIndexPage (req, resp, indexName, addCSP=true) {
     }
 
     // fill model versions
-    models = App.domain.config.models
-    mCnt = models.count
-    for (i = 0; i < mCnt; i++) {
-      mName = models.items[i].name
+    models = App.domainInfo.models
+    for (let modelName in models) {
+      let model = models[modelName]
+      let mPath = model.realPublicPath
       view.modelVersions.push({
-        modelName: mName,
-        modelVersion: App.folderChecksum(models.items[i].publicPath)
+        modelName: modelName,
+        modelVersion: App.folderChecksum(mPath)
       })
     }
 

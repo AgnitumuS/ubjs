@@ -245,7 +245,6 @@ class TubDatabase_ {
       sqlParts.push(sql.slice(startPos, sql.length))
       return {parsedSql: sqlParts.join(''), parsedParams: parsedParams}
     }
-
   }
 }
 

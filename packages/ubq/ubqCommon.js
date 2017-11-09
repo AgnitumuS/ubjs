@@ -77,12 +77,12 @@ me.sendQueueMail = function (ctxt) {
   }
 
   let inst = UB.Repository('ubq_messages')
-        .attrs(['ID', 'queueCode', 'msgCmd', 'msgData'])
-        .where('[queueCode]', '=', 'mail')
-        .where('[completeDate]', 'isNull')
-        .limit(100)
-//        .orderByDesc('[msgPriority]')
-        .select()
+    .attrs(['ID', 'queueCode', 'msgCmd', 'msgData'])
+    .where('[queueCode]', '=', 'mail')
+    .where('[completeDate]', 'isNull')
+    .limit(100)
+    // .orderByDesc('[msgPriority]')
+    .select()
 
   let mailSender = new UBMail.TubMailSender({
     host: mailerParams.targetHost,
@@ -122,14 +122,14 @@ me.sendQueueMail = function (ctxt) {
         }
       }
     }
-        /* this. */
+    /* this. */
     internalSendMail(mailData, mailSender)
     sentCount++
     inst.run('success', {
       ID: mailData.ID
     })
 
-    App.dbCommit(inst.entity.connectionName)
+    App.dbCommit(App.domainInfo.entities['ubq_messages'].connectionName)
 
     inst.next()
   }

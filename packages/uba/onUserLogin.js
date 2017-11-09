@@ -1,11 +1,11 @@
 let UBA = UB.ns('UBA')
 
-let auditEntityUba = App.domain.byName('uba_audit')
+let ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
 const queryString = require('querystring')
 
-if (auditEntityUba) {
-  auditStore = new TubDataStore(auditEntityUba)
+if (ubaAuditPresent) {
+  auditStore = new TubDataStore('uba_audit')
 }
 
 
@@ -119,7 +119,7 @@ UBA.onUserLogin = function (req) {
   data.userID = Session.userID
   data.roleIDs = roleIDs
 
-  if (auditEntityUba) { // uba_audit exists
+  if (ubaAuditPresent) { // uba_audit exists
     try {
       auditStore.run('insert', {
         execParams: {
@@ -145,7 +145,7 @@ Session.on('login', UBA.onUserLogin)
 UBA.onUserLoginFailed = function (isLocked) {
   console.debug('Call JS method: UBA.onUserLoginFailef')
 
-  if (auditEntityUba) { // uba_audit exists
+  if (ubaAuditPresent) { // uba_audit exists
     try {
       let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
       let user = obj ? obj.name : Session.userID
@@ -174,7 +174,7 @@ Session.on('loginFailed', UBA.onUserLoginFailed)
 UBA.securityViolation = function (reason) {
   console.debug('Call JS method: UBA.securityViolation')
 
-  if (auditEntityUba) { // uba_audit exists
+  if (ubaAuditPresent) { // uba_audit exists
     let user = '?'
     if (Session.userID && (Session.userID > 0)) {
       let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)

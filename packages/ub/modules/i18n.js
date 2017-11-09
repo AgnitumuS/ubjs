@@ -1,19 +1,15 @@
 /*
  * Server side i18n
  */
-
 const _ = require('lodash')
-if (!global.i18nData) {
-    /**
-     * i18n localization data. Do not use directly - use UB.i18n method instead
-     * @property {Object} i18nData
-     * @private
-     * @member global
-    */
-  global.i18nData = {}
-}
+/**
+ * i18n localization data. Do not use directly - use UB.i18n method instead
+ * @property {Object} i18nData
+ * @private
+*/
+let i18nData = {}
 
-_.merge(global.i18nData, {
+_.merge(i18nData, {
   'en': {
     'property': 'property',
     'inTime': 'In time',
@@ -73,7 +69,7 @@ _.merge(global.i18nData, {
 
 _.merge(global.i18nData, {
   'en': {
-        // M2Mobile
+    // M2Mobile
     projForSign: 'Projects for sign',
     projForVisa: 'Projects for visa',
     forConsideration: 'For consideration',
@@ -153,7 +149,7 @@ _.merge(global.i18nData, {
   },
 
   'uk': {
-        // M2Mobile
+    // M2Mobile
     projForSign: 'Проекти на підпис',
     projForVisa: 'Проекти на візування',
     forConsideration: 'Документи для розгляду',
@@ -246,15 +242,17 @@ _.merge(global.i18nData, {
  * @param {String} [lang] language to translate to. if not passed - current user session language used, or default application language if not logged in
  */
 UB.i18n = function (msg, lang) {
-  var
-        res
-
   lang = lang || Session.userLang || App.defaultLang
-  res = i18nData[lang] ? i18nData[lang][msg] : ''
+  let res = i18nData[lang] ? i18nData[lang][msg] : ''
   return res || msg
 }
 
-if (global.module && module.exports) {
-  module.exports = UB.i18n
+/**
+ * Merge localizationObject to UB.i18n. Usually called form serverLocale scripts
+ * @param {Object} localizationObject
+ */
+UB.i18nExtend = function (localizationObject) {
+  _.merge(i18nData, localizationObject)
 }
 
+module.exports = UB.i18n

@@ -1,6 +1,7 @@
 let me = ubq_scheduler
 
 const fs = require('fs')
+const path = require('path')
 const {argv, LocalDataStore} = require('@unitybase/base')
 const _ = require('lodash')
 
@@ -13,20 +14,14 @@ let resultDataCache = null
 const FILE_NAME_TEMPLATE = '_schedulers.json'
 
 // calculate default value for entity attributes
-let attributes = JSON.parse(me.entity.attributes.asJSON)
-let defaultValues = _(attributes).toArray().filter('defaultValue').value()
-    .reduce(function (result, attr) {
-      result[attr.name] = attr.defaultValue
-      return result
-    }, {})
-
+let attributes = me.entity.attributes
 /**
  * Load a schedulers from a file. Override a already loaded schedulers if need
- * @param {TubModelConfig} model
+ * @param {UBModel} model
  * @param {Array<Object>} loadedData Data already loaded
  */
 function loadOneFile (model, loadedData) {
-  let fn = model.path + FILE_NAME_TEMPLATE
+  let fn = path.join(model.path, FILE_NAME_TEMPLATE)
   let modelName = model.name
   let content, i, l, existedItem, item
 
@@ -35,7 +30,7 @@ function loadOneFile (model, loadedData) {
   const FALSE_CONDITION = 'false //disabled in app config'
   try {
     content = argv.safeParseJSONfile(fn)
-    if (!_.isArray(content)) {
+    if (!Array.isArray(content)) {
       console.error('SCHEDULER: invalid config in %. Must be a array ob objects', fn)
       return
     }
@@ -60,16 +55,21 @@ function loadOneFile (model, loadedData) {
   }
 }
 
+let defaultValues = _(attributes).toArray().filter('defaultValue').value()
+  .reduce(function (result, attr) {
+    result[attr.name] = attr.defaultValue
+    return result
+  }, {})
+
 function loadAll () {
-  let models = App.domain.config.models
-  let model, i, l
+  let models = App.domainInfo.models
   let loadedData = []
 
   if (!resultDataCache) {
     console.debug('load schedulers from models directory structure')
 
-    for (i = 0, l = models.count; i < l; i++) {
-      model = models.items[i]
+    for (let modelName in models) {
+      let model = models[modelName]
       loadOneFile(model, loadedData)
     }
 
@@ -105,7 +105,7 @@ function doSelect (ctxt) {
     }
   }
   let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
-    // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
+  // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
   let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
   ctxt.dataStore.initFromJSON(resp)
 }

@@ -1,4 +1,4 @@
-﻿_.merge(global.i18nData, {
+﻿UB.i18nExtend({
     "en": {
         errUnableToPerformThisOperation: '<<<Unable to perform this operation. Contact the administrator>>>',
         errNoRightsForInsUpdateGovOrg: '<<<You cannot perform this operation, because you don\'t have rights for adding/updating organization with government authority>>>',

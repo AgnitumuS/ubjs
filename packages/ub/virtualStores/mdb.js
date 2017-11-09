@@ -36,7 +36,7 @@ UB.virtualStores.mdb.getPermanentFileName = function (handler) {
     filePath = this.getTempFileName(handler)
   } else {
     let pathPart = content.relPath.split('|')
-    filePath = (pathPart.length === 2) ? path.join(App.domain.config.models.byName(pathPart[0]).publicPath, pathPart[1], content.fName) : ''
+    filePath = (pathPart.length === 2) ? path.join(App.domainInfo.models[pathPart[0]].realPublicPath, pathPart[1], content.fName) : ''
   }
   return filePath
 }
@@ -156,7 +156,7 @@ UB.virtualStores.mdb.moveToPermanentStore = function (handler, aPrevRelPath) {
   if (pathPart.length !== 2) {
     throw new Error('MDB store expect relPath in form modelName|pathRelativeToModelPublicFolder but got: ' + content.relPath)
   } else {
-    newFilePath = path.join(App.domain.config.models.byName(pathPart[0]).publicPath, pathPart[1])
+    newFilePath = path.join(App.domainInfo.models[pathPart[0]].realPublicPath, pathPart[1])
     if (!fs.isDir(newFilePath)) {
       fs.mkdirSync(newFilePath)
     }
