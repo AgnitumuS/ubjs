@@ -52,7 +52,7 @@ module.exports = function runTest (options) {
 
     assert.throws(
       () => conn.get(`clientRequire/@unitybase/ub/../../ubConfig.json`),
-      /Not Found/, 'Endpoint clientRequire must restrict access folder up from resolved'
+      /Bad Request/, 'Endpoint clientRequire must restrict access folder up from resolved'
     )
 
     assert.throws(

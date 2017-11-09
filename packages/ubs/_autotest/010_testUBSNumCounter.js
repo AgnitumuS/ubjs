@@ -25,6 +25,7 @@ try {
     // create threads
     for(i=0; i<numThreads; i++){
         workers.push(new Worker({
+            name: 'numCounter' + i,
             onmessage: onProcessWorker,
             onterminate: onTerminateWorker,
             onerror: onWorkerError
@@ -72,12 +73,15 @@ function onWorkerError(message, exception){
 
 function onProcessWorker(message){
     var
+        path = require('path'),
+        //argv = require(path.join(process.startupPath, 'node_modules', '@unitybase/base/argv')),
         argv = require('@unitybase/base/argv'),
         session,
         connection,
         result,
         startTime;
 
+    console.log(argv)
     if (message.signal !== 'start'){
         throw new Error('Start phase. Wrong message ' + message);
     }
