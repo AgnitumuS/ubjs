@@ -13,7 +13,7 @@ if (global.ORG && ORG.checkOrgUnitRequired) {
 }
 
 const path = require('path')
-const GS_PATH = App.domainInfo.models['TST'].path
+const GS_PATH = App.domainInfo.models['TST'].realPath
 const FIXTURES = path.join(GS_PATH, '_autotest', 'fixtures')
 /**
  * write custom request body to file FIXTURES/req and echo file back to client

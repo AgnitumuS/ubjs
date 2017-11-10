@@ -25,6 +25,6 @@ function getSubjectsContacts(subjects, contactCode){
         repo.where('subjectID', '=', subjects)
     }
     store = repo.selectAsArray();
-    return _.flatten(store.resultData.data);
+    return store.resultData.data.reduce( (a, b) => [...a, ...b], []) // _.flatten(store.resultData.data);
 }
 me.getSubjectsContacts = getSubjectsContacts;

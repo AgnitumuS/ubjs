@@ -389,6 +389,13 @@ function UBModel (cfg, modelCode) {
      */
     this.realPublicPath = cfg.realPublicPath
   }
+  if (cfg.realPath) {
+    /**
+     * Server-side domain only - the full path to model folder
+     * @type {string}
+     */
+    this.realPath = cfg.realPath
+  }
 }
 UBModel.prototype.needInit = false
 UBModel.prototype.needLocalize = false
