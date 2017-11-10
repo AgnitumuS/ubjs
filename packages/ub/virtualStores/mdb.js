@@ -138,7 +138,7 @@ UB.virtualStores.mdb.moveToArchive = function (handler) {
  * Do nothing here - content must be under external version control system (SVN, GIT, fossil)
  */
 UB.virtualStores.mdb.deleteContent = function () {
-    // nothing to do here
+  // nothing to do here
   return true
 }
 /**

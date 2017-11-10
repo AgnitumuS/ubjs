@@ -1,16 +1,188 @@
+/* eslint-disable camelcase,no-unused-vars */
 // This file is generated automatically and contain definition for code insight.
 // Ignored by UnityBase server because name start from "_".
 // Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
 
 /**
+* tst_2unity
+* @mixes EventEmitter
+*/
+global.tst_2unity = {
+  /** 
+   * Reference to entity metadata
+   * @type {UBEntity} 
+   */
+  entity: null
+}
+
+/**
+* Attributes of "tst_2unity"
+* @class
+*/
+function tst_2unity_object () {
+  /**
+  *  (ref -> tst_mainunity)
+  * 
+  * @type {Number}
+  */
+  this.ID = 0
+  /**
+  * Code 
+  * @type {String}
+  */
+  this.code = ''
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  *  
+  * 
+  * @type {String}
+  */
+  this.mi_unityEntity = ''
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
+  this.mi_owner = 0
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
+  this.mi_createDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
+  this.mi_createUser = 0
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
+  this.mi_modifyDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
+  this.mi_modifyUser = 0
+  /**
+  *  
+  * Deletion date
+  * 
+  * @type {Date}
+  */
+  this.mi_deleteDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who delete row
+  * 
+  * @type {Number}
+  */
+  this.mi_deleteUser = null
+}
+/**
+* tst_3unity
+* @mixes EventEmitter
+*/
+global.tst_3unity = {
+  /** 
+   * Reference to entity metadata
+   * @type {UBEntity} 
+   */
+  entity: null
+}
+
+/**
+* Attributes of "tst_3unity"
+* @class
+*/
+function tst_3unity_object () {
+  /**
+  *  (ref -> tst_2unity)
+  * 
+  * @type {Number}
+  */
+  this.ID = 0
+  /**
+  * Code 
+  * @type {String}
+  */
+  this.code = ''
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
+  this.mi_owner = 0
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
+  this.mi_createDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
+  this.mi_createUser = 0
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
+  this.mi_modifyDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
+  this.mi_modifyUser = 0
+  /**
+  *  
+  * Deletion date
+  * 
+  * @type {Date}
+  */
+  this.mi_deleteDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who delete row
+  * 
+  * @type {Number}
+  */
+  this.mi_deleteUser = null
+}
+/**
 * BLOBTest
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_blob = {
-  /**
+global.tst_blob = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -20,34 +192,32 @@ var tst_blob = {
 * @class
 */
 function tst_blob_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Description
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    * BLOB
-    * Long BLOB value
-    * @type {ArrayBuffer}
-    */
-  this.blb = undefined
+  /**
+  * Description 
+  * @type {String}
+  */
+  this.description = null
+  /**
+  * BLOB 
+  * Long BLOB value
+  * @type {ArrayBuffer}
+  */
+  this.blb = null
 }
-
 /**
 * COD docs kind
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_category = {
-  /**
+global.tst_category = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -57,39 +227,37 @@ var tst_category = {
 * @class
 */
 function tst_category_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * Internal code of document kind
-    * @type {String}
-    */
+  /**
+  * Code 
+  * Internal code of document kind
+  * @type {String}
+  */
   this.code = ''
-    /**
-    * InstanceID
-    * @type {Number}
-    */
+  /**
+  * InstanceID 
+  * @type {Number}
+  */
   this.instanceID = 0
-    /**
-    * Allow for user (ref -> uba_user)
-    * @type {Number}
-    */
+  /**
+  * Allow for user (ref -> uba_user)
+  * @type {Number}
+  */
   this.ubUser = 0
 }
-
 /**
 * CLOBTest
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_clob = {
-  /**
+global.tst_clob = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -99,78 +267,76 @@ var tst_clob = {
 * @class
 */
 function tst_clob_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Description
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    * Text100
-    * Long text value truncated to 100
-    * @type {String}
-    */
-  this.text100 = ''
-    /**
-    * Text2
-    * Long text value truncated to 2
-    * @type {String}
-    */
-  this.text2 = ''
-    /**
-    * Text2000
-    * Long text value truncated to 2000
-    * @type {String}
-    */
-  this.text2000 = ''
-    /**
-    *
-    * Long text 1900
-    * @type {String}
-    */
-  this.textN = ''
-    /**
-    * Code
-    * @type {String}
-    */
+  /**
+  * Description 
+  * @type {String}
+  */
+  this.description = null
+  /**
+  * Text100 
+  * Long text value truncated to 100
+  * @type {String}
+  */
+  this.text100 = null
+  /**
+  * Text2 
+  * Long text value truncated to 2
+  * @type {String}
+  */
+  this.text2 = null
+  /**
+  * Text2000 
+  * Long text value truncated to 2000
+  * @type {String}
+  */
+  this.text2000 = null
+  /**
+  *  
+  * Long text 1900
+  * @type {String}
+  */
+  this.textN = null
+  /**
+  * Code 
+  * @type {String}
+  */
   this.code = ''
-    /**
-    * Text100(100..)
-    * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text100&quot; attribute
-    *
-    * @type {String}
-    */
-  this.mi_tr_text100 = ''
-    /**
-    * Text2(2..)
-    * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text2&quot; attribute
-    *
-    * @type {String}
-    */
-  this.mi_tr_text2 = ''
-    /**
-    * Text2000(2000..)
-    * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text2000&quot; attribute
-    *
-    * @type {String}
-    */
-  this.mi_tr_text2000 = ''
+  /**
+  * Text100(100..) 
+  * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text100&quot; attribute
+  * 
+  * @type {String}
+  */
+  this.mi_tr_text100 = null
+  /**
+  * Text2(2..) 
+  * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text2&quot; attribute
+  * 
+  * @type {String}
+  */
+  this.mi_tr_text2 = null
+  /**
+  * Text2000(2000..) 
+  * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text2000&quot; attribute
+  * 
+  * @type {String}
+  */
+  this.mi_tr_text2000 = null
 }
-
 /**
 * Test crypto
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_crypto = {
-  /**
+global.tst_crypto = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -181,16 +347,14 @@ var tst_crypto = {
 */
 function tst_crypto_object () {
 }
-
 /**
 * tst_dictionary
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_dictionary = {
-  /**
+global.tst_dictionary = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -200,212 +364,213 @@ var tst_dictionary = {
 * @class
 */
 function tst_dictionary_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * Code
-    * @type {String}
-    */
+  /**
+  * Code 
+  * Code
+  * @type {String}
+  */
   this.code = ''
-    /**
-    * Caption
-    * Caption
-    * @type {String}
-    */
-  this.caption = ''
-    /**
-    * filterValue
-    * @type {Number}
-    */
+  /**
+  * Caption 
+  * Caption
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  * filterValue 
+  * @type {Number}
+  */
   this.filterValue = 0
-    /**
-    * Currency Data
-    * @type {Number}
-    */
-  this.currencyValue = 0
-    /**
-    * Назва
-    * @type {String}
-    */
-  this.calculated = ''
-    /**
-    * Test boolean column
-    * @type {Boolean}
-    */
+  /**
+  * Currency Data 
+  * @type {Number}
+  */
+  this.currencyValue = null
+  /**
+  * Float Data 
+  * @type {Number}
+  */
+  this.floatValue = null
+  /**
+  * Назва 
+  * @type {String}
+  */
+  this.calculated = null
+  /**
+  * Test boolean column 
+  * @type {Boolean}
+  */
   this.booleanColumn = undefined
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
   this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
   this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
   this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
   this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
   this.mi_modifyUser = 0
 }
-
 /**
-* DocumentTest
+* ТестДокументів
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_document = {
-  /**
+global.tst_document = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
 
 /**
-* Attributes of "DocumentTest"
+* Attributes of "ТестДокументів"
 * @class
 */
 function tst_document_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * @type {String}
-    */
+  /**
+  * Код 
+  * @type {String}
+  */
   this.code = ''
-    /**
-    * Document date
-    * @type {Date}
-    */
-  this.docDate = new Date()
-    /**
-    * income date
-    * @type {Date}
-    */
-  this.incomeDate = new Date()
-    /**
-    * reg date
-    * @type {Date}
-    */
-  this.regDate = new Date()
-    /**
-    * Category (ref -> tst_category)
-    * @type {Number}
-    */
+  /**
+  * Дата документу 
+  * @type {Date}
+  */
+  this.docDate = null
+  /**
+  * income date 
+  * @type {Date}
+  */
+  this.incomeDate = null
+  /**
+  * reg date 
+  * @type {Date}
+  */
+  this.regDate = null
+  /**
+  * Category (ref -> tst_category)
+  * @type {Number}
+  */
   this.category = 0
-    /**
-    * Favorites (ref -> tst_category)
-    * @type {Number}
-    */
+  /**
+  * Favorites (ref -> tst_category)
+  * @type {Number}
+  */
   this.favorites = 0
-    /**
-    * Favorites (ref -> tst_category)
-    * @type {Number}
-    */
+  /**
+  * Favorites (ref -> tst_category)
+  * @type {Number}
+  */
   this.favorites2 = 0
-    /**
-    * Document full date
-    * @type {Date}
-    */
-  this.docDateTime = new Date()
-    /**
-    * Description
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    * Simple
-    * Documnet stored to simple store
-    * @type {String}
-    */
-  this.fileStoreSimple = ''
-    /**
-    * person (ref -> cdn_person)
-    * @type {Number}
-    */
-  this.person = 0
-    /**
-    * employee (ref -> cdn_employee)
-    * @type {Number}
-    */
-  this.employee = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
+  /**
+  * Document full date 
+  * @type {Date}
+  */
+  this.docDateTime = null
+  /**
+  * Опис 
+  * @type {String}
+  */
+  this.description = null
+  /**
+  * Simple 
+  * Document stored to simple store
+  * @type {String}
+  */
+  this.fileStoreSimple = null
+  /**
+  * person (ref -> cdn_person)
+  * @type {Number}
+  */
+  this.person = null
+  /**
+  * employee (ref -> cdn_employee)
+  * @type {Number}
+  */
+  this.employee = null
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
   this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
   this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
   this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
   this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
   this.mi_modifyUser = 0
 }
-
 /**
 * DocusignEnvelopeTest
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_docusign = {
-  /**
+global.tst_docusign = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -415,69 +580,67 @@ var tst_docusign = {
 * @class
 */
 function tst_docusign_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * name
-    * @type {String}
-    */
+  /**
+  * name 
+  * @type {String}
+  */
   this.name = ''
-    /**
-    * Envelope (ref -> dses_envelope)
-    * Envelope
-    * @type {Number}
-    */
-  this.envelope = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
+  /**
+  * Envelope (ref -> dses_envelope)
+  * Envelope
+  * @type {Number}
+  */
+  this.envelope = null
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
   this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
   this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
   this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
   this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
   this.mi_modifyUser = 0
 }
-
 /**
 * DocusignDocument
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_docusign_doc = {
-  /**
+global.tst_docusign_doc = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -487,70 +650,68 @@ var tst_docusign_doc = {
 * @class
 */
 function tst_docusign_doc_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Envelope (ref -> tst_docusign)
-    * Envelope
-    * @type {Number}
-    */
+  /**
+  * Envelope (ref -> tst_docusign)
+  * Envelope
+  * @type {Number}
+  */
   this.envelope = 0
-    /**
-    * Document (ref -> tst_document)
-    * Document
-    * @type {Number}
-    */
+  /**
+  * Document (ref -> tst_document)
+  * Document
+  * @type {Number}
+  */
   this.document = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
   this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
   this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
   this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
   this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
   this.mi_modifyUser = 0
 }
-
 /**
 * DocusignReceiver
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_docusign_receiver = {
-  /**
+global.tst_docusign_receiver = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -560,70 +721,68 @@ var tst_docusign_receiver = {
 * @class
 */
 function tst_docusign_receiver_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Envelope (ref -> tst_docusign)
-    * Envelope
-    * @type {Number}
-    */
+  /**
+  * Envelope (ref -> tst_docusign)
+  * Envelope
+  * @type {Number}
+  */
   this.envelope = 0
-    /**
-    * Receiver (ref -> uba_user)
-    * Receiver
-    * @type {Number}
-    */
+  /**
+  * Receiver (ref -> uba_user)
+  * Receiver
+  * @type {Number}
+  */
   this.receiver = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
   this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
   this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
   this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
   this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
   this.mi_modifyUser = 0
 }
-
 /**
 * test fts data with scope&#x3D;Connection non multi lang
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_ftsconnection = {
-  /**
+global.tst_ftsconnection = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -633,33 +792,31 @@ var tst_ftsconnection = {
 * @class
 */
 function tst_ftsconnection_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Caption
-    * @type {String}
-    */
-  this.caption = ''
-    /**
-    * Registration date
-    * @type {Date}
-    */
-  this.regDate = new Date()
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  * Registration date 
+  * @type {Date}
+  */
+  this.regDate = null
 }
-
 /**
 * test fts data with scope&#x3D;Connection multi lang
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_ftsconnection_ml = {
-  /**
+global.tst_ftsconnection_ml = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -669,33 +826,31 @@ var tst_ftsconnection_ml = {
 * @class
 */
 function tst_ftsconnection_ml_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Caption
-    * @type {String}
-    */
-  this.caption = ''
-    /**
-    * Registration date
-    * @type {Date}
-    */
-  this.regDate = new Date()
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  * Registration date 
+  * @type {Date}
+  */
+  this.regDate = null
 }
-
 /**
 * test fts data with scope&#x3D;Entity non multi lang
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_ftsentity = {
-  /**
+global.tst_ftsentity = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -705,33 +860,119 @@ var tst_ftsentity = {
 * @class
 */
 function tst_ftsentity_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Caption
-    * @type {String}
-    */
-  this.caption = ''
-    /**
-    * Registration date
-    * @type {Date}
-    */
-  this.regDate = new Date()
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  * Registration date 
+  * @type {Date}
+  */
+  this.regDate = null
+}
+/**
+* tst_histDict
+* @mixes EventEmitter
+*/
+global.tst_histDict = {
+  /** 
+   * Reference to entity metadata
+   * @type {UBEntity} 
+   */
+  entity: null
 }
 
 /**
+* Attributes of "tst_histDict"
+* @class
+*/
+function tst_histDict_object () {
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
+  this.ID = 0
+  /**
+  * Organization (ref -> org_organization)
+  * Our organization
+  * @type {Number}
+  */
+  this.organization = 0
+  /**
+  * Currency Data 
+  * @type {Number}
+  */
+  this.currencyValue = 0
+  /**
+  *  (ref -> tst_histDict)
+  * 
+  * @type {Number}
+  */
+  this.mi_data_id = 0
+  /**
+  *  
+  * 
+  * @type {Date}
+  */
+  this.mi_dateFrom = new Date()
+  /**
+  *  
+  * 
+  * @type {Date}
+  */
+  this.mi_dateTo = new Date()
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
+  this.mi_owner = 0
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
+  this.mi_createDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
+  this.mi_createUser = 0
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
+  this.mi_modifyDate = new Date()
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
+  this.mi_modifyUser = 0
+}
+/**
 * ID mapped
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_IDMapping = {
-  /**
+global.tst_IDMapping = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -741,29 +982,27 @@ var tst_IDMapping = {
 * @class
 */
 function tst_IDMapping_object () {
-    /**
-    * Ідентифікатор запису
-    * Ідентифікатор запису
-    * @type {Number}
-    */
+  /**
+  * Ідентифікатор запису 
+  * Ідентифікатор запису
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * Internal code
-    * @type {String}
-    */
+  /**
+  * Code 
+  * Internal code
+  * @type {String}
+  */
   this.code = ''
 }
-
 /**
 * ub test main data
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_maindata = {
-  /**
+global.tst_maindata = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -773,127 +1012,196 @@ var tst_maindata = {
 * @class
 */
 function tst_maindata_object () {
-    /**
-    *  (ref -> tst_mainunity)
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> tst_mainunity)
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * @type {String}
-    */
+  /**
+  * Code 
+  * @type {String}
+  */
   this.code = ''
-    /**
-    * Caption
-    * @type {String}
-    */
-  this.caption = ''
-    /**
-    * complexCaption
-    * @type {String}
-    */
-  this.complexCaption = ''
-    /**
-    * nonNullDict_ID (ref -> tst_dictionary)
-    * @type {Number}
-    */
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  * complexCaption 
+  * @type {String}
+  */
+  this.complexCaption = null
+  /**
+  * nonNullDict_ID (ref -> tst_dictionary)
+  * @type {Number}
+  */
   this.nonNullDict_ID = 0
-    /**
-    * nullDict_ID (ref -> tst_dictionary)
-    * @type {Number}
-    */
-  this.nullDict_ID = 0
-    /**
-    * enumValue
-    * @type {String}
-    */
+  /**
+  * nullDict_ID (ref -> tst_dictionary)
+  * @type {Number}
+  */
+  this.nullDict_ID = null
+  /**
+  * parent (ref -> tst_maindata)
+  * @type {Number}
+  */
+  this.parent = null
+  /**
+  * parent (ref -> tst_mainunity)
+  * @type {Number}
+  */
+  this.parent1 = null
+  /**
+  * enumValue 
+  * @type {String}
+  */
   this.enumValue = ''
-    /**
-    * dateTimeValue
-    * @type {Date}
-    */
-  this.dateTimeValue = new Date()
-    /**
-    * booleanValue
-    * @type {Boolean}
-    */
+  /**
+  * dateTimeValue 
+  * @type {Date}
+  */
+  this.dateTimeValue = null
+  /**
+  * booleanValue 
+  * @type {Boolean}
+  */
   this.booleanValue = undefined
-    /**
-    * test many data (ref -> tst_dictionary)
-    * @type {String}
-    */
-  this.manyValue = ''
-    /**
-    * test 2d many data (ref -> tst_dictionary)
-    * @type {String}
-    */
-  this.manyValue2 = ''
-    /**
-    * BigInt
-    * @type {Number}
-    */
-  this.bigintValue = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
+  /**
+  * test many data (ref -> tst_dictionary)
+  * @type {String}
+  */
+  this.manyValue = null
+  /**
+  * test 2d many data (ref -> tst_dictionary)
+  * @type {String}
+  */
+  this.manyValue2 = null
+  /**
+  * BigInt 
+  * @type {Number}
+  */
+  this.bigintValue = null
+  /**
+  * mappedToSelf (ref -> uba_user)
+  * @type {Number}
+  */
+  this.mappedToSelf = null
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
   this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
   this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
   this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
   this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
   this.mi_modifyUser = 0
-    /**
-    *
-    * Deletion date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Deletion date
+  * 
+  * @type {Date}
+  */
   this.mi_deleteDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    *
-    * @type {Number}
-    */
-  this.mi_deleteUser = 0
+  /**
+  *  (ref -> uba_user)
+  * User who delete row
+  * 
+  * @type {Number}
+  */
+  this.mi_deleteUser = null
+}
+/**
+* 
+* @mixes EventEmitter
+*/
+global.tst_maind_dict = {
+  /** 
+   * Reference to entity metadata
+   * @type {UBEntity} 
+   */
+  entity: null
 }
 
 /**
+* Attributes of ""
+* @class
+*/
+function tst_maind_dict_object () {
+  /**
+  *  (ref -> tst_maindata)
+  * @type {Number}
+  */
+  this.sourceID = 0
+  /**
+  *  (ref -> tst_dictionary)
+  * @type {Number}
+  */
+  this.destID = 0
+}
+/**
+* 
+* @mixes EventEmitter
+*/
+global.tst_maind_dict2 = {
+  /** 
+   * Reference to entity metadata
+   * @type {UBEntity} 
+   */
+  entity: null
+}
+
+/**
+* Attributes of ""
+* @class
+*/
+function tst_maind_dict2_object () {
+  /**
+  *  (ref -> tst_maindata)
+  * @type {Number}
+  */
+  this.sourceID = 0
+  /**
+  *  (ref -> tst_dictionary)
+  * @type {Number}
+  */
+  this.destID = 0
+}
+/**
 * tst_mainunity
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_mainunity = {
-  /**
+global.tst_mainunity = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -903,88 +1211,86 @@ var tst_mainunity = {
 * @class
 */
 function tst_mainunity_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * @type {String}
-    */
+  /**
+  * Code 
+  * @type {String}
+  */
   this.code = ''
-    /**
-    * Caption
-    * @type {String}
-    */
-  this.caption = ''
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  *  (ref -> uba_user)
+  * Row owner
+  * 
+  * @type {Number}
+  */
   this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Creation date
+  * 
+  * @type {Date}
+  */
   this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who create row
+  * 
+  * @type {Number}
+  */
   this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Modification date
+  * 
+  * @type {Date}
+  */
   this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who modify row
+  * 
+  * @type {Number}
+  */
   this.mi_modifyUser = 0
-    /**
-    *
-    * Deletion date
-    *
-    * @type {Date}
-    */
+  /**
+  *  
+  * Deletion date
+  * 
+  * @type {Date}
+  */
   this.mi_deleteDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    *
-    * @type {Number}
-    */
-  this.mi_deleteUser = 0
-    /**
-    *
-    *
-    * @type {String}
-    */
+  /**
+  *  (ref -> uba_user)
+  * User who delete row
+  * 
+  * @type {Number}
+  */
+  this.mi_deleteUser = null
+  /**
+  *  
+  * 
+  * @type {String}
+  */
   this.mi_unityEntity = ''
 }
-
 /**
 * tst_ODataRef
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_ODataRef = {
-  /**
+global.tst_ODataRef = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -994,40 +1300,38 @@ var tst_ODataRef = {
 * @class
 */
 function tst_ODataRef_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * Code
-    * @type {String}
-    */
+  /**
+  * Code 
+  * Code
+  * @type {String}
+  */
   this.code = ''
-    /**
-    *  (ref -> tst_ODataSimple)
-    * @type {Number}
-    */
+  /**
+  *  (ref -> tst_ODataSimple)
+  * @type {Number}
+  */
   this.refColumn = 0
-    /**
-    * Simple
-    * Document stored to simple store
-    * @type {String}
-    */
-  this.storeColumn = ''
+  /**
+  * Simple 
+  * Document stored to simple store
+  * @type {String}
+  */
+  this.storeColumn = null
 }
-
 /**
 * tst_ODataSimple
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_ODataSimple = {
-  /**
+global.tst_ODataSimple = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -1037,65 +1341,99 @@ var tst_ODataSimple = {
 * @class
 */
 function tst_ODataSimple_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
   this.ID = 0
-    /**
-    * Code
-    * Code
-    * @type {String}
-    */
+  /**
+  * Code 
+  * Code
+  * @type {String}
+  */
   this.code = ''
-    /**
-    * Caption
-    * Caption
-    * @type {String}
-    */
-  this.caption = ''
-    /**
-    * filterValue
-    * @type {Number}
-    */
+  /**
+  * Caption 
+  * Caption
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  * filterValue 
+  * @type {Number}
+  */
   this.filterValue = 0
-    /**
-    * Currency Data
-    * @type {Number}
-    */
-  this.currencyValue = 0
-    /**
-    * Назва
-    * @type {String}
-    */
-  this.calculated = ''
-    /**
-    * Test boolean column
-    * @type {Boolean}
-    */
+  /**
+  * Currency Data 
+  * @type {Number}
+  */
+  this.currencyValue = null
+  /**
+  * Назва 
+  * @type {String}
+  */
+  this.calculated = null
+  /**
+  * Test boolean column 
+  * @type {Boolean}
+  */
   this.booleanColumn = undefined
-    /**
-    *
-    * @type {String}
-    */
-  this.enumColumn = ''
-    /**
-    * Document date
-    * @type {Date}
-    */
-  this.dateColumn = new Date()
+  /**
+  *  
+  * @type {String}
+  */
+  this.enumColumn = null
+  /**
+  * Document date 
+  * @type {Date}
+  */
+  this.dateColumn = null
+}
+/**
+* tst_onlyoffice
+* @mixes EventEmitter
+*/
+global.tst_onlyoffice = {
+  /** 
+   * Reference to entity metadata
+   * @type {UBEntity} 
+   */
+  entity: null
 }
 
 /**
+* Attributes of "tst_onlyoffice"
+* @class
+*/
+function tst_onlyoffice_object () {
+  /**
+  *  
+  * 
+  * @type {Number}
+  */
+  this.ID = 0
+  /**
+  * Caption 
+  * @type {String}
+  */
+  this.caption = null
+  /**
+  * content 
+  * contents of the document
+  * 
+  * @type {String}
+  */
+  this.content = null
+}
+/**
 * Test PDF sign
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_pdfSign = {
-  /**
+global.tst_pdfSign = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }
@@ -1106,16 +1444,14 @@ var tst_pdfSign = {
 */
 function tst_pdfSign_object () {
 }
-
 /**
 * Test servises
 * @mixes EventEmitter
-* @mixes RequiredModule
 */
-var tst_service = {
-  /**
+global.tst_service = {
+  /** 
    * Reference to entity metadata
-   * @type {TubEntity}
+   * @type {UBEntity} 
    */
   entity: null
 }

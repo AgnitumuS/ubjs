@@ -1,4 +1,3 @@
-/* jshint multistr:true */
 let me = ubm_diagram
 
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
@@ -153,8 +152,7 @@ function doUpdateInsert (ctxt, storedValue) {
     newDocument,
     ID,
     docHandler, docReq, ct, docBody, attr,
-    entity = me.entity,
-    attributes = entity.attributes
+    entity = me.entity
 
   newValues = mP.execParams || {}
   ID = newValues.ID
@@ -162,7 +160,7 @@ function doUpdateInsert (ctxt, storedValue) {
   // move all attributes from execParams to storedValue
   newDocument = newValues.document
   _.forEach(newValues, function (val, key) {
-    attr = attributes[key]
+    attr = entity.attributes[key]
     if (attr && (attr.dataType !== TubAttrDataType.Document)) {
       storedValue[key] = val
     }

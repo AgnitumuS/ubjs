@@ -1,28 +1,32 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "uba_audit"
-//@formType "auto"
-//@caption "SecurityAudit"
-//@description "Security audit"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "uba_audit"
+// @model "UBA"
+// @formCode "{"storeType":0,"store":"","fName":"uba_audit-show-fm.js","origName":"","relPath":"UBA|forms","ct":"application/json; charset=UTF-8","size":0,"md5":"","revision":0,"isDirty":false,"deleting":false,"isPermanent":false}"
+// @formDef "{"store":"mdb","fName":"uba_audit-show-fm.def","origName":"uba_audit-show-fm.def","relPath":"","ct":"application/def","size":1102,"md5":"e00df3181ebee13936bdd55864c6a993","revision":1,"isDirty":true}"
+// @formType "auto"
+// @caption "SecurityAudit"
+// @description "Security audit"
 exports.formDef = {
-    parentConfig: {
-        layout: { type:'vbox', align: 'stretch' }
-    },	items: [
-		{
-            xtype: 'container',
-            layout: {type: 'table', columns: 2, align: 'stretch'},
-            items: [
-                { attributeName: "entity", readOnly: true /*Entity code*/},
-                { attributeName: "actionType", readOnly: true /*Action*/},
-                { attributeName: "actionUser", readOnly: true /*User*/},
-                { attributeName: "actionTime", readOnly: true /*Action time*/},
-                { attributeName: "remoteIP", readOnly: true /*Remote IP*/},
-                { attributeName: "entityinfo_id", readOnly: true /*Instance ID*/},
-                { attributeName: "targetUser", readOnly: true /*Target user*/},
-                { attributeName: "targetRole", readOnly: true /*Target role*/}
-            ]
-        },
-                { attributeName: "fromValue", readOnly: true  /*Old values*/},
-                { attributeName: "toValue", readOnly: true /*New values*/}
+  parentConfig: {
+    layout: { type:'vbox', align: 'stretch' }
+  },	
+  items: [
+    {
+      xtype: 'container',
+      layout: {type: 'table', columns: 2, align: 'stretch'},
+      items: [
+        { attributeName: "entity", readOnly: true /*Entity code*/},
+        { attributeName: "actionType", readOnly: true /*Action*/},
+        { attributeName: "actionUser", readOnly: true /*User*/},
+        { attributeName: "actionTime", readOnly: true /*Action time*/},
+        { attributeName: "remoteIP", readOnly: true /*Remote IP*/},
+        { attributeName: "entityinfo_id", readOnly: true /*Instance ID*/},
+        { attributeName: "targetUser", readOnly: true /*Target user*/},
+        { attributeName: "targetRole", readOnly: true /*Target role*/}
+      ]
+    },
+    { attributeName: "fromValue", readOnly: true  /*Old values*/},
+    { attributeName: "toValue", readOnly: true /*New values*/}
 	]
 };

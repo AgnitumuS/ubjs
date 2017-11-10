@@ -1,8 +1,9 @@
 /* jshint multistr:true */
-/* global TubAttrDataType, ubm_form, require */
+/* global TubAttrDataType, require */
 let me = ubm_form
 
 const fs = require('fs')
+const _ = require('lodash')
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
 const LocalDataStore = require('@unitybase/base').LocalDataStore
 const path = require('path')
@@ -212,10 +213,9 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     newValues,
     newFormCodeMeta, newFormDefMeta, codeOfModelToStore,
     ID,
-    docHandler, docReq, ct, docBody, attr, attrName,
+    docHandler, docReq, ct, docBody, attr,
     formEntity,
-    entity = me.entity,
-    attributes = entity.attributes
+    entity = me.entity
 
   console.debug('--==== ubm_forms.doUpdateInsert ===-')
   newValues = mP.execParams || {}
@@ -225,7 +225,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   newFormCodeMeta = newValues.formCode
   newFormDefMeta = newValues.formDef
   _.forEach(newValues, function (val, key) {
-    attr = attributes[key]
+    attr = entity.attributes[key]
     if (attr && (attr.dataType !== TubAttrDataType.Document)) {
       storedValue[key] = val
     }
@@ -284,13 +284,13 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   }
 
   let addedAttr = ''
-  for (let j = 0, attrCnt = attributes.count; j < attrCnt; j++) {
-    attr = attributes.items[j]
-    attrName = attr.name
-    if (attr.dataType !== TubAttrDataType.Document && attr.defaultView && attrName !== 'ID' && attrName !== 'code') {
-      addedAttr = '// @' + attrName + ' "' + storedValue[attrName] + '"\r\n' + addedAttr
+  for (let attrCode in entity.attributes) {
+    let attr = entity.attributes[attrCode]
+    if (attr.dataType !== TubAttrDataType.Document && attr.defaultView && attrCode !== 'ID' && attrCode !== 'code') {
+      addedAttr = '// @' + attrCode + ' "' + storedValue[attrCode] + '"\r\n' + addedAttr
     }
   }
+
   docBody = '// @! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + docBody
   docHandler.request.setBodyAsUnicodeString(docBody)
   ct = docHandler.content
