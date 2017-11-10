@@ -10,7 +10,6 @@ const path = require('path')
 const _ = require('lodash')
 const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
-const UBDomain = require('@unitybase/base').UBDomain
 
 /**
  * @param {THTTPResponse} resp
@@ -173,7 +172,7 @@ function clientRequire (req, resp) {
     let models = App.domainInfo.models
     let restrictAccess = false
     // allow access to package.json for dynamically load a module from UI
-    if (! reqPath.endsWith('/package.json')) {
+    if (!reqPath.endsWith('/package.json')) {
       // in case this is request to UnityBase model - check resolved file is inside model public folder
       _.forEach(models, (model) => {
         if (model.moduleName &&
@@ -286,7 +285,7 @@ function getDomainInfoEp (req, resp) {
   // }
   // let res = JSON.stringify(restrictedDomain, domainReplacer)
 
-  let params = queryString.parse(req.parameters);
+  let params = queryString.parse(req.parameters)
   let isExtended = (params['extended'] === 'true')
   if (isExtended && authenticationHandled && !UBA_COMMON.isSuperUser()) {
     return badRequest(resp, 'Extended domain info allowed only for member of admin group of if authentication is disabled')

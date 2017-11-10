@@ -1,3 +1,4 @@
+const _ = require('lodash')
 /**
  *  @classdesc
  *  Virtual store implementation for storing content inside models `public` folders.
@@ -97,16 +98,16 @@ UB.virtualStores.mdb.loadContentFromTempStore = function (handler, aWithBody) {
     request = handler.request,
     strCtnt, objCtnt, fn
   console.debug('--========loadContentFromTempStore=====------ for ', handler.attribute.name)
-    // toLog('handler = %', handler);
+  // toLog('handler = %', handler);
 
   fn = this.getTempFileName(handler)
   strCtnt = loadFile(fn + this.fileTempInfoExt)
   if (!strCtnt) {
     return // TODO - make difference between insert (do nothing) and update - raise
-        // throw new Error('temporary content information not found for ' + handler.attribute.name);
+    // throw new Error('temporary content information not found for ' + handler.attribute.name);
   }
   objCtnt = JSON.parse(strCtnt)
-    // move all property from file to handler.content
+  // move all property from file to handler.content
   _.forEach(objCtnt, function (key, value) {
     content[key] = value
   })

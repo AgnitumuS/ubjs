@@ -1,4 +1,5 @@
-﻿var
+﻿const _ = require('lodash')
+var
     me = org_unit;
 me.entity.addMethod('afterupdate');
 

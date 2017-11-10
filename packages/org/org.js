@@ -1,4 +1,5 @@
-﻿var ORG = UB.ns('ORG');
+﻿const _ = require('lodash')
+var ORG = UB.ns('ORG');
 
 ORG.checkOrgUnitRequired = true;
 
