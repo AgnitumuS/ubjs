@@ -115,3 +115,15 @@ TubDataStore.initialize = function (source, keyMap) {
   }
   return this
 }
+
+/**
+ * Extended information about application domain
+ * @property {UBEntity} entity
+ * @memberOf TubDataStore
+ */
+Object.defineProperty(TubDataStore, 'entity', {
+  enumerable: true,
+  get: function () {
+    return App.domainInfo.get(this.entityCode)
+  }
+})
