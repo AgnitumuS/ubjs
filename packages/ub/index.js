@@ -57,6 +57,7 @@ let enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntit
   'TubAttrDataType', 'TubSQLExpressionType', 'TubSQLDialect', 'TubSQLDriver']
 enums.forEach(eN => {
   let e = global[eN]
+  if (!e) return
   let vals = Object.keys(e)
   vals.forEach(k => { e[k] = k })
 })

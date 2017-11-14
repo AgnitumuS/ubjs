@@ -37,7 +37,7 @@ function WebSocketTransport (props) {
     if (process.isWebSocketServer) {
       wsProtocol = wsBinding.addProtocol(props)
       EventEmitter.call(wsProtocol)
-      util._extend(wsProtocol, EventEmitter.prototype)
+      Object.assign(wsProtocol, EventEmitter.prototype)
       registeredWSProtocols[props.name] = wsProtocol
     } else {
       wsProtocol = wsBinding.retrieveProtocol(props)
@@ -137,7 +137,6 @@ function WebSocketTransport (props) {
  */
 function JsonMessagesProtocol (namedAs) {
   let me = this
-
   let _jsonProtocol = new WebSocketTransport({name: namedAs, handledAs: 'Json'})
 
   /**

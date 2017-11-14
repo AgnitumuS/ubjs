@@ -165,7 +165,9 @@ App.registerEndpoint('queriesRaw', queriesRaw, false)
 
 var
   fs = require('fs'),
-  tpl = fs.readFileSync(App.domain.config.models.byName('TPW').path + '/Fortune.mustache'),
+  path = require('path'),
+  _ = require('lodash'),
+  tpl = fs.readFileSync(path.join(App.domainInfo.models['TPW'].realPath, 'Fortune.mustache')),
   mustache = require('mustache')
 
 /**
