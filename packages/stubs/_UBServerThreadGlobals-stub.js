@@ -679,13 +679,6 @@ TubDataStore.prototype = {
   generateID: function () {},
 
     /**
-     * Entity repository created with
-     * @readonly
-     * @type {TubEntity}
-     */
-  entity: new TubEntity(),
-
-    /**
      * Is store initialized
      * @type {Boolean}
      */

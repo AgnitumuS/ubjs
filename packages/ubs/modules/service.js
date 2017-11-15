@@ -118,7 +118,7 @@ exports.Service = {
 
     setassociatedEntityValueByCode: function(ctxt, attrName, codeValue) {
         var
-            attr = ctxt.dataStore.entity.attributes.byName(attrName),
+            attr = ctxt.dataStore.entity.attr(attrName),
             assocObjectName,
             mParams = ctxt.mParams,
             execParams = mParams.execParams;
