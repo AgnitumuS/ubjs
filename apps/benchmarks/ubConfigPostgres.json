@@ -9,7 +9,7 @@
 		}
 	},
 	"logging": {
-		//"levels": ["*"],
+		"levels": ["*"],
 		"path": ".\\logs",
 		"rotationSizeInMB": 100,
 		"performanceCounters": false
@@ -48,7 +48,7 @@
 				"supportLang": [
 					"en"
 				],
-				"advSettings": "LibLocation=libpq.dll"
+				"advSettings": "LibLocation=D:\\apps\\PostgreSQL10\\bin\\libpq.dll"
 			}
 		],
 		"blobStores": [
