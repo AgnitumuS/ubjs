@@ -59,7 +59,7 @@
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": {"en": "Autotest UB SQLITE", "uk": "Автотест UB SQLITE"},
+			"applicationName": {"en": "Autotest UB Postgre", "uk": "Автотест UB Postgre"},
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
@@ -149,7 +149,7 @@
 				},
 				{
 					"name": "TST",
-					"path": ".\\models\\TST"
+					"path": "./models/TST"
 				}
 			],
 			"implicitlyAddedMixins": [

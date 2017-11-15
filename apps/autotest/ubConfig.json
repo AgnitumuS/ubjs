@@ -25,7 +25,7 @@
 		"threadingModel": "IdentifiedInOnFile",
 		"stackTrackDepth": 20,
 		"rotationSizeInMB": 100,
-		"performanceCounters": true
+		"performanceCounters": false
 	},
 	"javascript": {
 		"timeout": -1,
