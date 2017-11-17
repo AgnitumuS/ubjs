@@ -219,10 +219,15 @@ require('./virtualStores/fileVirtual')
 require('./virtualStores/fileVirtualWritePDF')
 require('./virtualStores/mdb')
 
+// export BEFORE load models, since models inside can use a UB model
+const modelLoader = require('./modules/moledLoader')
+module.exports = {
+  loadLegacyModules: modelLoader.loadLegacyModules
+}
 // for each model: 
 // - load all entities modules
 // - require a model itself
-const modelLoader = require('./modules/moledLoader')
+
 let orderedModels = App.domainInfo.orderedModels
 orderedModels.forEach((model) => {
   if (model.realPath && (model.name !== 'UB')) { // UB already loaded by UB.js
@@ -238,7 +243,3 @@ App.registerEndpoint('getAppInfo', getAppInfo, false)
 App.registerEndpoint('models', models, false)
 App.registerEndpoint('clientRequire', clientRequire, false)
 App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
-
-module.exports = {
-  loadLegacyModules: modelLoader.loadLegacyModules
-}
