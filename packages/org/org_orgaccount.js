@@ -1,4 +1,4 @@
-let me = cdn_orgaccount
+let me = org_orgaccount
 
 me.on('insert:before', setDescriptionAttribute)
 me.on('update:before', setDescriptionAttribute)

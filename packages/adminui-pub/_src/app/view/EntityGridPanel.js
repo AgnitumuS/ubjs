@@ -268,10 +268,14 @@ Ext.define('UB.view.EntityGridPanel', {
             let attributeDefinition = {}
 
             if (_.includes([UBDomain.ubDataTypes.Entity], entityAttribute.dataType)) {
-              if (fieldList[i].name.indexOf('.') + 1) {
-                attributeDefinition.fieldList = ['ID', fieldList[i].name.substring(fieldList[i].name.indexOf('.') + 1)]
+              if (fieldList[i].editor && fieldList[i].editor.fieldList){
+                attributeDefinition.fieldList = fieldList[i].editor.fieldList
               } else {
-                attributeDefinition.fieldList = ['ID', $App.domainInfo.get(entityAttribute.associatedEntity).getDescriptionAttribute()]
+                if (fieldList[i].name.indexOf('.') + 1) {
+                  attributeDefinition.fieldList = ['ID', fieldList[i].name.substring(fieldList[i].name.indexOf('.') + 1)]
+                } else {
+                  attributeDefinition.fieldList = ['ID', $App.domainInfo.get(entityAttribute.associatedEntity).getDescriptionAttribute()]
+                }
               }
 
               col.editor = UB.core.UBUtil.ubDt2Ext(entityAttribute, attributeDefinition)
@@ -288,6 +292,7 @@ Ext.define('UB.view.EntityGridPanel', {
               _.extend(col.editor, fieldList[i].editor)
             }
           }
+
           columns.push(col)
         }
       }
@@ -533,10 +538,20 @@ Ext.define('UB.view.EntityGridPanel', {
    */
   readOnly: false,
   /**
+   * @cfg {Boolean} notWriteChanges
+   * Do not write changes to the database
+   */
+  notWriteChanges: false,
+  /**
    * @cfg {Boolean} rowEditing
    * Allow editing at a row level for a Grid
    */
   rowEditing: false,
+  /**
+   * @cfg {Boolean} rowEditing
+   * Calculate sum on client (GridSummary)
+   */
+  summaryDataOnClient: false
   /**
    * @cfg {Object} menuAllActionsActionList
    * Set of action buttons that will be displayed in the menuAllActions of a grid.
@@ -583,6 +598,56 @@ Ext.define('UB.view.EntityGridPanel', {
   onOptimizeWidth: function () {
     this.optimizeColumnWidth(true)
   },
+
+  getData: function(){
+    let me = this
+    let result = []
+    me.getStore().data.items.forEach(function(item){
+      result.push(item.getData())
+    })
+    return result
+  },
+
+  getAttributeData: function(){
+    let me = this
+    let result = {
+      insert: [],
+      update: [],
+      del: []
+    }
+    me.getStore().data.items.forEach(function(item){
+      let data = item.getData()
+      for (let name in data) {
+        if (name.indexOf('.') + 1){
+          delete data[name]
+        }
+      }
+      if (!data.ID){
+        result.insert.push(data)
+      } else if (item.dirty) {
+        let change = item.getChanges()
+        let updateData = {ID: data.ID}
+        if (data.mi_modifyDate){
+          updateData.mi_modifyDate = data.mi_modifyDate
+        }
+        for (let name in change) {
+          if (!name.indexOf('.') + 1){
+            updateData[name] = data[name]
+          }
+        }
+        result.update.push(updateData)
+      }
+    })
+    me.getStore().getRemovedRecords().forEach(function(item){
+      let data = item.getData()
+      if (data.ID) {
+        result.del.push(item.getData())
+      }
+    })
+    return result
+  },
+
+
 
   /**
    * Set optimal width for grid columnsbased on current gerin width & attribute types
@@ -768,7 +833,8 @@ Ext.define('UB.view.EntityGridPanel', {
     }
 
     me.entityName = cfg.entity
-    if (me.loadStoreImmediately && !me.autoFilter && !me.disableAutoLoadStore) {
+    if (me.loadStoreImmediately && (!me.autoFilter || (me.autoFilter && me.autoFilter.notShowBefore)) &&
+      !me.disableAutoLoadStore) {
       me.store.load()
     }
   },
@@ -899,7 +965,8 @@ Ext.define('UB.view.EntityGridPanel', {
           me.entityName = me.store.ubRequest.entity
         }
       }
-      if (me.store && me.loadStoreImmediately && !me.autoFilter && !me.disableAutoLoadStore) {
+      if (me.store && me.loadStoreImmediately &&
+        (!me.autoFilter || (me.autoFilter && me.autoFilter.notShowBefore)) && !me.disableAutoLoadStore) {
         me.store.load()
       }
     }
@@ -965,6 +1032,7 @@ Ext.define('UB.view.EntityGridPanel', {
       }]
       */
     })
+
     /* RowEditing */
     if (me.rowEditing) {
       let rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
@@ -976,7 +1044,7 @@ Ext.define('UB.view.EntityGridPanel', {
         errorSummary: false
       })
       rowEditing.on('canceledit', function (editor, context) {
-        if (!context.record.get('ID')) {
+        if ((!context.record.get('ID') && !me.notWriteChanges) || (me.notWriteChanges && context.record.phantom)) {
           context.store.remove(context.record)
         }
       })
@@ -1094,8 +1162,11 @@ Ext.define('UB.view.EntityGridPanel', {
         me.setupActions()
         me.initPagingToolbar()
 
-        if (!me.store.isLoading() && !me.autoFilterActive) {
+        if (!me.store.isLoading() && !me.autoFilterActive && !me.notWriteChanges) {
           me.store.load()
+        }
+        if (me.notWriteChanges && me.GridSummary) {
+          me.GridSummary.dataBind()
         }
         let win = me.getFormWin()
         if (win) {
@@ -1174,9 +1245,9 @@ Ext.define('UB.view.EntityGridPanel', {
     me.dockedItems.push(me.bBar) // unshift
     me.callParent(arguments)
 
-    if (me.hidePagingBar) {
-      me.pagingBar.hide()
-    }
+    /* if (me.hidePagingBar) {
+       me.pagingBar.hide()
+     }*/
 
     /**
      * @cfg {Function} [afterInit] Will be called when initComponent done.
@@ -1196,48 +1267,50 @@ Ext.define('UB.view.EntityGridPanel', {
       cls: 'ub-float-toolbar',
       style: 'top: ' + (size.height - 30 - 20) + 'px; left: ' + (size.width - 300 - 20) + 'px; ' // width: 300px; height: 30px;
     }, true)
-    me.pagingBar = Ext.create('UB.view.PagingToolbar', {
-      renderTo: me.floatToolbarEl,
-      isPagingBar: true,
-      cls: 'ub-grid-info-panel-tb',
-      padding: '0 0 0 5',
-      /**
-       * @cfg {Boolean} autoCalcTotal default false
-       * If it is true show total row count in paging toolbar.
-       *
-       * To set this parameter in  {@link UB.core.UBCommand command} config use:
-       *
-       *       cmpInitConfig: {
+    if (!me.hidePagingBar) {
+      me.pagingBar = Ext.create('UB.view.PagingToolbar', {
+        renderTo: me.floatToolbarEl,
+        isPagingBar: true,
+        cls: 'ub-grid-info-panel-tb',
+        padding: '0 0 0 5',
+        /**
+         * @cfg {Boolean} autoCalcTotal default false
+         * If it is true show total row count in paging toolbar.
+         *
+         * To set this parameter in  {@link UB.core.UBCommand command} config use:
+         *
+         *       cmpInitConfig: {
        *                      autoCalcTotal: true
        *       }
-       *
-       */
-      autoCalcTotal: me.autoCalcTotal,
-      store: me.store // same store GridPanel is using
-    })
+         *
+         */
+        autoCalcTotal: me.autoCalcTotal,
+        store: me.store // same store GridPanel is using
+      })
 
-    me.on('activate', function () {
-      me.on('afterlayout', function () {
-        if (!me.isDestroyed && me.pagingBar) {
-          me.pagingBar.updateTotal()
-          me.realignFloatPanel()
-        }
-      }, me, {single: true})
-    })
+      me.on('activate', function () {
+        me.on('afterlayout', function () {
+          if (!me.isDestroyed && me.pagingBar) {
+            me.pagingBar.updateTotal()
+            me.realignFloatPanel()
+          }
+        }, me, {single: true})
+      })
 
-    me.store.on('refresh', function () {
-      if (me.store.currentPage === 1 && me.store.getCount() < me.minRowsPagingBarVisibled) {
-        me.floatToolbarEl.hide()
-      } else {
-        if (!me.floatToolbarEl.isVisible()) {
-          me.floatToolbarEl.show()
+      me.store.on('refresh', function () {
+        if (me.store.currentPage === 1 && me.store.getCount() < me.minRowsPagingBarVisibled) {
+          me.floatToolbarEl.hide()
+        } else {
+          if (!me.floatToolbarEl.isVisible()) {
+            me.floatToolbarEl.show()
+          }
         }
-      }
-    })
-    me.pagingBar.on('totalChanged', function () {
+      })
+      me.pagingBar.on('totalChanged', function () {
+        me.realignFloatPanel()
+      })
       me.realignFloatPanel()
-    })
-    me.realignFloatPanel()
+    }
   },
 
   getFormWin: function () {
@@ -1972,22 +2045,32 @@ Ext.define('UB.view.EntityGridPanel', {
         execParams[fieldName] = context.grid.parentContext[fieldName]
       })
     }
-
-    $App.connection.run({
-      entity: this.entityName,
-      method: 'insert',
-      fieldList: fieldList,
-      execParams: execParams
-    }).then(function (response) {
-      context.record.set('ID', response.execParams.ID)
-      if (response.execParams.mi_modifyDate) {
-        context.record.set('mi_modifyDate', new Date(response.execParams.mi_modifyDate))
+    if (!me.notWriteChanges) {
+      $App.connection.run({
+        entity: this.entityName,
+        method: 'insert',
+        fieldList: fieldList,
+        execParams: execParams
+      }).then(function (response) {
+        context.record.set('ID', response.execParams.ID)
+        if (response.execParams.mi_modifyDate) {
+          context.record.set('mi_modifyDate', new Date(response.execParams.mi_modifyDate))
+        }
+        context.record.commit()
+        if (me.GridSummary) {
+          me.GridSummary.dataBind()
+        }
+        me.fireEvent('changeData', me, 'insert')
+      })
+    } else {
+      if (!_.includes(me.hideActions,'del') && me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE)){
+        me.enableAction('del')
       }
-      context.record.commit()
-      if (me.gridSummary) {
-        me.gridSummary.dataBind()
+      if (me.GridSummary) {
+        me.GridSummary.dataBind()
       }
-    })
+      me.fireEvent('changeData', me, 'insert')
+    }
   },
   updateRecord: function (context) {
     let me = this
@@ -2015,20 +2098,28 @@ Ext.define('UB.view.EntityGridPanel', {
         fieldList.push(name)
       }
     }
-    $App.connection.run({
-      entity: me.entityName,
-      method: 'update',
-      fieldList: fieldList,
-      execParams: execParams
-    }).then(function (response) {
-      if (response.execParams.mi_modifyDate) {
-        context.record.set('mi_modifyDate', new Date(response.execParams.mi_modifyDate))
+    if (!me.notWriteChanges) {
+      $App.connection.run({
+        entity: me.entityName,
+        method: 'update',
+        fieldList: fieldList,
+        execParams: execParams
+      }).then(function (response) {
+        if (response.execParams.mi_modifyDate) {
+          context.record.set('mi_modifyDate', new Date(response.execParams.mi_modifyDate))
+        }
+        context.record.commit()
+        if (me.GridSummary) {
+          me.GridSummary.dataBind()
+        }
+        me.fireEvent('changeData', me, 'update')
+      })
+    } else {
+      if (me.GridSummary) {
+        me.GridSummary.dataBind()
       }
-      context.record.commit()
-      if (me.gridSummary) {
-        me.gridSummary.dataBind()
-      }
-    })
+      me.fireEvent('changeData', me, 'update')
+    }
   },
   addNewRecord: function (data) {
     if (!data) {
@@ -2109,7 +2200,7 @@ Ext.define('UB.view.EntityGridPanel', {
     } else {
       if (!me.editingPlugin.editing) {
         let parentForm = me.up('basepanel')
-        if (parentForm && (parentForm.isDirty() || parentForm.isNewInstance)) {
+        if (parentForm && (parentForm.isDirty() || parentForm.isNewInstance) && !me.notWriteChanges) {
           parentForm.saveForm().then(function (result) {
             if (result !== -1) {
               me.addNewRecord()
@@ -2123,20 +2214,30 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onAddNewByCurrent: function () {
-    let selection = this.getSelectionModel().getSelection()
+    let me = this
+    let selection = me.getSelectionModel().getSelection()
     if (selection.length < 1) {
       $App.dialogInfo('selectRowFirst')
       return
     }
-    if (!this.rowEditing) {
+    if (!me.rowEditing) {
       let eOpt = {
         addByCurrent: true,
         instanceID: selection[0].get('ID')
       }
-      this.openForm(eOpt)
+      me.openForm(eOpt)
     } else {
-      if (!this.editingPlugin.editing) {
-        this.addNewRecord(selection[0].getData())
+      if (!me.editingPlugin.editing) {
+        let parentForm = me.up('basepanel')
+        if (parentForm && (parentForm.isDirty() || parentForm.isNewInstance) && !me.notWriteChanges) {
+          parentForm.saveForm().then(function (result) {
+            if (result !== -1) {
+              me.addNewRecord(selection[0].getData())
+            }
+          })
+        } else {
+          me.addNewRecord(selection[0].getData())
+        }
       }
     }
   },
@@ -2191,57 +2292,83 @@ Ext.define('UB.view.EntityGridPanel', {
       let commandList = []
       let hasUnity = gridSelection.length && gridSelection[0].get('mi_unityEntity')
       let entityName
-
-      for (let i = 0, len = gridSelection.length; i < len; ++i) {
-        entityName = hasUnity ? gridSelection[i].get('mi_unityEntity') : me.entityName
-        commandList.push({
-          entity: entityName,
-          method: 'delete',
-          execParams: {ID: gridSelection[i].get('ID')}
-        })
-      }
-
-      $App.connection.runTrans(commandList).then(function (transResult) {
-        let waitList = []
-        _.forEach(transResult, function (resp) {
-          waitList.push($App.connection.invalidateCache(resp))
-        })
-        return Q.all(waitList).then(function () {
-          return transResult
-        })
-      }).done(function (transResult) {
-        let store = me.store
-        let idx = null
-        _.forEach(transResult, function (resp) {
-          let rRow = store.getById(resp.ID)
-          idx = store.indexOf(rRow)
-          // nRow = store.getAt(idx);
-          store.remove(rRow)
-          if (UB.core.UBAppConfig.systemEntities.hasOwnProperty(entityName)) {
-            let systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[entityName].name)
-            systemEntityStore.remove(systemEntityStore.getById(resp.ID))
-          }
-        })
-        if (me.store && me.store.fireModifyEvent) {
-          me.store.fireModifyEvent(commandList, transResult)
+      if (!me.notWriteChanges) {
+        for (let i = 0, len = gridSelection.length; i < len; ++i) {
+          entityName = hasUnity ? gridSelection[i].get('mi_unityEntity') : me.entityName
+          commandList.push({
+            entity: entityName,
+            method: 'delete',
+            execParams: {ID: gridSelection[i].get('ID')}
+          })
         }
 
+        $App.connection.runTrans(commandList).then(function (transResult) {
+          let waitList = []
+          _.forEach(transResult, function (resp) {
+            waitList.push($App.connection.invalidateCache(resp))
+          })
+          return Q.all(waitList).then(function () {
+            return transResult
+          })
+        }).done(function (transResult) {
+          let store = me.store
+          let idx = null
+          _.forEach(transResult, function (resp) {
+            let rRow = store.getById(resp.ID)
+            idx = store.indexOf(rRow)
+            // nRow = store.getAt(idx);
+            store.remove(rRow)
+            if (UB.core.UBAppConfig.systemEntities.hasOwnProperty(entityName)) {
+              let systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[entityName].name)
+              systemEntityStore.remove(systemEntityStore.getById(resp.ID))
+            }
+          })
+          if (me.store && me.store.fireModifyEvent) {
+            me.store.fireModifyEvent(commandList, transResult)
+          }
+
+          if (idx !== null) {
+            me.getView().on('itemremove', function () {
+              if (store.getCount() <= idx) {
+                idx = store.getCount() - 1
+              }
+              me.getSelectionModel().select(store.getAt(idx))
+            }, me, {single: true})
+          }
+          if (me.GridSummary) {
+            me.GridSummary.dataBind()
+          }
+          me.fireEvent('afterdel')
+          me.fireEvent('changeData', me, 'delete')
+          if (me.pagingBar) {
+            me.pagingBar.decreaseTotal()
+          }
+        })
+      } else {
+        let store = me.store
+        let idx = null
+        for (let i = 0, len = gridSelection.length; i < len; ++i) {
+          idx = store.indexOf(gridSelection[i])
+          store.remove(gridSelection[i])
+        }
         if (idx !== null) {
           me.getView().on('itemremove', function () {
+            if (me.GridSummary) {
+              me.GridSummary.dataBind()
+            }
+            me.fireEvent('afterdel')
+            me.fireEvent('changeData', me, 'delete')
+            if (me.pagingBar) {
+              me.pagingBar.decreaseTotal()
+            }
             if (store.getCount() <= idx) {
               idx = store.getCount() - 1
             }
             me.getSelectionModel().select(store.getAt(idx))
           }, me, {single: true})
         }
-        if (me.GridSummary) {
-          me.GridSummary.dataBind()
-        }
-        me.fireEvent('afterdel')
-        if (me.pagingBar) {
-          me.pagingBar.decreaseTotal()
-        }
-      })
+
+      }
     })
   },
 
@@ -2607,7 +2734,7 @@ Ext.define('UB.view.EntityGridPanel', {
    * @callback activateByCommand It is called when user again presses shortcut
    */
   activateByCommand: function (commandConfig) {
-    if (this.autoFilter) {
+    if (this.autoFilter && !this.autoFilter.notShowBefore) {
       this.onPrefilter()
     }
   },

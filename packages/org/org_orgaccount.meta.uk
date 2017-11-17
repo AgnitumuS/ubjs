@@ -1,10 +1,10 @@
 ﻿{
-    "caption": "Розрахункові коди",
+    "caption": "Розрахункові рахунки організації",
     "description": "Довідник розрахункових рахунків організації",
     "attributes": {
         "organizationID": {
-            "caption": "Организація",
-            "description": "Организація"
+           "caption": "Організація",
+           "description": "Організація"
         },
         "currencyID": {
             "caption": "Валюта",
@@ -19,8 +19,8 @@
             "description": "Код рахунку (номер рахунку)"
         },
         "description": {
-            "caption": "Назва",
-            "description": "Назва (для вибору зі списку)"
+            "caption": "Опис",
+            "description": "Опис (для вибору зі списку)"
         },
         "acctype": {
             "caption": "Тип рахунку",
