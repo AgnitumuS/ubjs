@@ -213,7 +213,7 @@ require('./TubDataStore')
 require('./modules/i18n')
 require('./modules/RLS')
 
-//TODO - remove after rewrite stores to pure JS
+// TODO - remove after rewrite stores to pure JS
 require('./virtualStores/Custom')
 require('./virtualStores/fileVirtual')
 require('./virtualStores/fileVirtualWritePDF')
@@ -225,7 +225,7 @@ require('./virtualStores/mdb')
 const modelLoader = require('./modules/moledLoader')
 let orderedModels = App.domainInfo.orderedModels
 orderedModels.forEach((model) => {
-  if (model.realPath) {
+  if (model.realPath && (model.name !== 'UB')) { // UB already loaded by UB.js
     modelLoader.loadEntitiesModules(model.realPath)
     require(model.realPath)
   }
