@@ -230,6 +230,9 @@ Ext.define('UB.core.UBFormLoader', {
           entity: 'ubm_form',
           attribute: attr
         }, null, null, {usePostMethod: true}).then(function (data) {
+          if (!data) { // prevent storing of undefined to localStore
+            throw new Error('Error loading form "' + config.formCode + '"')
+          }
           window.localStorage.setItem(UB.core.UBFormLoader.getFormCacheKey(code, attr), data)
           return data
         })

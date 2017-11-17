@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.2.35]
+## [4.2.37]
 ### Added
   - `EntityGridPanled` can be configured to allow editing at a row level for a Grid 
   by setting `rowEditing: true` configuration property. Or in the showList or navigation shortcut:
@@ -12,13 +12,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   ```
   {
   	"cmdType": "showList",
-    "cmpInitConfig": {"rowEditing": true},
+	"cmpInitConfig": {"rowEditing": true},
   	"cmdData": {    
-  		"params": [
-  			{
-  				"entity": "tst_document",
+  	  "params": [
+  	    {
+  	      "entity": "tst_document",
   ```
-  
+
+## Fixed
+  - prevent storing of `undefined` as a form value to localStore in case server is unavailable
+   
+## Changed
+  - Editor for attributes mapped to Currency type changed from spin edit to edit 
+  - display value for Currency type will be formated accoding to [Ext.util.Format.currency](http://docs.sencha.com/extjs/4.2.2/#!/api/Ext.util.Format-method-currency)
+   rules. Localization applied in `packages/adminui-pub/locale/lang-*.js`
+ 
+ 
 ## [4.2.35]
 ### Added
  - `BasePanel.on('manualsaving')` events added.

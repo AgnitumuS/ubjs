@@ -268,7 +268,7 @@ Ext.define('UB.view.EntityGridPanel', {
             let attributeDefinition = {}
 
             if (_.includes([UBDomain.ubDataTypes.Entity], entityAttribute.dataType)) {
-              if (fieldList[i].editor && fieldList[i].editor.fieldList){
+              if (fieldList[i].editor && fieldList[i].editor.fieldList) {
                 attributeDefinition.fieldList = fieldList[i].editor.fieldList
               } else {
                 if (fieldList[i].name.indexOf('.') + 1) {
@@ -599,46 +599,46 @@ Ext.define('UB.view.EntityGridPanel', {
     this.optimizeColumnWidth(true)
   },
 
-  getData: function(){
+  getData: function () {
     let me = this
     let result = []
-    me.getStore().data.items.forEach(function(item){
+    me.getStore().data.items.forEach(function (item) {
       result.push(item.getData())
     })
     return result
   },
 
-  getAttributeData: function(){
+  getAttributeData: function () {
     let me = this
     let result = {
       insert: [],
       update: [],
       del: []
     }
-    me.getStore().data.items.forEach(function(item){
+    me.getStore().data.items.forEach(function (item) {
       let data = item.getData()
       for (let name in data) {
         if (name.indexOf('.') + 1){
           delete data[name]
         }
       }
-      if (!data.ID){
+      if (!data.ID) {
         result.insert.push(data)
       } else if (item.dirty) {
         let change = item.getChanges()
         let updateData = {ID: data.ID}
-        if (data.mi_modifyDate){
+        if (data.mi_modifyDate) {
           updateData.mi_modifyDate = data.mi_modifyDate
         }
         for (let name in change) {
-          if (!name.indexOf('.') + 1){
+          if (!name.indexOf('.') + 1) {
             updateData[name] = data[name]
           }
         }
         result.update.push(updateData)
       }
     })
-    me.getStore().getRemovedRecords().forEach(function(item){
+    me.getStore().getRemovedRecords().forEach(function (item) {
       let data = item.getData()
       if (data.ID) {
         result.del.push(item.getData())
@@ -646,8 +646,6 @@ Ext.define('UB.view.EntityGridPanel', {
     })
     return result
   },
-
-
 
   /**
    * Set optimal width for grid columnsbased on current gerin width & attribute types
@@ -1244,10 +1242,6 @@ Ext.define('UB.view.EntityGridPanel', {
     me.on('close', me.onPanelClose, me)
     me.dockedItems.push(me.bBar) // unshift
     me.callParent(arguments)
-
-    /* if (me.hidePagingBar) {
-       me.pagingBar.hide()
-     }*/
 
     /**
      * @cfg {Function} [afterInit] Will be called when initComponent done.
@@ -2063,7 +2057,7 @@ Ext.define('UB.view.EntityGridPanel', {
         me.fireEvent('changeData', me, 'insert')
       })
     } else {
-      if (!_.includes(me.hideActions,'del') && me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE)){
+      if (!_.includes(me.hideActions, 'del') && me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE)) {
         me.enableAction('del')
       }
       if (me.GridSummary) {
@@ -2367,7 +2361,6 @@ Ext.define('UB.view.EntityGridPanel', {
             me.getSelectionModel().select(store.getAt(idx))
           }, me, {single: true})
         }
-
       }
     })
   },
@@ -3244,9 +3237,10 @@ Ext.define('UB.view.EntityGridPanel', {
       return
     }
 
-    let instanceID = selection[0].get('ID')
-    let me = this
     let formParam = me.getFormParam()
+    // in case form instance ID is passed in formParam - use it
+    let instanceID = (formParam && formParam.instanceID) || selection[0].get('ID')
+    let me = this
     let prm = ['cmdType=showForm']
     prm.push('entity=' + (formParam && formParam.entityName ? formParam.entityName : me.entityName))
     let formCode = (formParam && formParam.formCode ? formParam.formCode : formParam)
