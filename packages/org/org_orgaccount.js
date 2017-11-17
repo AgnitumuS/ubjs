@@ -5,10 +5,10 @@ me.on('update:before', setDescriptionAttribute)
 
 function setDescriptionAttribute (ctx) {
   let instanceData = JSON.parse(ctx.dataStore.asJSONObject)[0] || {}
-  let acctypeName = (UB.Repository('ubm_enum').attrs(['name'])
+  let acctypeName = UB.Repository('ubm_enum').attrs(['name'])
     .where('eGroup', '=', 'CDN_ACCOUNTTYPE')
     .where('code', '=', ctx.mParams.execParams.acctype || instanceData.acctype)
-    .selectAsObject()[0]).name || ''
+    .selectScalar() || ''
   let currencyCode3 = (UB.Repository('cdn_currency').attrs(['code3'])
     .selectById(ctx.mParams.execParams.currencyID || instanceData.currencyID)).code3 || ''
   let bankMFO = (UB.Repository('cdn_bank').attrs(['MFO'])

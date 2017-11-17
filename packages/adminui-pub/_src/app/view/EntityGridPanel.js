@@ -548,7 +548,7 @@ Ext.define('UB.view.EntityGridPanel', {
    */
   rowEditing: false,
   /**
-   * @cfg {Boolean} rowEditing
+   * @cfg {Boolean} summaryDataOnClient
    * Calculate sum on client (GridSummary)
    */
   summaryDataOnClient: false,

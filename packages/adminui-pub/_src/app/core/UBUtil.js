@@ -567,17 +567,7 @@ Ext.define('UB.core.UBUtil', {
    * @param {currency} value
    */
   formatAsCurrency: function (value) {
-    let me = this, decimalSeparator = me.decimalSeparator
-    value = me.parseValue(value)
-    value = me.fixPrecision(value)
-    value = _.isNumber(value) ? value : parseFloat(String(value).replace(decimalSeparator, '.'))
-    if (isNaN(value)) {
-      value = ''
-    } else {
-      value = value.toFixed(me.decimalPrecision)
-      value = String(value).replace('.', decimalSeparator)
-    }
-    return value
+    return Ext.util.Format.currency(value, '', this.decimalPrecision || 2)
   },
   /**
    * Create component config by data type
