@@ -14,7 +14,7 @@ SET UB_DEV=true
 call ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
 
-call ubcli initDB -host http://localhost:888 -cfg %UB_CFG% -u admin -p admin -drop -create
+call ubcli initDB -host http://localhost:888 -cfg %UB_CFG% -dba %DBA% -dbaPwd %DBA_PWD% -u admin -p admin -drop -create
 @if errorlevel 1 goto err
 
 SET TESTCASE=generateDDL

@@ -190,7 +190,7 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
       if (config.onNewFolder) {
         let newFolderCheck = config.onNewFolder(this, folderPath + fileName, recursionLevel + 1)
         if (newFolderCheck !== false) {
-          this.parseFolder(fullPath + '\\', recursionLevel + 1)
+          this.parseFolder(fullPath, recursionLevel + 1)
         }
       }
     } else if (!this.config.fileMask || this.config.fileMask.test(fileName)) { // filtration by mask
@@ -207,10 +207,10 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
       // check unique ID
       if (canAdd && config.uniqueID) {
         if (!oneRow.ID) {
-          console.error('Parameter ID not set. File "%" ignored', fullPath)
+          console.error(`Parameter ID not set. File "${fullPath}" ignored`)
           canAdd = false
         } else if (_.find(this.resultCollection, {ID: oneRow.ID})) {
-          console.error('Record with ID "' + oneRow.ID + '" already exist. File ignored ', fullPath)
+          console.error(`Record with ID "${oneRow.ID}" already exist. File "${fullPath}" ignored`)
           canAdd = false
         }
       }

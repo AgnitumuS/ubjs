@@ -1,1 +1,1 @@
-// no code yet except entities modules
+require('./serverLocale/cdn_i18n')

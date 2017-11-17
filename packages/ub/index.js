@@ -209,6 +209,28 @@ Session.runAsUser = function (userID, func) {
   return result
 }
 
+require('./TubDataStore')
+require('./modules/i18n')
+require('./modules/RLS')
+
+//TODO - remove after rewrite stores to pure JS
+require('./virtualStores/Custom')
+require('./virtualStores/fileVirtual')
+require('./virtualStores/fileVirtualWritePDF')
+require('./virtualStores/mdb')
+
+// for each model: 
+// - load all entities modules
+// - require a model itself
+const modelLoader = require('./modules/moledLoader')
+let orderedModels = App.domainInfo.orderedModels
+orderedModels.forEach((model) => {
+  if (model.realPath) {
+    modelLoader.loadEntitiesModules(model.realPath)
+    require(model.realPath)
+  }
+})
+
 // ENDPOINTS
 const {clientRequire, models, getAppInfo, getDomainInfoEp} = require('./modules/endpoints')
 
@@ -217,5 +239,6 @@ App.registerEndpoint('models', models, false)
 App.registerEndpoint('clientRequire', clientRequire, false)
 App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
 
-require('./modules/i18n')
-require('./modules/RLS')
+module.exports = {
+  loadLegacyModules: modelLoader.loadLegacyModules
+}

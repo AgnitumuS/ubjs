@@ -84,6 +84,12 @@ function UBDomain (domainInfo) {
   })
 
   /**
+   * Array of models, ordered by load order
+   * @type {Array<UBModel>}
+   */
+  this.orderedModels = []
+
+  /**
    * Models collection
    * @type {Object<String, UBModel>}
    */
@@ -92,7 +98,9 @@ function UBDomain (domainInfo) {
   modelCodes.forEach(function (modelCode) {
     let m = domainInfo.models[modelCode]
     me.models[modelCode] = new UBModel(m, modelCode)
+    me.orderedModels.push(me.models[modelCode])
   })
+  me.orderedModels.sort((a, b) => a.order - b.order)
 
   /**
    *
