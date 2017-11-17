@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/openid-connect",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "OpenID Connect authentication for UnityBase",
   "keywords": [
     "UB",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@unitybase/base": "^4.2.23",
-    "@unitybase/ub": "^4.0.46",
+    "@unitybase/ub": "^4.0.47",
     "btoa": "^1.1.2"
   },
   "eslintConfig": {
