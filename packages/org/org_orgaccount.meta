@@ -39,20 +39,21 @@
       "allowNull": false
     },
     {
-      "name": "description",
-      "dataType": "String",
-      "size": 64,
-      "caption": "Название",
-      "description": "Название (для выбора из списка)",
-      "allowNull": true
-    },
-    {
       "name": "acctype",
       "dataType": "Enum",
       "enumGroup": "CDN_ACCOUNTTYPE",
       "caption": "Тип счета",
       "description": "Тип счета",
       "allowNull": false
+    },
+    {
+      "name": "description",
+      "dataType": "String",
+      "size": 512,
+      "caption": "Название",
+      "description": "Название (для выбора из списка)",
+      "defaultView": false,
+      "allowNull": true
     }
   ],
   "mixins": {

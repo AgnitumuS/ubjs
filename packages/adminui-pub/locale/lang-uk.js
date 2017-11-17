@@ -773,7 +773,7 @@ Ext.onReady(function () {
     Ext.apply(Ext.util.Format, {
       thousandSeparator: ' ',
       decimalSeparator: ',',
-      currencySign: '\u20b4',  // Ukranian Hryvnia
+      currencySign: '',  // Ukranian Hryvnia
       dateFormat: 'd.m.Y',
       timeFormat: 'H:i:s',
       datetimeFormat: 'd.m.Y H:i'

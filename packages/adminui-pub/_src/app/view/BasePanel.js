@@ -2728,7 +2728,7 @@ Ext.define('UB.view.BasePanel', {
     }, me)
     me.on(events.save, function () {
       // fire event for manually saving form
-      me.fireEvent('manualsaving', me)
+      me.fireEvent('manualsaving', me, arguments)
       me.onSave.apply(me, arguments)
     }, me)
     me.on(events.refresh, me.onRefresh, me)
