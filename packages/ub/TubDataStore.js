@@ -1,3 +1,4 @@
+const App = require('./modules/App')
 /**
  *  Initialize DataStore from one of supported source formats:
  *

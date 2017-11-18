@@ -1,6 +1,7 @@
-﻿const argv = require('@unitybase/base').argv
-const EventEmitter = require('events').EventEmitter
+﻿const EventEmitter = require('events').EventEmitter
+const UBDomain = require('@unitybase/base').UBDomain
 const {ServerRepository} = require('@unitybase/base').ServerRepository // for backward compatibility with UB 1.7
+const App = require('./modules/App')
 /**
  * Create new instance of {@link ServerRepository}
  *
@@ -18,39 +19,9 @@ UB.Repository = function (entityName, cfg, connection) {
   }
 }
 
-/**
- * Server configuration (result of argv.getServerConfiguration() execution)
- * @type {Object}
- * @memberOf App
- */
-App.serverConfig = undefined
-try {
-  App.serverConfig = argv.getServerConfiguration()
-} catch (e) {
-  console.error(e)
-}
-
 // TODO - this hack is required for register UB.getWSNotifier. Must be rewrited
 const ws = require('./modules/web-sockets')
 UB.getWSNotifier = ws.getWSNotifier
-
-const UBDomain = require('@unitybase/base').UBDomain
-const {getDomainInfo} = process.binding('ub_app')
-let domain_
-/**
- * Extended information about application domain
- * @property {UBDomain} domainInfo
- * @memberOf App
- */
-Object.defineProperty(App, 'domainInfo', {
-  enumerable: true,
-  get: function () {
-    if (!domain_) {
-      domain_ = (new UBDomain(JSON.parse(getDomainInfo(true)))) // get extended domain information
-    }
-    return domain_
-  }
-})
 
 // normalize ENUMS TubCacheType = {Entity: 1, SessionEntity: 2} => {Entity: 'Entity', SessionEntity: 'SessionEntity'}
 let enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntityDataSourceType',
@@ -64,6 +35,7 @@ enums.forEach(eN => {
 
 // domain initialization
 const {addEntityMethod} = process.binding('ub_app')
+const {getDomainInfo} = process.binding('ub_app')
 // create scope for all domain objects
 const tempDomain = new UBDomain(JSON.parse(getDomainInfo(true)))
 tempDomain.eachEntity(entity => {
@@ -78,85 +50,6 @@ tempDomain.eachEntity(entity => {
     }
   })(entity.code)
 })
-
-const appBinding = process.binding('ub_app')
-
-let __preventDefault = false
-// add eventEmitter to application object
-EventEmitter.call(App)
-Object.assign(App, EventEmitter.prototype)
-App.emitWithPrevent = function (type, req, resp) {
-  __preventDefault = false
-  this.emit(type, req, resp)
-  return __preventDefault
-}
-/**
- * Accessible inside app-level `:before` event handler. Call to prevent default method handler.
- * In this case developer are responsible to fill response object, otherwise HTTP 400 is returned.
- * @memberOf App
- */
-App.preventDefault = function () {
-  __preventDefault = true
-}
-
-App.launchEndpoint = function (endpointName, req, resp) {
-  __preventDefault = false
-  this.emit(endpointName + ':before', req, resp)
-  if (!__preventDefault) {
-    appBinding.endpoints[endpointName](req, resp)
-    this.emit(endpointName + ':after', req, resp)
-  }
-}
-
-/**
- * Register a server endpoint. By default access to endpoint require authentication
- * @example
- *
- * // Write a custom request body to file FIXTURES/req and echo file back to client
- * // @param {THTTPRequest} req
- * // @param {THTTPResponse} resp
- * //
- * function echoToFile(req, resp) {
-   *    var fs = require('fs');
-   *    fs.writeFileSync(FIXTURES + 'req', req.read('bin'));
-   *    resp.statusCode = 200;
-   *    resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}));
-   * }
- * App.registerEndpoint('echoToFile', echoToFile);
- *
- * @param {String} endpointName
- * @param {Function} handler
- * @param {boolean} [requireAuthentication=true]
- * @memberOf App
- */
-App.registerEndpoint = function (endpointName, handler, requireAuthentication) {
-  if (!appBinding.endpoints[endpointName]) {
-    appBinding.endpoints[endpointName] = handler
-    return appBinding.registerEndpoint(endpointName, requireAuthentication === undefined ? true : requireAuthentication)
-  }
-}
-
-/**
- * @param {String} methodName
- * @method addAppLevelMethod
- * @deprecated Use {@link App.registerEndpoint} instead
- * @memberOf App
- */
-App.addAppLevelMethod = function (methodName) {
-  if (!appBinding.endpoints[methodName]) {
-    appBinding.endpoints[methodName] = global[methodName]
-    return appBinding.registerEndpoint(methodName, true)
-  }
-}
-/**
- * @param {String} methodName
- * @method serviceMethodByPassAuthentication
- * @deprecated Use {@link App.registerEndpoint} instead
- * @memberOf App
- */
-App.serviceMethodByPassAuthentication = function (methodName) {
-  return appBinding.setEndpointByPassAuthentication(methodName)
-}
 
 const sessionBinding = process.binding('ub_session')
 
@@ -224,10 +117,11 @@ const modelLoader = require('./modules/moledLoader')
 module.exports = {
   loadLegacyModules: modelLoader.loadLegacyModules
 }
+
+global.App = App
 // for each model: 
 // - load all entities modules
 // - require a model itself
-
 let orderedModels = App.domainInfo.orderedModels
 orderedModels.forEach((model) => {
   if (model.realPath && (model.name !== 'UB')) { // UB already loaded by UB.js
@@ -235,6 +129,7 @@ orderedModels.forEach((model) => {
     require(model.realPath)
   }
 })
+App.emit('domainIsLoaded')
 
 // ENDPOINTS
 const {clientRequire, models, getAppInfo, getDomainInfoEp} = require('./modules/endpoints')

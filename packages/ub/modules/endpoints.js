@@ -10,6 +10,7 @@ const path = require('path')
 const _ = require('lodash')
 const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
+const App = require('./App')
 
 /**
  * @param {THTTPResponse} resp
@@ -221,8 +222,8 @@ function getAppInfo (req, resp) {
 
   let appInfo = {
     serverVersion: process.version,
-    defaultLang: serverConfig.application.defaultLang || 'en',
-    simpleCertAuth: !!serverConfig.security.simpleCertAuth,
+    defaultLang: serverConfig.application.defaultLang,
+    simpleCertAuth: serverConfig.security.simpleCertAuth,
 
     trafficEncryption: DSTU ? DSTU.trafficEncryption : false,
     serverCertificate: (DSTU && DSTU.trafficEncryption) ? App.serverPublicCert : '',

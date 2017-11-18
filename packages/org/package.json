@@ -13,7 +13,7 @@
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "main": "index.js",
+  "main": "org.js",
   "dependencies": {
     "lodash": "^4",
     "@unitybase/base": "^5.0.0",

@@ -4,6 +4,8 @@
 const binding = process.binding('ub_dbConnection')
 const bindingDatabases = binding.databases
 const QueryString = require('querystring')
+const App = require('./App')
+
 const databases = {}
 const dbIndexSymbol = Symbol('dbIndex')
 const chDblQuote = 34
@@ -326,4 +328,3 @@ function runSQL_ (req, resp) {
 }
 
 App.registerEndpoint('runSQL_', runSQL_, true)
-

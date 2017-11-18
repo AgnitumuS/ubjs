@@ -284,6 +284,10 @@ function getServerConfiguration () {
   if (!result.application.customSettings) {
     result.application.customSettings = {}
   }
+  if (!result.uiSettings) {
+    result.uiSettings = {}
+  }
+  if (!result.security) result.security = {}
   return result
 }
 
