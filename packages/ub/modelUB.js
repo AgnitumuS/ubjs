@@ -1,4 +1,4 @@
-﻿const EventEmitter = require('events').EventEmitter
+const EventEmitter = require('events').EventEmitter
 const UBDomain = require('@unitybase/base').UBDomain
 const repositoryFabric = require('@unitybase/base').ServerRepository.fabric // for backward compatibility with UB 1.7
 const App = require('./modules/App')
@@ -43,7 +43,7 @@ UB.UBAbort = function UBAbort (message) {
   this.fileName = re[2]
   this.lineNumber = re[3]
   this.stack = tmpStack.join('\n')
-  // originat FF version:
+  // original FF version:
   // this.stack = (new Error()).stack;
 }
 UB.UBAbort.prototype = Object.create(Error.prototype) // new Error();
@@ -132,8 +132,26 @@ UB.Session = Session
 require('./TubDataStore')
 
 const i18n = require('./modules/i18n')
-UB.i18n = i18n.i18n
-UB.i18nExtend = i18n.i18nExtend
+/**
+ * Translate message specified language using data, prepared by `UB.i18nExtend`
+ * To add model-depended values in your model:
+ *
+ *    const UB = require('@unitybase/ub')
+ *    UB.i18nExtend({
+ *      "en": {yourMessage: "yourTranslation", ...},
+ *      "ru": {yourMessage: "yourTranslation", ...},
+ *       ....
+ *    })
+ *
+ * @param {String} msg Message to translate
+ * @param {String} [lang] language to translate to. if not passed - current user session language used, or default application language if not logged in
+ */
+UB.i18n = function i18n (msg, lang) {
+  lang = lang || Session.userLang || App.defaultLang
+  let res = i18n.lookup(lang, msg)
+  return res || msg
+}
+UB.i18nExtend = i18n.extend
 
 require('./modules/RLS')
 

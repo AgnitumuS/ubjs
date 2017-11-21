@@ -11,6 +11,7 @@ const _ = require('lodash')
 const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
 const App = require('./App')
+const Session = require('./Session')
 
 /**
  * @param {THTTPResponse} resp

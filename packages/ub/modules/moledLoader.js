@@ -4,6 +4,7 @@
 
 const fs = require('fs')
 const path = require('path')
+const App = require('./App')
 
 /**
  * Load all *.js for which there is a pair *.meta
@@ -35,8 +36,8 @@ function loadEntitiesModules (folderPath) {
 
 /**
  * For UB < 4.2 compatibility -  require all non - entity js
- * in specified folder ad it's subfolder,
- * exclude `modules` and `node_modules` subfolders.
+ * in specified folder add it's subfolder,
+ * exclude `modules` and `node_modules` subfolder's.
  * From 'public' subfolder only cs*.js are required.
  * To be called in model index.js as such:
  *   const modelLoader = require('@unitybase/ub).modelLoader

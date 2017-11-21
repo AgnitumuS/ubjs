@@ -1,3 +1,4 @@
+/* global TubDataStore */
 const App = require('./modules/App')
 /**
  *  Initialize DataStore from one of supported source formats:
@@ -37,15 +38,14 @@ const App = require('./modules/App')
      ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
         ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}]);
 
- * @memberof TubDataStore
- * @param {Object|Array} source
+  * @param {Object|Array} source
  * @param {Array.<String|Object>} [keyMap] Optional mapping of source field names to new field names
  * @returns {TubDataStore}
  */
 TubDataStore.initialize = function (source, keyMap) {
-  var
-    flatArray = [], resultFields = [], sourceFields = [],
-    i, j, l, rowCount, fieldCount, row
+  let flatArray = []
+  let resultFields = []
+  let sourceFields = []
 
   function keyMap2Mapping (keyMap, isIndexBased) {
     for (let i = 0, l = keyMap.length; i < l; i++) {
@@ -61,36 +61,39 @@ TubDataStore.initialize = function (source, keyMap) {
   }
 
   if (Array.isArray(source)) {
-    rowCount = source.length
-    if (rowCount === 0) {                   //   1) empty store
+    let rowCount = source.length
+    if (rowCount === 0) {
+      // 1) empty store
       keyMap2Mapping((keyMap && keyMap.length) ? keyMap : ['ID'])
       this.initFromJSON({fieldCount: resultFields.length, rowCount: 0, values: resultFields}) // empty dataStore initialization
-    } else if (Array.isArray(source[0])) { //  2) Array-of-array
+    } else if (Array.isArray(source[0])) {
+      //  2) Array-of-array
       if ((!keyMap) || (!keyMap.length)) {
         throw new Error('TubDataStore.initialize: for array-of-array keyMap is required')
       }
       keyMap2Mapping(keyMap, true)
-      fieldCount = resultFields.length
-      for (i = 0; i < fieldCount; i++) { // field names
+      let fieldCount = resultFields.length
+      for (let i = 0; i < fieldCount; i++) { // field names
         flatArray.push(resultFields[i])
       }
 
-      for (i = 0; i < rowCount; i++) { // data
-        row = source[i]
-        for (j = 0; j < fieldCount; j++) {
+      for (let i = 0; i < rowCount; i++) { // data
+        let row = source[i]
+        for (let j = 0; j < fieldCount; j++) {
           flatArray.push(row[sourceFields[j]]) // add source field using it index in keyMap
         }
       }
       this.initFromJSON({fieldCount: fieldCount, rowCount: rowCount, values: flatArray})
-    } else if (typeof source[0] === 'object') {     //  3) Array-of-object
+    } else if (typeof source[0] === 'object') {
+      // 3) Array-of-object
       keyMap2Mapping((keyMap && keyMap.length) ? keyMap : Object.keys(source[0]))
-      fieldCount = resultFields.length
-      for (i = 0; i < fieldCount; i++) { // field names
+      let fieldCount = resultFields.length
+      for (let i = 0; i < fieldCount; i++) { // field names
         flatArray.push(resultFields[i])
       }
-      for (i = 0; i < rowCount; i++) { // data
-        row = source[i]
-        for (j = 0; j < fieldCount; j++) {
+      for (let i = 0; i < rowCount; i++) { // data
+        let row = source[i]
+        for (let j = 0; j < fieldCount; j++) {
           flatArray.push(row[sourceFields[j]]) // add source field using it name from keyMap
         }
       }
@@ -103,7 +106,7 @@ TubDataStore.initialize = function (source, keyMap) {
       if (keyMap.length !== source.fieldCount) {
         throw new Error('TubDataStore.initialize: for flatten data keyMap length must be equal to fieldCount')
       }
-      for (i = 0, l = source.fieldCount; i < l; i++) {
+      for (let i = 0, l = source.fieldCount; i < l; i++) {
         if (typeof keyMap[i] !== 'string') {
           throw new Error('TubDataStore.initialize: for flatten data keyMap must contain only field names')
         }

@@ -167,6 +167,7 @@ App.serviceMethodByPassAuthentication = function (methodName) {
  * Server configuration (result of argv.getServerConfiguration() execution)
  * @readonly
  * @type {Object}
+ * @property {Object} httpServer HTTP server config
  * @property {Object} uiSettings Section `uiSettings` of ubConfig
  */
 App.serverConfig = undefined
@@ -182,8 +183,8 @@ try {
  * @readonly
  */
 App.staticPath = ''
-if (App.serverConfig.httpServer && App.serverConfig.httpServer.inetPub) {
-  let sp = App.serverConfig.httpServer.inetPub
+if (App.serverConfig.httpServer && App.serverConfig.httpServer['inetPub']) {
+  let sp = App.serverConfig.httpServer['inetPub']
   App.staticPath = path.isAbsolute(sp)
     ? sp
     : path.join(process.configPath, sp)

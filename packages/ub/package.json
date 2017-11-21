@@ -18,6 +18,7 @@
   "main": "modelUB.js",
   "dependencies": {
     "@unitybase/base": "^5.0.0",
+    "lodash": "^4",
     "mime-types": "^2.1.12"
   },
   "devDependencies": {
