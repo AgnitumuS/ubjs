@@ -13,6 +13,10 @@
         "name": {
             "caption": "Назва",
             "description": "Назва валюти"
+        },
+        "description": {
+            "caption": "Опис",
+            "description": "Опис (для вибору зі списку)"
         }
     }
 }

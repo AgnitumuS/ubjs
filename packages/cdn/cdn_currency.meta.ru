@@ -13,6 +13,10 @@
         "name": {
             "caption": "Название",
             "description": "Название валюты"
+        },
+        "description": {
+            "caption": "Описание",
+            "description": "Описание"
         }
     }
 }
