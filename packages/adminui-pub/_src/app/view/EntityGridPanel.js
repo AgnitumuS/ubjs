@@ -1056,7 +1056,15 @@ Ext.define('UB.view.EntityGridPanel', {
             return false
           }
         }
-
+        context.grid.columns.forEach((column) =>{
+          if (column.field){
+            column.field.setWidth(column.width - 2)
+          }
+          if (me.GridSummary){
+            item = _.find(me.GridSummary.items.items, {baseColumn: column})
+            item.setWidth(column.width - 2)
+          }
+        })
         let columnCombobox = _.filter(context.grid.columns, function (item) {
           return item.getEditor() && item.getEditor().xtype === 'ubcombobox'
         })
@@ -1105,6 +1113,13 @@ Ext.define('UB.view.EntityGridPanel', {
       }
       me.GridSummary = new UB.view.GridSummary({grid: me})
       me.dockedItems.push(me.GridSummary)
+      if (me.store) {
+        me.store.on('clear', function () {
+          if (me.GridSummary) {
+            me.GridSummary.dataBind()
+          }
+        })
+      }
     }
 
     if (!me.disableSearchBar) {
