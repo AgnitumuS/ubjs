@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "main": "index.js",
+  "main": "base.js",
   "dependencies": {
     "@unitybase/cryptojs": "^1.0.13",
     "lodash": "^4"

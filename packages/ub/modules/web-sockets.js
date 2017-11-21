@@ -5,7 +5,6 @@
  * @author pavel.mash
  */
 const EventEmitter = require('events').EventEmitter
-const util = require('util')
 
 let registeredWSProtocols = {}
 
@@ -172,7 +171,7 @@ function JsonMessagesProtocol (namedAs) {
 
   if (process.isWebSocketServer) {
     EventEmitter.call(me)
-    util._extend(me, EventEmitter.prototype)
+    Object.assign(me, EventEmitter.prototype)
 
     /**
      * Handle incoming messages
@@ -181,7 +180,7 @@ function JsonMessagesProtocol (namedAs) {
      * @param {String|ArrayBuffer} rawData
      */
     me.onWSMessage = function (connection, rawData) {
-      var msg
+      let msg
 
       console.debug('New WebSocket message from ', connection.session.id, rawData)
       try {

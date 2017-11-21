@@ -18,13 +18,13 @@
   },
   "dependencies": {
     "@unitybase/base": "^5.0.0",
-    "@unitybase/compressors": "^1.0.10",
+    "@unitybase/compressors": "^5.0.0",
     "@unitybase/ub": "^5.0.0",
     "lodash": "^4",
     "mustache": "^2.3.0"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.13"
+    "@unitybase/stubs": "^5.0.0"
   },
   "keywords": [
     "UnityBase",

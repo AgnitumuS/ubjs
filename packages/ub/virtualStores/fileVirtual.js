@@ -1,19 +1,20 @@
+const VirtualStoreCustom = require('./Custom')
 /**
  * @classdesc
  * Virtual store implementation for storing documents into the file system.
  * Since this is primary type of store for most systems, almost all methods is a proxy to `native` implementation for performance reason.
  *
  * @class
- * @extends UB.virtualStores.Custom
+ * @extends VirtualStoreCustom
  * @singleton
  */
-UB.virtualStores.fileVirtual = Object.create(UB.virtualStores.Custom)
+const VirtualStoreFiles = Object.create(VirtualStoreCustom)
 
 /**
  * Save file content to temporary file store
  * @param {TubDocumentHandlerCustom} handler
  */
-UB.virtualStores.fileVirtual.saveContentToTempStore = function (handler) {
+VirtualStoreFiles.saveContentToTempStore = function (handler) {
   return this.saveContentToTempFileStore(handler)
 }
 /**
@@ -21,7 +22,7 @@ UB.virtualStores.fileVirtual.saveContentToTempStore = function (handler) {
  * @param {TubDocumentHandlerCustom} handler
  * @return {Boolean}
  */
-UB.virtualStores.fileVirtual.moveToArchive = function (handler) {
+VirtualStoreFiles.moveToArchive = function (handler) {
   return this.moveToFileArchive(handler)
 }
 /**
@@ -29,7 +30,7 @@ UB.virtualStores.fileVirtual.moveToArchive = function (handler) {
  * @param {TubDocumentHandlerCustom} handler
  * @return {boolean}
  */
-UB.virtualStores.fileVirtual.deleteContent = function (handler) {
+VirtualStoreFiles.deleteContent = function (handler) {
   return this.deleteFileContent(handler)
 }
 /**
@@ -37,7 +38,7 @@ UB.virtualStores.fileVirtual.deleteContent = function (handler) {
  * @param {TubDocumentHandlerCustom} handler
  * @param {TubLoadContentBody} aWithBody
  */
-UB.virtualStores.fileVirtual.loadContentFromTempStore = function (handler, aWithBody) {
+VirtualStoreFiles.loadContentFromTempStore = function (handler, aWithBody) {
   this.loadContentFromTempFileStore(handler, aWithBody)
 }
 /**
@@ -46,14 +47,14 @@ UB.virtualStores.fileVirtual.loadContentFromTempStore = function (handler, aWith
  * @param {String} aPrevRelPath In case exist prev. file revision this variable contain it relative path
  * @return {boolean}
  */
-UB.virtualStores.fileVirtual.moveToPermanentStore = function (handler, aPrevRelPath) {
+VirtualStoreFiles.moveToPermanentStore = function (handler, aPrevRelPath) {
   this.moveToPermanentFileStore(handler, aPrevRelPath)
 }
 /**
  * Returns null and fill response from file storage
  * @inheritDoc
  */
-UB.virtualStores.fileVirtual.fillResponse = function (handler) {
+VirtualStoreFiles.fillResponse = function (handler) {
   return this.fillFileResponse(handler)
 }
 /**
@@ -61,7 +62,7 @@ UB.virtualStores.fileVirtual.fillResponse = function (handler) {
  * @param {TubDocumentHandlerCustom} handler
  * @return {boolean}
  */
-UB.virtualStores.fileVirtual.loadBodyFromEntity = function (handler) {
+VirtualStoreFiles.loadBodyFromEntity = function (handler) {
   return this.loadBodyFromFile(handler)
 }
 /**
@@ -71,7 +72,7 @@ UB.virtualStores.fileVirtual.loadBodyFromEntity = function (handler) {
  * @param {String} aRelPath
  * @return {String} JSON config
  */
-UB.virtualStores.fileVirtual.getRevisionConfig = function (handler, aRevision, aRelPath) {
+VirtualStoreFiles.getRevisionConfig = function (handler, aRevision, aRelPath) {
   return this.getRevisionConfigFromFileStore(handler, aRevision, aRelPath)
 }
 /**
@@ -83,7 +84,7 @@ UB.virtualStores.fileVirtual.getRevisionConfig = function (handler, aRevision, a
  * @param {Number} params.revision
  * @param {Boolean} params.isPermanent
  */
-UB.virtualStores.fileVirtual.setRevisionIsPermanent = function (params) {
+VirtualStoreFiles.setRevisionIsPermanent = function (params) {
   var request = new TubDocumentRequest(),
     path = require('path'),
     fs = require('fs'),
@@ -108,6 +109,8 @@ UB.virtualStores.fileVirtual.setRevisionIsPermanent = function (params) {
  * @param {TubDocumentHandlerCustom} handler
  * @return {Boolean}
  */
-UB.virtualStores.fileVirtual.tempContentExists = function (handler) {
+VirtualStoreFiles.tempContentExists = function (handler) {
   return this.tempFileContentExists(handler)
 }
+
+module.exports = VirtualStoreFiles

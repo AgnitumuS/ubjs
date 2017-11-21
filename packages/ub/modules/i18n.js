@@ -232,27 +232,26 @@ _.merge(global.i18nData, {
 })
 
 /**
- * Translate message specified language using `global.i18nData` translation table.
- * To add model-depended values in your model create i18n.js file in the model folder and place where this script:
- *
- *      _.merge(global.i18nData, {"en": {yourMessage: "yourTranslation", ...}, "ru": {yourMessage: "yourTranslation", ...}, ....}
- *
- * @memberof UB
- * @param {String} msg Message to translate
- * @param {String} [lang] language to translate to. if not passed - current user session language used, or default application language if not logged in
- */
-UB.i18n = function (msg, lang) {
-  lang = lang || Session.userLang || App.defaultLang
-  let res = i18nData[lang] ? i18nData[lang][msg] : ''
-  return res || msg
-}
-
-/**
  * Merge localizationObject to UB.i18n. Usually called form serverLocale scripts
  * @param {Object} localizationObject
  */
-UB.i18nExtend = function (localizationObject) {
+function extend (localizationObject) {
   _.merge(i18nData, localizationObject)
 }
 
-module.exports = UB.i18n
+/**
+ * Localize a message to lang. Return original message either lang not found
+ * or msg mot found in lang
+ * @param {String} lang
+ * @param {*} msg
+ * @return {*}
+ */
+function lookup (lang, msg) {
+  if (!i18nData[lang]) return msg
+  return i18nData[lang][msg] ? i18nData[lang][msg] : msg
+}
+
+module.exports = {
+  lookup: lookup,
+  extend: extend
+}

@@ -1,4 +1,7 @@
 ﻿const _ = require('lodash')
+// localize model
+require('./serverLocale/org_i18n')
+
 var ORG = UB.ns('ORG');
 
 ORG.checkOrgUnitRequired = true;

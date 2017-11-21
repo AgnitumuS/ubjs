@@ -81,5 +81,24 @@ module.exports = {
   /**
    * Constants for administrative security model
    */
-  uba_common
+  uba_common,
+  /**
+   * Allows you to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
+   * token must be unique, and must increment in the format {0}, {1}, etc.
+   * @example
+   *
+   *     var s = UB.format('{1}/lang-{0}.js', 'en', 'locale');
+   *     // s now contains the string: ''locale/lang-en.js''
+   *
+   * @deprecated Use a ES6 template string literal instead
+   * @param {String} stringToFormat The string to be formatted.
+   * @param {...*} values The values to replace tokens `{0}`, `{1}`, etc in order.
+   * @return {String} The formatted string.
+   */
+  format: function (stringToFormat, ...values) {
+    const FORMAT_RE = /{(\d+)}/g
+    return stringToFormat.replace(FORMAT_RE, function (m, i) {
+      return values[i]
+    })
+  }
 }

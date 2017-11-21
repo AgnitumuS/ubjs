@@ -1,4 +1,6 @@
 const _ = require('lodash')
+const VirtualStoreCustom = require('./Custom')
+const path = require('path')
 /**
  *  @classdesc
  *  Virtual store implementation for storing content inside models `public` folders.
@@ -15,21 +17,20 @@ const _ = require('lodash')
  *    - e.t.c.
  *
  * @class
- * @extends UB.virtualStores.Custom
+ * @extends VirtualStoreCustom
  * @singleton
  */
-UB.virtualStores.mdb = Object.create(UB.virtualStores.Custom)
+const VirtualStoreMDB = Object.create(VirtualStoreCustom)
 /**
  * @private
  */
-UB.virtualStores.mdb.fileTempInfoExt = '.fti'
+VirtualStoreMDB.fileTempInfoExt = '.fti'
 
-const path = require('path')
 /**
  * @private
  * @param {TubDocumentHandlerCustom} handler
  */
-UB.virtualStores.mdb.getPermanentFileName = function (handler) {
+VirtualStoreMDB.getPermanentFileName = function (handler) {
   var
     filePath,
     content = handler.content
@@ -44,7 +45,7 @@ UB.virtualStores.mdb.getPermanentFileName = function (handler) {
 /**
  * @inheritdoc
  */
-UB.virtualStores.mdb.fillResponse = function (handler) {
+VirtualStoreMDB.fillResponse = function (handler) {
   var
     filePath,
     content = handler.content
@@ -66,7 +67,7 @@ UB.virtualStores.mdb.fillResponse = function (handler) {
 /**
  * @inheritdoc
 */
-UB.virtualStores.mdb.saveContentToTempStore = function (handler) {
+VirtualStoreMDB.saveContentToTempStore = function (handler) {
   var
     content = handler.content,
     request = handler.request,
@@ -92,7 +93,7 @@ UB.virtualStores.mdb.saveContentToTempStore = function (handler) {
  *
  * See {@link UB.virtualStores.Custom#loadContentFromTempStore}
  */
-UB.virtualStores.mdb.loadContentFromTempStore = function (handler, aWithBody) {
+VirtualStoreMDB.loadContentFromTempStore = function (handler, aWithBody) {
   var
     content = handler.content,
     request = handler.request,
@@ -119,7 +120,7 @@ UB.virtualStores.mdb.loadContentFromTempStore = function (handler, aWithBody) {
 /**
  * @inheritdoc
  */
-UB.virtualStores.mdb.loadBodyFromEntity = function (handler) {
+VirtualStoreMDB.loadBodyFromEntity = function (handler) {
   var
     request = handler.request,
     content = handler.content,
@@ -131,20 +132,20 @@ UB.virtualStores.mdb.loadBodyFromEntity = function (handler) {
 /**
  * Do nothing here - just delete content. Content itself must be under external version control system (SVN, fossil)
  */
-UB.virtualStores.mdb.moveToArchive = function (handler) {
+VirtualStoreMDB.moveToArchive = function (handler) {
   return true // this.deleteContent(handler);
 }
 /**
  * Do nothing here - content must be under external version control system (SVN, GIT, fossil)
  */
-UB.virtualStores.mdb.deleteContent = function () {
+VirtualStoreMDB.deleteContent = function () {
   // nothing to do here
   return true
 }
 /**
  * @inheritDoc
  */
-UB.virtualStores.mdb.moveToPermanentStore = function (handler, aPrevRelPath) {
+VirtualStoreMDB.moveToPermanentStore = function (handler, aPrevRelPath) {
   var
     content = handler.content,
     pathPart, oldFilePath, newFilePath,
@@ -171,3 +172,5 @@ UB.virtualStores.mdb.moveToPermanentStore = function (handler, aPrevRelPath) {
   handler.content.isDirty = false
   return true
 }
+
+module.exports = VirtualStoreMDB

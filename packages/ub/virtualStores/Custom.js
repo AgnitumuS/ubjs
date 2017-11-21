@@ -84,114 +84,110 @@ Good example of Virtual store implementation is:
 
 ### Warning - descendants must be singleton. We can not define parent class as singleton due to Ext specific
 
- * @markdown
- * @namespace UB.virtualStores
  */
-UB.virtualStores = {}
 
 /**
- * @class UB.virtualStores.Custom
+ * @class VirtualStoreCustom
  * @abstract
  */
-UB.virtualStores.Custom = {
-    /**
-     * Implementation must save file content to temporary store
-     * @abstract
-     * @param {TubDocumentHandlerCustom} handler
-     */
+const VirtualStoreCustom = {
+  /**
+   * Implementation must save file content to temporary store
+   * @abstract
+   * @param {TubDocumentHandlerCustom} handler
+   */
   saveContentToTempStore: function (handler) {
   },
 
-    /**
-     * Implementation must move old file revision to archive according to store historyDepth and delete file from permanent store.
-     * @abstract
-     * @param {TubDocumentHandlerCustom} handler
-     * @return {Boolean}
-     */
+  /**
+   * Implementation must move old file revision to archive according to store historyDepth and delete file from permanent store.
+   * @abstract
+   * @param {TubDocumentHandlerCustom} handler
+   * @return {Boolean}
+   */
   moveToArchive: function (handler) {
   },
 
-    /**
-     * Implementation must delete file content from permanent store
-     * @abstract
-     * @param {TubDocumentHandlerCustom} handler
-     * @return {boolean}
-     */
+  /**
+   * Implementation must delete file content from permanent store
+   * @abstract
+   * @param {TubDocumentHandlerCustom} handler
+   * @return {boolean}
+   */
   deleteContent: function (handler) {
   },
 
-    /**
-     *  Load content and (optionally) body from temporary file
-     * @abstract
-     * @param {TubDocumentHandlerCustom} handler
-     * @param {TubLoadContentBody} aWithBody
-     */
+  /**
+   *  Load content and (optionally) body from temporary file
+   * @abstract
+   * @param {TubDocumentHandlerCustom} handler
+   * @param {TubLoadContentBody} aWithBody
+   */
   loadContentFromTempStore: function (handler, aWithBody) {
   },
 
-    /**
-     * Implementation must MOVE file content from temporary store to permanent store
-     * @abstract
-     * @param {TubDocumentHandlerCustom} handler
-     * @param {String} aPrevRelPath In case exist prev. file revision this variable contain it relative path
-     * @return {boolean}
-     */
+  /**
+   * Implementation must MOVE file content from temporary store to permanent store
+   * @abstract
+   * @param {TubDocumentHandlerCustom} handler
+   * @param {String} aPrevRelPath In case exist prev. file revision this variable contain it relative path
+   * @return {boolean}
+   */
   moveToPermanentStore: function (handler, aPrevRelPath) {
   },
 
-    /**
-     * Response for setDocument HTTP request. Descendants MUST return null(if responce internally filled) or
-     * the following object:
-     *
-     *      {
-     *          httpResultCode: 200, // in case httpResultCode == 200 you MUST return attributes below, else it not necessary
-     *          body: '..', either full file path or string representation of content
-     *          header: 'Content-Type: text/html', // HTTP header to be added to response. Minimal is Content-type header
-     *          isFromFile: false //is body contain path to file
-     *      }
-     * if body is undefined then out body will take from request body
-     *
-     * @param {TubDocumentHandlerCustom} handler
-     * @return {*}
-     */
+  /**
+   * Response for setDocument HTTP request. Descendants MUST return null(if responce internally filled) or
+   * the following object:
+   *
+   *      {
+   *          httpResultCode: 200, // in case httpResultCode == 200 you MUST return attributes below, else it not necessary
+   *          body: '..', either full file path or string representation of content
+   *          header: 'Content-Type: text/html', // HTTP header to be added to response. Minimal is Content-type header
+   *          isFromFile: false //is body contain path to file
+   *      }
+   * if body is undefined then out body will take from request body
+   *
+   * @param {TubDocumentHandlerCustom} handler
+   * @return {*}
+   */
   fillResponse: function (handler) {
-        // sample implementation
-        // return {
-        //    httpResultCode: 200,
-        //    body: filePath,
-        //    header: 'Content-type: application/pdf',
-        //        isFromFile: true
-        // };
+    // sample implementation
+    // return {
+    //    httpResultCode: 200,
+    //    body: filePath,
+    //    header: 'Content-type: application/pdf',
+    //        isFromFile: true
+    // };
   },
-    /**
-     * Implementation MUST fill handler.request body by call one of request body-related methods
-     * @abstract
-     * @param {TubDocumentHandlerCustom} handler
-     * @return {boolean}
-     */
+  /**
+   * Implementation MUST fill handler.request body by call one of request body-related methods
+   * @abstract
+   * @param {TubDocumentHandlerCustom} handler
+   * @return {boolean}
+   */
   loadBodyFromEntity: function (handler) {
     var
       request = handler.request,
       content = handler.content
     request.loadBodyFromFile(filePath)
   },
-    /**
-     * Path to temp folder
-     * @type {String}
-     * @private
-     */
+  /**
+   * Path to temp folder
+   * @type {String}
+   * @private
+   */
   tempFolder: (process.env.TEMP || process.env.TMP) + '\\',
-    /**
-     * Get path to temporary file and it's name
-     * @protected
-     * @param {TubDocumentHandlerCustom} handler
-     * @returns {string}
-     */
+  /**
+   * Get path to temporary file and it's name
+   * @protected
+   * @param {TubDocumentHandlerCustom} handler
+   * @returns {string}
+   */
   getTempFileName: function (handler) {
-    var
-            req = handler.request
-        // important to use Session.userID. See UB-617
+    var req = handler.request
+    // important to use Session.userID. See UB-617
     return [this.tempFolder, req.entity, '_', req.attribute, '_', req.id, '_', Session.userID].join('')
   }
-
 }
+module.exports = VirtualStoreCustom

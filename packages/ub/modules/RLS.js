@@ -8,7 +8,7 @@
 /**
  * @namespace
  */
-var RLS = UB.ns('RLS')
+let RLS = global.RLS = {}
 global['$'] = RLS
 
 var
