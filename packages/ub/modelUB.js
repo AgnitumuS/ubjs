@@ -131,7 +131,7 @@ UB.Session = Session
 
 require('./TubDataStore')
 
-const i18n = require('./modules/i18n')
+const mI18n = require('./modules/i18n')
 /**
  * Translate message specified language using data, prepared by `UB.i18nExtend`
  * To add model-depended values in your model:
@@ -148,10 +148,10 @@ const i18n = require('./modules/i18n')
  */
 UB.i18n = function i18n (msg, lang) {
   lang = lang || Session.userLang || App.defaultLang
-  let res = i18n.lookup(lang, msg)
+  let res = mI18n.lookup(lang, msg)
   return res || msg
 }
-UB.i18nExtend = i18n.extend
+UB.i18nExtend = mI18n.extend
 
 require('./modules/RLS')
 
