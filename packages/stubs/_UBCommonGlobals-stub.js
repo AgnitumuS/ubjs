@@ -45,18 +45,6 @@ function fileExists (fileName) {}
  */
 function directoryExists (pathToDir) {}
 /**
- * Read directory. Return array of file names. In case directory not exists - return null
- * if includeDirNames === true then directory names included with trailing slash. 'folder\' else no directory names included
- *
- * Do not use direclty. Use require('fs').readdirSync() instead.
- *
- * @param {String} pathToDir path to directory
- * @param {Boolean} [includeDirNames] Optional. default = false.
- * @returns {Array}
- * @private
- */
-function readDir (pathToDir, includeDirNames) {}
-/**
  * ForceDirectories ensures that all the directories in a specific path exist.
  * Any portion that does not already exist will be created.  Function result
  * indicates success of the operation.  The function can fail if the current

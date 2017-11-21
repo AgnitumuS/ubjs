@@ -135,7 +135,7 @@ process.on('exit', function () {
     knownGlobals.push(writeFile)
     knownGlobals.push(writeFileNew)
     knownGlobals.push(appendFileNew)
-    knownGlobals.push(readDir)
+    //knownGlobals.push(readDir)
     knownGlobals.push(forceDirectories)
     knownGlobals.push(removeDir)
     knownGlobals.push(deleteFile)
