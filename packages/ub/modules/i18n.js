@@ -241,7 +241,7 @@ _.merge(global.i18nData, {
  * @param {String} msg Message to translate
  * @param {String} [lang] language to translate to. if not passed - current user session language used, or default application language if not logged in
  */
-UB.i18n = function (msg, lang) {
+function i18n (msg, lang) {
   lang = lang || Session.userLang || App.defaultLang
   let res = i18nData[lang] ? i18nData[lang][msg] : ''
   return res || msg
@@ -251,8 +251,11 @@ UB.i18n = function (msg, lang) {
  * Merge localizationObject to UB.i18n. Usually called form serverLocale scripts
  * @param {Object} localizationObject
  */
-UB.i18nExtend = function (localizationObject) {
+function i18nExtend (localizationObject) {
   _.merge(i18nData, localizationObject)
 }
 
-module.exports = UB.i18n
+module.exports = {
+  i18n: i18n,
+  i18nExtend: i18nExtend
+}

@@ -17,10 +17,10 @@
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "main": "index.js",
+  "main": "ubs.js",
   "dependencies": {
     "@unitybase/base": "^5.0.0",
-    "@unitybase/pdf": "^1.1.25",
+    "@unitybase/pdf": "^5.0.0",
     "@unitybase/ub": "^5.0.0",
     "@unitybase/uba": "^5.0.0",
     "mime-types": "^2.1.14",

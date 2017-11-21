@@ -111,6 +111,15 @@ function models (req, resp) {
 }
 
 const MODULES_ROOT = path.join(process.configPath, 'node_modules')
+let SYMLINKED_MODULES_ROOT = ''
+// in case modules are symlinked (by lerna on `npm link`) real path may be differ
+// n this case __dirname (already normalized by require) not point to MODULES_ROOT
+let maybeSymlink = __dirname
+if (!maybeSymlink.startsWith(MODULES_ROOT)) { // remove ub: /dev/ub-all/packages/ub/modules -> /dev/ub-all/packages
+  let p = maybeSymlink.split(path.sep)
+  let ubIdx = p.indexOf('ub')
+  SYMLINKED_MODULES_ROOT = p.slice(0, ubIdx).join(path.sep)
+}
 
 /**
  * The `clientRequire` endpoint. Used by client side loaders (SystemJS for example) to emulate commonJS require
@@ -158,15 +167,19 @@ function clientRequire (req, resp) {
     let resolvedPath
     try {
       console.debug(`Try to resolve ${reqPath}`)
-      resolvedPath = require.resolve(reqPath)
+      // restrict access to modules other when defined for app
+      resolvedPath = require.resolve(reqPath, {
+        paths: [MODULES_ROOT]
+      })
     } catch (e) {
+      console.error(e)
       resolvedPath = undefined
     }
     if (!resolvedPath) {
       console.error(`Package ${reqPath} not found`)
       return notFound(resp, `"${reqPath}"`)
     }
-    if (!resolvedPath.startsWith(MODULES_ROOT)) {
+    if (!resolvedPath.startsWith(MODULES_ROOT) && !resolvedPath.startsWith(SYMLINKED_MODULES_ROOT)) {
       return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
     }
 

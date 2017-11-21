@@ -17,7 +17,9 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "mustache": "^2.3.0"
+    "mustache": "^2.3.0",
+    "@unitybase/ub": "^5.0.0",
+    "@unitybase/adminui-pub": "^5.0.0"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.0"

@@ -1,3 +1,4 @@
+const VirtualStoreFiles = require('./fileVirtual')
 /**
  * @classdesc
  * File store with automatic conversion MS Word, MS Excel and MS Power Point documents into \*.pdf format.
@@ -5,18 +6,18 @@
  * Require MS Office installed on the server - see <a href="https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=65274525#Installation(requirements)-UsingMicrosoftWordasservice"> requirement </a>
  *
  * @class
- * @extends UB.virtualStores.fileVirtual
+ * @extends VirtualStoreCustom
  * @singleton
  */
-UB.virtualStores.fileVirtualWritePDF = Object.create(UB.virtualStores.fileVirtual)
+const VirtualStoreFilePDF = Object.create(VirtualStoreFiles)
 /**
  * Save content to temp store and convert it to \*.pdf if content is MS Word, MS Excel or MS Power Point document.
  * If file has been converted then original file and original \*.ubfti file is in the same temp directory path with
  * the same name but with \*.orig extension
  *
- * See {@link UB.virtualStores.fileVirtual#saveContentToTempStore} for details
+ * See {@link VirtualStoreFiles#saveContentToTempStore} for details
  */
-UB.virtualStores.fileVirtualWritePDF.saveContentToTempStore = function (handler) {
+VirtualStoreFilePDF.saveContentToTempStore = function (handler) {
   var
     word2Pdf = function (message) {
       var wdExportFormatPDF = 17,
@@ -153,8 +154,9 @@ UB.virtualStores.fileVirtualWritePDF.saveContentToTempStore = function (handler)
       winApi = require('winApi'),
       PROCESS_ALL_ACCESS = 0x1FFFFF
     if (mes = w.waitMessage(5000, 100)) {
-      if (mes.convertFailed)
-              { throw new Error('<<<convertationToPDFAborted>>>') }
+      if (mes.convertFailed) {
+        throw new Error('<<<convertationToPDFAborted>>>')
+      }
       processID = mes.processID
     }
     if ((mes = w.waitMessage(20000, 1000)) && (mes.done)) {
@@ -184,3 +186,5 @@ UB.virtualStores.fileVirtualWritePDF.saveContentToTempStore = function (handler)
     console.debug('fileVirtualWritePDF: SKIP transformation of file', origFn, 'to PDF - unknown format')
   }
 }
+
+module.exports = VirtualStoreFilePDF

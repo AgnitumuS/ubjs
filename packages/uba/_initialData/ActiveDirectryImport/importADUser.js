@@ -24,7 +24,7 @@ if (!Array.isArray(csvData)) {
   throw new Error('Invalid CSV format or file ' + fileName + ' not found')
 }
 if (csvData.length < 1) {
-  throw UB.format('Length of CSVData ({0}) smaller then startRow ({1})', csvData.length, 1)
+  throw new Error(`Length of CSVData (${csvData.length}) smaller then startRow (1)`)
 }
 csvData.splice(0, 1)
 

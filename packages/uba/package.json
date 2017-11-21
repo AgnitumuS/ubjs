@@ -13,7 +13,7 @@
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "main": "index.js",
+  "main": "uba.js",
   "dependencies": {
     "@unitybase/base": "^5.0.0",
     "@unitybase/ub": "^5.0.0",

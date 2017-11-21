@@ -1,5 +1,4 @@
-/* global App */
-
+const App = require('@unitybase/ub').App
 /**
  * Return models config for `admin-UI` web client
  * The purpose is to load model initialization script BEFORE application start
@@ -7,16 +6,16 @@
 const mustache = require('mustache')
 const fs = require('fs')
 const path = require('path')
- /**
+/**
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @param {String} indexName
  * @param {boolean} [addCSP=true] Add a CSP header
  */
-function generateIndexPage (req, resp, indexName, addCSP=true) {
+function generateIndexPage (req, resp, indexName, addCSP = true) {
   let indexTpl, compiledIndex, compiledIndexKey
-  let models, mCnt, mName, i, uiSettings
+  let models, uiSettings
 
   function md5 (fileName) {
     let realPath = App.resolveStatic(fileName)
@@ -33,7 +32,7 @@ function generateIndexPage (req, resp, indexName, addCSP=true) {
   compiledIndexKey = 'UB_STATIC.compiled_index_' + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
   compiledIndex = App.globalCacheGet(compiledIndexKey)
   if (!compiledIndex) {
-    uiSettings = JSON.parse(App.getUISettings() || '{}')
+    uiSettings = App.serverConfig.uiSettings
     if (!uiSettings.adminUI) {
       uiSettings.adminUI = {themeName: 'UBGrayTheme'}
     } else if (!uiSettings.adminUI.themeName) {

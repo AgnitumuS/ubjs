@@ -1,5 +1,4 @@
-let UBA = UB.ns('UBA')
-
+const UB = require('@unitybase/ub')
 let ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
 const queryString = require('querystring')
@@ -8,23 +7,22 @@ if (ubaAuditPresent) {
   auditStore = new TubDataStore('uba_audit')
 }
 
-
 /**
  * Checking of user IP and device fingerpriont based on settings from `uba_advSecurity`
  * @param {THTTPRequest} req
  */
-function checkAdvancedSecurity(req) {
+function checkAdvancedSecurity (req) {
   let advData
 
   try {
     advData = UB.Repository('uba_advSecurity')
-      .attrs(['ID', 'allowedIP', 'refreshIP', 'fp', 'refreshFp', 'keyMediaName', 'refreshKeyMedia', 'mi_modifyDate' ])
+      .attrs(['ID', 'allowedIP', 'refreshIP', 'fp', 'refreshFp', 'keyMediaName', 'refreshKeyMedia', 'mi_modifyDate'])
       .where('[userID]', '=', Session.userID)
-      .selectAsObject()[ 0 ];
+      .selectAsObject()[ 0 ]
   } catch (e) {
     // nothing to do - table uba_advSecurity not exists
     console.warn('Advanced security is disabled because table uba_advSecurity does not exists')
-    doCheckAdvancedSecurity = function(){}
+    doCheckAdvancedSecurity = function () {}
   }
   if (!advData) return // no adv. settings for current user
   let updateParams = {}
@@ -39,11 +37,11 @@ function checkAdvancedSecurity(req) {
   let fp = ''
   let urlParams
   if (advData.refreshFp || advData.fp || advData.refreshKeyMedia || advData.keyMediaName) { // fp required
-    urlParams = queryString.parse(req.parameters);
+    urlParams = queryString.parse(req.parameters)
   }
 
   if (advData.refreshFp || advData.fp) { // fp required
-    fp = urlParams.FP;
+    fp = urlParams.FP
     if (!fp) throw new Error('Fingerprint requred but not passed in FP URL params')
   }
   if (advData.refreshFp) {
@@ -53,9 +51,9 @@ function checkAdvancedSecurity(req) {
   } else if (advData.fp && (advData.fp !== fp)) {
     throw new Error('Allowed FP ' + advData.fp + ' <> actual ' + fp)
   }
-  let keyMediaName = '';
+  let keyMediaName = ''
   if (advData.refreshKeyMedia || advData.keyMediaName) { // keyMediaName required
-    keyMediaName = urlParams.KMN;
+    keyMediaName = urlParams.KMN
     if (!keyMediaName) throw new Error('keyMediaName requred but not passed in KMN URL params')
   }
   if (advData.refreshKeyMedia) {
@@ -84,7 +82,7 @@ let doCheckAdvancedSecurity = null // calculate later
  * result we put in Session.uData - only one session-depended server object
  * @param {THTTPRequest} req
  */
-UBA.onUserLogin = function (req) {
+function onUserLogin (req) {
   console.debug('Call JS method: UBA.onUserLogin')
   let data = Session.uData
   let repo = null
@@ -93,7 +91,7 @@ UBA.onUserLogin = function (req) {
   data.login = userInfo.name || Session.userID
 
   if (!doCheckAdvancedSecurity) {
-    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity') ? checkAdvancedSecurity : function(){}
+    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity') ? checkAdvancedSecurity : function () {}
   }
   doCheckAdvancedSecurity(req)
 
@@ -140,9 +138,9 @@ UBA.onUserLogin = function (req) {
     }
   }
 }
-Session.on('login', UBA.onUserLogin)
+Session.on('login', onUserLogin)
 
-UBA.onUserLoginFailed = function (isLocked) {
+function onUserLoginFailed (isLocked) {
   console.debug('Call JS method: UBA.onUserLoginFailef')
 
   if (ubaAuditPresent) { // uba_audit exists
@@ -163,15 +161,15 @@ UBA.onUserLoginFailed = function (isLocked) {
       })
       App.dbCommit(auditStore.entity.connectionName)
     } catch (ex) {
-            // this possible if we connect to empty database without ubs_* tables
+      // this possible if we connect to empty database without ubs_* tables
       console.error('Error access audit entity:', ex.toString())
     }
   }
 }
 
-Session.on('loginFailed', UBA.onUserLoginFailed)
+Session.on('loginFailed', onUserLoginFailed)
 
-UBA.securityViolation = function (reason) {
+function securityViolation (reason) {
   console.debug('Call JS method: UBA.securityViolation')
 
   if (ubaAuditPresent) { // uba_audit exists
@@ -200,4 +198,4 @@ UBA.securityViolation = function (reason) {
   }
 }
 
-Session.on('securityViolation', UBA.securityViolation)
+Session.on('securityViolation', securityViolation)

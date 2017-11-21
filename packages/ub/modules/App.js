@@ -97,7 +97,7 @@ App.preventDefault = function () {
 /**
  * Called by native
  * TODO - remove when all App level method will be implemented in JS
- * @param eventName
+ * @param endpointName
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @private
@@ -167,6 +167,7 @@ App.serviceMethodByPassAuthentication = function (methodName) {
  * Server configuration (result of argv.getServerConfiguration() execution)
  * @readonly
  * @type {Object}
+ * @property {Object} uiSettings Section `uiSettings` of ubConfig
  */
 App.serverConfig = undefined
 try {
