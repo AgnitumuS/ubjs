@@ -539,6 +539,9 @@ Ext.define('UB.core.UBUtil', {
           xtype: 'numberfield',
           maxLength: 17,
           enforceMaxLength: true,
+          hideTrigger: true,
+          keyNavEnabled: false,
+          mouseWheelEnabled: false,
           validator: function (val) {
             if (Number(val.replace(/[^0-9]/, '')) < 8999000000000000) {
               var rv = val.match(/[0-9]*[^0-9]{1}([0-9]+)/)
@@ -548,6 +551,7 @@ Ext.define('UB.core.UBUtil', {
             }
             return UB.i18n('numberOfSignificantDigits')
           },
+          valueToRaw: UB.core.UBUtil.formatAsCurrency,
           maxValue: 8999000000000000,
           minValue: -8999000000000000
         }
@@ -558,7 +562,13 @@ Ext.define('UB.core.UBUtil', {
     }
     return ext
   },
-
+  /**
+   * Create currency format value
+   * @param {currency} value
+   */
+  formatAsCurrency: function (value) {
+    return Ext.util.Format.currency(value, '', this.decimalPrecision || 2)
+  },
   /**
    * Create component config by data type
    * @param {String} dataType
