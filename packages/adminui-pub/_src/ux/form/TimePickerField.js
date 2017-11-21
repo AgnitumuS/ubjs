@@ -33,10 +33,12 @@ Ext.define('Ext.ux.form.TimePickerField', {
       /** Override. */
       initComponent: function() {
           var me = this;
-
+          if (me.useSeconds) {
+            me.margin = '0 0 0 0'
+          }
           me.spinnerCfg = me.spinnerCfg || {
               columnWidth: me.useSeconds ? 0.333 : 0.5,
-              margin: '0 15px 0 0'
+              margin: me.useSeconds ? '0 0 0 0' : '0 15px 0 0'
           };
 
           me.value = me.value || '00:00:00';

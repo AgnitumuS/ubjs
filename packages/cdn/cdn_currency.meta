@@ -5,14 +5,16 @@
     "sqlAlias": "curr",
     "cacheType": "SessionEntity",
     "descriptionAttribute": "code3",
-    "attributes": {
-        "intCode": {
+    "attributes": [
+        {
+            "name": "intCode",
             "dataType": "Int",
             "caption": "Digital code",
             "description": "Digital code of currency",
             "allowNull": false
         },
-        "code3": {
+        {
+            "name": "code3",
             "dataType": "String",
             "size": 3,
             "caption": "3-character code",
@@ -20,15 +22,26 @@
             "allowNull": false,
             "isMultiLang": false
         },
-        "name": {
+        {
+            "name": "name",
             "dataType": "String",
             "size": 32,
             "caption": "Name",
             "description": "Name of currency",
             "allowNull": false,
             "isMultiLang": true
+        },
+        {
+            "name": "description",
+            "dataType": "String",
+            "size": 40,
+            "caption": "Назва",
+            "description": "Назва (для вибору зі списку)",
+            "documentation": "Назва (для выбору зі списку)",
+            "defaultView": false,
+            "allowNull": false
         }
-    },
+    ],
     "mixins": {
         "mStorage": {
             "simpleAudit": true,

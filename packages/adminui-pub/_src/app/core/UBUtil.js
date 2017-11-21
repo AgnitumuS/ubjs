@@ -567,7 +567,7 @@ Ext.define('UB.core.UBUtil', {
    * @param {currency} value
    */
   formatAsCurrency: function (value) {
-    return Ext.util.Format.currency(value, '', this.decimalPrecision || 2)
+    return _.isNumber(value) ? Ext.util.Format.currency(value, '', this.decimalPrecision || 2).replace(/ /g, '') : ''
   },
   /**
    * Create component config by data type
