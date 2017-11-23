@@ -27,6 +27,30 @@ class XLSXStyle {
   static get indexDefFormateDate () {
     return 14
   }
+  static get predefinedFormats () {
+    return {
+      general: 0,
+      sum: 2,
+      number: 3,
+      sumDelim: 4,
+      percent: 9,
+      percentDec: 10,
+      date: 14,
+      dateFull: 15,
+      dateShort: 17,
+      dateMY: 17,
+      timeShortPM: 18,
+      timeFullPM: 19,
+      time: 20,
+      timeFull: 21,
+      dateTime: 22,
+      numF: 37,
+      numRedF: 38,
+      sumF: 39,
+      sumRedF: 40,
+      mail: 49
+    }
+  }
 
   constructor (config) {
     config = config || {}

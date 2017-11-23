@@ -3,7 +3,8 @@
 */
 const fs = require('fs')
 const {
-  XLSXWorkbook
+  XLSXWorkbook,
+  XLSXStyle
 } = require('../index')
 
 function startTest () {
@@ -47,6 +48,16 @@ function startTest () {
     {column: 3, style: fstyle2},
     {column: 4, style: fstyleborderFull}
   ])
+  ws.addRow([{value: new Date()}, {value: new Date()}, {value: new Date()}], columnTemplate1)
+  var fstyleDate = wb.style.getStyle({font: defFont, format: XLSXStyle.predefinedFormats.dateFull})
+  var fstyleDate1 = wb.style.getStyle({font: defFont, format: XLSXStyle.predefinedFormats.date})
+  var fstyleDate2 = wb.style.getStyle({font: defFont, format: XLSXStyle.predefinedFormats.dateShort})
+  columnTemplate1 = [
+    {column: 1, style: fstyleDate},
+    {column: 3, style: fstyleDate1},
+    {column: 4, style: fstyleDate2}
+  ]
+  ws.addRow([{value: new Date()}, {value: new Date()}, {value: new Date()}], columnTemplate1)
 
   wb.render()
   .then(function (content) {

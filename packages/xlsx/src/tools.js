@@ -21,7 +21,11 @@ module.exports = {
     return t * 26 + this.alphabet.indexOf(s.substr(-1))
   },
   convertDate: function (input) {
-    return typeof input === 'object' ? ((input - (Date.UTC(1900, 0, 0) + input.getTimezoneOffset() * 60000)) / 86400000) + 1 : new Date(+(Date.UTC(1900, 0, 0) + input.getTimezoneOffset() * 60000) + (input - 1) * 86400000)
+    if (typeof input === 'object') {
+      return ((input - (Date.UTC(1900, 0, 0) + input.getTimezoneOffset() * 60000)) / 86400000) + 1
+    } else {
+      return new Date(+(Date.UTC(1900, 0, 0) + input.getTimezoneOffset() * 60000) + (input - 1) * 86400000)
+    }
   },
   typeOf: function (obj) {
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
