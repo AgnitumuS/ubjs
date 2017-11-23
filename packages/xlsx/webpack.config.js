@@ -10,7 +10,9 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'xlsx-all.min.js'
+    filename: 'xlsx-all.min.js',
+    library: 'XLSX',
+    libraryTarget: 'umd'
   },
   module: {
     loaders: [{
@@ -20,29 +22,17 @@ module.exports = {
       query: {
         presets: ['es2015']
       }
-    }, { 
-      test: /\.css$/, 
-      loader: "style-loader!css-loader" 
-      //loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' 
+    }, {
+      test: /\.css$/,
+      loader: 'style-loader!css-loader'
     }]
   },
-  //devtool: 'eval',
-  //devtool: 'source-map',
   devtool: 'cheap-module-source-map',
-
   plugins: [
-        // new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'vendor', /* filename= */'q-lodash-crypto.min.js'),
-    /*new webpack.optimize.CommonsChunkPlugin({
-	  name: 'vendor', filename: 'q-lodash-crypto.min.js',
-	  minChunks: function (module) {
-      		return isExternal(module)
-    	  }
-  	}),*/
-
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
-     'screw-ie8': true,
+      'screw-ie8': true,
       // compress: false
       compress: {
         sequences: true,
