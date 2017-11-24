@@ -43,13 +43,13 @@ class XLSXStyleAlign extends XLSXBaseStyleElement {
    * @param {Object} info
    * @param {String} [info.horizontal] = (general | left | center | right | fill | justify | centerContinuous | distributed)
    * @param {String} [info.vertical] = (top | center | bottom | justify distributed)
-   * @param {Integer} [info.textRotation]
+   * @param {Number} [info.textRotation]
    * @param {Boolean} [info.wrapText]
-   * @param {Integer} [info.indent]
-   * @param {Integer} [info.relativeIndent]
+   * @param {Number} [info.indent]
+   * @param {Number} [info.relativeIndent]
    * @param {Boolean} [info.justifyLastLine]
    * @param {Boolean} [info.shrinkToFit]
-   * @param {Integer} [info.readingOrder]
+   * @param {Number} [info.readingOrder]
    * @return {Number} index
    */
   add (info) {
@@ -57,7 +57,7 @@ class XLSXStyleAlign extends XLSXBaseStyleElement {
   }
 
   compile (element) {
-    this.compiled.push(this.templateCompile(element))  // tpl.apply(element)
+    this.compiled.push(this.templateCompile(element)) // tpl.apply(element)
   }
 }
 

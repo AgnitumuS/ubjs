@@ -11,6 +11,7 @@ class XLSXStyleFont extends XLSXBaseStyleElement {
   compileTemplate (element) {
     let out = []
     let xkey
+    // noinspection HtmlDeprecatedTag
     out.push('<font>')
     if (element.bold === true) {
       out.push('<b/>')

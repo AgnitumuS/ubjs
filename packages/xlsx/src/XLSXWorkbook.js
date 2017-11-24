@@ -157,15 +157,15 @@ class XLSXWorkbook {
 
   test () {
     /*
-           <font>
-           <b/>
-           <sz val="11"/>
-           <color theme="1"/>
-           <name val="Calibri"/>
-           <family val="2"/>
-           <scheme val="minor"/>
-           </font>
-           */
+     <font>
+     <b/>
+     <sz val="11"/>
+     <color theme="1"/>
+     <name val="Calibri"/>
+     <family val="2"/>
+     <scheme val="minor"/>
+     </font>
+     */
     var wb = this
     wb.useSharedString = false
     var defFont = this.style.fonts.add({code: 'def', name: 'Calibri', fontSize: 11, scheme: 'minor'})

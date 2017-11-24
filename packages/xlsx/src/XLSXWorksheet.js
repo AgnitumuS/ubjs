@@ -1,7 +1,6 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const XLSXWorkbook = require('./XLSXWorkbook')
 const st = require('./tools')
 
 /**
@@ -46,7 +45,7 @@ class XLSXWorksheet {
       title: 'Worksheet', name: 'Лист', setActive: false, table: null, id: 1
     })
 
-// todo check config
+    // todo check config
     Object.assign(this, config)
 
     this.margins = this.margins || {}

@@ -204,7 +204,7 @@ class XLSXStyle {
       return styleId
     }
 
-    cfg.id = this.styleHashList[styleHash] = this.styleHashListIndex  // this.elements
+    cfg.id = this.styleHashList[styleHash] = this.styleHashListIndex // this.elements
     this.styleHashListIndex++
     this.compiled.push(this.compileSTemplate(cfg)) // this.tplXfs.apply(cfg)
     if (cfg.code) {
@@ -242,10 +242,9 @@ class XLSXStyle {
 
   /**
    * @private
-   * @param context
    * @return {String}
    */
-  render (context) {
+  render () {
     this.elementsJoined = this.compiled.join('')
     this.bordersCnt = this.borders.elements.length
     this.fillsCnt = this.fills.elements.length

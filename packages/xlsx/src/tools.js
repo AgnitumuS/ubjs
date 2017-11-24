@@ -10,11 +10,11 @@ module.exports = {
 
   alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   numAlpha: function (i) {
-    var t = Math.floor(i / 26) - 1
+    let t = Math.floor(i / 26) - 1
     return (t > -1 ? this.numAlpha(t) : '') + this.alphabet.charAt(i % 26)
   },
   alphaNum: function (s) {
-    var t = 0
+    let t = 0
     if (s.length === 2) {
       t = this.alphaNum(s.charAt(0)) + 1
     }

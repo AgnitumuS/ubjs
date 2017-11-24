@@ -14,7 +14,7 @@ const tools = require('./tools')
  */
 class XLSXStyleFill extends XLSXBaseStyleElement {
   compileTemplate (element) {
-    var out = []
+    let out = []
     out.push(
       '<fill>',
       `<patternFill patternType="${element.patternType || 'solid'}">`
