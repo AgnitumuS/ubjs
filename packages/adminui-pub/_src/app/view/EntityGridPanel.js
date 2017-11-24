@@ -3113,12 +3113,7 @@ Ext.define('UB.view.EntityGridPanel', {
       metaobject: me.entity,
       scope: me,
       callback: function (rData) {
-        let sLength = rData.length
-        let sArray = new Uint8Array(new ArrayBuffer(sLength))
-        for (let i = 0; i < sLength; i++) {
-          sArray[i] = rData.charCodeAt(i)
-        }
-        let dBlob = new Blob([sArray], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}) // data:  ;base64
+        let dBlob = new Blob([rData], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}) // data:  ;base64
         saveAs(dBlob, fTitle + '.xlsx')
       }
     })

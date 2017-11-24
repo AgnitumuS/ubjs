@@ -1,4 +1,4 @@
-/* global XLSX */
+// const {XLSXWorkbook} = require('@unitybase/xlsx')
 /**
  * @class Ext.ux.Exporter.ExcelFormatter
  * @extends Ext.ux.Exporter.Formatter
@@ -24,7 +24,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
    */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
-      System.import('@unitybase/xlsx').then(() => {
+      System.import('@unitybase/xlsx/dist/xlsx-all.min.js').then((XLSX) => {
+        window.XLSX = XLSX
         Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded = true
         this.format(store, config)
       })
@@ -35,7 +36,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       borderFull, fldtitle, datestyleCol, entity, headerStyle, rowHeaderStyle, stl,
       styleWrapCol, styleCol, floatstyleCol, sumstyleCol, intstyleCol, entityName,
       eAttributes, modelFields
-    wb = Ext.create(XLSX.csWorkbook)
+    var XLSX = window.XLSX
+    wb = new XLSX.XLSXWorkbook()
     wb.useSharedString = true
     entity = config.metaobject
     entityName = config.entityName
@@ -56,7 +58,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     stl.formats.add({ code: 'sumFormat', formatCode: '#,##0.00_ ;[Red]\\-#,##0.00\\ ' })
     stl.formats.add({ code: 'intFormat', formatCode: '#,##0_ ;[Red]\\-#,##0\\ ' })
 
-    datestyleCol = stl.getStyle({font: defFont, border: borderFull, format: XLSX.csStyle.indexDefFormateDate, code: 'DefDateStyle'})
+    datestyleCol = stl.getStyle({font: defFont, border: borderFull, format: XLSX.XLSXStyle.indexDefFormateDate, code: 'DefDateStyle'})
     floatstyleCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.floatFormat })
     sumstyleCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.sumFormat })
     intstyleCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.intFormat })
@@ -221,7 +223,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     }
       // var rData = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + wb.render();
 
-    wb.render().then(function(result){
+    wb.render().then(function (result) {
       config.callback.call(config.scope, result)
     })
   }
