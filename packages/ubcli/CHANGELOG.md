@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.3]
+### Fixed
+- Database metadata for PostgreSQL now loaded for a current_schema instead of current_user
+- Added missed ; in the end of DDL script block
+
+
 ## [1.2.0]
 ### Added
 - DDL generation for PostgreSQL including latest PostgreSQL 10 release. Required UB >= 4.1.0beta.8
