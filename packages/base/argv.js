@@ -18,6 +18,12 @@
  * @module @unitybase/base/argv
  */
 /* global removeCommentsFromJSON, startServer, stopServer */
+
+/**
+ * 
+ * @module @unitybase/base/argv
+ */
+
 const _ = require('lodash')
 const options = require('./options')
 const fs = require('fs')
