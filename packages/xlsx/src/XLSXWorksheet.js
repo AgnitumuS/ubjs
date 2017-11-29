@@ -30,6 +30,7 @@ class XLSXWorksheet {
     this.dataRows = []
     this.nextRowNum = 1
     this.columnProperies = ''
+    this.defStyles = []
     this.merge = []
     /**
      * Worksheet orientation
@@ -255,6 +256,13 @@ class XLSXWorksheet {
       template.length === config.length
     const hasCellTemplate = (typeof rowConfig.cellTemplate !== 'undefined' && Array.isArray(rowConfig.cellTemplate) &&
       rowConfig.cellTemplate.length === config.length)
+    const existCell = {}
+    config.forEach((cd) => {
+      existCell[cd.column] = true
+    })
+    // write def
+    let defR = this.defStyles[this.nextRowNum]
+    let lastColCheckDef = 0
 
     config.forEach((cell, index) => {
       // cellCount++
@@ -270,6 +278,18 @@ class XLSXWorksheet {
       if (hasCellTemplate && typeof rowConfig.cellTemplate[index] === 'object') {
         cell = Object.assign(rowConfig.cellTemplate[index], cell)
       }
+      if (defR) { // write def styles before
+        for (let i = lastColCheckDef; i < cell.column; i++) {
+          if (defR[i]) {
+            this.dataRows.push(
+              '<c r="' + tools.numAlpha(i) + this.nextRowNum.toString() + '"' +
+              (' s="' + tools.extractId(defR[i]) + '"') + ' />'
+            )
+          }
+        }
+        lastColCheckDef = cell.column
+      }
+
       XLSXWorksheet.checkColNum(cell.column)
       if (typeof cell.value === 'string') {
         // Ext.String.htmlEncode
@@ -307,26 +327,56 @@ class XLSXWorksheet {
         '</c>'
       )
 
+      // remove used
+      if (this.defStyles[this.nextRowNum]) {
+        this.defStyles[this.nextRowNum][cell.column] = null
+      }
+
       if (cell.cellStyle) {
-        if (cell.cellStyle.rowSpan > 1) {
+        if (cell.cellStyle.rowSpan > 1 || cell.cellStyle.colSpan > 1) {
           this.addMerge({
             colFrom: cell.column,
-            rowFrom: this.rowsCount,
-            colTo: cell.column,
-            rowTo: this.rowsCount + cell.cellStyle.rowSpan - 1
+            rowFrom: this.nextRowNum,
+            colTo: cell.column + (cell.cellStyle.colSpan || 1) - 1,
+            rowTo: this.nextRowNum + (cell.cellStyle.rowSpan || 1) - 1
           })
         }
-        // colSpan
-        if (cell.cellStyle.colSpan > 1) {
-          this.addMerge({
-            colFrom: cell.column,
-            rowFrom: this.rowsCount,
-            colTo: cell.column + cell.cellStyle.colSpan - 1,
-            rowTo: this.rowsCount
-          })
+        if (cell.cellStyle.colSpan > 1 && cell.style && cell.style.config.border && cell.style.config.border.id > 0) {
+          // this.workBook.style.getStyle({border})
+          let cEnd = cell.column + cell.cellStyle.colSpan - 1
+          for (let i = cell.column + 1; i <= cEnd; i++) {
+            if (!existCell[i]) {
+              this.dataRows.push(
+                '<c r="' + tools.numAlpha(i) + this.nextRowNum.toString() + '"' +
+                (' s="' + tools.extractId(cell.style) + '"') + ' />'
+              )
+            }
+          }
+        }
+        if (cell.cellStyle.rowSpan > 1 && cell.style && cell.style.config.border && cell.style.config.border.id > 0) {
+          // remember style for down rows
+          let rwEnd = this.nextRowNum + cell.cellStyle.rowSpan - 1
+          let cEnd = cell.cellStyle.colSpan > 1 ? cell.column + cell.cellStyle.colSpan - 1 : cell.column
+          for (let ri = this.nextRowNum + 1; ri <= rwEnd; ri++) {
+            let rwCtx = this.defStyles[ri] = this.defStyles[ri] || []
+            for (let ci = cell.column; ci <= cEnd; ci++) {
+              rwCtx[ci] = cell.style
+            }
+          }
         }
       }
     })
+    // write def style fin
+    if (defR) {
+      defR.forEach((item, index) => {
+        if (!item || (index <= lastColCheckDef)) return
+        this.dataRows.push(
+          '<c r="' + tools.numAlpha(index) + this.nextRowNum.toString() + '"' +
+          (' s="' + tools.extractId(item) + '"') + ' />'
+        )
+      })
+      this.defStyles[this.nextRowNum] = null
+    }
 
     if (this.diapason.minRowNum === 0) {
       this.diapason.minRowNum = this.nextRowNum
