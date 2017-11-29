@@ -42,7 +42,7 @@ module.exports = function runOTPTest (options) {
       try {
         result = conn.post('evaluateScript', content)
       } catch (e) {
-        throw new Error(`Error in server-side script ${test}`)
+        throw new Error(`Error in server-side script ${test}: ${JSON.stringify(result)}`)
       }
       assert.ok(result.res === true)
     })
