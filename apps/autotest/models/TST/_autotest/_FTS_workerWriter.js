@@ -1,3 +1,11 @@
+const UBConnection = require('@unitybase/base').UBConnection
+
+module.exports = {
+  onmessage: onProcessWorker,
+  onterminate: onTerminateWorker,
+  onerror: onWorkerError
+}
+
 function onTerminateWorker () {
   postMessage('Worker terminated')
 }
@@ -15,11 +23,19 @@ function onProcessWorker (message) {
     _conn,
     transLen, command, startTime
 
+  if (message.signal !== 'start') {
+    throw new Error('Worker module: Start phase. Wrong message ' + message)
+  } else {
+    console.log('Worker module: got a signal', JSON.stringify(message))
+  }
+  const serverURL = message['serverURL']
+  let connection = new UBConnection(serverURL)
+  connection.onRequestAuthParams = function () {
+    return {authSchema: 'UB', login: 'admin', password: 'admin'}
+  }
+
   // first of all we await for worker num
   command = message
-  if (command.signal !== 'start') {
-    throw new Error('Start phase. Wrong message ' + message)
-  }
   // postMessage('connected');
   folder = command.folder
 
