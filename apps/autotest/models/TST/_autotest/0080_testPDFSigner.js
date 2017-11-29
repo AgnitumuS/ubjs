@@ -11,11 +11,10 @@
 
 const Worker = require('@unitybase/base').Worker
 const assert = require('assert')
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
-const path = require('path')
 const TEST_NAME = 'PDF signing thread test'
+const serverURL = argv.serverURLFromConfig(argv.getServerConfiguration())
 
 module.exports = function runPDFSignTest (options) {
   if (!options) {
@@ -35,73 +34,26 @@ module.exports = function runPDFSignTest (options) {
   console.debug('start ', numThreads, TEST_NAME)
 
   let workers = []
-
-  console.log('start ', numThreads, 'thread')
-  for (let i = 0; i < numThreads; i++) {
-    onProcessWorker({signal: 'start', thread: i})
-  }
-  return // TODO - MPV  require not work inside worker onProcessWorker
-
-    // create threads
+  let signerPath = require.resolve('./_FTS_workerWriter.js')
+  signerPath = signerPath.replace(/\\/g, '/')
+  // create threads
   for (let i = 0; i < numThreads; i++) {
     workers.push(new Worker({
-      onmessage: onProcessWorker,
-      onterminate: onTerminateWorker,
-      onerror: onWorkerError
+      name: `signer${i}`,
+      moduleName: signerPath
     }))
     console.log('Create worker ', i)
   }
 
   let i = 0
   workers.forEach(function (worker) {
-    worker.postMessage({signal: 'start', thread: i})
+    worker.postMessage({signal: 'start', thread: i, serverURL: serverURL})
     console.log('Worker ', i, 'started')
     i++
   })
-    // wait for done
+  // wait for done
   workers.forEach(function (worker) {
     let workerMessage = worker.waitMessage(100000)
     assert.ok(workerMessage.signal !== 'error', workerMessage.message)
   })
-}
-
-function onTerminateWorker () {
-  postMessage({signal: 'terminated'})
-}
-
-function onWorkerError (message, exception) {
-  postMessage({signal: 'error', message: exception + ' during handle message ' + message})
-}
-
-function onProcessWorker (message) {
-  var
-    argv = require('@unitybase/base').argv,
-    session,
-    connection,
-    result,
-    startTime
-
-  if (message.signal !== 'start') {
-    throw new Error('Start phase. Wrong message ' + message)
-  }
-
-  session = argv.establishConnectionFromCmdLineAttributes()
-  connection = session.connection
-  startTime = Date.now()
-  try {
-    result = connection.query({
-      entity: 'tst_pdfSign',
-      method: 'doTest',
-      threadNum: message.thread,
-      location: 'Located in ' + message.thread
-    })
-  } finally {
-    if (session) {
-      session.logout()
-    }
-  }
-  if (global.postMessage) { // we are in worker
-    postMessage({signal: 'done', thread: message.thread, timeSpend: Date.now() - startTime, result: result})
-    terminate()
-  }
 }

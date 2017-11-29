@@ -6,11 +6,11 @@
  */
 const Worker = require('@unitybase/base').Worker
 const assert = require('assert')
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
-const path = require('path')
 const TEST_NAME = 'IIT cryptography thread test'
+const serverConfig = argv.getServerConfiguration()
+const serverURL = argv.serverURLFromConfig(serverConfig)
 
 module.exports = function runIITCryptoTest (options) {
   if (!options) {
@@ -22,6 +22,9 @@ module.exports = function runIITCryptoTest (options) {
   } else {
     options.numThreads = 2
   }
+  if (!serverConfig.security || !serverConfig.security.dstu) {
+    console.log('Skip IIT CRYPTOGRAPHY test: serverConfig.security.dstu.iit section in server config not exists')
+  }
 
   // start a server for workers (if stopped)
   argv.establishConnectionFromCmdLineAttributes(options)
@@ -29,25 +32,22 @@ module.exports = function runIITCryptoTest (options) {
   let numThreads = parseInt(options.numThreads, 10)
   console.debug('start ', numThreads, TEST_NAME)
 
-  for (let i = 0; i < numThreads; i++) {
-    onProcessWorker({signal: 'start', thread: i})
-  }
-  return // TODO - MPV  require not work inside worker onProcessWorker
   let workers = []
   // create threads
+  let signerPath = require.resolve('./_IIT_workerCrypto.js')
+  signerPath = signerPath.replace(/\\/g, '/')
   for (let i = 0; i < numThreads; i++) {
     workers.push(new Worker({
-      onmessage: onProcessWorker,
-      onterminate: onTerminateWorker,
-      onerror: onWorkerError
+      name: `wcrypt${i}`,
+      moduleName: signerPath
     }))
     console.debug('Create worker ', i)
   }
 
   let i = 0
   workers.forEach((worker) => {
-    worker.postMessage({signal: 'start', thread: i})
-    console.log('Worker ', i, 'started')
+    worker.postMessage({signal: 'start', thread: i, serverURL: serverURL})
+    console.log('Worker', i, 'started')
     i++
   })
   // wait for done
@@ -55,46 +55,4 @@ module.exports = function runIITCryptoTest (options) {
     let workerMessage = worker.waitMessage(100000)
     assert.ok(workerMessage.signal !== 'error', workerMessage.message)
   })
-}
-
-function onTerminateWorker () {
-  postMessage({signal: 'terminated'})
-}
-
-function onWorkerError (message, exception) {
-  postMessage({signal: 'error', message: exception + ' during handle message ' + message})
-}
-
-function onProcessWorker (message) {
-  const argv = require('@unitybase/base').argv
-  const cmdLineOpt = require('@unitybase/base/options')
-
-  let result
-
-  if (message.signal !== 'start') {
-    throw new Error('Start phase. Wrong message ' + message)
-  }
-
-  let opts = cmdLineOpt.describe('', 'worker')
-    .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-  let options = opts.parseVerbose({}, true)
-
-  let session = argv.establishConnectionFromCmdLineAttributes(options)
-  let connection = session.connection
-  let startTime = Date.now()
-  try {
-    result = connection.query([{
-      entity: 'tst_crypto',
-      method: 'doTest',
-      execParams: {
-        code: message.thread
-      }
-    }])
-  } finally {
-    session.logout()
-  }
-  if (global.postMessage) { // we are in worker
-    postMessage({signal: 'done', thread: message.thread, timeSpend: Date.now() - startTime, result: result})
-    terminate()
-  }
 }
