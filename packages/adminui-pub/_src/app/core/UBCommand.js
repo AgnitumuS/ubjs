@@ -5,7 +5,7 @@ require('../view/BaseWindow')
 require('../view/BasePanel')
 require('../ux/UBPreFilter')
 require('../view/EntityGridPanel')
-var _ = require('lodash')
+const _ = require('lodash')
 /**
  * @author UnityBase team
  *
@@ -76,11 +76,10 @@ Ext.define('UB.core.UBCommand', {
      * @return {Object}
      */
     createDefaultItems: function (entityName, parentContext) {
-      var items = []
-      var privateRe
-      var entity = $App.domainInfo.get(entityName)
+      let items = []
+      let entity = $App.domainInfo.get(entityName)
 
-      privateRe = /^ID|^mi_/
+      let privateRe = /^ID|^mi_/
       if (!entity) {
         throw new Error('invalid entity ' + entityName)
       }
@@ -148,16 +147,12 @@ Ext.define('UB.core.UBCommand', {
      * @return {Object}
      */
     resultDataRow2Object: function (response, rowNum, fieldList) {
-      var i = -1
-      var len
-      var data
-      var responseFieldList
-      var result = {}
+      let data = response.resultData.data[rowNum || 0]
+      let responseFieldList = response.resultData.fields
 
-      data = response.resultData.data[rowNum || 0]
-      responseFieldList = response.resultData.fields
-
-      len = responseFieldList.length
+      let len = responseFieldList.length
+      let i = -1
+      let result = {}
       while (++i < len) {
         if (!fieldList || fieldList.indexOf(responseFieldList[i]) >= 0) {
           result[responseFieldList[i]] = data[i]
@@ -176,8 +171,7 @@ Ext.define('UB.core.UBCommand', {
      * @returns {Object} whereList with added master-detail condition
      */
     addMasterDetailRelation: function (whereListTo, masterFields, detailFields, record) {
-      var result = whereListTo || {}
-      var i, l, item, filterVal, detailField
+      let result = whereListTo || {}
 
       // drop all where expression started from __MD
       Object.keys(result).forEach(function (item) {
@@ -186,18 +180,17 @@ Ext.define('UB.core.UBCommand', {
         }
       })
       if (masterFields && detailFields) {
-        for (i = 0, l = Math.min(masterFields.length, detailFields.length); i < l; ++i) {
-          detailField = detailFields[i]
+        for (let i = 0, l = Math.min(masterFields.length, detailFields.length); i < l; ++i) {
+          let detailField = detailFields[i]
           if (detailField && detailField.indexOf('[') < 0) {
             detailField = '[' + detailField + ']'
           }
-          item = result['__MD' + i] = {
+          let item = result['__MD' + i] = {
             expression: detailField,
             condition: 'equal',
             values: {}
           }
-          filterVal = record ? record.get(masterFields[i]) : 0
-          item.values[detailFields[i]] = filterVal
+          item.values[detailFields[i]] = record ? record.get(masterFields[i]) : 0
         }
       }
       return result
@@ -210,33 +203,29 @@ Ext.define('UB.core.UBCommand', {
      * @returns {Object}
      */
     getCommandByUrl: function (url, target) {
-      var throwI = function () {
-        throw new Error('Incorect parametr for getCommandByUrl')
+      let throwI = function () {
+        throw new Error('Incorrect parameter for getCommandByUrl')
       }
-      var command
-
       if (!url || (url.indexOf('#') < 0)) {
         throwI()
       }
-
       url = url.split('#')[1]
       if (!url) { // Bug in EXT when hidden grid column add to url symbol #
         return
       }
 
       function parseParam (prm) {
-        var result = {}
+        let result = {}
         _.forEach(prm, function (item) {
-          var pair, name, value
           if (!item) {
             throwI()
           }
-          pair = item.split('=')
+          let pair = item.split('=')
           if (pair.length !== 2) {
             throwI()
           }
-          name = pair[0]
-          value = window.decodeURIComponent(pair[1])
+          let name = pair[0]
+          let value = window.decodeURIComponent(pair[1])
           if (value && (value.indexOf('&') >= 0)) {
             value = parseParam(value.split('&'))
           } else if (value && (value.indexOf('=') >= 0)) {
@@ -246,7 +235,7 @@ Ext.define('UB.core.UBCommand', {
         })
         return result
       }
-      command = parseParam(url.split('&'))
+      let command = parseParam(url.split('&'))
 
       if (command.params) {
         command.cmdData = {
@@ -274,8 +263,7 @@ Ext.define('UB.core.UBCommand', {
   customParams: {},
 
   constructor: function (config) {
-    var errMsg
-    var me = this
+    let me = this
 
     me.commandConfig = config
     me.commandType = config.cmdType || me.commandType
@@ -382,7 +370,7 @@ Ext.define('UB.core.UBCommand', {
       me.commandConfig.entity = me.entity
     } else {
       me.commandData = { params: [
-                { entity: me.entity, method: UB.core.UBCommand.methodName.SELECT, fieldList: '*' }
+        { entity: me.entity, method: UB.core.UBCommand.methodName.SELECT, fieldList: '*' }
       ]}
     }
 
@@ -397,13 +385,13 @@ Ext.define('UB.core.UBCommand', {
         me.showReport()
         break
       default:
-        errMsg = UB.format('{0}: "{1}"', UB.i18n('unknownCommandType'), me.commandType)
+        let errMsg = UB.format('{0}: "{1}"', UB.i18n('unknownCommandType'), me.commandType)
         throw new Error(errMsg)
     }
   },
 
   getFormParamFromCommandData: function (commandData) {
-    var formParam = {}
+    let formParam = {}
 
     if (commandData) {
       if (commandData.formCode) {
@@ -420,8 +408,7 @@ Ext.define('UB.core.UBCommand', {
    * @return {Object}
    */
   getFormParam: function () {
-    var me = this
-    var form, record, store
+    let me = this
 
     if (this.formParam) {
       return this.formParam
@@ -431,8 +418,8 @@ Ext.define('UB.core.UBCommand', {
       return this.formParam
     }
     if (me.formCode) {
-      store = UB.core.UBStoreManager.getFormStore()
-      record = store.findRecord('code', me.formCode, 0, false, true, true)
+      let store = UB.core.UBStoreManager.getFormStore()
+      let record = store.findRecord('code', me.formCode, 0, false, true, true)
       if (!record) {
         throw new Error('Unknown form code "' + me.formCode + '"')
       }
@@ -444,7 +431,7 @@ Ext.define('UB.core.UBCommand', {
       }
       return this.formParam
     }
-    form = UB.core.UBFormLoader.getFormByEntity(this.entity)
+    let form = UB.core.UBFormLoader.getFormByEntity(this.entity)
     if (form) {
       this.formCode = form.get('code')
       this.formParam = {
@@ -457,14 +444,13 @@ Ext.define('UB.core.UBCommand', {
   },
 
   showList: function () {
-    var me = this
-    var showListParam = _.find(me.commandData.params, ['entity', me.entity])
-    var errMsg, config
+    let me = this
+    let showListParam = _.find(me.commandData.params, ['entity', me.entity])
 
     me.showListParam = showListParam
 
     if (!showListParam) {
-      errMsg = UB.format(UB.i18n('neizvestnnajaSushhnost'), 'showList', me.entity)
+      let errMsg = UB.format(UB.i18n('neizvestnnajaSushhnost'), 'showList', me.entity)
       throw new UB.UBError(errMsg)
     }
     if ((showListParam.fieldList === '*') ||
@@ -486,7 +472,7 @@ Ext.define('UB.core.UBCommand', {
 
     showListParam.__mip_recordhistory = me.__mip_recordhistory
 
-    config = me.cmpInitConfig || {}
+    let config = me.cmpInitConfig || {}
 
     Ext.applyIf(config, {
       entityConfig: showListParam,
@@ -524,7 +510,7 @@ Ext.define('UB.core.UBCommand', {
     }
 
     if (me.tabId) {
-      var tab = Ext.getCmp(me.tabId)
+      let tab = Ext.getCmp(me.tabId)
       if (tab && tab.activateByCommand) {
         tab.activateByCommand(config)
       }
@@ -536,7 +522,7 @@ Ext.define('UB.core.UBCommand', {
       config.id = me.tabId
       config.closable = true
     }
-    var grid = Ext.create('UB.view.EntityGridPanel', config)
+    let grid = Ext.create('UB.view.EntityGridPanel', config)
     me.bindFocus(grid)
 
     if (_.isFunction(grid.customInit)) {
@@ -547,8 +533,7 @@ Ext.define('UB.core.UBCommand', {
   },
 
   showForm: function () {
-    var me = this
-    var defaultItems
+    let me = this
 
     // form code can be function - in this case execute it. {cmdType: "showForm", formCode: function(){...}
     me.formCode = me.formCode || (me.formParam ? me.formParam.formCode : undefined)
@@ -560,7 +545,8 @@ Ext.define('UB.core.UBCommand', {
       // me.description = me.description || (me.formParam ? me.formParam.description : undefined)
       me.caption = me.caption || (me.formParam ? me.formParam.caption : undefined)
       if (!Ext.isDefined(me.formCode)) {
-        me.windowCommandCode = UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), defaultItems = UB.core.UBCommand.createDefaultItems(me.entity, me.parentContext))
+        let defaultItems = UB.core.UBCommand.createDefaultItems(me.entity, me.parentContext)
+        me.windowCommandCode = UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), defaultItems)
         me.description = $App.domainInfo.get(me.entity).caption
         me.isDefaultForm = true
         me.onShowFormRun(defaultItems)
@@ -587,25 +573,24 @@ Ext.define('UB.core.UBCommand', {
   },
 
   onFormCodeRun: function () {
-    var me = this
+    let me = this
     UB.core.UBFormLoader.getFormViewAndController({formCode: me.formCode}).then(function (form) {
       me.onShowFormRun(form.formView, form.formController)
     })
   },
 
   showReport: function () {
-    var me = this
-    var reportParams, report, options
-    reportParams = me.commandData
-    options = me.reportOptions || reportParams.reportOptions || {}
+    let me = this
+    let reportParams = me.commandData
+    let options = me.reportOptions || reportParams.reportOptions || {}
 
-    report = Ext.create('UBS.UBReport', _.defaults(options, {
+    let report = Ext.create('UBS.UBReport', _.defaults(options, {
       code: reportParams.reportCode,
       type: reportParams.reportType,
       params: reportParams.reportParams
     }))
     report.init().then(function () {
-      var viewer = Ext.create('UBS.ReportViewer', {
+      let viewer = Ext.create('UBS.ReportViewer', {
         report: report
       })
       viewer.target = me.target
@@ -618,9 +603,8 @@ Ext.define('UB.core.UBCommand', {
   },
 
   onShowFormRun: function (dfm, functions) {
-    var me = this
-    var formConfig = me.cmpInitConfig || {}
-    var form
+    let me = this
+    let formConfig = me.cmpInitConfig || {}
 
     me.entity = me.entity || dfm.entity
     Ext.apply(formConfig, {
@@ -654,12 +638,12 @@ Ext.define('UB.core.UBCommand', {
       hideActions: me.hideActions
     })
 
-// BVV add for preview form------------------------------------------------25-09-2013
+    // BVV add for preview form------------------------------------------------25-09-2013
     if (me.isDetail) {
       formConfig.height = UB.appConfig.gridDefaultDetailViewHeight
     }
     if (me.tabId) {
-      var tab = Ext.getCmp(me.tabId)
+      let tab = Ext.getCmp(me.tabId)
       if (!tab && me.instanceID) { // специально для тестировщиков которые открывают из реестра еще раз только чтосохраненный документ
         tab = $App.viewport.centralPanel.down('basepanel[instanceID=' + me.instanceID + ']')
       }
@@ -670,7 +654,8 @@ Ext.define('UB.core.UBCommand', {
       formConfig.id = me.tabId
       formConfig.closable = true
     }
-// BVV add for preview form------------------------------------------------25-09-2013
+    // BVV add for preview form------------------------------------------------25-09-2013
+    let form
     if (typeof dfm !== 'function') {
       formConfig.dfm = dfm
       formConfig.functions = functions
@@ -684,7 +669,7 @@ Ext.define('UB.core.UBCommand', {
   },
 
   bindFocus: function (target) {
-    var me = this
+    let me = this
     if (me.sender) {
       target.on('destroy', function () {
         if (me.sender) {
@@ -702,18 +687,16 @@ Ext.define('UB.core.UBCommand', {
    * @param {String} options.title
    */
   showCommandResult: function (result, options) {
-    var me = this
-    var parentName = me.detailAttribute
+    let me = this
+    let parentName = me.detailAttribute
       ? UB.format(' ({0}: {1})', UB.i18n('filtr'), $App.domainInfo.get(me.entity).attr(me.detailAttribute).caption)
       : ''
-    var history = me.__mip_recordhistory ? ' (' + UB.i18n('istorijaIzmenenij') + ')' : ''
-    var title
-    var config
-    var disableAutoShow = result.disableAutoShow
+    let history = me.__mip_recordhistory ? ' (' + UB.i18n('istorijaIzmenenij') + ')' : ''
+    let disableAutoShow = result.disableAutoShow
 
     options = options || {}
 
-    title = options.title ||
+    let title = options.title ||
        (me.caption || (me.formParam
          ? (me.formParam.caption || me.formParam.description)
          : null) ||
@@ -722,7 +705,7 @@ Ext.define('UB.core.UBCommand', {
 
     if (!me.createOnly) {
       if (!result.target) {
-        config = {
+        let config = {
           title: title,
           autoScroll: true,
           border: 0,
@@ -736,10 +719,10 @@ Ext.define('UB.core.UBCommand', {
         }
 
         if (!options.isGrid /* && me.instanceID && !me.addByCurrent */) {
-          var entity = me.entity
-          var last = me.instanceID || 'new-' + (new Date()).getTime()
-          var wndId = UB.format('ub-wnd-{0}-{1}', me.entity, last)
-          var wnd = Ext.WindowManager.get(wndId)
+          let entity = me.entity
+          let last = me.instanceID || 'new-' + (new Date()).getTime()
+          let wndId = UB.format('ub-wnd-{0}-{1}', me.entity, last)
+          let wnd = Ext.WindowManager.get(wndId)
 
           if (wnd) {
             Ext.WindowManager.each(function (item) {
@@ -830,7 +813,7 @@ Ext.define('UB.core.UBCommand', {
   },
 
   checkTabsCount: function (tabPanel) {
-    var count = tabPanel.items.getCount()
+    let count = tabPanel.items.getCount()
     if (count >= UB.appConfig.maxMainWindowTabOpened) {
       Ext.create('widget.uxNotification', {
         title: UB.i18n('error'),
