@@ -1,20 +1,26 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const XLSXBaseStyleElement = require('./XLSXBaseStyleElement')
+const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 
+let instance = null
 /**
  * @class XLSXStyleProtect Registered protect styles
  */
-class XLSXStyleProtect extends XLSXBaseStyleElement {
-  compileTemplate (element) {
+class XLSXStyleControllerProtect extends XLSXBaseStyleController {
+  static instance () {
+    return instance
+  }
+
+  compile (item) {
     let out = []
     let xkey
+    let element = item.config
     out.push('<protection>')
     for (xkey in element) {
       if (element.color.hasOwnProperty(xkey)) {
-        if (xkey === 'id' || xkey === 'code' || xkey === 'code') {
+        if (xkey === 'id' || xkey === 'code') {
           continue
         }
         out.push(' ', xkey, '="', element[xkey], '" ')
@@ -30,29 +36,23 @@ class XLSXStyleProtect extends XLSXBaseStyleElement {
    * @param {Object} info
    * @param {String} info.type locked, hidden
    * @param {boolean} info.value
-   * @return {Number} index
+   * @return {XLSXBaseStyleElement}
    */
   add (info) {
-    return super.add(info)
+    tools.checkParamTypeObj(info, 'XLSXStyleControllerProtect.add')
+    return super.add(info, 'PROTECT')
   }
 
   getHash (info) {
     return tools.createHash([
-      info.patternType,
-      info.charset,
-      info.fontSize,
-      info.bold,
-      info.shadow,
-      info.family,
-      info.scheme,
-      info.underline,
-      info.color ? tools.getHashColor(info.color) : '#'
+      info.type,
+      info.value
     ])
-  }
-
-  compile (element) {
-    this.compiled.push(this.compileTemplate(element)) // tpl.apply(element)
   }
 }
 
-module.exports = XLSXStyleProtect
+instance = new XLSXStyleControllerProtect()
+
+module.exports = {
+  XLSXStyleControllerProtect
+}

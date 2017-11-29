@@ -1,21 +1,28 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const st = require('./tools')
+const tools = require('./tools')
 
 /**
  * Class XLSXWorksheet
  */
 class XLSXWorksheet {
   /**
-   *  @cfg {Object} margins
-   *  @cfg {Number} margins.left
-   *  @cfg {Number} margins.top
-   *  @cfg {Number} margins.right
-   *  @cfg {Number} margins.bottom
-   *  @cfg {Number} margins.header
-   *  @cfg {Number} margins.footer
-   *  all values are expressed in millimeters
+   * @constructor
+   * @param {Object} config
+   * @param {String} [config.title=Worksheet]
+   * @param {String} [config.name=Sheet] max length 30 symbols
+   * @param {String} [config.orientation=portrait]
+   * @param {Number} [config.worksheetScale] Scale of worksheet when printing
+   * @param {Boolean} [config.fixFirstColumn] Fix for unfilling first column
+   * @param {Object} [config.margins] all values are expressed in millimeters
+   * @param {Number} [config.margins.left]
+   * @param {Number} [config.margins.top]
+   * @param {Number} [config.margins.right]
+   * @param {Number} [config.margins.bottom]
+   * @param {Number} [config.margins.header]
+   * @param {Number} [config.margins.footer]
+   * @param workBook
    */
   constructor (config, workBook) {
     config = config || {}
@@ -41,9 +48,9 @@ class XLSXWorksheet {
       minRowNum: 0, minColNum: 0, maxRowNum: 0, maxColNum: 0
     }
 
-    Object.assign(config, {
-      title: 'Worksheet', name: 'Лист', setActive: false, table: null, id: 1
-    })
+    config = Object.assign({
+      title: 'Worksheet', name: 'Sheet', setActive: false, table: null, id: 1
+    }, config)
 
     // todo check config
     Object.assign(this, config)
@@ -71,8 +78,8 @@ class XLSXWorksheet {
     d.maxRowNum = d.maxRowNum === 0 ? 1 : d.maxRowNum
 
     result += '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac">' +
-      '<dimension ref="' + st.numAlpha(d.minColNum - (this.fixFirstColumn ? 1 : 0)) + d.minRowNum.toString() +
-      ':' + st.numAlpha(d.maxColNum - (this.fixFirstColumn ? 1 : 0)) + d.maxRowNum.toString() + '"/><sheetViews><sheetView ' + (this.setActive ? 'tabSelected="1" ' : '') +
+      '<dimension ref="' + tools.numAlpha(d.minColNum - (this.fixFirstColumn ? 1 : 0)) + d.minRowNum.toString() +
+      ':' + tools.numAlpha(d.maxColNum - (this.fixFirstColumn ? 1 : 0)) + d.maxRowNum.toString() + '"/><sheetViews><sheetView ' + (this.setActive ? 'tabSelected="1" ' : '') +
       ' workbookViewId="0"/></sheetViews><sheetFormatPr defaultRowHeight="15" />'
 
     result += this.columnProperies + '<sheetData>'
@@ -151,9 +158,9 @@ class XLSXWorksheet {
      */
 
     context.contentTypes.unshift('<Override PartName="/xl/worksheets/sheet' + this.id + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>')
-    context.props.unshift(st.escapeXML(this.name) || 'Sheet' + this.id)
+    context.props.unshift(tools.escapeXML(this.name) || 'Sheet' + this.id)
     context.xlRels.unshift('<Relationship Id="rId' + this.id + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + this.id + '.xml"/>')
-    context.worksheets.unshift('<sheet name="' + (st.escapeXML(this.name) || 'Sheet' + this.id) + '" sheetId="' + this.id + '" r:id="rId' + this.id + '"/>')
+    context.worksheets.unshift('<sheet name="' + (tools.escapeXML(this.name) || 'Sheet' + this.id) + '" sheetId="' + this.id + '" r:id="rId' + this.id + '"/>')
   }
 
   /**
@@ -187,15 +194,16 @@ class XLSXWorksheet {
    */
 
   /**
-   * Add next row to Worksheet. Current row number can only increase.
+   * Add next row to Worksheet.
+   * _**Current row number can only increase!**_
    * For change the current row number, use {@link XLSX.csWorksheet#setRowNum}
    *
-   * @param {Array} config array of cells
-   * @param {Object} config.value type of Object must be in (string, boolean, date)
-   * @param {string} config.formula
-   * @param {Number} config.style style index for get call  WorkBook.style.add(congig)
-   * @param {Number} config.column column num
-   * @param {Array} [template] (optional) options for apply to config
+   * @param [{Object|*}] config Array of cell config {Object} If item type is not object it convert to yourValue >> {value: yourValue}
+   * @param {Object} cell.value type of Object must be (number, string, boolean, date)
+   * @param {string} [cell.formula]
+   * @param {Number|XLSXStyle|Object} [cell.style]  Style index for get call  WorkBook.style.add(congig)
+   * @param {Number} [cell.column] Column number First column 0
+   * @param {Array} [template] (optional) Template for apply to config. Array of {Cell}. Use this parameters for apply styles.
    * @param {Object} [rowConfig] (optional)
    * @param {Object} [rowConfig.height] (optional)
    * @return {Number}
@@ -242,17 +250,25 @@ class XLSXWorksheet {
 
     this.dataRows.push('> ') // + '" x14ac:dyDescent="0.25">';
 
-    var cellCount = 0
+    // let cellCount = 0
+    const hasTemplate = typeof template !== 'undefined' && Array.isArray(template) &&
+      template.length === config.length
+    const hasCellTemplate = (typeof rowConfig.cellTemplate !== 'undefined' && Array.isArray(rowConfig.cellTemplate) &&
+      rowConfig.cellTemplate.length === config.length)
 
     config.forEach((cell, index) => {
-      cellCount++
+      // cellCount++
       type = undefined
       valAsTagIs = false
-      // if (!Ext.isDefined(cell.value)){
-      //    return true;
-      // }
-      if (typeof template !== 'undefined' && typeof template[index] !== 'undefined') {
-        cell = Object.assign(cell, template[index])
+      let cellType = typeof cell
+      if (cellType !== 'object' || (cell instanceof Date)) {
+        cell = {value: cell}
+      }
+      if (hasTemplate && typeof template[index] === 'object') {
+        cell = Object.assign(template[index], cell)
+      }
+      if (hasCellTemplate && typeof rowConfig.cellTemplate[index] === 'object') {
+        cell = Object.assign(rowConfig.cellTemplate[index], cell)
       }
       XLSXWorksheet.checkColNum(cell.column)
       if (typeof cell.value === 'string') {
@@ -261,7 +277,7 @@ class XLSXWorksheet {
           cell.value = this.workBook.addString(cell.value)
           type = 's'
         } else {
-          cell.value = st.escapeXML(cell.value)
+          cell.value = tools.escapeXML(cell.value)
           valAsTagIs = true
           type = 'inlineStr'
         }
@@ -269,7 +285,7 @@ class XLSXWorksheet {
         cell.value = (cell.value ? 1 : 0)
         type = 'b'
       } else if (cell.value && cell.value instanceof Date) {
-        cell.value = st.convertDate(cell.value)
+        cell.value = tools.convertDate(cell.value)
         if (!cell.style) {
           cell.style = this.workBook.style.getDefDateStyle()
         }
@@ -281,8 +297,8 @@ class XLSXWorksheet {
         this.diapason.maxColNum = cell.column
       }
       this.dataRows.push(
-        '<c r="' + st.numAlpha(cell.column - (this.fixFirstColumn ? 1 : 0)) + this.nextRowNum.toString() + '"' +
-        (cell.style ? ' s="' + cell.style + '"' : '') +
+        '<c r="' + tools.numAlpha(cell.column - (this.fixFirstColumn ? 1 : 0)) + this.nextRowNum.toString() + '"' +
+        (cell.style ? ' s="' + tools.extractId(cell.style) + '"' : '') +
         (type ? ' t="' + type + '"' : '') +
         '>' +
         (cell.formula ? '<f>' + cell.formula + '</f>' : '') +
@@ -294,18 +310,18 @@ class XLSXWorksheet {
       if (cell.cellStyle) {
         if (cell.cellStyle.rowSpan > 1) {
           this.addMerge({
-            colFrom: cellCount,
+            colFrom: cell.column,
             rowFrom: this.rowsCount,
-            colTo: cellCount,
+            colTo: cell.column,
             rowTo: this.rowsCount + cell.cellStyle.rowSpan - 1
           })
         }
         // colSpan
         if (cell.cellStyle.colSpan > 1) {
           this.addMerge({
-            colFrom: cellCount,
+            colFrom: cell.column,
             rowFrom: this.rowsCount,
-            colTo: cellCount + cell.cellStyle.colSpan - 1,
+            colTo: cell.column + cell.cellStyle.colSpan - 1,
             rowTo: this.rowsCount
           })
         }
@@ -331,15 +347,13 @@ class XLSXWorksheet {
     let res = []
     // this.columnProperties
     res.push('<cols>')
+    config = config.sort(f => f.column)
     config.forEach((column) => {
-      column.column = XLSXWorksheet.checkColNum(column.column)
-      res.push('<col min="')
-      res.push(column.column.toString()) // TODO: Индекс колонки с шириной
-      res.push('" max="')
-      res.push(column.column.toString())
-      res.push('" width="')
-      res.push(column.width.toString())
-      res.push('" customWidth="1"/>')
+      if (typeof column.column !== 'number' || typeof column.width !== 'number') {
+        throw new Error('Invalid parameters for XLSXWorksheet.setColsProperties')
+      }
+      let col = XLSXWorksheet.checkColNum(column.column) + 1
+      res.push(`<col min="${col}" max="${col}" width="${column.width}" customWidth="1"/>`)
     })
     res.push('</cols>')
     this.columnProperies = res.join('')
@@ -392,8 +406,8 @@ class XLSXWorksheet {
     config.colTo = XLSXWorksheet.checkColNum(config.colTo)
     config.rowTo = XLSXWorksheet.checkRowNum(config.rowTo || this.nextRowNum)
 
-    this.merge.push('<mergeCell ref="' + st.numAlpha(config.colFrom - (this.fixFirstColumn ? 1 : 0)) + config.rowFrom +
-      ':' + st.numAlpha(config.colTo - (this.fixFirstColumn ? 1 : 0)) + config.rowTo + '"/>')
+    this.merge.push('<mergeCell ref="' + tools.numAlpha(config.colFrom - (this.fixFirstColumn ? 1 : 0)) + config.rowFrom +
+      ':' + tools.numAlpha(config.colTo - (this.fixFirstColumn ? 1 : 0)) + config.rowTo + '"/>')
     /*
      <mergeCells count="3">
      <mergeCell ref="A1:A3"/>

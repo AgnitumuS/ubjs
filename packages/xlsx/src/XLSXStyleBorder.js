@@ -1,9 +1,11 @@
 /**
  * Created by xmax on 16.11.2017.
 */
-const XLSXBaseStyleElement = require('./XLSXBaseStyleElement')
+const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
+const Color = require('./Color')
 
+let instance = null
 /**
  *
  *    const wb = new XLSXWorkbook()
@@ -21,39 +23,32 @@ const tools = require('./tools')
  *
  * @class XLSXStyleBorder Registered border styles
  */
-class XLSXStyleBorder extends XLSXBaseStyleElement {
-  compileTemplate (element) {
+class XLSXStyleControllerBorder extends XLSXBaseStyleController {
+  static instance () {
+    return instance
+  }
+
+  /**
+   * @param {XLSXBaseStyleElement} item
+   * @return {string}
+   */
+  compile (item) {
     let out = []
-    let xkey
+    let xKey
     let prop
-    let colorN
+    const element = item.config
     out.push('<border>')
-    for (xkey in element) {
-      if (element.hasOwnProperty(xkey)) {
-        prop = element[xkey]
-        if (xkey === 'id') {
+    for (xKey in element) {
+      if (element.hasOwnProperty(xKey)) {
+        prop = element[xKey]
+        if (xKey === 'id' || xKey === 'style' || xKey === 'color' || xKey === 'code') {
           continue
         }
-        out.push('<', xkey, ' ')
         if (prop.style) {
-          out.push('style="', prop.style, '" ')
+          let colorT = prop.color ? prop.color.compile() : '<color auto="1" />'
+          out.push(`<${xKey} style="${prop.style}">${colorT}</${xKey}>`)
         } else {
-          out.push('/')
-        }
-        out.push('>')
-        if (prop.style) {
-          out.push('<color ')
-          if (prop.color) {
-            for (colorN in prop.color) {
-              if (prop.color.hasOwnProperty(colorN)) {
-                out.push(colorN, '="', prop.color[colorN], '" ')
-              }
-            }
-          } else {
-            out.push('auto="1" ')
-          }
-          out.push('/>')
-          out.push('</', xkey, '>')
+          out.push(`<${xKey}/>`)
         }
       }
     }
@@ -74,9 +69,10 @@ class XLSXStyleBorder extends XLSXBaseStyleElement {
    * @param {String} [info.style] (optional) Default style for all border
    * @param {String} [info.color] (optional) Default color for all border
    * @param {String} [info.code] (optional) for link code to index in associative array
-   * @return {Number} index
+   * @return {XLSXBaseStyleElement}
    */
   add (info) {
+    tools.checkParamTypeObj(info, 'XLSXStyleControllerBorder.add')
     info = info || {}
     info.left = info.left || {}
     info.right = info.right || {}
@@ -88,35 +84,50 @@ class XLSXStyleBorder extends XLSXBaseStyleElement {
       info.top.style = info.left.style || info.style
       info.bottom.style = info.left.style || info.style
     }
+    if (info.color && !(info.color instanceof Color)) {
+      info.color = new Color(info.color)
+    }
     if (info.color) {
       info.left.color = info.left.color || info.color
       info.right.color = info.left.color || info.color
       info.top.color = info.left.color || info.color
       info.bottom.color = info.left.color || info.color
     }
+    if (info.left.color && !(info.left.color instanceof Color)) {
+      info.left.color = new Color(info.left.color)
+    }
+    if (info.right.color && !(info.right.color instanceof Color)) {
+      info.right.color = new Color(info.right.color)
+    }
+    if (info.top.color && !(info.top.color instanceof Color)) {
+      info.top.color = new Color(info.top.color)
+    }
+    if (info.bottom.color && !(info.bottom.color instanceof Color)) {
+      info.bottom.color = new Color(info.bottom.color)
+    }
     info.diagonal = info.diagonal || {}
-    return super.add(info)
+    if (info.diagonal.color && !(info.diagonal.color instanceof Color)) {
+      info.diagonal.color = new Color(info.diagonal.color)
+    }
+    return super.add(info, 'BORDER')
   }
 
   getHash (info) {
     return tools.createHash([
       info.left.style,
-      info.left.color ? tools.getHashColor(info.left.color) : '#',
+      info.left.color ? Color.getHash(info.left.color) : '#',
       info.right.style,
-      info.right.color ? tools.getHashColor(info.right.color) : '#',
+      info.right.color ? Color.getHash(info.right.color) : '#',
       info.top.style,
-      info.top.color ? tools.getHashColor(info.top.color) : '#',
+      info.top.color ? Color.getHash(info.top.color) : '#',
       info.bottom.style,
-      info.bottom.color ? tools.getHashColor(info.bottom.color) : '#',
+      info.bottom.color ? Color.getHash(info.bottom.color) : '#',
       info.diagonal.style,
-      info.diagonal.color ? tools.getHashColor(info.diagonal.color) : '#'
+      info.diagonal.color ? Color.getHash(info.diagonal.color) : '#'
     ])
   }
 
   /**
-   * @private
-   * compile borders
-   * -----------------
    * <border>
    * <left style="medium">
    *    <color rgb="FFFF0000"/>
@@ -128,14 +139,11 @@ class XLSXStyleBorder extends XLSXBaseStyleElement {
    * </border>
    */
   /*
- compile: function(){
-     this.compiled =  new Array(this.elements.length);
-
-     Ext.each(this.elements, function(fill, index) {
-         this.compiled[index] = this.compileTemplate(fill);    //tpl.apply(fill)
-     }, this);
- }
  */
 }
 
-module.exports = XLSXStyleBorder
+instance = new XLSXStyleControllerBorder()
+
+module.exports = {
+  XLSXStyleControllerBorder
+}
