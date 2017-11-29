@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.40]
+### Added
+- new CSS class .iconPdf to display a PDF file icon
+- BasePanel.aftersave event fired with with 2 parameters: `(me, result)`
+ where `result` is a record state AFTER server side updating 
+
 ## [4.2.37]
 ### Added
   - `EntityGridPanled` can be configured to allow editing at a row level for a Grid 

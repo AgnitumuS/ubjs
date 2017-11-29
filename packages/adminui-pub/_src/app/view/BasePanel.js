@@ -360,7 +360,7 @@ Ext.define('UB.view.BasePanel', {
      */
     /**
      * @event aftersave
-     * Fires when record saved
+     * Fires when record saved with 2 parameters: (me, result) where result is a record state AFTER server side updating
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
      */
     /**
