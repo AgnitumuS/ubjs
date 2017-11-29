@@ -1,10 +1,10 @@
 ﻿{
-    "caption": "Розрахункові коди",
+    "caption": "Розрахункові рахунки контрагентів",
     "description": "Довідник розрахункових кодів організації",
     "attributes": {
         "organizationID": {
-            "caption": "Организація",
-            "description": "Организація"
+            "caption": "Контрагент",
+            "description": "Контрагент"
         },
         "currencyID": {
             "caption": "Валюта",
@@ -23,8 +23,8 @@
             "description": "Тип рахунку"
         },
         "description": {
-            "caption": "Назва",
-            "description": "Назва (для вибору зі списку)"
+            "caption": "Опис",
+            "description": "Опис (для вибору зі списку)"
         }
     }
 }

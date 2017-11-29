@@ -3271,7 +3271,7 @@ Ext.define('UB.view.BasePanel', {
           var wnd = me.getFormWin()
           if (wnd) delete wnd.newInstance
 
-          me.fireEvent('aftersave', me)
+          me.fireEvent('aftersave', me, result)
 
           /* todo remove this call */
           Ext.callback(me.eventHandler, me, [me, 'aftersave'])

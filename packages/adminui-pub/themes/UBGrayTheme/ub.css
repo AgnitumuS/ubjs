@@ -227,6 +227,10 @@
     background-image: url(./ubimages/excel.png) ! important;
 }
 
+.iconPdf {
+    background-image: url(./ubimages/icon-pdf.png) ! important;
+}
+
 .iconPrinter {
     background-image: url(./ubimages/printer.png) ! important;
 }
