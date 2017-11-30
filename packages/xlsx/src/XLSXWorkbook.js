@@ -4,7 +4,7 @@
 const st = require('./tools')
 const XLSXStyle = require('./XLSXStyle')
 const XLSXWorksheet = require('./XLSXWorksheet')
-const JSZip = require('JSZip')
+const JSZip = require('jszip')
 
 class XLSXWorkbook {
   constructor (config) {
