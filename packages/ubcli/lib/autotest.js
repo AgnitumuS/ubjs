@@ -37,7 +37,7 @@ module.exports = function autotest (options) {
     if (!options) return
   }
 
-    // redefine debug output
+  // redefine debug output
   console.debug = function () {
     debugOutput.push(util.format.apply(this, arguments))
   }

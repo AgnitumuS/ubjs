@@ -1,4 +1,7 @@
 /* global _App */
+if (typeof _App === 'undefined') {
+  throw new Error('(@unitybase/ub).App accessible only inside server thread')
+}
 const argv = require('@unitybase/base').argv
 const path = require('path')
 const UBDomain = require('@unitybase/base').UBDomain

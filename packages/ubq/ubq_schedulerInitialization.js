@@ -1,5 +1,6 @@
 const GLOBAL_CACHE_INITIALIZED_ENTRY = 'UBQ.schedulersInitialized'
 const Worker = require('@unitybase/base').Worker
+const App = require('@unitybase/ub').App
 
 if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
   if (process.startupMode === 'CmdLine') {
@@ -74,12 +75,12 @@ function startSchedulers () {
     onerror: onWorkerError
   })
 
-    // MPV: in case engine expire worked MUST remain alive,
-    // so we can't terminate it here
-    // TODO - think what to do
-    // process.on('exit', function(){
-    //    w.terminate();
-    // });
+  // MPV: in case engine expire worked MUST remain alive,
+  // so we can't terminate it here
+  // TODO - think what to do
+  // process.on('exit', function(){
+  //    w.terminate();
+  // });
 
   w.postMessage({serverURL: App.serverURL, config: cfgForWorker})
   console.debug('SCHEDULER: leave queueWorkerInitialization')

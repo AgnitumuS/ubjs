@@ -63,8 +63,6 @@ function runTest () {
   const buf1 = Buffer.from(res[0].blb.substr(1), 'base64')
   assert.equal(res.length, 1, ``)
   assert.equal(buf1.compare(buf), 0, '')
-
-  return
 /*
 // this fail for SQLite3 (no array binding) - TB tested for other DB
   st.runSQL('select id from uba_user where id in (:ids:)', {ids: [UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID]})
@@ -75,12 +73,13 @@ function runTest () {
 */
 }
 
-try {
-  runTest()
-  exports.res = true
-    return {res: true};
-} catch (e) {
-  exports.res = e.toString()
+(function () {
+  try {
+    runTest()
+    exports.res = true
+    return {res: true}
+  } catch (e) {
+    exports.res = e.toString()
     return {res: e.toString()}
-}
-
+  }
+})()

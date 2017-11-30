@@ -1,6 +1,3 @@
-/**
- * Created by v.orel on 20.01.2017.
- */
 /*
 - field list
   - simple attribute
@@ -58,9 +55,21 @@
 - als
 - els
  */
-var generator = require('@unitybase/dml-generator')
-console.log(generator.mssql.biuldSelectSql('tst_maindata',{fieldList: ['parent1@tst_maindata.manyValue.mi_modifyUser.name'],whereList:{c1: {
-expression:'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition : 'equal', values: {c1: 'admin'}
-}}}))
-// server - side test MUST return a result in form {res: true|false}
-return {res: true};
+(function () {
+  try {
+    const generator = require('@unitybase/dml-generator')
+    const sql = generator.mssql.biuldSelectSql('tst_maindata', {
+      fieldList: ['parent1@tst_maindata.manyValue.mi_modifyUser.name'],
+      whereList: {
+        c1: {
+          expression: 'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition: 'equal', values: {c1: 'admin'}
+        }
+      }
+    })
+    console.log(sql)
+    // server - side test MUST return a result in form {res: true|false}
+    return {res: true}
+  } catch (e) {
+    return e.toString()
+  }
+})()

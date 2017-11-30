@@ -20,7 +20,7 @@ module.exports = {
   /**
    * Command line utils
    */
-  argv,
+  argv: argv,
   /**
    * Base class for Browser / server Repository
    * @type {CustomRepository}

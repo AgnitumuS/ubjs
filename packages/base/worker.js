@@ -30,9 +30,7 @@ const {sleep} = process.binding('syNode')
  * Warning!!! All defined workers MUST be terminated until application shut down. In opposite case you can get AV.
  * @param {Object|Number} paramsObj Parameters object for create new Worker or WorkerID for use existing Worker
  * @param {String} [paramsObj.name='Worker'] Name of Worker for debugger
- * @param {String|Function} paramsObj.onmessage Message handler. Accept 1 parameter - message
- * @param {String|Function} paramsObj.onterminate Terminate handler. Accept no parameters
- * @param {String|Function} paramsObj.onerror Error handler. Accept 2 parameters - message and exception
+ * @param {String|Function} paramsObj.moduleName Module name. Module must export 3 function: onmessage, onterminate and onerror
  * @param paramsObj.message Message. If assigned then post this message after start thread
  */
 function Worker (paramsObj) {
