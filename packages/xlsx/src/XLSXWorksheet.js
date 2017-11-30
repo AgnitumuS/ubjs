@@ -273,10 +273,10 @@ class XLSXWorksheet {
         cell = {value: cell}
       }
       if (hasTemplate && typeof template[index] === 'object') {
-        cell = Object.assign(template[index], cell)
+        cell = Object.assign(cell, template[index])
       }
       if (hasCellTemplate && typeof rowConfig.cellTemplate[index] === 'object') {
-        cell = Object.assign(rowConfig.cellTemplate[index], cell)
+        cell = Object.assign(cell, rowConfig.cellTemplate[index])
       }
       if (defR) { // write def styles before
         for (let i = lastColCheckDef; i < cell.column; i++) {
@@ -437,9 +437,9 @@ class XLSXWorksheet {
    *  add Merge for cells
    *  @param {Object|[colFrom, colTo, rowFrom, rowTo]} config
    *  @param {Number} config.colFrom
-   *  @param {Number} config.rowFrom
+   *  @param {Number} [config.rowFrom=current]
    *  @param {Number} config.colTo
-   *  @param {Number} config.rowTo
+   *  @param {Number} [config.rowTo=current]
    */
   addMerge (config) {
     if (Array.isArray(config)) {

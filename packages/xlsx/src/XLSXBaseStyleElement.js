@@ -116,15 +116,15 @@ class XLSXBaseStyleController {
     let hash = this.getHash(info)
     let exist = this.hashList[hash]
     if (exist) return exist
-    info = new XLSXBaseStyleElement(info, type, this)
+    const infoEl = new XLSXBaseStyleElement(info, type, this)
 
-    this.elements.push(info)
-    info.setId(this.startId)
+    this.elements.push(infoEl)
+    infoEl.setId(this.startId)
     this.startId++
     if (info.code) {
-      this.named[info.code] = info
+      this.named[info.code] = infoEl
     }
-    return info
+    return infoEl
   }
 
   /**

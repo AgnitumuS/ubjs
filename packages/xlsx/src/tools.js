@@ -79,7 +79,7 @@ module.exports = {
    * @param {String} [delimiter='_']
    */
   createHash: function (items, delimiter) {
-    items.map(v => v || '').join(delimiter || '_')
+    return items.map(v => v || '').join(delimiter || '_')
   },
 
   getHashColor: function (info) {
