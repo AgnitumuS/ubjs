@@ -1,0 +1,3 @@
+EXTERNAL_LIBS_PATH="../../../../ub-server/libs"
+LAZARUS_PATH="/usr/share/lazarus/1.6.4"
+fpc -MDelphi -Scghi -Cg -O1 -g -gl -l -vewnhibq -Fi$EXTERNAL_LIBS_PATH/Synopse -Fi$EXTERNAL_LIBS_PATH/Synopse/SQLite3 -Fi$EXTERNAL_LIBS_PATH/Synopse/SyNode -Fu$LAZARUS_PATH/lcl/units/x86_64-linux -Fu$LAZARUS_PATH/components/lazutils/lib/x86_64-linux -Fu$LAZARUS_PATH/packager/units/x86_64-linux -Fu$EXTERNAL_LIBS_PATH/FastMM4 -Fu$EXTERNAL_LIBS_PATH/Synopse/SyNode -Fu$EXTERNAL_LIBS_PATH/Synopse/SQLite3 -Fu$EXTERNAL_LIBS_PATH/Synopse -Fu$EXTERNAL_LIBS_PATH/synapse40/source/lib -Fu./src -FU./src/lib/x86_64-linux/ -FE./bin/x64/ -olibubmail.so -dLCL -dLCLgtk2 -dSM52 ./src/UBMail.dpr

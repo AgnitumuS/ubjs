@@ -2,13 +2,17 @@ library UBMail;
 
 uses
   FastMM4,
+  {$IFDEF MSWINDOWS}
   Windows,
+  {$ELSE}
+  cthreads,
+  {$ENDIF}
   SysUtils,
   Classes,
   SpiderMonkey,
   SyNodePluginIntf,
   uUBMail in 'uUBMail.pas',
-  SyNodeReadWrite,
+  //SyNodeReadWrite,
   mORMot,
   SynCommons;
 
@@ -50,5 +54,5 @@ exports UnInitPlugin;
 begin
   IsMultiThread := True; //!!IMPORTANT for FastMM
   threadCounter := -1;
-  FillMemory(@ThreadRecs[0], SizeOf(ThreadRecs), 0);
+  FillChar(ThreadRecs, SizeOf(ThreadRecs), 0); // was Win specific: FillMemory(@ThreadRecs[0], SizeOf(ThreadRecs), 0);
 end.
