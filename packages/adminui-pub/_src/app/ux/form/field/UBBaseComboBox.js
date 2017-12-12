@@ -10,28 +10,27 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   alias: 'widget.ubbasebox',
   queryCaching: true,
 
-    /**
-     * return entity code
-     * @pribate
-     * @returns {String}
-     */
+  /**
+   * return entity code
+   * @pribate
+   * @returns {String}
+   */
   getEntity: function () {
-    var me = this, request
-    request = me.ubRequest || (me.store ? me.store.ubRequest : null)
+    let request = this.ubRequest || (this.store ? this.store.ubRequest : null)
     return request.entity
   },
 
-    /**
-     * Field list displayed while we show dictionary for this combobox. If omitted - all entity fields will be shown.
-     * @cfg {Array<String>} [gridFieldList]
-     */
+  /**
+   * Field list displayed while we show dictionary for this combobox. If omitted - all entity fields will be shown.
+   * @cfg {Array<String>} [gridFieldList]
+   */
   initComponent: function () {
     var me = this,
       eStore = me.getStore()
 
     me.callParent(arguments)
     me.on('afterrender', me.onAfterRender, me)
-        // me.on('focus', me.onFocus, me);
+    // me.on('focus', me.onFocus, me);
     me.on('change', me.onValueChange, me)
     if (eStore) { // we can create UBBaseComboBox w/o store (in UB.ux.UBPreFilter for example)
       eStore.on('load', function (owner, record, success) {
@@ -40,7 +39,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         }
       }, me, {single: true})
     }
-        // make default delay short for cached entities. For example user quickly type "Uni" and press Tab to select UnityBase from combo
+    // make default delay short for cached entities. For example user quickly type "Uni" and press Tab to select UnityBase from combo
     if (eStore && eStore.ubRequest && eStore.ubRequest.entity) {
       var eCacheType = $App.domainInfo.get(eStore.ubRequest.entity, true).cacheType
       if ((eCacheType === 'Session') ||

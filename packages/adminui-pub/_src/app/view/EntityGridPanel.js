@@ -2230,7 +2230,7 @@ Ext.define('UB.view.EntityGridPanel', {
           me.addNewRecord()
         }
       } else {
-        $App.dialogInfo(UB.i18n('rowEditing'))
+        $App.dialogInfo('rowEditing')
       }
     }
   },
@@ -2261,7 +2261,7 @@ Ext.define('UB.view.EntityGridPanel', {
           me.addNewRecord(selection[0].getData())
         }
       } else {
-        $App.dialogInfo(UB.i18n('rowEditing'))
+        $App.dialogInfo('rowEditing')
       }
     }
   },
@@ -2302,7 +2302,7 @@ Ext.define('UB.view.EntityGridPanel', {
     let entityCaptionsToDelete = ''
 
     if (me.rowEditing && me.editingPlugin.editing) {
-      $App.dialogInfo(UB.i18n('rowEditing'))
+      $App.dialogInfo('rowEditing')
       return
     }
     if (gridSelection.length === 1) {
