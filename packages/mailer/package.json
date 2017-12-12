@@ -4,7 +4,7 @@
   "description": "UnityBase SMTP/POP3",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer",
   "scripts": {
-    "build:native": "call ./bin/compile.cmd"
+    "build:native": "node ./bin/compile.js"
   },
   "public": true,
   "publishConfig": {
@@ -12,7 +12,8 @@
   },
   "main": "./UBMail.js",
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.0"
+    "@unitybase/stubs": "^5.0.0",
+    "shelljs": "^0.7.8"
   },
   "keywords": [
     "UnityBase",
