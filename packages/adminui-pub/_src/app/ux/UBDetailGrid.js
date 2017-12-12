@@ -41,7 +41,7 @@ Ext.define('UB.ux.UBDetailGrid', {
    */
   detailFields: [],
   initComponent: function () {
-    var cmdParams
+    let cmdParams
 
     if (this.cmpInitConfig) {
       console.warn('cmpInitConfig parameter is deprecated. You can set parameters from cmpInitConfig into UBDetailGrid config.')
@@ -98,7 +98,7 @@ Ext.define('UB.ux.UBDetailGrid', {
    * @param {String} parentEntityName
    */
   setValue: function (record, parentEntityName) {
-    var me = this
+    let me = this
     if (parentEntityName) {
       $App.domainInfo.get(parentEntityName).checkAttributeExist(me.masterFields, 'UB.ux.UBDetailGrid, masterFields:')
     }
@@ -121,7 +121,7 @@ Ext.define('UB.ux.UBDetailGrid', {
    * @param {Ext.data.Model} record
    */
   onRefreshDetail: function (record) {
-    var req
+    let req
 
     if (record && record.isModel) {
       req = this.store.ubRequest
@@ -129,6 +129,9 @@ Ext.define('UB.ux.UBDetailGrid', {
          req.whereList, this.masterFields, this.detailFields, record
       )
       if (this.rendered) {
+        if (this.rowEditing && this.editingPlugin.editing) {
+          this.editingPlugin.cancelEdit()
+        }
         this.store.reload()
       }
     }

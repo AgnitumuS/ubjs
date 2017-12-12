@@ -6,8 +6,9 @@
     "cacheType": "SessionEntity",
     "descriptionAttribute": "name",
     "documentation": "",
-    "attributes": {
-        "MFO": {
+    "attributes": [
+        {
+            "name": "MFO",
             "dataType": "String",
             "size": 16,
             "caption": "Bank code",
@@ -15,14 +16,16 @@
             "allowNull": false,
             "isUnique": true
         },
-        "code": {
+        {
+            "name": "code",
             "dataType": "String",
             "size": 16,
             "caption": "Organization code",
             "description": "Bank organization code",
             "allowNull": true
         },
-        "name": {
+        {
+            "name": "name",
             "dataType": "String",
             "size": 128,
             "caption": "Name",
@@ -30,7 +33,8 @@
             "allowNull": false,
             "isMultiLang": true
         },
-        "fullName": {
+        {
+            "name": "fullName",
             "dataType": "String",
             "size": 128,
             "caption": "Full name",
@@ -38,26 +42,47 @@
             "allowNull": false,
             "isMultiLang": true
         },
-        "phones": {
+        {
+            "name": "phones",
             "dataType": "String",
             "size": 255,
             "caption": "Phones",
             "allowNull": true
         },
-        "address": {
+        {
+            "name": "address",
             "dataType": "String",
             "size": 255,
             "caption": "Address",
             "allowNull": true
         },
-        "countryID": {
+        {
+            "name": "countryID",
             "dataType": "Entity",
             "associatedEntity": "cdn_country",
             "caption": "Country",
             "description": "Registration country",
             "allowNull": true
+        },
+        {
+            "name": "cityID",
+            "dataType": "Entity",
+            "associatedEntity": "cdn_city",
+            "caption": "City",
+            "description": "City",
+            "allowNull": true
+        },
+        {
+            "name": "description",
+            "dataType": "String",
+            "size": 512,
+            "caption": "description",
+            "description": "description",
+            "documentation": "description",
+            "defaultView": false,
+            "allowNull": false
         }
-    },
+    ],
     "mixins": {
         "mStorage": {
             "simpleAudit": true,

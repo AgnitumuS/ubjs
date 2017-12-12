@@ -27,6 +27,14 @@
         "countryID": {
             "caption": "Ölkə",
             "description": "Qeydiyyatdan keçdiyi ölkə"
+        },
+        "cityID": {
+            "caption": "Yaş. məntəqəsi",
+            "description": "Yaşayış məntəqəsi"
+        },
+        "description": {
+            "caption": "Təsvir",
+            "description": "Təyinatın təsviri"
         }
     }
 }

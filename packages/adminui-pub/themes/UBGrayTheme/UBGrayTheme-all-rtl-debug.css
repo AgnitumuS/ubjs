@@ -10772,7 +10772,8 @@ a.x-tab {
 /* line 161, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-scroll-left {
   background-image: url(images/toolbar/scroll-left.png);
-  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-position: center center !important;
   width: 16px;
   height: 16px;
   border-style: solid;
@@ -10789,6 +10790,8 @@ a.x-tab {
 /* line 176, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-scroll-right {
   background-image: url(images/toolbar/scroll-right.png);
+  background-repeat: no-repeat;
+  background-position: center center !important;
   width: 16px;
   height: 16px;
   border-style: solid;

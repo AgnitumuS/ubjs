@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.41]
+## Fixed
+- errors associated with editing data in the grid
+
 ## [4.2.40]
 ### Added
 - new CSS class .iconPdf to display a PDF file icon

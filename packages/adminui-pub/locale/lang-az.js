@@ -114,6 +114,7 @@ UB.i18nExtend({
   deleteConfirmation: "Yazı'{0}' silinəcək. Əminsiniz?",
   deleteConfirmationWithCaption: "Yazı'{0}{1}' silinəcək. Əminsiniz?",
   deleteFormConfirmCaption: "'{0}'Silinəcək. Əminsiniz?",
+  rowEditing: 'Düzəliş məlumatlarını tamamlamanız lazımdır',
   vyUvereny: 'Əminsiniz?',
   formDefinition: 'İnterfeysin təsviri',
   formModule: 'Üsulların təsviri',
