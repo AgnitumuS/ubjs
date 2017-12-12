@@ -116,6 +116,7 @@ UB.i18nExtend({
   deleteConfirmation: "Record will be deleted from the '{0}'. Are You sure?",
   deleteConfirmationWithCaption: "Record {1} will be deleted from the '{0}'. Are You sure?",
   deleteFormConfirmCaption: "Will be deleted '{0}'. Are You sure?",
+  rowEditing: 'Need to complete editing data',
   vyUvereny: 'Are You sure?',
   formDefinition: "Interface's definition",
   formModule: "Methods' definition",

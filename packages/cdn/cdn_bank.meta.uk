@@ -1,10 +1,10 @@
 ﻿{
-    "caption": "Банківські відділення",
-    "description": "Довідник банківських відділень",
+    "caption": "Банки",
+    "description": "Довідник банків",
     "attributes": {
         "MFO": {
             "caption": "МФО",
-            "description": "МФО банківського відділення"
+            "description": "МФО банка"
         },
         "code": {
             "caption": "ЄДРПОУ",
@@ -27,6 +27,14 @@
         "countryID": {
             "caption": "Країна",
             "description": "Країна реєстрації"
+        },
+        "cityID": {
+            "caption": "Місто",
+            "description": "Місто реєстрації"
+        },
+        "description": {
+            "caption": "Опис",
+            "description": "Опис (для вибору зі списку)"
         }
     }
 }

@@ -318,7 +318,11 @@ me.insert = function (ctxt) {
 
   let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
-    throw new Error('Report with ID ' + ID + 'already exist')
+    throw new Error('<<<Report with ID ' + ID + ' already exist>>>')
+  }
+  row = LocalDataStore.doFilterAndSort(cachedData, {report_code: inParams.report_code})
+  if (row.total) {
+    throw new Error('<<<Report with Code ' + inParams.report_code + ' already exist>>>')
   }
 
   doUpdateInsert(ctxt, oldValue, true)

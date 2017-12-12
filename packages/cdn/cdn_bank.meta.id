@@ -27,6 +27,14 @@
         "countryID": {
             "caption": "Negara",
             "description": "negara Pendaftaran"
+        },
+        "cityID": {
+            "caption": "Kota",
+            "description": "Kota"
+        },
+        "description": {
+           "caption": "Komentar",
+           "description": "Komentar"
         }
     }
 }
