@@ -9,7 +9,7 @@ const _ = require('lodash')
 /**
  * @author UnityBase team
  *
- * Execute a comand (showForm, showList, shoeReport)
+ * Execute a command (showForm, showList, shoeReport)
  */
 Ext.define('UB.core.UBCommand', {
   uses: [
