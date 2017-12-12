@@ -64,11 +64,12 @@ module.exports = {
  * @param {String} fileName Full path to file
  * @param {String} entityName Entity code to load data into
  * @param {Array<string>} ettAttributes Array of attribute codes
- * @param {Array<Number|Object|Function>} mapping Mapping of CSV file columns to attributes. Can be:
- *
+ * @param {Array<Number|Object|Function>} [mapping] Mapping of CSV file columns to attributes. Can be one of:
  *   - either numeric (zero based) index of column is CSV file
  *   - or lookup configuration
  *   - or function what take a array representing current row in CSW file on input and return a attribute value to bi inserted
+ *  
+ *   If argument is not passed, it defaults to all ettAttributes passed "as is".
  *
  * @param {Number} [startRow=0] Start from this CSV file row
  * @param {String} [delimiter=';'] CSV file delimiter
@@ -107,6 +108,8 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
  *   - numeric (zero based) index of column is CSV file
  *   - lookup configuration
  *   - function (currentRowAsArray, newRecordID) what take a array representing current row in CSV file & new RecordID on input and return a attribute value to be inserted
+ *  
+ *   If argument is not passed, it defaults to all ettAttributes passed "as is".
  *
  * @param {Number} [transLen=1000] Maximum rows count to be inserted on the single database transaction
  */
