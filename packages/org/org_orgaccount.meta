@@ -33,7 +33,7 @@
     {
       "name": "code",
       "dataType": "String",
-      "size": 32,
+      "size": 20,
       "caption": "КодСчета",
       "description": "Код счета (Номер счета)",
       "allowNull": false

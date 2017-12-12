@@ -138,6 +138,13 @@
 			"description": "Заголовок",
 			"allowNull": true,
 			"isMultiLang": true
+		},
+		"isGovernmentFond": {
+			"dataType": "Boolean",
+			"caption": "Державний фонд",
+			"description": "Державний фонд",
+			"allowNull": true,
+			"defaultValue" : "0"
 		}
 },
 	"mixins": {

@@ -27,6 +27,15 @@
         "countryID": {
             "caption": "Country",
             "description": "Registration country"
+        },
+        "cityID": {
+            "caption": "City",
+            "description": "City"
+        },
+            "description": {
+            "caption": "Description",
+            "description": "Description"
         }
+
     }
 }

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.41]
+### Added
+- add attributes cityID and description in cdn_bank
+
+## Fixed
+  - Errors associated with editing data in the grid
+
+## Changed
+  localization for cdn_orgaccount, org_orgaccount 
+
 ## [4.2.40]
 ### Added
 - new CSS class .iconPdf to display a PDF file icon
