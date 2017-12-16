@@ -61,4 +61,4 @@ _FOSSIL_
 
 #FPC
 *.lps
-src/lib/
+bin/x64
