@@ -20,10 +20,13 @@
  */
 
 const _ = require('lodash')
+const process = require('process');
 const fs = require('fs')
 const path = require('path')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
+
+const pathDelim = process.platform === 'win32' ? '\\' : '/';
 
 module.exports = function createStore (options) {
   let
@@ -83,7 +86,7 @@ module.exports = function createStore (options) {
     function createSubFolders (startFromPath, level) {
       if (level) {
         for (let i = 100; i < 501; i++) {
-          let fld = startFromPath + i.toString(10) + '\\'
+          let fld = startFromPath + i.toString(10) + pathDelim
           if (!fs.isDir(fld)) {
             fs.mkdirSync(fld)
           }
@@ -109,14 +112,14 @@ module.exports = function createStore (options) {
       }
       cStorePath = path.join(configPath, cStore.path)
       if (!/\\$/.test(cStorePath)) {
-        cStorePath += '\\'
+        cStorePath += pathDelim
       }
       console.log('\t Resolved to path', cStorePath)
       if (!fs.isDir(cStorePath)) {
         console.log('\t Resolved path not exists. Do force directory')
         fs.mkdirSync(cStorePath)
       }
-      tmp = cStorePath + '_temp\\'
+      tmp = cStorePath + '_temp' + pathDelim
       if (!fs.isDir(tmp)) {
         console.log('\t Create temp directory %s', tmp)
         fs.mkdirSync(tmp)
