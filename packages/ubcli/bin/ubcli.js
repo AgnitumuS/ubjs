@@ -1,4 +1,4 @@
-#!/usr/bin/env %UB_HOME%\ub
+#!/usr/bin/env ub
 
 const fs = require('fs')
 const path = require('path')
