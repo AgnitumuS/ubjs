@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.0.47]
 ### Added
 - `cdn_bank` `cityID` and `description` attributes
+- `cdn_currency` `curMult` attributes (Default multiplicity)
 
 ## Changed
 - localization for cdn_orgaccount

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.2.41]
 ## Fixed
 - errors associated with editing data in the grid
+- errors associated with add new record from ubcombobox
 
 ## [4.2.40]
 ### Added
