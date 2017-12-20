@@ -315,25 +315,25 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
   },
 
   addItem: function () {
-    var
-      me = this,
-      store = me.getStore(),
-      entityName = store.entityName,
-      displayField = me.displayField,
-      val = me.getValue(),
-      rec = store.getById(val),
-      cmdConfig = {
-        cmdType: UB.core.UBCommand.commandType.showForm,
-        entity: entityName,
-        store: store,
-        isModal: true,
-        sender: me,
-        onClose: function (itemId) {
-          if (itemId && me.setValueById) {
-            me.setValueById(itemId)
-          }
+    let me = this
+    let store = me.getStore()
+    let entityName = store.entityName
+    let displayField = me.displayField
+    let val = me.getValue()
+    let rec = store.getById(val)
+    let cmdConfig = {
+      cmdType: UB.core.UBCommand.commandType.showForm,
+      entity: entityName,
+      store: store,
+      isModal: true,
+      sender: me,
+      onClose: function (itemId) {
+        if (itemId && me.setValueById) {
+          me.setIsActualValue = true
+          me.setValueById(itemId)
         }
       }
+    }
     cmdConfig.initValue = {}
     cmdConfig.initValue[displayField] = rec ? rec.get(displayField) : val
 

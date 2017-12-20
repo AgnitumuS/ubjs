@@ -32,12 +32,20 @@
             "isMultiLang": true
         },
         {
+            "name": "curMult",
+            "dataType": "Int",
+            "caption": "Default multiplicity",
+            "description": "Default multiplicity",
+            "defaultValue": "100",
+            "allowNull": false
+        },
+        {
             "name": "description",
             "dataType": "String",
             "size": 40,
-            "caption": "Назва",
-            "description": "Назва (для вибору зі списку)",
-            "documentation": "Назва (для выбору зі списку)",
+            "caption": "Description",
+            "description": "Description",
+            "documentation": "Description",
             "defaultView": false,
             "allowNull": false
         }

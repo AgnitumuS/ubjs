@@ -14,6 +14,10 @@
             "caption": "Название",
             "description": "Название валюты"
         },
+        "curMult":{
+                    "caption": "Кратность",
+                    "description": "Кратность"
+        },
         "description": {
             "caption": "Описание",
             "description": "Описание"

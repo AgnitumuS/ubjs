@@ -1,4 +1,4 @@
-﻿require('../ux/form/field/UBText')
+require('../ux/form/field/UBText')
 require('../ux/form/field/UBTextArea')
 require('../ux/form/field/UBBoxSelect')
 require('../ux/form/field/ComboExtraButtons')
@@ -482,7 +482,7 @@ Ext.define('UB.view.BasePanel', {
       }
 
       if (!me.isDestroyed) {
-	var el = me.getEl()
+        var el = me.getEl()
         el && el.unmask()
       }
     })
@@ -994,8 +994,8 @@ Ext.define('UB.view.BasePanel', {
               method: 'unlock',
               ID: baseID
             }).then(function (result) {
-              me.record.lockInfo = (result && result.resultLock && result.resultLock.lockInfo) ?
-                                    result.resultLock.lockInfo : {}
+              me.record.lockInfo = (result && result.resultLock && result.resultLock.lockInfo)
+                                    ? result.resultLock.lockInfo : {}
               return result && result.resultLock ? result.resultLock.success : false
             })
           })
@@ -1016,10 +1016,10 @@ Ext.define('UB.view.BasePanel', {
     me._formFullTitle = fullTitle
     me._formTitle = aTitle
     if (wnd) {
-      wnd.setTitle(fullTitle ? fullTitle : aTitle)
+      wnd.setTitle(fullTitle || aTitle)
     } else {
       if (me.headerPanel) {
-        me.headerPanel.setTitle(fullTitle ? fullTitle : aTitle) // setText(fullTitle ? fullTitle : aTitle, false);
+        me.headerPanel.setTitle(fullTitle || aTitle) // setText(fullTitle ? fullTitle : aTitle, false);
         if (placeholder && placeholder.setTooltip) {
           placeholder.setTooltip(aTitle)
         }
@@ -2946,6 +2946,14 @@ Ext.define('UB.view.BasePanel', {
     promise = me.isFormDirty() ? $App.dialogYesNo('areYouSure', 'formWasChanged') : Q.resolve(true)
     promise.done(function (res) {
       if (res) {
+        let details = me.details
+        if (details && details.length) {
+          details.forEach((detail) => {
+            if (detail.rowEditing && detail.editingPlugin.editing) {
+              detail.editingPlugin.cancelEdit()
+            }
+          })
+        }
         me.deleteLock().then(function () {
           me.loadInstance()
         })

@@ -14,6 +14,10 @@
             "caption": "Nama",
             "description": "Nama mata uang"
         },
+        "curMult":{
+            "caption": "Multiplisitas default",
+            "description": "Multiplisitas default"
+        },
         "description": {
             "caption": "Komentar"
             "description": "Komentar"

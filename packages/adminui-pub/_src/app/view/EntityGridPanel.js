@@ -635,7 +635,7 @@ Ext.define('UB.view.EntityGridPanel', {
         }
 
         Object.keys(change).forEach(function (name) {
-          if (!name.indexOf('.') + 1) {
+          if (!(name.indexOf('.') + 1)) {
             updateData[name] = data[name]
           }
         })
@@ -1055,22 +1055,21 @@ Ext.define('UB.view.EntityGridPanel', {
         if (me.editingPlugin.editing || me.readOnly || !me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.UPDATE)) {
           return false
         }
-        if (_.isFunction(me.onBeforeEdit)) {
-          let result = me.onBeforeEdit(editor, context)
-          if (result === false) {
-            return false
-          }
-        }
         context.grid.columns.forEach((column) => {
           if (column.field) {
             column.field.setWidth(column.width - 2)
           }
           if (me.GridSummary) {
-            item = _.find(me.GridSummary.items.items, {baseColumn: column})
+            let item = _.find(me.GridSummary.items.items, {baseColumn: column})
             item.setWidth(column.width - 2)
           }
           if (column.field) {
-            column.field.on('change', function (ctrl, newValue, oldValue) {
+            if (_.has(column.field, 'events.change')) {
+              if (typeof column.field.events.change.clearListeners === 'function') {
+                column.field.events.change.clearListeners()
+              }
+            }
+            column.field.on('change', function (ctrl) {
               if (ctrl.storeAttributeValueField) {
                 context.record.set(ctrl.storeAttributeValueField, !ctrl.getValue() ? null : ctrl.lastSelection[0].get('ID'))
               }
@@ -1081,10 +1080,24 @@ Ext.define('UB.view.EntityGridPanel', {
             })
           }
         })
+        if (_.isFunction(me.onBeforeEdit)) {
+          let result = me.onBeforeEdit(editor, context)
+          if (result === false) {
+            return false
+          }
+        }
         let columnCombobox = _.filter(context.grid.columns, function (item) {
           return item.getEditor() && item.getEditor().xtype === 'ubcombobox'
         })
         columnCombobox.forEach(function (item) {
+          let displayFields = $App.domainInfo.get(item.field.getStore().entityName).getAttributeNames({defaultView: true})
+          if (!_.includes(displayFields, item.field.displayField)) {
+            displayFields.push(item.field.displayField)
+          }
+          if (!_.includes(displayFields, item.field.valueField)) {
+            displayFields.push(item.field.valueField)
+          }
+          item.field.gridFieldList = displayFields
           item.field.disableModifyEntity = true
           item.field.clearValue()
           item.field.getStore().reload().then(function () { item.field.clearInvalid() })
