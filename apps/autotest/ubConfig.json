@@ -5,7 +5,7 @@
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": ".\\inetPub\\",
+		"inetPub": "./inetPub/",
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
@@ -18,7 +18,7 @@
 		"path": "ws"
 	},*/
 	"logging": {
-		"path": ".\\logs",
+		"path": "./logs",
 		"levels": [
 			"*"
 		],
@@ -158,7 +158,7 @@
 				"driver": "SQLite3",
 				"isDefault": true,
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestDB.sqlite3",
+				"databaseName": "./autotestDB.sqlite3",
 				"supportLang": ["en", "uk"],
 				"advSettings": "Synchronous=Off"
 			},
@@ -166,7 +166,7 @@
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestFTS.sqlite3",
+				"databaseName": "./autotestFTS.sqlite3",
 				"supportLang": [
 					"uk"
 				],
@@ -176,7 +176,7 @@
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestSubjectsFTS.sqlite3",
+				"databaseName": "./autotestSubjectsFTS.sqlite3",
 				"supportLang": [
 					"uk"
 				],
@@ -190,7 +190,7 @@
 			},
 			{
 				"name": "simple",
-				"path": ".\\documents\\simple\\",
+				"path": "./documents/simple/",
 				"isDefault": true,
 				"historyDepth": 0,
 				"storeSize": "Simple",
@@ -198,7 +198,7 @@
 			},
 			{
 				"name": "avatars",
-					"path": ".\\documents\\avatars\\",
+					"path": "./documents/avatars/",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false

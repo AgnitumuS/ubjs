@@ -4,7 +4,9 @@ uses
   FastMM4,
   SysUtils,
   Classes,
+{$IFDEF MSWINDOWS}
   Windows,
+{$ENDIF}
   SpiderMonkey,
   SyNodePluginIntf,
   uUBCompressors in 'uUBCompressors.pas';
@@ -48,6 +50,6 @@ exports UnInitPlugin;
 begin
   IsMultiThread := True; //!!IMPORTANT for FastMM
   threadCounter := -1;
-  FillMemory(@ThreadRecs[0], SizeOf(ThreadRecs), 0);
+  FillChar(ThreadRecs, SizeOf(ThreadRecs), #0); // was Win specific: FillMemory(@ThreadRecs[0], SizeOf(ThreadRecs), 0);
 end.
  
