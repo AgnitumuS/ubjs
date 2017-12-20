@@ -236,7 +236,7 @@ Ext.define('UB.view.BasePanel', {
    * @cfg {Boolean} [postOnlySimpleAttributes=false]
    * If `true` form will post only values of modified attributes
    * which do not contain a dot.
-   * Exapmle: if form def is
+   * Example: if form def is
    *    items:[
    *      { attributeName: "nullDict_ID"},
    *      { attributeName: "nullDict_ID.code", readOnly: true},
