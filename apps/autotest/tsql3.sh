@@ -1,5 +1,7 @@
 #!/bin/sh
 
+PORT=8881
+
 err()
 {
   echo Testcase $TESTCASE failed
@@ -30,17 +32,17 @@ UB_DEV=true
 ubcli createStore -cfg $UB_CFG -noLogo
 if [ ! $? = 0 ]; then err; fi
 
-ubcli initDB -host http://localhost:8880 -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -u admin -p admin -drop -create
+ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -u admin -p admin -drop -create
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=generateDDL
-ubcli generateDDL -host http://localhost:8880 -cfg $UB_CFG -u admin -p admin -autorun
+ubcli generateDDL -host http://localhost:$PORT -cfg $UB_CFG -u admin -p admin -autorun
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=initialize
-ubcli initialize -cfg $UB_CFG -u admin -p admin -host http://localhost:8880
+ubcli initialize -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=autotest
-ubcli autotest -cfg $UB_CFG -u admin -p admin -host http://localhost:8880 -noLogo -skipModules
+ubcli autotest -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT -noLogo -skipModules
 if [ ! $? = 0 ]; then err; fi
