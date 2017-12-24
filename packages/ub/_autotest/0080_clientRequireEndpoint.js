@@ -33,9 +33,11 @@ module.exports = function runTest (options) {
   }
 
   function testClientRequireEndpoint (conn) {
-    let winDir = process.env.windir
+    let absFile = process.platform === 'win32'
+      ? process.env.windir + '/win.ini'
+      : process.env.HOME + '/.profile'
     assert.throws(
-      () => conn.get(`clientRequire/${winDir}/win.ini`),
+      () => conn.get(`clientRequire/${absFile}`),
       /Bad Request/, 'Endpoint clientRequire must restrict access to absolute path'
     )
 
