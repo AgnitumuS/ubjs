@@ -170,7 +170,8 @@
 				"supportLang": [
 					"uk"
 				],
-				"advSettings": "Synchronous=Off,Tokenizer=stemka"
+				"advSettings": "Synchronous=Off"
+				//"advSettings": "Synchronous=Off,Tokenizer=stemka" fpc win64 donthave stemka
 			},
 			{
 				"name": "ftsSubjectSearch",
@@ -180,7 +181,8 @@
 				"supportLang": [
 					"uk"
 				],
-				"advSettings": "Synchronous=Off,Tokenizer=stemka"
+				"advSettings": "Synchronous=Off"
+				//"advSettings": "Synchronous=Off,Tokenizer=stemka" fpc win64 donthave stemka
 			}
 		],
 		"blobStores": [
