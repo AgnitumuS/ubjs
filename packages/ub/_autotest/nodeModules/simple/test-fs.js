@@ -9,6 +9,9 @@ var content
 content = fs.readFileSync(folder + 'ascii.txt', {encoding: 'ascii'})
 assert.ok(content == etalon, 'ascii.txt fail')
 
+content = fs.readFileSync(folder + 'файл.txt', {encoding: 'ascii'})
+assert.ok(content == etalon, 'файл.txt fail')
+
 content = fs.readFileSync(folder + 'utf8wBOM.txt')
 assert.ok(content == etalon, 'utf8wBOM.txt fail')
 
