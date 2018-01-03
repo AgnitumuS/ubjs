@@ -115,7 +115,7 @@ function buildUrl (url, params) {
 }
 
 let __lastRequestData
-let __lastRequestTime = new Date().getTime()
+let __lastRequestTime = Date.now()
 let __lastRequestURL
 
 /**
@@ -251,7 +251,7 @@ function xhr (requestConfig) {
     headers = config.headers
     let reqData = transformData(config.data, headersGetter(headers), config.transformRequest)
     let prevReqTime = __lastRequestTime
-    __lastRequestTime = new Date().getTime()
+    __lastRequestTime = Date.now()
     // strip content-type if data is undefined
     if (!config.data) {
       forEach(headers, function (value, header) {

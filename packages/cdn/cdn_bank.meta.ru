@@ -27,6 +27,14 @@
         "countryID": {
             "caption": "Страна",
             "description": "Страна регистрации"
+        },
+        "cityID": {
+            "caption": "Город",
+            "description": "Город регистрации"
+        },
+        "description": {
+            "caption": "Описание",
+            "description": "Описание (для вибора из списка)"
         }
     }
 }

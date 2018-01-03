@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.0",
-    "@unitybase/ub": "^5.0.0"
+    "@unitybase/ub": "^5.0.0",
+    "@unitybase/base": "^5.0.0"
   },
   "keywords": [
     "Proxy",

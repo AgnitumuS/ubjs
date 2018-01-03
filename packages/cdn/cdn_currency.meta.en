@@ -14,6 +14,10 @@
             "caption": "Name",
             "description": "Name of currency"
         },
+        "curMult":{
+            "caption": "Default multiplicity",
+            "description": "Default multiplicity"
+        },
         "description": {
             "caption": "Description",
             "description": "Description"

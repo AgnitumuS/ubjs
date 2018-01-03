@@ -318,7 +318,7 @@ me.insert = function (ctxt) {
 
   let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
-    throw new Error('Report with ID ' + ID + 'already exist')
+    throw new Error('<<<Report with ID ' + ID + ' already exist>>>')
   }
 
   doUpdateInsert(ctxt, oldValue, true)

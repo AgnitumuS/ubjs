@@ -159,7 +159,7 @@ function formatAsText (connectionName, connDDLs, warnings) {
     txtRes.push(
       '-- ' + res.description,
       '--#############################################################',
-      res.statements.join(';\r\n--\r\n')
+      res.statements.join(';\r\n--\r\n') + ';'
     )
   }
 

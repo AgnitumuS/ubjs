@@ -14,6 +14,10 @@
             "caption": "Назва",
             "description": "Назва валюти"
         },
+        "curMult":{
+            "caption": "Кратність",
+            "description": "Кратність"
+        },
         "description": {
             "caption": "Опис",
             "description": "Опис (для вибору зі списку)"

@@ -26,10 +26,10 @@ class DBPostgreSQL extends DBAbstract {
     let tablesSQL = `select t.table_name as name, 
       (select description from pg_description
         where objoid = (select typrelid from pg_type where typname = t.table_name
-        and typowner = (select oid from pg_roles where rolname = current_user)) and objsubid = 0
+        and typowner = (select oid from pg_roles where rolname = current_schema)) and objsubid = 0
       ) as caption
     from information_schema.tables t
-    where t.table_schema = current_user`
+    where t.table_schema = current_schema`
 
     /** @type {Array<Object>} */
     let dbTables = this.conn.xhr({
@@ -56,10 +56,10 @@ class DBPostgreSQL extends DBAbstract {
         'NO' as is_computed, c.column_default as defvalue,
           (select description from pg_description
           where objoid =
-            (select typrelid from pg_type where typname = LOWER(c.table_name) and typowner = (select oid from pg_roles where rolname = current_user))
+            (select typrelid from pg_type where typname = LOWER(c.table_name) and typowner = (select oid from pg_roles where rolname = current_schema))
             and objsubid = c.ordinal_position) as description
         from information_schema.columns c
-        where c.table_schema = current_user
+        where c.table_schema = current_schema
         and c.table_name = LOWER(:('${asIsTable._upperName}'):)
         order by c.ordinal_position`
 
@@ -148,8 +148,8 @@ WHERE
       //   substr(constraint_type, 1, 1) as constraint_type,
       //   '' as search_condition, 'ENABLED' as status, 'USER NAME' as generated
       //   from information_schema.table_constraints tc
-      //   where tc.constraint_schema = current_user
-      //   and tc.table_schema = current_user
+      //   where tc.constraint_schema = current_schema
+      //   and tc.table_schema = current_schema
       //   and tc.table_name = LOWER(:('${asIsTable._upperName}'):)
       //   and tc.constraint_type in ('PRIMARY KEY')`
 
@@ -213,7 +213,7 @@ ORDER BY index_id, column_position`
          FROM pg_constraint c 
          LEFT JOIN pg_class t ON c.conrelid  = t.oid 
          WHERE t.relname = LOWER(:('${asIsTable._upperName}'):) 
-         and t.relowner = (select oid from pg_roles where rolname = current_user) 
+         and t.relowner = (select oid from pg_roles where rolname = current_schema) 
          AND c.contype = 'c'`
 
       let constraintsFromDb = this.conn.xhr({
@@ -234,7 +234,7 @@ ORDER BY index_id, column_position`
       this.dbTableDefs.push(asIsTable)
     }
 
-    let sequencesSQL = `select sequence_name from information_schema.sequences where sequence_schema = current_user`
+    let sequencesSQL = `select sequence_name from information_schema.sequences where sequence_schema = current_schema`
     let dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,
@@ -407,7 +407,7 @@ ORDER BY index_id, column_position`
     if (!column.allowNull) {
       let nullable = column.allowNull ? ' null' : ' not null'
       this.DDL.alterColumnNotNull.statements.push(
-        `alter table ${table.name} alter column ${column.name} ${this.createTypeDefine(column)}${nullable}`
+        `alter table ${table.name} alter column ${column.name} set ${nullable}`
       )
     }
   }

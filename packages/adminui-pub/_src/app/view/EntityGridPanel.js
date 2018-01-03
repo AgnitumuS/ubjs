@@ -238,9 +238,10 @@ Ext.define('UB.view.EntityGridPanel', {
      * @param {String[]} fieldList
      * @param {Object} stores
      * @param {Boolean} rowEditing
+     * @param {Boolean} sortableColumns
      * @return {Object[]}
      */
-    getEntityColumns: function (entityName, fieldList, stores, rowEditing) {
+    getEntityColumns: function (entityName, fieldList, stores, rowEditing, sortableColumns) {
       let columns = []
       let entity = $App.domainInfo.get(entityName)
       fieldList = fieldList || UB.Utils.convertFieldListToExtended(entity.filterAttribute({defaultView: true}))
@@ -259,7 +260,7 @@ Ext.define('UB.view.EntityGridPanel', {
           })
           continue
         }
-        let col = UB.view.EntityGridPanel.getEntityColumn(entityName, fieldList[i], stores)
+        let col = UB.view.EntityGridPanel.getEntityColumn(entityName, fieldList[i], stores, sortableColumns)
 
         if (col) {
           if (rowEditing) {
@@ -327,9 +328,10 @@ Ext.define('UB.view.EntityGridPanel', {
      * @param {String} [field.filterCaption]
      * @param {String} [field.summaryType]
      * @param {Object} stores
+     * @param {Object} [sortableColumns]
      * @return {Object}
      */
-    getEntityColumn: function (entityName, field, stores) {
+    getEntityColumn: function (entityName, field, stores, sortableColumns) {
       let domain = $App.domainInfo
       let fieldName = field.name
       let formatC = field.format && !_.isFunction(field.format) ? field.format : null
@@ -362,9 +364,10 @@ Ext.define('UB.view.EntityGridPanel', {
       column.dataIndex = fieldName
       column.header = field.description || columnCaption
       column.tooltip = field.tooltip || field.description || columnCaption
-      column.sortable = field.hasOwnProperty('sortable')
-        ? field.sortable && (metaAttribute.dataType !== 'Text')
-        : (metaAttribute.dataType !== 'Text') && metaAttribute.allowSort
+      column.sortable = sortableColumns === false ? sortableColumns
+        : (field.hasOwnProperty('sortable')
+          ? field.sortable && (metaAttribute.dataType !== 'Text')
+          : (metaAttribute.dataType !== 'Text') && metaAttribute.allowSort)
 
       column.simpleFilter = field.simpleFilter
       column.filterCaption = field.filterCaption
@@ -617,11 +620,11 @@ Ext.define('UB.view.EntityGridPanel', {
     }
     me.getStore().data.items.forEach(function (item) {
       let data = item.getData()
-      for (let name in data) {
-        if (name.indexOf('.') + 1){
+      Object.keys(data).forEach(function (name) {
+        if (name.indexOf('.') + 1) {
           delete data[name]
         }
-      }
+      })
       if (!data.ID) {
         result.insert.push(data)
       } else if (item.dirty) {
@@ -630,11 +633,12 @@ Ext.define('UB.view.EntityGridPanel', {
         if (data.mi_modifyDate) {
           updateData.mi_modifyDate = data.mi_modifyDate
         }
-        for (let name in change) {
-          if (!name.indexOf('.') + 1) {
+
+        Object.keys(change).forEach(function (name) {
+          if (!(name.indexOf('.') + 1)) {
             updateData[name] = data[name]
           }
-        }
+        })
         result.update.push(updateData)
       }
     })
@@ -982,7 +986,8 @@ Ext.define('UB.view.EntityGridPanel', {
       me.createAutoFilter()
     }
 
-    me.columns = me.columns || UB.view.EntityGridPanel.getEntityColumns(me.entityName, me.getVisibleColumns(), me.stores, me.rowEditing)
+    me.columns = me.columns || UB.view.EntityGridPanel.getEntityColumns(me.entityName, me.getVisibleColumns(), me.stores,
+      me.rowEditing, me.hasOwnProperty('sortableColumns') ? me.sortableColumns : undefined)
 
     /**
      * @cfg {[]} extendedColumns Extended column configuration. If column with fieldName exists in default column config
@@ -1042,7 +1047,7 @@ Ext.define('UB.view.EntityGridPanel', {
         errorSummary: false
       })
       rowEditing.on('canceledit', function (editor, context) {
-        if ((!context.record.get('ID') && !me.notWriteChanges) || (me.notWriteChanges && context.record.phantom)) {
+        if ((!context.record.get('ID') && !me.notWriteChanges) || (me.notWriteChanges && context.record.phantom && context.record.dirtySave !== null)) {
           context.store.remove(context.record)
         }
       })
@@ -1050,25 +1055,50 @@ Ext.define('UB.view.EntityGridPanel', {
         if (me.editingPlugin.editing || me.readOnly || !me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.UPDATE)) {
           return false
         }
+        context.grid.columns.forEach((column) => {
+          if (column.field) {
+            column.field.setWidth(column.width - 2)
+          }
+          if (me.GridSummary) {
+            let item = _.find(me.GridSummary.items.items, {baseColumn: column})
+            item.setWidth(column.width - 2)
+          }
+          if (column.field) {
+            if (_.has(column.field, 'events.change')) {
+              if (typeof column.field.events.change.clearListeners === 'function') {
+                column.field.events.change.clearListeners()
+              }
+            }
+            column.field.on('change', function (ctrl) {
+              if (ctrl.storeAttributeValueField) {
+                context.record.set(ctrl.storeAttributeValueField, !ctrl.getValue() ? null : ctrl.lastSelection[0].get('ID'))
+              }
+              if (ctrl && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], ctrl.xtype) &&
+                context.record.modified[column.dataIndex] !== undefined && context.record.get(column.dataIndex) === '') {
+                context.record.set(column.dataIndex, null)
+              }
+            })
+          }
+        })
         if (_.isFunction(me.onBeforeEdit)) {
           let result = me.onBeforeEdit(editor, context)
           if (result === false) {
             return false
           }
         }
-        context.grid.columns.forEach((column) =>{
-          if (column.field){
-            column.field.setWidth(column.width - 2)
-          }
-          if (me.GridSummary){
-            item = _.find(me.GridSummary.items.items, {baseColumn: column})
-            item.setWidth(column.width - 2)
-          }
-        })
         let columnCombobox = _.filter(context.grid.columns, function (item) {
           return item.getEditor() && item.getEditor().xtype === 'ubcombobox'
         })
         columnCombobox.forEach(function (item) {
+          let displayFields = $App.domainInfo.get(item.field.getStore().entityName).getAttributeNames({defaultView: true})
+          if (!_.includes(displayFields, item.field.displayField)) {
+            displayFields.push(item.field.displayField)
+          }
+          if (!_.includes(displayFields, item.field.valueField)) {
+            displayFields.push(item.field.valueField)
+          }
+          item.field.gridFieldList = displayFields
+          item.field.disableModifyEntity = true
           item.field.clearValue()
           item.field.getStore().reload().then(function () { item.field.clearInvalid() })
         })
@@ -1175,7 +1205,7 @@ Ext.define('UB.view.EntityGridPanel', {
         me.setupActions()
         me.initPagingToolbar()
 
-        if (!me.store.isLoading() && !me.autoFilterActive && !me.notWriteChanges) {
+        if (!me.store.isLoading() && !me.autoFilterActive) {
           me.store.load()
         }
         if (me.notWriteChanges && me.GridSummary) {
@@ -1724,8 +1754,11 @@ Ext.define('UB.view.EntityGridPanel', {
         menuAllActions.push(new Ext.Action(arr[i]))
       }
     }
-    menuAllActions.push('-')
-    menuAllActions.push(me.createMenuExport())
+    if (!me.hideActions || !_.includes(me.hideActions, actions.exportXls) ||
+      !_.includes(me.hideActions, actions.exportCsv) || !_.includes(me.hideActions, actions.exportCsv)) {
+      menuAllActions.push('-')
+      menuAllActions.push(me.createMenuExport())
+    }
 
     if (me.entityDetails.length && !me.disableMenuItemDetails) {
       menuAllActions.push('-')
@@ -2027,13 +2060,6 @@ Ext.define('UB.view.EntityGridPanel', {
     let me = this
     let fieldList = []
     context.grid.columns.forEach(function (col) {
-      if (col.field && col.field.storeAttributeValueField) {
-        if (!col.field.getValue() && col.field.getValue() !== context.record[col.field.storeAttributeValueField]) {
-          context.record.set(col.field.storeAttributeValueField, col.field.getValue())
-        } else if (col.field.getValue() && context.record.modified[col.dataIndex] !== undefined) {
-          context.record.set(col.field.storeAttributeValueField, col.field.lastSelection[0].get('ID'))
-        }
-      }
       if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
         context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
         context.record.set(col.dataIndex, null)
@@ -2085,13 +2111,6 @@ Ext.define('UB.view.EntityGridPanel', {
     let me = this
     let fieldList = []
     context.grid.columns.forEach(function (col) {
-      if (col.field && col.field.storeAttributeValueField && context.record.modified[col.dataIndex] !== undefined) {
-        if (!col.field.getValue() && col.field.getValue() !== context.record[storeAttributeValueField]) {
-          context.record.set(col.field.storeAttributeValueField, col.field.getValue())
-        } else if (col.field.getValue()) {
-          context.record.set(col.field.storeAttributeValueField, col.field.lastSelection[0].get('ID'))
-        }
-      }
       if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
         context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
         context.record.set(col.dataIndex, null)
@@ -2131,16 +2150,21 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
   addNewRecord: function (data) {
-    if (!data) {
-      data = {}
-      this.store.ubRequest.fieldList.forEach(function (field) {
-        data[field] = null
+    let recordData = {}
+    let index = this.store.data.length
+    this.store.ubRequest.fieldList.forEach(function (field) {
+      recordData[field] = null
+    })
+    this.store.insert(index, recordData)
+    if (data) {
+      delete data.ID
+      delete data.mi_modifyDate
+      let record = this.store.getAt(index)
+      Object.keys(data).forEach(function (key) {
+        record.set(key, data[key])
       })
     }
-    delete data.ID
-    delete data.mi_modifyDate
-    this.store.insert(this.store.data.length, data)
-    this.editingPlugin.startEdit(this.store.data.length - 1, 0)
+    this.editingPlugin.startEdit(index, 0)
   },
   /**
    *
@@ -2218,6 +2242,8 @@ Ext.define('UB.view.EntityGridPanel', {
         } else {
           me.addNewRecord()
         }
+      } else {
+        $App.dialogInfo('rowEditing')
       }
     }
   },
@@ -2247,6 +2273,8 @@ Ext.define('UB.view.EntityGridPanel', {
         } else {
           me.addNewRecord(selection[0].getData())
         }
+      } else {
+        $App.dialogInfo('rowEditing')
       }
     }
   },
@@ -2286,6 +2314,10 @@ Ext.define('UB.view.EntityGridPanel', {
     let me = this
     let entityCaptionsToDelete = ''
 
+    if (me.rowEditing && me.editingPlugin.editing) {
+      $App.dialogInfo('rowEditing')
+      return
+    }
     if (gridSelection.length === 1) {
       if (me.entity.descriptionAttribute) {
         try {
@@ -2419,6 +2451,9 @@ Ext.define('UB.view.EntityGridPanel', {
 
     let sm = grid.getSelectionModel()
     if (!sm) return
+    if (this.rowEditing && this.editingPlugin.editing) {
+      return
+    }
     /**
      * forbid row selecting when fire event contextMenu
      * @cfg {Boolean} forbidSelectOnContextMenu
@@ -2585,13 +2620,7 @@ Ext.define('UB.view.EntityGridPanel', {
             entity: 'uba_auditTrail',
             method: UB.core.UBCommand.methodName.SELECT,
             fieldList: fieldList,
-            whereList: whereList,
-            orderList: {
-              actionTime: {
-                'expression': 'actionTime',
-                'order': 'desc'
-              }
-            }
+            whereList: whereList
           }
         ]
       },
@@ -2600,12 +2629,12 @@ Ext.define('UB.view.EntityGridPanel', {
           this.doOnEdit(eOpts)
         },
         afterInit: function () {
-          var grid = this
-          var grouper
-
+          let grid = this
+          let grouper
+          grid.store.sort('actionTime', 'DESC')
           grid.store.oldGroup = grid.store.group
           grid.store.group = function (groupers, direction, suppressEvent) {
-            var me = this
+            let me = this
             if (!me.groupOptions) {
               me.oldGroup(groupers, direction, suppressEvent)
             }
@@ -3246,11 +3275,11 @@ Ext.define('UB.view.EntityGridPanel', {
       $App.dialogInfo('gridEmptySelection')
       return
     }
-
+    let me = this
     let formParam = me.getFormParam()
     // in case form instance ID is passed in formParam - use it
     let instanceID = (formParam && formParam.instanceID) || selection[0].get('ID')
-    let me = this
+
     let prm = ['cmdType=showForm']
     prm.push('entity=' + (formParam && formParam.entityName ? formParam.entityName : me.entityName))
     let formCode = (formParam && formParam.formCode ? formParam.formCode : formParam)
