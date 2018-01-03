@@ -257,9 +257,10 @@ function localizeEntity (session, config, locale) {
  * @param {string} entityName
  * @param {string|Array<string>} attributeName  Attribute name or array of names
  * @param {number|Array<number>} colIndex      Column index or indexes
+ * @param {boolean} [doNotUseCache] Option to skip using cache on lookup.  Use, when entity refer itself and next rows may use previous.
  * @returns {Function}
  */
-function lookup (conn, entityName, attributeName, colIndex) {
+function lookup (conn, entityName, attributeName, colIndex, doNotUseCache) {
   /**
   * A function which lookup a value for dataLoader.
   * @param {UBConnection} conn
@@ -288,7 +289,7 @@ function lookup (conn, entityName, attributeName, colIndex) {
             ? buildWhereList(attributeName, colIndex)
             : buildWhereList([attributeName], [colIndex])
 
-    return conn.lookup(entityName, 'ID', whereList)
+    return conn.lookup(entityName, 'ID', whereList, doNotUseCache)
   }
 
   return doLookup.bind(null, conn, entityName, attributeName, colIndex)
