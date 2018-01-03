@@ -585,7 +585,7 @@ UBConnection.prototype.insert = function (ubq) {
 }
 
 /**
- * Execute insert method by add method: 'update' to `ubq` query (if req.method not already set)
+ * Execute update method by add method: 'update' to `ubq` query (if req.method not already set)
  */
 UBConnection.prototype.update = function (ubq) {
   let req = ubq
