@@ -585,6 +585,16 @@ UBConnection.prototype.insert = function (ubq) {
 }
 
 /**
+ * Execute update method by add method: 'update' to `ubq` query (if req.method not already set)
+ */
+UBConnection.prototype.update = function (ubq) {
+  let req = ubq
+  req.method = req.method || 'update'
+  let res = this.query(req)
+  return res.resultData
+}
+
+/**
  * Create a new instance of repository
  * @param {String} entityName name of Entity we create for
  * @returns {ServerRepository}
