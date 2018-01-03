@@ -1069,15 +1069,6 @@ Ext.define('UB.view.EntityGridPanel', {
                 column.field.events.change.clearListeners()
               }
             }
-            column.field.on('change', function (ctrl) {
-              if (ctrl.storeAttributeValueField) {
-                context.record.set(ctrl.storeAttributeValueField, !ctrl.getValue() ? null : ctrl.lastSelection[0].get('ID'))
-              }
-              if (ctrl && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], ctrl.xtype) &&
-                context.record.modified[column.dataIndex] !== undefined && context.record.get(column.dataIndex) === '') {
-                context.record.set(column.dataIndex, null)
-              }
-            })
           }
         })
         if (_.isFunction(me.onBeforeEdit)) {
@@ -1099,8 +1090,7 @@ Ext.define('UB.view.EntityGridPanel', {
           }
           item.field.gridFieldList = displayFields
           item.field.disableModifyEntity = true
-          item.field.clearValue()
-          item.field.getStore().reload().then(function () { item.field.clearInvalid() })
+          item.field.useForGridEdit = true
         })
       })
       rowEditing.on('validateedit', function (editor, context) {
@@ -2060,6 +2050,9 @@ Ext.define('UB.view.EntityGridPanel', {
     let me = this
     let fieldList = []
     context.grid.columns.forEach(function (col) {
+      if (col.field && col.field.storeAttributeValueField) {
+        context.record.set(col.field.storeAttributeValueField, col.field.getValue() && col.field.lastSelection ? col.field.lastSelection[0].get('ID') : null)
+      }
       if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
         context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
         context.record.set(col.dataIndex, null)
@@ -2067,13 +2060,13 @@ Ext.define('UB.view.EntityGridPanel', {
     })
     let execParams = context.record.getData()
 
-    for (let name in execParams) {
+    Object.keys(execParams).forEach(function (name) {
       if ((name.indexOf('.') + 1) || _.includes(['ID', 'mi_modifyDate'], name)) {
         delete execParams[name]
       } else {
         fieldList.push(name)
       }
-    }
+    })
     if (context.grid.detailFields && context.grid.detailFields.length) {
       context.grid.detailFields.forEach(function (fieldName) {
         fieldList.push(fieldName)
@@ -2111,6 +2104,9 @@ Ext.define('UB.view.EntityGridPanel', {
     let me = this
     let fieldList = []
     context.grid.columns.forEach(function (col) {
+      if (col.field && col.field.storeAttributeValueField) {
+        context.record.set(col.field.storeAttributeValueField, col.field.getValue() && col.field.lastSelection ? col.field.lastSelection[0].get('ID') : null)
+      }
       if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
         context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
         context.record.set(col.dataIndex, null)
@@ -2118,14 +2114,15 @@ Ext.define('UB.view.EntityGridPanel', {
     })
     let execParams = context.record.getData()
 
-    for (let name in execParams) {
+    Object.keys(execParams).forEach(function (name) {
       if (((name.indexOf('.') + 1) || context.record.modified[name] === undefined) &&
         !_.includes(['ID', 'mi_modifyDate'], name)) {
         delete execParams[name]
       } else {
         fieldList.push(name)
       }
-    }
+    })
+
     if (!me.notWriteChanges) {
       $App.connection.run({
         entity: me.entityName,
@@ -2149,7 +2146,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.fireEvent('changeData', me, 'update')
     }
   },
-  addNewRecord: function (data) {
+  addNewRecord: function (data, edit) {
     let recordData = {}
     let index = this.store.data.length
     this.store.ubRequest.fieldList.forEach(function (field) {
@@ -2164,7 +2161,13 @@ Ext.define('UB.view.EntityGridPanel', {
         record.set(key, data[key])
       })
     }
-    this.editingPlugin.startEdit(index, 0)
+    if (edit) {
+      this.editingPlugin.startEdit(index, 0)
+    } else {
+      let record = this.store.getAt(index)
+      record.dirtySave = null
+      this.enableAction('del')
+    }
   },
   /**
    *
@@ -2236,11 +2239,11 @@ Ext.define('UB.view.EntityGridPanel', {
         if (parentForm && (parentForm.isDirty() || parentForm.isNewInstance) && !me.notWriteChanges) {
           parentForm.saveForm().then(function (result) {
             if (result !== -1) {
-              me.addNewRecord()
+              me.addNewRecord(null, true)
             }
           })
         } else {
-          me.addNewRecord()
+          me.addNewRecord(null, true)
         }
       } else {
         $App.dialogInfo('rowEditing')
@@ -2267,11 +2270,11 @@ Ext.define('UB.view.EntityGridPanel', {
         if (parentForm && (parentForm.isDirty() || parentForm.isNewInstance) && !me.notWriteChanges) {
           parentForm.saveForm().then(function (result) {
             if (result !== -1) {
-              me.addNewRecord(selection[0].getData())
+              me.addNewRecord(selection[0].getData(), true)
             }
           })
         } else {
-          me.addNewRecord(selection[0].getData())
+          me.addNewRecord(selection[0].getData(), true)
         }
       } else {
         $App.dialogInfo('rowEditing')
@@ -2323,7 +2326,7 @@ Ext.define('UB.view.EntityGridPanel', {
         try {
           entityCaptionsToDelete = gridSelection[0].get(me.entity.descriptionAttribute)
         } catch (e) {}
-        if (entityCaptionsToDelete) entityCaptionsToDelete = '[' + entityCaptionsToDelete + ']'
+        entityCaptionsToDelete =  (entityCaptionsToDelete ? '[' + entityCaptionsToDelete + ']' : '')
       }
     }
     $App.dialogYesNo('deletionDialogConfirmCaption',
