@@ -362,7 +362,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
       let column = {stateId: fieldName, fieldName: fieldName}
       column.dataIndex = fieldName
-      column.header = field.description || columnCaption
+      column.header = field.description || columnCaption || UB.i18n(metaAttribute.code)
       column.tooltip = field.tooltip || field.description || columnCaption
       column.sortable = sortableColumns === false ? sortableColumns
         : (field.hasOwnProperty('sortable')
@@ -2506,14 +2506,18 @@ Ext.define('UB.view.EntityGridPanel', {
     let fieldList = me.entityConfig.fieldList.concat()
     let extendedFieldList = me.extendedFieldList.concat()
 
-    if (fieldList.indexOf('mi_dateTo') < 0) {
-      fieldList = ['mi_dateTo'].concat(fieldList)
-      extendedFieldList = [{name: 'mi_dateTo', visibility: true, description: UB.i18n('mi_dateTo')}].concat(extendedFieldList)
+    function configureMixinAttribute (attributeCode) {
+      if (_.findIndex(extendedFieldList, {name: attributeCode}) < 0) {
+        fieldList = [attributeCode].concat(fieldList)
+        extendedFieldList = [{
+          name: attributeCode,
+          visibility: true,
+          description: UB.i18n(attributeCode)
+        }].concat(extendedFieldList)
+      }
     }
-    if (fieldList.indexOf('mi_dateFrom') < 0) {
-      fieldList = ['mi_dateFrom'].concat(fieldList)
-      extendedFieldList = [{name: 'mi_dateFrom', visibility: true, description: UB.i18n('mi_dateFrom')}].concat(extendedFieldList)
-    }
+    configureMixinAttribute('mi_dateTo')
+    configureMixinAttribute('mi_dateFrom')
 
     let sel = this.getSelectionModel().getSelection()
     if (!me.isInHistory && sel.length < 1) {

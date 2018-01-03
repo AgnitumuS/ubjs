@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.43]
+## Fixed
+- fix "Change's history" action executed from entityGridPanel in case fieldList
+ already contains mi_date[From|To] in extended format {name: 'mi_dateFrom', description: UB.i18n('mi_dateFrom')} 
+
+### Changed
+- in case entityGridPanel columns caption is empty set it to UB.i18n(attributeCode)
+ Usable for translating mixin's attributes like `mi_date*` etc.
+
+## Added
+- translation for `mi_modifyDate` to global level of i18n    
+
 ## [4.2.41]
 ## Fixed
 - errors associated with editing data in the grid

@@ -415,6 +415,7 @@ UB.i18nExtend({
   unknownError: 'Naməlum səhv baş vermişdir. Xahiş edirik, administratora müraciət edəsiniz.',
   mi_dateFrom: 'Tarixdən',
   mi_dateTo: 'Tarixə',
+  mi_modifyDate: 'Last modified',
   ubErrLockedbyanotheruser: 'Yazı digər istifadəçi tərəfindən bloka salınıb. Bütün dəyişiklikləri yadda saxlamaq mümkün olmayacaq. Təkrar cəhd edin.',
   showFilterPanel: 'Filtr',
 

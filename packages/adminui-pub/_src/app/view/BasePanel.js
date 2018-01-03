@@ -3642,14 +3642,18 @@ Ext.define('UB.view.BasePanel', {
       return
     }
 
-    if (me.fieldList.indexOf('mi_dateTo') < 0) {
-      fieldList = ['mi_dateTo'].concat(fieldList)
-      extendedFieldList = [{name: 'mi_dateTo', visibility: true, description: UB.i18n('mi_dateTo')}].concat(extendedFieldList)
+    function configureMixinAttribute (attributeCode) {
+      if (_.findIndex(extendedFieldList, {name: attributeCode}) < 0) {
+        fieldList = [attributeCode].concat(fieldList)
+        extendedFieldList = [{
+          name: attributeCode,
+          visibility: true,
+          description: UB.i18n(attributeCode)
+        }].concat(extendedFieldList)
+      }
     }
-    if (me.fieldList.indexOf('mi_dateFrom') < 0) {
-      fieldList = ['mi_dateFrom'].concat(fieldList)
-      extendedFieldList = [{name: 'mi_dateFrom', visibility: true, description: UB.i18n('mi_dateFrom')}].concat(extendedFieldList)
-    }
+    configureMixinAttribute('mi_dateTo')
+    configureMixinAttribute('mi_dateFrom')
 
     $App.doCommand({
       cmdType: 'showList',
