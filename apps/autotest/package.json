@@ -1,7 +1,7 @@
 {
   "id": "Server",
   "name": "autotest",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -15,7 +15,7 @@
     "@ub-e/dses": "^1.0.23",
     "@ub-e/odata": "^1.0.22",
     "@ub-e/ube-pub": "^4.2.5",
-    "@unitybase/adminui-pub": "^4.2.42",
+    "@unitybase/adminui-pub": "^4.2.43",
     "@unitybase/adminui-reg": "^4.1.17",
     "@unitybase/base": "^4.2.25",
     "@unitybase/canvas": "^4.0.14",
