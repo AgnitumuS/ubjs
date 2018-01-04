@@ -436,6 +436,9 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         }))
       } else {
         store.filters.removeAtKey(me.userFilterId)
+        if (me.useForGridEdit && store.totalCount <= 1) {
+          store.reload()
+        }
         queryEvent.forceAll = true
       }
     }
@@ -468,6 +471,18 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
     me.clearIsPhantom()
     me.callParent(arguments)
+    let store = me.getStore()
+    if (me.useForGridEdit && value && !_.isArray(value) &&
+      (!store.filters.get(me.userFilterId) || store.filters.get(me.userFilterId).value !== value)) {
+      store.suspendEvent('clear')
+      store.filter(new Ext.util.Filter({
+        id: me.userFilterId,
+        root: 'data',
+        property: this.valueField || 'ID',
+        condition: value && _.isArray(value) ? 'in' : 'equal',
+        value: value
+      }))
+    }
   },
 
   getValue: function (field) {
