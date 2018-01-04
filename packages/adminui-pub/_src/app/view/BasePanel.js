@@ -1845,7 +1845,7 @@ Ext.define('UB.view.BasePanel', {
       UB.ux.data.UBStore.resultDataRow2Record(result, me.record)
       me.instanceID = me.record.get('ID') || me.instanceID
       if (result.method === UB.core.UBCommand.methodName.ADDNEW) {
-        let dateAttrs = _.filter($App.domainInfo.entities['sia_docPayOrderOut'].attributes, {dataType: 'Date'})
+        let dateAttrs = _.filter($App.domainInfo.entities[result.entity].attributes, {dataType: 'Date'})
         dateAttrs.forEach(function (item) {
           if (me.record.get(item.name) && _.isDate(me.record.get(item.name))) {
             let date = me.record.get(item.name)
