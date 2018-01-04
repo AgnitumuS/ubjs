@@ -434,7 +434,7 @@ UB.i18nExtend({
   documentNotFound: 'Данные на сервере не найдены. Обратитесь, пожалуйста, к администратору системы.',
   mi_dateFrom: 'Дата с',
   mi_dateTo: 'Дата по',
-
+  mi_modifyDate: 'Отредактировано',
   ubErrLockedbyanotheruser: 'Запись заблокирована другим пользователем. Все внесенные изменения не будут сохранены. Попробуйте позднее.',
   showFilterPanel: 'Фильтр',
 
@@ -737,7 +737,7 @@ Ext.onReady(function () {
     Ext.apply(Ext.util.Format, {
       thousandSeparator: ' ',
       decimalSeparator: ',',
-      currencySign: '\u0440\u0443\u0431',  // Russian Ruble
+      currencySign: '',
       dateFormat: 'd.m.Y',
       timeFormat: 'G:i:s',
       datetimeFormat: 'd.m.Y H:i'

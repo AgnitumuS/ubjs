@@ -201,7 +201,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
         glyph: UB.core.UBUtil.glyphs.faEdit,
         itemID: 'editItem',
         handler: me.editItem,
-        hidden: !!me.hideEntityItemInContext,
+        hidden: !!me.hideEntityItemInContext || me.disableModifyEntity,
         disabled: me.disabled || /* me.readOnly || */ me.disableModifyEntity,
         scope: me
       })
@@ -211,7 +211,7 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
                 // iconCls: 'ub-icon-table',
         itemID: 'showLookup',
         handler: me.showLookup,
-        hidden: !!me.hideEntityItemInContext || me.disableModifyEntity,
+        hidden: !!me.hideEntityItemInContext,
         disabled: me.disabled || me.readOnly,
         scope: me
       })

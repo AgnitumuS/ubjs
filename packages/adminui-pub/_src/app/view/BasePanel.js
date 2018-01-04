@@ -1833,8 +1833,8 @@ Ext.define('UB.view.BasePanel', {
    * @param {Object} [result]
    */
   initFormData: function (result) {
-    var me = this
-    var resultAls
+    let me = this
+    let resultAls
 
     if (me.isDestroyed) return
 
@@ -1844,7 +1844,16 @@ Ext.define('UB.view.BasePanel', {
       me.disableBinder()
       UB.ux.data.UBStore.resultDataRow2Record(result, me.record)
       me.instanceID = me.record.get('ID') || me.instanceID
-
+      if (result.method === UB.core.UBCommand.methodName.ADDNEW) {
+        let dateAttrs = _.filter($App.domainInfo.entities[result.entity].attributes, {dataType: 'Date'})
+        dateAttrs.forEach(function (item) {
+          if (me.record.get(item.name) && _.isDate(me.record.get(item.name))) {
+            let date = me.record.get(item.name)
+            date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+            me.record.set(item.name, date)
+          }
+        })
+      }
       if (!me.isNewInstance) {
         UB.ux.data.UBStore.resetRecord(me.record)
       }
@@ -3642,14 +3651,18 @@ Ext.define('UB.view.BasePanel', {
       return
     }
 
-    if (me.fieldList.indexOf('mi_dateTo') < 0) {
-      fieldList = ['mi_dateTo'].concat(fieldList)
-      extendedFieldList = [{name: 'mi_dateTo', visibility: true, description: UB.i18n('mi_dateTo')}].concat(extendedFieldList)
+    function configureMixinAttribute (attributeCode) {
+      if (_.findIndex(extendedFieldList, {name: attributeCode}) < 0) {
+        fieldList = [attributeCode].concat(fieldList)
+        extendedFieldList = [{
+          name: attributeCode,
+          visibility: true,
+          description: UB.i18n(attributeCode)
+        }].concat(extendedFieldList)
+      }
     }
-    if (me.fieldList.indexOf('mi_dateFrom') < 0) {
-      fieldList = ['mi_dateFrom'].concat(fieldList)
-      extendedFieldList = [{name: 'mi_dateFrom', visibility: true, description: UB.i18n('mi_dateFrom')}].concat(extendedFieldList)
-    }
+    configureMixinAttribute('mi_dateTo')
+    configureMixinAttribute('mi_dateFrom')
 
     $App.doCommand({
       cmdType: 'showList',

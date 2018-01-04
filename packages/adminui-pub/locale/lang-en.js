@@ -509,6 +509,7 @@ UB.i18nExtend({
   'showFilterPanel': 'Filter',
   'mi_dateFrom': 'Date from',
   'mi_dateTo': 'Date to',
+  'mi_modifyDate': 'Last modified',
   'countST': 'Record count',
   'sumST': 'Sum',
   'maxST': 'Max value',
@@ -724,7 +725,10 @@ Ext.onReady(function () {
     Ext.apply(Ext.util.Format, {
       dateFormat: 'm/d/Y',
       timeFormat: 'H:i:s',
-      datetimeFormat: 'm/d/Y H:i'
+      datetimeFormat: 'm/d/Y H:i',
+      thousandSeparator: ' ',
+      decimalSeparator: ',',
+      currencySign: ''
     })
   }
 

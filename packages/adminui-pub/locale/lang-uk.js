@@ -457,6 +457,7 @@ UB.i18nExtend({
   documentNotFound: 'Дані на сервері не знайдено. Зверніться, будь ласка, до адміністратора системи.',
   mi_dateFrom: 'Дата з',
   mi_dateTo: 'Дата по',
+  mi_modifyDate: 'Відредаговано',
   showAudit: 'Аудит',
   isRequiredTip: 'Обов\'язкове для заповнення',
   isMultilangTip: 'Значення на інших мовах',
@@ -774,7 +775,7 @@ Ext.onReady(function () {
     Ext.apply(Ext.util.Format, {
       thousandSeparator: ' ',
       decimalSeparator: ',',
-      currencySign: '',  // Ukranian Hryvnia
+      currencySign: '',
       dateFormat: 'd.m.Y',
       timeFormat: 'H:i:s',
       datetimeFormat: 'd.m.Y H:i'
