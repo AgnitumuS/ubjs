@@ -738,7 +738,7 @@ Ext.onReady(function () {
     Ext.apply(Ext.util.Format, {
       thousandSeparator: ' ',
       decimalSeparator: ',',
-      currencySign: '\u0440\u0443\u0431',  // Russian Ruble
+      currencySign: '', //\u0440\u0443\u0431',  // Russian Ruble
       dateFormat: 'd.m.Y',
       timeFormat: 'G:i:s',
       datetimeFormat: 'd.m.Y H:i'

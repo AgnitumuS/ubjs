@@ -725,7 +725,10 @@ Ext.onReady(function () {
     Ext.apply(Ext.util.Format, {
       dateFormat: 'm/d/Y',
       timeFormat: 'H:i:s',
-      datetimeFormat: 'm/d/Y H:i'
+      datetimeFormat: 'm/d/Y H:i',
+      thousandSeparator: ' ',
+      decimalSeparator: ',',
+      currencySign: ''
     })
   }
 

@@ -656,8 +656,7 @@ Ext.onReady(function () {
     Ext.apply(Ext.util.Format, {
       thousandSeparator: ' ',
       decimalSeparator: ',',
-      currencySign: 'AZM',
-            // Turkish Lira
+      currencySign: '', // 'AZM',
       timeFormat: 'H:i:s',
       datetimeFormat: 'd.m.Y H:i',
       dateFormat: 'd.m.Y'

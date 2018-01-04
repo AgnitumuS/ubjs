@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.44]
+## Fixed
+- set currency sign to '' for all languages to pass form validation for Currency attributes
+
 ## [4.2.43]
 ## Fixed
 - fix "Change's history" action executed from entityGridPanel in case fieldList
