@@ -10,8 +10,7 @@
     "additionalProperties": false,
     "required": [
       "name",
-      "cron",
-      "command"
+      "cron"
     ],
     "defaultProperties": [
       "singleton",
@@ -33,7 +32,11 @@
       },
       "command": {
         "type": "string",
-        "description": "A function name (include a path to function) to be executed in the HTTP worker context"
+        "description": "A function name (include a path to function) to be executed in the HTTP worker context. If command specified, do not specify module"
+      },
+      "module": {
+        "type": "string",
+        "description": "A module name to be executed in the HTTP worker context.  If module specified, do not specify command"
       },
       "singleton": {
         "type": "boolean",
@@ -55,6 +58,10 @@
         "description": "Put information about success task execution in the `ubq_runstat`. If `false` - only errors will be recoded",
         "defaultValue": true
       }
-    }
+    },
+    "oneOf": [
+      {"required": ["command"]},
+      {"required": ["module"]}
+    ]
   }
 }
