@@ -127,7 +127,7 @@
 					"name": "adminui-reg",
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
-				}/*,
+				},
                                 {
 					"name": "DSES",
 					"path": "./node_modules/@ub-e/dses",
@@ -142,7 +142,7 @@
 				{
 					"name": "TST",
 					"path": "./models/TST"
-				}*/
+				}
 			],
 			"implicitlyAddedMixins": [
 				"audit"
