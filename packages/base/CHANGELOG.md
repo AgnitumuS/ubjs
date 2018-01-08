@@ -4,12 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.26]
+### Fixed
+- entity localization files `*.meta.lang` now can contains `attributes` section 
+defined as array 
+```
+"attributes": [{"name": "arrtCode", ...}, ...]
+```
+(object also supported)
+
 ## [4.2.24]
+### Added
 - `dataLoader` module, method lookup now supports optional parameter `doNotUseCache`, which allows
   loading hierarchical data, with references to itself, when each next row may point to previous rows in CSV or array.
   NOTE: use transLen = 1 for such scenarios, otherwise it won't work, because lookup would happen before parent rows inserted
 
 ## [4.2.23]
+### Added
 - `FileBaseStoreLoader` now use a `CRC32(fileDate.toString())` to calculate a cache version (UB only).
 Prev. implementataion based on max file modification date fails in 
 case we updated something backwards

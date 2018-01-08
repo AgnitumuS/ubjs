@@ -62,9 +62,27 @@ function UBDomain (domainInfo) {
    * @type {Array<DBConnectionConfig>}
    */
   this.connections = domainInfo['connections']
-  entityCodes.forEach(function (entityCode) {
+  for (let i = 0, L = entityCodes.length; i < L; i++) {
+    let entityCode = entityCodes[i]
+    let entity = domainInfo.domain[entityCode]
+    // entity attributes locale can come either as array
+    // "attributes": [{"name": "attrCode", ...}, ..]
+    // or as object
+    // "attributes": {"attrCode": {...}, ..]
+    // to be merged correctly transformation to object required
+    if (entity.i18n && entity.i18n.attributes && Array.isArray(entity.i18n.attributes)) {
+      let attrs = entity.i18n.attributes
+      let newAttrs = {}
+      for (let k = 0, lL = attrs.length; k < lL; k++) {
+        let attr = attrs[k]
+        let attrName = attr.name
+        if (!attrName) throw new Error('Invalid localization JSON for entity ' + entityCode)
+        delete attr['name']
+        newAttrs[attrName] = attr
+      }
+      entity.i18n.attributes = newAttrs
+    }
     if (isV4API) {
-      let entity = domainInfo.domain[entityCode]
       me.entities[entityCode] = new UBEntity(
         entity,
         entity.entityMethods || {},
@@ -74,14 +92,14 @@ function UBDomain (domainInfo) {
       )
     } else {
       me.entities[entityCode] = new UBEntity(
-        domainInfo.domain[entityCode],
+        entity,
         domainInfo.entityMethods[entityCode] || {},
         domainInfo.i18n[entityCode],
         entityCode,
         me
       )
     }
-  })
+  }
 
   /**
    * Array of models, ordered by load order
