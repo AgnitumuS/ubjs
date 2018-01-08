@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.27]
+### Changed
+- allow blank for mi_dateTo record history mixin attribute on browser side
+ (but for DDL generator mi_dateTo must be not null, so for non-browser keep it as is)
+
 ## [4.2.26]
 ### Fixed
 - entity localization files `*.meta.lang` now can contains `attributes` section 
