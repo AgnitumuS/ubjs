@@ -155,6 +155,11 @@
           "type": "string",
           "description": "Origins for cross-origin resource sharing (CORS). See <a href=\"https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS\">mozilla documentation</a><br>Can be set e.g. to '\"*\"' to allow requests from any sites, or specify an URI to be allowed as origin (e.g. 'http://foo.example'). By default (empty) CORS are not allowed"
         },
+        "remoteIPHeader": {
+          "type": "string",
+          "description": "The value of a custom HTTP header containing the real client IP. By default, the RemoteIP information will be retrieved from the socket layer - but if the server runs behind some proxy service, you should define here the HTTP header name which indicates the true remote client IP value, mostly as 'X-Real-IP' or 'X-Forwarded-For'",
+          "default": ""
+        },
         "compression": {
           "enum": [
             "zip",

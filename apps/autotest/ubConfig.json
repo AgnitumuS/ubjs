@@ -6,6 +6,7 @@
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
 		"inetPub": "./inetPub/",
+		//"remoteIPHeader": "X-Real-IP",
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
