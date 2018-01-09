@@ -28,7 +28,14 @@
  */
 
 const btoa = require('btoa')
-
+const customSettings = App.serverConfig.application.customSettings
+let externalUrl = App.serverURL
+/**
+ *
+ */
+if (customSettings && customSettings.externalServerUrl) {
+  externalUrl = customSettings.externalServerUrl
+}
 module.exports.registerEndpoint = registerOpenIDEndpoint
 
 let endpoints = {}
@@ -135,7 +142,7 @@ function openIDConnect (req, resp) {
   // if (redirectUrl) {
   //    redirectUrl = redirectUrl.substr(0, redirectUrl.lastIndexOf('/')) + '/' + endpointName + '/' + providerName;
   // }
-  let redirectUrl = App.serverURL + (App.serverURL[App.serverURL.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
+  let redirectUrl = externalUrl + (externalUrl[externalUrl.length - 1] === '/' ? '' : '/') + endpointName + '/' + providerName
   let paramStr = (req.method === 'GET') ? req.parameters : req.read()
   let params = paramStr ? queryString.parse(paramStr) : null
 
@@ -303,7 +310,12 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
         resp.writeHead('Content-Type: text/html')
         resp.writeHead('Access-Control-Allow-Credentials:true')
         resp.writeHead('Access-Control-Allow-Methods:GET, OPTIONS')
-        resp.writeHead('Access-Control-Allow-Origin:' + orign ? orign.trim() : 'null')
+        // Xhr back redirect return Origin equal null. Null without space ignored in header
+        if (orign && orign.trim() === 'null') {
+          resp.writeHead('Access-Control-Allow-Origin: null')
+        } else {
+          resp.writeHead('Access-Control-Allow-Origin:' + orign ? orign.trim() : 'null')
+        }
       }
     }
   } else {
