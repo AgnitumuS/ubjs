@@ -5,6 +5,7 @@
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
+		//"remoteIPHeader": "X-Real-IP",
 		"inetPub": ".\\inetPub\\",
 		"watchFileChanges": {
 			"enabled": true,
