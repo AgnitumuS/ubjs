@@ -48,11 +48,36 @@ Ext.define('UB.core.UBStoreManager', {
   },
 
   /**
+   * in-memory cache of ubm_navshortcut cmdData values. Key is shortcut ID
+   */
+  shortcutCommandCache: {},
+  shortcutAttributes: ['ID', 'desktopID', 'parentID', 'code', 'isFolder', 'caption', 'inWindow', 'isCollapsed', 'displayOrder', 'iconCls'],
+  /**
+   * Load a nav. shortcut command text from cache or from server
+   * @param {number} shortcutID
+   * @return Promise
+   */
+  getNavshortcutCommandText: function (shortcutID) {
+    var cmdCode = UB.core.UBStoreManager.shortcutCommandCache[shortcutID]
+    var cmdCodePromise
+    if (cmdCode) {
+      cmdCodePromise = Promise.resolve(cmdCode)
+    } else {
+      cmdCodePromise = UB.Repository('ubm_navshortcut').attrs(['ID', 'cmdCode']).where('ID', '=', shortcutID)
+        .selectSingle().then(function (cmd) {
+          var parsedCmdCode = Ext.JSON.decode(cmd.cmdCode)
+          UB.core.UBStoreManager.shortcutCommandCache[shortcutID] = parsedCmdCode
+          return parsedCmdCode
+        })
+    }
+    return cmdCodePromise
+  },
+  /**
    *
    * @return {Ext.data.Store}
    */
   getNavigationShortcutStore: function () {
-    return this.getStore('ubm_navshortcut', $App.domainInfo.get('ubm_navshortcut').getAttributeNames())
+    return this.getStore('ubm_navshortcut', this.shortcutAttributes)
   },
 
   /**

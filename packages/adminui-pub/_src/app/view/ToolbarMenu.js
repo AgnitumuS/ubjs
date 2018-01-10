@@ -140,24 +140,7 @@ Ext.define('UB.view.ToolbarMenu', {
   },
 
   onItemClick: function (button) {
-    var
-      commandConfig,
-      // recordId = parseInt(record.getId(), 10),
-      // navFields = UB.core.UBAppConfig.systemEntities.navigationShortcut.fields,
-      shortcut = button.record // this.storeNavigationShortcut.getById(recordId);
-    try {
-      commandConfig = Ext.JSON.decode(shortcut.get('cmdCode'))
-    } catch (e) {
-      UB.showErrorWindow(e.message || e)
-      throw e
-    }
-
-    if (!shortcut.get('inWindow')) { // inWindow
-      commandConfig.tabId = 'navigator' + shortcut.get('ID') // recordId;
-      commandConfig.target = $App.viewport.centralPanel
-    }
-
-    $App.doCommand(commandConfig)
+    var shortcut = button.record
+    $App.runShortcutCommand(shortcut.get('ID'), shortcut.get('inWindow'))
   }
-
 })

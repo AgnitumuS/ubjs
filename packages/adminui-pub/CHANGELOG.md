@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.45]
+## Changed
+- `ubm_navshortcut` not not load `cmdData` attribute during startup, because this is CLOB,
+and fetching all CLOBS from table is very slow (at last for Oracle)
+
 ## [4.2.44]
 ## Fixed
 - set currency sign to '' for all languages to pass form validation for Currency attributes

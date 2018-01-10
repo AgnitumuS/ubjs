@@ -3,7 +3,7 @@
 	"description": "Shortcut to launch function",
 	"connectionName": "",
 	"sqlAlias": "navsh",
-	"cacheType": "Session", // mixin RLS and cache is not compatrible
+	"cacheType": "None", // we load cmdData on first click to prevent BLOB fetch
 	"descriptionAttribute": "caption",
 	"documentation": "",
 	"attributes": {

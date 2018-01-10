@@ -100,6 +100,9 @@ Ext.define('UB.view.NavigationPanel', {
     let me = this
     let entityName = me.storeNavigationShortcut.ubRequest.entity
     let updateStore = function (store, record, operation) {
+      if (operation === Ext.data.Model.COMMIT) {
+        UB.core.UBStoreManager.shortcutCommandCache[record.get('ID')] = undefined
+      }
       if (me.desktopID && (!operation || Ext.data.Model.COMMIT === operation)) {
         me.onDesktopChanged(me.desktopID)
         return
@@ -225,7 +228,6 @@ Ext.define('UB.view.NavigationPanel', {
   onItemClick: function (view, record, item, index, event, eOpts) {
     var
       me = this,
-      commandConfig,
       recordId, navFields, shortcut
     if (me.clickDisabled) {
       return  // Если быстро клацать по папке в навигационной панели, то рендерятся несколько блоков одинаковых ярлыков https://enviance.softline.kiev.ua/jira/browse/UB-361
@@ -254,27 +256,14 @@ Ext.define('UB.view.NavigationPanel', {
       return
     }
 
-    try {
-      commandConfig = Ext.JSON.decode(shortcut.get(navFields.commandCode))
-    } catch (e) {
-      UB.showErrorWindow(e.message || e)
-      throw e
-    }
-
-    commandConfig.commandContext = { menuButton: item, event: event }
-    if (!shortcut.get(navFields.inWindow)) {
-      commandConfig.tabId = 'navigator' + recordId
-      commandConfig.target = $App.viewport.centralPanel
-    }
-
-    $App.doCommand(commandConfig)
+    $App.runShortcutCommand(shortcut.get('ID'), shortcut.get('inWindow'))
   },
 
-    /**
-     *
-     * @param {Number} desktop
-     * @return {Object[]}
-     */
+  /**
+   *
+   * @param {Number} desktop
+   * @return {Object[]}
+   */
   getData: function (desktop) {
     var
       data = [],
@@ -298,17 +287,14 @@ Ext.define('UB.view.NavigationPanel', {
         level = getLevel(record.get(navFields.ubTreePath))
         data.push({
           id: record.get('ID'),
-          text: // '<span class="' +  (record.get(navFields.isFolder) === 1 ?  'fa fa-folder-o' : 'fa fa-leaf') + '">' +
-                        record.get(navFields.caption), // + '</span>',
+          text: record.get(navFields.caption),
           leaf: !record.get(navFields.isFolder),
           parentId: record.get(navFields.folderID),
-          treepath: record.get(navFields.ubTreePath),
           displayOrder: record.get(navFields.displayOrder),
           desktopID: record.get(navFields.desktopID),
-          expanded: (isFirst && level === 1 || level > 1) && !record.get(navFields.isCollapsed),
+          expanded: ((isFirst && level === 1) || level > 1) && !record.get(navFields.isCollapsed),
           iconCls: record.get('iconCls') || 'fa fa-space',
-          cls: 'ub_navpnl_item' + (level < 4 ? ' ub_navpnl_item_l' + level : '')  // record.get('cls')
-          // iconCls: record.get(navFields.isFolder) === 1 ?  'fa fa-folder-o' : 'fa fa-leaf'
+          cls: 'ub_navpnl_item' + (level < 4 ? ' ub_navpnl_item_l' + level : '')
         })
         isFirst = false
       }
