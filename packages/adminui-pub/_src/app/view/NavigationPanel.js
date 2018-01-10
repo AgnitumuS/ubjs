@@ -98,7 +98,6 @@ Ext.define('UB.view.NavigationPanel', {
 
   initContextMenu: function () {
     let me = this
-    let navFields = UB.core.UBAppConfig.systemEntities.navigationShortcut.fields
     let entityName = me.storeNavigationShortcut.ubRequest.entity
     let updateStore = function (store, record, operation) {
       if (me.desktopID && (!operation || Ext.data.Model.COMMIT === operation)) {
