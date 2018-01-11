@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.48]
+### Changed
+- `ubm_navshortcut` now not cached on entity level (admin UI cache it using it own mechanism)
+This change is required to prevent massive CLOB fetching (cmdData attribute)
+
 ## [4.0.39]
 ### Added
  - userful code snippets added to a form builder for def and js parts
