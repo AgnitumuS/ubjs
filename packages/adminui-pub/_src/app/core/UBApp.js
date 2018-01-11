@@ -435,7 +435,9 @@ Ext.define('UB.core.UBApp', {
           ubRequests: [
             UB.Repository('ubm_navshortcut')
               .attrs(UB.core.UBStoreManager.shortcutAttributes)
-              .orderBy('desktopID').orderBy('parentID').orderBy('caption').ubql()
+              .orderBy('desktopID').orderBy('parentID')
+              .orderBy('displayOrder').orderBy('caption')
+              .ubql()
           ],
           setStoreId: true
         })
