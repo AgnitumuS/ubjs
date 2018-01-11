@@ -7,10 +7,9 @@ Provide a way to store files in any manner developer want.
 
 # General explanation
 
-UnityBase provide 3 different type of storing files on server side:
+UnityBase provide 2 type of storing files on server side:
 
 1. FileSystem
-2. Database
 3. Virtual
 
 First two type implemented inside UnityBase server. Virtual type can be implemented by developer in any manner.
@@ -26,7 +25,7 @@ For Virtual entity developer must implement `select` method and fill content of 
 
 In the store definition section of application configuration developer describe stores. Each store must implement interface described below.
 
-In case `storeType` is `FileSystem` or `Database` this interface is implemented inside UnityBase server executable, for
+In case `storeType` is `FileSystem` this interface is implemented inside UnityBase server executable, for
 `storeType` == Virtual UnityBase search for implementation in `UB.virtualStores.YourStoreName` JS class.
 
 The store class itself must provide storing and retrieving file content (based on meta-information stored in the entity attribute).

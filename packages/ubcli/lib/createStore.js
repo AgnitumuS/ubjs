@@ -101,7 +101,7 @@ module.exports = function createStore (options) {
       }
     }
     console.log('Start handle blobStore "%s"', cStore.name)
-    if (cStore['storeType'] === 'Virtual' || cStore['storeType'] === 'Database') {
+    if (cStore['storeType'] === 'Virtual') {
       console.log('\t Skip. For storeType %s there is no need to create folder structure', cStore['storeType'])
     } else {
       if (!cStore['storeType']) {
