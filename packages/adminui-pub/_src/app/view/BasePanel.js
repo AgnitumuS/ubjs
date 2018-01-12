@@ -379,6 +379,10 @@ Ext.define('UB.view.BasePanel', {
      *
      */
     /**
+     * @event beforeRefresh
+     * Fires before refresh panel.
+     */
+    /**
      * @event beforeClose
      * Fires before close panel.
      */
@@ -411,7 +415,7 @@ Ext.define('UB.view.BasePanel', {
      */
     me.addEvents('recordloaded', 'beforesave', 'manualsaving', 'aftersave', 'afterdelete', 'formDataReady',
       'beforeSaveForm', 'beforeDelete', 'beforeClose', 'updateFields',
-      'controlChanged', 'initComponentDone', 'dataBind')
+      'controlChanged', 'initComponentDone', 'dataBind', 'beforeRefresh')
 
     me.on('destroy', me.onFormDestroy, me)
     me.on('close', me.onPanelClose, me)
@@ -2955,6 +2959,7 @@ Ext.define('UB.view.BasePanel', {
     promise = me.isFormDirty() ? $App.dialogYesNo('areYouSure', 'formWasChanged') : Q.resolve(true)
     promise.done(function (res) {
       if (res) {
+        me.fireEvent('beforeRefresh', me)
         let details = me.details
         if (details && details.length) {
           details.forEach((detail) => {

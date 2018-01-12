@@ -4,6 +4,7 @@ require('../view/Viewport')
 require('../core/UBDataLoader.js')
 require('../view/cryptoUI/ReadPK')
 require('../view/cryptoUI/SelectCert')
+require('./UBStoreManager')
 
 const _ = require('lodash')
 const UB = require('@unitybase/ub-pub')
@@ -416,7 +417,7 @@ Ext.define('UB.core.UBApp', {
       me.fireEvent('appInitialize', me)
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
-        ubRequests: ['ubm_desktop', 'ubm_navshortcut', 'ubm_form', 'ubm_enum'].map(function (item) {
+        ubRequests: ['ubm_desktop', 'ubm_form', 'ubm_enum'].map(function (item) {
           var res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
           if (item === 'ubm_desktop') {
             res.orderList = {
@@ -426,24 +427,20 @@ Ext.define('UB.core.UBApp', {
               }
             }
           }
-          if (item === 'ubm_navshortcut') {
-            res.orderList = [{
-              expression: 'desktopID',
-              order: 'asc'
-            }, {
-              expression: 'parentID',
-              order: 'asc'
-            }, {
-              expression: 'displayOrder',
-              order: 'asc'
-            }, {
-              expression: 'caption',
-              order: 'asc'
-            }]
-          }
           return res
         }),
         setStoreId: true
+      }).then(function () {
+        return UB.core.UBDataLoader.loadStores({
+          ubRequests: [
+            UB.Repository('ubm_navshortcut')
+              .attrs(UB.core.UBStoreManager.shortcutAttributes)
+              .orderBy('desktopID').orderBy('parentID')
+              .orderBy('displayOrder').orderBy('caption')
+              .ubql()
+          ],
+          setStoreId: true
+        })
       })
     }).then(function () { // clear form's def/js cache if ubm_form version changed
       // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
@@ -952,6 +949,22 @@ Ext.define('UB.core.UBApp', {
     }
 
     Ext.create('UB.core.UBCommand', config)
+  },
+  /**
+   * Load a shortcut command by given shortcut ID and run it
+   * @param {Number} shortcutID
+   * @param {Boolean} inWindow
+   */
+  runShortcutCommand: function (shortcutID, inWindow) {
+    var cmdCodePromise = UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
+    cmdCodePromise.then(function (parsedCmdCode) {
+      var commandConfig = _.clone(parsedCmdCode)
+      if (!inWindow) {
+        commandConfig.tabId = 'navigator' + shortcutID
+        commandConfig.target = $App.viewport.centralPanel
+      }
+      $App.doCommand(commandConfig)
+    })
   },
 
   /**

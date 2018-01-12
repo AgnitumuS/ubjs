@@ -287,6 +287,9 @@ Ext.define('UB.view.EntityGridPanel', {
               }
             } else {
               col.editor = UB.core.UBUtil.ubDt2Ext(entityAttribute, attributeDefinition)
+              if (entityAttribute.allowNull === false) {
+                col.editor.allowBlank = false
+              }
             }
             col.editor.margin = '0 1 0 1'
             if (fieldList[i].editor) {

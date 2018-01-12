@@ -46,28 +46,29 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     }
     stl = wb.style
 
-    defFont = stl.fonts.add({code: 'def', name: 'Calibri', fontSize: 11, scheme: 'minor' })
-    borderFull = stl.borders.add({left: {style: 'thin'}, right: {style: 'thin'}, top: {style: 'thin'}, bottom: {style: 'thin'} })
-    stl.fonts.add({code: 'defBold', name: 'Calibri', fontSize: 11, scheme: 'minor', bold: true })
-    stl.alignments.add({code: 'Hright', horizontal: 'right' })
-    stl.alignments.add({code: 'Hcenter', horizontal: 'center', wrapText: '1' })
-    stl.alignments.add({code: 'HVcenter', horizontal: 'center', vertical: 'center', wrapText: '1' })
-    stl.alignments.add({code: 'wrapText', wrapText: '1' })
+    defFont = stl.fonts.add({ code: 'def', name: 'Calibri', fontSize: 11, scheme: 'minor' })
+    stl.fonts.add({ code: 'defBold', name: 'Calibri', fontSize: 11, scheme: 'minor', bold: true })
+
+    borderFull = stl.borders.add({ left: {style: 'thin'}, right: {style: 'thin'}, top: {style: 'thin'}, bottom: {style: 'thin'} })
+    stl.alignments.add({ code: 'Hright', horizontal: 'right' })
+    stl.alignments.add({ code: 'Hcenter', horizontal: 'center', wrapText: '1' })
+    stl.alignments.add({ code: 'HVcenter', horizontal: 'center', vertical: 'center', wrapText: '1' })
+    stl.alignments.add({ code: 'wrapText', wrapText: '1' })
 
     stl.formats.add({ code: 'floatFormat', formatCode: '#,##0.0000_ ;[Red]\\-#,##0.0000\\ ' })
     stl.formats.add({ code: 'sumFormat', formatCode: '#,##0.00_ ;[Red]\\-#,##0.00\\ ' })
     stl.formats.add({ code: 'intFormat', formatCode: '#,##0_ ;[Red]\\-#,##0\\ ' })
 
-    datestyleCol = stl.getStyle({font: defFont, border: borderFull, format: XLSX.XLSXStyle.indexDefFormateDate, code: 'DefDateStyle'})
-    floatstyleCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.floatFormat })
-    sumstyleCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.sumFormat })
-    intstyleCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.intFormat })
+    datestyleCol = stl.getStyle({ font: defFont, border: borderFull, format: XLSX.XLSXStyle.indexDefFormateDate, code: 'DefDateStyle' })
+    floatstyleCol = stl.getStyle({ font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.floatFormat })
+    sumstyleCol = stl.getStyle({ font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.sumFormat })
+    intstyleCol = stl.getStyle({ font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.intFormat })
 
-    fstyle = stl.getStyle({font: defFont})
-    styleCol = stl.getStyle({font: defFont, border: borderFull})
+    fstyle = stl.getStyle({ font: defFont })
+    styleCol = stl.getStyle({ font: defFont, border: borderFull })
     styleWrapCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.wrapText})
-    headerStyle = stl.getStyle({font: stl.fonts.named.defBold, alignment: stl.alignments.named.HVcenter })
-    rowHeaderStyle = stl.getStyle({font: stl.fonts.named.defBold, border: borderFull, alignment: stl.alignments.named.HVcenter })
+    headerStyle = stl.getStyle({ font: stl.fonts.named.defBold, alignment: stl.alignments.named.HVcenter })
+    rowHeaderStyle = stl.getStyle({ font: stl.fonts.named.defBold, fill: 'EBEDED', border: borderFull, alignment: stl.alignments.named.HVcenter })
 
     eAttributes = {}
     Ext.each(config.columns, function (field, index) {
@@ -98,9 +99,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     }
 
     function getWide (fld) {
-      var
-        attribute = eAttributes[fld.name],
-        ubDataTypes = UBDomain.ubDataTypes
+      let attribute = eAttributes[fld.name]
+      let ubDataTypes = UBDomain.ubDataTypes
       if (attribute) {
         switch (attribute.dataType) {  //   entity.attributes[fld.name].
           case ubDataTypes.Date: return 12
@@ -145,24 +145,24 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     }, this)
 
       // title ##################################################
-    ws.addMerge({colFrom: 1, colTo: config.columns.length })
-    ws.addRow({value: config.title, column: 1, style: headerStyle }, {}, {height: 40 })
+    ws.addMerge({ colFrom: 1, colTo: config.columns.length })
+    ws.addRow({ value: config.title, column: 1, style: headerStyle }, {}, { height: 40 })
 
      // Header cells ##################################################
       /* auto (Default, implies no conversion) string int float boolean date */
 
-    colParam.push({column: 1, width: 1 })
+    colParam.push({ column: 0, width: 1 })
     Ext.each(config.columns, function (field, index) {
       var fld = modelFields[field.dataIndex]
-      colParam.push({column: index + 2, width: getWide(fld) })
-      columnTemplate.push({column: index + 1, style: getTypeStyle(fld) })
+      colParam.push({ column: index + 1, width: getWide(fld) })
+      columnTemplate.push({ column: index + 1, style: getTypeStyle(fld) })
       fldtitle = Ext.String.capitalize(field.text || fld.name || '').replace(/_/g, ' ')
-      nrowData.push({value: fldtitle, style: rowHeaderStyle})
+      nrowData.push({column: index + 1, value: fldtitle, style: rowHeaderStyle})
           //  cols.push(this.buildColumn());
     }, this)
     ws.setColsProperties(colParam)
       // Herader
-    ws.addRow(nrowData, columnTemplate, {height: 30 })
+    ws.addRow(nrowData, null, { height: 30 })
 
     function formatValue (fld, fvalue, dataRow) {
       var value
