@@ -15,7 +15,7 @@ UnityBase provide 2 type of storing files on server side:
 First two type implemented inside UnityBase server. Virtual type can be implemented by developer in any manner.
 
 In any case you define **Entity** contain **attribute** of `Document` type and set `storeName` property for this attribute.
-Content of such attributes is a meta-information about file - serialized {TubDocumentContent} object, not actual file content.
+Content of such attributes is a meta-information about file - a serialized {TubDocumentContent} object, not actual file content.
 
 For non-virtual entity (`dsType`!=='Virtual') UnityBase create varchar(4000) field in database and store
 there {TubDocumentContent} serialized to JSON.
@@ -26,7 +26,7 @@ For Virtual entity developer must implement `select` method and fill content of 
 In the store definition section of application configuration developer describe stores. Each store must implement interface described below.
 
 In case `storeType` is `FileSystem` this interface is implemented inside UnityBase server executable, for
-`storeType` == Virtual UnityBase search for implementation in `UB.virtualStores.YourStoreName` JS class.
+`storeType` == Virtual UnityBase search for JS implementation class named 'UB.virtualStores' + [`implementedBy` property from store config].
 
 The store class itself must provide storing and retrieving file content (based on meta-information stored in the entity attribute).
 
@@ -57,7 +57,7 @@ what type of store is used for this attribute. Server:
 
     - load information about previously stored document from entity attribute to {@link TubDocumentContent}.
         Create {@link TubDocumentHandlerCustom} for old file content;
-    - in case of `update` and exist previous revision: if (storeConfig.historyDepth > 0) then
+    - in case of `update` and previous revision is exist: if (storeConfig.historyDepth > 0) then
         call {@link UB.virtualStores.Custom#moveToArchive}, else call {@link UB.virtualStores.Custom#deleteContent};
     - load temporary document meta-information from string provided in update/insert method to {@link TubDocumentContent}.
         Create {@link TubDocumentHandlerCustom} for new file content;
@@ -78,8 +78,10 @@ For download file from server client call getDocument app level method. Server:
 
 Good example of Virtual store implementation is:
 
-  - **mdb** store placed in `UnityBase\models\UB\virtualStores\mdb.js` - implement read/write files from models `public/form` folder;
-  - **fileVirtualWritePDF** (`UnityBase\models\UB\virtualStores\fileVirtualWritePDF.js`) - implement file store with automatic conversion MS Word, MS Excel and MS Power Point documents into \*.pdf format;
+  - **mdb** store placed in `UnityBase\models\UB\virtualStores\mdb.js` - implement read/write files
+ from models `public/form` folder;
+  - **fileVirtualWritePDF** (`UnityBase\models\UB\virtualStores\fileVirtualWritePDF.js`) - implement file store with
+ automatic conversion MS Word, MS Excel and MS Power Point documents into \*.pdf format;
 
 ### Warning - descendants must be singleton. We can not define parent class as singleton due to Ext specific
 
