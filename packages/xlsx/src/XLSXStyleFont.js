@@ -1,16 +1,23 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const XLSXBaseStyleElement = require('./XLSXBaseStyleElement')
+const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
+const Color = require('./Color')
+
+let instance = null
 
 /**
  * @class XLSXStyleFont Registered font styles
  */
-class XLSXStyleFont extends XLSXBaseStyleElement {
-  compileTemplate (element) {
+class XLSXStyleControllerFont extends XLSXBaseStyleController {
+  static instance () {
+    return instance
+  }
+
+  compile (item) {
     let out = []
-    let xkey
+    let element = item.config
     // noinspection HtmlDeprecatedTag
     out.push('<font>')
     if (element.bold === true) {
@@ -20,28 +27,22 @@ class XLSXStyleFont extends XLSXBaseStyleElement {
       out.push('<shadow/>')
     }
     if (element.fontSize) {
-      out.push('<sz val="', element.fontSize + '', '"/>')
+      out.push(`<sz val="${String(element.fontSize)}"/>`)
     }
     if (element.color) {
-      out.push('<color ')
-      for (xkey in element.color) {
-        if (element.color.hasOwnProperty(xkey)) {
-          out.push(xkey, '="', element.color[xkey], '" ')
-        }
-      }
-      out.push('/>')
+      out.push(element.color.compile())
     }
     if (element.name) {
-      out.push('<name val="', element.name, '"/>')
+      out.push(`<name val="${element.name}"/>`)
     }
     if (element.family) {
-      out.push('<family val="', element.family, '"/>')
+      out.push(`<family val="${element.family}"/>`)
     }
     if (element.scheme) {
-      out.push('<scheme val="', element.scheme, '"/>')
+      out.push(`<scheme val="${element.scheme}"/>`)
     }
     if (element.underline) {
-      out.push('<underline val="', element.underline, '"/>')
+      out.push(`<underline val="${element.underline}"/>`)
     }
     out.push('</font>')
     return out.join('')
@@ -57,7 +58,7 @@ class XLSXStyleFont extends XLSXBaseStyleElement {
       info.family,
       info.scheme,
       info.underline,
-      info.color ? tools.getHashColor(info.color) : '#'
+      info.color ? Color.getHash(info.color) : '#'
     ])
   }
 
@@ -72,7 +73,7 @@ class XLSXStyleFont extends XLSXBaseStyleElement {
    * @param {Number} [info.family] (optional) 0 - 14
    * @param {String} [info.scheme] (optional)  none, major, minor
    * @param {String} [info.underline] (optional) single, double, singleAccounting, doubleAccounting, none,
-   * @param {Object} [info.color] (optional)
+   * @param {Object|string|Color} [info.color] (optional)
    * @param {String} [info.color.theme] (optional)
    * @param {Number} [info.color.tint] (optional)
    * @param {Number} [info.color.indexed] (optional)
@@ -80,8 +81,16 @@ class XLSXStyleFont extends XLSXBaseStyleElement {
    * @return {Number} index
    */
   add (info) {
-    return super.add(info)
+    tools.checkParamTypeObj(info, 'XLSXStyleControllerFont.add')
+    if (info.color) {
+      info.color = Color.from(info.color)
+    }
+    return super.add(info, 'FONT')
   }
 }
 
-module.exports = XLSXStyleFont
+instance = new XLSXStyleControllerFont()
+
+module.exports = {
+  XLSXStyleControllerFont
+}

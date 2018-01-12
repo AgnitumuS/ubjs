@@ -1,9 +1,11 @@
-const XLSXStyleBorder = require('./XLSXStyleBorder')
-const XLSXStyleFill = require('./XLSXStyleFill')
-const XLSXStyleFormat = require('./XLSXStyleFormat')
-const XLSXStyleFont = require('./XLSXStyleFont')
-const XLSXStyleAlign = require('./XLSXStyleAlign')
-const XLSXStyleProtect = require('./XLSXStyleProtect')
+const {XLSXBaseStyleElement} = require('./XLSXBaseStyleElement')
+const {XLSXStyleControllerBorder} = require('./XLSXStyleBorder')
+const {XLSXStyleControllerFill} = require('./XLSXStyleFill')
+const {XLSXStyleControllerFormat} = require('./XLSXStyleFormat')
+const {XLSXStyleControllerFont} = require('./XLSXStyleFont')
+const {XLSXStyleControllerAlign} = require('./XLSXStyleAlign')
+const {XLSXStyleControllerProtect} = require('./XLSXStyleProtect')
+const tools = require('./tools')
 
 /**
  *
@@ -52,82 +54,84 @@ class XLSXStyle {
     }
   }
 
+  /**
+   * Use function wb.style.getStyle for create XLSXStyle
+   * @private
+   * @param {Object} config
+   * @param {Number} id
+   * @param {XLSXStyleController} controller
+   */
+  constructor (config, id, controller) {
+    this.config = config
+    this.id = id
+    this.controller = controller
+  }
+
+  /**
+   * Returns clone of this style with compounded config
+   * @param {Object} config Configuration for compound. If config do not have properties the function return same style
+   * @return {XLSXStyle}
+   */
+  compound (config) {
+    return this.controller.getStyle(Object.assign(tools.configFromInstance(this.config), config))
+  }
+
+  compile () {
+    let cfg = this.config
+    let out = []
+    out.push(
+      `<xf numFmtId="${extractId(cfg.format)}" fontId="${extractId(cfg.font)}"`
+    )
+    out.push(
+      ` fillId="${extractId(cfg.fill)}" borderId="${extractId(cfg.border)}" xfId="0"`
+    )
+    out.push(
+      ` ${cfg.format ? 'applyNumberFormat="1"' : ''}  applyFont="1" ${cfg.fill ? 'applyFill="1"' : ''} ${cfg.border ? 'applyBorder="1"' : ''}`
+    )
+    let setAdditionalAlignment = cfg.wrapText || cfg.verticalAlign || cfg.horizontalAlign
+    out.push(
+      ` ${cfg.alignment || setAdditionalAlignment ? 'applyAlignment="1"' : ''} ${cfg.protect ? 'applyProtection="1"' : ''} >`
+    )
+    if (cfg.alignment) {
+      out.push(cfg.alignment.compile())
+    }
+    if (cfg.protect) {
+      out.push(cfg.protect.compile())
+    }
+    if (setAdditionalAlignment) {
+      out.push(
+        `<alignment ${cfg.wrapText ? 'wrapText="1"' : ''} ${cfg.verticalAlign ? 'vertical="' + cfg.verticalAlign + '"' : ''}`
+      )
+      // left (by default), center, right
+      out.push(cfg.horizontalAlign ? ' horizontal="' + cfg.setHorizontalAlign + '" />' : ' />')
+    }
+    out.push('</xf>')
+    return out.join('')
+  }
+}
+
+class XLSXStyleController {
   constructor (config) {
     config = config || {}
 
-    this.borders = new XLSXStyleBorder({left: {}, right: {}, top: {}, bottom: {}})
-    this.fills = new XLSXStyleFill({patternType: 'none'})
-    this.formats = new XLSXStyleFormat()
-    this.fonts = new XLSXStyleFont()
-    this.alignments = new XLSXStyleAlign()
-    this.protects = new XLSXStyleProtect()
+    this.alignments = XLSXStyleControllerAlign.instance()
+    this.borders = XLSXStyleControllerBorder.instance()
+    this.borders.add({left: {}, right: {}, top: {}, bottom: {}})
+    this.fills = XLSXStyleControllerFill.instance()
+    this.fills.add({patternType: 'none'})
+    this.formats = XLSXStyleControllerFormat.instance()
+    this.fonts = XLSXStyleControllerFont.instance()
+    this.protects = XLSXStyleControllerProtect.instance()
 
     this.elements = []
     this.named = {}
-    this.compiled = []
     this.styleHashList = {}
     this.styleHashListIndex = 0
 
     this.defaultStyle = this.getStyle({code: 'defaultStyle'})
   }
 
-  compileSTemplate (cfg) {
-    let out = []
-    out.push(`<xf numFmtId="${cfg.format}" fontId="${cfg.font}" fillId="${cfg.fill}" borderId="${cfg.border}" xfId="0"`)
-    if (cfg.setformat === true) {
-      out.push(' applyNumberFormat="1"')
-    }
-    // if (cfg.setfont === true){
-    out.push(' applyFont="1"')
-    // }
-    if (cfg.setfill === true) {
-      out.push(' applyFill="1"')
-    }
-    if (cfg.setborder === true) {
-      out.push(' applyBorder="1"')
-    }
-    if (cfg.setalignment === true || cfg.setWrapText === 1) {
-      out.push(' applyAlignment="1"')
-    }
-    if (cfg.setprotect === true) {
-      out.push(' applyProtection="1"')
-    }
-    out.push('>')
-    if (cfg.setalignment === true) {
-      out.push(' ', cfg.alignmentval)
-    }
-    if (cfg.setprotect === true) {
-      out.push(' ', cfg.protectionval)
-    }
-
-    let setAdditionalAlignment =
-      cfg.setWrapText ||
-      cfg.setVerticalAlign ||
-      cfg.setHorizontalAlign
-
-    if (setAdditionalAlignment !== 0) {
-      out.push('<alignment ')
-    }
-    if (cfg.setWrapText === 1) {
-      out.push(' wrapText="1" ')
-    }
-    // top, center, bottom (by default)
-    if (cfg.setVerticalAlign !== 0) {
-      out.push(' vertical="' + cfg.setVerticalAlign + '" ')
-    }
-    // left (by default), center, right
-    if (cfg.setHorizontalAlign !== 0) {
-      out.push(' horizontal="' + cfg.setHorizontalAlign + '" ')
-    }
-    if (setAdditionalAlignment !== 0) {
-      out.push('/>')
-    }
-
-    out.push('</xf>')
-    return out.join('')
-  }
-
-  compileTemplate (obj) {
+  compile (obj) {
     let out = []
 
     out.push(
@@ -150,7 +154,7 @@ class XLSXStyle {
       '<cellStyleXfs count="1">',
       '<xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>',
       '</cellStyleXfs>',
-      '<cellXfs count="', obj.compiled.length, '">', obj.elementsJoined, '</cellXfs>',
+      '<cellXfs count="', obj.elements.length, '">', obj.elementsJoined, '</cellXfs>',
       '<cellStyles count="1">',
       '<cellStyle name="Обычный" xfId="0" builtinId="0"/>',
       '</cellStyles>',
@@ -165,52 +169,57 @@ class XLSXStyle {
   }
 
   /**
-   * If style not exists add new.  Return style index
-   * @param config
-   *  @param {Number} [config.border] (optional) {@link XLSX.csStyle#borders.add} {@link XLSX.csStyleBorder#add}
-   *  @param {Number} [config.fill] (optional) {@link XLSX.csStyle#fills.add} {@link XLSX.csStyleFill#add}
-   *  @param {Number} [config.format] (optional) {@link XLSX.csStyle#formats.add} {@link XLSX.csStyleFormat#add}
-   *  @param {Number} [config.font] (optional) {@link XLSX.csStyle#fonts.add} {@link XLSX.csStyleFont#add}
-   *  @param {Number} [config.alignment] (optional) {@link XLSX.csStyle#alignments.add} {@link XLSX.csStyleAlign#add}
-   *  @param {Number} [config.protect] (optional) {@link XLSX.csStyle#protects.add} {@link XLSX.csStyleProtect#add}
-   *  @return {Number}
+   * If style not exists add new. Return style index
+   * @param {object} config
+   *  @param {Number} [config.border|XLSXBaseStyleElement] (optional) {@link XLSXStyle#borders.add} {@link XLSXStyleBorder#add}
+   *  @param {Number} [config.fill|XLSXBaseStyleElement] (optional) {@link XLSXStyle#fills.add} {@link XLSXStyleFill#add}
+   *  @param {Number} [config.format|XLSXBaseStyleElement] (optional) {@link XLSXStyle#formats.add} {@link XLSXStyleFormat#add}
+   *  @param {Number} [config.font|XLSXBaseStyleElement] (optional) {@link XLSXStyle#fonts.add} {@link XLSXStyleFont#add}
+   *  @param {Number} [config.alignment|XLSXBaseStyleElement] (optional) {@link XLSXStyle#alignments.add} {@link XLSXStyleAlign#add}
+   *  @param {Number} [config.protect|XLSXBaseStyleElement] (optional) {@link XLSXStyle#protects.add} {@link XLSXStyleProtect#add}
+   *  @param {boolean} [config.wrapText=false]
+   *  @param {String} [config.verticalAlign=bottom] top, center, bottom  Synonim SetVerticalAlign
+   *  @param {String} [config.horizontalAlign=left] left , center, right
+   *  @return {XLSXStyle}
    */
   getStyle (config) {
+    tools.checkParamTypeObj(config, 'XLSXStyleControllerProtect.getHash')
     const cfg = config
-    cfg.setborder = typeof cfg.border !== 'undefined'
-    cfg.border = cfg.border || 0
-    cfg.setfill = typeof cfg.fill !== 'undefined'
-    cfg.fill = cfg.fill || 0
-    cfg.setformat = typeof cfg.format !== 'undefined'
-    cfg.format = cfg.format || 0
-    cfg.setfont = typeof cfg.font !== 'undefined'
-    cfg.font = cfg.font || 0
-    cfg.setalignment = typeof cfg.alignment !== 'undefined'
-    cfg.setWrapText = cfg.setWrapText || 0
-    cfg.setVerticalAlign = cfg.setVerticalAlign || 0
-    cfg.setHorizontalAlign = cfg.setHorizontalAlign || 0
-    cfg.alignment = cfg.alignment || 0
+    if (typeof cfg.border !== 'undefined') {
+      cfg.border = this.borders.get(cfg.border)
+    }
+    if (typeof cfg.fill !== 'undefined') {
+      cfg.fill = this.fills.get(cfg.fill)
+    }
+    if (typeof cfg.format !== 'undefined') {
+      cfg.format = this.formats.get(cfg.format)
+    }
+    if (typeof cfg.font !== 'undefined') {
+      cfg.font = this.fonts.get(cfg.font)
+    }
+    cfg.wrapText = cfg.wrapText !== undefined ? cfg.wrapText : cfg.setWrapText
+    cfg.verticalAlign = cfg.verticalAlign || cfg.setVerticalAlign
+    cfg.horizontalAlign = cfg.horizontalAlign || cfg.setHorizontalAlign
     if (typeof cfg.alignment !== 'undefined') {
-      cfg.alignmentval = this.alignments.compiled[cfg.alignment]
+      cfg.alignment = this.alignments.get(cfg.alignment)
     }
-    cfg.setprotect = typeof cfg.protect !== 'undefined'
     if (typeof cfg.protect !== 'undefined') {
-      cfg.protectval = this.protects.compiled[cfg.protect]
+      cfg.protect = this.protects.get(cfg.protect)
     }
-    cfg.protect = cfg.protect || 0
     const styleHash = this.getStyleHash(cfg)
-    let styleId = this.styleHashList[styleHash]
-    if (styleId) {
-      return styleId
+    let style = this.styleHashList[styleHash]
+    if (style) {
+      return style
     }
 
-    cfg.id = this.styleHashList[styleHash] = this.styleHashListIndex // this.elements
+    style = new XLSXStyle(cfg, this.styleHashListIndex, this)
+    this.styleHashList[styleHash] = style
+    this.elements[this.styleHashListIndex] = style
     this.styleHashListIndex++
-    this.compiled.push(this.compileSTemplate(cfg)) // this.tplXfs.apply(cfg)
     if (cfg.code) {
       this.named[cfg.code] = cfg.id
     }
-    return cfg.id
+    return style
   }
 
   getDefDateStyle () {
@@ -227,16 +236,15 @@ class XLSXStyle {
    */
   getStyleHash (config) {
     return [
-      !config.setborder ? '#' : config.border.toString(),
-      !config.border ? '#' : config.border.toString(),
-      !config.setfill ? '#' : config.fill.toString(),
-      !config.setformat ? '#' : config.format.toString(),
-      !config.setfont ? '#' : config.font.toString(),
-      !config.setalignment ? '#' : config.alignment.toString(),
-      !config.setprotect ? '#' : config.protect.toString(),
-      !config.setWrapText ? '#' : config.setWrapText.toString(),
-      !config.setVerticalAlign ? '#' : config.setVerticalAlign.toString(),
-      !config.setHorizontalAlign ? '#' : config.setHorizontalAlign.toString()
+      !config.border ? '#' : String(extractId(config.border)),
+      !config.fill ? '#' : String(extractId(config.fill)),
+      !config.format ? '#' : String(extractId(config.format)),
+      !config.font ? '#' : String(extractId(config.font)),
+      !config.alignment ? '#' : String(extractId(config.alignment)),
+      !config.protect ? '#' : String(extractId(config.protect)),
+      !config.wrapText ? '1' : '0',
+      !config.verticalAlign ? '#' : config.verticalAlign,
+      !config.horizontalAlign ? '#' : config.horizontalAlign
     ].join('_')
   }
 
@@ -245,7 +253,7 @@ class XLSXStyle {
    * @return {String}
    */
   render () {
-    this.elementsJoined = this.compiled.join('')
+    this.elementsJoined = this.elements.map(item => item.compile()).join('')
     this.bordersCnt = this.borders.elements.length
     this.fillsCnt = this.fills.elements.length
     this.formatsCnt = this.formats.elements.length
@@ -253,8 +261,19 @@ class XLSXStyle {
     this.alignmentsCnt = this.alignments.elements.length
     this.protectsCnt = this.protects
 
-    return this.compileTemplate(this) // this.tpl.apply(this);
+    return this.compile(this) // this.tpl.apply(this);
   }
 }
 
-module.exports = XLSXStyle
+function extractId (item) {
+  switch (typeof item) {
+    case 'undefined': return 0
+    case 'object': return item.id
+    case 'number': return item
+  }
+}
+
+module.exports = {
+  XLSXStyle,
+  XLSXStyleController
+}
