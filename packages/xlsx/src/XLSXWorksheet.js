@@ -34,6 +34,7 @@ class XLSXWorksheet {
     this.worksheetScale = null
 
     /**
+     * @deprecated
      * Fix for unfilling first column
      */
     this.fixFirstColumn = false
@@ -420,10 +421,11 @@ class XLSXWorksheet {
   }
 
   /**
+   * @deprecated
    * Setting up for fix first column
    */
   setFixForFirstColumn () {
-    this.fixFirstColumn = true
+    this.fixFirstColumn = false
   }
 }
 
