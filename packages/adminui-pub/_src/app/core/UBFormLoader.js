@@ -226,7 +226,7 @@ Ext.define('UB.core.UBFormLoader', {
         return Promise.resolve(data)
       } else {
         return UB.core.UBService.getDocument({
-          id: id,
+          ID: id,
           entity: 'ubm_form',
           attribute: attr
         }, null, null, {usePostMethod: true}).then(function (data) {

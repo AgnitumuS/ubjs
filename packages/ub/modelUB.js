@@ -191,12 +191,13 @@ UB.run = function () {
   App.emit('domainIsLoaded')
 
   // ENDPOINTS
-  const {clientRequire, models, getAppInfo, getDomainInfoEp} = require('./modules/endpoints')
+  const {clientRequire, models, getAppInfo, getDomainInfoEp, getDocument} = require('./modules/endpoints')
 
   App.registerEndpoint('getAppInfo', getAppInfo, false)
   App.registerEndpoint('models', models, false)
   App.registerEndpoint('clientRequire', clientRequire, false)
   App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
+  App.registerEndpoint('getDocument', getDocument, true)
 }
 
 module.exports = UB

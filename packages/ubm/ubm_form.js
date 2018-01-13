@@ -72,7 +72,7 @@ function postProcessing (loader, fullFilePath, content, row) {
     row.formCode = JSON.stringify({
       fName: fileName,
       origName: fileName,
-      ct: JSON_CONTENT_TYPE,
+      ct: DFM_CONTENT_TYPE, // JSON_CONTENT_TYPE,
       size: jsFileStat.size,
       md5: 'fb6a51668017be0950bd18c2fb0474a0',
       relPath: relPath
