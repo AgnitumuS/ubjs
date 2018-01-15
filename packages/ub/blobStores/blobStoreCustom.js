@@ -93,9 +93,9 @@ const path = require('path')
  * @property {String} ct Content type
  * @property {Number} size Content size
  * @property {String} md5 Content MD5 checksum
- * @property {Number} revision Content revision
- * @property {Number} isDirty ????
- * @property {Boolean} isPermanent If `true` - do not delete content during history rotation
+ * @property {Number} [revision] Content revision. Used only for stores with `historyDepth` > 0
+ * @property {Number} [isDirty] ????
+ * @property {Boolean} [isPermanent] If `true` - do not delete content during history rotation
  */
 
 /**
@@ -115,13 +115,30 @@ const path = require('path')
  */
 const BlobStoreCustom = {
   /**
-   * -
    * Implementation must save file content to temporary store
    * @abstract
-   * @param {TubDocumentHandlerCustom} handler
+   * @param {BlobStoreRequest} request Request params
+   * @param {UBEntityAttribute} attribute
+   * @param {ArrayBuffer} content
+   * @param {THTTPRequest} req
+   * @param {THTTPResponse} resp
+   * @returns {BlobStoreItem}
    */
-  saveContentToTempStore: function (handler) {
+  saveContentToTempStore: function (request, attribute, content, req, resp) {
   },
+
+  /**
+   * Retrieve BLOB content from blob store.
+   * @abstract
+   * @param {BlobStoreRequest} request
+   * @param {BlobStoreItem} blobInfo JSON retrieved from a DB.
+   * @param {Object} [options]
+   * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
+   *   If `undefined` UB will send query to entity anf get it from DB.
+   *   At last one parameter {store: storeName} should be defined to prevent loading actual JSON from DB
+   * @returns {String|ArrayBuffer}
+   */
+  getContent: function (request, blobInfo, options) { },
 
   /**
    * -

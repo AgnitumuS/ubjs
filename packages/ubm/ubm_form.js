@@ -1,5 +1,5 @@
 /* jshint multistr:true */
-/* global TubAttrDataType, require */
+/* global ubm_form */
 let me = ubm_form
 
 const fs = require('fs')
@@ -7,6 +7,10 @@ const _ = require('lodash')
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
 const LocalDataStore = require('@unitybase/base').LocalDataStore
 const path = require('path')
+const App = require('@unitybase/ub').App
+const UB = require('@unitybase/ub')
+const UBDomain = require('@unitybase/base').UBDomain
+const blobStores = require('@unitybase/ub/blobStores')
 
 me.entity.addMethod('select')
 me.entity.addMethod('update')
@@ -133,7 +137,7 @@ function doSelect (ctxt) {
 
   cachedData = loadAllForms()
 
-  if (!(aID && (aID > -1)) && (cType === TubCacheType.Entity || cType === TubCacheType.SessionEntity) && (!mP.skipCache)) {
+  if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity || cType === UBDomain.EntityCacheTypes.SessionEntity) && (!mP.skipCache)) {
     reqVersion = mP.version
     mP.version = resultDataCache.version
     if (reqVersion === resultDataCache.version) {
@@ -226,48 +230,40 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   newFormDefMeta = newValues.formDef
   _.forEach(newValues, function (val, key) {
     attr = entity.attributes[key]
-    if (attr && (attr.dataType !== TubAttrDataType.Document)) {
+    if (attr && (attr.dataType !== UBDomain.ubDataTypes.Document)) {
       storedValue[key] = val
     }
   })
 
   formEntity = App.domainInfo.get(storedValue.entity)
   codeOfModelToStore = storedValue.model || formEntity.modelName
-  // check form -fm.js
-  docReq = new TubDocumentRequest()
-  docReq.entity = entity.name
-  docReq.attribute = 'formCode'
-  docReq.id = ID
-  docReq.isDirty = Boolean(newFormCodeMeta) || isInsert
-  docHandler = docReq.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.Yes /* WithBody */)
-  docBody = docHandler.request.getBodyAsUnicodeString()
-  if ((storedValue.formType === 'auto') && (!docBody || docBody === '{}')) {
-    docBody = getFormBodyTpl('new_autoFormJS.mustache', 'exports.formCode = {\r\n};')
-    docHandler.request.setBodyAsUnicodeString(docBody)
-  } else if ((storedValue.formType === 'vue') && (!docBody || docBody === '{}')) {
-    docBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n};')
-    docHandler.request.setBodyAsUnicodeString(docBody)
+  if (!newFormCodeMeta && isInsert) {
+    // create boilerplate for empty form code
+    let docBody
+    if (storedValue.formType === 'auto') {
+      docBody = getFormBodyTpl('new_autoFormJS.mustache', 'exports.formCode = {\r\n}')
+    } else if (storedValue.formType === 'vue') {
+      docBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n}')
+    }
+    let formCodeInfo = blobStores.putToBlobStore({
+      entity: entity.name,
+      attribute: 'formCode',
+      ID: ID,
+      fileName: storedValue.code + JS_FILE_TAIL
+    }, docBody)
+    newFormCodeMeta = JSON.stringify(formCodeInfo)
   }
-  ct = docHandler.content
-  ct.fName = storedValue.code + JS_FILE_TAIL
-  ct.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
-  ct.ct = JSON_CONTENT_TYPE
-  docReq.isDirty = true
-  docHandler.saveContentToTempStore()
-  docHandler.moveToPermanentStore('')
-  storedValue.formCode = JSON.stringify(ct)
+  if (newFormCodeMeta) {
+    storedValue.formCode = newFormCodeMeta
+  }
 
-  // in all case load form definition
-  docReq = new TubDocumentRequest()
-  docReq.entity = entity.name
-  docReq.attribute = 'formDef'
-  docReq.id = ID
-  // if passed new form definition - load from temp store, else - from permanent
-  docReq.isDirty = Boolean(newFormDefMeta) || isInsert
-  docHandler = docReq.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.Yes /* with body */)
-  docBody = docHandler.request.getBodyAsUnicodeString()
+  docBody = blobStores.getFromBlobStore({
+    entity: entity.name,
+    attribute: 'formDef',
+    ID: ID,
+    isDirty: Boolean(newFormDefMeta) || isInsert
+  }, {store: 'mdb'}, {encoding: 'utf-8'})
+
   let clearAttrReg = /^\/\/[ \t]?@(.+) "(.*)"[ \t]*\r?\n/gm // seek for //@ "bla bla" CRLF
   if (!docBody) {
     if (storedValue.formType === 'auto') {
@@ -286,21 +282,25 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   let addedAttr = ''
   for (let attrCode in entity.attributes) {
     let attr = entity.attributes[attrCode]
-    if (attr.dataType !== TubAttrDataType.Document && attr.defaultView && attrCode !== 'ID' && attrCode !== 'code') {
+    if (attr.dataType !== UBDomain.ubDataTypes.Document && attr.defaultView && attrCode !== 'ID' && attrCode !== 'code') {
       addedAttr = '// @' + attrCode + ' "' + storedValue[attrCode] + '"\r\n' + addedAttr
     }
   }
 
   docBody = '// @! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + docBody
-  docHandler.request.setBodyAsUnicodeString(docBody)
-  ct = docHandler.content
-  ct.fName = storedValue.code + DEF_FILE_TAIL
-  ct.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
-  ct.ct = JSON_CONTENT_TYPE
-  storedValue.formDef = JSON.stringify(ct)
+  let formDefInfo = blobStores.putToBlobStore({
+    entity: entity.name,
+    attribute: 'formDef',
+    ID: ID,
+    fileName: storedValue.code + DEF_FILE_TAIL
+    // ct.fName = storedValue.code + DEF_FILE_TAIL
+    // ct.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
+    // ct.ct = JSON_CONTENT_TYPE
+  }, docBody)
+  storedValue.formDef = JSON.stringify(formDefInfo)
 
-  docHandler.saveContentToTempStore()
-  docHandler.moveToPermanentStore('')
+  // TODO call applyAdtDocumentAttributes to move files from temp to permanent
+
   console.debug('--== ubm_form: resultDataCache cleared ==--')
   resultDataCache = null // drop cache. afterInsert call select and restore cache
   return true
@@ -329,7 +329,7 @@ me.update = function (ctxt) {
   if (inParams.code && inParams.code !== storedValue.code) {
     throw new Error('<<<To change form code rename both *.def & *.js files & change "//@code "formCode" comment inside new def file>>>')
   }
-  doUpdateInsert(ctxt, storedValue)
+  doUpdateInsert(ctxt, storedValue, false)
   ctxt.preventDefault()
   return true // everything is OK
 }

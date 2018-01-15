@@ -146,7 +146,7 @@ class ServerRepository extends CustomRepository {
 /**
  * Create new instance of ServerRepository
  *
- *      const Repository = require('@unitybase.base/ServerRepository').fabric;
+ *      const Repository = require('@unitybase.base').ServerRepository.fabric;
  *      var req = Repository('uba_user').attrs('*').ubql();
  *
  * @param {String} entityName name of Entity for which we create repository

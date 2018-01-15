@@ -505,6 +505,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   if (entityInfo.descriptionAttribute) this.descriptionAttribute = entityInfo.descriptionAttribute
   if (entityInfo.cacheType) this.cacheType = entityInfo.cacheType
   if (entityInfo.dsType) this.dsType = entityInfo.dsType
+  if (entityInfo.isUnity) this.isUnity = true
 
   /**
    * Internal short alias
@@ -646,6 +647,11 @@ UBEntity.prototype.cacheType = 'None'
  */
 UBEntity.prototype.dsType = 'Normal'
 
+/**
+ * Is this entity UNITY for someone
+ * @type {boolean}
+ */
+UBEntity.prototype.isUnity = false
 /**
  * Return an entity caption to display on UI
  * @returns {string}

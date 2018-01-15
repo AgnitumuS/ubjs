@@ -12,33 +12,7 @@ const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
 const App = require('./App')
 const Session = require('./Session')
-
-/**
- * @param {THTTPResponse} resp
- * @param {string} [reason]
- * @return {boolean}
- * @private
- */
-function badRequest (resp, reason) {
-  resp.statusCode = 400
-  resp.writeEnd('Bad request')
-  if (reason) console.error('Bad request.', reason)
-  return false
-}
-
-/**
- * @param {THTTPResponse} resp
- * @param {string} reason
- * @return {boolean}
- * @private
- */
-function notFound (resp, reason) {
-  resp.statusCode = 404
-  resp.writeEnd('Not found')
-  if (reason) console.error('Not found', reason)
-  return false
-}
-
+const {badRequest, notFound} = require('./httpUtils')
 /**
  *
  * @param {string} reqPath
@@ -317,81 +291,9 @@ function getDomainInfoEp (req, resp) {
   resp.validateETag()
 }
 
-const UBDomain = require('@unitybase/base').UBDomain
-const Repository = require('@unitybase/base').ServerRepository.fabric
-function createBlobStoreMap () {
-  let blobStores = App.serverConfig.application.blobStores
-  let res = {}
-  if (!blobStores) return
-  blobStores.forEach((store) => {
-    res[store.name] = store
-    let storeImplementationModule = store.implementedBy
-    // UB4 compatibility
-    if (!storeImplementationModule && (!store.storeType || store.name === 'fileVirtual')) {
-      storeImplementationModule = '../blobStores/fileSystemBlobStore'
-    }
-    if (!storeImplementationModule && (store.name = 'mdb')) {
-      storeImplementationModule = '../blobStores/mdbBlobStore'
-    }
-    if (storeImplementationModule === 'fileVirtualWritePDF') {
-      storeImplementationModule = '../blobStores/fileVirtualWritePDF'
-    }
-    /**
-     * Store implementation
-     */
-    store.implementation = require(storeImplementationModule)
-  })
-  return res
-}
-const blobStoresMap = createBlobStoreMap()
-
-/**
- * Retrieve document content from blobStore and send it to response.
- *
- * Accept 3 mandatory parameter: entity,attribute,ID
- * and 3 optional parameter: isDirty, fileName, revision.
- *
- * HTTP method can be either GET - in this case parameters passed in the URL
- * or POST - in this case parameters as JSON in body
- *
- * @param {THTTPRequest} req
- * @param {THTTPResponse} resp
- */
-function getDocument (req, resp) {
-  let params
-  if (req.method === 'GET') { // TODO - should we handle 'HEAD' here?
-    params = queryString.parse(req.parameters)
-  } else if (req.method === 'POST') {
-    params = JSON.parse(req.read())
-  } else {
-    return badRequest(resp, 'invalid HTTP verb' + req.method)
-  }
-
-  if (!params.entity || !params.attribute || !params.ID) {
-    return badRequest(resp, 'one of required parameters (entity,attribute,ID) not found')
-  }
-  let ID = parseInt(params.ID)
-  if (ID <= 0) return badRequest(resp, 'incorrect ID value')
-  let entity = App.domainInfo.get(params.entity)
-  let attribute = entity.getAttribute(params.attribute)
-  if (attribute.dataType !== UBDomain.ubDataTypes.Document) {
-    return badRequest(resp, `Invalid getDocument Request to non-document attribute ${params.entity}.${params.attribute}`)
-  }
-  let blobInfoTxt = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectScalar()
-  if (!blobInfoTxt) return notFound(resp, `${entity.code} with ID=${ID}`)
-  let blobInfo = JSON.parse(blobInfoTxt)
-  // first try to get a store code from blobInfo
-  let storeCode = blobInfo.store ? blobInfo.store : attribute.storeName
-  let store = blobStoresMap[storeCode]
-  if (!store) return badRequest(resp, `Blob store ${storeCode} not found in application config`)
-  // call store implementation method
-  return store.implementation.fillResponse(params, blobInfo, req, resp)
-}
-
 module.exports = {
   models,
   getAppInfo,
   clientRequire,
-  getDomainInfoEp,
-  getDocument
+  getDomainInfoEp
 }

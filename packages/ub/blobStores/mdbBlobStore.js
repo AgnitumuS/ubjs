@@ -2,6 +2,8 @@ const _ = require('lodash')
 const BlobStoreCustom = require('./BlobStoreCustom')
 const path = require('path')
 const App = require('../modules/App')
+const fs = require('fs')
+const CryptoJS = require('@unitybase/cryptojs/core')
 /**
  *  @classdesc
  *  Blob store implementation for storing content inside models `public` folders.
@@ -61,28 +63,46 @@ MdbBlobStore.fillResponse = function (requestParams, blobInfo, req, resp) {
 }
 
 /**
- * @inheritdoc
+ * @inheritDoc
+ * @param {BlobStoreRequest} request Request params
+ * @param {UBEntityAttribute} attribute
+ * @param {ArrayBuffer} content
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @returns {BlobStoreItem}
 */
-MdbBlobStore.saveContentToTempStore = function (handler) {
-  var
-    content = handler.content,
-    request = handler.request,
-    fn
-  console.debug('--========saveContentToTempStore=====------')
-
-  if (!request.getIsBodyLoaded()) {
-    request.setBodyAsUnicodeString('{}')
+MdbBlobStore.saveContentToTempStore = function (request, attribute, content, req, resp) {
+  let fn = this.getTempFileName(request)
+  console.debug('temp file is written to', fn)
+  fs.writeFileSync(fn, content)
+  // TODO md5val = CryptoJS.MD5(content)
+  return {
+    store: attribute.storeName,
+    fName: '',
+    origName: '',
+    ct: '', // TODO
+    size: content.byteLength,
+    md5: '',
+    isDirty: true
   }
-  fn = this.getTempFileName(handler)
-  console.debug('temp file is writen to ', fn)
-  if (!request.saveBodyToFile(fn)) {
-    throw new Error('invalid temp path')
-  }
-  if (!writeFile(fn + this.fileTempInfoExt, content)) {
-    throw new Error('invalid temp path')
-  }
-  return true
 }
+
+/**
+ * Retrieve BLOB content from blob store.
+ * @abstract
+ * @param {BlobStoreRequest} request
+ * @param {BlobStoreItem} blobInfo JSON retrieved from a DB.
+ * @param {Object} [options]
+ * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
+ *   If `undefined` UB will send query to entity anf get it from DB.
+ *   At last one parameter {store: storeName} should be defined to prevent loading actual JSON from DB
+ * @returns {String|ArrayBuffer}
+ */
+MdbBlobStore.getContent = function (request, blobInfo, options) {
+  let filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo)
+  return fs.readFileSync(filePath, options)
+}
+
 /**
  *  Must return true in case no exception
  *  load content and body from temporary file in the this.tempFolder'
