@@ -1,5 +1,5 @@
 EXTERNAL_LIBS_PATH="../../../../ub-server/libs"
-LAZARUS_PATH="/usr/share/lazarus/1.6.4"
+LAZARUS_PATH="/usr/local/share/lazarus"
 SRC_PATH=../mailer/src
 BIN_PATH=./bin/x64
 LIB_PATH=$BIN_PATH/lib
