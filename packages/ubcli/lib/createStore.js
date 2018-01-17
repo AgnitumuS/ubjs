@@ -26,7 +26,8 @@ const path = require('path')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
-const pathDelim = process.platform === 'win32' ? '\\' : '/';
+const pathDelim = process.platform === 'win32' ? '\\' : '/'
+const trailingPathDelim = new RegExp(pathDelim + '$')
 
 module.exports = function createStore (options) {
   let
@@ -111,7 +112,7 @@ module.exports = function createStore (options) {
         throw new Error('Unknown storeType', cStore['storeType'])
       }
       cStorePath = path.join(configPath, cStore.path)
-      if (!/\\$/.test(cStorePath)) {
+      if (!trailingPathDelim.test(cStorePath)) {
         cStorePath += pathDelim
       }
       console.log('\t Resolved to path', cStorePath)
