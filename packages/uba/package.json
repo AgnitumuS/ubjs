@@ -1,6 +1,10 @@
 {
   "name": "@unitybase/uba",
+<<<<<<< HEAD
   "version": "5.0.0",
+=======
+  "version": "4.1.38",
+>>>>>>> master
   "description": "UnityBase Administrative model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/uba",
   "config": {
@@ -15,8 +19,13 @@
   },
   "main": "uba.js",
   "dependencies": {
+<<<<<<< HEAD
     "@unitybase/base": "^5.0.0",
     "@unitybase/ub": "^5.0.0",
+=======
+    "@unitybase/base": "^4.2.26",
+    "@unitybase/ub": "^4.0.50",
+>>>>>>> master
     "asn1js": "^2.0.14",
     "pkijs": "^2.0.56"
   },

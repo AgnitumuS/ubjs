@@ -1,43 +1,54 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const XLSXBaseStyleElement = require('./XLSXBaseStyleElement')
+const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
-
+let instance = null
 /**
- * @class XLSXStyleFormat Registered format styles
+ * @class XLSXStyleControllerFormat Registered format styles
  */
-class XLSXStyleFormat extends XLSXBaseStyleElement {
+class XLSXStyleControllerFormat extends XLSXBaseStyleController {
+  static instance () {
+    return instance
+  }
+
   constructor (config) {
-    super(config)
-    this.startId = 164
+    super(config, 164)
   }
 
   /**
    * add new border style info. Used for add new style.
-   * @param {Object} info
+   * @param {Object|String} info
    * @param {String} info.formatCode example  #,##0.00_ ;[Red]\-#,##0.00\
-   * @return {Number} index
+   * @return {XLSXBaseStyleElement}
    */
   add (info) {
+    tools.checkParamType(info, ['object', 'string'], 'XLSXStyleControllerFormat.add')
+    if (typeof info !== 'object') {
+      info = {formatCode: info}
+    }
     info.formatCode = tools.escapeXML(info.formatCode)
-    return super.add(info)
+    return super.add(info, 'FORMAT')
   }
 
   getHash (info) {
     return tools.createHash([
-      info.id,
       info.formatCode
     ])
   }
 
-  compile (element) {
+  compile (item) {
+    let element = item.config
     if (element.formatCode) {
-      this.compiled.push(`<numFmt numFmtId="${element.id}" formatCode="${element.formatCode}"/>`)
+      return `<numFmt numFmtId="${item.id}" formatCode="${element.formatCode}"/>`
     } else {
-      this.compiled.push('')
+      return ''
     }
   }
 }
 
-module.exports = XLSXStyleFormat
+instance = new XLSXStyleControllerFormat()
+
+module.exports = {
+  XLSXStyleControllerFormat
+}

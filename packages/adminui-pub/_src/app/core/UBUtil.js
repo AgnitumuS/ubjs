@@ -578,7 +578,7 @@ Ext.define('UB.core.UBUtil', {
     var
       configs = {
         'int': { xtype: 'numberfield', allowDecimals: false, hideTrigger: true },
-        'float': { xtype: 'numberfield' },
+        'float': { xtype: 'numberfield', hideTrigger: true },
         'date': { xtype: 'ubdatefield', format: Ext.util.Format.dateFormat },
         'boolean': {xtype: 'checkboxfield'},
         'string': {xtype: 'ubtextfield', enforceMaxLength: true}
