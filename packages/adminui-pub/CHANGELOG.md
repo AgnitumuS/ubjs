@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.45]
+## Changed
+- UBDocument.forceMIME id DEPRECATED and not handled anymore. 
+ 
 ## Fixed
 - EntityGridPanel `Export to Excel` action now enabled even in standard edition,
  since `xlsx` module added to `adminui-pub` as chunk
