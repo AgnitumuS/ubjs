@@ -6,8 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.45]
 ## Changed
-- UBDocument.forceMIME is DEPRECATED and not handled anymore. 
- 
+- UBDocument.forceMIME is DEPRECATED and not handled anymore.
+- UBApp.runShortcutCommand now can accept a shortcut code to run
+```javascript
+   $App.runShortcutCommand('tst_document')
+   //or
+   $App.runShortcutCommand(30000012312)
+```
+
 ## Fixed
 - EntityGridPanel `Export to Excel` action now enabled even in standard edition,
  since `xlsx` module added to `adminui-pub` as chunk
