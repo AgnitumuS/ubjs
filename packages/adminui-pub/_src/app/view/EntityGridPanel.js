@@ -1642,7 +1642,6 @@ Ext.define('UB.view.EntityGridPanel', {
       glyph: UB.core.UBUtil.glyphs.faFileExcelO,
       text: UB.i18n('exportXls'),
       eventId: events.exportXls,
-      disabled: !$App.domainInfo.models.UBE,
       handler: me.onAction,
       scope: me
     })
