@@ -343,34 +343,10 @@ Ext.define('UB.ux.UBDocument', {
    * @returns Promise
    */
   loadContent: function (url, defaultContentType, asArrayBuffer) {
-    var me = this,
-      urlArr, elm,
-      ct, mime, types, cType = null
-
-    mime = me.forceMIME.toUpperCase()
-    ct = defaultContentType ? defaultContentType.toUpperCase() : ''
-    if (mime && ct !== mime && ct !== 'UB.ux.UBLabel'.toUpperCase()) {
-      types = $App.domainInfo.forceMIMEConvertors[ct] || []
-      _.forEach(types, function (item) {
-        if (item === mime) {
-          cType = me.forceMIME
-          return false
-        }
-        return true
-      })
-    }
-
-    if (me.forceMIME && cType) { // insert parameter in the middle of url to keep session_signature in the end
-      urlArr = url.split('&')
-      elm = urlArr.pop()
-      urlArr.push('forceMIME=' + encodeURIComponent(me.forceMIME), elm)
-      url = urlArr.join('&')
-    }
-
+    let me = this
     if (me.bypassCache) {
       url += '&_dc=' + (new Date()).getTime()
     }
-
     return $App.connection.get(url, {responseType: 'arraybuffer'})
       .then(function (response) {
         if (asArrayBuffer) {
@@ -412,7 +388,7 @@ Ext.define('UB.ux.UBDocument', {
       me.createComponent(me.documentMIME)
       resetOriginalValue = true
     }
-    if (value && _.isObject(value) && ((value instanceof Blob) || (value instanceof File))) {
+    if (value && (typeof value === 'object') && ((value instanceof Blob) || (value instanceof File))) {
       return me.ubCmp.setSrc({
         blobData: value,
         resetOriginalValue: resetOriginalValue
@@ -444,14 +420,14 @@ Ext.define('UB.ux.UBDocument', {
     let xtype, ct, url, params
     let val = {}
     let hasError = false
-    let isString = Ext.isString(valueStr)
-    let isObject = Ext.isObject(valueStr)
+    let isString = (typeof valueStr === 'string')
+    let isObject = valueStr && (typeof valueStr === 'object')
 
     me.lastNotEmptyValue = valueStr || me.lastNotEmptyValue
     me.lastOriginalValue = valueStr
     me.instanceID = instanceID
 
-    val = isString ? Ext.JSON.decode(valueStr) : valueStr
+    val = isString ? JSON.parse(valueStr) : valueStr
 
     if ((!isString && !isObject) ||
         (isString && valueStr.length === 0) ||
@@ -499,7 +475,7 @@ Ext.define('UB.ux.UBDocument', {
     me.originalMIME = me.originalMIME || xtype
     xtype = me.documentMIME || xtype
 
-    me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined
+    me.value = Ext.Object.getSize(val) > 0 ? JSON.stringify(val) : undefined
 
     me.checkChange()
 
@@ -514,25 +490,13 @@ Ext.define('UB.ux.UBDocument', {
         me.errorLabel.hide()
       }
 
-        // me.value = Ext.Object.getSize(val) > 0 ? Ext.JSON.encode(val) : undefined;
-        /* исходный конфииг
-        var src = {
-            url: url,
-            contentType: val.ct,
-            onContentNotFound: me.onContentNotFound.bind(me),
-            html: val.deleting ? url : val.origName || url,
-            blobValue: blobValue,
-            params: params
-        };
-        */
-
       let src = {
         url: baseUrl,
         contentType: baseCt,
         html: !val || val.deleting ? url : val.origName || url,
         blobData: blob
       }
-        // Возможно стоит сравнить md5. Пока не везде честный md5.
+      // Возможно стоит сравнить md5. Пока не везде честный md5.
       if (me.forceReload || !me.editorInited || !me.isEditor()) {
         me.ubCmp.setSrc(src).then(function (r) {
           defer.resolve(r)
@@ -540,11 +504,6 @@ Ext.define('UB.ux.UBDocument', {
           defer.reject(r)
         })
         me.editorInited = me.isEditor()
-          /*
-          me.ubCmp.on('afterrender', function(){
-              me.updateLayout();
-          }, me, {single: true});
-          */
       } else {
         defer.resolve(null)
       }
@@ -612,7 +571,6 @@ Ext.define('UB.ux.UBDocument', {
         }
       })
     }
-
     return defer.promise
   },
 
@@ -701,23 +659,24 @@ Ext.define('UB.ux.UBDocument', {
    */
   save: function (force) {
     const me = this
-    let val, content, promise
 
     if (!force && (!me.isEditor() || !me.isDirty())) {
       return Promise.resolve(true)
     }
 
-    val = me.getValue() || me.lastNotEmptyValue
+    let val = me.getValue() || me.lastNotEmptyValue
     if (val) {
       val = JSON.parse(val)
     }
 
+    let content
     if (me.ubCmp.getValue) {
       content = me.ubCmp.getValue('UBDocument')
     } else if (me.sourceBlob) {
       content = me.sourceBlob.data
     }
 
+    let promise
     if (!content && me.loadUrl) {
       promise = me.loadContent(me.loadUrl, null, true)
     } else {
