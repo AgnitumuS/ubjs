@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.45]
 ## Changed
-- UBDocument.forceMIME id DEPRECATED and not handled anymore. 
+- UBDocument.forceMIME is DEPRECATED and not handled anymore. 
  
 ## Fixed
 - EntityGridPanel `Export to Excel` action now enabled even in standard edition,
