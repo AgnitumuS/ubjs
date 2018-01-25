@@ -1,4 +1,4 @@
-/* global UB, Ext */
+/* global UB,Ext */
 exports.reportCode = {
   /**
    * This function must be defined in report code block.
