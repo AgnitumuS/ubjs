@@ -1,10 +1,11 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const st = require('./tools')
+const tools = require('./tools')
 const {XLSXStyleController} = require('./XLSXStyle')
 const XLSXWorksheet = require('./XLSXWorksheet')
 const JSZip = require('JSZip')
+const ReachText = require('./ReachText')
 
 class XLSXWorkbook {
   /**
@@ -86,8 +87,18 @@ class XLSXWorkbook {
     return ws
   }
 
+  /**
+   *
+    * @param {String|ReachText} value
+   * @return {*}
+   */
   addString (value) {
-    let val = st.escapeXML(value)
+    let val
+    if (value && (value instanceof ReachText)) {
+      val = value.xmlText()
+    } else {
+      val = tools.escapeXML(value)
+    }
     let index = this.sharedStrings[val]
     this.sharedStringTotal++
     if (!index) {

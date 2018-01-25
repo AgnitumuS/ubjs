@@ -4,6 +4,7 @@
 const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 const Color = require('./Color')
+const orderWrite = ['left', 'right', 'top', 'bottom', 'diagonal']
 
 let instance = null
 /**
@@ -34,15 +35,13 @@ class XLSXStyleControllerBorder extends XLSXBaseStyleController {
    */
   compile (item) {
     let out = []
-    let xKey
-    let prop
     const element = item.config
     out.push('<border>')
-    for (xKey in element) {
-      if (element.hasOwnProperty(xKey)) {
-        prop = element[xKey]
+    orderWrite.forEach(xKey => {
+      let prop = element[xKey]
+      if (prop) {
         if (xKey === 'id' || xKey === 'style' || xKey === 'color' || xKey === 'code') {
-          continue
+          return
         }
         if (prop.style) {
           let colorT = prop.color ? prop.color.compile() : '<color auto="1" />'
@@ -51,7 +50,7 @@ class XLSXStyleControllerBorder extends XLSXBaseStyleController {
           out.push(`<${xKey}/>`)
         }
       }
-    }
+    })
     out.push('</border>')
     return out.join('')
   }

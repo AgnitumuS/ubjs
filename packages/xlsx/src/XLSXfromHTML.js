@@ -1,10 +1,153 @@
 const fontsMap = {}
+const ReachText = require('./ReachText')
+const {SpanMap} = require('./SpanMap')
+
+/**
+ * This class used for extract value for html tag td and convert it to reachText
+ */
+class CellValue {
+  /**
+   *
+   * @param rootNode
+   * @return {ReachText}
+   */
+  static getValue (rootNode) {
+    const cv = new CellValue(rootNode)
+    return cv.getValue()
+  }
+
+  constructor (rootNode) {
+    this.rootNode = rootNode
+    this.items = []
+    this.reachText = new ReachText()
+    this.useReachText = false
+    this.reachInfo = null
+  }
+
+  /**
+   *
+   * @return {ReachText}
+   */
+  getValue () {
+    for (let i = 0; i < this.rootNode.childNodes.length; ++i) {
+      let childNode = this.rootNode.childNodes[i]
+      this.addValue(childNode)
+    }
+    return this.useReachText ? this.reachText : (this.items.length > 0 ? this.items.join(',') : null)
+  }
+
+  addValue (node) {
+    let value = node.nodeValue
+    if (!node.childNodes && value !== null && value !== undefined) {
+      if (this.reachInfo || this.useReachText) {
+        if (!this.useReachText && this.items.length > 0) {
+          this.items.forEach(F => this.reachText.addText(F))
+          this.items = null
+        }
+        this.useReachText = true
+        this.reachText.addText(value, this.reachInfo)
+      } else {
+        this.items.push(value)
+      }
+      return
+    }
+    let nodeInfo = (node.nodeName === '#text') ? null : getTagInfo(node)
+    let reachInfo = nodeInfo ? tagInfoToReachTextConfig(nodeInfo) : null
+    let masterReachInfo = this.reachInfo
+    if (reachInfo) {
+      if (masterReachInfo) {
+        this.reachInfo = Object.assign({}, masterReachInfo)
+      }
+      this.reachInfo = Object.assign(this.reachInfo || {}, reachInfo)
+    }
+    for (let i = 0; i < node.childNodes.length; ++i) {
+      let childNode = node.childNodes[i]
+      this.addValue(childNode)
+    }
+    this.reachInfo = masterReachInfo
+  }
+}
+
+function mustacheFdExec (val, render) {
+  const me = this
+  let data = render(val)
+  if (!data) return data
+  let dataArr = JSON.parse('[' + data + ']')
+  if (dataArr < 1) {
+    throw new Error('$fd function require one or two parameter. {{#$fd}}"dateReg","dd.mm.yyyy"{{/fd}} ')
+  }
+  return XLSXfromHTML.formatValue(me[dataArr[0]], dataArr.length > 1 ? dataArr[1] : null)
+}
+
+function mustacheFdFactory () {
+  return mustacheFdExec
+}
+
+function mustacheFnExec (val, render) {
+  const me = this
+  let data = render(val)
+  if (!data) return data
+  let dataArr = JSON.parse('[' + data + ']')
+  if (dataArr < 1) {
+    throw new Error('$format function require one or two parameter. {{#$fn}}"sum"{{/fn}} {{#$fn}}"sum","0,00"{{/fn}} ')
+  }
+  return XLSXfromHTML.formatValue(me[dataArr[0]], dataArr.length > 1 ? dataArr[1] : null)
+}
+
+function mustacheFnFactory () {
+  return mustacheFnExec
+}
 
 class XLSXfromHTML {
+  /**
+   *
+   * @param {xmldom.DOMParser} DOMParser Class factory
+   * @param {XLSXWorkbook} workBook
+   * @param {Object} [sheetConfig] Config for XLSXWorkbook.addWorkSheet. You can see full list of config parameters in {@link XLSXWorkbook.addWorkSheet XLSXWorkbook.addWorkSheet}.
+   * @param {String} [sheetConfig.title='Worksheet']
+   * @param {String} [sheetConfig.name='Лист']
+   * @param {String} [sheetConfig.setActive=false]
+   */
   constructor (DOMParser, workBook, sheetConfig) {
     this.parser = new DOMParser()
     this.wb = workBook
     this.sheetConfig = sheetConfig
+  }
+
+  /**
+   * Convert any primitives data type value to format XLSXfromHTML compatible
+   * @param {Primitives} value
+   * @param {String} format
+   * @return {String}
+   */
+  static formatValue (value, format) {
+    let result
+    let valueType = typeof value
+    if (valueType === 'object' && value instanceof Date) {
+      valueType = 'datetime'
+    }
+    switch (valueType) {
+      case 'datetime':
+        result = `${formatPrefix}d${value.getTime()}`
+        break
+      case 'number':
+        result = `${formatPrefix}n${String(value)}`
+        break
+      default:
+        result = (value !== null && value !== undefined) ? String(value) : ''
+        format = null
+    }
+    if (result && format) {
+      result += formatPrefix + 'f' + format
+    }
+    return result
+  }
+
+  static addMustacheSysFunction (data) {
+    if (typeof data !== 'object') throw new Error('Invalid param data type')
+    data.$fd = mustacheFdFactory.bind(data)
+    data.$fd = mustacheFnFactory.bind(data)
+    data.$f = mustacheFnFactory.bind(data)
   }
 
   writeHtml (config) {
@@ -45,11 +188,19 @@ class XLSXfromHTML {
     let rows = []
     let rowIndex = config.startRowIndex || 0
     let ctxt = { tableInfo: getTagInfo(node), config: config }
+    ctxt.tableStyle = styleToXlsx(ctxt.tableInfo)
+    ctxt.colWidth = []
+    ctxt.spanMap = new SpanMap(ctxt.tableInfo.style.width)
     findNode(node, 'tr', rows, true)
     rows.forEach(F => {
       this.writeRow(ws, F, rowIndex, ctxt)
       rowIndex++
     })
+    let widths = ctxt.spanMap.getWidths()
+    widths = widths.map((F, i) => { return F ? {column: i, width: F} : null }).filter(F => F)
+    if (widths.length) {
+      ws.setColsProperties(widths)
+    }
   }
 
   /**
@@ -62,40 +213,106 @@ class XLSXfromHTML {
   writeRow (ws, node, index, ctxt) {
     let cells = []
     let trInfo = getTagInfo(node)
-    let minHeight = trInfo.style.height || trInfo.style.minHeight
+    let minHeight = trInfo.style.height || trInfo.style.minHeight || 0
+    let trStyle = styleToXlsx(trInfo)
+    let startRow = ctxt.config.startRow || 0
+    let colWidth = []
 
     findNode(node, 'td', cells)
-    let sellsData = cells.map(F => {
+    let columnNum = startRow
+    // let collIdx = 0
+    // let rowData = []
+    let cellsData = cells.map(F => {
       let cellInfo = {}
-      cellInfo.value = getCellValue(F)
-      let tdInfo = getTagInfo(node)
+      cellInfo.value = CellValue.getValue(F)
+      let typedValue = getTypedValue(cellInfo.value)
+      let valueStyle = {}
+      if (typedValue) {
+        cellInfo.value = typedValue.value
+        if (typedValue.format) {
+          valueStyle = {format: typedValue.format}
+        }
+      }
+      let tdInfo = getTagInfo(F)
+      let colSpan = getAttributeInt(F, 'colspan')
+      if (colSpan) cellInfo.cellStyle = {colSpan: colSpan}
+      let rowSpan = getAttributeInt(F, 'rowspan')
+      if (rowSpan) {
+        cellInfo.cellStyle = cellInfo.cellStyle || {}
+        cellInfo.rowSpan = rowSpan
+      }
       let tdMinHeight = tdInfo.style.height || tdInfo.style.minHeight
       if (tdMinHeight && tdMinHeight > minHeight) minHeight = tdMinHeight
-      cellInfo.
+      colWidth.push({rowSpan, colSpan, width: tdInfo.style.width, widthPercent: tdInfo.style.widthPercent})
+      cellInfo.style = getStyleByHtml(ws.workBook, [valueStyle, styleToXlsx(tdInfo), trStyle, ctxt.tableStyle])
+      cellInfo.column = columnNum
+      columnNum = ctxt.spanMap.getNextCellNum(columnNum, colSpan)
+      // columnNum++
       return cellInfo
     })
-    ws.addRow(sellsData)
+    ctxt.spanMap.addRow(colWidth)
+    ws.addRow(cellsData, null, minHeight ? {height: minHeight} : null)
   }
 }
 
+const formatPrefix = '##$'
+const formatPrefixLen = formatPrefix.length
+
 /**
- *
- * @param node
- * @return {string}
+ * For date use (new Date()).getTime()
+ * For number use String(1234.11)
+ * ##$d1516790542564##$fdd.mm.yyyy
+ *    ##$ - prefix
+ *    d - type must be d (dateTime) or n (Number)
+ *    $f - optional show format
+ * @param {String} value
+ * @return {*}
  */
-function getCellValue (node) {
-  var result = ''
-  if (!node.childNodes) return result
-  node.childNodes.forEach(function (childNode) {
-    result += getCellValue(childNode)
-    if (!childNode.nodeValue) {
-      result += childNode.nodeValue
+function getTypedValue (value) {
+  if ((typeof value !== 'string') || value.length <= formatPrefixLen) return null
+  if (value.substr(0, formatPrefixLen) === formatPrefix) {
+    let dataType = value.substr(formatPrefixLen, 1)
+    let dataValue = value.substr(formatPrefixLen + 1)
+    let dataFormat
+    dataValue = dataValue.split(formatPrefix + 'f')
+    if (dataValue.length > 1) {
+      dataFormat = dataValue[1]
     }
-  })
-  return result
+    dataValue = dataValue[0]
+    switch (dataType) {
+      case 'd':
+        dataValue = new Date(Number(dataValue))
+        break
+      case 'n':
+        dataValue = Number(dataValue)
+        break
+    }
+    return {value: dataValue, format: dataFormat, dataType}
+  }
+  return null
+}
+
+function tagInfoToReachTextConfig (tagInfo) {
+  if (!tagInfo || !tagInfo.style) return null
+  let res = {}
+  if (tagInfo.style.font.weight === 'bold') res.bold = true
+  if (tagInfo.style.font.style === 'italic') res.italic = true
+  if (tagInfo.style.font.name) {
+    res.font = tagInfo.style.font.name
+  }
+  if (tagInfo.style.font.fontSize) {
+    res.fontSize = tagInfo.style.font.fontSize
+  }
+  if (tagInfo.style.font.color) {
+    res.color = tagInfo.style.font.color
+  }
+  if (tagInfo.style.textDecoration === 'line-through') res.strike = true
+  if (tagInfo.style.textDecoration === 'underline') res.underline = 'single'
+  return res
 }
 
 function findNode (node, key, items, deep) {
+  if (!node.childNodes) return
   for (let nodeIndex = 0; nodeIndex < node.childNodes.length; nodeIndex++) {
     let nc = node.childNodes[nodeIndex]
     let nodeName = nc.nodeName.toLowerCase()
@@ -142,17 +359,18 @@ function parseStyle (node) {
   return result
 }
 
-function convertToMeasure (value, measure) {
+function convertToMeasure (value, measure, horizontal) {
   if (!value) return value
   switch (measure) {
     case 'px':
     case 'pt':
-      return value * 25.4 / 72
+      return horizontal ? value * 13.75 / 100 : value * 3 / 4 // 72 / 25.4
     case 'cm':
     case 'mm':
       return value
     default:
-      throw new Error('Unknown measure ' + measure)
+      return horizontal ? value * 13.75 / 100 : value * 3 / 4 // 72 / 25.4
+      // throw new Error('Unknown measure ' + measure)
   }
 }
 
@@ -173,7 +391,20 @@ function toXLSMeasure (styleProp, options) {
   val = parseInt(val, 10)
   if (val === 0) return val
   if (Number.isNaN(val)) return null  // do not throw error
-  return this.convertToMeasure(val, 'px')
+  return convertToMeasure(val, 'px', options.horizontal)
+}
+
+function setDefaultNodeStyle (info, node) {
+  switch (node.nodeName.toLowerCase()) {
+    case 'em':
+    case 'i':
+      info.style.font.style = 'italic'
+      break
+    case 'strong':
+    case 'b':
+      info.style.font.weight = 'bold'
+      break
+  }
 }
 
 function getTagInfo (node) {
@@ -183,14 +414,130 @@ function getTagInfo (node) {
   info.border = getBorderInfo(info.styleProps)
   info.padding = getPaddingInfo(info.styleProps)
   info.margin = getMarginInfo(info.styleProps)
+  setDefaultNodeStyle(info, node)
   return info
 }
 
-function getStyleByHtml (wb, htmlStyleInfo) {
-  if (htmlStyleInfo.backgroundColor)
-    wb.style.fill.add({fgColor: {rgb: 'fff100'}})
+function getStyleByHtml (wb, styles) {
+  let config = {}
+  styles.reverse().forEach(F => {
+    Object.assign(config, F)
+  })
+  return wb.style.getStyle(config)
 }
 
+/**
+ * Convert html align to xlsx
+ * @param align
+ * @return {*}
+ */
+function decodeAlign (align) {
+  if (!align) return align
+  // start | end | left | right | center | justify | match-parent
+  // (general | left | center | right | fill | justify | centerContinuous | distributed)
+  switch (align) {
+    case 'start':
+    case 'left': return 'left'
+    case 'end':
+    case 'right': return 'right'
+    case 'center': return 'center'
+    case 'justify': return 'justify'
+    default: return 'general'
+  }
+}
+
+/**
+ * Decode html vertical align
+ * @param align
+ * @return {*}
+ */
+function decodeVAlign (align) {
+  if (!align) return align
+ // baseline | sub | super | text-top | text-bottom | middle | top | bottom
+ // top | center | bottom | justify distributed
+  switch (align) {
+    case 'baseline':
+    case 'sub':
+    case 'text-top':
+    case 'super':
+    case 'top': return 'top'
+    case 'text-bottom':
+    case 'bottom': return 'bottom'
+    case 'middle': return 'center'
+    default: return 'top'
+  }
+}
+
+function styleToXlsx (htmlStyleInfo) {
+  let config = {}
+  if (htmlStyleInfo.style.backgroundColor) {
+    config.fill = htmlStyleInfo.style.backgroundColor
+  }
+  if (htmlStyleInfo.style.font) {
+    let font = htmlStyleInfo.style.font
+    config.font = {}
+    if (font.name) config.font.name = font.name
+    if (font.weight) config.font.bold = font.weight === 'bold'
+    if (font.style) config.font.italic = font.style === 'italic'
+    if (font.color) config.font.color = font.color
+    if (font.size) config.font.fontSize = font.size
+  }
+  if (htmlStyleInfo.style.textDecoration) {
+    config.font = config.font || {}
+    // line-through, overline, underline
+    if (htmlStyleInfo.style.textDecoration === 'line-through') config.font.strike = true
+    if (htmlStyleInfo.style.textDecoration === 'underline') config.font.underline = 'single'
+  }
+  if (htmlStyleInfo.style.textRotation) {
+    config.alignment = config.alignment || {}
+    config.alignment.textRotation = parseInt(htmlStyleInfo.style.textRotation, 10)
+  }
+  if (htmlStyleInfo.style.align) {
+    config.alignment = config.alignment || {}
+    config.alignment.horizontal = decodeAlign(htmlStyleInfo.style.align)
+  }
+  if (htmlStyleInfo.style.verticalAlign) {
+    config.alignment = config.alignment || {}
+    config.alignment.vertical = decodeVAlign(htmlStyleInfo.style.verticalAlign)
+  }
+  setBorderItem(htmlStyleInfo.border, config, 'top')
+  setBorderItem(htmlStyleInfo.border, config, 'bottom')
+  setBorderItem(htmlStyleInfo.border, config, 'left')
+  setBorderItem(htmlStyleInfo.border, config, 'right')
+
+  return config
+}
+
+function setBorderItem (item, config, type) {
+  if (item[type]) {
+    config.border = config.border || {}
+    config.border[type] = {}
+    config.border[type].style = htmlBorderStyle2XLSX(item[type].style)
+    if (item[type].color) {
+      config.border[type].color = item[type].color
+    }
+  }
+}
+
+function htmlBorderStyle2XLSX (htmlStyle) {
+  // "none","thin","medium","dashed","dotted","thick","double","hair","mediumDashed","dashDot","mediumDashDot","dashDotDot","mediumDashDotDot","slantDashDot"
+  // none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset
+  switch (htmlStyle) {
+    case 'hidden':
+    case 'none': return 'none'
+    case 'dotted': return 'dotted'
+    case 'dashed': return 'dashed'
+    case 'solid': return 'thin'
+    case 'groove':
+    case 'ridge':
+    case 'inset':
+    case 'outset':
+    case 'double': return 'double'
+    default: return 'none'
+  }
+}
+
+const RErotateDeg = /^rotate\((.*)deg\)$/
 
 function getStyleProp (style) {
   let res = {
@@ -206,7 +553,7 @@ function getStyleProp (style) {
     if (tmp) {
       res.font.weight = tmp
       if (tmp !== 'normal') {
-        res.font.type = 'bold'
+        res.font.weight = 'bold'
       }
     }
   }
@@ -215,7 +562,7 @@ function getStyleProp (style) {
     if (tmp) {
       res.font.style = tmp
       if (tmp !== 'normal') {
-        res.font.type = (res.font.type || '') + 'italic'
+        res.font.style = (res.font.style || '') + 'italic'
       }
     }
   }
@@ -228,17 +575,26 @@ function getStyleProp (style) {
       res.font.size = parseFloat(tmp)
     }
   }
-  // cfg.color || pBlock.font.color);
-  if (style['text-align']) {
-    tmp = style['text-align']
-    if (tmp) {
-      res.align = tmp
+  if (style['text-decoration']) {
+    tmp = style['text-decoration']
+    if (tmp && tmp !== 'none') {
+      res.textDecoration = style['text-decoration']
     }
   }
+  if (style['transform']) {
+    tmp = style['transform']
+    let rotateDeg = tmp.match(RErotateDeg)
+    if (rotateDeg && rotateDeg[1]) {
+      res.textRotation = rotateDeg[1]
+    }
+  }
+
+  // cfg.color || pBlock.font.color);
+  if (style['text-align']) {
+    res.align = style['text-align']
+  }
   if (style['vertical-align']) {
-    tmp = style['vertical-align']
-    tmp = tmp === 'middle' ? 'center' : tmp
-    res.verticalAlign = tmp
+    res.verticalAlign = style['vertical-align']
   }
   if (style['text-indent']) {
     res.textIndent = toXLSMeasure(style['text-indent'])
@@ -270,7 +626,7 @@ function getStyleProp (style) {
   }
 
   if (style.width) {
-    tmp = {}
+    tmp = {horizontal: true}
     res.width = toXLSMeasure(style.width, tmp)
     if (tmp.isPercent) {
       res.widthPercent = res.width
@@ -325,7 +681,8 @@ function parseComplex (value, onValue) {
 }
 
 function getBorderInfo (itemStyle) {
-  let borderStyle, bWidth
+  let borderStyle, bWidth, borderColor
+  let border = {}
 
   if (itemStyle.border) {
     let brd = itemStyle.border.split(' ')
@@ -335,6 +692,9 @@ function getBorderInfo (itemStyle) {
     if (brd.length > 1) {
       borderStyle = [brd[1]]
     }
+    if (brd.length > 2) {
+      borderColor = [brd[2]]
+    }
   }
   if (!borderStyle) {
     borderStyle = itemStyle['border-style']
@@ -342,7 +702,40 @@ function getBorderInfo (itemStyle) {
       borderStyle = (borderStyle || '').split(' ')
     }
   }
-  borderStyle = this.parseComplex(borderStyle || [])
+  if (!borderColor) {
+    borderColor = itemStyle['border-color']
+    if (borderColor) {
+      borderColor = (borderColor || '').split(' ')
+    }
+  }
+  if (itemStyle['border-right']) {
+    border.right = extractBorderProps(itemStyle['border-right'])
+  }
+  if (itemStyle['border-left']) {
+    border.left = extractBorderProps(itemStyle['border-left'])
+  }
+  if (itemStyle['border-top']) {
+    border.top = extractBorderProps(itemStyle['border-top'])
+  }
+  if (itemStyle['border-bottom']) {
+    border.bottom = extractBorderProps(itemStyle['border-bottom'])
+  }
+
+  borderColor = parseComplex(borderColor || [])
+  if (itemStyle['border-top-color']) {
+    borderColor.top = itemStyle['border-top-color']
+  }
+  if (itemStyle['border-right-color']) {
+    borderColor.right = itemStyle['border-right-color']
+  }
+  if (itemStyle['border-bottom-color']) {
+    borderColor.bottom = itemStyle['border-bottom-color']
+  }
+  if (itemStyle['border-left-color']) {
+    borderColor.left = itemStyle['border-left-color']
+  }
+
+  borderStyle = parseComplex(borderStyle || [])
   if (itemStyle['border-top-style']) {
     borderStyle.top = itemStyle['border-top-style']
   }
@@ -387,7 +780,67 @@ function getBorderInfo (itemStyle) {
   if (rWidth.left) {
     rWidth.left = convertToMeasure(parseIntValue(rWidth.left), 'px')
   }
-  return { borderWidth: rWidth, borderStyle: borderStyle }
+
+  setPropertyStyleFromType(border, 'right', rWidth, 'width')
+  setPropertyStyleFromType(border, 'left', rWidth, 'width')
+  setPropertyStyleFromType(border, 'bottom', rWidth, 'width')
+  setPropertyStyleFromType(border, 'top', rWidth, 'width')
+
+  setPropertyStyleFromType(border, 'right', borderStyle, 'style')
+  setPropertyStyleFromType(border, 'left', borderStyle, 'style')
+  setPropertyStyleFromType(border, 'bottom', borderStyle, 'style')
+  setPropertyStyleFromType(border, 'top', borderStyle, 'style')
+
+  setPropertyStyleFromType(border, 'right', borderColor, 'color')
+  setPropertyStyleFromType(border, 'left', borderColor, 'color')
+  setPropertyStyleFromType(border, 'bottom', borderColor, 'color')
+  setPropertyStyleFromType(border, 'top', borderColor, 'color')
+
+  let result = { borderWidth: rWidth, borderStyle: borderStyle, borderColor: borderColor }
+  if (result.borderWidth.top && result.borderStyle.top) {
+    result.top = {width: result.borderWidth.top, style: result.borderStyle.top, color: result.borderColor.top}
+  }
+  if (result.borderWidth.bottom && result.borderStyle.bottom) {
+    result.bottom = {width: result.borderWidth.bottom, style: result.borderStyle.bottom, color: result.borderColor.bottom}
+  }
+  if (result.borderWidth.left && result.borderStyle.left) {
+    result.left = {width: result.borderWidth.left, style: result.borderStyle.left, color: result.borderColor.left}
+  }
+  if (result.borderWidth.right && result.borderStyle.right) {
+    result.right = {width: result.borderWidth.right, style: result.borderStyle.right, color: result.borderColor.right}
+  }
+  return result
+}
+
+function setPropertyStyleFromType (objType, type, obj, style) {
+  if (objType[type] && objType[type][style] && (!obj[type] || !obj[type][style])) {
+   // obj[type] = obj[type] || {}
+    obj[type] = objType[type][style]
+  }
+}
+
+const borderStyles = ['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset']
+
+/**
+ * parse html border style '1px solid black' and return object {style, width, color}
+ * @param items
+ * @return {*}
+ */
+function extractBorderProps (items) {
+  items = (items || '').split(' ')
+  if (items.length < 2) return false
+  const result = {}
+  if (borderStyles.indexOf(items[1] >= 0)) {
+    result.style = items[1]
+    result.width = convertToMeasure(parseIntValue(items[0]))
+  } else {
+    result.style = items[0]
+    result.width = convertToMeasure(parseIntValue(items[1]))
+  }
+  if (items.length > 2) {
+    result.color = items[2]
+  }
+  return result
 }
 
 function getPaddingInfo (itemStyle, def) {
