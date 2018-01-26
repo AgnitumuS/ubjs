@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "cdn_city"
-//@formType "auto"
-//@caption "Населенные пункты"
-//@description "Справочник населенных пунктов"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "cdn_city"
+// @model "CDN"
+// @formType "auto"
+// @caption "locality_title"
+// @description "locality_title"
 exports.formDef = {
 
     size: {

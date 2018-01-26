@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "true"
-//@entity "cdn_region"
-//@formType "auto"
-//@caption "Регионы"
-//@description "Справочник регионов"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "true"
+// @entity "cdn_region"
+// @model "CDN"
+// @formType "auto"
+// @caption "region_title"
+// @description "region_title"
 exports.formDef = {
 
     size: {
