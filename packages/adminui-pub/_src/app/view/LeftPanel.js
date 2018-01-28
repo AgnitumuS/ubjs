@@ -2,6 +2,7 @@ require('../core/UBAppConfig')
 require('../core/UBStoreManager')
 require('../core/UBUtilTree')
 require('./NavigationPanel')
+const shortcutFTS = require('./shortcutFTS')
 
 Ext.define('UB.view.LeftPanel', {
   extend: 'Ext.panel.Panel',
@@ -47,7 +48,19 @@ Ext.define('UB.view.LeftPanel', {
       })
     }
 
-    me.items.push(mainButton = Ext.create('Ext.button.Button', {
+    let shortcutStore = UB.core.UBStoreManager.getNavigationShortcutStore()
+    let shortcutFts = Ext.create('Ext.form.field.Text', {
+      emptyText: 'Search for action',
+      color: 'black',
+      magrin: 0,
+      padding: 0
+    })
+    shortcutFts.on('change', function (elm, newValue, oldValue, eOpts) {
+      shortcutFTS.doFullSearch(shortcutStore, newValue)
+    })
+    me.items.push(shortcutFts)
+
+    mainButton = Ext.create('Ext.button.Button', {
       text: dsCurrent ? dsCurrent.get('caption') : (defaultDT ? defaultDT.get('caption') : '--'),
       cls: 'ub-desktop-button',
       selectedItemID: dsCurrent ? dsCurrent.get('ID') : (defaultDT ? defaultDT.get('ID') : null),
@@ -58,7 +71,8 @@ Ext.define('UB.view.LeftPanel', {
       menu: menu = Ext.create('Ext.menu.Menu', {
         items: desktopMenu
       })
-    }))
+    })
+    me.items.push(mainButton)
 
     me.items.push(me.navPnl = Ext.create('UB.view.NavigationPanel', {flex: 1}))
 
