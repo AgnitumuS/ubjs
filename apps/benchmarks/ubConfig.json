@@ -1,7 +1,7 @@
 {
 	"httpServer": {
 		"host": "+",
-		"port": "888",
+		"port": "8881",
 		"watchFileChanges": {
 			"enabled": false,
 			"hashingStrategy": "ModifyDate"
@@ -39,7 +39,7 @@
 				"driver": "SQLite3",
 				"isDefault": true,
 				"dialect": "SQLite3",
-				"databaseName": ".\\techempower.sqlite3",
+				"databaseName": "./techempower.sqlite3",
 				"supportLang": [
 					"en"
 				]
@@ -53,7 +53,7 @@
 			{
 				"name": "avatars",
 				"isDefault": true,
-				"path": ".\\stores\\avatars\\",
+				"path": "./stores/avatars",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false
