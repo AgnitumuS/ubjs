@@ -650,5 +650,14 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       condition: id && _.isArray(id) ? 'in' : 'equal',
       value: id
     }))
+  },
+
+  /**
+   * Get field value by name from fieldList
+   * @param fieldName
+   * @returns
+   */
+  getFieldValue: function (fieldName) {
+    return this.getValue() && this.lastSelection.length ? this.lastSelection[0].get(fieldName) : null
   }
 })

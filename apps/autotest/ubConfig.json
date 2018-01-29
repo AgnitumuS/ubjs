@@ -1,5 +1,6 @@
 { 
 	"httpServer": {
+		//"serverType": "Socket",
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,

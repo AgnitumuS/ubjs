@@ -65,8 +65,7 @@ function postProcessing (loader, fullFilePath, content, row) {
   row.model = loader.processingRootFolder.model.name
 
   // fill name attribute with file name w/o ".xml" extension
-  let parts = fullFilePath.split('\\')
-  let fileName = parts[parts.length - 1]
+  let fileName = path.basename(fullFilePath)
   row.report_code = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length)
 
     // fill formDef attribute value
@@ -80,8 +79,7 @@ function postProcessing (loader, fullFilePath, content, row) {
   })
 
   fileName = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length) + CODE_BEHIND_EXTENSION
-  parts[parts.length - 1] = fileName
-  let jsFilePath = parts.join('\\')
+  let jsFilePath = path.join(path.dirname(fullFilePath), fileName)
   let jsFileStat = fs.statSync(jsFilePath)
   if (jsFileStat) { // file exists
     row.code = JSON.stringify({

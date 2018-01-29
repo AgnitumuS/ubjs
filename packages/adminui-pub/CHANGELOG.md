@@ -6,8 +6,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.45]
 ## Changed
+- UBDocument.forceMIME is DEPRECATED and not handled anymore.
+- UBApp.runShortcutCommand now can accept a shortcut code to run
+```javascript
+   $App.runShortcutCommand('tst_document')
+   //or
+   $App.runShortcutCommand(30000012312)
+```
+To use in ubm_navshortcut place this code to the `ubm_navshortcut.cmdCode` attribute:
+```javascript
+  {cmdType: 'showForm', formCode: function () { $App.runShortcutCommand('sia_docPayOrderOut') }}
+```
+
+## Fixed
+- EntityGridPanel `Export to Excel` action now enabled even in standard edition,
+ since `xlsx` module added to `adminui-pub` as chunk
+
+## [4.2.45]
+## Changed
 - `ubm_navshortcut` not not load `cmdData` attribute during startup, because this is CLOB,
 and fetching all CLOBS from table is very slow (at last for Oracle)
+
+### Added
+- Firing of BasePanel `beforeRefresh` event
+- ubdetailgrid: set allowBlank=false for row editor fields in case allowNull===false in meta files
+- ubcombobox: function getFieldValue - Get field value by name from fieldList
+- set `hideTrigger: true` by default for auto generated componets for numeric attributes
 
 ## [4.2.44]
 ## Fixed
