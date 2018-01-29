@@ -1,3 +1,4 @@
+// TODO - remove _ in file name after enable require in evalScript endpoint
 /**
  * User: pavel.mash
  * Date: 22.10.14
@@ -35,7 +36,7 @@ module.exports = function runOTPTest (options) {
 
     console.debug('test Server-side js')
     tests.forEach((test) => {
-      if (!test.endsWith('.js')) return
+      if (!test.endsWith('.js') || test.charAt(0) === '_') return
       let content = fs.readFileSync(path.join(folder, 'serverSide', test))
       console.debug('Eval a ' + test)
       let result = {res: false}

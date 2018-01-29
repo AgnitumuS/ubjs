@@ -68,21 +68,8 @@ module.exports = function (session) {
     }
   })
 
-  console.log('\t\t\tcreate `tst_docusign` shortcut')
-  conn.insert({
-    fieldList: ['ID'],
-    entity: 'ubm_navshortcut',
-    execParams: {
-      desktopID: desktopID,
-      code: 'tst_docusign',
-      caption: 'Docusign test',
-      displayOrder: 40,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_docusign', method: 'select', fieldList: ['name', 'envelope']}]}}, null, '\t')
-    }
-  })
-
   var displayOrder = 40;
-  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_ODataSimple', 'tst_ODataRef', 'tst_histDict'].forEach(function (entityCode) {
+  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_histDict'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
     conn.insert({
       fieldList: ['ID'],
