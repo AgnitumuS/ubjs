@@ -29,6 +29,7 @@ function initIndex (shortcutsStore) {
     shortcutsStore.each((r) => {
       data.push({
         ID: r.get('ID'),
+        iconCls: r.get('code'),
         code: r.get('code'),
         name: r.get('caption'),
         description: r.get('caption')
