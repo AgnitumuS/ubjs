@@ -143,3 +143,5 @@ Object.defineProperty(TubDataStore, 'entity', {
  * @param keyMap
  */
 TubDataStore.applyBLOBChanges = function (source, keyMap) {
+
+}
