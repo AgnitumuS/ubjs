@@ -131,3 +131,15 @@ Object.defineProperty(TubDataStore, 'entity', {
     return App.domainInfo.get(this.entityCode)
   }
 })
+
+// do additional operation with adtDocument attributes
+//  move adtDocument content from temporary store to permanent
+// return true if some document attribute actually changed
+/**
+ * If have attributes of type `Document` and it values changed then
+ * for each changed attribute:
+ *  - call a BLOB store implementation method `moveToPermanent`
+ * @param source
+ * @param keyMap
+ */
+TubDataStore.applyBLOBChanges = function (source, keyMap) {
