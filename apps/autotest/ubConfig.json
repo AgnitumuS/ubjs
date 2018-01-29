@@ -140,11 +140,11 @@
 					"publicPath": "./node_modules/@ub-d/nm-dstu",
 					"path": "_public_only_",
 					"moduleName": "@ub-d/nm-dstu"
-				},
-				{
+				},*/
+				,{
 					"name": "TST",
 					"path": "./models/TST"
-				}*/
+				}
 			],
 			"implicitlyAddedMixins": [
 				"audit"
@@ -172,8 +172,8 @@
 				"supportLang": [
 					"uk"
 				],
-				"advSettings": "Synchronous=Off"
-				//"advSettings": "Synchronous=Off,Tokenizer=stemka" fpc win64 donthave stemka
+				//"advSettings": "Synchronous=Off"
+				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			},
 			{
 				"name": "ftsSubjectSearch",

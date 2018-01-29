@@ -48,7 +48,7 @@ module.exports = function runTest (options) {
 
     assert.throws(
       () => conn.get(`clientRequire/@unitybase/ub/../../../ubConfig.json`),
-      /Not Found/, 'Endpoint clientRequire must restrict access folder up from resolved'
+      /(Not Found|Bad Request)/, 'Endpoint clientRequire must restrict access folder up from resolved'
     )
 
     assert.throws(
@@ -67,7 +67,7 @@ module.exports = function runTest (options) {
     )
 
     assert.throws(
-      () => conn.get(`clientRequire/@ub-e/dses/dses_log.js`),
+      () => conn.get(`clientRequire/@unitybase/ub/modelUB.js`),
       /Bad Request/, 'Endpoint clientRequire must restrict access to model without public folders'
     )
 

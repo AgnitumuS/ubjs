@@ -1,5 +1,5 @@
 ﻿const assert = require('assert')
-const UBA = require('@unitybase/uba/modules/uba_common')
+const UBA = require('@unitybase/base').uba_common
 
 function runTest () {
   let prm = {
