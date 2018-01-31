@@ -565,7 +565,13 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @type {Object<string, UBEntityAttribute>}
    */
   this.attributes = new UBEntityAttributes()
-  _.forEach(entityInfo.attributes, function (attributeInfo, attributeCode) {
+  /**
+   * Slice of attributes with type `Document`
+   * @type {Array<UBEntityAttribute>}
+   */
+  this.blobAttributes = []
+
+  _.forEach(entityInfo.attributes, (attributeInfo, attributeCode) => {
     let attr = new UBEntityAttribute(attributeInfo, attributeCode, me)
     // record history mixin set a dateTo automatically, so let's allow blank mi_dateTo on UI
     // but for DDL generator mi_dateTo must be not null, so change only for browser side
@@ -573,6 +579,9 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
       attr.allowNull = true
     }
     me.attributes[attributeCode] = attr
+    if (attr.dataType === UBDomain.ubDataTypes.Document) {
+      this.blobAttributes.push(attr)
+    }
   })
 
   mixinNames = Object.keys(entityInfo.mixins || {})

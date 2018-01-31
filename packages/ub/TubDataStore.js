@@ -132,6 +132,29 @@ Object.defineProperty(TubDataStore, 'entity', {
   }
 })
 
+/**
+ *  Active dataset name we work with
+ *  @example
+ *    let store = ctx.dataStore
+ *    let prevData = store.currentDataName
+ *    try {
+ *      store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
+ *      let valueBeforeUpdate = store.get('code')
+ *    } finally {
+ *      store.currentDataName = prevData
+ *    }
+ */
+TubDataStore.prototype.DATA_NAMES = {
+  BEFORE_UPDATE: 'selectBeforeUpdate',
+  AFTER_UPDATE: 'selectAfterUpdate',
+  AFTER_INSERT: 'selectAfterInsert',
+  BEFORE_DELETE: 'selectBeforeDelete',
+  TOTAL: '__totalRecCount',
+  SOFTLOCK: 'softLock',
+  RECORDSIGN: 'recordSign',
+  TEMP: '_temp'
+}
+
 // do additional operation with adtDocument attributes
 //  move adtDocument content from temporary store to permanent
 // return true if some document attribute actually changed
@@ -139,9 +162,45 @@ Object.defineProperty(TubDataStore, 'entity', {
  * If have attributes of type `Document` and it values changed then
  * for each changed attribute:
  *  - call a BLOB store implementation method `moveToPermanent`
- * @param source
- * @param keyMap
+ * @param {ubMethodParams} ctx
+ * @param {Boolean} isUpdate
+ * @return {Boolean} True in case some of document type attributes actually changed
  */
-TubDataStore.applyBLOBChanges = function (source, keyMap) {
+TubDataStore.prototype.applyBLOBChanges = function (ctx, isUpdate) {
+  let entity = this.entity
+  if (!entity.blobAttributes.length) return false
 
+  if (entity.isUnity) {
+    console.debug('skip processing blobStores for UNITY update call', entity.name)
+    return false
+  }
+  console.debug('Start processing documents for entity', entity.name)
+
+  let execParams = ctx.mParams.execParams
+  let modifiedBlobs = []
+  for (let i = 0, L = entity.blobAttributes.length; i < L; i++) {
+    let blobAttr = entity.blobAttributes[i]
+    let newVal = execParams.byName(blobAttr.name)
+    if (newVal) {
+      modifiedBlobs.push({
+        attr: blobAttr,
+        newVal: newVal,
+        oldVal: null
+      })
+    }
+  }
+  if (!modifiedBlobs.length) return false
+
+  if (isUpdate) { // for update operations retrieve a prev. values
+    let store = ctx.dataStore
+    let prevData = store.currentDataName
+    try {
+      store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
+      for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
+        modifiedBlobs[i].oldVal = store.get(modifiedBlobs[i].attr.name)
+      }
+    } finally {
+      store.currentDataName = prevData
+    }
+  }
 }

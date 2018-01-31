@@ -159,15 +159,7 @@ TubDataStore.prototype = {
      */
   asXMLPersistent: 'MS dataset xml format',
   /**
-   * Active dataset name we work with. There is some predefined dataNames - see mixin documentation for details
-	 *
-	 * Predefined values:
-   *
-	 *  - selectBeforeUpdate
-	 *  - selectAfterUpdate
-	 *  - selectAfterInsert
-	 *  - selectBeforeDelete
-   *
+   * Active dataset name we work with. There is some predefined dataNames - see TubDataStore.prototype.DATA_NAMES
    * @type {String}
    */
   currentDataName: '',
