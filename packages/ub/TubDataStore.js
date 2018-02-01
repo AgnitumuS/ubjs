@@ -1,5 +1,6 @@
 /* global TubDataStore */
 const App = require('./modules/App')
+const blobStores = require('./blobStores')
 /**
  *  Initialize DataStore from one of supported source formats:
  *
@@ -166,7 +167,7 @@ TubDataStore.prototype.DATA_NAMES = {
  * @param {Boolean} isUpdate
  * @return {Boolean} True in case some of document type attributes actually changed
  */
-TubDataStore.prototype.applyBLOBChanges = function (ctx, isUpdate) {
+TubDataStore.prototype.commitBLOBStores = function (ctx, isUpdate) {
   let entity = this.entity
   if (!entity.blobAttributes.length) return false
 
@@ -180,11 +181,11 @@ TubDataStore.prototype.applyBLOBChanges = function (ctx, isUpdate) {
   let modifiedBlobs = []
   for (let i = 0, L = entity.blobAttributes.length; i < L; i++) {
     let blobAttr = entity.blobAttributes[i]
-    let newVal = execParams.byName(blobAttr.name)
+    let newVal = execParams[blobAttr.name]
     if (newVal) {
       modifiedBlobs.push({
         attr: blobAttr,
-        newVal: newVal,
+        newVal: JSON.parse(newVal),
         oldVal: null
       })
     }
@@ -193,14 +194,28 @@ TubDataStore.prototype.applyBLOBChanges = function (ctx, isUpdate) {
 
   if (isUpdate) { // for update operations retrieve a prev. values
     let store = ctx.dataStore
-    let prevData = store.currentDataName
+    let prevDataName = store.currentDataName
     try {
-      store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
+      store.currentDataName = this.DATA_NAMES.BEFORE_UPDATE
       for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
-        modifiedBlobs[i].oldVal = store.get(modifiedBlobs[i].attr.name)
+        let modifiedBlob = modifiedBlobs[i]
+        if (!(modifiedBlob.newVal.isDirty || modifiedBlob.newVal.deleting)) { // [UB-858]
+          throw new Error(`Invalid ${entity.name}.${modifiedBlob.attr.name} Document type attribute content. Update possible either for dirty or for deleting content`)
+        }
+        let oldVal = store.get(modifiedBlob.attr.name)
+        if (oldVal) modifiedBlob.oldVal = JSON.parse(oldVal)
       }
     } finally {
-      store.currentDataName = prevData
+      store.currentDataName = prevDataName
     }
   }
+
+  // for each modified BLOB call a BLOB store implementation for actually
+  // move BLOB data from temporary to permanent store
+  for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
+    let modifiedBlob = modifiedBlobs[i]
+    let newMeta = blobStores.doCommit()
+    execParams[modifiedBlob.attr.name] = newMeta
+  }
+  return true
 }

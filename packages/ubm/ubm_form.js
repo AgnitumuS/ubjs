@@ -249,7 +249,8 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       entity: entity.name,
       attribute: 'formCode',
       ID: ID,
-      fileName: storedValue.code + JS_FILE_TAIL
+      fileName: storedValue.code + JS_FILE_TAIL,
+      model: codeOfModelToStore
     }, docBody)
     newFormCodeMeta = JSON.stringify(formCodeInfo)
   }
@@ -299,7 +300,8 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   }, docBody)
   storedValue.formDef = JSON.stringify(formDefInfo)
 
-  // TODO call applyAdtDocumentAttributes to move files from temp to permanent
+  // move files from temp to permanent
+  ctxt.dataStore.commitBLOBStores(ctxt, isInsert === false)
 
   console.debug('--== ubm_form: resultDataCache cleared ==--')
   resultDataCache = null // drop cache. afterInsert call select and restore cache

@@ -83,6 +83,7 @@ MdbBlobStore.saveContentToTempStore = function (request, attribute, content, req
     ct: '', // TODO
     size: content.byteLength,
     md5: '',
+    model: request['model'] || attribute.entity.modelName,
     isDirty: true
   }
 }
@@ -101,6 +102,25 @@ MdbBlobStore.saveContentToTempStore = function (request, attribute, content, req
 MdbBlobStore.getContent = function (request, blobInfo, options) {
   let filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo)
   return fs.readFileSync(filePath, options)
+}
+
+/**
+ * Move content defined by `dirtyItem` from temporary to permanent store.
+ * In case `oldItem` is present store implementation & parameters should be taken from oldItem.store.
+ * Return a new attribute content which describe a place of BLOB in permanent store
+ *
+ * @param {UBEntityAttribute} attribute
+ * @param {Number} ID
+ * @param {BlobStoreItem} dirtyItem
+ * @param {BlobStoreItem} oldItem
+ * @return {BlobStoreItem}
+ */
+MdbBlobStore.doCommit = function (attribute, ID, dirtyItem, oldItem) {
+  let modelToStore = App.domainInfo.models[dirtyItem.model]
+  if (!modelToStore) {
+    throw new Error('MdbBlobStore: model not defined in dirtyItem')
+  }
+  let persistentPath = 
 }
 
 /**

@@ -141,6 +141,30 @@ const BlobStoreCustom = {
   getContent: function (request, blobInfo, options) { },
 
   /**
+   * Fill HTTP response for getDocument request
+   * @abstract
+   * @param {BlobStoreRequest} requestParams
+   * @param {BlobStoreItem} blobInfo
+   * @param {THTTPRequest} req
+   * @param {THTTPResponse} resp
+   * @return {Boolean}
+   */
+  fillResponse: function (requestParams, blobInfo, req, resp) { },
+
+  /**
+   * Move content defined by `dirtyItem` from temporary to permanent store.
+   * In case `oldItem` is present store implementation & parameters should be taken from oldItem.store.
+   * Return a new attribute content which describe a place of BLOB in permanent store
+   * @abstract
+   * @param {UBEntityAttribute} attribute
+   * @param {Number} ID
+   * @param {BlobStoreItem} dirtyItem
+   * @param {BlobStoreItem} oldItem
+   * @return {BlobStoreItem}
+   */
+  doCommit: function (attribute, ID, dirtyItem, oldItem) { },
+
+  /**
    * -
    * Implementation must move old file revision to archive according to store historyDepth and delete file from permanent store.
    * @abstract
@@ -181,18 +205,6 @@ const BlobStoreCustom = {
   moveToPermanentStore: function (handler, aPrevRelPath) {
   },
 
-  /**
-   * Fill HTTP response for getDocument request
-   *
-   * @param {BlobStoreRequest} requestParams
-   * @param {BlobStoreItem} blobInfo
-   * @param {THTTPRequest} req
-   * @param {THTTPResponse} resp
-   * @return {Boolean}
-   */
-  fillResponse: function (requestParams, blobInfo, req, resp) {
-
-  },
   /**
    * -
    * Implementation MUST fill handler.request body by call one of request body-related methods

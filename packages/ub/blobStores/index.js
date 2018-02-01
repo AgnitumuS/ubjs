@@ -158,7 +158,7 @@ function getFromBlobStore (request, blobInfo, options) {
 }
 
 /**
- * Put content to the temporary path ot Blob store
+ * Put content to the temporary path of Blob store
  * @param {BlobStoreRequest} request
  * @param {ArrayBuffer|String} content
  * @return {BlobStoreItem}
@@ -176,9 +176,29 @@ function putToBlobStore (request, content) {
   return store.implementation.saveContentToTempStore(request, attribute, content)
 }
 
+/**
+ * Move content defined by `dirtyItem` from temporary to permanent store.
+ * In case `oldItem` is present store implementation should be taken from oldItem.store.
+ * Return a new attribute content which describe a place of BLOB in permanent store
+ *
+ * @param {UBEntityAttribute} attribute
+ * @param {Number} ID
+ * @param {BlobStoreItem} dirtyItem
+ * @param {BlobStoreItem} oldItem
+ * @return {BlobStoreItem}
+ */
+function doCommit (attribute, ID, dirtyItem, oldItem) {
+  let storeName = oldItem ? oldItem.store : attribute.storeName
+  if (!storeName) storeName = blobStoresMap.defaultStoreName
+  let store = blobStoresMap[storeName]
+  if (!store) throw new Error(`Blob store ${storeName} not found in application config`)
+  return store.implementation.doCommit(attribute, ID, dirtyItem, oldItem)
+}
+
 module.exports = {
   getDocument,
   setDocument,
   getFromBlobStore,
-  putToBlobStore
+  putToBlobStore,
+  doCommit
 }
