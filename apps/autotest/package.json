@@ -11,11 +11,6 @@
     "ddl": "ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
-    "@ub-d/iit-crypto": "^5.0.0",
-    "@ub-d/nm-dstu": "^5.0.0",
-    "@ub-e/dses": "^5.0.0",
-    "@ub-e/odata": "^5.0.0",
-    "@ub-e/ube-pub": "^5.0.0",
     "@unitybase/adminui-pub": "^5.0.0",
     "@unitybase/adminui-reg": "^5.0.0",
     "@unitybase/base": "^5.0.0",
