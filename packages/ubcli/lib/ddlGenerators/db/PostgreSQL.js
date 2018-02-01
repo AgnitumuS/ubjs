@@ -210,10 +210,8 @@ ORDER BY index_id, column_position`
       // check constraints
       let checkConstraintsSQL = `SELECT c.conname AS name, 
          c.consrc as definition 
-         FROM pg_constraint c 
-         LEFT JOIN pg_class t ON c.conrelid  = t.oid 
-         WHERE t.relname = LOWER(:('${asIsTable._upperName}'):) 
-         and t.relowner = (select oid from pg_roles where rolname = current_schema) 
+         FROM pg_constraint c
+         WHERE c.conrelid = '${asIsTable.name}'::regclass
          AND c.contype = 'c'`
 
       let constraintsFromDb = this.conn.xhr({
@@ -297,8 +295,8 @@ ORDER BY index_id, column_position`
 
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
-    if (value) value = value.replace(/'/g, "''")
     if (!value && !oldValue) return // prevent create empty comments
+    if (value) value = value.replace(/'/g, "''")
     let result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
     this.DDL.caption.statements.push(result)
   }
@@ -464,7 +462,7 @@ ORDER BY index_id, column_position`
     if (indexDB.isConstraint) {
       cObj.push(`ALTER TABLE ${tableDB.name} DROP CONSTRAINT ${indexDB.name}`)
     } else {
-      cObj.push(`drop index ${indexDB.name} on ${tableDB.name}`)
+      cObj.push(`drop index ${indexDB.name}`)
     }
   }
   /**
