@@ -1,9 +1,8 @@
-const _ = require('lodash')
 const BlobStoreCustom = require('./BlobStoreCustom')
 const path = require('path')
 const App = require('../modules/App')
 const fs = require('fs')
-const CryptoJS = require('@unitybase/cryptojs/core')
+
 /**
  *  @classdesc
  *  Blob store implementation for storing content inside models `public` folders.
@@ -24,10 +23,6 @@ const CryptoJS = require('@unitybase/cryptojs/core')
  * @singleton
  */
 const MdbBlobStore = Object.create(BlobStoreCustom)
-/**
- * @private
- */
-MdbBlobStore.fileTempInfoExt = '.fti'
 
 /**
  * For MDB blob store relPath === '[modelCode]|folderPath'
@@ -78,12 +73,12 @@ MdbBlobStore.saveContentToTempStore = function (request, attribute, content, req
   // TODO md5val = CryptoJS.MD5(content)
   return {
     store: attribute.storeName,
-    fName: '',
-    origName: '',
+    fName: request.fileName,
+    origName: request.fileName,
+    relPath: request.relPath,
     ct: '', // TODO
     size: content.byteLength,
     md5: '',
-    model: request['model'] || attribute.entity.modelName,
     isDirty: true
   }
 }
@@ -116,97 +111,23 @@ MdbBlobStore.getContent = function (request, blobInfo, options) {
  * @return {BlobStoreItem}
  */
 MdbBlobStore.doCommit = function (attribute, ID, dirtyItem, oldItem) {
-  let modelToStore = App.domainInfo.models[dirtyItem.model]
-  if (!modelToStore) {
-    throw new Error('MdbBlobStore: model not defined in dirtyItem')
-  }
-  let persistentPath = 
-}
-
-/**
- *  Must return true in case no exception
- *  load content and body from temporary file in the this.tempFolder'
- *
- * See {@link UB.virtualStores.Custom#loadContentFromTempStore}
- */
-MdbBlobStore.loadContentFromTempStore = function (handler, aWithBody) {
-  var
-    content = handler.content,
-    request = handler.request,
-    strCtnt, objCtnt, fn
-  console.debug('--========loadContentFromTempStore=====------ for ', handler.attribute.name)
-  // toLog('handler = %', handler);
-
-  fn = this.getTempFileName(handler)
-  strCtnt = loadFile(fn + this.fileTempInfoExt)
-  if (!strCtnt) {
-    return // TODO - make difference between insert (do nothing) and update - raise
-    // throw new Error('temporary content information not found for ' + handler.attribute.name);
-  }
-  objCtnt = JSON.parse(strCtnt)
-  // move all property from file to handler.content
-  _.forEach(objCtnt, function (key, value) {
-    content[key] = value
+  let tempPath = this.getTempFileName({
+    entity: attribute.entity.name,
+    attribute: attribute.name,
+    ID: ID
   })
-  if (aWithBody === TubLoadContentBody.Yes) {
-    request.loadBodyFromFile(fn)
+  let permanentPath = this.getPermanentFileName(dirtyItem)
+  fs.renameSync(tempPath, permanentPath)
+  let nameWoPath = path.basename(permanentPath)
+  return {
+    store: attribute.storeName,
+    fName: nameWoPath,
+    origName: nameWoPath,
+    relPath: dirtyItem.relPath,
+    ct: dirtyItem.ct,
+    size: dirtyItem.size,
+    md5: dirtyItem.md5
   }
-  return true
-}
-/**
- * @inheritdoc
- */
-MdbBlobStore.loadBodyFromEntity = function (handler) {
-  var
-    request = handler.request,
-    content = handler.content,
-    filePath = content.isDirty ? this.getTempFileName(handler) : this.getPermanentFileName(handler)
-
-  console.debug('--===== loadBodyFromEntity ===--- try to load body from', filePath)
-  return filePath ? request.loadBodyFromFile(filePath) : false
-}
-/**
- * Do nothing here - just delete content. Content itself must be under external version control system (SVN, fossil)
- */
-MdbBlobStore.moveToArchive = function (handler) {
-  return true // this.deleteContent(handler);
-}
-/**
- * Do nothing here - content must be under external version control system (SVN, GIT, fossil)
- */
-MdbBlobStore.deleteContent = function () {
-  // nothing to do here
-  return true
-}
-/**
- * @inheritDoc
- */
-MdbBlobStore.moveToPermanentStore = function (handler, aPrevRelPath) {
-  var
-    content = handler.content,
-    pathPart, oldFilePath, newFilePath,
-    fs = require('fs')
-
-  console.debug('--========moveToPermanentStore=====------')
-  oldFilePath = this.getTempFileName(handler)
-
-  pathPart = content.relPath.split('|')
-  if (pathPart.length !== 2) {
-    throw new Error('MDB store expect relPath in form modelName|pathRelativeToModelPublicFolder but got: ' + content.relPath)
-  } else {
-    newFilePath = path.join(App.domainInfo.models[pathPart[0]].realPublicPath, pathPart[1])
-    if (!fs.isDir(newFilePath)) {
-      fs.mkdirSync(newFilePath)
-    }
-    newFilePath = path.join(newFilePath, content.fName)
-  }
-  console.debug('move from ' + oldFilePath + ' to ' + newFilePath)
-  if (!moveFile(oldFilePath, newFilePath)) {
-    throw new Error('Can\'t move file to permanent store')
-  }
-  deleteFile(oldFilePath + this.fileTempInfoExt)
-  handler.content.isDirty = false
-  return true
 }
 
 module.exports = MdbBlobStore

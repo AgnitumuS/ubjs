@@ -94,7 +94,7 @@ const path = require('path')
  * @property {Number} size Content size
  * @property {String} md5 Content MD5 checksum
  * @property {Number} [revision] Content revision. Used only for stores with `historyDepth` > 0
- * @property {Number} [isDirty] ????
+ * @property {Boolean} [isDirty] ????
  * @property {Boolean} [isPermanent] If `true` - do not delete content during history rotation
  */
 

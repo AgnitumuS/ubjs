@@ -213,21 +213,17 @@ function getFormBodyTpl (fileName, defaultBody) {
  */
 function doUpdateInsert (ctxt, storedValue, isInsert) {
   var
-    mP = ctxt.mParams,
-    newValues,
-    newFormCodeMeta, newFormDefMeta, codeOfModelToStore,
-    ID,
     docHandler, docReq, ct, docBody, attr,
-    formEntity,
     entity = me.entity
 
   console.debug('--==== ubm_forms.doUpdateInsert ===-')
-  newValues = mP.execParams || {}
-  ID = newValues.ID
+  let mP = ctxt.mParams
+  let newValues = mP.execParams || {}
+  let ID = newValues.ID
 
   // move all attributes from execParams to storedValue
-  newFormCodeMeta = newValues.formCode
-  newFormDefMeta = newValues.formDef
+  let newFormCodeMeta = newValues.formCode
+  let newFormDefMeta = newValues.formDef
   _.forEach(newValues, function (val, key) {
     attr = entity.attributes[key]
     if (attr && (attr.dataType !== UBDomain.ubDataTypes.Document)) {
@@ -235,8 +231,8 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   })
 
-  formEntity = App.domainInfo.get(storedValue.entity)
-  codeOfModelToStore = storedValue.model || formEntity.modelName
+  let formEntity = App.domainInfo.get(storedValue.entity)
+  let codeOfModelToStore = storedValue.model || formEntity.modelName
   if (!newFormCodeMeta && isInsert) {
     // create boilerplate for empty form code
     let docBody
@@ -250,7 +246,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       attribute: 'formCode',
       ID: ID,
       fileName: storedValue.code + JS_FILE_TAIL,
-      model: codeOfModelToStore
+      relPath: codeOfModelToStore + '|' + REL_PATH_TAIL
     }, docBody)
     newFormCodeMeta = JSON.stringify(formCodeInfo)
   }
@@ -293,7 +289,8 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     entity: entity.name,
     attribute: 'formDef',
     ID: ID,
-    fileName: storedValue.code + DEF_FILE_TAIL
+    fileName: storedValue.code + DEF_FILE_TAIL,
+    relPath: codeOfModelToStore + '|' + REL_PATH_TAIL
     // ct.fName = storedValue.code + DEF_FILE_TAIL
     // ct.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
     // ct.ct = JSON_CONTENT_TYPE
@@ -301,7 +298,13 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   storedValue.formDef = JSON.stringify(formDefInfo)
 
   // move files from temp to permanent
-  ctxt.dataStore.commitBLOBStores(ctxt, isInsert === false)
+  let fakeCtx = {
+    dataStore: null,
+    mParams: {
+      execParams: storedValue
+    }
+  }
+  ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
 
   console.debug('--== ubm_form: resultDataCache cleared ==--')
   resultDataCache = null // drop cache. afterInsert call select and restore cache
