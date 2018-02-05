@@ -1,6 +1,6 @@
 exports.formCode = {
   initUBComponent: function () {
-
+    this.down('label[ubID="newFormTip"]').setVisible(this.isNewInstance)
   },
 
   testReport: function (type, serverSide) {
