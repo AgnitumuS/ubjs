@@ -146,7 +146,7 @@ function getFromBlobStore (request, blobInfo, options) {
   } else {
     let row = Repository(request.entity).attrs(['ID', request.attribute]).where('ID', '=', request.ID).selectSingle()
     if (row && row[request.attribute]) {
-      blobInfo = JSON.parse(request.attribute)
+      blobInfo = JSON.parse(row[request.attribute])
       storeCode = blobInfo.store
     }
     if (!storeCode) storeCode = parsed.attribute.storeName
@@ -154,7 +154,7 @@ function getFromBlobStore (request, blobInfo, options) {
   let store = blobStoresMap[storeCode]
   if (!store) throw new Error(`Blob store ${storeCode} not found in application config`)
   // call store implementation method
-  return store.implementation.getContent(request, options, blobInfo)
+  return store.implementation.getContent(request, blobInfo, options)
 }
 
 /**

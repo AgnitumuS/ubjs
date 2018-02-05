@@ -16,6 +16,7 @@ const fs = require('fs')
  *
  *    - ubm_form for store form def & js inside /public/forms
  *    - ubm_diagrams for store diagram inside /public/erdiagrams
+ *    - ubs_report for store report template inside /public/reports
  *    - e.t.c.
  *
  * @class
@@ -38,7 +39,6 @@ MdbBlobStore.getPermanentFileName = function (item) {
 }
 /**
  * Fill HTTP response for getDocument request
- *
  * @param {BlobStoreRequest} requestParams
  * @param {BlobStoreItem} blobInfo
  * @param {THTTPRequest} req
@@ -75,7 +75,6 @@ MdbBlobStore.saveContentToTempStore = function (request, attribute, content, req
     store: attribute.storeName,
     fName: request.fileName,
     origName: request.fileName,
-    relPath: request.relPath,
     ct: '', // TODO
     size: content.byteLength,
     md5: '',

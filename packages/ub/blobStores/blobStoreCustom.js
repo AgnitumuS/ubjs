@@ -104,7 +104,7 @@ const path = require('path')
  * @property {String} entity
  * @property {String} attribute
  * @property {String} ID
- * @property {String} [isDirty]
+ * @property {Boolean} [isDirty]
  * @property {String} [fileName]
  * @property {Number} [revision]
  */
@@ -164,60 +164,6 @@ const BlobStoreCustom = {
    */
   doCommit: function (attribute, ID, dirtyItem, oldItem) { },
 
-  /**
-   * -
-   * Implementation must move old file revision to archive according to store historyDepth and delete file from permanent store.
-   * @abstract
-   * @param {TubDocumentHandlerCustom} handler
-   * @return {Boolean}
-   */
-  moveToArchive: function (handler) {
-  },
-
-  /**
-   * -
-   * Implementation must delete file content from permanent store
-   * @abstract
-   * @param {TubDocumentHandlerCustom} handler
-   * @return {boolean}
-   */
-  deleteContent: function (handler) {
-  },
-
-  /**
-   * -
-   *  Load content and (optionally) body from temporary file
-   * @abstract
-   * @param {TubDocumentHandlerCustom} handler
-   * @param {TubLoadContentBody} aWithBody
-   */
-  loadContentFromTempStore: function (handler, aWithBody) {
-  },
-
-  /**
-   * -
-   * Implementation must MOVE file content from temporary store to permanent store
-   * @abstract
-   * @param {TubDocumentHandlerCustom} handler
-   * @param {String} aPrevRelPath In case exist prev. file revision this variable contain it relative path
-   * @return {boolean}
-   */
-  moveToPermanentStore: function (handler, aPrevRelPath) {
-  },
-
-  /**
-   * -
-   * Implementation MUST fill handler.request body by call one of request body-related methods
-   * @abstract
-   * @param {TubDocumentHandlerCustom} handler
-   * @return {boolean}
-   */
-  loadBodyFromEntity: function (handler) {
-    var
-      request = handler.request,
-      content = handler.content
-    request.loadBodyFromFile(filePath)
-  },
   /**
    * Path to temp folder
    * @type {String}

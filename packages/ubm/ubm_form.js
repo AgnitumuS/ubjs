@@ -176,13 +176,11 @@ function validateInput (aID, formCode, formEntity) {
     throw new Error(`<<<entity "${formEntity}" not exist in Domain>>>`)
   }
 
-  if (!aID) {
-    throw new Error('No ID parameter passed in execParams')
-  }
+  if (!aID) throw new Error('No ID parameter passed in execParams')
 
   if (formCode.length < formEntity.length ||
-        (formCode.length === formEntity.length && formCode !== formEntity) ||
-        (formCode.length !== formEntity.length && formCode.substring(0, formEntity.length + 1) !== formEntity + '-')
+    (formCode.length === formEntity.length && formCode !== formEntity) ||
+    (formCode.length !== formEntity.length && formCode.substring(0, formEntity.length + 1) !== formEntity + '-')
   ) {
     throw new Error(`<<<Invalid form code format. Must be "${formEntity}-FormVersion" where FormVersion is any character string>>>`)
   }
@@ -202,8 +200,9 @@ function validateInput (aID, formCode, formEntity) {
  */
 function getFormBodyTpl (fileName, defaultBody) {
   let filePath = path.join(App.domainInfo.models['UBM'].realPublicPath, '_templates', fileName)
-  return fs.isFile(filePath) ? fs.readFileSync(filePath) : defaultBody
+  return fs.existsSync(filePath) ? fs.readFileSync(filePath) : defaultBody
 }
+
 /**
  *
  * @param {ubMethodParams} ctxt
@@ -212,34 +211,40 @@ function getFormBodyTpl (fileName, defaultBody) {
  * @return {boolean}
  */
 function doUpdateInsert (ctxt, storedValue, isInsert) {
-  var
-    docHandler, docReq, ct, docBody, attr,
-    entity = me.entity
-
   console.debug('--==== ubm_forms.doUpdateInsert ===-')
+  let entity = me.entity
   let mP = ctxt.mParams
   let newValues = mP.execParams || {}
   let ID = newValues.ID
 
   // move all attributes from execParams to storedValue
-  let newFormCodeMeta = newValues.formCode
-  let newFormDefMeta = newValues.formDef
   _.forEach(newValues, function (val, key) {
-    attr = entity.attributes[key]
+    let attr = entity.attributes[key]
     if (attr && (attr.dataType !== UBDomain.ubDataTypes.Document)) {
       storedValue[key] = val
     }
   })
-
   let formEntity = App.domainInfo.get(storedValue.entity)
+  let newFormDefMeta = newValues.formDef
+  let newFormCodeMeta = newValues.formCode
   let codeOfModelToStore = storedValue.model || formEntity.modelName
-  if (!newFormCodeMeta && isInsert) {
-    // create boilerplate for empty form code
-    let docBody
+  let formDefBody
+  let formScriptBody
+  if (isInsert) { // for insert operation create a boilerplate for form definition & form script
     if (storedValue.formType === 'auto') {
-      docBody = getFormBodyTpl('new_autoFormJS.mustache', 'exports.formCode = {\r\n}')
+      formDefBody = getFormBodyTpl('new_autoFormDef.mustache', 'exports.formDef = {\r\n\titems:[\r\n\t\t/*put your items here*/\r\n\t]\r\n};')
+    } else if (storedValue.formType === 'custom') {
+      let codeParts = storedValue.code.split('-')
+      let className = formEntity.modelName + '.' + (codeParts[1] ? codeParts[1] : 'BetterToSetFormCodeToEntity-ClassName')
+      formDefBody = getFormBodyTpl('new_customForm.mustache', '').replace('{{className}}', className)
     } else if (storedValue.formType === 'vue') {
-      docBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n}')
+      formDefBody = getFormBodyTpl('new_vueFormDef.mustache', '')
+    }
+    // and for form script
+    if (storedValue.formType === 'auto') {
+      formScriptBody = getFormBodyTpl('new_autoFormJS.mustache', 'exports.formCode = {\r\n}')
+    } else if (storedValue.formType === 'vue') {
+      formScriptBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n}')
     }
     let formCodeInfo = blobStores.putToBlobStore({
       entity: entity.name,
@@ -247,35 +252,29 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       ID: ID,
       fileName: storedValue.code + JS_FILE_TAIL,
       relPath: codeOfModelToStore + '|' + REL_PATH_TAIL
-    }, docBody)
+    }, formScriptBody)
     newFormCodeMeta = JSON.stringify(formCodeInfo)
-  }
-  if (newFormCodeMeta) {
-    storedValue.formCode = newFormCodeMeta
-  }
-
-  docBody = blobStores.getFromBlobStore({
-    entity: entity.name,
-    attribute: 'formDef',
-    ID: ID,
-    isDirty: Boolean(newFormDefMeta) || isInsert
-  }, {store: 'mdb'}, {encoding: 'utf-8'})
-
-  let clearAttrReg = /^\/\/[ \t]?@(.+) "(.*)"[ \t]*\r?\n/gm // seek for //@ "bla bla" CRLF
-  if (!docBody) {
-    if (storedValue.formType === 'auto') {
-      docBody = getFormBodyTpl('new_autoFormDef.mustache', 'exports.formDef = {\r\n\titems:[\r\n\t\t/*put your items here*/\r\n\t]\r\n};')
-    } else if (storedValue.formType === 'custom') {
-      let codeParts = storedValue.code.split('-')
-      let className = formEntity.modelName + '.' + (codeParts[1] ? codeParts[1] : 'BetterToSetFormCodeToEntity-ClassName')
-      docBody = getFormBodyTpl('new_customForm.mustache', '').replace('{{className}}', className)
-    } else if (storedValue.formType === 'vue') {
-      docBody = getFormBodyTpl('new_vueFormDef.mustache', '')
+  } else { // for update operation load form definition body from store (temp or persistent if not modified)
+    if (newFormDefMeta) { // if form definition modified
+      formDefBody = blobStores.getFromBlobStore({
+        entity: entity.name,
+        attribute: 'formDef',
+        ID: ID,
+        isDirty: true
+      }, {store: 'mdb'}, {encoding: 'utf-8'})
+    } else {
+      formDefBody = blobStores.getFromBlobStore({
+        entity: entity.name,
+        attribute: 'formDef',
+        ID: ID,
+        isDirty: false
+      }, JSON.parse(storedValue.formDef), {encoding: 'utf-8'})
     }
-  } else {
-    docBody = docBody.replace(clearAttrReg, '') // remove all old entity attributes
   }
 
+  // replace comments in the beginning of form definition to the new one
+  let clearAttrReg = /^\/\/[ \t]?@(.+) "(.*)"[ \t]*\r?\n/gm // seek for //@ "bla bla" CRLF
+  formDefBody = formDefBody.replace(clearAttrReg, '') // remove all old entity attributes
   let addedAttr = ''
   for (let attrCode in entity.attributes) {
     let attr = entity.attributes[attrCode]
@@ -283,21 +282,34 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       addedAttr = '// @' + attrCode + ' "' + storedValue[attrCode] + '"\r\n' + addedAttr
     }
   }
+  formDefBody = '// @! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + formDefBody
 
-  docBody = '// @! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + docBody
+  // save modified form definition to the temp store
   let formDefInfo = blobStores.putToBlobStore({
     entity: entity.name,
     attribute: 'formDef',
     ID: ID,
-    fileName: storedValue.code + DEF_FILE_TAIL,
-    relPath: codeOfModelToStore + '|' + REL_PATH_TAIL
+    fileName: storedValue.code + DEF_FILE_TAIL
     // ct.fName = storedValue.code + DEF_FILE_TAIL
     // ct.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
     // ct.ct = JSON_CONTENT_TYPE
-  }, docBody)
+  }, formDefBody)
+  // add a relPath
+  formDefInfo.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
+  // and update an attribute value to the new blob info
   storedValue.formDef = JSON.stringify(formDefInfo)
 
-  // move files from temp to permanent
+  if (newFormCodeMeta) { // in case form script is modified add a relPath
+    let parsed = JSON.parse(newFormCodeMeta)
+    parsed.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
+    parsed.fName = storedValue.code + JS_FILE_TAIL
+    newFormCodeMeta = JSON.stringify(parsed)
+    storedValue.formCode = newFormCodeMeta
+  } else {
+    delete storedValue.formCode
+  }
+
+  // commit BLOB store changes
   let fakeCtx = {
     dataStore: null,
     mParams: {
@@ -317,9 +329,8 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
  * @return {boolean}
  */
 me.update = function (ctxt) {
-  var
-    inParams = ctxt.mParams.execParams || {},
-    ID = inParams.ID
+  let inParams = ctxt.mParams.execParams || {}
+  let ID = inParams.ID
 
   console.debug('!!ubm_form.update-----------------')
   let cachedData = loadAllForms()
@@ -349,19 +360,19 @@ me.on('delete:before', function () {
  * @return {boolean}
  */
 me.insert = function (ctxt) {
-  var
-    inParams = ctxt.mParams.execParams,
-    aID = inParams.ID,
-    oldValue = {}
+  let inParams = ctxt.mParams.execParams
+  let aID = inParams.ID
+
   console.debug('--====== ubm_form.insert ====--')
   let cachedData = loadAllForms()
 
   validateInput(aID, inParams.code, inParams.entity)
   let row = LocalDataStore.byID(cachedData, aID)
   if (row.total) {
-    throw new UB.UBAbort('<<<Form with ID ' + aID + 'already exist in domain>>>')
+    throw new UB.UBAbort(`<<<Form with ID ${aID} already exist in domain>>>`)
   }
 
+  let oldValue = {}
   doUpdateInsert(ctxt, oldValue, true)
   ctxt.preventDefault()
   return true // everything is OK
