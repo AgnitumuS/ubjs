@@ -93,8 +93,9 @@ function loadAllDiagrams () {
   return resultDataCache
 }
 
-/** Retrieve data from resultDataCache and init ctxt.dataStore
- *  caller MUST set dataStore.currentDataName before call doSelect
+/**
+ * Retrieve data from resultDataCache and init ctxt.dataStore
+ * caller MUST set dataStore.currentDataName before call doSelect
  * @param {ubMethodParams} ctxt
  */
 function doSelect (ctxt) {
@@ -120,7 +121,6 @@ function doSelect (ctxt) {
 }
 
 /**
- *
  * @param {ubMethodParams} ctxt
  * @return {Boolean}
  */
@@ -145,14 +145,13 @@ me.validateInput = function (aID, modelName) {
 }
 
 /**
- *
  * @param {ubMethodParams} ctxt
  * @param {Object} storedValue
  * @param {Boolean} isInsert
  * @return {boolean}
  */
 function doUpdateInsert (ctxt, storedValue, isInsert) {
-  console.debug('--==== ubm_forms.doUpdateInsert ===-')
+  console.debug('--==== ubm_diagram.doUpdateInsert ===-')
   let entity = me.entity
   let mP = ctxt.mParams
   let newValues = mP.execParams || {}
@@ -208,7 +207,6 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
 }
 
 /**
- *
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
@@ -222,7 +220,7 @@ me.update = function (ctxt) {
   }
   storedValue = LocalDataStore.selectResultToArrayOfObjects(storedValue)[0]
   me.validateInput(ID, inParams.model || storedValue.model)
-  doUpdateInsert(ctxt, storedValue)
+  doUpdateInsert(ctxt, storedValue, false)
   ctxt.preventDefault()
   return true // everything is OK
 }
@@ -241,10 +239,10 @@ me.insert = function (ctxt) {
 
   let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
-    throw new Error('Diagram with ID ' + ID + 'already exist')
+    throw new Error(`Diagram with ID ${ID} already exist`)
   }
   let oldValue = {}
-  doUpdateInsert(ctxt, oldValue)
+  doUpdateInsert(ctxt, oldValue, true)
   ctxt.preventDefault()
   return true // everything is OK
 }

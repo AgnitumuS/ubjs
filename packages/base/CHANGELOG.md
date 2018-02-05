@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.0]
 ### Added
 - UBEntity.isUnity property added
+- UBConnection.getDocument method
 
 ## [4.2.27]
 ### Changed
