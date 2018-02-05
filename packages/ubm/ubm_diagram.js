@@ -203,51 +203,6 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   }
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
 
-  // var
-  //   mP = ctxt.mParams,
-  //   newValues,
-  //   newDocument,
-  //   ID,
-  //   docHandler, docReq, ct, docBody, attr,
-  //   entity = me.entity
-  //
-  // newValues = mP.execParams || {}
-  // ID = newValues.ID
-  //
-  // // move all attributes from execParams to storedValue
-  // newDocument = newValues.document
-  // _.forEach(newValues, function (val, key) {
-  //   attr = entity.attributes[key]
-  //   if (attr && (attr.dataType !== TubAttrDataType.Document)) {
-  //     storedValue[key] = val
-  //   }
-  // })
-  //
-  // docReq = new TubDocumentRequest()
-  // docReq.entity = entity.name
-  // docReq.attribute = 'document'
-  // docReq.id = ID
-  // docReq.isDirty = Boolean(newDocument)
-  // docHandler = docReq.createHandlerObject(false)
-  // docHandler.loadContent(TubLoadContentBody.Yes /* WithBody */)
-  // docBody = docHandler.request.getBodyAsUnicodeString()
-  // if (!docBody) {
-  //   docBody = '<!--@ID "' + ID + '"-->\r\n<mxGraphModel><root></root></mxGraphModel>'
-  // } else {
-  //   var clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
-  //   docBody = '<!--@ID "' + ID + '"-->\r\n' + docBody.replace(clearAttrReg, '') // remove all old entity attributes
-  // }
-  // docHandler.request.setBodyAsUnicodeString(docBody)
-  //
-  // ct = docHandler.content
-  // ct.fName = storedValue.name + XML_EXTENSION
-  // ct.relPath = storedValue.model + '|' + REL_PATH_TAIL
-  // ct.ct = DIAGRAM_CONTENT_TYPE
-  // docReq.isDirty = true
-  // docHandler.saveContentToTempStore()
-  // docHandler.moveToPermanentStore('')
-  // storedValue.document = JSON.stringify(ct)
-
   resultDataCache = null // drop cache. afterInsert call select and restore cache
   return true
 }
