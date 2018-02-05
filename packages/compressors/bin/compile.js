@@ -3,6 +3,6 @@ var process = require('process');
 
 shell.echo('We run on ' + process.platform);
 if (process.platform === 'win32')
-  shell.exec('.\\bin\\compile.cmd');
+  shell.exit(shell.exec('.\\bin\\compile.cmd').code);
 else // posix
-  shell.exec('./bin/compile.sh');
+  shell.exit(shell.exec('./bin/compile.sh').code)

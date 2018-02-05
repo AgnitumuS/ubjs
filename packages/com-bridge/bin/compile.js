@@ -3,6 +3,6 @@ var process = require('process');
 
 shell.echo('We run on ' + process.platform);
 if (process.platform === 'win32')
-  shell.exec('.\\bin\\compile.cmd');
+  shell.exit(shell.exec('.\\bin\\compile.cmd').code);
 else // posix
-  ; // Com not available on Linux
+  shell.exit(0); // Com not available on Linux
