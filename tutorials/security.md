@@ -169,6 +169,9 @@ in application domain. In other case default values are applied.
 | `UBA.passwordPolicy.allowMatchWithLogin` | Check password not match the user name. If so - *Password matches with login* error is raised | false |
 | `UBA.passwordPolicy.maxInvalidAttempts` | After *maxInvalidAttempts* unsuccessful authorization user will be locked (`uba_user.disabled=1`). All attempts will logged to `uba_audit` as  *LOGIN FAILED* or *LOCKED LOGIN FAILED* events | 0 (unlimited) |
 
+Note, that for some of these settings, you will need to restart UnityBase server after the change.
+Setting value is a localizable string, make sure you update the setting in all the languages.
+
 ### Security audit & dashboard
 All security related operations are added to the `uba_audit` entity. The interface part is available in the `adminUI` on the path
 `Administrator -> Security -> Security audit`.
