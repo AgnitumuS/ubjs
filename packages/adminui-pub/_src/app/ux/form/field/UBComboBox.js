@@ -472,7 +472,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     me.clearIsPhantom()
     me.callParent(arguments)
     let store = me.getStore()
-    if (me.useForGridEdit && value && !_.isArray(value) &&
+    if (me.useForGridEdit && value && !_.isArray(value) && !_.isObject(value) &&
       (!store.filters.get(me.userFilterId) || store.filters.get(me.userFilterId).value !== value)) {
       store.suspendEvent('clear')
       store.filter(new Ext.util.Filter({
