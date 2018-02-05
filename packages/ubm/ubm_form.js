@@ -1,4 +1,3 @@
-/* jshint multistr:true */
 /* global ubm_form */
 let me = ubm_form
 
@@ -22,7 +21,6 @@ me.entity.addMethod('insert')
 let resultDataCache = null
 let modelLoadDate
 
-const JSON_CONTENT_TYPE = 'application/json; charset=UTF-8'
 const DFM_CONTENT_TYPE = 'text/javascript; charset=UTF-8'
 const REL_PATH_TAIL = 'forms'
 const DEF_FILE_TAIL = '-fm.def'
@@ -128,17 +126,13 @@ function loadAllForms () {
  * @param {ubMethodParams} ctxt
  */
 function doSelect (ctxt) {
-  var
-    mP = ctxt.mParams,
-    aID = mP.ID,
-    cachedData, filteredData,
-    resp, cType = ctxt.dataStore.entity.cacheType,
-    reqVersion
+  let mP = ctxt.mParams
+  let aID = mP.ID
 
-  cachedData = loadAllForms()
-
+  let cachedData = loadAllForms()
+  let cType = ctxt.dataStore.entity.cacheType
   if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity || cType === UBDomain.EntityCacheTypes.SessionEntity) && (!mP.skipCache)) {
-    reqVersion = mP.version
+    let reqVersion = mP.version
     mP.version = resultDataCache.version
     if (reqVersion === resultDataCache.version) {
       mP.resultData = {}
@@ -146,9 +140,9 @@ function doSelect (ctxt) {
       return
     }
   }
-  filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
+  let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
   // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
-  resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
+  let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
   ctxt.dataStore.initFromJSON(resp)
 }
 
