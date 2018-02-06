@@ -20,7 +20,8 @@
     "uglify-js": "^3.0.26",
     "uglifycss": "*",
     "webpack": "^3.3.0",
-    "webpack-bundle-analyzer": "^2.8.3"
+    "webpack-bundle-analyzer": "^2.8.3",
+    "cross-env": "^5.1.1"
   },
   "scripts": {
     "clean": "lerna clean --yes",

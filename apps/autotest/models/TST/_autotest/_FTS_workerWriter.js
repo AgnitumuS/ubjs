@@ -44,12 +44,13 @@ function onProcessWorker (message) {
   terminate()
 
   function testFTS (connection, folder) {
-    const CRLF = String.fromCharCode(13) + String.fromCharCode(10)
     const descrMaxLen = 2000
     let trans = []
     let d = new Date(2015, 1, 1)
 
-    let testArr = fs.readFileSync(path.join(folder, 'fixtures', FILE_NAME)).split(CRLF)
+    let data = fs.readFileSync(path.join(folder, 'fixtures', FILE_NAME))
+    let LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
+    let testArr = data.split(LINE_DELIMITER)
     let curTrLen = 0
     for (let i = command.beginFrom; i < command.beginFrom + command.insertCount; i++) {
       d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)

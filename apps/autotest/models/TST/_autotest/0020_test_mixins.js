@@ -72,6 +72,7 @@ function testClobTruncate (conn) {
   assert.deepEqual(inserted, mustBe)
 
   let html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2strip.html'))
+  let LINE_DELIMITER = html2strip.indexOf('\r\n') > -1 ? '\r\n' : '\n'
   let updated = conn.query({
     entity: 'tst_clob',
     method: 'update',
@@ -81,7 +82,7 @@ function testClobTruncate (conn) {
       text2000: html2strip
     }
   })
-  assert.equal(updated.resultData.data[0][0], '1\r\n3')
+  assert.equal(updated.resultData.data[0][0], `1${LINE_DELIMITER}3`)
 
   html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.html'))
   updated = conn.query({
