@@ -84,13 +84,15 @@ class SpanMap {
     if (!spanRow) this.spanRows[rowNum] = spanRow = {}
     let configNum = 0
     for (let colNum = 0; colNum < this.columnCount; colNum++) {
-      if (spanRow[colNum]) continue
+      if (spanRow[colNum]) {
+        continue
+      }
       let config = columnsConfig[configNum]
       if (config.rowSpan && config.rowSpan > 1) {
-        for (let rw = rowNum; rw < rowNum + config.rowSpan - 1; rw++) {
+        for (let rw = rowNum + 1; rw < rowNum + config.rowSpan; rw++) {
           let rowForSpan = this.spanRows[rw]
           if (!rowForSpan) this.spanRows[rw] = rowForSpan = {}
-          for (let colSp = colNum; colSp <= colSp + (config.colSpan || 1) - 1; colSp++) {
+          for (let colSp = colNum; colSp <= colNum + (config.colSpan || 1) - 1; colSp++) {
             rowForSpan[colSp] = true
           }
         }

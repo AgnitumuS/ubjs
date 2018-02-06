@@ -163,7 +163,7 @@ class XLSXWorksheet {
     context.contentTypes.unshift('<Override PartName="/xl/worksheets/sheet' + this.id + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>')
     context.props.unshift(tools.escapeXML(this.name) || 'Sheet' + this.id)
     context.xlRels.unshift('<Relationship Id="rId' + this.id + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + this.id + '.xml"/>')
-    context.worksheets.unshift('<sheet name="' + (tools.escapeXML(this.name) || 'Sheet' + this.id) + '" sheetId="' + this.id + '" r:id="rId' + this.id + '"/>')
+    context.worksheets.unshift('<sheet name="' + (tools.escapeXML(this.name) || 'Sheet' + this.id) + '" tabId="' + this.id + '" sheetId="' + this.id + '" r:id="rId' + this.id + '"/>')
   }
 
   /**

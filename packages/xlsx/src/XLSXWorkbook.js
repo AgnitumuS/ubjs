@@ -28,7 +28,7 @@ class XLSXWorkbook {
     config = config || {}
 
     // todo check config
-    Object.assign(config, {
+    const param = {
       title: 'Workbook',
       fileCreator: 'UB',
       lastModifiedBy: 'UB',
@@ -39,8 +39,9 @@ class XLSXWorkbook {
       windowWidth: 50000,
       protectStructure: false,
       protectWindows: false
-    })
-    Object.assign(this, config)
+    }
+    Object.assign(param, config)
+    Object.assign(this, param)
 
     this.worksheets = []
     this.compiledWorksheets = []
@@ -82,8 +83,14 @@ class XLSXWorkbook {
   addWorkSheet (config) {
     config = config || {}
     config.id = this.worksheets.length + 1
+    if (!config.name) {
+      config.name = 'Sheet ' + config.id
+    }
+    if (this.worksheets.some(F => F.name === config.name)) {
+      config.name += '_' + config.id
+    }
     var ws = new XLSXWorksheet(config, this)
-    this.worksheets.push(ws)
+    this.worksheets.unshift(ws)
     return ws
   }
 

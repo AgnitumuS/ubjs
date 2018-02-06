@@ -1,4 +1,5 @@
 const fontsMap = {}
+const mustache = require('mustache')
 const ReachText = require('./ReachText')
 const {SpanMap} = require('./SpanMap')
 
@@ -98,12 +99,53 @@ function mustacheFnFactory () {
   return mustacheFnExec
 }
 
+const optimizationProp = '$xlsx_optimization'
+const minLenOptimization = 1
+
+/**
+ * This function replace iterator block to iterator tag and save block template
+ * @param sourceObj
+ * @param tempObj
+ * @param templates
+ * @param templatesData
+ * @param path
+ */
+function wrapIterator (sourceObj, tempObj, templates, templatesData, path) {
+  // copy function from parent path
+  let ctxt = path && templatesData[path] ? Object.assign({}, templatesData[path]) : {}
+  const currCtxt = Object.keys(sourceObj)
+    .map(key => typeof sourceObj[key] === 'function' ? sourceObj[key] : null)
+    .filter(F => F)
+  Object.assign(ctxt, currCtxt)
+  Object.keys(sourceObj).map(key => {
+    let item = sourceObj[key]
+    let newPath = path ? path + '.' + key : key
+    if (typeof item === 'object' && Array.isArray(item) && item.length >= minLenOptimization) {
+      templatesData[newPath] = Object.assign({items: item}, currCtxt)
+      tempObj[key] = function () {
+        return function (iTemplate, render) {
+          iTemplate = iTemplate.trim()
+          let hasComment = iTemplate.substr(0, 3) === '-->'
+          templates[newPath] = hasComment ? iTemplate.substr(3, iTemplate.length - 7) : iTemplate
+          return hasComment ? `--><iterator name="${newPath}" /><!--` : `<iterator name="${newPath}" />`
+        }
+      }
+    } else {
+      if (typeof item === 'object') {
+        tempObj[key] = {}
+        wrapIterator(item, tempObj[key], templates, templatesData, newPath)
+      }
+      tempObj[key] = item
+    }
+  })
+}
+
 class XLSXfromHTML {
   /**
    *
    * @param {xmldom.DOMParser} DOMParser Class factory
    * @param {XLSXWorkbook} workBook
-   * @param {Object} [sheetConfig] Config for XLSXWorkbook.addWorkSheet. You can see full list of config parameters in {@link XLSXWorkbook.addWorkSheet XLSXWorkbook.addWorkSheet}.
+   * @param {Object|Object[]} [sheetConfig] Config for XLSXWorkbook.addWorkSheet. You can see full list of config parameters in {@link XLSXWorkbook.addWorkSheet XLSXWorkbook.addWorkSheet}.
    * @param {String} [sheetConfig.title='Worksheet']
    * @param {String} [sheetConfig.name='Лист']
    * @param {String} [sheetConfig.setActive=false]
@@ -112,6 +154,41 @@ class XLSXfromHTML {
     this.parser = new DOMParser()
     this.wb = workBook
     this.sheetConfig = sheetConfig
+  }
+
+  /**
+   * @private
+   * @param index
+   * @return {{title: string, name: string, setActive: boolean}}
+   */
+  getSheetConfig (index) {
+    let cfg = {title: 'Worksheet', name: 'sheet ' + (index + 1), setActive: (index === 0)}
+    if (this.sheetConfig) {
+      if (Array.isArray(this.sheetConfig)) {
+        if (this.sheetConfig.length > index && (typeof this.sheetConfig[index] === 'object')) {
+          Object.assign(cfg, this.sheetConfig[index])
+        }
+      } else {
+        Object.assign(cfg, this.sheetConfig)
+      }
+    }
+    return cfg
+  }
+
+  /**
+   * Render html mustache template for transform to HTML with optimization
+   * @param template
+   * @param data
+   * @return {String}
+   */
+  static mustacheRenderOptimization (template, data) {
+    const tmpData = {}
+    const templates = {}
+    const templatesData = {}
+    wrapIterator(data, tmpData, templates, templatesData, null)
+    XLSXfromHTML.addMustacheSysFunction(tmpData)
+    data[optimizationProp] = {templates, templatesData}
+    return mustache.render(template, tmpData)
   }
 
   /**
@@ -146,35 +223,79 @@ class XLSXfromHTML {
   static addMustacheSysFunction (data) {
     if (typeof data !== 'object') throw new Error('Invalid param data type')
     data.$fd = mustacheFdFactory.bind(data)
-    data.$fd = mustacheFnFactory.bind(data)
+    data.$fn = mustacheFnFactory.bind(data)
     data.$f = mustacheFnFactory.bind(data)
+  }
+
+  /**
+   * @private Execute iterator
+   * @param {Object} node
+   * @param {String} tagName
+   * @param {Object} sourceData
+   * @param {Function} itemReady Callback for apply iterator result
+   */
+  applyIterator (node, tagName, sourceData, itemReady) {
+    const {templates, templatesData} = sourceData[optimizationProp]
+    const itemName = getAttribute(node, 'name')
+    const template = `{{#item}}${templates[itemName]}{{/item}}`
+    const blockLen = 2
+    let blockArr = []
+    let result = []
+    mustache.parse(template)
+    const data = templatesData[itemName]
+    XLSXfromHTML.addMustacheSysFunction(data)
+    data.items.forEach(F => {
+      data.item = F
+      blockArr.push(mustache.render(template, data))
+      if (blockArr.length >= blockLen) {
+        let root = this.parseXml(blockArr.join(''))
+        blockArr = []
+        findNode(root, tagName, result, true)
+        result.forEach(itemReady)
+        result = []
+      }
+    })
+    if (blockArr.length > 0) {
+      let root = this.parseXml(blockArr.join(''))
+      findNode(root, tagName, result, true)
+      result.forEach(itemReady)
+    }
+  }
+
+  parseXml (xml) {
+    let html = removeEntities(xml)
+    html = html.replace(/(\r|\n)/g, '')
+    const root = this.parser.parseFromString('<xmn>' + html + '</xmn>', 'application/xml').documentElement
+    if (root.childNodes && root.childNodes.length > 0 && root.childNodes[0].nodeName === 'parsererror') {
+      throw new Error(root.childNodes[0].innerHTML)
+    }
+    return root
   }
 
   writeHtml (config) {
     if (!config.html) throw new Error('Empty config.html')
-    let html = removeEntities(config.html)
-    html = html.replace(/(\r|\n)/g, '')
-
-    let root = this.parser.parseFromString('<xmn>' + html + '</xmn>', 'application/xml').documentElement
-    if (root.childNodes && root.childNodes.length > 0 && root.childNodes[0].nodeName === 'parsererror') {
-      throw new Error(root.childNodes[0].innerHTML)
-    }
+    let root = this.parseXml(config.html)
 
     let tables = []
-    findNode(root, 'table', tables, true)
+    findNode(root, config.sourceData ? ['table', 'iterator'] : 'table', tables, true)
     if (tables.length === 0) {
       throw new Error('Table tag not found')
     }
+    let idx = 0
 
-    tables.forEach((F, idx) => {
-      let cfg = {title: 'Worksheet', name: 'Лист', setActive: false}
-      Object.assign(cfg, this.sheetConfig)
-      if (idx > 0) {
-        cfg.name += ' ' + idx
-        cfg.title += ' ' + idx
-      }
+    let addItem = F => {
+      const cfg = this.getSheetConfig(idx)
       let ws = this.wb.addWorkSheet(cfg)
       this.writeTable(ws, F, config)
+      idx++
+    }
+
+    tables.forEach((F, idx) => {
+      if (F.nodeName.toLowerCase() === 'iterator') {
+        this.applyIterator(F, 'table', config, addItem)
+      } else {
+        addItem(F)
+      }
     })
   }
 
@@ -191,11 +312,21 @@ class XLSXfromHTML {
     ctxt.tableStyle = styleToXlsx(ctxt.tableInfo)
     ctxt.colWidth = []
     ctxt.spanMap = new SpanMap(ctxt.tableInfo.style.width)
-    findNode(node, 'tr', rows, true)
-    rows.forEach(F => {
+    findNode(node, config.sourceData ? ['tr', 'iterator'] : 'tr', rows, true)
+
+    let addItem = F => {
       this.writeRow(ws, F, rowIndex, ctxt)
       rowIndex++
+    }
+
+    rows.forEach(F => {
+      if (config.sourceData && F.nodeName.toLowerCase() === 'iterator') {
+        this.applyIterator(F, 'tr', config.sourceData, addItem)
+      } else {
+        addItem(F)
+      }
     })
+
     let widths = ctxt.spanMap.getWidths()
     widths = widths.map((F, i) => { return F ? {column: i, width: F} : null }).filter(F => F)
     if (widths.length) {
@@ -218,11 +349,10 @@ class XLSXfromHTML {
     let startRow = ctxt.config.startRow || 0
     let colWidth = []
 
-    findNode(node, 'td', cells)
+    findNode(node, ctxt.config.sourceData ? ['td', 'iterator'] : 'td', cells)
     let columnNum = startRow
-    // let collIdx = 0
-    // let rowData = []
-    let cellsData = cells.map(F => {
+    const cellsData = []
+    let addItem = F => {
       let cellInfo = {}
       cellInfo.value = CellValue.getValue(F)
       let typedValue = getTypedValue(cellInfo.value)
@@ -239,7 +369,7 @@ class XLSXfromHTML {
       let rowSpan = getAttributeInt(F, 'rowspan')
       if (rowSpan) {
         cellInfo.cellStyle = cellInfo.cellStyle || {}
-        cellInfo.rowSpan = rowSpan
+        cellInfo.cellStyle.rowSpan = rowSpan
       }
       let tdMinHeight = tdInfo.style.height || tdInfo.style.minHeight
       if (tdMinHeight && tdMinHeight > minHeight) minHeight = tdMinHeight
@@ -247,9 +377,16 @@ class XLSXfromHTML {
       cellInfo.style = getStyleByHtml(ws.workBook, [valueStyle, styleToXlsx(tdInfo), trStyle, ctxt.tableStyle])
       cellInfo.column = columnNum
       columnNum = ctxt.spanMap.getNextCellNum(columnNum, colSpan)
-      // columnNum++
-      return cellInfo
+      cellsData.push(cellInfo)
+    }
+    cells.forEach(F => {
+      if (ctxt.config.sourceData && F.nodeName.toLowerCase() === 'iterator') {
+        this.applyIterator(F, 'td', ctxt.config.sourceData, addItem)
+      } else {
+        addItem(F)
+      }
     })
+
     ctxt.spanMap.addRow(colWidth)
     ws.addRow(cellsData, null, minHeight ? {height: minHeight} : null)
   }
@@ -311,12 +448,20 @@ function tagInfoToReachTextConfig (tagInfo) {
   return res
 }
 
+/**
+ * Find child nodes by key[s]
+ * @param {DOMNode} node
+ * @param {string|array} key
+ * @param {array} items
+ * @param {bool} deep
+ */
 function findNode (node, key, items, deep) {
   if (!node.childNodes) return
+  key = Array.isArray(key) ? key : [key]
   for (let nodeIndex = 0; nodeIndex < node.childNodes.length; nodeIndex++) {
     let nc = node.childNodes[nodeIndex]
     let nodeName = nc.nodeName.toLowerCase()
-    if (nodeName === key) {
+    if (key.indexOf(nodeName) >= 0) {
       items.push(nc)
     } else if (deep) {
       findNode(nc, key, items, deep)
