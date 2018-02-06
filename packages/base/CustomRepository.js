@@ -594,7 +594,7 @@ class CustomRepository {
      *
      * WARNING method do not check repository contains the single row and always return a first row from result.
      * @abstract
-     * @return {Object|undefined}
+     * @return {*|undefined}
      */
   selectSingle () {
     throw new Error('abstract')

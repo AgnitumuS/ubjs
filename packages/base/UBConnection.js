@@ -610,7 +610,7 @@ UBConnection.prototype.getDocument = function (params, options) {
       }
     })
   } else {
-    reqParams.params = params
+    reqParams.URLParams = params
   }
   let docContent = this.xhr(reqParams)
   return docContent
