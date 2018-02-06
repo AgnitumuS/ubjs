@@ -42,6 +42,7 @@ const blobStoresMap = createBlobStoreMap()
  * @return {Object<success: false, reason: string>|Object<success: true, entity: UBEntity, attribute: UBEntityAttribute, ID: Number>}
  */
 function parseBlobRequestParams (params) {
+  if (params.id && !params.ID) params.ID = params.id
   if (!params.entity || !params.attribute || !params.ID) {
     return {success: false, reason: 'one of required parameters (entity,attribute,ID) not found'}
   }
