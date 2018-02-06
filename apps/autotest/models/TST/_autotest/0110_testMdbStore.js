@@ -70,4 +70,3 @@ function testUbmDiagram (conn) {
   let templateContent = conn.getDocument({entity: ENTITY, attribute: 'document', ID: diagramRow.ID}, {resultIsBinary: true})
   assert.equal(templateContent.byteLength, templateJson.size, `Size of actual diagram content should be the same as stored in metadata`)
 }
-

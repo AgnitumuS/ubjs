@@ -1034,7 +1034,7 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
     return domainEntity.attributes[attributeNameParts[0]]
   }
 
-    // TODO: Сделать так же для других спец.символов, кроме @
+  // TODO: Make the same thing for other special chars (except @)
   while (domainEntity && attributeNameParts.length) {
     if (domainEntity && attributeNameParts.length === 1) {
       complexAttr = attributeNameParts[0].split('@')
@@ -1056,7 +1056,7 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
         return attribute
       }
       attributeName = attributeNameParts[0]
-      if (attribute.dataType === 'Enum') {
+      if (attribute.dataType === UBDomain.ubDataTypes.Enum) {
         if (attributeName === 'name') { // WTF?
           return attribute
         } else {
@@ -1104,7 +1104,7 @@ UBEntity.prototype.getEntityRequirements = function (fieldList) {
     let fieldNameParts = fieldList[i].split('.')
 
     let attr = this.getEntityAttribute(fieldNameParts[0])
-    if (attr.dataType === 'Entity') {
+    if (attr.dataType === UBDomain.ubDataTypes.Entity) {
       if (fieldNameParts.length > 1) {
         let tail = [fieldNameParts.slice(1).join('.')]
         result = _.union(result, attr.getAssociatedEntity().getEntityRequirements(tail))

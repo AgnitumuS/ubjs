@@ -21,6 +21,8 @@ function createBlobStoreMap () {
     if (storeImplementationModule === 'fileVirtualWritePDF') {
       storeImplementationModule = '../blobStores/fileVirtualWritePDF'
     }
+    if (!storeImplementationModule) storeImplementationModule = '../blobStores/fileSystemBlobStore'
+
     if (store.isDefault) res.defaultStoreName = store.name
     /**
      * Store implementation
