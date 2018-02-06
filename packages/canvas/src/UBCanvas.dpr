@@ -1,7 +1,9 @@
 library UBCanvas;
 
 uses
+  {$IFNDEF FPC}
   FastMM4,
+  {$ENDIF}
   SysUtils,
   Windows,
   SyNodeReadWrite,

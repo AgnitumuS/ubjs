@@ -1,7 +1,9 @@
 library UBComBridge;
 
 uses
+  {$IFNDEF FPC}
   FastMM4,
+  {$ENDIF}
   SysUtils,
   Classes,
   Windows,

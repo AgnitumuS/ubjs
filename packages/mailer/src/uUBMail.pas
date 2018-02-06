@@ -171,7 +171,7 @@ end;
 
 function SLRead(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 const
-  SLCall1Args: array [0..0] of uintN = ( ptStr );
+  SLCall1Args: array [0..0] of uintN = ( SyNodePluginIntf.ptStr );
   SLCalls: array [0..1] of TNSMCallInfo = (
     ( func: @SLRead_impl; argc: 0 ),
     ( func: @SLRead_impl; argc: Length(SLCall1Args); argt: @SLCall1Args )
@@ -193,7 +193,7 @@ end;
 function SLReadLn(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 const
   SLCall1Args: array [0..0] of uintN = ( ptInt );
-  SLCall2Args: array [0..1] of uintN = ( ptInt, ptStr );
+  SLCall2Args: array [0..1] of uintN = ( ptInt, SyNodePluginIntf.ptStr );
   SLCalls: array [0..1] of TNSMCallInfo = (
     ( func: @SLReadLn_impl; argc: Length(SLCall1Args); argt: @SLCall1Args ),
     ( func: @SLReadLn_impl; argc: Length(SLCall2Args); argt: @SLCall2Args )

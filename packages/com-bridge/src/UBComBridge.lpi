@@ -2,6 +2,7 @@
 <CONFIG>
   <ProjectOptions>
     <Version Value="11"/>
+    <PathDelim Value="\"/>
     <General>
       <Flags>
         <MainUnitHasCreateFormStatements Value="False"/>
@@ -9,13 +10,10 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="UBMail"/>
+      <Title Value="UBComBridge"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
-    <i18n>
-      <EnableI18N LFM="False"/>
-    </i18n>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
@@ -24,35 +22,29 @@
     </PublishOptions>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes Count="1">
-        <Mode0 Name="default"/>
-      </Modes>
+      <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="1">
-      <Item1>
-        <PackageName Value="LCL"/>
-      </Item1>
-    </RequiredPackages>
     <Units Count="2">
       <Unit0>
-        <Filename Value="UBMail.dpr"/>
+        <Filename Value="UBComBridge.dpr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
-        <Filename Value="uUBMail.pas"/>
+        <Filename Value="uUBComBridge.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit1>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
+    <PathDelim Value="\"/>
     <Target>
-      <Filename Value="../bin/x64/libubmail"/>
+      <Filename Value="../bin/x64/libubcombridge"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);../../../../../ub-server/libs/Synopse;../../../../../ub-server/libs/Synopse/SQLite3;../../../../../ub-server/libs/Synopse/SyNode"/>
-      <OtherUnitFiles Value="../../../../../ub-server/libs/FastMM4;../../../../../ub-server/libs/Synopse/SyNode;../../../../../ub-server/libs/Synopse/SQLite3;../../../../../ub-server/libs/Synopse;../../../../../ub-server/libs/synapse40/source/lib"/>
-      <UnitOutputDirectory Value="../bin/lib/$(TargetCPU)-$(TargetOS)"/>
+      <IncludeFiles Value="$(ProjOutDir);..\..\..\..\..\ub-server\libs\Synopse;..\..\..\..\..\ub-server\libs\Synopse\SQLite3;..\..\..\..\..\ub-server\libs\Synopse\SyNode"/>
+      <OtherUnitFiles Value="..\..\..\..\..\ub-server\libs\FastMM4;..\..\..\..\..\ub-server\libs\Synopse\SyNode;..\..\..\..\..\ub-server\libs\Synopse\SQLite3;..\..\..\..\..\ub-server\libs\Synopse;..\..\..\..\..\ub-server\libs\synapse40\source\lib"/>
+      <UnitOutputDirectory Value="..\bin\lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>
