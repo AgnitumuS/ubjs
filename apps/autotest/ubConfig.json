@@ -194,7 +194,7 @@
 			},
 			{
 				"name": "simple",
-				"path": "./documents/simple/",
+				"path": "./documents/simple",
 				"isDefault": true,
 				"historyDepth": 0,
 				"storeSize": "Simple",
@@ -202,7 +202,7 @@
 			},
 			{
 				"name": "avatars",
-					"path": "./documents/avatars/",
+				"path": "./documents/avatars",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false
