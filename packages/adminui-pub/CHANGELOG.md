@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Fixed 
 
 setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
+clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
 
 ## [4.2.45]
 ## Changed
