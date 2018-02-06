@@ -1,14 +1,18 @@
+@rem PATH=..\..\..\..\ub-server\bin\d-win32;..\..\node_modules\.bin;%PATH%
+@rem PATH=..\..\..\..\ub-server\bin\fpc-win32;..\..\node_modules\.bin;%PATH%
+PATH=..\..\..\..\ub-server\bin\fpc-win64;..\..\node_modules\.bin;%PATH%
 
 if [%UB_HOST%]==[] (
   SET UB_HOST=http://localhost:8881
 )
 
-del .\_autotestResults.json
-del .\last_result.log
+if exist .\_autotestResults.json del .\_autotestResults.json
+if exist .\last_result.log del .\last_result.log
 
 SET TESTCASE=drop database
-del /Q .\*FTS.sqlite3
-
+if exist autotestDB.sqlite3 del autotestDB.sqlite3
+if exist autotestFTS.sqlite3 del autotestFTS.sqlite3
+if exist autotestSubjectsFTS.sqlite3 del autotestSubjectsFTS.sqlite3
 
 SET TESTCASE=init database
 if [%UB_CFG%]==[] (
