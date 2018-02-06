@@ -1,7 +1,9 @@
 library UBMail;
 
 uses
+  {$IFNDEF FPC}
   FastMM4,
+  {$ENDIF}
   {$IFDEF MSWINDOWS}
   Windows,
   {$ELSE}

@@ -1,12 +1,14 @@
 library UBCompressors;
 
 uses
+  {$IFNDEF FPC}
   FastMM4,
+  {$ENDIF}
   SysUtils,
   Classes,
-{$IFDEF MSWINDOWS}
+  {$IFDEF MSWINDOWS}
   Windows,
-{$ENDIF}
+  {$ENDIF}
   SpiderMonkey,
   SyNodePluginIntf,
   uUBCompressors in 'uUBCompressors.pas';
