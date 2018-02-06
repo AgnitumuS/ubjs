@@ -1072,6 +1072,9 @@ Ext.define('UB.view.EntityGridPanel', {
                 column.field.events.change.clearListeners()
               }
             }
+            if (column.field.xtype === 'ubcombobox') {
+              column.field.setValue()
+            }
           }
         })
         if (_.isFunction(me.onBeforeEdit)) {
