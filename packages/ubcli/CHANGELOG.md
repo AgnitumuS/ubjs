@@ -5,8 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.2.7]
-### Fixed PostgreSQl DDL generator
-- Fixed DROP INDEX script
+### Fixed 
+- PostgreSQl DDL generator: DROP INDEX script syntax
 
 ## [1.2.3]
 ### Fixed
