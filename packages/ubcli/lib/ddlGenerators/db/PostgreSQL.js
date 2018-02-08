@@ -26,7 +26,7 @@ class DBPostgreSQL extends DBAbstract {
     let tablesSQL = `select t.table_name as name, 
       (select description from pg_description
         where objoid = (select typrelid from pg_type where typname = t.table_name
-        and typowner = (select oid from pg_roles where rolname = current_role)) and objsubid = 0
+        and typowner = (select oid from pg_roles where rolname = current_schema)) and objsubid = 0
       ) as caption
     from information_schema.tables t
     where t.table_schema = current_schema`
@@ -56,7 +56,7 @@ class DBPostgreSQL extends DBAbstract {
         'NO' as is_computed, c.column_default as defvalue,
           (select description from pg_description
           where objoid =
-            (select typrelid from pg_type where typname = LOWER(c.table_name) and typowner = (select oid from pg_roles where rolname = current_role))
+            (select typrelid from pg_type where typname = LOWER(c.table_name) and typowner = (select oid from pg_roles where rolname = current_schema))
             and objsubid = c.ordinal_position) as description
         from information_schema.columns c
         where c.table_schema = current_schema
@@ -97,18 +97,18 @@ class DBPostgreSQL extends DBAbstract {
 
       // foreign key
       let foreignKeysSQL =
-		`SELECT 
-		  ct.conname as foreign_key_name,
-		  ct.condeferred as is_disabled,
-		  (SELECT a.attname FROM pg_attribute a WHERE a.attnum = ct.conkey[1] AND a.attrelid = ct.conrelid) as constraint_column_name,
-		  (SELECT tc.relname from pg_class tc where tc.oid = ct.confrelid) as referenced_object,
-		  ct.confdeltype as delete_referential_action_desc, -- a = no action, r = restrict, c = cascade, n = set null, d = set default
-		  ct.confupdtype as update_referential_action_desc -- a = no action, r = restrict, c = cascade, n = set null, d = set default
-		FROM pg_constraint ct
-		LEFT JOIN pg_class t ON ct.conrelid  = t.oid
-		WHERE t.relname = LOWER(:('${asIsTable._upperName}'):) 
-          AND t.relowner = (SELECT oid FROM pg_roles WHERE rolname = current_role) 
-		  AND contype = 'f'`
+`SELECT 
+  ct.conname as foreign_key_name,
+  ct.condeferred as is_disabled,
+  (SELECT a.attname FROM pg_attribute a WHERE a.attnum = ct.conkey[1] AND a.attrelid = ct.conrelid) as constraint_column_name,
+  (SELECT tc.relname from pg_class tc where tc.oid = ct.confrelid) as referenced_object,
+  ct.confdeltype as delete_referential_action_desc, -- a = no action, r = restrict, c = cascade, n = set null, d = set default
+  ct.confupdtype as update_referential_action_desc -- a = no action, r = restrict, c = cascade, n = set null, d = set default
+FROM 
+  pg_constraint ct
+WHERE 
+  conrelid = '${asIsTable.name}'::regclass 
+  AND contype = 'f'`
 
       let fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
@@ -139,10 +139,19 @@ class DBPostgreSQL extends DBAbstract {
         `SELECT UPPER(c.relname) constraint_name, UPPER(a.attname) AS column_name
         FROM   pg_index i
         JOIN pg_class c on i.indexrelid = c.oid
-        JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
-        WHERE i.indrelid = '${asIsTable.name}'::regclass
-		  AND c.relowner = (SELECT oid FROM pg_roles WHERE rolname = current_role)
-          AND i.indisprimary`
+        JOIN pg_attribute a ON a.attrelid = i.indrelid
+                           AND a.attnum = ANY(i.indkey)
+        WHERE  i.indrelid = '${asIsTable.name}'::regclass
+        AND    i.indisprimary`
+
+      // `select UPPER(tc.constraint_name) as constraint_name,
+      //   substr(constraint_type, 1, 1) as constraint_type,
+      //   '' as search_condition, 'ENABLED' as status, 'USER NAME' as generated
+      //   from information_schema.table_constraints tc
+      //   where tc.constraint_schema = current_schema
+      //   and tc.table_schema = current_schema
+      //   and tc.table_name = LOWER(:('${asIsTable._upperName}'):)
+      //   and tc.constraint_type in ('PRIMARY KEY')`
 
       let pkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
@@ -159,20 +168,20 @@ class DBPostgreSQL extends DBAbstract {
 
       // indexes
       let indexesSQL =
-		`SELECT 
-		  i.indexrelid as index_id,
-		  UPPER(c.relname) as index_name,
-		  CASE WHEN i.indisunique THEN 1 ELSE 0 END as is_unique, 
-		  UPPER(a.attname) AS column_name,
-		  array_position(i.indkey, a.attnum) as column_position,
-		  CASE WHEN position(a.attname || ' DESC' in pg_get_indexdef(i.indexrelid)) > 0 THEN 1 ELSE 0 END as is_descending_key
-		FROM pg_index i
-		  JOIN pg_class c ON c.oid = i.indexrelid 
-		  JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
-		WHERE i.indrelid = '${asIsTable.name}'::regclass 
-		  AND NOT i.indisprimary
-		  AND c.relowner = (SELECT oid FROM pg_roles WHERE rolname = current_role)
-		ORDER BY index_id, column_position`
+`SELECT 
+  i.indexrelid as index_id,
+  UPPER(c.relname) as index_name,
+  CASE WHEN i.indisunique THEN 1 ELSE 0 END as is_unique, 
+  UPPER(a.attname) AS column_name,
+  array_position(i.indkey, a.attnum) as column_position,
+  CASE WHEN position(a.attname || ' DESC' in pg_get_indexdef(i.indexrelid)) > 0 THEN 1 ELSE 0 END as is_descending_key
+FROM pg_index i
+  JOIN pg_class c ON c.oid = i.indexrelid 
+  JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
+WHERE 
+  i.indrelid = '${asIsTable.name}'::regclass AND 
+  NOT i.indisprimary
+ORDER BY index_id, column_position`
 
       let indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
@@ -204,7 +213,7 @@ class DBPostgreSQL extends DBAbstract {
          FROM pg_constraint c 
          LEFT JOIN pg_class t ON c.conrelid  = t.oid 
          WHERE t.relname = LOWER(:('${asIsTable._upperName}'):) 
-         AND t.relowner = (SELECT oid FROM pg_roles WHERE rolname = current_role) 
+         and t.relowner = (select oid from pg_roles where rolname = current_schema) 
          AND c.contype = 'c'`
 
       let constraintsFromDb = this.conn.xhr({
@@ -288,8 +297,8 @@ class DBPostgreSQL extends DBAbstract {
 
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
-    if (!value && !oldValue) return // prevent create empty comments
     if (value) value = value.replace(/'/g, "''")
+    if (!value && !oldValue) return // prevent create empty comments
     let result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
     this.DDL.caption.statements.push(result)
   }

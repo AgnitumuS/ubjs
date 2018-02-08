@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.2.7]
 ### Fixed PostgreSQl DDL generator
 - Fixed DROP INDEX script
-- Fixed scripts that pull information about db structure considering current role
 
 ## [1.2.3]
 ### Fixed
