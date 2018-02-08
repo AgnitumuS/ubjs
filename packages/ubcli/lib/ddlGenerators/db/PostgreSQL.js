@@ -464,7 +464,7 @@ ORDER BY index_id, column_position`
     if (indexDB.isConstraint) {
       cObj.push(`ALTER TABLE ${tableDB.name} DROP CONSTRAINT ${indexDB.name}`)
     } else {
-      cObj.push(`drop index ${indexDB.name} on ${tableDB.name}`)
+      cObj.push(`drop index ${indexDB.name}`)
     }
   }
   /**
