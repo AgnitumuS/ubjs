@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.2.48]
+### Added
+add line numbering for rowEditing ubdetailgrid
+
 ## Fixed 
 
 setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
