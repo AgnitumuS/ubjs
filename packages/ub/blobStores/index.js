@@ -8,14 +8,14 @@ function createBlobStoreMap () {
   let blobStores = App.serverConfig.application.blobStores
   let res = {}
   if (!blobStores) return
-  blobStores.forEach((store) => {
-    res[store.name] = store
-    let storeImplementationModule = store['implementedBy']
+  blobStores.forEach((storeConfig) => {
+    res[storeConfig.name] = storeConfig
+    let storeImplementationModule = storeConfig['implementedBy']
     // UB4 compatibility
-    if (!storeImplementationModule && (!store.storeType || store.name === 'fileVirtual')) {
+    if (!storeImplementationModule && (!storeConfig.storeType || storeConfig.name === 'fileVirtual')) {
       storeImplementationModule = '../blobStores/fileSystemBlobStore'
     }
-    if (!storeImplementationModule && (store.name = 'mdb')) {
+    if (!storeImplementationModule && (storeConfig.name = 'mdb')) {
       storeImplementationModule = '../blobStores/mdbBlobStore'
     }
     if (storeImplementationModule === 'fileVirtualWritePDF') {
@@ -23,38 +23,57 @@ function createBlobStoreMap () {
     }
     if (!storeImplementationModule) storeImplementationModule = '../blobStores/fileSystemBlobStore'
 
-    if (store.isDefault) res.defaultStoreName = store.name
+    if (storeConfig.isDefault) res.defaultStoreName = storeConfig.name
+    let StoreClass = require(storeImplementationModule)
     /**
      * Store implementation
+     * @type {BlobStoreCustom}
      */
-    store.implementation = require(storeImplementationModule)
+    storeConfig.implementation = new StoreClass(storeConfig)
   })
   return res
 }
 const blobStoresMap = createBlobStoreMap()
 
 /**
+ * Blob store request (parameters passed to get|setDocument)
+ * @typedef {Object} ParsedRequest
+ * @property {Boolean} success
+ * @property {String} [reason] Error message in case success === false
+ * @property {BlobStoreRequest} [bsReq] Parsed parameters in case success
+ * @property {UBEntityAttribute} [attribute] Entity attribute in case success
+ */
+
+/**
  * Check params contains entity,attribute & ID.
- * Entity should be in domain, attribute should be of `Documant` type and ID should be Number
+ * Entity should be in domain, attribute should be of `Document` type and ID should be Number
  * In case params are invalid return false (and write an error in resp)
  *
- * @param {BlobStoreRequest} params
- * @return {Object<success: false, reason: string>|Object<success: true, entity: UBEntity, attribute: UBEntityAttribute, ID: Number>}
+ * @param {*} params
+ * @return {ParsedRequest}
  */
 function parseBlobRequestParams (params) {
-  if (params.id && !params.ID) params.ID = params.id
-  if (!params.entity || !params.attribute || !params.ID) {
-    return {success: false, reason: 'one of required parameters (entity,attribute,ID) not found'}
-  }
-  let ID = parseInt(params.ID)
+  let ID = parseInt(params.ID || params.id)
   if (ID <= 0) return {success: false, reason: 'incorrect ID value'}
-
+  if (!params.entity || !params.attribute) {
+    return {success: false, reason: 'One of required parameters (entity,attribute) not found'}
+  }
   let entity = App.domainInfo.get(params.entity)
   let attribute = entity.getAttribute(params.attribute)
   if (attribute.dataType !== UBDomain.ubDataTypes.Document) {
     return {success: false, reason: `Invalid getDocument Request to non-document attribute ${params.entity}.${params.attribute}`}
   }
-  return {success: true, entity, attribute, ID}
+  let bsReq = {
+    ID: ID,
+    entity: params.entity,
+    attribute: params.attribute,
+    isDirty: (params.isDirty === true || params.isDirty === 'true' || params.isDirty === '1'),
+    // UB <5 compatibility
+    fileName: (params.origName || params.origname || params.fileName || params.filename || params.fName),
+    revision: params.revision ? parseInt(params.revision, 10) : undefined,
+    extra: params.extra
+  }
+  return {success: true, bsReq: bsReq, attribute: attribute}
 }
 /**
  * Retrieve document content from blobStore and send it to response.
@@ -81,17 +100,22 @@ function getDocument (req, resp) {
 
   let parsed = parseBlobRequestParams(params)
   if (!parsed.success) return badRequest(resp, parsed.reason)
-  let {entity, attribute, ID} = parsed
+  let attribute = parsed.attribute
+  let entity = attribute.entity
+  let ID = parsed.bsReq.ID
 
-  let blobInfoTxt = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectScalar()
-  if (!blobInfoTxt) return notFound(resp, `${entity.code} with ID=${ID}`)
-  let blobInfo = JSON.parse(blobInfoTxt)
-  // first try to get a store code from blobInfo
+  let blobInfo = {}
+  if (!parsed.bsReq.isDirty) {
+    let blobInfoTxt = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectScalar()
+    if (!blobInfoTxt) return notFound(resp, `${entity.code} with ID=${ID}`)
+    blobInfo = JSON.parse(blobInfoTxt)
+  }
+  // first try to get a store code from blobInfo. In case of dirty request - from attribute
   let storeCode = blobInfo.store ? blobInfo.store : attribute.storeName
   let store = blobStoresMap[storeCode]
   if (!store) return badRequest(resp, `Blob store ${storeCode} not found in application config`)
   // call store implementation method
-  return store.implementation.fillResponse(params, blobInfo, req, resp)
+  return store.implementation.fillResponse(parsed.bsReq, blobInfo, req, resp)
 }
 
 /**
@@ -116,17 +140,17 @@ function setDocument (req, resp) {
 
   let parsed = parseBlobRequestParams(request)
   if (!parsed.success) return badRequest(resp, parsed.reason)
-  let {entity, /** @type UBEntityAttribute */attribute} = parsed
+  let attribute = parsed.attribute
   if (attribute.entity.isUnity) {
-    return badRequest(resp, `Direct modification of UNITY entity ${entity.code} not allowed`)
+    return badRequest(resp, `Direct modification of UNITY entity ${attribute.entity.code} not allowed`)
   }
   let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeCode]
   if (!store) return badRequest(resp, `Blob store ${storeCode} not found in application config`)
   let content = req.read('bin')
-  let blobStoreItem = store.implementation.saveContentToTempStore(request, attribute, content)
+  let blobStoreItem = store.implementation.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
-  resp.writeEnd({result: blobStoreItem})
+  resp.writeEnd({success: true, errMsg: '', result: blobStoreItem})
 }
 
 /**
@@ -157,7 +181,7 @@ function getFromBlobStore (request, blobInfo, options) {
   let store = blobStoresMap[storeCode]
   if (!store) throw new Error(`Blob store ${storeCode} not found in application config`)
   // call store implementation method
-  return store.implementation.getContent(request, blobInfo, options)
+  return store.implementation.getContent(parsed.bsReq, blobInfo, options)
 }
 
 /**
@@ -169,14 +193,14 @@ function getFromBlobStore (request, blobInfo, options) {
 function putToBlobStore (request, content) {
   let parsed = parseBlobRequestParams(request)
   if (!parsed.success) throw new Error(parsed.reason)
-  let {entity, /** @type UBEntityAttribute */attribute} = parsed
+  let attribute = parsed.attribute
   if (attribute.entity.isUnity) {
-    throw new Error(`Direct modification of UNITY entity ${entity.code} not allowed`)
+    throw new Error(`Direct modification of UNITY entity ${attribute.entity.code} not allowed`)
   }
   let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeCode]
   if (!store) throw new Error(`Blob store ${storeCode} not found in application config`)
-  return store.implementation.saveContentToTempStore(request, attribute, content)
+  return store.implementation.saveContentToTempStore(parsed.bsReq, attribute, content)
 }
 
 /**

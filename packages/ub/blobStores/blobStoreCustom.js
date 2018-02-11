@@ -83,6 +83,13 @@
 const Session = require('../modules/Session')
 const path = require('path')
 
+// {"store":"documents","fName":"contr_contractdoc document 3000000405832.pdf",
+//   "origName":"договор №01Т.pdf",
+//   "relPath":"435\\",
+//   "ct":"application/pdf",
+//   "size":2057405,
+//   "md5":"3b44f38f6b120615604846b67150fcb0",
+//   "revision":2}
 /**
  * Blob store item content (JSON stored in database)
  * @typedef {Object} BlobStoreItem
@@ -99,21 +106,34 @@ const path = require('path')
  */
 
 /**
- * Blob store request (parameters passed to getDocument)
+ * Blob store request (parameters passed to get|setDocument)
  * @typedef {Object} BlobStoreRequest
+ * @property {Number} ID
  * @property {String} entity
  * @property {String} attribute
- * @property {String} ID
  * @property {Boolean} [isDirty]
  * @property {String} [fileName]
  * @property {Number} [revision]
+ * @property {String} [extra] Store-specific extra parameters
  */
 
-/**
- * @class BlobStoreCustom
- * @abstract
- */
-const BlobStoreCustom = {
+class BlobStoreCustom {
+  constructor (storeConfig) {
+    /**
+     * Store parameters as defined in ubConfig
+     */
+    this.config = Object.assign({}, storeConfig)
+    /**
+     * Name of store (from app config)
+     */
+    this.name = this.config.name
+    /**
+     * Path to temp folder
+     * @type {String}
+     * @private
+     */
+    this.tempFolder = (process.env.TEMP || process.env.TMP)
+  }
   /**
    * Implementation must save file content to temporary store
    * @abstract
@@ -124,9 +144,7 @@ const BlobStoreCustom = {
    * @param {THTTPResponse} resp
    * @returns {BlobStoreItem}
    */
-  saveContentToTempStore: function (request, attribute, content, req, resp) {
-  },
-
+  saveContentToTempStore (request, attribute, content, req, resp) {}
   /**
    * Retrieve BLOB content from blob store.
    * @abstract
@@ -138,8 +156,7 @@ const BlobStoreCustom = {
    *   At last one parameter {store: storeName} should be defined to prevent loading actual JSON from DB
    * @returns {String|ArrayBuffer}
    */
-  getContent: function (request, blobInfo, options) { },
-
+  getContent (request, blobInfo, options) {}
   /**
    * Fill HTTP response for getDocument request
    * @abstract
@@ -149,11 +166,9 @@ const BlobStoreCustom = {
    * @param {THTTPResponse} resp
    * @return {Boolean}
    */
-  fillResponse: function (requestParams, blobInfo, req, resp) { },
-
+  fillResponse (requestParams, blobInfo, req, resp) { }
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
-   * In case `oldItem` is present store implementation & parameters should be taken from oldItem.store.
    * Return a new attribute content which describe a place of BLOB in permanent store
    * @abstract
    * @param {UBEntityAttribute} attribute
@@ -162,23 +177,16 @@ const BlobStoreCustom = {
    * @param {BlobStoreItem} oldItem
    * @return {BlobStoreItem}
    */
-  doCommit: function (attribute, ID, dirtyItem, oldItem) { },
-
-  /**
-   * Path to temp folder
-   * @type {String}
-   * @private
-   */
-  tempFolder: (process.env.TEMP || process.env.TMP),
+  doCommit (attribute, ID, dirtyItem, oldItem) { }
   /**
    * Get path to temporary file and it's name
    * @protected
    * @param {BlobStoreRequest} request
    * @returns {string}
    */
-  getTempFileName: function (request) {
+  getTempFileName (request) {
     // important to use Session.userID. See UB-617
-    return path.join(this.tempFolder, [request.entity, request.attribute, request.ID, Session.userID].join('_'))
+    return path.join(this.tempFolder, `${request.entity}_${request.attribute}_${request.ID}_${Session.userID}`)
   }
 }
 module.exports = BlobStoreCustom
