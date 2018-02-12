@@ -1,5 +1,5 @@
-set EXTERNAL_LIBS_PATH=..\..\..\..\ub-server\libs
-set SHARED_LIBS_BASE=..\..\..\..\ub-server\bin
+if not defined EXTERNAL_LIBS_PATH set EXTERNAL_LIBS_PATH=..\..\..\..\ub-server\libs
+if not defined SHARED_LIBS_BASE set SHARED_LIBS_BASE=..\..\..\..\ub-server\bin
 
 rem set LAZARUS_PATH="\usr\local\share\lazarus" - should be set externally
 if not defined LAZARUS_PATH (
