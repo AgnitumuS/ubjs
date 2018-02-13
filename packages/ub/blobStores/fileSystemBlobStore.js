@@ -2,7 +2,13 @@ const BlobStoreCustom = require('./BlobStoreCustom')
 const path = require('path')
 const fs = require('fs')
 const mime = require('mime-types')
+const App = require('../modules/App')
 
+function getRandomInt (max) {
+  return Math.floor(Math.random() * Math.floor(max))
+}
+const STORE_SUBFOLDER_COUNT = 400
+const MAX_COUNTER = Math.pow(2, 31)
 /**
  *  @classdesc
  *  Blob store implementation for storing content inside models `public` folders.
@@ -42,6 +48,18 @@ class FileSystemBlobStore extends BlobStoreCustom {
     this.keepOriginalFileNames = this.config.keepOriginalFileNames === false
     this.historyDepth = this.config.historyDepth || 0
     this.storeSize = this.config.storeSize || 'Simple'
+    this._folderCounter = 0
+    this.SIZES = {
+      Simple: 'Simple', Medium: 'Medium', Large: 'Large', Monthly: 'Monthly', Daily: 'Daily'
+    }
+    if (!this.SIZES[this.storeSize]) {
+      throw new Error(`Invalid storeSize "${this.storeSize}" for BLOB store "${this.name}"`)
+    }
+    if (this.storeSize === this.SIZES.Medium) {
+      this._folderCounter = getRandomInt(STORE_SUBFOLDER_COUNT) + 100
+    } else if (this.storeSize === this.SIZES.Large) {
+      this._folderCounter = (getRandomInt(STORE_SUBFOLDER_COUNT) + 1) * (getRandomInt(STORE_SUBFOLDER_COUNT) + 1)
+    }
   }
   /**
    * @inheritDoc
@@ -128,53 +146,124 @@ class FileSystemBlobStore extends BlobStoreCustom {
    */
   doCommit (attribute, ID, dirtyItem, oldItem) {
     if (!dirtyItem.isDirty) throw new Error('Committing of non dirty BLOBs is forbidden')
+    // TODO handle deletion
     let tempPath = this.getTempFileName({
       entity: attribute.entity.name,
       attribute: attribute.name,
       ID: ID
     })
-    let newRelPath = '' // TODO construct
-    let newFN
-    if (this.keepOriginalFileNames) {
-      newFN = dirtyItem.origName
-    } else {
-      // TODO construct
-      throw new Error('Not implemented file name construction')
-    }
-    let permanentPath = this.getPermanentFileName({
-      relPath: newRelPath,
-      fName: newFN
-    })
-    fs.renameSync(tempPath, permanentPath)
-    let nameWoPath = path.basename(permanentPath)
-    let ct = mime.contentType(path.extname(nameWoPath))
-    let stat = fs.statSync(permanentPath)
-    return {
+    let newPlacement = this.genNewPlacement(attribute, dirtyItem, ID)
+    fs.renameSync(tempPath, newPlacement.fullFn)
+    let ct = mime.contentType(newPlacement.ext)
+    let stat = fs.statSync(newPlacement.fullFn)
+    let resp = {
+      v: 1,
       store: attribute.storeName,
-      fName: nameWoPath,
-      origName: dirtyItem.origName,  // TODO - depend on store keepOriginalFileName
-      relPath: newRelPath,
+      fName: newPlacement.fn,
+      origName: dirtyItem.origName,
+      relPath: newPlacement.relPath,
       ct: ct,
       size: stat.size,
       md5: dirtyItem.md5 // TODO - calc it here (do not trust client)
     }
+    try {
+      // TODO prev. version - delete/move to history + inc revision
+      // resp.revision = 0
+      // resp.isPermanent = 0
+    } catch (e) {
+
+    }
+    return resp
+  }
+
+  safeIncFolderCounter () {
+    this._folderCounter++
+    if (this._folderCounter > MAX_COUNTER) this._folderCounter = 100
+    return this._folderCounter
+  }
+  /**
+   * Calculate a relative path & file name for a new BLOB item.
+   * If new folder dose not exists - create it
+   * @param {UBEntityAttribute} attribute
+   * @param {BlobStoreItem} dirtyItem
+   * @param {Number} ID
+   * @return {{fn: string, ext: string, relPath: string, fullFn: string}}
+   */
+  genNewPlacement (attribute, dirtyItem, ID) {
+    // generate file name for storing file
+    let fn = this.keepOriginalFileNames ? dirtyItem.origName : ''
+    let ext = path.extname(dirtyItem.origName)
+    if (!fn) {
+      fn = `${attribute.entity.sqlAlias || attribute.entity.code}-${attribute.code}${ID}${ext}`
+    }
+    let l1subfolder = ''
+    let l2subfolder = ''
+    if (this.storeSize === this.SIZES.Medium) {
+      let c = this.safeIncFolderCounter()
+      l1subfolder = '' + (c % STORE_SUBFOLDER_COUNT + 100)
+    } else if (this.storeSize === this.SIZES.Large) {
+      let c = this.safeIncFolderCounter()
+      l1subfolder = '' + (Math.floor(c / STORE_SUBFOLDER_COUNT) % STORE_SUBFOLDER_COUNT + 100)
+      l2subfolder = '' + (c % STORE_SUBFOLDER_COUNT + 100)
+    } else if (this.storeSize === this.SIZES.Monthly || this.storeSize === this.SIZES.Daily) {
+      let today = new Date()
+      let year = today.getFullYear().toString()
+      let month = today.getMonth().toString().padStart(2, '0')
+      l1subfolder = `${year}${month}`
+      if (this.storeSize === this.SIZES.Daily) {
+        l2subfolder = today.getDay().toString().padStart(2, '0')
+      }
+    }
+    // check target folder exists. Create if possible
+    // use a global cache for already verified folder
+    let fullFn = this.fullStorePath
+    let relPath = ''
+    if (l1subfolder) {
+      fullFn = path.join(this.fullStorePath, l1subfolder)
+      let cacheKey = `BSFCACHE#${this.name}#${l1subfolder}`
+      let verified = App.globalCacheGet(cacheKey) === '1'
+      if (!verified) {
+        if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
+        App.globalCachePut(cacheKey, '1')
+      }
+      relPath = l1subfolder
+      if (l2subfolder) {
+        fullFn = path.join(fullFn, l2subfolder)
+        cacheKey = `BSFCACHE#${this.name}#${l1subfolder}#${l2subfolder}`
+        let verified = App.globalCacheGet(cacheKey) === '1'
+        if (!verified) {
+          if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
+          App.globalCachePut(cacheKey, '1')
+        }
+        relPath = path.join(relPath, l2subfolder)
+      }
+    }
+    return {
+      fn: fn,
+      ext: ext,
+      relPath: relPath,
+      fullFn: fullFn
+    }
   }
   /**
    * For file based store:
-   *   - store.path + relativePath (depends on store size) + fileName (depends on keepOriginalFileNames)
+   *   - store.path + relativePath  + fileName
    * @private
    * @param {BlobStoreItem} blobItem
    */
   getPermanentFileName (blobItem) {
-    let result = ''
     let fn = blobItem.fName
     let relPath = blobItem.relPath || ''
-    if (this.keepOriginalFileNames) {
-      result = path.join(this.fullStorePath, relPath, fn)
-    } else {
-      throw new Error('not implemented')
+    // v:0 create a folder FormatUTF8('% % %%', [Attribute.Entity.name, Attribute.name, Request.ID])
+    // and place where file with name = revisionNumber+ext
+    // sample: {"store":"documents","fName":"doc_outdoc document 3000019161319.pdf","origName":"3000019161319.pdf","relPath":"101\\","ct":"application/pdf","size":499546,"md5":"5224456db8d3c47f5681c5e970826211","revision":5}
+    if (!blobItem.v) { // UB <5
+      let ext = path.extname(fn)
+      let fileFolder = path.basename(fn, ext) // file name without ext
+      fn = `${blobItem.revision || 1}${ext}` // actual file name is `revision number + ext`
+      relPath = path.join(relPath, fileFolder)
     }
-    return result
+    return path.join(this.fullStorePath, relPath, fn)
   }
 }
 

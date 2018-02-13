@@ -93,6 +93,7 @@ const path = require('path')
 /**
  * Blob store item content (JSON stored in database)
  * @typedef {Object} BlobStoreItem
+ * @property {Number} [v] Store version. Empty for UB<5. Store implementation must check `v` for backward compatibility
  * @property {String} store Code of store implementation from application config. If empty - use a store from attribute configuration
  * @property {String} fName File name inside store (auto generated in most case)
  * @property {String} origName Original file name (as user upload it)
