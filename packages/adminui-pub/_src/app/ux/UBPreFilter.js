@@ -312,7 +312,7 @@ Ext.define('UB.ux.UBPreFilter', {
         };
         me.loadSettings(configName).done(function(store){
             var record;
-            if (store.length !== 0){
+            if (store.count() !== 0){
                 record = store.getAt(0);
                 var resControls = JSON.parse(record.get('filter'));
                 if (Ext.isObject(resControls)){
