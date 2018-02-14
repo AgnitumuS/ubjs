@@ -1,29 +1,7 @@
 <!--@name "OnClick sample"-->
-<!--@report_code "click_sample"-->
 <!--@model "UBS"-->
-<!--@ID "332110723252225"-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!--%pageOrientation:portrait-->
-
-
-
-
-
-
 <h1>OnClick event sample</h1>
 <table><!--{{#countries}}-->
 <tbody>

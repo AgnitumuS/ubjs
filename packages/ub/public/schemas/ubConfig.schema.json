@@ -271,7 +271,7 @@
       "properties": {
         "levels": {
           "type": "array",
-          "description": "Type of events to put to log file. \"*\" - all events",
+          "description": "Type of events to put to log file. \"*\" - all events. To enable logging of a remote debug protocol on log level Custom4 set an environment variable FF_RDP_DEBUG=true",
           "_format": "table",
           "default": [
             "LastError",

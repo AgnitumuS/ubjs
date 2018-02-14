@@ -151,6 +151,10 @@ class CustomRepository {
      *  - expression may contains this functions: 'SUM', 'COUNT', 'AVG', 'MAX', 'MIN', 'CAST', 'COALESCE',
      *    'LENGTH', 'LOWER', 'UPPER', 'DAY', 'MONTH', 'YEAR', 'ROUND', 'FLOOR', 'CEILING'
      *
+     *  - for a Date/DateTime attributes special macros `#maxdate` or `#currentdate` can be used as a value:
+     *
+     *    .where('dateValue', '=', '#maxdate')
+     *    .where('dateTimeValue', '<', '#currentdate')
      *
      * `In` and 'notIn` conditions can take a sub-repository as a values parameter value. See CustomRepository.exists for a conplex example
      *

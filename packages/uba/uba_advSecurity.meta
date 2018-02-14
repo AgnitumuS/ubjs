@@ -38,8 +38,8 @@
       "name": "fp",
       "dataType": "String",
       "size": 256,
-      "caption": "Fingerpring",
-      "documentation": "Fingerpring of user device. If empty - not checked"
+      "caption": "Fingerprint",
+      "documentation": "Fingerprint of user device. If empty - not checked"
     }, {
       "name": "refreshFp",
       "dataType": "Boolean",

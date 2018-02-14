@@ -3,6 +3,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+## [4.2.48]
+### Added
+add line numbering for rowEditing ubdetailgrid
+
+## Fixed 
+
+setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
+clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+
+## [4.2.45]
+## Changed
+- UBDocument.forceMIME is DEPRECATED and not handled anymore.
+- UBApp.runShortcutCommand now can accept a shortcut code to run
+```javascript
+   $App.runShortcutCommand('tst_document')
+   //or
+   $App.runShortcutCommand(30000012312)
+```
+To use in ubm_navshortcut place this code to the `ubm_navshortcut.cmdCode` attribute:
+```javascript
+  {cmdType: 'showForm', formCode: function () { $App.runShortcutCommand('sia_docPayOrderOut') }}
+```
+
+## Fixed
+- EntityGridPanel `Export to Excel` action now enabled even in standard edition,
+ since `xlsx` module added to `adminui-pub` as chunk
 
 ## [4.2.45]
 ## Changed

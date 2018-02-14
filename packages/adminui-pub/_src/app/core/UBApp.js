@@ -1,3 +1,4 @@
+/* global Ext, $App */
 require('../view/LoginWindow.js')
 require('../../ux/window/Notification')
 require('../view/Viewport')
@@ -951,14 +952,29 @@ Ext.define('UB.core.UBApp', {
     Ext.create('UB.core.UBCommand', config)
   },
   /**
-   * Load a shortcut command by given shortcut ID and run it
-   * @param {Number} shortcutID
-   * @param {Boolean} inWindow
+   * Load a shortcut command by given shortcut ID (or code) and run it
+   *
+   *    $App.runShortcutCommand('tst_document')
+   *    //or
+   *    $App.runShortcutCommand(30000012312)
+   *
+   * @param {Number|String} shortcutIDOrCode Either shortcut ID or shortcut code to run
+   * @param {Boolean} inWindow Show a command result in window instead of tab
    */
-  runShortcutCommand: function (shortcutID, inWindow) {
-    var cmdCodePromise = UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
+  runShortcutCommand: function (shortcutIDOrCode, inWindow) {
+    let shortcutID = shortcutIDOrCode
+    if (typeof shortcutIDOrCode !== 'number') {
+      let store = UB.core.UBStoreManager.getNavigationShortcutStore()
+      let rowNum = store.findExact('code', shortcutIDOrCode)
+      if (rowNum !== -1) {
+        shortcutID = store.getAt(rowNum).get('ID')
+      } else {
+        throw new Error(`Shortcut with code ${shortcutIDOrCode} not found`)
+      }
+    }
+    let cmdCodePromise = UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
     cmdCodePromise.then(function (parsedCmdCode) {
-      var commandConfig = _.clone(parsedCmdCode)
+      let commandConfig = _.clone(parsedCmdCode)
       if (!inWindow) {
         commandConfig.tabId = 'navigator' + shortcutID
         commandConfig.target = $App.viewport.centralPanel

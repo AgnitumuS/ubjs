@@ -69,6 +69,9 @@ function postProcessing (loader, fullFilePath, content, row) {
   let fileName = parts[parts.length - 1]
   row.report_code = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length)
 
+  if (row.ID) console.warn(`Please, remove a row "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB4 report ID is generated automatically as crc32(fileNameWoExtension)`)
+  row.ID = ncrc32(0, row.report_code)
+
     // fill formDef attribute value
   row.template = JSON.stringify({
     fName: fileName,
@@ -203,7 +206,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   let newValues = mP.execParams || {}
   let ID = newValues.ID
 
-    // move all attributes from execParams to storedValue
+  // move all attributes from execParams to storedValue
   _.forEach(newValues, function (val, key) {
     let attr = attributes[key]
     if (attr && (attr.dataType !== UBDomain.ubDataTypes.Document)) {
@@ -229,7 +232,8 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   }
   for (let attrName in attributes) {
     let attr = attributes[attrName]
-    if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView || attrName === 'ID')) {
+    if (attr.dataType !== UBDomain.ubDataTypes.Document &&
+      attr.defaultView && attrName !== 'ID' && attrName !== 'report_code') {
       docBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + docBody
     }
   }

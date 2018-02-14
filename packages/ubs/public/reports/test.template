@@ -1,12 +1,10 @@
 <!--@name "11111"-->
-<!--@report_code "test"-->
 <!--@model "UBS"-->
-<!--@ID "3000002237700"-->
 
 
 
 <!--%pageOrientation:landscape--><h1 style="text-align: center;">Report <br />builder manual</h1>
-<p><span style="font-size: 10pt;">In UnityBase <strong>report is&nbsp;simply a <a href="https://github.com/janl/mustache.js">Mustache</a>! </strong>So you can use <strong>everything must</strong>ache is support.</span></p>
+<p><span style="font-size: 10pt;">In UnityBase <strong>report is a <a href="https://github.com/janl/mustache.js">Mustache</a>! </strong>So you can use <strong>everything must</strong>ache is support.</span></p>
 <table style="word-break: break-all;" border="1px" width="773" cellspacing="0" cellpadding="3px">
 <tbody>
 <tr>

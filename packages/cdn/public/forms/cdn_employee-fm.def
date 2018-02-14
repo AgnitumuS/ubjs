@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "cdn_employee"
-//@formType "auto"
-//@caption "Сотрудник внешней организации"
-//@description "Сотрудник внешней организации"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "cdn_employee"
+// @model "CDN"
+// @formType "auto"
+// @caption "employee_title"
+// @description "employee_title"
 exports.formDef = {
 
     size: {
