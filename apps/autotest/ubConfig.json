@@ -197,7 +197,7 @@
 				"path": "./documents/simple",
 				"isDefault": true,
 				"historyDepth": 0,
-				"storeSize": "Simple",
+				"storeSize": "Medium",
 				"keepOriginalFileNames": false
 			},
 			{

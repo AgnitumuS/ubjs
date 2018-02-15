@@ -45,7 +45,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
      * Normalized path to the store root
      */
     this.fullStorePath = storePath
-    this.keepOriginalFileNames = this.config.keepOriginalFileNames === false
+    this.keepOriginalFileNames = (this.config.keepOriginalFileNames === true)
     this.historyDepth = this.config.historyDepth || 0
     this.storeSize = this.config.storeSize || 'Simple'
     this._folderCounter = 0
@@ -133,20 +133,33 @@ class FileSystemBlobStore extends BlobStoreCustom {
   }
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
-   * TODO - think about it. New items should be putted to the new store (old one can be read-only for example or full)
-   * TODO if old item present we should TRY delete it?
-   * In case `oldItem` is present then store implementation & parameters should be taken from oldItem.store.
+   * TIPS: in v0 (UB<5) in case file updated implementation take a store from old item.
+   *   This raise a problem - old store may be in archive state (readonly)
+   * So in UB5 we change implementation to use store defined in attribute for new items
    * Return a new attribute content which describe a place of BLOB in permanent store
    *
    * @param {UBEntityAttribute} attribute
    * @param {Number} ID
    * @param {BlobStoreItem} dirtyItem
    * @param {BlobStoreItem} oldItem
-   * @return {BlobStoreItem}
+   * @return {BlobStoreItem|''}
    */
   doCommit (attribute, ID, dirtyItem, oldItem) {
-    if (!dirtyItem.isDirty) throw new Error('Committing of non dirty BLOBs is forbidden')
-    // TODO handle deletion
+    if (dirtyItem.deleting) {
+      if (dirtyItem.isDirty) { // content stored in temp storage - delete temp file
+        let tempPath = this.getTempFileName({
+          entity: attribute.entity.name,
+          attribute: attribute.name,
+          ID: ID
+        })
+        if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath)
+      }
+      if (oldItem) { // permanent file exists
+        this.doArchOrDeletion(attribute, oldItem)
+      }
+      return ''
+    }
+    if (!dirtyItem.isDirty) throw new Error('Committing of non dirty/deleting BLOBs is forbidden')
     let tempPath = this.getTempFileName({
       entity: attribute.entity.name,
       attribute: attribute.name,
@@ -181,9 +194,57 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (this._folderCounter > MAX_COUNTER) this._folderCounter = 100
     return this._folderCounter
   }
+
+  /**
+   * @protected
+   * @param {UBEntityAttribute} attribute
+   * @param {BlobStoreItem} oldItem
+   */
+  doArchOrDeletion (attribute, oldItem) {
+    if (this.historyDepth) {
+      this.doArch(attribute, oldItem)
+    } else {
+      this.doDelete(attribute, oldItem)
+    }
+  }
+  /**
+   * @protected
+   * @param {UBEntityAttribute} attribute
+   * @param {BlobStoreItem} oldItem
+   */
+  doDelete (attribute, oldItem) {
+    let fn
+    try {
+      fn = this.getPermanentFileName(oldItem)
+      if (fs.existsSync(fn)) fs.unlinkSync(fn)
+    } catch (e) {
+      console.error(`BLOB store "${this.name}" - can't delete permanent file "${fn}":`, e)
+    }
+  }
+
+  /**
+   * Archive file for stores with historyDepth > 0.
+   * V1 implementation will:
+   *   - insert record to ub_blobHistory with oldInfo
+   *   - try to delete expired non-permanent history records
+   * TIPS: For v0 (UB < 5) archiving rename file 0.ext|fti -> newRev.ext|fti (0.pdf -> 8.pdf; 0.fti -> 8.fti)
+   * @protected
+   * @param {UBEntityAttribute} attribute
+   * @param {BlobStoreItem} oldItem
+   */
+  doArch (attribute, oldItem) {
+    try {
+      // insert to ub_blobHistory
+      // clear expired historical items (do not touch isPermanent)
+
+    } catch (e) {
+      console.error(`BLOB store "${this.name}" - can't move permanent file "${fn}" to ${newFn}:`, e)
+    }
+  }
   /**
    * Calculate a relative path & file name for a new BLOB item.
    * If new folder dose not exists - create it
+   * @protected
    * @param {UBEntityAttribute} attribute
    * @param {BlobStoreItem} dirtyItem
    * @param {Number} ID
@@ -238,6 +299,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
         relPath = path.join(relPath, l2subfolder)
       }
     }
+    fullFn = path.join(fullFn, fn)
     return {
       fn: fn,
       ext: ext,
@@ -248,7 +310,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
   /**
    * For file based store:
    *   - store.path + relativePath  + fileName
-   * @private
+   * @protected
    * @param {BlobStoreItem} blobItem
    */
   getPermanentFileName (blobItem) {
