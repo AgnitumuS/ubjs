@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+## [4.2.49]
+### Added
+in ubdetailgrid add param forceDataLoad for force load data in store
+
 ## [4.2.48]
 ### Added
 add line numbering for rowEditing ubdetailgrid

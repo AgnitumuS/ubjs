@@ -40,6 +40,10 @@ Ext.define('UB.ux.UBDetailGrid', {
    * @cfg {Array.<String>} detailFields Detail attribute name(s) for master-detail
    */
   detailFields: [],
+  /**
+   *  @cfg {Boolean} force load data in store
+   */
+  forceDataLoad: false,
   initComponent: function () {
     let cmdParams
 
@@ -128,7 +132,7 @@ Ext.define('UB.ux.UBDetailGrid', {
       req.whereList = UB.core.UBCommand.addMasterDetailRelation(
          req.whereList, this.masterFields, this.detailFields, record
       )
-      if (this.rendered) {
+      if (this.rendered || this.forceDataLoad) {
         if (this.rowEditing && this.editingPlugin.editing) {
           this.editingPlugin.cancelEdit()
         }
