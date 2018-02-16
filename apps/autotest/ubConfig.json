@@ -183,8 +183,8 @@
 				"supportLang": [
 					"uk"
 				],
-				"advSettings": "Synchronous=Off"
-				//"advSettings": "Synchronous=Off,Tokenizer=stemka" fpc win64 donthave stemka
+				//"advSettings": "Synchronous=Off"
+				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			}
 		],
 		"blobStores": [

@@ -47,13 +47,13 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
     URLParams: {CONNECTION: databaseConfig.name},
     data: UB.format(sequences, clientNum)
   })
-  let script = fs.readFileSync(path.join(__dirname, 'postgreSQLObjects.sql'))
+  let script = fs.readFileSync(path.join(__dirname, 'postgresqlObjects.sql'))
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: databaseConfig.name},
     data: script
   })
-  script = fs.readFileSync(path.join(__dirname, 'postgreSQLTables.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'postgresqlTables.sql'))
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: databaseConfig.name},
