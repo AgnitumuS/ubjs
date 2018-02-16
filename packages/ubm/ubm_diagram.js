@@ -172,7 +172,6 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       ID: ID,
       isDirty: Boolean(newDocument)
     },
-    newDocument ? {store: 'mdb'} : JSON.parse(storedValue.formDef),
     {encoding: 'utf-8'}
   )
   if (!diagramBody) {

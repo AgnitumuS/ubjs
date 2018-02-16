@@ -224,3 +224,5 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   }
   return true
 }
+
+module.exports = TubDataStore

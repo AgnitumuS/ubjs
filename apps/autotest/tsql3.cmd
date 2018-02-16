@@ -20,8 +20,8 @@ if [%UB_CFG%]==[] (
 )
 SET UB_DEV=true
 
-call ubcli createStore -cfg %UB_CFG% -noLogo
-@if errorlevel 1 goto err
+rem call ubcli createStore -cfg %UB_CFG% -noLogo
+rem @if errorlevel 1 goto err
 
 call ubcli initDB -host %UB_HOST% -cfg %UB_CFG% -dba %UB_DBA% -dbaPwd %UB_DBAPWD% -u admin -p admin -drop -create
 @if errorlevel 1 goto err

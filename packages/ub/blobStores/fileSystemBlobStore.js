@@ -3,12 +3,14 @@ const path = require('path')
 const fs = require('fs')
 const mime = require('mime-types')
 const App = require('../modules/App')
+const Repository = require('@unitybase/base').ServerRepository.fabric
 
 function getRandomInt (max) {
   return Math.floor(Math.random() * Math.floor(max))
 }
 const STORE_SUBFOLDER_COUNT = 400
 const MAX_COUNTER = Math.pow(2, 31)
+
 /**
  *  @classdesc
  *  Blob store implementation for storing content inside models `public` folders.
@@ -34,9 +36,6 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (!path.isAbsolute(storePath)) {
       storePath = path.join(process.configPath, storePath)
     }
-    if (!fs.existsSync(storePath)) {
-      throw new Error(`Folder "${storePath}" for BLOB store "${this.name}" doesn't exist. Either check "path" or run ">ubcli createStore" to create folder and it internal structure`)
-    }
     let fStat = fs.statSync(storePath)
     if (!fStat.isDirectory()) {
       throw new Error(`BLOB store "${this.name}" path "${storePath}" is not a folder`)
@@ -45,6 +44,16 @@ class FileSystemBlobStore extends BlobStoreCustom {
      * Normalized path to the store root
      */
     this.fullStorePath = storePath
+
+    let tmpFolder = this.tempFolder
+    if (!path.isAbsolute(tmpFolder)) {
+      tmpFolder = path.join(process.configPath, tmpFolder)
+    }
+    if (!fs.existsSync(tmpFolder)) {
+      throw new Error(`Temp folder "${tmpFolder}" for BLOB store "${this.name}" doesn't exist. Check a "tempPath" store config parameter`)
+    } else {
+      this.tempFolder = tmpFolder
+    }
     this.keepOriginalFileNames = (this.config.keepOriginalFileNames === true)
     this.historyDepth = this.config.historyDepth || 0
     this.storeSize = this.config.storeSize || 'Simple'
@@ -66,15 +75,12 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
    * @param {ArrayBuffer} content
-   * @param {THTTPRequest} req
-   * @param {THTTPResponse} resp
    * @returns {BlobStoreItem}
    */
-  saveContentToTempStore (request, attribute, content, req, resp) {
+  saveContentToTempStore (request, attribute, content) {
     let fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
     fs.writeFileSync(fn, content)
-    // TODO md5val = CryptoJS.MD5(content)
     let origFn = request.fileName
     let ct = mime.contentType(path.extname(origFn))
     return {
@@ -99,8 +105,8 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @returns {String|ArrayBuffer}
    */
   getContent (request, blobInfo, options) {
-    let filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo)
-    return fs.readFileSync(filePath, options)
+    let filePath = request.isDirty ? this.getTempFileName(request) : this.getPermanentFileName(blobInfo, request)
+    return filePath ? fs.readFileSync(filePath, options) : undefined
   }
   /**
    * Fill HTTP response for getDocument request
@@ -118,7 +124,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
         ct = mime.contentType(path.extname(requestParams.fileName))
       }
     } else {
-      filePath = this.getPermanentFileName(blobInfo)
+      filePath = this.getPermanentFileName(blobInfo, requestParams)
       ct = blobInfo.ct
     }
     if (!ct) ct = 'application/octet-stream'
@@ -155,7 +161,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
         if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath)
       }
       if (oldItem) { // permanent file exists
-        this.doArchOrDeletion(attribute, oldItem)
+        this.doArchOrDeletion(attribute, oldItem, ID)
       }
       return ''
     }
@@ -177,15 +183,10 @@ class FileSystemBlobStore extends BlobStoreCustom {
       relPath: newPlacement.relPath,
       ct: ct,
       size: stat.size,
-      md5: dirtyItem.md5 // TODO - calc it here (do not trust client)
+      md5: dirtyItem.md5, // TODO - calc it here (do not trust client)
+      revision: ((oldItem && oldItem.revision) || 0) + 1
     }
-    try {
-      // TODO prev. version - delete/move to history + inc revision
-      // resp.revision = 0
-      // resp.isPermanent = 0
-    } catch (e) {
-
-    }
+    if (dirtyItem.isPermanent) resp.isPermanent = true
     return resp
   }
 
@@ -199,10 +200,12 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @protected
    * @param {UBEntityAttribute} attribute
    * @param {BlobStoreItem} oldItem
+   * @param {Number} ID
    */
-  doArchOrDeletion (attribute, oldItem) {
+  переделать! Надо для каждой исторической записи искать имплементацию стора
+  doArchOrDeletion (attribute, oldItem, ID) {
     if (this.historyDepth) {
-      this.doArch(attribute, oldItem)
+      this.doArch(attribute, oldItem, ID)
     } else {
       this.doDelete(attribute, oldItem)
     }
@@ -211,12 +214,13 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @protected
    * @param {UBEntityAttribute} attribute
    * @param {BlobStoreItem} oldItem
+   * @param {Boolean} [clearHistory=true] TODO - remove history in case entity not safeDelete?
    */
-  doDelete (attribute, oldItem) {
+  doDelete (attribute, oldItem, clearHistory = true) {
     let fn
     try {
       fn = this.getPermanentFileName(oldItem)
-      if (fs.existsSync(fn)) fs.unlinkSync(fn)
+      if (fn && fs.existsSync(fn)) fs.unlinkSync(fn)
     } catch (e) {
       console.error(`BLOB store "${this.name}" - can't delete permanent file "${fn}":`, e)
     }
@@ -231,12 +235,37 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @protected
    * @param {UBEntityAttribute} attribute
    * @param {BlobStoreItem} oldItem
+   * @param {Number} ID
    */
-  doArch (attribute, oldItem) {
+  doArch (attribute, oldItem, ID) {
     try {
-      // insert to ub_blobHistory
+      let blobHistoryStore = getBlobHistoryStore()
       // clear expired historical items (do not touch isPermanent)
-
+      let histData = Repository(BLOB_HISTORY_STORE_NAME)
+        .attrs(['ID', 'blobInfo'])
+        .where('instance', '=', ID)
+        .where('attribute', '=', attribute.name)
+        .where('isPermanent', '=', false)
+        .orderBy('revision')
+        .limit(this.historyDepth)
+        .selectAsObject()
+      for (let i = 0, L = histData.length; i < L; i++) {
+        let item = histData[i]
+        // delete file. do not try recursively clear history
+        this.doDelete(attribute, JSON.parse(item['blobInfo']), false)
+        // and information about history from DB
+        blobHistoryStore.run('delete', {execParams: {ID: item['ID']}})
+      }
+      // insert new historical item
+      blobHistoryStore.run('insert', {
+        execParams: {
+          instance: ID,
+          attribute: attribute.name,
+          revision: oldItem.revision,
+          permanent: oldItem.isPermanent,
+          blobInfo: JSON.stringify(oldItem)
+        }
+      })
     } catch (e) {
       console.error(`BLOB store "${this.name}" - can't move permanent file "${fn}" to ${newFn}:`, e)
     }
@@ -312,8 +341,10 @@ class FileSystemBlobStore extends BlobStoreCustom {
    *   - store.path + relativePath  + fileName
    * @protected
    * @param {BlobStoreItem} blobItem
+   * @param {BlobStoreRequest} [request] Optional request to get a revision
+   * @return {String} In case of item not exists - return empty string ''
    */
-  getPermanentFileName (blobItem) {
+  getPermanentFileName (blobItem, request) {
     let fn = blobItem.fName
     let relPath = blobItem.relPath || ''
     // v:0 create a folder FormatUTF8('% % %%', [Attribute.Entity.name, Attribute.name, Request.ID])

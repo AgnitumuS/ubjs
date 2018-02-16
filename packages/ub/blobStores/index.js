@@ -4,6 +4,15 @@ const Repository = require('@unitybase/base').ServerRepository.fabric
 const queryString = require('querystring')
 const {badRequest, notFound} = require('../modules/httpUtils')
 
+// const TubDataStore = require('../TubDataStore')
+const BLOB_HISTORY_STORE_NAME = 'ub_blobHistory'
+/** @type TubDataStore */
+let _blobHistoryStore
+function getBlobHistoryStore () {
+  if (!_blobHistoryStore) _blobHistoryStore = new TubDataStore(BLOB_HISTORY_STORE_NAME)
+  return _blobHistoryStore
+}
+
 function createBlobStoreMap () {
   let blobStores = App.serverConfig.application.blobStores
   let res = {}
@@ -75,6 +84,63 @@ function parseBlobRequestParams (params) {
   }
   return {success: true, bsReq: bsReq, attribute: attribute}
 }
+
+/**
+ *
+ * @param {ParsedRequest} parsedRequest
+ */
+function getRequestedBLOBInfo (parsedRequest) {
+  let attribute = parsedRequest.attribute
+  let entity = attribute.entity
+  let ID = parsedRequest.bsReq.ID
+
+  let storeCode, blobInfo
+  // dirty request always come to blob store defined in attribute
+  if (parsedRequest.bsReq.isDirty) {
+    storeCode = attribute.storeName
+  } else {
+    // check user have access to row and retrieve current blobInfo
+    let blobInfoTxt = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectScalar()
+    if (!blobInfoTxt) {
+      return {
+        success: false,
+        reason: `${entity.code} with ID=${ID} not accessible`
+      }
+    }
+    blobInfo = JSON.parse(blobInfoTxt)
+    // check revision. If not current - get a blobInfo from history
+    let rev = parsedRequest.bsReq.revision
+    if (rev && (rev !== blobInfo['revision'])) {
+      let historicalBlobItem = Repository(BLOB_HISTORY_STORE_NAME)
+        .attrs('blobInfo')
+        .where('instance', '=', ID)
+        .where('attribute', '=', attribute.name)
+        .where('revision', '=', rev)
+        .selectScalar()
+      if (historicalBlobItem) {
+        blobInfo = JSON.parse(historicalBlobItem) // use historical blob item
+      } else {
+        return {
+          success: false,
+          reason: `Revision ${rev} not found for ${entity.code}.${attribute.code} with ID=${ID}`
+        }
+      }
+    }
+    storeCode = (blobInfo && blobInfo.store) ? blobInfo.store : attribute.storeName
+  }
+  let store = blobStoresMap[storeCode]
+  if (!store) {
+    return {
+      success: false,
+      reason: `Store "${storeCode}" not found in application config`
+    }
+  }
+  return {
+    success: true,
+    blobInfo,
+    store
+  }
+}
 /**
  * Retrieve document content from blobStore and send it to response.
  *
@@ -100,22 +166,31 @@ function getDocument (req, resp) {
 
   let parsed = parseBlobRequestParams(params)
   if (!parsed.success) return badRequest(resp, parsed.reason)
-  let attribute = parsed.attribute
-  let entity = attribute.entity
-  let ID = parsed.bsReq.ID
-
-  let blobInfo = {}
-  if (!parsed.bsReq.isDirty) {
-    let blobInfoTxt = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectScalar()
-    if (!blobInfoTxt) return notFound(resp, `${entity.code} with ID=${ID}`)
-    blobInfo = JSON.parse(blobInfoTxt)
+  let requested = getRequestedBLOBInfo(parsed)
+  if (!requested.success) {
+    return badRequest(resp, requested.reason)
   }
-  // first try to get a store code from blobInfo. In case of dirty request - from attribute
-  let storeCode = blobInfo.store ? blobInfo.store : attribute.storeName
-  let store = blobStoresMap[storeCode]
-  if (!store) return badRequest(resp, `Blob store ${storeCode} not found in application config`)
   // call store implementation method
-  return store.implementation.fillResponse(parsed.bsReq, blobInfo, req, resp)
+  return requested.store.implementation.fillResponse(parsed.bsReq, requested.blobInfo, req, resp)
+}
+
+/**
+ * Retrieve BLOB content from blob store.
+ * @param {BlobStoreRequest} request
+ * @ param {BlobStoreItem} blobInfo JSON retrieved from a DB. `undefinded` for dirty request.
+ *   If `undefined` and requested not dirty item then UB will send query to entity and get blobInfo from DB.
+ * @param {Object} [options]
+ * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
+ * @returns {String|ArrayBuffer}
+ */
+function getFromBlobStore (request, options) {
+  let parsed = parseBlobRequestParams(request)
+  if (!parsed.success) throw new Error(parsed.reason)
+  let requested = getRequestedBLOBInfo(parsed)
+  if (!requested.success) {
+    throw new Error(requested.reason)
+  }
+  return requested.store.implementation.getContent(parsed.bsReq, requested.blobInfo, options)
 }
 
 /**
@@ -151,37 +226,6 @@ function setDocument (req, resp) {
   let blobStoreItem = store.implementation.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
   resp.writeEnd({success: true, errMsg: '', result: blobStoreItem})
-}
-
-/**
- * Retrieve BLOB content from blob store.
- * @param {BlobStoreRequest} request
- * @param {BlobStoreItem} blobInfo JSON retrieved from a DB.
- *   If `undefined` UB will send query to entity anf get it from DB.
- *   At last one parameter {store: storeName} should be defined to prevent loading actual JSON from DB
- * @param {Object} [options]
- * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
- * @returns {String|ArrayBuffer}
- */
-function getFromBlobStore (request, blobInfo, options) {
-  let parsed = parseBlobRequestParams(request)
-  if (!parsed.success) throw new Error(parsed.reason)
-  // A blob store code MUST be taken from BlobStoreItem - this required by store rotation mechanism
-  let storeCode
-  if (blobInfo && blobInfo.store) {
-    storeCode = blobInfo.store
-  } else {
-    let row = Repository(request.entity).attrs(['ID', request.attribute]).where('ID', '=', request.ID).selectSingle()
-    if (row && row[request.attribute]) {
-      blobInfo = JSON.parse(row[request.attribute])
-      storeCode = blobInfo.store
-    }
-    if (!storeCode) storeCode = parsed.attribute.storeName
-  }
-  let store = blobStoresMap[storeCode]
-  if (!store) throw new Error(`Blob store ${storeCode} not found in application config`)
-  // call store implementation method
-  return store.implementation.getContent(parsed.bsReq, blobInfo, options)
 }
 
 /**
@@ -227,5 +271,6 @@ module.exports = {
   setDocument,
   getFromBlobStore,
   putToBlobStore,
-  doCommit
+  doCommit,
+  getBlobHistoryStore
 }

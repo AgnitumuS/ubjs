@@ -27,11 +27,9 @@ class MdbBlobStore extends BlobStoreCustom {
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
    * @param {ArrayBuffer} content
-   * @param {THTTPRequest} req
-   * @param {THTTPResponse} resp
    * @returns {BlobStoreItem}
    */
-  saveContentToTempStore (request, attribute, content, req, resp) {
+  saveContentToTempStore (request, attribute, content) {
     let fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
     fs.writeFileSync(fn, content)

@@ -4,6 +4,7 @@ const repositoryFabric = require('@unitybase/base').ServerRepository.fabric // f
 const App = require('./modules/App')
 const Session = require('./modules/Session')
 const UBFormat = require('@unitybase/base').format
+const blobStores = require('./blobStores')
 
 /**
  * The UB namespace (global object) encapsulates some classes, singletons, and utility methods provided by UnityBase server.
@@ -168,6 +169,8 @@ const modelLoader = require('./modules/moledLoader')
 UB.loadLegacyModules = modelLoader.loadLegacyModules
 UB.App = App
 
+UB.blobStores = blobStores
+
 UB.run = function () {
   /**
    * @deprecated Use `const UB = require('@unitybase/ub')`
@@ -196,10 +199,8 @@ UB.run = function () {
   App.registerEndpoint('models', models, false)
   App.registerEndpoint('clientRequire', clientRequire, false)
   App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
-
-  const {getDocument, setDocument} = require('./blobStores')
-  App.registerEndpoint('getDocument', getDocument, true)
-  App.registerEndpoint('setDocument', setDocument, true)
+  App.registerEndpoint('getDocument', blobStores.getDocument, true)
+  App.registerEndpoint('setDocument', blobStores.setDocument, true)
 }
 
 module.exports = UB

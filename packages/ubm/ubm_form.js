@@ -255,14 +255,14 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
         attribute: 'formDef',
         ID: ID,
         isDirty: true
-      }, {store: 'mdb'}, {encoding: 'utf-8'})
+      }, {encoding: 'utf-8'})
     } else {
       formDefBody = blobStores.getFromBlobStore({
         entity: entity.name,
         attribute: 'formDef',
         ID: ID,
         isDirty: false
-      }, JSON.parse(storedValue.formDef), {encoding: 'utf-8'})
+      }, {encoding: 'utf-8'}) //, JSON.parse(storedValue.formDef),
     }
   }
 

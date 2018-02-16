@@ -221,7 +221,6 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       ID: ID,
       isDirty: Boolean(newTemplateInfo)
     },
-    newTemplateInfo ? {store: 'mdb'} : JSON.parse(storedValue.template),
     {encoding: 'utf-8'}
   )
   if (!reportBody) {

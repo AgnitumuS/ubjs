@@ -134,7 +134,7 @@ class BlobStoreCustom {
      * @type {String}
      * @private
      */
-    this.tempFolder = (process.env.TEMP || process.env.TMP)
+    this.tempFolder = (this.config.tempPath || process.env.TEMP || process.env.TMP)
   }
   /**
    * Implementation must save file content to temporary store
@@ -142,11 +142,9 @@ class BlobStoreCustom {
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute
    * @param {ArrayBuffer} content
-   * @param {THTTPRequest} req
-   * @param {THTTPResponse} resp
    * @returns {BlobStoreItem}
    */
-  saveContentToTempStore (request, attribute, content, req, resp) {}
+  saveContentToTempStore (request, attribute, content) {}
   /**
    * Retrieve BLOB content from blob store.
    * @abstract
@@ -191,4 +189,5 @@ class BlobStoreCustom {
     return path.join(this.tempFolder, `${request.entity}_${request.attribute}_${request.ID}_${Session.userID}`)
   }
 }
+
 module.exports = BlobStoreCustom
