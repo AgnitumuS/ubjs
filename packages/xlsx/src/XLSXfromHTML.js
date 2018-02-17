@@ -86,7 +86,7 @@ function mustacheFdExec (val, render) {
 }
 */
 
-function getDottedPrperty (me, property) {
+function getDottedProperty (me, property) {
   var value = me
   property.split('.').forEach(function (name) {
     if (!value) throw new Error('Invalid property ' + name)
@@ -105,7 +105,7 @@ function formatMustache (format, fixFormat, root) {
     if (dataArr < 1) {
       throw new Error('$format function require one or two parameter. {{#$f}}"amount"{{/f}} {{#$f}}"amount","sum"{{/f}} ')
     }
-    let value = getDottedPrperty(me, dataArr[0])
+    let value = getDottedProperty(me, dataArr[0])
     if (fixFormat && (value !== undefined && value !== null)) {
       if (fixFormat === 'number') value = Number(value)
       else if (fixFormat === 'date' && !(value instanceof Date)) value = new Date(value)

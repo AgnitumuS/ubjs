@@ -135,7 +135,7 @@ UBReport.prototype.makeReport = function (params) {
  * @param {Object} reportData
  * @param {Object} config
  * @param {Boolean} [config.disableOptimization=false]
- * @param {Boolean} [config.minLenOptimization=10] Minimal length of data Array to start optimisation {@link XLSXWorkbook.addWorkSheet}
+ * @param {Boolean} [config.minLenOptimization=10] Minimal length of data Array to start optimization {@link XLSXWorkbook.addWorkSheet}
  * @param {Boolean} [config.useSharedString=false] For detail information open {@link XLSXWorkbook#constructor}
  * @param {Boolean} [config.sheetConfig=[{name: 'Sheet'}]] For detail information open {@link XLSXfromHTML#constructor} and {@link XLSXWorkbook.addWorkSheet}
  * @return {Promise.<ArrayBuffer>}
