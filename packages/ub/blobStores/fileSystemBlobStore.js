@@ -1,4 +1,4 @@
-const BlobStoreCustom = require('./BlobStoreCustom')
+const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const fs = require('fs')
 const mime = require('mime-types')
@@ -93,7 +93,6 @@ class FileSystemBlobStore extends BlobStoreCustom {
   }
   /**
    * Retrieve BLOB content from blob store.
-   * @abstract
    * @param {BlobStoreRequest} request
    * @param {BlobStoreItem} blobInfo JSON retrieved from a DB.
    * @param {Object} [options]
