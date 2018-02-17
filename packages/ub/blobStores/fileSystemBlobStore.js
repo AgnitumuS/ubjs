@@ -3,7 +3,6 @@ const path = require('path')
 const fs = require('fs')
 const mime = require('mime-types')
 const App = require('../modules/App')
-const Repository = require('@unitybase/base').ServerRepository.fabric
 
 function getRandomInt (max) {
   return Math.floor(Math.random() * Math.floor(max))
@@ -55,7 +54,6 @@ class FileSystemBlobStore extends BlobStoreCustom {
       this.tempFolder = tmpFolder
     }
     this.keepOriginalFileNames = (this.config.keepOriginalFileNames === true)
-    this.historyDepth = this.config.historyDepth || 0
     this.storeSize = this.config.storeSize || 'Simple'
     this._folderCounter = 0
     this.SIZES = {
@@ -147,25 +145,19 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @param {UBEntityAttribute} attribute
    * @param {Number} ID
    * @param {BlobStoreItem} dirtyItem
-   * @param {BlobStoreItem} oldItem
-   * @return {BlobStoreItem|''}
+   * @param {number} newRevision
+   * @return {BlobStoreItem|null}
    */
-  doCommit (attribute, ID, dirtyItem, oldItem) {
+  persist (attribute, ID, dirtyItem, newRevision) {
     if (dirtyItem.deleting) {
-      if (dirtyItem.isDirty) { // content stored in temp storage - delete temp file
-        let tempPath = this.getTempFileName({
-          entity: attribute.entity.name,
-          attribute: attribute.name,
-          ID: ID
-        })
-        if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath)
-      }
-      if (oldItem) { // permanent file exists
-        this.doArchOrDeletion(attribute, oldItem, ID)
-      }
-      return ''
+      let tempPath = this.getTempFileName({
+        entity: attribute.entity.name,
+        attribute: attribute.name,
+        ID: ID
+      })
+      if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath)
+      return null
     }
-    if (!dirtyItem.isDirty) throw new Error('Committing of non dirty/deleting BLOBs is forbidden')
     let tempPath = this.getTempFileName({
       entity: attribute.entity.name,
       attribute: attribute.name,
@@ -184,7 +176,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       ct: ct,
       size: stat.size,
       md5: dirtyItem.md5, // TODO - calc it here (do not trust client)
-      revision: ((oldItem && oldItem.revision) || 0) + 1
+      revision: newRevision
     }
     if (dirtyItem.isPermanent) resp.isPermanent = true
     return resp
@@ -197,79 +189,21 @@ class FileSystemBlobStore extends BlobStoreCustom {
   }
 
   /**
-   * @protected
+   * @override
    * @param {UBEntityAttribute} attribute
-   * @param {BlobStoreItem} oldItem
    * @param {Number} ID
+   * @param {BlobStoreItem} blobInfo
    */
-  переделать! Надо для каждой исторической записи искать имплементацию стора
-  doArchOrDeletion (attribute, oldItem, ID) {
-    if (this.historyDepth) {
-      this.doArch(attribute, oldItem, ID)
-    } else {
-      this.doDelete(attribute, oldItem)
-    }
-  }
-  /**
-   * @protected
-   * @param {UBEntityAttribute} attribute
-   * @param {BlobStoreItem} oldItem
-   * @param {Boolean} [clearHistory=true] TODO - remove history in case entity not safeDelete?
-   */
-  doDelete (attribute, oldItem, clearHistory = true) {
+  doDeletion (attribute, ID, blobInfo) {
     let fn
     try {
-      fn = this.getPermanentFileName(oldItem)
+      fn = this.getPermanentFileName(blobInfo)
       if (fn && fs.existsSync(fn)) fs.unlinkSync(fn)
     } catch (e) {
-      console.error(`BLOB store "${this.name}" - can't delete permanent file "${fn}":`, e)
+      console.error(`BLOB store "${this.name}" - can't delete file "${fn}":`, e)
     }
   }
 
-  /**
-   * Archive file for stores with historyDepth > 0.
-   * V1 implementation will:
-   *   - insert record to ub_blobHistory with oldInfo
-   *   - try to delete expired non-permanent history records
-   * TIPS: For v0 (UB < 5) archiving rename file 0.ext|fti -> newRev.ext|fti (0.pdf -> 8.pdf; 0.fti -> 8.fti)
-   * @protected
-   * @param {UBEntityAttribute} attribute
-   * @param {BlobStoreItem} oldItem
-   * @param {Number} ID
-   */
-  doArch (attribute, oldItem, ID) {
-    try {
-      let blobHistoryStore = getBlobHistoryStore()
-      // clear expired historical items (do not touch isPermanent)
-      let histData = Repository(BLOB_HISTORY_STORE_NAME)
-        .attrs(['ID', 'blobInfo'])
-        .where('instance', '=', ID)
-        .where('attribute', '=', attribute.name)
-        .where('isPermanent', '=', false)
-        .orderBy('revision')
-        .limit(this.historyDepth)
-        .selectAsObject()
-      for (let i = 0, L = histData.length; i < L; i++) {
-        let item = histData[i]
-        // delete file. do not try recursively clear history
-        this.doDelete(attribute, JSON.parse(item['blobInfo']), false)
-        // and information about history from DB
-        blobHistoryStore.run('delete', {execParams: {ID: item['ID']}})
-      }
-      // insert new historical item
-      blobHistoryStore.run('insert', {
-        execParams: {
-          instance: ID,
-          attribute: attribute.name,
-          revision: oldItem.revision,
-          permanent: oldItem.isPermanent,
-          blobInfo: JSON.stringify(oldItem)
-        }
-      })
-    } catch (e) {
-      console.error(`BLOB store "${this.name}" - can't move permanent file "${fn}" to ${newFn}:`, e)
-    }
-  }
   /**
    * Calculate a relative path & file name for a new BLOB item.
    * If new folder dose not exists - create it

@@ -220,7 +220,7 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
     let modifiedBlob = modifiedBlobs[i]
     let newMeta = blobStores.doCommit(modifiedBlob.attr, ID, modifiedBlob.newVal, modifiedBlob.oldVal)
-    execParams[modifiedBlob.attr.name] = JSON.stringify(newMeta)
+    execParams[modifiedBlob.attr.name] = newMeta ? JSON.stringify(newMeta) : null
   }
   return true
 }

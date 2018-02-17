@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.0]
 ### Added
+- `UB.blobStores` interface for working with BLOBs content
+- new entity `ub_blobHistory` for storing BLOB store revisions information instead of *.fti files
 - BLOB stores "Monthly" and "Daily" sizes"
 - automatically creation of BLOB store structure - no need to call `ubcli createStore` anymore. 
   In case of DFS folders should be created/mounted manually
+  
 
 ## [4.0.30]
 ### Added

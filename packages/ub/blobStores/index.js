@@ -2,23 +2,28 @@ const App = require('../modules/App')
 const UBDomain = require('@unitybase/base').UBDomain
 const Repository = require('@unitybase/base').ServerRepository.fabric
 const queryString = require('querystring')
-const {badRequest, notFound} = require('../modules/httpUtils')
+const {badRequest} = require('../modules/httpUtils')
 
 // const TubDataStore = require('../TubDataStore')
 const BLOB_HISTORY_STORE_NAME = 'ub_blobHistory'
-/** @type TubDataStore */
-let _blobHistoryStore
-function getBlobHistoryStore () {
-  if (!_blobHistoryStore) _blobHistoryStore = new TubDataStore(BLOB_HISTORY_STORE_NAME)
-  return _blobHistoryStore
+let _blobHistoryDataStore
+/** @private
+ * @return {TubDataStore}
+ */
+function getBlobHistoryDataStore () {
+  // eslint-disable-next-line
+  if (!_blobHistoryDataStore) _blobHistoryDataStore = new TubDataStore(BLOB_HISTORY_STORE_NAME)
+  return _blobHistoryDataStore
 }
 
+/**
+ * @return {Object<string, BlobStoreCustom>}
+ */
 function createBlobStoreMap () {
   let blobStores = App.serverConfig.application.blobStores
   let res = {}
   if (!blobStores) return
   blobStores.forEach((storeConfig) => {
-    res[storeConfig.name] = storeConfig
     let storeImplementationModule = storeConfig['implementedBy']
     // UB4 compatibility
     if (!storeImplementationModule && (!storeConfig.storeType || storeConfig.name === 'fileVirtual')) {
@@ -34,11 +39,7 @@ function createBlobStoreMap () {
 
     if (storeConfig.isDefault) res.defaultStoreName = storeConfig.name
     let StoreClass = require(storeImplementationModule)
-    /**
-     * Store implementation
-     * @type {BlobStoreCustom}
-     */
-    storeConfig.implementation = new StoreClass(storeConfig)
+    res[storeConfig.name] = new StoreClass(storeConfig)
   })
   return res
 }
@@ -78,7 +79,7 @@ function parseBlobRequestParams (params) {
     attribute: params.attribute,
     isDirty: (params.isDirty === true || params.isDirty === 'true' || params.isDirty === '1'),
     // UB <5 compatibility
-    fileName: (params.origName || params.origname || params.fileName || params.filename || params.fName),
+    fileName: (params.origName || params['origname'] || params.fileName || params.filename || params.fName),
     revision: params.revision ? parseInt(params.revision, 10) : undefined,
     extra: params.extra
   }
@@ -86,8 +87,11 @@ function parseBlobRequestParams (params) {
 }
 
 /**
+ * Retrieve blobInfo depending on requested revision. The main purpose is to take store implementation depending on revision
+ * Return either success: false with reason or success: true and requested blobInfo & store implementation
  *
  * @param {ParsedRequest} parsedRequest
+ * @return {{success: boolean, reason}|{success: boolean, blobInfo: Object, store: BlobStoreCustom}}
  */
 function getRequestedBLOBInfo (parsedRequest) {
   let attribute = parsedRequest.attribute
@@ -171,7 +175,7 @@ function getDocument (req, resp) {
     return badRequest(resp, requested.reason)
   }
   // call store implementation method
-  return requested.store.implementation.fillResponse(parsed.bsReq, requested.blobInfo, req, resp)
+  return requested.store.fillResponse(parsed.bsReq, requested.blobInfo, req, resp)
 }
 
 /**
@@ -190,7 +194,7 @@ function getFromBlobStore (request, options) {
   if (!requested.success) {
     throw new Error(requested.reason)
   }
-  return requested.store.implementation.getContent(parsed.bsReq, requested.blobInfo, options)
+  return requested.store.getContent(parsed.bsReq, requested.blobInfo, options)
 }
 
 /**
@@ -223,7 +227,7 @@ function setDocument (req, resp) {
   let store = blobStoresMap[storeCode]
   if (!store) return badRequest(resp, `Blob store ${storeCode} not found in application config`)
   let content = req.read('bin')
-  let blobStoreItem = store.implementation.saveContentToTempStore(parsed.bsReq, attribute, content)
+  let blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
   resp.writeEnd({success: true, errMsg: '', result: blobStoreItem})
 }
@@ -244,11 +248,65 @@ function putToBlobStore (request, content) {
   let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeCode]
   if (!store) throw new Error(`Blob store ${storeCode} not found in application config`)
-  return store.implementation.saveContentToTempStore(parsed.bsReq, attribute, content)
+  return store.saveContentToTempStore(parsed.bsReq, attribute, content)
 }
 
 /**
+ * @private
+ * @param {UBEntityAttribute} attribute
+ * @param {BlobStoreItem} blobItem
+ * @return {BlobStoreCustom}
+ */
+function getStore (attribute, blobItem) {
+  let storeName = blobItem.store || attribute.storeName
+  let store = blobStoresMap[storeName]
+  if (!store) throw new Error(`Blob store ${storeName} not found in application config`)
+  return store
+}
+
+/**
+ * History rotation for specified attribute.
+ * Will delete expired historical BLOBs and insert a new row into ub_blobHistory with blobInfo content
+ * @param {BlobStoreCustom} store
+ * @param {UBEntityAttribute} attribute
+ * @param {number} ID
+ * @param {BlobStoreItem} blobInfo
+ */
+function rotateHistory (store, attribute, ID, blobInfo) {
+  // clear expired historical items (excluding isPermanent)
+  let histData = Repository(BLOB_HISTORY_STORE_NAME)
+    .attrs(['ID', 'blobInfo'])
+    .where('instance', '=', ID)
+    .where('attribute', '=', attribute.name)
+    .where('permanent', '=', false)
+    .orderBy('revision')
+    .limit(store.historyDepth)
+    .selectAsObject()
+  let dataStore = getBlobHistoryDataStore()
+  for (let i = 0, L = histData.length; i < L; i++) {
+    let item = histData[i]
+    let historicalBlobInfo = JSON.parse(item['blobInfo'])
+    let store = getStore(attribute, historicalBlobInfo)
+    // delete persisted item
+    store.doDeletion(attribute, ID, historicalBlobInfo)
+    // and information about history from ub_blobHistory
+    dataStore.run('delete', {execParams: {ID: item['ID']}})
+  }
+  let archivedBlobInfo = store.doArchive(attribute, ID, blobInfo)
+  // insert new historical item
+  dataStore.run('insert', {
+    execParams: {
+      instance: ID,
+      attribute: attribute.name,
+      revision: blobInfo.revision,
+      permanent: blobInfo.isPermanent,
+      blobInfo: JSON.stringify(archivedBlobInfo)
+    }
+  })
+}
+/**
  * Move content defined by `dirtyItem` from temporary to permanent store.
+ * In case of historical store archive the oldItem.
  * In case `oldItem` is present store implementation should be taken from oldItem.store.
  * Return a new attribute content which describe a place of BLOB in permanent store
  *
@@ -259,11 +317,21 @@ function putToBlobStore (request, content) {
  * @return {BlobStoreItem}
  */
 function doCommit (attribute, ID, dirtyItem, oldItem) {
-  let storeName = oldItem ? oldItem.store : attribute.storeName
-  if (!storeName) storeName = blobStoresMap.defaultStoreName
-  let store = blobStoresMap[storeName]
-  if (!store) throw new Error(`Blob store ${storeName} not found in application config`)
-  return store.implementation.doCommit(attribute, ID, dirtyItem, oldItem)
+  if (!(dirtyItem.isDirty || dirtyItem.deleting)) {
+    throw new Error('Committing of BLOBs allowed either for dirty content or in case of deletion')
+  }
+  let newRevision = 1
+  if (oldItem) { // delete / archive old item
+    let store = getStore(attribute, oldItem)
+    if (store.historyDepth) {
+      rotateHistory(store, attribute, ID, oldItem)
+    } else {
+      store.doDeletion(attribute, ID, oldItem)
+    }
+    if (oldItem.revision) newRevision = oldItem.revision + 1
+  }
+  let store = getStore(attribute, dirtyItem)
+  return store.persist(attribute, ID, dirtyItem, newRevision)
 }
 
 module.exports = {
@@ -271,6 +339,5 @@ module.exports = {
   setDocument,
   getFromBlobStore,
   putToBlobStore,
-  doCommit,
-  getBlobHistoryStore
+  doCommit
 }

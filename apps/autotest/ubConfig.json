@@ -196,7 +196,7 @@
 				"name": "simple",
 				"path": "./documents/simple",
 				"isDefault": true,
-				"historyDepth": 0,
+				"historyDepth": 2,
 				"storeSize": "Medium",
 				"keepOriginalFileNames": false
 			},

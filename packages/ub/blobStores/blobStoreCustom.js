@@ -83,13 +83,15 @@
 const Session = require('../modules/Session')
 const path = require('path')
 
-// {"store":"documents","fName":"contr_contractdoc document 3000000405832.pdf",
-//   "origName":"договор №01Т.pdf",
-//   "relPath":"435\\",
-//   "ct":"application/pdf",
-//   "size":2057405,
-//   "md5":"3b44f38f6b120615604846b67150fcb0",
-//   "revision":2}
+/* BlobStoreItem sample:
+{"store":"documents","fName":"contr_contractdoc document 3000000405832.pdf",
+  "origName":"Contract #01T.pdf",
+  "relPath":"435\\",
+  "ct":"application/pdf",
+  "size":2057405,
+  "md5":"3b44f38f6b120615604846b67150fcb0",
+  "revision":2}
+*/
 /**
  * Blob store item content (JSON stored in database)
  * @typedef {Object} BlobStoreItem
@@ -134,7 +136,12 @@ class BlobStoreCustom {
      * @type {String}
      * @private
      */
-    this.tempFolder = (this.config.tempPath || process.env.TEMP || process.env.TMP)
+    this.tempFolder = (this.config['tempPath'] || process.env.TEMP || process.env.TMP)
+    /**
+     * How many previous revision is stored
+     * @type {number}
+     */
+    this.historyDepth = this.config.historyDepth || 0
   }
   /**
    * Implementation must save file content to temporary store
@@ -174,10 +181,30 @@ class BlobStoreCustom {
    * @param {UBEntityAttribute} attribute
    * @param {Number} ID
    * @param {BlobStoreItem} dirtyItem
-   * @param {BlobStoreItem} oldItem
+   * @param {number} newRevision
    * @return {BlobStoreItem}
    */
-  doCommit (attribute, ID, dirtyItem, oldItem) { }
+  persist (attribute, ID, dirtyItem, newRevision) { }
+
+  /**
+   * Do something with BLOB content during archiving. For example - move to slow drive etc.
+   * Default implementation do nothing.
+   * @param {UBEntityAttribute} attribute
+   * @param {Number} ID
+   * @param {BlobStoreItem} blobInfo
+   * @returns {BlobStoreItem}
+   */
+  doArchive (attribute, ID, blobInfo) {
+    return blobInfo
+  }
+  /**
+   * Delete persisted BLOB content
+   * @abstract
+   * @param {UBEntityAttribute} attribute
+   * @param {Number} ID
+   * @param {BlobStoreItem} blobInfo
+   */
+  doDeletion (attribute, ID, blobInfo) { }
   /**
    * Get path to temporary file and it's name
    * @protected

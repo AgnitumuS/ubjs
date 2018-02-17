@@ -86,10 +86,10 @@ class MdbBlobStore extends BlobStoreCustom {
    * @param {UBEntityAttribute} attribute
    * @param {Number} ID
    * @param {BlobStoreItem} dirtyItem
-   * @param {BlobStoreItem} oldItem
+   * @param {number} newRevision
    * @return {BlobStoreItem}
    */
-  doCommit (attribute, ID, dirtyItem, oldItem) {
+  persist (attribute, ID, dirtyItem, newRevision) {
     let tempPath = this.getTempFileName({
       entity: attribute.entity.name,
       attribute: attribute.name,
@@ -107,6 +107,12 @@ class MdbBlobStore extends BlobStoreCustom {
       size: dirtyItem.size,
       md5: dirtyItem.md5
     }
+  }
+  /**
+   * @override
+   */
+  doDeletion (attribute, ID, blobInfo) {
+    throw new Error(`${this.name} store not support deletion. Developer must delete file manually`)
   }
   /**
    * For MDB blob store relPath === '[modelCode]|folderPath'
