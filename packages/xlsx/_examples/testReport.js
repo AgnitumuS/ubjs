@@ -1,6 +1,7 @@
 /*
 * Created by xmax on 15.01.2018
 */
+console.log('start')
 const fs = require('fs')
 const mustache = require('mustache')
 const xmldom = require('xmldom')
@@ -30,7 +31,14 @@ let html = mustache.render(template, data)
 const wb = new XLSXWorkbook({useSharedString: false})
 const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
 converter.writeHtml({html: html, sourceData: data})
+console.log('1')
+// sleep(100000)
+// debugger
+var f
 wb.render().then(function (content) {
+  console.log('2')
   content = Buffer.from(content)
+  f = content
   fs.writeFileSync('./testReport.xlsx', content, 'binary')
 })
+//var b = f

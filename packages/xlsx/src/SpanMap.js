@@ -9,8 +9,9 @@ class SpanMap {
   constructor (tableWidth) {
     this.spanRows = {}
     this.colWidth = []
+    this.colWidthCalcSpan = []
     this.columnCount = null
-    this.tableWidth = tableWidth
+    this.tableWidth = tableWidth || 90
     this.rowIndex = 1
   }
 
@@ -35,7 +36,13 @@ class SpanMap {
    * @return {number[]}
    */
   getWidths () {
-    return this.colWidth
+    let colWidth = this.colWidth.map(I => I)
+    this.colWidthCalcSpan.forEach((v, i) => {
+      if (!colWidth[i]) {
+        colWidth[i] = v
+      }
+    })
+    return colWidth
   }
 
   /**
@@ -61,7 +68,18 @@ class SpanMap {
     for (let i = cellNum + (colSpan || 1); i < this.columnCount; i++) {
       if (!spanRow[i]) return i
     }
-    return null
+    return this.columnCount // null
+  }
+
+  getCurrentCellNum (cellNum) {
+    if (!this.columnCount) {
+      return cellNum
+    }
+    const spanRow = this.spanRows[this.rowIndex] || {}
+    for (let i = cellNum; i < this.columnCount; i++) {
+      if (!spanRow[i]) return i
+    }
+    return this.columnCount // null
   }
 
   /**
@@ -102,12 +120,21 @@ class SpanMap {
           spanRow[i] = true
         }
       }
-      if (!config.colSpan && ((typeof config.width === 'number') || (typeof config.widthPercent === 'number'))) {
+      if (((typeof config.width === 'number') || (typeof config.widthPercent === 'number'))) {
         let width = config.width
-        if (typeof config.widthPercent === 'number' && this.tableWidth) {
-          width = this.tableWidth * 100 / config.widthPercent
+        if (typeof config.widthPercent === 'number') {
+          width = this.tableWidth * config.widthPercent / 100
         }
-        this.colWidth[colNum] = width
+        if (width) {
+          if (config.colSpan) {
+            width = width / config.colSpan
+            for (let colSp = colNum; colSp < colNum + config.colSpan; colSp++) {
+              this.colWidthCalcSpan[colSp] = width
+            }
+          } else {
+            this.colWidth[colNum] = width
+          }
+        }
       }
       configNum++
     }

@@ -4,15 +4,17 @@
  *
  */
 const Mustache = require('mustache')
+const formatFunctions = require('./formatFunctions')
 const _ = require('lodash')
  /**
   * @constructor
   * @param {String|Object} reportCode
   * If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
-  * @param {String} [reportType='html'] Possible values: 'html'|'pdf'
+  * @param {String} [reportType='html'] Possible values: 'html'|'pdf'|'xlsx'
   * @param {{}} params
+  * @param {String} [language=en]
   */
-function UBReport (reportCode, reportType, params) {
+function UBReport (reportCode, reportType, params, language) {
   /**
    * Report code
    * @property {String} reportCode
@@ -34,11 +36,13 @@ function UBReport (reportCode, reportType, params) {
   *  @property {{}} reportOptions
   */
   this.reportOptions = {}
+  this.lang = language
 
   if (typeof reportCode === 'object') {
     this.reportCode = reportCode.code
     this.reportType = reportCode.type || 'html'
     this.incomeParams = reportCode.params
+    this.lang = reportCode.language
     this.debug = reportCode.debug
   }
 }
@@ -127,26 +131,51 @@ UBReport.prototype.makeReport = function (params) {
 }
 
 /**
+ * Create new XLSX file by template
+ * @param {Object} reportData
+ * @param {Object} config
+ * @param {Boolean} [config.disableOptimization=false]
+ * @param {Boolean} [config.minLenOptimization=10] Minimal length of data Array to start optimisation {@link XLSXWorkbook.addWorkSheet}
+ * @param {Boolean} [config.useSharedString=false] For detail information open {@link XLSXWorkbook#constructor}
+ * @param {Boolean} [config.sheetConfig=[{name: 'Sheet'}]] For detail information open {@link XLSXfromHTML#constructor} and {@link XLSXWorkbook.addWorkSheet}
+ * @return {Promise.<ArrayBuffer>}
+ */
+UBReport.prototype.buildXLSX = function (reportData, config) {
+  if (!reportData || typeof (reportData) !== 'object' || reportData instanceof Array) {
+    throw new Error('reportData must have type Object')
+  }
+
+  formatFunctions.addBaseMustacheSysFunction(reportData)
+  formatFunctions.addMustacheSysFunction(reportData, this.lang)
+  let xlsxPromise = System.import('@unitybase/xlsx')
+  return xlsxPromise.then((xlsx) => {
+    config = config || {}
+    let html
+    if (config.disableOptimization) {
+      xlsx.XLSXfromHTML.addMustacheSysFunction(reportData)
+      html = Mustache.render(this.reportRW.templateData, reportData)
+    } else {
+      html = xlsx.XLSXfromHTML.mustacheRenderOptimization(this.reportRW.templateData, reportData, config.minLenOptimization)
+    }
+    const wb = new xlsx.XLSXWorkbook({useSharedString: !!config.useSharedString})
+    const converter = new xlsx.XLSXfromHTML(global.DOMParser, wb, config.sheetConfig || [{name: 'Sheet'}])
+    converter.writeHtml({html: html, sourceData: reportData})
+    return wb.render()
+  })
+}
+
+/**
 * build HTML report
 * @param {Object} reportData
 * @returns {String}
 */
 UBReport.prototype.buildHTML = function (reportData) {
-  let userLang
   if (!reportData || typeof (reportData) !== 'object' || reportData instanceof Array) {
     throw new Error('reportData must have type Object')
   }
 
-  reportData = reportData || {}
-  reportData.i18n = function () {
-    if (UB.isServer) {
-      return function (word) {
-        return UB.i18n(word, userLang)
-      }
-    } else {
-      return UB.i18n
-    }
-  }
+  formatFunctions.addBaseMustacheSysFunction(reportData)
+  formatFunctions.addMustacheSysFunction(reportData)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 

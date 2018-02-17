@@ -602,7 +602,8 @@ Ext.define('UB.core.UBCommand', {
     report = Ext.create('UBS.UBReport', _.defaults(options, {
       code: reportParams.reportCode,
       type: reportParams.reportType,
-      params: reportParams.reportParams
+      params: reportParams.reportParams,
+      language: $App.connection.userLang()
     }))
     report.init().then(function () {
       var viewer = Ext.create('UBS.ReportViewer', {

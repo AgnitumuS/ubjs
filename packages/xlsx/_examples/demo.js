@@ -78,15 +78,69 @@ function startTest () {
   ws.addRow([10, 200, 40000], columnTemplate)
 
   // you can create clone style with compounded configuration
-  let fstyleDate = fstyleAligBG.compound({format: XLSXStyle.predefinedFormats.date})
-  let fstyleDateFull = fstyleborderFull.compound({font: defFont, format: XLSXStyle.predefinedFormats.dateFull})
+  let fstyleDate = fstyle.compound({format: XLSXStyle.predefinedFormats.date})
+  let fstyleDateFull = fstyle.compound({format: XLSXStyle.predefinedFormats.dateFull})
+  ws.addRow(['demo XLSXStyle.predefinedFormats for Date'], [{column: 1, colSpan: 4, style: fstyle.compound({font: {bold: true, fontSize: 18}})}])
   let columnTemplate1 = [
     {column: 1, style: fstyle},
-    {column: 3, style: fstyleDate},
-    {column: 4, style: fstyleDateFull}
+    {column: 3, style: fstyle},
+    {column: 4, style: fstyle}
   ]
-  ws.addRow(['Date format and compont style', new Date(), new Date()], columnTemplate1)
+  ws.addRow(['date', 'dateFull', 'dateShort'], columnTemplate1)
+  let columnTemplateT = [
+    {column: 1, style: fstyleDate},
+    {column: 3, style: fstyleDateFull},
+    {column: 4, style: fstyle.compound({format: XLSXStyle.predefinedFormats.dateShort})}
+  ]
+  ws.addRow([new Date(), new Date(), new Date()], columnTemplateT)
+
+  ws.addRow(['dateMY', 'timeShortPM', 'timeFullPM'], columnTemplate1)
+  columnTemplateT = [
+    {column: 1, style: fstyle.compound({format: XLSXStyle.predefinedFormats.dateMY})},
+    {column: 3, style: fstyle.compound({format: XLSXStyle.predefinedFormats.timeShortPM})},
+    {column: 4, style: fstyle.compound({format: XLSXStyle.predefinedFormats.timeFullPM})}
+  ]
+  ws.addRow([new Date(), new Date(), new Date()], columnTemplateT)
+
+  ws.addRow(['time', 'timeFull', 'dateTime'], columnTemplate1)
+  columnTemplateT = [
+    {column: 1, style: fstyle.compound({format: XLSXStyle.predefinedFormats.time})},
+    {column: 3, style: fstyle.compound({format: XLSXStyle.predefinedFormats.timeFull})},
+    {column: 4, style: fstyle.compound({format: XLSXStyle.predefinedFormats.dateTime})}
+  ]
+  ws.addRow([new Date(), new Date(), new Date()], columnTemplateT)
+
+  ws.addRow(['demo XLSXStyle.predefinedFormats for Number'], [{column: 1, colSpan: 4, style: fstyle.compound({font: {bold: true, fontSize: 18}})}])
+
+  const pi = Math.PI
+  const pim = Math.PI * 1000000
+  ws.addRow(['sum', 'number', 'sumDelim'], columnTemplate1)
+  columnTemplateT = [
+    {column: 1, style: fstyle.compound({format: XLSXStyle.predefinedFormats.sum})},
+    {column: 3, style: fstyle.compound({format: XLSXStyle.predefinedFormats.number})},
+    {column: 4, style: fstyle.compound({format: XLSXStyle.predefinedFormats.sumDelim})}
+  ]
+  ws.addRow([pi, pi, pim], columnTemplateT)
+
+  ws.addRow(['percent', 'percentDec', 'numF'], columnTemplate1)
+  columnTemplateT = [
+    {column: 1, style: fstyle.compound({format: XLSXStyle.predefinedFormats.percent})},
+    {column: 3, style: fstyle.compound({format: XLSXStyle.predefinedFormats.percentDec})},
+    {column: 4, style: fstyle.compound({format: XLSXStyle.predefinedFormats.numF})}
+  ]
+  ws.addRow([pi, pi, pim], columnTemplateT)
+
+  ws.addRow(['numRedF', 'sumF', 'sumRedF'], columnTemplate1)
+  columnTemplateT = [
+    {column: 1, style: fstyle.compound({format: XLSXStyle.predefinedFormats.numRedF})},
+    {column: 3, style: fstyle.compound({format: XLSXStyle.predefinedFormats.sumF})},
+    {column: 4, style: fstyle.compound({format: XLSXStyle.predefinedFormats.sumRedF})}
+  ]
+  ws.addRow([pi, pi, pim], columnTemplateT)
+
   ws.addRow(['Rowspan and text transform'], [{column: 1, cellStyle: {rowSpan: 5}, style: fstyle.compound({alignment: {textRotation: 119}})}])
+  ws.setRowNum(ws.getRowNum() + 5)
+  ws.addRow([Math.PI * 1000], [{column: 1, colSpan: 4, style: fstyle.compound({format: '#,######0.000000_ ;[Red]\\-#,######0.000000\\ '})}])
 
   // Table Example
   ws = wb.addWorkSheet({title: 'Table example', name: 'SheetTab'})

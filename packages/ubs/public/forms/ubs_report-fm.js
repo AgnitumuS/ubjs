@@ -37,6 +37,23 @@ exports.formCode = {
             window.saveAs(blobData, me.record.get('report_code') + '.' + type)
           })
       } else {
+          if (type === 'xlsx') {
+             Ext.create('UBS.UBReport', {
+                code: me.getField('report_code').getValue(),
+                type: type,
+                params: {},
+                language: $App.connection.userLang()
+             }).makeReport()
+               .then(function (data) {
+                  var blobData = new Blob(
+                    [data.reportData],
+                    {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+                  )
+                  window.saveAs(blobData, me.record.get('report_code') + '.' + type)
+               })
+            return 
+          }
+
           $App.doCommand({
             'cmdType': 'showReport',
             'cmdData': {

@@ -1,8 +1,9 @@
 const fontsMap = {}
+const _ = require('lodash')
 const mustache = require('mustache')
 const ReachText = require('./ReachText')
 const {SpanMap} = require('./SpanMap')
-
+const {XLSXStyle} = require('./XLSXStyle')
 /**
  * This class used for extract value for html tag td and convert it to reachText
  */
@@ -10,15 +11,17 @@ class CellValue {
   /**
    *
    * @param rootNode
+   * @param parentInfo
    * @return {ReachText}
    */
-  static getValue (rootNode) {
-    const cv = new CellValue(rootNode)
+  static getValue (rootNode, parentInfo) {
+    const cv = new CellValue(rootNode, parentInfo)
     return cv.getValue()
   }
 
-  constructor (rootNode) {
+  constructor (rootNode, parentInfo) {
     this.rootNode = rootNode
+    this.parentInfo = parentInfo
     this.items = []
     this.reachText = new ReachText()
     this.useReachText = false
@@ -30,7 +33,8 @@ class CellValue {
    * @return {ReachText}
    */
   getValue () {
-    for (let i = 0; i < this.rootNode.childNodes.length; ++i) {
+    const childCount = this.rootNode.childNodes.length
+    for (let i = 0; i < childCount; ++i) {
       let childNode = this.rootNode.childNodes[i]
       this.addValue(childNode)
     }
@@ -39,7 +43,7 @@ class CellValue {
 
   addValue (node) {
     let value = node.nodeValue
-    if (!node.childNodes && value !== null && value !== undefined) {
+    if ((!node.childNodes || node.childNodes.length === 0) && value !== null && value !== undefined) {
       if (this.reachInfo || this.useReachText) {
         if (!this.useReachText && this.items.length > 0) {
           this.items.forEach(F => this.reachText.addText(F))
@@ -69,6 +73,7 @@ class CellValue {
   }
 }
 
+/*
 function mustacheFdExec (val, render) {
   const me = this
   let data = render(val)
@@ -79,28 +84,43 @@ function mustacheFdExec (val, render) {
   }
   return XLSXfromHTML.formatValue(me[dataArr[0]], dataArr.length > 1 ? dataArr[1] : null)
 }
+*/
 
-function mustacheFdFactory () {
-  return mustacheFdExec
+function getDottedPrperty (me, property) {
+  var value = me
+  property.split('.').forEach(function (name) {
+    if (!value) throw new Error('Invalid property ' + name)
+    value = value[name]
+  })
+  return value
 }
 
-function mustacheFnExec (val, render) {
-  const me = this
-  let data = render(val)
-  if (!data) return data
-  let dataArr = JSON.parse('[' + data + ']')
-  if (dataArr < 1) {
-    throw new Error('$format function require one or two parameter. {{#$fn}}"sum"{{/fn}} {{#$fn}}"sum","0,00"{{/fn}} ')
+function formatMustache (format, fixFormat, root) {
+  const predefinedFormats = XLSXStyle.predefinedFormats
+  return function (val, render) {
+    const me = this
+    let data = render(val)
+    if (!data) return data
+    let dataArr = JSON.parse('[' + data + ']')
+    if (dataArr < 1) {
+      throw new Error('$format function require one or two parameter. {{#$f}}"amount"{{/f}} {{#$f}}"amount","sum"{{/f}} ')
+    }
+    let value = getDottedPrperty(me, dataArr[0])
+    if (fixFormat && (value !== undefined && value !== null)) {
+      if (fixFormat === 'number') value = Number(value)
+      else if (fixFormat === 'date' && !(value instanceof Date)) value = new Date(value)
+    }
+    const formatPattern = dataArr.length > 1 ? dataArr[1] : (format || (typeof value === 'number' ? 'sum' : 'date'))
+    let formatR = predefinedFormats[formatPattern]
+    if (!formatR && formatR !== 0) {
+      throw new Error('Undefined format')
+    }
+    return XLSXfromHTML.formatValue(value, formatPattern)
   }
-  return XLSXfromHTML.formatValue(me[dataArr[0]], dataArr.length > 1 ? dataArr[1] : null)
-}
-
-function mustacheFnFactory () {
-  return mustacheFnExec
 }
 
 const optimizationProp = '$xlsx_optimization'
-const minLenOptimization = 1
+// const minLenOptimization = 1
 
 /**
  * This function replace iterator block to iterator tag and save block template
@@ -108,9 +128,9 @@ const minLenOptimization = 1
  * @param tempObj
  * @param templates
  * @param templatesData
- * @param path
+ * @param [path]
  */
-function wrapIterator (sourceObj, tempObj, templates, templatesData, path) {
+function wrapIterator (sourceObj, tempObj, templates, templatesData, path, minLenOptimization) {
   // copy function from parent path
   let ctxt = path && templatesData[path] ? Object.assign({}, templatesData[path]) : {}
   const currCtxt = Object.keys(sourceObj)
@@ -140,12 +160,24 @@ function wrapIterator (sourceObj, tempObj, templates, templatesData, path) {
   })
 }
 
+/**
+ * Class for convert html to XLSX.
+ * Example:
+ *
+ *      const {XLSXWorkbook, XLSXfromHTML} = require('xlsx')
+ *      const xmldom = require('xmldom')
+ *      const wb = new XLSXWorkbook({useSharedString: false})
+ *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+ *      converter.writeHtml({html: yourHtmlString})
+ *
+ * Example of usage exist in writeHtml
+ */
 class XLSXfromHTML {
   /**
    *
    * @param {xmldom.DOMParser} DOMParser Class factory
    * @param {XLSXWorkbook} workBook
-   * @param {Object|Object[]} [sheetConfig] Config for XLSXWorkbook.addWorkSheet. You can see full list of config parameters in {@link XLSXWorkbook.addWorkSheet XLSXWorkbook.addWorkSheet}.
+   * @param {Object|Object[]} [sheetConfig] Config for {@link XLSXWorkbook.addWorkSheet}. You can see full list of config parameters in {@link XLSXWorkbook.addWorkSheet XLSXWorkbook.addWorkSheet}.
    * @param {String} [sheetConfig.title='Worksheet']
    * @param {String} [sheetConfig.name='Лист']
    * @param {String} [sheetConfig.setActive=false]
@@ -154,6 +186,7 @@ class XLSXfromHTML {
     this.parser = new DOMParser()
     this.wb = workBook
     this.sheetConfig = sheetConfig
+    this.defaultTableWidth = 90 // todo calculate this value
   }
 
   /**
@@ -176,16 +209,46 @@ class XLSXfromHTML {
   }
 
   /**
-   * Render html mustache template for transform to HTML with optimization
-   * @param template
-   * @param data
+   * Render html mustache template for transform to HTML with memory usage optimization.
+   * This function render Mustache template and replace section with big data to "iterator" tag
+   * Example
+   *
+   *
+   *     const template = `
+   *      <table><body>
+   *        {{#bicycles}}
+   *          <tr><td>{{name}}</td><td>{{#$f}}"weight","#,##0.00"{{/$f}}</td></tr>
+   *        {{/bicycles}}
+   *      </body></table>`
+   *
+   *      const data = {
+   *         bicycles: [{name: 'Mountain', weight: 16.4}, {name: 'Marin', weight: 12.56}, {name: 'Tricycles', weight: 9.5}]
+   *      }
+   *
+   *      const {XLSXWorkbook, XLSXfromHTML} = require('xlsx')
+   *      const xmldom = require('xmldom')
+   *      const wb = new XLSXWorkbook({useSharedString: false})
+   *      const html = XLSXfromHTML.mustacheRenderOptimization(template, data, 2)
+   *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+   *      converter.writeHtml({html: html, sourceData: data})
+   *
+   *
+   * @param {String} template
+   * @param {Object} data
+   * @param {Number} [minLenOptimization=10] Minimal count of item in source data list to start optimization.
+   * Optimization will applied for items with Array data type.
+   * Also it use as size of block html data rendering.
    * @return {String}
    */
-  static mustacheRenderOptimization (template, data) {
+  static mustacheRenderOptimization (template, data, minLenOptimization) {
     const tmpData = {}
     const templates = {}
     const templatesData = {}
-    wrapIterator(data, tmpData, templates, templatesData, null)
+
+    if (!minLenOptimization && minLenOptimization !== 0) {
+      minLenOptimization = 10
+    }
+    wrapIterator(data, tmpData, templates, templatesData, null, minLenOptimization)
     XLSXfromHTML.addMustacheSysFunction(tmpData)
     data[optimizationProp] = {templates, templatesData}
     return mustache.render(template, tmpData)
@@ -220,11 +283,51 @@ class XLSXfromHTML {
     return result
   }
 
+  /**
+   * Add data format function to object that will be used as data for "Mustache" template.
+   * Example usage in "Mustache" template
+   *
+   *
+   *     {{#$f}}"propertyName","#,##0.00"{{/$f}}
+   *
+   * @param data
+   */
   static addMustacheSysFunction (data) {
     if (typeof data !== 'object') throw new Error('Invalid param data type')
-    data.$fd = mustacheFdFactory.bind(data)
-    data.$fn = mustacheFnFactory.bind(data)
-    data.$f = mustacheFnFactory.bind(data)
+    // data.$fd = mustacheFdFactory.bind(data)
+    // data.$fn = mustacheFnFactory.bind(data)
+    // data.$f = mustacheFnFactory.bind(data)
+    /**
+     *
+     * @return {Function}
+     */
+    data.$f = function () {
+      return formatMustache()
+    }
+
+    data.$fn = function () {
+      return formatMustache('number', 'number', data)
+    }
+
+    data.$fs = function () {
+      return formatMustache('sum', 'number', data)
+    }
+
+    data.crn = function () {
+      return formatMustache('sum', 'number', data)
+    }
+
+    data.$fd = function () {
+      return formatMustache('date', 'date', data)
+    }
+
+    data.$ft = function () {
+      return formatMustache('time', 'date', data)
+    }
+
+    data.$fdt = function () {
+      return formatMustache('time', 'date', data)
+    }
   }
 
   /**
@@ -272,6 +375,62 @@ class XLSXfromHTML {
     return root
   }
 
+  /**
+   * Convert html to XLSX.
+   * This function search all tags "table" and transform each table to XLSX Sheet.
+   * Inside table support tags:
+   * body, header, iterator, tr, td, th, STRONG, b, EM, i, br, p, span, div
+   * Supported style parameters:
+   *     'font-family','font-weight','font-style','font-size','text-align','vertical-align','text-indent',
+   *     'list-style-type',
+   *     'list-style-position',
+   *     'background-color',
+   *     'width','height',
+   *     'border-style','border-top-style','border-bottom-style','border-right-style','border-left-style','border',
+   *     'border-width','border-top-width','border-bottom-width','border-right-width','border-left-width',
+   *     'padding','padding-top','padding-bottom','padding-right','padding-left',
+   *     'margin','margin-top','margin-bottom','margin-right','margin-left',
+   *
+   * Tag "iterator" used for render iterable data in html.
+   * This methodic used for transform  XLSX iterable data by "Mustache" template.
+   * Template for iterator tag must be valid xml (congruence part of HTML)
+   *
+   * By default all data from HTML have String data type and it will put into XLSX as String
+   * If you want have other data types in XLSX use function XLSXfromHTML.formatValue.
+   * It convert your data to formatted string that will be converted to correct data type and cell data render format
+   *
+   * Example
+   * You put into HTML data
+   *
+   *
+   *     const html = `
+   *      <table><body>
+   *         <iterator name="bicycles"></iterator>
+   *      </body></table>`
+   *
+   *      const data = {
+   *         $xlsx_optimization: {
+   *             templates: {
+   *               bicycles: '<tr><td>{{name}}</td><td>{{#$f}}"weight","#,##0.00"{{/$f}}</td></tr>'
+   *             },
+   *             templatesData: {
+   *               bicycles: [{name: 'Mountain', weight: 16.4}, {name: 'Marin', weight: 12.56}, {name: 'Tricycles', weight: 9.5}]
+   *             }
+   *         }
+   *      }
+   *
+   *      const {XLSXWorkbook, XLSXfromHTML} = require('xlsx')
+   *      const xmldom = require('xmldom')
+   *      const wb = new XLSXWorkbook({useSharedString: false})
+   *      const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
+   *      XLSXfromHTML.addMustacheSysFunction(data)
+   *      converter.writeHtml({html: html, sourceData: data})
+   *
+   *
+   * @param {Object} config
+   * @param {String} config.html
+   * @param {Object} [config.sourceData] Data for render "iterator" tag
+   */
   writeHtml (config) {
     if (!config.html) throw new Error('Empty config.html')
     let root = this.parseXml(config.html)
@@ -310,8 +469,11 @@ class XLSXfromHTML {
     let rowIndex = config.startRowIndex || 0
     let ctxt = { tableInfo: getTagInfo(node), config: config }
     ctxt.tableStyle = styleToXlsx(ctxt.tableInfo)
+    // html do not inherit this
+    // let ts = ctxt.tableStyle
+    // if (ts.border) delete ts.border
     ctxt.colWidth = []
-    ctxt.spanMap = new SpanMap(ctxt.tableInfo.style.width)
+    ctxt.spanMap = new SpanMap(ctxt.tableInfo.style.width || this.defaultTableWidth)
     findNode(node, config.sourceData ? ['tr', 'iterator'] : 'tr', rows, true)
 
     let addItem = F => {
@@ -354,16 +516,16 @@ class XLSXfromHTML {
     const cellsData = []
     let addItem = F => {
       let cellInfo = {}
-      cellInfo.value = CellValue.getValue(F)
+      let tdInfo = getTagInfo(F)
+      cellInfo.value = CellValue.getValue(F, tdInfo)
       let typedValue = getTypedValue(cellInfo.value)
       let valueStyle = {}
       if (typedValue) {
         cellInfo.value = typedValue.value
         if (typedValue.format) {
-          valueStyle = {format: typedValue.format}
+          valueStyle.format = typedValue.format
         }
       }
-      let tdInfo = getTagInfo(F)
       let colSpan = getAttributeInt(F, 'colspan')
       if (colSpan) cellInfo.cellStyle = {colSpan: colSpan}
       let rowSpan = getAttributeInt(F, 'rowspan')
@@ -374,9 +536,10 @@ class XLSXfromHTML {
       let tdMinHeight = tdInfo.style.height || tdInfo.style.minHeight
       if (tdMinHeight && tdMinHeight > minHeight) minHeight = tdMinHeight
       colWidth.push({rowSpan, colSpan, width: tdInfo.style.width, widthPercent: tdInfo.style.widthPercent})
-      cellInfo.style = getStyleByHtml(ws.workBook, [valueStyle, styleToXlsx(tdInfo), trStyle, ctxt.tableStyle])
-      cellInfo.column = columnNum
-      columnNum = ctxt.spanMap.getNextCellNum(columnNum, colSpan)
+      cellInfo.style = getStyleByHtml(ws.workBook, [valueStyle, styleToXlsx(tdInfo), trStyle, ctxt.tableStyle, {alignment: {wrapText: true}}])
+      cellInfo.column = columnNum = ctxt.spanMap.getCurrentCellNum(columnNum)
+      // columnNum = ctxt.spanMap.getNextCellNum(columnNum, colSpan)
+      columnNum = columnNum + 1 + (colSpan || 1) - 1
       cellsData.push(cellInfo)
     }
     cells.forEach(F => {
@@ -414,6 +577,10 @@ function getTypedValue (value) {
     dataValue = dataValue.split(formatPrefix + 'f')
     if (dataValue.length > 1) {
       dataFormat = dataValue[1]
+      let dataFormatF = XLSXStyle.predefinedFormats[dataFormat]
+      if (dataFormatF || dataFormatF === 0) {
+        dataFormat = dataFormatF
+      }
     }
     dataValue = dataValue[0]
     switch (dataType) {
@@ -504,6 +671,7 @@ function parseStyle (node) {
   return result
 }
 
+// todo calculate proportion point to mm from scale
 function convertToMeasure (value, measure, horizontal) {
   if (!value) return value
   switch (measure) {
@@ -522,6 +690,7 @@ function convertToMeasure (value, measure, horizontal) {
 function toXLSMeasure (styleProp, options) {
   if (!styleProp) return 0
   let val = styleProp
+  let isPercent = false
   if (typeof (val) !== 'string') {
     val = val + ''
   }
@@ -530,13 +699,13 @@ function toXLSMeasure (styleProp, options) {
     if (!options || options.banPercent) {
       throw new Error('% is not supported metric for font-size')
     } else {
-      if (options) options.isPercent = true
+      if (options) options.isPercent = isPercent = true
     }
   }
   val = parseInt(val, 10)
   if (val === 0) return val
   if (Number.isNaN(val)) return null  // do not throw error
-  return convertToMeasure(val, 'px', options.horizontal)
+  return isPercent ? val : convertToMeasure(val, 'px', options.horizontal)
 }
 
 function setDefaultNodeStyle (info, node) {
@@ -566,7 +735,8 @@ function getTagInfo (node) {
 function getStyleByHtml (wb, styles) {
   let config = {}
   styles.reverse().forEach(F => {
-    Object.assign(config, F)
+    _.defaultsDeep(config, F)
+    // Object.assign(config, F)
   })
   return wb.style.getStyle(config)
 }
@@ -734,6 +904,8 @@ function getStyleProp (style) {
     }
   }
 
+  //wrapText
+
   // cfg.color || pBlock.font.color);
   if (style['text-align']) {
     res.align = style['text-align']
@@ -830,16 +1002,10 @@ function getBorderInfo (itemStyle) {
   let border = {}
 
   if (itemStyle.border) {
-    let brd = itemStyle.border.split(' ')
-    if (brd.length > 0) {
-      bWidth = [brd[0]]
-    }
-    if (brd.length > 1) {
-      borderStyle = [brd[1]]
-    }
-    if (brd.length > 2) {
-      borderColor = [brd[2]]
-    }
+    let brd = extractBorderProps(itemStyle.border)
+    bWidth = [brd.width]
+    borderStyle = [brd.style]
+    borderColor = [brd.color]
   }
   if (!borderStyle) {
     borderStyle = itemStyle['border-style']
@@ -966,26 +1132,60 @@ function setPropertyStyleFromType (objType, type, obj, style) {
 
 const borderStyles = ['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset']
 
+function isWidth (value) {
+  if (!value) return false
+  return value.substr(-2) === 'px'
+}
+
 /**
  * parse html border style '1px solid black' and return object {style, width, color}
  * @param items
  * @return {*}
  */
-function extractBorderProps (items) {
-  items = (items || '').split(' ')
+function extractBorderProps (borderStyle) {
+  let items = (borderStyle || '').split(' ')
   if (items.length < 2) return false
-  const result = {}
-  if (borderStyles.indexOf(items[1] >= 0)) {
-    result.style = items[1]
-    result.width = convertToMeasure(parseIntValue(items[0]))
-  } else {
-    result.style = items[0]
-    result.width = convertToMeasure(parseIntValue(items[1]))
+  const v0 = items[0]
+  const v1 = items[1]
+  const v2 = items.length > 2 ? items[2] : undefined
+  let style = borderStyles.indexOf(v0) >= 0 ? v0 : null
+  let styleIdx = 0
+  if (!style) {
+    style = borderStyles.indexOf(v1) >= 0 ? v1 : null
+    styleIdx = 1
   }
-  if (items.length > 2) {
-    result.color = items[2]
+  if (!style) {
+    style = borderStyles.indexOf(v2) >= 0 ? v2 : null
+    styleIdx = 2
   }
-  return result
+  if (!style) {
+    throw new Error('Invalid border format ' + borderStyle)
+  }
+  let width
+  let widthIdx
+  if (styleIdx !== 0 && isWidth(v0)) {
+    width = v0
+    widthIdx = 0
+  }
+  if (!width && styleIdx !== 1 && isWidth(v1)) {
+    width = v1
+    widthIdx = 1
+  }
+  if (!width && styleIdx !== 2 && isWidth(v2)) {
+    width = v2
+    widthIdx = 2
+  }
+  if (!width) {
+    throw new Error('Invalid border format ' + borderStyle)
+  }
+  let color
+  if (styleIdx !== 0 && widthIdx !== 0) color = v0
+  if (styleIdx !== 1 && widthIdx !== 1) color = v1
+  if (styleIdx !== 2 && widthIdx !== 2) color = v2
+  if (!color) {
+    color = 'black'
+  }
+  return {style: style, width: convertToMeasure(parseIntValue(width)), color: color}
 }
 
 function getPaddingInfo (itemStyle, def) {
@@ -1081,6 +1281,7 @@ function getAttributeInt (node, name) {
  * @param {String} name
  * @param {Int} value
  */
+/*
 function updateAttributeInt (node, name, value) {
   if (!node.attributes) return
 
@@ -1093,6 +1294,7 @@ function updateAttributeInt (node, name, value) {
     node.attributes.setNamedItem(val)
   }
 }
+*/
 
 const htmlBaseEntity = {'&lt;': 1, '&gt;': 1, '&amp;': 1, '&apos;': 1, '&quot;': 1}
 // all HTML4 entities as defined here: http://www.w3.org/TR/html4/sgml/entities.html

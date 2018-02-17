@@ -33,7 +33,7 @@ class XLSXStyle {
     return {
       general: 0,
       sum: 2,
-      number: 3,
+      numberGroup: 3,
       sumDelim: 4,
       percent: 9,
       percentDec: 10,
@@ -50,7 +50,17 @@ class XLSXStyle {
       numRedF: 38,
       sumF: 39,
       sumRedF: 40,
-      mail: 49
+      mail: 49,
+      decimal1: '#,#0.0_ ;[Red]\\-#,#0.0\\ ',
+      decimal2: '#,##0.00_ ;[Red]\\-#,##0.00\\ ',
+      decimal3: '#,###0.000_ ;[Red]\\-#,###0.000\\ ',
+      decimal4: '#,####0.0000_ ;[Red]\\-\'#,####0.0000\\ ',
+      decimal5: '#,#####0.00000_ ;[Red]\\-#,#####0.00000\\ ',
+      decimal6: '#,######0.000000_ ;[Red]\\-#,######0.000000\\ ',
+      number: '00 ',
+      dateDay: 'dd ',
+      dateMonthName: 'mmmm ',
+      dateMonth: 'mm '
     }
   }
 

@@ -4,7 +4,7 @@
 const tools = require('./tools')
 const {XLSXStyleController} = require('./XLSXStyle')
 const XLSXWorksheet = require('./XLSXWorksheet')
-const JSZip = require('JSZip')
+const JSZip = require('jszip/dist/jszip')
 const ReachText = require('./ReachText')
 
 class XLSXWorkbook {
@@ -184,7 +184,6 @@ class XLSXWorkbook {
       'xWindow="480" yWindow="60" windowWidth="18195" windowHeight="8505"/></bookViews><sheets>' +
       context.worksheets.join('') + '</sheets><calcPr calcId="145621"/></workbook>')
     // }
-
     return zip.generateAsync({type: opt.type, compression: this.compression})
   }
 
