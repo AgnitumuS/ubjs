@@ -82,6 +82,7 @@
 
 const Session = require('../modules/Session')
 const path = require('path')
+const os = require('os')
 
 /* BlobStoreItem sample:
 {"store":"documents","fName":"contr_contractdoc document 3000000405832.pdf",
@@ -136,7 +137,7 @@ class BlobStoreCustom {
      * @type {String}
      * @private
      */
-    this.tempFolder = (this.config['tempPath'] || process.env.TEMP || process.env.TMP)
+    this.tempFolder = (this.config['tempPath'] || os.tmpdir())
     /**
      * How many previous revision is stored
      * @type {number}
