@@ -9,15 +9,6 @@
 */
 
 /**
- * @enum TubLoadContentBody
- */
-const TubLoadContentBody = {
-  Default: 0,
-  Yes: 1,
-  No: 2
-}
-
-/**
  * @classdesc
  * Entity communication class. Use it to:
  *
@@ -159,15 +150,7 @@ TubDataStore.prototype = {
      */
   asXMLPersistent: 'MS dataset xml format',
   /**
-   * Active dataset name we work with. There is some predefined dataNames - see mixin documentation for details
-	 *
-	 * Predefined values:
-   *
-	 *  - selectBeforeUpdate
-	 *  - selectAfterUpdate
-	 *  - selectAfterInsert
-	 *  - selectBeforeDelete
-   *
+   * Active dataset name we work with. There is some predefined dataNames - see TubDataStore.prototype.DATA_NAMES
    * @type {String}
    */
   currentDataName: '',
@@ -401,173 +384,6 @@ THTTPResponse.prototype = {
    *  - in other case will add a ETag header with value = hex representation of crc32(responseBody).
    */
   validateETag: function () {}
-}
-
-/**
- * Class for store meta information (not content) about content for adtDocument attribute. Serialized representation are stored in the adtDocumnet attribute.
- * Actual content (file) is stored elsewhere (in store)!.
- * @class TubDocumentContent
- * @property {String} fName actual file name
- * @property {String} origName Original file name
- * @property {String} relPath Can be one of follow: - relative path of document in medium/large store - record ID for DB store - any data for virtual store
- * @property {String} ct Content type
- * @property {Number} size Content size
- * @property {String} md5 Content md5 checksum
- * @property {Number} revision Content revision
- * @property {Boolean} isDirty
- * @property {Boolean} deleting
- */
-
-/**
- * Container for raw document data extracted from incoming HTTP request for setDocument/setDocumentMultipart app level methods
- *
- * @class TubDocumentRequest
- * @param {THTTPRequest} [httpReq] Optional HTTP request. In case passed content will be loaded from request body during constructor call
- * @constructor
- */
-function TubDocumentRequest (httpReq) {}
-TubDocumentRequest.prototype = {
-  /**
-   * Entity code
-   * @type {String}
-   */
-  entity: '',
-  /**
-   * Entity attribute code
-   * @type {String}
-   */
-  attribute: '',
-  /**
-   * @type {Number}
-   */
-  id: 0,
-  /**
-   * If `true` - content is stored in the temporary store
-   * @type {Boolean}
-   */
-  isDirty: false,
-  /**
-   * MIME type to force convertion to (in case blob store sonfigured to support MIME convetration)
-   * @type {String}
-   */
-  forceMime: '',
-  /**
-   * Name of file as it in the store
-   * @type {String}
-   */
-  fileName: '',
-
-  /**
-   * @param {boolean} AEstablishStoreFromAttribute
-   * @returns TubDocumentHandlerCustom
-   */
-  createHandlerObject: function (AEstablishStoreFromAttribute) {},
-  /**
-   * Save request body to file
-   * @param {String} fileName name of file to save request body to
-   * @returns {boolean}
-   */
-  saveBodyToFile: function (fileName) { return true },
-  /**
-   * @param {String} fileName
-   * @return {boolean}
-   */
-  loadBodyFromFile: function (fileName) { return true },
-  /**
-   * @return {string}
-   */
-  getBodyAsUnicodeString: function () { return '' },
-  /**
-   * Transform unicode string to internal UFT8 buffer
-   * @param {String} bodyAsString
-   */
-  setBodyAsUnicodeString: function (bodyAsString) {},
-  /**
-   * Read request body from array buffer and call TubDocumentRequest.writeToTemp method.
-   * @param {ArrayBuffer} buffer
-   * @returns {String} Document content (JSON, contain meta information about file) to be stored to Document type attribute
-   */
-  setBodyFromArrayBuffer: function (buffer) {},
-  /**
-   * @returns {String} base64 encoded body representation
-   */
-  getBodyAsBase64String: function () { return '' },
-  /**
-   * @returns {boolean}
-   */
-  getIsBodyLoaded: function () { return false },
-
-  /**
-   * Set document content to internal request buffer (in-memory). Function implement {@link UBWriter#write}
-   * Call to this function not perform actual writing of document to store,
-   * to save document to store call {@link TubDocumentRequest#writeToTemp}
-   */
-  setContent: function (data, encoding) {},
-
-  /**
-   * Read document content. Content must be previously loaded. Function implement {@link UBReader#read}
-   */
-  getContent: function () {},
-
-  /**
-   * Write passed body to temporary store. If body is loaded it is possible to call writeToTemp without parameters.
-   *
-   * @example
-   *
-   *      var
-   *          pdfRequest = new TubDocumentRequest(),
-   *          docContent;
-   *      pdfRequest.entity = "rep_reportResult";
-   *      pdfRequest.attribute = 'generatedDocument';
-   *      pdfRequest.id = reportResultID;
-   *      pdfRequest.fileName = reportResultID.toString() + '.pdf';
-   *
-   *      docHandler = docReq.createHandlerObject(true);
-   *      docHandler.loadContent(TubLoadContentBody.Yes);
-   *
-   *      docContent = pdfRequest.writeToTemp(pdfDocument.pdf.output(), 'bin');
-   *
-   * @param {TubDocumentRequest|String} [body] Body to write. Can be copied from existing TubDocumentRequest or from string. In case body is loaded using TubDocumentRequest#write, it can be omitted
-   * @param {String} [encoding] Optional. In case parameter exist and first parameter type is string - perform decode of body before write to store. Possible values: "bin", "base64"
-   * @returns {String} Document content (JSON, contain meta information about file) to be stored to Document type attribute
-   */
-  writeToTemp: function (body, encoding) { return '' }
-}
-
-/**
- * Class to work with stored content of `Document` attribute (files/BLOB/Virtual)
- * @class TubDocumentHandlerCustom
- * @constructor
- */
-function TubDocumentHandlerCustom () {}
-TubDocumentHandlerCustom.prototype = {
-  /**
-   * Load file/BLOB into memory
-   * @param {TubLoadContentBody} loaderType
-   */
-  loadContent: function (loaderType) {},
-
-  /**
-   * Reference to attribute definition
-   * @type {TubEntityAttribute}
-   * @readonly
-   */
-  attribute: null,
-  /**
-   * @type {TubDocumentRequest}
-   */
-  request: null,
-  /**
-   * @type {TubStoreConfig}
-   * @readonly
-   */
-  storeConfig: null,
-
-  /**
-   * Actual content
-   * @type {TubDocumentContent}
-   */
-  content: null
 }
 
 /**

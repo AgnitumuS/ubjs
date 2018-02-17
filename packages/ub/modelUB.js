@@ -4,6 +4,7 @@ const repositoryFabric = require('@unitybase/base').ServerRepository.fabric // f
 const App = require('./modules/App')
 const Session = require('./modules/Session')
 const UBFormat = require('@unitybase/base').format
+const blobStores = require('./blobStores')
 
 /**
  * The UB namespace (global object) encapsulates some classes, singletons, and utility methods provided by UnityBase server.
@@ -156,18 +157,12 @@ UB.i18nExtend = mI18n.extend
 
 require('./modules/RLS')
 
-// TODO - remove after rewrite stores to pure JS
-UB.virtualStores = {
-  fileVirtual: require('./virtualStores/fileVirtual'),
-  fileVirtualWritePDF: require('./virtualStores/fileVirtualWritePDF'),
-  mdb: require('./virtualStores/mdb')
-}
-// require('./virtualStores/Custom')
-
 // export BEFORE load models, since models inside can use a UB model
 const modelLoader = require('./modules/moledLoader')
 UB.loadLegacyModules = modelLoader.loadLegacyModules
 UB.App = App
+
+UB.blobStores = blobStores
 
 UB.run = function () {
   /**
@@ -193,11 +188,12 @@ UB.run = function () {
 
   // ENDPOINTS
   const {clientRequire, models, getAppInfo, getDomainInfoEp} = require('./modules/endpoints')
-
   App.registerEndpoint('getAppInfo', getAppInfo, false)
   App.registerEndpoint('models', models, false)
   App.registerEndpoint('clientRequire', clientRequire, false)
   App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
+  App.registerEndpoint('getDocument', blobStores.getDocument, true)
+  App.registerEndpoint('setDocument', blobStores.setDocument, true)
 }
 
 module.exports = UB

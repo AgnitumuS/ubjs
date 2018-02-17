@@ -6,11 +6,17 @@ const _ = require('lodash')
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
 const LocalDataStore = require('@unitybase/base').LocalDataStore
 const UBDomain = require('@unitybase/base').UBDomain
+const App = require('@unitybase/ub').App
+const blobStores = require('@unitybase/ub/blobStores')
 
 me.entity.addMethod('select')
 me.entity.addMethod('update')
 me.entity.addMethod('insert')
 me.entity.addMethod('testServerRendering')
+
+me.on('delete:before', function () {
+  throw new Error('<<<To delete Report you must manually delete corresponding xml file from modelFolder/public/reports folder>>>')
+})
 
 /**
  *  here we store loaded forms
@@ -19,10 +25,10 @@ let resultDataCache = null
 let modelLoadDate
 
 const TEMPLATE_CONTENT_TYPE = 'application/ubreport'
-const CODE_BEHIND_CONTENT_TYPE = 'application/def'
+const SCRIPT_CONTENT_TYPE = 'application/def'
 const REL_PATH_TAIL = 'reports'
 const TEMPLATE_EXTENSION = '.template'
-const CODE_BEHIND_EXTENSION = '.js'
+const SCRIPT_EXTENSION = '.js'
 
 const REPORT_BODY_TPL = `
 exports.reportCode = {
@@ -78,14 +84,14 @@ function postProcessing (loader, fullFilePath, content, row) {
     relPath: relPath
   })
 
-  fileName = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length) + CODE_BEHIND_EXTENSION
+  fileName = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length) + SCRIPT_EXTENSION
   let jsFilePath = path.join(path.dirname(fullFilePath), fileName)
   let jsFileStat = fs.statSync(jsFilePath)
   if (jsFileStat) { // file exists
     row.code = JSON.stringify({
       fName: fileName,
       origName: fileName,
-      ct: CODE_BEHIND_CONTENT_TYPE,
+      ct: SCRIPT_CONTENT_TYPE,
       size: jsFileStat.size,
       md5: 'fakemd50000000000000000000000000',
       relPath: relPath
@@ -194,80 +200,82 @@ function validateInput (aID, modelName) {
  * @return {boolean}
  */
 function doUpdateInsert (ctxt, storedValue, isInsert) {
+  console.debug('--==== ubs_report.doUpdateInsert ===-')
+  let entity = me.entity
   let mP = ctxt.mParams
-  let entity = App.domainInfo.get('ubs_report') // me.entity,
-  let attributes = entity.attributes
-
   let newValues = mP.execParams || {}
   let ID = newValues.ID
 
-    // move all attributes from execParams to storedValue
+  // move all attributes from execParams to storedValue
   _.forEach(newValues, function (val, key) {
-    let attr = attributes[key]
+    let attr = entity.attributes[key]
     if (attr && (attr.dataType !== UBDomain.ubDataTypes.Document)) {
       storedValue[key] = val
     }
   })
-
-  let newDocument = newValues.template
-  let nDoc = newDocument ? JSON.parse(newDocument) : undefined
-
-  let docReq = new TubDocumentRequest()
-  docReq.entity = entity.name
-  docReq.attribute = 'template'
-  docReq.id = ID
-  docReq.isDirty = nDoc ? !!nDoc.isDirty : !!isInsert // Boolean(!newDocument);
-  let docHandler = docReq.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.Yes /* WithBody */)
-  let docBody = docHandler.request.getBodyAsUnicodeString()
-  if (docBody) {
+  let newTemplateInfo = newValues.template
+  let reportBody = blobStores.getFromBlobStore(
+    {
+      entity: entity.name,
+      attribute: 'template',
+      ID: ID,
+      isDirty: Boolean(newTemplateInfo)
+    },
+    {encoding: 'utf-8'}
+  )
+  if (!reportBody) {
+    reportBody = `<!--@ID "${ID}"-->\r\n`
+  } else {
     let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
-        // docBody = '<!--@ID "' + ID + '"-->\r\n' + docBody.replace(clearAttrReg, ''); // remove all old entity attributes
-    docBody = docBody.replace(clearAttrReg, '')
-  }
-  for (let attrName in attributes) {
-    let attr = attributes[attrName]
-    if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView || attrName === 'ID')) {
-      docBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + docBody
+    reportBody = reportBody.replace(clearAttrReg, '') // remove all old entity attributes
+    let attributes = entity.attributes
+    for (let attrName in attributes) {
+      let attr = attributes[attrName]
+      if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView || attrName === 'ID')) {
+        reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
+      }
     }
   }
-  docHandler.request.setBodyAsUnicodeString(docBody)
+  let docInfo = blobStores.putToBlobStore({
+    entity: entity.name,
+    attribute: 'template',
+    ID: ID,
+    fileName: storedValue.report_code + TEMPLATE_EXTENSION,
+    ct: TEMPLATE_CONTENT_TYPE
+  }, reportBody)
+  // add a relPath
+  docInfo.relPath = storedValue.model + '|' + REL_PATH_TAIL
+  // and update an attribute value to the new blob info
+  storedValue.template = JSON.stringify(docInfo)
 
-  let ct = docHandler.content
-  ct.fName = storedValue.report_code + TEMPLATE_EXTENSION
-  ct.relPath = storedValue.model + '|' + REL_PATH_TAIL
-  ct.ct = TEMPLATE_CONTENT_TYPE
-  docReq.isDirty = true
-  docHandler.saveContentToTempStore()
-  docHandler.moveToPermanentStore('')
-  storedValue.template = JSON.stringify(ct)
-
-  newDocument = newValues.code
-  if (newDocument) {
-    nDoc = JSON.parse(newDocument)
+  if (isInsert) {
+    let reportCodeInfo = blobStores.putToBlobStore({
+      entity: entity.name,
+      attribute: 'code',
+      ID: ID,
+      fileName: storedValue.report_code + SCRIPT_EXTENSION
+    }, REPORT_BODY_TPL)
+    newValues.code = JSON.stringify(reportCodeInfo)
   }
-  docReq = new TubDocumentRequest()
-  docReq.entity = entity.name
-  docReq.attribute = 'code'
-  docReq.id = ID
-    // if passed new form definition - load from temp store, else - from permanent
-  docReq.isDirty = !!newDocument || isInsert // !!newDocument Boolean(newDocument);
-  docHandler = docReq.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.Yes /* with body */)
-  docBody = docHandler.request.getBodyAsUnicodeString()
-  if ((!docBody || docBody === '{}') && newDocument === undefined) {
-    docBody = REPORT_BODY_TPL
+  let newCode = newValues.code
+  if (newCode) { // in case report script is modified add a relPath
+    let parsed = JSON.parse(newCode)
+    parsed.relPath = storedValue.model + '|' + REL_PATH_TAIL
+    parsed.fName = storedValue.report_code + SCRIPT_EXTENSION
+    parsed.ct = SCRIPT_CONTENT_TYPE
+    storedValue.code = JSON.stringify(parsed)
+  } else {
+    delete storedValue.code
   }
 
-  docHandler.request.setBodyAsUnicodeString(docBody)
-  ct = docHandler.content
-  ct.fName = storedValue.report_code + CODE_BEHIND_EXTENSION
-  ct.relPath = storedValue.model + '|' + REL_PATH_TAIL
-  ct.ct = CODE_BEHIND_CONTENT_TYPE
-  storedValue.code = JSON.stringify(ct)
-
-  docHandler.saveContentToTempStore()
-  docHandler.moveToPermanentStore('')
+  // commit BLOB store changes
+  let fakeCtx = {
+    dataStore: null,
+    mParams: {
+      execParams: storedValue
+    }
+  }
+  ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
 
   resultDataCache = null // drop cache. afterInsert call select and restore cache
   return true
@@ -291,15 +299,11 @@ me.update = function (ctxt) {
 
   validateInput(ID, inParams.model || storedValue.model)
 
-  doUpdateInsert(ctxt, storedValue)
+  doUpdateInsert(ctxt, storedValue, false)
 
   ctxt.preventDefault()
   return true // everything is OK
 }
-
-me.on('delete:before', function () {
-  throw new Error('<<<To delete Report you must manually delete corresponding xml file from modelFolder/public/reports folder>>>')
-})
 
 /**
  * Check ID is unique and perform insertion
@@ -316,7 +320,7 @@ me.insert = function (ctxt) {
 
   let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
-    throw new Error('<<<Report with ID ' + ID + ' already exist>>>')
+    throw new Error(`<<<Report with ID ${ID} already exist>>>`)
   }
 
   doUpdateInsert(ctxt, oldValue, true)

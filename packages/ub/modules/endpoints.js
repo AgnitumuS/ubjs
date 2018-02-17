@@ -12,33 +12,7 @@ const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
 const App = require('./App')
 const Session = require('./Session')
-
-/**
- * @param {THTTPResponse} resp
- * @param {string} reason
- * @return {boolean}
- * @private
- */
-function badRequest (resp, reason) {
-  resp.statusCode = 400
-  resp.writeEnd('Bad request')
-  if (reason) console.error('Bad request.', reason)
-  return false
-}
-
-/**
- * @param {THTTPResponse} resp
- * @param {string} reason
- * @return {boolean}
- * @private
- */
-function notFound (resp, reason) {
-  resp.statusCode = 404
-  resp.writeEnd('Not found')
-  if (reason) console.error('Not found', reason)
-  return false
-}
-
+const {badRequest, notFound} = require('./httpUtils')
 /**
  *
  * @param {string} reqPath

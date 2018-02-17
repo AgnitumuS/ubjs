@@ -1,5 +1,6 @@
 /* global TubDataStore */
 const App = require('./modules/App')
+const blobStores = require('./blobStores')
 /**
  *  Initialize DataStore from one of supported source formats:
  *
@@ -131,3 +132,97 @@ Object.defineProperty(TubDataStore, 'entity', {
     return App.domainInfo.get(this.entityCode)
   }
 })
+
+/**
+ *  Active dataset name we work with
+ *  @example
+ *    let store = ctx.dataStore
+ *    let prevData = store.currentDataName
+ *    try {
+ *      store.currentDataName = TubDataStore.DATA_NAMES.BEFORE_UPDATE
+ *      let valueBeforeUpdate = store.get('code')
+ *    } finally {
+ *      store.currentDataName = prevData
+ *    }
+ */
+TubDataStore.DATA_NAMES = {
+  BEFORE_UPDATE: 'selectBeforeUpdate',
+  AFTER_UPDATE: 'selectAfterUpdate',
+  AFTER_INSERT: 'selectAfterInsert',
+  BEFORE_DELETE: 'selectBeforeDelete',
+  TOTAL: '__totalRecCount',
+  SOFTLOCK: 'softLock',
+  RECORDSIGN: 'recordSign',
+  TEMP: '_temp'
+}
+
+// do additional operation with adtDocument attributes
+//  move adtDocument content from temporary store to permanent
+// return true if some document attribute actually changed
+/**
+ * If have attributes of type `Document` and it values changed then
+ * for each changed attribute:
+ *  - call a BLOB store implementation method `moveToPermanent`
+ * @param {ubMethodParams} ctx
+ * @param {Boolean} isUpdate
+ * @return {Boolean} True in case some of document type attributes actually changed
+ */
+TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
+  let entity = this.entity
+  if (!entity.blobAttributes.length) return false
+
+  if (entity.isUnity) {
+    console.debug('skip processing blobStores for UNITY update call', entity.name)
+    return false
+  }
+  console.debug('Start processing documents for entity', entity.name)
+
+  let execParams = ctx.mParams.execParams
+  let modifiedBlobs = []
+  for (let i = 0, L = entity.blobAttributes.length; i < L; i++) {
+    let blobAttr = entity.blobAttributes[i]
+    let newVal = execParams[blobAttr.name]
+    if (newVal) {
+      modifiedBlobs.push({
+        attr: blobAttr,
+        newVal: JSON.parse(newVal),
+        oldVal: null
+      })
+    }
+  }
+  if (!modifiedBlobs.length) return false
+
+  if (isUpdate) { // for update operations retrieve a prev. values
+    let store = ctx.dataStore
+    if (store && store.initialized) { // virtual entity can bypass store initialization
+      let prevDataName = store.currentDataName
+      try {
+        store.currentDataName = this.DATA_NAMES.BEFORE_UPDATE
+        if (!store.eof) {
+          for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
+            let modifiedBlob = modifiedBlobs[i]
+            if (!(modifiedBlob.newVal.isDirty || modifiedBlob.newVal.deleting)) { // [UB-858]
+              throw new Error(`Invalid ${entity.name}.${modifiedBlob.attr.name} Document type attribute content. Update possible either for dirty or for deleting content`)
+            }
+            let oldVal = store.get(modifiedBlob.attr.name)
+            if (oldVal) modifiedBlob.oldVal = JSON.parse(oldVal)
+          }
+        }
+      } finally {
+        store.currentDataName = prevDataName
+      }
+    }
+  }
+
+  // for each modified BLOB call a BLOB store implementation for actually
+  // move BLOB data from temporary to permanent store
+  let ID = execParams.ID
+  for (let i = 0, L = modifiedBlobs.length; i < L; i++) {
+    let modifiedBlob = modifiedBlobs[i]
+    let newMeta = blobStores.doCommit(modifiedBlob.attr, ID, modifiedBlob.newVal, modifiedBlob.oldVal)
+    execParams[modifiedBlob.attr.name] = newMeta ? JSON.stringify(newMeta) : null
+  }
+  return true
+}
+
+module.exports = TubDataStore

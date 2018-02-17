@@ -717,6 +717,11 @@
                 "type": "string",
                 "description": "If `storeType: \"FileSystem\"` then  path to store root folder, if `storeType: \"Database\"` then name of a table or view where BLOB are stored"
               },
+              "tempPath": {
+                "type": "string",
+                "description": "Path for storing uncommitted files. Recommended to be on the same volume as `path`",
+                "default": "process.env.TEMP"
+              },
               "connectionName": {
                 "type": "string",
                 "description": "Applicable for `storeType: \"Database\"`. Name of the connection where table with BLOBS are placed. If empty - will use the default connection"
@@ -727,8 +732,8 @@
                 "default": 0
               },
               "storeSize": {
-                "enum": ["Simple", "Medium", "Large"],
-                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000",
+                "enum": ["Simple", "Medium", "Large", "Monthly", "Daily"],
+                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000\n| `Montly`| New subfolder `YYYYMM` for every month\n| `Daily`| New subfolder `YYYYMM` for every month and when new folder `DD` for every day",
                 "default": "Simple"
               },
               "keepOriginalFileNames":{

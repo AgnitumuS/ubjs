@@ -505,6 +505,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   if (entityInfo.descriptionAttribute) this.descriptionAttribute = entityInfo.descriptionAttribute
   if (entityInfo.cacheType) this.cacheType = entityInfo.cacheType
   if (entityInfo.dsType) this.dsType = entityInfo.dsType
+  if (entityInfo.isUnity) this.isUnity = true
 
   /**
    * Internal short alias
@@ -564,7 +565,13 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @type {Object<string, UBEntityAttribute>}
    */
   this.attributes = new UBEntityAttributes()
-  _.forEach(entityInfo.attributes, function (attributeInfo, attributeCode) {
+  /**
+   * Slice of attributes with type `Document`
+   * @type {Array<UBEntityAttribute>}
+   */
+  this.blobAttributes = []
+
+  _.forEach(entityInfo.attributes, (attributeInfo, attributeCode) => {
     let attr = new UBEntityAttribute(attributeInfo, attributeCode, me)
     // record history mixin set a dateTo automatically, so let's allow blank mi_dateTo on UI
     // but for DDL generator mi_dateTo must be not null, so change only for browser side
@@ -572,6 +579,9 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
       attr.allowNull = true
     }
     me.attributes[attributeCode] = attr
+    if (attr.dataType === UBDomain.ubDataTypes.Document) {
+      this.blobAttributes.push(attr)
+    }
   })
 
   mixinNames = Object.keys(entityInfo.mixins || {})
@@ -646,6 +656,11 @@ UBEntity.prototype.cacheType = 'None'
  */
 UBEntity.prototype.dsType = 'Normal'
 
+/**
+ * Is this entity UNITY for someone
+ * @type {boolean}
+ */
+UBEntity.prototype.isUnity = false
 /**
  * Return an entity caption to display on UI
  * @returns {string}
@@ -1019,7 +1034,7 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
     return domainEntity.attributes[attributeNameParts[0]]
   }
 
-    // TODO: Сделать так же для других спец.символов, кроме @
+  // TODO: Make the same thing for other special chars (except @)
   while (domainEntity && attributeNameParts.length) {
     if (domainEntity && attributeNameParts.length === 1) {
       complexAttr = attributeNameParts[0].split('@')
@@ -1041,7 +1056,7 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
         return attribute
       }
       attributeName = attributeNameParts[0]
-      if (attribute.dataType === 'Enum') {
+      if (attribute.dataType === UBDomain.ubDataTypes.Enum) {
         if (attributeName === 'name') { // WTF?
           return attribute
         } else {
@@ -1089,7 +1104,7 @@ UBEntity.prototype.getEntityRequirements = function (fieldList) {
     let fieldNameParts = fieldList[i].split('.')
 
     let attr = this.getEntityAttribute(fieldNameParts[0])
-    if (attr.dataType === 'Entity') {
+    if (attr.dataType === UBDomain.ubDataTypes.Entity) {
       if (fieldNameParts.length > 1) {
         let tail = [fieldNameParts.slice(1).join('.')]
         result = _.union(result, attr.getAssociatedEntity().getEntityRequirements(tail))

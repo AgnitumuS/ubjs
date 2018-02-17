@@ -2,23 +2,31 @@ let me = ubm_diagram
 
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
 const LocalDataStore = require('@unitybase/base').LocalDataStore
+const App = require('@unitybase/ub').App
+const UB = require('@unitybase/ub')
+const UBDomain = require('@unitybase/base').UBDomain
+const blobStores = require('@unitybase/ub/blobStores')
+
 const path = require('path')
 const _ = require('lodash')
 
+const DIAGRAM_CONTENT_TYPE = 'application/m3metadiag'
+const REL_PATH_TAIL = 'erdiagrams'
+const XML_EXTENSION = '.xml'
+
 me.entity.addMethod('select')
 me.entity.addMethod('update')
-me.entity.addMethod('beforedelete')
 me.entity.addMethod('insert')
+
+me.on('delete:before', function () {
+  throw new UB.UBAbort('<<<To delete ER-diagram you must manually delete corresponding xml file from model folder>>>')
+})
 
 /**
  *  here we store loaded forms
  */
-var
-  resultDataCache = null,
-  modelLoadDate,
-  DIAGRAM_CONTENT_TYPE = 'application/m3metadiag',
-  REL_PATH_TAIL = 'erdiagrams',
-  XML_EXTENSION = '.xml'
+let resultDataCache = null
+let modelLoadDate
 
 /**
  * Check integrity of file content. Passed as a callback to FileBasedStore.onBeforeRowAdd
@@ -52,9 +60,9 @@ function postProcessing (loader, fullFilePath, content, row) {
 }
 
 function loadAllDiagrams () {
-  var models = App.domainInfo.models,
-    folders = [],
-    modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
+  let models = App.domainInfo.models
+  let folders = []
+  let modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
 
   console.debug('modelLastDate = ', modelLastDate)
   if (!resultDataCache || modelLoadDate < modelLastDate) {
@@ -85,22 +93,20 @@ function loadAllDiagrams () {
   return resultDataCache
 }
 
-/** Retrieve data from resultDataCache and init ctxt.dataStore
- *  caller MUST set dataStore.currentDataName before call doSelect
+/**
+ * Retrieve data from resultDataCache and init ctxt.dataStore
+ * caller MUST set dataStore.currentDataName before call doSelect
  * @param {ubMethodParams} ctxt
  */
 function doSelect (ctxt) {
-  var
-    mP = ctxt.mParams,
-    aID = mP.ID,
-    cachedData, filteredData,
-    resp, cType = ctxt.dataStore.entity.cacheType,
-    reqVersion
+  let mP = ctxt.mParams
+  let aID = mP.ID
+  let cType = ctxt.dataStore.entity.cacheType
 
-  cachedData = loadAllDiagrams()
+  let cachedData = loadAllDiagrams()
 
-  if (!(aID && (aID > -1)) && (cType === TubCacheType.Entity || cType === TubCacheType.SessionEntity) && (!mP.skipCache)) {
-    reqVersion = mP.version
+  if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity || cType === UBDomain.EntityCacheTypes.SessionEntity) && (!mP.skipCache)) {
+    let reqVersion = mP.version
     mP.version = resultDataCache.version
     if (reqVersion === resultDataCache.version) {
       mP.resultData = {}
@@ -108,14 +114,13 @@ function doSelect (ctxt) {
       return
     }
   }
-  filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
+  let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
   // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
-  resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
+  let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
   ctxt.dataStore.initFromJSON(resp)
 }
 
 /**
- *
  * @param {ubMethodParams} ctxt
  * @return {Boolean}
  */
@@ -132,7 +137,7 @@ me.select = function (ctxt) {
  * @param {String} modelName
  */
 me.validateInput = function (aID, modelName) {
-  var model = App.domainInfo.models[modelName]
+  let model = App.domainInfo.models[modelName]
   if (!model) {
     throw new Error(`ubm_diagram: Invalid model attribute value "${modelName}". Model not exist in domain`)
   }
@@ -140,90 +145,83 @@ me.validateInput = function (aID, modelName) {
 }
 
 /**
- *
  * @param {ubMethodParams} ctxt
  * @param {Object} storedValue
+ * @param {Boolean} isInsert
  * @return {boolean}
  */
-function doUpdateInsert (ctxt, storedValue) {
-  var
-    mP = ctxt.mParams,
-    newValues,
-    newDocument,
-    ID,
-    docHandler, docReq, ct, docBody, attr,
-    entity = me.entity
-
-  newValues = mP.execParams || {}
-  ID = newValues.ID
+function doUpdateInsert (ctxt, storedValue, isInsert) {
+  console.debug('--==== ubm_diagram.doUpdateInsert ===-')
+  let entity = me.entity
+  let mP = ctxt.mParams
+  let newValues = mP.execParams || {}
+  let ID = newValues.ID
 
   // move all attributes from execParams to storedValue
-  newDocument = newValues.document
   _.forEach(newValues, function (val, key) {
-    attr = entity.attributes[key]
-    if (attr && (attr.dataType !== TubAttrDataType.Document)) {
+    let attr = entity.attributes[key]
+    if (attr && (attr.dataType !== UBDomain.ubDataTypes.Document)) {
       storedValue[key] = val
     }
   })
-
-  docReq = new TubDocumentRequest()
-  docReq.entity = entity.name
-  docReq.attribute = 'document'
-  docReq.id = ID
-  docReq.isDirty = Boolean(newDocument)
-  docHandler = docReq.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.Yes /* WithBody */)
-  docBody = docHandler.request.getBodyAsUnicodeString()
-  if (!docBody) {
-    docBody = '<!--@ID "' + ID + '"-->\r\n<mxGraphModel><root></root></mxGraphModel>'
+  let newDocument = newValues.document
+  let diagramBody = blobStores.getFromBlobStore(
+    {
+      entity: entity.name,
+      attribute: 'document',
+      ID: ID,
+      isDirty: Boolean(newDocument)
+    },
+    {encoding: 'utf-8'}
+  )
+  if (!diagramBody) {
+    diagramBody = `<!--@ID "${ID}"-->\r\n<mxGraphModel><root></root></mxGraphModel>`
   } else {
-    var clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
-    docBody = '<!--@ID "' + ID + '"-->\r\n' + docBody.replace(clearAttrReg, '') // remove all old entity attributes
+    let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
+    diagramBody = '<!--@ID "' + ID + '"-->\r\n' + diagramBody.replace(clearAttrReg, '') // remove all old entity attributes
   }
-  docHandler.request.setBodyAsUnicodeString(docBody)
+  let docInfo = blobStores.putToBlobStore({
+    entity: entity.name,
+    attribute: 'document',
+    ID: ID,
+    fileName: storedValue.name + XML_EXTENSION,
+    ct: DIAGRAM_CONTENT_TYPE
+  }, diagramBody)
+  // add a relPath
+  docInfo.relPath = storedValue.model + '|' + REL_PATH_TAIL
+  // and update an attribute value to the new blob info
+  storedValue.document = JSON.stringify(docInfo)
 
-  ct = docHandler.content
-  ct.fName = storedValue.name + XML_EXTENSION
-  ct.relPath = storedValue.model + '|' + REL_PATH_TAIL
-  ct.ct = DIAGRAM_CONTENT_TYPE
-  docReq.isDirty = true
-  docHandler.saveContentToTempStore()
-  docHandler.moveToPermanentStore('')
-  storedValue.document = JSON.stringify(ct)
+  // commit BLOB store changes
+  let fakeCtx = {
+    dataStore: null,
+    mParams: {
+      execParams: storedValue
+    }
+  }
+  ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
 
   resultDataCache = null // drop cache. afterInsert call select and restore cache
   return true
 }
 
 /**
- *
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
 me.update = function (ctxt) {
-  var
-    inParams = ctxt.mParams.execParams || {},
-    ID = inParams.ID,
-    storedValue,
-    cachedData
-
-  cachedData = loadAllDiagrams()
-  storedValue = LocalDataStore.byID(cachedData, ID)
+  let inParams = ctxt.mParams.execParams || {}
+  let ID = inParams.ID
+  let cachedData = loadAllDiagrams()
+  let storedValue = LocalDataStore.byID(cachedData, ID)
   if (storedValue.total !== 1) {
-    throw new Error('Record with ID=' + ID + 'not found')
+    throw new Error(`Record with ID=${ID} not found`)
   }
   storedValue = LocalDataStore.selectResultToArrayOfObjects(storedValue)[0]
-
   me.validateInput(ID, inParams.model || storedValue.model)
-
-  doUpdateInsert(ctxt, storedValue)
-
+  doUpdateInsert(ctxt, storedValue, false)
   ctxt.preventDefault()
   return true // everything is OK
-}
-
-me.beforedelete = function () {
-  throw new Error('<<<To delete ER-diagram you must manually delete corresponding xml file from model folder!>>>')
 }
 
 /**
@@ -232,21 +230,18 @@ me.beforedelete = function () {
  * @return {boolean}
  */
 me.insert = function (ctxt) {
-  var
-    inParams = ctxt.mParams.execParams,
-    ID = inParams.ID,
-    cachedData, row,
-    oldValue = {}
+  let inParams = ctxt.mParams.execParams
+  let ID = inParams.ID
 
-  cachedData = loadAllDiagrams()
+  let cachedData = loadAllDiagrams()
   me.validateInput(ID, inParams.model)
 
-  row = LocalDataStore.byID(cachedData, ID)
+  let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
-    throw new Error('Diagram with ID ' + ID + 'already exist')
+    throw new Error(`Diagram with ID ${ID} already exist`)
   }
-
-  doUpdateInsert(ctxt, oldValue)
+  let oldValue = {}
+  doUpdateInsert(ctxt, oldValue, true)
   ctxt.preventDefault()
   return true // everything is OK
 }

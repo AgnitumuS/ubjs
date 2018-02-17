@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.0]
+### Added
+- UBEntity.isUnity property added
+- UBConnection.getDocument method
+
 ## [4.2.27]
 ### Changed
 - allow blank for mi_dateTo record history mixin attribute on browser side

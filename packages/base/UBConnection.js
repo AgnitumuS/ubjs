@@ -545,6 +545,77 @@ UBConnection.prototype.setDocument = function (entity, attribute, id, data, orig
   return JSON.stringify(setDocumentResponse.result)
 }
 
+const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty', 'forceMime', 'fileName', 'store', 'revision']
+/**
+ * Retrieve content of `document` type attribute field from server. Usage samples:
+ *
+ *      //Retrieve content of document as string using GET
+ *      let frmContent = conn.getDocument({
+ *          entity:'ubm_form',
+ *          attribute: 'formDef',
+ *          ID: 100000232003
+ *       })
+ *       console.log(typeof frmContent)
+ *
+ *      //The same, but using POST for bypass cache
+ *      let frmContent = conn.getDocument({
+ *          entity:'ubm_form',
+ *          attribute: 'formDef',
+ *          ID: 100000232003
+ *       }, {
+ *          bypassCache: true
+ *       })
+ *       console.log(typeof frmContent) // string
+ *
+ *
+ *      //Retrieve content of document as ArrayBuffer and bypass cache
+ *      let frmContent = conn.getDocument({
+ *          entity:'ubm_form',
+ *          attribute: 'formDef',
+ *          ID: 100000232003
+ *       }, {
+ *          bypassCache: true, resultIsBinary: true
+ *       })
+ *       console.log('Result is', typeof frmContent, 'of length' , frmContent.byteLength, 'bytes'); //output: Result is object of length 2741 bytes
+ *
+ * @param {Object} params
+ * @param {String} params.entity Code of entity to retrieve from
+ * @param {String} params.attribute `document` type attribute code
+ * @param {Number} params.id Instance ID
+ * @param {String} [params.forceMime] If passed and server support transformation from source MIME type to `forceMime` server perform transformation and return documenRt representation in the passed MIME
+ * @param {Number} [params.revision] Optional revision of the documnet (if supported by server-side store configuration). Default is current revision.
+ * @param {String} [params.fileName] ????
+ * @param {Boolean} [params.isDirty=false] Optional ability to retrieve document in **dirty** state
+ * @param {String} [params.store] ????
+ *
+ * @param {Object} [options] Additional request options
+ * @param {Boolean} [options.resultIsBinary=false] if true - return document content as arrayBuffer
+ * @param {Boolean} [options.bypassCache] HTTP POST verb will be used instead of GET for bypass browser cache
+ * @returns {Promise} Resolved to document content (either ArrayBuffer in case options.resultIsBinary===true or text/json)
+ */
+UBConnection.prototype.getDocument = function (params, options) {
+  let opt = Object.assign({}, options)
+  let reqParams = {
+    endpoint: 'getDocument',
+    HTTPMethod: opt.bypassCache ? 'POST' : 'GET'
+  }
+  if (options && options.resultIsBinary) {
+    reqParams.responseType = 'arraybuffer'
+  }
+  if (opt.bypassCache) {
+    reqParams.data = Object.assign({}, params)
+    Object.keys(reqParams.data).forEach(function (key) {
+      if (ALLOWED_GET_DOCUMENT_PARAMS.indexOf(key) === -1) {
+        delete reqParams.data[key]
+      }
+    })
+  } else {
+    reqParams.URLParams = params
+  }
+  let docContent = this.xhr(reqParams)
+  return docContent
+}
+
 /**
  * Execute insert method by add method: 'insert' to `ubq` query (if req.method not already set)
  *
