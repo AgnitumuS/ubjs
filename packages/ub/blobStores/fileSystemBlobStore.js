@@ -127,7 +127,11 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (!ct) ct = 'application/octet-stream'
     if (filePath) {
       resp.statusCode = 200
-      resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
+      if (blobInfo && blobInfo.origName) {
+        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\n'Content-Disposition: attachment;filename='${blobInfo.origName}'`)
+      } else {
+        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}'`)
+      }
       resp.writeEnd(filePath)
     } else {
       resp.statusCode = 404

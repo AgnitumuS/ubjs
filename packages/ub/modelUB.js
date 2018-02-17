@@ -156,14 +156,6 @@ UB.i18nExtend = mI18n.extend
 
 require('./modules/RLS')
 
-// TODO - remove after rewrite stores to pure JS
-UB.virtualStores = {
-  fileVirtual: require('./virtualStores/fileVirtual'),
-  fileVirtualWritePDF: require('./virtualStores/fileVirtualWritePDF'),
-  mdb: require('./virtualStores/mdb')
-}
-// require('./virtualStores/Custom')
-
 // export BEFORE load models, since models inside can use a UB model
 const modelLoader = require('./modules/moledLoader')
 UB.loadLegacyModules = modelLoader.loadLegacyModules
