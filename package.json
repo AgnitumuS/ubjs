@@ -26,9 +26,7 @@
   "scripts": {
     "clean": "lerna clean --yes",
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
-    "build:js": "lerna run build",
-    "build:native": "lerna run build:native --concurrency 1",
-    "bootstrap": "npm run clean && call ./.bin/bootstrap.cmd"
+    "build": "lerna run build"
   },
   "engines": {
     "npm": "^5"

@@ -27,7 +27,7 @@ const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
 const pathDelim = process.platform === 'win32' ? '\\' : '/'
-const trailingPathDelim = new RegExp(pathDelim + '$')
+const trailingPathDelim = process.platform === 'win32' ? /\\$/ : /\/$/
 
 module.exports = function createStore (options) {
   let

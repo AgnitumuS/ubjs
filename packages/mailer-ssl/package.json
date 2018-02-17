@@ -26,9 +26,6 @@
   ],
   "author": "Vadim Orel (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
-  "os": [
-    "win32"
-  ],
   "engines": {
     "UnityBase": "^4.0"
   }

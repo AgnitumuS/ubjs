@@ -42,3 +42,6 @@ _FOSSIL_
 node_modules/
 .deploy*/
 .idea/
+
+# FPC compiler artifacts
+bin/x64/lib/
