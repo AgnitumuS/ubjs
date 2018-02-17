@@ -27,15 +27,15 @@ function createBlobStoreMap () {
     let storeImplementationModule = storeConfig['implementedBy']
     // UB4 compatibility
     if (!storeImplementationModule && (!storeConfig.storeType || storeConfig.name === 'fileVirtual')) {
-      storeImplementationModule = '../blobStores/fileSystemBlobStore'
+      storeImplementationModule = './fileSystemBlobStore'
     }
     if (!storeImplementationModule && (storeConfig.name = 'mdb')) {
-      storeImplementationModule = '../blobStores/mdbBlobStore'
+      storeImplementationModule = './mdbBlobStore'
     }
     if (storeImplementationModule === 'fileVirtualWritePDF') {
-      storeImplementationModule = '../blobStores/fileVirtualWritePDF'
+      storeImplementationModule = './fileSystemPDFBlobStore'
     }
-    if (!storeImplementationModule) storeImplementationModule = '../blobStores/fileSystemBlobStore'
+    if (!storeImplementationModule) storeImplementationModule = './fileSystemBlobStore'
 
     if (storeConfig.isDefault) res.defaultStoreName = storeConfig.name
     let StoreClass = require(storeImplementationModule)
