@@ -1,4 +1,4 @@
-const BlobStoreCustom = require('./BlobStoreCustom')
+const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const App = require('../modules/App')
 const fs = require('fs')

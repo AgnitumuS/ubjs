@@ -36,11 +36,11 @@
  1. Upload file to temporary store - on this stage client call setDocument/setDocumentMultipart app level method and
  pass file content to server with additional parameter **isDirty=true**, server must store file in the temporary place. To do this server:
 
- - parse incoming HTTP request and transform it to {@link TubDocumentRequest} object - container for raw document data
- - based on entity attribute UnityBase create {@link TubDocumentHandlerCustom} descendant object - this object able to
+ - parse incoming HTTP request and transform it to {@link BlobStoreRequest} object - container for raw document data
+ - based on entity attribute UnityBase create {@link BlobStoreCustom} descendant - this object able to
  put TubDocumentRequest content to store. During initialization handler calculate md5 checksum of incoming
  document and MIME content type (based of origName file extension or on magic bytes in case extension is unknown)
- - server call {@link UB.virtualStores.Custom#saveContentToTempStore} method passing {@link TubDocumentHandlerCustom handler} as a parameter
+ - server call {@link BlobStoreCustom#saveContentToTempStore} method passing {@link TubDocumentHandlerCustom handler} as a parameter
  - server return in HTTP response serialized {@link TubDocumentContent}, with {@link TubDocumentContent#isDirty} attribute is set to `true`.
  This information is used on the next step to determinate where to found file .
 

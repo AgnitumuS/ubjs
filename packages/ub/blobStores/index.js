@@ -22,7 +22,7 @@ function getBlobHistoryDataStore () {
 function createBlobStoreMap () {
   let blobStores = App.serverConfig.application.blobStores
   let res = {}
-  if (!blobStores) return
+  if (!blobStores) return res
   blobStores.forEach((storeConfig) => {
     let storeImplementationModule = storeConfig['implementedBy']
     // UB4 compatibility
