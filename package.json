@@ -24,9 +24,9 @@
     "cross-env": "^5.1.1"
   },
   "scripts": {
-    "clean": "lerna clean --yes",
-    "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
-    "build": "lerna run build"
+    "clean": "npx lerna clean --yes",
+    "build:doc": "npx jsdoc -c ./jsdoc-conf.json --package ./package.json",
+    "build": "npx lerna run build"
   },
   "engines": {
     "npm": "^5"
