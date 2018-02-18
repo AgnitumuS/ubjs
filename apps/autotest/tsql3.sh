@@ -29,20 +29,20 @@ if [ -z ${UB_DBAPWD+x} ] || [ -z "${UB_DBAPWD// }" ]; then
 fi
 export UB_DEV=true
 
-ubcli createStore -cfg $UB_CFG -noLogo
+npx ubcli createStore -cfg $UB_CFG -noLogo
 if [ ! $? = 0 ]; then err; fi
 
-ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -u admin -p admin -drop -create
+npx ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -u admin -p admin -drop -create
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=generateDDL
-ubcli generateDDL -host http://localhost:$PORT -cfg $UB_CFG -u admin -p admin -autorun
+npx ubcli generateDDL -host http://localhost:$PORT -cfg $UB_CFG -u admin -p admin -autorun
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=initialize
-ubcli initialize -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT
+npx ubcli initialize -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=autotest
-ubcli autotest -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT -noLogo -skipModules
+npx ubcli autotest -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT -noLogo -skipModules
 if [ ! $? = 0 ]; then err; fi
