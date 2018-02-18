@@ -25,7 +25,6 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/adminui-reg": "^5.0.0",
     "@unitybase/base": "^5.0.0",
     "@unitybase/codemirror-full": "^1.2.12",
     "@unitybase/ub-pub": "^5.0.0",
