@@ -8,7 +8,7 @@
   "main": "appAutotest.js",
   "scripts": {
     "test": "echo Manually run a .\\tsql3.cmd for test",
-    "ddl": "ubcli generateDDL -u admin -p admin -autorun"
+    "ddl": "npx ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
     "@unitybase/adminui-pub": "^5.0.0",
