@@ -1,3 +1,4 @@
+require('./DashboardDropZone')
 require('./DashboardColumn')
 Ext.define('UB.ux.dashboard.DashboardPanel', {
     extend: 'Ext.panel.Panel',
