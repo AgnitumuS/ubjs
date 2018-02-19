@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubm",
-  "version": "4.0.51",
+  "version": "4.0.52",
   "description": "Set of entites to construct a dynamic UnityBase UI",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubm",
   "config": {
@@ -18,7 +18,7 @@
     "@unitybase/base": "^4.2.27",
     "@unitybase/ub": "^4.0.51",
     "@unitybase/uba": "^4.1.39",
-    "@unitybase/ubs": "^4.1.43"
+    "@unitybase/ubs": "^4.1.44"
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.1.13"
