@@ -3,14 +3,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
 ## [4.2.48]
 ### Added
-add line numbering for rowEditing ubdetailgrid
+- add line numbering for rowEditing ubdetailgrid
 
 ## Fixed 
-
-setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
-clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+- setValue() in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
+- clearValue() in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+- entitygridpanel filters configuraion loading in case no filters is stored
 
 ## [4.2.45]
 ## Changed
