@@ -5,7 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.2.49]
 ### Added
-in ubdetailgrid add param forceDataLoad for force load data in store
+- new @cfg parameter for ubdetailgrid - `forceDataLoad`. If set to true will force grid 
+ to create and load underline store even if grin is placed onto inactive tab
 
 ## [4.2.48]
 ### Added

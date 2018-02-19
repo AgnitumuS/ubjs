@@ -41,7 +41,8 @@ Ext.define('UB.ux.UBDetailGrid', {
    */
   detailFields: [],
   /**
-   *  @cfg {Boolean} force load data in store
+   *  @cfg {Boolean} force If set to true will force grid to create and load underline store even if grin is placed onto inactive tab
+   *  Be carefully - by default only first data page if loading. Set `pageSize to 0 to load lo all data (not recommended)
    */
   forceDataLoad: false,
   initComponent: function () {
