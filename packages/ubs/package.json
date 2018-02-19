@@ -21,6 +21,7 @@
   "dependencies": {
     "@unitybase/base": "^4.2.27",
     "@unitybase/pdf": "^1.1.25",
+    "@unitybase/xlsx": "^4.1.6",
     "@unitybase/ub": "^4.0.51",
     "@unitybase/uba": "^4.1.39",
     "mime-types": "^2.1.14",
