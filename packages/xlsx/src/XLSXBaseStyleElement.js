@@ -104,6 +104,7 @@ class XLSXBaseStyleController {
   /**
    *
    * @param {XLSXBaseStyleElement} info
+   * @param {String} type
    * @return {XLSXBaseStyleElement} Style element index
    */
   add (info, type) {
@@ -118,6 +119,7 @@ class XLSXBaseStyleController {
     if (exist) return exist
     const infoEl = new XLSXBaseStyleElement(info, type, this)
 
+    this.hashList[hash] = infoEl
     this.elements.push(infoEl)
     infoEl.setId(this.startId)
     this.startId++

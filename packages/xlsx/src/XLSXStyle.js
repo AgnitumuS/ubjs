@@ -33,7 +33,7 @@ class XLSXStyle {
     return {
       general: 0,
       sum: 2,
-      number: 3,
+      numberGroup: 3,
       sumDelim: 4,
       percent: 9,
       percentDec: 10,
@@ -50,7 +50,17 @@ class XLSXStyle {
       numRedF: 38,
       sumF: 39,
       sumRedF: 40,
-      mail: 49
+      mail: 49,
+      decimal1: '#,#0.0_ ;[Red]\\-#,#0.0\\ ',
+      decimal2: '#,##0.00_ ;[Red]\\-#,##0.00\\ ',
+      decimal3: '#,###0.000_ ;[Red]\\-#,###0.000\\ ',
+      decimal4: '#,####0.0000_ ;[Red]\\-\'#,####0.0000\\ ',
+      decimal5: '#,#####0.00000_ ;[Red]\\-#,#####0.00000\\ ',
+      decimal6: '#,######0.000000_ ;[Red]\\-#,######0.000000\\ ',
+      number: '00 ',
+      dateDay: 'dd ',
+      dateMonthName: 'mmmm ',
+      dateMonth: 'mm '
     }
   }
 
@@ -171,15 +181,12 @@ class XLSXStyleController {
   /**
    * If style not exists add new. Return style index
    * @param {object} config
-   *  @param {Number} [config.border|XLSXBaseStyleElement] (optional) {@link XLSXStyle#borders.add} {@link XLSXStyleBorder#add}
-   *  @param {Number} [config.fill|XLSXBaseStyleElement] (optional) {@link XLSXStyle#fills.add} {@link XLSXStyleFill#add}
-   *  @param {Number} [config.format|XLSXBaseStyleElement] (optional) {@link XLSXStyle#formats.add} {@link XLSXStyleFormat#add}
-   *  @param {Number} [config.font|XLSXBaseStyleElement] (optional) {@link XLSXStyle#fonts.add} {@link XLSXStyleFont#add}
-   *  @param {Number} [config.alignment|XLSXBaseStyleElement] (optional) {@link XLSXStyle#alignments.add} {@link XLSXStyleAlign#add}
-   *  @param {Number} [config.protect|XLSXBaseStyleElement] (optional) {@link XLSXStyle#protects.add} {@link XLSXStyleProtect#add}
-   *  @param {boolean} [config.wrapText=false]
-   *  @param {String} [config.verticalAlign=bottom] top, center, bottom  Synonim SetVerticalAlign
-   *  @param {String} [config.horizontalAlign=left] left , center, right
+   *  @param {Number|Object|XLSXBaseStyleElement} [config.border] (optional) {@link XLSXStyle#borders.add} {@link XLSXStyleBorder#add}
+   *  @param {Number|Object|XLSXBaseStyleElement} [config.fill] (optional) {@link XLSXStyle#fills.add} {@link XLSXStyleFill#add}
+   *  @param {Number|Object|XLSXBaseStyleElement} [config.format] (optional) {@link XLSXStyle#formats.add} {@link XLSXStyleFormat#add}
+   *  @param {Number|Object|XLSXBaseStyleElement} [config.font] (optional) {@link XLSXStyle#fonts.add} {@link XLSXStyleFont#add}
+   *  @param {Number|Object|XLSXBaseStyleElement} [config.alignment] (optional) {@link XLSXStyle#alignments.add} {@link XLSXStyleAlign#add}
+   *  @param {Number|Object|XLSXBaseStyleElement} [config.protect] (optional) {@link XLSXStyle#protects.add} {@link XLSXStyleProtect#add}
    *  @return {XLSXStyle}
    */
   getStyle (config) {
@@ -197,9 +204,11 @@ class XLSXStyleController {
     if (typeof cfg.font !== 'undefined') {
       cfg.font = this.fonts.get(cfg.font)
     }
+/*
     cfg.wrapText = cfg.wrapText !== undefined ? cfg.wrapText : cfg.setWrapText
     cfg.verticalAlign = cfg.verticalAlign || cfg.setVerticalAlign
     cfg.horizontalAlign = cfg.horizontalAlign || cfg.setHorizontalAlign
+*/
     if (typeof cfg.alignment !== 'undefined') {
       cfg.alignment = this.alignments.get(cfg.alignment)
     }
@@ -241,10 +250,13 @@ class XLSXStyleController {
       !config.format ? '#' : String(extractId(config.format)),
       !config.font ? '#' : String(extractId(config.font)),
       !config.alignment ? '#' : String(extractId(config.alignment)),
-      !config.protect ? '#' : String(extractId(config.protect)),
+      !config.protect ? '#' : String(extractId(config.protect))
+/*
+      ,
       !config.wrapText ? '1' : '0',
       !config.verticalAlign ? '#' : config.verticalAlign,
       !config.horizontalAlign ? '#' : config.horizontalAlign
+*/
     ].join('_')
   }
 
@@ -253,6 +265,10 @@ class XLSXStyleController {
    * @return {String}
    */
   render () {
+    if (this.fonts.elements.length === 0) {
+      this.fonts.add({name: 'Calibri', fontSize: 11, scheme: 'minor'})
+    }
+
     this.elementsJoined = this.elements.map(item => item.compile()).join('')
     this.bordersCnt = this.borders.elements.length
     this.fillsCnt = this.fills.elements.length
