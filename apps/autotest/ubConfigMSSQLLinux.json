@@ -1,0 +1,155 @@
+{
+    "httpServer": {
+        "host": "+",
+        "port": "8881",
+        "requestQueueLength": 1000,
+        "maxConnections": 0,
+        "allowCORSFrom": "*",
+        "inetPub": "./inetPub/",
+        "watchFileChanges": {
+            "enabled": true,
+            "hashingStrategy": "ModifyDate"
+        },
+        "threadPoolSize": 1
+    },
+    "logging": {
+        "path": "./logs",
+        "levels": [
+            "*"
+        ],
+        "threadingModel": "IdentifiedInOnFile",
+        "stackTrackDepth": 20,
+        "rotationSizeInMB": 100,
+        "performanceCounters": false
+    },
+    "javascript": {
+        "timeout": -1,
+        "lifetimeInMinutes": 1000,
+        "fullGCPeriod": 100,
+        "maxPerEngineMemory": 512,
+        "maxRecursionDepth": 32
+    },
+    "security": {},
+    "uiSettings": {
+        "adminUI": {
+            "applicationName": {
+                "en": "Autotest UB SQLITE",
+                "uk": "Автотест UB SQLITE"
+            },
+            "applicationTitle": "AdminUI",
+            "defaultPasswordForDebugOnly": "admin",
+            "themeName": "UBGrayTheme",
+            "loginWindowTopLogoURL": "models/TST/UB200.png",
+            "endpoint": "ubadminui",
+            "messenger": {
+                "enabled": true,
+                "checkInterval": 30
+            },
+            "linter": {
+                "asi": true,
+                "sub": true
+            },
+            "onlyOffice": {
+                "serverIP": "10.8.17.6:32771"
+            }
+        },
+        "portalUI": {
+            "applicationName": "UBCore usage"
+        }
+    },
+    "application": {
+        "defaultLang": "uk",
+        "rootHandler": "index.html",
+        "schedulers": {
+            "enabled": false
+        },
+        "domain": {
+            "models": [
+                {
+                    "name": "UB",
+                    "path": "./node_modules/@unitybase/ub",
+                    "moduleName": "@unitybase/ub"
+                }
+            ]
+        },
+        "fts": {
+            "enabled": true,
+            "async": false
+        },
+        "connections": [
+            {
+                "name": "main",
+                "driver": "MSSQLODBC",
+                "isDefault": true,
+                "dialect": "MSSQL2012",
+                "serverName": "ub_autotest",
+                "databaseName": "ub_autotest",
+                "userID": "ub_autotest",
+                "password": "ub_autotest",
+                "supportLang": [
+                    "en",
+                    "uk"
+                ]
+            },
+            {
+                "name": "ftsDefault",
+                "driver": "SQLite3",
+                "dialect": "SQLite3",
+                "databaseName": "./autotestFTS.sqlite3",
+                "supportLang": [
+                    "uk"
+                ],
+                "advSettings": "Synchronous=Off,Tokenizer=stemka"
+            },
+            {
+                "name": "ftsSubjectSearch",
+                "driver": "SQLite3",
+                "dialect": "SQLite3",
+                "databaseName": "./autotestSubjectsFTS.sqlite3",
+                "supportLang": [
+                    "uk"
+                ],
+                "advSettings": "Synchronous=Off,Tokenizer=stemka"
+            }
+        ],
+        "blobStores": [
+            {
+                "name": "mdb",
+                "storeType": "Virtual"
+            },
+            {
+                "name": "simple",
+                "path": "./documents/simple",
+                "isDefault": true,
+                "historyDepth": 2,
+                "storeSize": "Medium",
+                "keepOriginalFileNames": false
+            },
+            {
+                "name": "avatars",
+                "path": "./documents/avatars",
+                "historyDepth": 0,
+                "storeSize": "Simple",
+                "keepOriginalFileNames": false
+            }
+        ],
+        "customSettings": {
+            "docuSign": {
+                "userName": "",
+                "password": "",
+                "integratorKey": "",
+                "apiUrl": "https://demo.docusign.net/restapi"
+            },
+            "mailerConfig": {
+                "targetHost": "mail.softline.main",
+                "targetPort": "25",
+                "fromAddr": "no-reply@softline.kiev.ua",
+                "user": "",
+                "password": "",
+                "autoTLS": false,
+                "auth": false
+            }
+        },
+        "name": "/"
+    }
+}
