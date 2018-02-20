@@ -1,0 +1,15 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "Call UnityBase methods from node.js",
+  "main": "ub_from_node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@unitybase/ub-pub": "^4.4.19",
+    "xmlhttprequest": "^1.8.0"
+  }
+}
