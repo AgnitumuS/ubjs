@@ -52,7 +52,7 @@
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": "Autotest UB SQLITE",
+			"applicationName": {"en": "Autotest UB SQLServer", "uk": "Автотест UB SQLServer"},
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
