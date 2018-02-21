@@ -69,8 +69,8 @@ create table uba_audit (
 	remoteIP NVARCHAR2(40) null,
 	targetUser NVARCHAR2(128) null,
 	targetRole NVARCHAR2(128) null,
-	fromValue NVARCHAR2(2000) null,
-	toValue NVARCHAR2(2000) null
+	fromValue CLOB null,
+	toValue CLOB null
 );
 /
 --
@@ -104,9 +104,9 @@ alter table uba_userrole add constraint PK_USROLE PRIMARY KEY ( ID);
 alter table uba_als add constraint PK_ALS PRIMARY KEY ( ID);
 /
 --
-alter table uba_audit add constraint PK_uba_audit PRIMARY KEY ( ID );
+alter table uba_audit add constraint PK_SAUD PRIMARY KEY ( ID );
 /
 --
-alter table ubs_settings add constraint PK_ubs_settings PRIMARY KEY ( ID );
+alter table ubs_settings add constraint PK_STNGS PRIMARY KEY ( ID );
 /
 --

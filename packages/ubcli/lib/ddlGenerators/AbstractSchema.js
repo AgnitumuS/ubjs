@@ -38,7 +38,7 @@ function FieldDefinition (cfg) {
   this.refTable = cfg.refTable
   this.baseName = cfg.baseName
 
-  this.isString = (['VARCHAR', 'NVARCHAR', 'UVARCHAR', 'CHAR', 'NCHAR', 'NTEXT', 'TEXT'].indexOf(this.dataType) !== -1)
+  this.isString = (['VARCHAR', 'NVARCHAR', 'NVARCHAR2', 'UVARCHAR', 'CHAR', 'NCHAR', 'NTEXT', 'TEXT'].indexOf(this.dataType) !== -1)
   this.isBoolean = (this.dataType === 'BOOLEAN')
   this._upperName = this.name.toUpperCase()
 }
