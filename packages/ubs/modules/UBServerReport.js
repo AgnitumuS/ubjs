@@ -23,6 +23,7 @@ const Q = require('when')
 const _ = require('lodash')
 const path = require('path')
 const queryBuilder = require('@unitybase/base').ServerRepository.fabric
+const formatFunctions = require('../public/formatFunctions')
 
 const xmldom = require('xmldom')
 global.DOMParser = xmldom.DOMParser
@@ -171,11 +172,9 @@ UBServerReport.prototype.buildHTML = function (reportData) {
     throw new Error('reportData must be a Object')
   }
   reportData = reportData || {}
-  reportData.i18n = function () {
-    return function (word) {
-      return UB.i18n(word)
-    }
-  }
+
+  formatFunctions.addBaseMustacheSysFunction(reportData)
+  formatFunctions.addMustacheSysFunction(reportData)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 

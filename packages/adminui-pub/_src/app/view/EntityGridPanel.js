@@ -1072,8 +1072,20 @@ Ext.define('UB.view.EntityGridPanel', {
                 column.field.events.change.clearListeners()
               }
             }
+            if (column.field.xtype === 'ubcombobox') {
+              column.field.setValue()
+            }
           }
         })
+        if (me.lineNumberColumn) {
+          if (!context.record.get(me.lineNumberColumn)) {
+            let numberColumn = _.find(context.grid.columns, {dataIndex: me.lineNumberColumn})
+            if (numberColumn) {
+              numberColumn.field.setValue()
+              context.record.set(me.lineNumberColumn, context.grid.getStore().max(me.lineNumberColumn) + 1)
+            }
+          }
+        }
         if (_.isFunction(me.onBeforeEdit)) {
           let result = me.onBeforeEdit(editor, context)
           if (result === false) {

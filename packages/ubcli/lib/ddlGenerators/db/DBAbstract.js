@@ -239,6 +239,7 @@ class DBAbstract {
    * @abstract
    * @param {string} macro
    * @param {FieldDefinition} [column]
+   * @return {string}
    */
   getExpression (macro, column) {
     throw new Error('Abstract getExpression')

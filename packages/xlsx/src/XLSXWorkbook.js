@@ -1,10 +1,11 @@
 /**
  * Created by xmax on 16.11.2017.
  */
-const st = require('./tools')
+const tools = require('./tools')
 const {XLSXStyleController} = require('./XLSXStyle')
 const XLSXWorksheet = require('./XLSXWorksheet')
-const JSZip = require('jszip')
+const JSZip = require('jszip/dist/jszip')
+const ReachText = require('./ReachText')
 
 class XLSXWorkbook {
   /**
@@ -27,7 +28,7 @@ class XLSXWorkbook {
     config = config || {}
 
     // todo check config
-    Object.assign(config, {
+    const param = {
       title: 'Workbook',
       fileCreator: 'UB',
       lastModifiedBy: 'UB',
@@ -38,8 +39,9 @@ class XLSXWorkbook {
       windowWidth: 50000,
       protectStructure: false,
       protectWindows: false
-    })
-    Object.assign(this, config)
+    }
+    Object.assign(param, config)
+    Object.assign(this, param)
 
     this.worksheets = []
     this.compiledWorksheets = []
@@ -81,13 +83,29 @@ class XLSXWorkbook {
   addWorkSheet (config) {
     config = config || {}
     config.id = this.worksheets.length + 1
+    if (!config.name) {
+      config.name = 'Sheet ' + config.id
+    }
+    if (this.worksheets.some(F => F.name === config.name)) {
+      config.name += '_' + config.id
+    }
     var ws = new XLSXWorksheet(config, this)
-    this.worksheets.push(ws)
+    this.worksheets.unshift(ws)
     return ws
   }
 
+  /**
+   *
+    * @param {String|ReachText} value
+   * @return {*}
+   */
   addString (value) {
-    let val = st.escapeXML(value)
+    let val
+    if (value && (value instanceof ReachText)) {
+      val = value.xmlText()
+    } else {
+      val = tools.escapeXML(value)
+    }
     let index = this.sharedStrings[val]
     this.sharedStringTotal++
     if (!index) {
@@ -166,7 +184,6 @@ class XLSXWorkbook {
       'xWindow="480" yWindow="60" windowWidth="18195" windowHeight="8505"/></bookViews><sheets>' +
       context.worksheets.join('') + '</sheets><calcPr calcId="145621"/></workbook>')
     // }
-
     return zip.generateAsync({type: opt.type, compression: this.compression})
   }
 

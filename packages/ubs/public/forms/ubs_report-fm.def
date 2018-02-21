@@ -33,6 +33,10 @@ exports.formDef = {
       orderId: 11,
       handler: function () { this.up('form').testReport('pdf', false) }
     }, {
+      text: UB.i18n('testReport') + '(xlsx)',
+      orderId: 11,
+      handler: function () { this.up('form').testReport('xlsx', false) }
+    },{
       text: UB.i18n('testReport') + '(server html)',
       orderId: 12,
       handler: function () { this.up('form').testReport('html', true) }

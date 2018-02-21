@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "cdn_organization"
-//@formType "auto"
-//@caption "externalOrganizations"
-//@description "externalOrganizations"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "cdn_organization"
+// @model "CDN"
+// @formType "auto"
+// @caption "externalOrganizations_title"
+// @description "externalOrganizations_title"
 exports.formDef = {
     requiredFields: ['caption'],
     size: {

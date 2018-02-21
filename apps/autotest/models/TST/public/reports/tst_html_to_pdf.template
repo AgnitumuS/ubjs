@@ -1,9 +1,6 @@
 <!--@name "HTML to PDF test"-->
 <!--@report_code "tst_html_to_pdf"-->
 <!--@model "TST"-->
-<!--@ID "3000000002223"-->
-
-
 
 <!--%pageOrientation:landscape--><h1>Cell merge</h1>
 <p style="margin-left: 20mm;">Moved left to 20mm</p>

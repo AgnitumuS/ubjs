@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.49]
+### Added
+- new @cfg parameter for ubdetailgrid - `forceDataLoad`. If set to true will force grid 
+ to create and load underline store even if grin is placed onto inactive tab
+
+## [4.2.48]
+### Added
+- add line numbering for rowEditing ubdetailgrid
+
+## Fixed 
+- setValue() in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
+- clearValue() in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+- entitygridpanel filters configuraion loading in case no filters is stored
+
 ## [4.2.45]
 ## Changed
 - UBDocument.forceMIME is DEPRECATED and not handled anymore.

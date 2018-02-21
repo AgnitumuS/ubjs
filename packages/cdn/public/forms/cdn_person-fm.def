@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "cdn_person"
-//@formType "auto"
-//@caption "physPerson"
-//@description "physPerson"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "cdn_person"
+// @model "CDN"
+// @formType "auto"
+// @caption "physPerson_title"
+// @description "physPerson_title"
 exports.formDef = {
     size: {
         width: 650,
