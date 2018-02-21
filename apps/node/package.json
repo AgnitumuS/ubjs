@@ -5,7 +5,7 @@
   "main": "ub_from_node.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node .\ub_from_node.js"
+    "run": "node ./ub_from_node.js"
   },
   "author": "",
   "license": "ISC",
