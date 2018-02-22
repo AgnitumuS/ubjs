@@ -10,7 +10,7 @@
     "ubcli": "bin/ubcli.js"
   },
   "engines": {
-    "ub": "~4.0.2"
+    "ub": "~4.2.2"
   },
   "scripts": {
     "test": "ubcli createStore -cfg ./test/testCfg.json",
