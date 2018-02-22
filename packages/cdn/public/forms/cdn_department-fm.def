@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "cdn_department"
-//@formType "auto"
-//@caption "Департамент внешней организации"
-//@description "Департамент внешней организации"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "cdn_department"
+// @model "CDN"
+// @formType "auto"
+// @caption "department_title"
+// @description "department_title"
 exports.formDef = {
 
     size: {

@@ -478,8 +478,8 @@ class DDLGenerator {
       case UBDomain.ubDataTypes.String:
         dataType = 'NVARCHAR'
         size = attribute.size
-        if (DDLGenerator.isOracle(attribute.entity.connectionConfig.dialect) && (attribute.size > 2000)) {
-          throw new Error(`Specified length of attribute "${attribute.entity.name}.${attribute.name}" too long for Oracle`)
+        if (attribute.size > DDLGenerator.MAX_NVARCHAR[attribute.entity.connectionConfig.dialect]) {
+          throw new Error(`Specified length of attribute "${attribute.entity.name}.${attribute.name}" too long for ${attribute.entity.connectionConfig.dialect}. Max value is ${DDLGenerator.MAX_NVARCHAR[attribute.entity.connectionConfig.dialect]}`)
         }
         break
       case UBDomain.ubDataTypes.Enum:
@@ -526,7 +526,7 @@ class DDLGenerator {
         break
       case UBDomain.ubDataTypes.Document:
         dataType = 'NVARCHAR'
-        size = 4000
+        size = DDLGenerator.MAX_NVARCHAR[attribute.entity.connectionConfig.dialect]
         break
       case UBDomain.ubDataTypes.TimeLog:
         dataType = 'BIGINT'
@@ -679,6 +679,21 @@ DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS = {
   SQLite3: 128,
   PostgreSQL: 63,
   Firebird: 30
+}
+
+DDLGenerator.MAX_NVARCHAR = {
+  AnsiSQL: 4000,
+  Oracle: 2000,
+  MSSQL: 4000,
+  MSSQL2008: 4000,
+  MSSQL2012: 4000,
+  Oracle9: 2000,
+  Oracle10: 2000,
+  Oracle11: 2000,
+  Oracle12: 2000,
+  SQLite3: 4000,
+  PostgreSQL: 4000,
+  Firebird: 4000
 }
 
 module.exports = DDLGenerator

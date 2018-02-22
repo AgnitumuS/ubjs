@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "cdn_contact"
-//@formType "auto"
-//@caption "Контакт"
-//@description "Контакт"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "cdn_contact"
+// @model "CDN"
+// @formType "auto"
+// @caption "contact_title"
+// @description "contact_title"
 exports.formDef = {
 
     size: {

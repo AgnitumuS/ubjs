@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "@unitybase/base": "^5.0.0",
-    "jszip": "^3.1.5"
+    "jszip": "^3.1.5",
+    "lodash": "^4.17.5",
+    "mustache": "^2.3.0"
   },
   "keywords": [
     "UnityBase",

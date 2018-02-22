@@ -23,6 +23,7 @@
     "@unitybase/pdf": "^5.0.0",
     "@unitybase/ub": "^5.0.0",
     "@unitybase/uba": "^5.0.0",
+    "@unitybase/xlsx": "^5.0.0",
     "mime-types": "^2.1.14",
     "mustache": "^2.3.0",
     "when": "1.8.1",

@@ -12,6 +12,12 @@ class Color {
     return new Color(color)
   }
 
+  static parseRGB (color) {
+    if (!color || typeof color !== 'string') return color
+    if (color[0] === '#') color = color.substr(1)
+    return color
+  }
+
   /**
    * From any source - string, object, Color
    * @param config
@@ -30,7 +36,7 @@ class Color {
     this.theme = config.theme
     this.tint = config.tint
     this.indexed = config.indexed
-    this.rgb = config.rgb
+    this.rgb = Color.parseRGB(config.rgb)
     this.baseTag = config.baseTag || baseTag
   }
 

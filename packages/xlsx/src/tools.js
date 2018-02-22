@@ -41,11 +41,15 @@ module.exports = {
   },
 
   escapeXML: function (s) {
-    return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;')
+    if (!s) return s
+    return s.replace(escapeRE, escapeReplacer)
+    // return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;')
   }, // see http://www.w3.org/TR/xml/#syntax
 
   unescapeXML: function (s) {
-    return (s || '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, '\'')
+    if (!s) return s
+    return s.replace(unescapeRE, unescapeReplacer)
+    // return (s || '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, '\'')
   },
 
   /**
@@ -103,4 +107,25 @@ module.exports = {
     }
   }
 
+}
+
+const escapeRE = /('|"|<|>|&)/g
+function escapeReplacer (match, v) {
+  switch (v) {
+    case '<': return '&lt;'
+    case '>': return '&gt;'
+    case '&': return '&amp;'
+    case '"': return '&quot;'
+    case '\'': return '&#x27;'
+  }
+}
+const unescapeRE = /(&lt;|&gt;|&amp;|&quot;|&#x27;)/g
+function unescapeReplacer (match, v) {
+  switch (v) {
+    case '&lt;': return '<'
+    case '&gt;': return '>'
+    case '&amp;': return '&'
+    case '&quot;': return '"'
+    case '&#x27;': return '\''
+  }
 }

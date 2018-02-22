@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "cdn_profession"
-//@formType "auto"
-//@caption "Професії"
-//@description "Професії"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "cdn_profession"
+// @model "CDN"
+// @formType "auto"
+// @caption "profession_title"
+// @description "profession_title"
 exports.formDef = {
 
 size: {

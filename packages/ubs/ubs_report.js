@@ -74,6 +74,9 @@ function postProcessing (loader, fullFilePath, content, row) {
   let fileName = path.basename(fullFilePath)
   row.report_code = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length)
 
+  if (row.ID) console.warn(`Please, remove a row "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB4 report ID is generated automatically as crc32(fileNameWoExtension)`)
+  row.ID = ncrc32(0, row.report_code)
+
     // fill formDef attribute value
   row.template = JSON.stringify({
     fName: fileName,

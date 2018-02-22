@@ -22,18 +22,13 @@ const NON_AUTH_URLS_RE = /(\/|^)(models|auth|getAppInfo|downloads)(\/|\?|$)/
  * The most used method is {@link UBConnection#query  UBConnection.query} - a authorized request to `ubql` endpoint.
  *
 
-     var UBConnection = require('@unitybase/base').UBConnection
-     var conn = new UBConnection({host: 'localhost', port: '888', path: 'autotest', keepAlive: true})
-     // alternative way is:
-     // var conn = new UBConnection('http://localhost:888/orm');
-     // but in this case keepAlive is false
-     conn.onRequestAuthParams = function(){
-       return {authSchema: 'UB', login: 'admin', password: 'admin'}
-     }
-     var domain = conn.getDomainInfo()
-     if (domain.has('my_entity')){
-               ..
-      }
+    const UB = require('@unitybase/base')
+    let conn = new UB.UBConnection({URL: 'http://localhost:888'})
+    conn.onRequestAuthParams = function(){ return {authSchema: 'UB', login: 'admin', password: 'admin'} }
+    var domain = conn.getDomainInfo();
+    if (domain.has('my_entity')){
+             ..
+    }
 
  * @class
  * @param {Object} options Connection parameters. See {@link module:http http.request} for details

@@ -40,6 +40,11 @@ Ext.define('UB.ux.UBDetailGrid', {
    * @cfg {Array.<String>} detailFields Detail attribute name(s) for master-detail
    */
   detailFields: [],
+  /**
+   *  @cfg {Boolean} force If set to true will force grid to create and load underline store even if grin is placed onto inactive tab
+   *  Be carefully - by default only first data page if loading. Set `pageSize to 0 to load lo all data (not recommended)
+   */
+  forceDataLoad: false,
   initComponent: function () {
     let cmdParams
 
@@ -128,7 +133,7 @@ Ext.define('UB.ux.UBDetailGrid', {
       req.whereList = UB.core.UBCommand.addMasterDetailRelation(
          req.whereList, this.masterFields, this.detailFields, record
       )
-      if (this.rendered) {
+      if (this.rendered || this.forceDataLoad) {
         if (this.rowEditing && this.editingPlugin.editing) {
           this.editingPlugin.cancelEdit()
         }

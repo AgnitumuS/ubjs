@@ -169,7 +169,9 @@ function openIDConnect (req, resp) {
   } else if (params.logout) {
     redirectToProviderLogout(req, resp, provider, params)
   } else {
-    notifyProviderError(resp, provider)
+    // - Add custom params for openID auth
+    redirectToProviderAuth(req, resp, provider, redirectUrl, params)
+    // notifyProviderError(resp, provider)
   }
 }
 
@@ -222,10 +224,8 @@ function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, request
     '&redirect_uri=' + redirectUrl +
     '&response_type=' + providerConfig.response_type +
     '&client_id=' + providerConfig.client_id +
-    '&response_mode=' + providerConfig.response_mode || 'form_post' +
-    '&referer=' + redirectUrl +
-    // '&referer=BACK_REDIRECT_URL' +
-    customHeaders
+    '&response_mode=' + (providerConfig.response_mode || 'form_post') +
+     customHeaders
   )
 }
 

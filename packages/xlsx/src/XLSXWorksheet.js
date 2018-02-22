@@ -2,6 +2,7 @@
  * Created by xmax on 16.11.2017.
  */
 const tools = require('./tools')
+const ReachText = require('./ReachText')
 
 /**
  * Class XLSXWorksheet
@@ -42,6 +43,7 @@ class XLSXWorksheet {
     this.worksheetScale = null
 
     /**
+     * @deprecated
      * Fix for unfilling first column
      */
     this.fixFirstColumn = false
@@ -161,7 +163,7 @@ class XLSXWorksheet {
     context.contentTypes.unshift('<Override PartName="/xl/worksheets/sheet' + this.id + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>')
     context.props.unshift(tools.escapeXML(this.name) || 'Sheet' + this.id)
     context.xlRels.unshift('<Relationship Id="rId' + this.id + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + this.id + '.xml"/>')
-    context.worksheets.unshift('<sheet name="' + (tools.escapeXML(this.name) || 'Sheet' + this.id) + '" sheetId="' + this.id + '" r:id="rId' + this.id + '"/>')
+    context.worksheets.unshift('<sheet name="' + (tools.escapeXML(this.name) || 'Sheet' + this.id) + '" tabId="' + this.id + '" sheetId="' + this.id + '" r:id="rId' + this.id + '"/>')
   }
 
   /**
@@ -204,6 +206,9 @@ class XLSXWorksheet {
    * @param {string} [cell.formula]
    * @param {Number|XLSXStyle|Object} [cell.style]  Style index for get call  WorkBook.style.add(congig)
    * @param {Number} [cell.column] Column number First column 0
+   * @param {Object} [cell.cellStyle]
+   * @param {Number} [cell.cellStyle.colSpan]
+   * @param {Number} [cell.cellStyle.rowSpan]
    * @param {Array} [template] (optional) Template for apply to config. Array of {Cell}. Use this parameters for apply styles.
    * @param {Object} [rowConfig] (optional)
    * @param {Object} [rowConfig.height] (optional)
@@ -291,17 +296,24 @@ class XLSXWorksheet {
       }
 
       XLSXWorksheet.checkColNum(cell.column)
-      if (typeof cell.value === 'string') {
+      const valueType = typeof cell.value
+      if (cell.value && (valueType === 'string' || cell.value instanceof ReachText)) {
         // Ext.String.htmlEncode
         if (useSharedString) {
           cell.value = this.workBook.addString(cell.value)
           type = 's'
         } else {
-          cell.value = tools.escapeXML(cell.value)
+          if (cell.value && (cell.value instanceof ReachText)) {
+            cell.value = cell.value.getXML()
+          } else {
+            if ((typeof cell.value !== 'undefined') && (cell.value !== null)) {
+              cell.value = `<t>${tools.escapeXML(cell.value)}</t>`
+            }
+          }
           valAsTagIs = true
           type = 'inlineStr'
         }
-      } else if (typeof cell.value === 'boolean') {
+      } else if (valueType === 'boolean') {
         cell.value = (cell.value ? 1 : 0)
         type = 'b'
       } else if (cell.value && cell.value instanceof Date) {
@@ -309,7 +321,13 @@ class XLSXWorksheet {
         if (!cell.style) {
           cell.style = this.workBook.style.getDefDateStyle()
         }
+      } else if (valueType === 'number') {
+        type = 'n'
       }
+      /* not implemented
+          type = 'str' - cell contain formula
+          'e' - error
+       */
       if (this.diapason.minColNum === 0) {
         this.diapason.minColNum = cell.column
       }
@@ -322,8 +340,8 @@ class XLSXWorksheet {
         (type ? ' t="' + type + '"' : '') +
         '>' +
         (cell.formula ? '<f>' + cell.formula + '</f>' : '') +
-        ((typeof cell.value !== 'undefined') && (cell.value !== null)
-          ? (valAsTagIs ? '<is><t>' + cell.value + '</t></is>' : '<v>' + cell.value + '</v>') : '') +
+        ((valueType !== 'undefined') && (cell.value !== null)
+          ? (valAsTagIs ? `<is>${cell.value}</is>` : `<v>${cell.value}</v>`) : '') +
         '</c>'
       )
 
@@ -484,10 +502,11 @@ class XLSXWorksheet {
   }
 
   /**
+   * @deprecated
    * Setting up for fix first column
    */
   setFixForFirstColumn () {
-    this.fixFirstColumn = true
+    this.fixFirstColumn = false
   }
 }
 
