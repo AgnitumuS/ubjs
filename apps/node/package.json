@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Call UnityBase methods from node.js",
   "main": "ub_from_node.js",
+  "private": true,
   "scripts": {
     "test": "node ./ub_from_node.js"
   },
