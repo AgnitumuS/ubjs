@@ -69,7 +69,7 @@ module.exports = function initDB (cfg) {
   }
   if (!cfg) return
   let session, conn, generator
-  if (cfg.clientIdentifier > 8998) {
+  if (cfg.clientIdentifier > 8999) {
     throw new Error('clientIdentifier (-c parameter) must be between 1 and 8999')
   }
   let originalConfigFileName = argv.getConfigFileName()
