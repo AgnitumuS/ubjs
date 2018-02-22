@@ -115,8 +115,8 @@ module.exports = function autotest (options) {
       process.on('exit', function () {
         console.info((testResults.length - failed.length) + ' of ' + testResults.length + ' tests passed')
         if (failed.length) {
-          fs.writeFileSync(process.cwd() + '_autotestResults.json', JSON.stringify(failed, null, '\t'))
-          console.error(failed.length + ' tests fail. See ' + process.cwd() + '_autotestResults.json for details')
+          fs.writeFileSync(path.join(process.cwd(), '_autotestResults.json'), JSON.stringify(failed, null, '\t'))
+          console.error(failed.length + ' tests fail. See ' + path.join(process.cwd(), '_autotestResults.json') + ' for details')
           throw new Error('Autotest complete with errors')
         }
       })
