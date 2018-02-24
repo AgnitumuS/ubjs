@@ -56,27 +56,6 @@ Ext.define('UB.core.UBApp', {
   },
 
   /**
-   * Instance of UBNativePDFSign. Do not use directly - use $App.pdfSigner().then(function(signer){...});
-   * @private
-   * @type {UBNativePDFSign}
-   */
-  __pdfSigner: null,
-
-  /**
-   * Instance of UBNativeScanner. Do not use directly - use $App.scanService().then(function(scanner){...});
-   * @private
-   * @type {UBNativeScanner}
-   */
-  __scanService: null,
-
-  /**
-   * Instance of UBNativeDocEdit. Do not use directly - use $App.docEdit().then(function(docedit){...});
-   * @private
-   * @type {UBNativeDocEdit}
-   */
-  __docEdit: null,
-
-  /**
    * The core instance. Initialized after launch()
    * @type Core
    */
@@ -543,7 +522,7 @@ Ext.define('UB.core.UBApp', {
    * @returns {Promise} resolved to true | false depending on user choice
    */
   dialogYesNo: function (title, msg) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       Ext.MessageBox.show({
         modal: true,
         title: UB.i18n(title),
@@ -641,24 +620,28 @@ Ext.define('UB.core.UBApp', {
 
   /**
    * Return instance of {@link UBNativePDFSign} for PDF signing operations
-   * @returns {Promise} resolved to initialized UBNativePDFSign instance
+   * @returns {Promise<UBNativePDFSign>}
    */
   pdfSigner: function () {
-    if (!this.__pdfSigner) {
-      this.__pdfSigner = new UBNativePDFSign()
-    }
-    return this.__pdfSigner.init()
+    let i = 'import'
+    let moduleName = '@ub-e/nm-pdfsigner' + window.isDeveloperMode ? '' : '/dist/nm-pdfsigner.min.js'
+    // System[i] is required for preventing webpack to include a ub-e/nm-pdfsigner to the bundle
+    return System[i](moduleName).then(function (nmPDFSignerModule) {
+      return nmPDFSignerModule.connect()
+    })
   },
 
   /**
-   * Return instance of {@link UBNativeDocEdit} for edit document content
-   * @returns {Promise} resolved to initialized UBNativeDocEdit instance
+   * Return instance of {@link UBNativeDocEdit} for pen document using WebDav
+   * @returns {Promise<UBNativeDocEdit>} resolved to initialized UBNativeDocEdit instance
    */
   docEdit: function () {
-    if (!this.__docEdit) {
-      this.__docEdit = new UBNativeDocEdit()
-    }
-    return this.__docEdit.init()
+    let i = 'import'
+    let moduleName = '@ub-e/nm-docedit' + window.isDeveloperMode ? '' : '/dist/nm-docedit.min.js'
+    // System[i] is required for preventing webpack to include a ub-e/nm-docedit to the bundle
+    return System[i](moduleName).then(function (nmDocEditModule) {
+      return nmDocEditModule.connect()
+    })
   },
 
   /**
@@ -673,15 +656,18 @@ Ext.define('UB.core.UBApp', {
   },
 
   /**
-   * Return promise, resolved to instance of {@link UBNativeScanner} for scanner direct manipulation
+   * Return promise, resolved to instance of {@link UBNativeScanner} for direct manipulation with scanner
+   * `@ub-e/nm-scanner must be in application packages list (run `npm i @ub-e/nm-scanner` in the shell)
    * @method
-   * @return {Promise}
+   * @return {Promise<UBNativeScanner>}
    */
   scanService: function () {
-    if (!this.__scanService) {
-      this.__scanService = new UBNativeScanner()
-    }
-    return this.__scanService.init()
+    let i = 'import'
+    let moduleName = '@ub-e/nm-scanner' + window.isDeveloperMode ? '' : '/dist/nm-scanner.min.js'
+    // System[i] is required for preventing webpack to include a ub-e/nm-scanner to the bundle
+    return System[i](moduleName).then(function (nmScannerModule) {
+      return nmScannerModule.connect()
+    })
   },
 
   /**
@@ -714,17 +700,14 @@ Ext.define('UB.core.UBApp', {
    * @returns {Promise} resolved to base64 data or false in case user press cancel.
    */
   scan: function (header, config, documentMIME) {
-    var me = this
-    var mimeToOutputFormat = {
+    const mimeToOutputFormat = {
       'image/jpeg': 'JPEG',
       'application/jpg': 'JPEG'
     }
-    var outputFormat = mimeToOutputFormat[documentMIME]
+    let outputFormat = mimeToOutputFormat[documentMIME]
     return $App.scanService().then(function (scanner) {
-      var AllowAddPages = false
-      var statusWindow
-
-      statusWindow = Ext.create('UB.view.StatusWindow', {
+      let allowAddPages = false
+      let statusWindow = Ext.create('UB.view.StatusWindow', {
         title: header
       })
 
@@ -739,7 +722,7 @@ Ext.define('UB.core.UBApp', {
       function onScan (pageCount) {
         if (pageCount > 0) {
           statusWindow.setStatus(UB.format(UB.i18n('doScanPages'), pageCount))
-          if (AllowAddPages) {
+          if (allowAddPages) {
             return checkContinue()
           } else {
             statusWindow.setStatus(UB.i18n('doFinishScan'))
@@ -781,7 +764,7 @@ Ext.define('UB.core.UBApp', {
       }
 
       return scanner.getDefaultSettings().then(function (defaultParams) {
-        var scanSettings = _.merge(defaultParams, config || {})
+        let scanSettings = _.merge(defaultParams, config || {})
         if (!scanSettings) {
           throw new UB.UBError(UB.format(UB.i18n('setScannerSettings'), '$App.scannerSettings(); '))
         }
@@ -793,7 +776,7 @@ Ext.define('UB.core.UBApp', {
           } else {
             _.forEach(scanSettings.FRScan.ScanSettings, function (setting) {
               if (setting.Source === scanSettings.FRScan.LastUsedScanner) {
-                AllowAddPages = !!setting.AllowAddPages
+                allowAddPages = !!setting.AllowAddPages
               }
             })
           }
@@ -801,7 +784,7 @@ Ext.define('UB.core.UBApp', {
         if (scanSettings.CurrentScanType === 'UnityBase' && scanSettings.UBScan && scanSettings.UBScan.LastUsedScanner) {
           _.forEach(scanSettings.UBScan.ScanSettings, function (setting) {
             if (setting.Source === scanSettings.UBScan.LastUsedScanner) {
-              AllowAddPages = !!setting.AllowAddPages
+              allowAddPages = !!setting.AllowAddPages
             }
           })
           if (outputFormat) {
@@ -810,19 +793,17 @@ Ext.define('UB.core.UBApp', {
         }
 
         statusWindow.setStatus(UB.i18n('doStartScan'))
-        me.__scanService.lastScanedFormat = scanSettings.UBScan.OutputFormat
+        scanner.lastScanedFormat = scanSettings.UBScan.OutputFormat
         return scanner.startScan(scanSettings)
-      })
-        .then(onScan, null, onNotify)
-        .fin(function () {
+      }).then(onScan, null, onNotify)
+      .fin(function () {
+        statusWindow.close()
+      }).catch(function (error) {
+        return scanner.cancelScan().then(function () {
           statusWindow.close()
+          throw error
         })
-        .catch(function (error) {
-          return scanner.cancelScan().then(function () {
-            statusWindow.close()
-            throw error
-          })
-        })
+      })
     })
   },
 

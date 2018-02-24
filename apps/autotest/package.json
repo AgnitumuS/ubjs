@@ -13,6 +13,7 @@
   "dependencies": {
     "@ub-d/iit-crypto": "^1.0.8",
     "@ub-e/dses": "^1.0.23",
+    "@ub-e/nm-scanner": "^4.0.0",
     "@ub-e/odata": "^1.0.22",
     "@ub-e/ube-pub": "^4.2.5",
     "@unitybase/adminui-pub": "^4.2.51",
