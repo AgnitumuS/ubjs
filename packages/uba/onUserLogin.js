@@ -1,8 +1,10 @@
 const UB = require('@unitybase/ub')
+const App = require('@unitybase/ub').App
+const queryString = require('querystring')
+const Session = require('@unitybase/ub').Session
+
 let ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
-const queryString = require('querystring')
-
 if (ubaAuditPresent) {
   auditStore = new TubDataStore('uba_audit')
 }
@@ -22,16 +24,18 @@ function checkAdvancedSecurity (req) {
   } catch (e) {
     // nothing to do - table uba_advSecurity not exists
     console.warn('Advanced security is disabled because table uba_advSecurity does not exists')
-    doCheckAdvancedSecurity = function () {return {enabled: false}}
+    doCheckAdvancedSecurity = function () { return {enabled: false} }
   }
   let fp = ''
   let fpa = ''
   let urlParams = queryString.parse(req.decodedParameters)
 
-  if (!advData) return { // no adv. settings for current user
-    ebnabled: true,
-    kmn: urlParams.KMN || '',
-    fpa: urlParams.FPA || ''
+  if (!advData) {
+    return { // no adv. settings for current user
+      ebnabled: true,
+      kmn: urlParams.KMN || '',
+      fpa: urlParams.FPA || ''
+    }
   }
   let updateParams = {}
   let needUpdate = false
@@ -45,6 +49,7 @@ function checkAdvancedSecurity (req) {
 
   if (advData.refreshFp || advData.fp) { // fp required
     fp = urlParams.FP
+    fpa = urlParams.FPA
     if (!fp) throw new Error('Fingerprint requred but not passed in FP URL params')
   }
   if (advData.refreshFp) {
