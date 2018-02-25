@@ -8,25 +8,32 @@ if (auditEntityUba) {
   auditStore = new TubDataStore(auditEntityUba)
 }
 
-
 /**
  * Checking of user IP and device fingerpriont based on settings from `uba_advSecurity`
  * @param {THTTPRequest} req
+ * @return {{enabled: false}}{enabled: true, kmn: string, fpa: string}}
  */
-function checkAdvancedSecurity(req) {
+function checkAdvancedSecurity (req) {
   let advData
-
   try {
     advData = UB.Repository('uba_advSecurity')
-      .attrs(['ID', 'allowedIP', 'refreshIP', 'fp', 'refreshFp', 'keyMediaName', 'refreshKeyMedia', 'mi_modifyDate' ])
+      .attrs(['ID', 'allowedIP', 'refreshIP', 'fp', 'refreshFp', 'keyMediaName', 'refreshKeyMedia', 'mi_modifyDate'])
       .where('[userID]', '=', Session.userID)
-      .selectAsObject()[ 0 ];
+      .selectAsObject()[ 0 ]
   } catch (e) {
     // nothing to do - table uba_advSecurity not exists
     console.warn('Advanced security is disabled because table uba_advSecurity does not exists')
-    doCheckAdvancedSecurity = function(){}
+    doCheckAdvancedSecurity = function () {return {enabled: false}}
   }
-  if (!advData) return // no adv. settings for current user
+  let fp = ''
+  let fpa = ''
+  let urlParams = queryString.parse(req.decodedParameters)
+
+  if (!advData) return { // no adv. settings for current user
+    ebnabled: true,
+    kmn: urlParams.KMN || '',
+    fpa: urlParams.FPA || ''
+  }
   let updateParams = {}
   let needUpdate = false
   if (advData.refreshIP) {
@@ -36,14 +43,9 @@ function checkAdvancedSecurity(req) {
   } else if (advData.allowedIP) {
     if (Session.callerIP !== advData.allowedIP) throw new Error('Allowed IP ' + advData.allowedIP + ' <> actual ' + Session.callerIP)
   }
-  let fp = ''
-  let urlParams
-  if (advData.refreshFp || advData.fp || advData.refreshKeyMedia || advData.keyMediaName) { // fp required
-    urlParams = queryString.parse(req.parameters);
-  }
 
   if (advData.refreshFp || advData.fp) { // fp required
-    fp = urlParams.FP;
+    fp = urlParams.FP
     if (!fp) throw new Error('Fingerprint requred but not passed in FP URL params')
   }
   if (advData.refreshFp) {
@@ -53,9 +55,9 @@ function checkAdvancedSecurity(req) {
   } else if (advData.fp && (advData.fp !== fp)) {
     throw new Error('Allowed FP ' + advData.fp + ' <> actual ' + fp)
   }
-  let keyMediaName = '';
+  let keyMediaName = ''
   if (advData.refreshKeyMedia || advData.keyMediaName) { // keyMediaName required
-    keyMediaName = urlParams.KMN;
+    keyMediaName = urlParams.KMN
     if (!keyMediaName) throw new Error('keyMediaName requred but not passed in KMN URL params')
   }
   if (advData.refreshKeyMedia) {
@@ -74,6 +76,11 @@ function checkAdvancedSecurity(req) {
     })
     advStore.freeNative()
   }
+  return {
+    enabled: true,
+    kmn: urlParams.KMN || '',
+    fpa: urlParams.FPA || ''
+  }
 }
 
 let doCheckAdvancedSecurity = null // calculate later
@@ -91,12 +98,10 @@ UBA.onUserLogin = function (req) {
 
   let userInfo = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
   data.login = userInfo.name || Session.userID
-
   if (!doCheckAdvancedSecurity) {
-    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity') ? checkAdvancedSecurity : function(){}
+    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity') ? checkAdvancedSecurity : function () { return {enabled: false} }
   }
-  doCheckAdvancedSecurity(req)
-
+  let advCheckData = doCheckAdvancedSecurity(req)
   try {
     repo = UB.Repository('uba_userrole')
       .attrs(['ID', 'roleID.name', 'roleID'])
@@ -129,7 +134,8 @@ UBA.onUserLogin = function (req) {
           actionUser: Session.userID,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
-          targetUser: data.login,
+          targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : data.login,
+          targetRole: (advCheckData.enabled && advCheckData.fpa) ? advCheckData.fpa.slice(0, 127) : '',
           fromValue: req.headers
         }
       })
