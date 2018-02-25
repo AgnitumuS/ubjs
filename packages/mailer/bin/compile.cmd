@@ -14,6 +14,8 @@ cd %~dp0..\src
   -N%DCU7_PATH% ^
   UBMail.dpr
 
+@if errorlevel 1 goto err
+
 if not exist %~dp0x64 mkdir %~dp0x64
 %DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE%SM52DEF% -E..\bin\x64 ^
   -NSSystem;Winapi;System.Win; ^
@@ -23,3 +25,5 @@ if not exist %~dp0x64 mkdir %~dp0x64
   -U%UNIT_PATH%;"%DELPHI_XE2%\lib\Win64\release" ^
   -N%DCUX64_PATH% ^
   UBMail.dpr
+
+:err
