@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.5.0]
+### Changed
+- **BREAKING** Native messages features moved to the modules in `@ub-e` namespace.
+  Depending on feature required for application add a `@ub-e/nm-docedit`, `@ub-e/nm-pdfsign`
+  or `@ub-e/nm-scanner` to application packages (don't need to add to a domain models)
+
 ## [4.4.13]
 ### Fixed
  - UBNotifierWSProtocol do not connect with server after UBConnection restore session. The session can be restored when configuration parameter allowSessionPersistent = true.

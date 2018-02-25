@@ -313,10 +313,10 @@ class DBSQLite3 extends DBAbstract {
       case 'INT8': return 'BIGINT'
       case 'INT4': return 'INTEGER'
       case 'SMALLINT': return 'BOOLEAN'
-      case 'TIMESTAMP': return 'TIMESTAMP' // Не будет совпадать с типом DATETIME и сгенерится ALTER
+      case 'TIMESTAMP': return 'TIMESTAMP'
       case 'TIMESTAMP WITH TIME ZONE': return 'DATETIME'
-      case 'TIMESTAMP WITHOUT TIME ZONE': return 'TIMESTAMP WITHOUT TIME ZONE' // Не будет совпадать с типом DATETIME и сгенерится ALTER
-      case 'DATE': return 'DATE' // Не будет совпадать с типом DATETIME и сгенерится ALTER
+      case 'TIMESTAMP WITHOUT TIME ZONE': return 'TIMESTAMP WITHOUT TIME ZONE'
+      case 'DATE': return 'DATE'
       case 'CHARACTER VARYING': return 'UVARCHAR'
       case 'NVARYING': return 'UVARCHAR'
       case 'VARCHAR': return 'UVARCHAR'

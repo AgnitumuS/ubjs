@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 // Originally found on  from https://github.com/mozilla/localForage
 let dbInfo = {
   name: 'UB',
@@ -83,7 +84,7 @@ function UBCache (dbName, version) {
   })
 
   /**
-   * Must be call before access to UBCache methods
+   * Must be called before access to UBCache methods
    * @method
    * @private
    * @returns {Promise} resolved to IDBDatabase
@@ -112,44 +113,28 @@ UBCache.PERMANENT = 'permanent'
  * @enum
  */
 UBCache.cacheTypes = {
-    /**
-     * Кэширование не осуществляется. Запрос на сервер отправляется всегда.
-     *
-     * @type String
-     */
+  /**
+   * No cache performed
+   * @type String
+   */
   None: 'None',
 
-    /**
-     * Кэширование осуществляется на уровне сущности. Запрос на сервер отправляется всегда. При этом в запрос добавляется версия закэшированных данных, если таковые имеются.
-     * Результат запроса содержит
-     * или данные и версию данных, которые помещаются в кэш;
-     * или флаг notModified. В этом случае данные считываются из кэша.
-     *
-     * Если в запросе в whereList присутствует ID - кэширование не осуществляется. Запрос на сервер отправляется всегда.
-     *
-     * @type String
-     */
+  /**
+   * Client validate data version on server for each request*
+   * @type String
+   */
   Entity: 'Entity',
 
-    /**
-     * Кэширование осуществляется на уровне сессии. Запрос на сервер отправляется только один раз при старте сессии. При старте сессии все закэшированные сущности удаляются из кэша.
-     *
-     * Если в запросе в whereList присутствует ID - кэширование не осуществляется. Запрос на сервер отправляется всегда.
-     *
-     * @type String
-     */
+  /**
+   * First request to data in the current session ALWAYS retrieve data from server. All other requests got a local copy
+   * @type String
+   */
   Session: 'Session',
 
-    /**
-     * Кеширование осуществляется на уровне сессии и сущности. Запрос на сервер отправляетсятолько один раз при старте сессии. При этом в запрос добавляется версия закэшированных данных, если таковые имеются.
-     * Результат запроса содержит
-     * или данные и версию данных, которые помещаются в кэш;
-     * или флаг notModified. В этом случае данные считываются из кэша.
-     *
-     * Если в запросе в whereList присутствует ID - кэширование не осуществляется. Запрос на сервер отправляется всегда.
-     *
-     * @type String
-     */
+  /**
+   * Client validate data version on server ONLY for first request in the current session*
+   * @type String
+   */
   SessionEntity: 'SessionEntity'
 }
 
@@ -160,9 +145,9 @@ UBCache.cacheTypes = {
  * @type {function}
  */
 UBCache.prototype.onTransactionComplete = function (e) {
-    // if (e.target.mode !== 'readonly'){
-    //   UB.logDebug('IDB ' + e.target.mode + ' transaction complete');
-    // }
+  // if (e.target.mode !== 'readonly'){
+  //   UB.logDebug('IDB ' + e.target.mode + ' transaction complete');
+  // }
 }
 
 /**

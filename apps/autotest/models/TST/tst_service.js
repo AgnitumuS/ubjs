@@ -36,6 +36,14 @@ me.uDataTest = function (ctx) {
   Session.uData.addedNotInOnLogin = 'must not persis between calls'
 }
 
+me.entity.addMethod('ubAbortTest')
+/**
+ * @param {ubMethodParams} ctx
+ */
+me.ubAbortTest = function (ctx) {
+  throw new UB.UBAbort(`<<<Документ "Договір">>>`) 
+}
+
 App.globalCachePut('aa', '12')
 console.log('Got a value:', App.globalCacheGet('aa'))
 
