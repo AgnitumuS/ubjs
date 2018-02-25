@@ -17,6 +17,8 @@ cd %~dp0..\src
   -N%DCU7_PATH% ^
   UBCanvas.dpr
 
+@if errorlevel 1 goto err
+
 if not exist %~dp0x64 mkdir %~dp0x64
 %DCC64% -$D- -$L- -$Y- -B -Q -DRELEASE%SM52DEF% -E..\bin\x64 ^
   -NSSystem;Winapi;System.Win;Vcl; ^

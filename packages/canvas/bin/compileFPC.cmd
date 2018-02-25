@@ -13,4 +13,9 @@ set LIB_PATH=%BIN_PATH%\lib
 if not exist %BIN_PATH% mkdir %BIN_PATH%
 if not exist %LIB_PATH% mkdir %LIB_PATH%
 
-fpc -MDelphi -Scghi -WR -O1 -g -gl -l -vewnhibq -Fi%EXTERNAL_LIBS_PATH%\Synopse -Fi%EXTERNAL_LIBS_PATH%\Synopse\SQLite3 -Fi%EXTERNAL_LIBS_PATH%\Synopse\SyNode -Fu%EXTERNAL_LIBS_PATH%\FastMM4 -Fu%EXTERNAL_LIBS_PATH%\Synopse\SyNode -Fu%EXTERNAL_LIBS_PATH%\Synopse\SQLite3 -Fu%EXTERNAL_LIBS_PATH%\Synopse -Fu%EXTERNAL_LIBS_PATH%\synapse40\source\lib -Fu%LAZARUS_PATH%\lcl\units\x86_64-win64\win32 -Fu%LAZARUS_PATH%\lcl\units\x86_64-win64 -Fu%LAZARUS_PATH%\components\lazutils\lib\x86_64-win64 -Fu%LAZARUS_PATH%\packager\units\x86_64-win64 -Fu%SRC_PATH% -FU%LIB_PATH% -FE%BIN_PATH% -oubcanvas.dll -dLCL -dLCLwin32 -dSM52 %SRC_PATH%\UBCanvas.dpr
+rem for debug build 
+rem set OPT=-O1 -g -gl -vewnhibq
+set OPT=-O3 -vw-n-h
+
+
+fpc -MDelphi -Scghi -WR %OPT% -Fi%EXTERNAL_LIBS_PATH%\Synopse -Fi%EXTERNAL_LIBS_PATH%\Synopse\SQLite3 -Fi%EXTERNAL_LIBS_PATH%\Synopse\SyNode -Fu%EXTERNAL_LIBS_PATH%\FastMM4 -Fu%EXTERNAL_LIBS_PATH%\Synopse\SyNode -Fu%EXTERNAL_LIBS_PATH%\Synopse\SQLite3 -Fu%EXTERNAL_LIBS_PATH%\Synopse -Fu%EXTERNAL_LIBS_PATH%\synapse40\source\lib -Fu%LAZARUS_PATH%\lcl\units\x86_64-win64\win32 -Fu%LAZARUS_PATH%\lcl\units\x86_64-win64 -Fu%LAZARUS_PATH%\components\lazutils\lib\x86_64-win64 -Fu%LAZARUS_PATH%\packager\units\x86_64-win64 -Fu%SRC_PATH% -FU%LIB_PATH% -FE%BIN_PATH% -oubcanvas.dll -dLCL -dLCLwin32 -dSM52 %SRC_PATH%\UBCanvas.dpr
