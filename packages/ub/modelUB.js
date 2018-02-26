@@ -5,6 +5,7 @@ const App = require('./modules/App')
 const Session = require('./modules/Session')
 const UBFormat = require('@unitybase/base').format
 const blobStores = require('./blobStores')
+const TubDataStore = require('./TubDataStore')
 
 /**
  * The UB namespace (global object) encapsulates some classes, singletons, and utility methods provided by UnityBase server.
@@ -131,7 +132,15 @@ tempDomain.eachEntity(entity => {
 global.Session = Session
 UB.Session = Session
 
-require('./TubDataStore')
+/**
+ * Construct new data store
+ * @param {string} entityCode
+ * @return {TubDataStore}
+ * @constructor
+ */
+UB.DataStore = function (entityCode) {
+  return new TubDataStore(entityCode)
+}
 
 const mI18n = require('./modules/i18n')
 /**

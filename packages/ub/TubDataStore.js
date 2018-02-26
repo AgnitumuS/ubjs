@@ -1,6 +1,169 @@
 /* global TubDataStore */
 const App = require('./modules/App')
 const blobStores = require('./blobStores')
+
+/**
+ * @classdesc
+ * Entity communication class. Use it to:
+ *
+ *  - execute any entity method using {@link TubDataStore#run}
+ *  - execute any SQL statement using {@link TubDataStore#runSQL} or {@link TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)
+ *  - store several named data collection using {@link TubDataStore#currentDataName} (data stored inside server memory, not in JS, this is very good for GC)
+ *  - iterate other collection rows using {@link TubDataStore#next}, eof, e.t.c and retrieve row data using TubDataStore.get
+ *  - serialize data to XML or JSON
+ *
+ *  To retrieve data from database using build-in ORM (to execute entity `select` method) preffered way is to use {@link UB.Repository} fabric function.
+ *
+ * @class TubDataStore
+ * @param {String} entityCode
+ * @constructor
+ */
+/**
+ * Run any entity method.
+ * @example
+ *
+ * var store = new TubDataStore('doc_attachment');
+ * store.run('update', {execParams: {
+ *          ID: 1,
+ *          approved: 0
+ *      }
+ * });
+ *
+ * store.run('anyEntityMethod', {param1: 'valueOfParam1', ...});
+ *
+ * @param {String} methodName
+ * @param {Object|TubList} params
+ * @return {Boolean} True in case of success, else raise exception
+ * @method run
+ */
+/**
+ * Execute SQL with parameters and place result into dataStore. This method expect SQL statement have **result**.
+ *
+ * To execute SQL statement without result (`insert` for example) - use TubDataStore.execSQL instead.
+ *
+ * @param {String} sql SQL statement to run
+ * @param {Object|TubList} params SQL parameters list
+ * @method runSQL
+ */
+/**
+ * Execute SQL with parameters. Not wait result data
+ * @param {String} sql SQL statement to run
+ * @param {Object|TubList} params SQL parameters list
+ * @method execSQL
+ */
+/**
+ * init dataStore content from JSON string
+ * If you need to init dataStore w/o rows:
+ *
+ *      var ds = new TubDataStore('myEntityCode');
+ *      ds.initFromJSON({"fieldCount":1,"values":["ID"],"rowCount":0});
+ *      console.log(ds.initialized); // TRUE
+ *
+ * WARNING!!! during initFromJSON UnityBase determinate field types from vield values,
+ *  so if some data column contain only numeric values it becode Number (even if in source it String).
+ *
+ * @param source
+ * @method initFromJSON
+ */
+
+/**
+ * Return zero based index of fieldName from current data store (-1 if not found)
+ * @example
+
+ var r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name']).where('[ID]', '=', 3000000002801).select();
+ console.log(r.fieldIndexByName('mi_owner.name')); // 1
+ console.log(r.fieldIndexByName('unexistedAttr')); // -1
+
+ * @param {String} fieldName
+ * @method fieldIndexByName
+ */
+
+/**
+ * Return value of attribute.
+ *
+ * In case store initialized using TubDataStore.run style we can return Number or String type,
+ * but in case it initialized using runSQL columns data types is unknown and you must cast value do required type directly.
+ *
+ * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
+ * @return {Number|String}
+ * @method get
+ */
+
+/**
+ * Return value of attribute as ArrayBuffer.
+ *
+ * You can apply this method to blob fields only
+ *
+ * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
+ * @return {ArrayBuffer}
+ * @method getAsBuffer
+ */
+/**
+ * Move next
+ * @method next
+ */
+/**
+ * Move prev
+ * @method prev
+ */
+/**
+ * Move first
+ * @method first
+ */
+/**
+ * Move last
+ * @method last
+ */
+/**
+ * Indicate current position in data collection is on the begining of collection
+ * @property {Boolean} bof
+ */
+/**
+ * Indicate current position in data collection is on the end of collection.
+ * @property {Boolean} eof
+ */
+/**
+ * Generate a new identifier (int64)
+ * @return {Number}
+ * @method generateID
+ */
+/**
+ * Is store initialized
+ * @property {Boolean} initialized
+ */
+/**
+ * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
+ * @property {String} asJSONObject
+ */
+/**
+ * Return string representation of Instance in `Array of array` format
+ * @property {String} asJSONArray
+ */
+/**
+ * Return XML representation of Instance in MS DataSet format
+ * @property {String} asXMLPersistent
+ */
+/**
+ * Active dataset name we work with. There is some predefined dataNames - see TubDataStore.prototype.DATA_NAMES
+ * @property {String} currentDataName
+ */
+/**
+ * Record count. If DataStore is not initialized or empty will return 0.
+ * @property {Number} rowCount
+ */
+/**
+ * Total record count if store are filled with withTotal() option.
+ * If DataStore is not initialized or empty or inited without withTotal() will return -1.
+ * @property {Number} totalRowCount
+ */
+/**
+ * Row position inside currentDataName dataset. Read/write
+ * @property {Number} rowPos
+ */
+/**
+ * Release all internal resources. Store became unusable after call to `freeNative()`
+ * @method freeNative
+ */
 /**
  *  Initialize DataStore from one of supported source formats:
  *
@@ -39,7 +202,7 @@ const blobStores = require('./blobStores')
      ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
         ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}]);
 
-  * @param {Object|Array} source
+ * @param {Object|Array} source
  * @param {Array.<String|Object>} [keyMap] Optional mapping of source field names to new field names
  * @returns {TubDataStore}
  */

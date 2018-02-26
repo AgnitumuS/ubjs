@@ -12,7 +12,7 @@ if (ubaAuditPresent) {
 /**
  * Checking of user IP and device fingerpriont based on settings from `uba_advSecurity`
  * @param {THTTPRequest} req
- * @return {{enabled: false}}{enabled: true, kmn: string, fpa: string}}
+ * @return {{enabled: false}|{enabled: true, kmn: string, fpa: string}}
  */
 function checkAdvancedSecurity (req) {
   let advData

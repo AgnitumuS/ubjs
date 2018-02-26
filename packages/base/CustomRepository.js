@@ -547,6 +547,7 @@ class CustomRepository {
      *      [{"ID":3000000000004,"code":"uba_user"},{"ID":3000000000039,"code":"uba_auditTrail"}]
      *
      * @abstract
+     * @return {*}
      */
   selectAsObject () {
     throw new Error('abstract')
