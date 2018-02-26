@@ -1,6 +1,6 @@
 [
 	{
-		"name": "Synchronize Camunda Tasks to UBPM",
+		"name": "Scheduler for testing purpose",
 		"cron": "30 */1 * * * *",
 		"command": "tst_service.schedulerTest",
 		"schedulingCondition": "true",

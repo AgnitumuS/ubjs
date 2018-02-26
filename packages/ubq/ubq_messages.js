@@ -1,4 +1,7 @@
-﻿let me = ubq_messages
+﻿const UB = require('@unitybase/ub')
+const App = UB.App
+const Session = require('@unitybase/ub').Session
+let me = ubq_messages
 me.entity.addMethod('addqueue')
 // WTF me.entity.addMethod('sendmail');
 me.entity.addMethod('success')
@@ -30,7 +33,7 @@ me.addqueue = function (ctxt) {
   console.debug('Call JS method: ubq_messages.addqueue')
   let mparams = ctxt.mParams
   let fMethod = 'insert'
-  let inst = new TubDataStore('ubq_messages')
+  let inst = UB.DataStore('ubq_messages')
   let fexecParams = {}
 
   fexecParams.ID = inst.generateID()
@@ -141,7 +144,7 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
       }
     }
     let endTime = new Date()
-    let statInst = new TubDataStore(ubq_runstat.entity)
+    let statInst = UB.DataStore('ubq_runstat')
     if (task.logSuccessful || err !== '') {
       statParams = {
         appName: process.env['COMPUTERNAME'],

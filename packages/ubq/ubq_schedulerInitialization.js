@@ -1,6 +1,7 @@
 const GLOBAL_CACHE_INITIALIZED_ENTRY = 'UBQ.schedulersInitialized'
 const Worker = require('@unitybase/base').Worker
 const App = require('@unitybase/ub').App
+const UB = require('@unitybase/ub')
 
 if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
   if (process.startupMode === 'CmdLine') {
@@ -38,6 +39,7 @@ function startSchedulers () {
     if (item.schedulingCondition) {
       let canSchedule = false
       try {
+        // eslint-disable-next-line no-eval
         canSchedule = eval(item.schedulingCondition)
       } catch (e) {
         console.error('SCHEDULER: Invalid scheduleCondition for item', item.name, 'Item DISABLED')
@@ -69,10 +71,11 @@ function startSchedulers () {
     })
   }
 
+  let workerPath = require.resolve('./modules/schedulerWorker.js')
+  workerPath = workerPath.replace(/\\/g, '/')
   let w = new Worker({
     name: 'Scheduler',
-    onmessage: runSchedulersCircle,
-    onerror: onWorkerError
+    moduleName: workerPath
   })
 
   // MPV: in case engine expire worked MUST remain alive,
@@ -85,81 +88,3 @@ function startSchedulers () {
   w.postMessage({serverURL: App.serverURL, config: cfgForWorker})
   console.debug('SCHEDULER: leave queueWorkerInitialization')
 }
-
-function onWorkerError (message, exception) {
-  console.error('SCHEDULER: ', message, exception)
-}
-
-/**
- * The Worker function. Function body is evaluated in the worker thread, so
- * reference from this function to anything from a module is NOT ALLOWED
- */
-function runSchedulersCircle (message) {
-  // boilerplate to stop debuger inside Worker 
-  // put breakpoint on line  let p = 0 and change a value of i to 2 to go forward
-  /* let i = 1
-  while (i===1) { 
-    let p = 0
-  }
-  */
-  const Module = require('module')
-  let parent = new Module('internal/preload', null)
-  // TODO this hack is temporary solution for require.resolve. 
-  // The problem here: we lost a folder for where runSchedulersCircle and replace it with process.configPath
-  // process.cwd() not work for case server started as a service
-  // so all modules what required inside worker must be either global or in application node_modules folder
-  parent.paths = Module._nodeModulePaths(process.configPath)
-  const UBConnection = parent.require('@unitybase/base').UBConnection
-  const cron = parent.require('node-cron')
-  const serverURL = message.serverURL
-  const config = message.config
-  let jobs = [], job
-
-  function safeSendAsyncRequest (cfgIdx) {
-    try {
-      let conn = new UBConnection(serverURL)
-      let cfg = config[cfgIdx]
-      conn.onRequestAuthParams = function () {
-        return {authSchema: 'UB', login: cfg.runAs, apiKey: cfg.apiKey}
-      }
-      console.log('SCHEDULER: Job', cfg.name, 'started at', new Date())
-      console.debug('Job defined as:', cfg)
-      conn.xhr({
-        endpoint: 'rest/ubq_messages/executeSchedulerTask',
-        method: 'POST',
-        URLParams: {async: true},
-        data: {schedulerName: cfg.name, command: cfg.command, module: cfg.module, singleton: cfg.singleton == 1, logSuccessful: cfg.logSuccessful == 1}
-      })
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  function cronJobStopped (cfgIdx) {
-    console.log('SCHEDULER: Job', config[cfgIdx].name, 'stopped')
-  }
-
-  console.debug('SCHEDULER: start initializeSchedulers..')
-
-  console.debug('SCHEDULER: Got a init config %j', config)
-  for (let i = 0, l = config.length; i < l; i++) {
-    console.debug('SCHEDULER: add a job for', config[i].name, 'scheduled as', config[i].cron)
-    job = cron.schedule(
-      config[i].cron,
-      safeSendAsyncRequest.bind(null, i),
-      // OBSOLETE cronJobStopped.bind(null, i),
-      true /* Start the job right now */
-      // OBSOLETE '' /* local timezone */
-    )
-    jobs.push(job)
-  }
-  global._timerLoop.setTimeoutWithPriority(
-      function () {
-        console.log('SCHEDULER: end timer loop')
-        terminate()
-      },
-      0,
-      1000
-  )
-}
-
