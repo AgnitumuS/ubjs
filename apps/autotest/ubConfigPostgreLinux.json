@@ -1,6 +1,5 @@
 {
 	"httpServer": {
-		//"serverType": "Socket",
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
@@ -53,7 +52,7 @@
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": {"en": "Autotest UB SQLITE", "uk": "Автотест UB SQLITE"},
+			"applicationName": {"en": "Autotest UB Postgre", "uk": "Автотест UB Postgre"},
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
@@ -175,7 +174,6 @@
 				"supportLang": [
 					"uk"
 				],
-				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			},
 			{
@@ -186,7 +184,6 @@
 				"supportLang": [
 					"uk"
 				],
-				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			}
 		],

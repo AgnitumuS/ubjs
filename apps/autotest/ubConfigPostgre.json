@@ -1,11 +1,12 @@
 ﻿{ 
 	"httpServer": {
 		"host": "+",
-		"port": "888",
+		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": ".\\inetPub\\",
+		"inetPub": "./inetPub/",
+		//"remoteIPHeader": "X-Real-IP",
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
@@ -18,7 +19,7 @@
 		"path": "ws"
 	},*/
 	"logging": {
-		"path": ".\\logs",
+		"path": "./logs",
 		"levels": [
 			"*"
 		],
@@ -38,14 +39,6 @@
 		"authenticationMethods": [
 			"UB", "Negotiate"
 		],
-		/*"dstu": {
-			"findCertificateBySerial": true,
-			"iit": {
-				"libraryPath": "D:\\SVN\\M3\\trunk\\06-Source\\libs_vendor\\iit",
-				"keyPath": ".\\models\\TST\\_autotest\\iitKey\\Key-6.pfx",
-				"password": "12345678"
-			}
-		},*/
 		"ldapCatalogs": [
 			{
 				"name": "MYDOMAIN",
@@ -135,7 +128,7 @@
 					"name": "adminui-reg",
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
-				},
+				}/*,
                                 {
 					"name": "DSES",
 					"path": "./node_modules/@ub-e/dses",
@@ -146,8 +139,8 @@
 					"publicPath": "./node_modules/@ub-d/nm-dstu",
 					"path": "_public_only_",
 					"moduleName": "@ub-d/nm-dstu"
-				},
-				{
+				},*/
+				,{
 					"name": "TST",
 					"path": "./models/TST"
 				}
@@ -177,7 +170,7 @@
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestFTS.sqlite3",
+				"databaseName": "./autotestFTS.sqlite3",
 				"supportLang": [
 					"uk"
 				],
@@ -187,7 +180,7 @@
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestSubjectsFTS.sqlite3",
+				"databaseName": "./autotestSubjectsFTS.sqlite3",
 				"supportLang": [
 					"uk"
 				],
@@ -201,7 +194,7 @@
 			},
 			{
 				"name": "simple",
-				"path": ".\\documents\\simple\\",
+				"path": "./documents/simple",
 				"isDefault": true,
 				"historyDepth": 0,
 				"storeSize": "Simple",
@@ -209,7 +202,7 @@
 			},
 			{
 				"name": "avatars",
-				"path": ".\\documents\\avatars\\",
+				"path": "./documents/avatars",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false
@@ -229,7 +222,7 @@
 				"user": "",
 				"password": "",
 				"autoTLS": false,
-				"auth": false 
+				"auth": false
 			}
 		}
 	}
