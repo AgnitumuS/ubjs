@@ -30,7 +30,7 @@ function checkAdvancedSecurity (req) {
   let urlParams = queryString.parse(req.decodedParameters)
 
   if (!advData) return { // no adv. settings for current user
-    ebnabled: true,
+    enabled: true,
     kmn: urlParams.KMN || '',
     fpa: urlParams.FPA || ''
   }
