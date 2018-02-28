@@ -27,7 +27,7 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
       data: `DROP DATABASE ${databaseConfig.databaseName}`
     })
   } else {
-    console.warn('Database %s dose not exists. Drop skipped', databaseConfig.databaseName)
+    console.warn('Database %s does not exist. Drop skipped', databaseConfig.databaseName)
   }
 }
 
