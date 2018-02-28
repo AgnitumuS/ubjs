@@ -33,6 +33,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
   extend: 'Ext.form.field.ComboBox',
   alias: ['widget.comboboxselect', 'widget.boxselect'],
   requires: ['Ext.selection.Model', 'Ext.data.Store'],
+  // MPV -02-28 prevent create incorrect CSV with spaces
+  delimiter: ',',
 
     //
     // Begin configuration options related to the underlying store
