@@ -163,7 +163,13 @@ function getDocument (req, resp) {
   if (req.method === 'GET') { // TODO - should we handle 'HEAD' here?
     params = queryString.parse(req.parameters)
   } else if (req.method === 'POST') {
-    params = JSON.parse(req.read())
+    let paramStr = req.read()
+    try {
+      params = JSON.parse(paramStr)
+    } catch (e) {
+      console.error('Exception when parsing POST parameters "{paramStr}":' + e)
+      return badRequest(resp, 'wrong parameters passed' + req.method)
+    }
   } else {
     return badRequest(resp, 'invalid HTTP verb' + req.method)
   }
