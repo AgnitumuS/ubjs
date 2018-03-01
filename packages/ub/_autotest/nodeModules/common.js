@@ -127,7 +127,7 @@ process.on('exit', function () {
     knownGlobals.push(filename)
     knownGlobals.push(loaded)
     knownGlobals.push(children)
-    knownGlobals.push(paths)
+    //knownGlobals.push(paths)
 // TODO: remove in 1.9 require need
     knownGlobals.push(toLog)
     knownGlobals.push(objectToJSON)

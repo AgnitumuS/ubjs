@@ -30,8 +30,6 @@
  */
 
 // [{short: 'u', long: 'user', param: 'userName', defaultValue: true, searchInEnv: true, help: 'A user name for server connection'}]
-const _ = require('lodash')
-
 /**
  * @class
  * @param commandName
