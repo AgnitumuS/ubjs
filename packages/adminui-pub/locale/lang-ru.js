@@ -611,6 +611,8 @@ UB.i18nExtend({
   'Mixins': 'Mixins',
   'enabled': 'enabled',
 
+  dateIsTooEarly: 'Дата должна быть больше {0}',
+
   // !!!
     // Do not change this last item.
     // Put your new items before EOF for SVN auto merge reason.

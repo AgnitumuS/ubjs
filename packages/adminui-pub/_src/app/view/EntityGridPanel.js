@@ -2238,9 +2238,19 @@ Ext.define('UB.view.EntityGridPanel', {
     if (!me.rowEditing) {
       if (this.isHistory) {
         // this.onHistory();
+        var minDate = undefined
+        if (me.store.data.length > 0) {
+          minDate = me.store.data.first().data['mi_dateFrom']
+          me.store.data.each(function (item) {
+            minDate = item.data['mi_dateFrom'] > minDate ? item.data['mi_dateFrom'] : minDate
+          })
+        }
         Ext.create('UB.view.InputDateWindow', {
           callback: function (date) {
-            me.openForm({__mip_ondate: date, instanceID: me.miDataID})
+            if (_.isUndefined(minDate) || date > minDate)
+              me.openForm({__mip_ondate: date, instanceID: me.miDataID})
+            else
+              throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), minDate))
           },
           scope: me
         })
@@ -2486,11 +2496,29 @@ Ext.define('UB.view.EntityGridPanel', {
     let sel = me.getSelectionModel().getSelection()
     if (sel.length < 1) return
 
-    Ext.create('UB.view.InputDateWindow', {
-      callback: function (date) {
-        me.onItemDblClick(me, sel[0], null, null, null, { __mip_ondate: date })
-      },
-      scope: this
+    UB.Repository(me.entityName)
+    .attrs(['ID', 'mi_data_id'])
+    .selectById(sel[0].get('ID'))
+    .then(function(record) {
+      return UB.Repository(me.entityName)
+        .attrs(['mi_dateFrom'])
+        .where('mi_data_id', '=', record['mi_data_id'])
+        .misc({__mip_recordhistory_all: true})
+        .orderByDesc('mi_dateFrom')
+        .limit(1)
+        .select()
+    })
+    .then(function (rows) {
+      var record = rows[0]
+      Ext.create('UB.view.InputDateWindow', {
+        callback: function (date) {
+          if (date > record['mi_dateFrom'])
+            me.onItemDblClick(me, sel[0], null, null, null, { __mip_ondate: date })
+          else
+            throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), record['mi_dateFrom']))
+        },
+        scope: me
+      })
     })
   },
 

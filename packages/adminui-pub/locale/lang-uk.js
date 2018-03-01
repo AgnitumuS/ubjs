@@ -671,6 +671,8 @@ UB.i18nExtend({
      ubErrElsNeedAuth: 'ubErrElsNeedAuth',
      */
 
+  dateIsTooEarly: 'Дата має бути більше {0}',
+
     // !!!
     // Do not change this last item.
     // Put your new items before EOF for SVN auto merge reason.
