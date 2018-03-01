@@ -62,10 +62,9 @@ function test1 () {
     results.push('EOF')
   })
   flow()
-
   process.on('exit', function () {
     assert.deepStrictEqual(results, [ 'xxxxx', 'xxxxx', 'EOF' ])
-    console.log('ok')
+    console.log('ok xxx xxx EOF')
   })
 }
 
