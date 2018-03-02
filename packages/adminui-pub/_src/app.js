@@ -319,7 +319,13 @@ function launchApp () {
         }
       }
     })
-
+    Ext.override(Ext.grid.plugin.RowEditing, {
+      validateEdit: function() {
+        let me = this
+        let context = me.context
+        return me.fireEvent('validateedit', me, context) !== false && !context.cancel && this.getEditor().completeEdit()
+      }
+    })
     Ext.override(Ext.form.field.Base, {
       /**
        * @cfg leftIndent Width in pixels of left field indent. Default 15.
