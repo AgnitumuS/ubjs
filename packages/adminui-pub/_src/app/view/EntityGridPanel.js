@@ -2119,7 +2119,9 @@ Ext.define('UB.view.EntityGridPanel', {
     let fieldList = []
     context.grid.columns.forEach(function (col) {
       if (col.field && col.field.storeAttributeValueField) {
-        context.record.set(col.field.storeAttributeValueField, col.field.getValue() && col.field.lastSelection ? col.field.lastSelection[0].get('ID') : null)
+        if (!(col.field.getValue() && col.field.lastSelection && !col.field.lastSelection[0].get)) {
+          context.record.set(col.field.storeAttributeValueField, col.field.getValue() && col.field.lastSelection ? col.field.lastSelection[0].get('ID') : null)
+        }
       }
       if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
         context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
@@ -2170,6 +2172,9 @@ Ext.define('UB.view.EntityGridPanel', {
     if (data) {
       delete data.ID
       delete data.mi_modifyDate
+      if (this.lineNumberColumn) {
+        delete data[this.lineNumberColumn]
+      }
       let record = this.store.getAt(index)
       Object.keys(data).forEach(function (key) {
         record.set(key, data[key])
