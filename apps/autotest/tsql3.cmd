@@ -9,6 +9,10 @@ if [%UB_HOST%]==[] (
 if exist .\_autotestResults.json del .\_autotestResults.json
 if exist .\last_result.log del .\last_result.log
 
+SET TESTCASE=hello
+ub -e "console.log('Start autotest')"
+@if errorlevel 1 goto err
+
 SET TESTCASE=drop database
 if exist autotestDB.sqlite3 del autotestDB.sqlite3
 if exist autotestFTS.sqlite3 del autotestFTS.sqlite3

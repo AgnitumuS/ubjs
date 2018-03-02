@@ -11,8 +11,12 @@ err()
 rm -f ./_autotestResults.json
 rm -f ./last_result.log
 
+TESTCASE='hello'
+ub -e "console.log('Start autotest')"
+
 TESTCASE='drop database'
 rm -f ./*FTS.sqlite3
+if [ ! $? = 0 ]; then err; fi
 
 TESTCASE='init database'
 # Check whether UB_CFG set and contains a value, not spaces
