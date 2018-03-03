@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.2.52]
 ### Fixed
 - fix value serialization for attributes of type Many (BoxSelect, UBBoxSelect) - remove space inside CSV
+- ubdetailgrid: fix bug on validateedit event for row row editing grid
 
 ## [4.2.49]
 ### Added
