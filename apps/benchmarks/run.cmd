@@ -3,4 +3,4 @@ if not defined UB_CFG (
   echo A default config %UB_CFG% will be used
 )
 
-%UB_HOME%\ub -cfg %UB_CFG%
+ub -cfg %UB_CFG%

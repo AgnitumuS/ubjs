@@ -26,6 +26,7 @@
     "mustache": "^2.3.0"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.0"
+    "@unitybase/stubs": "^5.0.0",
+    "@unitybase/ubcli": "^5.0.0"
   }
 }

@@ -25,18 +25,18 @@ if not defined UB_CFG (
 
 rem SET UB_DEV=true
 
-call ubcli createStore -cfg %UB_CFG% -noLogo
+call npx ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
 
-call ubcli initDB -host http://localhost:%PORT% -cfg %UB_CFG% -dba %DBA% -dbaPwd %DBA_PWD% -u admin -p admin -drop -create
+call npx ubcli initDB -host http://localhost:%PORT% -cfg %UB_CFG% -dba %DBA% -dbaPwd %DBA_PWD% -u admin -p admin -drop -create
 if errorlevel 1 goto err
 
 SET TESTCASE=generateDDL
-call ubcli generateDDL -host http://localhost:%PORT% -cfg %UB_CFG% -u admin -p admin -autorun
+call npx ubcli generateDDL -host http://localhost:%PORT% -cfg %UB_CFG% -u admin -p admin -autorun
 if errorlevel 1 goto err
 
 SET TESTCASE=initialize
-call ubcli initialize -cfg %UB_CFG% -host http://localhost:%PORT% -u admin -p admin
+call npx ubcli initialize -cfg %UB_CFG% -host http://localhost:%PORT% -u admin -p admin
 if errorlevel 1 goto err
 
 goto :eof
