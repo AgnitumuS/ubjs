@@ -2172,7 +2172,7 @@ Ext.define('UB.view.EntityGridPanel', {
     if (data) {
       delete data.ID
       delete data.mi_modifyDate
-      if (this.lineNumberColumn) {
+      if (this.lineNumberColumn && edit) {
         delete data[this.lineNumberColumn]
       }
       let record = this.store.getAt(index)
