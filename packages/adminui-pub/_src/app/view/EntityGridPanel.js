@@ -2118,10 +2118,10 @@ Ext.define('UB.view.EntityGridPanel', {
     let me = this
     let fieldList = []
     context.grid.columns.forEach(function (col) {
-      if (col.field && col.field.storeAttributeValueField) {
-        if (!(col.field.getValue() && col.field.lastSelection && !col.field.lastSelection[0].get)) {
-          context.record.set(col.field.storeAttributeValueField, col.field.getValue() && col.field.lastSelection ? col.field.lastSelection[0].get('ID') : null)
-        }
+      if (col.field && col.field.storeAttributeValueField &&
+        (!col.field.getValue() || _.get(col.field, 'lastSelection[0]'))) {
+        context.record.set(col.field.storeAttributeValueField, col.field.getValue() && col.field.lastSelection
+          ? col.field.lastSelection[0].get('ID') : null)
       }
       if (col.field && _.includes(['textareafield', 'ubtextfield', 'ubtextareafield'], col.field.xtype) &&
         context.record.modified[col.dataIndex] !== undefined && context.record.get(col.dataIndex) === '') {
@@ -2345,7 +2345,7 @@ Ext.define('UB.view.EntityGridPanel', {
         try {
           entityCaptionsToDelete = gridSelection[0].get(me.entity.descriptionAttribute)
         } catch (e) {}
-        entityCaptionsToDelete =  (entityCaptionsToDelete ? '[' + entityCaptionsToDelete + ']' : '')
+        entityCaptionsToDelete = (entityCaptionsToDelete ? '[' + entityCaptionsToDelete + ']' : '')
       }
     }
     $App.dialogYesNo('deletionDialogConfirmCaption',
