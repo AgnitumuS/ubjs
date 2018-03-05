@@ -4,12 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1.47]
+### Added
+ - ubs_settings.addOrUpdateKey function 
+ 
 ## [4.1.43]
 ### Added
 - New report type 'xlsx'. For detail see report 'xlsxExample'
 - New function for format data types "number" and "date" as string
  for reports. List of function see in formatFunction.js
-
 
 ## [4.1.41]
 ### Changed
