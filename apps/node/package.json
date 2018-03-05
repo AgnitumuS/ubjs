@@ -1,6 +1,6 @@
 {
   "name": "node",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Call UnityBase methods from node.js",
   "main": "ub_from_node.js",
   "private": true,
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@unitybase/ub-pub": "^4.5.1",
+    "@unitybase/ub-pub": "^4.5.2",
     "xmlhttprequest": "^1.8.0"
   }
 }
