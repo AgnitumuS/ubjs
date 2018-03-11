@@ -52,7 +52,7 @@ We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Sta
   Path to FPC should be added to PATh environment variable:
   
   ```bash
-  export PATH=~/fpcupdeluxe/fpc/bin/x86_64-linux:~/dev/ub-server/bin/fpc-linux:$PATH
+  export PATH=~/fpcupdeluxe/fpc/bin/x86_64-linux:$PATH
   ```
   
   Build modules
