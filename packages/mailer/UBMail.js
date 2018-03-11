@@ -49,8 +49,15 @@
 const dllName = process.platform === 'win32' ? 'ubmail.dll' : 'libubmail.so'
 const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'
 const path = require('path')
+const fs = require('fs')
 const moduleName = path.join(__dirname, archPath, dllName)
-const binding = require(moduleName)
+let binding
+if (!fs.existsSync(moduleName)) {
+  console.warn('UBMail is not compiled')
+  binding = {}
+} else {
+  binding = require(moduleName)
+}
 let UBMail = module.exports
 
 /**
