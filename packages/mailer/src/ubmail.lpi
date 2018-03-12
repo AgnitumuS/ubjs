@@ -129,7 +129,7 @@ end;"/>
     </RequiredPackages>
     <Units Count="2">
       <Unit0>
-        <Filename Value="UBMail.dpr"/>
+        <Filename Value="ubmail.dpr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>
