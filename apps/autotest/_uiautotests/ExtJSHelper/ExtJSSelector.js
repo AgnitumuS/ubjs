@@ -1,8 +1,30 @@
-import { ClientFunction } from 'testcafe';
+import { ClientFunction, Selector } from 'testcafe';
+import LoginWindow from './loginWindowSelector'
 
 export default class ExtSelector {
+  constructor (selectorCode) {
+    this.selectorCode = selectorCode
+  }
+
+  itemSelector (queryCode) {return new ItemSelector(queryCode)}
+
+  loginWinItems () { return new LoginWindow()}
+
+  find () {
+    return Selector(this.selectorCode)()
+  }
+}
+
+class ItemSelector {
   constructor (queryCode) {
     this.queryCode = queryCode
+  }
+
+  click () {
+    let elClick = ClientFunction((queryCode) => {
+      Ext.ComponentQuery.query(queryCode)[0].el.dom.click()
+    })
+    return elClick(this.queryCode)
   }
 
   showMenu () {
@@ -14,13 +36,6 @@ export default class ExtSelector {
     return elShow(this.queryCode)
   }
 
-  click () {
-    let elClick = ClientFunction((queryCode) => {
-      Ext.ComponentQuery.query(queryCode)[0].el.dom.click()
-    })
-    return elClick(this.queryCode)
-  }
-
   setValue (value) {
     let elValue = ClientFunction((queryCode, value) => {
       let caption = Ext.ComponentQuery.query(queryCode)[0]
@@ -28,18 +43,6 @@ export default class ExtSelector {
     })
     return elValue(this.queryCode, value)
   }
-  setValueToUBAuth(user, pwd, activeTab){
-    let elValue = ClientFunction((user, pwd, activeTab) => {
-      let lw = Ext.ComponentQuery.query('loginwindow')[0]
-      lw.textFieldPassword.setValue(pwd)
-      lw.textFieldLogin.setValue(user)
-      if(activeTab) lw.authTabs.setActiveTab(activeTab)
-
-    })
-    if(this.queryCode = 'loginwindow')
-    return elValue(user, pwd, activeTab)
-  }
-
 }
 
 

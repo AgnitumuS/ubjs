@@ -1,6 +1,6 @@
-import { Selector, ClientFunction } from 'testcafe';
+import { Selector } from 'testcafe';
 import ExtSelector from './ExtJSHelper/ExtJSSelector.js'
-import LoginWindow from './ExtJSHelper/loginWindowSelector'
+//import LoginWindow from './ExtJSHelper/loginWindowSelector'
 
 var timestamp = +new Date();
 var folderCaption = 'test_folder_' + timestamp;
@@ -11,46 +11,25 @@ fixture(`Preparing data for Move folder and shortcut to Desktop test`)// declare
 
 test('Desktop test', async t => {
 
-  const loginWin = Selector('.ub-login-window')
-  await loginWin()
+  const loginWin = new ExtSelector('.ub-login-window')
+  await loginWin.find()
+  await loginWin.loginWinItems().setValueToUBAuth('admin', 'admin')
+  await loginWin.loginWinItems().loginBtnClick()
 
-  const lwFields = new LoginWindow()
-  await lwFields.setValueToUBAuth('admin','admin')
+  const mainMenu = new ExtSelector('.ub-header-menu-item')
+  await mainMenu.find()
+  await mainMenu.itemSelector('button[text=Administrator][ui=default-toolbar-small]').click()
+  await mainMenu.itemSelector('menuitem[text=UI]').showMenu()
+  await mainMenu.itemSelector('menuitem[text=Desktops]').click()
 
-  const loginButton = Selector('.ub-login-btn')
-  await t.click(loginButton)
+  const ubGrid = new ExtSelector('.ub-entity-grid')
+  await ubGrid.find()
+  await ubGrid.itemSelector('button[actionId=addNew]').click()
 
-  const mainMenu = Selector('.ub-header-menu-item')//.nth(1)
-  await  mainMenu()
-
-  let admBtn = new ExtSelector('button[text=Administrator][ui=default-toolbar-small]')
-  await admBtn.click()
-
-  let expandMenu = new ExtSelector('menuitem[text=UI]')
-  await expandMenu.showMenu()
-
-  let DesktopItm = new ExtSelector('menuitem[text=Desktops]')
-  await DesktopItm.click()
-
-  const ubGrid = Selector('.ub-entity-grid')
-  await ubGrid()
-
-  let addBtn = new ExtSelector('button[actionId=addNew]')
-  await addBtn.click()
-
-  const basePanel = Selector('.ub-basepanel')
-  await basePanel()
-
-  let captionField = new ExtSelector('ubtextfield[attributeName=caption]')
-  await captionField.setValue('test_desktop_name')
-
-  let codeField = new ExtSelector('ubtextfield[attributeName=code]')
-  await codeField.setValue('test_desktop_code')
-
-  let saveBtn = new ExtSelector('button[actionId=saveAndClose]')
-  await saveBtn.click()
-
-  await t
-    .debug()
+  const basePanel = new ExtSelector('.ub-basepanel')
+  await basePanel.find()
+  await basePanel.itemSelector('ubtextfield[attributeName=caption]').setValue('test_desktop_name')
+  await basePanel.itemSelector('ubtextfield[attributeName=code]').setValue('test_desktop_code')
+  await basePanel.itemSelector('button[actionId=saveAndClose]').click()
 
 })
