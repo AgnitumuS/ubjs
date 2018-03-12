@@ -1,14 +1,22 @@
-import { ClientFunction, Selector } from 'testcafe';
+/* global Ext */
+import { ClientFunction, Selector } from 'testcafe'
 import LoginWindow from './loginWindowSelector'
 
-export default class ExtSelector {
+async function extSelector (cssSelector) {
+  let res = new ExtSelector('cssSelector')
+  await res.find()
+  return res
+}
+export default extSelector
+
+class ExtSelector {
   constructor (selectorCode) {
     this.selectorCode = selectorCode
   }
 
-  itemSelector (queryCode) {return new ItemSelector(queryCode)}
+  itemSelector (queryCode) { return new ItemSelector(queryCode) }
 
-  loginWinItems () { return new LoginWindow()}
+  loginWinItems () { return new LoginWindow() }
 
   find () {
     return Selector(this.selectorCode)()
@@ -29,9 +37,9 @@ class ItemSelector {
 
   showMenu () {
     let elShow = ClientFunction((queryCode) => {
-        let menuItem = Ext.ComponentQuery.query(queryCode)[0]
-        menuItem.menu.show()
-      }
+      let menuItem = Ext.ComponentQuery.query(queryCode)[0]
+      menuItem.menu.show()
+    }
     )
     return elShow(this.queryCode)
   }
@@ -44,7 +52,3 @@ class ItemSelector {
     return elValue(this.queryCode, value)
   }
 }
-
-
-
-
