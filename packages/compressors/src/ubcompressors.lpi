@@ -30,7 +30,7 @@
             <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="//if TargetOS='linux' and SrcOS='win' then
-//  LinkerOptions += ' -FL' + Env(LAZARUS_PATH) + '\..\cross\lib\x86_64-linux\ld-linux-x86-64.so.2';
+//  CustomOptions += ' -FL' + Env(LAZARUS_PATH) + '\..\cross\lib\x86_64-linux\ld-linux-x86-64.so.2';
 //end;
 
 // example for adding linker options on Mac OS X
@@ -68,8 +68,7 @@
               <ShowHints Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CustomOptions Value="-dSM52
--FL$(LazarusDir)\..\cross\lib\x86_64-linux\ld-linux-x86-64.so.2"/>
+            <CustomOptions Value="-dSM52"/>
           </Other>
         </CompilerOptions>
       </Item2>
@@ -115,6 +114,9 @@
           </Other>
         </CompilerOptions>
       </Item3>
+      <SharedMatrixOptions Count="1">
+        <Item1 ID="178110207089" Modes="ReleaseLinux" Value="-FL$(LazarusDir)\..\cross\lib\x86_64-linux\ld-linux-x86-64.so.2"/>
+      </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
