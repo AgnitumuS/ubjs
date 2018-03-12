@@ -54,4 +54,3 @@ begin
   threadCounter := -1;
   FillChar(ThreadRecs, SizeOf(ThreadRecs), #0); // was Win specific: FillMemory(@ThreadRecs[0], SizeOf(ThreadRecs), 0);
 end.
- 
