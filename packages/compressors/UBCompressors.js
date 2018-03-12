@@ -9,7 +9,7 @@
  * @module @unitybase/compressors
  */
 const dllName = process.platform === 'win32' ? 'ubcompressors.dll' : 'libubcompressors.so'
-const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'
+const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x86_64'
 const path = require('path')
 const moduleName = path.join(__dirname, archPath, dllName)
 const binding = require(moduleName)
