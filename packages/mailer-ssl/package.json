@@ -15,7 +15,8 @@
     "@unitybase/mailer": "^5.0.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.1"
+    "@unitybase/stubs": "^5.0.1",
+    "@unitybase/fpc-utils": "^5.0.0"
   },
   "keywords": [
     "UnityBase",
