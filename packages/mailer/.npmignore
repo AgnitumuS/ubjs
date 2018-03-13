@@ -44,4 +44,5 @@ node_modules/
 .idea/
 
 # FPC compiler artifacts
-bin/x64/lib/
+lib/
+src/backup/

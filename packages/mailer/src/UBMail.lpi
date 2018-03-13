@@ -16,8 +16,101 @@
     <i18n>
       <EnableI18N LFM="False"/>
     </i18n>
-    <BuildModes Count="1">
+    <BuildModes Count="3">
       <Item1 Name="Default" Default="True"/>
+      <Item2 Name="ReleaseWin64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <Target>
+            <Filename Value="../bin/$(TargetCPU)/"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib"/>
+            <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <SyntaxMode Value="Delphi"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <RelocatableUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="2"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <Options>
+              <ExecutableType Value="Library"/>
+            </Options>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShowWarn Value="False"/>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+            </Verbosity>
+            <WriteFPCLogo Value="False"/>
+            <CustomOptions Value="-dSM52"/>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="ReleaseLinux">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <Target>
+            <Filename Value="../bin/$(TargetCPU)/"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
+            <Libraries Value="$Env(UB_SRC)/bin/fpc-linux"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
+            <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Conditionals Value="// check compilation executed under windows
+// TargetOS and SrcOS not work for this
+e:=GetIDEValue('OS');
+if e='win64' then begin
+  CustomOptions += ' -FL$(LazarusDir)..\cross\lib\x86_64-linux\ld-linux-x86-64.so.2';
+end;"/>
+          <Parsing>
+            <SyntaxOptions>
+              <SyntaxMode Value="Delphi"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <RelocatableUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="linux"/>
+            <Optimizations>
+              <OptimizationLevel Value="2"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <Options>
+              <ExecutableType Value="Library"/>
+            </Options>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShowWarn Value="False"/>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+            </Verbosity>
+            <WriteFPCLogo Value="False"/>
+            <CustomOptions Value="-dSM52"/>
+          </Other>
+        </CompilerOptions>
+      </Item3>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -47,12 +140,12 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="../bin/x64/libubmail"/>
+      <Filename Value="../bin/$(TargetCPU)/"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);../../../../../ub-server/libs/Synopse;../../../../../ub-server/libs/Synopse/SQLite3;../../../../../ub-server/libs/Synopse/SyNode"/>
-      <OtherUnitFiles Value="../../../../../ub-server/libs/FastMM4;../../../../../ub-server/libs/Synopse/SyNode;../../../../../ub-server/libs/Synopse/SQLite3;../../../../../ub-server/libs/Synopse;../../../../../ub-server/libs/synapse40/source/lib"/>
-      <UnitOutputDirectory Value="../bin/lib/$(TargetCPU)-$(TargetOS)"/>
+      <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
+      <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
+      <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>

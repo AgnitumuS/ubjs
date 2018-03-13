@@ -13,7 +13,7 @@
   "main": "./UBMail.js",
   "devDependencies": {
     "@unitybase/stubs": "^5.0.1",
-    "shelljs": "^0.7.8"
+    "@unitybase/fpc-utils": "^5.0.0"
   },
   "keywords": [
     "UnityBase",

@@ -13,7 +13,7 @@
   "main": "./UBCompressors.js",
   "devDependencies": {
     "@unitybase/stubs": "^5.0.1",
-    "chalk": "^2.3.2"
+    "@unitybase/fpc-utils": "^5.0.0"
   },
   "keywords": [
     "UnityBase",

@@ -47,7 +47,7 @@
  * @module @unitybase/mailer
  */
 const dllName = process.platform === 'win32' ? 'ubmail.dll' : 'libubmail.so'
-const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'
+const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x86_64'
 const path = require('path')
 const fs = require('fs')
 const moduleName = path.join(__dirname, archPath, dllName)
