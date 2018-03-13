@@ -2,7 +2,7 @@
 *.exe
 # *.dll
 *.dcp
-*.so
+# *.so
 *.apk
 *.drc
 *.map
