@@ -1,8 +1,3 @@
-const shell = require('shelljs')
+const fpcUtils = require('@unitybase/fpc-utils')
 
-shell.echo('We run on ' + process.platform)
-if (process.platform === 'win32') {
-  shell.exit(shell.exec('.\\bin\\compileFPC.cmd').code)
-} else { // posix
-  shell.exit(0) // COM not available on Linux
-}
+fpcUtils.lazCrossCompile('./src/ubcombridge.lpi', ['ReleaseWin64'])

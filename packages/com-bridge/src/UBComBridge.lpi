@@ -14,8 +14,51 @@
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
-    <BuildModes Count="1">
+    <BuildModes Count="2">
       <Item1 Name="Default" Default="True"/>
+      <Item2 Name="ReleaseWin64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="..\bin\$(TargetCPU)\"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3;$(ProjOutDir)"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+            <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <SyntaxMode Value="Delphi"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <RelocatableUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="2"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <Options>
+              <ExecutableType Value="Library"/>
+            </Options>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+            </Verbosity>
+            <WriteFPCLogo Value="False"/>
+            <CustomOptions Value="-dSM52"/>
+          </Other>
+        </CompilerOptions>
+      </Item2>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -39,12 +82,12 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="../bin/x64/libubcombridge"/>
+      <Filename Value="..\bin\$(TargetCPU)\"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);..\..\..\..\..\ub-server\libs\Synopse;..\..\..\..\..\ub-server\libs\Synopse\SQLite3;..\..\..\..\..\ub-server\libs\Synopse\SyNode"/>
-      <OtherUnitFiles Value="..\..\..\..\..\ub-server\libs\FastMM4;..\..\..\..\..\ub-server\libs\Synopse\SyNode;..\..\..\..\..\ub-server\libs\Synopse\SQLite3;..\..\..\..\..\ub-server\libs\Synopse;..\..\..\..\..\ub-server\libs\synapse40\source\lib"/>
-      <UnitOutputDirectory Value="..\bin\lib\$(TargetCPU)-$(TargetOS)"/>
+      <IncludeFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+      <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+      <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
       <SyntaxOptions>
