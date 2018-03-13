@@ -26,7 +26,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
-            <Libraries Value="$Env(UB_SRC)/libs/Synopse/fpc-$(TargetOS)"/>
+            <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
             <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
             <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>

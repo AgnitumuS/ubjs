@@ -76,7 +76,7 @@ end;"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
-            <Libraries Value="$Env(UB_SRC)/libs/Synopse/fpc-$(TargetOS)"/>
+            <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
             <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse"/>
             <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
