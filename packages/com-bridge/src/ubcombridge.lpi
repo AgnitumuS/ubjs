@@ -10,7 +10,7 @@
       </Flags>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="UBComBridge"/>
+      <Title Value="ubcombridge"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -69,7 +69,7 @@
     </RunParams>
     <Units Count="2">
       <Unit0>
-        <Filename Value="UBComBridge.dpr"/>
+        <Filename Value="ubcombridge.dpr"/>
         <IsPartOfProject Value="True"/>
       </Unit0>
       <Unit1>

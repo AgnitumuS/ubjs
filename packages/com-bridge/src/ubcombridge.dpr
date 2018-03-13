@@ -1,4 +1,4 @@
-library UBComBridge;
+library ubcombridge;
 
 uses
   {$IFNDEF FPC}
