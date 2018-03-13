@@ -1,4 +1,4 @@
-library UBMail;
+library ubmail;
 
 uses
   {$IFNDEF FPC}
