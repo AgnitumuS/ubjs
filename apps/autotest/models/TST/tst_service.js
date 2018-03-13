@@ -17,6 +17,19 @@ me.multiply = function (ctx) {
   params.multiplyResult = a * b
 }
 
+me.entity.addMethod('sleep3sec')
+/**
+ * Called by auto test in async mode to check ?async=true is work
+ * @param {ubMethodParams} ctx
+ * @param {THTTPRequest} req Name of a scheduler item
+ * @param {THTTPResponse} resp Command to execute
+ */
+me.sleep3sec = function (ctx, req, resp) {
+  sleep(3)
+  resp.statusCode = 200
+  resp.writeEnd({result: true})
+}
+
 me.schedulerTest = function (ctx) {
   console.log('SCHEDULLER: log message from a test scheduller')
   var store = new TubDataStore('uba_user')
