@@ -21,13 +21,13 @@
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
-            <Filename Value="../bin/$(TargetCPU)/"/>
+            <Filename Value="$(ProjPath)/../bin/$(TargetCPU)/"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
             <Libraries Value="$Env(UB_SRC)/bin/fpc-linux"/>
             <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse"/>
-            <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
+            <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="// check compilation executed under windows
 // TargetOS and SrcOS not work for this
@@ -72,13 +72,13 @@ end;"/>
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
-            <Filename Value="../bin/$(TargetCPU)/"/>
+            <Filename Value="$(ProjPath)/../bin/$(TargetCPU)/"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
             <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
             <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse"/>
-            <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
+            <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
             <SyntaxOptions>
