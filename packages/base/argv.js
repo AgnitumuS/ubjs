@@ -1,4 +1,5 @@
 /**
+ *
  * Utils for connecting to a local UnityBase server
  *
  * In case you need to work with command line use a {@link module:@unitybase/base/options @unitybase/base.options} module
@@ -14,15 +15,10 @@
   let conn = session.connection
   // obtain domain information
   const domainInfo = conn.getDomainInfo()
-
- * @module @unitybase/base/argv
+ *
+ * @module argv
  */
 /* global removeCommentsFromJSON, startServer, stopServer */
-
-/**
- * 
- * @module @unitybase/base/argv
- */
 
 const _ = require('lodash')
 const options = require('./options')

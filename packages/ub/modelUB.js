@@ -1,6 +1,7 @@
 const EventEmitter = require('events').EventEmitter
 const UBDomain = require('@unitybase/base').UBDomain
-const repositoryFabric = require('@unitybase/base').ServerRepository.fabric // for backward compatibility with UB 1.7
+const ServerRepository = require('@unitybase/base').ServerRepository
+const repositoryFabric = ServerRepository.fabric // for backward compatibility with UB 1.7
 const App = require('./modules/App')
 const Session = require('./modules/Session')
 const UBFormat = require('@unitybase/base').format

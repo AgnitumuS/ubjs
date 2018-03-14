@@ -16,7 +16,6 @@
  *  - transform UBQL -> SQL
  *  - etc
  *
- * @module @unitybase/base/UBDomain
  */
 
 const _ = require('lodash')
@@ -40,13 +39,13 @@ const _ = require('lodash')
  *     // retrieve a localized caption of uba_user.name attribute
  *     domain.get('uba_user').attr('name').caption
  *
- * @class
  * @param {Object} domainInfo getDomainInfo UB server method result
  * @param {Object} domainInfo.domain raw entities collection
  * @param {Object} domainInfo.entityMethods entities methods access rights for current user
  * @param {Object} domainInfo.models information about domain models
  * @param {Object} domainInfo.i18n entities localization to current user language
  * @param {Object} domainInfo.forceMIMEConvertors list of registered server-side MIME converters for document type attribute content
+ * @class UBDomain
  */
 function UBDomain (domainInfo) {
   let me = this

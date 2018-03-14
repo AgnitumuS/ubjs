@@ -1,9 +1,3 @@
-/**
- * HTTP(s) connection to UnityBase server. Exports a {@link UBConnection} class
- *
- * @module @unitybase/base/UBConnection
- */
-
 const http = require('http')
 const _ = require('lodash')
 const UBSession = require('./UBSession')

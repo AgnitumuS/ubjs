@@ -1,6 +1,8 @@
-/**
+/*
  * Created by pavel.mash on 10.10.2014.
  */
+const UB = require('@unitybase/ub')
+const App = UB.App
 App.registerEndpoint('echoToFile', echoToFile, false)
 
 App.registerEndpoint('echoFromFile', echoFromFile, false)

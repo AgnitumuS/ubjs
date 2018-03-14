@@ -1,7 +1,6 @@
 /**
  * Repository for server-side data retrieve
  *
- * @module @unitybase/base/CustomRepository
  * @author pavel.mash 23.09.2014
  */
 

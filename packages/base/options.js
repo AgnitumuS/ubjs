@@ -1,8 +1,8 @@
 /**
  * Parse a command line options & environment variables and create a configuration object.
  *
-     const cmdLineOpt = require('cmd/options')
-     const argv = require('cmd/argv')
+     const cmdLineOpt = require('@unitybase/base').options
+     const argv = require('@unitybase/base').argv
 
      let paramsDescription = cmdLineOpt.describe('cmd/generateDDL',
       'Check database structure for application domain. ' +
@@ -24,9 +24,8 @@
      })
      let passedOptions = paramsDescription.parseVerbose({}, true)
 
- *
+ * @module options
  * @author pavel.mash
- * @module @unitybase/base/options
  */
 
 // [{short: 'u', long: 'user', param: 'userName', defaultValue: true, searchInEnv: true, help: 'A user name for server connection'}]

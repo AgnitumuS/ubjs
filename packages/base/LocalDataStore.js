@@ -1,5 +1,5 @@
 /**
- * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format).
+ * Helper for manipulation with data, stored locally in ({@link TubCachedData} format).
  *
  * This module shared between client & server. In case of server we use it together with {@link dataLoader},
  * in case of client - inside {@link UBConnection#select} to handle operations with entity data cached in IndexedDB.
@@ -8,17 +8,22 @@
  *
  * Client-side sample:
  *
- *         $App.connection.run({
-                entity: 'tst_IDMapping',
-                method: 'addnew',
-                fieldList: ['ID', 'code']
-           }).done(function(result){
-                // here result in array-of-array format: [{"entity":"tst_IDMapping","method":"addnew","fieldList":["ID","code"],"__fieldListExternal":["ID","code"],"resultData":{"fields":["ID","code"],"rowCount": 1, "data":[[3500000016003,null]]}}]
-                var objArray = UB.LocalDataStore.selectResultToArrayOfObjects(result); // transform array-of-array result representation to array-of-object
-                console.log(objArray); // now result in more simple array-of-object format: [{ID: 12312312312, code: null}]
-           });
+      $App.connection.run({
+        entity: 'tst_IDMapping',
+        method: 'addnew',
+        fieldList: ['ID', 'code']
+      }).done(function(result){
+        // here result in array-of-array format
+        // [{"entity":"tst_IDMapping","method":"addnew","fieldList":["ID","code"],
+        //   "__fieldListExternal":["ID","code"],
+        //   "resultData":{"fields":["ID","code"],"rowCount": 1, "data":[[3500000016003,null]]}}]
+        var objArray = UB.LocalDataStore.selectResultToArrayOfObjects(result);
+        // transform array-of-array result representation to array-of-object
+        console.log(objArray);
+        // now result in more simple array-of-object format: [{ID: 12312312312, code: null}]
+      });
 
- * @module @unitybase/base/LocalDataStore
+ * @module LocalDataStore
  */
 /*
  @author pavel.mash

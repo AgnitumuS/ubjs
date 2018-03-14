@@ -19,6 +19,7 @@ const uba_common = require('./uba_common')
 module.exports = {
   /**
    * Command line utils
+   * @type {argv}
    */
   argv: argv,
   /**
@@ -28,14 +29,14 @@ module.exports = {
   CustomRepository,
   /**
    * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format)
-   * @type {LocalDataStore}
+   * @type {module:LocalDataStore}
    */
   LocalDataStore,
   /**
    * Parse a command line options & environment variables and create a configuration object
    * @type {options}
    */
-  options,
+  options: options,
   /**
    * Server side & CLI side Repository
    * @type {ServerRepository}
