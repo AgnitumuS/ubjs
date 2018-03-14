@@ -1,7 +1,7 @@
 {
   "id": "Server",
   "name": "autotest",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -11,26 +11,26 @@
     "ddl": "npx ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
-    "@unitybase/adminui-pub": "^5.0.1",
-    "@unitybase/adminui-reg": "^5.0.1",
-    "@unitybase/base": "^5.0.1",
-    "@unitybase/canvas": "^5.0.1",
-    "@unitybase/cdn": "^5.0.1",
+    "@unitybase/adminui-pub": "^5.0.2",
+    "@unitybase/adminui-reg": "^5.0.2",
+    "@unitybase/base": "^5.0.2",
+    "@unitybase/canvas": "^5.0.2",
+    "@unitybase/cdn": "^5.0.2",
     "@unitybase/codemirror-full": "^1.2.13",
     "@unitybase/cryptojs": "^1.0.13",
-    "@unitybase/dml-generator": "^5.0.1",
-    "@unitybase/http-proxy": "^5.0.1",
-    "@unitybase/mailer": "^5.0.1",
-    "@unitybase/openid-connect": "^5.0.1",
-    "@unitybase/org": "^5.0.1",
+    "@unitybase/dml-generator": "^5.0.2",
+    "@unitybase/http-proxy": "^5.0.2",
+    "@unitybase/mailer": "^5.0.2",
+    "@unitybase/openid-connect": "^5.0.2",
+    "@unitybase/org": "^5.0.2",
     "@unitybase/pdf": "^5.0.1",
-    "@unitybase/ub": "^5.0.1",
-    "@unitybase/ub-pub": "^5.0.1",
-    "@unitybase/uba": "^5.0.1",
-    "@unitybase/ubm": "^5.0.1",
-    "@unitybase/ubq": "^5.0.1",
-    "@unitybase/ubs": "^5.0.1",
-    "@unitybase/xlsx": "^5.0.1",
+    "@unitybase/ub": "^5.0.2",
+    "@unitybase/ub-pub": "^5.0.2",
+    "@unitybase/uba": "^5.0.2",
+    "@unitybase/ubm": "^5.0.2",
+    "@unitybase/ubq": "^5.0.2",
+    "@unitybase/ubs": "^5.0.2",
+    "@unitybase/xlsx": "^5.0.2",
     "asn1js": "^2.0.14",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
@@ -49,8 +49,8 @@
     "tinymce": "^4.5.1"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.1",
-    "@unitybase/ubcli": "^5.0.1"
+    "@unitybase/stubs": "^5.0.2",
+    "@unitybase/ubcli": "^5.0.2"
   },
   "engines": {
     "ub": "^5.0"

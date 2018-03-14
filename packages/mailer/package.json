@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/mailer",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "UnityBase SMTP/POP3",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer",
   "scripts": {
@@ -12,8 +12,8 @@
   },
   "main": "./UBMail.js",
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.1",
-    "@unitybase/fpc-utils": "^5.0.0"
+    "@unitybase/fpc-utils": "^5.0.1",
+    "@unitybase/stubs": "^5.0.2"
   },
   "keywords": [
     "UnityBase",
