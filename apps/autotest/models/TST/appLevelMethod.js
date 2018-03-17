@@ -218,7 +218,7 @@ function testServerSideBLOB (req, resp) {
     assert.equal(i.v, 1, 'blobstore v1 implementation')
     assert.equal(i.store, 'simple')
     assert.equal(i.origName, fn)
-    assert.equal(i.relPath, '')
+    // assert.equal(i.relPath, '')
 
     let binContent = App.blobStores.getFromBlobStore(
       {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE},
@@ -226,26 +226,13 @@ function testServerSideBLOB (req, resp) {
     )
     assert.equal(binContent.byteLength, fStat.size, `content size ${binContent.byteLength} not match real ${fStat.size}`)
   } catch (e) {
-    err = e.message + 'Call stack: ' + e.stack
+    err = e.message + 'Server-side call stack: ' + e.stack
   }
   if (err) {
     resp.writeEnd({success: false, reason: err})
   } else {
     resp.writeEnd({success: true})
   }
-
-  // var docReq = new TubDocumentRequest() // starting from UB 1.11 handler is a singleton inside request
-  // docReq.entity = 'tst_document'
-  // docReq.attribute = 'fileStoreSimple'
-  // docReq.id = 3000000003738
-  // let docHandler = docReq.createHandlerObject(true)
-  // docHandler.loadContent(TubLoadContentBody.Yes)
-  // // var content = docReq.getBodyAsBase64String();
-  // // console.log(content.length);
-  // docHandler.freeNative()
-  // docReq.freeNative()
-  // resp.statusCode = 200
-  // resp.writeEnd('OK')
 }
 App.registerEndpoint('testServerSideBLOB', testServerSideBLOB, false)
 
