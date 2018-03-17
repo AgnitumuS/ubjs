@@ -1,6 +1,3 @@
-/* global TubDocumentRequest, TubLoadContentBody */
-/* global Session, App */
-
 /**
  * @type {{notifyDocumentSaved: notifyDocumentSaved, getDocumentOffice: getDocumentOffice, getOnlyOfficeConfiguration: getOnlyOfficeConfiguration}}
  */

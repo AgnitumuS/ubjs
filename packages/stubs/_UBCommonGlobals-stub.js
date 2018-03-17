@@ -130,29 +130,6 @@ function terminateWorkerThread (threadID) {}
 function gc () {}
 
 /**
- * Write something to file. If isBynary == false in UTF8 encoding. Do not use directly, use require('fs').writeFileSync() instead
- * @private
- * @deprecated Use writeFileNew
- * @param {String} fileName
- * @param {String|Object|ArrayBuffer|ArrayBufferView} fileContent if {Object} passed it can be serialized to string first
- * @param {Boolean} [isBinary] If true - string not decoded to UTF8 and writed to file as is.
- * @return {Boolean} success or not
- */
-function writeFile (fileName, fileContent, isBinary) { return true }
-
-/**
- * Write content to file. Internally implement {@link UBWriter#write}
- * @private
- * @param {String} filePath
- * @param {String|Object|ArrayBuffer} fileContent
- * @param {String} [encoding="utf-8"] Optional encoding of source.
- *						        If 'bin' - return ArrayBuffer source representation without any conversion.
- *							  	If 'base64' - transform base64 encoded content of source to ArrayBuffer
- * @returns {ArrayBuffer|String} Return String in case no encoding passed or ArrayBuffer
- */
-function writeFileNew (filePath, fileContent, encoding) {}
-
-/**
  * Native CRC32 implementation. Much (x100) faster compared to JS implemenattion
  * @param {Number} initialValue Must be 0 in case no initial value
  * @param {String|ArrayBuffer|ArrayBufferView} data Data to calculate CRC32. In case of string will be transformed to UFT8 before calculation

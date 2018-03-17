@@ -7,19 +7,16 @@
 
  # General explanation
 
- In any case you define **Entity attribute** of `Document` type and set `storeName` property for this attribute.
- Content of such attributes is a meta-information about file - a serialized {TubDocumentContent} object, not actual file content.
+ **Entity attribute** of `Document` type with `storeName` property for this attribute should be defined.
+ Content (data stored in database) of such attributes is a meta-information about file - a serialized {@link BlobStoreItem} object, not an actual file content.
 
- For non-virtual entity (`dsType`!=='Virtual') UnityBase create varchar(4000) field in database and store
- there {TubDocumentContent} serialized to JSON.
+ For non-virtual entity (`dsType`!=='Virtual') UnityBase create nvarchar(2000) field in database and store
+ there {BlobStoreItem} serialized to JSON.
 
- For Virtual entity developer must implement `select` method and fill content of document type attribute manually
+ For Virtual entity developer should implement `select` method and fill {@link BlobStoreItem} manually
  (for example by parsing file content as done in **ubm_form**).
 
  In the store definition section of application configuration developer describe stores. Each store must implement interface described below.
-
- In case `storeType` is `FileSystem` this interface is implemented inside UnityBase server executable, for
- `storeType` == Virtual UnityBase search for JS implementation class named 'UB.virtualStores' + [`implementedBy` property from store config].
 
  The store class itself must provide storing and retrieving file content (based on meta-information stored in the entity attribute).
 
@@ -33,50 +30,18 @@
 
  So in UnityBase upload file to to the server is performed in two stages:
 
- 1. Upload file to temporary store - on this stage client call setDocument/setDocumentMultipart app level method and
- pass file content to server with additional parameter **isDirty=true**, server must store file in the temporary place. To do this server:
-
- - parse incoming HTTP request and transform it to {@link BlobStoreRequest} object - container for raw document data
- - based on entity attribute UnityBase create {@link BlobStoreCustom} descendant - this object able to
- put TubDocumentRequest content to store. During initialization handler calculate md5 checksum of incoming
- document and MIME content type (based of origName file extension or on magic bytes in case extension is unknown)
- - server call {@link BlobStoreCustom#saveContentToTempStore} method passing {@link TubDocumentHandlerCustom handler} as a parameter
- - server return in HTTP response serialized {@link TubDocumentContent}, with {@link TubDocumentContent#isDirty} attribute is set to `true`.
- This information is used on the next step to determinate where to found file .
+ 1. Upload file to temporary store - on this stage client call setDocument app level method and
+ pass file content to server with additional parameter **isDirty=true**, server store file in the temporary place.
 
  2. Client execute `insert` or `update` entity method and pass (with other attributes) string, returned on the first stage as a value of `Document`
  type attribute. On this stage server see what user want to update/insert Document and, based on *Domain* information, know
  what type of store is used for this attribute. Server:
 
- - load information about previously stored document from entity attribute to {@link TubDocumentContent}.
- Create {@link TubDocumentHandlerCustom} for old file content;
- - in case of `update` and previous revision is exist: if (storeConfig.historyDepth > 0) then
- call {@link UB.virtualStores.Custom#moveToArchive}, else call {@link UB.virtualStores.Custom#deleteContent};
- - load temporary document meta-information from string provided in update/insert method to {@link TubDocumentContent}.
- Create {@link TubDocumentHandlerCustom} for new file content;
- - in case new content {@link TubDocumentContent#isDirty} equal to `true` - call {@link UB.virtualStores.Custom#loadContentFromTempStore}(TubLoadContentBody.No).
- `TubLoadContentBody.No` implies that there is no need to load file into memory. When UnityBase increase {@link TubDocumentContent#revision handler.content.revision}
- and call {@link UB.virtualStores.Custom#moveToPermanentStore}
-
  3. Finally UnityBase update entity and commit database transaction (in case entity is non-virtual)
 
  ## Download file from server
 
- For download file from server client call getDocument app level method. Server:
-
- - lock document for a time of reading from store (by entity + ID)
- - if dirty copy requested - call {@link UB.virtualStores.Custom#loadContentFromTempStore}(TubLoadContentBody.Yes) else call {@link UB.virtualStores.Custom#loadBodyFromEntity}
- - call {@link UB.virtualStores.Custom#fillResponse}
- - unlock document
-
- Good example of Virtual store implementation is:
-
- - **mdb** store placed in `UnityBase\models\UB\virtualStores\mdb.js` - implement read/write files
- from models `public/form` folder;
- - **fileVirtualWritePDF** (`UnityBase\models\UB\virtualStores\fileVirtualWritePDF.js`) - implement file store with
- automatic conversion MS Word, MS Excel and MS Power Point documents into \*.pdf format;
-
- ### Warning - descendants must be singleton. We can not define parent class as singleton due to Ext specific
+ For download file from server client call `getDocument` endpoint
 
  */
 

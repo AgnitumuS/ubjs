@@ -1,12 +1,15 @@
-﻿/**
+/**
  * @class UB.UBQ
  * Mail sender for Scheduler
  * @singleton
  */
-
+const UB = require('@unitybase/ub')
+const App = UB.App
 let me = UB.ns('UB.UBQ')
 let mailerParams = App.serverConfig.application.customSettings['mailerConfig']
-const UBMail = (mailerParams && mailerParams.autoTLS) ? require('@unitybase/mailer-ssl') : require('@unitybase/mailer');
+const UBMail = (mailerParams && mailerParams.autoTLS)
+  ? require('@unitybase/mailer-ssl')
+  : require('@unitybase/mailer')
 
 /**
  * @private
@@ -42,25 +45,25 @@ function internalSendMail (data, mailer) {
  * Read queue with code 'mail' and send mails to recipient(s)
  * to attach files into the mail, use queue like this:
 
-        msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, atachName: <file name>}, ...]
+      msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, atachName: <file name>}, ...]
 
  * for document image:
 
-          {
-                entity: 'doc_document',
-                attribute: 'document',
-                id: <doc_document ID>,
-                atachName: "document.pdf"
-          }
+    {
+      entity: 'doc_document',
+      attribute: 'document',
+      id: <doc_document ID>,
+      atachName: "document.pdf"
+    }
 
  * for attached files:
  *
-        {
-            entity: "doc_attachment",
-            attribute: 'document',
-            id: <attachment ID>,
-            atachName: <attachment caption>
-        }
+    {
+      entity: "doc_attachment",
+      attribute: 'document',
+      id: <attachment ID>,
+      atachName: <attachment caption>
+    }
 
  * @param {ubMethodParams} ctxt
  * @returns {String}
@@ -68,7 +71,6 @@ function internalSendMail (data, mailer) {
 me.sendQueueMail = function (ctxt) {
   let eMsg
   let mailData = {}
-  let docReq
   let sentCount = 0
 
   console.log('Call JS method: UB.UBQ.sendQueueMail')
@@ -100,20 +102,17 @@ me.sendQueueMail = function (ctxt) {
     let cmd = JSON.parse(mailData.msgCmd)
     mailData.attaches = []
     if (cmd.attaches && cmd.attaches.length) {
-      if (!docReq) {
-        docReq = new TubDocumentRequest() // create it only if necessary
-      }
-      for (let i = 0; i < cmd.attaches.length; i++) {
-        docReq.entity = cmd.attaches[i].entity
-        docReq.attribute = cmd.attaches[i].attribute
-        docReq.id = cmd.attaches[i].id
-        let docHandler = docReq.createHandlerObject(true)
+      for (let i = 0, L = cmd.attaches.length; i < L; i++) {
         try {
-          docHandler.loadContent(TubLoadContentBody.Yes)
+          let base64Body = App.blobStores.getFromBlobStore({
+            entity: cmd.attaches[i].entity,
+            attribute: cmd.attaches[i].attribute,
+            ID: cmd.attaches[i].id
+          }, {encoding: 'base64'})
           mailData.attaches.push({
             kind: UBMail.TubSendMailAttachKind.Text,
             atachName: cmd.attaches[i].atachName,
-            data: docReq.getBodyAsBase64String(),
+            data: base64Body,
             isBase64: true
           })
         } catch (e) {

@@ -22,7 +22,8 @@ const Mustache = require('mustache')
 const Q = require('when')
 const _ = require('lodash')
 const path = require('path')
-const queryBuilder = require('@unitybase/base').ServerRepository.fabric
+const UB = require('@unitybase/ub')
+const App = UB.App
 const formatFunctions = require('../public/formatFunctions')
 
 const xmldom = require('xmldom')
@@ -98,7 +99,7 @@ UBServerReport.makeReport = function (reportCode, reportType, params) {
 * Load report template and code.
 */
 UBServerReport.prototype.init = function () {
-  let reportInfo = queryBuilder('ubs_report').attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
+  let reportInfo = UB.Repository('ubs_report').attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
           .where('[report_code]', '=', this.reportCode).selectSingle()
 
   if (!reportInfo) throw new Error(`Report with code "${this.reportCode}" not found`)
@@ -342,14 +343,12 @@ UBServerReport.prototype.buildReport = function (reportParams) {
 UBServerReport.prototype.getDocument = function (attribute) {
   let cfg = JSON.parse(this.reportRW[attribute])
 
-  let docReq = new TubDocumentRequest()
-  docReq.entity = 'ubs_report'
-  docReq.attribute = attribute
-  docReq.id = this.reportRW.ID
-  docReq.isDirty = !!cfg.isDirty
-  let docHandler = docReq.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.Yes /* WithBody */)
-  return docHandler.request.getBodyAsUnicodeString()
+  return App.blobStores.getFromBlobStore({
+    entity: 'ubs_report',
+    attribute: attribute,
+    ID: this.reportRW.ID,
+    isDirty: !!cfg.isDirty
+  }, {encoding: 'utf8'})
 }
 
 module.exports = UBServerReport
