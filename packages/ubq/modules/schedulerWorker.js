@@ -5,8 +5,8 @@ const cron = require('node-cron')
  * reference from this function to anything from a module is NOT ALLOWED
  */
 function runSchedulersCircle (message) {
-  // boilerplate to stop debuger inside Worker
-  // put breakpoint on line  let p = 0 and change a value of i to 2 to go forward
+  // boilerplate to stop debugger inside Worker
+  // put breakpoint on line  let p = 0 and change a value of i to 2 in debugger to go forward
   /* let i = 1
   while (i===1) {
     let p = 0
@@ -14,7 +14,7 @@ function runSchedulersCircle (message) {
   */
   const serverURL = message.serverURL
   const config = message.config
-  let jobs = [], job
+  let jobs = []
 
   function safeSendAsyncRequest (cfgIdx) {
     try {
@@ -45,7 +45,7 @@ function runSchedulersCircle (message) {
   console.debug('SCHEDULER: Got a init config %j', config)
   for (let i = 0, l = config.length; i < l; i++) {
     console.debug('SCHEDULER: add a job for', config[i].name, 'scheduled as', config[i].cron)
-    job = cron.schedule(
+    let job = cron.schedule(
       config[i].cron,
       safeSendAsyncRequest.bind(null, i),
       // OBSOLETE cronJobStopped.bind(null, i),

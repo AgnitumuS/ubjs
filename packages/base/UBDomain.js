@@ -1,23 +1,3 @@
-/**
- * UnityBase domain object model (metadata) - in-memory representation of all *.meta files included in the application config.
- *
- * Developer should never create {@link UBDomain} class directly, but instead use a:
- *
- *  - inside server-side methods - {@link App.domainInfo App.domainInfo} property
- *  - inside CLI scripts - using {@link UBConnection.getDomainInfo UBConnection.getDomainInfo} method
- *  - inside a browser - `UBConnection.domain` property
- *
- * Information about domain is used in many aspects of UnityBase:
- *
- *  - database generation
- *  - documentation generation
- *  - forms generation
- *  - views generation etc.
- *  - transform UBQL -> SQL
- *  - etc
- *
- */
-
 const _ = require('lodash')
 
 /**
@@ -31,13 +11,13 @@ const _ = require('lodash')
 
 /**
  * @classdesc
- * UnityBase domain object model.
- * Construct new UBDomain instance based on getDomainInfo UB server method result
+ * Domain object model (metadata) - in-memory representation of all *.meta files included in the application config.
  *
- * Usage sample:
+ * Developer should never create {@link UBDomain} class directly, but instead use a:
  *
- *     // retrieve a localized caption of uba_user.name attribute
- *     domain.get('uba_user').attr('name').caption
+ *  - {@link App.domainInfo App.domainInfo} property inside server-side methods
+ *  - {@link UBConnection#getDomainInfo UBConnection.getDomainInfo} method inside CLI scripts
+ *  - `UBConnection.domain` property inside a browser
  *
  * @param {Object} domainInfo getDomainInfo UB server method result
  * @param {Object} domainInfo.domain raw entities collection
@@ -206,12 +186,12 @@ UBDomain.prototype.filterEntities = function (config) {
 }
 
 /**
- * UnityBase base attribute data types
+ * Possible types of the attributes
  * @readonly
  * @enum
  */
 UBDomain.ubDataTypes = {
-  /** Small string. MSSQL: NVARCHAR, ORACLE: NVARCHAR2, POSTGRE: VARCHAR */
+  /** Small string. _MSSQL: NVARCHAR, ORACLE: NVARCHAR2, POSTGRE: VARCHAR_ */
   String: 'String',
   /** 32-bite Integer. MSSQL: INT, ORACLE: INTEGER, POSTGRE: INTEGER */
   Int: 'Int',

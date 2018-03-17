@@ -1,7 +1,6 @@
-/**
+/*
  * Repository for server-side data retrieve
  *
- * @module @unitybase/base/ServerRepository
  * @author pavel.mash
  */
 
@@ -10,30 +9,35 @@ const LocalDataStore = require('./LocalDataStore')
 
 /* global TubDataStore */
 /**
- * Create a new server side repository.
- * Implement {@link ServerRepository#select} method able to return initialized {@link TubDataStore}
+ * @classdesc
+ * Server side repository.
+ * Overrided {@link ServerRepository#select} method return initialized {@link TubDataStore}
  *
- * Usually created using fabric function {@link UBConnection.Repository  conn.Repository}
+ * Usually is created by using one of the fabric functions:
  *
- * @example
+ *   - {@link UB.Repository UB.Repository} for entities from this server instance
+ *   - {@link UBConnection#Repository conn.Repository} for access remote UB server
+ *
 
- let store = UB.Repository('my_entity')
-   .attrs('id')
-   .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
-   .where('name', 'contains', 'Homer'). // name like '%homer%'
-   .where('birtday', 'geq', new Date()) //(birtday >= '2012-01-01')
-   .where('birtday', 'leq', new Date() + 10) // AND (birtday <= '2012-01-02')
-   .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
-   .where('', 'match', 'myvalue') // perform full text search for entity (require fts mixin)
-   .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
-   .select()
+     let store = UB.Repository('my_entity')
+       .attrs('id')
+       .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
+       .where('name', 'contains', 'Homer'). // name like '%homer%'
+       .where('birtday', 'geq', new Date()) //(birtday >= '2012-01-01')
+       .where('birtday', 'leq', new Date() + 10) // AND (birtday <= '2012-01-02')
+       .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
+       .where('', 'match', 'myvalue') // perform full text search for entity (require fts mixin)
+       .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
+       .select()
 
- * @class
- * @extends {CustomRepository}
- * @param {UBConnection|null} connection The remote server connection or `null` for internal server thread
- * @param {String} entityName name of Entity we create for
+ * @extends CustomRepository
  */
 class ServerRepository extends CustomRepository {
+  /**
+   * @private
+   * @param {UBConnection|null} connection The remote server connection or `null` for internal server thread
+   * @param {String} entityName name of Entity we create for
+   */
   constructor (connection, entityName) {
     super(entityName)
     /**

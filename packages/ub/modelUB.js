@@ -170,8 +170,16 @@ require('./modules/RLS')
 // export BEFORE load models, since models inside can use a UB model
 const modelLoader = require('./modules/moledLoader')
 UB.loadLegacyModules = modelLoader.loadLegacyModules
+/**
+ * Application instance
+ * @type {App}
+ */
 UB.App = App
 
+/**
+ * Initialize UnityBase application by require all models defined in config
+ * and registering endpoints
+ */
 UB.run = function () {
   /**
    * @deprecated Use `const UB = require('@unitybase/ub')`

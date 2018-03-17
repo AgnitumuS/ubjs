@@ -8,18 +8,17 @@ const UBDomain = require('@unitybase/base').UBDomain
 const EventEmitter = require('events').EventEmitter
 
 /**
- * UnityBase application. Accessible via singleton instance App.
+ * UnityBase application
  *
- * This documentation describe `native` (implemented inside ub.exe) methods,
- * but developer can add his own (custom) application level methods using {@link App.registerEndpoint App.registerEndpoint}
+ *    const App = require('@unitybase/ub').App
+ *
+ * Developer can add his own application level methods using {@link App.registerEndpoint App.registerEndpoint}
  * and take a full control on HTTP request & response.
  *
  * Mixes EventEmitter, and server will emit:
  *
  *  - `endpointName + ':before'` event before endpoint handler  execution
- *  - `endpointName + ':after'` event after success (no exception is raised, no App.preventDefault() is called) endpoint handler execution
- *
- * This happens for both native and custom methods.
+ *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault() is called inside endpoint handler
  *
  * @Example:
  *
@@ -53,17 +52,17 @@ const App = {
    *
    * On this stage you can subscribe on a cross-model handles.
    *
-   * Example:
+   * @example:
    *
    App.once('domainIsLoaded', function(){
-         for (eName in App.domainInfo.entities) {
-            // if entity have attribute mi_fedUnit
-            if (App.domainInfo.entities[eName].attributes.mi_fedUnit) {
-              let entityObj = global[eName]
-              entityObj.on('insert:before', fedBeforeInsert) // add before insert handler
-            }
-         }
-       })
+     for (eName in App.domainInfo.entities) {
+        // if entity have attribute mi_fedUnit
+        if (App.domainInfo.entities[eName].attributes.mi_fedUnit) {
+          let entityObj = global[eName]
+          entityObj.on('insert:before', fedBeforeInsert) // add before insert handler
+        }
+     }
+   })
    *
    * @event domainIsLoaded
    */
@@ -286,7 +285,8 @@ const {getDomainInfo} = process.binding('ub_app')
 let _domainCache
 /**
  * Extended information about application domain (metadata)
- * @type {UBDomain}
+ * @memberOf App
+ * @member {UBDomain} domainInfo
  */
 Object.defineProperty(App, 'domainInfo', {
   enumerable: true,
