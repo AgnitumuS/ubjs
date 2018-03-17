@@ -49,4 +49,7 @@ if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=autotest
 npx ubcli autotest -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT -noLogo -skipModules
-if [ ! $? = 0 ]; then err; fi
+if [ ! $? = 0 ]; then
+  cat ./_autotestResults.json;
+  err;
+fi
