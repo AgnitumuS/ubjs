@@ -15,8 +15,6 @@ const blobStores = require('./blobStores')
  *  To retrieve data from database using build-in ORM (to execute entity `select` method) preffered way is to use {@link UB.Repository} fabric function.
  *
  * @class TubDataStore
- * @param {String} entityCode
- * @constructor
  */
 /**
  * Run any entity method.
@@ -35,6 +33,7 @@ const blobStores = require('./blobStores')
  * @param {Object|TubList} params
  * @return {Boolean} True in case of success, else raise exception
  * @method run
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Execute SQL with parameters and place result into dataStore. This method expect SQL statement have **result**.
@@ -44,11 +43,13 @@ const blobStores = require('./blobStores')
  * @param {String} sql SQL statement to run
  * @param {Object|TubList} params SQL parameters list
  * @method runSQL
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Execute SQL with parameters. Not wait result data
  * @param {String} sql SQL statement to run
  * @param {Object|TubList} params SQL parameters list
+ * @memberOf TubDataStore.prototype
  * @method execSQL
  */
 /**
@@ -64,6 +65,7 @@ const blobStores = require('./blobStores')
  *
  * @param source
  * @method initFromJSON
+ * @memberOf TubDataStore.prototype
  */
 
 /**
@@ -76,6 +78,7 @@ const blobStores = require('./blobStores')
 
  * @param {String} fieldName
  * @method fieldIndexByName
+ * @memberOf TubDataStore.prototype
  */
 
 /**
@@ -87,6 +90,7 @@ const blobStores = require('./blobStores')
  * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
  * @return {Number|String}
  * @method get
+ * @memberOf TubDataStore.prototype
  */
 
 /**
@@ -97,72 +101,89 @@ const blobStores = require('./blobStores')
  * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
  * @return {ArrayBuffer}
  * @method getAsBuffer
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Move next
  * @method next
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Move prev
  * @method prev
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Move first
  * @method first
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Move last
  * @method last
+ * @memberOf TubDataStore.prototype
  */
 /**
- * Indicate current position in data collection is on the begining of collection
- * @property {Boolean} bof
+ * Indicate current position in data collection is on the beginning of collection
+ * @member {Boolean} bof
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Indicate current position in data collection is on the end of collection.
- * @property {Boolean} eof
+ * @member {Boolean} eof
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Generate a new identifier (int64)
  * @return {Number}
  * @method generateID
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Is store initialized
- * @property {Boolean} initialized
+ * @member {Boolean} initialized
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
- * @property {String} asJSONObject
+ * @member {String} asJSONObject
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Return string representation of Instance in `Array of array` format
- * @property {String} asJSONArray
+ * @member {String} asJSONArray
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Return XML representation of Instance in MS DataSet format
- * @property {String} asXMLPersistent
+ * @member {String} asXMLPersistent
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Active dataset name we work with. There is some predefined dataNames - see TubDataStore.prototype.DATA_NAMES
- * @property {String} currentDataName
+ * @member {String} currentDataName
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Record count. If DataStore is not initialized or empty will return 0.
- * @property {Number} rowCount
+ * @member {Number} rowCount
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Total record count if store are filled with withTotal() option.
  * If DataStore is not initialized or empty or inited without withTotal() will return -1.
- * @property {Number} totalRowCount
+ * @member {Number} totalRowCount
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Row position inside currentDataName dataset. Read/write
- * @property {Number} rowPos
+ * @member {Number} rowPos
+ * @memberOf TubDataStore.prototype
  */
 /**
  * Release all internal resources. Store became unusable after call to `freeNative()`
  * @method freeNative
+ * @memberOf TubDataStore.prototype
  */
 /**
  *  Initialize DataStore from one of supported source formats:
@@ -205,6 +226,7 @@ const blobStores = require('./blobStores')
  * @param {Object|Array} source
  * @param {Array.<String|Object>} [keyMap] Optional mapping of source field names to new field names
  * @returns {TubDataStore}
+ * @memberOf TubDataStore.prototype
  */
 TubDataStore.initialize = function (source, keyMap) {
   let flatArray = []
@@ -286,8 +308,8 @@ TubDataStore.initialize = function (source, keyMap) {
 
 /**
  * Extended information about application domain
- * @property {UBEntity} entity
- * @memberOf TubDataStore
+ * @member {UBEntity} entity
+ * @memberOf TubDataStore.prototype
  */
 Object.defineProperty(TubDataStore, 'entity', {
   enumerable: true,
@@ -307,6 +329,7 @@ Object.defineProperty(TubDataStore, 'entity', {
  *    } finally {
  *      store.currentDataName = prevData
  *    }
+ * @memberOf TubDataStore
  */
 TubDataStore.DATA_NAMES = {
   BEFORE_UPDATE: 'selectBeforeUpdate',
@@ -329,6 +352,7 @@ TubDataStore.DATA_NAMES = {
  * @param {ubMethodParams} ctx
  * @param {Boolean} isUpdate
  * @return {Boolean} True in case some of document type attributes actually changed
+ * @memberOf TubDataStore.prototype
  */
 TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   let entity = this.entity
