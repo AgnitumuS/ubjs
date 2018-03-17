@@ -4,8 +4,40 @@
  *
  * @example
 
-App.blobStores.getFromBlobStore
-App.blobStores.putToBlobStore
+    // get dirty (not committed yet) content of my_entity.docAttribute with ID = 12312 as ArrayBuffer
+    let tmpContent = App.blobStores.getFromBlobStore(
+       {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute', isDirty: true},
+       {encoding: 'bin'}
+    )
+
+    // get BLOB content of my_entity.docAttribute with ID = 12312 as base64 string
+    let base64Content = App.blobStores.getFromBlobStore(
+      {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute'},
+      {encoding: 'base64'}
+    )
+
+    // get BLOB content of my_entity.docAttribute with ID = 12312 as string
+    let base64Content = App.blobStores.getFromBlobStore(
+      {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute'},
+      {encoding: 'utf8'}
+    )
+
+    // read file and but it to BLOB store (not committed yet)
+    let content = fs.readFileSync(__filename, {encoding: 'bin'})
+    let fn = path.basename(__filename)
+    let blobItem = App.blobStores.putToBlobStore(
+      {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute'},
+      content
+    )
+
+    // commit blob store
+    let dataStore = UB.DataStore(my_entity)
+    dataStore.run('update', {
+      execParams: {
+        ID: 12312,
+        blobAttribute: JSON.stringify(blobItem)
+      }
+    })
 
  *
  * @module blobStores

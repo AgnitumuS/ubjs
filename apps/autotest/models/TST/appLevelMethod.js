@@ -226,7 +226,7 @@ function testServerSideBLOB (req, resp) {
     )
     assert.equal(binContent.byteLength, fStat.size, `content size ${binContent.byteLength} not match real ${fStat.size}`)
   } catch (e) {
-    err = e.message
+    err = e.message + 'Call stack: ' + e.stack
   }
   if (err) {
     resp.writeEnd({success: false, reason: err})
