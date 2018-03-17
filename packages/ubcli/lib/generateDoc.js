@@ -89,7 +89,7 @@ module.exports = function generateDoc (cfg) {
       }
     }
 
-    let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'generateDoc_template.mustache'))
+    let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'generateDoc_template.mustache'), 'utf8')
 
     let rendered = mustache.render(tpl, {
       domain: domainAsArray,

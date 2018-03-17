@@ -170,7 +170,7 @@ PrintToPdf.requireFonts = function (config) {
     }
     for (let i = 0, l = notLoadedFonts.length; i < l; i++) {
       const realPath = path.join(__dirname, '..', notLoadedFonts[i])
-      let fontData = JSON.parse(fs.readFileSync(realPath))
+      let fontData = JSON.parse(fs.readFileSync(realPath, 'utf8'))
       JsPDF.API.addRawFontData(fontData)
     }
     return true

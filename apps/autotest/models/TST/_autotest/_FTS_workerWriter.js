@@ -48,7 +48,7 @@ function onProcessWorker (message) {
     let trans = []
     let d = new Date(2015, 1, 1)
 
-    let data = fs.readFileSync(path.join(folder, 'fixtures', FILE_NAME))
+    let data = fs.readFileSync(path.join(folder, 'fixtures', FILE_NAME), 'utf8')
     let LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
     let testArr = data.split(LINE_DELIMITER)
     let curTrLen = 0

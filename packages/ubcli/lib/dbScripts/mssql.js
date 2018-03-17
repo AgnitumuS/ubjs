@@ -46,11 +46,11 @@ function splitAndExec (stmts, ubConnection, dbConnectionName) {
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
-  let script = fs.readFileSync(path.join(__dirname, 'mssqlCreateDatabase.sql'))
+  let script = fs.readFileSync(path.join(__dirname, 'mssqlCreateDatabase.sql'), 'utf8')
   script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
   splitAndExec(script, conn, DBA_FAKE)
 
-  script = fs.readFileSync(path.join(__dirname, 'mssqlCreateLogin.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'mssqlCreateLogin.sql'), 'utf8')
   script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
   splitAndExec(script, conn, DBA_FAKE /* databaseConfig.name */)
 }
@@ -71,9 +71,9 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
   sequences = UB.format(sequences, clientNum)
   splitAndExec(sequences, conn, databaseConfig.name)
 
-  let script = fs.readFileSync(path.join(__dirname, 'mssqlObjects.sql'))
+  let script = fs.readFileSync(path.join(__dirname, 'mssqlObjects.sql'), 'utf8')
   splitAndExec(script, conn, databaseConfig.name)
 
-  script = fs.readFileSync(path.join(__dirname, 'mssqlTables.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'mssqlTables.sql'), 'utf8')
   splitAndExec(script, conn, databaseConfig.name)
 }

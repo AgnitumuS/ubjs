@@ -1,3 +1,15 @@
+/**
+ *
+ * Server-side BLOB stores methods. Accessible via {@link App.blobStores}
+ *
+ * @example
+
+App.blobStores.getFromBlobStore
+App.blobStores.putToBlobStore
+
+ *
+ * @module blobStores
+ */
 const App = require('../modules/App')
 const UBDomain = require('@unitybase/base').UBDomain
 const Repository = require('@unitybase/base').ServerRepository.fabric
@@ -17,6 +29,7 @@ function getBlobHistoryDataStore () {
 }
 
 /**
+ * @private
  * @return {Object<string, BlobStoreCustom>}
  */
 function createBlobStoreMap () {
@@ -47,11 +60,41 @@ const blobStoresMap = createBlobStoreMap()
 
 /**
  * Blob store request (parameters passed to get|setDocument)
+ * @typedef {Object} BlobStoreRequest
+ * @property {Number} ID
+ * @property {String} entity
+ * @property {String} attribute
+ * @property {Boolean} [isDirty]
+ * @property {String} [fileName]
+ * @property {Number} [revision]
+ * @property {String} [extra] Store-specific extra parameters
+ */
+
+/**
+ * Parsed blob store request (validated input parameters and object relations)
  * @typedef {Object} ParsedRequest
  * @property {Boolean} success
  * @property {String} [reason] Error message in case success === false
  * @property {BlobStoreRequest} [bsReq] Parsed parameters in case success
  * @property {UBEntityAttribute} [attribute] Entity attribute in case success
+ * @private
+ */
+
+/**
+ * Blob store item content (JSON stored in database)
+ * @typedef {Object} BlobStoreItem
+ * @property {Number} [v] Store version. Empty for UB<5. Store implementation must check `v` for backward compatibility
+ * @property {String} store Code of store implementation from application config. If empty - use a store from attribute configuration
+ * @property {String} fName File name inside store (auto generated in most case)
+ * @property {String} origName Original file name (as user upload it)
+ * @property {String} [relPath] Relative path of fName inside store folder (for file-based stores)
+ * @property {String} ct Content type
+ * @property {Number} size Content size
+ * @property {String} md5 Content MD5 checksum
+ * @property {Number} [revision] Content revision. Used only for stores with `historyDepth` > 0
+ * @property {Boolean} [deleting] If true content must be deleted/archived during commit
+ * @property {Boolean} [isDirty] ????
+ * @property {Boolean} [isPermanent] If `true` - do not delete content during history rotation
  */
 
 /**
@@ -61,6 +104,7 @@ const blobStoresMap = createBlobStoreMap()
  *
  * @param {*} params
  * @return {ParsedRequest}
+ * @private
  */
 function parseBlobRequestParams (params) {
   let ID = parseInt(params.ID || params.id)
@@ -87,11 +131,12 @@ function parseBlobRequestParams (params) {
 }
 
 /**
- * Retrieve blobInfo depending on requested revision. The main purpose is to take store implementation depending on revision
+ * Obtain blobInfo depending on requested revision. The main purpose is to take store implementation depending on revision
  * Return either success: false with reason or success: true and requested blobInfo & store implementation
  *
  * @param {ParsedRequest} parsedRequest
  * @return {{success: boolean, reason}|{success: boolean, blobInfo: Object, store: BlobStoreCustom}}
+ * @private
  */
 function getRequestedBLOBInfo (parsedRequest) {
   let attribute = parsedRequest.attribute
@@ -146,7 +191,7 @@ function getRequestedBLOBInfo (parsedRequest) {
   }
 }
 /**
- * Retrieve document content from blobStore and send it to response.
+ * Obtains document content from blobStore and send it to response.
  *
  * Accept 3 mandatory parameter: entity,attribute,ID
  * and 3 optional parameter: isDirty, fileName, revision.
@@ -156,6 +201,7 @@ function getRequestedBLOBInfo (parsedRequest) {
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @private
  */
 function getDocument (req, resp) {
   /** @type BlobStoreRequest */
@@ -185,13 +231,13 @@ function getDocument (req, resp) {
 }
 
 /**
- * Retrieve BLOB content from blob store.
+ * Server-side method for obtaining BLOB content from blob store.
  * @param {BlobStoreRequest} request
- * @ param {BlobStoreItem} blobInfo JSON retrieved from a DB. `undefinded` for dirty request.
- *   If `undefined` and requested not dirty item then UB will send query to entity and get blobInfo from DB.
  * @param {Object} [options]
- * @param {String|Null} [options.encoding] Default to 'bin'. Possible values: 'bin'|'ascii'|'utf-8'
- * @returns {String|ArrayBuffer}
+ * @param {String|Null} [options.encoding] Possible values:
+ *   'bin' 'ascii'  'base64' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
+ *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
+ * @returns {String|Buffer|ArrayBuffer}
  */
 function getFromBlobStore (request, options) {
   let parsed = parseBlobRequestParams(request)
@@ -204,7 +250,7 @@ function getFromBlobStore (request, options) {
 }
 
 /**
- * Got a BLOB content (in the POST request body) and save it to the BLOB store temporary storage.
+ * Endpoint for putting BLOB content (in the POST request body) to the BLOB store temporary storage.
  * Return a JSON with blob store item info {@link BlobStoreItem}
  *
  * Accept 3 mandatory parameter: entity,attribute,ID
@@ -212,6 +258,7 @@ function getFromBlobStore (request, options) {
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @private
  */
 function setDocument (req, resp) {
   /** @type BlobStoreRequest */
@@ -239,7 +286,7 @@ function setDocument (req, resp) {
 }
 
 /**
- * Put content to the temporary path of Blob store
+ * Server-side method for putting BLOB content to BLOB store temporary storage
  * @param {BlobStoreRequest} request
  * @param {ArrayBuffer|String} content
  * @return {BlobStoreItem}
@@ -277,6 +324,7 @@ function getStore (attribute, blobItem) {
  * @param {UBEntityAttribute} attribute
  * @param {number} ID
  * @param {BlobStoreItem} blobInfo
+ * @private
  */
 function rotateHistory (store, attribute, ID, blobInfo) {
   // clear expired historical items (excluding isPermanent)
@@ -311,9 +359,9 @@ function rotateHistory (store, attribute, ID, blobInfo) {
   })
 }
 /**
- * Move content defined by `dirtyItem` from temporary to permanent store.
- * In case of historical store archive the oldItem.
- * In case `oldItem` is present store implementation should be taken from oldItem.store.
+ * Server-side method for moving content defined by `dirtyItem` from temporary to permanent store.
+ * For internal use only. In app logic use {@link TubDataStore#commitBLOBStores} method
+ * In case of historical store will archive the oldItem.
  * Return a new attribute content which describe a place of BLOB in permanent store
  *
  * @param {UBEntityAttribute} attribute
@@ -321,6 +369,7 @@ function rotateHistory (store, attribute, ID, blobInfo) {
  * @param {BlobStoreItem} dirtyItem
  * @param {BlobStoreItem} oldItem
  * @return {BlobStoreItem}
+ * @private
  */
 function doCommit (attribute, ID, dirtyItem, oldItem) {
   if (!(dirtyItem.isDirty || dirtyItem.deleting)) {
@@ -338,6 +387,15 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
   }
   let store = getStore(attribute, dirtyItem)
   return store.persist(attribute, ID, dirtyItem, newRevision)
+}
+
+/**
+ * BLOB stores methods
+ * @memberOf App
+ */
+App.blobStores = {
+  getFromBlobStore,
+  putToBlobStore
 }
 
 module.exports = {

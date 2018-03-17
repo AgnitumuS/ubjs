@@ -194,7 +194,7 @@ function validateInput (aID, formCode, formEntity) {
  */
 function getFormBodyTpl (fileName, defaultBody) {
   let filePath = path.join(App.domainInfo.models['UBM'].realPublicPath, '_templates', fileName)
-  return fs.existsSync(filePath) ? fs.readFileSync(filePath) : defaultBody
+  return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : defaultBody
 }
 
 /**

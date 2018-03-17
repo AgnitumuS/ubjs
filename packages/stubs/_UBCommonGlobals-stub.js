@@ -12,7 +12,7 @@
 /**
  * Load file content to string. Only for non-binary files!
  *
- * Do not use directly. Use fs.readFileSync(path) instead.
+ * Do not use directly. Use fs.readFileSync(path, 'utf8') instead.
  * @private
  * @param {String} fileName Full path to file
  * @return {String} File content. In case of error - raise exception

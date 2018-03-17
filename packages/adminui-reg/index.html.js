@@ -39,7 +39,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
       uiSettings.adminUI.themeName = 'UBGrayTheme'
     }
     let adminUIPath = path.dirname(require.resolve('@unitybase/adminui-pub'))
-    indexTpl = fs.readFileSync(path.join(adminUIPath, indexName))
+    indexTpl = fs.readFileSync(path.join(adminUIPath, indexName), 'utf8')
 
     // create view for mustache
     // noinspection JSUnusedGlobalSymbols

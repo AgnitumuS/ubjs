@@ -194,7 +194,7 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
         }
       }
     } else if (!this.config.fileMask || this.config.fileMask.test(fileName)) { // filtration by mask
-      let content = fs.readFileSync(fullPath)
+      let content = fs.readFileSync(fullPath, 'utf8')
       let oneRow = this.extractAttributesValues(content)
 
       if (this.haveModifyDate) {

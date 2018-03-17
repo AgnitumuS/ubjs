@@ -93,35 +93,6 @@ const os = require('os')
   "md5":"3b44f38f6b120615604846b67150fcb0",
   "revision":2}
 */
-/**
- * Blob store item content (JSON stored in database)
- * @typedef {Object} BlobStoreItem
- * @property {Number} [v] Store version. Empty for UB<5. Store implementation must check `v` for backward compatibility
- * @property {String} store Code of store implementation from application config. If empty - use a store from attribute configuration
- * @property {String} fName File name inside store (auto generated in most case)
- * @property {String} origName Original file name (as user upload it)
- * @property {String} [relPath] Relative path of fName inside store folder (for file-based stores)
- * @property {String} ct Content type
- * @property {Number} size Content size
- * @property {String} md5 Content MD5 checksum
- * @property {Number} [revision] Content revision. Used only for stores with `historyDepth` > 0
- * @property {Boolean} [deleting] If true content must be deleted/archived during commit
- * @property {Boolean} [isDirty] ????
- * @property {Boolean} [isPermanent] If `true` - do not delete content during history rotation
- */
-
-/**
- * Blob store request (parameters passed to get|setDocument)
- * @typedef {Object} BlobStoreRequest
- * @property {Number} ID
- * @property {String} entity
- * @property {String} attribute
- * @property {Boolean} [isDirty]
- * @property {String} [fileName]
- * @property {Number} [revision]
- * @property {String} [extra] Store-specific extra parameters
- */
-
 class BlobStoreCustom {
   constructor (storeConfig) {
     /**

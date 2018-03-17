@@ -55,7 +55,7 @@ function insertFirst50Article (connection) {
   const descrMaxLen = 2000
   let d = new Date(2015, 1, 1)
 
-  let data = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME))
+  let data = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME), 'utf8')
   let LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
   let testArr = data.split(LINE_DELIMITER)
 

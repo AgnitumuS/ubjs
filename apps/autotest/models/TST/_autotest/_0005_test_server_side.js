@@ -37,7 +37,7 @@ module.exports = function runOTPTest (options) {
     console.debug('test Server-side js')
     tests.forEach((test) => {
       if (!test.endsWith('.js') || test.charAt(0) === '_') return
-      let content = fs.readFileSync(path.join(folder, 'serverSide', test))
+      let content = fs.readFileSync(path.join(folder, 'serverSide', test), 'utf8')
       console.debug('Eval a ' + test)
       let result = {res: false}
       try {

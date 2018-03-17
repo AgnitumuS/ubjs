@@ -42,7 +42,7 @@ UB.UBAbort = function UBAbort (message) {
   this.message = message || 'UBAbortError'
   // FF, IE 10+ and Safari 6+. Fallback for others
   let tmpStack = (new Error()).stack.split('\n').slice(1)
-  let realErr = tmp_stack.find((str) => str.indexOf('@') > 0) // serch for a first error outside of ub core modules
+  let realErr = tmpStack.find((str) => str.indexOf('@') > 0) // search for a first error outside of ub core modules
   let re = /^(.*?)@(.*?):(.*?)$/.exec(realErr) // [undef, undef, this.fileName, this.lineNumber] = re
   this.fileName = re[2]
   this.lineNumber = re[3]
@@ -171,8 +171,6 @@ require('./modules/RLS')
 const modelLoader = require('./modules/moledLoader')
 UB.loadLegacyModules = modelLoader.loadLegacyModules
 UB.App = App
-
-UB.blobStores = blobStores
 
 UB.run = function () {
   /**

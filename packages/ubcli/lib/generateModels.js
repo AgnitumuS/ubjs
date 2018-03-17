@@ -62,7 +62,7 @@ function doGenerateModels (modelsDir, conn, options) {
   result = JSON.parse(result)
   Object.keys(result).forEach(function (element, index) {
     entity = JSON.stringify(result[element], null, '\t')
-    fs.writeFileSync(cModelPath + '\\' + element + '.meta', entity, {encoding: 'UTF-8'})
+    fs.writeFileSync(path.join(cModelPath, element + '.meta'), entity, {encoding: 'utf-8'})
   })
 }
 
@@ -91,7 +91,7 @@ function createCommandEntity (modelsDir, options) {
   }
   fileName = modelsDir + '\\ub_model_ub\\' + entityName + '.meta'
 
-  fs.writeFileSync(fileName, JSON.stringify(modelCmd, null, '\t'), {encoding: 'UTF-8'})
+  fs.writeFileSync(fileName, JSON.stringify(modelCmd, null, '\t'), {encoding: 'utf-8'})
     // console.log(fileName);
   return fileName
 }

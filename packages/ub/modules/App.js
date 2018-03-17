@@ -44,7 +44,7 @@ const EventEmitter = require('events').EventEmitter
 
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
  *
- * @type {Object}
+ * @namespace App
  * @mixes EventEmitter
  */
 const App = {

@@ -10,7 +10,7 @@ let session = argv.establishConnectionFromCmdLineAttributes()
 conn = session.connection
 
 let fn = path.join(__dirname, 'tst_dictionary-TST.csv')
-let fContent = fs.readFileSync(fn)
+let fContent = fs.readFileSync(fn, 'utf8')
 if (!fContent) { throw new Error(`File ${fn} is empty or not exist`) }
 fContent = fContent.trim()
 let csvData = csv.parse(fContent)

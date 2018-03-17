@@ -34,7 +34,7 @@ function testFTSSpeed (connection, options) {
   let iterationCnt = parseInt(options.iterationCnt, 10)
   let transLen = parseInt(options.transLen, 10)
 
-  let bibleArr = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME)).split('\r\n')
+  let bibleArr = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME), 'utf8').split('\r\n')
   bibleArr.splice(0, 72) // remove Table of content
 
   let descrMaxLen = 2000

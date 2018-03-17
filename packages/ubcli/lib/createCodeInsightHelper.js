@@ -97,7 +97,7 @@ module.exports = function createCodeInsightHelper (cfg) {
     Date: 'Date'
   }
 
-  let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'))
+  let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
 
   function processEntities (entities, folderName, modelName) {
     let res, resFileName

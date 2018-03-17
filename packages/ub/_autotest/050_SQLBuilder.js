@@ -4,7 +4,6 @@
  * This test connect to UB server and do select for all entities
  */
 const assert = require('assert')
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const TEST_NAME = 'SQL builder test'

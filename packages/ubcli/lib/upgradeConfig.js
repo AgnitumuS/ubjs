@@ -33,7 +33,7 @@ module.exports = function upgradeConfig (cfg) {
     return
   }
 
-  let oldContent = fs.readFileSync(path.join(process.cwd(), cfgFile))
+  let oldContent = fs.readFileSync(path.join(process.cwd(), cfgFile), 'utf8')
   fs.writeFileSync(path.join(process.cwd(), cfgFile + '.old'), oldContent)
   fs.writeFileSync(path.join(process.cwd(), cfgFile), JSON.stringify(n, null, '\t'))
 }

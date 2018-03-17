@@ -13,7 +13,7 @@ assert.ok(content === etalon, 'ascii.txt fail')
 content = fs.readFileSync(path.join(folder, 'файл.txt'), {encoding: 'utf-8'})
 assert.ok(content === etalon, 'файл.txt fail')
 
-content = fs.readFileSync(path.join(folder, 'utf8wBOM.txt'))
+content = fs.readFileSync(path.join(folder, 'utf8wBOM.txt'), {encoding: 'utf-8'})
 assert.ok(content === etalon, 'utf8wBOM.txt fail')
 
 content = fs.readFileSync(path.join(folder, 'utf8wBOM.txt'), {encoding: 'uft-8'})
@@ -22,7 +22,7 @@ assert.ok(content === etalon, 'utf8wBOM.txt fail')
 content = fs.readFileSync(path.join(folder, 'utf8woBOM.txt'), {encoding: 'uft-8'})
 assert.ok(content === etalon, 'utf8woBOM.txt fail')
 
-content = fs.readFileSync(path.join(folder, 'utf8woBOM.txt'))
+content = fs.readFileSync(path.join(folder, 'utf8woBOM.txt'), {encoding: 'utf-8'})
 assert.ok(content === etalon, 'utf8woBOM.txt fail')
 
 content = fs.readFileSync(path.join(folder, 'utf8wBOM.txt'), {encoding: 'bin'})

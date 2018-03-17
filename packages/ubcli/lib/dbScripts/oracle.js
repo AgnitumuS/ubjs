@@ -104,7 +104,7 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
     data: `CREATE SEQUENCE SEQ_UBMAIN_BY1 START WITH ${clientNum}500000000000 MAXVALUE ${clientNum}999999999999 MINVALUE ${clientNum}500000000000 NOCYCLE ORDER`
   })
 
-  let createObjectSQL = fs.readFileSync(path.join(__dirname, 'oracleObjects.sql'))
+  let createObjectSQL = fs.readFileSync(path.join(__dirname, 'oracleObjects.sql'), 'utf8')
   let delimRe = /\r\n/.test(createObjectSQL) ? '/\r\n--' : '/\n--' // git can remove \r\n
   let statements = createObjectSQL.split(delimRe)
   statements.forEach(function (statement) {
@@ -113,7 +113,7 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
     }
   })
 
-  let initialData = fs.readFileSync(path.join(__dirname, 'oracleTables.sql'))
+  let initialData = fs.readFileSync(path.join(__dirname, 'oracleTables.sql'), 'utf8')
   statements = initialData.split(delimRe)
   statements.forEach(function (statement) {
     if (statement) {

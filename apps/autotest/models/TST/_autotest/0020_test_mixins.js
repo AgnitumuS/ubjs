@@ -71,7 +71,7 @@ function testClobTruncate (conn) {
 
   assert.deepEqual(inserted, mustBe)
 
-  let html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2strip.html'))
+  let html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2strip.html'), 'utf8')
   let LINE_DELIMITER = html2strip.indexOf('\r\n') > -1 ? '\r\n' : '\n'
   let updated = conn.query({
     entity: 'tst_clob',
@@ -84,7 +84,7 @@ function testClobTruncate (conn) {
   })
   assert.equal(updated.resultData.data[0][0], `1${LINE_DELIMITER}3`)
 
-  html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.html'))
+  html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.html'), 'utf8')
   updated = conn.query({
     entity: 'tst_clob',
     method: 'update',
@@ -94,7 +94,7 @@ function testClobTruncate (conn) {
       text2000: html2strip
     }
   })
-  let truncatedHuge = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.txt'))
+  let truncatedHuge = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.txt'), 'utf8')
   assert.equal(updated.resultData.data[0][0], truncatedHuge)
 
   let mResult = conn.query({entity: 'tst_service', method: 'multiply', a: 2, b: 3})

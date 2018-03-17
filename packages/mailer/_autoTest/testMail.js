@@ -200,7 +200,7 @@ function checkIsSameMessage(mimeMsg, sendingMsg) {
                         body = subPart.partBody.read();
                     } else {
                         fs.writeFileSync(path.resolve(testFilesDir,'tmpFile.tmp'), subPart.partBody.read('base64'), {encoding: 'bin'});
-                        body = fs.readFileSync(path.resolve(testFilesDir,'tmpFile.tmp'));
+                        body = fs.readFileSync(path.resolve(testFilesDir,'tmpFile.tmp'), 'utf8');
                     }
                     assert.strictEqual(body, attach.data, "Invalid text attachment data");
                     break;

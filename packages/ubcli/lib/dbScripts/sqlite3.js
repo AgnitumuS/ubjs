@@ -65,6 +65,6 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
   splitAndExec(script, conn, databaseConfig.name)
 
     // TODO put clientNum to a table for a ID generator initialization
-  script = fs.readFileSync(path.join(__dirname, 'sqlite3Tables.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'sqlite3Tables.sql'), 'utf8')
   splitAndExec(script, conn, databaseConfig.name)
 }

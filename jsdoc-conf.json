@@ -8,7 +8,7 @@
       "./packages/stubs",
       "./packages/ub",
       "./packages/ub/modules",
-      "./packages/ub/virtualStores",
+      "./packages/ub/blobStores",
       "./packages/ubcli/lib",
       "./packages/http-proxy",
       "./packages/canvas/UBCanvas.js",

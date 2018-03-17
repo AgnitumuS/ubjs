@@ -82,7 +82,7 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
   transLen = transLen || 1000
   startRow = startRow || 0
 
-  let fContent = fs.readFileSync(fileName)
+  let fContent = fs.readFileSync(fileName, 'utf8')
   if (!fContent) { throw new Error('File ' + fileName + ' is empty or not exist') }
   fContent = fContent.trim()
   let csvData = csv.parse(fContent, delimiter)

@@ -16,7 +16,7 @@ var csvLoader = require('@unitybase/base').dataLoader, conn = session.connection
 
 var fContent, csvData, fileName = __dirname + '/ALLADUsers.csv', dataLength, i, lVal, resData = []
 
-fContent = fs.readFileSync(fileName)
+fContent = fs.readFileSync(fileName, 'utf8')
 if (!fContent) { throw new Error('File ' + fileName + ' is empty or not exist') }
 fContent = fContent.trim()
 csvData = csv.parse(fContent, ',')

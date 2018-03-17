@@ -1,6 +1,8 @@
 /*
  * Created by pavel.mash on 10.10.2014.
  */
+const fs = require('fs')
+const assert = require('assert')
 const UB = require('@unitybase/ub')
 const App = UB.App
 App.registerEndpoint('echoToFile', echoToFile, false)
@@ -36,7 +38,7 @@ function echoToFile (req, resp) {
  */
 function echoFromFile (req, resp) {
   var fs = require('fs')
-  var str = fs.readFileSync(path.join(FIXTURES, 'respD.txt'))
+  var str = fs.readFileSync(path.join(FIXTURES, 'respD.txt'), 'utf8')
   resp.statusCode = 200
   resp.writeEnd(str)
 }
@@ -132,7 +134,7 @@ App.registerEndpoint('getIDTest', getIDTest, false)
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
-var __testIDStore = new TubDataStore('tst_IDMapping')
+let __testIDStore = UB.DataStore('tst_IDMapping')
 function getIDTest (req, resp) {
   resp.statusCode = 200
   resp.writeEnd(__testIDStore.generateID())
@@ -150,21 +152,102 @@ function testTimeout (req, resp) {
   resp.writeEnd('OK')
 }
 
-function testDocHandler (req, resp) {
-  var docReq = new TubDocumentRequest() // starting from UB 1.11 handler is a singleton inside request
-  docReq.entity = 'tst_document'
-  docReq.attribute = 'fileStoreSimple'
-  docReq.id = 3000000003738
-  let docHandler = docReq.createHandlerObject(true)
-  docHandler.loadContent(TubLoadContentBody.Yes)
-  // var content = docReq.getBodyAsBase64String();
-  // console.log(content.length);
-  docHandler.freeNative()
-  docReq.freeNative()
+/**
+ * Test server-side BLOB stores
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function testServerSideBLOB (req, resp) {
+  const DOC_CODE = '2014-01-01'
+  const DOC_ENTITY = 'tst_document'
+  const DOC_ATTRIBUTE = 'fileStoreSimple'
   resp.statusCode = 200
-  resp.writeEnd('OK')
+  let err
+  try {
+    let firstDoc = UB.Repository(DOC_ENTITY)
+      .attrs(['ID', DOC_ATTRIBUTE, 'mi_modifyDate'])
+      .where('code', '=', DOC_CODE)
+      .limit(1).selectSingle()
+    assert.ok(firstDoc, `${DOC_ENTITY} with code "${DOC_CODE}" not found`)
+
+    let content = fs.readFileSync(__filename, {encoding: 'bin'})
+    let fn = path.basename(__filename)
+    let blobItem = App.blobStores.putToBlobStore(
+      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, fileName: fn},
+      content
+    )
+    assert.equal(blobItem.store, 'simple')
+    assert.equal(blobItem.origName, fn)
+    assert.equal(blobItem.ct, 'application/javascript; charset=utf-8')
+    let fStat = fs.statSync(__filename)
+    assert.equal(blobItem.size, fStat.size)
+    assert.equal(blobItem.isDirty, true, 'BLOB should be dirty after putToBlobStore')
+    let tmpContent = App.blobStores.getFromBlobStore(
+      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true},
+      {encoding: 'bin'}
+    )
+    assert.equal(tmpContent.byteLength, fStat.size, `temp content size ${tmpContent.byteLength} not match real ${fStat.size}`)
+
+    let tmpStrContent = App.blobStores.getFromBlobStore(
+      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true},
+      {encoding: 'utf-8'}
+    )
+    let realStrContent = fs.readFileSync(__filename, 'utf8')
+    assert.equal(tmpStrContent, realStrContent, 'BLOB store content obtained as string must match')
+
+    let dataStore = UB.DataStore(DOC_ENTITY)
+    dataStore.run('lock', {
+      lockType: 'ltTemp',
+      ID: firstDoc.ID
+    })
+    dataStore.run('update', {
+      fieldList: ['ID', DOC_ATTRIBUTE],
+      execParams: {
+        ID: firstDoc.ID,
+        [DOC_ATTRIBUTE]: JSON.stringify(blobItem),
+        mi_modifyDate: firstDoc.mi_modifyDate
+      }
+    })
+    dataStore.currentDataName = dataStore.DATA_NAMES.AFTER_UPDATE
+    let newBlobItem = dataStore.get(DOC_ATTRIBUTE)
+    dataStore.run('unlock', {
+      ID: firstDoc.ID
+    })
+    assert.ok(newBlobItem, 'updated blobItem content should be non empty')
+    let i = JSON.parse(newBlobItem)
+    assert.equal(i.v, 1, 'blobstore v1 implementation')
+    assert.equal(i.store, 'simple')
+    assert.equal(i.origName, fn)
+    assert.equal(i.relPath, '')
+
+    let binContent = App.blobStores.getFromBlobStore(
+      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE},
+      {encoding: 'bin'}
+    )
+    assert.equal(binContent.byteLength, fStat.size, `content size ${binContent.byteLength} not match real ${fStat.size}`)
+  } catch (e) {
+    err = e.message
+  }
+  if (err) {
+    resp.writeEnd({success: false, reason: err})
+  } else {
+    resp.writeEnd({success: true})
+  }
+
+  // var docReq = new TubDocumentRequest() // starting from UB 1.11 handler is a singleton inside request
+  // docReq.entity = 'tst_document'
+  // docReq.attribute = 'fileStoreSimple'
+  // docReq.id = 3000000003738
+  // let docHandler = docReq.createHandlerObject(true)
+  // docHandler.loadContent(TubLoadContentBody.Yes)
+  // // var content = docReq.getBodyAsBase64String();
+  // // console.log(content.length);
+  // docHandler.freeNative()
+  // docReq.freeNative()
+  // resp.statusCode = 200
+  // resp.writeEnd('OK')
 }
-App.registerEndpoint('testDocHandler', testDocHandler, false)
+App.registerEndpoint('testServerSideBLOB', testServerSideBLOB, false)
 
 const HttpProxy = require('@unitybase/http-proxy')
 let proxy = new HttpProxy({

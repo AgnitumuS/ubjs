@@ -242,7 +242,7 @@ function replaceIncludeVariables (content) {
     if (!fs.statSync(filePath)) {
       return 'INVALID INCLUDE ' + filePath
     }
-    let content = removeCommentsFromJSON(fs.readFileSync(filePath))
+    let content = removeCommentsFromJSON(fs.readFileSync(filePath, 'utf8'))
     if (!content) {
       return 'EMPTY INCLUDE ' + filePath
     }
@@ -260,7 +260,7 @@ function getServerConfiguration () {
   let cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
-  // var content = removeCommentsFromJSON(fs.readFileSync(cfgFileName))
+  // var content = removeCommentsFromJSON(fs.readFileSync(cfgFileName, 'utf8'))
   // content = replaceIncludeVariables(replaceEnvironmentVariables(content))
 
   let result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(content)))
@@ -315,7 +315,7 @@ function serverURLFromConfig (config) {
  * @return {Object}
  */
 function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
-  let content = removeCommentsFromJSON(fs.readFileSync(fileName))
+  let content = removeCommentsFromJSON(fs.readFileSync(fileName, 'utf8'))
   if (allowMultiLineString) {
     content = content.replace(/[\n\r\t]/gm, ' ')
   }

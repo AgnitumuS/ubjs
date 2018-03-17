@@ -2,7 +2,7 @@
  * SyNode file-system routines. We try to implement here the same interface as in <a href="http://nodejs.org/api/fs.html">NodeJS fs</a>
  *
  *      var fs = require('fs');
- *      var content = fs.readFileSync('c:\\a.txt');
+ *      var content = fs.readFileSync('c:\\a.txt', 'utf8');
  *
  * @module fs
  */
