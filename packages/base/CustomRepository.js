@@ -720,70 +720,117 @@ CustomRepository.prototype.ubRequest = CustomRepository.prototype.ubql
  * @enum {string}
  */
 CustomRepository.prototype.WhereCondition = {
-  'gt': 'more', /** @property {string} gt Alias for `more` */
-  '>': 'more',  /** @property {string} _greaterThan This is actually **>** sign - we can't pout it into documentation. Alias for `more` */
-  'more': 'more', /** @property {string} more Greater than */
+  /** @description Alias for `more` */
+  'gt': 'more',
+  /** @description Alias for `more` */
+  '>': 'more',
+  /** @description Greater than */
+  'more': 'more',
+  /** @description Alias for `less` */
+  'lt': 'less',
+  /** @description Alias for `less` */
+  '<': 'less',
+  /** @description Less than */
+  'less': 'less',
 
-  'lt': 'less', /** @property {string} lt Alias for `less` */
-  '<': 'less', /** @property {string} _lessThan (actually **<** sign). Alias for `less` */
-  'less': 'less', /** @property {string} less Less than */
+  /** @description Alias for `equal` */
+  'eq': 'equal',
+  /** @description Alias for `equal` */
+  '=': 'equal',
+  /** @description Equal to */
+  'equal': 'equal',
 
-  'eq': 'equal', /** @property {string} eq Alias for `equal` */
-  '=': 'equal', /** @property {string} _eq (actually **=** sign). Alias for `equal` */
-  'equal': 'equal', /** @property {string} equal Equal to */
+  /** @description Alias for `moreEqual` */
+  'ge': 'moreEqual',
+  /** @description  Alias for `moreEqual` */
+  'geq': 'moreEqual',
+  /** @description  Alias for `moreEqual` */
+  '>=': 'moreEqual',
+  /** @description  Greater than or equal */
+  'moreEqual': 'moreEqual',
 
-  'ge': 'moreEqual', /** @property {string} geq Alias for `moreEqual` */
-  'geq': 'moreEqual', /** @property {string} geq Alias for `moreEqual` */
-  '>=': 'moreEqual', /** @property {string} _geq (actually **>=** sign). Alias for `moreEqual` */
-  'moreEqual': 'moreEqual', /** @property {string} moreEqual Greater than or equal */
+  /** @description Alias for `lessEqual` */
+  'le': 'lessEqual',
+  /** @description Alias for `lessEqual` */
+  'leq': 'lessEqual',
+  /** @description Alias for `lessEqual` */
+  '<=': 'lessEqual',
+  /** @description Less than or equal */
+  'lessEqual': 'lessEqual',
 
-  'le': 'lessEqual', /** @property {string} leq Alias for `lessEqual` */
-  'leq': 'lessEqual', /** @property {string} leq Alias for `lessEqual` */
-  '<=': 'lessEqual', /** @property {string} _leq (actually **<=** sign). Alias for `lessEqual` */
-  'lessEqual': 'lessEqual', /** @property {string} lessEqual Less than or equal */
+  /** @description Alias for `notEqual` */
+  'ne': 'notEqual',
+  /** @description Alias for `notEqual` */
+  'neq': 'notEqual',
+  /** @description Alias for `notEqual` */
+  '<>': 'notEqual',
+  /** @description Alias for `notEqual` */
+  '!=': 'notEqual',
+  /** @description Alias for `notEqual` */
+  '!==': 'notEqual',
+  /** @description Not equal */
+  'notEqual': 'notEqual',
 
-  'ne': 'notEqual', /** @property {string} neq Alias for `notEqual` */
-  'neq': 'notEqual', /** @property {string} neq Alias for `notEqual` */
-  '<>': 'notEqual', /** @property {string} _neq1 (actually **<>** sign). Alias for `notEqual` */
-  '!=': 'notEqual', /** @property {string} _neq2 (actually **!=** sign). Alias for `notEqual` */
-  '!==': 'notEqual', /** @property {string} _neq3 (actually **!==** sign). Alias for `notEqual` */
-  'notEqual': 'notEqual', /** @property {string} notEqual Not equal */
+  /** @description Alias for `like` */
+  'contains': 'like',
+  /** @description Like condition. For attributes of type `String` only */
+  'like': 'like',
 
-  'contains': 'like', /** @property {string} contains Alias for `like` */
-  'like': 'like', /** @property {string} like Like condition. For `String` type attribute only */
+  /** @description Alias for `notLike` */
+  'notContains': 'notLike',
+  /** @description Not like condition. For attributes of type `String` only */
+  'notLike': 'notLike',
 
-  'notContains': 'notLike', /** @property {string} notContains Alias for `notLike` */
-  'notLike': 'notLike', /** @property {string} notLike Not like condition. For `String` type attribute only */
+  /** @description Is null */
+  'isNull': 'isNull',
+  /** @description Alias for `isNull` */
+  'null': 'isNull',
 
-  'isNull': 'isNull', /** @property {string} isNull Is null */
-  'null': 'isNull', /** @property {string} null Alias for `isNull` */
+  /** @description Alias for `notIsNull` */
+  'notNull': 'notIsNull',
+  /** @description Not is null */
+  'notIsNull': 'notIsNull',
+  /** @description Alias for `notIsNull` */
+  'isNotNull': 'notIsNull',
 
-  'notNull': 'notIsNull', /** @property {string} notNull Alias for `notIsNull` */
-  'notIsNull': 'notIsNull', /** @property {string} notIsNull Not is null */
-  'isNotNull': 'notIsNull', /** @property {string} isNotNull Alias for `notIsNull` */
+  /** @description Alias for `startWith` */
+  'beginWith': 'startWith',
+  /** @description Start with. For attributes of type `String` only */
+  'startWith': 'startWith',
+  /** @description Alias for `startWith` */
+  'startsWith': 'startWith',
+  /** @description Alias for `startWith` */
+  'startswith': 'startWith',
 
-  'beginWith': 'startWith', /** @property {string} beginWith Alias for `startWith` */
-  'startWith': 'startWith', /** @property {string} startWith Start with. For `String` type attribute only */
-  'startsWith': 'startWith', /** @property {string} startsWith Alias for `startWith` */
-  'startswith': 'startWith', /** @property {string} startwith Alias for `startWith` */
+  /** @description Alias for `notStartWith` */
+  'notBeginWith': 'notStartWith',
+  /** @description Not start with. For attributes of type `String` only */
+  'notStartWith': 'notStartWith',
+  /** @description Alias for `notStartWith` */
+  'notStartsWith': 'notStartWith',
 
-  'notBeginWith': 'notStartWith', /** @property {string} notBeginWith Alias for `notStartWith` */
-  'notStartWith': 'notStartWith', /** @property {string} notStartWith Not start with. For `String` type attribute only */
-  'notStartsWith': 'notStartWith', /** @property {string} notStartWith Alias for `notStartWith` */
+  /** @description Alias for `in` */
+  'includes': 'in',
+  /** @description One of. Can accept array of string on array of Int/Int64 as values depending on attribute type. */
+  'in': 'in',
 
-  'includes': 'in', /** @property {string} includes Alias for `in` */
-  'in': 'in', /** @property {string} in One of. Can accept array of string on array of Int/Int64 as values depending on attribute type. */
+  /** @description Alias for `notIn` */
+  'notIncludes': 'notIn',
+  /** @description Not one of. See WhereCondition.in for details */
+  'notIn': 'notIn',
 
-  'notIncludes': 'notIn', /** @property {string} notIncludes Alias for `notIn` */
-  'notIn': 'notIn', /** @property {string} notIn Not one of. See WhereCondition.in for details */
+  /** @description For entities with FTS mixin enabled. TODO - expand */
+  'match': 'match',
 
-  'match': 'match', /** @property {string} match For entities with FTS mixin enabled. TODO - expand */
+  /** @description Execute a sub-query passed in values. Better to use 'in' condition with Repository as a values parameter or a CustomRepository.exists method */
+  'subquery': 'subquery',
+  /** @description Execute a exists(sub-query) passed in values. Better to use CustomRepository.exists method */
+  'exists': 'subquery',
+  /** @description Execute a not exists(sub-query) passed in values. Better to use CustomRepository.notExists method */
+  'notExists': 'subquery',
 
-  'subquery': 'subquery', /** @property {string} subquery Execute a sub-query passed in values. Better to use 'in' condition with Repository as a values parameter or a CustomRepository.exists method */
-  'exists': 'subquery', /** @property {string} exists Execute a exists(sub-query) passed in values. Better to use CustomRepository.exists method */
-  'notExists': 'subquery', /** @property {string} exists Execute a not exists(sub-query) passed in values. Better to use CustomRepository.notExists method */
-
-  'custom': 'custom' /** @property {string} custom Custom condition. For Server-side call only. For this condition `expression` can be any SQL statement */
+  /** @description Custom condition. For Server-side call only. For this condition `expression` can be any SQL statement */
+  'custom': 'custom'
 }
 
 /**
