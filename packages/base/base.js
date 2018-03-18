@@ -1,7 +1,3 @@
-/**
- * Contains classes, common for CLI, server-side and browser side
- * @package module @unitybase/base
- */
 const argv = require('./argv')
 const CustomRepository = require('./CustomRepository')
 const LocalDataStore = require('./LocalDataStore')
@@ -14,12 +10,17 @@ const csv1 = require('./csv1')
 const dataLoader = require('./dataLoader')
 const FileBasedStoreLoader = require('./FileBasedStoreLoader')
 const Worker = require('./worker')
+// eslint-disable-next-line camelcase
 const uba_common = require('./uba_common')
 
+/**
+ * Contains classes, common for CLI, server-side and browser side
+ * @module @unitybase/base
+ */
 module.exports = {
   /**
    * Command line utils
-   * @type {argv}
+   * @type {module:argv}
    */
   argv: argv,
   /**
@@ -34,7 +35,7 @@ module.exports = {
   LocalDataStore,
   /**
    * Parse a command line options & environment variables and create a configuration object
-   * @type {options}
+   * @type {module:options}
    */
   options: options,
   /**
@@ -59,21 +60,20 @@ module.exports = {
   UBSession,
   /**
    * CSV data parser
-   * @type {csv1}
+   * @type {module:csv1}
    */
   csv: csv1,
   /**
    * Bulk data loader from CSV/arrays to UB
-   * @type {dataLoader}
+   * @type {module:dataLoader}
    */
   dataLoader: dataLoader,
-
   /**
    * File-system based virtual store **select**.
    * Able to load files & transform it content to {@link TubCachedData} format
+   * @type {module:FileBasedStoreLoader}
    */
   FileBasedStoreLoader,
-
   /**
    * Execute a script in a dedicated thread
    * @type {Worker}
@@ -81,10 +81,11 @@ module.exports = {
   Worker,
   /**
    * Constants for administrative security model
+   * @type {module:uba_common}
    */
   uba_common,
   /**
-   * Allows you to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
+   * Allows to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
    * token must be unique, and must increment in the format {0}, {1}, etc.
    * @example
    *

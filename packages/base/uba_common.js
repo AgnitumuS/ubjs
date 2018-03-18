@@ -1,8 +1,3 @@
-/*
- * Constants for administrative security model
- * Created by pavel.mash on 15.09.2016.
- */
-
 const USERS = {
   ADMIN: {
     ID: 10,
@@ -66,6 +61,12 @@ const ROLES = {
     TIMEOUT: 100
   }
 }
+
+/**
+ * Constants for administrative security model
+ * @autror pavel.mash 15.09.2016
+ * @module uba_common
+ */
 
 module.exports = {
   /** Build-in users */

@@ -38,7 +38,7 @@
  *          console.log(rows[i]);
  *       }
  *
- * @module @unitybase/base/csv1
+ * @module csv1
  */
 
 var QUOTE = '"',

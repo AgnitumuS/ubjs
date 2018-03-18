@@ -1,3 +1,10 @@
+const _ = require('lodash')
+const options = require('./options')
+const fs = require('fs')
+const path = require('path')
+const http = require('http')
+const UBConnection = require('./UBConnection')
+
 /**
  *
  * Utils for connecting to a local UnityBase server
@@ -18,14 +25,29 @@
  *
  * @module argv
  */
-/* global removeCommentsFromJSON, startServer, stopServer */
+module.exports = {
+  safeParseJSONfile: safeParseJSONfile,
+  /**
+   * @deprecated Use `options.switchIndex' instead
+   * @param switchName
+   * @returns {Number} switch index if found or -1 otherwise
+   */
+  findCmdLineSwitch: options.switchIndex,
+  /**
+   * @deprecated Use `options.switchValue' instead
+   * @param switchName
+   * @returns {String} switch value or `undefined` in case switch not found or switch not have value
+   */
+  findCmdLineSwitchValue: options.switchValue,
+  getConfigFileName: getConfigFileName,
+  serverSessionFromCmdLineAttributes: serverSessionFromCmdLineAttributes,
+  establishConnectionFromCmdLineAttributes: establishConnectionFromCmdLineAttributes,
+  checkServerStarted: checkServerStarted,
+  getServerConfiguration,
+  serverURLFromConfig: serverURLFromConfig
+}
 
-const _ = require('lodash')
-const options = require('./options')
-const fs = require('fs')
-const path = require('path')
-const http = require('http')
-const UBConnection = require('./UBConnection')
+/* global removeCommentsFromJSON, startServer, stopServer */
 
 /**
  * Get config file name. if -cfg switch passed then use this switch value, else use default
@@ -328,26 +350,4 @@ function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
     console.error('Processed file is saved to "' + fileName + '.bak"')
     throw e
   }
-}
-
-module.exports = {
-  safeParseJSONfile: safeParseJSONfile,
-    /**
-     * @deprecated Use `options.switchIndex' instead
-     * @param switchName
-     * @returns {Number} switch index if found or -1 otherwise
-     */
-  findCmdLineSwitch: options.switchIndex,
-    /**
-     * @deprecated Use `options.switchValue' instead
-     * @param switchName
-     * @returns {String} switch value or `undefined` in case switch not found or switch not have value
-     */
-  findCmdLineSwitchValue: options.switchValue,
-  getConfigFileName: getConfigFileName,
-  serverSessionFromCmdLineAttributes: serverSessionFromCmdLineAttributes,
-  establishConnectionFromCmdLineAttributes: establishConnectionFromCmdLineAttributes,
-  checkServerStarted: checkServerStarted,
-  getServerConfiguration,
-  serverURLFromConfig: serverURLFromConfig
 }

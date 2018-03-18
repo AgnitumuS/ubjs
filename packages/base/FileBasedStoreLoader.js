@@ -1,17 +1,16 @@
+const lds = require('./LocalDataStore')
+const path = require('path')
+const UBDomain = require('./UBDomain')
+const _ = require('lodash')
+
 /**
  * UnityBase file-system based virtual store **select**. Able to load files & transform it content to {@link TubCachedData} format.
  *
  * Good sample of usage can be found in `ubm_form.loadAllForm`
  *
  * For work with data, loaded by FileBasedStoreLoader you can use {@link LocalDataStore} class.
- * @module @unitybase/base/FileBasedStoreLoader
+ * @module FileBasedStoreLoader
  */
-
-const lds = require('./LocalDataStore')
-const path = require('path')
-const UBDomain = require('./UBDomain')
-const _ = require('lodash')
-
 module.exports = FileBasedStoreLoader
 /**
  * @example

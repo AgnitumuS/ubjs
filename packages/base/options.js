@@ -30,7 +30,9 @@
 
 // [{short: 'u', long: 'user', param: 'userName', defaultValue: true, searchInEnv: true, help: 'A user name for server connection'}]
 /**
+ * Internal class for parsing command line options. Created by {@link options#describe options.describe} method
  * @class
+ * @access package
  * @param commandName
  * @param commandDescription
  * @param {String} [cli='ub'] An executable used to execute a command `commandName`. For example: `ubcli`
