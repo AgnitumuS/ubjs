@@ -1,7 +1,7 @@
 const UB = require('@unitybase/ub')
-const App = require('@unitybase/ub').App
+const App = UB.App
 const queryString = require('querystring')
-const Session = require('@unitybase/ub').Session
+const Session = UB.Session
 
 let ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore

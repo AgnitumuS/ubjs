@@ -156,6 +156,7 @@ class ServerRepository extends CustomRepository {
  * @param {String} entityName name of Entity for which we create repository
  * @param {UBConnection} [connection] The remote server connection. For internal server thread can be empty
  * @return {ServerRepository}
+ * @private
  */
 function fabric (entityName, connection = null) {
   return new ServerRepository(connection, entityName)

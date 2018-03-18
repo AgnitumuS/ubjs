@@ -1,10 +1,11 @@
-/**
- * Functions for evaluation UnityBase model JS files
- */
-
 const fs = require('fs')
 const path = require('path')
 const App = require('./App')
+
+/**
+ * Functions for evaluation UnityBase model JS files
+ * @module
+ */
 
 /**
  * Load all *.js for which there is a pair *.meta

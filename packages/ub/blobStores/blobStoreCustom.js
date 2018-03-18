@@ -1,3 +1,7 @@
+const Session = require('../modules/Session')
+const path = require('path')
+const os = require('os')
+
 /**
  * @classdesc
 
@@ -44,10 +48,6 @@
  For download file from server client call `getDocument` endpoint
 
  */
-
-const Session = require('../modules/Session')
-const path = require('path')
-const os = require('os')
 
 /* BlobStoreItem sample:
 {"store":"documents","fName":"contr_contractdoc document 3000000405832.pdf",

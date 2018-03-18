@@ -68,7 +68,7 @@ ubMethodParams.prototype = {
    * @type {TubDataStore}
    * @readonly
    */
-  dataStore: new TubDataStore(),
+  dataStore: null,
   /**
    * Params caller pass to HTTP request.
    * @type {TubList}
@@ -241,64 +241,3 @@ WebSocketConnection.prototype = {
    */
   close: function (reason) {}
 }
-
-/**
- * Entity attributes data type
- * @enum {Number}
- * @readonly
- */
-TubAttrDataType = {Unknown: 0,
-  String: 1,
-  Int: 2,
-  BigInt: 3,
-  Float: 4,
-  Currency: 5,
-  Boolean: 6,
-  DateTime: 7,
-  Text: 8,
-  ID: 9,
-  Entity: 10,
-  Document: 11,
-  Many: 12,
-  TimeLog: 13,
-  Enum: 14,
-  BLOB: 15,
-  Date: 16}
-
-/**
- * Entity cache type
- * @enum {Number}
- * @readonly
- */
-TubCacheType = {None: 0, SessionEntity: 1, Entity: 2, Session: 3}
-
-/**
- * Supported SQL dialects
- * @enum {Number}
- * @readonly
- */
-TubSQLDialect = {AnsiSQL: 0,
-  Oracle: 1,
-  Oracle9: 2,
-  Oracle10: 3,
-  Oracle11: 4,
-  MSSQL: 5,
-  MSSQL2008: 6,
-  MSSQL2012: 7,
-  SQLite3: 8,
-  PostgreSQL: 9,
-  Firebird: 10}
-
-/**
- * Entity dataSource types
- * @enum {Number}
- * @readonly
- */
-TubEntityDataSourceType = {Normal: 0, External: 1, System: 2, Virtual: 3}
-
-/**
- * SQL expression types
- * @enum {Number}
- * @readonly
- */
-TubSQLExpressionType = {Field: 0, Expression: 1}

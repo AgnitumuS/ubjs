@@ -232,6 +232,9 @@ _.merge(global.i18nData, {
 })
 
 /**
+ * @module i18n
+ */
+/**
  * Merge localizationObject to UB.i18n. Usually called form serverLocale scripts
  * @param {Object} localizationObject
  */

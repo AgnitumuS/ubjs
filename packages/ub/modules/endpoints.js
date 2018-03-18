@@ -2,6 +2,7 @@
  * UnityBase default endpoints implementation.
  * In UB <=4 these endpoints have been defined in the native code
  * @author pavel.mash on 13.10.2016.
+ * @module endpoints
  */
 
 const {relToAbs} = process.binding('fs')
@@ -69,7 +70,6 @@ function resolveModelFile (reqPath, resp) {
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
- * @member {App}
  */
 function models (req, resp) {
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {

@@ -2,6 +2,10 @@
 const _ = require('lodash')
 
 /**
+ * @module UBDomain
+ */
+
+/**
  * Database connection config (w/o credential)
  * @typedef {object} DBConnectionConfig
  * @property {string} name
@@ -19,6 +23,12 @@ const _ = require('lodash')
  *  - {@link App.domainInfo App.domainInfo} property inside server-side methods
  *  - {@link UBConnection#getDomainInfo UBConnection.getDomainInfo} method inside CLI scripts
  *  - `UBConnection.domain` property inside a browser
+ *
+       // server-side example
+       const UB = require('@unitybase/ub')
+       const App = UB.App
+       let ubaAuditPresent = App.domainInfo.has('uba_audit')
+
  *
  * @param {object} domainInfo getDomainInfo UB server method result
  * @param {object} domainInfo.domain raw entities collection
@@ -224,6 +234,7 @@ UBDomain.prototype.ubDataTypes = UBDomain.ubDataTypes
 /**
  * Types of expressions in attribute mapping
  * @readonly
+ * @private
  * @enum
  */
 UBDomain.ExpressionType = {
@@ -234,6 +245,7 @@ UBDomain.ExpressionType = {
 /**
  * UnityBase base mixins
  * @readonly
+ * @private
  * @enum
  */
 UBDomain.ubMixins = {
@@ -278,6 +290,7 @@ UBDomain.EntityCacheTypes = {
 /**
  * Priority to apply a mapping of a attributes/entities to the physical tables depending of connection dialect
  * @enum
+ * @private
  */
 UBDomain.dialectsPriority = {
   MSSQL2012: [ 'MSSQL2012', 'MSSQL', 'AnsiSQL' ],
@@ -1145,7 +1158,7 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   this.name = attributeInfo.name
   /**
    * Non enumerable (to prevent JSON.stringify circular ref) read only entity reference
-   * @member {UBEntity} entity
+   * @property {UBEntity} entity
    * @readonly
    */
   Object.defineProperty(this, 'entity', {enumerable: false, value: entity})

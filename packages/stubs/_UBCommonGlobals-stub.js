@@ -34,37 +34,6 @@ function loadFileToBuffer (fileName) { return new ArrayBuffer(0) }
  * @return {String} JSON string without comment's
  */
 function removeCommentsFromJSON (JSONString) {}
-/**
- * @private
- * @param {String} fileName
- */
-function fileExists (fileName) {}
-/**
- * @private
- * @param {String} pathToDir
- */
-function directoryExists (pathToDir) {}
-/**
- * ForceDirectories ensures that all the directories in a specific path exist.
- * Any portion that does not already exist will be created.  Function result
- * indicates success of the operation.  The function can fail if the current
- * user does not have sufficient file access rights to create directories in
- * the given path.
- * @param {String} pathToDir
- * @returns {boolean} success
- */
-function forceDirectories (pathToDir) {}
-/**
- * Deletes an existing empty directory.
- * Call removeDir to remove the directory specified by the Dir parameter.
- * The return value is True if a new directory was successfully deleted, False if an error occurred.
- * The directory must be emptied before it can be successfully deleted
- * When working with symlinks, there are some special cases to consider because of how symlinks are implemented on different platforms.
- * On Windows, RemoveDir can only delete a symbolic link from a directory, regardless if the directory link is broken or not
- * @param {String} pathToDir
- * @returns {boolean} success
- */
-function removeDir (pathToDir) {}
 
 /**
  * Check is fileName is relative path, and if true - transform it to absolute from baseDir
@@ -75,27 +44,6 @@ function removeDir (pathToDir) {}
  * @private
  */
 function relToAbs (baseDir, fileName) {}
-
-/**
- * @private
- * @param fileName
- */
-function fileStat (fileName) {}
-/**
- * Remove file. Do not use directly. Use require('fs').unlinkSync() instead.
- * @protected
- * @param {String} fileName
- * @private
- */
-function deleteFile (fileName) {}
-
-/**
- * Move file. Do not use directly. Use require('fs').moveSync() instead.
- * @private
- * @param {String} fileNameFrom
- * @param {String} fileNameTo
- */
-function moveFile (fileNameFrom, fileNameTo) {}
 
 /**
  * Create GUID

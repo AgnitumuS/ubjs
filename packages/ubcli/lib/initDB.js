@@ -22,7 +22,7 @@
     initDB(options)
 
  * If DBA already create a database set both `dropDatabase` & `createDatabase` to `false`
- * @module @unitybase/ubcli/initDB
+ * @module initDB
  */
 
 const options = require('@unitybase/base').options

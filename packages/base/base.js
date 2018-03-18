@@ -1,6 +1,6 @@
 /**
  * Contains classes, common for CLI, server-side and browser side
- * @module @unitybase/base
+ * @package module @unitybase/base
  */
 const argv = require('./argv')
 const CustomRepository = require('./CustomRepository')
