@@ -1,8 +1,9 @@
+/* documentation verified by mpv on 2018-03-18 */
 const _ = require('lodash')
 
 /**
  * Database connection config (w/o credential)
- * @typedef {Object} DBConnectionConfig
+ * @typedef {object} DBConnectionConfig
  * @property {string} name
  * @property {string} dialect
  * @property {Array<string>} supportLang
@@ -19,26 +20,26 @@ const _ = require('lodash')
  *  - {@link UBConnection#getDomainInfo UBConnection.getDomainInfo} method inside CLI scripts
  *  - `UBConnection.domain` property inside a browser
  *
- * @param {Object} domainInfo getDomainInfo UB server method result
- * @param {Object} domainInfo.domain raw entities collection
- * @param {Object} domainInfo.entityMethods entities methods access rights for current user
- * @param {Object} domainInfo.models information about domain models
- * @param {Object} domainInfo.i18n entities localization to current user language
- * @param {Object} domainInfo.forceMIMEConvertors list of registered server-side MIME converters for document type attribute content
- * @class UBDomain
+ * @param {object} domainInfo getDomainInfo UB server method result
+ * @param {object} domainInfo.domain raw entities collection
+ * @param {object} domainInfo.entityMethods entities methods access rights for current user
+ * @param {object} domainInfo.models information about domain models
+ * @param {object} domainInfo.i18n entities localization to current user language
+ * @param {object} domainInfo.forceMIMEConvertors list of registered server-side MIME converters for document type attribute content
+ * @class
  */
 function UBDomain (domainInfo) {
   let me = this
   let entityCodes = Object.keys(domainInfo.domain)
   let isV4API = (typeof domainInfo.entityMethods === 'undefined')
   /**
-   * Hash of entities. Keys is entity name, value is UBEntity
-   * @type {Object<String, UBEntity>}
+   * Map with keys is entity name, value is UBEntity
+   * @member {Object<string, UBEntity>}
    */
   this.entities = {}
   /**
-   * Connection collection (for extended domain info only).
-   * @type {Array<DBConnectionConfig>}
+   * Connection collection (extended domain only)
+   * @member {Array<DBConnectionConfig>}
    */
   this.connections = domainInfo['connections']
   for (let i = 0, L = entityCodes.length; i < L; i++) {
@@ -81,14 +82,15 @@ function UBDomain (domainInfo) {
   }
 
   /**
-   * Array of models, ordered by load order
-   * @type {Array<UBModel>}
+   * Array of models, sorted by the order of loading
+   * @member {Array<UBModel>}
+   * @private
    */
   this.orderedModels = []
 
   /**
    * Models collection
-   * @type {Object<String, UBModel>}
+   * @member {Object<string, UBModel>}
    */
   this.models = {}
   let modelCodes = Object.keys(domainInfo.models)
@@ -98,13 +100,6 @@ function UBDomain (domainInfo) {
     me.orderedModels.push(me.models[modelCode])
   })
   me.orderedModels.sort((a, b) => a.order - b.order)
-
-  /**
-   *
-   * @type {Object}
-   * @readonly
-   */
-  this.forceMIMEConvertors = domainInfo.forceMIMEConvertors
 }
 
 /**
@@ -112,7 +107,7 @@ function UBDomain (domainInfo) {
  *
  * If entity does not exist in domain or at last one of provided methods is not accessible - return false
  *
- * @param {String} entityCode
+ * @param {string} entityCode
  * @param {String|Array} methodNames
  */
 UBDomain.prototype.isEntityMethodsAccessible = function (entityCode, methodNames) {
@@ -122,7 +117,7 @@ UBDomain.prototype.isEntityMethodsAccessible = function (entityCode, methodNames
 }
 /**
  * Get entity by code
- * @param {String} entityCode
+ * @param {string} entityCode
  * @param {Boolean} [raiseErrorIfNotExists=true] If `true`(default) and entity does not exists throw error
  * @returns {UBEntity}
  */
@@ -136,7 +131,7 @@ UBDomain.prototype.get = function (entityCode, raiseErrorIfNotExists) {
 
 /**
  * Check entity present in domain & user has access right for at least one entity method
- * @param {String} entityCode
+ * @param {string} entityCode
  * @returns {Boolean}
  */
 UBDomain.prototype.has = function (entityCode) {
@@ -146,8 +141,8 @@ UBDomain.prototype.has = function (entityCode) {
 /**
 * @callback domainEntitiesIteratorCallback
 * @param {UBEntity} entity
-* @param {String} entityCode
-* @param {Object<String, UBEntity>} entities
+* @param {string} entityCode
+* @param {Object<string, UBEntity>} entities
 */
 
 /**
@@ -163,21 +158,21 @@ UBDomain.prototype.eachEntity = function (cb) {
  * Filter entities by properties
  * @example
  *
- *      // sessionCachedEntites contains all entities with property cacheType equal Session
- *      var sessionCachedEntites = domain.filterEntities({cacheType: 'Session'});
+ *      // sessionCachedEntities contains all entities with property cacheType === Session
+ *      var sessionCachedEntities = domain.filterEntities({cacheType: 'Session'});
  *
- * @param {Object|Function} config
- * @returns {Array}
+ * @param {Object|Function} predicate Either a function passed to lodash filter or object
+ * @returns {Array<UBEntity>}
  */
-UBDomain.prototype.filterEntities = function (config) {
-  if (_.isFunction(config)) {
-    return _.filter(this.entities, config)
+UBDomain.prototype.filterEntities = function (predicate) {
+  if (_.isFunction(predicate)) {
+    return _.filter(this.entities, predicate)
   } else {
     return _.filter(this.entities, function (item) {
       let res = true
-      for (let prop in config) {
-        if (config.hasOwnProperty(prop)) {
-          res = res && (item[prop] === config[prop])
+      for (let prop in predicate) {
+        if (predicate.hasOwnProperty(prop)) {
+          res = res && (item[prop] === predicate[prop])
         }
       }
       return res
@@ -260,7 +255,7 @@ UBDomain.ubServiceFields = {
 
 /**
  * Entity dataSource types
- * @enum {String}
+ * @enum {string}
  * @readonly
  */
 UBDomain.EntityDataSourceType = {
@@ -282,6 +277,7 @@ UBDomain.EntityCacheTypes = {
 
 /**
  * Priority to apply a mapping of a attributes/entities to the physical tables depending of connection dialect
+ * @enum
  */
 UBDomain.dialectsPriority = {
   MSSQL2012: [ 'MSSQL2012', 'MSSQL', 'AnsiSQL' ],
@@ -299,8 +295,8 @@ UBDomain.dialectsPriority = {
 
 /**
  * Return physical type by UBDataType
- * @param {String} dataType
- * @return {String}
+ * @param {string} dataType
+ * @return {string}
  */
 UBDomain.getPhysicalDataType = function (dataType) {
   let ubDataTypes = UBDomain.ubDataTypes
@@ -330,7 +326,8 @@ UBDomain.getPhysicalDataType = function (dataType) {
 }
 
 /**
- * Model (logical group of entities)
+ * Model (logical group of entities).
+ * Instantiated in  {@link UBDomain#models UBDomain.models} and {@link UBDomain#orderedModels UBDomain.orderedModels}
  * @class
  * @param cfg
  * @param cfg.path
@@ -371,6 +368,7 @@ function UBModel (cfg, modelCode) {
   this.order = cfg.order
   /**
    * Module name for `require`
+   * @type {string}
    */
   this.moduleName = cfg.moduleName
   // if (cfg.moduleSuffix && cfg.moduleName) {
@@ -378,7 +376,6 @@ function UBModel (cfg, modelCode) {
   // }
   /**
    * The path for retrieve a model public accessible files (using clientRequire endpoint)
-   *
    * @type {string}
    */
   this.clientRequirePath = /* cfg.clientRequirePath
@@ -413,7 +410,7 @@ UBModel.prototype.realPublicPath = ''
 function UBEntityAttributes () {}
 /**
  * Return a JSON representation of all entity attributes
- * @returns {Object}
+ * @returns {object}
  */
 UBEntityAttributes.prototype.asJSON = function () {
   let result = {}
@@ -440,11 +437,12 @@ function UBEntityMapping (maping) {
 }
 
 /**
+ * Entity metadata
  * @class
- * @param {Object} entityInfo
- * @param {Object} entityMethods
- * @param {Object} i18n
- * @param {String} entityCode
+ * @param {object} entityInfo
+ * @param {object} entityMethods
+ * @param {object} i18n
+ * @param {string} entityCode
  * @param {UBDomain} domain
  */
 function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
@@ -461,19 +459,19 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    */
   Object.defineProperty(this, 'domain', {enumerable: false, value: domain})
   /**
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.code = entityCode
   /**
    * Entity model name
-   * @type{String}
+   * @type{string}
    * @readonly
    */
   this.modelName = entityInfo.modelName
   /**
    * Entity name
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.name = entityInfo.name
@@ -488,13 +486,13 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
 
   /**
    * Internal short alias
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.sqlAlias = entityInfo.sqlAlias
   /**
    * Data source connection name
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.connectionName = entityInfo.connectionName
@@ -530,12 +528,12 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
 
   /**
    * Optional dbKeys (for extended domain info)
-   * @type {Object}
+   * @type {object}
    */
   this.dbKeys = entityInfo.dbKeys && Object.keys(entityInfo.dbKeys).length ? entityInfo.dbKeys : undefined
   /**
    * Optional dbExtensions (for extended domain info)
-   * @type {Object}
+   * @type {object}
    */
   this.dbExtensions = entityInfo.dbExtensions && Object.keys(entityInfo.dbExtensions).length ? entityInfo.dbExtensions : undefined
 
@@ -566,7 +564,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   mixinNames = Object.keys(entityInfo.mixins || {})
   /**
    * Collection of entity mixins
-   * @type {Object<String, UBEntityMixin>}
+   * @type {Object<string, UBEntityMixin>}
    */
   this.mixins = {}
   mixinNames.forEach(function (mixinCode) {
@@ -594,7 +592,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   })
   /**
    * Entity methods, allowed for current logged-in user in format {method1: 1, method2: 1}. 1 mean method is allowed
-   * @type {Object<String, Number>}
+   * @type {Object<string, Number>}
    * @readOnly
    */
   this.entityMethods = entityMethods || {}
@@ -636,7 +634,7 @@ UBEntity.prototype.cacheType = 'None'
 UBEntity.prototype.dsType = 'Normal'
 
 /**
- * Is this entity UNITY for someone
+ * Indicate this entity is a UNITY for someone
  * @type {boolean}
  */
 UBEntity.prototype.isUnity = false
@@ -649,21 +647,21 @@ UBEntity.prototype.getEntityCaption = function () {
 }
 
 /**
- * Get entity attribute by code. Return undefined if attribute does not found
- * @param {String} attributeCode
- * @param {Boolean} [simple] Is do not complex attribute name. By default false.
+ * Get entity attribute by code. Return `undefined` if attribute is not found
+ * @param {string} attributeCode
+ * @param {Boolean} [simpleOnly=false] Check for complex attributes like `attr1.attr2.attr3`
  * @returns {UBEntityAttribute}
  */
-UBEntity.prototype.attr = function (attributeCode, simple) {
+UBEntity.prototype.attr = function (attributeCode, simpleOnly) {
   let res = this.attributes[attributeCode]
-  if (!res && !simple) {
+  if (!res && !simpleOnly) {
     res = this.getEntityAttribute(attributeCode)
   }
   return res
 }
 
 /**
- * Get entity attribute by code. Throw error if attribute does not found.
+ * Get entity attribute by code. Throw error if attribute is not found.
  * @param attributeCode
  * @returns {UBEntityAttribute}
  */
@@ -678,7 +676,7 @@ UBEntity.prototype.getAttribute = function (attributeCode) {
 /**
  * @callback entityAttributesIteratorCallback
  * @param {UBEntityAttribute} attribute
- * @param {String} [attributeName]
+ * @param {string} [attributeName]
  * @param {UBEntityAttributes} [attributes]
  */
 
@@ -692,8 +690,8 @@ UBEntity.prototype.eachAttribute = function (callBack) {
 }
 
 /**
- * Get entity mixin by code. Returns "undefined" if the mixin is not found
- * @param {String} mixinCode
+ * Get entity mixin by code. Returns `undefined` if mixin is not found
+ * @param {string} mixinCode
  * @returns {UBEntityMixin}
  */
 UBEntity.prototype.mixin = function (mixinCode) {
@@ -701,8 +699,8 @@ UBEntity.prototype.mixin = function (mixinCode) {
 }
 
 /**
- * Check the entity has mixin. Returns `true` if the mixin is exist and enabled
- * @param {String} mixinCode
+ * Checks if entity has enabled mixin with specified code.
+ * @param {string} mixinCode
  * @returns {Boolean}
  */
 UBEntity.prototype.hasMixin = function (mixinCode) {
@@ -714,8 +712,8 @@ UBEntity.prototype.hasMixin = function (mixinCode) {
 }
 
 /**
- * Check the entity has mixin. Throw error if mixin dose not exist or not enabled
- * @param {String} mixinCode
+ * Checks if entity has mixin. Throw if mixin dose not exist or not enabled
+ * @param {string} mixinCode
  */
 UBEntity.prototype.checkMixin = function (mixinCode) {
   if (!this.hasMixin(mixinCode)) {
@@ -739,8 +737,8 @@ UBEntity.prototype.asJSON = function () {
 }
 
 /**
- * Check current user have access to specified entity method
- * @param {String} methodCode
+ * Checks if current user has access to specified entity method
+ * @param {string} methodCode
  * @returns {Boolean}
  */
 UBEntity.prototype.haveAccessToMethod = function (methodCode) {
@@ -750,24 +748,24 @@ UBEntity.prototype.haveAccessToMethod = function (methodCode) {
 }
 
 /**
- * Filter attributes by properties
- * @param {Object|Function} config
- * @returns {Array}
- * example
+ * Filters attributes by properties
+ * @param {Object|Function} predicate
+ * @returns {Array<UBEntityAttribute>}
+ * @example
  *
- *      domain.get('uba_user').filterAttribute({dataType: 'Document'});
+ *   // return all attributes where property dataType equal Document
+ *   domain.get('uba_user').filterAttribute({dataType: 'Document'});
  *
- *   return all attributes where property dataType equal Document
  */
-UBEntity.prototype.filterAttribute = function (config) {
-  if (_.isFunction(config)) {
-    return _.filter(this.attributes, config)
+UBEntity.prototype.filterAttribute = function (predicate) {
+  if (_.isFunction(predicate)) {
+    return _.filter(this.attributes, predicate)
   } else {
     return _.filter(this.attributes, function (item) {
       let res = true
-      for (let prop in config) {
-        if (config.hasOwnProperty(prop)) {
-          res = res && (item[prop] === config[prop])
+      for (let prop in predicate) {
+        if (predicate.hasOwnProperty(prop)) {
+          res = res && (item[prop] === predicate[prop])
         }
       }
       return res
@@ -776,13 +774,13 @@ UBEntity.prototype.filterAttribute = function (config) {
 }
 
 /**
- * Check current user have access to AT LAST one of specified methods
- * @param {Array} methods
+ * Checks if current user has access to at last one of specified methods
+ * @param {Array<string>} methodsCodes
  * @returns {boolean}
  */
-UBEntity.prototype.haveAccessToAnyMethods = function (methods) {
+UBEntity.prototype.haveAccessToAnyMethods = function (methodsCodes) {
   let me = this
-  let fMethods = methods || []
+  let fMethods = methodsCodes || []
   let result = false
 
   fMethods.forEach(function (methodCode) {
@@ -796,8 +794,8 @@ UBEntity.prototype.haveAccessToAnyMethods = function (methods) {
 }
 
 /**
- * Check current user have access to ALL of specified methods
- * @param {Array<String>} methods Method names
+ * Checks if current user has access to ALL of the specified methods
+ * @param {Array<string>} methods Method names
  * @returns {Boolean}
  */
 UBEntity.prototype.haveAccessToMethods = function (methods) {
@@ -816,18 +814,19 @@ UBEntity.prototype.haveAccessToMethods = function (methods) {
 }
 
 /**
- * Add entity level method.
+ * Add entity level method. Client can call such methods remotely. Also such methods are the subjects of ELS.
  *
- * Method itself must be a function type property of entity with single parameter of type {ubMethodParams}
- * Client able to call such methods remotely. Also such methods is a subject of ELS security.
+ * Property named `methodName` with a type `function` should be added to the entity namespace.
+ * Such functions accept single parameter of type {@link ubMethodParams}
  *
- * You do not need to add methods what do not called from client using {TubEntity#addMethod}
+ * Don't add methods what do not called from client using {@UBEntity#addMethod}!
  *
- * Warning: do not call entity.addMethod from inside function or conditions. This code evaluated during thread initialization and each thread must add method in the same manner.
+ * **Warning:** do not call UBEntity.addMethod from inside function or conditions.
+ * This code evaluated during thread initialization and each thread must add method in the same manner.
  *
  * @example
  *
- * //consider we have entity my_entity. Code below is inside my_entity.js file):
+  //consider entity with code `my_entity` exists. Inside my_entity.js file):
   var me = my_entity;
   me.entity.addMethod('externalMethod');
   // @param {ubMethodParams} ctx <- here must be JSDoc comment format
@@ -842,8 +841,8 @@ UBEntity.prototype.haveAccessToMethods = function (methods) {
   $App.connection.query({entity: 'my_entity', method: 'externalMethod', a: 10, b:20}).then(function(result){
     console.log(' 10 * 20 = ', result.multiplyResult); // will put to log "10 * 20 = 200"
   })
- *
- * @param {String} methodName
+
+ * @param {string} methodName
  */
 UBEntity.prototype.addMethod = function (methodName) {
   throw new Error('UBEntity.addMethod implemented only in HTTP worker thread')
@@ -875,7 +874,7 @@ function iso8601ParseAsDate (value) {
 }
 
 /**
- * Convert UnityBase server Boolean response to Boolean (0 = false & 1 = trhe)
+ * Convert UnityBase server Boolean response to Boolean (0 = false & 1 = true)
  * @private
  * @param v Value to convert
  * @returns {Boolean|null}
@@ -892,7 +891,7 @@ function booleanParse (v) {
 
 /**
  * Return array of conversion rules for raw server response data
- * @param {Array<String>} fieldList
+ * @param {Array<string>} fieldList
  * @returns {Array<{index: number, convertFn: function}>}
  */
 UBEntity.prototype.getConvertRules = function (fieldList) {
@@ -925,11 +924,9 @@ UBEntity.prototype.getConvertRules = function (fieldList) {
 }
 
 /**
- * Return description attribute name (`descriptionAttribute` metadata property)
- * This property may be empty or valid(validation performed by server)
- * If case property is empty - try to get attribute with code `caption`
- *
- * @return {String}
+ * Returns description attribute name (`descriptionAttribute` metadata property)
+ * If `descriptionAttribute` is empty - fallback to attribute with code `caption`
+ * @return {string}
  */
 UBEntity.prototype.getDescriptionAttribute = function () {
   let result = this.descriptionAttribute || 'caption'
@@ -940,12 +937,12 @@ UBEntity.prototype.getDescriptionAttribute = function () {
 }
 
 /**
- * Return information about attribute and attribute entity. Understand complex attributes like firmID.firmType.code
- * @param {String} attributeName
- * @param {Number} [deep] If 0 - last, -1 - before last, > 0 - root. Default 0.
- * @return {{ entity: String, attribute: Object, attributeCode: String }}
+ * Returns information about attribute and attribute entity. Understand complex attributes like firmID.firmType.code
+ * @param {string} attributeName
+ * @param {number} [depth=0] If 0 - last, -1 - before last, > 0 - root. Default 0.
+ * @return {{ entity: String, attribute: UBEntityAttribute, attributeCode: String }|undefined}
  */
-UBEntity.prototype.getEntityAttributeInfo = function (attributeName, deep) {
+UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
   let domainEntity = this
   let attributeNameParts = attributeName.split('.')
   let currentLevel = -(attributeNameParts.length - 1)
@@ -955,7 +952,7 @@ UBEntity.prototype.getEntityAttributeInfo = function (attributeName, deep) {
   let attribute
   let key
 
-  if (deep && deep > 0) {
+  if (depth && depth > 0) {
     return { entity: currentEntity, attribute: domainEntity.attr(attributeNameParts[0]), attributeCode: attributeNameParts[0] }
   }
 
@@ -977,7 +974,7 @@ UBEntity.prototype.getEntityAttributeInfo = function (attributeName, deep) {
     }
     attribute = domainEntity.attr(key)
     if (attribute) { // check that attribute exists in domainEntity
-      if (currentLevel === (deep || 0)) {
+      if (currentLevel === (depth || 0)) {
         return { entity: currentEntity, attribute: attribute, attributeCode: key }
       }
       attributeName = attributeNameParts[0]
@@ -996,12 +993,12 @@ UBEntity.prototype.getEntityAttributeInfo = function (attributeName, deep) {
 }
 
 /**
- * Return Entity attribute. Understand complex attributes like firmID.firmType.code
- * @param {String} attributeName
- * @param {Number} [deep] If 0 - last, -1 - before last, > 0 - root. Default 0.
+ * Returns entity attribute. Understand complex attributes like firmID.firmType.code
+ * @param {string} attributeName
+ * @param {number} [recDepth=0] Current recursion depth. If 0 - last, -1 - before last, > 0 - root. Default 0.
  * @return {UBEntityAttribute}
  */
-UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
+UBEntity.prototype.getEntityAttribute = function (attributeName, recDepth) {
   let domainEntity = this
   let attributeNameParts = attributeName.split('.')
   let currentLevel = -(attributeNameParts.length - 1)
@@ -1009,7 +1006,7 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
   let attribute
   let key
 
-  if (deep && deep > 0) {
+  if (recDepth && recDepth > 0) {
     return domainEntity.attributes[attributeNameParts[0]]
   }
 
@@ -1031,7 +1028,7 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
     }
     attribute = domainEntity.attributes[key]
     if (attribute) { // check that attribute exists in domainEntity
-      if (currentLevel === (deep || 0)) {
+      if (currentLevel === (recDepth || 0)) {
         return attribute
       }
       attributeName = attributeNameParts[0]
@@ -1053,14 +1050,14 @@ UBEntity.prototype.getEntityAttribute = function (attributeName, deep) {
 }
 
 /**
- * return attributes code list
- * @param {Object|Function} [filter]
- * @returns String[]
+ * Returns array of entity attribute`s names
+ * @param {Object|Function} [predicate] In empty - will return all names
+ * @returns {Array<string>}
  */
-UBEntity.prototype.getAttributeNames = function (filter) {
+UBEntity.prototype.getAttributeNames = function (predicate) {
   let attributes = []
-  if (filter) {
-    _.forEach(this.filterAttribute(filter), function (attr) {
+  if (predicate) {
+    _.forEach(this.filterAttribute(predicate), function (attr) {
       attributes.push(attr.code)
     })
     return attributes
@@ -1070,18 +1067,15 @@ UBEntity.prototype.getAttributeNames = function (filter) {
 }
 
 /**
- * Return requirements entity code list for field list
- * @param {String[]} [fieldList] (optional)
- * @return {String[]}
+ * For each attribute from `fieldList` chck it's type, and if this type is Entity - add entity code to then result
+ * @param {Array<string>} [fieldList] If empty - all entity attributes will be used
+ * @return {Array<string>}
  */
 UBEntity.prototype.getEntityRequirements = function (fieldList) {
   let result = []
-
   fieldList = fieldList || this.getAttributeNames()
-
-  for (let i = 0, len = fieldList.length; i < len; ++i) {
+  for (let i = 0, L = fieldList.length; i < L; ++i) {
     let fieldNameParts = fieldList[i].split('.')
-
     let attr = this.getEntityAttribute(fieldNameParts[0])
     if (attr.dataType === UBDomain.ubDataTypes.Entity) {
       if (fieldNameParts.length > 1) {
@@ -1092,14 +1086,13 @@ UBEntity.prototype.getEntityRequirements = function (fieldList) {
       }
     }
   }
-
   return result
 }
 
 /**
- * Check the entity contains attribute(s) and throw error if not contains
- * @param {String|Array<String>} attributeName
- * @param {String} contextMessage
+ * Checks entity has attribute(s) and throw error if not
+ * @param {String|Array<string>} attributeName
+ * @param {string} contextMessage
  */
 UBEntity.prototype.checkAttributeExist = function (attributeName, contextMessage) {
   let me = this
@@ -1113,14 +1106,16 @@ UBEntity.prototype.checkAttributeExist = function (attributeName, contextMessage
 }
 
 /**
- * Return entity description.
+ * Return entity description
  * @returns {string}
  */
 UBEntity.prototype.getEntityDescription = function () {
   return this.description || this.caption
 }
 
-/** @class */
+/**
+ * @class
+ */
 function UBEntityAttributeMapping (maping) {
   /**
    * @type {UBDomain.ExpressionType}
@@ -1131,25 +1126,26 @@ function UBEntityAttributeMapping (maping) {
 }
 
 /**
- * @param {Object} attributeInfo
- * @param {String} attributeCode
+ * Entity attribute
+ * @param {object} attributeInfo
+ * @param {string} attributeCode
  * @param {UBEntity} entity
- * @constructor
+ * @class
  */
 function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   // i18n already merged by entity constructor
   /**
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.code = attributeCode
-  /** @type {String}
+  /** @type {string}
   * @readonly
   */
   this.name = attributeInfo.name
   /**
    * Non enumerable (to prevent JSON.stringify circular ref) read only entity reference
-   * @property {UBEntity} entity
+   * @member {UBEntity} entity
    * @readonly
    */
   Object.defineProperty(this, 'entity', {enumerable: false, value: entity})
@@ -1161,32 +1157,32 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   this.dataType = attributeInfo.dataType || 'String'
   /**
    * Name of entity referenced by the attribute (for attributes of type `Many` - entity name from the AssociationManyData)
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.associatedEntity = attributeInfo.associatedEntity
   /**
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.associationAttr = attributeInfo.associationAttr
   /**
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.caption = attributeInfo.caption || ''
   /**
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.description = attributeInfo.description || ''
   /**
-   * @type {String}
+   * @type {string}
    * @readonly
    */
   this.documentation = attributeInfo.documentation || ''
   /**
-   * @type {Number}
+   * @type {number}
    * @readonly
    */
   this.size = attributeInfo.size || 0
@@ -1208,12 +1204,12 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    */
   this.isUnique = (attributeInfo.isUnique === true)
   /**
-   * @type{String}
+   * @type{string}
    * @readonly
    */
   this.defaultValue = attributeInfo.defaultValue
   /**
-   * Allow edit
+   * Edition allowed (not verified by server side)
    * @type {Boolean}
    * @readonly
    */
@@ -1224,47 +1220,47 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    */
   this.isMultiLang = (attributeInfo.isMultiLang === true)
   /**
-   * Possible for dataType=Entity - enable cascade delete on application serve level (not on database level)
+   * For attributes of type Entity enable cascade deletion on application server level (not on database level)
    * @type {Boolean}
    * @readonly
    */
   this.cascadeDelete = (attributeInfo.cascadeDelete === true)
   /**
-   * Required for dataType=Enum - Group code from ubm_enum.eGroup
-   * @property {String} enumGroup
+   * For attributes of type Enum - code of enumeration group from `ubm_enum.eGroup`
+   * @property {string} enumGroup
    * @readonly
    */
   this.enumGroup = attributeInfo.enumGroup
   /**
-   * @type {Object}
+   * @type {object}
    * @readonly
    */
   this.customSettings = attributeInfo.customSettings || {}
   /**
-   * Required for dataType=Many - name of the many-to-many table. UB create system entity with this name and generate table during DDL generation
-   * @property {String}
+   * For attributes of type Many - name of the many-to-many table. UB create system entity with this name and generate table during DDL generation
+   * @property {string}
    * @readonly
    */
   this.associationManyData = attributeInfo.associationManyData
   /**
-   * Applicable to attribute with dataType=Document - name of store from storeConfig application config section. If emtpy - store with isDefault=true will be used
-   * @type{String}
+   * For attributes of type Document - name of BLOB store from application `storeConfig`. If empty - default store will be used
+   * @type {string}
    * @readonly
    */
   this.storeName = attributeInfo.storeName
   /**
-   * Applicable for dataType=Entity. If false DDL generator will bypass foreign key generation on the database level
+   * For attributes of type Entity. If `false` - bypass foreign key generation by DDL generator
    * @type {boolean}
    */
   this.generateFK = attributeInfo.generateFK !== false
   /**
-   * If true - client should shows this attribute in auto-build forms and in '*' select fields
+   * If `true` - client should shows this attribute in auto-build forms and in '*' select fields
    * @type {boolean}
    */
   this.defaultView = attributeInfo.defaultView !== false
   /**
-   * Optional mapping of atribute to phisical data (for extended domain info only).
-   * Calculated from a entity mapping collection in accordance with application connection confiduration
+   * Optional mapping of attribute to physical data (for extended domain info only).
+   * Calculated from a entity mapping collection in accordance with application connection configuration
    * @type {UBEntityAttributeMapping}
    * @readonly
    */
@@ -1282,14 +1278,14 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   }
 
   /**
-   * @property {String} physicalDataType
+   * @property {string} physicalDataType
    * @readonly
    */
   this.physicalDataType = UBDomain.getPhysicalDataType(this.dataType || 'String')
 }
 
 /**
- * Return associated entity. Return null if attribute type is not Entity.
+ * Return associated entity or `null` if type of attribute !==`Entity`.
  * @returns {UBEntity}
  */
 UBEntityAttribute.prototype.getAssociatedEntity = function () {
@@ -1312,17 +1308,17 @@ UBEntityAttribute.prototype.asJSON = function () {
 }
 
 /**
- * Contains all properties defined in mixin section of a entity metafile
+ * Contains all properties defined in mixin section of a entity meta file
  * @class
  * @protected
- * @param {Object} mixinInfo
- * @param {Object} i18n
- * @param {String} mixinCode
+ * @param {object} mixinInfo
+ * @param {object} i18n
+ * @param {string} mixinCode
  */
 function UBEntityMixin (mixinInfo, i18n, mixinCode) {
   /**
    * Mixin code
-   * @type {String}
+   * @type {string}
    */
   this.code = mixinCode
   _.assign(this, mixinInfo)
@@ -1331,6 +1327,10 @@ function UBEntityMixin (mixinInfo, i18n, mixinCode) {
   }
 }
 
+/**
+ * Is mixin enabled
+ * @type {boolean}
+ */
 UBEntityMixin.prototype.enabled = true
 
 /**
@@ -1439,5 +1439,5 @@ UBEntityAlsMixin.prototype.alsOptimistic = true
 UBDomain.UBEntity = UBEntity
 UBDomain.UBModel = UBModel
 UBDomain.UBEntity.UBEntityAttribute = UBEntityAttribute
-module.exports = UBDomain
 
+module.exports = UBDomain
