@@ -1,6 +1,7 @@
 /*
  * Repository for server-side data retrieve
  * @author pavel.mash 23.09.2014
+ * documentation verified by mpv on 2018-03-18
  */
 
 // ***********   !!!!WARNING!!!!! **********************
@@ -24,7 +25,7 @@ for (let i = 0; i < 100; i++) {
  */
 class CustomRepository {
   /**
-   * @param {String} entityName name of Entity we create for
+   * @param {string} entityName name of Entity we create for
    */
   constructor (entityName) {
     /**
@@ -104,9 +105,8 @@ class CustomRepository {
   }
 
   /**
-   * Add fields to collection.
-   * Can take one attribute name as string or array of attributes.
-   * Duplicate is not checked and in case of duplicate attribute caller got server error.
+   * Adds attribute.
+   * Duplicate is not checked and caller will get server exception.
    *
    *      UB.Repository('tri_srf_reg').attrs('ID').attrs(['code', 'name']).attrs('fullName', 'newCode');
    *
@@ -115,16 +115,15 @@ class CustomRepository {
    *
    * - **'SUM', 'COUNT', 'AVG', 'MAX', 'MIN', 'CAST', 'COALESCE'**
    *
-   * Example:
-   *
-   *      UB.Repository('tri_srf_reg').attrs('SUM([payment])').where('documentID', '=', value);
-   *      //will calculate sum of document payments
-   *
-   * If case of server-side execution any valid SQL expression is accepted:
-   *
-   *      UB.Repository('uba_user').attrs('[ID] / 100 + 1').selectAsArray()
-   *
-   * @param {String|Array} attr
+   * @example
+
+   // calculate sum of document payments
+   UB.Repository('tri_srf_reg').attrs('SUM([payment])').where('documentID', '=', value)
+
+   // In case of server-side execution any valid SQL expression is accepted:
+   UB.Repository('uba_user').attrs('[ID] / 100 + 1').selectAsArray()
+
+   * @param {string|Array<string>} attr
    * @return {CustomRepository}
    */
   attrs (attr) {
@@ -141,7 +140,7 @@ class CustomRepository {
   }
 
   /**
-   * Add where expression.
+   * Adds where expression
    *
    *  - the expression may contain one of the following functions: 'SUM', 'COUNT', 'AVG', 'MAX', 'MIN', 'CAST', 'COALESCE',
    *    'LENGTH', 'LOWER', 'UPPER', 'DAY', 'MONTH', 'YEAR', 'ROUND', 'FLOOR', 'CEILING'
@@ -152,7 +151,7 @@ class CustomRepository {
    *      .where('dateTimeValue', '<', '#currentdate')
    *
    *  - `in` and 'notIn` conditions can take a sub-repository as a values parameter value.
-   *  See {@link CustomRepository#exists} for examples of using
+   *  See {@link CustomRepository#exists} for sample
    *
    * @example
 
@@ -171,10 +170,10 @@ class CustomRepository {
     // for condition match expression not need
     .where('', 'match', 'myvalue')
 
-   * @param {String} expression   Attribute name (with or without []) or valid expression with attributes in []
+   * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
    * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
    * @param {*} [values] Condition value. If `undefined` values not passed to ubql
-   * @param {String} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
+   * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
    *   If not passed where will generate unique clause named 'c1', 'c2', ......
    * @return {CustomRepository}
    */
@@ -258,36 +257,38 @@ class CustomRepository {
   }
 
   /**
-   *  Add an expression with `EXISTS` sub-query. Inside a sub-query there is two macro:
+   *  Adds where condition with `EXISTS` sub-query. Inside a sub-query there are two macros:
    *
-   *  - {master} will be replaced by master entity alias
-   *  - {self}  will be replaced by sub-query entity alias
+   *  - `{master}` will be replaced by master entity alias
+   *  - `{self}` will be replaced by sub-query entity alias
    *
-   *      UB.Repository('uba_user').attrs(['ID', 'name']) //select users
-   *        // who are not disabled
-   *        .where('disabled', '=', 0)
-   *        // which allowed access from Kiev
-   *        .where('trustedIP', 'in',
-   *          UB.Repository('geo_ip').attrs('IPAddr')
-   *            .where('city', '=', 'Kiev')
-   *        )
-   *        // who do not login during this year
-   *        .notExists(
-   *          UB.Repository('uba_audit')
-   *            .correlation('actionUser', 'name')  // here we link to uba_user.name
-   *            .where('actionTime', '>', new Date(2016, 1, 1))
-   *            .where('actionType', '=', 'LOGIN')
-   *        )
-   *        // but modify some data
-   *        .exists(
-   *          UB.Repository('uba_auditTrail')
-   *            .correlation('actionUser', 'ID') // here we link to uba_user.ID
-   *            .where('actionTime', '>', new Date(2016, 1, 1))
-   *        )
-   *        .select()
-   *
+   * @example
+
+  UB.Repository('uba_user').attrs(['ID', 'name']) //select users
+    // who are not disabled
+    .where('disabled', '=', 0)
+    // which allowed access from Kiev
+    .where('trustedIP', 'in',
+     UB.Repository('geo_ip').attrs('IPAddr')
+       .where('city', '=', 'Kiev')
+    )
+    // who do not login during this year
+    .notExists(
+     UB.Repository('uba_audit')
+       .correlation('actionUser', 'name')  // here we link to uba_user.name
+       .where('actionTime', '>', new Date(2016, 1, 1))
+       .where('actionType', '=', 'LOGIN')
+    )
+    // but modify some data
+    .exists(
+     UB.Repository('uba_auditTrail')
+       .correlation('actionUser', 'ID') // here we link to uba_user.ID
+       .where('actionTime', '>', new Date(2016, 1, 1))
+    )
+    .select()
+
    * @param {CustomRepository} subRepository  Repository, what represent a sub-query to be execute inside EXISTS statement
-   * @param {String} [clauseName] Optional clause name
+   * @param {string} [clauseName] Optional clause name
    * @return {CustomRepository}
    */
   exists (subRepository, clauseName) {
@@ -295,10 +296,10 @@ class CustomRepository {
   }
 
   /**
-   * Add an expression with `NOT EXISTS` sub-query. See CustomRepository.exists for sample
+   * Adds where condition with `NOT EXISTS` sub-query. See CustomRepository.exists for sample
    *
    * @param {CustomRepository} subRepository  Repository, what represent a sub-query to be execute inside EXISTS statement
-   * @param {String} [clauseName] Optional clause name
+   * @param {string} [clauseName] Optional clause name
    * @return {CustomRepository}
    */
   notExists (subRepository, clauseName) {
@@ -306,14 +307,14 @@ class CustomRepository {
   }
 
   /**
-   * If current repository are used as a sub-query for `exists`, `notExists`, `in` or `notIn` conditions
-   * will add a [correlation](https://en.wikipedia.org/wiki/Correlated_subquery) with a master repository
+   * If current repository is used as a sub-query for `exists`, `notExists`, `in` or `notIn` conditions
+   * [correlation](https://en.wikipedia.org/wiki/Correlated_subquery) with a master repository will added
    *
-   *
-   * @param {String} subQueryAttribute
-   * @param {String} masterAttribute
+   * @param {string} subQueryAttribute
+   * @param {string} masterAttribute
    * @param {WhereCondition|String} [condition=eq] A subset from WhereCondition list applicable for correlation join
-   * @param {String} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}. If not passed where will generate unique clause named 'c1', 'c2', ......
+   * @param {string} [clauseName] Optional clause name to be used in {@link CustomRepository#logic logic}.
+   *   If not passed unique clause names ('c1', 'c2', ...) where will be generated
    * @return {CustomRepository}
    */
   correlation (subQueryAttribute, masterAttribute, condition, clauseName) {
@@ -324,21 +325,24 @@ class CustomRepository {
     return this.where(subQueryAttribute + condition + '[{master}.' + masterAttribute + ']', 'custom', undefined, clauseName)
   }
   /**
-   * Arrange where expressions in logical order. By default where expressions is joined by AND logical predicate. Here is possible to  join it in custom order.
+   * Arrange `where expressions` in logical order. By default `where expressions` are joined by AND logical predicate.
+   * It is possible to join it in custom order using `logic`.
    *
-   *      UB.Repository('my_entity').attrs('id')
-   *        // code in ('1', '2', '3')
-   *        .where('code', 'in', ['1', '2', '3'], 'byCode')
-   *        // name like '%homer%'
-   *        .where('name', 'contains', 'Homer', 'byName')
-   *        //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
-   *        .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
-   *        // (age + 10 >= 15)
-   *        .where('[age] -10', '>=', {age: 15}, 'byAge')
-   *        // (byCode OR byName) AND (all where items, not included in logic)
-   *        .logic('(([byCode]) OR ([byName]))')
-   *
-   * @param {String} predicate logical predicate.
+   * @example
+
+  UB.Repository('my_entity').attrs('id')
+   // code in ('1', '2', '3')
+   .where('code', 'in', ['1', '2', '3'], 'byCode')
+   // name like '%homer%'
+   .where('name', 'contains', 'Homer', 'byName')
+   //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
+   .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
+   // (age + 10 >= 15)
+   .where('[age] -10', '>=', {age: 15}, 'byAge')
+   // (byCode OR byName) AND (all where items, not included in logic)
+   .logic('(([byCode]) OR ([byName]))')
+
+   * @param {string} predicate logical predicate.
    * @return {CustomRepository}
    */
   logic (predicate) {
@@ -347,21 +351,22 @@ class CustomRepository {
   }
 
   /**
-   * Force where expressions to be used in join SQL statement instead of where. Applicable only for not cached entities.
-   *
-   *      // will generate
-   *      // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
-   *      //    ON (B.instanceID = A.ID and B.ubUser = 10)
-   *      // instead of
-   *      // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
-   *      //    ON B.instanceID = A.ID
-   *      //    WHERE B.ubUser = 10
-   *      UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
-   *          .where('[caregory.ubUser]', '=', 10, 'wantInJoin')
-   *          .join('wantInJoin')
-   *          .selectAsObject().done(UB.logDebug);
-   *
-   * @param {String} whereItemName name of where item to use in join.
+   * Force `where expressions` to be used in join part of SQL statement instead of where part. Applicable only for not cached entities
+   * @exapmle
+
+  // will generate
+  // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
+  //    ON (B.instanceID = A.ID and B.ubUser = 10)
+  // instead of
+  // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
+  //    ON B.instanceID = A.ID
+  //    WHERE B.ubUser = 10
+  UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
+   .where('[caregory.ubUser]', '=', 10, 'wantInJoin')
+   .join('wantInJoin')
+   .selectAsObject().done(UB.logDebug)
+
+   * @param {string} whereItemName name of where item to use in join.
    * @return {CustomRepository}
    */
   join (whereItemName) {
@@ -370,13 +375,14 @@ class CustomRepository {
   }
 
   /**
-   * Add join condition. Fix some known issues
+   * Adds join condition. Fix some known issues
    *
-   * @param {String} expression   Attribute name (with or without []) or valid expression with attributes in [].
-   * @param {WhereCondition} condition    Any value from WhereCondition list.
-   * @param {*} [values]          Condition value. In case expression is complex can take {Object} as value.
-   *                              In case values === undefined no values property passed to where list
-   * @param {String} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}. If not passed where will generate unique clause named 'c1', 'c2', ......
+   * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in [].
+   * @param {CustomRepository.WhereCondition} condition    Any value from WhereCondition list.
+   * @param {*} [values] Condition value. In case expression is complex can take {Object} as value.
+   *   In case values === undefined no values property passed to where list
+   * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}.
+   *   If not passed where will generate unique clause named 'c1', 'c2', ......
    * @return {CustomRepository}
    */
   joinCondition (expression, condition, values, clauseName) {
@@ -392,12 +398,13 @@ class CustomRepository {
   }
 
   /**
-   * Add sorting
-   *
-   *      UB.CustomRepository('my_entity').attrs('ID').orderBy('code')
-   *
-   * @param attr      Sorted attribute
-   * @param [direction='asc'] Sort direction ('asc'|'desc')
+   * Sorting
+   * @example
+
+  UB.CustomRepository('my_entity').attrs('ID').orderBy('code')
+
+   * @param {string} attr Sorted attribute
+   * @param {string} [direction='asc'] Sort direction ('asc'|'desc')
    * @return {CustomRepository}
    */
   orderBy (attr, direction) {
@@ -410,13 +417,14 @@ class CustomRepository {
   }
 
   /**
-   * Add desc sorting. The same as orderBy(attr, 'desc')
-   *
-   *      UB.Repository('my_entity').attrs('ID')
-   *        // ORDER BY code, date_create DESC
-   *        .orderBy('code').orderByDesc('date_create')
-   *
-   * @param {String} attr
+   * Adds descend sorting. The same as orderBy(attr, 'desc')
+   * @example
+
+  UB.Repository('my_entity').attrs('ID')
+    // ORDER BY code, date_create DESC
+    .orderBy('code').orderByDesc('date_create')
+
+   * @param {string} attr
    * @return {CustomRepository}
    */
   orderByDesc (attr) {
@@ -428,17 +436,17 @@ class CustomRepository {
   }
 
   /**
-   * Add grouping
-   * Can take one attribute name as string or array of attributes name
-   *
-   *      UB.Repository('my_entity').attrs('ID')
-   *        .groupBy('code')
-   *      UB.Repository('uba_user').attrs('disabled')
-   *        .groupBy('disabled').select()
-   *      UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
-   *        .groupBy(['disabled','uPassword']).select()
-   *
-   * @param attr  Grouped attribute
+   * Adds grouping
+   * @example
+
+  UB.Repository('my_entity').attrs('ID')
+   .groupBy('code')
+  UB.Repository('uba_user').attrs('disabled')
+   .groupBy('disabled').select()
+  UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
+   .groupBy(['disabled','uPassword']).select()
+
+   * @param {string|Array<string>} attr Grouped attribute(s)
    * @return {CustomRepository}
    */
   groupBy (attr) {
@@ -451,12 +459,13 @@ class CustomRepository {
   }
 
   /**
-   * Add options.start value to retrieve first `start` rows
-   *
-   *      let store = UB.Repository('my_entity').attrs('id')
-   *        //will return ID's from 15 to 25
-   *        .start(15).limit(10).select()
-   *
+   * Retrieve first `start` rows
+   * @example
+
+  let store = UB.Repository('my_entity').attrs('id')
+   //will return ID's from 15 to 25
+   .start(15).limit(10).select()
+
    * @param {Number} start
    * @return {CustomRepository}
    */
@@ -466,11 +475,12 @@ class CustomRepository {
   }
 
    /**
-   * Add options.limit value. Can be combined with start.
-   *
-      // will return first two ID's from my_entity
-      let store = UB.Repository('my_entity').attrs('id').limit(2).select()
-   *
+   * How many rows to select
+   * @example
+
+  // will return first two ID's from my_entity
+  let store = UB.Repository('my_entity').attrs('id').limit(2).selectAsObject()
+
    * @param {number} rowsLimit
    * @return {CustomRepository}
    */
@@ -480,13 +490,13 @@ class CustomRepository {
   }
 
   /**
-   * For debug purpose only.
+   * For debug purpose only. Will put this description into log before query execution
    *
-   * If set, in GUI mode will put this description into log before query execution
-   *
-   *      let store = UB.Repository('my_entity').attrs('ID').describe('Select all record for "my_entity"').select()
-   *
-   * @param {String} value
+   * @example
+
+  let store = UB.Repository('my_entity').attrs('ID').describe('Select all record for "my_entity"').select()
+
+   * @param {string} value
    * @return {CustomRepository}
    */
   describe (value) {
@@ -495,12 +505,13 @@ class CustomRepository {
   }
 
   /**
-   * Construct a UBQL JSON request. Used in {@link CustomRepository#select}
-   *
-   *       let repo = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a')
-   *       let inst = new TubDataStore(my_entity);
-   *       inst.run('select', repo.ubql());
-   *
+   * Construct a UBQL JSON
+   * @example
+
+  let repo = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a')
+  let inst = UB.DataStore(my_entity)
+  inst.run('select', repo.ubql())
+
    * @return {Object}
    */
   ubql () {
@@ -587,13 +598,14 @@ class CustomRepository {
   }
 
   /**
-   * Select a single row. If ubql result is empty - return {undefined}
-   *
-   *    UB.Repository('uba_user').attrs('name', 'ID').where('ID', '=', 10)
-   *      .selectSingle().then(UB.logDebug)
-   *    // will output: {name: "admin", ID: 10}
-   *
-   * WARNING method do not check repository contains the single row and always return a first row from result.
+   * Select a single row. If ubql result is empty - return `undefined`
+   * @example
+
+  UB.Repository('uba_user').attrs('name', 'ID').where('ID', '=', 10)
+   .selectSingle().then(UB.logDebug)
+  // will output: {name: "admin", ID: 10}
+
+   * **WARNING** method does not check if result contains the single row and always returns a first row from result
    * @abstract
    * @return {*|undefined}
    */
@@ -602,14 +614,15 @@ class CustomRepository {
   }
 
   /**
-   * Perform select and return a value of the first attribute from the first row
-   *
-   *    UB.Repository('uba_user')
-   *    .attrs('name')
-   *    .where('ID', '=', 10)
-   *    .selectScalar().then(UB.logDebug) // will output `admin`
-   *
-   * WARNING method do not check repository contains the single row
+   * Execute select and returns a value of the first attribute from the first row
+   * @example
+
+  UB.Repository('uba_user')
+    .attrs('name')
+    .where('ID', '=', 10)
+    .selectScalar().then(UB.logDebug) // will output `admin`
+
+   * **WARNING** does not check if result contains the single row
    * @abstract
    * @return {Number|String|undefined}
    */
@@ -618,15 +631,13 @@ class CustomRepository {
   }
 
   /**
-   * Select a single row by ID. If ubql result is empty - return {undefined}
-   *
-   * If result not empty - return a object
-   *
-   *    UB.Repository('uba_user').attrs('name', 'ID').selectById(10).then(UB.logDebug)
-   *    // will output: {name: "admin", ID: 10}
-   *
-   * for server side or Promise resolved to object for client
-   *
+   * Select a single row by ID. If result is empty - returns `undefined`
+   * If result is not empty - returns a object
+   * @example
+
+  UB.Repository('uba_user').attrs('name', 'ID').selectById(10).then(UB.logDebug)
+  // will output: {name: "admin", ID: 10}
+
    * @abstract
    * @param {Number} ID Row identifier
    * @return {Object|undefined}
@@ -636,12 +647,13 @@ class CustomRepository {
   }
 
   /**
-   * Apply miscellaneous options to resulting ubql:
-   *
-   *       // this server-side call will select all currency, including deleted
-   *       UB.Repository('cdn_currency').attrs(['ID'])
-   *         .misc({__allowSelectSafeDeleted: true}).selectAsArray();
-   *
+   * Apply miscellaneous options to resulting UBQL
+   * @example
+
+  // this server-side call will select all currency, including deleted
+  UB.Repository('cdn_currency').attrs(['ID'])
+    .misc({__allowSelectSafeDeleted: true}).selectAsArray();
+
    * @param {Object} flags
    * @param {Date} [flags.__mip_ondate] Specify date on which to select data for entities with `dataHistory` mixin. Default to Now()
    * @param {Boolean} [flags.__mip_recordhistory=false] Select only record history data for specified ID (for entities with `dataHistory` mixin)
@@ -653,7 +665,6 @@ class CustomRepository {
    * @param {Boolean} [flags.__skipSelectAfterInsert=false] **Server-side only.**
    * @param {Boolean} [flags.__skipRls=false] **Server-side only.**
    * @param {Boolean} [flags.__skipAclRls=false] **Server-side only.**
-   *
    * @return {CustomRepository}
    */
   misc (flags) {
@@ -688,7 +699,7 @@ class CustomRepository {
  * Alias to {@link CustomRepository#ubql CustomRepository.ubql}
  * @memberOf CustomRepository
  * @private
- * @deprecated Will be removed in UB 2.0. Use .ubql() instead
+ * @deprecated Will be removed in UB 5.1. Use .ubql() instead
  */
 CustomRepository.prototype.getRunListItem = CustomRepository.prototype.ubql
 /**
@@ -696,7 +707,7 @@ CustomRepository.prototype.getRunListItem = CustomRepository.prototype.ubql
  * @method
  * @memberOf CustomRepository
  * @private
- * @deprecated Will be removed in UB 2.0. Use .ubql() instead
+ * @deprecated Will be removed in UB 5.1. Use .ubql() instead
  */
 CustomRepository.prototype.ubRequest = CustomRepository.prototype.ubql
 

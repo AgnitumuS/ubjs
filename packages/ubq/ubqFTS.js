@@ -1,11 +1,12 @@
-﻿/**
+﻿const UB = require('@unitybase/ub')
+const _ = require('lodash')
+let me = UB.ns('UB.UBQ')
+
+/**
  * @class UB.UBQ
  * FTS index builder for Scheduler
  * @singleton
  */
-
-const _ = require('lodash')
-let me = UB.ns('UB.UBQ')
 
 /**
  * Read queue with code 'ASYNCFTS' (by portion of 1000 queue rows at once) and rebuild FTS indexes.
