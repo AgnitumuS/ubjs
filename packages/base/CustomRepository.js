@@ -79,13 +79,6 @@ class CustomRepository {
     this.method = 'select'
 
     /**
-     * Retrieved data description for server log in GUI mode. Default is ''.
-     * @property {string} __description
-     * @private
-     */
-    this.__description = ''
-
-    /**
      * Miscellaneous options
      * @property {Object} __misc
      * @private
@@ -486,21 +479,6 @@ class CustomRepository {
    */
   limit (rowsLimit) {
     this.options.limit = rowsLimit
-    return this
-  }
-
-  /**
-   * For debug purpose only. Will put this description into log before query execution
-   *
-   * @example
-
-  let store = UB.Repository('my_entity').attrs('ID').describe('Select all record for "my_entity"').select()
-
-   * @param {string} value
-   * @return {CustomRepository}
-   */
-  describe (value) {
-    this.__description = value
     return this
   }
 
