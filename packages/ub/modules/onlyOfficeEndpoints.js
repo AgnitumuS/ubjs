@@ -1,6 +1,5 @@
 /**
- * @module
- * @ type {{notifyDocumentSaved: notifyDocumentSaved, getDocumentOffice: getDocumentOffice, getOnlyOfficeConfiguration: getOnlyOfficeConfiguration}}
+ * @module onlyOfficeEndpoints
  */
 module.exports = {
   notifyDocumentSaved,
