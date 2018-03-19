@@ -4,8 +4,10 @@ const App = require('./App')
 
 /**
  * Functions for evaluation UnityBase model JS files
- * @module
+ * @module modelLoader
  */
+module.exports.loadEntitiesModules = loadEntitiesModules
+module.exports.loadLegacyModules = loadLegacyModules
 
 /**
  * Load all *.js for which there is a pair *.meta
@@ -72,6 +74,3 @@ function loadLegacyModules (folderPath, isFromPublicFolder = false) {
     }
   }
 }
-
-module.exports.loadEntitiesModules = loadEntitiesModules
-module.exports.loadLegacyModules = loadLegacyModules

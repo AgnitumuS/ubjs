@@ -168,7 +168,7 @@ UB.i18nExtend = mI18n.extend
 require('./modules/RLS')
 
 // export BEFORE load models, since models inside can use a UB model
-const modelLoader = require('./modules/moledLoader')
+const modelLoader = require('./modules/modelLoader')
 UB.loadLegacyModules = modelLoader.loadLegacyModules
 /**
  * Application instance
