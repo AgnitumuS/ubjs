@@ -81,36 +81,36 @@ let verboseMode = options.switchIndex('noLogo') === -1
  * @class ServerSession
  */
 function ServerSession (config) {
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.HOST = config.host
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.USER = config.user
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.PWD = config.pwd
-    /**
-     * Custom user data returned by server login method
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Custom user data returned by server login method
+   * @type {String}
+   * @readonly
+   */
   this.uData = null
   this.__serverStartedByMe = false
-    /**
-     * @type {UBConnection}
-     */
+  /**
+   * @type {UBConnection}
+   */
   this.connection = null
-    /**
-     * Shut down server in case it started during connection establish or logout from remote server
-     * @method
-     */
+  /**
+   * Shut down server in case it started during connection establish or logout from remote server
+   * @method
+   */
   this.logout = function () {
     if (this.__serverStartedByMe) {
       if (verboseMode) console.info('Shut down local server')
@@ -120,11 +120,11 @@ function ServerSession (config) {
     }
   }
 
-    // noinspection JSUnusedGlobalSymbols
-    /**
-     * Result of `getAppInfo` endpoint execution
-     * @type {Object}
-     */
+  // noinspection JSUnusedGlobalSymbols
+  /**
+   * Result of `getAppInfo` endpoint execution
+   * @type {Object}
+   */
   this.appInfo = {}
 }
 
