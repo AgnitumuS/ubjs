@@ -57,7 +57,7 @@ function dbUbql (req, resp) {
 }
 App.registerEndpoint('dbUbql', dbUbql, false)
 
-const CustomRepository = require('@unitybase/base').CustomRepository
+const CustomRepository = require('@unitybase/cs-shared').CustomRepository
 let PureQ = new CustomRepository('World').attrs(['ID', 'randomNumber']).where('ID', '=', 0).ubql()
 
 /**

@@ -4,11 +4,12 @@ let me = ubm_form
 const fs = require('fs')
 const _ = require('lodash')
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
-const LocalDataStore = require('@unitybase/base').LocalDataStore
+const csShared = require('@unitybase/cs-shared')
+const UBDomain = csShared.UBDomain
+const LocalDataStore = csShared.LocalDataStore
 const path = require('path')
 const App = require('@unitybase/ub').App
 const UB = require('@unitybase/ub')
-const UBDomain = require('@unitybase/base').UBDomain
 const blobStores = require('@unitybase/ub/blobStores')
 
 me.entity.addMethod('select')

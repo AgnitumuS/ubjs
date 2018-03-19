@@ -8,9 +8,11 @@ const EventEmitter = require('./events')
 const ubUtils = require('./utils')
 const i18n = require('./i18n').i18n
 const transport = require('./transport')
-const UBSession = require('@unitybase/base/UBSession')
-const LocalDataStore = require('@unitybase/base/LocalDataStore')
-const UBDomain = require('@unitybase/base/UBDomain')
+
+const csShared = require('@unitybase/cs-shared')
+const LocalDataStore = csShared.LocalDataStore
+const UBSession = csShared.UBSession
+const UBDomain = csShared.UBDomain
 const UBCache = require('./UBCache')
 const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
@@ -1470,7 +1472,7 @@ UBConnection.prototype.serverErrorByCode = function (errorNum) {
 /**
  * Create a new instance of repository
  * @param {String} entityName name of Entity we create for
- * @returns {ServerRepository}
+ * @returns {ClientRepository}
  */
 UBConnection.prototype.Repository = function (entityName) {
   return new ClientRepository(this, entityName)

@@ -1,5 +1,6 @@
-const LocalDataStore = require('@unitybase/base/LocalDataStore')
-const CustomRepository = require('@unitybase/base/CustomRepository')
+const csShared = require('@unitybase/cs-shared')
+const LocalDataStore = csShared.LocalDataStore
+const CustomRepository = csShared.CustomRepository
 
 /**
  * Repository for client-side data retrieve.

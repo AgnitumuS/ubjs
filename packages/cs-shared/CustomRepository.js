@@ -1,5 +1,5 @@
 /*
- * Repository for server-side data retrieve
+ * Ancestor for client-side & server-side repositories
  * @author pavel.mash 23.09.2014
  * documentation verified by mpv on 2018-03-18
  */

@@ -1,9 +1,10 @@
 const http = require('http')
 const _ = require('lodash')
-const UBSession = require('./UBSession')
+const csShared = require('@unitybase/cs-shared')
+const UBSession = csShared.UBSession
 const CryptoJS = require('@unitybase/cryptojs/core')
 const {ServerRepository} = require('./ServerRepository')
-const UBDomain = require('./UBDomain')
+const UBDomain = csShared.UBDomain
 
 CryptoJS.MD5 = require('@unitybase/cryptojs/md5')
 // regular expression for URLs server not require authorization.

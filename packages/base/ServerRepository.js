@@ -4,8 +4,9 @@
  * @author pavel.mash
  */
 
-const CustomRepository = require('./CustomRepository.js')
-const LocalDataStore = require('./LocalDataStore')
+const csShared = require('@unitybase/cs-shared')
+const CustomRepository = csShared.CustomRepository
+const LocalDataStore = csShared.LocalDataStore
 
 /* global TubDataStore */
 /**

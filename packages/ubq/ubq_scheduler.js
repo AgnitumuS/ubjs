@@ -2,7 +2,8 @@ let me = ubq_scheduler
 
 const fs = require('fs')
 const path = require('path')
-const {argv, LocalDataStore} = require('@unitybase/base')
+const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
+const argv = require('@unitybase/base').argv
 const _ = require('lodash')
 
 me.entity.addMethod('select')

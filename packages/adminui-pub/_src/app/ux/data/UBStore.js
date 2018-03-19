@@ -1,6 +1,6 @@
 require('../../core/UBCommand')
 require('./proxy/UBProxy')
-const UBDomain = require('@unitybase/base/UBDomain')
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 /**
  * Extend {@link Ext.data.Store} to easy use with UnityBase server:
  *

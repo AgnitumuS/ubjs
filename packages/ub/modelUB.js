@@ -1,5 +1,5 @@
 const EventEmitter = require('events').EventEmitter
-const UBDomain = require('@unitybase/base').UBDomain
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 const ServerRepository = require('@unitybase/base').ServerRepository
 const repositoryFabric = ServerRepository.fabric // for backward compatibility with UB 1.7
 const App = require('./modules/App')

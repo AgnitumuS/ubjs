@@ -1,10 +1,11 @@
 let me = ubm_diagram
 
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
-const LocalDataStore = require('@unitybase/base').LocalDataStore
-const App = require('@unitybase/ub').App
+const csShared = require('@unitybase/cs-shared')
+const UBDomain = csShared.UBDomain
+const LocalDataStore = csShared.LocalDataStore
 const UB = require('@unitybase/ub')
-const UBDomain = require('@unitybase/base').UBDomain
+const App = UB.App
 const blobStores = require('@unitybase/ub/blobStores')
 
 const path = require('path')

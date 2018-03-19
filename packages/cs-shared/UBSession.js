@@ -1,10 +1,9 @@
 /**
- * Internal class, returned as a result of {@link UBConnection#authorize UBConnection.authorize()}
- * @module @unitybase/base/UBSession
+ * Exports UBSession class, returned as a result of {@link UBConnection#authorize UBConnection.authorize()}
+ * @module UBSession
+ * @author pavel.mash
  */
-/*
- @author pavel.mash
- */
+module.exports = UBSession
 
 /* global ncrc32 */
 
@@ -179,5 +178,3 @@ UBSession.prototype.crc32 = function crc32 (s, polynomial, initialValue, finalXO
   return (crc ^ finalXORValue) >>> 0
 }
 const crc32 = UBSession.prototype.crc32
-
-module.exports = UBSession

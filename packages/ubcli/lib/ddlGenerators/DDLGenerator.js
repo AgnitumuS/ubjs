@@ -3,7 +3,7 @@
  rewrite to ES6 & ubcli by pavel.mash 08.2016
  */
 const _ = require('lodash')
-const UBDomain = require('@unitybase/base').UBDomain
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 const {TableDefinition, strIComp} = require('./AbstractSchema')
 
 /**

@@ -4,9 +4,11 @@ const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
-const LocalDataStore = require('@unitybase/base').LocalDataStore
-const UBDomain = require('@unitybase/base').UBDomain
-const App = require('@unitybase/ub').App
+const csShared = require('@unitybase/cs-shared')
+const UBDomain = csShared.UBDomain
+const LocalDataStore = csShared.LocalDataStore
+const UB = require('@unitybase/ub')
+const App = UB.App
 const blobStores = require('@unitybase/ub/blobStores')
 
 me.entity.addMethod('select')

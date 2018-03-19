@@ -4,7 +4,7 @@ if (typeof _App === 'undefined') {
 }
 const argv = require('@unitybase/base').argv
 const path = require('path')
-const UBDomain = require('@unitybase/base').UBDomain
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 const EventEmitter = require('events').EventEmitter
 
 /**

@@ -43,7 +43,7 @@
  * @module blobStores
  */
 const App = require('../modules/App')
-const UBDomain = require('@unitybase/base').UBDomain
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 const Repository = require('@unitybase/base').ServerRepository.fabric
 const queryString = require('querystring')
 const {badRequest} = require('../modules/httpUtils')

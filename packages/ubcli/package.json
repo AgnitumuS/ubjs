@@ -17,6 +17,7 @@
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json"
   },
   "dependencies": {
+    "@unitybase/cs-shared": "^5.0.0",
     "@unitybase/base": "^5.0.3",
     "@unitybase/compressors": "^5.0.3",
     "@unitybase/ub": "^5.0.3",

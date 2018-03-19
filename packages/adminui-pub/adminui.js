@@ -5,8 +5,9 @@
 const UB = require('@unitybase/ub-pub')
 const Q = require('bluebird-q')
 const _ = require('lodash')
-const UBDomain = require('@unitybase/base/UBDomain')
-const LocalDataStore = require('@unitybase/base/LocalDataStore')
+const csShared = require('@unitybase/cs-shared')
+const UBDomain = csShared.UBDomain
+const LocalDataStore = csShared.LocalDataStore
 
 /** @global */
 window.UB = UB

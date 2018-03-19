@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/UnityBaseJS/benchmarks#readme",
   "dependencies": {
+    "@unitybase/cs-shared": "^5.0.0",
     "@unitybase/base": "^5.0.3",
     "@unitybase/dml-generator": "^5.0.3",
     "@unitybase/ub": "^5.0.3",

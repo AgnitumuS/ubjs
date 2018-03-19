@@ -1,7 +1,8 @@
-const lds = require('./LocalDataStore')
 const path = require('path')
-const UBDomain = require('./UBDomain')
 const _ = require('lodash')
+const csShared = require('@unitybase/cs-shared')
+const UBDomain = csShared.UBDomain
+const lds = csShared.LocalDataStore
 
 /**
  * UnityBase file-system based virtual store **select**. Able to load files & transform it content to {@link TubCachedData} format.
