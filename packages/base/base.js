@@ -10,7 +10,7 @@ const Worker = require('./worker')
 const uba_common = require('./uba_common')
 
 /**
- * Contains classes, common for CLI, server-side and browser side
+ * Classes, common for CLI and server side
  * @module @unitybase/base
  */
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
    */
   ServerRepository,
   /**
-   * Server side & CLI side connection to UB server
+   * Synchronous connection to external UB server
    * @type {SyncConnection}
    */
   SyncConnection,
@@ -46,7 +46,7 @@ module.exports = {
   dataLoader: dataLoader,
   /**
    * File-system based virtual store **select**.
-   * Able to load files & transform it content to {@link TubCachedData} format
+   * Used for loading files & transforming it content to {@link TubCachedData} format
    * @type {module:FileBasedStoreLoader}
    */
   FileBasedStoreLoader,
@@ -72,6 +72,7 @@ module.exports = {
    * @param {String} stringToFormat The string to be formatted.
    * @param {...*} values The values to replace tokens `{0}`, `{1}`, etc in order.
    * @return {String} The formatted string.
+   * @private
    */
   format: function (stringToFormat, ...values) {
     const FORMAT_RE = /{(\d+)}/g

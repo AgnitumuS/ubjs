@@ -1,3 +1,6 @@
+const bindings = process.binding('worker')
+const {sleep} = process.binding('syNode')
+
 /**
  * Execute a script in a dedicated thread.
  *
@@ -18,11 +21,9 @@
  *  - *terminate()* for terminating current worker thread
  *
  * @author v.orel
- * @module @unitybase/base/worker
+ * @module worker
  */
-
-const bindings = process.binding('worker')
-const {sleep} = process.binding('syNode')
+module.exports = Worker
 
 /**
  * @class
@@ -44,7 +45,6 @@ function Worker (paramsObj) {
     this.postMessage(paramsObj.message)
   }
 }
-module.exports = Worker
 
 /**
  * Get message from the worker thread
