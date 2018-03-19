@@ -51,7 +51,7 @@ module.exports = function runUDataTest (options) {
 
 /**
  *  Test uData is Object and it persisted only on Session.on('login');
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testUData (conn) {
     // check it filled

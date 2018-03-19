@@ -6,7 +6,7 @@ const {strIComp} = require('../AbstractSchema')
 
 class DBAbstract {
   /**
-   * @param {UBConnection} conn
+   * @param {SyncConnection} conn
    * @param {DBConnectionConfig} dbConnectionConfig
    * @param {Array<TableDefinition>} referencedTables
    * @param {boolean} [isUnsafe=true] do not comment out a unsafe DB operations

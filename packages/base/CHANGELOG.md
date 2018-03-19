@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.0]
 ### Added
 - UBEntity.isUnity property added
-- UBConnection.getDocument method
+- SyncConnection.getDocument method
 
 ## [4.2.27]
 ### Changed
@@ -54,7 +54,7 @@ case we updated something backwards
 - `argv.getConfigFileName` take a config from UB_CFG environment variable if `-cfg` cmd line switch omitted
 - `FileBaseStoreLoader.load()` now return data version in TubDataCache. 
   To be used in file-based entitis select's instead of version calculation individually in each entity
-- `UBConnection.setDocument` method for convinient uploading content to temp store, for example in model initialization or
+- `SyncConnection.setDocument` method for convinient uploading content to temp store, for example in model initialization or
   data update/migration scripts
 
 ### Fixed

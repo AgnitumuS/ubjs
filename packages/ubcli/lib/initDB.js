@@ -157,7 +157,7 @@ module.exports = function initDB (cfg) {
 
 /**
  * Create a Everyone & admin roles and a SuperUser named admin with password `admin`
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {String} dbDriverName
  * @private
  */

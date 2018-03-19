@@ -27,7 +27,7 @@ module.exports = function runMDBTest (options) {
 }
 
 /**
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testUbmForm (conn) {
   const ENTITY = 'ubm_form'
@@ -43,7 +43,7 @@ function testUbmForm (conn) {
 }
 
 /**
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testUbsReport (conn) {
   const ENTITY = 'ubs_report'
@@ -59,7 +59,7 @@ function testUbsReport (conn) {
 }
 
 /**
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testUbmDiagram (conn) {
   const ENTITY = 'ubm_diagram'

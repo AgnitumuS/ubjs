@@ -23,7 +23,7 @@ module.exports = function runFTSTest (options) {
 
 /**
  * Issue UB-1219: Error during delete operation in case ID attribute is mapped
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testIDMapping (conn) {
   // add new

@@ -23,7 +23,7 @@ module.exports = function runMDBTest (options) {
 }
 
 /**
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testServerSideBLOB (conn) {
   let resp = conn.post('testServerSideBLOB', {})

@@ -2,7 +2,7 @@
  * Helper for manipulation with data, stored locally in ({@link TubCachedData} format).
  *
  * This module shared between client & server. In case of server we use it together with {@link dataLoader},
- * in case of client - inside {@link UBConnection#select} to handle operations with entity data cached in IndexedDB.
+ * in case of client - inside {@link SyncConnection#select} to handle operations with entity data cached in IndexedDB.
  *
  * For server-side samples see ubm_forms.doSelect method implementation.
  *
@@ -292,7 +292,7 @@ function whereListToFunctions (request, fieldList) {
 }
 
 /**
- * Transform result of {@link UBConnection#select} response
+ * Transform result of {@link SyncConnection#select} response
  * from Array of Array representation to Array of Object.
  *
  *      LocalDataStore.selectResultToArrayOfObjects({resultData: {

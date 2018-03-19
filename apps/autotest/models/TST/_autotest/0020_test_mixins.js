@@ -31,7 +31,7 @@ module.exports = function runELSTest (options) {
 }
 
 /**
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testClobTruncate (conn) {
   let s200 = '1234567890'.repeat(2000)
@@ -111,7 +111,7 @@ function testClobTruncate (conn) {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testDateTime (conn) {
   let dayDate = new Date()
@@ -135,7 +135,7 @@ function testDateTime (conn) {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testFloatAndCurrency (conn) {
   let firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
@@ -145,7 +145,7 @@ function testFloatAndCurrency (conn) {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testParamMacros (conn) {
   // Этот тест проверяет, насколько корректно построитель запросов обрабатывает символ '#', на который начинаются некоторые макросы

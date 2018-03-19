@@ -35,7 +35,7 @@ module.exports = function runTest (options) {
 
   /**
    *
-   * @param {UBConnection} conn
+   * @param {SyncConnection} conn
    */
   function testAllSelect (conn) {
     let recCnt = 0

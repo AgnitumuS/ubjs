@@ -37,7 +37,7 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
 
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
@@ -87,7 +87,7 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
 
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */

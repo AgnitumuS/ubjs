@@ -1,5 +1,5 @@
 /**
- * Exports UBSession class, returned as a result of {@link UBConnection#authorize UBConnection.authorize()}
+ * Exports UBSession class, returned as a result of [UB|Sync]Connection.authorize
  * @module UBSession
  * @author pavel.mash
  */
@@ -10,7 +10,7 @@ module.exports = UBSession
 // ***********   !!!!WARNING!!!!! **********************
 // Module shared between server and client code
 /**
- * Internal class, returned as a result of {@link UBConnection#authorize UBConnection.authorize()}
+ * Internal class, returned as a result of [UB|Sync]Connection.authorize()
  * The main method is {@link UBSession.signature UBSession.signature()}
  *
  * Developer never create this class directly.
@@ -35,7 +35,7 @@ function UBSession (authResponse, secretWord, authSchema) {
    */
   Object.defineProperty(this, 'sessionID', {enumerable: true, writable: false, value: hexa8ID})
   /**
-   * User logon name. Better to access this value using {@link UBConnection#userLogin UBConnection.userLogin()} method.
+   * User logon name. Better to access this value using {@link SyncConnection#userLogin SyncConnection.userLogin()} method.
    * @type {String}
    * @private
    * @readonly
@@ -44,7 +44,7 @@ function UBSession (authResponse, secretWord, authSchema) {
 
   /** Contain custom user data. Usually filled inside **server** `onUserLogon` event handlers
    *
-   * Do not use it directly, instead use helper method {@link UBConnection#userData UBConnection.userData()} instead.
+   * Do not use it directly, instead use helper method {@link SyncConnection#userData SyncConnection.userData()} instead.
    *
    * @type {Object}
    * @protected

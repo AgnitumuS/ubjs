@@ -31,7 +31,7 @@ module.exports = function runHTTPTest (options) {
 }
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {UBDomain} domain
  * @param {ServerSession} session
  */

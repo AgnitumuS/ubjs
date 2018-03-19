@@ -17,7 +17,7 @@ const LocalDataStore = csShared.LocalDataStore
  * Usually is created by using one of the fabric functions:
  *
  *   - {@link UB.Repository UB.Repository} for entities from this server instance
- *   - {@link UBConnection#Repository conn.Repository} for access remote UB server
+ *   - {@link SyncConnection#Repository conn.Repository} for access remote UB server
  *
 
      let store = UB.Repository('my_entity')
@@ -36,13 +36,13 @@ const LocalDataStore = csShared.LocalDataStore
 class ServerRepository extends CustomRepository {
   /**
    * @private
-   * @param {UBConnection|null} connection The remote server connection or `null` for internal server thread
+   * @param {SyncConnection|null} connection The remote server connection or `null` for internal server thread
    * @param {String} entityName name of Entity we create for
    */
   constructor (connection, entityName) {
     super(entityName)
     /**
-     * @type {UBConnection}
+     * @type {SyncConnection}
      * @private
      */
     this.connection = connection
@@ -155,7 +155,7 @@ class ServerRepository extends CustomRepository {
  *      var req = Repository('uba_user').attrs('*').ubql();
  *
  * @param {String} entityName name of Entity for which we create repository
- * @param {UBConnection} [connection] The remote server connection. For internal server thread can be empty
+ * @param {SyncConnection} [connection] The remote server connection. For internal server thread can be empty
  * @return {ServerRepository}
  * @private
  */

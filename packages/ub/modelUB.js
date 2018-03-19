@@ -86,7 +86,7 @@ UB.format = UBFormat
  *
  * @param {String} entityName
  * @param {Object} [cfg]
- * @param {UBConnection} [connection] Pass in case of remote UnityBase server connection.
+ * @param {SyncConnection} [connection] Pass in case of remote UnityBase server connection.
  * @returns {ServerRepository}
  */
 UB.Repository = function (entityName, cfg, connection) {

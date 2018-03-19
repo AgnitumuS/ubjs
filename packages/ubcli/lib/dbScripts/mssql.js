@@ -31,18 +31,18 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
   }
 }
 
-function splitAndExec (stmts, ubConnection, dbConnectionName) {
+function splitAndExec (stmts, syncConnection, dbConnectionName) {
   let delimRe = /\r\n/.test(stmts) ? 'GO\r\n' : 'GO\n' // git can remove \r\n
   let statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement && statement !== 'GO') {
-      ubConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
+      syncConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
     }
   })
 }
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
@@ -57,7 +57,7 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
 
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */

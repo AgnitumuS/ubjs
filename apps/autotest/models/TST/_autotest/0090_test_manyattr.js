@@ -30,7 +30,7 @@ try {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testManyAttribute(conn){
 

@@ -21,7 +21,7 @@ const _ = require('lodash')
  * Developer should never create {@link UBDomain} class directly, but instead use a:
  *
  *  - {@link App.domainInfo App.domainInfo} property inside server-side methods
- *  - {@link UBConnection#getDomainInfo UBConnection.getDomainInfo} method inside CLI scripts
+ *  - {@link SyncConnection#getDomainInfo SyncConnection.getDomainInfo} method inside CLI scripts
  *  - `UBConnection.domain` property inside a browser
  *
        // server-side example

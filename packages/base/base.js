@@ -1,7 +1,7 @@
 const argv = require('./argv')
 const options = require('./options')
 const ServerRepository = require('./ServerRepository')
-const UBConnection = require('./UBConnection')
+const SyncConnection = require('./SyncConnection')
 const csv1 = require('./csv1')
 const dataLoader = require('./dataLoader')
 const FileBasedStoreLoader = require('./FileBasedStoreLoader')
@@ -31,9 +31,9 @@ module.exports = {
   ServerRepository,
   /**
    * Server side & CLI side connection to UB server
-   * @type {UBConnection}
+   * @type {SyncConnection}
    */
-  UBConnection,
+  SyncConnection,
   /**
    * CSV data parser
    * @type {module:csv1}

@@ -143,7 +143,7 @@ class DDLGenerator {
   /**
    * Generate DD SQL for entity list
    * @param {Array<string>} names Entity names (may be regular expressions)
-   * @param {UBConnection} conn
+   * @param {SyncConnection} conn
    * @param {boolean} [unsafe=false]
    * @return {Object} DDL SQL
    */
@@ -205,7 +205,7 @@ class DDLGenerator {
 
   /**
    * Create reference table structure based on metadata
-   * @param {UBConnection} conn
+   * @param {SyncConnection} conn
    * @param {UBEntity} entity
    * @return {TableDefinition}
    */

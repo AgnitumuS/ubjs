@@ -3,14 +3,11 @@ const options = require('./options')
 const fs = require('fs')
 const path = require('path')
 const http = require('http')
-const UBConnection = require('./UBConnection')
+const SyncConnection = require('./SyncConnection')
 
 /**
  *
- * Utils for connecting to a local UnityBase server
- *
- * In case you need to work with command line use a {@link module:@unitybase/base/options @unitybase/base.options} module
- *
+ * Command-line utils for connecting to a [local] UnityBase server
  * @example
 
   const argv = require('@unitybase/base').argv
@@ -22,7 +19,7 @@ const UBConnection = require('./UBConnection')
   let conn = session.connection
   // obtain domain information
   const domainInfo = conn.getDomainInfo()
- *
+
  * @module argv
  */
 module.exports = {
@@ -104,7 +101,7 @@ function ServerSession (config) {
   this.uData = null
   this.__serverStartedByMe = false
   /**
-   * @type {UBConnection}
+   * @type {SyncConnection}
    */
   this.connection = null
   /**
@@ -190,7 +187,7 @@ function establishConnectionFromCmdLineAttributes (config) {
   if (config.timeout) {
     http.setGlobalConnectionDefaults({receiveTimeout: parseInt(config.timeout, 10)})
   }
-  let conn = serverSession.connection = new UBConnection({ URL: serverSession.HOST })
+  let conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
   let appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
   if (appInfo.authMethods.indexOf('UB') !== -1) {

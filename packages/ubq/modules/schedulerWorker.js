@@ -1,4 +1,4 @@
-const UBConnection = require('@unitybase/base').UBConnection
+const SyncConnection = require('@unitybase/base').SyncConnection
 const cron = require('node-cron')
 /**
  * The Worker function. Function body is evaluated in the worker thread, so
@@ -18,7 +18,7 @@ function runSchedulersCircle (message) {
 
   function safeSendAsyncRequest (cfgIdx) {
     try {
-      let conn = new UBConnection(serverURL)
+      let conn = new SyncConnection(serverURL)
       let cfg = config[cfgIdx]
       conn.onRequestAuthParams = function () {
         return {authSchema: 'UB', login: cfg.runAs, apiKey: cfg.apiKey}
@@ -36,9 +36,9 @@ function runSchedulersCircle (message) {
     }
   }
 
-  function cronJobStopped (cfgIdx) {
-    console.log('SCHEDULER: Job', config[cfgIdx].name, 'stopped')
-  }
+  // function cronJobStopped (cfgIdx) {
+  //   console.log('SCHEDULER: Job', config[cfgIdx].name, 'stopped')
+  // }
 
   console.debug('SCHEDULER: start initializeSchedulers..')
 

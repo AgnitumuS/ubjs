@@ -59,7 +59,7 @@ module.exports = {
 
 /**
  * Load data from CSV with delimiter (";" by default)
- * @param {UBConnection} conn Connection to UnityBase server
+ * @param {SyncConnection} conn Connection to UnityBase server
  * @param {String} fileName Full path to file
  * @param {String} entityName Entity code to load data into
  * @param {Array<string>} ettAttributes Array of attribute codes
@@ -99,7 +99,7 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
 
 /**
  * Load data from a array (rows) of array (columns data).
- * @param {UBConnection} conn Connection to UnityBase server
+ * @param {SyncConnection} conn Connection to UnityBase server
  * @param {Array} dataArray - array to load
  * @param {String} entityName Entity code to load data into
  * @param {Array<string>} ettAttributes Array of attribute codes
@@ -252,7 +252,7 @@ function localizeEntity (session, config, locale) {
     1000
   )
 
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {string} entityName
  * @param {string|Array<string>} attributeName  Attribute name or array of names
  * @param {number|Array<number>} colIndex      Column index or indexes
@@ -262,7 +262,7 @@ function localizeEntity (session, config, locale) {
 function lookup (conn, entityName, attributeName, colIndex, doNotUseCache) {
   /**
   * A function which lookup a value for dataLoader.
-  * @param {UBConnection} conn
+  * @param {SyncConnection} conn
   * @param {string} entityName
   * @param {string|Array<string>} attributeName  Attribute name or array of names
   * @param {number|Array<number>} colIndex      Column index or indexes

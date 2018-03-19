@@ -1,4 +1,4 @@
-const UBConnection = require('@unitybase/base').UBConnection
+const SyncConnection = require('@unitybase/base').SyncConnection
 const fs = require('fs')
 const path = require('path')
 
@@ -25,7 +25,7 @@ function onProcessWorker (message) {
     console.log('Worker module: got a signal', JSON.stringify(message))
   }
   const serverURL = message['serverURL']
-  let connection = new UBConnection(serverURL)
+  let connection = new SyncConnection(serverURL)
   connection.onRequestAuthParams = function () {
     return {authSchema: 'UB', login: 'admin', password: 'admin'}
   }

@@ -120,7 +120,7 @@ function expectationTest (connection, matches) {
  * Change  `республікою` to `монархією` in record with code=code16
  * Delete  record with code006 (word 'богом')
  *
- * @param {UBConnection} connection
+ * @param {SyncConnection} connection
  * @param {Array<Object>} expectations
  */
 function modifyData (connection, expectations) {

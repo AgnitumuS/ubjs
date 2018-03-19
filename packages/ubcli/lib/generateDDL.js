@@ -60,7 +60,7 @@ module.exports = function generateDDL (cgf) {
 }
 
 /**
- *  @param {UBConnection} conn
+ *  @param {SyncConnection} conn
  *  @param {boolean} autorun Optional server config application section (used in `auto` mode to execute DDL statements)
  *  @param {String} inEntities
  *  @param {String} inModelsCSV
