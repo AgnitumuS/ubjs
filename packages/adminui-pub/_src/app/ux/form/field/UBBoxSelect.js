@@ -285,13 +285,20 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
     if (typeof (id) !== 'string') {
       id = String(id)
     }
-    ids = id.split(',').map(function (val) { return parseInt(val, 10) })
+    if (this.valueField === 'ID') {
+      ids = id.split(',').map(function (val) { return parseInt(val, 10) })
+    } else {
+      ids = id.replace(/"/g, '').split(',')
+    }
 
     var repo = UB.Repository(originalReq.entity).attrs(originalReq.fieldList)
     if (ids.length > 1) {
-      repo = repo.where('[ID]', 'in', ids)
+      repo = repo.where('[' + this.valueField + ']', 'in', ids)
     } else {
-      repo = repo.where('[ID]', '=', ids[0])
+      repo = repo.where('[' + this.valueField + ']', '=', ids[0])
+    }
+    if (this.enumGroupFilter) {
+      repo = repo.where('[eGroup]', '=', this.enumGroupFilter)
     }
     repo.selectAsStore().then(function (store) {
       var values = []
