@@ -158,7 +158,7 @@ test('Open Desktop details', async t => {
   mainMenu.querySelector('menuitem[shortcutCode=adm_folder_UI]').showMenu()
   mainMenu.querySelector('menuitem[shortcutCode=ubm_desktop]').click()
 
-  //Select on existing Desktop
+  // Select on existing Desktop
   let eGrid = await extSelector('.ub-entity-grid')
   let idSht = await eGrid.querySelector('ubtableview').getIdByAttr('code', 'test_desktop_code')
   await t.rightClick(idSht)
