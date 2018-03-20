@@ -1,2 +1,2 @@
 const UB = require('@unitybase/ub')
-UB.run()
+UB.start()

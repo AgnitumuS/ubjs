@@ -36,7 +36,7 @@ if (!Promise.prototype.done) {
 }
 
 window.JSZip = require('jszip/dist/jszip.js') // for xlsx-pub. require('jszip') dose not work
-window.saveAs = require('file-saver/FileSaver.js').saveAs //not work require('file-saver').saveAs
+window.saveAs = require('file-saver').saveAs
 
 Ext.Loader.setConfig({
   enabled: true,
