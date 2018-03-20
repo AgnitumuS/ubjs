@@ -241,7 +241,6 @@ App.localIPs = _App.localIPs
  *  Will return '' in case of error (filePath not under `inetPub` or `model/`) to prevent ../../ attack
  * @param {String} aRequestedFile
  * @returns {String}
- * @protected
  */
 App.resolveStatic = function (aRequestedFile) {
   return _App.resolveStatic(aRequestedFile)

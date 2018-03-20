@@ -86,7 +86,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     if (addCSP) {
       let wsSrc = 'ws' + App.serverURL.slice(4)
       if (!uiSettings) {
-        uiSettings = JSON.parse(App.getUISettings() || '{}')
+        uiSettings = App.serverConfig.uiSettings
       }
       let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
       let cspHeaders =
