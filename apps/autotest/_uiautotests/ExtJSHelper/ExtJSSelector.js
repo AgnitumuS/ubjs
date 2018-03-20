@@ -2,8 +2,13 @@
 import { ClientFunction, Selector, t } from 'testcafe'
 import { LoginWin } from './loginWindowSelector'
 
-const getWindowError = ClientFunction(prop => window.onerror = prop);
+const getWindowError = ClientFunction(prop => window.onerror = prop)
 
+/**
+ *
+ * @param {string} cssSelector
+ * @return {Promise<ExtSelector>}
+ */
 async function extSelector (cssSelector) {
   let res = new ExtSelector(cssSelector)
   await t.expect(res.find().exists).ok()
@@ -69,21 +74,21 @@ class ItemSelector {
 
   getIdByAttr (attr, attrValue) {
     let elID = ClientFunction((queryCode, attr, attrValue) => {
-      let id, xtype = Ext.ComponentQuery.query(queryCode)[0].xtype;
-      if (xtype == 'treeview' || xtype == 'ubtableview') {
+      let id, xtype = Ext.ComponentQuery.query(queryCode)[0].xtype
+      if (xtype === 'treeview' || xtype === 'ubtableview') {
         let treeID = Ext.ComponentQuery.query(queryCode)[0].id, itemID
         let treeItems = Ext.ComponentQuery.query(queryCode)[0].store.data.items
         if (treeItems.length) {
           itemID = treeItems.forEach(item => {
             switch (attr) {
               case 'text': {
-                if (item.data.text == attrValue) {
+                if (item.data.text === attrValue) {
                   id = '#' + treeID + '-record-' + item.data.id
                   return id
                 }
               }
               case 'code': {
-                if (item.data.code == attrValue) {
+                if (item.data.code === attrValue) {
                   id = '#' + treeID + '-record-' + item.data.ID
                   return id
                 }
@@ -93,13 +98,13 @@ class ItemSelector {
           })
         }
       }
-      else if (xtype == 'tabpanel') {
+      else if (xtype === 'tabpanel') {
         let tabpanelArr = Ext.ComponentQuery.query('tabpanel')
         if (tabpanelArr.length) {
           tabpanelArr.forEach(tabpanel => {
             switch (attr) {
               case 'entityName': {
-                if (tabpanel.items.items[0].entityName == attrValue) {
+                if (tabpanel.items.items[0].entityName === attrValue) {
                   id = '#' + tabpanel.el.dom.id
                   return id
                 }

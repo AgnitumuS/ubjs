@@ -1,14 +1,14 @@
 import { extSelector, getWindowError } from './ExtJSHelper/ExtJSSelector'
 import { Selector, ClientFunction } from 'testcafe'
 
-const testPage = `http://localhost:888/adm-dev`
+const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
 
-fixture(`Preparing data for Move folder and shortcut to Desktop test`)
-  .page(testPage)
+fixture(`Preparing data for moving folder and shortcut to Desktop test`)
+  .page(TEST_PAGE)
 
 test('Add Desktop', async t => {
   await getWindowError(null)
-  //login in systems
+  // login
   let lw = await extSelector('.ub-login-window')
   lw.loginWin().setValueToUBAuth('admin', 'admin')
   lw.loginWin().loginBtnClick()
@@ -22,7 +22,7 @@ test('Add Desktop', async t => {
   // Click button 'Add'
   let eGrid = await extSelector('.ub-entity-grid')
   let grid = await Selector('.x-grid-view').innerText
-  if (grid.indexOf('test_desktop_code') > 0) {
+  if (grid.indexOf('test_desktop_code') !== -1) {
     await deleteExistDesktop('test_desktop_code')
   }
   eGrid.querySelector('button[actionId=addNew]').click()
@@ -33,8 +33,11 @@ test('Add Desktop', async t => {
   basepanel.querySelector('ubtextfield[attributeName=code]').setValue('test_desktop_code')
   basepanel.querySelector('button[actionId=saveAndClose]').click()
 
-  const e = await t.getBrowserConsoleMessages();
-  if (e.error.length > 0) await t.expect(e.error[e.error.length - 1]).notContains('UNHANDLED UBError', 'desktop with code test_desktop_code is exists')
+  const e = await t.getBrowserConsoleMessages()
+  if (e.error.length > 0) {
+    await t.expect(e.error[e.error.length - 1])
+      .notContains('UNHANDLED UBError', 'desktop with code test_desktop_code is exists')
+  }
 
   // Verify that new desktop is dispayed on the grid
   await extSelector('.ub-entity-grid')
@@ -42,7 +45,7 @@ test('Add Desktop', async t => {
   await t.expect(reloadGrid).contains('test_desktop_code')
 
   // Relogin to the system
-  await t.navigateTo(testPage)
+  await t.navigateTo(TEST_PAGE)
   lw = await extSelector('.ub-login-window')
   lw.loginWin().setValueToUBAuth('admin', 'admin')
   lw.loginWin().loginBtnClick()
@@ -57,7 +60,7 @@ test('Add Desktop', async t => {
 })
 
 test('Move folder and shortcut to Desktop', async t => {
-  await t.navigateTo(testPage)
+  await t.navigateTo(TEST_PAGE)
   let lw = await extSelector('.ub-login-window')
   lw.loginWin().setValueToUBAuth('admin', 'admin')
   lw.loginWin().loginBtnClick()
@@ -69,7 +72,7 @@ test('Move folder and shortcut to Desktop', async t => {
     await checkPrecondition()
     await t
       .click(Selector('.ub-header-menu-item'))
-      .navigateTo(testPage)
+      .navigateTo(TEST_PAGE)
     let lw = await extSelector('.ub-login-window')
     lw.loginWin().setValueToUBAuth('admin', 'admin')
     lw.loginWin().loginBtnClick()
@@ -92,7 +95,7 @@ test('Move folder and shortcut to Desktop', async t => {
   shForm.querySelector('button[actionId=saveAndClose]').click()
 
   // Reload browser
-  await t.navigateTo(testPage)
+  await t.navigateTo(TEST_PAGE)
   lw = await extSelector('.ub-login-window')
   lw.loginWin().setValueToUBAuth('admin', 'admin')
   lw.loginWin().loginBtnClick()
@@ -102,7 +105,7 @@ test('Move folder and shortcut to Desktop', async t => {
   leftMenu.querySelector('button[cls=ub-desktop-button]').click()
   leftMenu.querySelector('menuitem[text=test_desktop_name]').click()
 
-  //Verify that only folder is available on selected Desktop
+  // Verify that only folder is available on selected Desktop
   let reloadGrid = await Selector('.ub-left-panel').innerText
   await t
     .expect(reloadGrid).contains('Test folder')
@@ -131,7 +134,7 @@ test('Move folder and shortcut to Desktop', async t => {
   shForm.querySelector('button[actionId=saveAndClose]').click()
 
   // Reload browser
-  await t.navigateTo(testPage)
+  await t.navigateTo(TEST_PAGE)
   lw = await extSelector('.ub-login-window')
   lw.loginWin().setValueToUBAuth('admin', 'admin')
   lw.loginWin().loginBtnClick()
@@ -147,7 +150,7 @@ test('Move folder and shortcut to Desktop', async t => {
 })
 
 test('Open Desktop details', async t => {
-  await t.navigateTo(testPage)
+  await t.navigateTo(TEST_PAGE)
   let lw = await extSelector('.ub-login-window')
   lw.loginWin().setValueToUBAuth('admin', 'admin')
   lw.loginWin().loginBtnClick()
@@ -184,111 +187,89 @@ test('Open Desktop details', async t => {
 
 function deleteExistDesktop (code) {
   return ClientFunction(code => {
-    UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', code).selectAsObject()
-      .done(res => {
-        $App.connection.query(
-          {
-            entity: 'ubm_desktop', method: 'delete', execParams: {ID: res[0].ID}
-          }
-        )
+    UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', code)
+      .selectAsObject()
+      .then(res => {
+        $App.connection.query({
+          entity: 'ubm_desktop', method: 'delete', execParams: {ID: res[0].ID}
+        })
       })
   })(code)
 }
 
-async function checkPrecondition () {
-  return await ClientFunction(() => {
-    UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', 'adm_desktop').selectAsObject()
-      .done(dst => {
-        UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID').where('code', '=', 'test_folder').selectAsObject()
-          .done(sht => {
-            if (!sht.length) {
-              $App.connection.query(
-                {
-                  entity: 'ubm_navshortcut',
-                  method: 'insert',
-                  fieldList: ['ID'],
-                  execParams: {
-                    desktopID: dst[0].ID,
-                    code: 'test_folder',
-                    caption: 'Test folder',
-                    isFolder: true
-                  }
-                }
-              ).done(res => {
-                UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID', 'parentID').where('code', '=', 'test_shortcut').selectAsObject()
-                  .done(shtTest => {
-                    if (!shtTest.length) {
-                      $App.connection.query(
-                        {
-                          entity: 'ubm_navshortcut',
-                          method: 'insert',
-                          fieldList: ['ID'],
-                          execParams: {
-                            desktopID: dst[0].ID,
-                            code: 'test_shortcut',
-                            caption: 'Test shortcut',
-                            parentID: res.resultData.data[0][0],
-                            isFolder: false
-                          }
-                        }
-                      )
-                    }
-                  })
-              })
-            }
-            else if (sht[0].desktopID != dst[0].ID) {
-              $App.connection.query(
-                {
-                  entity: 'ubm_navshortcut',
-                  method: 'update',
-                  fieldList: [],
-                  __skipOptimisticLock: true,
-                  execParams: {
-                    ID: sht[0].ID,
-                    desktopID: dst[0].ID
-                  }
-                }
-              )
-            }
-            return sht
-          }).done(sht => {
-          UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID', 'parentID').where('code', '=', 'test_shortcut').selectAsObject()
-            .done(shtTest => {
-              if (!shtTest.length) {
-                $App.connection.query(
-                  {
-                    entity: 'ubm_navshortcut',
-                    method: 'insert',
-                    fieldList: ['ID'],
-                    execParams: {
-                      desktopID: dst[0].ID,
-                      code: 'test_shortcut',
-                      caption: 'Test shortcut',
-                      parentID: sht[0].ID,
-                      isFolder: false
-                    }
-                  }
-                )
-              }
-              else if (shtTest[0].desktopID != dst[0].ID || shtTest[0].parentID != sht[0].ID) {
-                $App.connection.query(
-                  {
-                    entity: 'ubm_navshortcut',
-                    method: 'update',
-                    fieldList: [],
-                    __skipOptimisticLock: true,
-                    execParams: {
-                      ID: shtTest[0].ID,
-                      desktopID: dst[0].ID,
-                      parentID: sht[0].ID
-                    }
-                  }
-                )
-              }
-            })
-        })
-      })
+function insertOrUpdateFolder (desktop, folder) {
+  if (!folder) {
+    return $App.connection.query({
+      entity: 'ubm_navshortcut',
+      method: 'insert',
+      fieldList: ['ID', 'code', 'desktopID'],
+      execParams: {
+        desktopID: desktop.ID,
+        code: 'test_folder',
+        caption: 'Test folder',
+        isFolder: true
+      }
+    }).then(newFolderData => {
+      return newFolderData.data[0]
+    })
+  } else if (folder.desktopID !== desktop.ID) {
+    return $App.connection.query({
+      entity: 'ubm_navshortcut',
+      method: 'update',
+      fieldList: ['ID', 'code', 'desktopID'],
+      __skipOptimisticLock: true,
+      execParams: {
+        ID: folder.ID,
+        desktopID: desktop.ID
+      }
+    }).then(newFolderData => {
+      return newFolderData.data[0]
+    })
+  } else {
+    return folder
+  }
+}
 
+async function checkPrecondition () {
+  return ClientFunction(() => {
+    return Promise.all([
+      UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', 'adm_desktop').selectSingle(),
+      UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID').where('code', '=', 'test_folder').selectSingle(),
+      UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID', 'parentID').where('code', '=', 'test_shortcut').selectSingle()
+    ]).then(([desktop, folder, shortcut]) => {
+      return insertOrUpdateFolder(desktop, folder).then(newFolder => {
+        return {
+          desktop, newFolder, shortcut
+        }
+      })
+    }).then(([desktop, folder, shortcut]) => {
+      if (!shortcut) {
+        return $App.connection.query({
+          entity: 'ubm_navshortcut',
+          method: 'insert',
+          fieldList: ['ID'],
+          execParams: {
+            desktopID: desktop.ID,
+            code: 'test_shortcut',
+            caption: 'Test shortcut',
+            parentID: folder.ID,
+            isFolder: false
+          }
+        })
+      } else if (shortcut.desktopID !== desktop.ID || shortcut.parentID !== folder.ID) {
+        return $App.connection.query({
+          entity: 'ubm_navshortcut',
+          method: 'update',
+          fieldList: [],
+          __skipOptimisticLock: true,
+          execParams: {
+            ID: shortcut.ID,
+            desktopID: desktop.ID,
+            parentID: folder.ID
+          }
+        })
+      }
+    })
   })()
 }
 
