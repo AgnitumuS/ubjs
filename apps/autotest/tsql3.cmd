@@ -1,6 +1,6 @@
 @rem PATH=..\..\..\..\ub-server\bin\d-win32;..\..\node_modules\.bin;%PATH%
 @rem PATH=..\..\..\..\ub-server\bin\fpc-win32;..\..\node_modules\.bin;%PATH%
-PATH=..\..\..\..\ub-server\bin\fpc-win64;..\..\node_modules\.bin;%PATH%
+rem PATH=..\..\..\..\ub-server\bin\fpc-win64;..\..\node_modules\.bin;%PATH%
 
 if [%UB_HOST%]==[] (
   SET UB_HOST=http://localhost:8881
@@ -27,7 +27,7 @@ SET UB_DEV=true
 call npx ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
 
-call npx ubcli initDB -host %UB_HOST% -cfg %UB_CFG% -dba %UB_DBA% -dbaPwd %UB_DBAPWD% -u admin -p admin -drop -create
+call npx ubcli initDB -host %UB_HOST% -cfg %UB_CFG% -u admin -p admin -drop -create
 @if errorlevel 1 goto err
 
 SET TESTCASE=generateDDL
