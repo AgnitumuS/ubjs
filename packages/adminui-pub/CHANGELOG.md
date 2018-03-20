@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 add line numbering for rowEditing ubdetailgrid
 
 ## Fixed 
-
-setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
+setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary'
 clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+Double downloading document when click on document link
+Opening a new tab browser when click on document link on new form
 
 ## [4.2.45]
 ## Changed
