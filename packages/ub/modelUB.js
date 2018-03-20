@@ -180,7 +180,7 @@ UB.App = App
  * Initialize UnityBase application by require all models defined in config
  * and registering endpoints
  */
-UB.run = function () {
+UB.start = function () {
   /**
    * @deprecated Use `const UB = require('@unitybase/ub')`
    */
