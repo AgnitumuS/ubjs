@@ -86,12 +86,17 @@ function models (req, resp) {
 }
 
 /*
- * In case lerna used add all folders lerna observe to the possible node_modules roots
+ * In case lerna is used or .links.json file exists in project root will
+ * add all folders from "packages" section as possible node_modules roots
  */
 let SYMLINKED_PATHS = []
 function checkModulesSymlinkedByLerna () {
   let lernaConfigPath = path.resolve(process.configPath, 'lerna.json')
   let isLerna = fs.existsSync(lernaConfigPath)
+  if (!isLerna) {
+    lernaConfigPath = path.resolve(process.configPath, '.links.json')
+    isLerna = fs.existsSync(lernaConfigPath)
+  }
   if (isLerna) {
     let lernaConfig = JSON.parse(fs.readFileSync(lernaConfigPath, 'utf8'))
     if (!lernaConfig.packages) return
