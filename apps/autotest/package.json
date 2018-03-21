@@ -1,7 +1,7 @@
 {
   "id": "Server",
   "name": "autotest",
-  "version": "1.0.37",
+  "version": "1.0.39",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -16,7 +16,7 @@
     "@ub-e/nm-scanner": "^4.0.0",
     "@ub-e/odata": "^1.0.22",
     "@ub-e/ube-pub": "^4.2.5",
-    "@unitybase/adminui-pub": "^4.2.53",
+    "@unitybase/adminui-pub": "^4.2.55",
     "@unitybase/adminui-reg": "^4.1.18",
     "@unitybase/base": "^4.2.29",
     "@unitybase/canvas": "^4.0.14",
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.1.13",
-    "@unitybase/ubcli": "^1.2.10"
+    "@unitybase/ubcli": "^1.2.11"
   },
   "engines": {
     "ub": "4.1.0-beta.5"
