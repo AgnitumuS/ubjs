@@ -31,7 +31,7 @@ fi
 if [ -z ${UB_DBAPWD+x} ] || [ -z "${UB_DBAPWD// }" ]; then
   UB_DBAPWD=sa
 fi
-export UB_DEV=true
+# export UB_DEV=true
 
 npx ubcli createStore -cfg $UB_CFG -noLogo
 if [ ! $? = 0 ]; then err; fi

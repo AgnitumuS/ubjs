@@ -22,7 +22,7 @@ SET TESTCASE=init database
 if [%UB_CFG%]==[] (
   SET UB_CFG=ubConfig.json
 )
-SET UB_DEV=true
+rem SET UB_DEV=true
 
 call npx ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
