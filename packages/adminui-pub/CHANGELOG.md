@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Fixed 
  - prevent double downloading of document when clicking on document link
  - prevent opening of new tab browser when click on document link in the inserting mode
+- `ubboxselect` can be used for attributes with dataType: Enum (will use this.valueField for data)
+
 
 ## [4.2.53]
 ## Fixed 
