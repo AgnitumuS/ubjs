@@ -1096,14 +1096,16 @@ Ext.define('UB.view.EntityGridPanel', {
           return item.getEditor() && item.getEditor().xtype === 'ubcombobox'
         })
         columnCombobox.forEach(function (item) {
-          let displayFields = $App.domainInfo.get(item.field.getStore().entityName).getAttributeNames({defaultView: true})
-          if (!_.includes(displayFields, item.field.displayField)) {
-            displayFields.push(item.field.displayField)
+          if (!item.field.gridFieldList) {
+            let displayFields = $App.domainInfo.get(item.field.getStore().entityName).getAttributeNames({defaultView: true})
+            if (!_.includes(displayFields, item.field.displayField)) {
+              displayFields.push(item.field.displayField)
+            }
+            if (!_.includes(displayFields, item.field.valueField)) {
+              displayFields.push(item.field.valueField)
+            }
+            item.field.gridFieldList = displayFields
           }
-          if (!_.includes(displayFields, item.field.valueField)) {
-            displayFields.push(item.field.valueField)
-          }
-          item.field.gridFieldList = displayFields
           item.field.disableModifyEntity = true
           item.field.useForGridEdit = true
         })
