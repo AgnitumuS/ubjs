@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.54]
-- use ubboxselect for attribute with dataType : Enum
+- `ubboxselect` can be used for attributes with dataType: Enum (will use this.valueField for data)
 
 ## [4.2.53]
 - fix copy line numbering for rowEditing ubdetailgrid
