@@ -4,8 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.54]
+## Fixed 
+ - prevent double downloading of document when clicking on document link
+ - prevent opening of new tab browser when click on document link in the inserting mode
+
 ## [4.2.53]
-- fix copy line numbering for rowEditing ubdetailgrid
+## Fixed 
+ - setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary'
+ - clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+ - fix coping of line numbering for rowEditing ubdetailgrid
 
 ## [4.2.52]
 ### Fixed
