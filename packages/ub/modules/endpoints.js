@@ -85,16 +85,24 @@ function models (req, resp) {
   // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
 }
 
-const MODULES_ROOT = path.join(process.configPath, 'node_modules')
-let SYMLINKED_MODULES_ROOT = ''
-// in case modules are symlinked (by lerna on `npm link`) real path may be differ
-// n this case __dirname (already normalized by require) not point to MODULES_ROOT
-let maybeSymlink = __dirname
-if (!maybeSymlink.startsWith(MODULES_ROOT)) { // remove ub: /dev/ub-all/packages/ub/modules -> /dev/ub-all/packages
-  let p = maybeSymlink.split(path.sep)
-  let ubIdx = p.indexOf('ub')
-  SYMLINKED_MODULES_ROOT = p.slice(0, ubIdx).join(path.sep)
+/*
+ * In case lerna used add all folders lerna observe to the possible node_modules roots
+ */
+let SYMLINKED_PATHS = []
+function checkModulesSymlinkedByLerna () {
+  let lernaConfigPath = path.resolve(process.configPath, 'lerna.json')
+  let isLerna = fs.existsSync(lernaConfigPath)
+  if (isLerna) {
+    let lernaConfig = JSON.parse(fs.readFileSync(lernaConfigPath, 'utf8'))
+    if (!lernaConfig.packages) return
+    for (let i = 0, L = lernaConfig.packages.length; i < L; i++) {
+      let p = fs.realpathSync(path.resolve(process.configPath, lernaConfig.packages[i]).replace('*', ''))
+      SYMLINKED_PATHS.push(p)
+    }
+  }
 }
+checkModulesSymlinkedByLerna()
+const MODULES_ROOT = path.join(process.configPath, 'node_modules')
 
 /**
  * The `clientRequire` endpoint. Used by client side loaders (SystemJS for example) to emulate commonJS require
@@ -106,7 +114,7 @@ if (!maybeSymlink.startsWith(MODULES_ROOT)) { // remove ub: /dev/ub-all/packages
  *   - allow access only to modules inside application `node_modules` folder
  *   - in case requested module is a UnityBase model (present in ubConfig.json) then restrict access to non-public part of such model
  *
- * So developer MUST listen all modules what contains a sensitive server-side business logic in the application
+ * So developer should list all the modules that contain a sensitive server-side business logic inside the application
  * config and set a `moduleName` parameter correctly for such models
  *
  * @param {THTTPRequest} req
@@ -154,7 +162,7 @@ function clientRequire (req, resp) {
       console.error(`Package ${reqPath} not found`)
       return notFound(resp, `"${reqPath}"`)
     }
-    if (!resolvedPath.startsWith(MODULES_ROOT) && !resolvedPath.startsWith(SYMLINKED_MODULES_ROOT)) {
+    if (!(resolvedPath.startsWith(MODULES_ROOT) || SYMLINKED_PATHS.find((p) => resolvedPath.startsWith(p)))) {
       return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
     }
 
