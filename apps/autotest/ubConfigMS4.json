@@ -1,7 +1,7 @@
 ﻿{ 
 	"httpServer": {
 		"host": "+",
-		"port": "888",
+		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
@@ -13,11 +13,11 @@
 		},
 		"threadPoolSize": 8
 	},
-	"wsServer": {
+	/*"wsServer": {
 		"host": "+",
 		"port": "888",
 		"path": "ws"
-	},
+	},*/
 	"logging": {
 		"path": ".\\logs",
 		"levels": [
