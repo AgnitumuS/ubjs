@@ -3,15 +3,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
 ## [4.2.48]
 ### Added
-add line numbering for rowEditing ubdetailgrid
+ - added line numbering for rowEditing ubdetailgrid
 
 ## Fixed 
-setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary'
-clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
-Double downloading document when click on document link
-Opening a new tab browser when click on document link on new form
+ - setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary'
+ - clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+ - prevent double downloading of document when clicking on document link
+ - prevent opening of new tab browser when click on document link in the inserting mode
 
 ## [4.2.45]
 ## Changed
