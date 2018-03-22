@@ -21,6 +21,11 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
     //    URLParams: {CONNECTION: DBA_FAKE},
     //    data: UB.format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", databaseConfig.databaseName)
     // });
+    conn.xhr({ // This is required for OBDC connection - it does not use 'database' attribute in configuration file
+      endpoint: 'runSQL',
+      URLParams: {CONNECTION: DBA_FAKE},
+      data: `USE master`
+    })
     conn.xhr({
       endpoint: 'runSQL',
       URLParams: {CONNECTION: DBA_FAKE},
