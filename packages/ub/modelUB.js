@@ -208,8 +208,8 @@ UB.start = function () {
   App.registerEndpoint('models', models, false)
   App.registerEndpoint('clientRequire', clientRequire, false)
   App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
-  App.registerEndpoint('getDocument', blobStores.getDocument, true)
-  App.registerEndpoint('setDocument', blobStores.setDocument, true)
+  App.registerEndpoint('getDocument', blobStores.getDocumentEndpoint, true)
+  App.registerEndpoint('setDocument', blobStores.setDocumentEndpoint, true)
 }
 
 module.exports = UB

@@ -5,19 +5,19 @@
  * @example
 
     // get dirty (not committed yet) content of my_entity.docAttribute with ID = 12312 as ArrayBuffer
-    let tmpContent = App.blobStores.getFromBlobStore(
+    let tmpContent = App.blobStores.getContent(
        {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute', isDirty: true},
        {encoding: 'bin'}
     )
 
     // get BLOB content of my_entity.docAttribute with ID = 12312 as base64 string
-    let base64Content = App.blobStores.getFromBlobStore(
+    let base64Content = App.blobStores.getContent(
       {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute'},
       {encoding: 'base64'}
     )
 
     // get BLOB content of my_entity.docAttribute with ID = 12312 as string
-    let base64Content = App.blobStores.getFromBlobStore(
+    let base64Content = App.blobStores.getContent(
       {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute'},
       {encoding: 'utf8'}
     )
@@ -25,7 +25,7 @@
     // read file and but it to BLOB store (not committed yet)
     let content = fs.readFileSync(__filename, {encoding: 'bin'})
     let fn = path.basename(__filename)
-    let blobItem = App.blobStores.putToBlobStore(
+    let blobItem = App.blobStores.putContent(
       {ID: 12312, entity: 'my_entity', attribute: 'blobAttribute'},
       content
     )
@@ -235,7 +235,7 @@ function getRequestedBLOBInfo (parsedRequest) {
  * @param {THTTPResponse} resp
  * @private
  */
-function getDocument (req, resp) {
+function getDocumentEndpoint (req, resp) {
   /** @type BlobStoreRequest */
   let params
   if (req.method === 'GET') { // TODO - should we handle 'HEAD' here?
@@ -271,7 +271,7 @@ function getDocument (req, resp) {
  *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
  * @returns {String|Buffer|ArrayBuffer}
  */
-function getFromBlobStore (request, options) {
+function getContent (request, options) {
   let parsed = parseBlobRequestParams(request)
   if (!parsed.success) throw new Error(parsed.reason)
   let requested = getRequestedBLOBInfo(parsed)
@@ -292,7 +292,7 @@ function getFromBlobStore (request, options) {
  * @param {THTTPResponse} resp
  * @private
  */
-function setDocument (req, resp) {
+function setDocumentEndpoint (req, resp) {
   /** @type BlobStoreRequest */
   let request
   // TODO HTTP 'DELETE'
@@ -323,7 +323,7 @@ function setDocument (req, resp) {
  * @param {ArrayBuffer|String} content
  * @return {BlobStoreItem}
  */
-function putToBlobStore (request, content) {
+function putContent (request, content) {
   let parsed = parseBlobRequestParams(request)
   if (!parsed.success) throw new Error(parsed.reason)
   let attribute = parsed.attribute
@@ -426,14 +426,14 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
  * @memberOf App
  */
 App.blobStores = {
-  getFromBlobStore,
-  putToBlobStore
+  getContent,
+  putContent
 }
 
 module.exports = {
-  getDocument,
-  setDocument,
-  getFromBlobStore,
-  putToBlobStore,
+  getDocumentEndpoint,
+  setDocumentEndpoint,
+  getContent,
+  putContent,
   doCommit
 }

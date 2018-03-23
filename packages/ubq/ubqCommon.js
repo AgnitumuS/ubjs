@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @class UB.UBQ
  * Mail sender for Scheduler
  * @singleton
@@ -104,7 +104,7 @@ me.sendQueueMail = function (ctxt) {
     if (cmd.attaches && cmd.attaches.length) {
       for (let i = 0, L = cmd.attaches.length; i < L; i++) {
         try {
-          let base64Body = App.blobStores.getFromBlobStore({
+          let base64Body = App.blobStores.getContent({
             entity: cmd.attaches[i].entity,
             attribute: cmd.attaches[i].attribute,
             ID: cmd.attaches[i].id

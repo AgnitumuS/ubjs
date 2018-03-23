@@ -241,7 +241,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     } else if (storedValue.formType === 'vue') {
       formScriptBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n}')
     }
-    let formCodeInfo = blobStores.putToBlobStore({
+    let formCodeInfo = blobStores.putContent({
       entity: entity.name,
       attribute: 'formCode',
       ID: ID,
@@ -251,14 +251,14 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     newFormCodeMeta = JSON.stringify(formCodeInfo)
   } else { // for update operation load form definition body from store (temp or persistent if not modified)
     if (newFormDefMeta) { // if form definition modified
-      formDefBody = blobStores.getFromBlobStore({
+      formDefBody = blobStores.getContent({
         entity: entity.name,
         attribute: 'formDef',
         ID: ID,
         isDirty: true
       }, {encoding: 'utf-8'})
     } else {
-      formDefBody = blobStores.getFromBlobStore({
+      formDefBody = blobStores.getContent({
         entity: entity.name,
         attribute: 'formDef',
         ID: ID,
@@ -280,7 +280,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   formDefBody = '// @! "do not remove comments below unless you know what you do!"\r\n' + addedAttr + formDefBody
 
   // save modified form definition to the temp store
-  let formDefInfo = blobStores.putToBlobStore({
+  let formDefInfo = blobStores.putContent({
     entity: entity.name,
     attribute: 'formDef',
     ID: ID,

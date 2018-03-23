@@ -172,7 +172,7 @@ function testServerSideBLOB (req, resp) {
 
     let content = fs.readFileSync(__filename, {encoding: 'bin'})
     let fn = path.basename(__filename)
-    let blobItem = App.blobStores.putToBlobStore(
+    let blobItem = App.blobStores.putContent(
       {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, fileName: fn},
       content
     )
@@ -181,14 +181,14 @@ function testServerSideBLOB (req, resp) {
     assert.equal(blobItem.ct, 'application/javascript; charset=utf-8')
     let fStat = fs.statSync(__filename)
     assert.equal(blobItem.size, fStat.size)
-    assert.equal(blobItem.isDirty, true, 'BLOB should be dirty after putToBlobStore')
-    let tmpContent = App.blobStores.getFromBlobStore(
+    assert.equal(blobItem.isDirty, true, 'BLOB should be dirty after putContent')
+    let tmpContent = App.blobStores.getContent(
       {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true},
       {encoding: 'bin'}
     )
     assert.equal(tmpContent.byteLength, fStat.size, `temp content size ${tmpContent.byteLength} not match real ${fStat.size}`)
 
-    let tmpStrContent = App.blobStores.getFromBlobStore(
+    let tmpStrContent = App.blobStores.getContent(
       {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true},
       {encoding: 'utf-8'}
     )
@@ -220,7 +220,7 @@ function testServerSideBLOB (req, resp) {
     assert.equal(i.origName, fn)
     // assert.equal(i.relPath, '')
 
-    let binContent = App.blobStores.getFromBlobStore(
+    let binContent = App.blobStores.getContent(
       {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE},
       {encoding: 'bin'}
     )

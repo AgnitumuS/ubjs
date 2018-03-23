@@ -219,7 +219,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   })
   let newTemplateInfo = newValues.template
-  let reportBody = blobStores.getFromBlobStore(
+  let reportBody = blobStores.getContent(
     {
       entity: entity.name,
       attribute: 'template',
@@ -241,7 +241,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       }
     }
   }
-  let docInfo = blobStores.putToBlobStore({
+  let docInfo = blobStores.putContent({
     entity: entity.name,
     attribute: 'template',
     ID: ID,
@@ -254,7 +254,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   storedValue.template = JSON.stringify(docInfo)
 
   if (isInsert) {
-    let reportCodeInfo = blobStores.putToBlobStore({
+    let reportCodeInfo = blobStores.putContent({
       entity: entity.name,
       attribute: 'code',
       ID: ID,

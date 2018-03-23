@@ -343,7 +343,7 @@ UBServerReport.prototype.buildReport = function (reportParams) {
 UBServerReport.prototype.getDocument = function (attribute) {
   let cfg = JSON.parse(this.reportRW[attribute])
 
-  return App.blobStores.getFromBlobStore({
+  return App.blobStores.getContent({
     entity: 'ubs_report',
     attribute: attribute,
     ID: this.reportRW.ID,

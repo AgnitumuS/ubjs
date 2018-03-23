@@ -166,7 +166,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   })
   let newDocument = newValues.document
-  let diagramBody = blobStores.getFromBlobStore(
+  let diagramBody = blobStores.getContent(
     {
       entity: entity.name,
       attribute: 'document',
@@ -181,7 +181,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
     diagramBody = '<!--@ID "' + ID + '"-->\r\n' + diagramBody.replace(clearAttrReg, '') // remove all old entity attributes
   }
-  let docInfo = blobStores.putToBlobStore({
+  let docInfo = blobStores.putContent({
     entity: entity.name,
     attribute: 'document',
     ID: ID,
