@@ -36,7 +36,7 @@ const JS_FILE_TAIL = '-fm.js'
  * @return {boolean}
  */
 function postProcessing (loader, fullFilePath, content, row) {
-  let jsFilePath, jsFileStat
+  let jsFilePath
 
   // check entity exist in domain
   let val = row.entity
@@ -70,8 +70,8 @@ function postProcessing (loader, fullFilePath, content, row) {
   // in case form js exist - fill formCode
   fileName = fileName.substring(0, fileName.length - DEF_FILE_TAIL.length) + JS_FILE_TAIL
   jsFilePath = path.join(path.dirname(fullFilePath), fileName)
-  jsFileStat = fs.statSync(jsFilePath)
-  if (jsFileStat) { // file exists
+  if (fs.existsSync(jsFilePath)) { // file exists
+    let jsFileStat = fs.statSync(jsFilePath)
     row.formCode = JSON.stringify({
       fName: fileName,
       origName: fileName,

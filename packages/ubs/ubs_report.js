@@ -91,8 +91,8 @@ function postProcessing (loader, fullFilePath, content, row) {
 
   fileName = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length) + SCRIPT_EXTENSION
   let jsFilePath = path.join(path.dirname(fullFilePath), fileName)
-  let jsFileStat = fs.statSync(jsFilePath)
-  if (jsFileStat) { // file exists
+  if (fs.existsSync(jsFilePath)) {
+    let jsFileStat = fs.statSync(jsFilePath)
     row.code = JSON.stringify({
       fName: fileName,
       origName: fileName,

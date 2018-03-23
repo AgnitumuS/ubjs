@@ -38,3 +38,5 @@ assert.ok(fs.statSync(path.join(folder, '_utf8wBOM.txt')).size === 23, 'write bi
 assert.deepEqual(content, contentNew, 'ArrayBuffer equal')
 bytes[1] = 10
 assert.notDeepEqual(content, contentNew, 'ArrayBuffer not equal')
+
+assert.throws(function () { fs.statSync(path.join(folder, 'NOT EXISTS')) }, / ENOENT/, 'Must throw on statSync if file does not exists')

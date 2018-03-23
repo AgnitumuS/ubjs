@@ -258,7 +258,9 @@ function replaceIncludeVariables (content) {
       return 'INVALID INCLUDE ' + p1
     }
     if (!path.isAbsolute(filePath)) filePath = path.join(process.configPath, filePath)
-    if (!fs.statSync(filePath)) {
+    try {
+      fs.statSync(filePath)
+    } catch (e) {
       return 'INVALID INCLUDE ' + filePath
     }
     let content = removeCommentsFromJSON(fs.readFileSync(filePath, 'utf8'))

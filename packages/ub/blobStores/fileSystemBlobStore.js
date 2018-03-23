@@ -35,6 +35,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (!path.isAbsolute(storePath)) {
       storePath = path.join(process.configPath, storePath)
     }
+    if (!fs.existsSync(storePath)) throw new Error(`BLOB store "${this.name}" path "${storePath}" not exists`)
     let fStat = fs.statSync(storePath)
     if (!fStat.isDirectory()) {
       throw new Error(`BLOB store "${this.name}" path "${storePath}" is not a folder`)
