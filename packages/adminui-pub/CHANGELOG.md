@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.56]
+## Fixed 
+- use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
+
 ## [4.2.54]
 ## Fixed 
  - prevent double downloading of document when clicking on document link
