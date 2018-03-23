@@ -11,10 +11,9 @@ test('Check Pure ExtJS Form', async t => {
   let lw = await extSelector('.ub-login-window')
   await lw.loginWin().setValueToUBAuth('admin', 'admin')
   await lw.loginWin().loginBtnClick()
-
-
 })
 
+/*
 async function checkPrecondition () {
   return await ClientFunction(() => {
     UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', 'adm_desktop').selectAsObject()
@@ -111,3 +110,4 @@ async function checkPrecondition () {
 
   })()
 }
+*/
