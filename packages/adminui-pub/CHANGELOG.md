@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.2.56]
+## Fixed 
+- use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
+
+## [4.2.54]
+## Fixed 
+ - prevent double downloading of document when clicking on document link
+ - prevent opening of new tab browser when click on document link in the inserting mode
+- `ubboxselect` can be used for attributes with dataType: Enum (will use this.valueField for data)
+
+
+## [4.2.53]
+## Fixed 
+ - setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary'
+ - clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
+ - fix coping of line numbering for rowEditing ubdetailgrid
+
 ## [4.2.52]
 ### Fixed
 - fix value serialization for attributes of type Many (BoxSelect, UBBoxSelect) - remove space inside CSV

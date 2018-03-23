@@ -8,7 +8,7 @@ Ext.define('UB.ux.UBLink', {
     alias: 'widget.ublink',
 
     autoEl: 'a',
-    href: '',
+    href: 'javascript:;',
     html: '',
     target: '_blank',
 
@@ -28,7 +28,7 @@ Ext.define('UB.ux.UBLink', {
             }];
         }
 
-        a.href = '';//'javascript:void(0)';
+        a.href = 'javascript:;';//'javascript:void(0)';
         // a.href || this.href;
         //a.html = a.html ||this.html;
         a.target = a.target ||this.target;
@@ -65,7 +65,7 @@ Ext.define('UB.ux.UBLink', {
                             me.html = '<span style="color: red">' + UB.i18n('documentNotFound') + '<span/>';
                             if (me.aEl){
                                 me.aEl.dom.innerHTML = me.html;
-                                me.aEl.dom.href = 'blank';
+                                me.aEl.dom.href = '_blank';
                             }
                         }
                     });
