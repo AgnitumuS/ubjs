@@ -1,5 +1,5 @@
 import { extSelector, getWindowError } from './ExtJSHelper/ExtJSSelector'
-import { Selector, ClientFunction } from 'testcafe'
+import { ClientFunction } from 'testcafe'
 
 const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
 
@@ -8,57 +8,59 @@ fixture(`Preparing data for moving folder and shortcut to Desktop test`)
 
 test('Add Desktop', async t => {
   await getWindowError(null)
+  let ext = await extSelector()
   // login
-  let lw = await extSelector('.ub-login-window')
-  lw.loginWin().setValueToUBAuth('admin', 'admin')
-  lw.loginWin().loginBtnClick()
-
+  let loginWindow = ext.loginWindow
+  await loginWindow.load()
+  loginWindow.setValueToUBAuth('admin', 'admin')
+  loginWindow.loginBtnClick()
   // Open top navbar menu Administrator / UI / Desktops
-  let mainMenu = await extSelector('.ub-header-menu-item')
-  mainMenu.querySelector('button[text=Administrator][ui=default-toolbar-small]').click()
-  mainMenu.querySelector('menuitem[shortcutCode=adm_folder_UI]').showMenu()
-  mainMenu.querySelector('menuitem[shortcutCode=ubm_desktop]').click()
-
+  let mainToolbar = ext.mainToolbar
+  await mainToolbar.load()
+  mainToolbar.desktopMenuBtn('adm_desktop').click()
+  mainToolbar.menuItem('adm_folder_UI').showMenu()
+  mainToolbar.menuItem('ubm_desktop').click()
   // Click button 'Add'
-  let eGrid = await extSelector('.ub-entity-grid')
-  let grid = await Selector('.x-grid-view').innerText
-  if (grid.indexOf('test_desktop_code') !== -1) {
-    await deleteExistDesktop('test_desktop_code')
+  let tabPanel = ext.tabpanel
+  await tabPanel.load()
+  await tabPanel.loadTabpanelChild('entitygridpanel', {entityName: 'ubm_desktop'})
+  let grid = tabPanel.entityGridPanel('ubm_desktop')
+  let gridText = await grid.innerText()
+  if (gridText.indexOf('test_desktop_code') !== -1) {
+    deleteExistDesktop('test_desktop_code')
   }
-  eGrid.querySelector('button[actionId=addNew]').click()
-
+  grid.click({actionID: 'addNew'})
   // Fill a field 'Desktop name', Fill a field 'Code', Click button 'Save and close'
-  let basepanel = await extSelector('.ub-basepanel')
-  basepanel.querySelector('ubtextfield[attributeName=caption]').setValue('test_desktop_name')
-  basepanel.querySelector('ubtextfield[attributeName=code]').setValue('test_desktop_code')
-  basepanel.querySelector('button[actionId=saveAndClose]').click()
-
+  await tabPanel.loadTabpanelChild('basepanel', {entityName: 'ubm_desktop'})
+  let form = tabPanel.formPanel('ubm_desktop')
+  form.setValueToAttr('test_desktop_name', 'caption')
+  form.setValueToAttr('test_desktop_code', 'code')
+  form.click({actionID: 'saveAndClose'})
   const e = await t.getBrowserConsoleMessages()
   if (e.error.length > 0) {
     await t.expect(e.error[e.error.length - 1])
       .notContains('UNHANDLED UBError', 'desktop with code test_desktop_code is exists')
   }
-
   // Verify that new desktop is dispayed on the grid
-  await extSelector('.ub-entity-grid')
-  let reloadGrid = await Selector('.x-grid-view').innerText
+  let reloadGrid = await grid.innerText()
   await t.expect(reloadGrid).contains('test_desktop_code')
-
   // Relogin to the system
   await t.navigateTo(TEST_PAGE)
-  lw = await extSelector('.ub-login-window')
-  lw.loginWin().setValueToUBAuth('admin', 'admin')
-  lw.loginWin().loginBtnClick()
-
+  await loginWindow.load()
+  loginWindow.setValueToUBAuth('admin', 'admin')
+  loginWindow.loginBtnClick()
   // Verify that new Desktop is dispayed on top navbar and on left sidebar's drop-down menu
-  mainMenu = await extSelector('.ub-header-menu-item')
-  mainMenu.querySelector('button[text=test_desktop_name][ui=default-toolbar-small]').click()
-  let leftMenu = await extSelector('.ub-left-panel')
-  leftMenu.querySelector('button[cls=ub-desktop-button]').click()
-  leftMenu.querySelector('menuitem[text=test_desktop_name]').click()
+  await mainToolbar.load()
+  mainToolbar.desktopMenuBtn('test_desktop_code').click()
 
+  let leftPanel = ext.leftpanel
+  await leftPanel.load()
+  leftPanel.desktopMenuBtn().click()
+  leftPanel.selectDesktopMenuItem('test_desktop_code')
+  await t.debug()
 })
 
+/*
 test('Move folder and shortcut to Desktop', async t => {
   await t.navigateTo(TEST_PAGE)
   let lw = await extSelector('.ub-login-window')
@@ -77,11 +79,9 @@ test('Move folder and shortcut to Desktop', async t => {
     lw.loginWin().setValueToUBAuth('admin', 'admin')
     lw.loginWin().loginBtnClick()
   }
-
   // Select existing Folder with Shortcut on sidebar menu
   let mainMenu = await extSelector('.ub-header-menu-item')
   let idMenu = await mainMenu.querySelector('treeview').getIdByAttr('text', 'Test folder')
-
   // Open folder's context menu and click button 'Edit'
   await t.rightClick(idMenu)
   let leftMenu = await extSelector('.ub-left-panel')
@@ -149,6 +149,7 @@ test('Move folder and shortcut to Desktop', async t => {
     .expect(reloadGrid).contains('Test shortcut')
 })
 
+
 test('Open Desktop details', async t => {
   await t.navigateTo(TEST_PAGE)
   let lw = await extSelector('.ub-login-window')
@@ -182,11 +183,11 @@ test('Open Desktop details', async t => {
   await t
     .click(Selector(idDetail))
     .expect(Selector(idDetail).innerText).contains('adm_folder_users')
-
 })
+*/
 
-function deleteExistDesktop (code) {
-  return ClientFunction(code => {
+async function deleteExistDesktop (code) {
+  await ClientFunction(code => {
     UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', code)
       .selectAsObject()
       .then(res => {
@@ -210,7 +211,7 @@ function insertOrUpdateFolder (desktop, folder) {
         isFolder: true
       }
     }).then(newFolderData => {
-      return newFolderData.data[0]
+      return newFolderData.resultData.data[0]
     })
   } else if (folder.desktopID !== desktop.ID) {
     return $App.connection.query({
@@ -223,24 +224,22 @@ function insertOrUpdateFolder (desktop, folder) {
         desktopID: desktop.ID
       }
     }).then(newFolderData => {
-      return newFolderData.data[0]
+      return newFolderData.resultData.data[0]
     })
   } else {
-    return folder
+    return Promise.resolve(folder)
   }
 }
 
 async function checkPrecondition () {
-  return ClientFunction(() => {
+  await ClientFunction(() => {
     return Promise.all([
       UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', 'adm_desktop').selectSingle(),
       UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID').where('code', '=', 'test_folder').selectSingle(),
       UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID', 'parentID').where('code', '=', 'test_shortcut').selectSingle()
     ]).then(([desktop, folder, shortcut]) => {
       return insertOrUpdateFolder(desktop, folder).then(newFolder => {
-        return {
-          desktop, newFolder, shortcut
-        }
+        return Promise.resolve([desktop, newFolder, shortcut])
       })
     }).then(([desktop, folder, shortcut]) => {
       if (!shortcut) {
@@ -270,6 +269,8 @@ async function checkPrecondition () {
         })
       }
     })
+  }, {
+    dependencies: {insertOrUpdateFolder}
   })()
 }
 

@@ -1,4 +1,4 @@
-import { ClientFunction } from 'testcafe';
+import { ClientFunction } from 'testcafe'
 
 class LoginWin {
   async setValueToUBAuth (user, pwd, activeTab) {
@@ -9,13 +9,13 @@ class LoginWin {
       if (activeTab) lw.authTabs.setActiveTab(activeTab)
 
     })
-    return await elValue(user, pwd, activeTab)
+    return Promise.resolve(elValue(user, pwd, activeTab))
   }
 
   async loginBtnClick () {
-    return await ClientFunction(() => {
+    return Promise.resolve(ClientFunction(() => {
       Ext.ComponentQuery.query('button[initialCls=ub-login-btn]')[0].el.dom.click()
-    })()
+    })())
   }
 
   setValueToADAuth () {}
