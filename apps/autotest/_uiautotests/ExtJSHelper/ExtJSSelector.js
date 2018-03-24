@@ -1,26 +1,15 @@
 /* global Ext */
 import { ClientFunction, Selector, t } from 'testcafe'
-import { LoginWin } from './loginWindowSelector'
 
 const getWindowError = ClientFunction(prop => window.onerror = prop)
-
-/**
- *
- * @param {string} cssSelector
- * @return {Promise<ExtSelector>}
- */
-async function extSelector () {
-  let res
-  res = new ExtSelector()
-  return res
-}
 
 class ExtSelector {
   constructor () {
     this.mainToolbar = new TopMenu()
     this.loginWindow = new LoginWindow()
-    this.tabpanel = new TabPanel()
-    this.leftpanel = new LeftPanel()
+    this.tabPanel = new TabPanel()
+    this.leftPanel = new LeftPanel()
+    this.baseWindow = new BaseWindow()
   }
 }
 
@@ -30,23 +19,37 @@ class LoginWindow {
     await Selector('.ub-login-window')()
   }
 
-  async setCredentials (user, pwd, activeTab) {
-    let elValue = ClientFunction((user, pwd, activeTab) => {
+  /**
+   *
+   * @param {string} authType
+   * @param params[activeTab][pwd][user]
+   * @returns {Promise.<void>}
+   */
+  async setCredentials (authType, params) {
+    let elValue = ClientFunction((authType, params) => {
       let lw = Ext.ComponentQuery.query('loginwindow')[0]
-      lw.textFieldPassword.setValue(pwd)
-      lw.textFieldLogin.setValue(user)
-      if (activeTab) lw.authTabs.setActiveTab(activeTab)
+      if (params.activeTab) lw.authTabs.setActiveTab(params.activeTab)
+      switch (authType) {
+        case 'UB': {
+          lw.textFieldPassword.setValue(params.pwd)
+          lw.textFieldLogin.setValue(params.user)
+          break
+        }
+        default : {}
+      }
     })
-    await elValue(user, pwd, activeTab)
+    await elValue(authType, params)
   }
 
+  /**
+   *
+   * @returns {Promise.<void>}
+   */
   async loginBtnClick () {
     await ClientFunction(() => {
       Ext.ComponentQuery.query('button[initialCls=ub-login-btn]')[0].el.dom.click()
     })()
   }
-
-  setValueToADAuth () {}
 }
 
 class TopMenu {
@@ -59,7 +62,7 @@ class TopMenu {
    * @return {ItemSelector}
    */
   desktopMenuBtn (desktopCode) {
-    let queryCode = '[desktopCode=' + desktopCode + ']'
+    let queryCode = `[desktopCode=${desktopCode}]`
     return new ItemSelector(queryCode)
   }
 
@@ -78,11 +81,22 @@ class TabPanel {
     await t.expect(Selector('#ubCenterViewport').exists).ok()
   }
 
+  /**
+   *
+   * @param {string} entityName
+   * @returns {ItemSelector}
+   */
   entityGridPanel (entityName) {
-    let queryCode = 'entitygridpanel[entityName=' + entityName + ']'
+    let queryCode = `entitygridpanel[entityName=${entityName}]`
     return new ItemSelector(queryCode)
   }
 
+  /**
+   *
+   * @param {string} xtype
+   * @param {Object} params[entityName]
+   * @returns {Promise.<void>}
+   */
   async loadTabPanelChild (xtype, params) {
     let queryCode = (xtype === 'basepanel')
       ? this.getFormPanelQuery(params)
@@ -95,17 +109,29 @@ class TabPanel {
     await t.expect(Selector(childID).exists).ok(childID)
   }
 
+  /**
+   *
+   * @param {Object} params[entityName][instanceCode][instanceAttr]
+   * @returns {string}
+   */
   getFormPanelQuery (params) {
     if (!params.instanceCode) {
-      return 'basepanel[entityName=' + params.entityName + '][isNewInstance=true]'
+      return `basepanel[entityName=${params.entityName}][isNewInstance=true]`
     }
     return UB.Repository(params.entityName).attrs('ID', params.instanceAttr)
       .where(params.instanceAttr, '=', params.instanceCode).selectSingle()
       .then(instance => {
-        return 'basepanel[entityName=' + params.entityName + '][instanceID=' + instance.ID + ']'
+        return `basepanel[entityName=${params.entityName}][instanceID='${instance.ID}]`
       })
   }
 
+  /**
+   *
+   * @param {string} entityName
+   * @param {string} instanceAttr
+   * @param {string} instanceCode
+   * @returns {ItemSelector}
+   */
   formPanel (entityName, instanceAttr, instanceCode) {
     let formParams = {entityName: entityName, instanceAttr: instanceAttr, instanceCode: instanceCode}
     let queryCode = this.getFormPanelQuery(formParams)
@@ -114,25 +140,78 @@ class TabPanel {
 }
 
 class LeftPanel {
+  /**
+   *
+   * @returns {Promise.<void>}
+   */
   async load () {
-    await Selector('.ub-left-panel')
+    await t
+      .expect(Selector('.ub-left-panel').exists).ok()
+      .expect(Selector('.x-tree-view').exists).ok()
   }
 
+  /**
+   *
+   * @returns {ItemSelector}
+   */
   desktopMenuBtn () {
     let queryCode = 'button[cls=ub-desktop-button]'
     return new ItemSelector(queryCode)
   }
 
+  /**
+   *
+   * @param {string} desktopCode
+   * @returns {Promise.<void>}
+   */
   async selectDesktopMenuItem (desktopCode) {
     let query = ClientFunction((desktopCode) => {
       let queryCode
-      queryCode = UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', 'test_desktop_code').selectSingle()
+      queryCode = UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', desktopCode).selectSingle()
         .then(res => {
-          queryCode = 'menuitem[itemID=' + res.ID + ']'
+          queryCode = `menuitem[itemID=${res.ID}]`
           return Ext.ComponentQuery.query(queryCode)[0].el.dom.click()
         })
     })
     await query(desktopCode)
+  }
+
+  /**
+   *
+   * @returns {ItemSelector}
+   */
+  treeMenu () {
+    let queryCode = 'treeview'
+    return new ItemSelector(queryCode)
+  }
+
+  /**
+   *
+   * @param {string} actionID
+   * @returns {ItemSelector}
+   */
+  contextMenuItem (actionID) {
+    let queryCode = `menuitem[actionID=${actionID}]`
+    return new ItemSelector(queryCode)
+  }
+}
+
+class BaseWindow {
+  /**
+   *
+   * @returns {Promise.<void>}
+   */
+  async load () {
+    await Selector('.x-window')()
+  }
+
+  /**
+   *
+   * @returns {ItemSelector}
+   */
+  modalForm () {
+    let queryCode = 'basewindow'
+    return new ItemSelector(queryCode)
   }
 }
 
@@ -172,6 +251,10 @@ class ItemSelector {
     this.params = params
   }
 
+  /**
+   * returns innerText from component`s DOM
+   *@returns {string}
+   */
   innerText () {
     let elText = ClientFunction((querycode) => {
       return Ext.ComponentQuery.query(querycode)[0].el.dom.innerText
@@ -180,7 +263,7 @@ class ItemSelector {
   }
 
   /**
-   * Simulate click on element (on action if passed)
+   * Simulates click on element (on action if passed)
    * @param {Object} params
    * @param {string} [params.actionID]
    * @return {Promise<void>}
@@ -192,7 +275,9 @@ class ItemSelector {
     if (params) actionID = params.actionID
     if (actionID) {
       elClick = ClientFunction((querycode, actionID) => {
-        Ext.ComponentQuery.query(querycode)[0].actions[actionID].items[0].el.dom.click()
+        (querycode === 'basewindow')
+          ? Ext.ComponentQuery.query(querycode)[0].items.items[0].actions[actionID].items[0].el.dom.click()
+          : Ext.ComponentQuery.query(querycode)[0].actions[actionID].items[0].el.dom.click()
       })
       await elClick(this.queryCode, actionID)
     } else {
@@ -203,36 +288,30 @@ class ItemSelector {
     }
   }
 
+  /**
+   * Simulates the selection of the drop-down menu
+   * @returns {Promise.<T>}
+   */
   async showMenu () {
     let elShow = ClientFunction((queryCode) => {
-      let menuItem = Ext.ComponentQuery.query(queryCode)[0]
-      menuItem.menu.show()
-    }
+        let menuItem = Ext.ComponentQuery.query(queryCode)[0]
+        menuItem.menu.show()
+      }
     )
     return Promise.resolve(elShow(this.queryCode))
   }
 
+  /**
+   * set value to input attribute on UBForm
+   * @param {string} value
+   * @param {string} attr
+   * @returns {Promise.<void>}
+   */
   async setValueToAttr (value, attr) {
-    /*let elValue = ClientFunction((queryCode, value) => {
-      let caption = Ext.ComponentQuery.query(queryCode)[0]
-      if (caption.xtype === 'ubcombobox') {
-        caption.store.load().done(() => {
-          let store = caption.store.data.items
-          if (store.length) {
-            store.forEach(item => {
-              if (item.data.caption === value) {
-                return caption.setValue(item.data.ID)
-              }
-            })
-          }
-        })
-      }
-
-      else caption.setValue(value)
-    })
-    return Promise.resolve(elValue(this.queryCode, value))*/
     let elValue = ClientFunction((queryCode, value, attr) => {
-      let fields = Ext.ComponentQuery.query(queryCode)[0].fields
+      let fields = (queryCode === 'basewindow')
+        ? Ext.ComponentQuery.query(queryCode)[0].items.items[0].fields
+        : Ext.ComponentQuery.query(queryCode)[0].fields
       let fieldObj
       if (fields.length) {
         fields.forEach(field => {
@@ -241,60 +320,77 @@ class ItemSelector {
           }
         })
       }
-      fieldObj.setValue(value)
+      if (fieldObj.xtype === 'ubcombobox') {
+        fieldObj.store.load().done(() => {
+          let store = (queryCode === 'basewindow')
+            ? fieldObj.store.data.items[0].store.data.items
+            : fieldObj.store.data.items
+
+          if (store.length) {
+            store.forEach(item => {
+              if (item.data.caption === value) {
+                return fieldObj.setValue(item.data.ID)
+              }
+            })
+          }
+        })
+      } else fieldObj.setValue(value)
     })
     await elValue(this.queryCode, value, attr)
   }
 
-  /*getIdByAttr (attr, attrValue) {
+  getIdByAttr (attr, attrValue) {
     let elID = ClientFunction((queryCode, attr, attrValue) => {
-      let id, xtype = Ext.ComponentQuery.query(queryCode)[0].xtype
+      let id
+      let xtype = Ext.ComponentQuery.query(queryCode)[0].xtype
       if (xtype === 'treeview' || xtype === 'ubtableview') {
-        let treeID = Ext.ComponentQuery.query(queryCode)[0].id, itemID
+        let treeID = Ext.ComponentQuery.query(queryCode)[0].id
         let treeItems = Ext.ComponentQuery.query(queryCode)[0].store.data.items
         if (treeItems.length) {
-          itemID = treeItems.forEach(item => {
-            switch (attr) {
-              case 'text': {
-                if (item.data.text === attrValue) {
-                  id = '#' + treeID + '-record-' + item.data.id
+          treeItems.forEach(item => {
+            switch (xtype) {
+              case 'treeview': {
+                if (item.raw[attr] === attrValue) {
+                  id = `#${treeID}-record-${item.raw.id}`
                   return id
                 }
+                break
               }
-              case 'code': {
-                if (item.data.code === attrValue) {
-                  id = '#' + treeID + '-record-' + item.data.ID
+              case 'ubtableview': {
+                if (item.data[attr] === attrValue) {
+                  id = `#${treeID}-record-${item.data.ID}`
                   return id
                 }
+                break
               }
               default : {}
             }
           })
         }
-      }
-      else if (xtype === 'tabpanel') {
-        let tabpanelArr = Ext.ComponentQuery.query('tabpanel')
+      } else if (xtype === 'tabPanel') {
+        let tabpanelArr = Ext.ComponentQuery.query('tabPanel')
         if (tabpanelArr.length) {
           tabpanelArr.forEach(tabpanel => {
             switch (attr) {
               case 'entityName': {
                 if (tabpanel.items.items[0].entityName === attrValue) {
-                  id = '#' + tabpanel.el.dom.id
+                  id = `#${tabpanel.el.dom.id}`
                   return id
                 }
+                break
               }
               default : {}
             }
           })
         }
       }
-      else id = '#' + Ext.ComponentQuery.query(queryCode)[0].id
+      else id = `#${Ext.ComponentQuery.query(queryCode)[0].id}`
 
       return id
     })
     return elID(this.queryCode, attr, attrValue)
 
-  }*/
+  }
 }
 
-export { extSelector, getWindowError }
+export { ExtSelector, getWindowError }
