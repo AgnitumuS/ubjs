@@ -30,7 +30,7 @@ class LoginWindow {
     await Selector('.ub-login-window')()
   }
 
-  async setValueToUBAuth (user, pwd, activeTab) {
+  async setCredentials (user, pwd, activeTab) {
     let elValue = ClientFunction((user, pwd, activeTab) => {
       let lw = Ext.ComponentQuery.query('loginwindow')[0]
       lw.textFieldPassword.setValue(pwd)
@@ -54,13 +54,21 @@ class TopMenu {
     await Selector('.ub-header-menu-container')()
   }
 
+  /**
+   * @param {string} desktopCode
+   * @return {ItemSelector}
+   */
   desktopMenuBtn (desktopCode) {
     let queryCode = '[desktopCode=' + desktopCode + ']'
     return new ItemSelector(queryCode)
   }
 
+  /**
+   * @param {string} shortcutCode
+   * @return {ItemSelector}
+   */
   menuItem (shortcutCode) {
-    let queryCode = '[shortcutCode=' + shortcutCode + ']'
+    let queryCode = `[shortcutCode=${shortcutCode}]`
     return new ItemSelector(queryCode)
   }
 }
@@ -75,13 +83,12 @@ class TabPanel {
     return new ItemSelector(queryCode)
   }
 
-  async loadTabpanelChild (xtype, params) {
-    let queryCode
-    if (xtype === 'basepanel') {
-      queryCode = this.getFormPanelQuery(params)
-    } else queryCode = 'entitygridpanel[entityName=' + params.entityName + ']'
-    let childID = await ClientFunction((querycode) => {
-      return Ext.ComponentQuery.query(querycode)[0].id
+  async loadTabPanelChild (xtype, params) {
+    let queryCode = (xtype === 'basepanel')
+      ? this.getFormPanelQuery(params)
+      : `entitygridpanel[entityName=${params.entityName}]`
+    let childID = await ClientFunction((q) => {
+      return Ext.ComponentQuery.query(q)[0].id
     })(queryCode)
     childID = '#' + childID
     await Selector(childID)()
@@ -89,17 +96,14 @@ class TabPanel {
   }
 
   getFormPanelQuery (params) {
-    let queryCode
     if (!params.instanceCode) {
-      queryCode = 'basepanel[entityName=' + params.entityName + '][isNewInstance=true]'
-    } else {
-      UB.Repository(params.entityName).attrs('ID', params.instanceAttr)
-        .where(params.instanceAttr, '=', params.instanceCode).selectSingle()
-        .then(instance => {
-          queryCode = 'basepanel[entityName=' + params.entityName + '][instanceID=' + instance.ID + ']'
-        })
+      return 'basepanel[entityName=' + params.entityName + '][isNewInstance=true]'
     }
-    return queryCode
+    return UB.Repository(params.entityName).attrs('ID', params.instanceAttr)
+      .where(params.instanceAttr, '=', params.instanceCode).selectSingle()
+      .then(instance => {
+        return 'basepanel[entityName=' + params.entityName + '][instanceID=' + instance.ID + ']'
+      })
   }
 
   formPanel (entityName, instanceAttr, instanceCode) {
@@ -175,6 +179,12 @@ class ItemSelector {
     return elText(this.queryCode)
   }
 
+  /**
+   * Simulate click on element (on action if passed)
+   * @param {Object} params
+   * @param {string} [params.actionID]
+   * @return {Promise<void>}
+   */
   async click (params) {
     let
       actionID,
@@ -182,17 +192,7 @@ class ItemSelector {
     if (params) actionID = params.actionID
     if (actionID) {
       elClick = ClientFunction((querycode, actionID) => {
-        switch (actionID) {
-          case 'addNew': {
-            Ext.ComponentQuery.query(querycode)[0].actions.addNew.items[0].el.dom.click()
-            break
-          }
-          case 'saveAndClose': {
-            Ext.ComponentQuery.query(querycode)[0].actions.saveAndClose.items[0].el.dom.click()
-            break
-          }
-          default: {}
-        }
+        Ext.ComponentQuery.query(querycode)[0].actions[actionID].items[0].el.dom.click()
       })
       await elClick(this.queryCode, actionID)
     } else {

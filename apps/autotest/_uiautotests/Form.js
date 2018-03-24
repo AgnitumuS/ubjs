@@ -9,7 +9,7 @@ fixture(`Preparing data for Move folder and shortcut to Desktop test`)
 test('Check Pure ExtJS Form', async t => {
   //login in systems
   let lw = await extSelector('.ub-login-window')
-  await lw.loginWin().setValueToUBAuth('admin', 'admin')
+  await lw.loginWin().setCredentials('admin', 'admin')
   await lw.loginWin().loginBtnClick()
 })
 

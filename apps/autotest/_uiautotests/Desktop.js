@@ -12,7 +12,7 @@ test('Add Desktop', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setValueToUBAuth('admin', 'admin')
+  loginWindow.setCredentials('admin', 'admin')
   loginWindow.loginBtnClick()
   // Open top navbar menu Administrator / UI / Desktops
   let mainToolbar = ext.mainToolbar
@@ -23,7 +23,7 @@ test('Add Desktop', async t => {
   // Click button 'Add'
   let tabPanel = ext.tabpanel
   await tabPanel.load()
-  await tabPanel.loadTabpanelChild('entitygridpanel', {entityName: 'ubm_desktop'})
+  await tabPanel.loadTabPanelChild('entitygridpanel', {entityName: 'ubm_desktop'})
   let grid = tabPanel.entityGridPanel('ubm_desktop')
   let gridText = await grid.innerText()
   if (gridText.indexOf('test_desktop_code') !== -1) {
@@ -31,25 +31,25 @@ test('Add Desktop', async t => {
   }
   grid.click({actionID: 'addNew'})
   // Fill a field 'Desktop name', Fill a field 'Code', Click button 'Save and close'
-  await tabPanel.loadTabpanelChild('basepanel', {entityName: 'ubm_desktop'})
+  await tabPanel.loadTabPanelChild('basepanel', {entityName: 'ubm_desktop'})
   let form = tabPanel.formPanel('ubm_desktop')
   form.setValueToAttr('test_desktop_name', 'caption')
   form.setValueToAttr('test_desktop_code', 'code')
   form.click({actionID: 'saveAndClose'})
   const e = await t.getBrowserConsoleMessages()
-  if (e.error.length > 0) {
+  if (e.error.length) {
     await t.expect(e.error[e.error.length - 1])
       .notContains('UNHANDLED UBError', 'desktop with code test_desktop_code is exists')
   }
-  // Verify that new desktop is dispayed on the grid
+  // Verify that new desktop is displayed on the grid
   let reloadGrid = await grid.innerText()
   await t.expect(reloadGrid).contains('test_desktop_code')
-  // Relogin to the system
+  // Re-login to the system
   await t.navigateTo(TEST_PAGE)
   await loginWindow.load()
-  loginWindow.setValueToUBAuth('admin', 'admin')
+  loginWindow.setCredentials('admin', 'admin')
   loginWindow.loginBtnClick()
-  // Verify that new Desktop is dispayed on top navbar and on left sidebar's drop-down menu
+  // Verify that new Desktop is displayed on top navbar and on left sidebar's drop-down menu
   await mainToolbar.load()
   mainToolbar.desktopMenuBtn('test_desktop_code').click()
 
@@ -60,131 +60,129 @@ test('Add Desktop', async t => {
   await t.debug()
 })
 
-/*
-test('Move folder and shortcut to Desktop', async t => {
-  await t.navigateTo(TEST_PAGE)
-  let lw = await extSelector('.ub-login-window')
-  lw.loginWin().setValueToUBAuth('admin', 'admin')
-  lw.loginWin().loginBtnClick()
-
-  // check if test folder with shortcut is exist in Administrator desktop
-  // if not exist - create or remove
-  let leftMenuInnerText = await Selector('.x-tree-view').innerText
-  if (leftMenuInnerText.indexOf('Test folder') < 0) {
-    await checkPrecondition()
-    await t
-      .click(Selector('.ub-header-menu-item'))
-      .navigateTo(TEST_PAGE)
-    let lw = await extSelector('.ub-login-window')
-    lw.loginWin().setValueToUBAuth('admin', 'admin')
-    lw.loginWin().loginBtnClick()
-  }
-  // Select existing Folder with Shortcut on sidebar menu
-  let mainMenu = await extSelector('.ub-header-menu-item')
-  let idMenu = await mainMenu.querySelector('treeview').getIdByAttr('text', 'Test folder')
-  // Open folder's context menu and click button 'Edit'
-  await t.rightClick(idMenu)
-  let leftMenu = await extSelector('.ub-left-panel')
-  leftMenu.querySelector('menuitem[text=Edit]').click()
-
-  // Сhange Desktop on "Desktop" drop-down menu
-  let shForm = await extSelector('.ub-basepanel')
-  shForm.querySelector('ubcombobox[attributeName="desktopID"]').setValue('test_desktop_name')
-
-  // Click button 'Save and close'
-  shForm.querySelector('button[actionId=saveAndClose]').click()
-
-  // Reload browser
-  await t.navigateTo(TEST_PAGE)
-  lw = await extSelector('.ub-login-window')
-  lw.loginWin().setValueToUBAuth('admin', 'admin')
-  lw.loginWin().loginBtnClick()
-
-  // Switch the Desktop in the left sidebar drop-down menu which the folder was moved
-  leftMenu = await extSelector('.ub-left-panel')
-  leftMenu.querySelector('button[cls=ub-desktop-button]').click()
-  leftMenu.querySelector('menuitem[text=test_desktop_name]').click()
-
-  // Verify that only folder is available on selected Desktop
-  let reloadGrid = await Selector('.ub-left-panel').innerText
-  await t
-    .expect(reloadGrid).contains('Test folder')
-    .expect(reloadGrid).notContains('Test shortcut')
-
-  // Select Desktop on top navbar which the folder was moved
-  mainMenu = await extSelector('.ub-header-menu-item')
-  mainMenu.querySelector('button[text=test_desktop_name][ui=default-toolbar-small]').click()
-  mainMenu.querySelector('menuitem[shortcutCode=test_folder]').click()
-
-  // Open top navbar Administrator / UI / Shortcuts
-  mainMenu.querySelector('button[text=Administrator][ui=default-toolbar-small]').click()
-  mainMenu.querySelector('menuitem[shortcutCode=adm_folder_UI]').showMenu()
-  mainMenu.querySelector('menuitem[shortcutCode=ubm_navshortcut]').click()
-
-  // Open shortcut
-  let eGrid = await extSelector('.ub-entity-grid')
-  let idSht = await eGrid.querySelector('ubtableview').getIdByAttr('code', 'test_shortcut')
-  await t.doubleClick(idSht)
-
-  // Select new Desktop on 'Desktop drop-down menu'
-  shForm = await extSelector('.ub-basepanel')
-  shForm.querySelector('ubcombobox[attributeName="desktopID"]').setValue('test_desktop_name')
-
-  // Click button 'Save and close'
-  shForm.querySelector('button[actionId=saveAndClose]').click()
-
-  // Reload browser
-  await t.navigateTo(TEST_PAGE)
-  lw = await extSelector('.ub-login-window')
-  lw.loginWin().setValueToUBAuth('admin', 'admin')
-  lw.loginWin().loginBtnClick()
-
-  // Select new Desktop on left sidebar's drop-down menu
-  leftMenu = await extSelector('.ub-left-panel')
-  leftMenu.querySelector('button[cls=ub-desktop-button]').click()
-  leftMenu.querySelector('menuitem[text=test_desktop_name]').click()
-  reloadGrid = await Selector('.ub-left-panel').innerText
-  await t
-    .expect(reloadGrid).contains('Test folder')
-    .expect(reloadGrid).contains('Test shortcut')
-})
-
-
-test('Open Desktop details', async t => {
-  await t.navigateTo(TEST_PAGE)
-  let lw = await extSelector('.ub-login-window')
-  lw.loginWin().setValueToUBAuth('admin', 'admin')
-  lw.loginWin().loginBtnClick()
-
-  // Open top navbar menu Administrator / UI / Desktops
-  let mainMenu = await extSelector('.ub-header-menu-item')
-  mainMenu.querySelector('button[text=Administrator][ui=default-toolbar-small]').click()
-  mainMenu.querySelector('menuitem[shortcutCode=adm_folder_UI]').showMenu()
-  mainMenu.querySelector('menuitem[shortcutCode=ubm_desktop]').click()
-
-  // Select on existing Desktop
-  let eGrid = await extSelector('.ub-entity-grid')
-  let idSht = await eGrid.querySelector('ubtableview').getIdByAttr('code', 'test_desktop_code')
-  await t.rightClick(idSht)
-
-  // Select menu All action / Detail / Shourtcut (Desktop) (on right top side)
-  eGrid.querySelector('menuitem[actionId="showDetail"][text="Details"]').showMenu()
-  eGrid.querySelector('menuitem[actionId="showDetail"][text="Shortcut (Desktop)"]').click()
-  let idDetail = await eGrid.querySelector('tabpanel').getIdByAttr('entityName', 'ubm_navshortcut')
-  //  await t.expect(Selector(idDetail).exists).ok(idDetail);
-  await t.expect(Selector(idDetail).innerText).contains('test_folder')
-
-  // Select on Administrator desktop
-  let idAdm = await eGrid.querySelector('ubtableview').getIdByAttr('code', 'adm_desktop')
-  await t.click(Selector(idAdm))
-
-  // Verify that system changed grid of shortcuts on the tab  'Desktop -> Shortcut' and display correct shortcuts
-  idDetail = await eGrid.querySelector('tabpanel').getIdByAttr('entityName', 'ubm_navshortcut')
-  await t
-    .click(Selector(idDetail))
-    .expect(Selector(idDetail).innerText).contains('adm_folder_users')
-})
-*/
+// test('Move folder and shortcut to Desktop', async t => {
+//   await t.navigateTo(TEST_PAGE)
+//   let lw = await extSelector('.ub-login-window')
+//   lw.loginWin().setCredentials('admin', 'admin')
+//   lw.loginWin().loginBtnClick()
+//
+//   // check if test folder with shortcut is exist in Administrator desktop
+//   // if not exist - create or remove
+//   let leftMenuInnerText = await Selector('.x-tree-view').innerText
+//   if (leftMenuInnerText.indexOf('Test folder') < 0) {
+//     await checkPrecondition()
+//     await t
+//       .click(Selector('.ub-header-menu-item'))
+//       .navigateTo(TEST_PAGE)
+//     let lw = await extSelector('.ub-login-window')
+//     lw.loginWin().setCredentials('admin', 'admin')
+//     lw.loginWin().loginBtnClick()
+//   }
+//   // Select existing Folder with Shortcut on sidebar menu
+//   let mainMenu = await extSelector('.ub-header-menu-item')
+//   let idMenu = await mainMenu.querySelector('treeview').getIdByAttr('text', 'Test folder')
+//   // Open folder's context menu and click button 'Edit'
+//   await t.rightClick(idMenu)
+//   let leftMenu = await extSelector('.ub-left-panel')
+//   leftMenu.querySelector('menuitem[text=Edit]').click()
+//
+//   // Сhange Desktop on "Desktop" drop-down menu
+//   let shForm = await extSelector('.ub-basepanel')
+//   shForm.querySelector('ubcombobox[attributeName="desktopID"]').setValue('test_desktop_name')
+//
+//   // Click button 'Save and close'
+//   shForm.querySelector('button[actionId=saveAndClose]').click()
+//
+//   // Reload browser
+//   await t.navigateTo(TEST_PAGE)
+//   lw = await extSelector('.ub-login-window')
+//   lw.loginWin().setCredentials('admin', 'admin')
+//   lw.loginWin().loginBtnClick()
+//
+//   // Switch the Desktop in the left sidebar drop-down menu which the folder was moved
+//   leftMenu = await extSelector('.ub-left-panel')
+//   leftMenu.querySelector('button[cls=ub-desktop-button]').click()
+//   leftMenu.querySelector('menuitem[text=test_desktop_name]').click()
+//
+//   // Verify that only folder is available on selected Desktop
+//   let reloadGrid = await Selector('.ub-left-panel').innerText
+//   await t
+//     .expect(reloadGrid).contains('Test folder')
+//     .expect(reloadGrid).notContains('Test shortcut')
+//
+//   // Select Desktop on top navbar which the folder was moved
+//   mainMenu = await extSelector('.ub-header-menu-item')
+//   mainMenu.querySelector('button[text=test_desktop_name][ui=default-toolbar-small]').click()
+//   mainMenu.querySelector('menuitem[shortcutCode=test_folder]').click()
+//
+//   // Open top navbar Administrator / UI / Shortcuts
+//   mainMenu.querySelector('button[text=Administrator][ui=default-toolbar-small]').click()
+//   mainMenu.querySelector('menuitem[shortcutCode=adm_folder_UI]').showMenu()
+//   mainMenu.querySelector('menuitem[shortcutCode=ubm_navshortcut]').click()
+//
+//   // Open shortcut
+//   let eGrid = await extSelector('.ub-entity-grid')
+//   let idSht = await eGrid.querySelector('ubtableview').getIdByAttr('code', 'test_shortcut')
+//   await t.doubleClick(idSht)
+//
+//   // Select new Desktop on 'Desktop drop-down menu'
+//   shForm = await extSelector('.ub-basepanel')
+//   shForm.querySelector('ubcombobox[attributeName="desktopID"]').setValue('test_desktop_name')
+//
+//   // Click button 'Save and close'
+//   shForm.querySelector('button[actionId=saveAndClose]').click()
+//
+//   // Reload browser
+//   await t.navigateTo(TEST_PAGE)
+//   lw = await extSelector('.ub-login-window')
+//   lw.loginWin().setCredentials('admin', 'admin')
+//   lw.loginWin().loginBtnClick()
+//
+//   // Select new Desktop on left sidebar's drop-down menu
+//   leftMenu = await extSelector('.ub-left-panel')
+//   leftMenu.querySelector('button[cls=ub-desktop-button]').click()
+//   leftMenu.querySelector('menuitem[text=test_desktop_name]').click()
+//   reloadGrid = await Selector('.ub-left-panel').innerText
+//   await t
+//     .expect(reloadGrid).contains('Test folder')
+//     .expect(reloadGrid).contains('Test shortcut')
+// })
+//
+//
+// test('Open Desktop details', async t => {
+//   await t.navigateTo(TEST_PAGE)
+//   let lw = await extSelector('.ub-login-window')
+//   lw.loginWin().setCredentials('admin', 'admin')
+//   lw.loginWin().loginBtnClick()
+//
+//   // Open top navbar menu Administrator / UI / Desktops
+//   let mainMenu = await extSelector('.ub-header-menu-item')
+//   mainMenu.querySelector('button[text=Administrator][ui=default-toolbar-small]').click()
+//   mainMenu.querySelector('menuitem[shortcutCode=adm_folder_UI]').showMenu()
+//   mainMenu.querySelector('menuitem[shortcutCode=ubm_desktop]').click()
+//
+//   // Select on existing Desktop
+//   let eGrid = await extSelector('.ub-entity-grid')
+//   let idSht = await eGrid.querySelector('ubtableview').getIdByAttr('code', 'test_desktop_code')
+//   await t.rightClick(idSht)
+//
+//   // Select menu All action / Detail / Shourtcut (Desktop) (on right top side)
+//   eGrid.querySelector('menuitem[actionId="showDetail"][text="Details"]').showMenu()
+//   eGrid.querySelector('menuitem[actionId="showDetail"][text="Shortcut (Desktop)"]').click()
+//   let idDetail = await eGrid.querySelector('tabpanel').getIdByAttr('entityName', 'ubm_navshortcut')
+//   //  await t.expect(Selector(idDetail).exists).ok(idDetail);
+//   await t.expect(Selector(idDetail).innerText).contains('test_folder')
+//
+//   // Select on Administrator desktop
+//   let idAdm = await eGrid.querySelector('ubtableview').getIdByAttr('code', 'adm_desktop')
+//   await t.click(Selector(idAdm))
+//
+//   // Verify that system changed grid of shortcuts on the tab  'Desktop -> Shortcut' and display correct shortcuts
+//   idDetail = await eGrid.querySelector('tabpanel').getIdByAttr('entityName', 'ubm_navshortcut')
+//   await t
+//     .click(Selector(idDetail))
+//     .expect(Selector(idDetail).innerText).contains('adm_folder_users')
+// })
 
 async function deleteExistDesktop (code) {
   await ClientFunction(code => {
