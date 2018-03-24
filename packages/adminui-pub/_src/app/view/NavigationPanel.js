@@ -121,6 +121,7 @@ Ext.define('UB.view.NavigationPanel', {
 
     var editAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faEdit,
+      actionID: 'Edit',
       text: UB.i18n('Edit'),
       disabled: !navShortcutEntity.haveAccessToMethod('update'),
       handler: function () {
@@ -142,6 +143,7 @@ Ext.define('UB.view.NavigationPanel', {
 
     var addShortcutAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faLink,
+      actionID: 'addShortcut',
       text: UB.i18n('dobavitYarlik'),
       disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
@@ -162,6 +164,7 @@ Ext.define('UB.view.NavigationPanel', {
 
     var addFolderAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faFolder,
+      actionID: 'addFolder',
       text: UB.i18n('dobavitDirectoriu'),
       disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
@@ -182,6 +185,7 @@ Ext.define('UB.view.NavigationPanel', {
     })
 
     var deleteShortcutAction = new Ext.Action({
+      actionID: 'deleteShortcut',
       text: UB.i18n('Delete'),
       glyph: UB.core.UBUtil.glyphs.faTrashO,
       scope: this,
@@ -287,6 +291,7 @@ Ext.define('UB.view.NavigationPanel', {
         level = getLevel(record.get(navFields.ubTreePath))
         data.push({
           id: record.get('ID'),
+          code: record.get(navFields.code),
           text: record.get(navFields.caption),
           leaf: !record.get(navFields.isFolder),
           parentId: record.get(navFields.folderID),
