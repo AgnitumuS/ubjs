@@ -311,6 +311,9 @@ function getServerConfiguration () {
     result.uiSettings = {}
   }
   if (!result.security) result.security = {}
+  if (!result.httpServer) result.httpServer = {}
+  if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}
+  if (!result.httpServer.reverseProxy.sendFileLocationRoot) result.httpServer.reverseProxy.sendFileLocationRoot = 'ubstatic'
   return result
 }
 

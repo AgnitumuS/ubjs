@@ -14,6 +14,8 @@ const WebSockets = require('./web-sockets')
 const App = require('./App')
 const Session = require('./Session')
 const {badRequest, notFound} = require('./httpUtils')
+const PROXY_SEND_FILE_HEADER = App.serverConfig.httpServer['reverseProxy']['sendFileHeader']
+const PROXY_SEND_FILE_LOCATION_ROOT = App.serverConfig.httpServer['reverseProxy']['sendFileLocationRoot']
 /**
  *
  * @param {string} reqPath
@@ -36,7 +38,7 @@ function resolveModelFile (reqPath, resp) {
     if (!model) {
       return badRequest(resp, 'no such model ' + modelName)
     }
-    entry.fullPath = relToAbs(model.realPublicPath, parts.join('\\'))
+    entry.fullPath = path.normalize(path.join(model.realPublicPath, parts.join('/')))
     if (!entry.fullPath) {
       return badRequest(resp, 'cant resolve relative path')
     }
@@ -46,18 +48,29 @@ function resolveModelFile (reqPath, resp) {
     if (!fs.existsSync(entry.fullPath)) {
       return notFound(resp, `"${entry.fullPath}"`)
     }
-    let ct = mime.contentType(parts.pop())
-    if (ct) {
-      entry.mimeHead = 'Content-Type: ' + ct
+    if (PROXY_SEND_FILE_HEADER) {
+      entry.fullPath = path.relative(process.configPath, entry.fullPath)
+    } else {
+      let ct = mime.contentType(parts.pop())
+      if (ct) {
+        entry.mimeHead = 'Content-Type: ' + ct
+      }
     }
     App.globalCachePut(`UB_MODELS_REQ${reqPath}`, JSON.stringify(entry))
   } else {
     entry = JSON.parse(cached)
   }
-  resp.writeEnd(entry.fullPath)
-  resp.writeHead('Content-Type: !STATICFILE')
-  if (entry.mimeHead) {
-    resp.writeHead(entry.mimeHead)
+  if (PROXY_SEND_FILE_HEADER) {
+    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${App.package.name}/${entry.fullPath}`
+    console.debug(`<- `, head)
+    resp.writeHead(head)
+    resp.writeEnd('')
+  } else {
+    resp.writeEnd(entry.fullPath)
+    resp.writeHead('Content-Type: !STATICFILE')
+    if (entry.mimeHead) {
+      resp.writeHead(entry.mimeHead)
+    }
   }
   resp.statusCode = 200
 }
@@ -192,9 +205,13 @@ function clientRequire (req, resp) {
       return badRequest(resp, `Request to UnityBase model ${reqPath} resolved to (${resolvedPath}) which is not inside any of public models folder`)
     }
     entry.fullPath = resolvedPath
-    let ct = mime.contentType(path.extname(resolvedPath))
-    if (ct) {
-      entry.mimeHead = 'Content-Type: ' + ct
+    if (PROXY_SEND_FILE_HEADER) {
+      entry.fullPath = path.relative(process.configPath, entry.fullPath)
+    } else {
+      let ct = mime.contentType(path.extname(resolvedPath))
+      if (ct) {
+        entry.mimeHead = 'Content-Type: ' + ct
+      }
     }
     App.globalCachePut(`UB_CLIENT_REQ${reqPath}`, JSON.stringify(entry))
     console.debug(`Resolve ${reqPath} -> ${resolvedPath}`)
@@ -202,10 +219,17 @@ function clientRequire (req, resp) {
     entry = JSON.parse(cached)
     console.debug(`Retrieve cached ${reqPath} -> ${entry.fullPath}`)
   }
-  resp.writeEnd(entry.fullPath)
-  resp.writeHead('Content-Type: !STATICFILE')
-  if (entry.mimeHead) {
-    resp.writeHead(entry.mimeHead)
+  if (PROXY_SEND_FILE_HEADER) {
+    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${App.package.name}/${entry.fullPath}`
+    console.debug(`<- `, head)
+    resp.writeHead(head)
+    resp.writeEnd('')
+  } else {
+    resp.writeEnd(entry.fullPath)
+    resp.writeHead('Content-Type: !STATICFILE')
+    if (entry.mimeHead) {
+      resp.writeHead(entry.mimeHead)
+    }
   }
   resp.statusCode = 200
 }
@@ -304,9 +328,51 @@ function getDomainInfoEp (req, resp) {
   resp.validateETag()
 }
 
+/**
+ * Default endpoint. Will be called in case URL do not start form a known endpoint.
+ * Current implementation will handle static files from `ServerConfig.HTTPServer.inetPub` folder
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function staticEndpoint (req, resp) {
+  if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
+    return badRequest(resp, 'invalid request method ' + req.method)
+  }
+  let reqPath = req.decodedUri
+  if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
+    return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
+  }
+  let normalized = path.normalize(path.join(App.staticPath, reqPath))
+  if (!normalized.startsWith(App.staticPath)) {
+    return badRequest(resp, `statics: resolved path "${normalized}" is not inside inetPub folder ${App.staticPath}`)
+  }
+  if (PROXY_SEND_FILE_HEADER) {
+    let relative = path.relative(process.configPath, normalized)
+    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${App.package.name}/${relative}`
+    console.debug(`<- `, head)
+    resp.writeHead(head)
+    resp.writeEnd('')
+    resp.statusCode = 200
+  } else {
+    if (!fs.existsSync(normalized)) {
+      return notFound(resp, `"${normalized}"`)
+    }
+    let ext = path.extname(normalized)
+    let ct = mime.contentType(ext)
+    resp.writeEnd(normalized)
+    resp.writeHead('Content-Type: !STATICFILE')
+    if (ct) {
+      resp.writeHead('Content-Type: ' + ct)
+    }
+    resp.statusCode = 200
+  }
+}
+
 module.exports = {
   models,
   getAppInfo,
   clientRequire,
-  getDomainInfoEp
+  getDomainInfoEp,
+  staticEndpoint
 }

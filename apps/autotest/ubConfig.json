@@ -1,13 +1,18 @@
 { 
 	"httpServer": {
 		//"serverType": "Socket",
+		"reverseProxy": {
+			"kind": "nginx",
+			"remoteIPHeader": "X-Real-IP",
+			"sendFileHeader": "X-Accel-Redirect",
+			"sendFileLocationRoot": "ubstatic"
+		},
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": "./inetPub/",
-		//"remoteIPHeader": "X-Real-IP",
+		"inetPub": "./inetPub/",		
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
@@ -75,7 +80,7 @@
 	"application": {
 		"defaultLang": "uk",
 		"rootHandler": "index.html",
-		"schedulers": {"enabled": true},
+		"schedulers": {"enabled": false},
 		"domain": {
 			"models": [
 				{

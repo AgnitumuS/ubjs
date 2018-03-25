@@ -210,7 +210,7 @@ THTTPResponse.prototype = {
    * Perform a ETag based HTTP response caching.
    * Must be called after writeEnd called and and statusCode is defined.
    *
-   * In case statusCode === 2000 and response body length > 64 will
+   * In case statusCode === 200 and response body length > 64 will
    *  - if request contains a IF-NONE-MATCH header, and it value equal to response crc32
    * will mutate a statusCode to 304 (not modified) and clear the response body
    *  - in other case will add a ETag header with value = hex representation of crc32(responseBody).
