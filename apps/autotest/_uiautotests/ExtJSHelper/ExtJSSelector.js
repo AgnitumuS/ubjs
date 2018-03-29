@@ -3,6 +3,9 @@ import { ClientFunction, Selector, t } from 'testcafe'
 
 const getWindowError = ClientFunction(prop => window.onerror = prop)
 
+/**
+ * Global Ext class
+ */
 class ExtSelector {
   constructor () {
     this.mainToolbar = new TopMenu()
@@ -14,15 +17,22 @@ class ExtSelector {
 }
 
 class LoginWindow {
+  /**
+   * waiting for load of login form
+   * @returns {Promise.<void>}
+   */
   async load () {
     await Selector('#UBLogo')()
     await Selector('.ub-login-window')()
   }
 
   /**
-   *
+   * set credentials params to the login form
    * @param {string} authType
-   * @param params[activeTab][pwd][user]
+   * @param {Object} params
+   * @param {string} [params.activeTab]
+   * @param {string} [params.pwd]
+   * @param {string} [params.user]
    * @returns {Promise.<void>}
    */
   async setCredentials (authType, params) {
@@ -42,7 +52,7 @@ class LoginWindow {
   }
 
   /**
-   *
+   * clicks to the Login button in the login form
    * @returns {Promise.<void>}
    */
   async loginBtnClick () {
@@ -53,6 +63,10 @@ class LoginWindow {
 }
 
 class TopMenu {
+  /**
+   * waiting for load of top menu container
+   * @returns {Promise.<void>}
+   */
   async load () {
     await Selector('.ub-header-menu-container')()
   }
@@ -84,64 +98,262 @@ class TabPanel {
   /**
    *
    * @param {string} entityName
-   * @returns {ItemSelector}
+   * @returns {EntityGrid}
    */
-  entityGridPanel (entityName) {
-    let queryCode = `entitygridpanel[entityName=${entityName}]`
-    return new ItemSelector(queryCode)
+  entityGridPanel (queryCode) {
+    return new EntityGrid(queryCode)
   }
 
   /**
-   *
+   * waiting for loading of form panel or entitygrid panel
    * @param {string} xtype
-   * @param {Object} params[entityName]
-   * @returns {Promise.<void>}
+   * @param {Object} params
+   * @param {string} params.entityName
+   * @param {string} [params.instanceCode]
+   * @param {string} [params.instanceAttr]
+   * @returns {string}
    */
   async loadTabPanelChild (xtype, params) {
     let queryCode = (xtype === 'basepanel')
-      ? this.getFormPanelQuery(params)
+      ? await this.getFormPanelQuery(params)
       : `entitygridpanel[entityName=${params.entityName}]`
     let childID = await ClientFunction((q) => {
-      return Ext.ComponentQuery.query(q)[0].id
+      if (Ext.ComponentQuery.query(q)[0]) {
+        return Ext.ComponentQuery.query(q)[0].id
+      } else return 'undefined'
     })(queryCode)
     childID = '#' + childID
-    await Selector(childID)()
-    await t.expect(Selector(childID).exists).ok(childID)
+    await t.expect(Selector(childID).exists).ok(`${xtype} with entityName ${params.entityName} is undefined`)
+    return queryCode
   }
 
   /**
    *
-   * @param {Object} params[entityName][instanceCode][instanceAttr]
+   * @param {Object} params
+   * @param {string} params.entityName
+   * @param {string} [params.instanceCode]
+   * @param {string} [params.instanceAttr]
    * @returns {string}
    */
   getFormPanelQuery (params) {
     if (!params.instanceCode) {
       return `basepanel[entityName=${params.entityName}][isNewInstance=true]`
     }
-    return UB.Repository(params.entityName).attrs('ID', params.instanceAttr)
-      .where(params.instanceAttr, '=', params.instanceCode).selectSingle()
-      .then(instance => {
-        return `basepanel[entityName=${params.entityName}][instanceID='${instance.ID}]`
-      })
+    let getForm = ClientFunction(params => {
+      if (params.isFormConstructor) {
+        let ubmForms = Ext.ComponentQuery.query(`basepanel[entityName=ubm_form]`)
+        let idForm
+        if (ubmForms.length) {
+          ubmForms.forEach(form => {
+            if (form.record.data.code === params.instanceCode) idForm = form.id
+          })
+          return `basepanel[id=${idForm}]`
+        }
+      } else {
+        return UB.Repository(params.entityName).attrs('ID', params.instanceAttr)
+          .where(params.instanceAttr, '=', params.instanceCode).selectSingle()
+          .then(instance => {
+            return `basepanel[entityName=${params.entityName}][instanceID='${instance.ID}]`
+          })
+      }
+    })
+    let queryCode = getForm(params)
+    return queryCode
   }
 
   /**
-   *
-   * @param {string} entityName
-   * @param {string} instanceAttr
-   * @param {string} instanceCode
+   * returns FormConstructor for ubm_form and BasePanel for other forms
+   * @param {string} queryCode
+   * @param {boolean} [isFormConstructor]
+   * @returns {FormConstructor||BasePanel}
+   */
+  formPanel (queryCode, isFormConstructor) {
+    return (isFormConstructor)
+      ? new FormConstructor(queryCode)
+      : new BasePanel(queryCode)
+  }
+}
+
+class EntityGrid {
+  constructor (gridCode) {
+    this.queryCode = gridCode
+    this.rows = new ItemSelector(gridCode)
+  }
+
+  /**
+   * waiting wor reload entitygridpanel store
+   * @returns {Promise.<void>}
+   */
+  async reload () {
+    // не ожидает
+    // await ClientFunction((queryCode) => {
+    //   while (1) {
+    //     if (!Ext.ComponentQuery.query(queryCode)[0].store.loading) return
+    //   }
+    // })(this.queryCode)
+    // - так достаточно задержки, но нужно придумать нормальный алгоритм ожидания подгрузки таблицы
+    await Selector('ubdetailview')()
+  }
+
+  /**
+   * get action button on the grid by actionID
+   * @param {string} actionID
    * @returns {ItemSelector}
    */
-  formPanel (entityName, instanceAttr, instanceCode) {
-    let formParams = {entityName: entityName, instanceAttr: instanceAttr, instanceCode: instanceCode}
-    let queryCode = this.getFormPanelQuery(formParams)
-    return new ItemSelector(queryCode)
+  getGridAction (actionID) {
+    return new ItemSelector(this.queryCode, {actionID: actionID})
+  }
+
+  /**
+   * select menuitem on top right menu by actionID/ and entityName for showDetail action
+   * @param {Object} params
+   * @param {string} [params.entityName]
+   * @param {string} params.actionID
+   * @returns {Promise.<void>}
+   */
+  async selectAllActionMenuItem (params) {
+    let getIem = ClientFunction((queryCode, params) => {
+      Ext.ComponentQuery.query('[menuId="AllActions"]')[0].el.dom.click()
+      let menu = Ext.ComponentQuery.query(queryCode)[0].menuAllActions
+      let menuItems
+      menu.forEach(item => {
+        if (item.menu) {
+          menuItems = item.menu.items.items
+          item.menu.show()
+        } else if (item.items && item.items.length) menuItems = item.items
+        if (menuItems.length) {
+          menuItems.forEach(menuItem => {
+            if (params.actionID === 'showDetail' && params.entityName) {
+              if (menuItem.entityName === params.entityName) {
+                menuItem.el.dom.click()
+              }
+            } else if (menuItem.actionId === params.actionID && menuItem.xtype === 'menuitem' && menuItem.el) {
+              menuItem.el.dom.click()
+            }
+          })
+        }
+        if (item.menu) item.menu.hide()
+      })
+    })
+    await getIem(this.queryCode, params)
+  }
+
+  /**
+   * close this grid panel
+   * @returns {Promise.<void>}
+   */
+  async closeGrid () {
+    await ClientFunction((queryCode) => {
+      return Ext.ComponentQuery.query(queryCode)[0].close()
+    })(this.queryCode)
+  }
+}
+
+class BasePanel {
+  constructor (gridCode) {
+    this.queryCode = gridCode
+    this.items = new ItemSelector(gridCode)
+  }
+
+  /**
+   * gets action button on the form by actionID
+   * @param {string} actionID
+   * @returns {ItemSelector}
+   */
+  getFormAction (actionID) {
+    return new ItemSelector(this.queryCode, {actionID: actionID})
+  }
+
+  /**
+   * finds and clicks on the form tab by the tabID
+   * @param {string} tabID
+   * @returns {Promise.<void>}
+   */
+  async selectTab (tabID) {
+    await ClientFunction((queryCode, tabID) => {
+      let tabPanel = Ext.ComponentQuery.query(queryCode)[0].items.items[0].tabBar.items.items
+      if (tabPanel.length) {
+        tabPanel.forEach(tab => {
+          if (tab.card.tabID === tabID) {
+            tab.el.dom.click()
+          }
+        })
+      }
+    })(this.queryCode, tabID)
+  }
+
+  /**
+   * close this form panel
+   * @returns {Promise.<void>}
+   */
+  async closeForm () {
+    await ClientFunction((queryCode) => {
+      return Ext.ComponentQuery.query(queryCode)[0].close()
+    })(this.queryCode)
+  }
+}
+
+class FormConstructor extends BasePanel {
+  /**
+   * returns this form 'Interface Definition' value
+   * @returns {string}
+   */
+  getFormDefEditorValue () {
+    return ClientFunction((queryCode) => {
+      return Ext.ComponentQuery.query(queryCode)[0].formDefEditor.rawValue
+    })(this.queryCode)
+  }
+
+  /**
+   * set to this form 'Interface Definition' value
+   * @param {string} value
+   * @returns {Promise.<void>}
+   */
+  async setFormDefEditorValue (value) {
+    await ClientFunction((queryCode, value) => {
+      return Ext.ComponentQuery.query(queryCode)[0].formDefEditor.codeMirrorInstance.setValue(value)
+    })(this.queryCode, value)
+  }
+
+  /**
+   * returns this form 'Method Definition' value
+   * @returns {string}
+   */
+  getFormCodeValue () {
+    return ClientFunction((queryCode) => {
+      return Ext.ComponentQuery.query(queryCode)[0].ubAttributeMap.formCode.ubCmp.rawValue
+    })(this.queryCode)
+  }
+
+  /**
+   * check if this form Visual Designer is hidden
+   * @returns {boolean}
+   */
+  checkVisualDesignerVisibility () {
+    return ClientFunction((queryCode) => {
+      return Ext.ComponentQuery.query(queryCode)[0].designer.hidden
+    })(this.queryCode)
+  }
+
+  /**
+   * returns innerText of this forms Visual Designer
+   * @returns {string}
+   */
+  checkVisualDesignerInnerText () {
+    return ClientFunction((queryCode) => {
+      return Ext.ComponentQuery.query(queryCode)[0].designer.ownerCt.el.dom.innerText
+    })(this.queryCode)
   }
 }
 
 class LeftPanel {
+  constructor () {
+    this.treeItems = new ItemSelector('treeview')
+    this.desktopMenuBtn = new ItemSelector('button[cls=ub-desktop-button]')
+  }
+
   /**
-   *
+   * waiting for load of left menu
    * @returns {Promise.<void>}
    */
   async load () {
@@ -151,16 +363,7 @@ class LeftPanel {
   }
 
   /**
-   *
-   * @returns {ItemSelector}
-   */
-  desktopMenuBtn () {
-    let queryCode = 'button[cls=ub-desktop-button]'
-    return new ItemSelector(queryCode)
-  }
-
-  /**
-   *
+   * select desktop by the left panel menu
    * @param {string} desktopCode
    * @returns {Promise.<void>}
    */
@@ -177,16 +380,7 @@ class LeftPanel {
   }
 
   /**
-   *
-   * @returns {ItemSelector}
-   */
-  treeMenu () {
-    let queryCode = 'treeview'
-    return new ItemSelector(queryCode)
-  }
-
-  /**
-   *
+   * get menuitem object on the contextMenu of left panel`s items
    * @param {string} actionID
    * @returns {ItemSelector}
    */
@@ -197,8 +391,12 @@ class LeftPanel {
 }
 
 class BaseWindow {
+  constructor () {
+    this.modalForm = new ItemSelector('basewindow')
+  }
+
   /**
-   *
+   * waiting for load of modal form panel
    * @returns {Promise.<void>}
    */
   async load () {
@@ -206,44 +404,14 @@ class BaseWindow {
   }
 
   /**
-   *
+   * returns object of action button on this form
+   * @param actionID
    * @returns {ItemSelector}
    */
-  modalForm () {
-    let queryCode = 'basewindow'
-    return new ItemSelector(queryCode)
+  getFormAction (actionID) {
+    return new ItemSelector('basewindow', {actionID: actionID})
   }
 }
-
-/*class FormSelector {
-  constructor (formCode, instanceAttr, instanceCode) {
-    this.queryCode = this.getFormPanelQuery(formCode, instanceAttr, instanceCode)
-   }
-
-  getFormPanelQuery (formCode, instanceAttr, instanceCode) {
-    let queryCode
-    if (!instanceCode) {
-      queryCode = 'basepanel[entityName=' + formCode + '][isNewInstance=true]'
-    } else {
-      UB.Repository(formCode).attrs('ID', instanceAttr).where(instanceAttr, '=', instanceCode).selectSingle()
-        .then(instance => {
-          queryCode = 'basepanel[entityName=' + formCode + '][instanceID=' + instance.ID + ']'
-        })
-    }
-    return queryCode
-  }
-
-  async loadForm (entityName, instanceAttr, instanceCode) {
-    let queryCode = this.getFormPanelQuery(entityName, instanceAttr, instanceCode)
-    let getFormId = ClientFunction((queryCode) => {
-      return Ext.ComponentQuery.query(queryCode)[0].id
-    })
-    let formID = await getFormId(queryCode)
-    formID = '#' + formID
-    await Selector(formID)()
-    await t.expect(Selector(formID).exists).ok(formID)
-  }
-}*/
 
 class ItemSelector {
   constructor (queryCode, params) {
@@ -252,7 +420,7 @@ class ItemSelector {
   }
 
   /**
-   * returns innerText from component`s DOM
+   * returns innerText of component`s DOM
    *@returns {string}
    */
   innerText () {
@@ -268,11 +436,11 @@ class ItemSelector {
    * @param {string} [params.actionID]
    * @return {Promise<void>}
    */
-  async click (params) {
+  async click () {
     let
       actionID,
       elClick
-    if (params) actionID = params.actionID
+    if (this.params) actionID = this.params.actionID
     if (actionID) {
       elClick = ClientFunction((querycode, actionID) => {
         (querycode === 'basewindow')
@@ -294,10 +462,9 @@ class ItemSelector {
    */
   async showMenu () {
     let elShow = ClientFunction((queryCode) => {
-        let menuItem = Ext.ComponentQuery.query(queryCode)[0]
-        menuItem.menu.show()
-      }
-    )
+      let menuItem = Ext.ComponentQuery.query(queryCode)[0]
+      menuItem.menu.show()
+    })
     return Promise.resolve(elShow(this.queryCode))
   }
 
@@ -339,12 +506,20 @@ class ItemSelector {
     await elValue(this.queryCode, value, attr)
   }
 
+  /**
+   * returns DOM id of element by attribute of the owner
+   * @param {string} attr
+   * @param {string} attrValue
+   * @returns {string}
+   */
   getIdByAttr (attr, attrValue) {
     let elID = ClientFunction((queryCode, attr, attrValue) => {
       let id
       let xtype = Ext.ComponentQuery.query(queryCode)[0].xtype
-      if (xtype === 'treeview' || xtype === 'ubtableview') {
-        let treeID = Ext.ComponentQuery.query(queryCode)[0].id
+      if (xtype === 'treeview' || xtype === 'entitygridpanel') {
+        let treeID = (xtype === 'treeview')
+          ? Ext.ComponentQuery.query(queryCode)[0].id
+          : Ext.ComponentQuery.query(queryCode)[0].view.id
         let treeItems = Ext.ComponentQuery.query(queryCode)[0].store.data.items
         if (treeItems.length) {
           treeItems.forEach(item => {
@@ -356,40 +531,30 @@ class ItemSelector {
                 }
                 break
               }
-              case 'ubtableview': {
+              case 'entitygridpanel': {
                 if (item.data[attr] === attrValue) {
                   id = `#${treeID}-record-${item.data.ID}`
                   return id
                 }
                 break
               }
-              default : {}
+              default : { }
             }
           })
         }
-      } else if (xtype === 'tabPanel') {
-        let tabpanelArr = Ext.ComponentQuery.query('tabPanel')
-        if (tabpanelArr.length) {
-          tabpanelArr.forEach(tabpanel => {
-            switch (attr) {
-              case 'entityName': {
-                if (tabpanel.items.items[0].entityName === attrValue) {
-                  id = `#${tabpanel.el.dom.id}`
-                  return id
-                }
-                break
-              }
-              default : {}
-            }
+      } else if (xtype === 'basepanel') {
+        let formItems = Ext.ComponentQuery.query(queryCode)[0].items.items
+        if (formItems.length) {
+          formItems.forEach(item => {
+            if (item[attr] === attrValue) id = `#${item.id}`
+            return id
           })
         }
-      }
-      else id = `#${Ext.ComponentQuery.query(queryCode)[0].id}`
-
+      } else id = `#${Ext.ComponentQuery.query(queryCode)[0].id}`
+      if (!id) id = '#undefined'
       return id
     })
     return elID(this.queryCode, attr, attrValue)
-
   }
 }
 
