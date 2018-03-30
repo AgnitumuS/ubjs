@@ -13,7 +13,7 @@
 			"isUnique": false,
 			"documentation": "Ідентифікатор запису",
 			"mapping": {
-				"AnsiSql": { "expression": "C_ID" }
+				"AnsiSQL": { "expression": "C_ID" }
 			}
 		},
 		"code": {
@@ -28,7 +28,7 @@
                 }
 	},
 	"mapping": {
-		"AnsiSql": { 
+		"AnsiSQL": {
 			"pkGenerator": "SEQ_UBMAIN_BY1" 
 		}
 	},

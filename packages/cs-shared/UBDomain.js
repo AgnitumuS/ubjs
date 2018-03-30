@@ -290,7 +290,7 @@ UBDomain.EntityCacheTypes = {
 /**
  * Priority to apply a mapping of a attributes/entities to the physical tables depending of connection dialect
  * @enum
- * @private
+ * @protected
  */
 UBDomain.dialectsPriority = {
   MSSQL2012: [ 'MSSQL2012', 'MSSQL', 'AnsiSQL' ],
@@ -528,15 +528,21 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @readonly
    */
   this.mapping = undefined
-
-  if (entityInfo.mapping && Object.keys(entityInfo.mapping).length) {
-    dialectProiority = UBDomain.dialectsPriority[this.connectionConfig.dialect]
-    _.forEach(dialectProiority, function (dialect) {
-      if (entityInfo.mapping[dialect]) {
-        me.mapping = new UBEntityMapping(entityInfo.mapping[dialect])
-        return false
-      }
+  if (entityInfo.mapping) {
+    let mappingKeys = Object.keys(entityInfo.mapping)
+    mappingKeys.forEach(key => {
+      if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${this.code} mapping`)
     })
+    if (mappingKeys.length) {
+      let me = this
+      dialectProiority = UBDomain.dialectsPriority[this.connectionConfig.dialect]
+      _.forEach(dialectProiority, function (dialect) {
+        if (entityInfo.mapping[dialect]) {
+          me.mapping = new UBEntityMapping(entityInfo.mapping[dialect])
+          return false
+        }
+      })
+    }
   }
 
   /**
@@ -1279,15 +1285,21 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    */
   this.mapping = undefined
 
-  let me = this
-  if (attributeInfo.mapping && Object.keys(attributeInfo.mapping).length) {
-    let dialectsPriority = UBDomain.dialectsPriority[this.entity.connectionConfig.dialect]
-    _.forEach(dialectsPriority, function (dialect) {
-      if (attributeInfo.mapping[dialect]) {
-        me.mapping = new UBEntityAttributeMapping(attributeInfo.mapping[dialect])
-        return false // break loop
-      }
+  if (attributeInfo.mapping) {
+    let mappingKeys = Object.keys(attributeInfo.mapping)
+    mappingKeys.forEach(key => {
+      if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${entity.code}.${this.code} mapping`)
     })
+    if (mappingKeys.length) {
+      let me = this
+      let dialectsPriority = UBDomain.dialectsPriority[this.entity.connectionConfig.dialect]
+      _.forEach(dialectsPriority, function (dialect) {
+        if (attributeInfo.mapping[dialect]) {
+          me.mapping = new UBEntityAttributeMapping(attributeInfo.mapping[dialect])
+          return false // break loop
+        }
+      })
+    }
   }
 
   /**
