@@ -36,7 +36,7 @@
 			"size": 255,
 			"caption": "Назва",
 			"mapping": {
-				"AnsiSql": { "expressionType": "Expression", "expression": "[code] || ' ' || [caption]" },
+				"AnsiSQL": { "expressionType": "Expression", "expression": "[code] || ' ' || [caption]" },
 				"MSSQL": { "expressionType": "Expression", "expression": "[code] + ' ' + [caption]" } 
 			}
 		},
