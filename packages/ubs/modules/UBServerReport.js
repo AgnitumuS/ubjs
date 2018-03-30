@@ -261,7 +261,7 @@ UBServerReport.prototype.prepareCode = function () {
     _.forEach(reportModule.reportCode, (val, name) => {
       this[name] = val
     })
-  }  
+  }
 }
 
  /**
