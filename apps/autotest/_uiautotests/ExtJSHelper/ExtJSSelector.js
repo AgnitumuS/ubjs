@@ -13,6 +13,7 @@ class ExtSelector {
     this.tabPanel = new TabPanel()
     this.leftPanel = new LeftPanel()
     this.baseWindow = new BaseWindow()
+    this.messagebox = new MessageBox()
   }
 }
 
@@ -123,6 +124,7 @@ class TabPanel {
       } else return 'undefined'
     })(queryCode)
     childID = '#' + childID
+    await Selector(childID)()
     await t.expect(Selector(childID).exists).ok(`${xtype} with entityName ${params.entityName} is undefined`)
     return queryCode
   }
@@ -234,6 +236,47 @@ class EntityGrid {
         }
         if (item.menu) item.menu.hide()
       })
+    })
+    await getIem(this.queryCode, params)
+  }
+
+  /**
+   * select menuitem on context menu by actionID/ and entityName for showDetail action
+   * @param {Object} params
+   * @param {string} [params.entityName]
+   * @param {string} params.actionID
+   * @returns {Promise.<void>}
+   */
+  async selectContextMenuItem (params) {
+    let getIem = ClientFunction((queryCode, params) => {
+      let menu = Ext.ComponentQuery.query(queryCode)[0].menu.items.items
+      if (menu.length) {
+        let menuItems
+        menu.forEach(item => {
+          if (item.menu) {
+            menuItems = item.menu.items.items
+            item.menu.show()
+            menuItems.forEach(menuItem => {
+              if (params.actionID === 'showDetail' && params.entityName) {
+                if (menuItem.entityName === params.entityName) {
+                  menuItem.el.dom.click()
+                }
+              } else if (menuItem.actionId === params.actionID && menuItem.xtype === 'menuitem' && menuItem.el) {
+                menuItem.el.dom.click()
+              }
+              item.menu.hide()
+            })
+          } else {
+            if (params.actionID === 'showDetail' && params.entityName) {
+              if (item.entityName === params.entityName) {
+                item.el.dom.click()
+              }
+            } else if (item.actionId === params.actionID && item.xtype === 'menuitem' && item.el) {
+              item.el.dom.click()
+            }
+          }
+        })
+      }
     })
     await getIem(this.queryCode, params)
   }
@@ -413,6 +456,25 @@ class BaseWindow {
   }
 }
 
+class MessageBox {
+  /**
+   * clicks on button with actionID ['ok', 'yes', 'no', 'cancel']
+   * @param {string} actionID
+   * @returns {Promise.<void>}
+   */
+  async selectAction (actionID) {
+    await t.expect(Selector('.x-window').exists).ok('Message Box is not showed')
+    await ClientFunction((actionID) => {
+      let actions = Ext.ComponentQuery.query('messagebox')[0].msgButtons
+      if (actions.length) {
+        actions.forEach(btn => {
+          if (btn.itemId === actionID) btn.el.dom.click()
+        })
+      }
+    })(actionID)
+  }
+}
+
 class ItemSelector {
   constructor (queryCode, params) {
     this.queryCode = queryCode
@@ -515,12 +577,14 @@ class ItemSelector {
   getIdByAttr (attr, attrValue) {
     let elID = ClientFunction((queryCode, attr, attrValue) => {
       let id
-      let xtype = Ext.ComponentQuery.query(queryCode)[0].xtype
+      let element = Ext.ComponentQuery.query(queryCode)
+      if (!element.length) return '#undefined'
+      let xtype = element[0].xtype
       if (xtype === 'treeview' || xtype === 'entitygridpanel') {
         let treeID = (xtype === 'treeview')
-          ? Ext.ComponentQuery.query(queryCode)[0].id
-          : Ext.ComponentQuery.query(queryCode)[0].view.id
-        let treeItems = Ext.ComponentQuery.query(queryCode)[0].store.data.items
+          ? element[0].id
+          : element[0].view.id
+        let treeItems = element[0].store.data.items
         if (treeItems.length) {
           treeItems.forEach(item => {
             switch (xtype) {
