@@ -6,6 +6,8 @@ const argv = require('@unitybase/base').argv
 const path = require('path')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 const EventEmitter = require('events').EventEmitter
+const THTTPResponse = require('./HTTPResponse')
+const THTTPRequest = require('./HTTPRequest')
 
 /**
  * UnityBase application
@@ -100,13 +102,13 @@ App.preventDefault = function () {
  * Called by native
  * TODO - remove when all App level method will be implemented in JS
  * @param endpointName
- * @param {THTTPRequest} req
- * @param {THTTPResponse} resp
  * @private
  * @returns {boolean}
  */
-App.launchEndpoint = function (endpointName, req, resp) {
+App.launchEndpoint = function (endpointName) {
   __preventDefault = false
+  let resp = new THTTPResponse()
+  let req = new THTTPRequest()
   this.emit(endpointName + ':before', req, resp)
   if (!__preventDefault) {
     appBinding.endpoints[endpointName](req, resp)
