@@ -13,16 +13,13 @@ const LocalDataStore = csShared.LocalDataStore
 window.UB = UB
 /** @global */
 window._ = _
-// window.UB.ClientRepository = core.ClientRepository
 window.UB.LocalDataStore = LocalDataStore
 
-// window.UBConnection = UBConnection
 window.Q = Q
-// window.CryptoJS = CryptoJS
 window.UBDomain = UBDomain // used as UBDomain.getPhysicalDataType && UBDomain.ubDataTypes
 
 if (!Promise.prototype.fin) {
-  // noinspection Eslint
+  // eslint-disable-next-line no-extend-native
   Promise.prototype.fin = function (cb) {
     const res = () => this
     const fin = () => Promise.resolve(cb()).then(res)
@@ -31,7 +28,7 @@ if (!Promise.prototype.fin) {
 }
 
 if (!Promise.prototype.done) {
-  // noinspection Eslint
+  // eslint-disable-next-line no-extend-native
   Promise.prototype.done = Promise.prototype.then
 }
 

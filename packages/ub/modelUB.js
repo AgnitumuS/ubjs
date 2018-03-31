@@ -59,7 +59,7 @@ UB.UBAbort.prototype.constructor = UB.UBAbort
  *     UB.ns('DOC.Report');
  *     DOC.Report.myReport = function() { ... };
  *
- * @deprecated Try to avoid namespaces in your - instead create a modules and use require()
+ * @deprecated Try to avoid namespaces - instead create a modules and use require()
  * @param {String} namespacePath
  * @return {Object} The namespace object.
  */

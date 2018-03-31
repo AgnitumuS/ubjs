@@ -1,7 +1,7 @@
 ﻿{
 	"caption": "Report templates",
 	"description": "Report templates",
-        "dsType": "Virtual",
+    "dsType": "Virtual",
 	"cacheType": "SessionEntity",
 	"descriptionAttribute": "name",
 	"documentation": "",
