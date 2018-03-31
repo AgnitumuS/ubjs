@@ -343,7 +343,7 @@ function putContent (request, content) {
  * @return {BlobStoreCustom}
  */
 function getStore (attribute, blobItem) {
-  let storeName = blobItem.store || attribute.storeName
+  let storeName = blobItem.store || attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeName]
   if (!store) throw new Error(`Blob store ${storeName} not found in application config`)
   return store
