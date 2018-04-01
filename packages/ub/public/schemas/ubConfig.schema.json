@@ -27,7 +27,7 @@
             "None"
           ],
           "default": "HTTPSys",
-          "description": "The type of HTTP server\n\n |Value  |Description\n|-\n| `None`|No HTTP server\n| `HTTPSys`| HTTP.sys kernel mode driver used. Fast, but require URL to be written to routing table using _ub -http register_ command \n| `Socket` | Plain socket powered by IOCP"
+          "description": "The type of HTTP server\n\n |Value  |Description\n|-\n| `None`|No HTTP server\n| `HTTPSys`| HTTP.sys kernel mode driver used. Fast, but require URL to be written to routing table using _ub -http register_ command \n| `Socket` | Plain socket. Require reverse proxy for production usage"
         },
         "protocol": {
           "enum": [
@@ -44,7 +44,7 @@
         },
         "port": {
           "type": "string",
-          "default": "888",
+          "default": "8881",
           "description": "Port to listen on"
         },
         "path": {
@@ -155,11 +155,6 @@
           "type": "string",
           "description": "Origins for cross-origin resource sharing (CORS). See <a href=\"https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS\">mozilla documentation</a><br>Can be set e.g. to '\"*\"' to allow requests from any sites, or specify an URI to be allowed as origin (e.g. 'http://foo.example'). By default (empty) CORS are not allowed"
         },
-        "remoteIPHeader": {
-          "type": "string",
-          "description": "The value of a custom HTTP header containing the real client IP. By default, the RemoteIP information will be retrieved from the socket layer - but if the server runs behind some proxy service, you should define here the HTTP header name which indicates the true remote client IP value, mostly as 'X-Real-IP' or 'X-Forwarded-For'",
-          "default": ""
-        },
         "compression": {
           "enum": [
             "zip",
@@ -212,6 +207,34 @@
               "description": "Set it to 0 to remove limit at all. The minimum send rate, in bytes-per-second, for the response. The default response send rate is 150 bytes-per-second"
             }
           }
+        },
+        "reverseProxy": {
+          "type": "object",
+          "description": "Required for `Socket` server",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "nginx"
+              ],
+              "description": "Reserved"
+            },
+            "remoteIPHeader": {
+              "type": "string",
+              "description": "The value of a custom HTTP header containing the real client IP. By default, the RemoteIP information will be retrieved from the socket layer - but if the server runs behind some proxy service, you should define here the HTTP header name which indicates the true remote client IP value, mostly as 'X-Real-IP' or 'X-Forwarded-For'",
+              "default": ""
+            },
+            "sendFileHeader": {
+              "type": "string",
+              "default": "",
+              "description": "Send static files using reverse proxy X-Sendfile feature. For nginx should be `X-Accel-Redirect`"
+            },
+            "sendFileLocationRoot": {
+              "type": "string",
+              "default": "ubstatic",
+              "description": "Prefix added to the beginning of sendFileHeader location"
+            }
+          }
         }
       }
     },
@@ -242,7 +265,7 @@
         },
         "port": {
           "type": "string",
-          "default": "888",
+          "default": "8881",
           "description": "Port to listen on"
         },
         "path": {
@@ -685,7 +708,7 @@
               },
               "advSettings": {
                 "type": "string",
-                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 32|64 bit libpq.dll`| \"LibLocation=C:\\Program Files\\PostgreSQL (x86)\\9.3\\bin\\libpq.dll\"\n| `Oracle`| Combination of `MANY=hint` `ONE=hint` `INLINE_IN` `USE_WALLET`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br>(UB5 only) LibLocation=`Path to folder with oci.dll(libclntsh.so)` | \"MANY=\\/*+ NO_CPU_COSTING *\\/,ONE=\\/*+ NO_CPU_COSTING *\\/INLINE_IN,USE_WALLET,,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
+                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 32|64 bit libpq.dll`| \"LibLocation=C:\\Program Files\\PostgreSQL (x86)\\9.3\\bin\\libpq.dll\"\n| `Oracle`| Combination of `MANY=hint` `ONE=hint` `INLINE_IN` `USE_WALLET`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \"MANY=\\/*+ NO_CPU_COSTING *\\/,ONE=\\/*+ NO_CPU_COSTING *\\/INLINE_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
               }
             }
           }
@@ -703,7 +726,8 @@
               },
               "storeType": {
                 "enum": ["FileSystem", "Virtual"],
-                "default": "FileSystem"
+                "default": "FileSystem",
+                "description": "DEPRECATED. Use implementedBy instead"
               },
               "isDefault": {
                 "type": "boolean",
@@ -711,20 +735,16 @@
               },
               "implementedBy": {
                 "type": "string",
-                "description": "Applicable for `storeType: \"Virtual\"`. Name of then `UB.virtualStores` member witch implement virtualStores interface"
+                "description": "Name of module what implement a BlobStoreCustom interface for this store"
               },
               "path": {
                 "type": "string",
-                "description": "If `storeType: \"FileSystem\"` then  path to store root folder, if `storeType: \"Database\"` then name of a table or view where BLOB are stored"
+                "description": "Path to the folder where all files are placed"
               },
               "tempPath": {
                 "type": "string",
-                "description": "Path for storing uncommitted files. Recommended to be on the same volume as `path`",
+                "description": "Path for storing uncommitted files. Recommended to be on the same volume as `path`. In case of reverse proxy - must be inside store folder",
                 "default": "process.env.TEMP"
-              },
-              "connectionName": {
-                "type": "string",
-                "description": "Applicable for `storeType: \"Database\"`. Name of the connection where table with BLOBS are placed. If empty - will use the default connection"
               },
               "historyDepth": {
                 "type": "number",

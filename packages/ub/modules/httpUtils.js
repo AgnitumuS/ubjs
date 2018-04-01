@@ -1,3 +1,5 @@
+const App = require('./App')
+
 /**
  * @param {THTTPResponse} resp
  * @param {string} [reason]
@@ -24,6 +26,12 @@ function notFound (resp, reason) {
   return false
 }
 
+const PROXY_SEND_FILE_HEADER = App.serverConfig.httpServer['reverseProxy']['sendFileHeader']
+const PROXY_SEND_FILE_LOCATION_ROOT = App.serverConfig.httpServer['reverseProxy']['sendFileLocationRoot']
+
 module.exports = {
-  badRequest, notFound
+  badRequest,
+  notFound,
+  PROXY_SEND_FILE_HEADER,
+  PROXY_SEND_FILE_LOCATION_ROOT
 }

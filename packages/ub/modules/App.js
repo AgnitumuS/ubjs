@@ -4,6 +4,7 @@ if (typeof _App === 'undefined') {
 }
 const argv = require('@unitybase/base').argv
 const path = require('path')
+const fs = require('fs')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 const EventEmitter = require('events').EventEmitter
 const THTTPResponse = require('./HTTPResponse')
@@ -118,7 +119,8 @@ App.launchEndpoint = function (endpointName) {
 
 const appBinding = process.binding('ub_app')
 /**
- * Register a server endpoint. By default access to endpoint require authentication
+ * Register a server endpoint.
+ * One on endpoint can be default - this endpoint will be used as a fallback in case URL do not start with eny of known endpoints.
  * @example
  *
  * // Write a custom request body to file FIXTURES/req and echo file back to client
@@ -136,12 +138,13 @@ const appBinding = process.binding('ub_app')
  * @param {String} endpointName
  * @param {Function} handler
  * @param {boolean} [requireAuthentication=true]
+ * @param {boolean} [isDefault=false]
  * @memberOf App
  */
-App.registerEndpoint = function (endpointName, handler, requireAuthentication) {
+App.registerEndpoint = function (endpointName, handler, requireAuthentication, isDefault) {
   if (!appBinding.endpoints[endpointName]) {
     appBinding.endpoints[endpointName] = handler
-    return appBinding.registerEndpoint(endpointName, requireAuthentication === undefined ? true : requireAuthentication)
+    return appBinding.registerEndpoint(endpointName, requireAuthentication === undefined ? true : requireAuthentication , isDefault === true)
   }
 }
 
@@ -152,10 +155,7 @@ App.registerEndpoint = function (endpointName, handler, requireAuthentication) {
  * @memberOf App
  */
 App.addAppLevelMethod = function (methodName) {
-  if (!appBinding.endpoints[methodName]) {
-    appBinding.endpoints[methodName] = global[methodName]
-    return appBinding.registerEndpoint(methodName, true)
-  }
+  throw new Error('App.addAppLevelMethod is obsolete. Use App.registerEndpoint instead')
 }
 /**
  * @param {String} methodName
@@ -164,7 +164,7 @@ App.addAppLevelMethod = function (methodName) {
  * @memberOf App
  */
 App.serviceMethodByPassAuthentication = function (methodName) {
-  return appBinding.setEndpointByPassAuthentication(methodName)
+  throw new Error('App.serviceMethodByPassAuthentication is obsolete. Use App.registerEndpoint instead')
 }
 
 /**
@@ -180,6 +180,14 @@ try {
 } catch (e) {
   console.error(e)
 }
+
+let pkgFile = path.join(process.configPath, 'package.json')
+let appPkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'))
+/**
+ * Application package.json content (parsed)
+ * @type {Object}
+ */
+App.package = appPkg
 
 /**
  * Full path to application static folder if any, '' if static folder not set

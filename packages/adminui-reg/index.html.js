@@ -62,11 +62,13 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     models = App.domainInfo.models
     for (let modelName in models) {
       let model = models[modelName]
-      let mPath = model.realPublicPath
-      view.modelVersions.push({
-        modelName: modelName,
-        modelVersion: App.folderChecksum(mPath)
-      })
+      if (model.realPublicPath) {
+        let pver = require(path.join(model.realPath ? model.realPath : model.realPublicPath, 'package.json')).version
+        view.modelVersions.push({
+          modelName: modelName,
+          modelVersion: pver
+        })
+      }
     }
 
     compiledIndex = mustache.render(indexTpl, view)

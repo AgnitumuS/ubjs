@@ -113,7 +113,7 @@ function launchApp () {
     try {
       // throw below required to log a stack trace to console
       // noinspection ExceptionCaughtLocallyJS
-      throw new Error('Component "' + url + '" is loaded directly using Ext.require or inderectly by one of Ext.create({"requires":.., "extend": ..., "mixins": ...}) directive) - in UB4 use require() instead')
+      throw new Error('Component "' + url + '" is loaded directly using Ext.require or inderectly by one of Ext.create({"requires":.., "extend": ..., "mixins": ...}) directive) - in UB>=4 use require() instead')
     } catch (e) {
       console.warn(e)
     }

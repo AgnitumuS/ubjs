@@ -2,6 +2,7 @@ const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const App = require('../modules/App')
 const fs = require('fs')
+const {badRequest, notFound, PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
 
 /**
  *  @classdesc
@@ -71,11 +72,19 @@ class MdbBlobStore extends BlobStoreCustom {
     let filePath = requestParams.isDirty ? this.getTempFileName(requestParams) : this.getPermanentFileName(blobItem)
     if (filePath) {
       resp.statusCode = 200
-      resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${blobItem.ct}`)
-      resp.writeEnd(filePath)
+      if (PROXY_SEND_FILE_HEADER) {
+        let storeRelPath = path.relative(process.configPath, filePath)
+        let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${storeRelPath}`
+        console.debug(`<- `, head)
+        head += `\r\nContent-Type: ${blobItem.ct}`
+        resp.writeHead(head)
+        resp.writeEnd('')
+      } else {
+        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${blobItem.ct}`)
+        resp.writeEnd(filePath)
+      }
     } else {
-      resp.statusCode = 404
-      resp.writeEnd('Not found')
+      notFound(resp, 'mdb store item ' + filePath)
     }
   }
   /**
