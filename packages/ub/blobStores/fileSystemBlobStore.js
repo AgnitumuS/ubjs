@@ -9,6 +9,7 @@ function getRandomInt (max) {
 }
 const STORE_SUBFOLDER_COUNT = 400
 const MAX_COUNTER = Math.pow(2, 31)
+const {badRequest, notFound, PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
 
 /**
  *  @classdesc
@@ -128,12 +129,24 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (!ct) ct = 'application/octet-stream'
     if (filePath) {
       resp.statusCode = 200
-      if (blobInfo && blobInfo.origName) {
-        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\n'Content-Disposition: attachment;filename='${blobInfo.origName}'`)
+      if (PROXY_SEND_FILE_HEADER) {
+        let storeRelPath = path.relative(this.fullStorePath, filePath)
+        let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
+        console.debug(`<- `, head)
+        head += `\r\nContent-Type: ${ct}`
+        if (blobInfo && blobInfo.origName) {
+          head += `\r\nContent-Disposition: attachment;filename='${blobInfo.origName}`
+        }
+        resp.writeHead(head)
+        resp.writeEnd('')
       } else {
-        resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}'`)
+        if (blobInfo && blobInfo.origName) {
+          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename='${blobInfo.origName}`)
+        } else {
+          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}'`)
+        }
+        resp.writeEnd(filePath)
       }
-      resp.writeEnd(filePath)
     } else {
       resp.statusCode = 404
       resp.writeEnd('Not found')

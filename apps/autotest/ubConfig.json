@@ -1,12 +1,12 @@
 { 
 	"httpServer": {
-		//"serverType": "Socket",
+		/*"serverType": "Socket",
 		"reverseProxy": {
 			"kind": "nginx",
 			"remoteIPHeader": "X-Real-IP",
 			"sendFileHeader": "X-Accel-Redirect",
-			"sendFileLocationRoot": "ubstatic"
-		},
+			"sendFileLocationRoot": "ubstatic-autotest"
+		},*/
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
@@ -134,19 +134,8 @@
 					"name": "adminui-reg",
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
-				}/*,
-                                {
-					"name": "DSES",
-					"path": "./node_modules/@ub-e/dses",
-					"moduleName": "@ub-e/dses"
 				},
 				{
-					"name": "nm-dstu",
-					"publicPath": "./node_modules/@ub-d/nm-dstu",
-					"path": "_public_only_",
-					"moduleName": "@ub-d/nm-dstu"
-				},*/
-				,{
 					"name": "TST",
 					"path": "./models/TST"
 				}
@@ -195,11 +184,13 @@
 		"blobStores": [
 			{
 				"name": "mdb",
-				"storeType": "Virtual"
+				"storeType": "Virtual",
+                "tempPath": "./_temp"
 			},
 			{
 				"name": "simple",
 				"path": "./documents/simple",
+                "tempPath": "./documents/simple/_temp",
 				"isDefault": true,
 				"historyDepth": 2,
 				"storeSize": "Medium",
@@ -208,6 +199,7 @@
 			{
 				"name": "avatars",
 				"path": "./documents/avatars",
+                "tempPath": "./documents/avatars/_temp",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false

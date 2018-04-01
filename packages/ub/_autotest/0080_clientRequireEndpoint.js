@@ -58,7 +58,7 @@ module.exports = function runTest (options) {
 
     assert.throws(
       () => conn.get(`clientRequire/lerna`),
-      /Bad Request/, 'Endpoint clientRequire must restrict access to modules outside app node_modules folder'
+      /(Not Found|Bad Request)/, 'Endpoint clientRequire must restrict access to modules outside app node_modules folder'
     )
 
     assert.throws(

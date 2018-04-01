@@ -5,7 +5,6 @@
  * @module endpoints
  */
 
-const {relToAbs} = process.binding('fs')
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
@@ -13,9 +12,7 @@ const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
 const App = require('./App')
 const Session = require('./Session')
-const {badRequest, notFound} = require('./httpUtils')
-const PROXY_SEND_FILE_HEADER = App.serverConfig.httpServer['reverseProxy']['sendFileHeader']
-const PROXY_SEND_FILE_LOCATION_ROOT = App.serverConfig.httpServer['reverseProxy']['sendFileLocationRoot']
+const {badRequest, notFound, PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('./httpUtils')
 /**
  *
  * @param {string} reqPath
@@ -61,7 +58,7 @@ function resolveModelFile (reqPath, resp) {
     entry = JSON.parse(cached)
   }
   if (PROXY_SEND_FILE_HEADER) {
-    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${App.package.name}/${entry.fullPath}`
+    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${entry.fullPath}`
     console.debug(`<- `, head)
     resp.writeHead(head)
     resp.writeEnd('')
@@ -98,28 +95,6 @@ function models (req, resp) {
   // resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT');
 }
 
-/*
- * In case lerna is used or .links.json file exists in project root will
- * add all folders from "packages" section as possible node_modules roots
- */
-let SYMLINKED_PATHS = []
-function checkModulesSymlinkedByLerna () {
-  let lernaConfigPath = path.resolve(process.configPath, 'lerna.json')
-  let isLerna = fs.existsSync(lernaConfigPath)
-  if (!isLerna) {
-    lernaConfigPath = path.resolve(process.configPath, '.links.json')
-    isLerna = fs.existsSync(lernaConfigPath)
-  }
-  if (isLerna) {
-    let lernaConfig = JSON.parse(fs.readFileSync(lernaConfigPath, 'utf8'))
-    if (!lernaConfig.packages) return
-    for (let i = 0, L = lernaConfig.packages.length; i < L; i++) {
-      let p = fs.realpathSync(path.resolve(process.configPath, lernaConfig.packages[i]).replace('*', ''))
-      SYMLINKED_PATHS.push(p)
-    }
-  }
-}
-checkModulesSymlinkedByLerna()
 const MODULES_ROOT = path.join(process.configPath, 'node_modules')
 
 /**
@@ -168,10 +143,23 @@ function clientRequire (req, resp) {
     let resolvedPath
     try {
       console.debug(`Try to resolve ${reqPath}`)
-      // restrict access to modules other when defined for app
-      resolvedPath = require.resolve(reqPath, {
-        paths: [MODULES_ROOT]
-      })
+      // preventSymlinks emulation. code below will resolve to realPath
+      // what can be outside the application foler if packages are symlinked
+      // resolvedPath = require.resolve(reqPath, {
+      //   paths: [MODULES_ROOT]
+      // })
+      resolvedPath = path.resolve(MODULES_ROOT, reqPath)
+      if (!fs.existsSync(resolvedPath)) { // try js file
+        resolvedPath = resolvedPath + '.js'
+      }
+      let stat = fs.statSync(resolvedPath)
+      if (stat.isDirectory()) {
+        let pkgName = path.join(resolvedPath, 'package.json')
+        if (fs.existsSync(pkgName)) {
+          let pkgMain = JSON.parse(fs.readFileSync(pkgName, 'utf8')).main
+          resolvedPath = path.join(resolvedPath, pkgMain)
+        }
+      }
     } catch (e) {
       console.error(e)
       resolvedPath = undefined
@@ -180,7 +168,7 @@ function clientRequire (req, resp) {
       console.error(`Package ${reqPath} not found`)
       return notFound(resp, `"${reqPath}"`)
     }
-    if (!(resolvedPath.startsWith(MODULES_ROOT) || SYMLINKED_PATHS.find((p) => resolvedPath.startsWith(p)))) {
+    if (!resolvedPath.startsWith(MODULES_ROOT)) {
       return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
     }
 
@@ -220,7 +208,7 @@ function clientRequire (req, resp) {
     console.debug(`Retrieve cached ${reqPath} -> ${entry.fullPath}`)
   }
   if (PROXY_SEND_FILE_HEADER) {
-    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${App.package.name}/${entry.fullPath}`
+    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${entry.fullPath}`
     console.debug(`<- `, head)
     resp.writeHead(head)
     resp.writeEnd('')
@@ -349,7 +337,7 @@ function staticEndpoint (req, resp) {
   }
   if (PROXY_SEND_FILE_HEADER) {
     let relative = path.relative(process.configPath, normalized)
-    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${App.package.name}/${relative}`
+    let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${relative}`
     console.debug(`<- `, head)
     resp.writeHead(head)
     resp.writeEnd('')

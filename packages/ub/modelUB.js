@@ -125,6 +125,10 @@ tempDomain.eachEntity(entity => {
     }
   })(entity.code)
 })
+// TODO - validate domain
+// 1) if (FAttr.dataType = adtDocument) and (FAttr.storeName <> '') and
+// ubLog.Add.Log(sllError, 'DomainLoad: Error loading entity "%". A storeName="%" specified in attribute "%" not in defined in application.blobStore config)',
+// 2) fLog.Log(sllInfo, 'Check blob store "%" folder "%": folder exists', [fAppConfig.blobStores[i].name, fAppConfig.blobStores[i].path]);
 
 /**
  * @type Session
