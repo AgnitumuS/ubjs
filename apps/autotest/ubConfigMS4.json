@@ -126,20 +126,9 @@
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
 				},
-                                {
-					"name": "DSES",
-					"path": "./node_modules/@ub-e/dses",
-					"moduleName": "@ub-e/dses"
-				},
-				{
-					"name": "nm-dstu",
-					"publicPath": "./node_modules/@ub-d/nm-dstu",
-					"path": "_public_only_",
-					"moduleName": "@ub-d/nm-dstu"
-				},
 				{
 					"name": "TST",
-					"path": ".\\models\\TST"
+					"path": "./models/TST"
 				}
 			],
 			"implicitlyAddedMixins": [

@@ -1,4 +1,4 @@
-/* global SystemJS */
+/* global SystemJS, Ext */
 require('./app/core/UBApp')
 require('./app/view/UBDropZone')
 require('./app/view/ErrorWindow')

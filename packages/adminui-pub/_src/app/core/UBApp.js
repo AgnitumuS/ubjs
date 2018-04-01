@@ -38,7 +38,6 @@ const RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
  * @author UnityBase core team
  */
 Ext.define('UB.core.UBApp', {
-/* globals UBNativeScanner, UBNativeDocEdit, UBNativePDFSign */
   singleton: true,
 
   requires: [

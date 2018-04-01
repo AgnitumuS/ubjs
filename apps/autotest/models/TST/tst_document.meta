@@ -33,7 +33,7 @@
 			"cascadeDelete": false,
 			"customSettings": { "UIGridColumnClass": "Categories" },
 			"mapping": {
-				"AnsiSql": {
+				"AnsiSQL": {
 					"expressionType": "Field",
 					"expression": "ID"
 				}
@@ -49,7 +49,7 @@
 			"cascadeDelete": true,
 			"customSettings": { "UIGridColumnClass": "Favorites" },
 			"mapping": {
-				"AnsiSql": {
+				"AnsiSQL": {
 					"expressionType": "Field",
 					"expression": "ID"
 				}
@@ -65,7 +65,7 @@
 			"cascadeDelete": true,
 			//"customSettings": { "UIGridColumnClass": "Favorites" },
 			"mapping": {
-				"AnsiSql": {
+				"AnsiSQL": {
 					"expressionType": "Field",
 					"expression": "ID"
 				}

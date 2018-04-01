@@ -1,5 +1,8 @@
 // noinspection Eslint
-const me = ubs_report
+/**
+ * @type {{entity: UBEntity}}
+ */
+const me = global['ubs_report']
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
@@ -356,5 +359,4 @@ me.testServerRendering = function (ctxt, req, resp) {
   resp.writeEnd(result.reportData)
   resp.writeHead(resp.writeHead('Content-Type: ' + mime.lookup(result.reportType)))
   resp.statusCode = 200
-
 }

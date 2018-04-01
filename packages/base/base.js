@@ -17,6 +17,7 @@ module.exports = {
   /**
    * Command line utils
    * @type {module:argv}
+   * @type {argv}
    */
   argv: argv,
   /**
@@ -42,6 +43,7 @@ module.exports = {
   /**
    * Bulk data loader from CSV/arrays to UB
    * @type {module:dataLoader}
+   * @type {dataLoader}
    */
   dataLoader: dataLoader,
   /**
@@ -58,6 +60,7 @@ module.exports = {
   /**
    * Constants for administrative security model
    * @type {module:uba_common}
+   * @type {uba_common}
    */
   uba_common,
   /**
