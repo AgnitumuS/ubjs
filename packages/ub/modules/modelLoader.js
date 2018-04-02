@@ -65,7 +65,7 @@ function loadLegacyModules (folderPath, isFromPublicFolder = false, depth = 0) {
     let stat = fs.statSync(fullPath)
 
     if (stat.isDirectory() && (depth === 0)) {
-      if ((fn === 'modules') || (fn === 'node_modules') || (fn === 'public')) continue
+      if ((fn === 'modules') || (fn === 'node_modules')) continue
       // prevent recursion inside public folder
       if (!isFromPublicFolder) loadLegacyModules(fullPath + path.sep, fn === 'public', depth + 1)
     } else if (fn.endsWith('.js') && (!isFromPublicFolder || fn.startsWith('cs'))) {
