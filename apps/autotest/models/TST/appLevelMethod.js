@@ -6,7 +6,7 @@ const assert = require('assert')
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
-const queryString = require('queryString')
+const queryString = require('querystring')
 App.registerEndpoint('echoToFile', echoToFile, false)
 
 App.registerEndpoint('echoFromFile', echoFromFile, false)
