@@ -52,6 +52,16 @@ function UBDomain (domainInfo) {
    * @member {Array<DBConnectionConfig>}
    */
   this.connections = domainInfo['connections']
+  /**
+   * Default connection (extended domain only)
+   * @member {DBConnectionConfig}
+   */
+  this.defaultConnection = undefined
+  if (this.connections) {
+    this.connections.forEach((conn) => {
+      if (conn['isDefault']) this.defaultConnection = conn
+    })
+  }
   for (let i = 0, L = entityCodes.length; i < L; i++) {
     let entityCode = entityCodes[i]
     let entity = domainInfo.domain[entityCode]

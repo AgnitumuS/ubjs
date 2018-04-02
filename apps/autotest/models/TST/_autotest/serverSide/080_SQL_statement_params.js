@@ -1,12 +1,14 @@
 ﻿const assert = require('assert')
 const UBA = require('@unitybase/base').uba_common
+const UB = require('@unitybase/ub')
+const App = UB.App
 
 function runTest () {
   let prm = {
     name: 'admin'
   }
 
-  let st = new TubDataStore('uba_user')
+  let st = UB.DataStore('uba_user')
   st.runSQL('select id from uba_user where name = :name:', {name: 'testelsuser'})
   assert.equal(st.rowCount, 1, `single named param. Expect 1 row, got ${st.rowCount}`)
 
@@ -46,8 +48,10 @@ function runTest () {
   })
   assert.equal(st.rowCount, 1, `Mix un-named named and inlined parameters v2. Expect 1 row, got ${st.rowCount}`)
 
-  st.runSQL(`select id from uba_user where id in (select id from :(${JSON.stringify([UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID])}):)`, {})
-  assert.equal(st.rowCount, 2, `Named array binding. Expect 2 row, got ${st.rowCount}`)
+  if (App.domainInfo.connections[0].dialect !== 'SQLite3') {
+    st.runSQL(`select id from uba_user where id in (select id from :(${JSON.stringify([UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID])}):)`, {})
+    assert.equal(st.rowCount, 2, `Named array binding. Expect 2 row, got ${st.rowCount}`)
+  }
 
   return
 // below is fails
@@ -72,10 +76,13 @@ function runTest () {
 }
 
 (function () {
+  let res = {success: true}
   try {
     runTest()
-    return {res: true}
   } catch (e) {
-    return {res: e.toString()}
+    res.success = false
+    res.reason = e.message + ' Stack: ' + e.stack
   }
+  module.exports = res
+  return res
 })()

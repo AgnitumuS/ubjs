@@ -9,7 +9,7 @@ function getRandomInt (max) {
 }
 const STORE_SUBFOLDER_COUNT = 400
 const MAX_COUNTER = Math.pow(2, 31)
-const {badRequest, notFound, PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
+const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
 
 /**
  *  @classdesc

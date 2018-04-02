@@ -5,6 +5,8 @@ const fs = require('fs')
 const assert = require('assert')
 const UB = require('@unitybase/ub')
 const App = UB.App
+const Session = UB.Session
+const queryString = require('queryString')
 App.registerEndpoint('echoToFile', echoToFile, false)
 
 App.registerEndpoint('echoFromFile', echoFromFile, false)
@@ -235,6 +237,32 @@ function testServerSideBLOB (req, resp) {
   }
 }
 App.registerEndpoint('testServerSideBLOB', testServerSideBLOB, false)
+
+/**
+ * Evaluate script (for test purpose)
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function evaluateScript (req, resp) {
+  if (App.localIPs.indexOf(Session.callerIP) === -1) {
+    throw new Error('SCHEDULER: remote execution is not allowed')
+  }
+  let script
+  if (req.method === 'GET') {
+    script = queryString.parse(req.parameters).script
+  } else if (req.method === 'POST') {
+    script = req.read('utf-8')
+  } else {
+    return resp.badRequest(resp, 'invalid HTTP verb ' + req.method)
+  }
+  let wrapped = new Function(script)
+  wrapped = wrapped.bind(this)
+  debugger
+  let funcRes = wrapped()
+  resp.writeEnd(funcRes)
+  resp.statusCode = 200
+}
+App.registerEndpoint('evaluateScript', evaluateScript)
 
 const HttpProxy = require('@unitybase/http-proxy')
 let proxy = new HttpProxy({

@@ -27,7 +27,7 @@ function HTTPResponse () {
   /**
    * Response HTTP status code
    * @memberOf HTTPResponse
-   * @type {Number}
+   * @property {Number} statusCode
    */
   Object.defineProperty(this, 'statusCode', {
     enumerable: true,
@@ -82,6 +82,28 @@ HTTPResponse.prototype = {
    */
   validateETag: function () {
     return resp_validateETag()
+  },
+  /**
+   * Write a HTTP 400 Bad Request response. Return false
+   * @param {string} reason If specified will be written to log as error
+   * @return {boolean}
+   */
+  badRequest: function (reason) {
+    this.statusCode = 400
+    this.writeEnd('Bad Request')
+    if (reason) console.error('Bad request', reason)
+    return false
+  },
+  /**
+   * Write a HTTP 404 Not Found response. Return false
+   * @param {string} reason  If specified will be written to log as error
+   * @return {boolean}
+   */
+  notFound: function (reason) {
+    this.statusCode = 404
+    this.writeEnd('Not Found')
+    if (reason) console.error('Not found', reason)
+    return false
   }
 }
 

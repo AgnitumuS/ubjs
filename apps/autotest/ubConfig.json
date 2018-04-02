@@ -17,7 +17,7 @@
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 8
+		"threadPoolSize": 2
 	},
 	/*"wsServer": {
 		"host": "+",
@@ -194,7 +194,7 @@
 				"isDefault": true,
 				"historyDepth": 2,
 				"storeSize": "Medium",
-				"keepOriginalFileNames": false
+				"keepOriginalFileLocalIPsNames": false
 			},
 			{
 				"name": "avatars",

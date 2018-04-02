@@ -2,12 +2,8 @@
  * Created by v.orel on 22.12.2016.
  */
 const binding = process.binding('ub_dbConnection')
-const bindingDatabases = binding.databases
-const QueryString = require('querystring')
-const App = require('./App')
 
-const databases = {}
-const dbIndexSymbol = Symbol('dbIndex')
+const DB_INDEX = Symbol('dbIndex')
 const chDblQuote = 34
 const chQuote = 39
 const chColon = 58
@@ -37,7 +33,7 @@ const chCR = 13
 /**
  * Class for database access. Databases are defined in config file
  */
-class TubDatabase_ {
+class DBConnection {
   /**
    * @private
    * @param {number} index
@@ -47,35 +43,35 @@ class TubDatabase_ {
      * @private
      * @property dbIndexSymbol
      */
-    Object.defineProperty(this, dbIndexSymbol, {value: index})
+    Object.defineProperty(this, DB_INDEX, {value: index})
   }
   /**
    * Is database in transaction
    * @returns {boolean}
    */
   get inTransaction () {
-    return binding.inTransaction(this[dbIndexSymbol])
+    return binding.inTransaction(this[DB_INDEX])
   }
   /**
    * Start transaction. If transaction is already started return false
    * @returns {boolean}
    */
   startTransaction () {
-    return binding.startTransaction(this[dbIndexSymbol])
+    return binding.startTransaction(this[DB_INDEX])
   }
   /**
    * Commit transaction. If transaction is not started return false
    * @returns {boolean}
    */
   commit () {
-    return binding.commit(this[dbIndexSymbol])
+    return binding.commit(this[DB_INDEX])
   }
   /**
    * Rollback transaction. If transaction is not started return false
    * @returns {boolean}
    */
   rollback () {
-    return binding.rollback(this[dbIndexSymbol])
+    return binding.rollback(this[DB_INDEX])
   }
   /**
    * Run select sql and return result
@@ -85,7 +81,7 @@ class TubDatabase_ {
    */
   run (sql, params) {
     const {parsedSql, parsedParams} = this.parseSQL(sql, params)
-    return binding.run(this[dbIndexSymbol], parsedSql, parsedParams)
+    return binding.run(this[DB_INDEX], parsedSql, parsedParams)
   }
   /**
    * Execute sql
@@ -95,7 +91,7 @@ class TubDatabase_ {
    */
   exec (sql, params) {
     const {parsedSql, parsedParams} = this.parseSQL(sql, params)
-    return binding.exec(this[dbIndexSymbol], parsedSql, parsedParams)
+    return binding.exec(this[DB_INDEX], parsedSql, parsedParams)
   }
   /**
    * Generate ID for entity
@@ -250,81 +246,10 @@ class TubDatabase_ {
   }
 }
 
-for (let index in bindingDatabases) {
-  Object.defineProperty(databases, bindingDatabases[index], {value: new TubDatabase_(Number.parseInt(index)), enumerable: true})
-}
-/**
- * Databases of application
- * @memberOf App
- * @property databases_
- * @type {Object<string,TubDatabase_>}
- */
-App.databases_ = databases
-
-/**
- * Default database of application
- * @memberOf App
- * @property defaultDatabase_
- * @type {TubDatabase_}
- */
-App.defaultDatabase_ = databases[binding.defaultDb]
-
-/**
- * Run sql on server side
- * Allowed from localIP
- * Connection name is in `connection` uri parameter (or default connection if not set)
- * If HTTP method is GET then allowed inline parameters only
- *   sql is in `sql` uri parameter
- * If Http method is not GET then
- *   sql is in request body
- *   parameters is uri parameters except `connection`
- * @param {THTTPRequest} req
- * @param {THTTPResponse} resp
- * @private
- */
-function runSQL_ (req, resp) {
-  if (App.localIPs.indexOf(Session.callerIP) === -1) {
-    throw new Error(`Only local execution allowed. Caller remoteIP="${Session.callerIP}"`)
-  }
-
-  let database,
-    sql,
-    sqlParams
-
-  if (Object.keys(App.databases_).length === 0) {
-    throw new Error('Application dose not support connections')
-  }
-
-  const parameters = QueryString.parse(req.parameters, null, null)
-  const connectionName = parameters.connection || parameters.CONNECTION
-  if (connectionName) {
-    database = App.databases_[connectionName]
-  } else {
-    database = App.defaultDatabase_
-  }
-
-  if (!database) { throw new Error('Unknown connection name') }
-
-  if (req.method === 'GET') {
-    sql = parameters.sql
-    sqlParams = null
-  } else {
-    sql = req.read()
-    delete parameters.connection
-    sqlParams = parameters
-  }
-
-  if (!sql) { throw new Error('Empty SQL statement passed') }
-
-  let upperStmt = sql.toUpperCase()
-  if (upperStmt.startsWith('SELECT') || upperStmt.startsWith('PRAGMA')) {
-    let result = database.run(sql, sqlParams)
-    resp.writeEnd(result)
-  } else {
-    database.exec(sql, sqlParams)
-    resp.writeEnd('[]')
-  }
-  resp.statusCode = 200
+const connections = {}
+const connBinding = binding.connections
+for (let index in connBinding) {
+  Object.defineProperty(connections, connBinding[index], {value: new DBConnection(parseInt(index, 10)), enumerable: true})
 }
 
-App.registerEndpoint('runSQL_', runSQL_, true)
+module.exports = connections

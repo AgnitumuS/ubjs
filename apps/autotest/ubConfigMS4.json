@@ -11,7 +11,7 @@
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 8
+		"threadPoolSize": 2
 	},
 	/*"wsServer": {
 		"host": "+",

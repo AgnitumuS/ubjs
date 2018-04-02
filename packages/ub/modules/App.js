@@ -9,7 +9,7 @@ const UBDomain = require('@unitybase/cs-shared').UBDomain
 const EventEmitter = require('events').EventEmitter
 const THTTPResponse = require('./HTTPResponse')
 const THTTPRequest = require('./HTTPRequest')
-
+const dbConnections = require('./DBConnections')
 /**
  * UnityBase application
  *
@@ -345,6 +345,12 @@ App.deleteFromFTSIndex = function (entityName, instanceID) {
 App.updateFTSIndex = function (entityName, instanceID) {
   _App.updateFTSIndex(entityName, instanceID)
 }
+
+/**
+ * Databases connections
+ * @type {Object<string, DBConnection>}
+ */
+App.dbConnections = dbConnections
 
 /**
  * Check database are used in current endpoint context and DB transaction is already active

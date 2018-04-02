@@ -357,10 +357,58 @@ function staticEndpoint (req, resp) {
   }
 }
 
+/**
+ * Run sql on server side
+ * Allowed from localIP
+ * Connection name is in `connection` uri parameter (or default connection if not set)
+ * If HTTP method is GET then allowed inline parameters only
+ *   sql is in `sql` uri parameter
+ * If Http method is not GET then
+ *   sql is in request body
+ *   parameters is uri parameters except `connection`
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @private
+ */
+function runSQL (req, resp) {
+  if (App.localIPs.indexOf(Session.callerIP) === -1) {
+    throw new Error(`Only local execution allowed. Caller remoteIP="${Session.callerIP}"`)
+  }
+
+  const parameters = queryString.parse(req.parameters)
+  let connectionName = parameters.connection || parameters.CONNECTION || App.domainInfo.defaultConnection.name
+  let conn = App.dbConnections[connectionName]
+
+  if (!conn) throw new Error(`runSQL: Unknown connection ${connectionName}`)
+
+  let sql, sqlParams
+  if (req.method === 'GET') {
+    sql = parameters.sql
+    sqlParams = null
+  } else {
+    sql = req.read('utf-8')
+    delete parameters.connection
+    sqlParams = parameters
+  }
+
+  if (!sql) { throw new Error('runSQL: statement is empty') }
+
+  let upperStmt = sql.toUpperCase()
+  if (upperStmt.startsWith('SELECT') || upperStmt.startsWith('PRAGMA')) {
+    let result = conn.run(sql, sqlParams)
+    resp.writeEnd(result)
+  } else {
+    conn.exec(sql, sqlParams)
+    resp.writeEnd('')
+  }
+  resp.statusCode = 200
+}
+
 module.exports = {
   models,
   getAppInfo,
   clientRequire,
   getDomainInfoEp,
-  staticEndpoint
+  staticEndpoint,
+  runSQL
 }
