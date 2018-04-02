@@ -27,6 +27,7 @@ exports.formDef = {
         flex: 1,
         items: [{
             title: UB.i18n('formBaseProperty'),
+	          tabID: 'formBaseProperty',
             layout: 'vbox',
             defaults: {
                 labelAlign: "left",
@@ -39,9 +40,9 @@ exports.formDef = {
                 attributeName: "entity"
             }, {
               attributeName: "model"
-            }, 
+            },
             {
-              layout: 'hbox', 
+              layout: 'hbox',
               items: [
                 {
                   labelWidth: 130,
@@ -49,7 +50,7 @@ exports.formDef = {
               	}, {xtype: 'ublabel',
                   ubID: 'howToChangeCode',
                   text: "To change existing form code rename both *-fm.js and *-fm.def files in folder 'yourModel\\public\\forms'",
-                  margins: '10px 0 0 0'  
+                  margins: '10px 0 0 0'
                 }
               ]
             }, {
@@ -72,6 +73,7 @@ exports.formDef = {
         }, {
             title: UB.i18n('formDefinition'),
             layout: 'hbox',
+	    tabID: 'formDefinition',
             isDefifnition: true,
             items: [{
                 width: 150,
@@ -111,7 +113,8 @@ exports.formDef = {
         }, {
             title: UB.i18n('formModule'),
             layout: 'hbox',
-            isFormModule: true,
+	    tabID: 'formMethods',
+	    isFormModule: true,
             items: [{
                 width: 150,
                 height: "100%",
@@ -147,6 +150,7 @@ exports.formDef = {
             }]
         }, {
             title: UB.i18n('Visual designer'),
+	    tabID: 'VisualDesigner',
             layout: {
                 type: 'hbox',
                 align: 'stretch'
