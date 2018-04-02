@@ -255,9 +255,9 @@ function evaluateScript (req, resp) {
   } else {
     return resp.badRequest(resp, 'invalid HTTP verb ' + req.method)
   }
+  // eslint-disable-next-line no-new-func
   let wrapped = new Function(script)
   wrapped = wrapped.bind(this)
-  debugger
   let funcRes = wrapped()
   resp.writeEnd(funcRes)
   resp.statusCode = 200
