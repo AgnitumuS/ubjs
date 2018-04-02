@@ -178,7 +178,7 @@ function getRequestedBLOBInfo (parsedRequest) {
   let storeCode, blobInfo
   // dirty request always come to blob store defined in attribute
   if (parsedRequest.bsReq.isDirty) {
-    storeCode = attribute.storeName
+    storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
     // check user have access to row and retrieve current blobInfo
     let blobInfoTxt = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectScalar()
@@ -207,7 +207,7 @@ function getRequestedBLOBInfo (parsedRequest) {
         }
       }
     }
-    storeCode = (blobInfo && blobInfo.store) ? blobInfo.store : attribute.storeName
+    storeCode = (blobInfo && blobInfo.store) ? blobInfo.store : (attribute.storeName || blobStoresMap.defaultStoreName)
   }
   let store = blobStoresMap[storeCode]
   if (!store) {
