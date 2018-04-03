@@ -197,3 +197,15 @@ me.dmlGeneratorTest = function (ctx) {
   )
 }
 me.entity.addMethod('dmlGeneratorTest')
+
+/**
+ * Test entity method execution using `rest` pattern
+ * @param {null} ctx
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+me.restTest = function (ctx, req, resp) {
+  resp.writeEnd({headers: req.headers})
+  resp.statusCode = 200
+}
+me.entity.addMethod('restTest')

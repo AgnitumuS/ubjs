@@ -25,6 +25,7 @@ module.exports = function runHTTPTest (options) {
   let domain = conn.getDomainInfo()
   try {
     testHTTP(conn, domain, session)
+    testRest(conn)
   } finally {
     session.logout()
   }
@@ -62,4 +63,23 @@ function testHTTP (conn, domain, session) {
     data: {test: 1}
   })
   assert.ok(Date.now() - t < 1000, 'async call should respond quickly')
+}
+
+/**
+ *
+ * @param {SyncConnection} conn
+ */
+function testRest (conn) {
+  function invalidRestCall () {
+    return conn.xhr({
+      endpoint: 'rest/tst_service',
+      HTTPMethod: 'POST'
+    })
+  }
+  assert.throws(invalidRestCall, /Not Implemented/, 'Should throw on rest without method')
+  let d = conn.xhr({
+    endpoint: 'rest/tst_service/restTest',
+    HTTPMethod: 'POST'
+  })
+  assert.ok(typeof d === 'object', 'rest call convention fail')
 }
