@@ -1,0 +1,257 @@
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "tst_service"
+// @model "TST"
+// @formType "custom"
+// @caption "testCipherCrypto"
+// @description "tst_service-testCipherCrypto"
+
+
+function initLib() {
+ return System.import('@ub-e/cipher/index.js')
+   .then(function (res) {
+      return new res.UBCipherCrypto()
+   })
+}
+
+function str2ab(str) {
+  var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+  var bufView = new Uint16Array(buf);
+  for (var i=0, strLen=str.length; i<strLen; i++) {
+    bufView[i] = str.charCodeAt(i);
+  }
+  return buf;
+}
+
+Ext.define('TST.CipherSign', {
+  extend: 'Ext.form.Panel',
+
+  items: [{
+    xtype: 'filefield',
+    name: 'selFile',
+    fieldLabel: 'File',
+    labelWidth: 100,
+    msgTarget: 'side',
+    allowBlank: false,
+    anchor: '95%',
+    buttonText: 'Select File...',
+    ubID: 'dataFile'
+  }, {
+    xtype: 'textarea',
+    fieldLabel: 'Signature',
+    labelWidth: 100,
+    height: 100,
+    anchor: '95%',
+    ubID: 'signature',
+    items: [{
+      xtype: 'textareafield',
+      grow: true,
+      name: 'message',
+      fieldLabel: 'Message',
+      anchor: '100%'
+    }]
+  }, {
+    xtype: 'textarea',
+    fieldLabel: 'Output data',
+    labelWidth: 100,
+    height: 100,
+    anchor: '95%',
+    ubID: 'resultData',
+    items: [{
+      xtype: 'textareafield',
+      grow: true,
+      name: 'message',
+      fieldLabel: 'Message',
+      anchor: '100%'
+    }]
+  }, {
+    xtype: 'container',
+    layout: {
+      type: 'hbox',
+      defaultMargins: {
+        left: 2
+      }
+    },
+    items: [{
+      xtype: 'button',
+      width: 150,
+      ubID: 'doSign',
+      text: 'Sign'
+    }, {
+      xtype: 'filefield',
+      name: 'selFile',
+      fieldLabel: '',
+      labelWidth: 150,
+      msgTarget: 'side',
+      allowBlank: false,
+      anchor: '0%',
+      width: 150,
+      buttonText: 'Load signature',
+      buttonOnly: true,
+      buttonConfig: {
+        width: 150
+      },
+      ubID: 'doLoadSign',
+      listeners: {
+        afterrender: function (sender) {
+          var
+            me = sender.up('component').up('component'),
+            onFileSelect
+
+          onFileSelect = function (evt) {
+            var file = evt.target.files[0]
+            UB.base64FromAny(file).then(function (b64) {
+              me.down('component[ubID="signature"]').setValue(b64)
+            })
+          }
+
+          sender.getEl().dom.addEventListener('change', onFileSelect, false)
+          sender.inputEl.on('click', function () {
+            this.button.fileInputEl.dom.click()
+          }, sender)
+        },
+        scope: this
+      }
+    }, {
+      xtype: 'button',
+      width: 150,
+      ubID: 'doClearSign',
+      text: 'Clear signature'
+    }, {
+      xtype: 'button',
+      width: 150,
+      ubID: 'doSaveSign',
+      text: 'Save signature'
+    }, {
+      xtype: 'button',
+      width: 150,
+      ubID: 'doValidate',
+      text: 'Verify signature'
+    }]
+  }],
+
+  LoadFile: function (asBase64) {
+    var me = this
+    var f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+    if (!f) {
+      return Promise.reject(new UB.UBError('No file selected'))
+    }
+    return asBase64 ? UB.base64FromAny(f): Promise.resolve(f)
+  },
+
+  initComponent: function () {
+    var me = this
+    me.callParent(arguments)
+    debugger
+    me.down('component[ubID="doSign"]').handler = function () {
+      me.mask('Signing')
+      let cipherCrypto = null
+      initLib().then(function(cmp){
+          cipherCrypto = cmp
+          return cipherCrypto.checkServiceStatus()
+      }).then(function(status){
+          return cipherCrypto.getFeatures()
+      }).then(function(status){
+          return me.LoadFile()
+      }).then(function(data){
+          return cipherCrypto.sign(data)
+          //str2ab('test3232')
+      }).then(function(signature){
+          return UB.base64FromAny(signature)
+      }).then(function(signature) {
+        me.down('component[ubID="signature"]').setValue(signature)
+      }).fin(function () {
+        me.unmask()
+      })
+    }
+
+    me.down('component[ubID="doClearSign"]').handler = function () {
+      me.down('component[ubID="signature"]').setValue('')
+    }
+
+    me.down('component[ubID="doValidate"]').handler = function () {
+      me.mask('Signing')
+      let cipherCrypto = null
+      let srcData = null
+      initLib().then(function(cmp){
+          cipherCrypto = cmp
+          return cipherCrypto.checkServiceStatus()
+      }).then(function(status){
+          return me.LoadFile()
+      }).then(function(data){
+          srcData = data
+          return UB.base64toArrayBuffer(me.down('component[ubID="signature"]').value)
+      }).then(function(signature){
+          return cipherCrypto.verify(signature, srcData)
+      }).then(function(result){
+        me.down('component[ubID="resultData"]').setValue(JSON.stringify(result, null, '  '))
+      }).fin(function () {
+        me.unmask()
+      })
+      /* 
+      me.mask('Verifying')
+      me.initPKIAndLoadFile().then(function (data) {
+        return data.pki.verifySignature(data.data, me.down('component[ubID="signature"]').value)
+      }).then(function (verificationResult) {
+        me.down('component[ubID="resultData"]').setValue(verificationResult)
+      }).catch(function (verificationError) {
+        throw new UB.UBError(verificationError.detail)
+      }).then(function () {
+        me.unmask()
+      })
+      */
+    }
+
+    me.down('component[ubID="doSaveSign"]').handler = function () {
+      var buf = UB.base64toArrayBuffer(me.down('component[ubID="signature"]').value)
+      var f = me.down('component[ubID="dataFile"]').fileInputEl.dom.files[0]
+      var filename = 'signature.p7s'
+      if (f && f.name){
+        filename = f.name + '.p7s'
+      }
+      saveAs(buf, filename)
+    }
+  }
+})
+
+function toByteArray (b64) {
+  var i, j, l, tmp, placeHolders, arr
+  var len = b64.length
+
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // the number of equal signs (place holders)
+  // if there are two placeholders, than the two characters before it
+  // represent one byte
+  // if there is only one, then the three characters before it represent 2 bytes
+  // this is just a cheap hack to not do indexOf twice
+  placeHolders = b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+
+  // base64 is 4/3 + up to two characters of the original data
+  arr = new Arr(len * 3 / 4 - placeHolders)
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  l = placeHolders > 0 ? len - 4 : len
+
+  var L = 0
+
+  for (i = 0, j = 0; i < l; i += 4, j += 3) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+    arr[L++] = (tmp >> 16) & 0xFF
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  if (placeHolders === 2) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[L++] = tmp & 0xFF
+  } else if (placeHolders === 1) {
+    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[L++] = (tmp >> 8) & 0xFF
+    arr[L++] = tmp & 0xFF
+  }
+
+  return arr
+}
