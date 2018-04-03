@@ -30,6 +30,20 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
   matchCls: 'combo-search-match',
   disableGrow: false,
   growMax: 100,
+  /**
+   * Custom action each rendered previous to the burtton "readMore".
+   * Can be used for create button "byTemplate"
+   *
+   * @example
+   *
+   * Ext.widget('button', {
+            xtype: "button",
+            tooltip: UB.i18n('byTemplate'),
+            text: UB.i18n('byTemplate'),
+            menu: me.menu
+        })
+   */
+  customAction: null,
 
   /**
   * Combobox items query. If passed - store is created automatically
@@ -128,7 +142,7 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
             flex: 1
           }, {
             xtype: 'tbseparator'
-          }, {
+          }, me.customAction || "-", {
             xtype: 'button',
             text: UB.i18n('more'),
             handler: me.readMoreData,
