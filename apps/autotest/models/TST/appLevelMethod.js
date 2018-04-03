@@ -253,7 +253,7 @@ function evaluateScript (req, resp) {
   } else if (req.method === 'POST') {
     script = req.read('utf-8')
   } else {
-    return resp.badRequest(resp, 'invalid HTTP verb ' + req.method)
+    return resp.badRequest('invalid HTTP verb ' + req.method)
   }
   // eslint-disable-next-line no-new-func
   let wrapped = new Function(script)

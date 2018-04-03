@@ -124,7 +124,13 @@ me.entity.addMethod('abortTest')
  * @param {ubMethodParams} ctx
  */
 me.throwTest = function (ctx) {
-  throw new Error('Error exception logger as EXC level')
+  let mParams = ctx.mParams
+  let isUnicode = (mParams.isUnicode === true)
+  if (isUnicode) {
+    throw new Error('Підтримується')
+  } else {
+    throw new Error('Error exception logger as EXC level')
+  }
 }
 me.entity.addMethod('throwTest')
 

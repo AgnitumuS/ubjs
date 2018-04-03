@@ -154,7 +154,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
   }
   /**
    * Move content defined by `dirtyItem` from temporary to permanent store.
-   * TIPS: in v0 (UB<5) in case file updated implementation take a store from old item.
+   * TIPS: in v0 (UB<5) if file updated then implementation takes a store from old item.
    *   This raise a problem - old store may be in archive state (readonly)
    * So in UB5 we change implementation to use store defined in attribute for new items
    * Return a new attribute content which describe a place of BLOB in permanent store
@@ -182,6 +182,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     })
     let newPlacement = this.genNewPlacement(attribute, dirtyItem, ID)
     fs.renameSync(tempPath, newPlacement.fullFn)
+    let newMD5 = nhashFile(newPlacement.fullFn, 'MD5')
     let ct = mime.contentType(newPlacement.ext)
     let stat = fs.statSync(newPlacement.fullFn)
     let resp = {
@@ -192,7 +193,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
       relPath: newPlacement.relPath,
       ct: ct,
       size: stat.size,
-      md5: dirtyItem.md5, // TODO - calc it here (do not trust client)
+      md5: newMD5,
       revision: newRevision
     }
     if (dirtyItem.isPermanent) resp.isPermanent = true

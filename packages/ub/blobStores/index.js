@@ -246,17 +246,17 @@ function getDocumentEndpoint (req, resp) {
       params = JSON.parse(paramStr)
     } catch (e) {
       console.error('Exception when parsing POST parameters "{paramStr}":' + e)
-      return badRequest(resp, 'wrong parameters passed' + req.method)
+      return badRequest('wrong parameters passed' + req.method)
     }
   } else {
-    return badRequest(resp, 'invalid HTTP verb' + req.method)
+    return badRequest('invalid HTTP verb' + req.method)
   }
 
   let parsed = parseBlobRequestParams(params)
-  if (!parsed.success) return badRequest(resp, parsed.reason)
+  if (!parsed.success) return resp.badRequest(parsed.reason)
   let requested = getRequestedBLOBInfo(parsed)
   if (!requested.success) {
-    return badRequest(resp, requested.reason)
+    return resp.badRequest(requested.reason)
   }
   // call store implementation method
   return requested.store.fillResponse(parsed.bsReq, requested.blobInfo, req, resp)
@@ -299,18 +299,18 @@ function setDocumentEndpoint (req, resp) {
   if (req.method === 'POST') {
     request = queryString.parse(req.parameters)
   } else {
-    return badRequest(resp, 'invalid HTTP verb' + req.method)
+    return resp.badRequest('invalid HTTP verb' + req.method)
   }
 
   let parsed = parseBlobRequestParams(request)
-  if (!parsed.success) return badRequest(resp, parsed.reason)
+  if (!parsed.success) return resp.badRequest(parsed.reason)
   let attribute = parsed.attribute
   if (attribute.entity.isUnity) {
-    return badRequest(resp, `Direct modification of UNITY entity ${attribute.entity.code} not allowed`)
+    return resp.badRequest(`Direct modification of UNITY entity ${attribute.entity.code} not allowed`)
   }
   let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeCode]
-  if (!store) return badRequest(resp, `Blob store ${storeCode} not found in application config`)
+  if (!store) return resp.badRequest(`Blob store ${storeCode} not found in application config`)
   let content = req.read('bin')
   let blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200

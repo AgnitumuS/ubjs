@@ -4,26 +4,22 @@ const App = require('./App')
  * @param {THTTPResponse} resp
  * @param {string} [reason]
  * @return {boolean}
+ * @deprecated Use `resp.badRequest(reason)`
  * @private
  */
 function badRequest (resp, reason) {
-  resp.statusCode = 400
-  resp.writeEnd('Bad request')
-  if (reason) console.error('Bad request.', reason)
-  return false
+  return resp.badRequest(reason)
 }
 
 /**
  * @param {THTTPResponse} resp
  * @param {string} reason
  * @return {boolean}
+ * @deprecated Use `resp.notFound(reason)`
  * @private
  */
 function notFound (resp, reason) {
-  resp.statusCode = 404
-  resp.writeEnd('Not found')
-  if (reason) console.error('Not found', reason)
-  return false
+  return resp.notFound(reason)
 }
 
 const PROXY_SEND_FILE_HEADER = App.serverConfig.httpServer['reverseProxy']['sendFileHeader']

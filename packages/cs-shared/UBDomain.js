@@ -621,6 +621,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   })
   /**
    * Entity methods, allowed for current logged-in user in format {method1: 1, method2: 1}. 1 mean method is allowed
+   * Empty for server-side domain - use `entity.haveAccessToMethod` to check method is accessible for user.
    * @type {Object<string, Number>}
    * @readOnly
    */

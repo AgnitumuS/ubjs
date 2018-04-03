@@ -4,11 +4,8 @@
  * Test HTTP communication layer
  */
 const assert = require('assert')
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
-const path = require('path')
-const _ = require('lodash')
 const http = require('http')
 
 module.exports = function runHTTPTest (options) {
@@ -26,6 +23,7 @@ module.exports = function runHTTPTest (options) {
   try {
     testHTTP(conn, domain, session)
     testRest(conn)
+    testUnicode(conn)
   } finally {
     session.logout()
   }
@@ -66,7 +64,6 @@ function testHTTP (conn, domain, session) {
 }
 
 /**
- *
  * @param {SyncConnection} conn
  */
 function testRest (conn) {
@@ -82,4 +79,14 @@ function testRest (conn) {
     HTTPMethod: 'POST'
   })
   assert.ok(typeof d === 'object', 'rest call convention fail')
+}
+
+/**
+ * @param {SyncConnection} conn
+ */
+function testUnicode (conn) {
+  function unicodeExc () {
+    conn.query({entity: 'tst_service', method: 'throwTest', isUnicode: true})
+  }
+  assert.throws(unicodeExc, /Підтримується/, 'Should throw unicode error')
 }

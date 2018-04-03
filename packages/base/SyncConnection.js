@@ -352,7 +352,7 @@ SyncConnection.prototype.query = function (ubq) {
  * @param {*} [options.URLParams] Optional parameters added to URL using http.buildURL
  * @param {ArrayBuffer|Object|String} [options.data] Optional body
  * @param  {String} [options.responseType] see <a href="https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType">responseType</a>.
- *                                          Currently only `arraybuffer` suported.
+ *    Currently only `arraybuffer` supported.
  * @returns {ArrayBuffer|Object|String|Array<Object>}
  */
 SyncConnection.prototype.xhr = function (options) {

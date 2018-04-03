@@ -12,7 +12,8 @@ const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
 const App = require('./App')
 const Session = require('./Session')
-const {badRequest, notFound, PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('./httpUtils')
+const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('./httpUtils')
+const ubErrors = require('./ubErrors')
 /**
  *
  * @param {string} reqPath
@@ -29,21 +30,21 @@ function resolveModelFile (reqPath, resp) {
     let parts = reqPath.replace(/\\/g, '/').split('/')
     let modelName = parts.shift()
     if (!modelName) {
-      return badRequest(resp, 'first part of path must be model name')
+      return resp.badRequest('first part of path must be model name')
     }
     let model = App.domainInfo.models[modelName]
     if (!model) {
-      return badRequest(resp, 'no such model ' + modelName)
+      return resp.badRequest('no such model ' + modelName)
     }
     entry.fullPath = path.normalize(path.join(model.realPublicPath, parts.join('/')))
     if (!entry.fullPath) {
-      return badRequest(resp, 'cant resolve relative path')
+      return resp.badRequest('cant resolve relative path')
     }
     if (!entry.fullPath.startsWith(model.realPublicPath)) {
-      return badRequest(resp, `resolved path "${entry.fullPath}" is not inside model folder ${model.realPublicPath}`)
+      return resp.badRequest(`resolved path "${entry.fullPath}" is not inside model folder ${model.realPublicPath}`)
     }
     if (!fs.existsSync(entry.fullPath)) {
-      return notFound(resp, `"${entry.fullPath}"`)
+      return resp.notFound(`"${entry.fullPath}"`)
     }
     if (PROXY_SEND_FILE_HEADER) {
       entry.fullPath = path.relative(process.configPath, entry.fullPath)
@@ -81,13 +82,13 @@ function resolveModelFile (reqPath, resp) {
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
-function models (req, resp) {
+function modelsEp (req, resp) {
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
-    return badRequest(resp, 'invalid request method ' + req.method)
+    return resp.badRequest('invalid request method ' + req.method)
   }
   let reqPath = req.decodedUri
   if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
-    return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
+    return resp.badRequest('path too long (max is 250) ' + reqPath.length)
   }
   resolveModelFile(reqPath, resp)
 
@@ -113,10 +114,10 @@ const MODULES_ROOT = path.join(process.configPath, 'node_modules')
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
-function clientRequire (req, resp) {
+function clientRequireEp (req, resp) {
   console.log(`Call clientRequire`)
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
-    return badRequest(resp, 'invalid request method ' + req.method)
+    return resp.badRequest('invalid request method ' + req.method)
   }
   let reqPath = req.decodedUri
   // cache actual file path & type for success clientRequire/* request
@@ -126,7 +127,7 @@ function clientRequire (req, resp) {
   }
   if (!cached) {
     if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
-      return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
+      return resp.badRequest('path too long (max is 250) ' + reqPath.length)
     }
 
     if (reqPath.startsWith('models/')) {
@@ -135,10 +136,10 @@ function clientRequire (req, resp) {
     }
 
     if (reqPath.indexOf('..') !== -1) { // prevent clientRequire/../../../secret.txt attack
-      return badRequest(resp, `Relative path (${reqPath}) not allowed`)
+      return resp.badRequest(`Relative path (${reqPath}) not allowed`)
     }
     if (path.isAbsolute(reqPath)) { // prevent clientRequire/d:/secret.txt attack
-      return badRequest(resp, `Absolute path (${reqPath}) not allowed`)
+      return resp.badRequest(`Absolute path (${reqPath}) not allowed`)
     }
     let resolvedPath
     try {
@@ -165,11 +166,10 @@ function clientRequire (req, resp) {
       resolvedPath = undefined
     }
     if (!resolvedPath) {
-      console.error(`Package ${reqPath} not found`)
-      return notFound(resp, `"${reqPath}"`)
+      return resp.notFound(`Package ${reqPath} not found`)
     }
     if (!resolvedPath.startsWith(MODULES_ROOT)) {
-      return badRequest(resp, `Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
+      return resp.badRequest(`Path (${reqPath}) must be inside application node_modules folder but instead resolved to ${resolvedPath}`)
     }
 
     let models = App.domainInfo.models
@@ -190,7 +190,7 @@ function clientRequire (req, resp) {
     }
 
     if (restrictAccess) {
-      return badRequest(resp, `Request to UnityBase model ${reqPath} resolved to (${resolvedPath}) which is not inside any of public models folder`)
+      return resp.badRequest(`Request to UnityBase model ${reqPath} resolved to (${resolvedPath}) which is not inside any of public models folder`)
     }
     entry.fullPath = resolvedPath
     if (PROXY_SEND_FILE_HEADER) {
@@ -229,7 +229,7 @@ function clientRequire (req, resp) {
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
-function getAppInfo (req, resp) {
+function getAppInfoEp (req, resp) {
   const serverConfig = App.serverConfig
   let DSTU = serverConfig.security && serverConfig.security.dstu
 
@@ -292,7 +292,7 @@ const nativeGetDomainInfo = appBinding.getDomainInfo
  * @param {THTTPResponse} resp
  */
 function getDomainInfoEp (req, resp) {
-  // implementation below is SLOW. The bottlenack is JSON.stringify() for huge JSON
+  // implementation below is SLOW. The bottleneck is JSON.stringify() for huge JSON
   // let restrictedDomain = {
   //   domain: App.domainInfo.entities, // _.filter(App.domainInfo.entities, (e) => e.code.startsWith('ubm')),
   //   models: App.domainInfo.models
@@ -302,10 +302,10 @@ function getDomainInfoEp (req, resp) {
   let params = queryString.parse(req.parameters)
   let isExtended = (params['extended'] === 'true')
   if (isExtended && authenticationHandled && !UBA_COMMON.isSuperUser()) {
-    return badRequest(resp, 'Extended domain info allowed only for member of admin group of if authentication is disabled')
+    return resp.badRequest('Extended domain info allowed only for member of admin group of if authentication is disabled')
   }
   if (!params['userName'] || params['userName'] !== Session.uData.login) {
-    return badRequest(resp, 'userName=login parameter is required')
+    return resp.badRequest('userName=login parameter is required')
   }
 
   let res = nativeGetDomainInfo(isExtended)
@@ -323,17 +323,17 @@ function getDomainInfoEp (req, resp) {
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
-function staticEndpoint (req, resp) {
+function staticEp (req, resp) {
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
-    return badRequest(resp, 'invalid request method ' + req.method)
+    return resp.badRequest('invalid request method ' + req.method)
   }
   let reqPath = req.decodedUri
   if (!reqPath || !reqPath.length || (reqPath.length > 250)) {
-    return badRequest(resp, 'path too long (max is 250) ' + reqPath.length)
+    return resp.badRequest('path too long (max is 250) ' + reqPath.length)
   }
   let normalized = path.normalize(path.join(App.staticPath, reqPath))
   if (!normalized.startsWith(App.staticPath)) {
-    return badRequest(resp, `statics: resolved path "${normalized}" is not inside inetPub folder ${App.staticPath}`)
+    return resp.badRequest(`statics: resolved path "${normalized}" is not inside inetPub folder ${App.staticPath}`)
   }
   if (PROXY_SEND_FILE_HEADER) {
     let relative = path.relative(process.configPath, normalized)
@@ -344,7 +344,7 @@ function staticEndpoint (req, resp) {
     resp.statusCode = 200
   } else {
     if (!fs.existsSync(normalized)) {
-      return notFound(resp, `"${normalized}"`)
+      return resp.notFound(`"${normalized}"`)
     }
     let ext = path.extname(normalized)
     let ct = mime.contentType(ext)
@@ -358,19 +358,17 @@ function staticEndpoint (req, resp) {
 }
 
 /**
- * Run sql on server side
- * Allowed from localIP
+ * Run sql query on server side. Allowed from local IP's.
+ *
  * Connection name is in `connection` uri parameter (or default connection if not set)
- * If HTTP method is GET then allowed inline parameters only
- *   sql is in `sql` uri parameter
- * If Http method is not GET then
- *   sql is in request body
- *   parameters is uri parameters except `connection`
+ *  - If HTTP verb is GET then allowed inline parameters only and sql is in `sql` uri parameter
+ *  - If HTTP verb is POST then sql is in request body and query parameters is uri parameters except `connection`
+ *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @private
  */
-function runSQL (req, resp) {
+function runSQLEp (req, resp) {
   if (App.localIPs.indexOf(Session.callerIP) === -1) {
     throw new Error(`Only local execution allowed. Caller remoteIP="${Session.callerIP}"`)
   }
@@ -385,13 +383,15 @@ function runSQL (req, resp) {
   if (req.method === 'GET') {
     sql = parameters.sql
     sqlParams = null
-  } else {
+  } else if (req.method === 'POST') {
     sql = req.read('utf-8')
     delete parameters.connection
     sqlParams = parameters
+  } else {
+    return resp.badRequest('runSQL: invalid verb ' + req.method)
   }
 
-  if (!sql) { throw new Error('runSQL: statement is empty') }
+  if (!sql) throw new Error('runSQL: statement is empty')
 
   let upperStmt = sql.toUpperCase()
   if (upperStmt.startsWith('SELECT') || upperStmt.startsWith('PRAGMA')) {
@@ -404,11 +404,37 @@ function runSQL (req, resp) {
   resp.statusCode = 200
 }
 
+/**
+ * Run sql query on server side. Allowed from local IP's.
+ *
+ * Connection name is in `connection` uri parameter (or default connection if not set)
+ *  - If HTTP verb is GET then allowed inline parameters only and sql is in `sql` uri parameter
+ *  - If HTTP verb is POST then sql is in request body and query parameters is uri parameters except `connection`
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @private
+ */
+function restEp (req, resp) {
+  const INVALID_PARAMS = 'REST: parameters are invalid'
+  if (req.uri === '') return resp.badRequest(INVALID_PARAMS)
+  let parts = req.uri.split('/')
+  let entity = App.domainInfo.get(parts[0], false)
+  if (!entity) return resp.badRequest('REST: unknown entity ' + parts[0])
+  let method = parts[1]
+  if (!method) return resp.notImplemented(`REST: await "entity/method" in url`)
+  if (!entity.haveAccessToMethod(method)) throw new ubErrors.ESecurityException(`REST: unknown method or access deny ${entity.code}.${method}`)
+  // TODO - must be implemented using launchMethod to emit :before and :after events etc.
+  global[entity.code][method](null, req, resp)
+  return true
+}
+
 module.exports = {
-  models,
-  getAppInfo,
-  clientRequire,
+  modelsEp,
+  getAppInfoEp,
+  clientRequireEp,
   getDomainInfoEp,
-  staticEndpoint,
-  runSQL
+  staticEp,
+  runSQLEp,
+  restEp
 }

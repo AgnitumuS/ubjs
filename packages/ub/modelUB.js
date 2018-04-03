@@ -7,6 +7,7 @@ const Session = require('./modules/Session')
 const UBFormat = require('@unitybase/base').format
 const blobStores = require('./blobStores')
 const TubDataStore = require('./TubDataStore')
+const Errors = require('./modules/ubErrors')
 
 /**
  * The UB namespace (global object) encapsulates some classes, singletons, and utility methods provided by UnityBase server.
@@ -19,39 +20,11 @@ let UB = {
    * To check we are in server thread use process.isServer.
    * @readonly
    */
-  isServer: true
+  isServer: true,
 }
 
-/**
- * Server-side Abort exception. To be used in server-side logic in case of HANDLED
- * exception. This errors logged using "Error" log level to prevent unnecessary
- * EXC log entries.
- *
- *       // UB client will show message inside <<<>>> to user (and translate it using UB.i18n)
- *       throw new UB.UBAbort('<<<textToDisplayForClient>>>');
- *       //for API methods we do not need <<<>>>
- *       throw new UB.UBAbort('wrongParameters');
- *
- * @param {String} [message] Message
- * @extends {Error}
- */
-// For SM<=45 we use a "exception class" inherit pattern below, but it stop working in SM52, so fallback to Error
-UB.UBAbort = function UBAbort (message) {
-  this.name = 'UBAbort'
-  this.code = 'UBAbort'
-  this.message = message || 'UBAbortError'
-  // FF, IE 10+ and Safari 6+. Fallback for others
-  let tmpStack = (new Error()).stack.split('\n').slice(1)
-  let realErr = tmpStack.find((str) => str.indexOf('@') > 0) // search for a first error outside of ub core modules
-  let re = /^(.*?)@(.*?):(.*?)$/.exec(realErr) // [undef, undef, this.fileName, this.lineNumber] = re
-  this.fileName = re[2]
-  this.lineNumber = re[3]
-  this.stack = tmpStack.join('\n')
-  // original FF version:
-  // this.stack = (new Error()).stack;
-}
-UB.UBAbort.prototype = Object.create(Error.prototype) // new Error();
-UB.UBAbort.prototype.constructor = UB.UBAbort
+UB.UBAbort = Errors.UBAbort
+UB.ESecurityException = Errors.ESecurityException
 
 /**
  * Creates namespaces to be used for scoping variables and classes so that they are not global.
@@ -207,15 +180,16 @@ UB.start = function () {
   App.emit('domainIsLoaded')
 
   // ENDPOINTS
-  const {clientRequire, models, getAppInfo, getDomainInfoEp, staticEndpoint, runSQL} = require('./modules/endpoints')
-  App.registerEndpoint('getAppInfo', getAppInfo, false)
-  App.registerEndpoint('models', models, false)
-  App.registerEndpoint('clientRequire', clientRequire, false)
+  const {clientRequireEp, modelsEp, getAppInfoEp, getDomainInfoEp, staticEp, runSQLEp, restEp} = require('./modules/endpoints')
+  App.registerEndpoint('getAppInfo', getAppInfoEp, false)
+  App.registerEndpoint('models', modelsEp, false)
+  App.registerEndpoint('clientRequire', clientRequireEp, false)
   App.registerEndpoint('getDomainInfo', getDomainInfoEp, true)
   App.registerEndpoint('getDocument', blobStores.getDocumentEndpoint, true)
   App.registerEndpoint('setDocument', blobStores.setDocumentEndpoint, true)
-  App.registerEndpoint('runSQL', runSQL, true)
-  App.registerEndpoint('statics', staticEndpoint, false, true)
+  App.registerEndpoint('runSQL', runSQLEp, true)
+  App.registerEndpoint('rest', restEp, true)
+  App.registerEndpoint('statics', staticEp, false, true)
 }
 
 module.exports = UB

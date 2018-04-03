@@ -2,7 +2,7 @@ const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const App = require('../modules/App')
 const fs = require('fs')
-const {badRequest, notFound, PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
+const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
 
 /**
  *  @classdesc
@@ -84,7 +84,7 @@ class MdbBlobStore extends BlobStoreCustom {
         resp.writeEnd(filePath)
       }
     } else {
-      notFound(resp, 'mdb store item ' + filePath)
+      return resp.notFound('mdb store item ' + filePath)
     }
   }
   /**

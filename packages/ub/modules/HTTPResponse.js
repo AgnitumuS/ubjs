@@ -109,6 +109,17 @@ class THTTPResponse {
     if (reason) console.error('Not found', reason)
     return false
   }
+  /**
+   * Write a HTTP 501 'Not Implemented response. Return false
+   * @param {string} reason  If specified will be written to log as error
+   * @return {boolean}
+   */
+  notImplemented (reason) {
+    this.statusCode = 501
+    this.writeEnd('Not Implemented')
+    if (reason) console.error('Not Implemented', reason)
+    return false
+  }
 }
 
 module.exports = THTTPResponse
