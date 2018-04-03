@@ -18,6 +18,7 @@ Ext.define("UB.core.UBAppConfig", {
         navigationShortcut: {
             name: "ubm_navshortcut",
             fields: {
+                code: "code",
                 desktopID: "desktopID",
                 folderID: "parentID",
                 isFolder: "isFolder",

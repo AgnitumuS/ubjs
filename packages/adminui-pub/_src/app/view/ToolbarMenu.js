@@ -113,6 +113,7 @@ Ext.define('UB.view.ToolbarMenu', {
           if (nNode.items.length > 0) {
             result.push({
               text: nNode.row.get('caption'),
+	      shortcutCode: nNode.row.get('code'),
               menu: {
                 items: processItem(nNode)
               }
@@ -121,6 +122,7 @@ Ext.define('UB.view.ToolbarMenu', {
             result.push({
               text: nNode.row.get('caption'),
               record: nNode.row,
+	      shortcutCode: nNode.row.get('code'),
               handler: me.onItemClick
             })
           }
@@ -130,6 +132,7 @@ Ext.define('UB.view.ToolbarMenu', {
     }
     return {
       text: dsRow.get('caption'),
+      desktopCode: dsRow.get('code'),
       menu: Ext.create('Ext.menu.Menu', {
         style: {
           overflow: 'visible'
