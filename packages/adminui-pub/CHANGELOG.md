@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
 ### Added
 - in BasePanel add property formWasSaved, set 'true' when open form was saved 
+## Changed
+- remove set focuse for ubboxselect after load store
 
 ## [4.2.54]
 ## Fixed 
