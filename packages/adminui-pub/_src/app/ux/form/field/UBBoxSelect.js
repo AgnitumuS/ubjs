@@ -430,7 +430,6 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
     }
     me.onDataRefreshed()
     if (me.inputEl) {
-      me.inputEl.focus()
       if (me.inputEl.getValue()) {
         strLength = me.inputEl.getValue().length
         me.inputEl.dom.setSelectionRange(strLength, strLength)
