@@ -1,9 +1,9 @@
 import { ExtSelector, getWindowError } from './ExtJSHelper/ExtJSSelector'
-import { ClientFunction, Selector } from 'testcafe'
+import { Selector } from 'testcafe'
 
 const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
 
-fixture(`Preparing data for moving folder and shortcut to Desktop test`)
+fixture(`Preparing data for Form test`)
   .page(TEST_PAGE)
 
 test('Check Pure ExtJS Form', async t => {

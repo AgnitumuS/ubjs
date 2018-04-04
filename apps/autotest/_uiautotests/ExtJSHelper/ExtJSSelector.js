@@ -1,8 +1,6 @@
 /* global Ext */
 import { ClientFunction, Selector, t } from 'testcafe'
 
-const getWindowError = ClientFunction(prop => window.onerror = prop)
-
 /**
  * Global Ext class
  */
@@ -210,7 +208,8 @@ class EntityGrid {
    * select menuitem on top right menu by actionID/ and entityName for showDetail action
    * @param {Object} params
    * @param {string} [params.entityName]
-   * @param {string} params.actionID
+   * @param {string} params.actionID ['refresh', 'edit', 'addNew', 'addNewByCurrent', 'del', 'showPreview',
+   * 'commandLink', 'itemLink', 'audit', 'optimizeWidth', 'exportXls', 'exportCsv', 'exportHtml', 'showDetail']
    * @returns {Promise.<void>}
    */
   async selectAllActionMenuItem (params) {
@@ -244,7 +243,7 @@ class EntityGrid {
    * select menuitem on context menu by actionID/ and entityName for showDetail action
    * @param {Object} params
    * @param {string} [params.entityName]
-   * @param {string} params.actionID
+   * @param {string} params.actionID ['edit', 'addNewByCurrent', 'del', 'audit', 'itemLink']
    * @returns {Promise.<void>}
    */
   async selectContextMenuItem (params) {
@@ -308,17 +307,24 @@ class BasePanel {
   }
 
   /**
-   * finds and clicks on the form tab by the tabID
+   * finds and clicks on the form tab by the tabID or tab title
    * @param {string} tabID
    * @returns {Promise.<void>}
    */
   async selectTab (tabID) {
     await ClientFunction((queryCode, tabID) => {
-      let tabPanel = Ext.ComponentQuery.query(queryCode)[0].items.items[0].tabBar.items.items
-      if (tabPanel.length) {
-        tabPanel.forEach(tab => {
-          if (tab.card.tabID === tabID) {
-            tab.el.dom.click()
+      let formItems = Ext.ComponentQuery.query(queryCode)[0].items.items
+      if (formItems.length) {
+        formItems.forEach(item => {
+          if (item.xtype === 'tabpanel') {
+            let tabPanel = item.tabBar.items.items
+            if (tabPanel.length) {
+              tabPanel.forEach(tab => {
+                if (tab.card.tabID === tabID || tab.card.title === tabID) {
+                  tab.el.dom.click()
+                }
+              })
+            }
           }
         })
       }
@@ -424,12 +430,20 @@ class LeftPanel {
 
   /**
    * get menuitem object on the contextMenu of left panel`s items
-   * @param {string} actionID
+   * @param {string} actionID [ 'Edit', 'addShortcut', 'addFolder', 'deleteShortcut' ]
    * @returns {ItemSelector}
    */
   contextMenuItem (actionID) {
     let queryCode = `menuitem[actionID=${actionID}]`
     return new ItemSelector(queryCode)
+  }
+
+  getID () {
+    let treeID = ClientFunction(() => {
+      let id = `#${Ext.ComponentQuery.query('treeview')[0].id}`
+      return id
+    })
+    return treeID()
   }
 }
 
@@ -559,7 +573,7 @@ class ItemSelector {
             store.forEach(item => {
               if (item.data.caption === value) {
                 return fieldObj.setValue(item.data.ID)
-              }
+              } else return fieldObj.setValue('')
             })
           }
         })
@@ -622,4 +636,4 @@ class ItemSelector {
   }
 }
 
-export { ExtSelector, getWindowError }
+export { ExtSelector }

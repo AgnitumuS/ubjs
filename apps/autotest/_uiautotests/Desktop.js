@@ -1,4 +1,5 @@
-import { ExtSelector, getWindowError } from './ExtJSHelper/ExtJSSelector'
+import { ExtSelector } from './ExtJSHelper/ExtJSSelector'
+import { deleteExistDesktop, insertDesktop, getWindowError } from './ExtJSHelper/Preconditions'
 import { ClientFunction, Selector } from 'testcafe'
 
 const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
@@ -292,17 +293,33 @@ test('Delete Desktop', async t => {
   await t.expect(Selector(desktopID).exists).notOk('The desktop with code "test_desktop_code" was`nt removed from navbar')
 })
 
-async function deleteExistDesktop (code) {
-  await ClientFunction(code => {
-    UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', code)
-      .selectAsObject()
-      .then(res => {
-        $App.connection.query({
-          entity: 'ubm_desktop', method: 'delete', execParams: {ID: res[0].ID}
-        }).then(res => { return res })
-      })
-  })(code)
-}
+test('All actions - Details (Not selected item)', async t => {
+  let ext = new ExtSelector()
+  // login
+  await t.navigateTo(TEST_PAGE)
+  let loginWindow = ext.loginWindow
+  await loginWindow.load()
+  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  loginWindow.loginBtnClick()
+
+  // Open top navbar menu Administrator / UI / Desktops
+  let mainToolbar = ext.mainToolbar
+  await mainToolbar.load()
+  mainToolbar.desktopMenuBtn('adm_desktop').click()
+  mainToolbar.menuItem('adm_folder_UI').showMenu()
+  mainToolbar.menuItem('ubm_desktop').click()
+
+  // Click "All actions" on the right corner, select  "Details" and click "Shortcut (Desktop)"
+  let tabPanel = ext.tabPanel
+  await tabPanel.load()
+  let gridCode = await tabPanel.loadTabPanelChild('entitygridpanel', {entityName: 'ubm_desktop'})
+  let grid = tabPanel.entityGridPanel(gridCode)
+  grid.selectAllActionMenuItem({actionID: 'showDetail', entityName: 'ubm_navshortcut'})
+
+  // Click "Ok"
+  let messageBox = ext.messagebox
+  await messageBox.selectAction('ok')
+})
 
 function insertOrUpdateFolder (desktop, folder) {
   if (!folder) {
@@ -380,25 +397,6 @@ async function checkPrecondition () {
   })()
 }
 
-async function insertDesktop (code, caption) {
-  await ClientFunction((code, caption) => {
-    UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', code)
-      .selectSingle()
-      .then(res => {
-        if (!res) {
-          $App.connection.query({
-            entity: 'ubm_desktop',
-            method: 'insert',
-            fieldList: ['ID', 'code', 'caption'],
-            execParams: {
-              code: code,
-              caption: caption
-            }
-          }).then(res => { return res })
-        }
-      })
-  })(code, caption)
-}
 
 /*
 run commands
