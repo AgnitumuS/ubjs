@@ -127,7 +127,7 @@ me.throwTest = function (ctx) {
   let mParams = ctx.mParams
   let isUnicode = (mParams.isUnicode === true)
   if (isUnicode) {
-    throw new Error('Підтримується')
+    throw new UB.UBAbort('Підтримується')
   } else {
     throw new Error('Error exception logger as EXC level')
   }

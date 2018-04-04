@@ -60,7 +60,7 @@ function testHTTP (conn, domain, session) {
     URLParams: {async: true},
     data: {test: 1}
   })
-  assert.ok(Date.now() - t < 1000, 'async call should respond quickly')
+  assert.ok(Date.now() - t < 2000, 'async call should respond quickly')
 }
 
 /**

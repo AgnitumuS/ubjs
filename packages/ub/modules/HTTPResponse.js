@@ -94,6 +94,7 @@ class THTTPResponse {
    */
   badRequest (reason) {
     this.statusCode = 400
+    this.writeHead('Content-Type: text/plain')
     this.writeEnd('Bad Request')
     if (reason) console.error('Bad request', reason)
     return false
@@ -105,6 +106,7 @@ class THTTPResponse {
    */
   notFound (reason) {
     this.statusCode = 404
+    this.writeHead('Content-Type: text/plain')
     this.writeEnd('Not Found')
     if (reason) console.error('Not found', reason)
     return false
@@ -116,6 +118,7 @@ class THTTPResponse {
    */
   notImplemented (reason) {
     this.statusCode = 501
+    this.writeHead('Content-Type: text/plain')
     this.writeEnd('Not Implemented')
     if (reason) console.error('Not Implemented', reason)
     return false
