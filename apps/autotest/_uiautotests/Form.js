@@ -1,10 +1,14 @@
-import { ExtSelector, getWindowError } from './ExtJSHelper/ExtJSSelector'
+import { ExtSelector } from './ExtJSHelper/ExtJSSelector'
+import { getWindowError } from './ExtJSHelper/Preconditions'
 import { Selector } from 'testcafe'
 
 const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
 
-fixture(`Preparing data for Form test`)
+fixture(`Form test`)
   .page(TEST_PAGE)
+  .beforeEach(async t => {
+    await t.resizeWindow(1200, 800)
+  })
 
 test('Check Pure ExtJS Form', async t => {
   await getWindowError(null)
@@ -12,7 +16,7 @@ test('Check Pure ExtJS Form', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials ('UB', {pwd: 'admin', user: 'admin'})
+  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
   loginWindow.loginBtnClick()
 
   // Open Administrator / UI / Forms
@@ -158,7 +162,7 @@ test('Edit Form', async t => {
 
   // On page, should be field 'URL'
   let urlFieldID = await form.items.getIdByAttr('attributeName', 'url')
-  await t.expect(Selector(urlFieldID).exists).ok('Field URL not found on the form')
+  await t.expect(Selector(urlFieldID).exists).ok(`Field URL with id ${urlFieldID} not found on the form`)
 
   // Close tab 'Deskop'
   form.closeForm()
@@ -195,7 +199,6 @@ test('Edit Form', async t => {
   await editForm.setFormDefEditorValue(newRawValue)
   // Click button 'Save'
   editForm.getFormAction('save').click()
-  await t.debug()
   // Open top navbar menu Administrator / UI / Desktops
   await mainToolbar.load()
   mainToolbar.desktopMenuBtn('adm_desktop').click()

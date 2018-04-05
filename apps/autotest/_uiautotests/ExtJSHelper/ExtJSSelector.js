@@ -634,6 +634,15 @@ class ItemSelector {
     })
     return elID(this.queryCode, attr, attrValue)
   }
+
+  getValueByID (id) {
+    let elValue = ClientFunction((querycode) => {
+      return Ext.ComponentQuery.query(querycode)[0].rawValue
+    })
+    id = id.replace('#', '')
+    let queryCode = `[id=${id}]`
+    return elValue(queryCode)
+  }
 }
 
 export { ExtSelector }

@@ -1,15 +1,18 @@
 import { ExtSelector } from './ExtJSHelper/ExtJSSelector'
-import { deleteExistDesktop, insertDesktop, getWindowError } from './ExtJSHelper/Preconditions'
-import { ClientFunction, Selector } from 'testcafe'
+import { deleteExistDesktop, insertDesktop, getWindowError, checkIsShortcutInFolder } from './ExtJSHelper/Preconditions'
+import { Selector } from 'testcafe'
 
 const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
+const ext = new ExtSelector()
 
-fixture(`Preparing data for moving folder and shortcut to Desktop test`)
+fixture(`Desktop test`)
   .page(TEST_PAGE)
+  .beforeEach(async t => {
+    await t.resizeWindow(1200, 800)
+  })
 
 test('Add Desktop', async t => {
   await getWindowError(null)
-  let ext = new ExtSelector()
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
@@ -48,7 +51,7 @@ test('Add Desktop', async t => {
     await t.expect(e.error[e.error.length - 1])
       .notContains('UNHANDLED UBError', 'desktop with code test_desktop_code is exists')
   }
-  grid.reload()
+
   // Verify that new desktop is displayed on the grid
   testDesktopRow = await grid.rows.getIdByAttr('code', 'test_desktop_code')
   await t.expect(Selector(testDesktopRow).exists).ok(`Desktop with ${testDesktopRow} id not displayed on grid`)
@@ -70,9 +73,7 @@ test('Add Desktop', async t => {
 })
 
 test('Move folder and shortcut to Desktop', async t => {
-  let ext = new ExtSelector()
   // login
-  await t.navigateTo(TEST_PAGE)
   let loginWindow = ext.loginWindow
   await loginWindow.load()
   loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
@@ -85,7 +86,14 @@ test('Move folder and shortcut to Desktop', async t => {
   let testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder')
   let sel = await Selector(testFolderID).exists
   if (!sel) {
-    await checkPrecondition()
+    let conditionParams = {
+      desktopCode: 'adm_desktop',
+      folderCode: 'test_folder_code',
+      folderCaption: 'test_folder',
+      shortcutCode: 'test_shortcut_code',
+      shortcutCaption: 'test_shortcut'
+    }
+    await checkIsShortcutInFolder(conditionParams)
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
     loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
@@ -94,7 +102,7 @@ test('Move folder and shortcut to Desktop', async t => {
 
   // Select existing Folder with Shortcut on sidebar menu
   await leftPanel.load()
-  let idMenu = await leftPanel.treeItems.getIdByAttr('code', 'test_folder')
+  let idMenu = await leftPanel.treeItems.getIdByAttr('code', 'test_folder_code')
   await t.rightClick(idMenu)
   leftPanel.contextMenuItem('Edit').click()
   // Сhange Desktop on "Desktop" drop-down menu
@@ -123,8 +131,8 @@ test('Move folder and shortcut to Desktop', async t => {
 
   // Verify that only folder is available on selected Desktop
   await leftPanel.load()
-  testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder')
-  let testShtID = await leftPanel.treeItems.getIdByAttr('code', 'test_shortcut')
+  testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder_code')
+  let testShtID = await leftPanel.treeItems.getIdByAttr('code', 'test_shortcut_code')
   await t
     .expect(Selector(testFolderID).exists).ok(`Folder with id ${testFolderID} is not exist in Test Desktop menu now`)
     .expect(Selector(testShtID).exists).notOk(`Shortcut with id ${testShtID} is exist in Test Desktop menu now`)
@@ -132,7 +140,7 @@ test('Move folder and shortcut to Desktop', async t => {
   // Select Desktop on top navbar which the folder was moved
   let mainToolbar = ext.mainToolbar
   mainToolbar.desktopMenuBtn('test_desktop_code').click()
-  mainToolbar.menuItem('test_folder').click()
+  mainToolbar.menuItem('test_folder_code').click()
 
   // Open top navbar Administrator / UI / Shortcuts
   mainToolbar.desktopMenuBtn('adm_desktop').click()
@@ -144,13 +152,13 @@ test('Move folder and shortcut to Desktop', async t => {
   await tabPanel.load()
   let gridCode = await tabPanel.loadTabPanelChild('entitygridpanel', {entityName: 'ubm_navshortcut'})
   let grid = tabPanel.entityGridPanel(gridCode)
-  let idTestShtRow = await grid.rows.getIdByAttr('code', 'test_shortcut')
+  let idTestShtRow = await grid.rows.getIdByAttr('code', 'test_shortcut_code')
   await t.doubleClick(idTestShtRow)
 
   // Select new Desktop on 'Desktop drop-down menu'
   let formParams = {
     entityName: 'ubm_navshortcut',
-    instanceCode: 'test_shortcut',
+    instanceCode: 'test_shortcut_code',
     instanceAttr: 'code'
   }
   let formCode = await tabPanel.loadTabPanelChild('basepanel', formParams)
@@ -167,17 +175,15 @@ test('Move folder and shortcut to Desktop', async t => {
 
   // Select new Desktop on left sidebar's drop-down menu
   await leftPanel.load()
-  testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder')
-  testShtID = await leftPanel.treeItems.getIdByAttr('code', 'test_shortcut')
+  testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder_code')
+  testShtID = await leftPanel.treeItems.getIdByAttr('code', 'test_shortcut_code')
   await t
     .expect(Selector(testFolderID).exists).ok(`Folder with id ${testFolderID} is not exist in Test Desktop menu now`)
     .expect(Selector(testShtID).exists).ok(`Shortcut with id ${testShtID} is not exist in Test Desktop menu now`)
 })
 
 test('Open Desktop details', async t => {
-  let ext = new ExtSelector()
   // login
-  await t.navigateTo(TEST_PAGE)
   let loginWindow = ext.loginWindow
   await loginWindow.load()
   loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
@@ -225,9 +231,7 @@ test('Open Desktop details', async t => {
 })
 
 test('Delete Desktop', async t => {
-  let ext = new ExtSelector()
   // login
-  await t.navigateTo(TEST_PAGE)
   let loginWindow = ext.loginWindow
   await loginWindow.load()
   loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
@@ -294,9 +298,7 @@ test('Delete Desktop', async t => {
 })
 
 test('All actions - Details (Not selected item)', async t => {
-  let ext = new ExtSelector()
   // login
-  await t.navigateTo(TEST_PAGE)
   let loginWindow = ext.loginWindow
   await loginWindow.load()
   loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
@@ -320,83 +322,6 @@ test('All actions - Details (Not selected item)', async t => {
   let messageBox = ext.messagebox
   await messageBox.selectAction('ok')
 })
-
-function insertOrUpdateFolder (desktop, folder) {
-  if (!folder) {
-    return $App.connection.query({
-      entity: 'ubm_navshortcut',
-      method: 'insert',
-      fieldList: ['ID', 'code', 'desktopID'],
-      execParams: {
-        desktopID: desktop.ID,
-        code: 'test_folder',
-        caption: 'Test folder',
-        isFolder: true
-      }
-    }).then(newFolderData => {
-      return {ID: newFolderData.resultData.data[0][0]}
-    })
-  } else if (folder.desktopID !== desktop.ID) {
-    return $App.connection.query({
-      entity: 'ubm_navshortcut',
-      method: 'update',
-      fieldList: ['ID', 'code', 'desktopID'],
-      __skipOptimisticLock: true,
-      execParams: {
-        ID: folder.ID,
-        desktopID: desktop.ID
-      }
-    }).then(newFolderData => {
-      return {ID: newFolderData.resultData.data[0][0]}
-    })
-  } else {
-    return Promise.resolve(folder)
-  }
-}
-
-async function checkPrecondition () {
-  await ClientFunction(() => {
-    return Promise.all([
-      UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', 'adm_desktop').selectSingle(),
-      UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID').where('code', '=', 'test_folder').selectSingle(),
-      UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID', 'parentID').where('code', '=', 'test_shortcut').selectSingle()
-    ]).then(([desktop, folder, shortcut]) => {
-      return insertOrUpdateFolder(desktop, folder).then(newFolder => {
-        return Promise.resolve([desktop, newFolder, shortcut])
-      })
-    }).then(([desktop, folder, shortcut]) => {
-      if (!shortcut) {
-        return $App.connection.query({
-          entity: 'ubm_navshortcut',
-          method: 'insert',
-          fieldList: ['ID'],
-          execParams: {
-            desktopID: desktop.ID,
-            code: 'test_shortcut',
-            caption: 'Test shortcut',
-            parentID: folder.ID,
-            isFolder: false
-          }
-        })
-      } else if (shortcut.desktopID !== desktop.ID || shortcut.parentID !== folder.ID) {
-        return $App.connection.query({
-          entity: 'ubm_navshortcut',
-          method: 'update',
-          fieldList: [],
-          __skipOptimisticLock: true,
-          execParams: {
-            ID: shortcut.ID,
-            desktopID: desktop.ID,
-            parentID: folder.ID
-          }
-        })
-      }
-    })
-  }, {
-    dependencies: {insertOrUpdateFolder}
-  })()
-}
-
 
 /*
 run commands

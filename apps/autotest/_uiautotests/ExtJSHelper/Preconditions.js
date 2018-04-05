@@ -79,4 +79,79 @@ async function insertShortcut (code, caption, desktopCode, cmdCode) {
   })(code, caption, desktopCode, cmdCode)
 }
 
-export { deleteExistDesktop, getWindowError, insertDesktop, deleteExistShortcut, insertShortcut }
+function insertOrUpdateFolder (desktop, folder, params) {
+  if (!folder) {
+    return $App.connection.query({
+      entity: 'ubm_navshortcut',
+      method: 'insert',
+      fieldList: ['ID', 'code', 'desktopID'],
+      execParams: {
+        desktopID: desktop.ID,
+        code: params.folderCode,
+        caption: params.folderCaption,
+        isFolder: true
+      }
+    }).then(newFolderData => {
+      return {ID: newFolderData.resultData.data[0][0]}
+    })
+  } else if (folder.desktopID !== desktop.ID) {
+    return $App.connection.query({
+      entity: 'ubm_navshortcut',
+      method: 'update',
+      fieldList: ['ID', 'code', 'desktopID'],
+      __skipOptimisticLock: true,
+      execParams: {
+        ID: folder.ID,
+        desktopID: desktop.ID
+      }
+    }).then(newFolderData => {
+      return {ID: newFolderData.resultData.data[0][0]}
+    })
+  } else {
+    return Promise.resolve(folder)
+  }
+}
+async function checkIsShortcutInFolder (params) {
+  await ClientFunction((params) => {
+    return Promise.all([
+      UB.Repository('ubm_desktop').attrs('ID', 'code').where('code', '=', params.desktopCode).selectSingle(),
+      UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID').where('code', '=', params.folderCode).selectSingle(),
+      UB.Repository('ubm_navshortcut').attrs('ID', 'code', 'desktopID', 'parentID').where('code', '=', params.shortcutCode).selectSingle()
+    ]).then(([desktop, folder, shortcut]) => {
+      return insertOrUpdateFolder(desktop, folder, params).then(newFolder => {
+        return Promise.resolve([desktop, newFolder, shortcut])
+      })
+    }).then(([desktop, folder, shortcut]) => {
+      if (!shortcut) {
+        return $App.connection.query({
+          entity: 'ubm_navshortcut',
+          method: 'insert',
+          fieldList: ['ID'],
+          execParams: {
+            desktopID: desktop.ID,
+            code: params.shortcutCode,
+            caption: params.shortcutCaption,
+            parentID: folder.ID,
+            isFolder: false
+          }
+        })
+      } else if (shortcut.desktopID !== desktop.ID || shortcut.parentID !== folder.ID) {
+        return $App.connection.query({
+          entity: 'ubm_navshortcut',
+          method: 'update',
+          fieldList: [],
+          __skipOptimisticLock: true,
+          execParams: {
+            ID: shortcut.ID,
+            desktopID: desktop.ID,
+            parentID: folder.ID
+          }
+        })
+      }
+    })
+  }, {
+    dependencies: {insertOrUpdateFolder}
+  })(params)
+}
+
+export { deleteExistDesktop, getWindowError, insertDesktop, deleteExistShortcut, insertShortcut, checkIsShortcutInFolder }

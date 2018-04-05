@@ -5,8 +5,11 @@ import { deleteExistShortcut, insertDesktop, insertShortcut } from './ExtJSHelpe
 const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
 const ext = new ExtSelector()
 
-fixture(`Preparing data for moving folder and shortcut to Desktop test`)
+fixture(`Shortcut test`)
   .page(TEST_PAGE)
+  .beforeEach(async t => {
+    await t.resizeWindow(1200, 800)
+  })
 
 test('Add Shortcut based on existing Shortcut', async t => {
   // login
@@ -204,7 +207,7 @@ test('Edit existing Shortcut', async t => {
 	}
 }`
   await insertShortcut('test_code_shortcut1', 'test_shortcut1', 'test_desktop_code', cmdCode)
-  await deleteExistShortcut('test_code_shotcut1_re')
+  await deleteExistShortcut('test_code_shortcut1_re')
   // Open in the top menu: Administrator- UI- Shortcuts
   mainToolbar.desktopMenuBtn('adm_desktop').click()
   mainToolbar.menuItem('adm_folder_UI').showMenu()
@@ -229,7 +232,7 @@ test('Edit existing Shortcut', async t => {
   // Rename Shortcut caption
   form.items.setValueToAttr('test_shortcut1_re', 'caption')
   // Rename Code
-  form.items.setValueToAttr('test_code_shotcut1_re', 'code')
+  form.items.setValueToAttr('test_code_shortcut1_re', 'code')
   // Click tab 'Shortcut source code'
   form.selectTab('Shortcut source code')
   // Delete one colum from code and click button 'Save and close'. Optional refresh page F5
@@ -264,7 +267,7 @@ test('Edit existing Shortcut', async t => {
   await mainToolbar.load()
   mainToolbar.desktopMenuBtn('test_desktop_code').click()
   // Check Shortcut caption and Code field
-  let shortcutID = await mainToolbar.menuItem('test_code_shotcut1_re').getIdByAttr()
+  let shortcutID = await mainToolbar.menuItem('test_code_shortcut1_re').getIdByAttr()
   let shortcutSelector = Selector(shortcutID)
   await t.expect(shortcutSelector.innerText).contains('test_shortcut1_re', 'Shortcut was not renamed')
     .click(shortcutSelector)
@@ -277,6 +280,52 @@ test('Edit existing Shortcut', async t => {
   await t.expect(Selector(testDesktopRow).exists).ok(`Row with ${testDesktopRow} id not displayed on grid`)
   let gridText = await grid.rows.innerText()
   await t.expect(gridText).notContains('Last Name', 'grid is contains deleted rows')
+})
+
+test('Delete Shortcut', async t => {
+// login
+  let loginWindow = ext.loginWindow
+  await loginWindow.load()
+  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  loginWindow.loginBtnClick()
+
+  let mainToolbar = ext.mainToolbar
+  await mainToolbar.load()
+  await insertShortcut('test_code_shortcut1', 'test_shortcut1', 'adm_desktop')
+
+  // Open in the top menu: Administrator- UI- Shortcuts
+  mainToolbar.desktopMenuBtn('adm_desktop').click()
+  mainToolbar.menuItem('adm_folder_UI').showMenu()
+  mainToolbar.menuItem('ubm_navshortcut').click()
+
+  // Open context menu from existing Shortcut and click 'Delete'
+  let tabPanel = ext.tabPanel
+  await tabPanel.load()
+  let gridCode = await tabPanel.loadTabPanelChild('entitygridpanel', {entityName: 'ubm_navshortcut'})
+  let grid = tabPanel.entityGridPanel(gridCode)
+  let idTestShortcutRow = await grid.rows.getIdByAttr('code', 'test_code_shortcut1')
+  await t.rightClick(idTestShortcutRow)
+  await grid.selectContextMenuItem({actionID: 'del'})
+
+  // Click on button 'NO'
+  let messageBox = ext.messagebox
+  await messageBox.selectAction('no')
+
+  // Verify that system closed confirmation message and Desktop is present
+  await t
+    .expect(Selector('messagebox').exists).notOk('The message window is not closed')
+    .expect(Selector(idTestShortcutRow).exists).ok('The desktop with code "test_desktop_code" was deleted')
+
+  // Open context menu from existing Shortcut and click 'Delete'
+  await t.rightClick(idTestShortcutRow)
+  grid.selectContextMenuItem({actionID: 'del'})
+
+  // Click on button 'YES'
+  await messageBox.selectAction('yes')
+  // Verify that system closed confirmation message and Shortcut is deleled
+  await t
+    .expect(Selector('messagebox').exists).notOk('The message window is not closed')
+    .expect(Selector(idTestShortcutRow).exists).notOk('The desktop with code "test_desktop_code" was`nt deleted')
 })
 /*
 run commands
