@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.2.56]
 ## Fixed 
 - use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
+- in UBComboBox remove clearValue when call doSetValue 
 ### Added
 - in BasePanel add property formWasSaved, set 'true' when open form was saved 
 ## Changed
