@@ -126,8 +126,11 @@ me.entity.addMethod('abortTest')
 me.throwTest = function (ctx) {
   let mParams = ctx.mParams
   let isUnicode = (mParams.isUnicode === true)
+  let isSystem = (mParams.isSystem === true)
   if (isUnicode) {
     throw new UB.UBAbort('Підтримується')
+  } else if (isSystem) {
+    fs.renameSync('file_not_found_exos', 'second_path_wrong')
   } else {
     throw new Error('Error exception logger as EXC level')
   }

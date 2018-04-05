@@ -89,4 +89,8 @@ function testUnicode (conn) {
     conn.query({entity: 'tst_service', method: 'throwTest', isUnicode: true})
   }
   assert.throws(unicodeExc, /Підтримується/, 'Should throw unicode error')
+  // function systemExc () {
+  //   conn.query({entity: 'tst_service', method: 'throwTest', isSystem: true})
+  // }
+  // assert.throws(systemExc, /aa/, 'Should throw system errro encoded to UTF8')
 }
