@@ -1,4 +1,4 @@
-this.mapping = undefined/**
+/**
  * UnityBase domain object model (metadata) - in-memory representation of all *.meta files included in the application config.
  *
  * Developer should never create {@link UBDomain} class directly, but instead use a:
@@ -1227,20 +1227,20 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    */
   this.defaultView = attributeInfo.defaultView !== false
   /**
-   * Optional mapping of atribute to phisical data (for extended domain info only).
-   * Calculated from a entity mapping collection in accordance with application connection confiduration
+   * Optional mapping of attribute to physical data (for extended domain info only).
+   * Calculated from a entity mapping collection in accordance with application connection configurationn
    * @type {UBEntityAttributeMapping}
    * @readonly
    */
   this.mapping = undefined
 
   if (attributeInfo.mapping) {
+    let me = this
     let mappingKeys = Object.keys(attributeInfo.mapping)
-    mappingKeys.forEach(key => {
-      if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${entity.code}.${this.code} mapping`)
+    mappingKeys.forEach(function (key) {
+      if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${entity.code}.${me.code} mapping`)
     })
     if (mappingKeys.length) {
-      let me = this
       let dialectsPriority = UBDomain.dialectsPriority[this.entity.connectionConfig.dialect]
       _.forEach(dialectsPriority, function (dialect) {
         if (attributeInfo.mapping[dialect]) {
