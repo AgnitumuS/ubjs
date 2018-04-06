@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.56]
 ## Fixed 
+ - in case value is empty during form refresh, `ubboxselet.value` will be set to null
+
+## [4.2.56]
+## Fixed 
 - use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
 - in UBComboBox remove clearValue when call doSetValue 
 ### Added
