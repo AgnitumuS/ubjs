@@ -181,11 +181,19 @@ function getRequestedBLOBInfo (parsedRequest) {
     storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
     // check user have access to row and retrieve current blobInfo
-    let blobInfoTxt = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectScalar()
-    if (!blobInfoTxt) {
+    let blobInfoDS = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectAsObject()
+    if (!blobInfoDS.length) {
       return {
         success: false,
         reason: `${entity.code} with ID=${ID} not accessible`
+      }
+    }
+    let blobInfoTxt = blobInfoDS[0][attribute.code]
+    if (!blobInfoTxt) {
+      return {
+        success: false,
+        isEmpty: true,
+        reason: `${entity.code} with ID=${ID} is empty`
       }
     }
     blobInfo = JSON.parse(blobInfoTxt)
@@ -264,19 +272,24 @@ function getDocumentEndpoint (req, resp) {
 
 /**
  * Server-side method for obtaining BLOB content from blob store.
+ * In case blob store attribute value is null return `null`.
  * @param {BlobStoreRequest} request
  * @param {Object} [options]
  * @param {String|Null} [options.encoding] Possible values:
  *   'bin' 'ascii'  'base64' 'binary' 'hex' ucs2/ucs-2/utf16le/utf-16le utf8/utf-8
  *   if `null` will return {@link Buffer}, if `bin` - ArrayBuffer
- * @returns {String|Buffer|ArrayBuffer}
+ * @returns {String|Buffer|ArrayBuffer|null}
  */
 function getContent (request, options) {
   let parsed = parseBlobRequestParams(request)
   if (!parsed.success) throw new Error(parsed.reason)
   let requested = getRequestedBLOBInfo(parsed)
   if (!requested.success) {
-    throw new Error(requested.reason)
+    if (requested.isEmpty) {
+      return null
+    } else {
+      throw new Error(requested.reason)
+    }
   }
   return requested.store.getContent(parsed.bsReq, requested.blobInfo, options)
 }

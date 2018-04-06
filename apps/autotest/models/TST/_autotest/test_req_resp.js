@@ -45,9 +45,9 @@ function testHTTP (conn, domain, session) {
   assert.equal(resp.statusCode, 200, 'echo text string - response status is 200')
   assert.equal(resp.read(), data, 'got the same text as send')
 
-  data = new Uint8Array(255)
-  for (let n = 0; n < 255; n++) {
-    data[n] = n
+  data = new Uint8Array(255000)
+  for (let n = 0, L = data.byteLength; n < L; n++) {
+    data[n] = n % 254 + 1
   }
   resp = req.end(data)
   assert.equal(resp.statusCode, 200, 'echo binary - response status is 200')
@@ -102,4 +102,8 @@ function testUnicode (conn) {
     conn.query({entity: 'tst_service', method: 'throwTest', isUnicode: true})
   }
   assert.throws(unicodeExc, /Підтримується/, 'Should throw unicode error')
+  // function systemExc () {
+  //   conn.query({entity: 'tst_service', method: 'throwTest', isSystem: true})
+  // }
+  // assert.throws(systemExc, /aa/, 'Should throw system errro encoded to UTF8')
 }

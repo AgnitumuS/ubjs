@@ -1072,7 +1072,7 @@ Ext.define('UB.view.EntityGridPanel', {
                 column.field.events.change.clearListeners()
               }
             }
-            if (column.field.xtype === 'ubcombobox') {
+            if (column.field.xtype.indexOf('combobox') + 1) {
               column.field.setValue()
             }
           }
@@ -1093,7 +1093,7 @@ Ext.define('UB.view.EntityGridPanel', {
           }
         }
         let columnCombobox = _.filter(context.grid.columns, function (item) {
-          return item.getEditor() && item.getEditor().xtype === 'ubcombobox'
+          return item.getEditor() && item.getEditor().xtype.indexOf('combobox') >= 0
         })
         columnCombobox.forEach(function (item) {
           if (!item.field.gridFieldList) {
