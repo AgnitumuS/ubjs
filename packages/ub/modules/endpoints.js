@@ -383,7 +383,7 @@ function runSQLEp (req, resp) {
   if (req.method === 'GET') {
     sql = parameters.sql
     sqlParams = null
-  } else if (req.method === 'POST') {
+  } else if ((req.method === 'POST') || (req.method === 'PUT')) {
     sql = req.read('utf-8')
     delete parameters.connection
     sqlParams = parameters
