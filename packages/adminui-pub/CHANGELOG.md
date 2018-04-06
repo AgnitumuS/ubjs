@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.56]
 ## Fixed 
- - in case value is empty during refresh form, for ubboxselet set  value is null 
+ - in case value is empty during form refresh, `ubboxselet.value` will be set to null
 
 ## [4.2.56]
 ## Fixed 
