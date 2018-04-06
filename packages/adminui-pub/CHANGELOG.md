@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.2.56]
 ## Fixed 
- - clear value ubboxselect on form refresh if not original value
+ - in case value is empty during refresh form, for ubboxselet set  value is null 
 
 ## [4.2.56]
 ## Fixed 
