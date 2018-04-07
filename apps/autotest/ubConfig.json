@@ -1,7 +1,7 @@
 {
 	"httpServer": {
 		//"serverType": "Socket",
-		#include(%UB_RP_CONFIG%)
+		"#include(%UB_RP_CONFIG%)"
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
