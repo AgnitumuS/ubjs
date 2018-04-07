@@ -101,10 +101,12 @@ module.exports = function generateNginxCfg (cfg) {
     console.error(`Write to file ${cfg.out} fail`)
   }
   console.info(`
-  Config generated and can be included inside nginx.conf using 'include ${cfg.out.replace(/\\/g, '/')};'
-  or linked to /etc/nginx/sites-enabled if you are on linux:
+Config generated and can be included inside nginx.conf: 
+  include ${cfg.out.replace(/\\/g, '/')};
+  
+or linked to /etc/nginx/sites-enabled if you are on linux:
   sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available/${cfg.host}.cfg
   sudo ln -s /etc/nginx/sites-available/${cfg.host}.cfg /etc/nginx/sites-enabled
   sudo nginx -s reload
-  `)
+`)
 }
