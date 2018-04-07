@@ -19,4 +19,3 @@ if (!command || (['-?', '/?', '-help', '/help'].indexOf(command) !== -1)) {
   const cmdModule = require(`../lib/${command}`)
   if (typeof cmdModule === 'function') cmdModule()
 }
-

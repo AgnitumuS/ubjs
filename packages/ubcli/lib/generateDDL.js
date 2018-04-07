@@ -22,7 +22,7 @@
      DDLGenerator(options)
 
  * @author pavel.mash
- * @module @unitybase/ubcli/generateDDL
+ * @module generateDDL
  */
 const _ = require('lodash')
 const fs = require('fs')
