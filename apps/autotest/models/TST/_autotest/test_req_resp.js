@@ -53,14 +53,14 @@ function testHTTP (conn, domain, session) {
   assert.equal(resp.statusCode, 200, 'echo binary - response status is 200')
   assert.deepEqual(resp.read('bin'), data.buffer, 'got the same text as send')
 
-  let t = Date.now()
-  conn.xhr({
-    endpoint: 'rest/tst_service/sleep3sec',
-    method: 'POST',
-    URLParams: {async: true},
-    data: {test: 1}
-  })
-  assert.ok(Date.now() - t < 2000, 'async call should respond quickly')
+  // let t = Date.now()
+  // conn.xhr({
+  //   endpoint: 'rest/tst_service/sleep3sec',
+  //   method: 'POST',
+  //   URLParams: {async: true},
+  //   data: {test: 1}
+  // })
+  // assert.ok(Date.now() - t < 2000, 'async call should respond quickly')
 }
 
 /**
@@ -76,7 +76,20 @@ function testRest (conn) {
   assert.throws(invalidRestCall, /Not Implemented/, 'Should throw on rest without method')
   let d = conn.xhr({
     endpoint: 'rest/tst_service/restTest',
-    HTTPMethod: 'POST'
+    HTTPMethod: 'PUT',
+    data: 'put test data'
+  })
+  assert.ok(typeof d === 'object', 'rest call convention fail')
+  let d1 = conn.xhr({
+    endpoint: 'rest/tst_service/restTest',
+    HTTPMethod: 'GET',
+    data: 'put test data'
+  })
+  assert.ok(typeof d === 'object', 'rest call convention fail')
+  let d2 = conn.xhr({
+    endpoint: 'rest/tst_service/restTest',
+    HTTPMethod: 'POST',
+    data: 'put test data'
   })
   assert.ok(typeof d === 'object', 'rest call convention fail')
 }
