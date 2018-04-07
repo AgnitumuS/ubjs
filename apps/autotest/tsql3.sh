@@ -1,6 +1,14 @@
 #!/bin/sh
 
-PORT=8881
+# Reverse proxy configuration
+if [ -z "$UB_RP_CONFIG" ]; then
+  UB_RP_CONFIG=$(pwd)/rp-config-disable.json
+fi
+
+# Host configuration (set UB_HOST in case of reverse proxy)
+if [ -z "$UB_HOST" ]; then
+  UB_HOST=http://localhost:8881
+fi
 
 err()
 {
@@ -36,19 +44,19 @@ fi
 npx ubcli createStore -cfg $UB_CFG -noLogo
 if [ ! $? = 0 ]; then err; fi
 
-npx ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -u admin -p admin -drop -create
+npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -u admin -p admin -drop -create
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=generateDDL
-npx ubcli generateDDL -host http://localhost:$PORT -cfg $UB_CFG -u admin -p admin -autorun
+npx ubcli generateDDL -cfg $UB_CFG -u admin -p admin -autorun
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=initialize
-npx ubcli initialize -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT
+npx ubcli initialize -cfg $UB_CFG -u admin -p admin
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=autotest
-npx ubcli autotest -cfg $UB_CFG -u admin -p admin -host http://localhost:$PORT -noLogo -skipModules
+npx ubcli autotest -cfg $UB_CFG -u admin -p admin -noLogo -skipModules
 if [ ! $? = 0 ]; then
   cat ./_autotestResults.json;
   err;

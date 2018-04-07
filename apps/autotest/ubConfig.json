@@ -1,18 +1,13 @@
-{ 
+{
 	"httpServer": {
-		/*"serverType": "Socket",
-		"reverseProxy": {
-			"kind": "nginx",
-			"remoteIPHeader": "X-Real-IP",
-			"sendFileHeader": "X-Accel-Redirect",
-			"sendFileLocationRoot": "ubstatic-autotest"
-		},*/
+		//"serverType": "Socket",
+		#include(%UB_RP_CONFIG%)
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": "./inetPub/",		
+		"inetPub": "./inetPub/",
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
