@@ -6,6 +6,10 @@ if [%UB_HOST%]==[] (
   SET UB_HOST=http://localhost:8881
 )
 
+if [%UB_RP_CONFIG%]==[] (
+  SET UB_RP_CONFIG=./rp-config-disable.json
+)
+
 if exist .\_autotestResults.json del .\_autotestResults.json
 if exist .\last_result.log del .\last_result.log
 
