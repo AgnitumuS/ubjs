@@ -53,6 +53,7 @@ test('Add Desktop', async t => {
   }
 
   // Verify that new desktop is displayed on the grid
+  await grid.reload()
   testDesktopRow = await grid.rows.getIdByAttr('code', 'test_desktop_code')
   await t.expect(Selector(testDesktopRow).exists).ok(`Desktop with ${testDesktopRow} id not displayed on grid`)
 
@@ -83,6 +84,9 @@ test('Move folder and shortcut to Desktop', async t => {
   // if not exist - create or remove
   let leftPanel = ext.leftPanel
   await leftPanel.load()
+  leftPanel.desktopMenuBtn.click()
+  leftPanel.selectDesktopMenuItem('adm_desktop')
+  await leftPanel.load()
   let testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder')
   let sel = await Selector(testFolderID).exists
   if (!sel) {
@@ -98,10 +102,13 @@ test('Move folder and shortcut to Desktop', async t => {
     await loginWindow.load()
     loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
     loginWindow.loginBtnClick()
+    await leftPanel.load()
+    leftPanel.desktopMenuBtn.click()
+    leftPanel.selectDesktopMenuItem('adm_desktop')
   }
 
   // Select existing Folder with Shortcut on sidebar menu
-  await leftPanel.load()
+
   let idMenu = await leftPanel.treeItems.getIdByAttr('code', 'test_folder_code')
   await t.rightClick(idMenu)
   leftPanel.contextMenuItem('Edit').click()
@@ -110,6 +117,7 @@ test('Move folder and shortcut to Desktop', async t => {
   await baseWindow.load()
   baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
   // Click button 'Save and close'
+
   baseWindow.getFormAction('saveAndClose').click()
 
   // check if form saved without errors

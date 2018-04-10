@@ -116,6 +116,7 @@ class TabPanel {
     let queryCode = (xtype === 'basepanel')
       ? await this.getFormPanelQuery(params)
       : `entitygridpanel[entityName=${params.entityName}]`
+    await Selector('#ubCenterViewport')()
     let childID = await ClientFunction((q) => {
       if (Ext.ComponentQuery.query(q)[0]) {
         return Ext.ComponentQuery.query(q)[0].id
@@ -564,19 +565,14 @@ class ItemSelector {
         })
       }
       if (fieldObj.xtype === 'ubcombobox') {
-        fieldObj.store.load().done(() => {
-          let store = (queryCode === 'basewindow')
-            ? fieldObj.store.data.items[0].store.data.items
-            : fieldObj.store.data.items
-
-          if (store.length) {
-            store.forEach(item => {
-              if (item.data.caption === value) {
-                return fieldObj.setValue(item.data.ID)
-              } else return fieldObj.setValue('')
-            })
-          }
-        })
+        return UB.Repository(fieldObj.store.ubRequest.entity).attrs('ID', 'caption')
+          .where('caption', '=', value).selectSingle()
+          .then(record => {
+            if (record) {
+              fieldObj.setRawValue(record.caption)
+              fieldObj.setValue(record.ID)
+            } else return fieldObj.setValue('')
+          })
       } else fieldObj.setValue(value)
     })
     await elValue(this.queryCode, value, attr)

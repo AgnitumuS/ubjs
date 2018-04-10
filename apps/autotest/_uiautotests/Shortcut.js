@@ -39,6 +39,9 @@ test('Add Shortcut based on existing Shortcut', async t => {
   // Open Shortcuts' context menu and click button 'Add shortcut'
   let leftPanel = ext.leftPanel
   await leftPanel.load()
+  leftPanel.desktopMenuBtn.click()
+  leftPanel.selectDesktopMenuItem('adm_desktop')
+  await leftPanel.load()
   let idMenu = await leftPanel.treeItems.getIdByAttr('code', 'uba_user')
   await t.rightClick(idMenu)
   leftPanel.contextMenuItem('addShortcut').click()
