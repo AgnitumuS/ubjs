@@ -1297,12 +1297,12 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   this.mapping = undefined
 
   if (attributeInfo.mapping) {
+    let me = this
     let mappingKeys = Object.keys(attributeInfo.mapping)
-    mappingKeys.forEach(key => {
-      if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${entity.code}.${this.code} mapping`)
+    mappingKeys.forEach(function (key) {
+      if (!UBDomain.dialectsPriority[key]) throw new Error(`Invalid dialect ${key} in ${entity.code}.${me.code} mapping`)
     })
     if (mappingKeys.length) {
-      let me = this
       let dialectsPriority = UBDomain.dialectsPriority[this.entity.connectionConfig.dialect]
       _.forEach(dialectsPriority, function (dialect) {
         if (attributeInfo.mapping[dialect]) {

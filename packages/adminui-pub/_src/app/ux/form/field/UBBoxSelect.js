@@ -286,6 +286,7 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
     var me = this
     var originalReq, ids
     if (!id) {
+      me.setValue(id)
       if (isDefault) {
         me.resetOriginalValue()
       }
