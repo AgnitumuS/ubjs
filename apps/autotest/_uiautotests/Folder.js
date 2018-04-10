@@ -85,7 +85,7 @@ test('Move Shortcut to Folder', async t => {
     loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
-  // chech if shortcut and folder is exist
+  // check if shortcut and folder is exist
   await insertShortcut('test_code_folder', 'test_folder', 'test_desktop_code')
   await insertShortcut('test_code_shortcut1', 'test_shortcut1', 'test_desktop_code')
 
@@ -111,10 +111,11 @@ test('Move Shortcut to Folder', async t => {
   let form = tabPanel.formPanel(formCode)
   // On the page, should be drop-down menu 'Папка ярлика'
   form.items.setValueToAttr('test_folder', 'parentID')
+  form.getFormAction('save').click()
   let folderFieldID = await form.items.getIdByAttr('attributeName', 'parentID')
-  // Verify that the correct folder dispayed on 'Папка ярлика' drop-down menu
+  // Verify that the correct folder displayed on 'Папка ярлика' drop-down menu
   let folderFieldValue = await form.items.getValueByID(folderFieldID)
-  await t.expect(folderFieldValue).eql('test_folder', 'folder of shortcut was nor set correctly')
+  await t.expect(folderFieldValue).eql('test_folder', 'folder of shortcut was not set correctly')
 })
 
 test('Move Shortcut from Folder', async t => {
