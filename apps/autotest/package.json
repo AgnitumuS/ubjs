@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo Manually run a .\\tsql3.cmd for test",
+    "test:ui": "npx testcafe \"chrome:headless\" ./_uiautotests/ui-test-all.js --screenshots ./screenshots --screenshots-on-fails",
     "ddl": "ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
@@ -55,7 +56,8 @@
   },
   "devDependencies": {
     "@unitybase/stubs": "^4.1.13",
-    "@unitybase/ubcli": "^1.2.8"
+    "@unitybase/ubcli": "^1.2.8",
+    "testcafe": "^0.19.1"
   },
   "engines": {
     "ub": "4.1.0-beta.5"
