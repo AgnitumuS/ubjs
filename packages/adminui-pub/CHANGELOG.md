@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [4.2.56]
+## [4.2.57]
 ## Fixed 
 - ubdetailgrid does not load store on boxready event if forceDataLoad is true 
 - ubboxselect erorr on getValue
