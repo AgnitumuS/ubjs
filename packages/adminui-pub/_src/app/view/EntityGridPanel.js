@@ -1212,7 +1212,7 @@ Ext.define('UB.view.EntityGridPanel', {
         me.setupActions()
         me.initPagingToolbar()
 
-        if (!me.store.isLoading() && !me.autoFilterActive) {
+        if (!me.store.isLoading() && !me.autoFilterActive && !me.forceDataLoad) {
           me.store.load()
         }
         if (me.notWriteChanges && me.GridSummary) {
