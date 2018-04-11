@@ -223,14 +223,19 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
    * @returns {*}
    */
   getValue: function (asObject) {
-    var value = this.callParent(arguments)
+    let me = this
+    let value = me.callParent(arguments)
+    let resultValue = []
     if (asObject) {
       return value
     }
     if (!value) {
       return value
     } else {
-      return UB.core.UBUtil.extractfromBrackets(Ext.JSON.encode(value))
+      _.forEach(value,function (elm) {
+        resultValue.push(_.isObject(elm) ? elm.get(me.valueField) : elm)
+      })
+      return UB.core.UBUtil.extractfromBrackets(JSON.stringify(resultValue))
     }
   },
 

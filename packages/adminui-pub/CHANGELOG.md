@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.2]
+## Fixed 
+- ubdetailgrid does not load store on boxready event if forceDataLoad is true 
+- ubboxselect erorr on getValue
+
 ## [4.2.56]
 ## Fixed 
  - in case value is empty during form refresh, `ubboxselet.value` will be set to null
