@@ -643,7 +643,7 @@
               },
               "statementCacheSize": {
                 "type": "number",
-                "description": "The number of prepared statements, cached by database driver on the client (UB) side",
+                "description": "The number of prepared statements, cached by database driver on the client (UB) side. 0 - disable cache (for PostgreSQL in case of multitenancy etc.)",
                 "default": 30
               },
               "driver": {
