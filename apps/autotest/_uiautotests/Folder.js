@@ -111,7 +111,7 @@ test('Move Shortcut to Folder', async t => {
   let form = tabPanel.formPanel(formCode)
   // On the page, should be drop-down menu 'Папка ярлика'
   form.items.setValueToAttr('test_folder', 'parentID')
-  form.getFormAction('save').click()
+  await form.getFormAction('save').click()
   let folderFieldID = await form.items.getIdByAttr('attributeName', 'parentID')
   // Verify that the correct folder displayed on 'Папка ярлика' drop-down menu
   let folderFieldValue = await form.items.getValueByID(folderFieldID)
