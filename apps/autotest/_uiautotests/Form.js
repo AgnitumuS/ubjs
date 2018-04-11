@@ -2,7 +2,7 @@ import { ExtSelector } from './ExtJSHelper/ExtJSSelector'
 import { getWindowError } from './ExtJSHelper/Preconditions'
 import { Selector } from 'testcafe'
 
-const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
+const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/ubadminui` //`http://localhost:888/adm-dev`
 
 fixture(`Form test`)
   .page(TEST_PAGE)
@@ -61,9 +61,12 @@ test('Check Pure ExtJS Form', async t => {
   // 'The visual designer do not work with type of this form.'
   let hidden = await form.checkVisualDesignerVisibility()
   let designerText = await form.checkVisualDesignerInnerText()
+  if(designerText.substr(-1) === '\n'){
+    designerText = designerText.slice(0, -1)
+  }
   await t
     .expect(hidden).eql(true, 'Visual designer is visible')
-    .expect(designerText).eql('The visual designer do not work with type of this form.\n'
+    .expect(designerText).eql('The visual designer do not work with type of this form.'
       , 'Visual designer contains an incorrect code')
 })
 
@@ -116,9 +119,12 @@ test('Check UB Form', async t => {
   // 'The visual designer do not work with type of this form.'
   let hidden = await form.checkVisualDesignerVisibility()
   let designerText = await form.checkVisualDesignerInnerText()
+  if (designerText.substr(-1) === '\n') {
+    designerText = designerText.slice(0, -1)
+  }
   await t
     .expect(hidden).eql(false, 'Visual designer is visible')
-    .expect(designerText).notEql('The visual designer do not work with type of this form.\n'
+    .expect(designerText).notEql('The visual designer do not work with type of this form.'
       , 'Visual designer contains an incorrect code')
 })
 

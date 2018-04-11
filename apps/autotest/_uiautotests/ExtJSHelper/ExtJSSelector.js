@@ -116,15 +116,17 @@ class TabPanel {
     let queryCode = (xtype === 'basepanel')
       ? await this.getFormPanelQuery(params)
       : `entitygridpanel[entityName=${params.entityName}]`
-    await Selector('#ubCenterViewport')()
+    await t
+      .expect(Selector('.x-panel').exists).ok()
+      .expect(Selector('.x-tabpanel-child').exists).ok()
     let childID = await ClientFunction((q) => {
       if (Ext.ComponentQuery.query(q)[0]) {
         return Ext.ComponentQuery.query(q)[0].id
-      } else return 'undefined'
+      } else return 'undefinedPanel'
     })(queryCode)
     childID = '#' + childID
     await Selector(childID)()
-    await t.expect(Selector(childID).exists).ok(`${xtype} with entityName ${params.entityName} is undefined`)
+    await t.expect(Selector(childID).exists).ok(`${xtype} with id ${childID} entityName ${params.entityName}  is undefined`)
     return queryCode
   }
 
@@ -136,7 +138,7 @@ class TabPanel {
    * @param {string} [params.instanceAttr]
    * @returns {string}
    */
-  getFormPanelQuery (params) {
+  async getFormPanelQuery (params) {
     if (!params.instanceCode) {
       return `basepanel[entityName=${params.entityName}][isNewInstance=true]`
     }
@@ -187,13 +189,19 @@ class EntityGrid {
    */
   async reload () {
     // не ожидает
-    // await ClientFunction((queryCode) => {
-    //   while (1) {
-    //     if (!Ext.ComponentQuery.query(queryCode)[0].store.loading) return
-    //   }
-    // })(this.queryCode)
-    // - так достаточно задержки, но нужно придумать нормальный алгоритм ожидания подгрузки таблицы
-    await Selector('ubdetailview')()
+    let storeLoad = ClientFunction((queryCode) => {
+      let requestParam = Ext.ComponentQuery.query(queryCode)[0].store.ubRequest
+      return UB.Repository(requestParam.entity).attrs('ID').selectSingle()
+        .then(record => { Ext.ComponentQuery.query(queryCode)[0].store.load().then(store => { return store }) })
+    })
+    await storeLoad(this.queryCode)
+    await t
+      .expect(Selector('.x-tabpanel-child').exists).ok()
+      .expect(Selector('.x-grid-view').exists).ok()
+
+
+// - так достаточно задержки, но нужно придумать нормальный алгоритм ожидания подгрузки таблицы
+// await Selector('ubdetailview')()
   }
 
   /**
@@ -237,7 +245,8 @@ class EntityGrid {
         if (item.menu) item.menu.hide()
       })
     })
-    await getIem(this.queryCode, params)
+    await
+      getIem(this.queryCode, params)
   }
 
   /**
@@ -278,7 +287,8 @@ class EntityGrid {
         })
       }
     })
-    await getIem(this.queryCode, params)
+    await
+      getIem(this.queryCode, params)
   }
 
   /**
@@ -348,7 +358,7 @@ class FormConstructor extends BasePanel {
    * returns this form 'Interface Definition' value
    * @returns {string}
    */
-  getFormDefEditorValue () {
+  async getFormDefEditorValue () {
     return ClientFunction((queryCode) => {
       return Ext.ComponentQuery.query(queryCode)[0].formDefEditor.rawValue
     })(this.queryCode)
@@ -361,7 +371,8 @@ class FormConstructor extends BasePanel {
    */
   async setFormDefEditorValue (value) {
     await ClientFunction((queryCode, value) => {
-      return Ext.ComponentQuery.query(queryCode)[0].formDefEditor.codeMirrorInstance.setValue(value)
+      let formDef = Ext.ComponentQuery.query(queryCode)[0].formDefEditor
+      if (formDef) return Ext.ComponentQuery.query(queryCode)[0].formDefEditor.codeMirrorInstance.setValue(value)
     })(this.queryCode, value)
   }
 
@@ -369,7 +380,7 @@ class FormConstructor extends BasePanel {
    * returns this form 'Method Definition' value
    * @returns {string}
    */
-  getFormCodeValue () {
+  async getFormCodeValue () {
     return ClientFunction((queryCode) => {
       return Ext.ComponentQuery.query(queryCode)[0].ubAttributeMap.formCode.ubCmp.rawValue
     })(this.queryCode)
@@ -379,7 +390,7 @@ class FormConstructor extends BasePanel {
    * check if this form Visual Designer is hidden
    * @returns {boolean}
    */
-  checkVisualDesignerVisibility () {
+  async checkVisualDesignerVisibility () {
     return ClientFunction((queryCode) => {
       return Ext.ComponentQuery.query(queryCode)[0].designer.hidden
     })(this.queryCode)
@@ -389,7 +400,7 @@ class FormConstructor extends BasePanel {
    * returns innerText of this forms Visual Designer
    * @returns {string}
    */
-  checkVisualDesignerInnerText () {
+  async checkVisualDesignerInnerText () {
     return ClientFunction((queryCode) => {
       return Ext.ComponentQuery.query(queryCode)[0].designer.ownerCt.el.dom.innerText
     })(this.queryCode)
@@ -439,7 +450,7 @@ class LeftPanel {
     return new ItemSelector(queryCode)
   }
 
-  getID () {
+  async getID () {
     let treeID = ClientFunction(() => {
       let id = `#${Ext.ComponentQuery.query('treeview')[0].id}`
       return id
@@ -500,7 +511,7 @@ class ItemSelector {
    * returns innerText of component`s DOM
    *@returns {string}
    */
-  innerText () {
+  async innerText () {
     let elText = ClientFunction((querycode) => {
       return Ext.ComponentQuery.query(querycode)[0].el.dom.innerText
     })
@@ -584,7 +595,7 @@ class ItemSelector {
    * @param {string} attrValue
    * @returns {string}
    */
-  getIdByAttr (attr, attrValue) {
+  async getIdByAttr (attr, attrValue) {
     let elID = ClientFunction((queryCode, attr, attrValue) => {
       let id
       let element = Ext.ComponentQuery.query(queryCode)
@@ -631,7 +642,7 @@ class ItemSelector {
     return elID(this.queryCode, attr, attrValue)
   }
 
-  getValueByID (id) {
+  async getValueByID (id) {
     let elValue = ClientFunction((querycode) => {
       return Ext.ComponentQuery.query(querycode)[0].rawValue
     })
