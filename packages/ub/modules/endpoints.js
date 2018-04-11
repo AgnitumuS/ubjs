@@ -357,7 +357,7 @@ function staticEp (req, resp) {
   }
 }
 
-const EXPECT_RESULT_RE = /^[\r\n\t]*(select|pragma)/i // start with optional RC LF TAB and when select or pragma
+const EXPECT_RESULT_RE = /^[ \r\n\t]*(select|pragma)/i // start with optional RC LF TAB or SPACE and when select or pragma
 /**
  * Run sql query on server side. Allowed from local IP's.
  *
