@@ -357,6 +357,7 @@ function staticEp (req, resp) {
   }
 }
 
+const EXPECT_RESULT_RE = /^[ \r\n\t]*(select|pragma)/i // start with optional RC LF TAB or SPACE and when select or pragma
 /**
  * Run sql query on server side. Allowed from local IP's.
  *
@@ -392,9 +393,7 @@ function runSQLEp (req, resp) {
   }
 
   if (!sql) throw new Error('runSQL: statement is empty')
-
-  let upperStmt = sql.toUpperCase()
-  if (upperStmt.startsWith('SELECT') || upperStmt.startsWith('PRAGMA')) {
+  if (EXPECT_RESULT_RE.test(sql)) {
     let result = conn.run(sql, sqlParams)
     resp.writeEnd(result)
   } else {

@@ -332,6 +332,16 @@ function setDocumentEndpoint (req, resp) {
 
 /**
  * Server-side method for putting BLOB content to BLOB store temporary storage
+ * @example
+
+ // convert base64 encoded string stored in `prm.signature` to binary and put to the store
+ docContent = App.blobStores.putContent({
+   entity: 'iit_signature',
+   attribute: 'signature',
+   ID: ID,
+   fileName: ID + '.p7s'
+ }, Buffer.from(prm.signature, 'base64'))
+
  * @param {BlobStoreRequest} request
  * @param {ArrayBuffer|String} content
  * @return {BlobStoreItem}
