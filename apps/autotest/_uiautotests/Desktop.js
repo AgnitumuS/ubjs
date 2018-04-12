@@ -16,15 +16,15 @@ test('Add Desktop', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // Open top navbar menu Administrator / UI / Desktops
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_desktop').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_desktop').click()
 
   // Click button 'Add'
   let tabPanel = ext.tabPanel
@@ -36,14 +36,14 @@ test('Add Desktop', async t => {
   if (sel) {
     deleteExistDesktop('test_desktop_code')
   }
-  grid.getGridAction('addNew').click()
+  await grid.getGridAction('addNew').click()
 
   // Fill a field 'Desktop name', Fill a field 'Code', Click button 'Save and close'
   let formCode = await tabPanel.loadTabPanelChild('basepanel', {entityName: 'ubm_desktop'})
   let form = tabPanel.formPanel(formCode)
   form.items.setValueToAttr('test_desktop_name', 'caption')
   form.items.setValueToAttr('test_desktop_code', 'code')
-  form.getFormAction('saveAndClose').click()
+  await form.getFormAction('saveAndClose').click()
 
   // check if form saved without errors
   const e = await t.getBrowserConsoleMessages()
@@ -60,8 +60,8 @@ test('Add Desktop', async t => {
   // Re-login to the system
   await t.navigateTo(TEST_PAGE)
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // Verify that new Desktop is displayed on top navbar and on left sidebar's drop-down menu
   await mainToolbar.load()
@@ -69,23 +69,23 @@ test('Add Desktop', async t => {
 
   let leftPanel = ext.leftPanel
   await leftPanel.load()
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('test_desktop_code')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('test_desktop_code')
 })
 
 test('Move folder and shortcut to Desktop', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // check if test folder with shortcut is exist in Administrator desktop
   // if not exist - create or remove
   let leftPanel = ext.leftPanel
   await leftPanel.load()
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('adm_desktop')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('adm_desktop')
   await leftPanel.load()
   let testFolderID = await leftPanel.treeItems.getIdByAttr('code', 'test_folder')
   let sel = await Selector(testFolderID).exists
@@ -100,25 +100,25 @@ test('Move folder and shortcut to Desktop', async t => {
     await checkIsShortcutInFolder(conditionParams)
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await leftPanel.load()
-    leftPanel.desktopMenuBtn.click()
-    leftPanel.selectDesktopMenuItem('adm_desktop')
+    await leftPanel.desktopMenuBtn.click()
+    await leftPanel.selectDesktopMenuItem('adm_desktop')
   }
 
   // Select existing Folder with Shortcut on sidebar menu
 
   let idMenu = await leftPanel.treeItems.getIdByAttr('code', 'test_folder_code')
   await t.rightClick(idMenu)
-  leftPanel.contextMenuItem('Edit').click()
+  await leftPanel.contextMenuItem('Edit').click()
   // Сhange Desktop on "Desktop" drop-down menu
   let baseWindow = ext.baseWindow
   await baseWindow.load()
-  baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
+  await baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
   // Click button 'Save and close'
 
-  baseWindow.getFormAction('saveAndClose').click()
+  await baseWindow.getFormAction('saveAndClose').click()
 
   // check if form saved without errors
   const e = await t.getBrowserConsoleMessages()
@@ -129,13 +129,13 @@ test('Move folder and shortcut to Desktop', async t => {
   // Reload browser
   await t.navigateTo(TEST_PAGE)
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // Switch the Desktop in the left sidebar drop-down menu which the folder was moved
   await leftPanel.load()
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('test_desktop_code')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('test_desktop_code')
 
   // Verify that only folder is available on selected Desktop
   await leftPanel.load()
@@ -147,13 +147,13 @@ test('Move folder and shortcut to Desktop', async t => {
 
   // Select Desktop on top navbar which the folder was moved
   let mainToolbar = ext.mainToolbar
-  mainToolbar.desktopMenuBtn('test_desktop_code').click()
-  mainToolbar.menuItem('test_folder_code').click()
+  await mainToolbar.desktopMenuBtn('test_desktop_code').click()
+  await mainToolbar.menuItem('test_folder_code').click()
 
   // Open top navbar Administrator / UI / Shortcuts
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_navshortcut').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_navshortcut').click()
 
   // Open shortcut
   let tabPanel = ext.tabPanel
@@ -174,12 +174,12 @@ test('Move folder and shortcut to Desktop', async t => {
   form.items.setValueToAttr('test_desktop_name', 'desktopID')
 
   // Click button 'Save and close'
-  form.getFormAction('saveAndClose').click()
+  await form.getFormAction('saveAndClose').click()
   // Reload browser
   await t.navigateTo(TEST_PAGE)
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // Select new Desktop on left sidebar's drop-down menu
   await leftPanel.load()
@@ -194,8 +194,8 @@ test('Open Desktop details', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
@@ -208,15 +208,15 @@ test('Open Desktop details', async t => {
     await mainToolbar.load()
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
 
   // Open top navbar menu Administrator / UI / Desktops
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_desktop').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_desktop').click()
 
   // Select on existing Desktop
   let tabPanel = ext.tabPanel
@@ -226,7 +226,7 @@ test('Open Desktop details', async t => {
   let testDesktopRow = await grid.rows.getIdByAttr('code', 'test_desktop_code')
   await t.click(Selector(testDesktopRow))
   // Select menu All action / Detail / Shourtcut (Desktop) (on right top side)
-  grid.selectAllActionMenuItem({actionID: 'showDetail', entityName: 'ubm_navshortcut'})
+  await grid.selectAllActionMenuItem({actionID: 'showDetail', entityName: 'ubm_navshortcut'})
   gridCode = await tabPanel.loadTabPanelChild('entitygridpanel', {entityName: 'ubm_navshortcut'})
 
   // Select on Administrator desktop
@@ -242,8 +242,8 @@ test('Delete Desktop', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // Open top navbar menu Administrator / UI / Desktops
   let mainToolbar = ext.mainToolbar
@@ -257,14 +257,14 @@ test('Delete Desktop', async t => {
     await mainToolbar.load()
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
 
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_desktop').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_desktop').click()
 
   // Open context menu from existing Desktop and click 'Delete'
   let tabPanel = ext.tabPanel
@@ -286,7 +286,7 @@ test('Delete Desktop', async t => {
 
   // Open context menu from existing Desktop and click 'Delete'
   await t.rightClick(idTestDesktopRow)
-  grid.selectContextMenuItem({actionID: 'del'})
+  await grid.selectContextMenuItem({actionID: 'del'})
 
   // Click on button 'YES'
   await messageBox.selectAction('yes')
@@ -298,8 +298,8 @@ test('Delete Desktop', async t => {
   // Reload browser
   await t.navigateTo(TEST_PAGE)
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   desktopID = await mainToolbar.desktopMenuBtn('test_desktop_code').getIdByAttr()
   await t.expect(Selector(desktopID).exists).notOk('The desktop with code "test_desktop_code" was`nt removed from navbar')
@@ -309,22 +309,22 @@ test('All actions - Details (Not selected item)', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // Open top navbar menu Administrator / UI / Desktops
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_desktop').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_desktop').click()
 
   // Click "All actions" on the right corner, select  "Details" and click "Shortcut (Desktop)"
   let tabPanel = ext.tabPanel
   await tabPanel.load()
   let gridCode = await tabPanel.loadTabPanelChild('entitygridpanel', {entityName: 'ubm_desktop'})
   let grid = tabPanel.entityGridPanel(gridCode)
-  grid.selectAllActionMenuItem({actionID: 'showDetail', entityName: 'ubm_navshortcut'})
+  await grid.selectAllActionMenuItem({actionID: 'showDetail', entityName: 'ubm_navshortcut'})
 
   // Click "Ok"
   let messageBox = ext.messagebox

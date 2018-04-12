@@ -67,7 +67,7 @@ class TopMenu {
    * @returns {Promise.<void>}
    */
   async load () {
-    await Selector('.ub-header-menu-container')()
+    await t.expect(Selector('.ub-header-menu-container').exists).ok()
   }
 
   /**
@@ -119,10 +119,11 @@ class TabPanel {
     await t
       .expect(Selector('.x-panel').exists).ok()
       .expect(Selector('.x-tabpanel-child').exists).ok()
+      .expect(Selector('.x-panel-body').exists).ok()
     let childID = await ClientFunction((q) => {
-      if (Ext.ComponentQuery.query(q)[0]) {
+     // if (Ext.ComponentQuery.query(q)[0]) {
         return Ext.ComponentQuery.query(q)[0].id
-      } else return 'undefinedPanel'
+    //  } else return 'undefinedPanel'
     })(queryCode)
     childID = '#' + childID
     await Selector(childID)()
