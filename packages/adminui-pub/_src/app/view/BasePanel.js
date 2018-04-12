@@ -247,6 +247,13 @@ Ext.define('UB.view.BasePanel', {
    */
   postOnlySimpleAttributes: false,
 
+  /**
+   * Is open form was saved
+   * @property {boolean} formWasSaved
+   * @readonly
+   */
+  formWasSaved: false,
+
   initComponent: function () {
     var
             me = this
@@ -602,12 +609,12 @@ Ext.define('UB.view.BasePanel', {
    *  @private
    */
   onPanelClose: function () {
-    var me = this
+    let me = this
     if (me.onClose && typeof me.onClose === 'function') {
       if (me.isDeleted) {
-        me.onClose(null, me.store)
+        me.onClose(null, me.store, me.formWasSaved)
       } else {
-        me.onClose(me.isNewInstance ? null : me.instanceID, me.store)
+        me.onClose(me.isNewInstance ? null : me.instanceID, me.store, me.formWasSaved)
       }
     }
     me.fireEvent('beforeClose', me)
@@ -3292,7 +3299,7 @@ Ext.define('UB.view.BasePanel', {
 
           var wnd = me.getFormWin()
           if (wnd) delete wnd.newInstance
-
+          me.formWasSaved = true
           me.fireEvent('aftersave', me, result)
 
           /* todo remove this call */

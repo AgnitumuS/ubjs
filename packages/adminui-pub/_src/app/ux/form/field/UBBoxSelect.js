@@ -223,14 +223,19 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
    * @returns {*}
    */
   getValue: function (asObject) {
-    var value = this.callParent(arguments)
+    let me = this
+    let value = me.callParent(arguments)
+    let resultValue = []
     if (asObject) {
       return value
     }
     if (!value) {
       return value
     } else {
-      return UB.core.UBUtil.extractfromBrackets(Ext.JSON.encode(value))
+      _.forEach(value,function (elm) {
+        resultValue.push(_.isObject(elm) ? elm.get(me.valueField) : elm)
+      })
+      return UB.core.UBUtil.extractfromBrackets(JSON.stringify(resultValue))
     }
   },
 
@@ -272,6 +277,7 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
     var me = this
     var originalReq, ids
     if (!id) {
+      me.setValue(id)
       if (isDefault) {
         me.resetOriginalValue()
       }
@@ -430,7 +436,6 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
     }
     me.onDataRefreshed()
     if (me.inputEl) {
-      me.inputEl.focus()
       if (me.inputEl.getValue()) {
         strLength = me.inputEl.getValue().length
         me.inputEl.dom.setSelectionRange(strLength, strLength)

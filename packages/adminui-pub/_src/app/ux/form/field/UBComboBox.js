@@ -579,7 +579,6 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
     var store = me.getStore()
     function doSetValue (record, setNull) {
-      me.clearValue()
       if (setNull || record || me.store.getById(id)) {
         me.setValue(setNull ? null : record || id)
       }

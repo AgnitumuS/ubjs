@@ -4,9 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.3.2]
+## Fixed 
+- ubdetailgrid does not load store on boxready event if forceDataLoad is true 
+- ubboxselect erorr on getValue
+
+## [4.2.56]
+## Fixed 
+ - in case value is empty during form refresh, `ubboxselet.value` will be set to null
+
 ## [4.2.56]
 ## Fixed 
 - use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
+- in UBComboBox remove clearValue when call doSetValue 
+### Added
+- in BasePanel add property formWasSaved, set 'true' when open form was saved 
+## Changed
+- remove set focuse for ubboxselect after load store
 
 ## [4.2.54]
 ## Fixed 

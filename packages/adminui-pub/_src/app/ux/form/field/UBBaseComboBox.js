@@ -354,8 +354,8 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
       store: store,
       isModal: true,
       sender: me,
-      onClose: function (itemID, store) {
-        if (!me.readOnly) {
+      onClose: function (itemID, store, formWasSaved) {
+        if (!me.readOnly && formWasSaved) {
           me.setValue(null)
           me.getStore().clearData()
           me.setValueById(itemID || instanceID)

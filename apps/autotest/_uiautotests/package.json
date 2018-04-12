@@ -1,0 +1,13 @@
+{
+  "name": "_uiautotests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Desktop.js",
+  "scripts": {
+    "UItest": "testcafe \"chrome:headless\" Shortcut.js Folder.js Desktop.js Form.js",
+    "UItest:screenshots": "testcafe \"chrome:headless\" Shortcut.js Folder.js Desktop.js Form.js --screenshots ./screenshots --screenshots-on-fails"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
