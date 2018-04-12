@@ -359,6 +359,7 @@ PrintToPdf.isUnitValue = function (value) {
  * Example:
  *
  *      pdf.parseBorder('1px 2px 1px 3px'); //when base measure is 'px' return {top: 1, right: 2, bottom: 1, left: 3}
+ *      pdf.parseBorder('3'); //when base measure is 'px' return {top: 3, right: 3, bottom: 3, left: 3}
  *
  * @param {String} val
  * @returns {{ left: String|number, top: String|number, bottom: String|number, right: String|number}}
@@ -379,8 +380,17 @@ PrintToPdf.prototype.parseBorder = function (val) {
       }
     } else if (PrintToPdf.isUnitValue(val)) {
       return {top: pm(val), right: pm(val), bottom: pm(val), left: pm(val)}
+    } else if (typeof parseInt(val, 2) === 'number') {
+      // in case when val = "0"
+      const defaultMeasure = parseInt(val, 2) + 'px'
+      return {
+        top: pm(defaultMeasure),
+        right: pm(defaultMeasure),
+        bottom: pm(defaultMeasure),
+        left: pm(defaultMeasure)
+      }
     } else {
-      throw new Error('MPV: this code do nothing')
+      throw new Error('Unknown format for tag: border = "' + val + '"')
       // // old format
       // var result = {left: 0, top: 0, bottom: 0, right: 0}
       // dimension = 'px'
