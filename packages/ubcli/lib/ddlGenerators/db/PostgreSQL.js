@@ -586,15 +586,6 @@ ORDER BY index_id, column_position`
     }
   }
 
-  // /** @override */
-  // compareDefault (dataType, newValue, oldValue, constraintName, oldConstraintName) {
-  //   if (typeof oldValue === 'string') {
-  //     // special case for MS SQL datetime function: CONVERT(datetime,''31.12.9999'',(104)) but DB return CONVERT([datetime],''31.12.9999'',(104))
-  //     oldValue = oldValue.toString().trim().replace('[datetime]', 'datetime')
-  //   }
-  //   return super.compareDefault(dataType, newValue, oldValue, constraintName, oldConstraintName)
-  // }
-
   /**
    * Generate a column type DDL part
    * @override

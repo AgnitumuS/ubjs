@@ -244,7 +244,7 @@ UBDomain.prototype.ubDataTypes = UBDomain.ubDataTypes
 /**
  * Types of expressions in attribute mapping
  * @readonly
- * @private
+ * @protected
  * @enum
  */
 UBDomain.ExpressionType = {

@@ -582,7 +582,7 @@ class DBAbstract {
     return res
   }
 
-  compareDefault (dataType, mustBeDefault, asIsDefault, mustBeConstraintName, asIsConstraintName) {
+  compareDefault (dataType, mustBeDefault, asIsDefault) {
     if (!mustBeDefault && !asIsDefault) return false
     return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) && (`(${mustBeDefault})` !== asIsDefault)
   }

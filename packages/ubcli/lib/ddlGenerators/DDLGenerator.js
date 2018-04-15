@@ -20,7 +20,7 @@ function getTableDBName (entity) {
  * @param {string} sourceTableName
  * @param {string} sourceColumnName
  * @param {string} destTableName
- * @param {DDLGenerator.dbDialectes} dialect
+ * @param {string|DDLGenerator.dbDialectes} dialect
  * @return {string}
  */
 function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
@@ -79,26 +79,14 @@ function getAttributeDBName (entity, attributeCode) {
 }
 
 function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory, storage) {
-  var xDef = {
+  let xDef = {
     isUnique: true,
     name: formatName('UIDX_', sqlAlias, `_${attrName.toUpperCase()}`, dialect),
     keys: [ attrName ]
   }
-  if (isHistory) {
-    xDef.keys.push('mi_dateFrom')
-    // если елемент уникален то никак ни в рамках истории одного элемента
+  if (isHistory) xDef.keys.push('mi_dateFrom')
     // xDef.keys.push('mi_data_id');
-  }
-  if (storage.safeDelete) {
-    if (DDLGenerator.isPostgre(dialect)) {
-      // felix 29.10.2013 TODO После переделки на COALESCE стало невозможно сравнить индексы на postgres,
-      // рассматривается вариант перехода на ненулевое значение. Пока временно возвращено поле без COALESCE
-      // xDef.keys.push("COALESCE(mi_deletedate, TIMESTAMP WITH TIME ZONE 'epoch')");
-      xDef.keys.push('mi_deleteDate')
-    } else {
-      xDef.keys.push('mi_deleteDate')
-    }
-  }
+  if (storage.safeDelete) xDef.keys.push('mi_deleteDate')
   tableDef.addIndex(xDef)
 }
 
@@ -107,7 +95,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
  * @param prefix
  * @param root
  * @param suffix
- * @param {DDLGenerator.dbDialectes} dialect
+ * @param {string|DDLGenerator.dbDialectes} dialect One of DDLGenerator.dbDialectes
  * @returns {*}
  */
 function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
@@ -229,7 +217,6 @@ class DDLGenerator {
     })
 
     let defaultLang = conn.getAppInfo().defaultLang
-    // generateIndexForPK = (dialect === TubSQLDialect.Oracle);
 
     _.forEach(entity.attributes,
       /** @param {UBEntityAttribute} attribute
@@ -620,10 +607,6 @@ class DDLGenerator {
 
   static isEqualStrings (a, b) {
     return _.isString(a) && _.isString(b) && (a.toUpperCase() === b.toUpperCase())
-  }
-
-  static isEqualArrayKey (array1, array2) {
-    return _.isEqual(array1, array2)
   }
 }
 

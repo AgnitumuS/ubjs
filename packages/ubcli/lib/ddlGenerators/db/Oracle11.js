@@ -34,7 +34,7 @@ class DBOracle extends DBAbstract {
     for (let tabDef of dbTables) {
       let asIsTable = new TableDefinition({
         name: tabDef.NAME,
-        caption: tabDef.CAPTION
+        caption: tabDef['CAPTION']
       })
 
       //   -- tc.data_length,
@@ -66,7 +66,7 @@ order by tc.column_id`
         let def = colDef['DEFVALUE'] ? colDef['DEFVALUE'].trim() : colDef['DEFVALUE']
         let nObj = {
           name: colDef.NAME,
-          description: colDef.DESCRIPTION,
+          description: colDef['DESCRIPTION'],
           allowNull: (colDef['NULLABLE'] === 'Y'),
           dataType: this.dataBaseTypeToUni(colDef['TYPENAME'], colDef['LEN'], colDef['PREC'], colDef['SCALE']),
           size: (['varchar2', 'nvarchar2', 'character varying', 'nvarchar', 'varchar', 'char', 'nchar', 'clob', 'nclob']

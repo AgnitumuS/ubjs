@@ -130,14 +130,6 @@ class TableDefinition {
 
   /**
    * @param {string} name
-   * @return {number}
-   */
-  getIndexIndexByName (name) {
-    return _.findIndex(this.indexes, {_upperName: name.toUpperCase()})
-  }
-
-  /**
-   * @param {string} name
    * @return {IndexAttributes}
    */
   indexByName (name) {
@@ -159,19 +151,6 @@ class TableDefinition {
       }
     }
     return resultIdx
-  }
-
-  /**
-   * @param {IndexAttributes} refObj
-   * @return {IndexAttributes|null}
-   */
-  findEqualIndexByParam (refObj) {
-    for (let idxObj of this.indexes) {
-      if (_.isEqual(idxObj.keys, refObj.keys) && ((idxObj.isUnique || false) === (refObj.isUnique || false))) {
-        return idxObj
-      }
-    }
-    return null
   }
 
   /**
@@ -205,10 +184,6 @@ class TableDefinition {
     return obj
   }
 
-  getFKIndexByName (fkName) {
-    return _.findIndex(this.foreignKeys, {_upperName: fkName.toUpperCase()})
-  }
-
   /**
    * @param fkName
    * @return {FKAttributes}
@@ -226,15 +201,6 @@ class TableDefinition {
       }
     }
     return []
-  }
-
-  findEqualFKByParam (refObj) {
-    for (let fkObj of this.foreignKeys) {
-      if (_.isEqual(fkObj.keys, refObj.keys) && strIComp(fkObj.references, refObj.references)) {
-        return fkObj
-      }
-    }
-    return null
   }
 
   addCheckConstr (obj, checkName) {

@@ -547,12 +547,12 @@ class DBSQL2012 extends DBAbstract {
   }
 
   /** @override */
-  compareDefault (dataType, newValue, oldValue, constraintName, oldConstraintName) {
+  compareDefault (dataType, newValue, oldValue) {
     if (typeof oldValue === 'string') {
       // special case for MS SQL datetime function: CONVERT(datetime,''31.12.9999'',(104)) but DB return CONVERT([datetime],''31.12.9999'',(104))
       oldValue = oldValue.toString().trim().replace('[datetime]', 'datetime')
     }
-    return super.compareDefault(dataType, newValue, oldValue, constraintName, oldConstraintName)
+    return super.compareDefault(dataType, newValue, oldValue)
   }
 }
 
