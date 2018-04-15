@@ -158,13 +158,14 @@
 				"name": "main",
 				"driver": "PostgreSQL",
 				"isDefault": true,
+				"statementCacheSize": 0,
 				"dialect": "PostgreSQL",
 				"serverName": "postgresql://localhost:5432",
 				"databaseName": "postgres",
 				"userID": "ub_autotest",
 				"password": "ub_autotest",
 				"supportLang": ["en", "uk"],
-				"advSettings": "LibLocation=D:\\apps\\PostgreSQL10\\bin\\libpq.dll"
+				"advSettings": "LibLocation=D:\\dist\\pgsql10-3-2-x64\\bin\\libpq.dll"
 			},
 			{
 				"name": "ftsDefault",
