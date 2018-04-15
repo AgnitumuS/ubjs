@@ -597,6 +597,10 @@ class DBAbstract {
     let constraint = table.getFKByColumnName(column.name)
     if (constraint.length > 0) {
       constraint = constraint[0]
+      // The default value for a column that references itself. For example mi_data_id in history mixin
+      if (table.name === constraint.references) {
+        return 'ID'
+      }
       return `(select min(id) from ${constraint.references})`
     }
     if (column.enumGroup) {
