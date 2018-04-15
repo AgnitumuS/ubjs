@@ -16,7 +16,6 @@
     "@unitybase/adminui-reg": "^5.0.4",
     "@unitybase/cs-shared": "^5.0.1",
     "@unitybase/base": "^5.0.4",
-    "@unitybase/canvas": "^5.0.4",
     "@unitybase/cdn": "^5.0.4",
     "@unitybase/codemirror-full": "^1.2.13",
     "@unitybase/cryptojs": "^1.0.13",
