@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.2]
+### Fixed
+- correctly generate a check constraints defined in `dbExtensions` section of entity metadata
+
 ## [1.2.7]
 ### Fixed 
 - PostgreSQl DDL generator: DROP INDEX script syntax

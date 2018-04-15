@@ -241,7 +241,7 @@ class TableDefinition {
     let idxIndex = -1
     obj._upperName = obj.name.toUpperCase()
     if (checkName) {
-      idxIndex = _.find(this.checkConstraints, { _upperName: obj._upperName })
+      idxIndex = _.findIndex(this.checkConstraints, { _upperName: obj._upperName })
     }
     if (idxIndex !== -1) {
       this.checkConstraints[ idxIndex ] = obj
