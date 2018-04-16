@@ -252,7 +252,9 @@ where
       return column.isString
         ? (!column.defaultValue && (column.refTable || column.enumGroup)
           ? v.replace(/'/g, "''")
-          : "''" + v.replace(/'/g, '') + "''")
+          : v === 'ID'
+            ? 'ID' // do not quoter ID
+            : "''" + v.replace(/'/g, '') + "''")
         : v
       //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }
