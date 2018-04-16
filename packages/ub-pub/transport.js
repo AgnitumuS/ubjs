@@ -250,8 +250,6 @@ function xhr (requestConfig) {
   serverRequest = function (config) {
     headers = config.headers
     let reqData = transformData(config.data, headersGetter(headers), config.transformRequest)
-    let prevReqTime = __lastRequestTime
-    __lastRequestTime = Date.now()
     // strip content-type if data is undefined
     if (!config.data) {
       forEach(headers, function (value, header) {
@@ -263,6 +261,8 @@ function xhr (requestConfig) {
       // prevent reiteration sending of the same request
       // for example if HTML button on the form got a focus and `space` pressed
       // in case button not disabled inside `onclick` handler we got a many-many same requests
+      let prevReqTime = __lastRequestTime
+      __lastRequestTime = Date.now()
       if ((__lastRequestURL === config.url) && (typeof reqData === 'string') && (__lastRequestData === reqData) && (__lastRequestTime - prevReqTime < 100)) {
         throw new ubUtils.UBError('monkeyRequestsDetected')
       } else {
