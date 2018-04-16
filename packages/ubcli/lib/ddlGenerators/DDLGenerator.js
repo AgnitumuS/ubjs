@@ -383,6 +383,12 @@ class DDLGenerator {
     let haveDeleteDateInFields = false
     let dialect = entity.connectionConfig.dialect
     let isHistory = entity.mixins.dataHistory
+    function formatBrackets (stringToFormat, ...values) {
+      const FORMAT_RE = /{(\d+)}/g
+      return stringToFormat.replace(FORMAT_RE, function (m, i) {
+        return values[i]
+      })
+    }
     if (entity.dbKeys) {
       dbKeys = entity.dbKeys
       _.forEach(dbKeys, (fields, dbKey) => {
@@ -390,7 +396,11 @@ class DDLGenerator {
         _.forEach(fields, (options, field) => {
           let fieldKey = field
           if (options.func && ((DDLGenerator.isOracle(dialect)) || (DDLGenerator.isPostgre(dialect)))) {
-            fieldKey = options.func + '(' + fieldKey + ')'
+            if (options.func.indexOf('{0}') === -1) {
+              fieldKey = options.func + '(' + fieldKey + ')'
+            } else {
+              fieldKey = formatBrackets(options.func, fieldKey)
+            }
           }
           if (options.sort && (DDLGenerator.isEqualStrings(options.sort, 'DESC'))) {
             fieldKey += ' DESC'
@@ -422,7 +432,11 @@ class DDLGenerator {
               objDef = {name: dbKey, keys: [], isUnique: definition.isUnique}
               _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
                 if (fKeyOptions.func && ((DDLGenerator.isOracle(dialect)) || (DDLGenerator.isPostgre(dialect)))) {
-                  fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
+                  if (fKeyOptions.func.indexOf('{0}') === -1) {
+                    fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
+                  } else {
+                    fkeyText = formatBrackets(fKeyOptions.func, fkeyText)
+                  }
                 }
                 if (fKeyOptions.sort && (DDLGenerator.isEqualStrings(fKeyOptions.sort, 'DESC'))) {
                   fkeyText += ' DESC'
