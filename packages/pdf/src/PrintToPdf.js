@@ -381,7 +381,7 @@ PrintToPdf.prototype.parseBorder = function (val) {
     } else if (PrintToPdf.isUnitValue(val)) {
       return {top: pm(val), right: pm(val), bottom: pm(val), left: pm(val)}
     } else if (typeof parseInt(val, 2) === 'number') {
-      // in case when val = "0"
+      // in case val = "0"
       const defaultMeasure = parseInt(val, 2) + 'px'
       return {
         top: pm(defaultMeasure),
