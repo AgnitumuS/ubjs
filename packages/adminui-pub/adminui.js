@@ -39,16 +39,12 @@ Ext.Loader.setConfig({
   enabled: true,
   disableCaching: false,
   paths: {
-    // 'Ext.ux': 'models/adminui-pub/_src/ux',
-    // 'UB': 'models/adminui-pub/_src/app'
     'Ext.ux': '@unitybase/adminui-pub/_src/ux',
     'UB': '@unitybase/adminui-pub/_src/app'
   }
 })
 
-let launcher = require('./_src/app.js')
-launcher()
+let {launchApp, $App} = require('./_src/app.js')
+launchApp()
 
-module.exports = {
-  UB: UB
-}
+module.exports = $App

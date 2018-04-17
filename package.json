@@ -26,6 +26,7 @@
   "scripts": {
     "clean": "npx lerna clean --yes",
     "build:doc": "npx jsdoc -c ./jsdoc-conf.json --package ./package.json",
+    "build:adminuidoc": "npx jsdoc -c ./jsdoc-adminui-conf.json",
     "build": "npx lerna run build"
   },
   "engines": {

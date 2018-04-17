@@ -5,6 +5,8 @@
  */
 const Mustache = require('mustache')
 const formatFunctions = require('./formatFunctions')
+const UB = require('@unitybase/ub-pub')
+const $App = require('@unitybase/adminui-pub')
 const _ = require('lodash')
  /**
   * @constructor
@@ -65,7 +67,7 @@ UBReport.prototype.init = function () {
   if (me.isInited) {
     return Promise.resolve(true)
   }
-  let repository = UB.Repository('ubs_report')
+  let repository = $App.connection.Repository('ubs_report')
     .attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
     .where('[report_code]', '=', me.reportCode)
 

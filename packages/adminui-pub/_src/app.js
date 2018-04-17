@@ -1,8 +1,8 @@
 /* global SystemJS, Ext */
-require('./app/core/UBApp')
+const UB = require('@unitybase/ub-pub')
+const $App = require('./app/core/UBApp')
 require('./app/view/UBDropZone')
 require('./app/view/ErrorWindow')
-const UB = require('@unitybase/ub-pub')
 
 /**
  * Main UnityBase Ext-based client file
@@ -602,4 +602,8 @@ function launchApp () {
   }
 }
 
-module.exports = launchApp
+module.exports = {
+  launchApp,
+  /** @type {UB.core.UBApp} */
+  $App
+}

@@ -1,4 +1,5 @@
-/* global Ext, $App */
+/* global Ext */
+const UB = require('@unitybase/ub-pub')
 require('../view/LoginWindow.js')
 require('../../ux/window/Notification')
 require('../view/Viewport')
@@ -8,7 +9,6 @@ require('../view/cryptoUI/SelectCert')
 require('./UBStoreManager')
 
 const _ = require('lodash')
-const UB = require('@unitybase/ub-pub')
 
 const RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
 const RE_ENGLISH = /[A-Za-z]/
@@ -36,16 +36,11 @@ const RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
  *  - create {@link UB.view.Viewport viewport} - the main documnet DOM component
  *
  * @author UnityBase core team
+ * @namespace $App
  */
 Ext.define('UB.core.UBApp', {
   singleton: true,
 
-  requires: [
-    'Ext.Loader',
-    'UB.view.LoginWindow',
-    'UB.view.cryptoUI.ReadPK',
-    'Ext.ux.window.Notification'
-  ],
   uses: [
     'UB.core.UBCommand'
   ],
@@ -1064,3 +1059,5 @@ Ext.define('UB.core.UBApp', {
     document.getElementById('UBLogo').style.display = 'none'
   }
 })
+debugger
+module.exports = UB.core.UBApp

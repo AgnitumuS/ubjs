@@ -19,9 +19,11 @@ module.exports = {
     lodash: {
       commonjs: 'lodash',
       commonjs2: 'lodash',
-      amd: 'lodash',
-      root: '_'
-    }
+      amd: 'lodash'
+      //root: '_'
+    },
+    '@unitybase/ub-pub': 'UB',
+    '@unitybase/adminui-pub': '$App'
   },
   module: {
     rules: [{
@@ -53,7 +55,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true
-    }),
+    })/*,
 
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
@@ -68,6 +70,6 @@ module.exports = {
         drop_console: false, // true,
         unsafe: true
       }
-    })
+    })  */
   ]
 }
