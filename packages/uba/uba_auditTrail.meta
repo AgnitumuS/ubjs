@@ -2,7 +2,7 @@
 	"caption": "Audit",
 	"description": "Data changes audit trail",
 	"connectionName": "",
-	"sqlAlias": "aud",
+	"sqlAlias": "audtr",
 	"cacheType": "None",
 	"descriptionAttribute": "entity",
 	"documentation": "All DML statement for entity with mixin 'audit' logged here. Use 'autoimplementedMixins': ['audit'] in server config to apply audit for all entity",
