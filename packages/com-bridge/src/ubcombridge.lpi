@@ -25,7 +25,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3;$(ProjOutDir)"/>
-            <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse\SyNode\puv;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
             <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -86,7 +86,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
-      <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+      <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse\SyNode\puv;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
       <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

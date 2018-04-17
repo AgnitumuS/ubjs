@@ -27,7 +27,7 @@
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
             <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)\libs\Synopse\SyNode\puv;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
             <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -71,7 +71,7 @@
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
             <Libraries Value="$Env(UB_SRC)/bin/fpc-linux"/>
-            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)\libs\Synopse\SyNode\puv;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
             <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="// check compilation executed under windows
@@ -145,7 +145,7 @@ end;"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
-      <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
+      <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)\libs\Synopse\SyNode\puv;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib"/>
       <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
