@@ -23,9 +23,7 @@ Ext.define("Ext.ux.exporter.excelFormatter.Worksheet", {
   },
 
   /**
-   * @property dateFormatString
-   * @type String
-   * String used to format dates (defaults to "Y-m-d"). All other data types are left unmolested
+   * @property {string} dateFormatString String used to format dates (defaults to "Y-m-d"). All other data types are left unmolested
    */
   dateFormatString: "Y-m-d",
 
@@ -168,9 +166,7 @@ Ext.define("Ext.ux.exporter.excelFormatter.Worksheet", {
   },
 
   /**
-   * @property typeMappings
-   * @type Object
-   * Mappings from Ext.data.Record types to Excel types
+   * @property {Object} typeMappings Mappings from Ext.data.Record types to Excel types
    */
   typeMappings: {
     'int'   : "Number",

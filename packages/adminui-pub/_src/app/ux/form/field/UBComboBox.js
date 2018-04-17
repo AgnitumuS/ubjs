@@ -87,8 +87,8 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         // me.resizable = true;
 
         /**
-         * @event beforeQuerySend
          * Fires before the request sent to the server.
+         * @event beforeQuerySend
          * @param {Object} queryPlan An object containing details about the query to be executed.
          * @param {Ext.form.field.ComboBox} queryPlan.combo A reference to this ComboBox.
          * @param {String} queryPlan.query The query value to be used to match against the ComboBox's {@link #valueField}.
@@ -654,7 +654,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   /**
    * Get field value by name from fieldList
    * @param fieldName
-   * @returns
+   * @returns {*}
    */
   getFieldValue: function (fieldName) {
     return this.getValue() && this.lastSelection.length ? this.lastSelection[0].get(fieldName) : null

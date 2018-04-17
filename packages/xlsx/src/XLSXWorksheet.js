@@ -495,7 +495,7 @@ class XLSXWorksheet {
 
   /**
    *
-   * @param {Int} scale
+   * @param {number} scale
    */
   setWorksheetScale (scale) {
     this.worksheetScale = scale

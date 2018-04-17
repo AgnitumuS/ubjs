@@ -60,22 +60,21 @@ require('./UBComboBox')
         me.on('focus', me.oncbFocus, me);
         me.callParent(arguments);
         /**
-         * @event beforeAutoSave
          * Fires before send request for insert element. First parameter is comboBox. Second parameter is request config object.
+         * Actual autoSave performed during main form save, not after exiting from comboBox, to prevent garbage adding to dictionary.
+         * @event beforeAutoSave
          * @param {this}
          * @param {Object}
-         *
-         * Actual autoSave performed during main form save, not after exiting from comboBox, to prevent garbage adding to dictionary.
          */
         /**
-         * @event afterAutoSave
          * Fires after insert element. First parameter is comboBox. Second parameter is record.
+         * @event afterAutoSave
          * @param {this}
          * @param {Ext.data.Model}
          */
         /**
-         * @event beforeShowDictionary
          * Fires before show dictionary form. First parameter is comboBox. Second parameter is command config object.
+         * @event beforeShowDictionary
          * @param {this}
          * @param {Object}
          */

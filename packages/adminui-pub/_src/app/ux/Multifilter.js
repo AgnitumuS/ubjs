@@ -1665,8 +1665,8 @@ Ext.define('UB.ux.Multifilter', {
 
         /**
          * Return the interface controls required to filter by entity attribute of store
-         * @param {Styring} entityName
-         * @param {Styring} attrName
+         * @param {String} entityName
+         * @param {String} attrName
          * @param {Object} [options]
          * @param {Object} [options.whereList]
          * @param {Object} [options.orderList]
@@ -1676,17 +1676,15 @@ Ext.define('UB.ux.Multifilter', {
          * @param {Boolean} [options.__mip_recordhistory_all]
          * @param {Boolean} [options.__mip_disablecache]
          * @param {Boolean} [options.__allowSelectSafeDeleted]
-         * @param {{
-         *         getFilterPrefix: Function,
-         *         getPrevFilter: Function,
-         *         getInitParam: Function,
-         *         removeFilter: Function,
-         *         setFilter: Function,
-         *         initFilterFunc: Function,
-         *         initFilterControl: Function
-         *         isPreFilter: boolean
-         *         }} context
-         * isPreFilter - if "true" then for filter on form
+         * @param {Object} context
+         * @param {Function} context.getFilterPrefix
+         * @param {Function} context.getPrevFilter
+         * @param {Function} context.getInitParam
+         * @param {Function} context.removeFilter
+         * @param {Function} context.setFilter
+         * @param {Function} context.initFilterFunc
+         * @param {Function} context.initFilterControl
+         * @param {boolean} context.isPreFilter if "true" then for filter on form
          * @returns {Array}
          */
         getAssociationFilterInputS: function(entityName, attrName, options, context){

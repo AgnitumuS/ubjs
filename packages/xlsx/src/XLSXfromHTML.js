@@ -1279,7 +1279,7 @@ function getAttributeInt (node, name) {
  * Set attribute value. If attribute not exist create it.
  * @param {xmldom.Node} node
  * @param {String} name
- * @param {Int} value
+ * @param {number} value
  */
 /*
 function updateAttributeInt (node, name, value) {

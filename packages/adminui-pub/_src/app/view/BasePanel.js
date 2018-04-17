@@ -347,78 +347,77 @@ Ext.define('UB.view.BasePanel', {
 
     me.details = me.getDetails()
     /**
-     * @event recordloaded
      * Fires when form record load is finish.
      * Use {@link UB.view.BasePanel#formDataReady} to do something when all related structures loaded.
+     * @event recordloaded
      * @param {Ext.data.Model} rec Loaded record
      */
     /**
-     * @event manualsaving
      * Fires just **after** USER call `save` action (press save button or Ctrl+S shortcut)
      * but **before** data passed to a server for update/insert
+     * @event manualsaving
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
      * @param {Object} request  Update/insert ubql (can be modified)
      */
     /**
-     * @event beforesave
      * Fires just before data passed to a server for update/insert
+     * @event beforesave
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
      * @param {Object} request  Update/insert ubql (can be modified)
      */
     /**
-     * @event aftersave
      * Fires when record saved with 2 parameters: (me, result) where result is a record state AFTER server side updating
+     * @event aftersave
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
      */
     /**
-     * @event afterdelete
      * Fires when record deleted
+     * @event afterdelete
      */
     /**
-     * @event formDataReady
      * Fires when data bonded and all form required data loaded (combobox data, details data e.t.c.)
+     * @event formDataReady
      */
     /**
-     * @event beforeDelete
-     * @param {Promise[]}
      * To return Promise put it into income array
      * Fires before delete.
-     *
+     * @event beforeDelete
+     * @param {Promise[]}
      */
     /**
-     * @event beforeRefresh
      * Fires before refresh panel.
+     * @event beforeRefresh
      */
     /**
-     * @event beforeClose
      * Fires before close panel.
+     * @event beforeClose
      */
     /**
-     * @event updateFields
      * Fires after form fields are updated. Updated fields start after: load form data, refresh form data, save form data
+     * @event updateFields
      */
     /**
-     * @event beforeSaveForm
-     * @param {[Number, function][]}
      * You can put into this array your array where first element is orderNumber and second id function.
      * Function will be called to order specified in orderNumber. Each function can return promise. when run for last promise form start savind.
+     * @param Array<Number|Function>
+     * @event beforeSaveForm
      */
     /**
-     * @event controlChanged
      * Fires when any binded control changed by user. When data changed from dataBinder then this event do not fired.
      * If you want to interrupt the data binding then return false from function.
+     * @event controlChanged
      * @param {Ext.form.field.Field} this
      * @param {Object} newValue The new value
      * @param {Object} oldValue The original value
      */
     /**
-    * @event initComponentDone
-    * Fires on component was initialized.
-    */
+     * Fires on component was initialized.
+     * @event initComponentDone
+     */
     /**
+     * Fired when data is bound.
      * @event dataBind
      * @param {Ext.data.Model} record
-     * Fired when data is bound.
      */
     me.addEvents('recordloaded', 'beforesave', 'manualsaving', 'aftersave', 'afterdelete', 'formDataReady',
       'beforeSaveForm', 'beforeDelete', 'beforeClose', 'updateFields',
@@ -2070,8 +2069,8 @@ Ext.define('UB.view.BasePanel', {
    * For examample: for complex attribute 'recStageID.docID.document' it adds 'recStageID.docID' attribute to fieldList
    * @param {Array} componentList
    * @param {Array} attributeNames
-   * @param {int} len length of 'componentList' array
-   * @param {int} i index of current attr in 'componentList' array
+   * @param {number} len length of 'componentList' array
+   * @param {number} i index of current attr in 'componentList' array
    */
   addDocumentAttrForComplexUBDocumentAttr: function (componentList, attributeNames, len, i) {
     var fieldNameParts = componentList[i].attributeName.split('.')

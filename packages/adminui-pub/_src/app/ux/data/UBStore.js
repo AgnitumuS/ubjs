@@ -95,7 +95,7 @@ Ext.define('UB.ux.data.UBStore', {
      * - check ID is inside field list. If not - add.
      * - if entity is under simpleAudit and no 'mi_modifyDate' passed - add
      *
-     * @param {String,UBEntity} entityName
+     * @param {String|UBEntity} entityName
      * @param {Array<*|String>} fieldList
      * @returns {Array} modified fieldList
      */
@@ -252,8 +252,8 @@ Ext.define('UB.ux.data.UBStore', {
     }
 
     /**
-     * @event beforereload
      * Fires each times before call reload method
+     * @event beforereload
      */
     me.addEvents('beforereload', 'entityModified')
 
@@ -421,7 +421,7 @@ Ext.define('UB.ux.data.UBStore', {
     try {
       /**
        * @private
-       * @type {boolean} throwLoadError
+       * @type {boolean}
        */
       this.throwLoadError = true
       this.callParent(arguments)

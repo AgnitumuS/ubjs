@@ -1,6 +1,4 @@
 /**
- * @class Ext.ux.Exporter.ExcelFormatter.Style
- * @extends Object
  * Represents a style declaration for a Workbook (this is like defining CSS rules). Example:
  *
  * new Ext.ux.Exporter.ExcelFormatter.Style({
@@ -28,6 +26,7 @@
  * @cfg {String} id The ID of this style (required)
  * @cfg {Array} attributes The attributes for this style
  * @cfg {String} parentStyle The (optional parentStyle ID)
+ * @class Ext.ux.Exporter.ExcelFormatter.Style
  */
 Ext.define("Ext.ux.exporter.excelFormatter.Style", {
   constructor: function(config) {

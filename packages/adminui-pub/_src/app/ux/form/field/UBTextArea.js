@@ -262,10 +262,10 @@ Ext.define('UB.ux.form.field.UBTextArea', {
             height = me.inputEl.getHeight();
             if (height !== me.lastInputHeight) {
                 /**
-                 * @event autosize
                  * Fires when the {@link #autoSize} function is triggered and the field is resized according to
                  * the grow/growMin/growMax configs as a result. This event provides a hook for the developer
                  * to apply additional logic at runtime to resize the field if needed.
+                 * @event autosize
                  * @param {Ext.form.field.Text} this
                  * @param {Number} height
                  */

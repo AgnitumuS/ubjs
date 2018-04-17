@@ -1233,12 +1233,12 @@ Ext.define('UB.view.EntityGridPanel', {
     })
 
     /**
-     * @event beforeClose
      * Fires before close panel.
+     * @event beforeClose
      */
     /**
-     * @event parentchange
      * Fires when grid in detail mode and parent selection change.
+     * @event parentchange
      */
     me.addEvents('parentchange')
 

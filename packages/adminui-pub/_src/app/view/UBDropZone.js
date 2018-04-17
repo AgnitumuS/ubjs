@@ -147,11 +147,12 @@ Ext.define('UB.view.UBDropZone', {
     },
 
     /**
-     * @method init
      * Init DropZone. Call this after dom ready in your custom application.
      * We already done this in app.js for Ext-based client!
      *
      *           UB.view.UBDropZone.init();
+     *
+     * @method init
      */
     init: function () {
         var body = document.body, me = this, mask, content;

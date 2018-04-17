@@ -138,10 +138,7 @@ Ext.define('UB.core.UBApp', {
        */
       'windowDestroyed',
       /**
-       * @event buildMainMenu
        * Fires when application ready to build main menu
-       * @param {*} items Collection of {@link UB.view.ToolbarWidget}.
-       *
        * For example in initModels.js you can write:
        *
        *        $App.on('buildMainMenu', function(items){
@@ -151,6 +148,9 @@ Ext.define('UB.core.UBApp', {
        *                Ext.create('UB.view.ToolbarUser')
        *            );
        *       });
+       *
+       * @event buildMainMenu
+       * @param {*} items Collection of {@link UB.view.ToolbarWidget}.
        */
       'buildMainMenu'
     )
