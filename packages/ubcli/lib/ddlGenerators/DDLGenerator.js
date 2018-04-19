@@ -16,7 +16,7 @@ function getTableDBName (entity) {
 }
 
 /**
- * Generate a name of a foreign key as it must be in database
+ * Creates the name of the foreign key as it should be in the database
  * @param {string} sourceTableName
  * @param {string} sourceColumnName
  * @param {string} destTableName
@@ -44,7 +44,7 @@ function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = 
         colName = colName.substring(0, 3)
         baseLen = prefix.length + 1 + colName.length
         delta = MAX_IDENTIFIER_LEN - baseLen
-        if (delta < destTableName.length) {
+        if ((delta > 0) && (delta < destTableName.length)) {
           destTableName = destTableName.substring(0, delta)
         } else {
           destTableName = destTableName.substring(0, 3)
@@ -61,7 +61,7 @@ function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = 
 }
 
 /**
- * Return name of an attribute in a database according to mapping and dialect
+ * Return the name of the attribute in the database according to mapping and dialect
  * @param {UBEntity} entity
  * @param {String} attributeCode
  */
