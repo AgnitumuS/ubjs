@@ -10,7 +10,7 @@
 function initLib() {
  return System.import('@ub-e/cipher/index.js')
    .then(function (res) {
-      return new res.UBCipherCrypto()
+      return new res.UBCipherCrypto('https://local.cipher.kiev.ua:9091/api/v1')
    })
 }
 
