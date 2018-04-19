@@ -27,7 +27,8 @@ class DBOracle extends DBAbstract {
       URLParams: {CONNECTION: this.dbConnectionConfig.name}
     })
 
-    // create a function to extract index column name from Long
+    // create a function to extract index column name from Long (LOB)
+    // direct loading a LOB column values to the app server is slow
     this.conn.xhr({
       endpoint: 'runSQL',
       data: `create or replace function F_ColumnNameForIdx( iName in varchar2, tName in varchar2, cPos number)
