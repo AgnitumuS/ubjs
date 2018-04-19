@@ -1059,5 +1059,5 @@ Ext.define('UB.core.UBApp', {
     document.getElementById('UBLogo').style.display = 'none'
   }
 })
-debugger
+
 module.exports = UB.core.UBApp
