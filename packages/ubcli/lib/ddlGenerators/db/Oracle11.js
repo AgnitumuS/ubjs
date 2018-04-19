@@ -27,6 +27,22 @@ class DBOracle extends DBAbstract {
       URLParams: {CONNECTION: this.dbConnectionConfig.name}
     })
 
+    // create a function to extract index column name from Long
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: `create or replace function F_ColumnNameForIdx( iName in varchar2, tName in varchar2, cPos number)
+return varchar2
+  as
+  l_data long;
+res varchar2(64);
+begin
+select column_expression into l_data from user_ind_expressions e where e.index_name = iName and e.table_name = tName and e.column_position=cPos;
+res := substr( l_data, 2, 64 );
+return substr(res, 1, LENGTH(res) - 1);
+end;`,
+      URLParams: {CONNECTION: this.dbConnectionConfig.name}
+    })
+
     // filter tables from a metadata if any
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, {_upperName: dbTab.NAME.toUpperCase()}) !== -1)
@@ -148,7 +164,7 @@ select
   ui.index_name as index_id,
   ui.index_name,
   decode(ui.uniqueness,'UNIQUE',1,0) as is_unique,
-  uic.column_name,
+  case when uic.descend = 'ASC' then uic.column_name else F_ColumnNameForIdx(ui.index_name, ui.table_name, uic.column_position) end AS column_name,
   uic.column_position,
   decode(uic.descend,'ASC',0,1) is_descending_key,
   uc.constraint_type
@@ -170,6 +186,9 @@ order
       })
       let i = 0
       let idxCnt = indexesFromDb.length
+      if (asIsTable._upperName === 'DOC_ACCOUNTDOC') {
+        debugger
+      }
       while (i < idxCnt) {
         let indexObj = {
           name: indexesFromDb[i]['INDEX_NAME'],

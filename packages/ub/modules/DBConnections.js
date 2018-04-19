@@ -205,16 +205,22 @@ class DBConnection {
         } else {
           // UB :paramName: - replace by ? and add a named param to AOutParams
           const paramStart = i
-          while ((ch = sql.charCodeAt(++i)) !== chColon) {}
-          const paramEnd = i
-          const paramName = sql.slice(paramStart, paramEnd)
-          const paramValue = params[paramName]
-          if (paramValue === undefined) {
-            throw new Error(`Param ${paramName} not found`)
-          } else {
-            parsedParams.push(paramValue)
+          ch = sql.charCodeAt(++i)
+          if (
+            ((ch >= 'a'.charCodeAt(0)) && (ch <= 'z'.charCodeAt(0))) ||
+            ((ch >= 'A'.charCodeAt(0)) && (ch <= 'Z'.charCodeAt(0)))
+          ) {
+            while ((i < L) && ((ch = sql.charCodeAt(++i)) !== chColon)) {}
+            const paramEnd = i
+            const paramName = sql.slice(paramStart, paramEnd)
+            const paramValue = params[paramName]
+            if (paramValue === undefined) {
+              throw new Error(`Param ${paramName} not found`)
+            } else {
+              parsedParams.push(paramValue)
+            }
+            paramPositions.push({paramStart: paramStart - 1, paramEnd: paramEnd + 1})
           }
-          paramPositions.push({paramStart: paramStart - 1, paramEnd: paramEnd + 1})
         }
       } else if (ch === chQuestionMark) {
         const unnamedParamValue = params[unnamedParamsCount++]
