@@ -543,7 +543,7 @@ class DDLGenerator {
       dataType,
       description: attribute.description || attribute.caption,
       allowNull,
-      defaultValue: (attribute.defaultValue ? attribute.defaultValue : undefined),
+      defaultValue: (attribute.defaultValue ? attribute.defaultValue : null),
       defaultConstraintName: attribute.defaultValue
         ? formatName(attribute.entity.sqlAlias || attribute.entity.name, `_${fieldName.toUpperCase()}`, '_DEF', attribute.entity.connectionConfig.dialect)
         : '',

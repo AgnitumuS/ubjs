@@ -31,9 +31,9 @@ class DBOracle extends DBAbstract {
     // direct loading a LOB column values to the app server is slow
     this.conn.xhr({
       endpoint: 'runSQL',
-      data: `create or replace function F_ColumnNameForIdx( iName in varchar2, tName in varchar2, cPos number)
+      data: `create or replace function F_ColumnNameForIdx( iName in varchar2, tName in varchar2, cPos in number)
 return varchar2
-  as
+as
   l_data long;
 res varchar2(64);
 begin
@@ -42,6 +42,20 @@ begin
 end;`,
       URLParams: {CONNECTION: this.dbConnectionConfig.name}
     })
+// to be called as F_ColumnDefault(tc.table_name, tc.column_name)
+//     this.conn.xhr({
+//       endpoint: 'runSQL',
+//       data: `create or replace function F_ColumnDefault( tName in varchar2, cName in varchar2)
+// return varchar2
+// as
+//   l_data long;
+//   res varchar2(64);
+// begin
+//  select tc.data_default into l_data from user_tab_columns tc where tc.table_name=tName and tc.column_name=cName;
+//  return substr( l_data, 1, 64 );
+// end;`,
+//       URLParams: {CONNECTION: this.dbConnectionConfig.name}
+//     })
     // filter tables from a metadata if any
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, {_upperName: dbTab.NAME.toUpperCase()}) !== -1)

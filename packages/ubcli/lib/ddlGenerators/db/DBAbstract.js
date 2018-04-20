@@ -584,7 +584,8 @@ class DBAbstract {
 
   compareDefault (dataType, mustBeDefault, asIsDefault) {
     if (!mustBeDefault && !asIsDefault) return false
-    return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) && (`(${mustBeDefault})` !== asIsDefault)
+    return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) &&
+      (`${mustBeDefault}` !== asIsDefault) && (`(${mustBeDefault})` !== asIsDefault)
   }
 
   /**

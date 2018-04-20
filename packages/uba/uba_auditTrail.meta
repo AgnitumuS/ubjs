@@ -73,13 +73,13 @@
 		}
 	},
     "dbExtensions":{
-        "idx_aud_entity": {
+        "idx_audtr_entity": {
             "type": "INDEX",
             "definition":{
                 "keys": { "entityinfo_id": {} }
             }
         },
-        "idx_aud_parententityinfoid": {
+        "idx_audtr_parententinfoid": {
             "type": "INDEX",
             "definition":{
                 "keys": { "parentEntityInfo_id": {} }
