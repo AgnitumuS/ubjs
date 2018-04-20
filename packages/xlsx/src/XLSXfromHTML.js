@@ -38,7 +38,7 @@ class CellValue {
       let childNode = this.rootNode.childNodes[i]
       this.addValue(childNode)
     }
-    return this.useReachText ? this.reachText : (this.items.length > 0 ? this.items.join(',') : null)
+    return this.useReachText ? this.reachText : (this.items.length > 0 ? this.items.join(' ') : null)
   }
 
   addValue (node) {
@@ -59,6 +59,9 @@ class CellValue {
     let nodeInfo = (node.nodeName === '#text') ? null : getTagInfo(node)
     let reachInfo = nodeInfo ? tagInfoToReachTextConfig(nodeInfo) : null
     let masterReachInfo = this.reachInfo
+    if (node.nodeName === 'br') {
+      this.items.push('\n')
+    }
     if (reachInfo) {
       if (masterReachInfo) {
         this.reachInfo = Object.assign({}, masterReachInfo)
@@ -96,7 +99,7 @@ function getDottedProperty (me, property) {
 }
 
 function formatMustache (format, fixFormat, root) {
-  const predefinedFormats = XLSXStyle.predefinedFormats
+  // const predefinedFormats = XLSXStyle.predefinedFormats
   return function (val, render) {
     const me = this
     let data = render(val)
@@ -111,10 +114,12 @@ function formatMustache (format, fixFormat, root) {
       else if (fixFormat === 'date' && !(value instanceof Date)) value = new Date(value)
     }
     const formatPattern = dataArr.length > 1 ? dataArr[1] : (format || (typeof value === 'number' ? 'sum' : 'date'))
+    // Can be custom format value
+    /*
     let formatR = predefinedFormats[formatPattern]
     if (!formatR && formatR !== 0) {
-      throw new Error('Undefined format')
-    }
+       throw new Error('Undefined format')
+    } */
     return XLSXfromHTML.formatValue(value, formatPattern)
   }
 }
@@ -904,7 +909,7 @@ function getStyleProp (style) {
     }
   }
 
-  //wrapText
+  // wrapText
 
   // cfg.color || pBlock.font.color);
   if (style['text-align']) {
