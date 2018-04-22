@@ -1,15 +1,15 @@
 /**
  * Module for send and receive mail.
- * ssl is not supported. If you need SSL connection - use {@link module:@unitybase/mailer-ssl @unitybase/mailer-ssl}
+ * For SSL support OpenSSL libraries version >= 0.9.7 must be installed and
+ * libraries `libssl32.dll`, `libeay32.dll`, `ssleay32.dll` must be in the PATH
  *
  * WARNING - do not send a mail directly from a HTTP thread. Mail server can fail or work slowly.
  * The rigth way is to **put a mail messages in the queue** and send it via scheduler.
  *
  * UBQ model already have:
  *
- *  - a module 'modules/mail-queue` for addint EMails to queue
- *  - a `mail` scheduler job for sending a mail from queue (once a minute by default)
- *
+ *  - a module 'modules/mail-queue` for add E-Mail's to queue
+ *  - a `mail` scheduler job for sending mails from queue (once a minute by default)
  *
  * Usage sample:
  *

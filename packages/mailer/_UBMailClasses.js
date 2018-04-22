@@ -312,7 +312,7 @@ TMessHeaderBind.charsetCode = ''
 function TMimePartBind () {}
 
 /**
- * Read part content
+ * Read DECODED part content.
  * @param {String} [encoding] Optional encoding of source. Default to 'utf-8'.
  *          If 'bin' - return ArrayBuffer source representation without any conversion.
  *          If 'base64' - transform base64 encoded content of source to ArrayBuffer

@@ -14,7 +14,7 @@ type
 implementation
 
 uses
-  mimemess, mimepart, synautil, synachar, smtpsend, pop3send, {$IFDEF openssl}ssl_openssl,{$ENDIF}
+  mimemess, mimepart, synautil, synachar, smtpsend, pop3send, ssl_openssl,
   SpiderMonkey, SyNodeProto, SyNodeSimpleProto,
   Classes, SysUtils,{$IFDEF MSWINDOWS} Windows,{$ENDIF}
   SynCommons, mORMOt, DateUtils, SyNodeReadWrite;
@@ -388,7 +388,7 @@ var
   begin
     Size := 0;
     for i := 0 to SL.Count-1 do Inc(Size, Length(SL[I]));
-      SetLength(str, Size);
+    SetLength(str, Size);
     P := pointer(str);
     for i := 0 to SL.Count-1 do begin
       S := StringToUTF8(SL[I]);
@@ -415,20 +415,13 @@ begin
       vp := JSVAL_NULL
     else begin
       SubPartsVal := obj.ReservedSlot[idx];
-//      SubPartsVals := SubPartsVal.asPrivate;
-//      if not Assigned(SubPartsVals[idx+1]) then begin
       if SubPartsVal.isVoid then begin
         New(inst);
         SubPart := Part.GetSubPart(idx);
         SubPart.TargetCharset := UTF_8;
         SubPart.ForcedHTMLConvert := True;
         SubPart.DecodePartHeader;
-        if UpperCase(SubPart.Disposition) <> 'ATTACHMENT' then begin
-          SubPart.DecodePart;
-          SubPart.PartBody.LoadFromStream(SubPart.DecodedLines);
-        end else begin
-          DeleteLineBreaksFromSL(SubPart.PartBody);
-        end;
+        SubPart.DecodePart;
         SubPartsVal := inst.CreateForObj(cx, SubPart, TMimePartProtoObject, PJSRootedObject(nil));
         obj.ReservedSlot[idx] := SubPartsVal
       end;
@@ -487,7 +480,6 @@ var
   Inst: PSMInstanceRecord;
   SubPartsValIndex: Integer;
   SubPartsObj: PJSObject;
-//  SubPartsVals: PjsRVVector;
   Part: TMimePart;
   cnt: Integer;
   SubPartsVal: jsval;
@@ -506,7 +498,6 @@ begin
       this.ReservedSlot[SubPartsValIndex] := SubPartsVal;
     end;
     vp.rval := SubPartsVal;
-//    JS_SET_RVAL(cx, vp, Inst.storedVals[SubPartsValIndex]);
   end else
     vp.rval := JSVAL_NULL;
   Result := True;
@@ -526,7 +517,9 @@ begin
       raise ESMException.Create(SM_NOT_A_NATIVE_OBJECT);
     part := (sm_inst.Instance as TMimePart);
     part.DecodedLines.Seek(0, soFromBeginning);
-    strLen := part.DecodedLines.Size - 2; // remove CRLF from tail
+    strLen := part.DecodedLines.Size;
+    if UpperCase(part.Disposition) <> 'ATTACHMENT' then // remove CRLF from tail
+      Dec(strLen, 2);
     if strLen > 0 then begin
       SetLength(str, strLen);
       part.DecodedLines.ReadBuffer(Pointer(str)^, strLen);
@@ -647,8 +640,6 @@ var
   sl: TStringList;
   res: Boolean;
   s, ps: string;
-
-//  SU: SynUnicode;
   curState: string;
 begin
   if not IsInstanceObject(cx, thisObj, nativeObj) then
@@ -665,7 +656,6 @@ begin
 //      Msg.Header.subject := val.asJSString.ToString(Cx)
     else
       Msg.Header.subject := '';
-//    SU := UTF8ToSynUnicode(Msg.Header.subject);
 
     if obj.GetProperty(cx, 'bodyType', val) and val.isInteger then
       bodyType := TubSendMailBodyType(val.asInteger)
@@ -984,14 +974,8 @@ begin
 
   if receiver.Retr(mailIndex) then begin
     New(inst);
-//    Result := inst.CreateForObj(cx, FMailMessage, TUBMimeMessProtoObject, thisObj).ToJSValue;
     Result := inst.CreateNew(cx, defineClass(cx, TUBMimeMess, TUBMimeMessProtoObject, PJSRootedObject(nil)), 0, fake);
-//    FMailMessage, TUBMimeMessProtoObject, thisObj).ToJSValue;
-
-//    FMailMessage := TUBMimeMess.Create;
     FMailMessage := TUBMimeMess(inst.Instance);
-    //FMailMessage.MessagePart.TargetCharset := UTF_8;
-    //FMailMessage.Header.CharsetCode := UTF_8;
     FMailMessage.Clear;
     // MPV - clear will clear the MessagePart.TargetCharset
     FMailMessage.MessagePart.TargetCharset := UTF_8;
@@ -1000,8 +984,6 @@ begin
     FMailMessage.Lines.Assign(receiver.FullResult);
     FMailMessage.DecodeMessage;
     FMailMessage.MessagePart.DecodePart;
-    //MPV Del below
-    FMailMessage.MessagePart.PartBody.LoadFromStream(FMailMessage.MessagePart.DecodedLines);
   end else
     raise ESMException.CreateFmt('TubMailReceiver cannot receive mail with index %d: %s',[mailIndex, receiver.ResultString]);
 end;
