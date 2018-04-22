@@ -894,10 +894,14 @@ begin
         authNeccessary := val.asBoolean
       else
         authNeccessary := False;
-      if not Sender.Login then
-        raise ESMException.CreateFmt('Login not complete :%s',[Sender.Sock.LastErrorDesc]);
+      if not Sender.Login then begin
+        if Pos('TLS', Sender.Sock.LastErrorDesc) <> 0 then
+          raise ESMException.CreateFmt('Login not complete: %s May be OpenSSL not installed or not accessible',[Sender.Sock.LastErrorDesc])
+        else
+          raise ESMException.CreateFmt('Login not complete: %s',[Sender.Sock.LastErrorDesc]);
+      end;
       if not Sender.AuthDone and authNeccessary then
-          raise ESMException.CreateFmt('Authorization not complete :%s',[Sender.Sock.LastErrorDesc]);
+          raise ESMException.CreateFmt('Authorization not complete: %s',[Sender.Sock.LastErrorDesc]);
     except
       Sender.Free;
       raise;

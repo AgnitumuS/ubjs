@@ -1,7 +1,9 @@
 /**
  * Module for send and receive mail.
  * For SSL support OpenSSL libraries version >= 0.9.7 must be installed and
- * libraries `libssl32.dll`, `libeay32.dll`, `ssleay32.dll` must be in the PATH
+ *
+ *  - Windows: `libssl32.dll`, `libeay32.dll`, (optional `ssleay32.dll`) must be in the PATH
+ *  - Linux: libssl.so libcrypto.so must be in LD_LIBRARY_PATH
  *
  * WARNING - do not send a mail directly from a HTTP thread. Mail server can fail or work slowly.
  * The rigth way is to **put a mail messages in the queue** and send it via scheduler.

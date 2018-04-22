@@ -30,7 +30,7 @@ const sender1 = new UBMail.TubMailSender({
 const sender2 = new UBMail.TubMailSender({
   host: mailHost,
   port: sPort,
-  tls: true
+  tls: false
 })
 const receiver1 = new UBMail.TubMailReceiver({
   host: mailHost,
@@ -43,7 +43,7 @@ const receiver1 = new UBMail.TubMailReceiver({
 const receiver2 = new UBMail.TubMailReceiver({
   host: mailHost,
   port: rPort,
-  tls: true,
+  tls: false,
   auth: true,
   user: account2,
   password: account2Pwd
