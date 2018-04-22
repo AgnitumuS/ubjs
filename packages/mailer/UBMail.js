@@ -76,47 +76,56 @@ UBMail.TubMailReceiver = binding.TubMailReceiver
  */
 UBMail.TubMailSender = binding.TubMailSender
 
+let _bt = binding.TubSendMailBodyType
 /**
  * Mail body type
- *
- * @type {TubSendMailBodyTypeBind}
+ * @enum
  */
-UBMail.TubSendMailBodyType = binding.TubSendMailBodyType
+UBMail.TubSendMailBodyType = {
+  Text: _bt.Text,
+  HTML: _bt.HTML,
+  Calendar: _bt.Calendar
+}
 
+let _ac = binding.TubSendMailAttachKind
 /**
- * Mail body type
- *
- * @property TubSendMailAttackKind
- * @type {TubSendMailAttachKindBind}
+ * Mail attach kind
+ * @enum
  */
-UBMail.TubSendMailAttachKind = binding.TubSendMailAttachKind
-
-/**
- * Get body from message part
- *
- * @ignore
- * @param {TMimePartBind} part
- * @returns {StringCollectionBind}
- */
-function getBodyFromMessagePart (part) {
-  let subPart = part.subPart
-  if (subPart.length === 0) {
-    return part.partBody
-  } else {
-    for (let i = 0; i < subPart.length; i++) {
-      if (subPart[i].disposition !== 'ATTACHMENT') {
-        return getBodyFromMessagePart(subPart[i])
-      }
-    }
-  }
+UBMail.TubSendMailAttachKind = {
+  File: _ac.File,
+  Text: _ac.Text,
+  Buffer: _ac.Buffer
 }
 
 /**
  * Get body from message
  *
- * @param {TubMimeMessBind} message
- * @returns {StringCollectionBind}
+ * @deprecated Use UBMail.getBodyPart(mimeMsg).read() instead
  */
-UBMail.getBodyFromMessage = function (message) {
-  return getBodyFromMessagePart(message.messagePart)
+UBMail.getBodyFromMessage = function () {
+  throw new Error('UBMail.getBodyFromMessage is obsolete. Use UBMail.getBodyPart(mimeMsg).read() instead')
+}
+
+/**
+ * Return a mime part what represents the e-mail body
+ * @param {TubMimeMessBind} message
+ * @return {TMimePartBind}
+ */
+UBMail.getBodyPart = function (message) {
+  function bodyPartDeep (part) {
+    let subPart = part.subPart
+    let L = subPart.length
+    if (L === 0) {
+      return part
+    } else {
+      for (let i = 0; i < L; i++) {
+        let pi = subPart[i]
+        if (pi.disposition !== 'ATTACHMENT') {
+          return bodyPartDeep(pi)
+        }
+      }
+    }
+  }
+  return bodyPartDeep(message.messagePart)
 }

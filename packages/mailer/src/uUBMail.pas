@@ -2,7 +2,7 @@ unit uUBMail;
 
 interface
 
-uses 
+uses
   SyNodePluginIntf;
 
 type
@@ -173,7 +173,7 @@ function SLRead(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
 const
   SLCall1Args: array [0..0] of uintN = ( SyNodePluginIntf.ptStr );
   SLCalls: array [0..1] of TNSMCallInfo = (
-    ( func: @SLRead_impl; argc: 0 ),
+    ( func: @SLRead_impl; argc: 0; argt: nil ),
     ( func: @SLRead_impl; argc: Length(SLCall1Args); argt: @SLCall1Args )
   );
 begin
@@ -246,20 +246,22 @@ var
   i: integer;
   e: Extended;
   str: RawByteString;
+  uStr: RawUTF8;
   unixTime: Int64;
   dmsec: double;
   oDate: PJSObject;
   d: TDateTime;
 begin
-
   {$ifdef UNICODE}
   if (PI^.PropType^^.Kind = tkUString) then begin
     Result.asJSString := cx.NewJSString(PI.GetUnicodeStrValue(Instance^.instance));
   end else
   {$endif}
-  if (PI^.PropType^.Kind = tkLString) then begin
+  if (PI^.PropType^.Kind in [tkLString{$IFDEF FPC}, tkAString{$ENDIF}]) then begin
     // value is already in UTF-8
+    //PI.GetLongStrValue(Instance^.instance, uStr);
     PI.GetRawByteStringValue(Instance^.instance, str);
+    //Result.asJSString := cx.NewJSString(pointer(str), length(str), CP_UTF8);
     Result.asJSString := cx.NewJSString(str);
   end else if (PI^.PropType^.Kind = tkInteger) then begin
     Result.asInteger := PI.GetOrdValue(Instance^.instance);
@@ -510,6 +512,37 @@ begin
   Result := True;
 end;
 
+function nsm_readMimePartBody(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  part: TMimePart;
+  sm_inst: PSMInstanceRecord;
+  str: RawByteString;
+  strLen: Int64;
+  P : PByte;
+begin
+  Result := true;
+  try
+    if not IsInstanceObject(cx, vp.thisObject[cx], sm_inst) then
+      raise ESMException.Create(SM_NOT_A_NATIVE_OBJECT);
+    part := (sm_inst.Instance as TMimePart);
+    part.DecodedLines.Seek(0, soFromBeginning);
+    strLen := part.DecodedLines.Size - 2; // remove CRLF from tail
+    if strLen > 0 then begin
+      SetLength(str, strLen);
+      part.DecodedLines.ReadBuffer(Pointer(str)^, strLen);
+      P := Pointer(str) + strLen;
+      p^ := 0;
+    end else
+      str := '';
+    vp.rval := SyNodeReadWrite.SMRead_impl(cx, argc, vp.argv, str);
+  except
+    on E: Exception do begin
+      Result := False;
+      JSError(cx, E);
+    end;
+  end;
+end;
+
 procedure TMimePartProtoObject.InitObject(aParent: PJSRootedObject);
 var
   l: Integer;
@@ -524,6 +557,7 @@ begin
   FJSProps[l].setter.native.info := nil;
   FJSProps[l].setter.native.op := nil;
   Inc(fDeterministicCnt);
+  definePrototypeMethod('read', nsm_readMimePartBody, 1, [jspPermanent, jspReadOnly]);
 end;
 
 type
@@ -608,7 +642,7 @@ var
   atachName: RawUTF8;
   attDataIncorrect: Boolean;
   isBase64: Boolean;
-  attStream: TSynMemoryStream;
+  attStream: TStream;
 
   sl: TStringList;
   res: Boolean;
@@ -723,7 +757,7 @@ begin
 
           attStream := nil;
           case attKind of
-            akFile: attStream := TSynMemoryStreamMapped.Create(attDataStr);
+            akFile: attStream := TFileStream.Create(UTF8ToString(attDataStr), fmOpenRead); // to be verified TSynMemoryStreamMapped.Create(attDataStr);
             akText: attStream := TSynMemoryStream.Create(attDataStr);
             akBuffer: attStream := TSynMemoryStream.Create(attDataBuf, Integer(attDataBufSize));
           end;
@@ -956,12 +990,17 @@ begin
 
 //    FMailMessage := TUBMimeMess.Create;
     FMailMessage := TUBMimeMess(inst.Instance);
+    //FMailMessage.MessagePart.TargetCharset := UTF_8;
+    //FMailMessage.Header.CharsetCode := UTF_8;
+    FMailMessage.Clear;
+    // MPV - clear will clear the MessagePart.TargetCharset
     FMailMessage.MessagePart.TargetCharset := UTF_8;
     FMailMessage.Header.CharsetCode := UTF_8;
-    FMailMessage.Clear;
+    FMailMessage.MessagePart.ConvertCharset := false;
     FMailMessage.Lines.Assign(receiver.FullResult);
     FMailMessage.DecodeMessage;
     FMailMessage.MessagePart.DecodePart;
+    //MPV Del below
     FMailMessage.MessagePart.PartBody.LoadFromStream(FMailMessage.MessagePart.DecodedLines);
   end else
     raise ESMException.CreateFmt('TubMailReceiver cannot receive mail with index %d: %s',[mailIndex, receiver.ResultString]);

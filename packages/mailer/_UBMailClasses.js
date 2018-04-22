@@ -7,20 +7,6 @@
 
 /**
  * @class
- * Mail body type
- * @enum {Number}
- */
-const TubSendMailBodyTypeBind = {Text: 0, HTML: 1, Calendar: 2}
-
-/**
- * @class
- * Mail attach kind
- * @enum {Number}
- */
-const TubSendMailAttachKindBind = {File: 0, Text: 1, Buffer: 2}
-
-/**
- * @class
  * Binding to a native implementation of POP3 receiver.
  *
  * Should be created using {@link TubMailReceiver} method of {@link module:@unitybase/mailer} module
@@ -326,6 +312,16 @@ TMessHeaderBind.charsetCode = ''
 function TMimePartBind () {}
 
 /**
+ * Read part content
+ * @param {String} [encoding] Optional encoding of source. Default to 'utf-8'.
+ *          If 'bin' - return ArrayBuffer source representation without any conversion.
+ *          If 'base64' - transform base64 encoded content of source to ArrayBuffer
+ *          If 'bin2base64' - transform content to base64 encoded string
+ * @returns {ArrayBuffer|String} Return String in case no encoding passed or ArrayBuffer
+ */
+TMimePartBind.read = function (encoding) {}
+
+/**
  * Primary Mime type of part. (i.e. 'application')
  *
  * @type {String}
@@ -520,6 +516,6 @@ TMimePartBind.maxLineLength = 0
 /**
  * Subparts of MimePart
  *
- * @type {Array.<TMimePartBind>}
+ * @type {Array<TMimePartBind>}
  */
 TMimePartBind.subPart = []
