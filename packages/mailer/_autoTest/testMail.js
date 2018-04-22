@@ -2,8 +2,8 @@ const path = require('path')
 const assert = require('assert')
 const fs = require('fs')
 let testFilesDir = path.resolve(__dirname, 'TestFiles')
-let moduleName = path.basename(path.resolve(__dirname, '../'))
-let useTls = (moduleName !== 'mailer')
+// let moduleName = path.basename(path.resolve(__dirname, '../'))
+// let useTls = (moduleName !== 'mailer')
 console.time('load UBMail')
 let UBMail = require('../UBMail')
 console.timeEnd('load UBMail')
@@ -25,17 +25,17 @@ const mailAddr2 = account2 + mailSuffix
 const sender1 = new UBMail.TubMailSender({
   host: mailHost,
   port: sPort,
-  tls: useTls
+  tls: false
 })
 const sender2 = new UBMail.TubMailSender({
   host: mailHost,
   port: sPort,
-  tls: useTls
+  tls: true
 })
 const receiver1 = new UBMail.TubMailReceiver({
   host: mailHost,
   port: rPort,
-  tls: useTls,
+  tls: false,
   auth: true,
   user: account1,
   password: account1Pwd
@@ -43,12 +43,12 @@ const receiver1 = new UBMail.TubMailReceiver({
 const receiver2 = new UBMail.TubMailReceiver({
   host: mailHost,
   port: rPort,
-  tls: useTls,
+  tls: true,
   auth: true,
   user: account2,
   password: account2Pwd
 })
-console.debug('useTls=' + useTls)
+console.debug('useTls=MIXED')
 // Start tests
 
 console.debug('1. Cleaning the mailboxes')
