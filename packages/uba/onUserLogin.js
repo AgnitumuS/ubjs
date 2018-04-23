@@ -133,7 +133,7 @@ function onUserLogin (req) {
           entity: 'uba_user',
           entityinfo_id: Session.userID,
           actionType: 'LOGIN',
-          actionUser: Session.userID,
+          actionUser: data.login, //Session.userID,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : data.login,
@@ -163,7 +163,7 @@ function onUserLoginFailed (isLocked) {
           entity: 'uba_user',
           entityinfo_id: Session.userID,
           actionType: isLocked ? 'LOGIN_LOCKED' : 'LOGIN_FAILED',
-          actionUser: Session.userID,
+          actionUser: user, //Session.userID,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: user

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.6]
+### Changed
+- put user name into uba_audit.actionuser for login/loginFail operations
+
 ## [4.1.32]
 ### Changed
 - `uba_als.code` length increased to 128 to allow developer to create a unixue ELS rule codes based on code = role.name + entity.name + method.name pattern
