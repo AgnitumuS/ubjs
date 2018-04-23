@@ -246,7 +246,6 @@ var
   i: integer;
   e: Extended;
   str: RawByteString;
-  uStr: RawUTF8;
   unixTime: Int64;
   dmsec: double;
   oDate: PJSObject;
@@ -518,8 +517,9 @@ begin
     part := (sm_inst.Instance as TMimePart);
     part.DecodedLines.Seek(0, soFromBeginning);
     strLen := part.DecodedLines.Size;
-    if UpperCase(part.Disposition) <> 'ATTACHMENT' then // remove CRLF from tail
-      Dec(strLen, 2);
+    if UpperCase(part.Disposition) <> 'ATTACHMENT' then
+      // remove CRLF (LF on Linux) from tail
+      Dec(strLen, {$IFDEF Linux}1{$else}2{$endif});
     if strLen > 0 then begin
       SetLength(str, strLen);
       part.DecodedLines.ReadBuffer(Pointer(str)^, strLen);

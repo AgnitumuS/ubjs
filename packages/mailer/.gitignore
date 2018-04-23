@@ -64,3 +64,4 @@ _FOSSIL_
 bin/x64
 lib/
 src/backup/
+backup/

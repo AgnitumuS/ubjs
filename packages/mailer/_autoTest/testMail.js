@@ -48,19 +48,19 @@ const receiver2 = new UBMail.TubMailReceiver({
   user: account2,
   password: account2Pwd
 })
-console.debug('useTls=MIXED')
+console.log('useTls=MIXED')
 // Start tests
 
-console.debug('1. Cleaning the mailboxes')
+console.log('1. Cleaning the mailboxes')
 emptyMailBoxes()
 receiveMail(receiver1, account1, 0)
 receiveMail(receiver2, account2, 0)
 
-console.debug('2. Sending message to both mailboxes with plain text body without attaches')
+console.log('2. Sending message to both mailboxes with plain text body without attaches')
 const message1 = {
   subject: 'subject 1',
   bodyType: UBMail.TubSendMailBodyType.Text,
-  body: 'body\r\n 1',
+  body: 'body\n 1', // \r\n under linux become \n while reseive
   fromAddr: mailAddr1,
   toAddr: [mailAddr1, mailAddr2]
 }
@@ -69,7 +69,7 @@ sleep(SLEEP_TIMEOUT)
 let msgList = receiveMail(receiver1, account1, 1)
 checkIsSameMessage(msgList[0], message1)
 
-console.debug('3. Sending message to second mailbox with html body with 2 text file attaches')
+console.log('3. Sending message to second mailbox with html body with 2 text file attaches')
 // first attach is not base64, but second is
 const message2 = {
   subject: 'subject 2',
@@ -100,12 +100,12 @@ checkIsSameMessage(msgList[1], message2)
 
 emptyMailBoxes()
 
-console.debug('4. Sending message to first mailbox with Unicode text body with 6 attaches')
+console.log('4. Sending message to first mailbox with Unicode text body with 6 attaches')
 // attach with even number s is not base64, and with odd number is base64
 const message3 = {
   subject: 'тема сообщения Təşəbbüs ',
   bodyType: UBMail.TubSendMailBodyType.Text,
-  body: 'Cavab \r\n məktub Təşəbbüs məktu',
+  body: 'Cavab \n məktub Təşəbbüs məktu',
   fromAddr: mailAddr2,
   toAddr: [mailAddr1],
   attaches: [
@@ -153,11 +153,11 @@ checkIsSameMessage(msgList[0], message3)
 
 emptyMailBoxes()
 
-console.debug('5. Sending message to second mailbox with UTF8 html body without attach')
+console.log('5. Sending message to second mailbox with UTF8 html body without attach')
 const message4 = {
   subject: 'subject 4',
   bodyType: UBMail.TubSendMailBodyType.HTML,
-  body: '<b>body</b> 4 <i>тест Cavab \r\n məktub \r\n  Təşəbbüs məktu </i>',
+  body: '<b>body</b> 4 <i>тест Cavab \n məktub \n  Təşəbbüs məktu </i>',
   fromAddr: mailAddr1,
   toAddr: [mailAddr2]
 }
@@ -167,7 +167,7 @@ msgList = receiveMail(receiver2, account2, 1)
 checkIsSameMessage(msgList[0], message4)
 
 emptyMailBoxes()
-
+debugger
 /**
  * Delete all messages from both mailboxes
  */
