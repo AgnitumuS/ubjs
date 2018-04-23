@@ -1,6 +1,8 @@
 const path = require('path')
 const assert = require('assert')
 const fs = require('fs')
+const {EOL} = require('os')
+
 let testFilesDir = path.resolve(__dirname, 'TestFiles')
 // let moduleName = path.basename(path.resolve(__dirname, '../'))
 // let useTls = (moduleName !== 'mailer')
@@ -60,13 +62,14 @@ console.log('2. Sending message to both mailboxes with plain text body without a
 const message1 = {
   subject: 'subject 1',
   bodyType: UBMail.TubSendMailBodyType.Text,
-  body: 'body\n 1', // \r\n under linux become \n while reseive
+  body: `body${EOL} 1`,
   fromAddr: mailAddr1,
   toAddr: [mailAddr1, mailAddr2]
 }
 assert(sender1.sendMail(message1), 'Sending message1 failed')
 sleep(SLEEP_TIMEOUT)
 let msgList = receiveMail(receiver1, account1, 1)
+debugger
 checkIsSameMessage(msgList[0], message1)
 
 console.log('3. Sending message to second mailbox with html body with 2 text file attaches')
@@ -105,7 +108,7 @@ console.log('4. Sending message to first mailbox with Unicode text body with 6 a
 const message3 = {
   subject: 'тема сообщения Təşəbbüs ',
   bodyType: UBMail.TubSendMailBodyType.Text,
-  body: 'Cavab \n məktub Təşəbbüs məktu',
+  body: `Cavab ${EOL} məktub Təşəbbüs məktu`,
   fromAddr: mailAddr2,
   toAddr: [mailAddr1],
   attaches: [
@@ -157,7 +160,7 @@ console.log('5. Sending message to second mailbox with UTF8 html body without at
 const message4 = {
   subject: 'subject 4',
   bodyType: UBMail.TubSendMailBodyType.HTML,
-  body: '<b>body</b> 4 <i>тест Cavab \n məktub \n  Təşəbbüs məktu </i>',
+  body: `<b>body</b> 4 <i>тест Cavab ${EOL} məktub ${EOL}  Təşəbbüs məktu </i>`,
   fromAddr: mailAddr1,
   toAddr: [mailAddr2]
 }
