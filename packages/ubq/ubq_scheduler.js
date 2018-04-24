@@ -4,6 +4,8 @@ const fs = require('fs')
 const path = require('path')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 const argv = require('@unitybase/base').argv
+const UB = require('@unitybase/ub')
+const App = UB.App
 const _ = require('lodash')
 
 me.entity.addMethod('select')
@@ -24,20 +26,19 @@ let attributes = me.entity.attributes
 function loadOneFile (model, loadedData) {
   let fn = path.join(model.path, FILE_NAME_TEMPLATE)
   let modelName = model.name
-  let content, i, l, existedItem, item
 
   if (!fs.existsSync(fn)) { return }
   let schedulersEnabled = (!(App.serverConfig.application.schedulers && (App.serverConfig.application.schedulers.enabled === false)))
   const FALSE_CONDITION = 'false //disabled in app config'
   try {
-    content = argv.safeParseJSONfile(fn)
+    let content = argv.safeParseJSONfile(fn)
     if (!Array.isArray(content)) {
       console.error('SCHEDULER: invalid config in %. Must be a array ob objects', fn)
       return
     }
-    for (i = 0, l = content.length; i < l; i++) {
-      item = content[i]
-      existedItem = _.find(loadedData, {name: item.name})
+    for (let i = 0, L = content.length; i < L; i++) {
+      let item = content[i]
+      let existedItem = _.find(loadedData, {name: item.name})
       _.defaults(item, defaultValues)
       item.actualModel = modelName
       if (!schedulersEnabled) {

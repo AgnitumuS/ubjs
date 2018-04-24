@@ -2,6 +2,7 @@ const GLOBAL_CACHE_INITIALIZED_ENTRY = 'UBQ.schedulersInitialized'
 const Worker = require('@unitybase/base').Worker
 const App = require('@unitybase/ub').App
 const UB = require('@unitybase/ub')
+const Session = UB.Session
 
 if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
   if (process.startupMode === 'CmdLine') {
@@ -31,7 +32,7 @@ function startSchedulers () {
   App.globalCachePut(GLOBAL_CACHE_INITIALIZED_ENTRY, 'yes')
   console.debug('SCHEDULER: executing UBQ.initializeSchedulers')
 
-  let store = new TubDataStore('uba_user')
+  let store = UB.DataStore('uba_user')
   /** @type {Array<ubq_scheduler_object>} */
   let schedulers = UB.Repository('ubq_scheduler').attrs('*').selectAsObject()
   for (let i = 0, l = schedulers.length; i < l; i++) {

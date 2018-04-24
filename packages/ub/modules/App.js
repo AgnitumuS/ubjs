@@ -172,7 +172,15 @@ App.serviceMethodByPassAuthentication = function (methodName) {
  * @readonly
  * @type {Object}
  * @property {Object} httpServer HTTP server config
+ * @property {Object} application
+ * @property {string} application.name
+ * @property {string} application.defaultLang
+ * @property {Object} application.domain
+ * @property {Array} application.domain.models
+ * @property {Array<string>} application.domain.supportedLanguages
+ * @property {Object} application.customSettings
  * @property {Object} uiSettings Section `uiSettings` of ubConfig
+ * @property {Object} security
  */
 App.serverConfig = undefined
 try {

@@ -256,17 +256,17 @@ function checkIsSameMessage (mimeMsg, sendingMsg) {
             body = Buffer.from(body).toString('base64') // transform if to base64 string
             assert.deepEqual(body, Buffer.from(attach.data).toString(), `Invalid buffer data in attachment ${i}`)
           } else {
-            body = subPart.read('bin') //partBody.read('base64')
+            body = subPart.read('bin') // partBody.read('base64')
             assert.deepEqual(body, attach.data, `Invalid buffer data in attachment ${i}`)
           }
           break
         case UBMail.TubSendMailAttachKind.File:
           body = subPart.read('bin') // partBody.read('bin')
           if (attach.isBase64) {
-            body = Buffer.from(body).toString('base64') //subPart.partBody.read('bin')
+            body = Buffer.from(body).toString('base64') // subPart.partBody.read('bin')
             assert.deepEqual(body, fs.readFileSync(attach.data, {encoding: 'utf-8'}), `Invalid file data in attachment ${i}`)
           } else {
-            body = subPart.read('bin') //partBody.read('base64')
+            body = subPart.read('bin') // partBody.read('base64')
             assert.deepEqual(body, fs.readFileSync(attach.data, {encoding: 'bin'}), `Invalid file data in attachment ${i}`)
           }
           break
