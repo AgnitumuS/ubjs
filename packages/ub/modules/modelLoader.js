@@ -56,6 +56,8 @@ function loadLegacyModules (folderPath, isFromPublicFolder = false, depth = 0) {
   if (!fs.existsSync(folderPath)) return
 
   let folderFiles = fs.readdirSync(folderPath)
+  // readdirSync can return UINSORTED file names under Linux (UB.5)
+  folderFiles.sort()
 
   for (let i = 0, l = folderFiles.length; i < l; i++) {
     let fn = folderFiles[i]
