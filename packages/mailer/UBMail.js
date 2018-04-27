@@ -66,7 +66,7 @@ let UBMail = module.exports
  * constructor for TubMailReceiver
  *
  * @method TubMailReceiver
- * @return {TubMailReceiverBind}
+ * @return {TubMailReceiver}
  */
 UBMail.TubMailReceiver = binding.TubMailReceiver
 

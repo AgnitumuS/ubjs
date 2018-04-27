@@ -20,14 +20,14 @@
  *   not implemented so you will get an exception when set this value true.
  *   For using tls use {@link module:@unitybase/mailer-ssl} class
  */
-function TubMailReceiverBind (paramsObj) {}
+function TubMailReceiver (paramsObj) {}
 
 /**
  * Count of messages on server
  *
  * @returns {Number}
  */
-TubMailReceiverBind.getMessagesCount = function () {}
+TubMailReceiver.getMessagesCount = function () {}
 
 /**
  * Get size of message
@@ -35,7 +35,7 @@ TubMailReceiverBind.getMessagesCount = function () {}
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {Number}
  */
-TubMailReceiverBind.getMessageSize = function (index) {}
+TubMailReceiver.getMessageSize = function (index) {}
 
 /**
  * Receive message from server
@@ -43,7 +43,7 @@ TubMailReceiverBind.getMessageSize = function (index) {}
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {TubMimeMessBind}
  */
-TubMailReceiverBind.receive = function (index) {}
+TubMailReceiver.receive = function (index) {}
 
 /**
  * Receive message headers and first maxLines strings of message
@@ -52,7 +52,7 @@ TubMailReceiverBind.receive = function (index) {}
  * @param {Number} maxLines Count of message lines to receive
  * @returns {TubMimeMessBind}
  */
-TubMailReceiverBind.top = function (index, maxLines) {}
+TubMailReceiver.top = function (index, maxLines) {}
 
 /**
  * Mark the message to delete. The message will be removed indeed, when reconnect to the server
@@ -62,14 +62,14 @@ TubMailReceiverBind.top = function (index, maxLines) {}
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {Boolean} True if successfully, in opposite case raise exception
  */
-TubMailReceiverBind.deleteMessage = function (index) {}
+TubMailReceiver.deleteMessage = function (index) {}
 
 /**
  * Reconnect to mail server. Get new messages from server, delete marked for delete messages.
  *
  * @returns {Boolean} True if successfully, in opposite case raise exception
  */
-TubMailReceiverBind.reconnect = function () {}
+TubMailReceiver.reconnect = function () {}
 
 /**
  * @class UBMail.TubMailAttach
