@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 22.10.14
  * Test server side implementations from serverSide folder
  */

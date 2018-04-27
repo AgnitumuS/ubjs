@@ -1,12 +1,12 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for TST model
  */
 
 /**
  * Initial script for create desktop navigation shortcuts for TST model
- * Used by cmd\initialize command
- * @param {cmd.argv.serverSession} session
+ * Used by `ubcli initialize` command
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   var

@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for UBA model
  */
 

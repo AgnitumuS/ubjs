@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 23.01.14
  * This test connect to UB server and do select for all entities
  */

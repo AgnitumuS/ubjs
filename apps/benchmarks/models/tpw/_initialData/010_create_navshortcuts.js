@@ -1,11 +1,11 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for TechemPower test
  */
 
 /**
  * Initial script for create UnityBase TechEmPower test desktop navigation shortcuts
- * Used by cmd\initialize command
+ * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
 module.exports = function(session) {

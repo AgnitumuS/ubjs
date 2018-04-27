@@ -1,6 +1,6 @@
 /**
  * Fill ELS for UBM model
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   'use strict'

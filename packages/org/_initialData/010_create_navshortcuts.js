@@ -1,12 +1,12 @@
 ﻿/**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for ORG model
  */
 
 /**
  * Initial script for create UnityBase Organizational Structure desktop navigation short-cuts (ORG model)
  * Used by ubcli initialize command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function(session){
 var

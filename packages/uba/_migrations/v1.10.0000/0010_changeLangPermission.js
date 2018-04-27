@@ -1,10 +1,10 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Add permission for uba_user.changeLanguage for Everyone role
  */
 
  /**
-  * @param {cmd.argv.serverSession} session
+  * @param {ServerSession} session
   */
 module.exports = function (session) {
   var conn = session.connection

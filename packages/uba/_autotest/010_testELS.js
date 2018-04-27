@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 09.10.14
  * Entity Level Security (ELS) rules test
  */

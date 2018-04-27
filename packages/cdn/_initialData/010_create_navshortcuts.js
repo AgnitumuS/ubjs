@@ -1,5 +1,5 @@
 ﻿/**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for CDN model
  */
 
@@ -7,7 +7,7 @@ var UBA_COMMON = require('@unitybase/uba/modules/uba_common');
 /**
  * Initial script for create UnityBase Common Dictionaries desktop navigation short-cuts (CDN model)
  * Used by ubcli initialize command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function(session){
 var

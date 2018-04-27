@@ -1,7 +1,7 @@
 /**
  * Fill UBS model settings
  * Used by `ubcli initialize` command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function(session){
     "use strict";

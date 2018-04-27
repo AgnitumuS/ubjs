@@ -1,12 +1,12 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * 
  */
 
 /**
  * Initial script for fill Words entity by 10000 random numbers as expected by TechEmPower test
- * Used by cmd\initialize command
- * @param {cmd.argv.serverSession} session
+ * Used by `ubcli initialize` command
+ * @param {ServerSession} session
  */
 module.exports = function(session) {
     "use strict";

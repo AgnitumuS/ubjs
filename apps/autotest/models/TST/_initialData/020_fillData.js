@@ -1,7 +1,7 @@
 /**
  * Fill TST model enums
- * Used by cmd\initialize command
- * @param {cmd.argv.serverSession} session
+ * Used by `ubcli initialize` command
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   'use strict'

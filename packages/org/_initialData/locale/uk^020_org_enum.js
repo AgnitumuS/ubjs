@@ -2,7 +2,7 @@
  * @author pavel.mash
  * Enumeration localization to Ukrainian for ORG model
  * Used by `ubcli initialize` command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function(session){
 var

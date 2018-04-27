@@ -69,7 +69,6 @@ const message1 = {
 assert(sender1.sendMail(message1), 'Sending message1 failed')
 sleep(SLEEP_TIMEOUT)
 let msgList = receiveMail(receiver1, account1, 1)
-debugger
 checkIsSameMessage(msgList[0], message1)
 
 console.log('3. Sending message to second mailbox with html body with 2 text file attaches')
@@ -170,7 +169,6 @@ msgList = receiveMail(receiver2, account2, 1)
 checkIsSameMessage(msgList[0], message4)
 
 emptyMailBoxes()
-debugger
 /**
  * Delete all messages from both mailboxes
  */
