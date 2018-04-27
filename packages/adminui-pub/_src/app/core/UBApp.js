@@ -620,7 +620,7 @@ Ext.define('UB.core.UBApp', {
     let i = 'import'
     let moduleName = '@ub-e/nm-pdfsign' + (window.isDeveloperMode ? '' : '/dist/nm-pdfsign.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-pdfsigner to the bundle
-    return System[i](moduleName).then(function (nmPDFSignerModule) {
+    return SystemJS[i](moduleName).then(function (nmPDFSignerModule) {
       return nmPDFSignerModule.connect()
     })
   },
@@ -633,7 +633,7 @@ Ext.define('UB.core.UBApp', {
     let i = 'import'
     let moduleName = '@ub-e/nm-docedit' + (window.isDeveloperMode ? '' : '/dist/nm-docedit.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-docedit to the bundle
-    return System[i](moduleName).then(function (nmDocEditModule) {
+    return SystemJS[i](moduleName).then(function (nmDocEditModule) {
       return nmDocEditModule.connect()
     })
   },
@@ -659,7 +659,7 @@ Ext.define('UB.core.UBApp', {
     let i = 'import'
     let moduleName = '@ub-e/nm-scanner' + (window.isDeveloperMode ? '' : '/dist/nm-scanner.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-scanner to the bundle
-    return System[i](moduleName).then(function (nmScannerModule) {
+    return SystemJS[i](moduleName).then(function (nmScannerModule) {
       return nmScannerModule.connect()
     })
   },
