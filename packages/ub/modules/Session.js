@@ -380,7 +380,6 @@ Object.defineProperty(Session, 'callerIP', {
 })
 /**
  * Create new session for userID
- * @deprecated use runAsUser instead this
  * @method
  * @param {Number} userID ID of  user
  * @param {String} [secret] secret word. If defined then session secretWord is `JSON.parse(returns).result+secret`

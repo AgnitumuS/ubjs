@@ -1,7 +1,10 @@
-var me = uba_role
-
-var UBA_COMMON = require('./modules/uba_common')
-
+/* global uba_role */
+// eslint-disable-next-line camelcase
+let me = uba_role
+const UBA_COMMON = require('@unitybase/base').uba_common
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
 /**
  * After inserting new user - log event to uba_audit
  * @param {ubMethodParams} ctx
@@ -11,9 +14,9 @@ function ubaAuditNewRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) {
     return
   }
-  var params = ctx.mParams.execParams
-  var store = new TubDataStore('uba_audit')
-  var actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+  let store = UB.DataStore('uba_audit')
+  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+  let params = ctx.mParams.execParams
   store.run('insert', {
     execParams: {
       entity: 'uba_role',
@@ -46,16 +49,14 @@ me.on('insert:before', fillRoleDescriptionIfMissing)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyRole (ctx) {
-  if (!App.domainInfo.has('uba_audit')) {
-    return
-  }
-  var
-    params = ctx.mParams.execParams,
-    store = new TubDataStore('uba_audit'),
-    actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select(),
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, oldName
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let params = ctx.mParams.execParams
+  let store = UB.DataStore('uba_audit')
+  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let oldValues, oldName
 
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
@@ -115,16 +116,14 @@ me.on('update:after', ubaAuditModifyRole)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteRole (ctx) {
-  if (!App.domainInfo.has('uba_audit')) {
-    return
-  }
-  var
-    params = ctx.mParams.execParams,
-    store = new TubDataStore('uba_audit'),
-    actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select(),
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, oldName
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let params = ctx.mParams.execParams
+  let store = UB.DataStore('uba_audit')
+  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let oldValues, oldName
 
   try {
     origStore.currentDataName = 'selectBeforeDelete'
@@ -154,9 +153,7 @@ me.on('delete:after', ubaAuditDeleteRole)
  * @param {ubMethodParams} ctx
  */
 function disableBuildInRoleDelete (ctx) {
-  var
-    params = ctx.mParams.execParams,
-    ID = params.ID
+  let ID = ctx.mParams.execParams.ID
 
   for (let role in UBA_COMMON.ROLES) {
     if (UBA_COMMON.ROLES[role].ID === ID) {

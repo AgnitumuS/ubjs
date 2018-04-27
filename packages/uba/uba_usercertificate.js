@@ -1,8 +1,11 @@
 /**
- * Created by xmax.
+ * User certificates
+ * @author xmax
  */
-
+/* global uba_usercertificate */
+// eslint-disable-next-line camelcase
 const me = uba_usercertificate
+const UB = require('@unitybase/ub')
 
 function setBlob (ctxt) {
   const execParams = ctxt.mParams.execParams
@@ -26,8 +29,9 @@ me.on('insert:after', clearBlob)
 me.on('update:after', clearBlob)
 
 me.getCertificate = function (ctxt) {
-  let store = UB.Repository('uba_usercertificate').attrs(['ID', 'certificate'])
-  .where('ID', '=', ctxt.mParams.ID).select()
+  let store = UB.Repository('uba_usercertificate')
+    .attrs(['ID', 'certificate'])
+    .where('ID', '=', ctxt.mParams.ID).select()
 
   let certificate = store.getAsBuffer('certificate')
   certificate = Buffer.from(certificate)

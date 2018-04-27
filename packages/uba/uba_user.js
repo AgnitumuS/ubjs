@@ -1,6 +1,10 @@
-﻿var me = uba_user
-
+﻿/* global uba_user ubs_settings uba_otp nsha256 */
+// eslint-disable-next-line camelcase
+let me = uba_user
 const UBA_COMMON = require('@unitybase/base').uba_common
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
 const http = require('http')
 
 me.entity.addMethod('changeLanguage')
@@ -10,9 +14,9 @@ me.entity.addMethod('changeLanguage')
  * @param {ubMethodParams} ctxt
  */
 function checkDuplicateUser (ctxt) {
-  var params = ctxt.mParams.execParams,
-    newName = params.name,
-    ID = params.ID
+  let params = ctxt.mParams.execParams
+  let newName = params.name
+  let ID = params.ID
   if (newName) {
     let repo = UB.Repository('uba_user').attrs('ID').where('name', '=', newName.toLowerCase())
     if (ID) {
@@ -37,9 +41,10 @@ function fillFullNameIfMissing (ctxt) {
   let params = ctxt.mParams.execParams
   if (!params.fullName) {
     params.fullName = params.name
-  };
+  }
   if (params.name && params.name.indexOf('\\') !== -1) {
-      params.lastPasswordChangeDate = new Date(2099,12,31);
+    // domaim/ldap user password never expire on UB level
+    params.lastPasswordChangeDate = new Date(2099, 12, 31)
   }
 }
 me.on('insert:before', fillFullNameIfMissing)
@@ -52,13 +57,10 @@ me.on('insert:before', fillFullNameIfMissing)
  * @param {String} [oldPwd] Optional for optimisation
  */
 me.changePassword = function (userID, userName, password, needChangePassword, oldPwd) {
-  var newPwd = password || '',
-    store = new TubDataStore('uba_user'),
-    passwordPolicy
-
   if ((!userID && !userName) || !password) {
     throw new Error('Invalid parameters.')
   }
+  let store = UB.DataStore('uba_user')
   if (userID && (!userName || !oldPwd)) {
     UB.Repository('uba_user').attrs(['ID', 'name', 'uPasswordHashHexa']).where('[ID]', '=', userID).select(store)
     userName = store.get('name')
@@ -69,7 +71,8 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
     oldPwd = store.get('uPasswordHashHexa')
   }
 
-  passwordPolicy = ubs_settings ? {
+// eslint-disable-next-line camelcase
+  let passwordPolicy = ubs_settings ? {
     minLength: ubs_settings.getSettingValue('UBA.passwordPolicy.minLength'),
     checkCmplexity: ubs_settings.getSettingValue('UBA.passwordPolicy.checkCmplexity'),
     checkDictionary: ubs_settings.getSettingValue('UBA.passwordPolicy.checkDictionary'),
@@ -82,28 +85,31 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   if (passwordPolicy.allowMatchWithLogin == null) passwordPolicy.allowMatchWithLogin = false
   if (passwordPolicy.checkPrevPwdNum == null) passwordPolicy.checkPrevPwdNum = 4
 
-    // minLength
+  let newPwd = password || ''
+  // minLength
   if (passwordPolicy.minLength > 0) {
     if (newPwd.length < passwordPolicy.minLength) {
       throw new Error('<<<Password is too short>>>')
     }
   }
 
-    // checkCmplexity
+  // checkCmplexity
   if (passwordPolicy.checkCmplexity) {
-    if (!(/[A-Z]/.test(newPwd) && /[a-z]/.test(newPwd) && /[0-9]/.test(newPwd) && /[~!@#$%^&*()_+|\\=\-\/'":;<>]/.test(newPwd))) {
+    if (!(/[A-Z]/.test(newPwd) && /[a-z]/.test(newPwd) &&
+      /[0-9]/.test(newPwd) && /[~!@#$%^&*()_+|\\=\-/'":;<>]/.test(newPwd))
+    ) {
       throw new Error('<<<Password is too simple>>>')
     }
   }
     // checkDictionary
   if (passwordPolicy.checkDictionary) {
     // todo - check password from dictionary
-    if (false) {
-      throw new Error('<<<Password is dictionary word>>>')
-    }
+    // if (false) {
+    //   throw new Error('<<<Password is dictionary word>>>')
+    // }
   }
 
-    // allowMatchWithLogin
+  // allowMatchWithLogin
   if (!passwordPolicy.allowMatchWithLogin) {
     if (userName === newPwd) {
       throw new Error('<<<Password matches with login>>>')
@@ -113,8 +119,11 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   newPwd = nsha256('salt' + newPwd)
     // checkPrevPwdNum
   if (passwordPolicy.checkPrevPwdNum > 0) {
-    UB.Repository('uba_prevPasswordsHash').attrs('uPasswordHashHexa').where('userID', '=', userID)
-            .limit(passwordPolicy.checkPrevPwdNum).orderBy('mi_createDate', 'desc').select(store)
+    UB.Repository('uba_prevPasswordsHash')
+      .attrs('uPasswordHashHexa')
+      .where('userID', '=', userID)
+      .limit(passwordPolicy.checkPrevPwdNum)
+      .orderBy('mi_createDate', 'desc').select(store)
     store.first()
     while (!store.eof) {
       if (store.get('uPasswordHashHexa') === newPwd) {
@@ -124,10 +133,16 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
     }
   }
 
-    // since attribute uPasswordHashHexa is not defined in entity metadata for security reason we need to execute SQL. It is always better to not use execSQL at all!
-  store.execSQL('update uba_user set uPasswordHashHexa=:newPwd:, lastPasswordChangeDate=:lastPasswordChangeDate: where id = :userID:',
-        {newPwd: newPwd, lastPasswordChangeDate: needChangePassword ? new Date(2000, 1, 1) : new Date(), userID: userID})
-    // store oldPwd
+  // since attribute uPasswordHashHexa is not defined in entity metadata for security reason we need to execute SQL. It is always better to not use execSQL at all!
+  store.execSQL(
+    'update uba_user set uPasswordHashHexa=:newPwd:, lastPasswordChangeDate=:lastPasswordChangeDate: where id = :userID:',
+    {
+      newPwd: newPwd,
+      lastPasswordChangeDate: needChangePassword ? new Date(2000, 1, 1) : new Date(),
+      userID: userID
+    }
+  )
+  // store oldPwd
   if (oldPwd) {
     store.run('insert', {
       entity: 'uba_prevPasswordsHash',
@@ -139,82 +154,77 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   }
 }
 
-App.registerEndpoint('changePassword',
-    /**
-     * Change (or set) user password.
-     * For users with `admins` group we allow to change password for everyone,
-     * in this case `forUser` parameter required.
-     * @param {THTTPRequest}req
-     * @param {THTTPResponse}resp
-     */
-    function (req, resp) {
-      var params = JSON.parse(req.read()),
-        forUser = params.forUser,
-        newPwd = params.newPwd || '',
-        pwd = params.pwd || '',
-        needChangePassword = params.needChangePassword || false,
-        store = new TubDataStore('uba_user'),
-        roles, userID, oldPwd
+/**
+ * Change (or set) user password.
+ * For users with `admins` group we allow to change password for everyone,
+ * in this case `forUser` parameter required.
+ * @param {THTTPRequest}req
+ * @param {THTTPResponse}resp
+ */
+function changePasswordEp (req, resp) {
+  let reqBody = req.read()
+  let params = JSON.parse(reqBody)
+  let forUser = params.forUser
+  let newPwd = params.newPwd || ''
+  let pwd = params.pwd || ''
+  let needChangePassword = params.needChangePassword || false
+  let store = UB.DataStore('uba_user')
+  let roles, userID, oldPwd
 
-      if (!newPwd) {
-        throw new Error('newPwd parameter is required')
-      }
+  if (!newPwd) throw new Error('newPwd parameter is required')
 
-      let failException = null
-      try {
-        if (forUser) {
-          roles = (Session.userRoleNames || '').split(',')
-          if ((roles.indexOf(UBA_COMMON.ROLES.ADMIN.NAME) === -1) && (roles.indexOf('accountAdmins') === -1)) {
-            throw new Error(`Change password for other users allowed only for "${UBA_COMMON.ROLES.ADMIN.NAME}" or "accountAdmins" group members`)
-          }
-          UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)
-          if (store.eof) {
-            throw new Error('User not found')
-          }
-          userID = store.get('ID')
-          oldPwd = store.get('uPasswordHashHexa')
-        } else {
-          userID = Session.userID
-          UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
-          if (!store.eof) {
-            forUser = store.get('name')
-            oldPwd = store.get('uPasswordHashHexa')
-          }
-              // checkPrevPwd
-          if (pwd !== oldPwd) {
-            throw new UB.UBAbort('<<<Incorrect old password>>>')
-          }
-        }
-        me.changePassword(userID, forUser, newPwd, needChangePassword, oldPwd)
-      } catch (e) {
-        failException = e
+  let failException = null
+  try {
+    if (forUser) {
+      roles = (Session.userRoleNames || '').split(',')
+      if ((roles.indexOf(UBA_COMMON.ROLES.ADMIN.NAME) === -1) && (roles.indexOf('accountAdmins') === -1)) {
+        throw new Error(`Change password for other users allowed only for "${UBA_COMMON.ROLES.ADMIN.NAME}" or "accountAdmins" group members`)
       }
+      UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)
+      if (store.eof) throw new Error('User not found')
 
-      // make uba_audit record
-      if (App.domainInfo.has('uba_audit')) {
-        // var store = new TubDataStore('uba_audit');
-        /** @type uba_user_object */
-        store.run('insert', {
-          entity: 'uba_audit',
-          execParams: {
-            entity: 'uba_user',
-            entityinfo_id: userID, // Session.userID,
-            actionType: failException  ? 'SECURITY_VIOLATION' : 'UPDATE',
-            actionUser: Session.uData.login,
-            actionTime: new Date(),
-            remoteIP: Session.callerIP,
-            targetUser: forUser.toLowerCase(),
-            toValue: failException
-              ? JSON.stringify({action: 'changePassword', reason: failException.message})
-              : JSON.stringify({action: 'changePassword'})
-          }
-        })
-        App.dbCommit()
+      userID = store.get('ID')
+      oldPwd = store.get('uPasswordHashHexa')
+    } else {
+      userID = Session.userID
+      UB.Repository('uba_user').attrs('name', 'uPasswordHashHexa').where('ID', '=', userID).select(store)
+      if (!store.eof) {
+        forUser = store.get('name')
+        oldPwd = store.get('uPasswordHashHexa')
       }
-      if (failException) throw failException
-      resp.statusCode = 200
+      // checkPrevPwd
+      if (pwd !== oldPwd) throw new UB.UBAbort('<<<Incorrect old password>>>')
     }
-)
+    me.changePassword(userID, forUser, newPwd, needChangePassword, oldPwd)
+  } catch (e) {
+    failException = e
+  }
+
+  // make uba_audit record
+  if (App.domainInfo.has('uba_audit')) {
+    // var store = new TubDataStore('uba_audit');
+    /** @type uba_user_object */
+    store.run('insert', {
+      entity: 'uba_audit',
+      execParams: {
+        entity: 'uba_user',
+        entityinfo_id: userID, // Session.userID,
+        actionType: failException ? 'SECURITY_VIOLATION' : 'UPDATE',
+        actionUser: Session.uData.login,
+        actionTime: new Date(),
+        remoteIP: Session.callerIP,
+        targetUser: forUser.toLowerCase(),
+        toValue: failException
+          ? JSON.stringify({action: 'changePassword', reason: failException.message})
+          : JSON.stringify({action: 'changePassword'})
+      }
+    })
+    App.dbCommit()
+  }
+  if (failException) throw failException
+  resp.statusCode = 200
+}
+App.registerEndpoint('changePassword', changePasswordEp)
 
 /**
  * Change (or set) current user language.
@@ -222,7 +232,6 @@ App.registerEndpoint('changePassword',
  *
  * @param {ubMethodParams} ctxt
  * @param {String} ctxt.mParams.newLang new user language
- *
  */
 function changeLanguage (ctxt) {
   let params = ctxt.mParams
@@ -238,24 +247,24 @@ function changeLanguage (ctxt) {
   }
 
   let supportedLangs = user.entity.connectionConfig.supportLang
-  if (_.indexOf(supportedLangs, newLang) < 0) {
-    throw new Error('Language "' + newLang + '" not supported')
+  if (supportedLangs.indexOf(newLang) < 0) {
+    throw new Error(`Language "${newLang}" not supported`)
   }
 
-  let uData
+  let newUData
   try {
-    uData = JSON.parse(user.get('uData'))
+    newUData = JSON.parse(user.get('uData'))
   } catch (e) {
-    uData = {}
+    newUData = {}
   }
-  if (!uData) {
-    uData = {}
+  if (!newUData) {
+    newUData = {}
   }
-  uData.lang = newLang
+  newUData.lang = newLang
   user.run('update', {
     execParams: {
       ID: userID,
-      uData: JSON.stringify(uData),
+      uData: JSON.stringify(newUData),
       mi_modifyDate: user.get('mi_modifyDate')
     }
   })
@@ -267,12 +276,10 @@ me.changeLanguage = changeLanguage
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewUser (ctx) {
-  if (!App.domainInfo.has('uba_audit')) {
-    return
-  }
+  if (!App.domainInfo.has('uba_audit')) return
 
   let params = ctx.mParams.execParams
-  let store = new TubDataStore('uba_audit')
+  let store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_user',
@@ -293,15 +300,13 @@ me.on('insert:after', ubaAuditNewUser)
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyUser (ctx) {
-  if (!App.domainInfo.has('uba_audit')) {
-    return
-  }
-  var
-    params = ctx.mParams.execParams,
-    store = new TubDataStore('uba_audit'),
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, oldName
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let params = ctx.mParams.execParams
+  let store = UB.DataStore('uba_audit')
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let oldValues, oldName
 
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
@@ -364,7 +369,7 @@ function ubaAuditDeleteUser (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
   let params = ctx.mParams.execParams
-  let store = new TubDataStore('uba_audit')
+  let store = UB.DataStore('uba_audit')
   let origStore = ctx.dataStore
   let origName = origStore.currentDataName
   let oldValues, oldName
@@ -397,9 +402,7 @@ me.on('delete:after', ubaAuditDeleteUser)
  * @param {ubMethodParams} ctx
  */
 function denyBuildInUserDeletion (ctx) {
-  var
-    params = ctx.mParams.execParams,
-    ID = params.ID
+  let ID = ctx.mParams.execParams.ID
 
   for (let user in UBA_COMMON.USERS) {
     if (UBA_COMMON.USERS[user].ID === ID) {
@@ -409,6 +412,7 @@ function denyBuildInUserDeletion (ctx) {
 }
 me.on('delete:before', denyBuildInUserDeletion)
 
+// eslint-disable-next-line no-useless-escape
 const EMAIL_VALIDATION_RE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 /**
  * Check provided Email is look like Email address
@@ -419,8 +423,10 @@ function validateEmail (email) {
   return email && (email.length < 60) && EMAIL_VALIDATION_RE.test(email)
 }
 
-const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings && App.serverConfig.application.customSettings.reCAPTCHA ?
-    App.serverConfig.application.customSettings.reCAPTCHA.secretKey : ''
+const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings &&
+  App.serverConfig.application.customSettings.reCAPTCHA
+    ? App.serverConfig.application.customSettings.reCAPTCHA.secretKey
+    : ''
 /**
  * Validate a reCAPTCHA from client request. See <a href="https://developers.google.com/recaptcha/docs/verify"reCAPTCHA doc</a>
  * App.serverConfig.application.customSettings.reCAPTCHA.secretKey must be defined
@@ -429,8 +435,7 @@ const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings && App.
  */
 function validateRecaptcha (recaptcha) {
   if (!RECAPTCHA_SECRET_KEY) return true
-  var data, resp
-  resp = http.request({
+  let resp = http.request({
     URL: 'https://www.google.com/recaptcha/api/siteverify' + '?' + 'secret=' + RECAPTCHA_SECRET_KEY + '&response=' + recaptcha,
     method: 'POST',
     sendTimeout: 30000,
@@ -438,16 +443,17 @@ function validateRecaptcha (recaptcha) {
     keepAlive: true,
     compressionEnable: true
   }).end('')
-  data = JSON.parse(resp.read())
+  let data = JSON.parse(resp.read())
   return data.success
 }
 
 me.entity.addMethod('publicRegistration')
 
 const confirmationRedirectURI = App.serverConfig.application.customSettings &&
-    App.serverConfig.application.customSettings.publicRegistration &&
-    App.serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI ?
-    App.serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI : '/'
+  App.serverConfig.application.customSettings.publicRegistration &&
+  App.serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI
+  ? App.serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI
+  : '/'
 
 const QueryString = require('querystring')
 
@@ -458,8 +464,9 @@ const QueryString = require('querystring')
  * @param {string} login user login
  */
 function processRegistrationStep2 (resp, otp, login) {
-  let userID, userOtpData = null
-  let store = new TubDataStore(me.entity)
+  let userID
+  let userOtpData = null
+  let store = UB.DataStore(me.entity.name)
   uba_otp.authAndExecute(otp, 'EMail', function (uData) {
     userID = Session.userID
     userOtpData = uData
@@ -502,7 +509,7 @@ function processRegistrationStep2 (resp, otp, login) {
 }
 
 /**
- * 2-step new user public registration rest endpoint.
+ * Two-step new user public registration rest endpoint.
  *
  * 1-st step: web page pass a registration parameters as JSON:
  *
@@ -517,7 +524,7 @@ function processRegistrationStep2 (resp, otp, login) {
  *    Report take a parameters {login, password, activateUrl, appConfig}
  *  - schedule a confirmation e-mail for user
  *
- * 2-nd step: user folow the link from e-mail
+ * 2-nd step: user follow the link from e-mail
  *
  *      GET /rest/uba_user/publicRegistration?otp=<one time pwd value>&login=<user_login>
  *
@@ -544,15 +551,14 @@ me.publicRegistration = function (fake, req, resp) {
 3. get redirect page address
 4. answer redirect
 */
-
   const mailQueue = require('@unitybase/ubq/modules/mail-queue')
   const UBReport = require('@unitybase/ubs/modules/UBServerReport')
 
-  const publicRegistrationSubject = ubs_settings.loadKey('uba.user.publicRegistrationSubject'),
-    publicRegistrationReportCode = ubs_settings.loadKey('uba.user.publicRegistrationReportCode')
+  const publicRegistrationSubject = ubs_settings.loadKey('uba.user.publicRegistrationSubject')
+  const publicRegistrationReportCode = ubs_settings.loadKey('uba.user.publicRegistrationReportCode')
 
-  const {otp, login} = QueryString.parse(req.parameters, null, null, {maxKeys: 3}),
-    store = new TubDataStore(me.entity)
+  const {otp, login} = QueryString.parse(req.parameters, null, null, {maxKeys: 3})
+  let store = UB.DataStore(me.entity.name)
 
   if (otp && login) {
     processRegistrationStep2(resp, otp, login)
@@ -566,10 +572,10 @@ me.publicRegistration = function (fake, req, resp) {
       throw new UB.UBAbort('reCAPTCTA check fail')
     }
     Session.emit('registrationStart', {
-            authType: 'UB',
-            publicRegistration: true,
-            params: {email, phone, utmSource, utmCampaign, recaptcha}
-        });
+      authType: 'UB',
+      publicRegistration: true,
+      params: {email, phone, utmSource, utmCampaign, recaptcha}
+    })
     Session.runAsAdmin(function () {
       store.run('insert', {
         execParams: {
@@ -594,7 +600,7 @@ me.publicRegistration = function (fake, req, resp) {
         activateUrl: registrationAddress,
         appConfig: App.serverConfig
       })
-      let mailBody = reportResult.reportData;
+      let mailBody = reportResult.reportData
 
       mailQueue.queueMail({
         to: email,

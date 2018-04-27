@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 const UB = require('@unitybase/ub')
 const App = UB.App
 const queryString = require('querystring')
@@ -6,7 +7,7 @@ const Session = UB.Session
 let ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
 if (ubaAuditPresent) {
-  auditStore = new TubDataStore('uba_audit')
+  auditStore = UB.DataStore('uba_audit')
 }
 
 /**
@@ -27,7 +28,6 @@ function checkAdvancedSecurity (req) {
     doCheckAdvancedSecurity = function () { return {enabled: false} }
   }
   let fp = ''
-  let fpa = ''
   let urlParams = queryString.parse(req.decodedParameters)
 
   if (!advData) return { // no adv. settings for current user
@@ -47,7 +47,6 @@ function checkAdvancedSecurity (req) {
 
   if (advData.refreshFp || advData.fp) { // fp required
     fp = urlParams.FP
-    fpa = urlParams.FPA
     if (!fp) throw new Error('Fingerprint requred but not passed in FP URL params')
   }
   if (advData.refreshFp) {
@@ -72,7 +71,7 @@ function checkAdvancedSecurity (req) {
   if (needUpdate) {
     updateParams.ID = advData.ID
     updateParams.mi_modifyDate = advData.mi_modifyDate
-    let advStore = new TubDataStore('uba_advSecurity')
+    let advStore = UB.DataStore('uba_advSecurity')
     advStore.run('update', {
       execParams: updateParams
     })
@@ -133,7 +132,7 @@ function onUserLogin (req) {
           entity: 'uba_user',
           entityinfo_id: Session.userID,
           actionType: 'LOGIN',
-          actionUser: data.login, //Session.userID,
+          actionUser: data.login,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : data.login,
@@ -163,7 +162,7 @@ function onUserLoginFailed (isLocked) {
           entity: 'uba_user',
           entityinfo_id: Session.userID,
           actionType: isLocked ? 'LOGIN_LOCKED' : 'LOGIN_FAILED',
-          actionUser: user, //Session.userID,
+          actionUser: user,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: user

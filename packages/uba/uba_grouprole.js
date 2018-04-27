@@ -1,5 +1,7 @@
-var me = uba_grouprole
-var UBA_COMMON = require('./modules/uba_common')
+/* global uba_grouprole */
+// eslint-disable-next-line camelcase
+const me = uba_grouprole
+const UBA_COMMON = require('@unitybase/base').uba_common
 
 me.on('insert:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmins)
 me.on('update:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmins)

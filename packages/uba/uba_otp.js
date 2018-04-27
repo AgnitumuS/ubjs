@@ -4,8 +4,11 @@
  * @autor v.orel
  * @module @unitybase/uba/uba_otp
  */
-
-var me = uba_otp
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+/* global uba_otp createGuid */
+// eslint-disable-next-line camelcase
+let me = uba_otp
 /**
  * Generate one-time-password (OTP), insert record into table and returns new OTP
  *
@@ -17,11 +20,10 @@ var me = uba_otp
  * @return {String}
  */
 me.generateOtp = function (otpKind, userID, uData, lifeTime) {
-  var lifeTimeOfEMail = 30 * 24 * 60 * 60, // 30 days
-    lifeTimeOfSMS = 20 * 60, // 30 minutes
-    expiredDate = new Date(),
-    uDataStr,
-    otp
+  const lifeTimeOfEMail = 30 * 24 * 60 * 60 // 30 days
+  const lifeTimeOfSMS = 20 * 60 // 30 minutes
+  let expiredDate = new Date()
+  let otp
   if (otpKind === 'EMail') {
     otp = createGuid()
     if (!lifeTime) lifeTime = lifeTimeOfEMail
@@ -32,12 +34,11 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
     throw new Error('invalid otpKind')
   }
   expiredDate.setTime(expiredDate.getTime() + lifeTime * 1000)
-  if (uData) uDataStr = JSON.stringify(uData)
-  else uDataStr = ''
-  var inst = UB.Repository('uba_otp').attrs(['ID', 'otp'])
-        .where('[otp]', '=', otp)
-        .select()
-  var res = inst.run('insert', {
+  let uDataStr = uData ? JSON.stringify(uData) : ''
+  let inst = UB.Repository('uba_otp').attrs(['ID', 'otp'])
+    .where('[otp]', '=', otp)
+    .select()
+  let res = inst.run('insert', {
     execParams: {
       otp: otp,
       userID: userID,
@@ -45,8 +46,7 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
       expiredDate: expiredDate,
       uData: uDataStr
     }
-  }
-    )
+  })
   if (!res) {
     throw inst.lastError
   }
@@ -66,40 +66,35 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
  * @returns {Boolean}
  */
 me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
-  var repo
-  var inst
-
-  repo = UB.Repository('uba_otp').attrs(['userID', 'ID', 'uData'])
-        .where('[otp]', '=', otp).where('[expiredDate]', '>=', new Date())
+  let repo = UB.Repository('uba_otp').attrs(['userID', 'ID', 'uData'])
+    .where('[otp]', '=', otp).where('[expiredDate]', '>=', new Date())
   if (otpKind) {
     repo = repo.where('[otpKind]', '=', otpKind)
   }
-  inst = repo.select()
-  if (inst.eof) {
-    return false
-  } else {
-    var res = inst.run('delete', {
-      execParams: {ID: inst.get('ID')}
-    })
-    if (!res) {
-      throw inst.lastError
+  let inst = repo.select()
+  if (inst.eof) return false
+
+  let res = inst.run('delete', {
+    execParams: {ID: inst.get('ID')}
+  })
+  if (!res) throw inst.lastError
+
+  if ((!fCheckUData) || (fCheckUData(inst.get('uData'), checkData))) {
+    if (call) {
+      Session.runAsUser(inst.get('userID'), call.bind(null, inst.get('uData')))
+    } else {
+      Session.setUser(inst.get('userID'))
     }
-    if ((!fCheckUData) || (fCheckUData(inst.get('uData'), checkData))) {
-      if (call)
-              { Session.runAsUser(inst.get('userID'), call.bind(null, inst.get('uData'))) }
-      else
-                { // noinspection JSDeprecatedSymbols
-        Session.setUser(inst.get('userID'))
-      }
-      return true
-    } else return false
+    return true
+  } else {
+    return false
   }
 }
 
 /**
- * Check given otp, and when it is correct then run callback
+ * Check given otp, and in case it is correct run callback
  *
- * Sample
+ * @example
  *          // generation otp
  *          var userID = 100000000122,
  *              uData = {size: {width: 100, height: 50}};
@@ -121,14 +116,15 @@ me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
  */
 me.authAndExecute = function (otp, otpKind, callBack) {
   const store = UB.Repository('uba_otp').attrs(['userID', 'ID', 'uData'])
-        .where('[otp]', '=', otp).where('[otpKind]', '=', otpKind).where('[userID.disabled]', '=', 0).where('[expiredDate]', '>=', new Date()).select()
-  if (store.eof) {
-    return false
-  } else {
-    if (!store.run('delete', {execParams: {ID: store.get('ID')}})) {
-      throw store.lastError
-    }
-    Session.runAsUser(store.get('userID'), callBack.bind(null, store.get('uData')))
-    return true
+    .where('[otp]', '=', otp).where('[otpKind]', '=', otpKind)
+    .where('[userID.disabled]', '=', 0)
+    .where('[expiredDate]', '>=', new Date())
+    .select()
+  if (store.eof) return false
+
+  if (!store.run('delete', {execParams: {ID: store.get('ID')}})) {
+    throw store.lastError
   }
+  Session.runAsUser(store.get('userID'), callBack.bind(null, store.get('uData')))
+  return true
 }
