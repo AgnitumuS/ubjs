@@ -2,8 +2,7 @@
 /*
  { "cmdType": "showForm",
  "formCode": function(){
- debugger;
- var rep = Ext.create("PDF.cstestReport");
+  var rep = Ext.create("PDF.cstestReport");
  rep.doTest();
  //alert('ddd');
  },
@@ -269,7 +268,6 @@ Ext.define('PDF.cstestReport', {
       return
     }
 
-    // debugger;
     var stTime = (new Date()).getTime()
 
     pdf = Ext.create('PDF.csPrintToPdf', {
@@ -432,7 +430,6 @@ Ext.define('PDF.cstestReport', {
       for (i = 0; i < 800; i++){
           testText0 += 'test12345678';
       }
-      //debugger;
       pdf.writeSimpleText({text: testText0, splitOnPage: true});
       pdf.movePosition(10);
       pdf.writeSimpleText({text: testText0, splitOnPage: true});
@@ -442,7 +439,7 @@ Ext.define('PDF.cstestReport', {
       pdf.writeSimpleText({text: testText0, splitOnPage: true, font: { type: "Italic" }});
 
       largeText =  testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText + testText;
-      //debugger;
+
       var tbN = pdf.createTextBox({text: largeText, splitOnPage: true, width: pdf.page.innerSize.width, border: "TB"});
       if (tbN.lastPageNumber){
           pdf.setPage(tbN.lastPageNumber);

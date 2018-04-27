@@ -186,7 +186,6 @@ Ext.define('UB.ux.GraphViewer', {
 
             document = mxUtils.getXml(data);
             UB.core.UBService.setDocument(params, 'POST', document, function(response){
-                //debugger;
                 var resDat = Ext.JSON.decode(response);
                 if (resDat.success){
                   var ndoc = Ext.JSON.encode(resDat.result);

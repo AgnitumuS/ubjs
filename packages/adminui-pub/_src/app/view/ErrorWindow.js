@@ -62,7 +62,6 @@ UB.view.ErrorWindow = {
       eDiv.appendChild(msgDiv);
 
       msgDiv.oncontextmenu = function(event){
-          //debugger;
           var removeCtxMenu = function(){
               me.removeEvent(document.body, "click", closeMenu);
               document.body.removeChild(msgDiv);

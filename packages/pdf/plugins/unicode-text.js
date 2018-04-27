@@ -361,7 +361,6 @@
     jsPDFAPI.addExtFonts = function () {
 //        var out = this.internal.write;
 
-        //debugger;
         //this.setTextColor(1,1,1);
         return this;
     };

@@ -109,7 +109,6 @@ function launchApp () {
 
   Ext.Loader.loadScriptFileBase = Ext.Loader.loadScriptFile
   Ext.Loader.loadScriptFile = function (url, onLoad, onError, scope, synchronous) {
-    // debugger
     try {
       // throw below required to log a stack trace to console
       // noinspection ExceptionCaughtLocallyJS

@@ -21,7 +21,6 @@ function runTest () {
   // return
 
   let res
-//  debugger;
   res = JSON.parse(db.run('select id from uba_user where name = :name:', {name: 'anonymous'}))
   assert.equal(res.length, 1, `single named param. Expect 1 row, got ${res.length}`)
 

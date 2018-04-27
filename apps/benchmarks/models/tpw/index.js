@@ -98,7 +98,6 @@ App.registerEndpoint('dbRaw', dbRaw, false)
  * @param {THTTPResponse} resp
  */
 function dbRawJS (req, resp) {
-  debugger
   let resStr = App.defaultDatabase_.run(SQL, [rnd10000()])
   let res = JSON.parse(resStr)
   resp.statusCode = 200

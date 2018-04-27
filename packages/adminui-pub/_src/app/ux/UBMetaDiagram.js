@@ -380,7 +380,6 @@ Ext.define('UB.ux.UBMetaDiagram', {
     if (!me.useBlobForData) {
       Ext.Error.raise('object does not use Blob')
     }
-    // debugger;
     if (me.dataBlob && !Ext.isEmpty(this.objUrl)) {
       window.URL.revokeObjectURL(this.objUrl)
     }
@@ -392,7 +391,6 @@ Ext.define('UB.ux.UBMetaDiagram', {
 
   onDestroy: function () {
     var me = this
-    // debugger;
     me.dataBlob = null
     me.data = null
     if (me.useBlobForData && !Ext.isEmpty(me.objUrl)) {
@@ -1120,7 +1118,6 @@ Ext.define('UB.ux.UBMetaDiagram', {
       graph.addListener(mxEvent.ROOT, funct)
 
       me.editor.tasks = taskWnd
-      // debugger;
       me.editor.createTasks(div)
     }
 

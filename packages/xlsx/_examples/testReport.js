@@ -32,8 +32,7 @@ const wb = new XLSXWorkbook({useSharedString: false})
 const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
 converter.writeHtml({html: html, sourceData: data})
 console.log('1')
-// sleep(100000)
-// debugger
+
 var f
 wb.render().then(function (content) {
   console.log('2')
