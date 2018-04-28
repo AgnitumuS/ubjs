@@ -6,12 +6,14 @@
     "include": [
       "./packages/base",
       "./packages/stubs",
+      "./packages/cs-shared",
       "./packages/ub",
+      "./packages/uba",
       "./packages/ub/modules",
       "./packages/ub/blobStores",
       "./packages/ubcli/lib",
       "./packages/http-proxy",
-      "./packages/canvas/UBCanvas.js",
+      "../ub-e/packages/ubcanvas/UBCanvas.js",
       "./packages/com-bridge/UBComBridge.js",
       "./packages/mailer",
       "./packages/openid-connect/openIDConnect.js",
@@ -22,7 +24,8 @@
   },
   "plugins": [
     "plugins/markdown",
-    "./packages/ub-jsdocs/plugins/sripPFromDescription"
+    "./packages/ub-jsdocs/plugins/sripPFromDescription",
+    "./packages/ub-jsdocs/plugins/memberOfModule.js"
   ],
   "opts": {
     "template": "./packages/ub-jsdocs",

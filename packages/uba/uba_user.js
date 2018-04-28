@@ -11,6 +11,7 @@ me.entity.addMethod('changeLanguage')
 
 /**
  * Do not allow user with same name but in different case
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function checkDuplicateUser (ctxt) {
@@ -50,16 +51,19 @@ function fillFullNameIfMissing (ctxt) {
 me.on('insert:before', fillFullNameIfMissing)
 
 /**
+ * Change user password
  * @param {Number} userID
- * @param {String} userName  One of the parameters userName or userID must be specified
+ * @param {String} userName Either userName or userID must be specified
  * @param  {String} password
  * @param {Boolean} [needChangePassword=false] If true the password will by expired
  * @param {String} [oldPwd] Optional for optimisation
+ * @method changePassword
+ * @memberOf uba_user_object.prototype
+ * @memberOfModule @unitybase/uba
  */
 me.changePassword = function (userID, userName, password, needChangePassword, oldPwd) {
-  if ((!userID && !userName) || !password) {
-    throw new Error('Invalid parameters.')
-  }
+  if ((!userID && !userName) || !password) throw new Error('Invalid parameters')
+
   let store = UB.DataStore('uba_user')
   if (userID && (!userName || !oldPwd)) {
     UB.Repository('uba_user').attrs(['ID', 'name', 'uPasswordHashHexa']).where('[ID]', '=', userID).select(store)
@@ -133,7 +137,9 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
     }
   }
 
-  // since attribute uPasswordHashHexa is not defined in entity metadata for security reason we need to execute SQL. It is always better to not use execSQL at all!
+  // since attribute uPasswordHashHexa is not defined in entity metadata
+  // for security reason we need to execute SQL
+  // It's always better to not use execSQL at all!
   store.execSQL(
     'update uba_user set uPasswordHashHexa=:newPwd:, lastPasswordChangeDate=:lastPasswordChangeDate: where id = :userID:',
     {

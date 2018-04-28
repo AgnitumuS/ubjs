@@ -10,10 +10,8 @@ const App = UB.App
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewRole (ctx) {
-  'use strict'
-  if (!App.domainInfo.has('uba_audit')) {
-    return
-  }
+  if (!App.domainInfo.has('uba_audit')) return
+
   let store = UB.DataStore('uba_audit')
   let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
   let params = ctx.mParams.execParams

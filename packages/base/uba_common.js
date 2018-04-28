@@ -64,7 +64,7 @@ const ROLES = {
 
 /**
  * Constants for administrative security model
- * @autror pavel.mash 15.09.2016
+ * @author pavel.mash 15.09.2016
  * @module uba_common
  */
 

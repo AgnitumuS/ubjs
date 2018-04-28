@@ -1,1259 +1,945 @@
-/* eslint-disable camelcase,no-unused-vars */
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Advanced security
-* @mixes EventEmitter
-*/
-global.uba_advSecurity = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
+ * @module @unitybase/uba
+ */
 
 /**
-* Attributes of "Advanced security"
-* @class
-*/
-function uba_advSecurity_object () {
-  /**
-  *  
-  * 
+ * Advanced security
+ * @extends EntityModule
+ */
+class uba_advSecurity_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_advSecurity_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * User (ref -> uba_user)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.userID = 0
-  /**
-  * Cause of change 
+  userID: 0,
+ /**
   * @type {String}
   */
-  this.editCause = ''
-  /**
-  * Allowed IP address 
+  editCause: '',
+ /**
   * @type {String}
   */
-  this.allowedIP = null
-  /**
-  * Refresh allowed IP 
+  allowedIP: null,
+ /**
   * @type {Boolean}
   */
-  this.refreshIP = undefined
-  /**
-  * Fingerpring 
+  refreshIP: undefined,
+ /**
   * @type {String}
   */
-  this.fp = null
-  /**
-  * Refresh fingerpring 
+  fp: null,
+ /**
   * @type {Boolean}
   */
-  this.refreshFp = undefined
-  /**
-  * Key media name 
+  refreshFp: undefined,
+ /**
   * @type {String}
   */
-  this.keyMediaName = null
-  /**
-  * Refresh key media name 
+  keyMediaName: null,
+ /**
   * @type {Boolean}
   */
-  this.refreshKeyMedia = undefined
-  /**
-  * Additional 
+  refreshKeyMedia: undefined,
+ /**
   * JSON with advanced settings
   * @type {String}
   */
-  this.additional = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  additional: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
+}
+/**
+* Advanced security
+* @type {uba_advSecurity_object}
+*/
+const uba_advSecurity = new uba_advSecurity_object()
+/**
+ * Attribute level security (ALS)
+ * @extends EntityModule
+ */
+class uba_als_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_als_object.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  entity: '',
+ /**
+  * @type {String}
+  */
+  attribute: '',
+ /**
+  * @type {String}
+  */
+  state: '',
+ /**
+  * @type {String}
+  */
+  roleName: '',
+ /**
+  * @type {Number}
+  */
+  actions: 0,
 }
 /**
 * Attribute level security (ALS)
-* @mixes EventEmitter
+* @type {uba_als_object}
 */
-global.uba_als = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_als = new uba_als_object()
 /**
-* Attributes of "Attribute level security (ALS)"
-* @class
-*/
-function uba_als_object () {
-  /**
-  *  
-  * 
+ * Аудит
+ * @extends EntityModule
+ */
+class uba_audit_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_audit_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Сутність 
-  * @type {String}
-  */
-  this.entity = ''
-  /**
-  * Атрибут 
-  * @type {String}
-  */
-  this.attribute = ''
-  /**
-  * Код стану 
-  * @type {String}
-  */
-  this.state = ''
-  /**
-  * Назва ролі 
-  * @type {String}
-  */
-  this.roleName = ''
-  /**
-  * Дозволені дії 
-  * @type {Number}
-  */
-  this.actions = 0
-}
-/**
-* Аудит
-* @mixes EventEmitter
-*/
-global.uba_audit = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "Аудит"
-* @class
-*/
-function uba_audit_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Сутність 
+  ID: 0,
+ /**
   * Сутність
   * @type {String}
   */
-  this.entity = ''
-  /**
-  * ID запису сутності 
+  entity: '',
+ /**
   * ID запису сутності
   * @type {Number}
   */
-  this.entityinfo_id = 0
-  /**
-  * Дія 
+  entityinfo_id: 0,
+ /**
   * Дія
   * @type {String}
   */
-  this.actionType = ''
-  /**
-  * Користувач 
+  actionType: '',
+ /**
   * Користувач
   * @type {String}
   */
-  this.actionUser = ''
-  /**
-  * Час дії 
+  actionUser: '',
+ /**
   * Час дії
   * @type {Date}
   */
-  this.actionTime = new Date()
-  /**
-  * IP адреса 
+  actionTime: new Date(),
+ /**
   * IP адреса сторони, з якої здійснено виклик
   * @type {String}
   */
-  this.remoteIP = null
-  /**
-  * Цільовий користувач 
+  remoteIP: null,
+ /**
   * Ім&#39;я користувача, який змінив дані
   * @type {String}
   */
-  this.targetUser = null
-  /**
-  * Цільова роль 
+  targetUser: null,
+ /**
   * Роль користувача, який змінив дані
   * @type {String}
   */
-  this.targetRole = null
-  /**
-  * Було значення 
+  targetRole: null,
+ /**
   * @type {String}
   */
-  this.fromValue = null
-  /**
-  * Стало значення 
+  fromValue: null,
+ /**
   * @type {String}
   */
-  this.toValue = null
+  toValue: null,
 }
 /**
 * Аудит
-* @mixes EventEmitter
+* @type {uba_audit_object}
 */
-global.uba_auditTrail = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_audit = new uba_audit_object()
 /**
-* Attributes of "Аудит"
-* @class
-*/
-function uba_auditTrail_object () {
-  /**
-  *  
-  * 
+ * Аудит
+ * @extends EntityModule
+ */
+class uba_auditTrail_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_auditTrail_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Сутність 
+  ID: 0,
+ /**
   * Сутність
   * @type {String}
   */
-  this.entity = ''
-  /**
-  * ID запису сутності 
+  entity: '',
+ /**
   * ID запису сутності
   * @type {Number}
   */
-  this.entityinfo_id = 0
-  /**
-  * Дія 
+  entityinfo_id: 0,
+ /**
   * Дія
   * @type {String}
   */
-  this.actionType = ''
-  /**
-  * Користувач (ref -> uba_user)
-  * Користувач
+  actionType: '',
+ /**
+  * Користувач -> uba_user
   * @type {Number}
   */
-  this.actionUser = 0
-  /**
-  * Час дії 
+  actionUser: 0,
+ /**
   * Час дії
   * @type {Date}
   */
-  this.actionTime = new Date()
-  /**
-  * IP адреса 
+  actionTime: new Date(),
+ /**
   * @type {String}
   */
-  this.remoteIP = null
-  /**
-  * Було значення 
+  remoteIP: null,
+ /**
   * @type {String}
   */
-  this.fromValue = null
-  /**
-  * Стало значення 
+  fromValue: null,
+ /**
   * @type {String}
   */
-  this.toValue = null
-  /**
-  * Батьківська сутність 
+  toValue: null,
+ /**
   * @type {String}
   */
-  this.parentEntity = null
-  /**
-  * ID запису батьківської сутності 
+  parentEntity: null,
+ /**
   * @type {Number}
   */
-  this.parentEntityInfo_id = null
+  parentEntityInfo_id: null,
 }
 /**
-* Entity Level Security(ELS)
-* @mixes EventEmitter
+* Аудит
+* @type {uba_auditTrail_object}
 */
-global.uba_els = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_auditTrail = new uba_auditTrail_object()
 /**
-* Attributes of "Entity Level Security(ELS)"
-* @class
-*/
-function uba_els_object () {
-  /**
-  *  
-  * 
+ * Entity Level Security(ELS)
+ * @extends EntityModule
+ */
+class uba_els_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_els_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код правила 
+  ID: 0,
+ /**
   * Код ELS правила
   * @type {String}
   */
-  this.code = null
-  /**
-  * Опис 
+  code: null,
+ /**
   * Опис правила
   * @type {String}
   */
-  this.description = ''
-  /**
-  * Відключено 
+  description: '',
+ /**
   * Правило відключено
   * @type {Boolean}
   */
-  this.disabled = undefined
-  /**
-  * Маска сутності 
+  disabled: undefined,
+ /**
   * @type {String}
   */
-  this.entityMask = ''
-  /**
-  * Маска методів 
+  entityMask: '',
+ /**
   * @type {String}
   */
-  this.methodMask = ''
-  /**
-  * Тип правила 
+  methodMask: '',
+ /**
   * Тип правила
   * @type {String}
   */
-  this.ruleType = ''
-  /**
-  * Роль (ref -> uba_role)
-  * Роль, для якої застосовувати правило
+  ruleType: '',
+ /**
+  * Роль, для якої застосовувати правило -> uba_role
   * @type {Number}
   */
-  this.ruleRole = 0
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  ruleRole: 0,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* User groups
-* @mixes EventEmitter
+* Entity Level Security(ELS)
+* @type {uba_els_object}
 */
-global.uba_group = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_els = new uba_els_object()
 /**
-* Attributes of "User groups"
-* @class
-*/
-function uba_group_object () {
-  /**
-  *  (ref -> uba_subject)
-  * 
+ * User groups
+ * @extends EntityModule
+ */
+class uba_group_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_group_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Code 
+  ID: 0,
+ /**
   * Group code. Used by APIs and scripts
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Name 
+  code: '',
+ /**
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Description 
+  name: '',
+ /**
   * @type {String}
   */
-  this.description = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  description: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
+}
+/**
+* User groups
+* @type {uba_group_object}
+*/
+const uba_group = new uba_group_object()
+/**
+ * Ролі груп
+ * @extends EntityModule
+ */
+class uba_grouprole_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_grouprole_object.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  groupID: 0,
+ /**
+  * @type {Number}
+  */
+  roleID: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
 /**
 * Ролі груп
-* @mixes EventEmitter
+* @type {uba_grouprole_object}
 */
-global.uba_grouprole = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_grouprole = new uba_grouprole_object()
 /**
-* Attributes of "Ролі груп"
-* @class
-*/
-function uba_grouprole_object () {
-  /**
-  *  
-  * 
+ * Одноразові паролі
+ * @extends EntityModule
+ */
+class uba_otp_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_otp_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Група (ref -> uba_group)
-  * @type {Number}
-  */
-  this.groupID = 0
-  /**
-  * Роль (ref -> uba_role)
-  * @type {Number}
-  */
-  this.roleID = 0
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
-  * @type {Number}
-  */
-  this.mi_owner = 0
-  /**
-  *  
-  * Creation date
-  * 
-  * @type {Date}
-  */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
-  * @type {Number}
-  */
-  this.mi_createUser = 0
-  /**
-  *  
-  * Modification date
-  * 
-  * @type {Date}
-  */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
-  * @type {Number}
-  */
-  this.mi_modifyUser = 0
-}
-/**
-* Одноразові паролі
-* @mixes EventEmitter
-*/
-global.uba_otp = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "Одноразові паролі"
-* @class
-*/
-function uba_otp_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Пароль 
+  ID: 0,
+ /**
   * Згенерований одноразовий пароль
   * @type {String}
   */
-  this.otp = ''
-  /**
-  * Користувач (ref -> uba_user)
-  * Користувач, для якого згенеровано пароль
+  otp: '',
+ /**
+  * Користувач, для якого згенеровано пароль -> uba_user
   * @type {Number}
   */
-  this.userID = 0
-  /**
-  * Додаткові дані 
+  userID: 0,
+ /**
   * Додаткові дані
   * @type {String}
   */
-  this.uData = null
-  /**
-  * Термін дії 
+  uData: null,
+ /**
   * Термін дії
   * @type {Date}
   */
-  this.expiredDate = new Date()
-  /**
-  * Вид паролю 
+  expiredDate: new Date(),
+ /**
   * Вид паролю(Email, SMS тощо)
   * @type {String}
   */
-  this.otpKind = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  otpKind: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
+}
+/**
+* Одноразові паролі
+* @type {uba_otp_object}
+*/
+const uba_otp = new uba_otp_object()
+/**
+ * Попередні паролі
+ * @extends EntityModule
+ */
+class uba_prevPasswordsHash_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_prevPasswordsHash_object.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * @type {String}
+  */
+  uPasswordHashHexa: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
 /**
 * Попередні паролі
-* @mixes EventEmitter
+* @type {uba_prevPasswordsHash_object}
 */
-global.uba_prevPasswordsHash = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_prevPasswordsHash = new uba_prevPasswordsHash_object()
 /**
-* Attributes of "Попередні паролі"
-* @class
-*/
-function uba_prevPasswordsHash_object () {
-  /**
-  *  
-  * 
+ * Системні ролі
+ * @extends EntityModule
+ */
+class uba_role_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_role_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Користувач (ref -> uba_user)
-  * @type {Number}
-  */
-  this.userID = 0
-  /**
-  * Хеш паролю 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.uPasswordHashHexa = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
-  * @type {Number}
-  */
-  this.mi_owner = 0
-  /**
-  *  
-  * Creation date
-  * 
-  * @type {Date}
-  */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
-  * @type {Number}
-  */
-  this.mi_createUser = 0
-  /**
-  *  
-  * Modification date
-  * 
-  * @type {Date}
-  */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
-  * @type {Number}
-  */
-  this.mi_modifyUser = 0
-}
-/**
-* Системні ролі
-* @mixes EventEmitter
-*/
-global.uba_role = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "Системні ролі"
-* @class
-*/
-function uba_role_object () {
-  /**
-  *  (ref -> uba_subject)
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Роль 
+  name: '',
+ /**
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Опис 
-  * @type {String}
-  */
-  this.description = ''
-  /**
-  * Час дії сесії 
+  description: '',
+ /**
   * Час, після якого сесія видаляється по таймауту (в хвилинах)
   * @type {Number}
   */
-  this.sessionTimeout = 0
-  /**
-  * Які методи застосування можна виконувати 
+  sessionTimeout: 0,
+ /**
   * @type {String}
   */
-  this.allowedAppMethods = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  allowedAppMethods: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
+}
+/**
+* Системні ролі
+* @type {uba_role_object}
+*/
+const uba_role = new uba_role_object()
+/**
+ * Суб&#39;єкти адміністрування
+ * @extends EntityModule
+ */
+class uba_subject_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_subject_object.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {String}
+  */
+  name: '',
+ /**
+  * @type {String}
+  */
+  sType: '',
+ /**
+  * @type {String}
+  */
+  mi_unityEntity: '',
 }
 /**
 * Суб&#39;єкти адміністрування
-* @mixes EventEmitter
+* @type {uba_subject_object}
 */
-global.uba_subject = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_subject = new uba_subject_object()
 /**
-* Attributes of "Суб&#39;єкти адміністрування"
-* @class
-*/
-function uba_subject_object () {
-  /**
-  *  
-  * 
+ * Користувачі
+ * @extends EntityModule
+ */
+class uba_user_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_user_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * @type {String}
-  */
-  this.code = ''
-  /**
-  * Логін 
-  * @type {String}
-  */
-  this.name = ''
-  /**
-  * Тип суб&#39;єкта 
-  * @type {String}
-  */
-  this.sType = ''
-  /**
-  *  
-  * 
-  * @type {String}
-  */
-  this.mi_unityEntity = ''
-}
-/**
-* Користувачі
-* @mixes EventEmitter
-*/
-global.uba_user = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "Користувачі"
-* @class
-*/
-function uba_user_object () {
-  /**
-  *  (ref -> uba_subject)
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Логін 
+  ID: 0,
+ /**
   * User login in lower case
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Ім&#39;я 
+  name: '',
+ /**
   * @type {String}
   */
-  this.firstName = null
-  /**
-  * Прізвище 
+  firstName: null,
+ /**
   * @type {String}
   */
-  this.lastName = null
-  /**
-  * ПІБ 
+  lastName: null,
+ /**
   * @type {String}
   */
-  this.fullName = null
-  /**
-  * Стать 
-  * 
+  fullName: null,
+ /**
   * @type {String}
   */
-  this.gender = null
-  /**
-  * Email 
+  gender: null,
+ /**
   * Email користувача (може бути виконистано для повідомленнь)
-  * 
   * @type {String}
   */
-  this.email = null
-  /**
-  * Телефон 
+  email: null,
+ /**
   * Телефон користувача (може бути виконистано для СМС)
-  * 
   * @type {String}
   */
-  this.phone = null
-  /**
-  * Аватар 
+  phone: null,
+ /**
   * Аватар користувача (рекомендується 128x128)
-  * 
   * @type {String}
   */
-  this.avatar = null
-  /**
-  * Опис 
+  avatar: null,
+ /**
   * Additional description of user account
-  * 
   * @type {String}
   */
-  this.description = null
-  /**
-  * Додаткові дані 
+  description: null,
+ /**
   * Додаткові дані
-  * 
   * @type {String}
   */
-  this.uData = null
-  /**
-  * Відключений 
+  uData: null,
+ /**
   * @type {Boolean}
   */
-  this.disabled = undefined
-  /**
-  * Очікує підтвердження 
+  disabled: undefined,
+ /**
   * Користувач очікує на підтверждення реєстрації
   * @type {Boolean}
   */
-  this.isPending = undefined
-  /**
-  * trusted IPs 
-  * 
+  isPending: undefined,
+ /**
   * @type {String}
   */
-  this.trustedIP = null
-  /**
-  * Хеш пароля 
-  * 
+  trustedIP: null,
+ /**
   * @type {String}
   */
-  this.uPasswordHashHexa = null
-  /**
-  * Дата останньої зміни пароля 
+  uPasswordHashHexa: null,
+ /**
   * Дата останньої зміни пароля
-  * 
   * @type {Date}
   */
-  this.lastPasswordChangeDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  lastPasswordChangeDate: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* Сертифікати
-* @mixes EventEmitter
+* Користувачі
+* @type {uba_user_object}
 */
-global.uba_usercertificate = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_user = new uba_user_object()
 /**
-* Attributes of "Сертифікати"
-* @class
-*/
-function uba_usercertificate_object () {
-  /**
-  *  
-  * 
+ * Сертифікати
+ * @extends EntityModule
+ */
+class uba_usercertificate_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_usercertificate_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Користувач (ref -> uba_user)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.userID = 0
-  /**
-  * Серійний ключ ЦСК 
+  userID: 0,
+ /**
   * Issuer tag of cerificate
   * @type {String}
   */
-  this.issuer_serial = ''
-  /**
-  * Назва ЦСК 
+  issuer_serial: '',
+ /**
   * @type {String}
   */
-  this.issuer_cn = null
-  /**
-  * Серійний номер 
+  issuer_cn: null,
+ /**
   * Serial number of cerificate
   * @type {String}
   */
-  this.serial = ''
-  /**
-  * Сертифікат 
+  serial: '',
+ /**
   * Binary data of certificate
   * @type {ArrayBuffer}
   */
-  this.certificate = undefined
-  /**
-  * Опис 
+  certificate: undefined,
+ /**
   * @type {String}
   */
-  this.description = null
-  /**
-  * Відключений 
+  description: null,
+ /**
   * disabled
   * @type {Boolean}
   */
-  this.disabled = undefined
-  /**
-  * Відкликаний 
+  disabled: undefined,
+ /**
   * Revoked
   * @type {Boolean}
   */
-  this.revoked = undefined
-  /**
-  * Revocation date 
+  revoked: undefined,
+ /**
   * Revocation date
   * @type {Date}
   */
-  this.revocationDate = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  revocationDate: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
+}
+/**
+* Сертифікати
+* @type {uba_usercertificate_object}
+*/
+const uba_usercertificate = new uba_usercertificate_object()
+/**
+ * Групи користувачів
+ * @extends EntityModule
+ */
+class uba_usergroup_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_usergroup_object.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * @type {Number}
+  */
+  groupID: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
 /**
 * Групи користувачів
-* @mixes EventEmitter
+* @type {uba_usergroup_object}
 */
-global.uba_usergroup = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const uba_usergroup = new uba_usergroup_object()
 /**
-* Attributes of "Групи користувачів"
-* @class
-*/
-function uba_usergroup_object () {
-  /**
-  *  
-  * 
+ * Ролі користувача
+ * @extends EntityModule
+ */
+class uba_userrole_object extends EntityModule {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_userrole_object.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Користувач (ref -> uba_user)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.userID = 0
-  /**
-  * Група (ref -> uba_group)
+  userID: 0,
+ /**
   * @type {Number}
   */
-  this.groupID = 0
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  roleID: 0,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
 * Ролі користувача
-* @mixes EventEmitter
+* @type {uba_userrole_object}
 */
-global.uba_userrole = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "Ролі користувача"
-* @class
-*/
-function uba_userrole_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Користувач (ref -> uba_user)
-  * @type {Number}
-  */
-  this.userID = 0
-  /**
-  * Роль (ref -> uba_role)
-  * @type {Number}
-  */
-  this.roleID = 0
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
-  * @type {Number}
-  */
-  this.mi_owner = 0
-  /**
-  *  
-  * Creation date
-  * 
-  * @type {Date}
-  */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
-  * @type {Number}
-  */
-  this.mi_createUser = 0
-  /**
-  *  
-  * Modification date
-  * 
-  * @type {Date}
-  */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
-  * @type {Number}
-  */
-  this.mi_modifyUser = 0
-}
+const uba_userrole = new uba_userrole_object()

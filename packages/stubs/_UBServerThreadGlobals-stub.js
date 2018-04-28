@@ -110,3 +110,19 @@ WebSocketConnection.prototype = {
    */
   close: function (reason) {}
 }
+
+/**
+ * @classdesc
+ * Entity module
+ * @extends EventEmitter
+ */
+class EntityModule extends EventEmitter {
+  constructor () {
+    super()
+    /**
+     * Reference to entity metadata
+     * @type {UBEntity}
+     */
+    this.entity = new UBEntity()
+  }
+}

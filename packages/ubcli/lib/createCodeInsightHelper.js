@@ -17,7 +17,7 @@
      createCodeInsightHelper(options)
 
  * @author pavel.mash
- * @module @unitybase/ubcli/createCodeInsightHelper
+ * @module createCodeInsightHelper
  */
 const _ = require('lodash')
 const fs = require('fs')
@@ -99,11 +99,12 @@ module.exports = function createCodeInsightHelper (cfg) {
 
   let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
 
-  function processEntities (entities, folderName, modelName) {
+  function processEntities (entities, folderName, modelName, moduleName) {
     let res, resFileName
 
     if (entities.length) {
       res = mustache.render(tpl, {
+        moduleName: moduleName,
         entities: entities,
         getJSType: function () {
           return '{' + (ub2JS[this.dataType] || '*') + '}'
@@ -182,9 +183,12 @@ module.exports = function createCodeInsightHelper (cfg) {
     _.forEach(realDomain.entities, function (entityDef, entityName) {
       if (entityDef.modelName === modelCfg.name) {
         entityDef.attributes = namedCollection2Array(entityDef.attributes)
-        entities.push({name: entityName, meta: entityDef})
+        entities.push({
+          name: entityName,
+          description: entityDef.description ? entityDef.description : entityDef.caption,
+          meta: entityDef})
       }
     })
-    processEntities(entities, currentPath, modelCfg.name)
+    processEntities(entities, currentPath, modelCfg.name, modelCfg.moduleName)
   })
 }
