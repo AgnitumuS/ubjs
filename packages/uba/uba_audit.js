@@ -32,10 +32,11 @@ me.on('insert:after', function notifyAboutSecurity (ctxt) {
 
 const UBA_AUDIT = UB.DataStore('uba_audit')
 /**
- * Store an audit events from secure browser
+ * Save an audit events from the secure browser (UnityBase defense edition)
  * @param {ubMethodParams} ctx
  * @param {string} ctx.mParams.reason
  * @param {string} ctx.mParams.action
+ * @published
  */
 function secureBrowserEvent (ctx) {
   let params = ctx.mParams

@@ -5,11 +5,15 @@ let me = uba_als
 me.entity.addMethod('save')
 
 /**
- * Save one ALS record. If unique values "entity+attribute+state+roleName" is found in database - record will update,
- * else record will insert
+ * Save one ALS row. If case unique row "entity+attribute+state+roleName" is found in the database then
+ * row will be update, else will be inserted
  *
+ * @method save
  * @param {ubMethodParams} ctxt
  * @return {boolean}
+ * @memberOf uba_als_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @published
  */
 me.save = function (ctxt) {
   let execParams = ctxt.mParams.execParams

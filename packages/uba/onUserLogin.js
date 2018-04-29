@@ -4,6 +4,10 @@ const App = UB.App
 const queryString = require('querystring')
 const Session = UB.Session
 
+Session.on('login', onUserLogin)
+Session.on('loginFailed', onUserLoginFailed)
+Session.on('securityViolation', securityViolation)
+
 let ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
 if (ubaAuditPresent) {
@@ -12,6 +16,7 @@ if (ubaAuditPresent) {
 
 /**
  * Checking of user IP and device fingerpriont based on settings from `uba_advSecurity`
+ * @private
  * @param {THTTPRequest} req
  * @return {{enabled: false}|{enabled: true, kmn: string, fpa: string}}
  */
@@ -90,6 +95,7 @@ let doCheckAdvancedSecurity = null // calculate later
  * Session 'login' event occurred every time new user logged in
  * here we calculate logged-in user's roles,
  * result we put in Session.uData - only one session-depended server object
+ * @private
  * @param {THTTPRequest} req
  */
 function onUserLogin (req) {
@@ -147,7 +153,6 @@ function onUserLogin (req) {
     }
   }
 }
-Session.on('login', onUserLogin)
 
 function onUserLoginFailed (isLocked) {
   console.debug('Call JS method: UBA.onUserLoginFailef')
@@ -175,8 +180,6 @@ function onUserLoginFailed (isLocked) {
     }
   }
 }
-
-Session.on('loginFailed', onUserLoginFailed)
 
 function securityViolation (reason) {
   console.debug('Call JS method: UBA.securityViolation')
@@ -206,5 +209,3 @@ function securityViolation (reason) {
     }
   }
 }
-
-Session.on('securityViolation', securityViolation)
