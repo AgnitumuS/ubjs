@@ -9,11 +9,11 @@
 
 /**
  * Advanced security
- * @extends EntityModule
+ * @extends EntityNamespace
  */
-class uba_advSecurity_object extends EntityModule {}
+class uba_advSecurity_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_advSecurity_object.attrs = {
+uba_advSecurity_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -23,35 +23,43 @@ uba_advSecurity_object.attrs = {
   */
   userID: 0,
  /**
+  * Filled by supervisor to indicate cause of changes
   * @type {String}
   */
   editCause: '',
  /**
+  * The ID address from which the user is allowed access. If empty - allowed from any
   * @type {String}
   */
   allowedIP: null,
  /**
+  * If turned on will refresh allowed IP on firs user logon
   * @type {Boolean}
   */
   refreshIP: undefined,
  /**
+  * Fingerprint of user device. If empty - not checked
   * @type {String}
   */
   fp: null,
  /**
+  * If turned on will refresh Fingerpring of user device on firs user logon
   * @type {Boolean}
   */
   refreshFp: undefined,
  /**
+  * Name of key media device
   * @type {String}
   */
   keyMediaName: null,
  /**
+  * If turned on will refresh key media name of user private key device
   * @type {Boolean}
   */
   refreshKeyMedia: undefined,
  /**
   * JSON with advanced settings
+  * This settings can be handled in Session.on login event
   * @type {String}
   */
   additional: null,
@@ -83,16 +91,16 @@ uba_advSecurity_object.attrs = {
 }
 /**
 * Advanced security
-* @type {uba_advSecurity_object}
+* @type {uba_advSecurity_ns}
 */
-const uba_advSecurity = new uba_advSecurity_object()
+const uba_advSecurity = new uba_advSecurity_ns()
 /**
  * Attribute level security (ALS)
- * @extends EntityModule
+ * @extends EntityNamespace
  */
-class uba_als_object extends EntityModule {}
+class uba_als_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_als_object.attrs = {
+uba_als_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -120,57 +128,55 @@ uba_als_object.attrs = {
 }
 /**
 * Attribute level security (ALS)
-* @type {uba_als_object}
+* @type {uba_als_ns}
 */
-const uba_als = new uba_als_object()
+const uba_als = new uba_als_ns()
 /**
- * Аудит
- * @extends EntityModule
+ * Audit
+ * @extends EntityNamespace
  */
-class uba_audit_object extends EntityModule {}
+class uba_audit_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_audit_object.attrs = {
+uba_audit_ns.attrs = {
  /**
   * @type {Number}
   */
   ID: 0,
  /**
-  * Сутність
   * @type {String}
   */
   entity: '',
  /**
-  * ID запису сутності
   * @type {Number}
   */
   entityinfo_id: 0,
  /**
-  * Дія
+  * Action
   * @type {String}
   */
   actionType: '',
  /**
-  * Користувач
+  * User
   * @type {String}
   */
   actionUser: '',
  /**
-  * Час дії
+  * Action time
   * @type {Date}
   */
   actionTime: new Date(),
  /**
-  * IP адреса сторони, з якої здійснено виклик
+  * Caller remote IP address
   * @type {String}
   */
   remoteIP: null,
  /**
-  * Ім&#39;я користувача, який змінив дані
+  * The user name for which the data has changed
   * @type {String}
   */
   targetUser: null,
  /**
-  * Роль користувача, який змінив дані
+  * The role name for which the data has changed
   * @type {String}
   */
   targetRole: null,
@@ -184,47 +190,46 @@ uba_audit_object.attrs = {
   toValue: null,
 }
 /**
-* Аудит
-* @type {uba_audit_object}
+* Audit
+* @type {uba_audit_ns}
 */
-const uba_audit = new uba_audit_object()
+const uba_audit = new uba_audit_ns()
 /**
- * Аудит
- * @extends EntityModule
+ * Audit
+ * @extends EntityNamespace
  */
-class uba_auditTrail_object extends EntityModule {}
+class uba_auditTrail_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_auditTrail_object.attrs = {
+uba_auditTrail_ns.attrs = {
  /**
   * @type {Number}
   */
   ID: 0,
  /**
-  * Сутність
   * @type {String}
   */
   entity: '',
  /**
-  * ID запису сутності
   * @type {Number}
   */
   entityinfo_id: 0,
  /**
-  * Дія
+  * Action
   * @type {String}
   */
   actionType: '',
  /**
-  * Користувач -> uba_user
+  * User -> uba_user
   * @type {Number}
   */
   actionUser: 0,
  /**
-  * Час дії
+  * Action time
   * @type {Date}
   */
   actionTime: new Date(),
  /**
+  * Caller remote IP address. NULL in case of localhost
   * @type {String}
   */
   remoteIP: null,
@@ -246,51 +251,65 @@ uba_auditTrail_object.attrs = {
   parentEntityInfo_id: null,
 }
 /**
-* Аудит
-* @type {uba_auditTrail_object}
+* Audit
+* @type {uba_auditTrail_ns}
 */
-const uba_auditTrail = new uba_auditTrail_object()
+const uba_auditTrail = new uba_auditTrail_ns()
 /**
  * Entity Level Security(ELS)
- * @extends EntityModule
+ * @extends EntityNamespace
  */
-class uba_els_object extends EntityModule {}
+class uba_els_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_els_object.attrs = {
+uba_els_ns.attrs = {
  /**
   * @type {Number}
   */
   ID: 0,
  /**
-  * Код ELS правила
+  * Code for ELS rule
+  * This field is used by migrations for automatically update rules. It recommended to use your model code as rule prefix.
+        We do not set this attribute to unique, because some external models use the same code for different rules.
+        But all UnityBase models set this attribute to unique value
   * @type {String}
   */
   code: null,
  /**
-  * Опис правила
+  * Rule description
   * @type {String}
   */
   description: '',
  /**
-  * Правило відключено
+  * Rule is disabled
   * @type {Boolean}
   */
   disabled: undefined,
  /**
+  * <h4>Masks wildchars:</h4> <ul>
+        <li>*	   	Matches any contiguous characters</li>
+        <li>?	   	Matches any single characer</li>
+        <li>[abc]  	Matches a or b or c at that position</li>
+        <li>[^abc]	Matches anything but a or b or c at that position</li>
+        <li>[!abc]	Matches anything but a or b or c at that position</li>
+        <li>[a-e]  	Matches a through e at that position</li>
+        <li>[abcx-z]  Matches a or b or c or x or y or or z, as does [a-cx-z]</li>
+        </ul>
+        Example: [iu]* match any string start from either 'i' or 'u' like: 'insetr', 'inner', 'update',...
   * @type {String}
   */
   entityMask: '',
  /**
+  * Method mask
   * @type {String}
   */
   methodMask: '',
  /**
-  * Тип правила
+  * Rule type
   * @type {String}
   */
   ruleType: '',
  /**
-  * Роль, для якої застосовувати правило -> uba_role
+  * Role for which the rule applies -> uba_role
   * @type {Number}
   */
   ruleRole: 0,
@@ -322,22 +341,23 @@ uba_els_object.attrs = {
 }
 /**
 * Entity Level Security(ELS)
-* @type {uba_els_object}
+* @type {uba_els_ns}
 */
-const uba_els = new uba_els_object()
+const uba_els = new uba_els_ns()
 /**
  * User groups
- * @extends EntityModule
+ * @extends EntityNamespace
  */
-class uba_group_object extends EntityModule {}
+class uba_group_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_group_object.attrs = {
+uba_group_ns.attrs = {
  /**
   * @type {Number}
   */
   ID: 0,
  /**
   * Group code. Used by APIs and scripts
+  * Unique group code. Used by APIs and scripts
   * @type {String}
   */
   code: '',
@@ -377,16 +397,16 @@ uba_group_object.attrs = {
 }
 /**
 * User groups
-* @type {uba_group_object}
+* @type {uba_group_ns}
 */
-const uba_group = new uba_group_object()
+const uba_group = new uba_group_ns()
 /**
- * Ролі груп
- * @extends EntityModule
+ * Group roles
+ * @extends EntityNamespace
  */
-class uba_grouprole_object extends EntityModule {}
+class uba_grouprole_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_grouprole_object.attrs = {
+uba_grouprole_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -426,43 +446,44 @@ uba_grouprole_object.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Ролі груп
-* @type {uba_grouprole_object}
+* Group roles
+* @type {uba_grouprole_ns}
 */
-const uba_grouprole = new uba_grouprole_object()
+const uba_grouprole = new uba_grouprole_ns()
 /**
- * Одноразові паролі
- * @extends EntityModule
+ * One time passwords
+ * @extends EntityNamespace
  */
-class uba_otp_object extends EntityModule {}
+class uba_otp_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_otp_object.attrs = {
+uba_otp_ns.attrs = {
  /**
   * @type {Number}
   */
   ID: 0,
  /**
-  * Згенерований одноразовий пароль
+  * Generated one time password
   * @type {String}
   */
   otp: '',
  /**
-  * Користувач, для якого згенеровано пароль -> uba_user
+  * User for which password was generated -> uba_user
   * @type {Number}
   */
   userID: 0,
  /**
-  * Додаткові дані
+  * Additional  data
+  * Any valid JSON object. This data transferred to client part as result of auth method. Also accessible in server methods vis Session.uData
   * @type {String}
   */
   uData: null,
  /**
-  * Термін дії
+  * Expired date
   * @type {Date}
   */
   expiredDate: new Date(),
  /**
-  * Вид паролю(Email, SMS тощо)
+  * Kind of otp(Email, SMS etc)
   * @type {String}
   */
   otpKind: '',
@@ -503,17 +524,17 @@ uba_otp_object.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Одноразові паролі
-* @type {uba_otp_object}
+* One time passwords
+* @type {uba_otp_ns}
 */
-const uba_otp = new uba_otp_object()
+const uba_otp = new uba_otp_ns()
 /**
- * Попередні паролі
- * @extends EntityModule
+ * Previous passwords
+ * @extends EntityNamespace
  */
-class uba_prevPasswordsHash_object extends EntityModule {}
+class uba_prevPasswordsHash_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_prevPasswordsHash_object.attrs = {
+uba_prevPasswordsHash_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -523,6 +544,7 @@ uba_prevPasswordsHash_object.attrs = {
   */
   userID: 0,
  /**
+  * PasswordHashHexa := SHA256('salt'+PasswordPlain) in UTF-8
   * @type {String}
   */
   uPasswordHashHexa: null,
@@ -553,35 +575,38 @@ uba_prevPasswordsHash_object.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Попередні паролі
-* @type {uba_prevPasswordsHash_object}
+* Previous passwords
+* @type {uba_prevPasswordsHash_ns}
 */
-const uba_prevPasswordsHash = new uba_prevPasswordsHash_object()
+const uba_prevPasswordsHash = new uba_prevPasswordsHash_ns()
 /**
- * Системні ролі
- * @extends EntityModule
+ * System roles
+ * @extends EntityNamespace
  */
-class uba_role_object extends EntityModule {}
+class uba_role_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_role_object.attrs = {
+uba_role_ns.attrs = {
  /**
   * @type {Number}
   */
   ID: 0,
  /**
+  * Role
   * @type {String}
   */
   name: '',
  /**
+  * Description
   * @type {String}
   */
   description: '',
  /**
-  * Час, після якого сесія видаляється по таймауту (в хвилинах)
+  * Time after which the session is deleted by timeout (in minutes)
   * @type {Number}
   */
   sessionTimeout: 0,
  /**
+  * Which application level methods are allowed
   * @type {String}
   */
   allowedAppMethods: null,
@@ -612,17 +637,17 @@ uba_role_object.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Системні ролі
-* @type {uba_role_object}
+* System roles
+* @type {uba_role_ns}
 */
-const uba_role = new uba_role_object()
+const uba_role = new uba_role_ns()
 /**
- * Суб&#39;єкти адміністрування
- * @extends EntityModule
+ * Administration subjects
+ * @extends EntityNamespace
  */
-class uba_subject_object extends EntityModule {}
+class uba_subject_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_subject_object.attrs = {
+uba_subject_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -632,10 +657,12 @@ uba_subject_object.attrs = {
   */
   code: '',
  /**
+  * Login
   * @type {String}
   */
   name: '',
  /**
+  * Subject type
   * @type {String}
   */
   sType: '',
@@ -645,17 +672,17 @@ uba_subject_object.attrs = {
   mi_unityEntity: '',
 }
 /**
-* Суб&#39;єкти адміністрування
-* @type {uba_subject_object}
+* Administration subjects
+* @type {uba_subject_ns}
 */
-const uba_subject = new uba_subject_object()
+const uba_subject = new uba_subject_ns()
 /**
- * Користувачі
- * @extends EntityModule
+ * Users
+ * @extends EntityNamespace
  */
-class uba_user_object extends EntityModule {}
+class uba_user_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_user_object.attrs = {
+uba_user_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -682,17 +709,17 @@ uba_user_object.attrs = {
   */
   gender: null,
  /**
-  * Email користувача (може бути виконистано для повідомленнь)
+  * User email (could be used for notifications)
   * @type {String}
   */
   email: null,
  /**
-  * Телефон користувача (може бути виконистано для СМС)
+  * User phone (could be used for sms)
   * @type {String}
   */
   phone: null,
  /**
-  * Аватар користувача (рекомендується 128x128)
+  * User avatar image (recommended 128x128)
   * @type {String}
   */
   avatar: null,
@@ -702,29 +729,34 @@ uba_user_object.attrs = {
   */
   description: null,
  /**
-  * Додаткові дані
+  * Additional  data
+  * Any valid JSON object. This data transferred to client part as result of auth method. Also accessible in server methods vis Session.uData
   * @type {String}
   */
   uData: null,
  /**
+  * Disabled
   * @type {Boolean}
   */
   disabled: undefined,
  /**
-  * Користувач очікує на підтверждення реєстрації
+  * The user is waiting for confirmation of registration
   * @type {Boolean}
   */
   isPending: undefined,
  /**
+  * Semicolon separated list of allowed IPs for UBIP authentication schema. Warning! We recomend use it only for IPs from DMZ
   * @type {String}
   */
   trustedIP: null,
  /**
+  * Password hash
+  * PasswordHashHexa := SHA256('salt'+PasswordPlain) in UTF-8
   * @type {String}
   */
   uPasswordHashHexa: null,
  /**
-  * Дата останньої зміни пароля
+  * Last password change date
   * @type {Date}
   */
   lastPasswordChangeDate: new Date(),
@@ -755,17 +787,17 @@ uba_user_object.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Користувачі
-* @type {uba_user_object}
+* Users
+* @type {uba_user_ns}
 */
-const uba_user = new uba_user_object()
+const uba_user = new uba_user_ns()
 /**
- * Сертифікати
- * @extends EntityModule
+ * User certificates
+ * @extends EntityNamespace
  */
-class uba_usercertificate_object extends EntityModule {}
+class uba_usercertificate_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_usercertificate_object.attrs = {
+uba_usercertificate_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -839,17 +871,17 @@ uba_usercertificate_object.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Сертифікати
-* @type {uba_usercertificate_object}
+* User certificates
+* @type {uba_usercertificate_ns}
 */
-const uba_usercertificate = new uba_usercertificate_object()
+const uba_usercertificate = new uba_usercertificate_ns()
 /**
- * Групи користувачів
- * @extends EntityModule
+ * User Groups
+ * @extends EntityNamespace
  */
-class uba_usergroup_object extends EntityModule {}
+class uba_usergroup_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_usergroup_object.attrs = {
+uba_usergroup_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -889,17 +921,17 @@ uba_usergroup_object.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Групи користувачів
-* @type {uba_usergroup_object}
+* User Groups
+* @type {uba_usergroup_ns}
 */
-const uba_usergroup = new uba_usergroup_object()
+const uba_usergroup = new uba_usergroup_ns()
 /**
- * Ролі користувача
- * @extends EntityModule
+ * User roles
+ * @extends EntityNamespace
  */
-class uba_userrole_object extends EntityModule {}
+class uba_userrole_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-uba_userrole_object.attrs = {
+uba_userrole_ns.attrs = {
  /**
   * @type {Number}
   */
@@ -939,7 +971,7 @@ uba_userrole_object.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Ролі користувача
-* @type {uba_userrole_object}
+* User roles
+* @type {uba_userrole_ns}
 */
-const uba_userrole = new uba_userrole_object()
+const uba_userrole = new uba_userrole_ns()

@@ -73,9 +73,9 @@
 		}
 	},
 	"application": {
-		"defaultLang": "uk",
+		"defaultLang": "en",
 		"rootHandler": "index.html",
-		"schedulers": {"enabled": true},
+		"schedulers": {"enabled": false},
 		"domain": {
 			"models": [
 				{
@@ -159,7 +159,7 @@
 				"dialect": "SQLite3",
 				"databaseName": "./autotestFTS.sqlite3",
 				"supportLang": [
-					"uk"
+					"en", "uk"
 				],
 				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
@@ -170,7 +170,7 @@
 				"dialect": "SQLite3",
 				"databaseName": "./autotestSubjectsFTS.sqlite3",
 				"supportLang": [
-					"uk"
+					"en", "uk"
 				],
 				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"

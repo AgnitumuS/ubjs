@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.6]
+### Changed
+- createCodeInsightHelper command now generate stubs using ES6 syntax
+- createCodeInsightHelper create [entityCode]_ns stub class for each entity
+  and define e global variable [entityCode] = new [entityCode]_ns()
+
 ## [1.3.2]
 ### Fixed
 - correctly generate a check constraints defined in `dbExtensions` section of entity metadata

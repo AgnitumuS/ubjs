@@ -7,7 +7,18 @@ const Session = UB.Session
 const App = UB.App
 const http = require('http')
 
+App.registerEndpoint('changePassword', changePasswordEp)
+
 me.entity.addMethod('changeLanguage')
+me.entity.addMethod('publicRegistration')
+
+me.on('insert:before', checkDuplicateUser)
+me.on('update:before', checkDuplicateUser)
+me.on('insert:before', fillFullNameIfMissing)
+me.on('insert:after', ubaAuditNewUser)
+me.on('update:after', ubaAuditModifyUser)
+me.on('delete:after', ubaAuditDeleteUser)
+me.on('delete:before', denyBuildInUserDeletion)
 
 /**
  * Do not allow user with same name but in different case
@@ -30,12 +41,11 @@ function checkDuplicateUser (ctxt) {
     params.name = newName.toLowerCase() // convert user name to lower case
   }
 }
-me.on('insert:before', checkDuplicateUser)
-me.on('update:before', checkDuplicateUser)
 
 /**
  * Set fullName = name in case fullName is missing
  * Set lastPasswordChangeDate = maxDate in case user is domainUser
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function fillFullNameIfMissing (ctxt) {
@@ -48,7 +58,6 @@ function fillFullNameIfMissing (ctxt) {
     params.lastPasswordChangeDate = new Date(2099, 12, 31)
   }
 }
-me.on('insert:before', fillFullNameIfMissing)
 
 /**
  * Change user password
@@ -58,8 +67,9 @@ me.on('insert:before', fillFullNameIfMissing)
  * @param {Boolean} [needChangePassword=false] If true the password will by expired
  * @param {String} [oldPwd] Optional for optimisation
  * @method changePassword
- * @memberOf uba_user_object.prototype
+ * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba
+ * @public
  */
 me.changePassword = function (userID, userName, password, needChangePassword, oldPwd) {
   if ((!userID && !userName) || !password) throw new Error('Invalid parameters')
@@ -164,6 +174,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
  * Change (or set) user password.
  * For users with `admins` group we allow to change password for everyone,
  * in this case `forUser` parameter required.
+ * @private
  * @param {THTTPRequest}req
  * @param {THTTPResponse}resp
  */
@@ -230,7 +241,6 @@ function changePasswordEp (req, resp) {
   if (failException) throw failException
   resp.statusCode = 200
 }
-App.registerEndpoint('changePassword', changePasswordEp)
 
 /**
  * Change (or set) current user language.
@@ -238,6 +248,9 @@ App.registerEndpoint('changePassword', changePasswordEp)
  *
  * @param {ubMethodParams} ctxt
  * @param {String} ctxt.mParams.newLang new user language
+ * @memberOf uba_user_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @published
  */
 function changeLanguage (ctxt) {
   let params = ctxt.mParams
@@ -279,6 +292,7 @@ me.changeLanguage = changeLanguage
 
 /**
  * After inserting new user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewUser (ctx) {
@@ -299,10 +313,10 @@ function ubaAuditNewUser (ctx) {
     }
   })
 }
-me.on('insert:after', ubaAuditNewUser)
 
 /**
  * After updating user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyUser (ctx) {
@@ -365,10 +379,10 @@ function ubaAuditModifyUser (ctx) {
     })
   }
 }
-me.on('update:after', ubaAuditModifyUser)
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUser (ctx) {
@@ -401,10 +415,10 @@ function ubaAuditDeleteUser (ctx) {
     }
   })
 }
-me.on('delete:after', ubaAuditDeleteUser)
 
 /**
  * Prevent delete a build-in user
+ * @private
  * @param {ubMethodParams} ctx
  */
 function denyBuildInUserDeletion (ctx) {
@@ -416,12 +430,12 @@ function denyBuildInUserDeletion (ctx) {
     }
   }
 }
-me.on('delete:before', denyBuildInUserDeletion)
 
 // eslint-disable-next-line no-useless-escape
 const EMAIL_VALIDATION_RE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 /**
  * Check provided Email is look like Email address
+ * @private
  * @param {string} email
  * @returns {boolean}
  */
@@ -436,6 +450,7 @@ const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings &&
 /**
  * Validate a reCAPTCHA from client request. See <a href="https://developers.google.com/recaptcha/docs/verify"reCAPTCHA doc</a>
  * App.serverConfig.application.customSettings.reCAPTCHA.secretKey must be defined
+ * @private
  * @param {string} recaptcha
  * @returns {boolean}
  */
@@ -453,8 +468,6 @@ function validateRecaptcha (recaptcha) {
   return data.success
 }
 
-me.entity.addMethod('publicRegistration')
-
 const confirmationRedirectURI = App.serverConfig.application.customSettings &&
   App.serverConfig.application.customSettings.publicRegistration &&
   App.serverConfig.application.customSettings.publicRegistration.confirmationRedirectURI
@@ -465,8 +478,9 @@ const QueryString = require('querystring')
 
 /**
  * Process a user registration step 2 - OneTime password received
+ * @private
  * @param {THTTPResponse} resp
- * @param {string} otp One Time Passwoed
+ * @param {string} otp One Time Password
  * @param {string} login user login
  */
 function processRegistrationStep2 (resp, otp, login) {
@@ -545,6 +559,7 @@ function processRegistrationStep2 (resp, otp, login) {
  *
  * GET if has otp and login get parameter - then activate user
  * else - expect body in kind
+ * @published
  * @param fake
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp

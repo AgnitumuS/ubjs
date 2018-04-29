@@ -10,16 +10,19 @@
 {{#entities}}
 /**
  * {{meta.caption}}
- * @extends EntityModule
+ * @extends EntityNamespace
  */
-class {{name}}_object extends EntityModule {}
+class {{name}}_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
-{{name}}_object.attrs = {
+{{name}}_ns.attrs = {
 {{#meta.attributes}}
  /**
   {{#description}}
   * {{description}}{{#associatedEntity}} -> {{associatedEntity}}{{/associatedEntity}}
   {{/description}}
+  {{#documentation}}
+  * {{{documentation}}}
+  {{/documentation}}
   * @type {{getJSType}}
   */
   {{name}}: {{{getDefaultValue}}},
@@ -27,7 +30,7 @@ class {{name}}_object extends EntityModule {}
 }
 /**
 * {{meta.caption}}
-* {{=<% %>=}}@type {<%name%>_object}<%={{ }}=%>
+* {{=<% %>=}}@type {<%name%>_ns}<%={{ }}=%>
 */
-const {{name}} = new {{name}}_object()
+const {{name}} = new {{name}}_ns()
 {{/entities}}

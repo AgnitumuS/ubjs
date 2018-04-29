@@ -113,10 +113,16 @@ WebSocketConnection.prototype = {
 
 /**
  * @classdesc
- * Entity module
+ * During initialization phrase UnityBase load application domain {@link UBDomain} and create a global
+ * variable for each entity from domain. Name of such global variable equal to entity name.
+ * `EntityNamespace` pseudo class is a accessor for such namespaces.
+ *
+ * The main task of this class is to provide a code insight in IDEs like WebStorm or VSCode.
+ * `ubcli createCodeInsightHelper` command will create a stubs for all entities in model.
+ *
  * @extends EventEmitter
  */
-class EntityModule extends EventEmitter {
+class EntityNamespace extends EventEmitter {
   constructor () {
     super()
     /**

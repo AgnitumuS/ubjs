@@ -9,6 +9,8 @@ const blobStores = require('./blobStores')
 const TubDataStore = require('./TubDataStore')
 const Errors = require('./modules/ubErrors')
 
+//if (typeof global['UB'] !== 'undefined') throw new Error('@unitybase/ub already required')
+
 /**
  * The UB namespace (global object) encapsulates some classes, singletons, and utility methods provided by UnityBase server.
  * @namespace UB
@@ -20,7 +22,7 @@ let UB = {
    * To check we are in server thread use process.isServer.
    * @readonly
    */
-  isServer: true,
+  isServer: true
 }
 
 UB.UBAbort = Errors.UBAbort

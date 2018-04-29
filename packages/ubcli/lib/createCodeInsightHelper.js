@@ -183,9 +183,11 @@ module.exports = function createCodeInsightHelper (cfg) {
     _.forEach(realDomain.entities, function (entityDef, entityName) {
       if (entityDef.modelName === modelCfg.name) {
         entityDef.attributes = namedCollection2Array(entityDef.attributes)
+        let doc = entityDef.description ? entityDef.description : entityDef.caption
+        if (entityDef.documentation) doc += '\n' + entityDef.documentation
         entities.push({
           name: entityName,
-          description: entityDef.description ? entityDef.description : entityDef.caption,
+          description: doc,
           meta: entityDef})
       }
     })
