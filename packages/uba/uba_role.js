@@ -1,12 +1,19 @@
-/* global uba_role */
-// eslint-disable-next-line camelcase
-let me = uba_role
 const UBA_COMMON = require('@unitybase/base').uba_common
 const UB = require('@unitybase/ub')
 const Session = UB.Session
 const App = UB.App
+/* global uba_role */
+// eslint-disable-next-line camelcase
+let me = uba_role
+me.on('insert:before', fillRoleDescriptionIfMissing)
+me.on('insert:after', ubaAuditNewRole)
+me.on('update:after', ubaAuditModifyRole)
+me.on('delete:before', disableBuildInRoleDelete)
+me.on('delete:after', ubaAuditDeleteRole)
+
 /**
  * After inserting new user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewRole (ctx) {
@@ -28,10 +35,10 @@ function ubaAuditNewRole (ctx) {
     }
   })
 }
-me.on('insert:after', ubaAuditNewRole)
 
 /**
  * Set description = name in case it missing
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function fillRoleDescriptionIfMissing (ctxt) {
@@ -40,10 +47,10 @@ function fillRoleDescriptionIfMissing (ctxt) {
     params.description = params.name
   }
 }
-me.on('insert:before', fillRoleDescriptionIfMissing)
 
 /**
  * After updating user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyRole (ctx) {
@@ -107,10 +114,10 @@ function ubaAuditModifyRole (ctx) {
     })
   }
 }
-me.on('update:after', ubaAuditModifyRole)
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteRole (ctx) {
@@ -144,10 +151,10 @@ function ubaAuditDeleteRole (ctx) {
     }
   })
 }
-me.on('delete:after', ubaAuditDeleteRole)
 
 /**
  * Prevent delete a build-in roles
+ * @private
  * @param {ubMethodParams} ctx
  */
 function disableBuildInRoleDelete (ctx) {
@@ -159,4 +166,3 @@ function disableBuildInRoleDelete (ctx) {
     }
   }
 }
-me.on('delete:before', disableBuildInRoleDelete)

@@ -25,11 +25,12 @@
   "plugins": [
     "plugins/markdown",
     "./node_modules/ub-jsdoc/plugins/sripPFromDescription",
-    "./node_modules/ub-jsdoc/plugins/memberOfModule.js"
+    "./node_modules/ub-jsdoc/plugins/memberOfModule.js",
+    "./node_modules/ub-jsdoc/plugins/publishedTag.js"
   ],
   "opts": {
     "template": "./node_modules/ub-jsdoc",
-    "readme": "./readme.md",
+    "readme": "./DOC-MAIN-PAGE.md",
     "encoding": "utf8",
     "destination": "./docs",
     "recurse": false,

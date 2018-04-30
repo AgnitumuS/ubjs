@@ -10,6 +10,7 @@
 /**
  * Advanced security
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_advSecurity_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -97,6 +98,7 @@ const uba_advSecurity = new uba_advSecurity_ns()
 /**
  * Attribute level security (ALS)
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_als_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -134,6 +136,7 @@ const uba_als = new uba_als_ns()
 /**
  * Audit
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_audit_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -197,6 +200,7 @@ const uba_audit = new uba_audit_ns()
 /**
  * Audit
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_auditTrail_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -258,6 +262,7 @@ const uba_auditTrail = new uba_auditTrail_ns()
 /**
  * Entity Level Security(ELS)
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_els_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -347,6 +352,8 @@ const uba_els = new uba_els_ns()
 /**
  * User groups
  * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
  */
 class uba_group_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -403,6 +410,7 @@ const uba_group = new uba_group_ns()
 /**
  * Group roles
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_grouprole_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -453,6 +461,7 @@ const uba_grouprole = new uba_grouprole_ns()
 /**
  * One time passwords
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_otp_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -531,6 +540,7 @@ const uba_otp = new uba_otp_ns()
 /**
  * Previous passwords
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_prevPasswordsHash_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -582,6 +592,8 @@ const uba_prevPasswordsHash = new uba_prevPasswordsHash_ns()
 /**
  * System roles
  * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
  */
 class uba_role_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -644,6 +656,7 @@ const uba_role = new uba_role_ns()
 /**
  * Administration subjects
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_subject_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -679,6 +692,8 @@ const uba_subject = new uba_subject_ns()
 /**
  * Users
  * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
  */
 class uba_user_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -794,6 +809,7 @@ const uba_user = new uba_user_ns()
 /**
  * User certificates
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_usercertificate_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -878,6 +894,7 @@ const uba_usercertificate = new uba_usercertificate_ns()
 /**
  * User Groups
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_usergroup_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -928,6 +945,7 @@ const uba_usergroup = new uba_usergroup_ns()
 /**
  * User roles
  * @extends EntityNamespace
+ * @mixes mStorage
  */
 class uba_userrole_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */

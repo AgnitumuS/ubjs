@@ -4,15 +4,18 @@ const App = UB.App
 /* global uba_els */
 // eslint-disable-next-line camelcase
 let me = uba_els
+me.on('insert:after', ubaAuditNewEls)
+me.on('update:after', ubaAuditModifyEls)
+me.on('delete:after', ubaAuditDeleteEls)
 
 /**
  * After inserting new user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewEls (ctx) {
-  if (!App.domainInfo.has('uba_audit')) {
-    return
-  }
+  if (!App.domainInfo.has('uba_audit')) return
+
   let params = ctx.mParams.execParams
   let ruleRole = params.ruleRole
   if (ruleRole) {
@@ -33,10 +36,10 @@ function ubaAuditNewEls (ctx) {
     }
   })
 }
-me.on('insert:after', ubaAuditNewEls)
 
 /**
  * After updating user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyEls (ctx) {
@@ -111,10 +114,10 @@ function ubaAuditModifyEls (ctx) {
     })
   }
 }
-me.on('update:after', ubaAuditModifyEls)
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteEls (ctx) {
@@ -151,4 +154,3 @@ function ubaAuditDeleteEls (ctx) {
     }
   })
 }
-me.on('delete:after', ubaAuditDeleteEls)

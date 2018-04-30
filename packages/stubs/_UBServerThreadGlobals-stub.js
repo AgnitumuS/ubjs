@@ -132,3 +132,185 @@ class EntityNamespace extends EventEmitter {
     this.entity = new UBEntity()
   }
 }
+
+// TODO - mixin documentation
+/**
+ * Mixin. Provide CRUID operations for entity database persistent (ORM) using `ubql` query syntax
+ * @mixin
+ */
+const mStorage = {
+  /**
+   * Read entity data
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  select: function (ctxt) {},
+  /**
+   * Insert data
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  insert: function (ctxt) {},
+  /**
+   * Update data
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  update: function (ctxt) {},
+  /**
+   * Delete data
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  delete: function (ctxt) {},
+  /**
+   * Create record with filled default values and return it to caller.
+   * Newly created record not inserted to database. For inserting record to the database `insert` method should be called
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  addNew: function (ctxt) {}
+}
+
+/**
+ * Mixin. Implements inheritance for ORM. Override `insert`, `update` and `delete` methods and
+ * synchronize content of current entity attributes subset (defined in `unity.attributeList` config)
+ * with entity specified in `unity.entity` mixin configuration parameter.
+ *
+ * Configuration can accept optional `unity.mapping` and `unity.defaults`
+ * @mixin
+ */
+const unity = {
+
+}
+
+/**
+ * Mixin. Enabled by default. All insert/update/delete low level operation will be logged to `uba_auditTrail`
+ * @mixin
+ */
+const audit = {
+
+}
+
+/**
+ * Mixin. Pessimistic Lock implementation
+ * @mixin
+ */
+const softLock = {
+  /**
+   * Lock entity row. In case entity row not locked `update` & `delete` operation are not permitted
+   * @published
+   * @param {ubMethodParams} ctxt
+   * @param {number} ctxt.mParams.ID
+   */
+  lock: function (ctxt) {},
+  /**
+   * Unlock entity row.
+   * @published
+   * @param {ubMethodParams} ctxt
+   * @param {number} ctxt.mParams.ID
+   */
+  unlock: function (ctxt) {},
+  /**
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  renewLock: function (ctxt) {},
+  /**
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  isLocked: function (ctxt) {}
+}
+
+/**
+ * Mixin. Provide Row Level Security. See {@tutorial rls} for details.
+ * Will override `select` method and add a SQL expression returned by function specified in `rls.expression`
+ * to `where` section of each `select` operation
+ * @mixin
+ */
+const rls = {
+
+}
+
+/**
+ * Mixin. Provide Row Level Security based on Access Control List
+ * @mixin
+ */
+const aclRls = {
+
+}
+
+/**
+ * Mixin. Provide Attribute Level Security
+ * @mixin
+ */
+const als = {
+  /**
+   * Must be implemented in entity. Method should return all possible roles
+   * @published
+   * @abstract
+   * @param {ubMethodParams} ctxt
+   */
+  getallroles: function (ctxt) {},
+  /**
+   * Must be implemented in entity. Method should return all possible states
+   * @published
+   * @abstract
+   * @param {ubMethodParams} ctxt
+   */
+  getallstates: function (ctxt) {}
+}
+
+/**
+ * Mixin. Provide historical data storage
+ * @mixin
+ */
+const dataHistory = {
+  /**
+   * Create new version of specified record
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  newversion: function (ctxt) {}
+}
+
+/**
+ * Mixin. Implements Materialized path.
+ * Will add mi_treePath to entity attribute and store where current row Materialized path - a string
+ * representing row hierarchy rootID/textLevelID/.../currentRowID
+ *
+ * @mixin
+ */
+const tree = {
+
+}
+
+/**
+ * Mixin. Full Text Search. See {@tutorial fts} for details
+ *
+ * @mixin
+ */
+const fts = {
+  /**
+   * Full text search query
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  fts: function (ctxt) {},
+  /**
+   * Ce-create entity FTS index
+   * @published
+   * @param {ubMethodParams} ctxt
+   */
+  ftsreindex: function (ctxt) {}
+}
+
+/**
+ * Mixin for truncate `clob` field data to short string (mostly for Oracle)
+ *
+ * @mixin
+ */
+const clobTruncate = {
+
+}

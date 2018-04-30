@@ -529,7 +529,7 @@ function processRegistrationStep2 (resp, otp, login) {
 }
 
 /**
- * Two-step new user public registration rest endpoint.
+ * Two-step new user public registration **rest** endpoint.
  *
  * 1-st step: web page pass a registration parameters as JSON:
  *
@@ -559,10 +559,13 @@ function processRegistrationStep2 (resp, otp, login) {
  *
  * GET if has otp and login get parameter - then activate user
  * else - expect body in kind
- * @published
  * @param fake
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
+ * @method publicRegistration
+ * @memberOf uba_user_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @published
  */
 me.publicRegistration = function (fake, req, resp) {
 /*

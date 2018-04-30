@@ -11,6 +11,9 @@
 /**
  * {{meta.caption}}
  * @extends EntityNamespace
+ {{#meta.mixins}}
+ * @mixes {{name}}
+ {{/meta.mixins}}
  */
 class {{name}}_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */

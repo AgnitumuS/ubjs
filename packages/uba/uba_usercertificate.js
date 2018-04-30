@@ -1,11 +1,16 @@
-/**
+/*
  * User certificates
  * @author xmax
  */
+const UB = require('@unitybase/ub')
 /* global uba_usercertificate */
 // eslint-disable-next-line camelcase
 const me = uba_usercertificate
-const UB = require('@unitybase/ub')
+me.on('insert:before', setBlob)
+me.on('update:before', setBlob)
+me.on('insert:after', clearBlob)
+me.on('update:after', clearBlob)
+me.entity.addMethod('getCertificate')
 
 function setBlob (ctxt) {
   const execParams = ctxt.mParams.execParams
@@ -16,8 +21,6 @@ function setBlob (ctxt) {
     execParams.setBLOBValue('certificate', cert) // base64
   }
 }
-me.on('insert:before', setBlob)
-me.on('update:before', setBlob)
 
 function clearBlob (ctxt) {
   let execParams = ctxt.mParams.execParams
@@ -25,9 +28,17 @@ function clearBlob (ctxt) {
     execParams.certificate = ''
   }
 }
-me.on('insert:after', clearBlob)
-me.on('update:after', clearBlob)
 
+/**
+ * Retrieve certificate as base64 encoded string
+ *
+ * @param {ubMethodParams} ctxt
+ * @param {number} ctxt.mParams.ID
+ * @method getCertificate
+ * @memberOf uba_usercertificate_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @published
+ */
 me.getCertificate = function (ctxt) {
   let store = UB.Repository('uba_usercertificate')
     .attrs(['ID', 'certificate'])
@@ -38,5 +49,3 @@ me.getCertificate = function (ctxt) {
   certificate = certificate.toString('base64')
   ctxt.dataStore.initFromJSON({fieldCount: 1, values: ['certificate', certificate], rowCount: 1})
 }
-
-me.entity.addMethod('getCertificate')

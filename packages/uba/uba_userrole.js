@@ -1,16 +1,20 @@
-/* global uba_userrole */
-// eslint-disable-next-line camelcase
-const me = uba_userrole
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
 const UBA_COMMON = require('@unitybase/base').uba_common
+/* global uba_userrole */
+// eslint-disable-next-line camelcase
+const me = uba_userrole
 
 me.on('insert:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmins)
 me.on('update:before', UBA_COMMON.denyBuildInRoleAssignmentAndAdminsOnlyForAdmins)
+me.on('insert:after', ubaAuditNewUserRole)
+me.on('update:after', ubaAuditModifyUserRole)
+me.on('delete:after', ubaAuditDeleteUserRole)
 
 /**
  * After inserting new user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewUserRole (ctx) {
@@ -43,10 +47,10 @@ function ubaAuditNewUserRole (ctx) {
     }
   })
 }
-me.on('insert:after', ubaAuditNewUserRole)
 
 /**
  * After updating user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyUserRole (ctx) {
@@ -113,7 +117,6 @@ function ubaAuditModifyUserRole (ctx) {
     }
   })
 }
-me.on('update:after', ubaAuditModifyUserRole)
 
 me.on('delete:before', function (ctxt) {
   if (!App.domainInfo.has('uba_audit')) return
@@ -128,6 +131,7 @@ me.on('delete:before', function (ctxt) {
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteUserRole (ctx) {
@@ -161,4 +165,3 @@ function ubaAuditDeleteUserRole (ctx) {
     }
   })
 }
-me.on('delete:after', ubaAuditDeleteUserRole)
