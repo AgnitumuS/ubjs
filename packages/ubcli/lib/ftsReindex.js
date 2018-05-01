@@ -7,6 +7,7 @@
 
  * @author pavel.mash
  * @module ftsReindex
+ * @memberOf module:@unitybase/ubcli
  */
 
 const http = require('http')

@@ -10,6 +10,7 @@
  * Warning! Some autotest may be designed to run only once after application initialization
  *
  * @module autotest
+ * @memberOf module:@unitybase/ubcli
  */
 const _ = require('lodash')
 const fs = require('fs')

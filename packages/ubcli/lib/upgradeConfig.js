@@ -6,6 +6,8 @@
  *
  * @author pavel.mash on 22.12.2015.
  * @module upgradeConfig
+ * @memberOf module:@unitybase/ubcli
+ * @deprecated
  */
 const _ = require('lodash')
 const fs = require('fs')

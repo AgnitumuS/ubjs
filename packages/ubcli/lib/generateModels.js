@@ -1,5 +1,8 @@
-/*
- * Created by xmax on 16.09.2016.
+/**
+ * Reverse model generation from a database tables
+ * @module generateDDL
+ * @memberOf module:@unitybase/ubcli
+ * @author xmax on 16.09.2016.
  */
 const fs = require('fs')
 const http = require('http')

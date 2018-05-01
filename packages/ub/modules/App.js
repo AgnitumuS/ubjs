@@ -60,7 +60,8 @@ const dbConnections = require('./DBConnections')
  *
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
  *
- * @namespace App
+ * @module App
+ * @memberOf module:@unitybase/ub
  * @mixes EventEmitter
  */
 const App = {

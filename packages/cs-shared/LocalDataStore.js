@@ -6,8 +6,8 @@
  *
  * For server-side samples see ubm_forms.doSelect method implementation.
  *
- * Client-side sample:
- *
+ * @example
+
   $App.connection.run({
     entity: 'tst_IDMapping',
     method: 'addnew',
@@ -24,7 +24,7 @@
   });
 
  * @module LocalDataStore
- * @memberOf @unitybase/cs-shared
+ * @memberOf module:@unitybase/cs-shared
  * @author pavel.mash
  */
 

@@ -5,6 +5,11 @@ const path = require('path')
 // argv: executable ubcli command ...params
 const command = process.argv[2]
 
+/**
+ * A simple CLI for scaffolding UnityBase projects
+ * @module @unitybase/ubcli
+ */
+
 // commands help
 if (!command || (['-?', '/?', '-help', '/help'].indexOf(command) !== -1)) {
   let commands = fs.readdirSync(path.join(__dirname, '..', 'lib'))

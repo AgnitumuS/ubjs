@@ -6,6 +6,7 @@
 
  * @author pavel.mash 04.02.14
  * @module generateDoc
+ * @memberOf module:@unitybase/ubcli
  */
 const fs = require('fs')
 const argv = require('@unitybase/base').argv

@@ -1,10 +1,18 @@
 /**
- * UnityBase default endpoints implementation.
- * In UB <=4 these endpoints have been defined in the native code
- * @author pavel.mash on 13.10.2016.
+ * Build-in UnityBase endpoints.
+ * Endpoints below are implemented inside native code:
+ *  - ubql
+ *  - stat
+ *  - auth
+ *  - logout
+ *  - timeStamp
+ *
+ * and will be moved to JavaScript in future releases
+ *
  * @module endpoints
+ * @memberOf module:@unitybase/ub
  */
-
+// author pavel.mash on 13.10.2016
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')

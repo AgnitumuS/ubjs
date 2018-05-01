@@ -27,6 +27,7 @@
 
  * @author pavel.mash 2018-04-07
  * @module generateDDL
+ * @memberOf module:@unitybase/ubcli
  */
 const fs = require('fs')
 const path = require('path')

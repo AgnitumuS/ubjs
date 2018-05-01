@@ -17,6 +17,7 @@
 
  * @author pavel.mash
  * @module createStore
+ * @memberOf module:@unitybase/ubcli
  */
 
 const _ = require('lodash')

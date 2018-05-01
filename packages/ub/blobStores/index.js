@@ -41,6 +41,7 @@
 
  *
  * @module blobStores
+ * @memberOf module:@unitybase/ub
  */
 const App = require('../modules/App')
 const UBDomain = require('@unitybase/cs-shared').UBDomain

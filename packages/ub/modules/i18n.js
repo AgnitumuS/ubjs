@@ -233,6 +233,7 @@ _.merge(global.i18nData, {
 
 /**
  * @module i18n
+ * @memberOf module:@unitybase/ub
  */
 /**
  * Merge localizationObject to UB.i18n. Usually called form serverLocale scripts

@@ -11,6 +11,8 @@
 
  * @author pavel.mash
  * @module prepareGZIP
+ * @memberOf module:@unitybase/ubcli
+ * @deprecated Use reverse proxy (nginx) for gzipping
  */
 const _ = require('lodash')
 const fs = require('fs')

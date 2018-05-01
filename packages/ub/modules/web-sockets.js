@@ -1,7 +1,9 @@
 /**
- * High level WebSocket protocols implementation
+ * High level WebSocket protocols implementation.
+ * TODO - rewrite for UB5(linux) using node/go as microservice
  *
- * @module @unitybase/ub/web-sockets
+ * @module web-sockets
+ * @memberOf module:@unitybase/ub
  * @author pavel.mash
  */
 const EventEmitter = require('events').EventEmitter

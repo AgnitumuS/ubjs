@@ -1,5 +1,7 @@
 /**
+ * WIP: not finished yet
  * @module onlyOfficeEndpoints
+ * @memberOf module:@unitybase/ub
  */
 module.exports = {
   notifyDocumentSaved,

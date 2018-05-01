@@ -5,6 +5,7 @@ const App = require('./App')
 /**
  * Functions for evaluation UnityBase model JS files
  * @module modelLoader
+ * @memberOf module:@unitybase/ub
  */
 module.exports.loadEntitiesModules = loadEntitiesModules
 module.exports.loadLegacyModules = loadLegacyModules
