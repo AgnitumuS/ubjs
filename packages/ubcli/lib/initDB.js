@@ -32,8 +32,8 @@ const UBA_COMMON = require('@unitybase/base').uba_common
 const _ = require('lodash')
 const fs = require('fs')
 const http = require('http')
-
-/**
+module.exports = initDB
+  /**
  * @param {Object} cfg
  * @param {Number} [cfg.clientIdentifier=3] Identifier of the client.
  *    Must be between 2 and 8999. Number 1 is for UnityBase developer, 3 for test.
@@ -43,7 +43,7 @@ const http = require('http')
  * @param {String} [cfg.dba] A DBA name. Used in case `createDatabase=true`
  * @param {String} [cfg.dbaPwd] A DBA password. Used in case `createDatabase=true`
  */
-module.exports = function initDB (cfg) {
+function initDB (cfg) {
   if (!cfg) {
     let opts = options.describe('initDB', 'Prepare a new database for a UB ORM', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)

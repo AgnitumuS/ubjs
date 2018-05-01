@@ -7,7 +7,7 @@ const SyncConnection = require('./SyncConnection')
 
 /**
  *
- * Command-line utils for connecting to a [local] UnityBase server
+ * Command-line utils for connecting to a UnityBase server
  * @example
 
   const argv = require('@unitybase/base').argv

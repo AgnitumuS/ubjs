@@ -6,7 +6,9 @@ const path = require('path')
 const command = process.argv[2]
 
 /**
- * A simple CLI for scaffolding UnityBase projects
+ * A simple CLI for scaffolding UnityBase projects.
+ * Run `npx ubcli -help` in command line (or `ubcli --help` if installed globaly) for a full list of available commands
+ *
  * @module @unitybase/ubcli
  */
 

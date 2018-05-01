@@ -4,6 +4,8 @@
 // Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
+ * UnityBase Administrative model. Define entities for users, roles and permissions
+ * @version 5.0.6
  * @module @unitybase/uba
  */
 

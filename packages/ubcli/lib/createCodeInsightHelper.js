@@ -103,9 +103,10 @@ module.exports = function createCodeInsightHelper (cfg) {
   function processEntities (entities, folderName, modelName, moduleName) {
     let res, resFileName
 
+    let modulePackage = require(path.join(folderName, 'package.json'))
     if (entities.length) {
       res = mustache.render(tpl, {
-        moduleName: moduleName,
+        module: modulePackage,
         entities: entities,
         getJSType: function () {
           return '{' + (ub2JS[this.dataType] || '*') + '}'

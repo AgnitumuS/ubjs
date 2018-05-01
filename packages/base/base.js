@@ -15,13 +15,13 @@ const uba_common = require('./uba_common')
  */
 module.exports = {
   /**
-   * Command line utils
+   * Command-line utils for connecting to a UnityBase server
    * @type {module:argv}
    * @type {argv}
    */
   argv: argv,
   /**
-   * Parse a command line options & environment variables and create a configuration object
+   * Parse a command line options & environment variables
    * @type {module:options}
    */
   options: options,
@@ -41,7 +41,7 @@ module.exports = {
    */
   csv: csv1,
   /**
-   * Bulk data loader from CSV/arrays to UB
+   * Bulk data loader from CSV/arrays
    * @type {module:dataLoader}
    * @type {dataLoader}
    */
