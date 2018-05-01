@@ -21,7 +21,8 @@ This is a short list of modules, available in unityBase standard distribution:
  physical database structure, auto tests, generation of documentation and IDE code insight stubs, etc.
  - {@link module:@unitybase/base @unitybase/base}: working with command line args, connecting to UnityBase server, bulk data loading
  - {@link module:@unitybase/uba @unitybase/uba}: UnityBase Administrative model. Define entities for users, roles and permissions. See tutorial {@tutorial security}
- - {@link module:@unitybase/ubq @unitybase/ubq}: Asynchronous task queue persisted into database. See tutorials {@tutorial delayed_operations} and {@tutorial schedulers}
+ - {@link module:@unitybase/ubq @unitybase/ubq}: Asynchronous task queue persisted into database. See tutorials {@tutorial delayed_operations} and {@tutorial schedulers}.
+  Contains jobs for sending e-mail and updating FTS indexes.
  - TODO
 
 # Get Started

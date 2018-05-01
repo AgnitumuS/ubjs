@@ -1,1 +1,1 @@
-UnityBase tasks queue
+Asynchronous task queue persisted into database. Contains jobs for sending e-mail and updating FTS indexes
