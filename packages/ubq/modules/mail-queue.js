@@ -1,8 +1,9 @@
 /**
  * Adding a EMail to queue for sending
- * @author pavel.mash on 25.09.2016.
  * @module mail-queue
+ * @memberOf module:@unitybase/ubq
  */
+// author pavel.mash on 25.09.2016.
 const UB = require('@unitybase/ub')
 const App = UB.App
 const UBMail = require('@unitybase/mailer')

@@ -1,74 +1,38 @@
-﻿/**
- * @class UB.UBQ
- * Mail sender for Scheduler
- * @singleton
- */
-const UB = require('@unitybase/ub')
+﻿const UB = require('@unitybase/ub')
 const App = UB.App
-let me = UB.ns('UB.UBQ')
 let mailerParams = App.serverConfig.application.customSettings['mailerConfig']
-const UBMail = (mailerParams && mailerParams.autoTLS)
-  ? require('@unitybase/mailer-ssl')
-  : require('@unitybase/mailer')
+const UBMail = require('@unitybase/mailer')
 
 /**
- * @private
- * @param {object} data
- * @param {String} data.msgCmd Stringified JSON of mail
- * @param {String} data.msgData mail body (used if data.msgCmd.body is empty or not defined)
- * @param {UBMail} mailer Mailer instance
- * @return {Boolean}
- */
-function internalSendMail (data, mailer) {
-  let fMailData = JSON.parse(data.msgCmd)
-
-  console.log('UB.UBQ.internalSendMail. Trying send mail to:', fMailData.to)
-
-  let fRes = mailer.sendMail({
-    fromAddr: fMailData.from || mailerParams.fromAddr || ('no-reply@' + mailerParams.targetHost),
-    subject: fMailData.subject,
-    bodyType: fMailData.bodyType || UBMail.TubSendMailBodyType.Text,
-    body: fMailData.body ? fMailData.body : data.msgData,
-    toAddr: Array.isArray(fMailData.to) ? fMailData.to : [fMailData.to],
-    attaches: data.attaches
-  })
-
-  if (!fRes) {
-    console.error('UB.UBQ.internalSendMail. Error when sending mail:', mailer.lastError)
-  } else {
-    console.info('UB.UBQ.internalSendMail. Mail sent successfully')
-  }
-  return fRes
-}
-
-/**
- * Read queue with code 'mail' and send mails to recipient(s)
+ * Mail sender for Scheduler
+ * Read queue with code **mail** and send mails to recipient(s)
  * to attach files into the mail, use queue like this:
 
-      msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, atachName: <file name>}, ...]
+ msgCmd.attaches = [{entity: <entity>, attribute: 'document', id: <id>, atachName: <file name>}, ...]
 
  * for document image:
 
-    {
-      entity: 'doc_document',
-      attribute: 'document',
-      id: <doc_document ID>,
-      atachName: "document.pdf"
-    }
+ {
+   entity: 'doc_document',
+   attribute: 'document',
+   id: <doc_document ID>,
+   atachName: "document.pdf"
+ }
 
  * for attached files:
  *
-    {
-      entity: "doc_attachment",
-      attribute: 'document',
-      id: <attachment ID>,
-      atachName: <attachment caption>
-    }
+ {
+   entity: "doc_attachment",
+   attribute: 'document',
+   id: <attachment ID>,
+   atachName: <attachment caption>
+ }
 
- * @param {ubMethodParams} ctxt
- * @returns {String}
+ *
+ * @module ubqMailJob
+ * @memberOf module:@unitybase/ubq
  */
-me.sendQueueMail = function (ctxt) {
+module.exports = function () {
   let eMsg
   let mailData = {}
   let sentCount = 0
@@ -135,4 +99,34 @@ me.sendQueueMail = function (ctxt) {
   mailSender.freeNative() // release a connection to mail server
   mailSender = null
   return `Send ${sentCount} emails`
+}
+
+/**
+ * @private
+ * @param {object} data
+ * @param {String} data.msgCmd Stringified JSON of mail
+ * @param {String} data.msgData mail body (used if data.msgCmd.body is empty or not defined)
+ * @param {UBMail} mailer Mailer instance
+ * @return {Boolean}
+ */
+function internalSendMail (data, mailer) {
+  let fMailData = JSON.parse(data.msgCmd)
+
+  console.log('UB.UBQ.internalSendMail. Trying send mail to:', fMailData.to)
+
+  let fRes = mailer.sendMail({
+    fromAddr: fMailData.from || mailerParams.fromAddr || ('no-reply@' + mailerParams.targetHost),
+    subject: fMailData.subject,
+    bodyType: fMailData.bodyType || UBMail.TubSendMailBodyType.Text,
+    body: fMailData.body ? fMailData.body : data.msgData,
+    toAddr: Array.isArray(fMailData.to) ? fMailData.to : [fMailData.to],
+    attaches: data.attaches
+  })
+
+  if (!fRes) {
+    console.error('UB.UBQ.internalSendMail. Error when sending mail:', mailer.lastError)
+  } else {
+    console.info('UB.UBQ.internalSendMail. Mail sent successfully')
+  }
+  return fRes
 }

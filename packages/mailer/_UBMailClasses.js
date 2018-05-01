@@ -16,9 +16,7 @@
  * @param {String} paramsObj.port port of mail server
  * @param {String} [paramsObj.user = ''] user login on mail server
  * @param {String} [paramsObj.password = ''] user password on mail server
- * @param {Boolean} [paramsObj.tls = false] use tls. In {@link module:@unitybase/mailer} tls is
- *   not implemented so you will get an exception when set this value true.
- *   For using tls use {@link module:@unitybase/mailer-ssl} class
+ * @param {Boolean} [paramsObj.tls = false] use tls. Require openSSL library to be installed
  */
 function TubMailReceiver (paramsObj) {}
 

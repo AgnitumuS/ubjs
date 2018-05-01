@@ -1,17 +1,19 @@
 ﻿const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = require('@unitybase/ub').Session
+/* global ubq_messages */
+// eslint-disable-next-line camelcase
 let me = ubq_messages
-me.entity.addMethod('addqueue')
-// WTF me.entity.addMethod('sendmail');
-me.entity.addMethod('success')
+
 me.entity.addMethod('executeSchedulerTask')
 
 /**
  * Mark queue task as successfully executed
+ * @method success
  * @param {ubMethodParams} ctxt
- * @param {TubList} ctxt.mParams
  * @param {Number} ctxt.mParams.ID
+ * @memberOf ubq_messages_ns.prototype
+ * @memberOfModule @unitybase/ubq
  */
 me.success = function (ctxt) {
   ctxt.dataStore.execSQL('update ubq_messages set completeDate = :completeDate: where ID = :ID:', {completeDate: new Date(), ID: ctxt.mParams.ID})
@@ -22,25 +24,28 @@ me.success = function (ctxt) {
  * Add item to queue.
  *
  * Used by server FTS mixin - do not remove
+ * @method addqueue
  * @param {ubMethodParams} ctxt
  * @param {String} ctxt.mParams.queueCode Queue code to add a item to
  * @param {String} ctxt.mParams.msgCmd Command
  * @param {String} ctxt.mParams.msgData Additional command data
  * @param {Number} [ctxt.mParams.msgPriority=0] Priority
+ * @memberOf ubq_messages_ns.prototype
+ * @memberOfModule @unitybase/ubq
  * @return {Boolean}
  */
 me.addqueue = function (ctxt) {
   console.debug('Call JS method: ubq_messages.addqueue')
-  let mparams = ctxt.mParams
+  let mParams = ctxt.mParams
   let fMethod = 'insert'
   let inst = UB.DataStore('ubq_messages')
   let fexecParams = {}
 
   fexecParams.ID = inst.generateID()
-  fexecParams.queueCode = mparams.queueCode
-  fexecParams.msgCmd = mparams.msgCmd
-  fexecParams.msgData = mparams.msgData
-  if (!mparams.msgPriority) {
+  fexecParams.queueCode = mParams.queueCode
+  fexecParams.msgCmd = mParams.msgCmd
+  fexecParams.msgData = mParams.msgData
+  if (!mParams.msgPriority) {
     fexecParams.msgPriority = 0
   }
 
@@ -57,6 +62,7 @@ me.addqueue = function (ctxt) {
 /**
  * Take a `.` separated string and return a function it points to (starting from global)
  * Think about it as about safe eval
+ * @private
  * @param {String} path
  * @return {Function|undefined}
  */
@@ -83,7 +89,7 @@ function getFnFromNS (path) {
 /**
  * REST endpoint for executing a scheduler task.
  * Queue worker will sent the tasks in async mode to this endpoint according to a schedulers.
- * Endpoint wait a POST requests from a local IP with JSON:
+ * Endpoint wait a POST requests from a local IP with JSON in body:
  *
  *      {schedulerName: cfg.name, command: cfg.command, module: cfg.module, singleton: cfg.singleton !== false, logSuccessful: cfg.logSuccessful}
   *
@@ -98,9 +104,13 @@ function getFnFromNS (path) {
  * - If command executed **with exception**, record with resultError===1 will be written to `ubq_runstat` entity,
  * Exception text will be written written to `ubq_runstat.resultErrorMsg`.
  *
+ * @method executeSchedulerTask
  * @param {null} nullCtxt
  * @param {THTTPRequest} req Name of a scheduler item
  * @param {THTTPResponse} resp Command to execute
+ * @memberOf ubq_messages_ns.prototype
+ * @memberOfModule @unitybase/ubq
+ * @published
  * @return {Boolean}
  */
 me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {

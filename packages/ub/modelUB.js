@@ -123,75 +123,6 @@ let UB = module.exports = {
 }
 
 /**
- * Creates namespaces to be used for scoping variables and classes so that they are not global.
- *
- *     UB.ns('DOC.Report');
- *     DOC.Report.myReport = function() { ... };
- *
- * @deprecated Try to avoid namespaces - instead create a modules and use require()
- * @param {String} namespacePath
- * @return {Object} The namespace object.
- */
-function ns (namespacePath) {
-  let root = global
-  let parts = namespacePath.split('.')
-
-  for (let j = 0, subLn = parts.length; j < subLn; j++) {
-    let part = parts[j]
-
-    if (!root[part]) {
-      root[part] = {}
-    }
-    root = root[part]
-  }
-  return root
-}
-
-// normalize ENUMS TubCacheType = {Entity: 1, SessionEntity: 2} => {Entity: 'Entity', SessionEntity: 'SessionEntity'}
-function normalizeEnums () {
-  let enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntityDataSourceType',
-    'TubAttrDataType', 'TubSQLExpressionType', 'TubSQLDialect', 'TubSQLDriver']
-  enums.forEach(eN => {
-    let e = global[eN]
-    if (!e) return
-    let vals = Object.keys(e)
-    vals.forEach(k => { e[k] = k })
-  })
-}
-
-// domain initialization
-function initializeDomain () {
-  const {addEntityMethod} = process.binding('ub_app')
-  const {getDomainInfo} = process.binding('ub_app')
-// create scope for all domain objects
-  const tempDomain = new UBDomain(JSON.parse(getDomainInfo(true)))
-  tempDomain.eachEntity(entity => {
-    let e = global[entity.code] = {
-      entity: entity
-    }
-    EventEmitter.call(e)
-    Object.assign(e, EventEmitter.prototype)
-    e.entity.addMethod = (function (entityCode) {
-      return function (methodCode) {
-        addEntityMethod(entityCode, methodCode)
-      }
-    })(entity.code)
-  })
-  // TODO - validate domain
-  // 1) if (FAttr.dataType = adtDocument) and (FAttr.storeName <> '') and
-  // ubLog.Add.Log(sllError, 'DomainLoad: Error loading entity "%". A storeName="%" specified in attribute "%" not in defined in application.blobStore config)',
-  // 2) fLog.Log(sllInfo, 'Check blob store "%" folder "%": folder exists', [fAppConfig.blobStores[i].name, fAppConfig.blobStores[i].path]);
-}
-
-/**
- * @type Session
- * @deprecated Use const Session = require('@unitybase/ub').Session
- */
-global.Session = Session
-
-require('./modules/RLS')
-
-/**
  * Initialize UnityBase application:
  *  - create namespaces (global objects) for all `*.meta` files from domain
  *  - require all packages specified in config `application.domain.models`
@@ -234,5 +165,75 @@ function start () {
   App.registerEndpoint('rest', restEp, true)
   App.registerEndpoint('statics', staticEp, false, true)
 }
+
+// normalize ENUMS TubCacheType = {Entity: 1, SessionEntity: 2} => {Entity: 'Entity', SessionEntity: 'SessionEntity'}
+function normalizeEnums () {
+  let enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType', 'TubEntityDataSourceType',
+    'TubAttrDataType', 'TubSQLExpressionType', 'TubSQLDialect', 'TubSQLDriver']
+  enums.forEach(eN => {
+    let e = global[eN]
+    if (!e) return
+    let vals = Object.keys(e)
+    vals.forEach(k => { e[k] = k })
+  })
+}
+
+// domain initialization
+function initializeDomain () {
+  const {addEntityMethod} = process.binding('ub_app')
+  const {getDomainInfo} = process.binding('ub_app')
+// create scope for all domain objects
+  const tempDomain = new UBDomain(JSON.parse(getDomainInfo(true)))
+  tempDomain.eachEntity(entity => {
+    let e = global[entity.code] = {
+      entity: entity
+    }
+    EventEmitter.call(e)
+    Object.assign(e, EventEmitter.prototype)
+    e.entity.addMethod = (function (entityCode) {
+      return function (methodCode) {
+        addEntityMethod(entityCode, methodCode)
+      }
+    })(entity.code)
+  })
+  // TODO - validate domain
+  // 1) if (FAttr.dataType = adtDocument) and (FAttr.storeName <> '') and
+  // ubLog.Add.Log(sllError, 'DomainLoad: Error loading entity "%". A storeName="%" specified in attribute "%" not in defined in application.blobStore config)',
+  // 2) fLog.Log(sllInfo, 'Check blob store "%" folder "%": folder exists', [fAppConfig.blobStores[i].name, fAppConfig.blobStores[i].path]);
+}
+
+/**
+ * Creates namespaces to be used for scoping variables and classes so that they are not global.
+ *
+ *     UB.ns('DOC.Report');
+ *     DOC.Report.myReport = function() { ... };
+ *
+ * @deprecated Try to avoid namespaces - instead create a modules and use require()
+ * @param {String} namespacePath
+ * @return {Object} The namespace object.
+ */
+function ns (namespacePath) {
+  let root = global
+  let parts = namespacePath.split('.')
+
+  for (let j = 0, subLn = parts.length; j < subLn; j++) {
+    let part = parts[j]
+
+    if (!root[part]) {
+      root[part] = {}
+    }
+    root = root[part]
+  }
+  return root
+}
+
+/**
+ * @type Session
+ * @deprecated Use `const Session = require('@unitybase/ub').Session`
+ */
+global.Session = Session
+
+// legacy 1.12
+require('./modules/RLS')
 
 module.exports = UB

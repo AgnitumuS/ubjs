@@ -1,22 +1,18 @@
 ﻿const UB = require('@unitybase/ub')
 const _ = require('lodash')
-let me = UB.ns('UB.UBQ')
+const App = UB.App
 
 /**
- * @class UB.UBQ
- * FTS index builder for Scheduler
- * @singleton
- */
-
-/**
- * Read queue with code 'ASYNCFTS' (by portion of 1000 queue rows at once) and rebuild FTS indexes.
+ * Used by scheduler to build a full text search index.
+ * Read queue with code **ASYNCFTS** (by portion of 1000 queue rows at once) and rebuild FTS indexes.
  *
  * Expect msgCmd value in form: {"entity":"tst_document","ID":3000000005908,"operation":"DELETE"}
  * Possible operation is 'INSERT' 'UPDATE' 'DELETE'
- * @param {ubMethodParams} ctxt
- * @returns {String}
+ *
+ * @module ubqFTSJob
+ * @memberOf module:@unitybase/ubq
  */
-me.FTSReindexFromQueue = function (ctxt) {
+module.exports = function () {
   console.log('Call JS scheduler method: UB.UBQ.FTSReindexFromQueue')
 
   let cmdStore = UB.Repository('ubq_messages')

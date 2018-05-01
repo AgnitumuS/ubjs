@@ -1,9 +1,12 @@
+/* global ubq_scheduler ncrc32 */
+// eslint-disable-next-line camelcase
 let me = ubq_scheduler
 
 const fs = require('fs')
 const path = require('path')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
 const argv = require('@unitybase/base').argv
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 const UB = require('@unitybase/ub')
 const App = UB.App
 const _ = require('lodash')
@@ -20,11 +23,13 @@ const FILE_NAME_TEMPLATE = '_schedulers.json'
 let attributes = me.entity.attributes
 /**
  * Load a schedulers from a file. Override a already loaded schedulers if need
+ * @private
  * @param {UBModel} model
  * @param {Array<Object>} loadedData Data already loaded
  */
 function loadOneFile (model, loadedData) {
-  let fn = path.join(model.path, FILE_NAME_TEMPLATE)
+  if (!model.realPath) return // model with public path only
+  let fn = path.join(model.realPath, FILE_NAME_TEMPLATE)
   let modelName = model.name
 
   if (!fs.existsSync(fn)) { return }
@@ -69,7 +74,6 @@ function loadAll () {
 
   if (!resultDataCache) {
     console.debug('load schedulers from models directory structure')
-
     for (let modelName in models) {
       let model = models[modelName]
       loadOneFile(model, loadedData)
@@ -87,8 +91,10 @@ function loadAll () {
   return resultDataCache
 }
 
-/** Retrieve data from resultDataCache and init ctxt.dataStore
- *  caller MUST set dataStore.currentDataName before call doSelect function
+/**
+ * Retrieve data from resultDataCache and init ctxt.dataStore
+ * caller MUST set dataStore.currentDataName before call doSelect function
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function doSelect (ctxt) {
@@ -97,7 +103,7 @@ function doSelect (ctxt) {
   let cType = ctxt.dataStore.entity.cacheType
   let cachedData = loadAll()
 
-  if (!(aID && (aID > -1)) && (cType === TubCacheType.Entity || cType === TubCacheType.SessionEntity) && (!mP.skipCache)) {
+  if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity || cType === UBDomain.EntityCacheTypes.SessionEntity) && (!mP.skipCache)) {
     let reqVersion = mP.version
     mP.version = resultDataCache.version
     if (reqVersion === resultDataCache.version) {
@@ -113,12 +119,16 @@ function doSelect (ctxt) {
 }
 
 /**
- *
+ * Virtual `select` implementation. Actual data are stored in `_schedulers.json` files from models folders
+ * @method select
  * @param {ubMethodParams} ctxt
  * @return {Boolean}
+ * @memberOf ubq_scheduler_ns.prototype
+ * @memberOfModule @unitybase/ubq
+ * @published
  */
 me.select = function (ctxt) {
-  ctxt.dataStore.currentDataName = 'select' // TODO надо или нет????
+  ctxt.dataStore.currentDataName = 'select' // do we need it????
   doSelect(ctxt)
   ctxt.preventDefault()
   return true // everything is OK

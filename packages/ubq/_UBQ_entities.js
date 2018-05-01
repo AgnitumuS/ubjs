@@ -1,251 +1,205 @@
-/* eslint-disable camelcase,no-unused-vars */
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Message queue
-* @mixes EventEmitter
-*/
-global.ubq_messages = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
+ * Task queue persisted into database
+ * @version 5.0.6
+ * @module @unitybase/ubq
+ */
 
 /**
-* Attributes of "Message queue"
-* @class
-*/
-function ubq_messages_object () {
-  /**
-  *  
-  * 
+ * Message queue
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubq_messages_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubq_messages_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Queue code 
-  * Consumer determinate handler by this code. for each queCode must be consumer which handle it
+  ID: 0,
+ /**
+  * Receivers determinate handler by this code. For each queCode must be receiver which handle it
   * @type {String}
   */
-  this.queueCode = ''
-  /**
-  * Command 
+  queueCode: '',
+ /**
   * Command for receiver. Contain JSON serialized object with command parameters. Command must contain attributes receiver understand
   * @type {String}
   */
-  this.msgCmd = null
-  /**
-  * Message data 
+  msgCmd: null,
+ /**
   * Additional data for message. May contain Base64 encoded binary data
   * @type {String}
   */
-  this.msgData = null
-  /**
-  * Priority 
-  * Priority of messages. 1&#x3D;High, 0&#x3D;Low, default 0
+  msgData: null,
+ /**
+  * Priority of messages. 1&#x3D;High, 0&#x3D;Low, default 1
   * @type {Number}
   */
-  this.msgPriority = 0
-  /**
-  * Complete date 
+  msgPriority: 0,
+ /**
   * @type {Date}
   */
-  this.completeDate = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  completeDate: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* Scheduler run statistic
-* @mixes EventEmitter
+* Message queue
+* @type {ubq_messages_ns}
 */
-global.ubq_runstat = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubq_messages = new ubq_messages_ns()
 /**
-* Attributes of "Scheduler run statistic"
-* @class
-*/
-function ubq_runstat_object () {
-  /**
-  *  
-  * 
+ * Scheduler run statistic
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubq_runstat_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubq_runstat_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Application name 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.appName = ''
-  /**
-  * Scheduler name 
+  appName: '',
+ /**
   * @type {String}
   */
-  this.schedulerName = ''
-  /**
-  * Time of start scheduler item 
+  schedulerName: '',
+ /**
   * Time of start scheduler item
   * @type {Date}
   */
-  this.startTime = new Date()
-  /**
-  * Time of end scheduler item 
+  startTime: new Date(),
+ /**
   * Time of end scheduler item
   * @type {Date}
   */
-  this.endTime = null
-  /**
-  * Log from runned script about all actions 
+  endTime: null,
+ /**
   * Log from runned script about all actions
   * @type {String}
   */
-  this.logText = null
-  /**
-  * Result error code. 0&#x3D;No error 
+  logText: null,
+ /**
   * @type {Number}
   */
-  this.resultError = null
-  /**
-  * Error text message if resultError &gt; 0 
+  resultError: null,
+ /**
   * @type {String}
   */
-  this.resultErrorMsg = null
+  resultErrorMsg: null,
 }
 /**
-* Schedulers
-* @mixes EventEmitter
+* Scheduler run statistic
+* @type {ubq_runstat_ns}
 */
-global.ubq_scheduler = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubq_runstat = new ubq_runstat_ns()
 /**
-* Attributes of "Schedulers"
-* @class
-*/
-function ubq_scheduler_object () {
-  /**
-  *  
+ * Schedulers
+ * @extends EntityNamespace
+ */
+class ubq_scheduler_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubq_scheduler_ns.attrs = {
+ /**
   * crc32(name)
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Job name 
+  ID: 0,
+ /**
   * Unique job name. Models will override a jobs with the same name in order models are listen in server configuration
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Condition to schedule a job 
+  name: '',
+ /**
   * Expression to be evaluated during server startup. In case result is empty or evaluated to &#x60;true&#x60; job will be scheduled
   * @type {String}
   */
-  this.schedulingCondition = null
-  /**
-  * Cron record 
+  schedulingCondition: null,
+ /**
   * A cron for job as in unix systems. Format: &#39;Seconds(0-59) Minutes(0-59) Hours(0-23) DayOfMonth(1-31) Months(0-11) DayOfWeek(0-6)&#39;
   * @type {String}
   */
-  this.cron = ''
-  /**
-  * Description 
+  cron: '',
+ /**
   * Job description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Command 
+  description: null,
+ /**
   * Name of function to be executed in a server context
   * @type {String}
   */
-  this.command = null
-  /**
-  * Module 
+  command: null,
+ /**
   * Name of module to require with scheduler job function as a default export
   * @type {String}
   */
-  this.module = null
-  /**
-  * Singleton 
+  module: null,
+ /**
   * If &#x60;1&#x60; - only single instance of a running job is allowed
   * @type {Boolean}
   */
-  this.singleton = undefined
-  /**
-  * runAs 
+  singleton: undefined,
+ /**
   * A user name for a job execution
   * @type {String}
   */
-  this.runAs = null
-  /**
-  * Log a Successful execution 
+  runAs: null,
+ /**
   * If 1 (default) then successful job execution result will be logged into &#x60;ubq_runstat&#x60;, otherwise - only errors
   * @type {Boolean}
   */
-  this.logSuccessful = undefined
-  /**
-  * Overridden 
+  logSuccessful: undefined,
+ /**
   * Indicate original job is overridden by other models
   * @type {Boolean}
   */
-  this.overridden = undefined
-  /**
-  * OriginalModel 
+  overridden: undefined,
+ /**
   * A model name where original job definition file is stored
   * @type {String}
   */
-  this.originalModel = ''
-  /**
-  * Actual model 
+  originalModel: '',
+ /**
   * A name of model where actual job definition file is stored. Can de not equal to &#x60;originalModel&#x60; if someone overrides the job
   * @type {String}
   */
-  this.actualModel = ''
+  actualModel: '',
 }
+/**
+* Schedulers
+* @type {ubq_scheduler_ns}
+*/
+const ubq_scheduler = new ubq_scheduler_ns()

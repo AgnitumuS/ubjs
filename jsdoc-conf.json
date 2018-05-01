@@ -19,6 +19,7 @@
       "./packages/mailer",
       "./packages/openid-connect/openIDConnect.js",
       "./packages/compressors/UBCompressors.js",
+      "./packages/ubq",
       "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
