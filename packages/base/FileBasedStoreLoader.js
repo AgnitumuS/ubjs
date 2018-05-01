@@ -11,6 +11,7 @@ const lds = csShared.LocalDataStore
  *
  * For work with data, loaded by FileBasedStoreLoader you can use {@link LocalDataStore} class.
  * @module FileBasedStoreLoader
+ * @memberOf module:@unitybase/base
  */
 module.exports = FileBasedStoreLoader
 /**

@@ -36,6 +36,8 @@ const UBA_AUDIT = UB.DataStore('uba_audit')
  * @param {ubMethodParams} ctx
  * @param {string} ctx.mParams.reason
  * @param {string} ctx.mParams.action
+ * @memberOf uba_audit_ns.prototype
+ * @memberOfModule @unitybase/uba
  * @published
  */
 function secureBrowserEvent (ctx) {

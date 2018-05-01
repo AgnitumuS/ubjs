@@ -2,7 +2,7 @@ const bindings = process.binding('worker')
 const {sleep} = process.binding('syNode')
 
 /**
- * Execute a script in a dedicated thread.
+ * Create a worker to execute a script in a dedicated thread.
  *
  * The flow:
  *
@@ -20,15 +20,16 @@ const {sleep} = process.binding('syNode')
  *  - *postMessage(message)* for posting messages from worker thread. You can get this message by function getMessage of worker object
  *  - *terminate()* for terminating current worker thread
  *
- * @author v.orel
  * @module worker
+ * @memberOf module:@unitybase/base
+ * @author v.orel
  */
 module.exports = Worker
 
 /**
  * @class
  * Worker implementation.
- * Warning!!! All defined workers MUST be terminated until application shut down. In opposite case you can get AV.
+ * All defined workers **MUST be terminated** until application shut down. In opposite case you can get AV.
  * @param {Object|Number} paramsObj Parameters object for create new Worker or WorkerID for use existing Worker
  * @param {String} [paramsObj.name='Worker'] Name of Worker for debugger
  * @param {String|Function} paramsObj.moduleName Module name. Module must export 3 function: onmessage, onterminate and onerror

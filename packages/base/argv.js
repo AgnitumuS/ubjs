@@ -21,6 +21,7 @@ const SyncConnection = require('./SyncConnection')
   const domainInfo = conn.getDomainInfo()
 
  * @module argv
+ * @memberOf module:@unitybase/base
  */
 module.exports = {
   safeParseJSONfile: safeParseJSONfile,

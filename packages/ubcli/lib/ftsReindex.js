@@ -6,7 +6,7 @@
       ubcli ftsReindex -?
 
  * @author pavel.mash
- * @module @unitybase/ubcli/ftsReindex
+ * @module ftsReindex
  */
 
 const http = require('http')

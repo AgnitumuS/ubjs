@@ -5,7 +5,7 @@
  *    ubcli upgradeConfig -help
  *
  * @author pavel.mash on 22.12.2015.
- * @module @upgradeConfig
+ * @module upgradeConfig
  */
 const _ = require('lodash')
 const fs = require('fs')

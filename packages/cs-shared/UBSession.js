@@ -1,6 +1,7 @@
 /**
  * Exports UBSession class, returned as a result of [UB|Sync]Connection.authorize
  * @module UBSession
+ * @memberOf @unitybase/cs-shared
  * @author pavel.mash
  */
 module.exports = UBSession

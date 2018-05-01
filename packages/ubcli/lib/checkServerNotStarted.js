@@ -1,7 +1,7 @@
 /**
   Command line module. Throw error in case server is started.
 
-  @module @unitybase/ubcli/checkServerNotStarted
+  @module checkServerNotStarted
   @author pavel.mash
  */
 const options = require('@unitybase/base').options

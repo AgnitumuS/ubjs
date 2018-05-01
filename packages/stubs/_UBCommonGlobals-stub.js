@@ -9,6 +9,7 @@
  Date: 10.08.13
 */
 
+
 /**
  * Load file content to string. Only for non-binary files!
  *

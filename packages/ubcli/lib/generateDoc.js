@@ -5,7 +5,7 @@
        ubcli generateDoc -?
 
  * @author pavel.mash 04.02.14
- * @module @unitybase/ubcli/generateDoc
+ * @module generateDoc
  */
 const fs = require('fs')
 const argv = require('@unitybase/base').argv

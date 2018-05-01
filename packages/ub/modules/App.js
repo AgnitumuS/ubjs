@@ -13,8 +13,6 @@ const dbConnections = require('./DBConnections')
 /**
  * UnityBase application
  *
- *    const App = require('@unitybase/ub').App
- *
  * Developer can add his own application level methods using {@link App.registerEndpoint App.registerEndpoint}
  * and take a full control on HTTP request & response.
  *
@@ -23,15 +21,30 @@ const dbConnections = require('./DBConnections')
  *  - `endpointName + ':before'` event before endpoint handler  execution
  *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault() is called inside endpoint handler
  *
- * @Example:
- *
+ * @example
+
+ const App = require('@unitybase/ub').App
+ // Register public (accessible without authentication) endpoint
+ App.registerEndpoint('echoToFile', echoToFile, false)
+
+ // write custom request body to file FIXTURES/req and echo file back to client
+ // @param {THTTPRequest} req
+ // @param {THTTPResponse} resp
+ function echoToFile (req, resp) {
+   var fs = require('fs')
+   fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
+   resp.statusCode = 200
+   resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), {encoding: 'bin'}))
+ }
+
  //Before getDocument requests
  //@param {THTTPRequest} req
  //@param {THTTPResponse} resp
  function doSomethingBeforeGetDocumentCall(req, resp){
-        console.log('User with ID', Session.userID, 'try to get document');
-     }
- App.on('getDocument:before', doSomethingBeforeGetDocumentCall);
+   console.log('User with ID', Session.userID, 'try to get document')
+ }
+ // Adds hook called before each call to getDocument endpoint
+ App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
 
  const querystring = require('querystring')
  //
@@ -39,11 +52,12 @@ const dbConnections = require('./DBConnections')
  //@param {THTTPRequest} req
  //@param {THTTPResponse} resp
  function doSomethingAfterGetDocumentCall(req, resp){
-       params = querystring.parse(req.parameters)
-       console.log('User with ID', Session.userID, 'obtain document using params',  params)
-     }
- App.on('getDocument:after', doSomethingAfterGetDocumentCall);
+   params = querystring.parse(req.parameters)
+   console.log('User with ID', Session.userID, 'obtain document using params',  params)
+ }
+ App.on('getDocument:after', doSomethingAfterGetDocumentCall)
 
+ *
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
  *
  * @namespace App
@@ -168,7 +182,7 @@ App.serviceMethodByPassAuthentication = function (methodName) {
 }
 
 /**
- * Server configuration (result of argv.getServerConfiguration() execution)
+ * Server configuration - result of {@link module:argv~getServerConfiguration argv.getServerConfiguration}
  * @readonly
  * @type {Object}
  * @property {Object} httpServer HTTP server config
@@ -192,7 +206,7 @@ try {
 let pkgFile = path.join(process.configPath, 'package.json')
 let appPkg = JSON.parse(fs.readFileSync(pkgFile, 'utf8'))
 /**
- * Application package.json content (parsed)
+ * Application `package.json` content (parsed)
  * @type {Object}
  */
 App.package = appPkg

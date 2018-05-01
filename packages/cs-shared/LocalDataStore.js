@@ -8,29 +8,25 @@
  *
  * Client-side sample:
  *
-      $App.connection.run({
-        entity: 'tst_IDMapping',
-        method: 'addnew',
-        fieldList: ['ID', 'code']
-      }).done(function(result){
-        // here result in array-of-array format
-        // [{"entity":"tst_IDMapping","method":"addnew","fieldList":["ID","code"],
-        //   "__fieldListExternal":["ID","code"],
-        //   "resultData":{"fields":["ID","code"],"rowCount": 1, "data":[[3500000016003,null]]}}]
-        var objArray = UB.LocalDataStore.selectResultToArrayOfObjects(result);
-        // transform array-of-array result representation to array-of-object
-        console.log(objArray);
-        // now result in more simple array-of-object format: [{ID: 12312312312, code: null}]
-      });
+  $App.connection.run({
+    entity: 'tst_IDMapping',
+    method: 'addnew',
+    fieldList: ['ID', 'code']
+  }).done(function(result){
+    // here result in array-of-array format
+    // [{"entity":"tst_IDMapping","method":"addnew","fieldList":["ID","code"],
+    //   "__fieldListExternal":["ID","code"],
+    //   "resultData":{"fields":["ID","code"],"rowCount": 1, "data":[[3500000016003,null]]}}]
+    var objArray = UB.LocalDataStore.selectResultToArrayOfObjects(result);
+    // transform array-of-array result representation to array-of-object
+    console.log(objArray);
+    // now result in more simple array-of-object format: [{ID: 12312312312, code: null}]
+  });
 
  * @module LocalDataStore
+ * @memberOf @unitybase/cs-shared
+ * @author pavel.mash
  */
-/*
- @author pavel.mash
- */
-
-// ***********   !!!!WARNING!!!!! **********************
-// Module shared between server and client code
 
 const _ = require('lodash')
 /**
@@ -417,4 +413,3 @@ module.exports.arrayOfObjectsToSelectResult = function (arrayOfObject, attribute
   })
   return result
 }
-

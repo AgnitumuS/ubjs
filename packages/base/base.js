@@ -47,7 +47,7 @@ module.exports = {
    */
   dataLoader: dataLoader,
   /**
-   * File-system based virtual store **select**.
+   * ORM **select** method implementation using files as a data source.
    * Used for loading files & transforming it content to {@link TubCachedData} format
    * @type {module:FileBasedStoreLoader}
    */

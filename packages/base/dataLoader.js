@@ -48,6 +48,7 @@ const path = require('path')
      )
 
  * @module dataLoader
+ * @memberOf module:@unitybase/base
  * @author pavel.mash
  */
 module.exports = {

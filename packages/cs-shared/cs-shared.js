@@ -15,7 +15,7 @@ module.exports = {
   CustomRepository,
   /**
    * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format)
-   * @type {module:LocalDataStore}
+   * @type {LocalDataStore}
    */
   LocalDataStore,
   /**
@@ -24,8 +24,8 @@ module.exports = {
    */
   UBDomain,
   /**
-   * UB connection user session
-   * @type {module:UBSession~UBSession}
+   * User session for connection to UB server
+   * @type {UBSession}
    */
   UBSession
 }

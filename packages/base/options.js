@@ -25,6 +25,7 @@
      let passedOptions = paramsDescription.parseVerbose({}, true)
 
  * @module options
+ * @memberOf module:@unitybase/base
  * @author pavel.mash
  */
 

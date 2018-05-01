@@ -4,9 +4,24 @@
 */
 
 let {coreModulesPath, runInThisContext} = process.binding('modules'),
-    {relToAbs,loadFile} = process.binding('fs'),
+    {loadFile} = process.binding('fs'),
     Module;
 
+/**
+ * Stub for documenting build-in modules and classes.
+ *
+ * All `buildin` submodules can be required directly without adding namespace:
+ *
+ *      const assert = require('assert')
+ *
+ * All members are accessible in global:
+ *
+ *      console.log(process.cwd())
+ * 
+ * In case submodule is not documented here - see documentation on [node.js](https://nodejs.org/dist/latest-v8.x/docs/api/) site
+ *
+ * @module buildin
+ */
 
 /**
 * @namespace process
@@ -58,6 +73,11 @@ function startup() {
      * @global	
      */
     global.sleep = process.binding('syNode').sleep;
+
+    const EventEmitter = NativeModule.require('events').EventEmitter;
+    // add EventEmitter to process object
+    EventEmitter.call(process);
+    Object.assign(process, EventEmitter.prototype);
 
     const WindowTimer =  NativeModule.require('polyfill/WindowTimer');
     global._timerLoop = WindowTimer.makeWindowTimer(global, function (ms) { global.sleep(ms); });
@@ -142,14 +162,17 @@ function NativeModule(id) {
 
 const NODE_CORE_MODULES = ['fs', 'util', 'path', 'assert', 'module', 'console', 'events','vm',
  'net', 'os', 'punycode', 'querystring', 'timers', 'tty', 'url', 'child_process', 'http', 'https',
- 'crypto', 'zlib', //fake modules
+ 'crypto', 'zlib', 'dns', //fake modules
  'buffer', 'string_decoder', 'internal/util', 'internal/module', 'stream', '_stream_readable', '_stream_writable', 
  'internal/streams/BufferList', '_stream_duplex', '_stream_transform', '_stream_passthrough',
+ 'internal/fs',
+ 'internal/errors', 'internal/querystring',  
  'polyfill/WindowTimer']; 
 
 NativeModule._source = {};
+const PATH_DELIM = process.platform === 'win32' ? '\\' : '/'
 NODE_CORE_MODULES.forEach( (module_name) => { 
-  NativeModule._source[module_name] = relToAbs(coreModulesPath, `.\\node_modules\\${module_name}.js`) 
+  NativeModule._source[module_name] = `${coreModulesPath}${PATH_DELIM}node_modules${PATH_DELIM}${module_name}.js`
 });
 
 NativeModule._cache = {};

@@ -16,7 +16,7 @@
      storeCreator(options)
 
  * @author pavel.mash
- * @module @unitybase/ubcli/createStore
+ * @module createStore
  */
 
 const _ = require('lodash')

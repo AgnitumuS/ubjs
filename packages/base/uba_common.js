@@ -66,6 +66,7 @@ const ROLES = {
  * Constants for administrative security model
  * @author pavel.mash 15.09.2016
  * @module uba_common
+ * @memberOf module:@unitybase/base
  */
 
 module.exports = {

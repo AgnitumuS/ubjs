@@ -1,6 +1,7 @@
 /**
- * HTTPS client. See {@link module:http} for details
+ * HTTPS client.
  * @module https
+ * @memberOf module:buildin
  */
  
 let http = require('http');

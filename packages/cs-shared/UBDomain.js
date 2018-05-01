@@ -3,6 +3,7 @@ const _ = require('lodash')
 
 /**
  * @module UBDomain
+ * @memberOf @unitybase/cs-shared
  */
 
 /**
