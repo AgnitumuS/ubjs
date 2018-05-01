@@ -23,7 +23,7 @@ This is a short list of modules, available in unityBase standard distribution:
  - {@link module:@unitybase/uba @unitybase/uba}: UnityBase Administrative model. Define entities for users, roles and permissions. See tutorial {@tutorial security}
  - {@link module:@unitybase/ubq @unitybase/ubq}: Asynchronous task queue persisted into database. See tutorials {@tutorial delayed_operations} and {@tutorial schedulers}.
   Contains jobs for sending e-mail and updating FTS indexes.
- - TODO
+ - TODO ubs, cdn, org, ubm, xlsx, ub-pub, pdf, (cs-shared, stubs)
 
 # Get Started
 
