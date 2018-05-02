@@ -1,11 +1,12 @@
+/**
+ * @deprecated
+ */
 exports.Service = {
-
   /**
    * @method
    * returns array of supported languages
    * @param {ubMethodParams} ctxt
    * @return {Array}
-   *
    */
   getSupportLang: function (ctxt) {
     return ctxt.dataStore.entity.connectionConfig.supportLang
@@ -16,7 +17,6 @@ exports.Service = {
    * returns true in case when insert method works in given context
    * @param {ubMethodParams} ctxt
    * @return {Boolean}
-   *
    */
   inserting: function (ctxt) {
     return (ctxt.mParams.method === 'insert')
@@ -27,7 +27,6 @@ exports.Service = {
    * returns true in case when update method works in given context
    * @param {ubMethodParams} ctxt
    * @return {Boolean}
-   *
    */
   updating: function (ctxt) {
     return (ctxt.mParams.method === 'update')
@@ -38,7 +37,6 @@ exports.Service = {
    * returns true in case when delete method works in given context
    * @param {ubMethodParams} ctxt
    * @return {Boolean}
-   *
    */
   deleting: function (ctxt) {
     return (ctxt.mParams.method === 'delete')
@@ -48,7 +46,6 @@ exports.Service = {
    * @method
    * @param {ubMethodParams} ctxt
    * @return {Object}
-   *
    */
   getOldValues: function (ctxt) {
     let currentDataName = ctxt.dataStore.currentDataName
@@ -66,7 +63,6 @@ exports.Service = {
    * returns the next code generated from ubs_numcounter for entity
    * @param {ubMethodParams} ctxt
    * @return {Number}
-   *
    */
   getNextCode: function (ctxt) {
     return ubs_numcounter.getRegnum(ctxt.dataStore.entity.name, 1)

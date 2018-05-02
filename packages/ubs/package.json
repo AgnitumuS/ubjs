@@ -1,7 +1,7 @@
 {
   "name": "@unitybase/ubs",
   "version": "5.0.6",
-  "description": "UnityBase Service model",
+  "description": "Reports, User messages (notifications), Settings (aka about:config), Counters",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubs",
   "config": {
     "ubmodel": "UBS"

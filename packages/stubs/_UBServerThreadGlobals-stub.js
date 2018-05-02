@@ -224,9 +224,11 @@ const softLock = {
 }
 
 /**
- * Mixin. Provide Row Level Security. See {@tutorial rls} for details.
+ * Mixin. Provide Row Level Security.
  * Will override `select` method and add a SQL expression returned by function specified in `rls.expression`
- * to `where` section of each `select` operation
+ * to `where` section for each `select` operation.
+ *
+ * See tutorial {@tutorial mixin_rls} for details.
  * @mixin
  */
 const rls = {

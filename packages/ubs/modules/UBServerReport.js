@@ -1,8 +1,9 @@
 /**
  * Server-side Report builder
  *
- * Example usage on server side
+ * @example
 
+       // Server side report generation
        const fs = require('fs');
        const UBReport = require('@unitybase/ubs/modules/UBServerReport');
        let report = UBReport.makeReport('test','pdf',{});
@@ -16,7 +17,8 @@
          }
        })
 
- * @module @unitybase/ubs/modules/UBServerReport
+ * @module UBServerReport
+ * @memberOf module:@unitybase/ubs
  */
 const Mustache = require('mustache')
 const Q = require('when')

@@ -1,3 +1,6 @@
+const UB = require('@unitybase/ub')
+/* global ubs_settings */
+// eslint-disable-next-line camelcase
 const me = ubs_settings
 
 function convertBoolean (value, settingKey) {
@@ -22,6 +25,9 @@ function convert (type, value, settingKey) {
 
 /**
  * Load a single configuration value.
+ * @method loadKey
+ * @memberOf ubs_settings_ns.prototype
+ * @memberOfModule @unitybase/ubs
  * @param {string} settingKey
  * @param {String|Boolean|Number|null} [defaultValue=null] The value returned if setting key not fount
  * @returns {null|number|string|boolean}
@@ -47,6 +53,9 @@ me.loadKey = function loadKey (settingKey, defaultValue = null) {
 
 /**
  * Load a configuration object for number of keys.
+ * @method loadKeys
+ * @memberOf ubs_settings_ns.prototype
+ * @memberOfModule @unitybase/ubs
  * @param {Array<string>|string} settingKeys   A mask or array of keys.
  * @returns {object}
  */
@@ -67,17 +76,21 @@ me.loadKeys = function loadKeys (settingKeys) {
 
 let _settingsStore
 /**
+ * @private
  * @return {TubDataStore}
  */
 function getSettingsStore () {
   if (!_settingsStore) {
-    _settingsStore = new TubDataStore('ubs_settings')
+    _settingsStore = UB.DataStore('ubs_settings')
   }
   return _settingsStore
 }
 /**
  * Create a new Key or set value for existing key
- * @param {ubs_settings_object} keyData
+ * @method addOrUpdateKey
+ * @memberOf ubs_settings_ns.prototype
+ * @memberOfModule @unitybase/ubs
+ * @param {ubs_settings_ns} keyData
  */
 me.addOrUpdateKey = function (keyData) {
   const existedKeyData = UB.Repository('ubs_settings')
@@ -98,8 +111,11 @@ me.addOrUpdateKey = function (keyData) {
 }
 
 /**
- * Alias for a loadKey (for compatibility with 1.11)
- *
+ * Alias for a loadKey
+ * @deprecated Use ubs_setting.loadKey instead
+ * @method getSettingValue
+ * @memberOf ubs_settings_ns.prototype
+ * @memberOfModule @unitybase/ubs
  * @param {String} settingKey
  * @param {String|Boolean|Number|null} [defaultValue=null] The value returned if setting key not fount
  * @returns {String|Boolean|Number|null}

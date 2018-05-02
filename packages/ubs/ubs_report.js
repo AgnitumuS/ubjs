@@ -1,8 +1,6 @@
-// noinspection Eslint
-/**
- * @type {{entity: UBEntity}}
- */
-const me = global['ubs_report']
+/* global ubs_report ncrc32 */
+// eslint-disable-next-line camelcase
+const me = ubs_report
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
@@ -17,15 +15,15 @@ const blobStores = require('@unitybase/ub/blobStores')
 me.entity.addMethod('select')
 me.entity.addMethod('update')
 me.entity.addMethod('insert')
-me.entity.addMethod('testServerRendering')
+if (process.isDebug) {
+  me.entity.addMethod('testServerRendering')
+}
 
 me.on('delete:before', function () {
   throw new Error('<<<To delete Report you must manually delete corresponding xml file from modelFolder/public/reports folder>>>')
 })
 
-/**
- *  here we store loaded forms
- */
+// here we store loaded reports
 let resultDataCache = null
 let modelLoadDate
 
@@ -62,6 +60,7 @@ exports.reportCode = {
 `
 /**
  * Check integrity of file content. Passed as a callback to FileBasedStore.onBeforeRowAdd
+ * @private
  * @param {FileBasedStoreLoader} loader
  * @param {String} fullFilePath
  * @param {String} content
@@ -146,8 +145,10 @@ function loadAll () {
   return resultDataCache
 }
 
-/** Retrieve data from resultDataCache and init ctxt.dataStore
- *  caller MUST set dataStore.currentDataName before call doSelect function
+/**
+ * Retrieve data from resultDataCache and init ctxt.dataStore.
+ * Caller MUST set dataStore.currentDataName before call doSelect function
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function doSelect (ctxt) {
@@ -173,7 +174,10 @@ function doSelect (ctxt) {
 }
 
 /**
- *
+ * @method select
+ * @memberOf ubs_report_ns.prototype
+ * @memberOfModule @unitybase/ubs
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {Boolean}
  */
@@ -186,6 +190,7 @@ me.select = function (ctxt) {
 
 /**
  * Check model exists
+ * @private
  * @param {Number} aID
  * @param {String} modelName
  */
@@ -194,14 +199,13 @@ function validateInput (aID, modelName) {
   if (!model) {
     throw new Error(`ubs_report: Invalid model attribute value "${modelName}". Model not exist in domain`)
   }
-
   if (!aID) {
     throw new Error('No ID parameter passed in execParams')
   }
 }
 
 /**
- *
+ * @private
  * @param {ubMethodParams} ctxt
  * @param {Object} storedValue
  * @param {Boolean} isInsert
@@ -290,7 +294,10 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
 }
 
 /**
- *
+ * @method update
+ * @memberOf ubs_report_ns.prototype
+ * @memberOfModule @unitybase/ubs
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
@@ -315,6 +322,10 @@ me.update = function (ctxt) {
 
 /**
  * Check ID is unique and perform insertion
+ * @method insert
+ * @memberOf ubs_report_ns.prototype
+ * @memberOfModule @unitybase/ubs
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
@@ -337,26 +348,29 @@ me.insert = function (ctxt) {
 }
 
 const mime = require('mime-types')
-/**
- * REST endpoint for Report test purpose
- * Expect POST request with JSON on body {reportCode: 'reportCode', responseType: 'pdf'|'html', reportParams: {paramName: paramValue, ...}}
- * Return a HTML/PDF
- * @param {null} ctxt
- * @param {THTTPRequest} req
- * @param {THTTPResponse} resp
- */
-me.testServerRendering = function (ctxt, req, resp) {
-  let body = req.read()
-  let params = JSON.parse(body)
-  const UBServerReport = require('./modules/UBServerReport')
-  let result = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
 
-  if (result.reportType === 'pdf') {
-    console.debug('Generate a PDF report of size=', result.reportData.byteLength)
-  } else {
-    console.debug('Generate a HTML report of size=', result.reportData.length)
+if (process.isDebug) {
+  /**
+   * REST endpoint for Report test purpose. Available in `-dev` mode only.
+   * Expect POST request with JSON on body {reportCode: 'reportCode', responseType: 'pdf'|'html', reportParams: {paramName: paramValue, ...}}
+   * Return a HTML/PDF
+   * @param {null} ctxt
+   * @param {THTTPRequest} req
+   * @param {THTTPResponse} resp
+   */
+  me.testServerRendering = function (ctxt, req, resp) {
+    let body = req.read()
+    let params = JSON.parse(body)
+    const UBServerReport = require('./modules/UBServerReport')
+    let result = UBServerReport.makeReport(params.reportCode, params.responseType, params.reportParams)
+
+    if (result.reportType === 'pdf') {
+      console.debug('Generate a PDF report of size=', result.reportData.byteLength)
+    } else {
+      console.debug('Generate a HTML report of size=', result.reportData.length)
+    }
+    resp.writeEnd(result.reportData)
+    resp.writeHead('Content-Type: ' + mime.lookup(result.reportType))
+    resp.statusCode = 200
   }
-  resp.writeEnd(result.reportData)
-  resp.writeHead(resp.writeHead('Content-Type: ' + mime.lookup(result.reportType)))
-  resp.statusCode = 200
 }

@@ -91,8 +91,11 @@ function getFnFromNS (path) {
  * Queue worker will sent the tasks in async mode to this endpoint according to a schedulers.
  * Endpoint wait a POST requests from a local IP with JSON in body:
  *
- *      {schedulerName: cfg.name, command: cfg.command, module: cfg.module, singleton: cfg.singleton !== false, logSuccessful: cfg.logSuccessful}
-  *
+ *      {
+ *        schedulerName: cfg.name, command: cfg.command, module: cfg.module,
+ *        singleton: cfg.singleton !== false, logSuccessful: cfg.logSuccessful
+ *      }
+ *
  * `command` must be a function name (may including namespace), for example `UB.UBQ.sendQueueMail` or `ubs_message_edit.notifyAllRecipients`
  * in case `command` not passed `module` must be a module what export default a function, for example module: '@unitybase/myModule/schedTask'
  * and  in schedTask.js `module exports = function() {...}`

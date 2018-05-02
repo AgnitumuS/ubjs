@@ -20,6 +20,7 @@
       "./packages/openid-connect/openIDConnect.js",
       "./packages/compressors/UBCompressors.js",
       "./packages/ubq",
+      "./packages/ubs",
       "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
