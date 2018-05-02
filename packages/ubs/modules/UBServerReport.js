@@ -93,7 +93,7 @@ function UBServerReport (reportCode, reportType, params) {
 
    /**
     * The options of report. Known options: pageOrientation.
-     *  @property {{}} reportOptions
+    * @property {{}} reportOptions
     */
   this.reportOptions = {}
 
