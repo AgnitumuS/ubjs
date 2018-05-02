@@ -185,9 +185,12 @@ function initializeDomain () {
 // create scope for all domain objects
   const tempDomain = new UBDomain(JSON.parse(getDomainInfo(true)))
   tempDomain.eachEntity(entity => {
-    let e = global[entity.code] = {
-      entity: entity
-    }
+    let e = global[entity.code] = { }
+    Object.defineProperty(e, 'entity', {
+      writable: false,
+      enumerable: true,
+      value: entity
+    })
     EventEmitter.call(e)
     Object.assign(e, EventEmitter.prototype)
     e.entity.addMethod = (function (entityCode) {
