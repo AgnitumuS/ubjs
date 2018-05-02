@@ -4,7 +4,7 @@
 // Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
- * UnityBase Service model
+ * Reports, User messages (notifications), Settings (aka about:config), Counters
  * @version 5.0.6
  * @module @unitybase/ubs
  */

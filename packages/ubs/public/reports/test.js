@@ -1,6 +1,4 @@
 /* global Ext */
-const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
-
 exports.reportCode = {
   /**
    * This function must be defined in report code block.
@@ -32,6 +30,7 @@ exports.reportCode = {
    * @return {String}
    */
   buildReportOnServer: function (reportParams) {
+    const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
     let limit = reportParams.limitation || 1000
     let countries = UB.Repository('cdn_country')
       .attrs(['code', 'name', 'fullName', 'currencyID.name'])
