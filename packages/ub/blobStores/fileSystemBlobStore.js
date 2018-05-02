@@ -143,7 +143,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
         if (blobInfo && blobInfo.origName) {
           resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename='${blobInfo.origName}`)
         } else {
-          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}'`)
+          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
         }
         resp.writeEnd(filePath)
       }
