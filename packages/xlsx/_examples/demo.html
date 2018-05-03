@@ -29,12 +29,18 @@
         <td></td>
         <td style="border-left: 1px solid #ff7f7f;"><em>{{name}}</em></td>
         <td style="text-align: right">{{count}}</td>
-        <td style="border-right: 1px solid #FF7F7F; text-align: right">{{#$f}}"sum","#,##0.00"{{/$f}}</td>
+        <td style="border-right: 1px solid #FF7F7F; text-align: right">{{#$f}}"sum","decimal2"{{/$f}}</td>
     </tr>
     <!--{{/footer}}--> <!--{{/data}}-->
     <tr >
         <td colspan="3"></td>
         <td style="text-align: center">{{#$f}}"reportDate","dd/mm/yyyy\\ h:mm"{{/$f}}</td>
+    </tr>
+    <tr style="">
+        <td></td>
+        <td style="width: 180px;border: 1px solid #ff7f7f;">name bla bla<br/> &nbsp;&nbsp;bla bla<br/> &nbsp;&nbsp;&nbsp;&nbsp;bla bla bla<br/>end</td>
+        <td style="width: 180px;border: 1px solid #ff7f7f;">&nbsp;&nbsp;&nbsp;3 SPACES</td>
+        <td style="width: 180px;border: 1px solid #ff7f7f;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 SPASES</td>
     </tr>
     </tbody>
 </table>
@@ -50,6 +56,5 @@
       </tr>
     </tbody>
 </table>
-
 </body>
 </html>
