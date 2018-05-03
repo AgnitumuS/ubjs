@@ -11,14 +11,16 @@ me.entity.addMethod('getRegnumCounter')
  * @memberOfModule @unitybase/ubs
  * @param {String} regKeyValue Registration key mask
  * @param {Number} [startNum] The starting counter value in case mask not exists
+ * @param {Boolean} [skipReservedNumber=false] When "true" skip loading number from reserve and calculate new number by mask
  * @return {Number} Next number for this mask
  */
-me.getRegnum = function (regKeyValue, startNum) {
+me.getRegnum = function (regKeyValue, startNum, skipReservedNumber) {
   let res
   let counterInData = -1
 
   if (startNum !== 0) startNum = startNum || 1
-  let autoRegWithDeletedNumber = ubs_settings.loadKey('ubs.numcounter.autoRegWithDeletedNumber', true)
+  // Get autoRegWithDeletedNumber from settings if skipReservedNumber is not true
+  let autoRegWithDeletedNumber = !skipReservedNumber ? ubs_settings.loadKey('ubs.numcounter.autoRegWithDeletedNumber', true) : false
   // Get counter from reserved if autoRegWithDeletedNumber set to true in settings
   let reservedCounter = (autoRegWithDeletedNumber === true) ? ubs_numcounterreserv.getReservedRegnum(regKeyValue) : -1
 
@@ -80,10 +82,12 @@ me.getRegnum = function (regKeyValue, startNum) {
  * @published
  * @param {ubMethodParams} ctxt
  * @param {string} ctxt.mParams.execParams.regkey
+ * @param {boolean} ctxt.mParams.execParams.skipReservedNumber Skip loading number from reserve and calculate new number by mask
  */
 me.getRegnumCounter = function (ctxt) {
   // RegKey caller pass to method
   let upregKey = ctxt.mParams.execParams.regkey
-  ctxt.mParams.getRegnumCounter = me.getRegnum(upregKey, 1)
+  let skipReservedNumber = ctxt.mParams.execParams.skipReservedNumber || false
+  ctxt.mParams.getRegnumCounter = me.getRegnum(upregKey, 1, skipReservedNumber)
   return true
 }

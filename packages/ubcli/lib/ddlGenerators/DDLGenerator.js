@@ -84,7 +84,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
     name: formatName('UIDX_', sqlAlias, `_${attrName.toUpperCase()}`, dialect),
     keys: [ attrName ]
   }
-  if (isHistory) xDef.keys.push('mi_dateFrom')
+  if (isHistory) xDef.keys.push('mi_dateTo')
     // xDef.keys.push('mi_data_id');
   if (storage.safeDelete) xDef.keys.push('mi_deleteDate')
   tableDef.addIndex(xDef)
