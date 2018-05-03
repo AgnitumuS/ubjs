@@ -70,7 +70,7 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
     			"safeDelete": true
     		},
     		"rls": {
-    			"expression": "'([mi_owner] = :(' + Session.userID + '):)'"
+    			"expression": "`([mi_owner] = :(${Session.userID}):)`"
     		}	
     	}
     }
@@ -98,16 +98,16 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
 
     var me = tst_maindata;
     me.getMainDataRLS = function(){
-        console.log('!!!!!!!!!!!!!', this.entity.name); // -> tst_maindata
-        return '([mi_owner] = :(' + Session.userID + '):)';
+      console.log('!!!!!!!!!!!!!', this.entity.name); // -> tst_maindata
+      return `([mi_owner] = :(${Session.userID}):)`
     }
  
     me.denyNonLocal = function(){
-        if (App.localIPs.indexOf(Session.callerIP) === -1) {
-           return '(1=1)';
-        } else {
-          return '(1=0)';
-        }  
+      if (App.localIPs.indexOf(Session.callerIP) === -1) {
+        return '(1=1)';
+      } else {
+        return '(1=0)';
+      }
     }
 
 Обратите внимание на то, как корректно вернуть что выражение всегда истино - '(1=1)' или ложно '(1=0)'. Такие выражения корректно отработают оптимизаторы любого сервера БД.    
