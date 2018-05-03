@@ -87,17 +87,12 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
 
 // eslint-disable-next-line camelcase
   let passwordPolicy = ubs_settings ? {
-    minLength: ubs_settings.getSettingValue('UBA.passwordPolicy.minLength'),
-    checkCmplexity: ubs_settings.getSettingValue('UBA.passwordPolicy.checkCmplexity'),
-    checkDictionary: ubs_settings.getSettingValue('UBA.passwordPolicy.checkDictionary'),
-    allowMatchWithLogin: ubs_settings.getSettingValue('UBA.passwordPolicy.allowMatchWithLogin'),
-    checkPrevPwdNum: ubs_settings.getSettingValue('UBA.passwordPolicy.checkPrevPwdNum')
+    minLength: ubs_settings.loadKey('UBA.passwordPolicy.minLength', 3),
+    checkCmplexity: ubs_settings.loadKey('UBA.passwordPolicy.checkCmplexity', false),
+    checkDictionary: ubs_settings.loadKey('UBA.passwordPolicy.checkDictionary', false),
+    allowMatchWithLogin: ubs_settings.loadKey('UBA.passwordPolicy.allowMatchWithLogin', false),
+    checkPrevPwdNum: ubs_settings.loadKey('UBA.passwordPolicy.checkPrevPwdNum', 4)
   } : {}
-  if (passwordPolicy.minLength == null) passwordPolicy.minLength = 3
-  if (passwordPolicy.checkCmplexity == null) passwordPolicy.checkCmplexity = false
-  if (passwordPolicy.checkDictionary == null) passwordPolicy.checkDictionary = false
-  if (passwordPolicy.allowMatchWithLogin == null) passwordPolicy.allowMatchWithLogin = false
-  if (passwordPolicy.checkPrevPwdNum == null) passwordPolicy.checkPrevPwdNum = 4
 
   let newPwd = password || ''
   // minLength
@@ -219,8 +214,6 @@ function changePasswordEp (req, resp) {
 
   // make uba_audit record
   if (App.domainInfo.has('uba_audit')) {
-    // var store = new TubDataStore('uba_audit');
-    /** @type uba_user_object */
     store.run('insert', {
       entity: 'uba_audit',
       execParams: {

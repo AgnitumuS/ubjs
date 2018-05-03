@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Post index",
-    "description": "Post index",
+    "caption": "ZIP codes",
+    "description": "ZIP codes",
     "attributes": {
         "code": {
             "caption": "Index",

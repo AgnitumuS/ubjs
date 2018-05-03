@@ -10,9 +10,13 @@ me.on('update:before', setDescriptionAttribute)
  * @param {ubMethodParams} ctx
  */
 function setDescriptionAttribute (ctx) {
-  let oldData = {
-    code3: ctx.dataStore.get('code3'),
-    name: ctx.dataStore.get('name')
+  let oldData = {}
+  const dataStore = ctx.dataStore
+  if (!dataStore.eof) {
+    oldData = {
+      code3: dataStore.get('code3'),
+      name: dataStore.get('name')
+    }
   }
   const execParams = ctx.mParams.execParams
   execParams.description = (execParams.code3 || oldData.code3 || '') + ' ' +

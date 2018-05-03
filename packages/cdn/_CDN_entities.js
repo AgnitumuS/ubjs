@@ -1,3145 +1,2429 @@
-/* eslint-disable camelcase,no-unused-vars */
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Адреси
-* @mixes EventEmitter
-*/
-global.cdn_address = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
+ * Set of dictionaries, common for most enterprise systems
+ * @version 5.0.6
+ * @module @unitybase/cdn
+ */
 
 /**
-* Attributes of "Адреси"
-* @class
-*/
-function cdn_address_object () {
-  /**
-  *  
-  * 
+ * Addresses
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_address_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_address_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Тип адреси 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.addressType = ''
-  /**
-  * Адреса 
+  addressType: '',
+ /**
   * @type {String}
   */
-  this.value = ''
-  /**
-  * Субект 
+  value: '',
+ /**
+  * Reference to address owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in beforedelete manually.
   * @type {Number}
   */
-  this.subjectID = 0
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  subjectID: 0,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Адміністративні одиниці
-* @mixes EventEmitter
+* Addresses
+* @type {cdn_address_ns}
 */
-global.cdn_adminunit = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_address = new cdn_address_ns()
 /**
-* Attributes of "Адміністративні одиниці"
-* @class
-*/
-function cdn_adminunit_object () {
-  /**
-  *  
-  * 
+ * Admin unit
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_adminunit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_adminunit_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Підпорядкування (ref -> cdn_adminunit)
-  * Підпорядкування
+  ID: 0,
+ /**
+  * Parent -> cdn_adminunit
   * @type {Number}
   */
-  this.parentAdminUnitID = null
-  /**
-  * Код 
-  * Внутрішній код
+  parentAdminUnitID: null,
+ /**
+  * Internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
+  code: '',
+ /**
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
+  name: '',
+ /**
   * @type {String}
   */
-  this.fullName = null
-  /**
-  * Тип адм-ної одиниці 
+  fullName: null,
+ /**
+  * String representation of unit's type for fast queries
   * @type {String}
   */
-  this.adminUnitType = ''
-  /**
-  * Заголовок 
+  adminUnitType: '',
+ /**
   * @type {String}
   */
-  this.caption = null
-  /**
-  *  
-  * 
+  caption: null,
+ /**
   * @type {String}
   */
-  this.mi_unityEntity = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_unityEntity: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Банківські відділення
-* @mixes EventEmitter
+* Admin unit
+* @type {cdn_adminunit_ns}
 */
-global.cdn_bank = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_adminunit = new cdn_adminunit_ns()
 /**
-* Attributes of "Банківські відділення"
-* @class
-*/
-function cdn_bank_object () {
-  /**
-  *  
-  * 
+ * Bank branches
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_bank_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_bank_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * МФО 
-  * МФО банківського відділення
+  ID: 0,
+ /**
+  * Bank branch code
   * @type {String}
   */
-  this.MFO = ''
-  /**
-  * ЄДРПОУ 
-  * Код ЄДРПОУ
+  MFO: '',
+ /**
+  * Bank organization code
   * @type {String}
   */
-  this.code = null
-  /**
-  * Робоча назва 
-  * Назва без лапок і форм власності. Для зручності при пошуку.
+  code: null,
+ /**
+  * Name without quotes and ownership. For searching data.
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна назва, яка вказана у свідоцтві про реєстрацію. Використовується у звітах.
+  name: '',
+ /**
+  * Full official bank name . For displaying in reports.
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Телефони 
+  fullName: '',
+ /**
   * @type {String}
   */
-  this.phones = null
-  /**
-  * Адреса 
+  phones: null,
+ /**
   * @type {String}
   */
-  this.address = null
-  /**
-  * Країна (ref -> cdn_country)
-  * Країна реєстрації
+  address: null,
+ /**
+  * Registration country -> cdn_country
   * @type {Number}
   */
-  this.countryID = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  countryID: null,
+ /**
+  * City -> cdn_city
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  cityID: null,
+ /**
+  * Description
+  * description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Список будинків
-* @mixes EventEmitter
+* Bank branches
+* @type {cdn_bank_ns}
 */
-global.cdn_building = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_bank = new cdn_bank_ns()
 /**
-* Attributes of "Список будинків"
-* @class
-*/
-function cdn_building_object () {
-  /**
-  *  
-  * 
+ * List of buildings
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_building_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_building_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Вулиця (ref -> cdn_street)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.streetID = 0
-  /**
-  * Індекс (ref -> cdn_postindex)
+  streetID: 0,
+ /**
   * @type {Number}
   */
-  this.postIndexID = 0
-  /**
-  * № 
-  * Код
+  postIndexID: 0,
+ /**
+  * Code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Опис 
-  * Опис
+  code: '',
+ /**
+  * Description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Тип 
-  * Тип
+  description: null,
+ /**
+  * Type
   * @type {String}
   */
-  this.buildingType = ''
-  /**
-  *  (ref -> cdn_building)
-  * 
+  buildingType: '',
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Населені пункти
-* @mixes EventEmitter
+* List of buildings
+* @type {cdn_building_ns}
 */
-global.cdn_city = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_building = new cdn_building_ns()
 /**
-* Attributes of "Населені пункти"
-* @class
-*/
-function cdn_city_object () {
-  /**
-  *  (ref -> cdn_adminunit)
-  * 
+ * Cities
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class cdn_city_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_city_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Предок (ref -> cdn_adminunit)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.parentAdminUnitID = 0
-  /**
-  * Код 
-  * Код населеного пункту
+  parentAdminUnitID: 0,
+ /**
+  * City code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва населеного пункту
+  code: '',
+ /**
+  * City name
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Заголовок 
+  name: '',
+ /**
   * @type {String}
   */
-  this.caption = null
-  /**
-  * Опис 
-  * Опис населеного пункту
+  caption: null,
+ /**
+  * City description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Поштовий код 
-  * Поштовий код населеного пункту
+  description: null,
+ /**
+  * City postal code
   * @type {String}
   */
-  this.postalCode = null
-  /**
-  * Телефонний код 
-  * Телефонний код населеного пункту
+  postalCode: null,
+ /**
+  * City phone code
   * @type {String}
   */
-  this.phoneCode = null
-  /**
-  * Тип населеного пункту (ref -> cdn_citytype)
-  * Тип населеного пункту
+  phoneCode: null,
+ /**
+  * City type -> cdn_citytype
   * @type {Number}
   */
-  this.cityTypeID = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  cityTypeID: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Типи населених пунктів
-* @mixes EventEmitter
+* Cities
+* @type {cdn_city_ns}
 */
-global.cdn_citytype = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_city = new cdn_city_ns()
 /**
-* Attributes of "Типи населених пунктів"
-* @class
-*/
-function cdn_citytype_object () {
-  /**
-  *  
-  * 
+ * City types
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_citytype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_citytype_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Код типу населеного пункту
+  ID: 0,
+ /**
+  * Internal code of city type
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва типу населеного пункту
+  code: '',
+ /**
+  * City type name
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Контакти
-* @mixes EventEmitter
+* City types
+* @type {cdn_citytype_ns}
 */
-global.cdn_contact = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_citytype = new cdn_citytype_ns()
 /**
-* Attributes of "Контакти"
-* @class
-*/
-function cdn_contact_object () {
-  /**
-  *  
-  * 
+ * Contacts
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_contact_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_contact_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Тип контакту (ref -> cdn_contacttype)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.contactTypeID = 0
-  /**
-  * Контакт 
+  contactTypeID: 0,
+ /**
   * @type {String}
   */
-  this.value = ''
-  /**
-  * Subject 
+  value: '',
+ /**
+  * Reference to contact owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in delete:before manually
   * @type {Number}
   */
-  this.subjectID = 0
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  subjectID: 0,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Типи контактів
-* @mixes EventEmitter
+* Contacts
+* @type {cdn_contact_ns}
 */
-global.cdn_contacttype = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_contact = new cdn_contact_ns()
 /**
-* Attributes of "Типи контактів"
-* @class
-*/
-function cdn_contacttype_object () {
-  /**
-  *  
-  * 
+ * Contact types
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_contacttype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_contacttype_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва типу контакта
+  code: '',
+ /**
+  * Contact type name
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Індекси кореспондентів
-* @mixes EventEmitter
+* Contact types
+* @type {cdn_contacttype_ns}
 */
-global.cdn_corrindex = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_contacttype = new cdn_contacttype_ns()
 /**
-* Attributes of "Індекси кореспондентів"
-* @class
-*/
-function cdn_corrindex_object () {
-  /**
-  *  
-  * 
+ * Correspondent indexes
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_corrindex_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_corrindex_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Код індексу кореспондента
+  ID: 0,
+ /**
+  * Code of correspondent index
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва індексу кореспондента
+  code: '',
+ /**
+  * Name of correspondent index
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна назва індексу кореспондента
+  name: '',
+ /**
+  * Full name of correspondent index
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  fullName: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Країни
-* @mixes EventEmitter
+* Correspondent indexes
+* @type {cdn_corrindex_ns}
 */
-global.cdn_country = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_corrindex = new cdn_corrindex_ns()
 /**
-* Attributes of "Країни"
-* @class
-*/
-function cdn_country_object () {
-  /**
-  *  (ref -> cdn_adminunit)
-  * 
+ * Countries
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class cdn_country_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_country_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Внутрішній код
+  ID: 0,
+ /**
+  * Internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва країни
+  code: '',
+ /**
+  * Name of the country
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна офіційна назва країни
+  name: '',
+ /**
+  * Full official name of the country
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Код цифровий 
-  * Цифровий код країни
+  fullName: '',
+ /**
+  * Digital code of the country
   * @type {Number}
   */
-  this.intCode = 0
-  /**
-  * ISO код 
-  * 2-х символьний код країни по класифікації ISO
+  intCode: 0,
+ /**
+  * 2-character code of the country by ISO classification
   * @type {String}
   */
-  this.symbol2 = ''
-  /**
-  * Код МОК 
-  * 3-х символьний код країни по класифікації МОК
+  symbol2: '',
+ /**
+  * 3-character code of the country by IOC classification
   * @type {String}
   */
-  this.symbol3 = ''
-  /**
-  * Опис 
-  * Опис країни
+  symbol3: '',
+ /**
+  * Country description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Телефонний код 
-  * Телефонний код країни
+  description: null,
+ /**
+  * Country phone code
   * @type {String}
   */
-  this.phoneCode = null
-  /**
-  * Валюта (ref -> cdn_currency)
-  * Валюта, яка використовується в країні в якості основної
+  phoneCode: null,
+ /**
+  * Main currency of the country -> cdn_currency
   * @type {Number}
   */
-  this.currencyID = null
-  /**
-  * Столиця (ref -> cdn_city)
-  * Столиця країни
+  currencyID: null,
+ /**
+  * Capital of the country -> cdn_city
   * @type {Number}
   */
-  this.capitalID = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  capitalID: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Валюти
-* @mixes EventEmitter
+* Countries
+* @type {cdn_country_ns}
 */
-global.cdn_currency = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_country = new cdn_country_ns()
 /**
-* Attributes of "Валюти"
-* @class
-*/
-function cdn_currency_object () {
-  /**
-  *  
-  * 
+ * Currencies
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_currency_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_currency_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Цифровий код 
-  * Цифровий код валюти
+  ID: 0,
+ /**
+  * Digital code of currency
   * @type {Number}
   */
-  this.intCode = 0
-  /**
-  * Код 3-х символьний 
-  * 3-х символьний код валюти
+  intCode: 0,
+ /**
+  * 3-character code of currency
   * @type {String}
   */
-  this.code3 = ''
-  /**
-  * Назва 
-  * Назва валюти
+  code3: '',
+ /**
+  * Name of currency
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Default multiplicity
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  curMult: 0,
+ /**
+  * Description
+  * Description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Зовнішні підрозділи
-* @mixes EventEmitter
+* Currencies
+* @type {cdn_currency_ns}
 */
-global.cdn_department = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_currency = new cdn_currency_ns()
 /**
-* Attributes of "Зовнішні підрозділи"
-* @class
-*/
-function cdn_department_object () {
-  /**
-  *  
-  * 
+ * External departments
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_department_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_department_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Внутрішній код 
-  * Внутрішній код підрозділу
+  ID: 0,
+ /**
+  * Code of the department
   * @type {String}
   */
-  this.code = null
-  /**
-  * Назва підрозділу 
-  * Назва без лапок та абревіатур
+  code: null,
+ /**
+  * Name of the department
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна назва підрозділу
+  name: '',
+ /**
+  * Full official name of the department
   * @type {String}
   */
-  this.fullName = null
-  /**
-  * Опис підрозділу 
-  * Опис підрозділу
+  fullName: null,
+ /**
+  * Description of the department
   * @type {String}
   */
-  this.description = null
-  /**
-  * Назва підрозділу в родовому відмінку 
-  * Назва без лапок та абревіатур у родовому відмінку
+  description: null,
+ /**
+  * Department name in genitive case
   * @type {String}
   */
-  this.nameGen = null
-  /**
-  * Назва підрозділу в давальному відмінку 
-  * Назва без лапок та абревіатур у давальному відмінку
+  nameGen: null,
+ /**
+  * Department name in dative case
   * @type {String}
   */
-  this.nameDat = null
-  /**
-  * Повна назва підрозділу в родовому відмінку 
-  * Повна назва підрозділу в родовому відмінку
+  nameDat: null,
+ /**
+  * Department full official name in genitive case
   * @type {String}
   */
-  this.fullNameGen = null
-  /**
-  * Повна назва підрозділу в давальному відмінку 
-  * Повна назва підрозділу в давальному відмінку
+  fullNameGen: null,
+ /**
+  * Department full official name in dative case
   * @type {String}
   */
-  this.fullNameDat = null
-  /**
-  * Тип підрозділу (ref -> cdn_deptype)
-  * Тип підрозділу
+  fullNameDat: null,
+ /**
+  * Type of the department -> cdn_deptype
   * @type {Number}
   */
-  this.depTypeID = null
-  /**
-  * Організація (ref -> cdn_organization)
-  * Організація, до якої належить підрозділ
+  depTypeID: null,
+ /**
+  * Parent external organization -> cdn_organization
   * @type {Number}
   */
-  this.organizationID = null
-  /**
-  *  (ref -> cdn_department)
-  * 
+  organizationID: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Типи департаментів
-* @mixes EventEmitter
+* External departments
+* @type {cdn_department_ns}
 */
-global.cdn_deptype = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_department = new cdn_department_ns()
 /**
-* Attributes of "Типи департаментів"
-* @class
-*/
-function cdn_deptype_object () {
-  /**
-  *  
-  * 
+ * Department types
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_deptype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_deptype_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Внутрішній код департамента
+  ID: 0,
+ /**
+  * Code of the department type
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва типу департамента
+  code: '',
+ /**
+  * Name of the department type
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Співробітники зовнішніх організацій
-* @mixes EventEmitter
+* Department types
+* @type {cdn_deptype_ns}
 */
-global.cdn_employee = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_deptype = new cdn_deptype_ns()
 /**
-* Attributes of "Співробітники зовнішніх організацій"
-* @class
-*/
-function cdn_employee_object () {
-  /**
-  *  
-  * 
+ * Employees of external organizations
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_employee_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_employee_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Прізвище 
-  * Прізвище співробітника
+  ID: 0,
+ /**
+  * Employee last name
   * @type {String}
   */
-  this.lastName = ''
-  /**
-  * Ім&#39;я 
-  * Ім&#39;я співробітника
+  lastName: '',
+ /**
+  * Employee first name
   * @type {String}
   */
-  this.firstName = ''
-  /**
-  * По-батькові 
-  * По-батькові
+  firstName: '',
+ /**
+  * Employee middle name
   * @type {String}
   */
-  this.middleName = null
-  /**
-  * Опис 
-  * Опис співробітника
+  middleName: null,
+ /**
+  * Employee description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Стать 
-  * Стать співробітника
+  description: null,
+ /**
+  * Employee sex
   * @type {String}
   */
-  this.sexType = ''
-  /**
-  * Табельний номер 
-  * Табельний номер співробітника
+  sexType: '',
+ /**
+  * Employee number
   * @type {String}
   */
-  this.uniqNum = null
-  /**
-  * Суфікс 
-  * Суфікс
+  uniqNum: null,
+ /**
+  * Suffix
   * @type {String}
   */
-  this.suffix = null
-  /**
-  * Коротке ПІБ 
-  * Приклад: Прізвище І.Б.
+  suffix: null,
+ /**
+  * Example: Ivanov A.O.
   * @type {String}
   */
-  this.shortFIO = ''
-  /**
-  * Повне ПІБ 
-  * Приклад: Прізвище Ім&#39;я По-батькові
+  shortFIO: '',
+ /**
+  * Example: Ivanov Anton Olegovich
   * @type {String}
   */
-  this.fullFIO = ''
-  /**
-  * Звернення 
-  * Як звертатися до цієї людини
+  fullFIO: '',
+ /**
+  * Describes how to treat to this person
   * @type {String}
   */
-  this.apply = null
-  /**
-  * Прізвище в род. відмінку 
-  * Прізвище співробітника в родовому відмінку
+  apply: null,
+ /**
+  * Employee last name in genitive case
   * @type {String}
   */
-  this.lastNameGen = null
-  /**
-  * Прізвище в дав. відмінку 
-  * Прізвище співробітника в давальному відмінку
+  lastNameGen: null,
+ /**
+  * Employee last name in dative case
   * @type {String}
   */
-  this.lastNameDat = null
-  /**
-  * Ім&#39;я в род. відмінку 
-  * Ім&#39;я співробітника в родовому відмінку
+  lastNameDat: null,
+ /**
+  * Employee first name in genitive case
   * @type {String}
   */
-  this.firstNameGen = null
-  /**
-  * Ім&#39;я в дав. відмінку 
-  * Ім&#39;я співробітника в давальному відмінку
+  firstNameGen: null,
+ /**
+  * Employee first name in dative case
   * @type {String}
   */
-  this.firstNameDat = null
-  /**
-  * По-батькові в род. відмінку 
-  * По-батькові в родовому відмінку
+  firstNameDat: null,
+ /**
+  * Employee middle name in genitive case
   * @type {String}
   */
-  this.middleNameGen = null
-  /**
-  * По-батькові в дав. відмінку 
-  * По-батькові в давальному відмінку
+  middleNameGen: null,
+ /**
+  * Employee middle name in dative case
   * @type {String}
   */
-  this.middleNameDat = null
-  /**
-  * Скорочений ПІБ у род. відмінку 
-  * Скорочений ПІБ співробітника в родовому відмінку
+  middleNameDat: null,
+ /**
+  * Employee short name in genitive case
   * @type {String}
   */
-  this.shortFIOGen = null
-  /**
-  * Скорочений ПІБ у дав. відмінку 
-  * Скорочений ПІБ персони в давальному відмінку
+  shortFIOGen: null,
+ /**
+  * Employee short name in dative case
   * @type {String}
   */
-  this.shortFIODat = null
-  /**
-  * Повний ПІБ у род. відмінку 
-  * Повний ПІБ співробітника в родовому відмінку
+  shortFIODat: null,
+ /**
+  * Employee full name in genitive case
   * @type {String}
   */
-  this.fullFIOGen = null
-  /**
-  * Повний ПІБ у дав. відмінку 
-  * Повний ПІБ співробітника в давальному відмінку
+  fullFIOGen: null,
+ /**
+  * Employee full name in dative case
   * @type {String}
   */
-  this.fullFIODat = null
-  /**
-  * Звернення в род. відмінку 
-  * Як звертатися до цієї людини в родовому відмінку
+  fullFIODat: null,
+ /**
+  * Describes how to treat to this person in genitive case
   * @type {String}
   */
-  this.applyGen = null
-  /**
-  * Звернення в дав. відмінку 
-  * Як звертатися до цієї людини в давальному відмінку
+  applyGen: null,
+ /**
+  * Describes how to treat to this person in dative case
   * @type {String}
   */
-  this.applyDat = null
-  /**
-  * Департамент (ref -> cdn_department)
-  * Департамент зовнішньої організації, в якому працює цей співробітник
+  applyDat: null,
+ /**
+  * Department of external organization, which employee belongs -> cdn_department
   * @type {Number}
   */
-  this.departmentID = null
-  /**
-  * Організація (ref -> cdn_organization)
-  * Зовнішня організація, в якій працює цей співробітник
+  departmentID: null,
+ /**
+  * External organization, which employee belongs -> cdn_organization
   * @type {Number}
   */
-  this.organizationID = 0
-  /**
-  * Формулювання адресата 
-  * Формулювання адресата, яке буде відображатися при генерації PDF образу вихідного документа
+  organizationID: 0,
+ /**
+  * Formulation of the recipient, that will appear in the formation of PDF outgoing document
   * @type {String}
   */
-  this.addrText = null
-  /**
-  *  (ref -> cdn_employee)
-  * 
+  addrText: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Розрахункові коди
-* @mixes EventEmitter
+* Employees of external organizations
+* @type {cdn_employee_ns}
 */
-global.cdn_orgaccount = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_employee = new cdn_employee_ns()
 /**
-* Attributes of "Розрахункові коди"
-* @class
-*/
-function cdn_orgaccount_object () {
-  /**
-  *  
-  * 
+ * Current accounts
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_orgaccount_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_orgaccount_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Организація (ref -> cdn_organization)
-  * Организація
+  ID: 0,
+ /**
+  * Organization -> cdn_organization
   * @type {Number}
   */
-  this.organizationID = 0
-  /**
-  * Валюта (ref -> cdn_currency)
-  * Валюта рахунку
+  organizationID: 0,
+ /**
+  * Currency of the account -> cdn_currency
   * @type {Number}
   */
-  this.currencyID = 0
-  /**
-  * Банк (ref -> cdn_bank)
-  * Банк, де відкрито рахунок
+  currencyID: 0,
+ /**
+  * Bank of the account -> cdn_bank
   * @type {Number}
   */
-  this.bankID = 0
-  /**
-  * Код рахунку 
-  * Код рахунку (номер рахунку)
+  bankID: 0,
+ /**
+  * Code of the account
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Тип рахунку 
-  * Тип рахунку
+  code: '',
+ /**
+  * Type of the account
   * @type {String}
   */
-  this.acctype = ''
-  /**
-  * Назва 
-  * Назва (для вибору зі списку)
+  acctype: '',
+ /**
+  * Description
+  * Назва (для выбору зі списку)
   * @type {String}
   */
-  this.description = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  description: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Зовнішні організації
-* @mixes EventEmitter
+* Current accounts
+* @type {cdn_orgaccount_ns}
 */
-global.cdn_organization = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_orgaccount = new cdn_orgaccount_ns()
 /**
-* Attributes of "Зовнішні організації"
-* @class
-*/
-function cdn_organization_object () {
-  /**
-  *  
-  * 
+ * External organizations
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes fts
+ */
+class cdn_organization_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_organization_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Внутрішній код 
-  * Внутрішній код організації
+  ID: 0,
+ /**
+  * Organization internal code
   * @type {String}
   */
-  this.code = null
-  /**
-  * ЄДРПОУ 
-  * Загальний класифікатор підприємств та організацій (ЄДРПОУ)
+  code: null,
+ /**
+  * Common classifier of enterprises and organizations (CCEO)
   * @type {String}
   */
-  this.OKPOCode = null
-  /**
-  * Податковий № 
-  * Податковий номер
+  OKPOCode: null,
+ /**
+  * Tax number
   * @type {String}
   */
-  this.taxCode = null
-  /**
-  * № св. ПДВ 
-  * № свідоцтва платника ПДВ
+  taxCode: null,
+ /**
+  * VAT (value-added tax) registration certificate number
   * @type {String}
   */
-  this.vatCode = null
-  /**
-  * Назва організації 
-  * Назва без лапок та абревіатур
+  vatCode: null,
+ /**
+  * Name of organization without the quotes and abbreviations
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва організації 
-  * Повна назва організації, як це вказано в свідоцтві про реєстрацію
+  name: '',
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Назва організації в родовому відмінку 
-  * Назва без лапок та абревіатур у родовому відмінку
+  fullName: '',
+ /**
+  * Organization name in genitive case
   * @type {String}
   */
-  this.nameGen = null
-  /**
-  * Назва організації в давальному відмінку 
-  * Назва без лапок та абревіатур у давальному відмінку
+  nameGen: null,
+ /**
+  * Organization name in dative case
   * @type {String}
   */
-  this.nameDat = null
-  /**
-  * Повна назва організації в родовому відмінку 
-  * Повна назва організації, як це вказано в свідоцтві про реєстрацію, в родовому відмінку
+  nameDat: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in genitive case
   * @type {String}
   */
-  this.fullNameGen = null
-  /**
-  * Повна назва організації в давальному відмінку 
-  * Повна назва організації, як це вказано в свідоцтві про реєстрацію, в давальному відмінку
+  fullNameGen: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in dative case
   * @type {String}
   */
-  this.fullNameDat = null
-  /**
-  * Опис 
-  * Опис організації
+  fullNameDat: null,
+ /**
+  * Organization description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Тип організації (ref -> cdn_orgbusinesstype)
-  * Тип організації
+  description: null,
+ /**
+  * Organization type -> cdn_orgbusinesstype
   * @type {Number}
   */
-  this.orgBusinessTypeID = null
-  /**
-  * Тип власності (ref -> cdn_orgownershiptype)
-  * Тип власності
+  orgBusinessTypeID: null,
+ /**
+  * Ownership type -> cdn_orgownershiptype
   * @type {Number}
   */
-  this.orgOwnershipTypeID = null
-  /**
-  * Індекс кореспондента (ref -> cdn_corrindex)
-  * Індекс кореспондента
+  orgOwnershipTypeID: null,
+ /**
+  * Index of correspondent -> cdn_corrindex
   * @type {Number}
   */
-  this.corrIndexID = null
-  /**
-  * Формулювання адресата 
-  * Формулювання адресата, яке буде відображатися при генерації PDF образу вихідного документа
+  corrIndexID: null,
+ /**
+  * Formulation of the recipient, that will appear in the formation of PDF outgoing document
   * @type {String}
   */
-  this.addrText = null
-  /**
-  * Заголовок 
-  * Заголовок
+  addrText: null,
+ /**
+  * Caption
   * @type {String}
   */
-  this.caption = null
-  /**
-  *  (ref -> cdn_organization)
-  * 
+  caption: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Типи організацій
-* @mixes EventEmitter
+* External organizations
+* @type {cdn_organization_ns}
 */
-global.cdn_orgbusinesstype = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_organization = new cdn_organization_ns()
 /**
-* Attributes of "Типи організацій"
-* @class
-*/
-function cdn_orgbusinesstype_object () {
-  /**
-  *  
-  * 
+ * Organization types
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_orgbusinesstype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_orgbusinesstype_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Внутрішній код типу організації
+  ID: 0,
+ /**
+  * Code of the organization type
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Абревіатура 
-  * Абревіатура типу організації
+  code: '',
+ /**
+  * Acronim of the organization type
   * @type {String}
   */
-  this.shortName = null
-  /**
-  * Назва 
-  * Назва типу організації
+  shortName: null,
+ /**
+  * Name  of the organization type
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Опис 
-  * Опис типу організації
+  name: '',
+ /**
+  * Description of the organization type
   * @type {String}
   */
-  this.fullName = null
-  /**
-  * Держ. Орган 
-  * Ознака, що організація вказаного типу є державним органом
+  fullName: null,
+ /**
+  * Sign, that the organization of this type is a government authority
   * @type {Boolean}
   */
-  this.isGovAuthority = undefined
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  isGovAuthority: undefined,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Форма власності
-* @mixes EventEmitter
+* Organization types
+* @type {cdn_orgbusinesstype_ns}
 */
-global.cdn_orgownershiptype = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_orgbusinesstype = new cdn_orgbusinesstype_ns()
 /**
-* Attributes of "Форма власності"
-* @class
-*/
-function cdn_orgownershiptype_object () {
-  /**
-  *  
-  * 
+ * Types of ownership
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_orgownershiptype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_orgownershiptype_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Внутрішній код форм власності
+  ID: 0,
+ /**
+  * Code of the ownership type
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Абревіатура 
-  * Абревіатура форми власності
+  code: '',
+ /**
+  * Acronim of the ownership type
   * @type {String}
   */
-  this.shortName = null
-  /**
-  * Назва 
-  * Назва форм власності
+  shortName: null,
+ /**
+  * Name of the ownership type
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна назва форм власності
+  name: '',
+ /**
+  * Full name of the ownership type
   * @type {String}
   */
-  this.fullName = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  fullName: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Список фізичних осіб
-* @mixes EventEmitter
+* Types of ownership
+* @type {cdn_orgownershiptype_ns}
 */
-global.cdn_person = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_orgownershiptype = new cdn_orgownershiptype_ns()
 /**
-* Attributes of "Список фізичних осіб"
-* @class
-*/
-function cdn_person_object () {
-  /**
-  *  
-  * 
+ * Physical persons
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes fts
+ */
+class cdn_person_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_person_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Прізвище 
-  * Прізвище персони
+  ID: 0,
+ /**
+  * Last name of the person
   * @type {String}
   */
-  this.lastName = ''
-  /**
-  * Ім&#39;я 
-  * Ім&#39;я персони
+  lastName: '',
+ /**
+  * First name of the person
   * @type {String}
   */
-  this.firstName = ''
-  /**
-  * По-батькові 
-  * По-батькові
+  firstName: '',
+ /**
+  * Middle name of the person
   * @type {String}
   */
-  this.middleName = null
-  /**
-  * Посвідчення особи 
-  * Посвідчення особи
+  middleName: null,
+ /**
+  * Person&#39;s identity card
   * @type {String}
   */
-  this.identCard = null
-  /**
-  * Місце роботи, посада 
-  * Місце роботи, посада
+  identCard: null,
+ /**
+  * Place of work, position
   * @type {String}
   */
-  this.workPlacePos = null
-  /**
-  * Дата народження 
-  * Дата народження
+  workPlacePos: null,
+ /**
+  * Birthday of the person
   * @type {Date}
   */
-  this.birthDate = null
-  /**
-  * Опис 
-  * Опис персони
+  birthDate: null,
+ /**
+  * Description of the person
   * @type {String}
   */
-  this.description = null
-  /**
-  * Стать 
-  * Стать персони
+  description: null,
+ /**
+  * Sex of the person
   * @type {String}
   */
-  this.sexType = ''
-  /**
-  * Суфікс 
-  * Суфікс
+  sexType: '',
+ /**
+  * Sufix of the person
   * @type {String}
   */
-  this.suffix = null
-  /**
-  * Скорочений ПІБ 
-  * Приклад: Петренко П.П
+  suffix: null,
+ /**
+  * Example: Antonov I.P.
   * @type {String}
   */
-  this.shortFIO = null
-  /**
-  * Повний ПІБ 
-  * Приклад: Петренко Петро Петрович
+  shortFIO: null,
+ /**
+  * Example: Antonov Ivan Petrovich
   * @type {String}
   */
-  this.fullFIO = ''
-  /**
-  * Звертання 
-  * Як звертатися до цієї особи
+  fullFIO: '',
+ /**
+  * Apply to the person
   * @type {String}
   */
-  this.apply = null
-  /**
-  * Фото 
-  * Фотографія персони
+  apply: null,
+ /**
+  * Person&#39;s photo
   * @type {String}
   */
-  this.photo = null
-  /**
-  * Прізвище в род. відмінку 
-  * Прізвище персони в родовому відмінку
+  photo: null,
+ /**
+  * Person&#39;s last name in genitive case
   * @type {String}
   */
-  this.lastNameGen = null
-  /**
-  * Прізвище в дав. відмінку 
-  * Прізвище персони в давальному відмінку
+  lastNameGen: null,
+ /**
+  * Person&#39;s last name in dative case
   * @type {String}
   */
-  this.lastNameDat = null
-  /**
-  * Ім&#39;я в род. відмінку 
-  * Ім&#39;я персони в родовому відмінку
+  lastNameDat: null,
+ /**
+  * Person&#39;s first name in genitive case
   * @type {String}
   */
-  this.firstNameGen = null
-  /**
-  * Ім&#39;я в дав. відмінку 
-  * Ім&#39;я персони в давальному відмінку
+  firstNameGen: null,
+ /**
+  * Person&#39;s first name in dative case
   * @type {String}
   */
-  this.firstNameDat = null
-  /**
-  * По-батькові в род. відмінку 
-  * По-батькові в родовому відмінку
+  firstNameDat: null,
+ /**
+  * Person&#39;s middle name in genitive case
   * @type {String}
   */
-  this.middleNameGen = null
-  /**
-  * По-батькові в дав. відмінку 
-  * По-батькові в давальному відмінку
+  middleNameGen: null,
+ /**
+  * Person&#39;s middle name in dative case
   * @type {String}
   */
-  this.middleNameDat = null
-  /**
-  * Скорочений ПІБ в род. відмінку 
-  * Скорочений ПІБ персони в родовому відмінку
+  middleNameDat: null,
+ /**
+  * Person&#39;s short name in genitive case
   * @type {String}
   */
-  this.shortFIOGen = null
-  /**
-  * Скорочений ПІБ в дав. відмінку 
-  * Скорочений ПІБ персони в давальному відмінку
+  shortFIOGen: null,
+ /**
+  * Person&#39;s short name in dative case
   * @type {String}
   */
-  this.shortFIODat = null
-  /**
-  * Повний ПІБ в род. відмінку 
-  * Повний ПІБ персони в родовому відмінку
+  shortFIODat: null,
+ /**
+  * Person&#39;s full name in genitive case
   * @type {String}
   */
-  this.fullFIOGen = null
-  /**
-  * Повний ПІБ в дав. відмінку 
-  * Повний ПІБ персони в давальному відмінку
+  fullFIOGen: null,
+ /**
+  * Person&#39;s full name in dative case
   * @type {String}
   */
-  this.fullFIODat = null
-  /**
-  * Звертання в род. відмінку 
-  * Як звертатися до цієї особи в родовому відмінку
+  fullFIODat: null,
+ /**
+  * Apply to the person in genitive case
   * @type {String}
   */
-  this.applyGen = null
-  /**
-  * Звертання в дав. відмінку 
-  * Як звертатися до цієї особи в давальному відмінку
+  applyGen: null,
+ /**
+  * Apply to the person in dative case
   * @type {String}
   */
-  this.applyDat = null
-  /**
-  * Регіон (ref -> cdn_region)
-  * Регіон мешкання персони
+  applyDat: null,
+ /**
+  * Person&#39;s region -> cdn_region
   * @type {Number}
   */
-  this.regionID = null
-  /**
-  * Соціальний статус (ref -> cdn_personsocialstatus)
-  * Соціальний статус
+  regionID: null,
+ /**
+  * Social status position -> cdn_personsocialstatus
   * @type {Number}
   */
-  this.socialstatusID = null
-  /**
-  * Категорія (ref -> cdn_personcategory)
-  * Категорія
+  socialstatusID: null,
+ /**
+  * Category position -> cdn_personcategory
   * @type {Number}
   */
-  this.categoryID = null
-  /**
-  *  (ref -> cdn_person)
-  * 
+  categoryID: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Категорія персон
-* @mixes EventEmitter
+* Physical persons
+* @type {cdn_person_ns}
 */
-global.cdn_personcategory = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_person = new cdn_person_ns()
 /**
-* Attributes of "Категорія персон"
-* @class
-*/
-function cdn_personcategory_object () {
-  /**
-  *  
-  * 
+ * Category of persons
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_personcategory_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_personcategory_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Внутрішній код
+  ID: 0,
+ /**
+  * Code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва категорії
+  code: '',
+ /**
+  * Name of category
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Cоціальний статус
-* @mixes EventEmitter
+* Category of persons
+* @type {cdn_personcategory_ns}
 */
-global.cdn_personsocialstatus = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_personcategory = new cdn_personcategory_ns()
 /**
-* Attributes of "Cоціальний статус"
-* @class
-*/
-function cdn_personsocialstatus_object () {
-  /**
-  *  
-  * 
+ * Social status
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_personsocialstatus_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_personsocialstatus_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Внутрішній код
+  ID: 0,
+ /**
+  * Code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва соціального  статусу
+  code: '',
+ /**
+  * Name of social status
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Поштові індекси
-* @mixes EventEmitter
+* Social status
+* @type {cdn_personsocialstatus_ns}
 */
-global.cdn_postindex = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_personsocialstatus = new cdn_personsocialstatus_ns()
 /**
-* Attributes of "Поштові індекси"
-* @class
-*/
-function cdn_postindex_object () {
-  /**
-  *  
-  * 
+ * Post index
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_postindex_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_postindex_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Індекс 
-  * Індекс
+  ID: 0,
+ /**
+  * Index
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Вулиця (ref -> cdn_street)
+  code: '',
+ /**
   * @type {Number}
   */
-  this.streetID = 0
-  /**
-  * Опис 
-  * Опис
+  streetID: 0,
+ /**
+  * Description
   * @type {String}
   */
-  this.description = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  description: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Професії
-* @mixes EventEmitter
+* Post index
+* @type {cdn_postindex_ns}
 */
-global.cdn_profession = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_postindex = new cdn_postindex_ns()
 /**
-* Attributes of "Професії"
-* @class
-*/
-function cdn_profession_object () {
-  /**
-  *  
-  * 
+ * Standard professions
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_profession_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_profession_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Код професії
+  ID: 0,
+ /**
+  * Code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва професії
+  code: '',
+ /**
+  * Name of profession
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Заголовок 
+  name: '',
+ /**
   * @type {String}
   */
-  this.description = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  description: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Регіони
-* @mixes EventEmitter
+* Standard professions
+* @type {cdn_profession_ns}
 */
-global.cdn_region = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_profession = new cdn_profession_ns()
 /**
-* Attributes of "Регіони"
-* @class
-*/
-function cdn_region_object () {
-  /**
-  *  (ref -> cdn_adminunit)
-  * 
+ * Regions
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class cdn_region_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_region_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Предок (ref -> cdn_adminunit)
-  * Предок
+  ID: 0,
+ /**
+  * Parent -> cdn_adminunit
   * @type {Number}
   */
-  this.parentAdminUnitID = 0
-  /**
-  * Код 
-  * Внутрішній код
+  parentAdminUnitID: 0,
+ /**
+  * Internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Тип (ref -> cdn_regiontype)
-  * Тип регіону
+  code: '',
+ /**
+  * Type of region -> cdn_regiontype
   * @type {Number}
   */
-  this.regionTypeID = null
-  /**
-  * Назва 
-  * Назва регіону
+  regionTypeID: null,
+ /**
+  * Name of region
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Заголовок 
-  * Заголовок
+  name: '',
+ /**
+  * Caption
   * @type {String}
   */
-  this.caption = null
-  /**
-  * Повна назва 
-  * Повна офіційна назва регіону
+  caption: null,
+ /**
+  * Full name of region
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Опис 
-  * Опис регіону
+  fullName: '',
+ /**
+  * Description of region
   * @type {String}
   */
-  this.description = null
-  /**
-  * Телефонний код 
-  * Телефонний код регіону
+  description: null,
+ /**
+  * Phone code of region
   * @type {String}
   */
-  this.phoneCode = null
-  /**
-  * Центр (ref -> cdn_city)
-  * Центр регіону
+  phoneCode: null,
+ /**
+  * Center of region -> cdn_city
   * @type {Number}
   */
-  this.centerID = null
-  /**
-  *  (ref -> cdn_region)
-  * 
+  centerID: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Типи регіонів
-* @mixes EventEmitter
+* Regions
+* @type {cdn_region_ns}
 */
-global.cdn_regiontype = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_region = new cdn_region_ns()
 /**
-* Attributes of "Типи регіонів"
-* @class
-*/
-function cdn_regiontype_object () {
-  /**
-  *  
-  * 
+ * Region types
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_regiontype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_regiontype_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Код
+  ID: 0,
+ /**
+  * Code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва типу регіону
+  code: '',
+ /**
+  * Name of region type
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Типы штатних одиниць
-* @mixes EventEmitter
+* Region types
+* @type {cdn_regiontype_ns}
 */
-global.cdn_staffunittype = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_regiontype = new cdn_regiontype_ns()
 /**
-* Attributes of "Типы штатних одиниць"
-* @class
-*/
-function cdn_staffunittype_object () {
-  /**
-  *  
-  * 
+ * Staffunit types
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_staffunittype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_staffunittype_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Код
+  ID: 0,
+ /**
+  * Code of the staffunit type
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва типу штатної одиниці
+  code: '',
+ /**
+  * Name of the staffunit type
   * @type {String}
   */
-  this.name = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  name: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Список вулиць
-* @mixes EventEmitter
+* Staffunit types
+* @type {cdn_staffunittype_ns}
 */
-global.cdn_street = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const cdn_staffunittype = new cdn_staffunittype_ns()
 /**
-* Attributes of "Список вулиць"
-* @class
-*/
-function cdn_street_object () {
-  /**
-  *  
-  * 
+ * List of streets
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_street_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_street_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Назва 
-  * Назва вулиці
+  ID: 0,
+ /**
+  * Street name
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна назва
+  name: '',
+ /**
+  * Street full name
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Код 
-  * Код
+  fullName: '',
+ /**
+  * Code
   * @type {String}
   */
-  this.code = null
-  /**
-  * Тип 
-  * Тип
+  code: null,
+ /**
+  * Type
   * @type {String}
   */
-  this.streetType = null
-  /**
-  * Нас. пункт (ref -> cdn_city)
-  * Населений пункт
+  streetType: null,
+ /**
+  * City -> cdn_city
   * @type {Number}
   */
-  this.cityID = null
-  /**
-  *  (ref -> cdn_street)
-  * 
+  cityID: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
+/**
+* List of streets
+* @type {cdn_street_ns}
+*/
+const cdn_street = new cdn_street_ns()

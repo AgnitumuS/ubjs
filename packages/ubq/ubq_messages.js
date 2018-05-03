@@ -6,12 +6,15 @@ const Session = require('@unitybase/ub').Session
 let me = ubq_messages
 
 me.entity.addMethod('executeSchedulerTask')
+me.entity.addMethod('addqueue')
+me.entity.addMethod('success')
 
 /**
  * Mark queue task as successfully executed
  * @method success
  * @param {ubMethodParams} ctxt
  * @param {Number} ctxt.mParams.ID
+ * @published
  * @memberOf ubq_messages_ns.prototype
  * @memberOfModule @unitybase/ubq
  */
@@ -30,6 +33,7 @@ me.success = function (ctxt) {
  * @param {String} ctxt.mParams.msgCmd Command
  * @param {String} ctxt.mParams.msgData Additional command data
  * @param {Number} [ctxt.mParams.msgPriority=0] Priority
+ * @published
  * @memberOf ubq_messages_ns.prototype
  * @memberOfModule @unitybase/ubq
  * @return {Boolean}

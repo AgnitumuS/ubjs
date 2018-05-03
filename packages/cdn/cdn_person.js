@@ -1,40 +1,37 @@
-﻿var me = cdn_person;
-me.entity.addMethod('beforeinsert');
-me.entity.addMethod('beforeupdate');
-
-me.checkPhotoMimeType = function(ctxt, typesArray){
-    var photo = ctxt.mParams.execParams.photo;
-    if (photo) {
-        toLog('photo: %', photo);
-        var photoObj = JSON.parse(photo);
-        var contentType = photoObj.ct;
-        console.debug('contentType:', contentType);
-        if (!photoObj.deleting){
-            if (typesArray.indexOf(contentType) === -1) { //find contentType in typesArray
-                throw new Error(UB.format(UB.i18n('errNotSupportedFileType'), contentType, typesArray.join(',')));
-            }
-        }
-    }
-};
+﻿const UB = require('@unitybase/ub')
+/* global cdn_person */
+// eslint-disable-next-line camelcase
+const me = cdn_person
+me.on('insert:before', checkPhotoIsJpeg)
+me.on('update:before', checkPhotoIsJpeg)
 
 /**
+ * Check mime type of uploaded photo is in mimeTypes array
+ * @method checkPhotoMimeType
+ * @memberOf cdn_person_ns.prototype
+ * @memberOfModule @unitybase/cdn
  * @param {ubMethodParams} ctxt
- * @return {Boolean}
+ * @param {Array<string>} mimeTypes
  */
-me.beforeinsert = function (ctxt) {
-    var typesArray = ['application/jpg', 'image/jpeg'];
-    this.checkPhotoMimeType(ctxt, typesArray);
-    return true;
-};
+me.checkPhotoMimeType = function (ctxt, mimeTypes) {
+  let photo = ctxt.mParams.execParams.photo
+  if (!photo) return
+  let photoObj = JSON.parse(photo)
+  let contentType = photoObj.ct
+  if (!photoObj.deleting && (mimeTypes.indexOf(contentType) === -1)) {
+    throw new UB.UBAbort(
+      UB.format(UB.i18n('errNotSupportedFileType'), contentType, mimeTypes.join(','))
+    )
+  }
+}
 
+const POSSIBLE_PHOTO_MIMES = ['application/jpg', 'image/jpeg']
 /**
- *  @param {ubMethodParams} ctxt
+ * @private
+ * @param {ubMethodParams} ctx
  * @return {Boolean}
  */
-me.beforeupdate = function (ctxt) {
-    var typesArray = ['application/jpg', 'image/jpeg'];
-    this.checkPhotoMimeType(ctxt, typesArray);
-
-
-    return true;
-};
+function checkPhotoIsJpeg (ctx) {
+  this.checkPhotoMimeType(ctx, POSSIBLE_PHOTO_MIMES)
+  return true
+}

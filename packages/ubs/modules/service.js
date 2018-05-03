@@ -3,8 +3,9 @@
  */
 exports.Service = {
   /**
+   * Returns array of supported languages
+   * @deprecated Use me.entity.connectionConfig.supportLang
    * @method
-   * returns array of supported languages
    * @param {ubMethodParams} ctxt
    * @return {Array}
    */
@@ -13,8 +14,9 @@ exports.Service = {
   },
 
   /**
+   * Returns true in case when insert method works in given context
+   * @deprecated Use ctx.mParams.method === 'insert'
    * @method
-   * returns true in case when insert method works in given context
    * @param {ubMethodParams} ctxt
    * @return {Boolean}
    */
@@ -69,10 +71,11 @@ exports.Service = {
   },
 
   /**
-   * @method
-   * Sets the 'CODE' attribute value if the user has not provided one.
+   * Sets the 'code' attribute value if the user has not provided one.
    * In this case developer must provide on client default value of attribute
-   * named 'CODE' , for example, in *.def file, desirable '----' like this { attributeName: "code", defaultValue: '----'}
+   * named 'code'.
+   * For example, in *.def file, desirable '----' like this { attributeName: "code", defaultValue: '----'}
+   * @method
    * @param {ubMethodParams} ctxt
    * @param {string} [emptyCode]  - string that means emptyCode value
    * @param {number} [codeLen] - length of 'CODE' attribute

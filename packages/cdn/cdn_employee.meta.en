@@ -32,11 +32,11 @@
         },
         "shortFIO": {
             "caption": "Last name with initials",
-            "description": "Example: Ivanov A.O."
+            "description": "Example: A.O. Ivanov"
         },
         "fullFIO": {
             "caption": "Full name",
-            "description": "Example: Ivanov Anton Olegovich"
+            "description": "Example: Anton Olegovich Ivanov"
         },
         "apply": {
             "caption": "Treatment",
@@ -99,8 +99,8 @@
             "description": "External organization, which employee belongs"
         },
         "addrText": {
-            "caption": "Addresse formulation",
-            "description": "Formulation of the recipient, that will appear in the formation of PDF outgoing document"
+            "caption": "Addressee formulation",
+            "description": "Formulation of the recipient, that will appear in the formation of outgoing document"
         }
     }
 }

@@ -140,8 +140,8 @@ class CustomRepository {
    *
    *  - for a Date/DateTime attributes special macros `#maxdate` or `#currentdate` can be used as a value:
    *
-   *      .where('dateValue', '=', '#maxdate')
-   *      .where('dateTimeValue', '<', '#currentdate')
+   *        .where('dateValue', '=', '#maxdate')
+   *        .where('dateTimeValue', '<', '#currentdate')
    *
    *  - `in` and 'notIn` conditions can take a sub-repository as a values parameter value.
    *  See {@link CustomRepository#exists} for sample
@@ -532,7 +532,7 @@ class CustomRepository {
    *      [{"ID":3000000000004,"code":"uba_user"},{"ID":3000000000039,"code":"uba_auditTrail"}]
    *
    * @abstract
-   * @return {*}
+   * @return {Array.<object>}
    */
   selectAsObject () {
     throw new Error('abstract')
