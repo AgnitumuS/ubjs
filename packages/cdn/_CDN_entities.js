@@ -1107,12 +1107,12 @@ cdn_employee_ns.attrs = {
   */
   suffix: null,
  /**
-  * Example: Ivanov A.O.
+  * Example: A.O. Ivanov
   * @type {String}
   */
   shortFIO: '',
  /**
-  * Example: Ivanov Anton Olegovich
+  * Example: Anton Olegovich Ivanov
   * @type {String}
   */
   fullFIO: '',
@@ -1192,7 +1192,7 @@ cdn_employee_ns.attrs = {
   */
   organizationID: 0,
  /**
-  * Formulation of the recipient, that will appear in the formation of PDF outgoing document
+  * Formulation of the recipient, that will appear in the formation of outgoing document
   * @type {String}
   */
   addrText: null,
@@ -1288,7 +1288,6 @@ cdn_orgaccount_ns.attrs = {
   acctype: '',
  /**
   * Description
-  * Назва (для выбору зі списку)
   * @type {String}
   */
   description: '',
@@ -1503,7 +1502,7 @@ cdn_orgbusinesstype_ns.attrs = {
   */
   shortName: null,
  /**
-  * Name  of the organization type
+  * Name of the organization type
   * @type {String}
   */
   name: '',
@@ -1965,7 +1964,7 @@ cdn_personsocialstatus_ns.attrs = {
 */
 const cdn_personsocialstatus = new cdn_personsocialstatus_ns()
 /**
- * Post index
+ * ZIP codes
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -2027,7 +2026,7 @@ cdn_postindex_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Post index
+* ZIP codes
 * @type {cdn_postindex_ns}
 */
 const cdn_postindex = new cdn_postindex_ns()
