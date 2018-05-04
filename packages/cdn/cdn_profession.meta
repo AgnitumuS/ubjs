@@ -1,4 +1,4 @@
-﻿{
+﻿	{
 	"caption": "Професії",
 	"description": "Довідник професій",
 	"connectionName": "",
@@ -14,6 +14,7 @@
 			"caption": "Код",
 			"description": "Код професії",
 			"allowNull": false,
+			"defaultValue": "----",
 			"isUnique": true
 		},
 		"name":

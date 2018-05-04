@@ -1,4 +1,5 @@
 ﻿const UB = require('@unitybase/ub')
+const App = UB.App
 /* global ubs_numcounter ubs_numcounterreserv ubs_settings */
 // eslint-disable-next-line camelcase
 const me = ubs_numcounter
@@ -74,6 +75,46 @@ me.getRegnum = function (regKeyValue, startNum, skipReservedNumber) {
   return counterInData
 }
 
+/**
+ * Generate auto incremental code for specified entity attribute in case
+ * attribute value in execParams is empty or equal to attribute default value,
+ * specified in meta file.
+ *
+ * Will create a numcounter with code === entity.name and 1 as initial value.
+ *
+ * Result value will be left padded by '0' to the length specified in ubs_settings
+ * To be used in `insert:before` handler as
+ * @example
+
+const me = cdn_profession
+me.on('insert:before', generateAutoIncrementalCode)
+
+function generateAutoIncrementalCode (ctx) {
+  ubs_numcounter.generateAutoIncrementalCode(ctx, 'code')
+}
+
+ * @method generateAutoIncrementalCode
+ * @memberOf ubs_numcounter_ns.prototype
+ * @memberOfModule @unitybase/ubs
+ * @param {ubMethodParams} ctx
+ * @param {string} ctx.mParams.entity
+ * @param {TubList|Object} ctx.mParams.execParams
+ * @param {string} [forAttribute='code'] Code of attribute for number generation
+ */
+me.generateAutoIncrementalCode = function (ctx, forAttribute = 'code') {
+  const mParams = ctx.mParams
+  const execParams = mParams.execParams
+  if (!execParams) return
+  const entityCode = mParams.entity
+  const ubEntity = App.domainInfo.get(entityCode)
+  const attr = ubEntity.attributes[forAttribute]
+  let newAttrValue = execParams[forAttribute]
+  if (execParams && (!newAttrValue || (attr.defaultValue && attr.defaultValue === execParams[forAttribute]))) {
+    const padTo = ubs_settings.loadKey('ubs.numcounter.autoIncrementalCodeLen', 12)
+    let newNum = '' + ubs_numcounter.getRegnum(entityCode, 1)
+    execParams.code = newNum.padStart(padTo, '0')
+  }
+}
 /**
  * Get counter value by registration key
  * @method getRegnumCounter

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.7]
+### Added
+ - introduce method `ubs_numcounter.generateAutoIncrementalCode` - to be used in `insert:before`
+ handlers for generation unique codes for entities natural primary key attribute.
+ See cdn_profession.js for usage sample.
+ - new ubs_settings key `ubs.numcounter.autoIncrementalCodeLen` - resulting length of
+ auto incremental code created by `ubs_numcounter.generateAutoIncrementalCode` function
+
 ## [4.1.47]
 ### Added
  - ubs_settings.addOrUpdateKey function 

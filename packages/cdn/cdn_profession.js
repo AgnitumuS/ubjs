@@ -1,10 +1,9 @@
 // User: banyai Date: 20.09.13
-/* global cdn_profession */
+/* global cdn_profession ubs_numcounter */
 // eslint-disable-next-line camelcase
 const me = cdn_profession
-const svc = require('@unitybase/ubs/modules/service').Service
-me.on('insert:before', setCodeIfEmpty)
+me.on('insert:before', generateAutoIncrementalCode)
 
-function setCodeIfEmpty (ctxt) {
-  svc.setCode(ctxt, '----', 12)
+function generateAutoIncrementalCode (ctx) {
+  ubs_numcounter.generateAutoIncrementalCode(ctx, 'code')
 }
