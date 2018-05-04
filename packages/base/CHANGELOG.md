@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.6]
+### Changed
+- change default value of `-host` command line parameter from http://localhost:888 to http://localhost:8881
+
 ## [5.0.0]
 ### Added
 - UBEntity.isUnity property added

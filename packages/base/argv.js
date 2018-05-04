@@ -209,7 +209,7 @@ function establishConnectionFromCmdLineAttributes (config) {
  * @type {Array<Object>}
  */
 establishConnectionFromCmdLineAttributes._cmdLineParams = [
-  {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:888', searchInEnv: true, help: 'Full server URL'},
+  {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL'},
   {short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name'},
   {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password'},
   {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'},
