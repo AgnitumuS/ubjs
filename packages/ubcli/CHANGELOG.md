@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.7]
+### Changed
+ - stubs created by `createCodeInsightHelper` now include documentation specified in entity meta files
+
 ## [5.0.6]
 ### Changed
 - createCodeInsightHelper command now generate stubs using ES6 syntax
@@ -16,7 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.2.7]
 ### Fixed 
-- PostgreSQl DDL generator: DROP INDEX script syntax
+- PostgreSQL DDL generator: DROP INDEX script syntax
 
 ## [1.2.3]
 ### Fixed

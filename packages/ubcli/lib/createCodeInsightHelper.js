@@ -187,7 +187,7 @@ module.exports = function createCodeInsightHelper (cfg) {
         entityDef.attributes = namedCollection2Array(entityDef.attributes)
         entityDef.mixins = namedCollection2Array(entityDef.mixins)
         let doc = entityDef.description ? entityDef.description : entityDef.caption
-        if (entityDef.documentation) doc += '\n' + entityDef.documentation
+        if (entityDef.documentation) doc += '.\n * ' + entityDef.documentation
         entities.push({
           name: entityName,
           description: doc,

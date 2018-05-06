@@ -11,7 +11,7 @@
 
 {{#entities}}
 /**
- * {{meta.caption}}
+ * {{description}}
  * @extends EntityNamespace
  {{#meta.mixins}}
  * @mixes {{name}}
@@ -34,7 +34,7 @@ class {{name}}_ns extends EntityNamespace {}
 {{/meta.attributes}}
 }
 /**
-* {{meta.caption}}
+* {{description}}
 * {{=<% %>=}}@type {<%name%>_ns}<%={{ }}=%>
 */
 const {{name}} = new {{name}}_ns()
