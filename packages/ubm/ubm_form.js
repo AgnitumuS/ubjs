@@ -160,14 +160,13 @@ function doSelect (ctxt) {
  * @return {Boolean}
  */
 me.select = function (ctxt) {
-  ctxt.dataStore.currentDataName = 'select' // TODO надо или нет????
+  ctxt.dataStore.currentDataName = 'select'
   doSelect(ctxt)
-  return true // everything is OK
+  return true
 }
 
 /**
  * Check form code start from form entity code and entity exist in domain. throw exception on fail
- * TODO - check mi_modifyDate in case entity.mixins.mStorage.simpleAudit and !runParams.skipOptimisticLock
  * @private
  * @param {Number} aID
  * @param {String} formCode
@@ -356,7 +355,7 @@ me.update = function (ctxt) {
     throw new Error('<<<To change form code rename both *.def & *.js files & change "//@code "formCode" comment inside new def file>>>')
   }
   doUpdateInsert(ctxt, storedValue, false)
-  return true // everything is OK
+  return true
 }
 
 /**
@@ -396,7 +395,7 @@ me.insert = function (ctxt) {
  * @return {boolean}
  */
 me.addnew = function (ctxt) {
-  console.debug('--====== ubm_form.addNew ====--')
+  console.debug('--====== ubm_form.addnew ====--')
   let params = ctxt.mParams
   let requestedFieldList = params.fieldList
   let entity = me.entity

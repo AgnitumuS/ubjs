@@ -1,44 +1,49 @@
 // @! "do not remove comments below unless you know what you do!"
+// @mi_modifyDate "Sun May 06 2018 19:05:29 GMT+0300 (FLE Standard Time)"
 // @isDefault "true"
 // @entity "ubm_diagram"
 // @model "UBM"
 // @formType "auto"
 // @caption "ER diagram"
 // @description "ER diagram"
-/*global UB, Ext */
+/* global UB, Ext */
 exports.formDef = {
-    size: {
-        width: 1000,
-        height:  600
-    },
-    parentConfig: {
-        layout: { // выравниваем 
-            type: "vbox",
-            align: "stretch" //max 
-        }
-    },
+  size: {
+    width: 1000,
+    height: 600
+  },
+  parentConfig: {
+    layout: {
+      type: 'vbox',
+      align: 'stretch'
+    }
+  },
+  items: [{
+    xtype: 'panel',
+    layout: 'hbox',
+    height: 35,
     items: [{
-        xtype: 'panel',
-        layout: 'hbox',
-        height: 35,
-        items: [{
-            attributeName: "model",
-            flex: 1
-        },{
-            attributeName: "name",
-			flex: 3,
-            labelWidth: 120,
-            //width: 350,
-            margins: '0 10 0 0'
-        }
-        ]
+      attributeName: 'model',
+      flex: 1
     }, {
-			layout: 'fit',
-			flex: 1,
-      margins: '10 0 0 0',
-      expanded: true,
-      attributeName: "document",
-      forceMIME: "application/ubMetaDiagram",
-      documentMIME: "application/ubMetaDiagram"
-    }]
+      attributeName: 'name',
+      flex: 3,
+      labelWidth: 120,
+      margins: '0 10 0 0'
+    }
+    ]
+  }, {
+    xtype: 'label',
+    ubID: 'newFormTip',
+    style: {
+      backgroundColor: 'yellow'
+    },
+    text: 'Fill model, name and save form to edit diagram'
+  }, {
+    layout: 'fit',
+    flex: 1,
+    margins: '10 0 0 0',
+    expanded: true,
+    attributeName: 'document'
+  }]
 }

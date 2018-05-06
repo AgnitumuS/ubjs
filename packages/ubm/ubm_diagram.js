@@ -8,21 +8,18 @@ const UB = require('@unitybase/ub')
 const App = UB.App
 const blobStores = App.blobStores
 
-/* global ubm_diagram */
+/* global ubm_diagram ncrc32 */
 // eslint-disable-next-line camelcase
 let me = ubm_diagram
 
-const DIAGRAM_CONTENT_TYPE = 'application/m3metadiag'
+const DIAGRAM_CONTENT_TYPE = 'application/ubMetaDiagram'
 const REL_PATH_TAIL = 'erdiagrams'
 const XML_EXTENSION = '.xml'
 
 me.entity.addMethod('select')
 me.entity.addMethod('update')
 me.entity.addMethod('insert')
-
-me.on('delete:before', function () {
-  throw new UB.UBAbort('<<<To delete ER-diagram you must manually delete corresponding xml file from model folder>>>')
-})
+me.entity.addMethod('addnew')
 
 /**
  *  here we store loaded forms
@@ -49,6 +46,9 @@ function postProcessing (loader, fullFilePath, content, row) {
   // fill name attribute with file name w/o ".xml" extension
   let fileName = path.basename(fullFilePath)
   row.name = fileName.substring(0, fileName.length - XML_EXTENSION.length)
+
+  if (row.ID) console.warn(`Please, remove a row "//@ID ${row.ID}" from a file ${fileName}. In UB5 ER diagram ID is generated automatically as crc32(name)`)
+  row.ID = ncrc32(0, row.name)
 
   // fill formDef attribute value
   row.document = JSON.stringify({
@@ -133,9 +133,8 @@ function doSelect (ctxt) {
  * @return {Boolean}
  */
 me.select = function (ctxt) {
-  ctxt.dataStore.currentDataName = 'select' // TODO надо или нет????
+  ctxt.dataStore.currentDataName = 'select'
   doSelect(ctxt)
-  ctxt.preventDefault()
   return true
 }
 
@@ -144,13 +143,14 @@ me.select = function (ctxt) {
  * @private
  * @param {Number} aID
  * @param {String} modelName
+ * @param {string} name
  */
-function validateInput (aID, modelName) {
+function validateInput (aID, modelName, name) {
   let model = App.domainInfo.models[modelName]
   if (!model) {
     throw new Error(`ubm_diagram: Invalid model attribute value "${modelName}". Model not exist in domain`)
   }
-  if (!aID) throw new Error('No ID parameter passed in execParams')
+  if (!name) throw new Error('ubm_diagram: name is required')
 }
 
 /**
@@ -175,20 +175,21 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   })
   let newDocument = newValues.document
-  let diagramBody = blobStores.getContent(
-    {
-      entity: entity.name,
-      attribute: 'document',
-      ID: ID,
-      isDirty: Boolean(newDocument)
-    },
-    {encoding: 'utf-8'}
-  )
-  if (!diagramBody) {
-    diagramBody = `<!--@ID "${ID}"-->\r\n<mxGraphModel><root></root></mxGraphModel>`
+  let diagramBody
+  if (isInsert || !newDocument) {
+    diagramBody = `<mxGraphModel><root></root></mxGraphModel>`
   } else {
+    diagramBody = blobStores.getContent(
+      {
+        entity: entity.name,
+        attribute: 'document',
+        ID: ID,
+        isDirty: Boolean(newDocument)
+      },
+      {encoding: 'utf-8'}
+    )
     let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
-    diagramBody = '<!--@ID "' + ID + '"-->\r\n' + diagramBody.replace(clearAttrReg, '') // remove all old entity attributes
+    diagramBody = diagramBody.replace(clearAttrReg, '') // remove all old entity attributes
   }
   let docInfo = blobStores.putContent({
     entity: entity.name,
@@ -210,6 +211,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   }
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
+  ctxt.dataStore.initialize([storedValue])
 
   resultDataCache = null // drop cache. afterInsert call select and restore cache
   return true
@@ -232,10 +234,9 @@ me.update = function (ctxt) {
     throw new Error(`Record with ID=${ID} not found`)
   }
   storedValue = LocalDataStore.selectResultToArrayOfObjects(storedValue)[0]
-  validateInput(ID, inParams.model || storedValue.model)
+  validateInput(ID, inParams.model || storedValue.model, inParams.name || storedValue.name)
   doUpdateInsert(ctxt, storedValue, false)
-  ctxt.preventDefault()
-  return true // everything is OK
+  return true
 }
 
 /**
@@ -249,17 +250,43 @@ me.update = function (ctxt) {
  */
 me.insert = function (ctxt) {
   let inParams = ctxt.mParams.execParams
-  let ID = inParams.ID
+  let newName = inParams.name
+  let ID = ncrc32(0, newName)
+  inParams.ID = ID
+  validateInput(ID, inParams.model, newName)
 
   let cachedData = loadAllDiagrams()
-  validateInput(ID, inParams.model)
 
   let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
-    throw new Error(`Diagram with ID ${ID} already exist`)
+    throw new Error(`Diagram with name ${newName} already exist`)
   }
   let oldValue = {}
   doUpdateInsert(ctxt, oldValue, true)
-  ctxt.preventDefault()
   return true // everything is OK
+}
+/**
+ * New diagram
+ * @method addNew
+ * @memberOf ubm_form_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
+ * @param {ubMethodParams} ctxt
+ * @return {boolean}
+ */
+me.addnew = function (ctxt) {
+  console.debug('--====== ubm_diagram.addnew ====--')
+  let params = ctxt.mParams
+  let requestedFieldList = params.fieldList
+  let entity = me.entity
+  // fill array by default values from metadata
+  let defValues = requestedFieldList.map((attrName) => {
+    let attr = entity.attr(attrName, true)
+    return attr && attr.defaultValue
+      ? attr.defaultValue
+      : null
+  })
+  // and initialize store by default values as expected by `addnew` method
+  ctxt.dataStore.initialize([defValues], requestedFieldList)
+  return true
 }

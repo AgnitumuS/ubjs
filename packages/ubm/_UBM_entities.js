@@ -81,7 +81,6 @@ ubm_desktop_ns.attrs = {
 */
 const ubm_desktop = new ubm_desktop_ns()
 /**
- * Administering of desktops.
  * Administering of desktops
  * @extends EntityNamespace
  * @mixes mStorage
@@ -103,8 +102,7 @@ ubm_desktop_adm_ns.attrs = {
   admSubjID: 0,
 }
 /**
-* Administering of desktops.
- * Administering of desktops
+* Administering of desktops
 * @type {ubm_desktop_adm_ns}
 */
 const ubm_desktop_adm = new ubm_desktop_adm_ns()
@@ -245,7 +243,6 @@ const ubm_enum = new ubm_enum_ns()
 /**
  * Definition of interface forms
  * @extends EntityNamespace
- * @mixes mStorage
  */
 class ubm_form_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -301,30 +298,10 @@ ubm_form_ns.attrs = {
   */
   isDefault: undefined,
  /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
+  * Emulate a mStorage.mi_modifyDate for cache version calculation
   * @type {Date}
   */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
+  mi_modifyDate: null,
 }
 /**
 * Definition of interface forms
