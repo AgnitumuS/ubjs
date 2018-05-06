@@ -223,10 +223,11 @@ const blobStores = require('./blobStores')
      ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
         ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}]);
 
+ * @method initialize
+ * @memberOf TubDataStore.prototype
  * @param {Object|Array} source
  * @param {Array.<String|Object>} [keyMap] Optional mapping of source field names to new field names
  * @returns {TubDataStore}
- * @memberOf TubDataStore.prototype
  */
 TubDataStore.initialize = function (source, keyMap) {
   let flatArray = []

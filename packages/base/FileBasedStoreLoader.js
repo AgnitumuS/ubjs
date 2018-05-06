@@ -1,3 +1,4 @@
+/* global ncrc32 */
 const path = require('path')
 const _ = require('lodash')
 const csShared = require('@unitybase/cs-shared')
@@ -155,7 +156,6 @@ FileBasedStoreLoader.prototype.load = function () {
         // add a row count for case when some row are deleted or added with old date
         result.version = new Date(dataVersion).getTime() + result.data.length
       }
-
     }
   } else {
     result = me.resultCollection

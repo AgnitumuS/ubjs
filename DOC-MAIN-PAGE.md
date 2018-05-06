@@ -29,10 +29,10 @@ This is a short list of modules, available in unityBase standard distribution:
    - Regions (countries, cities, streets, buildings etc)
  - {@link module:@unitybase/ubm @unitybase/ubm}: Set of entities for constructing a dynamically generated UnityBase UI
     - enumerations
-    - navigation desktops & shortcuts
-    - forms definitions
+    - navigation desktops & shortcuts ( can be used for dynamic routing generation for portalUI)
+    - forms definitions (used by adminUI for dynamic forms generation)
     - ER diagrams
- - TODO org, ubm, xlsx, ub-pub, pdf, (cs-shared, stubs)
+ - TODO org, xlsx, ub-pub, pdf, (cs-shared, stubs)
 
 # Get Started
 
