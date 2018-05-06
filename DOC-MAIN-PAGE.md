@@ -24,6 +24,10 @@ This is a short list of modules, available in unityBase standard distribution:
  - {@link module:@unitybase/ubq @unitybase/ubq}: Asynchronous task queue persisted into database. See tutorials {@tutorial delayed_operations} and {@tutorial schedulers}.
   Contains jobs for sending e-mail and updating FTS indexes.
  - {@link module:@unitybase/ubs @unitybase/ubs}: Reports, User messages (notifications), Settings (aka about:config), Counters
+ - {@link module:@unitybase/cdn @unitybase/cdn}: Set of dictionaries, common for most enterprise systems:
+   - Organizations (departments, persons, contacts, bank accounts etc.)
+   - Regions (countries, cities, streets, buildings etc)
+
  - TODO cdn, org, ubm, xlsx, ub-pub, pdf, (cs-shared, stubs)
 
 # Get Started

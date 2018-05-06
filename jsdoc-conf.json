@@ -21,6 +21,7 @@
       "./packages/compressors/UBCompressors.js",
       "./packages/ubq",
       "./packages/ubs",
+      "./packages/cdn",
       "./packages/ubs/modules/UBServerReport.js",
       "../ub-e/packages/odata/OData.js"
     ],

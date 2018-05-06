@@ -4,13 +4,13 @@
 // Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
- * Set of dictionaries, common for most enterprise systems
- * @version 5.0.6
+ * Set of dictionaries, common for most enterprise systems. For internal organization structure see @ubitybase&#x2F;org module
+ * @version 5.0.7
  * @module @unitybase/cdn
  */
 
 /**
- * Addresses
+ * Addresses directory
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -71,12 +71,13 @@ cdn_address_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Addresses
+* Addresses directory
 * @type {cdn_address_ns}
 */
 const cdn_address = new cdn_address_ns()
 /**
- * Admin unit
+ * Admin unit (country, region, city)
+ * Main parent for countries, regions and cities
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -155,12 +156,13 @@ cdn_adminunit_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Admin unit
+* Admin unit (country, region, city)
+ * Main parent for countries, regions and cities
 * @type {cdn_adminunit_ns}
 */
 const cdn_adminunit = new cdn_adminunit_ns()
 /**
- * Bank branches
+ * Bank branches directory
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -252,7 +254,7 @@ cdn_bank_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Bank branches
+* Bank branches directory
 * @type {cdn_bank_ns}
 */
 const cdn_bank = new cdn_bank_ns()
@@ -346,7 +348,7 @@ cdn_building_ns.attrs = {
 */
 const cdn_building = new cdn_building_ns()
 /**
- * Cities
+ * Cities directory
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes unity
@@ -433,12 +435,12 @@ cdn_city_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Cities
+* Cities directory
 * @type {cdn_city_ns}
 */
 const cdn_city = new cdn_city_ns()
 /**
- * City types
+ * City types directory
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -496,12 +498,12 @@ cdn_citytype_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* City types
+* City types directory
 * @type {cdn_citytype_ns}
 */
 const cdn_citytype = new cdn_citytype_ns()
 /**
- * Contacts
+ * Contacts directory
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -562,12 +564,12 @@ cdn_contact_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Contacts
+* Contacts directory
 * @type {cdn_contact_ns}
 */
 const cdn_contact = new cdn_contact_ns()
 /**
- * Contact types
+ * Contact types directory
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -624,12 +626,12 @@ cdn_contacttype_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Contact types
+* Contact types directory
 * @type {cdn_contacttype_ns}
 */
 const cdn_contacttype = new cdn_contacttype_ns()
 /**
- * Correspondent indexes
+ * Correspondent indexes directory
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -692,12 +694,12 @@ cdn_corrindex_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Correspondent indexes
+* Correspondent indexes directory
 * @type {cdn_corrindex_ns}
 */
 const cdn_corrindex = new cdn_corrindex_ns()
 /**
- * Countries
+ * Countries directory
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes unity
@@ -796,12 +798,12 @@ cdn_country_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Countries
+* Countries directory
 * @type {cdn_country_ns}
 */
 const cdn_country = new cdn_country_ns()
 /**
- * Currencies
+ * Currencies dictionary
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -875,12 +877,12 @@ cdn_currency_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Currencies
+* Currencies dictionary
 * @type {cdn_currency_ns}
 */
 const cdn_currency = new cdn_currency_ns()
 /**
- * External departments
+ * External departments dictionary
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes dataHistory
@@ -991,12 +993,12 @@ cdn_department_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* External departments
+* External departments dictionary
 * @type {cdn_department_ns}
 */
 const cdn_department = new cdn_department_ns()
 /**
- * Department types
+ * Department types dictionary
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -1054,12 +1056,12 @@ cdn_deptype_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Department types
+* Department types dictionary
 * @type {cdn_deptype_ns}
 */
 const cdn_deptype = new cdn_deptype_ns()
 /**
- * Employees of external organizations
+ * List of employees of external organizations
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes dataHistory
@@ -1245,12 +1247,12 @@ cdn_employee_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Employees of external organizations
+* List of employees of external organizations
 * @type {cdn_employee_ns}
 */
 const cdn_employee = new cdn_employee_ns()
 /**
- * Current accounts
+ * Organization&#39;s current accounts dictionary
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -1328,12 +1330,12 @@ cdn_orgaccount_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Current accounts
+* Organization&#39;s current accounts dictionary
 * @type {cdn_orgaccount_ns}
 */
 const cdn_orgaccount = new cdn_orgaccount_ns()
 /**
- * External organizations
+ * List of external organizations
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes dataHistory
@@ -1475,12 +1477,12 @@ cdn_organization_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* External organizations
+* List of external organizations
 * @type {cdn_organization_ns}
 */
 const cdn_organization = new cdn_organization_ns()
 /**
- * Organization types
+ * Organization types dictionary (LTD etc.)
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -1553,7 +1555,7 @@ cdn_orgbusinesstype_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Organization types
+* Organization types dictionary (LTD etc.)
 * @type {cdn_orgbusinesstype_ns}
 */
 const cdn_orgbusinesstype = new cdn_orgbusinesstype_ns()
@@ -1631,7 +1633,8 @@ cdn_orgownershiptype_ns.attrs = {
 */
 const cdn_orgownershiptype = new cdn_orgownershiptype_ns()
 /**
- * Physical persons
+ * Physical persons dictionary
+ * The directory stores a list of persons (physical persons)
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes dataHistory
@@ -1833,12 +1836,14 @@ cdn_person_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Physical persons
+* Physical persons dictionary
+ * The directory stores a list of persons (physical persons)
 * @type {cdn_person_ns}
 */
 const cdn_person = new cdn_person_ns()
 /**
- * Category of persons
+ * Ctegory of persons
+ * The directory stores a list of categories or physical persons
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -1896,12 +1901,14 @@ cdn_personcategory_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Category of persons
+* Ctegory of persons
+ * The directory stores a list of categories or physical persons
 * @type {cdn_personcategory_ns}
 */
 const cdn_personcategory = new cdn_personcategory_ns()
 /**
- * Social status
+ * Dictionary of social status
+ * The directory stores a list of social status for individuals
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -1959,7 +1966,8 @@ cdn_personsocialstatus_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Social status
+* Dictionary of social status
+ * The directory stores a list of social status for individuals
 * @type {cdn_personsocialstatus_ns}
 */
 const cdn_personsocialstatus = new cdn_personsocialstatus_ns()
@@ -2031,7 +2039,7 @@ cdn_postindex_ns.attrs = {
 */
 const cdn_postindex = new cdn_postindex_ns()
 /**
- * Standard professions
+ * Dictionary of standard professions
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -2093,12 +2101,12 @@ cdn_profession_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Standard professions
+* Dictionary of standard professions
 * @type {cdn_profession_ns}
 */
 const cdn_profession = new cdn_profession_ns()
 /**
- * Regions
+ * Regions dictionary
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes dataHistory
@@ -2205,12 +2213,12 @@ cdn_region_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Regions
+* Regions dictionary
 * @type {cdn_region_ns}
 */
 const cdn_region = new cdn_region_ns()
 /**
- * Region types
+ * Region types dictionary
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -2268,12 +2276,12 @@ cdn_regiontype_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Region types
+* Region types dictionary
 * @type {cdn_regiontype_ns}
 */
 const cdn_regiontype = new cdn_regiontype_ns()
 /**
- * Staffunit types
+ * Staffunit types dictionary
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -2331,12 +2339,13 @@ cdn_staffunittype_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Staffunit types
+* Staffunit types dictionary
 * @type {cdn_staffunittype_ns}
 */
 const cdn_staffunittype = new cdn_staffunittype_ns()
 /**
  * List of streets
+ * В этом справочнике хранится перечень вулиць
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes dataHistory
@@ -2423,6 +2432,7 @@ cdn_street_ns.attrs = {
 }
 /**
 * List of streets
+ * В этом справочнике хранится перечень вулиць
 * @type {cdn_street_ns}
 */
 const cdn_street = new cdn_street_ns()

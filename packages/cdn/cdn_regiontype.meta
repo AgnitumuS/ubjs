@@ -1,35 +1,35 @@
 {
-	"caption": "Типы регионов",
-	"description": "Справочник типов регионов",
-	"connectionName": "",
-	"sqlAlias": "regnt",
-	"cacheType": "SessionEntity",
-	"descriptionAttribute": "name",
-	"documentation": "",
-	"attributes": {
-		"code":
-		{
-			"dataType": "String",
-			"size": 16,
-			"caption": "Код",
-			"description": "Код",
-			"allowNull": false,
-			"isMultiLang": false
-		},	
-		"name":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Название",
-			"description": "Название типа региона",
-			"allowNull": false,
-			"isMultiLang": true
-		}	
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-        }
-	}
+  "caption": "Типы регионов",
+  "description": "Справочник типов регионов",
+  "connectionName": "",
+  "sqlAlias": "regnt",
+  "cacheType": "SessionEntity",
+  "descriptionAttribute": "name",
+  "documentation": "",
+  "attributes": [
+    {
+      "dataType": "String",
+      "size": 16,
+      "caption": "Code",
+      "description": "Code",
+      "allowNull": false,
+      "isMultiLang": false,
+      "name": "code"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name",
+      "description": "Name of region type",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "name"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
 }
