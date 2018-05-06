@@ -11,17 +11,15 @@ const LocalDataStore = csShared.LocalDataStore
 const UB = require('@unitybase/ub')
 const App = UB.App
 const blobStores = require('@unitybase/ub/blobStores')
+const mStorage = UB.mixins.mStorage
 
 me.entity.addMethod('select')
 me.entity.addMethod('update')
 me.entity.addMethod('insert')
+me.entity.addMethod('addnew')
 if (process.isDebug) {
   me.entity.addMethod('testServerRendering')
 }
-
-me.on('delete:before', function () {
-  throw new Error('<<<To delete Report you must manually delete corresponding xml file from modelFolder/public/reports folder>>>')
-})
 
 // here we store loaded reports
 let resultDataCache = null
@@ -36,18 +34,18 @@ const SCRIPT_EXTENSION = '.js'
 const REPORT_BODY_TPL = `
 exports.reportCode = {
   /**
-  * This function must be defined in report code block.
+  * This function should be defined in report code block.
   *
-  * Inside function you must:
+  * Inside function you should:
   * 1) Prepare data
   * 2) Run method this.buildHTML(reportData); where reportData is data for mustache template
   * 3) If need create PDF run method this.transformToPdf(htmlReport); where htmlReport is HTML
-  * 4) If is server side function must return report as string otherwise Promise or string
+  * 4) If is server side function should return report as string otherwise Promise or string
   *
   * @cfg {function} buildReport
   * @params {[]|{}} reportParams
-  * @returns {Promise|Object} If code run on server method must return report data.
-  * Promise object must be resolved report code
+  * @returns {Promise|Object} If code run on server method should return report data.
+  * Promise object should be resolved report code
   */
   buildReport: function(reportParams){
     var result = this.buildHTML(reportParams)
@@ -182,25 +180,24 @@ function doSelect (ctxt) {
  * @return {Boolean}
  */
 me.select = function (ctxt) {
-  ctxt.dataStore.currentDataName = 'select' // TODO надо или нет????
+  ctxt.dataStore.currentDataName = 'select'
   doSelect(ctxt)
-  ctxt.preventDefault()
   return true // everything is OK
 }
 
 /**
  * Check model exists
  * @private
- * @param {Number} aID
+ * @param {string} reportCode
  * @param {String} modelName
  */
-function validateInput (aID, modelName) {
+function validateInput (reportCode, modelName) {
   let model = App.domainInfo.models[modelName]
   if (!model) {
     throw new Error(`ubs_report: Invalid model attribute value "${modelName}". Model not exist in domain`)
   }
-  if (!aID) {
-    throw new Error('No ID parameter passed in execParams')
+  if (!reportCode) {
+    throw new Error('Parameter "report_code" not passed in execParams')
   }
 }
 
@@ -226,18 +223,19 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   })
   let newTemplateInfo = newValues.template
-  let reportBody = blobStores.getContent(
-    {
-      entity: entity.name,
-      attribute: 'template',
-      ID: ID,
-      isDirty: Boolean(newTemplateInfo)
-    },
-    {encoding: 'utf-8'}
-  )
-  if (!reportBody) {
-    reportBody = `<!--@ID "${ID}"-->\r\n`
+  let reportBody
+  if (isInsert || !newTemplateInfo) {
+    reportBody = ''
   } else {
+    reportBody = blobStores.getContent(
+      {
+        entity: entity.name,
+        attribute: 'template',
+        ID: ID,
+        isDirty: Boolean(newTemplateInfo)
+      },
+      {encoding: 'utf-8'}
+    )
     let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
     reportBody = reportBody.replace(clearAttrReg, '') // remove all old entity attributes
     let attributes = entity.attributes
@@ -288,6 +286,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   }
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
+  ctxt.dataStore.initialize([storedValue])
 
   resultDataCache = null // drop cache. afterInsert call select and restore cache
   return true
@@ -312,11 +311,9 @@ me.update = function (ctxt) {
   }
   storedValue = LocalDataStore.selectResultToArrayOfObjects(storedValue)[0]
 
-  validateInput(ID, inParams.model || storedValue.model)
+  validateInput(inParams.report_code || storedValue.report_code, inParams.model || storedValue.model)
 
   doUpdateInsert(ctxt, storedValue, false)
-
-  ctxt.preventDefault()
   return true // everything is OK
 }
 
@@ -331,20 +328,21 @@ me.update = function (ctxt) {
  */
 me.insert = function (ctxt) {
   let inParams = ctxt.mParams.execParams
-  let ID = inParams.ID
-  let oldValue = {}
 
   let cachedData = loadAll()
-  validateInput(ID, inParams.model)
+  let newReportCode = inParams.report_code
+  let ID = ncrc32(0, newReportCode)
+  inParams.ID = ID
+  validateInput(inParams.report_code, inParams.model)
 
   let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {
     throw new Error(`<<<Report with ID ${ID} already exist>>>`)
   }
 
+  let oldValue = {}
   doUpdateInsert(ctxt, oldValue, true)
-  ctxt.preventDefault()
-  return true // everything is OK
+  return true
 }
 
 const mime = require('mime-types')
@@ -374,3 +372,14 @@ if (process.isDebug) {
     resp.statusCode = 200
   }
 }
+
+/**
+ * New report
+ * @method addNew
+ * @memberOf ubm_form_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
+ * @param {ubMethodParams} ctxt
+ * @return {boolean}
+ */
+me.addnew = mStorage.addNew

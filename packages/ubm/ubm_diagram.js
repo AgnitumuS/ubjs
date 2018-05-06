@@ -7,6 +7,7 @@ const LocalDataStore = csShared.LocalDataStore
 const UB = require('@unitybase/ub')
 const App = UB.App
 const blobStores = App.blobStores
+const mStorage = UB.mixins.mStorage
 
 /* global ubm_diagram ncrc32 */
 // eslint-disable-next-line camelcase
@@ -274,19 +275,4 @@ me.insert = function (ctxt) {
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
-me.addnew = function (ctxt) {
-  console.debug('--====== ubm_diagram.addnew ====--')
-  let params = ctxt.mParams
-  let requestedFieldList = params.fieldList
-  let entity = me.entity
-  // fill array by default values from metadata
-  let defValues = requestedFieldList.map((attrName) => {
-    let attr = entity.attr(attrName, true)
-    return attr && attr.defaultValue
-      ? attr.defaultValue
-      : null
-  })
-  // and initialize store by default values as expected by `addnew` method
-  ctxt.dataStore.initialize([defValues], requestedFieldList)
-  return true
-}
+me.addnew = mStorage.addNew

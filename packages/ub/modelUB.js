@@ -12,6 +12,7 @@ const Errors = require('./modules/ubErrors')
 const ws = require('./modules/web-sockets')
 const mI18n = require('./modules/i18n')
 const modelLoader = require('./modules/modelLoader')
+const mStorage = require('./mixins/mStorage')
 
 //if (typeof global['UB'] !== 'undefined') throw new Error('@unitybase/ub already required')
 /**
@@ -119,7 +120,10 @@ let UB = module.exports = {
    * @type {App}
    */
   App: App,
-  start: start
+  start: start,
+  mixins: {
+    mStorage: mStorage
+  }
 }
 
 /**

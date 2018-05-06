@@ -9,6 +9,7 @@ const LocalDataStore = csShared.LocalDataStore
 const App = require('@unitybase/ub').App
 const UB = require('@unitybase/ub')
 const blobStores = App.blobStores
+const mStorage = UB.mixins.mStorage
 
 const DFM_CONTENT_TYPE = 'text/javascript; charset=UTF-8'
 const REL_PATH_TAIL = 'forms'
@@ -382,7 +383,7 @@ me.insert = function (ctxt) {
 
   let oldValue = {}
   doUpdateInsert(ctxt, oldValue, true)
-  return true // everything is OK
+  return true
 }
 
 /**
@@ -394,19 +395,4 @@ me.insert = function (ctxt) {
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
-me.addnew = function (ctxt) {
-  console.debug('--====== ubm_form.addnew ====--')
-  let params = ctxt.mParams
-  let requestedFieldList = params.fieldList
-  let entity = me.entity
-  // fill array by default values from metadata
-  let defValues = requestedFieldList.map((attrName) => {
-    let attr = entity.attr(attrName, true)
-    return attr && attr.defaultValue
-      ? attr.defaultValue
-      : null
-  })
-  // and initialize store by default values as expected by `addnew` method
-  ctxt.dataStore.initialize([defValues], requestedFieldList)
-  return true
-}
+me.addnew = mStorage.addNew
