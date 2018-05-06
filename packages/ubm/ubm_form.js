@@ -22,9 +22,7 @@ let me = ubm_form
 me.entity.addMethod('select')
 me.entity.addMethod('update')
 me.entity.addMethod('insert')
-me.on('delete:before', function () {
-  throw new UB.UBAbort(`<<<To delete Form you must manually delete corresponding ${DEF_FILE_TAIL} and ${JS_FILE_TAIL} file(s) from model folder>>>`)
-})
+me.entity.addMethod('addnew')
 
 // here we store loaded forms
 let resultDataCache = null
@@ -164,7 +162,6 @@ function doSelect (ctxt) {
 me.select = function (ctxt) {
   ctxt.dataStore.currentDataName = 'select' // TODO надо или нет????
   doSelect(ctxt)
-  ctxt.preventDefault()
   return true // everything is OK
 }
 
@@ -230,6 +227,10 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       storedValue[key] = val
     }
   })
+  if (isInsert) {
+    ID = ncrc32(0, storedValue.code)
+    storedValue.ID = ID
+  }
   let formEntity = App.domainInfo.get(storedValue.entity)
   let newFormDefMeta = newValues.formDef
   let newFormCodeMeta = newValues.formCode
@@ -314,7 +315,6 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   } else {
     delete storedValue.formCode
   }
-
   // commit BLOB store changes
   let fakeCtx = {
     dataStore: null,
@@ -323,6 +323,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     }
   }
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
+  ctxt.dataStore.initialize([storedValue])
 
   console.debug('--== ubm_form: resultDataCache cleared ==--')
   resultDataCache = null // drop cache. afterInsert call select and restore cache
@@ -355,7 +356,6 @@ me.update = function (ctxt) {
     throw new Error('<<<To change form code rename both *.def & *.js files & change "//@code "formCode" comment inside new def file>>>')
   }
   doUpdateInsert(ctxt, storedValue, false)
-  ctxt.preventDefault()
   return true // everything is OK
 }
 
@@ -383,6 +383,31 @@ me.insert = function (ctxt) {
 
   let oldValue = {}
   doUpdateInsert(ctxt, oldValue, true)
-  ctxt.preventDefault()
   return true // everything is OK
+}
+
+/**
+ * New form
+ * @method addNew
+ * @memberOf ubm_form_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
+ * @param {ubMethodParams} ctxt
+ * @return {boolean}
+ */
+me.addnew = function (ctxt) {
+  console.debug('--====== ubm_form.addNew ====--')
+  let params = ctxt.mParams
+  let requestedFieldList = params.fieldList
+  let entity = me.entity
+  // fill array by default values from metadata
+  let defValues = requestedFieldList.map((attrName) => {
+    let attr = entity.attr(attrName, true)
+    return attr && attr.defaultValue
+      ? attr.defaultValue
+      : null
+  })
+  // and initialize store by default values as expected by `addnew` method
+  ctxt.dataStore.initialize([defValues], requestedFieldList)
+  return true
 }
