@@ -1,15 +1,16 @@
-let me = ubm_diagram
-
+const path = require('path')
+const _ = require('lodash')
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
 const UB = require('@unitybase/ub')
 const App = UB.App
-const blobStores = require('@unitybase/ub/blobStores')
+const blobStores = App.blobStores
 
-const path = require('path')
-const _ = require('lodash')
+/* global ubm_diagram */
+// eslint-disable-next-line camelcase
+let me = ubm_diagram
 
 const DIAGRAM_CONTENT_TYPE = 'application/m3metadiag'
 const REL_PATH_TAIL = 'erdiagrams'
@@ -31,6 +32,7 @@ let modelLoadDate
 
 /**
  * Check integrity of file content. Passed as a callback to FileBasedStore.onBeforeRowAdd
+ * @private
  * @param {FileBasedStoreLoader} loader
  * @param {String} fullFilePath
  * @param {String} content
@@ -97,6 +99,7 @@ function loadAllDiagrams () {
 /**
  * Retrieve data from resultDataCache and init ctxt.dataStore
  * caller MUST set dataStore.currentDataName before call doSelect
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function doSelect (ctxt) {
@@ -122,6 +125,10 @@ function doSelect (ctxt) {
 }
 
 /**
+ * @method select
+ * @memberOf ubm_diagram_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {Boolean}
  */
@@ -129,15 +136,16 @@ me.select = function (ctxt) {
   ctxt.dataStore.currentDataName = 'select' // TODO надо или нет????
   doSelect(ctxt)
   ctxt.preventDefault()
-  return true // everything is OK
+  return true
 }
 
 /**
  * Check model exists
+ * @private
  * @param {Number} aID
  * @param {String} modelName
  */
-me.validateInput = function (aID, modelName) {
+function validateInput (aID, modelName) {
   let model = App.domainInfo.models[modelName]
   if (!model) {
     throw new Error(`ubm_diagram: Invalid model attribute value "${modelName}". Model not exist in domain`)
@@ -146,6 +154,7 @@ me.validateInput = function (aID, modelName) {
 }
 
 /**
+ * @private
  * @param {ubMethodParams} ctxt
  * @param {Object} storedValue
  * @param {Boolean} isInsert
@@ -207,6 +216,10 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
 }
 
 /**
+ * @method update
+ * @memberOf ubm_diagram_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
@@ -219,7 +232,7 @@ me.update = function (ctxt) {
     throw new Error(`Record with ID=${ID} not found`)
   }
   storedValue = LocalDataStore.selectResultToArrayOfObjects(storedValue)[0]
-  me.validateInput(ID, inParams.model || storedValue.model)
+  validateInput(ID, inParams.model || storedValue.model)
   doUpdateInsert(ctxt, storedValue, false)
   ctxt.preventDefault()
   return true // everything is OK
@@ -227,6 +240,10 @@ me.update = function (ctxt) {
 
 /**
  * Check ID is unique and perform insertion
+ * @method insert
+ * @memberOf ubm_diagram_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
@@ -235,7 +252,7 @@ me.insert = function (ctxt) {
   let ID = inParams.ID
 
   let cachedData = loadAllDiagrams()
-  me.validateInput(ID, inParams.model)
+  validateInput(ID, inParams.model)
 
   let row = LocalDataStore.byID(cachedData, ID)
   if (row.total) {

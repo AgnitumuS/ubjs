@@ -22,6 +22,7 @@
       "./packages/ubq",
       "./packages/ubs",
       "./packages/cdn",
+      "./packages/ubm",
       "./packages/ubs/modules/UBServerReport.js",
       "../ub-e/packages/odata/OData.js"
     ],

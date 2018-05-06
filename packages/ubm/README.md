@@ -1,2 +1,8 @@
-Set of entites to construct a dynamic UnityBase UI
+# UnityBase Mobile (ubm) UI
+
+Set of entities for constructing a dynamically generated UnityBase UI:
+ - enumerations
+ - navigation desktops & shortcuts
+ - forms definitions
+ - ER diagrams
 

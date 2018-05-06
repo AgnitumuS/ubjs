@@ -1,6 +1,5 @@
 ﻿{
     "caption": "Administering of desktops",
-    "documentation": "Administering of desktops",
     "attributes": {
         "instanceID": {
             "caption": "Desktop"

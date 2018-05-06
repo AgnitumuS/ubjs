@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Shortcut",
-    "description": "Shortcut to launch function",
+    "description": "Metadata for build navbars",
     "attributes": {
         "desktopID": {
             "caption": "Desktop"

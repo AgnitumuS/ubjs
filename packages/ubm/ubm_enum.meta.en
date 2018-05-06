@@ -17,7 +17,7 @@
             "caption": "Value name"
         },
         "sortOrder": {
-            "caption": "№ order"
+            "caption": "Order #"
         }
     }
 }

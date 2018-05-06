@@ -1,34 +1,38 @@
-/* global ubm_form */
-let me = ubm_form
-
 const fs = require('fs')
+const path = require('path')
 const _ = require('lodash')
+
 const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
-const path = require('path')
 const App = require('@unitybase/ub').App
 const UB = require('@unitybase/ub')
-const blobStores = require('@unitybase/ub/blobStores')
-
-me.entity.addMethod('select')
-me.entity.addMethod('update')
-me.entity.addMethod('insert')
-
-/**
- *  here we store loaded forms
-*/
-let resultDataCache = null
-let modelLoadDate
+const blobStores = App.blobStores
 
 const DFM_CONTENT_TYPE = 'text/javascript; charset=UTF-8'
 const REL_PATH_TAIL = 'forms'
 const DEF_FILE_TAIL = '-fm.def'
 const JS_FILE_TAIL = '-fm.js'
 
+/* global ubm_form ncrc32 */
+// eslint-disable-next-line camelcase
+let me = ubm_form
+
+me.entity.addMethod('select')
+me.entity.addMethod('update')
+me.entity.addMethod('insert')
+me.on('delete:before', function () {
+  throw new UB.UBAbort(`<<<To delete Form you must manually delete corresponding ${DEF_FILE_TAIL} and ${JS_FILE_TAIL} file(s) from model folder>>>`)
+})
+
+// here we store loaded forms
+let resultDataCache = null
+let modelLoadDate
+
 /**
  * Check integrity of file content. Passed as a callback to FileBasedStore.onBeforeRowAdd
+ * @private
  * @param {FileBasedStoreLoader} loader
  * @param {String} fullFilePath
  * @param {String} content
@@ -122,8 +126,10 @@ function loadAllForms () {
   return resultDataCache
 }
 
-/** Retrieve data from resultDataCache and init ctxt.dataStore
- *  caller MUST set dataStore.currentDataName before call doSelect
+/**
+ * Retrieve data from resultDataCache and init ctxt.dataStore
+ * caller MUST set dataStore.currentDataName before call doSelect
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function doSelect (ctxt) {
@@ -148,7 +154,10 @@ function doSelect (ctxt) {
 }
 
 /**
- *
+ * @method select
+ * @memberOf ubm_form_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {Boolean}
  */
@@ -162,6 +171,7 @@ me.select = function (ctxt) {
 /**
  * Check form code start from form entity code and entity exist in domain. throw exception on fail
  * TODO - check mi_modifyDate in case entity.mixins.mStorage.simpleAudit and !runParams.skipOptimisticLock
+ * @private
  * @param {Number} aID
  * @param {String} formCode
  * @param {String} formEntity
@@ -190,6 +200,7 @@ function validateInput (aID, formCode, formEntity) {
 
 /**
  * Return form body template from UBM/_templates/fileName is any or defaultBody
+ * @private
  * @param {String} fileName
  * @param {String} [defaultBody]
  */
@@ -199,7 +210,7 @@ function getFormBodyTpl (fileName, defaultBody) {
 }
 
 /**
- *
+ * @private
  * @param {ubMethodParams} ctxt
  * @param {Object} storedValue
  * @param {boolean} isInsert
@@ -319,7 +330,10 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
 }
 
 /**
- *
+ * @method update
+ * @memberOf ubm_form_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */
@@ -345,12 +359,12 @@ me.update = function (ctxt) {
   return true // everything is OK
 }
 
-me.on('delete:before', function () {
-  throw new UB.UBAbort(`<<<To delete Form you must manually delete corresponding ${DEF_FILE_TAIL} and ${JS_FILE_TAIL} file(s) from model folder>>>`)
-})
-
 /**
  * Check ID is unique and perform insertion
+ * @method insert
+ * @memberOf ubm_form_ns.prototype
+ * @memberOfModule @unitybase/ubm
+ * @published
  * @param {ubMethodParams} ctxt
  * @return {boolean}
  */

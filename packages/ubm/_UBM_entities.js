@@ -1,585 +1,464 @@
-/* eslint-disable camelcase,no-unused-vars */
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Робочий стіл
-* @mixes EventEmitter
-*/
-global.ubm_desktop = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
+ * Set of entities for constructing a dynamically generated UnityBase UI. Enumerations, navigation desktops &amp; shortcuts, forms, ER diagrams
+ * @version 5.0.7
+ * @module @unitybase/ubm
+ */
 
 /**
-* Attributes of "Робочий стіл"
-* @class
-*/
-function ubm_desktop_object () {
-  /**
-  *  
-  * 
+ * Application desktops
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_desktop_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_desktop_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Назва десктопу 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.caption = ''
-  /**
-  * Код 
+  caption: '',
+ /**
+  * Unique desktop code. Used for version upgrade
   * @type {String}
   */
-  this.code = ''
-  /**
-  * URL 
-  * URL статичної сторінки сервера, яка відображається в центрі екрану при виборі робочого столу
+  code: '',
+ /**
+  * Static server page URL which is displayed in screen centre of selected desktop
   * @type {String}
   */
-  this.url = null
-  /**
-  * За замовчуванням? 
+  url: null,
+ /**
   * @type {Boolean}
   */
-  this.isDefault = undefined
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  isDefault: undefined,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Адміністрування робочих столів
-* @mixes EventEmitter
+* Application desktops
+* @type {ubm_desktop_ns}
 */
-global.ubm_desktop_adm = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubm_desktop = new ubm_desktop_ns()
 /**
-* Attributes of "Адміністрування робочих столів"
-* @class
-*/
-function ubm_desktop_adm_object () {
-  /**
-  *  
-  * 
+ * Administering of desktops.
+ * Administering of desktops
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_desktop_adm_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_desktop_adm_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Робочий стіл (ref -> ubm_desktop)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.instanceID = 0
-  /**
-  * Суб&#39;єкт адміністрування (ref -> uba_subject)
+  instanceID: 0,
+ /**
   * @type {Number}
   */
-  this.admSubjID = 0
+  admSubjID: 0,
 }
 /**
-* Діаграми
-* @mixes EventEmitter
+* Administering of desktops.
+ * Administering of desktops
+* @type {ubm_desktop_adm_ns}
 */
-global.ubm_diagram = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubm_desktop_adm = new ubm_desktop_adm_ns()
 /**
-* Attributes of "Діаграми"
-* @class
-*/
-function ubm_diagram_object () {
-  /**
-  *  
+ * Entity relation diagrams
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_diagram_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_diagram_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Модель 
-  * Модель
+  ID: 0,
+ /**
+  * Model
   * @type {String}
   */
-  this.model = ''
-  /**
-  * Назва 
+  model: '',
+ /**
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Діаграма 
-  * Діаграма сутностей
+  name: '',
+ /**
+  * Entity diagram
   * @type {String}
   */
-  this.document = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  document: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* Перераховані значення
-* @mixes EventEmitter
+* Entity relation diagrams
+* @type {ubm_diagram_ns}
 */
-global.ubm_enum = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubm_diagram = new ubm_diagram_ns()
 /**
-* Attributes of "Перераховані значення"
-* @class
-*/
-function ubm_enum_object () {
-  /**
-  *  
-  * 
+ * Enumerated values.
+ * On the UI used as a lookup for attributes with dataType &#x60;Enum&#x60;
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_enum_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_enum_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Група 
-  * Group of enumeration
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.eGroup = ''
-  /**
-  * Код 
-  * Код значення
+  eGroup: '',
+ /**
+  * Value code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Коротка назва 
+  code: '',
+ /**
   * @type {String}
   */
-  this.shortName = null
-  /**
-  * Назва значення 
+  shortName: null,
+ /**
   * @type {String}
   */
-  this.name = ''
-  /**
-  * № п&#x2F;п 
+  name: '',
+ /**
+  * This attribute is used for ordering enum on UI select. Default = 100 for easy change order to be more or less
   * @type {Number}
   */
-  this.sortOrder = 0
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  sortOrder: 0,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Форма
-* @mixes EventEmitter
+* Enumerated values.
+ * On the UI used as a lookup for attributes with dataType &#x60;Enum&#x60;
+* @type {ubm_enum_ns}
 */
-global.ubm_form = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubm_enum = new ubm_enum_ns()
 /**
-* Attributes of "Форма"
-* @class
-*/
-function ubm_form_object () {
-  /**
-  *  
+ * Definition of interface forms
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_form_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_form_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код форми 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Опис 
+  code: '',
+ /**
   * @type {String}
   */
-  this.description = null
-  /**
-  * Заголовок форми 
+  description: null,
+ /**
   * Keep it empty to use entity name as form caption
   * @type {String}
   */
-  this.caption = null
-  /**
-  * Тип форми 
-  * Тип визначення форми auto чи custom
+  caption: null,
+ /**
+  * Form definition type (auto or custom)
   * @type {String}
   */
-  this.formType = ''
-  /**
-  * Визначення форми 
-  * Визначення інтерфейсу форми
+  formType: '',
+ /**
+  * Form interface definition
   * @type {String}
   */
-  this.formDef = null
-  /**
-  * Скрипт форми 
-  * JS з клієнтської логіки форми
+  formDef: null,
+ /**
+  * JS worm client logic
   * @type {String}
   */
-  this.formCode = null
-  /**
-  * Модель 
-  * Модель куди зберігати
+  formCode: null,
+ /**
+  * Model where form is stored
+  * Model where form is stored. If empty - entity model is used. The purpose of this attribute is to develop a form for entities form other models
   * @type {String}
   */
-  this.model = null
-  /**
-  * Сутність 
-  * Код сутності
+  model: null,
+ /**
+  * Entity code
+  * This value is used for fount default entity form
   * @type {String}
   */
-  this.entity = null
-  /**
-  * За замовчуванням 
-  * Використовувати за замовчуванням
+  entity: null,
+ /**
+  * Default entity form
+  * On AdminUI execution of `doCommand.showForm` without passing a form code as a parameter client seek for form for entity, and if exist > 1 form - form with isDefault=true is selected
   * @type {Boolean}
   */
-  this.isDefault = undefined
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  isDefault: undefined,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* Ярлик
-* @mixes EventEmitter
+* Definition of interface forms
+* @type {ubm_form_ns}
 */
-global.ubm_navshortcut = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubm_form = new ubm_form_ns()
 /**
-* Attributes of "Ярлик"
-* @class
-*/
-function ubm_navshortcut_object () {
-  /**
-  *  
-  * 
+ * Metadata for build navbars
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes tree
+ */
+class ubm_navshortcut_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_navshortcut_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Десктоп (ref -> ubm_desktop)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.desktopID = 0
-  /**
-  * Папка ярлика (ref -> ubm_navshortcut)
-  * 
+  desktopID: 0,
+ /**
   * @type {Number}
   */
-  this.parentID = null
-  /**
-  * Код 
+  parentID: null,
+ /**
+  * Unique shortcut code. Used for version upgrade
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Папка? 
+  code: '',
+ /**
   * @type {Boolean}
   */
-  this.isFolder = undefined
-  /**
-  * Назва ярлика 
+  isFolder: undefined,
+ /**
   * @type {String}
   */
-  this.caption = ''
-  /**
-  * Текст команди 
+  caption: '',
+ /**
   * @type {String}
   */
-  this.cmdCode = null
-  /**
-  * В окремому вікні 
-  * Відображати в окремому вікні
+  cmdCode: null,
+ /**
+  * Display in new window
   * @type {Boolean}
   */
-  this.inWindow = undefined
-  /**
-  * Згорнути 
-  * Відображати згорнутим при першому запуску
+  inWindow: undefined,
+ /**
+  * Show collapsed at the first start
+  * It make sense if isFolder = true
   * @type {Boolean}
   */
-  this.isCollapsed = undefined
-  /**
-  * № п&#x2F;п 
-  * Порядок відображення (в рамках поточного вузла)
+  isCollapsed: undefined,
+ /**
+  * Display order (in current node)
   * @type {Number}
   */
-  this.displayOrder = 0
-  /**
-  * icon css class name 
+  displayOrder: 0,
+ /**
   * @type {String}
   */
-  this.iconCls = null
-  /**
-  *  
-  * 
+  iconCls: null,
+ /**
   * @type {String}
   */
-  this.mi_treePath = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_treePath: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Адміністрування панелі навігації
-* @mixes EventEmitter
+* Metadata for build navbars
+* @type {ubm_navshortcut_ns}
 */
-global.ubm_navshortcut_adm = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const ubm_navshortcut = new ubm_navshortcut_ns()
 /**
-* Attributes of "Адміністрування панелі навігації"
-* @class
-*/
-function ubm_navshortcut_adm_object () {
-  /**
-  *  
-  * 
+ * Description.
+ * This entity used by $.currentUserOrUserGroupInAdmSubtable RLS macro
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_navshortcut_adm_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_navshortcut_adm_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Ярлик (ref -> ubm_navshortcut)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.instanceID = 0
-  /**
-  * Суб&#39;єкт адміністрування (ref -> uba_subject)
+  instanceID: 0,
+ /**
   * @type {Number}
   */
-  this.admSubjID = 0
+  admSubjID: 0,
 }
+/**
+* Description.
+ * This entity used by $.currentUserOrUserGroupInAdmSubtable RLS macro
+* @type {ubm_navshortcut_adm_ns}
+*/
+const ubm_navshortcut_adm = new ubm_navshortcut_adm_ns()

@@ -27,8 +27,12 @@ This is a short list of modules, available in unityBase standard distribution:
  - {@link module:@unitybase/cdn @unitybase/cdn}: Set of dictionaries, common for most enterprise systems:
    - Organizations (departments, persons, contacts, bank accounts etc.)
    - Regions (countries, cities, streets, buildings etc)
-
- - TODO cdn, org, ubm, xlsx, ub-pub, pdf, (cs-shared, stubs)
+ - {@link module:@unitybase/ubm @unitybase/ubm}: Set of entities for constructing a dynamically generated UnityBase UI
+    - enumerations
+    - navigation desktops & shortcuts
+    - forms definitions
+    - ER diagrams
+ - TODO org, ubm, xlsx, ub-pub, pdf, (cs-shared, stubs)
 
 # Get Started
 
