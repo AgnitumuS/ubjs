@@ -3,10 +3,7 @@ exports.formCode = {
   codeTabs: null,
 
   initUBComponent: function () {
-    var
-      me = this,
-      code = this.record.get('code') || '',
-      fn
+    var me = this
 
     // remove document-menu buttons
     var tbar = this.query('[ubID=mainToolbar]')[0]
@@ -44,8 +41,6 @@ exports.formCode = {
     })
     if (!me.isEditMode) { // new form
       me.record.set('ID', null) // ID will be calculated as crc32(code)
-      me.getUBCmp('attrFormDef').setValue('{"store":"mdb","fName":"' + (fn = code.length > 0 ? code + '.def' : '') + '","origName":"' + fn + '","ct":"application/def","size":0,"isDirty":true}', this.instanceID)
-      me.getUBCmp('attrFormCode').setValue('{"store":"mdb","fName":"' + (fn = code.length > 0 ? code + '.js' : '') + '","origName":"' + fn + '","ct":"application/javascript","size":0,"isDirty":true}', this.instanceID)
     } else {
       me.getUBCmp('attrCode').setReadOnly(true)
       me.getUBCmp('attrModel').setReadOnly(true)
