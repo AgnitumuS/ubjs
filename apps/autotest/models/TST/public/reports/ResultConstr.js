@@ -1,8 +1,8 @@
 exports.reportCode = {
 /**
-* This function must be defined in report code block.
+* This function should be defined in report code block.
 *
-* Inside function you must:
+* Inside function you should:
 * 1) Prepare data
 * 2) Run method this.buildHTML(reportData); where reportData is data for mustache template
 * 3) If need create PDF run method this.transformToPdf(htmlReport); where htmlReport is HTML

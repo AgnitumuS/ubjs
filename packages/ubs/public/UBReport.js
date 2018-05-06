@@ -300,18 +300,18 @@ UBReport.prototype.prepareCode = function () {
 }
 
 /**
-* This function must be defined in report code block.
+* This function should be defined in report code block.
 *
-* Implementation must:
+* Implementation should:
 *
 *  - Prepare data
 *  - Run method this.buildHTML(reportData); where reportData is data for mustache template
 *  - If need create PDF run method this.buildPdf(htmlReport); where htmlReport is HTML
-*  - If is server side function must return report as string otherwise Promise
+*  - If is server side function should return report as string otherwise Promise
 *
 * @cfg {function} buildReport
 * @param {Object} reportParams
-* @returns {Promise|Object|String} If code run at server, method must return report data, else - Promise, which resolves to report data
+* @returns {Promise|Object|String} If code run at server, method should return report data, else - Promise, which resolves to report data
 */
 UBReport.prototype.buildReport = function (reportParams) {
   throw new UB.UBError('Function "buildReport" not defined in report code block')

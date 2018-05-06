@@ -51,11 +51,12 @@
       "allowNull": true,
       "storeName": "mdb",
       "name": "code"
+    },
+    {
+      "dataType": "DateTime",
+      "caption": "Modification date",
+      "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation",
+      "name": "mi_modifyDate"
     }
-  ],
-  "mixins": {
-    "mStorage": {
-      "simpleAudit": true
-    }
-  }
+  ]
 }
