@@ -1,6 +1,6 @@
 ﻿{
-	"caption": "Диаграммы",
-	"description": "Диаграммы",
+	"caption": "Diagrams",
+	"description": "Diagrams",
 	"connectionName": "",
 	"sqlAlias": "odiagram",
 	"cacheType": "SessionEntity",

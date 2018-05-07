@@ -1,7 +1,7 @@
 ﻿{
     "caption": "Employees of internal organizations",
     "description": "List of employees of internal organizations",
-    "documentation": "В этом справочнике хранится перечень работников. Работник назначается на штатные единицы в сущности org_employeeonstaff",
+    "documentation":"This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity",
     "attributes": {
         "code": {
             "caption": "Code",
@@ -29,7 +29,7 @@
         },
         "description": {
             "caption": "Comment",
-            "description": "Comment on Employee"
+            "description": "Comment on employee"
         },
         "sexType": {
             "caption": "Sex",
@@ -41,11 +41,11 @@
         },
         "shortFIO": {
             "caption": "Last name with initials",
-            "description": "Example: Ivanov A.O."
+            "description": "Example: Smith J.K."
         },
         "fullFIO": {
             "caption": "Full name",
-            "description": "Example: Ivanov Anton Olegovich"
+            "description": "Example: Smith Jay Key"
         },
         "apply": {
             "caption": "Treatment",

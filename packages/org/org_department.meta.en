@@ -1,7 +1,7 @@
 ﻿{
     "caption": "Internal departments",
     "description": "Internal departments",
-    "documentation": "",
+    "documentation":"This dictionary contains list of departments. Each department links to org_unit by Unity mixin",
     "attributes": {
         "parentID": {
             "caption": "Parent",

@@ -1,7 +1,7 @@
 ﻿{
-	"caption": "Штатные единицы",
-	"description": "Справочник штатных единиц",
-    "documentation": "В этом справочнике хранится перечень штатных единиц (должностей). Каждая штатная единица по UNITY складывается в org_unit",
+	"caption": "Staff units",
+	"description": "List of staff units",
+    "documentation":"This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
 	"connectionName": "",
 	"sqlAlias": "stunit",
 	"cacheType": "catySession",
@@ -11,71 +11,71 @@
 		{
 			"dataType": "Entity",
 			"associatedEntity": "org_unit",
-			"caption": "Предок",
-			"description": "Предок",
+			"caption": "Parent",
+			"description": "Parent",
 			"allowNull": true
 		},
 		"code": {
 			"dataType": "String",
 			"size": 16,
-			"caption": "Внутренний код",
-			"description": "Внутренний код штатной единицы",
+			"caption": "Internal code",
+			"description": "Staff unit internal code",
 			"allowNull": false,
             "isUnique": true
 		},
 		"name": {
 			"dataType": "String",
 			"size": 128,
-			"caption": "Название штатной единицы",
-			"description": "Название без кавычек и абревиатур",
+			"caption": "Staff unit name",
+			"description": "Name of staff unit without the quotes and abbreviations",
 			"allowNull": false,
 			"isMultiLang": true
 		},
 		"fullName": {
 			"dataType": "String",
 			"size": 255,
-			"caption": "Полное название штатной единицы",
-			"description": "Полное название",
+			"caption": "Full name",
+			"description": "Staff unit full name",
 			"allowNull": false,
 			"isMultiLang": true
 		},
 		"description" : {
 			"dataType" : "String",
 			"size" : 255,
-			"caption" : "Описание штатной единицы",
-			"description" : "Описание штатной единицы",
+			"caption" : "Staff unit description",
+			"description" : "Staff unit description",
 			"allowNull" : true,
 			"isMultiLang" : true
 		},
         "nameGen": {
             "dataType": "String",
             "size": 128,
-            "caption": "Название штатной единицы в родительном падеже",
-            "description": "Полное название штатной единицы в родительном падеже",
+            "caption": "Staff unit name in genitive case",
+            "description": "Staff unit name in genitive case",
             "allowNull": true,
             "isMultiLang": true
         },		
         "nameDat": {
             "dataType": "String",
             "size": 128,
-            "caption": "Название штатной единицы в дательном падеже",
-            "description": "Полное название штатной единицы в дательном падеже",
+            "caption": "Staff unit name in dative case",
+            "description": "Name of staff unit without the quotes and abbreviations in dative case",
             "allowNull": true,
             "isMultiLang": true
         },
         "fullNameGen": {
             "dataType": "String",
             "size": 255,
-            "caption": "Полное название штатной единицы в родительном падеже",
-            "description": "Полное название штатной единицы в родительном падеже",
+            "caption": "Full name in genitive case",
+            "description": "Staff unit full name in genitive case",
             "allowNull": true,
             "isMultiLang": true
         },
         "fullNameDat": {
             "dataType": "String",
             "size": 255,
-            "caption": "Полное название штатной единицы в дательном падеже",
-            "description": "Полное название штатной единицы в дательном падеже",
+            "caption": "Full name in dative case",
+            "description": "Full name in dative case",
             "allowNull": true,
             "isMultiLang": true
         },			
@@ -83,36 +83,36 @@
         {
             "dataType": "String",
             "size": 1024,
-            "caption": "Заголовок",
-            "description": "Заголовок",
+            "caption": "Caption",
+            "description": "Caption",
             "allowNull": false,
             "isMultiLang": true
         },
 		"professionExtID": {
 			"dataType": "Entity",
 			"associatedEntity": "cdn_profession",
-			"caption": "Професія",
-			"description": "Професія",
+			"caption": "Profession",
+			"description": "Profession",
 			"allowNull": true
 		},
         "professionID": {
             "dataType": "Entity",
             "associatedEntity": "org_profession",
-            "caption": "Посада",
-            "description": "Посада",
+            "caption": "Position",
+            "description": "Position",
             "allowNull": false
         },
 		"staffUnitTypeID": {
 			"dataType": "Entity",
 			"associatedEntity": "cdn_staffunittype",
-			"caption": "Тип штатной единицы",
-			"description": "Тип штатной единицы",
+			"caption": "Staff unit type",
+			"description": "Staff unit type",
 			"allowNull": false
 		},
         "subordinationLevel": {
             "dataType": "Int",
-            "caption": "Уровень субординации",
-            "description": "Уровень субординации - чем ниже, тем штатная единица считается более важной по орг.структуре",
+            "caption": "Subordination level",
+            "description": "If level is lower - then staff unit is more important",
             "allowNull": true
 		},
         "isBoss": {

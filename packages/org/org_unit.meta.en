@@ -1,7 +1,7 @@
 ﻿{
     "caption": "Organization units",
     "description": "List of organization units",
-    "documentation": "Справочник, в который по UNITY складываются организации (org_organization), департаменты (org_department) и штатные единицы (org_staffunit). Справочник самозацикленный, что позволяет строить иерархию по всем организационным единицам в одном дереве",
+    "documentation": "Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree",
     "attributes": {
         "parentID": {
             "caption": "Parent",
@@ -17,7 +17,7 @@
         },
         "unitType": {
             "caption": "Org. unit type",
-            "description": "Org. unit type"
+            "description": "Organization unit type"
         }
     }
 }

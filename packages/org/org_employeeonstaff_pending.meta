@@ -1,7 +1,7 @@
 ﻿{
-	"caption": "Назначения с отложенной датой",
-	"description": "Назначения с отложенной датой",
-    "documentation":"Сущность, в которой хранятся ссылки на назначения, срок действия которых не начался",
+	"caption": "Assignment with pending date",
+	"description": "Assignment with pending date",
+    "documentation":"Entity which contains links to assignments with pending date",
 	"connectionName": "",
 	"sqlAlias": "emponpend",
 	"cacheType": "Entity",
@@ -10,20 +10,20 @@
 		"emponstaffID": {
 			"dataType": "Entity",
 			"associatedEntity": "org_employeeonstaff",
-			"caption": "Назначение",
-			"description": "Назначение",
+			"caption": "Assignment",
+			"description": "Assignment",
 			"allowNull": false          
 		},
         "startDate":{
             "dataType": "Date",
-            "caption": "Начало",
-            "description": "Начало действия назначения",
+            "caption": "Start",
+            "description": "Assignment start date",
             "allowNull": false
         },
         "endDate":{
             "dataType": "Date",
-            "caption": "Окончание",
-            "description": "Окончание действия назначения",
+            "caption": "End",
+            "description": "Assignment end date",
             "allowNull": true
         }
 	},

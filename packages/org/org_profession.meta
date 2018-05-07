@@ -1,6 +1,6 @@
 ﻿{
-	"caption": "Посади",
-	"description": "Довідник посад",
+	"caption": "Positions",
+	"description": "List of positions",
 	"connectionName": "",
 	"sqlAlias": "prof",
 	"cacheType": "SessionEntity",
@@ -11,8 +11,8 @@
 		{
 			"dataType": "String",
 			"size": 16,
-			"caption": "Код",
-			"description": "Код посади",
+			"caption": "Code",
+			"description": "Code of position",
 			"allowNull": false,
 			"isUnique": true
 		},
@@ -20,8 +20,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Назва",
-			"description": "Назва посади",
+			"caption": "Name",
+			"description": "Position name",
 			"allowNull": false,
        		"isMultiLang": true
 		},
@@ -29,45 +29,45 @@
         {
             "dataType": "String",
             "size": 255,
-            "caption": "Повна назва",
-            "description": "Повна назва посади",
+            "caption": "Full name",
+            "description": "Position full name",
             "allowNull": false,
             "isMultiLang": true
         },
         "nameGen": {
             "dataType": "String",
             "size": 128,
-            "caption": "Название должности в родительном падеже",
-            "description": "Полное название должности в родительном падеже",
+            "caption": "Name in genitive case",
+            "description": "Position name in genitive case",
             "allowNull": true,
             "isMultiLang": true
         },		
         "nameDat": {
             "dataType": "String",
             "size": 128,
-            "caption": "Название должности в дательном падеже",
-            "description": "Полное название должности в дательном падеже",
+            "caption": "Name in dative case",
+            "description": "Position name in dative case",
             "allowNull": true,
             "isMultiLang": true
         },
         "fullNameGen": {
             "dataType": "String",
             "size": 255,
-            "caption": "Полное название должности в родительном падеже",
-            "description": "Полное название должности в родительном падеже",
+            "caption": "Full name in genitive case",
+            "description": "Position full name in genitive case",
             "allowNull": true,
             "isMultiLang": true
         },
         "fullNameDat": {
             "dataType": "String",
             "size": 255,
-            "caption": "Полное название должности в дательном падеже",
-            "description": "Полное название должности в дательном падеже",
+            "caption": "Full name in dative case",
+            "description": "Position full name in dative case",
             "allowNull": true,
             "isMultiLang": true
         },		
 		"description": {
-		 	"caption" : "Назва + код",
+		 	"caption" : "Caption",
 			"dataType": "String",
 			"size": 128,
         	"allowNull": false,

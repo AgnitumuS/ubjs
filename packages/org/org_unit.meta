@@ -1,9 +1,7 @@
 ﻿{
-	"caption": "Организационные единицы",
-	"description": "Справочник организационных единиц (организации, департаменты и штатные единицы)",
-    	"documentation":"Справочник, в который по UNITY складываются организации (org_organization), департаменты (org_department)
-                    и штатные единицы (org_staffunit). Справочник самозацикленный, что позволяет строить
-                    иерархию по всем организационным единицам в одном дереве",
+	"caption": "Organization units",
+	"description": "List of organization units",
+    "documentation": "Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree",
 	"connectionName": "",
 	"sqlAlias": "ounit",
 	"cacheType": "catySession",
@@ -13,42 +11,33 @@
 		{
 			"dataType": "Entity",
 			"associatedEntity": "org_unit",
-			"caption": "Предок",
-			"description": "Предок",
+			"caption": "Parent",
+			"description": "Parent",
 			"allowNull": true
 		},		
 		"code":
 		{
 			"dataType": "String",
 			"size": 16,
-			"caption": "Внутренний код",
-			"description": "Внутренний код организационной единицы",
+			"caption": "Internal code",
+			"description": "Organization unit internal code",
 			"allowNull": false
 		},
         "caption":
         {
             "dataType": "String",
             "size": 1024,
-            "caption": "Заголовок",
-            "description": "Заголовок",
+            "caption": "Caption",
+            "description": "Caption",
             "allowNull": false,
             "isMultiLang": true
         },
-//        "executorName":
-//        {
-//            "dataType": "String",
-//            "size": 255,
-//            "caption": "Название исполнителя",
-//            "description": "Для штатных единиц - ФИО работника на текущем основном назначении, для департаментов - название",
-//            "allowNull": false,
-//            "isMultiLang": true
-//        },
 		"unitType":
 		{
 			"dataType": "Enum",
 			"enumGroup": "ORG_UNITTYPE",
-			"caption": "Тип орг. единицы",
-			"description": "Тип организационной единицы",
+			"caption": "Org. unit type",
+			"description": "Organization unit type",
 			"allowNull": false,
 			"isMultiLang": false
 		}

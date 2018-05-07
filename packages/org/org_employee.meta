@@ -1,7 +1,7 @@
 ﻿{
-	"caption": "Сотрудники внутренней организации",
-	"description": "Справочник сотрудников внутренней организации",
-    "documentation":"В этом справочнике хранится перечень сотрудников. Сотрудник назначается на штатные единицы в сущности org_employeeonstaff",
+	"caption": "Employees of internal organizations",
+	"description": "List of employees of internal organizations",
+    "documentation":"This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity",
 	"connectionName": "",
 	"sqlAlias": "oemp",
 	"cacheType": "catySession",
@@ -10,8 +10,8 @@
         "code":
         {
             "dataType": "String",
-            "caption": "Код",
-			"description": "Внутренний код сотрудника",			
+            "caption": "Code",
+			"description": "Employees internal code",			
             "size": 20,
             "allowNull": false,
             "isUnique": true
@@ -19,8 +19,8 @@
         "userID":
         {
             "dataType": "Entity",
-            "caption": "Пользователь",
-			"description": "Пользовательский логин",
+            "caption": "User",
+			"description": "User login",
             "associatedEntity": "uba_user",
             "allowNull": true
         },
@@ -28,8 +28,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Фамилия",
-			"description": "Фамилия сотрудника",
+			"caption": "Last name",
+			"description": "Employee last name",
 			"allowNull": false,
 			"isMultiLang": true
 		},
@@ -37,8 +37,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Имя",
-			"description": "Имя сотрудника",
+			"caption": "First name",
+			"description": "Employee first name",
 			"allowNull": false,
 			"isMultiLang": true
 		},
@@ -46,24 +46,24 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Отчество",
-			"description": "Отчество сотрудника",
+			"caption": "Middle name",
+			"description": "Employee middle name",
 			"allowNull": true,
 			"isMultiLang": true
 		},				
         "birthDate":
         {
             "dataType": "Date",
-            "caption": "Дата рождения",
-			"description": "Дата рождения",			
+            "caption": "Date of birth",
+			"description": "Date of birth",			
             "allowNull": true
         },
 		"description":
 		{
 			"dataType": "String",
 			"size": 255,
-			"caption": "Коментар",
-			"description": "Коментар",
+			"caption": "Comment",
+			"description": "Comment on employee",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -71,16 +71,16 @@
 		{
 			"dataType": "Enum",
 			"enumGroup": "CDN_SEXTYPE",
-			"caption": "Пол",
-			"description": "Пол сотрудника внутренней организации",
+			"caption": "Sex",
+			"description": "Employee sex",
 			"allowNull": false
 		},		
 		"suffix":
 		{
 			"dataType": "String",
 			"size": 30,
-			"caption": "Суффикс",
-			"description": "Суффикс",
+			"caption": "Suffix",
+			"description": "Suffix",
 			"allowNull": true,
 			"isMultiLang": true
 		},			
@@ -88,8 +88,8 @@
 		{
 			"dataType": "String",
 			"size": 256,
-			"caption": "Краткое ФИО",
-			"description": "Пример: Фамилия И.О.",
+			"caption": "Last name with initials",
+			"description": "Example: Smith J.K.",
 			"allowNull": true,
 			"isMultiLang": true
 		},			
@@ -97,8 +97,8 @@
 		{
 			"dataType": "String",
 			"size": 512,
-			"caption": "Полное ФИО",
-			"description": "Пример: Фамилия Имя Отчество",
+			"caption": "Full name",
+			"description": "Example: Smith Jay Key",
 			"allowNull": false,
 			"isMultiLang": true
 		},		
@@ -106,8 +106,8 @@
 		{
 			"dataType": "String",
 			"size": 100,
-			"caption": "Обращение",
-			"description": "Как обращаться к этому человеку",
+			"caption": "Treatment",
+			"description": "Describes how to treat to this person",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -115,8 +115,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Фамилия в род. падеже",
-			"description": "Фамилия сотрудника в родительном падеже",
+			"caption": "Last name in genitive",
+			"description": "Employee last name in genitive case",
 			"allowNull": true,
 			"isMultiLang": true
 		},		
@@ -124,8 +124,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Фамилия в дат. падеже",
-			"description": "Фамилия сотрудника в дательном падеже",
+			"caption": "Last name in dative",
+			"description": "Employee last name in dative case",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -133,8 +133,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Имя в род. падеже",
-			"description": "Имя сотрудника в родительном падеже",
+			"caption": "First name in genitive",
+			"description": "Employee first name in genitive case",
 			"allowNull": true,
 			"isMultiLang": true
 		},		
@@ -142,8 +142,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Имя в дат. падеже",
-			"description": "Имя сотрудника в дательном падеже",
+			"caption": "First name in dative",
+			"description": "Employee first name in dative case",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -151,8 +151,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Отчество в род. падеже",
-			"description": "Отчество сотрудника в родительном падеже",
+			"caption": "Middle name in genitive",
+			"description": "Employee middle name in dative case",
 			"allowNull": true,
 			"isMultiLang": true
 		},		
@@ -160,8 +160,8 @@
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Отчество в дат. падеже",
-			"description": "Отчество сотрудника в дательном падеже",
+			"caption": "Middle name in dative",
+			"description": "Employee middle name in dative case",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -169,8 +169,8 @@
 		{
 			"dataType": "String",
 			"size": 256,
-			"caption": "Краткое ФИО в род. падеже",
-			"description": "Краткое ФИО в родительном падеже",
+			"caption": "Short name in genitive",
+			"description": "Employee short name in genitive case",
 			"allowNull": true,
 			"isMultiLang": true
 		},			
@@ -178,8 +178,8 @@
 		{
 			"dataType": "String",
 			"size": 256,
-			"caption": "Краткое ФИО в дат. падеже",
-			"description": "Краткое ФИО в дательном падеже",
+			"caption": "Short name in dative",
+			"description": "Employee short name in dative case",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -187,8 +187,8 @@
 		{
 			"dataType": "String",
 			"size": 512,
-			"caption": "Полное ФИО в род. падеже",
-			"description": "Полное ФИО в родительном падеже",
+			"caption": "Full name in genitive",
+			"description": "Employee full name in genitive case",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -196,8 +196,8 @@
 		{
 			"dataType": "String",
 			"size": 512,
-			"caption": "Полное ФИО в дат. падеже",
-			"description": "Полное ФИО в дательном падеже",
+			"caption": "Full name in dative",
+			"description": "Employee full name in dative case",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -205,8 +205,8 @@
 		{
 			"dataType": "String",
 			"size": 100,
-			"caption": "Обращение в род. падеже",
-			"description": "Как обращаться к этому человеку в родительном падеже",
+			"caption": "Treatment in genitive",
+			"description": "Describes how to treat to this person in genitive case",
 			"allowNull": true,
 			"isMultiLang": true
 		},
@@ -214,16 +214,16 @@
 		{
 			"dataType": "String",
 			"size": 100,
-			"caption": "Обращение в дат. падеже",
-			"description": "Как обращаться к этому человеку в дательном падеже",
+			"caption": "Treatment in dative",
+			"description": "Describes how to treat to this person in dative case",
 			"allowNull": true,
 			"isMultiLang": true
 		},		
         "facsimile":
         {
             "dataType": "Document",
-            "caption": "Факсимиле",
-            "description": "Изображение подписи сотрудника",
+            "caption": "Facsimile",
+            "description": "Employee signature image",
             "allowNull": true
         }
     },

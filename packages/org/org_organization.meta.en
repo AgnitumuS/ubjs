@@ -1,7 +1,7 @@
 ﻿{
     "caption": "Internal organizations",
     "description": " List of internal organizations",
-    "documentation": "В этом справочнике хранится перечень организаций. Каждая организация по UNITY складывается в org_unit",
+    "documentation":"This dictionary contains list of internal organizations. Each organization links to org_unit by Unity mixin",
     "attributes": {
         "parentID": {
             "caption": "Parent",

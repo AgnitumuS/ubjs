@@ -1,7 +1,7 @@
 ﻿{
-	"caption": "Внутренние подразделения",
-	"description": "Справочник внутренних подразделений",
-    "documentation":"В этом справочнике хранится перечень депаратментов. Каждый департамент по UNITY складывается в org_unit",
+    "caption": "Internal departments",
+    "description": "Internal departments",
+    "documentation":"This dictionary contains list of departments. Each department links to org_unit by Unity mixin",
 	"connectionName": "",
 	"sqlAlias": "odep",
 	"cacheType": "catySession",
@@ -12,24 +12,24 @@
 		{
 			"dataType": "Entity",
 			"associatedEntity": "org_unit",
-			"caption": "Предок",
-			"description": "Предок",
+			"caption": "Parent",
+			"description": "Parent",
 			"allowNull": true
 		},
 		"code":
 		{
 			"dataType": "String",
 			"size": 16,
-			"caption": "Внутренний код",
-			"description": "Внутренний код подразделения",
+			"caption": "Internal code",
+			"description": "Internal code of department",
 			"allowNull": false
 		},
 		"name":
 		{
 			"dataType": "String",
 			"size": 128,
-			"caption": "Название подразделения",
-			"description": "Название без кавычек и абревиатур",
+			"caption": "Department name",
+			"description": "Name of department without the quotes and abbreviations",
 			"allowNull": false,
             "isMultiLang": true
 		},
@@ -37,8 +37,8 @@
 		{
 			"dataType": "String",
 			"size": 255,
-			"caption": "Полное название подразделения",
-			"description": "Полное название подразделения",
+			"caption": "Department full name",
+			"description": "Department full name",
 			"allowNull": false,
             "isMultiLang": true
 		},
@@ -46,40 +46,40 @@
 		{
 			"dataType": "String",
 			"size": 255,
-			"caption": "Описание подразделения",
-			"description": "Описание",
+			"caption": "Department description",
+			"description": "Department description",
 			"allowNull": true,
             "isMultiLang": true
 		},
         "nameGen": {
             "dataType": "String",
             "size": 128,
-            "caption": "Название в родит. падеже",
-            "description": "Название без кавычек и аббревиатур в родительном падеже",
+            "caption": "Department name in genitive case",
+            "description": "Department name without the quotes and abbreviations in genitive case",
             "allowNull": true,
             "isMultiLang": true
         },		
         "nameDat": {
             "dataType": "String",
             "size": 128,
-            "caption": "Название в дат. падеже",
-            "description": "Название без кавычек и аббревиатур в дательном падеже",
+            "caption": "Department name in dative case",
+            "description": "Department name without the quotes and abbreviations in dative case",
             "allowNull": true,
             "isMultiLang": true
         },
         "fullNameGen": {
             "dataType": "String",
             "size": 255,
-            "caption": "Полное название в родит. падеже",
-            "description": "Полное название подразделения в родительном падеже",
+            "caption": "Department full name in genitive case",
+            "description": "Department full name in genitive case",
             "allowNull": true,
             "isMultiLang": true
         },
         "fullNameDat": {
             "dataType": "String",
             "size": 255,
-            "caption": "Полное название в дат. падеже",
-            "description": "Полное название подразделения в дательном падеже",
+            "caption": "Department full name in dative case",
+            "description": "Department full name in dative case",
             "allowNull": true,
             "isMultiLang": true
         },		
@@ -87,23 +87,23 @@
 		{
 			"dataType": "Entity",
 			"associatedEntity": "cdn_deptype",
-			"caption": "Тип подразделения",
-			"description": "Тип подразделения",
+			"caption": "Department type",
+			"description": "Department type",
 			"allowNull": true
 		},
         "isClerical":
         {
             "dataType": "Boolean",
-            "caption": "Деловодное?",
-            "description": "Является ли это подразделение деловодным",
+            "caption": "Clerical?",
+            "description": "Clerical unit mark",
 			"defaultValue": "0"
         },
 		"caption":
 		{
 			"dataType": "String",
             "size": 512,
-			"caption": "Заголовок",
-			"description": "Заголовок",
+			"caption": "Caption",
+			"description": "Caption",
             "isMultiLang": true,
 			"allowNull": false
 		}

@@ -10,44 +10,44 @@
 		"tabNo": {
 			"dataType": "String",
 			"size": 20,
-			"caption": "Таб. №",
-			"description": "Табельный номер",
+			"caption": "Employee №",
+			"description": "Employee number",
 			"allowNull": false
 		},
 		"employeeID": {
 			"dataType": "Entity",
 			"associatedEntity": "org_employee",
-			"caption": "Сотрудник",
-			"description": "Сотрудник",
+			"caption": "Employee",
+			"description": "Employee",
 			"allowNull": false          
 		},
 		"staffUnitID":	{
 			"dataType": "Entity",
 			"associatedEntity": "org_staffunit",
-			"caption": "Штатная единица",
-			"description": "Штатная единица внутренней организации",
+			"caption": "Staff unit",
+			"description": "Internal organization staff unit",
 			"allowNull": false            
 		},
 		"employeeOnStaffType": {
 			"dataType": "Enum",
 			"enumGroup": "CDN_EMPLOYEEONSTAFFTYPE",
-			"caption": "Тип назначения",
-			"description": "Тип назначения",
+			"caption": "Assignment type",
+			"description": "Assignment type",
 			"allowNull": false            
 		},						
 		"description": {
 			"dataType": "String",
 			"size": 255,
-			"caption": "Описание",
-			"description": "Описание назначения",
+			"caption": "Description",
+			"description": "Assignment description",
 			"allowNull": true,
 			"isMultiLang": true
 		},
         "caption": {
             "dataType": "String",
             "size": 1024,
-            "caption": "Заголовок",
-            "description": "Заголовок",
+            "caption": "Caption",
+            "description": "Caption",
             "allowNull": true,
             "isMultilang": true
         }

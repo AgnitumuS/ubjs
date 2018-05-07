@@ -1,6 +1,6 @@
 {
-  "caption": "Расчётные счета(наши)",
-  "description": "Справочник расчётных счетов внутренних организаций",
+  "caption": "Current accounts",
+  "description": "List of current accounts of internal organizations",
   "connectionName": "",
   "sqlAlias": "uorgacc",
   "cacheType": "Entity",
@@ -8,50 +8,50 @@
   "attributes": [
     {
       "name": "organizationID",
-      "caption": "Организация",
+      "caption": "Organization",
       "dataType": "Entity",
       "associatedEntity": "org_organization",
-      "description": "Организация",
+      "description": "Organization",
       "allowNull": false
     },
     {
       "name": "currencyID",
       "caption": "Валюта",
-      "dataType": "Entity",
+      "dataType": "Currency",
       "associatedEntity": "cdn_currency",
-      "description": "Валюта счета",
+      "description": "Currency of the account",
       "allowNull": false
     },
     {
       "name": "bankID",
-      "caption": "Банк",
+      "caption": "Bank",
       "dataType": "Entity",
       "associatedEntity": "cdn_bank",
-      "description": "Банк, в котором открыт счет",
+      "description": "Bank of the account",
       "allowNull": false
     },
     {
       "name": "code",
       "dataType": "String",
       "size": 20,
-      "caption": "КодСчета",
-      "description": "Код счета (Номер счета)",
+      "caption": "Code",
+      "description": "Code of the account (account number)",
       "allowNull": false
     },
     {
       "name": "acctype",
       "dataType": "Enum",
       "enumGroup": "CDN_ACCOUNTTYPE",
-      "caption": "Тип счета",
-      "description": "Тип счета",
+      "caption": "Type",
+      "description": "Type of the account",
       "allowNull": false
     },
     {
       "name": "description",
       "dataType": "String",
       "size": 512,
-      "caption": "Название",
-      "description": "Название (для выбора из списка)",
+      "caption": "Description",
+      "description": "Description",
       "defaultView": false,
       "allowNull": true
     }
