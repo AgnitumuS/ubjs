@@ -17,8 +17,8 @@
   "dependencies": {
     "@unitybase/base": "^5.0.6",
     "@unitybase/ub": "^5.0.7",
-    "asn1js": "^2.0.14",
-    "pkijs": "^2.0.56"
+    "asn1js": "^2.0.19",
+    "pkijs": "^2.1.46"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.6"

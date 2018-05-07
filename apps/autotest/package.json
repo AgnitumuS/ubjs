@@ -32,7 +32,7 @@
     "@unitybase/ubq": "^5.0.7",
     "@unitybase/ubs": "^5.0.7",
     "@unitybase/xlsx": "^5.0.6",
-    "asn1js": "^2.0.14",
+    "asn1js": "^2.0.19",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.22.0",
@@ -44,7 +44,8 @@
     "mustache": "^2.3.0",
     "mxgraph-js": "^1.0.1",
     "node-cron": "^1.1.2",
-    "pkijs": "^2.0.56",
+    "pkijs": "^2.1.46",
+    "pvutils": "^1.0.12",
     "systemjs": "^0.20.13",
     "systemjs-plugin-css": "^0.1.32",
     "tinymce": "^4.5.1"
