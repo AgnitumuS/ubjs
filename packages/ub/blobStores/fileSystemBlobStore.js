@@ -1,3 +1,4 @@
+/* global nhashFile */
 const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const fs = require('fs')
@@ -236,7 +237,8 @@ class FileSystemBlobStore extends BlobStoreCustom {
     let fn = this.keepOriginalFileNames ? dirtyItem.origName : ''
     let ext = path.extname(dirtyItem.origName)
     if (!fn) {
-      fn = `${attribute.entity.sqlAlias || attribute.entity.code}-${attribute.code}${ID}${ext}`
+      let entropy = (Date.now() & 0x0000FFFF).toString(16)
+      fn = `${attribute.entity.sqlAlias || attribute.entity.code}-${attribute.code}${ID}${entropy}${ext}`
     }
     let l1subfolder = ''
     let l2subfolder = ''

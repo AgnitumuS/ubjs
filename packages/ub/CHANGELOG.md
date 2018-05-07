@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.8]
+## Fixed
+- fileSystemBlobStore will add a entropy to the persistent file name to prevent
+ possible file name duplication for historical data
+
 ## [5.0.0]
 ### Added
 - `UB.blobStores` interface for working with BLOBs content
