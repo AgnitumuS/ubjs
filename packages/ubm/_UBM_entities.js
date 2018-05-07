@@ -109,7 +109,6 @@ const ubm_desktop_adm = new ubm_desktop_adm_ns()
 /**
  * Entity relation diagrams
  * @extends EntityNamespace
- * @mixes mStorage
  */
 class ubm_diagram_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -133,30 +132,10 @@ ubm_diagram_ns.attrs = {
   */
   document: null,
  /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
+  * Emulate a mStorage.mi_modifyDate for cache version calculation
   * @type {Date}
   */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
+  mi_modifyDate: null,
 }
 /**
 * Entity relation diagrams

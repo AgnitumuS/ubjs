@@ -5,12 +5,13 @@
 
 /**
  * Reports, User messages (notifications), Settings (aka about:config), Counters
- * @version 5.0.6
+ * @version 5.0.7
  * @module @unitybase/ubs
  */
 
 /**
- * Stored UI filters
+ * Stored UI filters.
+ * doCmd.showList.autofilter use this entity to store user filters definition
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -74,12 +75,14 @@ ubs_filter_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Stored UI filters
+* Stored UI filters.
+ * doCmd.showList.autofilter use this entity to store user filters definition
 * @type {ubs_filter_ns}
 */
 const ubs_filter = new ubs_filter_ns()
 /**
- * Messages
+ * System messages.
+ * System messages
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -152,12 +155,14 @@ ubs_message_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Messages
+* System messages.
+ * System messages
 * @type {ubs_message_ns}
 */
 const ubs_message = new ubs_message_ns()
 /**
- * Messages
+ * System messages.
+ * System messages
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -225,12 +230,14 @@ ubs_message_edit_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Messages
+* System messages.
+ * System messages
 * @type {ubs_message_edit_ns}
 */
 const ubs_message_edit = new ubs_message_edit_ns()
 /**
- * Message recipients
+ * System messages recipients.
+ * System messages recipient
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -255,7 +262,8 @@ ubs_message_recipient_ns.attrs = {
   acceptDate: null,
 }
 /**
-* Message recipients
+* System messages recipients.
+ * System messages recipient
 * @type {ubs_message_recipient_ns}
 */
 const ubs_message_recipient = new ubs_message_recipient_ns()
@@ -328,7 +336,6 @@ const ubs_numcounterreserv = new ubs_numcounterreserv_ns()
 /**
  * Report templates
  * @extends EntityNamespace
- * @mixes mStorage
  */
 class ubs_report_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
@@ -361,30 +368,10 @@ ubs_report_ns.attrs = {
   */
   code: null,
  /**
-  * Row owner -> uba_user
-  * @type {Number}
-  */
-  mi_owner: 0,
- /**
-  * Creation date
+  * Emulate a mStorage.mi_modifyDate for cache version calculation
   * @type {Date}
   */
-  mi_createDate: new Date(),
- /**
-  * User who create row -> uba_user
-  * @type {Number}
-  */
-  mi_createUser: 0,
- /**
-  * Modification date
-  * @type {Date}
-  */
-  mi_modifyDate: new Date(),
- /**
-  * User who modify row -> uba_user
-  * @type {Number}
-  */
-  mi_modifyUser: 0,
+  mi_modifyDate: null,
 }
 /**
 * Report templates
@@ -392,7 +379,7 @@ ubs_report_ns.attrs = {
 */
 const ubs_report = new ubs_report_ns()
 /**
- * Settings
+ * Entity with information about system settings
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -460,7 +447,7 @@ ubs_settings_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Settings
+* Entity with information about system settings
 * @type {ubs_settings_ns}
 */
 const ubs_settings = new ubs_settings_ns()
