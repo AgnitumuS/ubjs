@@ -24,6 +24,7 @@ const mailSuffix = '@softline.kiev.ua'
 
 const mailAddr1 = account1 + mailSuffix
 const mailAddr2 = account2 + mailSuffix
+let res
 
 const sender1 = new UBMail.TubMailSender({
   host: mailHost,
@@ -67,7 +68,8 @@ const message1 = {
   fromAddr: mailAddr1,
   toAddr: [mailAddr1, mailAddr2]
 }
-assert(sender1.sendMail(message1), 'Sending message1 failed')
+res = sender1.sendMail(message1)
+assert(res, 'Sending message1 failed: ' + sender1.lastError)
 sleep(SLEEP_TIMEOUT)
 let msgList = receiveMail(receiver1, account1, 1)
 checkIsSameMessage(msgList[0], message1)
@@ -94,7 +96,8 @@ const message2 = {
     }
   ]
 }
-assert.ok(sender1.sendMail(message2), 'Sending message2 failed')
+res = sender1.sendMail(message2)
+assert.ok(res, 'Sending message2 failed: ' + sender1.lastError)
 sleep(SLEEP_TIMEOUT)
 receiveMail(receiver1, account1, 1)
 msgList = receiveMail(receiver2, account2, 2)
@@ -148,7 +151,8 @@ const message3 = {
     }
   ]
 }
-assert.ok(sender2.sendMail(message3), 'Sending message3 failed')
+res = sender2.sendMail(message3)
+assert.ok(res, 'Sending message3 failed: ' + sender2.lastError)
 sleep(SLEEP_TIMEOUT)
 receiveMail(receiver2, account2, 0)
 msgList = receiveMail(receiver1, account1, 1)
@@ -164,7 +168,8 @@ const message4 = {
   fromAddr: mailAddr1,
   toAddr: [mailAddr2]
 }
-assert.ok(sender1.sendMail(message4), 'Sending message4 failed')
+res = sender1.sendMail(message4)
+assert.ok(res, 'Sending message4 failed: ' + sender1.lastError)
 sleep(SLEEP_TIMEOUT)
 msgList = receiveMail(receiver2, account2, 1)
 checkIsSameMessage(msgList[0], message4)
