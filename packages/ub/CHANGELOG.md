@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Fixed
 - fileSystemBlobStore will add a entropy to the persistent file name to prevent
  possible file name duplication for historical data
+- fileSystemBlobStore rotateHistory will delete only revisions older when `store.historyDepth`
 
 ## [5.0.0]
 ### Added

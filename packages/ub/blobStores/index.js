@@ -393,7 +393,7 @@ function rotateHistory (store, attribute, ID, blobInfo) {
     .limit(store.historyDepth)
     .selectAsObject()
   let dataStore = getBlobHistoryDataStore()
-  for (let i = 0, L = histData.length; i < L; i++) {
+  for (let i = 0, L = histData.length - store.historyDepth; i < L; i++) {
     let item = histData[i]
     let historicalBlobInfo = JSON.parse(item['blobInfo'])
     let store = getStore(attribute, historicalBlobInfo)
