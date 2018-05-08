@@ -153,7 +153,7 @@ function clientRequireEp (req, resp) {
     try {
       console.debug(`Try to resolve ${reqPath}`)
       // preventSymlinks emulation. code below will resolve to realPath
-      // what can be outside the application foler if packages are symlinked
+      // what can be outside the application folder if packages are symlinked
       // resolvedPath = require.resolve(reqPath, {
       //   paths: [MODULES_ROOT]
       // })

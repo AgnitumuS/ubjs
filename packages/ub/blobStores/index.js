@@ -75,7 +75,7 @@ function createBlobStoreMap () {
     if (!storeImplementationModule && (!storeConfig.storeType || storeConfig.name === 'fileVirtual')) {
       storeImplementationModule = './fileSystemBlobStore'
     }
-    if (!storeImplementationModule && (storeConfig.name = 'mdb')) {
+    if (!storeImplementationModule && (storeConfig.name === 'mdb')) {
       storeImplementationModule = './mdbBlobStore'
     }
     if (storeImplementationModule === 'fileVirtualWritePDF') {
