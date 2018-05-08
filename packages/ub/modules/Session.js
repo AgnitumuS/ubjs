@@ -23,9 +23,19 @@ let _sessionCached = {
 const Session = {
   /**
    * Fires just after user successfully logged-in but before auth response is written to client.
-   * Inside models initialization script you can subscribe to this event and add some data to Session.uData.
-   * No parameter is passed to this event handler. Example below add `someCustomProperty` to Session.uData
-   * and this value is accessible on client via $App.connection.userData(`someCustomProperty`):
+   * Model developer can subscribe to this event and add some model specific data to Session.uData.
+   *
+   * Since all uData content is passed to client and accessible on client via
+   *  $App.connection.userData(`someCustomProperty`) do not add there a security sensitive data.
+   *
+   * Standard models like `@unitybase/uba` and `@unitybase/org` are subscribed to this event and add
+   * most useful information to the uData - {@see Session.uData Session.uData} documentation.
+   * Never override `uData` using `Session.uData = {...}`, in this case you delete uData properties,
+   * defined in other application models.
+   * Instead define or remove properties using `Session.uData.myProperty = ...`
+   * or use `delete Session.uData.myProperty` if you need to undefine something.
+   *
+   * Example below add `someCustomProperty` to Session.uData:
    *
    *      // @param {THTTPRequest} req
    *      Session.on('login', function (req) {
@@ -33,7 +43,7 @@ const Session = {
    *          uData.someCustomProperty = 'Hello!'
    *      })
    *
-   * See real life example inside `\models\ORG\org.js`.
+   * See real life example inside `@unitybase/org/org.js`.
    * @event login
    */
 
@@ -272,7 +282,8 @@ Session.reset = function (sessionID, userID) {
 
 /**
  * Current session identifier. === 0 if session not started, ===1 in case authentication not used, >1 in case user authorized
- * @type {Number}
+ * @member {number} id
+ * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'id', {
@@ -283,7 +294,8 @@ Object.defineProperty(Session, 'id', {
 })
 /**
  * Logged-in user identifier (from uba_user.ID). Undefined if Session.id is 0 or 1 (no authentication running)
- * @type {Number}
+ * @member {number} userID
+ * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'userID', {
@@ -295,7 +307,8 @@ Object.defineProperty(Session, 'userID', {
 /**
  * Logged-in user role IDs in CSV format. ==="" if no authentication running
  * @deprecated Use Session.uData.roleIDs - an array of roles IDs
- * @type {String}
+ * @member {number} userRoles
+ * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'userRoles', {
@@ -309,7 +322,8 @@ Object.defineProperty(Session, 'userRoles', {
 })
 /**
  * Logged-in user role names in CSV format. ==="" if no authentication running
- * @type {String}
+ * @member {string} userRoleNames
+ * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'userRoleNames', {
@@ -324,7 +338,8 @@ Object.defineProperty(Session, 'userRoleNames', {
 
 /**
  * Logged-in user language. ==="" if no authentication running
- * @type {String}
+ * @member {string} userLang
+ * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'userLang', {
@@ -339,18 +354,17 @@ Object.defineProperty(Session, 'userLang', {
 
 /**
  * Custom properties, defined in {@link Session.login Session.on('login')} handlers for logged-in user.
+ * We strongly recommend to **not modify** value of uData outside the `Session.on('login')` handler -
+ * such modification is not persisted between calls.
  *
- * Starting from UB 1.9.13 this is a JavaScript object (before is {TubList} ).
+ * Properties documented below are added by `@unitybase/uba` model, but other model can define his own properties.
  *
- * If modified inside Session.on('login'), value of this object is persisted into global server Sessions (via JSON.stringify)
- * and restored for each call (via JSON.parse).
- *
- * Never override it using `Session.uData = {...}`, in this case you delete uData properties, defined in other application models.
- * Instead define or remove properties using `Session.uData.myProperty = ...` or `delete Session.uData.myProperty`;
- *
- * We strongly recommend to **not modify** value of uData outside the `Session.on('login')` handler.
- * Such modification is not persisted between calls.
- * @type {Object}
+ * @member {Object} uData
+ * @memberOf Session
+ * @property {number} userID Logged in user ID. The same as Session.userID. Added by `uba` model
+ * @property {string} login Logged in user name. Added by `uba` model
+ * @property {string} roles Logged in user roles names separated by comma. In most case better to use uData.roleIDs array. Added by `uba` model
+ * @property {Array<number>} roleIDs Array or role IDs for logged in user roles. Added by `uba` model
  * @readonly
  */
 Object.defineProperty(Session, 'uData', {
@@ -366,7 +380,8 @@ Object.defineProperty(Session, 'uData', {
 /**
  * IP address of a user. May differ from IP address current user login from.
  * May be empty if request come from localhost.
- * @type {String}
+ * @member {string} callerIP
+ * @memberOf Session
  * @readonly
  */
 Object.defineProperty(Session, 'callerIP', {
