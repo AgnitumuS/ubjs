@@ -11,7 +11,7 @@ ORG.checkOrgUnitRequired = true
 const UBA_COMMON = require('@unitybase/base').uba_common
 
 /**
- * for a superuser (user with id = 10) nothing happens here
+ * For a superuser (UBA_COMMON.USERS.ADMIN.ID) nothing happens here
  * Session 'login' event occurred every time new user logged in
  * here we calculate logged-in user FullName from org structure,
  * and array of org_unit IDs current user participate
@@ -46,10 +46,10 @@ ORG.onUserLogin = function () {
 
   try {
     eInst = UB.Repository('org_employeeonstaff')
-            .attrs(['ID', 'employeeOnStaffType', 'description', 'employeeID.userID', 'employeeID.shortFIO', 'employeeID.fullFIO', 'staffUnitID.ID.mi_treePath',
-              'staffUnitID.parentID', 'staffUnitID.parentID.mi_unityEntity', 'staffUnitID', 'staffUnitID.fullName', 'staffUnitID.name', 'employeeID'])
-            .where('[employeeID.userID]', '=', Session.userID)
-            .select()
+      .attrs(['ID', 'employeeOnStaffType', 'description', 'employeeID.userID', 'employeeID.shortFIO', 'employeeID.fullFIO', 'staffUnitID.ID.mi_treePath',
+        'staffUnitID.parentID', 'staffUnitID.parentID.mi_unityEntity', 'staffUnitID', 'staffUnitID.fullName', 'staffUnitID.name', 'employeeID'])
+      .where('[employeeID.userID]', '=', Session.userID)
+      .select()
   } catch (ex) {
         // this possible if we connect to empty database without org_* tables
     lastError = ex.toString()

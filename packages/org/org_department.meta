@@ -1,125 +1,133 @@
-﻿{
-    "caption": "Internal departments",
-    "description": "Internal departments",
-    "documentation":"This dictionary contains list of departments. Each department links to org_unit by Unity mixin",
-	"connectionName": "",
-	"sqlAlias": "odep",
-	"cacheType": "catySession",
-	"descriptionAttribute": "caption",
-	"documentation": "",
-	"attributes": {
-		"parentID":                                                    
-		{
-			"dataType": "Entity",
-			"associatedEntity": "org_unit",
-			"caption": "Parent",
-			"description": "Parent",
-			"allowNull": true
-		},
-		"code":
-		{
-			"dataType": "String",
-			"size": 16,
-			"caption": "Internal code",
-			"description": "Internal code of department",
-			"allowNull": false
-		},
-		"name":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Department name",
-			"description": "Name of department without the quotes and abbreviations",
-			"allowNull": false,
-            "isMultiLang": true
-		},
-		"fullName":
-		{
-			"dataType": "String",
-			"size": 255,
-			"caption": "Department full name",
-			"description": "Department full name",
-			"allowNull": false,
-            "isMultiLang": true
-		},
-		"description":
-		{
-			"dataType": "String",
-			"size": 255,
-			"caption": "Department description",
-			"description": "Department description",
-			"allowNull": true,
-            "isMultiLang": true
-		},
-        "nameGen": {
-            "dataType": "String",
-            "size": 128,
-            "caption": "Department name in genitive case",
-            "description": "Department name without the quotes and abbreviations in genitive case",
-            "allowNull": true,
-            "isMultiLang": true
-        },		
-        "nameDat": {
-            "dataType": "String",
-            "size": 128,
-            "caption": "Department name in dative case",
-            "description": "Department name without the quotes and abbreviations in dative case",
-            "allowNull": true,
-            "isMultiLang": true
-        },
-        "fullNameGen": {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Department full name in genitive case",
-            "description": "Department full name in genitive case",
-            "allowNull": true,
-            "isMultiLang": true
-        },
-        "fullNameDat": {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Department full name in dative case",
-            "description": "Department full name in dative case",
-            "allowNull": true,
-            "isMultiLang": true
-        },		
-		"depTypeID":
-		{
-			"dataType": "Entity",
-			"associatedEntity": "cdn_deptype",
-			"caption": "Department type",
-			"description": "Department type",
-			"allowNull": true
-		},
-        "isClerical":
-        {
-            "dataType": "Boolean",
-            "caption": "Clerical?",
-            "description": "Clerical unit mark",
-			"defaultValue": "0"
-        },
-		"caption":
-		{
-			"dataType": "String",
-            "size": 512,
-			"caption": "Caption",
-			"description": "Caption",
-            "isMultiLang": true,
-			"allowNull": false
-		}
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-         },
-		"dataHistory":{},
-		"unity":{
-			"entity": "org_unit",
-			"attributeList": ["parentID","code","caption"], 
-			"defaults":{ 
-				"unitType": "DEP" 
-			} 
-		}
-	}
+{
+  "caption": "Internal departments",
+  "description": "Internal departments",
+  "documentation": "",
+  "connectionName": "",
+  "sqlAlias": "odep",
+  "cacheType": "Session",
+  "descriptionAttribute": "caption",
+  "attributes": [
+    {
+      "dataType": "Entity",
+      "associatedEntity": "org_unit",
+      "caption": "Parent",
+      "description": "Parent",
+      "allowNull": true,
+      "name": "parentID"
+    },
+    {
+      "dataType": "String",
+      "size": 16,
+      "caption": "Internal code",
+      "description": "Internal code of department",
+      "allowNull": false,
+      "defaultValue": "----",
+      "name": "code"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Department name",
+      "description": "Name of department without the quotes and abbreviations",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "name"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Department full name",
+      "description": "Department full name",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "fullName"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Department description",
+      "description": "Department description",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "description"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Department name in genitive case",
+      "description": "Department name without the quotes and abbreviations in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "nameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Department name in dative case",
+      "description": "Department name without the quotes and abbreviations in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "nameDat"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Department full name in genitive case",
+      "description": "Department full name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullNameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Department full name in dative case",
+      "description": "Department full name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullNameDat"
+    },
+    {
+      "dataType": "Entity",
+      "associatedEntity": "cdn_deptype",
+      "caption": "Department type",
+      "description": "Department type",
+      "allowNull": true,
+      "name": "depTypeID"
+    },
+    {
+      "dataType": "Boolean",
+      "caption": "Clerical?",
+      "description": "Clerical unit mark",
+      "defaultValue": "0",
+      "name": "isClerical"
+    },
+    {
+      "dataType": "String",
+      "size": 512,
+      "caption": "Caption",
+      "description": "Caption",
+      "isMultiLang": true,
+      "allowNull": false,
+      "name": "caption"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "dataHistory": {},
+    "unity": {
+      "entity": "org_unit",
+      "attributeList": [
+        "parentID",
+        "code",
+        "caption"
+      ],
+      "defaults": {
+        "unitType": "DEP"
+      }
+    }
+  }
 }

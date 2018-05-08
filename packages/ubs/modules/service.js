@@ -76,6 +76,7 @@ exports.Service = {
    * named 'code'.
    * For example, in *.def file, desirable '----' like this { attributeName: "code", defaultValue: '----'}
    * @method
+   * @deprecated Use ubs_numcounter.generateAutoIncrementalCode (+ set default value for a attribute)
    * @param {ubMethodParams} ctxt
    * @param {string} [emptyCode]  - string that means emptyCode value
    * @param {number} [codeLen] - length of 'CODE' attribute

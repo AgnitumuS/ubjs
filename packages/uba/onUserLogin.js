@@ -106,7 +106,9 @@ function onUserLogin (req) {
   let userInfo = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
   data.login = userInfo.name || Session.userID
   if (!doCheckAdvancedSecurity) {
-    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity') ? checkAdvancedSecurity : function () { return {enabled: false} }
+    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity')
+      ? checkAdvancedSecurity
+      : function () { return {enabled: false} }
   }
   let advCheckData = doCheckAdvancedSecurity(req)
   try {
