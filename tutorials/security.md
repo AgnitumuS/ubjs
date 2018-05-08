@@ -180,6 +180,11 @@ For user, specified in the `UBA.securityDashboard.supervisorUser` setting key (b
 `Security monitor` ( `Administrator -> Security -> Security monitor` ) feature, where all security related events are logged in the real time.
 For a real-time communication WebSockets must be turned on both server and client side - see {@tutorial web_sockets}.
 
+## Additional feature of enterprise edition
+### Kerberos authentication
+
+#### Linux 
+
 ## Additional features in Defence edition
 UnityBase Defense edition provide additional security features.
 In the security environment instead of usual HTML browsed UBDefenseBrowser - a chromium based Web browser must be used.
