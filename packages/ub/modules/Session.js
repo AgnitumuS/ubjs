@@ -365,6 +365,26 @@ Object.defineProperty(Session, 'userLang', {
  * @property {string} login Logged in user name. Added by `uba` model
  * @property {string} roles Logged in user roles names separated by comma. In most case better to use uData.roleIDs array. Added by `uba` model
  * @property {Array<number>} roleIDs Array or role IDs for logged in user roles. Added by `uba` model
+ * @property {string} [employeeShortFIO] Short name of employee. Added by `org` model
+ * @property {string} [employeeFullFIO] Full name of employee
+ * @property {number} [employeeID] Employee ID
+ * @property {string} [staffUnitFullName]
+ * @property {string} [staffUnitName]
+ * @property {number} [staffUnitID] permanent staffUnitID. Added by `org` model
+ * @property {number} [employeeOnStaffID] permanent employeeOnStaffID. Added by `org` model
+ * @property {number} [parentID] permanent staffUnitID parent. Added by `org` model
+ * @property {string} [parentUnityEntity] permanent staffUnitID parent entity type. Added by `org` model
+ * @property {string} [orgUnitIDs] all orgUnit's IDs as CSV string. Added by `org` model
+ * @property {string} [permanentOrgUnitIDs] all user orgUnit ID's permanent employeeOnStaffIDs in CSV. Added by `org` model
+ * @property {string} [tempStaffUnitIDs] array temporary staffUnitIDs in CSV. Added by `org` model
+ * @property {string} [tempEmployeeOnStaffIDs] array of temporary employeeOnStaffIDs in CSV. Added by `org` model
+ * @property {string} [assistantStaffUnitIDs] array of assistant staffUnitIDs in CSV. Added by `org` model
+ * @property {string} [assistantEmployeeOnStaffIDs] array of assistant employeeOnStaffIDs  in CSV. Added by `org` model
+ * @property {string} [allStaffUnitIDs] array of all (permanent + temporary + assistant) staffUnitIDs in CSV. Added by `org` model
+ * @property {string} [allEmployeeOnStaffIDs] array of all (permanent + temporary + assistant) employeeOnStaffIds in CSV. Added by `org` model
+ * @property {string} [tempPositions] stringified array ob temporary position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
+ * @property {string} [assistantPositions] stringified array ob assistant position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
+ * @property {string} [allPositions] stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}. Added by `org` model
  * @readonly
  */
 Object.defineProperty(Session, 'uData', {
