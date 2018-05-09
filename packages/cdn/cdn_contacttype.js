@@ -39,5 +39,3 @@ me.getContactTypeByCode = getContactTypeByCode
 function clearCache () {
   App.globalCachePut(CACHE_KEY, '')
 }
-
-me.afterinsert = me.afterupdate = me.afterdelete = clearCache
