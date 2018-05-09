@@ -96,23 +96,24 @@ function ubaAuditLinkUser (ctx) {
 function ubaAuditLinkUserModify (ctx) {
   if (!ubaAuditPresent) return
 
-  var
-    params = ctx.mParams.execParams,
-    actionUserRepo,
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, linkUser
+  const params = ctx.mParams.execParams
+  let actionUser
+  let oldValues, linkUser
 
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
     oldValues = JSON.parse(origStore.asJSONObject)
-    oldValues = (typeof(oldValues) === 'object') && (oldValues instanceof Array) && oldValues.length > 0 ? oldValues[0] : oldValues
+    oldValues = ((typeof oldValues === 'object') && (oldValues instanceof Array) && (oldValues.length > 0))
+      ? oldValues[0]
+      : oldValues
   } finally {
     origStore.currentDataName = origName
   }
 
   if (params.userID !== oldValues.userID) {
-    actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+    actionUser = Session.uData.login
     if (oldValues.userID) {
       linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
       auditStore.run('insert', {
@@ -120,7 +121,7 @@ function ubaAuditLinkUserModify (ctx) {
           entity: 'org_employee',
           entityinfo_id: params.ID,
           actionType: 'DELETE',
-          actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+          actionUser: actionUser,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: linkUser.eof ? oldValues.userID : linkUser.get('name'),
@@ -136,7 +137,7 @@ function ubaAuditLinkUserModify (ctx) {
           entity: 'org_employee',
           entityinfo_id: params.ID,
           actionType: 'INSERT',
-          actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+          actionUser: actionUser,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: linkUser.eof ? params.userID : linkUser.get('name'),
@@ -150,34 +151,35 @@ function ubaAuditLinkUserModify (ctx) {
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditLinkUserDelete (ctx) {
   if (!ubaAuditPresent) return
 
-  var
-    params = ctx.mParams.execParams,
-    actionUserRepo,
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, linkUser
+  const params = ctx.mParams.execParams
+  let oldValues, linkUser
 
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
   try {
     origStore.currentDataName = 'selectBeforeDelete'
     oldValues = JSON.parse(origStore.asJSONObject)
-    oldValues = (typeof(oldValues) === 'object') && (oldValues instanceof Array) && oldValues.length > 0 ? oldValues[0] : oldValues
+    oldValues = ((typeof oldValues === 'object') && (oldValues instanceof Array) && (oldValues.length > 0))
+      ? oldValues[0]
+      : oldValues
   } finally {
     origStore.currentDataName = origName
   }
   if (oldValues.userID) {
-    actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+    let actionUser = Session.uData.login
     linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
     auditStore.run('insert', {
       execParams: {
         entity: 'uba_user',
         entityinfo_id: params.ID,
         actionType: 'DELETE',
-        actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+        actionUser: actionUser,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
         targetUser: linkUser.eof ? oldValues.userID : linkUser.get('name'),
@@ -186,4 +188,3 @@ function ubaAuditLinkUserDelete (ctx) {
     })
   }
 }
-

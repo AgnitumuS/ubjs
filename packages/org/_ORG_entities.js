@@ -1,1422 +1,1118 @@
-/* eslint-disable camelcase,no-unused-vars */
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Внутрішні підрозділи
-* @mixes EventEmitter
-*/
-global.org_department = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
+ * Organisation structure
+ * @version 5.0.8
+ * @module @unitybase/org
+ */
 
 /**
-* Attributes of "Внутрішні підрозділи"
-* @class
-*/
-function org_department_object () {
-  /**
-  *  (ref -> org_unit)
-  * 
+ * Internal departments.
+ * This dictionary contains list of departments. Each department links to org_unit by Unity mixin
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class org_department_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_department_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Батьківський елемент (ref -> org_unit)
-  * Батьківський елемент
+  ID: 0,
+ /**
+  * Parent -> org_unit
   * @type {Number}
   */
-  this.parentID = null
-  /**
-  * Внутрішній код 
-  * Внутрішній код підрозділу
+  parentID: null,
+ /**
+  * Internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва підрозділу 
-  * Назва без лапок та абревіатур
+  code: '',
+ /**
+  * Name of department without the quotes and abbreviations
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва підрозділу 
-  * Повна назва підрозділу
+  name: '',
+ /**
+  * Department full name
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Опис підрозділу 
-  * Опис
+  fullName: '',
+ /**
+  * Department description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Назва в род. відмінку 
-  * Назва без лапок та абревіатур у родовому відмінку
+  description: null,
+ /**
+  * Department name without the quotes and abbreviations in genitive case
   * @type {String}
   */
-  this.nameGen = null
-  /**
-  * Назва в дав. відмінку 
-  * Назва без лапок та абревіатур у давальному відмінку
+  nameGen: null,
+ /**
+  * Department name without the quotes and abbreviations in dative case
   * @type {String}
   */
-  this.nameDat = null
-  /**
-  * Повна назва в род. відмінку 
-  * Повна назва підрозділу в родовому відмінку
+  nameDat: null,
+ /**
+  * Department full name in genitive case
   * @type {String}
   */
-  this.fullNameGen = null
-  /**
-  * Повна назва в дав. відмінку 
-  * Повна назва підрозділу в давальному відмінку
+  fullNameGen: null,
+ /**
+  * Department full name in dative case
   * @type {String}
   */
-  this.fullNameDat = null
-  /**
-  * Тип підрозділу (ref -> cdn_deptype)
-  * Тип підрозділу
+  fullNameDat: null,
+ /**
+  * Department type -> cdn_deptype
   * @type {Number}
   */
-  this.depTypeID = null
-  /**
-  * Діловодне? 
-  * Чи є цей підрозділ діловодним
+  depTypeID: null,
+ /**
+  * Clerical unit mark
   * @type {Boolean}
   */
-  this.isClerical = undefined
-  /**
-  * Заголовок 
-  * Заголовок
+  isClerical: undefined,
+ /**
+  * Caption
   * @type {String}
   */
-  this.caption = ''
-  /**
-  *  (ref -> org_department)
-  * 
+  caption: '',
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Діаграми
-* @mixes EventEmitter
+* Internal departments.
+ * This dictionary contains list of departments. Each department links to org_unit by Unity mixin
+* @type {org_department_ns}
 */
-global.org_diagram = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_department = new org_department_ns()
 /**
-* Attributes of "Діаграми"
-* @class
-*/
-function org_diagram_object () {
-  /**
-  *  
-  * 
+ * Diagrams
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_diagram_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_diagram_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Корінь (ref -> org_unit)
+  ID: 0,
+ /**
   * @type {Number}
   */
-  this.orgunitID = null
-  /**
-  * Назва 
-  * Назва
+  orgunitID: null,
+ /**
+  * Name
   * @type {String}
   */
-  this.caption = null
-  /**
-  * За замовченням 
-  * За замовченням
+  caption: null,
+ /**
+  * Default
   * @type {Boolean}
   */
-  this.isdefault = undefined
-  /**
-  * Органограма 
-  * Органограма
+  isdefault: undefined,
+ /**
+  * Organization chart
   * @type {String}
   */
-  this.document = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  document: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Співробітники внутрішньої організації
-* @mixes EventEmitter
+* Diagrams
+* @type {org_diagram_ns}
 */
-global.org_employee = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_diagram = new org_diagram_ns()
 /**
-* Attributes of "Співробітники внутрішньої організації"
-* @class
-*/
-function org_employee_object () {
-  /**
-  *  
-  * 
+ * List of employees of internal organizations.
+ * This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class org_employee_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_employee_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Внутрішній код співробітника
+  ID: 0,
+ /**
+  * Employees internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Користувач (ref -> uba_user)
-  * Логін користувача
+  code: '',
+ /**
+  * User login -> uba_user
   * @type {Number}
   */
-  this.userID = null
-  /**
-  * Прізвище 
-  * Прізвище співробітника
+  userID: null,
+ /**
+  * Employee last name
   * @type {String}
   */
-  this.lastName = ''
-  /**
-  * Ім&#39;я 
-  * Ім&#39;я співробітника
+  lastName: '',
+ /**
+  * Employee first name
   * @type {String}
   */
-  this.firstName = ''
-  /**
-  * По батькові 
-  * По батькові співробітника
+  firstName: '',
+ /**
+  * Employee middle name
   * @type {String}
   */
-  this.middleName = null
-  /**
-  * Дата народження 
-  * Дата народження
+  middleName: null,
+ /**
+  * Date of birth
   * @type {Date}
   */
-  this.birthDate = null
-  /**
-  * Коментар 
-  * Коментар по співробітнику
+  birthDate: null,
+ /**
+  * Comment on employee
   * @type {String}
   */
-  this.description = null
-  /**
-  * Стать 
-  * Стать співробітника внутрішньої організації
+  description: null,
+ /**
+  * Employee sex
   * @type {String}
   */
-  this.sexType = ''
-  /**
-  * Суфікс 
-  * Суфікс
+  sexType: '',
+ /**
+  * Suffix
   * @type {String}
   */
-  this.suffix = null
-  /**
-  * Коротке ПІБ 
-  * Приклад: Прізвище І.Б.
+  suffix: null,
+ /**
+  * Example: Smith J.K.
   * @type {String}
   */
-  this.shortFIO = null
-  /**
-  * Повне ПІБ 
-  * Приклад: Прізвище Ім&#39;я По батькові
+  shortFIO: null,
+ /**
+  * Example: Smith Jay Key
   * @type {String}
   */
-  this.fullFIO = ''
-  /**
-  * Звернення 
-  * Як звертатися до цієї людини
+  fullFIO: '',
+ /**
+  * Describes how to treat to this person
   * @type {String}
   */
-  this.apply = null
-  /**
-  * Прізвище в род. відмінку 
-  * Прізвище співробітника в родовому відмінку
+  apply: null,
+ /**
+  * Employee last name in genitive case
   * @type {String}
   */
-  this.lastNameGen = null
-  /**
-  * Прізвище в дав. відмінку 
-  * Прізвище співробітника в давальному відмінку
+  lastNameGen: null,
+ /**
+  * Employee last name in dative case
   * @type {String}
   */
-  this.lastNameDat = null
-  /**
-  * Ім&#39;я в род. відмінку 
-  * Ім&#39;я співробітника в родовому відмінку
+  lastNameDat: null,
+ /**
+  * Employee first name in genitive case
   * @type {String}
   */
-  this.firstNameGen = null
-  /**
-  * Ім&#39;я в дав. відмінку 
-  * Ім&#39;я співробітника в давальному відмінку
+  firstNameGen: null,
+ /**
+  * Employee first name in dative case
   * @type {String}
   */
-  this.firstNameDat = null
-  /**
-  * По-батькові в род. відмінку 
-  * По-батькові в родовому відмінку
+  firstNameDat: null,
+ /**
+  * Employee middle name in genitive case
   * @type {String}
   */
-  this.middleNameGen = null
-  /**
-  * По-батькові в дав. відмінку 
-  * По-батькові в давальному відмінку
+  middleNameGen: null,
+ /**
+  * Employee middle name in dative case
   * @type {String}
   */
-  this.middleNameDat = null
-  /**
-  * Скорочений ПІБ у род. відмінку 
-  * Скорочений ПІБ співробітника в родовому відмінку
+  middleNameDat: null,
+ /**
+  * Employee short name in genitive case
   * @type {String}
   */
-  this.shortFIOGen = null
-  /**
-  * Скорочений ПІБ у дав. відмінку 
-  * Скорочений ПІБ персони в давальному відмінку
+  shortFIOGen: null,
+ /**
+  * Employee short name in dative case
   * @type {String}
   */
-  this.shortFIODat = null
-  /**
-  * Повний ПІБ у род. відмінку 
-  * Повний ПІБ співробітника в родовому відмінку
+  shortFIODat: null,
+ /**
+  * Employee full name in genitive case
   * @type {String}
   */
-  this.fullFIOGen = null
-  /**
-  * Повний ПІБ у дав. відмінку 
-  * Повний ПІБ співробітника в давальному відмінку
+  fullFIOGen: null,
+ /**
+  * Employee full name in dative case
   * @type {String}
   */
-  this.fullFIODat = null
-  /**
-  * Звернення в род. відмінку 
-  * Як звертатися до цієї людини в родовому відмінку
+  fullFIODat: null,
+ /**
+  * Describes how to treat to this person in genitive case
   * @type {String}
   */
-  this.applyGen = null
-  /**
-  * Звернення в дав. відмінку 
-  * Як звертатися до цієї людини в давальному відмінку
+  applyGen: null,
+ /**
+  * Describes how to treat to this person in dative case
   * @type {String}
   */
-  this.applyDat = null
-  /**
-  * Факсиміле 
-  * Зображення підпису співробітника
+  applyDat: null,
+ /**
+  * Employee signature image
   * @type {String}
   */
-  this.facsimile = null
-  /**
-  *  (ref -> org_employee)
-  * 
+  facsimile: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Призначення внутрішньої організації
-* @mixes EventEmitter
+* List of employees of internal organizations.
+ * This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity
+* @type {org_employee_ns}
 */
-global.org_employeeonstaff = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_employee = new org_employee_ns()
 /**
-* Attributes of "Призначення внутрішньої організації"
-* @class
-*/
-function org_employeeonstaff_object () {
-  /**
-  *  
-  * 
+ * List of internal organization assignments.
+ * Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение). Так же есть тип назначения (временное, постоянное, полставки и т.д.)
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class org_employeeonstaff_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_employeeonstaff_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Таб. № 
-  * Табельний номер
+  ID: 0,
+ /**
+  * Employee number
   * @type {String}
   */
-  this.tabNo = ''
-  /**
-  * Співробітник (ref -> org_employee)
-  * Співробітник
+  tabNo: '',
+ /**
+  * Employee -> org_employee
   * @type {Number}
   */
-  this.employeeID = 0
-  /**
-  * Штатна одиниця (ref -> org_staffunit)
-  * Штатна одиниця внутрішньої організації
+  employeeID: 0,
+ /**
+  * Internal organization staff unit -> org_staffunit
   * @type {Number}
   */
-  this.staffUnitID = 0
-  /**
-  * Тип призначення 
-  * Тип призначення
+  staffUnitID: 0,
+ /**
+  * Assignment type
   * @type {String}
   */
-  this.employeeOnStaffType = ''
-  /**
-  * Опис 
-  * Опис призначення
+  employeeOnStaffType: '',
+ /**
+  * Assignment description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Заголовок 
-  * Заголовок
+  description: null,
+ /**
+  * Caption
   * @type {String}
   */
-  this.caption = null
-  /**
-  *  (ref -> org_employeeonstaff)
-  * 
+  caption: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Призначення з відкладеною датою
-* @mixes EventEmitter
+* List of internal organization assignments.
+ * Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение). Так же есть тип назначения (временное, постоянное, полставки и т.д.)
+* @type {org_employeeonstaff_ns}
 */
-global.org_employeeonstaff_pending = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_employeeonstaff = new org_employeeonstaff_ns()
 /**
-* Attributes of "Призначення з відкладеною датою"
-* @class
-*/
-function org_employeeonstaff_pending_object () {
-  /**
-  *  
-  * 
+ * Assignment with pending date.
+ * Entity which contains links to assignments with pending date
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_employeeonstaff_pending_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_employeeonstaff_pending_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Призначення (ref -> org_employeeonstaff)
-  * Призначення
+  ID: 0,
+ /**
+  * Assignment -> org_employeeonstaff
   * @type {Number}
   */
-  this.emponstaffID = 0
-  /**
-  * Початок 
-  * Початок дії призначення
+  emponstaffID: 0,
+ /**
+  * Assignment start date
   * @type {Date}
   */
-  this.startDate = new Date()
-  /**
-  * Закінчення 
-  * Закінчення дії призначення
+  startDate: new Date(),
+ /**
+  * Assignment end date
   * @type {Date}
   */
-  this.endDate = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  endDate: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* Розрахункові коди
-* @mixes EventEmitter
+* Assignment with pending date.
+ * Entity which contains links to assignments with pending date
+* @type {org_employeeonstaff_pending_ns}
 */
-global.org_orgaccount = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_employeeonstaff_pending = new org_employeeonstaff_pending_ns()
 /**
-* Attributes of "Розрахункові коди"
-* @class
-*/
-function org_orgaccount_object () {
-  /**
-  *  
-  * 
+ * List of current accounts of internal organizations
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_orgaccount_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_orgaccount_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Организація (ref -> org_organization)
-  * Организація
+  ID: 0,
+ /**
+  * Organization -> org_organization
   * @type {Number}
   */
-  this.organizationID = 0
-  /**
-  * Валюта (ref -> cdn_currency)
-  * Валюта рахунку
+  organizationID: 0,
+ /**
+  * Currency of the account
   * @type {Number}
   */
-  this.currencyID = 0
-  /**
-  * Банк (ref -> cdn_bank)
-  * Банк, де відкрито рахунок
+  currencyID: 0,
+ /**
+  * Bank of the account -> cdn_bank
   * @type {Number}
   */
-  this.bankID = 0
-  /**
-  * Код рахунку 
-  * Код рахунку (номер рахунку)
+  bankID: 0,
+ /**
+  * Code of the account (account number)
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва (для вибору зі списку)
+  code: '',
+ /**
+  * Type of the account
   * @type {String}
   */
-  this.description = null
-  /**
-  * Тип рахунку 
-  * Тип рахунку
+  acctype: '',
+ /**
+  * Description
   * @type {String}
   */
-  this.acctype = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  description: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Внутрішні організації
-* @mixes EventEmitter
+* List of current accounts of internal organizations
+* @type {org_orgaccount_ns}
 */
-global.org_organization = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_orgaccount = new org_orgaccount_ns()
 /**
-* Attributes of "Внутрішні організації"
-* @class
-*/
-function org_organization_object () {
-  /**
-  *  (ref -> org_unit)
-  * 
+ *  List of internal organizations.
+ * This dictionary contains list of internal organizations. Each organization links to org_unit by Unity mixin
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class org_organization_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_organization_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Батьківський елемент (ref -> org_unit)
-  * Батьківський елемент
+  ID: 0,
+ /**
+  * Parent -> org_unit
   * @type {Number}
   */
-  this.parentID = null
-  /**
-  * Внутрішній код 
-  * Внутрішній код організації
+  parentID: null,
+ /**
+  * Organization internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * ЄДРПОУ 
-  * Загальний класифікатор підприємств і організацій (ЄДРПОУ)
+  code: '',
+ /**
+  * Common classifier of enterprises and organizations (CCEO)
   * @type {String}
   */
-  this.OKPOCode = null
-  /**
-  * Податковий № 
-  * Податковий номер
+  OKPOCode: null,
+ /**
+  * Tax number
   * @type {String}
   */
-  this.taxCode = null
-  /**
-  * № св. ПДВ 
-  * № свідоцтва платника ПДВ
+  taxCode: null,
+ /**
+  * VAT (value-added tax) registration certificate number
   * @type {String}
   */
-  this.vatCode = null
-  /**
-  * Назва організації 
-  * Назва без лапок та абревіатур
+  vatCode: null,
+ /**
+  * Name of organization without the quotes and abbreviations
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва організації 
-  * Повна назва, як воно вказано в свідоцтві про реєстрацію
+  name: '',
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Назва в род. відмінку 
-  * Назва без лапок та абревіатур у родовому відмінку
+  fullName: '',
+ /**
+  * Organization name in genitive case
   * @type {String}
   */
-  this.nameGen = null
-  /**
-  * Назва в дав. відмінку 
-  * Назва без лапок та абревіатур у давальному відмінку
+  nameGen: null,
+ /**
+  * Organization name in dative case
   * @type {String}
   */
-  this.nameDat = null
-  /**
-  * Повна назва в род. відмінку 
-  * Повна назва організації, як це вказано в свідоцтві про реєстрацію, в родовому відмінку
+  nameDat: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in genitive case
   * @type {String}
   */
-  this.fullNameGen = null
-  /**
-  * Повна назва в дав. відмінку 
-  * Повна назва організації, як це вказано в свідоцтві про реєстрацію, в давальному відмінку
+  fullNameGen: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in dative case
   * @type {String}
   */
-  this.fullNameDat = null
-  /**
-  * Опис організації 
-  * Опис
+  fullNameDat: null,
+ /**
+  * Organization description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Тип організації (ref -> cdn_orgbusinesstype)
-  * Тип організації
+  description: null,
+ /**
+  * Organization type -> cdn_orgbusinesstype
   * @type {Number}
   */
-  this.orgBusinessTypeID = null
-  /**
-  * Тип власності (ref -> cdn_orgownershiptype)
-  * Тип власності
+  orgBusinessTypeID: null,
+ /**
+  * Ownership type -> cdn_orgownershiptype
   * @type {Number}
   */
-  this.orgOwnershipTypeID = null
-  /**
-  *  (ref -> org_organization)
-  * 
+  orgOwnershipTypeID: null,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Посади
-* @mixes EventEmitter
+*  List of internal organizations.
+ * This dictionary contains list of internal organizations. Each organization links to org_unit by Unity mixin
+* @type {org_organization_ns}
 */
-global.org_profession = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_organization = new org_organization_ns()
 /**
-* Attributes of "Посади"
-* @class
-*/
-function org_profession_object () {
-  /**
-  *  
-  * 
+ * List of positions
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_profession_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_profession_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
-  * Код посади
+  ID: 0,
+ /**
+  * Code of position
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва 
-  * Назва посади
+  code: '',
+ /**
+  * Position name
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна назва посади
+  name: '',
+ /**
+  * Position full name
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Назва в род. відмінку 
-  * Назва посади в родовому відмінку
+  fullName: '',
+ /**
+  * Position name in genitive case
   * @type {String}
   */
-  this.nameGen = null
-  /**
-  * Назва в дав. відмінку 
-  * Назва посади в давальному відмінку
+  nameGen: null,
+ /**
+  * Position name in dative case
   * @type {String}
   */
-  this.nameDat = null
-  /**
-  * Повна назва в род. відмінку 
-  * Повна назва посади в родовому відмінку
+  nameDat: null,
+ /**
+  * Position full name in genitive case
   * @type {String}
   */
-  this.fullNameGen = null
-  /**
-  * Повна назва в дав. відмінку 
-  * Повна назва посади в давальному відмінку
+  fullNameGen: null,
+ /**
+  * Position full name in dative case
   * @type {String}
   */
-  this.fullNameDat = null
-  /**
-  * Заголовок 
+  fullNameDat: null,
+ /**
   * @type {String}
   */
-  this.description = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  description: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Штатні одиниці
-* @mixes EventEmitter
+* List of positions
+* @type {org_profession_ns}
 */
-global.org_staffunit = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_profession = new org_profession_ns()
 /**
-* Attributes of "Штатні одиниці"
-* @class
-*/
-function org_staffunit_object () {
-  /**
-  *  (ref -> org_unit)
-  * 
+ * List of staff units.
+ * This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class org_staffunit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_staffunit_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Батьківський елемент (ref -> org_unit)
-  * Батьківський елемент
+  ID: 0,
+ /**
+  * Parent -> org_unit
   * @type {Number}
   */
-  this.parentID = null
-  /**
-  * Внутрішній код 
-  * Внутрішній код штатної одиниці
+  parentID: null,
+ /**
+  * Staff unit internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Назва штатної одиниці 
-  * Назва без лапок і абревіатур
+  code: '',
+ /**
+  * Name of staff unit without the quotes and abbreviations
   * @type {String}
   */
-  this.name = ''
-  /**
-  * Повна назва 
-  * Повна назва штатної одиниці
+  name: '',
+ /**
+  * Staff unit full name
   * @type {String}
   */
-  this.fullName = ''
-  /**
-  * Опис штатної одиниці 
-  * Опис штатної одиниці
+  fullName: '',
+ /**
+  * Staff unit description
   * @type {String}
   */
-  this.description = null
-  /**
-  * Назва штатної одиниці в род. відмінку 
-  * Назва без лапок і абревіатур у родовому відмінку
+  description: null,
+ /**
+  * Name of staff unit without the quotes and abbreviations in genitive case
   * @type {String}
   */
-  this.nameGen = null
-  /**
-  * Назва штатної одиниці в дав. відмінку 
-  * Назва без лапок і абревіатур у давальному відмінку
+  nameGen: null,
+ /**
+  * Name of staff unit without the quotes and abbreviations in dative case
   * @type {String}
   */
-  this.nameDat = null
-  /**
-  * Повна назва в род. відмінку 
-  * Повна назва штатної одиниці в родовому відмінку
+  nameDat: null,
+ /**
+  * Staff unit full name in genitive case
   * @type {String}
   */
-  this.fullNameGen = null
-  /**
-  * Повна назва в дав. відмінку 
-  * Повна назва штатної одиниці в давальному відмінку
+  fullNameGen: null,
+ /**
+  * Full name in dative case
   * @type {String}
   */
-  this.fullNameDat = null
-  /**
-  * Заголовок 
-  * Заголовок
+  fullNameDat: null,
+ /**
+  * Caption
   * @type {String}
   */
-  this.caption = ''
-  /**
-  * Професія (ref -> cdn_profession)
-  * Професія
+  caption: '',
+ /**
+  * Profession -> cdn_profession
   * @type {Number}
   */
-  this.professionExtID = null
-  /**
-  * Посада (ref -> org_profession)
-  * Посада
+  professionExtID: null,
+ /**
+  * Position -> org_profession
   * @type {Number}
   */
-  this.professionID = 0
-  /**
-  * Тип штатної одиниці (ref -> cdn_staffunittype)
-  * Тип штатної одиниці
+  professionID: 0,
+ /**
+  * Staff unit type -> cdn_staffunittype
   * @type {Number}
   */
-  this.staffUnitTypeID = 0
-  /**
-  * Рівень субординації 
-  * Рівень субординації - чим нижче, тим штатна одиниця вважається більш важливою по орг. структурі
+  staffUnitTypeID: 0,
+ /**
+  * If level is lower - then staff unit is more important
   * @type {Number}
   */
-  this.subordinationLevel = null
-  /**
-  * Керівник 
-  * Керівник
+  subordinationLevel: null,
+ /**
+  * Boss
   * @type {Boolean}
   */
-  this.isBoss = undefined
-  /**
-  *  (ref -> org_staffunit)
-  * 
+  isBoss: undefined,
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* Організаційні одиниці
-* @mixes EventEmitter
+* List of staff units.
+ * This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin
+* @type {org_staffunit_ns}
 */
-global.org_unit = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const org_staffunit = new org_staffunit_ns()
 /**
-* Attributes of "Організаційні одиниці"
-* @class
-*/
-function org_unit_object () {
-  /**
-  *  
-  * 
+ * List of organization units.
+ * Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes tree
+ */
+class org_unit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_unit_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Батьківський елемент (ref -> org_unit)
-  * Батьківський елемент
-  * 
+  ID: 0,
+ /**
+  * Parent -> org_unit
   * @type {Number}
   */
-  this.parentID = null
-  /**
-  * Внутрішній код 
-  * Внутрішній код організаційної одиниці
+  parentID: null,
+ /**
+  * Organization unit internal code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Заголовок 
-  * Заголовок
+  code: '',
+ /**
+  * Caption
   * @type {String}
   */
-  this.caption = ''
-  /**
-  * Тип орг. одиниці 
-  * Тип організаційної одиниці
+  caption: '',
+ /**
+  * Organization unit type
   * @type {String}
   */
-  this.unitType = ''
-  /**
-  *  
-  * 
+  unitType: '',
+ /**
   * @type {String}
   */
-  this.mi_treePath = ''
-  /**
-  *  (ref -> org_unit)
-  * 
+  mi_treePath: '',
+ /**
   * @type {Number}
   */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
-  /**
-  *  
-  * 
+  mi_deleteUser: null,
+ /**
   * @type {String}
   */
-  this.mi_unityEntity = ''
+  mi_unityEntity: '',
 }
+/**
+* List of organization units.
+ * Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree
+* @type {org_unit_ns}
+*/
+const org_unit = new org_unit_ns()

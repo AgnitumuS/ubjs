@@ -11,12 +11,12 @@ me.on('insert:before', generateDefaultCodeAndCaption)
  * Updates all multilingual captions for org_department
  * @method setCaption
  * @memberOf cdn_organization_ns.prototype
- * @memberOfModule @unitybase/cdn
- * @param {ubMethodParams} ctxt
+ * @memberOfModule @unitybase/org
+ * @param {ubMethodParams} ctx
  * @param {string} mode One on 'INS', 'UPD'
  */
-me.setCaption = function (ctxt, mode) {
-  const execParams = ctxt.mParams.execParams
+me.setCaption = function (ctx, mode) {
+  const execParams = ctx.mParams.execParams
   const defaultSuffix = `_${App.defaultLang}^`
   const supportedLangs = me.entity.connectionConfig.supportLang
 

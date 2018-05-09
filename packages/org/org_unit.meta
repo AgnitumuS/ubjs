@@ -1,58 +1,58 @@
-﻿{
-	"caption": "Organization units",
-	"description": "List of organization units",
-    "documentation": "Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree",
-	"connectionName": "",
-	"sqlAlias": "ounit",
-	"cacheType": "catySession",
-	"descriptionAttribute": "caption",
-	"attributes": {
-		"parentID":
-		{
-			"dataType": "Entity",
-			"associatedEntity": "org_unit",
-			"caption": "Parent",
-			"description": "Parent",
-			"allowNull": true
-		},		
-		"code":
-		{
-			"dataType": "String",
-			"size": 16,
-			"caption": "Internal code",
-			"description": "Organization unit internal code",
-			"allowNull": false
-		},
-        "caption":
-        {
-            "dataType": "String",
-            "size": 1024,
-            "caption": "Caption",
-            "description": "Caption",
-            "allowNull": false,
-            "isMultiLang": true
-        },
-		"unitType":
-		{
-			"dataType": "Enum",
-			"enumGroup": "ORG_UNITTYPE",
-			"caption": "Org. unit type",
-			"description": "Organization unit type",
-			"allowNull": false,
-			"isMultiLang": false
-		}
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-        },
-		"dataHistory":{},
-		"tree": {
-			"parentAttr": "parentID"
-		},
-		"audit": {
-			"enabled": false
-		}
-	}
+{
+  "caption": "Organization units",
+  "description": "List of organization units",
+  "documentation": "Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree",
+  "connectionName": "",
+  "sqlAlias": "ounit",
+  "cacheType": "Session",
+  "descriptionAttribute": "caption",
+  "attributes": [
+    {
+      "dataType": "Entity",
+      "associatedEntity": "org_unit",
+      "caption": "Parent",
+      "description": "Parent",
+      "allowNull": true,
+      "name": "parentID"
+    },
+    {
+      "dataType": "String",
+      "size": 16,
+      "caption": "Internal code",
+      "description": "Organization unit internal code",
+      "allowNull": false,
+      "name": "code"
+    },
+    {
+      "dataType": "String",
+      "size": 1024,
+      "caption": "Caption",
+      "description": "Caption",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "caption"
+    },
+    {
+      "dataType": "Enum",
+      "enumGroup": "ORG_UNITTYPE",
+      "caption": "Org. unit type",
+      "description": "Organization unit type",
+      "allowNull": false,
+      "isMultiLang": false,
+      "name": "unitType"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "dataHistory": {},
+    "tree": {
+      "parentAttr": "parentID"
+    },
+    "audit": {
+      "enabled": false
+    }
+  }
 }

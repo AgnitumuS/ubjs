@@ -1,62 +1,69 @@
-﻿{
-	"caption": "Назначения внутренней организации",
-	"description": "Справочник назначений внутренней организации",
-    "documentation":"Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение).Так же есть тип назначения (временное, постоянное, полставки и т.д.)",
-	"connectionName": "",
-	"sqlAlias": "empons",
-	"cacheType": "catySession",
-	"descriptionAttribute": "caption",
-	"attributes": {
-		"tabNo": {
-			"dataType": "String",
-			"size": 20,
-			"caption": "Employee №",
-			"description": "Employee number",
-			"allowNull": false
-		},
-		"employeeID": {
-			"dataType": "Entity",
-			"associatedEntity": "org_employee",
-			"caption": "Employee",
-			"description": "Employee",
-			"allowNull": false          
-		},
-		"staffUnitID":	{
-			"dataType": "Entity",
-			"associatedEntity": "org_staffunit",
-			"caption": "Staff unit",
-			"description": "Internal organization staff unit",
-			"allowNull": false            
-		},
-		"employeeOnStaffType": {
-			"dataType": "Enum",
-			"enumGroup": "CDN_EMPLOYEEONSTAFFTYPE",
-			"caption": "Assignment type",
-			"description": "Assignment type",
-			"allowNull": false            
-		},						
-		"description": {
-			"dataType": "String",
-			"size": 255,
-			"caption": "Description",
-			"description": "Assignment description",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-        "caption": {
-            "dataType": "String",
-            "size": 1024,
-            "caption": "Caption",
-            "description": "Caption",
-            "allowNull": true,
-            "isMultilang": true
-        }
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-        	},
-		"dataHistory":{}
-	}
+{
+  "caption": "Назначения внутренней организации",
+  "description": "Справочник назначений внутренней организации",
+  "documentation": "Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение).Так же есть тип назначения (временное, постоянное, полставки и т.д.)",
+  "connectionName": "",
+  "sqlAlias": "empons",
+  "cacheType": "catySession",
+  "descriptionAttribute": "caption",
+  "attributes": [
+    {
+      "dataType": "String",
+      "size": 20,
+      "caption": "Employee №",
+      "description": "Employee number",
+      "allowNull": false,
+      "name": "tabNo"
+    },
+    {
+      "dataType": "Entity",
+      "associatedEntity": "org_employee",
+      "caption": "Employee",
+      "description": "Employee",
+      "allowNull": false,
+      "name": "employeeID"
+    },
+    {
+      "dataType": "Entity",
+      "associatedEntity": "org_staffunit",
+      "caption": "Staff unit",
+      "description": "Internal organization staff unit",
+      "allowNull": false,
+      "name": "staffUnitID"
+    },
+    {
+      "dataType": "Enum",
+      "enumGroup": "CDN_EMPLOYEEONSTAFFTYPE",
+      "caption": "Assignment type",
+      "description": "Assignment type",
+      "allowNull": false,
+      "defaultValue": "PERMANENT",
+      "name": "employeeOnStaffType"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Description",
+      "description": "Assignment description",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "description"
+    },
+    {
+      "dataType": "String",
+      "size": 1024,
+      "caption": "Caption",
+      "description": "Caption",
+      "allowNull": true,
+      "isMultilang": true,
+      "name": "caption"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "dataHistory": {}
+  }
 }

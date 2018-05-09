@@ -1,89 +1,94 @@
-﻿{
-	"caption": "Positions",
-	"description": "List of positions",
-	"connectionName": "",
-	"sqlAlias": "prof",
-	"cacheType": "SessionEntity",
-	"descriptionAttribute": "name",
-	"documentation": "",
-	"attributes": {
-		"code":
-		{
-			"dataType": "String",
-			"size": 16,
-			"caption": "Code",
-			"description": "Code of position",
-			"allowNull": false,
-			"isUnique": true
-		},
-		"name":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Name",
-			"description": "Position name",
-			"allowNull": false,
-       		"isMultiLang": true
-		},
-        "fullName":
-        {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Full name",
-            "description": "Position full name",
-            "allowNull": false,
-            "isMultiLang": true
-        },
-        "nameGen": {
-            "dataType": "String",
-            "size": 128,
-            "caption": "Name in genitive case",
-            "description": "Position name in genitive case",
-            "allowNull": true,
-            "isMultiLang": true
-        },		
-        "nameDat": {
-            "dataType": "String",
-            "size": 128,
-            "caption": "Name in dative case",
-            "description": "Position name in dative case",
-            "allowNull": true,
-            "isMultiLang": true
-        },
-        "fullNameGen": {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Full name in genitive case",
-            "description": "Position full name in genitive case",
-            "allowNull": true,
-            "isMultiLang": true
-        },
-        "fullNameDat": {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Full name in dative case",
-            "description": "Position full name in dative case",
-            "allowNull": true,
-            "isMultiLang": true
-        },		
-		"description": {
-		 	"caption" : "Caption",
-			"dataType": "String",
-			"size": 128,
-        	"allowNull": false,
-			"mapping": { 
-				"AnsiSQL": {
-					"expressionType": "Expression",
-					"expression": "[fullName]"
-				}
-			}
-		}
-
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete": true
+{
+  "caption": "Positions",
+  "description": "List of positions",
+  "connectionName": "",
+  "sqlAlias": "prof",
+  "cacheType": "SessionEntity",
+  "descriptionAttribute": "name",
+  "documentation": "",
+  "attributes": [
+    {
+      "dataType": "String",
+      "size": 16,
+      "caption": "Code",
+      "description": "Code of position",
+      "allowNull": false,
+      "isUnique": true,
+      "defaultValue": "----",
+      "name": "code"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name",
+      "description": "Position name",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "name"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Full name",
+      "description": "Position full name",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "fullName"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name in genitive case",
+      "description": "Position name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "nameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name in dative case",
+      "description": "Position name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "nameDat"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Full name in genitive case",
+      "description": "Position full name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullNameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Full name in dative case",
+      "description": "Position full name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullNameDat"
+    },
+    {
+      "caption": "Caption",
+      "dataType": "String",
+      "size": 128,
+      "allowNull": false,
+      "mapping": {
+        "AnsiSQL": {
+          "expressionType": "Expression",
+          "expression": "[fullName]"
         }
-	}
+      },
+      "name": "description"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
 }

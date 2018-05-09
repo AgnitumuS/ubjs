@@ -1,237 +1,237 @@
-﻿{
-	"caption": "Employees of internal organizations",
-	"description": "List of employees of internal organizations",
-    "documentation":"This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity",
-	"connectionName": "",
-	"sqlAlias": "oemp",
-	"cacheType": "catySession",
-	"descriptionAttribute": "fullFIO",
-	"attributes": {
-        "code":
-        {
-            "dataType": "String",
-            "caption": "Code",
-			"description": "Employees internal code",			
-            "size": 20,
-            "allowNull": false,
-            "isUnique": true
-        },
-        "userID":
-        {
-            "dataType": "Entity",
-            "caption": "User",
-			"description": "User login",
-            "associatedEntity": "uba_user",
-            "allowNull": true
-        },
-		"lastName":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Last name",
-			"description": "Employee last name",
-			"allowNull": false,
-			"isMultiLang": true
-		},
-		"firstName":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "First name",
-			"description": "Employee first name",
-			"allowNull": false,
-			"isMultiLang": true
-		},
-		"middleName":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Middle name",
-			"description": "Employee middle name",
-			"allowNull": true,
-			"isMultiLang": true
-		},				
-        "birthDate":
-        {
-            "dataType": "Date",
-            "caption": "Date of birth",
-			"description": "Date of birth",			
-            "allowNull": true
-        },
-		"description":
-		{
-			"dataType": "String",
-			"size": 255,
-			"caption": "Comment",
-			"description": "Comment on employee",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"sexType":
-		{
-			"dataType": "Enum",
-			"enumGroup": "CDN_SEXTYPE",
-			"caption": "Sex",
-			"description": "Employee sex",
-			"allowNull": false
-		},		
-		"suffix":
-		{
-			"dataType": "String",
-			"size": 30,
-			"caption": "Suffix",
-			"description": "Suffix",
-			"allowNull": true,
-			"isMultiLang": true
-		},			
-		"shortFIO":
-		{
-			"dataType": "String",
-			"size": 256,
-			"caption": "Last name with initials",
-			"description": "Example: Smith J.K.",
-			"allowNull": true,
-			"isMultiLang": true
-		},			
-		"fullFIO":
-		{
-			"dataType": "String",
-			"size": 512,
-			"caption": "Full name",
-			"description": "Example: Smith Jay Key",
-			"allowNull": false,
-			"isMultiLang": true
-		},		
-		"apply":
-		{
-			"dataType": "String",
-			"size": 100,
-			"caption": "Treatment",
-			"description": "Describes how to treat to this person",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"lastNameGen":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Last name in genitive",
-			"description": "Employee last name in genitive case",
-			"allowNull": true,
-			"isMultiLang": true
-		},		
-		"lastNameDat":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Last name in dative",
-			"description": "Employee last name in dative case",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"firstNameGen":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "First name in genitive",
-			"description": "Employee first name in genitive case",
-			"allowNull": true,
-			"isMultiLang": true
-		},		
-		"firstNameDat":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "First name in dative",
-			"description": "Employee first name in dative case",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"middleNameGen":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Middle name in genitive",
-			"description": "Employee middle name in dative case",
-			"allowNull": true,
-			"isMultiLang": true
-		},		
-		"middleNameDat":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Middle name in dative",
-			"description": "Employee middle name in dative case",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"shortFIOGen":
-		{
-			"dataType": "String",
-			"size": 256,
-			"caption": "Short name in genitive",
-			"description": "Employee short name in genitive case",
-			"allowNull": true,
-			"isMultiLang": true
-		},			
-		"shortFIODat":
-		{
-			"dataType": "String",
-			"size": 256,
-			"caption": "Short name in dative",
-			"description": "Employee short name in dative case",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"fullFIOGen":
-		{
-			"dataType": "String",
-			"size": 512,
-			"caption": "Full name in genitive",
-			"description": "Employee full name in genitive case",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"fullFIODat":
-		{
-			"dataType": "String",
-			"size": 512,
-			"caption": "Full name in dative",
-			"description": "Employee full name in dative case",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"applyGen":
-		{
-			"dataType": "String",
-			"size": 100,
-			"caption": "Treatment in genitive",
-			"description": "Describes how to treat to this person in genitive case",
-			"allowNull": true,
-			"isMultiLang": true
-		},
-		"applyDat":
-		{
-			"dataType": "String",
-			"size": 100,
-			"caption": "Treatment in dative",
-			"description": "Describes how to treat to this person in dative case",
-			"allowNull": true,
-			"isMultiLang": true
-		},		
-        "facsimile":
-        {
-            "dataType": "Document",
-            "caption": "Facsimile",
-            "description": "Employee signature image",
-            "allowNull": true
-        }
+{
+  "caption": "Employees of internal organizations",
+  "description": "List of employees of internal organizations",
+  "documentation": "This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity",
+  "connectionName": "",
+  "sqlAlias": "oemp",
+  "cacheType": "Session",
+  "descriptionAttribute": "fullFIO",
+  "attributes": [
+    {
+      "dataType": "String",
+      "caption": "Code",
+      "description": "Employees internal code",
+      "size": 20,
+      "allowNull": false,
+      "isUnique": true,
+      "name": "code"
     },
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-        },
-		"dataHistory":{}		
-	}
+    {
+      "dataType": "Entity",
+      "caption": "User",
+      "description": "User login",
+      "associatedEntity": "uba_user",
+      "allowNull": true,
+      "name": "userID"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Last name",
+      "description": "Employee last name",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "lastName"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "First name",
+      "description": "Employee first name",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "firstName"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Middle name",
+      "description": "Employee middle name",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "middleName"
+    },
+    {
+      "dataType": "Date",
+      "caption": "Date of birth",
+      "description": "Date of birth",
+      "allowNull": true,
+      "name": "birthDate"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Comment",
+      "description": "Comment on employee",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "description"
+    },
+    {
+      "dataType": "Enum",
+      "enumGroup": "CDN_SEXTYPE",
+      "caption": "Sex",
+      "description": "Employee sex",
+      "allowNull": false,
+      "name": "sexType"
+    },
+    {
+      "dataType": "String",
+      "size": 30,
+      "caption": "Suffix",
+      "description": "Suffix",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "suffix"
+    },
+    {
+      "dataType": "String",
+      "size": 256,
+      "caption": "Last name with initials",
+      "description": "Example: Smith J.K.",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "shortFIO"
+    },
+    {
+      "dataType": "String",
+      "size": 512,
+      "caption": "Full name",
+      "description": "Example: Smith Jay Key",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "fullFIO"
+    },
+    {
+      "dataType": "String",
+      "size": 100,
+      "caption": "Treatment",
+      "description": "Describes how to treat to this person",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "apply"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Last name in genitive",
+      "description": "Employee last name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "lastNameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Last name in dative",
+      "description": "Employee last name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "lastNameDat"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "First name in genitive",
+      "description": "Employee first name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "firstNameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "First name in dative",
+      "description": "Employee first name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "firstNameDat"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Middle name in genitive",
+      "description": "Employee middle name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "middleNameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Middle name in dative",
+      "description": "Employee middle name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "middleNameDat"
+    },
+    {
+      "dataType": "String",
+      "size": 256,
+      "caption": "Short name in genitive",
+      "description": "Employee short name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "shortFIOGen"
+    },
+    {
+      "dataType": "String",
+      "size": 256,
+      "caption": "Short name in dative",
+      "description": "Employee short name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "shortFIODat"
+    },
+    {
+      "dataType": "String",
+      "size": 512,
+      "caption": "Full name in genitive",
+      "description": "Employee full name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullFIOGen"
+    },
+    {
+      "dataType": "String",
+      "size": 512,
+      "caption": "Full name in dative",
+      "description": "Employee full name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullFIODat"
+    },
+    {
+      "dataType": "String",
+      "size": 100,
+      "caption": "Treatment in genitive",
+      "description": "Describes how to treat to this person in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "applyGen"
+    },
+    {
+      "dataType": "String",
+      "size": 100,
+      "caption": "Treatment in dative",
+      "description": "Describes how to treat to this person in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "applyDat"
+    },
+    {
+      "dataType": "Document",
+      "caption": "Facsimile",
+      "description": "Employee signature image",
+      "allowNull": true,
+      "name": "facsimile"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "dataHistory": {}
+  }
 }

@@ -16,6 +16,7 @@ Session.on('login', orgOnUserLogin)
  * and array of org_unit IDs current user participate
  * this array used in org structure-based RLS
  * result we put in Session.uData - ony one session-depended server object
+ * @private
  */
 function orgOnUserLogin () {
   console.debug('Call JS method: ORG.onUserLogin')

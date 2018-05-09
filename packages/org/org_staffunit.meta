@@ -1,140 +1,158 @@
-﻿{
-	"caption": "Staff units",
-	"description": "List of staff units",
-    "documentation":"This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
-	"connectionName": "",
-	"sqlAlias": "stunit",
-	"cacheType": "catySession",
-	"descriptionAttribute": "caption",
-	"attributes": {
-		"parentID":
-		{
-			"dataType": "Entity",
-			"associatedEntity": "org_unit",
-			"caption": "Parent",
-			"description": "Parent",
-			"allowNull": true
-		},
-		"code": {
-			"dataType": "String",
-			"size": 16,
-			"caption": "Internal code",
-			"description": "Staff unit internal code",
-			"allowNull": false,
-            "isUnique": true
-		},
-		"name": {
-			"dataType": "String",
-			"size": 128,
-			"caption": "Staff unit name",
-			"description": "Name of staff unit without the quotes and abbreviations",
-			"allowNull": false,
-			"isMultiLang": true
-		},
-		"fullName": {
-			"dataType": "String",
-			"size": 255,
-			"caption": "Full name",
-			"description": "Staff unit full name",
-			"allowNull": false,
-			"isMultiLang": true
-		},
-		"description" : {
-			"dataType" : "String",
-			"size" : 255,
-			"caption" : "Staff unit description",
-			"description" : "Staff unit description",
-			"allowNull" : true,
-			"isMultiLang" : true
-		},
-        "nameGen": {
-            "dataType": "String",
-            "size": 128,
-            "caption": "Staff unit name in genitive case",
-            "description": "Staff unit name in genitive case",
-            "allowNull": true,
-            "isMultiLang": true
-        },		
-        "nameDat": {
-            "dataType": "String",
-            "size": 128,
-            "caption": "Staff unit name in dative case",
-            "description": "Name of staff unit without the quotes and abbreviations in dative case",
-            "allowNull": true,
-            "isMultiLang": true
-        },
-        "fullNameGen": {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Full name in genitive case",
-            "description": "Staff unit full name in genitive case",
-            "allowNull": true,
-            "isMultiLang": true
-        },
-        "fullNameDat": {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Full name in dative case",
-            "description": "Full name in dative case",
-            "allowNull": true,
-            "isMultiLang": true
-        },			
-        "caption":
-        {
-            "dataType": "String",
-            "size": 1024,
-            "caption": "Caption",
-            "description": "Caption",
-            "allowNull": false,
-            "isMultiLang": true
-        },
-		"professionExtID": {
-			"dataType": "Entity",
-			"associatedEntity": "cdn_profession",
-			"caption": "Profession",
-			"description": "Profession",
-			"allowNull": true
-		},
-        "professionID": {
-            "dataType": "Entity",
-            "associatedEntity": "org_profession",
-            "caption": "Position",
-            "description": "Position",
-            "allowNull": false
-        },
-		"staffUnitTypeID": {
-			"dataType": "Entity",
-			"associatedEntity": "cdn_staffunittype",
-			"caption": "Staff unit type",
-			"description": "Staff unit type",
-			"allowNull": false
-		},
-        "subordinationLevel": {
-            "dataType": "Int",
-            "caption": "Subordination level",
-            "description": "If level is lower - then staff unit is more important",
-            "allowNull": true
-		},
-        "isBoss": {
-            "dataType": "Boolean",
-            "caption": "Boss",
-            "description": "Boss",
-            "allowNull": true,
-            "defaultValue": "0"
-        }
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit": true,
-			"safeDelete": true
-		},
-		"dataHistory": {},
-		"unity": {
-			"entity": "org_unit",
-			"attributeList": ["parentID","code","caption"],
-			"defaults": {
-				"unitType": "STAFF"
-			}
-		}
-	}
+{
+  "caption": "Staff units",
+  "description": "List of staff units",
+  "documentation": "This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
+  "connectionName": "",
+  "sqlAlias": "stunit",
+  "cacheType": "Session",
+  "descriptionAttribute": "caption",
+  "attributes": [
+    {
+      "dataType": "Entity",
+      "associatedEntity": "org_unit",
+      "caption": "Parent",
+      "description": "Parent",
+      "allowNull": true,
+      "name": "parentID"
+    },
+    {
+      "dataType": "String",
+      "size": 16,
+      "caption": "Internal code",
+      "description": "Staff unit internal code",
+      "allowNull": false,
+      "isUnique": true,
+      "defaultValue": "----",
+      "name": "code"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Staff unit name",
+      "description": "Name of staff unit without the quotes and abbreviations",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "name"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Full name",
+      "description": "Staff unit full name",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "fullName"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Staff unit description",
+      "description": "Staff unit description",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "description"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Staff unit name in genitive case",
+      "description": "Staff unit name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "nameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Staff unit name in dative case",
+      "description": "Name of staff unit without the quotes and abbreviations in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "nameDat"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Full name in genitive case",
+      "description": "Staff unit full name in genitive case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullNameGen"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Full name in dative case",
+      "description": "Full name in dative case",
+      "allowNull": true,
+      "isMultiLang": true,
+      "name": "fullNameDat"
+    },
+    {
+      "dataType": "String",
+      "size": 1024,
+      "caption": "Caption",
+      "description": "Caption",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "caption"
+    },
+    {
+      "dataType": "Entity",
+      "associatedEntity": "cdn_profession",
+      "caption": "Profession",
+      "description": "Profession",
+      "allowNull": true,
+      "name": "professionExtID"
+    },
+    {
+      "dataType": "Entity",
+      "associatedEntity": "org_profession",
+      "caption": "Position",
+      "description": "Position",
+      "allowNull": false,
+      "name": "professionID"
+    },
+    {
+      "dataType": "Entity",
+      "associatedEntity": "cdn_staffunittype",
+      "caption": "Staff unit type",
+      "description": "Staff unit type",
+      "allowNull": false,
+      "name": "staffUnitTypeID"
+    },
+    {
+      "dataType": "Int",
+      "caption": "Subordination level",
+      "description": "If level is lower - then staff unit is more important",
+      "allowNull": true,
+      "name": "subordinationLevel"
+    },
+    {
+      "dataType": "Boolean",
+      "caption": "Boss",
+      "description": "Boss",
+      "allowNull": true,
+      "defaultValue": "0",
+      "name": "isBoss"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    },
+    "dataHistory": {},
+    "unity": {
+      "entity": "org_unit",
+      "attributeList": [
+        "parentID",
+        "code",
+        "caption"
+      ],
+      "defaults": {
+        "unitType": "STAFF"
+      }
+    }
+  }
 }

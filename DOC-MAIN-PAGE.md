@@ -32,7 +32,11 @@ This is a short list of modules, available in unityBase standard distribution:
     - navigation desktops & shortcuts ( can be used for dynamic routing generation for portalUI)
     - forms definitions (used by adminUI for dynamic forms generation)
     - ER diagrams
- - TODO org, xlsx, ub-pub, pdf, (cs-shared, stubs)
+ - {@link module:@unitybase/ubm @unitybase/ubm}: organization structure of owner organizations
+    - include organizations, departments, staffs, positions, employee, professions
+    - can store hierarchical organization charts
+    - all entities are historical and support safe delete
+ - TODO xlsx, ub-pub, pdf, (cs-shared, stubs)
 
 # Get Started
 
