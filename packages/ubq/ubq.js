@@ -18,6 +18,7 @@ if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
 /**
  * Read a schedulers configuration, calculate a apiKeys for all users and
  * pass a config to worker thread for starting
+ * @private
  */
 function startSchedulers () {
   let cfgForWorker = []

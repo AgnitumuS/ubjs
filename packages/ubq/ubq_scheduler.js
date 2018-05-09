@@ -13,9 +13,7 @@ const _ = require('lodash')
 
 me.entity.addMethod('select')
 
-/**
- *  here we store loaded forms
- */
+// here we store loaded schedulers
 let resultDataCache = null
 const FILE_NAME_TEMPLATE = '_schedulers.json'
 

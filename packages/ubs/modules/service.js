@@ -1,3 +1,6 @@
+/* global ubs_numcounter TubDataStore */
+const UB = require('@unitybase/ub')
+const Session = UB.Session
 /**
  * @deprecated
  */
@@ -25,8 +28,9 @@ exports.Service = {
   },
 
   /**
+   * Returns true in case update method works in given context
+   * @deprecated Use ctxt.mParams.method === 'update'
    * @method
-   * returns true in case when update method works in given context
    * @param {ubMethodParams} ctxt
    * @return {Boolean}
    */
@@ -35,8 +39,9 @@ exports.Service = {
   },
 
   /**
+   * Returns true in case when delete method works in given context
    * @method
-   * returns true in case when delete method works in given context
+   * @deprecated Use ctxt.mParams.method === 'delete'
    * @param {ubMethodParams} ctxt
    * @return {Boolean}
    */
@@ -45,24 +50,29 @@ exports.Service = {
   },
 
   /**
+   * Return old values
    * @method
    * @param {ubMethodParams} ctxt
    * @return {Object}
    */
   getOldValues: function (ctxt) {
     let currentDataName = ctxt.dataStore.currentDataName
-    if (this.inserting(ctxt)) {
-      return ctxt.mParams.execParams
-    }
-    ctxt.dataStore.currentDataName = this.updating(ctxt) ? 'selectBeforeUpdate' : this.deleting(ctxt) ? 'selectBeforeDelete' : currentDataName
+    const method = ctxt.mParams.method
+    if (method === 'insert') return ctxt.mParams.execParams
+
+    ctxt.dataStore.currentDataName = method === 'update'
+      ? TubDataStore.DATA_NAMES.BEFORE_UPDATE
+      : method === 'delete'
+        ? TubDataStore.DATA_NAMES.BEFORE_DELETE
+        : currentDataName
     let oldValues = JSON.parse(ctxt.dataStore.asJSONObject)
     ctxt.dataStore.currentDataName = currentDataName
     return (oldValues && oldValues.length) ? oldValues[0] : ctxt.mParams.execParams
   },
 
   /**
+   * Returns the next code generated from ubs_numcounter for entity
    * @method
-   * returns the next code generated from ubs_numcounter for entity
    * @param {ubMethodParams} ctxt
    * @return {Number}
    */
@@ -116,7 +126,7 @@ exports.Service = {
     if (!assocObjectName) {
       throw new Error('<<<UB.Service.setassociatedEntityValueByCode - associatedEntity for attribute ' + attrName + ' not found >>>')
     }
-    var inst = new TubDataStore(assocObjectName)
+    let inst = UB.DataStore(assocObjectName)
     if (!codeValue) { // take the row with smallest value of CODE
       inst.run('select', { fieldList: ['code', 'ID'],
         orderList: {'0': {'expression': 'code', 'order': 'desc'}},

@@ -25,7 +25,7 @@ const chSpace = 32
 const chLF = 10
 const chCR = 13
 /**
- * @typedef {Object} parseSQLResult
+ * @typedef {Object} parsedSQLResult
  * @property {string} parsedSql
  * @property {Array} parsedParams
  */
@@ -106,7 +106,7 @@ class DBConnection {
    * @private
    * @param {string} sql
    * @param {Object} params
-   * @returns {parseSQLResult}
+   * @returns {parsedSQLResult}
    */
   parseSQL (sql, params) {
     const parsedParams = []

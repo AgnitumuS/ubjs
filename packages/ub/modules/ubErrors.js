@@ -1,18 +1,25 @@
 /**
+ * @module ubErrors
+ * @memberOf module:@unitybase/ub
+ */
+
+/**
  * Server-side Abort exception. To be used in server-side logic in case of HANDLED
  * exception. This errors logged using "Error" log level to prevent unnecessary
  * EXC log entries.
  *
  *       // UB client will show message inside <<<>>> to user (and translate it using UB.i18n)
- *       throw new UB.UBAbort('<<<textToDisplayForClient>>>');
- *       //for API methods we do not need <<<>>>
- *       throw new UB.UBAbort('wrongParameters');
+ *       const UB = require('@unitybase/ub')
+ *       throw new UB.UBAbort('<<<textToDisplayForClient>>>')
+ *       // for API methods we do not need <<<>>>
+ *       throw new UB.UBAbort('wrongParameters')
  *
  * @param {String} [message] Message
  * @extends {Error}
+ * @constructor
  */
-// For SM<=45 we use a "exception class" inherit pattern below, but it stop working in SM52, so fallback to Error
 function UBAbort (message) {
+  // For SM<=45 we use a "exception class" inherit pattern below, but it stop working in SM52, so fallback to Error
   this.name = 'UBAbort'
   this.code = 'UBAbort'
   this.message = message || 'UBAbortError'

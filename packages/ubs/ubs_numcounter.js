@@ -93,6 +93,9 @@ function generateAutoIncrementalCode (ctx) {
   ubs_numcounter.generateAutoIncrementalCode(ctx, 'code')
 }
 
+//or even simple if attribute name is `code`
+me.on('insert:before', ubs_numcounter.generateAutoIncrementalCode)
+
  * @method generateAutoIncrementalCode
  * @memberOf ubs_numcounter_ns.prototype
  * @memberOfModule @unitybase/ubs

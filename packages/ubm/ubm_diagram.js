@@ -22,9 +22,6 @@ me.entity.addMethod('update')
 me.entity.addMethod('insert')
 me.entity.addMethod('addnew')
 
-/**
- *  here we store loaded forms
- */
 let resultDataCache = null
 let modelLoadDate
 
