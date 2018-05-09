@@ -316,3 +316,195 @@ const fts = {
 const clobTruncate = {
 
 }
+
+// WebStorm do not understand JSDoc without real method declaration, so create a subs here
+/**
+ * Return zero based index of fieldName from current data store (-1 if not found)
+ * @example
+
+ var r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name']).where('[ID]', '=', 3000000002801).select();
+ console.log(r.fieldIndexByName('mi_owner.name')); // 1
+ console.log(r.fieldIndexByName('unexistedAttr')); // -1
+
+ * @method fieldIndexByName
+ * @memberOf TubDataStore.prototype
+ * @param {String} fieldName
+ */
+TubDataStore.fieldIndexByName = function(fieldName){}
+/**
+ * Run any entity method.
+ * @example
+
+let store = new TubDataStore('doc_attachment');
+store.run('update', {execParams: {
+  ID: 1,
+  approved: 0
+}
+})
+store.run('anyEntityMethod', {param1: 'valueOfParam1', ...})
+
+ * @param {String} methodName
+ * @param {Object|TubList} params
+ * @return {Boolean} True in case of success, else raise exception
+ * @method run
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.run = function (methodName, params) {}
+/**
+ * Execute SQL with parameters and place result into dataStore. This method expect SQL statement have **result**.
+ *
+ * To execute SQL statement without result (`insert` for example) - use TubDataStore.execSQL instead.
+ *
+ * @param {String} sql SQL statement to run
+ * @param {Object|TubList} params SQL parameters list
+ * @method runSQL
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.runSQL = function (sql, params) {}
+/**
+ * Execute SQL with parameters. Not wait result data
+ * @param {String} sql SQL statement to run
+ * @param {Object|TubList} params SQL parameters list
+ * @memberOf TubDataStore.prototype
+ * @method execSQL
+ */
+TubDataStore.execSQL = function (sql, params) {}
+/**
+ * init dataStore content from JSON string.
+ * WARNING!!! during initFromJSON UnityBase determinate field types from vield values,
+ *  so if some data column contain only numeric values it becode Number (even if in source it String).
+ * @example
+
+const UB = require('@unitybase/ub')
+let ds = UB.DataStore('myEntityCode')
+ds.initFromJSON({"fieldCount":1,"values":["ID"],"rowCount":0});
+console.log(ds.initialized); // TRUE
+
+ * @deprecated Use `TubDataStore.initialize` instead
+ * @param source
+ * @method initFromJSON
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.initFromJSON = function (source) {}
+/**
+ * Return value of attribute.
+ *
+ * In case store initialized using TubDataStore.run style we can return Number or String type,
+ * but in case it initialized using runSQL columns data types is unknown and you must cast value do required type directly.
+ *
+ * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
+ * @return {Number|String}
+ * @method get
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.get = function (attrib) {}
+/**
+ * Return value of attribute as ArrayBuffer.
+ *
+ * You can apply this method to blob fields only
+ *
+ * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
+ * @return {ArrayBuffer}
+ * @method getAsBuffer
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.getAsBuffer = function (attrib) {}
+/**
+ * Move next
+ * @method next
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.next = function () {}
+/**
+ * Move prev
+ * @method prev
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.prev = function () {}
+/**
+ * Move first
+ * @method first
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.first = function () {}
+/**
+ * Move last
+ * @method last
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.last = function () {}
+/**
+ * Indicate current position in data collection is on the beginning of collection
+ * @member {Boolean} bof
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.bof = false
+/**
+ * Indicate current position in data collection is on the end of collection.
+ * @member {Boolean} eof
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.eof = false
+/**
+ * Generate a new identifier (int64)
+ * @return {Number}
+ * @method generateID
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.generateID = function () {}
+/**
+ * Is store initialized
+ * @member {Boolean} initialized
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.initialized = false
+/**
+ * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
+ * @member {String} asJSONObject
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.asJSONObject = '[{},{}]'
+/**
+ * Return string representation of Instance in `Array of array` format
+ * @member {String} asJSONArray
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.asJSONArray = '[[],[]]'
+/**
+ * Return XML representation of Instance in MS DataSet format
+ * @member {String} asXMLPersistent
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.asXMLPersistent = '<xml>...</xml>'
+/**
+ * Active dataset name we work with. There is some predefined
+ * dataNames - see {@link TubDataStore#DATA_NAMES TubDataStore.DATA_NAMES}
+ * @member {String} currentDataName
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.currentDataName = '<xml>...</xml>'
+/**
+ * Record count. If DataStore is not initialized or empty will return 0.
+ * @member {Number} rowCount
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.rowCount = 0
+/**
+ * Total record count if store are filled with {@link CustomRepository#withTotal Repository.withTotal()} option.
+ * If DataStore is not initialized or empty or initialized without withTotal() will return -1.
+ * @member {Number} totalRowCount
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.totalRowCount = 0
+/**
+ * Row position inside currentDataName dataset. Read/write
+ * @member {Number} rowPos
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.rowPos = 0
+/**
+ * Release all internal resources. Store became unusable after call to `freeNative()`
+ * @method freeNative
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.freeNative = function () {}

@@ -10,181 +10,13 @@ const blobStores = require('./blobStores')
  *  - execute any SQL statement using {@link TubDataStore#runSQL} or {@link TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)
  *  - store several named data collection using {@link TubDataStore#currentDataName} (data stored inside server memory, not in JS, this is very good for GC)
  *  - iterate other collection rows using {@link TubDataStore#next}, eof, e.t.c and retrieve row data using TubDataStore.get
- *  - serialize data to XML or JSON
+ *  - serialize data to XML {@link TubDataStore#asXMLPersistent} or JSON in array-of-array {@link TubDataStore#asJSONArray} on array-of-object {@link TubDataStore#asJSONObject} format
  *
- *  To retrieve data from database using build-in ORM (to execute entity `select` method) preffered way is to use {@link UB.Repository} fabric function.
+ *  To retrieve data from database using build-in ORM (execute entity `select` method) preferred way is to use {@link module:@unitybase/ub#Repository UB.Repository} fabric function.
  *
  * @class TubDataStore
  */
-/**
- * Run any entity method.
- * @example
- *
- * var store = new TubDataStore('doc_attachment');
- * store.run('update', {execParams: {
- *          ID: 1,
- *          approved: 0
- *      }
- * });
- *
- * store.run('anyEntityMethod', {param1: 'valueOfParam1', ...});
- *
- * @param {String} methodName
- * @param {Object|TubList} params
- * @return {Boolean} True in case of success, else raise exception
- * @method run
- * @memberOf TubDataStore.prototype
- */
-/**
- * Execute SQL with parameters and place result into dataStore. This method expect SQL statement have **result**.
- *
- * To execute SQL statement without result (`insert` for example) - use TubDataStore.execSQL instead.
- *
- * @param {String} sql SQL statement to run
- * @param {Object|TubList} params SQL parameters list
- * @method runSQL
- * @memberOf TubDataStore.prototype
- */
-/**
- * Execute SQL with parameters. Not wait result data
- * @param {String} sql SQL statement to run
- * @param {Object|TubList} params SQL parameters list
- * @memberOf TubDataStore.prototype
- * @method execSQL
- */
-/**
- * init dataStore content from JSON string
- * If you need to init dataStore w/o rows:
- *
- *      var ds = new TubDataStore('myEntityCode');
- *      ds.initFromJSON({"fieldCount":1,"values":["ID"],"rowCount":0});
- *      console.log(ds.initialized); // TRUE
- *
- * WARNING!!! during initFromJSON UnityBase determinate field types from vield values,
- *  so if some data column contain only numeric values it becode Number (even if in source it String).
- *
- * @param source
- * @method initFromJSON
- * @memberOf TubDataStore.prototype
- */
 
-/**
- * Return zero based index of fieldName from current data store (-1 if not found)
- * @example
-
- var r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name']).where('[ID]', '=', 3000000002801).select();
- console.log(r.fieldIndexByName('mi_owner.name')); // 1
- console.log(r.fieldIndexByName('unexistedAttr')); // -1
-
- * @param {String} fieldName
- * @method fieldIndexByName
- * @memberOf TubDataStore.prototype
- */
-
-/**
- * Return value of attribute.
- *
- * In case store initialized using TubDataStore.run style we can return Number or String type,
- * but in case it initialized using runSQL columns data types is unknown and you must cast value do required type directly.
- *
- * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
- * @return {Number|String}
- * @method get
- * @memberOf TubDataStore.prototype
- */
-
-/**
- * Return value of attribute as ArrayBuffer.
- *
- * You can apply this method to blob fields only
- *
- * @param {Number|String} attrib attribute index or name. Index is faster but less readable.
- * @return {ArrayBuffer}
- * @method getAsBuffer
- * @memberOf TubDataStore.prototype
- */
-/**
- * Move next
- * @method next
- * @memberOf TubDataStore.prototype
- */
-/**
- * Move prev
- * @method prev
- * @memberOf TubDataStore.prototype
- */
-/**
- * Move first
- * @method first
- * @memberOf TubDataStore.prototype
- */
-/**
- * Move last
- * @method last
- * @memberOf TubDataStore.prototype
- */
-/**
- * Indicate current position in data collection is on the beginning of collection
- * @member {Boolean} bof
- * @memberOf TubDataStore.prototype
- */
-/**
- * Indicate current position in data collection is on the end of collection.
- * @member {Boolean} eof
- * @memberOf TubDataStore.prototype
- */
-/**
- * Generate a new identifier (int64)
- * @return {Number}
- * @method generateID
- * @memberOf TubDataStore.prototype
- */
-/**
- * Is store initialized
- * @member {Boolean} initialized
- * @memberOf TubDataStore.prototype
- */
-/**
- * Return string representation of Instance in format `[{attr1: value1, attr2: value2},... ]`
- * @member {String} asJSONObject
- * @memberOf TubDataStore.prototype
- */
-/**
- * Return string representation of Instance in `Array of array` format
- * @member {String} asJSONArray
- * @memberOf TubDataStore.prototype
- */
-/**
- * Return XML representation of Instance in MS DataSet format
- * @member {String} asXMLPersistent
- * @memberOf TubDataStore.prototype
- */
-/**
- * Active dataset name we work with. There is some predefined dataNames - see TubDataStore.prototype.DATA_NAMES
- * @member {String} currentDataName
- * @memberOf TubDataStore.prototype
- */
-/**
- * Record count. If DataStore is not initialized or empty will return 0.
- * @member {Number} rowCount
- * @memberOf TubDataStore.prototype
- */
-/**
- * Total record count if store are filled with withTotal() option.
- * If DataStore is not initialized or empty or inited without withTotal() will return -1.
- * @member {Number} totalRowCount
- * @memberOf TubDataStore.prototype
- */
-/**
- * Row position inside currentDataName dataset. Read/write
- * @member {Number} rowPos
- * @memberOf TubDataStore.prototype
- */
-/**
- * Release all internal resources. Store became unusable after call to `freeNative()`
- * @method freeNative
- * @memberOf TubDataStore.prototype
- */
 /**
  *  Initialize DataStore from one of supported source formats:
  *
@@ -195,33 +27,48 @@ const blobStores = require('./blobStores')
  *  Can (optionally) convert source field names to new names using keyMap array.
  *  @example
  *
-     var ds = new TubDataStore('my_entity');
 
-     // init empty (rowCount=0) dataStore with provided fields.
-     // In case keyMap is omitted we consider it contain one attribute 'ID'
-     ds.initialize([]); // the same as ds.initialize([], ['ID']);
-     ds.initialize([], ['ID', 'name', {from: 'AGE', to: 'age'}]);
+ const UB = require('@unitybase/ub')
+ var ds = UB.DataStore('my_entity')
 
-     // Initialize dataStore from array-of-object representation
-     // Resulting datstore will contain 3 field: ID, nam, age (in order, they listen in keyMap array).
-     // During initialization we convert fiend name 'AGE' -> age;
-     ds.initialize([{ID: 10, name: 'Jon', AGE: 10}, {ID: 20, name: 'Smith', AGE: 63}],
-        ['ID', 'name', {from: 'AGE', to: 'age'}]);
+ // init empty (rowCount=0) dataStore with provided fields.
+ // In case keyMap is omitted we consider it contain one attribute 'ID'
+ ds.initialize([]) // the same as ds.initialize([], ['ID'])
+ ds.initialize([], ['ID', 'name', {from: 'AGE', to: 'age'}])
 
-     //the same, but do not convert AGE->age. Result dataset field order is unknown
-     ds.initialize([{ID: 10, name: 'Jon', AGE: 10}, {ID: 20, name: 'Smith', AGE: 63}]);
+ // Initialize dataStore from array-of-object representation
+ // Resulting datstore will contain 3 field: ID, nam, age (in order, they listen in keyMap array).
+ // During initialization we convert fiend name 'AGE' -> age;
+ ds.initialize([
+     {ID: 10, name: 'Jon', AGE: 10},
+     {ID: 20, name: 'Smith', AGE: 63}
+   ],
+   ['ID', 'name', {from: 'AGE', to: 'age'}]
+ )
 
-     //result dataset will contain only two field 'ID' & 'age'
-     ds.initialize([{ID: 10, name: 'Jon', AGE: 10}, {ID: 20, name: 'Smith', AGE: 63}],
-        ['ID', {from: 'AGE', to: 'age'}]);
+ //the same, but do not convert AGE->age. Result dataset field order is unknown
+ ds.initialize([
+   {ID: 10, name: 'Jon', AGE: 10},
+   {ID: 20, name: 'Smith', AGE: 63}
+ ])
 
-     // Initialize dataStore from Array-of-array data
-     // in this case keyMap is mandatory.
-     // In case of mapping from is zero-based index of source element in row array
-     ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]], ['ID', 'name', 'age']);
-     // or use mapping
-     ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
-        ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}]);
+ //result dataset will contain only two field 'ID' & 'age'
+ ds.initialize([
+     {ID: 10, name: 'Jon', AGE: 10},
+     {ID: 20, name: 'Smith', AGE: 63}
+   ],
+   ['ID', {from: 'AGE', to: 'age'}]
+ )
+
+ // Initialize dataStore from Array-of-array data
+ // in this case keyMap is mandatory.
+ // In case of mapping from is zero-based index of source element in row array
+ ds.initialize([
+   [10, 'Jon', 10], [20, 'Smith', 63]], ['ID', 'name', 'age']
+ ])
+ // or use mapping
+ ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
+    ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}])
 
  * @method initialize
  * @memberOf TubDataStore.prototype
@@ -330,6 +177,8 @@ Object.defineProperty(TubDataStore, 'entity', {
  *    } finally {
  *      store.currentDataName = prevData
  *    }
+ *
+ * @member DATA_NAMES
  * @memberOf TubDataStore
  */
 TubDataStore.DATA_NAMES = {
