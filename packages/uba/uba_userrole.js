@@ -57,7 +57,7 @@ function ubaAuditModifyUserRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
   let params = ctx.mParams.execParams
-  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+  let actionUser = Session.uData.login
   let origStore = ctx.dataStore
   let origName = origStore.currentDataName
   let roleNew = params.roleID
@@ -94,7 +94,7 @@ function ubaAuditModifyUserRole (ctx) {
       entity: 'uba_userrole',
       entityinfo_id: params.ID,
       actionType: 'DELETE',
-      actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+      actionUser: actionUser,
       actionTime: new Date(),
       remoteIP: Session.callerIP,
       targetRole: role,
@@ -107,7 +107,7 @@ function ubaAuditModifyUserRole (ctx) {
       entity: 'uba_userrole',
       entityinfo_id: params.ID,
       actionType: 'INSERT',
-      actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+      actionUser: actionUser,
       actionTime: new Date(),
       remoteIP: Session.callerIP,
       targetRole: roleNew || role,
@@ -138,7 +138,6 @@ function ubaAuditDeleteUserRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
   let params = ctx.mParams.execParams
-  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
 
   let role = ctx.mParams.delRoleID
   if (role) {
@@ -157,7 +156,7 @@ function ubaAuditDeleteUserRole (ctx) {
       entity: 'uba_userrole',
       entityinfo_id: params.ID,
       actionType: 'DELETE',
-      actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+      actionUser: Session.uData.login,
       actionTime: new Date(),
       remoteIP: Session.callerIP,
       targetRole: role,

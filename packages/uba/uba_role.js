@@ -20,14 +20,13 @@ function ubaAuditNewRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
   let store = UB.DataStore('uba_audit')
-  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
   let params = ctx.mParams.execParams
   store.run('insert', {
     execParams: {
       entity: 'uba_role',
       entityinfo_id: params.ID,
       actionType: 'INSERT',
-      actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+      actionUser: Session.uData.login,
       actionTime: new Date(),
       remoteIP: Session.callerIP,
       targetRole: params.name,
@@ -58,7 +57,7 @@ function ubaAuditModifyRole (ctx) {
 
   let params = ctx.mParams.execParams
   let store = UB.DataStore('uba_audit')
-  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+  let actionUser = Session.uData.login
   let origStore = ctx.dataStore
   let origName = origStore.currentDataName
   let oldValues, oldName
@@ -77,7 +76,7 @@ function ubaAuditModifyRole (ctx) {
         entity: 'uba_role',
         entityinfo_id: params.ID,
         actionType: 'DELETE',
-        actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+        actionUser: actionUser,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
         targetRole: oldName,
@@ -90,7 +89,7 @@ function ubaAuditModifyRole (ctx) {
         entity: 'uba_role',
         entityinfo_id: params.ID,
         actionType: 'INSERT',
-        actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+        actionUser: actionUser,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
         targetRole: params.name,
@@ -104,7 +103,7 @@ function ubaAuditModifyRole (ctx) {
         entity: 'uba_role',
         entityinfo_id: params.ID,
         actionType: 'UPDATE',
-        actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+        actionUser: actionUser,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
         targetRole: oldName,
@@ -124,8 +123,6 @@ function ubaAuditDeleteRole (ctx) {
   if (!App.domainInfo.has('uba_audit')) return
 
   let params = ctx.mParams.execParams
-  let store = UB.DataStore('uba_audit')
-  let actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
   let origStore = ctx.dataStore
   let origName = origStore.currentDataName
   let oldValues, oldName
@@ -138,12 +135,13 @@ function ubaAuditDeleteRole (ctx) {
     origStore.currentDataName = origName
   }
 
+  let store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_role',
       entityinfo_id: params.ID,
       actionType: 'DELETE',
-      actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+      actionUser: Session.uData.login,
       actionTime: new Date(),
       remoteIP: Session.callerIP,
       targetRole: oldName,
