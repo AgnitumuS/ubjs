@@ -1,5 +1,11 @@
 /**
- * Created by pavel.mash on 01.12.2016.
+ * HTTP(s) transport based on XMLHttpRequest
+ * To use in nodeJS XMLHttpRequest should be defined in global like
+ *
+ *      global.XMLHttpRequest = require('xhr2')
+ *
+ * @module transport
+ * @memberOf module:@unitybase/ub-pub
  */
 
 /* global XMLHttpRequest */
@@ -119,71 +125,20 @@ let __lastRequestTime = Date.now()
 let __lastRequestURL
 
 /**
- * Promise of perform an asynchronous HTTP request
- * Returns a {Promise} object with the
- *   standard Promise methods (<a href="https://github.com/kriskowal/q/wiki/Coming-from-jQuery#reference">reference</a>).
- *   The `then` method takes two arguments a success and an error callback which will be called with a
- *   response object. The arguments passed into these functions are destructured representation of the response object passed into the
- *   `then` method. The response object has these properties:
- *
- *   - **data** – `{string|Object}` – The response body transformed with the transform
- *     functions. Default transform check response content-type is application/json and if so - convert data to Object
- *   - **status** – `{number}` – HTTP status code of the response.
- *   - **headers** – `{function([headerName])}` – Header getter function.
- *   - **config** – `{Object}` – The configuration object that was used to generate the request.
- *
- *  @example
- *
- *      //Get some data from server:
- *      UB.xhr({url: 'getAppInfo'}).then(function(resp) {
- *          console.log('this is appInfo: %o', resp.data)
- *      });
- *
- *      //The same, but in more short form via {@link get UB.get} shorthand:
- *      UB.get('getAppInfo').then(function(resp) {
- *          console.log('this is appInfo: %o', resp.data)
- *      });
- *
- *      //Run POST method:
- *      UB.post('ubql', [
- *          {entity: 'uba_user', method: 'select', fieldList: ['*']}
- *      ]).then(function(resp) {
- *          console.log('success!');
- *      }, function(resp) {
- *          console.log('request failed with status' + resp.status);
- *      });
- *
- *      //retrieve binary data as ArrayBuffer
- *      UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
- *      .then(function(res){
- *          console.log('Got Arrray of %d length', res.data.byteLength);
- *      });
- *
- * @method
- * @param {Object} requestConfig Object describing the request to be made and how it should be
- *    processed. The object has following properties:
- * @param {String} requestConfig.url  Absolute or relative URL of the resource that is being requested
- * @param {String} [requestConfig.method] HTTP method (e.g. 'GET', 'POST', etc). Default is GET
- * @param {Object.<string|Object>} [requestConfig.params] Map of strings or objects which will be turned
- *      to `?key1=value1&key2=value2` after the url. If the value is not a string, it will be JSONified
- * @param {String|Object} [requestConfig.data] Data to be sent as the request message data
- * @param {Object} [requestConfig.headers]  Map of strings or functions which return strings representing
- *      HTTP headers to send to the server. If the return value of a function is null, the
- *      header will not be sent. Merged with {@link xhrDefaults UB.xhrDefaults.headers}
+ * see docs in ub-pub main module
+ * @private
+ * @param {Object} requestConfig
+ * @param {String} requestConfig.url
+ * @param {String} [requestConfig.method]
+ * @param {Object.<string|Object>} [requestConfig.params]
+ * @param {String|Object} [requestConfig.data]
+ * @param {Object} [requestConfig.headers]
  * @param {function(data, function)|Array.<function(data, function)>} [requestConfig.transformRequest]
- *      Transform function or an array of such functions. The transform function takes the http
- *      request body and headers and returns its transformed (typically serialized) version.
  * @param {function(data, function)|Array.<function(data, function)>} [requestConfig.transformResponse]
- *      Transform function or an array of such functions. The transform function takes the http
- *      response body and headers and returns its transformed (typically deserialized) version.
- * @param  {Number|Promise} [requestConfig.timeout] timeout in milliseconds, or {Promise}
- *      that should abort the request when resolved. Default to {UB.xhrDefaults.timeout}
- * @param  {Boolean} [requestConfig.withCredentials] whether to to set the `withCredentials` flag on the
- *      XHR object. See <a href="https://developer.mozilla.org/en/http_access_control#section_5">requests with credentials</a>
- *      for more information.
- * @param  {String} [requestConfig.responseType] see <a href="https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType">responseType</a>.
- * @param {Function} [requestConfig.onProgress] XHR onProgress callback, see <a href="https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent">ProgressEvent</url> for details.
- *      To be user instead obsolete Q Promise.progress()
+ * @param  {Number|Promise} [requestConfig.timeout]
+ * @param  {Boolean} [requestConfig.withCredentials]
+ * @param  {String} [requestConfig.responseType]
+ * @param {Function} [requestConfig.onProgress]
  * @returns {Promise}
  */
 function xhr (requestConfig) {
@@ -435,11 +390,11 @@ function sendReq (config, reqData, reqHeaders) {
 }
 
 /**
- * Shortcut for {@link xhr} to perform a `GET` request.
- * @method
- * @param {string} url Relative or absolute URL specifying the destination of the request
- * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
- * @returns {Promise} Future object
+ * see docs in ub-pub main module
+ * @private
+ * @param {string} url
+ * @param {Object=} [config]
+ * @returns {Promise}
  */
 function get (url, config) {
   return xhr(ubUtils.apply(config || {}, {
@@ -449,12 +404,12 @@ function get (url, config) {
 }
 
 /**
- * Shortcut for {@link xhr} to perform a `POST` request.
- * @method
- * @param {string} url Relative or absolute URL specifying the destination of the request
- * @param {*} data Request content
- * @param {Object=} [config] Optional configuration object as in {@link xhr UB.xhr}
- * @returns {Promise} Future object
+ * see docs in ub-pub main module
+ * @private
+ * @param {string} url
+ * @param {*} data
+ * @param {Object=} [config]
+ * @returns {Promise}
  */
 function post (url, data, config) {
   return xhr(ubUtils.apply(config || {}, {

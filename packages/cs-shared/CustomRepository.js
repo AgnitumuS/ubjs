@@ -18,8 +18,7 @@ for (let i = 0; i < 100; i++) {
 }
 
 /**
- * Base data access class for server-side, client(browser)-side and client(console) side Repositories.
- * Usually used via UB.Repository fabric function.
+ * Ancestor for Browser/NodeJS ClientRepository and server side ServerRepository.
  *
  * Do not use it directly, use {@link UB.Repository UB.Repository} on server side
  */

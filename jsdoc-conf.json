@@ -39,7 +39,7 @@
     "template": "./node_modules/ub-jsdoc",
     "readme": "./DOC-MAIN-PAGE.md",
     "encoding": "utf8",
-    "destination": "./docs",
+    "destination": "./docs/server-v5",
     "recurse": false,
     "tutorials": "tutorials"
   },
@@ -67,12 +67,8 @@
     "stylesheet": "styles/ub-jsdoc.css",
     "links": [
       {
-        "text": "WEB Core API",
-        "href": "../ubcore/"
-      },
-      {
-        "text": "adminUI API",
-        "href": "../adminUI/"
+        "text": "Client side docs",
+        "href": "../ubpub-v5/"
       }
     ],
     "googleAnalytics": "UA-66006954-1",

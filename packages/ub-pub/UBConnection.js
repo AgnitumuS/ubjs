@@ -1,5 +1,8 @@
-/*
-  Rewritten to ES6 from UB 1.12 sources by pavel.mash on 12.2016
+/**
+ * Connection to UnityBase server
+ *
+ * @module UBConnection
+ * @memberOf module:@unitybase/ub-pub
  */
 
 /* global localStorage */
@@ -142,7 +145,7 @@ function UBConnection (connectionParams) {
   this.preferredLocale = 'en'
 
   /**
-   * Domain information. Initialized after promise, returned by by function {@link UBConnection#getDomainInfo getDomainInfo} isresolved
+   * Domain information. Initialized after promise, returned by by function {@link UBConnection#getDomainInfo getDomainInfo} is resolved
    * @type {UBDomain}
    */
   this.domain = null
@@ -1487,60 +1490,19 @@ UBConnection.prototype.SHA256 = SHA256
 
 const LDS = (typeof window !== 'undefined') && window.localStorage
 /**
- * Connect to UnityBase server
- *
- * Example:
- *
- const UB = require('@unitybase/ub-core')
- let conn = UB.connect({
-    host: window.location.origin,
-    path: window.location.pathname,
-    onCredentialRequired: function(conn, isRepeat){
-        if (isRepeat){
-            throw new UB.UBAbortError('invalid')
-        } else {
-            return Promise.resolve({authSchema: 'UB', login: 'admin', password: 'admin'})
-        }
-    },
-    onAuthorizationFail:  function(reason){
-        alert(reason);
-    }
- });
- conn.then(function(conn){
-    conn.get('stat').then(function(statResp){
-        document.getElementById('ubstat').innerText = JSON.stringify(statResp.data, null, '\t');
-    });
-
-    conn.Repository('ubm_navshortcut').attrs(['ID', 'code', 'caption']).selectAsArray().then(function(data){
-        let tmpl = _.template(document.getElementById('repo-template').innerHTML);
-        let result = tmpl(data.resultData);
-        // document.getElementById('ubnav').innerText = JSON.stringify(data.resultData);
-        document.getElementById('ubnav').innerHTML = result;
-    });
- });
-
- * Preferred locale tip: to set a connection preferredLocale parameter to, for example 'uk', use
-
-    localStorage.setItem((path || '/') + 'preferredLocale', 'uk')
-
- * **before** call to UBConnection.connect
- *
+ * see docs in ub-pub main module
+ * @private
  * @param cfg
- * @param {string} cfg.host Server host
- * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
- * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
- * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
- *  In case user logged out by server side this type persistent not work and UBConnection will call onCredentialRequired handler,
- *  so user will be prompted for credentials
- * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
- * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
- * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
- * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
- *  Accept one parameter - connection: UBConnection
- *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
- *  Should return a promise then done
+ * @param {string} cfg.host
+ * @param {string} [cfg.path]
+ * @param cfg.onCredentialRequired
+ * @param {boolean} [cfg.allowSessionPersistent=false]
+ * @param [cfg.onAuthorizationFail]
+ * @param [cfg.onAuthorized]
+ * @param [cfg.onNeedChangePassword]
+ * @param [cfg.onGotApplicationConfig]
  * @param [cfg.onGotApplicationDomain]
- * @return Promise<UBConnection>
+ * @return {Promise<UBConnection>}
  */
 function connect (cfg) {
   let config = this.config = _.clone(cfg)

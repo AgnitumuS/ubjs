@@ -1,33 +1,46 @@
-﻿As described in an [Architecture](/docs/architecture.html), when UnityBase is running in the HTTP server mode, it picks up the pool of independent working thread
+﻿As described in an [Architecture](/docs/architecture.html), when UnityBase is running
+in the HTTP server mode, it picks up the pool of independent working thread
 responsible for processing the HTTP requests - let's call it the HTTP workers.
+
 The number of HTTP workers is configured in the [Sever configuration](/models/UB/docson/index.html#../schemas/ubConfig.schema.json) `httpServer.threadPoolSize` parameter.
 
 Overall scheme is:
-    Client sends the HTTP request -> Server puts it to HTTP worker queue -> picks a free HTTP worker -> executes the logic,
- associated with endpoint -> puts a response to a HTTP queue for sending
+ - client sends the HTTP request
+ - server receive request and puts it to the queue
+ - server picks a free HTTP worker thread
+ - server executes the logic, associated with endpoint
+ - server puts a response to a HTTP queue for sending
 
-The endpoint logic is executed in synchronous mode, so client will wait while response is calculated. In most case this is a behavior that the user expects.
+The endpoint logic is executed in synchronous mode, so client will wait
+until response is calculated. In most case this is a behavior that the user expects.
 For example, the user said "give me a list of my tasks".
-The user will not be able to give the next command to the server until the tasks are not rendered on the screen, so he has to wait.
 
-But what to do if we know that operation takes a long period of time? For example the user (or other server) said "create me a big report".
-In this case a good decision is to respond to the caller immediately "Yes, we accept your query. Come later and ask for the result",
-or "Yes, we accept your query. We will notify you when it will be done".
+The user will not be able to give the next command to the server
+until the tasks are not rendered on the screen, so he has to wait.
+
+But what to do if we know that operation takes a long period of time?
+For example the user (or other server) said "create me a big report".
+
+In this case a good decision is to respond to the caller immediately
+ - "Yes, we accept your query. Come later and ask for the result", or
+ - "Yes, we accept your query. We will notify you when it will be done".
+
 In both case we need to write a response immediately and "delay" an actual operation.
-Since the request has not been completed, the right HTTP response code for such responses [202 "Accepted"].
+Since the request has not been completed, the right HTTP response code
+for such responses [202 "Accepted"].
 
 For the delayed operation UnityBase provides:
 
    - asynchronous endpoints
    - {@link worker} as an internal mechanism for run scripts in separate thread
-   - UBQ model for a message queue
+   - {@link module:@unitybase/ubq @unitybase/ubq} module for a message queue
    - {@tutorial schedulers} for a periodical scheduled operations
 
 For the notification about operation results:
 
   - WebSocket based [Notification subsystem]
-  - {@link module:UBMail UBMail module} for sending e-mail notifications
-  - {@link module:http http module} for call back an external HTTP services
+  - {@link module:@unitybase/mailer @unitybase/mailer} module for sending e-mail notifications
+  - {@link module:buildin/http http module} for call back an external HTTP services
 
 ## Asynchronous endpoints
 Any UnityBase endpoint can work in asynchronous mode. If Client sends a request with URL parameter `async=true`
@@ -46,11 +59,11 @@ passing a task to be executed in the request body. Server determines the `async=
 answers [202 "Accepted"] to the scheduler worker, so worker is not waiting until job is completed and can send
 a next job execution request.
 
-{@link TubEntity#addMethod Entity-level method} `ubq_messages.executeSchedulerTask` executes a scheduler job
-and since it knows it can receive only async request, writes a result to `ubq_runstst` entity instead of sending it
+{@link TubEntity#addMethod Entity-level method} {@link module:@unitybase/ubq~ubq_messages_ns#executeSchedulerTask ubq_messages.executeSchedulerTask} executes a scheduler job
+and since it knows it can receive only async request, save a result to {@link module:@unitybase/ubq~ubq_runstst_ns ubq_runstst} entity instead of sending it
 to the caller.
 
-## UnityBase Queue (UBQ) model
+## UnityBase Queue (@unitybase/ubq) model
 It is common for applications to have workloads that can be processed asynchronously from application flows.
 A common example of this is sending an email. For instance, when a new user registers, you may need to send him
 a confirmation email to validate that the address the user just entered is actually their.

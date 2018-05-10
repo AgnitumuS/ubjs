@@ -26,7 +26,9 @@
   },
   "scripts": {
     "clean": "npx lerna clean --yes",
-    "build:doc": "npx jsdoc -c ./jsdoc-conf.json --package ./package.json",
+    "build:doc": "npm run build:doc-server && npm run build:doc-ubpub",
+    "build:doc-server": "npx jsdoc -c ./jsdoc-conf.json",
+    "build:doc-ubpub": "npx jsdoc -c ./jsdoc-conf-ubpub.json",
     "build:adminuidoc": "npx jsdoc -c ./jsdoc-adminui-conf.json",
     "build": "npx lerna run build"
   },

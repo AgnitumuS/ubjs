@@ -1,7 +1,3 @@
-/**
- * Created by pavel.mash on 01.12.2016.
- */
-
 const _ = require('lodash')
 
 const __i18n = {
@@ -9,14 +5,12 @@ const __i18n = {
 }
 
 /**
- * Return locale-specific resource from it identifier.
- * localeString must be either previously defined dy call to {i18nExtend} or
- * or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
- * or `UB.i18n('uba_role.description')` would be resolved to localized entity caption or entity attribute caption
+ * see docs in ub-pub main module
+ * @private
  * @param {String} localeString
  * @returns {*}
  */
-function i18n (localeString) {
+module.exports.i18n = function i18n (localeString) {
   let res = __i18n[localeString]
   if (res !== undefined || localeString == null) return res
 
@@ -62,14 +56,10 @@ function i18n (localeString) {
 }
 
 /**
- * Merge localizationObject to UB.i18n. Usually called form modelPublic/locale/lang-*.js scripts
+ * see docs in ub-pub main module
+ * @private
  * @param {Object} localizationObject
  */
-function i18nExtend (localizationObject) {
+module.exports.i18nExtend = function i18nExtend (localizationObject) {
   _.merge(__i18n, localizationObject)
-}
-
-module.exports = {
-  i18n,
-  i18nExtend
 }

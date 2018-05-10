@@ -1,6 +1,13 @@
-/*
- @author xmax, mpv
+/**
+ * Native messaging enables an extension to exchange
+ * messages with a native application installed on the user's computer.
+ * Read more in <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Native_messaging">MDN Native messaging documentation</a>
+ *
+ * @module UBNativeMessage
+ * @memberOf module:@unitybase/ub-pub
+ * @author xmax, mpv
  */
+module.exports = UBNativeMessage
 
 const ubUtils = require('./utils')
 const i18n = require('./i18n').i18n
@@ -446,4 +453,3 @@ function createFeatureUpdateMsg (featureConfig, currentVersion, isUpdate) {
   return ubUtils.format(i18n(msg), i18n(featureConfig.UIName), featureConfig.minVersion, currentVersion, installer)
 }
 
-module.exports = UBNativeMessage

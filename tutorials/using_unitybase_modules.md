@@ -1,8 +1,8 @@
 ﻿# Manage a remote server using console
 
-Usually we manage a windows-based enviromnent using Remote Desktop Connection (log in to the GUI mode and use a mouse to do somethoing). 
+Usually we manage a windows-based environment using Remote Desktop Connection (log in to the GUI mode and use a mouse to do somethoing).
 
-This is slow and non-scailable way. Below we describe a "unix way" of remote server managment.
+This is slow and non-scalable way. Below we describe a "unix way" of remote server management.
 
 ## Console - a right way
   We strongly recommend to use a Far Manager + ConEmu instead of Explorer + cmd:
@@ -23,7 +23,7 @@ This is slow and non-scailable way. Below we describe a "unix way" of remote ser
 
   _ConEmu {cmd:Admin} console indicate a `admin` session as a **$** sign in the left of command line_
 
-###  Enable WinRM remote acces 
+###  Enable WinRM remote access
 
 #### Both server and client are in the same domain
 
@@ -52,7 +52,7 @@ This is slow and non-scailable way. Below we describe a "unix way" of remote ser
 
 	$ winrm set winrm/config/client @{TrustedHosts="*"}
     
-## Add ub-service (local users perm) to "Allow logon localy" and "Logon as batch job" to local security policy
+## Add ub-service (local users perm) to "Allow logon locally" and "Logon as batch job" to local security policy
 
   	
 ## Connect ot Remote Server using PowerShell
@@ -115,9 +115,6 @@ For a production environment all operations below must be performed under user w
         schtasks /Create /RU ub-service /RP adminub /SC ONSTART /TN PM2 /TR "C:\Users\ub-service\AppData\Roaming\npm\pm2.cmd resurrect" /V1 /F
         
    admin rights is required. /V1 switch is **IMPORTANT** - it set a valid working folder for the command (pm2.cmd inside use a %~dp0 - a cwd() analog in cmd)
- 
-
-
 
 # UnityBase modules repository
 
@@ -131,7 +128,7 @@ Modify your `package.json` file by adding a `publishConfig` property. This preve
 We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Standard Style] code style so we add a "standard" to the package.json devDependency
  
        "publishConfig": {
-         "registry": "http://packages.unitybase.info"
+         "registry": "http://registry.unitybase.info"
        },
        "devDependencies": {
            "standard": "*"
@@ -143,34 +140,9 @@ Install `lerna` (> 2.0 required for scoped packages support)
 
 	npm install -g lerna@latest
 
-Link all UB modules to the global NPM storage
-
-	cd /dev/ubjs
-	lerna exec -- npm link
-
-Create your test application 
-
-	mkdir my-app
-	cd my-app
-	npm init
-
-Link a unitybase modules required by your project
-
-	npm link @unitybase/stubs 
-	npm link @unitybase/ub 
-	npm link @unitybase/uba 
-	npm link @unitybase/ub-pub
-	npm link @unitybase/ubs 
-	npm link @unitybase/ubm 
-	npm link @unitybase/ubq	
-	npm link @unitybase/adminui-pub 
-	npm link @unitybase/adminui-reg
-
 Install all other required modules
 	
 	npm install
-
-**Warning** Pathed cversion of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
 
 ## Developer environment 
 
@@ -206,7 +178,7 @@ Ensure you set a `publishConfig` parameter in `package.json`.
 Bump a module version using (file:///C:/nodejs/node_modules/npm/html/doc/cli/npm-version.html)[npm version] command.
 For initial publication this step can be omitted. For example the command below will increase a patch version of module `ub_model_ub`:   
 
-      cd X:\pathToSource\ub_model_ub
+      cd X:\pathToSource\ub
       npm version patch -m "Upgrade to %s - remove a `ub-ddl-generator` dependency"
 
 Publish a module
@@ -216,7 +188,6 @@ Publish a module
 To publish to a UnityBase repository you must authorize your requests
       
       npm adduser --registry http://registry.unitybase.info
-
 
  
 # Installing packages

@@ -9,7 +9,7 @@ const UBSession = require('./UBSession')
  */
 module.exports = {
   /**
-   * Base class for Browser / server Repository
+   * Ancestor for Browser/NodeJS ClientRepository and server side ServerRepository
    * @type {CustomRepository}
    */
   CustomRepository,

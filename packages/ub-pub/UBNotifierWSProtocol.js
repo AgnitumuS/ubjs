@@ -1,6 +1,12 @@
-/*
- * Created by pavel.mash on 14.03.2016.
+/**
+ * WebSocket connection to UnityBase server using ubNotifier protocol
+ *
+ * @module UBNotifierWSProtocol
+ * @memberOf module:@unitybase/ub-pub
+ * @author xmax, mpv
  */
+module.exports = UBNotifierWSProtocol
+
 const _ = require('lodash')
 const EventEmitter = require('./events')
 
@@ -176,4 +182,3 @@ function UBNotifierWSProtocol (connection) {
   }
   connection.on('authorized', _onUBConnectionAuthorized)
 }
-module.exports = UBNotifierWSProtocol

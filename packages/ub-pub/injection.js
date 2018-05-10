@@ -2,36 +2,19 @@ let __loadedScript = {}
 let __head = (typeof document !== 'undefined') && document.getElementsByTagName('head')[0]
 
 /**
- * Inject external script or css to DOM and return a promise to be resolved when script is loaded.
- *
- * Implement single load mode (if script successfully loaded using inject it not loaded anymore.
- *
- * @example
- *
- //Load script.js:
- UB.inject('jslibs/script.js')
+ * Exports client side injections
+ * @module injectin
+ * @memberOf module:@unitybase/ub-pub
+ */
 
- //Load several script at once and error handling:
- Promise.all([UB.inject('jslibs/script.js'), UB.inject('script2.js')])
- .catch(function(err){
-   console.log('Oh! error occurred: ' + err)
- });
-
- //Load one script and then load other
- UB.inject('jslibs/js_beautify.js')
- .then(function(){
-     console.log('first script loaded. Continue to load second')
-     return UB.inject('jslibs/js_beautify1.js')
- });
-
- //Load couple of resources:
- Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
-
+/**
+ * see docs in ub-pub main module
+ * @private
  * @param {String} url either *js* or *css* resource to load
  * @param {String} [charset]
  * @return {Promise}
  */
-function inject (url, charset) {
+module.exports.inject = function inject (url, charset) {
   let res
   if (__loadedScript[url]) {
     res = __loadedScript[url]
@@ -93,10 +76,10 @@ function inject (url, charset) {
 }
 
 /**
- *  In case window contains __ubVersion property {@link addResourceVersion addResourceVersion} will add
- *  version parameter to scripts inside models.
+ * In case window contains __ubVersion property {@link addResourceVersion addResourceVersion} will add
+ * version parameter to scripts inside models.
  *
- *  @private
+ * @private
  */
 const __ubVersion = (typeof window !== 'undefined') && window.__ubVersion
 const MODEL_RE = new RegExp('models/(.+?)/') // speculative search. w/o ? found maximum string length
@@ -104,6 +87,7 @@ const MODEL_RE = new RegExp('models/(.+?)/') // speculative search. w/o ? found 
 /**
  * Search for resource version in the  window.__ubVersion global const
  * IF any,  return 'ver=version' else ''
+ * @private
  * @param {String} uri
  * @returns {String}
  */
@@ -116,6 +100,7 @@ function getResourceVersion (uri) {
 
 /**
  * Append UnityBase model version to the URL
+ * @private
  * @param {String} uri
  * @returns {String} uri with added resource version
  */
@@ -123,8 +108,4 @@ function addResourceVersion (uri) {
   let ver = getResourceVersion(uri)
   return ver ? uri + ver : uri
 }
-
-module.exports = {
-  inject,
-  addResourceVersion
-}
+module.exports.addResourceVersion = addResourceVersion
