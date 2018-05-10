@@ -1,0 +1,62 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": [
+      "./packages/cs-shared",
+      "./packages/ub-pub"	
+    ],
+    "includePattern": ".+\\.js(m|x)?$"
+  },
+  "plugins": [
+    "plugins/markdown",
+    "./node_modules/ub-jsdoc/plugins/sripPFromDescription",
+    "./node_modules/ub-jsdoc/plugins/memberOfModule.js",
+    "./node_modules/ub-jsdoc/plugins/publishedTag.js"
+  ],
+  "opts": {
+    "template": "./node_modules/ub-jsdoc",
+    "readme": "./DOC-UB-PUB-MAIN_PAGE.md",
+    "encoding": "utf8",
+    "destination": "./docs/ubpub-v5",
+    "recurse": false
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": false,
+    "buildInURL": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/",
+    "buildins": [
+      "array",
+      "arraybuffer",
+      "boolean",
+      "date",
+      "error",
+      "function",
+      "json",
+      "number",
+      "object",
+      "regexp",
+      "string",
+      "null"
+    ],
+    "smallSourceLink": true,
+    "fullTextSearch": true,
+    "hideAuthor": true,
+    "stylesheet": "styles/ub-jsdoc.css",
+    "links": [
+      {
+        "text": "Server side docs",
+        "href": "../server-v5/"
+      }
+    ],
+    "googleAnalytics": "UA-66006954-1",
+    "default": {
+      "outputSourceFiles": true,
+      "staticFiles": {
+	"include": ["./tutorials"],
+        "excludePattern": "\\.md$"
+      }
+    }
+  }
+}
