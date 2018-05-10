@@ -1,9 +1,9 @@
-global.XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest
+global.XMLHttpRequest = require('xhr2')
 
 const UB = require('@unitybase/ub-pub')
 
 let conn = UB.connect({
-  host: 'http://localhost:888',
+  host: 'http://localhost:8881',
   onCredentialRequired: function (conn, isRepeat) {
     if (isRepeat) {
       throw new UB.UBAbortError('invalid')

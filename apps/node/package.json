@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@unitybase/ub-pub": "^5.0.6",
-    "xmlhttprequest": "^1.8.0"
+    "xhr2": "^0.1.4"
   }
 }
