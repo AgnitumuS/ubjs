@@ -34,12 +34,7 @@ function updateStaffUnitCaption (ctxt) {
   const execParams = ctxt.mParams.execParams
 
   let attrs = Object.keys(execParams)
-  let needUpdateStaffUnit = false
-  attrs.forEach(execParams, function (value, attr) {
-    if (attr.indexOf('caption') === 0) {
-      needUpdateStaffUnit = true
-    }
-  })
+  let needUpdateStaffUnit = attrs.find(attrName => attrName.startsWith('caption'))
   if (!needUpdateStaffUnit) return
 
   let updParams = {
