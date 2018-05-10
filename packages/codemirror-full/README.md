@@ -1,9 +1,10 @@
 CodeMirror with plugins for UnityBase
 
-The main purpose of this package is to create a boundle for CodeMirror + CodeMirror plugins + jshint 
-for use it inside UnityBase platform
+The main purpose of this package is to create a bundle for CodeMirror +
+CodeMirror plugins + jshint for using it inside UnityBase platform.
 
-We can't  boundle a original for several reason^
+We can't  bundle an original version of CodeMirror for several reasons:
 
- - it use old version of lodash
- - we can't use jshint form SystemJS because it require node build-in module "events"
+ - it uses an old version of lodash
+ - we can't use jshint from SystemJS because it requires node's build-in
+ module "events"

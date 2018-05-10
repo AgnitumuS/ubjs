@@ -25,7 +25,7 @@ let conn = UB.connect({
 conn.then(function (conn) {
   console.log(`
     Hello, ${conn.userLogin()}!
-    We know what you are ${JSON.stringify(conn.userData())}
+    We know that you are ${JSON.stringify(conn.userData())}
   `)
   conn.get('stat').then(function (statResp) {
     console.log('Current server statistics:', statResp.data)
@@ -41,4 +41,5 @@ conn.then(function (conn) {
 })
 ```
 
-The same code as above will work in browser (just comment first line where XMLHttpRequest is required)
+The same code as above will work in browser (just comment first line
+where XMLHttpRequest is required).

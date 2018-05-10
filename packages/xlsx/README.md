@@ -1,6 +1,7 @@
-### UnityBase enterprise Excel exporter
+### The UnityBase EE Excel exporter
 
-AdminUI use this module for export grid view to Excel (via Action -> Export -> Excel)
+AdminUI uses this module to export EntityGridPanel content to Excel
+(via Action -> Export -> Excel)
 
 ### Install
 

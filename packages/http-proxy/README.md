@@ -4,10 +4,11 @@ Reverse proxy with authentication
  
 Code below will add a `cms` endpoint.
 
-On every request to cms endpoint will check UB authentication header is valid (if not - return 401)
-and after this proxy all requests for `cms` endpoint to the `http://localhost:3030`.
+On every request to cms endpoint the UB authentication header will be checked.
+If it's valid then this request will be redirected to `http://localhost:3030`.
+If not - then the endpoint will return 401.
 
-For requests what start from `/ubcms` authentication not checked
+For the requests which start from `/ubcms` the authentication will not be checked.
 
 I.e. `GET /cms/some/path&p1=true` will be proxies to `GET http://localhost:3030/some/path&p1=true`
  

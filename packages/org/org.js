@@ -10,12 +10,15 @@ ORG.checkOrgUnitRequired = true
 Session.on('login', orgOnUserLogin)
 
 /**
- * For a superuser (UBA_COMMON.USERS.ADMIN.ID) nothing happens here
- * Session 'login' event occurred every time new user logged in
- * here we calculate logged-in user FullName from org structure,
- * and array of org_unit IDs current user participate
- * this array used in org structure-based RLS
- * result we put in Session.uData - ony one session-depended server object
+ * For a superuser (UBA_COMMON.USERS.ADMIN.ID) nothing happens here.
+ *
+ * Session 'login' event occurs every time when new user logs in.
+ * Here we define logged-in user's FullName from org structure,
+ * and array of org_unit IDs current user participates in.
+ * This array is used in org structure-based RLS.
+ *
+ * We put the user's FullName and array of org_unit IDs
+ * in Session.uData - only one session-depended server object
  * @private
  */
 function orgOnUserLogin () {

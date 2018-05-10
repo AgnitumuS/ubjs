@@ -1,7 +1,8 @@
 ﻿[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-# Isomorphic (browser, nodeJS, UB CLI, UB server) classes
+# The isomorphic (browser, nodeJS, UB CLI, UB server) classes
 
-Contains isomorphic classes, shared between CLI, server-side and browser side
+This module contains the isomorphic classes, shared between CLI,
+server-side and browser side.
 
 

@@ -1,6 +1,6 @@
-﻿# Administration model
+﻿# The administration model
 
-This model define a users, roles and permissions for UnityBase
+This model defines users, roles and permissions for UnityBase.
 
 
 
