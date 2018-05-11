@@ -30,11 +30,17 @@ UB.start()
 
 and perform steps below for every HTTP thread:
  - read and validate all `*.meta` files from folders, defined in `application.domain.models`
- - create {@link EntityNamespace entity namespaces} (global objects) for all `*.meta` files from domain
- - call `require` for all `application.domain.models` folders (except ones marked as `_public_only_`)
-  in order they are defined in config
+ - for each model from `application.domain.models` folders (except ones marked as `_public_only_`)
+  load a model (see below)
  - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
  - emit {@link event:domainIsLoaded App.domainIsLoaded} event
+
+## Model
+Model is a logically grouped set of entities, server side and client-side code.
+Model is loaded in server thread memory by server in three steps:
+ - {@link EntityNamespace entity namespaces} (global objects) are created for all `*.meta` files from this model
+ - `require` is called for all `*.js` files paired with `*.meta`
+ - `require` is called for model entry point defined in `package.json` placed in the model folder
 
 ## Endpoints
 UnityBase comes with simple one-level routing.

@@ -1,6 +1,25 @@
 # <a href="https://unitybase.info/"> <img src="/favicon.ico" height="50"/></a> UnityBase
 
-Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose is to provide a set of modules for rapid development of RMS / EDRMS class software.
+Unitybase is a full stack JavaScript framework for Enterprise. It's main
+purpose is to provide a set of modules for rapid development of RMS / EDRMS class software.
+
+From the low level point of view UnityBase is a asynchronous non-blocking HTTP(S) server with a:
+
+ - build-in synchronous multi-thread JavaScript engine [SpiderMonkey](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey)
+ - build-in Database access for a most known RDBMS
+ - build-in file systems access
+
+<img src="img/UB-Server-Architecture-v4.png" alt="UB4 Server Architecture">
+
+Form a business logic developer point of view UnityBase is:
+ - an DBMS agnostic ORM what work over application Domain metadata
+ - a set of tools for
+   - synchronizing a physical database structure with Domain metadata
+   - generating REST API based on Domain metadata
+   - generating developer documentation from Domain metadata
+ - authorization, authentication, role based access control, row level security, audit trail, etc
+ - a set of ready to use entities appropriate for the majority of enterprise systems
+ - automatically generated admin UI based on Domain
 
 # About this documentation
 
@@ -33,13 +52,15 @@ This is a short list of the modules available in unityBase standard distribution
     - navigation desktops & shortcuts ( can be used for the dynamic routing generation for portalUI)
     - forms definitions (used by adminUI for dynamic forms' generation)
     - ER diagrams
- - {@link module:@unitybase/ubm @unitybase/ubm}: an internal organization structure
+ - {@link module:@unitybase/org @unitybase/org}: an internal organization structure
     - includes organizations, departments, staffs, positions, employees, professions
     - can store hierarchical organization charts
     - all entities are historical and support safe delete
- - TODO xlsx, ub-pub, pdf, (cs-shared, stubs)
+ - TODO xlsx, pdf
 
 # Get Started
+
+Read about UnityBase application initilization process in {@link module:@unitybase/ub @unitybase/ub} module documentation.
 
 Check out UnityBase [**Getting Started**](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v4) guide
 and [other guides](https://git-pub.intecracy.com/unitybase/samples).

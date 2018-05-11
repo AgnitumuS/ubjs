@@ -19,7 +19,8 @@ const dbConnections = require('./DBConnections')
  * Mixes EventEmitter, and server will emit:
  *
  *  - `endpointName + ':before'` event before endpoint handler  execution
- *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault() is called inside endpoint handler
+ *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault()
+ *  is called inside endpoint handler
  *
  * @example
 
@@ -65,7 +66,8 @@ const dbConnections = require('./DBConnections')
  */
 const App = {
   /**
-   * Fires for an {@link App App} just after all domain entities (all *.meta) are in server memory, and all server-side js are evaluated.
+   * Fires for an {@link App App} just after all domain entities (all *.meta) are loaded into server memory
+   * and all server-side js are evaluated.
    *
    * On this stage you can subscribe on a cross-model handles.
    *
@@ -158,7 +160,11 @@ const appBinding = process.binding('ub_app')
 App.registerEndpoint = function (endpointName, handler, requireAuthentication, isDefault) {
   if (!appBinding.endpoints[endpointName]) {
     appBinding.endpoints[endpointName] = handler
-    return appBinding.registerEndpoint(endpointName, requireAuthentication === undefined ? true : requireAuthentication , isDefault === true)
+    return appBinding.registerEndpoint(
+      endpointName,
+      requireAuthentication === undefined ? true : requireAuthentication,
+      isDefault === true
+    )
   }
 }
 
