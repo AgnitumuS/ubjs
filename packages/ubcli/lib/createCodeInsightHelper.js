@@ -61,6 +61,9 @@ module.exports = function createCodeInsightHelper (cfg) {
       return modelCfg.name === filterByModel
     })
   }
+  models = _.filter(models, function (modelCfg) {
+    return modelCfg.path !== '_public_only_'
+  })
 
   /**
    * Convert named collection - {name1: {}, name2: {}} to array -> [{name: name1, ...}, ...]
