@@ -30,7 +30,7 @@ UB.start()
 
 and perform steps below for every HTTP thread:
  - read and validate all `*.meta` files from folders, defined in `application.domain.models`
- - create {@link EntityNamespace namespaces} (global objects) for all `*.meta` files from domain
+ - create {@link EntityNamespace entity namespaces} (global objects) for all `*.meta` files from domain
  - call `require` for all `application.domain.models` folders (except ones marked as `_public_only_`)
   in order they are defined in config
  - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
@@ -42,7 +42,8 @@ UnityBase comes with simple one-level routing.
 functions for a first level of routing:
 
 ```
-/** Write a custom request body to file FIXTURES/req and echo file back to client
+/**
+ * Write a custom request body to file FIXTURES/req and echo file back to client
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */

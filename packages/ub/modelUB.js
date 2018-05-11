@@ -70,15 +70,7 @@ let UB = module.exports = {
   },
   /**
    * Translate message specified language using data, prepared by `UB.i18nExtend`
-   * To add model-depended values in your model:
-   *
-   *    const UB = require('@unitybase/ub')
-   *    UB.i18nExtend({
-   *      "en": {yourMessage: "yourTranslation", ...},
-   *      "ru": {yourMessage: "yourTranslation", ...},
-   *       ....
-   *    })
-   *
+   * To add model-depended values in your model use {@link module:@unitybase/ub#i18nExtend UB.i18nExtend}
    * @param {String} msg Message to translate
    * @param {String} [lang] language to translate to. if not passed - current user session language used, or default application language if not logged in
    */
@@ -89,6 +81,19 @@ let UB = module.exports = {
   },
   /**
    * Merge localizationObject to UB.i18n
+   * @example
+
+const UB = require('@unitybase/ub')
+UB.i18nExtend({
+ "en": {yourMessage: "yourTranslationToEng", ...},
+ "uk": {yourMessage: "yourTranslationToUk", ...},
+  ....
+})
+// if logged in user language is `en` will output "yourTranslationToEng"
+console.log(UB.i18n(yourMessage))
+// will output "yourTranslationToUk"
+console.log(UB.i18n(yourMessage, 'uk'))
+
    * @param {Object} localizationObject
    */
   i18nExtend: mI18n.extend,
