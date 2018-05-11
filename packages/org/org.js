@@ -85,9 +85,10 @@ function orgOnUserLogin () {
     let permanentOrgUnitIDs = []
     let currPositionObj, currStaffUnitID, currEmployeeOnStaffID
 
-    data.employeeShortFIO = staffs['employeeID.shortFIO']
-    data.employeeFullFIO = staffs['employeeID.fullFIO']
-    data.employeeID = staffs['employeeID']
+    let firstStaff = staffs[0]
+    data.employeeShortFIO = firstStaff['employeeID.shortFIO']
+    data.employeeFullFIO = firstStaff['employeeID.fullFIO']
+    data.employeeID = firstStaff['employeeID']
 
     for (let i = 0, L = staffs.length; i < L; i++) {
       let staff = staffs[i]
