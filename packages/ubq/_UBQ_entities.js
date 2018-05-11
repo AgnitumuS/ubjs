@@ -4,13 +4,14 @@
 // Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
- * Task queue persisted into database
- * @version 5.0.6
+ * Asynchronous task queue persisted into database. Contains jobs for sending e-mail and updating FTS indexes
+ * @version 5.0.8
  * @module @unitybase/ubq
  */
 
 /**
- * Message queue
+ * Message queue.
+ * Store messages posted by producers. Consumers read messages from this table and run corresponding tasks
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -72,12 +73,14 @@ ubq_messages_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Message queue
+* Message queue.
+ * Store messages posted by producers. Consumers read messages from this table and run corresponding tasks
 * @type {ubq_messages_ns}
 */
 const ubq_messages = new ubq_messages_ns()
 /**
- * Scheduler run statistic
+ * Scheduler run statistic.
+ * Statistic for every scheduler item run and result
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -121,12 +124,14 @@ ubq_runstat_ns.attrs = {
   resultErrorMsg: null,
 }
 /**
-* Scheduler run statistic
+* Scheduler run statistic.
+ * Statistic for every scheduler item run and result
 * @type {ubq_runstat_ns}
 */
 const ubq_runstat = new ubq_runstat_ns()
 /**
- * Schedulers
+ * Scheduled jobs.
+ * Virtual entity for show configured schedulers. Schedulers are placed in files MODEL_FOLDER&#x2F;_schedulers.json. To override a existed scheduler do not modify it directly, instead create the scheduler with the same name inside your model
  * @extends EntityNamespace
  */
 class ubq_scheduler_ns extends EntityNamespace {}
@@ -199,7 +204,8 @@ ubq_scheduler_ns.attrs = {
   actualModel: '',
 }
 /**
-* Schedulers
+* Scheduled jobs.
+ * Virtual entity for show configured schedulers. Schedulers are placed in files MODEL_FOLDER&#x2F;_schedulers.json. To override a existed scheduler do not modify it directly, instead create the scheduler with the same name inside your model
 * @type {ubq_scheduler_ns}
 */
 const ubq_scheduler = new ubq_scheduler_ns()

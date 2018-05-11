@@ -5,7 +5,7 @@
 
 /**
  * Reports, User messages (notifications), Settings (aka about:config), Counters
- * @version 5.0.7
+ * @version 5.0.8
  * @module @unitybase/ubs
  */
 

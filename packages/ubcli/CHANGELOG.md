@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.9]
+### Fixed
+ - createCodeInsightHelper will ignore models with "_public_only_" paths
+
 ## [5.0.7]
 ### Changed
  - stubs created by `createCodeInsightHelper` now include documentation specified in entity meta files

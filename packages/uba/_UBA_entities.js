@@ -4,13 +4,14 @@
 // Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
- * UnityBase Administrative model. Define entities for users, roles and permissions
- * @version 5.0.6
+ * UnityBase Administrative model. Define users, roles and permissions
+ * @version 5.0.8
  * @module @unitybase/uba
  */
 
 /**
- * Advanced security
+ * Advanced security settings.
+ * For any authentication type add binding of user to IP address. For CERT additionaly add a binding to device fingerprint
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -93,12 +94,13 @@ uba_advSecurity_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Advanced security
+* Advanced security settings.
+ * For any authentication type add binding of user to IP address. For CERT additionaly add a binding to device fingerprint
 * @type {uba_advSecurity_ns}
 */
 const uba_advSecurity = new uba_advSecurity_ns()
 /**
- * Attribute level security (ALS)
+ * Attribute level security
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -131,12 +133,13 @@ uba_als_ns.attrs = {
   actions: 0,
 }
 /**
-* Attribute level security (ALS)
+* Attribute level security
 * @type {uba_als_ns}
 */
 const uba_als = new uba_als_ns()
 /**
- * Audit
+ * Security changes audit.
+ * All changes to UBA model entities (except uba_als &amp; uba_subject) + user login related event are logged here
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -195,12 +198,14 @@ uba_audit_ns.attrs = {
   toValue: null,
 }
 /**
-* Audit
+* Security changes audit.
+ * All changes to UBA model entities (except uba_als &amp; uba_subject) + user login related event are logged here
 * @type {uba_audit_ns}
 */
 const uba_audit = new uba_audit_ns()
 /**
- * Audit
+ * Data changes audit.
+ * All DML statement for entity with mixin &#39;audit&#39; logged here
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -257,12 +262,14 @@ uba_auditTrail_ns.attrs = {
   parentEntityInfo_id: null,
 }
 /**
-* Audit
+* Data changes audit.
+ * All DML statement for entity with mixin &#39;audit&#39; logged here
 * @type {uba_auditTrail_ns}
 */
 const uba_auditTrail = new uba_auditTrail_ns()
 /**
- * Entity Level Security(ELS)
+ * Describe, which role have access permissions to Entities methods.
+ * Administering of entity level. The system checks the access by the rule &quot;Allowed and NOT Prohibited&quot;
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -347,7 +354,8 @@ uba_els_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Entity Level Security(ELS)
+* Describe, which role have access permissions to Entities methods.
+ * Administering of entity level. The system checks the access by the rule &quot;Allowed and NOT Prohibited&quot;
 * @type {uba_els_ns}
 */
 const uba_els = new uba_els_ns()
@@ -410,7 +418,7 @@ uba_group_ns.attrs = {
 */
 const uba_group = new uba_group_ns()
 /**
- * Group roles
+ * Roles assigned to groups
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -456,12 +464,13 @@ uba_grouprole_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Group roles
+* Roles assigned to groups
 * @type {uba_grouprole_ns}
 */
 const uba_grouprole = new uba_grouprole_ns()
 /**
- * One time passwords
+ * One time passwords.
+ * One-time-password generation and verification
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -535,12 +544,13 @@ uba_otp_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* One time passwords
+* One time passwords.
+ * One-time-password generation and verification
 * @type {uba_otp_ns}
 */
 const uba_otp = new uba_otp_ns()
 /**
- * Previous passwords
+ * Previous passwords hashes
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -587,12 +597,12 @@ uba_prevPasswordsHash_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* Previous passwords
+* Previous passwords hashes
 * @type {uba_prevPasswordsHash_ns}
 */
 const uba_prevPasswordsHash = new uba_prevPasswordsHash_ns()
 /**
- * System roles
+ * Administering subsystem roles
  * @extends EntityNamespace
  * @mixes mStorage
  * @mixes unity
@@ -651,7 +661,7 @@ uba_role_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* System roles
+* Administering subsystem roles
 * @type {uba_role_ns}
 */
 const uba_role = new uba_role_ns()
@@ -809,7 +819,8 @@ uba_user_ns.attrs = {
 */
 const uba_user = new uba_user_ns()
 /**
- * User certificates
+ * User certificates.
+ * used for Certificate authentification 
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -889,12 +900,13 @@ uba_usercertificate_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* User certificates
+* User certificates.
+ * used for Certificate authentification 
 * @type {uba_usercertificate_ns}
 */
 const uba_usercertificate = new uba_usercertificate_ns()
 /**
- * User Groups
+ * User memberships in groups
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -940,12 +952,12 @@ uba_usergroup_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* User Groups
+* User memberships in groups
 * @type {uba_usergroup_ns}
 */
 const uba_usergroup = new uba_usergroup_ns()
 /**
- * User roles
+ * Roles assigned to user
  * @extends EntityNamespace
  * @mixes mStorage
  */
@@ -991,7 +1003,7 @@ uba_userrole_ns.attrs = {
   mi_modifyUser: 0,
 }
 /**
-* User roles
+* Roles assigned to user
 * @type {uba_userrole_ns}
 */
 const uba_userrole = new uba_userrole_ns()

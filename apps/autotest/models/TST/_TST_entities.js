@@ -1,1253 +1,828 @@
-/* eslint-disable camelcase,no-unused-vars */
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* tst_2unity
-* @mixes EventEmitter
-*/
-global.tst_2unity = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
+ * UnityBasde autotest app
+ * @version 1.0.0
+ * @module tst
+ */
 
 /**
-* Attributes of "tst_2unity"
-* @class
-*/
-function tst_2unity_object () {
-  /**
-  *  (ref -> tst_mainunity)
-  * 
+ * ub test main unity
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class tst_2unity_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_2unity_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Code 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Caption 
+  code: '',
+ /**
   * @type {String}
   */
-  this.caption = null
-  /**
-  *  
-  * 
+  caption: null,
+ /**
   * @type {String}
   */
-  this.mi_unityEntity = ''
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_unityEntity: '',
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* tst_3unity
-* @mixes EventEmitter
+* ub test main unity
+* @type {tst_2unity_ns}
 */
-global.tst_3unity = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_2unity = new tst_2unity_ns()
 /**
-* Attributes of "tst_3unity"
-* @class
-*/
-function tst_3unity_object () {
-  /**
-  *  (ref -> tst_2unity)
-  * 
+ * ub test main unity
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class tst_3unity_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_3unity_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Code 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Caption 
+  code: '',
+ /**
   * @type {String}
   */
-  this.caption = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  caption: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
+  mi_deleteUser: null,
 }
 /**
-* BLOBTest
-* @mixes EventEmitter
+* ub test main unity
+* @type {tst_3unity_ns}
 */
-global.tst_blob = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_3unity = new tst_3unity_ns()
 /**
-* Attributes of "BLOBTest"
-* @class
-*/
-function tst_blob_object () {
-  /**
-  *  
-  * 
+ * Test BLOB attributes
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class tst_blob_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_blob_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Description 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.description = null
-  /**
-  * BLOB 
+  description: null,
+ /**
   * Long BLOB value
   * @type {ArrayBuffer}
   */
-  this.blb = null
+  blb: null,
 }
 /**
-* COD docs kind
-* @mixes EventEmitter
+* Test BLOB attributes
+* @type {tst_blob_ns}
 */
-global.tst_category = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_blob = new tst_blob_ns()
 /**
-* Attributes of "COD docs kind"
-* @class
-*/
-function tst_category_object () {
-  /**
-  *  
-  * 
+ * Kind of documents, stored in COD
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class tst_category_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_category_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Code 
+  ID: 0,
+ /**
   * Internal code of document kind
   * @type {String}
   */
-  this.code = ''
-  /**
-  * InstanceID 
+  code: '',
+ /**
   * @type {Number}
   */
-  this.instanceID = 0
-  /**
-  * Allow for user (ref -> uba_user)
+  instanceID: 0,
+ /**
   * @type {Number}
   */
-  this.ubUser = 0
+  ubUser: 0,
 }
 /**
-* CLOBTest
-* @mixes EventEmitter
+* Kind of documents, stored in COD
+* @type {tst_category_ns}
 */
-global.tst_clob = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_category = new tst_category_ns()
 /**
-* Attributes of "CLOBTest"
-* @class
-*/
-function tst_clob_object () {
-  /**
-  *  
-  * 
+ * Test CLOB attributes
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes clobTruncate
+ */
+class tst_clob_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_clob_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Description 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.description = null
-  /**
-  * Text100 
+  description: null,
+ /**
   * Long text value truncated to 100
   * @type {String}
   */
-  this.text100 = null
-  /**
-  * Text2 
+  text100: null,
+ /**
   * Long text value truncated to 2
   * @type {String}
   */
-  this.text2 = null
-  /**
-  * Text2000 
+  text2: null,
+ /**
   * Long text value truncated to 2000
   * @type {String}
   */
-  this.text2000 = null
-  /**
-  *  
+  text2000: null,
+ /**
   * Long text 1900
   * @type {String}
   */
-  this.textN = null
-  /**
-  * Code 
+  textN: null,
+ /**
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Text100(100..) 
+  code: '',
+ /**
   * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text100&quot; attribute
-  * 
   * @type {String}
   */
-  this.mi_tr_text100 = null
-  /**
-  * Text2(2..) 
+  mi_tr_text100: null,
+ /**
   * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text2&quot; attribute
-  * 
   * @type {String}
   */
-  this.mi_tr_text2 = null
-  /**
-  * Text2000(2000..) 
+  mi_tr_text2: null,
+ /**
   * Mixin &quot;clobTruncate&quot; autogenerated attribute for truncate text value of &quot;text2000&quot; attribute
-  * 
   * @type {String}
   */
-  this.mi_tr_text2000 = null
+  mi_tr_text2000: null,
 }
 /**
-* Test crypto
-* @mixes EventEmitter
+* Test CLOB attributes
+* @type {tst_clob_ns}
 */
-global.tst_crypto = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_clob = new tst_clob_ns()
 /**
-* Attributes of "Test crypto"
-* @class
-*/
-function tst_crypto_object () {
-}
-/**
-* tst_dictionary
-* @mixes EventEmitter
-*/
-global.tst_dictionary = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "tst_dictionary"
-* @class
-*/
-function tst_dictionary_object () {
-  /**
-  *  
-  * 
+ * ub test dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class tst_dictionary_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_dictionary_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Code 
+  ID: 0,
+ /**
   * Code
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Caption 
+  code: '',
+ /**
   * Caption
   * @type {String}
   */
-  this.caption = null
-  /**
-  * filterValue 
+  caption: null,
+ /**
   * @type {Number}
   */
-  this.filterValue = 0
-  /**
-  * Currency Data 
+  filterValue: 0,
+ /**
   * @type {Number}
   */
-  this.currencyValue = null
-  /**
-  * Float Data 
+  currencyValue: null,
+ /**
   * @type {Number}
   */
-  this.floatValue = null
-  /**
-  * Назва 
+  floatValue: null,
+ /**
   * @type {String}
   */
-  this.calculated = null
-  /**
-  * Test boolean column 
+  calculated: null,
+ /**
   * @type {Boolean}
   */
-  this.booleanColumn = undefined
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  booleanColumn: undefined,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* ТестДокументів
-* @mixes EventEmitter
+* ub test dictionary
+* @type {tst_dictionary_ns}
 */
-global.tst_document = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_dictionary = new tst_dictionary_ns()
 /**
-* Attributes of "ТестДокументів"
-* @class
-*/
-function tst_document_object () {
-  /**
-  *  
-  * 
+ * Test adtDocument attributes
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes softLock
+ * @mixes fts
+ */
+class tst_document_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_document_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Код 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Дата документу 
+  code: '',
+ /**
   * @type {Date}
   */
-  this.docDate = null
-  /**
-  * income date 
+  docDate: null,
+ /**
   * @type {Date}
   */
-  this.incomeDate = null
-  /**
-  * reg date 
+  incomeDate: null,
+ /**
   * @type {Date}
   */
-  this.regDate = null
-  /**
-  * Category (ref -> tst_category)
+  regDate: null,
+ /**
   * @type {Number}
   */
-  this.category = 0
-  /**
-  * Favorites (ref -> tst_category)
+  category: 0,
+ /**
   * @type {Number}
   */
-  this.favorites = 0
-  /**
-  * Favorites (ref -> tst_category)
+  favorites: 0,
+ /**
   * @type {Number}
   */
-  this.favorites2 = 0
-  /**
-  * Document full date 
+  favorites2: 0,
+ /**
   * @type {Date}
   */
-  this.docDateTime = null
-  /**
-  * Опис 
+  docDateTime: null,
+ /**
   * @type {String}
   */
-  this.description = null
-  /**
-  * Simple 
+  description: null,
+ /**
   * Document stored to simple store
   * @type {String}
   */
-  this.fileStoreSimple = null
-  /**
-  * person (ref -> cdn_person)
+  fileStoreSimple: null,
+ /**
   * @type {Number}
   */
-  this.person = null
-  /**
-  * employee (ref -> cdn_employee)
+  person: null,
+ /**
   * @type {Number}
   */
-  this.employee = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  employee: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
-
 /**
-* test fts data with scope&#x3D;Connection non multi lang
-* @mixes EventEmitter
+* Test adtDocument attributes
+* @type {tst_document_ns}
 */
-global.tst_ftsconnection = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_document = new tst_document_ns()
 /**
-* Attributes of "test fts data with scope&#x3D;Connection non multi lang"
-* @class
-*/
-function tst_ftsconnection_object () {
-  /**
-  *  
-  * 
+ * test fts data with scope&#x3D;Connection non multi lang
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes fts
+ */
+class tst_ftsconnection_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_ftsconnection_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Caption 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.caption = null
-  /**
-  * Registration date 
+  caption: null,
+ /**
   * @type {Date}
   */
-  this.regDate = null
+  regDate: null,
+}
+/**
+* test fts data with scope&#x3D;Connection non multi lang
+* @type {tst_ftsconnection_ns}
+*/
+const tst_ftsconnection = new tst_ftsconnection_ns()
+/**
+ * test fts data with scope&#x3D;Connection multi lang
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes fts
+ */
+class tst_ftsconnection_ml_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_ftsconnection_ml_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * @type {Date}
+  */
+  regDate: null,
 }
 /**
 * test fts data with scope&#x3D;Connection multi lang
-* @mixes EventEmitter
+* @type {tst_ftsconnection_ml_ns}
 */
-global.tst_ftsconnection_ml = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_ftsconnection_ml = new tst_ftsconnection_ml_ns()
 /**
-* Attributes of "test fts data with scope&#x3D;Connection multi lang"
-* @class
-*/
-function tst_ftsconnection_ml_object () {
-  /**
-  *  
-  * 
+ * test fts data with scope&#x3D;Entity non multi lang
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes fts
+ */
+class tst_ftsentity_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_ftsentity_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Caption 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.caption = null
-  /**
-  * Registration date 
+  caption: null,
+ /**
   * @type {Date}
   */
-  this.regDate = null
+  regDate: null,
 }
 /**
 * test fts data with scope&#x3D;Entity non multi lang
-* @mixes EventEmitter
+* @type {tst_ftsentity_ns}
 */
-global.tst_ftsentity = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_ftsentity = new tst_ftsentity_ns()
 /**
-* Attributes of "test fts data with scope&#x3D;Entity non multi lang"
-* @class
-*/
-function tst_ftsentity_object () {
-  /**
-  *  
-  * 
+ * Historical dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class tst_histDict_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_histDict_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Caption 
-  * @type {String}
+  ID: 0,
+ /**
+  * Our organization -> org_organization
+  * @type {Number}
   */
-  this.caption = null
-  /**
-  * Registration date 
+  organization: 0,
+ /**
+  * @type {Number}
+  */
+  currencyValue: 0,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
   * @type {Date}
   */
-  this.regDate = null
-}
-/**
-* tst_histDict
-* @mixes EventEmitter
-*/
-global.tst_histDict = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "tst_histDict"
-* @class
-*/
-function tst_histDict_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Organization (ref -> org_organization)
-  * Our organization
-  * @type {Number}
-  */
-  this.organization = 0
-  /**
-  * Currency Data 
-  * @type {Number}
-  */
-  this.currencyValue = 0
-  /**
-  *  (ref -> tst_histDict)
-  * 
-  * @type {Number}
-  */
-  this.mi_data_id = 0
-  /**
-  *  
-  * 
+  mi_dateFrom: new Date(),
+ /**
   * @type {Date}
   */
-  this.mi_dateFrom = new Date()
-  /**
-  *  
-  * 
-  * @type {Date}
-  */
-  this.mi_dateTo = new Date()
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
+  mi_modifyUser: 0,
 }
 /**
-* ID mapped
-* @mixes EventEmitter
+* Historical dictionary
+* @type {tst_histDict_ns}
 */
-global.tst_IDMapping = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_histDict = new tst_histDict_ns()
 /**
-* Attributes of "ID mapped"
-* @class
-*/
-function tst_IDMapping_object () {
-  /**
-  * Ідентифікатор запису 
+ * Test for mapped ID [UB-1219]
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class tst_IDMapping_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_IDMapping_ns.attrs = {
+ /**
+  * Ідентифікатор запису
   * Ідентифікатор запису
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Code 
+  ID: 0,
+ /**
   * Internal code
   * @type {String}
   */
-  this.code = ''
+  code: '',
+}
+/**
+* Test for mapped ID [UB-1219]
+* @type {tst_IDMapping_ns}
+*/
+const tst_IDMapping = new tst_IDMapping_ns()
+/**
+ * ub test main data
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class tst_maindata_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_maindata_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * @type {String}
+  */
+  complexCaption: null,
+ /**
+  * @type {Number}
+  */
+  nonNullDict_ID: 0,
+ /**
+  * @type {Number}
+  */
+  nullDict_ID: null,
+ /**
+  * @type {Number}
+  */
+  parent: null,
+ /**
+  * @type {Number}
+  */
+  parent1: null,
+ /**
+  * @type {String}
+  */
+  enumValue: '',
+ /**
+  * @type {Date}
+  */
+  dateTimeValue: null,
+ /**
+  * @type {Boolean}
+  */
+  booleanValue: undefined,
+ /**
+  * @type {String}
+  */
+  manyValue: null,
+ /**
+  * @type {String}
+  */
+  manyValue2: null,
+ /**
+  * @type {Number}
+  */
+  bigintValue: null,
+ /**
+  * For testing DDL Generator - this attribute must be ignored, since it mapped to existed attribute
+  * @type {Number}
+  */
+  mappedToSelf: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
 /**
 * ub test main data
-* @mixes EventEmitter
+* @type {tst_maindata_ns}
 */
-global.tst_maindata = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_maindata = new tst_maindata_ns()
 /**
-* Attributes of "ub test main data"
-* @class
-*/
-function tst_maindata_object () {
-  /**
-  *  (ref -> tst_mainunity)
-  * 
+ * 
+ * @extends EntityNamespace
+ */
+class tst_maind_dict_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_maind_dict_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.ID = 0
-  /**
-  * Code 
-  * @type {String}
-  */
-  this.code = ''
-  /**
-  * Caption 
-  * @type {String}
-  */
-  this.caption = null
-  /**
-  * complexCaption 
-  * @type {String}
-  */
-  this.complexCaption = null
-  /**
-  * nonNullDict_ID (ref -> tst_dictionary)
+  sourceID: 0,
+ /**
   * @type {Number}
   */
-  this.nonNullDict_ID = 0
-  /**
-  * nullDict_ID (ref -> tst_dictionary)
-  * @type {Number}
-  */
-  this.nullDict_ID = null
-  /**
-  * parent (ref -> tst_maindata)
-  * @type {Number}
-  */
-  this.parent = null
-  /**
-  * parent (ref -> tst_mainunity)
-  * @type {Number}
-  */
-  this.parent1 = null
-  /**
-  * enumValue 
-  * @type {String}
-  */
-  this.enumValue = ''
-  /**
-  * dateTimeValue 
-  * @type {Date}
-  */
-  this.dateTimeValue = null
-  /**
-  * booleanValue 
-  * @type {Boolean}
-  */
-  this.booleanValue = undefined
-  /**
-  * test many data (ref -> tst_dictionary)
-  * @type {String}
-  */
-  this.manyValue = null
-  /**
-  * test 2d many data (ref -> tst_dictionary)
-  * @type {String}
-  */
-  this.manyValue2 = null
-  /**
-  * BigInt 
-  * @type {Number}
-  */
-  this.bigintValue = null
-  /**
-  * mappedToSelf (ref -> uba_user)
-  * @type {Number}
-  */
-  this.mappedToSelf = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
-  * @type {Number}
-  */
-  this.mi_owner = 0
-  /**
-  *  
-  * Creation date
-  * 
-  * @type {Date}
-  */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
-  * @type {Number}
-  */
-  this.mi_createUser = 0
-  /**
-  *  
-  * Modification date
-  * 
-  * @type {Date}
-  */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
-  * @type {Number}
-  */
-  this.mi_modifyUser = 0
-  /**
-  *  
-  * Deletion date
-  * 
-  * @type {Date}
-  */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
-  * @type {Number}
-  */
-  this.mi_deleteUser = null
+  destID: 0,
 }
 /**
 * 
-* @mixes EventEmitter
+* @type {tst_maind_dict_ns}
 */
-global.tst_maind_dict = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_maind_dict = new tst_maind_dict_ns()
 /**
-* Attributes of ""
-* @class
-*/
-function tst_maind_dict_object () {
-  /**
-  *  (ref -> tst_maindata)
+ * 
+ * @extends EntityNamespace
+ */
+class tst_maind_dict2_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_maind_dict2_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.sourceID = 0
-  /**
-  *  (ref -> tst_dictionary)
+  sourceID: 0,
+ /**
   * @type {Number}
   */
-  this.destID = 0
+  destID: 0,
 }
 /**
 * 
-* @mixes EventEmitter
+* @type {tst_maind_dict2_ns}
 */
-global.tst_maind_dict2 = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_maind_dict2 = new tst_maind_dict2_ns()
 /**
-* Attributes of ""
-* @class
-*/
-function tst_maind_dict2_object () {
-  /**
-  *  (ref -> tst_maindata)
+ * ub test main unity
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class tst_mainunity_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_mainunity_ns.attrs = {
+ /**
   * @type {Number}
   */
-  this.sourceID = 0
-  /**
-  *  (ref -> tst_dictionary)
-  * @type {Number}
-  */
-  this.destID = 0
-}
-/**
-* tst_mainunity
-* @mixes EventEmitter
-*/
-global.tst_mainunity = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "tst_mainunity"
-* @class
-*/
-function tst_mainunity_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Code 
+  ID: 0,
+ /**
   * @type {String}
   */
-  this.code = ''
-  /**
-  * Caption 
+  code: '',
+ /**
   * @type {String}
   */
-  this.caption = null
-  /**
-  *  (ref -> uba_user)
-  * Row owner
-  * 
+  caption: null,
+ /**
+  * Row owner -> uba_user
   * @type {Number}
   */
-  this.mi_owner = 0
-  /**
-  *  
+  mi_owner: 0,
+ /**
   * Creation date
-  * 
   * @type {Date}
   */
-  this.mi_createDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who create row
-  * 
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
   * @type {Number}
   */
-  this.mi_createUser = 0
-  /**
-  *  
+  mi_createUser: 0,
+ /**
   * Modification date
-  * 
   * @type {Date}
   */
-  this.mi_modifyDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who modify row
-  * 
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
   * @type {Number}
   */
-  this.mi_modifyUser = 0
-  /**
-  *  
+  mi_modifyUser: 0,
+ /**
   * Deletion date
-  * 
   * @type {Date}
   */
-  this.mi_deleteDate = new Date()
-  /**
-  *  (ref -> uba_user)
-  * User who delete row
-  * 
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
   * @type {Number}
   */
-  this.mi_deleteUser = null
-  /**
-  *  
-  * 
+  mi_deleteUser: null,
+ /**
   * @type {String}
   */
-  this.mi_unityEntity = ''
+  mi_unityEntity: '',
 }
 /**
-* tst_ODataRef
-* @mixes EventEmitter
+* ub test main unity
+* @type {tst_mainunity_ns}
 */
-global.tst_ODataRef = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
+const tst_mainunity = new tst_mainunity_ns()
 /**
-* Attributes of "tst_ODataRef"
-* @class
-*/
-function tst_ODataRef_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Code 
-  * Code
-  * @type {String}
-  */
-  this.code = ''
-  /**
-  *  (ref -> tst_ODataSimple)
-  * @type {Number}
-  */
-  this.refColumn = 0
-  /**
-  * Simple 
-  * Document stored to simple store
-  * @type {String}
-  */
-  this.storeColumn = null
+ * List of test commands
+ * @extends EntityNamespace
+ */
+class tst_service_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+tst_service_ns.attrs = {
 }
 /**
-* tst_ODataSimple
-* @mixes EventEmitter
+* List of test commands
+* @type {tst_service_ns}
 */
-global.tst_ODataSimple = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "tst_ODataSimple"
-* @class
-*/
-function tst_ODataSimple_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Code 
-  * Code
-  * @type {String}
-  */
-  this.code = ''
-  /**
-  * Caption 
-  * Caption
-  * @type {String}
-  */
-  this.caption = null
-  /**
-  * filterValue 
-  * @type {Number}
-  */
-  this.filterValue = 0
-  /**
-  * Currency Data 
-  * @type {Number}
-  */
-  this.currencyValue = null
-  /**
-  * Назва 
-  * @type {String}
-  */
-  this.calculated = null
-  /**
-  * Test boolean column 
-  * @type {Boolean}
-  */
-  this.booleanColumn = undefined
-  /**
-  *  
-  * @type {String}
-  */
-  this.enumColumn = null
-  /**
-  * Document date 
-  * @type {Date}
-  */
-  this.dateColumn = null
-}
-/**
-* tst_onlyoffice
-* @mixes EventEmitter
-*/
-global.tst_onlyoffice = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "tst_onlyoffice"
-* @class
-*/
-function tst_onlyoffice_object () {
-  /**
-  *  
-  * 
-  * @type {Number}
-  */
-  this.ID = 0
-  /**
-  * Caption 
-  * @type {String}
-  */
-  this.caption = null
-  /**
-  * content 
-  * contents of the document
-  * 
-  * @type {String}
-  */
-  this.content = null
-}
-/**
-* Test PDF sign
-* @mixes EventEmitter
-*/
-global.tst_pdfSign = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "Test PDF sign"
-* @class
-*/
-function tst_pdfSign_object () {
-}
-/**
-* Test servises
-* @mixes EventEmitter
-*/
-global.tst_service = {
-  /** 
-   * Reference to entity metadata
-   * @type {UBEntity} 
-   */
-  entity: null
-}
-
-/**
-* Attributes of "Test servises"
-* @class
-*/
-function tst_service_object () {
-}
+const tst_service = new tst_service_ns()

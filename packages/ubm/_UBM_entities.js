@@ -5,7 +5,7 @@
 
 /**
  * Set of entities for constructing a dynamically generated UnityBase UI. Enumerations, navigation desktops &amp; shortcuts, forms, ER diagrams
- * @version 5.0.7
+ * @version 5.0.8
  * @module @unitybase/ubm
  */
 

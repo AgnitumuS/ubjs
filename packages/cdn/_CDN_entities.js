@@ -5,7 +5,7 @@
 
 /**
  * Set of dictionaries, common for most enterprise systems. For internal organization structure see @ubitybase&#x2F;org module
- * @version 5.0.7
+ * @version 5.0.8
  * @module @unitybase/cdn
  */
 
@@ -76,7 +76,7 @@ cdn_address_ns.attrs = {
 */
 const cdn_address = new cdn_address_ns()
 /**
- * Admin unit (country, region, city)
+ * Admin unit (country, region, city).
  * Main parent for countries, regions and cities
  * @extends EntityNamespace
  * @mixes mStorage
@@ -156,7 +156,7 @@ cdn_adminunit_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Admin unit (country, region, city)
+* Admin unit (country, region, city).
  * Main parent for countries, regions and cities
 * @type {cdn_adminunit_ns}
 */
@@ -1633,7 +1633,7 @@ cdn_orgownershiptype_ns.attrs = {
 */
 const cdn_orgownershiptype = new cdn_orgownershiptype_ns()
 /**
- * Physical persons dictionary
+ * Physical persons dictionary.
  * The directory stores a list of persons (physical persons)
  * @extends EntityNamespace
  * @mixes mStorage
@@ -1836,13 +1836,13 @@ cdn_person_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Physical persons dictionary
+* Physical persons dictionary.
  * The directory stores a list of persons (physical persons)
 * @type {cdn_person_ns}
 */
 const cdn_person = new cdn_person_ns()
 /**
- * Ctegory of persons
+ * Ctegory of persons.
  * The directory stores a list of categories or physical persons
  * @extends EntityNamespace
  * @mixes mStorage
@@ -1901,13 +1901,13 @@ cdn_personcategory_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Ctegory of persons
+* Ctegory of persons.
  * The directory stores a list of categories or physical persons
 * @type {cdn_personcategory_ns}
 */
 const cdn_personcategory = new cdn_personcategory_ns()
 /**
- * Dictionary of social status
+ * Dictionary of social status.
  * The directory stores a list of social status for individuals
  * @extends EntityNamespace
  * @mixes mStorage
@@ -1966,7 +1966,7 @@ cdn_personsocialstatus_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* Dictionary of social status
+* Dictionary of social status.
  * The directory stores a list of social status for individuals
 * @type {cdn_personsocialstatus_ns}
 */
@@ -2344,7 +2344,7 @@ cdn_staffunittype_ns.attrs = {
 */
 const cdn_staffunittype = new cdn_staffunittype_ns()
 /**
- * List of streets
+ * List of streets.
  * В этом справочнике хранится перечень вулиць
  * @extends EntityNamespace
  * @mixes mStorage
@@ -2431,7 +2431,7 @@ cdn_street_ns.attrs = {
   mi_deleteUser: null,
 }
 /**
-* List of streets
+* List of streets.
  * В этом справочнике хранится перечень вулиць
 * @type {cdn_street_ns}
 */
