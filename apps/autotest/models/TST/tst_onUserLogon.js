@@ -1,8 +1,9 @@
-/**
- * Created by pavel.mash on 25.05.2015.
- */
-
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+// Created by pavel.mash on 25.05.2015.
 const _ = require('lodash')
+
 /**
  * Check Session.uData persistence. Here we fill Session.uData and check it in tst_service.uDataTest
  */

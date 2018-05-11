@@ -4,7 +4,7 @@ const blobStores = require('./blobStores')
 
 /**
  * @classdesc
- * Entity communication class. Use it to:
+ * Class for execution of an ORM/SQL queries on the server side. Use it to:
  *
  *  - execute any entity method using {@link TubDataStore#run}
  *  - execute any SQL statement using {@link TubDataStore#runSQL} or {@link TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)

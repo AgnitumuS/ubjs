@@ -1,13 +1,12 @@
 /**
- * Build-in UnityBase endpoints.
- * Endpoints below are implemented inside native code:
+ * Build-in UnityBase endpoints. Will be registered during {@link module:@unitybase/ub~start UB.start}
+ * In addition to endpoints documented below additional endpoints
  *  - ubql
  *  - stat
  *  - auth
  *  - logout
  *  - timeStamp
- *
- * and will be moved to JavaScript in future releases
+ * are implemented inside native code and will be moved to JavaScript in future releases.
  *
  * @module endpoints
  * @memberOf module:@unitybase/ub

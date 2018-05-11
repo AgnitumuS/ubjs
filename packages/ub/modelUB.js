@@ -16,15 +16,6 @@ const mStorage = require('./mixins/mStorage')
 
 //if (typeof global['UB'] !== 'undefined') throw new Error('@unitybase/ub already required')
 /**
- * The main entry point for UnityBase application.
- * See {@link start UB.start} method for initialization process description
- *
- * @example
-
-const UB = require('@unitybase/ub')
-UB.start()
-
- *
  * @module @unitybase/ub
  */
 let UB = module.exports = {
@@ -45,7 +36,7 @@ let UB = module.exports = {
   /**
    * Server-side Security exception. Throwing of such exception will trigger
    * `Session.securityViolation` event
-   * @rype {ESecurityException}
+   * @type {ESecurityException}
    */
   ESecurityException: Errors.ESecurityException,
   ns: ns,

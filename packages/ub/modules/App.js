@@ -60,8 +60,7 @@ const dbConnections = require('./DBConnections')
  *
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
  *
- * @module App
- * @memberOf module:@unitybase/ub
+ * @class App
  * @mixes EventEmitter
  */
 const App = {
@@ -135,7 +134,7 @@ App.launchEndpoint = function (endpointName) {
 const appBinding = process.binding('ub_app')
 /**
  * Register a server endpoint.
- * One on endpoint can be default - this endpoint will be used as a fallback in case URL do not start with eny of known endpoints.
+ * One on endpoint can be default - this endpoint will be used as a fallback in case URL do not start with any of known endpoints.
  * @example
  *
  * // Write a custom request body to file FIXTURES/req and echo file back to client
