@@ -67,10 +67,10 @@ console.log(`Currently logged-in user
 
 ## Querying data
 
-In most cases client retrieves data from the server using UBQL (UnityBase Query Language).
+In most cases client retrieves data from the server using {@link UBQL UBQL} (UnityBase Query Language) JSON.
 
 {@link UBConnection#Repository connection.Repository} fabric function is a helper
-for building UBQL
+for building {@link UBQL UBQL} JSON
 
 ```
 conn.Repository('my_entity').attrs(['ID', 'code'])

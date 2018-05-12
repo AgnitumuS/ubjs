@@ -76,6 +76,7 @@ ubMethodParams.prototype = {
   originalParams: null,
   /**
    * In/Out method parameters. All parameters added or modified in this object is passed back to client
+   * In case method is called from client `mParams` is a serialized request body
    * @type {TubList}
    */
   mParams: null,
@@ -142,34 +143,39 @@ const mStorage = {
   /**
    * Read entity data
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
+   * @param {UBQL} ctx.mParams ORM query in UBQL format
    */
-  select: function (ctxt) {},
+  select: function (ctx) {},
   /**
-   * Insert data
+   * Insert new row to the entity.
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
+   * @param {Object|TubList} ctx.mParams.execParams Object keys is entity attributes names, key values is a value to be inserted
    */
-  insert: function (ctxt) {},
+  insert: function (ctx) {},
   /**
    * Update data
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
+   * @param {Object|TubList} ctx.mParams.execParams Object keys is entity attributes names, key values is a value to be inserted
+   * @param {number} ctx.mParams.execParams.ID element ID to be updated
    */
-  update: function (ctxt) {},
+  update: function (ctx) {},
   /**
    * Delete data
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
+   * @param {number} ctx.mParams.execParams.ID element ID to be deleted
    */
-  delete: function (ctxt) {},
+  delete: function (ctx) {},
   /**
    * Create record with filled default values and return it to caller.
-   * Newly created record not inserted to database. For inserting record to the database `insert` method should be called
+   * Newly created record is not inserted to database. For inserting record to the database `insert` method should be called
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  addNew: function (ctxt) {}
+  addNew: function (ctx) {}
 }
 
 /**
@@ -200,27 +206,27 @@ const softLock = {
   /**
    * Lock entity row. In case entity row not locked `update` & `delete` operation are not permitted
    * @published
-   * @param {ubMethodParams} ctxt
-   * @param {number} ctxt.mParams.ID
+   * @param {ubMethodParams} ctx
+   * @param {number} ctx.mParams.ID
    */
-  lock: function (ctxt) {},
+  lock: function (ctx) {},
   /**
    * Unlock entity row.
    * @published
-   * @param {ubMethodParams} ctxt
-   * @param {number} ctxt.mParams.ID
+   * @param {ubMethodParams} ctx
+   * @param {number} ctx.mParams.ID
    */
-  unlock: function (ctxt) {},
+  unlock: function (ctx) {},
   /**
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  renewLock: function (ctxt) {},
+  renewLock: function (ctx) {},
   /**
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  isLocked: function (ctxt) {}
+  isLocked: function (ctx) {}
 }
 
 /**
@@ -252,16 +258,16 @@ const als = {
    * Must be implemented in entity. Method should return all possible roles
    * @published
    * @abstract
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  getallroles: function (ctxt) {},
+  getallroles: function (ctx) {},
   /**
    * Must be implemented in entity. Method should return all possible states
    * @published
    * @abstract
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  getallstates: function (ctxt) {}
+  getallstates: function (ctx) {}
 }
 
 /**
@@ -272,9 +278,9 @@ const dataHistory = {
   /**
    * Create new version of specified record
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  newversion: function (ctxt) {}
+  newversion: function (ctx) {}
 }
 
 /**
@@ -297,15 +303,15 @@ const fts = {
   /**
    * Full text search query
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  fts: function (ctxt) {},
+  fts: function (ctx) {},
   /**
    * Ce-create entity FTS index
    * @published
-   * @param {ubMethodParams} ctxt
+   * @param {ubMethodParams} ctx
    */
-  ftsreindex: function (ctxt) {}
+  ftsreindex: function (ctx) {}
 }
 
 /**

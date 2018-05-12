@@ -90,15 +90,16 @@ function loadAll () {
 }
 
 /**
- * Retrieve data from resultDataCache and init ctxt.dataStore
+ * Retrieve data from resultDataCache and init ctx.dataStore
  * caller MUST set dataStore.currentDataName before call doSelect function
  * @private
- * @param {ubMethodParams} ctxt
+ * @param {ubMethodParams} ctx
+ * @param {UBQL} ctx.mParams ORM query in UBQL format
  */
-function doSelect (ctxt) {
-  let mP = ctxt.mParams
+function doSelect (ctx) {
+  let mP = ctx.mParams
   let aID = mP.ID
-  let cType = ctxt.dataStore.entity.cacheType
+  let cType = ctx.dataStore.entity.cacheType
   let cachedData = loadAll()
 
   if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity || cType === UBDomain.EntityCacheTypes.SessionEntity) && (!mP.skipCache)) {
@@ -113,21 +114,22 @@ function doSelect (ctxt) {
   let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
   // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
   let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
-  ctxt.dataStore.initFromJSON(resp)
+  ctx.dataStore.initFromJSON(resp)
 }
 
 /**
  * Virtual `select` implementation. Actual data are stored in `_schedulers.json` files from models folders
  * @method select
- * @param {ubMethodParams} ctxt
+ * @param {ubMethodParams} ctx
+ * @param {UBQL} ctx.mParams ORM query in UBQL format
  * @return {Boolean}
  * @memberOf ubq_scheduler_ns.prototype
  * @memberOfModule @unitybase/ubq
  * @published
  */
-me.select = function (ctxt) {
-  ctxt.dataStore.currentDataName = 'select' // do we need it????
-  doSelect(ctxt)
-  ctxt.preventDefault()
+me.select = function (ctx) {
+  ctx.dataStore.currentDataName = 'select' // do we need it????
+  doSelect(ctx)
+  ctx.preventDefault()
   return true // everything is OK
 }

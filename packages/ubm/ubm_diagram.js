@@ -127,12 +127,13 @@ function doSelect (ctxt) {
  * @memberOf ubm_diagram_ns.prototype
  * @memberOfModule @unitybase/ubm
  * @published
- * @param {ubMethodParams} ctxt
+ * @param {ubMethodParams} ctx
+ * @param {UBQL} ctx.mParams ORM query in UBQL format
  * @return {Boolean}
  */
-me.select = function (ctxt) {
-  ctxt.dataStore.currentDataName = 'select'
-  doSelect(ctxt)
+me.select = function (ctx) {
+  ctx.dataStore.currentDataName = 'select'
+  doSelect(ctx)
   return true
 }
 

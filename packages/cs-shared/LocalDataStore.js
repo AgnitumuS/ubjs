@@ -29,15 +29,6 @@
  */
 
 const _ = require('lodash')
-/**
- * Format for UBQ select request
- * @typedef {Object} TubSelectRequest
- * @property {Array<String>} fieldList Array of entity attribute names
- * @property {Object} whereList Where clauses
- * @property {Object} orderList Order clauses
- * @property {Object} options Options
- * @property {Number} ID ID
- */
 
 /**
  * Format for data, stored in client-side cache
@@ -49,22 +40,22 @@ const _ = require('lodash')
  */
 
 /**
- * Perform local filtration and sorting of data array according to ubRequest whereList & order list
+ * Perform local filtration and sorting of data array according to ubql whereList & order list
  * @param {TubCachedData} cachedData Data, retrieved from cache
- * @param {TubSelectRequest} ubRequest Initial server request
+ * @param {UBQL} ubql Initial server request
  * @returns {*} new filtered & sorted array
  */
-module.exports.doFilterAndSort = function (cachedData, ubRequest) {
+module.exports.doFilterAndSort = function (cachedData, ubql) {
   let rangeStart
 
-  let filteredData = this.doFiltration(cachedData, ubRequest)
+  let filteredData = this.doFiltration(cachedData, ubql)
   let totalLength = filteredData.length
-  this.doSorting(filteredData, cachedData, ubRequest)
+  this.doSorting(filteredData, cachedData, ubql)
     // apply options start & limit
-  if (ubRequest.options) {
-    rangeStart = ubRequest.options.start || 0
-    if (ubRequest.options.limit) {
-      filteredData = filteredData.slice(rangeStart, rangeStart + ubRequest.options.limit)
+  if (ubql.options) {
+    rangeStart = ubql.options.start || 0
+    if (ubql.options.limit) {
+      filteredData = filteredData.slice(rangeStart, rangeStart + ubql.options.limit)
     } else {
       filteredData = filteredData.slice(rangeStart)
     }
@@ -88,18 +79,18 @@ module.exports.byID = function (cachedData, IDValue) {
 }
 
 /**
- * Apply ubRequest.whereList to data array and return new array contain filtered data
+ * Apply ubql.whereList to data array and return new array contain filtered data
  * @protected
  * @param {TubCachedData} cachedData Data, retrieved from cache
- * @param {TubSelectRequest} ubRequest
+ * @param {UBQL} ubql
  * @returns {Array.<Array>}
  */
-module.exports.doFiltration = function (cachedData, ubRequest) {
+module.exports.doFiltration = function (cachedData, ubql) {
   let f, isAcceptable
   let rawDataArray = cachedData.data
-  let byPrimaryKey = Boolean(ubRequest.ID)
+  let byPrimaryKey = Boolean(ubql.ID)
 
-  let filterFabric = whereListToFunctions(ubRequest, cachedData.fields)
+  let filterFabric = whereListToFunctions(ubql, cachedData.fields)
   let filterCount = filterFabric.length
 
   if (filterCount === 0) {
@@ -176,19 +167,19 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
 /**
  * Transform whereList to array of function
  * @private
- * @param {TubSelectRequest} request
+ * @param {UBQL} ubql
  * @param {Array.<String>} fieldList
  * @returns {Array}
  */
-function whereListToFunctions (request, fieldList) {
-  Object.keys(request) // FIX BUG WITH TubList TODO - rewrite to native
+function whereListToFunctions (ubql, fieldList) {
+  Object.keys(ubql) // FIX BUG WITH TubList TODO - rewrite to native
   let propIdx, fValue, filterFabricFn
   let filters = []
   let escapeForRegexp = function (text) {
     // convert text to string
     return text ? ('' + text).replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&') : ''
   }
-  let whereList = request.whereList
+  let whereList = ubql.whereList
 
   filterFabricFn = function (propertyIdx, condition, value) {
     let regExpFilter
@@ -279,7 +270,7 @@ function whereListToFunctions (request, fieldList) {
     filters.push(filterFabricFn(propIdx, clause.condition, fValue))
   }
     // check for top level ID  - in this case add condition for filter by ID
-  const reqID = request.ID
+  const reqID = ubql.ID
   if (reqID) {
     transformClause({expression: '[ID]', condition: 'equal', values: {ID: reqID}})
   }

@@ -959,11 +959,11 @@ UBConnection.prototype.convertResponseDataToJsTypes = function (serverResponse) 
  * Call a {@link LocalDataStore#doFilterAndSort} - see a parameters there
  * @protected
  * @param {TubCachedData} cachedData
- * @param {TubSelectRequest} ubRequest
+ * @param {UBQL} ubql
  * @returns {Object}
  */
-UBConnection.prototype.doFilterAndSort = function (cachedData, ubRequest) {
-  return LocalDataStore.doFilterAndSort(cachedData, ubRequest)
+UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
+  return LocalDataStore.doFilterAndSort(cachedData, ubql)
 }
 
 /**

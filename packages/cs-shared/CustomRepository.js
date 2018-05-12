@@ -109,11 +109,11 @@ class CustomRepository {
    *
    * @example
 
-   // calculate sum of document payments
-   UB.Repository('tri_srf_reg').attrs('SUM([payment])').where('documentID', '=', value)
+ // calculate sum of document payments
+ UB.Repository('tri_srf_reg').attrs('SUM([payment])').where('documentID', '=', value)
 
-   // In case of server-side execution any valid SQL expression is accepted:
-   UB.Repository('uba_user').attrs('[ID] / 100 + 1').selectAsArray()
+ // In case of server-side execution any valid SQL expression is accepted:
+ UB.Repository('uba_user').attrs('[ID] / 100 + 1').selectAsArray()
 
    * @param {string|Array<string>} attr
    * @return {CustomRepository}
@@ -147,20 +147,20 @@ class CustomRepository {
    *
    * @example
 
-  UB.Repository('my_entity').attrs('id')
-    // code in ('1', '2', '3')
-    .where('code', 'in', ['1', '2', '3'])
-    // code in (select code from my_codes where id = 10)
-    .where('code', 'in', UB.Repository('my_codes').attr('code').where('ID', '<', 10)
-    // name like '%homer%'
-    .where('[name]', 'contains', 'Homer').
-    //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
-    .where('[birtday]', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
-    // (age + 10 >= 15)
-    .where('[age] -10', '>=', {age: 15}, 'byAge')
-    .where('LENGTH([code]), '<', 5)
-    // for condition match expression not need
-    .where('', 'match', 'myvalue')
+UB.Repository('my_entity').attrs('id')
+  // code in ('1', '2', '3')
+  .where('code', 'in', ['1', '2', '3'])
+  // code in (select code from my_codes where id = 10)
+  .where('code', 'in', UB.Repository('my_codes').attr('code').where('ID', '<', 10)
+  // name like '%homer%'
+  .where('[name]', 'contains', 'Homer').
+  //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
+  .where('[birtday]', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
+  // (age + 10 >= 15)
+  .where('[age] -10', '>=', {age: 15}, 'byAge')
+  .where('LENGTH([code]), '<', 5)
+  // for condition match expression not need
+  .where('', 'match', 'myvalue')
 
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
    * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
@@ -256,28 +256,28 @@ class CustomRepository {
    *
    * @example
 
-  UB.Repository('uba_user').attrs(['ID', 'name']) //select users
-    // who are not disabled
-    .where('disabled', '=', 0)
-    // which allowed access from Kiev
-    .where('trustedIP', 'in',
-     UB.Repository('geo_ip').attrs('IPAddr')
-       .where('city', '=', 'Kiev')
-    )
-    // who do not login during this year
-    .notExists(
-     UB.Repository('uba_audit')
-       .correlation('actionUser', 'name')  // here we link to uba_user.name
-       .where('actionTime', '>', new Date(2016, 1, 1))
-       .where('actionType', '=', 'LOGIN')
-    )
-    // but modify some data
-    .exists(
-     UB.Repository('uba_auditTrail')
-       .correlation('actionUser', 'ID') // here we link to uba_user.ID
-       .where('actionTime', '>', new Date(2016, 1, 1))
-    )
-    .select()
+UB.Repository('uba_user').attrs(['ID', 'name']) //select users
+  // who are not disabled
+  .where('disabled', '=', 0)
+  // which allowed access from Kiev
+  .where('trustedIP', 'in',
+   UB.Repository('geo_ip').attrs('IPAddr')
+     .where('city', '=', 'Kiev')
+  )
+  // who do not login during this year
+  .notExists(
+   UB.Repository('uba_audit')
+     .correlation('actionUser', 'name')  // here we link to uba_user.name
+     .where('actionTime', '>', new Date(2016, 1, 1))
+     .where('actionType', '=', 'LOGIN')
+  )
+  // but modify some data
+  .exists(
+   UB.Repository('uba_auditTrail')
+     .correlation('actionUser', 'ID') // here we link to uba_user.ID
+     .where('actionTime', '>', new Date(2016, 1, 1))
+  )
+  .select()
 
    * @param {CustomRepository} subRepository  Repository, what represent a sub-query to be execute inside EXISTS statement
    * @param {string} [clauseName] Optional clause name
@@ -322,17 +322,17 @@ class CustomRepository {
    *
    * @example
 
-  UB.Repository('my_entity').attrs('id')
-   // code in ('1', '2', '3')
-   .where('code', 'in', ['1', '2', '3'], 'byCode')
-   // name like '%homer%'
-   .where('name', 'contains', 'Homer', 'byName')
-   //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
-   .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
-   // (age + 10 >= 15)
-   .where('[age] -10', '>=', {age: 15}, 'byAge')
-   // (byCode OR byName) AND (all where items, not included in logic)
-   .logic('(([byCode]) OR ([byName]))')
+UB.Repository('my_entity').attrs('id')
+ // code in ('1', '2', '3')
+ .where('code', 'in', ['1', '2', '3'], 'byCode')
+ // name like '%homer%'
+ .where('name', 'contains', 'Homer', 'byName')
+ //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
+ .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
+ // (age + 10 >= 15)
+ .where('[age] -10', '>=', {age: 15}, 'byAge')
+ // (byCode OR byName) AND (all where items, not included in logic)
+ .logic('(([byCode]) OR ([byName]))')
 
    * @param {string} predicate logical predicate.
    * @return {CustomRepository}
@@ -346,17 +346,17 @@ class CustomRepository {
    * Force `where expressions` to be used in join part of SQL statement instead of where part. Applicable only for not cached entities
    * @exapmle
 
-  // will generate
-  // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
-  //    ON (B.instanceID = A.ID and B.ubUser = 10)
-  // instead of
-  // SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
-  //    ON B.instanceID = A.ID
-  //    WHERE B.ubUser = 10
-  UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
-   .where('[caregory.ubUser]', '=', 10, 'wantInJoin')
-   .join('wantInJoin')
-   .selectAsObject().done(UB.logDebug)
+// will generate
+// SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
+//    ON (B.instanceID = A.ID and B.ubUser = 10)
+// instead of
+// SELECT A.ID, B.code FROM tst_document A LEFT JOIN tst_category B
+//    ON B.instanceID = A.ID
+//    WHERE B.ubUser = 10
+UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
+ .where('[caregory.ubUser]', '=', 10, 'wantInJoin')
+ .join('wantInJoin')
+ .selectAsObject().done(UB.logDebug)
 
    * @param {string} whereItemName name of where item to use in join.
    * @return {CustomRepository}
@@ -393,7 +393,7 @@ class CustomRepository {
    * Sorting
    * @example
 
-  UB.CustomRepository('my_entity').attrs('ID').orderBy('code')
+UB.CustomRepository('my_entity').attrs('ID').orderBy('code')
 
    * @param {string} attr Sorted attribute
    * @param {string} [direction='asc'] Sort direction ('asc'|'desc')
@@ -412,9 +412,9 @@ class CustomRepository {
    * Adds descend sorting. The same as orderBy(attr, 'desc')
    * @example
 
-  UB.Repository('my_entity').attrs('ID')
-    // ORDER BY code, date_create DESC
-    .orderBy('code').orderByDesc('date_create')
+UB.Repository('my_entity').attrs('ID')
+  // ORDER BY code, date_create DESC
+  .orderBy('code').orderByDesc('date_create')
 
    * @param {string} attr
    * @return {CustomRepository}
@@ -431,12 +431,12 @@ class CustomRepository {
    * Adds grouping
    * @example
 
-  UB.Repository('my_entity').attrs('ID')
-   .groupBy('code')
-  UB.Repository('uba_user').attrs('disabled')
-   .groupBy('disabled').select()
-  UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
-   .groupBy(['disabled','uPassword']).select()
+UB.Repository('my_entity').attrs('ID')
+ .groupBy('code')
+UB.Repository('uba_user').attrs('disabled')
+ .groupBy('disabled').select()
+UB.Repository('uba_user').attrs(['disabled','uPassword','COUNT([ID])'])
+ .groupBy(['disabled','uPassword']).select()
 
    * @param {string|Array<string>} attr Grouped attribute(s)
    * @return {CustomRepository}
@@ -454,9 +454,9 @@ class CustomRepository {
    * Retrieve first `start` rows
    * @example
 
-  let store = UB.Repository('my_entity').attrs('id')
-   //will return ID's from 15 to 25
-   .start(15).limit(10).select()
+let store = UB.Repository('my_entity').attrs('id')
+ //will return ID's from 15 to 25
+ .start(15).limit(10).select()
 
    * @param {Number} start
    * @return {CustomRepository}
@@ -470,8 +470,8 @@ class CustomRepository {
    * How many rows to select
    * @example
 
-  // will return first two ID's from my_entity
-  let store = UB.Repository('my_entity').attrs('id').limit(2).selectAsObject()
+// will return first two ID's from my_entity
+let store = UB.Repository('my_entity').attrs('id').limit(2).selectAsObject()
 
    * @param {number} rowsLimit
    * @return {CustomRepository}
@@ -485,11 +485,11 @@ class CustomRepository {
    * Construct a UBQL JSON
    * @example
 
-  let repo = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a')
-  let inst = UB.DataStore(my_entity)
-  inst.run('select', repo.ubql())
+let repo = UB.Repository('my_entity').attrs('ID').where('code', '=', 'a')
+let inst = UB.DataStore(my_entity)
+inst.run('select', repo.ubql())
 
-   * @return {Object}
+   * @return {UBQL}
    */
   ubql () {
     let orderCnt = this.orderList.length
