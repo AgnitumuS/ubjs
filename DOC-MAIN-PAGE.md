@@ -56,7 +56,8 @@ This is a short list of the modules available in unityBase standard distribution
     - includes organizations, departments, staffs, positions, employees, professions
     - can store hierarchical organization charts
     - all entities are historical and support safe delete
- - TODO xlsx, pdf
+ - [@unitybase/xlsx](http://registry.unitybase.info/#/detail/@unitybase/xlsx) package for creating MS Excel files
+ - [@unitybase/pdf](http://registry.unitybase.info/#/detail/@unitybase/pdf) package for creating PDFs
 
 # Get Started
 
