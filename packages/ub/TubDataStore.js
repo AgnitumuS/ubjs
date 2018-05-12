@@ -4,15 +4,18 @@ const blobStores = require('./blobStores')
 
 /**
  * @classdesc
- * Class for execution of an ORM/SQL queries on the server side. Use it to:
+ * Class for execution of an ORM/SQL queries on the server side.
+ * Contains several data collection stored in the heap of ub application (i.e not use a JS engine memory and since not a subject of GC)
  *
+ * Use it to:
  *  - execute any entity method using {@link TubDataStore#run}
  *  - execute any SQL statement using {@link TubDataStore#runSQL} or {@link TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)
  *  - store several named data collection using {@link TubDataStore#currentDataName} (data stored inside server memory, not in JS, this is very good for GC)
  *  - iterate other collection rows using {@link TubDataStore#next}, eof, e.t.c and retrieve row data using TubDataStore.get
  *  - serialize data to XML {@link TubDataStore#asXMLPersistent} or JSON in array-of-array {@link TubDataStore#asJSONArray} on array-of-object {@link TubDataStore#asJSONObject} format
  *
- *  To retrieve data from database using build-in ORM (execute entity `select` method) preferred way is to use {@link module:@unitybase/ub#Repository UB.Repository} fabric function.
+ *  To retrieve data from database using build-in ORM (execute entity `select` method) preferred way is
+ *  to use {@link module:@unitybase/ub#Repository UB.Repository} fabric function.
  *
  * @class TubDataStore
  */

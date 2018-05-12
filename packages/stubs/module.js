@@ -1,7 +1,9 @@
 'use strict';
 
 /**
+ * CommonJS modules.
  * @module module
+ * @memberOf module:buildin
  */
 
 

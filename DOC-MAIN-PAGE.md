@@ -29,8 +29,6 @@ Form a business logic developer point of view UnityBase is:
 - method marked as <span class="member-attr api">api</span> is available from the client
 
 # Available server-side modules
-The complete list of available modules is in [UnityBase packages registry](http://registry.unitybase.info)
-
 Also many of [nodejs modules](https://www.npmjs.com) are compatible with UnityBase. We are constantly working on enhancing the compatibility with nodejs.
 
 This is a short list of the modules available in unityBase standard distribution:
@@ -58,6 +56,8 @@ This is a short list of the modules available in unityBase standard distribution
     - all entities are historical and support safe delete
  - [@unitybase/xlsx](http://registry.unitybase.info/#/detail/@unitybase/xlsx) package for creating MS Excel files
  - [@unitybase/pdf](http://registry.unitybase.info/#/detail/@unitybase/pdf) package for creating PDFs
+
+The **complete list of available modules** is in [UnityBase packages registry](http://registry.unitybase.info)
 
 # Get Started
 
