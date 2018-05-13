@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.10]
+### Changed
+- argv.getServerConfiguration during parsing ubConfig application.domain.models
+ config will take model parameters from model package.json config.ubmodel
+ object in case model `name` is omitted in config. This allow simplify a config as such:
+
+ ```
+ "models": [
+    {
+      "path": "./node_modules/@unitybase/ub"
+    }, {
+      "path": "./node_modules/@unitybase/uba"
+    }, ...
+  ```
+
 ## [5.0.6]
 ### Changed
 - change default value of `-host` command line parameter from http://localhost:888 to http://localhost:8881
