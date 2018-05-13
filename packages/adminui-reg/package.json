@@ -5,7 +5,9 @@
   "main": "index.html.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-reg",
   "config": {
-    "ubmodel": "adminui-reg"
+    "ubmodel": {
+      "name": "adminui-reg"
+    }
   },
   "scripts": {
     "dev": "npm link lodash @unitybase/CryptoJS @unitybase/base @unitybase/adminui",

@@ -4,7 +4,9 @@
   "description": "Reports, User messages (notifications), Settings (aka about:config), Counters",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubs",
   "config": {
-    "ubmodel": "UBS"
+    "ubmodel": {
+      "name": "UBS"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m UBS -skipModules",

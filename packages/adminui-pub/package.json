@@ -5,8 +5,10 @@
   "main": "adminui.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-pub",
   "config": {
-    "ubmodel": "adminui-pub",
-    "ubmodelispublic": true
+    "ubmodel": {
+       "name": "adminui-pub",
+       "isPublic": true
+    }
   },
   "scripts": {
     "build": "npm run build:prep && npm run build:js && npm run build:css && npm run build:adminui",

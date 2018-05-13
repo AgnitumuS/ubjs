@@ -4,7 +4,9 @@
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub",
   "config": {
-    "ubmodel": "UB"
+    "ubmodel": {
+      "name": "UB"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m UB -skipModules",

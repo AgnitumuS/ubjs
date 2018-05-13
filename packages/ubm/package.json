@@ -4,7 +4,9 @@
   "description": "Set of entities for constructing a dynamically generated UnityBase UI. Enumerations, navigation desktops & shortcuts, forms, ER diagrams",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubm",
   "config": {
-    "ubmodel": "UBM"
+    "ubmodel": {
+      "name": "UBM"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m UBM -skipModules"

@@ -4,7 +4,9 @@
   "description": "Asynchronous task queue persisted into database. Contains jobs for sending e-mail and updating FTS indexes",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubq",
   "config": {
-    "ubmodel": "UBQ"
+    "ubmodel": {
+      "name": "UBQ"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m UBQ -skipModules"

@@ -273,7 +273,7 @@ function replaceIncludeVariables (content) {
 }
 
 /**
- * Read server configuration using file, resolved by argv.getConfigFileName
+ * Read server configuration from file, resolved by argv.getConfigFileName
  * parse it in safe mode, replace environment variables by it values and return parsed config
  *
  * @return {Object}
@@ -297,6 +297,25 @@ function getServerConfiguration () {
   if (!result.application.domain) {
     result.application.domain = {models: []}
   }
+  // for models without name - read it from package.json
+  result.application.domain.models.forEach((model) => {
+    if (model.name) return
+    let p = model.path
+    if (!path.isAbsolute(p)) p = path.join(process.configPath, p)
+    let packFN = path.join(p, 'package.json')
+    if (fs.existsSync(packFN)) {
+      let packageData = require(packFN)
+      model.moduleName = packageData.name
+      if (packageData.config && packageData.config.ubmodel) {
+        let ubModelConfig = packageData.config.ubmodel
+        model.name = ubModelConfig.name
+        if (ubModelConfig.isPublic) {
+          model.publicPath = model.path
+          model.path = '_public_only_'
+        }
+      }
+    }
+  })
   if (!result.application.domain.supportedLanguages) {
     let conns = result.application.connections
     if (conns) {

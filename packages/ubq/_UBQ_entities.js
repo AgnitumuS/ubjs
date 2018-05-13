@@ -5,7 +5,7 @@
 
 /**
  * Asynchronous task queue persisted into database. Contains jobs for sending e-mail and updating FTS indexes
- * @version 5.0.8
+ * @version 5.0.10
  * @module @unitybase/ubq
  */
 

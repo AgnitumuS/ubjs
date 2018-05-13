@@ -4,7 +4,9 @@
   "description": "Set of dictionaries, common for most enterprise systems. For internal organization structure see @ubitybase/org module",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/cdn",
   "config": {
-    "ubmodel": "CDN"
+    "ubmodel": {
+      "name": "CDN"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m CDN -skipModules"

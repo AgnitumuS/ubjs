@@ -5,7 +5,7 @@
 
 /**
  * Set of dictionaries, common for most enterprise systems. For internal organization structure see @ubitybase&#x2F;org module
- * @version 5.0.8
+ * @version 5.0.10
  * @module @unitybase/cdn
  */
 

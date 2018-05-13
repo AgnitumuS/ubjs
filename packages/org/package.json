@@ -4,7 +4,9 @@
   "description": "Organisation structure",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/org",
   "config": {
-    "ubmodel": "ORG"
+    "ubmodel": {
+      "name": "ORG"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m ORG -skipModules"

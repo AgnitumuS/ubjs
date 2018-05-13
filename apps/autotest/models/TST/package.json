@@ -4,7 +4,9 @@
   "description": "UnityBasde autotest app",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest/models/TST",
   "config": {
-    "ubmodel": "TST"
+    "ubmodel": {
+      "name": "TST"
+    }
   },
   "scripts": {
   },

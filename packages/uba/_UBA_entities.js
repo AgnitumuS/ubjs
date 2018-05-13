@@ -5,7 +5,7 @@
 
 /**
  * UnityBase Administrative model. Define users, roles and permissions
- * @version 5.0.8
+ * @version 5.0.10
  * @module @unitybase/uba
  */
 

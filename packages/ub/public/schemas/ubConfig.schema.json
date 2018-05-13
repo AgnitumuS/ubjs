@@ -603,10 +603,12 @@
               "description": "Domain models. Loaded in the order in which they appear in this array",
               "items": {
                 "type": "object",
+                "required": ["path"],
                 "properties": {
                   "name": {
                     "type": "string",
-                    "unique": true
+                    "unique": true,
+                    "description": "Model name. If omitted - will be taken from model package.json `config.ubmodel.name`"
                   },
                   "path": {
                     "type": "string",
@@ -614,8 +616,8 @@
                   },
                   "publicPath":{
                     "type": "string",
-                    "default": "path + '\\public'",
-                    "description": "Starting from UB4 - path to public model folder. In UB<4 always === \"path + '\\public'"
+                    "default": "path + 'public'",
+                    "description": "Path to public model folder. If model name is taken from model package.json publicPath can also be defined there"
                   }
                 }
               }
