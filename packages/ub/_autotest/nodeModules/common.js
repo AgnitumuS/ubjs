@@ -137,6 +137,7 @@ process.on('exit', function () {
     knownGlobals.push(removeCommentsFromJSON)
     knownGlobals.push(runInThisContext)
     knownGlobals.push(runInVariableScopeContext)
+    knownGlobals.push(nhashFile)
     knownGlobals.push(ncrc32)
     knownGlobals.push(nsha256)
     knownGlobals.push(startServer)
