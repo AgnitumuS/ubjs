@@ -1,3 +1,4 @@
+const _ = require('lodash')
 require('./UBAppConfig')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 /**
@@ -691,7 +692,7 @@ Ext.define('UB.core.UBUtil', {
       ubRequest: {
         entity: 'ubm_enum',
         method: UB.core.UBCommand.methodName.SELECT,
-        fieldList: (config && config.fieldList) ? config.fieldList : ['eGroup', 'code', 'name', 'shortName', 'sortOrder'],
+        fieldList: (config && config.fieldList) ? _.union(config.fieldList, ['eGroup', 'sortOrder']) : ['eGroup', 'code', 'name', 'shortName', 'sortOrder'],
         whereList: whereList,
         orderList: orderList,
         idProperty: 'code'
