@@ -94,4 +94,3 @@ function runTest () {
   module.exports = res
   return res
 })()
-
