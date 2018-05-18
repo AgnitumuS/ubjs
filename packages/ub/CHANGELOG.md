@@ -4,8 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.12]
+### Added
+- new function `App.blobStores.markRevisionAsPermanent` allow to prevent
+specified revision of historical store from deletion during history rotation
+
+### Changed
+- historical BLOB stores will put create a record in ub_blobHistory on commit.
+ In prev. implementation a record in history was added after the update
+
 ## [5.0.8]
-## Fixed
+### Fixed
 - fileSystemBlobStore will add a entropy to the persistent file name to prevent
  possible file name duplication for historical data
 - fileSystemBlobStore rotateHistory will delete only revisions older when `store.historyDepth`

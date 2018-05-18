@@ -432,17 +432,62 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
     throw new Error('Committing of BLOBs allowed either for dirty content or in case of deletion')
   }
   let newRevision = 1
-  if (oldItem) { // delete / archive old item
-    let store = getStore(attribute, oldItem)
-    if (store.historyDepth) {
-      rotateHistory(store, attribute, ID, oldItem)
-    } else {
-      store.doDeletion(attribute, ID, oldItem)
-    }
+  let oldItemStore
+  if (oldItem) {
+    oldItemStore = getStore(attribute, oldItem)
     if (oldItem.revision) newRevision = oldItem.revision + 1
   }
   let store = getStore(attribute, dirtyItem)
-  return store.persist(attribute, ID, dirtyItem, newRevision)
+  let persistedItem = store.persist(attribute, ID, dirtyItem, newRevision)
+  if (store.historyDepth) { // for historical stores add item to history
+    rotateHistory(store, attribute, ID, persistedItem)
+  } else if (oldItem) { // delete / archive old item
+    oldItemStore.doDeletion(attribute, ID, oldItem)
+  }
+  return persistedItem
+}
+
+/**
+ * For a historical BLOB stores mark specified revision as a permanent.
+ * Permanents revisions will not be deleted during history rotation.
+ * @example
+ *
+const UB = require(@unitybase/ub')
+const App = UB.App
+App.blobStores.markRevisionAsPermanent({
+  entity: 'my_entity',
+  attribute: 'attributeOfTypeDocument',
+  ID: 1000,
+  revision: 2
+})
+
+ * @param {BlobStoreRequest} request
+ * @param  {Number} request.revision revision to be marked as permanent
+ */
+function markRevisionAsPermanent (request) {
+  let r = parseBlobRequestParams(request)
+  if (!r.success) throw new Error(r.reason)
+  let revisionFor = r.bsReq.revision
+  if (!revisionFor) throw new Error(`Missing revision parameter`)
+  let store = getStore(r.attribute, {})
+  if (!store.historyDepth) throw new Error(`Store ${store.name} is not a historical store`)
+  let histID = Repository(BLOB_HISTORY_STORE_NAME)
+    .attrs(['ID'])
+    .where('instance', '=', r.bsReq.ID)
+    .where('attribute', '=', r.attribute.name)
+    .where('permanent', '=', false)
+    .where('revision', '=', r.bsReq.revision)
+    .limit(1)
+    .selectScalar()
+  if (histID) {
+    let dataStore = getBlobHistoryDataStore()
+    dataStore.run('update', {execParams: {
+      ID: histID,
+      permanent: 1
+    }})
+  } else {
+    console.error(`Revision ${r.bsReq.revision} not exists for ${r.attribute.entity.name}.${r.attribute.name} with ID ${r.bsReq.ID}`)
+  }
 }
 
 /**
@@ -451,7 +496,8 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
  */
 App.blobStores = {
   getContent,
-  putContent
+  putContent,
+  markRevisionAsPermanent
 }
 
 module.exports = {

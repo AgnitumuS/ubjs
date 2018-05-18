@@ -157,7 +157,8 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * Move content defined by `dirtyItem` from temporary to permanent store.
    * TIPS: in v0 (UB<5) if file updated then implementation takes a store from old item.
    *   This raise a problem - old store may be in archive state (readonly)
-   * So in UB5 we change implementation to use store defined in attribute for new items
+   * So in UB5 we change implementation to use a store defined in the attribute for new items
+   *
    * Return a new attribute content which describe a place of BLOB in permanent store
    *
    * @param {UBEntityAttribute} attribute
