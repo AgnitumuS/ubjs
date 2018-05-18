@@ -4,6 +4,9 @@ const App = require('../modules/App')
 const fs = require('fs')
 const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
 
+// model's public folder may not exists - in this we will create it
+// during `getPermanentFileName` and cache verified path's here
+const VERIFIED_PATH = {}
 /**
  *  @classdesc
  *  Blob store implementation for storing content inside models `public` folders.
@@ -133,7 +136,18 @@ class MdbBlobStore extends BlobStoreCustom {
     if (pathPart.length !== 2) return '' // this is error
     let model = App.domainInfo.models[pathPart[0]]
     if (!model) throw new Error('MDB blob store - not existed model' + pathPart[0])
-    return path.join(model.realPublicPath, pathPart[1], bsItem.fName)
+    let folder = path.join(model.realPublicPath, pathPart[1])
+    if (!VERIFIED_PATH[folder]) {
+      // verify public path exists
+      if (!fs.existsSync(model.realPublicPath)) {
+        fs.mkdirSync(model.realPublicPath)
+      }
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder)
+      }
+      VERIFIED_PATH[folder] = true
+    }
+    return path.join(folder, bsItem.fName)
   }
 }
 

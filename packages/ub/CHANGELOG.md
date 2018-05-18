@@ -13,6 +13,10 @@ specified revision of historical store from deletion during history rotation
 - historical BLOB stores will put create a record in ub_blobHistory on commit.
  In prev. implementation a record in history was added after the update
 
+### Fixed
+- `mdb` BLOB stores will automatically crate a folder in case
+it's not exists(for example user create a ER diagram etc.)
+
 ## [5.0.8]
 ### Fixed
 - fileSystemBlobStore will add a entropy to the persistent file name to prevent
