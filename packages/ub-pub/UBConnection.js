@@ -228,12 +228,14 @@ function UBConnection (connectionParams) {
   /**
    * Return custom data for logged in user, or {lang: 'en', login: 'anonymous'} in case not logged in
    *
-   * If key is provided - return only key part of user data:
-   *
-   *      $App.connection.userData('lang');
-   *      // or the same but dedicated alias
-   *      $App.connection.userLang()
-   *
+   * If key is provided - return only key part of user data. For a list of possible keys see
+   * <a href="http://unitybase.info/api/server-v5/Session.html#.uData">Session.uData</a> in server side documentation.
+   * @example
+
+$App.connection.userData('lang');
+// or the same but dedicated alias
+$App.connection.userLang()
+
    * @param {String} [key] Optional key
    * @returns {*}
    */
