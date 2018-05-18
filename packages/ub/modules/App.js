@@ -153,16 +153,17 @@ const appBinding = process.binding('ub_app')
  *
  * @param {String} endpointName
  * @param {Function} handler
- * @param {boolean} [requireAuthentication=true]
+ * @param {boolean} [authorizationRequired=true] If `true` UB will check for valid Authorization header before
+ *  execute endpoint handler
  * @param {boolean} [isDefault=false]
  * @memberOf App
  */
-App.registerEndpoint = function (endpointName, handler, requireAuthentication, isDefault) {
+App.registerEndpoint = function (endpointName, handler, authorizationRequired, isDefault) {
   if (!appBinding.endpoints[endpointName]) {
     appBinding.endpoints[endpointName] = handler
     return appBinding.registerEndpoint(
       endpointName,
-      requireAuthentication === undefined ? true : requireAuthentication,
+      authorizationRequired === undefined ? true : authorizationRequired,
       isDefault === true
     )
   }
