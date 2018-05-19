@@ -242,7 +242,6 @@
       "type": "object",
       "description": "Built-in WebSocket server configuration",
       "additionalProperties": false,
-      "required": [ ],
       "defaultProperties": [
         "protocol",
         "host",
@@ -339,7 +338,7 @@
         },
         "path": {
           "type": "string",
-          "default": ".\\\\log",
+          "default": "./logs",
           "description": "Path to folder where server place log files (including rotated logs)"
         },
         "rotationSizeInMB": {
