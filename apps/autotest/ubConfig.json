@@ -97,7 +97,8 @@
 					"path": "./node_modules/@unitybase/cdn"
 				},
 				{
-					"path": "./node_modules/@unitybase/org"				},
+					"path": "./node_modules/@unitybase/org"				
+				},
 				{
 					"path": "./node_modules/@unitybase/ub-pub"
 				},

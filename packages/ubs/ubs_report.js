@@ -10,7 +10,6 @@ const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
 const UB = require('@unitybase/ub')
 const App = UB.App
-const blobStores = require('@unitybase/ub/blobStores')
 const mStorage = UB.mixins.mStorage
 
 me.entity.addMethod('select')
@@ -228,7 +227,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   if (isInsert || !newTemplateInfo) {
     reportBody = ''
   } else {
-    reportBody = blobStores.getContent(
+    reportBody = App.blobStores.getContent(
       {
         entity: entity.name,
         attribute: 'template',
@@ -247,7 +246,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       }
     }
   }
-  let docInfo = blobStores.putContent({
+  let docInfo = App.blobStores.putContent({
     entity: entity.name,
     attribute: 'template',
     ID: ID,
@@ -260,7 +259,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   storedValue.template = JSON.stringify(docInfo)
 
   if (isInsert) {
-    let reportCodeInfo = blobStores.putContent({
+    let reportCodeInfo = App.blobStores.putContent({
       entity: entity.name,
       attribute: 'code',
       ID: ID,

@@ -1,8 +1,6 @@
 const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
-const App = require('../modules/App')
 const fs = require('fs')
-const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
 
 // model's public folder may not exists - in this we will create it
 // during `getPermanentFileName` and cache verified path's here
@@ -75,9 +73,9 @@ class MdbBlobStore extends BlobStoreCustom {
     let filePath = requestParams.isDirty ? this.getTempFileName(requestParams) : this.getPermanentFileName(blobItem)
     if (filePath) {
       resp.statusCode = 200
-      if (PROXY_SEND_FILE_HEADER) {
+      if (this.PROXY_SEND_FILE_HEADER) {
         let storeRelPath = path.relative(process.configPath, filePath)
-        let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${storeRelPath}`
+        let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/app/${storeRelPath}`
         console.debug(`<- `, head)
         head += `\r\nContent-Type: ${blobItem.ct}`
         resp.writeHead(head)
@@ -134,7 +132,7 @@ class MdbBlobStore extends BlobStoreCustom {
   getPermanentFileName (bsItem) {
     let pathPart = bsItem.relPath.split('|')
     if (pathPart.length !== 2) return '' // this is error
-    let model = App.domainInfo.models[pathPart[0]]
+    let model = this.App.domainInfo.models[pathPart[0]]
     if (!model) throw new Error('MDB blob store - not existed model' + pathPart[0])
     let folder = path.join(model.realPublicPath, pathPart[1])
     if (!VERIFIED_PATH[folder]) {

@@ -1,4 +1,3 @@
-const Session = require('../modules/Session')
 const path = require('path')
 const os = require('os')
 
@@ -59,7 +58,19 @@ const os = require('os')
   "revision":2}
 */
 class BlobStoreCustom {
-  constructor (storeConfig) {
+  /**
+   * @param {Object} storeConfig
+   * @param {App} appInstance
+   * @param {UBSession} sessionInstance
+   * @param storeConfig
+   */
+  constructor (storeConfig, appInstance, sessionInstance) {
+    /** @type {App} */
+    this.App = appInstance
+    /** @type {UBSession} */
+    this.Session = sessionInstance
+    this.PROXY_SEND_FILE_HEADER = this.App.serverConfig.httpServer['reverseProxy']['sendFileHeader']
+    this.PROXY_SEND_FILE_LOCATION_ROOT = this.App.serverConfig.httpServer['reverseProxy']['sendFileLocationRoot']
     /**
      * Store parameters as defined in ubConfig
      */
@@ -150,7 +161,7 @@ class BlobStoreCustom {
    */
   getTempFileName (request) {
     // important to use Session.userID. See UB-617
-    return path.join(this.tempFolder, `${request.entity}_${request.attribute}_${request.ID}_${Session.userID}`)
+    return path.join(this.tempFolder, `${request.entity}_${request.attribute}_${request.ID}_${this.Session.userID}`)
   }
 }
 

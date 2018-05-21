@@ -40,19 +40,20 @@
     })
 
  *
- * @module blobStores
- * @memberOf module:@unitybase/ub
+ * @module @unitybase/blob-stores
  */
-const App = require('../modules/App')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 const Repository = require('@unitybase/base').ServerRepository.fabric
 const queryString = require('querystring')
-const {badRequest} = require('../modules/httpUtils')
+const BlobStoreCustom = require('./blobStoreCustom')
+const MdbBlobStore = require('./mdbBlobStore')
+const FileSystemBlobStore = require('./fileSystemBlobStore')
 
 // const TubDataStore = require('../TubDataStore')
 const BLOB_HISTORY_STORE_NAME = 'ub_blobHistory'
 let _blobHistoryDataStore
-/** @private
+/**
+ * @private
  * @return {TubDataStore}
  */
 function getBlobHistoryDataStore () {
@@ -62,34 +63,49 @@ function getBlobHistoryDataStore () {
 }
 
 /**
- * @private
- * @return {Object<string, BlobStoreCustom>}
+ * @type {App}
  */
-function createBlobStoreMap () {
+let App
+/**
+ * @type {UBSession}
+ */
+let Session
+/**
+ * @private
+ * @type {Object<string, BlobStoreCustom>}
+ */
+const blobStoresMap = {}
+/**
+ * Initialize blobStoresMap. Called by UBApp and initialize a `App.blobStores`
+ * @param {App} appInstance
+ * @param {UBSession} sessionInstance
+  */
+function initBLOBStores (appInstance, sessionInstance) {
+  App = appInstance
+  Session = sessionInstance
+  Session = sessionInstance
   let blobStores = App.serverConfig.application.blobStores
-  let res = {}
+  let res = blobStoresMap
   if (!blobStores) return res
   blobStores.forEach((storeConfig) => {
     let storeImplementationModule = storeConfig['implementedBy']
-    // UB4 compatibility
-    if (!storeImplementationModule && (!storeConfig.storeType || storeConfig.name === 'fileVirtual')) {
-      storeImplementationModule = './fileSystemBlobStore'
+    let StoreClass
+    if (storeImplementationModule) {
+      StoreClass = require(storeImplementationModule)
+    } else { // UB4 compatibility
+      if (!storeConfig.storeType || storeConfig.name === 'fileVirtual') {
+        StoreClass = FileSystemBlobStore
+      } else if (storeConfig.name === 'mdb') {
+        StoreClass = MdbBlobStore
+      } else {
+        StoreClass = FileSystemBlobStore
+      }
     }
-    if (!storeImplementationModule && (storeConfig.name === 'mdb')) {
-      storeImplementationModule = './mdbBlobStore'
-    }
-    if (storeImplementationModule === 'fileVirtualWritePDF') {
-      storeImplementationModule = './fileSystemPDFBlobStore'
-    }
-    if (!storeImplementationModule) storeImplementationModule = './fileSystemBlobStore'
-
+    if (!StoreClass) throw new Error(`BLOB store implementation module not set for ${storeConfig.name}`)
     if (storeConfig.isDefault) res.defaultStoreName = storeConfig.name
-    let StoreClass = require(storeImplementationModule)
-    res[storeConfig.name] = new StoreClass(storeConfig)
+    res[storeConfig.name] = new StoreClass(storeConfig, App, Session)
   })
-  return res
 }
-const blobStoresMap = createBlobStoreMap()
 
 /**
  * Blob store request (parameters passed to get|setDocument)
@@ -255,10 +271,10 @@ function getDocumentEndpoint (req, resp) {
       params = JSON.parse(paramStr)
     } catch (e) {
       console.error('Exception when parsing POST parameters "{paramStr}":' + e)
-      return badRequest('wrong parameters passed' + req.method)
+      return resp.badRequest('wrong parameters passed' + req.method)
     }
   } else {
-    return badRequest('invalid HTTP verb' + req.method)
+    return resp.badRequest('invalid HTTP verb' + req.method)
   }
 
   let parsed = parseBlobRequestParams(params)
@@ -490,20 +506,17 @@ function markRevisionAsPermanent (request) {
   }
 }
 
-/**
- * BLOB stores methods
- * @memberOf App
- */
-App.blobStores = {
-  getContent,
-  putContent,
-  markRevisionAsPermanent
-}
-
 module.exports = {
   getDocumentEndpoint,
   setDocumentEndpoint,
+  markRevisionAsPermanent,
   getContent,
   putContent,
-  doCommit
+  doCommit,
+  initBLOBStores,
+  classes: {
+    BlobStoreCustom,
+    MdbBlobStore,
+    FileSystemBlobStore
+  }
 }

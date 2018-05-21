@@ -16,10 +16,10 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@unitybase/base": "^4.2.23"
+    "@unitybase/base": "^5.0.0"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.13"
+    "@unitybase/stubs": "^5.0.0"
   },
   "keywords": [
     "UnityBase",

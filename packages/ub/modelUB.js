@@ -5,7 +5,7 @@ const repositoryFabric = ServerRepository.fabric // for backward compatibility w
 const App = require('./modules/App')
 const Session = require('./modules/Session')
 const format = require('@unitybase/base').format
-const blobStores = require('./blobStores')
+const blobStores = require('@unitybase/blob-stores')
 const TubDataStore = require('./TubDataStore')
 const Errors = require('./modules/ubErrors')
 // TODO - this hack is required for register UB.getWSNotifier. Must be rewrites
@@ -152,6 +152,7 @@ function start () {
     }
   })
   App.emit('domainIsLoaded')
+  blobStores.initBLOBStores(App, Session)
 
   // ENDPOINTS
   const {clientRequireEp, modelsEp, getAppInfoEp, getDomainInfoEp, staticEp, runSQLEp, restEp} = require('./modules/endpoints')

@@ -10,6 +10,7 @@ const EventEmitter = require('events').EventEmitter
 const THTTPResponse = require('./HTTPResponse')
 const THTTPRequest = require('./HTTPRequest')
 const dbConnections = require('./DBConnections')
+const blobStores = require('@unitybase/blob-stores')
 /**
  * UnityBase application
  *
@@ -477,5 +478,14 @@ App.emitterEnabled = true
  * @type {string}
  */
 App.serverPublicCert = _App.serverPublicCert
+
+/**
+ * BLOB stores methods
+ */
+App.blobStores = {
+  getContent: blobStores.getContent,
+  putContent: blobStores.putContent,
+  markRevisionAsPermanent: blobStores.markRevisionAsPermanent
+}
 
 module.exports = App

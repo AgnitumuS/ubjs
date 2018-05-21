@@ -1,6 +1,6 @@
 /* global TubDataStore */
 const App = require('./modules/App')
-const blobStores = require('./blobStores')
+const blobStores = require('@unitybase/blob-stores')
 
 /**
  * @classdesc

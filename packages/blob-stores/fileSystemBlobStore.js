@@ -3,14 +3,12 @@ const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const fs = require('fs')
 const mime = require('mime-types')
-const App = require('../modules/App')
 
 function getRandomInt (max) {
   return Math.floor(Math.random() * Math.floor(max))
 }
 const STORE_SUBFOLDER_COUNT = 400
 const MAX_COUNTER = Math.pow(2, 31)
-const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modules/httpUtils')
 
 /**
  *  @classdesc
@@ -31,8 +29,14 @@ const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('../modu
  * @singleton
  */
 class FileSystemBlobStore extends BlobStoreCustom {
-  constructor (storeConfig) {
-    super(storeConfig)
+  /**
+   * @param {Object} storeConfig
+   * @param {App} appInstance
+   * @param {UBSession} sessionInstance
+   * @param storeConfig
+   */
+  constructor (storeConfig, appInstance, sessionInstance) {
+    super(storeConfig, appInstance, sessionInstance)
     let storePath = this.config.path
     if (!path.isAbsolute(storePath)) {
       storePath = path.join(process.configPath, storePath)
@@ -130,9 +134,9 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (!ct) ct = 'application/octet-stream'
     if (filePath) {
       resp.statusCode = 200
-      if (PROXY_SEND_FILE_HEADER) {
+      if (this.PROXY_SEND_FILE_HEADER) {
         let storeRelPath = path.relative(this.fullStorePath, filePath)
-        let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
+        let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
         console.debug(`<- `, head)
         head += `\r\nContent-Type: ${ct}`
         if (blobInfo && blobInfo.origName) {
@@ -266,19 +270,19 @@ class FileSystemBlobStore extends BlobStoreCustom {
     if (l1subfolder) {
       fullFn = path.join(this.fullStorePath, l1subfolder)
       let cacheKey = `BSFCACHE#${this.name}#${l1subfolder}`
-      let verified = App.globalCacheGet(cacheKey) === '1'
+      let verified = this.App.globalCacheGet(cacheKey) === '1'
       if (!verified) {
         if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
-        App.globalCachePut(cacheKey, '1')
+        this.App.globalCachePut(cacheKey, '1')
       }
       relPath = l1subfolder
       if (l2subfolder) {
         fullFn = path.join(fullFn, l2subfolder)
         cacheKey = `BSFCACHE#${this.name}#${l1subfolder}#${l2subfolder}`
-        let verified = App.globalCacheGet(cacheKey) === '1'
+        let verified = this.App.globalCacheGet(cacheKey) === '1'
         if (!verified) {
           if (!fs.existsSync(fullFn)) fs.mkdirSync(fullFn, '0777')
-          App.globalCachePut(cacheKey, '1')
+          this.App.globalCachePut(cacheKey, '1')
         }
         relPath = path.join(relPath, l2subfolder)
       }
