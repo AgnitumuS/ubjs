@@ -93,6 +93,7 @@ exports.reportCode = {
 
   onParamPanelConfig: function () {
     var paramForm = Ext.create('UBS.ReportParamForm', {
+      collapsible: true,
       items: [{
         xtype: 'textfield',
         name: 'name',
