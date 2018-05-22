@@ -2,12 +2,12 @@
 
 # Reverse proxy configuration
 if [ -z "$UB_RP_CONFIG" ]; then
-  UB_RP_CONFIG=$(pwd)/rp-config-disable.json
+  export UB_RP_CONFIG=$PWD/rp-config-disable.json
 fi
 
 # Host configuration (set UB_HOST in case of reverse proxy)
 if [ -z "$UB_HOST" ]; then
-  UB_HOST=http://localhost:8881
+  export UB_HOST=http://localhost:8881
 fi
 
 err()
