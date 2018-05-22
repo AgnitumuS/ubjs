@@ -15,7 +15,7 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
   - _(optional step)_ To debug server-side JavaScript install [FireFox browser](https://www.mozilla.org/ru/firefox/new/)
   - Install UnityBase command line tool globally
 ```
-  npm i -g @unitybase/ubcli --registry=http://registry.unitybase.info
+  npm i -g @unitybase/ubcli@1.3 --registry=http://registry.unitybase.info
 ```
 
 > In case you develop a module for UnityBase, please see [Contribution Guide](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/CONTRIBUTING.md).
