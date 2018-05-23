@@ -3,49 +3,8 @@ const os = require('os')
 
 /**
  * @classdesc
-
- Abstract interface for Virtual store. Must be implemented in descendants.
-
- Provide a way to store files in any manner developer want.
-
- # General explanation
-
- **Entity attribute** of `Document` type with `storeName` property for this attribute should be defined.
- Content (data stored in database) of such attributes is a meta-information about file - a serialized {@link BlobStoreItem} object, not an actual file content.
-
- For non-virtual entity (`dsType`!=='Virtual') UnityBase create nvarchar(2000) field in database and store
- there {BlobStoreItem} serialized to JSON.
-
- For Virtual entity developer should implement `select` method and fill {@link BlobStoreItem} manually
- (for example by parsing file content as done in **ubm_form**).
-
- In the store definition section of application configuration developer describe stores. Each store must implement interface described below.
-
- The store class itself must provide storing and retrieving file content (based on meta-information stored in the entity attribute).
-
- From client-side POV uploading files to server is separated onto two part. Like in gmail when you send mail with
- attachment you can attach file, and gmail send it to server, but you do not send mail itself yet - this is first stage.
- Result of this stage is information about where file on server stored.
- When you send email client pass to server email attributes, body and information about attached files.
- This is the same UnityBase do in the second stage.
-
- ## Upload file to server
-
- So in UnityBase upload file to to the server is performed in two stages:
-
- 1. Upload file to temporary store - on this stage client call setDocument app level method and
- pass file content to server with additional parameter **isDirty=true**, server store file in the temporary place.
-
- 2. Client execute `insert` or `update` entity method and pass (with other attributes) string, returned on the first stage as a value of `Document`
- type attribute. On this stage server see what user want to update/insert Document and, based on *Domain* information, know
- what type of store is used for this attribute. Server:
-
- 3. Finally UnityBase update entity and commit database transaction (in case entity is non-virtual)
-
- ## Download file from server
-
- For download file from server client call `getDocument` endpoint
-
+ * Abstract interface for Virtual store. Must be implemented in descendants.
+ * Provide a way to store files in any manner developer want.
  */
 
 /* BlobStoreItem sample:
