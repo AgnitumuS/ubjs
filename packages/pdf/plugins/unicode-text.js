@@ -1,5 +1,5 @@
 /* global jsPDF DOMParser */
-
+const _ = require('lodash')
 ;(function (jsPDFAPI) {
   // Private functions
   // simplified (speedier) replacement for sprintf's %.2f conversion
