@@ -18,56 +18,52 @@
  *     }
  */
 Ext.define('UBS.ReportParamForm', {
-    extend: 'Ext.form.Panel',
-    layout: {
-        //type: 'form'
-        type: 'vbox',
-        align: 'stretch'
-    },
-    padding: '2 4',
+  extend: 'Ext.form.Panel',
+  layout: {
+    type: 'vbox',
+    align: 'stretch'
+  },
+  padding: '2 4',
+  /**
+   *  @cfg {function} validateForm This function called when validate form. If function return false the buildReport event will not called.
+   *
+   */
+  initComponent: function () {
+    var me = this
+
+    me.buttons = [{
+      text: UB.i18n('BuildReport'),
+      handler: function () {
+        var params, form, isValid
+        form = me.up('form')
+        isValid = form.isValid()
+        if (me.validateForm) {
+          isValid = me.validateForm()
+        }
+        if (!isValid) {
+          return
+        }
+        if (me.getParameters) {
+          params = me.getParameters(me)
+        }
+        me.fireEvent('buildReport', params, me)
+      }
+    }]
+
     /**
-     *  @cfg {function} validateForm This function called when validate form. If function return false the buildReport event will not called.
-     *
+     * Callback must return parameters for report
+     * @callback getParameters
+     * @param {UBS.ReportParamForm}
      */
 
-    initComponent: function () {
-        var me = this;
-
-        me.buttons = [{
-            text: UB.i18n('BuildReport'),
-            handler: function(){
-                var params, form, isValid;
-                form = me.up('form');
-                isValid = form.isValid();
-                if (me.validateForm){
-                    isValid = me.validateForm();
-                }
-                if (!isValid){
-                    return;
-                }
-                if (me.getParameters){
-                   params = me.getParameters(me);
-                }
-                me.fireEvent('buildReport', params, me);
-            }
-        }];
-
-        /**
-         * Callback must return parameters for report
-         * @callback getParameters
-         * @param {UBS.ReportParamForm}
-         */
-
-        /**
-         * @event buildReport
-         * @param {Array}  params
-         * @param {Ext.panel.Panel} owner
-         * Fires when user press button "build report".
-         * Function will be called to order specified in orderNumber. Each function can return promise. when run for last promise form start savind.
-         */
-        me.addEvents('buildReport');
-        me.callParent(arguments);
-    }
-
-
-});
+    /**
+     * @event buildReport
+     * @param {Array}  params
+     * @param {Ext.panel.Panel} owner
+     * Fires when user press button "build report".
+     * Function will be called to order specified in orderNumber. Each function can return promise. when run for last promise form start savind.
+     */
+    me.addEvents('buildReport')
+    me.callParent(arguments)
+  }
+})
