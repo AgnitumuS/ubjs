@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.14]
+### Changed
+- Report parameter form `UBS.ReportParamForm` now collapsible by default.
+  To disable developed should implicitly define `collapsible: false` in
+  `UBS.ReportParamForm` descendant inside report code block:
+
+```
+exports.reportCode = {
+  buildReport: function (reportParams) {
+...
+  },
+  onParamPanelConfig: function () {
+    let paramForm = Ext.create('UBS.ReportParamForm', {
+      collapsible: false,
+      ...
+```
 ## [5.0.7]
 ### Added
  - introduce method `ubs_numcounter.generateAutoIncrementalCode` - to be used in `insert:before`

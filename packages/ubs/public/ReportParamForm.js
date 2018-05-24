@@ -23,7 +23,8 @@ Ext.define('UBS.ReportParamForm', {
     type: 'vbox',
     align: 'stretch'
   },
-  padding: '2 4',
+  collapsible: true,
+
   /**
    *  @cfg {function} validateForm This function called when validate form. If function return false the buildReport event will not called.
    *
