@@ -23,6 +23,7 @@ Ext.define('UBS.ReportParamForm', {
     type: 'vbox',
     align: 'stretch'
   },
+  title: UB.i18n('reportParametersHeader'),
   collapsible: true,
 
   /**
@@ -47,6 +48,7 @@ Ext.define('UBS.ReportParamForm', {
         if (me.getParameters) {
           params = me.getParameters(me)
         }
+        me.collapse()
         me.fireEvent('buildReport', params, me)
       }
     }]

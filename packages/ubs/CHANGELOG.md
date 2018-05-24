@@ -20,6 +20,8 @@ exports.reportCode = {
       collapsible: false,
       ...
 ```
+- UBS.ReportParamForm now will collapse after BuildReport button pressed
+
 ## [5.0.7]
 ### Added
  - introduce method `ubs_numcounter.generateAutoIncrementalCode` - to be used in `insert:before`
