@@ -119,7 +119,7 @@ class XLSXWorkbook {
   /**
    * Output XLSX
    * @param {Object} [options]
-   * @param {String} [options.type=arraybuffer] jszip generateAsync options.type https://stuk.github.io/jszip/documentation/api_jszip/generate_async.html#type-option
+   * @param {String} [options.type='arraybuffer'] ZIP type. See <a href="https://stuk.github.io/jszip/documentation/api_jszip/generate_async.html#type-option">jszip type doc</a>
    * @return {*}
    */
   render (options) {
@@ -184,7 +184,7 @@ class XLSXWorkbook {
       'xWindow="480" yWindow="60" windowWidth="18195" windowHeight="8505"/></bookViews><sheets>' +
       context.worksheets.join('') + '</sheets><calcPr calcId="145621"/></workbook>')
     // }
-    return zip.generateAsync({type: opt.type, compression: this.compression})
+    return zip.generate({type: opt.type, compression: this.compression})
   }
 
   /**
