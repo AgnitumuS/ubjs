@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.10]
+### Fixed
+- request for retrieve data for cached entity from server will remove `logicalPredicates`
+ in addition to where & order lists
+
 ## [4.5.0]
 ### Changed
 - **BREAKING** Native messages features moved to the modules in `@ub-e` namespace.

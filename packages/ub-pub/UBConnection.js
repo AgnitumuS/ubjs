@@ -1209,10 +1209,10 @@ UBConnection.prototype._doSelectForCacheableEntity = function (serverRequest, ca
       // or SessionEntity cached not for current cache version
       (version && cacheType === UBCache.cacheTypes.SessionEntity && this.cachedSessionEntityRequested[cKey] !== version)
     ) {
-      // remove where order & limits
+      // remove where order logicalPredicates & limits
       let serverRequestWOLimits = {}
       Object.keys(serverRequest).forEach(function (key) {
-        if (['whereList', 'orderList', 'options'].indexOf(key) === -1) {
+        if (['whereList', 'orderList', 'options', 'logicalPredicates'].indexOf(key) === -1) {
           serverRequestWOLimits[key] = serverRequest[key]
         }
       })
