@@ -48,7 +48,7 @@ Ext.define('UBS.ReportParamForm', {
         if (me.getParameters) {
           params = me.getParameters(me)
         }
-        me.collapse()
+        me.collapse(Ext.Component.DIRECTION_TOP, false)
         me.fireEvent('buildReport', params, me)
       }
     }]
