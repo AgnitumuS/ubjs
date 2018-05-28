@@ -47,7 +47,7 @@ Ext.define('UBS.ReportViewer', {
         })
         break
       case 'html':
-                // control = Ext.create('UB.ux.UBReportEditor', {
+        // control = Ext.create('UB.ux.UBReportEditor', {
         control = Ext.create('UB.ux.UBTinyMCETextArea', {
           readOnly: true,
           hidden: true,
@@ -192,7 +192,7 @@ Ext.define('UBS.ReportViewer', {
         if (ed && ed.dom) {
           if (me.reportControl.orientation === 'landscape') {
             ed.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-          } else {
+          } else if (me.reportControl.orientation === 'portrait') {
             ed.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
           }
         } else {
@@ -200,7 +200,7 @@ Ext.define('UBS.ReportViewer', {
             editor.on('init', function () {
               if (me.reportControl.orientation === 'landscape') {
                 editor.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-              } else {
+              } else if (me.reportControl.orientation === 'portrait') {
                 editor.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
               }
             })

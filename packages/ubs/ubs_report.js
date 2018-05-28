@@ -167,7 +167,7 @@ function doSelect (ctxt) {
   let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
     // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
   let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
-  ctxt.dataStore.initFromJSON(resp)
+  ctxt.dataStore.initialize(resp)
 }
 
 /**
@@ -307,7 +307,7 @@ me.update = function (ctxt) {
   let cachedData = loadAll()
   let storedValue = LocalDataStore.byID(cachedData, ID)
   if (storedValue.total !== 1) {
-    throw new Error('Record with ID=' + ID + 'not found')
+    throw new Error(`Record with ID=${ID} not found`)
   }
   storedValue = LocalDataStore.selectResultToArrayOfObjects(storedValue)[0]
 

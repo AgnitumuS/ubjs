@@ -130,6 +130,5 @@ function doSelect (ctx) {
 me.select = function (ctx) {
   ctx.dataStore.currentDataName = 'select' // do we need it????
   doSelect(ctx)
-  ctx.preventDefault()
   return true // everything is OK
 }
