@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - speed up UBS.ReportViewer during HTML reports rendering
 - removed 15px margins in UBS.ReportViewer
 
+### Fixed
+- client side mustache formatting function **$fs** (aka Format Sum) will
+ format numbers with decimal and thousand separators for current locale
+
 ## [5.0.15]
 ### Fixed
 - Collapsing animation of `UBS.ReportParamForm` removed (fixed wrong report align)

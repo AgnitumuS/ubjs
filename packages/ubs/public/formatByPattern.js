@@ -57,8 +57,11 @@ function formatNumber (value, patternName, lang) {
   if (!value && value !== 0) return
   if (!(typeof value === 'number')) throw new Error('Value must be Number')
   if (Number.isNaN(value)) return 'NaN'
-  const lng = (lang || 'en').toLowerCase()
-  const locale = lng + '-' + lng.toUpperCase()
+  let locale = lang
+  if (lang.length < 3) {
+    let lng = (lang || 'en').toLowerCase()
+    locale = lng + '-' + lng.toUpperCase()
+  }
   const pattern = numberPatterns[patternName]
   if (!pattern) throw new Error('Unknown number pattern ' + patternName)
   return value.toLocaleString(locale, pattern)

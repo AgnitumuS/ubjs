@@ -33,7 +33,7 @@ exports.reportCode = {
     const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
     let limit = reportParams.limitation || 1000
     let countries = UB.Repository('cdn_country')
-      .attrs(['code', 'name', 'fullName', 'currencyID.name'])
+      .attrs(['ID', 'code', 'name', 'fullName', 'currencyID.name'])
       .limit(limit)
       .selectAsArray()
     let countriesAsObjects = LocalDataStore.selectResultToArrayOfObjects(countries, {
@@ -63,7 +63,7 @@ exports.reportCode = {
     var limit = reportParams.limitation || 1000
 
     return UB.Repository('cdn_country')
-      .attrs(['code', 'name', 'fullName', 'currencyID.name'])
+      .attrs(['ID','code', 'name', 'fullName', 'currencyID.name'])
       .limit(limit)
       .selectAsArray()
       .then(function (response) {
