@@ -29,6 +29,26 @@ const numberPatterns = {
   decimal6: {style: 'decimal', useGrouping: true, maximumFractionDigits: 6, minimumFractionDigits: 6}
 }
 
+const langToICU = {
+  en: 'en-US',
+  ru: 'ru-RU',
+  uk: 'uk-UA',
+  az: 'az'
+}
+
+/**
+ * Create a ICU locale based on UB language
+ * @param lang
+ * @return {string}
+ */
+function lang2locale(lang) {
+  lang = lang || 'en'
+  if ((lang.length < 3) && langToICU[lang]) {
+    return langToICU[lang]
+  } else {
+    return lang + '-' + lang.toUpperCase()
+  }
+}
 /**
  * Format date by pattern
  * @param value
@@ -39,8 +59,7 @@ const numberPatterns = {
 function formatDate (value, patternName, lang) {
   if (!value) return
   if (!(value instanceof Date)) throw new Error('Value must be Date')
-  const lng = (lang || 'en').toLowerCase()
-  const locale = lng + '-' + lng.toUpperCase()
+  const locale = lang2locale(lang)
   const pattern = datePatterns[patternName]
   if (!pattern) throw new Error('Unknown date pattern ' + patternName)
   return value.toLocaleDateString(locale, pattern)
@@ -57,11 +76,7 @@ function formatNumber (value, patternName, lang) {
   if (!value && value !== 0) return
   if (!(typeof value === 'number')) throw new Error('Value must be Number')
   if (Number.isNaN(value)) return 'NaN'
-  let locale = lang
-  if (lang.length < 3) {
-    let lng = (lang || 'en').toLowerCase()
-    locale = lng + '-' + lng.toUpperCase()
-  }
+  let locale = lang2locale(lang)
   const pattern = numberPatterns[patternName]
   if (!pattern) throw new Error('Unknown number pattern ' + patternName)
   return value.toLocaleString(locale, pattern)

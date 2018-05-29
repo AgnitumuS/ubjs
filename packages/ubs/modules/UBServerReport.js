@@ -39,6 +39,7 @@ const Q = require('when')
 const _ = require('lodash')
 const path = require('path')
 const UB = require('@unitybase/ub')
+const Session = UB.Session
 const App = UB.App
 const formatFunctions = require('../public/formatFunctions')
 
@@ -198,7 +199,7 @@ UBServerReport.prototype.buildHTML = function (reportData) {
   reportData = reportData || {}
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
-  formatFunctions.addMustacheSysFunction(reportData)
+  formatFunctions.addMustacheSysFunction(reportData, Session.userLang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 

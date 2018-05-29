@@ -178,8 +178,7 @@ UBReport.prototype.buildHTML = function (reportData) {
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
   let lang = $App.connection.userLang()
-  let langToICU = {en: 'en-US', ru: 'ru-RU', uk: 'uk-UA', az: 'az'}
-  formatFunctions.addMustacheSysFunction(reportData, langToICU[lang] || lang)
+  formatFunctions.addMustacheSysFunction(reportData, lang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 
