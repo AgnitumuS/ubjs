@@ -403,7 +403,7 @@ Ext.define('UB.ux.UBReportEditor', {
   },
 
   getValue: function (sender) {
-    let value = this.callParent(sender)
+    let value = this.callParent()
     value = '<!--%pageOrientation:' + this.orientation + '-->' + value
     if (sender === 'UBDocument' && this.valuesSpecialComments) {
       value = this.valuesSpecialComments + value
