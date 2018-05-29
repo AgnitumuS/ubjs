@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.16]
+### Changed
+- speed up UBS.ReportViewer during HTML reports rendering
+- removed 15px margins in UBS.ReportViewer
+
 ## [5.0.15]
 ### Fixed
 - Collapsing animation of `UBS.ReportParamForm` removed (fixed wrong report align)
