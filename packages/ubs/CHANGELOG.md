@@ -10,8 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - removed 15px margins in UBS.ReportViewer
 
 ### Fixed
-- client side mustache formatting function **$fs** (aka Format Sum) will
- format numbers with decimal and thousand separators for current locale
+- mustache formatting function **$fs and $fd** (aka Format Sum / Date) will
+ format according to current user locale
 
 ## [5.0.15]
 ### Fixed
