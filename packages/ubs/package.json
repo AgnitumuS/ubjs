@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubs",
-  "version": "5.0.15",
+  "version": "5.0.16",
   "description": "Reports, User messages (notifications), Settings (aka about:config), Counters",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubs",
   "config": {
@@ -21,7 +21,7 @@
   },
   "main": "ubs.js",
   "dependencies": {
-    "@unitybase/adminui-pub": "^5.0.15",
+    "@unitybase/adminui-pub": "^5.0.16",
     "@unitybase/base": "^5.0.11",
     "@unitybase/cs-shared": "^5.0.5",
     "@unitybase/pdf": "^5.0.6",
