@@ -64,10 +64,12 @@ function getBlobHistoryDataStore () {
 
 /**
  * @type {App}
+ * @private
  */
 let App
 /**
  * @type {UBSession}
+ * @private
  */
 let Session
 /**
@@ -79,6 +81,7 @@ const blobStoresMap = {}
  * Initialize blobStoresMap. Called by UBApp and initialize a `App.blobStores`
  * @param {App} appInstance
  * @param {UBSession} sessionInstance
+ * @private
   */
 function initBLOBStores (appInstance, sessionInstance) {
   App = appInstance
@@ -288,8 +291,8 @@ function getDocumentEndpoint (req, resp) {
 }
 
 /**
- * Server-side method for obtaining BLOB content from blob store.
- * In case blob store attribute value is null return `null`.
+ * Server-side method for obtaining BLOB content from the blob store.
+ * Return `null` in case attribute value is null.
  * @param {BlobStoreRequest} request
  * @param {Object} [options]
  * @param {String|Null} [options.encoding] Possible values:
