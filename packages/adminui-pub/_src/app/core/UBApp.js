@@ -370,15 +370,12 @@ Ext.define('UB.core.UBApp', {
         if (model.path && model.key !== 'UB') {
           Ext.Loader.setPath(model.key, model.path)
         }
-        if (model.needLocalize) {
-          localeScriptForLoad.push(UB.inject(model.path + '/locale/lang-' + myLocale + '.js'))
-        }
         if (model.needInit) {
           initScriptForLoad.push(model.clientRequirePath + '/initModel.js')
         }
       })
       // load models initialization script in order they passed
-      return Promise.all(localeScriptForLoad).then(function () {
+      return UB.inject('allLocales?lang=' + myLocale).then(function () {
         var promise = Promise.resolve(true)
         initScriptForLoad.forEach(function (script) {
           promise = promise.then(function () {

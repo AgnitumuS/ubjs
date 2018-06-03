@@ -155,7 +155,7 @@ function start () {
   blobStores.initBLOBStores(App, Session)
 
   // ENDPOINTS
-  const {clientRequireEp, modelsEp, getAppInfoEp, getDomainInfoEp, staticEp, runSQLEp, restEp} = require('./modules/endpoints')
+  const {clientRequireEp, modelsEp, getAppInfoEp, getDomainInfoEp, staticEp, runSQLEp, restEp, allLocalesEp} = require('./modules/endpoints')
   App.registerEndpoint('getAppInfo', getAppInfoEp, false)
   App.registerEndpoint('models', modelsEp, false)
   App.registerEndpoint('clientRequire', clientRequireEp, false)
@@ -164,6 +164,7 @@ function start () {
   App.registerEndpoint('setDocument', blobStores.setDocumentEndpoint, true)
   App.registerEndpoint('runSQL', runSQLEp, true)
   App.registerEndpoint('rest', restEp, true)
+  App.registerEndpoint('allLocales', allLocalesEp, false)
   App.registerEndpoint('statics', staticEp, false, true)
 }
 
