@@ -1,11 +1,19 @@
 /*
  * Created by pavel.mash on 03.12.2016.
  */
-
+/* global SystemJS */
 const UB = require('@unitybase/ub-pub')
 const Q = require('bluebird-q')
 const _ = require('lodash')
 const csShared = require('@unitybase/cs-shared')
+// register required modules into SystemJS registry
+// to prevent double loading of modules in case for example
+// System.import('lodash') somewhere in code exists
+// Important to use SystemJS instead of System to prevent webpack to optimize calls to System
+if (!SystemJS.has('lodash')) SystemJS.set('lodash', SystemJS.newModule(_))
+if (!SystemJS.has('bluebird-q')) SystemJS.set('bluebird-q', SystemJS.newModule(Q))
+if (!SystemJS.has('@unitybase/cs-shared')) SystemJS.set('@unitybase/cs-shared', SystemJS.newModule(csShared))
+
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
 

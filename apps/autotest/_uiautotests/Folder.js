@@ -5,7 +5,7 @@ import {
   insertShortcut
 } from './ExtJSHelper/Preconditions'
 
-const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
+const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:8881/ubadminui`
 const ext = new ExtSelector()
 
 fixture(`Folder tests`)

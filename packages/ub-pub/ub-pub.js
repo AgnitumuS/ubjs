@@ -1,3 +1,4 @@
+/* global SystemJS */
 const i18n = require('./i18n')
 const utils = require('./utils')
 const transport = require('./transport')
@@ -6,10 +7,10 @@ const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
 const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
+const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
 const UBNativeMessage = require('./UBNativeMessage')
-
 /**
  * Data layer for accessing UnityBase server from Browser or NodeJS
  * @module @unitybase/ub-pub
@@ -310,4 +311,9 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    * Calculate MD5 checksum
    */
   MD5: MD5
+}
+
+if (typeof SystemJS !== 'undefined') { // browser
+  if (!SystemJS.has('@unitybase/cryptojs')) SystemJS.set('@unitybase/cryptojs', SystemJS.newModule(CryptoJSCore))
+  if (!SystemJS.has('@unitybase/ub-pub')) SystemJS.set('@unitybase/ub-pub', SystemJS.newModule(module.exports))
 }
