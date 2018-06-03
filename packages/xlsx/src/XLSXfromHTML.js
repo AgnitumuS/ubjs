@@ -1,6 +1,11 @@
+/* global SystemJS */
 const fontsMap = {}
 const _ = require('lodash')
 const mustache = require('mustache')
+if (typeof SystemJS !== 'undefined') { // browser
+  if (!SystemJS.has('lodash')) SystemJS.set('lodash', SystemJS.newModule(_))
+  if (!SystemJS.has('mustache')) SystemJS.set('mustache', SystemJS.newModule(mustache))
+}
 const ReachText = require('./ReachText')
 const {SpanMap} = require('./SpanMap')
 const {XLSXStyle} = require('./XLSXStyle')

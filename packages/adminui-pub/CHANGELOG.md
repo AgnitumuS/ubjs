@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.17]
+### Fixed
+- package will expose itself and 'lodash', 'bluebird-q' and '@unitybase/cs-shared'
+ as SystemJS module to prevent double-loading
+
+### Changed
+- `adminui-pub` will inject all localization script at once using new `allLocales` endpoint.
+Will speed up startup for applications with several models
+
 ## [5.0.15]
 ### Changed
 - TinyMCE upgraded to 4.7.13

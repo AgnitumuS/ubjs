@@ -21,6 +21,9 @@ const App = require('./App')
 const Session = require('./Session')
 const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('./httpUtils')
 const ubErrors = require('./ubErrors')
+const UBA_COMMON = require('@unitybase/base').uba_common
+const queryString = require('querystring')
+const appBinding = process.binding('ub_app')
 /**
  *
  * @param {string} reqPath
@@ -286,9 +289,6 @@ function getAppInfoEp (req, resp) {
 //   }
 // }
 
-const UBA_COMMON = require('@unitybase/base').uba_common
-const queryString = require('querystring')
-const appBinding = process.binding('ub_app')
 const authenticationHandled = appBinding.handleAuthentication
 const nativeGetDomainInfo = appBinding.getDomainInfo
 /**
@@ -435,6 +435,45 @@ function restEp (req, resp) {
   return true
 }
 
+const CACHE_LOCALE_KEY_PREFIX = 'UB.LOCALE.'
+/**
+ * Return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
+ * excluding adminui-pub what injected before login window
+ *
+ *      GET allLocales?lang=en
+ *
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @private
+ */
+function allLocalesEp (req, resp) {
+  let cached
+  const parameters = queryString.parse(req.parameters)
+  let lang = parameters.lang
+  if (!lang || lang.length > 5) return resp.badRequest('lang parameter required')
+  let supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
+  if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
+
+  cached = App.globalCacheGet(`${CACHE_LOCALE_KEY_PREFIX}${lang}`)
+  if (!cached) {
+    cached = ' '
+    App.domainInfo.orderedModels.forEach((model) => {
+      if (model.needLocalize && model.name !== 'adminui-pub') { // adminui-pub will be injected before login window
+        let localeScript = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
+        if (fs.existsSync(localeScript)) {
+          let content = fs.readFileSync(localeScript, 'utf-8')
+          cached += `\n// ${model.name} localization\n${content}`
+        }
+      }
+    })
+    App.globalCachePut(`${CACHE_LOCALE_KEY_PREFIX}${lang}`, cached)
+  }
+  resp.writeEnd(cached)
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/javascript')
+  resp.validateETag()
+}
+
 module.exports = {
   modelsEp,
   getAppInfoEp,
@@ -442,5 +481,6 @@ module.exports = {
   getDomainInfoEp,
   staticEp,
   runSQLEp,
-  restEp
+  restEp,
+  allLocalesEp
 }

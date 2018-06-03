@@ -46,7 +46,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     let view = {
       uiSettings: uiSettings,
       modelVersions: [],
-      staticVersion: App.globalCacheGet('UB_STATIC.modelsModifyDate'), // prev. App.folderChecksum(App.staticPath),
+      staticVersion: '' + ncrc32(0, App.globalCacheGet('UB_STATIC.modelsModifyDate')), // prev. App.folderChecksum(App.staticPath),
       UB_API_PATH: App.serverConfig.httpServer.path || '/', //  serverURL.replace(/\/$/, ''),
       md5template: function () {
         return function (template) {

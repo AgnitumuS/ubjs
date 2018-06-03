@@ -105,7 +105,6 @@ function UBDomain (domainInfo) {
   /**
    * Array of models, sorted by the order of loading
    * @member {Array<UBModel>}
-   * @private
    */
   this.orderedModels = []
 

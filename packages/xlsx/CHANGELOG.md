@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.13]
+### Fixed
+- for environment with SystemJS (usually browser) package will expose
+ `mustache` and `lodash` as SystemJS module to prevent double-loading
+
 ## [5.0.11]
 ### Fixed
 - XLSXWorkbook.render will use jzsip.generate instead of unsupported in UB jszip.generateAsync
