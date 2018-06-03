@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - package will expose itself and 'lodash', 'bluebird-q' and '@unitybase/cs-shared'
  as SystemJS module to prevent double-loading
 
+### Changed
+- `adminui-pub` will inject all localization script at once using new `allLocales` endpoint.
+Will speed up startup for applications with several models
+
 ## [5.0.15]
 ### Changed
 - TinyMCE upgraded to 4.7.13

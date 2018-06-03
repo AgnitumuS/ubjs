@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.16]
+### Added
+- new endpoind `allLocales` - return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
+ excluding adminui-pub what injected before login window
+
 ## [5.0.12]
 ### Added
 - new function `App.blobStores.markRevisionAsPermanent` allow to prevent

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - for environment with SystemJS (usually browser) package will expose
  itself and `@unitybase/cryptojs` as SystemJS module to prevent double-loading
+- injection.addResourceVersion correctly add version to URI with parameters (if `?` exists will use `&` as separator)
 
 ## [5.0.10]
 ### Fixed
