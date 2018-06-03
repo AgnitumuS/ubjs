@@ -2,7 +2,7 @@ import { ExtSelector } from './ExtJSHelper/ExtJSSelector'
 import { Selector } from 'testcafe'
 import { deleteExistShortcut, insertDesktop, insertShortcut } from './ExtJSHelper/Preconditions'
 
-const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
+const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:8881/ubadminui`
 const ext = new ExtSelector()
 
 fixture(`Shortcut test`)
