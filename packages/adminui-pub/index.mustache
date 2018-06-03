@@ -72,8 +72,6 @@
                 packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });
             System.import('@unitybase/adminui-pub/dist/adminui.app.min.js').then(function(adminUI){
-                // System.set('lodash', System.newModule(_))
-                // System.set('@unitybase/ub-pub', System.newModule(UB))
                 return System.import('@unitybase/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js')
             });
         </script>

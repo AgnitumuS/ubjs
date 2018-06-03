@@ -3,7 +3,6 @@
  */
 const webpack = require('webpack')
 const path = require('path')
-const WebpackSystemRegister = require('webpack-system-register')
 
 /**
 Set NODE_ENV=production for production build
@@ -66,12 +65,6 @@ module.exports = {
 
     new webpack.optimize.CommonsChunkPlugin({
       children: true
-    }),
-    new WebpackSystemRegister({
-	systemjsDeps: [
-	/.*/, // any import
- 	],
-	registerName: '@unitybase/adminui-pub', // optional name that SystemJS will know this bundle as.
     }),
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,

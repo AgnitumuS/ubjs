@@ -1,9 +1,11 @@
+/* global SystemJS */
 /**
  * @class UBReport
  * Client side report builder
  *
  */
 const Mustache = require('mustache')
+if (!SystemJS.has('mustache')) SystemJS.set('mustache', SystemJS.newModule(Mustache))
 const formatFunctions = require('./formatFunctions')
 const UB = require('@unitybase/ub-pub')
 const $App = require('@unitybase/adminui-pub')
