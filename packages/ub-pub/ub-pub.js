@@ -7,7 +7,8 @@ const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
 const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
-const CryptoJSCore = require('@unitybase/cryptojs/core')
+const CryptoJS = require('@unitybase/cryptojs')
+// const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
 const UBNativeMessage = require('./UBNativeMessage')
@@ -314,6 +315,6 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
 }
 
 if (typeof SystemJS !== 'undefined') { // browser
-  if (!SystemJS.has('@unitybase/cryptojs')) SystemJS.set('@unitybase/cryptojs', SystemJS.newModule(CryptoJSCore))
+  if (!SystemJS.has('@unitybase/cryptojs')) SystemJS.set('@unitybase/cryptojs', SystemJS.newModule(CryptoJS))
   if (!SystemJS.has('@unitybase/ub-pub')) SystemJS.set('@unitybase/ub-pub', SystemJS.newModule(module.exports))
 }

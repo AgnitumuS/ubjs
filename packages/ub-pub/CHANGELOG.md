@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.12]
+### Fixed
+- Package `@unitybase/cryptojs` expose as SystemJS will include typed array
+
 ## [5.0.11]
 ### Fixed
 - for environment with SystemJS (usually browser) package will expose
