@@ -1,10 +1,15 @@
 # OpenID Connect authorization
 
-This UnityBase model implements authorization over OpenID Connect
+This UnityBase model implements authorization over OpenID Connect.
+For adminUI "OpenIDConnect" should be added to the "authenticationMethods".
 
 Configuration:
 
 ```
+"security": {
+  "authenticationMethods": ["UB", "OpenIDConnect"]
+},
+...
 "application": {
     ...,
     "customSettings": {
