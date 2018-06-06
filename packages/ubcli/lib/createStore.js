@@ -98,6 +98,7 @@ module.exports = function createStore (options) {
       fs.mkdirSync(cStorePath)
     }
     let tmp = cStore.tempPath || (cStorePath + '_temp')
+    if (!path.isAbsolute(tmp)) tmp = path.join(configPath, tmp)
     if (!fs.existsSync(tmp)) {
       console.log('\t Create temp directory %s', tmp)
       fs.mkdirSync(tmp)

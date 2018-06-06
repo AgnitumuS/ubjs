@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.18]
+### Fixed
+- `ubcli createStore` will create temp path even if it is relative.
+ In this case we consider path is relative to config path
+
 ## [5.0.16]
 ### Fixed
 - fix retrieve foreign key metadata from PostgreSQL (BOOL column type not handled properly by ZEOS 7.2)
