@@ -165,7 +165,7 @@
 				"isDefault": true,
 				"historyDepth": 2,
 				"storeSize": "Medium",
-				"keepOriginalFileLocalIPsNames": false
+				"keepOriginalFileNames": false
 			},
 			{
 				"name": "avatars",
