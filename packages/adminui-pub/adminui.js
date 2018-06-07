@@ -6,6 +6,7 @@ const UB = require('@unitybase/ub-pub')
 const Q = require('bluebird-q')
 const _ = require('lodash')
 const csShared = require('@unitybase/cs-shared')
+const fileSaver = require('file-saver')
 // register required modules into SystemJS registry
 // to prevent double loading of modules in case for example
 // System.import('lodash') somewhere in code exists
@@ -13,6 +14,7 @@ const csShared = require('@unitybase/cs-shared')
 if (!SystemJS.has('lodash')) SystemJS.set('lodash', SystemJS.newModule(_))
 if (!SystemJS.has('bluebird-q')) SystemJS.set('bluebird-q', SystemJS.newModule(Q))
 if (!SystemJS.has('@unitybase/cs-shared')) SystemJS.set('@unitybase/cs-shared', SystemJS.newModule(csShared))
+if (!SystemJS.has('file-saver')) SystemJS.set('file-saver', SystemJS.newModule(fileSaver))
 
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -41,7 +43,7 @@ if (!Promise.prototype.done) {
 }
 
 window.JSZip = require('jszip/dist/jszip.js') // for xlsx-pub. require('jszip') dose not work
-window.saveAs = require('file-saver').saveAs
+window.saveAs = fileSaver.saveAs
 
 Ext.Loader.setConfig({
   enabled: true,

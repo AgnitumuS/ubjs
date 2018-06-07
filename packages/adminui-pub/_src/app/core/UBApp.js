@@ -344,7 +344,6 @@ Ext.define('UB.core.UBApp', {
         })
       }
     }).then(function (connection) {
-      var localeScriptForLoad = []
       var initScriptForLoad = []
       var myLocale, models
 
