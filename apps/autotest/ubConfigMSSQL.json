@@ -1,18 +1,16 @@
-{
+﻿{
 	"httpServer": {
-		//"serverType": "Socket",
-		"#include(%UB_RP_CONFIG%)"
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": "./inetPub/",
+		"inetPub": ".\\inetPub/",
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 2
+		"threadPoolSize": 8
 	},
 	/*"wsServer": {
 		"host": "+",
@@ -20,7 +18,7 @@
 		"path": "ws"
 	},*/
 	"logging": {
-		"path": "./logs",
+		"path": ".\\logs",
 		"levels": [
 			"*"
 		],
@@ -53,7 +51,7 @@
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": {"en": "Autotest UB SQLITE", "uk": "Автотест UB SQLITE"},
+			"applicationName": {"en": "Autotest UB SQLServer", "uk": "Автотест UB SQLServer"},
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
@@ -124,33 +122,33 @@
 		"connections": [
 			{
 				"name": "main",
-				"driver": "SQLite3",
+				"driver": "MSSQL2012OleDB",
 				"isDefault": true,
-				"dialect": "SQLite3",
-				"databaseName": "./autotestDB.sqlite3",
-				"supportLang": ["en", "uk"],
-				"advSettings": "Synchronous=Off"
+				"dialect": "MSSQL2012",
+				"serverName": "172.16.97.148",
+				"databaseName": "ub5_autotest_win",
+				"userID": "ub5_autotest_win",
+				"password": "ub_autotest",
+				"supportLang": ["en", "uk"]
 			},
 			{
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": "./autotestFTS.sqlite3",
+				"databaseName": ".\\autotestFTS.sqlite3",
 				"supportLang": [
 					"en", "uk"
 				],
-				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			},
 			{
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": "./autotestSubjectsFTS.sqlite3",
+				"databaseName": ".\\autotestSubjectsFTS.sqlite3",
 				"supportLang": [
 					"en", "uk"
 				],
-				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			}
 		],
@@ -158,12 +156,12 @@
 			{
 				"name": "mdb",
 				"storeType": "Virtual",
-				"tempPath": "./_temp"
+				"tempPath": ".\\_temp"
 			},
 			{
 				"name": "simple",
-				"path": "./documents/simple",
-				"tempPath": "./documents/simple/_temp",
+				"path": ".\\documents\\simple\\",
+				"tempPath": ".\\documents\\simple\\_temp",
 				"isDefault": true,
 				"historyDepth": 2,
 				"storeSize": "Medium",
@@ -171,8 +169,8 @@
 			},
 			{
 				"name": "avatars",
-				"path": "./documents/avatars",
-				"tempPath": "./documents/avatars/_temp",
+					"path": ".\\documents\\avatars\\",
+				"tempPath": ".\\documents\\avatars\\_temp",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false

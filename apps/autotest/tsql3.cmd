@@ -10,7 +10,7 @@ if [%UB_RP_CONFIG%]==[] (
   SET UB_RP_CONFIG=./rp-config-disable.json
 )
 
-if exist .\_autotestResults.json del .\_autotestResults.json
+if exist .\_autotestResults*.json del .\_autotestResults*.json
 if exist .\last_result.log del .\last_result.log
 
 SET TESTCASE=hello
@@ -44,7 +44,11 @@ call npx ubcli initialize -cfg %UB_CFG% -u admin -p admin -host %UB_HOST%
 
 SET TESTCASE=autotest
 call npx ubcli autotest -cfg %UB_CFG% -u admin -p admin -host %UB_HOST% -noLogo -skipModules
-@if errorlevel 1 goto err
+@if errorlevel 1 (
+  type .\_autotestResults.json
+  if not [%UB_TESTRES%]==[] rename .\_autotestResults.json _autotestResults%UB_TESTRES%.json
+  goto err
+)
 
 
 goto :eof

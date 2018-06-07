@@ -16,7 +16,7 @@ err()
   exit 1
 }
 
-rm -f ./_autotestResults.json
+rm -f ./_autotestResults*.json
 rm -f ./last_result.log
 
 TESTCASE='hello'
@@ -59,5 +59,8 @@ TESTCASE=autotest
 npx ubcli autotest -cfg $UB_CFG -u admin -p admin -noLogo -skipModules
 if [ ! $? = 0 ]; then
   cat ./_autotestResults.json;
+  if [ ! -z ${UB_TESTRES+x} ] && [ ! -z "${UB_TESTRES// }" ]; then
+    mv ./_autotestResults.json ./_autotestResults$UB_TESTRES.json
+  fi
   err;
 fi

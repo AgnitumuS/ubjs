@@ -10,7 +10,7 @@
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 8
+		"threadPoolSize": 2
 	},
 	/*"wsServer": {
 		"host": "+",
@@ -51,7 +51,7 @@
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": {"en": "Autotest UB SQLServer", "uk": "Автотест UB SQLServer"},
+			"applicationName": {"en": "Autotest UB Oracle", "uk": "Автотест UB Oracle"},
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
@@ -95,7 +95,7 @@
 					"path": "./node_modules/@unitybase/cdn"
 				},
 				{
-					"path": "./node_modules/@unitybase/org"
+					"path": "./node_modules/@unitybase/org"				
 				},
 				{
 					"path": "./node_modules/@unitybase/ub-pub"
@@ -122,14 +122,14 @@
 		"connections": [
 			{
 				"name": "main",
-				"driver": "MSSQLODBC",
+				"driver": "Oracle",
 				"isDefault": true,
-				"dialect": "MSSQL2012",
-				"serverName": "ub5_autotest_mssql", // this is an entry in ~/.obdc.ini file
-				"databaseName": "ub5_autotest_lin",
-				"userID": "ub5_autotest_lin",
+				"dialect": "Oracle11",
+				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.97.177)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraib11n)))",
+				"userID": "UB5_AUTOTEST_LIN",
 				"password": "ub_autotest",
-				"supportLang": ["en", "uk"]
+				"supportLang": ["en", "uk"],
+				"executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"]
 			},
 			{
 				"name": "ftsDefault",
@@ -190,7 +190,7 @@
 				"user": "",
 				"password": "",
 				"autoTLS": false,
-				"auth": false 
+				"auth": false
 			}
 		}
 	}
