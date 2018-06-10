@@ -167,7 +167,7 @@ function clientRequireEp (req, resp) {
       if (stat.isDirectory()) {
         let pkgName = path.join(resolvedPath, 'package.json')
         if (fs.existsSync(pkgName)) {
-          let pkgMain = JSON.parse(fs.readFileSync(pkgName, 'utf8')).main
+          let pkgMain = JSON.parse(fs.readFileSync(pkgName, 'utf8')).main || './index.js'
           resolvedPath = path.join(resolvedPath, pkgMain)
         }
       }
