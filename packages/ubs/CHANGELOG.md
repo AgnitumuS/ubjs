@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.18]
 ### Fixed
-- added `UBS.MessageBar` initialization when started
+- `UBS.MessageBar` will be bundled into `@unitybase/ubs`
 
 ## [5.0.17]
 ### Fixed
