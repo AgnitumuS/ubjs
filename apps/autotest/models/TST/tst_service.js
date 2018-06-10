@@ -127,7 +127,7 @@ me.throwTest = function (ctx) {
   let isUnicode = (mParams.isUnicode === true)
   let isSystem = (mParams.isSystem === true)
   if (isUnicode) {
-    throw new UB.UBAbort('Підтримується')
+    throw new UB.UBAbort('<<<Підтримується>>>')
   } else if (isSystem) {
     fs.renameSync('file_not_found_exos', 'second_path_wrong')
   } else {
