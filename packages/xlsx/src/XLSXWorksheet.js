@@ -44,7 +44,7 @@ class XLSXWorksheet {
 
     /**
      * @deprecated
-     * Fix for unfilling first column
+     * Fix for unfeeling first column
      */
     this.fixFirstColumn = false
     this.diapason = {
@@ -204,7 +204,7 @@ class XLSXWorksheet {
    * @param [{Object|*}] config Array of cell config {Object} If item type is not object it convert to yourValue >> {value: yourValue}
    * @param {Object} cell.value type of Object must be (number, string, boolean, date)
    * @param {string} [cell.formula]
-   * @param {Number|XLSXStyle|Object} [cell.style]  Style index for get call  WorkBook.style.add(congig)
+   * @param {Number|XLSXStyle|Object} [cell.style]  Style index for get call  WorkBook.style.add(config)
    * @param {Number} [cell.column] Column number First column 0
    * @param {Object} [cell.cellStyle]
    * @param {Number} [cell.cellStyle.colSpan]

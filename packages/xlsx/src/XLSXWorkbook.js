@@ -89,7 +89,7 @@ class XLSXWorkbook {
     if (this.worksheets.some(F => F.name === config.name)) {
       config.name += '_' + config.id
     }
-    var ws = new XLSXWorksheet(config, this)
+    let ws = new XLSXWorksheet(config, this)
     this.worksheets.unshift(ws)
     return ws
   }
