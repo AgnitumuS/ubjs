@@ -6,7 +6,7 @@ const tools = require('./tools')
 const Color = require('./Color')
 const orderWrite = ['left', 'right', 'top', 'bottom', 'diagonal']
 
-let instance = null
+let _instance
 /**
  *
  *    const wb = new XLSXWorkbook()
@@ -26,7 +26,8 @@ let instance = null
  */
 class XLSXStyleControllerBorder extends XLSXBaseStyleController {
   static instance () {
-    return instance
+    if (!_instance) _instance = new XLSXStyleControllerBorder()
+    return _instance
   }
 
   /**
@@ -140,8 +141,6 @@ class XLSXStyleControllerBorder extends XLSXBaseStyleController {
   /*
  */
 }
-
-instance = new XLSXStyleControllerBorder()
 
 module.exports = {
   XLSXStyleControllerBorder

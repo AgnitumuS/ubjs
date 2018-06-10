@@ -5,14 +5,15 @@ const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 const Color = require('./Color')
 
-let instance = null
+let _instance
 
 /**
  * @class XLSXStyleFont Registered font styles
  */
 class XLSXStyleControllerFont extends XLSXBaseStyleController {
   static instance () {
-    return instance
+    if (!_instance) _instance = new XLSXStyleControllerFont()
+    return _instance
   }
 
   compile (item) {
@@ -98,8 +99,6 @@ class XLSXStyleControllerFont extends XLSXBaseStyleController {
     return super.add(info, 'FONT')
   }
 }
-
-instance = new XLSXStyleControllerFont()
 
 module.exports = {
   XLSXStyleControllerFont
