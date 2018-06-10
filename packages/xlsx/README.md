@@ -28,10 +28,8 @@ ws.addRow(
         {column: 4, style: fstyle1}
     ]
 )
-wb.render()
-.then(function (content) {
-  fs.writeFileSync('./example.xlsx', content, 'binary')
-})
+let content = wb.render()
+fs.writeFileSync('./example.xlsx', content, 'binary')
 ```
 
 
