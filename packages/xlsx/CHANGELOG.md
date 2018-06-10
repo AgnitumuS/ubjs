@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - **BREAKING** `XLSXWorkbook.render` will return rendered data instead of Promise,
  because we use a synchronous version of JSZip
+### Changed
+- use external `lodash` library inside bundle (webpack config changed)
 
 ## [5.0.13]
 ### Fixed
