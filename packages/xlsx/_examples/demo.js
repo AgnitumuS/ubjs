@@ -209,10 +209,9 @@ function startTest () {
   tableData.forEach(f => {
     ws.addRow(f, f.length === 7 ? rowStyle : rowStyleBalance)
   })
-  wb.render().then(function (content) {
-    content = Buffer.from(content)
-    fs.writeFileSync('./test.xlsx', content, 'binary')
-  })
+  let content = wb.render()
+  content = Buffer.from(content)
+  fs.writeFileSync('./test.xlsx', content, 'binary')
 }
 
 const tableData = [

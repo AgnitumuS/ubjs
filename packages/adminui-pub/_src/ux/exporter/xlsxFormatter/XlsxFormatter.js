@@ -221,10 +221,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
         ws.addRow(nrowData, columnTemplate)
       }, this)
     }
-      // var rData = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + wb.render();
-
-    wb.render().then(function (result) {
-      config.callback.call(config.scope, result)
-    })
+    // var rData = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," + wb.render();
+    let result = wb.render()
+    config.callback.call(config.scope, result)
   }
 })

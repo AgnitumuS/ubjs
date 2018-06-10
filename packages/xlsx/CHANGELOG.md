@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.14]
+### Fixed
+- **BREAKING** `XLSXWorkbook.render` will return rendered data instead of Promise,
+ because we use a synchronous version of JSZip
+
 ## [5.0.13]
 ### Fixed
 - for environment with SystemJS (usually browser) package will expose
@@ -28,10 +33,9 @@ const xmldom = require('xmldom')
 const wb = new XLSXWorkbook({useSharedString: false})
 const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
 converter.writeHtml({html: yourHtmlString})
-wb.render().then(function (content) {
- content = Buffer.from(content)
- fs.writeFileSync('./testHtml.xlsx', content, 'binary')
-})
+let content = wb.render()
+content = Buffer.from(content)
+fs.writeFileSync('./testHtml.xlsx', content, 'binary')
 ```
 
 Full example './_examples/testHtml.js'
