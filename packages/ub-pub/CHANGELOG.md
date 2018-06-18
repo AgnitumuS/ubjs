@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.13]
+### Fixed
+- UBConnection constructor will understand react native environment and create a server URL correctly
+
 ## [5.0.12]
 ### Fixed
 - Package `@unitybase/cryptojs` expose as SystemJS will include typed array

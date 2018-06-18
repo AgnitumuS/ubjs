@@ -162,7 +162,8 @@ function UBConnection (connectionParams) {
    * @readonly
    */
   this.serverUrl = serverURL
-  baseURL = ((typeof window !== 'undefined') && (window.location.origin === host)) ? appName : serverURL
+  // for react native window exists but window.location - not
+  baseURL = ((typeof window !== 'undefined') && window.location && (window.location.origin === host)) ? appName : serverURL
   if (baseURL.charAt(baseURL.length - 1) !== '/') baseURL = baseURL + '/'
   /**
    * The base of all urls of your requests. Will be prepend to all urls while call UB.xhr
