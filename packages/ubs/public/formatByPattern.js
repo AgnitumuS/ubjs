@@ -17,7 +17,7 @@ const datePatterns = {
 }
 // {style: 'decimal', useGrouping: true, minimumIntegerDigits: 10, maximumFractionDigits: 2, minimumFractionDigits: 2, minimumSignificantDigits: 5}
 const numberPatterns = {
-  sum: {style: 'decimal', useGrouping: false, maximumFractionDigits: 2, minimumFractionDigits: 2},
+  sum: {style: 'decimal', useGrouping: true, maximumFractionDigits: 2, minimumFractionDigits: 2},
   numberGroup: {style: 'decimal', useGrouping: true, maximumFractionDigits: 0},
   sumDelim: {style: 'decimal', useGrouping: true, maximumFractionDigits: 2, minimumFractionDigits: 2},
   number: {style: 'decimal', useGrouping: false, maximumFractionDigits: 0},
