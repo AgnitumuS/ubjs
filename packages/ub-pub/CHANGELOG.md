@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - UBConnection constructor will understand react native environment and create a server URL correctly
 
+### Added
+- ReactNative detection added
+```
+const UB = requite('@unitybase/ub-pub')
+if (UB.isReactNative) {...}
+```
+
 ## [5.0.12]
 ### Fixed
 - Package `@unitybase/cryptojs` expose as SystemJS will include typed array
