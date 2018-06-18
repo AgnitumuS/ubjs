@@ -52,13 +52,13 @@ function formatMustache (lang, format, fixFormat) {
 /**
  * Add base sys function to data
  * @param {Object} data
+ * @param {String} lang
  */
-function addBaseMustacheSysFunction (data) {
-  let userLang
+function addBaseMustacheSysFunction (data, lang) {
   data.i18n = function () {
     if (UB.isServer) {
       return function (word) {
-        return UB.i18n(word, userLang)
+        return UB.i18n(word, lang)
       }
     } else {
       return UB.i18n

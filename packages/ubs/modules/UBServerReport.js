@@ -74,8 +74,9 @@ global.atob = function (text) {
  * If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
  * @param {string} [reportType='html'] Possible values: 'html'|'pdf'
  * @param {{}} params
+ * @param {String} [language=Session.userLang]
  */
-function UBServerReport (reportCode, reportType, params) {
+function UBServerReport (reportCode, reportType, params, language) {
   /**
    * Report code
    * @property {string} reportCode
@@ -98,10 +99,13 @@ function UBServerReport (reportCode, reportType, params) {
     */
   this.reportOptions = {}
 
+  this.lang = language || Session.userLang
+
   if (typeof reportCode === 'object') {
     this.reportCode = reportCode.code
     this.reportType = reportCode.type || 'html'
     this.incomeParams = reportCode.params
+    this.lang = reportCode.language || Session.userLang
     this.debug = reportCode.debug
   }
 }
@@ -198,8 +202,8 @@ UBServerReport.prototype.buildHTML = function (reportData) {
   }
   reportData = reportData || {}
 
-  formatFunctions.addBaseMustacheSysFunction(reportData)
-  formatFunctions.addMustacheSysFunction(reportData, Session.userLang)
+  formatFunctions.addBaseMustacheSysFunction(reportData, this.lang)
+  formatFunctions.addMustacheSysFunction(reportData, this.lang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 
