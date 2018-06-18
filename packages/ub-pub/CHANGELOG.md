@@ -15,6 +15,9 @@ const UB = requite('@unitybase/ub-pub')
 if (UB.isReactNative) {...}
 ```
 
+### Changed
+- for ReactNative environment set a default UB.xhr timeout to 5sec instead of 120sec to prevent freezing of ReactNative app
+
 ## [5.0.12]
 ### Fixed
 - Package `@unitybase/cryptojs` expose as SystemJS will include typed array
