@@ -98,7 +98,6 @@ function testRest (conn) {
  * @param {SyncConnection} conn
  */
 function testUnicode (conn) {
-  return
   function unicodeExc () {
     conn.query({entity: 'tst_service', method: 'throwTest', isUnicode: true})
   }
