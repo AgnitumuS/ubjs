@@ -275,3 +275,5 @@ module.exports.isOpera = /opr|opera/.test(userAgent)
 module.exports.isMac = /macintosh|mac os x/.test(userAgent)
 /** @type {Boolean} */
 module.exports.isSecureBrowser = /\belectron\b/.test(userAgent)
+/** @type {Boolean} */
+module.exports.isReactNative = (typeof navigator !== 'undefined' && navigator.product === 'ReactNative')

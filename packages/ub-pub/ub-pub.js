@@ -274,6 +274,7 @@ conn.then(function(conn){
   isOpera: utils.isOpera,
   isMac: utils.isMac,
   isSecureBrowser: utils.isSecureBrowser,
+  isReactNative: utils.isReactNative,
   /**
    * Inject external script or css to DOM and return a promise to be resolved when script is loaded.
    *
