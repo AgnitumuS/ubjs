@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.18]
 ### Fixed
 - **CRITICAL** prevent transferring of application files to client in case `httpServer.inetPub` is empty in config
+- THTTPResponse methods `badRequest`, `notFound` and `notImplemented` will return charset in
+ Content-Type header as required by HTTP 1.0
 
 ## [5.0.16]
 ### Added
