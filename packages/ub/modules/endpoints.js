@@ -331,6 +331,7 @@ function getDomainInfoEp (req, resp) {
  * @param {THTTPResponse} resp
  */
 function staticEp (req, resp) {
+  if (!App.staticPath) return resp.notFound('httpServer.inetPub is empty')
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
     return resp.badRequest('invalid request method ' + req.method)
   }

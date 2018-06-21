@@ -225,7 +225,8 @@ App.package = appPkg
  * @readonly
  */
 App.staticPath = ''
-if (App.serverConfig.httpServer && App.serverConfig.httpServer['inetPub']) {
+if (App.serverConfig.httpServer && App.serverConfig.httpServer['inetPub'] &&
+  App.serverConfig.httpServer['inetPub'].trim()) {
   let sp = App.serverConfig.httpServer['inetPub']
   App.staticPath = path.isAbsolute(sp)
     ? sp

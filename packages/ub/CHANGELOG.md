@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.18]
+### Fixed
+- **CRITICAL** prevent transferring of application files to client in case `httpServer.inetPub` is empty in config
+
 ## [5.0.16]
 ### Added
 - new endpoind `allLocales` - return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
