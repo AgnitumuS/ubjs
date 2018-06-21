@@ -267,7 +267,7 @@ ORDER BY index_id, column_position`
       return column.isString
         ? (!column.defaultValue && (column.refTable || column.enumGroup)
           ? v.replace(/'/g, "''")
-          : "''" + v.replace(/'/g, '') + "''")
+          : "'" + v.replace(/'/g, '') + "'")
         : v
       //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }

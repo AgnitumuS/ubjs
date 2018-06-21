@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.19]
 ### Fixed
-- Posgres DDL generator will ignore functional ("func") index definition in `dbExtensions`
-  section (should be applied only for Oracle as documented)
-
+- PostgreSQL DDL generator will ignore functional ("func") index definition in `dbExtensions`
+ section (should be applied only for Oracle as documented)
+- PostgreSQL DDL generator will generate single-quoter string for estimation update of newly
+ added not null attributes of string type
 
 ## [5.0.18]
 ### Fixed
