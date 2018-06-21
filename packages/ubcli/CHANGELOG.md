@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.19]
+### Fixed
+- Posgres DDL generator will ignore functional ("func") index definition in `dbExtensions`
+  section (should be applied only for Oracle as documented)
+
+
 ## [5.0.18]
 ### Fixed
 - `ubcli createStore` will create temp path even if it is relative.
