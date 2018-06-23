@@ -398,10 +398,11 @@ function getStore (attribute, blobItem) {
  * @param {BlobStoreCustom} store
  * @param {UBEntityAttribute} attribute
  * @param {number} ID
- * @param {BlobStoreItem} blobInfo
+ * @param {BlobStoreItem} blobInfo Newly inserted/updated blobInfo. null in case of deletion
  * @private
  */
 function rotateHistory (store, attribute, ID, blobInfo) {
+  if (!blobInfo) return // deletion
   // clear expired historical items (excluding isPermanent)
   let histData = Repository(BLOB_HISTORY_STORE_NAME)
     .attrs(['ID', 'blobInfo'])
