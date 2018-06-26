@@ -449,10 +449,6 @@
           "default": false,
           "description": "If `true` will not require password for CERT authentication (only secret key passrord is required)"
         },
-        "SPN": {
-          "type": "string",
-          "description": "Service Principal Name is a name of service instance to be used for Kerberos authentication when GSSAPI implementation is used (currently - this is applicable when Negotiate authentication method selected on Linux and only for Enterprise Edition). The same name should be contained in the keytab file specified in KRB5_KTNAME environment variable. SPN can be omitted while keytab is required, when not set default credentials from keytab file will be used. Don't forget that NTLM authentication is not supported - domain should be configured accordingly"
-        },
         "ldapCatalogs": {
           "type": "array",
           "description": "If `userName` passed to `auth` in form `DOMAIN\\domainUser` and `UBLDAP` is present in `authenticationMethods` user credentials will be checked by request to LDAP catalog",
