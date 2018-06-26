@@ -137,20 +137,32 @@ App.launchEndpoint = function (endpointName) {
 const appBinding = process.binding('ub_app')
 /**
  * Register a server endpoint.
- * One on endpoint can be default - this endpoint will be used as a fallback in case URL do not start with any of known endpoints.
- * @example
+ * One of the endpoints can be default endpoint - it will be used as a fallback
+ * in case URL do not start with any of known endpoints name.
  *
- * // Write a custom request body to file FIXTURES/req and echo file back to client
- * // @param {THTTPRequest} req
- * // @param {THTTPResponse} resp
- * //
- * function echoToFile(req, resp) {
-   *    var fs = require('fs');
-   *    fs.writeFileSync(FIXTURES + 'req', req.read('bin'));
-   *    resp.statusCode = 200;
-   *    resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}));
-   * }
- * App.registerEndpoint('echoToFile', echoToFile);
+ * Exceptions inside endpoint handler are intercepted by UB server. In case exception is occurred
+ * server will rollback any active DB transactions and serialize an exception message
+ * to response depending on server execution mode:
+ *  - for `dev` mode - original exception text will be serialized (for debugging purpose)
+ *  - for production mode - in case exception message is wrapped into `<<<..>>>` then this message will be serialized,
+ *  if not - text will be always `Internal server error` (for security reason)
+ *
+ *  Recommended way to throw an handled error inside endpoint handler is `throw new UB.UBAbort('.....')`
+ *
+ * @example
+
+ // Write a custom request body to file FIXTURES/req and echo file back to client
+ // @param {THTTPRequest} req
+ // @param {THTTPResponse} resp
+ //
+ function echoToFile(req, resp) {
+   var fs = require('fs');
+   fs.writeFileSync(FIXTURES + 'req', req.read('bin'));
+   resp.statusCode = 200;
+   resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}));
+ }
+ App.registerEndpoint('echoToFile', echoToFile);
+
  *
  * @param {String} endpointName
  * @param {Function} handler
