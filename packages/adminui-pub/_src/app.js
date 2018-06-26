@@ -361,7 +361,9 @@ function launchApp () {
         '{beforeLabelTpl}',
         '<label id="{id}-labelEl" {labelAttrTpl}',
         '<tpl if="inputId && !(boxLabel && !fieldLabel)"> for="{inputId}"</tpl>',
-        ' class="{labelCls}"',
+        ' class="{labelCls}',
+        '<tpl if="allowBlank !== undefined && !allowBlank"> x-label-required</tpl>',
+        '"',
         '<tpl if="labelStyle"> style="{labelStyle}"</tpl>',
         // Required for Opera
         ' unselectable="on"',
@@ -386,7 +388,9 @@ function launchApp () {
         '<tpl if="labelAlign==\'top\'">',
         '{beforeLabelTpl}',
         '<div role="presentation" id="{id}-labelCell" style="{labelCellStyle}">',
-        '<label id="{id}-labelEl" {labelAttrTpl}<tpl if="inputId"> for="{inputId}"</tpl> class="{labelCls}"',
+        '<label id="{id}-labelEl" {labelAttrTpl}<tpl if="inputId"> for="{inputId}"</tpl> class="{labelCls}',
+        '<tpl if="allowBlank !== undefined && !allowBlank"> x-label-required</tpl>',
+        '"',
         '<tpl if="labelStyle"> style="{labelStyle}"</tpl>',
         // Required for Opera
         ' unselectable="on"',
