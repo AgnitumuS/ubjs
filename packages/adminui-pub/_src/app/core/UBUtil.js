@@ -561,6 +561,7 @@ Ext.define('UB.core.UBUtil', {
         ext = this.getComponentConfigByDataType(attribute.dataType, attribute.size)
         break
     }
+    if (attribute.readOnly) ext.readOnly = true
     return ext
   },
   /**

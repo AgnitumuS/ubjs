@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.22]
+### Fixed
+- handle entity attribute readOnly property on adminUI as documented (regression)
+
 ## [5.0.21]
 ### Changed
 - made metadata diagrams correlate with terms used in UML diagram
