@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - handle entity attribute readOnly property on adminUI as documented (regression)
 
+### Changed
+- add a red asterisk for required field's labels
+
 ## [5.0.21]
 ### Changed
 - made metadata diagrams correlate with terms used in UML diagram

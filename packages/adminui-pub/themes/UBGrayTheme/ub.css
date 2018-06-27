@@ -1602,3 +1602,8 @@ input.x-form-field-text{
 .x-grid-row-bold .x-grid-cell{
     font-weight: bold;
 }
+
+.x-label-required span[role=separator]::before {
+    content: '*';
+    color: #D0021B;
+}
