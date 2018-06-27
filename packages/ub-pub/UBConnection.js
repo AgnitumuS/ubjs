@@ -1496,14 +1496,19 @@ const LDS = (typeof window !== 'undefined') && window.localStorage
  * see docs in ub-pub main module
  * @private
  * @param cfg
- * @param {string} cfg.host
- * @param {string} [cfg.path]
- * @param cfg.onCredentialRequired
- * @param {boolean} [cfg.allowSessionPersistent=false]
- * @param [cfg.onAuthorizationFail]
- * @param [cfg.onAuthorized]
- * @param [cfg.onNeedChangePassword]
- * @param [cfg.onGotApplicationConfig]
+ * @param {string} cfg.host Server host
+ * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
+ * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+ * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
+ *  In case user is logged out by server this persistent dos't work and UBConnection will call onCredentialRequired handler,
+ *  so user will be prompted for credentials
+ * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
+ * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
+ * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
+ * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
+ *  Accept one parameter - connection: UBConnection
+ *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
+ *  Should return a promise then done
  * @param [cfg.onGotApplicationDomain]
  * @return {Promise<UBConnection>}
  */

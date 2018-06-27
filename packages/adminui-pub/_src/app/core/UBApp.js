@@ -288,6 +288,7 @@ Ext.define('UB.core.UBApp', {
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
       onCredentialRequired: UB.view.LoginWindow.DoLogon,
+      allowSessionPersistent: (window.UB_LOGIN_URL !== undefined), // see uiSettings.adminUI.loginURL
       onAuthorizationFail: function (reason) {
         UB.showErrorWindow(reason)
       },
@@ -352,6 +353,12 @@ Ext.define('UB.core.UBApp', {
       myLocale = connection.preferredLocale
       me.domainInfo = connection.domain
       models = me.domainInfo.models
+
+      if (window.UB_LOGIN_URL !== undefined) { // external login page
+        me.connection.once('authorized', function (conn) {
+          localStorage.removeItem(conn.__sessionPersistKey)
+        })
+      }
 
       UB.Repository = function (entityCode) {
         return new UB.ClientRepository(connection, entityCode)
