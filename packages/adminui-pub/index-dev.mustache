@@ -12,15 +12,28 @@
         <link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
 
         <script type="text/javascript">
+            {{#uiSettings.adminUI.loginURL}}
+            window.UB_API_PATH = '{{{UB_API_PATH}}}';
+            window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
+
+            if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
+                const searchParams = window.location.href.split('?')[1];
+                let redirectTo = UB_LOGIN_URL;
+                if (searchParams) {
+                    redirectTo += '?returnUrl=' + encodeURIComponent(searchParams);
+                }
+                window.location.href = redirectTo;
+            }
+            {{/uiSettings.adminUI.loginURL}}
+
             window.__ubVersion = {
                 _web: '{{staticVersion}}'
-            {{#modelVersions}}
-            , '{{modelName}}': '{{modelVersion}}'
-            {{/modelVersions}}
+                {{#modelVersions}}
+                , '{{modelName}}': '{{modelVersion}}'
+                {{/modelVersions}}
             };
             window.isDeveloperMode = true;
             window.IMAGE_PATH = 'res/mxGraph/images';
-            window.UB_API_PATH = '{{{UB_API_PATH}}}';
             window.mxLoadResources = false;
         </script>
 
@@ -29,13 +42,12 @@
         <link rel="stylesheet" href="clientRequire/font-awesome/css/font-awesome.css"/>
         <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
 
-
         <style>
             .ub-logo-h {
                 position: absolute;
                 top: 40%;
                 left: 47%;
-		color: rgb(100, 149, 237);
+                color: rgb(100, 149, 237);
                 font-size: 10em;
             }
             .x-body {
