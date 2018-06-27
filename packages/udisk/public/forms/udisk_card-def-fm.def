@@ -1,0 +1,9 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "true"
+//@entity "udisk_card"
+//@formType "custom"
+//@caption "udiskProperties"
+//@description "udiskProperties"
+Ext.define('UDISK.AdminFileEditForm', {
+    extend: "UDISK.AdminEditForm"
+});
