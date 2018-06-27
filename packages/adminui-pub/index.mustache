@@ -17,10 +17,11 @@
             window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
 
             if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
-                const searchParams = window.location.href.split('?')[1];
+                const searchParams = window.location.search;
                 let redirectTo = UB_LOGIN_URL;
                 if (searchParams) {
-                    redirectTo += '?returnUrl=' + encodeURIComponent(searchParams);
+                    redirectTo += '&returnUrl=' + encodeURIComponent(searchParams);
+                    if (window.location.hash) redirectTo += window.location.hash;
                 }
                 window.location.href = redirectTo;
             }
