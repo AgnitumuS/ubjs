@@ -84,7 +84,7 @@ Ext.define("UDISK.AdminView",{
     initComponent: function () {
         var me = this /*, model*/;
 
-        me.adminMode = me.mode === 'admin';
+        me.adminMode = false; //me.mode === 'admin';
         me.addEvents('foldersLoadOver');
 
         if (!me.entityName) {
@@ -514,10 +514,12 @@ Ext.define("UDISK.AdminView",{
                     );
                     saveAs( blobData , name || docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct ) ;
 
+/*
                 }).fail(function(reason){
                     if (reason.status === 404){
                         throw new UB.UBError(UB.i18n('documentNotFound'));
                     }
+*/
                 }).done();
     },
 
@@ -828,7 +830,7 @@ Ext.define("UDISK.AdminView",{
             text: UB.i18n('showAudit')  ,
             eventId: 'audit',
             handler: me.onAudit,
-            disabled: !$App.domainInfo.get('ubs_audit').haveAccessToMethod('select'),
+            disabled: false, //!$App.domainInfo.get('ubs_audit').haveAccessToMethod('select'),
             hidden: !me.adminMode,
 
             tooltip: UB.i18n('showAudit'),
@@ -841,7 +843,7 @@ Ext.define("UDISK.AdminView",{
             eventId: 'audit',
             handler: me.onAuditRight,
             hidden: !me.adminMode,
-            disabled: !$App.domainInfo.get('ubs_audit').haveAccessToMethod('select'),
+            disabled: false,//!$App.domainInfo.get('ubs_audit').haveAccessToMethod('select'),
 
             tooltip: UB.i18n('showAuditRight'),
             scope: me
@@ -974,11 +976,13 @@ Ext.define("UDISK.AdminView",{
     },
 
     initFileTemplates: function(){
+        console.log('HURRAY'+ UB.appConfig.udiscFileTemplates);
         var me = this;
         me.templateActions = {};
-        if (UB.appConfig.udiscFileTemplates){
+        if (true){//UB.appConfig.udiscFileTemplates){
             UB.xhr({
-                url: UB.appConfig.udiscFileTemplates + '/' + me.entityName + '.JSON'
+                url: 'models/UDISK/fileTemplates/' + me.entityName + '.JSON'
+//                url: UB.appConfig.udiscFileTemplates + '/' + me.entityName + '.JSON'
             }).done(function(result){
                 _.forEach(result.data, function(item, index){
                    var code = item.code || 'fileTemplateItem' + index;

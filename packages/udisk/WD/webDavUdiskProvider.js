@@ -568,6 +568,9 @@
         return false;
     };
 
-   require('models/WD/modules/WebDav.js').registerProvider(provider.name, provider  ); //{modules: {exports: provider}}
-   require('models/WD/modules/WebDav.js').registerProvider('docAttr', require('models/WD/_providers/webDavDocAttrProvider.js'));
+console.log('!!UKDISk WD!!');
+   require('./modules/WebDav.js').registerProvider(provider.name, provider  ); //{modules: {exports: provider}}
+   require('./modules/WebDav.js').registerProvider('docAttr', require('models/WD/_providers/webDavDocAttrProvider.js'));
+//   require('models/WD/modules/WebDav.js').registerProvider(provider.name, provider  ); //{modules: {exports: provider}}
+//   require('models/WD/modules/WebDav.js').registerProvider('docAttr', require('models/WD/_providers/webDavDocAttrProvider.js'));
 }());

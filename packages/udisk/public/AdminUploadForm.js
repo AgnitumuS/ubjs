@@ -209,8 +209,10 @@ Ext.define('UDISK.AdminUploadForm', {
                 return $App.connection.post('setDocument', inFile, {
                     params: params,
                     headers: {"Content-Type": "application/octet-stream"}
+/*
                 }).progress(function(progress){
                     progressBar.updateProgress( (progress.loaded * (10 / 9) / progress.total)  , name + '  - ' + Math.round(progress.loaded * 100 / progress.total) + '%', true);
+*/
                 }).then(function(resp){
                     resp.recordParams = record;
                     return resp;
@@ -240,11 +242,8 @@ Ext.define('UDISK.AdminUploadForm', {
                 } else {
                     return res;
                 }
-            }).
-            then(function(res){
-                progressBar.updateProgress(1);
-                return res.resultData.data[0]; //resolve ID
             })
+/*
             .fail(function(err){
                 if (entityID){
                     return $App.connection.doDelete({entity: me.entityName,
@@ -255,7 +254,13 @@ Ext.define('UDISK.AdminUploadForm', {
                     });
                 }
                 throw err;
-            });
+            })
+*/
+            .then(function(res){
+                progressBar.updateProgress(1);
+                return res.resultData.data[0]; //resolve ID
+            })
+;
     },
 
 

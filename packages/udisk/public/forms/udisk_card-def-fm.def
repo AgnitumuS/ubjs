@@ -4,6 +4,9 @@
 //@formType "custom"
 //@caption "udiskProperties"
 //@description "udiskProperties"
+//@code "udisk_card"
+//@ID "3000000007623"
 Ext.define('UDISK.AdminFileEditForm', {
     extend: "UDISK.AdminEditForm"
+//@code "udisk_card-def"
 });

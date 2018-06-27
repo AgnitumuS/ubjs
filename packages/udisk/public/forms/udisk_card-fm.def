@@ -4,6 +4,8 @@
 //@formType "custom"
 //@caption "UDISK"
 //@description "UDISK"
+//@code "udisk_card"
+//@ID "3000000005903"
 Ext.define('UDISK.AdminViewForm', {
     extend: "UDISK.AdminView"
 });
