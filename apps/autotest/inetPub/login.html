@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<style>
+    html, body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    #app {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+<div id="app">
+    <el-form :model="authData">
+        <h1> Custom login page </h1>
+        <el-form-item>
+            <el-input placeholder="User Name" v-model="authData.user"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-input placeholder="password" v-model="authData.pwd"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="onSubmit">Login</el-button>
+        </el-form-item>
+    </el-form>
+    <el-dialog :visible.sync="visible" title="Hello world">
+        <p>Try Element</p>
+    </el-dialog>
+
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="/clientRequire/lodash/lodash.js"></script>
+<script src="/clientRequire/@unitybase/ub-pub/dist/ub-pub.min.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data: function () {
+      return {
+        visible: false,
+        authData: {user: '', pwd: ''}
+      }
+    },
+    methods: {
+      onSubmit: function () {
+        var vm = this
+        UB.connect({
+          host: window.location.origin,
+          allowSessionPersistent: true,
+          onCredentialRequired: function (conn, isRepeat) {
+            return isRepeat
+              ? Promise.reject(new UB.UBAbortError('invalid password for user admin'))
+              : Promise.resolve({authSchema: 'UB', login: vm.authData.user, password: vm.authData.pwd})
+          },
+          onAuthorizationFail: function (reason) {
+            window.alert(reason)
+          }
+        }).then(function (conn) {
+          function getUrlVars () {
+            var vars = {}
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+              vars[key] = value
+            })
+            return vars
+          }
+
+          var returnUrl = getUrlVars()['returnUrl']
+          window.location.href = decodeURIComponent(returnUrl)
+        })
+      }
+    }
+  })
+</script>
+</html>

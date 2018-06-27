@@ -59,6 +59,7 @@
 			"themeName": "UBGrayTheme",
 			"loginWindowTopLogoURL": "models/TST/UB200.png",
 			"endpoint": "ubadminui",
+			"loginURL": "http://localhost:8881/login.html",
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
