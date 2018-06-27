@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.22]
 ### Fixed
 - handle entity attribute readOnly property on adminUI as documented (regression)
+- added support for `adminui.loginURL` parameter, if parameter is set, then all unautorized users will be redirected to
+  that page for authentication
 
 ### Changed
 - add a red asterisk for required field's labels

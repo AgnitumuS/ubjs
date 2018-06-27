@@ -12,6 +12,18 @@
 		<link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
 		
 		<script type="text/javascript">
+            {{#uiSettings.adminUI.loginURL}}
+            const ubToken = window.localStorage.getItem('ub-token');
+            if (ubToken == null) {
+                const searchParams = window.location.href.split('?')[1];
+                let redirectTo = '{{{uiSettings.adminUI.loginURL}}}';
+                if (searchParams) {
+                    redirectTo += '?returnUrl=' + encodeURIComponent(searchParams);
+                }
+                window.location.href = redirectTo;
+            }
+            {{/uiSettings.adminUI.loginURL}}
+
             window.__ubVersion = {
                 _web: '{{staticVersion}}'
                 {{#modelVersions}}
@@ -28,7 +40,6 @@
         <link rel="stylesheet" href="{{#md5}}models/adminui-pub/ub-css-all.css{{/md5}}"/>
         <link rel="stylesheet" href="clientRequire/font-awesome/css/font-awesome.min.css"/>
         <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
-
 
         <style>
             .ub-logo-h {
@@ -48,10 +59,11 @@
 	    <i class="fa fa-spinner fa-pulse"></i>
 	    <span class="sr-only">Loading...</span>
         </div>
+
         <div id ="ubExtensionPageMessageObj"></div>
 
         <!-- add promises to IE-->
-	<script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
+        <script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
 
         <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
         <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
