@@ -13,10 +13,12 @@
 
         <script type="text/javascript">
             {{#uiSettings.adminUI.loginURL}}
-            const ubToken = window.localStorage.getItem('ub-token');
-            if (ubToken == null) {
+            window.UB_API_PATH = '{{{UB_API_PATH}}}';
+            window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
+
+            if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
                 const searchParams = window.location.href.split('?')[1];
-                let redirectTo = '{{{uiSettings.adminUI.loginURL}}}';
+                let redirectTo = UB_LOGIN_URL;
                 if (searchParams) {
                     redirectTo += '?returnUrl=' + encodeURIComponent(searchParams);
                 }
@@ -32,7 +34,6 @@
             };
             window.isDeveloperMode = true;
             window.IMAGE_PATH = 'res/mxGraph/images';
-            window.UB_API_PATH = '{{{UB_API_PATH}}}';
             window.mxLoadResources = false;
         </script>
 

@@ -10,13 +10,15 @@
 		<link rel="icon" href="models/UB/img/UBLogo32.png" type="image/png" sizes="32x32" />
 		<link rel="icon" href="models/UB/img/UBLogo48.png" type="image/png" sizes="48x48" />
 		<link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
-		
+
 		<script type="text/javascript">
             {{#uiSettings.adminUI.loginURL}}
-            const ubToken = window.localStorage.getItem('ub-token');
-            if (ubToken == null) {
+            window.UB_API_PATH = '{{{UB_API_PATH}}}';
+            window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
+
+            if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
                 const searchParams = window.location.href.split('?')[1];
-                let redirectTo = '{{{uiSettings.adminUI.loginURL}}}';
+                let redirectTo = UB_LOGIN_URL;
                 if (searchParams) {
                     redirectTo += '?returnUrl=' + encodeURIComponent(searchParams);
                 }
@@ -32,7 +34,6 @@
             };
             window.isDeveloperMode = false;
             window.IMAGE_PATH = 'res/mxGraph/images';
-            window.UB_API_PATH = '{{{UB_API_PATH}}}';
             window.mxLoadResources = false;
         </script>
 
@@ -46,7 +47,7 @@
                 position: absolute;
                 top: 40%;
                 left: 47%;
-		color: rgb(100, 149, 237);
+                color: rgb(100, 149, 237);
                 font-size: 10em;
             }
             .x-body {
