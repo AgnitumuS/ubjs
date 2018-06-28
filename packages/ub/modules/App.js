@@ -283,6 +283,13 @@ App.getUISettings = function () {
 App.serverURL = argv.serverURLFromConfig(App.serverConfig)
 
 /**
+ * URL that the User from the internet will use to access your server. To be used in case server is behind a reverse proxy
+ * @type {String}
+ * @readonly
+ */
+App.externalURL = App.serverConfig.httpServer.externalURL || App.serverURL
+
+/**
  * List of a local server IP addresses CRLF (or CR for non-windows) separated
  */
 App.localIPs = _App.localIPs

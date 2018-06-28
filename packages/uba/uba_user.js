@@ -517,7 +517,7 @@ function processRegistrationStep2 (resp, otp, login) {
       throw new UB.UBAbort('Invalid OTP')
     }
   }
-  resp.writeHead(`Location: ${App.serverURL + confirmationRedirectURI}?login=${encodeURIComponent(login)}`)
+  resp.writeHead(`Location: ${App.externalURL + confirmationRedirectURI}?login=${encodeURIComponent(login)}`)
   resp.statusCode = 302
 }
 
@@ -610,7 +610,7 @@ me.publicRegistration = function (fake, req, resp) {
       me.changePassword(userID, email, password)
       const userOtp = uba_otp.generateOtp('EMail', userID, {utmSource, utmCampaign})
 
-      const registrationAddress = `${App.serverURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
+      const registrationAddress = `${App.externalURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
       let reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
         login: email,
