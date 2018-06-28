@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
 <style>
@@ -21,67 +25,109 @@
     }
 </style>
 <div id="app">
-    <el-form :model="authData">
-        <h1> Custom login page </h1>
-        <el-form-item>
-            <el-input placeholder="User Name" v-model="authData.user"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-input placeholder="password" v-model="authData.pwd"></el-input>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="onSubmit">Login</el-button>
-        </el-form-item>
-    </el-form>
-    <el-dialog :visible.sync="visible" title="Hello world">
-        <p>Try Element</p>
-    </el-dialog>
-
+    <el-row :gutter="10">
+        <el-col :md="12">
+            <h1> Login form information going here</h1>
+            <p> This is a custom login form demo </p>
+        </el-col>
+        <el-col :md="12">
+        <el-form :model="authData">
+            <el-form-item v-if="hasNegotiate()">
+                <h1>For a domain members</h1>
+                <el-button type="primary" @click="doNegotiateLogin">Login as domain user</el-button>
+              <el-checkbox v-model="silenceKerberosLogin">always login using domain</el-checkbox>
+              <h2>Or using user name and password</h2>
+            </el-form-item>
+            <el-form-item v-else>
+                <h1>Enter credential</h1>
+            </el-form-item>
+            <el-form-item>
+                <el-input placeholder="User Name" v-model="authData.user"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-input placeholder="Password" v-model="authData.pwd"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="doUBLogin">Login</el-button>
+            </el-form-item>
+        </el-form>
+        </el-col>
+    </el-row>
 </div>
 </body>
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="/clientRequire/lodash/lodash.js"></script>
 <script src="/clientRequire/@unitybase/ub-pub/dist/ub-pub.min.js"></script>
 <script>
-  new Vue({
+  var vm = new Vue({
     el: '#app',
     data: function () {
       return {
-        visible: false,
+        silenceKerberosLogin: JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false'),
+        userDidLogout: JSON.parse(window.localStorage.getItem('userDidLogout') || 'false'),
+        authMethods: [],
         authData: {user: '', pwd: ''}
       }
     },
+    watch: {
+      silenceKerberosLogin: function(val) {
+        if (val) {
+          window.localStorage.setItem('silenceKerberosLogin', 'true')
+        } else {
+          window.localStorage.removeItem('silenceKerberosLogin')
+        }
+      }
+    },
     methods: {
-      onSubmit: function () {
-        var vm = this
-        UB.connect({
-          host: window.location.origin,
-          allowSessionPersistent: true,
-          onCredentialRequired: function (conn, isRepeat) {
-            return isRepeat
-              ? Promise.reject(new UB.UBAbortError('invalid password for user admin'))
-              : Promise.resolve({authSchema: 'UB', login: vm.authData.user, password: vm.authData.pwd})
-          },
-          onAuthorizationFail: function (reason) {
-            window.alert(reason)
-          }
-        }).then(function (conn) {
-          function getUrlVars () {
-            var vars = {}
-            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-              vars[key] = value
-            })
-            return vars
-          }
-
-          var returnUrl = getUrlVars()['returnUrl']
-          window.location.href = decodeURIComponent(returnUrl)
+      hasNegotiate: function () {
+        return this.authMethods.indexOf('Negotiate') !== -1
+      },
+      doNegotiateLogin: function () {
+        window.deferred.resolve({
+          authSchema: 'Negotiate',
+          login: '',
+          password: '',
+          registration: 0
         })
+      },
+      doUBLogin: function () {
+         window.deferred.resolve({authSchema: 'UB', login: vm.authData.user, password: vm.authData.pwd})
       }
     }
+  })
+  window.deferred = {}
+  UB.connect({
+    host: window.location.origin,
+    allowSessionPersistent: true,
+    onCredentialRequired: function (conn, isRepeat) {
+      if (vm.silenceKerberosLogin && !isRepeat && !vm.userDidLogout && (conn.authMethods.indexOf('Negotiate') >= 0)) {
+        return Promise.resolve({
+          authSchema: 'Negotiate',
+          login: '',
+          password: '',
+          registration: 0
+        })
+      }
+      vm.authMethods = conn.authMethods || []
+      var loginPromise = new Promise(function (resolve, reject) {
+        window.deferred.resolve = resolve;
+        window.deferred.reject = reject;
+      })
+      return loginPromise
+    },
+    onAuthorizationFail: function (reason) {
+      window.alert(reason)
+    }
+  }).then(function (conn) {
+    function getUrlVars () {
+      var vars = {}
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value
+      })
+      return vars
+    }
+
+    var returnUrl = getUrlVars()['returnUrl']
+    window.location.href = decodeURIComponent(returnUrl)
   })
 </script>
 </html>
