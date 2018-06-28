@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.22]
 ### Fixed
 - handle entity attribute readOnly property on adminUI as documented (regression)
-- added support for `adminui.loginURL` parameter, if parameter is set, then all unauthorized users will be redirected to
-  that page for authentication. Page itself should create a UBConnection with `allowSessionPersistent` and do a `UBConnection.connect()`
+- added support for `adminui.loginURL` parameter. If parameter is set, then all unauthorized users will be redirected to
+  that page for authentication. Page itself should create a UBConnection with `allowSessionPersistent`
+  and do a `UBConnection.connect()`. See login page example in [autotest app](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/apps/autotest/inetPub/login.html)
 
 ### Changed
 - add a red asterisk for required field's labels
