@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.19]
 ### Added
-- Described in `ubConfig.schema.json` the `adminui.loginURL` setting.
+- the `adminui.loginURL` setting described in `ubConfig.schema.json`
+- the `httpServer.externalURL` configuration parameter is added to ubConfig.
+ URL that the User from the internet will use to access your server.
+ To be used in case server is behind a reverse proxy
+- `App.externalURL` property added - either `httpServer.externalURL` of `App.serverURL` if external URL not configured
 
 ## [5.0.18]
 ### Fixed

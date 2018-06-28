@@ -86,7 +86,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     // cache forever - do not cache index*.html
     let cspHeader = ''
     if (addCSP) {
-      let wsSrc = 'ws' + App.serverURL.slice(4)
+      let wsSrc = 'ws' + App.externalURL.slice(4)
       if (!uiSettings) {
         uiSettings = App.serverConfig.uiSettings
       }
@@ -117,7 +117,7 @@ adminUIEndpointName = adminUIEndpointName || App.serverConfig.application.rootHa
 App.registerEndpoint(adminUIEndpointName, function (req, resp) {
   if (req.url.endsWith('/')) {
     resp.statusCode = 301 // HTTP_MOVEDPERMANENTLY
-    resp.writeHead(`Location: ${App.serverURL}${adminUIEndpointName}`)
+    resp.writeHead(`Location: ${App.externalURL}${adminUIEndpointName}`)
     return
   }
   generateIndexPage(req, resp, 'index.mustache')
@@ -131,7 +131,7 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
   if (process.isDebug) {
     if (req.url.endsWith('/')) {
       resp.statusCode = 301 // HTTP_MOVEDPERMANENTLY
-      resp.writeHead(`Location: ${App.serverURL}${adminUIEndpointName}`)
+      resp.writeHead(`Location: ${App.externalURL}${adminUIEndpointName}`)
       return
     }
     generateIndexPage(req, resp, 'index-dev.mustache', false)
