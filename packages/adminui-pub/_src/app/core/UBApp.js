@@ -289,7 +289,7 @@ Ext.define('UB.core.UBApp', {
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
       onCredentialRequired: UB.view.LoginWindow.DoLogon,
-      allowSessionPersistent: (window.UB_LOGIN_URL !== undefined), // see uiSettings.adminUI.loginURL
+      allowSessionPersistent: isExternalLogin, // see uiSettings.adminUI.loginURL
       onAuthorizationFail: function (reason, conn) {
         if (isExternalLogin) {
           var storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
