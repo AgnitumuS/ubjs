@@ -28,10 +28,6 @@ Ext.define('UB.view.LoginWindow', {
         userDidLogout = JSON.parse(window.localStorage.getItem('userDidLogout') || 'false'),
         loginPromise
 
-      if (userDidLogout) {
-        window.localStorage.setItem('userDidLogout', 'false')
-      }
-
       if (!connection.authMethods.length) {
         return Promise.resolve({
           authSchema: 'None',
