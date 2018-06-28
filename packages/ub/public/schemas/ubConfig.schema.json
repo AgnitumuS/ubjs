@@ -815,10 +815,14 @@
               "description": "UI theme name. Can be name of a folder in the `inetPub\\themes\\` folder",
               "default": "UBtheme"
             },
-			"loginWindowTopLogoURL": {
-			  "type": "string",
+            "loginURL": {
+              "type": "string",
+              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page",
+            },
+            "loginWindowTopLogoURL": {
+              "type": "string",
               "description": "Optional URL for a logo to display on the top of login form. Logo stretched to 150px height, so it is a good idea for logo to be 150x150px"
-			},
+            },
             "endpoint": {
               "type": "string",
               "description": "The entry point for a adminUI interface. In case both adminUI & portalUI is used on the same instance set this parameter to something long and unique to prevent hacking",
@@ -877,11 +881,11 @@
                 }
               }
             },
-			"favoriteCategoryCount": {
-			  "type": "number",
+            "favoriteCategoryCount": {
+              "type": "number",
               "description": "Number of categories (up to 4) for a favorites columnus",
               "default": 2
-			}
+            }
           }
         },
         "portalUI": {
