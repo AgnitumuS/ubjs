@@ -284,13 +284,23 @@ Ext.define('UB.core.UBApp', {
    */
   launch: function () {
     var me = this
+    var isExternalLogin = typeof window.redirectToLogin === 'function'
     return UB.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
       onCredentialRequired: UB.view.LoginWindow.DoLogon,
       allowSessionPersistent: (window.UB_LOGIN_URL !== undefined), // see uiSettings.adminUI.loginURL
-      onAuthorizationFail: function (reason) {
-        UB.showErrorWindow(reason)
+      onAuthorizationFail: function (reason, conn) {
+        if (isExternalLogin) {
+          var storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
+          if (storedSession) { // invalid session is created by external login page
+            window.redirectToLogin(reason)
+          } else {
+            UB.showErrorWindow(reason)
+          }
+        } else {
+          UB.showErrorWindow(reason)
+        }
       },
       onNeedChangePassword: $App.onPasswordChange.bind($App),
       onGotApplicationConfig: function (/** @type {UBConnection} */connection) {
@@ -354,9 +364,9 @@ Ext.define('UB.core.UBApp', {
       me.domainInfo = connection.domain
       models = me.domainInfo.models
 
-      if (window.UB_LOGIN_URL !== undefined) { // external login page
+      if (isExternalLogin) { // external login page
         me.connection.once('authorized', function (conn) {
-          localStorage.removeItem(conn.__sessionPersistKey)
+          window.localStorage.removeItem(conn.__sessionPersistKey)
         })
       }
 

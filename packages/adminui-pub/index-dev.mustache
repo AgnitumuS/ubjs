@@ -12,6 +12,21 @@
         <link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
 
         <script type="text/javascript">
+            window.UB_API_PATH = '{{{UB_API_PATH}}}';
+            {{#uiSettings.adminUI.loginURL}}
+                window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
+                window.redirectToLogin = function(reason) {
+                    var url = UB_LOGIN_URL;
+                    if (reason) {
+                      url += (url.indexOf('?') === -1 ? '?' : '&') + 'reason=' + encodeURIComponent(reason);
+                    }
+                    url += (url.indexOf('?') === -1 ? '?' : '&') + 'returnUrl=' + encodeURIComponent(window.location.href);
+                    window.location.href = url;
+                }
+                if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
+                    redirectToLogin();
+                }
+            {{/uiSettings.adminUI.loginURL}}
             window.__ubVersion = {
                 _web: '{{staticVersion}}'
                 {{#modelVersions}}
@@ -43,18 +58,6 @@
 
     </head>
     <body class="x-body">
-        {{#uiSettings.adminUI.loginURL}}
-        <script type="text/javascript">
-            ;(function () {
-                window.UB_API_PATH = '{{{UB_API_PATH}}}';
-                window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
-                if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
-                    var redirectTo = UB_LOGIN_URL + '?returnUrl=' + encodeURIComponent(window.location.href);
-                    window.location.href = redirectTo;
-                }
-            })();
-        </script>
-        {{/uiSettings.adminUI.loginURL}}
         <div id="UBLogo" class="ub-logo-h">
 	    <i class="fa fa-spinner fa-pulse"></i>
 	    <span class="sr-only">Loading...</span>
