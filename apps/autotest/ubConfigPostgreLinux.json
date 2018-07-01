@@ -125,10 +125,10 @@
 				"driver": "PostgreSQL",
 				"isDefault": true,
 				"dialect": "PostgreSQL",
-				"serverName": "postgresql://172.16.97.178:5433",
-				"databaseName": "postgres",
+				"serverName": "postgresql://172.16.97.21:5432",
+				"databaseName": "ub5_autotest_lin",
 				"userID": "ub5_autotest_lin",
-				"password": "ub_autotest",
+				"password": "ub5_autotest_lin",
 				"supportLang": ["en", "uk"],
 				"advSettings": "LibLocation=libpq.so.5"
 			},

@@ -125,9 +125,9 @@
 				"driver": "Oracle",
 				"isDefault": true,
 				"dialect": "Oracle11",
-				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.97.177)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraib11n)))",
+				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.97.22)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraub.cloud.local)))",
 				"userID": "UB5_AUTOTEST_WIN",
-				"password": "ub_autotest",
+				"password": "UB5_AUTOTEST_WIN",
 				"supportLang": ["en", "uk"],
 				"executeWhenConnected": ["ALTER SESSION SET NLS_COMP=LINGUISTIC", "ALTER SESSION SET NLS_SORT=BINARY_CI"]
 			},
