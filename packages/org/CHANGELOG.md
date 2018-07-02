@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.23]
+### Fixed
+- Cleaned up border unit shortcut from `_initialData`
+
 ## [5.0.13]
 ### Fixed
 - `org_orgaccount.currencyID` attribute should be of dataType: cnd_currency
