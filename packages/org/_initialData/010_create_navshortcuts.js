@@ -97,7 +97,7 @@ var
             desktopID:  desktopID,
             parentID:   folderID,
             code:       'org_employeeonstaff_all',
-            caption:    'Employee on staff',
+            caption:    'Employee on staff (all)',
             iconCls:    'fa fa-briefcase',
             displayOrder: 35,
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_employeeonstaff', method: 'select', fieldList: '*', __mip_recordhistory_all: true}]}}, null, '\t')
