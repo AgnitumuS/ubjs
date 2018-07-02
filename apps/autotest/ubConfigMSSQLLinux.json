@@ -128,7 +128,7 @@
 				"serverName": "ub5_autotest_mssql", // this is an entry in ~/.obdc.ini file
 				"databaseName": "ub5_autotest_lin",
 				"userID": "ub5_autotest_lin",
-				"password": "ub_autotest",
+				"password": "ub5_autotest_lin",
 				"supportLang": ["en", "uk"]
 			},
 			{

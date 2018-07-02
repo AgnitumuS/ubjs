@@ -126,12 +126,12 @@
 				"isDefault": true,
 				"statementCacheSize": 0,
 				"dialect": "PostgreSQL",
-				"serverName": "postgresql://172.16.97.178:5433",
+				"serverName": "postgresql://172.16.97.21:5432",
 				"databaseName": "ub5_autotest_win",
 				"userID": "ub5_autotest_win",
-				"password": "ub_autotest",
+				"password": "ub5_autotest_win",
 				"supportLang": ["en", "uk"],
-				"advSettings": "LibLocation=D:\\PosgresClient\\10\\x64\\bin\\libpq.dll"
+				"advSettings": "LibLocation=D:/PosgresClient/10/x64/bin/libpq.dll"
 			},
 			{
 				"name": "ftsDefault",

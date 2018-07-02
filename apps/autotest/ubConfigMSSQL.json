@@ -125,10 +125,10 @@
 				"driver": "MSSQL2012OleDB",
 				"isDefault": true,
 				"dialect": "MSSQL2012",
-				"serverName": "172.16.97.148",
+				"serverName": "172.16.97.178,1435",
 				"databaseName": "ub5_autotest_win",
 				"userID": "ub5_autotest_win",
-				"password": "ub_autotest",
+				"password": "ub5_autotest_win",
 				"supportLang": ["en", "uk"]
 			},
 			{
