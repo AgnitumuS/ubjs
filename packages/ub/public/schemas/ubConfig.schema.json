@@ -684,7 +684,7 @@
               },
               "serverName": {
                 "type": "string",
-                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|[protocol:]hostname or IP[\\instanceName]| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" \n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | protocol://host:port | \"postgresql://dodb3-s8:5432\""
+                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|Windows: [protocol:]hostname or IP[\\instanceName]; Linux: section name from `/etc/odbc.ini`| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" <br> example linux: \"myserver\"\n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | protocol://host:port | \"postgresql://dodb3-s8:5432\""
               },
               "databaseName": {
                 "type": "string",
