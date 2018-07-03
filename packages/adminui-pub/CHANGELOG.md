@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.23]
+### Changed
+- adminUI left navbar:
+ - arrow color changed to the same color as menu text
+ - arrow style changed from fa-angle-left to fa-caret-right
+ - increase padding (+4 px) between left arrow and workspace
+
 ## [5.0.22]
 ### Fixed
 - handle entity attribute readOnly property on adminUI as documented (regression)
