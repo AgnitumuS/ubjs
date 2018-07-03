@@ -42,10 +42,10 @@
                 <h1>Enter credential</h1>
             </el-form-item>
             <el-form-item>
-                <el-input placeholder="User Name" v-model="authData.user"></el-input>
+                <el-input autofocus="true" placeholder="User Name" v-model="authData.user" v-on:keyup.enter="doUBLogin"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-input placeholder="Password" v-model="authData.pwd"></el-input>
+                <el-input placeholder="Password" v-model="authData.pwd" v-on:keyup.enter="doUBLogin"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="doUBLogin">Login</el-button>
