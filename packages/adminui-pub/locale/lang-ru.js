@@ -501,7 +501,7 @@ UB.i18nExtend({
   editMultiLang: 'На других языках',
 
   close: 'Закрыть',
-  closeOther: 'Закрыть все, кроме этого',
+  closeOther: 'Закрыть другие вкладки',
   closeAll: 'Закрыть все',
 
   dropZoneOneFileRequired: 'Для этой операции можно использовать только один файл',

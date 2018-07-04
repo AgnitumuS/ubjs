@@ -492,7 +492,7 @@ UB.i18nExtend({
   editMultiLang: 'На інших мовах',
 
   close: 'Закрити',
-  closeOther: 'Закрити всі, крім цього',
+  closeOther: 'Закрити інші',
   closeAll: 'Закрити всі',
   elementIsNotActual: 'Елемент не актуальний на поточну дату.',
 
