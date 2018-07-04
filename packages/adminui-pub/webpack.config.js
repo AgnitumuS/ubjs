@@ -65,7 +65,7 @@ module.exports = {
 
     new webpack.optimize.CommonsChunkPlugin({
       children: true
-    }),
+    })/*,
     new webpack.optimize.UglifyJsPlugin({
       beautify: false,
       comments: false,
@@ -85,6 +85,6 @@ module.exports = {
       output: {
         ascii_only: true // for TinyMCE
       }
-    })
+    }) */
   ]
 }

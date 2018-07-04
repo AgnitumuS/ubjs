@@ -33,6 +33,8 @@
                  , '{{modelName}}': '{{modelVersion}}'
                 {{/modelVersions}}
             };
+            window.__modelInit = [];
+            {{#modelInitialization}}window.__modelInit.push('{{{prod}}}');{{/modelInitialization}}
             window.isDeveloperMode = false;
             window.IMAGE_PATH = 'res/mxGraph/images';
             window.mxLoadResources = false;
@@ -85,9 +87,9 @@
                 },
                 packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });
-            System.import('@unitybase/adminui-pub/dist/adminui.app.min.js').then(function(adminUI){
+            System.import('{{{adminUIModel.prod}}}').then(function(){
                 return System.import('@unitybase/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js')
-            });
+            })
         </script>
     </body>
 </html>

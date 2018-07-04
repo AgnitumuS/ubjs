@@ -361,14 +361,11 @@ Ext.define('UB.core.UBApp', {
         })
       }
     }).then(function (connection) {
-      var initScriptForLoad = []
-      var myLocale, models
-
       me.connection = connection
       me.ubNotifier = connection.ubNotifier
-      myLocale = connection.preferredLocale
+      let myLocale = connection.preferredLocale
       me.domainInfo = connection.domain
-      models = me.domainInfo.models
+      let models = me.domainInfo.models
 
       UB.Repository = function (entityCode) {
         return new UB.ClientRepository(connection, entityCode)
@@ -386,14 +383,11 @@ Ext.define('UB.core.UBApp', {
         if (model.path && model.key !== 'UB') {
           Ext.Loader.setPath(model.key, model.path)
         }
-        if (model.needInit) {
-          initScriptForLoad.push(model.clientRequirePath + '/initModel.js')
-        }
       })
       // load models initialization script in order they passed
       return UB.inject('allLocales?lang=' + myLocale).then(function () {
-        var promise = Promise.resolve(true)
-        initScriptForLoad.forEach(function (script) {
+        let promise = Promise.resolve(true)
+        window.__modelInit.forEach(function (script) {
           promise = promise.then(function () {
             return window.System.import(script)
           })

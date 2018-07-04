@@ -282,11 +282,8 @@ function getServerConfiguration () {
   let cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
-  // var content = removeCommentsFromJSON(fs.readFileSync(cfgFileName, 'utf8'))
-  // content = replaceIncludeVariables(replaceEnvironmentVariables(content))
-
   let result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(content)))
-    // add name attribute for applications
+  // add name attribute for applications
   if (!result.application) {
     result.application = {}
   }
@@ -298,8 +295,9 @@ function getServerConfiguration () {
     result.application.domain = {models: []}
   }
   // for models without name - read it from package.json
+  // read "browser" section of package.json to check model is require initialization in the browser
+  // browser section may contains "prod" / "dev" key for production / development client execution
   result.application.domain.models.forEach((model) => {
-    if (model.name) return
     let p = model.path
     if (!path.isAbsolute(p)) p = path.join(process.configPath, p)
     let packFN = path.join(p, 'package.json')
@@ -308,12 +306,22 @@ function getServerConfiguration () {
       model.moduleName = packageData.name
       if (packageData.config && packageData.config.ubmodel) {
         let ubModelConfig = packageData.config.ubmodel
+        if (model.name) console.warn('model name is configured in both `ubConfig` and model `package.json`. Will use name from package.json')
         model.name = ubModelConfig.name
         if (ubModelConfig.isPublic) {
           model.publicPath = model.path
           model.path = '_public_only_'
         }
       }
+      // check browser settings
+      if (packageData.browser) {
+        let dev = packageData.browser.dev || packageData.browser
+        dev = path.isAbsolute(dev) ? dev : path.join(packageData.name, dev).replace(/\\/g, '/')
+        let prod = packageData.browser.prod || packageData.browser
+        prod = path.isAbsolute(prod) ? prod : path.join(packageData.name, prod).replace(/\\/g, '/')
+        model.browser = {dev, prod}
+      }
+      model.version = packageData.version
     }
   })
   if (!result.application.domain.supportedLanguages) {

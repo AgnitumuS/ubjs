@@ -15,6 +15,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "main": "index.js",
+  "browser": "/clientRequire/models/TST/initModel.js",
   "dependencies": {
     "@unitybase/base": "^5.0.0"
   },

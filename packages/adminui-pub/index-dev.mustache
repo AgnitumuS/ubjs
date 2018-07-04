@@ -33,6 +33,8 @@
                 , '{{modelName}}': '{{modelVersion}}'
                 {{/modelVersions}}
             };
+            window.__modelInit = [];
+            {{#modelInitialization}}window.__modelInit.push('{{{dev}}}');{{/modelInitialization}}
             window.isDeveloperMode = true;
             window.IMAGE_PATH = 'res/mxGraph/images';
             window.mxLoadResources = false;
@@ -87,7 +89,7 @@
                 packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });
 
-            System.import('@unitybase/adminui-pub').then(function(adminUI){
+            System.import('{{{adminUIModel.dev}}}').then(function(adminUI){
                 return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
             });
         </script>

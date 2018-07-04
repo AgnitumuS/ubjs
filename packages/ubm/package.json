@@ -16,6 +16,7 @@
     "registry": "http://registry.unitybase.info"
   },
   "main": "ubm.js",
+  "browser": "./public/initModel.js",
   "dependencies": {
     "@unitybase/base": "^5.0.12",
     "@unitybase/cs-shared": "^5.0.6",
