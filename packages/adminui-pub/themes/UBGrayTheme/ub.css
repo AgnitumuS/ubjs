@@ -582,6 +582,9 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .x-tab-default .x-tab-close-btn {
     opacity: 0.5;
+}
+
+.x-tab-default .x-tab-close-btn:not(.x-boxselect-item-close) {
     top: 8px;
     right: 4px;
 }
