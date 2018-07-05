@@ -306,7 +306,10 @@ function getServerConfiguration () {
       model.moduleName = packageData.name
       if (packageData.config && packageData.config.ubmodel) {
         let ubModelConfig = packageData.config.ubmodel
-        if (model.name) console.warn('model name is configured in both `ubConfig` and model `package.json`. Will use name from package.json')
+        if (model.name) {
+          console.warn(`Warning: model name for model ${model.name} is configured in both "ubConfig" and model "package.json".
+  Will use name from package.json`)
+        }
         model.name = ubModelConfig.name
         if (ubModelConfig.isPublic) {
           model.publicPath = model.path

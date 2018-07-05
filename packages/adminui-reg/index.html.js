@@ -83,6 +83,13 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
         let modelCfg = modelsConfig.find(m => m.name === model.name)
         if (modelCfg.browser) {
           view.modelInitialization.push(modelCfg.browser)
+        } else if (model.needInit) { // ub 5.0.5 compartibility
+          console.warn(`Compatibility warning! Model ${model.name} has browser initialization script,
+  but "browser" section in package.json is not define. Will fallback to "browser": "./public/initModel.js"`)
+          view.modelInitialization.push({
+            dev: `${model.moduleName}/public/initModel.js`,
+            prod: `${model.moduleName}/public/initModel.js`
+          })
         }
       }
     })
