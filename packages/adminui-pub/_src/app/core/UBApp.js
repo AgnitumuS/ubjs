@@ -95,6 +95,16 @@ Ext.define('UB.core.UBApp', {
      */
     window.$App = this
 
+    /**
+     * In case model require asynchronous operation during loading it
+     * should add a chain to this promise. Next model will await chain resolving
+     * @example
+     *    $App.modelLoadedPromise = $App.modelLoadedPromise.then(...)
+     *
+     * @type {Promise<boolean>}
+     */
+    this.modelLoadedPromise = Promise.resolve(true)
+
     this.addEvents(
       /**
        * Fires then user change active desktop
@@ -350,7 +360,7 @@ Ext.define('UB.core.UBApp', {
             }
 
             return UB.inject(pkiForAuth).then(() => {
-              window[ libraryName ].addEncryptionToConnection(connection, advParam)
+              window[libraryName].addEncryptionToConnection(connection, advParam)
             })
           } else {
             return true
@@ -390,6 +400,9 @@ Ext.define('UB.core.UBApp', {
         window.__modelInit.forEach(function (script) {
           promise = promise.then(function () {
             return window.System.import(script)
+          }).then(() => {
+            // model can resolve $App.modelLoadedPromise later. See settings.js in UBS model
+            return $App.modelLoadedPromise
           })
         })
         return promise
@@ -399,7 +412,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
         ubRequests: ['ubm_desktop', 'ubm_form', 'ubm_enum'].map(function (item) {
-          var res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
+          var res = {entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames()}
           if (item === 'ubm_desktop') {
             res.orderList = {
               ord: {
@@ -487,10 +500,18 @@ Ext.define('UB.core.UBApp', {
     var icon
     config = config || {}
     switch (config.icon || 'QUESTION') {
-      case 'QUESTION': icon = Ext.window.MessageBox.QUESTION; break
-      case 'ERROR': icon = Ext.window.MessageBox.ERROR; break
-      case 'WARNING': icon = Ext.window.MessageBox.WARNING; break
-      case 'INFO': icon = Ext.window.MessageBox.INFO; break
+      case 'QUESTION':
+        icon = Ext.window.MessageBox.QUESTION
+        break
+      case 'ERROR':
+        icon = Ext.window.MessageBox.ERROR
+        break
+      case 'WARNING':
+        icon = Ext.window.MessageBox.WARNING
+        break
+      case 'INFO':
+        icon = Ext.window.MessageBox.INFO
+        break
     }
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
@@ -797,14 +818,14 @@ Ext.define('UB.core.UBApp', {
         scanner.lastScanedFormat = scanSettings.UBScan.OutputFormat
         return scanner.startScan(scanSettings)
       }).then(onScan, null, onNotify)
-      .fin(function () {
-        statusWindow.close()
-      }).catch(function (error) {
-        return scanner.cancelScan().then(function () {
+        .fin(function () {
           statusWindow.close()
-          throw error
+        }).catch(function (error) {
+          return scanner.cancelScan().then(function () {
+            statusWindow.close()
+            throw error
+          })
         })
-      })
     })
   },
 
