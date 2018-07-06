@@ -278,6 +278,14 @@ Ext.define('UB.view.EntityGridPanel', {
                   attributeDefinition.fieldList = ['ID', $App.domainInfo.get(entityAttribute.associatedEntity).getDescriptionAttribute()]
                 }
               }
+              if (fieldList[i].editor) {
+                if (fieldList[i].editor.whereList) {
+                  attributeDefinition.whereList = fieldList[i].editor.whereList
+                }
+                if (fieldList[i].editor.orderList) {
+                  attributeDefinition.orderList = fieldList[i].editor.orderList
+                }
+              }
 
               col.editor = UB.core.UBUtil.ubDt2Ext(entityAttribute, attributeDefinition)
               col.editor.valueField = col.editor.displayField

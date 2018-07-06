@@ -30,6 +30,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - arrow style changed from fa-angle-left to fa-caret-right
  - increase padding (+4 px) between left arrow and workspace
 
+### Fixed
+-  set whereList property for ubcombobox when use row editing in ubdetailgrid
+
 ## [5.0.22]
 ### Fixed
 - handle entity attribute readOnly property on adminUI as documented (regression)
