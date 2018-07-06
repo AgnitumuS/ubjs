@@ -256,11 +256,30 @@ conn.then(function(conn){
    * @param [cfg.onGotApplicationDomain]
    * @return {Promise<UBConnection>}
    */
-  connect: function (cfg) { return conn.connect(cfg) },
+  connect: function (cfg) {
+    return conn.connect(cfg).then((conn) => {
+      this.Repository = function (entityCode) {
+        return new ClientRepository(conn, entityCode)
+      }
+      return conn
+    })
+  },
   /**
    * @type {ClientRepository}
    */
   ClientRepository: ClientRepository,
+  /**
+   * Create a new instance of repository for a current connection. Defined only inside adminUI
+   * @param {String} entityCode name of Entity we create repository for
+   * @returns {ClientRepository}
+   */
+  Repository: function (entityCode) {
+    throw new Error('function defined only after connect()')
+  },
+  /**
+   * @deprecated Use connection.appConfig instead
+   */
+  appConfig: null,
   /**
    * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format)
    * @type {LocalDataStore}

@@ -377,16 +377,7 @@ Ext.define('UB.core.UBApp', {
       me.domainInfo = connection.domain
       let models = me.domainInfo.models
 
-      UB.Repository = function (entityCode) {
-        return new UB.ClientRepository(connection, entityCode)
-      }
-      // for each model:
-      // - configure Ext.loader
-      // - if model need localization - load localization script
-      // - if model need initialization - shedule initModel.js script
-      // if (myLocale !== preferredLocale){
-      //    localeScriptForLoad.push(UB.inject('models/adminui/locale/ext-lang-' + myLocale + '.js'));
-      // }
+      // for each model configure Ext.loader
       _.forEach(models, function (item, key) { item.key = key }) // move names inside elements
       models = _.sortBy(models, 'order') // sort models by order
       _.forEach(models, function (model) {
@@ -394,9 +385,11 @@ Ext.define('UB.core.UBApp', {
           Ext.Loader.setPath(model.key, model.path)
         }
       })
+      // load localization script (bundled from all models on the server side)
       // load models initialization script in order they passed
       return UB.inject('allLocales?lang=' + myLocale).then(function () {
         let promise = Promise.resolve(true)
+        // inject models initialization scripts
         window.__modelInit.forEach(function (script) {
           promise = promise.then(function () {
             return window.System.import(script)
@@ -412,7 +405,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
         ubRequests: ['ubm_desktop', 'ubm_form', 'ubm_enum'].map(function (item) {
-          var res = {entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames()}
+          let res = {entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames()}
           if (item === 'ubm_desktop') {
             res.orderList = {
               ord: {
