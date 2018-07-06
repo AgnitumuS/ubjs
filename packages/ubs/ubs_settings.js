@@ -16,6 +16,7 @@ function convert (type, value, settingKey) {
       return convertBoolean(value, settingKey)
     case 'STRING':
     case 'INT':
+    case 'NUMBER':
       return value
     default :
       console.error('Unknown type:', type, 'for key:', settingKey)
