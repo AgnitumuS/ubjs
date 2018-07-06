@@ -298,7 +298,7 @@ function getServerConfiguration () {
   // read "browser" section of package.json to check model is require initialization in the browser
   // browser section may contains "prod" / "dev" key for production / development client execution
   result.application.domain.models.forEach((model) => {
-    let p = model.path
+    let p = (model.path === '_public_only_') ? model.publicPath : model.path
     if (!path.isAbsolute(p)) p = path.join(process.configPath, p)
     let packFN = path.join(p, 'package.json')
     if (fs.existsSync(packFN)) {
@@ -316,6 +316,7 @@ function getServerConfiguration () {
           model.path = '_public_only_'
         }
       }
+debugger
       // check browser settings
       if (packageData.browser) {
         let dev = packageData.browser.dev || packageData.browser
