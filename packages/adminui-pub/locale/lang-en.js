@@ -468,7 +468,7 @@ UB.i18nExtend({
   emptyPeriod: 'For all time',
 
   close: 'Close',
-  closeOther: 'Close all but this',
+  closeOther: 'Close other tabs',
   closeAll: 'Close all',
   dropZoneOneFileRequired: 'One file required for this operation',
   dropZoneReplace: 'Replace',
