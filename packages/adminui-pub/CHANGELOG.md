@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Model public path initialization do not require creation of `/public/initModel.js` script.
  Instead `package.json` can contain section "browser" what point either to the model initialization script for browser
+
+ In case model is a published module (placed in the node_modules folder) path should be relative to the `package.json`:
+
  ```package.json
  "browser": "./public/initModel.js"
  ```
@@ -16,7 +19,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   "browser": {
     "dev": "./public/devEntryPoint.js"
     "prod": "./public/dist/modelBundle.js"
+  }
  ```
+
+ In case model is in `models` folder p[ath must be absolute
+ ```package.json
+   "browser": "/clientRequire/models/TST/initModel.js",
+ ```
+
 
 ### Added
 - $App.modelLoadedPromise promise added to indicate model public part is completely loaded
