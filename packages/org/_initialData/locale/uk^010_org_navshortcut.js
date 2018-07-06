@@ -32,8 +32,7 @@ var
 		{keyValue: 'org_employee',  execParams: {caption: 'Внутрішні працівники'}},
 	        {keyValue: 'org_folder_dict',  execParams: {caption: 'Додатково'}},
                 {keyValue: 'org_profession',  execParams: {caption: 'Професії'}},
-		{keyValue: 'org_diagram',  execParams: {caption: 'Орантограми'}},
-		{keyValue: 'org_borderunit',  execParams: {caption: 'Граничні елементи'}}
+		{keyValue: 'org_diagram',  execParams: {caption: 'Орантограми'}}
         ]
     };
 
