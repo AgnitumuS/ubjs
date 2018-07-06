@@ -36,11 +36,72 @@ and perform steps below for every HTTP thread:
  - emit {@link event:domainIsLoaded App.domainIsLoaded} event
 
 ## Model
-Model is a logically grouped set of entities, server side and client-side code.
-Model is loaded in server thread memory by server in three steps:
+### Server-side
+Model is a commonJS module with logically grouped set of entities + server side code + client-side code.
+In the application config (ubConfig.json) application.domain.models section contains an array of models, required by application.
+
+Model is loaded in server thread memory(in order they defined in `application.domain.models` config section) in three steps:
  - {@link EntityNamespace entity namespaces} (global objects) are created for all `*.meta` files from this model
  - `require` is called for all `*.js` files paired with `*.meta`
  - `require` is called for model entry point defined in `package.json` placed in the model folder
+
+To simplify a ubConfig model `package.json` can contains `config.ubmodel` section what describe the
+model name and (optionally) ``"isPublic": true` for "browser-only" model
+
+``` package.json
+"config": {
+    "ubmodel": {
+      "name": "UBS"
+    }
+  },
+```
+
+for "browser-only" model:
+``` package.json
+  "config": {
+    "ubmodel": {
+      "name": "adminui-pub",
+      "isPublic": true
+    }
+  },
+```
+
+For such models only path to model should be added to the `application.domain.models` section of ubConfig.json:
+``` ubConfig.json
+	"application": {
+        ...
+		"domain": {
+			"models": [
+			    ...
+				{
+					"path": "./node_modules/@unitybase/ubs"
+				},
+```
+
+### Client-side (adminUI)
+Model can contains a "browser-side" part. In this case model `package.json` should contains `browser` section
+what point to the model initialization script for browser
+
+ - In case model is a published module (placed in the node_modules folder) path should be relative to the `package.json`:
+
+ ```package.json
+ "browser": "./public/initModel.js"
+ ```
+
+ - or for dev/prod scripts
+
+ ```package.json
+  "browser": {
+    "dev": "./public/devEntryPoint.js"
+    "prod": "./public/dist/modelBundle.js"
+  }
+ ```
+
+ - In case model is in `models` folder p[ath must be absolute
+ ```package.json
+   "browser": "/clientRequire/models/TST/initModel.js",
+ ```
+
 
 ## Endpoints
 UnityBase comes with simple one-level routing.
