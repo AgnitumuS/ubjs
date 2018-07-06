@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Changed
+- Model public path initialization do not require creation of `/public/initModel.js` script.
+ Instead `package.json` can contain section "browser" what point either to the model initialization script for browser
+ ```package.json
+ "browser": "./public/initModel.js"
+ ```
+ or for ev/prod scripts
+ ```package.json
+  "browser": {
+    "dev": "./public/devEntryPoint.js"
+    "prod": "./public/dist/modelBundle.js"
+ ```
+
+### Added
+- $App.modelLoadedPromise promise added to indicate model public part is completely loaded
+  In case model require asynchronous operation during loading it should add a chain to this promise.
+  Next model will await chain resolving.
+
 ## [5.0.23]
 ### Changed
 - adminUI left navbar:

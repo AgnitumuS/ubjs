@@ -3,6 +3,10 @@
   "version": "5.0.22",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
+  "browser": {
+    "dev": "adminui.js",
+    "prod": "./dist/adminui.app.min.js"
+  },
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-pub",
   "config": {
     "ubmodel": {

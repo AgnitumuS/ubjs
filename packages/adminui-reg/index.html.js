@@ -15,7 +15,6 @@ const path = require('path')
  */
 function generateIndexPage (req, resp, indexName, addCSP = true) {
   let indexTpl, compiledIndex, compiledIndexKey
-  let models, uiSettings
 
   function md5 (fileName) {
     let realPath = App.resolveStatic(fileName)
@@ -32,7 +31,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
   compiledIndexKey = 'UB_STATIC.compiled_index_' + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
   compiledIndex = App.globalCacheGet(compiledIndexKey)
   if (!compiledIndex) {
-    uiSettings = App.serverConfig.uiSettings
+    let uiSettings = App.serverConfig.uiSettings
     if (!uiSettings.adminUI) {
       uiSettings.adminUI = {themeName: 'UBGrayTheme'}
     } else if (!uiSettings.adminUI.themeName) {
@@ -46,6 +45,8 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     let view = {
       uiSettings: uiSettings,
       modelVersions: [],
+      modelInitialization: [],
+      adminUIModel: '',
       staticVersion: '' + ncrc32(0, App.globalCacheGet('UB_STATIC.modelsModifyDate')), // prev. App.folderChecksum(App.staticPath),
       UB_API_PATH: App.serverConfig.httpServer.path || '/', //  serverURL.replace(/\/$/, ''),
       md5template: function () {
@@ -59,17 +60,39 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     }
 
     // fill model versions
-    models = App.domainInfo.models
+    let models = App.domainInfo.models
+    let modelsConfig = App.serverConfig.application.domain.models
+    console.log('modelsConfig', JSON.stringify(modelsConfig, null, ' '))
     for (let modelName in models) {
       let model = models[modelName]
+      let modelCfg = modelsConfig.find(m => m.name === modelName)
       if (model.realPublicPath) {
-        let pver = require(path.join(model.realPath ? model.realPath : model.realPublicPath, 'package.json')).version
+        let pver = modelCfg.version
         view.modelVersions.push({
           modelName: modelName,
           modelVersion: pver
         })
       }
     }
+    // add admin-ui
+    const ADMINUI_MODEL = '@unitybase/adminui-pub'
+    let modelCfg = modelsConfig.find(m => m.moduleName === ADMINUI_MODEL)
+    view.adminUIModel = modelCfg.browser
+    App.domainInfo.orderedModels.forEach((model) => {
+      if (model.moduleName !== ADMINUI_MODEL) {
+        let modelCfg = modelsConfig.find(m => m.name === model.name)
+        if (modelCfg.browser) {
+          view.modelInitialization.push(modelCfg.browser)
+        } else if (model.needInit) { // ub 5.0.5 compartibility
+          console.warn(`Compatibility warning! Model ${model.name} has browser initialization script,
+  but "browser" section in package.json is not define. Will fallback to "browser": "./public/initModel.js"`)
+          view.modelInitialization.push({
+            dev: `${model.moduleName}/public/initModel.js`,
+            prod: `${model.moduleName}/public/initModel.js`
+          })
+        }
+      }
+    })
 
     compiledIndex = mustache.render(indexTpl, view)
     if (compiledIndex) {
@@ -87,9 +110,8 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     let cspHeader = ''
     if (addCSP) {
       let wsSrc = 'ws' + App.externalURL.slice(4)
-      if (!uiSettings) {
-        uiSettings = App.serverConfig.uiSettings
-      }
+      let uiSettings = App.serverConfig.uiSettings
+
       let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
       let cspHeaders =
         // "default-src * data: blob:;" +

@@ -20,6 +20,10 @@
     "registry": "http://registry.unitybase.info"
   },
   "main": "ubs.js",
+  "browser": {
+    "dev": "./public/index.js",
+    "prod": "./public/dist/ubs.main.min.js"
+  },	
   "dependencies": {
     "@unitybase/adminui-pub": "^5.0.22",
     "@unitybase/base": "^5.0.12",

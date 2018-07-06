@@ -12,16 +12,11 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: 'ubs.[name].min.js',
     publicPath: '/clientRequire/@unitybase/ubs/public/dist/',
-    library: '@unitybase/ubs',
-    libraryTarget: 'umd'
+    library: 'unitybase_ubs',
+    libraryTarget: 'var'
   },
   externals: {
-    lodash: {
-      commonjs: 'lodash',
-      commonjs2: 'lodash',
-      amd: 'lodash',
-      root: '_'
-    },
+    lodash: '_',
     '@unitybase/ub-pub': 'UB',
     '@unitybase/adminui-pub': '$App'
   },

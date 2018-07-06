@@ -58,3 +58,4 @@ let {launchApp, $App} = require('./_src/app.js')
 launchApp()
 
 module.exports = $App
+if (!SystemJS.has('@unitybase/adminui-pub')) SystemJS.set('@unitybase/adminui-pub', SystemJS.newModule($App))

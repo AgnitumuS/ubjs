@@ -3,6 +3,12 @@
   "version": "5.0.14",
   "description": "UnityBase Excel exporter",
   "main": "index.js",
+  "config": {
+    "ubmodel": {
+      "name": "XLSX",
+      "isPublic": true
+    }
+  },
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/xlsx",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
