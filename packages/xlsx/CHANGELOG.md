@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.15]
+### Added
+- `ubmodel` section adedd to `package.json`, so @unitybase/xlsx model now
+ can be added to the application congig in one line
+ ```
+  "domain": {
+      "models": [
+	...
+        {
+          "path": "./node_modules/@unitybase/xlsx"
+        },
+ ```
+
 ## [5.0.14]
 ### Fixed
 - **BREAKING** `XLSXWorkbook.render` will return rendered data instead of Promise,

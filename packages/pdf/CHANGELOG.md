@@ -5,6 +5,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.7]
+### Added
+- `ubmodel` section adedd to `package.json`, so @unitybase/pdf model now
+ can be added to the application congig in one line
+ ```
+  "domain": {
+      "models": [
+	...
+        {
+          "path": "./node_modules/@unitybase/pdf"
+        },
+ ```
+
+## [5.0.7]
 ### Fixed
 - invalid PDF file format in case timesNewRomanBoldItalic font is used
 
