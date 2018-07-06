@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  ```package.json
  "browser": "./public/initModel.js"
  ```
- or for ev/prod scripts
+
+ or for dev/prod scripts
+
  ```package.json
   "browser": {
     "dev": "./public/devEntryPoint.js"
