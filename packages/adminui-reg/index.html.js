@@ -62,7 +62,6 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     // fill model versions
     let models = App.domainInfo.models
     let modelsConfig = App.serverConfig.application.domain.models
-    console.log('modelsConfig', JSON.stringify(modelsConfig, null, ' '))
     for (let modelName in models) {
       let model = models[modelName]
       let modelCfg = modelsConfig.find(m => m.name === modelName)
