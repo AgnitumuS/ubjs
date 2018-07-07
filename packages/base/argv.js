@@ -275,10 +275,11 @@ function replaceIncludeVariables (content) {
 /**
  * Read server configuration from file, resolved by argv.getConfigFileName
  * parse it in safe mode, replace environment variables by it values and return parsed config
- *
+ * @param {boolean} [forFutureSave=false] if true will return config ready to save back as new ubConfig
+ *  (do not add props model.browser & model.version)
  * @return {Object}
  */
-function getServerConfiguration () {
+function getServerConfiguration (forFutureSave = false) {
   let cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
@@ -316,16 +317,15 @@ function getServerConfiguration () {
           model.path = '_public_only_'
         }
       }
-debugger
       // check browser settings
       if (packageData.browser) {
         let dev = packageData.browser.dev || packageData.browser
         dev = path.isAbsolute(dev) ? dev : path.join(packageData.name, dev).replace(/\\/g, '/')
         let prod = packageData.browser.prod || packageData.browser
         prod = path.isAbsolute(prod) ? prod : path.join(packageData.name, prod).replace(/\\/g, '/')
-        model.browser = {dev, prod}
+        if (!forFutureSave) model.browser = {dev, prod}
       }
-      model.version = packageData.version
+      if (!forFutureSave) model.version = packageData.version
     }
   })
   if (!result.application.domain.supportedLanguages) {

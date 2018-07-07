@@ -74,7 +74,7 @@ function initDB (cfg) {
     throw new Error('clientIdentifier (-c parameter) must be between 1 and 8999')
   }
   let originalConfigFileName = argv.getConfigFileName()
-  let config = argv.getServerConfiguration()
+  let config = argv.getServerConfiguration(true)
   cfg.host = argv.serverURLFromConfig(config)
 
   // database are slow :( Increase timeout to 2 minutes
