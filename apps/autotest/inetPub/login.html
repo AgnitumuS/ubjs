@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="clientRequire/element-ui/lib/theme-chalk/index.css">
     <!-- import Vue before Element -->
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="clientRequire/vue/dist/vue.js"></script>
     <!-- import JavaScript -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="clientRequire/element-ui/lib/index.js"></script>
 </head>
 <body>
 <style>
@@ -16,7 +16,7 @@
         padding: 0;
         margin: 0;
     }
-    #app {
+    #login-page {
         width: 100%;
         height: 100%;
         display: flex;
@@ -24,8 +24,15 @@
         align-items: center;
     }
 </style>
-<div id="app">
-    <el-row :gutter="10">
+<div id="app"> </div>
+</body>
+<script src="/clientRequire/lodash/lodash.js"></script>
+<script src="/clientRequire/@unitybase/ub-pub/dist/ub-pub.min.js"></script>
+<script>
+  var vm = new Vue({
+    el: '#app',
+    template: `<div id ="login-page">
+      <el-row :gutter="10">
         <el-col :md="12">
             <h1> Login form information going here</h1>
             <p> This is a custom login form demo </p>
@@ -52,14 +59,9 @@
             </el-form-item>
         </el-form>
         </el-col>
-    </el-row>
-</div>
-</body>
-<script src="/clientRequire/lodash/lodash.js"></script>
-<script src="/clientRequire/@unitybase/ub-pub/dist/ub-pub.min.js"></script>
-<script>
-  var vm = new Vue({
-    el: '#app',
+      </el-row>
+    </div>`,
+
     data: function () {
       return {
         silenceKerberosLogin: JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false'),
@@ -91,22 +93,22 @@
       },
       doUBLogin: function () {
          window.deferred.resolve({authSchema: 'UB', login: vm.authData.user, password: vm.authData.pwd})
+      },
+      showError: function({errMsg, errCode, entityCode, detail}) {
+        this.$message({
+          showClose: true,
+          message: errMsg,
+          type: 'error'
+        })
       }
     }
   })
   window.deferred = {}
+  UB.setErrorReporter(vm.showError.bind(vm))
   UB.connect({
     host: window.location.origin,
     allowSessionPersistent: true,
     onCredentialRequired: function (conn, isRepeat) {
-      if (vm.silenceKerberosLogin && !isRepeat && !vm.userDidLogout && (conn.authMethods.indexOf('Negotiate') >= 0)) {
-        return Promise.resolve({
-          authSchema: 'Negotiate',
-          login: '',
-          password: '',
-          registration: 0
-        })
-      }
       vm.authMethods = conn.authMethods || []
       var loginPromise = new Promise(function (resolve, reject) {
         window.deferred.resolve = resolve;
@@ -115,7 +117,7 @@
       return loginPromise
     },
     onAuthorizationFail: function (reason) {
-      window.alert(reason)
+      UB.showErrorWindow(reason)
     }
   }).then(function (conn) {
     function getUrlVars () {

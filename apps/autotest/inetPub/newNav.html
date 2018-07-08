@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="clientRequire/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="ub-elm.css">
+    <script type="text/javascript">
+      window.UB_API_PATH = '/';
+      window.UB_LOGIN_URL = '/login.html';
+      window.redirectToLogin = function(reason) {
+        var url = UB_LOGIN_URL;
+        if (reason) {
+          url += (url.indexOf('?') === -1 ? '?' : '&') + 'reason=' + encodeURIComponent(reason);
+        }
+        url += (url.indexOf('?') === -1 ? '?' : '&') + 'returnUrl=' + encodeURIComponent(window.location.href);
+        window.location.href = url;
+      }
+      if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
+        redirectToLogin();
+      }
+    </script>
+    <link rel="stylesheet" href="clientRequire/font-awesome/css/font-awesome.min.css"/>
+    <!-- import Vue before Element -->
+    <script src="clientRequire/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="clientRequire/element-ui/lib/index.js"></script>
+    <script src="/clientRequire/systemjs/dist/system.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+      // set our baseURL reference path
+      SystemJS.config({
+        map: {
+          css: 'systemjs-plugin-css/css.js'
+        },
+        baseURL: '/clientRequire',
+        packageConfigPaths: ['@unitybase/*/package.json']
+      });
+      if (!SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule(window.ELEMENT))
+      if (!SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(Vue))
+      // loads /js/main.js
+      SystemJS.import('./newNav.js');
+    </script>
+</body>
+
+</html>
