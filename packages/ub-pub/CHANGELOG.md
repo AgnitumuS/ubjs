@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Added
+- new method `setErrorReporter`. Developer can set his own function that will show
+ unhandled errors to user. Default error reporter will show unhandled error as `window.alert`
+ for browser environment and `console.error` for non-browsers.
+   - for adminUI is set to `UBPub.setErrorReporter(UB.view.ErrorWindow.showError.bind(UB.view.ErrorWindow))`
+   - for portalUI should be called by developer. Vue sample:
+   ```
+   vm = new Vue({
+     ...
+     methods: {
+       showError: function({errMsg, errCode, entityCode, detail}) {
+           this.$message({
+             showClose: true,
+             message: errMsg,
+             type: 'error'
+           })
+         }
+       }
+     })
+   UB.setErrorReporter(vm.showError.bind(vm))
+   ```
+
+### Changed
+- for a browser environment package will add a browser-level unhandled rejection handlers
+  and redirect unhandled errors to the error reported ( see new `setErrorReporter` method)
+- for a browser environment `UB.connect` will automatically resolve "silence kerberos login" - situation
+ when localStorage.silenceKerberosLogin jey is set to "true". In this case `onCredentialRequired` callback is not
+ called and Kerberos/NTLM auth method will be used (if Negotiate is in the application auth list)
+
 ## [5.0.15]
 ### Fixed
 - '@unitybase/ub-pub'.Repository (i.e. UB.Repository) will be defined inside `ub-pub` instead of `adminUI`

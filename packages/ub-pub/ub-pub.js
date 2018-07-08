@@ -12,6 +12,9 @@ const CryptoJS = require('@unitybase/cryptojs')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
 const UBNativeMessage = require('./UBNativeMessage')
+
+let _errorReporter = null
+
 /**
  * Data layer for accessing UnityBase server from Browser or NodeJS
  * @module @unitybase/ub-pub
@@ -204,7 +207,10 @@ UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
    */
   UBCache: UBCache,
   /**
-   * Create authorized connection to UnityBase server
+   * Create authorized connection to UnityBase server.
+   *
+   * For a browser clients in case value of `silenceKerberosLogin` localStorage key is 'true' and 'Negotiate'
+   * authorization method is enable for application will try to authenticate user using Kerberos/NTLM method.
    *
    * Preferred locale tip: to define connection preferredLocale parameter call
    * `localStorage.setItem((path || '/') + 'preferredLocale', 'uk')`
@@ -246,7 +252,7 @@ conn.then(function(conn){
    * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
    *  In case user logged out by server side this type persistent not work and UBConnection will call onCredentialRequired handler,
    *  so user will be prompted for credentials
-   * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
+   * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event. Shoud handle all errors indside!
    * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
    * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
    * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
@@ -261,9 +267,15 @@ conn.then(function(conn){
       this.Repository = function (entityCode) {
         return new ClientRepository(conn, entityCode)
       }
+      this.connection = conn
       return conn
     })
   },
+  /**
+   * After call to UB.connect this property will point to the active connection
+   * @type {UBConnection}
+   */
+  connection: null,
   /**
    * @type {ClientRepository}
    */
@@ -275,6 +287,59 @@ conn.then(function(conn){
    */
   Repository: function (entityCode) {
     throw new Error('function defined only after connect()')
+  },
+  /**
+   * Set a error reported callback for unhandled errors (including unhandled promise rejections).
+   * Callback signature `function({errMsg, errCode, entityCode, detail})`
+   *  - `errMsg` is already translated using UB.i18n
+   *
+   * This callback also called inside `UBPub.showErrorWindow`
+   *
+   * @param {function} errorReportedFunction
+   */
+  setErrorReporter: function (errorReportedFunction) {
+    _errorReporter = errorReportedFunction
+  },
+  /**
+   * Default error reported handler. Will translate error message using {@link UB#i18n i18n}.
+   *
+   * For a UI other then adminUI developer can call `UB.setErrorReporter` to set his own error reporter
+   * @example
+
+      const UB = require('@unitybase/ub-pub')
+      const vm = new Vue({
+        ...
+        methods: {
+          showError: function(errMsg, errCode, entityCode, detail) {
+            this.$message({
+              showClose: true,
+              message: errMsg,
+              type: 'error'
+            })
+          }
+          ...
+      })
+      UB.setErrorReporter(vm.showError.bind(vm))
+   *
+   * @param {String|Object|Error|UBError} errMsg  message to show
+   * @param {String} [errCode] error code
+   * @param {String} [entityCode] entity code
+   * @param {String} [detail] details
+   */
+  showErrorWindow: function (errMsg, errCode, entityCode, detail) {
+    let parsed
+    try {
+      parsed = utils.parseUBError(errMsg, errCode, entityCode, detail)
+      if (_errorReporter) {
+        _errorReporter(parsed)
+      } else if (this.userAgent && typeof window !== 'undefined') {
+        window.alert(parsed.errMsg)
+      } else if (typeof console !== 'undefined') {
+        console.error(parsed.errMsg, parsed.detail)
+      }
+    } catch (e) {
+      console.error(e)
+    }
   },
   /**
    * @deprecated Use connection.appConfig instead
@@ -333,6 +398,97 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    */
   MD5: MD5
 }
+
+let __alreadyAdded = false
+/**
+ * Intercept all unhandled errors including Promise unhandled rejections.
+ * Errors will be parsed and passed to UB.showErrorWindow {@see setErrorReporter setErrorReporter}
+ */
+function addBrowserUnhandledRejectionHandler (UBPub) {
+  let orignalOnError = null
+  if (typeof window === 'undefined' || UBPub.isReactNative || __alreadyAdded) return // non browser environment
+  if (__alreadyAdded) console.error('module @unitybase/ub-pub imported several times. This is wrong situation and should be fixed by app developer')
+  __alreadyAdded = true
+  if (window.onerror) {
+    UBPub.logDebug('window.onerror already set')
+    orignalOnError = window.onerror
+  }
+  // for a unhandled rejection in bluebird-q
+  if (window.Q && window.Q.getBluebirdPromise) {
+    window.Q.onerror = function (error) {
+      window.onerror.apply(UBPub, [ '', '', '', '', error ])
+    }
+  }
+  // for unhandled rejection in bluebird/native promises (IE 10+)
+  window.addEventListener('unhandledrejection', function (e) {
+    // NOTE: e.preventDefault() must be manually called to prevent the default
+    // action which is currently to log the stack trace to console.warn
+    e.preventDefault()
+    // NOTE: parameters are properties of the event detail property
+    let reason = e.detail ? e.detail.reason : e.reason
+    let promise = e.detail ? e.detail.promise : e.promise
+    // See Promise.onPossiblyUnhandledRejection for parameter documentation
+    if (window.onerror) window.onerror.apply(UBPub, [ '', '', '', '', reason ])
+    console.error('UNHANDLED', reason, promise)
+  })
+
+  window.onerror = function (msg, file, line, column, errorObj) {
+    let message
+    let detail = ''
+
+    if (errorObj && utils.UBAbortError && errorObj instanceof utils.UBAbortError) {
+      console.log(errorObj)
+      return
+    }
+    let isHandled = errorObj && utils.UBError && errorObj instanceof utils.UBError
+
+    if (errorObj && Error && errorObj instanceof Error) {
+      message = errorObj.message
+      detail = ''
+      if (/q\.js/.test(file) === false) {
+        detail += 'file: "' + file + '" line: ' + line
+      }
+      let strace = errorObj.stack || ''
+      detail += strace.replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
+      detail = detail.replace(new RegExp(window.location.origin.replace(/:/g, '\\$&'), 'g'), '') // remove address if same as origin
+      detail = detail.replace(/\/[\w-]+\.js:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
+      detail = detail.replace(/\n/g, '<br>&nbsp;&nbsp;')
+    } else if (errorObj && errorObj.data && errorObj.data.errMsg) {
+      message = errorObj.data.errMsg
+    } else if (errorObj && errorObj.status === 0) { // long network request
+      message = 'serverIsBusy'
+      isHandled = true
+    } else if (errorObj && errorObj.errMsg) {
+      message = errorObj.errMsg
+      detail = errorObj.detail ? errorObj.detail : message
+    } else {
+      message = errorObj && (typeof errorObj === 'string') ? errorObj : msg
+    }
+    if (errorObj && errorObj.detail) {
+      detail = errorObj.detail + (detail ? '<br/>' + detail : '')
+      // 405 Method Not Allowed
+      if (errorObj.detail === 'Method Not Allowed') {
+        message = 'recordNotExistsOrDontHaveRights'
+      }
+    }
+    if (!message) {
+      message = 'internalServerError'
+    }
+
+    if (!isHandled) {
+      // MPV - message is already in datail (stack trace)
+      // detail = message + '<BR/> ' + detail;
+      message = 'unknownError'
+    }
+    try {
+      UBPub.showErrorWindow(message, '', '', detail)
+    } catch (err) {
+      window.alert(message)
+    }
+    orignalOnError.call(window, msg, file, line, column, errorObj)
+  }
+}
+addBrowserUnhandledRejectionHandler(module.exports)
 
 if (typeof SystemJS !== 'undefined') { // browser
   if (!SystemJS.has('@unitybase/cryptojs')) SystemJS.set('@unitybase/cryptojs', SystemJS.newModule(CryptoJS))

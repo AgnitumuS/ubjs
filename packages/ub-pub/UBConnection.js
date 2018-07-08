@@ -32,21 +32,7 @@ const AUTH_METHOD_URL = 'auth'
 const ANONYMOUS_USER = 'anonymous'
 const AUTH_SCHEMA_FOR_ANONYMOUS = 'None'
 
-/**
- * Default anonymous credential
- * @param {UBConnection} conn
- * @param {Boolean} isRepeat
- * @returns {*}
- */
-function anonymousRequestAuthParams (conn, isRepeat) {
-  if (isRepeat) {
-    throw new ubUtils.UBError('Access deny')
-  } else {
-    return Promise.resolve({authSchema: AUTH_SCHEMA_FOR_ANONYMOUS, login: ANONYMOUS_USER})
-  }
-}
-
-function parseUBErrorMessage(errMsg) {
+function parseUBErrorMessage (errMsg) {
   return JSON.parse('"' + errMsg.match(/<<<(.*)>>>/)[1] + '"')
 }
 
@@ -153,9 +139,37 @@ function UBConnection (connectionParams) {
   if (appName.charAt(0) !== '/') {
     appName = '/' + appName
   }
-  if (!requestAuthParams) {
-    requestAuthParams = anonymousRequestAuthParams
+  /**
+   * For a browser env. check silence kerberos login {@see UB.connect UB.connect} for details
+   * @param {UBConnection} conn
+   * @param {Boolean} isRepeat
+   * @returns {*}
+   */
+  function doOnCredentialsRequired (conn, isRepeat) {
+    let isBrowser = (typeof window !== 'undefined') && window.localStorage
+    let silenceKerberosLogin = isBrowser ? JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false') : false
+    let userDidLogout = isBrowser ? JSON.parse(window.localStorage.getItem('userDidLogout') || 'false') : false
+
+    // only anonymous authentication or requestAuthParams not passe in config
+    if (!conn.authMethods.length || !requestAuthParams) {
+      if (isRepeat) {
+        throw new ubUtils.UBError('Access deny')
+      } else {
+        return Promise.resolve({authSchema: AUTH_SCHEMA_FOR_ANONYMOUS, login: ANONYMOUS_USER})
+      }
+    }
+
+    if (silenceKerberosLogin && !isRepeat && !userDidLogout && (conn.authMethods.indexOf('Negotiate') >= 0)) {
+      return Promise.resolve({
+        authSchema: 'Negotiate',
+        login: '',
+        password: '',
+        registration: 0
+      })
+    }
+    return requestAuthParams(conn, isRepeat)
   }
+
   serverURL = host + appName
   /** UB Server URL with protocol and host.
    * @type {string}
@@ -296,7 +310,7 @@ $App.connection.userLang()
     if (this._pendingAuthPromise) return this._pendingAuthPromise
 
     this.exchangeKeysPromise = null
-    this._pendingAuthPromise = requestAuthParams(this, isRepeat)
+    this._pendingAuthPromise = doOnCredentialsRequired(this, isRepeat)
       .then(function (authParams) {
         return me.doAuth(authParams).then(function (session) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
@@ -309,6 +323,9 @@ $App.connection.userLang()
           return session
         }).catch(function (reason) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
+          if ((typeof window !== 'undefined') && window.localStorage) {
+            window.localStorage.removeItem('silenceKerberosLogin')
+          }
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
             /**
              * Fired for {@link UBConnection} instance in case of bad authorization Accept 2 args (reason, connection)
@@ -316,6 +333,7 @@ $App.connection.userLang()
              */
             me.emit('authorizationFail', reason, me)
           }
+        }).then(function () {
           return me.authorize(true)
         })
       })
