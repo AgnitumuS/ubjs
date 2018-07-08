@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.2]
+### Changed
+- unhandled errors now will be redirected to error reporter by `ub-pub`
+- silence Kerberos login will be handled by `ub-pub`
+- use new feature `ub-pub.setErrorReporter`
+
 ## [5.1.1]
 ### Fixed
 - '@unitybase/ub-pub'.Repository (i.e. UB.Repository) will be defined inside `ub-pub` instead of `adminUI`

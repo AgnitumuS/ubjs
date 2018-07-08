@@ -23,30 +23,9 @@ Ext.define('UB.view.LoginWindow', {
      * @return {Promise}
      */
     DoLogon: function (connection, isRepeat) {
-      var loginWindow,
-        silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false'),
-        userDidLogout = JSON.parse(window.localStorage.getItem('userDidLogout') || 'false'),
-        loginPromise
+      let loginWindow = Ext.create('UB.view.LoginWindow', {connection: connection})
 
-      if (!connection.authMethods.length) {
-        return Promise.resolve({
-          authSchema: 'None',
-          login: 'anonymous'
-        })
-      }
-
-      if (silenceKerberosLogin && !isRepeat && !userDidLogout && (connection.authMethods.indexOf('Negotiate') >= 0)) {
-        return Promise.resolve({
-          authSchema: 'Negotiate',
-          login: '',
-          password: '',
-          registration: 0
-        })
-      }
-
-      loginWindow = Ext.create('UB.view.LoginWindow', {connection: connection})
-
-      loginPromise = new Promise(function (resolve, reject) {
+      let loginPromise = new Promise(function (resolve, reject) {
         loginWindow.deferred = {resolve: resolve, reject: reject}
       })
             // user already authorized but session expire
