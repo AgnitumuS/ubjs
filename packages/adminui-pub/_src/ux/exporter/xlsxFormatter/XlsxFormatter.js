@@ -122,7 +122,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       }
     }
 
-    ws = wb.addWorkSheet({caption: config.title, name: config.title})
+    var title = (config.title || '').replace(/[\[\]/\\?:*]/g,'_')
+    ws = wb.addWorkSheet({caption: title, name: title})
 
     stmodel = Ext.ModelManager.getModel(store.model)
     fields = stmodel.getFields()

@@ -85,8 +85,10 @@ class XLSXWorkbook {
     config.id = this.worksheets.length + 1
     if (!config.name) {
       config.name = 'Sheet ' + config.id
+    } else {
+      config.name = (config.name || '').replace(/[\[\]/\\?:*]/g,'_')
     }
-    if (this.worksheets.some(F => F.name === config.name)) {
+    while (this.worksheets.some(F => F.name === config.name)) {
       config.name += '_' + config.id
     }
     var ws = new XLSXWorksheet(config, this)
