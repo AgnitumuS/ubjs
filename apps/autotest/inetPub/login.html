@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <!-- import CSS -->
+    <!-- normalize browser CSS i.e. button should have the same font-family as body -->
+    <link rel="stylesheet" href="clientRequire/normalize.css/normalize.css">
     <link rel="stylesheet" href="clientRequire/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="clientRequire/font-awesome/css/font-awesome.min.css"/>
     <!-- import Vue before Element -->
     <script src="clientRequire/vue/dist/vue.js"></script>
     <!-- import JavaScript -->
@@ -12,54 +15,83 @@
 <body>
 <style>
     html, body {
-        height: 100%;
-        padding: 0;
         margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+        font-size: 1rem;
+        color: #5D6A76;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: left;
     }
+
     #login-page {
         width: 100%;
         height: 100%;
-        display: flex;
         justify-content: center;
+        text-align: center;
         align-items: center;
     }
+
+    .el-checkbox__label {
+        color: #5D6A76;
+        font-size: .75rem;
+    }
+
+    .form-wrapper {
+        width: 300px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
-<div id="app"> </div>
+<div id="app"></div>
 </body>
 <script src="/clientRequire/lodash/lodash.js"></script>
 <script src="/clientRequire/@unitybase/ub-pub/dist/ub-pub.min.js"></script>
 <script>
   var vm = new Vue({
     el: '#app',
-    template: `<div id ="login-page">
-      <el-row :gutter="10">
-        <el-col :md="12">
-            <h1> Login form information going here</h1>
-            <p> This is a custom login form demo </p>
-        </el-col>
-        <el-col :md="12">
-        <el-form :model="authData">
-            <el-form-item v-if="hasNegotiate()">
-                <h1>For a domain members</h1>
-                <el-button type="primary" @click="doNegotiateLogin">Login as domain user</el-button>
-              <el-checkbox v-model="silenceKerberosLogin">always login using domain</el-checkbox>
-              <h2>Or using user name and password</h2>
-            </el-form-item>
-            <el-form-item v-else>
-                <h1>Enter credential</h1>
-            </el-form-item>
-            <el-form-item>
-                <el-input autofocus="true" placeholder="User Name" v-model="authData.user" v-on:keyup.enter="doUBLogin"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-input placeholder="Password" v-model="authData.pwd" v-on:keyup.enter="doUBLogin"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="doUBLogin">Login</el-button>
-            </el-form-item>
-        </el-form>
-        </el-col>
+    template: `
+    <div id ="login-page">
+      <el-row>
+        <el-col :span="24" style = "background-color: rgb(125, 145, 163);color: whitesmoke;padding: 1rem;font-size: 2rem;">Аутентифікація</el-col>
       </el-row>
+      <div class="form-wrapper">
+        <img src="img/m-docnet.png" style="max-width: 100%;margin-top: 2rem;margin-bottom:  2rem;">
+        <hr>
+
+      <el-form :model="authData">
+        <div v-if="hasNegotiate()">
+          <p>Вхід через обліковий запис <br/> операційної системи</p>
+          <el-form-item>
+            <el-button type="primary" style="min-width: 8rem" @click="doNegotiateLogin">Продовжити</el-button>
+            <div><el-checkbox v-model="silenceKerberosLogin">Запам'ятати спосіб входу</el-checkbox></div>
+          </el-form-item>
+          <hr>
+        </div>
+
+        <p>Вхід через обліковий запис <br/> Megapolis.DocNet</p>
+        <el-form-item>
+            <el-input autofocus="true" placeholder="Користувач" v-model="authData.user" v-on:keyup.enter="doUBLogin">
+              <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
+            </el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-input placeholder="Пароль" v-model="authData.pwd" v-on:keyup.enter="doUBLogin">
+              <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
+            </el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">Увійти</el-button>
+        </el-form-item>
+        <el-form-item>
+          <div><a href="#">Забули пароль?</a></div>
+          <div><a href="#">Реєстрація</a></div>
+        </el-form-item>
+      </el-form>
+      </div>
     </div>`,
 
     data: function () {
@@ -71,7 +103,7 @@
       }
     },
     watch: {
-      silenceKerberosLogin: function(val) {
+      silenceKerberosLogin: function (val) {
         if (val) {
           window.localStorage.setItem('silenceKerberosLogin', 'true')
         } else {
@@ -92,9 +124,9 @@
         })
       },
       doUBLogin: function () {
-         window.deferred.resolve({authSchema: 'UB', login: vm.authData.user, password: vm.authData.pwd})
+        window.deferred.resolve({authSchema: 'UB', login: vm.authData.user, password: vm.authData.pwd})
       },
-      showError: function({errMsg, errCode, entityCode, detail}) {
+      showError: function ({errMsg, errCode, entityCode, detail}) {
         this.$message({
           showClose: true,
           message: errMsg,
@@ -111,8 +143,8 @@
     onCredentialRequired: function (conn, isRepeat) {
       vm.authMethods = conn.authMethods || []
       var loginPromise = new Promise(function (resolve, reject) {
-        window.deferred.resolve = resolve;
-        window.deferred.reject = reject;
+        window.deferred.resolve = resolve
+        window.deferred.reject = reject
       })
       return loginPromise
     },
