@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.3]
+### Fixed
+- remove displaying of "undefine" in UBDetailTree in minified version of adminUI
+
 ## [5.1.2]
 ### Changed
 - unhandled errors now will be redirected to error reporter by `ub-pub`
