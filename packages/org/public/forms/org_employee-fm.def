@@ -133,20 +133,26 @@ exports.formDef = {
                         items: [
                             { attributeName: "lastNameGen"},
                             { attributeName: "lastNameDat"},
+                            { attributeName: "lastNameObj"},
                             { attributeName: "firstNameGen"},
                             { attributeName: "firstNameDat"},
+                            { attributeName: "firstNameObj"},
                             { attributeName: "middleNameGen"},
-                            { attributeName: "middleNameDat"}
+                            { attributeName: "middleNameDat"},
+                            { attributeName: "middleNameObj"}
                         ]
                     },{
                         flex: 1,
                         items: [
                             { attributeName: "shortFIOGen"},
                             { attributeName: "shortFIODat"},
+                            { attributeName: "shortFIOObj"},
                             { attributeName: "fullFIOGen"},
                             { attributeName: "fullFIODat"},
+                            { attributeName: "fullFIOObj"},
                             { attributeName: "applyGen"},
-                            { attributeName: "applyDat"}
+                            { attributeName: "applyDat"},
+                            { attributeName: "applyObj"}
                         ]
                     }]
                 }
