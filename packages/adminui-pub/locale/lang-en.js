@@ -133,7 +133,7 @@ UB.i18nExtend({
   exportXls: 'Export to "Excel"',
   exportCsv: 'Export to CSV',
   'export': 'Export',
-  oshibkaVvoda: 'Can not save <b>{0}</b> card.<br > Invalid field',
+  oshibkaVvoda: 'Cannot save <b>{0}</b> card.<br > Invalid field',
   currentPageNumber: 'Current page',
   persistLockInfo: 'You was set permanent lock at {1}',
   softLockInfo: 'The record was locked by user {0} at {1}',
@@ -482,11 +482,10 @@ UB.i18nExtend({
   registraionPassed: 'Your certificate has been successfully downloaded and passed to the processing',
   keyAlreadyRegisteredForUser: 'Key is already registered for another user',
   keyBlockedByAdmin: 'Key for entering the system was blocked by system administrator. Blocking reason: ',
-  keyNoRightsRejected: 'User can not permissions to entering the system. Request for registration of key denied.',
-  keyNoRightsRepeat: 'User can not permissions to entering the system. Request for reminding registration of key in consideration state.',
+  keyNoRightsRejected: 'User cannot permissions to entering the system. Request for registration of key denied.',
+  keyNoRightsRepeat: 'User cannot permissions to entering the system. Request for reminding registration of key in consideration state.',
   keyAlreadyRegistered: 'Enable to send request registration of key. Current key is already registered in system.',
 
-    // todo это разница с ua надо перевести  -- Переведена
   'error': 'Error',
   'detail': 'Detail',
   'exportHtml': 'Export to Html',
@@ -540,7 +539,7 @@ UB.i18nExtend({
   'Incorrect old password': 'Incorrect current password',
   'Password is too short': 'Password is too short',
   'Password is too simple': 'Password is too simple',
-  'Password is dictionary word': 'Password can not be as word from dictionary',
+  'Password is dictionary word': 'Password cannot be as word from dictionary',
   'Password matches with login': 'Password matches with login',
   'Previous password is not allowed': 'Password matches with one of the previous',
 
@@ -744,7 +743,7 @@ Ext.onReady(function () {
     Ext.apply(Ext.picker.Date.prototype, {
       todayText: 'Today',
       minText: 'This date less than minimal date',
-      maxText: 'This date much than maximal date',
+      maxText: 'This date greater than maximal date',
       disabledDaysText: '',
       disabledDatesText: '',
       monthNames: Ext.Date.monthNames,
@@ -792,8 +791,8 @@ Ext.onReady(function () {
 
   if (Ext.form.field.Number) {
     Ext.apply(Ext.form.field.Number.prototype, {
-      minText: 'Field value can not be less than {0}',
-      maxText: 'Field value can not be much than {0}',
+      minText: 'Field value cannot be less than {0}',
+      maxText: 'Field value cannot be greater than {0}',
       nanText: '{0} is not a number'
     })
   }
@@ -802,7 +801,7 @@ Ext.onReady(function () {
     Ext.apply(Ext.form.field.Date.prototype, {
       disabledDaysText: 'Not accessible',
       disabledDatesText: 'Not accessible',
-      minText: 'Date in this field must be much then {0}',
+      minText: 'Date in this field must be greater then {0}',
       maxText: 'Date in this field must be less then {0}',
       invalidText: '{0} is not a correct. Date must be in format {1}',
       format: Ext.util.Format ? Ext.util.Format.dateFormat : 'm/d/Y',
