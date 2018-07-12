@@ -14,10 +14,16 @@ exports.formCode = {
         lastNameDat: {
             value: '{lastName}'
         },
+        lastNameObj: {
+            value: '{lastName}'
+        },
         firstNameGen: {
             value: '{firstName}'
         },
         firstNameDat: {
+            value: '{firstName}'
+        },
+        firstNameObj: {
             value: '{firstName}'
         },
         middleNameGen: {
@@ -26,10 +32,16 @@ exports.formCode = {
         middleNameDat: {
             value: '{middleName}'
         },
+        middleNameObj: {
+            value: '{middleName}'
+        },
         shortFIOGen: {
             value: '{shortFIO}'
         },
         shortFIODat: {
+            value: '{shortFIO}'
+        },
+        shortFIOObj: {
             value: '{shortFIO}'
         },
         fullFIOGen: {
@@ -38,10 +50,16 @@ exports.formCode = {
         fullFIODat: {
             value: '{fullFIO}'
         },
+        fullFIOObj: {
+            value: '{fullFIO}'
+        },
         applyGen: {
             value: '{apply}'
         },
         applyDat: {
+            value: '{apply}'
+        },
+        applyObj: {
             value: '{apply}'
         }
     },
