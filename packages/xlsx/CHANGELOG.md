@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.16]
+### Fixed
+ - removing special symbols from sheet name. XLSX format does not allow symbols []/\?:* in sheet name
+
+### Added
+- support for <br/> tag
+
 ## [5.0.15]
 ### Added
 - `ubmodel` section adedd to `package.json`, so @unitybase/xlsx model now
@@ -32,12 +39,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.11]
 ### Fixed
 - XLSXWorkbook.render will use jzsip.generate instead of unsupported in UB jszip.generateAsync
-
-## [4.2.2]
-### Fixed
- -  Removing special symbols from sheet name. XLSX format does not allow contains symbols []/\?:* in sheet name
-### Added
-- Added supporting <br/> tag
 
 ## [4.1.6]
 ### Added
