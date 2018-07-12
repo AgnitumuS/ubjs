@@ -141,7 +141,7 @@ var
             desktopID:  desktopID,
             parentID:   folderID,
             code:       'org_employee',
-            caption:    'Employeers',
+            caption:    'Employees',
 		iconCls:    'fa fa-male',
             displayOrder: 110,
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_employee', method: 'select', fieldList: '*'}]}}, null, '\t')
