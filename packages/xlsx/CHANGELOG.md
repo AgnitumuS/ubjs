@@ -34,6 +34,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - XLSXWorkbook.render will use jzsip.generate instead of unsupported in UB jszip.generateAsync
 
 ## [4.2.2]
+### Fixed
+ -  Removing special symbols from sheet name. XLSX format does not allow contains symbols []/\?:* in sheet name
 ### Added
 - Added supporting <br/> tag
 

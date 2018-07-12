@@ -1,0 +1,52 @@
+{
+    "caption": "Общий доступ",
+    "description": "Общий доступ",
+    "connectionName": "",
+    "sqlAlias": "udisksrvp",
+    "descriptionAttribute": "cardID",
+    "cacheType": "None",
+    "attributes": {
+        "cardID": {
+                "dataType": "Entity",
+                "associatedEntity": "udisk_servicecard",
+                "caption": "Card",
+                "description": "Card",
+                "allowNull": false,
+                "cascadeDelete": false
+        },
+        "userID": {
+                "dataType": "Entity",
+                "associatedEntity": "uba_subject",
+                "caption": "user",
+                "description": "user",
+                "allowNull": false
+        },
+        "accessType": {
+                "dataType": "Enum",
+                "enumGroup": "UDISK_ACCESS_TYPE",
+                "caption": "Access type",
+                "description": "Access type ### owner, read, write, delegate ",
+                "allowNull": false
+        },
+        "parentID": {
+          "dataType": "Entity",
+          "associatedEntity": "udisk_srvpermission",
+          "caption": "parentID",
+          "description": "parentID",
+          "allowNull": true,
+          "cascadeDelete": true
+        }
+    },
+    "mixins": {
+        "mStorage": {
+            "simpleAudit": true,
+            "safeDelete" : false
+        },
+        "audit": {
+          "enabled": true,
+          "parentIdentifier": "cardID",
+          "parentEntity": "udisk_servicecard"
+        }
+    }
+}
+
