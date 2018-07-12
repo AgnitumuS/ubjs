@@ -52,7 +52,7 @@ Ext.define('UB.ux.UBDetailTreeColumn', {
 
         var iconCls = record.raw.iconCls;
         var titleContent = record.raw.title;
-        titleContent = titleContent ? '<legend>' + '<span>' + record.raw.title + '</span>' + '</legend>' : undefined;
+        titleContent = titleContent ? `<legend><span>${record.raw.title}</span></legend>` : '';
         if (iconCls){
             formattedValue = [
                 '<fieldset class="ub-tree-node">',
@@ -68,12 +68,7 @@ Ext.define('UB.ux.UBDetailTreeColumn', {
                 '</fieldset>'
             ].join('');
         } else {
-            formattedValue = [
-                '<fieldset class="ub-tree-node">',
-                titleContent,
-                formattedValue,
-                '</fieldset>'
-            ].join('');
+            formattedValue = `<fieldset class="ub-tree-node">${titleContent}${formattedValue}</fieldset>`
         }
         while (record) {
 
