@@ -132,15 +132,10 @@ UB.i18nExtend({
   exportCsv: 'CSV-yə eksport',
   exportHtml: 'Html-ya eksport',
   'export': 'Eksport',
-  nepravilniyTipResolucii: 'Naməlum dərkənar tipi. Dərkənarın identifikatoru: {0}',
-  nepravilnayaRolIspolitelya: 'Dərkənar icraçısının naməlum rolu. İstifadəçinin identifikatoru: {0}',
-  nepravilniyTipDocumenta: 'Naməlum sənəd tipi. Sənədin identifikatoru: {0}',
   readPKCanceled: 'Ləğv edilmiş istifadəçi',
   invalidPrivateKeyCertificate: 'Fərdi sertifikat(lar) üçün yalnış açar seçilmişdir. 2014- cü ildən sonra verilmiş açar üçün iki ədəd sertifikat olmalıdır.',
-  ubErrElsInvalidUserOrPwd: 'Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.',
   OpenIDConnect: 'OpenID',
   authOpenIDConnectFail: "OpenID provider can't authorize your request",
-  msgInvalidUBAuth: 'Keçid ləğv olunub. Zəhmət olmasa istifadəçi adı və parol -u yoxlayın.',
   oshibkaVvoda: '<b>{0}</b>.<br > kartını yadda saxlamaq mümkün deyil. Yanlış doldurulmuş xana',
   ok: 'ОK',
   cancel: 'Ləğv',
@@ -161,7 +156,6 @@ UB.i18nExtend({
   ot: ' bu tarixdən ',
   do: ' bu tarixədək ',
   document: 'Sənəd',
-  enter: 'Daxil ol',
   sign: 'Daxil ol',
 
   NMUBExtension: '"UBExtension" genişlənməsi',
@@ -171,7 +165,7 @@ UB.i18nExtend({
   NMFeaturePDFSigner: 'PDF imzalanması modulu',
   singOperationInProcess: 'Başqa sənədin imzalanmasını Running. Sonra hərəkətə təkrar',
 
-    // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
   NMInstallExtensionChrome: '<p>İşi davam etdirmək üçün "Google Chrome" brauzeri üçün <b>"UBExtension"</b> genişlənməsini quraşdırmaq lazımdır.</p> ' +
         '<p> "Google" mağazasına keçmək üçün <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">GENİŞLƏNMƏNİ QURAŞDIR</a> keçidi üzərində vurun</p>' +
         '<p> Mağaza pəncərəsində <img src="models/adminui-pub/ub-extension/ChromePlusFreeEn.png"/> düyməsini(ola bilər ki, <b>+ÖDƏNİŞSİZ</b>) sıxın </p>' +
@@ -283,17 +277,7 @@ UB.i18nExtend({
   sucImportMsgTitle: 'Sənəd uğurla import edilmişdir',
   sucImportMsg: 'Sənəd uğurla ESMS-ə import edilmişdir',
   filterType: 'Filtr tipi',
-  documentsForConsideration: 'Sənəd dövriyyəsi: Baxış üçün sənədlər',
-  registrationsByDays: 'Günlər üzrə qeydiyyat',
-  docExecution: 'Sənəd dövriyyəsi: Sənədlərin icrası',
   permits: 'Həllər',
-  RCC: 'RCC',
-  outgoing: 'Göndərilənlər',
-  incoming: 'Daxil olanlar',
-  respForTask: 'Tapşırığa görə məsul ş.',
-  barCode: 'Ştrix-kod',
-  triRemainsInPVD: 'Transinspeksiya: PVD-də qalıqlar',
-  triSalesByMonth: 'Transinspeksiya: Aylar üzrə satış',
   analyticDesktop: 'Analitika',
   validFrom: 'Bu tarixdən qüvvədədir',
   validTo: 'Bu tarixədək qüvvədədir',
@@ -370,7 +354,6 @@ UB.i18nExtend({
   startSearchMinCharacters: 'Axtarışa başlamaq üçün azı {0} simvol daxil edin',
   useUBAuthenticationTitle: 'Parol üzrə',
   useOSCredentialTitle: 'Domen',
-  useOSCredentialInfo: 'Əməliyyat sisteminin girişi zamanı göstərilən istifadəçi adı və paroldan istifadə etməklə giriş.<p>Kompüter Windows</p> domeninə qoşulmuş olmalıdır ',
   useCertificateTitle: 'Açar üzrə',
   useCertificateInfo: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
         '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
@@ -389,7 +372,6 @@ UB.i18nExtend({
   msgInvalidPlugin: 'Plaginin versiyası köhnəlib. Quraşdırılmış versiya {0}, tələb olnur {1}. Avtomatik yenilənmə 2 saatdan bir baş verir.' +
         ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +
         ' Əgər yenilənmədən sonra mesaj yenədə qalıbsa, administratorun köməyindən istifadə edin.',
-  msgInvalidCertAuth: 'Girişə icazə verilmədi. Yanlış sertifikat, yaxud bağlı açar.',
   navShortcutCode: 'Yarlık kodu',
   navShortcutRights: 'Yarlıq hüququ',
   cases: 'Hallar',
@@ -403,7 +385,6 @@ UB.i18nExtend({
     // useUBAuthenticatinInfo: 'İstifadəçi adını və parolu daxil etdikdən sonra,  "Giriş" düyməsini sıxın.',
   moreThanOneUserWithPassedCertificate: 'Bu sertifikat bir neçə istifadəçi tərəfindən istifadə edilir. İstifadəçi adını qeyd edin',
   useUBAuthenticatinInfo: 'İstifadəçi adı və şifrəni daxil edib “Daxil ol” düyməsini sıxın',
-  recordNotExistsOrDontHaveRights: 'Qeyd mövcud deyil, yaxud Sizin ona baxmaq üçün hüququnuz yoxdur',
   showDocVersions: 'Əvvəlki versiya',
   selectDocRevision: 'Versiyanı seçin:',
   isLastDocRevision: '(mövcud versiya)',
@@ -412,7 +393,6 @@ UB.i18nExtend({
   revisionNum: 'Versiyası №',
 
   menu: 'Menyu',
-  unknownError: 'Naməlum səhv baş vermişdir. Xahiş edirik, administratora müraciət edəsiniz.',
   mi_dateFrom: 'Tarixdən',
   mi_dateTo: 'Tarixə',
   mi_modifyDate: 'Last modified',

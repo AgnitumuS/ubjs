@@ -1,5 +1,5 @@
 /**
- * UnityBase Russian translation. PTNPNX
+ * UnityBase Russian translation
  */
 UB.i18nExtend({
   SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
@@ -136,9 +136,6 @@ UB.i18nExtend({
   exportCsv: 'Экспорт в CSV',
   exportHtml: 'Экспорт в Html',
   'export': 'Экспорт',
-  nepravilniyTipResolucii: 'Неизвестный тип резолюции. Идентификатор резолюции: {0}',
-  nepravilnayaRolIspolitelya: 'Неизвестная роль исполнителя резолюции. Идентификатор исполнителя: {0}',
-  nepravilniyTipDocumenta: 'Неизвестный тип документа. Идентификатор документа: {0}',
   readPKCanceled: 'Прервано пользователем',
   invalidPrivateKeyCertificate: 'Выбрано ошибочный сертификат(ы) личного ключа. Для ключа, выданного после 2014 года, должно быть два сертификата.',
   currentPageNumber: 'Текущая страница',
@@ -157,7 +154,6 @@ UB.i18nExtend({
   ot: ' от ',
   do: ' до ',
   document: 'Документ',
-  enter: 'Вход',
   sign: 'Войти',
 
   NMUBExtension: 'расширение "UBExtension"',
@@ -291,17 +287,7 @@ UB.i18nExtend({
   sucImportMsgTitle: 'Документ был успешно импортирован',
   sucImportMsg: 'Документ был успешно импортирован из СЭВ',
   filterType: 'Тип фильтра',
-  documentsForConsideration: 'Документооборот: Документы для рассмотрения',
-  registrationsByDays: 'Регистрация по дням',
-  docExecution: 'Документооборот: Исполнение документов',
   permits: 'Разрешения',
-  RCC: 'РКК',
-  outgoing: 'Исходящие',
-  incoming: 'Входящие',
-  respForTask: 'Отв. за задание',
-  barCode: 'Штрих-код',
-  triRemainsInPVD: 'Трансинспекция: Остатки в ПВД',
-  triSalesByMonth: 'Трансинспекция: Продажи по месяцам',
   analyticDesktop: 'Аналитика',
   validFrom: 'Действителен с',
   validTo: 'Действителен до',
@@ -386,7 +372,6 @@ UB.i18nExtend({
   startSearchMinCharacters: 'Минимальное к-во символов для поиска: {0}',
   useUBAuthenticationTitle: 'По паролю',
   useOSCredentialTitle: 'Доменная',
-  useOSCredentialInfo: 'Вход с использованием имени пользователя и пароля, указанных при входе в операционную систему. <p>Компьютер должен быть подключён к домену Windows</p>',
   useCertificateTitle: 'По ключу',
   useCertificateInfo: 'Вход с использованием <b>личного ключа:</b><ol>' +
         '<li>Установите носитель ключевой информации</li>' +
@@ -408,9 +393,6 @@ UB.i18nExtend({
         ' Если после обновления сообщение осталось, обратитесь к администратору.',
   moreThanOneUserWithPassedCertificate: 'Этот сертификат используется несколькими пользователями. Укажите имя пользователя.',
   useUBAuthenticatinInfo: 'Введите имя пользователя, пароль и нажмите "Вход".',
-  msgInvalidCertAuth: 'В доступе отказано. Некорректный сертификат, закрытый ключ или ошибочное имя пользователя.',
-  msgInvalidUBAuth: 'В доступе отказано. Проверьте имя пользователя и пароль.',
-  ubErrElsInvalidUserOrPwd: 'В доступе отказано. Проверьте имя пользователя и пароль.',
   OpenIDConnect: 'OpenID',
   authOpenIDConnectFail: 'Удостоверяющий центр отклонил запрос на аутентификацию',
   navShortcutCode: 'Код ярлыка',
@@ -421,7 +403,6 @@ UB.i18nExtend({
   fullNameInGen: 'Полн. название в род. падеже',
   fullNameInDat: 'Полн. название в дат. падеже',
   Language: 'Язык',
-  recordNotExistsOrDontHaveRights: 'Запись не существует или у Вас отсутствуют права доступа',
   showDocVersions: 'Предыдущие версии',
   selectDocRevision: 'Выберите версию:',
   isLastDocRevision: '(текущая версия)',
@@ -430,7 +411,6 @@ UB.i18nExtend({
   revisionNum: 'Версия №',
 
   menu: 'Меню',
-  unknownError: 'Возникла неизвестная ошибка. Обратитесь, пожалуйста, к администратору системы.',
   documentNotFound: 'Данные на сервере не найдены. Обратитесь, пожалуйста, к администратору системы.',
   mi_dateFrom: 'Дата с',
   mi_dateTo: 'Дата по',

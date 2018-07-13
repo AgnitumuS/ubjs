@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.19]
+### Changed
+- values from locale folder merged to the ub-pub model localization
+
+## [5.0.19]
 ### Added
 - the `adminui.loginURL` setting described in `ubConfig.schema.json`
 - the `httpServer.externalURL` configuration parameter is added to ubConfig.
