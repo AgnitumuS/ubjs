@@ -1608,7 +1608,8 @@ input.x-form-field-text{
     font-weight: bold;
 }
 
-.x-label-required span[role=separator]::before {
+.x-label-required span[role=separator]::after {
     content: '*';
     color: #D0021B;
+    float: right;
 }
