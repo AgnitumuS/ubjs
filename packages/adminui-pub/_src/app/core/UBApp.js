@@ -304,7 +304,7 @@ Ext.define('UB.core.UBApp', {
         if (isExternalLogin) { // external login page
           window.localStorage.removeItem(conn.__sessionPersistKey)
         }
-        window.localStorage.setItem('userDidLogout', 'false')
+        window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'false')
       },
       onAuthorizationFail: function (reason, conn) {
         if (isExternalLogin) {

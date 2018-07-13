@@ -14,27 +14,38 @@ const MD5 = require('@unitybase/cryptojs/md5')
 const UBNativeMessage = require('./UBNativeMessage')
 
 let _errorReporter = null
-
+let _globalVueInstance = null
 /**
  * Data layer for accessing UnityBase server from Browser or NodeJS
  * @module @unitybase/ub-pub
  */
 module.exports = {
   /**
-   * Return locale-specific resource from it identifier.
-   * `localeString` must be either previously defined dy call to {@link i18nExtend i18nExtend} or
-   * or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
-   * or `UB.i18n('uba_role.description')` would be resolved to
-   * localized entity caption or entity attribute caption
+   * Return locale-specific resource from it identifier. `localeString` must be:
+   *
+   * - either previously defined dy call to {@link i18nExtend i18nExtend}
+   * - or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
+   *  or `UB.i18n('uba_role.description')` would be resolved to  localized entity caption or entity attribute caption
+   *
+   * Localized string can be formatted:
+   *
+   *    UB.i18nExtend({
+   *      greeting: 'Hello {0}, welcome to {1}'
+   *    })
+   *    UB.i18n('greeting', 'Mark', 'MyApp') // Hello Mark, welcome to MyApp
+   *
    * @param {String} localeString
+   * @param {...*} formatArgs Format args
    * @returns {*}
    */
-  i18n: function (localeString) { return i18n.i18n(localeString) },
+  i18n: i18n.i18n.bind(i18n),
   /**
    * Merge localizationObject to UB.i18n. Usually called form `modelFolder/locale/lang-*.js` scripts
    * @param {Object} localizationObject
    */
-  i18nExtend: function (localizationObject) { return i18n.i18nExtend(localizationObject) },
+  i18nExtend: function (localizationObject) {
+    return i18n.i18nExtend(localizationObject)
+  },
   /**
    * Allows to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
    * token must be unique, and must increment in the format {0}, {1}, etc.  Example usage:
@@ -213,7 +224,7 @@ UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
    * authorization method is enable for application will try to authenticate user using Kerberos/NTLM method.
    *
    * Preferred locale tip: to define connection preferredLocale parameter call
-   * `localStorage.setItem((path || '/') + 'preferredLocale', 'uk')`
+   * `localStorage.setItem(UB.LDS_KEYS.PREFERRED_LOCALE, 'uk')`
    * **before** call to UBConnection.connect
    * @example
 
@@ -263,11 +274,13 @@ conn.then(function(conn){
    * @return {Promise<UBConnection>}
    */
   connect: function (cfg) {
-    return conn.connect(cfg).then((conn) => {
+    return conn.connect(cfg, this).then((conn) => {
+      if (_globalVueInstance && _globalVueInstance.$i18n) {
+        _globalVueInstance.$i18n.locale = conn.userLang()
+      }
       this.Repository = function (entityCode) {
         return new ClientRepository(conn, entityCode)
       }
-      this.connection = conn
       return conn
     })
   },
@@ -396,7 +409,47 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
   /**
    * Calculate MD5 checksum
    */
-  MD5: MD5
+  MD5: MD5,
+  /**
+   * Vue JS integration
+   *  - inject UB localization {@link UB.i18n UB.i18n} to global Vue instance as $ut:
+   *  - inject `@unitybase/ub-pub` to global Vue instance as $UB
+   *
+   * @example
+
+  const Vue = require('vue')
+  const UB = require('@unitybase/ub-pub')
+  Vue.use(UB)
+
+  // localization of vue template
+  <button >{{ $ut('Enter') }}</button>
+  // in case translation result is HTML + use formatting
+  <p v-html="$ut('UBAuthHeader', appName)"></p>
+  // inside binding
+  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+  // inside vue methods
+  this.$ut('UBAuthTip')
+
+  // using UB inside vue methods
+  methods: {
+     hasNegotiate: function () {
+       return this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
+     }
+  }
+
+   * @param vue
+   */
+  install: function (vue) {
+    _globalVueInstance = vue
+    vue.prototype.$UB = module.exports
+    vue.prototype.$ut = module.exports.i18n
+  },
+  /**
+   * localDataStorage keys used by @unitybase-ub-pub (in case of browser environment)
+   * @readonly
+   * @enum
+   */
+  LDS_KEYS: utils.LDS_KEYS
 }
 
 let __alreadyAdded = false
@@ -407,7 +460,7 @@ let __alreadyAdded = false
 function addBrowserUnhandledRejectionHandler (UBPub) {
   let orignalOnError = null
   if (typeof window === 'undefined' || UBPub.isReactNative || __alreadyAdded) return // non browser environment
-  if (__alreadyAdded) console.error('module @unitybase/ub-pub imported several times. This is wrong situation and should be fixed by app developer')
+  if (__alreadyAdded) console.error('module @unitybase/ub-pub imported several times. This is wrong situation and should be fixed by app developer. Try `npm ddp`')
   __alreadyAdded = true
   if (window.onerror) {
     UBPub.logDebug('window.onerror already set')
@@ -485,7 +538,7 @@ function addBrowserUnhandledRejectionHandler (UBPub) {
     } catch (err) {
       window.alert(message)
     }
-    orignalOnError.call(window, msg, file, line, column, errorObj)
+    if (orignalOnError) orignalOnError.call(window, msg, file, line, column, errorObj)
   }
 }
 addBrowserUnhandledRejectionHandler(module.exports)

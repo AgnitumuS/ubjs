@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Added
+- VueJS integration
+```
+const UB = require('@unitybase/ub-pub')
+const Vue = require('vue')
+Vue.use(UB)
+
+
+- Localized string can be formatted by i18n
+```
+ UB.i18nExtend({
+   greeting: 'Hello {0}, welcome to {1}'
+ })
+ UB.i18n('greeting', 'Mark', 'MyApp') // Hello Mark, welcome to MyApp
+```
+
+- UB.LDS_KEYS enum with localStorage keys used by ub-pub in browser mode
+- localisations for login window & server-side errors now inside ub-pub
+
 ## [5.1.0]
 ### Added
 - new method `setErrorReporter`. Developer can set his own function that will show

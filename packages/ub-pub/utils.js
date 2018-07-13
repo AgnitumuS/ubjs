@@ -317,3 +317,25 @@ module.exports.isMac = /macintosh|mac os x/.test(userAgent)
 module.exports.isSecureBrowser = /\belectron\b/.test(userAgent)
 /** @type {Boolean} */
 module.exports.isReactNative = (typeof navigator !== 'undefined' && navigator.product === 'ReactNative')
+
+/**
+ * localDataStorage keys used by @unitybase-ub-pub (in case of browser environment)
+ */
+module.exports.LDS_KEYS = {
+  /**
+   * In case stored value is 'true' then login using Negotiate without prompt
+   */
+  SILENCE_KERBEROS_LOGIN: 'silenceKerberosLogin',
+  /**
+   * Last logged in user name (login)
+   */
+  LAST_LOGIN: 'lastLogin',
+  /**
+   * In case stored value is 'true' then used call logout directly (i.e. press logout button)
+   */
+  USER_DID_LOGOUT: 'userDidLogout',
+  /**
+   * locale, preferred by user. Empty in case of first login
+   */
+  PREFERRED_LOCALE: 'preferredLocale'
+}

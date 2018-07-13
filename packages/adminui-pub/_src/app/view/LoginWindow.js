@@ -91,16 +91,16 @@ Ext.define('UB.view.LoginWindow', {
       authItems = [],
       firstLogin, silenceKerberosLogin,
       minAuthTabsHeight = 265,
-      lastSavedLogin = window.localStorage.getItem('lastLogin'),
+      lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN),
       locale = this.connection.preferredLocale,
       applicationName
     var cfgAdminUI = UB.appConfig.uiSettings.adminUI
     firstLogin = JSON.parse(window.localStorage.getItem('firstLogin') || 'false')
-    silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false')
+    silenceKerberosLogin = JSON.parse(window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) || 'false')
 
     me.items = []
     me.buttons = [{
-      text: UB.i18n('enter'),
+      text: UB.i18n('Enter'),
       cls: 'ub-login-btn',
       scope: this,
       minWidth: 150,
@@ -305,7 +305,7 @@ Ext.define('UB.view.LoginWindow', {
             xtype: 'component',
             autoEl: {
               tag: 'div',
-              html: UB.i18n('useOSCredentialInfo')
+              html: UB.i18n('KerberosTip')
             }
           }]
       })
@@ -508,10 +508,9 @@ Ext.define('UB.view.LoginWindow', {
       })
     }
     window.localStorage.setItem('lastAuthType', authType)
-    window.localStorage.setItem('lastLogin', login)
 
     if (authType === 'Negotiate') {
-      window.localStorage.setItem('silenceKerberosLogin', me.chkSilenceLogint.getValue())
+      window.localStorage.setItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, me.chkSilenceLogint.getValue())
     }
 
     me.close()
