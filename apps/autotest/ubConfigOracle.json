@@ -125,7 +125,7 @@
 				"driver": "Oracle",
 				"isDefault": true,
 				"dialect": "Oracle11",
-				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 172.16.97.22)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraub.cloud.local)))",
+				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = ora12.unitybase.info)(PORT = 15211)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraub.cloud.local)))",
 				"userID": "UB5_AUTOTEST_WIN",
 				"password": "UB5_AUTOTEST_WIN",
 				"supportLang": ["en", "uk"],
