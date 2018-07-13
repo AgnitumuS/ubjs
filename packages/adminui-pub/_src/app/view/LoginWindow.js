@@ -290,10 +290,9 @@ Ext.define('UB.view.LoginWindow', {
         xtype: 'checkbox',
         labelAlign: 'left',
         labelCls: 'ub-login-label',
-                // boxLabelAlign: 'before',
         labelWidth: 80,
         checked: !!silenceKerberosLogin,
-        boxLabel: UB.i18n('chkSilenceLogin')
+        boxLabel: UB.i18n('KerberosRemember')
       })
       me.pnlOs = Ext.create('Ext.panel.Panel', {
         title: UB.i18n('useOSCredentialTitle'),
