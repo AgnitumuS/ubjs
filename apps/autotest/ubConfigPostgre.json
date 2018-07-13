@@ -126,7 +126,7 @@
 				"isDefault": true,
 				"statementCacheSize": 0,
 				"dialect": "PostgreSQL",
-				"serverName": "postgresql://172.16.97.21:5432",
+				"serverName": "postgresql://pg10.unitybase.info:5402",
 				"databaseName": "ub5_autotest_win",
 				"userID": "ub5_autotest_win",
 				"password": "ub5_autotest_win",
