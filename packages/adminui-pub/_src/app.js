@@ -219,7 +219,7 @@ function launchApp () {
       /**
        *  @cfg {String} requireText Text for placeHolder. Default value 'pleaseInputValueToThisField'.
        */
-      requireText: 'pleaseInputValueToThisField',
+      requireText: '',
       /**
        * This method allow change the allowBlank property dynamically
        * @param allowBlank
