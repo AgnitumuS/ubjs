@@ -60,7 +60,7 @@ UB.i18nExtend({
   opisanie: 'Опис',
   sohranit: 'Зберегти',
   dobavit: 'Додати',
-  dobavitKak: 'Додати як',
+  Copy: 'Копіювати',
   redaktirovat: 'Редагувати',
   Delete: 'Видалити',
   vseDeystviya: 'Всі дії',

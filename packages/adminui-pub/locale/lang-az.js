@@ -60,7 +60,7 @@ UB.i18nExtend({
   opisanie: 'Təsvir',
   sohranit: 'Yadda saxla',
   dobavit: 'Əlavə et',
-  dobavitKak: 'Nə kimi əlavə et',
+  Copy: 'Nə kimi əlavə et',
   redaktirovat: 'Redaktə et',
   Delete: 'Sil',
   vseDeystviya: 'Bütün fəaliyyətlər',

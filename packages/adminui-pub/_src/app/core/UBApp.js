@@ -322,7 +322,7 @@ Ext.define('UB.core.UBApp', {
       onGotApplicationConfig: function (/** @type {UBConnection} */connection) {
         _.defaultsDeep(connection.appConfig, {
           comboPageSize: 30,
-          maxMainWindowTabOpened: 10,
+          maxMainWindowTabOpened: 40,
           storeDefaultPageSize: 100,
 
           gridHeightDefault: 400,

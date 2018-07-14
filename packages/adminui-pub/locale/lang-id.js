@@ -61,7 +61,7 @@ UB.i18nExtend({
   opisanie: 'Description',
   sohranit: 'Save',
   dobavit: 'Add',
-  dobavitKak: 'Add as',
+  Copy: 'Copy',
   redaktirovat: 'Edit',
   Delete: 'Delete',
   vseDeystviya: 'All actions',

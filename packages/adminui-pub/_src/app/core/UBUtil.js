@@ -67,7 +67,8 @@ Ext.define('UB.core.UBUtil', {
     faHierarche: 0xf0e8,
     faPencilSquareO: 0xf044,
     faArrowLeft: 0xf060,
-    faTimes: 0xf00d // CLOSE action
+    faTimes: 0xf00d, // CLOSE action
+    faClone: 0xf24d
   },
 
   /**

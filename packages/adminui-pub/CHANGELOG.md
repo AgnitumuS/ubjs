@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - for a "required" attributes changed style to display the asterisk after delimiter, not before and align on the right side
 - remove placeholder "fill value" for a "required" attributes
+- "Add As" action renamed to "Copy". Glyph changed to `faCopy`
+- max open tabs now 40 by default (can be changed back to 10 by `ubConfig.uiSettings.adminUI.maxMainWindowTabOpened: 10`)
 
 ## [5.1.3]
 ### Fixed
