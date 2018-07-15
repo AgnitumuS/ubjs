@@ -2,17 +2,95 @@
 
 This model extend UnityBase adminUI by Vue + ElementUI libraries
 
+# What included
+## JavaScript
+ - Vue (exported as global Vue variable and registered in SystemJS as 'vue')
+ - ElementUI (exported as global ElementUI variable and registered in SystemJS as 'element-ui')
+ - UB.i18n intergated into Vue as `$ut`
+ - UB injected into Vue.prototype as `$UB`
+
+## CSS
+ - `dist/adminui-next.css` theme include normalize.css && modified element-theme-chalk
+
+## Views
+### Modern login page
+
+Placed in `/views/ub-auth.html`
+
+To use it in `adminUI` based apps in ubConfig
+```
+"uiSettings": {
+  "adminUI": {
+	"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+	"loginURL": "/models/adminui-next/views/ub-auth.html",
+  ...
+```
+
+# Usage
+## adminUI based app
+ For adminUI based application just add a `@unitybase/adminui-next` in the domain.models section of config
+ after `adminui-pub`
+
+```
+"application": {
+  "domain": {
+    "models": [
+		...
+		{
+			"path": "./node_modules/@unitybase/ub-pub"
+		},
+		{
+			"path": "./node_modules/@unitybase/adminui-pub"
+		},
+		{
+			"path": "./node_modules/@unitybase/adminui-reg"
+		},
+		{
+			"path": "./node_modules/@unitybase/adminui-next"
+		}
+		..
+```
+
+## Stand-alone app
+See `/views/ub-auth.html` for sample
+
+### Compiled Vue app
+In case you embad a compiled Vue app into adminUI:
+
+- define output section in the webpack config to prevent loading modules twice:
+```
+  output: {
+    path: path.join(__dirname, 'dist'),
+    library: 'YUR_LIB_NAME',
+    libraryTarget: 'var',
+    filename: 'your-lib-entry-point.min.js',
+    publicPath: '/clientRequire/YOUR_MODULE_NAME/dist/'
+  },
+```
+
+- define externals section in the webpack config to prevent loading modules twice:
+
+```
+  externals: {
+    lodash: '_',
+    '@unitybase/ub-pub': 'UB',
+    '@unitybase/adminui-pub': '$App',
+    'vue': 'Vue',
+    'element-ui': 'ElementUI',
+  },
+
 
 # Contribution
 
 ## Theme
+Generate variables 
 ```
-npm i element-theme -D
-npm i element-theme-chalk -D
-npx et -i theme/ub-el.scss
+npm run gen-el-vars
 ```
-Edit theme/ub-el.scss 
+
+Edit theme/ub-el.scss. Build it:
+
 ```
-npx et -c theme/ub-el.scss -o el-css
+npm run build:theme
 ```
 

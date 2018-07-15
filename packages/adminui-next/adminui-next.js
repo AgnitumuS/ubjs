@@ -5,13 +5,12 @@ window.process = {
 }
 const Vue = require('vue')
 const ElementUI = require('element-ui/lib/index.js')
-require('element-ui/lib/theme-chalk/index.css')
-// locale from 'element-ui/lib/locale/lang/en'
-// Vue.use(ElementUI, { locale })
-window.Vue = Vue
-if (!SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule({exports: Vue}))
 Vue.use(UB)
 // redirect ElementUI localization to UB.i18n
 Vue.use(ElementUI, {
   i18n: UB.i18n.bind(UB)
 })
+window.Vue = Vue
+if ((typeof SystemJS !== 'undefined') && !SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule({exports: Vue}))
+window.ElementUI = ElementUI
+if ((typeof SystemJS !== 'undefined') && !SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(ElementUI))
