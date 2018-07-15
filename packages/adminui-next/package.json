@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "npm run build:theme && npm run build:js",
+    "prepublish": "npm run build",
     "gen-el-vars": "et -i theme/ub-el.scss",
     "build:theme": "npm run build:el && npm run build:css",
     "build:el": "et -c theme/ub-el.scss -o dist",
