@@ -5,20 +5,26 @@ window.UB = UB
 
 Vue.use(ElementUI)
 
+// var vm = new Vue({
+//   components: {SidebarItem},
+//   template: '<sidebar></sidebar>'
+// })
+// window.vm = vm
+
 var vm = new Vue({
   el: '#app',
   template: `
 <el-row class="tac">
   <el-col style="width: 225px; height: 100%">
-    
+
     <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
       <el-radio-button :label="false">expand</el-radio-button>
       <el-radio-button :label="true">collapse</el-radio-button>
     </el-radio-group>
-    
+
     <h5>Menu</h5>
-    
-    <el-menu 
+
+    <el-menu
       class="el-menu-demo"
       mode="horizontal"
       menu-trigger="click"
@@ -31,7 +37,7 @@ var vm = new Vue({
         <el-menu-item v-for=" desktop in desktops" :index="desktop.code" :key="desktop.ID">{{ desktop.caption }}</el-menu-item>
       </el-submenu>
     </el-menu>
-                 
+
     <el-menu
       unique-opened="true"
       :collapse="isCollapse"
@@ -53,13 +59,13 @@ var vm = new Vue({
           <template slot="title">
             <i :class="folderL2.iconCls"></i>
             <span>{{ folderL2.caption }}</span>
-          </template>  
+          </template>
           <!-- 2 level folder shortcuts -->
           <el-menu-item v-for="shortcutL2 in activeDesktopFolderMembers(folderL2.ID)" :index="shortcutL2.code" :key="shortcutL2.ID">
             <i :class="shortcutL2.iconCls"></i>
             <span>{{ shortcutL2.caption }}</span>
           </el-menu-item>
-        </el-submenu>  
+        </el-submenu>
         <!-- 1 level folder shortcuts -->
         <el-menu-item v-for="shortcutL1 in activeDesktopFolderMembers(folderL1.ID)" :index="shortcutL1.code" :key="shortcutL1.ID">
           <i :class="shortcutL1.iconCls"></i>
@@ -70,7 +76,7 @@ var vm = new Vue({
       <el-menu-item v-for="shortcutL0 in activeDesktopFolderMembers(null)" :index="shortcutL0.code" :key="shortcutL0.ID">
         <i :class="shortcutL0.iconCls"></i>
         <span>{{ shortcutL0.caption }}</span>
-      </el-menu-item>  
+      </el-menu-item>
     </el-menu>
   </el-col>
 </el-row>
@@ -151,7 +157,7 @@ UB.connect({
     if (isExternalLogin) { // external login page
       window.localStorage.removeItem(conn.__sessionPersistKey)
     }
-    window.localStorage.setItem('userDidLogout', 'false')
+    window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'false')
   },
   onAuthorizationFail: function (reason, conn) {
     if (isExternalLogin) {

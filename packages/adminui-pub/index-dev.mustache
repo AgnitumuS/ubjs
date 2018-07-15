@@ -73,9 +73,10 @@
         <script src="{{#md5}}clientRequire/systemjs/dist/system.src.js{{/md5}}" type="text/javascript"></script>
 
         <script type="text/javascript">
-            // set our baseURL reference path
+          // set our baseURL reference path
             System.config({
                 baseURL: '/clientRequire',
+                transpiler: 'none',
                 map: {
                     css: 'systemjs-plugin-css/css.js'
                 },
