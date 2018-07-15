@@ -7,7 +7,7 @@
     "dev": "adminui-next.js",
     "prod": "./dist/adminui-next.min.js"
   },
-  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-newx",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/adminui-next",
   "config": {
     "ubmodel": {
       "name": "adminui-next",
@@ -16,7 +16,6 @@
   },
   "scripts": {
     "build": "npm run build:theme && npm run build:js",
-    "prepublish": "npm run build",
     "gen-el-vars": "et -i theme/ub-el.scss",
     "build:theme": "npm run build:el && npm run build:css",
     "build:el": "et -c theme/ub-el.scss -o dist",
@@ -27,7 +26,10 @@
   "files": [
     "dist/adminui-next.css",
     "dist/adminui-next.min.js",
-    "dist/fonts"
+    "dist/fonts",
+    "locale",
+    "adminui-next.js",
+    "webpack.config.js"
   ],
   "element-theme": {
     "minimize": true
