@@ -145,8 +145,8 @@ function UBConnection (connectionParams) {
    * @returns {*}
    */
   function doOnCredentialsRequired (conn, isRepeat) {
-    let silenceKerberosLogin = LDS ? JSON.parse(LDS.getItem(ubUtils.LDS_KEYS.SILENCE_KERBEROS_LOGIN) || 'false') : false
-    let userDidLogout = LDS ? JSON.parse(ubUtils.LDS_KEYS.USER_DID_LOGOUT || 'false') : false
+    let silenceKerberosLogin = LDS && LDS.getItem(ubUtils.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
+    let userDidLogout = LDS && LDS.getItem(ubUtils.LDS_KEYS.USER_DID_LOGOUT) === 'true'
 
     // only anonymous authentication or requestAuthParams not passe in config
     if (!conn.authMethods.length || !requestAuthParams) {

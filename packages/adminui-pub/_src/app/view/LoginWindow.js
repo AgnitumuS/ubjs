@@ -89,14 +89,13 @@ Ext.define('UB.view.LoginWindow', {
       me = this,
       authMethods = me.connection.authMethods,
       authItems = [],
-      firstLogin, silenceKerberosLogin,
       minAuthTabsHeight = 265,
       lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN),
       locale = this.connection.preferredLocale,
       applicationName
     var cfgAdminUI = UB.appConfig.uiSettings.adminUI
-    firstLogin = JSON.parse(window.localStorage.getItem('firstLogin') || 'false')
-    silenceKerberosLogin = JSON.parse(window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) || 'false')
+    let firstLogin = window.localStorage.getItem('firstLogin') === 'true'
+    let silenceKerberosLogin = window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
 
     me.items = []
     me.buttons = [{

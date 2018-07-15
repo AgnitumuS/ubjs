@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.23]
+### Changed
+- `allLocales` endpoint will join locales from all models (since login form localization moved to ub-pub
+ we do not need to skip a adminui-pub localization anymore)
+
 ## [5.0.19]
 ### Changed
 - values from locale folder merged to the ub-pub model localization

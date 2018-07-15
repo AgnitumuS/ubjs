@@ -3,7 +3,7 @@ const _ = require('lodash')
 const __i18n = {
   monkeyRequestsDetected: 'Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?'
 }
-const FORMAT_RE = /{(\d+)}/g
+const FORMAT_RE = /{([0-9a-zA-Z_]+)}/g
 
 function domainBasedLocalization (localeString) {
   // $App is accessible only inside adminUI
@@ -57,11 +57,20 @@ function domainBasedLocalization (localeString) {
 module.exports.i18n = function i18n (localeString, ...formatArgs) {
   if (localeString == null) return localeString
   let res = __i18n[localeString]
+  if (!res) res = _.get(__i18n, localeString)
   res = res || domainBasedLocalization(localeString)
   if (formatArgs && formatArgs.length && (typeof res === 'string')) {
-    return res.replace(FORMAT_RE, function (m, i) {
-      return formatArgs[i]
-    })
+    // key-value object
+    if ((formatArgs.length === 1) && (typeof formatArgs[0] === 'object')) {
+      let first = formatArgs[0]
+      return res.replace(FORMAT_RE, function (m, k) {
+        return _.get(first, k)
+      })
+    } else { // array of values
+      return res.replace(FORMAT_RE, function (m, i) {
+        return formatArgs[i]
+      })
+    }
   } else {
     return res
   }

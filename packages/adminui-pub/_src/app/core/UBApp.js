@@ -350,7 +350,7 @@ Ext.define('UB.core.UBApp', {
         // TODO - remove because mutation of other objects is bad idea
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
-        return UB.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
+        return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
             const pkiForAuth = UB.appConfig.uiSettings.adminUI.encryptionImplementation || 'clientRequire/@ub-d/nm-dstu/injectEncription.js'
             const libraryName = pkiForAuth.split('/')[2]

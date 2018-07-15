@@ -459,7 +459,7 @@ function allLocalesEp (req, resp) {
   if (!cached) {
     cached = ' '
     App.domainInfo.orderedModels.forEach((model) => {
-      if (model.needLocalize && model.name !== 'adminui-pub') { // adminui-pub will be injected before login window
+      if (model.needLocalize) {
         let localeScript = path.join(model.realPublicPath, 'locale', `lang-${lang}.js`)
         if (fs.existsSync(localeScript)) {
           let content = fs.readFileSync(localeScript, 'utf-8')

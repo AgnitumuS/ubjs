@@ -1,5 +1,5 @@
 /**
- * UnityBase Tajik translation. PTNPNX
+ * UnityBase Tajik translation.
  */
 UB.i18nExtend({
   SelectPKAndPassMsg: 'Виберите файл и заполните пароль',

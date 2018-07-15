@@ -27,12 +27,28 @@ module.exports = {
    * - or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
    *  or `UB.i18n('uba_role.description')` would be resolved to  localized entity caption or entity attribute caption
    *
-   * Localized string can be formatted:
-   *
-   *    UB.i18nExtend({
-   *      greeting: 'Hello {0}, welcome to {1}'
-   *    })
-   *    UB.i18n('greeting', 'Mark', 'MyApp') // Hello Mark, welcome to MyApp
+   * @example
+
+ //Localized string can be formatted either by position args:
+ UB.i18nExtend({
+   greeting: 'Hello {0}, welcome to {1}'
+ })
+ UB.i18n('greeting', 'Mark', 'Kiev') // Hello Mark, welcome to Kiev
+
+ //Or by named args:
+ UB.i18nExtend({
+   namedGreeting: 'Hello {name}, welcome to {place}'
+ })
+ UB.i18n('namedGreeting', {name: 'Mark', place: 'Kiev'}) // Hello Mark, welcome to Kiev
+
+ //Localization itself can be an object:
+ UB.i18nExtend({
+   loginPage: { welcome: 'Welcome to our app', user: 'Dear {user}'}
+ })
+ UB.i18n('loginPage.welcome') // Welcome to our app
+ UB.i18n('loginPage.user', {user: 'Pol}) // Dear Pol
+ UB.i18n('loginPage') // return object {welcome: "Welcome to our app", user: "Dear {user}"}
+
    *
    * @param {String} localeString
    * @param {...*} formatArgs Format args
