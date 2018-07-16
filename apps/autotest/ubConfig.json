@@ -113,7 +113,6 @@
 					"path": "./node_modules/@unitybase/adminui-next"
 				},
 				{
-					"name": "TST",
 					"path": "./models/TST"
 				}
 			],

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.0]
 ### Fixed
 - adminui-pub locales can be injected to environments what do not use ExtJS
+- added add/remove class to required field label on change of allowBlank
 
 ### Changed
 - UBGrayTheme now use font-size (14px) and font-family (Segoe UI) defined on body level
