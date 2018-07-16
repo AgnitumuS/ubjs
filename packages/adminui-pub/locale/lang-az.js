@@ -1,3 +1,4 @@
+/* global Ext UB */
 /**
  * Translation into Azerbaijani
  */
@@ -19,7 +20,6 @@ UB.i18nExtend({
   gridItemLink: 'Bəndə istinad',
   gridCategoryCaption: 'Кateqoriya',
   gridFavoritesCaption: 'Seçilmiş',
-  isFirstLogin: 'Qeydiyyat rejimi',
   oshibka: 'Səhv',
   info: 'Məlumat',
   error: 'Səhv',
@@ -33,7 +33,6 @@ UB.i18nExtend({
   nevozmozhnoDecodirovat: 'Kodunu açmaq mümkün deyil',
   avtorizatsia: 'Avtorizasiya',
   login: 'İstifadəçi',
-  parol: 'Parol',
   stariyParol: 'Köhnə parol',
   obazatelnoePole: 'Bu xananın doldurulması mütləqdir',
   Obshchee: 'Ümumi',
@@ -349,26 +348,7 @@ UB.i18nExtend({
   filterIsRequired: 'Filtr mütləq doldurulmalıdır',
   сhooseEntity: 'Mahiyyəti seç',
   startSearchMinCharacters: 'Axtarışa başlamaq üçün azı {0} simvol daxil edin',
-  useUBAuthenticationTitle: 'Parol üzrə',
-  useOSCredentialTitle: 'Domen',
-  useCertificateTitle: 'Açar üzrə',
-  useCertificateInfo: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
-        '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
-        '"Daxil ol"</li> sıxın<li>' +
-        '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
-  useCertificateInfoSimple: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
-  '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
-  '"Daxil ol"</li> sıxın<li>' +
-  '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
-  useCertificateInfoSimpleUserName: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
-  '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
-  '"Daxil ol"</li> sıxın<li>' +
-  '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
 
-  IITCertCanceledByUser: 'Canceled by user',
-  msgInvalidPlugin: 'Plaginin versiyası köhnəlib. Quraşdırılmış versiya {0}, tələb olnur {1}. Avtomatik yenilənmə 2 saatdan bir baş verir.' +
-        ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +
-        ' Əgər yenilənmədən sonra mesaj yenədə qalıbsa, administratorun köməyindən istifadə edin.',
   navShortcutCode: 'Yarlık kodu',
   navShortcutRights: 'Yarlıq hüququ',
   cases: 'Hallar',
@@ -378,10 +358,7 @@ UB.i18nExtend({
   fullNameInDat: 'Yön. halındakı tam ad',
   Language: 'Dil',
 
-    // moreThanOneUserWithPassedCertificate: 'Bu sertifikat bir neçə istifadəçi tərəfindən istifadə edilir. İstifadəçi adını göstərin.',
-    // useUBAuthenticatinInfo: 'İstifadəçi adını və parolu daxil etdikdən sonra,  "Giriş" düyməsini sıxın.',
   moreThanOneUserWithPassedCertificate: 'Bu sertifikat bir neçə istifadəçi tərəfindən istifadə edilir. İstifadəçi adını qeyd edin',
-  useUBAuthenticatinInfo: 'İstifadəçi adı və şifrəni daxil edib “Daxil ol” düyməsini sıxın',
   showDocVersions: 'Əvvəlki versiya',
   selectDocRevision: 'Versiyanı seçin:',
   isLastDocRevision: '(mövcud versiya)',

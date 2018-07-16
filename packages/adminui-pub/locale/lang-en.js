@@ -1,3 +1,4 @@
+/* global Ext UB */
 /*
 This file is part UnityBase Ext-based client
 Copyright (c) 2014 InBase
@@ -23,7 +24,6 @@ UB.i18nExtend({
   gridItemLink: 'Item link',
   gridCategoryCaption: 'Category',
   gridFavoritesCaption: 'Favorites',
-  isFirstLogin: 'Registration mode',
   oshibka: 'Error',
   info: 'Information',
   uk: 'Ukrainian',
@@ -35,7 +35,6 @@ UB.i18nExtend({
   nevozmozhnoDecodirovat: "Can't decode",
   avtorizatsia: 'Authorization',
   login: 'Login',
-  parol: 'Password',
   stariyParol: 'Old password',
   obazatelnoePole: 'This field is required',
   Obshchee: 'General',
@@ -335,19 +334,8 @@ UB.i18nExtend({
   deleteConfirm: 'Do you really want to delete configuration?',
   filterWasChangedConfirm: 'Filter was changed. After loading the configuration, all changes will be lost. Continue?',
   filterIsRequired: 'The filter is required',
-  useOSCredentialTitle: 'Domain',
-  useUBAuthenticationTitle: 'User&password',
-  useCertificateTitle: 'Using certificate',
-  useCertificateInfo: 'Authorization using electronic signature',
-  useCertificateInfoSimple: 'Authorization using electronic signature',
-  useCertificateInfoSimpleUserName: 'Authorization using electronic signature',
-  IITCertCanceledByUser: 'Canceled by user',
   navShortcutCode: 'Shortcut source code',
   navShortcutRights: 'Shortcut rights',
-  msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
-        ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
-        ' If after updating message remains, please, contact your system administrator.',
-
   storageFrmCaption: 'Storage settings',
   storageFrmKeys: 'Keys',
   storageFrmPass: 'Password',
@@ -357,7 +345,6 @@ UB.i18nExtend({
   changedByAnotherUserForLock: 'During the viewing of the document, it has been changed by another user. Open the document again to start editing mode exclusive lock',
 
   moreThanOneUserWithPassedCertificate: 'There are more than one user with passed certificate. Please, enter the user name/',
-  useUBAuthenticatinInfo: "Please, enter the user name, password and click 'Enter'.",
 
   headerSelectCert: 'Select certificate',
   headerSelectOwnCert: 'Select certificate for private key',

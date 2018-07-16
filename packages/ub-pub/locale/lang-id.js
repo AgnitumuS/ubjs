@@ -1,6 +1,6 @@
 UB.i18nExtend({
-  Enter: 'Enter', //enter
-  Password: 'Password', //password
+  Enter: 'Enter',
+  Password: 'Password',
   User: 'User name', // login
   UBAuthTip: "Please, enter the user name, password and click 'Enter'", // useUBAuthenticatinInfo
   UBAuthHeader: 'Sign in with your <br/> {0} account',
@@ -11,6 +11,19 @@ UB.i18nExtend({
   KerberosHeader: 'Sign in using the <br/> operating system account', // useOSCredentialInfo
   KerberosTip: 'Login with the user rights entered into the operating system. The computer must be included in the domain',
   Authentication: 'Authentication',
+  RegistrationMode: 'Registration mode',
+  useOSCredentialTitle: 'Domain',
+  useUBAuthenticationTitle: 'User&password',
+  useCertificateTitle: 'Using certificate',
+  useCertificateInfo: 'Authorization using electronic signature',
+  useCertificateInfoSimple: 'Authorization using electronic signature',
+  useCertificateInfoSimpleUserName: 'Authorization using electronic signature',
+  IITCertCanceledByUser: 'Canceled by user',
+  navShortcutCode: 'Shortcut source code',
+  navShortcutRights: 'Shortcut rights',
+  msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
+  ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
+  ' If after updating message remains, please, contact your system administrator.',
 
   unknownError: 'Unknown error. Please, contact your system administrator.',
   recordNotExistsOrDontHaveRights: 'Record not exists or you don\'t have access rights',

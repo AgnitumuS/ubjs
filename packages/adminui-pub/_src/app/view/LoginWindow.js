@@ -145,11 +145,11 @@ Ext.define('UB.view.LoginWindow', {
         allowBlank: false,
         cls: 'ub-login-input',
         labelClsExtra: 'fa fa-user fa-2x',
-        requireText: UB.i18n('login'),
+        requireText: UB.i18n('User'),
         fieldLabel: ' ',
         labelSeparator: '',
         regex: authenticationCert.userNameRE ? new RegExp(authenticationCert.userNameRE) : null,
-        regexText: authenticationCert.userNameREMessage ? UB.i18n(authenticationCert.userNameREMessage): null,
+        regexText: authenticationCert.userNameREMessage ? UB.i18n(authenticationCert.userNameREMessage) : null,
         labelWidth: 40,
         value: me.connection.lastLoginName || lastSavedLogin
       })
@@ -159,7 +159,7 @@ Ext.define('UB.view.LoginWindow', {
         cls: 'ub-login-input',
 
         labelClsExtra: 'fa fa-key fa-2x',
-        requireText: UB.i18n('parol'),
+        requireText: UB.i18n('Password'),
         fieldLabel: ' ',
         labelSeparator: '',
         labelWidth: 40,
@@ -178,9 +178,8 @@ Ext.define('UB.view.LoginWindow', {
         // boxLabelAlign: 'before',
         labelWidth: 80,
         checked: !!firstLogin,
-        boxLabel: UB.i18n('isFirstLogin')
+        boxLabel: UB.i18n('RegistrationMode')
       })
-
 
       var certItem = []
       var useCertificateInfo = 'useCertificateInfoSimple'
@@ -242,7 +241,7 @@ Ext.define('UB.view.LoginWindow', {
         allowBlank: false,
         cls: 'ub-login-input',
         labelClsExtra: 'fa fa-key fa-2x',
-        requireText: UB.i18n('parol'),
+        requireText: UB.i18n('Password'),
         fieldLabel: ' ',
         labelSeparator: '',
         labelWidth: 40,
@@ -274,7 +273,7 @@ Ext.define('UB.view.LoginWindow', {
             padding: '50 0 0 0',
             autoEl: {
               tag: 'div',
-              html: UB.i18n('useUBAuthenticatinInfo')
+              html: UB.i18n('UBAuthTip')
             }
           }
         ]

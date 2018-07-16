@@ -11,6 +11,27 @@ UB.i18nExtend({
   KerberosHeader: 'Sign in using the <br/> operating system account',
   KerberosTip: 'Əməliyyat sisteminin girişi zamanı göstərilən istifadəçi adı və paroldan istifadə etməklə giriş.Kompüter domeninə qoşulmuş olmalıdır',
   Authentication: 'Authentication',
+  RegistrationMode: 'Qeydiyyat rejimi',
+  useOSCredentialTitle: 'Domen',
+  useUBAuthenticationTitle: 'Parol üzrə',
+  useCertificateTitle: 'Açar üzrə',
+  useCertificateInfo: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
+  '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
+  '"Daxil ol"</li> sıxın<li>' +
+  '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
+  useCertificateInfoSimple: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
+  '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
+  '"Daxil ol"</li> sıxın<li>' +
+  '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
+  useCertificateInfoSimpleUserName: '<b>şəxsi açardan istifadə etməklə giiriş:</b><ol>' +
+  '</li> Yoxlama qurğusuna açar məlumatın daşıyıcısını <li> quraşdırın ' +
+  '"Daxil ol"</li> sıxın<li>' +
+  '<li>Dialoq pəncərəsində açarın yerləşmə yerini seçin,<br> parol göstərin və "ОK" sıxın</li></ol>',
+
+  IITCertCanceledByUser: 'Canceled by user',
+  msgInvalidPlugin: 'Plaginin versiyası köhnəlib. Quraşdırılmış versiya {0}, tələb olnur {1}. Avtomatik yenilənmə 2 saatdan bir baş verir.' +
+  ' Əllə iş salmaq üçün bu instruksiyadan <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_az.html" target="_blank">istifadə edin</a>. ' +
+  ' Əgər yenilənmədən sonra mesaj yenədə qalıbsa, administratorun köməyindən istifadə edin.',
 
   unknownError: 'Naməlum səhv baş vermişdir. Xahiş edirik, administratora müraciət edəsiniz.',
   recordNotExistsOrDontHaveRights: 'Qeyd mövcud deyil, yaxud Sizin ona baxmaq üçün hüququnuz yoxdur',
