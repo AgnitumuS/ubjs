@@ -587,33 +587,34 @@ UB.i18nExtend({
  * Define missing english date format settings
  * By mpv (utf-8 encoding)
  */
-if (typeof Ext === 'undefined') return
-Ext.onReady(function () {
-  if (Ext.util.Format) {
-    Ext.apply(Ext.util.Format, {
-      dateFormat: 'm/d/Y',
-      timeFormat: 'H:i:s',
-      datetimeFormat: 'm/d/Y H:i'
+if (typeof Ext !== 'undefined') {
+  Ext.onReady(function () {
+    if (Ext.util.Format) {
+      Ext.apply(Ext.util.Format, {
+        dateFormat: 'm/d/Y',
+        timeFormat: 'H:i:s',
+        datetimeFormat: 'm/d/Y H:i'
+      })
+    }
+    Ext.define('Ext.uk.ux.DateTimePicker', {
+      override: 'Ext.ux.DateTimePicker',
+      todayText: 'Now',
+      timeLabel: 'Time'
     })
-  }
-  Ext.define('Ext.uk.ux.DateTimePicker', {
-    override: 'Ext.ux.DateTimePicker',
-    todayText: 'Now',
-    timeLabel: 'Time'
-  })
 
-  if (Ext.MessageBox) {
-    Ext.MessageBox.buttonText = {
-      ok: 'OK',
-      yes: 'Yes',
-      no: 'No',
-      cancel: 'Cancel'
+    if (Ext.MessageBox) {
+      Ext.MessageBox.buttonText = {
+        ok: 'OK',
+        yes: 'Yes',
+        no: 'No',
+        cancel: 'Cancel'
+      }
+      Ext.MessageBox.titleText = {
+        confirm: 'Confirm',
+        prompt: 'Prompt',
+        wait: 'Loading...',
+        alert: 'Attention'
+      }
     }
-    Ext.MessageBox.titleText = {
-      confirm: 'Confirm',
-      prompt: 'Prompt',
-      wait: 'Loading...',
-      alert: 'Attention'
-    }
-  }
-})
+  })
+}

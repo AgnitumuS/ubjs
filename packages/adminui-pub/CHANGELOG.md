@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - UBGrayTheme now use font-size (14px) and font-family (Segoe UI) defined on body level
 - all "bold" weights changed to 600 (more lighter)
 - [normalize.css](https://github.com/necolas/normalize.css/) added
+- Tab borders is set to `1 1 1 1`
 
 
 ## [5.1.4]
