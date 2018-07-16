@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.29]
+### Changed
+- org_staffunit.parentID.allowNull is set to **false** (all staffs should be assigned either to organization or to department)
+
 ## [5.0.24]
 ### Added
-- `org_employyee` add new attributes (**lastNameObj, firstNameObj, middleNameObj, shortFIOObj, fullFIOObj, applyObj**) -  Describes how to treat to this person in objective case
+- `org_employyee` add new attributes (**lastNameObj, firstNameObj, middleNameObj, shortFIOObj, fullFIOObj, applyObj**)
+ describes how to treat to this person in objective case
 
 ## [5.0.23]
 ### Fixed
