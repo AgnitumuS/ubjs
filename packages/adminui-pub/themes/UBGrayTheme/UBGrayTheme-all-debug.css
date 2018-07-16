@@ -4673,7 +4673,7 @@ div.x-editor {
   border: 0;
   width: 0;
   height: 0;
-  line-height: 0px;
+  line-height: 0;
 }
 
 /* line 17, ../../../../ext/packages/ext-theme-base/sass/src/toolbar/Toolbar.scss */
@@ -4731,7 +4731,6 @@ div.x-editor {
   padding-left: 20px;
   white-space: nowrap;
   color: #000;
-  font: normal 12px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   border: 1px solid;
   border-color: #ddd #bbb #bbb #ddd;
   background-color: #fff;
@@ -5124,7 +5123,7 @@ the height of a multi-line element */
 
 /* line 8, ../../../../ext/packages/ext-theme-base/sass/src/view/BoundList.scss */
 .x-strict .x-ie9 .x-boundlist-list-ct {
-  min-height: 0\%;
+  min-height: 0;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/picker/Date.scss */
@@ -5606,7 +5605,7 @@ td.x-grid-rowwrap .x-grid-cell {
 /* line 22, ../../../../ext/packages/ext-theme-base/sass/src/menu/Menu.scss */
 .x-menu-icon-separator {
   position: absolute;
-  top: 0px;
+  top: 0;
   z-index: 0;
   height: 100%;
   overflow: hidden;
@@ -5884,8 +5883,6 @@ a.x-tab {
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/Component.scss */
 .x-body {
   color: black;
-  font-size: 13px;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   background: white;
 }
 
@@ -5905,18 +5902,18 @@ a.x-tab {
   position: absolute;
   top: -10px;
   left: -10px;
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
 }
 
 /* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
 .x-focus-frame {
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   z-index: 100000000;
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
 }
 
 /* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
@@ -5925,8 +5922,8 @@ a.x-tab {
 .x-focus-frame-left,
 .x-focus-frame-right {
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
 }
 
 /* line 28, ../../../../ext/packages/ext-theme-neutral/sass/src/FocusManager.scss */
@@ -5967,7 +5964,6 @@ a.x-tab {
   padding: 0;
   background-color: transparent;
   color: #666666;
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 /* line 39, ../../../../ext/packages/ext-theme-neutral/sass/src/LoadMask.scss */
@@ -6044,9 +6040,7 @@ a.x-tab {
 /* line 112, ../../../../ext/packages/ext-theme-neutral/sass/src/ProgressBar.scss */
 .x-progress-default .x-progress-text {
   color: #666666;
-  font-weight: bold;
-  font-size: 13px;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   text-align: center;
   line-height: 20px;
 }
@@ -7354,11 +7348,11 @@ a.x-tab {
 .x-nbr .x-btn-default-small {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -7475,9 +7469,7 @@ a.x-tab {
 /* */
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-small .x-btn-inner {
-  font-size: 12px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #0d47a1;
   padding: 0 5px;
 }
@@ -7834,11 +7826,11 @@ a.x-tab {
 .x-nbr .x-btn-default-medium {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -7956,8 +7948,7 @@ a.x-tab {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-medium .x-btn-inner {
   font-size: 14px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #0d47a1;
   padding: 0 8px;
 }
@@ -8314,11 +8305,11 @@ a.x-tab {
 .x-nbr .x-btn-default-large {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -8436,8 +8427,7 @@ a.x-tab {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large .x-btn-inner {
   font-size: 16px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #0d47a1;
   padding: 0 10px;
 }
@@ -8794,11 +8784,11 @@ a.x-tab {
 .x-nbr .x-btn-default-toolbar-small {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -8903,9 +8893,8 @@ a.x-tab {
 
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small .x-btn-inner {
-  font-size: 12px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  /*font-size: 12px;*/
+  font-weight: 600;
   color: #2f7c94;
   padding: 0 5px;
 }
@@ -9259,11 +9248,11 @@ a.x-tab {
 .x-nbr .x-btn-default-toolbar-medium {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -9369,8 +9358,7 @@ a.x-tab {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-medium .x-btn-inner {
   font-size: 14px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #2f7c94;
   padding: 0 8px;
 }
@@ -9724,11 +9712,11 @@ a.x-tab {
 .x-nbr .x-btn-default-toolbar-large {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -9834,8 +9822,7 @@ a.x-tab {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-large .x-btn-inner {
   font-size: 16px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #2f7c94;
   padding: 0 10px;
 }
@@ -10251,7 +10238,6 @@ a.x-tab {
  */
 /* line 92, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Toolbar.scss */
 .x-toolbar {
-  font-size: 13px;
   border-style: solid;
   padding: 4px 0 4px 8px;
 }
@@ -10266,7 +10252,6 @@ a.x-tab {
   margin: 0 6px 0 4px;
   color: #4c4c4c;
   line-height: 20px;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   font-size: 12px;
   font-weight: normal;
 }
@@ -10308,7 +10293,7 @@ a.x-tab {
 /* line 45, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-default {
   border-color: silver;
-  border-width: 0px;
+  border-width: 0;
   background-image: none;
   background-color: #f0f3f3;
 }
@@ -10560,7 +10545,6 @@ a.x-tab {
 
 /* line 225, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-default {
-  font-size: 13px;
   border: 1px solid #cacaca;
 }
 
@@ -10587,9 +10571,7 @@ a.x-tab {
 /* line 273, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-text-container-default {
   color: #06183d;
-  font-size: 13px;
-  font-weight: bold;
-  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: 600;
   line-height: 15px;
   padding: 1px 0 0;
   text-transform: none;
@@ -10600,10 +10582,8 @@ a.x-tab {
   background: white;
   border-color: #e7e7e7;
   color: black;
-  font-size: 13px;
   font-weight: normal;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
-  border-width: 0px;
+  border-width: 0;
   border-style: solid;
 }
 
@@ -10769,12 +10749,11 @@ a.x-tab {
 /* line 219, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-default-framed {
   border-color: #e7e7e7;
-  padding: 0px;
+  padding: 0;
 }
 
 /* line 225, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-default-framed {
-  font-size: 13px;
   border: 1px solid #e7e7e7;
 }
 
@@ -10801,9 +10780,7 @@ a.x-tab {
 /* line 273, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-text-container-default-framed {
   color: #06183d;
-  font-size: 13px;
-  font-weight: bold;
-  font-family: arial, helvetica, verdana, sans-serif;
+  font-weight: 600;
   line-height: 15px;
   padding: 1px 0 0;
   text-transform: none;
@@ -10814,9 +10791,7 @@ a.x-tab {
   background: #fafbfb;
   border-color: #e7e7e7;
   color: black;
-  font-size: 13px;
   font-weight: normal;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   border-width: 1px;
   border-style: solid;
 }
@@ -11113,7 +11088,7 @@ a.x-tab {
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 3px 3px 3px 3px;
-  border-width: 0px;
+  border-width: 0;
   border-style: solid;
   background-color: #323232;
 }
@@ -11127,11 +11102,11 @@ a.x-tab {
 .x-nbr .x-tip-default {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -11227,7 +11202,7 @@ a.x-tab {
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tip-default-mc {
-  padding: 0px 0px 0px 0px;
+  padding: 0 0 0 0;
 }
 
 /* line 439, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -11273,15 +11248,13 @@ a.x-tab {
 /* line 161, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
 .x-tip-header-text-container-default {
   color: #fafafa;
-  font-size: 13px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 /* line 167, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
 .x-tip-body-default {
   padding: 3px;
   color: #fafafa;
-  font-size: 13px;
   font-weight: normal;
 }
 /* line 172, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
@@ -11297,7 +11270,7 @@ a.x-tab {
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 3px 3px 3px 3px;
-  border-width: 0px;
+  border-width: 0;
   border-style: solid;
   background-color: #323232;
 }
@@ -11311,11 +11284,11 @@ a.x-tab {
 .x-nbr .x-tip-form-invalid {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -11411,7 +11384,7 @@ a.x-tab {
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tip-form-invalid-mc {
-  padding: 0px 0px 0px 0px;
+  padding: 0 0 0 0;
 }
 
 /* line 439, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -11457,15 +11430,13 @@ a.x-tab {
 /* line 161, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
 .x-tip-header-text-container-form-invalid {
   color: #fafafa;
-  font-size: 13px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 /* line 167, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
 .x-tip-body-form-invalid {
   padding: 3px 3px 3px 22px;
   color: #fafafa;
-  font-size: 13px;
   font-weight: normal;
 }
 /* line 172, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
@@ -11535,9 +11506,9 @@ a.x-tab {
 /* line 101, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-default {
   border-color: #ecf0f6;
-  -webkit-box-shadow: white 0 1px 0px 0 inset, white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
-  -moz-box-shadow: white 0 1px 0px 0 inset, white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
-  box-shadow: white 0 1px 0px 0 inset, white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+  -webkit-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
+  -moz-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
+  box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
 }
 
 /* line 110, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
@@ -11545,12 +11516,12 @@ a.x-tab {
   padding: 4px 5px;
   line-height: 16px;
   background: #ecf0f6;
-  -moz-border-radius-topleft: 0px;
-  -webkit-border-top-left-radius: 0px;
-  border-top-left-radius: 0px;
-  -moz-border-radius-topright: 0px;
-  -webkit-border-top-right-radius: 0px;
-  border-top-right-radius: 0px;
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-topright: 0;
+  -webkit-border-top-right-radius: 0;
+  border-top-right-radius: 0;
 }
 /* line 121, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-header-default .x-tool-img {
@@ -11560,7 +11531,6 @@ a.x-tab {
 
 /* line 132, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-header-text-container-default {
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   line-height: 16px;
   color: #666666;
 }
@@ -11581,7 +11551,7 @@ a.x-tab {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 0px 1px 0px 1px;
+  padding: 0 1px 0 1px;
   border-width: 3px;
   border-style: solid;
   background-color: white;
@@ -11596,11 +11566,11 @@ a.x-tab {
 .x-nbr .x-btn-group-default-framed {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -11696,7 +11666,7 @@ a.x-tab {
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-group-default-framed-mc {
-  padding: 0px 1px 0px 1px;
+  padding: 0 1px 0 1px;
 }
 
 /* line 439, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -11722,7 +11692,7 @@ a.x-tab {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 0px 1px 0px 1px;
+  padding: 0 1px 0 1px;
   border-width: 3px;
   border-style: solid;
   background-color: white;
@@ -11737,11 +11707,11 @@ a.x-tab {
 .x-nbr .x-btn-group-default-framed-notitle {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -11837,7 +11807,7 @@ a.x-tab {
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-group-default-framed-notitle-mc {
-  padding: 0px 1px 0px 1px;
+  padding: 0 1px 0 1px;
 }
 
 /* line 439, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -11859,9 +11829,9 @@ a.x-tab {
 /* line 101, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-default-framed {
   border-color: #ecf0f6;
-  -webkit-box-shadow: white 0 1px 0px 0 inset, white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
-  -moz-box-shadow: white 0 1px 0px 0 inset, white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
-  box-shadow: white 0 1px 0px 0 inset, white 0 -1px 0px 0 inset, white -1px 0 0px 0 inset, white 1px 0 0px 0 inset;
+  -webkit-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
+  -moz-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
+  box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
 }
 
 /* line 110, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
@@ -11884,7 +11854,6 @@ a.x-tab {
 
 /* line 132, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-header-text-container-default-framed {
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   line-height: 16px;
   color: #666666;
 }
@@ -12033,11 +12002,11 @@ a.x-tab {
 /* line 189, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-default {
   border-color: #d7dada;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
 }
 
 /* line 210, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
@@ -12047,14 +12016,11 @@ a.x-tab {
   border-style: solid;
   background: #fafbfb;
   color: black;
-  font-size: 13px;
   font-weight: normal;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 /* line 224, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-header-default {
-  font-size: 13px;
   border-color: #d7dada;
   zoom: 1;
   background-color: #d7dada;
@@ -12084,10 +12050,8 @@ a.x-tab {
 /* line 251, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-header-text-container-default {
   color: #06183d;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 15px;
-  font-family: arial, helvetica, verdana, sans-serif;
-  font-size: 13px;
   padding: 1px 0 0;
   text-transform: none;
 }
@@ -12151,7 +12115,7 @@ a.x-tab {
 
 /* line 499, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-header-default {
-  border-width: 0px !important;
+  border-width: 0 !important;
 }
 
 /* line 509, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
@@ -12162,126 +12126,125 @@ a.x-tab {
 /* line 2, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-l {
   border-left-color: #d7dada !important;
-  border-left-width: 0px !important;
+  border-left-width: 0 !important;
 }
 
 /* line 6, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-b {
   border-bottom-color: #d7dada !important;
-  border-bottom-width: 0px !important;
+  border-bottom-width: 0 !important;
 }
 
 /* line 10, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-bl {
   border-bottom-color: #d7dada !important;
-  border-bottom-width: 0px !important;
+  border-bottom-width: 0 !important;
   border-left-color: #d7dada !important;
-  border-left-width: 0px !important;
+  border-left-width: 0 !important;
 }
 
 /* line 16, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-r {
   border-right-color: #d7dada !important;
-  border-right-width: 0px !important;
+  border-right-width: 0 !important;
 }
 
 /* line 20, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-rl {
   border-right-color: #d7dada !important;
-  border-right-width: 0px !important;
+  border-right-width: 0 !important;
   border-left-color: #d7dada !important;
-  border-left-width: 0px !important;
+  border-left-width: 0 !important;
 }
 
 /* line 26, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-rb {
   border-right-color: #d7dada !important;
-  border-right-width: 0px !important;
+  border-right-width: 0 !important;
   border-bottom-color: #d7dada !important;
-  border-bottom-width: 0px !important;
+  border-bottom-width: 0 !important;
 }
 
 /* line 32, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-rbl {
   border-right-color: #d7dada !important;
-  border-right-width: 0px !important;
+  border-right-width: 0 !important;
   border-bottom-color: #d7dada !important;
-  border-bottom-width: 0px !important;
+  border-bottom-width: 0 !important;
   border-left-color: #d7dada !important;
-  border-left-width: 0px !important;
+  border-left-width: 0 !important;
 }
 
 /* line 40, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-t {
   border-top-color: #d7dada !important;
-  border-top-width: 0px !important;
+  border-top-width: 0 !important;
 }
 
 /* line 44, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-tl {
   border-top-color: #d7dada !important;
-  border-top-width: 0px !important;
+  border-top-width: 0 !important;
   border-left-color: #d7dada !important;
-  border-left-width: 0px !important;
+  border-left-width: 0 !important;
 }
 
 /* line 50, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-tb {
   border-top-color: #d7dada !important;
-  border-top-width: 0px !important;
+  border-top-width: 0 !important;
   border-bottom-color: #d7dada !important;
-  border-bottom-width: 0px !important;
+  border-bottom-width: 0 !important;
 }
 
 /* line 56, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-tbl {
   border-top-color: #d7dada !important;
-  border-top-width: 0px !important;
+  border-top-width: 0 !important;
   border-bottom-color: #d7dada !important;
-  border-bottom-width: 0px !important;
+  border-bottom-width: 0 !important;
   border-left-color: #d7dada !important;
-  border-left-width: 0px !important;
+  border-left-width: 0 !important;
 }
 
 /* line 64, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-tr {
   border-top-color: #d7dada !important;
-  border-top-width: 0px !important;
+  border-top-width: 0 !important;
   border-right-color: #d7dada !important;
-  border-right-width: 0px !important;
+  border-right-width: 0 !important;
 }
 
 /* line 70, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-trl {
   border-top-color: #d7dada !important;
-  border-top-width: 0px !important;
+  border-top-width: 0 !important;
   border-right-color: #d7dada !important;
-  border-right-width: 0px !important;
+  border-right-width: 0 !important;
   border-left-color: #d7dada !important;
-  border-left-width: 0px !important;
+  border-left-width: 0 !important;
 }
 
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-trb {
   border-top-color: #d7dada !important;
-  border-top-width: 0px !important;
+  border-top-width: 0 !important;
   border-right-color: #d7dada !important;
-  border-right-width: 0px !important;
+  border-right-width: 0 !important;
   border-bottom-color: #d7dada !important;
-  border-bottom-width: 0px !important;
+  border-bottom-width: 0 !important;
 }
 
 /* line 86, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/border-management.scss */
 .x-window-default-outer-border-trbl {
   border-color: #d7dada !important;
-  border-width: 0px !important;
+  border-width: 0 !important;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-form-invalid-under {
   padding: 2px 2px 2px 20px;
   color: #cf4c35;
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   line-height: 16px;
   background: no-repeat 0 2px;
   background-image: url(images/form/exclamation.png);
@@ -12304,12 +12267,13 @@ div.x-lbl-top-err-icon {
 /* line 26, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-form-item-label {
   color: #818181;
-  font: bold 13px/17px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  line-height: 17px;
   margin-top: 7px;
 }
 /* line 31, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-toolbar-item .x-form-item-label {
-  font: normal 13px/17px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  line-height: 17px;
   margin-top: 6px;
 }
 
@@ -12338,12 +12302,12 @@ div.x-lbl-top-err-icon {
 /* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Base.scss */
 .x-form-item,
 .x-form-field {
-  font: 13px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 }
 /* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Base.scss */
 .x-toolbar-item .x-form-item, .x-toolbar-item
 .x-form-field {
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+
 }
 
 /* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Base.scss */
@@ -12426,7 +12390,7 @@ textarea.x-form-empty-field {
 
 /* line 11, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Display.scss */
 .x-form-display-field {
-  font: normal 13px/17px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  line-height: 17px;
   color: black;
   margin-top: 7px;
 }
@@ -12515,11 +12479,12 @@ textarea.x-form-empty-field {
 /* line 40, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Checkbox.scss */
 .x-form-cb-label {
   margin-top: 7px;
-  font: bold 13px/17px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  line-height: 17px;
 }
 /* line 43, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Checkbox.scss */
 .x-toolbar-item .x-form-cb-label {
-  font: normal 13px/17px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  line-height: 17px;
   margin-top: 6px;
 }
 
@@ -12607,7 +12572,6 @@ textarea.x-form-empty-field {
 
 /* line 41, ../../../../ext/packages/ext-theme-neutral/sass/src/form/FieldSet.scss */
 .x-fieldset-header-text {
-  font: 14px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #2196f3;
   padding: 1px 0;
 }
@@ -12843,7 +12807,6 @@ div.x-form-spinner-down {
 .x-toolbar-item div.x-form-spinner-up,
 .x-toolbar-item div.x-form-spinner-down {
   background-image: url(images/form/spinner-small.png);
-  height: 13px;
 }
 /* line 45, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Spinner.scss */
 .x-toolbar-item .x-form-spinner-down {
@@ -12898,7 +12861,7 @@ div.x-form-spinner-down {
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
 .x-boundlist {
-  border-width: 0px;
+  border-width: 0;
   border-style: solid;
   border-color: #e1e1e1;
   background: white;
@@ -12912,7 +12875,6 @@ div.x-form-spinner-down {
 /* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/view/BoundList.scss */
 .x-boundlist-item {
   padding: 0 6px;
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   line-height: 30px;
   cursor: pointer;
   cursor: hand;
@@ -13021,7 +12983,7 @@ a.x-datepicker-arrow:hover {
 .x-datepicker-column-header {
   width: 30px;
   color: black;
-  font: bold 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   text-align: right;
   background-image: none;
   background-color: white;
@@ -13044,7 +13006,6 @@ a.x-datepicker-arrow:hover {
 /* line 128, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 .x-datepicker-date {
   padding: 0 7px 0 0;
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   color: black;
   cursor: pointer;
   line-height: 23px;
@@ -13064,7 +13025,7 @@ a.x-datepicker-date:hover {
 /* line 146, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 .x-datepicker-selected .x-datepicker-date {
   background-color: #ecf2fd;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 /* line 152, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
@@ -13138,7 +13099,6 @@ a.x-datepicker-date:hover {
 /* line 233, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 .x-monthpicker-item {
   margin: 5px 0 5px;
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   text-align: center;
 }
 
@@ -13418,13 +13378,11 @@ a.x-color-picker-item:hover {
 
 /* line 95, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
 .x-html-editor-tb .x-font-select {
-  font-size: 13px;
   font-family: inherit;
 }
 
 /* line 100, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
 .x-html-editor-wrap textarea {
-  font: 13px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: white;
   resize: none;
 }
@@ -13432,7 +13390,7 @@ a.x-color-picker-item:hover {
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Table.scss */
 .x-grid-body {
   background: white;
-  border-width: 0px;
+  border-width: 0;
   border-style: solid;
   border-color: silver;
 }
@@ -13442,13 +13400,12 @@ a.x-color-picker-item:hover {
   padding: 10px;
   color: gray;
   background-color: white;
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 /* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Table.scss */
 .x-grid-cell {
   color: "none";
-  font: normal 13px/15px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  line-height: 15px;
   background-color: white;
   border-color: #ededed;
   border-style: solid;
@@ -13579,7 +13536,7 @@ a.x-color-picker-item:hover {
 .x-grid-drop-indicator {
   position: absolute;
   height: 1px;
-  line-height: 0px;
+  line-height: 0;
   background-color: #77BC71;
   overflow: visible;
   pointer-events: none;
@@ -13672,7 +13629,6 @@ a.x-color-picker-item:hover {
 .x-column-header {
   border-right: 1px none #d7d5d5;
   color: #7f7f7e;
-  font: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-image: none;
   background-color: #e0e4e4;
 }
@@ -13847,7 +13803,8 @@ a.x-color-picker-item:hover {
 /* line 30, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/Grouping.scss */
 .x-grid-group-title {
   color: #666666;
-  font: bold 13px/15px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  line-height: 15px;
 }
 
 /* line 36, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/Grouping.scss */
@@ -13872,7 +13829,7 @@ a.x-color-picker-item:hover {
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/RowBody.scss */
 .x-grid-rowbody {
-  font: normal 13px/15px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  line-height: 15px;
   padding: 5px 10px 5px 10px;
 }
 
@@ -13905,7 +13862,6 @@ a.x-color-picker-item:hover {
   border-color: #ededed;
   background-color: transparent !important;
   border-top-width: 0;
-  font: normal 13px/15px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
 }
 
 /* line 26, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/Summary.scss */
@@ -13937,7 +13893,6 @@ a.x-color-picker-item:hover {
 
 /* line 4, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/plugin/Editing.scss */
 .x-grid-editor .x-form-text {
-  font: normal 13px/15px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   padding: 4px 9px 3px 9px;
   height: 24px;
 }
@@ -13972,7 +13927,6 @@ a.x-color-picker-item:hover {
 }
 /* line 64, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/plugin/Editing.scss */
 .x-grid-editor .x-form-display-field {
-  font: normal 13px/15px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   padding: 5px 10px 4px 10px;
   text-overflow: ellipsis;
 }
@@ -14054,11 +14008,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-grid-row-editor-buttons-default-bottom {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -14202,11 +14156,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-grid-row-editor-buttons-default-top {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -14373,8 +14327,7 @@ a.x-color-picker-item:hover {
 /* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/layout/container/Accordion.scss */
 .x-accordion-hd .x-panel-header-text-container {
   color: #2196f3;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   text-transform: none;
 }
 
@@ -14599,8 +14552,7 @@ a.x-color-picker-item:hover {
 
 /* line 194, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu-item-text {
-  font: normal 13px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
-  line-height: 33px;
+  line-height: 2.5rem;
   padding-top: 1px;
   color: black;
   cursor: pointer;
@@ -14655,11 +14607,11 @@ a.x-color-picker-item:hover {
 
 /* line 264, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-content-box .x-menu-icon-separator {
-  width: 0px;
+  width: 0;
 }
 /* line 268, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-content-box .x-menu-item-separator {
-  height: 0px;
+  height: 0;
 }
 
 /* line 277, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
@@ -14674,7 +14626,6 @@ a.x-color-picker-item:hover {
 
 /* line 291, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu-item .x-form-item-label {
-  font-size: 13px;
   color: black;
 }
 
@@ -15691,7 +15642,7 @@ a.x-color-picker-item:hover {
   -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 7px 12px 7px 12px;
-  border-width: 0px 0px 0 0px;
+  border-width: 0 0 0 0;
   border-style: solid;
   background-image: none;
   background-color: #f0f3f3;
@@ -15714,11 +15665,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-top {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
   background-image: none;
 }
@@ -15835,20 +15786,11 @@ a.x-color-picker-item:hover {
 /* */
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-bottom {
-  -moz-border-radius-topleft: 0;
-  -webkit-border-top-left-radius: 0;
-  border-top-left-radius: 0;
-  -moz-border-radius-topright: 0;
-  -webkit-border-top-right-radius: 0;
-  border-top-right-radius: 0;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  -webkit-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
   padding: 7px 12px 7px 12px;
-  border-width: 0 0px 0px 0px;
+  border-width: 0 0 0 0;
   border-style: solid;
   background-image: none;
   background-color: #f0f3f3;
@@ -15871,11 +15813,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-bottom {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
   background-image: none;
 }
@@ -16005,7 +15947,7 @@ a.x-color-picker-item:hover {
   -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 7px 12px 7px 12px;
-  border-width: 0px 0px 0 0px;
+  border-width: 0 0 0 0;
   border-style: solid;
   background-image: none;
   background-color: #f0f3f3;
@@ -16028,11 +15970,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-left {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
   background-image: none;
 }
@@ -16162,7 +16104,7 @@ a.x-color-picker-item:hover {
   -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 7px 12px 7px 12px;
-  border-width: 0px 0px 0 0px;
+  border-width: 0 0 0 0;
   border-style: solid;
   background-image: none;
   background-color: #f0f3f3;
@@ -16185,11 +16127,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-right {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
   background-image: none;
 }
@@ -16312,9 +16254,7 @@ a.x-color-picker-item:hover {
 }
 /* line 312, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default .x-tab-inner {
-  font-size: 13px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #676a6c;
   line-height: 16px;
 }
@@ -16362,7 +16302,7 @@ a.x-color-picker-item:hover {
 .x-tab-default-top,
 .x-tab-default-left,
 .x-tab-default-right {
-  border-bottom: 0px solid #f0f3f3;
+  border-bottom: 0 solid #f0f3f3;
   background-image: none;
   background-color: #f0f3f3;
 }
@@ -16375,7 +16315,7 @@ a.x-color-picker-item:hover {
 
 /* line 419, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom {
-  border-top: 0px solid #f0f3f3;
+  border-top: 0 solid #f0f3f3;
   background-image: none;
   background-color: #f0f3f3;
 }
@@ -16480,7 +16420,7 @@ a.x-color-picker-item:hover {
 .x-tab-default-top-active,
 .x-tab-default-left-active,
 .x-tab-default-right-active {
-  border-bottom: 0px solid #f0f3f3;
+  border-bottom: 0 solid #f0f3f3;
   background-image: none;
   background-color: #f0f3f3;
 }
@@ -16493,7 +16433,7 @@ a.x-color-picker-item:hover {
 
 /* line 596, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom-active {
-  border-top: 0px solid #f0f3f3;
+  border-top: 0 solid #f0f3f3;
   background-image: none;
   background-color: #f0f3f3;
 }
@@ -17200,7 +17140,6 @@ a.x-color-picker-item:hover {
 
 /* line 222, ../../../../ext/packages/ext-theme-neutral/sass/src/tree/Panel.scss */
 .x-tree-node-text {
-  *font-size: 13px;
   padding-left: 4px;
 }
 
@@ -17232,7 +17171,7 @@ a.x-color-picker-item:hover {
 /* line 17, ../../../../ext/packages/ext-theme-neutral/sass/src/tree/ViewDropZone.scss */
 .x-tree-ddindicator {
   height: 1px;
-  border-width: 1px 0px 0px;
+  border-width: 1px 0 0;
   border-style: dotted;
   border-color: green;
 }
@@ -17265,11 +17204,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-btn-plain-toolbar-small {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -17375,8 +17314,7 @@ a.x-color-picker-item:hover {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-small .x-btn-inner {
   font-size: 12px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #2f7c94;
   padding: 0 5px;
 }
@@ -17730,11 +17668,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-btn-plain-toolbar-medium {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -17840,8 +17778,7 @@ a.x-color-picker-item:hover {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-medium .x-btn-inner {
   font-size: 14px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #2f7c94;
   padding: 0 8px;
 }
@@ -18195,11 +18132,11 @@ a.x-color-picker-item:hover {
 .x-nbr .x-btn-plain-toolbar-large {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  -ms-border-radius: 0px;
-  -o-border-radius: 0px;
-  border-radius: 0px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
   background-color: transparent;
 }
 
@@ -18305,8 +18242,7 @@ a.x-color-picker-item:hover {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-large .x-btn-inner {
   font-size: 16px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   color: #2f7c94;
   padding: 0 10px;
 }
@@ -18700,7 +18636,6 @@ a.x-color-picker-item:hover {
 
 /* line 225, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-light {
-  font-size: 13px;
   border: 1px solid #cacaca;
 }
 /* line 232, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
@@ -18731,9 +18666,7 @@ a.x-color-picker-item:hover {
 /* line 273, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-text-container-light {
   color: #666666;
-  font-size: 13px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   line-height: 15px;
   padding: 1px 0 0;
   text-transform: none;
@@ -18744,10 +18677,8 @@ a.x-color-picker-item:hover {
   background: white;
   border-color: #e7e7e7;
   color: black;
-  font-size: 13px;
   font-weight: normal;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
-  border-width: 0px;
+  border-width: 0;
   border-style: solid;
 }
 
@@ -18913,12 +18844,11 @@ a.x-color-picker-item:hover {
 /* line 219, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-light-framed {
   border-color: #ecf0f6;
-  padding: 0px;
+  padding: 0;
 }
 
 /* line 225, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-light-framed {
-  font-size: 13px;
   border: 1px solid #ecf0f6;
 }
 /* line 232, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
@@ -18949,9 +18879,7 @@ a.x-color-picker-item:hover {
 /* line 273, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-text-container-light-framed {
   color: #666666;
-  font-size: 13px;
-  font-weight: bold;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 600;
   line-height: 15px;
   padding: 1px 0 0;
   text-transform: none;
@@ -18962,9 +18890,7 @@ a.x-color-picker-item:hover {
   background: #fafbfb;
   border-color: #ecf0f6;
   color: black;
-  font-size: 13px;
   font-weight: normal;
-  font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
   border-width: 1px;
   border-style: solid;
 }
@@ -19447,7 +19373,7 @@ h6,
 
 /* line 20, ../../sass/src/button/Button.scss */
 .ub-raisen-btn .x-btn-wrap {
-  box-shadow: rgba(0, 0, 0, 0.259) 0px 2px 5px 0px;
+  box-shadow: rgba(0, 0, 0, 0.259) 0 2px 5px 0;
   padding: 6px;
 }
 
@@ -19458,7 +19384,7 @@ h6,
 
 /* line 28, ../../sass/src/button/Button.scss */
 .x-btn {
-  text-transform: uppercase;
+  
 }
 
 /* line 32, ../../sass/src/button/Button.scss */
@@ -19499,12 +19425,12 @@ h6,
 
 /* line 6, ../../sass/src/panel/Panel.scss */
 .ub-toolbar-header .x-header-text-container {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 /* line 11, ../../sass/src/panel/Panel.scss */
 .x-panel-default-framed {
-  padding: 0px;
+  padding: 0;
 }
 
 /* line 15, ../../sass/src/panel/Panel.scss */
@@ -19512,17 +19438,16 @@ h6,
   color: #2196f3;
   background: transparent !important;
   cursor: pointer;
-  font: 14px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* line 22, ../../sass/src/panel/Panel.scss */
 .accordion-header .x-panel-header-text-container-default {
-  font: 14px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 }
 
 /* line 28, ../../sass/src/panel/Panel.scss */
 .x-form-form-item td {
-  border-top: 0px solid transparent;
+  border-top: 0 solid transparent;
 }
 
 /* line 1, ../../sass/src/tip/Tip.scss */
@@ -19550,7 +19475,7 @@ h6,
 /* line 1, ../../sass/src/window/Window.scss */
 .x-window-default {
   border-color: white;
-  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2), 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
 }
 
 /* line 6, ../../sass/src/window/Window.scss */
@@ -19561,25 +19486,22 @@ h6,
 /* line 1, ../../sass/src/form/Labelable.scss */
 .x-form-item-label {
   color: #818181;
-  font: bold 13px/17px "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  margin-top: 7px;
+  line-height: 17px;
   word-break: break-word;
-  font-weight: bold;
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-weight: 600;
   margin-bottom: 5px;
   margin-top: 5px;
 }
 /* line 6, ../../sass/src/form/Labelable.scss */
 .x-toolbar-item .x-form-item-label {
-  font: normal 13px/17px "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+  line-height: 17px;
   margin-top: 6px;
 }
 
 /* line 23, ../../sass/src/form/Labelable.scss */
 .x-toolbar .x-form-item-label {
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 
 /*
@@ -19648,14 +19570,14 @@ h6,
 
 /* line 27, ../../sass/src/form/field/Text.scss */
 .x-form-trigger-wrap .x-form-field-text {
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 
 /* line 32, ../../sass/src/form/field/Text.scss */
 .x-toolbar .x-form-text {
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
   height: 26px;
 }
 
@@ -19667,7 +19589,7 @@ h6,
 
 /* line 1, ../../sass/src/form/field/Checkbox.scss */
 .x-form-cb-label {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 /* line 5, ../../sass/src/form/field/Checkbox.scss */
@@ -19725,9 +19647,7 @@ h6,
 /* line 1, ../../sass/src/form/Label.scss */
 .ub-label {
   word-break: break-word;
-  font-weight: bold;
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-weight: 600;
 }
 
 /* line 1, ../../sass/src/form/field/Radio.scss */
@@ -19806,8 +19726,8 @@ h6,
 
 /* line 60, ../../sass/src/form/field/Trigger.scss */
 .x-toolbar .x-form-trigger-wrap {
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
   height: 26px !important;
 }
 /* line 64, ../../sass/src/form/field/Trigger.scss */
@@ -19832,12 +19752,12 @@ h6,
 
 /* line 5, ../../sass/src/form/field/Spinner.scss */
 .x-form-spinner-down {
-  background-position: 0px -10px !important;
+  background-position: 0 -10px !important;
 }
 
 /* line 9, ../../sass/src/form/field/Spinner.scss */
 .x-form-trigger-wrap-focus .x-form-spinner-down {
-  background-position: 0px -10px !important;
+  background-position: 0 -10px !important;
 }
 
 /* line 12, ../../sass/src/form/field/Spinner.scss */
@@ -19858,7 +19778,7 @@ h6,
 
 /* line 10, ../../sass/src/view/BoundList.scss */
 .x-boundlist {
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.137) 0px 2px 2px 0px, rgba(0, 0, 0, 0.118) 0px 1px 5px 0px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.137) 0 2px 2px 0, rgba(0, 0, 0, 0.118) 0 1px 5px 0;
 }
 
 /* line 15, ../../sass/src/view/BoundList.scss */
@@ -19912,9 +19832,7 @@ h6,
 .x-column-header {
   border-right: 1px none #d7d5d5;
   color: #7f7f7e;
-  font: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  font-size: 13px;
+  font-weight: 600;
   background-image: none;
   background-color: #e0e4e4;
 }
@@ -19968,7 +19886,7 @@ h6,
 /* line 40, ../../sass/src/menu/Menu.scss */
 .x-menu {
   border-color: white;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.137) 0px 2px 2px 0px, rgba(0, 0, 0, 0.118) 0px 1px 5px 0px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 3px 1px -2px, rgba(0, 0, 0, 0.137) 0 2px 2px 0, rgba(0, 0, 0, 0.118) 0 1px 5px 0;
 }
 
 /* line 1, ../../sass/src/resizer/Resizer.scss */
@@ -19986,9 +19904,10 @@ h6,
 }
 
 /* line 7, ../../sass/src/tab/Tab.scss */
-.x-tab-default {
+/* .x-tab-default {
   text-transform: uppercase;
 }
+*/
 
 /* line 13, ../../sass/src/tab/Tab.scss */
 .x-tab-default .x-tab-close-btn {

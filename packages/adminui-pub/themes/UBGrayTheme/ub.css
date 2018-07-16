@@ -1,6 +1,6 @@
 
 .combo-search-match {
-    font-weight: bold;
+    font-weight: 600;
     background-color: #FAFAB1;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .x-grid-row-summary .x-grid-cell-inner {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 11px;
     border-width: 1px 0 0 0;
     border-color: #a6a6a6;
@@ -298,12 +298,12 @@
 div.CodeMirror span.CodeMirror-matchingbracket {
     color: black !important;
     background-color: #2f2;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 div.CodeMirror span.CodeMirror-nonmatchingbracket {
     color: #f22 !important;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .CodeMirror-completions {
@@ -311,11 +311,11 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .docItemNumber {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .docItemResponsExecutorLabel {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .multiline-content {
@@ -516,7 +516,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .ub-login-label {
-    font-family: Arial;
     color: #1584c9;
 }
 
@@ -710,25 +709,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     border-left: 5px #a9a9a9 solid;
 }
 
-#app-header {
-    color: #596F8F;
-    font-size: 22px;
-    font-weight: 200;
-    padding: 8px 15px;
-    text-shadow: 0 1px 0 #fff;
-}
-
-#app-msg {
-    background: #D1DDEF;
-    border: 1px solid #ACC3E4;
-    padding: 3px 15px;
-    font-weight: bold;
-    font-size: 13px;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
 .x-panel-ghost {
     z-index: 1;
 }
@@ -798,7 +778,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .ub-view-marked-field-label {
     color: #f00;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .ub-header-menu-container {
@@ -838,9 +818,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .ub-header-menu-item .x-btn-default-toolbar-small .x-btn-inner {
-    font-size: 12px;
-    font-weight: bold;
-    font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+    font-weight: 600;
     /* color: rgba(255, 255, 255, 0.87); */
     color: #0d47a1;
     /* padding: 0 5px; */
@@ -909,7 +887,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .leftMenu .ub_tree_text {
     color: #a7b1c2;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .leftMenu .x-grid-tree-node-expanded .ub_tree_text{
@@ -1051,7 +1029,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 /*}*/
 
 .ub_tree_text_group {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .ub_tree_icon,
@@ -1087,7 +1065,6 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 
 .ub_tree_text {
     width: 100%;
-    font-size: 13px;
     padding-left: 3px;
 }
 
@@ -1133,7 +1110,6 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 
 .ub-desktop-button .x-btn-inner {
     color: #ffffff;
-    font-size: 13px;
 }
 
 .ub-desktop-button-image {
@@ -1214,7 +1190,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 
 .ub-error-win-header {
     padding: 7px 5px;
-    font-weight: bold;
+    font-weight: 600;
     min-height: 10px;
 
     margin-left: 20px;
@@ -1230,7 +1206,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
     border-width: 0;
     background-color: white;
     color: black;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 14px;
     border-radius: 3px;
     cursor: pointer;
@@ -1373,7 +1349,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 
 .ub-total-row {
     color: rgb(61, 60, 66);
-    font-weight: bold;
+    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -1606,7 +1582,7 @@ input.x-form-field-text{
 }
 
 .x-grid-row-bold .x-grid-cell{
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .x-label-required span[role=separator]::after {

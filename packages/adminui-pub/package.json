@@ -18,7 +18,7 @@
     "build": "npm run build:prep && npm run build:js && npm run build:css && npm run build:adminui",
     "build:prep": "shx mkdir -p ./dist && shx rm -f ./dist/ext-all.*",
     "build:js": "uglifyjs ext-all-debug-w-comments.js -o ./dist/ext-all.min.js --screw-ie8 --prefix relative --compress --mangle",
-    "build:css": "cleancss -o ./ub-css-all.css ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css ./_src/css/ub-badge.css",
+    "build:css": "cleancss -o ./ub-css-all.css ./_src/css/normalize.css ./_src/css/ub-body.css ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css ./_src/css/ub-badge.css",
     "build:adminui": "cross-env NODE_ENV=production webpack",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",

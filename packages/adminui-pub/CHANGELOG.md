@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - adminui-pub locales can be injected to environments what do not use ExtJS
 
+### Changed
+- UBGrayTheme now use font-size (14px) and font-family (Segoe UI) defined on body level
+- all "bold" weights changed to 600 (more lighter)
+- [normalize.css](https://github.com/necolas/normalize.css/) added
+
+
 ## [5.1.4]
 ### Changed
 - for a "required" attributes changed style to display the asterisk after delimiter, not before and align on the right side
