@@ -590,64 +590,6 @@ UB.i18nExtend({
   'Mixins': 'Mixins',
   'enabled': 'enabled',
 
-  // serever Errors
-    /*
-     ubErrNotImplementedErrnum: 'ubErrNotImplementedErrnum',
-     ubErrRollbackedErrnum: 'ubErrRollbackedErrnum',
-     ubErrNotExecutedErrnum: 'ubErrNotExecutedErrnum',
-     ubErrInvaliddataforrunmethod: 'ubErrInvaliddataforrunmethod',
-     ubErrInvaliddataforrunmethodlist: 'ubErrInvaliddataforrunmethodlist',
-     ubErrNoMethodParameter: 'ubErrNoMethodParameter',
-     ubErrMethodNotExist: 'ubErrMethodNotExist',
-     ubErrNoEntityParameter: 'ubErrNoEntityParameter',
-     ubErrNoSuchRecord: 'ubErrNoSuchRecord',
-     ubErrInvalidDocpropFldContent: 'ubErrInvalidDocpropFldContent',
-     ubErrEntityNotExist: 'ubErrEntityNotExist',
-     ubErrAttributeNotExist: 'ubErrAttributeNotExist',
-     ubErrNotexistEntitymethod: 'ubErrNotexistEntitymethod',
-     ubErrInvalidSetdocData: 'ubErrInvalidSetdocData',
-     ubErrSoftlockExist: 'ubErrSoftlockExist',
-     ubErrNoErrorDescription: 'ubErrNoErrorDescription',
-     ubErrUnknownStore: 'ubErrUnknownStore',
-     ubErrObjdatasrcempty: 'ubErrObjdatasrcempty',
-     ubErrObjattrexprbodyempty: 'ubErrObjattrexprbodyempty',
-     ubErrNecessaryfieldNotExist: 'ubErrNecessaryfieldNotExist',
-     ubErrNotexistnecessparam: 'ubErrNotexistnecessparam',
-     ubErrNotexistfieldlist: 'ubErrNotexistfieldlist',
-     ubErrUpdaterecnotfound: 'ubErrUpdaterecnotfound',
-     ubErrNecessaryparamnotexist: 'ubErrNecessaryparamnotexist',
-     ubErrInvalidstoredirs: 'ubErrInvalidstoredirs',
-     ubErrNofileinstore: 'ubErrNofileinstore',
-     ubErrAppnotsupportconnection: 'ubErrAppnotsupportconnection',
-     ubErrAppnotsupportstore: 'ubErrAppnotsupportstore',
-     ubErrDeleterecnotfound: 'ubErrDeleterecnotfound',
-     ubErrNotfoundlinkentity: 'ubErrNotfoundlinkentity',
-     ubErrEntitynotcontainmixinaslink: 'ubErrEntitynotcontainmixinaslink',
-     ubErrEssnotinherfromessaslink: 'ubErrEssnotinherfromessaslink',
-     ubErrInstancedatanameisreadonly: 'ubErrInstancedatanameisreadonly',
-     ubErrManyrecordsforsoftlock: 'ubErrManyrecordsforsoftlock',
-     ubErrNotfoundidentfieldsl: 'ubErrNotfoundidentfieldsl',
-     ubErrInvalidlocktypevalue: 'ubErrInvalidlocktypevalue',
-     ubErrInvalidwherelistinparams: 'ubErrInvalidwherelistinparams',
-     ubErrRecnotlocked: 'ubErrRecnotlocked',
-     ubErrManyrecordsforchecksign: 'ubErrManyrecordsforchecksign',
-     ubErrNotfoundparamnotrootlevel: 'ubErrNotfoundparamnotrootlevel',
-     ubErrCantcreatedirlogmsg: 'ubErrCantcreatedirlogmsg',
-     ubErrCantcreatedirclientmsg: 'ubErrCantcreatedirclientmsg',
-     ubErrConnectionNotExist: 'ubErrConnectionNotExist',
-     ubErrDirectUnityModification: 'ubErrDirectUnityModification',
-     ubErrCantdelrecthisvalueusedinassocrec: 'ubErrCantdelrecthisvalueusedinassocrec',
-     ubErrAssocattrnotfound: 'ubErrAssocattrnotfound',
-     ubErrAttrassociationtoentityisempty: 'ubErrAttrassociationtoentityisempty',
-     ubErrNotfoundconforentityinapp: 'ubErrNotfoundconforentityinapp',
-     ubErrNewversionrecnotfound: 'ubErrNewversionrecnotfound',
-     ubErrElsAccessDenyEntity: 'ubErrElsAccessDenyEntity',
-     ubErrAlsAccessDenyEntityattr: 'ubErrAlsAccessDenyEntityattr',
-     ubErrDatastoreEmptyentity: 'ubErrDatastoreEmptyentity',
-     ubErrElsAccessDeny: 'ubErrElsAccessDeny',
-     ubErrElsNeedAuth: 'ubErrElsNeedAuth',
-     */
-
   dateIsTooEarly: 'Дата має бути більше {0}',
 
     // !!!
@@ -665,6 +607,7 @@ UB.i18nExtend({
  * Updated by dev.ashevchuk@gmail.com
  * 01.09.2009
  */
+if (typeof Ext === 'undefined') return
 Ext.onReady(function () {
   if (Ext.Updater) {
     Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Завантаження...</div>'

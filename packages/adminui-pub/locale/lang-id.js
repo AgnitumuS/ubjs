@@ -584,9 +584,10 @@ UB.i18nExtend({
 })
 
 /**
- * Define missing englist date format settings
+ * Define missing english date format settings
  * By mpv (utf-8 encoding)
  */
+if (typeof Ext === 'undefined') return
 Ext.onReady(function () {
   if (Ext.util.Format) {
     Ext.apply(Ext.util.Format, {

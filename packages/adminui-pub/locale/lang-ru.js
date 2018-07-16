@@ -599,6 +599,7 @@ UB.i18nExtend({
 /**
  * ExtJS Russian translation
  */
+if (typeof Ext === 'undefined') return
 Ext.onReady(function () {
   if (Ext.Updater) {
     Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Идет загрузка...</div>'

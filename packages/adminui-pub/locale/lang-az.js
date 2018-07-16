@@ -596,6 +596,7 @@ UB.i18nExtend({
 /**
  * ExtJS Translation into Azerbaijani
  */
+if (typeof Ext === 'undefined') return
 Ext.onReady(function () {
   var cm = Ext.ClassManager
   var exists = Ext.Function.bind(cm.get, cm)

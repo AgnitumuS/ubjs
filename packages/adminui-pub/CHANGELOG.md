@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Fixed
+- adminui-pub locales can be injected to environments what do not use ExtJS
+
 ## [5.1.4]
 ### Changed
 - for a "required" attributes changed style to display the asterisk after delimiter, not before and align on the right side
