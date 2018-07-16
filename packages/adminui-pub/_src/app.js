@@ -226,6 +226,15 @@ function launchApp () {
        */
       setAllowBlank: function (allowBlank) {
         this.allowBlank = allowBlank
+
+        if (this.labelEl) {
+          if (allowBlank) {
+            this.labelEl.removeCls('x-label-required')
+          } else {
+            this.labelEl.addCls('x-label-required')
+          }
+        }
+
         if (!this.inputEl) {
           return
         }
