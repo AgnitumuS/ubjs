@@ -690,9 +690,9 @@ Ext.define('UB.core.UBCommand', {
   showCommandResult: function (result, options) {
     let me = this
     let parentName = me.detailAttribute
-      ? UB.format(' ({0}: {1})', UB.i18n('filtr'), $App.domainInfo.get(me.entity).attr(me.detailAttribute).caption)
+      ? UB.format(' ({0}: {1})', UB.i18n('Filter'), $App.domainInfo.get(me.entity).attr(me.detailAttribute).caption)
       : ''
-    let history = me.__mip_recordhistory ? ' (' + UB.i18n('istorijaIzmenenij') + ')' : ''
+    let history = me.__mip_recordhistory ? ' (' + UB.i18n('ChangesHistory') + ')' : ''
     let disableAutoShow = result.disableAutoShow
 
     options = options || {}
