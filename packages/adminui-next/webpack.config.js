@@ -5,8 +5,8 @@ const webpack = require('webpack')
 const path = require('path')
 
 /**
-Set NODE_ENV=production for production build
-*/
+ Set NODE_ENV=production for production build
+ */
 if (process.env.NODE_ENV) process.env.NODE_ENV = process.env.NODE_ENV.trim()
 const PRODUCTION = (process.env.NODE_ENV === 'production')
 
@@ -44,13 +44,26 @@ module.exports = {
       }
     }, {
       test: /\.css$/,
-      use: ['style-loader', 'css-loader']
+      use: [
+        {
+          loader: 'style-loader/url',
+          options: {
+            hmr: false
+          }
+        },
+        {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]'
+          }
+        }
+      ]
     }]
   },
   // devtool: 'eval',
   // devtool: 'source-map',
   // devtool: 'cheap-module-source-map',
-  devtool: PRODUCTION ? 'cheap-source-map' : 'eval',
+  devtool: (PRODUCTION ? 'cheap-source-map' : 'eval'),
 
   plugins: [
     new webpack.DefinePlugin({
@@ -67,16 +80,16 @@ module.exports = {
       'screw-ie8': true,
       sourceMap: !PRODUCTION,
       compress: PRODUCTION
-          ? {
-            sequences: true,
-            booleans: true,
-            loops: true,
-            unused: false, // true
-            warnings: !PRODUCTION, // false,
-            drop_console: false, // true,
-            unsafe: true
-          }
-          : false,
+        ? {
+          sequences: true,
+          booleans: true,
+          loops: true,
+          unused: false, // true
+          warnings: !PRODUCTION, // false,
+          drop_console: false, // true,
+          unsafe: true
+        }
+        : false,
       output: {
         ascii_only: true // for TinyMCE
       }

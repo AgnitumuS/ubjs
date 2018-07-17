@@ -5,6 +5,7 @@ window.process = {
 }
 const Vue = require('vue')
 const ElementUI = require('element-ui/lib/index.js')
+require('./dist/adminui-next.css')
 Vue.use(UB)
 // redirect ElementUI localization to UB.i18n
 Vue.use(ElementUI, {
