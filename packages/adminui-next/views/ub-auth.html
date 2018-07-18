@@ -80,25 +80,27 @@
           <hr>
         </div>
 
-        <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
-          <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-        </el-tooltip>
-        <p v-html="$ut('UBAuthHeader', appName)"></p>
-        <el-form-item>
-          <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user" @keyup.enter.native="doUBLogin">
-            <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin">
-            <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}</el-button>
-        </el-form-item>
-        <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
-        <div><a href="#">{{ $ut('UBAuthRegistration') }}</a></div>
+        <div v-if="hasUB()">
+          <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+            <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+          </el-tooltip>
+          <p v-html="$ut('UBAuthHeader', appName)"></p>
+          <el-form-item>
+            <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user" @keyup.enter.native="doUBLogin">
+              <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin">
+              <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}</el-button>
+          </el-form-item>
+          <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
+          <div><a href="#">{{ $ut('UBAuthRegistration') }}</a></div>
+        </div>
       </el-form>
     </div>
     </div>
@@ -134,6 +136,9 @@
     methods: {
       hasNegotiate: function () {
         return this.$UB.connection && (this.$UB.connection.authMethods.indexOf('Negotiate') !== -1)
+      },
+      hasUB: function () {
+        return this.$UB.connection && (this.$UB.connection.authMethods.indexOf('UB') !== -1)
       },
       doNegotiateLogin: function () {
         window.deferred.resolve({
