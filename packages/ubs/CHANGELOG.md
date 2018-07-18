@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.30]
+### Fixed
+- ubs_settings.loadKey & ubs_settings.loadKeys will convert values for keys of type int and number to number using parseInt
+
 ## [5.0.23]
 ### Changed
 - adminUI will await while ubs model finish query to `ubs_setting` entity for UBS.Settings.findByKey work correctly
