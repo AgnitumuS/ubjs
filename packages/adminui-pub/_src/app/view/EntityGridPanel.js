@@ -1529,7 +1529,7 @@ Ext.define('UB.view.EntityGridPanel', {
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faEdit,
         cls: 'edit-action',
-        text: UB.i18n('redaktirovat') + hotKeys[actions.edit].text,
+        text: UB.i18n('Edit') + hotKeys[actions.edit].text,
         eventId: events.edit,
         handler: me.onAction,
         disabled: !me.entity.haveAccessToMethod(methodNames.UPDATE),
