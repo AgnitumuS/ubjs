@@ -61,8 +61,8 @@ async function runServer (opts) {
     /[/\\]\./,
     // Ignore relative, top-level dotfiles as well (e.g. '.gitignore').
     /^\.[^/\\]/,
-    'node_modules/**', todo - node_modules not ignored
-    '.git/**'
+    `node_modules${path.sep}**`,
+    `.git${path.sep}**`
   ]
   let chokidarOpts = {
     ignored: ignoredPaths,
