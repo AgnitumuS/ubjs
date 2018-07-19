@@ -66,9 +66,11 @@ async function runServer (opts) {
   ]
   let chokidarOpts = {
     ignored: ignoredPaths,
-    ignoreInitial: true
+    ignoreInitial: true,
+    depth: opts.depth
   }
   if (opts.poll) chokidarOpts.usePolling = true
+  log('Options', chokidarOpts)
   log('Watching:')
   log(pathsToWatch.join('\n'))
   let watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('all', (event, onPath) => {

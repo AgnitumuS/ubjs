@@ -8,7 +8,8 @@ program
   .option('-u --user [adminUserName]', 'UB user name with admin rights', process.env.UB_USER)
   .option('-p --pwd [password]', 'UB user password', process.env.UB_PWD)
   .option('-host --host [UB host]', 'host UB listen on', 'http://localhost:8881')
-  .option('--poll', 'Use poll', false)
+  .option('--poll', 'Use polling (may leads to high CPU utilization)', false)
+  .option('-d --depth [n]', 'Limits how many levels of subdirectories will be traversed', 3)
   .option('-q, --quiet', 'do not harm console', false)
   .parse(process.argv)
 
@@ -18,7 +19,8 @@ let opts = {
   pwd: program.pwd,
   host: program.host,
   poll: program.poll,
-  quiet: program.quiet
+  quiet: program.quiet,
+  depth: program.depth
 }
 
 server(opts)
