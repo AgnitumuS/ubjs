@@ -595,7 +595,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
   beforeDestroy: function () {
     var me = this
 
-    var ed = tinymce.get(me.getInputId())
+    var ed = window.tinymce && tinymce.get(me.getInputId())
 
     if (ed) ed.destroy(false)
   },

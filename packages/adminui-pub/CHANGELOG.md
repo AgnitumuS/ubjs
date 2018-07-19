@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.1]
+### Fixed
+- skip destroying `tinymce` when it is not defined yet
+
 ## [5.2.0]
 ### Fixed
 - adminui-pub locales can be injected to environments what do not use ExtJS
