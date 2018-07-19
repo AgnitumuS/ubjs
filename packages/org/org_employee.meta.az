@@ -102,6 +102,30 @@
         "facsimile": {
             "caption": "Faksimil",
             "description": "Əməkdaşın imzasının təsviri"
+        },
+        "lastNameObj": {
+            "caption": "Təs. halda soyad",
+            "description": "Təsirlik halda əməkdaşın soyadı"
+        },
+        "firstNameObj": {
+            "caption": "Təs. halda ad",
+            "description": "Təsirlik halda əməkdaşın adı"
+        },
+        "middleNameObj": {
+            "caption": "Təs. halda atasının adı",
+            "description": "Təsirlik halda əməkdaşın atasının adı"
+        },
+        "shortFIOObj": {
+            "caption": "Təs. halda qısa ASA",
+            "description": "Təsirlik halda əməkdaşın qısa ASA"
+        },
+        "fullFIOObj": {
+            "caption": "Təs. halda tam ASA",
+            "description": "Təsirlik halda əməkdaşın tam ASA"
+        },
+        "applyObj": {
+            "caption": "Təs. halda müraciət",
+            "description": "Təsirlik halda bu şəxsə müraciət forması"
         }
     }
 }

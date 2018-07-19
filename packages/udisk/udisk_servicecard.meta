@@ -1,0 +1,97 @@
+{
+    "caption": "Files",
+    "description": "Files",
+    "connectionName": "",
+    "sqlAlias": "udisksrv",
+    "descriptionAttribute": "name",
+    "cacheType": "None",
+    "attributes": {
+        "name": {
+                "dataType": "String",
+                "size": 512,
+                "caption": "Name",
+                "description": "Name",
+                "allowNull": false,
+                "isMultiLang": false,
+                "customSettings": {
+                   "permissionEntityName": "udisk_srvpermission",
+                   "userRole": "udiskServiceUsers",
+                   "adminRole": "udiskServiceAdmins",
+                   "adminDenyContentRole": "udiskServiceAdminsDenyContent",
+                   "diskType": "service"
+                }
+        },
+        "parentID": {
+                "dataType": "Entity",
+                "associatedEntity": "udisk_servicecard",
+                "caption": "Folder",
+                "description": "Folder",
+                "allowNull": true
+        },
+        "fcomment": {
+                "dataType": "String",
+                "size": 512,
+                "caption": "Comment",
+                "description": "Comment",
+                "allowNull": true
+        },
+        "isFolder": {
+                "dataType": "Boolean",
+                "caption": "Is folder",
+                "description": "Is folder",
+                "allowNull": false,
+                "defaultValue": "0"
+        },
+        "ownerID": {
+            "dataType": "Entity",
+            "associatedEntity": "uba_user",
+            "caption": "owner",
+            "description": "owner",
+            "allowNull": false
+        },
+        "fsize": {
+            "dataType": "BigInt",
+            "caption": "size",
+            "description": "size",
+            "allowNull": true
+        },
+        "contentType": {
+            "dataType": "String",
+            "size": 100,
+            "caption": "contentType",
+            "description": "contentType",
+            "allowNull": true
+        },
+        "isTemporary": {
+                "dataType": "Boolean",
+                "caption": "Temporary",
+                "description": "Temporary",
+                "allowNull": true,
+                "defaultValue": "0"
+        },
+        "fileData": {
+            "dataType": "Document",
+            "caption": "file",
+            "description": "file",
+            "allowNull": true,
+            "storeName": "udiskStoreService"
+        }
+    },
+	"mixins": {
+		"mStorage": {
+			"simpleAudit": true,
+			"safeDelete" : false
+		},
+        "tree": {
+			"parentAttr": "parentID"
+		},
+
+		"rls": {
+			 "expression": "udisk_servicecard.limitByUser()"
+		},
+        "softLock": {
+           "lockIdentifier": "ID",
+           "lockEntity": "udisk_servicecard"
+        }
+	}
+}

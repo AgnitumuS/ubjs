@@ -4,6 +4,57 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Added
+- VueJS integration
+```
+const UB = require('@unitybase/ub-pub')
+const Vue = require('vue')
+Vue.use(UB)
+
+  // localization of vue template
+  <button >{{ $ut('Enter') }}</button>
+  // in case translation result is HTML + use formatting
+  <p v-html="$ut('UBAuthHeader', appName)"></p>
+  // inside binding
+  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+  // inside vue methods
+  this.$ut('UBAuthTip')
+
+  // using UB inside vue methods
+  methods: {
+     hasNegotiate: function () {
+       return this.$UB.connection && (this.$UB.connection.authMethods.indexOf('Negotiate') !== -1)
+     }
+  }
+```
+
+- Extended i18n
+```
+ //Localized string can be formatted either by position args:
+  UB.i18nExtend({
+    greeting: 'Hello {0}, welcome to {1}'
+  })
+  UB.i18n('greeting', 'Mark', 'Kiev') // Hello Mark, welcome to Kiev
+
+  //Or by named args:
+  UB.i18nExtend({
+    namedGreeting: 'Hello {name}, welcome to {place}'
+  })
+  UB.i18n('namedGreeting', {name: 'Mark', place: 'Kiev'}) // Hello Mark, welcome to Kiev
+
+  //Localization itself can be an object:
+  UB.i18nExtend({
+    loginPage: { welcome: 'Welcome to our app', user: 'Dear {user}'}
+  })
+  UB.i18n('loginPage.welcome') // Welcome to our app
+  UB.i18n('loginPage.user', {user: 'Pol}) // Dear Pol
+  UB.i18n('loginPage') // return object {welcome: "Welcome to our app", user: "Dear {user}"}
+```
+
+- UB.LDS_KEYS enum with localStorage keys used by ub-pub in browser mode
+- localisations for login window & server-side errors now inside ub-pub
+
 ## [5.1.0]
 ### Added
 - new method `setErrorReporter`. Developer can set his own function that will show

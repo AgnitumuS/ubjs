@@ -76,7 +76,7 @@ module.exports = function runTest (options) {
       /Bad Request/, 'Endpoint clientRequire must restrict access to non-public root of model'
     )
 
-    ok(conn.get(`clientRequire/@unitybase/ub/public/locale/lang-en.js`), 'Access to public model folder must be allowed')
+    ok(conn.get(`clientRequire/@unitybase/ub/public/schemas/entity.schema.json`), 'Access to public model folder must be allowed')
     ok(conn.get(`clientRequire/@unitybase/cs-shared/LocalDataStore`), 'Access module not defined as model be allowed')
   }
 }

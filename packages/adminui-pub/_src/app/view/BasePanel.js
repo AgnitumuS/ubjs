@@ -255,8 +255,7 @@ Ext.define('UB.view.BasePanel', {
   formWasSaved: false,
 
   initComponent: function () {
-    var
-            me = this
+    var me = this
     if (me.dfm && me.dfm.parentConfig) {
       Ext.apply(me, me.dfm.parentConfig)
     }
@@ -293,11 +292,11 @@ Ext.define('UB.view.BasePanel', {
     _.forEach(me.domainEntity.filterAttribute({dataType: 'Document'}), function (attr) {
       me.documents[attr.code] = attr
     })
-        // domain.getEntityAttributesWithDataTypeAdtDocument(me.entityName);
+    // domain.getEntityAttributesWithDataTypeAdtDocument(me.entityName);
     me.documentsCount = Ext.Object.getSize(me.documents)
 
     me.hasDataHistoryMixin = me.domainEntity.hasMixin('dataHistory')
-        // since by default audit is enabled, we do not write it in the domainInfo. So mixin present only if in meta: audit: {enabled: false}
+    // since by default audit is enabled, we do not write it in the domainInfo. So mixin present only if in meta: audit: {enabled: false}
     me.hasAuditMixin = me.domainEntity.hasMixin('audit')
     me.hasHardSecurityMixin = me.domainEntity.hasMixin('aclRls')
     me.isEntityLockable = me.domainEntity.hasMixin('softLock')
@@ -310,7 +309,7 @@ Ext.define('UB.view.BasePanel', {
 
     me.preprocessPanel()
 
-    if (me.tabID) {  // opened in tab
+    if (me.tabID) { // opened in tab
       if (!me.dockedItems) me.dockedItems = []
 
       me.headerPanel = Ext.create('Ext.panel.Header', {
@@ -2252,7 +2251,7 @@ Ext.define('UB.view.BasePanel', {
       me.actions[actions.history] = new Ext.Action({
         actionId: actions.history,
         iconCls: 'iconHistory',
-        text: UB.i18n('istorijaIzmenenij'),
+        text: UB.i18n('ChangesHistory'),
         eventId: events.history,
         handler: me.onAction,
         scope: me

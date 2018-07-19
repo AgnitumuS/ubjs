@@ -1514,10 +1514,10 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.addNewByCurrent] = new Ext.Action({
       actionId: actions.addNewByCurrent,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faPlusCircle,
+      glyph: UB.core.UBUtil.glyphs.faClone,
       cls: 'add-currect-action',
 
-      text: UB.i18n('dobavitKak'),
+      text: UB.i18n('Copy'),
       eventId: events.addnewbycurrent,
       handler: me.onAction,
       disabled: !me.entity.haveAccessToMethod(methodNames.ADDNEW),
@@ -1574,7 +1574,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.actions[actions.history] = new Ext.Action({
         actionId: actions.history,
         iconCls: 'iconHistory',
-        text: UB.i18n('istorijaIzmenenij'),
+        text: UB.i18n('ChangesHistory'),
         eventId: events.history,
         handler: me.onAction,
         scope: me

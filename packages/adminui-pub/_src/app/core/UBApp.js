@@ -304,7 +304,7 @@ Ext.define('UB.core.UBApp', {
         if (isExternalLogin) { // external login page
           window.localStorage.removeItem(conn.__sessionPersistKey)
         }
-        window.localStorage.setItem('userDidLogout', 'false')
+        window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'false')
       },
       onAuthorizationFail: function (reason, conn) {
         if (isExternalLogin) {
@@ -322,7 +322,7 @@ Ext.define('UB.core.UBApp', {
       onGotApplicationConfig: function (/** @type {UBConnection} */connection) {
         _.defaultsDeep(connection.appConfig, {
           comboPageSize: 30,
-          maxMainWindowTabOpened: 10,
+          maxMainWindowTabOpened: 40,
           storeDefaultPageSize: 100,
 
           gridHeightDefault: 400,
@@ -350,7 +350,7 @@ Ext.define('UB.core.UBApp', {
         // TODO - remove because mutation of other objects is bad idea
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
-        return UB.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
+        return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
             const pkiForAuth = UB.appConfig.uiSettings.adminUI.encryptionImplementation || 'clientRequire/@ub-d/nm-dstu/injectEncription.js'
             const libraryName = pkiForAuth.split('/')[2]

@@ -1,3 +1,4 @@
+/* global Ext UB */
 /*
 This file is part UnityBase Ext-based client
 Copyright (c) 2014 InBase
@@ -11,7 +12,6 @@ UB.i18nExtend({
   'Select private key file': 'Виберіть файл приватного ключа',
   setScannerSettings: 'You must set scanner settings, before use it. Scanner settings are <a href="/" onclick="{0} return false;">here</a>.',
   showResultConfig: 'Show configuration',
-  chkSilenceLogin: 'Always login by domain',
   numberOfSignificantDigits: 'The number of significant digits exceeds the allowable',
   yearShort: 'y.',
   PastTooLargeText: 'You perform the insertion of a large volume. This operation may take a long time. Do you want to continue?',
@@ -23,7 +23,6 @@ UB.i18nExtend({
   gridItemLink: 'Item link',
   gridCategoryCaption: 'Category',
   gridFavoritesCaption: 'Favorites',
-  isFirstLogin: 'Registration mode',
   oshibka: 'Error',
   info: 'Information',
   uk: 'Ukrainian',
@@ -35,9 +34,7 @@ UB.i18nExtend({
   nevozmozhnoDecodirovat: "Can't decode",
   avtorizatsia: 'Authorization',
   login: 'Login',
-  parol: 'Password',
   stariyParol: 'Old password',
-  neizvestnyjLoginIliNepravilnyjParol: 'Incorrect user name or password',
   obazatelnoePole: 'This field is required',
   Obshchee: 'General',
   neUdalosZagruzitFajlConfiguratsii: 'Failed to load config file.',
@@ -63,7 +60,7 @@ UB.i18nExtend({
   opisanie: 'Description',
   sohranit: 'Save',
   dobavit: 'Add',
-  dobavitKak: 'Add as',
+  Copy: 'Copy',
   redaktirovat: 'Edit',
   Delete: 'Delete',
   vseDeystviya: 'All actions',
@@ -87,9 +84,9 @@ UB.i18nExtend({
   ssylka: 'Link',
   vneshnaja: 'External',
   vnutrennaja: 'Internal',
-  istorijaIzmenenij: "Changes' history",
+  ChangesHistory: "Changes history",
   detali: 'Details',
-  filtr: 'Filter',
+  Filter: 'Filter',
   s: 'from',
   po: 'till',
   pluginNeUstanovlen: "Plugin isn't installed",
@@ -99,7 +96,6 @@ UB.i18nExtend({
   skanirovanieAtributa: 'Scanning of attribute',
   izFayla: 'From file',
   shtrikhKod: 'Barcode',
-  pechatRKK: 'RKK',
   ochistit: 'Clear',
   dokument: 'Document',
   fayl: 'File',
@@ -148,9 +144,6 @@ UB.i18nExtend({
   recordNotLocked: 'The record is not locked',
   tempLockExistForThisUser: 'The current user is currently editing an entry in another tab or window on another computer does',
 
-  nepravilniyTipResolucii: 'Unknown resolution type. ResolutionID: {0}',
-  nepravilniyTipDocumenta: 'Unknown document type. documentID: {0}',
-  nepravilnayaRolIspolitelya: 'Unknown executor\'s role. ExecutorID: {0}',
   neNaidenShablon: 'Cannot find template for node: {0} with node type: {1}',
   da: 'Yes',
   net: 'No',
@@ -165,7 +158,6 @@ UB.i18nExtend({
   ot: ' of ',
   'do': ' to ',
   document: 'document',
-  enter: 'Enter',
   sign: 'Sign',
   clear: 'Clear',
 
@@ -280,17 +272,7 @@ UB.i18nExtend({
   sucImportMsgTitle: 'Document has been import successfully',
   sucImportMsg: 'Document has been import from SEV successfully',
   filterType: 'Filter type',
-  documentsForConsideration: 'Documents for consideration',
-  registrationsByDays: 'Registrations by days',
-  docExecution: 'Document\'s execution',
   permits: 'Permits',
-  RCC: 'RCC',
-  outgoing: 'Outgoing',
-  incoming: 'Incoming',
-  respForTask: 'Resp. for task',
-  barCode: 'Barcode',
-  triRemainsInPVD: 'TransInspection: Remains in PVD',
-  triSalesByMonth: 'TransInspection: Sales by months',
   analyticDesktop: 'Analytic desktop',
   validFrom: 'Valid from',
   validTo: 'Valid to',
@@ -351,21 +333,6 @@ UB.i18nExtend({
   deleteConfirm: 'Do you really want to delete configuration?',
   filterWasChangedConfirm: 'Filter was changed. After loading the configuration, all changes will be lost. Continue?',
   filterIsRequired: 'The filter is required',
-  useOSCredentialTitle: 'Domain',
-  useOSCredentialInfo: 'Authenticate using login and password you type while login to Windows Domain.<p>You must be member of domain to use this authentication type</p>',
-  useUBAuthenticationTitle: 'User&password',
-  useCertificateTitle: 'Using certificate',
-  useCertificateInfo: 'Authorization using electronic signature',
-  useCertificateInfoSimple: 'Authorization using electronic signature',
-  useCertificateInfoSimpleUserName: 'Authorization using electronic signature',
-  IITCertCanceledByUser: 'Canceled by user',
-  navShortcutCode: 'Shortcut source code',
-  navShortcutRights: 'Shortcut rights',
-  msgInvalidCertAuth: 'Invalid certificate or private key',
-  msgInvalidUBAuth: 'Access denied. Invalid user name or password',
-  msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
-        ' For manual updating use <a href="update_plugin.html" target="_blank">instruction</a>. ' +
-        ' If after updating message remains, please, contact your system administrator.',
 
   storageFrmCaption: 'Storage settings',
   storageFrmKeys: 'Keys',
@@ -376,7 +343,6 @@ UB.i18nExtend({
   changedByAnotherUserForLock: 'During the viewing of the document, it has been changed by another user. Open the document again to start editing mode exclusive lock',
 
   moreThanOneUserWithPassedCertificate: 'There are more than one user with passed certificate. Please, enter the user name/',
-  useUBAuthenticatinInfo: "Please, enter the user name, password and click 'Enter'.",
 
   headerSelectCert: 'Select certificate',
   headerSelectOwnCert: 'Select certificate for private key',
@@ -497,13 +463,11 @@ UB.i18nExtend({
   'formNotFound': 'Form not found',
   'сhooseEntity': 'Choose entity',
   'startSearchMinCharacters': 'Min character quantity for search: {0}',
-  'ubErrElsInvalidUserOrPwd': 'Access deny. Check login name and password.',
   OpenIDConnect: 'OpenID',
   authOpenIDConnectFail: "OpenID provider can't authorize your request",
   'readPKCanceled': 'Canceled by user',
   'invalidPrivateKeyCertificate': 'Choose wrong private key sertificate(s). For key after 2014 you nedd to have 2 sertificates.',
   'menu': 'Menu',
-  'unknownError': 'Unknown error. Please, contact your system administrator.',
   'ubErrLockedbyanotheruser': 'Record locked by another user. All changes cannot be saved. Try again later.',
   'showFilterPanel': 'Filter',
   'mi_dateFrom': 'Date from',
@@ -606,35 +570,37 @@ UB.i18nExtend({
 })
 
 /**
- * Define missing englist date format settings
+ * Define missing english date format settings
  * By mpv (utf-8 encoding)
  */
-Ext.onReady(function () {
-  if (Ext.util.Format) {
-    Ext.apply(Ext.util.Format, {
-      dateFormat: 'm/d/Y',
-      timeFormat: 'H:i:s',
-      datetimeFormat: 'm/d/Y H:i'
+if (typeof Ext !== 'undefined') {
+  Ext.onReady(function () {
+    if (Ext.util.Format) {
+      Ext.apply(Ext.util.Format, {
+        dateFormat: 'm/d/Y',
+        timeFormat: 'H:i:s',
+        datetimeFormat: 'm/d/Y H:i'
+      })
+    }
+    Ext.define('Ext.uk.ux.DateTimePicker', {
+      override: 'Ext.ux.DateTimePicker',
+      todayText: 'Now',
+      timeLabel: 'Time'
     })
-  }
-  Ext.define('Ext.uk.ux.DateTimePicker', {
-    override: 'Ext.ux.DateTimePicker',
-    todayText: 'Now',
-    timeLabel: 'Time'
-  })
 
-  if (Ext.MessageBox) {
-    Ext.MessageBox.buttonText = {
-      ok: 'OK',
-      yes: 'Yes',
-      no: 'No',
-      cancel: 'Cancel'
+    if (Ext.MessageBox) {
+      Ext.MessageBox.buttonText = {
+        ok: 'OK',
+        yes: 'Yes',
+        no: 'No',
+        cancel: 'Cancel'
+      }
+      Ext.MessageBox.titleText = {
+        confirm: 'Confirm',
+        prompt: 'Prompt',
+        wait: 'Loading...',
+        alert: 'Attention'
+      }
     }
-    Ext.MessageBox.titleText = {
-      confirm: 'Confirm',
-      prompt: 'Prompt',
-      wait: 'Loading...',
-      alert: 'Attention'
-    }
-  }
-})
+  })
+}

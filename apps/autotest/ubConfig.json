@@ -57,9 +57,9 @@
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
-			"loginWindowTopLogoURL": "models/TST/UB200.png",
+			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
 			"endpoint": "ubadminui",
-			"loginURL": "http://localhost:8881/login.html",
+			"loginURL": "/models/adminui-next/views/ub-auth.html",
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
@@ -110,7 +110,9 @@
 					"path": "./node_modules/@unitybase/adminui-reg"
 				},
 				{
-					"name": "TST",
+					"path": "./node_modules/@unitybase/adminui-next"
+				},
+				{
 					"path": "./models/TST"
 				}
 			],

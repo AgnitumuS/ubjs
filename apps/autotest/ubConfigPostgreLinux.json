@@ -125,7 +125,7 @@
 				"driver": "PostgreSQL",
 				"isDefault": true,
 				"dialect": "PostgreSQL",
-				"serverName": "postgresql://172.16.97.21:5432",
+				"serverName": "postgresql://pg10.unitybase.info:5402",
 				"databaseName": "ub5_autotest_lin",
 				"userID": "ub5_autotest_lin",
 				"password": "ub5_autotest_lin",

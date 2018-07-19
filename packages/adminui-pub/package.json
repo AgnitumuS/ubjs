@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "5.1.2",
+  "version": "5.2.1",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "browser": {
@@ -15,10 +15,11 @@
     }
   },
   "scripts": {
-    "build": "npm run build:prep && npm run build:js && npm run build:css && npm run build:adminui",
+    "build": "npm run build:prep && npm run build:js && npm run build:theme && npm run build:css && npm run build:adminui",
     "build:prep": "shx mkdir -p ./dist && shx rm -f ./dist/ext-all.*",
     "build:js": "uglifyjs ext-all-debug-w-comments.js -o ./dist/ext-all.min.js --screw-ie8 --prefix relative --compress --mangle",
-    "build:css": "uglifycss ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css ./_src/css/ub-badge.css > ./ub-css-all.css",
+    "build:css": "cleancss -o ./ub-css-all.css ./_src/css/normalize.css ./_src/css/ub-body.css ./_src/css/GridFilters.css ./_src/css/RangeMenu.css ./_src/css/toastr.css ./_src/ux/form/field/BoxSelect.css ./_src/css/ub-badge.css",
+    "build:theme": "cleancss -o ./themes/UBGrayTheme/UBGrayTheme-all.css ./themes/UBGrayTheme/UBGrayTheme-all-debug.css && uglifyjs ./themes/UBGrayTheme/UBGrayTheme-debug.js -o ./themes/UBGrayTheme/UBGrayTheme.js --screw-ie8 --prefix relative --compress --mangle",
     "build:adminui": "cross-env NODE_ENV=production webpack",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
@@ -33,9 +34,9 @@
   "dependencies": {
     "@unitybase/codemirror-full": "^1.2.15",
     "@unitybase/cs-shared": "^5.0.6",
-    "@unitybase/ub-pub": "^5.1.0",
-    "@unitybase/ubm": "^5.0.25",
-    "@unitybase/xlsx": "^5.0.17",
+    "@unitybase/ub-pub": "^5.1.2",
+    "@unitybase/ubm": "^5.0.29",
+    "@unitybase/xlsx": "^5.0.18",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.20.2",
@@ -58,9 +59,9 @@
   "author": "UnityBase team (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
   "devDependencies": {
+    "clean-css-cli": "^4.1.11",
     "cross-env": "^5.1.1",
     "shx": "^0.2.2",
-    "uglify-js": "^3.0.26",
-    "uglifycss": "0.0.27"
+    "uglify-js": "^3.0.26"
   }
 }

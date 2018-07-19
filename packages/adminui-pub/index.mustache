@@ -59,37 +59,38 @@
         </style>
     </head>
     <body class="x-body">
-        <div id="UBLogo" class="ub-logo-h">
-	    <i class="fa fa-spinner fa-pulse"></i>
-	    <span class="sr-only">Loading...</span>
-        </div>
+      <div id="UBLogo" class="ub-logo-h">
+	      <i class="fa fa-spinner fa-pulse"></i>
+	      <span class="sr-only">Loading...</span>
+      </div>
 
-        <div id ="ubExtensionPageMessageObj"></div>
+      <div id ="ubExtensionPageMessageObj"></div>
 
-        <!-- add promises to IE-->
-        <script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
+      <!-- add promises to IE-->
+      <script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
 
-        <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
-        <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
-        <script type="text/javascript">
-            // set our baseURL reference path
-            System.config({
-                baseURL: '/clientRequire',
-                map: {
-                    css: 'systemjs-plugin-css/css.js'
-                },
-                meta: {
-                    '*.css': { loader: 'css' },
-                    'codemirror/*.js': { format: 'cjs' },
-                    'tinymce/*.js': { format: 'global' },
-                    'file-saver': { format: 'cjs' },
-                    '*/adminui.app.min.js': { format: 'global' } // important because adminui.min.js dose not define anything
-                },
-                packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
-            });
-            System.import('{{{adminUIModel.prod}}}').then(function(){
-                return System.import('@unitybase/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js')
-            })
-        </script>
+      <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
+      <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
+      <script type="text/javascript">
+        // set our baseURL reference path
+        System.config({
+            baseURL: '/clientRequire',
+            map: {
+                css: 'systemjs-plugin-css/css.js'
+            },
+            meta: {
+                '*.css': { loader: 'css' },
+                'codemirror/*.js': { format: 'cjs' },
+                'tinymce/*.js': { format: 'global' },
+                'file-saver': { format: 'cjs' },
+                '*/adminui.app.min.js': { format: 'global' }, // important because adminui.min.js dose not define anything
+                '*/adminui-next.min.js': { format: 'global' } // important because adminui.min.js dose not define anything
+            },
+            packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
+        });
+        System.import('{{{adminUIModel.prod}}}').then(function(){
+            return System.import('@unitybase/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js')
+        })
+      </script>
     </body>
 </html>

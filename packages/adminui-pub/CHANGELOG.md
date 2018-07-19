@@ -8,6 +8,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - method `cmdCommand.showList` sets attribute value **description** as tabs caption
 
+## [5.2.0]
+### Fixed
+- adminui-pub locales can be injected to environments what do not use ExtJS
+- added add/remove class to required field label on change of allowBlank
+
+### Changed
+- UBGrayTheme now use font-size (14px) and font-family (Segoe UI) defined on body level
+- all "bold" weights changed to 600 (more lighter)
+- [normalize.css](https://github.com/necolas/normalize.css/) added
+- Tab borders is set to `1 1 1 1`
+
+
+## [5.1.4]
+### Changed
+- for a "required" attributes changed style to display the asterisk after delimiter, not before and align on the right side
+- remove placeholder "fill value" for a "required" attributes
+- "Add As" action renamed to "Copy". Glyph changed to `faCopy`
+- max open tabs now 40 by default (can be changed back to 10 by `ubConfig.uiSettings.adminUI.maxMainWindowTabOpened: 10`)
+
+## [5.1.3]
+### Fixed
+- remove displaying of "undefine" in UBDetailTree in minified version of adminUI
+
 ## [5.1.2]
 ### Changed
 - unhandled errors now will be redirected to error reporter by `ub-pub`

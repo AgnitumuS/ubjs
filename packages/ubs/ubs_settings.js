@@ -15,9 +15,10 @@ function convert (type, value, settingKey) {
     case 'BOOLEAN':
       return convertBoolean(value, settingKey)
     case 'STRING':
+      return value
     case 'INT':
     case 'NUMBER':
-      return value
+      return parseInt(value, 10)
     default :
       console.error('Unknown type:', type, 'for key:', settingKey)
       return value

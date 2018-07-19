@@ -219,13 +219,22 @@ function launchApp () {
       /**
        *  @cfg {String} requireText Text for placeHolder. Default value 'pleaseInputValueToThisField'.
        */
-      requireText: 'pleaseInputValueToThisField',
+      requireText: '',
       /**
        * This method allow change the allowBlank property dynamically
        * @param allowBlank
        */
       setAllowBlank: function (allowBlank) {
         this.allowBlank = allowBlank
+
+        if (this.labelEl) {
+          if (allowBlank) {
+            this.labelEl.removeCls('x-label-required')
+          } else {
+            this.labelEl.addCls('x-label-required')
+          }
+        }
+
         if (!this.inputEl) {
           return
         }

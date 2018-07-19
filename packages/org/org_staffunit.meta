@@ -12,7 +12,7 @@
       "associatedEntity": "org_unit",
       "caption": "Parent",
       "description": "Parent",
-      "allowNull": true,
+      "allowNull": false,
       "name": "parentID"
     },
     {
