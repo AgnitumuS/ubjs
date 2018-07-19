@@ -76,7 +76,7 @@
           // set our baseURL reference path
             System.config({
                 baseURL: '/clientRequire',
-                transpiler: 'none',
+                defaultJSExtensions: false,
                 map: {
                     css: 'systemjs-plugin-css/css.js',
                     vue: 'vue/dist/vue.common.js' // should be the same as in adminui-next webpack config
@@ -86,13 +86,16 @@
                   '*.css': { loader: 'css' },
                   '*.min.js':   { format: 'cjs' },
                   'codemirror/*.js': { format: 'cjs' },
-                  'file-saver': { format: 'cjs' }
+                  'file-saver': { format: 'cjs' },
+                  '*.def': {format: 'cjs'}
                 },
                 packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });
 
-            System.import('{{{adminUIModel.dev}}}').then(function(adminUI){
-                return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
+            System.import('systemjs-hmr').then(function () {
+              return System.import('{{{adminUIModel.dev}}}')
+            }).then(function(adminUI){
+              return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
             });
         </script>
     </body>

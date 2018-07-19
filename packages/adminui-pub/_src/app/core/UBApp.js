@@ -429,19 +429,6 @@ Ext.define('UB.core.UBApp', {
           setStoreId: true
         })
       })
-    }).then(function () { // clear form's def/js cache if ubm_form version changed
-      // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
-      let cacheKey = me.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
-      let realFormsVersion = me.connection.cachedSessionEntityRequested[cacheKey]
-
-      if (realFormsVersion) {
-        let storedFormsVersion = +window.localStorage.getItem('ubm_form_cache_version')
-        if (storedFormsVersion !== realFormsVersion) {
-          UB.core.UBFormLoader.clearFormCache()
-          window.localStorage.setItem('ubm_form_cache_version', realFormsVersion)
-        }
-      }
-      return true
     }).then(function () {
       me.setLocalStorageProviderPrefix(me.connection.userLogin())
       /**

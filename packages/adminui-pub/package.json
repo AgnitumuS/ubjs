@@ -62,6 +62,7 @@
     "clean-css-cli": "^4.1.11",
     "cross-env": "^5.1.1",
     "shx": "^0.2.2",
+    "systemjs-hmr": "^2.0.9",
     "uglify-js": "^3.0.26"
   }
 }

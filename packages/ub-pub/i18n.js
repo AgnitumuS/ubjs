@@ -57,8 +57,8 @@ function domainBasedLocalization (localeString) {
 module.exports.i18n = function i18n (localeString, ...formatArgs) {
   if (localeString == null) return localeString
   let res = __i18n[localeString]
-  if (!res) res = _.get(__i18n, localeString)
-  res = res || domainBasedLocalization(localeString)
+  if (res === undefined) res = _.get(__i18n, localeString)
+  if (res === undefined) res = domainBasedLocalization(localeString)
   if (formatArgs && formatArgs.length && (typeof res === 'string')) {
     // key-value object
     if ((formatArgs.length === 1) && (typeof formatArgs[0] === 'object')) {
