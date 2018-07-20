@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.1]
+### Changed
+- 'tabsCountLimitExceeded' message type changed from error to information
+
 ## [5.3.0]
 ### BREAKING
 - `custom` (pure ExtJS) forms must export a entry point class name.

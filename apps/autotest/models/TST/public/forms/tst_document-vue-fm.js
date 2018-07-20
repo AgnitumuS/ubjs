@@ -9,6 +9,14 @@ const tpl = `
   <el-form-item>
     <el-date-picker type="date"></el-date-picker>
   </el-form-item>
+  <el-form-item>
+  <el-date-picker
+    type="daterange"
+    range-separator="To"
+    start-placeholder="Start date"
+    end-placeholder="End date">
+  </el-date-picker>
+  </el-form-item>
 </el-form>
 <hr/>
 

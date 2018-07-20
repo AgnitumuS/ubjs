@@ -168,7 +168,7 @@ UB.i18nExtend({
   NMFeaturePDFSigner: 'PDF signing module',
   singOperationInProcess: 'The system performs the signing of another document. Try again later',
 
-    // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
   NMInstallExtensionChrome: '<p>To use this application Chrome extension <b>"UBExtension"</b> must be installed.</p> ' +
         '<p>Follow <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">ADD EXTENSION</a> ' +
         ' to go to the Google store</p>' +
@@ -298,7 +298,7 @@ UB.i18nExtend({
   signVerification: 'Sign verification',
   signsInDocument: 'Signs',
   UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
-    // search form (UBPreFilter)
+  // search form (UBPreFilter)
   search: 'Search',
   'Filter by': 'Filter by',
   filterForm: 'Search form',

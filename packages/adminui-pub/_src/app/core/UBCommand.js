@@ -812,7 +812,7 @@ Ext.define('UB.core.UBCommand', {
     let count = tabPanel.items.getCount()
     if (count >= UB.appConfig.maxMainWindowTabOpened) {
       Ext.create('widget.uxNotification', {
-        title: UB.i18n('error'),
+        title: UB.i18n('info'),
         position: 't',
         slideInDuration: 800,
         slideBackDuration: 1500,
