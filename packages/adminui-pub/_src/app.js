@@ -312,7 +312,7 @@ function launchApp () {
         '</tpl>',
 
         // Body of the input. That will be an input element, or, from a TriggerField, a table containing an input cell and trigger cell(s)
-        '<td role="presentation" class="{baseBodyCls} {fieldBodyCls} {extraFieldBodyCls}" id="{id}-bodyEl" colspan="{bodyColspan}" role="presentation">',
+        '<td role="presentation" class="{baseBodyCls} {fieldBodyCls} {extraFieldBodyCls}" id="{id}-bodyEl" colspan="{bodyColspan}">',
         '{beforeBodyEl}',
 
         // Label just sits on top of the input field if labelAlign === 'top'
