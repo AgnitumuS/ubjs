@@ -39,6 +39,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - skip destroying `tinymce` when it is not defined yet
 
+### Added
+- method `cmdCommand.showList` sets attribute value **description** as tabs caption
+
 ## [5.2.0]
 ### Fixed
 - adminui-pub locales can be injected to environments what do not use ExtJS

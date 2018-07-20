@@ -529,7 +529,10 @@ Ext.define('UB.core.UBCommand', {
       console.error('Function customInit is deprecated. You should use callback function initComponentStart in script file.')
       grid.customInit()
     }
-    me.showCommandResult(grid, { isGrid: true })
+    me.showCommandResult(grid, {
+      isGrid: true,
+      title: me.description
+    })
   },
 
   showForm: function () {
