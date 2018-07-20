@@ -92,7 +92,9 @@
                 packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });
 
-            System.import('systemjs-hmr').then(function () {
+            //System.import('systemjs-hmr').then(function () {
+            System.import('@unitybase/adminui-pub/hmr-client/system-hmr-ub').then(function (connectHMR) {
+              connectHMR({ hmrServer: '{{{uiSettings.adminUI.hmrServerURL}}}' })
               return System.import('{{{adminUIModel.dev}}}')
             }).then(function(adminUI){
               return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');

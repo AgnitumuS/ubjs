@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.3.0]
 ### BREAKING
-- `custom` (Pure ExtJS) forms must export a entry point class name.
-
+- `custom` (pure ExtJS) forms must export a entry point class name.
+ 
  For example if form `*-fm.def` contains `Ext.define("UBM.userSettings", ...` then line
  `exports.formDef = 'UBM.userSettings'` must be added to the beginning of file
 
@@ -25,11 +25,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - forms caching is moved to the HTTP cache level, localStorage is not used anymore for form cache
 
+### Added
+ - Hot Module Replacements for forms (work only for client in `dev` mode).
+ See [ub-hrm server](https://git-pub.intecracy.com/unitybase/ubjs/tree/v5.x/packages/hmr) for details
+
 ### Changed
 - all forms are loading using SystemJS.import:
   - form definition can use `require('something')` and it will be parsed synchronously as expected
   - forms are cached on HTTP level (in case of reverse proxy). local storage based cache not used for cache forms anymore
-- Hot Module Replacements for forms work only for client in `dev` mode.
+
 
 
 ## [5.2.0]

@@ -1,9 +1,10 @@
 const chokidar = require('chokidar')
 const path = require('path')
-const socketsConnected = []
 global.XMLHttpRequest = require('xhr2')
 const UB = require('@unitybase/ub-pub')
 const fs = require('fs')
+const WebSocket = require('ws')
+
 module.exports = runServer
 
 function getDomainFolders (opts) {
@@ -24,13 +25,15 @@ function getDomainFolders (opts) {
   }).then(function (res) {
     let models = res.data.models
     let folders = []
+    console.log(models)
     for (let modelName in models) {
-      let pp = models[modelName].realPublicPath
+      const model = models[modelName]
+      let pp = model.realPublicPath
       if (pp) {
         if (fs.existsSync(pp)) {
-          let replaceBy = models[modelName].moduleName.startsWith('@')
-            ? models[modelName].moduleName
-            : models[modelName].path
+          let replaceBy = model.moduleName.startsWith('@')
+            ? model.moduleName + (model.moduleSuffix ? ('/' + model.moduleSuffix) : '')
+            : model.path
           folders.push({
             publicPath: pp,
             replaceBy
@@ -49,11 +52,9 @@ async function runServer (opts) {
     log('Public folders not found')
     process.exit(1)
   }
-  let httpServer = require('http').createServer()
 
-  let io = require('socket.io')(httpServer)
-  httpServer.listen(opts.port, () => {
-    log('UB HMR listening on', opts.port)
+  const wss = new WebSocket.Server({
+    port: opts.port
   })
 
   const pathsToWatch = folders.map(fc => fc.publicPath)
@@ -70,13 +71,12 @@ async function runServer (opts) {
     depth: opts.depth
   }
   if (opts.poll) chokidarOpts.usePolling = true
-  log('Options', chokidarOpts)
   log('Watching:')
   log(pathsToWatch.join('\n'))
   let watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('all', (event, onPath) => {
     let modelFolder = folders.find(f => onPath.startsWith(f.publicPath))
     if (!modelFolder) {
-      log('Public path not found for ', onPath)
+      log('Public path not found for', onPath)
       return
     }
     let clientPath = modelFolder.replaceBy + onPath.slice(modelFolder.publicPath.length - 1)
@@ -85,32 +85,40 @@ async function runServer (opts) {
     }
 
     log('File', onPath, 'emitted:', event, 'with', clientPath)
-    socketsConnected.forEach((socket) => {
-      socket.emit(event, {path: clientPath})
+    wss.clients.forEach(function each (client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({event: event, path: clientPath}))
+      }
     })
   })
-  io.on('connection', (socket) => {
-    let index = socketsConnected.push(socket)
-    socket.on('disconnect', () => {
-      socketsConnected.splice(index - 1, 1)
-    })
 
-    socket.on('identification', (name) => {
-      log('connected client:' + name)
+  function noop () {}
+
+  function heartbeat () {
+    this.isAlive = true
+  }
+
+  wss.on('connection', function connection (ws, req) {
+    ws.isAlive = true
+    ws.clientIP = req.connection.remoteAddress
+    ws.on('pong', heartbeat)
+    ws.on('close', function () {
+      log('Close connection from', ws.clientIP)
     })
+    log('New connection from', ws.clientIP)
   })
+
+  const interval = setInterval(function ping () {
+    wss.clients.forEach(function each (ws) {
+      if (ws.isAlive === false) return ws.terminate()
+
+      ws.isAlive = false
+      ws.ping(noop)
+    })
+  }, 30000)
 
   return {
-    io: io,
-    app: httpServer,
-    watcher: watcher,
-    close: (callback) => {
-      watcher.close()
-      log('closing UB HMR')
-      socketsConnected.forEach((socket) => {
-        socket.disconnect()
-      })
-      io.httpServer.close(callback)
-    }
+    wss: wss,
+    watcher: watcher
   }
 }
