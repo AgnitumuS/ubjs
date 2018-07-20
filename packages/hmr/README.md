@@ -2,7 +2,7 @@
 
 # Hot Module Replacement for UB 
 
-Module for watching changes in the public part of UnityBase and send notifications for UB adminUI in dev mode using web sockets
+Module for watching changes in the `public` part of UnityBase models and sending notifications for UB adminUI HMR (in dev mode)
 
 ## Usage
  ```
