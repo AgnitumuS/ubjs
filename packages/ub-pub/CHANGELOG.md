@@ -54,6 +54,7 @@ Vue.use(UB)
 
 - UB.LDS_KEYS enum with localStorage keys used by ub-pub in browser mode
 - localisations for login window & server-side errors now inside ub-pub
+- fake UB.view & UB.ux properties added to package to fix ExtJS components visibility in case `UB = require(''@unitybase/ub-pub')`
 
 ## [5.1.0]
 ### Added

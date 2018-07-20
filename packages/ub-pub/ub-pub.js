@@ -465,7 +465,22 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    * @readonly
    * @enum
    */
-  LDS_KEYS: utils.LDS_KEYS
+  LDS_KEYS: utils.LDS_KEYS,
+  /**
+   * Legacy for old adminUI
+   * @private
+   */
+  ux: {},
+  /**
+   * Legacy for old adminUI
+   * @private
+   */
+  view: {},
+  /**
+   * Legacy for old adminUI
+   * @private
+   */
+  core: {}
 }
 
 let __alreadyAdded = false
