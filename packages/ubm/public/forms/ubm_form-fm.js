@@ -59,27 +59,10 @@ exports.formCode = {
   },
 
   onAfterSave: function () {
-    var
-      me = this,
-      className
-
-    if (!this.formDefEditor) {
-      this.formDefEditor = this.down('ubcodemirror[name="formDef"]')
-    }
-
-    // undefine ExtJS based form (remove class)
-    let formType = me.record.get('formType')
-    if (formType === 'custom') {
-      className = UB.core.UBFormLoader.getComponentClassName(this.formDefEditor.getValue())
-      if (className) {
-        UB.core.UBFormLoader.undefineExtClass(className)
-      }
-    }
-    // TODO - check HMR is enabled. If yes - do nor replace module(s) here
-    if (SystemJS.reload) {
-      let formModelName = me.record.get('model')
+    if (SystemJS.reload && !window.__systemHmrUBConnected) {
+      let formModelName = this.record.get('model')
       let model = $App.domainInfo.models[formModelName]
-      let formCode = me.record.get('code')
+      let formCode = this.record.get('code')
       let defImportPath = `${model.clientRequirePath}/forms/${formCode}-fm.def`
       let jsImportPath = `${model.clientRequirePath}/forms/${formCode}-fm.js`
       SystemJS.reload(defImportPath)

@@ -45,8 +45,8 @@ const tpl = `
 </el-form>
 </div>
 `
+const $App = require('@unitybase/adminui-pub')
 exports.mount = function () {
-  d = document.createElement('div')
   let tab = $App.viewport.centralPanel.add({
     title: 'VueJS form',
     bodyPadding: 10,
@@ -61,6 +61,6 @@ exports.mount = function () {
   // !! important
   tab.on('close', function() {
     vm.$destroy()
-  });  
+  })
   $App.viewport.centralPanel.setActiveTab(tab)
 }
