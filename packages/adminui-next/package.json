@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-next",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "UnityBase admin UI extended with Vue + ElementUI",
   "main": "adminui-next.js",
   "browser": {
@@ -40,8 +40,8 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/cs-shared": "^5.0.6",
-    "@unitybase/ub-pub": "^5.1.2",
+    "@unitybase/cs-shared": "^5.0.7",
+    "@unitybase/ub-pub": "^5.2.0",
     "element-ui": "^2.4.3",
     "font-awesome": "^4.7.0",
     "lodash": "^4",
