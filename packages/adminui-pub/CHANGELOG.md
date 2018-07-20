@@ -35,6 +35,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - forms are cached on HTTP level (in case of reverse proxy). local storage based cache not used for cache forms anymore
 
 
+## [5.2.1]
+### Fixed
+- skip destroying `tinymce` when it is not defined yet
+
+### Added
+- method `cmdCommand.showList` sets attribute value **description** as tabs caption
 
 ## [5.2.0]
 ### Fixed
