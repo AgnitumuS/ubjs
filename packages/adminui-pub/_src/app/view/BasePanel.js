@@ -3100,22 +3100,7 @@ Ext.define('UB.view.BasePanel', {
         return res
       }
       if (!form.isValid()) {
-        form.getFields().each(function (item) {
-          if (!item.isValid()) {
-            UB.toast({
-              entityTitle: me.domainEntity.caption,
-              fieldLabel: item.fieldLabel,
-              callback: function () {
-                if (me) {
-                  let wnd = me.getFormWin()
-                  if (wnd) wnd.toFront()
-                  Ext.callback(item.focus, item, [], 100)
-                }
-              }
-            })
-            item.focus()
-          }
-        }, me)
+        me.showValidationErrors()
         return Q.resolve(-1)
       }
       if (!form.isValid()) {
@@ -3138,6 +3123,29 @@ Ext.define('UB.view.BasePanel', {
         return me.saveInstance()
       }
     })
+  },
+
+  /**
+   * Show horrible multiple toasts as validation errors.
+   */
+  showValidationErrors: function() {
+    const me = this
+    me.getForm().getFields().each(function (item) {
+      if (!item.isValid()) {
+        UB.toast({
+          entityTitle: me.domainEntity.caption,
+          fieldLabel: item.fieldLabel,
+          callback: function () {
+            if (me) {
+              let wnd = me.getFormWin()
+              if (wnd) wnd.toFront()
+              Ext.callback(item.focus, item, [], 100)
+            }
+          }
+        })
+        item.focus()
+      }
+    }, me)
   },
 
   /**
