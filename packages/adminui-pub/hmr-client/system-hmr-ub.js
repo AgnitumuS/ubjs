@@ -11,7 +11,7 @@ module.exports = connectHMR
  */
 function connectHMR (opts) {
   const hmrServer = opts.hmrServer || 'ws://localhost:5776'
-  let socket = new ReconnectingWebSocket(hmrServer, null, {debug: true, reconnectInterval: 5000})
+  let socket = new ReconnectingWebSocket(hmrServer, null, {debug: false, reconnectInterval: 5000})
   let system = opts._system || window.SystemJS
   function doOnMessage (e) {
     let data = JSON.parse(e.data)

@@ -5,7 +5,9 @@ window.process = {
 }
 const Vue = require('vue')
 window.Vue = Vue
+// next 2 lines for modules what use ES6 import `import Vue from 'vue' (not recommended for use)
 Vue.__useDefault = Vue
+Vue.default = Vue
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule(Vue))
 const ElementUI = require('element-ui/lib/index.js')
 window.ElementUI = ElementUI
