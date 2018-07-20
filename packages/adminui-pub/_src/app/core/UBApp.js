@@ -87,6 +87,11 @@ Ext.define('UB.core.UBApp', {
      */
     this.domainInfo = null
     /**
+     * Main application window. Initialised after $App.launch()
+     * @property {UB.view.Viewport} viewport
+     */
+    this.viewport = null
+    /**
      * UnityBase application instance short alias reference. Use it instead of UB.core.UBApp singleton
      * @property {UB.core.UBApp} $App
      * @type {UB.core.UBApp}
@@ -431,10 +436,6 @@ Ext.define('UB.core.UBApp', {
       })
     }).then(function () {
       me.setLocalStorageProviderPrefix(me.connection.userLogin())
-      /**
-       * Main application window
-       * @property {UB.view.Viewport} viewport
-       */
       me.viewport = Ext.create('UB.view.Viewport')
       me.viewport.show()
       me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop)
