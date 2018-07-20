@@ -345,7 +345,6 @@ UB.i18nExtend({
   deleteConfirm: 'Konfiqurasiyanı həqiqən silmək istəyitsiniz?',
   filterWasChangedConfirm: 'Filtr dəyişdirilmişdir. Konfiqurasiyanın yüklənməsi zamanı bütün dəyişikliklər itirilə bilər. Yükləməni davam edirsiniz?',
   filterIsRequired: 'Filtr mütləq doldurulmalıdır',
-  сhooseEntity: 'Mahiyyəti seç',
   startSearchMinCharacters: 'Axtarışa başlamaq üçün azı {0} simvol daxil edin',
 
   navShortcutCode: 'Yarlık kodu',

@@ -363,7 +363,6 @@ UB.i18nExtend({
   deleteConfirm: 'Ви действительно хотите удалить конфигурацию?',
   filterWasChangedConfirm: 'Фильтр изменился. При загрузке конфигурации все изменения будут потеряны. Продолжить загрузку?',
   filterIsRequired: 'Фильтр обязательный для заполнения',
-  сhooseEntity: 'Выберите сущность',
   startSearchMinCharacters: 'Минимальное к-во символов для поиска: {0}',
   moreThanOneUserWithPassedCertificate: 'Этот сертификат используется несколькими пользователями. Укажите имя пользователя.',
   OpenIDConnect: 'OpenID',

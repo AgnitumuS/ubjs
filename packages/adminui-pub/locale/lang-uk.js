@@ -302,12 +302,12 @@ UB.i18nExtend({
   certificate: 'Сертифікат',
   certificates: 'Сертифікати',
   signVerification: 'Перевірка підпису',
-    // signsInDocument: 'Підписи в документі',
+  // signsInDocument: 'Підписи в документі',
   UserWithoutOrgEmployeeNotAllowed: 'Користувач не перебуває в штаті організації (не співставлений з жодною штатною одиницею). Вхід заборонено.',
-    // search form (UBPreFilter)
+  // search form (UBPreFilter)
   search: 'Пошук',
   'Filter by': 'Фильтрувати по',
-    // cancel: 'Відміна',
+  // cancel: 'Відміна',
   filterForm: 'Форма пошуку',
   main: 'Основне',
   other: 'Інше',
@@ -339,7 +339,6 @@ UB.i18nExtend({
   deleteConfirm: 'Ви дійсно бажате видалити конфігурацію?',
   filterWasChangedConfirm: 'Фільтр було змінено. При завантаженні конфігурації всі зміни буде втрачено. Продовжити завантаження?',
   filterIsRequired: "Фільтр обов'язковий для заповнення",
-  сhooseEntity: 'Виберіть сутність',
   startSearchMinCharacters: 'Мінімальна к-ть символів для пошуку: {0}',
   headerSelectCert: 'Виберіть сертифікат',
   headerSelectOwnCert: 'Виберіть сертифікати, що відповідні закритому ключу',

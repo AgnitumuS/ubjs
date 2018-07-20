@@ -8,11 +8,11 @@
 // @description "Document type attribute test"
 const UB = require('@unitybase/ub-pub')
 exports.formDef = {
-	items:[
+  items: [
     {
-		  layout: {type: 'hbox'},
-		  items: [
-		    {
+      layout: {type: 'hbox'},
+      items: [
+        {
           xtype: 'ub-badge',
           text: UB.i18n('red inverted'),
           invert: true,
@@ -33,44 +33,44 @@ exports.formDef = {
           invert: false,
           cssClass: 'green'
         }
-		  ]
-		},
-    { attributeName: "code" /*Code*/},
-        { attributeName: "description",width: 800},
-		{
-      xtype: 'ubfieldset', 
+      ]
+    },
+    {attributeName: 'code'},
+    {attributeName: 'description', width: 800},
+    {
+      xtype: 'ubfieldset',
       text: 'Grouped data',
       items: [
-        { attributeName: "docDate"},
-        { attributeName: "docDateTime"}
+        {attributeName: 'docDate'},
+        {attributeName: 'docDateTime'}
       ]
     },
     {
-      xtype: "grid", 
+      xtype: 'grid',
       store: new UB.ux.data.UBStore({
         ubRequest: UB.Repository('tst_document').attrs(['ID', 'docDate', 'code', 'description']).ubql()
       }),
       columns: [{
-        text     : 'ID',
-        width    : 100,
-        sortable : false,
+        text: 'ID',
+        width: 100,
+        sortable: false,
         dataIndex: 'ID'
       }, {
         text: 'Other attrs',
         columns: [{
-          text     : 'docDate',
-          width    : 250,
-          sortable : true,
+          text: 'docDate',
+          width: 250,
+          sortable: true,
           dataIndex: 'docDate'
         }, {
-          text     : 'code',
-          width    : 180,
-          sortable : true,
+          text: 'code',
+          width: 180,
+          sortable: true,
           dataIndex: 'code'
         }]
-      }],  
+      }],
       height: 200
     },
-    { attributeName: "fileStoreSimple", expanded: true, height: 500}
-	]
-};
+    {attributeName: 'fileStoreSimple', expanded: true, height: 500}
+  ]
+}

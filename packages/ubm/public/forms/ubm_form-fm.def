@@ -8,6 +8,7 @@
 // @description "Form editor"
 
 require('@unitybase/adminui-pub/_src/app/ux/designer/VisualDesigner')
+const UB = require('@unitybase/ub-pub')
 
 exports.formDef = {
   parentConfig: {
