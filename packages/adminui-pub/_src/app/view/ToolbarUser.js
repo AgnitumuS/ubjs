@@ -91,30 +91,6 @@ Ext.define('UB.view.ToolbarUser', {
               handler: function () {
                 UB.core.UBLocalStorageManager.removeUserDataUI()
               }
-            }, {
-              text: UB.i18n('clearFormsCache'),
-              iconCls: 'iconForm',
-              tooltip: 'Ctrl+Alt+C', // this shortcut handled on global level in app.js
-              handler: function () {
-                UB.core.UBFormLoader.clearFormCache()
-                Ext.create('widget.uxNotification', {
-                  title: UB.i18n('executed'),
-                  position: 't',
-                  slideInDuration: 800,
-                  useXAxis: true,
-                  autoShow: true,
-                  cls: 'ux-notification-light',
-                  // iconCls: 'ux-notification-icon-error',
-                  bodyPadding: 5,
-                  items: [{
-                    xtype: 'component',
-                    autoEl: {
-                      tag: 'div',
-                      html: UB.i18n('clearFormsCache')
-                    }
-                  }]
-                })
-              }
             }]
           }
         }]

@@ -557,19 +557,11 @@ Ext.define('UB.core.UBCommand', {
         me.windowCommandCode = me.formCode
 
         UB.core.UBFormLoader.getFormViewAndController({formCode: me.formCode}).then(function (formDefinition) {
-          // TODO - MPV temporary
-          // if (formDefinition.formType === 'vue') {
-          //   UB.inject('vue.js').then(function () {
-          //     var clearAttrReg = /^\/\/@(.+) "(.*)"[ \t]*\r?\n/gm // seek for //@ "bla bla" CRLF
-          //     if (!formDefinition.formController.el) {
-          //       formDefinition.formController.el = $App.viewport.centralPanel.getEl().dom
-          //     }
-          //     formDefinition.formController.template = formDefinition.formView.replace(clearAttrReg, '')
-          //     new Vue(formDefinition.formController)
-          //   })
-          // } else {
-          me.onShowFormRun(formDefinition.formView, formDefinition.formController)
-          // }
+          if (formDefinition.formType === 'vue') {
+            formDefinition.formController.mount()
+          } else {
+            me.onShowFormRun(formDefinition.formView, formDefinition.formController)
+          }
         })
       }
     }

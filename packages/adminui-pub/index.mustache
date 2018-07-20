@@ -83,8 +83,9 @@
                 'codemirror/*.js': { format: 'cjs' },
                 'tinymce/*.js': { format: 'global' },
                 'file-saver': { format: 'cjs' },
-                '*/adminui.app.min.js': { format: 'global' }, // important because adminui.min.js dose not define anything
-                '*/adminui-next.min.js': { format: 'global' } // important because adminui.min.js dose not define anything
+                '*.def': {format: 'cjs'},
+                '*/adminui.app.min.js': { format: 'global' }, // important: adminui.min.js does not define anything
+                '*/adminui-next.min.js': { format: 'global' } // important: adminui-next.min.js does not define anything
             },
             packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
         });

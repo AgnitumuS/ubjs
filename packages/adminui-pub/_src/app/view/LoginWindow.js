@@ -28,8 +28,8 @@ Ext.define('UB.view.LoginWindow', {
       let loginPromise = new Promise(function (resolve, reject) {
         loginWindow.deferred = {resolve: resolve, reject: reject}
       })
-            // user already authorized but session expire
-            // disable userName & auth tabs so user can only repeat then same auth
+      // user already authorized but session expire
+      // disable userName & auth tabs so user can only repeat then same auth
       if (connection.lastLoginName) {
         loginWindow.textFieldLoginCert && loginWindow.textFieldLoginCert.setDisabled(true)
         loginWindow.textFieldLogin && loginWindow.textFieldLogin.setDisabled(true)
@@ -54,14 +54,13 @@ Ext.define('UB.view.LoginWindow', {
   resizable: false,
   id: 'extClientLoginForm',
 
-    /**
-     * @type {UBConnection}
-     */
+  /**
+   * @type {UBConnection}
+   */
   connection: null,
-    /**
-     *
-     * @param {UBConnection} connection
-     */
+  /**
+   * @param {UBConnection} connection
+   */
   constructor: function (connection) {
     this.callParent(arguments)
   },
@@ -270,7 +269,6 @@ Ext.define('UB.view.LoginWindow', {
           me.textFieldPassword,
           {
             xtype: 'component',
-            padding: '50 0 0 0',
             autoEl: {
               tag: 'div',
               html: UB.i18n('UBAuthTip')
@@ -315,7 +313,7 @@ Ext.define('UB.view.LoginWindow', {
         var OpenIDConnectProviders = responce.data
         var radioGroup = {
           xtype: 'radiogroup',
-                    // Arrange radio buttons into two columns, distributed vertically
+          // Arrange radio buttons into two columns, distributed vertically
           columns: 1,
           id: 'extLoginOpenIDType',
           vertical: true,

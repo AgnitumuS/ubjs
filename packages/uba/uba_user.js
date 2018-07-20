@@ -110,7 +110,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
       throw new Error('<<<Password is too simple>>>')
     }
   }
-    // checkDictionary
+  // checkDictionary
   if (passwordPolicy.checkDictionary) {
     // todo - check password from dictionary
     // if (false) {
@@ -126,7 +126,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   }
 
   newPwd = nsha256('salt' + newPwd)
-    // checkPrevPwdNum
+  // checkPrevPwdNum
   if (passwordPolicy.checkPrevPwdNum > 0) {
     UB.Repository('uba_prevPasswordsHash')
       .attrs('uPasswordHashHexa')

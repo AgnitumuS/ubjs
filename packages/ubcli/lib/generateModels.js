@@ -26,7 +26,7 @@ module.exports = function generateModels (cfg) {
     if (!cfg) return
   }
 
-    // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
+  // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({receiveTimeout: 120000})
 
   let autorun = cfg.autorun

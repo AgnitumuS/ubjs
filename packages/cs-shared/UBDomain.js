@@ -401,11 +401,9 @@ function UBModel (cfg, modelCode) {
    * The path for retrieve a model public accessible files (using clientRequire endpoint)
    * @type {string}
    */
-  this.clientRequirePath = /* cfg.clientRequirePath
-    ? cfg.clientRequirePath
-    : */(cfg.moduleSuffix && cfg.moduleName)
-      ? this.moduleName + '/' + cfg.moduleSuffix
-      : (this.moduleName || this.path)
+  this.clientRequirePath = (cfg.moduleSuffix && cfg.moduleName && cfg.moduleName.startsWith('@'))
+    ? (this.moduleName + '/' + cfg.moduleSuffix)
+    : (this.path)
 
   if (cfg.realPublicPath) {
     /**

@@ -87,6 +87,11 @@ Ext.define('UB.core.UBApp', {
      */
     this.domainInfo = null
     /**
+     * Main application window. Initialised after $App.launch()
+     * @property {UB.view.Viewport} viewport
+     */
+    this.viewport = null
+    /**
      * UnityBase application instance short alias reference. Use it instead of UB.core.UBApp singleton
      * @property {UB.core.UBApp} $App
      * @type {UB.core.UBApp}
@@ -429,25 +434,8 @@ Ext.define('UB.core.UBApp', {
           setStoreId: true
         })
       })
-    }).then(function () { // clear form's def/js cache if ubm_form version changed
-      // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
-      let cacheKey = me.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
-      let realFormsVersion = me.connection.cachedSessionEntityRequested[cacheKey]
-
-      if (realFormsVersion) {
-        let storedFormsVersion = +window.localStorage.getItem('ubm_form_cache_version')
-        if (storedFormsVersion !== realFormsVersion) {
-          UB.core.UBFormLoader.clearFormCache()
-          window.localStorage.setItem('ubm_form_cache_version', realFormsVersion)
-        }
-      }
-      return true
     }).then(function () {
       me.setLocalStorageProviderPrefix(me.connection.userLogin())
-      /**
-       * Main application window
-       * @property {UB.view.Viewport} viewport
-       */
       me.viewport = Ext.create('UB.view.Viewport')
       me.viewport.show()
       me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop)

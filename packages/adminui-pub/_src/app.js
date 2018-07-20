@@ -513,9 +513,6 @@ function launchApp () {
       if (eKey === Ext.EventObject.BACKSPACE && 'textarea|input'.indexOf(type) < 0) {
         e.preventDefault()
       }
-      if (e.getKey() === Ext.EventObject.C && e.ctrlKey && e.altKey) {
-        UB.core.UBFormLoader.clearFormCache()
-      }
     })
 
     // init dropzone

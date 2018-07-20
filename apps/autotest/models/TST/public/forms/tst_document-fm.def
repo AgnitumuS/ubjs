@@ -1,10 +1,12 @@
 // @! "do not remove comments below unless you know what you do!"
+// @mi_modifyDate "Fri Jun 01 2018 03:13:31 GMT+0300 (FLE Standard Time)"
 // @isDefault "false"
 // @entity "tst_document"
 // @model "TST"
 // @formType "auto"
 // @caption "tst_document.meta"
 // @description "Document type attribute test"
+const UB = require('@unitybase/ub-pub')
 exports.formDef = {
 	items:[
     {
