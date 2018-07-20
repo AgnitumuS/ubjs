@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.0]
+### BREAKING
+- `custom` (pure ExtJS) forms must export a entry point class name.
+ 
+ For example if form `*-fm.def` contains `Ext.define("UBM.userSettings", ...` then line
+ `exports.formDef = 'UBM.userSettings'` must be added to the beginning of file
+
+- `custom` && `auto` forms definition are not parsed for `requires: [...]` && 'uses: [...]' sections.
+ All required components must be loaded using direct `require('pathToComponentImplemenattion')` calls.
+
+ For example if form `*-fm.def` contains section
+ ```
+ requires: ['UB.ux.designer.VisualDesigner']
+ ```
+ then VisualDesigner implementation must be required either in model initialization script or inside component file (recommended)
+ ```
+ require('@unitybase/adminui-pub/_src/app/ux/designer/VisualDesigner')
+ ```
+
+- forms caching is moved to the HTTP cache level, localStorage is not used anymore for form cache
+
+### Added
+ - Hot Module Replacements for forms (work only for client in `dev` mode).
+ See [ub-hrm server](https://git-pub.intecracy.com/unitybase/ubjs/tree/v5.x/packages/hmr) for details
+
+### Changed
+- all forms are loading using SystemJS.import:
+  - form definition can use `require('something')` and it will be parsed synchronously as expected
+  - forms are cached on HTTP level (in case of reverse proxy). local storage based cache not used for cache forms anymore
+
+
 ## [5.2.1]
 ### Fixed
 - skip destroying `tinymce` when it is not defined yet

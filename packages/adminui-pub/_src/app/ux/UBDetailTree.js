@@ -157,7 +157,7 @@ Ext.define('UB.ux.UBDetailTree', {
             actionId: actions.edit,
             glyph: UB.core.UBUtil.glyphs.faEdit,
             cls: 'edit-action',
-            tooltip: UB.i18n('redaktirovat'), //+ hotKeys[actions.addNew].text,
+            tooltip: UB.i18n('Edit'), //+ hotKeys[actions.addNew].text,
             eventId: events.edit,
             handler: me.onAction,
             scope: me

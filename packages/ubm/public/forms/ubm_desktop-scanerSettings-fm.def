@@ -5,8 +5,7 @@
 //@caption "ScanerSettings"
 //@description "ScanerSettings"
 
-//do not remove this. It's a dirty hack for get class with regexp from UBFormLoader.js
-//Ext.define('UBM.scanerSettings', {
+exports.formDef = 'UBM.scanerSettings'
 
 Ext.define('UBM.scanerSettings.doubleFields', {
     extend: 'Ext.data.Model',

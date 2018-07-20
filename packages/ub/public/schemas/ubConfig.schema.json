@@ -846,6 +846,11 @@
                 }
               }
             },
+            "hmrServerURL": {
+              "type": "string",
+              "description": "@unitybase/hmr Hot module replacer web socket URL",
+              "default": "equal to application.rootHandler"
+            },
             "encryptionImplementation" : {
               "type": "string",
               "description": "Define encryption implementation for authentication CERT. By default @ub-d/nm-dstu/injectEncription.js"
