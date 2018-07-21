@@ -789,14 +789,14 @@ begin
       for I := 0 to Msg.Header.ToList.Count - 1 do
       begin
         s := Msg.Header.ToList[I];
-        { для каждого получателя выполняем команду MAIL TO }
+        { РґР»СЏ РєР°Р¶РґРѕРіРѕ РїРѕР»СѓС‡Р°С‚РµР»СЏ РІС‹РїРѕР»РЅСЏРµРј РєРѕРјР°РЅРґСѓ MAIL TO }
         ps := GetEmailAddr(s);
         res := Sender.MailTo(ps);
-        // не смогли выполнить команду - прерываем выполнение
+        // РЅРµ СЃРјРѕРіР»Рё РІС‹РїРѕР»РЅРёС‚СЊ РєРѕРјР°РЅРґСѓ - РїСЂРµСЂС‹РІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ
         if not res then
           Break;
       end;
-      if res then begin//все в порядке - выполняем команду DATA
+      if res then begin//РІСЃРµ РІ РїРѕСЂСЏРґРєРµ - РІС‹РїРѕР»РЅСЏРµРј РєРѕРјР°РЅРґСѓ DATA
         curState := 'MailData';
         res := Sender.MailData(Msg.Lines);
       end;
