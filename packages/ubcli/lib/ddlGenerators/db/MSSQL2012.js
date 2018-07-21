@@ -316,7 +316,6 @@ class DBSQL2012 extends DBAbstract {
 
     // in case of not null added - recreate index
     // if (allowNullChanged && !column.allowNull ){
-    debugger
     let objects = tableDB.getIndexesByColumn(column)
     for (let colIndex of objects) {
       colIndex.isForDelete = true
