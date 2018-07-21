@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-next",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "UnityBase admin UI extended with Vue + ElementUI",
   "main": "adminui-next.js",
   "browser": {
