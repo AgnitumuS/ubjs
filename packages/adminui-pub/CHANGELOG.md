@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  `exports.formDef = 'UBM.userSettings'` must be added to the beginning of file
 
 - `custom` && `auto` forms definition are not parsed for `requires: [...]` && 'uses: [...]' sections.
- All required components must be loaded using direct `require('pathToComponentImplemenattion')` calls.
+ All required components must be loaded using direct `require('pathToComponentImplementation')` calls.
 
  For example if form `*-fm.def` contains section
  ```

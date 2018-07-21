@@ -368,7 +368,7 @@ where
   genCodeAlterColumn (table, tableDB, column, columnDB, typeChanged, sizeChanged, allowNullChanged) {
     // recreate index only if type changed
     if (typeChanged || sizeChanged) {
-      let objects = tableDB.getIndexesByColumnName(column.name)
+      let objects = tableDB.getIndexesByColumn(column)
       for (let colIndex of objects) {
         colIndex.isForDelete = true
         colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`

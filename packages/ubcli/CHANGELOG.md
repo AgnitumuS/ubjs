@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.28]
+### Fixed
+- Fixed [unitybase/ubjs#5] - DDL generation will drop and re-create indexes of columns if column type is changed
+
 ## [5.0.19]
 ### Fixed
 - PostgreSQL DDL generator will ignore functional ("func") index definition in `dbExtensions`

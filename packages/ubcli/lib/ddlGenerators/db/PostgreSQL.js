@@ -352,7 +352,7 @@ ORDER BY index_id, column_position`
     // in case of not null added - recreate index
     // if (allowNullChanged && !column.allowNull ){
 
-    let objects = tableDB.getIndexesByColumnName(column.name)
+    let objects = tableDB.getIndexesByColumn(column)
     for (let colIndex of objects) {
       colIndex.isForDelete = true
       colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`
