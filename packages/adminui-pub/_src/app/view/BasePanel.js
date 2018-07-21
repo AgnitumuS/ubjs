@@ -2096,14 +2096,11 @@ Ext.define('UB.view.BasePanel', {
    */
 
   /**
-   * Fill form field values from record. For non-simple fields (i.e. combobox) fill
+   * Fill form field values from record
    * @param {Ext.data.Model} record
    */
   setFields: function (record) {
-    var
-      me = this,
-      field,
-      fields = me.fields
+    let me = this
 
     if (!record) return
     if (!me.binder.record || (me.binder.record !== record)) {
@@ -2121,20 +2118,20 @@ Ext.define('UB.view.BasePanel', {
       me.disableBinder()
       me.binder.bind(true)
       me.enableBinder()
-
-      for (var i = 0, len = fields.length; i < len; ++i) {
-        field = fields[i]
-// add link between action and field, becase when we need to disable field
+      let fields = me.fields
+      for (let i = 0, len = fields.length; i < len; i++) {
+        let field = fields[i]
+        // add link between action and field, because when we need to disable field
         // we need to disable action menu items
         if (field.xtype === 'ubdocument') {
-          for (var j = 0; j < this.docActions.length; j++) {
+          for (let j = 0, l = this.docActions.length; j < l; j++) {
             if (this.docActions[j].initialConfig.key === field.attributeName) {
               field.action = this.docActions[j]
               break
             }
           }
         }
-        me.updateAls(field, field.attributeName)
+        if (me.record.resultAls) me.updateAls(field, field.attributeName)
       }
       me.fireEvent('updateFields', record)
     } finally {

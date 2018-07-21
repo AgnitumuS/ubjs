@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.3.1]
 ### Changed
-- 'tabsCountLimitExceeded' message type changed from error to information
+- `tabsCountLimitExceeded` message type changed from error to information
+
+### Fixed
+- Issue #6 ALS screws up attributes by prevent calling of BasePanel.updateAls if record.resultAls is undefined
 
 ## [5.3.0]
 ### BREAKING
