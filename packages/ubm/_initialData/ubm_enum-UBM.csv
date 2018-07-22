@@ -5,7 +5,7 @@ UBA_RULETYPE;D;Deny;20
 FORM_TYPE;auto;UB form;10
 FORM_TYPE;custom;Pure ExtJS form;20
 FORM_TYPE;vue;VueJS form;30
-FORM_TYPE;module;Any module what exports mount();30
+FORM_TYPE;module;Any module what exports mount();40
 CMD_TYPE;showList;Show list;10
 CMD_TYPE;showForm;Show form;20
 CMD_TYPE;runCode;Code execution;30
