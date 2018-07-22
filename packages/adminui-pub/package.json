@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "5.3.1",
+  "version": "5.3.2",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "browser": {
@@ -35,7 +35,7 @@
     "@unitybase/codemirror-full": "^1.2.15",
     "@unitybase/cs-shared": "^5.0.7",
     "@unitybase/ub-pub": "^5.2.0",
-    "@unitybase/ubm": "^5.0.31",
+    "@unitybase/ubm": "^5.0.32",
     "@unitybase/xlsx": "^5.0.19",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
@@ -49,9 +49,9 @@
     "mustache": "^2.3.0",
     "mxgraph-js": "^1.0.1",
     "systemjs": "^0.20.18",
+    "systemjs-hmr": "^2.0.9",
     "systemjs-plugin-css": "^0.1.32",
-    "tinymce": "^4.7.13",
-    "systemjs-hmr": "^2.0.9"
+    "tinymce": "^4.7.13"
   },
   "keywords": [
     "UnityBase",
