@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.2]
+### Fixed
+- fix error 404 Not Found during request to /clientRequire/systemjs-hmr.
+ systemjs-hmr is moved from devDependencies to dependencies section of package.json
+
 ## [5.3.1]
 ### Changed
 - `tabsCountLimitExceeded` message type changed from error to information

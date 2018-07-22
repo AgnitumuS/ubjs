@@ -50,7 +50,8 @@
     "mxgraph-js": "^1.0.1",
     "systemjs": "^0.20.18",
     "systemjs-plugin-css": "^0.1.32",
-    "tinymce": "^4.7.13"
+    "tinymce": "^4.7.13",
+    "systemjs-hmr": "^2.0.9"
   },
   "keywords": [
     "UnityBase",
@@ -62,7 +63,6 @@
     "clean-css-cli": "^4.1.11",
     "cross-env": "^5.1.1",
     "shx": "^0.2.2",
-    "systemjs-hmr": "^2.0.9",
     "uglify-js": "^3.0.26"
   }
 }
