@@ -28,6 +28,7 @@
     "dist/adminui-next.css",
     "dist/adminui-next.min.js",
     "dist/fonts",
+    "views/",
     "locale",
     "adminui-next.js",
     "webpack.config.js"
