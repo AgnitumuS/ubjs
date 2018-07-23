@@ -803,7 +803,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .x-tab-bar-body-default-top {
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 
 .ub-header-menu-item {
@@ -1044,7 +1044,6 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 .ub_tree_text {
     padding: 9px 0;
     vertical-align: middle;
-    //color: rgba(0, 0, 0, 0.870588);
     color: #ffffff;
 }
 
@@ -1468,17 +1467,11 @@ input.x-form-field-text{
 
 .mce-container {
     border-top-width: 0 !important;
-    border-bottom-width: 1 !important;
-}
-
-
-.leftMenuAvatar {
-    background-image: url(./ubimages/profile-background.jpg);
+    border-bottom-width: 1px !important;
 }
 
 .logoST{
     background-color: #55646b;
-    //background-image: url(./ubimages/sun-tech-logo.png);
 }
 
 .ub_tree_icon {
@@ -1505,32 +1498,17 @@ input.x-form-field-text{
 
 .ub-desktop-button {
     height: 34px;
-    //padding: 4px;
-    //border-bottom: solid 1px #9b9597;
 }
-/*
-.save-action,
-.save-and-close-action{
 
-    //background-color: #bfe8ca;
-}
-.save-action.x-over,
-.save-and-close-action.x-over{
-    background-color: #b7ddc0;
-}
-*/
 .save-action .x-btn-icon-el,
 .save-and-close-action .x-btn-icon-el{
     color: #049540;
-    //text-shadow: 0 0 0.05em #55B769;
 }
-
 
 .save-action.x-disabled .x-btn-icon-el,
 .save-and-close-action.x-disabled .x-btn-icon-el,
 .refresh-action.x-disabled .x-btn-icon-el{
     color: #585d5a;
-    //text-shadow: 0 0 0em white;
 }
 
 .refresh-action .x-btn-icon-el{

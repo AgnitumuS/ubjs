@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - login window logo css fixed in way logo looks the same on adminui-next adn adminui login windhw
 
+### Changed
+- remove IE9 specific CSS selectors from UBGrayTheme
+- remove invalid background images CSS selectors from UBGrayTheme
+
 ## [5.3.2]
 ### Fixed
 - fix error 404 Not Found during request to /clientRequire/systemjs-hmr.

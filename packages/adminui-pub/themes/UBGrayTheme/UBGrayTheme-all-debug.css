@@ -4181,14 +4181,12 @@ img {
 .x-layer {
   position: absolute !important;
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 51, ../../../../ext/packages/ext-theme-base/sass/src/Component.scss */
 .x-fixed-layer {
   position: fixed !important;
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 57, ../../../../ext/packages/ext-theme-base/sass/src/Component.scss */
@@ -4197,7 +4195,6 @@ img {
   left: 0;
   top: 0;
   overflow: hidden;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
@@ -4249,7 +4246,6 @@ img {
   display: none;
   position: absolute;
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 119, ../../../../ext/packages/ext-theme-base/sass/src/Component.scss */
@@ -4313,17 +4309,12 @@ img {
 .x-proxy-el {
   position: absolute;
   background: #b4b4b4;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
 }
 
 /* line 180, ../../../../ext/packages/ext-theme-base/sass/src/Component.scss */
 .x-css-shadow {
   position: absolute;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
 }
 
@@ -4356,7 +4347,6 @@ div.x-editor {
   position: absolute;
   width: 100%;
   height: 100%;
-  zoom: 1;
 }
 
 /* line 11, ../../../../ext/packages/ext-theme-base/sass/src/LoadMask.scss */
@@ -4545,8 +4535,6 @@ div.x-editor {
 .x-btn {
   display: inline-block;
   position: relative;
-  zoom: 1;
-  *display: inline;
   outline: 0;
   cursor: pointer;
   white-space: nowrap;
@@ -4566,7 +4554,6 @@ div.x-editor {
   display: block;
   text-decoration: none;
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 28, ../../../../ext/packages/ext-theme-base/sass/src/button/Button.scss */
@@ -4574,7 +4561,6 @@ div.x-editor {
   display: block;
   white-space: nowrap;
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 35, ../../../../ext/packages/ext-theme-base/sass/src/button/Button.scss */
@@ -4606,7 +4592,6 @@ div.x-editor {
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Box.scss */
 .x-box-layout-ct {
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 6, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Box.scss */
@@ -4621,7 +4606,6 @@ div.x-editor {
 /* line 31, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Box.scss */
 .x-box-inner {
   overflow: hidden;
-  zoom: 1;
   position: relative;
   left: 0;
   top: 0;
@@ -4715,7 +4699,6 @@ div.x-editor {
 
 /* line 2, ../../../../ext/packages/ext-theme-base/sass/src/dd/StatusProxy.scss */
 .x-dd-drag-repair .x-dd-drag-ghost {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
   opacity: 0.6;
 }
 /* line 6, ../../../../ext/packages/ext-theme-base/sass/src/dd/StatusProxy.scss */
@@ -4725,7 +4708,6 @@ div.x-editor {
 
 /* line 11, ../../../../ext/packages/ext-theme-base/sass/src/dd/StatusProxy.scss */
 .x-dd-drag-ghost {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);
   opacity: 0.85;
   padding: 5px;
   padding-left: 20px;
@@ -4778,18 +4760,6 @@ div.x-editor {
 }
 
 /* line 23, ../../../../ext/packages/ext-theme-base/sass/src/panel/Panel.scss */
-.x-ie .x-panel-header,
-.x-ie .x-panel-header-tl,
-.x-ie .x-panel-header-tc,
-.x-ie .x-panel-header-tr,
-.x-ie .x-panel-header-ml,
-.x-ie .x-panel-header-mc,
-.x-ie .x-panel-header-mr,
-.x-ie .x-panel-header-bl,
-.x-ie .x-panel-header-bc,
-.x-ie .x-panel-header-br {
-  zoom: 1;
-}
 
 /* line 29, ../../../../ext/packages/ext-theme-base/sass/src/panel/Panel.scss */
 .x-ie8 td.x-frame-mc {
@@ -4840,8 +4810,6 @@ div.x-editor {
   display: inline-block;
   vertical-align: middle;
   *vertical-align: auto;
-  zoom: 1;
-  *display: inline;
   overflow: hidden;
 }
 
@@ -4925,7 +4893,6 @@ svg, vml {
 /* line 6, ../../../../ext/packages/ext-theme-base/sass/src/container/ButtonGroup.scss */
 .x-btn-group-body {
   position: relative;
-  zoom: 1;
 }
 /* line 9, ../../../../ext/packages/ext-theme-base/sass/src/container/ButtonGroup.scss */
 .x-btn-group-body .x-table-layout-cell {
@@ -4976,7 +4943,6 @@ svg, vml {
 /* line 9, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
 .x-form-item-label-top {
   display: block;
-  zoom: 1;
 }
 
 /* line 15, ../../../../ext/packages/ext-theme-base/sass/src/form/Labelable.scss */
@@ -5011,7 +4977,6 @@ svg, vml {
 /* line 5, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Checkbox.scss */
 .x-form-cb-wrap-inner {
   position: relative;
-  zoom: 1;
 }
 
 /* line 10, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Checkbox.scss */
@@ -5042,7 +5007,6 @@ the height of a multi-line element */
 /* line 55, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Checkbox.scss */
 .x-form-cb-label {
   display: inline-block;
-  zoom: 1;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/form/FieldSet.scss */
@@ -5157,7 +5121,6 @@ the height of a multi-line element */
 /* line 26, ../../../../ext/packages/ext-theme-base/sass/src/picker/Date.scss */
 .x-datepicker-header {
   position: relative;
-  zoom: 1;
 }
 
 /* line 31, ../../../../ext/packages/ext-theme-base/sass/src/picker/Date.scss */
@@ -5175,7 +5138,6 @@ the height of a multi-line element */
 /* line 41, ../../../../ext/packages/ext-theme-base/sass/src/picker/Date.scss */
 .x-datepicker-date {
   display: block;
-  zoom: 1;
   text-decoration: none;
 }
 
@@ -5243,7 +5205,6 @@ the height of a multi-line element */
   cursor: pointer;
   top: -2px;
   right: -2px;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
   /* Yes, there's actually a good reason for this...
    * If the configured buttonText is set to something longer than the default,
@@ -5319,7 +5280,6 @@ the height of a multi-line element */
 .x-grid-cell-inner {
   overflow: hidden;
   white-space: nowrap;
-  zoom: 1;
 }
 
 /* line 28, ../../../../ext/packages/ext-theme-base/sass/src/panel/Table.scss */
@@ -5355,7 +5315,6 @@ the height of a multi-line element */
 
 /* line 7, ../../../../ext/packages/ext-theme-base/sass/src/grid/column/Column.scss */
 .x-column-header-inner {
-  zoom: 1;
   white-space: nowrap;
   position: relative;
   overflow: hidden;
@@ -5411,11 +5370,6 @@ the height of a multi-line element */
 }
 
 /* line 3, ../../../../ext/packages/ext-theme-base/sass/src/grid/feature/Grouping.scss */
-.x-grid-group,
-.x-grid-group-body,
-.x-grid-group-hd {
-  zoom: 1;
-}
 
 /* line 7, ../../../../ext/packages/ext-theme-base/sass/src/grid/feature/Grouping.scss */
 .x-grid-group-hd {
@@ -5429,9 +5383,6 @@ the height of a multi-line element */
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/grid/feature/RowBody.scss */
-.x-grid-rowbody {
-  zoom: 1;
-}
 
 /* line 5, ../../../../ext/packages/ext-theme-base/sass/src/grid/feature/RowBody.scss */
 .x-grid-row-body-hidden {
@@ -5536,7 +5487,6 @@ td.x-grid-rowwrap .x-grid-cell {
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Border.scss */
 .x-border-layout-ct {
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 6, ../../../../ext/packages/ext-theme-base/sass/src/layout/container/Border.scss */
@@ -5625,7 +5575,6 @@ td.x-grid-rowwrap .x-grid-cell {
 /* line 45, ../../../../ext/packages/ext-theme-base/sass/src/menu/Menu.scss */
 .x-menu-item-text {
   display: inline-block;
-  zoom: 1;
 }
 
 /* line 54, ../../../../ext/packages/ext-theme-base/sass/src/menu/Menu.scss */
@@ -5647,14 +5596,12 @@ td.x-grid-rowwrap .x-grid-cell {
   display: none;
   z-index: 200000;
   background-color: #fff;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/slider/Multi.scss */
 .x-slider {
   outline: none;
-  zoom: 1;
   position: relative;
 }
 
@@ -5664,7 +5611,6 @@ td.x-grid-rowwrap .x-grid-cell {
   left: 0;
   top: 0;
   overflow: visible;
-  zoom: 1;
 }
 /* line 17, ../../../../ext/packages/ext-theme-base/sass/src/slider/Multi.scss */
 .x-slider-vert .x-slider-inner {
@@ -5672,9 +5618,6 @@ td.x-grid-rowwrap .x-grid-cell {
 }
 
 /* line 23, ../../../../ext/packages/ext-theme-base/sass/src/slider/Multi.scss */
-.x-slider-end {
-  zoom: 1;
-}
 
 /* line 28, ../../../../ext/packages/ext-theme-base/sass/src/slider/Multi.scss */
 .x-slider-thumb {
@@ -5735,7 +5678,6 @@ a.x-tab {
 
 /* line 17, ../../../../ext/packages/ext-theme-base/sass/src/tab/Panel.scss */
 .x-tab-button {
-  zoom: 1;
   display: block;
 }
 
@@ -5747,7 +5689,6 @@ a.x-tab {
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 32, ../../../../ext/packages/ext-theme-base/sass/src/tab/Panel.scss */
@@ -5875,9 +5816,6 @@ a.x-tab {
 }
 
 /* line 31, ../../../../ext/packages/ext-theme-base/sass/src/tree/Panel.scss */
-.x-tree-node-text {
-  zoom: 1;
-}
 
 /* including package ext-theme-neutral */
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/Component.scss */
@@ -5942,7 +5880,6 @@ a.x-tab {
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/LoadMask.scss */
 .x-mask {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
   opacity: 0.7;
   background: white;
   cursor: default;
@@ -5951,10 +5888,6 @@ a.x-tab {
 /* line 9, ../../../../ext/packages/ext-theme-neutral/sass/src/LoadMask.scss */
 .x-mask-msg {
   padding: 8px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
   border-radius: 3px;
   background: white;
 }
@@ -7328,10 +7261,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-small {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -7348,10 +7277,6 @@ a.x-tab {
 .x-nbr .x-btn-default-small {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -7426,25 +7351,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-small-tl,
-.x-btn-default-small-bl,
-.x-btn-default-small-tr,
-.x-btn-default-small-br,
-.x-btn-default-small-tc,
-.x-btn-default-small-bc,
-.x-btn-default-small-ml,
-.x-btn-default-small-mr {
-  zoom: 1;
-  background-image: url(images/btn/btn-default-small-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-small-ml,
-.x-btn-default-small-mr {
-  zoom: 1;
-  background-image: url(images/btn/btn-default-small-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-small-mc {
@@ -7625,114 +7533,44 @@ a.x-tab {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-focus .x-frame-tl,
-.x-btn-default-small-focus .x-frame-bl,
-.x-btn-default-small-focus .x-frame-tr,
-.x-btn-default-small-focus .x-frame-br,
-.x-btn-default-small-focus .x-frame-tc,
-.x-btn-default-small-focus .x-frame-bc {
-  background-image: url(images/btn/btn-default-small-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-focus .x-frame-ml,
-.x-btn-default-small-focus .x-frame-mr {
-  background-image: url(images/btn/btn-default-small-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-focus .x-frame-mc {
-  background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-small-focus-fbg.gif);
-}
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-over .x-frame-tl,
-.x-btn-default-small-over .x-frame-bl,
-.x-btn-default-small-over .x-frame-tr,
-.x-btn-default-small-over .x-frame-br,
-.x-btn-default-small-over .x-frame-tc,
-.x-btn-default-small-over .x-frame-bc {
-  background-image: url(images/btn/btn-default-small-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-over .x-frame-ml,
-.x-btn-default-small-over .x-frame-mr {
-  background-image: url(images/btn/btn-default-small-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-small-over .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-small-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-menu-active .x-frame-tl,
-.x-btn-default-small-menu-active .x-frame-bl,
-.x-btn-default-small-menu-active .x-frame-tr,
-.x-btn-default-small-menu-active .x-frame-br,
-.x-btn-default-small-menu-active .x-frame-tc,
-.x-btn-default-small-menu-active .x-frame-bc,
-.x-btn-default-small-pressed .x-frame-tl,
-.x-btn-default-small-pressed .x-frame-bl,
-.x-btn-default-small-pressed .x-frame-tr,
-.x-btn-default-small-pressed .x-frame-br,
-.x-btn-default-small-pressed .x-frame-tc,
-.x-btn-default-small-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-default-small-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-menu-active .x-frame-ml,
-.x-btn-default-small-menu-active .x-frame-mr,
-.x-btn-default-small-pressed .x-frame-ml,
-.x-btn-default-small-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-default-small-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-small-menu-active .x-frame-mc,
 .x-btn-default-small-pressed .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-small-pressed-fbg.gif);
 }
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-disabled .x-frame-tl,
-.x-btn-default-small-disabled .x-frame-bl,
-.x-btn-default-small-disabled .x-frame-tr,
-.x-btn-default-small-disabled .x-frame-br,
-.x-btn-default-small-disabled .x-frame-tc,
-.x-btn-default-small-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-default-small-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-disabled .x-frame-ml,
-.x-btn-default-small-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-default-small-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small-disabled .x-frame-mc {
-  background-color: #f0f3f3;
-  background-image: url(images/btn/btn-default-small-disabled-fbg.gif);
-}
+
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-small-focus {
-  background-image: url(images/btn/btn-default-small-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-small-over {
-  background-image: url(images/btn/btn-default-small-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-small-menu-active,
-.x-nlg .x-btn-default-small-pressed {
-  background-image: url(images/btn/btn-default-small-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-small-disabled {
-  background-image: url(images/btn/btn-default-small-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-default-small {
@@ -7752,14 +7590,12 @@ a.x-tab {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-small-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=65);
   opacity: 0.65;
 }
 
 /* line 766, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-small-disabled .x-btn-inner,
 .x-btn-default-small-disabled .x-btn-icon-el {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=65);
   opacity: 0.65;
 }
 
@@ -7806,10 +7642,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-medium {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -7826,10 +7658,6 @@ a.x-tab {
 .x-nbr .x-btn-default-medium {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -7904,25 +7732,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-medium-tl,
-.x-btn-default-medium-bl,
-.x-btn-default-medium-tr,
-.x-btn-default-medium-br,
-.x-btn-default-medium-tc,
-.x-btn-default-medium-bc,
-.x-btn-default-medium-ml,
-.x-btn-default-medium-mr {
-  zoom: 1;
-  background-image: url(images/btn/btn-default-medium-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-medium-ml,
-.x-btn-default-medium-mr {
-  zoom: 1;
-  background-image: url(images/btn/btn-default-medium-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-medium-mc {
@@ -8104,114 +7915,49 @@ a.x-tab {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-focus .x-frame-tl,
-.x-btn-default-medium-focus .x-frame-bl,
-.x-btn-default-medium-focus .x-frame-tr,
-.x-btn-default-medium-focus .x-frame-br,
-.x-btn-default-medium-focus .x-frame-tc,
-.x-btn-default-medium-focus .x-frame-bc {
-  background-image: url(images/btn/btn-default-medium-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-focus .x-frame-ml,
-.x-btn-default-medium-focus .x-frame-mr {
-  background-image: url(images/btn/btn-default-medium-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-medium-focus .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-medium-focus-fbg.gif);
 }
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-over .x-frame-tl,
-.x-btn-default-medium-over .x-frame-bl,
-.x-btn-default-medium-over .x-frame-tr,
-.x-btn-default-medium-over .x-frame-br,
-.x-btn-default-medium-over .x-frame-tc,
-.x-btn-default-medium-over .x-frame-bc {
-  background-image: url(images/btn/btn-default-medium-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-over .x-frame-ml,
-.x-btn-default-medium-over .x-frame-mr {
-  background-image: url(images/btn/btn-default-medium-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-medium-over .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-medium-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-menu-active .x-frame-tl,
-.x-btn-default-medium-menu-active .x-frame-bl,
-.x-btn-default-medium-menu-active .x-frame-tr,
-.x-btn-default-medium-menu-active .x-frame-br,
-.x-btn-default-medium-menu-active .x-frame-tc,
-.x-btn-default-medium-menu-active .x-frame-bc,
-.x-btn-default-medium-pressed .x-frame-tl,
-.x-btn-default-medium-pressed .x-frame-bl,
-.x-btn-default-medium-pressed .x-frame-tr,
-.x-btn-default-medium-pressed .x-frame-br,
-.x-btn-default-medium-pressed .x-frame-tc,
-.x-btn-default-medium-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-default-medium-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-menu-active .x-frame-ml,
-.x-btn-default-medium-menu-active .x-frame-mr,
-.x-btn-default-medium-pressed .x-frame-ml,
-.x-btn-default-medium-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-default-medium-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-medium-menu-active .x-frame-mc,
 .x-btn-default-medium-pressed .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-medium-pressed-fbg.gif);
 }
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-disabled .x-frame-tl,
-.x-btn-default-medium-disabled .x-frame-bl,
-.x-btn-default-medium-disabled .x-frame-tr,
-.x-btn-default-medium-disabled .x-frame-br,
-.x-btn-default-medium-disabled .x-frame-tc,
-.x-btn-default-medium-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-default-medium-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-medium-disabled .x-frame-ml,
-.x-btn-default-medium-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-default-medium-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-medium-disabled .x-frame-mc {
   background-color: #f0f3f3;
-  background-image: url(images/btn/btn-default-medium-disabled-fbg.gif);
 }
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-medium-focus {
-  background-image: url(images/btn/btn-default-medium-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-medium-over {
-  background-image: url(images/btn/btn-default-medium-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-medium-menu-active,
-.x-nlg .x-btn-default-medium-pressed {
-  background-image: url(images/btn/btn-default-medium-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-medium-disabled {
-  background-image: url(images/btn/btn-default-medium-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-default-medium {
@@ -8231,14 +7977,12 @@ a.x-tab {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-medium-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=65);
   opacity: 0.65;
 }
 
 /* line 766, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-medium-disabled .x-btn-inner,
 .x-btn-default-medium-disabled .x-btn-icon-el {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=65);
   opacity: 0.65;
 }
 
@@ -8285,10 +8029,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-large {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -8305,10 +8045,6 @@ a.x-tab {
 .x-nbr .x-btn-default-large {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -8383,25 +8119,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-large-tl,
-.x-btn-default-large-bl,
-.x-btn-default-large-tr,
-.x-btn-default-large-br,
-.x-btn-default-large-tc,
-.x-btn-default-large-bc,
-.x-btn-default-large-ml,
-.x-btn-default-large-mr {
-  zoom: 1;
-  background-image: url(images/btn/btn-default-large-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-large-ml,
-.x-btn-default-large-mr {
-  zoom: 1;
-  background-image: url(images/btn/btn-default-large-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-large-mc {
@@ -8583,114 +8302,49 @@ a.x-tab {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-focus .x-frame-tl,
-.x-btn-default-large-focus .x-frame-bl,
-.x-btn-default-large-focus .x-frame-tr,
-.x-btn-default-large-focus .x-frame-br,
-.x-btn-default-large-focus .x-frame-tc,
-.x-btn-default-large-focus .x-frame-bc {
-  background-image: url(images/btn/btn-default-large-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-focus .x-frame-ml,
-.x-btn-default-large-focus .x-frame-mr {
-  background-image: url(images/btn/btn-default-large-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large-focus .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-large-focus-fbg.gif);
 }
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-over .x-frame-tl,
-.x-btn-default-large-over .x-frame-bl,
-.x-btn-default-large-over .x-frame-tr,
-.x-btn-default-large-over .x-frame-br,
-.x-btn-default-large-over .x-frame-tc,
-.x-btn-default-large-over .x-frame-bc {
-  background-image: url(images/btn/btn-default-large-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-over .x-frame-ml,
-.x-btn-default-large-over .x-frame-mr {
-  background-image: url(images/btn/btn-default-large-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large-over .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-large-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-menu-active .x-frame-tl,
-.x-btn-default-large-menu-active .x-frame-bl,
-.x-btn-default-large-menu-active .x-frame-tr,
-.x-btn-default-large-menu-active .x-frame-br,
-.x-btn-default-large-menu-active .x-frame-tc,
-.x-btn-default-large-menu-active .x-frame-bc,
-.x-btn-default-large-pressed .x-frame-tl,
-.x-btn-default-large-pressed .x-frame-bl,
-.x-btn-default-large-pressed .x-frame-tr,
-.x-btn-default-large-pressed .x-frame-br,
-.x-btn-default-large-pressed .x-frame-tc,
-.x-btn-default-large-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-default-large-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-menu-active .x-frame-ml,
-.x-btn-default-large-menu-active .x-frame-mr,
-.x-btn-default-large-pressed .x-frame-ml,
-.x-btn-default-large-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-default-large-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large-menu-active .x-frame-mc,
 .x-btn-default-large-pressed .x-frame-mc {
   background-color: #e4e4e4;
-  background-image: url(images/btn/btn-default-large-pressed-fbg.gif);
 }
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-disabled .x-frame-tl,
-.x-btn-default-large-disabled .x-frame-bl,
-.x-btn-default-large-disabled .x-frame-tr,
-.x-btn-default-large-disabled .x-frame-br,
-.x-btn-default-large-disabled .x-frame-tc,
-.x-btn-default-large-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-default-large-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-large-disabled .x-frame-ml,
-.x-btn-default-large-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-default-large-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large-disabled .x-frame-mc {
   background-color: #f0f3f3;
-  background-image: url(images/btn/btn-default-large-disabled-fbg.gif);
 }
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-large-focus {
-  background-image: url(images/btn/btn-default-large-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-large-over {
-  background-image: url(images/btn/btn-default-large-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-large-menu-active,
-.x-nlg .x-btn-default-large-pressed {
-  background-image: url(images/btn/btn-default-large-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-large-disabled {
-  background-image: url(images/btn/btn-default-large-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-default-large {
@@ -8710,14 +8364,12 @@ a.x-tab {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=65);
   opacity: 0.65;
 }
 
 /* line 766, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-large-disabled .x-btn-inner,
 .x-btn-default-large-disabled .x-btn-icon-el {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=65);
   opacity: 0.65;
 }
 
@@ -8764,10 +8416,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-small {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -8784,10 +8432,6 @@ a.x-tab {
 .x-nbr .x-btn-default-toolbar-small {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -8862,22 +8506,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-small-tl,
-.x-btn-default-toolbar-small-bl,
-.x-btn-default-toolbar-small-tr,
-.x-btn-default-toolbar-small-br,
-.x-btn-default-toolbar-small-tc,
-.x-btn-default-toolbar-small-bc,
-.x-btn-default-toolbar-small-ml,
-.x-btn-default-toolbar-small-mr {
-  zoom: 1;
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-small-ml,
-.x-btn-default-toolbar-small-mr {
-  zoom: 1;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-small-mc {
@@ -8893,7 +8523,6 @@ a.x-tab {
 
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small .x-btn-inner {
-  /*font-size: 12px;*/
   font-weight: 600;
   color: #2f7c94;
   padding: 0 5px;
@@ -9054,114 +8683,49 @@ a.x-tab {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-focus .x-frame-tl,
-.x-btn-default-toolbar-small-focus .x-frame-bl,
-.x-btn-default-toolbar-small-focus .x-frame-tr,
-.x-btn-default-toolbar-small-focus .x-frame-br,
-.x-btn-default-toolbar-small-focus .x-frame-tc,
-.x-btn-default-toolbar-small-focus .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-small-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-focus .x-frame-ml,
-.x-btn-default-toolbar-small-focus .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-small-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small-focus .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-small-focus-fbg.gif);
 }
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-over .x-frame-tl,
-.x-btn-default-toolbar-small-over .x-frame-bl,
-.x-btn-default-toolbar-small-over .x-frame-tr,
-.x-btn-default-toolbar-small-over .x-frame-br,
-.x-btn-default-toolbar-small-over .x-frame-tc,
-.x-btn-default-toolbar-small-over .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-small-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-over .x-frame-ml,
-.x-btn-default-toolbar-small-over .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-small-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small-over .x-frame-mc {
   background-color: #e0e4e4;
-  background-image: url(images/btn/btn-default-toolbar-small-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-menu-active .x-frame-tl,
-.x-btn-default-toolbar-small-menu-active .x-frame-bl,
-.x-btn-default-toolbar-small-menu-active .x-frame-tr,
-.x-btn-default-toolbar-small-menu-active .x-frame-br,
-.x-btn-default-toolbar-small-menu-active .x-frame-tc,
-.x-btn-default-toolbar-small-menu-active .x-frame-bc,
-.x-btn-default-toolbar-small-pressed .x-frame-tl,
-.x-btn-default-toolbar-small-pressed .x-frame-bl,
-.x-btn-default-toolbar-small-pressed .x-frame-tr,
-.x-btn-default-toolbar-small-pressed .x-frame-br,
-.x-btn-default-toolbar-small-pressed .x-frame-tc,
-.x-btn-default-toolbar-small-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-small-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-menu-active .x-frame-ml,
-.x-btn-default-toolbar-small-menu-active .x-frame-mr,
-.x-btn-default-toolbar-small-pressed .x-frame-ml,
-.x-btn-default-toolbar-small-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-small-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small-menu-active .x-frame-mc,
 .x-btn-default-toolbar-small-pressed .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-small-pressed-fbg.gif);
 }
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-disabled .x-frame-tl,
-.x-btn-default-toolbar-small-disabled .x-frame-bl,
-.x-btn-default-toolbar-small-disabled .x-frame-tr,
-.x-btn-default-toolbar-small-disabled .x-frame-br,
-.x-btn-default-toolbar-small-disabled .x-frame-tc,
-.x-btn-default-toolbar-small-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-small-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small-disabled .x-frame-ml,
-.x-btn-default-toolbar-small-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-small-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small-disabled .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-small-disabled-fbg.gif);
 }
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-small-focus {
-  background-image: url(images/btn/btn-default-toolbar-small-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-small-over {
-  background-image: url(images/btn/btn-default-toolbar-small-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-small-menu-active,
-.x-nlg .x-btn-default-toolbar-small-pressed {
-  background-image: url(images/btn/btn-default-toolbar-small-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-small-disabled {
-  background-image: url(images/btn/btn-default-toolbar-small-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-default-toolbar-small {
@@ -9181,7 +8745,6 @@ a.x-tab {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-small-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -9228,10 +8791,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-medium {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -9248,10 +8807,6 @@ a.x-tab {
 .x-nbr .x-btn-default-toolbar-medium {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -9326,22 +8881,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-medium-tl,
-.x-btn-default-toolbar-medium-bl,
-.x-btn-default-toolbar-medium-tr,
-.x-btn-default-toolbar-medium-br,
-.x-btn-default-toolbar-medium-tc,
-.x-btn-default-toolbar-medium-bc,
-.x-btn-default-toolbar-medium-ml,
-.x-btn-default-toolbar-medium-mr {
-  zoom: 1;
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-medium-ml,
-.x-btn-default-toolbar-medium-mr {
-  zoom: 1;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-medium-mc {
@@ -9518,114 +9059,47 @@ a.x-tab {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-focus .x-frame-tl,
-.x-btn-default-toolbar-medium-focus .x-frame-bl,
-.x-btn-default-toolbar-medium-focus .x-frame-tr,
-.x-btn-default-toolbar-medium-focus .x-frame-br,
-.x-btn-default-toolbar-medium-focus .x-frame-tc,
-.x-btn-default-toolbar-medium-focus .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-medium-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-focus .x-frame-ml,
-.x-btn-default-toolbar-medium-focus .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-medium-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-medium-focus .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-medium-focus-fbg.gif);
 }
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-over .x-frame-tl,
-.x-btn-default-toolbar-medium-over .x-frame-bl,
-.x-btn-default-toolbar-medium-over .x-frame-tr,
-.x-btn-default-toolbar-medium-over .x-frame-br,
-.x-btn-default-toolbar-medium-over .x-frame-tc,
-.x-btn-default-toolbar-medium-over .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-medium-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-over .x-frame-ml,
-.x-btn-default-toolbar-medium-over .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-medium-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-over .x-frame-mc {
-  background-color: #e0e4e4;
-  background-image: url(images/btn/btn-default-toolbar-medium-over-fbg.gif);
-}
+
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-menu-active .x-frame-tl,
-.x-btn-default-toolbar-medium-menu-active .x-frame-bl,
-.x-btn-default-toolbar-medium-menu-active .x-frame-tr,
-.x-btn-default-toolbar-medium-menu-active .x-frame-br,
-.x-btn-default-toolbar-medium-menu-active .x-frame-tc,
-.x-btn-default-toolbar-medium-menu-active .x-frame-bc,
-.x-btn-default-toolbar-medium-pressed .x-frame-tl,
-.x-btn-default-toolbar-medium-pressed .x-frame-bl,
-.x-btn-default-toolbar-medium-pressed .x-frame-tr,
-.x-btn-default-toolbar-medium-pressed .x-frame-br,
-.x-btn-default-toolbar-medium-pressed .x-frame-tc,
-.x-btn-default-toolbar-medium-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-medium-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-menu-active .x-frame-ml,
-.x-btn-default-toolbar-medium-menu-active .x-frame-mr,
-.x-btn-default-toolbar-medium-pressed .x-frame-ml,
-.x-btn-default-toolbar-medium-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-medium-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-medium-menu-active .x-frame-mc,
 .x-btn-default-toolbar-medium-pressed .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-medium-pressed-fbg.gif);
 }
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-disabled .x-frame-tl,
-.x-btn-default-toolbar-medium-disabled .x-frame-bl,
-.x-btn-default-toolbar-medium-disabled .x-frame-tr,
-.x-btn-default-toolbar-medium-disabled .x-frame-br,
-.x-btn-default-toolbar-medium-disabled .x-frame-tc,
-.x-btn-default-toolbar-medium-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-medium-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium-disabled .x-frame-ml,
-.x-btn-default-toolbar-medium-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-medium-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-medium-disabled .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-medium-disabled-fbg.gif);
 }
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-medium-focus {
-  background-image: url(images/btn/btn-default-toolbar-medium-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-medium-over {
-  background-image: url(images/btn/btn-default-toolbar-medium-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-medium-menu-active,
-.x-nlg .x-btn-default-toolbar-medium-pressed {
-  background-image: url(images/btn/btn-default-toolbar-medium-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-medium-disabled {
-  background-image: url(images/btn/btn-default-toolbar-medium-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-default-toolbar-medium {
@@ -9645,7 +9119,6 @@ a.x-tab {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-medium-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -9692,10 +9165,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-large {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -9712,10 +9181,6 @@ a.x-tab {
 .x-nbr .x-btn-default-toolbar-large {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -9790,22 +9255,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-large-tl,
-.x-btn-default-toolbar-large-bl,
-.x-btn-default-toolbar-large-tr,
-.x-btn-default-toolbar-large-br,
-.x-btn-default-toolbar-large-tc,
-.x-btn-default-toolbar-large-bc,
-.x-btn-default-toolbar-large-ml,
-.x-btn-default-toolbar-large-mr {
-  zoom: 1;
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-large-ml,
-.x-btn-default-toolbar-large-mr {
-  zoom: 1;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-large-mc {
@@ -9982,114 +9433,46 @@ a.x-tab {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-focus .x-frame-tl,
-.x-btn-default-toolbar-large-focus .x-frame-bl,
-.x-btn-default-toolbar-large-focus .x-frame-tr,
-.x-btn-default-toolbar-large-focus .x-frame-br,
-.x-btn-default-toolbar-large-focus .x-frame-tc,
-.x-btn-default-toolbar-large-focus .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-large-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-focus .x-frame-ml,
-.x-btn-default-toolbar-large-focus .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-large-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-focus .x-frame-mc {
-  background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-large-focus-fbg.gif);
-}
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-over .x-frame-tl,
-.x-btn-default-toolbar-large-over .x-frame-bl,
-.x-btn-default-toolbar-large-over .x-frame-tr,
-.x-btn-default-toolbar-large-over .x-frame-br,
-.x-btn-default-toolbar-large-over .x-frame-tc,
-.x-btn-default-toolbar-large-over .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-large-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-over .x-frame-ml,
-.x-btn-default-toolbar-large-over .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-large-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-large-over .x-frame-mc {
   background-color: #e0e4e4;
-  background-image: url(images/btn/btn-default-toolbar-large-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-menu-active .x-frame-tl,
-.x-btn-default-toolbar-large-menu-active .x-frame-bl,
-.x-btn-default-toolbar-large-menu-active .x-frame-tr,
-.x-btn-default-toolbar-large-menu-active .x-frame-br,
-.x-btn-default-toolbar-large-menu-active .x-frame-tc,
-.x-btn-default-toolbar-large-menu-active .x-frame-bc,
-.x-btn-default-toolbar-large-pressed .x-frame-tl,
-.x-btn-default-toolbar-large-pressed .x-frame-bl,
-.x-btn-default-toolbar-large-pressed .x-frame-tr,
-.x-btn-default-toolbar-large-pressed .x-frame-br,
-.x-btn-default-toolbar-large-pressed .x-frame-tc,
-.x-btn-default-toolbar-large-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-large-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-menu-active .x-frame-ml,
-.x-btn-default-toolbar-large-menu-active .x-frame-mr,
-.x-btn-default-toolbar-large-pressed .x-frame-ml,
-.x-btn-default-toolbar-large-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-large-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-large-menu-active .x-frame-mc,
 .x-btn-default-toolbar-large-pressed .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-large-pressed-fbg.gif);
 }
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-disabled .x-frame-tl,
-.x-btn-default-toolbar-large-disabled .x-frame-bl,
-.x-btn-default-toolbar-large-disabled .x-frame-tr,
-.x-btn-default-toolbar-large-disabled .x-frame-br,
-.x-btn-default-toolbar-large-disabled .x-frame-tc,
-.x-btn-default-toolbar-large-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-default-toolbar-large-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-large-disabled .x-frame-ml,
-.x-btn-default-toolbar-large-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-default-toolbar-large-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-large-disabled .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-default-toolbar-large-disabled-fbg.gif);
 }
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-large-focus {
-  background-image: url(images/btn/btn-default-toolbar-large-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-large-over {
-  background-image: url(images/btn/btn-default-toolbar-large-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-large-menu-active,
-.x-nlg .x-btn-default-toolbar-large-pressed {
-  background-image: url(images/btn/btn-default-toolbar-large-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-default-toolbar-large-disabled {
-  background-image: url(images/btn/btn-default-toolbar-large-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-default-toolbar-large {
@@ -10109,7 +9492,6 @@ a.x-tab {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-toolbar-large-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -10533,7 +9915,6 @@ a.x-tab {
  */
 /* line 753, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-ghost {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -10600,21 +9981,12 @@ a.x-tab {
 }
 
 /* line 469, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-top {
-  background: url(images/panel-header/panel-header-default-top-bg.gif);
-}
+
 /* line 474, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-bottom {
-  background: url(images/panel-header/panel-header-default-bottom-bg.gif);
-}
+
 /* line 479, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-left {
-  background: url(images/panel-header/panel-header-default-left-bg.gif) top right;
-}
+
 /* line 484, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-right {
-  background: url(images/panel-header/panel-header-default-right-bg.gif) top right;
-}
 
 /* line 509, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel .x-panel-header-default-collapsed-border-top {
@@ -10681,10 +10053,6 @@ a.x-tab {
   transform-origin: 0 0;
 }
 /* line 36, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie9m .x-panel-header-default-vertical .x-panel-header-text-container {
-  background-color: #cacaca;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1), progid:DXImageTransform.Microsoft.Chroma(color=#cacaca);
-}
 
 /* line 566, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-default .x-panel-header-icon {
@@ -10742,7 +10110,6 @@ a.x-tab {
 
 /* line 704, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-default-resizable .x-panel-handle {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
@@ -10809,21 +10176,12 @@ a.x-tab {
 }
 
 /* line 469, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-framed-top {
-  background: url(images/panel-header/panel-header-default-framed-top-bg.gif);
-}
+
 /* line 474, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-framed-bottom {
-  background: url(images/panel-header/panel-header-default-framed-bottom-bg.gif);
-}
+
 /* line 479, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-framed-left {
-  background: url(images/panel-header/panel-header-default-framed-left-bg.gif) top right;
-}
+
 /* line 484, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-default-framed-right {
-  background: url(images/panel-header/panel-header-default-framed-right-bg.gif) top right;
-}
 
 /* line 509, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel .x-panel-header-default-framed-collapsed-border-top {
@@ -10890,10 +10248,6 @@ a.x-tab {
   transform-origin: 0 0;
 }
 /* line 36, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie9m .x-panel-header-default-framed-vertical .x-panel-header-text-container {
-  background-color: #cacaca;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1), progid:DXImageTransform.Microsoft.Chroma(color=#cacaca);
-}
 
 /* line 566, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-header-default-framed .x-panel-header-icon {
@@ -10951,7 +10305,6 @@ a.x-tab {
 
 /* line 704, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-default-framed-resizable .x-panel-handle {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
@@ -11028,7 +10381,6 @@ a.x-tab {
   border-style: solid;
   border-width: 5px;
   border-color: #323232;
-  zoom: 1;
 }
 /* line 194, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
 .x-content-box .x-tip-anchor {
@@ -11082,10 +10434,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tip-default {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
   border-radius: 3px;
   padding: 3px 3px 3px 3px;
   border-width: 0;
@@ -11102,10 +10450,6 @@ a.x-tab {
 .x-nbr .x-tip-default {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -11180,25 +10524,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tip-default-tl,
-.x-tip-default-bl,
-.x-tip-default-tr,
-.x-tip-default-br,
-.x-tip-default-tc,
-.x-tip-default-bc,
-.x-tip-default-ml,
-.x-tip-default-mr {
-  zoom: 1;
-  background-image: url(images/tip/tip-default-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tip-default-ml,
-.x-tip-default-mr {
-  zoom: 1;
-  background-image: url(images/tip/tip-default-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tip-default-mc {
@@ -11264,10 +10591,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tip-form-invalid {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
   border-radius: 3px;
   padding: 3px 3px 3px 3px;
   border-width: 0;
@@ -11284,10 +10607,6 @@ a.x-tab {
 .x-nbr .x-tip-form-invalid {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -11362,25 +10681,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tip-form-invalid-tl,
-.x-tip-form-invalid-bl,
-.x-tip-form-invalid-tr,
-.x-tip-form-invalid-br,
-.x-tip-form-invalid-tc,
-.x-tip-form-invalid-bc,
-.x-tip-form-invalid-ml,
-.x-tip-form-invalid-mr {
-  zoom: 1;
-  background-image: url(images/tip/tip-form-invalid-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tip-form-invalid-ml,
-.x-tip-form-invalid-mr {
-  zoom: 1;
-  background-image: url(images/tip/tip-form-invalid-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tip-form-invalid-mc {
@@ -11507,7 +10809,6 @@ a.x-tab {
 .x-btn-group-default {
   border-color: #ecf0f6;
   -webkit-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
-  -moz-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
   box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
 }
 
@@ -11516,11 +10817,7 @@ a.x-tab {
   padding: 4px 5px;
   line-height: 16px;
   background: #ecf0f6;
-  -moz-border-radius-topleft: 0;
-  -webkit-border-top-left-radius: 0;
   border-top-left-radius: 0;
-  -moz-border-radius-topright: 0;
-  -webkit-border-top-right-radius: 0;
   border-top-right-radius: 0;
 }
 /* line 121, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
@@ -11546,10 +10843,6 @@ a.x-tab {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-group-default-framed {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
   border-radius: 3px;
   padding: 0 1px 0 1px;
   border-width: 3px;
@@ -11566,10 +10859,6 @@ a.x-tab {
 .x-nbr .x-btn-group-default-framed {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -11644,25 +10933,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-group-default-framed-tl,
-.x-btn-group-default-framed-bl,
-.x-btn-group-default-framed-tr,
-.x-btn-group-default-framed-br,
-.x-btn-group-default-framed-tc,
-.x-btn-group-default-framed-bc,
-.x-btn-group-default-framed-ml,
-.x-btn-group-default-framed-mr {
-  zoom: 1;
-  background-image: url(images/btn-group/btn-group-default-framed-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-group-default-framed-ml,
-.x-btn-group-default-framed-mr {
-  zoom: 1;
-  background-image: url(images/btn-group/btn-group-default-framed-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-group-default-framed-mc {
@@ -11687,10 +10959,6 @@ a.x-tab {
 /* */
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-group-default-framed-notitle {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
   border-radius: 3px;
   padding: 0 1px 0 1px;
   border-width: 3px;
@@ -11707,10 +10975,6 @@ a.x-tab {
 .x-nbr .x-btn-group-default-framed-notitle {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -11785,25 +11049,8 @@ a.x-tab {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-group-default-framed-notitle-tl,
-.x-btn-group-default-framed-notitle-bl,
-.x-btn-group-default-framed-notitle-tr,
-.x-btn-group-default-framed-notitle-br,
-.x-btn-group-default-framed-notitle-tc,
-.x-btn-group-default-framed-notitle-bc,
-.x-btn-group-default-framed-notitle-ml,
-.x-btn-group-default-framed-notitle-mr {
-  zoom: 1;
-  background-image: url(images/btn-group/btn-group-default-framed-notitle-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-group-default-framed-notitle-ml,
-.x-btn-group-default-framed-notitle-mr {
-  zoom: 1;
-  background-image: url(images/btn-group/btn-group-default-framed-notitle-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-group-default-framed-notitle-mc {
@@ -11830,7 +11077,6 @@ a.x-tab {
 .x-btn-group-default-framed {
   border-color: #ecf0f6;
   -webkit-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
-  -moz-box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
   box-shadow: white 0 1px 0 0 inset, white 0 -1px 0 0 inset, white -1px 0 0 0 inset, white 1px 0 0 0 inset;
 }
 
@@ -11839,11 +11085,7 @@ a.x-tab {
   padding: 4px 5px;
   line-height: 16px;
   background: #ecf0f6;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
 }
 /* line 121, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
@@ -11995,17 +11237,12 @@ a.x-tab {
  */
 /* line 565, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-ghost {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-default {
   border-color: #d7dada;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
 }
 
@@ -12022,7 +11259,6 @@ a.x-tab {
 /* line 224, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-header-default {
   border-color: #d7dada;
-  zoom: 1;
   background-color: #d7dada;
 }
 /* line 230, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
@@ -12042,10 +11278,7 @@ a.x-tab {
   transform-origin: 0 0;
 }
 /* line 36, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie9m .x-window-header-default-vertical .x-window-header-text-container {
-  background-color: #d7dada;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1), progid:DXImageTransform.Microsoft.Chroma(color=#d7dada);
-}
+
 
 /* line 251, ../../../../ext/packages/ext-theme-neutral/sass/src/window/Window.scss */
 .x-window-header-text-container-default {
@@ -12506,7 +11739,6 @@ textarea.x-form-empty-field {
 .x-quirks .x-ie .x-form-cb-wrap-inner-no-box-label, .x-ie7m .x-form-cb-wrap-inner-no-box-label {
   display: inline;
   width: 15px;
-  zoom: 1;
 }
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/form/CheckboxGroup.scss */
@@ -12643,9 +11875,6 @@ textarea.x-form-empty-field {
 }
 
 /* line 135, ../../../../ext/packages/ext-theme-neutral/sass/src/form/FieldSet.scss */
-.x-ie .x-fieldset-bwrap {
-  zoom: 1;
-}
 
 /* line 141, ../../../../ext/packages/ext-theme-neutral/sass/src/form/FieldSet.scss */
 .x-fieldset .x-tool-toggle {
@@ -12687,7 +11916,6 @@ textarea.x-form-empty-field {
 /* line 184, ../../../../ext/packages/ext-theme-neutral/sass/src/form/FieldSet.scss */
 .x-fieldset-bwrap {
   overflow: hidden;
-  zoom: 1;
 }
 
 /* line 190, ../../../../ext/packages/ext-theme-neutral/sass/src/form/FieldSet.scss */
@@ -12804,10 +12032,7 @@ div.x-form-spinner-down {
 }
 
 /* line 41, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Spinner.scss */
-.x-toolbar-item div.x-form-spinner-up,
-.x-toolbar-item div.x-form-spinner-down {
-  background-image: url(images/form/spinner-small.png);
-}
+
 /* line 45, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Spinner.scss */
 .x-toolbar-item .x-form-spinner-down {
   background-position: 0 -13px;
@@ -12880,7 +12105,6 @@ div.x-form-spinner-down {
   cursor: hand;
   position: relative;
   /*allow hover in IE on empty items*/
-  zoom: 1;
   border-width: 1px;
   border-style: dotted;
   border-color: white;
@@ -12933,13 +12157,11 @@ div.x-form-spinner-down {
   top: 12px;
   cursor: pointer;
   background-color: #f5f5f5;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
   opacity: 0.7;
 }
 
 /* line 50, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 a.x-datepicker-arrow:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
@@ -13141,14 +12363,12 @@ a.x-monthpicker-item-inner:hover {
   width: 12px;
   cursor: pointer;
   margin-top: 11px;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
   opacity: 0.7;
   background-color: white;
 }
 
 /* line 289, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 a.x-monthpicker-yearnav-button:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
@@ -13404,7 +12624,6 @@ a.x-color-picker-item:hover {
 
 /* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Table.scss */
 .x-grid-cell {
-  color: "none";
   line-height: 15px;
   background-color: white;
   border-color: #ededed;
@@ -13663,17 +12882,10 @@ a.x-color-picker-item:hover {
 }
 
 /* line 56, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/column/Column.scss */
-.x-nlg .x-grid-header-ct,
-.x-nlg .x-column-header {
-  background-image: url(images/grid/column-header-bg.gif);
-}
+
 
 /* line 67, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/column/Column.scss */
-.x-nlg .x-column-header-over,
-.x-nlg .x-column-header-sort-ASC,
-.x-nlg .x-column-header-sort-DESC {
-  background-image: url(images/grid/column-header-over-bg.gif);
-}
+
 
 /* line 75, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/column/Column.scss */
 .x-column-header-open {
@@ -13739,7 +12951,6 @@ a.x-color-picker-item:hover {
 
 /* line 12, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/column/Action.scss */
 .x-action-col-cell .x-item-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.3;
 }
 
@@ -13763,7 +12974,6 @@ a.x-color-picker-item:hover {
 }
 /* line 17, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/column/Check.scss */
 .x-item-disabled .x-grid-checkcolumn {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.3;
 }
 
@@ -13981,17 +13191,9 @@ a.x-color-picker-item:hover {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-grid-row-editor-buttons-default-bottom {
-  -moz-border-radius-topleft: 0;
-  -webkit-border-top-left-radius: 0;
   border-top-left-radius: 0;
-  -moz-border-radius-topright: 0;
-  -webkit-border-top-right-radius: 0;
   border-top-right-radius: 0;
-  -moz-border-radius-bottomright: 5px;
-  -webkit-border-bottom-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  -moz-border-radius-bottomleft: 5px;
-  -webkit-border-bottom-left-radius: 5px;
   border-bottom-left-radius: 5px;
   padding: 5px 5px 5px 5px;
   border-width: 0 1px 1px 1px;
@@ -14008,10 +13210,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-grid-row-editor-buttons-default-bottom {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -14086,25 +13284,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-grid-row-editor-buttons-default-bottom-tl,
-.x-grid-row-editor-buttons-default-bottom-bl,
-.x-grid-row-editor-buttons-default-bottom-tr,
-.x-grid-row-editor-buttons-default-bottom-br,
-.x-grid-row-editor-buttons-default-bottom-tc,
-.x-grid-row-editor-buttons-default-bottom-bc,
-.x-grid-row-editor-buttons-default-bottom-ml,
-.x-grid-row-editor-buttons-default-bottom-mr {
-  zoom: 1;
-  background-image: url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-bottom-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-grid-row-editor-buttons-default-bottom-ml,
-.x-grid-row-editor-buttons-default-bottom-mr {
-  zoom: 1;
-  background-image: url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-bottom-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-grid-row-editor-buttons-default-bottom-mc {
@@ -14129,17 +13310,9 @@ a.x-color-picker-item:hover {
 /* */
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-grid-row-editor-buttons-default-top {
-  -moz-border-radius-topleft: 5px;
-  -webkit-border-top-left-radius: 5px;
   border-top-left-radius: 5px;
-  -moz-border-radius-topright: 5px;
-  -webkit-border-top-right-radius: 5px;
   border-top-right-radius: 5px;
-  -moz-border-radius-bottomright: 0;
-  -webkit-border-bottom-right-radius: 0;
   border-bottom-right-radius: 0;
-  -moz-border-radius-bottomleft: 0;
-  -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 5px 5px 5px 5px;
   border-width: 1px 1px 0 1px;
@@ -14156,10 +13329,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-grid-row-editor-buttons-default-top {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -14234,25 +13403,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-grid-row-editor-buttons-default-top-tl,
-.x-grid-row-editor-buttons-default-top-bl,
-.x-grid-row-editor-buttons-default-top-tr,
-.x-grid-row-editor-buttons-default-top-br,
-.x-grid-row-editor-buttons-default-top-tc,
-.x-grid-row-editor-buttons-default-top-bc,
-.x-grid-row-editor-buttons-default-top-ml,
-.x-grid-row-editor-buttons-default-top-mr {
-  zoom: 1;
-  background-image: url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-top-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-grid-row-editor-buttons-default-top-ml,
-.x-grid-row-editor-buttons-default-top-mr {
-  zoom: 1;
-  background-image: url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-top-sides.gif);
-  background-repeat: repeat-y;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-grid-row-editor-buttons-default-top-mc {
@@ -14433,12 +13585,10 @@ a.x-color-picker-item:hover {
 /* line 79, ../../../../ext/packages/ext-theme-neutral/sass/src/resizer/Splitter.scss */
 .x-splitter-active {
   background-color: #b4b4b4;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
 }
 /* line 83, ../../../../ext/packages/ext-theme-neutral/sass/src/resizer/Splitter.scss */
 .x-splitter-active .x-collapse-el {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.3;
 }
 
@@ -14507,7 +13657,6 @@ a.x-color-picker-item:hover {
 /* line 112, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-nlg .x-menu-item-active {
   background: #ecf2fd repeat-x left top;
-  background-image: url(images/menu/menu-item-active-bg.gif);
 }
 
 /* line 121, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
@@ -14601,7 +13750,6 @@ a.x-color-picker-item:hover {
 
 /* line 258, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu-item-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -14616,7 +13764,6 @@ a.x-color-picker-item:hover {
 
 /* line 277, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-ie .x-menu-item-disabled .x-menu-item-icon {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 /* line 281, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
@@ -14643,20 +13790,17 @@ a.x-color-picker-item:hover {
 
 /* line 307, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu-scroll-top, .x-menu-scroll-bottom {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   background-color: white;
 }
 
 /* line 320, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu-scroll-top-hover, .x-menu-scroll-bottom-hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
   opacity: 0.6;
 }
 
 /* line 326, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu-scroll-top-pressed, .x-menu-scroll-bottom-pressed {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
   opacity: 0.7;
 }
 
@@ -14848,14 +13992,8 @@ a.x-color-picker-item:hover {
   font-size: 1px;
   line-height: 6px;
   overflow: hidden;
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
   background-color: #fff;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  -ms-border-radius: 6px;
-  -o-border-radius: 6px;
   border-radius: 6px;
 }
 
@@ -14979,13 +14117,11 @@ a.x-color-picker-item:hover {
 /* line 124, ../../../../ext/packages/ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-pinned .x-resizable-handle,
 .x-resizable-over .x-resizable-handle {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
 /* line 129, ../../../../ext/packages/ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-window .x-window-handle {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
@@ -15629,17 +14765,9 @@ a.x-color-picker-item:hover {
  */
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-top {
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 0;
-  -webkit-border-bottom-right-radius: 0;
   border-bottom-right-radius: 0;
-  -moz-border-radius-bottomleft: 0;
-  -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 7px 12px 7px 12px;
   border-width: 0 0 0 0;
@@ -15650,14 +14778,12 @@ a.x-color-picker-item:hover {
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-top-mc {
-  background-image: url(images/tab/tab-default-top-fbg.gif);
   background-position: 0 top;
   background-color: #f0f3f3;
 }
 
 /* line 212, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-nlg .x-tab-default-top {
-  background-image: url(images/tab/tab-default-top-bg.gif);
   background-position: 0 top;
 }
 
@@ -15665,10 +14791,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-top {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
   background-image: none;
@@ -15744,24 +14866,9 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-top-tl,
-.x-tab-default-top-bl,
-.x-tab-default-top-tr,
-.x-tab-default-top-br,
-.x-tab-default-top-tc,
-.x-tab-default-top-bc,
-.x-tab-default-top-ml,
-.x-tab-default-top-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-top-corners.gif);
-}
+
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-top-ml,
-.x-tab-default-top-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-top-sides.gif);
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-top-mc {
@@ -15786,8 +14893,6 @@ a.x-color-picker-item:hover {
 /* */
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-bottom {
-  -moz-border-radius: 0 0 3px 3px;
-  -webkit-border-radius: 0 0 3px 3px;
   border-radius: 0 0 3px 3px;
   padding: 7px 12px 7px 12px;
   border-width: 0 0 0 0;
@@ -15798,14 +14903,12 @@ a.x-color-picker-item:hover {
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-bottom-mc {
-  background-image: url(images/tab/tab-default-bottom-fbg.gif);
   background-position: 0 top;
   background-color: #f0f3f3;
 }
 
 /* line 212, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-nlg .x-tab-default-bottom {
-  background-image: url(images/tab/tab-default-bottom-bg.gif);
   background-position: 0 top;
 }
 
@@ -15813,10 +14916,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-bottom {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
   background-image: none;
@@ -15892,24 +14991,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-bottom-tl,
-.x-tab-default-bottom-bl,
-.x-tab-default-bottom-tr,
-.x-tab-default-bottom-br,
-.x-tab-default-bottom-tc,
-.x-tab-default-bottom-bc,
-.x-tab-default-bottom-ml,
-.x-tab-default-bottom-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-bottom-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-bottom-ml,
-.x-tab-default-bottom-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-bottom-sides.gif);
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-bottom-mc {
@@ -15934,17 +15017,9 @@ a.x-color-picker-item:hover {
 /* */
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-left {
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 0;
-  -webkit-border-bottom-right-radius: 0;
   border-bottom-right-radius: 0;
-  -moz-border-radius-bottomleft: 0;
-  -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 7px 12px 7px 12px;
   border-width: 0 0 0 0;
@@ -15955,14 +15030,12 @@ a.x-color-picker-item:hover {
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-left-mc {
-  background-image: url(images/tab/tab-default-top-fbg.gif);
   background-position: 0 top;
   background-color: #f0f3f3;
 }
 
 /* line 212, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-nlg .x-tab-default-left {
-  background-image: url(images/tab/tab-default-top-bg.gif);
   background-position: 0 top;
 }
 
@@ -15970,10 +15043,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-left {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
   background-image: none;
@@ -16049,24 +15118,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-left-tl,
-.x-tab-default-left-bl,
-.x-tab-default-left-tr,
-.x-tab-default-left-br,
-.x-tab-default-left-tc,
-.x-tab-default-left-bc,
-.x-tab-default-left-ml,
-.x-tab-default-left-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-top-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-left-ml,
-.x-tab-default-left-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-top-sides.gif);
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-left-mc {
@@ -16091,17 +15144,9 @@ a.x-color-picker-item:hover {
 /* */
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-right {
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 0;
-  -webkit-border-bottom-right-radius: 0;
   border-bottom-right-radius: 0;
-  -moz-border-radius-bottomleft: 0;
-  -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
   padding: 7px 12px 7px 12px;
   border-width: 0 0 0 0;
@@ -16112,14 +15157,12 @@ a.x-color-picker-item:hover {
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-right-mc {
-  background-image: url(images/tab/tab-default-top-fbg.gif);
   background-position: 0 top;
   background-color: #f0f3f3;
 }
 
 /* line 212, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-nlg .x-tab-default-right {
-  background-image: url(images/tab/tab-default-top-bg.gif);
   background-position: 0 top;
 }
 
@@ -16127,10 +15170,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-tab-default-right {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
   background-image: none;
@@ -16206,24 +15245,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-right-tl,
-.x-tab-default-right-bl,
-.x-tab-default-right-tr,
-.x-tab-default-right-br,
-.x-tab-default-right-tc,
-.x-tab-default-right-bc,
-.x-tab-default-right-ml,
-.x-tab-default-right-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-top-corners.gif);
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-right-ml,
-.x-tab-default-right-mr {
-  zoom: 1;
-  background-image: url(images/tab/tab-default-top-sides.gif);
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-right-mc {
@@ -16307,11 +15330,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 405, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-top, .x-nlg
-.x-tab-default-left, .x-nlg
-.x-tab-default-right {
-  background-image: url(images/tab/tab-default-top-bg.gif);
-}
 
 /* line 419, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom {
@@ -16320,9 +15338,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 426, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-bottom {
-  background-image: url(images/tab/tab-default-bottom-bg.gif);
-}
 
 /* line 440, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-left {
@@ -16336,9 +15351,6 @@ a.x-color-picker-item:hover {
   transform-origin: 100% 0;
 }
 /* line 36, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie9m .x-tab-default-left {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
 
 /* line 456, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-right {
@@ -16352,9 +15364,6 @@ a.x-color-picker-item:hover {
   transform-origin: 0 0;
 }
 /* line 36, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
-.x-ie9m .x-tab-default-right {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-}
 
 /* line 473, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-icon-text-left .x-tab-inner {
@@ -16382,11 +15391,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 531, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-top-over, .x-nlg
-.x-tab-default-left-over, .x-nlg
-.x-tab-default-right-over {
-  background-image: url(images/tab/tab-default-top-over-bg.gif);
-}
 
 /* line 536, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom-over {
@@ -16394,9 +15398,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 540, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-bottom-over {
-  background-image: url(images/tab/tab-default-bottom-over-bg.gif);
-}
 
 /* line 547, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-active {
@@ -16425,11 +15426,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 589, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-top-active, .x-nlg
-.x-tab-default-left-active, .x-nlg
-.x-tab-default-right-active {
-  background-image: url(images/tab/tab-default-top-active-bg.gif);
-}
 
 /* line 596, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom-active {
@@ -16438,9 +15434,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 602, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-bottom-active {
-  background-image: url(images/tab/tab-default-bottom-active-bg.gif);
-}
 
 /* line 609, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-disabled {
@@ -16448,12 +15441,10 @@ a.x-color-picker-item:hover {
 }
 /* line 622, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-disabled .x-tab-inner {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.3;
 }
 /* line 641, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-disabled .x-tab-icon-el {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 /* line 646, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
@@ -16487,11 +15478,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 684, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-top-disabled, .x-nlg
-.x-tab-default-left-disabled, .x-nlg
-.x-tab-default-right-disabled {
-  background-image: url(images/tab/tab-default-top-disabled-bg.gif);
-}
 
 /* line 689, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom-disabled {
@@ -16499,9 +15485,6 @@ a.x-color-picker-item:hover {
   background-color: #f0f3f3;
 }
 /* line 693, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-nlg .x-tab-default-bottom-disabled {
-  background-image: url(images/tab/tab-default-bottom-disabled-bg.gif);
-}
 
 /* line 701, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-nbr .x-tab-default {
@@ -16509,183 +15492,69 @@ a.x-color-picker-item:hover {
 }
 
 /* line 712, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-top-over .x-frame-tl,
-.x-tab-default-top-over .x-frame-bl,
-.x-tab-default-top-over .x-frame-tr,
-.x-tab-default-top-over .x-frame-br,
-.x-tab-default-top-over .x-frame-tc,
-.x-tab-default-top-over .x-frame-bc,
-.x-tab-default-left-over .x-frame-tl,
-.x-tab-default-left-over .x-frame-bl,
-.x-tab-default-left-over .x-frame-tr,
-.x-tab-default-left-over .x-frame-br,
-.x-tab-default-left-over .x-frame-tc,
-.x-tab-default-left-over .x-frame-bc,
-.x-tab-default-right-over .x-frame-tl,
-.x-tab-default-right-over .x-frame-bl,
-.x-tab-default-right-over .x-frame-tr,
-.x-tab-default-right-over .x-frame-br,
-.x-tab-default-right-over .x-frame-tc,
-.x-tab-default-right-over .x-frame-bc {
-  background-image: url(images/tab/tab-default-top-over-corners.gif);
-}
+
 /* line 716, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-top-over .x-frame-ml,
-.x-tab-default-top-over .x-frame-mr,
-.x-tab-default-left-over .x-frame-ml,
-.x-tab-default-left-over .x-frame-mr,
-.x-tab-default-right-over .x-frame-ml,
-.x-tab-default-right-over .x-frame-mr {
-  background-image: url(images/tab/tab-default-top-over-sides.gif);
-}
+
 /* line 719, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-top-over .x-frame-mc,
 .x-tab-default-left-over .x-frame-mc,
 .x-tab-default-right-over .x-frame-mc {
   background-color: #f0f3f3;
   background-repeat: repeat-x;
-  background-image: url(images/tab/tab-default-top-over-fbg.gif);
 }
 
 /* line 734, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-bottom-over .x-frame-tl,
-.x-tab-default-bottom-over .x-frame-bl,
-.x-tab-default-bottom-over .x-frame-tr,
-.x-tab-default-bottom-over .x-frame-br,
-.x-tab-default-bottom-over .x-frame-tc,
-.x-tab-default-bottom-over .x-frame-bc {
-  background-image: url(images/tab/tab-default-bottom-over-corners.gif);
-}
+
 /* line 738, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-bottom-over .x-frame-ml,
-.x-tab-default-bottom-over .x-frame-mr {
-  background-image: url(images/tab/tab-default-bottom-over-sides.gif);
-}
+
 /* line 741, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom-over .x-frame-mc {
   background-color: #f0f3f3;
   background-repeat: repeat-x;
-  background-image: url(images/tab/tab-default-bottom-over-fbg.gif);
 }
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-top-active .x-frame-tl,
-.x-tab-default-top-active .x-frame-bl,
-.x-tab-default-top-active .x-frame-tr,
-.x-tab-default-top-active .x-frame-br,
-.x-tab-default-top-active .x-frame-tc,
-.x-tab-default-top-active .x-frame-bc,
-.x-tab-default-left-active .x-frame-tl,
-.x-tab-default-left-active .x-frame-bl,
-.x-tab-default-left-active .x-frame-tr,
-.x-tab-default-left-active .x-frame-br,
-.x-tab-default-left-active .x-frame-tc,
-.x-tab-default-left-active .x-frame-bc,
-.x-tab-default-right-active .x-frame-tl,
-.x-tab-default-right-active .x-frame-bl,
-.x-tab-default-right-active .x-frame-tr,
-.x-tab-default-right-active .x-frame-br,
-.x-tab-default-right-active .x-frame-tc,
-.x-tab-default-right-active .x-frame-bc {
-  background-image: url(images/tab/tab-default-top-active-corners.gif);
-}
+
 /* line 762, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-top-active .x-frame-ml,
-.x-tab-default-top-active .x-frame-mr,
-.x-tab-default-left-active .x-frame-ml,
-.x-tab-default-left-active .x-frame-mr,
-.x-tab-default-right-active .x-frame-ml,
-.x-tab-default-right-active .x-frame-mr {
-  background-image: url(images/tab/tab-default-top-active-sides.gif);
-}
+
 /* line 765, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-top-active .x-frame-mc,
 .x-tab-default-left-active .x-frame-mc,
 .x-tab-default-right-active .x-frame-mc {
   background-color: #f0f3f3;
   background-repeat: repeat-x;
-  background-image: url(images/tab/tab-default-top-active-fbg.gif);
 }
 
 /* line 780, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-bottom-active .x-frame-tl,
-.x-tab-default-bottom-active .x-frame-bl,
-.x-tab-default-bottom-active .x-frame-tr,
-.x-tab-default-bottom-active .x-frame-br,
-.x-tab-default-bottom-active .x-frame-tc,
-.x-tab-default-bottom-active .x-frame-bc {
-  background-image: url(images/tab/tab-default-bottom-active-corners.gif);
-}
+
 /* line 784, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-bottom-active .x-frame-ml,
-.x-tab-default-bottom-active .x-frame-mr {
-  background-image: url(images/tab/tab-default-bottom-active-sides.gif);
-}
+
 /* line 787, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom-active .x-frame-mc {
   background-color: #f0f3f3;
   background-repeat: repeat-x;
-  background-image: url(images/tab/tab-default-bottom-active-fbg.gif);
 }
 
 /* line 804, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-top-disabled .x-frame-tl,
-.x-tab-default-top-disabled .x-frame-bl,
-.x-tab-default-top-disabled .x-frame-tr,
-.x-tab-default-top-disabled .x-frame-br,
-.x-tab-default-top-disabled .x-frame-tc,
-.x-tab-default-top-disabled .x-frame-bc,
-.x-tab-default-left-disabled .x-frame-tl,
-.x-tab-default-left-disabled .x-frame-bl,
-.x-tab-default-left-disabled .x-frame-tr,
-.x-tab-default-left-disabled .x-frame-br,
-.x-tab-default-left-disabled .x-frame-tc,
-.x-tab-default-left-disabled .x-frame-bc,
-.x-tab-default-right-disabled .x-frame-tl,
-.x-tab-default-right-disabled .x-frame-bl,
-.x-tab-default-right-disabled .x-frame-tr,
-.x-tab-default-right-disabled .x-frame-br,
-.x-tab-default-right-disabled .x-frame-tc,
-.x-tab-default-right-disabled .x-frame-bc {
-  background-image: url(images/tab/tab-default-top-disabled-corners.gif);
-}
+
 /* line 808, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-top-disabled .x-frame-ml,
-.x-tab-default-top-disabled .x-frame-mr,
-.x-tab-default-left-disabled .x-frame-ml,
-.x-tab-default-left-disabled .x-frame-mr,
-.x-tab-default-right-disabled .x-frame-ml,
-.x-tab-default-right-disabled .x-frame-mr {
-  background-image: url(images/tab/tab-default-top-disabled-sides.gif);
-}
+
 /* line 811, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-top-disabled .x-frame-mc,
 .x-tab-default-left-disabled .x-frame-mc,
 .x-tab-default-right-disabled .x-frame-mc {
   background-color: #f0f3f3;
   background-repeat: repeat-x;
-  background-image: url(images/tab/tab-default-top-disabled-fbg.gif);
 }
 
 /* line 826, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-bottom-disabled .x-frame-tl,
-.x-tab-default-bottom-disabled .x-frame-bl,
-.x-tab-default-bottom-disabled .x-frame-tr,
-.x-tab-default-bottom-disabled .x-frame-br,
-.x-tab-default-bottom-disabled .x-frame-tc,
-.x-tab-default-bottom-disabled .x-frame-bc {
-  background-image: url(images/tab/tab-default-bottom-disabled-corners.gif);
-}
+
 /* line 830, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
-.x-tab-default-bottom-disabled .x-frame-ml,
-.x-tab-default-bottom-disabled .x-frame-mr {
-  background-image: url(images/tab/tab-default-bottom-disabled-sides.gif);
-}
+
 /* line 833, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-bottom-disabled .x-frame-mc {
   background-color: #f0f3f3;
   background-repeat: repeat-x;
-  background-image: url(images/tab/tab-default-bottom-disabled-fbg.gif);
 }
 
 /* line 863, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
@@ -16707,7 +15576,6 @@ a.x-color-picker-item:hover {
 
 /* line 926, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-disabled .x-tab-close-btn {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.3;
   background-position: 0 0;
 }
@@ -17134,9 +16002,6 @@ a.x-color-picker-item:hover {
 }
 
 /* line 216, ../../../../ext/packages/ext-theme-neutral/sass/src/tree/Panel.scss */
-.x-grid-cell-inner-treecolumn {
-  *font-size: 1px;
-}
 
 /* line 222, ../../../../ext/packages/ext-theme-neutral/sass/src/tree/Panel.scss */
 .x-tree-node-text {
@@ -17184,10 +16049,6 @@ a.x-color-picker-item:hover {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-plain-toolbar-small {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -17204,10 +16065,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-btn-plain-toolbar-small {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -17282,22 +16139,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-small-tl,
-.x-btn-plain-toolbar-small-bl,
-.x-btn-plain-toolbar-small-tr,
-.x-btn-plain-toolbar-small-br,
-.x-btn-plain-toolbar-small-tc,
-.x-btn-plain-toolbar-small-bc,
-.x-btn-plain-toolbar-small-ml,
-.x-btn-plain-toolbar-small-mr {
-  zoom: 1;
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-small-ml,
-.x-btn-plain-toolbar-small-mr {
-  zoom: 1;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-plain-toolbar-small-mc {
@@ -17474,114 +16317,39 @@ a.x-color-picker-item:hover {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-focus .x-frame-tl,
-.x-btn-plain-toolbar-small-focus .x-frame-bl,
-.x-btn-plain-toolbar-small-focus .x-frame-tr,
-.x-btn-plain-toolbar-small-focus .x-frame-br,
-.x-btn-plain-toolbar-small-focus .x-frame-tc,
-.x-btn-plain-toolbar-small-focus .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-small-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-focus .x-frame-ml,
-.x-btn-plain-toolbar-small-focus .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-small-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-focus .x-frame-mc {
-  background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-small-focus-fbg.gif);
-}
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-over .x-frame-tl,
-.x-btn-plain-toolbar-small-over .x-frame-bl,
-.x-btn-plain-toolbar-small-over .x-frame-tr,
-.x-btn-plain-toolbar-small-over .x-frame-br,
-.x-btn-plain-toolbar-small-over .x-frame-tc,
-.x-btn-plain-toolbar-small-over .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-small-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-over .x-frame-ml,
-.x-btn-plain-toolbar-small-over .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-small-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-small-over .x-frame-mc {
   background-color: #e0e4e4;
-  background-image: url(images/btn/btn-plain-toolbar-small-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-menu-active .x-frame-tl,
-.x-btn-plain-toolbar-small-menu-active .x-frame-bl,
-.x-btn-plain-toolbar-small-menu-active .x-frame-tr,
-.x-btn-plain-toolbar-small-menu-active .x-frame-br,
-.x-btn-plain-toolbar-small-menu-active .x-frame-tc,
-.x-btn-plain-toolbar-small-menu-active .x-frame-bc,
-.x-btn-plain-toolbar-small-pressed .x-frame-tl,
-.x-btn-plain-toolbar-small-pressed .x-frame-bl,
-.x-btn-plain-toolbar-small-pressed .x-frame-tr,
-.x-btn-plain-toolbar-small-pressed .x-frame-br,
-.x-btn-plain-toolbar-small-pressed .x-frame-tc,
-.x-btn-plain-toolbar-small-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-small-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-menu-active .x-frame-ml,
-.x-btn-plain-toolbar-small-menu-active .x-frame-mr,
-.x-btn-plain-toolbar-small-pressed .x-frame-ml,
-.x-btn-plain-toolbar-small-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-small-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-menu-active .x-frame-mc,
-.x-btn-plain-toolbar-small-pressed .x-frame-mc {
-  background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-small-pressed-fbg.gif);
-}
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-disabled .x-frame-tl,
-.x-btn-plain-toolbar-small-disabled .x-frame-bl,
-.x-btn-plain-toolbar-small-disabled .x-frame-tr,
-.x-btn-plain-toolbar-small-disabled .x-frame-br,
-.x-btn-plain-toolbar-small-disabled .x-frame-tc,
-.x-btn-plain-toolbar-small-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-small-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-disabled .x-frame-ml,
-.x-btn-plain-toolbar-small-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-small-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-small-disabled .x-frame-mc {
-  background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-small-disabled-fbg.gif);
-}
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-small-focus {
-  background-image: url(images/btn/btn-plain-toolbar-small-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-small-over {
-  background-image: url(images/btn/btn-plain-toolbar-small-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-small-menu-active,
-.x-nlg .x-btn-plain-toolbar-small-pressed {
-  background-image: url(images/btn/btn-plain-toolbar-small-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-small-disabled {
-  background-image: url(images/btn/btn-plain-toolbar-small-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-plain-toolbar-small {
@@ -17601,7 +16369,6 @@ a.x-color-picker-item:hover {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-small-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -17648,10 +16415,6 @@ a.x-color-picker-item:hover {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-plain-toolbar-medium {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -17668,10 +16431,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-btn-plain-toolbar-medium {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -17746,22 +16505,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-medium-tl,
-.x-btn-plain-toolbar-medium-bl,
-.x-btn-plain-toolbar-medium-tr,
-.x-btn-plain-toolbar-medium-br,
-.x-btn-plain-toolbar-medium-tc,
-.x-btn-plain-toolbar-medium-bc,
-.x-btn-plain-toolbar-medium-ml,
-.x-btn-plain-toolbar-medium-mr {
-  zoom: 1;
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-medium-ml,
-.x-btn-plain-toolbar-medium-mr {
-  zoom: 1;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-plain-toolbar-medium-mc {
@@ -17938,114 +16683,49 @@ a.x-color-picker-item:hover {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-focus .x-frame-tl,
-.x-btn-plain-toolbar-medium-focus .x-frame-bl,
-.x-btn-plain-toolbar-medium-focus .x-frame-tr,
-.x-btn-plain-toolbar-medium-focus .x-frame-br,
-.x-btn-plain-toolbar-medium-focus .x-frame-tc,
-.x-btn-plain-toolbar-medium-focus .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-medium-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-focus .x-frame-ml,
-.x-btn-plain-toolbar-medium-focus .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-medium-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-medium-focus .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-medium-focus-fbg.gif);
 }
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-over .x-frame-tl,
-.x-btn-plain-toolbar-medium-over .x-frame-bl,
-.x-btn-plain-toolbar-medium-over .x-frame-tr,
-.x-btn-plain-toolbar-medium-over .x-frame-br,
-.x-btn-plain-toolbar-medium-over .x-frame-tc,
-.x-btn-plain-toolbar-medium-over .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-medium-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-over .x-frame-ml,
-.x-btn-plain-toolbar-medium-over .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-medium-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-medium-over .x-frame-mc {
   background-color: #e0e4e4;
-  background-image: url(images/btn/btn-plain-toolbar-medium-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-menu-active .x-frame-tl,
-.x-btn-plain-toolbar-medium-menu-active .x-frame-bl,
-.x-btn-plain-toolbar-medium-menu-active .x-frame-tr,
-.x-btn-plain-toolbar-medium-menu-active .x-frame-br,
-.x-btn-plain-toolbar-medium-menu-active .x-frame-tc,
-.x-btn-plain-toolbar-medium-menu-active .x-frame-bc,
-.x-btn-plain-toolbar-medium-pressed .x-frame-tl,
-.x-btn-plain-toolbar-medium-pressed .x-frame-bl,
-.x-btn-plain-toolbar-medium-pressed .x-frame-tr,
-.x-btn-plain-toolbar-medium-pressed .x-frame-br,
-.x-btn-plain-toolbar-medium-pressed .x-frame-tc,
-.x-btn-plain-toolbar-medium-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-medium-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-menu-active .x-frame-ml,
-.x-btn-plain-toolbar-medium-menu-active .x-frame-mr,
-.x-btn-plain-toolbar-medium-pressed .x-frame-ml,
-.x-btn-plain-toolbar-medium-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-medium-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-medium-menu-active .x-frame-mc,
 .x-btn-plain-toolbar-medium-pressed .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-medium-pressed-fbg.gif);
 }
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-disabled .x-frame-tl,
-.x-btn-plain-toolbar-medium-disabled .x-frame-bl,
-.x-btn-plain-toolbar-medium-disabled .x-frame-tr,
-.x-btn-plain-toolbar-medium-disabled .x-frame-br,
-.x-btn-plain-toolbar-medium-disabled .x-frame-tc,
-.x-btn-plain-toolbar-medium-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-medium-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-medium-disabled .x-frame-ml,
-.x-btn-plain-toolbar-medium-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-medium-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-medium-disabled .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-medium-disabled-fbg.gif);
 }
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-medium-focus {
-  background-image: url(images/btn/btn-plain-toolbar-medium-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-medium-over {
-  background-image: url(images/btn/btn-plain-toolbar-medium-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-medium-menu-active,
-.x-nlg .x-btn-plain-toolbar-medium-pressed {
-  background-image: url(images/btn/btn-plain-toolbar-medium-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-medium-disabled {
-  background-image: url(images/btn/btn-plain-toolbar-medium-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-plain-toolbar-medium {
@@ -18065,7 +16745,6 @@ a.x-color-picker-item:hover {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-medium-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -18112,10 +16791,6 @@ a.x-color-picker-item:hover {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-plain-toolbar-large {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
   border-radius: 5px;
   padding: 6px 6px 6px 8px;
   border-width: 1px;
@@ -18132,10 +16807,6 @@ a.x-color-picker-item:hover {
 .x-nbr .x-btn-plain-toolbar-large {
   padding: 0 !important;
   border-width: 0 !important;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
   border-radius: 0;
   background-color: transparent;
 }
@@ -18210,22 +16881,8 @@ a.x-color-picker-item:hover {
 }
 
 /* line 374, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-large-tl,
-.x-btn-plain-toolbar-large-bl,
-.x-btn-plain-toolbar-large-tr,
-.x-btn-plain-toolbar-large-br,
-.x-btn-plain-toolbar-large-tc,
-.x-btn-plain-toolbar-large-bc,
-.x-btn-plain-toolbar-large-ml,
-.x-btn-plain-toolbar-large-mr {
-  zoom: 1;
-}
 
 /* line 418, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-large-ml,
-.x-btn-plain-toolbar-large-mr {
-  zoom: 1;
-}
 
 /* line 430, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-plain-toolbar-large-mc {
@@ -18402,114 +17059,45 @@ a.x-color-picker-item:hover {
 }
 
 /* line 588, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-focus .x-frame-tl,
-.x-btn-plain-toolbar-large-focus .x-frame-bl,
-.x-btn-plain-toolbar-large-focus .x-frame-tr,
-.x-btn-plain-toolbar-large-focus .x-frame-br,
-.x-btn-plain-toolbar-large-focus .x-frame-tc,
-.x-btn-plain-toolbar-large-focus .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-large-focus-corners.gif);
-}
+
 /* line 592, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-focus .x-frame-ml,
-.x-btn-plain-toolbar-large-focus .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-large-focus-sides.gif);
-}
+
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-large-focus .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-large-focus-fbg.gif);
 }
 
 /* line 610, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-over .x-frame-tl,
-.x-btn-plain-toolbar-large-over .x-frame-bl,
-.x-btn-plain-toolbar-large-over .x-frame-tr,
-.x-btn-plain-toolbar-large-over .x-frame-br,
-.x-btn-plain-toolbar-large-over .x-frame-tc,
-.x-btn-plain-toolbar-large-over .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-large-over-corners.gif);
-}
+
 /* line 614, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-over .x-frame-ml,
-.x-btn-plain-toolbar-large-over .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-large-over-sides.gif);
-}
+
 /* line 617, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-large-over .x-frame-mc {
   background-color: #e0e4e4;
-  background-image: url(images/btn/btn-plain-toolbar-large-over-fbg.gif);
 }
 
 /* line 633, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-menu-active .x-frame-tl,
-.x-btn-plain-toolbar-large-menu-active .x-frame-bl,
-.x-btn-plain-toolbar-large-menu-active .x-frame-tr,
-.x-btn-plain-toolbar-large-menu-active .x-frame-br,
-.x-btn-plain-toolbar-large-menu-active .x-frame-tc,
-.x-btn-plain-toolbar-large-menu-active .x-frame-bc,
-.x-btn-plain-toolbar-large-pressed .x-frame-tl,
-.x-btn-plain-toolbar-large-pressed .x-frame-bl,
-.x-btn-plain-toolbar-large-pressed .x-frame-tr,
-.x-btn-plain-toolbar-large-pressed .x-frame-br,
-.x-btn-plain-toolbar-large-pressed .x-frame-tc,
-.x-btn-plain-toolbar-large-pressed .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-large-pressed-corners.gif);
-}
+
 /* line 637, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-menu-active .x-frame-ml,
-.x-btn-plain-toolbar-large-menu-active .x-frame-mr,
-.x-btn-plain-toolbar-large-pressed .x-frame-ml,
-.x-btn-plain-toolbar-large-pressed .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-large-pressed-sides.gif);
-}
+
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-menu-active .x-frame-mc,
-.x-btn-plain-toolbar-large-pressed .x-frame-mc {
-  background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-large-pressed-fbg.gif);
-}
 
 /* line 655, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-disabled .x-frame-tl,
-.x-btn-plain-toolbar-large-disabled .x-frame-bl,
-.x-btn-plain-toolbar-large-disabled .x-frame-tr,
-.x-btn-plain-toolbar-large-disabled .x-frame-br,
-.x-btn-plain-toolbar-large-disabled .x-frame-tc,
-.x-btn-plain-toolbar-large-disabled .x-frame-bc {
-  background-image: url(images/btn/btn-plain-toolbar-large-disabled-corners.gif);
-}
+
 /* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-plain-toolbar-large-disabled .x-frame-ml,
-.x-btn-plain-toolbar-large-disabled .x-frame-mr {
-  background-image: url(images/btn/btn-plain-toolbar-large-disabled-sides.gif);
-}
+
 /* line 662, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-large-disabled .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-plain-toolbar-large-disabled-fbg.gif);
 }
 
 /* line 674, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-large-focus {
-  background-image: url(images/btn/btn-plain-toolbar-large-focus-bg.gif);
-}
 
 /* line 682, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-large-over {
-  background-image: url(images/btn/btn-plain-toolbar-large-over-bg.gif);
-}
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-large-menu-active,
-.x-nlg .x-btn-plain-toolbar-large-pressed {
-  background-image: url(images/btn/btn-plain-toolbar-large-pressed-bg.gif);
-}
 
 /* line 699, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-plain-toolbar-large-disabled {
-  background-image: url(images/btn/btn-plain-toolbar-large-disabled-bg.gif);
-}
 
 /* line 707, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-nbr .x-btn-plain-toolbar-large {
@@ -18529,7 +17117,6 @@ a.x-color-picker-item:hover {
 
 /* line 758, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-plain-toolbar-large-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -18579,7 +17166,6 @@ a.x-color-picker-item:hover {
 .x-strict .x-ie8 .x-btn-plain-toolbar-small-disabled .x-btn-icon-el, .x-strict .x-ie8
 .x-btn-plain-toolbar-medium-disabled .x-btn-icon-el, .x-strict .x-ie8
 .x-btn-plain-toolbar-large-disabled .x-btn-icon-el {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
 
@@ -18593,24 +17179,20 @@ a.x-color-picker-item:hover {
 }
 /* line 12, ../../../../ext/packages/ext-theme-neptune/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-default .x-toolbar-scroll-left, .x-toolbar-default .x-toolbar-scroll-right {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
   opacity: 0.6;
 }
 /* line 17, ../../../../ext/packages/ext-theme-neptune/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-default .x-toolbar-scroll-left-hover, .x-toolbar-default .x-toolbar-scroll-right-hover {
   background-position: 0 0;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
 }
 /* line 23, ../../../../ext/packages/ext-theme-neptune/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-default .x-toolbar-scroll-left-pressed, .x-toolbar-default .x-toolbar-scroll-right-pressed {
   background-position: 0 0;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 /* line 29, ../../../../ext/packages/ext-theme-neptune/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-default .x-box-scroller-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
   opacity: 0.25;
 }
 /* line 33, ../../../../ext/packages/ext-theme-neptune/sass/src/toolbar/Toolbar.scss */
@@ -18695,21 +17277,12 @@ a.x-color-picker-item:hover {
 }
 
 /* line 469, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-top {
-  background: url(images/panel-header/panel-header-light-top-bg.gif);
-}
+
 /* line 474, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-bottom {
-  background: url(images/panel-header/panel-header-light-bottom-bg.gif);
-}
+
 /* line 479, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-left {
-  background: url(images/panel-header/panel-header-light-left-bg.gif) top right;
-}
+
 /* line 484, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-right {
-  background: url(images/panel-header/panel-header-light-right-bg.gif) top right;
-}
 
 /* line 509, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel .x-panel-header-light-collapsed-border-top {
@@ -18778,7 +17351,6 @@ a.x-color-picker-item:hover {
 /* line 36, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/rotate-element.scss */
 .x-ie9m .x-panel-header-light-vertical .x-panel-header-text-container {
   background-color: #ecf0f6;
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1), progid:DXImageTransform.Microsoft.Chroma(color=#ecf0f6);
 }
 
 /* line 566, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
@@ -18837,7 +17409,6 @@ a.x-color-picker-item:hover {
 
 /* line 704, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-light-resizable .x-panel-handle {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
@@ -18908,21 +17479,12 @@ a.x-color-picker-item:hover {
 }
 
 /* line 469, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-framed-top {
-  background: url(images/panel-header/panel-header-light-framed-top-bg.gif);
-}
+
 /* line 474, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-framed-bottom {
-  background: url(images/panel-header/panel-header-light-framed-bottom-bg.gif);
-}
+
 /* line 479, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-framed-left {
-  background: url(images/panel-header/panel-header-light-framed-left-bg.gif) top right;
-}
+
 /* line 484, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
-.x-nlg .x-panel-header-light-framed-right {
-  background: url(images/panel-header/panel-header-light-framed-right-bg.gif) top right;
-}
 
 /* line 509, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel .x-panel-header-light-framed-collapsed-border-top {
@@ -19050,7 +17612,6 @@ a.x-color-picker-item:hover {
 
 /* line 704, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Panel.scss */
 .x-panel-light-framed-resizable .x-panel-handle {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
 }
 
