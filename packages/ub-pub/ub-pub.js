@@ -494,7 +494,6 @@ function addBrowserUnhandledRejectionHandler (UBPub) {
   if (__alreadyAdded) console.error('module @unitybase/ub-pub imported several times. This is wrong situation and should be fixed by app developer. Try `npm ddp`')
   __alreadyAdded = true
   if (window.onerror) {
-    UBPub.logDebug('window.onerror already set')
     orignalOnError = window.onerror
   }
   // for a unhandled rejection in bluebird-q
