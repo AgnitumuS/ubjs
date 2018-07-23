@@ -228,7 +228,7 @@ Ext.define('UB.view.LoginWindow', {
         allowBlank: false,
         cls: 'ub-login-input',
         labelClsExtra: 'fa fa-user fa-2x',
-        requireText: UB.i18n('login'),
+        requireText: UB.i18n('User'),
         fieldLabel: ' ',
         labelSeparator: '',
         labelWidth: 40,
