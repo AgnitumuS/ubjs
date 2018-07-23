@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.3]
+### Fixed
+- login window logo css fixed in way logo looks the same on adminui-next adn adminui login windhw
+
 ## [5.3.2]
 ### Fixed
 - fix error 404 Not Found during request to /clientRequire/systemjs-hmr.

@@ -40,10 +40,14 @@
     margin-right: auto;
   }
 
-  .auth-page__logo {
+  .auth-page__logo-container {
     max-width: 210px;
     margin: 2rem auto 1rem;
     height: 3rem;
+  }
+  .auth-page__logo {
+    max-height: 3rem;
+    max-width: fit-content;
   }
 
   .auth-page__tooltip {
@@ -59,8 +63,8 @@
       <el-col :span="24" class="auth-page__header">{{ $ut('Authentication') }}</el-col>
     </el-row>
     <div class="auth-page__container">
-      <div class="auth-page__logo">
-        <img :src="topLogoURL" style="max-width: 100%;height: auto;">
+      <div class="auth-page__logo-container">
+        <img :src="topLogoURL" class="auth-page__logo">
       </div>
       <hr>
 
