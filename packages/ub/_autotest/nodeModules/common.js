@@ -139,6 +139,7 @@ process.on('exit', function () {
     knownGlobals.push(runInVariableScopeContext)
     knownGlobals.push(ncrc32)
     knownGlobals.push(nsha256)
+    knownGlobals.push(nhashFile)
     knownGlobals.push(startServer)
     knownGlobals.push(stopServer)
   }
