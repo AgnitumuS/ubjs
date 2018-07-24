@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.3.3]
+### Added
+- For ubdetailgrid with RowEditing plugin add event "changeData" when user cancel edit
+
 ### Fixed
 - login window logo css fixed in way logo looks the same on adminui-next adn adminui login windhw
 
