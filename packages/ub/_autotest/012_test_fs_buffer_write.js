@@ -7,25 +7,28 @@ const assert = require('assert')
 // сonst signBuffer = Buffer.from(base64String, 'base64')
 // fs.writeFileSync('D:/dev/tmp/s2.p7s', signBuffer)
 
-
 let buffer = new ArrayBuffer(8)
 let uint88 = new Uint8Array(buffer) // 1-7 (matches the byteLength of the buffer)
 for (let i = 0; i < uint88.byteLength; i++) uint88[i] = i + '0'.charCodeAt(0)
 
 let res
 let fn = path.join(__dirname, 'buf_res.txt')
+if (fs.existsSync(fn)) fs.unlinkSync(fn)
 fs.writeFileSync(fn, uint88)
 res = fs.readFileSync(fn, 'utf8')
 assert.equal('01234567', res, 'full ArrayBuffer slice')
+fs.unlinkSync(fn)
 
 fs.writeFileSync(fn, buffer)
 res = fs.readFileSync(fn, 'utf8')
 assert.equal('01234567', res, 'ArrayBuffer slice')
+fs.unlinkSync(fn)
 
-let uint815 = new Uint8Array(buffer, 1, 5); // 1-5 (as specified when constructing the Uint8Array)
+let uint815 = new Uint8Array(buffer, 1, 5) // 1-5 (as specified when constructing the Uint8Array)
 fs.writeFileSync(fn, uint815)
 res = fs.readFileSync(fn, 'utf8')
 assert.equal('12345', res, 'ArrayBuffer 1-5 slice')
+fs.unlinkSync(fn)
 
 let uint827 = new Uint8Array(buffer, 2) // 2-7 (due to the offset of the constructed Uint8Array)
 fs.writeFileSync(fn, uint827)
