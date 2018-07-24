@@ -719,13 +719,10 @@ begin
             akBuffer:
               if val.isObject then begin
                 attDataBufObj := val.asObject;
-                if attDataBufObj.IsArrayBufferObject() then begin
-                  attDataBuf := attDataBufObj.GetArrayBufferData;
-                  attDataBufSize := attDataBufObj.GetArrayBufferByteLength();
-                end else
-                attDataIncorrect := True;
+                if not attDataBufObj.GetBufferDataAndLength(attDataBuf, attDataBufSize) then
+                  attDataIncorrect := True;
               end else
-              attDataIncorrect := True;
+                attDataIncorrect := True;
             end
           else
             attDataIncorrect := True;
