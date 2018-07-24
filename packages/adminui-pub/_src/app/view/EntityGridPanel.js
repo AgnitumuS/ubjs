@@ -1061,6 +1061,7 @@ Ext.define('UB.view.EntityGridPanel', {
         if ((!context.record.get('ID') && !me.notWriteChanges) || (me.notWriteChanges && context.record.phantom && context.record.dirtySave !== null)) {
           context.store.remove(context.record)
         }
+        me.fireEvent('changeData', me, 'cancelEdit')
       })
       rowEditing.on('beforeedit', function (editor, context) {
         if (me.editingPlugin.editing || me.readOnly || !me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.UPDATE)) {
