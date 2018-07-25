@@ -558,6 +558,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 .ub-login-window .logo-top img{
     max-width: 450px;
     max-height: 5rem;
+    margin-top: 20px;
 }
 
 .ub-login-window .x-tab-bar-default,
