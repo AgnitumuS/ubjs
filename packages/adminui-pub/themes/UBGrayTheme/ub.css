@@ -1560,7 +1560,7 @@ input.x-form-field-text{
 }
 
 .x-grid-row-bold .x-grid-cell{
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .x-label-required span[role=separator]::after {
