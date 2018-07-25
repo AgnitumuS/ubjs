@@ -431,7 +431,9 @@ class DBSQL2012 extends DBAbstract {
    * @abstract
    */
   genCodeDropPK (tableName, constraintName) {
-    throw new Error('Abstract genCodeDropPK')
+    this.DDL.dropPK.statements.push(
+      `alter table dbo.${tableName} drop constraint ${constraintName}`
+    )
   }
   /**
    * @override
