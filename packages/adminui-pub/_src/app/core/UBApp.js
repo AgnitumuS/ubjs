@@ -438,7 +438,7 @@ Ext.define('UB.core.UBApp', {
       me.setLocalStorageProviderPrefix(me.connection.userLogin())
       me.viewport = Ext.create('UB.view.Viewport')
       me.viewport.show()
-      me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop)
+      me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop) // keep UB.core.UBAppConfig
       me.fireEvent('applicationReady')
       me.checkQueryString()
       me.hideLogo()
@@ -455,7 +455,7 @@ Ext.define('UB.core.UBApp', {
    * @returns {string}
    */
   getImagePath: function (imageName) {
-    return 'models/adminui-pub/themes/' + UB.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
+    return 'models/adminui-pub/themes/' + UB.connection.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
   },
 
   /**
