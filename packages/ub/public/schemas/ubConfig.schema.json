@@ -55,7 +55,7 @@
         "externalURL": {
           "type": "string",
           "default": "equal to full server URL",
-          "description": "URL that the User from the internet will use to access your server. To be used in case server is behind a reverse proxy"
+          "description": "URL that the User will use to access your server. To be used in case server is behind a reverse proxy"
         },
         "additionalURLs": {
           "type": "Array",

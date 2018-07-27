@@ -4,8 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.30]
+### Fixed
+- fixed [unitybase/ubjs#9] DDL SQLite3 "Error: this.DDL.dropColumn.push is not a function"
+
 ## [5.0.29]
-### Fised
+### Fixed
 - fixed [unitybase/ubjs#7] - missing genCodeDropPK in SQL Server DDl generator
 
 ## [5.0.28]

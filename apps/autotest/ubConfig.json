@@ -58,6 +58,7 @@
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			//"loginWindowTopLogoURL": "/img/m-docnet.png",
 			"endpoint": "ubadminui",
 			"loginURL": "/models/adminui-next/views/ub-auth.html",
 			"messenger": {
