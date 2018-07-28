@@ -21,6 +21,7 @@
     "jspm"
   ],
   "author": "Evan You",
+  "contributors": ["pavel.mash"],
   "license": "MIT",
   "bugs": {
     "url": "https://git-pub.intecracy.com/unitybase/ubjs/issues"
