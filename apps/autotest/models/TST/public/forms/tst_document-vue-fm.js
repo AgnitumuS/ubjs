@@ -1,73 +1,32 @@
 const Vue = require('vue')
+const TstForm = require('../components/TstForm.vue')
 const tpl = `
-<div>
-<el-form size="mini">
-<h1>Form mini </h1>
-  <el-form-item>
-    <el-input placeholder="Pavel"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-date-picker type="date"></el-date-picker>
-  </el-form-item>
-  <el-form-item>
-  <el-date-picker
-    type="daterange"
-    range-separator="To"
-    start-placeholder="Start date"
-    end-placeholder="End date">
-  </el-date-picker>
-  </el-form-item>
-</el-form>
-<hr/>
-
-<el-form size="small">
-  <h1>Form small</h1>
-  <el-form-item>
-    <el-input placeholder="Pavel"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-date-picker type="date"></el-date-picker>
-  </el-form-item>
-</el-form>
-<hr/>
-
-<el-form size="medium">
-  <el-form-item>
-    <h1>Form medium "Now = {{ $ut('el.datepicker.now') }}!"</h1>
-    <el-input placeholder="Pavel"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-date-picker type="date"></el-date-picker>
-  </el-form-item>
-</el-form>
-<hr/>
-
-<el-form>
-  <h1>Form default</h1>
-  <el-form-item>
-    <el-input placeholder="Pavel"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-date-picker type="date"></el-date-picker>
-  </el-form-item>
-</el-form>
-</div>
+<el-scrollbar style="height: 100%;">
+  <tst-form form-size=""></tst-form>
+  <hr/>
+  <tst-form form-size="mini"></tst-form>
+  <hr/>
+  <tst-form form-size="small"></tst-form>
+  <hr/>
+  <tst-form form-size="medium"></tst-form>
+</el-scrollbar>
 `
 const $App = require('@unitybase/adminui-pub')
 exports.mount = function () {
   let tab = $App.viewport.centralPanel.add({
     title: 'VueJS form',
-    bodyPadding: 10,
-    html : '<div id="vueTmp"></div>',
+    style: {
+      padding: '1em' // since we replace panel inner content below, set paddings here
+    },
     closable: true
   })
   let vm = new Vue({
-    template: tpl,
-    beforeDestroy: function() { console.log('beforeDestroy', vm) }
+    components: {'tst-form': TstForm},
+    template: tpl
   })
-  vm.$mount('#vueTmp')
+  vm.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   // !! important
-  tab.on('close', function() {
+  tab.on('close', function () {
     vm.$destroy()
   })
   $App.viewport.centralPanel.setActiveTab(tab)
