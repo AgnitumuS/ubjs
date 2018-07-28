@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.6]
+### Changed
+- set default size of ElementUI components to small
+
 ## [1.0.5]
 ### Fixed
 - login window logo css fixed in way logo looks the same on adminui-next adn adminui login windhw

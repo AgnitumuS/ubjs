@@ -15,7 +15,7 @@ if ((typeof SystemJS !== 'undefined') && !SystemJS.has('element-ui')) SystemJS.s
 
 require('./dist/adminui-next.css')
 Vue.use(UB)
-// redirect ElementUI localization to UB.i18n
 Vue.use(ElementUI, {
-  i18n: UB.i18n.bind(UB)
+  size: 'small', // set element-ui default size
+  i18n: UB.i18n.bind(UB) // redirect ElementUI localization to UB.i18n
 })
