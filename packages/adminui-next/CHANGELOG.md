@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.6]
+### Added
+- ability to load Vue single file components (*.vue) - see ``@unitybase/systemjs-plugin-vue-ub` readme for restrictions
+
 ### Changed
-- set default size of ElementUI components to small
+- default size of ElementUI components is set to to `small`
 
 ## [1.0.5]
 ### Fixed

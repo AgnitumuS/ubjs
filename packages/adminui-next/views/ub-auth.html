@@ -68,7 +68,7 @@
       </div>
       <hr>
 
-      <el-form :model="authData">
+      <el-form :model="authData" size="medium">
         <div v-if="hasNegotiate()">
           <el-tooltip :content="$ut('KerberosTip')" placement="bottom" effect="light">
             <i class="auth-page__tooltip fa fa-question-circle-o"></i>

@@ -43,6 +43,7 @@
   "dependencies": {
     "@unitybase/cs-shared": "^5.0.8",
     "@unitybase/ub-pub": "^5.2.1",
+    "@unitybase/systemjs-plugin-vue-ub": "^1.2.0",
     "element-ui": "^2.4.3",
     "font-awesome": "^4.7.0",
     "lodash": "^4",

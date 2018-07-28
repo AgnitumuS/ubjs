@@ -25,7 +25,6 @@ function getDomainFolders (opts) {
   }).then(function (res) {
     let models = res.data.models
     let folders = []
-    console.log(models)
     for (let modelName in models) {
       const model = models[modelName]
       let pp = model.realPublicPath
