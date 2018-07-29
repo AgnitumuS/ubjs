@@ -11562,7 +11562,8 @@ div.x-lbl-top-err-icon {
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
 .x-form-text {
   color: black;
-  padding: 4px 6px 3px 6px;
+  padding-right: 6px;
+  padding-left: 6px;
   background: white repeat-x 0 0;
   border-width: 1px;
   border-style: solid;
@@ -17617,7 +17618,7 @@ a.x-color-picker-item:hover {
 
 /* line 1, ../../../../ext/packages/ext-theme-neptune/sass/src/form/field/Trigger.scss */
 .x-form-trigger {
-  height: 28px;
+  height: 24px;
 }
 /* line 4, ../../../../ext/packages/ext-theme-neptune/sass/src/form/field/Trigger.scss */
 .x-toolbar-item .x-form-trigger {

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.6]
 ### Added
+- css for round ExtJS form fields border radius (as in ElementUI)
+
+## [1.0.6]
+### Added
 - ability to load Vue single file components (*.vue) - see ``@unitybase/systemjs-plugin-vue-ub` readme for restrictions
 
 ### Changed
