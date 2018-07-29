@@ -11,6 +11,7 @@ This model extend UnityBase adminUI by Vue + ElementUI libraries
 
 ## CSS
  - `dist/adminui-vue.css` theme include normalize.css && modified element-theme-chalk
+ - theme will add border radius to ExtJS form fields, so Ext based forms looks like Elements based forms
 
 ## Views
 ### Modern login page
