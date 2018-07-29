@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.6]
 ### Added
+- css for round ExtJS form fields border radius (as in ElementUI)
+
+## [1.0.6]
+### Added
 - ability to load Vue single file components (*.vue) - see ``@unitybase/systemjs-plugin-vue-ub` readme for restrictions
 
 ### Changed
@@ -13,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.5]
 ### Fixed
-- login window logo css fixed in way logo looks the same on adminui-next adn adminui login windhw
+- login window logo css fixed in way logo looks the same on adminui-vue and adminui login windhw
 - add missing `views/ub-auth.html` to the package
 
 ## [1.0.3]
@@ -22,5 +26,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.2]
 ### Changed
-- theme css `/dist/adminui-next.css` will loaded by adminui-next automatically (using require)
+- theme css `/dist/adminui-vue.css` will loaded by adminui-vue automatically (using require)
 - theme CSS will not override a body font-size, so other modules can set his own (we recommend 14px)
