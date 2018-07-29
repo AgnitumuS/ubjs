@@ -11,7 +11,7 @@
     "ddl": "npx ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
-    "@unitybase/adminui-next": "^1.0.6",
+    "@unitybase/adminui-vue": "^1.0.6",
     "@unitybase/adminui-pub": "^5.3.4",
     "@unitybase/adminui-reg": "^5.0.34",
     "@unitybase/base": "^5.0.17",

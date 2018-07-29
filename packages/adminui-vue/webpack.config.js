@@ -12,14 +12,14 @@ const PRODUCTION = (process.env.NODE_ENV === 'production')
 
 module.exports = {
   entry: {
-    app: './adminui-next.js'
+    app: './adminui-vue.js'
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    library: 'unitybase_adminui_next',
+    library: 'unitybase_adminui_vue',
     libraryTarget: 'var',
-    filename: 'adminui-next.min.js',
-    publicPath: '/clientRequire/@unitybase/adminui-next/dist/'
+    filename: 'adminui-vue.min.js',
+    publicPath: '/clientRequire/@unitybase/adminui-vue/dist/'
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

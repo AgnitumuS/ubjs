@@ -27,7 +27,7 @@ const ElementUI = require('element-ui/lib/index.js')
 window.ElementUI = ElementUI
 if (IS_SYSTEM_JS && !SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(ElementUI))
 
-require('./dist/adminui-next.css')
+require('./dist/adminui-vue.css')
 Vue.use(UB)
 Vue.use(ElementUI, {
   size: 'small', // set element-ui default size

@@ -1,4 +1,4 @@
-#Adminui Next
+#Adminui Vue
 
 This model extend UnityBase adminUI by Vue + ElementUI libraries
 
@@ -10,7 +10,7 @@ This model extend UnityBase adminUI by Vue + ElementUI libraries
  - UB injected into Vue.prototype as `$UB`
 
 ## CSS
- - `dist/adminui-next.css` theme include normalize.css && modified element-theme-chalk
+ - `dist/adminui-vue.css` theme include normalize.css && modified element-theme-chalk
 
 ## Views
 ### Modern login page
@@ -22,13 +22,13 @@ To use it in `adminUI` based apps in ubConfig
 "uiSettings": {
   "adminUI": {
 	"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
-	"loginURL": "/models/adminui-next/views/ub-auth.html",
+	"loginURL": "/models/adminui-vue/views/ub-auth.html",
   ...
 ```
 
 # Usage
 ## adminUI based app
- For adminUI based application just add a `@unitybase/adminui-next` in the domain.models section of config
+ For adminUI based application just add a `@unitybase/adminui-vue` in the domain.models section of config
  after `adminui-pub`
 
 ```
@@ -46,7 +46,7 @@ To use it in `adminUI` based apps in ubConfig
 			"path": "./node_modules/@unitybase/adminui-reg"
 		},
 		{
-			"path": "./node_modules/@unitybase/adminui-next"
+			"path": "./node_modules/@unitybase/adminui-vue"
 		}
 		..
 ```
@@ -55,7 +55,7 @@ To use it in `adminUI` based apps in ubConfig
 See `/views/ub-auth.html` for sample
 
 ### Compiled Vue app
-In case you embad a compiled Vue app into adminUI:
+In case you embedd a compiled Vue app into adminUI:
 
 - define output section in the webpack config to prevent loading modules twice:
 ```
