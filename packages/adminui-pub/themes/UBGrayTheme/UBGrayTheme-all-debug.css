@@ -5076,7 +5076,7 @@ the height of a multi-line element */
 /* line 14, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Trigger.scss */
 .x-form-trigger-wrap {
   vertical-align: top;
-  border-collapse: separate;
+  border-collapse: unset; /* MPV prevent border disappearance */
 }
 
 /* line 2, ../../../../ext/packages/ext-theme-base/sass/src/form/field/Spinner.scss */
@@ -17625,10 +17625,10 @@ a.x-color-picker-item:hover {
 }
 
 /* line 9, ../../../../ext/packages/ext-theme-neptune/sass/src/form/field/Trigger.scss */
-.x-form-trigger-wrap {
-  border: 1px solid;
-  border-color: #bfbebe;
-}
+/*.x-form-trigger-wrap {*/
+  /*border: 1px solid;*/
+  /*border-color: #bfbebe;*/
+/*}*/
 /* line 12, ../../../../ext/packages/ext-theme-neptune/sass/src/form/field/Trigger.scss */
 .x-form-trigger-wrap .x-form-text {
   border-width: 0;
@@ -18130,10 +18130,10 @@ h6,
 }
 
 /* line 27, ../../sass/src/form/field/Text.scss */
-.x-form-trigger-wrap .x-form-field-text {
-  margin-bottom: 0 !important;
-  margin-top: 0 !important;
-}
+/*.x-form-trigger-wrap .x-form-field-text {*/
+  /*margin-bottom: 0 !important;*/
+  /*margin-top: 0 !important;*/
+/*}*/
 
 /* line 32, ../../sass/src/form/field/Text.scss */
 .x-toolbar .x-form-text {
@@ -18259,19 +18259,15 @@ h6,
 .x-form-trigger-wrap {
   border: 1px solid;
   border-color: #bfbebe;
-  margin-bottom: 1px;
-  margin-top: 1px;
+  /*margin-bottom: 1px;*/
+  /*margin-top: 1px;*/
   /*
   border-top-style: none;
   border-left-style: none;
   border-right-style: none;
   */
 }
-/* line 34, ../../sass/src/form/field/Trigger.scss */
-.x-form-trigger-wrap .x-form-text {
-  border-width: 0;
-  height: 28px;
-}
+
 /* line 38, ../../sass/src/form/field/Trigger.scss */
 .x-content-box .x-form-trigger-wrap .x-form-text {
   height: 21px;

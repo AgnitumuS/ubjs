@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.4]
+### Fixed
+ - long terming bug with select/date control border disappears if page are scaled
+
 ## [5.3.3]
 ### Added
 - ubdetailgrid with RowEditing plugin will fire "changeData" when user cancel editing
