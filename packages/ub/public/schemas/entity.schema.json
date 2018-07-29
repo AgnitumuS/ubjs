@@ -465,7 +465,7 @@
                                 },
                                 "func": {
                                     "type": "string",
-                                    "description": "Function used to create `functional` index. Only for Oracle"
+                                    "description": "Function used to create Oracle/Postgres `functional` index. Can contains placeholder to put a yourAttributeCode value: \"func\": \"NLSSORT({0},'nls_sort=''BINARY_CI''')\""
                                 }
                             }
                         }

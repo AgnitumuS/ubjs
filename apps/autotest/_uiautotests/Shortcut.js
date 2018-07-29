@@ -2,7 +2,7 @@ import { ExtSelector } from './ExtJSHelper/ExtJSSelector'
 import { Selector } from 'testcafe'
 import { deleteExistShortcut, insertDesktop, insertShortcut } from './ExtJSHelper/Preconditions'
 
-const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
+const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:8881/ubadminui`
 const ext = new ExtSelector()
 
 fixture(`Shortcut test`)
@@ -15,8 +15,8 @@ test('Add Shortcut based on existing Shortcut', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
@@ -39,23 +39,23 @@ test('Add Shortcut based on existing Shortcut', async t => {
   // Open Shortcuts' context menu and click button 'Add shortcut'
   let leftPanel = ext.leftPanel
   await leftPanel.load()
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('adm_desktop')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('adm_desktop')
   await leftPanel.load()
   let idMenu = await leftPanel.treeItems.getIdByAttr('code', 'uba_user')
   await t.rightClick(idMenu)
-  leftPanel.contextMenuItem('addShortcut').click()
+  await leftPanel.contextMenuItem('addShortcut').click()
   // Сhange Desktop on "Desktop" drop-down menu
   let baseWindow = ext.baseWindow
   await baseWindow.load()
-  baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
-  baseWindow.modalForm.setValueToAttr('', 'parentID')
+  await baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
+  await baseWindow.modalForm.setValueToAttr('', 'parentID')
   // Fill a field 'Shortcut caption'
-  baseWindow.modalForm.setValueToAttr('test_shortcut1', 'caption')
+  await baseWindow.modalForm.setValueToAttr('test_shortcut1', 'caption')
   // Fill a field 'Code'
-  baseWindow.modalForm.setValueToAttr('test_code_shortcut1', 'code')
+  await baseWindow.modalForm.setValueToAttr('test_code_shortcut1', 'code')
   // Enter correct data into tab 'Shortcut source code'
-  baseWindow.modalForm.setValueToAttr(`{
+  await baseWindow.modalForm.setValueToAttr(`{
 	"cmdType": "showList",
 	"cmdData": {
 		"params": [
@@ -75,11 +75,11 @@ test('Add Shortcut based on existing Shortcut', async t => {
 }`
     , 'cmdCode')
   // Click on button 'Save and close'
-  baseWindow.getFormAction('saveAndClose').click()
+  await baseWindow.getFormAction('saveAndClose').click()
   // Click on new Shortcut on the test desktop
 
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('test_desktop_code')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('test_desktop_code')
   await leftPanel.load()
   let idShortcut = await leftPanel.treeItems.getIdByAttr('code', 'test_code_shortcut1')
   await t.click(Selector(idShortcut))
@@ -96,8 +96,8 @@ test('Add Shortcut', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
@@ -112,8 +112,8 @@ test('Add Shortcut', async t => {
     await mainToolbar.load()
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
 
@@ -122,17 +122,17 @@ test('Add Shortcut', async t => {
   await leftPanel.load()
   let treeID = await leftPanel.getID()
   await t.rightClick(treeID)
-  leftPanel.contextMenuItem('addShortcut').click()
+  await leftPanel.contextMenuItem('addShortcut').click()
   // Сhange Desktop on "Desktop" drop-down menu
   let baseWindow = ext.baseWindow
   await baseWindow.load()
-  baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
+  await baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
   // Fill a field 'Shortcut caption'
-  baseWindow.modalForm.setValueToAttr('test_shortcut2', 'caption')
+  await baseWindow.modalForm.setValueToAttr('test_shortcut2', 'caption')
   // Fill a field 'Code'
-  baseWindow.modalForm.setValueToAttr('test_code_shortcut2', 'code')
+  await baseWindow.modalForm.setValueToAttr('test_code_shortcut2', 'code')
   // Enter correct data into tab 'Shortcut source code'
-  baseWindow.modalForm.setValueToAttr(`{
+  await baseWindow.modalForm.setValueToAttr(`{
 	"cmdType": "showList",
 	"cmdData": {
 		"params": [
@@ -152,11 +152,11 @@ test('Add Shortcut', async t => {
 }`
     , 'cmdCode')
   // Click on button 'Save and close'
-  baseWindow.getFormAction('saveAndClose').click()
+  await baseWindow.getFormAction('saveAndClose').click()
   // Click on new Shortcut on the test desktop
 
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('test_desktop_code')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('test_desktop_code')
   await leftPanel.load()
   let idShortcut = await leftPanel.treeItems.getIdByAttr('code', 'test_code_shortcut2')
   await t.click(Selector(idShortcut))
@@ -173,8 +173,8 @@ test('Edit existing Shortcut', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
   // Open in the top menu: Administrator- UI- Shortcuts
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
@@ -187,8 +187,8 @@ test('Edit existing Shortcut', async t => {
     await mainToolbar.load()
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
   let cmdCode = `{
@@ -212,9 +212,9 @@ test('Edit existing Shortcut', async t => {
   await insertShortcut('test_code_shortcut1', 'test_shortcut1', 'test_desktop_code', cmdCode)
   await deleteExistShortcut('test_code_shortcut1_re')
   // Open in the top menu: Administrator- UI- Shortcuts
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_navshortcut').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_navshortcut').click()
 
   // Open shortcut
   let tabPanel = ext.tabPanel
@@ -224,7 +224,7 @@ test('Edit existing Shortcut', async t => {
   // Open Shortcuts' context menu and click button 'Edit'
   let idTestShtRow = await grid.rows.getIdByAttr('code', 'test_code_shortcut1')
   await t.rightClick(idTestShtRow)
-  grid.selectContextMenuItem({actionID: 'edit'})
+  await grid.selectContextMenuItem({actionID: 'edit'})
   let formParams = {
     entityName: 'ubm_navshortcut',
     instanceCode: 'test_code_shortcut1',
@@ -233,13 +233,13 @@ test('Edit existing Shortcut', async t => {
   let formCode = await tabPanel.loadTabPanelChild('basepanel', formParams)
   let form = tabPanel.formPanel(formCode)
   // Rename Shortcut caption
-  form.items.setValueToAttr('test_shortcut1_re', 'caption')
+  await form.items.setValueToAttr('test_shortcut1_re', 'caption')
   // Rename Code
-  form.items.setValueToAttr('test_code_shortcut1_re', 'code')
+  await form.items.setValueToAttr('test_code_shortcut1_re', 'code')
   // Click tab 'Shortcut source code'
-  form.selectTab('Shortcut source code')
+  await form.selectTab('Shortcut source code')
   // Delete one colum from code and click button 'Save and close'. Optional refresh page F5
-  form.items.setValueToAttr(`{
+  await form.items.setValueToAttr(`{
 	"cmdType": "showList",
 	"cmdData": {
 		"params": [
@@ -258,17 +258,17 @@ test('Edit existing Shortcut', async t => {
 }`
     , 'cmdCode')
   // Click button 'Save and close'
-  form.getFormAction('saveAndClose').click()
+  await form.getFormAction('saveAndClose').click()
 
   // Reload browser
   await t.navigateTo(TEST_PAGE)
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   // Select renamed Shortcut on top sidebar menu
   await mainToolbar.load()
-  mainToolbar.desktopMenuBtn('test_desktop_code').click()
+  await mainToolbar.desktopMenuBtn('test_desktop_code').click()
   // Check Shortcut caption and Code field
   let shortcutID = await mainToolbar.menuItem('test_code_shortcut1_re').getIdByAttr()
   let shortcutSelector = Selector(shortcutID)
@@ -289,17 +289,17 @@ test('Delete Shortcut', async t => {
 // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
   await insertShortcut('test_code_shortcut1', 'test_shortcut1', 'adm_desktop')
 
   // Open in the top menu: Administrator- UI- Shortcuts
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_navshortcut').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_navshortcut').click()
 
   // Open context menu from existing Shortcut and click 'Delete'
   let tabPanel = ext.tabPanel
@@ -321,7 +321,7 @@ test('Delete Shortcut', async t => {
 
   // Open context menu from existing Shortcut and click 'Delete'
   await t.rightClick(idTestShortcutRow)
-  grid.selectContextMenuItem({actionID: 'del'})
+  await grid.selectContextMenuItem({actionID: 'del'})
 
   // Click on button 'YES'
   await messageBox.selectAction('yes')

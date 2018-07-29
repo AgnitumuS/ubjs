@@ -5,7 +5,7 @@ const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 const Color = require('./Color')
 
-let instance = null
+let _instance
 /**
  * @class XLSXStyleControllerFill Registered fill styles
  *  example
@@ -22,7 +22,8 @@ let instance = null
  */
 class XLSXStyleControllerFill extends XLSXBaseStyleController {
   static instance () {
-    return instance
+    if (!_instance) _instance = new XLSXStyleControllerFill()
+    return _instance
   }
 
   compile (item) {
@@ -76,8 +77,6 @@ class XLSXStyleControllerFill extends XLSXBaseStyleController {
     return super.add(info, 'FILL')
   }
 }
-
-instance = new XLSXStyleControllerFill()
 
 module.exports = {
   XLSXStyleControllerFill

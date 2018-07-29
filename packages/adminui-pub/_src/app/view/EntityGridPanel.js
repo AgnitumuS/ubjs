@@ -278,6 +278,14 @@ Ext.define('UB.view.EntityGridPanel', {
                   attributeDefinition.fieldList = ['ID', $App.domainInfo.get(entityAttribute.associatedEntity).getDescriptionAttribute()]
                 }
               }
+              if (fieldList[i].editor) {
+                if (fieldList[i].editor.whereList) {
+                  attributeDefinition.whereList = fieldList[i].editor.whereList
+                }
+                if (fieldList[i].editor.orderList) {
+                  attributeDefinition.orderList = fieldList[i].editor.orderList
+                }
+              }
 
               col.editor = UB.core.UBUtil.ubDt2Ext(entityAttribute, attributeDefinition)
               col.editor.valueField = col.editor.displayField
@@ -1053,6 +1061,7 @@ Ext.define('UB.view.EntityGridPanel', {
         if ((!context.record.get('ID') && !me.notWriteChanges) || (me.notWriteChanges && context.record.phantom && context.record.dirtySave !== null)) {
           context.store.remove(context.record)
         }
+        me.fireEvent('changeData', me, 'cancelEdit')
       })
       rowEditing.on('beforeedit', function (editor, context) {
         if (me.editingPlugin.editing || me.readOnly || !me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.UPDATE)) {
@@ -1233,12 +1242,12 @@ Ext.define('UB.view.EntityGridPanel', {
     })
 
     /**
-     * @event beforeClose
      * Fires before close panel.
+     * @event beforeClose
      */
     /**
-     * @event parentchange
      * Fires when grid in detail mode and parent selection change.
+     * @event parentchange
      */
     me.addEvents('parentchange')
 
@@ -1506,10 +1515,10 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.addNewByCurrent] = new Ext.Action({
       actionId: actions.addNewByCurrent,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faPlusCircle,
+      glyph: UB.core.UBUtil.glyphs.faClone,
       cls: 'add-currect-action',
 
-      text: UB.i18n('dobavitKak'),
+      text: UB.i18n('Copy'),
       eventId: events.addnewbycurrent,
       handler: me.onAction,
       disabled: !me.entity.haveAccessToMethod(methodNames.ADDNEW),
@@ -1521,7 +1530,7 @@ Ext.define('UB.view.EntityGridPanel', {
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faEdit,
         cls: 'edit-action',
-        text: UB.i18n('redaktirovat') + hotKeys[actions.edit].text,
+        text: UB.i18n('Edit') + hotKeys[actions.edit].text,
         eventId: events.edit,
         handler: me.onAction,
         disabled: !me.entity.haveAccessToMethod(methodNames.UPDATE),
@@ -1566,7 +1575,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.actions[actions.history] = new Ext.Action({
         actionId: actions.history,
         iconCls: 'iconHistory',
-        text: UB.i18n('istorijaIzmenenij'),
+        text: UB.i18n('ChangesHistory'),
         eventId: events.history,
         handler: me.onAction,
         scope: me
@@ -2245,9 +2254,19 @@ Ext.define('UB.view.EntityGridPanel', {
     if (!me.rowEditing) {
       if (this.isHistory) {
         // this.onHistory();
+        var minDate = undefined
+        if (me.store.data.length > 0) {
+          minDate = me.store.data.first().data['mi_dateFrom']
+          me.store.data.each(function (item) {
+            minDate = item.data['mi_dateFrom'] > minDate ? item.data['mi_dateFrom'] : minDate
+          })
+        }
         Ext.create('UB.view.InputDateWindow', {
           callback: function (date) {
-            me.openForm({__mip_ondate: date, instanceID: me.miDataID})
+            if (_.isUndefined(minDate) || date > minDate)
+              me.openForm({__mip_ondate: date, instanceID: me.miDataID})
+            else
+              throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), minDate))
           },
           scope: me
         })
@@ -2493,11 +2512,29 @@ Ext.define('UB.view.EntityGridPanel', {
     let sel = me.getSelectionModel().getSelection()
     if (sel.length < 1) return
 
-    Ext.create('UB.view.InputDateWindow', {
-      callback: function (date) {
-        me.onItemDblClick(me, sel[0], null, null, null, { __mip_ondate: date })
-      },
-      scope: this
+    UB.Repository(me.entityName)
+    .attrs(['ID', 'mi_data_id'])
+    .selectById(sel[0].get('ID'))
+    .then(function(record) {
+      return UB.Repository(me.entityName)
+        .attrs(['mi_dateFrom'])
+        .where('mi_data_id', '=', record['mi_data_id'])
+        .misc({__mip_recordhistory_all: true})
+        .orderByDesc('mi_dateFrom')
+        .limit(1)
+        .select()
+    })
+    .then(function (rows) {
+      var record = rows[0]
+      Ext.create('UB.view.InputDateWindow', {
+        callback: function (date) {
+          if (date > record['mi_dateFrom'])
+            me.onItemDblClick(me, sel[0], null, null, null, { __mip_ondate: date })
+          else
+            throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), record['mi_dateFrom']))
+        },
+        scope: me
+      })
     })
   },
 

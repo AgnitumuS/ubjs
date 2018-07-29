@@ -1,5 +1,6 @@
-﻿# UnityBase base
+﻿[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-Contains classes, common for CLI server-side and browser side
+# UnityBase command line helpers
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+CLI classes for working with command line args,
+connecting to UnityBase server, bulk data loading.

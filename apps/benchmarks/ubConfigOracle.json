@@ -11,7 +11,8 @@
 	"logging": {
 		//"levels": ["*"],
 		"path": ".\\logs",
-		"rotationSizeInMB": 100
+		"rotationSizeInMB": 100,
+		"performanceCounters": false
 	},
 	"security": {
 		"authenticationMethods": []

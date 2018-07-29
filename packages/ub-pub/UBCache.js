@@ -1,3 +1,12 @@
+/**
+ * Client-side data cache. In case of Browser will use `indexedDB`
+ * as storage, in case of NodeJS will cache data in memory
+ *
+ * @module UBCache
+ * @memberOf module:@unitybase/ub-pub
+ */
+module.exports = UBCache
+
 /* eslint-disable prefer-promise-reject-errors */
 // Originally found on  from https://github.com/mozilla/localForage
 let dbInfo = {
@@ -424,4 +433,3 @@ UBCache.prototype.removeIfMach = function (regExp, storeName) {
   })
 }
 
-module.exports = UBCache

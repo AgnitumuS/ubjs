@@ -44,7 +44,7 @@ Ext.define('UB.ux.tree.Column', {
           '<tpl if="isNode">ub_tree_text_group</tpl>',
         ' {textCls}">{value}</span>',
         '<tpl if="isNode"><span class=',
-        '"ub_tree_group ub_tree_depth ub_tree_depth_{depth} fa <tpl if="expanded">fa-angle-down<tpl else>fa-angle-left</tpl>"',
+        '"ub_tree_group ub_tree_depth ub_tree_depth_{depth} fa <tpl if="expanded">fa-caret-down<tpl else>fa-caret-right</tpl>"',
         '></span>',
         '<tpl else><span class="ub_tree_group ub_tree_depth ub_tree_depth_{depth}"></tpl>'
     ],

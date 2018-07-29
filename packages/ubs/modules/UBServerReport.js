@@ -1,28 +1,46 @@
 /**
  * Server-side Report builder
  *
- * Example usage on server side
+ * @example
 
-       const fs = require('fs');
-       const UBReport = require('@unitybase/ubs/modules/UBServerReport');
-       let report = UBReport.makeReport('test','pdf',{});
-       report.then((result) => {
-         if (result.reportType === 'pdf') {
-           console.debug('Generate a PDF report of size=', result.reportData.byteLength)
-           fs.writeFileSync('d:/result.pdf', result.reportData )
-         } else {
-           console.debug('Generate a HTML report of size=', result.reportData.length)
-           fs.writeFileSync('d:/result.html', result.reportData )
-         }
-       })
+// Server side report generation
+const fs = require('fs');
+const UBReport = require('@unitybase/ubs/modules/UBServerReport');
+let reportResult = UBReport.makeReport('test','pdf',{});
+if (reportResult.reportType === 'pdf') {
+ console.debug('Generate a PDF report of size=', result.reportData.byteLength)
+ fs.writeFileSync('d:/result.pdf', result.reportData )
+} else {
+ console.debug('Generate a HTML report of size=', result.reportData.length)
+ fs.writeFileSync('d:/result.html', result.reportData )
+}
 
- * @module @unitybase/ubs/modules/UBServerReport
+ * @module UBServerReport
+ * @memberOf module:@unitybase/ubs
  */
+module.exports = {
+  /**
+   * Render report with code `reportCode` on the server side
+   * Report templates and creation rules are defined in `ubs_report` entity.
+   *
+   * @param {string|Object} reportCode If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
+   * @param {string} [reportType='html'] Possible values: 'html'|'pdf'
+   * @param {*} params Any parameters passed to the buildReport function from report code block
+   * @returns {ReportResult}
+   */
+  makeReport: function (reportCode, reportType, params) {
+    let report = new UBServerReport(reportCode, reportType, params)
+    return report.makeReport()
+  }
+}
+
 const Mustache = require('mustache')
 const Q = require('when')
 const _ = require('lodash')
 const path = require('path')
-const queryBuilder = require('@unitybase/base').ServerRepository.fabric
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
 const formatFunctions = require('../public/formatFunctions')
 
 const xmldom = require('xmldom')
@@ -45,26 +63,28 @@ global.atob = function (text) {
  * @property {string} reportType
  * @property {Object} incomeParams
  * @property {Object} reportOptions
- * @property {String|ArrayBuffer|*} reportData Result of buildReport function execution
+ * @property {string|ArrayBuffer|*} reportData Result of buildReport function execution
  */
 
 /**
-* @constructor
-* @param {String|Object} reportCode
-* If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
-* @param {String} [reportType='html'] Possible values: 'html'|'pdf'
-* @param {{}} params
-* @param {String} [language=Session.userLang]
+ * Server-side report builder
+ * @class
+ * @protected
+ * @param {string|Object} reportCode
+ * If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
+ * @param {string} [reportType='html'] Possible values: 'html'|'pdf'
+ * @param {{}} params
+ * @param {String} [language=Session.userLang]
  */
 function UBServerReport (reportCode, reportType, params, language) {
   /**
    * Report code
-   * @property {String} reportCode
+   * @property {string} reportCode
    */
   this.reportCode = reportCode
    /**
     * Possible values: 'html', 'pdf'
-    * @property {String} reportCode
+    * @property {string} reportCode
     */
   this.reportType = reportType || 'html'
   /**
@@ -75,7 +95,7 @@ function UBServerReport (reportCode, reportType, params, language) {
 
    /**
     * The options of report. Known options: pageOrientation.
-     *  @property {{}} reportOptions
+    * @property {{}} reportOptions
     */
   this.reportOptions = {}
 
@@ -91,19 +111,13 @@ function UBServerReport (reportCode, reportType, params, language) {
 }
 
 /**
-* @returns {ReportResult}
-*/
-UBServerReport.makeReport = function (reportCode, reportType, params) {
-  let report = new UBServerReport(reportCode, reportType, params)
-  return report.makeReport()
-}
-
-/**
 * Load report template and code.
 */
 UBServerReport.prototype.init = function () {
-  let reportInfo = queryBuilder('ubs_report').attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
-          .where('[report_code]', '=', this.reportCode).selectSingle()
+  let reportInfo = UB.Repository('ubs_report')
+    .attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
+    .where('[report_code]', '=', this.reportCode)
+    .selectSingle()
 
   if (!reportInfo) throw new Error(`Report with code "${this.reportCode}" not found`)
 
@@ -141,6 +155,17 @@ UBServerReport.prototype.prepareTemplate = function () {
 }
 
 /**
+ * Render report on server
+ * @example
+
+const UBReport = require('@unitybase/ubs/modules/UBServerReport')
+let reportResult = UBReport.makeReport('reportCode', 'html', {
+  login: email,
+  password: password,
+  activateUrl: registrationAddress,
+  appConfig: App.serverConfig
+})
+
  * @param {Object} [params]
  * @returns {ReportResult}
  */
@@ -167,9 +192,9 @@ UBServerReport.prototype.makeReport = function (params) {
 }
 
 /**
-* build HTML report
+* Render HTML report
 * @param {Object} reportData
-* @returns {String}
+* @returns {string}
 */
 UBServerReport.prototype.buildHTML = function (reportData) {
   if (!reportData || typeof (reportData) !== 'object' || reportData instanceof Array) {
@@ -184,7 +209,7 @@ UBServerReport.prototype.buildHTML = function (reportData) {
 
 /**
 * Prepare PDF report from html
-* @param {String} html
+* @param {string} html
 * @param {Object} options
 * @param {Array|Object} [options.fonts]
 * [{ fontName: "TimesNewRoman", fontStyle: "Normal" }, ..]
@@ -264,7 +289,7 @@ UBServerReport.prototype.prepareCode = function () {
     _.forEach(reportModule.reportCode, (val, name) => {
       this[name] = val
     })
-  }  
+  }
 }
 
  /**
@@ -340,20 +365,16 @@ UBServerReport.prototype.buildReport = function (reportParams) {
 
 /**
 * load document
-* @param {String} attribute
-* @returns {String}
+* @param {string} attribute
+* @returns {string}
 */
 UBServerReport.prototype.getDocument = function (attribute) {
   let cfg = JSON.parse(this.reportRW[attribute])
 
-  let docReq = new TubDocumentRequest()
-  docReq.entity = 'ubs_report'
-  docReq.attribute = attribute
-  docReq.id = this.reportRW.ID
-  docReq.isDirty = !!cfg.isDirty
-  let docHandler = docReq.createHandlerObject(false)
-  docHandler.loadContent(TubLoadContentBody.Yes /* WithBody */)
-  return docHandler.request.getBodyAsUnicodeString()
+  return App.blobStores.getContent({
+    entity: 'ubs_report',
+    attribute: attribute,
+    ID: this.reportRW.ID,
+    isDirty: !!cfg.isDirty
+  }, {encoding: 'utf8'})
 }
-
-module.exports = UBServerReport

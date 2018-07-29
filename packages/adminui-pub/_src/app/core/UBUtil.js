@@ -1,5 +1,6 @@
+const _ = require('lodash')
 require('./UBAppConfig')
-const UBDomain = require('@unitybase/base/UBDomain')
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 /**
  * File: UB.core.UBUtil.js
  * Author Nozhenko Igor
@@ -66,7 +67,8 @@ Ext.define('UB.core.UBUtil', {
     faHierarche: 0xf0e8,
     faPencilSquareO: 0xf044,
     faArrowLeft: 0xf060,
-    faTimes: 0xf00d // CLOSE action
+    faTimes: 0xf00d, // CLOSE action
+    faClone: 0xf24d
   },
 
   /**
@@ -560,6 +562,7 @@ Ext.define('UB.core.UBUtil', {
         ext = this.getComponentConfigByDataType(attribute.dataType, attribute.size)
         break
     }
+    if (attribute.readOnly) ext.readOnly = true
     return ext
   },
   /**
@@ -691,7 +694,7 @@ Ext.define('UB.core.UBUtil', {
       ubRequest: {
         entity: 'ubm_enum',
         method: UB.core.UBCommand.methodName.SELECT,
-        fieldList: (config && config.fieldList) ? config.fieldList : ['eGroup', 'code', 'name', 'shortName', 'sortOrder'],
+        fieldList: (config && config.fieldList) ? _.union(config.fieldList, ['eGroup', 'sortOrder']) : ['eGroup', 'code', 'name', 'shortName', 'sortOrder'],
         whereList: whereList,
         orderList: orderList,
         idProperty: 'code'

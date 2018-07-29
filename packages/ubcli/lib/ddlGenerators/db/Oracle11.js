@@ -27,6 +27,35 @@ class DBOracle extends DBAbstract {
       URLParams: {CONNECTION: this.dbConnectionConfig.name}
     })
 
+    // create a function to extract index column name from Long (LOB)
+    // direct loading a LOB column values to the app server is slow
+    this.conn.xhr({
+      endpoint: 'runSQL',
+      data: `create or replace function F_ColumnNameForIdx( iName in varchar2, tName in varchar2, cPos in number)
+return varchar2
+as
+  l_data long;
+res varchar2(64);
+begin
+ select column_expression into l_data from user_ind_expressions e where e.index_name = iName and e.table_name = tName and e.column_position=cPos;
+ return substr( l_data, 1, 64 );
+end;`,
+      URLParams: {CONNECTION: this.dbConnectionConfig.name}
+    })
+// to be called as F_ColumnDefault(tc.table_name, tc.column_name)
+//     this.conn.xhr({
+//       endpoint: 'runSQL',
+//       data: `create or replace function F_ColumnDefault( tName in varchar2, cName in varchar2)
+// return varchar2
+// as
+//   l_data long;
+//   res varchar2(64);
+// begin
+//  select tc.data_default into l_data from user_tab_columns tc where tc.table_name=tName and tc.column_name=cName;
+//  return substr( l_data, 1, 64 );
+// end;`,
+//       URLParams: {CONNECTION: this.dbConnectionConfig.name}
+//     })
     // filter tables from a metadata if any
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, {_upperName: dbTab.NAME.toUpperCase()}) !== -1)
@@ -34,10 +63,9 @@ class DBOracle extends DBAbstract {
     for (let tabDef of dbTables) {
       let asIsTable = new TableDefinition({
         name: tabDef.NAME,
-        caption: tabDef.CAPTION
+        caption: tabDef['CAPTION']
       })
 
-      //   -- tc.data_length,
       let columnSQL = `
 select 
   tc.column_name as name,
@@ -66,7 +94,7 @@ order by tc.column_id`
         let def = colDef['DEFVALUE'] ? colDef['DEFVALUE'].trim() : colDef['DEFVALUE']
         let nObj = {
           name: colDef.NAME,
-          description: colDef.DESCRIPTION,
+          description: colDef['DESCRIPTION'],
           allowNull: (colDef['NULLABLE'] === 'Y'),
           dataType: this.dataBaseTypeToUni(colDef['TYPENAME'], colDef['LEN'], colDef['PREC'], colDef['SCALE']),
           size: (['varchar2', 'nvarchar2', 'character varying', 'nvarchar', 'varchar', 'char', 'nchar', 'clob', 'nclob']
@@ -148,14 +176,17 @@ select
   ui.index_name as index_id,
   ui.index_name,
   decode(ui.uniqueness,'UNIQUE',1,0) as is_unique,
-  uic.column_name,
+  case when uic.column_name like 'SYS_N%' then 
+    F_ColumnNameForIdx(ui.index_name, ui.table_name, uic.column_position)
+  else 
+    uic.column_name 
+  end AS column_name,
   uic.column_position,
   decode(uic.descend,'ASC',0,1) is_descending_key,
   uc.constraint_type
 from 
-  user_indexes ui
-join 
-  user_ind_columns uic on uic.index_name=ui.index_name
+  user_indexes ui 
+  join user_ind_columns uic on uic.index_name=ui.index_name
   left join user_constraints uc on uc.table_name=ui.table_name and uc.index_name=ui.index_name and uc.constraint_type='P'  
 where 
   ui.table_name=:('${asIsTable._upperName}'):
@@ -181,7 +212,11 @@ order
         // index may consist of several keys (one row for each key)
         let buildKeysFor = indexesFromDb[i]['INDEX_ID']
         while ((i < idxCnt) && (indexesFromDb[i]['INDEX_ID'] === buildKeysFor)) {
-          indexObj.keys.push(indexesFromDb[i]['COLUMN_NAME'] + (indexesFromDb[i]['IS_DESCENDING_KEY'] !== 0 ? ' DESC' : ''))
+          // Examples. Desc index: "REGDATE"; Func index: "NLSSORT(\"MI_WFSTATE\",'nls_sort=''BINARY_CI''')"
+          let colExpression = indexesFromDb[i]['COLUMN_NAME']
+          // remove double quotes
+          colExpression = colExpression.replace(/"/g, '')
+          indexObj.keys.push(colExpression + (indexesFromDb[i]['IS_DESCENDING_KEY'] !== 0 ? ' DESC' : ''))
           i++
         }
         asIsTable.addIndex(indexObj)
@@ -252,7 +287,9 @@ where
       return column.isString
         ? (!column.defaultValue && (column.refTable || column.enumGroup)
           ? v.replace(/'/g, "''")
-          : "''" + v.replace(/'/g, '') + "''")
+          : v === 'ID'
+            ? 'ID' // do not quoter ID
+            : "''" + v.replace(/'/g, '') + "''")
         : v
       //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }
@@ -331,7 +368,7 @@ where
   genCodeAlterColumn (table, tableDB, column, columnDB, typeChanged, sizeChanged, allowNullChanged) {
     // recreate index only if type changed
     if (typeChanged || sizeChanged) {
-      let objects = tableDB.getIndexesByColumnName(column.name)
+      let objects = tableDB.getIndexesByColumn(column)
       for (let colIndex of objects) {
         colIndex.isForDelete = true
         colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`

@@ -1,9 +1,10 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "ubm_desktop"
-//@formType "auto"
-//@caption "Desktop"
-//@description "Desktop"
+// @! "do not remove comments below unless you know what you do!"
+// @isDefault "false"
+// @entity "ubm_desktop"
+// @model "UBM"
+// @formType "auto"
+// @caption "Desktop"
+// @description "Desktop"
 /*global UB, Ext */
 exports.formDef = {
 

@@ -1,6 +1,5 @@
-/**
+/*
  * Created by v.orel on 05.01.2017.
- * @module
  */
 // module.exports = require('./builder')
 const mssql = require('./mssql')

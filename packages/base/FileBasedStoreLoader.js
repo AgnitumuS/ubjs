@@ -1,29 +1,31 @@
+/* global ncrc32 */
+const path = require('path')
+const _ = require('lodash')
+const csShared = require('@unitybase/cs-shared')
+const UBDomain = csShared.UBDomain
+const lds = csShared.LocalDataStore
+
 /**
  * UnityBase file-system based virtual store **select**. Able to load files & transform it content to {@link TubCachedData} format.
  *
  * Good sample of usage can be found in `ubm_form.loadAllForm`
  *
  * For work with data, loaded by FileBasedStoreLoader you can use {@link LocalDataStore} class.
- * @module @unitybase/base/FileBasedStoreLoader
+ * @module FileBasedStoreLoader
+ * @memberOf module:@unitybase/base
  */
-
-const lds = require('./LocalDataStore')
-const path = require('path')
-const UBDomain = require('./UBDomain')
-const _ = require('lodash')
-
 module.exports = FileBasedStoreLoader
 /**
  * @example
 
-    const FileBasedStoreLoader = require('@unitybase/base')FileBasedStoreLoader
-    let loader = new FileBasedStoreLoader({
-      entity: me.entity,
-      foldersConfig: folders,
-      fileMask: /-fm\.def$/,
-      onBeforeRowAdd: postProcessing
-    });
-    let resultDataCache = loader.load()
+const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
+let loader = new FileBasedStoreLoader({
+  entity: me.entity,
+  foldersConfig: folders,
+  fileMask: /-fm\.def$/,
+  onBeforeRowAdd: postProcessing
+})
+let resultDataCache = loader.load()
 
  * @class
  * @param {Object}    config
@@ -87,13 +89,13 @@ function FileBasedStoreLoader (config) {
    * @type {Boolean}
    * @readonly
    */
-  this.haveModifyDate = Boolean(_.find(this.attributes, {name: 'mi_modifyDate'}))
+  this.haveModifyDate = this.attributes.findIndex((attr) => attr.name === 'mi_modifyDate') > -1
   /**
    * Is `mStore.simpleAudit` enabled for current entity (exist `mi_createDate` attribute)
    * @type {Boolean}
    * @readonly
    */
-  this.haveCreateDate = Boolean(_.find(this.attributes, {name: 'mi_createDate'}))
+  this.haveCreateDate = this.attributes.findIndex((attr) => attr.name === 'mi_createDate') > -1
 
   /**
    * Currently processed root folder
@@ -154,7 +156,6 @@ FileBasedStoreLoader.prototype.load = function () {
         // add a row count for case when some row are deleted or added with old date
         result.version = new Date(dataVersion).getTime() + result.data.length
       }
-
     }
   } else {
     result = me.resultCollection
@@ -190,11 +191,11 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
       if (config.onNewFolder) {
         let newFolderCheck = config.onNewFolder(this, folderPath + fileName, recursionLevel + 1)
         if (newFolderCheck !== false) {
-          this.parseFolder(fullPath + '\\', recursionLevel + 1)
+          this.parseFolder(fullPath, recursionLevel + 1)
         }
       }
     } else if (!this.config.fileMask || this.config.fileMask.test(fileName)) { // filtration by mask
-      let content = fs.readFileSync(fullPath)
+      let content = fs.readFileSync(fullPath, 'utf8')
       let oneRow = this.extractAttributesValues(content)
 
       if (this.haveModifyDate) {
@@ -207,10 +208,10 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
       // check unique ID
       if (canAdd && config.uniqueID) {
         if (!oneRow.ID) {
-          console.error('Parameter ID not set. File "%" ignored', fullPath)
+          console.error(`Parameter ID not set. File "${fullPath}" ignored`)
           canAdd = false
-        } else if (_.find(this.resultCollection, {ID: oneRow.ID})) {
-          console.error('Record with ID "' + oneRow.ID + '" already exist. File ignored ', fullPath)
+        } else if (this.resultCollection.indexOf((elm) => elm.ID === oneRow.ID) > -1) {
+          console.error(`Record with ID "${oneRow.ID}" already exist. File "${fullPath}" ignored`)
           canAdd = false
         }
       }
@@ -253,7 +254,7 @@ FileBasedStoreLoader.prototype.extractAttributesValues = function (content) {
   })
     // transformation block
   _.forEach(result, function (value, attribute) {
-    let attr = _.find(me.attributes, {name: attribute})
+    let attr = me.attributes.find(elm => elm.name === attribute)
 
     if (!attr) { return }
     switch (attr.dataType) {

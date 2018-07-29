@@ -101,6 +101,30 @@
         "facsimile": {
             "caption": "Faksimil",
             "description": "gambar tanda tangan karyawan"
+        },
+        "lastNameObj": {
+            "caption": "Last name in objective",
+            "description": "Employee last name in objective case"
+        },
+        "firstNameObj": {
+            "caption": "First name in objective",
+            "description": "Employee first name in objective case"
+        },
+        "middleNameObj": {
+            "caption": "Middle name in objective",
+            "description": "Employee middle name in objective case"
+        },
+        "shortFIOObj": {
+            "caption": "Short name in objective",
+            "description": "Employee short name in objective case"
+        },
+        "fullFIOObj": {
+            "caption": "Full name in objective",
+            "description": "Employee full name in objective case"
+        },
+        "applyObj": {
+            "caption": "Treatment in objective",
+            "description": "Describes how to treat to this person in objective case"
         }
     }
 }

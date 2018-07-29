@@ -58,3 +58,10 @@ __recovery/
 
 #other VCS
 _FOSSIL_
+
+#FPC
+*.lps
+bin/x64
+lib/
+src/backup/
+backup/

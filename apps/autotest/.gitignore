@@ -4,4 +4,7 @@ main.sql
 fts*.sql
 domainDocumentation.html
 _autotestResults.json
+ub-proxy.conf
+screenshots/
+_temp/
 

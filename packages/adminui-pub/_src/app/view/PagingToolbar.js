@@ -28,8 +28,8 @@ Ext.define('UB.view.PagingToolbar',{
         me.child('#inputItem').hide();
         me.child('#inputItem').setMinValue(1);
         /**
-         * @event totalChanged
          * Fires each times when the total count was changed
+         * @event totalChanged
          * @param {number} Total rows count.
          */
         me.addEvents('totalChanged');

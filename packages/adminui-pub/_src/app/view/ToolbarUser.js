@@ -27,11 +27,11 @@ Ext.define('UB.view.ToolbarUser', {
           }
         }, {
           xtype: 'checkbox',
-          checked: JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false'),
-          boxLabel: UB.i18n('chkSilenceLogin'),
+          checked: window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
+          boxLabel: UB.i18n('KerberosRemember'),
           hidden: $App.connection.authMethods.indexOf('Negotiate') < 0,
           handler: function () {
-            window.localStorage.setItem('silenceKerberosLogin', this.getValue())
+            window.localStorage.setItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, this.getValue())
           }
         }, {
           glyph: UB.core.UBUtil.glyphs.faKey, // iconCls: "icon-computer-key",
@@ -91,30 +91,6 @@ Ext.define('UB.view.ToolbarUser', {
               handler: function () {
                 UB.core.UBLocalStorageManager.removeUserDataUI()
               }
-            }, {
-              text: UB.i18n('clearFormsCache'),
-              iconCls: 'iconForm',
-              tooltip: 'Ctrl+Alt+C', // this shortcut handled on global level in app.js
-              handler: function () {
-                UB.core.UBFormLoader.clearFormCache()
-                Ext.create('widget.uxNotification', {
-                  title: UB.i18n('executed'),
-                  position: 't',
-                  slideInDuration: 800,
-                  useXAxis: true,
-                  autoShow: true,
-                  cls: 'ux-notification-light',
-                  // iconCls: 'ux-notification-icon-error',
-                  bodyPadding: 5,
-                  items: [{
-                    xtype: 'component',
-                    autoEl: {
-                      tag: 'div',
-                      html: UB.i18n('clearFormsCache')
-                    }
-                  }]
-                })
-              }
             }]
           }
         }]
@@ -139,7 +115,7 @@ Ext.define('UB.view.ToolbarUser', {
                           method: 'changeLanguage',
                           newLang: lang
                         }).then(function () {
-                          window.localStorage.setItem($App.connection.appName + 'preferredLocale', lang)
+                          window.localStorage.setItem(UB.LDS_KEYS.PREFERRED_LOCALE, lang)
                           $App.logout()
                         })
                       }
@@ -160,7 +136,7 @@ Ext.define('UB.view.ToolbarUser', {
       glyph: UB.core.UBUtil.glyphs.faSignOut, // iconCls: 'iconLogout',
       text: UB.i18n('logout'),
       handler: function () {
-        window.localStorage.setItem('userDidLogout', 'true')
+        window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
         $App.logout()
       }
     })

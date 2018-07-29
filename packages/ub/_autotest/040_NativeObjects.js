@@ -5,7 +5,7 @@ var l = new TubList()
 l.freeNative()
 l = null
 
-var session = require('@unitybase/base').UBSession
+var session = require('@unitybase/cs-shared').UBSession
 var crc32 = session.prototype.crc32 // slow CRC32 impl. Not support chining
 
 var c = crc32('aaaabbbb')

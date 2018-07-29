@@ -9,10 +9,11 @@
  Date: 10.08.13
 */
 
+
 /**
  * Load file content to string. Only for non-binary files!
  *
- * Do not use directly. Use fs.readFileSync(path) instead.
+ * Do not use directly. Use fs.readFileSync(path, 'utf8') instead.
  * @private
  * @param {String} fileName Full path to file
  * @return {String} File content. In case of error - raise exception
@@ -34,49 +35,6 @@ function loadFileToBuffer (fileName) { return new ArrayBuffer(0) }
  * @return {String} JSON string without comment's
  */
 function removeCommentsFromJSON (JSONString) {}
-/**
- * @private
- * @param {String} fileName
- */
-function fileExists (fileName) {}
-/**
- * @private
- * @param {String} pathToDir
- */
-function directoryExists (pathToDir) {}
-/**
- * Read directory. Return array of file names. In case directory not exists - return null
- * if includeDirNames === true then directory names included with trailing slash. 'folder\' else no directory names included
- *
- * Do not use direclty. Use require('fs').readdirSync() instead.
- *
- * @param {String} pathToDir path to directory
- * @param {Boolean} [includeDirNames] Optional. default = false.
- * @returns {Array}
- * @private
- */
-function readDir (pathToDir, includeDirNames) {}
-/**
- * ForceDirectories ensures that all the directories in a specific path exist.
- * Any portion that does not already exist will be created.  Function result
- * indicates success of the operation.  The function can fail if the current
- * user does not have sufficient file access rights to create directories in
- * the given path.
- * @param {String} pathToDir
- * @returns {boolean} success
- */
-function forceDirectories (pathToDir) {}
-/**
- * Deletes an existing empty directory.
- * Call removeDir to remove the directory specified by the Dir parameter.
- * The return value is True if a new directory was successfully deleted, False if an error occurred.
- * The directory must be emptied before it can be successfully deleted
- * When working with symlinks, there are some special cases to consider because of how symlinks are implemented on different platforms.
- * On Windows, RemoveDir can only delete a symbolic link from a directory, regardless if the directory link is broken or not
- * @param {String} pathToDir
- * @returns {boolean} success
- */
-function removeDir (pathToDir) {}
 
 /**
  * Check is fileName is relative path, and if true - transform it to absolute from baseDir
@@ -87,27 +45,6 @@ function removeDir (pathToDir) {}
  * @private
  */
 function relToAbs (baseDir, fileName) {}
-
-/**
- * @private
- * @param fileName
- */
-function fileStat (fileName) {}
-/**
- * Remove file. Do not use directly. Use require('fs').unlinkSync() instead.
- * @protected
- * @param {String} fileName
- * @private
- */
-function deleteFile (fileName) {}
-
-/**
- * Move file. Do not use directly. Use require('fs').moveSync() instead.
- * @private
- * @param {String} fileNameFrom
- * @param {String} fileNameTo
- */
-function moveFile (fileNameFrom, fileNameTo) {}
 
 /**
  * Create GUID
@@ -140,29 +77,6 @@ function terminateWorkerThread (threadID) {}
  * @global
  */
 function gc () {}
-
-/**
- * Write something to file. If isBynary == false in UTF8 encoding. Do not use directly, use require('fs').writeFileSync() instead
- * @private
- * @deprecated Use writeFileNew
- * @param {String} fileName
- * @param {String|Object|ArrayBuffer|ArrayBufferView} fileContent if {Object} passed it can be serialized to string first
- * @param {Boolean} [isBinary] If true - string not decoded to UTF8 and writed to file as is.
- * @return {Boolean} success or not
- */
-function writeFile (fileName, fileContent, isBinary) { return true }
-
-/**
- * Write content to file. Internally implement {@link UBWriter#write}
- * @private
- * @param {String} filePath
- * @param {String|Object|ArrayBuffer} fileContent
- * @param {String} [encoding="utf-8"] Optional encoding of source.
- *						        If 'bin' - return ArrayBuffer source representation without any conversion.
- *							  	If 'base64' - transform base64 encoded content of source to ArrayBuffer
- * @returns {ArrayBuffer|String} Return String in case no encoding passed or ArrayBuffer
- */
-function writeFileNew (filePath, fileContent, encoding) {}
 
 /**
  * Native CRC32 implementation. Much (x100) faster compared to JS implemenattion

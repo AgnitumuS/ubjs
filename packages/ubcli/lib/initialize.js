@@ -11,7 +11,8 @@
       ubcli initialize -?
 
  * @author pavel.mash
- * @module @unitybase/ubcli/initialize
+ * @module initialize
+ * @memberOf module:@unitybase/ubcli
 */
 const _ = require('lodash')
 const fs = require('fs')

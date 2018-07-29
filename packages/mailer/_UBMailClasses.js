@@ -7,20 +7,6 @@
 
 /**
  * @class
- * Mail body type
- * @enum {Number}
- */
-const TubSendMailBodyTypeBind = {Text: 0, HTML: 1, Calendar: 2}
-
-/**
- * @class
- * Mail attach kind
- * @enum {Number}
- */
-const TubSendMailAttachKindBind = {File: 0, Text: 1, Buffer: 2}
-
-/**
- * @class
  * Binding to a native implementation of POP3 receiver.
  *
  * Should be created using {@link TubMailReceiver} method of {@link module:@unitybase/mailer} module
@@ -30,18 +16,16 @@ const TubSendMailAttachKindBind = {File: 0, Text: 1, Buffer: 2}
  * @param {String} paramsObj.port port of mail server
  * @param {String} [paramsObj.user = ''] user login on mail server
  * @param {String} [paramsObj.password = ''] user password on mail server
- * @param {Boolean} [paramsObj.tls = false] use tls. In {@link module:@unitybase/mailer} tls is
- *   not implemented so you will get an exception when set this value true.
- *   For using tls use {@link module:@unitybase/mailer-ssl} class
+ * @param {Boolean} [paramsObj.tls = false] use tls. Require openSSL library to be installed
  */
-function TubMailReceiverBind (paramsObj) {}
+function TubMailReceiver (paramsObj) {}
 
 /**
  * Count of messages on server
  *
  * @returns {Number}
  */
-TubMailReceiverBind.getMessagesCount = function () {}
+TubMailReceiver.getMessagesCount = function () {}
 
 /**
  * Get size of message
@@ -49,7 +33,7 @@ TubMailReceiverBind.getMessagesCount = function () {}
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {Number}
  */
-TubMailReceiverBind.getMessageSize = function (index) {}
+TubMailReceiver.getMessageSize = function (index) {}
 
 /**
  * Receive message from server
@@ -57,7 +41,7 @@ TubMailReceiverBind.getMessageSize = function (index) {}
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {TubMimeMessBind}
  */
-TubMailReceiverBind.receive = function (index) {}
+TubMailReceiver.receive = function (index) {}
 
 /**
  * Receive message headers and first maxLines strings of message
@@ -66,7 +50,7 @@ TubMailReceiverBind.receive = function (index) {}
  * @param {Number} maxLines Count of message lines to receive
  * @returns {TubMimeMessBind}
  */
-TubMailReceiverBind.top = function (index, maxLines) {}
+TubMailReceiver.top = function (index, maxLines) {}
 
 /**
  * Mark the message to delete. The message will be removed indeed, when reconnect to the server
@@ -76,14 +60,14 @@ TubMailReceiverBind.top = function (index, maxLines) {}
  * @param {Number} index Index of mail message on server. Indexes starts from 1
  * @returns {Boolean} True if successfully, in opposite case raise exception
  */
-TubMailReceiverBind.deleteMessage = function (index) {}
+TubMailReceiver.deleteMessage = function (index) {}
 
 /**
  * Reconnect to mail server. Get new messages from server, delete marked for delete messages.
  *
  * @returns {Boolean} True if successfully, in opposite case raise exception
  */
-TubMailReceiverBind.reconnect = function () {}
+TubMailReceiver.reconnect = function () {}
 
 /**
  * @class UBMail.TubMailAttach
@@ -326,6 +310,16 @@ TMessHeaderBind.charsetCode = ''
 function TMimePartBind () {}
 
 /**
+ * Read DECODED part content.
+ * @param {String} [encoding] Optional encoding of source. Default to 'utf-8'.
+ *          If 'bin' - return ArrayBuffer source representation without any conversion.
+ *          If 'base64' - transform base64 encoded content of source to ArrayBuffer
+ *          If 'bin2base64' - transform content to base64 encoded string
+ * @returns {ArrayBuffer|String} Return String in case no encoding passed or ArrayBuffer
+ */
+TMimePartBind.read = function (encoding) {}
+
+/**
  * Primary Mime type of part. (i.e. 'application')
  *
  * @type {String}
@@ -520,6 +514,6 @@ TMimePartBind.maxLineLength = 0
 /**
  * Subparts of MimePart
  *
- * @type {Array.<TMimePartBind>}
+ * @type {Array<TMimePartBind>}
  */
 TMimePartBind.subPart = []

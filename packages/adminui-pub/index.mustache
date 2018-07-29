@@ -10,17 +10,33 @@
 		<link rel="icon" href="models/UB/img/UBLogo32.png" type="image/png" sizes="32x32" />
 		<link rel="icon" href="models/UB/img/UBLogo48.png" type="image/png" sizes="48x48" />
 		<link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
-		
+
 		<script type="text/javascript">
+            window.UB_API_PATH = '{{{UB_API_PATH}}}';
+            {{#uiSettings.adminUI.loginURL}}
+                window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
+                window.redirectToLogin = function(reason) {
+                    var url = UB_LOGIN_URL;
+                    if (reason) {
+                        url += (url.indexOf('?') === -1 ? '?' : '&') + 'reason=' + encodeURIComponent(reason);
+                    }
+                    url += (url.indexOf('?') === -1 ? '?' : '&') + 'returnUrl=' + encodeURIComponent(window.location.href);
+                    window.location.href = url;
+                }
+                if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
+                    redirectToLogin();
+                }
+            {{/uiSettings.adminUI.loginURL}}
             window.__ubVersion = {
                 _web: '{{staticVersion}}'
                 {{#modelVersions}}
                  , '{{modelName}}': '{{modelVersion}}'
                 {{/modelVersions}}
             };
+            window.__modelInit = [];
+            {{#modelInitialization}}window.__modelInit.push('{{{prod}}}');{{/modelInitialization}}
             window.isDeveloperMode = false;
             window.IMAGE_PATH = 'res/mxGraph/images';
-            window.UB_API_PATH = '{{{UB_API_PATH}}}';
             window.mxLoadResources = false;
         </script>
 
@@ -29,13 +45,12 @@
         <link rel="stylesheet" href="clientRequire/font-awesome/css/font-awesome.min.css"/>
         <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
 
-
         <style>
             .ub-logo-h {
                 position: absolute;
                 top: 40%;
                 left: 47%;
-		color: rgb(100, 149, 237);
+                color: rgb(100, 149, 237);
                 font-size: 10em;
             }
             .x-body {
@@ -44,36 +59,39 @@
         </style>
     </head>
     <body class="x-body">
-        <div id="UBLogo" class="ub-logo-h">
-	    <i class="fa fa-spinner fa-pulse"></i>
-	    <span class="sr-only">Loading...</span>
-        </div>
-        <div id ="ubExtensionPageMessageObj"></div>
+      <div id="UBLogo" class="ub-logo-h">
+	      <i class="fa fa-spinner fa-pulse"></i>
+	      <span class="sr-only">Loading...</span>
+      </div>
 
-        <!-- add promises to IE-->
-	<script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
+      <div id ="ubExtensionPageMessageObj"></div>
 
-        <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
-        <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
-        <script type="text/javascript">
-            // set our baseURL reference path
-            System.config({
-                baseURL: '/clientRequire',
-                map: {
-                    css: 'systemjs-plugin-css/css.js'
-                },
-                meta: {
-                    '*.css': { loader: 'css' },
-                    'codemirror/*.js': { format: 'cjs' },
-                    'tinymce/*.js': { format: 'global' },
-                    'file-saver/*.js': { format: 'cjs' },
-                    '*/adminui.app.min.js': { format: 'global' } // important because adminui.min.js dose not define anything
-                },
-                packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
-            });
-            System.import('@unitybase/adminui-pub/dist/adminui.app.min.js').then(function(adminUI){
-                return System.import('@unitybase/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js')
-            });
-        </script>
+      <!-- add promises to IE-->
+      <script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
+
+      <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
+      <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
+      <script type="text/javascript">
+        // set our baseURL reference path
+        System.config({
+            baseURL: '/clientRequire',
+            map: {
+                css: 'systemjs-plugin-css/css.js'
+            },
+            meta: {
+                '*.css': { loader: 'css' },
+                'codemirror/*.js': { format: 'cjs' },
+                'tinymce/*.js': { format: 'global' },
+                'file-saver': { format: 'cjs' },
+                '*.def': {format: 'cjs'},
+                '*/adminui.app.min.js': { format: 'global' }, // important: adminui.min.js does not define anything
+                '*/adminui-next.min.js': { format: 'global' } // important: adminui-next.min.js does not define anything
+            },
+            packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
+        });
+        System.import('{{{adminUIModel.prod}}}').then(function(){
+            return System.import('@unitybase/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js')
+        })
+      </script>
     </body>
 </html>

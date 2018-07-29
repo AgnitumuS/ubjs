@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 09.10.14
  * Entity Level Security (ELS) rules test
  */
@@ -8,7 +8,6 @@ const _ = require('lodash')
 const UBA_COMMON = require('@unitybase/base').uba_common
 const assert = require('assert')
 const ok = assert.ok
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const TEST_NAME = 'Entity Level Security (ELS) test'
@@ -47,7 +46,7 @@ module.exports = function runELSTest (options) {
       conn = session.connection
     }
 
-    let testUserID = conn.lookup('uba_user', 'ID', {expression: 'name', condition: 'equal', values: { name: 'testelsuser'}})
+    let testUserID = conn.lookup('uba_user', 'ID', {expression: 'name', condition: 'equal', values: {name: 'testelsuser'}})
 
     if (testUserID) {
       console.warn('\t\tSkip ELS test - uba_user "testelsuser" already exists. Test can be run only once after app initialization')
@@ -222,4 +221,3 @@ module.exports = function runELSTest (options) {
     })
   }
 }
-

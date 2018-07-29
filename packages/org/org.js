@@ -1,171 +1,176 @@
-﻿var ORG = UB.ns('ORG');
+const _ = require('lodash')
+// localize model
+require('./serverLocale/org_i18n')
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const UBA_COMMON = require('@unitybase/base').uba_common
 
-ORG.checkOrgUnitRequired = true;
-
-const UBA_COMMON = require('@unitybase/uba/modules/uba_common');
+const ORG = UB.ns('ORG')
+ORG.checkOrgUnitRequired = true
+Session.on('login', orgOnUserLogin)
 
 /**
- * for a superuser (user with id = 10) nothing happens here
- * Session 'login' event occurred every time new user logged in
- * here we calculate logged-in user FullName from org structure,
- * and array of org_unit IDs current user participate
- * this array used in org structure-based RLS
- * result we put in Session.uData - ony one session-depended server object
+ * For a superuser (UBA_COMMON.USERS.ADMIN.ID) nothing happens here.
+ *
+ * Session 'login' event occurs every time when new user logs in.
+ * Here we define logged-in user's FullName from org structure,
+ * and array of org_unit IDs current user participates in.
+ * This array is used in org structure-based RLS.
+ *
+ * We put the user's FullName and array of org_unit IDs
+ * in Session.uData - only one session-depended server object
+ * @private
  */
-ORG.onUserLogin = function () {
-    console.debug('Call JS method: ORG.onUserLogin');
-    var
-        data = Session.uData,
-        eInst = null,
-        orgUnitTypes, myOU,
-        orgUnitIDs = [],
-        tmpArr = [],
-        lastError = '';
-    //Initializing with empty values
-    data.staffUnitID = '';
-    data.employeeOnStaffID = '';
-    data.parentID = '';
-    data.parentUnityEntity = '';
-    data.orgUnitIDs = '';
-    data.tempStaffUnitIDs = '';
-    data.tempEmployeeOnStaffIDs = '';
-    data.assistantStaffUnitIDs = '';
-    data.assistantEmployeeOnStaffIDs = '';
-    data.allStaffUnitIDs = '';
-    data.allEmployeeOnStaffIDs = '';
-    data.tempPositions = '';
-    data.allPositions = '';
+function orgOnUserLogin () {
+  console.debug('Call JS method: ORG.onUserLogin')
+  let data = Session.uData
+  let staffs = null
+  let orgUnitIDs = []
+  let tmpArr = []
+  let lastError = ''
+    // Initializing with empty values
+  data.staffUnitID = 0
+  data.employeeOnStaffID = 0
+  data.parentID = 0
+  data.parentUnityEntity = ''
+  data.orgUnitIDs = ''
+  data.tempStaffUnitIDs = ''
+  data.tempEmployeeOnStaffIDs = ''
+  data.assistantStaffUnitIDs = ''
+  data.assistantEmployeeOnStaffIDs = ''
+  data.allStaffUnitIDs = ''
+  data.allEmployeeOnStaffIDs = ''
+  data.tempPositions = ''
+  data.allPositions = ''
 
-    if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) return;
+  if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) return
 
-    try {
-        eInst = UB.Repository('org_employeeonstaff')
-            .attrs(["ID", "employeeOnStaffType", "description", "employeeID.userID", "employeeID.shortFIO", "employeeID.fullFIO", "staffUnitID.ID.mi_treePath",
-                "staffUnitID.parentID", "staffUnitID.parentID.mi_unityEntity", "staffUnitID", "staffUnitID.fullName", "staffUnitID.name", "employeeID"])
-            .where('[employeeID.userID]', '=', Session.userID)
-            .select();
-    } catch (ex) {
-        // this possible if we connect to empty database without org_* tables
-        lastError = ex.toString();
-        console.error('error getting org_employee', lastError);
-    }
+  try {
+    staffs = UB.Repository('org_employeeonstaff')
+      .attrs(['ID', 'employeeOnStaffType', 'description', 'employeeID.userID', 'employeeID.shortFIO',
+        'employeeID.fullFIO', 'staffUnitID.ID.mi_treePath', 'staffUnitID.parentID',
+        'staffUnitID.parentID.mi_unityEntity', 'staffUnitID', 'staffUnitID.fullName',
+        'staffUnitID.name', 'employeeID'])
+      .where('[employeeID.userID]', '=', Session.userID)
+      .selectAsObject()
+  } catch (ex) {
+    // this possible if we connect to empty database without org_* tables
+    lastError = ex.toString()
+    console.error('error getting org_employee', lastError)
+  }
 
-    if (!eInst || eInst.eof) {
-        if (ORG.checkOrgUnitRequired && !(/\b1\b/.test(Session.userRoles))) { // allow anonymous login only for member of admin group (groupID = 1)
-            throw '<<<UserWithoutOrgEmployeeNotAllowed>>>. ' + lastError;
-        } else {
-            data.employeeShortFIO = '';
-            data['orgUnitIDs'] = '';
-            data.staffUnitID = -1;
-            data.employeeID = -1;
-        }
+  if (!staffs.length) {
+    // allow anonymous login only for member of admin group (groupID = 1)
+    if (ORG.checkOrgUnitRequired && (Session.uData.roleIDs.indexOf(UBA_COMMON.ROLES.ADMIN.ID) === -1)) {
+      throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>. ' + lastError)
     } else {
-        var permStaffUnitIDsArray = [],
-            tempStaffUnitIDsArray = [],
-            tempEmployeeOnStaffIDsArray = [],
-            tempPositionsArray = [],
-            assistantStaffUnitIDsArray = [],
-            assistantEmployeeOnStaffIDsArray = [],
-            assistantPositionsArray = [],
-            staffUnitID = null,
-            employeeOnStaffID = null,
-            parentID = null,
-            parentUnityEntity = null,
-            employeeOnStaffType = '',
-            permanentOrgUnitIDs = [],
-            currPositionObj, currStaffUnitID, currEmployeeOnStaffID;
-
-        data.employeeShortFIO = eInst.get('employeeID.shortFIO');
-        data.employeeFullFIO = eInst.get('employeeID.fullFIO');
-
-        data.employeeID = eInst.get('employeeID');
-        while (!eInst.eof) {
-            // treePath is something like this: "/2100002161511/2100002322780/" remove empty ""
-            tmpArr = _.without(eInst.get('staffUnitID.ID.mi_treePath').split('/'), '');
-            // drop STAFF type org units from orgUnitIDs array (see [UB-1571] for details)
-            myOU = tmpArr.pop(); // last entry in treePath is my staff, so memorise it
-            // select orgUnit types
-            orgUnitTypes = UB.Repository('org_unit').attrs(['ID', 'unitType']).where('ID', 'in', tmpArr).selectAsObject();
-            tmpArr = [];
-            orgUnitTypes.forEach(function(unit){
-                if (unit.unitType !== 'STAFF') {
-                    tmpArr.push(unit.ID);
-                }
-            });
-            tmpArr.push(myOU);
-
-            orgUnitIDs = _.union(orgUnitIDs, tmpArr);
-            employeeOnStaffType = eInst.get('employeeOnStaffType');
-            console.debug('employeeOnStaffType: ', employeeOnStaffType);
-
-            switch (employeeOnStaffType) {
-                case 'PERMANENT':
-                    staffUnitID = eInst.get('staffUnitID'); //permanentStaffUnit
-                    employeeOnStaffID = eInst.get('ID'); //permanent employeeOnStaff
-                    parentID = eInst.get('staffUnitID.parentID');
-                    parentUnityEntity = eInst.get('staffUnitID.parentID.mi_unityEntity');
-                    permStaffUnitIDsArray.push(staffUnitID);
-                    data.staffUnitFullName = eInst.get('staffUnitID.fullName');
-                    data.staffUnitName = eInst.get('staffUnitID.name');
-                    permanentOrgUnitIDs = tmpArr;
-                    break;
-                case 'TEMPORARY':
-                    currPositionObj = {};
-                    currStaffUnitID = eInst.get('staffUnitID');
-                    currEmployeeOnStaffID = eInst.get('ID');
-                    tempStaffUnitIDsArray.push(currStaffUnitID);
-                    tempEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID);
-                    currPositionObj.staffUnitID = eInst.get('staffUnitID');
-                    currPositionObj.employeeOnStaffID = eInst.get('ID');
-                    currPositionObj.staffUnitFullName = eInst.get('staffUnitID.fullName');
-                    currPositionObj.staffUnitName = eInst.get('staffUnitID.name');
-                    currPositionObj.employeeOnStaffDescription = eInst.get('description');
-                    tempPositionsArray.push(currPositionObj);
-                    break;
-                case 'ASSISTANT':
-                    currPositionObj = {};
-                    currStaffUnitID = eInst.get('staffUnitID');
-                    currEmployeeOnStaffID = eInst.get('ID');
-                    assistantStaffUnitIDsArray.push(currStaffUnitID);
-                    assistantEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID);
-                    currPositionObj.staffUnitID = eInst.get('staffUnitID');
-                    currPositionObj.employeeOnStaffID = eInst.get('ID');
-                    currPositionObj.staffUnitFullName = eInst.get('staffUnitID.fullName');
-                    currPositionObj.staffUnitName = eInst.get('staffUnitID.name');
-                    currPositionObj.employeeOnStaffDescription = eInst.get('description');
-                    assistantPositionsArray.push(currPositionObj);
-                    break;
-            }
-            eInst.next();
-        }
-
-        console.debug('permStaffUnitIDsArray:', permStaffUnitIDsArray);
-        console.debug('tempStaffUnitIDsArray:', tempStaffUnitIDsArray);
-        console.debug('assistantStaffUnitIDsArray:', assistantStaffUnitIDsArray);
-        if (permStaffUnitIDsArray.length > 1) {
-            throw new Error(UB.i18n('errUserWithMultiplePermanentStaffUnitsNotAllowed'));
-        }
-        data.staffUnitID = staffUnitID; //permanent staffUnitID
-        data.employeeOnStaffID = employeeOnStaffID; //permanent employeeOnStaffID
-        data.parentID = parentID; //permanent staffUnitID parent
-        data.parentUnityEntity = parentUnityEntity; //permanent staffUnitID parent entity type
-        data['orgUnitIDs'] = orgUnitIDs.join(','); //all orgUnit's chain
-        data['permanentOrgUnitIDs'] = permanentOrgUnitIDs.join(','); //user orgUnit's chain by permanent employeeOnStaffIDs
-        data.tempStaffUnitIDs = tempStaffUnitIDsArray.join(','); //array of temporary staffUnitIDs
-        data.tempEmployeeOnStaffIDs = tempEmployeeOnStaffIDsArray.join(','); //array of temporary employeeOnStaffIDs
-        data.assistantStaffUnitIDs = assistantStaffUnitIDsArray.join(','); //array of assistant staffUnitIDs
-        data.assistantEmployeeOnStaffIDs = assistantEmployeeOnStaffIDsArray.join(','); //array of assistant employeeOnStaffIDs
-        tempStaffUnitIDsArray = _.union(tempStaffUnitIDsArray, assistantStaffUnitIDsArray);
-        tempStaffUnitIDsArray.push(staffUnitID);
-        tempEmployeeOnStaffIDsArray = _.union(tempEmployeeOnStaffIDsArray, assistantEmployeeOnStaffIDsArray);
-        data.allStaffUnitIDs = tempStaffUnitIDsArray.join(','); //array of all (permanent + temporary + assistant) staffUnitIDs
-        tempEmployeeOnStaffIDsArray.push(employeeOnStaffID);
-        data.allEmployeeOnStaffIDs = tempEmployeeOnStaffIDsArray.join(','); //array of all (permanent + temporary + assistant) employeeOnStaffIds
-        data.tempPositions = JSON.stringify(tempPositionsArray); //stringifying array ob temporary position objects: {staffUnitID, employeeOnStaffID}
-        data.assistantPositions = JSON.stringify(assistantPositionsArray); //stringifying array ob assistant position objects: {staffUnitID, employeeOnStaffID}
-        tempPositionsArray = _.union(tempPositionsArray, assistantPositionsArray);
-        tempPositionsArray.push({staffUnitID: staffUnitID, employeeOnStaffID: employeeOnStaffID});
-        data.allPositions = JSON.stringify(tempPositionsArray); //stringifying array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
+      data.employeeShortFIO = ''
+      data['orgUnitIDs'] = ''
+      data.staffUnitID = -1
+      data.employeeID = -1
     }
-};
-Session.on('login', ORG.onUserLogin);
+  } else {
+    let permStaffUnitIDsArray = []
+    let tempStaffUnitIDsArray = []
+    let tempEmployeeOnStaffIDsArray = []
+    let tempPositionsArray = []
+    let assistantStaffUnitIDsArray = []
+    let assistantEmployeeOnStaffIDsArray = []
+    let assistantPositionsArray = []
+    let staffUnitID = null
+    let employeeOnStaffID = null
+    let parentID = null
+    let parentUnityEntity = null
+    let employeeOnStaffType = ''
+    let permanentOrgUnitIDs = []
+    let currPositionObj, currStaffUnitID, currEmployeeOnStaffID
+
+    let firstStaff = staffs[0]
+    data.employeeShortFIO = firstStaff['employeeID.shortFIO']
+    data.employeeFullFIO = firstStaff['employeeID.fullFIO']
+    data.employeeID = firstStaff['employeeID']
+
+    for (let i = 0, L = staffs.length; i < L; i++) {
+      let staff = staffs[i]
+      // treePath is something like this: "/2100002161511/2100002322780/" remove empty ""
+      tmpArr = _.without(staff['staffUnitID.ID.mi_treePath'].split('/'), '')
+      // drop STAFF type org units from orgUnitIDs array (see [UB-1571] for details)
+      let myOU = tmpArr.pop() // last entry in treePath is my staff, so memorise it
+      // select orgUnit types
+      let orgUnitTypes = UB.Repository('org_unit').attrs(['ID', 'unitType']).where('ID', 'in', tmpArr).selectAsObject()
+      tmpArr = []
+      orgUnitTypes.forEach(function (unit) {
+        if (unit.unitType !== 'STAFF') {
+          tmpArr.push(unit.ID)
+        }
+      })
+      tmpArr.push(myOU)
+
+      orgUnitIDs = _.union(orgUnitIDs, tmpArr)
+      employeeOnStaffType = staff['employeeOnStaffType']
+
+      if (employeeOnStaffType === 'PERMANENT') {
+        staffUnitID = staff['staffUnitID'] // permanentStaffUnit
+        employeeOnStaffID = staff['ID'] // permanent employeeOnStaff
+        parentID = staff['staffUnitID.parentID']
+        parentUnityEntity = staff['staffUnitID.parentID.mi_unityEntity']
+        permStaffUnitIDsArray.push(staffUnitID)
+        data.staffUnitFullName = staff['staffUnitID.fullName']
+        data.staffUnitName = staff['staffUnitID.name']
+        permanentOrgUnitIDs = tmpArr
+      } else if (employeeOnStaffType === 'TEMPORARY') {
+        currStaffUnitID = staff['staffUnitID']
+        currEmployeeOnStaffID = staff['ID']
+        tempStaffUnitIDsArray.push(currStaffUnitID)
+        tempEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID)
+        currPositionObj = {
+          staffUnitID: staff['staffUnitID'],
+          employeeOnStaffID: staff['ID'],
+          staffUnitFullName: staff['staffUnitID.fullName'],
+          staffUnitName: staff['staffUnitID.name'],
+          employeeOnStaffDescription: staff['description']
+        }
+        tempPositionsArray.push(currPositionObj)
+      } else if (employeeOnStaffType === 'ASSISTANT') {
+        currStaffUnitID = staff['staffUnitID']
+        currEmployeeOnStaffID = staff['ID']
+        assistantStaffUnitIDsArray.push(currStaffUnitID)
+        assistantEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID)
+        currPositionObj = {
+          staffUnitID: staff['staffUnitID'],
+          employeeOnStaffID: staff['ID'],
+          staffUnitFullName: staff['staffUnitID.fullName'],
+          staffUnitName: staff['staffUnitID.name'],
+          employeeOnStaffDescription: staff['description']
+        }
+        assistantPositionsArray.push(currPositionObj)
+      }
+    }
+
+    if (permStaffUnitIDsArray.length > 1) {
+      throw new UB.UBAbort(UB.i18n('errUserWithMultiplePermanentStaffUnitsNotAllowed'))
+    }
+    data.staffUnitID = staffUnitID // permanent staffUnitID
+    data.employeeOnStaffID = employeeOnStaffID // permanent employeeOnStaffID
+    data.parentID = parentID // permanent staffUnitID parent
+    data.parentUnityEntity = parentUnityEntity // permanent staffUnitID parent entity type
+    data['orgUnitIDs'] = orgUnitIDs.join(',') // all orgUnit's chain
+    data['permanentOrgUnitIDs'] = permanentOrgUnitIDs.join(',') // user orgUnit's chain by permanent employeeOnStaffIDs
+    data.tempStaffUnitIDs = tempStaffUnitIDsArray.join(',') // array of temporary staffUnitIDs
+    data.tempEmployeeOnStaffIDs = tempEmployeeOnStaffIDsArray.join(',') // array of temporary employeeOnStaffIDs
+    data.assistantStaffUnitIDs = assistantStaffUnitIDsArray.join(',') // array of assistant staffUnitIDs
+    data.assistantEmployeeOnStaffIDs = assistantEmployeeOnStaffIDsArray.join(',') // array of assistant employeeOnStaffIDs
+    tempStaffUnitIDsArray = _.union(tempStaffUnitIDsArray, assistantStaffUnitIDsArray)
+    tempStaffUnitIDsArray.push(staffUnitID)
+    tempEmployeeOnStaffIDsArray = _.union(tempEmployeeOnStaffIDsArray, assistantEmployeeOnStaffIDsArray)
+    data.allStaffUnitIDs = tempStaffUnitIDsArray.join(',') // array of all (permanent + temporary + assistant) staffUnitIDs
+    tempEmployeeOnStaffIDsArray.push(employeeOnStaffID)
+    data.allEmployeeOnStaffIDs = tempEmployeeOnStaffIDsArray.join(',') // array of all (permanent + temporary + assistant) employeeOnStaffIds
+    data.tempPositions = JSON.stringify(tempPositionsArray) // stringified array ob temporary position objects: {staffUnitID, employeeOnStaffID}
+    data.assistantPositions = JSON.stringify(assistantPositionsArray) // stringified array ob assistant position objects: {staffUnitID, employeeOnStaffID}
+    tempPositionsArray = _.union(tempPositionsArray, assistantPositionsArray)
+    tempPositionsArray.push({staffUnitID: staffUnitID, employeeOnStaffID: employeeOnStaffID})
+    data.allPositions = JSON.stringify(tempPositionsArray) // stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
+  }
+}
+ORG.onUserLogin = orgOnUserLogin

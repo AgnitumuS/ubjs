@@ -180,6 +180,90 @@ For user, specified in the `UBA.securityDashboard.supervisorUser` setting key (b
 `Security monitor` ( `Administrator -> Security -> Security monitor` ) feature, where all security related events are logged in the real time.
 For a real-time communication WebSockets must be turned on both server and client side - see {@tutorial web_sockets}.
 
+## Additional features of Enterprise edition
+### Kerberos authentication
+
+#### Linux
+
+UnityBase Enterprise edition supports Kerberos authentication on Linux using gssapi. UnityBase binary is compiled against MIT implementation of gssapi library.
+Internally the implementation of Kerberos authentication supports only one authentication iteration while RFC 2743 defines multiple iterations - this is a known implementation limitation.
+Despite there are some plugins for gssapi library that define NTLM support, use of such plugins is neither recommended nor functional. For Kerberos authentication to work properly it is recommended to setup domain to use SPNEGO authentication mechanism.
+
+To prepare UnityBase to use Kerberos authentication on Linux a number of steps should be done:
+
+1. Preparation of network interfaces
+1. Installation of packages required
+1. realmd configuration
+1. Joining the Linux Server to Active Directory
+1. Configuring Active Directory
+1. Creating keytab file for UnityBase service
+1. Configuring UnityBase to support Kerberos authentication
+
+Most of the steps above are clearly described in a document for configuring Microsoft SQL Sever to use Windows authentication which can be found at [https://www.mssqltips.com/sqlservertip/5075/configure-sql-server-on-linux-to-use-windows-authentication](https://www.mssqltips.com/sqlservertip/5075/configure-sql-server-on-linux-to-use-windows-authentication). These steps are described here only briefly.
+
+##### Preparation of network interfaces
+Network interfaces on the Linux server should be configured in the way that the server is on the same network as Domain Controller is and the server can resolve names withing Domain Controller's network.
+To achieve this an actions described in the document above could be done. By the way as a result "nslookup <DC_name>" should be resulted in actual Domain Controller's address.
+This may be required to check here an availability of desired ports if some filters are active in the network.
+At the moment a change of the name of the Linux server may be required to follow the domain's policies.
+
+##### Installation of packages required
+A few packages should be installed on the Linux server to prepare it to join an Active Directory domain, including:
+ - samba libraries and tools
+ - sssd libraries and tools
+ - MIT kerberos implementation libraries and tools including gssapi library
+Here is a list of packages that could be applicable:
+  realmd krb5-user sssd-ad samba-common-bin samba-libs sssd-tools krb5-user adcli
+When installing the packages a prompt for default realm should appear. Please note that it is required to enter the full (not short NETBIOS form) realm name in uppercase.
+
+This is also worth to mention that time on the Linux server should be synchronized with Domain Controller's one. For this purpose it is recommended to have ntpd installed of the server and ntpd configured to take time from Domain Controller.
+
+##### realmd configuration
+Before joining Active Directory realmd service should be properly configured.
+In the document above there is a good example of /etc/realmd.conf file to be taken.
+After the realmd.conf file is created it is needed to (re) start realmd service.
+
+##### Joining the Linux Server to Active Directory
+Everything is now ready to join the domain. This may be done by issuing the following command:
+
+    realm join [your_domain.com] -U '[user_with_rights_to_add_computer_to_domain@YOUR_DOMAIN.COM]' -v
+
+Please note that domain name should be provided using capital letters and this should be the full domain name.
+When the command successfully finishes, the Linux server become a member of the Active Directory domain.
+
+##### Configuring Active Directory
+It's now time to prepare Active Directory to know about UnityBase.
+Either computer's account or some special user account could be used by UnityBase service. The account should have "Logon as a service" right.
+In either case it is a good practice to create Service Principal Name for UnitBase service and associate it with the account chosen. As UnityBase is a Web (http) service, the SPN should correspond to the following schema:
+
+    HTTP/Fully_Qualified_Domain_Name_of_the_Server[:Listening_Port]
+
+Listening_Port is an optional component. it is recommended to add it when UnityBase listens on non default http|https port (not 80 or 443)
+Use setspn utility on Domain Controller or any Windows computer joined to the same domain to create SPN.
+
+##### Creating keytab file for UnityBase service
+On the Linux server service's credentials are stored as keytab file. ktutil is used to create such a file on Linux.
+Look at the document on configuring MS SQL Server mentioned above to see how to prepare the keytab file. Don't forget about user rights - UnityBase local account should be able to read the file.
+Below is a list of the commands used:
+
+    kinit <user@REALM.COM>
+    kvno <SPN>
+    ktutil
+ 
+    addent -password -p <SPN@REALM.COM> -k <no_from_kvno> -e aes256-cts-hmac-sha1-96
+    addent -password -p <SPN@REALM.COM> -k <no_from_kvno> -e rc4-hmac
+    write_kt /path/to/file.keytab
+    quit
+
+##### Configuring UnityBase to support Kerberos authentication
+The final step is to provide configuration information to UnityBase.
+It is mandatory to specify the keytab file to be used by UnityBase to authenticate itself in the domain. This is done by specifying KRB5_KTNAME environment variable for UnityBase process. It is better to specify it just at the call to ub:
+
+    KRB5_KTNAME=/path/to/file.keytab ub
+
+UnityBase server configuration file should also be changed. At least 'Negotiate' should be specified in the list of authentication providers. It is also strongly recommended to specify SPN parameter in the "security" section - the SPN string here shuld be written in wide form, with realm specified: SPN@REALM.COM. It should be exactly the same as the name inside the keytab.
+
+
 ## Additional features in Defence edition
 UnityBase Defense edition provide additional security features.
 In the security environment instead of usual HTML browsed UBDefenseBrowser - a chromium based Web browser must be used.

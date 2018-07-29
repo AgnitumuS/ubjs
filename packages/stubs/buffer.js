@@ -1,6 +1,7 @@
 /* eslint-disable require-buffer */
-/** 
+/**
  * @module buffer
+ * @memberOf module:buildin
  */
 
 'use strict';

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- import CSS -->
+  <!-- normalize browser CSS i.e. button should have the same font-family as body -->
+  <link rel="stylesheet" href="/clientRequire/font-awesome/css/font-awesome.min.css"/>
+  <script src="/clientRequire/lodash/lodash.min.js"></script>
+  <script src="/clientRequire/@unitybase/ub-pub/dist/ub-pub.min.js"></script>
+  <script src="/models/adminui-next/dist/adminui-next.min.js"></script>
+</head>
+<body>
+<style>
+  #auth-page {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  }
+
+  .auth-page__header {
+    padding: 2rem 0 0 0;
+    font-size: 1.5rem;
+    font-weight: 100;
+  }
+
+  .el-switch__label,
+  .el-checkbox__label {
+    color: #5D6A76;
+    font-size: .75rem;
+    font-weight: 400;
+  }
+
+  .auth-page__container {
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .auth-page__logo-container {
+    max-width: 210px;
+    margin: 2rem auto 1rem;
+    height: 3rem;
+  }
+  .auth-page__logo {
+    max-height: 3rem;
+    max-width: fit-content;
+  }
+
+  .auth-page__tooltip {
+    position: absolute;
+    margin-left: 140px;
+  }
+</style>
+
+<template id="ULoginPageTpl">
+  <div id="auth-page" v-loading.fullscreen.lock="loading">
+    <div v-if="!loading">
+    <el-row>
+      <el-col :span="24" class="auth-page__header">{{ $ut('Authentication') }}</el-col>
+    </el-row>
+    <div class="auth-page__container">
+      <div class="auth-page__logo-container">
+        <img :src="topLogoURL" class="auth-page__logo">
+      </div>
+      <hr>
+
+      <el-form :model="authData" size="medium">
+        <div v-if="hasNegotiate()">
+          <el-tooltip :content="$ut('KerberosTip')" placement="bottom" effect="light">
+            <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+          </el-tooltip>
+          <p v-html="$ut('KerberosHeader')"></p>
+          <el-form-item>
+            <el-button type="primary" style="min-width: 8rem" @click="doNegotiateLogin">{{ $ut('UBAuthContinue') }}
+            </el-button>
+            <div>
+              <el-switch v-model="silenceKerberosLogin" :active-text="$ut('KerberosRemember')"></el-switch>
+            </div>
+          </el-form-item>
+          <hr>
+        </div>
+
+        <div v-if="hasUB()">
+          <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+            <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+          </el-tooltip>
+          <p v-html="$ut('UBAuthHeader', appName)"></p>
+          <el-form-item>
+            <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user" @keyup.enter.native="doUBLogin">
+              <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin">
+              <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}</el-button>
+          </el-form-item>
+          <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
+          <div><a href="#">{{ $ut('UBAuthRegistration') }}</a></div>
+        </div>
+      </el-form>
+    </div>
+    </div>
+  </div>
+</template>
+
+<div id="app"></div>
+
+<script>
+  var vm = new Vue({
+    el: '#app',
+    template: '#ULoginPageTpl',
+
+    data: function () {
+      return {
+        loading: true,
+        appName: 'UnityBase',
+        topLogoURL: '/models/ub-pub/img/ub-login-logo.png',
+        silenceKerberosLogin: window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
+        userDidLogout: window.localStorage.getItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT) === 'true',
+        authData: {user: '', pwd: ''}
+      }
+    },
+    watch: {
+      silenceKerberosLogin: function (val) {
+        if (val) {
+          window.localStorage.setItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, 'true')
+        } else {
+          window.localStorage.removeItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT)
+        }
+      }
+    },
+    methods: {
+      hasNegotiate: function () {
+        return this.$UB.connection && (this.$UB.connection.authMethods.indexOf('Negotiate') !== -1)
+      },
+      hasUB: function () {
+        return this.$UB.connection && (this.$UB.connection.authMethods.indexOf('UB') !== -1)
+      },
+      doNegotiateLogin: function () {
+        window.deferred.resolve({
+          authSchema: 'Negotiate',
+          login: '',
+          password: '',
+          registration: 0
+        })
+      },
+      doUBLogin: function () {
+        window.deferred.resolve({authSchema: 'UB', login: vm.authData.user, password: vm.authData.pwd})
+      }
+    }
+  })
+  window.deferred = {}
+  function errorReporter({errMsg, errCode, entityCode, detail}) {
+    if (detail) console.error(detail)
+    Vue.prototype.$message({
+      showClose: true,
+      message: errMsg,
+      duration: 10000,
+      type: 'error'
+    })
+  }
+  UB.setErrorReporter(errorReporter)
+  UB.connect({
+    host: window.location.origin,
+    allowSessionPersistent: true,
+    onGotApplicationConfig: function (conn) {
+      vm.authMethods = conn.authMethods || []
+      let adminUICfg = conn.appConfig.uiSettings.adminUI
+      if (adminUICfg.applicationName) {
+        let appName = (typeof adminUICfg.applicationName === 'string')
+          ? adminUICfg.applicationName
+          : adminUICfg.applicationName[conn.preferredLocale]
+        if (appName) vm.appName = appName
+      }
+      if (adminUICfg.loginWindowTopLogoURL) vm.topLogoURL = adminUICfg.loginWindowTopLogoURL
+      if (adminUICfg.defaultPasswordForDebugOnly) vm.authData.pwd = adminUICfg.defaultPasswordForDebugOnly
+      let lastLogin = localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)
+      if (lastLogin) vm.authData.user = lastLogin
+      return UB.inject('/models/ub-pub/locale/lang-' + conn.preferredLocale + '.js').then(function () {
+        vm.loading = false
+      })
+    },
+    onCredentialRequired: function (conn, isRepeat) {
+      var loginPromise = new Promise(function (resolve, reject) {
+        window.deferred.resolve = resolve
+        window.deferred.reject = reject
+      })
+      return loginPromise
+    },
+    onAuthorizationFail: function (reason) {
+      UB.showErrorWindow(reason)
+    }
+  }).then(function (conn) {
+    function getUrlVars () {
+      var vars = {}
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value
+      })
+      return vars
+    }
+
+    var returnUrl = getUrlVars()['returnUrl']
+    window.location.href = decodeURIComponent(returnUrl)
+  })
+</script>
+</body>
+</html>

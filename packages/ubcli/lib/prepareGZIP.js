@@ -10,7 +10,9 @@
      ubcli prepareGZIP -cfg pathToDocumentationConfig.json
 
  * @author pavel.mash
- * @module @unitybase/ubcli/prepareGZIP
+ * @module prepareGZIP
+ * @memberOf module:@unitybase/ubcli
+ * @deprecated Use reverse proxy (nginx) for gzipping
  */
 const _ = require('lodash')
 const fs = require('fs')
@@ -85,7 +87,7 @@ module.exports = function prepareGZIP (cfg) {
         gzipFolder(fullFileName + '\\')
       } else {
         ++totalCount; util.print('.')
-                // console.debug('Try', fullFileName);
+        // console.debug('Try', fullFileName);
         if (_.some(gzipRules, function (rule) { return rule.re.test(fullFileName) })) { // some of usePreparedGzip rule is applied to this file
           sz = fs.statSync(fullFileName).size; totalSize += sz
           if (sz > largeWhen) { // more when 3kb

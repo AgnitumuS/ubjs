@@ -1,0 +1,47 @@
+server {
+{{#addHTTP}}
+    listen       80 {{{host}}};
+    {{#ipv6}}
+    listen       [::]:80 {{{host}}};
+    {{/ipv6}}
+{{/addHTTP}}
+
+{{#addHTTPS}}
+    listen       443 {{{host}}};
+    {{#ipv6}}
+    listen       [::]:443 {{{host}}};
+    {{/ipv6}}
+    ssl_certificate     {{{sslcert}}}
+    ssl_certificate_key {{{sslkey}}}
+{{/addHTTPS}}
+
+    #proxy all requests to the UB backend
+    location / {
+        proxy_pass          {{{ubURL}}};
+        proxy_set_header	Host    $host;
+        proxy_set_header	{{remoteIPHeader}}  $realip_remote_addr;
+        proxy_redirect      off;
+    }
+    #override client_max_body_size for setDocument endpoint
+    location /setDocument {
+        proxy_pass          {{{ubURL}}};
+        proxy_set_header	Host    $host;
+        proxy_set_header	{{remoteIPHeader}}  $realip_remote_addr;
+        proxy_redirect      off;
+        client_max_body_size    {{maxDocBodySize}};
+    }
+{{#sendFileHeader}}
+    #application internal location for clientRequire, mdb, models etc
+    location  /{{sendFileLocationRoot}}/app {
+        internal;
+        alias {{{appPath}}};
+    }
+    #BLOB stores internal locations
+    {{#blobStores}}
+    location  /{{sendFileLocationRoot}}/{{storeName}} {
+        internal;
+        alias {{{storePath}}};
+    }
+    {{/blobStores}}
+{{/sendFileHeader}}
+}

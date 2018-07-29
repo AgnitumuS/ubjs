@@ -4,6 +4,175 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.3]
+### Added
+- ubdetailgrid with RowEditing plugin will fire "changeData" when user cancel editing
+
+### Fixed
+- login window logo css fixed in way logo looks the same on adminui-next adn adminui login windhw
+
+### Changed
+- remove IE9 specific CSS selectors from UBGrayTheme
+- remove invalid background images CSS selectors from UBGrayTheme
+
+## [5.3.2]
+### Fixed
+- fix error 404 Not Found during request to /clientRequire/systemjs-hmr.
+ systemjs-hmr is moved from devDependencies to dependencies section of package.json
+
+## [5.3.1]
+### Changed
+- `tabsCountLimitExceeded` message type changed from error to information
+
+### Fixed
+- Issue #6 ALS screws up attributes by prevent calling of BasePanel.updateAls if record.resultAls is undefined
+
+## [5.3.0]
+### BREAKING
+- `custom` (pure ExtJS) forms must export a entry point class name.
+ 
+ For example if form `*-fm.def` contains `Ext.define("UBM.userSettings", ...` then line
+ `exports.formDef = 'UBM.userSettings'` must be added to the beginning of file
+
+- `custom` && `auto` forms definition are not parsed for `requires: [...]` && 'uses: [...]' sections.
+ All required components must be loaded using direct `require('pathToComponentImplementation')` calls.
+
+ For example if form `*-fm.def` contains section
+ ```
+ requires: ['UB.ux.designer.VisualDesigner']
+ ```
+ then VisualDesigner implementation must be required either in model initialization script or inside component file (recommended)
+ ```
+ require('@unitybase/adminui-pub/_src/app/ux/designer/VisualDesigner')
+ ```
+
+- forms caching is moved to the HTTP cache level, localStorage is not used anymore for form cache
+
+### Added
+ - Hot Module Replacements for forms (work only for client in `dev` mode).
+ See [ub-hrm server](https://git-pub.intecracy.com/unitybase/ubjs/tree/v5.x/packages/hmr) for details
+
+### Changed
+- all forms are loading using SystemJS.import:
+  - form definition can use `require('something')` and it will be parsed synchronously as expected
+  - forms are cached on HTTP level (in case of reverse proxy). local storage based cache not used for cache forms anymore
+
+
+## [5.2.1]
+### Fixed
+- skip destroying `tinymce` when it is not defined yet
+
+### Added
+- method `cmdCommand.showList` sets attribute value **description** as tabs caption
+
+## [5.2.0]
+### Fixed
+- adminui-pub locales can be injected to environments what do not use ExtJS
+- added add/remove class to required field label on change of allowBlank
+
+### Changed
+- UBGrayTheme now use font-size (14px) and font-family (Segoe UI) defined on body level
+- all "bold" weights changed to 600 (more lighter)
+- [normalize.css](https://github.com/necolas/normalize.css/) added
+- Tab borders is set to `1 1 1 1`
+
+
+## [5.1.4]
+### Changed
+- for a "required" attributes changed style to display the asterisk after delimiter, not before and align on the right side
+- remove placeholder "fill value" for a "required" attributes
+- "Add As" action renamed to "Copy". Glyph changed to `faCopy`
+- max open tabs now 40 by default (can be changed back to 10 by `ubConfig.uiSettings.adminUI.maxMainWindowTabOpened: 10`)
+
+## [5.1.3]
+### Fixed
+- remove displaying of "undefine" in UBDetailTree in minified version of adminUI
+
+## [5.1.2]
+### Changed
+- unhandled errors now will be redirected to error reporter by `ub-pub`
+- silence Kerberos login will be handled by `ub-pub`
+- use new feature `ub-pub.setErrorReporter`
+
+## [5.1.1]
+### Fixed
+- '@unitybase/ub-pub'.Repository (i.e. UB.Repository) will be defined inside `ub-pub` instead of `adminUI`
+
+## [5.1.0]
+### Changed
+- Model public path initialization do not require creation of `/public/initModel.js` script.
+ Instead `package.json` can contain section "browser" what point either to the model initialization script for browser
+
+ In case model is a published module (placed in the node_modules folder) path should be relative to the `package.json`:
+
+ ```package.json
+ "browser": "./public/initModel.js"
+ ```
+
+ or for dev/prod scripts
+
+ ```package.json
+  "browser": {
+    "dev": "./public/devEntryPoint.js"
+    "prod": "./public/dist/modelBundle.js"
+  }
+ ```
+
+ In case model is in `models` folder p[ath must be absolute
+ ```package.json
+   "browser": "/clientRequire/models/TST/initModel.js",
+ ```
+
+
+### Added
+- $App.modelLoadedPromise promise added to indicate model public part is completely loaded
+  In case model require asynchronous operation during loading it should add a chain to this promise.
+  Next model will await chain resolving.
+
+## [5.0.23]
+### Changed
+- adminUI left navbar:
+ - arrow color changed to the same color as menu text
+ - arrow style changed from fa-angle-left to fa-caret-right
+ - increase padding (+4 px) between left arrow and workspace
+
+### Fixed
+-  set whereList property for ubcombobox when use row editing in ubdetailgrid
+
+## [5.0.22]
+### Fixed
+- handle entity attribute readOnly property on adminUI as documented (regression)
+- added support for `adminui.loginURL` parameter. If parameter is set, then all unauthorized users will be redirected to
+  that page for authentication. Page itself should create a UBConnection with `allowSessionPersistent`
+  and do a `UBConnection.connect()`. See login page example in [autotest app](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/apps/autotest/inetPub/login.html)
+
+### Changed
+- add a red asterisk for required field's labels
+
+## [5.0.21]
+### Changed
+- made metadata diagrams correlate with terms used in UML diagram
+  - association (was "relation") - removed the diamond
+  - added a whole new type of link "composition" - with diamong("cascadeDelete" is used to determine if link is "association" or "composition")
+  - removed weird oval from start of "inheritance" link
+
+## [5.0.19]
+### Fixed
+- package will expose 'file-saver' as SystemJS module to prevent double-loading
+
+## [5.0.17]
+### Fixed
+- package will expose itself and 'lodash', 'bluebird-q' and '@unitybase/cs-shared'
+ as SystemJS module to prevent double-loading
+
+### Changed
+- `adminui-pub` will inject all localization script at once using new `allLocales` endpoint.
+Will speed up startup for applications with several models
+
+## [5.0.15]
+### Changed
+- TinyMCE upgraded to 4.7.13
+
 ## [4.3.2]
 ## Fixed 
 - ubdetailgrid does not load store on boxready event if forceDataLoad is true 
@@ -17,10 +186,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Fixed 
 - use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
 - in UBComboBox remove clearValue when call doSetValue 
+
 ### Added
-- in BasePanel add property formWasSaved, set 'true' when open form was saved 
+- property BasePanel.formWasSaved. Becomes 'true' in case opened form was saved
+
 ## Changed
-- remove set focuse for ubboxselect after load store
+- removed execution of ubboxselect.setFocuse after store is loaded
+
 
 ## [4.2.54]
 ## Fixed 

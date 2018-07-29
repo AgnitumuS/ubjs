@@ -17,7 +17,8 @@
      createCodeInsightHelper(options)
 
  * @author pavel.mash
- * @module @unitybase/ubcli/createCodeInsightHelper
+ * @module createCodeInsightHelper
+ * @memberOf module:@unitybase/ubcli
  */
 const _ = require('lodash')
 const fs = require('fs')
@@ -60,6 +61,9 @@ module.exports = function createCodeInsightHelper (cfg) {
       return modelCfg.name === filterByModel
     })
   }
+  models = _.filter(models, function (modelCfg) {
+    return modelCfg.path !== '_public_only_'
+  })
 
   /**
    * Convert named collection - {name1: {}, name2: {}} to array -> [{name: name1, ...}, ...]
@@ -97,13 +101,15 @@ module.exports = function createCodeInsightHelper (cfg) {
     Date: 'Date'
   }
 
-  let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'))
+  let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
 
-  function processEntities (entities, folderName, modelName) {
+  function processEntities (entities, folderName, modelName, moduleName) {
     let res, resFileName
 
+    let modulePackage = require(path.join(folderName, 'package.json'))
     if (entities.length) {
       res = mustache.render(tpl, {
+        module: modulePackage,
         entities: entities,
         getJSType: function () {
           return '{' + (ub2JS[this.dataType] || '*') + '}'
@@ -182,9 +188,15 @@ module.exports = function createCodeInsightHelper (cfg) {
     _.forEach(realDomain.entities, function (entityDef, entityName) {
       if (entityDef.modelName === modelCfg.name) {
         entityDef.attributes = namedCollection2Array(entityDef.attributes)
-        entities.push({name: entityName, meta: entityDef})
+        entityDef.mixins = namedCollection2Array(entityDef.mixins)
+        let doc = entityDef.description ? entityDef.description : entityDef.caption
+        if (entityDef.documentation) doc += '.\n * ' + entityDef.documentation
+        entities.push({
+          name: entityName,
+          description: doc,
+          meta: entityDef})
       }
     })
-    processEntities(entities, currentPath, modelCfg.name)
+    processEntities(entities, currentPath, modelCfg.name, modelCfg.moduleName)
   })
 }

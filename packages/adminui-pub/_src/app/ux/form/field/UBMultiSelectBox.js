@@ -22,8 +22,9 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
             '</tpl>';
 
         me.callParent(arguments);
-        /** @event itemSelected
+        /**
          * Fires when user press ok on form
+         * @event itemSelected
          * @param this
          */
         me.addEvents('itemSelected');

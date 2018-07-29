@@ -1,10 +1,11 @@
-//@! "do not remove comments below unless you know what you do!"
-//@isDefault "false"
-//@entity "uba_els"
-//@model "UBA"
-//@formType "auto"
-//@caption "Method rights"
-//@description "Method rights"
+// @! "do not remove comments below unless you know what you do!"
+// @mi_modifyDate "Tue Mar 13 2018 21:40:17 GMT+0200 (FLE Daylight Time)"
+// @isDefault "false"
+// @entity "uba_els"
+// @model "UBA"
+// @formType "auto"
+// @caption "Method rights"
+// @description "Method rights"
 /*global UB, Ext */
 exports.formDef = {
     size: {

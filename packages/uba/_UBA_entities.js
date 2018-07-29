@@ -1,1077 +1,1009 @@
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
+/**
+ * UnityBase Administrative model. Define users, roles and permissions
+ * @version 5.0.10
+ * @module @unitybase/uba
+ */
+
+/**
+ * Advanced security settings.
+ * For any authentication type add binding of user to IP address. For CERT additionaly add a binding to device fingerprint
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_advSecurity_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_advSecurity_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * Filled by supervisor to indicate cause of changes
+  * @type {String}
+  */
+  editCause: '',
+ /**
+  * The ID address from which the user is allowed access. If empty - allowed from any
+  * @type {String}
+  */
+  allowedIP: null,
+ /**
+  * If turned on will refresh allowed IP on firs user logon
+  * @type {Boolean}
+  */
+  refreshIP: undefined,
+ /**
+  * Fingerprint of user device. If empty - not checked
+  * @type {String}
+  */
+  fp: null,
+ /**
+  * If turned on will refresh Fingerpring of user device on firs user logon
+  * @type {Boolean}
+  */
+  refreshFp: undefined,
+ /**
+  * Name of key media device
+  * @type {String}
+  */
+  keyMediaName: null,
+ /**
+  * If turned on will refresh key media name of user private key device
+  * @type {Boolean}
+  */
+  refreshKeyMedia: undefined,
+ /**
+  * JSON with advanced settings
+  * This settings can be handled in Session.on login event
+  * @type {String}
+  */
+  additional: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+}
+/**
+* Advanced security settings.
+ * For any authentication type add binding of user to IP address. For CERT additionaly add a binding to device fingerprint
+* @type {uba_advSecurity_ns}
+*/
+const uba_advSecurity = new uba_advSecurity_ns()
+/**
+ * Attribute level security
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_als_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_als_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  entity: '',
+ /**
+  * @type {String}
+  */
+  attribute: '',
+ /**
+  * @type {String}
+  */
+  state: '',
+ /**
+  * @type {String}
+  */
+  roleName: '',
+ /**
+  * @type {Number}
+  */
+  actions: 0,
+}
 /**
 * Attribute level security
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {uba_als_ns}
 */
-var uba_als = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_als = new uba_als_ns()
 /**
-* Attributes of "Attribute level security"
-* @class
-*/
-function uba_als_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * Entity
-    * @type {String}
-    */
-  this.entity = ''
-    /**
-    * Attribute
-    * @type {String}
-    */
-  this.attribute = ''
-    /**
-    * State code
-    * @type {String}
-    */
-  this.state = ''
-    /**
-    * Role name
-    * @type {String}
-    */
-  this.roleName = ''
-    /**
-    * Allow actions
-    * @type {Number}
-    */
-  this.actions = 0
+ * Security changes audit.
+ * All changes to UBA model entities (except uba_als &amp; uba_subject) + user login related event are logged here
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_audit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_audit_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  entity: '',
+ /**
+  * @type {Number}
+  */
+  entityinfo_id: 0,
+ /**
+  * Action
+  * @type {String}
+  */
+  actionType: '',
+ /**
+  * User
+  * @type {String}
+  */
+  actionUser: '',
+ /**
+  * Action time
+  * @type {Date}
+  */
+  actionTime: new Date(),
+ /**
+  * Caller remote IP address
+  * @type {String}
+  */
+  remoteIP: null,
+ /**
+  * The user name for which the data has changed
+  * @type {String}
+  */
+  targetUser: null,
+ /**
+  * The role name for which the data has changed
+  * @type {String}
+  */
+  targetRole: null,
+ /**
+  * @type {String}
+  */
+  fromValue: null,
+ /**
+  * @type {String}
+  */
+  toValue: null,
 }
-
 /**
-* Security audit
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Security changes audit.
+ * All changes to UBA model entities (except uba_als &amp; uba_subject) + user login related event are logged here
+* @type {uba_audit_ns}
 */
-var uba_audit = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_audit = new uba_audit_ns()
 /**
-* Attributes of "Security audit"
-* @class
-*/
-function uba_audit_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * Entity code
-    * @type {String}
-    */
-  this.entity = ''
-    /**
-    * Instance ID
-    * @type {Number}
-    */
-  this.entityinfo_id = 0
-    /**
-    * Action
-    * @type {String}
-    */
-  this.actionType = ''
-    /**
-    * User
-    * User, who perform the action
-    * @type {String}
-    */
-  this.actionUser = ''
-    /**
-    * Action time
-    * @type {Date}
-    */
-  this.actionTime = new Date()
-    /**
-    * Remote IP
-    * Caller remote IP address. NULL in case of localhost
-    * @type {String}
-    */
-  this.remoteIP = ''
-    /**
-    * Target user
-    * The user name for which the data has changed
-    * @type {String}
-    */
-  this.targetUser = ''
-    /**
-    * Target role
-    * The role name for which the data has changed
-    * @type {String}
-    */
-  this.targetRole = ''
-    /**
-    * Old values
-    * @type {String}
-    */
-  this.fromValue = ''
-    /**
-    * New values
-    * @type {String}
-    */
-  this.toValue = ''
+ * Data changes audit.
+ * All DML statement for entity with mixin &#39;audit&#39; logged here
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_auditTrail_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_auditTrail_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  entity: '',
+ /**
+  * @type {Number}
+  */
+  entityinfo_id: 0,
+ /**
+  * Action
+  * @type {String}
+  */
+  actionType: '',
+ /**
+  * User -> uba_user
+  * @type {Number}
+  */
+  actionUser: 0,
+ /**
+  * Action time
+  * @type {Date}
+  */
+  actionTime: new Date(),
+ /**
+  * Caller remote IP address. NULL in case of localhost
+  * @type {String}
+  */
+  remoteIP: null,
+ /**
+  * @type {String}
+  */
+  fromValue: null,
+ /**
+  * @type {String}
+  */
+  toValue: null,
+ /**
+  * @type {String}
+  */
+  parentEntity: null,
+ /**
+  * @type {Number}
+  */
+  parentEntityInfo_id: null,
 }
-
 /**
-* Entity Level Security(ELS)
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Data changes audit.
+ * All DML statement for entity with mixin &#39;audit&#39; logged here
+* @type {uba_auditTrail_ns}
 */
-var uba_els = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_auditTrail = new uba_auditTrail_ns()
 /**
-* Attributes of "Entity Level Security(ELS)"
-* @class
-*/
-function uba_els_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * Rule code
-    * Code for ELS rule
-    * @type {String}
-    */
-  this.code = ''
-    /**
-    * Description
-    * Rule description
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    * Disabled
-    * Rule is disabled
-    * @type {Boolean}
-    */
-  this.disabled = undefined
-    /**
-    * Entity mask
-    * @type {String}
-    */
-  this.entityMask = ''
-    /**
-    * Method mask
-    * @type {String}
-    */
-  this.methodMask = ''
-    /**
-    * Rule type
-    * Is this ALLOW rule(A) or DENY rule(D) or Complements(C) rule
-    * @type {String}
-    */
-  this.ruleType = ''
-    /**
-    * Role (ref -> uba_role)
-    * Role for which the rule applies
-    * @type {Number}
-    */
-  this.ruleRole = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * Describe, which role have access permissions to Entities methods.
+ * Administering of entity level. The system checks the access by the rule &quot;Allowed and NOT Prohibited&quot;
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_els_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_els_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code for ELS rule
+  * This field is used by migrations for automatically update rules. It recommended to use your model code as rule prefix.
+        We do not set this attribute to unique, because some external models use the same code for different rules.
+        But all UnityBase models set this attribute to unique value
+  * @type {String}
+  */
+  code: null,
+ /**
+  * Rule description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Rule is disabled
+  * @type {Boolean}
+  */
+  disabled: undefined,
+ /**
+  * <h4>Masks wildchars:</h4> <ul>
+        <li>*	   	Matches any contiguous characters</li>
+        <li>?	   	Matches any single characer</li>
+        <li>[abc]  	Matches a or b or c at that position</li>
+        <li>[^abc]	Matches anything but a or b or c at that position</li>
+        <li>[!abc]	Matches anything but a or b or c at that position</li>
+        <li>[a-e]  	Matches a through e at that position</li>
+        <li>[abcx-z]  Matches a or b or c or x or y or or z, as does [a-cx-z]</li>
+        </ul>
+        Example: [iu]* match any string start from either 'i' or 'u' like: 'insetr', 'inner', 'update',...
+  * @type {String}
+  */
+  entityMask: '',
+ /**
+  * Method mask
+  * @type {String}
+  */
+  methodMask: '',
+ /**
+  * Rule type
+  * @type {String}
+  */
+  ruleType: '',
+ /**
+  * Role for which the rule applies -> uba_role
+  * @type {Number}
+  */
+  ruleRole: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
+/**
+* Describe, which role have access permissions to Entities methods.
+ * Administering of entity level. The system checks the access by the rule &quot;Allowed and NOT Prohibited&quot;
+* @type {uba_els_ns}
+*/
+const uba_els = new uba_els_ns()
+/**
+ * User groups
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class uba_group_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_group_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Group code. Used by APIs and scripts
+  * Unique group code. Used by APIs and scripts
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {String}
+  */
+  name: '',
+ /**
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+}
 /**
 * User groups
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {uba_group_ns}
 */
-var uba_group = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_group = new uba_group_ns()
 /**
-* Attributes of "User groups"
-* @class
-*/
-function uba_group_object () {
-    /**
-    *  (ref -> uba_subject)
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * Code
-    * Group code. Used by APIs and scripts
-    * @type {String}
-    */
-  this.code = ''
-    /**
-    * Name
-    * @type {String}
-    */
-  this.name = ''
-    /**
-    * Description
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * Roles assigned to groups
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_grouprole_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_grouprole_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  groupID: 0,
+ /**
+  * @type {Number}
+  */
+  roleID: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* Group Roles
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Roles assigned to groups
+* @type {uba_grouprole_ns}
 */
-var uba_grouprole = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_grouprole = new uba_grouprole_ns()
 /**
-* Attributes of "Group Roles"
-* @class
-*/
-function uba_grouprole_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * Group (ref -> uba_group)
-    * @type {Number}
-    */
-  this.groupID = 0
-    /**
-    * Role (ref -> uba_role)
-    * @type {Number}
-    */
-  this.roleID = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * One time passwords.
+ * One-time-password generation and verification
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_otp_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_otp_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Generated one time password
+  * @type {String}
+  */
+  otp: '',
+ /**
+  * User for which password was generated -> uba_user
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * Additional  data
+  * Any valid JSON object. This data transferred to client part as result of auth method. Also accessible in server methods vis Session.uData
+  * @type {String}
+  */
+  uData: null,
+ /**
+  * Expired date
+  * @type {Date}
+  */
+  expiredDate: new Date(),
+ /**
+  * Kind of otp(Email, SMS etc)
+  * @type {String}
+  */
+  otpKind: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* One time passwords
-* @mixes EventEmitter
-* @mixes RequiredModule
+* One time passwords.
+ * One-time-password generation and verification
+* @type {uba_otp_ns}
 */
-var uba_otp = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_otp = new uba_otp_ns()
 /**
-* Attributes of "One time passwords"
-* @class
-*/
-function uba_otp_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * OTP
-    * Generated one time password
-    * @type {String}
-    */
-  this.otp = ''
-    /**
-    * User (ref -> uba_user)
-    * @type {Number}
-    */
-  this.userID = 0
-    /**
-    * uData
-    * Additional  data
-    * @type {String}
-    */
-  this.uData = ''
-    /**
-    * Expired date
-    * @type {Date}
-    */
-  this.expiredDate = new Date()
-    /**
-    * Otp kind
-    * Kind of otp(Email, SMS, etc)
-    * @type {String}
-    */
-  this.otpKind = ''
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
-    /**
-    *
-    * Deletion date
-    *
-    * @type {Date}
-    */
-  this.mi_deleteDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    *
-    * @type {Number}
-    */
-  this.mi_deleteUser = 0
+ * Previous passwords hashes
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_prevPasswordsHash_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_prevPasswordsHash_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * PasswordHashHexa := SHA256('salt'+PasswordPlain) in UTF-8
+  * @type {String}
+  */
+  uPasswordHashHexa: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* Previous passwords
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Previous passwords hashes
+* @type {uba_prevPasswordsHash_ns}
 */
-var uba_prevPasswordsHash = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_prevPasswordsHash = new uba_prevPasswordsHash_ns()
 /**
-* Attributes of "Previous passwords"
-* @class
-*/
-function uba_prevPasswordsHash_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * User (ref -> uba_user)
-    * @type {Number}
-    */
-  this.userID = 0
-    /**
-    * Previous password hash
-    * @type {String}
-    */
-  this.uPasswordHashHexa = ''
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * Administering subsystem roles
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class uba_role_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_role_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Role
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Time after which the session is deleted by timeout (in minutes)
+  * @type {Number}
+  */
+  sessionTimeout: 0,
+ /**
+  * Which application level methods are allowed
+  * @type {String}
+  */
+  allowedAppMethods: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* System roles
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Administering subsystem roles
+* @type {uba_role_ns}
 */
-var uba_role = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_role = new uba_role_ns()
 /**
-* Attributes of "System roles"
-* @class
-*/
-function uba_role_object () {
-    /**
-    *  (ref -> uba_subject)
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * Role
-    * @type {String}
-    */
-  this.name = ''
-    /**
-    * Description
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    * Session duration
-    * Time after which the session is deleted by timeout (in minutes)
-    * @type {Number}
-    */
-  this.sessionTimeout = 0
-    /**
-    * Which application level methods are allowed (comma separated list)
-    * @type {String}
-    */
-  this.allowedAppMethods = ''
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * Administration subjects
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_subject_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_subject_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Login
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Subject type
+  * @type {String}
+  */
+  sType: '',
+ /**
+  * @type {String}
+  */
+  mi_unityEntity: '',
 }
-
 /**
 * Administration subjects
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {uba_subject_ns}
 */
-var uba_subject = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_subject = new uba_subject_ns()
 /**
-* Attributes of "Administration subjects"
-* @class
-*/
-function uba_subject_object () {
-    /**
-    *
-    *
-    * @type {Number}
+    * Users
+    * @extends EntityNamespace
+    * @mixes mStorage
+    * @mixes unity
     */
-  this.ID = 0
-    /**
-    * Login
-    * @type {String}
-    */
-  this.name = ''
-    /**
-    * Subject type
-    * @type {String}
-    */
-  this.sType = ''
-    /**
-    *
-    *
-    * @type {String}
-    */
-  this.mi_unityEntity = ''
+class uba_user_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_user_ns.attrs = {
+  /**
+   * @type {Number}
+   */
+  ID: 0,
+ /**
+  * User login in lower case
+  * @type {String}
+  */
+  name: '',
+ /**
+  * @type {String}
+  */
+  firstName: null,
+ /**
+  * @type {String}
+  */
+  lastName: null,
+ /**
+  * @type {String}
+  */
+  fullName: null,
+ /**
+  * @type {String}
+  */
+  gender: null,
+ /**
+  * User email (could be used for notifications)
+  * @type {String}
+  */
+  email: null,
+ /**
+  * User phone (could be used for sms)
+  * @type {String}
+  */
+  phone: null,
+ /**
+  * User avatar image (recommended 128x128)
+  * @type {String}
+  */
+  avatar: null,
+ /**
+  * Additional description of user account
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Additional  data
+  * Any valid JSON object. This data transferred to client part as result of auth method. Also accessible in server methods vis Session.uData
+  * @type {String}
+  */
+  uData: null,
+ /**
+  * Disabled
+  * @type {Boolean}
+  */
+  disabled: undefined,
+ /**
+  * The user is waiting for confirmation of registration
+  * @type {Boolean}
+  */
+  isPending: undefined,
+ /**
+  * Semicolon separated list of allowed IPs for UBIP authentication schema. Warning! We recomend use it only for IPs from DMZ
+  * @type {String}
+  */
+  trustedIP: null,
+ /**
+  * Password hash
+  * PasswordHashHexa := SHA256('salt'+PasswordPlain) in UTF-8
+  * @type {String}
+  */
+  uPasswordHashHexa: null,
+ /**
+  * Last password change date
+  * @type {Date}
+  */
+  lastPasswordChangeDate: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
 * Users
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {uba_user_ns}
 */
-var uba_user = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_user = new uba_user_ns()
 /**
-* Attributes of "Users"
-* @class
-*/
-function uba_user_object () {
-    /**
-    *  (ref -> uba_subject)
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * Login
-    * User login in lower case
-    * @type {String}
-    */
-  this.name = ''
-    /**
-    * First Name
-    * @type {String}
-    */
-  this.firstName = ''
-    /**
-    * Last Name
-    * @type {String}
-    */
-  this.lastName = ''
-    /**
-    * User gender
-    *
-    * @type {String}
-    */
-  this.gender = ''
-    /**
-    * Email
-    * User email (could be used for notifications)
-    *
-    * @type {String}
-    */
-  this.email = ''
-    /**
-    * Phone
-    * User phone (could be used for sms)
-    *
-    * @type {String}
-    */
-  this.phone = ''
-    /**
-    * Avatar
-    * User avatar image (recommended 128x128)
-    *
-    * @type {String}
-    */
-  this.avatar = ''
-    /**
-    * Description
-    * Additional description of user account
-    *
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    * uData
-    * Additional user data
-    *
-    * @type {String}
-    */
-  this.uData = ''
-    /**
-    * Disabled
-    * @type {Boolean}
-    */
-  this.disabled = undefined
-    /**
-    * Registration pending
-    * The user is waiting for confirmation of registration
-    * @type {Boolean}
-    */
-  this.isPending = undefined
-    /**
-    * trusted IPs
-    *
-    * @type {String}
-    */
-  this.trustedIP = ''
-    /**
-    * Password hash
-    *
-    * @type {String}
-    */
-  this.uPasswordHashHexa = ''
-    /**
-    * Last password change date
-    *
-    * @type {Date}
-    */
-  this.lastPasswordChangeDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * User certificates.
+ * used for Certificate authentification 
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_usercertificate_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_usercertificate_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * Issuer tag of cerificate
+  * @type {String}
+  */
+  issuer_serial: '',
+ /**
+  * @type {String}
+  */
+  issuer_cn: null,
+ /**
+  * Serial number of cerificate
+  * @type {String}
+  */
+  serial: '',
+ /**
+  * Binary data of certificate
+  * @type {ArrayBuffer}
+  */
+  certificate: undefined,
+ /**
+  * @type {String}
+  */
+  description: null,
+ /**
+  * disabled
+  * @type {Boolean}
+  */
+  disabled: undefined,
+ /**
+  * Revoked
+  * @type {Boolean}
+  */
+  revoked: undefined,
+ /**
+  * Revocation date
+  * @type {Date}
+  */
+  revocationDate: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* User certificates
-* @mixes EventEmitter
-* @mixes RequiredModule
+* User certificates.
+ * used for Certificate authentification 
+* @type {uba_usercertificate_ns}
 */
-var uba_usercertificate = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_usercertificate = new uba_usercertificate_ns()
 /**
-* Attributes of "User certificates"
-* @class
-*/
-function uba_usercertificate_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * User (ref -> uba_user)
-    * @type {Number}
-    */
-  this.userID = 0
-    /**
-    * Issuer
-    * Issuer tag of cerificate
-    * @type {String}
-    */
-  this.issuer_serial = ''
-    /**
-    * Issuer caption
-    * @type {String}
-    */
-  this.issuer_cn = ''
-    /**
-    * Serial number
-    * Serial number of cerificate
-    * @type {String}
-    */
-  this.serial = ''
-    /**
-    * Certificate
-    * Binary data of certificate
-    * @type {ArrayBuffer}
-    */
-  this.certificate = undefined
-    /**
-    * Description
-    * @type {String}
-    */
-  this.description = ''
-    /**
-    * Disabled
-    * disabled
-    * @type {Boolean}
-    */
-  this.disabled = undefined
-    /**
-    * Revoked
-    * Revoked
-    * @type {Boolean}
-    */
-  this.revoked = undefined
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * User memberships in groups
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_usergroup_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_usergroup_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * @type {Number}
+  */
+  groupID: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* User Groups
-* @mixes EventEmitter
-* @mixes RequiredModule
+* User memberships in groups
+* @type {uba_usergroup_ns}
 */
-var uba_usergroup = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
+const uba_usergroup = new uba_usergroup_ns()
 /**
-* Attributes of "User Groups"
-* @class
-*/
-function uba_usergroup_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * User (ref -> uba_user)
-    * @type {Number}
-    */
-  this.userID = 0
-    /**
-    * Group (ref -> uba_group)
-    * @type {Number}
-    */
-  this.groupID = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
+ * Roles assigned to user
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class uba_userrole_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+uba_userrole_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * @type {Number}
+  */
+  roleID: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* User Roles
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Roles assigned to user
+* @type {uba_userrole_ns}
 */
-var uba_userrole = {
-  /**
-   * Reference to entity metadata
-   * @type {TubEntity}
-   */
-  entity: null
-}
-
-/**
-* Attributes of "User Roles"
-* @class
-*/
-function uba_userrole_object () {
-    /**
-    *
-    *
-    * @type {Number}
-    */
-  this.ID = 0
-    /**
-    * User (ref -> uba_user)
-    * @type {Number}
-    */
-  this.userID = 0
-    /**
-    * Role (ref -> uba_role)
-    * @type {Number}
-    */
-  this.roleID = 0
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    *
-    * @type {Number}
-    */
-  this.mi_owner = 0
-    /**
-    *
-    * Creation date
-    *
-    * @type {Date}
-    */
-  this.mi_createDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    *
-    * @type {Number}
-    */
-  this.mi_createUser = 0
-    /**
-    *
-    * Modification date
-    *
-    * @type {Date}
-    */
-  this.mi_modifyDate = new Date()
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    *
-    * @type {Number}
-    */
-  this.mi_modifyUser = 0
-}
-
+const uba_userrole = new uba_userrole_ns()

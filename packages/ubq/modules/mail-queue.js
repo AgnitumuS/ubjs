@@ -1,9 +1,11 @@
 /**
  * Adding a EMail to queue for sending
- * @author pavel.mash on 25.09.2016.
- * @module
+ * @module mail-queue
+ * @memberOf module:@unitybase/ubq
  */
-
+// author pavel.mash on 25.09.2016.
+const UB = require('@unitybase/ub')
+const App = UB.App
 const UBMail = require('@unitybase/mailer')
 let ubqMessagesStore
 
@@ -27,7 +29,7 @@ let ubqMessagesStore
  */
 module.exports.queueMail = function (config) {
   let msgCmd = {
-    from: config.from || JSON.parse(App.customSettings)['mailerConfig'].fromAddr,
+    from: config.from || App.serverConfig.application.customSettings['mailerConfig'].fromAddr,
     to: Array.isArray(config.to) ? config.to : [config.to],
     bodyType: config.bodyType || UBMail.TubSendMailBodyType.HTML,
     subject: config.subject
@@ -37,7 +39,7 @@ module.exports.queueMail = function (config) {
     msgCmd.attaches = config.attachments
   }
     // create store here - in case of initialization entity ubq_messages may not exists
-  if (!ubqMessagesStore) ubqMessagesStore = new TubDataStore('ubq_messages')
+  if (!ubqMessagesStore) ubqMessagesStore = UB.DataStore('ubq_messages')
   ubqMessagesStore.run('insert', {
     fieldList: ['ID'],
     execParams: {
@@ -48,4 +50,3 @@ module.exports.queueMail = function (config) {
     }
   })
 }
-

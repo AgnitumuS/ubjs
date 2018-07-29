@@ -1,11 +1,10 @@
-/**
- * Created by pavel.mash on 04.09.2016.
- */
-var webpack = require('webpack')
+// Created by pavel.mash on 04.09.2016.
+
+const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
-  entry: './index.js',
+  entry: './ub-pub.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'ub-pub.min.js',
@@ -13,13 +12,13 @@ module.exports = {
     libraryTarget: 'umd'
   },
   externals: {
-        "lodash": {
-            commonjs: "lodash",
-            commonjs2: "lodash",
-            amd: "lodash",
-            root: "_"
-        }
-    },
+    'lodash': {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: 'lodash',
+      root: '_'
+    }
+  },
   module: {
     loaders: [{
       test: /\.js$/,
@@ -29,7 +28,7 @@ module.exports = {
         presets: ['es2015']
       }
     }]
-  },  
+  },
   devtool: 'cheap-source-map',
 
   plugins: [

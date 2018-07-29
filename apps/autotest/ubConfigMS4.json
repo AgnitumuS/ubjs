@@ -1,7 +1,8 @@
 ﻿{ 
 	"httpServer": {
+		//"serverType": "Socket",
 		"host": "+",
-		"port": "888",
+		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
@@ -11,13 +12,13 @@
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 8
+		"threadPoolSize": 2
 	},
-	"wsServer": {
+	/*"wsServer": {
 		"host": "+",
 		"port": "888",
 		"path": "ws"
-	},
+	},*/
 	"logging": {
 		"path": ".\\logs",
 		"levels": [
@@ -37,16 +38,17 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB", "Negotiate"
+			"UB", "UBLDAP", "Negotiate"
 		],
 		"ldapCatalogs": [
 			{
-				"name": "MYDOMAIN",
-				"host": "softline.main",
-				"port": "3268",
+				"name": "UBDF",
+				"host": "ubdf.local",
+				"port": "3268", //"636"
 				"useTLS": false,
 				"useSSL": false,
-				"useSasl": true
+				"useSasl": false,
+				"catalogType": "LDAP"
 			}
 		]
 	},
@@ -126,20 +128,9 @@
 					"path": "./node_modules/@unitybase/adminui-reg",
 					"moduleName": "@unitybase/adminui-reg"
 				},
-                                {
-					"name": "DSES",
-					"path": "./node_modules/@ub-e/dses",
-					"moduleName": "@ub-e/dses"
-				},
-				{
-					"name": "nm-dstu",
-					"publicPath": "./node_modules/@ub-d/nm-dstu",
-					"path": "_public_only_",
-					"moduleName": "@ub-d/nm-dstu"
-				},
 				{
 					"name": "TST",
-					"path": ".\\models\\TST"
+					"path": "./models/TST"
 				}
 			],
 			"implicitlyAddedMixins": [

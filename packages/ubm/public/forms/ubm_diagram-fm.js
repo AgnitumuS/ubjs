@@ -1,15 +1,13 @@
-/*global UB, Ext */
 exports.formCode = {
-    initUBComponent: function () {
-    },
-    onSave: function(action) {
-        var
-            me = this,
-			diagramName = me.record.get('name');
-
-		if (!me.isEditMode) {
-            me.record.set('document', "{\"store\":\"mdb\",\"fName\":\"" + diagramName + ".xml\",\"origName\":\"" + diagramName + "\",\"ct\":\"application/xml\",\"size\":0,\"isDirty\":true}");
-        }    
-        this.callParent([action]);
+  initUBComponent: function () {
+    var me = this
+    if (!me.isEditMode) { // new form
+      this.down('label[ubID="newFormTip"]').setVisible(true)
+      me.record.set('ID', null) // ID will be calculated as crc32(name)
+    } else {
+      this.down('label[ubID="newFormTip"]').setVisible(false)
+      me.getUBCmp('attrName').setReadOnly(true)
+      me.getUBCmp('attrModel').setReadOnly(true)
     }
+  }
 }

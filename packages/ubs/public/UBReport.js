@@ -1,10 +1,14 @@
+/* global SystemJS */
 /**
  * @class UBReport
  * Client side report builder
  *
  */
 const Mustache = require('mustache')
+if (!SystemJS.has('mustache')) SystemJS.set('mustache', SystemJS.newModule(Mustache))
 const formatFunctions = require('./formatFunctions')
+const UB = require('@unitybase/ub-pub')
+const $App = require('@unitybase/adminui-pub')
 const _ = require('lodash')
  /**
   * @constructor
@@ -65,7 +69,7 @@ UBReport.prototype.init = function () {
   if (me.isInited) {
     return Promise.resolve(true)
   }
-  let repository = UB.Repository('ubs_report')
+  let repository = $App.connection.Repository('ubs_report')
     .attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
     .where('[report_code]', '=', me.reportCode)
 
@@ -175,7 +179,8 @@ UBReport.prototype.buildHTML = function (reportData) {
   }
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
-  formatFunctions.addMustacheSysFunction(reportData)
+  let lang = $App.connection.userLang()
+  formatFunctions.addMustacheSysFunction(reportData, lang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 
@@ -298,18 +303,18 @@ UBReport.prototype.prepareCode = function () {
 }
 
 /**
-* This function must be defined in report code block.
+* This function should be defined in report code block.
 *
-* Implementation must:
+* Implementation should:
 *
 *  - Prepare data
 *  - Run method this.buildHTML(reportData); where reportData is data for mustache template
 *  - If need create PDF run method this.buildPdf(htmlReport); where htmlReport is HTML
-*  - If is server side function must return report as string otherwise Promise
+*  - If is server side function should return report as string otherwise Promise
 *
 * @cfg {function} buildReport
 * @param {Object} reportParams
-* @returns {Promise|Object|String} If code run at server, method must return report data, else - Promise, which resolves to report data
+* @returns {Promise|Object|String} If code run at server, method should return report data, else - Promise, which resolves to report data
 */
 UBReport.prototype.buildReport = function (reportParams) {
   throw new UB.UBError('Function "buildReport" not defined in report code block')

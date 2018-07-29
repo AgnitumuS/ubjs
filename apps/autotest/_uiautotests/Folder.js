@@ -5,7 +5,7 @@ import {
   insertShortcut
 } from './ExtJSHelper/Preconditions'
 
-const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/adm-dev`
+const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:8881/ubadminui`
 const ext = new ExtSelector()
 
 fixture(`Folder tests`)
@@ -18,8 +18,8 @@ test('Add Folder', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
@@ -34,8 +34,8 @@ test('Add Folder', async t => {
     await mainToolbar.load()
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
 
@@ -44,21 +44,21 @@ test('Add Folder', async t => {
   await leftPanel.load()
   let treeID = await leftPanel.getID()
   await t.rightClick(treeID)
-  leftPanel.contextMenuItem('addFolder').click()
+  await leftPanel.contextMenuItem('addFolder').click()
   // Сhange Desktop on "Desktop" drop-down menu
   let baseWindow = ext.baseWindow
   await baseWindow.load()
-  baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
+  await baseWindow.modalForm.setValueToAttr('test_desktop_name', 'desktopID')
   // Fill a field 'Shortcut caption'
-  baseWindow.modalForm.setValueToAttr('test_folder', 'caption')
+  await baseWindow.modalForm.setValueToAttr('test_folder', 'caption')
   // Fill a field 'Code'
-  baseWindow.modalForm.setValueToAttr('test_code_folder', 'code')
+  await baseWindow.modalForm.setValueToAttr('test_code_folder', 'code')
   // Click on button 'Save and close'
-  baseWindow.getFormAction('saveAndClose').click()
+  await baseWindow.getFormAction('saveAndClose').click()
 
   // Verify that new folder displayed on left sidebar
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('test_desktop_code')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('test_desktop_code')
   await leftPanel.load()
   let idFolder = await leftPanel.treeItems.getIdByAttr('code', 'test_code_folder')
   await t.expect(Selector(idFolder).exists).ok('The folder test_folder is not view in left sidebar')
@@ -68,8 +68,8 @@ test('Move Shortcut to Folder', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
@@ -81,8 +81,8 @@ test('Move Shortcut to Folder', async t => {
     await mainToolbar.load()
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
   // check if shortcut and folder is exist
@@ -90,9 +90,9 @@ test('Move Shortcut to Folder', async t => {
   await insertShortcut('test_code_shortcut1', 'test_shortcut1', 'test_desktop_code')
 
   // Open in the top menu: Administrator- UI- Shortcuts
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_navshortcut').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_navshortcut').click()
 
   // Open shortcuts' context menu and click button 'Edit'
   let tabPanel = ext.tabPanel
@@ -110,8 +110,8 @@ test('Move Shortcut to Folder', async t => {
   let formCode = await tabPanel.loadTabPanelChild('basepanel', formParams)
   let form = tabPanel.formPanel(formCode)
   // On the page, should be drop-down menu 'Папка ярлика'
-  form.items.setValueToAttr('test_folder', 'parentID')
-  form.getFormAction('save').click()
+  await form.items.setValueToAttr('test_folder', 'parentID')
+  await form.getFormAction('save').click()
   let folderFieldID = await form.items.getIdByAttr('attributeName', 'parentID')
   // Verify that the correct folder displayed on 'Папка ярлика' drop-down menu
   let folderFieldValue = await form.items.getValueByID(folderFieldID)
@@ -122,8 +122,8 @@ test('Move Shortcut from Folder', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
@@ -135,8 +135,8 @@ test('Move Shortcut from Folder', async t => {
     await mainToolbar.load()
     await t.navigateTo(TEST_PAGE)
     await loginWindow.load()
-    loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-    loginWindow.loginBtnClick()
+    await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+    await loginWindow.loginBtnClick()
     await mainToolbar.load()
   }
   let conditionParams = {
@@ -148,9 +148,9 @@ test('Move Shortcut from Folder', async t => {
   }
   await checkIsShortcutInFolder(conditionParams)
   // Open in the top menu: Administrator- UI- Shortcuts
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_navshortcut').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_navshortcut').click()
 
   // Open shortcuts' context menu and click button 'Edit'
   let tabPanel = ext.tabPanel
@@ -168,24 +168,24 @@ test('Move Shortcut from Folder', async t => {
   let formCode = await tabPanel.loadTabPanelChild('basepanel', formParams)
   let form = tabPanel.formPanel(formCode)
   // Clear the Shortcut folder  textfield
-  form.items.setValueToAttr('', 'parentID')
+  await form.items.setValueToAttr('', 'parentID')
   let folderFieldID = await form.items.getIdByAttr('attributeName', 'parentID')
   // The textfield must be empty
   let folderFieldValue = await form.items.getValueByID(folderFieldID)
   await t.expect(folderFieldValue).eql('', 'folder of shortcut was nor set correctly')
 
   // Click button 'Save and close'
-  form.getFormAction('saveAndClose').click()
+  await form.getFormAction('saveAndClose').click()
   // Relogin
   await t.navigateTo(TEST_PAGE)
   loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
   let leftPanel = ext.leftPanel
   await leftPanel.load()
-  leftPanel.desktopMenuBtn.click()
-  leftPanel.selectDesktopMenuItem('test_desktop_code')
+  await leftPanel.desktopMenuBtn.click()
+  await leftPanel.selectDesktopMenuItem('test_desktop_code')
   await leftPanel.load()
   // The folder is empty. The shortcut will be displayed on UB left panel
   let idFolder = await leftPanel.treeItems.getIdByAttr('code', 'test_code_folder')
@@ -199,16 +199,16 @@ test('Delete Folder', async t => {
   // login
   let loginWindow = ext.loginWindow
   await loginWindow.load()
-  loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
-  loginWindow.loginBtnClick()
+  await loginWindow.setCredentials('UB', {pwd: 'admin', user: 'admin'})
+  await loginWindow.loginBtnClick()
 
   let mainToolbar = ext.mainToolbar
   await mainToolbar.load()
   await insertShortcut('test_code_folder', 'test_folder1', 'adm_desktop')
   // Open in the top menu: Administrator- UI- Shortcuts
-  mainToolbar.desktopMenuBtn('adm_desktop').click()
-  mainToolbar.menuItem('adm_folder_UI').showMenu()
-  mainToolbar.menuItem('ubm_navshortcut').click()
+  await mainToolbar.desktopMenuBtn('adm_desktop').click()
+  await mainToolbar.menuItem('adm_folder_UI').showMenu()
+  await mainToolbar.menuItem('ubm_navshortcut').click()
 
   // Open context menu from existing Shortcut and click 'Delete'
   let tabPanel = ext.tabPanel
@@ -230,7 +230,7 @@ test('Delete Folder', async t => {
 
   // Open context menu from existing Shortcut and click 'Delete'
   await t.rightClick(idTestShortcutRow)
-  grid.selectContextMenuItem({actionID: 'del'})
+  await grid.selectContextMenuItem({actionID: 'del'})
 
   // Click on button 'YES'
   await messageBox.selectAction('yes')
@@ -238,7 +238,6 @@ test('Delete Folder', async t => {
   await t
     .expect(Selector('messagebox').exists).notOk('The message window is not closed')
     .expect(Selector(idTestShortcutRow).exists).notOk('The desktop with code "test_desktop_code" was`nt deleted')
-
 })
 /*
 run commands

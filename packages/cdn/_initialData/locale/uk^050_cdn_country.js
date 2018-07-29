@@ -16,7 +16,7 @@ var
             // {keyValue: 'CHECK',  execParams: {name: 'Розрахунковий'}}		
         ]
     };
-    let rawData = fs.readFileSync(__filename.replace(/\.js$/, '.csv'));
+    let rawData = fs.readFileSync(__filename.replace(/\.js$/, '.csv'), 'utf8');
     let rows = CSV.parse(rawData);
     if (!rows.length) {
         console.error('CSV file with country localisation is empty');

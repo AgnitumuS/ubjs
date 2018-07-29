@@ -70,7 +70,7 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
     			"safeDelete": true
     		},
     		"rls": {
-    			"expression": "'([mi_owner] = :(' + Session.userID + '):)'"
+    			"expression": "`([mi_owner] = :(${Session.userID}):)`"
     		}	
     	}
     }
@@ -84,45 +84,30 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
   
   В результате в условие `where` на сервер БД уйдёт `(tmd.mi_owner = 10)`.
   
-### Пример - использование this
+### Пример - использование ф-ии из пространства имен сущности
   В примере выше мы указали в `rls.expression` непосредственно выражение. но в более сложных случаях предпочтительнее использовать вызов ф-ии:
 
 **tst_maindata.meta**:
     
     ....
     "rls": {
-        "expression": "this.getMainDataRLS()"
+        "expression": "tst_maindata.getMainDataRLS()"
     }
  
 **tst_maindata.js**:
 
     var me = tst_maindata;
     me.getMainDataRLS = function(){
-        console.log('!!!!!!!!!!!!!', this.entity.name); // -> tst_maindata
-        return '([mi_owner] = :(' + Session.userID + '):)';
+      console.log('!!!!!!!!!!!!!', this.entity.name); // -> tst_maindata
+      return `([mi_owner] = :(${Session.userID}):)`
     }
  
-В этом случае сервер вызовет ф-ю getMainDataRLS, установив this в скоуп текущего объекта (назване meta файла).
-Важно! this равен текущему объекту только на верхнем уровне, внутри ф-й он (стандартно для JS) равен контексту вызова, то есть:
-
-**tst_maindata.meta**:
-
-     ....
-     "rls": {
-         "expression": "my_entity.calculateRLS()"
-     }
-
-**my_entity.js**:
-
-    var me = my_entity;
-    me.calculateRLS = function(sender){
-        console.log('!!!!!!!!!!!!!', sender.entity.name); // -> tst_maindata
-        console.log('!!!!!!!!!!!!!', me.entity.name); // -> my_entity
-        if (sender.entity.name === me.entity.name){
-           return '(1=1)';
-        } else {
-          return '(1=0)';
-        }  
+    me.denyNonLocal = function(){
+      if (App.localIPs.indexOf(Session.callerIP) === -1) {
+        return '(1=1)';
+      } else {
+        return '(1=0)';
+      }
     }
 
 Обратите внимание на то, как корректно вернуть что выражение всегда истино - '(1=1)' или ложно '(1=0)'. Такие выражения корректно отработают оптимизаторы любого сервера БД.    

@@ -66,6 +66,7 @@ class TableDefinition {
     this.primaryKey = undefined
     /** @type {Array<FieldDefinition>} */
     this.columns = []
+    /** @type {Array<IndexAttributes>} */
     this.indexes = []
     /** @type {Array<FKAttributes>} */
     this.foreignKeys = []
@@ -130,14 +131,6 @@ class TableDefinition {
 
   /**
    * @param {string} name
-   * @return {number}
-   */
-  getIndexIndexByName (name) {
-    return _.findIndex(this.indexes, {_upperName: name.toUpperCase()})
-  }
-
-  /**
-   * @param {string} name
    * @return {IndexAttributes}
    */
   indexByName (name) {
@@ -145,33 +138,18 @@ class TableDefinition {
   }
 
   /**
-   * @param {string} name
+   * @param {FieldDefinition} column
    * @return {Array<IndexAttributes>}
    */
-  getIndexesByColumnName (name) {
+  getIndexesByColumn (column) {
     let resultIdx = []
     for (let indexObj of this.indexes) {
-      for (let attrCode in indexObj) {
-        if (strIComp(attrCode, name)) {
-          resultIdx.push(indexObj)
-          break
-        }
+      if (indexObj.keys.find(c => c === column._upperName)) {
+        resultIdx.push(indexObj)
+        break
       }
     }
     return resultIdx
-  }
-
-  /**
-   * @param {IndexAttributes} refObj
-   * @return {IndexAttributes|null}
-   */
-  findEqualIndexByParam (refObj) {
-    for (let idxObj of this.indexes) {
-      if (_.isEqual(idxObj.keys, refObj.keys) && ((idxObj.isUnique || false) === (refObj.isUnique || false))) {
-        return idxObj
-      }
-    }
-    return null
   }
 
   /**
@@ -205,10 +183,6 @@ class TableDefinition {
     return obj
   }
 
-  getFKIndexByName (fkName) {
-    return _.findIndex(this.foreignKeys, {_upperName: fkName.toUpperCase()})
-  }
-
   /**
    * @param fkName
    * @return {FKAttributes}
@@ -226,15 +200,6 @@ class TableDefinition {
       }
     }
     return []
-  }
-
-  findEqualFKByParam (refObj) {
-    for (let fkObj of this.foreignKeys) {
-      if (_.isEqual(fkObj.keys, refObj.keys) && strIComp(fkObj.references, refObj.references)) {
-        return fkObj
-      }
-    }
-    return null
   }
 
   addCheckConstr (obj, checkName) {

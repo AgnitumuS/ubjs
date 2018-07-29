@@ -2,7 +2,7 @@
 *.exe
 # *.dll
 *.dcp
-*.so
+# *.so
 *.apk
 *.drc
 *.map
@@ -43,5 +43,6 @@ node_modules/
 .deploy*/
 .idea/
 
-#test files
-*.pdf
+# FPC compiler artifacts
+lib/
+src/backup/

@@ -48,13 +48,19 @@ We strongly recommend to use a (http://standardjs.com/index.html)[JavaScript Sta
 
 ## Build UntyBase packages with lerna
 
-    lerna run build
+  Compiling native modules. Current implementation fpc3.1.1 to be installed.
+  Path to FPC should be added to PATh environment variable:
   
-  Compiling native modules. Current implementation require a Delphi7 & Delphi XE2 || XE4 to be installed
+  ```bash
+  export PATH=~/fpcupdeluxe/fpc/bin/x86_64-linux:$PATH
+  ```
+  
+  Build modules
+  
+  ```bash
+  npm run build
+  ```
 
-	%ub_home%\bin\setEnv.cmd && lerna run build:native --concurrency 1
-
-**Warning** Patched version of SystemJS must be installed form http://registry.unitybase.info - this add a scoped modules support to system.js as described (in this issue)[https://github.com/systemjs/systemjs/issues/1496]
 
 ## Developer environment 
 

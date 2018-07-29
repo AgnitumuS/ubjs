@@ -9,7 +9,8 @@
 
  * Warning! Some autotest may be designed to run only once after application initialization
  *
- * @module @unitybase/ubcli/autotest
+ * @module autotest
+ * @memberOf module:@unitybase/ubcli
  */
 const _ = require('lodash')
 const fs = require('fs')
@@ -37,7 +38,7 @@ module.exports = function autotest (options) {
     if (!options) return
   }
 
-    // redefine debug output
+  // redefine debug output
   console.debug = function () {
     debugOutput.push(util.format.apply(this, arguments))
   }
@@ -115,8 +116,8 @@ module.exports = function autotest (options) {
       process.on('exit', function () {
         console.info((testResults.length - failed.length) + ' of ' + testResults.length + ' tests passed')
         if (failed.length) {
-          fs.writeFileSync(process.cwd() + '_autotestResults.json', JSON.stringify(failed, null, '\t'))
-          console.error(failed.length + ' tests fail. See ' + process.cwd() + '_autotestResults.json for details')
+          fs.writeFileSync(path.join(process.cwd(), '_autotestResults.json'), JSON.stringify(failed, null, '\t'))
+          console.error(failed.length + ' tests fail. See ' + path.join(process.cwd(), '_autotestResults.json') + ' for details')
           throw new Error('Autotest complete with errors')
         }
       })

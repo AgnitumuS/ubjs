@@ -1,12 +1,10 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 24.09.14
  * This UBRepository test
  */
-const _ = require('lodash')
 const assert = require('assert')
 const ok = assert.ok
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const TEST_NAME = 'UB.Repository test'
@@ -28,8 +26,8 @@ module.exports = function runRepositoryTest (options) {
   testRepository()
 
   function testRepository () {
-    var data, row,
-      repository = conn.Repository('uba_user').attrs([ 'ID', 'name' ]).where('ID', '=', 10)
+    let data, row
+    let repository = conn.Repository('uba_user').attrs([ 'ID', 'name' ]).where('ID', '=', 10)
 
     console.debug('test Repository.selectAsObject')
     data = repository.selectAsObject()
@@ -53,5 +51,3 @@ module.exports = function runRepositoryTest (options) {
     //        'plain text result is wrong');
   }
 }
-
-

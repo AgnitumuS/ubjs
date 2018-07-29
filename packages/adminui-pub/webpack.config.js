@@ -6,10 +6,9 @@ const path = require('path')
 
 /**
 Set NODE_ENV=production for production build
-in windows set NODE_ENV=production && webpack reate a "production " var value
 */
 if (process.env.NODE_ENV) process.env.NODE_ENV = process.env.NODE_ENV.trim()
-var PRODUCTION = (process.env.NODE_ENV === 'production')
+const PRODUCTION = (process.env.NODE_ENV === 'production')
 
 module.exports = {
   entry: {
@@ -17,8 +16,8 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    //filename: 'adminui.min.js',
-    //filename: '[name].[hash].js',
+    library: 'adminUI',
+    libraryTarget: 'umd',
     filename: 'adminui.[name].min.js',
     publicPath: '/clientRequire/@unitybase/adminui-pub/dist/'
   },
@@ -55,7 +54,7 @@ module.exports = {
     }]
   },
   // devtool: 'eval',
-  //devtool: 'source-map',
+  // devtool: 'source-map',
   // devtool: 'cheap-module-source-map',
   devtool: PRODUCTION ? 'cheap-source-map' : 'eval',
 

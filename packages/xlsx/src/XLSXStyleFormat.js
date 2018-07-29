@@ -3,13 +3,14 @@
  */
 const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
-let instance = null
+let _instance
 /**
  * @class XLSXStyleControllerFormat Registered format styles
  */
 class XLSXStyleControllerFormat extends XLSXBaseStyleController {
   static instance () {
-    return instance
+    if (!_instance) _instance = new XLSXStyleControllerFormat()
+    return _instance
   }
 
   constructor (config) {
@@ -46,8 +47,6 @@ class XLSXStyleControllerFormat extends XLSXBaseStyleController {
     }
   }
 }
-
-instance = new XLSXStyleControllerFormat()
 
 module.exports = {
   XLSXStyleControllerFormat

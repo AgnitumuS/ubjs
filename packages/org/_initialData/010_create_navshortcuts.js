@@ -1,12 +1,12 @@
 ﻿/**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for ORG model
  */
 
 /**
  * Initial script for create UnityBase Organizational Structure desktop navigation short-cuts (ORG model)
  * Used by ubcli initialize command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function(session){
 var
@@ -97,7 +97,7 @@ var
             desktopID:  desktopID,
             parentID:   folderID,
             code:       'org_employeeonstaff_all',
-            caption:    'Employee on staff',
+            caption:    'Employee on staff (all)',
             iconCls:    'fa fa-briefcase',
             displayOrder: 35,
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_employeeonstaff', method: 'select', fieldList: '*', __mip_recordhistory_all: true}]}}, null, '\t')
@@ -193,20 +193,4 @@ var
             cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_diagram', method: 'select', fieldList: ["ID","caption", "orgunitID.caption"]}]}}, null, '\t')
         }
     });
-
-    console.log('\t\t\tcreate `Border units` shortcut');
-    conn.insert({
-        fieldList: ['ID'],
-        entity: 'ubm_navshortcut',
-        execParams: {
-            desktopID:  desktopID,
-            parentID:   folderID,
-            code:       'org_borderunit',
-            caption:    'Border units',
-            iconCls:    'fa',
-            displayOrder: 10,
-            cmdCode : JSON.stringify({cmdType: 'showList', cmdData: {params:[{ entity: 'org_borderunit', method: 'select', fieldList: '*'}]}}, null, '\t')
-        }
-    });
-
 };

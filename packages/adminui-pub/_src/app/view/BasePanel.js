@@ -236,7 +236,7 @@ Ext.define('UB.view.BasePanel', {
    * @cfg {Boolean} [postOnlySimpleAttributes=false]
    * If `true` form will post only values of modified attributes
    * which do not contain a dot.
-   * Exapmle: if form def is
+   * Example: if form def is
    *    items:[
    *      { attributeName: "nullDict_ID"},
    *      { attributeName: "nullDict_ID.code", readOnly: true},
@@ -255,8 +255,7 @@ Ext.define('UB.view.BasePanel', {
   formWasSaved: false,
 
   initComponent: function () {
-    var
-            me = this
+    var me = this
     if (me.dfm && me.dfm.parentConfig) {
       Ext.apply(me, me.dfm.parentConfig)
     }
@@ -293,11 +292,11 @@ Ext.define('UB.view.BasePanel', {
     _.forEach(me.domainEntity.filterAttribute({dataType: 'Document'}), function (attr) {
       me.documents[attr.code] = attr
     })
-        // domain.getEntityAttributesWithDataTypeAdtDocument(me.entityName);
+    // domain.getEntityAttributesWithDataTypeAdtDocument(me.entityName);
     me.documentsCount = Ext.Object.getSize(me.documents)
 
     me.hasDataHistoryMixin = me.domainEntity.hasMixin('dataHistory')
-        // since by default audit is enabled, we do not write it in the domainInfo. So mixin present only if in meta: audit: {enabled: false}
+    // since by default audit is enabled, we do not write it in the domainInfo. So mixin present only if in meta: audit: {enabled: false}
     me.hasAuditMixin = me.domainEntity.hasMixin('audit')
     me.hasHardSecurityMixin = me.domainEntity.hasMixin('aclRls')
     me.isEntityLockable = me.domainEntity.hasMixin('softLock')
@@ -310,7 +309,7 @@ Ext.define('UB.view.BasePanel', {
 
     me.preprocessPanel()
 
-    if (me.tabID) {  // opened in tab
+    if (me.tabID) { // opened in tab
       if (!me.dockedItems) me.dockedItems = []
 
       me.headerPanel = Ext.create('Ext.panel.Header', {
@@ -347,78 +346,77 @@ Ext.define('UB.view.BasePanel', {
 
     me.details = me.getDetails()
     /**
-     * @event recordloaded
      * Fires when form record load is finish.
      * Use {@link UB.view.BasePanel#formDataReady} to do something when all related structures loaded.
+     * @event recordloaded
      * @param {Ext.data.Model} rec Loaded record
      */
     /**
-     * @event manualsaving
      * Fires just **after** USER call `save` action (press save button or Ctrl+S shortcut)
      * but **before** data passed to a server for update/insert
+     * @event manualsaving
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
      * @param {Object} request  Update/insert ubql (can be modified)
      */
     /**
-     * @event beforesave
      * Fires just before data passed to a server for update/insert
+     * @event beforesave
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
      * @param {Object} request  Update/insert ubql (can be modified)
      */
     /**
-     * @event aftersave
      * Fires when record saved with 2 parameters: (me, result) where result is a record state AFTER server side updating
+     * @event aftersave
      * @param {UB.view.BasePanel} sender BasePanel where save was happened
      */
     /**
-     * @event afterdelete
      * Fires when record deleted
+     * @event afterdelete
      */
     /**
-     * @event formDataReady
      * Fires when data bonded and all form required data loaded (combobox data, details data e.t.c.)
+     * @event formDataReady
      */
     /**
-     * @event beforeDelete
-     * @param {Promise[]}
      * To return Promise put it into income array
      * Fires before delete.
-     *
+     * @event beforeDelete
+     * @param {Promise[]}
      */
     /**
-     * @event beforeRefresh
      * Fires before refresh panel.
+     * @event beforeRefresh
      */
     /**
-     * @event beforeClose
      * Fires before close panel.
+     * @event beforeClose
      */
     /**
-     * @event updateFields
      * Fires after form fields are updated. Updated fields start after: load form data, refresh form data, save form data
+     * @event updateFields
      */
     /**
-     * @event beforeSaveForm
-     * @param {[Number, function][]}
      * You can put into this array your array where first element is orderNumber and second id function.
      * Function will be called to order specified in orderNumber. Each function can return promise. when run for last promise form start savind.
+     * @param Array<Number|Function>
+     * @event beforeSaveForm
      */
     /**
-     * @event controlChanged
      * Fires when any binded control changed by user. When data changed from dataBinder then this event do not fired.
      * If you want to interrupt the data binding then return false from function.
+     * @event controlChanged
      * @param {Ext.form.field.Field} this
      * @param {Object} newValue The new value
      * @param {Object} oldValue The original value
      */
     /**
-    * @event initComponentDone
-    * Fires on component was initialized.
-    */
+     * Fires on component was initialized.
+     * @event initComponentDone
+     */
     /**
+     * Fired when data is bound.
      * @event dataBind
      * @param {Ext.data.Model} record
-     * Fired when data is bound.
      */
     me.addEvents('recordloaded', 'beforesave', 'manualsaving', 'aftersave', 'afterdelete', 'formDataReady',
       'beforeSaveForm', 'beforeDelete', 'beforeClose', 'updateFields',
@@ -2070,8 +2068,8 @@ Ext.define('UB.view.BasePanel', {
    * For examample: for complex attribute 'recStageID.docID.document' it adds 'recStageID.docID' attribute to fieldList
    * @param {Array} componentList
    * @param {Array} attributeNames
-   * @param {int} len length of 'componentList' array
-   * @param {int} i index of current attr in 'componentList' array
+   * @param {number} len length of 'componentList' array
+   * @param {number} i index of current attr in 'componentList' array
    */
   addDocumentAttrForComplexUBDocumentAttr: function (componentList, attributeNames, len, i) {
     var fieldNameParts = componentList[i].attributeName.split('.')
@@ -2098,14 +2096,11 @@ Ext.define('UB.view.BasePanel', {
    */
 
   /**
-   * Fill form field values from record. For non-simple fields (i.e. combobox) fill
+   * Fill form field values from record
    * @param {Ext.data.Model} record
    */
   setFields: function (record) {
-    var
-      me = this,
-      field,
-      fields = me.fields
+    let me = this
 
     if (!record) return
     if (!me.binder.record || (me.binder.record !== record)) {
@@ -2123,20 +2118,20 @@ Ext.define('UB.view.BasePanel', {
       me.disableBinder()
       me.binder.bind(true)
       me.enableBinder()
-
-      for (var i = 0, len = fields.length; i < len; ++i) {
-        field = fields[i]
-// add link between action and field, becase when we need to disable field
+      let fields = me.fields
+      for (let i = 0, len = fields.length; i < len; i++) {
+        let field = fields[i]
+        // add link between action and field, because when we need to disable field
         // we need to disable action menu items
         if (field.xtype === 'ubdocument') {
-          for (var j = 0; j < this.docActions.length; j++) {
+          for (let j = 0, l = this.docActions.length; j < l; j++) {
             if (this.docActions[j].initialConfig.key === field.attributeName) {
               field.action = this.docActions[j]
               break
             }
           }
         }
-        me.updateAls(field, field.attributeName)
+        if (me.record.resultAls) me.updateAls(field, field.attributeName)
       }
       me.fireEvent('updateFields', record)
     } finally {
@@ -2253,7 +2248,7 @@ Ext.define('UB.view.BasePanel', {
       me.actions[actions.history] = new Ext.Action({
         actionId: actions.history,
         iconCls: 'iconHistory',
-        text: UB.i18n('istorijaIzmenenij'),
+        text: UB.i18n('ChangesHistory'),
         eventId: events.history,
         handler: me.onAction,
         scope: me
@@ -3102,22 +3097,7 @@ Ext.define('UB.view.BasePanel', {
         return res
       }
       if (!form.isValid()) {
-        form.getFields().each(function (item) {
-          if (!item.isValid()) {
-            UB.toast({
-              entityTitle: me.domainEntity.caption,
-              fieldLabel: item.fieldLabel,
-              callback: function () {
-                if (me) {
-                  let wnd = me.getFormWin()
-                  if (wnd) wnd.toFront()
-                  Ext.callback(item.focus, item, [], 100)
-                }
-              }
-            })
-            item.focus()
-          }
-        }, me)
+        me.showValidationErrors()
         return Q.resolve(-1)
       }
       if (!form.isValid()) {
@@ -3140,6 +3120,29 @@ Ext.define('UB.view.BasePanel', {
         return me.saveInstance()
       }
     })
+  },
+
+  /**
+   * Show horrible multiple toasts as validation errors.
+   */
+  showValidationErrors: function() {
+    const me = this
+    me.getForm().getFields().each(function (item) {
+      if (!item.isValid()) {
+        UB.toast({
+          entityTitle: me.domainEntity.caption,
+          fieldLabel: item.fieldLabel,
+          callback: function () {
+            if (me) {
+              let wnd = me.getFormWin()
+              if (wnd) wnd.toFront()
+              Ext.callback(item.focus, item, [], 100)
+            }
+          }
+        })
+        item.focus()
+      }
+    }, me)
   },
 
   /**

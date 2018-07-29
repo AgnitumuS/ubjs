@@ -17,7 +17,7 @@ jsPDF.adler32cs = require('./libs/adler32cs.js')
 require('./libs/jsPDF/libs/deflate')
 // MPV - in case of compression we need to modify /libs/jsPDF/libs/deflate to expose Deflater and uncoment lines below
 const Deflater = require('./libs/jsPDF/libs/deflate')
- to.Deflater = Deflater
+to.Deflater = Deflater
 
 const PNG = require('./libs/png')
 to.PNG = PNG

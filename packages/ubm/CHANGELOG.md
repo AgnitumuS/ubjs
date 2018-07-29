@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.12]
+### Fixed
+- fix creation of a new pureExtJS form from adminUI
+
 ## [4.0.48]
 ### Changed
 - `ubm_navshortcut` now not cached on entity level (admin UI cache it using it own mechanism)

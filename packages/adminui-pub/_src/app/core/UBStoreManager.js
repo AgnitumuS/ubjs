@@ -55,7 +55,7 @@ Ext.define('UB.core.UBStoreManager', {
   /**
    * Load a nav. shortcut command text from cache or from server
    * @param {number} shortcutID
-   * @return Promise
+   * @return {Promise}
    */
   getNavshortcutCommandText: function (shortcutID) {
     var cmdCode = UB.core.UBStoreManager.shortcutCommandCache[shortcutID]

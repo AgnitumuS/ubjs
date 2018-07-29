@@ -1,12 +1,12 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Set Entity level security basic rules
  */
 
 /**
  * Initial script for Set Entity level security basic rules for UBS model
  * Used by `ubcli initialize` command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function(session) {
     "use strict";

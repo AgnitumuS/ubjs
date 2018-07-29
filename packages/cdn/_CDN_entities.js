@@ -1,3192 +1,2438 @@
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Addresses
-* @mixes EventEmitter
-* @mixes RequiredModule
-*/
-var cdn_address = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
+ * Set of dictionaries, common for most enterprise systems. For internal organization structure see @ubitybase&#x2F;org module
+ * @version 5.0.10
+ * @module @unitybase/cdn
+ */
 
 /**
-* Attributes of "Addresses"
-* @class
-*/
-function cdn_address_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Address type 
-    * @type {String}
-    */
-    this.addressType = '';
-    /**
-    * Address 
-    * @type {String}
-    */
-    this.value = '';
-    /**
-    * Subject 
-    * @type {Number}
-    */
-    this.subjectID = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Addresses directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_address_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_address_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  addressType: '',
+ /**
+  * @type {String}
+  */
+  value: '',
+ /**
+  * Reference to address owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in beforedelete manually.
+  * @type {Number}
+  */
+  subjectID: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Admin unit
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Addresses directory
+* @type {cdn_address_ns}
 */
-var cdn_adminunit = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_address = new cdn_address_ns()
 /**
-* Attributes of "Admin unit"
-* @class
-*/
-function cdn_adminunit_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Parent (ref -> cdn_adminunit)
-    * Parent
-    * @type {Number}
-    */
-    this.parentAdminUnitID = 0;
-    /**
-    * Code 
-    * Internal code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Full name 
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Admin unit type 
-    * @type {String}
-    */
-    this.adminUnitType = '';
-    /**
-    * Caption 
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    *  
-    * 
-    * @type {String}
-    */
-    this.mi_unityEntity = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Admin unit (country, region, city).
+ * Main parent for countries, regions and cities
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_adminunit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_adminunit_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Parent -> cdn_adminunit
+  * @type {Number}
+  */
+  parentAdminUnitID: null,
+ /**
+  * Internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {String}
+  */
+  name: '',
+ /**
+  * @type {String}
+  */
+  fullName: null,
+ /**
+  * String representation of unit's type for fast queries
+  * @type {String}
+  */
+  adminUnitType: '',
+ /**
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * @type {String}
+  */
+  mi_unityEntity: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Bank branches
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Admin unit (country, region, city).
+ * Main parent for countries, regions and cities
+* @type {cdn_adminunit_ns}
 */
-var cdn_bank = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_adminunit = new cdn_adminunit_ns()
 /**
-* Attributes of "Bank branches"
-* @class
-*/
-function cdn_bank_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Bank code 
-    * Bank branch code
-    * @type {String}
-    */
-    this.MFO = '';
-    /**
-    * Organization code 
-    * Bank organization code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * Name without quotes and ownership. For searching data.
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Full name 
-    * Full official bank name . For displaying in reports.
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Phones 
-    * @type {String}
-    */
-    this.phones = '';
-    /**
-    * Address 
-    * @type {String}
-    */
-    this.address = '';
-    /**
-    * Country (ref -> cdn_country)
-    * Registration country
-    * @type {Number}
-    */
-    this.countryID = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Bank branches directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_bank_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_bank_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Bank branch code
+  * @type {String}
+  */
+  MFO: '',
+ /**
+  * Bank organization code
+  * @type {String}
+  */
+  code: null,
+ /**
+  * Name without quotes and ownership. For searching data.
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Full official bank name . For displaying in reports.
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * @type {String}
+  */
+  phones: null,
+ /**
+  * @type {String}
+  */
+  address: null,
+ /**
+  * Registration country -> cdn_country
+  * @type {Number}
+  */
+  countryID: null,
+ /**
+  * City -> cdn_city
+  * @type {Number}
+  */
+  cityID: null,
+ /**
+  * Description
+  * description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Список будинків
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Bank branches directory
+* @type {cdn_bank_ns}
 */
-var cdn_building = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_bank = new cdn_bank_ns()
 /**
-* Attributes of "Список будинків"
-* @class
-*/
-function cdn_building_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Вулиця (ref -> cdn_street)
-    * @type {Number}
-    */
-    this.streetID = 0;
-    /**
-    * Індекс (ref -> cdn_postindex)
-    * @type {Number}
-    */
-    this.postIndexID = 0;
-    /**
-    * № 
-    * Код
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Опис 
-    * Опис
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Тип 
-    * Тип
-    * @type {String}
-    */
-    this.buildingType = '';
-    /**
-    *  (ref -> cdn_building)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of buildings
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_building_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_building_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  streetID: 0,
+ /**
+  * @type {Number}
+  */
+  postIndexID: 0,
+ /**
+  * Code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Type
+  * @type {String}
+  */
+  buildingType: '',
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Cities
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of buildings
+* @type {cdn_building_ns}
 */
-var cdn_city = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_building = new cdn_building_ns()
 /**
-* Attributes of "Cities"
-* @class
-*/
-function cdn_city_object()  {
-    /**
-    *  (ref -> cdn_adminunit)
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Parent (ref -> cdn_adminunit)
-    * @type {Number}
-    */
-    this.parentAdminUnitID = 0;
-    /**
-    * Code 
-    * City code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * City name
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Caption 
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Description 
-    * City description
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Postal code 
-    * City postal code
-    * @type {String}
-    */
-    this.postalCode = '';
-    /**
-    * Phone code 
-    * City phone code
-    * @type {String}
-    */
-    this.phoneCode = '';
-    /**
-    * Type (ref -> cdn_citytype)
-    * City type
-    * @type {Number}
-    */
-    this.cityTypeID = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Cities directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class cdn_city_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_city_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  parentAdminUnitID: 0,
+ /**
+  * City code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * City name
+  * @type {String}
+  */
+  name: '',
+ /**
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * City description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * City postal code
+  * @type {String}
+  */
+  postalCode: null,
+ /**
+  * City phone code
+  * @type {String}
+  */
+  phoneCode: null,
+ /**
+  * City type -> cdn_citytype
+  * @type {Number}
+  */
+  cityTypeID: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* City types
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Cities directory
+* @type {cdn_city_ns}
 */
-var cdn_citytype = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_city = new cdn_city_ns()
 /**
-* Attributes of "City types"
-* @class
-*/
-function cdn_citytype_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * Internal code of city type
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * City type name
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * City types directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_citytype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_citytype_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Internal code of city type
+  * @type {String}
+  */
+  code: '',
+ /**
+  * City type name
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Contacts
-* @mixes EventEmitter
-* @mixes RequiredModule
+* City types directory
+* @type {cdn_citytype_ns}
 */
-var cdn_contact = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_citytype = new cdn_citytype_ns()
 /**
-* Attributes of "Contacts"
-* @class
-*/
-function cdn_contact_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Contact type (ref -> cdn_contacttype)
-    * @type {Number}
-    */
-    this.contactTypeID = 0;
-    /**
-    * Contact 
-    * @type {String}
-    */
-    this.value = '';
-    /**
-    * Subject 
-    * @type {Number}
-    */
-    this.subjectID = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Contacts directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_contact_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_contact_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  contactTypeID: 0,
+ /**
+  * @type {String}
+  */
+  value: '',
+ /**
+  * Reference to contact owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in delete:before manually
+  * @type {Number}
+  */
+  subjectID: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Contact types
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Contacts directory
+* @type {cdn_contact_ns}
 */
-var cdn_contacttype = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_contact = new cdn_contact_ns()
 /**
-* Attributes of "Contact types"
-* @class
-*/
-function cdn_contacttype_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * Contact type name
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Contact types directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_contacttype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_contacttype_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Contact type name
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Correspondent indexes
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Contact types directory
+* @type {cdn_contacttype_ns}
 */
-var cdn_corrindex = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_contacttype = new cdn_contacttype_ns()
 /**
-* Attributes of "Correspondent indexes"
-* @class
-*/
-function cdn_corrindex_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * Code of correspondent index
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * Name of correspondent index
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Full name 
-    * Full name of correspondent index
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Correspondent indexes directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_corrindex_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_corrindex_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of correspondent index
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of correspondent index
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Full name of correspondent index
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Countries
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Correspondent indexes directory
+* @type {cdn_corrindex_ns}
 */
-var cdn_country = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_corrindex = new cdn_corrindex_ns()
 /**
-* Attributes of "Countries"
-* @class
-*/
-function cdn_country_object()  {
-    /**
-    *  (ref -> cdn_adminunit)
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * Internal code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * Name of the country
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Full name 
-    * Full official name of the country
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Digital code 
-    * Digital code of the country
-    * @type {Number}
-    */
-    this.intCode = 0;
-    /**
-    * ISO code 
-    * 2-character code of the country by ISO classification
-    * @type {String}
-    */
-    this.symbol2 = '';
-    /**
-    * IOC code 
-    * 3-character code of the country by IOC classification
-    * @type {String}
-    */
-    this.symbol3 = '';
-    /**
-    * Description 
-    * Country description
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Phone code 
-    * Country phone code
-    * @type {String}
-    */
-    this.phoneCode = '';
-    /**
-    * Currency (ref -> cdn_currency)
-    * Main currency of the country
-    * @type {Number}
-    */
-    this.currencyID = 0;
-    /**
-    * Capital (ref -> cdn_city)
-    * Capital of the country
-    * @type {Number}
-    */
-    this.capitalID = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Countries directory
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes unity
+ */
+class cdn_country_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_country_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of the country
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Full official name of the country
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Digital code of the country
+  * @type {Number}
+  */
+  intCode: 0,
+ /**
+  * 2-character code of the country by ISO classification
+  * @type {String}
+  */
+  symbol2: '',
+ /**
+  * 3-character code of the country by IOC classification
+  * @type {String}
+  */
+  symbol3: '',
+ /**
+  * Country description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Country phone code
+  * @type {String}
+  */
+  phoneCode: null,
+ /**
+  * Main currency of the country -> cdn_currency
+  * @type {Number}
+  */
+  currencyID: null,
+ /**
+  * Capital of the country -> cdn_city
+  * @type {Number}
+  */
+  capitalID: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Currencies
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Countries directory
+* @type {cdn_country_ns}
 */
-var cdn_currency = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_country = new cdn_country_ns()
 /**
-* Attributes of "Currencies"
-* @class
-*/
-function cdn_currency_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Digital code 
-    * Digital code of currency
-    * @type {Number}
-    */
-    this.intCode = 0;
-    /**
-    * 3-character code 
-    * 3-character code of currency
-    * @type {String}
-    */
-    this.code3 = '';
-    /**
-    * Name 
-    * Name of currency
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Currencies dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_currency_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_currency_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Digital code of currency
+  * @type {Number}
+  */
+  intCode: 0,
+ /**
+  * 3-character code of currency
+  * @type {String}
+  */
+  code3: '',
+ /**
+  * Name of currency
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Default multiplicity
+  * @type {Number}
+  */
+  curMult: 0,
+ /**
+  * Description
+  * Description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Внешние подразделения
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Currencies dictionary
+* @type {cdn_currency_ns}
 */
-var cdn_department = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_currency = new cdn_currency_ns()
 /**
-* Attributes of "Внешние подразделения"
-* @class
-*/
-function cdn_department_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Внутренний код 
-    * Внутренний код подразделения
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Название подразделения 
-    * Название без кавычек и аббревиатур
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Полное название подразделения 
-    * Полное название подразделения
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Описание подразделения 
-    * Описание подразделения
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Название подразделения в родительном падеже 
-    * Название без кавычек и аббревиатур в родительном падеже
-    * @type {String}
-    */
-    this.nameGen = '';
-    /**
-    * Название подразделения в дательном падеже 
-    * Название без кавычек и аббревиатур в дательном падеже
-    * @type {String}
-    */
-    this.nameDat = '';
-    /**
-    * Полное название подразделения в родительном падеже 
-    * Полное название подразделения в родительном падеже
-    * @type {String}
-    */
-    this.fullNameGen = '';
-    /**
-    * Полное название подразделения в дательном падеже 
-    * Полное название подразделения в дательном падеже
-    * @type {String}
-    */
-    this.fullNameDat = '';
-    /**
-    * Тип подразделения (ref -> cdn_deptype)
-    * Тип подразделения
-    * @type {Number}
-    */
-    this.depTypeID = 0;
-    /**
-    * Организация (ref -> cdn_organization)
-    * Организация, которой принадлежит подразделение
-    * @type {Number}
-    */
-    this.organizationID = 0;
-    /**
-    *  (ref -> cdn_department)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * External departments dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_department_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_department_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of the department
+  * @type {String}
+  */
+  code: null,
+ /**
+  * Name of the department
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Full official name of the department
+  * @type {String}
+  */
+  fullName: null,
+ /**
+  * Description of the department
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Department name in genitive case
+  * @type {String}
+  */
+  nameGen: null,
+ /**
+  * Department name in dative case
+  * @type {String}
+  */
+  nameDat: null,
+ /**
+  * Department full official name in genitive case
+  * @type {String}
+  */
+  fullNameGen: null,
+ /**
+  * Department full official name in dative case
+  * @type {String}
+  */
+  fullNameDat: null,
+ /**
+  * Type of the department -> cdn_deptype
+  * @type {Number}
+  */
+  depTypeID: null,
+ /**
+  * Parent external organization -> cdn_organization
+  * @type {Number}
+  */
+  organizationID: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Типы департаментов
-* @mixes EventEmitter
-* @mixes RequiredModule
+* External departments dictionary
+* @type {cdn_department_ns}
 */
-var cdn_deptype = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_department = new cdn_department_ns()
 /**
-* Attributes of "Типы департаментов"
-* @class
-*/
-function cdn_deptype_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Внутренний код типа департамента
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Название 
-    * Название типа департамента
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Department types dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_deptype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_deptype_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of the department type
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of the department type
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Сотрудники внешних организаций
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Department types dictionary
+* @type {cdn_deptype_ns}
 */
-var cdn_employee = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_deptype = new cdn_deptype_ns()
 /**
-* Attributes of "Сотрудники внешних организаций"
-* @class
-*/
-function cdn_employee_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Фамилия 
-    * Фамилия сотрудника
-    * @type {String}
-    */
-    this.lastName = '';
-    /**
-    * Имя 
-    * Имя сотрудника
-    * @type {String}
-    */
-    this.firstName = '';
-    /**
-    * Отчество 
-    * Отчество сотрудника
-    * @type {String}
-    */
-    this.middleName = '';
-    /**
-    * Описание сотрудника внешней организации 
-    * Описание
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Пол 
-    * Пол сотрудника внешней организации
-    * @type {String}
-    */
-    this.sexType = '';
-    /**
-    * Табельный номер 
-    * Табельный номер сотрудника внешней организации
-    * @type {String}
-    */
-    this.uniqNum = '';
-    /**
-    * Суффикс 
-    * Суффикс
-    * @type {String}
-    */
-    this.suffix = '';
-    /**
-    * Краткое ФИО 
-    * Пример: Фамилия И.О.
-    * @type {String}
-    */
-    this.shortFIO = '';
-    /**
-    * Полное ФИО 
-    * Пример: Фамилия Имя Отчество
-    * @type {String}
-    */
-    this.fullFIO = '';
-    /**
-    * Обращение 
-    * Как обращаться к этому человеку
-    * @type {String}
-    */
-    this.apply = '';
-    /**
-    * Фамилия в род. падеже 
-    * Фамилия сотрудника в родительном падеже
-    * @type {String}
-    */
-    this.lastNameGen = '';
-    /**
-    * Фамилия в дат. падеже 
-    * Фамилия сотрудника в дательном падеже
-    * @type {String}
-    */
-    this.lastNameDat = '';
-    /**
-    * Имя в род. падеже 
-    * Имя сотрудника в родительном падеже
-    * @type {String}
-    */
-    this.firstNameGen = '';
-    /**
-    * Имя в дат. падеже 
-    * Имя сотрудника в дательном падеже
-    * @type {String}
-    */
-    this.firstNameDat = '';
-    /**
-    * Отчество в род. падеже 
-    * Отчество сотрудника в родительном падеже
-    * @type {String}
-    */
-    this.middleNameGen = '';
-    /**
-    * Отчество в дат. падеже 
-    * Отчество сотрудника в дательном падеже
-    * @type {String}
-    */
-    this.middleNameDat = '';
-    /**
-    * Краткое ФИО в род. падеже 
-    * Краткое ФИО в родительном падеже
-    * @type {String}
-    */
-    this.shortFIOGen = '';
-    /**
-    * Краткое ФИО в дат. падеже 
-    * Краткое ФИО в дательном падеже
-    * @type {String}
-    */
-    this.shortFIODat = '';
-    /**
-    * Полное ФИО в род. падеже 
-    * Полное ФИО в родительном падеже
-    * @type {String}
-    */
-    this.fullFIOGen = '';
-    /**
-    * Полное ФИО в дат. падеже 
-    * Полное ФИО в дательном падеже
-    * @type {String}
-    */
-    this.fullFIODat = '';
-    /**
-    * Обращение в род. падеже 
-    * Как обращаться к этому человеку в родительном падеже
-    * @type {String}
-    */
-    this.applyGen = '';
-    /**
-    * Обращение в дат. падеже 
-    * Как обращаться к этому человеку в дательном падеже
-    * @type {String}
-    */
-    this.applyDat = '';
-    /**
-    * Департамент (ref -> cdn_department)
-    * Департамент внешней организации, к которой принадлежит этот сотрудник
-    * @type {Number}
-    */
-    this.departmentID = 0;
-    /**
-    * Организация (ref -> cdn_organization)
-    * Внешняя организация, к которой принадлежит этот сотрудник
-    * @type {Number}
-    */
-    this.organizationID = 0;
-    /**
-    * Формулировка адресата 
-    * Формулировка адресата, которая будет отображаться при формировании PDF образа исходящего документа
-    * @type {String}
-    */
-    this.addrText = '';
-    /**
-    *  (ref -> cdn_employee)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of employees of external organizations
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_employee_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_employee_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Employee last name
+  * @type {String}
+  */
+  lastName: '',
+ /**
+  * Employee first name
+  * @type {String}
+  */
+  firstName: '',
+ /**
+  * Employee middle name
+  * @type {String}
+  */
+  middleName: null,
+ /**
+  * Employee description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Employee sex
+  * @type {String}
+  */
+  sexType: '',
+ /**
+  * Employee number
+  * @type {String}
+  */
+  uniqNum: null,
+ /**
+  * Suffix
+  * @type {String}
+  */
+  suffix: null,
+ /**
+  * Example: A.O. Ivanov
+  * @type {String}
+  */
+  shortFIO: '',
+ /**
+  * Example: Anton Olegovich Ivanov
+  * @type {String}
+  */
+  fullFIO: '',
+ /**
+  * Describes how to treat to this person
+  * @type {String}
+  */
+  apply: null,
+ /**
+  * Employee last name in genitive case
+  * @type {String}
+  */
+  lastNameGen: null,
+ /**
+  * Employee last name in dative case
+  * @type {String}
+  */
+  lastNameDat: null,
+ /**
+  * Employee first name in genitive case
+  * @type {String}
+  */
+  firstNameGen: null,
+ /**
+  * Employee first name in dative case
+  * @type {String}
+  */
+  firstNameDat: null,
+ /**
+  * Employee middle name in genitive case
+  * @type {String}
+  */
+  middleNameGen: null,
+ /**
+  * Employee middle name in dative case
+  * @type {String}
+  */
+  middleNameDat: null,
+ /**
+  * Employee short name in genitive case
+  * @type {String}
+  */
+  shortFIOGen: null,
+ /**
+  * Employee short name in dative case
+  * @type {String}
+  */
+  shortFIODat: null,
+ /**
+  * Employee full name in genitive case
+  * @type {String}
+  */
+  fullFIOGen: null,
+ /**
+  * Employee full name in dative case
+  * @type {String}
+  */
+  fullFIODat: null,
+ /**
+  * Describes how to treat to this person in genitive case
+  * @type {String}
+  */
+  applyGen: null,
+ /**
+  * Describes how to treat to this person in dative case
+  * @type {String}
+  */
+  applyDat: null,
+ /**
+  * Department of external organization, which employee belongs -> cdn_department
+  * @type {Number}
+  */
+  departmentID: null,
+ /**
+  * External organization, which employee belongs -> cdn_organization
+  * @type {Number}
+  */
+  organizationID: 0,
+ /**
+  * Formulation of the recipient, that will appear in the formation of outgoing document
+  * @type {String}
+  */
+  addrText: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Расчётные счета
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of employees of external organizations
+* @type {cdn_employee_ns}
 */
-var cdn_orgaccount = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_employee = new cdn_employee_ns()
 /**
-* Attributes of "Расчётные счета"
-* @class
-*/
-function cdn_orgaccount_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Организация (ref -> cdn_organization)
-    * Организация
-    * @type {Number}
-    */
-    this.organizationID = 0;
-    /**
-    * Валюта (ref -> cdn_currency)
-    * Валюта счета
-    * @type {Number}
-    */
-    this.currencyID = 0;
-    /**
-    * Банк (ref -> cdn_bank)
-    * Банк, в котором открыт счет
-    * @type {Number}
-    */
-    this.bankID = 0;
-    /**
-    * КодСчета 
-    * Код счета (Номер счета)
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Тип счета 
-    * Тип счета
-    * @type {String}
-    */
-    this.acctype = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Organization&#39;s current accounts dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_orgaccount_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_orgaccount_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Organization -> cdn_organization
+  * @type {Number}
+  */
+  organizationID: 0,
+ /**
+  * Currency of the account -> cdn_currency
+  * @type {Number}
+  */
+  currencyID: 0,
+ /**
+  * Bank of the account -> cdn_bank
+  * @type {Number}
+  */
+  bankID: 0,
+ /**
+  * Code of the account
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Type of the account
+  * @type {String}
+  */
+  acctype: '',
+ /**
+  * Description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Внешние организации
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Organization&#39;s current accounts dictionary
+* @type {cdn_orgaccount_ns}
 */
-var cdn_organization = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_orgaccount = new cdn_orgaccount_ns()
 /**
-* Attributes of "Внешние организации"
-* @class
-*/
-function cdn_organization_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Внутренний код 
-    * Внутренний код организации
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * ОКПО 
-    * Общий классификатор предприятий и организаций (ОКПО)
-    * @type {String}
-    */
-    this.OKPOCode = '';
-    /**
-    * Налоговый № 
-    * Налоговый номер
-    * @type {String}
-    */
-    this.taxCode = '';
-    /**
-    * № св. НДС 
-    * № свидетельства плательщика НДС
-    * @type {String}
-    */
-    this.vatCode = '';
-    /**
-    * Название организации 
-    * Название без кавычек и аббревиатур
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Полное название организации 
-    * Полное название, как оно указано в свидетельстве о регистрации
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Название организации в родительном падеже 
-    * Название без кавычек и аббревиатур в родительном падеже
-    * @type {String}
-    */
-    this.nameGen = '';
-    /**
-    * Название организации в дательном падеже 
-    * Название без кавычек и аббревиатур в дательном падеже
-    * @type {String}
-    */
-    this.nameDat = '';
-    /**
-    * Полное название организации в родительном падеже 
-    * Полное название, как оно указано в свидетельстве о регистрации, в родительном падеже
-    * @type {String}
-    */
-    this.fullNameGen = '';
-    /**
-    * Полное название организации в дательном падеже 
-    * Полное название, как оно указано в свидетельстве о регистрации, в дательном падеже
-    * @type {String}
-    */
-    this.fullNameDat = '';
-    /**
-    * Описание организации 
-    * Описание
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Тип организации (ref -> cdn_orgbusinesstype)
-    * Тип организации
-    * @type {Number}
-    */
-    this.orgBusinessTypeID = 0;
-    /**
-    * Тип собственности (ref -> cdn_orgownershiptype)
-    * Тип собственности
-    * @type {Number}
-    */
-    this.orgOwnershipTypeID = 0;
-    /**
-    * Индекс корреспондента (ref -> cdn_corrindex)
-    * Индекс корреспондента
-    * @type {Number}
-    */
-    this.corrIndexID = 0;
-    /**
-    * Формулировка адресата 
-    * Формулировка адресата, которая будет отображаться при формировании PDF образа исходящего документа
-    * @type {String}
-    */
-    this.addrText = '';
-    /**
-    * Заголовок 
-    * Заголовок
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    *  (ref -> cdn_organization)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of external organizations
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes fts
+ */
+class cdn_organization_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_organization_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Organization internal code
+  * @type {String}
+  */
+  code: null,
+ /**
+  * Common classifier of enterprises and organizations (CCEO)
+  * @type {String}
+  */
+  OKPOCode: null,
+ /**
+  * Tax number
+  * @type {String}
+  */
+  taxCode: null,
+ /**
+  * VAT (value-added tax) registration certificate number
+  * @type {String}
+  */
+  vatCode: null,
+ /**
+  * Name of organization without the quotes and abbreviations
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Organization name in genitive case
+  * @type {String}
+  */
+  nameGen: null,
+ /**
+  * Organization name in dative case
+  * @type {String}
+  */
+  nameDat: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in genitive case
+  * @type {String}
+  */
+  fullNameGen: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in dative case
+  * @type {String}
+  */
+  fullNameDat: null,
+ /**
+  * Organization description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Organization type -> cdn_orgbusinesstype
+  * @type {Number}
+  */
+  orgBusinessTypeID: null,
+ /**
+  * Ownership type -> cdn_orgownershiptype
+  * @type {Number}
+  */
+  orgOwnershipTypeID: null,
+ /**
+  * Index of correspondent -> cdn_corrindex
+  * @type {Number}
+  */
+  corrIndexID: null,
+ /**
+  * Formulation of the recipient, that will appear in the formation of PDF outgoing document
+  * @type {String}
+  */
+  addrText: null,
+ /**
+  * Caption
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Типы организаций
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of external organizations
+* @type {cdn_organization_ns}
 */
-var cdn_orgbusinesstype = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_organization = new cdn_organization_ns()
 /**
-* Attributes of "Типы организаций"
-* @class
-*/
-function cdn_orgbusinesstype_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Внутренний код типа организации
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Абревиатура 
-    * Абревиатура типа организации
-    * @type {String}
-    */
-    this.shortName = '';
-    /**
-    * Название 
-    * Название типа организации
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Описание 
-    * Описание типа организации
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Гос. орган 
-    * Признак, что организация указанного типа является государственным органом
-    * @type {Boolean}
-    */
-    this.isGovAuthority = undefined;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Organization types dictionary (LTD etc.)
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_orgbusinesstype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_orgbusinesstype_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of the organization type
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Acronim of the organization type
+  * @type {String}
+  */
+  shortName: null,
+ /**
+  * Name of the organization type
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Description of the organization type
+  * @type {String}
+  */
+  fullName: null,
+ /**
+  * Sign, that the organization of this type is a government authority
+  * @type {Boolean}
+  */
+  isGovAuthority: undefined,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Форма собственности
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Organization types dictionary (LTD etc.)
+* @type {cdn_orgbusinesstype_ns}
 */
-var cdn_orgownershiptype = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_orgbusinesstype = new cdn_orgbusinesstype_ns()
 /**
-* Attributes of "Форма собственности"
-* @class
-*/
-function cdn_orgownershiptype_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Внутренний код формы собственности
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Абревиатура 
-    * Абревиатура формы собственности
-    * @type {String}
-    */
-    this.shortName = '';
-    /**
-    * Название 
-    * Название формы собственности
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Полное название 
-    * Полное название формы собственности
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Types of ownership
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_orgownershiptype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_orgownershiptype_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of the ownership type
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Acronim of the ownership type
+  * @type {String}
+  */
+  shortName: null,
+ /**
+  * Name of the ownership type
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Full name of the ownership type
+  * @type {String}
+  */
+  fullName: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Physical persons
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Types of ownership
+* @type {cdn_orgownershiptype_ns}
 */
-var cdn_person = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_orgownershiptype = new cdn_orgownershiptype_ns()
 /**
-* Attributes of "Physical persons"
-* @class
-*/
-function cdn_person_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Last name 
-    * Last name of the person
-    * @type {String}
-    */
-    this.lastName = '';
-    /**
-    * First name 
-    * First name of the person
-    * @type {String}
-    */
-    this.firstName = '';
-    /**
-    * Middle name 
-    * Middle name of the person
-    * @type {String}
-    */
-    this.middleName = '';
-    /**
-    * Identity card 
-    * Person&#39;s identity card
-    * @type {String}
-    */
-    this.identCard = '';
-    /**
-    * Place of work, position 
-    * Place of work, position
-    * @type {String}
-    */
-    this.workPlacePos = '';
-    /**
-    * Birthday 
-    * Birthday of the person
-    * @type {Date}
-    */
-    this.birthDate = new Date();
-    /**
-    * Description 
-    * Description of the person
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Sex 
-    * Sex of the person
-    * @type {String}
-    */
-    this.sexType = '';
-    /**
-    * Sufix 
-    * Sufix of the person
-    * @type {String}
-    */
-    this.suffix = '';
-    /**
-    * Short name 
-    * Example: Antonov I.P.
-    * @type {String}
-    */
-    this.shortFIO = '';
-    /**
-    * Full name 
-    * Example: Antonov Ivan Petrovich
-    * @type {String}
-    */
-    this.fullFIO = '';
-    /**
-    * Apply 
-    * Apply to the person
-    * @type {String}
-    */
-    this.apply = '';
-    /**
-    * Photo 
-    * Person&#39;s photo
-    * @type {String}
-    */
-    this.photo = '';
-    /**
-    * Last name in genitive 
-    * Person&#39;s last name in genitive case
-    * @type {String}
-    */
-    this.lastNameGen = '';
-    /**
-    * Last name in dative 
-    * Person&#39;s last name in dative case
-    * @type {String}
-    */
-    this.lastNameDat = '';
-    /**
-    * First name in genitive 
-    * Person&#39;s first name in genitive case
-    * @type {String}
-    */
-    this.firstNameGen = '';
-    /**
-    * First name in dative 
-    * Person&#39;s first name in dative case
-    * @type {String}
-    */
-    this.firstNameDat = '';
-    /**
-    * Middle name in genitive 
-    * Person&#39;s middle name in genitive case
-    * @type {String}
-    */
-    this.middleNameGen = '';
-    /**
-    * Middle name in dative 
-    * Person&#39;s middle name in dative case
-    * @type {String}
-    */
-    this.middleNameDat = '';
-    /**
-    * Short name in genitive 
-    * Person&#39;s short name in genitive case
-    * @type {String}
-    */
-    this.shortFIOGen = '';
-    /**
-    * Short name in dative 
-    * Person&#39;s short name in dative case
-    * @type {String}
-    */
-    this.shortFIODat = '';
-    /**
-    * Full name in genitive 
-    * Person&#39;s full name in genitive case
-    * @type {String}
-    */
-    this.fullFIOGen = '';
-    /**
-    * Full name in dative 
-    * Person&#39;s full name in dative case
-    * @type {String}
-    */
-    this.fullFIODat = '';
-    /**
-    * Apply in genitive 
-    * Apply to the person in genitive case
-    * @type {String}
-    */
-    this.applyGen = '';
-    /**
-    * Apply in dative 
-    * Apply to the person in dative case
-    * @type {String}
-    */
-    this.applyDat = '';
-    /**
-    * Region (ref -> cdn_region)
-    * Person&#39;s region
-    * @type {Number}
-    */
-    this.regionID = 0;
-    /**
-    * Social status (ref -> cdn_personsocialstatus)
-    * Social status position
-    * @type {Number}
-    */
-    this.socialstatusID = 0;
-    /**
-    * Category (ref -> cdn_personcategory)
-    * Category position
-    * @type {Number}
-    */
-    this.categoryID = 0;
-    /**
-    *  (ref -> cdn_person)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Physical persons dictionary.
+ * The directory stores a list of persons (physical persons)
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes fts
+ */
+class cdn_person_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_person_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Last name of the person
+  * @type {String}
+  */
+  lastName: '',
+ /**
+  * First name of the person
+  * @type {String}
+  */
+  firstName: '',
+ /**
+  * Middle name of the person
+  * @type {String}
+  */
+  middleName: null,
+ /**
+  * Person&#39;s identity card
+  * @type {String}
+  */
+  identCard: null,
+ /**
+  * Place of work, position
+  * @type {String}
+  */
+  workPlacePos: null,
+ /**
+  * Birthday of the person
+  * @type {Date}
+  */
+  birthDate: null,
+ /**
+  * Description of the person
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Sex of the person
+  * @type {String}
+  */
+  sexType: '',
+ /**
+  * Sufix of the person
+  * @type {String}
+  */
+  suffix: null,
+ /**
+  * Example: Antonov I.P.
+  * @type {String}
+  */
+  shortFIO: null,
+ /**
+  * Example: Antonov Ivan Petrovich
+  * @type {String}
+  */
+  fullFIO: '',
+ /**
+  * Apply to the person
+  * @type {String}
+  */
+  apply: null,
+ /**
+  * Person&#39;s photo
+  * @type {String}
+  */
+  photo: null,
+ /**
+  * Person&#39;s last name in genitive case
+  * @type {String}
+  */
+  lastNameGen: null,
+ /**
+  * Person&#39;s last name in dative case
+  * @type {String}
+  */
+  lastNameDat: null,
+ /**
+  * Person&#39;s first name in genitive case
+  * @type {String}
+  */
+  firstNameGen: null,
+ /**
+  * Person&#39;s first name in dative case
+  * @type {String}
+  */
+  firstNameDat: null,
+ /**
+  * Person&#39;s middle name in genitive case
+  * @type {String}
+  */
+  middleNameGen: null,
+ /**
+  * Person&#39;s middle name in dative case
+  * @type {String}
+  */
+  middleNameDat: null,
+ /**
+  * Person&#39;s short name in genitive case
+  * @type {String}
+  */
+  shortFIOGen: null,
+ /**
+  * Person&#39;s short name in dative case
+  * @type {String}
+  */
+  shortFIODat: null,
+ /**
+  * Person&#39;s full name in genitive case
+  * @type {String}
+  */
+  fullFIOGen: null,
+ /**
+  * Person&#39;s full name in dative case
+  * @type {String}
+  */
+  fullFIODat: null,
+ /**
+  * Apply to the person in genitive case
+  * @type {String}
+  */
+  applyGen: null,
+ /**
+  * Apply to the person in dative case
+  * @type {String}
+  */
+  applyDat: null,
+ /**
+  * Person&#39;s region -> cdn_region
+  * @type {Number}
+  */
+  regionID: null,
+ /**
+  * Social status position -> cdn_personsocialstatus
+  * @type {Number}
+  */
+  socialstatusID: null,
+ /**
+  * Category position -> cdn_personcategory
+  * @type {Number}
+  */
+  categoryID: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* The category
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Physical persons dictionary.
+ * The directory stores a list of persons (physical persons)
+* @type {cdn_person_ns}
 */
-var cdn_personcategory = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_person = new cdn_person_ns()
 /**
-* Attributes of "The category"
-* @class
-*/
-function cdn_personcategory_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * Code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * Name
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Ctegory of persons.
+ * The directory stores a list of categories or physical persons
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_personcategory_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_personcategory_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of category
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Social status
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Ctegory of persons.
+ * The directory stores a list of categories or physical persons
+* @type {cdn_personcategory_ns}
 */
-var cdn_personsocialstatus = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_personcategory = new cdn_personcategory_ns()
 /**
-* Attributes of "Social status"
-* @class
-*/
-function cdn_personsocialstatus_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * Code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * Name
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Dictionary of social status.
+ * The directory stores a list of social status for individuals
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_personsocialstatus_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_personsocialstatus_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of social status
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Поштові індекси
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Dictionary of social status.
+ * The directory stores a list of social status for individuals
+* @type {cdn_personsocialstatus_ns}
 */
-var cdn_postindex = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_personsocialstatus = new cdn_personsocialstatus_ns()
 /**
-* Attributes of "Поштові індекси"
-* @class
-*/
-function cdn_postindex_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Індекс 
-    * Індекс
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Вулиця (ref -> cdn_street)
-    * @type {Number}
-    */
-    this.streetID = 0;
-    /**
-    * Опис 
-    * Опис
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * ZIP codes
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_postindex_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_postindex_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Index
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {Number}
+  */
+  streetID: 0,
+ /**
+  * Description
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Професії
-* @mixes EventEmitter
-* @mixes RequiredModule
+* ZIP codes
+* @type {cdn_postindex_ns}
 */
-var cdn_profession = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_postindex = new cdn_postindex_ns()
 /**
-* Attributes of "Професії"
-* @class
-*/
-function cdn_profession_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Код професії
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Назва 
-    * Назва професії
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Назва + код 
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Dictionary of standard professions
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_profession_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_profession_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of profession
+  * @type {String}
+  */
+  name: '',
+ /**
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Регионы
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Dictionary of standard professions
+* @type {cdn_profession_ns}
 */
-var cdn_region = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_profession = new cdn_profession_ns()
 /**
-* Attributes of "Регионы"
-* @class
-*/
-function cdn_region_object()  {
-    /**
-    *  (ref -> cdn_adminunit)
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Предок (ref -> cdn_adminunit)
-    * Предок
-    * @type {Number}
-    */
-    this.parentAdminUnitID = 0;
-    /**
-    * Код 
-    * Внутрішній код
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Тип региона (ref -> cdn_regiontype)
-    * Тип региона
-    * @type {Number}
-    */
-    this.regionTypeID = 0;
-    /**
-    * Название 
-    * Название региона
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Заголовок 
-    * Заголовок региона
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Полное название 
-    * Полное официальное название региона
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Описание 
-    * Описание региона
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Телефонный код 
-    * Телефонный код региона
-    * @type {String}
-    */
-    this.phoneCode = '';
-    /**
-    * Центр (ref -> cdn_city)
-    * Центр региона
-    * @type {Number}
-    */
-    this.centerID = 0;
-    /**
-    *  (ref -> cdn_region)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Regions dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class cdn_region_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_region_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Parent -> cdn_adminunit
+  * @type {Number}
+  */
+  parentAdminUnitID: 0,
+ /**
+  * Internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Type of region -> cdn_regiontype
+  * @type {Number}
+  */
+  regionTypeID: null,
+ /**
+  * Name of region
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Caption
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * Full name of region
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Description of region
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Phone code of region
+  * @type {String}
+  */
+  phoneCode: null,
+ /**
+  * Center of region -> cdn_city
+  * @type {Number}
+  */
+  centerID: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Типы регионов
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Regions dictionary
+* @type {cdn_region_ns}
 */
-var cdn_regiontype = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_region = new cdn_region_ns()
 /**
-* Attributes of "Типы регионов"
-* @class
-*/
-function cdn_regiontype_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Код
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Название 
-    * Название типа региона
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Region types dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_regiontype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_regiontype_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of region type
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Типы штатных единиц
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Region types dictionary
+* @type {cdn_regiontype_ns}
 */
-var cdn_staffunittype = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_regiontype = new cdn_regiontype_ns()
 /**
-* Attributes of "Типы штатных единиц"
-* @class
-*/
-function cdn_staffunittype_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Код
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Название 
-    * Название типа штатной единицы
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Staffunit types dictionary
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class cdn_staffunittype_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_staffunittype_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of the staffunit type
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of the staffunit type
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Список вулиць
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Staffunit types dictionary
+* @type {cdn_staffunittype_ns}
 */
-var cdn_street = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const cdn_staffunittype = new cdn_staffunittype_ns()
 /**
-* Attributes of "Список вулиць"
-* @class
-*/
-function cdn_street_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Назва 
-    * Назва вулиці
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Повна назва 
-    * Повна назва
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Код 
-    * Код
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Тип 
-    * Тип
-    * @type {String}
-    */
-    this.streetType = '';
-    /**
-    * Нас. пункт (ref -> cdn_city)
-    * Населений пункт
-    * @type {Number}
-    */
-    this.cityID = 0;
-    /**
-    *  (ref -> cdn_street)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of streets.
+ * В этом справочнике хранится перечень вулиць
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class cdn_street_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+cdn_street_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Street name
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Street full name
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Code
+  * @type {String}
+  */
+  code: null,
+ /**
+  * Type
+  * @type {String}
+  */
+  streetType: null,
+ /**
+  * City -> cdn_city
+  * @type {Number}
+  */
+  cityID: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
+/**
+* List of streets.
+ * В этом справочнике хранится перечень вулиць
+* @type {cdn_street_ns}
+*/
+const cdn_street = new cdn_street_ns()

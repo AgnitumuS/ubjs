@@ -1,6 +1,6 @@
-## Model for store organization structure of our organizations
+## The model for managing the internal organization structure
 
- - include organizations, departments, staffs, positions, employee, professions
- - Can store hierarchical organization charts
+ - includes organizations, departments, staffs, positions, employees, professions
+ - can store hierarchical organization charts
  - all entities are historical and support safe delete
 

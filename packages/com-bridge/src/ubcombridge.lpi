@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <General>
+      <Flags>
+        <MainUnitHasCreateFormStatements Value="False"/>
+        <MainUnitHasTitleStatement Value="False"/>
+      </Flags>
+      <SessionStorage Value="InProjectDir"/>
+      <MainUnit Value="0"/>
+      <Title Value="ubcombridge"/>
+      <UseAppBundle Value="False"/>
+      <ResourceType Value="res"/>
+    </General>
+    <BuildModes Count="2">
+      <Item1 Name="Default" Default="True"/>
+      <Item2 Name="ReleaseWin64">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="..\bin\$(TargetCPU)\"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3;$(ProjOutDir)"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse\SyNode\puv;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+            <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <SyntaxMode Value="Delphi"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <RelocatableUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="2"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <Options>
+              <ExecutableType Value="Library"/>
+            </Options>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+            </Verbosity>
+            <WriteFPCLogo Value="False"/>
+            <CustomOptions Value="-dSM52"/>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0"/>
+    </RunParams>
+    <Units Count="2">
+      <Unit0>
+        <Filename Value="ubcombridge.dpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="uUBComBridge.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit1>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="..\bin\$(TargetCPU)\"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+      <OtherUnitFiles Value="$Env(UB_SRC)\libs\Synopse\SyNode;$Env(UB_SRC)\libs\Synopse\SyNode\puv;$Env(UB_SRC)\libs\Synopse;$Env(UB_SRC)\libs\Synopse\SQLite3"/>
+      <UnitOutputDirectory Value="..\lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="Delphi"/>
+      </SyntaxOptions>
+    </Parsing>
+    <CodeGeneration>
+      <RelocatableUnit Value="True"/>
+    </CodeGeneration>
+    <Linking>
+      <Options>
+        <ExecutableType Value="Library"/>
+      </Options>
+    </Linking>
+    <Other>
+      <CustomOptions Value="-dSM52"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

@@ -59,7 +59,7 @@
             "description": "Index of correspondent"
         },
         "addrText": {
-            "caption": "Addresse formulation",
+            "caption": "Addressee formulation",
             "description": "Formulation of the recipient, that will appear in the formation of PDF outgoing document"
         },
         "caption": {

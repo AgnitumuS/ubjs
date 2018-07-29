@@ -441,7 +441,7 @@ class DBSQLite3 extends DBAbstract {
   }
 
   genCodeDropColumn (tableDB, columnDB) {
-    this.DDL.dropColumn.push(`alter table ${tableDB.name} drop column ${columnDB.name}`)
+    this.DDL.dropColumn.statements.push(`alter table ${tableDB.name} drop column ${columnDB.name}`)
   }
 
   genCodeDropConstraint (tableName, constraintName) {

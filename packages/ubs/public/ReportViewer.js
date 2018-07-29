@@ -47,18 +47,20 @@ Ext.define('UBS.ReportViewer', {
         })
         break
       case 'html':
-                // control = Ext.create('UB.ux.UBReportEditor', {
         control = Ext.create('UB.ux.UBTinyMCETextArea', {
           readOnly: true,
           hidden: true,
           flex: 1,
+          margin: 0,
           tinyMCEConfig: {
             menubar: false,
             contextmenu: false,
             toolbar: false,
             toolbar1: false,
-                        // allow <a href> onclick events
-            extended_valid_elements: 'a[name|href|target|title|onclick]'
+            // allow <a href> onclick events
+            extended_valid_elements: 'a[name|href|target|title|onclick]',
+            verify_html: false,
+            entity_encoding: 'raw'
           }
         })
         container = Ext.create('Ext.panel.Panel', {
@@ -72,13 +74,12 @@ Ext.define('UBS.ReportViewer', {
             autoScroll: true,
             layout: {
               type: 'hbox',
-              pack: 'center',
               align: 'stretch'
             },
             bodyCls: 'ub-panel-gray',
             items: [control]
           }, {
-            padding: '3 0 3 0',
+            padding: '2 0 2 0',
             layout: {
               type: 'hbox'
             },
@@ -186,13 +187,13 @@ Ext.define('UBS.ReportViewer', {
         me.reportControl.setSrc({ blobData: data })
         break
       case 'html':
-        me.reportControl.show()
+        //me.reportControl.show()
         me.reportControl.setValue(data)
         var ed = me.reportControl.getEditor()
         if (ed && ed.dom) {
           if (me.reportControl.orientation === 'landscape') {
             ed.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-          } else {
+          } else if (me.reportControl.orientation === 'portrait') {
             ed.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
           }
         } else {
@@ -200,12 +201,13 @@ Ext.define('UBS.ReportViewer', {
             editor.on('init', function () {
               if (me.reportControl.orientation === 'landscape') {
                 editor.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-              } else {
+              } else if (me.reportControl.orientation === 'portrait') {
                 editor.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
               }
             })
           }, me, {single: true})
         }
+        me.reportControl.show()
         break
     }
     if (me.getEl()) {

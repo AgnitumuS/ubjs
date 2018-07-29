@@ -1,0 +1,197 @@
+{
+	"httpServer": {
+		"host": "+",
+		"port": "8881",
+		"requestQueueLength": 1000,
+		"maxConnections": 0,
+		"allowCORSFrom": "*",
+		"inetPub": "./inetPub/",
+		"watchFileChanges": {
+			"enabled": true,
+			"hashingStrategy": "ModifyDate"
+		},
+		"threadPoolSize": 8
+	},
+	/*"wsServer": {
+		"host": "+",
+		"port": "888",
+		"path": "ws"
+	},*/
+	"logging": {
+		"path": "./logs",
+		"levels": [
+			"*"
+		],
+		"threadingModel": "IdentifiedInOnFile",
+		"stackTrackDepth": 20,
+		"rotationSizeInMB": 100,
+		"performanceCounters": false
+	},
+	"javascript": {
+		"timeout": -1,
+		"lifetimeInMinutes": 1000,
+		"fullGCPeriod": 100,
+		"maxPerEngineMemory": 512,
+		"maxRecursionDepth": 32
+	},
+	"security": {
+		"authenticationMethods": [
+			"UB", "Negotiate"
+		],
+		"ldapCatalogs": [
+			{
+				"name": "MYDOMAIN",
+				"host": "softline.main",
+				"port": "3268",
+				"useTLS": false,
+				"useSSL": false,
+				"useSasl": true
+			}
+		]
+	},
+	"uiSettings": {
+		"adminUI": {
+			"applicationName": {"en": "Autotest UB SQLServer", "uk": "Автотест UB SQLServer"},
+			"applicationTitle": "AdminUI",
+			"defaultPasswordForDebugOnly": "admin",
+			"themeName": "UBGrayTheme",
+			"loginWindowTopLogoURL": "models/TST/UB200.png",
+			"endpoint": "ubadminui",
+			"messenger": {
+				"enabled": true,
+				"checkInterval": 30
+			},
+			"linter": { "asi": true, "sub": true },
+			"onlyOffice": {
+				"serverIP": "10.8.17.6:32771"
+			}
+		},
+		"portalUI": {
+			"applicationName": "UBCore usage"
+		}
+	},
+	"application": {
+		"defaultLang": "en",
+		"rootHandler": "index.html",
+		"schedulers": {"enabled": false},
+		"domain": {
+			"models": [
+				{
+					"path": "./node_modules/@unitybase/ub"
+				},
+				{
+					"path": "./node_modules/@unitybase/uba"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubs"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubm"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubq"
+				},
+				{
+					"path": "./node_modules/@unitybase/cdn"
+				},
+				{
+					"path": "./node_modules/@unitybase/org"
+				},
+				{
+					"path": "./node_modules/@unitybase/ub-pub"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-pub"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-reg"
+				},
+				{
+					"name": "TST",
+					"path": "./models/TST"
+				}
+			],
+			"implicitlyAddedMixins": [
+				"audit"
+			]
+		},
+		"fts": {
+			"enabled": true,
+			"async": false
+		},
+		"connections": [
+			{
+				"name": "main",
+				"driver": "MSSQLODBC",
+				"isDefault": true,
+				"dialect": "MSSQL2012",
+				"serverName": "ub5_autotest_mssql", // this is an entry in ~/.obdc.ini file
+				"databaseName": "ub5_autotest_lin",
+				"userID": "ub5_autotest_lin",
+				"password": "ub5_autotest_lin",
+				"supportLang": ["en", "uk"]
+			},
+			{
+				"name": "ftsDefault",
+				"driver": "SQLite3",
+				"dialect": "SQLite3",
+				"databaseName": "./autotestFTS.sqlite3",
+				"supportLang": [
+					"en", "uk"
+				],
+				"advSettings": "Synchronous=Off,Tokenizer=stemka"
+			},
+			{
+				"name": "ftsSubjectSearch",
+				"driver": "SQLite3",
+				"dialect": "SQLite3",
+				"databaseName": "./autotestSubjectsFTS.sqlite3",
+				"supportLang": [
+					"en", "uk"
+				],
+				"advSettings": "Synchronous=Off,Tokenizer=stemka"
+			}
+		],
+		"blobStores": [
+			{
+				"name": "mdb",
+				"storeType": "Virtual",
+				"tempPath": "./_temp"
+			},
+			{
+				"name": "simple",
+				"path": "./documents/simple",
+				"tempPath": "./documents/simple/_temp",
+				"isDefault": true,
+				"historyDepth": 2,
+				"storeSize": "Medium",
+				"keepOriginalFileNames": false
+			},
+			{
+				"name": "avatars",
+				"path": "./documents/avatars",
+				"tempPath": "./documents/avatars/_temp",
+				"historyDepth": 0,
+				"storeSize": "Simple",
+				"keepOriginalFileNames": false
+			}
+		],
+		"customSettings": {
+			"docuSign": {
+				"userName":"",
+				"password":"",
+				"integratorKey":"",
+				"apiUrl":"https://demo.docusign.net/restapi"
+			},
+			"mailerConfig": {
+				"targetHost": "mail.softline.main",
+				"targetPort": "25",
+				"fromAddr": "no-reply@softline.kiev.ua",
+				"user": "",
+				"password": "",
+				"autoTLS": false,
+				"auth": false 
+			}
+		}
+	}
+}

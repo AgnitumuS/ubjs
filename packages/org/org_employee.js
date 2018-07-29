@@ -1,195 +1,190 @@
-﻿var
-    me = org_employee;
+﻿const _ = require('lodash')
+const UB = require('@unitybase/ub')
+const App = UB.App
+const Session = UB.Session
+/* global org_employee */
+// eslint-disable-next-line camelcase
+const me = org_employee
 
-me.entity.addMethod('afterupdate');
+let ubaAuditPresent = App.domainInfo.has('uba_audit')
+let auditStore
+if (ubaAuditPresent) {
+  auditStore = UB.DataStore('uba_audit')
+}
 
-/**
- *
- * @param {ubMethodParams} ctxt
- */
-me.afterupdate = function(ctxt) {
-	this.updatestaffunitcaption(ctxt);
-};
-
-/**
- * Raise update for caption of org_employeeonstaff and org_staffunit if needed
- * @param {ubMethodParams} ctxt
- */
-me.updatestaffunitcaption = function(ctxt) {
-	var
-        execParams = ctxt.mParams.execParams,
-        staffsForMe,
-        staffUnit,
-        needUpdate = false,
-        updParams = {};
-
-    staffsForMe  = UB.Repository('org_employeeonstaff').
-        attrs(['staffUnitID']).
-        where('[employeeID]', '=', execParams.ID).
-        select();
-    if(staffsForMe.rowCount === 0) {
-        return;
-    }
-    _.forEach(execParams, function(value, attr) {
-        if (attr.indexOf('shortFIO') !== -1) {
-            needUpdate = true;
-        }
-    });
-    if (!needUpdate) {
-       return;
-    }
-    updParams['caption_'+App.defaultLang+'^'] = '';
-    while (!staffsForMe.eof) {
-        staffUnit = new TubDataStore('org_staffunit');
-        updParams.ID = staffsForMe.get(0);
-        staffUnit.run('update',{
-                fieldList:[],
-                caller: me.entity.name,
-                execParams: updParams,
-                __skipOptimisticLock: true
-            }
-        );
-        staffsForMe.next();
-    }
-
-};
+me.on('update:after', updateCaptionAndLogToAudit)
+me.on('insert:after', ubaAuditLinkUser)
+me.on('delete:after', ubaAuditLinkUserDelete)
 
 /**
- * After link user to employee - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
-function ubaAuditLinkUser(ctx){
-    "use strict";
-    if (!App.domain.byName('uba_audit')){
-        return;
-    }
-    var store, actionUserRepo, linkUser, params = ctx.mParams.execParams;
-    if (params.userID){
-        store = new TubDataStore('uba_audit');
-        actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select();
-        linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', params.userID).select();
-
-        store.run('insert', {
-            execParams: {
-                entity: 'org_employee',
-                entityinfo_id: params.ID,
-                actionType: 'INSERT',
-                actionUser: actionUserRepo.eof ? Session.userID: actionUserRepo.get('name'),
-                actionTime: new Date(),
-                remoteIP: Session.callerIP,
-                targetUser: linkUser.eof ? params.userID: linkUser.get('name'),
-                toValue: JSON.stringify(params)
-            }
-        });
-    }
+function updateCaptionAndLogToAudit (ctx) {
+  updateStaffUnitCaption(ctx)
+  ubaAuditLinkUserModify(ctx)
 }
-me.on('insert:after', ubaAuditLinkUser);
 
 /**
- * After updating user - log event to uba_audit
+ * Update org_staffunit.caption for all staff utits of current employee
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
+function updateStaffUnitCaption (ctxt) {
+  const execParams = ctxt.mParams.execParams
+  // in case shortFIO on any language is modified
+  let attrsForUpdate = Object.keys(execParams)
+  let needUpdate = attrsForUpdate.find(attrName => attrName.startsWith('shortFIO'))
+  if (!needUpdate) return
+  // and employee is assigned to staff
+  let myStaffs = UB.Repository('org_employeeonstaff')
+    .attrs('staffUnitID')
+    .where('[employeeID]', '=', execParams.ID)
+    .select()
+  if (myStaffs.rowCount === 0) return
+
+  let updParams = {
+    ['caption_' + App.defaultLang + '^']: ''
+  }
+  let staffUnitStore = UB.DataStore('org_staffunit')
+  while (!myStaffs.eof) {
+    updParams.ID = myStaffs.get(0)
+    staffUnitStore.run('update', {
+      caller: me.entity.name,
+      execParams: updParams,
+      __skipOptimisticLock: true
+    })
+    myStaffs.next()
+  }
+}
+
+/**
+ * After employee is linked to uba_user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
-function ubaAuditLinkUserModify(ctx){
-    "use strict";
-    if (!App.domain.byName('uba_audit')){
-        return;
+function ubaAuditLinkUser (ctx) {
+  if (!ubaAuditPresent) return
+
+  const execParams = ctx.mParams.execParams
+  if (!execParams.userID) return
+
+  let userName = Session.uData.login
+  let linkUserName = UB.Repository('uba_user').attrs('name')
+    .where('[ID]', '=', execParams.userID)
+    .selectScalar()
+
+  auditStore.run('insert', {
+    execParams: {
+      entity: 'org_employee',
+      entityinfo_id: execParams.ID,
+      actionType: 'INSERT',
+      actionUser: userName,
+      actionTime: new Date(),
+      remoteIP: Session.callerIP,
+      targetUser: linkUserName || execParams.userID,
+      toValue: JSON.stringify(execParams)
     }
-    var
-        params = ctx.mParams.execParams,
-        store = new TubDataStore('uba_audit'),
-        actionUserRepo,
-        origStore = ctx.dataStore,
-        origName = origStore.currentDataName,
-        oldValues, linkUser;
-
-    try {
-        origStore.currentDataName = 'selectBeforeUpdate';
-        oldValues = JSON.parse(origStore.asJSONObject);
-        oldValues = (typeof(oldValues) === 'object') && (oldValues instanceof Array) && oldValues.length > 0 ? oldValues[0]: oldValues;
-    } finally {
-        origStore.currentDataName = origName;
-    }
-
-
-    if (params.userID !== oldValues.userID ){
-        actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select();
-        if (oldValues.userID){
-            linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select();
-            store.run('insert', {
-                execParams: {
-                    entity: 'org_employee',
-                    entityinfo_id: params.ID,
-                    actionType: 'DELETE',
-                    actionUser: actionUserRepo.eof ? Session.userID: actionUserRepo.get('name'),
-                    actionTime: new Date(),
-                    remoteIP: Session.callerIP,
-                    targetUser: linkUser.eof ? oldValues.userID: linkUser.get('name'),
-                    fromValue: JSON.stringify(oldValues),
-                    toValue: JSON.stringify(params)
-                }
-            });
-        }
-        if (params.userID) {
-            linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', params.userID).select();
-            store.run('insert', {
-                execParams: {
-                    entity: 'org_employee',
-                    entityinfo_id: params.ID,
-                    actionType: 'INSERT',
-                    actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
-                    actionTime: new Date(),
-                    remoteIP: Session.callerIP,
-                    targetUser: linkUser.eof ? params.userID: linkUser.get('name'),
-                    fromValue: JSON.stringify(oldValues),
-                    toValue: JSON.stringify(params)
-                }
-            });
-        }
-
-    }
+  })
 }
-me.on('update:after', ubaAuditLinkUserModify);
 
+/**
+ * After employee is reassigned to user - log event to uba_audit
+ * @private
+ * @param {ubMethodParams} ctx
+ */
+function ubaAuditLinkUserModify (ctx) {
+  if (!ubaAuditPresent) return
+
+  const params = ctx.mParams.execParams
+  let actionUser
+  let oldValues, linkUser
+
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  try {
+    origStore.currentDataName = 'selectBeforeUpdate'
+    oldValues = JSON.parse(origStore.asJSONObject)
+    oldValues = ((typeof oldValues === 'object') && (oldValues instanceof Array) && (oldValues.length > 0))
+      ? oldValues[0]
+      : oldValues
+  } finally {
+    origStore.currentDataName = origName
+  }
+
+  if (params.userID !== oldValues.userID) {
+    actionUser = Session.uData.login
+    if (oldValues.userID) {
+      linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
+      auditStore.run('insert', {
+        execParams: {
+          entity: 'org_employee',
+          entityinfo_id: params.ID,
+          actionType: 'DELETE',
+          actionUser: actionUser,
+          actionTime: new Date(),
+          remoteIP: Session.callerIP,
+          targetUser: linkUser.eof ? oldValues.userID : linkUser.get('name'),
+          fromValue: JSON.stringify(oldValues),
+          toValue: JSON.stringify(params)
+        }
+      })
+    }
+    if (params.userID) {
+      linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', params.userID).select()
+      auditStore.run('insert', {
+        execParams: {
+          entity: 'org_employee',
+          entityinfo_id: params.ID,
+          actionType: 'INSERT',
+          actionUser: actionUser,
+          actionTime: new Date(),
+          remoteIP: Session.callerIP,
+          targetUser: linkUser.eof ? params.userID : linkUser.get('name'),
+          fromValue: JSON.stringify(oldValues),
+          toValue: JSON.stringify(params)
+        }
+      })
+    }
+  }
+}
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
-function ubaAuditLinkUserDelete(ctx){
-    "use strict";
-    if (!App.domain.byName('uba_audit')){
-        return;
-    }
-    var
-        params = ctx.mParams.execParams,
-        store = new TubDataStore('uba_audit'),
-        actionUserRepo,
-        origStore = ctx.dataStore,
-        origName = origStore.currentDataName,
-        oldValues, linkUser;
+function ubaAuditLinkUserDelete (ctx) {
+  if (!ubaAuditPresent) return
 
-    try {
-        origStore.currentDataName = 'selectBeforeDelete';
-        oldValues = JSON.parse(origStore.asJSONObject);
-        oldValues = (typeof(oldValues) === 'object') && (oldValues instanceof Array) && oldValues.length > 0 ? oldValues[0]: oldValues;
-    } finally {
-        origStore.currentDataName = origName;
-    }
-    if (oldValues.userID) {
-        actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select();
-        linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select();
-        store.run('insert', {
-            execParams: {
-                entity: 'uba_user',
-                entityinfo_id: params.ID,
-                actionType: 'DELETE',
-                actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
-                actionTime: new Date(),
-                remoteIP: Session.callerIP,
-                targetUser: linkUser.eof ? oldValues.userID: linkUser.get('name'),
-                fromValue: JSON.stringify(oldValues)
-            }
-        });
-    }
+  const params = ctx.mParams.execParams
+  let oldValues, linkUser
+
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  try {
+    origStore.currentDataName = 'selectBeforeDelete'
+    oldValues = JSON.parse(origStore.asJSONObject)
+    oldValues = ((typeof oldValues === 'object') && (oldValues instanceof Array) && (oldValues.length > 0))
+      ? oldValues[0]
+      : oldValues
+  } finally {
+    origStore.currentDataName = origName
+  }
+  if (oldValues.userID) {
+    let actionUser = Session.uData.login
+    linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
+    auditStore.run('insert', {
+      execParams: {
+        entity: 'uba_user',
+        entityinfo_id: params.ID,
+        actionType: 'DELETE',
+        actionUser: actionUser,
+        actionTime: new Date(),
+        remoteIP: Session.callerIP,
+        targetUser: linkUser.eof ? oldValues.userID : linkUser.get('name'),
+        fromValue: JSON.stringify(oldValues)
+      }
+    })
+  }
 }
-me.on('delete:after', ubaAuditLinkUserDelete);

@@ -4,14 +4,15 @@
 const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 
-let instance = null
+let _instance
 
 /**
  * @class XLSXStyleControllerAlign Singleton for manage alignment styles
  */
 class XLSXStyleControllerAlign extends XLSXBaseStyleController {
   static instance () {
-    return instance
+    if (!_instance) _instance = new XLSXStyleControllerAlign()
+    return _instance
   }
 
   /**
@@ -68,8 +69,6 @@ class XLSXStyleControllerAlign extends XLSXBaseStyleController {
     return out.join('')
   }
 }
-
-instance = new XLSXStyleControllerAlign()
 
 module.exports = {
   XLSXStyleControllerAlign

@@ -147,7 +147,7 @@ Scheduler controller is a {@link worker} created during server startup. The task
 a `ubq_scheduler` entity, create an in-memory crontab using [node-cron](https://github.com/ncb000gt/node-cron) module
 and send a async HTTP request to `rest/ubq_messages/executeSchedulerTask` endpoint in accordance with the schedule.
 
-Requests are sent using {@link UBConnection} with a credential of a user, defined in the "runAs" scheduler parameter and
+Requests are sent using {@link SyncConnection} with a credential of a user, defined in the "runAs" scheduler parameter and
 with `UB` authentication schema.
 
 For emulation of a `setTimeout` function {@link WindowTimer} module is used.

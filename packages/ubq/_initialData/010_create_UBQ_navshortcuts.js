@@ -1,12 +1,12 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for UBQ model
  */
 
 /**
  * Initial script for create UnityBase Administration desktop navigation shortcuts for UBQ model
  * Used by `ubcli initialize` command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   'use strict'

@@ -1,6 +1,6 @@
 ﻿{
-    "caption": "Our accounts",
-    "description": "Our organization's current accounts",
+    "caption": "Current accounts",
+    "description": "List of current accounts of internal organizations",
     "attributes": {
         "organizationID": {
             "caption": "Organization",
@@ -16,7 +16,7 @@
         },
         "code": {
             "caption": "Code",
-            "description": "Code of the account"
+            "description": "Code of the account (account number)"
         },
 	"description": {
             "caption": "Description",

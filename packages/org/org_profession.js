@@ -1,10 +1,5 @@
-﻿var me  = org_profession,
-    svc = require('@unitybase/ubs/modules/service').Service;
+﻿/* global org_profession ubs_numcounter */
+// eslint-disable-next-line camelcase
+const me = org_profession
 
-me.entity.addMethod('beforeinsert');
-
-me.beforeinsert = function(ctxt) {
-    svc.setCode(ctxt, '----',12);
-    return true;
-};
-
+me.on('insert:before', ubs_numcounter.generateAutoIncrementalCode)

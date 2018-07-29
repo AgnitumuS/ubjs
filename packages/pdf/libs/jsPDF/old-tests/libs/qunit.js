@@ -1067,7 +1067,6 @@ function registerLoggingCallback(key){
 
 // Supports deprecated method of completely overwriting logging callbacks
 function runLoggingCallbacks(key, scope, args) {
-	//debugger;
 	var callbacks;
 	if ( QUnit.hasOwnProperty(key) ) {
 		QUnit[key].call(scope, args);

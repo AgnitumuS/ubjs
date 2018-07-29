@@ -1,7 +1,7 @@
 /**
  * Reverse proxy with UnityBase based authentication.
  *
- * Use it to authorize a requests using UB and when bypass it to other services
+ * Use it to authorize a requests using UB and when bypass it to another services
  *
  * Example below will check validity of UB authentication header (if not - return 401)
  * and proxy all requests for `cms` endpoint to the `http://localhost:3030`.

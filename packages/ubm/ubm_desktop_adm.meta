@@ -3,7 +3,6 @@
   "sqlAlias": "admdesk",
   "cacheType": "None",
   "descriptionAttribute": "ID",
-  "documentation": "Administering of desktops",
   "attributes": [
     {
       "name": "instanceID",

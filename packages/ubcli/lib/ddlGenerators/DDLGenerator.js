@@ -3,7 +3,7 @@
  rewrite to ES6 & ubcli by pavel.mash 08.2016
  */
 const _ = require('lodash')
-const UBDomain = require('@unitybase/base').UBDomain
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 const {TableDefinition, strIComp} = require('./AbstractSchema')
 
 /**
@@ -16,11 +16,11 @@ function getTableDBName (entity) {
 }
 
 /**
- * Generate a name of a foreign key as it must be in database
+ * Creates the name of the foreign key as it should be in the database
  * @param {string} sourceTableName
  * @param {string} sourceColumnName
  * @param {string} destTableName
- * @param {DDLGenerator.dbDialectes} dialect
+ * @param {string|DDLGenerator.dbDialectes} dialect
  * @return {string}
  */
 function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
@@ -44,7 +44,7 @@ function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = 
         colName = colName.substring(0, 3)
         baseLen = prefix.length + 1 + colName.length
         delta = MAX_IDENTIFIER_LEN - baseLen
-        if (delta < destTableName.length) {
+        if ((delta > 0) && (delta < destTableName.length)) {
           destTableName = destTableName.substring(0, delta)
         } else {
           destTableName = destTableName.substring(0, 3)
@@ -61,7 +61,7 @@ function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = 
 }
 
 /**
- * Return name of an attribute in a database according to mapping and dialect
+ * Return the name of the attribute in the database according to mapping and dialect
  * @param {UBEntity} entity
  * @param {String} attributeCode
  */
@@ -79,26 +79,14 @@ function getAttributeDBName (entity, attributeCode) {
 }
 
 function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory, storage) {
-  var xDef = {
+  let xDef = {
     isUnique: true,
     name: formatName('UIDX_', sqlAlias, `_${attrName.toUpperCase()}`, dialect),
     keys: [ attrName ]
   }
-  if (isHistory) {
-    xDef.keys.push('mi_dateFrom')
-    // если елемент уникален то никак ни в рамках истории одного элемента
+  if (isHistory) xDef.keys.push('mi_dateTo')
     // xDef.keys.push('mi_data_id');
-  }
-  if (storage.safeDelete) {
-    if (DDLGenerator.isPostgre(dialect)) {
-      // felix 29.10.2013 TODO После переделки на COALESCE стало невозможно сравнить индексы на postgres,
-      // рассматривается вариант перехода на ненулевое значение. Пока временно возвращено поле без COALESCE
-      // xDef.keys.push("COALESCE(mi_deletedate, TIMESTAMP WITH TIME ZONE 'epoch')");
-      xDef.keys.push('mi_deleteDate')
-    } else {
-      xDef.keys.push('mi_deleteDate')
-    }
-  }
+  if (storage.safeDelete) xDef.keys.push('mi_deleteDate')
   tableDef.addIndex(xDef)
 }
 
@@ -107,7 +95,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
  * @param prefix
  * @param root
  * @param suffix
- * @param {DDLGenerator.dbDialectes} dialect
+ * @param {string|DDLGenerator.dbDialectes} dialect One of DDLGenerator.dbDialectes
  * @returns {*}
  */
 function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
@@ -143,7 +131,7 @@ class DDLGenerator {
   /**
    * Generate DD SQL for entity list
    * @param {Array<string>} names Entity names (may be regular expressions)
-   * @param {UBConnection} conn
+   * @param {SyncConnection} conn
    * @param {boolean} [unsafe=false]
    * @return {Object} DDL SQL
    */
@@ -205,7 +193,7 @@ class DDLGenerator {
 
   /**
    * Create reference table structure based on metadata
-   * @param {UBConnection} conn
+   * @param {SyncConnection} conn
    * @param {UBEntity} entity
    * @return {TableDefinition}
    */
@@ -229,7 +217,6 @@ class DDLGenerator {
     })
 
     let defaultLang = conn.getAppInfo().defaultLang
-    // generateIndexForPK = (dialect === TubSQLDialect.Oracle);
 
     _.forEach(entity.attributes,
       /** @param {UBEntityAttribute} attribute
@@ -396,14 +383,24 @@ class DDLGenerator {
     let haveDeleteDateInFields = false
     let dialect = entity.connectionConfig.dialect
     let isHistory = entity.mixins.dataHistory
+    function formatBrackets (stringToFormat, ...values) {
+      const FORMAT_RE = /{(\d+)}/g
+      return stringToFormat.replace(FORMAT_RE, function (m, i) {
+        return values[i]
+      })
+    }
     if (entity.dbKeys) {
       dbKeys = entity.dbKeys
       _.forEach(dbKeys, (fields, dbKey) => {
         let indexDef = { name: dbKey, isUnique: true, keys: [], keyOptions: {} }
         _.forEach(fields, (options, field) => {
           let fieldKey = field
-          if (options.func && ((DDLGenerator.isOracle(dialect)) || (DDLGenerator.isPostgre(dialect)))) {
-            fieldKey = options.func + '(' + fieldKey + ')'
+          if (options.func && (DDLGenerator.isOracle(dialect))) {
+            if (options.func.indexOf('{0}') === -1) {
+              fieldKey = options.func + '(' + fieldKey + ')'
+            } else {
+              fieldKey = formatBrackets(options.func, fieldKey)
+            }
           }
           if (options.sort && (DDLGenerator.isEqualStrings(options.sort, 'DESC'))) {
             fieldKey += ' DESC'
@@ -434,8 +431,12 @@ class DDLGenerator {
             case 'INDEX':
               objDef = {name: dbKey, keys: [], isUnique: definition.isUnique}
               _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
-                if (fKeyOptions.func && ((DDLGenerator.isOracle(dialect)) || (DDLGenerator.isPostgre(dialect)))) {
-                  fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
+                if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
+                  if (fKeyOptions.func.indexOf('{0}') === -1) {
+                    fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
+                  } else {
+                    fkeyText = formatBrackets(fKeyOptions.func, fkeyText)
+                  }
                 }
                 if (fKeyOptions.sort && (DDLGenerator.isEqualStrings(fKeyOptions.sort, 'DESC'))) {
                   fkeyText += ' DESC'
@@ -542,7 +543,7 @@ class DDLGenerator {
       dataType,
       description: attribute.description || attribute.caption,
       allowNull,
-      defaultValue: (attribute.defaultValue ? attribute.defaultValue : undefined),
+      defaultValue: (attribute.defaultValue ? attribute.defaultValue : null),
       defaultConstraintName: attribute.defaultValue
         ? formatName(attribute.entity.sqlAlias || attribute.entity.name, `_${fieldName.toUpperCase()}`, '_DEF', attribute.entity.connectionConfig.dialect)
         : '',
@@ -620,10 +621,6 @@ class DDLGenerator {
 
   static isEqualStrings (a, b) {
     return _.isString(a) && _.isString(b) && (a.toUpperCase() === b.toUpperCase())
-  }
-
-  static isEqualArrayKey (array1, array2) {
-    return _.isEqual(array1, array2)
   }
 }
 

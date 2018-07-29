@@ -1,799 +1,420 @@
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Commands
-* @mixes EventEmitter
-* @mixes RequiredModule
-*/
-var ubm_command = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
+ * Set of entities for constructing a dynamically generated UnityBase UI. Enumerations, navigation desktops &amp; shortcuts, forms, ER diagrams
+ * @version 5.0.10
+ * @module @unitybase/ubm
+ */
 
 /**
-* Attributes of "Commands"
-* @class
-*/
-function ubm_command_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Command code 
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Command description 
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Entity 
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    * Command type 
-    * @type {String}
-    */
-    this.cmdType = '';
-    /**
-    * Is default? 
-    * @type {Boolean}
-    */
-    this.isDefault = undefined;
-    /**
-    * Is public 
-    * @type {Boolean}
-    */
-    this.isPublic = undefined;
-    /**
-    * Command definition 
-    * @type {String}
-    */
-    this.cmdData = '';
-    /**
-    * Command parameters 
-    * @type {String}
-    */
-    this.cmdParams = '';
-    /**
-    * Method of parameters specifying 
-    * Defines script or form to specify command parameters
-    * @type {String}
-    */
-    this.paramsFiller = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
+ * Application desktops
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_desktop_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_desktop_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  caption: '',
+ /**
+  * Unique desktop code. Used for version upgrade
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Static server page URL which is displayed in screen centre of selected desktop
+  * @type {String}
+  */
+  url: null,
+ /**
+  * @type {Boolean}
+  */
+  isDefault: undefined,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Desktops
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Application desktops
+* @type {ubm_desktop_ns}
 */
-var ubm_desktop = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubm_desktop = new ubm_desktop_ns()
 /**
-* Attributes of "Desktops"
-* @class
-*/
-function ubm_desktop_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Desktop name 
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Code 
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * URL 
-    * Static server page URL which is displayed in screen centre of selected desktop
-    * @type {String}
-    */
-    this.url = '';
-    /**
-    * Dy default? 
-    * @type {Boolean}
-    */
-    this.isDefault = undefined;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Administering of desktops
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_desktop_adm_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_desktop_adm_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  instanceID: 0,
+ /**
+  * @type {Number}
+  */
+  admSubjID: 0,
 }
-
 /**
 * Administering of desktops
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {ubm_desktop_adm_ns}
 */
-var ubm_desktop_adm = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubm_desktop_adm = new ubm_desktop_adm_ns()
 /**
-* Attributes of "Administering of desktops"
-* @class
-*/
-function ubm_desktop_adm_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Desktop (ref -> ubm_desktop)
-    * @type {Number}
-    */
-    this.instanceID = 0;
-    /**
-    * Admin subject (ref -> uba_subject)
-    * @type {Number}
-    */
-    this.admSubjID = 0;
+ * Entity relation diagrams
+ * @extends EntityNamespace
+ */
+class ubm_diagram_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_diagram_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Model
+  * @type {String}
+  */
+  model: '',
+ /**
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Entity diagram
+  * @type {String}
+  */
+  document: null,
+ /**
+  * Emulate a mStorage.mi_modifyDate for cache version calculation
+  * @type {Date}
+  */
+  mi_modifyDate: null,
 }
-
 /**
-* Entity diagrams
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Entity relation diagrams
+* @type {ubm_diagram_ns}
 */
-var ubm_diagram = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubm_diagram = new ubm_diagram_ns()
 /**
-* Attributes of "Entity diagrams"
-* @class
-*/
-function ubm_diagram_object()  {
-    /**
-    *  
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Model 
-    * Model code where to store diagram
-    * @type {String}
-    */
-    this.model = '';
-    /**
-    * Name 
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Diagram 
-    * Diagram
-    * @type {String}
-    */
-    this.document = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
+ * Enumerated values.
+ * On the UI used as a lookup for attributes with dataType &#x60;Enum&#x60;
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_enum_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_enum_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  eGroup: '',
+ /**
+  * Value code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {String}
+  */
+  shortName: null,
+ /**
+  * @type {String}
+  */
+  name: '',
+ /**
+  * This attribute is used for ordering enum on UI select. Default = 100 for easy change order to be more or less
+  * @type {Number}
+  */
+  sortOrder: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Enumerated values
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Enumerated values.
+ * On the UI used as a lookup for attributes with dataType &#x60;Enum&#x60;
+* @type {ubm_enum_ns}
 */
-var ubm_enum = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubm_enum = new ubm_enum_ns()
 /**
-* Attributes of "Enumerated values"
-* @class
-*/
-function ubm_enum_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Group 
-    * Group of enumeration
-    * @type {String}
-    */
-    this.eGroup = '';
-    /**
-    * Code 
-    * Value code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Short name 
-    * @type {String}
-    */
-    this.shortName = '';
-    /**
-    * Value name 
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * N order 
-    * @type {Number}
-    */
-    this.sortOrder = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Definition of interface forms
+ * @extends EntityNamespace
+ */
+class ubm_form_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_form_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Keep it empty to use entity name as form caption
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * Form definition type (auto or custom)
+  * @type {String}
+  */
+  formType: '',
+ /**
+  * Form interface definition
+  * @type {String}
+  */
+  formDef: null,
+ /**
+  * JS worm client logic
+  * @type {String}
+  */
+  formCode: null,
+ /**
+  * Model where form is stored
+  * Model where form is stored. If empty - entity model is used. The purpose of this attribute is to develop a form for entities form other models
+  * @type {String}
+  */
+  model: null,
+ /**
+  * Entity code
+  * This value is used for fount default entity form
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * Default entity form
+  * On AdminUI execution of `doCommand.showForm` without passing a form code as a parameter client seek for form for entity, and if exist > 1 form - form with isDefault=true is selected
+  * @type {Boolean}
+  */
+  isDefault: undefined,
+ /**
+  * Emulate a mStorage.mi_modifyDate for cache version calculation
+  * @type {Date}
+  */
+  mi_modifyDate: null,
 }
-
 /**
-* Form
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Definition of interface forms
+* @type {ubm_form_ns}
 */
-var ubm_form = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubm_form = new ubm_form_ns()
 /**
-* Attributes of "Form"
-* @class
-*/
-function ubm_form_object()  {
-    /**
-    *  
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Form code 
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Description 
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Form caption 
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Form type 
-    * @type {String}
-    */
-    this.formType = '';
-    /**
-    * Form definition 
-    * Form interface definition
-    * @type {String}
-    */
-    this.formDef = '';
-    /**
-    * Form script 
-    * JS form client logic
-    * @type {String}
-    */
-    this.formCode = '';
-    /**
-    * Entity 
-    * Entity code
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    * Is default 
-    * Is this is default entity form
-    * @type {Boolean}
-    */
-    this.isDefault = undefined;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
+ * Metadata for build navbars
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes tree
+ */
+class ubm_navshortcut_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_navshortcut_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  desktopID: 0,
+ /**
+  * @type {Number}
+  */
+  parentID: null,
+ /**
+  * Unique shortcut code. Used for version upgrade
+  * @type {String}
+  */
+  code: '',
+ /**
+  * @type {Boolean}
+  */
+  isFolder: undefined,
+ /**
+  * @type {String}
+  */
+  caption: '',
+ /**
+  * @type {String}
+  */
+  cmdCode: null,
+ /**
+  * Display in new window
+  * @type {Boolean}
+  */
+  inWindow: undefined,
+ /**
+  * Show collapsed at the first start
+  * It make sense if isFolder = true
+  * @type {Boolean}
+  */
+  isCollapsed: undefined,
+ /**
+  * Display order (in current node)
+  * @type {Number}
+  */
+  displayOrder: 0,
+ /**
+  * @type {String}
+  */
+  iconCls: null,
+ /**
+  * @type {String}
+  */
+  mi_treePath: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Shortcut
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Metadata for build navbars
+* @type {ubm_navshortcut_ns}
 */
-var ubm_navshortcut = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubm_navshortcut = new ubm_navshortcut_ns()
 /**
-* Attributes of "Shortcut"
-* @class
-*/
-function ubm_navshortcut_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Desktop (ref -> ubm_desktop)
-    * @type {Number}
-    */
-    this.desktopID = 0;
-    /**
-    * Shortcut folder (ref -> ubm_navshortcut)
-    * 
-    * @type {Number}
-    */
-    this.parentID = 0;
-    /**
-    * Code 
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Is this folder? 
-    * @type {Boolean}
-    */
-    this.isFolder = undefined;
-    /**
-    * Shortcut name 
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Command code 
-    * @type {String}
-    */
-    this.cmdCode = '';
-    /**
-    * In new window 
-    * Display command result in new window or inside panel
-    * @type {Boolean}
-    */
-    this.inWindow = undefined;
-    /**
-    * Collapsed 
-    * Show collapsed at the first start
-    * @type {Boolean}
-    */
-    this.isCollapsed = undefined;
-    /**
-    * № order 
-    * Display order (in current folder)
-    * @type {Number}
-    */
-    this.displayOrder = 0;
-    /**
-    * icon css class name 
-    * @type {String}
-    */
-    this.iconCls = '';
-    /**
-    *  
-    * 
-    * @type {String}
-    */
-    this.mi_treePath = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Description.
+ * This entity used by $.currentUserOrUserGroupInAdmSubtable RLS macro
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubm_navshortcut_adm_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubm_navshortcut_adm_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  instanceID: 0,
+ /**
+  * @type {Number}
+  */
+  admSubjID: 0,
 }
-
 /**
-* Administering of navigation panel
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Description.
+ * This entity used by $.currentUserOrUserGroupInAdmSubtable RLS macro
+* @type {ubm_navshortcut_adm_ns}
 */
-var ubm_navshortcut_adm = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
-/**
-* Attributes of "Administering of navigation panel"
-* @class
-*/
-function ubm_navshortcut_adm_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Navshortcut (ref -> ubm_navshortcut)
-    * @type {Number}
-    */
-    this.instanceID = 0;
-    /**
-    * Subject of administration (ref -> uba_subject)
-    * @type {Number}
-    */
-    this.admSubjID = 0;
-}
-
-/**
-* Scripts
-* @mixes EventEmitter
-* @mixes RequiredModule
-*/
-var ubm_script = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
-/**
-* Attributes of "Scripts"
-* @class
-*/
-function ubm_script_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * Code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Caption 
-    * Caption
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Description 
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Entity 
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    * Script body 
-    * @type {String}
-    */
-    this.scriptCode = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
-}
-
+const ubm_navshortcut_adm = new ubm_navshortcut_adm_ns()

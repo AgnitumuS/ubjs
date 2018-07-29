@@ -16,7 +16,7 @@ var csvLoader = require('@unitybase/base').dataLoader, conn = session.connection
 
 var fContent, csvData, fileName = __dirname + '/ALLADUsers.csv', dataLength, i, lVal, resData = []
 
-fContent = fs.readFileSync(fileName)
+fContent = fs.readFileSync(fileName, 'utf8')
 if (!fContent) { throw new Error('File ' + fileName + ' is empty or not exist') }
 fContent = fContent.trim()
 csvData = csv.parse(fContent, ',')
@@ -24,7 +24,7 @@ if (!Array.isArray(csvData)) {
   throw new Error('Invalid CSV format or file ' + fileName + ' not found')
 }
 if (csvData.length < 1) {
-  throw UB.format('Length of CSVData ({0}) smaller then startRow ({1})', csvData.length, 1)
+  throw new Error(`Length of CSVData (${csvData.length}) smaller then startRow (1)`)
 }
 csvData.splice(0, 1)
 

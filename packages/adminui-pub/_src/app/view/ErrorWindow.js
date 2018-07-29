@@ -10,6 +10,7 @@
  * @singleton
  */
 //@define UB.view.ErrorWindow
+const UBPub = require('@unitybase/ub-pub')
 if (!UB.view){
     UB.view = {};
 }
@@ -27,7 +28,6 @@ UB.view.ErrorWindow = {
      */
   showError: function(config){
       var me = this;
-      config.errMsg = UB.i18n(config.errMsg);
 
       if (!me.isInited){
           me.init();
@@ -62,7 +62,6 @@ UB.view.ErrorWindow = {
       eDiv.appendChild(msgDiv);
 
       msgDiv.oncontextmenu = function(event){
-          //debugger;
           var removeCtxMenu = function(){
               me.removeEvent(document.body, "click", closeMenu);
               document.body.removeChild(msgDiv);
@@ -266,42 +265,11 @@ UB.view.ErrorWindow = {
       me.mask.onkeypress = lockKey;
       me.mask.onkeyup = lockKey;
       me.mask.onkeydown = btn.onkeydown;
-
   }
-
 };
 
-/**
- *  Show error window.
- *  Translate error message using {@link UB#i18n i18n}
- * @param {String|Object|Error|UBError} errMsg  message to show
- * @param {String} [errCode] (Optional) error code
- * @param {String} [entityCode] (Optional) entity code
- */
-UB.showErrorWindow = function(errMsg, errCode, entityCode, detail){
-    var errDetails = detail || '';
-    if (errMsg && errMsg instanceof UB.UBError){
-        errCode = errMsg.code;
-        errDetails = errMsg.detail;
-        if(errMsg.stack) {
-            errDetails += '<BR/>stackTrace:' + errMsg.stack;
-        }
-        errMsg = errMsg.message;
-    } else if (errMsg instanceof Error){
-        if(errMsg.stack) {
-            errDetails += '<BR/>stackTrace:' + errMsg.stack;
-        }
-        errMsg = errMsg.toString();
-    } else if ( Ext.isObject(errMsg) ){
-        errCode = errMsg.errCode;
-        entityCode = errMsg.entity;
-        errMsg = errMsg.errMsg ? errMsg.errMsg : JSON.stringify(errMsg);
-        errDetails = errMsg.detail || errDetails;
-    }
-      //var wnd = Ext.WindowMgr.get('ub-error-Window') ||  Ext.create('UB.view.ErrorWindow',{id:'ub-error-Window'});
-    UB.view.ErrorWindow.showError({errMsg: errMsg, errCode: errCode, entityCode: entityCode, detail: errDetails });
-};
-
+// redefine error reporter to use a Ext based error window
+UBPub.setErrorReporter(UB.view.ErrorWindow.showError.bind(UB.view.ErrorWindow))
 
 UB.showResponseError = function(result){
     if (result.errCode === UB.core.UBCommand.errCode.MODIFIED_BY_ANOTHER_USER) {

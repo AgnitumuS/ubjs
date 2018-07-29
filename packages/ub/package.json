@@ -1,10 +1,12 @@
 {
   "name": "@unitybase/ub",
-  "version": "4.1.1",
+  "version": "5.0.27",
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub",
   "config": {
-    "ubmodel": "UB"
+    "ubmodel": {
+      "name": "UB"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m UB -skipModules",
@@ -15,13 +17,17 @@
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "main": "0_init.js",
+  "main": "modelUB.js",
   "dependencies": {
-    "@unitybase/base": "^4.3.1",
+    "@unitybase/base": "^5.0.17",
+    "@unitybase/blob-stores": "^5.0.11",
+    "@unitybase/cs-shared": "^5.0.8",
+    "lodash": "^4",
     "mime-types": "^2.1.12"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.13"
+    "@unitybase/cryptojs": "^1.0.13",
+    "@unitybase/stubs": "^5.0.9"
   },
   "keywords": [
     "UnityBase",

@@ -27,6 +27,14 @@ module.exports = {
       loader: 'style-loader!css-loader'
     }]
   },
+  externals: {
+    lodash: {
+      commonjs: 'lodash',
+      commonjs2: 'lodash',
+      amd: 'lodash',
+      root: '_'
+    }
+  },
   devtool: 'cheap-module-source-map',
   plugins: [
     new webpack.optimize.UglifyJsPlugin({

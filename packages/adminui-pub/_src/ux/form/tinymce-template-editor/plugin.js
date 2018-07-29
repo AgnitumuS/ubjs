@@ -14,9 +14,9 @@ tinymce.PluginManager.add('templateEditor', function (editor, url) {
     if (!trElm) return
 
     if (trElm.previousSibling && trElm.previousSibling.nodeName === '#comment' &&
-      trElm.previousSibling.nodeValue && /^{{[#\/]{0,1}?\w*?}}$/.test(trElm.previousSibling.nodeValue)
+      trElm.previousSibling.nodeValue && /^{{[#/]{0,1}?\w*?}}$/.test(trElm.previousSibling.nodeValue)
     ) {
-      let match = trElm.previousSibling.nodeValue.match(/^{{[#\/]{0,1}?(\w*?)}}$/)
+      let match = trElm.previousSibling.nodeValue.match(/^{{[#/]{0,1}?(\w*?)}}$/)
       if (match && match.length > 1) {
         data.templateType = match[1]
       }
@@ -135,4 +135,3 @@ tinymce.PluginManager.add('templateEditor', function (editor, url) {
   })
   editor.on('dblclick', templateProps)
 })
-

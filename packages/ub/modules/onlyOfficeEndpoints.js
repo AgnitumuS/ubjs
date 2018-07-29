@@ -1,8 +1,7 @@
-/* global TubDocumentRequest, TubLoadContentBody */
-/* global Session, App */
-
 /**
- * @type {{notifyDocumentSaved: notifyDocumentSaved, getDocumentOffice: getDocumentOffice, getOnlyOfficeConfiguration: getOnlyOfficeConfiguration}}
+ * WIP: not finished yet
+ * @module onlyOfficeEndpoints
+ * @memberOf module:@unitybase/ub
  */
 module.exports = {
   notifyDocumentSaved,

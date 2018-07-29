@@ -91,7 +91,7 @@ function addMustacheSysFunction (data, lang) {
    * Function for format number by pattern. Fix number data type and pattern "sum". Usage {{/$fs}}"fieldName"{{#$fs}}
    */
   data.$fs = data.$$fs = function () {
-    return formatMustache(lang, 'sum', 'number')
+    return formatMustache(lang, 'sumDelim', 'number')
   }
 
   data.crn = function () {

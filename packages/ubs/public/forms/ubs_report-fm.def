@@ -57,7 +57,15 @@ exports.formDef = {
           items: [
             { attributeName: 'model' },
             { attributeName: 'report_code' /* Report code */},
-            { attributeName: 'name' }
+            { attributeName: 'name' },
+            {
+                xtype: 'label',
+                ubID: 'newFormTip',
+                style: {
+                    backgroundColor: 'yellow'
+                },
+                text: 'TIP: Save form before switch to "' + UB.i18n('report_code') + '" tab for script boilerplate generation'
+            }
           ]
         }, { xtype: 'panel',
           layout: { type: 'hbox'},

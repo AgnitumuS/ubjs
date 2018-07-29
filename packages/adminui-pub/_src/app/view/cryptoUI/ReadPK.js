@@ -107,7 +107,7 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
       allowBlank: false,
       //cls: 'ub-login-input',
       labelClsExtra: 'fa fa-key fa-2x',
-      requireText: UB.i18n('parol'),
+      requireText: UB.i18n('Password'),
       fieldLabel: ' ',
       labelSeparator: '',
       labelWidth: 40,

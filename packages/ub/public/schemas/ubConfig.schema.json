@@ -27,7 +27,7 @@
             "None"
           ],
           "default": "HTTPSys",
-          "description": "The type of HTTP server\n\n |Value  |Description\n|-\n| `None`|No HTTP server\n| `HTTPSys`| HTTP.sys kernel mode driver used. Fast, but require URL to be written to routing table using _ub -http register_ command \n| `Socket` | Plain socket powered by IOCP"
+          "description": "The type of HTTP server\n\n |Value  |Description\n|-\n| `None`|No HTTP server\n| `HTTPSys`| HTTP.sys kernel mode driver used. Fast, but require URL to be written to routing table using _ub -http register_ command \n| `Socket` | Plain socket. Require reverse proxy for production usage"
         },
         "protocol": {
           "enum": [
@@ -44,13 +44,18 @@
         },
         "port": {
           "type": "string",
-          "default": "888",
+          "default": "8881",
           "description": "Port to listen on"
         },
         "path": {
           "type": "string",
           "default": "/",
           "description": "Begin of URL to listen on. Server will listen on `protocol://host:port/path`.<br>Several HTTPSys based server instances can share the same `host:port` combinations with the different paths"
+        },
+        "externalURL": {
+          "type": "string",
+          "default": "equal to full server URL",
+          "description": "URL that the User will use to access your server. To be used in case server is behind a reverse proxy"
         },
         "additionalURLs": {
           "type": "Array",
@@ -155,11 +160,6 @@
           "type": "string",
           "description": "Origins for cross-origin resource sharing (CORS). See <a href=\"https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS\">mozilla documentation</a><br>Can be set e.g. to '\"*\"' to allow requests from any sites, or specify an URI to be allowed as origin (e.g. 'http://foo.example'). By default (empty) CORS are not allowed"
         },
-        "remoteIPHeader": {
-          "type": "string",
-          "description": "The value of a custom HTTP header containing the real client IP. By default, the RemoteIP information will be retrieved from the socket layer - but if the server runs behind some proxy service, you should define here the HTTP header name which indicates the true remote client IP value, mostly as 'X-Real-IP' or 'X-Forwarded-For'",
-          "default": ""
-        },
         "compression": {
           "enum": [
             "zip",
@@ -212,6 +212,34 @@
               "description": "Set it to 0 to remove limit at all. The minimum send rate, in bytes-per-second, for the response. The default response send rate is 150 bytes-per-second"
             }
           }
+        },
+        "reverseProxy": {
+          "type": "object",
+          "description": "Required for `Socket` server",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "nginx"
+              ],
+              "description": "Reserved"
+            },
+            "remoteIPHeader": {
+              "type": "string",
+              "description": "The value of a custom HTTP header containing the real client IP. By default, the RemoteIP information will be retrieved from the socket layer - but if the server runs behind some proxy service, you should define here the HTTP header name which indicates the true remote client IP value, mostly as 'X-Real-IP' or 'X-Forwarded-For'",
+              "default": ""
+            },
+            "sendFileHeader": {
+              "type": "string",
+              "default": "",
+              "description": "Send static files using reverse proxy X-Sendfile feature. For nginx should be `X-Accel-Redirect`"
+            },
+            "sendFileLocationRoot": {
+              "type": "string",
+              "default": "ubstatic",
+              "description": "Prefix added to the beginning of sendFileHeader location"
+            }
+          }
         }
       }
     },
@@ -219,7 +247,6 @@
       "type": "object",
       "description": "Built-in WebSocket server configuration",
       "additionalProperties": false,
-      "required": [ ],
       "defaultProperties": [
         "protocol",
         "host",
@@ -242,7 +269,7 @@
         },
         "port": {
           "type": "string",
-          "default": "888",
+          "default": "8881",
           "description": "Port to listen on"
         },
         "path": {
@@ -316,7 +343,7 @@
         },
         "path": {
           "type": "string",
-          "default": ".\\\\log",
+          "default": "./logs",
           "description": "Path to folder where server place log files (including rotated logs)"
         },
         "rotationSizeInMB": {
@@ -391,11 +418,11 @@
           "default": 32,
           "description": "Maximum recursion depth"
         },
-		"debuggerListenOn": {
-			"type": "string",
-			"default": "6000",
-			"description": "[IP_Adress:]port whre remote debugger is listen on. If IP_Adress is omitted - 0.0.0.0 will be used. Debuger enabled only in -dev mode"
-		}
+        "debuggerListenOn": {
+          "type": "string",
+          "default": "6000",
+          "description": "[IP_Adress:]port whre remote debugger is listen on. If IP_Adress is omitted - 0.0.0.0 will be used. Debuger enabled only in -dev mode"
+        }
       }
     },
     "security": {
@@ -422,8 +449,8 @@
           "default": true,
           "description": "Will force a NTLM usage for Negotiate authentication method. If false - Kerberos will be used in most case"
         },
-	"simpleCertAuth": {
-	  "type": "boolean",
+        "simpleCertAuth": {
+          "type": "boolean",
           "default": false,
           "description": "If `true` will not require password for CERT authentication (only secret key passrord is required)"
         },
@@ -576,10 +603,12 @@
               "description": "Domain models. Loaded in the order in which they appear in this array",
               "items": {
                 "type": "object",
+                "required": ["path"],
                 "properties": {
                   "name": {
                     "type": "string",
-                    "unique": true
+                    "unique": true,
+                    "description": "Model name. If omitted - will be taken from model package.json `config.ubmodel.name`"
                   },
                   "path": {
                     "type": "string",
@@ -587,8 +616,8 @@
                   },
                   "publicPath":{
                     "type": "string",
-                    "default": "path + '\\public'",
-                    "description": "Starting from UB4 - path to public model folder. In UB<4 always === \"path + '\\public'"
+                    "default": "path + 'public'",
+                    "description": "Path to public model folder. If model name is taken from model package.json publicPath can also be defined there"
                   }
                 }
               }
@@ -605,7 +634,7 @@
         },
         "connections": {
           "type": "array",
-          "description": "Database connections. Main article is <a href=\"https://dev.softengi.com/confluence/pages/viewpage.action?pageId=65274525#Installation(requirements)-Databaseaccessrequirements\">here</a> Tips: <ul><li>You can use oracle client without install it. Just copy files distributed with <a href=\"http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html\">Oracle Instant Client</a> to the bin\\OracleInstantClient</li><li>To prevent storing oracle credential in config you can use <a href=\"For details see here: https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=65274525\">Oracle Wallet</a></li><li>to prevent Oracle client disconnect in case on inactivity add the SQLNET.EXPIRE_TIME to the sqlnet.ora file on the server and set it and set it to some interval (10 for example)</li></ul>",
+            "description": "Database connections. Main article is <a href=\"https://dev.intecracy.com/confluence/pages/viewpage.action?pageId=65274525#Installation(requirements)-Databaseaccessrequirements\">here</a> Tips: <ul><li>You can use oracle client without install it. Just copy files distributed with <a href=\"http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html\">Oracle Instant Client</a> to the bin\\OracleInstantClient</li><li>To prevent storing oracle credential in config you can use <a href=\"For details see here: https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=65274525\">Oracle Wallet</a></li><li>to prevent Oracle client disconnect in case on inactivity add the SQLNET.EXPIRE_TIME to the sqlnet.ora file on the server and set it and set it to some interval (10 for example)</li></ul>",
           "items": {
             "type": "object",
             "properties": {
@@ -620,7 +649,7 @@
               },
               "statementCacheSize": {
                 "type": "number",
-                "description": "The number of prepared statements, cached by database driver on the client (UB) side",
+                "description": "The number of prepared statements, cached by database driver on the client (UB) side. 0 - disable cache (for PostgreSQL in case of multitenancy etc.)",
                 "default": 30
               },
               "driver": {
@@ -655,7 +684,7 @@
               },
               "serverName": {
                 "type": "string",
-                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|[protocol:]hostname or IP[\\instanceName]| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" \n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | protocol://host:port | \"postgresql://dodb3-s8:5432\""
+                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|Windows: [protocol:]hostname or IP[\\instanceName]; Linux: section name from `/etc/odbc.ini`| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" <br> example linux: \"myserver\"\n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | protocol://host:port | \"postgresql://dodb3-s8:5432\""
               },
               "databaseName": {
                 "type": "string",
@@ -685,7 +714,7 @@
               },
               "advSettings": {
                 "type": "string",
-                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 32bit libpq.dll`| \"LibLocation=C:\\Program Files\\PostgreSQL (x86)\\9.3\\bin\\libpq.dll\"\n| `Oracle`| Combination of `MANY=hint` `ONE=hint` `INLINE_IN` `USE_WALLET`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition | \"MANY=\\/*+ NO_CPU_COSTING *\\/,ONE=\\/*+ NO_CPU_COSTING *\\/INLINE_IN USE_WALLET\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
+                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 32|64 bit libpq.dll`| \"LibLocation=C:\\Program Files\\PostgreSQL (x86)\\9.3\\bin\\libpq.dll\"\n| `Oracle`| Combination of `MANY=hint` `ONE=hint` `INLINE_IN` `USE_WALLET`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \"MANY=\\/*+ NO_CPU_COSTING *\\/,ONE=\\/*+ NO_CPU_COSTING *\\/INLINE_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
               }
             }
           }
@@ -702,8 +731,9 @@
                 "description": "Unique blobStore name. This name is used in `meta` file to determine where the attributes of the type `Document` store their content"
               },
               "storeType": {
-                "enum": ["FileSystem", "Database", "Virtual"],
-                "default": "FileSystem"
+                "enum": ["FileSystem", "Virtual"],
+                "default": "FileSystem",
+                "description": "DEPRECATED. Use implementedBy instead"
               },
               "isDefault": {
                 "type": "boolean",
@@ -711,15 +741,16 @@
               },
               "implementedBy": {
                 "type": "string",
-                "description": "Applicable for `storeType: \"Virtual\"`. Name of then `UB.virtualStores` member witch implement virtualStores interface"
+                "description": "Name of module what implement a BlobStoreCustom interface for this store"
               },
               "path": {
                 "type": "string",
-                "description": "If `storeType: \"FileSystem\"` then  path to store root folder, if `storeType: \"Database\"` then name of a table or view where BLOB are stored"
+                "description": "Path to the folder where all files are placed"
               },
-              "connectionName": {
+              "tempPath": {
                 "type": "string",
-                "description": "Applicable for `storeType: \"Database\"`. Name of the connection where table with BLOBS are placed. If empty - will use the default connection"
+                "description": "Path for storing uncommitted files. Recommended to be on the same volume as `path`. In case of reverse proxy - must be inside store folder",
+                "default": "process.env.TEMP"
               },
               "historyDepth": {
                 "type": "number",
@@ -727,8 +758,8 @@
                 "default": 0
               },
               "storeSize": {
-                "enum": ["Simple", "Medium", "Large"],
-                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000",
+                "enum": ["Simple", "Medium", "Large", "Monthly", "Daily"],
+                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000\n| `Montly`| New subfolder `YYYYMM` for every month\n| `Daily`| New subfolder `YYYYMM` for every month and when new folder `DD` for every day",
                 "default": "Simple"
               },
               "keepOriginalFileNames":{
@@ -789,10 +820,14 @@
               "description": "UI theme name. Can be name of a folder in the `inetPub\\themes\\` folder",
               "default": "UBtheme"
             },
-			"loginWindowTopLogoURL": {
-			  "type": "string",
+            "loginURL": {
+              "type": "string",
+              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page",
+            },
+            "loginWindowTopLogoURL": {
+              "type": "string",
               "description": "Optional URL for a logo to display on the top of login form. Logo stretched to 150px height, so it is a good idea for logo to be 150x150px"
-			},
+            },
             "endpoint": {
               "type": "string",
               "description": "The entry point for a adminUI interface. In case both adminUI & portalUI is used on the same instance set this parameter to something long and unique to prevent hacking",
@@ -810,6 +845,11 @@
                   "description": "Long pooling time (in seconds)"
                 }
               }
+            },
+            "hmrServerURL": {
+              "type": "string",
+              "description": "@unitybase/hmr Hot module replacer web socket URL",
+              "default": "equal to application.rootHandler"
             },
             "encryptionImplementation" : {
               "type": "string",
@@ -851,11 +891,11 @@
                 }
               }
             },
-			"favoriteCategoryCount": {
-			  "type": "number",
+            "favoriteCategoryCount": {
+              "type": "number",
               "description": "Number of categories (up to 4) for a favorites columnus",
               "default": 2
-			}
+            }
           }
         },
         "portalUI": {

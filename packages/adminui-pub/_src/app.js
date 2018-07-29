@@ -1,92 +1,14 @@
-/* global SystemJS */
-require('./app/core/UBApp')
+/* global SystemJS, Ext */
+const UB = require('@unitybase/ub-pub')
+const $App = require('./app/core/UBApp')
 require('./app/view/UBDropZone')
 require('./app/view/ErrorWindow')
-const UB = require('@unitybase/ub-pub')
 
 /**
  * Main UnityBase Ext-based client file
  */
 
 function launchApp () {
-// for a unhandled rejection in bluebird-q
-  if (window.Q && window.Q.getBluebirdPromise) {
-    window.Q.onerror = function (error) {
-      window.onerror.apply(this, [ '', '', '', '', error ])
-    }
-  }
-  // for unhandled rejection in bluebird/native promises (IE 10+)
-  window.addEventListener('unhandledrejection', function (e) {
-    // NOTE: e.preventDefault() must be manually called to prevent the default
-    // action which is currently to log the stack trace to console.warn
-    e.preventDefault()
-    // NOTE: parameters are properties of the event detail property
-    let reason = e.detail ? e.detail.reason : e.reason
-    let promise = e.detail ? e.detail.promise : e.promise
-    // See Promise.onPossiblyUnhandledRejection for parameter documentation
-    if (window.onerror) window.onerror.apply(this, [ '', '', '', '', reason ])
-    console.error('UNHANDLED', reason, promise)
-  })
-
-  window.onerror = function (msg, file, line, column, errorObj) {
-    let message
-    let detail = ''
-
-    if (errorObj && UB.UBAbortError && errorObj instanceof UB.UBAbortError) {
-      console.log(errorObj)
-      return
-    }
-    let isHandled = errorObj && UB.UBError && errorObj instanceof UB.UBError
-
-    if (errorObj && Error && errorObj instanceof Error) {
-      message = errorObj.message
-      detail = ''
-      if (/q\.js/.test(file) === false) {
-        detail += 'file: "' + file + '" line: ' + line
-      }
-      let strace = errorObj.stack || ''
-      detail += strace.replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
-      detail = detail.replace(new RegExp(window.location.origin.replace(/:/g, '\\$&'), 'g'), '') // remove address if same as origin
-      detail = detail.replace(/\/[\w-]+\.js:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
-      detail = detail.replace(/\n/g, '<br>&nbsp;&nbsp;')
-    } else if (errorObj && errorObj.data && errorObj.data.errMsg) {
-      message = errorObj.data.errMsg
-    } else if (errorObj && errorObj.status === 0) { // long network request
-      message = 'serverIsBusy'
-      isHandled = true
-    } else if (errorObj && errorObj.errMsg) {
-      message = errorObj.errMsg
-      detail = errorObj.detail ? errorObj.detail : message
-    } else {
-      message = errorObj && (typeof errorObj === 'string') ? errorObj : msg
-    }
-    if (errorObj && errorObj.detail) {
-      detail = errorObj.detail + (detail ? '<BR/>' + detail : '')
-      // 405 Method Not Allowed
-      if (errorObj.detail === 'Method Not Allowed') {
-        message = 'recordNotExistsOrDontHaveRights'
-      }
-    }
-    if (!message) {
-      message = 'internalServerError'
-    }
-
-    if (!isHandled) {
-      // MPV - message is already in datail (stack trace)
-      // detail = message + '<BR/> ' + detail;
-      message = 'unknownError'
-    }
-    try {
-      if (UB.showErrorWindow) {
-        UB.showErrorWindow(message, '', '', detail)
-      } else {
-        window.alert(message)
-      }
-    } catch (err) {
-      window.alert(message)
-    }
-  }
-
   // disable shadow for all floating window
   Ext.Window.prototype.floating = { shadow: false }
 
@@ -109,11 +31,10 @@ function launchApp () {
 
   Ext.Loader.loadScriptFileBase = Ext.Loader.loadScriptFile
   Ext.Loader.loadScriptFile = function (url, onLoad, onError, scope, synchronous) {
-    // debugger
     try {
       // throw below required to log a stack trace to console
       // noinspection ExceptionCaughtLocallyJS
-      throw new Error('Component "' + url + '" is loaded directly using Ext.require or inderectly by one of Ext.create({"requires":.., "extend": ..., "mixins": ...}) directive) - in UB4 use require() instead')
+      throw new Error('Component "' + url + '" is loaded directly using Ext.require or inderectly by one of Ext.create({"requires":.., "extend": ..., "mixins": ...}) directive) - in UB>=4 use require() instead')
     } catch (e) {
       console.warn(e)
     }
@@ -298,13 +219,22 @@ function launchApp () {
       /**
        *  @cfg {String} requireText Text for placeHolder. Default value 'pleaseInputValueToThisField'.
        */
-      requireText: 'pleaseInputValueToThisField',
+      requireText: '',
       /**
        * This method allow change the allowBlank property dynamically
        * @param allowBlank
        */
       setAllowBlank: function (allowBlank) {
         this.allowBlank = allowBlank
+
+        if (this.labelEl) {
+          if (allowBlank) {
+            this.labelEl.removeCls('x-label-required')
+          } else {
+            this.labelEl.addCls('x-label-required')
+          }
+        }
+
         if (!this.inputEl) {
           return
         }
@@ -362,7 +292,9 @@ function launchApp () {
         '{beforeLabelTpl}',
         '<label id="{id}-labelEl" {labelAttrTpl}',
         '<tpl if="inputId && !(boxLabel && !fieldLabel)"> for="{inputId}"</tpl>',
-        ' class="{labelCls}"',
+        ' class="{labelCls}',
+        '<tpl if="allowBlank !== undefined && !allowBlank"> x-label-required</tpl>',
+        '"',
         '<tpl if="labelStyle"> style="{labelStyle}"</tpl>',
         // Required for Opera
         ' unselectable="on"',
@@ -380,14 +312,16 @@ function launchApp () {
         '</tpl>',
 
         // Body of the input. That will be an input element, or, from a TriggerField, a table containing an input cell and trigger cell(s)
-        '<td role="presentation" class="{baseBodyCls} {fieldBodyCls} {extraFieldBodyCls}" id="{id}-bodyEl" colspan="{bodyColspan}" role="presentation">',
+        '<td role="presentation" class="{baseBodyCls} {fieldBodyCls} {extraFieldBodyCls}" id="{id}-bodyEl" colspan="{bodyColspan}">',
         '{beforeBodyEl}',
 
         // Label just sits on top of the input field if labelAlign === 'top'
         '<tpl if="labelAlign==\'top\'">',
         '{beforeLabelTpl}',
         '<div role="presentation" id="{id}-labelCell" style="{labelCellStyle}">',
-        '<label id="{id}-labelEl" {labelAttrTpl}<tpl if="inputId"> for="{inputId}"</tpl> class="{labelCls}"',
+        '<label id="{id}-labelEl" {labelAttrTpl}<tpl if="inputId"> for="{inputId}"</tpl> class="{labelCls}',
+        '<tpl if="allowBlank !== undefined && !allowBlank"> x-label-required</tpl>',
+        '"',
         '<tpl if="labelStyle"> style="{labelStyle}"</tpl>',
         // Required for Opera
         ' unselectable="on"',
@@ -579,9 +513,6 @@ function launchApp () {
       if (eKey === Ext.EventObject.BACKSPACE && 'textarea|input'.indexOf(type) < 0) {
         e.preventDefault()
       }
-      if (e.getKey() === Ext.EventObject.C && e.ctrlKey && e.altKey) {
-        UB.core.UBFormLoader.clearFormCache()
-      }
     })
 
     // init dropzone
@@ -602,4 +533,8 @@ function launchApp () {
   }
 }
 
-module.exports = launchApp
+module.exports = {
+  launchApp,
+  /** @type {UB.core.UBApp} */
+  $App
+}

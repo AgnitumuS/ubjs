@@ -1,14 +1,9 @@
-/*
- * User: banyai
- * Date: 20.09.13
- * Time: 9:43
- * To change this template use File | Settings | File Templates.
- */
-var me = cdn_profession,
-    svc = require('@unitybase/ubs/modules/service').Service;
-me.entity.addMethod('beforeinsert');
+// User: banyai Date: 20.09.13
+/* global cdn_profession ubs_numcounter */
+// eslint-disable-next-line camelcase
+const me = cdn_profession
+me.on('insert:before', generateAutoIncrementalCode)
 
-me.beforeinsert = function(ctxt) {
-    svc.setCode(ctxt, '----', 12);
-};
-
+function generateAutoIncrementalCode (ctx) {
+  ubs_numcounter.generateAutoIncrementalCode(ctx, 'code')
+}

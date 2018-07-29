@@ -1,41 +1,42 @@
 {
-	"caption": "Поштові індекси",
-	"description": "Поштові індекси",
-	"connectionName": "",
-	"sqlAlias": "postidx",
-	"cacheType": "SessionEntity",
-	"descriptionAttribute": "description",
-	"documentation": "",
-	"attributes": {
-		"code":
-		{
-			"dataType": "String",
-			"size": 6,
-			"caption": "Індекс",
-			"description": "Індекс",
-			"allowNull": false,
-            "isUnique": false
-		},
-        "streetID": {
-            "dataType": "Entity",
-            "associatedEntity": "cdn_street",
-            "caption": "Вулиця",
-            "allowNull": false
-        },
-		"description":
-		{
-			"dataType": "String",
-			"size": 255,
-			"caption": "Опис",
-			"description": "Опис",
-			"allowNull": false,
-			"isMultiLang": true
-		}
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-        }
-	}
+  "caption": "ZIP codes",
+  "description": "ZIP codes",
+  "connectionName": "",
+  "sqlAlias": "postidx",
+  "cacheType": "SessionEntity",
+  "descriptionAttribute": "description",
+  "documentation": "",
+  "attributes": [
+    {
+      "dataType": "String",
+      "size": 6,
+      "caption": "Index",
+      "description": "Index",
+      "allowNull": false,
+      "isUnique": false,
+      "name": "code"
+    },
+    {
+      "dataType": "Entity",
+      "associatedEntity": "cdn_street",
+      "caption": "Street",
+      "allowNull": false,
+      "name": "streetID"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Description",
+      "description": "Description",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "description"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
 }

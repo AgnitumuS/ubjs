@@ -3,10 +3,7 @@ exports.formCode = {
   codeTabs: null,
 
   initUBComponent: function () {
-    var
-      me = this,
-      code = this.record.get('code') || '',
-      fn
+    var me = this
 
     // remove document-menu buttons
     var tbar = this.query('[ubID=mainToolbar]')[0]
@@ -44,8 +41,6 @@ exports.formCode = {
     })
     if (!me.isEditMode) { // new form
       me.record.set('ID', null) // ID will be calculated as crc32(code)
-      me.getUBCmp('attrFormDef').setValue('{"store":"mdb","fName":"' + (fn = code.length > 0 ? code + '.def' : '') + '","origName":"' + fn + '","ct":"application/def","size":0,"isDirty":true}', this.instanceID)
-      me.getUBCmp('attrFormCode').setValue('{"store":"mdb","fName":"' + (fn = code.length > 0 ? code + '.js' : '') + '","origName":"' + fn + '","ct":"application/javascript","size":0,"isDirty":true}', this.instanceID)
     } else {
       me.getUBCmp('attrCode').setReadOnly(true)
       me.getUBCmp('attrModel').setReadOnly(true)
@@ -63,38 +58,21 @@ exports.formCode = {
     this.getUBCmp('attrFormCode').setOrigName(newValue.length > 0 ? newValue + '.js' : newValue)
   },
 
-  onSave: function (action) {
-    var
-      me = this,
-      res = true,
-      className
-
-    if (!this.formDefEditor) {
-      this.formDefEditor = this.down('ubcodemirror[name="formDef"]')
+  onAfterSave: function () {
+    if (SystemJS.reload && !window.__systemHmrUBConnected) {
+      let formModelName = this.record.get('model')
+      let model = $App.domainInfo.models[formModelName]
+      let formCode = this.record.get('code')
+      let defImportPath = `${model.clientRequirePath}/forms/${formCode}-fm.def`
+      let jsImportPath = `${model.clientRequirePath}/forms/${formCode}-fm.js`
+      SystemJS.reload(defImportPath)
+      SystemJS.reload(jsImportPath)
     }
-    var codeEditor = this.down('ubcodemirror[name="formCode"]')
-
-    if (res) {
-      UB.core.UBFormLoader.clearFormCache(me.record.get('code'))
-      // undefine ExtJS based form (remove class)
-      if (me.record.get('formType') === 'custom') {
-        className = UB.core.UBFormLoader.getComponentClassName(this.formDefEditor.getValue())
-        if (className) {
-          UB.core.UBFormLoader.undefineExtClass(className)
-        }
-      } else {
-        UB.core.UBFormLoader.reloadModule(codeEditor.getValue(), this.formDefEditor.getValue(), me.record.get('code'))
-      }
-      this.callParent([action])
-      UB.core.UBStoreManager.getFormStore().reload()
-    } else {
-      $App.dialogError('Errors', 'There is errors in script. Check for errors. Save is not performed').done()
-      return false
-    }
+    UB.core.UBStoreManager.getFormStore().reload()
   },
 
   onEntityChanged: function (field, newValue) {
-    var me = this, code_parts, newCode
+    var me = this, codeParts, newCode
 
     if ($App.connection.domain.entities[newValue]) {
       me.entityCode = newValue
@@ -103,14 +81,13 @@ exports.formCode = {
       if (me.record.get('formType') === 'auto') {
         me.designer.setEntityCode(newValue)
       }
-      code_parts = me.getField('code').getValue().split('-')
-      code_parts[0] = newValue
-      newCode = code_parts.join('-')
+      codeParts = me.getField('code').getValue().split('-')
+      codeParts[0] = newValue
+      newCode = codeParts.join('-')
       if (newCode !== me.getField('code').getValue()) {
         me.getField('code').setValue(newCode)
       }
       me.record.set('model', $App.connection.domain.entities[newValue].modelName)
-     // field.nextSibling('commandbuilderentitytreepanel').setEntity(newValue);
     }
   },
 

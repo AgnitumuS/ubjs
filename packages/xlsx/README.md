@@ -1,6 +1,7 @@
-### UnityBase enterprise Excel exporter
+### The UnityBase EE Excel exporter
 
-AdminUI use this module for export grid view to Excel (via Action -> Export -> Excel)
+AdminUI uses this module to export EntityGridPanel content to Excel
+(via Action -> Export -> Excel)
 
 ### Install
 
@@ -27,10 +28,8 @@ ws.addRow(
         {column: 4, style: fstyle1}
     ]
 )
-wb.render()
-.then(function (content) {
-  fs.writeFileSync('./example.xlsx', content, 'binary')
-})
+let content = wb.render()
+fs.writeFileSync('./example.xlsx', content, 'binary')
 ```
 
 

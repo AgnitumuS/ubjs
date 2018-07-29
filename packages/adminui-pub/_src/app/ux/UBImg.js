@@ -36,7 +36,6 @@ Ext.define('UB.ux.UBImg', {
         if (!me.useBlobForData){
             Ext.Error.raise('object does not use Blob');
         }
-        //debugger;
         if (me.dataBlob && !Ext.isEmpty(this.objUrl)){
             window.URL.revokeObjectURL(this.objUrl);
         }
@@ -77,7 +76,6 @@ Ext.define('UB.ux.UBImg', {
         me.dataUrl = data;
 
         if (me.useBlobForData){
-            //debugger;
             if (blobData){
                 me.updateDataBlob(blobData);
                 me.callParent([me.data]);

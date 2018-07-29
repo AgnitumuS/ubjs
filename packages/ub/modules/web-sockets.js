@@ -1,11 +1,12 @@
 /**
- * High level WebSocket protocols implementation
+ * High level WebSocket protocols implementation.
+ * TODO - rewrite for UB5(linux) using node/go as microservice
  *
- * @module @unitybase/ub/web-sockets
+ * @module web-sockets
+ * @memberOf module:@unitybase/ub
  * @author pavel.mash
  */
 const EventEmitter = require('events').EventEmitter
-const util = require('util')
 
 let registeredWSProtocols = {}
 
@@ -37,7 +38,7 @@ function WebSocketTransport (props) {
     if (process.isWebSocketServer) {
       wsProtocol = wsBinding.addProtocol(props)
       EventEmitter.call(wsProtocol)
-      util._extend(wsProtocol, EventEmitter.prototype)
+      Object.assign(wsProtocol, EventEmitter.prototype)
       registeredWSProtocols[props.name] = wsProtocol
     } else {
       wsProtocol = wsBinding.retrieveProtocol(props)
@@ -137,7 +138,6 @@ function WebSocketTransport (props) {
  */
 function JsonMessagesProtocol (namedAs) {
   let me = this
-
   let _jsonProtocol = new WebSocketTransport({name: namedAs, handledAs: 'Json'})
 
   /**
@@ -173,7 +173,7 @@ function JsonMessagesProtocol (namedAs) {
 
   if (process.isWebSocketServer) {
     EventEmitter.call(me)
-    util._extend(me, EventEmitter.prototype)
+    Object.assign(me, EventEmitter.prototype)
 
     /**
      * Handle incoming messages
@@ -182,7 +182,7 @@ function JsonMessagesProtocol (namedAs) {
      * @param {String|ArrayBuffer} rawData
      */
     me.onWSMessage = function (connection, rawData) {
-      var msg
+      let msg
 
       console.debug('New WebSocket message from ', connection.session.id, rawData)
       try {

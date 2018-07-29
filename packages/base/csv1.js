@@ -1,4 +1,4 @@
-/**
+/*
  * @license
  * Licensed under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>
  *
@@ -38,7 +38,8 @@
  *          console.log(rows[i]);
  *       }
  *
- * @module @unitybase/base/csv1
+ * @module csv1
+ * @memberOf module:@unitybase/base
  */
 
 var QUOTE = '"',

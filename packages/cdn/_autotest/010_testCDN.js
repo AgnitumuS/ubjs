@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 29.10.14
  * Common dictionary test.
  */

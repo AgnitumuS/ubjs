@@ -59,5 +59,8 @@ __recovery/
 #other VCS
 _FOSSIL_
 
-#test files
-*.pdf
+#FPC
+*.lps
+bin/x64
+lib/
+src/backup/

@@ -123,10 +123,10 @@ Ext.define('UB.view.OverflowSelect', {
             oid = owner.id;
 
         /**
-         * @private
-         * @property {Ext.menu.Menu} menu
          * The expand menu - holds items for every item that cannot be shown
          * because the container is currently not large enough.
+         * @private
+         * @property {Ext.menu.Menu} menu
          */
         me.menu = new Ext.menu.Menu({
             listeners: {
@@ -136,9 +136,9 @@ Ext.define('UB.view.OverflowSelect', {
         });
 
         /**
+         * The expand button which triggers the overflow menu to be shown
          * @private
          * @property {Ext.button.Button} menuTrigger
-         * The expand button which triggers the overflow menu to be shown
          */
         me.menuTrigger = new Ext.button.Button({
             id: oid + '-menu-trigger',
@@ -202,10 +202,10 @@ Ext.define('UB.view.OverflowSelect', {
     _asLayoutRoot: { isRoot: true },
 
     /**
-     * @private
      * Called by the layout, when it determines that there is no overflow.
      * Also called as an interceptor to the layout's onLayout method to reshow
      * previously hidden overflowing items.
+     * @private
      */
     clearOverflow: function(ownerContext) {
         var me = this,
@@ -220,9 +220,9 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Shows the overflow trigger when enableOverflow is set to true and the items
      * in the layout are too wide to fit in the space available
+     * @private
      */
     showTrigger: function(ownerContext) {
         var me = this,
@@ -356,8 +356,8 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Scrolls to the given position. Performs bounds checking.
+     * @private
      * @param {Number} position The position to scroll to. This is constrained.
      * @param {Boolean} animate True to animate. If undefined, falls back to value of this.animateScroll
      */
@@ -402,8 +402,8 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Enables or disables each scroller button based on the current scroll position
+     * @private
      */
     updateScrollButtons: function() {
         var me = this;
@@ -411,9 +411,9 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * For a given item in the container, return an object with information on whether the item is visible
      * with the current innerCt scroll value.
+     * @private
      * @param {Ext.Component} item The item
      * @return {Object} Values for fullyVisible, hiddenStart and hiddenEnd
      */
@@ -459,8 +459,8 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Returns the maximum value we can scrollTo
+     * @private
      * @return {Number} The max scroll value
      */
     getMaxScrollPosition: function() {
@@ -484,8 +484,8 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Called before the overflow menu is shown. This constructs the menu's items, caching them for as long as it can.
+     * @private
      */
     beforeMenuShow: function(menu) {
         var me = this,
@@ -514,9 +514,9 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Returns a menu config for a given component. This config is used to create a menu item
      * to be added to the expander menu
+     * @private
      * @param {Ext.Component} component The component to create the config for
      * @param {Boolean} hideOnClick Passed through to the menu item
      */
@@ -600,13 +600,13 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Adds the given Toolbar item to the given menu. Buttons inside a buttongroup are added individually.
-     * @param {Ext.menu.Menu} menu The menu to add to
-     * @param {Ext.Component} component The component to add
      * TODO: Implement overrides in Ext.layout.container.boxOverflow which create overrides
      * for SplitButton, Button, ButtonGroup, and TextField. And a generic one for Component
      * which create clones suitable for use in an overflow menu.
+     * @private
+     * @param {Ext.menu.Menu} menu The menu to add to
+     * @param {Ext.Component} component The component to add
      */
     addComponentToMenu : function(menu, component) {
         var me = this,
@@ -634,9 +634,9 @@ Ext.define('UB.view.OverflowSelect', {
     },
 
     /**
-     * @private
      * Deletes the sub-menu of each item in the expander menu. Submenus are created for items such as
      * splitbuttons and buttongroups, where the Toolbar item cannot be represented by a single menu item
+     * @private
      */
     clearMenu : function() {
         var menu = this.menu,
@@ -669,4 +669,3 @@ Ext.define('UB.view.OverflowSelect', {
         Ext.destroy(this.menu, trigger);
     }
 });
-

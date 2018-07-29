@@ -61,23 +61,23 @@ Ext.define('UB.view.FormDataBinder', {
         }
         me.mixins.observable.constructor.call(this, config);
         /**
-         * @event formDataReady
          * Fires when data bonded and all required data loaded
+         * @event formDataReady
          */
         /**
-         * @event controlDataReady
          * Fires when data of each control is loaded.
+         * @event controlDataReady
          */
         /**
+         * Fired when data is bound.
          * @event dataBind
          * @param {Ext.data.Model} record
-         * Fired when data is bound.
          */
 
         /**
-         * @event controlChanged
          * Fires when any binded control changed by user. When data changed from dataBinder then this event do not fired.
          * If you want to interrupt the data binding then return false from function.
+         * @event controlChanged
          * @param {Ext.form.field.Field} this
          * @param {Object} newValue The new value
          * @param {Object} oldValue The original value
@@ -116,7 +116,7 @@ Ext.define('UB.view.FormDataBinder', {
      *
      * @param {String} fieldName
      * @param {Boolean} [oneWay]
-     * @returns {[Ext.form.field.Field]}
+     * @returns {Array<Ext.form.field.Field>}
      */
     getFieldsByName: function(fieldName, oneWay){
         var me = this, result = [], fn;
@@ -349,8 +349,7 @@ Ext.define('UB.view.FormDataBinder', {
 
     /**
      *
-     * @returns {Object}
-     * an associative array of {@Link Ext.form.field.Field}
+     * @returns {Object} an associative array of {@Link Ext.form.field.Field}
      */
     getBindedFields: function(){
        return this.connectedFields;

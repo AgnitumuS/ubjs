@@ -1,6 +1,5 @@
 ﻿{
     "caption": "İş masalarının inzibatlaşdırılması",
-    "documentation": "İş masalarının inzibatlaşdırılması",
     "attributes": {
         "instanceID": {
             "caption": "İş masası"

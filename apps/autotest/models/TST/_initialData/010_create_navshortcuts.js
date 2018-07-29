@@ -1,16 +1,16 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for TST model
  */
 
 /**
  * Initial script for create desktop navigation shortcuts for TST model
- * Used by cmd\initialize command
- * @param {cmd.argv.serverSession} session
+ * Used by `ubcli initialize` command
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   var
-    desktopID, folderID, conn = session.connection
+    desktopID, conn = session.connection
 
   desktopID = conn.lookup('ubm_desktop', 'ID', {expression: 'code', condition: 'equal', values: {code: 'tst_desktop'}})
   console.info('\tFill `Test` desktop')
@@ -68,21 +68,8 @@ module.exports = function (session) {
     }
   })
 
-  console.log('\t\t\tcreate `tst_docusign` shortcut')
-  conn.insert({
-    fieldList: ['ID'],
-    entity: 'ubm_navshortcut',
-    execParams: {
-      desktopID: desktopID,
-      code: 'tst_docusign',
-      caption: 'Docusign test',
-      displayOrder: 40,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{ entity: 'tst_docusign', method: 'select', fieldList: ['name', 'envelope']}]}}, null, '\t')
-    }
-  })
-
-  var displayOrder = 40;
-  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_ODataSimple', 'tst_ODataRef', 'tst_histDict'].forEach(function (entityCode) {
+  let displayOrder = 40;
+  ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_histDict'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
     conn.insert({
       fieldList: ['ID'],
@@ -96,6 +83,19 @@ module.exports = function (session) {
       }
     })
     displayOrder = displayOrder + 10
+  })
+
+  console.log('\t\t\tcreate `Vue test` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_document-vue',
+      caption: 'VueJS form test',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({cmdType: 'showForm', formCode: 'tst_document-vue'}, null, '\t')
+    }
   })
 
   console.log('\t\t\tcreate `tst_onlyOffice` shortcut')

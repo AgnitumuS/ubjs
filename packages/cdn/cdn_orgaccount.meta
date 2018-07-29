@@ -10,49 +10,48 @@
 			"name": "organizationID",
 			"dataType": "Entity",
 			"associatedEntity": "cdn_organization",
-			"caption": "Организация",
-			"description": "Организация",
+			"caption": "Organization",
+			"description": "Organization",
 			"allowNull": false
 		},
 		{
 			"name": "currencyID",
 			"dataType": "Entity",
 			"associatedEntity": "cdn_currency",
-			"caption": "Валюта",
-			"description": "Валюта счета",
+			"caption": "Currency",
+			"description": "Currency of the account",
 			"allowNull": false
 		},
 		{
 			"name": "bankID",
 			"dataType": "Entity",
 			"associatedEntity": "cdn_bank",
-			"caption": "Банк",
-			"description": "Банк, в котором открыт счет",
+			"caption": "Bank",
+			"description": "Bank of the account",
 			"allowNull": false
 		},
 		{
 			"name": "code",
 			"dataType": "String",
 			"size": 20,
-			"caption": "КодСчета",
-			"description": "Код счета (Номер счета)",
+			"caption": "Code",
+			"description": "Code of the account",
 			"allowNull": false
 		},
 		{
 			"name": "acctype",
 			"dataType": "Enum",
 			"enumGroup": "CDN_ACCOUNTTYPE",
-			"caption": "Тип счета",
-			"description": "Тип счета",
+			"caption": "Type",
+			"description": "Type of the account",
 			"allowNull": false
 		},
 		{
 			"name": "description",
 			"dataType": "String",
 			"size": 512,
-			"caption": "Назва",
-			"description": "Назва (для вибору зі списку)",
-			"documentation": "Назва (для выбору зі списку)",
+			"caption": "Description",
+			"description": "Description",
 			"defaultView": false,
 			"allowNull": false
 		}

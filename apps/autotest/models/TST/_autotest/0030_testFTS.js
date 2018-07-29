@@ -52,16 +52,17 @@ module.exports = function runFTSTest (options) {
 }
 
 function insertFirst50Article (connection) {
-  let descrMaxLen = 2000
+  const descrMaxLen = 2000
   let d = new Date(2015, 1, 1)
-  let n, descr
 
-  let testArr = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME)).split('\r\n')
+  let data = fs.readFileSync(path.join(__dirname, 'fixtures', __FILE_NAME), 'utf8')
+  let LINE_DELIMITER = data.indexOf('\r\n') > -1 ? '\r\n' : '\n'
+  let testArr = data.split(LINE_DELIMITER)
 
   console.time('FTS')
   for (let i = 0; i < 50; i++) {
     d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)
-    descr = testArr[i].slice(0, descrMaxLen)
+    let descr = testArr[i].slice(0, descrMaxLen)
     connection.insert({
       entity: 'tst_document',
       execParams: {
@@ -119,7 +120,7 @@ function expectationTest (connection, matches) {
  * Change  `республікою` to `монархією` in record with code=code16
  * Delete  record with code006 (word 'богом')
  *
- * @param {UBConnection} connection
+ * @param {SyncConnection} connection
  * @param {Array<Object>} expectations
  */
 function modifyData (connection, expectations) {

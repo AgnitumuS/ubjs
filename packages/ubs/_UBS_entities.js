@@ -1,1191 +1,1024 @@
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Audit
-* @mixes EventEmitter
-* @mixes RequiredModule
-*/
-var ubs_audit = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
+ * Reports, User messages (notifications), Settings (aka about:config), Counters
+ * @version 5.0.10
+ * @module @unitybase/ubs
+ */
 
 /**
-* Attributes of "Audit"
-* @class
-*/
-function ubs_audit_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Entity code 
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    * Instance ID 
-    * @type {Number}
-    */
-    this.entityinfo_id = 0;
-    /**
-    * Action 
-    * @type {String}
-    */
-    this.actionType = '';
-    /**
-    * User (ref -> uba_user)
-    * @type {Number}
-    */
-    this.actionUser = 0;
-    /**
-    * Action time 
-    * @type {Date}
-    */
-    this.actionTime = new Date();
-    /**
-    * Remote IP 
-    * @type {String}
-    */
-    this.remoteIP = '';
-    /**
-    * Old values 
-    * @type {String}
-    */
-    this.fromValue = '';
-    /**
-    * New values 
-    * @type {String}
-    */
-    this.toValue = '';
-    /**
-    * Parent entity name 
-    * @type {String}
-    */
-    this.parentEntity = '';
-    /**
-    * Parent instance ID 
-    * @type {Number}
-    */
-    this.parentEntityInfo_id = 0;
+ * Stored UI filters.
+ * doCmd.showList.autofilter use this entity to store user filters definition
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_filter_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_filter_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of filter group
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Filter name
+  * @type {String}
+  */
+  name: '',
+ /**
+  * filter
+  * @type {String}
+  */
+  filter: '',
+ /**
+  * Is this filter accessible for all users
+  * Is this filter accessible for all users
+  * @type {Boolean}
+  */
+  isGlobal: undefined,
+ /**
+  * Filter owner -> uba_user
+  * @type {Number}
+  */
+  owner: 0,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* Stored UI filters
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Stored UI filters.
+ * doCmd.showList.autofilter use this entity to store user filters definition
+* @type {ubs_filter_ns}
 */
-var ubs_filter = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_filter = new ubs_filter_ns()
 /**
-* Attributes of "Stored UI filters"
-* @class
-*/
-function ubs_filter_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Code 
-    * Code of filter group
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Name 
-    * Filter name
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Filter definition 
-    * filter
-    * @type {String}
-    */
-    this.filter = '';
-    /**
-    * Is global? 
-    * Is global?
-    * @type {Boolean}
-    */
-    this.isGlobal = undefined;
-    /**
-    * Filter owner (ref -> uba_user)
-    * Filter owner
-    * @type {Number}
-    */
-    this.owner = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
+ * System messages.
+ * System messages
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_message_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_message_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  messageBody: null,
+ /**
+  * @type {Boolean}
+  */
+  complete: undefined,
+ /**
+  * @type {String}
+  */
+  messageType: '',
+ /**
+  * @type {Date}
+  */
+  startDate: new Date(),
+ /**
+  * @type {Date}
+  */
+  expireDate: new Date(),
+ /**
+  * System messages recipients -> ubs_message_recipient
+  * @type {Number}
+  */
+  recipients: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Message
-* @mixes EventEmitter
-* @mixes RequiredModule
+* System messages.
+ * System messages
+* @type {ubs_message_ns}
 */
-var ubs_message = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_message = new ubs_message_ns()
 /**
-* Attributes of "Message"
-* @class
-*/
-function ubs_message_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Message 
-    * @type {String}
-    */
-    this.messageBody = '';
-    /**
-    * complete 
-    * @type {Boolean}
-    */
-    this.complete = undefined;
-    /**
-    * Type 
-    * @type {String}
-    */
-    this.messageType = '';
-    /**
-    * Start date 
-    * @type {Date}
-    */
-    this.startDate = new Date();
-    /**
-    * Expire date 
-    * @type {Date}
-    */
-    this.expireDate = new Date();
-    /**
-    * recipients (ref -> ubs_message_recipient)
-    * @type {Number}
-    */
-    this.recipients = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * System messages.
+ * System messages
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_message_edit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_message_edit_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {String}
+  */
+  messageBody: null,
+ /**
+  * @type {Boolean}
+  */
+  complete: undefined,
+ /**
+  * @type {String}
+  */
+  messageType: '',
+ /**
+  * @type {Date}
+  */
+  startDate: new Date(),
+ /**
+  * @type {Date}
+  */
+  expireDate: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Message
-* @mixes EventEmitter
-* @mixes RequiredModule
+* System messages.
+ * System messages
+* @type {ubs_message_edit_ns}
 */
-var ubs_message_edit = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_message_edit = new ubs_message_edit_ns()
 /**
-* Attributes of "Message"
-* @class
-*/
-function ubs_message_edit_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Message 
-    * @type {String}
-    */
-    this.messageBody = '';
-    /**
-    * Redy to send 
-    * @type {Boolean}
-    */
-    this.complete = undefined;
-    /**
-    * Type 
-    * @type {String}
-    */
-    this.messageType = '';
-    /**
-    * Start date 
-    * @type {Date}
-    */
-    this.startDate = new Date();
-    /**
-    * Expire date 
-    * @type {Date}
-    */
-    this.expireDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * System messages recipients.
+ * System messages recipient
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_message_recipient_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_message_recipient_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  messageID: 0,
+ /**
+  * @type {Number}
+  */
+  userID: 0,
+ /**
+  * @type {Date}
+  */
+  acceptDate: null,
 }
-
 /**
-* Message recipient
-* @mixes EventEmitter
-* @mixes RequiredModule
+* System messages recipients.
+ * System messages recipient
+* @type {ubs_message_recipient_ns}
 */
-var ubs_message_recipient = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_message_recipient = new ubs_message_recipient_ns()
 /**
-* Attributes of "Message recipient"
-* @class
-*/
-function ubs_message_recipient_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Message (ref -> ubs_message)
-    * @type {Number}
-    */
-    this.messageID = 0;
-    /**
-    * User (ref -> uba_user)
-    * @type {Number}
-    */
-    this.userID = 0;
-    /**
-    * Accept date 
-    * @type {Date}
-    */
-    this.acceptDate = new Date();
+ * Registration key counter
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_numcounter_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_numcounter_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Registration key
+  * @type {String}
+  */
+  regKey: '',
+ /**
+  * Counter
+  * @type {Number}
+  */
+  counter: 0,
 }
-
-/**
-* Monitor
-* @mixes EventEmitter
-* @mixes RequiredModule
-*/
-var ubs_monitor = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
-/**
-* Attributes of "Monitor"
-* @class
-*/
-function ubs_monitor_object()  {
-}
-
 /**
 * Registration key counter
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {ubs_numcounter_ns}
 */
-var ubs_numcounter = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_numcounter = new ubs_numcounter_ns()
 /**
-* Attributes of "Registration key counter"
-* @class
-*/
-function ubs_numcounter_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Registration key 
-    * Registration key
-    * @type {String}
-    */
-    this.regKey = '';
-    /**
-    * Counter 
-    * Counter
-    * @type {Number}
-    */
-    this.counter = 0;
+ * Reserved counters for registration keys
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_numcounterreserv_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_numcounterreserv_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Registration key
+  * @type {String}
+  */
+  regKey: '',
+ /**
+  * Counter
+  * @type {Number}
+  */
+  counter: 0,
+ /**
+  * Reserved date for document
+  * @type {String}
+  */
+  reservedDate: null,
+ /**
+  * Description of reserved number (Department name, etc)
+  * @type {String}
+  */
+  note: null,
 }
-
 /**
 * Reserved counters for registration keys
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {ubs_numcounterreserv_ns}
 */
-var ubs_numcounterreserv = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_numcounterreserv = new ubs_numcounterreserv_ns()
 /**
-* Attributes of "Reserved counters for registration keys"
-* @class
-*/
-function ubs_numcounterreserv_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Reg key 
-    * Registration key
-    * @type {String}
-    */
-    this.regKey = '';
-    /**
-    * Counter 
-    * Reserved counter value
-    * @type {Number}
-    */
-    this.counter = 0;
-    /**
-    * Reserved date 
-    * Reserved date for document
-    * @type {String}
-    */
-    this.reservedDate = '';
-    /**
-    * Note 
-    * Description of reserved number (Department name, etc)
-    * @type {String}
-    */
-    this.note = '';
+ * Report templates
+ * @extends EntityNamespace
+ */
+class ubs_report_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_report_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Model code where to store report
+  * @type {String}
+  */
+  model: '',
+ /**
+  * @type {String}
+  */
+  report_code: '',
+ /**
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Template
+  * @type {String}
+  */
+  template: null,
+ /**
+  * Javascript code
+  * @type {String}
+  */
+  code: null,
+ /**
+  * Emulate a mStorage.mi_modifyDate for cache version calculation
+  * @type {Date}
+  */
+  mi_modifyDate: null,
 }
-
 /**
 * Report templates
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {ubs_report_ns}
 */
-var ubs_report = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_report = new ubs_report_ns()
 /**
-* Attributes of "Report templates"
-* @class
-*/
-function ubs_report_object()  {
-    /**
-    *  
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Model 
-    * Model code where to store report
-    * @type {String}
-    */
-    this.model = '';
-    /**
-    * Report code 
-    * @type {String}
-    */
-    this.report_code = '';
-    /**
-    * Name 
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Template 
-    * Template
-    * @type {String}
-    */
-    this.template = '';
-    /**
-    * Javascript code 
-    * Javascript code
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
+ * Entity with information about system settings
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_settings_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_settings_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Setting key
+  * @type {String}
+  */
+  settingKey: '',
+ /**
+  * Setting name
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Value type
+  * @type {String}
+  */
+  type: null,
+ /**
+  * Value
+  * @type {String}
+  */
+  settingValue: null,
+ /**
+  * Default value
+  * @type {String}
+  */
+  defaultValue: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* Settings
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Entity with information about system settings
+* @type {ubs_settings_ns}
 */
-var ubs_settings = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_settings = new ubs_settings_ns()
 /**
-* Attributes of "Settings"
-* @class
-*/
-function ubs_settings_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Key 
-    * Setting key. To prevent key conflicts key name must start with a model code where key is used. &#x60;ubs.numcounter.autoRegWithDeletedNumber&#x60;
-    * @type {String}
-    */
-    this.settingKey = '';
-    /**
-    * Name 
-    * Setting name
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Description 
-    * Description
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Type 
-    * Value type
-    * @type {String}
-    */
-    this.type = '';
-    /**
-    * Value 
-    * Value
-    * @type {String}
-    */
-    this.settingValue = '';
-    /**
-    * Default value 
-    * Default value (setted by developer)
-    * @type {String}
-    */
-    this.defaultValue = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
+ * Soft lock
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class ubs_softLock_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+ubs_softLock_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Entity
+  * @type {String}
+  */
+  entity: '',
+ /**
+  * Instance ID
+  * @type {Number}
+  */
+  lockID: 0,
+ /**
+  * User, who locking record -> uba_user
+  * @type {Number}
+  */
+  lockUser: 0,
+ /**
+  * Lock type
+  * @type {String}
+  */
+  lockType: '',
+ /**
+  * Lock time
+  * @type {Date}
+  */
+  lockTime: new Date(),
 }
-
 /**
 * Soft lock
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {ubs_softLock_ns}
 */
-var ubs_softLock = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const ubs_softLock = new ubs_softLock_ns()
 /**
-* Attributes of "Soft lock"
-* @class
-*/
-function ubs_softLock_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Entity code 
-    * Entity code
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    * Instance ID 
-    * Locked dataStore ID
-    * @type {Number}
-    */
-    this.lockID = 0;
-    /**
-    * User (ref -> uba_user)
-    * User who made a lock
-    * @type {Number}
-    */
-    this.lockUser = 0;
-    /**
-    * Lock type 
-    * Lock type
-    * @type {String}
-    */
-    this.lockType = '';
-    /**
-    * Lock time 
-    * Time when lock is made
-    * @type {Date}
-    */
-    this.lockTime = new Date();
+ * 
+ * @extends EntityNamespace
+ * @mixes ftsservice
+ */
+class fts_ftsDefault_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_ftsDefault_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
 }
-
 /**
 * 
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {fts_ftsDefault_ns}
 */
-var fts_ftsDefault = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const fts_ftsDefault = new fts_ftsDefault_ns()
 /**
-* Attributes of ""
-* @class
-*/
-function fts_ftsDefault_object()  {
-    /**
-    *  
-    * @type {String}
-    */
-    this.ID = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rowid = 0;
-    /**
-    *  
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.ftsentity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dy = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dm = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dd = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.datacode = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.aclrls = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.entitydescr = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.databody = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.snippet = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rank = 0;
+ * 
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class fts_tst_ftsentity_en_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_tst_ftsentity_en_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
 }
-
 /**
 * 
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {fts_tst_ftsentity_en_ns}
 */
-var fts_tst_ftsentity_uk = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const fts_tst_ftsentity_en = new fts_tst_ftsentity_en_ns()
 /**
-* Attributes of ""
-* @class
-*/
-function fts_tst_ftsentity_uk_object()  {
-    /**
-    *  
-    * @type {String}
-    */
-    this.ID = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rowid = 0;
-    /**
-    *  
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.ftsentity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dy = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dm = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dd = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.datacode = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.aclrls = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.entitydescr = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.databody = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.snippet = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rank = 0;
+ * 
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class fts_tst_ftsentity_uk_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_tst_ftsentity_uk_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
 }
-
 /**
 * 
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {fts_tst_ftsentity_uk_ns}
 */
-var fts_ftsDefault_uk = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const fts_tst_ftsentity_uk = new fts_tst_ftsentity_uk_ns()
 /**
-* Attributes of ""
-* @class
-*/
-function fts_ftsDefault_uk_object()  {
-    /**
-    *  
-    * @type {String}
-    */
-    this.ID = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rowid = 0;
-    /**
-    *  
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.ftsentity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dy = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dm = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dd = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.datacode = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.aclrls = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.entitydescr = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.databody = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.snippet = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rank = 0;
+ * 
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class fts_ftsDefault_en_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_ftsDefault_en_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
 }
-
 /**
 * 
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {fts_ftsDefault_en_ns}
 */
-var fts_ftsSubjectSearch = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const fts_ftsDefault_en = new fts_ftsDefault_en_ns()
 /**
-* Attributes of ""
-* @class
-*/
-function fts_ftsSubjectSearch_object()  {
-    /**
-    *  
-    * @type {String}
-    */
-    this.ID = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rowid = 0;
-    /**
-    *  
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.ftsentity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dy = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dm = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dd = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.datacode = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.aclrls = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.entitydescr = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.databody = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.snippet = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rank = 0;
+ * 
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class fts_ftsDefault_uk_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_ftsDefault_uk_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
 }
-
 /**
 * 
-* @mixes EventEmitter
-* @mixes RequiredModule
+* @type {fts_ftsDefault_uk_ns}
 */
-var fts_ftsSubjectSearch_uk = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const fts_ftsDefault_uk = new fts_ftsDefault_uk_ns()
 /**
-* Attributes of ""
-* @class
-*/
-function fts_ftsSubjectSearch_uk_object()  {
-    /**
-    *  
-    * @type {String}
-    */
-    this.ID = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rowid = 0;
-    /**
-    *  
-    * @type {String}
-    */
-    this.entity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.ftsentity = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dy = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dm = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.dd = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.datacode = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.aclrls = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.entitydescr = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.databody = '';
-    /**
-    *  
-    * @type {String}
-    */
-    this.snippet = '';
-    /**
-    *  
-    * @type {Number}
-    */
-    this.rank = 0;
+ * 
+ * @extends EntityNamespace
+ * @mixes ftsservice
+ */
+class fts_ftsSubjectSearch_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_ftsSubjectSearch_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
 }
-
+/**
+* 
+* @type {fts_ftsSubjectSearch_ns}
+*/
+const fts_ftsSubjectSearch = new fts_ftsSubjectSearch_ns()
+/**
+ * 
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class fts_ftsSubjectSearch_en_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_ftsSubjectSearch_en_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
+}
+/**
+* 
+* @type {fts_ftsSubjectSearch_en_ns}
+*/
+const fts_ftsSubjectSearch_en = new fts_ftsSubjectSearch_en_ns()
+/**
+ * 
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class fts_ftsSubjectSearch_uk_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+fts_ftsSubjectSearch_uk_ns.attrs = {
+ /**
+  * @type {String}
+  */
+  ID: null,
+ /**
+  * @type {Number}
+  */
+  rowid: null,
+ /**
+  * @type {String}
+  */
+  entity: null,
+ /**
+  * @type {String}
+  */
+  ftsentity: null,
+ /**
+  * @type {String}
+  */
+  dy: null,
+ /**
+  * @type {String}
+  */
+  dm: null,
+ /**
+  * @type {String}
+  */
+  dd: null,
+ /**
+  * @type {String}
+  */
+  datacode: null,
+ /**
+  * @type {String}
+  */
+  aclrls: null,
+ /**
+  * @type {String}
+  */
+  entitydescr: null,
+ /**
+  * @type {String}
+  */
+  databody: null,
+ /**
+  * @type {String}
+  */
+  snippet: null,
+ /**
+  * @type {Number}
+  */
+  rank: null,
+}
+/**
+* 
+* @type {fts_ftsSubjectSearch_uk_ns}
+*/
+const fts_ftsSubjectSearch_uk = new fts_ftsSubjectSearch_uk_ns()

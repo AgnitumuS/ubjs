@@ -30,7 +30,7 @@ Ext.define('UB.core.UBDataLoader', {
      * @param {String} cfg.entityName name of entity to load from
      * @param {Array.<string>} cfg.fieldList list of attribute name's
      * @param {Number} cfg.id ID of entity instance
-     * @param {function(record: Ext.data.Model)} cfg.callback function called in case of success loading
+     * @param {function} cfg.callback function called in case of success loading. Accept one argument record: Ext.data.Model
      * @param {Object} cfg.scope scope for callback
      * @param {String} [cfg.lockType] type of lock 'ltNone'|'ltPersist'|'ltTemp'
      * @return (Promise) Resolved to {Ext.data.Model|null}

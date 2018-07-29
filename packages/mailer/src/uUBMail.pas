@@ -2,7 +2,7 @@ unit uUBMail;
 
 interface
 
-uses 
+uses
   SyNodePluginIntf;
 
 type
@@ -14,9 +14,9 @@ type
 implementation
 
 uses
-  mimemess, mimepart, synautil, synachar, smtpsend, pop3send, {$IFDEF openssl}ssl_openssl,{$ENDIF}
+  mimemess, mimepart, synautil, synachar, smtpsend, pop3send, ssl_openssl,
   SpiderMonkey, SyNodeProto, SyNodeSimpleProto,
-  Classes, SysUtils, Windows,
+  Classes, SysUtils,{$IFDEF MSWINDOWS} Windows,{$ENDIF}
   SynCommons, mORMOt, DateUtils, SyNodeReadWrite;
 
 type
@@ -170,11 +170,14 @@ begin
 end;
 
 function SLRead(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCall1Args: array [0..0] of uintN = ( SyNodePluginIntf.ptStr );
+  SLCalls: array [0..1] of TNSMCallInfo = (
+    ( func: @SLRead_impl; argc: 0; argt: nil ),
+    ( func: @SLRead_impl; argc: Length(SLCall1Args); argt: @SLCall1Args )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [
-  0, Integer(@SLRead_impl),
-  1, ptStr, Integer(@SLRead_impl)
-  ])
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function SLReadLn_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
@@ -188,11 +191,15 @@ begin
 end;
 
 function SLReadLn(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCall1Args: array [0..0] of uintN = ( ptInt );
+  SLCall2Args: array [0..1] of uintN = ( ptInt, SyNodePluginIntf.ptStr );
+  SLCalls: array [0..1] of TNSMCallInfo = (
+    ( func: @SLReadLn_impl; argc: Length(SLCall1Args); argt: @SLCall1Args ),
+    ( func: @SLReadLn_impl; argc: Length(SLCall2Args); argt: @SLCall2Args )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [
-  1, ptInt, Integer(@SLReadLn_impl),
-  2, ptInt, ptStr, Integer(@SLReadLn_impl)
-  ])
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function SLToJSVal(cx: PJSContext; PI: PPropInfo; aObj: TObject): jsval;
@@ -244,29 +251,30 @@ var
   oDate: PJSObject;
   d: TDateTime;
 begin
-
   {$ifdef UNICODE}
   if (PI^.PropType^^.Kind = tkUString) then begin
     Result.asJSString := cx.NewJSString(PI.GetUnicodeStrValue(Instance^.instance));
   end else
   {$endif}
-  if (PI^.PropType^^.Kind = tkLString) then begin
+  if (PI^.PropType^.Kind in [tkLString{$IFDEF FPC}, tkAString{$ENDIF}]) then begin
     // value is already in UTF-8
+    //PI.GetLongStrValue(Instance^.instance, uStr);
     PI.GetRawByteStringValue(Instance^.instance, str);
+    //Result.asJSString := cx.NewJSString(pointer(str), length(str), CP_UTF8);
     Result.asJSString := cx.NewJSString(str);
-  end else if (PI^.PropType^^.Kind = tkInteger) then begin
+  end else if (PI^.PropType^.Kind = tkInteger) then begin
     Result.asInteger := PI.GetOrdValue(Instance^.instance);
-  end else if (PI^.PropType^^.Kind = tkEnumeration) then begin
+  end else if (PI^.PropType^.Kind = tkEnumeration) then begin
     i := PI.GetOrdValue(Instance^.instance);
-    if PI^.PropType^ = TypeInfo(Boolean) then
+    if PI^.PropType = TypeInfo(Boolean) then
       Result.asBoolean := Boolean(i)
     else begin
-      str := PI^.PropType^^.EnumBaseType.GetEnumNameTrimed(i);
+      str := PI^.PropType^.EnumBaseType.GetEnumNameTrimed(i);
       Result.asJSString := cx.NewJSString(str);
     end;
-  end else if (PI^.PropType^^.Kind = tkFloat) then begin
+  end else if (PI^.PropType^.Kind = tkFloat) then begin
     e := PI.GetExtendedValue(Instance^.instance);
-    if (PI^.PropType^ = TypeInfo(TDateTime)) then begin
+    if (PI^.PropType = TypeInfo(TDateTime)) then begin
       d := DateToUTC(e);
       str := DateTimeToStr(d);
       unixTime := DateTimeToUnixMSTime(d);
@@ -301,7 +309,7 @@ end;
 function TMessHeaderProtoObject.GetPropertyAddInformation(cx: PJSContext;
   PI: PPropInfo;  out isReadonly: boolean; out isDeterministic: boolean; aParent: PJSRootedObject): boolean;
 begin
-  Result := (PI^.PropType^^.Kind <> tkMethod) and ((PI^.PropType^^.Kind <> tkClass) or (PI^.PropType^^.ClassType.ClassType = TStringList));
+  Result := (PI^.PropType^.Kind <> tkMethod) and ((PI^.PropType^.Kind <> tkClass) or (PI^.PropType^.ClassType.ClassType = TStringList));
   isReadonly := True;
   isDeterministic := True;
 end;
@@ -379,7 +387,7 @@ var
   begin
     Size := 0;
     for i := 0 to SL.Count-1 do Inc(Size, Length(SL[I]));
-      SetLength(str, Size);
+    SetLength(str, Size);
     P := pointer(str);
     for i := 0 to SL.Count-1 do begin
       S := StringToUTF8(SL[I]);
@@ -406,20 +414,13 @@ begin
       vp := JSVAL_NULL
     else begin
       SubPartsVal := obj.ReservedSlot[idx];
-//      SubPartsVals := SubPartsVal.asPrivate;
-//      if not Assigned(SubPartsVals[idx+1]) then begin
       if SubPartsVal.isVoid then begin
         New(inst);
         SubPart := Part.GetSubPart(idx);
         SubPart.TargetCharset := UTF_8;
         SubPart.ForcedHTMLConvert := True;
         SubPart.DecodePartHeader;
-        if UpperCase(SubPart.Disposition) <> 'ATTACHMENT' then begin
-          SubPart.DecodePart;
-          SubPart.PartBody.LoadFromStream(SubPart.DecodedLines);
-        end else begin
-          DeleteLineBreaksFromSL(SubPart.PartBody);
-        end;
+        SubPart.DecodePart;
         SubPartsVal := inst.CreateForObj(cx, SubPart, TMimePartProtoObject, PJSRootedObject(nil));
         obj.ReservedSlot[idx] := SubPartsVal
       end;
@@ -478,7 +479,6 @@ var
   Inst: PSMInstanceRecord;
   SubPartsValIndex: Integer;
   SubPartsObj: PJSObject;
-//  SubPartsVals: PjsRVVector;
   Part: TMimePart;
   cnt: Integer;
   SubPartsVal: jsval;
@@ -497,10 +497,43 @@ begin
       this.ReservedSlot[SubPartsValIndex] := SubPartsVal;
     end;
     vp.rval := SubPartsVal;
-//    JS_SET_RVAL(cx, vp, Inst.storedVals[SubPartsValIndex]);
   end else
     vp.rval := JSVAL_NULL;
   Result := True;
+end;
+
+function nsm_readMimePartBody(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+var
+  part: TMimePart;
+  sm_inst: PSMInstanceRecord;
+  str: RawByteString;
+  strLen: Int64;
+  P : PByte;
+begin
+  Result := true;
+  try
+    if not IsInstanceObject(cx, vp.thisObject[cx], sm_inst) then
+      raise ESMException.Create(SM_NOT_A_NATIVE_OBJECT);
+    part := (sm_inst.Instance as TMimePart);
+    part.DecodedLines.Seek(0, soFromBeginning);
+    strLen := part.DecodedLines.Size;
+    if UpperCase(part.Disposition) <> 'ATTACHMENT' then
+      // remove CRLF (LF on Linux) from tail
+      Dec(strLen, {$IFDEF Linux}1{$else}2{$endif});
+    if strLen > 0 then begin
+      SetLength(str, strLen);
+      part.DecodedLines.ReadBuffer(Pointer(str)^, strLen);
+      P := Pointer(str) + strLen;
+      p^ := 0;
+    end else
+      str := '';
+    vp.rval := SyNodeReadWrite.SMRead_impl(cx, argc, vp.argv, str);
+  except
+    on E: Exception do begin
+      Result := False;
+      JSError(cx, E);
+    end;
+  end;
 end;
 
 procedure TMimePartProtoObject.InitObject(aParent: PJSRootedObject);
@@ -517,6 +550,7 @@ begin
   FJSProps[l].setter.native.info := nil;
   FJSProps[l].setter.native.op := nil;
   Inc(fDeterministicCnt);
+  definePrototypeMethod('read', nsm_readMimePartBody, 1, [jspPermanent, jspReadOnly]);
 end;
 
 type
@@ -601,13 +635,11 @@ var
   atachName: RawUTF8;
   attDataIncorrect: Boolean;
   isBase64: Boolean;
-  attStream: TSynMemoryStream;
+  attStream: TStream;
 
   sl: TStringList;
   res: Boolean;
   s, ps: string;
-
-//  SU: SynUnicode;
   curState: string;
 begin
   if not IsInstanceObject(cx, thisObj, nativeObj) then
@@ -624,7 +656,6 @@ begin
 //      Msg.Header.subject := val.asJSString.ToString(Cx)
     else
       Msg.Header.subject := '';
-//    SU := UTF8ToSynUnicode(Msg.Header.subject);
 
     if obj.GetProperty(cx, 'bodyType', val) and val.isInteger then
       bodyType := TubSendMailBodyType(val.asInteger)
@@ -688,13 +719,10 @@ begin
             akBuffer:
               if val.isObject then begin
                 attDataBufObj := val.asObject;
-                if attDataBufObj.IsArrayBufferObject() then begin
-                  attDataBuf := attDataBufObj.GetArrayBufferData;
-                  attDataBufSize := attDataBufObj.GetArrayBufferByteLength();
-                end else
-                attDataIncorrect := True;
+                if not attDataBufObj.GetBufferDataAndLength(attDataBuf, attDataBufSize) then
+                  attDataIncorrect := True;
               end else
-              attDataIncorrect := True;
+                attDataIncorrect := True;
             end
           else
             attDataIncorrect := True;
@@ -716,7 +744,7 @@ begin
 
           attStream := nil;
           case attKind of
-            akFile: attStream := TSynMemoryStreamMapped.Create(attDataStr);
+            akFile: attStream := TFileStream.Create(UTF8ToString(attDataStr), fmOpenRead); // to be verified TSynMemoryStreamMapped.Create(attDataStr);
             akText: attStream := TSynMemoryStream.Create(attDataStr);
             akBuffer: attStream := TSynMemoryStream.Create(attDataBuf, Integer(attDataBufSize));
           end;
@@ -758,14 +786,14 @@ begin
       for I := 0 to Msg.Header.ToList.Count - 1 do
       begin
         s := Msg.Header.ToList[I];
-        { для каждого получателя выполняем команду MAIL TO }
+        { РґР»СЏ РєР°Р¶РґРѕРіРѕ РїРѕР»СѓС‡Р°С‚РµР»СЏ РІС‹РїРѕР»РЅСЏРµРј РєРѕРјР°РЅРґСѓ MAIL TO }
         ps := GetEmailAddr(s);
         res := Sender.MailTo(ps);
-        // не смогли выполнить команду - прерываем выполнение
+        // РЅРµ СЃРјРѕРіР»Рё РІС‹РїРѕР»РЅРёС‚СЊ РєРѕРјР°РЅРґСѓ - РїСЂРµСЂС‹РІР°РµРј РІС‹РїРѕР»РЅРµРЅРёРµ
         if not res then
           Break;
       end;
-      if res then begin//все в порядке - выполняем команду DATA
+      if res then begin//РІСЃРµ РІ РїРѕСЂСЏРґРєРµ - РІС‹РїРѕР»РЅСЏРµРј РєРѕРјР°РЅРґСѓ DATA
         curState := 'MailData';
         res := Sender.MailData(Msg.Lines);
       end;
@@ -790,8 +818,13 @@ begin
 end;
 
 function ubMailSender_sendMail(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCallArgs: array [0..0] of uintN = ( ptObj );
+  SLCalls: array [0..0] of TNSMCallInfo = (
+    ( func: @ubMailSender_sendMail_impl; argc: Length(SLCallArgs); argt: @SLCallArgs )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [1, ptObj, integer(@ubMailSender_sendMail_impl)]);
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function SenderLastError(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
@@ -858,10 +891,14 @@ begin
         authNeccessary := val.asBoolean
       else
         authNeccessary := False;
-      if not Sender.Login then
-        raise ESMException.CreateFmt('Login not complete :%s',[Sender.Sock.LastErrorDesc]);
+      if not Sender.Login then begin
+        if Pos('TLS', Sender.Sock.LastErrorDesc) <> 0 then
+          raise ESMException.CreateFmt('Login not complete: %s May be OpenSSL not installed or not accessible',[Sender.Sock.LastErrorDesc])
+        else
+          raise ESMException.CreateFmt('Login not complete: %s',[Sender.Sock.LastErrorDesc]);
+      end;
       if not Sender.AuthDone and authNeccessary then
-          raise ESMException.CreateFmt('Authorization not complete :%s',[Sender.Sock.LastErrorDesc]);
+          raise ESMException.CreateFmt('Authorization not complete: %s',[Sender.Sock.LastErrorDesc]);
     except
       Sender.Free;
       raise;
@@ -885,8 +922,12 @@ begin
 end;
 
 function ubMailReceiver_getMessagesCount(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCalls: array [0..0] of TNSMCallInfo = (
+    ( func: @ubMailReceiver_getMessagesCount_impl; argc: 0; argt: nil )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [0, integer(@ubMailReceiver_getMessagesCount_impl)]);
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function ubMailReceiver_getMessageSize_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
@@ -909,8 +950,13 @@ begin
 end;
 
 function ubMailReceiver_getMessageSize(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCallArgs: array [0..0] of uintN = ( ptInt );
+  SLCalls: array [0..0] of TNSMCallInfo = (
+    ( func: @ubMailReceiver_getMessageSize_impl; argc: Length(SLCallArgs); argt: @SLCallArgs )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [1, ptInt, integer(@ubMailReceiver_getMessageSize_impl)]);
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function ubMailReceiver_receive_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
@@ -929,26 +975,28 @@ begin
 
   if receiver.Retr(mailIndex) then begin
     New(inst);
-//    Result := inst.CreateForObj(cx, FMailMessage, TUBMimeMessProtoObject, thisObj).ToJSValue;
     Result := inst.CreateNew(cx, defineClass(cx, TUBMimeMess, TUBMimeMessProtoObject, PJSRootedObject(nil)), 0, fake);
-//    FMailMessage, TUBMimeMessProtoObject, thisObj).ToJSValue;
-
-//    FMailMessage := TUBMimeMess.Create;
     FMailMessage := TUBMimeMess(inst.Instance);
+    FMailMessage.Clear;
+    // MPV - clear will clear the MessagePart.TargetCharset
     FMailMessage.MessagePart.TargetCharset := UTF_8;
     FMailMessage.Header.CharsetCode := UTF_8;
-    FMailMessage.Clear;
+    FMailMessage.MessagePart.ConvertCharset := false;
     FMailMessage.Lines.Assign(receiver.FullResult);
     FMailMessage.DecodeMessage;
     FMailMessage.MessagePart.DecodePart;
-    FMailMessage.MessagePart.PartBody.LoadFromStream(FMailMessage.MessagePart.DecodedLines);
   end else
     raise ESMException.CreateFmt('TubMailReceiver cannot receive mail with index %d: %s',[mailIndex, receiver.ResultString]);
 end;
 
 function ubMailReceiver_receive(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCallArgs: array [0..0] of uintN = ( ptInt );
+  SLCalls: array [0..0] of TNSMCallInfo = (
+    ( func: @ubMailReceiver_receive_impl; argc: Length(SLCallArgs); argt: @SLCallArgs )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [1, ptInt, integer(@ubMailReceiver_receive_impl)]);
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function ubMailReceiver_top_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
@@ -979,8 +1027,13 @@ begin
 end;
 
 function ubMailReceiver_top(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCallArgs: array [0..1] of uintN = ( ptInt, ptInt );
+  SLCalls: array [0..0] of TNSMCallInfo = (
+    ( func: @ubMailReceiver_top_impl; argc: Length(SLCallArgs); argt: @SLCallArgs )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [2, ptInt, ptInt, integer(@ubMailReceiver_top_impl)]);
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function ubMailReceiver_mailDelete_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
@@ -1001,8 +1054,13 @@ begin
 end;
 
 function ubMailReceiver_mailDelete(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCallArgs: array [0..0] of uintN = ( ptInt );
+  SLCalls: array [0..0] of TNSMCallInfo = (
+    ( func: @ubMailReceiver_mailDelete_impl; argc: Length(SLCallArgs); argt: @SLCallArgs )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [1, ptInt, integer(@ubMailReceiver_mailDelete_impl)]);
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 function ubMailReceiver_reconnect_impl(cx: PJSContext; argc: uintN; vals: PjsvalVector; thisObj, calleeObj: PJSObject): jsval; cdecl;
@@ -1020,8 +1078,12 @@ begin
 end;
 
 function ubMailReceiver_reconnect(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
+const
+  SLCalls: array [0..0] of TNSMCallInfo = (
+    ( func: @ubMailReceiver_reconnect_impl; argc: 0; argt: nil )
+  );
 begin
-  Result := nsmCallFunc(cx, argc, vp, [0, integer(@ubMailReceiver_reconnect_impl)]);
+  Result := nsmCallFunc(cx, argc, vp, @SLCalls, Length(SLCalls));
 end;
 
 procedure TubMailReceiverProtoObject.InitObject(aParent: PJSRootedObject);

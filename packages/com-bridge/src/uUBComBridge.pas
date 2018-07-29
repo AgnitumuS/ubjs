@@ -1,6 +1,7 @@
 unit uUBComBridge;
 
 interface
+
 uses
   SyNodePluginIntf;
 
@@ -11,10 +12,50 @@ type
   end;
 
 implementation
+
 uses
   SysUtils, Types, Windows,
   SpiderMonkey, SynCommons,
   Variants, ComObj, ActiveX;
+
+{$IFDEF FPC}
+const
+  DispIDArgs: Longint = DISPID_PROPERTYPUT;
+
+type
+  TMemberID = TDispID;
+
+  PMemberIDList = ^TMemberIDList;
+  TMemberIDList = array[0..65535] of TMemberID;
+
+procedure SetDispatchPropValue(const Disp: IDispatch; DispID: Integer;
+  const Value: OleVariant); overload;
+var
+  ExcepInfo: TExcepInfo;
+  DispParams: TDispParams;
+  Status: HResult;
+begin
+  with DispParams do
+  begin
+    rgvarg := @Value;
+    rgdispidNamedArgs := @DispIDArgs;
+    cArgs := 1;
+    cNamedArgs := 1;
+  end;
+  Status := Disp.Invoke(DispId, GUID_NULL, 0, DISPATCH_PROPERTYPUT, DispParams,
+    nil, @ExcepInfo, nil);
+  if Status <> S_OK then DispatchInvokeError(Status, ExcepInfo);
+end;
+
+procedure SetDispatchPropValue(const Disp: IDispatch; Name: WideString;
+  const Value: OleVariant); overload;
+var
+  ID: Integer;
+begin
+  OleCheck(Disp.GetIDsOfNames(GUID_NULL, @Name, 1, 0, @ID));
+  SetDispatchPropValue(Disp, ID, Value);
+end;
+{$ENDIF}
 
 function COM_ResolveObject(cx: PJSContext; var obj: PJSObject; var id: jsid; out resolved: Boolean): Boolean; cdecl; forward;
 function COM_GetProperty(cx: PJSContext; var obj: PJSObject; var id: jsid; out vp: jsval):Boolean;cdecl; forward;
@@ -179,7 +220,6 @@ begin
     else
       raise ESMException.CreateFmt('Unhandled ToVariant(%d)',[ord(t)]);
   end;
-
 end;
 
 function COM_toJSONFunction(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; cdecl;
@@ -188,7 +228,7 @@ begin
   Result := True;
 end;
 
-procedure GetFuncDesc(IDisp: IDispatch; ID: TDispID; var Getter: TFuncDesc; var Setter: TFuncDesc; var Method:TFuncDesc);
+procedure GetFuncDesc(IDisp: IDispatch; ID: TDispID; var Getter: tagFUNCDESC; var Setter: tagFUNCDESC; var Method: tagFUNCDESC);
 var
   TypeInfo: ITypeInfo;
   TypeAttr: PTypeAttr;
@@ -233,9 +273,9 @@ var
   i: integer;
   OleVar: OleVariant;
 
-  Getter: TFuncDesc;
-  Setter: TFuncDesc;
-  Method:TFuncDesc;
+  Getter: tagFUNCDESC;
+  Setter: tagFUNCDESC;
+  Method:tagFUNCDESC;
 
   obj: PJSObject;
   prop_ids: JSIdArray;
@@ -333,10 +373,10 @@ begin
     on E: Exception do begin
       Result := false;
       vp.rval := JSVAL_VOID;
-      if ExcepInfo.bstrDescription = '' then
+      if ExcepInfo.{$IFDEF FPC}Description{$ELSE}bstrDescription{$ENDIF} = '' then
         JSError(cx, E)
       else begin
-        ws := E.Message +' '+ExcepInfo.bstrDescription;
+        ws := E.Message +' '+ExcepInfo.{$IFDEF FPC}Description{$ELSE}bstrDescription{$ENDIF};
         JSErrorUC(cx, ws)
       end
     end;
@@ -474,9 +514,9 @@ var
   ExcepInfo: TExcepInfo;
   DispParams: TDispParams;
 
-  Getter: TFuncDesc;
-  Setter: TFuncDesc;
-  Method:TFuncDesc;
+  Getter: tagFuncDesc;
+  Setter: tagFuncDesc;
+  Method: tagFuncDesc;
 
   ws: WideString;
 begin
@@ -520,10 +560,10 @@ begin
     on E: Exception do begin
       Result := false;
       vp := JSVAL_VOID;
-      if ExcepInfo.bstrDescription = '' then
+      if ExcepInfo.{$IFDEF FPC}Description{$ELSE}bstrDescription{$ENDIF} = '' then
         JSError(cx, E)
       else begin
-        ws := E.Message +' '+ExcepInfo.bstrDescription;
+        ws := E.Message +' '+ExcepInfo.{$IFDEF FPC}Description{$ELSE}bstrDescription{$ENDIF};
         JSErrorUC(cx, ws)
       end
     end;
@@ -539,9 +579,9 @@ var
   iDispId : longint;
   oVar: OleVariant;
 
-  Getter: TFuncDesc;
-  Setter: TFuncDesc;
-  Method:TFuncDesc;
+  Getter: tagFuncDesc;
+  Setter: tagFuncDesc;
+  Method: tagFuncDesc;
 begin
   try
 
@@ -595,7 +635,7 @@ begin
       raise ESMException.Create('nsm_createCOMObject invalid ussage');
     params := vp.argv;
     if params[0].ValType(cx)=JSTYPE_STRING then
-      str := params[0].asJSString.ToSynUnicode(cx)
+      str := params[0].asJSString.ToString(cx)
     else
       raise ESMException.Create('nsm_createCOMObject invalid ussage');
 

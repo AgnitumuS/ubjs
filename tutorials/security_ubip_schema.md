@@ -63,9 +63,9 @@ to your HTTP requests.
 ### Using of hi-level server-side UBConnection
 
     var 
-      UBConnection = require('UBConnection'),
+      SyncConnection = require('@unitybse/base').SyncConnection,
       conn1;
-    conn1 = new UBConnection({
+    conn1 = new SyncConnection({
 		host: 'localhost', 
 		port: '888', 
 		path: 'autotest', 

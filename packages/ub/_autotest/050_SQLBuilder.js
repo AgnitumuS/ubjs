@@ -4,8 +4,8 @@
  * This test connect to UB server and do select for all entities
  */
 const assert = require('assert')
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
+const uba = require('@unitybase/base').uba_common
 const argv = require('@unitybase/base').argv
 const TEST_NAME = 'SQL builder test'
 
@@ -44,39 +44,40 @@ module.exports = function runTest (options) {
       'string parameters with : inside must not throw'
     )
 
-    // 1
     res = conn.Repository('uba_user')
       .attrs([ 'ID' ])
-      .where('[name]', 'like', 'admin')
+      .where('[name]', 'like', uba.USERS.ADMIN.NAME)
       .limit(1)
       .selectAsArray()
+    assert.equal(res.resultData.rowCount, 1, 'case sensitive LIKE fails')
 
-    assert.equal(res.resultData.rowCount, 1, 'LIKE not work (1)')
-
-    // 2
     res = conn.Repository('uba_user')
       .attrs([ 'ID' ])
-      .where('[name]', 'like', 'ADMIN')
+      .where('[name]', 'like', uba.USERS.ADMIN.NAME.toUpperCase())
       .limit(1)
       .selectAsArray()
+    assert.equal(res.resultData.rowCount, 1, 'case insensitive LIKE fails')
 
-    assert.equal(res.resultData.rowCount, 1, 'LIKE not work (2)')
-
-    // 3
     res = conn.Repository('uba_user')
       .attrs([ 'ID' ])
       .where('[name]', 'like', 'Admin')
       .limit(1)
       .selectAsArray()
+    assert.equal(res.resultData.rowCount, 1, 'mixed case insensitive LIKE fails')
 
-    assert.equal(res.resultData.rowCount, 1, 'LIKE not work (3)')
-
-    // 4
     res = conn.Repository('uba_user')
       .attrs([ 'ID' ])
-      .where('[ID]', 'in', [ 10, 20 ])
+      .where('[ID]', 'in', [uba.USERS.ADMIN.ID, uba.USERS.ANONYMOUS.ID])
       .limit(3)
       .selectAsArray()
+    assert.equal(res.resultData.rowCount, 2, 'IN condition for array of Numbers fails')
+
+    res = conn.Repository('uba_user')
+      .attrs([ 'ID' ])
+      .where('name', 'in', [uba.USERS.ADMIN.NAME, uba.USERS.ANONYMOUS.NAME])
+      .limit(3)
+      .selectAsArray()
+    assert.equal(res.resultData.rowCount, 2, 'IN condition for array if String fails')
 
     // in subquery
     res = conn.Repository('uba_user')
@@ -85,6 +86,7 @@ module.exports = function runTest (options) {
       .where('ID', 'in', conn.Repository('uba_user').attrs([ 'ID' ]).limit(1))
       .limit(3)
       .selectAsArray()
+    assert.equal(res.resultData.rowCount, 1, 'IN condition for subrepository fails')
 
     // exists
     // who do not login during this year

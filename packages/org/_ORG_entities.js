@@ -1,1411 +1,1118 @@
+/* eslint-disable camelcase,no-unused-vars,new-cap,no-undef,comma-dangle */
 // This file is generated automatically and contain definition for code insight.
-// Ignored by UnityBase server because name start from "_".
-// Do not modify this file directly. Run ub cmd/createCodeInsightHelper -help for details
+// It ignored by UnityBase server because name start from "_".
+// Do not modify this file directly. Run `ucli createCodeInsightHelper --help` for details
 
 /**
-* Граничные узлы
-* @mixes EventEmitter
-* @mixes RequiredModule
-*/
-var org_borderunit = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
+ * Organisation structure
+ * @version 5.0.10
+ * @module @unitybase/org
+ */
 
 /**
-* Attributes of "Граничные узлы"
-* @class
-*/
-function org_borderunit_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Предок (ref -> org_unit)
-    * Предок
-    * @type {Number}
-    */
-    this.orgUnitID = 0;
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Internal departments.
+ * This dictionary contains list of departments. Each department links to org_unit by Unity mixin
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class org_department_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_department_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Parent -> org_unit
+  * @type {Number}
+  */
+  parentID: null,
+ /**
+  * Internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of department without the quotes and abbreviations
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Department full name
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Department description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Department name without the quotes and abbreviations in genitive case
+  * @type {String}
+  */
+  nameGen: null,
+ /**
+  * Department name without the quotes and abbreviations in dative case
+  * @type {String}
+  */
+  nameDat: null,
+ /**
+  * Department full name in genitive case
+  * @type {String}
+  */
+  fullNameGen: null,
+ /**
+  * Department full name in dative case
+  * @type {String}
+  */
+  fullNameDat: null,
+ /**
+  * Department type -> cdn_deptype
+  * @type {Number}
+  */
+  depTypeID: null,
+ /**
+  * Clerical unit mark
+  * @type {Boolean}
+  */
+  isClerical: undefined,
+ /**
+  * Caption
+  * @type {String}
+  */
+  caption: '',
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Внутренние подразделения
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Internal departments.
+ * This dictionary contains list of departments. Each department links to org_unit by Unity mixin
+* @type {org_department_ns}
 */
-var org_department = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_department = new org_department_ns()
 /**
-* Attributes of "Внутренние подразделения"
-* @class
-*/
-function org_department_object()  {
-    /**
-    *  (ref -> org_unit)
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Предок (ref -> org_unit)
-    * Предок
-    * @type {Number}
-    */
-    this.parentID = 0;
-    /**
-    * Внутренний код 
-    * Внутренний код подразделения
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Название подразделения 
-    * Название без кавычек и абревиатур
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Полное название подразделения 
-    * Полное название подразделения
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Описание подразделения 
-    * Описание
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Название в родит. падеже 
-    * Название без кавычек и аббревиатур в родительном падеже
-    * @type {String}
-    */
-    this.nameGen = '';
-    /**
-    * Название в дат. падеже 
-    * Название без кавычек и аббревиатур в дательном падеже
-    * @type {String}
-    */
-    this.nameDat = '';
-    /**
-    * Полное название в родит. падеже 
-    * Полное название подразделения в родительном падеже
-    * @type {String}
-    */
-    this.fullNameGen = '';
-    /**
-    * Полное название в дат. падеже 
-    * Полное название подразделения в дательном падеже
-    * @type {String}
-    */
-    this.fullNameDat = '';
-    /**
-    * Тип подразделения (ref -> cdn_deptype)
-    * Тип подразделения
-    * @type {Number}
-    */
-    this.depTypeID = 0;
-    /**
-    * Деловодное? 
-    * Является ли это подразделение деловодным
-    * @type {Boolean}
-    */
-    this.isClerical = undefined;
-    /**
-    * Заголовок 
-    * Заголовок
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    *  (ref -> org_department)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Diagrams
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_diagram_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_diagram_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * @type {Number}
+  */
+  orgunitID: null,
+ /**
+  * Name
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * Default
+  * @type {Boolean}
+  */
+  isdefault: undefined,
+ /**
+  * Organization chart
+  * @type {String}
+  */
+  document: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Диаграммы
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Diagrams
+* @type {org_diagram_ns}
 */
-var org_diagram = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_diagram = new org_diagram_ns()
 /**
-* Attributes of "Диаграммы"
-* @class
-*/
-function org_diagram_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * root (ref -> org_unit)
-    * @type {Number}
-    */
-    this.orgunitID = 0;
-    /**
-    * Name 
-    * Name
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Default 
-    * Default
-    * @type {Boolean}
-    */
-    this.isdefault = undefined;
-    /**
-    * Organizational chart 
-    * Organizational chart
-    * @type {String}
-    */
-    this.document = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of employees of internal organizations.
+ * This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class org_employee_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_employee_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Employees internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * User login -> uba_user
+  * @type {Number}
+  */
+  userID: null,
+ /**
+  * Employee last name
+  * @type {String}
+  */
+  lastName: '',
+ /**
+  * Employee first name
+  * @type {String}
+  */
+  firstName: '',
+ /**
+  * Employee middle name
+  * @type {String}
+  */
+  middleName: null,
+ /**
+  * Date of birth
+  * @type {Date}
+  */
+  birthDate: null,
+ /**
+  * Comment on employee
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Employee sex
+  * @type {String}
+  */
+  sexType: '',
+ /**
+  * Suffix
+  * @type {String}
+  */
+  suffix: null,
+ /**
+  * Example: Smith J.K.
+  * @type {String}
+  */
+  shortFIO: null,
+ /**
+  * Example: Smith Jay Key
+  * @type {String}
+  */
+  fullFIO: '',
+ /**
+  * Describes how to treat to this person
+  * @type {String}
+  */
+  apply: null,
+ /**
+  * Employee last name in genitive case
+  * @type {String}
+  */
+  lastNameGen: null,
+ /**
+  * Employee last name in dative case
+  * @type {String}
+  */
+  lastNameDat: null,
+ /**
+  * Employee first name in genitive case
+  * @type {String}
+  */
+  firstNameGen: null,
+ /**
+  * Employee first name in dative case
+  * @type {String}
+  */
+  firstNameDat: null,
+ /**
+  * Employee middle name in genitive case
+  * @type {String}
+  */
+  middleNameGen: null,
+ /**
+  * Employee middle name in dative case
+  * @type {String}
+  */
+  middleNameDat: null,
+ /**
+  * Employee short name in genitive case
+  * @type {String}
+  */
+  shortFIOGen: null,
+ /**
+  * Employee short name in dative case
+  * @type {String}
+  */
+  shortFIODat: null,
+ /**
+  * Employee full name in genitive case
+  * @type {String}
+  */
+  fullFIOGen: null,
+ /**
+  * Employee full name in dative case
+  * @type {String}
+  */
+  fullFIODat: null,
+ /**
+  * Describes how to treat to this person in genitive case
+  * @type {String}
+  */
+  applyGen: null,
+ /**
+  * Describes how to treat to this person in dative case
+  * @type {String}
+  */
+  applyDat: null,
+ /**
+  * Employee signature image
+  * @type {String}
+  */
+  facsimile: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Сотрудники внутренней организации
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of employees of internal organizations.
+ * This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity
+* @type {org_employee_ns}
 */
-var org_employee = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_employee = new org_employee_ns()
 /**
-* Attributes of "Сотрудники внутренней организации"
-* @class
-*/
-function org_employee_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Внутренний код сотрудника
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Пользователь (ref -> uba_user)
-    * Пользовательский логин
-    * @type {Number}
-    */
-    this.userID = 0;
-    /**
-    * Фамилия 
-    * Фамилия сотрудника
-    * @type {String}
-    */
-    this.lastName = '';
-    /**
-    * Имя 
-    * Имя сотрудника
-    * @type {String}
-    */
-    this.firstName = '';
-    /**
-    * Отчество 
-    * Отчество сотрудника
-    * @type {String}
-    */
-    this.middleName = '';
-    /**
-    * Дата рождения 
-    * Дата рождения
-    * @type {Date}
-    */
-    this.birthDate = new Date();
-    /**
-    * Коментар 
-    * Коментар
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Пол 
-    * Пол сотрудника внутренней организации
-    * @type {String}
-    */
-    this.sexType = '';
-    /**
-    * Суффикс 
-    * Суффикс
-    * @type {String}
-    */
-    this.suffix = '';
-    /**
-    * Краткое ФИО 
-    * Пример: Фамилия И.О.
-    * @type {String}
-    */
-    this.shortFIO = '';
-    /**
-    * Полное ФИО 
-    * Пример: Фамилия Имя Отчество
-    * @type {String}
-    */
-    this.fullFIO = '';
-    /**
-    * Обращение 
-    * Как обращаться к этому человеку
-    * @type {String}
-    */
-    this.apply = '';
-    /**
-    * Фамилия в род. падеже 
-    * Фамилия сотрудника в родительном падеже
-    * @type {String}
-    */
-    this.lastNameGen = '';
-    /**
-    * Фамилия в дат. падеже 
-    * Фамилия сотрудника в дательном падеже
-    * @type {String}
-    */
-    this.lastNameDat = '';
-    /**
-    * Имя в род. падеже 
-    * Имя сотрудника в родительном падеже
-    * @type {String}
-    */
-    this.firstNameGen = '';
-    /**
-    * Имя в дат. падеже 
-    * Имя сотрудника в дательном падеже
-    * @type {String}
-    */
-    this.firstNameDat = '';
-    /**
-    * Отчество в род. падеже 
-    * Отчество сотрудника в родительном падеже
-    * @type {String}
-    */
-    this.middleNameGen = '';
-    /**
-    * Отчество в дат. падеже 
-    * Отчество сотрудника в дательном падеже
-    * @type {String}
-    */
-    this.middleNameDat = '';
-    /**
-    * Краткое ФИО в род. падеже 
-    * Краткое ФИО в родительном падеже
-    * @type {String}
-    */
-    this.shortFIOGen = '';
-    /**
-    * Краткое ФИО в дат. падеже 
-    * Краткое ФИО в дательном падеже
-    * @type {String}
-    */
-    this.shortFIODat = '';
-    /**
-    * Полное ФИО в род. падеже 
-    * Полное ФИО в родительном падеже
-    * @type {String}
-    */
-    this.fullFIOGen = '';
-    /**
-    * Полное ФИО в дат. падеже 
-    * Полное ФИО в дательном падеже
-    * @type {String}
-    */
-    this.fullFIODat = '';
-    /**
-    * Обращение в род. падеже 
-    * Как обращаться к этому человеку в родительном падеже
-    * @type {String}
-    */
-    this.applyGen = '';
-    /**
-    * Обращение в дат. падеже 
-    * Как обращаться к этому человеку в дательном падеже
-    * @type {String}
-    */
-    this.applyDat = '';
-    /**
-    * Факсимиле 
-    * Изображение подписи сотрудника
-    * @type {String}
-    */
-    this.facsimile = '';
-    /**
-    *  (ref -> org_employee)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of internal organization assignments.
+ * Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение). Так же есть тип назначения (временное, постоянное, полставки и т.д.)
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ */
+class org_employeeonstaff_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_employeeonstaff_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Employee number
+  * @type {String}
+  */
+  tabNo: '',
+ /**
+  * Employee -> org_employee
+  * @type {Number}
+  */
+  employeeID: 0,
+ /**
+  * Internal organization staff unit -> org_staffunit
+  * @type {Number}
+  */
+  staffUnitID: 0,
+ /**
+  * Assignment type
+  * @type {String}
+  */
+  employeeOnStaffType: '',
+ /**
+  * Assignment description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Caption
+  * @type {String}
+  */
+  caption: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Назначения внутренней организации
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of internal organization assignments.
+ * Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение). Так же есть тип назначения (временное, постоянное, полставки и т.д.)
+* @type {org_employeeonstaff_ns}
 */
-var org_employeeonstaff = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_employeeonstaff = new org_employeeonstaff_ns()
 /**
-* Attributes of "Назначения внутренней организации"
-* @class
-*/
-function org_employeeonstaff_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Таб. № 
-    * Табельный номер
-    * @type {String}
-    */
-    this.tabNo = '';
-    /**
-    * Сотрудник (ref -> org_employee)
-    * Сотрудник
-    * @type {Number}
-    */
-    this.employeeID = 0;
-    /**
-    * Штатная единица (ref -> org_staffunit)
-    * Штатная единица внутренней организации
-    * @type {Number}
-    */
-    this.staffUnitID = 0;
-    /**
-    * Тип назначения 
-    * Тип назначения
-    * @type {String}
-    */
-    this.employeeOnStaffType = '';
-    /**
-    * Описание 
-    * Описание назначения
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Заголовок 
-    * Заголовок
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    *  (ref -> org_employeeonstaff)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * Assignment with pending date.
+ * Entity which contains links to assignments with pending date
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_employeeonstaff_pending_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_employeeonstaff_pending_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Assignment -> org_employeeonstaff
+  * @type {Number}
+  */
+  emponstaffID: 0,
+ /**
+  * Assignment start date
+  * @type {Date}
+  */
+  startDate: new Date(),
+ /**
+  * Assignment end date
+  * @type {Date}
+  */
+  endDate: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
 }
-
 /**
-* Назначения с отложенной датой
-* @mixes EventEmitter
-* @mixes RequiredModule
+* Assignment with pending date.
+ * Entity which contains links to assignments with pending date
+* @type {org_employeeonstaff_pending_ns}
 */
-var org_employeeonstaff_pending = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_employeeonstaff_pending = new org_employeeonstaff_pending_ns()
 /**
-* Attributes of "Назначения с отложенной датой"
-* @class
-*/
-function org_employeeonstaff_pending_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Назначение (ref -> org_employeeonstaff)
-    * Назначение
-    * @type {Number}
-    */
-    this.emponstaffID = 0;
-    /**
-    * Начало 
-    * Начало действия назначения
-    * @type {Date}
-    */
-    this.startDate = new Date();
-    /**
-    * Окончание 
-    * Окончание действия назначения
-    * @type {Date}
-    */
-    this.endDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
+ * List of current accounts of internal organizations
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_orgaccount_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_orgaccount_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Organization -> org_organization
+  * @type {Number}
+  */
+  organizationID: 0,
+ /**
+  * Currency of the account
+  * @type {Number}
+  */
+  currencyID: 0,
+ /**
+  * Bank of the account -> cdn_bank
+  * @type {Number}
+  */
+  bankID: 0,
+ /**
+  * Code of the account (account number)
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Type of the account
+  * @type {String}
+  */
+  acctype: '',
+ /**
+  * Description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Внутренние организации
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of current accounts of internal organizations
+* @type {org_orgaccount_ns}
 */
-var org_organization = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_orgaccount = new org_orgaccount_ns()
 /**
-* Attributes of "Внутренние организации"
-* @class
-*/
-function org_organization_object()  {
-    /**
-    *  (ref -> org_unit)
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Родительский элемент (ref -> org_unit)
-    * Родительский элемент
-    * @type {Number}
-    */
-    this.parentID = 0;
-    /**
-    * Внутренний код 
-    * Внутренний код организации
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * ОКПО 
-    * Общий классификатор предприятий и организаций (ОКПО)
-    * @type {String}
-    */
-    this.OKPOCode = '';
-    /**
-    * Налоговый № 
-    * Налоговый номер
-    * @type {String}
-    */
-    this.taxCode = '';
-    /**
-    * № св. НДС 
-    * № свидетельства плательщика НДС
-    * @type {String}
-    */
-    this.vatCode = '';
-    /**
-    * Название организации 
-    * Название без кавычек и аббревиатур
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Полное название организации 
-    * Полное название, как оно указанно в свидетельстве о регистрации
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Название организации в родительном падеже 
-    * Название без кавычек и аббревиатур в родительном падеже
-    * @type {String}
-    */
-    this.nameGen = '';
-    /**
-    * Название организации в дательном падеже 
-    * Название без кавычек и аббревиатур в дательном падеже
-    * @type {String}
-    */
-    this.nameDat = '';
-    /**
-    * Полное название организации в родительном падеже 
-    * Полное название, как оно указано в свидетельстве о регистрации, в родительном падеже
-    * @type {String}
-    */
-    this.fullNameGen = '';
-    /**
-    * Полное название организации в дательном падеже 
-    * Полное название, как оно указано в свидетельстве о регистрации, в дательном падеже
-    * @type {String}
-    */
-    this.fullNameDat = '';
-    /**
-    * Описание организации 
-    * Описание
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Тип организации (ref -> cdn_orgbusinesstype)
-    * Тип организации
-    * @type {Number}
-    */
-    this.orgBusinessTypeID = 0;
-    /**
-    * Тип собственности (ref -> cdn_orgownershiptype)
-    * Тип собственности
-    * @type {Number}
-    */
-    this.orgOwnershipTypeID = 0;
-    /**
-    *  (ref -> org_organization)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ *  List of internal organizations.
+ * This dictionary contains list of internal organizations. Each organization links to org_unit by Unity mixin
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class org_organization_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_organization_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Parent -> org_unit
+  * @type {Number}
+  */
+  parentID: null,
+ /**
+  * Organization internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Common classifier of enterprises and organizations (CCEO)
+  * @type {String}
+  */
+  OKPOCode: null,
+ /**
+  * Tax number
+  * @type {String}
+  */
+  taxCode: null,
+ /**
+  * VAT (value-added tax) registration certificate number
+  * @type {String}
+  */
+  vatCode: null,
+ /**
+  * Name of organization without the quotes and abbreviations
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Organization name in genitive case
+  * @type {String}
+  */
+  nameGen: null,
+ /**
+  * Organization name in dative case
+  * @type {String}
+  */
+  nameDat: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in genitive case
+  * @type {String}
+  */
+  fullNameGen: null,
+ /**
+  * Full name of organization, as it&#39;s specified in the certificate of registration, in dative case
+  * @type {String}
+  */
+  fullNameDat: null,
+ /**
+  * Organization description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Organization type -> cdn_orgbusinesstype
+  * @type {Number}
+  */
+  orgBusinessTypeID: null,
+ /**
+  * Ownership type -> cdn_orgownershiptype
+  * @type {Number}
+  */
+  orgOwnershipTypeID: null,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Посади
-* @mixes EventEmitter
-* @mixes RequiredModule
+*  List of internal organizations.
+ * This dictionary contains list of internal organizations. Each organization links to org_unit by Unity mixin
+* @type {org_organization_ns}
 */
-var org_profession = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_organization = new org_organization_ns()
 /**
-* Attributes of "Посади"
-* @class
-*/
-function org_profession_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Код 
-    * Код посади
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Назва 
-    * Назва посади
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Повна назва 
-    * Повна назва посади
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Название должности в родительном падеже 
-    * Полное название должности в родительном падеже
-    * @type {String}
-    */
-    this.nameGen = '';
-    /**
-    * Название должности в дательном падеже 
-    * Полное название должности в дательном падеже
-    * @type {String}
-    */
-    this.nameDat = '';
-    /**
-    * Полное название должности в родительном падеже 
-    * Полное название должности в родительном падеже
-    * @type {String}
-    */
-    this.fullNameGen = '';
-    /**
-    * Полное название должности в дательном падеже 
-    * Полное название должности в дательном падеже
-    * @type {String}
-    */
-    this.fullNameDat = '';
-    /**
-    * Назва + код 
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of positions
+ * @extends EntityNamespace
+ * @mixes mStorage
+ */
+class org_profession_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_profession_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Code of position
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Position name
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Position full name
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Position name in genitive case
+  * @type {String}
+  */
+  nameGen: null,
+ /**
+  * Position name in dative case
+  * @type {String}
+  */
+  nameDat: null,
+ /**
+  * Position full name in genitive case
+  * @type {String}
+  */
+  fullNameGen: null,
+ /**
+  * Position full name in dative case
+  * @type {String}
+  */
+  fullNameDat: null,
+ /**
+  * @type {String}
+  */
+  description: '',
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Штатные единицы
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of positions
+* @type {org_profession_ns}
 */
-var org_staffunit = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_profession = new org_profession_ns()
 /**
-* Attributes of "Штатные единицы"
-* @class
-*/
-function org_staffunit_object()  {
-    /**
-    *  (ref -> org_unit)
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Предок (ref -> org_unit)
-    * Предок
-    * @type {Number}
-    */
-    this.parentID = 0;
-    /**
-    * Внутренний код 
-    * Внутренний код штатной единицы
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Название штатной единицы 
-    * Название без кавычек и абревиатур
-    * @type {String}
-    */
-    this.name = '';
-    /**
-    * Полное название штатной единицы 
-    * Полное название
-    * @type {String}
-    */
-    this.fullName = '';
-    /**
-    * Описание штатной единицы 
-    * Описание штатной единицы
-    * @type {String}
-    */
-    this.description = '';
-    /**
-    * Название штатной единицы в родительном падеже 
-    * Полное название штатной единицы в родительном падеже
-    * @type {String}
-    */
-    this.nameGen = '';
-    /**
-    * Название штатной единицы в дательном падеже 
-    * Полное название штатной единицы в дательном падеже
-    * @type {String}
-    */
-    this.nameDat = '';
-    /**
-    * Полное название штатной единицы в родительном падеже 
-    * Полное название штатной единицы в родительном падеже
-    * @type {String}
-    */
-    this.fullNameGen = '';
-    /**
-    * Полное название штатной единицы в дательном падеже 
-    * Полное название штатной единицы в дательном падеже
-    * @type {String}
-    */
-    this.fullNameDat = '';
-    /**
-    * Заголовок 
-    * Заголовок
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Професія (ref -> cdn_profession)
-    * Професія
-    * @type {Number}
-    */
-    this.professionExtID = 0;
-    /**
-    * Посада (ref -> org_profession)
-    * Посада
-    * @type {Number}
-    */
-    this.professionID = 0;
-    /**
-    * Тип штатной единицы (ref -> cdn_staffunittype)
-    * Тип штатной единицы
-    * @type {Number}
-    */
-    this.staffUnitTypeID = 0;
-    /**
-    * Уровень субординации 
-    * Уровень субординации - чем ниже, тем штатная единица считается более важной по орг.структуре
-    * @type {Number}
-    */
-    this.subordinationLevel = 0;
-    /**
-    * Boss 
-    * Boss
-    * @type {Boolean}
-    */
-    this.isBoss = undefined;
-    /**
-    *  (ref -> org_staffunit)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
+ * List of staff units.
+ * This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes unity
+ */
+class org_staffunit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_staffunit_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Parent -> org_unit
+  * @type {Number}
+  */
+  parentID: null,
+ /**
+  * Staff unit internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Name of staff unit without the quotes and abbreviations
+  * @type {String}
+  */
+  name: '',
+ /**
+  * Staff unit full name
+  * @type {String}
+  */
+  fullName: '',
+ /**
+  * Staff unit description
+  * @type {String}
+  */
+  description: null,
+ /**
+  * Name of staff unit without the quotes and abbreviations in genitive case
+  * @type {String}
+  */
+  nameGen: null,
+ /**
+  * Name of staff unit without the quotes and abbreviations in dative case
+  * @type {String}
+  */
+  nameDat: null,
+ /**
+  * Staff unit full name in genitive case
+  * @type {String}
+  */
+  fullNameGen: null,
+ /**
+  * Full name in dative case
+  * @type {String}
+  */
+  fullNameDat: null,
+ /**
+  * Caption
+  * @type {String}
+  */
+  caption: '',
+ /**
+  * Profession -> cdn_profession
+  * @type {Number}
+  */
+  professionExtID: null,
+ /**
+  * Position -> org_profession
+  * @type {Number}
+  */
+  professionID: 0,
+ /**
+  * Staff unit type -> cdn_staffunittype
+  * @type {Number}
+  */
+  staffUnitTypeID: 0,
+ /**
+  * If level is lower - then staff unit is more important
+  * @type {Number}
+  */
+  subordinationLevel: null,
+ /**
+  * Boss
+  * @type {Boolean}
+  */
+  isBoss: undefined,
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
 }
-
 /**
-* Организационные единицы
-* @mixes EventEmitter
-* @mixes RequiredModule
+* List of staff units.
+ * This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin
+* @type {org_staffunit_ns}
 */
-var org_unit = {
-  /** 
-   * Reference to entity metadata
-   * @type {TubEntity} 
-   */
-  entity: null
-};
-
+const org_staffunit = new org_staffunit_ns()
 /**
-* Attributes of "Организационные единицы"
-* @class
-*/
-function org_unit_object()  {
-    /**
-    *  
-    * 
-    * @type {Number}
-    */
-    this.ID = 0;
-    /**
-    * Предок (ref -> org_unit)
-    * Предок
-    * 
-    * @type {Number}
-    */
-    this.parentID = 0;
-    /**
-    * Внутренний код 
-    * Внутренний код организационной единицы
-    * @type {String}
-    */
-    this.code = '';
-    /**
-    * Заголовок 
-    * Заголовок
-    * @type {String}
-    */
-    this.caption = '';
-    /**
-    * Тип орг. единицы 
-    * Тип организационной единицы
-    * @type {String}
-    */
-    this.unitType = '';
-    /**
-    *  
-    * 
-    * @type {String}
-    */
-    this.mi_treePath = '';
-    /**
-    *  (ref -> org_unit)
-    * 
-    * @type {Number}
-    */
-    this.mi_data_id = 0;
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateFrom = new Date();
-    /**
-    *  
-    * 
-    * @type {Date}
-    */
-    this.mi_dateTo = new Date();
-    /**
-    *  (ref -> uba_user)
-    * Row owner
-    * 
-    * @type {Number}
-    */
-    this.mi_owner = 0;
-    /**
-    *  
-    * Creation date
-    * 
-    * @type {Date}
-    */
-    this.mi_createDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who create row
-    * 
-    * @type {Number}
-    */
-    this.mi_createUser = 0;
-    /**
-    *  
-    * Modification date
-    * 
-    * @type {Date}
-    */
-    this.mi_modifyDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who modify row
-    * 
-    * @type {Number}
-    */
-    this.mi_modifyUser = 0;
-    /**
-    *  
-    * Deletion date
-    * 
-    * @type {Date}
-    */
-    this.mi_deleteDate = new Date();
-    /**
-    *  (ref -> uba_user)
-    * User who delete row
-    * 
-    * @type {Number}
-    */
-    this.mi_deleteUser = 0;
-    /**
-    *  
-    * 
-    * @type {String}
-    */
-    this.mi_unityEntity = '';
+ * List of organization units.
+ * Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree
+ * @extends EntityNamespace
+ * @mixes mStorage
+ * @mixes dataHistory
+ * @mixes tree
+ */
+class org_unit_ns extends EntityNamespace {}
+/** Attributes defined in metadata. This property not exist in real life and added just for help */
+org_unit_ns.attrs = {
+ /**
+  * @type {Number}
+  */
+  ID: 0,
+ /**
+  * Parent -> org_unit
+  * @type {Number}
+  */
+  parentID: null,
+ /**
+  * Organization unit internal code
+  * @type {String}
+  */
+  code: '',
+ /**
+  * Caption
+  * @type {String}
+  */
+  caption: '',
+ /**
+  * Organization unit type
+  * @type {String}
+  */
+  unitType: '',
+ /**
+  * @type {String}
+  */
+  mi_treePath: '',
+ /**
+  * @type {Number}
+  */
+  mi_data_id: 0,
+ /**
+  * @type {Date}
+  */
+  mi_dateFrom: new Date(),
+ /**
+  * @type {Date}
+  */
+  mi_dateTo: new Date(),
+ /**
+  * Row owner -> uba_user
+  * @type {Number}
+  */
+  mi_owner: 0,
+ /**
+  * Creation date
+  * @type {Date}
+  */
+  mi_createDate: new Date(),
+ /**
+  * User who create row -> uba_user
+  * @type {Number}
+  */
+  mi_createUser: 0,
+ /**
+  * Modification date
+  * @type {Date}
+  */
+  mi_modifyDate: new Date(),
+ /**
+  * User who modify row -> uba_user
+  * @type {Number}
+  */
+  mi_modifyUser: 0,
+ /**
+  * Deletion date
+  * @type {Date}
+  */
+  mi_deleteDate: new Date(),
+ /**
+  * User who delete row -> uba_user
+  * @type {Number}
+  */
+  mi_deleteUser: null,
+ /**
+  * @type {String}
+  */
+  mi_unityEntity: '',
 }
-
+/**
+* List of organization units.
+ * Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree
+* @type {org_unit_ns}
+*/
+const org_unit = new org_unit_ns()

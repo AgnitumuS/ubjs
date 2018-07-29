@@ -1,5 +1,8 @@
-/*
- * Created by xmax on 16.09.2016.
+/**
+ * Reverse model generation from a database tables
+ * @module generateDDL
+ * @memberOf module:@unitybase/ubcli
+ * @author xmax on 16.09.2016.
  */
 const fs = require('fs')
 const http = require('http')
@@ -23,7 +26,7 @@ module.exports = function generateModels (cfg) {
     if (!cfg) return
   }
 
-    // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
+  // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({receiveTimeout: 120000})
 
   let autorun = cfg.autorun
@@ -56,18 +59,17 @@ function doGenerateModels (modelsDir, conn, options) {
   let cModelPath = path.join(modelsDir, options.modelName)
 
   result = conn.post('generateModel', options)
-  if (!fs.statSync(cModelPath)) {
+  if (!fs.existsSync(cModelPath)) {
     fs.mkdirSync(cModelPath)
   }
   result = JSON.parse(result)
-  Object.keys(result).forEach(function (element, index) {
+  Object.keys(result).forEach(function (element) {
     entity = JSON.stringify(result[element], null, '\t')
-    fs.writeFileSync(cModelPath + '\\' + element + '.meta', entity, {encoding: 'UTF-8'})
+    fs.writeFileSync(path.join(cModelPath, element + '.meta'), entity, {encoding: 'utf-8'})
   })
 }
 
 function createCommandEntity (modelsDir, options) {
-  'use strict'
   var modelCmd,
     entityName = 'ub_CommandEntity',
     fileName
@@ -89,9 +91,9 @@ function createCommandEntity (modelsDir, options) {
     },
     'options': {}
   }
-  fileName = modelsDir + '\\ub_model_ub\\' + entityName + '.meta'
+  fileName = path.join(modelsDir, 'ub_model_ub', entityName + '.meta')
 
-  fs.writeFileSync(fileName, JSON.stringify(modelCmd, null, '\t'), {encoding: 'UTF-8'})
+  fs.writeFileSync(fileName, JSON.stringify(modelCmd, null, '\t'), {encoding: 'utf-8'})
     // console.log(fileName);
   return fileName
 }

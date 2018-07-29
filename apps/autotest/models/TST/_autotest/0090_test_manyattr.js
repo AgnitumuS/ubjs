@@ -1,5 +1,5 @@
 ﻿/**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 17.10.14
  * Test clobTruncate mixin
  */
@@ -30,7 +30,7 @@ try {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testManyAttribute(conn){
 

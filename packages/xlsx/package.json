@@ -1,11 +1,17 @@
 {
   "name": "@unitybase/xlsx",
-  "version": "4.2.1",
+  "version": "5.0.20",
   "description": "UnityBase Excel exporter",
   "main": "index.js",
+  "config": {
+    "ubmodel": {
+      "name": "XLSX",
+      "isPublic": true
+    }
+  },
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/xlsx",
   "scripts": {
-    "build": "SET NODE_ENV=production&& webpack",
+    "build": "cross-env NODE_ENV=production webpack",
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
@@ -17,8 +23,8 @@
     "registry": "http://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^4.3.1",
-    "jszip": "^3.1.5",
+    "@unitybase/base": "^5.0.17",
+    "jszip": "2.6.0",
     "lodash": "^4.17.5",
     "mustache": "^2.3.0"
   },
@@ -27,5 +33,8 @@
     "UB4"
   ],
   "author": "UnityBase team (https://unitybase.info)",
-  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
+  "devDependencies": {
+    "cross-env": "^5.1.1"
+  }
 }

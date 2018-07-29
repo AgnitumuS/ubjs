@@ -1,5 +1,12 @@
-const LocalDataStore = require('@unitybase/base/LocalDataStore')
-const CustomRepository = require('@unitybase/base/CustomRepository')
+const csShared = require('@unitybase/cs-shared')
+const LocalDataStore = csShared.LocalDataStore
+const CustomRepository = csShared.CustomRepository
+
+/**
+ * @module ClientRepository
+ * @memberOf module:@unitybase/ub-pub
+ * @author pavel.mash 23.09.2014
+ */
 
 /**
  * Repository for client-side data retrieve.
@@ -14,7 +21,8 @@ const CustomRepository = require('@unitybase/base/CustomRepository')
  *      var store = UB.Repository('my_entity').attrs(['ID', 'code'])
  *       .where('code', 'includes', ['1', '2', '3'])  // code in ('1', '2', '3')
  *       .where('name', 'contains', 'Homer'). // name like '%homer%'
- *       .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10) //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
+ *        //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
+ *       .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
  *       .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
  *       .where('', 'match', 'myvalue'). // for condition match expression not need
  *       .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
@@ -25,12 +33,6 @@ const CustomRepository = require('@unitybase/base/CustomRepository')
  *
  * @class ClientRepository
  * @extends CustomRepository
- * @author pavel.mash 23.09.2014
- */
-
-/**
- * Create a new CustomRepository
- * @constructor
  * @param {UBConnection} connection
  * @param {String} entityName name of Entity we create for
  */
@@ -41,12 +43,14 @@ class ClientRepository extends CustomRepository {
   }
 
   /**
-   * Asynchronously run request, constructed by Repository. Return promise, resolved to `array of object` representation of response.
+   * Asynchronously run request, constructed by Repository. Return promise, resolved to `array of object`
+   * representation of response.
    *
    *      UB.Repository('ubm_navshortcut').attrs(['ID', 'code'])
-   *      .where('code', 'in', ['uba_user', 'uba_auditTrail'])
-   *      .selectAsObj().then(function(store){
-   *          console.log(store); // output is [{"ID":3000000000004,"code":"uba_user"},{"ID":3000000000039,"code":"ubs_audit"}]
+   *        .where('code', 'in', ['uba_user', 'uba_auditTrail'])
+   *        .selectAsObj().then(function(store) {
+   *          console.log(store)
+   *          // output is [{"ID":3000000000004,"code":"uba_user"},{"ID":3000000000039,"code":"ubs_audit"}]
    *      });
    *
    *  Optionally can rename attributes in the resulting object:
@@ -57,10 +61,12 @@ class ClientRepository extends CustomRepository {
               'product.name': 'productName',
               'product.provider.name': 'productProviderName'
           }).then(function(result){
-              console.log(result); // output [{"ID": 1, "productName": "My product", "productProviderName": "My provider"}, ...]
+              console.log(result);
+              // output [{"ID": 1, "productName": "My product", "productProviderName": "My provider"}, ...]
           });
    *
-   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
+   *  names during transform array to object
    * @return {Promise}
    */
   selectAsObject (fieldAliases) {
@@ -70,19 +76,27 @@ class ClientRepository extends CustomRepository {
   }
 
   /**
-   * Asynchronously run request, constructed by Repository. Return promise, resolved to `array of array` representation of response.
+   * Asynchronously run request, constructed by Repository. Return promise, resolved
+   * to `array of array` representation of response.
    * Actual data is placed to `resultData` response property.
    *
    *      UB.Repository('ubm_navshortcut').attrs(['ID', 'code'])
    *      .where('code', 'in', ['uba_user', 'ubs_audit'])
    *      .select().then(UB.logDebug);
-   *      // output is {"resultData":{"data":[[3000000000004,"uba_user"],[3000000000039,"ubs_audit"]],"fields":["ID","code"]},"total":2}
+   *      // output is
+   *      //{"resultData":{"data":[
+   *      //  [3000000000004,"uba_user"],[3000000000039,"ubs_audit"]
+   *      //],"fields":["ID","code"]},"total":2}
    *
-   * Response MAY (but may not even for the same request) contain other variables, returned by server in case data retrieved not from cache
+   * Response MAY (but may not even for the same request) contain other variables,
+   * returned by server in case data retrieved not from cache
    *
-   *      UB.Repository('uba_user').attrs(['ID', 'name', 'ID.name']) // since uba_user have `unity` mixin it ID property point us to parent (`uba_subject` in this case)
+   *      // since uba_user have `unity` mixin it ID property point us to parent (`uba_subject` in this case)
+   *      UB.Repository('uba_user').attrs(['ID', 'name', 'ID.name'])
    *      .selectAsArray().then(UB.logDebug);
-   *      // {"entity":"uba_user","fieldList":["ID","name","ID.name"],"method":"select","resultData":{"fields":["ID","name","ID.name"],"rowCount":1,"data":[[10,"admin","admin"]]},"total":1}
+   *      // {"entity":"uba_user","fieldList":["ID","name","ID.name"],"method":"select",
+   *      // "resultData":{"fields":["ID","name","ID.name"],"rowCount":1,
+   *      // "data":[[10,"admin","admin"]]},"total":1}
    *
    * But resultData is always present
    *
@@ -98,10 +112,11 @@ class ClientRepository extends CustomRepository {
    * For EntJS based client (actual implementation in {UB.ux.data.UBStore}) - create store based on request, constructed by Repository.
    * Return promise resolved to loaded {UB.ux.data.UBStore} instance.
    *
-   *      UB.Repository('ubm_navshortcut').attrs(['ID', 'code']).where('code', 'in', ['uba_user', 'ubs_audit'])
-   *      .selectAsStore().then(function(store){
+   *      UB.Repository('ubm_navshortcut').attrs(['ID', 'code'])
+   *        .where('code', 'in', ['uba_user', 'ubs_audit'])
+   *        .selectAsStore().then(function(store){
    *          console.log(store.getTotalCount()); // here store is UB.ux.data.UBStore instance
-   *      });
+   *        });
    *
    * @param {Object} [storeConfig] optional config passed to store constructor
    * @return {Promise}
@@ -111,7 +126,7 @@ class ClientRepository extends CustomRepository {
   }
 
   /**
-   * Alias to {ClientRepository.selectAsObject}
+   * Alias to {@link ClientRepository#selectAsObject ClientRepository.selectAsObject}
    */
   select (fieldAliases) {
     return this.selectAsObject(fieldAliases)
@@ -120,7 +135,8 @@ class ClientRepository extends CustomRepository {
   /**
    * Select a single row. If ubql result is empty - return {undefined}.
    *
-   * WARNING method do not check repository contains the single row and always return a first row from result.
+   * WARNING method do not check repository contains the single row and always return
+   * a first row from result.
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
    *   during transform array to object. See {@link selectAsObject}
    * @return {Promise} Promise, resolved to {Object|undefined}

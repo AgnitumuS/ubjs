@@ -1,35 +1,35 @@
 {
-	"caption": "Типы штатных единиц",
-	"description": "Справочник типов штатных единиц",
-	"connectionName": "",
-	"sqlAlias": "stunt",
-	"cacheType": "SessionEntity",
-	"descriptionAttribute": "name",
-	"documentation": "",
-	"attributes": {
-		"code":
-		{
-			"dataType": "String",
-			"size": 16,
-			"caption": "Код",
-			"description": "Код",
-			"allowNull": false,
-			"isMultiLang": false
-		},
-		"name":
-		{
-			"dataType": "String",
-			"size": 128,
-			"caption": "Название",
-			"description": "Название типа штатной единицы",
-			"allowNull": false,
-			"isMultiLang": true
-		}
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":true
-        }
-	}
+  "caption": "Типы штатных единиц",
+  "description": "Справочник типов штатных единиц",
+  "connectionName": "",
+  "sqlAlias": "stunt",
+  "cacheType": "SessionEntity",
+  "descriptionAttribute": "name",
+  "documentation": "",
+  "attributes": [
+    {
+      "dataType": "String",
+      "size": 16,
+      "caption": "Code",
+      "description": "Code of the staffunit type",
+      "allowNull": false,
+      "isMultiLang": false,
+      "name": "code"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name",
+      "description": "Name of the staffunit type",
+      "allowNull": false,
+      "isMultiLang": true,
+      "name": "name"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
 }

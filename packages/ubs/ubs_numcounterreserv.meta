@@ -1,51 +1,55 @@
-﻿{   
-	"caption": "Reserved counters for registration keys",
-	"description": "Reserved counters for registration keys",
-	"connectionName": "",
-	"sqlAlias": "ncre",
-	"descriptionAttribute": "",
-	"cacheType": "None",
-	"attributes": {
-		"regKey": {
-			"dataType": "String",
-			"size": 255,
-			"caption": "Reg key",
-			"description": "Registration key",
-			"allowNull": false,
-			"isMultiLang": false
-		},
-		"counter": {
-			"dataType": "ID",
-			"caption": "Counter",
-			"description": "Reserved counter value",
-			"allowNull": false
-		},
-        "reservedDate": {
-            "dataType": "String",
-            "size": 255,
-            "caption": "Reserved date",
-            "description": "Reserved date for document",
-            "allowNull": true
-        },
-	  "note": {
-		"dataType": "String",
-		"size": 255,
-		"caption": "Note",
-		"description": "Description of reserved number (Department name, etc)"
-	  },
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":false,
-			"safeDelete":false
-        },
-		"audit": {"enabled": false}
-	},
-	"dbKeys":
-	{
-		"UK_UBS_NUMCOUNT_RKC": {
-			"regKey":{},
-			"counter": {}
-		}
-	}
+{
+  "caption": "Reserved counters for registration keys",
+  "description": "Reserved counters for registration keys",
+  "sqlAlias": "ncre",
+  "descriptionAttribute": "",
+  "cacheType": "None",
+  "attributes": [
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Reg key",
+      "description": "Registration key",
+      "allowNull": false,
+      "isMultiLang": false,
+      "name": "regKey"
+    },
+    {
+      "dataType": "ID",
+      "caption": "Counter",
+      "description": "Reserved counter value",
+      "allowNull": false,
+      "name": "counter"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Reserved date",
+      "description": "Reserved date for document",
+      "allowNull": true,
+      "name": "reservedDate"
+    },
+    {
+      "dataType": "String",
+      "size": 255,
+      "caption": "Note",
+      "description": "Description of reserved number (Department name, etc)",
+      "name": "note"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": false,
+      "safeDelete": false
+    },
+    "audit": {
+      "enabled": false
+    }
+  },
+  "dbKeys": {
+    "UK_UBS_NUMCOUNT_RKC": {
+      "regKey": {},
+      "counter": {}
+    }
+  }
 }

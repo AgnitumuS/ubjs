@@ -76,9 +76,9 @@ Ext.define('UB.ux.UBDetailGrid', {
     $App.domainInfo.get(this.entityConfig.entity).checkAttributeExist(this.detailFields, 'UB.ux.UBDetailGrid, detailFields:')
 
     /**
+     * Fire when grid was created.
      * @deprecated Grid is created immediately
      * @event  gridCreated
-     * Fire when grid was created.
      */
     this.addEvents('gridCreated')
     if (this.isDesignMode) { // for visual designer forms

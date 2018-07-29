@@ -23,7 +23,7 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
 
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
@@ -36,7 +36,7 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
 
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */
@@ -47,13 +47,13 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
     URLParams: {CONNECTION: databaseConfig.name},
     data: UB.format(sequences, clientNum)
   })
-  let script = fs.readFileSync(path.join(__dirname, 'postgreSQLObjects.sql'))
+  let script = fs.readFileSync(path.join(__dirname, 'postgresqlObjects.sql'), 'utf8')
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: databaseConfig.name},
     data: script
   })
-  script = fs.readFileSync(path.join(__dirname, 'postgreSQLTables.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'postgresqlTables.sql'), 'utf8')
   conn.xhr({
     endpoint: 'runSQL',
     URLParams: {CONNECTION: databaseConfig.name},

@@ -1,65 +1,113 @@
-﻿/**
- * User: pavel.mash
+/**
+ * @author pavel.mash
  * Date: 17.10.14
  * Test HTTP communication layer
  */
-var
-    assert = require('assert'),
-    ok = assert.ok,
-    fs = require('fs'),
-    argv = require('@unitybase/base').argv,
-    session, conn, domain;
+const assert = require('assert')
+const cmdLineOpt = require('@unitybase/base').options
+const argv = require('@unitybase/base').argv
+const http = require('http')
 
-if (argv.findCmdLineSwitch('help') !== -1){
-    console.info([
-        'This test connect to UB server and send data to echo method defined in appLevelMethod.js ',
-        'Usage: ',
-            '>UB -f cmd/test_req_resp ' + argv.establishConnectionFromCmdLineAttributesUsageInfo
-    ].join('\r\n'));
-    return;
+module.exports = function runHTTPTest (options) {
+  if (!options) {
+    let opts = cmdLineOpt.describe('', 'uData test')
+      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+    options = opts.parseVerbose({}, true)
+    if (!options) return
+  }
+
+  // console.log('orig options:', options)
+  let session = argv.establishConnectionFromCmdLineAttributes(options)
+  let conn = session.connection
+  let domain = conn.getDomainInfo()
+  try {
+    testHTTP(conn, domain, session)
+    testRest(conn)
+    testUnicode(conn)
+  } finally {
+    session.logout()
+  }
 }
+/**
+ *
+ * @param {SyncConnection} conn
+ * @param {UBDomain} domain
+ * @param {ServerSession} session
+ */
+function testHTTP (conn, domain, session) {
+  let req = http.request({
+    URL: session.HOST + '/echoToFile',
+    method: 'POST'
+  })
+  let data = 'Строка по русски'
+  let resp = req.end(data)
 
-session = argv.establishConnectionFromCmdLineAttributes();
-conn = session.connection;
+  assert.equal(resp.statusCode, 200, 'echo text string - response status is 200')
+  assert.equal(resp.read(), data, 'got the same text as send')
 
-try {
-    var config;
+  data = new Uint8Array(255000)
+  for (let n = 0, L = data.byteLength; n < L; n++) {
+    data[n] = n % 254 + 1
+  }
+  resp = req.end(data)
+  assert.equal(resp.statusCode, 200, 'echo binary - response status is 200')
+  assert.deepEqual(resp.read('bin'), data.buffer, 'got the same text as send')
 
-    domain = conn.getDomainInfo();
-
-    testHTTP(conn, domain);
-} finally {
-    session.logout();
+  // let t = Date.now()
+  // conn.xhr({
+  //   endpoint: 'rest/tst_service/sleep3sec',
+  //   method: 'POST',
+  //   URLParams: {async: true},
+  //   data: {test: 1}
+  // })
+  // assert.ok(Date.now() - t < 2000, 'async call should respond quickly')
 }
 
 /**
- *
- * @param {UBConnection} conn
- * @param {UBDomain} domain
+ * @param {SyncConnection} conn
  */
-function testHTTP(conn, domain){
-    "use strict";
-    var
-        http = require('http');
-
-    var req = http.request({
-        URL: session.HOST + '/echoToFile',
-        method: 'POST'
-    });
-    var 
-        data = 'Строка по русски',
-        resp = req.end(data);
-
-    assert.equal(resp.statusCode, 200, 'echo text string - response status is 200');
-    assert.equal(resp.read(), data, 'got the same text as send');
-    
-    data = new Uint8Array(255);
-    for(var n=0; n<255; n++){
-      data[n] = n;
-    }
-    resp = req.end(data);
-    assert.equal(resp.statusCode, 200, 'echo binary - response status is 200');
-    assert.deepEqual(resp.read('bin'), data.buffer, 'got the same text as send');  
+function testRest (conn) {
+  function invalidRestCall () {
+    return conn.xhr({
+      endpoint: 'rest/tst_service',
+      HTTPMethod: 'POST'
+    })
+  }
+  assert.throws(invalidRestCall, /Not Implemented/, 'Should throw on rest without method')
+  let d = conn.xhr({
+    endpoint: 'rest/tst_service/restTest',
+    HTTPMethod: 'PUT',
+    data: 'put test data'
+  })
+  assert.ok(typeof d === 'object', 'rest call convention fail')
+  let d1 = conn.xhr({
+    endpoint: 'rest/tst_service/restTest',
+    HTTPMethod: 'GET',
+    data: 'put test data'
+  })
+  assert.ok(typeof d === 'object', 'rest call convention fail')
+  let d2 = conn.xhr({
+    endpoint: 'rest/tst_service/restTest',
+    HTTPMethod: 'POST',
+    data: 'put test data'
+  })
+  assert.ok(typeof d === 'object', 'rest call convention fail')
 }
 
-
+/**
+ * @param {SyncConnection} conn
+ */
+function testUnicode (conn) {
+  function unicodeExc () {
+    conn.query({entity: 'tst_service', method: 'throwTest', isUnicode: true})
+  }
+  assert.throws(unicodeExc, /<<<Підтримується>>>/, 'Should throw unicode error')
+  function systemExc () {
+    conn.query({entity: 'tst_service', method: 'throwTest', isSystem: true})
+  }
+  assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide system errros in production mode')
+  function usualExc () {
+    conn.query({entity: 'tst_service', method: 'throwTest'})
+  }
+  assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide JS errros in production mode')
+}

@@ -1,11 +1,18 @@
 /**
- * Created by pavel.mash on 01.12.2016.
+ * Utility functions for @unitybase/ub-pub module
+ *
+ * @module utils
+ * @memberOf module:@unitybase/ub-pub
+ * @author UnityBase team
  */
+
 /* global FileReader, Blob */
 const _ = require('lodash')
+const i18n = require('./i18n')
+
 /**
- * Copies all the properties of one or several objectsFrom to the specified objectTo.
- * Non-simple type copied by reference!
+ * see docs in ub-pub main module
+ * @private
  * @param {Object} objectTo The receiver of the properties
  * @param {...Object} objectsFrom The source(s) of the properties
  * @return {Object} returns objectTo
@@ -23,12 +30,8 @@ module.exports.apply = function (objectTo, objectsFrom) {
 
 const FORMAT_RE = /{(\d+)}/g
 /**
- * Allows you to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
- * token must be unique, and must increment in the format {0}, {1}, etc.  Example usage:
- *
- *     var s = UB.format('{1}/ext-lang-{0}.js', 'en', 'locale');
- *     // s now contains the string: ''locale/ext-lang-en.js''
- *
+ * see docs in ub-pub main module
+ * @private
  * @param {String} stringToFormat The string to be formatted.
  * @param {...*} values The values to replace tokens `{0}`, `{1}`, etc in order.
  * @return {String} The formatted string.
@@ -41,13 +44,8 @@ module.exports.format = function (stringToFormat, values) {
 }
 
 /**
- * Creates namespaces to be used for scoping variables and classes so that they are not global.
- * @example
- *     UB.ns('DOC.Report');
- *
- *     DOC.Report.myReport = function() { ... };
- *
- * @method
+ * see docs in ub-pub main module
+ * @private
  * @param {String} namespacePath
  * @return {Object} The namespace object.
  */
@@ -66,7 +64,8 @@ module.exports.ns = function (namespacePath) {
 }
 
 /**
- * Convert UnityBase server dateTime response to Date object
+ * see docs in ub-pub main module
+ * @private
  * @param value
  * @returns {Date}
  */
@@ -75,8 +74,8 @@ module.exports.iso8601Parse = function (value) {
 }
 
 /**
- * Convert UnityBase server date response to Date object.
- * date response is a day with 00 time (2015-07-17T00:00Z), to get a real date we must add current timezone shift
+ * see docs in ub-pub main module
+ * @private
  * @param value
  * @returns {Date}
  */
@@ -89,7 +88,8 @@ module.exports.iso8601ParseAsDate = function (value) {
 }
 
 /**
- * Convert UnityBase server Boolean response to Boolean (0 = false & 1 = trhe)
+ * see docs in ub-pub main module
+ * @private
  * @param v Value to convert
  * @returns {Boolean|null}
  */
@@ -100,8 +100,8 @@ module.exports.booleanParse = function (v) {
 }
 
 /**
- * Fast async transformation of data to base64 string
- * @method
+ * see docs in ub-pub main module
+ * @private
  * @param {File|ArrayBuffer|String|Blob|Array} data
  * @returns {Promise<string>} resolved to data converted to base64 string
  */
@@ -135,7 +135,8 @@ const BASE64DECODELOOKUP = new Uint8Array(256);
 })()
 
 /**
- * Convert base54 encoded string to decoded array buffer
+ * see docs in ub-pub main module
+ * @private
  * @param {String} base64
  * @returns {ArrayBuffer}
  */
@@ -145,23 +146,23 @@ module.exports.base64toArrayBuffer = function (base64) {
   let p = 0
   let encoded1, encoded2, encoded3, encoded4
 
-  if (base64[ base64.length - 1 ] === '=') {
+  if (base64[base64.length - 1] === '=') {
     bufferLength--
-    if (base64[ base64.length - 2 ] === '=') bufferLength--
+    if (base64[base64.length - 2] === '=') bufferLength--
   }
 
   let arrayBuffer = new ArrayBuffer(bufferLength)
   let bytes = new Uint8Array(arrayBuffer)
 
   for (let i = 0; i < len; i += 4) {
-    encoded1 = BASE64DECODELOOKUP[ base64.charCodeAt(i) ]
-    encoded2 = BASE64DECODELOOKUP[ base64.charCodeAt(i + 1) ]
-    encoded3 = BASE64DECODELOOKUP[ base64.charCodeAt(i + 2) ]
-    encoded4 = BASE64DECODELOOKUP[ base64.charCodeAt(i + 3) ]
+    encoded1 = BASE64DECODELOOKUP[base64.charCodeAt(i)]
+    encoded2 = BASE64DECODELOOKUP[base64.charCodeAt(i + 1)]
+    encoded3 = BASE64DECODELOOKUP[base64.charCodeAt(i + 2)]
+    encoded4 = BASE64DECODELOOKUP[base64.charCodeAt(i + 3)]
 
-    bytes[ p++ ] = (encoded1 << 2) | (encoded2 >> 4)
-    bytes[ p++ ] = ((encoded2 & 15) << 4) | (encoded3 >> 2)
-    bytes[ p++ ] = ((encoded3 & 3) << 6) | (encoded4 & 63)
+    bytes[p++] = (encoded1 << 2) | (encoded2 >> 4)
+    bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2)
+    bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63)
   }
 
   return arrayBuffer
@@ -169,14 +170,14 @@ module.exports.base64toArrayBuffer = function (base64) {
 
 /**
  * UnityBase client-side exception.
- * Such exceptions are will not be showed as unknown error in {@link UB.showErrorWindow}
- *
- * message Can be either localized message or locale identifier - in this case UB#showErrorWindow translate message using {@link UB#i18n}
- *
- *      @example
- *      throw new UB.UBError('lockedBy'); // will show message box "Record was locked by other user. It\'s read-only for you now"
- *
- * @param {String} message Message
+ * Such exceptions will not be showed as unknown error in {@link UB#showErrorWindow UB.showErrorWindow}
+ * @example
+
+ // in adminUI will show message box with text:
+ // "Record was locked by other user. It\'s read-only for you now"
+ throw new UB.UBError('lockedBy')
+
+ * @param {String} message Message can be either localized message or locale identifier - in this case UB#showErrorWindow translate message using {@link UB#i18n}
  * @param {String} [detail] Error details
  * @param {Number} [code] Error code (for server-side errors)
  * @extends {Error}
@@ -192,13 +193,14 @@ function UBError (message, detail, code) {
     this.stack = (new Error()).stack
   }
 }
+
 UBError.prototype = new Error()
 UBError.prototype.constructor = UBError
 
 module.exports.UBError = UBError
 
 /**
- * UnityBase still error. Global error handler does not show this error for user. Use it for still reject promise.
+ * Quiet exception. Global error handler does not show this exception for user. Use it for silently reject promise.
  * @param {String} [message] Message
  * @param {String} [detail] Error details
  * @extends {Error}
@@ -214,10 +216,47 @@ function UBAbortError (message, detail) {
     this.stack = (new Error()).stack
   }
 }
+
 UBAbortError.prototype = new Error()
 UBAbortError.prototype.constructor = UBAbortError
 
 module.exports.UBAbortError = UBAbortError
+
+/**
+ *  Parse error and translate message using {@link UB#i18n i18n}
+ * @param {string|Object|Error|UBError} errMsg  message to show
+ * @param {string} [errCode] (Optional) error code
+ * @param {string} [entityCode] (Optional) entity code
+ * @param {string} detail erro detail
+ * @return {{errMsg: string, errCode: *, entityCode: *, detail: *|string}}
+ */
+module.exports.parseUBError = function (errMsg, errCode, entityCode, detail) {
+  let errDetails = detail || ''
+  if (errMsg && errMsg instanceof UBError) {
+    errCode = errMsg.code
+    errDetails = errMsg.detail
+    if (errMsg.stack) {
+      errDetails += '<br/>stackTrace:' + errMsg.stack
+    }
+    errMsg = errMsg.message
+  } else if (errMsg instanceof Error) {
+    if (errMsg.stack) {
+      errDetails += '<br/>stackTrace:' + errMsg.stack
+    }
+    errMsg = errMsg.toString()
+  } else if (errMsg && (typeof errMsg === 'object')) {
+    errCode = errMsg.errCode
+    entityCode = errMsg.entity
+    errMsg = errMsg.errMsg ? errMsg.errMsg : JSON.stringify(errMsg)
+    errDetails = errMsg.detail || errDetails
+  }
+  return {
+    errMsg: i18n.i18n(errMsg),
+    errCode: errCode,
+    entityCode: entityCode,
+    detail: errDetails
+  }
+}
 
 /**
  * Log message to console (if console available)
@@ -276,3 +315,27 @@ module.exports.isOpera = /opr|opera/.test(userAgent)
 module.exports.isMac = /macintosh|mac os x/.test(userAgent)
 /** @type {Boolean} */
 module.exports.isSecureBrowser = /\belectron\b/.test(userAgent)
+/** @type {Boolean} */
+module.exports.isReactNative = (typeof navigator !== 'undefined' && navigator.product === 'ReactNative')
+
+/**
+ * localDataStorage keys used by @unitybase-ub-pub (in case of browser environment)
+ */
+module.exports.LDS_KEYS = {
+  /**
+   * In case stored value is 'true' then login using Negotiate without prompt
+   */
+  SILENCE_KERBEROS_LOGIN: 'silenceKerberosLogin',
+  /**
+   * Last logged in user name (login)
+   */
+  LAST_LOGIN: 'lastLogin',
+  /**
+   * In case stored value is 'true' then used call logout directly (i.e. press logout button)
+   */
+  USER_DID_LOGOUT: 'userDidLogout',
+  /**
+   * locale, preferred by user. Empty in case of first login
+   */
+  PREFERRED_LOCALE: 'preferredLocale'
+}

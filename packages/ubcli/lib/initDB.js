@@ -22,7 +22,8 @@
     initDB(options)
 
  * If DBA already create a database set both `dropDatabase` & `createDatabase` to `false`
- * @module @unitybase/ubcli/initDB
+ * @module initDB
+ * @memberOf module:@unitybase/ubcli
  */
 
 const options = require('@unitybase/base').options
@@ -31,8 +32,8 @@ const UBA_COMMON = require('@unitybase/base').uba_common
 const _ = require('lodash')
 const fs = require('fs')
 const http = require('http')
-
-/**
+module.exports = initDB
+  /**
  * @param {Object} cfg
  * @param {Number} [cfg.clientIdentifier=3] Identifier of the client.
  *    Must be between 2 and 8999. Number 1 is for UnityBase developer, 3 for test.
@@ -42,7 +43,7 @@ const http = require('http')
  * @param {String} [cfg.dba] A DBA name. Used in case `createDatabase=true`
  * @param {String} [cfg.dbaPwd] A DBA password. Used in case `createDatabase=true`
  */
-module.exports = function initDB (cfg) {
+function initDB (cfg) {
   if (!cfg) {
     let opts = options.describe('initDB', 'Prepare a new database for a UB ORM', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
@@ -69,11 +70,11 @@ module.exports = function initDB (cfg) {
   }
   if (!cfg) return
   let session, conn, generator
-  if (cfg.clientIdentifier > 8998) {
+  if (cfg.clientIdentifier > 8999) {
     throw new Error('clientIdentifier (-c parameter) must be between 1 and 8999')
   }
   let originalConfigFileName = argv.getConfigFileName()
-  let config = argv.getServerConfiguration()
+  let config = argv.getServerConfiguration(true)
   cfg.host = argv.serverURLFromConfig(config)
 
   // database are slow :( Increase timeout to 2 minutes
@@ -157,7 +158,7 @@ module.exports = function initDB (cfg) {
 
 /**
  * Create a Everyone & admin roles and a SuperUser named admin with password `admin`
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {String} dbDriverName
  * @private
  */

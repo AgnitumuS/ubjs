@@ -1,25 +1,11 @@
-/**
- * Created by pavel.mash on 01.12.2016.
- */
-
 const _ = require('lodash')
 
 const __i18n = {
   monkeyRequestsDetected: 'Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?'
 }
+const FORMAT_RE = /{([0-9a-zA-Z_]+)}/g
 
-/**
- * Return locale-specific resource from it identifier.
- * localeString must be either previously defined dy call to {i18nExtend} or
- * or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
- * or `UB.i18n('uba_role.description')` would be resolved to localized entity caption or entity attribute caption
- * @param {String} localeString
- * @returns {*}
- */
-function i18n (localeString) {
-  let res = __i18n[localeString]
-  if (res !== undefined || localeString == null) return res
-
+function domainBasedLocalization (localeString) {
   // $App is accessible only inside adminUI
   if (typeof $App === 'undefined') return localeString
 
@@ -62,14 +48,40 @@ function i18n (localeString) {
 }
 
 /**
- * Merge localizationObject to UB.i18n. Usually called form modelPublic/locale/lang-*.js scripts
- * @param {Object} localizationObject
+ * see docs in ub-pub main module
+ * @private
+ * @param {String} localeString
+ * @param {...*} formatArgs Format args
+ * @returns {*}
  */
-function i18nExtend (localizationObject) {
-  _.merge(__i18n, localizationObject)
+module.exports.i18n = function i18n (localeString, ...formatArgs) {
+  if (localeString == null) return localeString
+  let res = __i18n[localeString]
+  if (res === undefined) res = _.get(__i18n, localeString)
+  if (res === undefined) res = domainBasedLocalization(localeString)
+  if (formatArgs && formatArgs.length && (typeof res === 'string')) {
+    // key-value object
+    if ((formatArgs.length === 1) && (typeof formatArgs[0] === 'object')) {
+      let first = formatArgs[0]
+      return res.replace(FORMAT_RE, function (m, k) {
+        return _.get(first, k)
+      })
+    } else { // array of values
+      return res.replace(FORMAT_RE, function (m, i) {
+        return formatArgs[i]
+      })
+    }
+  } else {
+    return res
+  }
 }
 
-module.exports = {
-  i18n,
-  i18nExtend
+/**
+ * see docs in ub-pub main module
+ * @private
+ * @param {Object} localizationObject
+ * @returns {Object} new i18n object
+ */
+module.exports.i18nExtend = function i18nExtend (localizationObject) {
+  return _.merge(__i18n, localizationObject)
 }

@@ -1,17 +1,18 @@
-{ 
+{
 	"httpServer": {
+		//"serverType": "Socket",
+		"#include(%UB_RP_CONFIG%)"
 		"host": "+",
-		"port": "888",
+		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		//"remoteIPHeader": "X-Real-IP",
-		"inetPub": ".\\inetPub\\",
+		"inetPub": "./inetPub/",
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 8
+		"threadPoolSize": 2
 	},
 	/*"wsServer": {
 		"host": "+",
@@ -19,14 +20,14 @@
 		"path": "ws"
 	},*/
 	"logging": {
-		"path": ".\\logs",
+		"path": "./logs",
 		"levels": [
 			"*"
 		],
 		"threadingModel": "IdentifiedInOnFile",
 		"stackTrackDepth": 20,
 		"rotationSizeInMB": 100,
-		"performanceCounters": true
+		"performanceCounters": false
 	},
 	"javascript": {
 		"timeout": -1,
@@ -56,8 +57,10 @@
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
-			"loginWindowTopLogoURL": "models/TST/UB200.png",
+			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			//"loginWindowTopLogoURL": "/img/m-docnet.png",
 			"endpoint": "ubadminui",
+			"loginURL": "/models/adminui-next/views/ub-auth.html",
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
@@ -72,76 +75,45 @@
 		}
 	},
 	"application": {
-		"defaultLang": "uk",
+		"defaultLang": "en",
 		"rootHandler": "index.html",
 		"schedulers": {"enabled": false},
 		"domain": {
 			"models": [
 				{
-					"name": "UB",
-					"path": "./node_modules/@unitybase/ub",
-					"moduleName": "@unitybase/ub"
+					"path": "./node_modules/@unitybase/ub"
 				},
 				{
-					"name": "UBA",
-					"path": "./node_modules/@unitybase/uba",
-					"moduleName": "@unitybase/uba"
+					"path": "./node_modules/@unitybase/uba"
 				},
 				{
-					"name": "UBS",
-					"path": "./node_modules/@unitybase/ubs",
-					"moduleName": "@unitybase/ubs"
+					"path": "./node_modules/@unitybase/ubs"
 				},
 				{
-					"name": "UBM",
-					"path": "./node_modules/@unitybase/ubm",
-					"moduleName": "@unitybase/ubm"
+					"path": "./node_modules/@unitybase/ubm"
 				},
 				{
-					"name": "UBQ",
-					"path": "./node_modules/@unitybase/ubq",
-					"moduleName": "@unitybase/ubq"
+					"path": "./node_modules/@unitybase/ubq"
 				},
 				{
-					"name": "CDN",
-					"path": "./node_modules/@unitybase/cdn",
-					"moduleName": "@unitybase/cdn"
+					"path": "./node_modules/@unitybase/cdn"
 				},
 				{
-					"name": "ORG",
-					"path": "./node_modules/@unitybase/org",
-					"moduleName": "@unitybase/org"
+					"path": "./node_modules/@unitybase/org"				
 				},
 				{
-					"name": "ub-pub",
-					"publicPath": "./node_modules/@unitybase/ub-pub",
-					"path": "_public_only_",
-					"moduleName": "@unitybase/ub-pub"
+					"path": "./node_modules/@unitybase/ub-pub"
 				},
 				{
-					"name": "adminui-pub",
-					"publicPath": "./node_modules/@unitybase/adminui-pub",
-					"path": "_public_only_",
-					"moduleName": "@unitybase/adminui-pub"
+					"path": "./node_modules/@unitybase/adminui-pub"
 				},
 				{
-					"name": "adminui-reg",
-					"path": "./node_modules/@unitybase/adminui-reg",
-					"moduleName": "@unitybase/adminui-reg"
-				},
-                                {
-					"name": "DSES",
-					"path": "./node_modules/@ub-e/dses",
-					"moduleName": "@ub-e/dses"
+					"path": "./node_modules/@unitybase/adminui-reg"
 				},
 				{
-					"name": "nm-dstu",
-					"publicPath": "./node_modules/@ub-d/nm-dstu",
-					"path": "_public_only_",
-					"moduleName": "@ub-d/nm-dstu"
+					"path": "./node_modules/@unitybase/adminui-next"
 				},
 				{
-					"name": "TST",
 					"path": "./models/TST"
 				}
 			],
@@ -159,7 +131,7 @@
 				"driver": "SQLite3",
 				"isDefault": true,
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestDB.sqlite3",
+				"databaseName": "./autotestDB.sqlite3",
 				"supportLang": ["en", "uk"],
 				"advSettings": "Synchronous=Off"
 			},
@@ -167,39 +139,44 @@
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestFTS.sqlite3",
+				"databaseName": "./autotestFTS.sqlite3",
 				"supportLang": [
-					"uk"
+					"en", "uk"
 				],
+				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			},
 			{
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestSubjectsFTS.sqlite3",
+				"databaseName": "./autotestSubjectsFTS.sqlite3",
 				"supportLang": [
-					"uk"
+					"en", "uk"
 				],
+				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			}
 		],
 		"blobStores": [
 			{
 				"name": "mdb",
-				"storeType": "Virtual"
+				"storeType": "Virtual",
+				"tempPath": "./_temp"
 			},
 			{
 				"name": "simple",
-				"path": ".\\documents\\simple\\",
+				"path": "./documents/simple",
+				"tempPath": "./documents/simple/_temp",
 				"isDefault": true,
-				"historyDepth": 0,
-				"storeSize": "Simple",
+				"historyDepth": 2,
+				"storeSize": "Medium",
 				"keepOriginalFileNames": false
 			},
 			{
 				"name": "avatars",
-					"path": ".\\documents\\avatars\\",
+				"path": "./documents/avatars",
+				"tempPath": "./documents/avatars/_temp",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false

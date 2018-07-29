@@ -67,7 +67,7 @@ exports.formCode = {
           reader.onloadend = function () {
             var certBuff = reader.result
             Promise.all([
-              System.import('asn1js/build/asn1.js'),
+              System.import('asn1js'),
               System.import('pkijs/build/Certificate.js')
             ]).then(function (res) {
               var asn1js = res[0], Certificate = res[1].default

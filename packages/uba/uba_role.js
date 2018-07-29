@@ -1,25 +1,32 @@
-var me = uba_role
-
-var UBA_COMMON = require('./modules/uba_common')
+const UBA_COMMON = require('@unitybase/base').uba_common
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+/* global uba_role */
+// eslint-disable-next-line camelcase
+let me = uba_role
+me.on('insert:before', fillRoleDescriptionIfMissing)
+me.on('insert:after', ubaAuditNewRole)
+me.on('update:after', ubaAuditModifyRole)
+me.on('delete:before', disableBuildInRoleDelete)
+me.on('delete:after', ubaAuditDeleteRole)
 
 /**
  * After inserting new user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewRole (ctx) {
-  'use strict'
-  if (!App.domain.byName('uba_audit')) {
-    return
-  }
-  var params = ctx.mParams.execParams
-  var store = new TubDataStore('uba_audit')
-  var actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select()
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let store = UB.DataStore('uba_audit')
+  let params = ctx.mParams.execParams
   store.run('insert', {
     execParams: {
       entity: 'uba_role',
       entityinfo_id: params.ID,
       actionType: 'INSERT',
-      actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+      actionUser: Session.uData.login,
       actionTime: new Date(),
       remoteIP: Session.callerIP,
       targetRole: params.name,
@@ -27,10 +34,10 @@ function ubaAuditNewRole (ctx) {
     }
   })
 }
-me.on('insert:after', ubaAuditNewRole)
 
 /**
  * Set description = name in case it missing
+ * @private
  * @param {ubMethodParams} ctxt
  */
 function fillRoleDescriptionIfMissing (ctxt) {
@@ -39,23 +46,21 @@ function fillRoleDescriptionIfMissing (ctxt) {
     params.description = params.name
   }
 }
-me.on('insert:before', fillRoleDescriptionIfMissing)
 
 /**
  * After updating user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyRole (ctx) {
-  if (!App.domain.byName('uba_audit')) {
-    return
-  }
-  var
-    params = ctx.mParams.execParams,
-    store = new TubDataStore('uba_audit'),
-    actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select(),
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, oldName
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let params = ctx.mParams.execParams
+  let store = UB.DataStore('uba_audit')
+  let actionUser = Session.uData.login
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let oldValues, oldName
 
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
@@ -71,7 +76,7 @@ function ubaAuditModifyRole (ctx) {
         entity: 'uba_role',
         entityinfo_id: params.ID,
         actionType: 'DELETE',
-        actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+        actionUser: actionUser,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
         targetRole: oldName,
@@ -84,7 +89,7 @@ function ubaAuditModifyRole (ctx) {
         entity: 'uba_role',
         entityinfo_id: params.ID,
         actionType: 'INSERT',
-        actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+        actionUser: actionUser,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
         targetRole: params.name,
@@ -98,7 +103,7 @@ function ubaAuditModifyRole (ctx) {
         entity: 'uba_role',
         entityinfo_id: params.ID,
         actionType: 'UPDATE',
-        actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+        actionUser: actionUser,
         actionTime: new Date(),
         remoteIP: Session.callerIP,
         targetRole: oldName,
@@ -108,23 +113,19 @@ function ubaAuditModifyRole (ctx) {
     })
   }
 }
-me.on('update:after', ubaAuditModifyRole)
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteRole (ctx) {
-  if (!App.domain.byName('uba_audit')) {
-    return
-  }
-  var
-    params = ctx.mParams.execParams,
-    store = new TubDataStore('uba_audit'),
-    actionUserRepo = UB.Repository('uba_user').attrs('name').where('[ID]', '=', Session.userID).select(),
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues, oldName
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let params = ctx.mParams.execParams
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let oldValues, oldName
 
   try {
     origStore.currentDataName = 'selectBeforeDelete'
@@ -134,12 +135,13 @@ function ubaAuditDeleteRole (ctx) {
     origStore.currentDataName = origName
   }
 
+  let store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_role',
       entityinfo_id: params.ID,
       actionType: 'DELETE',
-      actionUser: actionUserRepo.eof ? Session.userID : actionUserRepo.get('name'),
+      actionUser: Session.uData.login,
       actionTime: new Date(),
       remoteIP: Session.callerIP,
       targetRole: oldName,
@@ -147,16 +149,14 @@ function ubaAuditDeleteRole (ctx) {
     }
   })
 }
-me.on('delete:after', ubaAuditDeleteRole)
 
 /**
  * Prevent delete a build-in roles
+ * @private
  * @param {ubMethodParams} ctx
  */
 function disableBuildInRoleDelete (ctx) {
-  var
-    params = ctx.mParams.execParams,
-    ID = params.ID
+  let ID = ctx.mParams.execParams.ID
 
   for (let role in UBA_COMMON.ROLES) {
     if (UBA_COMMON.ROLES[role].ID === ID) {
@@ -164,4 +164,3 @@ function disableBuildInRoleDelete (ctx) {
     }
   }
 }
-me.on('delete:before', disableBuildInRoleDelete)

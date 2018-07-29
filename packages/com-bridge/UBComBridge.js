@@ -34,8 +34,8 @@
  * @module @unitybase/com-bridge
  */
 
-const dllName = 'UBComBridge.dll'
-const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x64'
+const dllName = 'ubcombridge.dll'
+const archPath = process.arch === 'x32' ? './bin/x32' : './bin/x86_64'
 const path = require('path')
 const moduleName = path.join(__dirname, archPath, dllName)
 const binding = require(moduleName)

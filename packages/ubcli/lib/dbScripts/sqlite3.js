@@ -30,25 +30,26 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
 
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
   // SQLite3 database are created automatically during connection open
 }
 
-function splitAndExec (stmts, ubConnection, dbConnectionName) {
+function splitAndExec (stmts, syncConnection, dbConnectionName) {
   // git can replace \r\n by \n on windows
   let delimRe = /\r\n/.test(stmts) ? '--next\r\n' : '--next\n'
   var statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
-    if (statement)
-            { ubConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement}) }
+    if (statement) {
+      syncConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
+    }
   })
 }
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */
@@ -65,6 +66,6 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
   splitAndExec(script, conn, databaseConfig.name)
 
     // TODO put clientNum to a table for a ID generator initialization
-  script = fs.readFileSync(path.join(__dirname, 'sqlite3Tables.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'sqlite3Tables.sql'), 'utf8')
   splitAndExec(script, conn, databaseConfig.name)
 }

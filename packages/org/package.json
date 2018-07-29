@@ -1,10 +1,12 @@
 {
   "name": "@unitybase/org",
-  "version": "4.1.1",
+  "version": "5.0.35",
   "description": "Organisation structure",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/org",
   "config": {
-    "ubmodel": "ORG"
+    "ubmodel": {
+      "name": "ORG"
+    }
   },
   "scripts": {
     "test": "ubcli autotest -m ORG -skipModules"
@@ -13,16 +15,17 @@
   "publishConfig": {
     "registry": "http://registry.unitybase.info"
   },
-  "main": "index.js",
+  "main": "org.js",
   "dependencies": {
-    "@unitybase/base": "^4.3.1",
-    "@unitybase/cdn": "^4.1.1",
-    "@unitybase/ub": "^4.1.1",
-    "@unitybase/uba": "^4.2.1",
-    "@unitybase/ubs": "^4.2.1"
+    "@unitybase/base": "^5.0.17",
+    "@unitybase/cdn": "^5.0.34",
+    "@unitybase/ub": "^5.0.27",
+    "@unitybase/uba": "^5.0.27",
+    "@unitybase/ubs": "^5.0.34",
+    "lodash": "^4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^4.1.13"
+    "@unitybase/stubs": "^5.0.9"
   },
   "keywords": [
     "UnityBase",

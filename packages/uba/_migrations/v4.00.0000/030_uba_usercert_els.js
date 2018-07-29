@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Add ELS for uba_usercertificates
  */
 
@@ -9,7 +9,7 @@ const csvLoader = require('@unitybase/base').dataLoader
 
 /*
  * Used by ubcli initialize command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   if (!session) {

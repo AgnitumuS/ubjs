@@ -1,8 +1,13 @@
+const _ = require('lodash')
+const options = require('./options')
+const fs = require('fs')
+const path = require('path')
+const http = require('http')
+const SyncConnection = require('./SyncConnection')
+
 /**
- * Utils for connecting to a local UnityBase server
  *
- * In case you need to work with command line use a {@link module:@unitybase/base/options @unitybase/base.options} module
- *
+ * Command-line utils for connecting to a UnityBase server
  * @example
 
   const argv = require('@unitybase/base').argv
@@ -15,15 +20,32 @@
   // obtain domain information
   const domainInfo = conn.getDomainInfo()
 
- * @module @unitybase/base/argv
+ * @module argv
+ * @memberOf module:@unitybase/base
  */
+module.exports = {
+  safeParseJSONfile: safeParseJSONfile,
+  /**
+   * @deprecated Use `options.switchIndex' instead
+   * @param switchName
+   * @returns {Number} switch index if found or -1 otherwise
+   */
+  findCmdLineSwitch: options.switchIndex,
+  /**
+   * @deprecated Use `options.switchValue' instead
+   * @param switchName
+   * @returns {String} switch value or `undefined` in case switch not found or switch not have value
+   */
+  findCmdLineSwitchValue: options.switchValue,
+  getConfigFileName: getConfigFileName,
+  serverSessionFromCmdLineAttributes: serverSessionFromCmdLineAttributes,
+  establishConnectionFromCmdLineAttributes: establishConnectionFromCmdLineAttributes,
+  checkServerStarted: checkServerStarted,
+  getServerConfiguration,
+  serverURLFromConfig: serverURLFromConfig
+}
+
 /* global removeCommentsFromJSON, startServer, stopServer */
-const _ = require('lodash')
-const options = require('./options')
-const fs = require('fs')
-const path = require('path')
-const http = require('http')
-const UBConnection = require('./UBConnection')
 
 /**
  * Get config file name. if -cfg switch passed then use this switch value, else use default
@@ -57,36 +79,36 @@ let verboseMode = options.switchIndex('noLogo') === -1
  * @class ServerSession
  */
 function ServerSession (config) {
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.HOST = config.host
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.USER = config.user
-    /**
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * @type {String}
+   * @readonly
+   */
   this.PWD = config.pwd
-    /**
-     * Custom user data returned by server login method
-     * @type {String}
-     * @readonly
-     */
+  /**
+   * Custom user data returned by server login method
+   * @type {String}
+   * @readonly
+   */
   this.uData = null
   this.__serverStartedByMe = false
-    /**
-     * @type {UBConnection}
-     */
+  /**
+   * @type {SyncConnection}
+   */
   this.connection = null
-    /**
-     * Shut down server in case it started during connection establish or logout from remote server
-     * @method
-     */
+  /**
+   * Shut down server in case it started during connection establish or logout from remote server
+   * @method
+   */
   this.logout = function () {
     if (this.__serverStartedByMe) {
       if (verboseMode) console.info('Shut down local server')
@@ -96,11 +118,11 @@ function ServerSession (config) {
     }
   }
 
-    // noinspection JSUnusedGlobalSymbols
-    /**
-     * Result of `getAppInfo` endpoint execution
-     * @type {Object}
-     */
+  // noinspection JSUnusedGlobalSymbols
+  /**
+   * Result of `getAppInfo` endpoint execution
+   * @type {Object}
+   */
   this.appInfo = {}
 }
 
@@ -166,7 +188,7 @@ function establishConnectionFromCmdLineAttributes (config) {
   if (config.timeout) {
     http.setGlobalConnectionDefaults({receiveTimeout: parseInt(config.timeout, 10)})
   }
-  let conn = serverSession.connection = new UBConnection({ URL: serverSession.HOST })
+  let conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
   let appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
   if (appInfo.authMethods.indexOf('UB') !== -1) {
@@ -187,10 +209,10 @@ function establishConnectionFromCmdLineAttributes (config) {
  * @type {Array<Object>}
  */
 establishConnectionFromCmdLineAttributes._cmdLineParams = [
-  {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:888', searchInEnv: true, help: 'Server URL to connect, including protocol'},
+  {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL'},
   {short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name'},
   {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password'},
-  {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to server config'},
+  {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'},
   {short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms'}
 ]
 
@@ -237,10 +259,12 @@ function replaceIncludeVariables (content) {
       return 'INVALID INCLUDE ' + p1
     }
     if (!path.isAbsolute(filePath)) filePath = path.join(process.configPath, filePath)
-    if (!fs.statSync(filePath)) {
+    try {
+      fs.statSync(filePath)
+    } catch (e) {
       return 'INVALID INCLUDE ' + filePath
     }
-    let content = removeCommentsFromJSON(fs.readFileSync(filePath))
+    let content = removeCommentsFromJSON(fs.readFileSync(filePath, 'utf8'))
     if (!content) {
       return 'EMPTY INCLUDE ' + filePath
     }
@@ -249,20 +273,18 @@ function replaceIncludeVariables (content) {
 }
 
 /**
- * Read server configuration using file, resolved by argv.getConfigFileName
+ * Read server configuration from file, resolved by argv.getConfigFileName
  * parse it in safe mode, replace environment variables by it values and return parsed config
- *
+ * @param {boolean} [forFutureSave=false] if true will return config ready to save back as new ubConfig
+ *  (do not add props model.browser & model.version)
  * @return {Object}
  */
-function getServerConfiguration () {
+function getServerConfiguration (forFutureSave = false) {
   let cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
-  // var content = removeCommentsFromJSON(fs.readFileSync(cfgFileName))
-  // content = replaceIncludeVariables(replaceEnvironmentVariables(content))
-
   let result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(content)))
-    // add name attribute for applications
+  // add name attribute for applications
   if (!result.application) {
     result.application = {}
   }
@@ -273,6 +295,39 @@ function getServerConfiguration () {
   if (!result.application.domain) {
     result.application.domain = {models: []}
   }
+  // for models without name - read it from package.json
+  // read "browser" section of package.json to check model is require initialization in the browser
+  // browser section may contains "prod" / "dev" key for production / development client execution
+  result.application.domain.models.forEach((model) => {
+    let p = (model.path === '_public_only_') ? model.publicPath : model.path
+    if (!path.isAbsolute(p)) p = path.join(process.configPath, p)
+    let packFN = path.join(p, 'package.json')
+    if (fs.existsSync(packFN)) {
+      let packageData = require(packFN)
+      model.moduleName = packageData.name
+      if (packageData.config && packageData.config.ubmodel) {
+        let ubModelConfig = packageData.config.ubmodel
+        if (model.name) {
+          console.warn(`Warning: model name for model ${model.name} is configured in both "ubConfig" and model "package.json".
+  Will use name from package.json`)
+        }
+        model.name = ubModelConfig.name
+        if (ubModelConfig.isPublic) {
+          model.publicPath = model.path
+          model.path = '_public_only_'
+        }
+      }
+      // check browser settings
+      if (packageData.browser) {
+        let dev = packageData.browser.dev || packageData.browser
+        dev = path.isAbsolute(dev) ? dev : path.join(packageData.name, dev).replace(/\\/g, '/')
+        let prod = packageData.browser.prod || packageData.browser
+        prod = path.isAbsolute(prod) ? prod : path.join(packageData.name, prod).replace(/\\/g, '/')
+        if (!forFutureSave) model.browser = {dev, prod}
+      }
+      if (!forFutureSave) model.version = packageData.version
+    }
+  })
   if (!result.application.domain.supportedLanguages) {
     let conns = result.application.connections
     if (conns) {
@@ -284,6 +339,13 @@ function getServerConfiguration () {
   if (!result.application.customSettings) {
     result.application.customSettings = {}
   }
+  if (!result.uiSettings) {
+    result.uiSettings = {}
+  }
+  if (!result.security) result.security = {}
+  if (!result.httpServer) result.httpServer = {}
+  if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}
+  if (!result.httpServer.reverseProxy.sendFileLocationRoot) result.httpServer.reverseProxy.sendFileLocationRoot = 'ubstatic'
   return result
 }
 
@@ -309,7 +371,7 @@ function serverURLFromConfig (config) {
  * @return {Object}
  */
 function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
-  let content = removeCommentsFromJSON(fs.readFileSync(fileName))
+  let content = removeCommentsFromJSON(fs.readFileSync(fileName, 'utf8'))
   if (allowMultiLineString) {
     content = content.replace(/[\n\r\t]/gm, ' ')
   }
@@ -322,26 +384,4 @@ function safeParseJSONfile (fileName, allowMultiLineString, preprocessor) {
     console.error('Processed file is saved to "' + fileName + '.bak"')
     throw e
   }
-}
-
-module.exports = {
-  safeParseJSONfile: safeParseJSONfile,
-    /**
-     * @deprecated Use `options.switchIndex' instead
-     * @param switchName
-     * @returns {Number} switch index if found or -1 otherwise
-     */
-  findCmdLineSwitch: options.switchIndex,
-    /**
-     * @deprecated Use `options.switchValue' instead
-     * @param switchName
-     * @returns {String} switch value or `undefined` in case switch not found or switch not have value
-     */
-  findCmdLineSwitchValue: options.switchValue,
-  getConfigFileName: getConfigFileName,
-  serverSessionFromCmdLineAttributes: serverSessionFromCmdLineAttributes,
-  establishConnectionFromCmdLineAttributes: establishConnectionFromCmdLineAttributes,
-  checkServerStarted: checkServerStarted,
-  getServerConfiguration,
-  serverURLFromConfig: serverURLFromConfig
 }

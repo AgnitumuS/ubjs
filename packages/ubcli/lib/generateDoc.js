@@ -5,7 +5,8 @@
        ubcli generateDoc -?
 
  * @author pavel.mash 04.02.14
- * @module @unitybase/ubcli/generateDoc
+ * @module generateDoc
+ * @memberOf module:@unitybase/ubcli
  */
 const fs = require('fs')
 const argv = require('@unitybase/base').argv
@@ -39,11 +40,11 @@ module.exports = function generateDoc (cfg) {
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-    // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
+  // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({receiveTimeout: 120000})
   session = argv.establishConnectionFromCmdLineAttributes(cfg)
 
-    // must be required for translation
+  // must be required for translation
   require('@unitybase/ub/i18n')
 
   console.log('Session.uData: ', session.uData, typeof session.uData)
@@ -61,12 +62,12 @@ module.exports = function generateDoc (cfg) {
     })
 
     domainI18n = _.groupBy(domainI18n, 'modelName')
-        // add modelCode for each model in domain
+    // add modelCode for each model in domain
     _.each(domainI18n, function (value, key) {
       value.modelCode = key
       value.entities = []
     })
-        // transform domain to array of entity
+    // transform domain to array of entity
     let domainAsArray = _.values(domainI18n)
 
     for (i = 0, len = domainAsArray.length; i < len; ++i) {
@@ -89,7 +90,7 @@ module.exports = function generateDoc (cfg) {
       }
     }
 
-    let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'generateDoc_template.mustache'))
+    let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'generateDoc_template.mustache'), 'utf8')
 
     let rendered = mustache.render(tpl, {
       domain: domainAsArray,

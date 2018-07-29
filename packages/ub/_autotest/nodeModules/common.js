@@ -106,7 +106,6 @@ process.on('exit', function () {
   }
   if (global.UB) {
     knownGlobals.push(UB)
-//	knownGlobals.push(_);
     knownGlobals.push(Buffer)
     knownGlobals.push(setTimeout)
     knownGlobals.push(setInterval)
@@ -114,12 +113,7 @@ process.on('exit', function () {
     knownGlobals.push(clearTimeout)
     knownGlobals.push(clearInterval)
 // todo
-//	knownGlobals.push(clearImmediate);
     knownGlobals.push(_timerLoop)
-//	knownGlobals.push(Ext);
-	// tomporary - PDF fonts need atob & btoa
-//	knownGlobals.push(atob);
-//	knownGlobals.push(btoa);
 
     knownGlobals.push(id)
     knownGlobals.push(exports)
@@ -127,20 +121,12 @@ process.on('exit', function () {
     knownGlobals.push(filename)
     knownGlobals.push(loaded)
     knownGlobals.push(children)
-    knownGlobals.push(paths)
+    //knownGlobals.push(paths)
 // TODO: remove in 1.9 require need
     knownGlobals.push(toLog)
     knownGlobals.push(objectToJSON)
-    knownGlobals.push(loadFileToBuffer)
-    knownGlobals.push(writeFile)
-    knownGlobals.push(writeFileNew)
-    knownGlobals.push(appendFileNew)
-    knownGlobals.push(readDir)
-    knownGlobals.push(forceDirectories)
-    knownGlobals.push(removeDir)
-    knownGlobals.push(deleteFile)
+    //knownGlobals.push(readDir)
     knownGlobals.push(relToAbs)
-    knownGlobals.push(moveFile)
     knownGlobals.push(copyFile)
     knownGlobals.push(sleep)
     knownGlobals.push(createGuid)
@@ -153,6 +139,7 @@ process.on('exit', function () {
     knownGlobals.push(runInVariableScopeContext)
     knownGlobals.push(ncrc32)
     knownGlobals.push(nsha256)
+    knownGlobals.push(nhashFile)
     knownGlobals.push(startServer)
     knownGlobals.push(stopServer)
   }

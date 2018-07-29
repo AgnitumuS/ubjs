@@ -1,6 +1,6 @@
 
 .combo-search-match {
-    font-weight: bold;
+    font-weight: 600;
     background-color: #FAFAB1;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .x-grid-row-summary .x-grid-cell-inner {
-    font-weight: bold;
+    font-weight: 600;
     font-size: 11px;
     border-width: 1px 0 0 0;
     border-color: #a6a6a6;
@@ -298,12 +298,12 @@
 div.CodeMirror span.CodeMirror-matchingbracket {
     color: black !important;
     background-color: #2f2;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 div.CodeMirror span.CodeMirror-nonmatchingbracket {
     color: #f22 !important;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .CodeMirror-completions {
@@ -311,11 +311,11 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .docItemNumber {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .docItemResponsExecutorLabel {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .multiline-content {
@@ -516,7 +516,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .ub-login-label {
-    font-family: Arial;
     color: #1584c9;
 }
 
@@ -557,7 +556,9 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .ub-login-window .logo-top img{
-    height: 150px;
+    max-width: 450px;
+    max-height: 5rem;
+    margin-top: 20px;
 }
 
 .ub-login-window .x-tab-bar-default,
@@ -582,6 +583,11 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .x-tab-default .x-tab-close-btn {
     opacity: 0.5;
+}
+
+.x-tab-default .x-tab-close-btn:not(.x-boxselect-item-close) {
+    top: 8px;
+    right: 4px;
 }
 
 .x-tab-default-active  .x-tab-close-btn {
@@ -704,25 +710,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     border-left: 5px #a9a9a9 solid;
 }
 
-#app-header {
-    color: #596F8F;
-    font-size: 22px;
-    font-weight: 200;
-    padding: 8px 15px;
-    text-shadow: 0 1px 0 #fff;
-}
-
-#app-msg {
-    background: #D1DDEF;
-    border: 1px solid #ACC3E4;
-    padding: 3px 15px;
-    font-weight: bold;
-    font-size: 13px;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
 .x-panel-ghost {
     z-index: 1;
 }
@@ -792,7 +779,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .ub-view-marked-field-label {
     color: #f00;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .ub-header-menu-container {
@@ -817,7 +804,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .x-tab-bar-body-default-top {
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 
 .ub-header-menu-item {
@@ -832,9 +819,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .ub-header-menu-item .x-btn-default-toolbar-small .x-btn-inner {
-    font-size: 12px;
-    font-weight: bold;
-    font-family: "Open Sans", Tahoma, Arial, Helvetica, sans-serif;
+    font-weight: 600;
     /* color: rgba(255, 255, 255, 0.87); */
     color: #0d47a1;
     /* padding: 0 5px; */
@@ -903,7 +888,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .leftMenu .ub_tree_text {
     color: #a7b1c2;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .leftMenu .x-grid-tree-node-expanded .ub_tree_text{
@@ -984,22 +969,22 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 .ub_tree_depth_0 {
-    color: #e8e8e8;
+    color: #7b8f98;
     background-color: #2f4050;
 }
 
 .ub_tree_depth_1 {
-    color: #e8e8e8;
+    color: #7b8f98;
     background-color: #2f4050;
 }
 
 .ub_tree_depth_2 {
-    color: #e8e8e8;
+    color: #7b8f98;
     background-color: #293846;
 }
 
 .ub_tree_depth_3 {
-    color: #e8e8e8;
+    color: #7b8f98;
     background-color: #293846;
 }
 
@@ -1045,7 +1030,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 /*}*/
 
 .ub_tree_text_group {
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .ub_tree_icon,
@@ -1060,7 +1045,6 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 .ub_tree_text {
     padding: 9px 0;
     vertical-align: middle;
-    //color: rgba(0, 0, 0, 0.870588);
     color: #ffffff;
 }
 
@@ -1075,13 +1059,12 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 .ub_tree_group {
-    padding: 9px 4px 9px 4px;
+    padding: 9px 8px 9px 4px;
     margin: 0 4px;
 }
 
 .ub_tree_text {
     width: 100%;
-    font-size: 13px;
     padding-left: 3px;
 }
 
@@ -1127,7 +1110,6 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 
 .ub-desktop-button .x-btn-inner {
     color: #ffffff;
-    font-size: 13px;
 }
 
 .ub-desktop-button-image {
@@ -1208,7 +1190,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 
 .ub-error-win-header {
     padding: 7px 5px;
-    font-weight: bold;
+    font-weight: 600;
     min-height: 10px;
 
     margin-left: 20px;
@@ -1224,7 +1206,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
     border-width: 0;
     background-color: white;
     color: black;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 14px;
     border-radius: 3px;
     cursor: pointer;
@@ -1367,7 +1349,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 
 .ub-total-row {
     color: rgb(61, 60, 66);
-    font-weight: bold;
+    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -1486,17 +1468,11 @@ input.x-form-field-text{
 
 .mce-container {
     border-top-width: 0 !important;
-    border-bottom-width: 1 !important;
-}
-
-
-.leftMenuAvatar {
-    background-image: url(./ubimages/profile-background.jpg);
+    border-bottom-width: 1px !important;
 }
 
 .logoST{
     background-color: #55646b;
-    //background-image: url(./ubimages/sun-tech-logo.png);
 }
 
 .ub_tree_icon {
@@ -1523,32 +1499,17 @@ input.x-form-field-text{
 
 .ub-desktop-button {
     height: 34px;
-    //padding: 4px;
-    //border-bottom: solid 1px #9b9597;
 }
-/*
-.save-action,
-.save-and-close-action{
 
-    //background-color: #bfe8ca;
-}
-.save-action.x-over,
-.save-and-close-action.x-over{
-    background-color: #b7ddc0;
-}
-*/
 .save-action .x-btn-icon-el,
 .save-and-close-action .x-btn-icon-el{
     color: #049540;
-    //text-shadow: 0 0 0.05em #55B769;
 }
-
 
 .save-action.x-disabled .x-btn-icon-el,
 .save-and-close-action.x-disabled .x-btn-icon-el,
 .refresh-action.x-disabled .x-btn-icon-el{
     color: #585d5a;
-    //text-shadow: 0 0 0em white;
 }
 
 .refresh-action .x-btn-icon-el{
@@ -1600,5 +1561,11 @@ input.x-form-field-text{
 }
 
 .x-grid-row-bold .x-grid-cell{
-    font-weight: bold;
+    font-weight: 700;
+}
+
+.x-label-required span[role=separator]::after {
+    content: '*';
+    color: #D0021B;
+    float: right;
 }

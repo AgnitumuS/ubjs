@@ -1,7 +1,6 @@
 /**
- * @class Ext.ux.Exporter.ExcelFormatter.Workbook
- * @extends Object
  * Represents an Excel workbook
+ * @class Ext.ux.Exporter.ExcelFormatter.Workbook
  */
 Ext.define("Ext.ux.exporter.excelFormatter.Workbook", {
 
@@ -10,58 +9,58 @@ Ext.define("Ext.ux.exporter.excelFormatter.Workbook", {
 
     Ext.apply(this, config, {
       /**
+       * The title of the workbook (defaults to "Workbook")
        * @property title
        * @type String
-       * The title of the workbook (defaults to "Workbook")
        */
       title: "Workbook",
 
       /**
+       * The array of worksheets inside this workbook
        * @property worksheets
        * @type Array
-       * The array of worksheets inside this workbook
        */
       worksheets: [],
 
       /**
+       * Array of all rendered Worksheets
        * @property compileWorksheets
        * @type Array
-       * Array of all rendered Worksheets
        */
       compiledWorksheets: [],
 
       /**
+       * The colour of border to use for each Cell
        * @property cellBorderColor
        * @type String
-       * The colour of border to use for each Cell
        */
       cellBorderColor: "#e4e4e4",
 
       /**
+       * The array of Ext.ux.Exporter.ExcelFormatter.Style objects attached to this workbook
        * @property styles
        * @type Array
-       * The array of Ext.ux.Exporter.ExcelFormatter.Style objects attached to this workbook
        */
       styles: [],
 
       /**
+       * Array of all rendered Ext.ux.Exporter.ExcelFormatter.Style objects for this workbook
        * @property compiledStyles
        * @type Array
-       * Array of all rendered Ext.ux.Exporter.ExcelFormatter.Style objects for this workbook
        */
       compiledStyles: [],
 
       /**
+       * True to add the default styling options to all cells (defaults to true)
        * @property hasDefaultStyle
        * @type Boolean
-       * True to add the default styling options to all cells (defaults to true)
        */
       hasDefaultStyle: true,
 
       /**
+       * True to add the striping styles (defaults to true)
        * @property hasStripeStyles
        * @type Boolean
-       * True to add the striping styles (defaults to true)
        */
       hasStripeStyles: true,
 

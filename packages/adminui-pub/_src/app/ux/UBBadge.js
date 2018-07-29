@@ -37,7 +37,7 @@ const _ = require('lodash')
  *    cssClass: 'red'
  *  }
  *
- *  The possible cssClass is listed in TODO
+ *  The possible cssClass are: default, warning, yellow, success, green, error, red, primary, blue, grey
  */
 Ext.define('UB.ux.UBBadge', {
   extend: Ext.Component,
@@ -48,7 +48,7 @@ Ext.define('UB.ux.UBBadge', {
     /**
      * Replace a field into field description and put in the list "format" function, which will draw the badge.
      *
-     * @param {Array<string|object>} fieldList
+     * @param {Array<object>} fieldList Extended representation of field list
      * @param {string} fieldName
      * @param {string} enumGroup
      * @param {boolean} [invert]
@@ -66,7 +66,7 @@ Ext.define('UB.ux.UBBadge', {
      *   },
      */
     setupRenderer: function (fieldList, fieldName, enumGroup, invert, map) {
-      let field = _.find(fieldList, ['name', fieldName])
+      let field = fieldList.find(f => f.name === fieldName)
       if (!field) return
 
       if (!map) map = UB.ux.UBBadge.getCssMap(enumGroup)

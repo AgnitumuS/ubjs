@@ -5,7 +5,6 @@
 
 const assert = require('assert')
 const ok = assert.ok
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const TEST_NAME = 'clientRequire Endpoint test'
@@ -34,9 +33,11 @@ module.exports = function runTest (options) {
   }
 
   function testClientRequireEndpoint (conn) {
-    let winDir = process.env.windir
+    let absFile = process.platform === 'win32'
+      ? process.env.windir + '/win.ini'
+      : process.env.HOME + '/.profile'
     assert.throws(
-      () => conn.get(`clientRequire/${winDir}/win.ini`),
+      () => conn.get(`clientRequire/${absFile}`),
       /Bad Request/, 'Endpoint clientRequire must restrict access to absolute path'
     )
 
@@ -47,17 +48,17 @@ module.exports = function runTest (options) {
 
     assert.throws(
       () => conn.get(`clientRequire/@unitybase/ub/../../../ubConfig.json`),
-      /Not Found/, 'Endpoint clientRequire must restrict access folder up from resolved'
+      /(Not Found|Bad Request)/, 'Endpoint clientRequire must restrict access folder up from resolved'
     )
 
     assert.throws(
       () => conn.get(`clientRequire/@unitybase/ub/../../ubConfig.json`),
-      /Bad Request/, 'Endpoint clientRequire must restrict access folder up from resolved'
+      /Not Found/, 'Endpoint clientRequire must restrict access folder up from resolved'
     )
 
     assert.throws(
       () => conn.get(`clientRequire/lerna`),
-      /Bad Request/, 'Endpoint clientRequire must restrict access to modules outside app node_modules folder'
+      /(Not Found|Bad Request)/, 'Endpoint clientRequire must restrict access to modules outside app node_modules folder'
     )
 
     assert.throws(
@@ -66,7 +67,7 @@ module.exports = function runTest (options) {
     )
 
     assert.throws(
-      () => conn.get(`clientRequire/@ub-e/dses/dses_log.js`),
+      () => conn.get(`clientRequire/@unitybase/ub/modelUB.js`),
       /Bad Request/, 'Endpoint clientRequire must restrict access to model without public folders'
     )
 
@@ -75,7 +76,7 @@ module.exports = function runTest (options) {
       /Bad Request/, 'Endpoint clientRequire must restrict access to non-public root of model'
     )
 
-    ok(conn.get(`clientRequire/@unitybase/ub/public/locale/lang-en.js`), 'Access to public model folder must be allowed')
-    ok(conn.get(`clientRequire/@unitybase/base/LocalDataStore`), 'Access module not defined as model be allowed')
+    ok(conn.get(`clientRequire/@unitybase/ub/public/schemas/entity.schema.json`), 'Access to public model folder must be allowed')
+    ok(conn.get(`clientRequire/@unitybase/cs-shared/LocalDataStore`), 'Access module not defined as model be allowed')
   }
 }

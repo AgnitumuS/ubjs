@@ -23,7 +23,7 @@ exports.formDef = {
         items: [ // inside we can place as many elm's as we need - it will be scrolled 
           { attributeName: "text100", xtype: "ubhtmleditor", rows: 20},
           { attributeName: "text2000",  xtype: "textarea" /*, xtype: "ubtextarea", isMultiLang: true*/},
-          //{xtype: 'ubtextarea', isMultiLang: true},
+          // {xtype: 'ubtextarea', isMultiLang: true},
           { attributeName: "text2",  xtype: "textarea"  },
           { attributeName: "mi_tr_text2" /*Text2(2..)*/},
           { attributeName: "mi_tr_text100"},

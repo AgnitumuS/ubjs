@@ -223,10 +223,10 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     //
 
     /**
-     * @event autosize
      * Fires when the **{@link #autoSize}** function is triggered and the field is resized according to the
      * {@link #grow}/{@link #growMin}/{@link #growMax} configs as a result. This event provides a hook for the
      * developer to apply additional logic at runtime to resize the field if needed.
+     * @event autosize
      * @param {Ext.ux.form.field.BoxSelect} this This BoxSelect field
      * @param {Number} height The new field height
      */

@@ -1,7 +1,7 @@
 ﻿{
     "caption": "Staff units",
     "description": "List of staff units",
-    "documentation": "В этом справочнике хранится перечень штатных единиц (должностей). Каждая штатная единица по UNITY складывается в org_unit",
+    "documentation":"This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
     "attributes": {
         "parentID": {
             "caption": "Parent",
@@ -37,7 +37,7 @@
         },
         "fullNameDat": {
             "caption": "Full name in dative case",
-            "description": "Staff unit full name in dative case"
+            "description": "Full name in dative case"
         },
         "caption": {
             "caption": "Caption",

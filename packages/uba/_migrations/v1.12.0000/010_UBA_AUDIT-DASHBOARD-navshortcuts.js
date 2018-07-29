@@ -1,12 +1,12 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Fill navigation shortcuts for UBA model
  */
 
 /**
  * Initial script for create UnityBase Administration desktop navigation shortcuts for UBA model
- * Used by cmd\initialize command
- * @param {cmd.argv.serverSession} session
+ * Used by `ubcli initialize` command
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   var desktopID, folderID, conn = session.connection

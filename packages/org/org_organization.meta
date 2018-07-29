@@ -1,7 +1,7 @@
 {
-  "caption": "Внутренние организации",
-  "description": "Справочник внутренних организаций",
-  "documentation": "",
+  "caption": "Internal organizations",
+  "description": "List of internal organizations",
+  "documentation":"This dictionary contains list of internal organizations. Each organization links to org_unit by Unity mixin",
   "connectionName": "",
   "sqlAlias": "oorg",
   "cacheType": "Session",
@@ -11,16 +11,16 @@
       "name": "parentID",
       "dataType": "Entity",
       "associatedEntity": "org_unit",
-      "caption": "Родительский элемент",
-      "description": "Родительский элемент",
+      "caption": "Parent",
+      "description": "Parent",
       "allowNull": true
     },
     {
       "name": "code",
       "dataType": "String",
       "size": 16,
-      "caption": "Внутренний код",
-      "description": "Внутренний код организации",
+      "caption": "Internal code",
+      "description": "Organization internal code",
       "allowNull": false,
       "isUnique": true
     },
@@ -28,31 +28,31 @@
       "name": "OKPOCode",
       "dataType": "String",
       "size": 16,
-      "caption": "ОКПО",
-      "description": "Общий классификатор предприятий и организаций (ОКПО)",
+      "caption": "CCEO",
+      "description": "Common classifier of enterprises and organizations (CCEO)",
       "allowNull": true
     },
     {
       "name": "taxCode",
       "dataType": "String",
       "size": 32,
-      "caption": "Налоговый №",
-      "description": "Налоговый номер",
+      "caption": "Tax number",
+      "description": "Tax number",
       "allowNull": true
     },
     {
       "name": "vatCode",
       "dataType": "String",
       "size": 32,
-      "caption": "№ св. НДС",
-      "description": "№ свидетельства плательщика НДС",
+      "caption": "VAT number",
+      "description": "VAT (value-added tax) registration certificate number",
       "allowNull": true
     },
     {
       "dataType": "String",
       "size": 128,
       "caption": "Название организации",
-      "description": "Название без кавычек и аббревиатур",
+      "description": "Name of organization without the quotes and abbreviations",
       "allowNull": false,
       "isMultiLang": true,
       "name": "name"
@@ -60,8 +60,8 @@
     {
       "dataType": "String",
       "size": 255,
-      "caption": "Полное название организации",
-      "description": "Полное название, как оно указанно в свидетельстве о регистрации",
+      "caption": "Organization full name",
+      "description": "Full name of organization, as it's specified in the certificate of registration",
       "allowNull": false,
       "isMultiLang": true,
       "name": "fullName"
@@ -69,8 +69,8 @@
     {
       "dataType": "String",
       "size": 128,
-      "caption": "Название организации в родительном падеже",
-      "description": "Название без кавычек и аббревиатур в родительном падеже",
+      "caption": "Name in genitive case",
+      "description": "Organization name in genitive case",
       "allowNull": true,
       "isMultiLang": true,
       "name": "nameGen"
@@ -78,8 +78,8 @@
     {
       "dataType": "String",
       "size": 128,
-      "caption": "Название организации в дательном падеже",
-      "description": "Название без кавычек и аббревиатур в дательном падеже",
+      "caption": "Name in dative case",
+      "description": "Organization name in dative case",
       "allowNull": true,
       "isMultiLang": true,
       "name": "nameDat"
@@ -87,8 +87,8 @@
     {
       "dataType": "String",
       "size": 255,
-      "caption": "Полное название организации в родительном падеже",
-      "description": "Полное название, как оно указано в свидетельстве о регистрации, в родительном падеже",
+      "caption": "Full name in genitive case",
+      "description": "Full name of organization, as it's specified in the certificate of registration, in genitive case",
       "allowNull": true,
       "isMultiLang": true,
       "name": "fullNameGen"
@@ -96,8 +96,8 @@
     {
       "dataType": "String",
       "size": 255,
-      "caption": "Полное название организации в дательном падеже",
-      "description": "Полное название, как оно указано в свидетельстве о регистрации, в дательном падеже",
+      "caption": "Full name in dative case",
+      "description": "Full name of organization, as it's specified in the certificate of registration, in dative case",
       "allowNull": true,
       "isMultiLang": true,
       "name": "fullNameDat"
@@ -105,8 +105,8 @@
     {
       "dataType": "String",
       "size": 255,
-      "caption": "Описание организации",
-      "description": "Описание",
+      "caption": "Organization description",
+      "description": "Organization description",
       "allowNull": true,
       "isMultiLang": true,
       "name": "description"
@@ -114,16 +114,16 @@
     {
       "dataType": "Entity",
       "associatedEntity": "cdn_orgbusinesstype",
-      "caption": "Тип организации",
-      "description": "Тип организации",
+      "caption": "Organization type",
+      "description": "Organization type",
       "allowNull": true,
       "name": "orgBusinessTypeID"
     },
     {
       "dataType": "Entity",
       "associatedEntity": "cdn_orgownershiptype",
-      "caption": "Тип собственности",
-      "description": "Тип собственности",
+      "caption": "Ownership type",
+      "description": "Ownership type",
       "allowNull": true,
       "name": "orgOwnershipTypeID"
     }

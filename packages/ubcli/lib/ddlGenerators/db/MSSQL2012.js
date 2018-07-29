@@ -309,18 +309,18 @@ class DBSQL2012 extends DBAbstract {
   /** @override */
   genCodeAlterColumn (table, tableDB, column, columnDB, typeChanged, sizeChanged, allowNullChanged) {
     if (typeChanged && column.dataType === 'NTEXT') {
-      // todo сделать автоматом
+      // TODO should be implemented by create new column
       this.addWarning(`Converting to NTEXT type is not supported. Create a new field manually and copy the data into it
       \tField ${table.name}.${column.name}`)
     }
 
     // in case of not null added - recreate index
     // if (allowNullChanged && !column.allowNull ){
-
-    let objects = tableDB.getIndexesByColumnName(column.name)
+    let objects = tableDB.getIndexesByColumn(column)
     for (let colIndex of objects) {
       colIndex.isForDelete = true
       colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`
+      console.log(colIndex.isForDeleteMsg)
     }
 
     if (allowNullChanged && !column.allowNull) {
@@ -431,7 +431,9 @@ class DBSQL2012 extends DBAbstract {
    * @abstract
    */
   genCodeDropPK (tableName, constraintName) {
-    throw new Error('Abstract genCodeDropPK')
+    this.DDL.dropPK.statements.push(
+      `alter table dbo.${tableName} drop constraint ${constraintName}`
+    )
   }
   /**
    * @override
@@ -547,12 +549,12 @@ class DBSQL2012 extends DBAbstract {
   }
 
   /** @override */
-  compareDefault (dataType, newValue, oldValue, constraintName, oldConstraintName) {
+  compareDefault (dataType, newValue, oldValue) {
     if (typeof oldValue === 'string') {
       // special case for MS SQL datetime function: CONVERT(datetime,''31.12.9999'',(104)) but DB return CONVERT([datetime],''31.12.9999'',(104))
       oldValue = oldValue.toString().trim().replace('[datetime]', 'datetime')
     }
-    return super.compareDefault(dataType, newValue, oldValue, constraintName, oldConstraintName)
+    return super.compareDefault(dataType, newValue, oldValue)
   }
 }
 

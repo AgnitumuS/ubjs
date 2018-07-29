@@ -1,7 +1,7 @@
 /**
+ * Specialised Format class for outputting .xls files
  * @class Ext.ux.Exporter.ExcelFormatter
  * @extends Ext.ux.Exporter.Formatter
- * Specialised Format class for outputting .xls files
  */
 Ext.define("Ext.ux.exporter.excelFormatter.ExcelFormatter", {
     extend: "Ext.ux.exporter.Formatter",

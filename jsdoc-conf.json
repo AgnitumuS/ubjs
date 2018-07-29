@@ -6,29 +6,40 @@
     "include": [
       "./packages/base",
       "./packages/stubs",
+      "./packages/cs-shared",
+      "./packages/blob-stores",
       "./packages/ub",
+      "./packages/uba",
       "./packages/ub/modules",
-      "./packages/ub/virtualStores",
+      "./packages/ubcli/bin",
       "./packages/ubcli/lib",
       "./packages/http-proxy",
-      "./packages/canvas/UBCanvas.js",
+      "../ub-e/packages/ubcanvas/UBCanvas.js",
       "./packages/com-bridge/UBComBridge.js",
       "./packages/mailer",
       "./packages/openid-connect/openIDConnect.js",
       "./packages/compressors/UBCompressors.js",
+      "./packages/ubq",
+      "./packages/ubs",
+      "./packages/cdn",
+      "./packages/ubm",
+      "./packages/org",
+      "./packages/ubs/modules/UBServerReport.js",
       "../ub-e/packages/odata/OData.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
   "plugins": [
     "plugins/markdown",
-    "./packages/ub-jsdocs/plugins/sripPFromDescription"
+    "./node_modules/ub-jsdoc/plugins/sripPFromDescription",
+    "./node_modules/ub-jsdoc/plugins/memberOfModule.js",
+    "./node_modules/ub-jsdoc/plugins/publishedTag.js"
   ],
   "opts": {
-    "template": "./packages/ub-jsdocs",
-    "readme": "./readme.md",
+    "template": "./node_modules/ub-jsdoc",
+    "readme": "./DOC-MAIN-PAGE.md",
     "encoding": "utf8",
-    "destination": "./docs",
+    "destination": "./docs/server-v5",
     "recurse": false,
     "tutorials": "tutorials"
   },
@@ -56,12 +67,8 @@
     "stylesheet": "styles/ub-jsdoc.css",
     "links": [
       {
-        "text": "WEB Core API",
-        "href": "../ubcore/"
-      },
-      {
-        "text": "adminUI API",
-        "href": "../adminUI/"
+        "text": "Client side docs",
+        "href": "../ubpub-v5/"
       }
     ],
     "googleAnalytics": "UA-66006954-1",

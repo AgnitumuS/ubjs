@@ -2,7 +2,7 @@
  * @author pavel.mash
  * Navigation shortcuts localization to Ukrainian for CDN model
  * Used by `ubcli initialize` command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function(session){
 var
@@ -32,8 +32,7 @@ var
 		{keyValue: 'org_employee',  execParams: {caption: 'Внутрішні працівники'}},
 	        {keyValue: 'org_folder_dict',  execParams: {caption: 'Додатково'}},
                 {keyValue: 'org_profession',  execParams: {caption: 'Професії'}},
-		{keyValue: 'org_diagram',  execParams: {caption: 'Орантограми'}},
-		{keyValue: 'org_borderunit',  execParams: {caption: 'Граничні елементи'}}
+		{keyValue: 'org_diagram',  execParams: {caption: 'Орантограми'}}
         ]
     };
 

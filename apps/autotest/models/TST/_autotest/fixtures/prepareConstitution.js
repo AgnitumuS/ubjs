@@ -5,7 +5,7 @@ var
   argv = require('@unitybase/base').argv,
   fn = argv.findCmdLineSwitchValue('fn')
 
-var arr = fs.readFileSync(fn).split('\r\n')
+var arr = fs.readFileSync(fn, 'utf8').split('\r\n')
 console.log(arr.length)
 arr = arr.filter(row => row.length > 15)
 console.log(arr.length)

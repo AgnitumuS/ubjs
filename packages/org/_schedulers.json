@@ -1,4 +1,4 @@
-﻿[
+[
   {
 	"name": "updateStaffUnitCaptions",
 	"schedulingCondition": "App.serverConfig.application.fts && App.serverConfig.application.fts.enabled && App.serverConfig.application.fts.async",

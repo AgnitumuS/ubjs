@@ -2,7 +2,7 @@
 *.exe
 # *.dll
 *.dcp
-*.so
+# *.so
 *.apk
 *.drc
 *.map
@@ -42,3 +42,7 @@ _FOSSIL_
 node_modules/
 .deploy*/
 .idea/
+
+# FPC compiler artifacts
+lib/
+src/backup/

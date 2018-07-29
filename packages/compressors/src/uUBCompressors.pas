@@ -1,5 +1,9 @@
 unit uUBCompressors;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses 

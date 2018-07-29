@@ -1,17 +1,24 @@
-let UBA = UB.ns('UBA')
-
-let auditEntityUba = App.domain.byName('uba_audit')
-let auditStore
+/* eslint-disable curly */
+const UB = require('@unitybase/ub')
+const App = UB.App
 const queryString = require('querystring')
+const Session = UB.Session
 
-if (auditEntityUba) {
-  auditStore = new TubDataStore(auditEntityUba)
+Session.on('login', onUserLogin)
+Session.on('loginFailed', onUserLoginFailed)
+Session.on('securityViolation', securityViolation)
+
+let ubaAuditPresent = App.domainInfo.has('uba_audit')
+let auditStore
+if (ubaAuditPresent) {
+  auditStore = UB.DataStore('uba_audit')
 }
 
 /**
  * Checking of user IP and device fingerpriont based on settings from `uba_advSecurity`
+ * @private
  * @param {THTTPRequest} req
- * @return {{enabled: false}}{enabled: true, kmn: string, fpa: string}}
+ * @return {{enabled: false}|{enabled: true, kmn: string, fpa: string}}
  */
 function checkAdvancedSecurity (req) {
   let advData
@@ -23,10 +30,9 @@ function checkAdvancedSecurity (req) {
   } catch (e) {
     // nothing to do - table uba_advSecurity not exists
     console.warn('Advanced security is disabled because table uba_advSecurity does not exists')
-    doCheckAdvancedSecurity = function () {return {enabled: false}}
+    doCheckAdvancedSecurity = function () { return {enabled: false} }
   }
   let fp = ''
-  let fpa = ''
   let urlParams = queryString.parse(req.decodedParameters)
 
   if (!advData) return { // no adv. settings for current user
@@ -70,7 +76,7 @@ function checkAdvancedSecurity (req) {
   if (needUpdate) {
     updateParams.ID = advData.ID
     updateParams.mi_modifyDate = advData.mi_modifyDate
-    let advStore = new TubDataStore('uba_advSecurity')
+    let advStore = UB.DataStore('uba_advSecurity')
     advStore.run('update', {
       execParams: updateParams
     })
@@ -89,9 +95,10 @@ let doCheckAdvancedSecurity = null // calculate later
  * Session 'login' event occurred every time new user logged in
  * here we calculate logged-in user's roles,
  * result we put in Session.uData - only one session-depended server object
+ * @private
  * @param {THTTPRequest} req
  */
-UBA.onUserLogin = function (req) {
+function onUserLogin (req) {
   console.debug('Call JS method: UBA.onUserLogin')
   let data = Session.uData
   let repo = null
@@ -99,7 +106,9 @@ UBA.onUserLogin = function (req) {
   let userInfo = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
   data.login = userInfo.name || Session.userID
   if (!doCheckAdvancedSecurity) {
-    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity') ? checkAdvancedSecurity : function () { return {enabled: false} }
+    doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity')
+      ? checkAdvancedSecurity
+      : function () { return {enabled: false} }
   }
   let advCheckData = doCheckAdvancedSecurity(req)
   try {
@@ -124,14 +133,14 @@ UBA.onUserLogin = function (req) {
   data.userID = Session.userID
   data.roleIDs = roleIDs
 
-  if (auditEntityUba) { // uba_audit exists
+  if (ubaAuditPresent) { // uba_audit exists
     try {
       auditStore.run('insert', {
         execParams: {
           entity: 'uba_user',
           entityinfo_id: Session.userID,
           actionType: 'LOGIN',
-          actionUser: Session.userID,
+          actionUser: data.login,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : data.login,
@@ -146,12 +155,11 @@ UBA.onUserLogin = function (req) {
     }
   }
 }
-Session.on('login', UBA.onUserLogin)
 
-UBA.onUserLoginFailed = function (isLocked) {
+function onUserLoginFailed (isLocked) {
   console.debug('Call JS method: UBA.onUserLoginFailef')
 
-  if (auditEntityUba) { // uba_audit exists
+  if (ubaAuditPresent) { // uba_audit exists
     try {
       let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
       let user = obj ? obj.name : Session.userID
@@ -161,7 +169,7 @@ UBA.onUserLoginFailed = function (isLocked) {
           entity: 'uba_user',
           entityinfo_id: Session.userID,
           actionType: isLocked ? 'LOGIN_LOCKED' : 'LOGIN_FAILED',
-          actionUser: Session.userID,
+          actionUser: user,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
           targetUser: user
@@ -169,18 +177,16 @@ UBA.onUserLoginFailed = function (isLocked) {
       })
       App.dbCommit(auditStore.entity.connectionName)
     } catch (ex) {
-            // this possible if we connect to empty database without ubs_* tables
+      // this possible if we connect to empty database without ubs_* tables
       console.error('Error access audit entity:', ex.toString())
     }
   }
 }
 
-Session.on('loginFailed', UBA.onUserLoginFailed)
-
-UBA.securityViolation = function (reason) {
+function securityViolation (reason) {
   console.debug('Call JS method: UBA.securityViolation')
 
-  if (auditEntityUba) { // uba_audit exists
+  if (ubaAuditPresent) { // uba_audit exists
     let user = '?'
     if (Session.userID && (Session.userID > 0)) {
       let obj = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
@@ -205,5 +211,3 @@ UBA.securityViolation = function (reason) {
     }
   }
 }
-
-Session.on('securityViolation', UBA.securityViolation)

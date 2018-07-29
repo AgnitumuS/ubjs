@@ -1,21 +1,28 @@
-var me = uba_els
+const UB = require('@unitybase/ub')
+const Session = UB.Session
+const App = UB.App
+/* global uba_els */
+// eslint-disable-next-line camelcase
+let me = uba_els
+me.on('insert:after', ubaAuditNewEls)
+me.on('update:after', ubaAuditModifyEls)
+me.on('delete:after', ubaAuditDeleteEls)
 
 /**
  * After inserting new user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditNewEls (ctx) {
-  if (!App.domain.byName('uba_audit')) {
-    return
-  }
-  var params = ctx.mParams.execParams
-  var store = new TubDataStore('uba_audit')
-  var ruleRole = params.ruleRole
+  if (!App.domainInfo.has('uba_audit')) return
+
+  let params = ctx.mParams.execParams
+  let ruleRole = params.ruleRole
   if (ruleRole) {
     ruleRole = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
     ruleRole = ruleRole.eof ? params.ruleRole : ruleRole.get('name')
   }
-
+  let store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_els',
@@ -29,28 +36,26 @@ function ubaAuditNewEls (ctx) {
     }
   })
 }
-me.on('insert:after', ubaAuditNewEls)
 
 /**
  * After updating user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditModifyEls (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
-  var
-    params = ctx.mParams.execParams,
-    store = new TubDataStore('uba_audit'),
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues,
-    ruleRole, ruleRoleNew = params.ruleRole, obj
+  let params = ctx.mParams.execParams
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let ruleRoleNew = params.ruleRole
   if (ruleRoleNew) {
-    obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRoleNew).select()
+    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRoleNew).select()
     ruleRoleNew = obj.eof ? ruleRoleNew : obj.get('name')
   }
 
+  let oldValues, ruleRole
   try {
     origStore.currentDataName = 'selectBeforeUpdate'
     oldValues = origStore.asJSONObject
@@ -59,12 +64,13 @@ function ubaAuditModifyEls (ctx) {
     origStore.currentDataName = origName
   }
   if (ruleRole && params.ruleRole !== ruleRole) {
-    obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
+    let obj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
     ruleRole = obj.eof ? ruleRole : obj.get('name')
   } else {
     ruleRole = null
   }
 
+  let store = UB.DataStore('uba_audit')
   if (ruleRole && ruleRoleNew !== ruleRole) {
     store.run('insert', {
       execParams: {
@@ -108,23 +114,20 @@ function ubaAuditModifyEls (ctx) {
     })
   }
 }
-me.on('update:after', ubaAuditModifyEls)
 
 /**
  * After deleting user - log event to uba_audit
+ * @private
  * @param {ubMethodParams} ctx
  */
 function ubaAuditDeleteEls (ctx) {
-  if (!App.domain.byName('uba_audit')) {
+  if (!App.domainInfo.has('uba_audit')) {
     return
   }
-  var
-    store = new TubDataStore('uba_audit'),
-    params = ctx.mParams.execParams,
-    origStore = ctx.dataStore,
-    origName = origStore.currentDataName,
-    oldValues,
-    ruleRole, ruleRoleObj
+  let params = ctx.mParams.execParams
+  let origStore = ctx.dataStore
+  let origName = origStore.currentDataName
+  let oldValues, ruleRole, ruleRoleObj
 
   try {
     origStore.currentDataName = 'selectBeforeDelete'
@@ -137,7 +140,7 @@ function ubaAuditDeleteEls (ctx) {
     ruleRoleObj = UB.Repository('uba_role').attrs('name').where('[ID]', '=', ruleRole).select()
     ruleRole = ruleRoleObj.eof ? ruleRole : ruleRoleObj.get('name')
   }
-
+  let store = UB.DataStore('uba_audit')
   store.run('insert', {
     execParams: {
       entity: 'uba_els',
@@ -151,4 +154,3 @@ function ubaAuditDeleteEls (ctx) {
     }
   })
 }
-me.on('delete:after', ubaAuditDeleteEls)

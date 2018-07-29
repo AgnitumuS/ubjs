@@ -21,43 +21,48 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
     //    URLParams: {CONNECTION: DBA_FAKE},
     //    data: UB.format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", databaseConfig.databaseName)
     // });
+    conn.xhr({ // This is required for OBDC connection - it does not use 'database' attribute in configuration file
+      endpoint: 'runSQL',
+      URLParams: {CONNECTION: DBA_FAKE},
+      data: `USE master`
+    })
     conn.xhr({
       endpoint: 'runSQL',
       URLParams: {CONNECTION: DBA_FAKE},
       data: `DROP DATABASE ${databaseConfig.databaseName}`
     })
   } else {
-    console.warn('Database %s dose not exists. Drop skipped', databaseConfig.databaseName)
+    console.warn('Database %s does not exist. Drop skipped', databaseConfig.databaseName)
   }
 }
 
-function splitAndExec (stmts, ubConnection, dbConnectionName) {
+function splitAndExec (stmts, syncConnection, dbConnectionName) {
   let delimRe = /\r\n/.test(stmts) ? 'GO\r\n' : 'GO\n' // git can remove \r\n
   let statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement && statement !== 'GO') {
-      ubConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
+      syncConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
     }
   })
 }
 /**
  * Drop a specified schema & role (databaseName) with a pwd
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
-  let script = fs.readFileSync(path.join(__dirname, 'mssqlCreateDatabase.sql'))
+  let script = fs.readFileSync(path.join(__dirname, 'mssqlCreateDatabase.sql'), 'utf8')
   script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
   splitAndExec(script, conn, DBA_FAKE)
 
-  script = fs.readFileSync(path.join(__dirname, 'mssqlCreateLogin.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'mssqlCreateLogin.sql'), 'utf8')
   script = UB.format(script, databaseConfig.databaseName, databaseConfig.userID, databaseConfig.password)
   splitAndExec(script, conn, DBA_FAKE /* databaseConfig.name */)
 }
 
 /**
  * Create a minimally required  functions & tables for a first sign-in
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {Number} clientNum A number of client we create database for
  * @param {Object} databaseConfig A database configuration
  */
@@ -71,9 +76,9 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
   sequences = UB.format(sequences, clientNum)
   splitAndExec(sequences, conn, databaseConfig.name)
 
-  let script = fs.readFileSync(path.join(__dirname, 'mssqlObjects.sql'))
+  let script = fs.readFileSync(path.join(__dirname, 'mssqlObjects.sql'), 'utf8')
   splitAndExec(script, conn, databaseConfig.name)
 
-  script = fs.readFileSync(path.join(__dirname, 'mssqlTables.sql'))
+  script = fs.readFileSync(path.join(__dirname, 'mssqlTables.sql'), 'utf8')
   splitAndExec(script, conn, databaseConfig.name)
 }

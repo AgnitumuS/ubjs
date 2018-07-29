@@ -4,7 +4,7 @@
   "description": "",
   "main": "Desktop.js",
   "scripts": {
-    "UItest": "testcafe \"chrome:headless\" Shortcut.js Folder.js Desktop.js Form.js",
+    "UItest": "testcafe \"chrome\" Shortcut.js Folder.js Desktop.js Form.js",
     "UItest:screenshots": "testcafe \"chrome:headless\" Shortcut.js Folder.js Desktop.js Form.js --screenshots ./screenshots --screenshots-on-fails"
   },
   "keywords": [],

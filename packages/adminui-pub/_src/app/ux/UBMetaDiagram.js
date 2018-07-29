@@ -216,7 +216,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
         if (!lnk) {
           objLinks[attr.associatedEntity] = lnk = []
         }
-        lnk.push({ linkType: 'relation',
+        lnk.push({ linkType: attr.cascadeDelete ? 'composition' : 'association',
           srcObj: objCode,
           srcProp: attrCode,
           destObj: attr.associatedEntity,
@@ -229,7 +229,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       if (!lnk) {
         objLinks[metaObj.mixins.unity.entity] = lnk = []
       }
-      lnk.push({ linkType: 'inheritage',
+      lnk.push({ linkType: 'inheritance',
         srcObj: objCode,
         srcProp: 'ID',
         destObj: metaObj.mixins.unity.entity,
@@ -249,7 +249,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
             // other objects inherited from me
       if (linkmetaObj.mixins && linkmetaObj.mixins.unity && /* linkmetaObj.mixins.unity.enabled && */
                 linkmetaObj.mixins.unity.entity === objCode) {
-        lnkType = { linkType: 'inheritage',
+        lnkType = { linkType: 'inheritance',
           srcObj: objectCode,
           srcProp: 'ID',
           destObj: objCode,
@@ -270,7 +270,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
             return true
           }
           if (attr.dataType === 'Entity' && attrCode.toUpperCase() !== 'ID' && attr.associatedEntity === objCode) {
-            lnkType = { linkType: 'relation',
+            lnkType = { linkType: 'association',
               srcObj: objectCode,
               srcProp: attrCode,
               destObj: objCode,
@@ -294,17 +294,25 @@ Ext.define('UB.ux.UBMetaDiagram', {
     node.setAttribute('destObj', param.destObj)
     node.setAttribute('destProp', param.destProp)
 
-    if (param.linkType === 'relation') {
+    if (param.linkType === 'association') {
       assoc = new mxCell(node, new mxGeometry(0, 0, 0, 0),
-                'endArrow=open;endSize=10;startArrow=diamondThin;startSize=10;startFill=0;edgeStyle=orthogonalEdgeStyle;')
+                'endArrow=open;endSize=10;edgeStyle=orthogonalEdgeStyle;')
+      assoc.geometry.setTerminalPoint(new mxPoint(0, 0), true)
+      assoc.geometry.setTerminalPoint(new mxPoint(80, 0), true)
+      assoc.geometry.setTerminalPoint(new mxPoint(160, 0), false)
+      assoc.edge = true
+    }
+    if (param.linkType === 'composition') {
+      assoc = new mxCell(node, new mxGeometry(0, 0, 0, 0),
+                'endArrow=diamond;endSize=14;endFill=0;edgeStyle=orthogonalEdgeStyle;')
       assoc.geometry.setTerminalPoint(new mxPoint(0, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(80, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(160, 0), false)
       assoc.edge = true
     }
     // segmentEdgeStyle orthogonalEdgeStyle
-    if (param.linkType === 'inheritage') {
-      assoc = new mxCell(node, new mxGeometry(0, 0, 0, 0), 'endArrow=block;endSize=10;endFill=0;startArrow=oval;startFill=0;startSize=7;edgeStyle=segmentEdgeStyle;fillColor=#0B31D9;strokeColor=#0B31D9;')
+    if (param.linkType === 'inheritance') {
+      assoc = new mxCell(node, new mxGeometry(0, 0, 0, 0), 'endArrow=block;endSize=10;endFill=0;edgeStyle=segmentEdgeStyle;fillColor=#0B31D9;strokeColor=#0B31D9;')
       assoc.geometry.setTerminalPoint(new mxPoint(0, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(80, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(160, 0), false)
@@ -380,7 +388,6 @@ Ext.define('UB.ux.UBMetaDiagram', {
     if (!me.useBlobForData) {
       Ext.Error.raise('object does not use Blob')
     }
-    // debugger;
     if (me.dataBlob && !Ext.isEmpty(this.objUrl)) {
       window.URL.revokeObjectURL(this.objUrl)
     }
@@ -392,7 +399,6 @@ Ext.define('UB.ux.UBMetaDiagram', {
 
   onDestroy: function () {
     var me = this
-    // debugger;
     me.dataBlob = null
     me.data = null
     if (me.useBlobForData && !Ext.isEmpty(me.objUrl)) {
@@ -495,8 +501,8 @@ Ext.define('UB.ux.UBMetaDiagram', {
         srcProp = cellEdge.getAttribute('srcProp') || ''
         destObj = cellEdge.getAttribute('destObj') || ''
         destProp = cellEdge.getAttribute('destProp') || ''
-        linkType = cellEdge.getAttribute('linkType') || 'relation'
-        isInheritage = (linkType === 'inheritage')
+        linkType = cellEdge.getAttribute('linkType') || 'association'
+        isInheritage = (linkType === 'inheritance')
         deleteEdge = false
 
         switch (objCode) {
@@ -543,7 +549,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
        // добавляем отсутствующие элементы в схеме
       if (!hasInheritage && metaObj.mixins && metaObj.mixins.unity &&
                /** metaObj.mixins.unity.enabled &&**/ graphObject[metaObj.mixins.unity.entity]) {
-        var val = { linkType: 'inheritage', srcObj: objCode, srcProp: 'ID', destObj: metaObj.mixins.unity.entity, destProp: 'ID' }
+        var val = { linkType: 'inheritance', srcObj: objCode, srcProp: 'ID', destObj: metaObj.mixins.unity.entity, destProp: 'ID' }
         me.editor.graph.addEdge(me.createEdge(val), null, cell, graphObject[metaObj.mixins.unity.entity])
       }
 
@@ -553,7 +559,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
         }
         if (attr.dataType === 'Entity' && (attrCode.toUpperCase() !== 'ID') && graphObject[attr.associatedEntity.toLowerCase()] &&
                     !existProps[attrCode]) {
-          var val = { linkType: 'relation', srcObj: objCode, srcProp: attrCode, destObj: attr.associatedEntity, destProp: 'ID' }
+          var val = { linkType: 'association', srcObj: objCode, srcProp: attrCode, destObj: attr.associatedEntity, destProp: 'ID' }
           me.editor.graph.addEdge(me.createEdge(val), null, cell, graphObject[attr.associatedEntity.toLowerCase()])
         }
       })
@@ -935,7 +941,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       }
     }
     if ((attr = cell.getAttribute('srcProp'))) {
-      if ((cell.getAttribute('linkType') || 'relation') === 'relation') {
+      if ((cell.getAttribute('linkType') || 'association') === 'association') {
         return cell.getAttribute('srcObj') + '.' + attr + ' -> ' + cell.getAttribute('destObj') + '.' + cell.getAttribute('destProp')
       } else {
         return cell.getAttribute('srcObj') + ' inherit ' + cell.getAttribute('destObj')
@@ -1120,7 +1126,6 @@ Ext.define('UB.ux.UBMetaDiagram', {
       graph.addListener(mxEvent.ROOT, funct)
 
       me.editor.tasks = taskWnd
-      // debugger;
       me.editor.createTasks(div)
     }
 

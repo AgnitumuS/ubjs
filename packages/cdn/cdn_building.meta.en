@@ -6,7 +6,7 @@
             "caption": "Street"
         },
         "postIndexID": {
-            "caption": "Index"
+            "caption": "Zip"
         },
         "code": {
             "caption": "Num",

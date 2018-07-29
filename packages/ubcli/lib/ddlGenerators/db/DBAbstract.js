@@ -6,7 +6,7 @@ const {strIComp} = require('../AbstractSchema')
 
 class DBAbstract {
   /**
-   * @param {UBConnection} conn
+   * @param {SyncConnection} conn
    * @param {DBConnectionConfig} dbConnectionConfig
    * @param {Array<TableDefinition>} referencedTables
    * @param {boolean} [isUnsafe=true] do not comment out a unsafe DB operations
@@ -582,9 +582,10 @@ class DBAbstract {
     return res
   }
 
-  compareDefault (dataType, mustBeDefault, asIsDefault, mustBeConstraintName, asIsConstraintName) {
+  compareDefault (dataType, mustBeDefault, asIsDefault) {
     if (!mustBeDefault && !asIsDefault) return false
-    return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) && (`(${mustBeDefault})` !== asIsDefault)
+    return (mustBeDefault !== asIsDefault) && (mustBeDefault !== `'${asIsDefault}'`) &&
+      (`${mustBeDefault}` !== asIsDefault) && (`(${mustBeDefault})` !== asIsDefault)
   }
 
   /**

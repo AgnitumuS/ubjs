@@ -1,10 +1,10 @@
-# UnityBase Service model
+# The UnityBase Service model
 
-Include:
+Includes:
 
 - reports
 - user notification (messages)
-- generation numbers by mask, for example to generate a douments number
+- generation numbers by pattern, for example to generate a documents number
 - db-stored settings (like Windows registry)
 - soft & persistent lock support
 

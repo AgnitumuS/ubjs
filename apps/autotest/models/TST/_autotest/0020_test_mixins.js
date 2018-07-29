@@ -1,5 +1,5 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Date: 17.10.14
  * Test mixins
  */
@@ -31,7 +31,7 @@ module.exports = function runELSTest (options) {
 }
 
 /**
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testClobTruncate (conn) {
   let s200 = '1234567890'.repeat(2000)
@@ -71,7 +71,8 @@ function testClobTruncate (conn) {
 
   assert.deepEqual(inserted, mustBe)
 
-  let html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2strip.html'))
+  let html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2strip.html'), 'utf8')
+  let LINE_DELIMITER = html2strip.indexOf('\r\n') > -1 ? '\r\n' : '\n'
   let updated = conn.query({
     entity: 'tst_clob',
     method: 'update',
@@ -81,9 +82,9 @@ function testClobTruncate (conn) {
       text2000: html2strip
     }
   })
-  assert.equal(updated.resultData.data[0][0], '1\r\n3')
+  assert.equal(updated.resultData.data[0][0], `1${LINE_DELIMITER}3`)
 
-  html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.html'))
+  html2strip = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.html'), 'utf8')
   updated = conn.query({
     entity: 'tst_clob',
     method: 'update',
@@ -93,7 +94,7 @@ function testClobTruncate (conn) {
       text2000: html2strip
     }
   })
-  let truncatedHuge = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.txt'))
+  let truncatedHuge = fs.readFileSync(path.join(__dirname, 'fixtures/html2stripHuge.txt'), 'utf8')
   assert.equal(updated.resultData.data[0][0], truncatedHuge)
 
   let mResult = conn.query({entity: 'tst_service', method: 'multiply', a: 2, b: 3})
@@ -110,7 +111,7 @@ function testClobTruncate (conn) {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testDateTime (conn) {
   let dayDate = new Date()
@@ -134,7 +135,7 @@ function testDateTime (conn) {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testFloatAndCurrency (conn) {
   let firstDictRow = conn.Repository('tst_dictionary').attrs(['ID', 'code', 'caption', 'filterValue', 'booleanColumn', 'currencyValue', 'floatValue']).selectById(1)
@@ -144,7 +145,7 @@ function testFloatAndCurrency (conn) {
 
 /**
  *
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testParamMacros (conn) {
   // Этот тест проверяет, насколько корректно построитель запросов обрабатывает символ '#', на который начинаются некоторые макросы

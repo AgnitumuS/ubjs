@@ -7,6 +7,7 @@ const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 const path = require('path')
 const _ = require('lodash')
+const UBA = require('@unitybase/base').uba_common
 
 module.exports = function runUDataTest (options) {
   if (!options) {
@@ -39,6 +40,10 @@ module.exports = function runUDataTest (options) {
       method: 'runAsAdminTest'
     })
     assert.deepEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
+    let uDataInsidePseudoAdmin = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin)
+    // should be {"lang":"en","login":"admin","roles":"Admin","roleIDs":[1],"userID":10}
+    assert.equal(uDataInsidePseudoAdmin.roles, UBA.ROLES.ADMIN.NAME)
+    assert.deepEqual(uDataInsidePseudoAdmin.roleIDs, [UBA.ROLES.ADMIN.ID])
   }
 
   console.debug('test_uData')
@@ -51,15 +56,15 @@ module.exports = function runUDataTest (options) {
 
 /**
  *  Test uData is Object and it persisted only on Session.on('login');
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  */
 function testUData (conn) {
-    // check it filled
+  // check it filled
   conn.query({
     entity: 'tst_service',
     method: 'uDataTest'
   })
-    // and if we define something in uData not in Session.on(login) nothing changed
+  // and if we define something in uData not in Session.on(login) nothing changed
   conn.query({
     entity: 'tst_service',
     method: 'uDataTest'

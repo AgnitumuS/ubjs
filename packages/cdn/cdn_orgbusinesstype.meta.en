@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Organization types",
-    "description": "Organization types dictionary",
+    "description": "Organization types dictionary (LTD etc.)",
     "attributes": {
         "code": {
             "caption": "Code",
@@ -12,7 +12,7 @@
         },
         "name": {
             "caption": "Name",
-            "description": "Name  of the organization type"
+            "description": "Name of the organization type"
         },
         "fullName": {
             "caption": "Description",

@@ -1,56 +1,56 @@
-/**
- * Utils for load data from different formats. You can find many examples of the use inside models `_initialData` folders.
- *
- * Sample:
- *
-         const csvLoader = require('@unitybase/base').dataLoader
-         conn = session.connection;
-         csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-CDN.csv'),
-           'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3]
-         )
-
- * Sample with data transformation - in this case we pass transformation function to mapping
- * array instead of CSV column index:
- *
- *           var ukraineID = conn.lookup('cdn_country', 'ID',
- *              {expression: 'code', condition: 'equal', values: {code: 'UKR'}}
- *           );
-             if (!ukraineID) {
-                  throw new Error('Country with code UKR not found');
-              }
-
-             // CSV columns: code,regionType,name,fullName
-             // we map:
-             //  - parentAdminUnitID to id of Ukraine (constant)
-             //  - regionTypeID fo function what lookup region ID using region code from CSV file
-             csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_region_ukraine.csv', 'cdn_region',
-                ['parentAdminUnitID', 'code', 'regionTypeID', 'name', 'caption', 'fullName'],
-                [
-                    function(){return ukraineID;},
-                    0,
-                    function(row){
-                        var regionType;
-                        regionType = conn.lookup('cdn_regiontype', 'ID', {expression: 'code', condition: 'equal', values: {code: row[1]}});
-                        if (!regionType){
-                            throw new Error('Unknown region type ' + row[1]);
-                        }
-                        return regionType;
-                    },
-                    2, 2, 3
-                ],
-                1, ','
-             );
-
- * @module @unitybase/base/dataLoader
- * @author pavel.mash
- */
-
 const _ = require('lodash')
 const Repository = require('./ServerRepository').fabric
 const csv = require('./csv1')
 const fs = require('fs')
 const path = require('path')
 
+/**
+ * Utils for load data from different formats. You can find many examples of the use inside models `_initialData` folders.
+ *
+ * Example:
+ *
+     const csvLoader = require('@unitybase/base').dataLoader
+     conn = session.connection;
+     csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-CDN.csv'),
+       'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3]
+     )
+
+ * Example with data transformation - in this case we pass transformation function to mapping
+ * array instead of CSV column index:
+ *
+     var ukraineID = conn.lookup('cdn_country', 'ID',
+       {expression: 'code', condition: 'equal', values: {code: 'UKR'}}
+     );
+     if (!ukraineID) {
+          throw new Error('Country with code UKR not found');
+      }
+
+     // CSV columns: code,regionType,name,fullName
+     // we map:
+     //  - parentAdminUnitID to id of Ukraine (constant)
+     //  - regionTypeID fo function what lookup region ID using region code from CSV file
+     csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_region_ukraine.csv', 'cdn_region',
+        ['parentAdminUnitID', 'code', 'regionTypeID', 'name', 'caption', 'fullName'],
+        [
+            function(){return ukraineID;},
+            0,
+            function(row){
+                var regionType;
+                regionType = conn.lookup('cdn_regiontype', 'ID', {expression: 'code', condition: 'equal', values: {code: row[1]}});
+                if (!regionType){
+                    throw new Error('Unknown region type ' + row[1]);
+                }
+                return regionType;
+            },
+            2, 2, 3
+        ],
+        1, ','
+     )
+
+ * @module dataLoader
+ * @memberOf module:@unitybase/base
+ * @author pavel.mash
+ */
 module.exports = {
   loadSimpleCSVData,
   loadArrayData,
@@ -60,7 +60,7 @@ module.exports = {
 
 /**
  * Load data from CSV with delimiter (";" by default)
- * @param {UBConnection} conn Connection to UnityBase server
+ * @param {SyncConnection} conn Connection to UnityBase server
  * @param {String} fileName Full path to file
  * @param {String} entityName Entity code to load data into
  * @param {Array<string>} ettAttributes Array of attribute codes
@@ -68,7 +68,7 @@ module.exports = {
  *   - either numeric (zero based) index of column is CSV file
  *   - or lookup configuration
  *   - or function what take a array representing current row in CSW file on input and return a attribute value to bi inserted
- *  
+ *
  *   If argument is not passed, it defaults to all ettAttributes passed "as is".
  *
  * @param {Number} [startRow=0] Start from this CSV file row
@@ -82,7 +82,7 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
   transLen = transLen || 1000
   startRow = startRow || 0
 
-  let fContent = fs.readFileSync(fileName)
+  let fContent = fs.readFileSync(fileName, 'utf8')
   if (!fContent) { throw new Error('File ' + fileName + ' is empty or not exist') }
   fContent = fContent.trim()
   let csvData = csv.parse(fContent, delimiter)
@@ -100,7 +100,7 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
 
 /**
  * Load data from a array (rows) of array (columns data).
- * @param {UBConnection} conn Connection to UnityBase server
+ * @param {SyncConnection} conn Connection to UnityBase server
  * @param {Array} dataArray - array to load
  * @param {String} entityName Entity code to load data into
  * @param {Array<string>} ettAttributes Array of attribute codes
@@ -108,7 +108,7 @@ function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, 
  *   - numeric (zero based) index of column is CSV file
  *   - lookup configuration
  *   - function (currentRowAsArray, newRecordID) what take a array representing current row in CSV file & new RecordID on input and return a attribute value to be inserted
- *  
+ *
  *   If argument is not passed, it defaults to all ettAttributes passed "as is".
  *
  * @param {Number} [transLen=1000] Maximum rows count to be inserted on the single database transaction
@@ -154,19 +154,19 @@ function loadArrayData (conn, dataArray, entityName, ettAttributes, mapping, tra
 
 /**
  * Perform localization of entities data based on config & locale. See *.js in models `_initialData/locale` folder for usage samples.
- *
-       const loader = require('@unitybase/base').dataLoader
-       let localizationConfig = {
-          entity: 'ubm_enum',
-          keyAttribute: 'eGroup;code',
-          localization: [
-            {keyValue: 'UBS_MESSAGE_TYPE;user',  execParams: {name: 'Користувачів'}},
-            {keyValue: 'UBS_MESSAGE_TYPE;system',  execParams: {name: 'Система'}},
-            {keyValue: 'UBS_MESSAGE_TYPE;warning',  execParams: {name: 'Попереждення'}},
-            {keyValue: 'UBS_MESSAGE_TYPE;information',  execParams: {name: 'Інформація'}}
-          ]
-       }
-       loader.localizeEntity(session, localizationConfig, __filename);
+ * @example
+ const loader = require('@unitybase/base').dataLoader
+ let localizationConfig = {
+    entity: 'ubm_enum',
+    keyAttribute: 'eGroup;code',
+    localization: [
+      {keyValue: 'UBS_MESSAGE_TYPE;user',  execParams: {name: 'Користувачів'}},
+      {keyValue: 'UBS_MESSAGE_TYPE;system',  execParams: {name: 'Система'}},
+      {keyValue: 'UBS_MESSAGE_TYPE;warning',  execParams: {name: 'Попереждення'}},
+      {keyValue: 'UBS_MESSAGE_TYPE;information',  execParams: {name: 'Інформація'}}
+    ]
+ }
+ loader.localizeEntity(session, localizationConfig, __filename)
 
  * @param {ServerSession} session
  * @param {Object} config
@@ -253,7 +253,7 @@ function localizeEntity (session, config, locale) {
     1000
   )
 
- * @param {UBConnection} conn
+ * @param {SyncConnection} conn
  * @param {string} entityName
  * @param {string|Array<string>} attributeName  Attribute name or array of names
  * @param {number|Array<number>} colIndex      Column index or indexes
@@ -263,7 +263,7 @@ function localizeEntity (session, config, locale) {
 function lookup (conn, entityName, attributeName, colIndex, doNotUseCache) {
   /**
   * A function which lookup a value for dataLoader.
-  * @param {UBConnection} conn
+  * @param {SyncConnection} conn
   * @param {string} entityName
   * @param {string|Array<string>} attributeName  Attribute name or array of names
   * @param {number|Array<number>} colIndex      Column index or indexes

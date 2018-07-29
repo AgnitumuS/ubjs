@@ -1,6 +1,5 @@
 ﻿{
     "caption": "Адміністрування робочих столів",
-    "documentation": "Адміністрування робочих столів",
     "attributes": {
         "instanceID": {
             "caption": "Робочий стіл"

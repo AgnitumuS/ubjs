@@ -244,7 +244,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
     }
 
     editorWnd = Ext.create('UB.view.BaseWindow', {
-      title: UB.i18n('redaktirovat'),
+      title: UB.i18n('Edit'),
       modal: true,
       maximizable: true,
       maximized: false,
@@ -314,10 +314,8 @@ Ext.define('UB.ux.form.HtmlEditor', {
     me.editBtnCtrl = Ext.create('Ext.Button', {
       renderTo: me.editBtn,
       cls: 'ub-btn-flat ub-btn-rounded',
-            // text: UB.i18n("redaktirovat"),
-      tooltip: UB.i18n('redaktirovat'),
+      tooltip: UB.i18n('Edit'),
       focusOnToFront: false,
-            // plain: true,
       style: 'z-index: 3;',
       glyph: UB.core.UBUtil.glyphs.faPencil, // faEdit,
       handler: me.editContent,
@@ -325,7 +323,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
     })
   },
 
-    // for get focus in BasePanel
+  // for get focus in BasePanel
   isFocusableField: true,
 
   isFocusable: function () {

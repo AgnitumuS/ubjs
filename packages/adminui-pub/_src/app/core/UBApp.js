@@ -1,4 +1,5 @@
-/* global Ext, $App */
+/* global Ext */
+const UB = require('@unitybase/ub-pub')
 require('../view/LoginWindow.js')
 require('../../ux/window/Notification')
 require('../view/Viewport')
@@ -8,7 +9,6 @@ require('../view/cryptoUI/SelectCert')
 require('./UBStoreManager')
 
 const _ = require('lodash')
-const UB = require('@unitybase/ub-pub')
 
 const RE_LETTERS = /[A-Za-zА-Яа-яЁёіІїЇґҐ]/
 const RE_ENGLISH = /[A-Za-z]/
@@ -36,17 +36,11 @@ const RE_CAPS = /[A-ZА-ЯЁІЇҐ]/
  *  - create {@link UB.view.Viewport viewport} - the main documnet DOM component
  *
  * @author UnityBase core team
+ * @namespace $App
  */
 Ext.define('UB.core.UBApp', {
-/* globals UBNativeScanner, UBNativeDocEdit, UBNativePDFSign */
   singleton: true,
 
-  requires: [
-    'Ext.Loader',
-    'UB.view.LoginWindow',
-    'UB.view.cryptoUI.ReadPK',
-    'Ext.ux.window.Notification'
-  ],
   uses: [
     'UB.core.UBCommand'
   ],
@@ -93,6 +87,11 @@ Ext.define('UB.core.UBApp', {
      */
     this.domainInfo = null
     /**
+     * Main application window. Initialised after $App.launch()
+     * @property {UB.view.Viewport} viewport
+     */
+    this.viewport = null
+    /**
      * UnityBase application instance short alias reference. Use it instead of UB.core.UBApp singleton
      * @property {UB.core.UBApp} $App
      * @type {UB.core.UBApp}
@@ -100,6 +99,16 @@ Ext.define('UB.core.UBApp', {
      * @global
      */
     window.$App = this
+
+    /**
+     * In case model require asynchronous operation during loading it
+     * should add a chain to this promise. Next model will await chain resolving
+     * @example
+     *    $App.modelLoadedPromise = $App.modelLoadedPromise.then(...)
+     *
+     * @type {Promise<boolean>}
+     */
+    this.modelLoadedPromise = Promise.resolve(true)
 
     this.addEvents(
       /**
@@ -144,10 +153,7 @@ Ext.define('UB.core.UBApp', {
        */
       'windowDestroyed',
       /**
-       * @event buildMainMenu
        * Fires when application ready to build main menu
-       * @param {*} items Collection of {@link UB.view.ToolbarWidget}.
-       *
        * For example in initModels.js you can write:
        *
        *        $App.on('buildMainMenu', function(items){
@@ -157,6 +163,9 @@ Ext.define('UB.core.UBApp', {
        *                Ext.create('UB.view.ToolbarUser')
        *            );
        *       });
+       *
+       * @event buildMainMenu
+       * @param {*} items Collection of {@link UB.view.ToolbarWidget}.
        */
       'buildMainMenu'
     )
@@ -290,18 +299,35 @@ Ext.define('UB.core.UBApp', {
    */
   launch: function () {
     var me = this
+    var isExternalLogin = typeof window.redirectToLogin === 'function'
     return UB.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
       onCredentialRequired: UB.view.LoginWindow.DoLogon,
-      onAuthorizationFail: function (reason) {
-        UB.showErrorWindow(reason)
+      allowSessionPersistent: isExternalLogin, // see uiSettings.adminUI.loginURL
+      onAuthorized: function (conn) {
+        if (isExternalLogin) { // external login page
+          window.localStorage.removeItem(conn.__sessionPersistKey)
+        }
+        window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'false')
+      },
+      onAuthorizationFail: function (reason, conn) {
+        if (isExternalLogin) {
+          var storedSession = window.localStorage.getItem(conn.__sessionPersistKey)
+          if (storedSession) { // invalid session is created by external login page
+            window.redirectToLogin(reason)
+          } else {
+            UB.showErrorWindow(reason)
+          }
+        } else {
+          UB.showErrorWindow(reason)
+        }
       },
       onNeedChangePassword: $App.onPasswordChange.bind($App),
       onGotApplicationConfig: function (/** @type {UBConnection} */connection) {
         _.defaultsDeep(connection.appConfig, {
           comboPageSize: 30,
-          maxMainWindowTabOpened: 10,
+          maxMainWindowTabOpened: 40,
           storeDefaultPageSize: 100,
 
           gridHeightDefault: 400,
@@ -329,7 +355,7 @@ Ext.define('UB.core.UBApp', {
         // TODO - remove because mutation of other objects is bad idea
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
-        return UB.inject('models/adminui-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
+        return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
             const pkiForAuth = UB.appConfig.uiSettings.adminUI.encryptionImplementation || 'clientRequire/@ub-d/nm-dstu/injectEncription.js'
             const libraryName = pkiForAuth.split('/')[2]
@@ -339,7 +365,7 @@ Ext.define('UB.core.UBApp', {
             }
 
             return UB.inject(pkiForAuth).then(() => {
-              window[ libraryName ].addEncryptionToConnection(connection, advParam)
+              window[libraryName].addEncryptionToConnection(connection, advParam)
             })
           } else {
             return true
@@ -350,45 +376,31 @@ Ext.define('UB.core.UBApp', {
         })
       }
     }).then(function (connection) {
-      var localeScriptForLoad = []
-      var initScriptForLoad = []
-      var myLocale, models
-
       me.connection = connection
       me.ubNotifier = connection.ubNotifier
-      myLocale = connection.preferredLocale
+      let myLocale = connection.preferredLocale
       me.domainInfo = connection.domain
-      models = me.domainInfo.models
+      let models = me.domainInfo.models
 
-      UB.Repository = function (entityCode) {
-        return new UB.ClientRepository(connection, entityCode)
-      }
-      // for each model:
-      // - configure Ext.loader
-      // - if model need localization - load localization script
-      // - if model need initialization - shedule initModel.js script
-      // if (myLocale !== preferredLocale){
-      //    localeScriptForLoad.push(UB.inject('models/adminui/locale/ext-lang-' + myLocale + '.js'));
-      // }
+      // for each model configure Ext.loader
       _.forEach(models, function (item, key) { item.key = key }) // move names inside elements
       models = _.sortBy(models, 'order') // sort models by order
       _.forEach(models, function (model) {
         if (model.path && model.key !== 'UB') {
           Ext.Loader.setPath(model.key, model.path)
         }
-        if (model.needLocalize) {
-          localeScriptForLoad.push(UB.inject(model.path + '/locale/lang-' + myLocale + '.js'))
-        }
-        if (model.needInit) {
-          initScriptForLoad.push(model.clientRequirePath + '/initModel.js')
-        }
       })
+      // load localization script (bundled from all models on the server side)
       // load models initialization script in order they passed
-      return Promise.all(localeScriptForLoad).then(function () {
-        var promise = Promise.resolve(true)
-        initScriptForLoad.forEach(function (script) {
+      return UB.inject('allLocales?lang=' + myLocale).then(function () {
+        let promise = Promise.resolve(true)
+        // inject models initialization scripts
+        window.__modelInit.forEach(function (script) {
           promise = promise.then(function () {
             return window.System.import(script)
+          }).then(() => {
+            // model can resolve $App.modelLoadedPromise later. See settings.js in UBS model
+            return $App.modelLoadedPromise
           })
         })
         return promise
@@ -398,7 +410,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
         ubRequests: ['ubm_desktop', 'ubm_form', 'ubm_enum'].map(function (item) {
-          var res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
+          let res = {entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames()}
           if (item === 'ubm_desktop') {
             res.orderList = {
               ord: {
@@ -422,28 +434,11 @@ Ext.define('UB.core.UBApp', {
           setStoreId: true
         })
       })
-    }).then(function () { // clear form's def/js cache if ubm_form version changed
-      // here we relay ubm_form cache type is SessionEntity. If not - cache clearing is not performed
-      let cacheKey = me.connection.cacheKeyCalculate('ubm_form', $App.domainInfo.get('ubm_form').getAttributeNames())
-      let realFormsVersion = me.connection.cachedSessionEntityRequested[cacheKey]
-
-      if (realFormsVersion) {
-        let storedFormsVersion = +window.localStorage.getItem('ubm_form_cache_version')
-        if (storedFormsVersion !== realFormsVersion) {
-          UB.core.UBFormLoader.clearFormCache()
-          window.localStorage.setItem('ubm_form_cache_version', realFormsVersion)
-        }
-      }
-      return true
     }).then(function () {
       me.setLocalStorageProviderPrefix(me.connection.userLogin())
-      /**
-       * Main application window
-       * @property {UB.view.Viewport} viewport
-       */
       me.viewport = Ext.create('UB.view.Viewport')
       me.viewport.show()
-      me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop)
+      me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop) // keep UB.core.UBAppConfig
       me.fireEvent('applicationReady')
       me.checkQueryString()
       me.hideLogo()
@@ -460,7 +455,7 @@ Ext.define('UB.core.UBApp', {
    * @returns {string}
    */
   getImagePath: function (imageName) {
-    return 'models/adminui-pub/themes/' + UB.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
+    return 'models/adminui-pub/themes/' + UB.connection.appConfig.uiSettings.adminUI.themeName + '/ubimages/' + imageName
   },
 
   /**
@@ -486,10 +481,18 @@ Ext.define('UB.core.UBApp', {
     var icon
     config = config || {}
     switch (config.icon || 'QUESTION') {
-      case 'QUESTION': icon = Ext.window.MessageBox.QUESTION; break
-      case 'ERROR': icon = Ext.window.MessageBox.ERROR; break
-      case 'WARNING': icon = Ext.window.MessageBox.WARNING; break
-      case 'INFO': icon = Ext.window.MessageBox.INFO; break
+      case 'QUESTION':
+        icon = Ext.window.MessageBox.QUESTION
+        break
+      case 'ERROR':
+        icon = Ext.window.MessageBox.ERROR
+        break
+      case 'WARNING':
+        icon = Ext.window.MessageBox.WARNING
+        break
+      case 'INFO':
+        icon = Ext.window.MessageBox.INFO
+        break
     }
     return new Promise(function (resolve, reject) {
       Ext.MessageBox.show({
@@ -624,9 +627,9 @@ Ext.define('UB.core.UBApp', {
    */
   pdfSigner: function () {
     let i = 'import'
-    let moduleName = '@ub-e/nm-pdfsigner' + window.isDeveloperMode ? '' : '/dist/nm-pdfsigner.min.js'
+    let moduleName = '@ub-e/nm-pdfsign' + (window.isDeveloperMode ? '' : '/dist/nm-pdfsign.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-pdfsigner to the bundle
-    return System[i](moduleName).then(function (nmPDFSignerModule) {
+    return SystemJS[i](moduleName).then(function (nmPDFSignerModule) {
       return nmPDFSignerModule.connect()
     })
   },
@@ -637,9 +640,9 @@ Ext.define('UB.core.UBApp', {
    */
   docEdit: function () {
     let i = 'import'
-    let moduleName = '@ub-e/nm-docedit' + window.isDeveloperMode ? '' : '/dist/nm-docedit.min.js'
+    let moduleName = '@ub-e/nm-docedit' + (window.isDeveloperMode ? '' : '/dist/nm-docedit.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-docedit to the bundle
-    return System[i](moduleName).then(function (nmDocEditModule) {
+    return SystemJS[i](moduleName).then(function (nmDocEditModule) {
       return nmDocEditModule.connect()
     })
   },
@@ -663,9 +666,9 @@ Ext.define('UB.core.UBApp', {
    */
   scanService: function () {
     let i = 'import'
-    let moduleName = '@ub-e/nm-scanner' + window.isDeveloperMode ? '' : '/dist/nm-scanner.min.js'
+    let moduleName = '@ub-e/nm-scanner' + (window.isDeveloperMode ? '' : '/dist/nm-scanner.min.js')
     // System[i] is required for preventing webpack to include a ub-e/nm-scanner to the bundle
-    return System[i](moduleName).then(function (nmScannerModule) {
+    return SystemJS[i](moduleName).then(function (nmScannerModule) {
       return nmScannerModule.connect()
     })
   },
@@ -796,14 +799,14 @@ Ext.define('UB.core.UBApp', {
         scanner.lastScanedFormat = scanSettings.UBScan.OutputFormat
         return scanner.startScan(scanSettings)
       }).then(onScan, null, onNotify)
-      .fin(function () {
-        statusWindow.close()
-      }).catch(function (error) {
-        return scanner.cancelScan().then(function () {
+        .fin(function () {
           statusWindow.close()
-          throw error
+        }).catch(function (error) {
+          return scanner.cancelScan().then(function () {
+            statusWindow.close()
+            throw error
+          })
         })
-      })
     })
   },
 
@@ -1065,3 +1068,5 @@ Ext.define('UB.core.UBApp', {
     document.getElementById('UBLogo').style.display = 'none'
   }
 })
+
+module.exports = UB.core.UBApp

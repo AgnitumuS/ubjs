@@ -1,6 +1,12 @@
-/*
- * Created by pavel.mash on 14.03.2016.
+/**
+ * WebSocket connection to UnityBase server using ubNotifier protocol
+ *
+ * @module UBNotifierWSProtocol
+ * @memberOf module:@unitybase/ub-pub
+ * @author xmax, mpv
  */
+module.exports = UBNotifierWSProtocol
+
 const _ = require('lodash')
 const EventEmitter = require('./events')
 
@@ -91,11 +97,11 @@ function UBNotifierWSProtocol (connection) {
 
       $ws.onopen = function (e) {
         doDebug('connected to', e.target.url, 'protocol:', e.target.protocol)
-                /**
-                 * Emitted for {@link UBNotifierWSProtocol} just after WS connection is established, but before it accepted by server.
-                 * Params: url, protocol
-                 * @event connected
-                 */
+        /**
+         * Emitted for {@link UBNotifierWSProtocol} just after WS connection is established, but before it accepted by server.
+         * Params: url, protocol
+         * @event connected
+         */
         notifier.emit('connected', e.target.url, e.target.protocol)
       }
 
@@ -145,16 +151,16 @@ function UBNotifierWSProtocol (connection) {
     }
   }
 
-    /**
-     * Sand a command to server
-     *
-     *  - if WS connection is not accepted yet will buffer the commands and send it just after connection is accepted
-     *  - if `ubNotifier` protocol not supported by server will do nothing
-     *
-     * @method
-     * @param {string} command
-     * @param {*} params
-     */
+  /**
+   * Sand a command to server
+   *
+   *  - if WS connection is not accepted yet will buffer the commands and send it just after connection is accepted
+   *  - if `ubNotifier` protocol not supported by server will do nothing
+   *
+   * @method
+   * @param {string} command
+   * @param {*} params
+   */
   this.sendCommand = function (command, params) {
     if (supported) {
       if (isConnectionAccepted) {
@@ -170,10 +176,7 @@ function UBNotifierWSProtocol (connection) {
     isConnectionAccepted = false
     if (connection.supportedWSProtocols.indexOf(WS_PROTOCOL) !== -1) {
       _createWSConnection(session)
-    } else {
-      console.warn('ubNotifier: protocol not supported')
     }
   }
   connection.on('authorized', _onUBConnectionAuthorized)
 }
-module.exports = UBNotifierWSProtocol

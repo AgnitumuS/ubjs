@@ -1,12 +1,12 @@
 /**
- * User: pavel.mash
+ * @author pavel.mash
  * Create roles users / powerUsers / supervisors
  */
 
 /**
  * Initial script for create UnityBase Administration desktop navigation shortcuts for UBA model
  * Used by ubcli initialize command
- * @param {cmd.argv.serverSession} session
+ * @param {ServerSession} session
  */
 module.exports = function (session) {
   var conn = session.connection

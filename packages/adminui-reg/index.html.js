@@ -1,5 +1,4 @@
-/* global App */
-
+const App = require('@unitybase/ub').App
 /**
  * Return models config for `admin-UI` web client
  * The purpose is to load model initialization script BEFORE application start
@@ -7,16 +6,15 @@
 const mustache = require('mustache')
 const fs = require('fs')
 const path = require('path')
- /**
+/**
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  * @param {String} indexName
  * @param {boolean} [addCSP=true] Add a CSP header
  */
-function generateIndexPage (req, resp, indexName, addCSP=true) {
+function generateIndexPage (req, resp, indexName, addCSP = true) {
   let indexTpl, compiledIndex, compiledIndexKey
-  let models, mCnt, mName, i, uiSettings
 
   function md5 (fileName) {
     let realPath = App.resolveStatic(fileName)
@@ -33,21 +31,23 @@ function generateIndexPage (req, resp, indexName, addCSP=true) {
   compiledIndexKey = 'UB_STATIC.compiled_index_' + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
   compiledIndex = App.globalCacheGet(compiledIndexKey)
   if (!compiledIndex) {
-    uiSettings = JSON.parse(App.getUISettings() || '{}')
+    let uiSettings = App.serverConfig.uiSettings
     if (!uiSettings.adminUI) {
       uiSettings.adminUI = {themeName: 'UBGrayTheme'}
     } else if (!uiSettings.adminUI.themeName) {
       uiSettings.adminUI.themeName = 'UBGrayTheme'
     }
     let adminUIPath = path.dirname(require.resolve('@unitybase/adminui-pub'))
-    indexTpl = fs.readFileSync(path.join(adminUIPath, indexName))
+    indexTpl = fs.readFileSync(path.join(adminUIPath, indexName), 'utf8')
 
     // create view for mustache
     // noinspection JSUnusedGlobalSymbols
     let view = {
       uiSettings: uiSettings,
       modelVersions: [],
-      staticVersion: App.globalCacheGet('UB_STATIC.modelsModifyDate'), // prev. App.folderChecksum(App.staticPath),
+      modelInitialization: [],
+      adminUIModel: '',
+      staticVersion: '' + ncrc32(0, App.globalCacheGet('UB_STATIC.modelsModifyDate')), // prev. App.folderChecksum(App.staticPath),
       UB_API_PATH: App.serverConfig.httpServer.path || '/', //  serverURL.replace(/\/$/, ''),
       md5template: function () {
         return function (template) {
@@ -60,15 +60,41 @@ function generateIndexPage (req, resp, indexName, addCSP=true) {
     }
 
     // fill model versions
-    models = App.domain.config.models
-    mCnt = models.count
-    for (i = 0; i < mCnt; i++) {
-      mName = models.items[i].name
-      view.modelVersions.push({
-        modelName: mName,
-        modelVersion: App.folderChecksum(models.items[i].publicPath)
-      })
+    let models = App.domainInfo.models
+    let modelsConfig = App.serverConfig.application.domain.models
+    for (let modelName in models) {
+      let model = models[modelName]
+      let modelCfg = modelsConfig.find(m => m.name === modelName)
+      if (model.realPublicPath) {
+        let pver = modelCfg.version
+        view.modelVersions.push({
+          modelName: modelName,
+          modelVersion: pver
+        })
+      }
     }
+    // add admin-ui
+    const ADMINUI_MODEL = '@unitybase/adminui-pub'
+    let modelCfg = modelsConfig.find(m => m.moduleName === ADMINUI_MODEL)
+    view.adminUIModel = modelCfg.browser
+    App.domainInfo.orderedModels.forEach((model) => {
+      if (model.moduleName !== ADMINUI_MODEL) {
+        let modelCfg = modelsConfig.find(m => m.name === model.name)
+        if (modelCfg.browser) {
+          view.modelInitialization.push(modelCfg.browser)
+        } else if (model.needInit) { // ub 5.0.5 compatibility
+          console.warn(`Compatibility warning! Model ${model.name} has browser initialization script,
+but "browser" section in package.json is not define. Will fallback to "browser": "./public/initModel.js"`)
+          let pathStart = /node_modules/.test(model.path)
+            ? model.moduleName + '/public'
+            : path.join('/clientRequire', model.path).replace(/\\/g, '/')
+          view.modelInitialization.push({
+            dev: `${pathStart}/initModel.js`,
+            prod: `${pathStart}/initModel.js`
+          })
+        }
+      }
+    })
 
     compiledIndex = mustache.render(indexTpl, view)
     if (compiledIndex) {
@@ -85,10 +111,9 @@ function generateIndexPage (req, resp, indexName, addCSP=true) {
     // cache forever - do not cache index*.html
     let cspHeader = ''
     if (addCSP) {
-      let wsSrc = 'ws' + App.serverURL.slice(4)
-      if (!uiSettings) {
-        uiSettings = JSON.parse(App.getUISettings() || '{}')
-      }
+      let wsSrc = 'ws' + App.externalURL.slice(4)
+      let uiSettings = App.serverConfig.uiSettings
+
       let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
       let cspHeaders =
         // "default-src * data: blob:;" +
@@ -116,7 +141,7 @@ adminUIEndpointName = adminUIEndpointName || App.serverConfig.application.rootHa
 App.registerEndpoint(adminUIEndpointName, function (req, resp) {
   if (req.url.endsWith('/')) {
     resp.statusCode = 301 // HTTP_MOVEDPERMANENTLY
-    resp.writeHead(`Location: ${App.serverURL}${adminUIEndpointName}`)
+    resp.writeHead(`Location: ${App.externalURL}${adminUIEndpointName}`)
     return
   }
   generateIndexPage(req, resp, 'index.mustache')
@@ -130,7 +155,7 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
   if (process.isDebug) {
     if (req.url.endsWith('/')) {
       resp.statusCode = 301 // HTTP_MOVEDPERMANENTLY
-      resp.writeHead(`Location: ${App.serverURL}${adminUIEndpointName}`)
+      resp.writeHead(`Location: ${App.externalURL}${adminUIEndpointName}`)
       return
     }
     generateIndexPage(req, resp, 'index-dev.mustache', false)

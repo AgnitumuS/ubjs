@@ -22,7 +22,8 @@
      DDLGenerator(options)
 
  * @author pavel.mash
- * @module @unitybase/ubcli/generateDDL
+ * @module generateDDL
+ * @memberOf module:@unitybase/ubcli
  */
 const _ = require('lodash')
 const fs = require('fs')
@@ -60,7 +61,7 @@ module.exports = function generateDDL (cgf) {
 }
 
 /**
- *  @param {UBConnection} conn
+ *  @param {SyncConnection} conn
  *  @param {boolean} autorun Optional server config application section (used in `auto` mode to execute DDL statements)
  *  @param {String} inEntities
  *  @param {String} inModelsCSV
@@ -116,7 +117,9 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
         for (let part of nonEmptySorted) {
           for (let stmt of part.statements) {
             try {
-              stmt && conn.xhr({endpoint: 'runSQL', data: stmt, URLParams: {CONNECTION: connectionName}})
+              if (stmt) {
+                conn.xhr({endpoint: 'runSQL', data: stmt, URLParams: {CONNECTION: connectionName}})
+              }
             } catch (e) {
               if (!optimistic) {
                 throw e

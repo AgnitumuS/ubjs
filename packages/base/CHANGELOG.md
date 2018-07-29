@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.17]
+### Fixed
+- ServerRepository.selectAsObject now accept two optional parameters
+  `selectAsObject(fieldAliases, resultInPlainText)` to be compatible with ClientRepository.
+
+  **WARNING** using fieldAliases on server side cause a little performance degradation
+
+## [5.0.10]
+### Changed
+- argv.getServerConfiguration during parsing ubConfig application.domain.models
+ config will take model parameters from model package.json config.ubmodel
+ object in case model `name` is omitted in config. This allow simplify a config as such:
+
+ ```
+ "models": [
+    {
+      "path": "./node_modules/@unitybase/ub"
+    }, {
+      "path": "./node_modules/@unitybase/uba"
+    }, ...
+  ```
+
+## [5.0.6]
+### Changed
+- change default value of `-host` command line parameter from http://localhost:888 to http://localhost:8881
+
+## [5.0.0]
+### Added
+- UBEntity.isUnity property added
+- SyncConnection.getDocument method
+
 ## [4.2.27]
 ### Changed
 - allow blank for mi_dateTo record history mixin attribute on browser side
@@ -49,7 +80,7 @@ case we updated something backwards
 - `argv.getConfigFileName` take a config from UB_CFG environment variable if `-cfg` cmd line switch omitted
 - `FileBaseStoreLoader.load()` now return data version in TubDataCache. 
   To be used in file-based entitis select's instead of version calculation individually in each entity
-- `UBConnection.setDocument` method for convinient uploading content to temp store, for example in model initialization or
+- `SyncConnection.setDocument` method for convinient uploading content to temp store, for example in model initialization or
   data update/migration scripts
 
 ### Fixed
