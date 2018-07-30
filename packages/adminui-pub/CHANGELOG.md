@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.6]
+### Fixed
+- increase left panel desktop select height to 3rem for fit 2-line caption [UBDF-7808]
+
 ## [5.3.4]
 ### Fixed
  - long terming bug with select/date control border disappears if page are scaled

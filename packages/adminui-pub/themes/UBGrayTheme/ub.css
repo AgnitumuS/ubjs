@@ -1101,12 +1101,22 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 .ub-desktop-button {
-    background-color: #DADADA;
-}
-.ub-desktop-button .x-focus {
-    background-color: #DADADA;
+    height: 3rem;
+    background-color: #2f4050;
+    border-width: 0;
+    border-radius: 0;
 }
 
+/*.ub-desktop-button .x-focus {*/
+    /*background-color: #DADADA;*/
+/*}*/
+.ub-desktop-button .x-btn-button {
+    overflow: inherit;
+}
+
+.ub-desktop-button .x-btn-inner {
+    white-space: pre-wrap;
+}
 
 .ub-desktop-button .x-btn-inner {
     color: #ffffff;
@@ -1483,22 +1493,12 @@ input.x-form-field-text{
     content: " ";
 }
 
-.ub-desktop-button {
-    background-color: #2f4050;
-    border-width: 0;
-    border-radius: 0;
-}
-
 .ub-left-panel .x-grid-header-ct{
     border-bottom-width: 0 !important;
 }
 
 .ub-left-panel ::-webkit-scrollbar-thumb {
     background: hsl(0, 0%, 52%);
-}
-
-.ub-desktop-button {
-    height: 34px;
 }
 
 .save-action .x-btn-icon-el,
