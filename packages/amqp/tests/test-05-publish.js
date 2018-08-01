@@ -1,6 +1,6 @@
 // const assert = require('assert')
 const base = require('./testconnected')
-const lib = require('../ub-amqp')
+const lib = require('./.')
 
 class TestSuitePublish extends base.TestConnected {
   testPublishBasic () {

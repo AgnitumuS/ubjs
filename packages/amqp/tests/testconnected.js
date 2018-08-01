@@ -1,4 +1,4 @@
-const lib = require('../ub-amqp')
+const lib = require('./.')
 const testbase = require('./testbase')
 
 /**
