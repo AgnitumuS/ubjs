@@ -1,5 +1,5 @@
 {
-  "name": "ub-amqp",
+  "name": "@unitybase/amqp",
   "version": "1.0.0",
   "description": "This library tries to mimic amqplib nodejs library API but in synchronous mode which is natural for UnityBase",
   "main": "ub-amqp",
