@@ -1,0 +1,7 @@
+{
+  "httpServer": {
+		"host": "+",
+		"port": "8881",
+		"inetPub": "./"
+	}
+}
