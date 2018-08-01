@@ -1,3 +1,4 @@
+/* global Ext */
 require('./UBUtil')
 /**
  * Файл: UB.core.UBPanelMixin.js
@@ -28,10 +29,10 @@ Ext.define('UB.core.UBPanelMixin', {
     }
   },
 
-    /**
-     * Find all details for current entity (this.entityName)
-     * @return {Array}
-     */
+  /**
+   * Find all details for current entity (this.entityName)
+   * @return {Array}
+   */
   buildDetailList: function () {
     var
       result = [],
@@ -43,7 +44,8 @@ Ext.define('UB.core.UBPanelMixin', {
       result = details
     } else {
       $App.domainInfo.eachEntity(function (curEntity, curEntityName) {
-        if (curEntityName !== myName) {
+        // [unitybase/ubjs#2] - do not display refs to attributes of "many" type
+        if ((curEntityName !== myName) && curEntity.haveAccessToMethod('select')) {
           curEntity.eachAttribute(function (curAttr, curAttrName) {
             if ((curAttr.associatedEntity === myName) && !mixinArrtRe.test(curAttrName)) {
               result.push({
@@ -288,7 +290,7 @@ Ext.define('UB.core.UBPanelMixin', {
       actionId: 'commandLink',
       text: UB.i18n('ssylka'),
       hideOnClick: false,
-            // iconCls: 'iconLink',
+      // iconCls: 'iconLink',
       glyph: UB.core.UBUtil.glyphs.faShare,
       menu: {
         showSeparator: false,
