@@ -182,13 +182,13 @@ Ext.define('UB.view.LoginWindow', {
 
       var certItem = []
       var useCertificateInfo = 'useCertificateInfoSimple'
-      if (!me.connection.simpleCertAuth){
+      if (!me.connection.simpleCertAuth) {
         useCertificateInfo = 'useCertificateInfo'
         certItem.push(
           me.textFieldLoginCert,
           me.textFieldPasswordCert
         )
-      } else if (authenticationCert.requireUserName){
+      } else if (authenticationCert.requireUserName) {
         useCertificateInfo = 'useCertificateInfoSimpleUserName'
         certItem.push(me.textFieldLoginCert)
       }
@@ -233,7 +233,14 @@ Ext.define('UB.view.LoginWindow', {
         labelSeparator: '',
         labelWidth: 40,
         anchor: '100%',
-        value: me.connection.lastLoginName || lastSavedLogin
+        value: me.connection.lastLoginName || lastSavedLogin,
+        listeners: {
+          afterrender: function (cmp) {
+            cmp.inputEl.set({
+              autocomplete: 'off'
+            })
+          }
+        }
       })
       me.textFieldPassword = Ext.create('Ext.form.field.Text', {
         margin: '10 80 10 80',
@@ -317,12 +324,11 @@ Ext.define('UB.view.LoginWindow', {
           columns: 1,
           id: 'extLoginOpenIDType',
           vertical: true,
-          items: [
-          ]
+          items: []
         }
 
         OpenIDConnectProviders.forEach(function (provider) {
-          radioGroup.items.push({ boxLabel: UB.i18n(provider), name: 'providerName', inputValue: provider})
+          radioGroup.items.push({boxLabel: UB.i18n(provider), name: 'providerName', inputValue: provider})
         })
         if (radioGroup.items.length) {
           radioGroup.items[0].checked = true
@@ -419,11 +425,11 @@ Ext.define('UB.view.LoginWindow', {
       me.textFieldPasswordCert.validate()
       var authenticationCert = UB.appConfig.uiSettings.adminUI.authenticationCert || {}
       if ((!me.connection.simpleCertAuth || authenticationCert.requireUserName) &&
-         !me.textFieldLoginCert.validate() ){
-         return
+        !me.textFieldLoginCert.validate()) {
+        return
       }
       if (!me.connection.simpleCertAuth &&
-         !me.textFieldPasswordCert.validate() ){
+        !me.textFieldPasswordCert.validate()) {
         return
       }
       login = Ext.String.trim(me.textFieldLoginCert.getValue() || '')
@@ -473,6 +479,7 @@ Ext.define('UB.view.LoginWindow', {
       }
 
       var loginWindowOpenID = window.open(url, 'login', getWindowConfig())
+
       function loginListener (event) {
         if (event.source === loginWindowOpenID) {
           window.removeEventListener('message', loginListener)
@@ -491,6 +498,7 @@ Ext.define('UB.view.LoginWindow', {
           }
         }
       }
+
       window.addEventListener('message', loginListener)
       window.localStorage.setItem('lastAuthType', authType)
       return
