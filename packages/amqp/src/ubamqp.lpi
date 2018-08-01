@@ -71,7 +71,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/synapse40/source/lib;$(ProjOutDir)"/>
-            <Libraries Value="$Env(UB_SRC)/bin/fpc-linux"/>
+            <Libraries Value="$Env(UB_SRC)/bin/fpc-linux;../lib"/>
             <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/synapse40/source/lib;Delphi-RabbitMQ"/>
             <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
