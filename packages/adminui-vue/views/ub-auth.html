@@ -95,7 +95,7 @@
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin">
+            <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin" type="password">
               <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
             </el-input>
           </el-form-item>
