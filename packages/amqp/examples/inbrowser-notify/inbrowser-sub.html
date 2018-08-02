@@ -2,8 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="stomp.js"></script>
+    <script src="/node_modules/@stomp/stompjs/lib/stomp.js"></script>
     <script>
       // Create a WebSocket connection. Replace with your hostname
       var client = Stomp.client('ws://127.0.0.1:15674/ws')
@@ -20,7 +19,7 @@
       // Start subscribing to the chat queue
       function onConnect () {
         var id = client.subscribe('/amq/queue/hello', function (d) {
-          $('#chat').append(`<li>${d.body}</li>`)
+	  document.getElementById('#chat').innerHtml += `<li>${d.body}</li>`
         })
       }
 
