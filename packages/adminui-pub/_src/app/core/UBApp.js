@@ -55,6 +55,11 @@ Ext.define('UB.core.UBApp', {
    */
   core: null,
 
+  /** nm-scaner interface
+   * @type {Promise<UBNativeScanner>}
+   */
+  __scanService: null,
+
   constructor: function () {
     this.requireEncription = false
     this.mixins.observable.constructor.call(this)
@@ -709,6 +714,7 @@ Ext.define('UB.core.UBApp', {
     }
     let outputFormat = mimeToOutputFormat[documentMIME]
     return $App.scanService().then(function (scanner) {
+      $App.__scanService = scanner
       let allowAddPages = false
       let statusWindow = Ext.create('UB.view.StatusWindow', {
         title: header
