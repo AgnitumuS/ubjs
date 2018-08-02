@@ -1,7 +1,6 @@
 require('../ux/form/field/UBText')
 require('../ux/form/field/UBTextArea')
 require('../ux/form/field/UBBoxSelect')
-require('../ux/form/field/ComboExtraButtons')
 require('./FormDataBinder')
 require('../ux/UBDocument')
 require('../ux/UBDetailGrid')

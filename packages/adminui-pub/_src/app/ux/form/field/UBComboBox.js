@@ -1,5 +1,6 @@
 /* global Ext */
 require('./UBBaseComboBox')
+require('./ComboExtraButtons')
 const $App = require('@unitybase/adminui-pub')
 const UB = require('@unitybase/ub-pub')
 const _ = require('lodash')
@@ -27,7 +28,6 @@ const _ = require('lodash')
 Ext.define('UB.ux.form.field.UBComboBox', {
   extend: 'UB.ux.form.field.UBBaseComboBox',
   alias: 'widget.ubcombobox',
-  // require:['UB.ux.form.field.ComboExtraButtons'],
   uses: ['Ext.grid.plugin.BufferedRenderer'],
   queryCaching: true,
   editable: true,
@@ -119,10 +119,6 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
     store.pageSize = me.pageSize
 
-    let fnReplace = function (m) {
-      return '<span class="' + me.matchCls + '">' + m + '</span>'
-    }
-
     if (!me.tpl) {
       me.tpl = new Ext.XTemplate(
         '<ul class="' + Ext.plainListCls + '"><tpl for=".">',
@@ -133,6 +129,9 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       )
     }
 
+    let fnReplace = function (m) {
+      return '<span class="' + me.matchCls + '">' + m + '</span>'
+    }
     me.listConfig = Ext.apply({
       pageSize: me.pageSize,
       minWidth: me.listMinWidth,
@@ -207,8 +206,9 @@ Ext.define('UB.ux.form.field.UBComboBox', {
 
   onBeforedestroy: function () {
     let me = this
-    if (me.getStore()) {
-      me.getStore().un('load', me.onDataLoaded, me)
+    let store = me.getStore()
+    if (store) {
+      store.un('load', me.onDataLoaded, me)
     }
   },
 
@@ -395,7 +395,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
     let escapedQuery = UB.Utils.escapeForRegexp(queryEvent.query)
     me.searchRegExp = null
-    if (!Ext.isEmpty(escapedQuery)) {
+    if (!escapedQuery) {
       me.searchRegExp = new RegExp(escapedQuery, 'gi')
     }
 
