@@ -1117,6 +1117,9 @@ Ext.define('UB.view.EntityGridPanel', {
           }
           item.field.disableModifyEntity = true
           item.field.useForGridEdit = true
+          if (!context.record.get(item.field.name)) {
+            item.field.getStore().reload()
+          }
         })
       })
       rowEditing.on('validateedit', function (editor, context) {
