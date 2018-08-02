@@ -395,7 +395,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
     let escapedQuery = UB.Utils.escapeForRegexp(queryEvent.query)
     me.searchRegExp = null
-    if (!escapedQuery) {
+    if (escapedQuery) {
       me.searchRegExp = new RegExp(escapedQuery, 'gi')
     }
 
