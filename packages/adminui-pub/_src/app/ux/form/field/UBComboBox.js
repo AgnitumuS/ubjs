@@ -1,4 +1,8 @@
+/* global Ext */
 require('./UBBaseComboBox')
+const $App = require('@unitybase/adminui-pub')
+const UB = require('@unitybase/ub-pub')
+const _ = require('lodash')
 /**
  * Combobox, based on ubRequest. If ubRequest passed - store created automatically.
  * If valueField is missing in cfg - use first attribute from ubRequest.fieldList for value
@@ -23,79 +27,73 @@ require('./UBBaseComboBox')
 Ext.define('UB.ux.form.field.UBComboBox', {
   extend: 'UB.ux.form.field.UBBaseComboBox',
   alias: 'widget.ubcombobox',
-    // require:['UB.ux.form.field.ComboExtraButtons'],
+  // require:['UB.ux.form.field.ComboExtraButtons'],
   uses: ['Ext.grid.plugin.BufferedRenderer'],
   queryCaching: true,
   editable: true,
-    // forceSelection: true,
+  // forceSelection: true,
   minChars: 0,
   grow: false,
   queryMode: 'remote',
   userFilterId: '_userInput',
   matchFieldWidth: true,
   matchCls: 'combo-search-match',
-    /**
-     * Highlight input value in dropDownList
-     * @cfg {Boolean} highlightSearch
-     */
+  /**
+   * Highlight input value in dropDownList
+   * @cfg {Boolean} highlightSearch
+   */
   highlightSearch: true,
   disablePaging: false,
-    /**
-     * Minimum characters to start query
-     * @cfg {Number} minCharsForQuery
-     */
+  /**
+   * Minimum characters to start query
+   * @cfg {Number} minCharsForQuery
+   */
   minCharsForQuery: 0,
-    /**
-     * If false - value will always be equal to the value of the store
-     * @cfg {Boolean} allowCustomText
-     */
+  /**
+   * If false - value will always be equal to the value of the store
+   * @cfg {Boolean} allowCustomText
+   */
   allowCustomText: false,
-    /**
-     * true - has delay when set value
-     */
+  /**
+   * true - has delay when set value
+   */
   dataLoadDelay: true,
-
-    /**
-     * If true the user query will sent to the server as parameter. Param name may be set in  queryParamName.
-     * If false the user query will sent as filter (whereList). Default false.
-     *
-     * @cfg {Boolean} sendQueryAsParam
-     */
+  /**
+   * If true the user query will sent to the server as parameter. Param name may be set in  queryParamName.
+   * If false the user query will sent as filter (whereList). Default false.
+   *
+   * @cfg {Boolean} sendQueryAsParam
+   */
   sendQueryAsParam: false,
-
-    /**
-     * In case `sendQueryAsParam`=true name of parameter to sent typed text.
-     *
-     * @cfg {String} queryParamName
-     */
+  /**
+   * In case `sendQueryAsParam`=true name of parameter to sent typed text.
+   *
+   * @cfg {String} queryParamName
+   */
   queryParamName: 'query',
-
-    /**
-     * Auto complete combobox text from first value of dropdown. Default - false.
-     *
-     * @cfg {Boolean} autoCompleteText
-     */
+  /**
+   * Auto complete combobox text from first value of dropdown. Default - false.
+   *
+   * @cfg {Boolean} autoCompleteText
+   */
   autoCompleteText: false,
+  /**
+   * Combobox items query. If passed - store is created automatically. Else caller must pass store parameter
+   * @cfg {Object} [ubRequest]
+   */
+  initComponent: function () {
+    let me = this
 
     /**
-     * Combobox items query. If passed - store is created automatically. Else caller must pass store parameter
-     * @cfg {Object} [ubRequest]
+     * Fires before the request sent to the server.
+     * @event beforeQuerySend
+     * @param {Object} queryPlan An object containing details about the query to be executed.
+     * @param {Ext.form.field.ComboBox} queryPlan.combo A reference to this ComboBox.
+     * @param {String} queryPlan.query The query value to be used to match against the ComboBox's {@link #valueField}.
+     * @param {Boolean} queryPlan.forceAll If `true`, causes the query to be executed even if the minChars threshold is not met.
+     * @param {Boolean} queryPlan.cancel A boolean value which, if set to `true` upon return, causes the query not to be executed.
+     * @param {Boolean} queryPlan.rawQuery If `true` indicates that the raw input field value is being used, and upon store load
      */
-  initComponent: function () {
-    var me = this, fnReplace, store
-
-        // me.resizable = true;
-
-        /**
-         * Fires before the request sent to the server.
-         * @event beforeQuerySend
-         * @param {Object} queryPlan An object containing details about the query to be executed.
-         * @param {Ext.form.field.ComboBox} queryPlan.combo A reference to this ComboBox.
-         * @param {String} queryPlan.query The query value to be used to match against the ComboBox's {@link #valueField}.
-         * @param {Boolean} queryPlan.forceAll If `true`, causes the query to be executed even if the minChars threshold is not met.
-         * @param {Boolean} queryPlan.cancel A boolean value which, if set to `true` upon return, causes the query not to be executed.
-         * @param {Boolean} queryPlan.rawQuery If `true` indicates that the raw input field value is being used, and upon store load,         * @param {this}
-         */
     me.addEvents('beforeQuerySend')
 
     if (!me.disablePaging) {
@@ -105,7 +103,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     } else {
       delete me.pageSize
     }
-    store = me.getStore()
+    let store = me.getStore()
     if (!store && me.ubRequest) {
       store = me.store = Ext.create('UB.ux.data.UBStore', {
         ubRequest: me.ubRequest,
@@ -121,18 +119,18 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
     store.pageSize = me.pageSize
 
-    fnReplace = function (m) {
+    let fnReplace = function (m) {
       return '<span class="' + me.matchCls + '">' + m + '</span>'
     }
 
     if (!me.tpl) {
       me.tpl = new Ext.XTemplate(
-                '<ul class="' + Ext.plainListCls + '"><tpl for=".">',
-                '<li role="option" unselectable="on" class="',
-                'boundlist-{[xindex % 2 === 0 ? "even" : "odd"]}  ' + Ext.baseCSSPrefix + 'boundlist-item " ', // me.itemCls
-                ">{[values['" + this.displayField + "']]}</li>",
-                '</tpl></ul>'
-            )
+        '<ul class="' + Ext.plainListCls + '"><tpl for=".">',
+        '<li role="option" unselectable="on" class="',
+        'boundlist-{[xindex % 2 === 0 ? "even" : "odd"]}  ' + Ext.baseCSSPrefix + 'boundlist-item " ',
+        ">{[values['" + this.displayField + "']]}</li>",
+        '</tpl></ul>'
+      )
     }
 
     me.listConfig = Ext.apply({
@@ -144,16 +142,12 @@ Ext.define('UB.ux.form.field.UBComboBox', {
             if (!me.highlightSearch || !me.searchRegExp) {
               return
             }
-            var el = view.getEl(), list, itmEl
-            if (!el) {
-              return
-            }
-            list = el.down('.x-list-plain')
-            if (!list) {
-              return
-            }
+            let el = view.getEl()
+            if (!el) return
+            let list = el.down('.x-list-plain')
+            if (!list) return
 
-            itmEl = list.down('.x-boundlist-item')
+            let itmEl = list.down('.x-boundlist-item')
             while (itmEl) {
               if (itmEl.dom.innerHTML) {
                 itmEl.dom.innerHTML = itmEl.dom.innerHTML.replace(me.searchRegExp, fnReplace)
@@ -169,7 +163,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       },
 
       createPagingToolbar: function () {
-        var pagingToolbar = Ext.create('Ext.toolbar.Toolbar', {
+        let pagingToolbar = Ext.create('Ext.toolbar.Toolbar', {
           id: this.id + '-paging-toolbar',
           pageSize: me.pageSize,
           border: false,
@@ -212,37 +206,38 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   },
 
   onBeforedestroy: function () {
-    var me = this
+    let me = this
     if (me.getStore()) {
       me.getStore().un('load', me.onDataLoaded, me)
     }
   },
 
   onDataRefreshed: function () {
-    var me = this, store = this.getStore(),
-      storeLen = store.getCount(),
-      picker = me.getPicker(),
-      lestRow = me.lastRowIndex
-    if (lestRow) {
-      me.lastRowIndex = null
-      if (storeLen > lestRow + 8) {
-        lestRow = lestRow + 8
-      }
-      lestRow = store.getAt(lestRow)
-      if (lestRow) {
-        picker.focusNode(lestRow)
-      }
+    let lastRow = this.lastRowIndex
+    if (!lastRow) return
+
+    let store = this.getStore()
+    let storeLen = store.getCount()
+    let picker = this.getPicker()
+
+    this.lastRowIndex = null
+    if (storeLen > lastRow + 8) {
+      lastRow = lastRow + 8
+    }
+    lastRow = store.getAt(lastRow)
+    if (lastRow) {
+      picker.focusNode(lastRow)
     }
   },
 
   readMoreData: function () {
-    var me = this, store = this.getStore(), storeLen
-    storeLen = store.getCount()
-    me.lastRowIndex = null
+    let store = this.getStore()
+    let storeLen = store.getCount()
+    this.lastRowIndex = null
     if (storeLen > 0) {
-      me.lastRowIndex = storeLen - 1// store.getAt(storeLen - 1);
+      this.lastRowIndex = storeLen - 1 // store.getAt(storeLen - 1);
     }
-    me.inputEl.focus()
+    this.inputEl.focus()
     store.loadPage((store.currentPage || 0) + 1, {
       params: this.getParams(this.lastQuery),
       addRecords: true
@@ -250,22 +245,22 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   },
 
   createPicker: function () {
-    var picker = this.callParent(arguments)
+    let picker = this.callParent(arguments)
     picker.mon({blur: this.onPickerBlur, scope: this})
-        // picker.on({refresh: this.onDataRefreshed, scope: this});
+    // picker.on({refresh: this.onDataRefreshed, scope: this});
     return picker
   },
 
   onPickerBlur: function (event) {
-    var me = this, el = me.inputEl, picker = me.getPicker(),
-      i, elP
+    let el = this.inputEl
     if (!event.relatedTarget) {
-      me.inputEl.focus()
+      this.inputEl.focus()
     } else if (event.relatedTarget !== el.dom) {
-             // focus on picker
+      // focus on picker
+      let picker = this.getPicker()
       if (picker && picker.el) {
-        i = 0
-        elP = event.relatedTarget
+        let i = 0
+        let elP = event.relatedTarget
         while (i < 11 && elP) {
           if (picker.el.dom === elP) {
             return
@@ -274,22 +269,18 @@ Ext.define('UB.ux.form.field.UBComboBox', {
           i++
         }
       }
-      me.onExitCombo()
+      this.onExitCombo()
     }
   },
 
   onBlur: function (event) {
-    var me = this, i, el,
-      picker = me.getPicker()
-
-    if (me.allowCustomText) {
-      return
-    }
-
-        // focus on picker
+    if (this.allowCustomText) return
+    // focus on picker
+    let me = this
+    let picker = me.getPicker()
     if (picker && picker.el && event.relatedTarget) {
-      i = 0
-      el = event.relatedTarget
+      let i = 0
+      let el = event.relatedTarget
       while (i < 11 && el) {
         if (picker.el.dom === el) {
           el = Ext.dom.Element.get(event.relatedTarget)
@@ -301,21 +292,20 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         i++
       }
     }
-
     me.onExitCombo()
   },
 
   onExitCombo: function () {
-    var me = this, inputText = me.getRawValue(), i, valItem = null, isEqualVal
-
+    let me = this
     if ((!me.valueModels || me.valueModels.length === 0)) {
-      me.setRawValue(null)
-            // event.stopEvent();
+      me.setRawValue(null) // event.stopEvent();
       return
     }
 
-    isEqualVal = false
-    for (i = 0; i < me.valueModels.length; i++) {
+    let inputText = me.getRawValue()
+    let valItem = null
+    let isEqualVal = false
+    for (let i = 0; i < me.valueModels.length; i++) {
       valItem = me.valueModels[i]
       valItem = valItem.get(me.displayField)
       if (valItem === inputText) {
@@ -328,8 +318,9 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
   },
 
-  onDataLoaded: function (sender, records, successful, eOpts) {
-    var me = this, dataLen = me.store.getCount()
+  onDataLoaded: function () {
+    let me = this
+    let dataLen = me.store.getCount()
     if (me.pagingToolbar) {
       if (me.pageSize > dataLen || (me.lastRowIndex && ((me.lastRowIndex + 1 + me.pageSize) > dataLen))) {
         me.pagingToolbar.setHeight(0)
@@ -341,54 +332,52 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   },
 
   onKeyDown: function (e) { // override
-    var me = this
     if (e.ctrlKey && (e.getKey() === Ext.EventObject.Q)) {
-      me.stopKeyHandlers = true
+      this.stopKeyHandlers = true
     } else if (!e.ctrlKey) {
-      me.callParent(arguments)
+      this.callParent(arguments)
     }
   },
 
   onKeyUp: function (e) { // override
-    var me = this
     if (e.ctrlKey && (e.getKey() === Ext.EventObject.Q)) {
-      me.stopKeyHandlers = false
+      this.stopKeyHandlers = false
     } else if (!e.ctrlKey) {
-      me.callParent(arguments)
+      this.callParent(arguments)
     }
   },
 
   onKeyPress: function (e) { // override
-    var me = this
-    if (me.stopKeyHandlers) {
-      me.up('form').switchTabs(me, e.shiftKey)
+    if (this.stopKeyHandlers) {
+      this.up('form').switchTabs(this, e.shiftKey)
     } else if (!e.ctrlKey) {
-      me.callParent(arguments)
+      this.callParent(arguments)
     }
   },
 
-    /**
-     * Show message when too little chars in query.
-     */
+  /**
+   * Show message when too little chars in query.
+   */
   showToolTipMinQuery: function () {
-    var me = this, picker = me.getPicker(), targetEl
-    me.expand()
-    me.pagingToolbar.setHeight(0)
-    targetEl = picker.getTargetEl()
+    let picker = this.getPicker()
+    this.expand()
+    this.pagingToolbar.setHeight(0)
+    // noinspection JSAccessibilityCheck
+    let targetEl = picker.getTargetEl()
     picker.clearViewEl()
     Ext.core.DomHelper.insertHtml('beforeEnd', targetEl.dom,
-            UB.format(UB.i18n('startSearchMinCharacters'), me.minCharsForQuery)
-        )
+      UB.format(UB.i18n('startSearchMinCharacters'), this.minCharsForQuery)
+    )
   },
 
   afterQuery: function (queryPlan) {
-    var me = this, record, txtUser, txtAll
+    let me = this
     if (me.autoCompleteText) {
       if (me.store.getCount()) {
-        record = me.store.getAt(0)
-        txtUser = me.inputEl.dom.value
+        let record = me.store.getAt(0)
+        let txtUser = me.inputEl.dom.value
         me.userInputText = txtUser
-        txtAll = record.get(me.displayField)
+        let txtAll = record.get(me.displayField)
         me.inputEl.dom.value = txtAll
         me.inputEl.dom.setSelectionRange(txtUser.length, txtAll.length)
       }
@@ -396,17 +385,15 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     me.callParent(arguments)
   },
 
-  beforequery: function (queryEvent, eOpts) {
-    var
-      me = this, escapedQuery,
-      store = me.getStore()
+  beforequery: function (queryEvent) {
+    let me = this
 
     if (me.minCharsForQuery && me.minCharsForQuery > 0 && me.minCharsForQuery > (queryEvent.query || '').length) {
       queryEvent.cancel = true
       me.showToolTipMinQuery()
       return
     }
-    escapedQuery = UB.Utils.escapeForRegexp(queryEvent.query)
+    let escapedQuery = UB.Utils.escapeForRegexp(queryEvent.query)
     me.searchRegExp = null
     if (!Ext.isEmpty(escapedQuery)) {
       me.searchRegExp = new RegExp(escapedQuery, 'gi')
@@ -415,9 +402,9 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     me.fireEvent('beforeQuerySend', queryEvent)
 
     if (queryEvent.combo.queryMode !== 'local') {
-      var queryString = queryEvent.query || '',
-        displayField = me.displayField
+      let queryString = queryEvent.query || ''
 
+      let store = me.getStore()
       if (me.sendQueryAsParam) {
         if (!store.ubRequest) {
           store.ubRequest = {}
@@ -426,6 +413,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         return
       }
       if (queryString) {
+        let displayField = me.displayField
         store.filters.add(new Ext.util.Filter({
           id: me.userFilterId,
           root: 'data',
@@ -445,18 +433,16 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   },
 
   setValue: function (value) {
-    var me = this,
-      fValue, i, valItem, valIn,
-      isEqualVal
+    let me = this
 
-    fValue = Ext.Array.from(value)
-        // check has changes value
+    let fValue = Ext.Array.from(value, false)
+    // check has changes value
     if (!me.allowCustomText && me.valueModels && me.valueModels.length > 0 && fValue.length === me.valueModels.length) {
-      isEqualVal = true
-      for (i = 0; i < me.valueModels.length; i++) {
-        valItem = me.valueModels[i]
+      let isEqualVal = true
+      for (let i = 0; i < me.valueModels.length; i++) {
+        let valItem = me.valueModels[i]
         valItem = valItem.get(me.valueField)
-        valIn = fValue[i]
+        let valIn = fValue[i]
         if (Ext.isObject(valIn) && valIn.isModel) {
           valIn = valIn.get(me.valueField)
         }
@@ -486,20 +472,18 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   },
 
   getValue: function (field) {
-    var me = this, value
-    value = me.callParent(arguments)
-    return value === me.value ? value : null
+    let value = this.callParent(arguments)
+    return value === this.value ? value : null
   },
 
   getVal: function (field) {
-    var
-      me = this, item,
-      store = me.getStore(),
-      val = me.getValue()
+    let val = this.getValue()
 
     if (!val || !field) {
       return null
     }
+    let store = this.getStore()
+    let item
     if (store) {
       item = store.getById(val)
     }
@@ -507,46 +491,40 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   },
 
   clearValue: function () {
-    var
-      me = this,
-      store = me.store
-    me.callParent()
-    me.rawValue = null
+    let store = this.store
+    this.callParent()
+    this.rawValue = null
     if (store) {
-      store.filters.removeAtKey(me.userFilterId)
+      store.filters.removeAtKey(this.userFilterId)
     }
   },
 
-    /**
-     * return entity code
-     * @pribate
-     * @returns {String}
-     */
+  /**
+   * return entity code
+   * @pribate
+   * @returns {String}
+   */
   getEntity: function () {
-    var me = this, request
-    request = me.ubRequest || (me.store ? me.store.ubRequest : null)
+    let request = this.ubRequest || (this.store ? this.store.ubRequest : null)
     return request.entity
   },
 
   getSubTplData: function () {
-    var me = this, data
-    data = me.callParent(arguments)
-    return data
+    return this.callParent(arguments)
   },
 
   setRawValue: function (value) {
-    var me = this
-    me.callParent(arguments)
-    me.clearIsPhantom()
+    this.callParent(arguments)
+    this.clearIsPhantom()
   },
 
-    /**
-     * @private
-     */
+  /**
+   * @private
+   */
   clearIsPhantom: function () {
-    var me = this
+    let me = this
     if (me.rendered && me.phantomSelectedElement) {
-      var input = Ext.get(me.getInputId())
+      let input = Ext.get(me.getInputId())
       input.removeCls('ub-combo-deleted')
     }
     me.phantomSelectedElement = false
@@ -556,19 +534,19 @@ Ext.define('UB.ux.form.field.UBComboBox', {
     }
   },
 
-    /**
-     * Set combo value by recordId
-     * @param {Number} id  id of chosen value
-     * @param {Boolean} [isDefault]  (optional) true - to set initial value of combo. Used in {@link UB.view.BasePanel} Default: false
-     * @param {Function} [onLoadValue] (optional) raised when data loaded
-     * @param {Object} [scope] (optional) scope to onLoadValue
-     *
-     */
+  /**
+   * Set combo value by recordId
+   * @param {Number} id  id of chosen value
+   * @param {Boolean} [isDefault]  (optional) true - to set initial value of combo. Used in {@link UB.view.BasePanel} Default: false
+   * @param {Function} [onLoadValue] (optional) raised when data loaded
+   * @param {Object} [scope] (optional) scope to onLoadValue
+   *
+   */
   setValueById: function (id, isDefault, onLoadValue, scope) {
-    var me = this
+    let me = this
     if (Ext.isEmpty(id)) {
       me.setValue(id)
-            // me.clearValue();
+      // me.clearValue();
       if (isDefault) {
         me.resetOriginalValue()
       }
@@ -577,7 +555,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       }
       return
     }
-    var store = me.getStore()
+    let store = me.getStore()
     function doSetValue (record, setNull) {
       if (setNull || record || me.store.getById(id)) {
         me.setValue(setNull ? null : record || id)
@@ -586,7 +564,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         me.resetOriginalValue()
       }
       store.resumeEvent('clear')
-      me.lastQuery = null // reset cuery caching
+      me.lastQuery = null // reset query caching
       if (onLoadValue) {
         Ext.callback(onLoadValue, scope || me, [me])
       }
@@ -595,8 +573,8 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       load: {
         fn: function () {
           if (store.getCount() === 0) {
-            var entity = $App.domainInfo.get(me.getEntity(), true)
-                        // load deleted row or not actual historical
+            let entity = $App.domainInfo.get(me.getEntity(), true)
+            // load deleted row or not actual historical
             if (!me.setIsActualValue && ((entity.hasMixin('mStorage') && entity.mixin('mStorage').safeDelete) ||
                 entity.hasMixin('dataHistory'))) {
               $App.connection.select({
@@ -608,8 +586,8 @@ Ext.define('UB.ux.form.field.UBComboBox', {
                 if (store.isDestroyed) {
                   return
                 }
-                var record = Ext.create(store.model)
-                                // UB.ux.data.UBStore.createRecord(me.getEntity(), [me.valueField, me.displayField ], false);
+                let record = Ext.create(store.model)
+                // UB.ux.data.UBStore.createRecord(me.getEntity(), [me.valueField, me.displayField ], false);
                 if (!UB.ux.data.UBStore.resultDataRow2Record(result, record)) {
                   doSetValue(null, true)
                   return
@@ -619,7 +597,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
                 doSetValue(record)
                 me.fieldCls += ' ub-combo-deleted'
                 if (me.rendered) {
-                  var input = Ext.get(me.getInputId())
+                  let input = Ext.get(me.getInputId())
                   input.addCls('ub-combo-deleted')
                 }
                 me.phantomSelectedElement = true
@@ -646,7 +624,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       id: me.userFilterId,
       root: 'data',
       property: this.valueField || 'ID',
-      condition: id && _.isArray(id) ? 'in' : 'equal',
+      condition: id && Array.isArray(id) ? 'in' : 'equal',
       value: id
     }))
   },

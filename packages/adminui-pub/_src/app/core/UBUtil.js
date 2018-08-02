@@ -168,10 +168,10 @@ Ext.define('UB.core.UBUtil', {
    */
   getWindowHeight: function () {
     return (window.innerHeight
-        ? window.innerHeight
-        : (document.documentElement && document.documentElement.clientHeight
-          ? document.documentElement.clientHeight
-          : (document.body.clientHeight ? document.body.clientHeight : 400))) - 200
+      ? window.innerHeight
+      : (document.documentElement && document.documentElement.clientHeight
+        ? document.documentElement.clientHeight
+        : (document.body.clientHeight ? document.body.clientHeight : 400))) - 200
   },
 
   /**
@@ -180,10 +180,10 @@ Ext.define('UB.core.UBUtil', {
    */
   getWindowWidth: function () {
     return (window.innerWidth
-        ? window.innerWidth
-        : (document.documentElement && document.documentElement.clientWidth
-          ? document.documentElement.clientWidth
-          : (document.body.clientWidth ? document.body.clientWidth : 800))) - 200
+      ? window.innerWidth
+      : (document.documentElement && document.documentElement.clientWidth
+        ? document.documentElement.clientWidth
+        : (document.body.clientWidth ? document.body.clientWidth : 800))) - 200
   },
 
   /**
@@ -192,7 +192,7 @@ Ext.define('UB.core.UBUtil', {
    * @return {Boolean}
    */
   allPropsEqual: function (objLeft, objRight) {
-    for (var p in objRight) {
+    for (let p in objRight) {
       if (objRight.hasOwnProperty(p) && (objLeft[p] !== objRight[p])) {
         return false
       }
