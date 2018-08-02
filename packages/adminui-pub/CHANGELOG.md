@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - increase left panel desktop select height to 3rem for fit 2-line caption [UBDF-7808]
 - #2 - refs to attributes of "many" type should not be displayed in Details for EntityGridPanel.
  As a side effect - entities without accessible `select` should not be displayed also.
+- reload store for combobox before row edit on ubdetailgrid
 
 ## [5.3.4]
 ### Fixed
