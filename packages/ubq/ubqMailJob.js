@@ -50,6 +50,10 @@ module.exports = function () {
     // .orderByDesc('[msgPriority]')
     .select()
 
+  if (inst.eof) {
+    return 'No emails sent'
+  }
+
   let mailSender = new UBMail.TubMailSender({
     host: mailerParams.targetHost,
     port: mailerParams.targetPort || '25',
