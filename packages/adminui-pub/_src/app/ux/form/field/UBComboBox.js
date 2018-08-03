@@ -1,7 +1,6 @@
 /* global Ext */
 require('./UBBaseComboBox')
 require('./ComboExtraButtons')
-const $App = require('@unitybase/adminui-pub')
 const UB = require('@unitybase/ub-pub')
 const _ = require('lodash')
 // noinspection JSUnusedGlobalSymbols
@@ -574,11 +573,11 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       load: {
         fn: function () {
           if (store.getCount() === 0) {
-            let entity = $App.domainInfo.get(me.getEntity(), true)
+            let entity = UB.connection.domain.get(me.getEntity(), true)
             // load deleted row or not actual historical
             if (!me.setIsActualValue && ((entity.hasMixin('mStorage') && entity.mixin('mStorage').safeDelete) ||
                 entity.hasMixin('dataHistory'))) {
-              $App.connection.select({
+              UB.connection.select({
                 entity: me.getEntity(),
                 fieldList: store.ubRequest.fieldList, // [me.valueField, me.displayField ],
                 __allowSelectSafeDeleted: true,
