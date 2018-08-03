@@ -1,5 +1,4 @@
 const path = require('path')
-const os = require('os')
 
 /**
  * @classdesc
@@ -41,9 +40,9 @@ class BlobStoreCustom {
     /**
      * Path to temp folder
      * @type {String}
-     * @private
+     * @protected
      */
-    this.tempFolder = (this.config['tempPath'] || os.tmpdir())
+    this.tempFolder = this.config['tempPath']
     /**
      * How many previous revision is stored
      * @type {number}

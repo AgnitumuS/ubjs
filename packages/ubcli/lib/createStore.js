@@ -39,9 +39,9 @@ module.exports = function createStore (options) {
 
   if (!options) {
     let opts = cmdLineOpt.describe('createStore',
-          'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
-          'ubcli'
-      )
+      'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
+      'ubcli'
+    )
       .add({short: 'cfg', long: 'cfg', param: 'serverConfig', defaultValue: 'ubConfig.json', help: 'Server config'})
       .add({short: 'store', long: 'store', param: 'storesList', defaultValue: '*', help: 'Comma separated blob stores list'})
     options = opts.parseVerbose({}, true)

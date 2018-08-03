@@ -52,6 +52,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     this.fullStorePath = storePath
 
     let tmpFolder = this.tempFolder
+    if (!tmpFolder) tmpFolder = path.join(storePath, '_temp')
     if (!path.isAbsolute(tmpFolder)) {
       tmpFolder = path.join(process.configPath, tmpFolder)
     }
