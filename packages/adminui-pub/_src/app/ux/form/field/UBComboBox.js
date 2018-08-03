@@ -4,6 +4,7 @@ require('./ComboExtraButtons')
 const $App = require('@unitybase/adminui-pub')
 const UB = require('@unitybase/ub-pub')
 const _ = require('lodash')
+// noinspection JSUnusedGlobalSymbols
 /**
  * Combobox, based on ubRequest. If ubRequest passed - store created automatically.
  * If valueField is missing in cfg - use first attribute from ubRequest.fieldList for value
@@ -492,7 +493,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
 
   clearValue: function () {
     let store = this.store
-    this.callParent()
+    this.callParent(arguments)
     this.rawValue = null
     if (store) {
       store.filters.removeAtKey(this.userFilterId)
