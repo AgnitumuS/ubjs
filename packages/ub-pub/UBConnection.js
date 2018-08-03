@@ -313,7 +313,11 @@ $App.connection.userLang()
         return me.doAuth(authParams).then(function (session) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
           currentSession = session
-          if (LDS) LDS.setItem(ubUtils.LDS_KEYS.LAST_LOGIN, session.logonname)
+          if (LDS) {
+            LDS.setItem(ubUtils.LDS_KEYS.LAST_LOGIN, session.logonname)
+            LDS.setItem(ubUtils.LDS_KEYS.LAST_AUTH_SCHEMA, session.authSchema)
+          }
+
           /**
            * Fired for {@link UBConnection} instance after success authorization. Accept 3 args (conn: UBConnection, session: UBSession, authParams)
            * @event authorized
@@ -458,7 +462,7 @@ $App.connection.userLang()
    * @param {String} [authParams.authSchema] Either 'UB' (default) or 'CERT'. On case of CERT UBDesktop service NPI extension must be installed in browser
    * @param {String} [authParams.login] Optional login
    * @param {String} [authParams.password] Optional password
-   * @returns {Promise} Authentication promise. Resolved to {@link UBSession} is auth success or rejected to {errMsg: string, errCode: number, errDetails: string} if fail
+   * @returns {Promise<UBSession>} Authentication promise. Resolved to {@link UBSession} is auth success or rejected to {errMsg: string, errCode: number, errDetails: string} if fail
    */
   this.doAuth = function (authParams) {
     authParams.authSchema = authParams.authSchema || 'UB'

@@ -1,3 +1,4 @@
+const UB = require('@unitybase/ub-pub')
 /**
  * User login window.
  *
@@ -6,7 +7,6 @@
  * @protected
  * @author pavel.mash
  */
-
 Ext.define('UB.view.LoginWindow', {
   extend: 'Ext.window.Window',
   alias: 'widget.loginwindow',
@@ -391,8 +391,8 @@ Ext.define('UB.view.LoginWindow', {
 
     let authPanel
     if (me.authTabs) {
-      let lastAuthType = window.localStorage.getItem('lastAuthType') || authMethods[0] // activate first auth method by default
-      authPanel = me.query('panel[authType="' + lastAuthType + '"]')[0] || authItems[0]
+      let lastAuthSchema = window.localStorage.getItem(UB.LDS_KEYS.LAST_AUTH_SCHEMA) || authMethods[0] // activate first auth method by default
+      authPanel = me.query('panel[authType="' + lastAuthSchema + '"]')[0] || authItems[0]
       me.authTabs.setActiveTab(authPanel)
     } else {
       authPanel = authItems[0]
@@ -500,7 +500,7 @@ Ext.define('UB.view.LoginWindow', {
       }
 
       window.addEventListener('message', loginListener)
-      window.localStorage.setItem('lastAuthType', authType)
+      window.localStorage.setItem(UB.LDS_KEYS.LAST_AUTH_SCHEMA, authType)
       return
     } else {
       me.deferred.resolve({
@@ -510,7 +510,6 @@ Ext.define('UB.view.LoginWindow', {
         registration: 0 // me.chkFirstLogin.checked ? 1: 0
       })
     }
-    window.localStorage.setItem('lastAuthType', authType)
 
     if (authType === 'Negotiate') {
       window.localStorage.setItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, me.chkSilenceLogint.getValue())

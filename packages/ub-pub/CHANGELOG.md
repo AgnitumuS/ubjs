@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.2]
+### Added
+- UBConnection will store last auth schema to localStorage key (UB.LDS_KEYS.LAST_AUTH_SCHEMA) if LDS is available
+
 ## [5.2.0]
 ### Added
 - VueJS integration

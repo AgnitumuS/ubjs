@@ -323,6 +323,10 @@ module.exports.isReactNative = (typeof navigator !== 'undefined' && navigator.pr
  */
 module.exports.LDS_KEYS = {
   /**
+   * Authentication schema used by user during last logon
+   */
+  LAST_AUTH_SCHEMA: 'lastAuthType',
+  /**
    * In case stored value is 'true' then login using Negotiate without prompt
    */
   SILENCE_KERBEROS_LOGIN: 'silenceKerberosLogin',
