@@ -23,7 +23,9 @@
                     url += (url.indexOf('?') === -1 ? '?' : '&') + 'returnUrl=' + encodeURIComponent(window.location.href);
                     window.location.href = url;
                 }
-                if (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null) {
+                if ((window.localStorage.getItem('silenceKerberosLogin') !== 'true')
+                  && window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null)
+                {
                     redirectToLogin();
                 }
             {{/uiSettings.adminUI.loginURL}}

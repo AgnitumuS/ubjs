@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.4.0]
 ### Changed
 - **BREAKING** more strict Content Security Policy header: script-src 'unsafe-inline' directive is removed in flavor of 'nonce-...'
+- prevent redirect to custom login page in case of silenceKerberosLogin is true in localStorage
+- use
 
 ### Fixed
 - adedd property `$App.__scanService: UBNativeScanner`
