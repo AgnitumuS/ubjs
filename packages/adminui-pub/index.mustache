@@ -11,7 +11,7 @@
 		<link rel="icon" href="models/UB/img/UBLogo48.png" type="image/png" sizes="48x48" />
 		<link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
 
-		<script type="text/javascript">
+		<script type="text/javascript" nonce="{{cspNonce}}">
             window.UB_API_PATH = '{{{UB_API_PATH}}}';
             {{#uiSettings.adminUI.loginURL}}
                 window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
@@ -71,7 +71,7 @@
 
       <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
       <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
-      <script type="text/javascript">
+      <script type="text/javascript" nonce="{{cspNonce}}">
         // set our baseURL reference path
         System.config({
             baseURL: '/clientRequire',
@@ -79,6 +79,7 @@
                 css: 'systemjs-plugin-css/css.js'
             },
             meta: {
+                '*': {nonce: '{{cspNonce}}'},
                 '*.css': { loader: 'css' },
                 'codemirror/*.js': { format: 'cjs' },
                 'tinymce/*.js': { format: 'global' },

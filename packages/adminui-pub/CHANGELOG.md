@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.3.6]
+## [5.4.0]
+### Changed
+- **BREAKING** more strict Content Security Policy header: script-src 'unsafe-inline' directive is removed in flavor of 'nonce-...'
+
 ### Fixed
 - adedd property `$App.__scanService: UBNativeScanner`
 - increase left panel desktop select height to 3rem for fit 2-line caption [UBDF-7808]

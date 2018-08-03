@@ -40,6 +40,8 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     let adminUIPath = path.dirname(require.resolve('@unitybase/adminui-pub'))
     indexTpl = fs.readFileSync(path.join(adminUIPath, indexName), 'utf8')
 
+    let cspNonce = nsha256('' + Date.now()).substr(0, 8)
+    App.globalCachePut('INDEX_cspNonce', cspNonce)
     // create view for mustache
     // noinspection JSUnusedGlobalSymbols
     let view = {
@@ -47,6 +49,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
       modelVersions: [],
       modelInitialization: [],
       adminUIModel: '',
+      cspNonce: cspNonce,
       staticVersion: '' + ncrc32(0, App.globalCacheGet('UB_STATIC.modelsModifyDate')), // prev. App.folderChecksum(App.staticPath),
       UB_API_PATH: App.serverConfig.httpServer.path || '/', //  serverURL.replace(/\/$/, ''),
       md5template: function () {
@@ -111,15 +114,21 @@ but "browser" section in package.json is not define. Will fallback to "browser":
     // cache forever - do not cache index*.html
     let cspHeader = ''
     if (addCSP) {
-      let wsSrc = 'ws' + App.externalURL.slice(4)
-      let uiSettings = App.serverConfig.uiSettings
-
-      let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
+      let cspNonce = App.globalCacheGet('INDEX_cspNonce')
+      // let wsSrc = 'ws' + App.externalURL.slice(4)
+      // let uiSettings = App.serverConfig.uiSettings
+      // let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
       let cspHeaders =
-        // "default-src * data: blob:;" +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' " + onlyOfficeServer + ';' +
-        "style-src data: 'unsafe-inline' *;" +
-        "connect-src 'self' " + wsSrc + ' blob: ' + onlyOfficeServer + ';' +
+        "default-src 'self'; " +
+        // 'unsafe-inline' is removed in flavor of 'nonce-...'
+        // TODO - remove 'unsafe-eval' after removing all `eval(` from Ext
+        `script-src 'self' 'nonce-${cspNonce}' 'unsafe-eval';` +
+        "object-src 'none'; " +
+        "base-uri 'none'; " +
+        "style-src 'self' 'unsafe-inline' data:; " +
+        "font-src 'self' data:; " +
+        "frame-src 'none'; " +
+        "img-src 'self' data: blob:; " + // blob: is for pictures inside tinyMCE
         'plugin-types application/pdf'
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
     }
@@ -158,7 +167,7 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
       resp.writeHead(`Location: ${App.externalURL}${adminUIEndpointName}`)
       return
     }
-    generateIndexPage(req, resp, 'index-dev.mustache', false)
+    generateIndexPage(req, resp, 'index-dev.mustache', true) // false
   } else {
     resp.writeEnd('Server working in production mode')
     resp.statusCode = 404

@@ -11,7 +11,7 @@
         <link rel="icon" href="models/UB/img/UBLogo48.png" type="image/png" sizes="48x48" />
         <link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
 
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="{{cspNonce}}">
             window.UB_API_PATH = '{{{UB_API_PATH}}}';
             {{#uiSettings.adminUI.loginURL}}
                 window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
@@ -72,7 +72,7 @@
         <script charset="utf-8" src="{{#md5}}models/adminui-pub/ext-all-debug-w-comments.js{{/md5}}"></script>
         <script src="{{#md5}}clientRequire/systemjs/dist/system.src.js{{/md5}}" type="text/javascript"></script>
 
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="{{cspNonce}}">
           // set our baseURL reference path
             System.config({
                 baseURL: '/clientRequire',
@@ -82,6 +82,7 @@
                   vue: 'vue/dist/vue.common.js' // should be the same as in adminui-vue webpack config
                 },
                 meta: {
+                  '*': {nonce: '{{cspNonce}}'},
                   'tinymce*': { format: 'global' },
                   '*.css': { loader: 'css' },
                   '*.min.js':   { format: 'cjs' },
