@@ -8,3 +8,6 @@ We can't  bundle an original version of CodeMirror for several reasons:
  - it uses an old version of lodash
  - we can't use jshint from SystemJS because it requires node's build-in
  module "events"
+
+Also we mode a JSHint to the devDependencies, because npm version of jshint is HUGE (100Mb)
+
