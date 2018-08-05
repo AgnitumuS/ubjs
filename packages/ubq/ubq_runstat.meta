@@ -8,54 +8,54 @@
   "documentation": "Statistic for every scheduler item run and result",
   "attributes": [
     {
+      "name": "appName",
       "dataType": "String",
       "size": 64,
       "caption": "Application name",
       "description": "",
-      "allowNull": false,
-      "name": "appName"
+      "allowNull": false
     },
     {
+      "name": "schedulerName",
       "dataType": "String",
       "size": 64,
       "caption": "Scheduler name",
       "description": "",
-      "allowNull": false,
-      "name": "schedulerName"
+      "allowNull": false
     },
     {
+      "name": "startTime",
       "dataType": "DateTime",
       "caption": "Time of start scheduler item",
       "description": "Time of start scheduler item",
-      "allowNull": false,
-      "name": "startTime"
+      "allowNull": false
     },
     {
+      "name": "endTime",
       "dataType": "DateTime",
       "caption": "Time of end scheduler item",
       "description": "Time of end scheduler item",
-      "allowNull": true,
-      "name": "endTime"
+      "allowNull": true
     },
     {
-      "dataType": "adtText",
-      "caption": "Log from runned script about all actions",
-      "description": "Log from runned script about all actions",
-      "allowNull": true,
-      "name": "logText"
+      "name": "logText",
+      "dataType": "Text",
+      "caption": "Log from executed script about all actions",
+      "description": "Log from executed script about all actions",
+      "allowNull": true
     },
     {
+      "name": "resultError",
       "dataType": "Int",
       "caption": "Result error code. 0=No error",
-      "allowNull": true,
-      "name": "resultError"
+      "allowNull": true
     },
     {
+      "name": "resultErrorMsg",
       "dataType": "String",
       "size": 2000,
       "caption": "Error text message if resultError > 0",
-      "allowNull": true,
-      "name": "resultErrorMsg"
+      "allowNull": true
     }
   ],
   "mixins": {
