@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.4.2]
+### Changed
+ - remove unused Ext classes `Ext.direct.*; Ext.data.jsonp; Ext.form.action.DirectLoad; Ext.data.flash.BinaryXhr; Ext.flash.Component`
+
 ## [5.4.1]
 ### Fixed
 - prevent SystemJS to override global window.onerror handler defined by ub-pub by removing `nonce-` rule from SystemJS config
@@ -15,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - use
 
 ### Fixed
-- adedd property `$App.__scanService: UBNativeScanner`
+- added property `$App.__scanService: UBNativeScanner`
 - increase left panel desktop select height to 3rem for fit 2-line caption [UBDF-7808]
 - #2 - refs to attributes of "many" type should not be displayed in Details for EntityGridPanel.
  As a side effect - entities without accessible `select` should not be displayed also.
