@@ -84,7 +84,7 @@
                   vue: 'vue/dist/vue.common.js' // should be the same as in adminui-vue webpack config
                 },
                 meta: {
-                  '*': {nonce: '{{cspNonce}}'},
+                  // '*': {nonce: '{{cspNonce}}'}, if this line is added SystemJS override window.onerror
                   'tinymce*': { format: 'global' },
                   '*.css': { loader: 'css' },
                   '*.min.js':   { format: 'cjs' },

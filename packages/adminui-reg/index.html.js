@@ -123,11 +123,11 @@ but "browser" section in package.json is not define. Will fallback to "browser":
         // 'unsafe-inline' is removed in flavor of 'nonce-...'
         // TODO - remove 'unsafe-eval' after removing all `eval(` from Ext
         `script-src 'self' 'nonce-${cspNonce}' 'unsafe-eval';` +
-        "object-src 'none'; " +
+        'object-src blob:; ' +
         "base-uri 'none'; " +
         "style-src 'self' 'unsafe-inline' data:; " +
         "font-src 'self' data:; " +
-        "frame-src 'none'; " +
+        'frame-src blob:;' + // blob src required for PDF viewer
         "img-src 'self' data: blob:; " + // blob: is for pictures inside tinyMCE
         'plugin-types application/pdf'
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders

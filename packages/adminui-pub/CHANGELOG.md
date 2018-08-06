@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.4.1]
+### Fixed
+- prevent SystemJS to override global window.onerror handler defined by ub-pub by removing `nonce-` rule from SystemJS config
+
 ## [5.4.0]
 ### Changed
 - **BREAKING** more strict Content Security Policy header: script-src 'unsafe-inline' directive is removed in flavor of 'nonce-...'

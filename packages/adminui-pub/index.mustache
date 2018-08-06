@@ -81,7 +81,7 @@
                 css: 'systemjs-plugin-css/css.js'
             },
             meta: {
-                '*': {nonce: '{{cspNonce}}'},
+                // '*': {nonce: '{{cspNonce}}'}  if this line is added SystemJS override window.onerror
                 '*.css': { loader: 'css' },
                 'codemirror/*.js': { format: 'cjs' },
                 'tinymce/*.js': { format: 'global' },
