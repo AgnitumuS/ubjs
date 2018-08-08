@@ -41,7 +41,7 @@ function PrintToPdf (config) {
   this.page.format = config.format || 'a4'
   this.compress = (config.compress === false ? false : (config.compress || true))
   this.compressFont = (config.compressFont === false ? false : (config.compressFont || true))
-  this.compress = false
+//  this.compress = false
   this.pdf = new JsPDF(this.page.orientation, this.page.measure, this.page.format, this.compress)
   let pageSize = this.pdf.internal.pageSize
 
