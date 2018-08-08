@@ -97,7 +97,7 @@ function orgOnUserLogin () {
       // drop STAFF type org units from orgUnitIDs array (see [UB-1571] for details)
       let myOU = tmpArr.pop() // last entry in treePath is my staff, so memorise it
       // select orgUnit types
-      let orgUnitTypes = UB.Repository('org_unit').attrs(['ID', 'unitType']).where('ID', 'in', tmpArr).selectAsObject()
+      let orgUnitTypes = UB.Repository('org_unit').attrs(['ID', 'unitType']).where('ID', 'in', tmpArr).orderBy('mi_treePath').selectAsObject()
       tmpArr = []
       orgUnitTypes.forEach(function (unit) {
         if (unit.unitType !== 'STAFF') {
