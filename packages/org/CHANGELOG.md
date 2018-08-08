@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.39]
+### Fixed
+- set `uData.orgUnitIDs` order as **org_unit.mi_treePath**
+
+
 ## [5.0.29]
 ### Changed
 - org_staffunit.parentID.allowNull is set to **false** (all staffs should be assigned either to organization or to department)
