@@ -23,7 +23,7 @@ interface
 {$ENDREGION}
 
 const
-  LIBFILE = {$IFDEF MSWINDOWS}'rabbitmq.dll'{$ELSE}'rabbitmq'{$ENDIF};
+  LIBFILE = {$IFDEF MSWINDOWS}'rabbitmq.4.dll'{$ELSE}'rabbitmq'{$ENDIF};
   // const
   // POOL_TABLE_SIZE = 16;
 

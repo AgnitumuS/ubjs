@@ -1,6 +1,6 @@
 const assert = require('assert')
 const base = require('./testconnected')
-const lib = require('./.')
+const lib = require('..')
 
 class TestSuiteGet extends base.TestConnected {
   testBasic () {
