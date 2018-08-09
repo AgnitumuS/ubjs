@@ -131,7 +131,7 @@ function pngFromBitmap (bmp) {
 
 /**
  *
- * @param {CanvasRenderingContext2D} ctx Cnavas2d context
+ * @param {Context} ctx Cnavas2d context
  * @param {string} text Text to output. Cna contains \n as line delimiter
  * @param {number} x Horizontal position to output (upper left based)
  * @param {number} y Vertical position to output (upper left based)

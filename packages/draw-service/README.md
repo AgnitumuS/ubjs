@@ -36,3 +36,7 @@ fetch('http://localhost:8882', {method: 'POST', body: JSON.stringify(cmd)}.then(
 ```
 
 Can draw text, png image, rect - see `./text/test.js` for sample
+
+## Limitations
+ - supports only Times New Roman font family
+ - small font size can cause bad antialiasing
