@@ -1,0 +1,9 @@
+.idea
+node_modules
+*.log
+wp_stats.json
+*.map 
+result.png
+package-lock.json
+
+

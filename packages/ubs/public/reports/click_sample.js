@@ -17,7 +17,7 @@ exports.reportCode = {
   buildReport: function(reportParams){ 
     // this handler is used in template as onclick event 
     if (!window.openCountry) window.openCountry = function(ID){
-      // $App.doCommand({cmdType: 'showForm', entity: 'cdn_country', instanceID: ID})
+      //$App.doCommand({cmdType: 'showForm', entity: 'cdn_country', instanceID: ID})
       $App.dialogInfo('You clicked on country with id ' + ID)
     }
     var data = {
