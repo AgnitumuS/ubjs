@@ -127,7 +127,7 @@ but "browser" section in package.json is not define. Will fallback to "browser":
         "base-uri 'none'; " +
         "style-src 'self' 'unsafe-inline' data:; " +
         "font-src 'self' data:; " +
-        'frame-src blob:;' + // blob src required for PDF viewer
+        `frame-src 'self' blob:;` + // blob src required for chrome PDF viewer. Self - for JS PDF viewer
         "img-src 'self' data: blob:; " + // blob: is for pictures inside tinyMCE
         'plugin-types application/pdf'
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
