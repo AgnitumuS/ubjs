@@ -1,6 +1,17 @@
+/* global SystemJS */
 exports.formCode = {
   initUBComponent: function () {
     this.down('label[ubID="newFormTip"]').setVisible(this.isNewInstance)
+  },
+
+  onAfterSave: function () {
+    if (SystemJS.reload && !window.__systemHmrUBConnected) {
+      let reportModelName = this.record.get('model')
+      let reportCode = this.record.get('code')
+      let model = $App.domainInfo.models[reportModelName]
+      let reportCodePath = `${model.clientRequirePath}/reports/${reportCode}.js`
+      SystemJS.reload(reportCodePath)
+    }
   },
 
   testReport: function (type, serverSide) {

@@ -56,19 +56,19 @@ exports.formDef = {
           height: 350,
           items: [
             { attributeName: 'model' },
-            { attributeName: 'report_code' /* Report code */},
+            { attributeName: 'report_code' },
             { attributeName: 'name' },
             {
-                xtype: 'label',
-                ubID: 'newFormTip',
-                style: {
-                    backgroundColor: 'yellow'
-                },
-                text: 'TIP: Save form before switch to "' + UB.i18n('report_code') + '" tab for script boilerplate generation'
+              xtype: 'label',
+              ubID: 'newFormTip',
+              style: {
+                  backgroundColor: 'yellow'
+              },
+              text: 'TIP: Save form before switch to "' + UB.i18n('report_code') + '" tab for script boilerplate generation'
             }
           ]
         }, { xtype: 'panel',
-          layout: { type: 'hbox'},
+          layout: { type: 'hbox' },
           title: UB.i18n('templatePanelTitle'),
           autoScroll: true,
           items: [

@@ -10,7 +10,7 @@ const formatByPattern = require('./formatByPattern')
  * @returns {*}
  */
 function getDottedProperty (me, property) {
-  var value = me
+  let value = me
   property.split('.').forEach(function (name) {
     if (!value) throw new Error('Invalid property ' + name)
     value = value[name]
@@ -42,7 +42,7 @@ function formatMustache (lang, format, fixFormat) {
     if (typeof value === 'number') {
       return formatByPattern.formatNumber(value, dataArr.length > 1 ? dataArr[1] : format || 'sum', lang)
     } else if (value && value instanceof Date) {
-      return formatByPattern.formatDate(value, dataArr.length > 1 ? dataArr[1] : format || 'date', lang)
+      return formatByPattern.formatDate(value, dataArr.length > 1 ? dataArr[1] : (format || 'date'), lang)
     } else {
       return String(value)
     }
@@ -74,49 +74,56 @@ function addBaseMustacheSysFunction (data, lang) {
 function addMustacheSysFunction (data, lang) {
   lang = lang || 'en'
   /**
-   * Function for format number or date by pattern. Usage {{/$f}}"fieldName","paternCode"{{#$f}}. List of pattern see in formatByPattern.js
+   * Format number or date by pattern. Usage {{#$f}}"fieldName","paternCode"{{/$f}}. List of pattern see in formatByPattern.js
    */
   data.$f = data.$$f = function () {
     return formatMustache(lang)
   }
 
   /**
-   * Function for format number by pattern. Fix number data type and pattern "number". Usage {{/$fn}}"fieldName"{{#$fn}}
+   * Format number. Usage {{/$fn}}"fieldName"{{#$fn}}
    */
   data.$fn = data.$$fn = function () {
     return formatMustache(lang, 'number', 'number')
   }
 
   /**
-   * Function for format number by pattern. Fix number data type and pattern "sum". Usage {{/$fs}}"fieldName"{{#$fs}}
+   * Format number by pattern. Fix number data type and pattern "sum". Usage {{#$fs}}"fieldName"{{/$fs}}
    */
   data.$fs = data.$$fs = function () {
     return formatMustache(lang, 'sumDelim', 'number')
   }
 
-  data.crn = function () {
+  data.$crn = data.crn = function () {
     return formatMustache(lang, 'sum', 'number')
   }
 
   /**
-   * Function for format date by pattern. Fix number data type and pattern "date". Usage {{/$fd}}"fieldName"{{#$fd}}
+   * Format date by pattern. Fix number data type and pattern "date". Usage {{#$fd}}"fieldName"{{/$fd}}
    */
   data.$fd = data.$$fd = function () {
     return formatMustache(lang, 'date', 'date')
   }
 
   /**
-   * Function for format date by pattern. Fix number data type and pattern "time". Usage {{/$ft}}"fieldName"{{#$ft}}
+   * Format date by pattern. Fix number data type and pattern "time". Usage {{#$ft}}"fieldName"{{/$ft}}
    */
   data.$ft = data.$$ft = function () {
     return formatMustache(lang, 'time', 'date')
   }
 
   /**
-   * Function for format date by pattern. Fix number data type and pattern "dateTime". Usage {{/$fdt}}"fieldName"{{#$fdt}}
+   * Format date by pattern. Fix number data type and pattern "dateTime". Usage {{#$fdt}}"fieldName"{{/$fdt}}
    */
   data.$fdt = data.$$fdt = function () {
-    return formatMustache(lang, 'time', 'date')
+    return formatMustache(lang, 'dateTime', 'date')
+  }
+
+  /**
+   * Format date by pattern. Fix number data type and pattern "dateTime". Usage {{#$fdt}}"fieldName"{{/$fdt}}
+   */
+  data.$fdts = data.$$fdts = function () {
+    return formatMustache(lang, 'dateTimeFull', 'date')
   }
 }
 
