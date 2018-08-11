@@ -1,4 +1,55 @@
 require('./UBReport')
+const baseRepCSS = `body {
+    background-color: #FFFFFF;
+    color: #000000;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.3;
+}
+.word-wrap {
+    word-wrap: break-word;
+    hyphens: auto
+}
+td,th {
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 14px
+}
+.mce-pagebreak {
+    cursor: default;
+    display: block;
+    border: 0;
+    width: 100%;
+    height: 5px;
+    border: 1px dashed #666;
+    margin-top: 15px;
+    page-break-before: always
+}
+@media print {
+    .mce-pagebreak {
+        border: 0
+    }
+}`
+const tableResizeCSS = '@media screen{th { resize: both; overflow: auto; }}'
+const printRepCSS = '@page{margin: 0mm;}' // this affects the margin in the printer settings
+const repCSS = baseRepCSS + tableResizeCSS + printRepCSS
+
+/**
+ * Inject CSS o the documnet
+ * @param doc
+ * @param cssText
+ */
+function addStyleSheet (doc, cssText) {
+  let head = doc.getElementsByTagName('head')[0]
+  let styleEl = doc.createElement('style')
+  styleEl.setAttribute('type', 'text/css')
+  try {
+    styleEl.appendChild(doc.createTextNode(cssText))
+  } catch (e) {
+    styleEl.cssText = cssText
+  }
+  head.appendChild(styleEl)
+}
+
 /**
  * Displays a report.
  * Example:
@@ -18,12 +69,7 @@ require('./UBReport')
  */
 Ext.define('UBS.ReportViewer', {
   extend: 'Ext.form.Panel',
-  requires: [
-    'UBS.UBReport',
-    'UB.ux.PDFComponent',
-    'UB.ux.UBTinyMCETextArea'
-  ],
-  layout: { type: 'vbox', align: 'stretch'},
+  layout: {type: 'vbox', align: 'stretch'},
   width: 700,
   height: 500,
 
@@ -47,20 +93,11 @@ Ext.define('UBS.ReportViewer', {
         })
         break
       case 'html':
-        control = Ext.create('UB.ux.UBTinyMCETextArea', {
-          readOnly: true,
-          hidden: true,
+        control = Ext.create('Ext.Component', {
           flex: 1,
           margin: 0,
-          tinyMCEConfig: {
-            menubar: false,
-            contextmenu: false,
-            toolbar: false,
-            toolbar1: false,
-            // allow <a href> onclick events
-            extended_valid_elements: 'a[name|href|target|title|onclick]',
-            verify_html: false,
-            entity_encoding: 'raw'
+          autoEl: {
+            tag: 'iframe'
           }
         })
         container = Ext.create('Ext.panel.Panel', {
@@ -69,40 +106,27 @@ Ext.define('UBS.ReportViewer', {
             align: 'stretch'
           },
           flex: 1,
-          items: [{
-            flex: 1,
-            autoScroll: true,
-            layout: {
-              type: 'hbox',
-              align: 'stretch'
-            },
-            bodyCls: 'ub-panel-gray',
-            items: [control]
-          }, {
-            padding: '2 0 2 0',
-            layout: {
-              type: 'hbox'
-            },
-            items: [
-              {
-                flex: 1
-              }, {
-                xtype: 'button',
-                ui: 'default-toolbar',
-                text: UB.i18n('Print'),
-                handler: function () {
-                  control.getEditor().getWin().print()
-                }
-              }]
-          }]
+          items: [
+            control,
+            {
+              padding: '2 0 2 0',
+              layout: {
+                type: 'hbox'
+              },
+              items: [
+                {
+                  flex: 1
+                }, {
+                  xtype: 'button',
+                  ui: 'default-toolbar',
+                  text: UB.i18n('Print'),
+                  handler: function () {
+                    let iFrame = me.reportControl.getEl().dom
+                    iFrame.contentWindow.print()
+                  }
+                }]
+            }]
         })
-
-        control.on('setup', function (editor) {
-          editor.on('init', function () {
-            editor.dom.loadCSS('/models/adminui-pub/css/print-report.css')
-          })
-        }, me, {single: true})
-
         break
       default:
         throw new Error('Unknown value ' + me.reportType + ' for reportType.')
@@ -114,7 +138,7 @@ Ext.define('UBS.ReportViewer', {
 
     me.report.init().then(function () {
       if (me.report.onParamPanelConfig) {
-        var onParamForm = me.report.onParamPanelConfig()
+        let onParamForm = me.report.onParamPanelConfig()
         if (onParamForm) {
           me.addParamForm(onParamForm)
         }
@@ -122,10 +146,9 @@ Ext.define('UBS.ReportViewer', {
       } else {
         return false
       }
-    }).then(function (result) {
-      if (result) {
-        return false
-      }
+    }).then(function (paramsFormRequired) {
+      if (paramsFormRequired) return false // user enter params and press "show report" on params form
+
       return me.report.makeReport()
     }).done(function (data) {
       if (data && data.reportData) {
@@ -168,14 +191,14 @@ Ext.define('UBS.ReportViewer', {
   },
 
   showReport: function (data) {
-    var me = this, i
+    var me = this
     switch (me.reportType) {
       case 'pdf':
         if (typeof (data) === 'string') {
           var pdfLength = data.length
           var pdfArray = new Uint8Array(new ArrayBuffer(pdfLength))
 
-          for (i = 0; i < pdfLength; i++) {
+          for (let i = 0; i < pdfLength; i++) {
             pdfArray[i] = data.charCodeAt(i)
           }
 
@@ -187,27 +210,43 @@ Ext.define('UBS.ReportViewer', {
         me.reportControl.setSrc({ blobData: data })
         break
       case 'html':
-        //me.reportControl.show()
-        me.reportControl.setValue(data)
-        var ed = me.reportControl.getEditor()
-        if (ed && ed.dom) {
-          if (me.reportControl.orientation === 'landscape') {
-            ed.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-          } else if (me.reportControl.orientation === 'portrait') {
-            ed.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
-          }
-        } else {
-          me.reportControl.on('setup', function (editor) {
-            editor.on('init', function () {
-              if (me.reportControl.orientation === 'landscape') {
-                editor.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-              } else if (me.reportControl.orientation === 'portrait') {
-                editor.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
-              }
-            })
-          }, me, {single: true})
+        let iFrame = me.reportControl.getEl().dom
+        let iFrameDoc = iFrame.contentDocument
+        iFrameDoc.body.innerHTML = data
+        addStyleSheet(iFrameDoc, repCSS)
+        let orientation = me.report.reportOptions.pageOrientation
+        if (orientation === 'landscape') {
+          addStyleSheet(iFrameDoc, '@page{size: landscape;}')
+        } else if (orientation === 'portrait') {
+          addStyleSheet(iFrameDoc, '@page{size: portrait;}')
         }
-        me.reportControl.show()
+        if (me.report.onReportClick) { // add onclick handler for all <a href="">
+          var refs = iFrameDoc.getElementsByTagName('a')
+          for (let i = 0, L = refs.length; i < L; i++) {
+            refs[i].addEventListener('click', me.report.onReportClick, true)
+          }
+        }
+
+        // me.reportControl.setValue(data)
+        // let ed = me.reportControl.getEditor()
+        // if (ed && ed.dom) {
+        //   if (me.reportControl.orientation === 'landscape') {
+        //     ed.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
+        //   } else if (me.reportControl.orientation === 'portrait') {
+        //     ed.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
+        //   }
+        // } else {
+        //   me.reportControl.on('setup', function (editor) {
+        //     editor.on('init', function () {
+        //       if (me.reportControl.orientation === 'landscape') {
+        //         editor.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
+        //       } else if (me.reportControl.orientation === 'portrait') {
+        //         editor.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
+        //       }
+        //     })
+        //   }, me, {single: true})
+        // }
+        // me.reportControl.show()
         break
     }
     if (me.getEl()) {

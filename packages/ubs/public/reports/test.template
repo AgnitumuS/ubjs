@@ -1,5 +1,5 @@
-<!--@mi_modifyDate "Fri May 25 2018 22:28:03 GMT+0300 (FLE Standard Time)"-->
-<!--@name "undefined"-->
+<!--@mi_modifyDate "Thu Aug 09 2018 20:51:53 GMT+0300 (FLE Standard Time)"-->
+<!--@name "Report Builder manual"-->
 <!--@report_code "test"-->
 <!--@model "UBS"-->
 <!--@ID "3632233996"-->
@@ -7,39 +7,20 @@
 
 
 
-<!--%pageOrientation:landscape--><h1 style="text-align: center;">Report <br />builder manual</h1>
+<!--%pageOrientation:portrait--><h1 style="text-align: center;">Report <br />builder manual</h1>
 <p><span style="font-size: 10pt;">In UnityBase <strong>report is a <a href="https://github.com/janl/mustache.js">Mustache</a>! </strong>So you can use <strong>everything must</strong>ache is support.</span></p>
+<p><span style="font-size: 10pt;">Table <span style="text-decoration: underline;">headers are resizable in report viewer</span>, so user can change it before print&nbsp;</span></p>
 <table style="word-break: break-all;" border="1px" width="773" cellspacing="0" cellpadding="3px">
 <tbody>
 <tr>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;&nbsp;</td>
-<td>&nbsp;</td>
+<th style="width: 110px;">First Name</th>
+<th style="width: 458px;">Last Name</th>
+<th style="width: 179px;">Points</th>
 </tr>
 <tr>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr class="tinymce-templated">
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
+<td style="width: 110px;">Jill</td>
+<td style="width: 458px;">Smith</td>
+<td style="width: 179px;">50</td>
 </tr>
 </tbody>
 </table>
@@ -57,43 +38,35 @@
 <p>&nbsp;</p>
 <p style="text-indent: 15px;">You can use text-indent attribute for tag &lt;p&gt;. &nbsp;You can use text-indent attribute for tag &lt;p&gt;.&nbsp;You can use text-indent attribute for tag &lt;p&gt;.&nbsp;You can use text-indent attribute for tag &lt;p&gt;.&nbsp;You can use text-indent attribute for tag &lt;p&gt;.&nbsp;</p>
 <h1 style="text-indent: 15px;">Data formatting</h1>
-<p>123123412.77</p>
-<p style="text-indent: 15px;">&nbsp;</p>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAX5JREFUeNrEU71OwlAUPrVqrDFBHsARX6AJri4kJSEyEBMHggkLK8EEFsauvoPo4iN04gkgLiYOOBHUxDSUCBO0XL9z7a1t1YnBJl967/l+enIOaEII2uTZog2fbXW41zTSiSwcbaAbEDl+TJTmLsLO4x1YIOzzTscMvoRWmjtrNn9yPAPGHdFg3W6Lx1JJLFstwXfACjF4r9clN6lWJad8UUAPwhsQXqMh+vm8eK3VBN8ZT+WyrA0LBVljrfJpags9zMBnAi2eVirm82hEmUyGFosFvUwmZBgGzcfjoYYZYCbOZehLBKzwDsKQo1zOnLqu5HRdpw/XlWYM09lBTQVEW3gDdsMChLSazWhfkUEgw9nCm1n+9TuAwILAPs5mTcP36QA1Ba4xJ5LbSa4RX7FPIFSmB88bMtSduVVqjVEAE8WYuQ8jvthl9GMhxe+QZMAcwlsI93DmN9/RrsP4jVO+aAtX2IKH1tZIR2o3C+NhKJoBae46vcZ/+zd+CjAAN5vaL1x3kMMAAAAASUVORK5CYII=" alt="" width="16" height="16" /></p>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAX5JREFUeNrEU71OwlAUPrVqrDFBHsARX6AJri4kJSEyEBMHggkLK8EEFsauvoPo4iN04gkgLiYOOBHUxDSUCBO0XL9z7a1t1YnBJl967/l+enIOaEII2uTZog2fbXW41zTSiSwcbaAbEDl+TJTmLsLO4x1YIOzzTscMvoRWmjtrNn9yPAPGHdFg3W6Lx1JJLFstwXfACjF4r9clN6lWJad8UUAPwhsQXqMh+vm8eK3VBN8ZT+WyrA0LBVljrfJpags9zMBnAi2eVirm82hEmUyGFosFvUwmZBgGzcfjoYYZYCbOZehLBKzwDsKQo1zOnLqu5HRdpw/XlWYM09lBTQVEW3gDdsMChLSazWhfkUEgw9nCm1n+9TuAwILAPs5mTcP36QA1Ba4xJ5LbSa4RX7FPIFSmB88bMtSduVVqjVEAE8WYuQ8jvthl9GMhxe+QZMAcwlsI93DmN9/RrsP4jVO+aAtX2IKH1tZIR2o3C+NhKJoBae46vcZ/+zd+CjAAN5vaL1x3kMMAAAAASUVORK5CYII=" alt="" width="16" height="16" /></p>
+<p>123123412.77&nbsp;<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAX5JREFUeNrEU71OwlAUPrVqrDFBHsARX6AJri4kJSEyEBMHggkLK8EEFsauvoPo4iN04gkgLiYOOBHUxDSUCBO0XL9z7a1t1YnBJl967/l+enIOaEII2uTZog2fbXW41zTSiSwcbaAbEDl+TJTmLsLO4x1YIOzzTscMvoRWmjtrNn9yPAPGHdFg3W6Lx1JJLFstwXfACjF4r9clN6lWJad8UUAPwhsQXqMh+vm8eK3VBN8ZT+WyrA0LBVljrfJpags9zMBnAi2eVirm82hEmUyGFosFvUwmZBgGzcfjoYYZYCbOZehLBKzwDsKQo1zOnLqu5HRdpw/XlWYM09lBTQVEW3gDdsMChLSazWhfkUEgw9nCm1n+9TuAwILAPs5mTcP36QA1Ba4xJ5LbSa4RX7FPIFSmB88bMtSduVVqjVEAE8WYuQ8jvthl9GMhxe+QZMAcwlsI93DmN9/RrsP4jVO+aAtX2IKH1tZIR2o3C+NhKJoBae46vcZ/+zd+CjAAN5vaL1x3kMMAAAAASUVORK5CYII=" alt="" width="16" height="16" /></p>
 <p>&nbsp;Countries list&nbsp;</p>
 <table style="border-collapse: collapse; border: 1px solid black; height: 189px;" width="1060" cellspacing="0" cellpadding="3px">
 <tbody>
-<tr>
-<td style="width: 172px; border: 1px solid black;" rowspan="2">
-<div style="text-align: right;">Country code</div>
-<div style="text-align: right;">Country code 1</div>
-</td>
-<td style="width: 287px; border: 1px solid black;">Country name</td>
-<td style="width: 245px; border: 1px solid black;">Currency</td>
-</tr>
-<tr>
-<td style="width: 287px; border: 1px solid black;">Country name 1</td>
-<td style="width: 245px; border: 1px solid black;">Currency 1</td>
+<tr style="height: 24px;">
+<th style="width: 124px; border: 1px solid black; height: 109px;">
+<div style="text-align: center;">Code</div>
+</th>
+<th style="width: 292px; border: 1px solid black; height: 109px;">Country name (twice)</th>
+<th style="width: 304px; border: 1px solid black; height: 109px;">Currency formatting (according to language formatting rules)</th>
 </tr>
 <!--{{#countries}}-->
-<tr class="tinymce_templated" data-iterate-over="countries">
-<td class="tinymce_templated" style="width: 96px; border: 1px solid black; cursor: default; background-color: gray;">{{code}}</td>
-<td style="width: 248px; border: 1px solid black;">
+<tr class="tinymce_templated" style="height: 85px;" data-iterate-over="countries">
+<td class="tinymce_templated" style="width: 124px; border: 1px solid black; cursor: default; background-color: gray; height: 85px;">{{code}}</td>
+<td style="width: 292px; border: 1px solid black; height: 85px;">
 <p><strong>{{name}}</strong></p>
 <p><strong>{{name}}</strong></p>
 </td>
-<td style="width: 261px; border: 1px solid black;">&nbsp;{{currencyName}}&nbsp;{{#$fs}}"ID"{{/$fs}}</td>
+<td style="width: 303px; border: 1px solid black; height: 85px;">&nbsp;{{currencyName}}&nbsp;{{#$fs}}"ID"{{/$fs}}</td>
 </tr>
 <!--{{/countries}}-->
-<tr data-iterate-over="">
-<td style="cursor: default;">Площад ь</td>
-<td style="cursor: default;" colspan="2">{{area}}&nbsp;</td>
+<tr style="height: 25px;">
+<td style="cursor: default; height: 25px; width: 124px;">Площад ь</td>
+<td style="cursor: default; height: 25px; width: 603px;" colspan="2">{{area}}&nbsp;</td>
 </tr>
 </tbody>
 </table>
 <p>&nbsp;</p>
-<p>Roles:&nbsp;</p>
+<p>User role IDs:&nbsp;</p>
 <!--{{#roles}}-->
 <p class="tinymce_templated" data-iterate-over="roles">{{index}}. {{roleIDname}} от {{userIDname}} <br />для {{ID}}</p>
 <!--{{/roles}}-->

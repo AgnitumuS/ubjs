@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Changed
+- dramatically increase HTML report viewer by replacing TinyMCE to plain iframe
+- report code module now required once in the same manner forms are required
+- HMR now works for report code modules
+
+### Added
+- generic mechanism for follow hyperlink (drill down) is added to report builder. 
+ See report with code click_sample for usage example    
+
 ## [5.0.30]
 ### Fixed
 - ubs_settings.loadKey & ubs_settings.loadKeys will convert values for keys of type int and number to number using parseInt

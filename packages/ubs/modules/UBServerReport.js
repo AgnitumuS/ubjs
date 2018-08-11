@@ -82,21 +82,20 @@ function UBServerReport (reportCode, reportType, params, language) {
    * @property {string} reportCode
    */
   this.reportCode = reportCode
-   /**
-    * Possible values: 'html', 'pdf'
-    * @property {string} reportCode
-    */
+  /**
+   * Possible values: 'html', 'pdf'
+   * @property {string} reportCode
+   */
   this.reportType = reportType || 'html'
   /**
    * Report parameters
    * @property {{}} incomeParams
    */
   this.incomeParams = params || {}
-
-   /**
-    * The options of report. Known options: pageOrientation.
-    * @property {{}} reportOptions
-    */
+  /**
+   * The options of report. Known options: pageOrientation.
+   * @property {{}} reportOptions
+   */
   this.reportOptions = {}
 
   this.lang = language || Session.userLang
@@ -292,20 +291,20 @@ UBServerReport.prototype.prepareCode = function () {
   }
 }
 
- /**
-  * This function must be defined in report code block.
-  *
-  * Inside function you must:
-  *
-  *  - Prepare data
-  *  - Run method this.buildHTML(reportData); where reportData is data for mustache template
-  *  - If need create PDF run method this.buildPdf(htmlReport); where htmlReport is HTML
-  *  - If is server side function must return report as string otherwise Promise
-  *
-  * @cfg {function} buildReport
-  * @param {Object} reportParams
-  * @returns {Promise|Object|String} If code run at server, method must return report data, else - Promise, which resolves to report data
-  */
+/**
+ * This function must be defined in report code block.
+ *
+ * Inside function you must:
+ *
+ *  - Prepare data
+ *  - Run method this.buildHTML(reportData); where reportData is data for mustache template
+ *  - If need create PDF run method this.buildPdf(htmlReport); where htmlReport is HTML
+ *  - If is server side function must return report as string otherwise Promise
+ *
+ * @cfg {function} buildReport
+ * @param {Object} reportParams
+ * @returns {Promise|Object|String} If code run at server, method must return report data, else - Promise, which resolves to report data
+ */
 UBServerReport.prototype.buildReport = function (reportParams) {
   throw new UB.UBError('Function "buildReport" not defined in report code block')
 }
