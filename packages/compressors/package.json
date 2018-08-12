@@ -4,6 +4,7 @@
   "description": "gzip/gunzip/bzip(m2) implementation",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/compressors",
   "scripts": {
+    "test": "ub ./test/testCompresors.js",
     "build": "node ./bin/compile.js"
   },
   "public": true,
