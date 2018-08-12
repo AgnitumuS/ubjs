@@ -33,26 +33,33 @@ const SCRIPT_EXTENSION = '.js'
 const REPORT_BODY_TPL = `
 exports.reportCode = {
   /**
-  * This function should be defined in report code block.
-  *
-  * Inside function you should:
-  * 1) Prepare data
-  * 2) Run method this.buildHTML(reportData); where reportData is data for mustache template
-  * 3) If need create PDF run method this.transformToPdf(htmlReport); where htmlReport is HTML
-  * 4) If is server side function should return report as string otherwise Promise or string
-  *
-  * @cfg {function} buildReport
-  * @params {[]|{}} reportParams
-  * @returns {Promise|Object} If code run on server method should return report data.
-  * Promise object should be resolved report code
-  */
+   * Generate report data and render report. Function should:
+   *  - prepare reportData - a JavaScript object passed to mustache template
+   *  - call this.buildHTML(reportData) to render mustache template
+   *  - optionally call this.transformToPdf(htmlReport) where htmlReport is HTML from prev. step
+   *  - for server side returned value should be string, for client - Promise resolved to string
+   *
+   * @cfg {function} buildReport
+   * @params {[]|{}} reportParams
+   * @returns {Promise|Object}
+   */
   buildReport: function(reportParams){
-    var result = this.buildHTML(reportParams)
+    var reportData = this.buildHTML(reportParams)
     if (this.reportType === 'pdf') {
-        result = this.transformToPdf(result)
+        result = this.transformToPdf(reportData)
     }
     return result
-  }
+  },
+  /** optional report click event handler
+   * see click)sample report inside UBS model
+   */
+  // onReportClick: function (e) {
+  //   // prevent default action
+  //   e.preventDefault()
+  //   // get table/cell/roe based on event target
+  //   let cellInfo = UBS.UBReport.cellInfo(e)
+  //   ...
+  // }  
 }
 `
 /**
