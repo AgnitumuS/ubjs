@@ -45,7 +45,7 @@ TubNamedCollection.prototype = {
 
 /**
  * @classdesc
- * Structure passed as parameter to all entity level scripting methods
+ * Structure passed as a parameter for all entity level scripting methods
  * @class ubMethodParams
  */
 function ubMethodParams () {}

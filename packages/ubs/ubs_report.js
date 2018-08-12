@@ -85,7 +85,7 @@ function postProcessing (loader, fullFilePath, content, row) {
   if (row.ID) console.warn(`Please, remove a row "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB4 report ID is generated automatically as crc32(fileNameWoExtension)`)
   row.ID = ncrc32(0, row.report_code)
 
-    // fill formDef attribute value
+  // fill formDef attribute value
   row.template = JSON.stringify({
     fName: fileName,
     origName: fileName,
@@ -172,7 +172,7 @@ function doSelect (ctxt) {
     }
   }
   let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
-    // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
+  // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
   let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
   ctxt.dataStore.initialize(resp)
 }
