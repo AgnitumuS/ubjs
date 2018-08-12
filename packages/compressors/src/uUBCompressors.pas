@@ -7,7 +7,7 @@ unit uUBCompressors;
 interface
 
 uses 
-  SyNodePluginIntf, SynCommons, SynZip;
+  SpiderMonkey, SyNodePluginIntf, SynCommons, SynZip, SyNodeSimpleProto;
 
 type
   TUBCompressorsPlugin = class(TCustomSMPlugin)
@@ -22,12 +22,14 @@ type
     function getFileNames: TStringDynArray;
     function GetFileCount: integer;
   protected
-
+    property _fileNames: TStringDynArray read GetFileNames;
   published
-    property fileNames: TStringDynArray read GetFileNames;
     property fileCount: integer read GetFileCount;
-    function unZipToDir(fileIndex: integer; const dirName: string): boolean;
-    function unZipAllToDir(const dirName: string): boolean;
+    function fileNames(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+    //function unZipToDir(fileIndex: integer; const dirName: TFileName): boolean;
+    function unZipToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+    //function unZipAllToDir(const dirName: TFileName): boolean;
+    function unZipAllToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
   end;
 
   TubZipWriter = class(TZipWrite)
@@ -35,29 +37,30 @@ type
   protected
 
   published
-    procedure addFile(const fileName: string);
+    //procedure addFile(const fileName: TFileName);
+    function addFile(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
   end;
   {$M-}
 
-  TubZipReaderProtoObject = class(TSMNewRTTIProtoObject)
+  TubZipReaderProtoObject = class(TSMSimpleRTTIProtoObject)
   public
-    function NewSMInstance(aCx: PJSContext; argc: uintN; vp: pjsval): TObject; override;
+    function NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject; override;
   end;
 
-  TubZipWriterProtoObject = class(TSMNewRTTIProtoObject)
+  TubZipWriterProtoObject = class(TSMSimpleRTTIProtoObject)
   public
-    function NewSMInstance(aCx: PJSContext; argc: uintN; vp: pjsval): TObject; override;
+    function NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject; override;
   end;
 
 implementation
 
 uses
   SysUtils,
-  SpiderMonkey, SynCommons,
   {$IFDEF WIN32}
   SynBZ,
   {$ENDIF}
-  SynZip;
+  SyNodeProto;
+
 
 { TUBCompressorsPlugin }
 {$IFDEF WIN32}
@@ -173,27 +176,19 @@ begin
   end;
 end;
 
-function TubZipReaderProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; vp: pjsval): TObject;
+function TubZipReaderProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject;
 var
-  in_argv: PjsvalVector;
-  sm_inst: PSMInstanceRecord;
-  valType: JSType;
-  fName: string;
+  fName: TFileName;
 const
-  f_usage = 'usage: new TubZipReader(from: String|TubBuffer)';
+  f_usage = 'usage: new TubZipReader(fileName: String)';
 begin
-  in_argv := JS_ARGV(aCx, vp);
   {$POINTERMATH ON}
   if (argc<>1) then
     raise ESMException.Create(f_usage);
-  valType := JS_TypeOfValue(aCx, in_argv[0]);
-  if (valType = JSTYPE_STRING) then begin //fileName
+  if (vp.argv[0].isString) then begin //fileName
 //    fName := JSString_TO_UnicodeString(aContext.cx, JSVAL_TO_STRING(in_argv[0]));
-    fName := JSVAL_TO_STRING(in_argv[0]).ToSynUnicode(aCx);
+    fName := vp.argv[0].asJSString.ToString(aCx);
     Result := TubZipReader.Create(fName);
-  end else if (valType = JSTYPE_OBJECT) and IsInstanceObject(aCx, JSVAL_TO_OBJECT(in_argv[0]), sm_inst) and (sm_inst.Instance is TubBuffer) then begin
-    with TubBuffer(sm_inst.Instance) do
-      Result := TubZipReader.Create(PByteArray(DataString), Size);
   end else
     raise ESMException.Create(f_usage);
   {$POINTERMATH OFF}
@@ -225,66 +220,102 @@ begin
     end;
 end;
 
-function TubZipReader.unZipToBuffer(fileIndex: integer; const dest: TubBuffer): integer;
+function TubZipReader.fileNames(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
 var
-  s: RawByteString;
+  fc, i, L, num: integer;
+  val: jsval;
+  r: boolean;
+  pObj: PJSObject;
 begin
-  s := UnZip(fileIndex);
-  Result := dest.write(pointer(s)^, length(s));
+  fc := fileCount;
+  pObj := cx.NewArrayObject(fc);
+  L := length(Entry); num := 0;
+  for I := 0 to L - 1 do
+    if Entry[i].zipName <> '' then begin
+      val.asJSString := cx^.NewJSString(Entry[i].zipName);
+      r := pObj.SetElement(cx, num, val);
+      inc(num);
+      Assert(r);
+    end;
+  val.asObject := pObj;
+  vp.rval := val;
+  Result := true;
 end;
 
-function TubZipReader.unZipToDir(fileIndex: integer; const dirName: string): boolean;
+//function TubZipReader.unZipToDir(fileIndex: integer; const dirName: TFileName): boolean;
+function TubZipReader.unZipToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+const
+  cUSAGE = 'usage unZipToDir(fileIndex: integer; const dirName: TFileName)';
+var
+  fIndex: integer; fDir: TFileName;
+  val: jsval;
 begin
-  Result := UnZip(fileIndex, dirName);
+  if (argc <> 2) or (not vp.argv[0].isInteger) or (not vp.argv[1].isString) then
+    raise ESMException.Create(cUSAGE);
+  fIndex := vp.argv[0].asInteger;
+  fDir := vp.argv[1].asJSString.toString(cx);
+  fDir := IncludeTrailingPathDelimiter(fDir);
+  val.asBoolean := UnZip(fIndex, fDir);
+  vp.rval := val;
+  Result := true;
 end;
 
-function TubZipReader.unZipAllToDir(const dirName: string): boolean;
+//function TubZipReader.unZipAllToDir(const dirName: TFileName): boolean;
+function TubZipReader.unZipAllToDir(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+const
+  cUSAGE = 'usage unZipAllToDir(const dirName: TFileName)';
 var
+  fDir: TFileName;
+  val: jsval;
   l, i: integer;
 begin
+  if (argc <> 1) or (not vp.argv[0].isString) then
+    raise ESMException.Create(cUSAGE);
+  fDir := vp.argv[0].asJSString.toString(cx);
+  fDir := IncludeTrailingPathDelimiter(fDir);
   l := length(Entry);
   for I := 0 to l-1 do
     if Entry[i].zipName <> '' then begin
-      if not UnZip(i, dirName) then
+      if not UnZip(i, fDir) then begin
+        val.asBoolean := false;
+        vp.rval := val;
         exit(false);
+      end;
     end;
+  val.asBoolean := true;
+  vp.rval := val;
   Result := true;
 end;
 
 { TubZipWriter }
 
-procedure TubZipWriter.addBuffer(const fileName: string; const byteCount: cardinal; const source: TubBuffer);
+//procedure TubZipWriter.addFile(const fileName: TFileName);
+function TubZipWriter.addFile(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean;
+const
+  cUSAGE = 'usage addFile(const fileName: TFileName)';
 var
-  actualSizeToWrite: Cardinal;
+  fName: TFileName;
 begin
-  if source <> nil then begin
-    actualSizeToWrite := source.size - source.position;
-    if actualSizeToWrite < byteCount then
-      actualSizeToWrite := byteCount;
-    AddDeflated(fileName, source.currentPos, actualSizeToWrite);
-  end;
-end;
-
-procedure TubZipWriter.addFile(const fileName: string);
-begin
-  AddDeflated(fileName);
+  if (argc <> 1) or (not vp.argv[0].isString) then
+    raise ESMException.Create(cUSAGE);
+  fName := vp.argv[0].asJSString.toString(cx);
+  AddDeflated(fName);
+  Result := true;
 end;
 
 { TubZipWriterProtoObject }
 
-function TubZipWriterProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; vp: pjsval): TObject;
+function TubZipWriterProtoObject.NewSMInstance(aCx: PJSContext; argc: uintN; var vp: JSArgRec): TObject;
 var
-  in_argv: PjsvalVector;
-  fName: string;
+  fName: TFileName;
 const
   f_usage = 'usage: new TubZipWriter(fileName: String)';
 begin
-  in_argv := JS_ARGV(aCx, vp);
   {$POINTERMATH ON}
-  if (argc<>1) or not JSVAL_IS_STRING(in_argv[0]) then
+  if (argc<>1) or not vp.argv[0].isString then
     raise ESMException.Create(f_usage);
 //  fName := JSString_TO_UnicodeString(aContext.cx, JSVAL_TO_STRING(in_argv[0]));
-  fName := JSVAL_TO_STRING(in_argv[0]).ToSynUnicode(aCx);
+  fName := vp.argv[0].asJSString.toString(aCx);
   {$POINTERMATH OFF}
   Result := TubZipWriter.Create(fName);
 end;
@@ -297,6 +328,8 @@ begin
 {$ENDIF}
   rec.Exp.ptr.DefineFunction(rec.cx, 'gunzipFile', nsm_gunzipFile, 2, StaticROAttrs);
   rec.Exp.ptr.DefineFunction(rec.cx, 'gzipFile', nsm_gzipFile, 2, StaticROAttrs);
+  defineClass(rec.cx, TubZipReader, TubZipReaderProtoObject, rec.Exp);
+  defineClass(rec.cx, TubZipWriter, TubZipWriterProtoObject, rec.Exp);
 end;
 
 end.

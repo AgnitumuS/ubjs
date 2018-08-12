@@ -63,3 +63,5 @@ _FOSSIL_
 *.lps
 lib/
 backup/
+test/
+bin/

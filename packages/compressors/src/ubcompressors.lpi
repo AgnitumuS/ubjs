@@ -26,7 +26,7 @@
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
             <Libraries Value="$Env(UB_SRC)/bin/fpc-linux"/>
-            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
             <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="// check compilation executed under windows
@@ -77,7 +77,7 @@ end;"/>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
             <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
-            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
+            <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
             <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -121,10 +121,16 @@ end;"/>
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
+    <RequiredPackages Count="1">
+      <Item1>
+        <PackageName Value="LazUtils"/>
+      </Item1>
+    </RequiredPackages>
     <Units Count="4">
       <Unit0>
         <Filename Value="ubcompressors.dpr"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="UBCompressors"/>
       </Unit0>
       <Unit1>
         <Filename Value="uUBCompressors.pas"/>
@@ -147,7 +153,8 @@ end;"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
-      <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
+      <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
+      <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SQLite3;$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse"/>
       <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

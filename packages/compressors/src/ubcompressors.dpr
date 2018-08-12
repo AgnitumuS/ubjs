@@ -11,6 +11,9 @@ uses
   {$ENDIF}
   SpiderMonkey,
   SyNodePluginIntf,
+  SyNode,
+  SyNodeProto,
+  syNodeSimpleProto,
   uUBCompressors in 'uUBCompressors.pas';
 
 const
