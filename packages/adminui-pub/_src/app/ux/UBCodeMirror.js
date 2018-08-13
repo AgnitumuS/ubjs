@@ -8,31 +8,31 @@ Ext.define('UB.ux.UBCodeMirror', {
     field: 'Ext.form.field.Field'
   },
   statics: {
-    editorQTip: [
-      '<h5>Helpers</h5>',
-      '<ul>' +
-      '<li>Ctrl+Q - code templates</li>',
-      '<li>Ctrl+Space - code competition</li>',
-      '<li>Ctrl+B - Beautify content</li>',
-      '</ul>',
-      '<h5>Search</h5><ul>',
-      '<li>Ctrl-F  - Start searching</li>',
-      '<li>Ctrl-G  - Find next</li>',
-      '<li>Shift-Ctrl-G - Find previous</li>',
-      '<li>Shift-Ctrl-F - Replace</li>',
-      '<li>Shift-Ctrl-R - Replace all</li>',
-      '<li>Alt-F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)</li>',
-      '<li>Alt-G - Jump to line</li>',
-      '</ul>',
-      '<h5>Edit</h5><ul>',
-      '<li>Ctrl-A - Select the whole content of the editor</li>',
-      '<li>Ctrl-D - Deletes the whole line under the cursor</li>',
-      '<li>Ctrl-Z - Undo the last change</li>',
-      '<li>Ctrl-Y - Redo the last undone change</li>',
-      '<li>Ctrl-U - Undo the last change to the selection</li>',
-      '<li>Alt-Left / Alt-Right - Move the cursor to the start/end  of the line</li>',
-      '<li>Tab / Shift + Tab - If something is selected, indent/dedent it</li></ul>'
-    ].join('')
+    editorQTip: `
+<h5>Helpers</h5>
+<ul>
+  <li>Ctrl+Q - code templates</li>
+  <li>Ctrl+Space - code competition</li>
+  <li>Ctrl+B - Beautify content</li>
+</ul>
+<h5>Search</h5><ul>
+  <li>Ctrl-F  - Start searching</li>
+  <li>Ctrl-G  - Find next</li>
+  <li>Shift-Ctrl-G - Find previous</li>
+  <li>Shift-Ctrl-F - Replace</li>
+  <li>Shift-Ctrl-R - Replace all</li>
+  <li>Alt-F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)</li>
+  <li>Alt-G - Jump to line</li>
+</ul>
+<h5>Edit</h5><ul>
+  <li>Ctrl-A - Select the whole content of the editor</li>
+  <li>Ctrl-D - Deletes the whole line under the cursor</li>
+  <li>Ctrl-Z - Undo the last change</li>
+  <li>Ctrl-Y - Redo the last undone change</li>
+  <li>Ctrl-U - Undo the last change to the selection</li>
+  <li>Alt-Left / Alt-Right - Move the cursor to the start/end  of the line</li>
+  <li>Tab / Shift + Tab - If something is selected, indent/dedent it</li>
+</ul>`
   },
   alias: 'widget.ubcodemirror',
   border: 1,
@@ -48,7 +48,7 @@ Ext.define('UB.ux.UBCodeMirror', {
   codeSnippetsGetter: null,
 
   /**
-   * CodeMirror editor mode ( `javascript` or `yaml` in current implementation)
+   * CodeMirror editor mode ( javascript or yaml in current implementation)
    */
   editorMode: 'javascript',
 
@@ -164,7 +164,7 @@ Ext.define('UB.ux.UBCodeMirror', {
           mode: this.editorMode,
           value: this.rawValue || '',
           lineNumbers: true,
-          lint: _.assign({asi: true}, $App.connection.appConfig.uiSettings.adminUI.linter),
+          lint: Object.assign({asi: true, esversion: 6}, $App.connection.appConfig.uiSettings.adminUI.linter),
           readOnly: false,
           tabSize: 2,
           highlightSelectionMatches: {annotateScrollbar: true},
@@ -178,7 +178,7 @@ Ext.define('UB.ux.UBCodeMirror', {
           }
         })
         // <i style="position: absolute;right: 15px;" class="fa fa-question fa-lg" aria-hidden="true"></i>
-        var help = document.createElement('i')
+        let help = document.createElement('i')
         help.style = 'position: absolute;right: 15px; z-index: 10000'
         help.className = 'fa fa-question fa-border fa-2x'
         myElm.firstChild.insertBefore(help, myElm.firstChild.firstChild)

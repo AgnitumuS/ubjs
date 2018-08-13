@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.4.3]
+### Changed
+ - es6 syntax in code editors is enabled by default
+  
 ## [5.4.2]
 ### Changed
  - remove unused Ext classes `Ext.direct.*; Ext.data.jsonp; Ext.form.action.DirectLoad; Ext.data.flash.BinaryXhr; Ext.flash.Component`
