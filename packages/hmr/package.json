@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/hmr",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Module for watching changes in the public part of UnityBase and send notifications for UB adminUI in dev mode using web sockets",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/hmr",
   "scripts": {},
@@ -20,7 +20,7 @@
     "xhr2": "^0.1.4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.10"
+    "@unitybase/stubs": "^5.0.11"
   },
   "keywords": [
     "UnityBase",
