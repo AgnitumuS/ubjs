@@ -4,10 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Fixed
+ - syntax error in org_employeenstaff.caption isMultilang attribute
+   
+### Changed
+- all fullName* attributes sizes increased to 300 for org_department, org_employee and org_organization 
+
 ## [5.0.39]
 ### Fixed
 - set `uData.orgUnitIDs` order as **org_unit.mi_treePath**
-
 
 ## [5.0.29]
 ### Changed

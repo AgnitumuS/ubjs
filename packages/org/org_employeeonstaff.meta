@@ -1,62 +1,62 @@
 {
-  "caption": "Назначения внутренней организации",
-  "description": "Справочник назначений внутренней организации",
-  "documentation": "Развязочная сущность, в которой указывается какой работник на какой штатной единице работает (назначение).Так же есть тип назначения (временное, постоянное, полставки и т.д.)",
+  "caption": "Internal organization assignments",
+  "description": "List of internal organization assignments",
+  "documentation": "The denouement essence, which indicates which employee on which staff unit works (appointment). There is also a type of assignment (temporary, permanent, part-time, etc.)",
   "connectionName": "",
   "sqlAlias": "empons",
-  "cacheType": "catySession",
+  "cacheType": "Session",
   "descriptionAttribute": "caption",
   "attributes": [
     {
+      "name": "tabNo",
       "dataType": "String",
       "size": 20,
       "caption": "Employee №",
       "description": "Employee number",
-      "allowNull": false,
-      "name": "tabNo"
+      "allowNull": false
     },
     {
+      "name": "employeeID",
       "dataType": "Entity",
       "associatedEntity": "org_employee",
       "caption": "Employee",
       "description": "Employee",
-      "allowNull": false,
-      "name": "employeeID"
+      "allowNull": false
     },
     {
+      "name": "staffUnitID",
       "dataType": "Entity",
       "associatedEntity": "org_staffunit",
       "caption": "Staff unit",
       "description": "Internal organization staff unit",
-      "allowNull": false,
-      "name": "staffUnitID"
+      "allowNull": false
     },
     {
+      "name": "employeeOnStaffType",
       "dataType": "Enum",
       "enumGroup": "CDN_EMPLOYEEONSTAFFTYPE",
       "caption": "Assignment type",
       "description": "Assignment type",
       "allowNull": false,
-      "defaultValue": "PERMANENT",
-      "name": "employeeOnStaffType"
+      "defaultValue": "PERMANENT"
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Assignment description",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "caption",
       "dataType": "String",
       "size": 1024,
       "caption": "Caption",
       "description": "Caption",
       "allowNull": true,
-      "isMultilang": true,
-      "name": "caption"
+      "isMultiLang": true
     }
   ],
   "mixins": {

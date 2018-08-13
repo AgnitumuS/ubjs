@@ -8,81 +8,80 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Code",
       "description": "Code of position",
       "allowNull": false,
       "isUnique": true,
-      "defaultValue": "----",
-      "name": "code"
+      "defaultValue": "----"
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "description": "Position name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
-      "size": 255,
+      "size": 300,
       "caption": "Full name",
       "description": "Position full name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "nameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Name in genitive case",
       "description": "Position name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameGen"
+      "isMultiLang": true
     },
     {
+      "name": "nameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Name in dative case",
       "description": "Position name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameDat"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameGen",
       "dataType": "String",
-      "size": 255,
+      "size": 300,
       "caption": "Full name in genitive case",
       "description": "Position full name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameDat",
       "dataType": "String",
-      "size": 255,
+      "size": 300,
       "caption": "Full name in dative case",
       "description": "Position full name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "caption": "Caption",
       "dataType": "String",
       "size": 128,
       "allowNull": false,
-      "mapping": {
-        "AnsiSQL": {
-          "expressionType": "Expression",
-          "expression": "[fullName]"
-        }
-      },
-      "name": "description"
+      "mapping": [{
+        "name": "AnsiSQL",
+        "expression": "[fullName]",
+        "expressionType": "Expression"
+      }]
     }
   ],
   "mixins": {

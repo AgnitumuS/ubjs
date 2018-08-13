@@ -8,133 +8,133 @@
   "descriptionAttribute": "caption",
   "attributes": [
     {
+      "name": "parentID",
       "dataType": "Entity",
       "associatedEntity": "org_unit",
       "caption": "Parent",
       "description": "Parent",
-      "allowNull": false,
-      "name": "parentID"
+      "allowNull": false
     },
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Internal code",
       "description": "Staff unit internal code",
       "allowNull": false,
       "isUnique": true,
-      "defaultValue": "----",
-      "name": "code"
+      "defaultValue": "----"
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Staff unit name",
       "description": "Name of staff unit without the quotes and abbreviations",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
-      "size": 255,
+      "size": 300,
       "caption": "Full name",
       "description": "Staff unit full name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Staff unit description",
       "description": "Staff unit description",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "nameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Staff unit name in genitive case",
       "description": "Staff unit name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameGen"
+      "isMultiLang": true
     },
     {
+      "name": "nameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Staff unit name in dative case",
       "description": "Name of staff unit without the quotes and abbreviations in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameDat"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameGen",
       "dataType": "String",
-      "size": 255,
+      "size": 300,
       "caption": "Full name in genitive case",
       "description": "Staff unit full name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameDat",
       "dataType": "String",
-      "size": 255,
+      "size": 300,
       "caption": "Full name in dative case",
       "description": "Full name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "caption",
       "dataType": "String",
       "size": 1024,
       "caption": "Caption",
       "description": "Caption",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "caption"
+      "isMultiLang": true
     },
     {
+      "name": "professionExtID",
       "dataType": "Entity",
       "associatedEntity": "cdn_profession",
       "caption": "Profession",
       "description": "Profession",
-      "allowNull": true,
-      "name": "professionExtID"
+      "allowNull": true
     },
     {
+      "name": "professionID",
       "dataType": "Entity",
       "associatedEntity": "org_profession",
       "caption": "Position",
       "description": "Position",
-      "allowNull": false,
-      "name": "professionID"
+      "allowNull": false
     },
     {
+      "name": "staffUnitTypeID",
       "dataType": "Entity",
       "associatedEntity": "cdn_staffunittype",
       "caption": "Staff unit type",
       "description": "Staff unit type",
-      "allowNull": false,
-      "name": "staffUnitTypeID"
+      "allowNull": false
     },
     {
+      "name": "subordinationLevel",
       "dataType": "Int",
       "caption": "Subordination level",
       "description": "If level is lower - then staff unit is more important",
-      "allowNull": true,
-      "name": "subordinationLevel"
+      "allowNull": true
     },
     {
+      "name": "isBoss",
       "dataType": "Boolean",
       "caption": "Boss",
       "description": "Boss",
       "allowNull": true,
-      "defaultValue": "0",
-      "name": "isBoss"
+      "defaultValue": "0"
     }
   ],
   "mixins": {

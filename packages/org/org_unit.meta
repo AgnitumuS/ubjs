@@ -8,38 +8,38 @@
   "descriptionAttribute": "caption",
   "attributes": [
     {
+      "name": "parentID",
       "dataType": "Entity",
       "associatedEntity": "org_unit",
       "caption": "Parent",
       "description": "Parent",
-      "allowNull": true,
-      "name": "parentID"
+      "allowNull": true
     },
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Internal code",
       "description": "Organization unit internal code",
-      "allowNull": false,
-      "name": "code"
+      "allowNull": false
     },
     {
+      "name": "caption",
       "dataType": "String",
       "size": 1024,
       "caption": "Caption",
       "description": "Caption",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "caption"
+      "isMultiLang": true
     },
     {
+      "name": "unitType",
       "dataType": "Enum",
       "enumGroup": "ORG_UNITTYPE",
       "caption": "Org. unit type",
       "description": "Organization unit type",
       "allowNull": false,
-      "isMultiLang": false,
-      "name": "unitType"
+      "isMultiLang": false
     }
   ],
   "mixins": {

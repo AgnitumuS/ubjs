@@ -1,36 +1,39 @@
 ﻿{
-	"caption": "Assignment with pending date",
-	"description": "Assignment with pending date",
-    "documentation":"Entity which contains links to assignments with pending date",
-	"connectionName": "",
-	"sqlAlias": "emponpend",
-	"cacheType": "Entity",
-	"descriptionAttribute": "",
-	"attributes": {
-		"emponstaffID": {
-			"dataType": "Entity",
-			"associatedEntity": "org_employeeonstaff",
-			"caption": "Assignment",
-			"description": "Assignment",
-			"allowNull": false          
-		},
-        "startDate":{
-            "dataType": "Date",
-            "caption": "Start",
-            "description": "Assignment start date",
-            "allowNull": false
-        },
-        "endDate":{
-            "dataType": "Date",
-            "caption": "End",
-            "description": "Assignment end date",
-            "allowNull": true
-        }
-	},
-	"mixins": {
-		"mStorage": {
-			"simpleAudit":true,
-			"safeDelete":false
-        }
-	}
+  "caption": "Assignment with pending date",
+  "description": "Assignment with pending date",
+  "documentation": "Entity which contains links to assignments with pending date",
+  "connectionName": "",
+  "sqlAlias": "emponpend",
+  "cacheType": "Entity",
+  "descriptionAttribute": "",
+  "attributes": [
+    {
+      "name": "emponstaffID",
+      "dataType": "Entity",
+      "associatedEntity": "org_employeeonstaff",
+      "caption": "Assignment",
+      "description": "Assignment",
+      "allowNull": false
+    },
+    {
+      "name": "startDate",
+      "dataType": "Date",
+      "caption": "Start",
+      "description": "Assignment start date",
+      "allowNull": false
+    },
+    {
+      "name": "endDate",
+      "dataType": "Date",
+      "caption": "End",
+      "description": "Assignment end date",
+      "allowNull": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": false
+    }
+  }
 }
