@@ -1,4 +1,4 @@
-<!--@mi_modifyDate "Sat Aug 11 2018 19:35:39 GMT+0300 (FLE Standard Time)"-->
+<!--@mi_modifyDate "Sun Aug 12 2018 20:40:28 GMT+0300 (FLE Standard Time)"-->
 <!--@name "click_sample"-->
 <!--@report_code "click_sample"-->
 <!--@model "UBS"-->
@@ -79,14 +79,14 @@
 <table style="width: 433px; height: 36px;">
 <thead>
 <tr style="height: 18px;">
-<th style="width: 364px; height: 18px;">ID</th>
+<th style="width: 364px; height: 18px;">ID(editable)</th>
 <th style="width: 120px; height: 18px;" data-entity="cdn_country">Name</th>
 <th style="width: 290px; height: 18px;" data-entity="uba_user">Record Owner</th>
 </tr>
 </thead>
 <tbody><!--{{#countries}}-->
 <tr class="tinymce_templated" style="height: 18px;" data-iterate-over="countries">
-<td style="width: 364px; height: 18px;">{{ID}}</td>
+<td style="width: 364px; height: 18px;" contenteditable="true">{{ID}}</td>
 <td style="width: 120px; height: 18px;"><a href="#" data-id="{{ID}}">{{name}}</a></td>
 <td style="width: 290px; height: 18px;"><a href="#" data-id="{{mi_owner}}">{{ownerName}}</a></td>
 </tr>

@@ -26,7 +26,10 @@ td,th {
 }
 @media print {
     .mce-pagebreak {
-        border: 0
+      border: 0
+    }
+    a {
+      text-decoration: none
     }
 }`
 const tableResizeCSS = '@media screen{th { resize: both; overflow: auto; }}'
