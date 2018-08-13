@@ -81,4 +81,4 @@ class ZipWriter {
     return this._writer.addFile(filePath)
   }
 }
-UBCompressors.ZipWriter = binding.ZipWriter
+UBCompressors.ZipWriter = ZipWriter
