@@ -19,3 +19,8 @@ html, body {
 .x-boundlist {
   border-radius: 1px;
 }
+
+/* ExtJS fieldset border radius */
+.x-fieldset {
+  border-radius: 4px
+}
