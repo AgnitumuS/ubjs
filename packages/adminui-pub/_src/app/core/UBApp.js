@@ -1,4 +1,4 @@
-/* global Ext */
+/* global Ext, $App, SystemJS */
 const UB = require('@unitybase/ub-pub')
 require('../view/LoginWindow.js')
 require('../../ux/window/Notification')
@@ -465,16 +465,16 @@ Ext.define('UB.core.UBApp', {
 
   /**
    * Show confirmation dialog. Title & message are translated using UB.i18n
-   * Example:
-   *
-   *      $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfulody')
-   *      .then(function(btn){
-   *           if (btn === 'yes'){
-   *               me.openDocument();
-   *               me.closeWindow(true);
-   *           }
-   *       });
-   *
+   * @example
+
+$App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
+  .then(function(btn){
+    if (btn === 'yes'){
+      me.openDocument()
+      me.closeWindow(true)
+    }
+  });
+
    * @param {String} title
    * @param {String} msg
    * @param {Object} [config]

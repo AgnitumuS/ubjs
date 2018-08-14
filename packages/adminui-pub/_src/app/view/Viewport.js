@@ -1,5 +1,5 @@
 const UB = require('@unitybase/ub-pub')
-require('./OverflowSelect') // MPV Important for rolluped version
+require('./OverflowSelect') // MPV Important for rollup'ed version
 require('./UBBar')
 require('../core/UBStoreManager')
 require('./MainToolbar')
@@ -8,6 +8,7 @@ require('./LeftPanel')
 require('../../ux/window/Notification')
 require('../../ux/form/CheckboxGroupFix')
 require('../ux/UBToolTipOverride')
+/* global Ext $App */
 /**
  * UnityBase Ext-based client main viewport
  */

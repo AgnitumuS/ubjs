@@ -47,19 +47,8 @@ function launchApp () {
         return onError.call(scope)
       }
     )
-    // var config = this.getConfig()
-    // if (!config.disableCaching) {
-    //   url = addResourceVersion(url)
-    // }
-    // this.loadScriptFileBase(url, onLoad, onError, scope, synchronous)
   }
 
-  // Ext.require([
-  //   'UB.core.UBApp',
-  //   'UB.view.UBDropZone',
-  //   'UB.view.ErrorWindow',
-  //   'Ext.AbstractManager'
-  // ])
   Ext.onReady(extLoaded)
   /**
    * !!!
