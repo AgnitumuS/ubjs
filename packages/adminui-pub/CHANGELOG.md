@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.4.4]
+### Added
+ - `ubConfig.uiSettings.adminUI.customSidebar` & `ubConfig.uiSettings.adminUI.customSidebar` config properties added.
+ In case explicitly set to true, then adminUI will not create navbar/sidebar 
+ 
 ## [5.4.3]
 ### Changed
  - es6 syntax in code editors is enabled by default

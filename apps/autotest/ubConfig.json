@@ -61,6 +61,8 @@
 			//"loginWindowTopLogoURL": "/img/m-docnet.png",
 			"endpoint": "ubadminui",
 			"loginURL": "/models/adminui-vue/views/ub-auth.html",
+			"customSidebar": false, // set to true to not create sidebar
+			"customNavbar": false, // set to true to not create navbar
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
