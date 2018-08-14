@@ -32,7 +32,7 @@ cmd = {
   ]
 }
 
-fetch('http://localhost:8882', {method: 'POST', body: JSON.stringify(cmd)}.then((imageBin) => {...})
+fetch('http://localhost:8882', {method: 'POST', body: JSON.stringify(cmd)}).then((imageBin) => {...})
 ```
 
 Can draw text, png image, rect - see `./text/test.js` for sample
