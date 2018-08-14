@@ -4,12 +4,12 @@ function udiskController(diskEntity) {
     var me = diskEntity,
         entityName = me.entity.name,
 	    ENTITY_DIALECT = me.entity.connectionConfig ? me.entity.connectionConfig.dialect : '',
-        permissionEntityName = me.entity.attributes.byName('name').customSettings.permissionEntityName,
-        userRole = me.entity.attributes.byName('name').customSettings.userRole,
-        adminRole = me.entity.attributes.byName('name').customSettings.adminRole,
-        adminDCRole = me.entity.attributes.byName('name').customSettings.adminDenyContentRole,
+        permissionEntityName = me.entity.attributes.name.customSettings.permissionEntityName,
+        userRole = me.entity.attributes.name.customSettings.userRole,
+        adminRole = me.entity.attributes.name.customSettings.adminRole,
+        adminDCRole = me.entity.attributes.name.customSettings.adminDenyContentRole,
 
-    diskType = me.entity.attributes.byName('name').customSettings.diskType,
+    diskType = me.entity.attributes.name.customSettings.diskType,
         permissionEntity = global[permissionEntityName];
 
 
@@ -237,18 +237,14 @@ function udiskController(diskEntity) {
 
 
     function copyFileToNew(id, targetFolderID, name, isFolder, cStore) {
-        var docHandlerSrc,
-            docReq, docReqSrc, destID, eParams, content, cardStore;
-
+        let destID, eParams, cardStore;
+        let buffer;
         if (!isFolder) {
-            docReqSrc = new TubDocumentRequest();
-            docReqSrc.entity = entityName;
-            docReqSrc.attribute = 'fileData';
-            docReqSrc.id = id;
-            docReqSrc.isDirty = false;
-            docHandlerSrc = docReqSrc.createHandlerObject(true);
-            docHandlerSrc.loadContent(TubLoadContentBody.Yes);
-            //content = docReqSrc.getContent('bin');
+          buffer = App.blobStores.getContent({
+            entity: entityName,
+            ID: id,
+            attribute: 'fileData'
+          }, {encoding: 'bin'})
         }
         destID = cStore.generateID();
         cStore.run('insert', {
@@ -281,7 +277,6 @@ function udiskController(diskEntity) {
             return;
         }
 
-
         cStore.run('select', {
             entity: entityName,
             method: 'select',
@@ -290,17 +285,14 @@ function udiskController(diskEntity) {
             fieldList: ['ID']
         });
 
+        const content = App.blobStores.putContent({
+            entity: entityName,
+            attribute: 'fileData',
+            ID: destID,
+            fileName: name
+        }, buffer)
 
-        docReq = new TubDocumentRequest();
-        docReq.entity = entityName;
-        docReq.attribute = 'fileData';
-        docReq.fileName = name;
-        docReq.origName = name;
-        docReq.id = destID;
-        docReq.isDirty = true;
-        content = docReq.writeToTemp(docReqSrc);
-
-        eParams.fileData = content; //docHandler.content
+        eParams['fileData'] = JSON.stringify(content)
         cStore.run('update', {
                 entity: entityName,
                 fieldList: ["ID", 'name', 'fileData', 'mi_modifyDate'],
@@ -313,7 +305,6 @@ function udiskController(diskEntity) {
             ID: destID,
             fieldList: ['ID']
         });
-
     }
 
     function lockEntity(id, withChild){

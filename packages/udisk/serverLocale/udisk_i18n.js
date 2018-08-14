@@ -1,4 +1,5 @@
-﻿_.merge(global.i18nData, {
+﻿const UB = require('@unitybase/ub')
+UB.i18nExtend({
     'en': {
         accessDeny: '<<<Insufficient permissions for operation execution>>>',
         udiskUserMustHaveAccessToParent: 'User or role must have access to folder'
