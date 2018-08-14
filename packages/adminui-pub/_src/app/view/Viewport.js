@@ -17,20 +17,13 @@ Ext.define('UB.view.Viewport', {
 
   initComponent: function () {
     var me = this
+    UB.view.Viewport.main = this
     $App.on({
       updateCenterPanel: me.onUpdateCenterPanel,
       desktopChanged: me.onDesktopChanged,
       scope: me
     })
 
-    if (UB.connection.appConfig.uiSettings.adminUI.customNavbar !== true) {
-      me.topPanel = Ext.create('UB.view.MainToolbar', {
-        region: 'north',
-        collapsible: false,
-        border: false,
-        margin: '0, 0, 0, 0'
-      })
-    }
     if (UB.connection.appConfig.uiSettings.adminUI.customSidebar !== true) {
       me.leftPanel = Ext.create('UB.view.LeftPanel', {
         header: false,
@@ -40,6 +33,15 @@ Ext.define('UB.view.Viewport', {
         border: false
       })
     }
+    if (UB.connection.appConfig.uiSettings.adminUI.customNavbar !== true) {
+      me.topPanel = Ext.create('UB.view.MainToolbar', {
+        region: 'north',
+        collapsible: false,
+        border: false,
+        margin: '0, 0, 0, 0'
+      })
+    }
+
     me.contextMenu = Ext.create('Ext.menu.Menu', {items: [{
       text: UB.i18n('close'),
       scope: me,
@@ -110,7 +112,6 @@ Ext.define('UB.view.Viewport', {
     })
     this.callParent(arguments)
 
-    UB.view.Viewport.main = this
     this.on('destroy', function () {
       this.topPanel = null
       this.leftPanel = null
