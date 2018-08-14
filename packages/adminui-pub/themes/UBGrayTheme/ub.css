@@ -1569,3 +1569,7 @@ input.x-form-field-text{
     color: #D0021B;
     float: right;
 }
+
+.x-label-required.x-form-item-label-top span[role=separator]::after {
+    float: unset;
+}
