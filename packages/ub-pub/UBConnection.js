@@ -134,6 +134,13 @@ function UBConnection (connectionParams) {
    * @type {UBDomain}
    */
   this.domain = null
+  /**
+   * Allow to override a connection requestAuthParams function passed as config to UBConnection instance
+   * @param {function} authParamsFunc Function with the same signature as requestAuthParams parameter in UBConnection constructor
+   */
+  this.setRequestAuthParamsFunction = function (authParamsFunc) {
+    requestAuthParams = authParamsFunc
+  }
 
   if (appName.charAt(0) !== '/') {
     appName = '/' + appName

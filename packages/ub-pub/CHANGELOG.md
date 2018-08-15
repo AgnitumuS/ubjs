@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.3]
+### Added
+- allow to override UBConnection requestAuthParams after connection is created (for custom UI for example)
+
+```
+  function myLoginForm(connection, isRepeat) {
+    return new Promise((resolve, reject) => {
+      resolve({
+        authSchema: 'UB',
+        login: '....',
+        password: '.....',
+        registration: 0
+      })
+    }
+  }
+  UB.connection.setRequestAuthParamsFunction(myLoginForm)
+```
+
 ## [5.2.2]
 ### Added
 - UBConnection will store last auth schema to localStorage key (UB.LDS_KEYS.LAST_AUTH_SCHEMA) if LDS is available
