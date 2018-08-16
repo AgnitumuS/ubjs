@@ -8,6 +8,7 @@ UB.i18nExtend({
   UBAuthRegistration: 'Реєстрація',
   UBAuthContinue: 'Продовжити',
   KerberosRemember: 'Запам\'ятати спосіб входу',
+  KerberosRememberUserMenu: 'Завжди входити по домену',
   KerberosHeader: 'Вхід через обліковий запис <br/> операційної системи',
   KerberosTip: 'Вхід з правами користувача, що увійшов до операційної системи. Комп\'ютер повинен бути включено до домену',
   Authentication: 'Аутентифікація',

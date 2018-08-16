@@ -8,6 +8,7 @@ UB.i18nExtend({
   UBAuthRegistration: 'Registration',
   UBAuthContinue: 'Continue',
   KerberosRemember: 'Remember this login method',
+  KerberosRememberUserMenu: 'Always use domain for login',
   KerberosHeader: 'Sign in using the <br/> operating system account', // useOSCredentialInfo
   KerberosTip: 'Login with the user rights entered into the operating system. The computer must be included in the domain',
   Authentication: 'Authentication',

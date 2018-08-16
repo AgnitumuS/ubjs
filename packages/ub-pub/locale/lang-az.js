@@ -8,6 +8,7 @@ UB.i18nExtend({
   UBAuthRegistration: 'Registration',
   UBAuthContinue: 'Continue',
   KerberosRemember: 'Remember this login method',
+  KerberosRememberUserMenu: 'Always use domain for login',
   KerberosHeader: 'Sign in using the <br/> operating system account',
   KerberosTip: 'Əməliyyat sisteminin girişi zamanı göstərilən istifadəçi adı və paroldan istifadə etməklə giriş.Kompüter domeninə qoşulmuş olmalıdır',
   Authentication: 'Authentication',

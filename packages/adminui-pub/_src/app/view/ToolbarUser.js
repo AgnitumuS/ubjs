@@ -28,7 +28,7 @@ Ext.define('UB.view.ToolbarUser', {
         }, {
           xtype: 'checkbox',
           checked: window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
-          boxLabel: UB.i18n('KerberosRemember'),
+          boxLabel: UB.i18n('KerberosRememberUserMenu'),
           hidden: $App.connection.authMethods.indexOf('Negotiate') < 0,
           handler: function () {
             window.localStorage.setItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, this.getValue())
