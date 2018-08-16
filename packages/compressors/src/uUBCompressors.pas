@@ -232,7 +232,7 @@ begin
   L := length(Entry); num := 0;
   for I := 0 to L - 1 do
     if Entry[i].zipName <> '' then begin
-      val.asJSString := cx^.NewJSString(Entry[i].zipName);
+      val.asJSString := cx^.NewJSString(SetDirSeparators(Entry[i].zipName));
       r := pObj.SetElement(cx, num, val);
       inc(num);
       Assert(r);
