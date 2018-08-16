@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.10]
 ### Fixed
+- `PrintToPDF.requireFonts` documentation
 - parameter "compress" of constructor PrintToPdf was not enable content compression
 
 ## [5.0.7]
