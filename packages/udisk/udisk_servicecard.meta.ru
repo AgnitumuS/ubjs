@@ -10,8 +10,9 @@
             "caption": "Папка",
             "description": "Папка"
         },
-        "comment": {
-            "caption": "Описание"
+        "fcomment": {
+            "caption": "Комментарий",
+            "description": "Комментарий"
         },
         "isFolder": {
             "caption": "Папка",
@@ -21,8 +22,9 @@
             "caption": "Владелец",
             "description": "Владелец"
         },
-        "size": {
-            "caption": "Размер"
+        "fsize": {
+            "caption": "Размер",
+            "description": "Размер"
         },
         "contentType": {
             "caption": "Тип",
@@ -41,14 +43,6 @@
         },
         "permissionParent": {
             "caption": "Права папки"
-        },
-        "fcomment": {
-            "caption": "Комментарий",
-            "description": "Комментарий"
-        },
-        "fsize": {
-            "caption": "Размер",
-            "description": "Размер"
         }
     }
 }
