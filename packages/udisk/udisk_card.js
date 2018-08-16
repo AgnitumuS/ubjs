@@ -1,3 +1,3 @@
-/*globals require, udisk_card*/
-var controller = require('./modules/udiskController.js');
-controller(udisk_card);
+/* global udisk_card */
+const controller = require('./modules/udiskController.js')
+controller(udisk_card)

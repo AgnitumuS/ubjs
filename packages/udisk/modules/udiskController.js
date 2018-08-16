@@ -1,10 +1,14 @@
+const UB = require('@unitybase/ub')
+const App = UB.App
+const Session = UB.Session
+const _ = require('lodash')
+
 /* globals global */
 function udiskController (diskEntity) {
   var me = diskEntity,
     entityName = me.entity.name,
-	    ENTITY_DIALECT = me.entity.connectionConfig ? me.entity.connectionConfig.dialect : '',
+    ENTITY_DIALECT = me.entity.connectionConfig ? me.entity.connectionConfig.dialect : '',
     permissionEntityName = me.entity.attributes.name.customSettings.permissionEntityName,
-    userRole = me.entity.attributes.name.customSettings.userRole,
     adminRole = me.entity.attributes.name.customSettings.adminRole,
     adminDCRole = me.entity.attributes.name.customSettings.adminDenyContentRole,
 
@@ -57,7 +61,8 @@ function udiskController (diskEntity) {
      */
 
   function userHasRole (roleCode) {
-    var userRoleList = (Session.uData.roles || '').split(','), result = true
+    let userRoleList = (Session.uData.roles || '').split(',')
+    let result = true
     if (arguments.length > 1) {
       _.forEach(arguments, function (rc) {
         result = result && (userRoleList.indexOf(rc) >= 0)
@@ -70,7 +75,8 @@ function udiskController (diskEntity) {
   }
 
   function userHasAnyRole (roleCode) {
-    var userRoleList = (Session.uData.roles || '').split(','), result = true
+    let userRoleList = (Session.uData.roles || '').split(',')
+    let result = true
     _.forEach(arguments, function (rc) {
       result = (userRoleList.indexOf(rc) >= 0)
       return !result
@@ -81,7 +87,7 @@ function udiskController (diskEntity) {
   me.adminSelect = function (ctxt) {
     var params = ctxt.mParams,
       store = ctxt.dataStore
-    // store = new TubDataStore(ctxt.mParams.entity),
+    // store = UB.DataStore(ctxt.mParams.entity),
 
     if (userHasAnyRole(adminRole, adminDCRole)) {
       params.__skipRls = true
@@ -126,22 +132,21 @@ function udiskController (diskEntity) {
       throw new Error('<<<udiskCanChangeOnlyEmptyFolder>>>')
     }
 
-    store = new TubDataStore(entityName)
-    store.execSQL('delete from ' + entityName + ' where id = :ID:', params.execParams)
+    store = UB.DataStore(entityName)
+    store.execSQL(`delete from ${entityName} where id = :ID:`, params.execParams)
     // store.run('delete', params);
   }
 
   me.adminUpdate = function (ctxt) {
-    var params = ctxt.mParams,
-      store = ctxt.dataStore,
-      cStore
+    let params = ctxt.mParams
+    let store = ctxt.dataStore
 
     if (userHasAnyRole(adminRole, adminDCRole)) {
       params.__skipRls = true
     } else {
       throw new Error('Access deny')
     }
-    cStore = UB.Repository(entityName)
+    let cStore = UB.Repository(entityName)
       .attrs(['ID', 'isFolder'])
       .misc({__skipRls: true})
       .where('[ID]', '=', params.execParams.ID)
@@ -159,7 +164,7 @@ function udiskController (diskEntity) {
     }
     params.isAdminMode = true
     /*
-        store = new TubDataStore(entityName);
+        store = UB.DataStore(entityName);
         if (params.execParams.name && params.execParams.ID) {
             store.execSQL('update ' + entityName + ' set name = :name: where id = :ID:', params.execParams)
         } else {
@@ -300,8 +305,9 @@ function udiskController (diskEntity) {
   }
 
   function lockEntity (id, withChild) {
-    var lockedArr = [id],
-      store = new TubDataStore(entityName), lockRes
+    let lockedArr = [id]
+    let store = UB.DataStore(entityName)
+    let lockRes
     store.run('lock', {
       entity: entityName,
       method: 'lock',
@@ -330,7 +336,7 @@ function udiskController (diskEntity) {
   }
 
   function unlockEntity (ids) {
-    var store = new TubDataStore(entityName)
+    let store = UB.DataStore(entityName)
     function doUnlock (id) {
       store.run('unlock', {
         entity: entityName,
@@ -363,7 +369,7 @@ function udiskController (diskEntity) {
     if (!targetFolderID) {
       throw new Error('Invalid value of targetFolderID parameter')
     }
-    cStore = new TubDataStore(entityName)
+    cStore = UB.DataStore(entityName)
     if (action === 'cut') {
       if (sourceFolderID === targetFolderID) {
         return
@@ -479,7 +485,7 @@ function udiskController (diskEntity) {
 
     checkAccess(execParams.cardID, 'delegate')
 
-    pStore = new TubDataStore(permissionEntityName)
+    pStore = UB.DataStore(permissionEntityName)
     if (allChild) {
       cardStore = UB.Repository(entityName)
         .attrs(['ID', 'mi_treePath'])
@@ -694,9 +700,9 @@ function udiskController (diskEntity) {
      * @returns {String} accessType
      */
   function getAccessType (ID) {
-    var store, accessType, priority = -1, pTmp, result = null
+    var accessType, priority = -1, pTmp, result = null
 
-    store = new TubDataStore(permissionEntityName)
+    let store = UB.DataStore(permissionEntityName)
     store.runSQL('select p.accessType from ' + permissionEntityName + ' p where p.cardID = :ID: and exists ' +
         '(select 1 from uba_userrole ur where p.userID = ur.roleID and ur.userID = :userID: ' +
         ' union all select 1 from uba_user u where p.userID = u.ID and u.ID = :userID: ) ', {
@@ -844,7 +850,7 @@ function udiskController (diskEntity) {
      */
   function deleteInheritRight (ID) {
     var store,
-      pStore = new TubDataStore(permissionEntityName)
+      pStore = UB.DataStore(permissionEntityName)
     store = UB.Repository(permissionEntityName)
       .attrs(['ID'])
       .where('[cardID]', '=', ID)
@@ -872,7 +878,7 @@ function udiskController (diskEntity) {
      */
   function copyInheritRight (ID, parentID) {
     var store, store2,
-      pStore = new TubDataStore(permissionEntityName)
+      pStore = UB.DataStore(permissionEntityName)
 
     if (!parentID) {
       store = UB.Repository(entityName)
@@ -945,7 +951,7 @@ function udiskController (diskEntity) {
       .attrs(['ID'])
       .misc({__skipRls: true})
       .where('[parentID]', '=', execParams.ID).select()
-    pStore = new TubDataStore(entityName)
+    pStore = UB.DataStore(entityName)
 
     while (!store.eof) {
       try {
@@ -969,7 +975,7 @@ function udiskController (diskEntity) {
       .attrs(['ID'])
       .misc({__skipRls: true})
       .where('[cardID]', '=', execParams.ID).select()
-    pStore = new TubDataStore(permissionEntityName)
+    pStore = UB.DataStore(permissionEntityName)
 
     while (!store.eof) {
       try {
@@ -1001,7 +1007,7 @@ function udiskController (diskEntity) {
     adminMode = ctxt.mParams.mode === 'admin' && userHasAnyRole(adminRole, adminDCRole)
 
     if (!adminMode) { // in admin mode new object do not get the right
-      pStore = new TubDataStore(permissionEntityName)
+      pStore = UB.DataStore(permissionEntityName)
       pStore.run('insert', {
         fieldList: [],
         caller: me.entity.name,
@@ -1083,7 +1089,7 @@ function udiskController (diskEntity) {
 
      if (udisk_card.get('isFolder')) {
      // для всех подчинненых файлов ставим те же права
-     pStore = new TubDataStore(permissionEntityName);
+     pStore = UB.DataStore(permissionEntityName);
      cStore = UB.Repository(entityName).
      attrs(['ID']).
      where('[parentID]', '=', cardID).
@@ -1221,7 +1227,7 @@ function udiskController (diskEntity) {
   me.copyParentRight = function (ctxt) {
     var ID = ctxt.mParams.ID, parentID,
       store, store2,
-      pStore = new TubDataStore(permissionEntityName)
+      pStore = UB.DataStore(permissionEntityName)
 
     if (!ID) {
       throw new Error('Invalid parameters')
@@ -1301,7 +1307,7 @@ function udiskController (diskEntity) {
       return
     }
 
-    store = new TubDataStore(permissionEntityName)
+    store = UB.DataStore(permissionEntityName)
     store.runSQL(
       // user - user role - role
       'select p.accessType from ' + permissionEntityName + ' p where p.cardID = :cardID: and p.userID = :userID: ' +
@@ -1348,7 +1354,7 @@ function udiskController (diskEntity) {
     if (userHasAnyRole(adminRole, adminDCRole)) {
       return true
     }
-    store = new TubDataStore(permissionEntityName)
+    store = UB.DataStore(permissionEntityName)
 
     store.runSQL(
       'select 1 from ' + entityName + ' c where c.parentID = :cardID: and exists(' +
@@ -1410,7 +1416,7 @@ function udiskController (diskEntity) {
 
     if (udisk_card.get('isFolder')) {
       // для всех подчинненых файлов ставим те же права
-      permStore = new TubDataStore(permissionEntityName)
+      permStore = UB.DataStore(permissionEntityName)
       cStore = UB.Repository(entityName)
         .attrs(['ID'])
         .where('[parentID]', '=', cardID)
@@ -1519,7 +1525,7 @@ function udiskController (diskEntity) {
     // synchroniseAccess(ctxt, 'update');
 
     // update all child
-    permStore = new TubDataStore(permissionEntityName)
+    permStore = UB.DataStore(permissionEntityName)
     updParams = {}
     if (execParams.accessType) {
       updParams.accessType = execParams.accessType
