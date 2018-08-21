@@ -18,14 +18,14 @@ module.exports = FileBasedStoreLoader
 /**
  * @example
 
-    const FileBasedStoreLoader = require('@unitybase/base')FileBasedStoreLoader
-    let loader = new FileBasedStoreLoader({
-      entity: me.entity,
-      foldersConfig: folders,
-      fileMask: /-fm\.def$/,
-      onBeforeRowAdd: postProcessing
-    });
-    let resultDataCache = loader.load()
+const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
+let loader = new FileBasedStoreLoader({
+  entity: me.entity,
+  foldersConfig: folders,
+  fileMask: /-fm\.def$/,
+  onBeforeRowAdd: postProcessing
+})
+let resultDataCache = loader.load()
 
  * @class
  * @param {Object}    config
@@ -89,13 +89,13 @@ function FileBasedStoreLoader (config) {
    * @type {Boolean}
    * @readonly
    */
-  this.haveModifyDate = Boolean(_.find(this.attributes, {name: 'mi_modifyDate'}))
+  this.haveModifyDate = this.attributes.findIndex((attr) => attr.name === 'mi_modifyDate') > -1
   /**
    * Is `mStore.simpleAudit` enabled for current entity (exist `mi_createDate` attribute)
    * @type {Boolean}
    * @readonly
    */
-  this.haveCreateDate = Boolean(_.find(this.attributes, {name: 'mi_createDate'}))
+  this.haveCreateDate = this.attributes.findIndex((attr) => attr.name === 'mi_createDate') > -1
 
   /**
    * Currently processed root folder
@@ -210,7 +210,7 @@ FileBasedStoreLoader.prototype.parseFolder = function (folderPath, recursionLeve
         if (!oneRow.ID) {
           console.error(`Parameter ID not set. File "${fullPath}" ignored`)
           canAdd = false
-        } else if (_.find(this.resultCollection, {ID: oneRow.ID})) {
+        } else if (this.resultCollection.indexOf((elm) => elm.ID === oneRow.ID) > -1) {
           console.error(`Record with ID "${oneRow.ID}" already exist. File "${fullPath}" ignored`)
           canAdd = false
         }
@@ -254,7 +254,7 @@ FileBasedStoreLoader.prototype.extractAttributesValues = function (content) {
   })
     // transformation block
   _.forEach(result, function (value, attribute) {
-    let attr = _.find(me.attributes, {name: attribute})
+    let attr = me.attributes.find(elm => elm.name === attribute)
 
     if (!attr) { return }
     switch (attr.dataType) {

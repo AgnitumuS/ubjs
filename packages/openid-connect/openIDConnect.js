@@ -1,3 +1,5 @@
+const UB = require('@unitybase/ub')
+const App = UB.App
 /**
  * OpenIDConnect client for UnityBase
  *
@@ -29,7 +31,7 @@
 
 const btoa = require('btoa')
 const customSettings = App.serverConfig.application.customSettings
-let externalUrl = App.serverURL
+let externalUrl = App.externalURL
 /**
  *
  */
@@ -218,7 +220,7 @@ function redirectToProviderAuth (req, resp, providerConfig, redirectUrl, request
   resp.statusCode = 302
   resp.writeEnd('')
   resp.writeHead('Location: ' + providerConfig.authUrl +
-    '?state=' + btoa('fakestate') +  //TODO - get it from global cache
+    '?state=' + btoa('fakestate') +  // TODO - get it from global cache
     (providerConfig.scope ? '&scope=' + providerConfig.scope : '') +
     (providerConfig.nonce ? '&nonce=' + providerConfig.nonce : '') +
     '&redirect_uri=' + redirectUrl +
@@ -289,7 +291,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
       if (!userID) {
         notifyProviderError(resp, provider)
       } else {
-        let loginResp = Session.setUser(userID, code)
+        let loginResp = UB.Session.setUser(userID, code)
         let objConnectParam = {success: true, data: JSON.parse(loginResp), secretWord: code}
         resp.statusCode = 200
         resp.write('<!DOCTYPE html><html>')

@@ -110,7 +110,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
       throw new Error('<<<Password is too simple>>>')
     }
   }
-    // checkDictionary
+  // checkDictionary
   if (passwordPolicy.checkDictionary) {
     // todo - check password from dictionary
     // if (false) {
@@ -126,7 +126,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   }
 
   newPwd = nsha256('salt' + newPwd)
-    // checkPrevPwdNum
+  // checkPrevPwdNum
   if (passwordPolicy.checkPrevPwdNum > 0) {
     UB.Repository('uba_prevPasswordsHash')
       .attrs('uPasswordHashHexa')
@@ -517,19 +517,22 @@ function processRegistrationStep2 (resp, otp, login) {
       throw new UB.UBAbort('Invalid OTP')
     }
   }
-  resp.writeHead(`Location: ${App.serverURL + confirmationRedirectURI}?login=${encodeURIComponent(login)}`)
+  resp.writeHead(`Location: ${App.externalURL + confirmationRedirectURI}?login=${encodeURIComponent(login)}`)
   resp.statusCode = 302
 }
 
 /**
- * Two-step new user public registration **rest** endpoint.
+ * Two-step new user public registration **rest** endpoint. Optionaly can use google Re-captcha.
+ * To enable re-captcha on server side provide a valid [re-captcha SECRET](https://www.google.com/recaptcha/admin#list)
+ *  in `serverConfig.application.customSettings.reCAPTCHA.secretKey` application config.
  *
  * 1-st step: web page pass a registration parameters as JSON:
  *
  *      POST /rest/uba_user/publicRegistration
  *      {email: "<email>", phone: "", utmSource: '', utmCampaign: '', recaptca: "googleRecaptchaValue"}
  *
- * will:
+ *
+ * Server will:
  *
  *  - create a new uba_user (in pending state isPending===true) and generate a password for user
  *  - generate OTP, and put a optional `utmSource` and `utmCampaign` parameters to the OTP uData
@@ -541,17 +544,15 @@ function processRegistrationStep2 (resp, otp, login) {
  *
  *      GET /rest/uba_user/publicRegistration?otp=<one time pwd value>&login=<user_login>
  *
- * will:
+ * Server will:
  *
  *  - check the provided OTP and if it is valud
  *  - remove a `pending` from uba_user row
  *  - fire a `registration` event for {@link Session}
  *
- * Access to endpoint is restricted by default. To enable public registration a ELS rule for Anonymous role for `uba_user.publicRegistration` must be defined in your application.
+ * Access to endpoint is restricted by default. To enable public registration developer should grant ELS access for
+ * `uba_user.publicRegistration` method to `Anonymous` role.
  *
- *
- * GET if has otp and login get parameter - then activate user
- * else - expect body in kind
  * @param fake
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
@@ -609,7 +610,7 @@ me.publicRegistration = function (fake, req, resp) {
       me.changePassword(userID, email, password)
       const userOtp = uba_otp.generateOtp('EMail', userID, {utmSource, utmCampaign})
 
-      const registrationAddress = `${App.serverURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
+      const registrationAddress = `${App.externalURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
       let reportResult = UBReport.makeReport(publicRegistrationReportCode, 'html', {
         login: email,

@@ -702,17 +702,17 @@ uba_subject_ns.attrs = {
 */
 const uba_subject = new uba_subject_ns()
 /**
- * Users
- * @extends EntityNamespace
- * @mixes mStorage
- * @mixes unity
- */
+    * Users
+    * @extends EntityNamespace
+    * @mixes mStorage
+    * @mixes unity
+    */
 class uba_user_ns extends EntityNamespace {}
 /** Attributes defined in metadata. This property not exist in real life and added just for help */
 uba_user_ns.attrs = {
- /**
-  * @type {Number}
-  */
+  /**
+   * @type {Number}
+   */
   ID: 0,
  /**
   * User login in lower case

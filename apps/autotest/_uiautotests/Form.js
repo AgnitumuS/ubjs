@@ -2,7 +2,7 @@ import { ExtSelector } from './ExtJSHelper/ExtJSSelector'
 import { getWindowError } from './ExtJSHelper/Preconditions'
 import { Selector } from 'testcafe'
 
-const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:888/ubadminui` //`http://localhost:888/adm-dev`
+const TEST_PAGE = process.env.TEST_PAGE || `http://localhost:8881/ubadminui`
 
 fixture(`Form test`)
   .page(TEST_PAGE)

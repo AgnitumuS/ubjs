@@ -1,6 +1,6 @@
 {
   "id": "https://unitybase.info/models/UB/schemas/ubConfig.schema.json",
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/schema#",
   "title": "UnityBase configuration",
   "description": "Property values in the configuration may include: <ul><li>`%ENV_VAR%` - will be replaced by value of OS environment variable with the same name</li><li>`\"#include(pathToFile)\"` - will be replace by content of file `pathToFile`</li><li>Can be combined as such: `\"#include(%UB_HOME%\\models\\defHeadersPostprocessors.json)\"`</li></ul>",
   "type": "object",
@@ -51,6 +51,11 @@
           "type": "string",
           "default": "/",
           "description": "Begin of URL to listen on. Server will listen on `protocol://host:port/path`.<br>Several HTTPSys based server instances can share the same `host:port` combinations with the different paths"
+        },
+        "externalURL": {
+          "type": "string",
+          "default": "equal to full server URL",
+          "description": "URL that the User will use to access your server. To be used in case server is behind a reverse proxy"
         },
         "additionalURLs": {
           "type": "Array",
@@ -242,7 +247,6 @@
       "type": "object",
       "description": "Built-in WebSocket server configuration",
       "additionalProperties": false,
-      "required": [ ],
       "defaultProperties": [
         "protocol",
         "host",
@@ -339,7 +343,7 @@
         },
         "path": {
           "type": "string",
-          "default": ".\\\\log",
+          "default": "./logs",
           "description": "Path to folder where server place log files (including rotated logs)"
         },
         "rotationSizeInMB": {
@@ -449,10 +453,6 @@
           "type": "boolean",
           "default": false,
           "description": "If `true` will not require password for CERT authentication (only secret key passrord is required)"
-        },
-        "SPN": {
-          "type": "string",
-          "description": "Service Principal Name is a name of service instance to be used for Kerberos authentication when GSSAPI implementation is used (currently - this is applicable when Negotiate authentication method selected on Linux and only for Enterprise Edition). The same name should be contained in the keytab file specified in KRB5_KTNAME environment variable. SPN can be omitted while keytab is required, when not set default credentials from keytab file will be used. Don't forget that NTLM authentication is not supported - domain should be configured accordingly"
         },
         "ldapCatalogs": {
           "type": "array",
@@ -634,7 +634,7 @@
         },
         "connections": {
           "type": "array",
-          "description": "Database connections. Main article is <a href=\"https://dev.softengi.com/confluence/pages/viewpage.action?pageId=65274525#Installation(requirements)-Databaseaccessrequirements\">here</a> Tips: <ul><li>You can use oracle client without install it. Just copy files distributed with <a href=\"http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html\">Oracle Instant Client</a> to the bin\\OracleInstantClient</li><li>To prevent storing oracle credential in config you can use <a href=\"For details see here: https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=65274525\">Oracle Wallet</a></li><li>to prevent Oracle client disconnect in case on inactivity add the SQLNET.EXPIRE_TIME to the sqlnet.ora file on the server and set it and set it to some interval (10 for example)</li></ul>",
+            "description": "Database connections. Main article is <a href=\"https://dev.intecracy.com/confluence/pages/viewpage.action?pageId=65274525#Installation(requirements)-Databaseaccessrequirements\">here</a> Tips: <ul><li>You can use oracle client without install it. Just copy files distributed with <a href=\"http://www.oracle.com/technetwork/database/features/instant-client/index-097480.html\">Oracle Instant Client</a> to the bin\\OracleInstantClient</li><li>To prevent storing oracle credential in config you can use <a href=\"For details see here: https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=65274525\">Oracle Wallet</a></li><li>to prevent Oracle client disconnect in case on inactivity add the SQLNET.EXPIRE_TIME to the sqlnet.ora file on the server and set it and set it to some interval (10 for example)</li></ul>",
           "items": {
             "type": "object",
             "properties": {
@@ -684,7 +684,7 @@
               },
               "serverName": {
                 "type": "string",
-                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|[protocol:]hostname or IP[\\instanceName]| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" \n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | protocol://host:port | \"postgresql://dodb3-s8:5432\""
+                "description": "Database host\n\n |DBMS  |Format|Example\n|-\n| `MS SQL`|Windows: [protocol:]hostname or IP[\\instanceName]; Linux: section name from `/etc/odbc.ini`| example1: `\"SQLSERVER1\\instance2\"` <br> example2: \"tcp:SQL_SERVER12\" <br> example linux: \"myserver\"\n| `Oracle`| TNS_NAME or <br> TNS definition string| example1: \"MyOraTNSName\"<br>example: \"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=do5-s8)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORAUTC)))\" \n| `Postgre` | protocol://host:port | \"postgresql://dodb3-s8:5432\""
               },
               "databaseName": {
                 "type": "string",
@@ -750,7 +750,7 @@
               "tempPath": {
                 "type": "string",
                 "description": "Path for storing uncommitted files. Recommended to be on the same volume as `path`. In case of reverse proxy - must be inside store folder",
-                "default": "process.env.TEMP"
+                "default": "path.join(this.path, '_temp')"
               },
               "historyDepth": {
                 "type": "number",
@@ -820,10 +820,24 @@
               "description": "UI theme name. Can be name of a folder in the `inetPub\\themes\\` folder",
               "default": "UBtheme"
             },
-			"loginWindowTopLogoURL": {
-			  "type": "string",
+            "loginURL": {
+              "type": "string",
+              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page",
+            },
+            "customSidebar": {
+              "type": "boolean",
+              "default": false,
+              "description": "In case of true adminUI will not create a sidebar (instance of UB.view.LeftPanel)"
+            },
+            "customNavbar": {
+              "type": "boolean",
+              "default": false,
+              "description": "In case of true adminUI will not create a navbar (instance of UB.view.MainToolbar)"
+            },
+            "loginWindowTopLogoURL": {
+              "type": "string",
               "description": "Optional URL for a logo to display on the top of login form. Logo stretched to 150px height, so it is a good idea for logo to be 150x150px"
-			},
+            },
             "endpoint": {
               "type": "string",
               "description": "The entry point for a adminUI interface. In case both adminUI & portalUI is used on the same instance set this parameter to something long and unique to prevent hacking",
@@ -841,6 +855,11 @@
                   "description": "Long pooling time (in seconds)"
                 }
               }
+            },
+            "hmrServerURL": {
+              "type": "string",
+              "description": "@unitybase/hmr Hot module replacer web socket URL",
+              "default": "equal to application.rootHandler"
             },
             "encryptionImplementation" : {
               "type": "string",
@@ -882,11 +901,11 @@
                 }
               }
             },
-			"favoriteCategoryCount": {
-			  "type": "number",
+            "favoriteCategoryCount": {
+              "type": "number",
               "description": "Number of categories (up to 4) for a favorites columnus",
               "default": 2
-			}
+            }
           }
         },
         "portalUI": {

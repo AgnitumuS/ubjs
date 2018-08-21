@@ -10,7 +10,6 @@ const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
 const UB = require('@unitybase/ub')
 const App = UB.App
-const blobStores = require('@unitybase/ub/blobStores')
 const mStorage = UB.mixins.mStorage
 
 me.entity.addMethod('select')
@@ -34,26 +33,33 @@ const SCRIPT_EXTENSION = '.js'
 const REPORT_BODY_TPL = `
 exports.reportCode = {
   /**
-  * This function should be defined in report code block.
-  *
-  * Inside function you should:
-  * 1) Prepare data
-  * 2) Run method this.buildHTML(reportData); where reportData is data for mustache template
-  * 3) If need create PDF run method this.transformToPdf(htmlReport); where htmlReport is HTML
-  * 4) If is server side function should return report as string otherwise Promise or string
-  *
-  * @cfg {function} buildReport
-  * @params {[]|{}} reportParams
-  * @returns {Promise|Object} If code run on server method should return report data.
-  * Promise object should be resolved report code
-  */
+   * Generate report data and render report. Function should:
+   *  - prepare reportData - a JavaScript object passed to mustache template
+   *  - call this.buildHTML(reportData) to render mustache template
+   *  - optionally call this.transformToPdf(htmlReport) where htmlReport is HTML from prev. step
+   *  - for server side returned value should be string, for client - Promise resolved to string
+   *
+   * @cfg {function} buildReport
+   * @params {[]|{}} reportParams
+   * @returns {Promise|Object}
+   */
   buildReport: function(reportParams){
-    var result = this.buildHTML(reportParams)
+    var reportData = this.buildHTML(reportParams)
     if (this.reportType === 'pdf') {
-        result = this.transformToPdf(result)
+        result = this.transformToPdf(reportData)
     }
     return result
-  }
+  },
+  /** optional report click event handler
+   * see click)sample report inside UBS model
+   */
+  // onReportClick: function (e) {
+  //   // prevent default action
+  //   e.preventDefault()
+  //   // get table/cell/roe based on event target
+  //   let cellInfo = UBS.UBReport.cellInfo(e)
+  //   ...
+  // }  
 }
 `
 /**
@@ -79,7 +85,7 @@ function postProcessing (loader, fullFilePath, content, row) {
   if (row.ID) console.warn(`Please, remove a row "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB4 report ID is generated automatically as crc32(fileNameWoExtension)`)
   row.ID = ncrc32(0, row.report_code)
 
-    // fill formDef attribute value
+  // fill formDef attribute value
   row.template = JSON.stringify({
     fName: fileName,
     origName: fileName,
@@ -166,9 +172,9 @@ function doSelect (ctxt) {
     }
   }
   let filteredData = LocalDataStore.doFilterAndSort(cachedData, mP)
-    // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
+  // return as asked in fieldList using compact format  {fieldCount: 2, rowCount: 2, values: ["ID", "name", 1, "ss", 2, "dfd"]}
   let resp = LocalDataStore.flatten(mP.fieldList, filteredData.resultData)
-  ctxt.dataStore.initFromJSON(resp)
+  ctxt.dataStore.initialize(resp)
 }
 
 /**
@@ -228,7 +234,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   if (isInsert || !newTemplateInfo) {
     reportBody = ''
   } else {
-    reportBody = blobStores.getContent(
+    reportBody = App.blobStores.getContent(
       {
         entity: entity.name,
         attribute: 'template',
@@ -247,7 +253,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       }
     }
   }
-  let docInfo = blobStores.putContent({
+  let docInfo = App.blobStores.putContent({
     entity: entity.name,
     attribute: 'template',
     ID: ID,
@@ -260,7 +266,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   storedValue.template = JSON.stringify(docInfo)
 
   if (isInsert) {
-    let reportCodeInfo = blobStores.putContent({
+    let reportCodeInfo = App.blobStores.putContent({
       entity: entity.name,
       attribute: 'code',
       ID: ID,
@@ -308,7 +314,7 @@ me.update = function (ctxt) {
   let cachedData = loadAll()
   let storedValue = LocalDataStore.byID(cachedData, ID)
   if (storedValue.total !== 1) {
-    throw new Error('Record with ID=' + ID + 'not found')
+    throw new Error(`Record with ID=${ID} not found`)
   }
   storedValue = LocalDataStore.selectResultToArrayOfObjects(storedValue)[0]
 

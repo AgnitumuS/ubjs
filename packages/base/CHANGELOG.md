@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.17]
+### Fixed
+- ServerRepository.selectAsObject now accept two optional parameters
+  `selectAsObject(fieldAliases, resultInPlainText)` to be compatible with ClientRepository.
+
+  **WARNING** using fieldAliases on server side cause a little performance degradation
+
 ## [5.0.10]
 ### Changed
 - argv.getServerConfiguration during parsing ubConfig application.domain.models

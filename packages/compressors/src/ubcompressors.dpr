@@ -4,13 +4,18 @@ uses
   {$IFNDEF FPC}
   FastMM4,
   {$ENDIF}
-  SysUtils,
-  Classes,
   {$IFDEF MSWINDOWS}
   Windows,
+  {$ELSE}
+  cthreads,
   {$ENDIF}
+  SysUtils,
+  Classes,
   SpiderMonkey,
   SyNodePluginIntf,
+  SyNode,
+  SyNodeProto,
+  SyNodeSimpleProto,
   uUBCompressors in 'uUBCompressors.pas';
 
 const

@@ -55,13 +55,6 @@ module.exports.inject = function inject (url, charset) {
           }
         }, 0)
       }
-      // if ('readyState' in elm) {   // for <IE9 Compatability
-      //   elm.onreadystatechange = function () {
-      //     if (this.readyState === 'loaded' || this.readyState === 'complete') {
-      //       resultHandler()
-      //     }
-      //   }
-      // }
 
       __head.appendChild(elm)
       // src must be set AFTER onload && onerror && appendChild
@@ -94,7 +87,7 @@ const MODEL_RE = new RegExp('models/(.+?)/') // speculative search. w/o ? found 
 function getResourceVersion (uri) {
   let modelName = MODEL_RE.test(uri) ? MODEL_RE.exec(uri)[1] : '_web'
   return (__ubVersion && __ubVersion[modelName])
-    ? '?ubver=' + __ubVersion[modelName]
+    ? 'ubver=' + __ubVersion[modelName]
     : ''
 }
 
@@ -106,6 +99,8 @@ function getResourceVersion (uri) {
  */
 function addResourceVersion (uri) {
   let ver = getResourceVersion(uri)
-  return ver ? uri + ver : uri
+  if (!ver) return uri
+  let separator = (uri.indexOf('?') === -1) ? '?' : '&'
+  return uri + separator + ver
 }
 module.exports.addResourceVersion = addResourceVersion

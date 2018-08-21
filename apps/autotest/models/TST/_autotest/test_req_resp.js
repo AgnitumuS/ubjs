@@ -101,9 +101,13 @@ function testUnicode (conn) {
   function unicodeExc () {
     conn.query({entity: 'tst_service', method: 'throwTest', isUnicode: true})
   }
-  assert.throws(unicodeExc, /Підтримується/, 'Should throw unicode error')
-  // function systemExc () {
-  //   conn.query({entity: 'tst_service', method: 'throwTest', isSystem: true})
-  // }
-  // assert.throws(systemExc, /aa/, 'Should throw system errro encoded to UTF8')
+  assert.throws(unicodeExc, /<<<Підтримується>>>/, 'Should throw unicode error')
+  function systemExc () {
+    conn.query({entity: 'tst_service', method: 'throwTest', isSystem: true})
+  }
+  assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide system errros in production mode')
+  function usualExc () {
+    conn.query({entity: 'tst_service', method: 'throwTest'})
+  }
+  assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide JS errros in production mode')
 }

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubm",
-  "version": "5.0.11",
+  "version": "5.0.42",
   "description": "Set of entities for constructing a dynamically generated UnityBase UI. Enumerations, navigation desktops & shortcuts, forms, ER diagrams",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubm",
   "config": {
@@ -16,15 +16,16 @@
     "registry": "http://registry.unitybase.info"
   },
   "main": "ubm.js",
+  "browser": "./public/initModel.js",
   "dependencies": {
-    "@unitybase/base": "^5.0.10",
-    "@unitybase/cs-shared": "^5.0.5",
-    "@unitybase/ub": "^5.0.11",
-    "@unitybase/uba": "^5.0.11",
-    "@unitybase/ubs": "^5.0.11"
+    "@unitybase/base": "^5.0.19",
+    "@unitybase/cs-shared": "^5.0.8",
+    "@unitybase/ub": "^5.0.31",
+    "@unitybase/uba": "^5.0.31",
+    "@unitybase/ubs": "^5.1.4"
   },
   "devDependencies": {
-    "@unitybase/stubs": "^5.0.9"
+    "@unitybase/stubs": "^5.0.11"
   },
   "keywords": [
     "UnityBase",

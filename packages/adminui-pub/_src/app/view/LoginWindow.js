@@ -1,3 +1,4 @@
+const UB = require('@unitybase/ub-pub')
 /**
  * User login window.
  *
@@ -6,7 +7,6 @@
  * @protected
  * @author pavel.mash
  */
-
 Ext.define('UB.view.LoginWindow', {
   extend: 'Ext.window.Window',
   alias: 'widget.loginwindow',
@@ -23,38 +23,13 @@ Ext.define('UB.view.LoginWindow', {
      * @return {Promise}
      */
     DoLogon: function (connection, isRepeat) {
-      var loginWindow,
-        silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false'),
-        userDidLogout = JSON.parse(window.localStorage.getItem('userDidLogout') || 'false'),
-        loginPromise
+      let loginWindow = Ext.create('UB.view.LoginWindow', {connection: connection})
 
-      if (userDidLogout) {
-        window.localStorage.setItem('userDidLogout', 'false')
-      }
-
-      if (!connection.authMethods.length) {
-        return Promise.resolve({
-          authSchema: 'None',
-          login: 'anonymous'
-        })
-      }
-
-      if (silenceKerberosLogin && !isRepeat && !userDidLogout && (connection.authMethods.indexOf('Negotiate') >= 0)) {
-        return Promise.resolve({
-          authSchema: 'Negotiate',
-          login: '',
-          password: '',
-          registration: 0
-        })
-      }
-
-      loginWindow = Ext.create('UB.view.LoginWindow', {connection: connection})
-
-      loginPromise = new Promise(function (resolve, reject) {
+      let loginPromise = new Promise(function (resolve, reject) {
         loginWindow.deferred = {resolve: resolve, reject: reject}
       })
-            // user already authorized but session expire
-            // disable userName & auth tabs so user can only repeat then same auth
+      // user already authorized but session expire
+      // disable userName & auth tabs so user can only repeat then same auth
       if (connection.lastLoginName) {
         loginWindow.textFieldLoginCert && loginWindow.textFieldLoginCert.setDisabled(true)
         loginWindow.textFieldLogin && loginWindow.textFieldLogin.setDisabled(true)
@@ -79,14 +54,13 @@ Ext.define('UB.view.LoginWindow', {
   resizable: false,
   id: 'extClientLoginForm',
 
-    /**
-     * @type {UBConnection}
-     */
+  /**
+   * @type {UBConnection}
+   */
   connection: null,
-    /**
-     *
-     * @param {UBConnection} connection
-     */
+  /**
+   * @param {UBConnection} connection
+   */
   constructor: function (connection) {
     this.callParent(arguments)
   },
@@ -114,18 +88,17 @@ Ext.define('UB.view.LoginWindow', {
       me = this,
       authMethods = me.connection.authMethods,
       authItems = [],
-      firstLogin, silenceKerberosLogin,
       minAuthTabsHeight = 265,
-      lastSavedLogin = window.localStorage.getItem('lastLogin'),
+      lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN),
       locale = this.connection.preferredLocale,
       applicationName
     var cfgAdminUI = UB.appConfig.uiSettings.adminUI
-    firstLogin = JSON.parse(window.localStorage.getItem('firstLogin') || 'false')
-    silenceKerberosLogin = JSON.parse(window.localStorage.getItem('silenceKerberosLogin') || 'false')
+    let firstLogin = window.localStorage.getItem('firstLogin') === 'true'
+    let silenceKerberosLogin = window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
 
     me.items = []
     me.buttons = [{
-      text: UB.i18n('enter'),
+      text: UB.i18n('Enter'),
       cls: 'ub-login-btn',
       scope: this,
       minWidth: 150,
@@ -171,11 +144,11 @@ Ext.define('UB.view.LoginWindow', {
         allowBlank: false,
         cls: 'ub-login-input',
         labelClsExtra: 'fa fa-user fa-2x',
-        requireText: UB.i18n('login'),
+        requireText: UB.i18n('User'),
         fieldLabel: ' ',
         labelSeparator: '',
         regex: authenticationCert.userNameRE ? new RegExp(authenticationCert.userNameRE) : null,
-        regexText: authenticationCert.userNameREMessage ? UB.i18n(authenticationCert.userNameREMessage): null,
+        regexText: authenticationCert.userNameREMessage ? UB.i18n(authenticationCert.userNameREMessage) : null,
         labelWidth: 40,
         value: me.connection.lastLoginName || lastSavedLogin
       })
@@ -185,7 +158,7 @@ Ext.define('UB.view.LoginWindow', {
         cls: 'ub-login-input',
 
         labelClsExtra: 'fa fa-key fa-2x',
-        requireText: UB.i18n('parol'),
+        requireText: UB.i18n('Password'),
         fieldLabel: ' ',
         labelSeparator: '',
         labelWidth: 40,
@@ -204,19 +177,18 @@ Ext.define('UB.view.LoginWindow', {
         // boxLabelAlign: 'before',
         labelWidth: 80,
         checked: !!firstLogin,
-        boxLabel: UB.i18n('isFirstLogin')
+        boxLabel: UB.i18n('RegistrationMode')
       })
-
 
       var certItem = []
       var useCertificateInfo = 'useCertificateInfoSimple'
-      if (!me.connection.simpleCertAuth){
+      if (!me.connection.simpleCertAuth) {
         useCertificateInfo = 'useCertificateInfo'
         certItem.push(
           me.textFieldLoginCert,
           me.textFieldPasswordCert
         )
-      } else if (authenticationCert.requireUserName){
+      } else if (authenticationCert.requireUserName) {
         useCertificateInfo = 'useCertificateInfoSimpleUserName'
         certItem.push(me.textFieldLoginCert)
       }
@@ -256,19 +228,26 @@ Ext.define('UB.view.LoginWindow', {
         allowBlank: false,
         cls: 'ub-login-input',
         labelClsExtra: 'fa fa-user fa-2x',
-        requireText: UB.i18n('login'),
+        requireText: UB.i18n('User'),
         fieldLabel: ' ',
         labelSeparator: '',
         labelWidth: 40,
         anchor: '100%',
-        value: me.connection.lastLoginName || lastSavedLogin
+        value: me.connection.lastLoginName || lastSavedLogin,
+        listeners: {
+          afterrender: function (cmp) {
+            cmp.inputEl.set({
+              autocomplete: 'off'
+            })
+          }
+        }
       })
       me.textFieldPassword = Ext.create('Ext.form.field.Text', {
         margin: '10 80 10 80',
         allowBlank: false,
         cls: 'ub-login-input',
         labelClsExtra: 'fa fa-key fa-2x',
-        requireText: UB.i18n('parol'),
+        requireText: UB.i18n('Password'),
         fieldLabel: ' ',
         labelSeparator: '',
         labelWidth: 40,
@@ -297,10 +276,9 @@ Ext.define('UB.view.LoginWindow', {
           me.textFieldPassword,
           {
             xtype: 'component',
-            padding: '50 0 0 0',
             autoEl: {
               tag: 'div',
-              html: UB.i18n('useUBAuthenticatinInfo')
+              html: UB.i18n('UBAuthTip')
             }
           }
         ]
@@ -315,10 +293,9 @@ Ext.define('UB.view.LoginWindow', {
         xtype: 'checkbox',
         labelAlign: 'left',
         labelCls: 'ub-login-label',
-                // boxLabelAlign: 'before',
         labelWidth: 80,
         checked: !!silenceKerberosLogin,
-        boxLabel: UB.i18n('chkSilenceLogin')
+        boxLabel: UB.i18n('KerberosRemember')
       })
       me.pnlOs = Ext.create('Ext.panel.Panel', {
         title: UB.i18n('useOSCredentialTitle'),
@@ -330,7 +307,7 @@ Ext.define('UB.view.LoginWindow', {
             xtype: 'component',
             autoEl: {
               tag: 'div',
-              html: UB.i18n('useOSCredentialInfo')
+              html: UB.i18n('KerberosTip')
             }
           }]
       })
@@ -343,16 +320,15 @@ Ext.define('UB.view.LoginWindow', {
         var OpenIDConnectProviders = responce.data
         var radioGroup = {
           xtype: 'radiogroup',
-                    // Arrange radio buttons into two columns, distributed vertically
+          // Arrange radio buttons into two columns, distributed vertically
           columns: 1,
           id: 'extLoginOpenIDType',
           vertical: true,
-          items: [
-          ]
+          items: []
         }
 
         OpenIDConnectProviders.forEach(function (provider) {
-          radioGroup.items.push({ boxLabel: UB.i18n(provider), name: 'providerName', inputValue: provider})
+          radioGroup.items.push({boxLabel: UB.i18n(provider), name: 'providerName', inputValue: provider})
         })
         if (radioGroup.items.length) {
           radioGroup.items[0].checked = true
@@ -415,8 +391,8 @@ Ext.define('UB.view.LoginWindow', {
 
     let authPanel
     if (me.authTabs) {
-      let lastAuthType = window.localStorage.getItem('lastAuthType') || authMethods[0] // activate first auth method by default
-      authPanel = me.query('panel[authType="' + lastAuthType + '"]')[0] || authItems[0]
+      let lastAuthSchema = window.localStorage.getItem(UB.LDS_KEYS.LAST_AUTH_SCHEMA) || authMethods[0] // activate first auth method by default
+      authPanel = me.query('panel[authType="' + lastAuthSchema + '"]')[0] || authItems[0]
       me.authTabs.setActiveTab(authPanel)
     } else {
       authPanel = authItems[0]
@@ -449,11 +425,11 @@ Ext.define('UB.view.LoginWindow', {
       me.textFieldPasswordCert.validate()
       var authenticationCert = UB.appConfig.uiSettings.adminUI.authenticationCert || {}
       if ((!me.connection.simpleCertAuth || authenticationCert.requireUserName) &&
-         !me.textFieldLoginCert.validate() ){
-         return
+        !me.textFieldLoginCert.validate()) {
+        return
       }
       if (!me.connection.simpleCertAuth &&
-         !me.textFieldPasswordCert.validate() ){
+        !me.textFieldPasswordCert.validate()) {
         return
       }
       login = Ext.String.trim(me.textFieldLoginCert.getValue() || '')
@@ -503,6 +479,7 @@ Ext.define('UB.view.LoginWindow', {
       }
 
       var loginWindowOpenID = window.open(url, 'login', getWindowConfig())
+
       function loginListener (event) {
         if (event.source === loginWindowOpenID) {
           window.removeEventListener('message', loginListener)
@@ -521,8 +498,9 @@ Ext.define('UB.view.LoginWindow', {
           }
         }
       }
+
       window.addEventListener('message', loginListener)
-      window.localStorage.setItem('lastAuthType', authType)
+      window.localStorage.setItem(UB.LDS_KEYS.LAST_AUTH_SCHEMA, authType)
       return
     } else {
       me.deferred.resolve({
@@ -532,11 +510,9 @@ Ext.define('UB.view.LoginWindow', {
         registration: 0 // me.chkFirstLogin.checked ? 1: 0
       })
     }
-    window.localStorage.setItem('lastAuthType', authType)
-    window.localStorage.setItem('lastLogin', login)
 
     if (authType === 'Negotiate') {
-      window.localStorage.setItem('silenceKerberosLogin', me.chkSilenceLogint.getValue())
+      window.localStorage.setItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, me.chkSilenceLogint.getValue())
     }
 
     me.close()

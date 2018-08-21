@@ -39,6 +39,7 @@ const Q = require('when')
 const _ = require('lodash')
 const path = require('path')
 const UB = require('@unitybase/ub')
+const Session = UB.Session
 const App = UB.App
 const formatFunctions = require('../public/formatFunctions')
 
@@ -73,34 +74,37 @@ global.atob = function (text) {
  * If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
  * @param {string} [reportType='html'] Possible values: 'html'|'pdf'
  * @param {{}} params
+ * @param {String} [language=Session.userLang]
  */
-function UBServerReport (reportCode, reportType, params) {
+function UBServerReport (reportCode, reportType, params, language) {
   /**
    * Report code
    * @property {string} reportCode
    */
   this.reportCode = reportCode
-   /**
-    * Possible values: 'html', 'pdf'
-    * @property {string} reportCode
-    */
+  /**
+   * Possible values: 'html', 'pdf'
+   * @property {string} reportCode
+   */
   this.reportType = reportType || 'html'
   /**
    * Report parameters
    * @property {{}} incomeParams
    */
   this.incomeParams = params || {}
-
-   /**
-    * The options of report. Known options: pageOrientation.
-    * @property {{}} reportOptions
-    */
+  /**
+   * The options of report. Known options: pageOrientation.
+   * @property {{}} reportOptions
+   */
   this.reportOptions = {}
+
+  this.lang = language || Session.userLang
 
   if (typeof reportCode === 'object') {
     this.reportCode = reportCode.code
     this.reportType = reportCode.type || 'html'
     this.incomeParams = reportCode.params
+    this.lang = reportCode.language || Session.userLang
     this.debug = reportCode.debug
   }
 }
@@ -197,8 +201,8 @@ UBServerReport.prototype.buildHTML = function (reportData) {
   }
   reportData = reportData || {}
 
-  formatFunctions.addBaseMustacheSysFunction(reportData)
-  formatFunctions.addMustacheSysFunction(reportData)
+  formatFunctions.addBaseMustacheSysFunction(reportData, this.lang)
+  formatFunctions.addMustacheSysFunction(reportData, this.lang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 
@@ -287,20 +291,20 @@ UBServerReport.prototype.prepareCode = function () {
   }
 }
 
- /**
-  * This function must be defined in report code block.
-  *
-  * Inside function you must:
-  *
-  *  - Prepare data
-  *  - Run method this.buildHTML(reportData); where reportData is data for mustache template
-  *  - If need create PDF run method this.buildPdf(htmlReport); where htmlReport is HTML
-  *  - If is server side function must return report as string otherwise Promise
-  *
-  * @cfg {function} buildReport
-  * @param {Object} reportParams
-  * @returns {Promise|Object|String} If code run at server, method must return report data, else - Promise, which resolves to report data
-  */
+/**
+ * This function must be defined in report code block.
+ *
+ * Inside function you must:
+ *
+ *  - Prepare data
+ *  - Run method this.buildHTML(reportData); where reportData is data for mustache template
+ *  - If need create PDF run method this.buildPdf(htmlReport); where htmlReport is HTML
+ *  - If is server side function must return report as string otherwise Promise
+ *
+ * @cfg {function} buildReport
+ * @param {Object} reportParams
+ * @returns {Promise|Object|String} If code run at server, method must return report data, else - Promise, which resolves to report data
+ */
 UBServerReport.prototype.buildReport = function (reportParams) {
   throw new UB.UBError('Function "buildReport" not defined in report code block')
 }

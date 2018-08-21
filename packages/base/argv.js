@@ -275,18 +275,16 @@ function replaceIncludeVariables (content) {
 /**
  * Read server configuration from file, resolved by argv.getConfigFileName
  * parse it in safe mode, replace environment variables by it values and return parsed config
- *
+ * @param {boolean} [forFutureSave=false] if true will return config ready to save back as new ubConfig
+ *  (do not add props model.browser & model.version)
  * @return {Object}
  */
-function getServerConfiguration () {
+function getServerConfiguration (forFutureSave = false) {
   let cfgFileName = getConfigFileName()
   if (verboseMode) console.debug('Used config:', cfgFileName)
 
-  // var content = removeCommentsFromJSON(fs.readFileSync(cfgFileName, 'utf8'))
-  // content = replaceIncludeVariables(replaceEnvironmentVariables(content))
-
   let result = safeParseJSONfile(cfgFileName, true, (content) => replaceIncludeVariables(replaceEnvironmentVariables(content)))
-    // add name attribute for applications
+  // add name attribute for applications
   if (!result.application) {
     result.application = {}
   }
@@ -298,9 +296,10 @@ function getServerConfiguration () {
     result.application.domain = {models: []}
   }
   // for models without name - read it from package.json
+  // read "browser" section of package.json to check model is require initialization in the browser
+  // browser section may contains "prod" / "dev" key for production / development client execution
   result.application.domain.models.forEach((model) => {
-    if (model.name) return
-    let p = model.path
+    let p = (model.path === '_public_only_') ? model.publicPath : model.path
     if (!path.isAbsolute(p)) p = path.join(process.configPath, p)
     let packFN = path.join(p, 'package.json')
     if (fs.existsSync(packFN)) {
@@ -308,12 +307,25 @@ function getServerConfiguration () {
       model.moduleName = packageData.name
       if (packageData.config && packageData.config.ubmodel) {
         let ubModelConfig = packageData.config.ubmodel
+        if (model.name) {
+          console.warn(`Warning: model name for model ${model.name} is configured in both "ubConfig" and model "package.json".
+  Will use name from package.json`)
+        }
         model.name = ubModelConfig.name
         if (ubModelConfig.isPublic) {
           model.publicPath = model.path
           model.path = '_public_only_'
         }
       }
+      // check browser settings
+      if (packageData.browser) {
+        let dev = packageData.browser.dev || packageData.browser
+        dev = path.isAbsolute(dev) ? dev : path.join(packageData.name, dev).replace(/\\/g, '/')
+        let prod = packageData.browser.prod || packageData.browser
+        prod = path.isAbsolute(prod) ? prod : path.join(packageData.name, prod).replace(/\\/g, '/')
+        if (!forFutureSave) model.browser = {dev, prod}
+      }
+      if (!forFutureSave) model.version = packageData.version
     }
   })
   if (!result.application.domain.supportedLanguages) {

@@ -1,0 +1,48 @@
+﻿{
+    "caption": "Файли",
+    "description": "Файли",
+    "attributes": {
+        "name": {
+            "caption": "Назва",
+            "description": "Назва"
+        },
+        "parentID": {
+            "caption": "Папка",
+            "description": "Папка"
+        },
+        "fcomment": {
+            "caption": "Коментар",
+            "description": "Коментар"
+        },
+        "fsize": {
+            "caption": "Розмір",
+            "description": "Розмір"
+        },
+        "isFolder": {
+            "caption": "Папка",
+            "description": "Папка"
+        },
+        "ownerID": {
+            "caption": "Власник",
+            "description": "Власник"
+        },
+        "contentType": {
+            "caption": "Тип",
+            "description": "Тип"
+        },
+        "isTemporary": {
+            "caption": "Тимчасовий",
+            "description": "Тимчасовий"
+        },
+        "fileData": {
+            "caption": "Файл",
+            "description": "Файл"
+        },
+        "permission": {
+            "caption": "Права"
+        },
+        "permissionParent": {
+            "caption": "Права папки"
+        }
+    }
+}

@@ -11,11 +11,14 @@ tests.forEach(function (test) {
   require('./nodeModules/simple/' + test)
 })
 
-tests = fs.readdirSync(path.dirname(__filename) + '/nodeModules/parallel').sort()
+let parallelFolder = path.join(__dirname, 'nodeModules', 'parallel')
+tests = fs.readdirSync(parallelFolder).sort()
+console.log('parallel', tests)
 tests.forEach(function (test) {
+  console.log('!!!', test)
   if (test.substr(0, 4) === 'test') {
     console.log('Run', test)
     console.debug('Run', test)
-    require('./nodeModules/paralel/' + test)
+    require(path.join(parallelFolder, test))
   }
 })

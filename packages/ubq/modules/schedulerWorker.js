@@ -1,5 +1,7 @@
+/* global terminate */
 const SyncConnection = require('@unitybase/base').SyncConnection
 const cron = require('node-cron')
+
 /**
  * The Worker function. Function body is evaluated in the worker thread, so
  * reference from this function to anything from a module is NOT ALLOWED
@@ -29,7 +31,13 @@ function runSchedulersCircle (message) {
         endpoint: 'rest/ubq_messages/executeSchedulerTask',
         method: 'POST',
         URLParams: {async: true},
-        data: {schedulerName: cfg.name, command: cfg.command, module: cfg.module, singleton: cfg.singleton === 1, logSuccessful: cfg.logSuccessful === 1}
+        data: {
+          schedulerName: cfg.name,
+          command: cfg.command,
+          module: cfg.module,
+          singleton: cfg.singleton === 1,
+          logSuccessful: cfg.logSuccessful === 1
+        }
       })
     } catch (e) {
       console.error(e)

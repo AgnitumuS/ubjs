@@ -11,16 +11,34 @@
         <link rel="icon" href="models/UB/img/UBLogo48.png" type="image/png" sizes="48x48" />
         <link rel="icon" href="models/UB/img/UBLogo128.png" type="image/png" sizes="128x128" />
 
-        <script type="text/javascript">
+        <script type="text/javascript" nonce="{{cspNonce}}">
+            window.UB_API_PATH = '{{{UB_API_PATH}}}';
+            {{#uiSettings.adminUI.loginURL}}
+                window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
+                window.redirectToLogin = function(reason) {
+                    var url = UB_LOGIN_URL;
+                    if (reason) {
+                      url += (url.indexOf('?') === -1 ? '?' : '&') + 'reason=' + encodeURIComponent(reason);
+                    }
+                    url += (url.indexOf('?') === -1 ? '?' : '&') + 'returnUrl=' + encodeURIComponent(window.location.href);
+                    window.location.href = url;
+                }
+                if ((window.localStorage.getItem('silenceKerberosLogin') !== 'true')
+                  && window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null)
+                {
+                    redirectToLogin();
+                }
+            {{/uiSettings.adminUI.loginURL}}
             window.__ubVersion = {
                 _web: '{{staticVersion}}'
-            {{#modelVersions}}
-            , '{{modelName}}': '{{modelVersion}}'
-            {{/modelVersions}}
+                {{#modelVersions}}
+                , '{{modelName}}': '{{modelVersion}}'
+                {{/modelVersions}}
             };
+            window.__modelInit = [];
+            {{#modelInitialization}}window.__modelInit.push('{{{dev}}}');{{/modelInitialization}}
             window.isDeveloperMode = true;
             window.IMAGE_PATH = 'res/mxGraph/images';
-            window.UB_API_PATH = '{{{UB_API_PATH}}}';
             window.mxLoadResources = false;
         </script>
 
@@ -29,13 +47,12 @@
         <link rel="stylesheet" href="clientRequire/font-awesome/css/font-awesome.css"/>
         <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
 
-
         <style>
             .ub-logo-h {
                 position: absolute;
                 top: 40%;
                 left: 47%;
-		color: rgb(100, 149, 237);
+                color: rgb(100, 149, 237);
                 font-size: 10em;
             }
             .x-body {
@@ -57,25 +74,33 @@
         <script charset="utf-8" src="{{#md5}}models/adminui-pub/ext-all-debug-w-comments.js{{/md5}}"></script>
         <script src="{{#md5}}clientRequire/systemjs/dist/system.src.js{{/md5}}" type="text/javascript"></script>
 
-        <script type="text/javascript">
-            // set our baseURL reference path
+        <script type="text/javascript" nonce="{{cspNonce}}">
+          // set our baseURL reference path
             System.config({
                 baseURL: '/clientRequire',
+                defaultJSExtensions: false,
                 map: {
-                    css: 'systemjs-plugin-css/css.js'
+                  css: 'systemjs-plugin-css/css.js',
+                  vue: 'vue/dist/vue.common.js' // should be the same as in adminui-vue webpack config
                 },
                 meta: {
+                  // '*': {nonce: '{{cspNonce}}'}, if this line is added SystemJS override window.onerror
                   'tinymce*': { format: 'global' },
                   '*.css': { loader: 'css' },
                   '*.min.js':   { format: 'cjs' },
                   'codemirror/*.js': { format: 'cjs' },
-                  'file-saver/*.js': { format: 'cjs' }
+                  'file-saver': { format: 'cjs' },
+                  '*.def': {format: 'cjs'}
                 },
                 packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });
 
-            System.import('@unitybase/adminui-pub').then(function(adminUI){
-                return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
+            //System.import('systemjs-hmr').then(function () {
+            System.import('@unitybase/adminui-pub/hmr-client/system-hmr-ub').then(function (connectHMR) {
+              connectHMR({ hmrServer: '{{{uiSettings.adminUI.hmrServerURL}}}' })
+              return System.import('{{{adminUIModel.dev}}}')
+            }).then(function(adminUI){
+              return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js');
             });
         </script>
     </body>

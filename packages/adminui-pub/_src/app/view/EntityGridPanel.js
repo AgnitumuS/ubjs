@@ -278,6 +278,14 @@ Ext.define('UB.view.EntityGridPanel', {
                   attributeDefinition.fieldList = ['ID', $App.domainInfo.get(entityAttribute.associatedEntity).getDescriptionAttribute()]
                 }
               }
+              if (fieldList[i].editor) {
+                if (fieldList[i].editor.whereList) {
+                  attributeDefinition.whereList = fieldList[i].editor.whereList
+                }
+                if (fieldList[i].editor.orderList) {
+                  attributeDefinition.orderList = fieldList[i].editor.orderList
+                }
+              }
 
               col.editor = UB.core.UBUtil.ubDt2Ext(entityAttribute, attributeDefinition)
               col.editor.valueField = col.editor.displayField
@@ -1053,6 +1061,7 @@ Ext.define('UB.view.EntityGridPanel', {
         if ((!context.record.get('ID') && !me.notWriteChanges) || (me.notWriteChanges && context.record.phantom && context.record.dirtySave !== null)) {
           context.store.remove(context.record)
         }
+        me.fireEvent('changeData', me, 'cancelEdit')
       })
       rowEditing.on('beforeedit', function (editor, context) {
         if (me.editingPlugin.editing || me.readOnly || !me.entity.haveAccessToMethod(UB.core.UBCommand.methodName.UPDATE)) {
@@ -1108,6 +1117,9 @@ Ext.define('UB.view.EntityGridPanel', {
           }
           item.field.disableModifyEntity = true
           item.field.useForGridEdit = true
+          if (!context.record.get(item.field.name)) {
+            item.field.getStore().reload()
+          }
         })
       })
       rowEditing.on('validateedit', function (editor, context) {
@@ -1506,10 +1518,10 @@ Ext.define('UB.view.EntityGridPanel', {
     me.actions[actions.addNewByCurrent] = new Ext.Action({
       actionId: actions.addNewByCurrent,
       scale: 'medium',
-      glyph: UB.core.UBUtil.glyphs.faPlusCircle,
+      glyph: UB.core.UBUtil.glyphs.faClone,
       cls: 'add-currect-action',
 
-      text: UB.i18n('dobavitKak'),
+      text: UB.i18n('Copy'),
       eventId: events.addnewbycurrent,
       handler: me.onAction,
       disabled: !me.entity.haveAccessToMethod(methodNames.ADDNEW),
@@ -1521,7 +1533,7 @@ Ext.define('UB.view.EntityGridPanel', {
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faEdit,
         cls: 'edit-action',
-        text: UB.i18n('redaktirovat') + hotKeys[actions.edit].text,
+        text: UB.i18n('Edit') + hotKeys[actions.edit].text,
         eventId: events.edit,
         handler: me.onAction,
         disabled: !me.entity.haveAccessToMethod(methodNames.UPDATE),
@@ -1566,7 +1578,7 @@ Ext.define('UB.view.EntityGridPanel', {
       me.actions[actions.history] = new Ext.Action({
         actionId: actions.history,
         iconCls: 'iconHistory',
-        text: UB.i18n('istorijaIzmenenij'),
+        text: UB.i18n('ChangesHistory'),
         eventId: events.history,
         handler: me.onAction,
         scope: me

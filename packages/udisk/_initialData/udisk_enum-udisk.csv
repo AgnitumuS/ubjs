@@ -1,0 +1,5 @@
+UDISK_ACCESS_TYPE;read;read;20
+UDISK_ACCESS_TYPE;write;write;30
+UDISK_ACCESS_TYPE;delegate;delegate;40
+UDISK_ACCESS_TYPE;owner;owner;50
+

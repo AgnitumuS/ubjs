@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "firefox",
+            "request": "attach",
+            "name": "SyNode",
+            "addonType": "webExtension",
+            "addonPath": "${workspaceFolder}/",
+            "host": "127.0.0.1",
+            "port": 6000,
+            "sourceMaps": "client"/*,
+            "log": {
+                "consoleLevel": {
+                    "default": "Debug"
+                }
+            }*/
+        }
+    ]
+}

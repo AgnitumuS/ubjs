@@ -1,4 +1,5 @@
-require('./OverflowSelect') // MPV Important for rolluped version
+const UB = require('@unitybase/ub-pub')
+require('./OverflowSelect') // MPV Important for rollup'ed version
 require('./UBBar')
 require('../core/UBStoreManager')
 require('./MainToolbar')
@@ -7,6 +8,7 @@ require('./LeftPanel')
 require('../../ux/window/Notification')
 require('../../ux/form/CheckboxGroupFix')
 require('../ux/UBToolTipOverride')
+/* global Ext $App */
 /**
  * UnityBase Ext-based client main viewport
  */
@@ -16,25 +18,31 @@ Ext.define('UB.view.Viewport', {
 
   initComponent: function () {
     var me = this
+    UB.view.Viewport.main = this
     $App.on({
       updateCenterPanel: me.onUpdateCenterPanel,
       desktopChanged: me.onDesktopChanged,
       scope: me
     })
 
-    me.topPanel = Ext.create('UB.view.MainToolbar', {
-      region: 'north',
-      collapsible: false,
-      border: false,
-      margin: '0, 0, 0, 0'
-    })
-    me.leftPanel = Ext.create('UB.view.LeftPanel', {
-      header: false,
-      region: 'west',
-      width: 225, // 280
-      margin: '3, 5, 0, 0',
-      border: false
-    })
+    if (UB.connection.appConfig.uiSettings.adminUI.customSidebar !== true) {
+      me.leftPanel = Ext.create('UB.view.LeftPanel', {
+        header: false,
+        region: 'west',
+        width: 225, // 280
+        margin: '3, 5, 0, 0',
+        border: false
+      })
+    }
+    if (UB.connection.appConfig.uiSettings.adminUI.customNavbar !== true) {
+      me.topPanel = Ext.create('UB.view.MainToolbar', {
+        region: 'north',
+        collapsible: false,
+        border: false,
+        margin: '0, 0, 0, 0'
+      })
+    }
+
     me.contextMenu = Ext.create('Ext.menu.Menu', {items: [{
       text: UB.i18n('close'),
       scope: me,
@@ -105,7 +113,6 @@ Ext.define('UB.view.Viewport', {
     })
     this.callParent(arguments)
 
-    UB.view.Viewport.main = this
     this.on('destroy', function () {
       this.topPanel = null
       this.leftPanel = null
@@ -114,10 +121,10 @@ Ext.define('UB.view.Viewport', {
     }, this)
   },
 
-    /**
-     *
-     * @deprecated Use {$App.viewport.centralPanel} instead
-     */
+  /**
+   *
+   * @deprecated Use {$App.viewport.centralPanel} instead
+   */
   getCenterPanel: function () {
     return this.getLayout().centerRegion
   },
@@ -127,7 +134,8 @@ Ext.define('UB.view.Viewport', {
   },
 
   onUpdateCenterPanel: function (url) {
-    var centerPanel = this.getCenterPanel()
+    let centerPanel = this.centralPanel
+    if (!centerPanel) return
     if (typeof url === 'string') {
       centerPanel.getLoader().load({url: url})
     } else {

@@ -531,9 +531,11 @@ inst.run('select', repo.ubql())
    *      [{"ID":3000000000004,"code":"uba_user"},{"ID":3000000000039,"code":"uba_auditTrail"}]
    *
    * @abstract
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
+   *  names during transform array to object
    * @return {Array.<object>}
    */
-  selectAsObject () {
+  selectAsObject (fieldAliases) {
     throw new Error('abstract')
   }
   /**

@@ -19,6 +19,7 @@ conn.then(function (conn) {
   conn.get('stat').then(function (statResp) {
     console.log('Stat:', statResp.data)
   })
+  console.log(`A user data:`, conn.userData())
 
   conn.Repository('ubm_navshortcut').attrs(['ID', 'code', 'caption'])
     .limit(2)

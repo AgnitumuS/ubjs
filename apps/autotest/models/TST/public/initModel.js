@@ -1,4 +1,5 @@
-require('@unitybase/ubs/public/MessageBar.js')
+const _ = require('lodash')
+require('./src/test-module.js')
 $App.on('buildMainMenu', function (items) {
   // items.length = 0;
   items.push(

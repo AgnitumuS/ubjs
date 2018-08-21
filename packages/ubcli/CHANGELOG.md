@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.30]
+### Fixed
+- fixed [unitybase/ubjs#9] DDL SQLite3 "Error: this.DDL.dropColumn.push is not a function"
+
+## [5.0.29]
+### Fixed
+- fixed [unitybase/ubjs#7] - missing genCodeDropPK in SQL Server DDl generator
+
+## [5.0.28]
+### Fixed
+- Fixed [unitybase/ubjs#5] - DDL generation will drop and re-create indexes of columns if column type is changed
+
+## [5.0.19]
+### Fixed
+- PostgreSQL DDL generator will ignore functional ("func") index definition in `dbExtensions`
+ section (should be applied only for Oracle as documented)
+- PostgreSQL DDL generator will generate single-quoter string for estimation update of newly
+ added not null attributes of string type
+
+## [5.0.18]
+### Fixed
+- `ubcli createStore` will create temp path even if it is relative.
+ In this case we consider path is relative to config path
+
+## [5.0.16]
+### Fixed
+- fix retrieve foreign key metadata from PostgreSQL (BOOL column type not handled properly by ZEOS 7.2)
+
 ## [5.0.9]
 ### Fixed
  - createCodeInsightHelper will ignore models with "_public_only_" paths

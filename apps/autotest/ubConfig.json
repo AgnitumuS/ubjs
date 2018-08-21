@@ -57,8 +57,12 @@
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
-			"loginWindowTopLogoURL": "models/TST/UB200.png",
+			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			//"loginWindowTopLogoURL": "/img/m-docnet.png",
 			"endpoint": "ubadminui",
+			"loginURL": "/models/adminui-vue/views/ub-auth.html",
+			"customSidebar": false, // set to true to not create sidebar
+			"customNavbar": false, // set to true to not create navbar
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
@@ -97,7 +101,8 @@
 					"path": "./node_modules/@unitybase/cdn"
 				},
 				{
-					"path": "./node_modules/@unitybase/org"				},
+					"path": "./node_modules/@unitybase/org"				
+				},
 				{
 					"path": "./node_modules/@unitybase/ub-pub"
 				},
@@ -106,6 +111,9 @@
 				},
 				{
 					"path": "./node_modules/@unitybase/adminui-reg"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-vue"
 				},
 				{
 					"path": "./models/TST"
@@ -156,21 +164,21 @@
 			{
 				"name": "mdb",
 				"storeType": "Virtual",
-                "tempPath": "./_temp"
+				"tempPath": "./_temp"
 			},
 			{
 				"name": "simple",
 				"path": "./documents/simple",
-                "tempPath": "./documents/simple/_temp",
+				"tempPath": "./documents/simple/_temp",
 				"isDefault": true,
 				"historyDepth": 2,
 				"storeSize": "Medium",
-				"keepOriginalFileLocalIPsNames": false
+				"keepOriginalFileNames": false
 			},
 			{
 				"name": "avatars",
 				"path": "./documents/avatars",
-                "tempPath": "./documents/avatars/_temp",
+				"tempPath": "./documents/avatars/_temp",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false

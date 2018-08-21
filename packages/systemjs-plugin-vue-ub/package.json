@@ -1,0 +1,41 @@
+{
+  "name": "@unitybase/systemjs-plugin-vue-ub",
+  "version": "1.2.1",
+  "description": "SystemJS plugin for single file Vue components. Works in browser with UnityBase adminUI",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production && webpack",
+    "analyse-boundle": "cross-env NODE_ENV=production && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/systemjs-plugin-vue-ub"
+  },
+  "originalRepository": {
+    "type": "git",
+    "url": "git+https://github.com/vuejs/systemjs-plugin-vue.git"
+  },
+  "keywords": [
+    "vue",
+    "systemjs",
+    "jspm"
+  ],
+  "author": "Evan You",
+  "contributors": [
+    "pavel.mash"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://git-pub.intecracy.com/unitybase/ubjs/issues"
+  },
+  "homepage": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/systemjs-plugin-vue-ub#readme",
+  "dependencies": {
+    "cssnano": "^3.7.1",
+    "lru-cache": "^4.0.1",
+    "vue-template-compiler": "^2"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "webpack-bundle-analyzer": "^2.13.1"
+  }
+}

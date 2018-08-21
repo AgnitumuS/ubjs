@@ -1,7 +1,6 @@
 require('../ux/form/field/UBText')
 require('../ux/form/field/UBTextArea')
 require('../ux/form/field/UBBoxSelect')
-require('../ux/form/field/ComboExtraButtons')
 require('./FormDataBinder')
 require('../ux/UBDocument')
 require('../ux/UBDetailGrid')
@@ -255,8 +254,7 @@ Ext.define('UB.view.BasePanel', {
   formWasSaved: false,
 
   initComponent: function () {
-    var
-            me = this
+    var me = this
     if (me.dfm && me.dfm.parentConfig) {
       Ext.apply(me, me.dfm.parentConfig)
     }
@@ -293,11 +291,11 @@ Ext.define('UB.view.BasePanel', {
     _.forEach(me.domainEntity.filterAttribute({dataType: 'Document'}), function (attr) {
       me.documents[attr.code] = attr
     })
-        // domain.getEntityAttributesWithDataTypeAdtDocument(me.entityName);
+    // domain.getEntityAttributesWithDataTypeAdtDocument(me.entityName);
     me.documentsCount = Ext.Object.getSize(me.documents)
 
     me.hasDataHistoryMixin = me.domainEntity.hasMixin('dataHistory')
-        // since by default audit is enabled, we do not write it in the domainInfo. So mixin present only if in meta: audit: {enabled: false}
+    // since by default audit is enabled, we do not write it in the domainInfo. So mixin present only if in meta: audit: {enabled: false}
     me.hasAuditMixin = me.domainEntity.hasMixin('audit')
     me.hasHardSecurityMixin = me.domainEntity.hasMixin('aclRls')
     me.isEntityLockable = me.domainEntity.hasMixin('softLock')
@@ -310,7 +308,7 @@ Ext.define('UB.view.BasePanel', {
 
     me.preprocessPanel()
 
-    if (me.tabID) {  // opened in tab
+    if (me.tabID) { // opened in tab
       if (!me.dockedItems) me.dockedItems = []
 
       me.headerPanel = Ext.create('Ext.panel.Header', {
@@ -2097,14 +2095,11 @@ Ext.define('UB.view.BasePanel', {
    */
 
   /**
-   * Fill form field values from record. For non-simple fields (i.e. combobox) fill
+   * Fill form field values from record
    * @param {Ext.data.Model} record
    */
   setFields: function (record) {
-    var
-      me = this,
-      field,
-      fields = me.fields
+    let me = this
 
     if (!record) return
     if (!me.binder.record || (me.binder.record !== record)) {
@@ -2122,20 +2117,20 @@ Ext.define('UB.view.BasePanel', {
       me.disableBinder()
       me.binder.bind(true)
       me.enableBinder()
-
-      for (var i = 0, len = fields.length; i < len; ++i) {
-        field = fields[i]
-// add link between action and field, becase when we need to disable field
+      let fields = me.fields
+      for (let i = 0, len = fields.length; i < len; i++) {
+        let field = fields[i]
+        // add link between action and field, because when we need to disable field
         // we need to disable action menu items
         if (field.xtype === 'ubdocument') {
-          for (var j = 0; j < this.docActions.length; j++) {
+          for (let j = 0, l = this.docActions.length; j < l; j++) {
             if (this.docActions[j].initialConfig.key === field.attributeName) {
               field.action = this.docActions[j]
               break
             }
           }
         }
-        me.updateAls(field, field.attributeName)
+        if (me.record.resultAls) me.updateAls(field, field.attributeName)
       }
       me.fireEvent('updateFields', record)
     } finally {
@@ -2252,7 +2247,7 @@ Ext.define('UB.view.BasePanel', {
       me.actions[actions.history] = new Ext.Action({
         actionId: actions.history,
         iconCls: 'iconHistory',
-        text: UB.i18n('istorijaIzmenenij'),
+        text: UB.i18n('ChangesHistory'),
         eventId: events.history,
         handler: me.onAction,
         scope: me
@@ -3101,22 +3096,7 @@ Ext.define('UB.view.BasePanel', {
         return res
       }
       if (!form.isValid()) {
-        form.getFields().each(function (item) {
-          if (!item.isValid()) {
-            UB.toast({
-              entityTitle: me.domainEntity.caption,
-              fieldLabel: item.fieldLabel,
-              callback: function () {
-                if (me) {
-                  let wnd = me.getFormWin()
-                  if (wnd) wnd.toFront()
-                  Ext.callback(item.focus, item, [], 100)
-                }
-              }
-            })
-            item.focus()
-          }
-        }, me)
+        me.showValidationErrors()
         return Q.resolve(-1)
       }
       if (!form.isValid()) {
@@ -3139,6 +3119,29 @@ Ext.define('UB.view.BasePanel', {
         return me.saveInstance()
       }
     })
+  },
+
+  /**
+   * Show horrible multiple toasts as validation errors.
+   */
+  showValidationErrors: function() {
+    const me = this
+    me.getForm().getFields().each(function (item) {
+      if (!item.isValid()) {
+        UB.toast({
+          entityTitle: me.domainEntity.caption,
+          fieldLabel: item.fieldLabel,
+          callback: function () {
+            if (me) {
+              let wnd = me.getFormWin()
+              if (wnd) wnd.toFront()
+              Ext.callback(item.focus, item, [], 100)
+            }
+          }
+        })
+        item.focus()
+      }
+    }, me)
   },
 
   /**

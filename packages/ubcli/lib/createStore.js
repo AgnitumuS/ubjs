@@ -26,8 +26,7 @@ const path = require('path')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
-const pathDelim = process.platform === 'win32' ? '\\' : '/'
-const trailingPathDelim = process.platform === 'win32' ? /\\$/ : /\/$/
+const RE_TRAILING_PATH_SEP = process.platform === 'win32' ? /\\$/ : /\/$/
 
 module.exports = function createStore (options) {
   let
@@ -40,9 +39,9 @@ module.exports = function createStore (options) {
 
   if (!options) {
     let opts = cmdLineOpt.describe('createStore',
-          'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
-          'ubcli'
-      )
+      'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
+      'ubcli'
+    )
       .add({short: 'cfg', long: 'cfg', param: 'serverConfig', defaultValue: 'ubConfig.json', help: 'Server config'})
       .add({short: 'store', long: 'store', param: 'storesList', defaultValue: '*', help: 'Comma separated blob stores list'})
     options = opts.parseVerbose({}, true)
@@ -80,66 +79,31 @@ module.exports = function createStore (options) {
   configPath = path.dirname(configFileName)
 
   function createOneStore (cStore) {
-    let
-      cStorePath,
-      tmp
-
-    function createSubFolders (startFromPath, level) {
-      if (level) {
-        for (let i = 100; i < 501; i++) {
-          let fld = startFromPath + i.toString(10) + pathDelim
-          if (!fs.isDir(fld)) {
-            fs.mkdirSync(fld)
-          }
-          if (level - 1) {
-            createSubFolders(fld, level - 1)
-          } else {
-            if (i % Math.pow(10, level + 1) === 0) {
-              process.stdout.write('.')
-            }
-          }
-        }
-      }
-    }
     console.log('Start handle blobStore "%s"', cStore.name)
-    if (cStore['storeType'] === 'Virtual') {
-      console.log('\t Skip. For storeType %s there is no need to create folder structure', cStore['storeType'])
-    } else {
-      if (!cStore['storeType']) {
-        cStore['storeType'] = 'FileSystem'
-      }
-      if (cStore['storeType'] !== 'FileSystem') {
-        throw new Error('Unknown storeType', cStore['storeType'])
-      }
-      cStorePath = path.join(configPath, cStore.path)
-      if (!trailingPathDelim.test(cStorePath)) {
-        cStorePath += pathDelim
-      }
-      console.log('\t Resolved to path', cStorePath)
-      if (!fs.isDir(cStorePath)) {
-        console.log('\t Resolved path not exists. Do force directory')
-        fs.mkdirSync(cStorePath)
-      }
-      tmp = cStorePath + '_temp' + pathDelim
-      if (!fs.isDir(tmp)) {
-        console.log('\t Create temp directory %s', tmp)
-        fs.mkdirSync(tmp)
-      }
-
-      switch (cStore['storeSize']) {
-        case 'Simple':
-          break
-        case 'Medium':
-          createSubFolders(cStorePath, 1)
-          break
-        case 'Large':
-          createSubFolders(cStorePath, 2)
-          break
-        default:
-          throw new Error('Unknown store size ' + cStore['storeSize'])
-      }
-      console.log('Done!')
+    if (!cStore['storeType']) {
+      cStore['storeType'] = 'FileSystem'
     }
+    if (!cStore.path) {
+      console.log(`\tskipped - path not defined`)
+      return
+    }
+    let cStorePath = cStore.path
+    if (!path.isAbsolute(cStorePath)) cStorePath = path.join(configPath, cStorePath)
+    if (!RE_TRAILING_PATH_SEP.test(cStorePath)) {
+      cStorePath += path.sep
+    }
+    console.log('\tresolved to path', cStorePath)
+    if (!fs.existsSync(cStorePath)) {
+      console.log('\tresolved path not exists. Do force directory')
+      fs.mkdirSync(cStorePath)
+    }
+    let tmp = cStore.tempPath || (cStorePath + '_temp')
+    if (!path.isAbsolute(tmp)) tmp = path.join(configPath, tmp)
+    if (!fs.existsSync(tmp)) {
+      console.log('\t Create temp directory %s', tmp)
+      fs.mkdirSync(tmp)
+    }
+    console.log('Done!')
   }
 
   selectedStores.forEach(createOneStore)

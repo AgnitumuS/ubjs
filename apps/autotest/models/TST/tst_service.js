@@ -127,7 +127,7 @@ me.throwTest = function (ctx) {
   let isUnicode = (mParams.isUnicode === true)
   let isSystem = (mParams.isSystem === true)
   if (isUnicode) {
-    throw new UB.UBAbort('Підтримується')
+    throw new UB.UBAbort('<<<Підтримується>>>')
   } else if (isSystem) {
     fs.renameSync('file_not_found_exos', 'second_path_wrong')
   } else {
@@ -170,24 +170,23 @@ me.entity.addMethod('handledExceptionTest')
  */
 me.runAsAdminTest = function (ctx) {
   let uDataBefore = _.cloneDeep(Session.uData)
-  Session.runAsAdmin(function () {
+  let uDataInsidePseudoAdmin = Session.runAsAdmin(function () {
     // uParam.ID = userID;
     // uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
     let store = UB.DataStore('uba_user')
     store.run('update', {
       fieldList: ['ID'],
       '__skipOptimisticLock': true,
-        // execParams: uParam
       execParams: {ID: 10, name: 'admin'}
-        // execParams: {ID: 1, name: 'Admin'}
-    }
-    )
+    })
+    return JSON.stringify(Session.uData)
   })
   let uDataAfter = Session.uData
-  ctx.mParams.runAsAdminUData = {
-    before: uDataBefore,
-    after: uDataAfter
-  }
+  console.log('uDataInsidePseudoAdmin', uDataInsidePseudoAdmin)
+  ctx.mParams.runAsAdminUData = {}
+  ctx.mParams.runAsAdminUData.before = uDataBefore
+  ctx.mParams.runAsAdminUData.after = uDataAfter
+  ctx.mParams.runAsAdminUData.uDataInsidePseudoAdmin = uDataInsidePseudoAdmin
 }
 me.entity.addMethod('runAsAdminTest')
 

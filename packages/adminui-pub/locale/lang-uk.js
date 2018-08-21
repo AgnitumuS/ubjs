@@ -1,3 +1,4 @@
+/* global Ext UB */
 /**
  * UnityBase Ukrainian translation
  */
@@ -8,7 +9,6 @@ UB.i18nExtend({
   emptyBarcodeSettings: 'Перед першим використанням друку штрих-коду, необхідно його налаштувати.',
   setScannerSettings: 'Перед першим використанням сканера, необхідно його налаштувати. Налаштувати можна <a href="/" onclick="{0} return false;">тут</a>.',
   showResultConfig: 'Перегляд конфигураії',
-  chkSilenceLogin: 'Завжди входити по домену',
   numberOfSignificantDigits: 'Кількість значущих знаків перевищує припустиме',
   yearShort: 'р.',
   PastTooLargeText: 'Ви виконуєте вставку великого обсягу. Ця операція може тривати довго. Бажаєте продовжити?',
@@ -20,7 +20,6 @@ UB.i18nExtend({
   gridItemLink: 'Посилання на пункт',
   gridCategoryCaption: 'Категорія',
   gridFavoritesCaption: 'Обране',
-  isFirstLogin: 'Режим реєстрації',
   oshibka: 'Помилка',
   info: 'Інформація',
   error: 'Помилка',
@@ -34,9 +33,7 @@ UB.i18nExtend({
   nevozmozhnoDecodirovat: 'Неможливо декодувати',
   avtorizatsia: 'Авторизація',
   login: 'Користувач',
-  parol: 'Пароль',
   stariyParol: 'Старий пароль',
-  neizvestnyjLoginIliNepravilnyjParol: "Невірне ім'я користувача або пароль",
   obazatelnoePole: "Це поле обов'язкове для заповнення",
   Obshchee: 'Загальні',
   neUdalosZagruzitFajlConfiguratsii: 'Не вдалося завантажити файл конфігурації.',
@@ -62,8 +59,8 @@ UB.i18nExtend({
   opisanie: 'Опис',
   sohranit: 'Зберегти',
   dobavit: 'Додати',
-  dobavitKak: 'Додати як',
-  redaktirovat: 'Редагувати',
+  Copy: 'Копіювати',
+  Edit: 'Редагувати',
   Delete: 'Видалити',
   vseDeystviya: 'Всі дії',
   saveAndClose: 'Зберегти та закрити',
@@ -76,7 +73,6 @@ UB.i18nExtend({
   storedData: 'Дані, що збережено',
   ochistitKhranilischeSpravochnikov: 'Очистити сховище довідників',
   resetGUIToDefault: 'Налаштування інтерфейсу "По замовчанню"',
-  clearFormsCache: 'Очистити сховище форм',
   dopolnitelno: 'Додатково',
   clearLocalStore: 'Очистити локальне сховище',
   novajaVersija: 'Нова версія',
@@ -86,9 +82,9 @@ UB.i18nExtend({
   ssylka: 'Посилання',
   vneshnaja: 'Зовнішнє',
   vnutrennaja: 'Внутрішнє',
-  istorijaIzmenenij: 'Історія змін',
+  ChangesHistory: 'Історія змін',
   detali: 'Деталі',
-  filtr: 'Фільтр',
+  Filter: 'Фільтр',
   s: 'з',
   po: 'по',
   pluginNeUstanovlen: 'Плагін не встановлено',
@@ -98,7 +94,6 @@ UB.i18nExtend({
   skanirovanieAtributa: 'Сканування атрибуту',
   izFayla: 'З файлу',
   shtrikhKod: 'Штрих-код',
-  pechatRKK: 'РКК',
   ochistit: 'Очистити',
   dokument: 'Документ',
   fayl: 'Файл',
@@ -135,9 +130,6 @@ UB.i18nExtend({
   currentPageNumber: 'Поточна сторінка',
   'export': 'Експорт',
 
-  nepravilniyTipResolucii: 'Невідомий тип резолюції. Ідентифікатор резолюції: {0}',
-  nepravilnayaRolIspolitelya: 'Невідома роль виконавця резолюції. Ідентифікатор виконавця: {0}',
-  nepravilniyTipDocumenta: 'Невідомий тип документа. Ідентифікатор документа: {0}',
   persistLockInfo: 'Заблоковано {1}',
   softLockInfo: 'Заблоковано користувачем {0} {1}',
   tempSoftLockInfo: 'Запис зараз редагується користувачем {0}',
@@ -166,7 +158,6 @@ UB.i18nExtend({
   ot: ' від ',
   do: ' до ',
   document: 'Документ',
-  enter: 'Увійти',
   sign: 'Увійти',
 
   NMUBExtension: 'розширення "UBExtension"',
@@ -287,17 +278,7 @@ UB.i18nExtend({
   sucImportMsgTitle: 'Документ було успішно імпортовано',
   sucImportMsg: 'Документ було успішно імпортовано з СЕВ',
   filterType: 'Тип фільтра',
-  documentsForConsideration: 'Документообіг: Документи для розгляду',
-  registrationsByDays: 'Реєстрація по дням',
-  docExecution: 'Документообіг: Виконання документів',
   permits: 'Дозволи',
-  RCC: 'РКК',
-  outgoing: 'Вихідні',
-  incoming: 'Вхідні',
-  respForTask: 'Відп. за завд.',
-  barCode: 'Штрих-код',
-  triRemainsInPVD: 'Трансінспекція: Залишки в ПВД',
-  triSalesByMonth: 'Трансінспекція: Продаж по місяцям',
   analyticDesktop: 'Аналітика',
   validFrom: 'Дійсний з',
   validTo: 'Дійсний до',
@@ -321,12 +302,12 @@ UB.i18nExtend({
   certificate: 'Сертифікат',
   certificates: 'Сертифікати',
   signVerification: 'Перевірка підпису',
-    // signsInDocument: 'Підписи в документі',
+  // signsInDocument: 'Підписи в документі',
   UserWithoutOrgEmployeeNotAllowed: 'Користувач не перебуває в штаті організації (не співставлений з жодною штатною одиницею). Вхід заборонено.',
-    // search form (UBPreFilter)
+  // search form (UBPreFilter)
   search: 'Пошук',
   'Filter by': 'Фильтрувати по',
-    // cancel: 'Відміна',
+  // cancel: 'Відміна',
   filterForm: 'Форма пошуку',
   main: 'Основне',
   other: 'Інше',
@@ -358,12 +339,7 @@ UB.i18nExtend({
   deleteConfirm: 'Ви дійсно бажате видалити конфігурацію?',
   filterWasChangedConfirm: 'Фільтр було змінено. При завантаженні конфігурації всі зміни буде втрачено. Продовжити завантаження?',
   filterIsRequired: "Фільтр обов'язковий для заповнення",
-  сhooseEntity: 'Виберіть сутність',
   startSearchMinCharacters: 'Мінімальна к-ть символів для пошуку: {0}',
-  useOSCredentialTitle: 'Доменна',
-  useOSCredentialInfo: 'Вхід з правами користувача, що увійшов до операційної системи<p>Комп\'ютер повинен бути включений в домен Windows</p>',
-  useUBAuthenticationTitle: 'По паролю',
-  useCertificateTitle: 'По ключу',
   headerSelectCert: 'Виберіть сертифікат',
   headerSelectOwnCert: 'Виберіть сертифікати, що відповідні закритому ключу',
   invalidPrivateKeyCertificateSelection: 'Для операції підписання сховище сертифікатів користувача повинно містити один сертифікат. Зверніться до адміністратора системи.',
@@ -384,32 +360,9 @@ UB.i18nExtend({
 
   btnIItSttings: 'Параметри ІІТ',
   btnIItCert: 'Сертифікати ІІТ',
-  useCertificateInfo: 'Вхід з використанням <b>особистого ключа:</b><ol>' +
-        '<li>Встановіть носій ключової інформації</li>' +
-        "<li>Введіть ім'я користувача та пароль</li>" +
-        '<li>Натисніть "Увійти"</li>' +
-        '<li>У діалоговому вікні оберіть розташування ключа, <br>вкажіть пароль захисту ключа та натисніть "Ок"</li>' +
-        '</ol>',
-  useCertificateInfoSimple: 'Вхід з використанням <b>особистого ключа:</b><ol>' +
-  '<li>Встановіть носій ключової інформації</li>' +
-  '<li>Натисніть "Увійти"</li>' +
-  '<li>У діалоговому вікні оберіть розташування ключа, <br>вкажіть пароль захисту ключа та натисніть "Ок"</li></ol>',
-  useCertificateInfoSimpleUserName: 'Вхід з використанням <b>особистого ключа:</b><ol>' +
-  '<li>Встановіть носій ключової інформації</li>' +
-  "<li>Введіть ім'я користувача</li>" +
-  '<li>Натисніть "Увійти"</li>' +
-  '<li>У діалоговому вікні оберіть розташування ключа, <br>вкажіть пароль захисту ключа та натисніть "Ок"</li></ol>',
-  IITCertCanceledByUser: 'Зчитування ключа відмінено користувачем',
-  msgInvalidCertAuth: "В доступі відмовлено. Некоректний сертифікат, закритий ключ або ім'я користувача.",
-  msgInvalidUBAuth: "В доступі відмовлено. Перевірте ім'я користувача та пароль.",
-  ubErrElsInvalidUserOrPwd: "В доступі відмовлено. Перевірте ім'я користувача та пароль",
   OpenIDConnect: 'OpenID',
   authOpenIDConnectFail: 'Засвідчувальний центр відхилив запит на аутентифікацію',
   moreThanOneUserWithPassedCertificate: "Цей сертифікат використовується кількома користувачами. Введіть ім'я користувача.",
-  useUBAuthenticatinInfo: "Введіть ім'я користувача, пароль та натисніть 'Увійти'.",
-  msgInvalidPlugin: 'Версія плагіна застаріла. Встановлено версію {0}, необхідно {1}. Автоматичне оновлення відбувається раз на 2 години.' +
-        ' Для ручного запуску скористайтеся <a href="models/adminui-pub/ub-extension/pluginUpdateInstruction_uk.html" target="_blank">інструкцією</a>. ' +
-        ' Якщо після оновлення повідомлення залишилось, зверніться до адміністратора.',
   readPKCanceled: 'Припинено користувачем',
   invalidPrivateKeyCertificate: 'Обрано не вірний сертифікат(и) особистого ключа. Для ключа, виданого після 2014 року, потрібно мати два сертифікати.',
   serverIsBusy: 'Сервер тимчасово недоступний',
@@ -422,7 +375,6 @@ UB.i18nExtend({
   fullNameInGen: 'Повна назва в род. відмінку',
   fullNameInDat: 'Повна назва в дав. відмінку',
   Language: 'Мова',
-  recordNotExistsOrDontHaveRights: 'Запису не існує або у Вас відсутні права доступу',
   showDocVersions: 'Попередні версії',
   selectDocRevision: 'Виберіть версію:',
   isLastDocRevision: '(поточна версія)',
@@ -431,7 +383,6 @@ UB.i18nExtend({
   revisionNum: 'Версія №',
 
   menu: 'Меню',
-  unknownError: 'Виникла невідома помилка. Зверніться, будь ласка, до адміністратора системи.',
 
   ubErrLockedbyanotheruser: 'Запис заблоковано іншим користувачем. Всі внесені зміни не можна буде зберегти. Спробуйте пізніше.',
 
@@ -492,7 +443,7 @@ UB.i18nExtend({
   editMultiLang: 'На інших мовах',
 
   close: 'Закрити',
-  closeOther: 'Закрити всі, крім цього',
+  closeOther: 'Закрити інші',
   closeAll: 'Закрити всі',
   elementIsNotActual: 'Елемент не актуальний на поточну дату.',
 
@@ -613,64 +564,6 @@ UB.i18nExtend({
   'Mixins': 'Mixins',
   'enabled': 'enabled',
 
-  // serever Errors
-    /*
-     ubErrNotImplementedErrnum: 'ubErrNotImplementedErrnum',
-     ubErrRollbackedErrnum: 'ubErrRollbackedErrnum',
-     ubErrNotExecutedErrnum: 'ubErrNotExecutedErrnum',
-     ubErrInvaliddataforrunmethod: 'ubErrInvaliddataforrunmethod',
-     ubErrInvaliddataforrunmethodlist: 'ubErrInvaliddataforrunmethodlist',
-     ubErrNoMethodParameter: 'ubErrNoMethodParameter',
-     ubErrMethodNotExist: 'ubErrMethodNotExist',
-     ubErrNoEntityParameter: 'ubErrNoEntityParameter',
-     ubErrNoSuchRecord: 'ubErrNoSuchRecord',
-     ubErrInvalidDocpropFldContent: 'ubErrInvalidDocpropFldContent',
-     ubErrEntityNotExist: 'ubErrEntityNotExist',
-     ubErrAttributeNotExist: 'ubErrAttributeNotExist',
-     ubErrNotexistEntitymethod: 'ubErrNotexistEntitymethod',
-     ubErrInvalidSetdocData: 'ubErrInvalidSetdocData',
-     ubErrSoftlockExist: 'ubErrSoftlockExist',
-     ubErrNoErrorDescription: 'ubErrNoErrorDescription',
-     ubErrUnknownStore: 'ubErrUnknownStore',
-     ubErrObjdatasrcempty: 'ubErrObjdatasrcempty',
-     ubErrObjattrexprbodyempty: 'ubErrObjattrexprbodyempty',
-     ubErrNecessaryfieldNotExist: 'ubErrNecessaryfieldNotExist',
-     ubErrNotexistnecessparam: 'ubErrNotexistnecessparam',
-     ubErrNotexistfieldlist: 'ubErrNotexistfieldlist',
-     ubErrUpdaterecnotfound: 'ubErrUpdaterecnotfound',
-     ubErrNecessaryparamnotexist: 'ubErrNecessaryparamnotexist',
-     ubErrInvalidstoredirs: 'ubErrInvalidstoredirs',
-     ubErrNofileinstore: 'ubErrNofileinstore',
-     ubErrAppnotsupportconnection: 'ubErrAppnotsupportconnection',
-     ubErrAppnotsupportstore: 'ubErrAppnotsupportstore',
-     ubErrDeleterecnotfound: 'ubErrDeleterecnotfound',
-     ubErrNotfoundlinkentity: 'ubErrNotfoundlinkentity',
-     ubErrEntitynotcontainmixinaslink: 'ubErrEntitynotcontainmixinaslink',
-     ubErrEssnotinherfromessaslink: 'ubErrEssnotinherfromessaslink',
-     ubErrInstancedatanameisreadonly: 'ubErrInstancedatanameisreadonly',
-     ubErrManyrecordsforsoftlock: 'ubErrManyrecordsforsoftlock',
-     ubErrNotfoundidentfieldsl: 'ubErrNotfoundidentfieldsl',
-     ubErrInvalidlocktypevalue: 'ubErrInvalidlocktypevalue',
-     ubErrInvalidwherelistinparams: 'ubErrInvalidwherelistinparams',
-     ubErrRecnotlocked: 'ubErrRecnotlocked',
-     ubErrManyrecordsforchecksign: 'ubErrManyrecordsforchecksign',
-     ubErrNotfoundparamnotrootlevel: 'ubErrNotfoundparamnotrootlevel',
-     ubErrCantcreatedirlogmsg: 'ubErrCantcreatedirlogmsg',
-     ubErrCantcreatedirclientmsg: 'ubErrCantcreatedirclientmsg',
-     ubErrConnectionNotExist: 'ubErrConnectionNotExist',
-     ubErrDirectUnityModification: 'ubErrDirectUnityModification',
-     ubErrCantdelrecthisvalueusedinassocrec: 'ubErrCantdelrecthisvalueusedinassocrec',
-     ubErrAssocattrnotfound: 'ubErrAssocattrnotfound',
-     ubErrAttrassociationtoentityisempty: 'ubErrAttrassociationtoentityisempty',
-     ubErrNotfoundconforentityinapp: 'ubErrNotfoundconforentityinapp',
-     ubErrNewversionrecnotfound: 'ubErrNewversionrecnotfound',
-     ubErrElsAccessDenyEntity: 'ubErrElsAccessDenyEntity',
-     ubErrAlsAccessDenyEntityattr: 'ubErrAlsAccessDenyEntityattr',
-     ubErrDatastoreEmptyentity: 'ubErrDatastoreEmptyentity',
-     ubErrElsAccessDeny: 'ubErrElsAccessDeny',
-     ubErrElsNeedAuth: 'ubErrElsNeedAuth',
-     */
-
   dateIsTooEarly: 'Дата має бути більше {0}',
 
     // !!!
@@ -688,329 +581,331 @@ UB.i18nExtend({
  * Updated by dev.ashevchuk@gmail.com
  * 01.09.2009
  */
-Ext.onReady(function () {
-  if (Ext.Updater) {
-    Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Завантаження...</div>'
-  }
-  if (Ext.view.View) {
-    Ext.view.View.prototype.emptyText = '&lt Немає даних &gt'
-  }
-
-  if (Ext.grid.Panel) {
-    Ext.grid.Panel.prototype.ddText = '{0} обраних рядків'
-  }
-
-  if (Ext.TabPanelItem) {
-    Ext.TabPanelItem.prototype.closeText = 'Закрити цю вкладку'
-  }
-
-  if (Ext.form.field.Base) {
-    Ext.form.field.Base.prototype.invalidText = 'Хибне значення в цьому полі'
-  }
-
-  if (Ext.LoadMask) {
-    Ext.LoadMask.prototype.msg = 'Завантаження...'
-    Ext.LoadMask.msg = 'Завантаження...'
-  }
-
-  if (Ext.Date) {
-    Ext.Date.monthNumbers = {
-      'Січ': 0,
-      'Лют': 1,
-      'Бер': 2,
-      'Кві': 3,
-      'Тра': 4,
-      'Чер': 5,
-      'Лип': 6,
-      'Сер': 7,
-      'Вер': 8,
-      'Жов': 9,
-      'Лис': 10,
-      'Гру': 11
+if (typeof Ext !== 'undefined') {
+  Ext.onReady(function () {
+    if (Ext.Updater) {
+      Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Завантаження...</div>'
     }
-    Ext.Date.monthNames = [
-      'Січень',
-      'Лютий',
-      'Березень',
-      'Квітень',
-      'Травень',
-      'Червень',
-      'Липень',
-      'Серпень',
-      'Вересень',
-      'Жовтень',
-      'Листопад',
-      'Грудень'
-    ]
-
-    Ext.Date.dayNames = [
-      'Неділя',
-      'Понеділок',
-      'Вівторок',
-      'Середа',
-      'Четвер',
-      'П’ятниця',
-      'Субота'
-    ]
-  }
-
-  if (Ext.MessageBox) {
-    Ext.MessageBox.buttonText = {
-      ok: 'OK',
-      cancel: 'Відміна',
-      yes: 'Так',
-      no: 'Ні'
+    if (Ext.view.View) {
+      Ext.view.View.prototype.emptyText = '&lt Немає даних &gt'
     }
-    Ext.MessageBox.titleText = {
-      confirm: 'Підтвердження',
-      prompt: 'Інформація',
-      wait: 'Завантаження...',
-      alert: 'Увага'
+
+    if (Ext.grid.Panel) {
+      Ext.grid.Panel.prototype.ddText = '{0} обраних рядків'
     }
-  }
 
-  if (Ext.view.AbstractView) {
-    Ext.view.AbstractView.prototype.loadingText = 'Завантаження...'
-  }
+    if (Ext.TabPanelItem) {
+      Ext.TabPanelItem.prototype.closeText = 'Закрити цю вкладку'
+    }
 
-  if (Ext.util.Format) {
-    Ext.apply(Ext.util.Format, {
-      thousandSeparator: ' ',
-      decimalSeparator: ',',
-      currencySign: '',
-      dateFormat: 'd.m.Y',
-      timeFormat: 'H:i:s',
-      datetimeFormat: 'd.m.Y H:i'
-    })
-  }
+    if (Ext.form.field.Base) {
+      Ext.form.field.Base.prototype.invalidText = 'Хибне значення в цьому полі'
+    }
 
-  Ext.define('Ext.uk.ux.DateTimePicker', {
-    override: 'Ext.ux.DateTimePicker',
-    todayText: 'Сьогодні',
-    timeLabel: 'Час'
-  })
+    if (Ext.LoadMask) {
+      Ext.LoadMask.prototype.msg = 'Завантаження...'
+      Ext.LoadMask.msg = 'Завантаження...'
+    }
 
-  if (Ext.picker.Date) {
-    Ext.apply(Ext.picker.Date.prototype, {
-      todayText: 'Сьогодні',
-      minText: 'Ця дата менша за мінімально допустиму дату',
-      maxText: 'Ця дата більша за максимально допустиму дату',
-      disabledDaysText: '',
-      disabledDatesText: '',
-      monthNames: Ext.Date.monthNames,
-      dayNames: Ext.Date.dayNames,
-      nextText: 'Наступний місяць (Control+Вправо)',
-      prevText: 'Попередній місяць (Control+Вліво)',
-      monthYearText: 'Вибір місяця (Control+Вгору/Вниз для вибору року)',
-      todayTip: '{0} (Пробіл)',
-      format: 'd.m.Y',
-      altFormats: 'dmY|dmy|d.m.y|d/m/Y|j/m/y|d/n/y|j/m/Y|d/n/Y|d-m-y|d/m|d-m|dm|dmy|dmY|d',
-      startDay: 1
-    })
-  }
-
-  if (Ext.picker.Month) {
-    Ext.apply(Ext.picker.Month.prototype, {
-      okText: '&#160;OK&#160;',
-      cancelText: 'Відміна'
-    })
-  }
-
-  if (Ext.toolbar.Paging) {
-    Ext.apply(Ext.PagingToolbar.prototype, {
-      beforePageText: 'Сторінка',
-      afterPageText: 'з {0}',
-      firstText: 'Перша сторінка',
-      prevText: 'Попередня сторінка',
-      nextText: 'Наступна сторінка',
-      lastText: 'Остання сторінка',
-      refreshText: 'Оновити',
-      displayMsg: 'Відображення записів з {0} по {1}, всього {2}',
-      emptyMsg: 'Дані для відображення відсутні'
-
-    })
-  }
-
-  if (Ext.form.field.Text) {
-    Ext.apply(Ext.form.field.Text.prototype, {
-      minLengthText: 'Мінімальна довжина цього поля {0}',
-      maxLengthText: 'Максимальна довжина цього поля {0}',
-      blankText: 'Це поле є обов’язковим для заповнення',
-      regexText: '',
-      emptyText: null
-    })
-  }
-
-  if (Ext.form.field.Number) {
-    Ext.apply(Ext.form.field.Number.prototype, {
-      minText: 'Значення у цьому полі не може бути менше {0}',
-      maxText: 'Значення у цьому полі не може бути більше {0}',
-      nanText: '{0} не є числом'
-    })
-  }
-
-  if (Ext.form.field.Date) {
-    Ext.apply(Ext.form.field.Date.prototype, {
-      disabledDaysText: 'Не доступно',
-      disabledDatesText: 'Не доступно',
-      minText: 'Дата у цьому полі повинна бути більша {0}',
-      maxText: 'Дата у цьому полі повинна бути менша {0}',
-      invalidText: '{0} невірна дата - дата повинна бути вказана у форматі {1}',
-      format: 'd.m.Y',
-      startDay: 1,
-      altFormats: 'dmY|dmy|d.m.y|d/m/Y|j/m/y|d/n/y|j/m/Y|d/n/Y|d-m-y|d/m|d-m|dm|dmy|dmY|d'
-    })
-  }
-
-  if (Ext.form.field.ComboBox) {
-    Ext.apply(Ext.form.field.ComboBox.prototype, {
-      valueNotFoundText: undefined
-    })
-    Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: 'Завантаження...'
-    })
-  }
-
-  if (Ext.form.field.VTypes) {
-    Ext.apply(Ext.form.field.VTypes, {
-      emailText: 'Це поле повинно містити адресу електронної пошти у форматі "user@example.com"',
-      urlText: 'Це поле повинно містити URL у форматі "http:/' + '/www.example.com"',
-      alphaText: 'Це поле повинно містити виключно латинські літери та символ підкреслення "_"',
-      alphanumText: 'Це поле повинно містити виключно латинські літери, цифри та символ підкреслення "_"'
-    })
-  }
-
-  if (Ext.form.field.HtmlEditor) {
-    Ext.apply(Ext.form.field.HtmlEditor.prototype, {
-      createLinkText: 'Будь ласка, введіть адресу:',
-      buttonTips: {
-        bold: {
-          title: 'Напівжирний (Ctrl+B)',
-          text: 'Зробити напівжирним виділений текст.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        italic: {
-          title: 'Курсив (Ctrl+I)',
-          text: 'Зробити курсивом виділений текст.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        underline: {
-          title: 'Підкреслений (Ctrl+U)',
-          text: 'Зробити підкресленим виділений текст.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        increasefontsize: {
-          title: 'Збільшити розмір',
-          text: 'Збільшити розмір шрифта.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        decreasefontsize: {
-          title: 'Зменшити розмір',
-          text: 'Зменшити розмір шрифта.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        backcolor: {
-          title: 'Заливка',
-          text: 'Змінити колір фону для виділеного тексту або абзацу.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        forecolor: {
-          title: 'Колір тексту',
-          text: 'Змінити колір виділеного тексту або абзацу.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        justifyleft: {
-          title: 'Вирівняти текст по лівому полю',
-          text: 'Вирівнювання тексту по лівому полю.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        justifycenter: {
-          title: 'Вирівняти текст по центру',
-          text: 'Вирівнювання тексту по центру.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        justifyright: {
-          title: 'Вирівняти текст по правому полю',
-          text: 'Вирівнювання тексту по правому полю.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        insertunorderedlist: {
-          title: 'Маркери',
-          text: 'Почати маркерований список.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        insertorderedlist: {
-          title: 'Нумерація',
-          text: 'Почати нумерований список.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        createlink: {
-          title: 'Вставити гіперпосилання',
-          text: 'Створення посилання з виділеного тексту.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        },
-        sourceedit: {
-          title: 'Вихідний код',
-          text: 'Режим редагування вихідного коду.',
-          cls: Ext.baseCSSPrefix + 'html-editor-tip'
-        }
+    if (Ext.Date) {
+      Ext.Date.monthNumbers = {
+        'Січ': 0,
+        'Лют': 1,
+        'Бер': 2,
+        'Кві': 3,
+        'Тра': 4,
+        'Чер': 5,
+        'Лип': 6,
+        'Сер': 7,
+        'Вер': 8,
+        'Жов': 9,
+        'Лис': 10,
+        'Гру': 11
       }
-    })
-  }
+      Ext.Date.monthNames = [
+        'Січень',
+        'Лютий',
+        'Березень',
+        'Квітень',
+        'Травень',
+        'Червень',
+        'Липень',
+        'Серпень',
+        'Вересень',
+        'Жовтень',
+        'Листопад',
+        'Грудень'
+      ]
 
-  if (Ext.grid.header.Container) {
-    Ext.apply(Ext.grid.header.Container.prototype, {
-      sortAscText: 'Сортувати за зростанням',
-      sortDescText: 'Сортувати за спаданням',
-      lockText: 'Закріпити стовпець',
-      unlockText: 'Відкріпити стовпець',
-      columnsText: 'Стовпці'
-    })
-  }
+      Ext.Date.dayNames = [
+        'Неділя',
+        'Понеділок',
+        'Вівторок',
+        'Середа',
+        'Четвер',
+        'П’ятниця',
+        'Субота'
+      ]
+    }
 
-  if (Ext.grid.feature.Grouping) {
-    Ext.apply(Ext.grid.feature.Grouping.prototype, {
-      emptyGroupText: '(Порожньо)',
-      groupByText: 'Групувати по цьому полю',
-      showGroupsText: 'Відображати по групах'
-    })
-  }
+    if (Ext.MessageBox) {
+      Ext.MessageBox.buttonText = {
+        ok: 'OK',
+        cancel: 'Відміна',
+        yes: 'Так',
+        no: 'Ні'
+      }
+      Ext.MessageBox.titleText = {
+        confirm: 'Підтвердження',
+        prompt: 'Інформація',
+        wait: 'Завантаження...',
+        alert: 'Увага'
+      }
+    }
 
-  if (Ext.grid.PropertyColumnModel) {
-    Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
-      nameText: 'Назва',
-      valueText: 'Значення',
-      dateFormat: 'd.m.Y'
-    })
-  }
+    if (Ext.view.AbstractView) {
+      Ext.view.AbstractView.prototype.loadingText = 'Завантаження...'
+    }
 
-  if (Ext.SplitLayoutRegion) {
-    Ext.apply(Ext.SplitLayoutRegion.prototype, {
-      splitTip: 'Тягніть для зміни розміру.',
-      collapsibleSplitTip: 'Тягніть для зміни розміру. Подвійний клік сховає панель.'
-    })
-  }
+    if (Ext.util.Format) {
+      Ext.apply(Ext.util.Format, {
+        thousandSeparator: ' ',
+        decimalSeparator: ',',
+        currencySign: '',
+        dateFormat: 'd.m.Y',
+        timeFormat: 'H:i:s',
+        datetimeFormat: 'd.m.Y H:i'
+      })
+    }
 
-  if (Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion) {
-    Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
-      splitTip: 'Тягніть для зміни розміру.',
-      collapsibleSplitTip: 'Тягніть для зміни розміру. Подвійний клік сховає панель.'
+    Ext.define('Ext.uk.ux.DateTimePicker', {
+      override: 'Ext.ux.DateTimePicker',
+      todayText: 'Сьогодні',
+      timeLabel: 'Час'
     })
-  }
 
-  if (Ext.form.CheckboxGroup) {
-    Ext.apply(Ext.form.CheckboxGroup.prototype, {
-      blankText: 'Необхідно вибрати щонайменше одну позицію в групі'
-    })
-  }
+    if (Ext.picker.Date) {
+      Ext.apply(Ext.picker.Date.prototype, {
+        todayText: 'Сьогодні',
+        minText: 'Ця дата менша за мінімально допустиму дату',
+        maxText: 'Ця дата більша за максимально допустиму дату',
+        disabledDaysText: '',
+        disabledDatesText: '',
+        monthNames: Ext.Date.monthNames,
+        dayNames: Ext.Date.dayNames,
+        nextText: 'Наступний місяць (Control+Вправо)',
+        prevText: 'Попередній місяць (Control+Вліво)',
+        monthYearText: 'Вибір місяця (Control+Вгору/Вниз для вибору року)',
+        todayTip: '{0} (Пробіл)',
+        format: 'd.m.Y',
+        altFormats: 'dmY|dmy|d.m.y|d/m/Y|j/m/y|d/n/y|j/m/Y|d/n/Y|d-m-y|d/m|d-m|dm|dmy|dmY|d',
+        startDay: 1
+      })
+    }
 
-  if (Ext.tab.Tab) {
-    Ext.apply(Ext.tab.Tab.prototype, {
-      closeText: 'Закрити вкладку'
-    })
-  }
+    if (Ext.picker.Month) {
+      Ext.apply(Ext.picker.Month.prototype, {
+        okText: '&#160;OK&#160;',
+        cancelText: 'Відміна'
+      })
+    }
 
-  if (Ext.form.Basic) {
-    Ext.form.Basic.prototype.waitTitle = 'Зачекайте, будь ласка...'
-  }
-})
+    if (Ext.toolbar.Paging) {
+      Ext.apply(Ext.PagingToolbar.prototype, {
+        beforePageText: 'Сторінка',
+        afterPageText: 'з {0}',
+        firstText: 'Перша сторінка',
+        prevText: 'Попередня сторінка',
+        nextText: 'Наступна сторінка',
+        lastText: 'Остання сторінка',
+        refreshText: 'Оновити',
+        displayMsg: 'Відображення записів з {0} по {1}, всього {2}',
+        emptyMsg: 'Дані для відображення відсутні'
+
+      })
+    }
+
+    if (Ext.form.field.Text) {
+      Ext.apply(Ext.form.field.Text.prototype, {
+        minLengthText: 'Мінімальна довжина цього поля {0}',
+        maxLengthText: 'Максимальна довжина цього поля {0}',
+        blankText: 'Це поле є обов’язковим для заповнення',
+        regexText: '',
+        emptyText: null
+      })
+    }
+
+    if (Ext.form.field.Number) {
+      Ext.apply(Ext.form.field.Number.prototype, {
+        minText: 'Значення у цьому полі не може бути менше {0}',
+        maxText: 'Значення у цьому полі не може бути більше {0}',
+        nanText: '{0} не є числом'
+      })
+    }
+
+    if (Ext.form.field.Date) {
+      Ext.apply(Ext.form.field.Date.prototype, {
+        disabledDaysText: 'Не доступно',
+        disabledDatesText: 'Не доступно',
+        minText: 'Дата у цьому полі повинна бути більша {0}',
+        maxText: 'Дата у цьому полі повинна бути менша {0}',
+        invalidText: '{0} невірна дата - дата повинна бути вказана у форматі {1}',
+        format: 'd.m.Y',
+        startDay: 1,
+        altFormats: 'dmY|dmy|d.m.y|d/m/Y|j/m/y|d/n/y|j/m/Y|d/n/Y|d-m-y|d/m|d-m|dm|dmy|dmY|d'
+      })
+    }
+
+    if (Ext.form.field.ComboBox) {
+      Ext.apply(Ext.form.field.ComboBox.prototype, {
+        valueNotFoundText: undefined
+      })
+      Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
+        loadingText: 'Завантаження...'
+      })
+    }
+
+    if (Ext.form.field.VTypes) {
+      Ext.apply(Ext.form.field.VTypes, {
+        emailText: 'Це поле повинно містити адресу електронної пошти у форматі "user@example.com"',
+        urlText: 'Це поле повинно містити URL у форматі "http:/' + '/www.example.com"',
+        alphaText: 'Це поле повинно містити виключно латинські літери та символ підкреслення "_"',
+        alphanumText: 'Це поле повинно містити виключно латинські літери, цифри та символ підкреслення "_"'
+      })
+    }
+
+    if (Ext.form.field.HtmlEditor) {
+      Ext.apply(Ext.form.field.HtmlEditor.prototype, {
+        createLinkText: 'Будь ласка, введіть адресу:',
+        buttonTips: {
+          bold: {
+            title: 'Напівжирний (Ctrl+B)',
+            text: 'Зробити напівжирним виділений текст.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          italic: {
+            title: 'Курсив (Ctrl+I)',
+            text: 'Зробити курсивом виділений текст.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          underline: {
+            title: 'Підкреслений (Ctrl+U)',
+            text: 'Зробити підкресленим виділений текст.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          increasefontsize: {
+            title: 'Збільшити розмір',
+            text: 'Збільшити розмір шрифта.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          decreasefontsize: {
+            title: 'Зменшити розмір',
+            text: 'Зменшити розмір шрифта.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          backcolor: {
+            title: 'Заливка',
+            text: 'Змінити колір фону для виділеного тексту або абзацу.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          forecolor: {
+            title: 'Колір тексту',
+            text: 'Змінити колір виділеного тексту або абзацу.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          justifyleft: {
+            title: 'Вирівняти текст по лівому полю',
+            text: 'Вирівнювання тексту по лівому полю.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          justifycenter: {
+            title: 'Вирівняти текст по центру',
+            text: 'Вирівнювання тексту по центру.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          justifyright: {
+            title: 'Вирівняти текст по правому полю',
+            text: 'Вирівнювання тексту по правому полю.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          insertunorderedlist: {
+            title: 'Маркери',
+            text: 'Почати маркерований список.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          insertorderedlist: {
+            title: 'Нумерація',
+            text: 'Почати нумерований список.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          createlink: {
+            title: 'Вставити гіперпосилання',
+            text: 'Створення посилання з виділеного тексту.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          },
+          sourceedit: {
+            title: 'Вихідний код',
+            text: 'Режим редагування вихідного коду.',
+            cls: Ext.baseCSSPrefix + 'html-editor-tip'
+          }
+        }
+      })
+    }
+
+    if (Ext.grid.header.Container) {
+      Ext.apply(Ext.grid.header.Container.prototype, {
+        sortAscText: 'Сортувати за зростанням',
+        sortDescText: 'Сортувати за спаданням',
+        lockText: 'Закріпити стовпець',
+        unlockText: 'Відкріпити стовпець',
+        columnsText: 'Стовпці'
+      })
+    }
+
+    if (Ext.grid.feature.Grouping) {
+      Ext.apply(Ext.grid.feature.Grouping.prototype, {
+        emptyGroupText: '(Порожньо)',
+        groupByText: 'Групувати по цьому полю',
+        showGroupsText: 'Відображати по групах'
+      })
+    }
+
+    if (Ext.grid.PropertyColumnModel) {
+      Ext.apply(Ext.grid.PropertyColumnModel.prototype, {
+        nameText: 'Назва',
+        valueText: 'Значення',
+        dateFormat: 'd.m.Y'
+      })
+    }
+
+    if (Ext.SplitLayoutRegion) {
+      Ext.apply(Ext.SplitLayoutRegion.prototype, {
+        splitTip: 'Тягніть для зміни розміру.',
+        collapsibleSplitTip: 'Тягніть для зміни розміру. Подвійний клік сховає панель.'
+      })
+    }
+
+    if (Ext.layout.BorderLayout && Ext.layout.BorderLayout.SplitRegion) {
+      Ext.apply(Ext.layout.BorderLayout.SplitRegion.prototype, {
+        splitTip: 'Тягніть для зміни розміру.',
+        collapsibleSplitTip: 'Тягніть для зміни розміру. Подвійний клік сховає панель.'
+      })
+    }
+
+    if (Ext.form.CheckboxGroup) {
+      Ext.apply(Ext.form.CheckboxGroup.prototype, {
+        blankText: 'Необхідно вибрати щонайменше одну позицію в групі'
+      })
+    }
+
+    if (Ext.tab.Tab) {
+      Ext.apply(Ext.tab.Tab.prototype, {
+        closeText: 'Закрити вкладку'
+      })
+    }
+
+    if (Ext.form.Basic) {
+      Ext.form.Basic.prototype.waitTitle = 'Зачекайте, будь ласка...'
+    }
+  })
+}

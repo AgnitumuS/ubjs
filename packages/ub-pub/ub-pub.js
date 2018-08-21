@@ -1,3 +1,4 @@
+/* global SystemJS */
 const i18n = require('./i18n')
 const utils = require('./utils')
 const transport = require('./transport')
@@ -6,30 +7,61 @@ const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
 const UBCache = require('./UBCache')
 const LocalDataStore = require('@unitybase/cs-shared').LocalDataStore
+const CryptoJS = require('@unitybase/cryptojs')
+// const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
 const MD5 = require('@unitybase/cryptojs/md5')
 const UBNativeMessage = require('./UBNativeMessage')
 
+let _errorReporter = null
+let _globalVueInstance = null
 /**
  * Data layer for accessing UnityBase server from Browser or NodeJS
  * @module @unitybase/ub-pub
  */
 module.exports = {
   /**
-   * Return locale-specific resource from it identifier.
-   * `localeString` must be either previously defined dy call to {@link i18nExtend i18nExtend} or
-   * or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
-   * or `UB.i18n('uba_role.description')` would be resolved to
-   * localized entity caption or entity attribute caption
+   * Return locale-specific resource from it identifier. `localeString` must be:
+   *
+   * - either previously defined dy call to {@link i18nExtend i18nExtend}
+   * - or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
+   *  or `UB.i18n('uba_role.description')` would be resolved to  localized entity caption or entity attribute caption
+   *
+   * @example
+
+ //Localized string can be formatted either by position args:
+ UB.i18nExtend({
+   greeting: 'Hello {0}, welcome to {1}'
+ })
+ UB.i18n('greeting', 'Mark', 'Kiev') // Hello Mark, welcome to Kiev
+
+ //Or by named args:
+ UB.i18nExtend({
+   namedGreeting: 'Hello {name}, welcome to {place}'
+ })
+ UB.i18n('namedGreeting', {name: 'Mark', place: 'Kiev'}) // Hello Mark, welcome to Kiev
+
+ //Localization itself can be an object:
+ UB.i18nExtend({
+   loginPage: { welcome: 'Welcome to our app', user: 'Dear {user}'}
+ })
+ UB.i18n('loginPage.welcome') // Welcome to our app
+ UB.i18n('loginPage.user', {user: 'Pol}) // Dear Pol
+ UB.i18n('loginPage') // return object {welcome: "Welcome to our app", user: "Dear {user}"}
+
+   *
    * @param {String} localeString
+   * @param {...*} formatArgs Format args
    * @returns {*}
    */
-  i18n: function (localeString) { return i18n.i18n(localeString) },
+  i18n: i18n.i18n.bind(i18n),
   /**
    * Merge localizationObject to UB.i18n. Usually called form `modelFolder/locale/lang-*.js` scripts
    * @param {Object} localizationObject
    */
-  i18nExtend: function (localizationObject) { return i18n.i18nExtend(localizationObject) },
+  i18nExtend: function (localizationObject) {
+    return i18n.i18nExtend(localizationObject)
+  },
   /**
    * Allows to define a tokenized string and pass an arbitrary number of arguments to replace the tokens.  Each
    * token must be unique, and must increment in the format {0}, {1}, etc.  Example usage:
@@ -202,10 +234,13 @@ UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
    */
   UBCache: UBCache,
   /**
-   * Create authorized connection to UnityBase server
+   * Create authorized connection to UnityBase server.
+   *
+   * For a browser clients in case value of `silenceKerberosLogin` localStorage key is 'true' and 'Negotiate'
+   * authorization method is enable for application will try to authenticate user using Kerberos/NTLM method.
    *
    * Preferred locale tip: to define connection preferredLocale parameter call
-   * `localStorage.setItem((path || '/') + 'preferredLocale', 'uk')`
+   * `localStorage.setItem(UB.LDS_KEYS.PREFERRED_LOCALE, 'uk')`
    * **before** call to UBConnection.connect
    * @example
 
@@ -244,9 +279,9 @@ conn.then(function(conn){
    * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
    *  In case user logged out by server side this type persistent not work and UBConnection will call onCredentialRequired handler,
    *  so user will be prompted for credentials
-   * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
-   * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
-   * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
+   * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@event authorizationFail} event. Should handle all errors inside!
+   * @param [cfg.onAuthorized] Callback for authorization success. See {@event authorized} event.
+   * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@event passwordExpired} event
    * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
    *  Accept one parameter - connection: UBConnection
    *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
@@ -254,11 +289,91 @@ conn.then(function(conn){
    * @param [cfg.onGotApplicationDomain]
    * @return {Promise<UBConnection>}
    */
-  connect: function (cfg) { return conn.connect(cfg) },
+  connect: function (cfg) {
+    return conn.connect(cfg, this).then((conn) => {
+      if (_globalVueInstance && _globalVueInstance.$i18n) {
+        _globalVueInstance.$i18n.locale = conn.userLang()
+      }
+      this.Repository = function (entityCode) {
+        return new ClientRepository(conn, entityCode)
+      }
+      return conn
+    })
+  },
+  /**
+   * After call to UB.connect this property will point to the active connection
+   * @type {UBConnection}
+   */
+  connection: null,
   /**
    * @type {ClientRepository}
    */
   ClientRepository: ClientRepository,
+  /**
+   * Create a new instance of repository for a current connection. Defined only inside adminUI
+   * @param {String} entityCode name of Entity we create repository for
+   * @returns {ClientRepository}
+   */
+  Repository: function (entityCode) {
+    throw new Error('function defined only after connect()')
+  },
+  /**
+   * Set a error reported callback for unhandled errors (including unhandled promise rejections).
+   * Callback signature `function({errMsg, errCode, entityCode, detail})`
+   *  - `errMsg` is already translated using UB.i18n
+   *
+   * This callback also called inside `UBPub.showErrorWindow`
+   *
+   * @param {function} errorReportedFunction
+   */
+  setErrorReporter: function (errorReportedFunction) {
+    _errorReporter = errorReportedFunction
+  },
+  /**
+   * Default error reported handler. Will translate error message using {@link UB#i18n i18n}.
+   *
+   * For a UI other then adminUI developer can call `UB.setErrorReporter` to set his own error reporter
+   * @example
+
+      const UB = require('@unitybase/ub-pub')
+      const vm = new Vue({
+        ...
+        methods: {
+          showError: function(errMsg, errCode, entityCode, detail) {
+            this.$message({
+              showClose: true,
+              message: errMsg,
+              type: 'error'
+            })
+          }
+          ...
+      })
+      UB.setErrorReporter(vm.showError.bind(vm))
+   *
+   * @param {String|Object|Error|UBError} errMsg  message to show
+   * @param {String} [errCode] error code
+   * @param {String} [entityCode] entity code
+   * @param {String} [detail] details
+   */
+  showErrorWindow: function (errMsg, errCode, entityCode, detail) {
+    let parsed
+    try {
+      parsed = utils.parseUBError(errMsg, errCode, entityCode, detail)
+      if (_errorReporter) {
+        _errorReporter(parsed)
+      } else if (this.userAgent && typeof window !== 'undefined') {
+        window.alert(parsed.errMsg)
+      } else if (typeof console !== 'undefined') {
+        console.error(parsed.errMsg, parsed.detail)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+  /**
+   * @deprecated Use connection.appConfig instead
+   */
+  appConfig: null,
   /**
    * Helper class for manipulation with data, stored locally in ({@link TubCachedData} format)
    * @type {LocalDataStore}
@@ -272,6 +387,7 @@ conn.then(function(conn){
   isOpera: utils.isOpera,
   isMac: utils.isMac,
   isSecureBrowser: utils.isSecureBrowser,
+  isReactNative: utils.isReactNative,
   /**
    * Inject external script or css to DOM and return a promise to be resolved when script is loaded.
    *
@@ -309,5 +425,160 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
   /**
    * Calculate MD5 checksum
    */
-  MD5: MD5
+  MD5: MD5,
+  /**
+   * Vue JS integration
+   *  - inject UB localization {@link UB.i18n UB.i18n} to global Vue instance as $ut:
+   *  - inject `@unitybase/ub-pub` to global Vue instance as $UB
+   *
+   * @example
+
+  const Vue = require('vue')
+  const UB = require('@unitybase/ub-pub')
+  Vue.use(UB)
+
+  // localization of vue template
+  <button >{{ $ut('Enter') }}</button>
+  // in case translation result is HTML + use formatting
+  <p v-html="$ut('UBAuthHeader', appName)"></p>
+  // inside binding
+  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+  // inside vue methods
+  this.$ut('UBAuthTip')
+
+  // using UB inside vue methods
+  methods: {
+     hasNegotiate: function () {
+       return this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
+     }
+  }
+
+   * @param vue
+   */
+  install: function (vue) {
+    _globalVueInstance = vue
+    vue.prototype.$UB = module.exports
+    vue.prototype.$ut = module.exports.i18n
+  },
+  /**
+   * localDataStorage keys used by @unitybase-ub-pub (in case of browser environment)
+   * @readonly
+   * @enum
+   */
+  LDS_KEYS: utils.LDS_KEYS,
+  /**
+   * Legacy for old adminUI
+   * @private
+   */
+  ux: {},
+  /**
+   * Legacy for old adminUI
+   * @private
+   */
+  view: {},
+  /**
+   * Legacy for old adminUI
+   * @private
+   */
+  core: {},
+  /**
+   * Legacy for old adminUI. UBUtil.js will define this property
+   * @private
+   */
+  Utils: {}
+}
+
+let __alreadyAdded = false
+/**
+ * Intercept all unhandled errors including Promise unhandled rejections.
+ * Errors will be parsed and passed to UB.showErrorWindow {@see setErrorReporter setErrorReporter}
+ */
+function addBrowserUnhandledRejectionHandler (UBPub) {
+  let originalOnError = null
+  if (typeof window === 'undefined' || UBPub.isReactNative || __alreadyAdded) return // non browser environment
+  if (__alreadyAdded) console.error('module @unitybase/ub-pub imported several times. This is wrong situation and should be fixed by app developer. Try `npm ddp`')
+  __alreadyAdded = true
+  if (window.onerror) {
+    originalOnError = window.onerror
+  }
+  // for a unhandled rejection in bluebird-q
+  if (window.Q && window.Q.getBluebirdPromise) {
+    window.Q.onerror = function (error) {
+      window.onerror.apply(UBPub, [ '', '', '', '', error ])
+    }
+  }
+  // for unhandled rejection in bluebird/native promises (IE 10+)
+  window.addEventListener('unhandledrejection', function (e) {
+    // NOTE: e.preventDefault() must be manually called to prevent the default
+    // action which is currently to log the stack trace to console.warn
+    e.preventDefault()
+    // NOTE: parameters are properties of the event detail property
+    let reason = e.detail ? e.detail.reason : e.reason
+    let promise = e.detail ? e.detail.promise : e.promise
+    // See Promise.onPossiblyUnhandledRejection for parameter documentation
+    if (window.onerror) window.onerror.apply(UBPub, [ '', '', '', '', reason ])
+    console.error('UNHANDLED', reason, promise)
+  })
+
+  window.onerror = function (msg, file, line, column, errorObj) {
+    let message
+    let detail = ''
+
+    if (errorObj && utils.UBAbortError && errorObj instanceof utils.UBAbortError) {
+      console.log(errorObj)
+      return
+    }
+    let isHandled = errorObj && utils.UBError && errorObj instanceof utils.UBError
+
+    if (errorObj && Error && errorObj instanceof Error) {
+      message = errorObj.message
+      detail = ''
+      if (/q\.js/.test(file) === false) {
+        detail += 'file: "' + file + '" line: ' + line
+      }
+      let strace = errorObj.stack || ''
+      detail += strace.replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
+      detail = detail.replace(new RegExp(window.location.origin.replace(/:/g, '\\$&'), 'g'), '') // remove address if same as origin
+      detail = detail.replace(/\/[\w-]+\.js:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
+      detail = detail.replace(/\n/g, '<br>&nbsp;&nbsp;')
+    } else if (errorObj && errorObj.data && errorObj.data.errMsg) {
+      message = errorObj.data.errMsg
+    } else if (errorObj && errorObj.status === 0) { // long network request
+      message = 'serverIsBusy'
+      isHandled = true
+    } else if (errorObj && errorObj.errMsg) {
+      message = errorObj.errMsg
+      detail = errorObj.detail ? errorObj.detail : message
+    } else {
+      message = errorObj && (typeof errorObj === 'string') ? errorObj : msg
+    }
+    if (errorObj && errorObj.detail) {
+      detail = errorObj.detail + (detail ? '<br/>' + detail : '')
+      // 405 Method Not Allowed
+      if (errorObj.detail === 'Method Not Allowed') {
+        message = 'recordNotExistsOrDontHaveRights'
+      }
+    }
+    if (!message) {
+      message = 'internalServerError'
+    }
+
+    if (!isHandled) {
+      // MPV - message is already in datail (stack trace)
+      // detail = message + '<BR/> ' + detail;
+      message = 'unknownError'
+    }
+    try {
+      UBPub.showErrorWindow(message, '', '', detail)
+    } catch (err) {
+      window.alert(message)
+    }
+    if (originalOnError) originalOnError.call(window, msg, file, line, column, errorObj)
+  }
+}
+addBrowserUnhandledRejectionHandler(module.exports)
+
+if (typeof SystemJS !== 'undefined') { // browser
+  if (!SystemJS.has('@unitybase/cryptojs')) SystemJS.set('@unitybase/cryptojs', SystemJS.newModule(CryptoJS))
+  if (!SystemJS.has('@unitybase/ub-pub')) SystemJS.set('@unitybase/ub-pub', SystemJS.newModule(module.exports))
 }

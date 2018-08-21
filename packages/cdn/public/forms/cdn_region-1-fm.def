@@ -1,5 +1,5 @@
 // @! "do not remove comments below unless you know what you do!"
-// @isDefault "true"
+// @isDefault "false"
 // @entity "cdn_region"
 // @model "CDN"
 // @formType "auto"

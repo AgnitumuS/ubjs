@@ -96,10 +96,11 @@ class DBPostgreSQL extends DBAbstract {
       }
 
       // foreign key
+      // Zeos 7.2 serialize BOOL to false/true instead of 0/1, so transform it manually
       let foreignKeysSQL =
 `SELECT 
   ct.conname as foreign_key_name,
-  ct.condeferred as is_disabled,
+  case when ct.condeferred then 1 else 0 end AS is_disabled,
   (SELECT a.attname FROM pg_attribute a WHERE a.attnum = ct.conkey[1] AND a.attrelid = ct.conrelid) as constraint_column_name,
   (SELECT tc.relname from pg_class tc where tc.oid = ct.confrelid) as referenced_object,
   ct.confdeltype as delete_referential_action_desc, -- a = no action, r = restrict, c = cascade, n = set null, d = set default
@@ -266,7 +267,7 @@ ORDER BY index_id, column_position`
       return column.isString
         ? (!column.defaultValue && (column.refTable || column.enumGroup)
           ? v.replace(/'/g, "''")
-          : "''" + v.replace(/'/g, '') + "''")
+          : "'" + v.replace(/'/g, '') + "'")
         : v
       //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }
@@ -351,7 +352,7 @@ ORDER BY index_id, column_position`
     // in case of not null added - recreate index
     // if (allowNullChanged && !column.allowNull ){
 
-    let objects = tableDB.getIndexesByColumnName(column.name)
+    let objects = tableDB.getIndexesByColumn(column)
     for (let colIndex of objects) {
       colIndex.isForDelete = true
       colIndex.isForDeleteMsg = `Delete for altering column ${table.name}.${column.name}`

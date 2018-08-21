@@ -1,0 +1,26 @@
+{
+  "name": "@unitybase/draw-service",
+  "version": "1.0.2",
+  "description": "Micro service for creating PNG picture based on series of commands",
+  "main": "drawer.js",
+  "scripts": {
+    "test": "node ./test/test.js",
+    "server": "node ./server.js"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "keywords": [
+    "UnityBase",
+    "canvas",
+    "PNG"
+  ],
+  "dependencies": {
+    "opentype.js": "^0.4.3",
+    "pngjs": "^3.3.3",
+    "pureimage": "^0.1.6"
+  },
+  "author": "UnityBase team (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}

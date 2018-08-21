@@ -66,9 +66,6 @@ Ext.define('UB.view.LeftPanel', {
     me.navPnl.on('itemclickstart', this.itemClickStart, this)
     this.callParent(arguments)
 
-    me.on('resize', function (sender, width /*, height, oldWidth, oldHeight */) {
-      menu.setWidth(width)
-    })
     me.on('destroy', this.onDestroy(), this)
   },
 

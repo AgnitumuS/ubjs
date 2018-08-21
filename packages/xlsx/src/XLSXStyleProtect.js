@@ -4,13 +4,14 @@
 const {XLSXBaseStyleController} = require('./XLSXBaseStyleElement')
 const tools = require('./tools')
 
-let instance = null
+let _instance = null
 /**
  * @class XLSXStyleProtect Registered protect styles
  */
 class XLSXStyleControllerProtect extends XLSXBaseStyleController {
   static instance () {
-    return instance
+    if (!_instance) _instance = new XLSXStyleControllerProtect()
+    return _instance
   }
 
   compile (item) {
@@ -50,8 +51,6 @@ class XLSXStyleControllerProtect extends XLSXBaseStyleController {
     ])
   }
 }
-
-instance = new XLSXStyleControllerProtect()
 
 module.exports = {
   XLSXStyleControllerProtect

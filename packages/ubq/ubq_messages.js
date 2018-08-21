@@ -5,6 +5,9 @@ const Session = require('@unitybase/ub').Session
 // eslint-disable-next-line camelcase
 let me = ubq_messages
 
+const os = require('os')
+const HOST_NAME = os.hostname() || 'unknown'
+
 me.entity.addMethod('executeSchedulerTask')
 me.entity.addMethod('addqueue')
 me.entity.addMethod('success')
@@ -164,7 +167,7 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
     let statInst = UB.DataStore('ubq_runstat')
     if (task.logSuccessful || err !== '') {
       statParams = {
-        appName: process.env['COMPUTERNAME'],
+        appName: HOST_NAME,
         schedulerName: taskName,
         startTime: startTime,
         endTime: endTime,

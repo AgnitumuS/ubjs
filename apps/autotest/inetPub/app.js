@@ -1,26 +1,6 @@
 var UB = require('@unitybase/ub-pub')
 var _ = require('lodash')
 
-// for a unhandled rejection in bluebird-q
-if (window.Q && window.Q.getBluebirdPromise) {
-  window.Q.onerror = function (error) {
-    window.onerror.apply(this, ['', '', '', '', error])
-  }
-} else {
-  // for unhandled rejection in bluebird/native promises (IE 10+)
-  window.addEventListener('unhandledrejection', function (e) {
-    // NOTE: e.preventDefault() must be manually called to prevent the default
-    // action which is currently to log the stack trace to console.warn
-    e.preventDefault()
-    // NOTE: parameters are properties of the event detail property
-    var reason = e.detail ? e.detail.reason : e.reason
-    var promise = e.detail ? e.detail.promise : e.promise
-    // See Promise.onPossiblyUnhandledRejection for parameter documentation
-    if (window.onerror) window.onerror.apply(this, ['', '', '', '', reason])
-    console.log('UNHANDLED', reason, promise)
-  })
-}
-
 UB.connect({
   host: window.location.origin,
   allowSessionPersistent: true,

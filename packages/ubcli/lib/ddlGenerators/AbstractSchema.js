@@ -66,6 +66,7 @@ class TableDefinition {
     this.primaryKey = undefined
     /** @type {Array<FieldDefinition>} */
     this.columns = []
+    /** @type {Array<IndexAttributes>} */
     this.indexes = []
     /** @type {Array<FKAttributes>} */
     this.foreignKeys = []
@@ -137,17 +138,15 @@ class TableDefinition {
   }
 
   /**
-   * @param {string} name
+   * @param {FieldDefinition} column
    * @return {Array<IndexAttributes>}
    */
-  getIndexesByColumnName (name) {
+  getIndexesByColumn (column) {
     let resultIdx = []
     for (let indexObj of this.indexes) {
-      for (let attrCode in indexObj) {
-        if (strIComp(attrCode, name)) {
-          resultIdx.push(indexObj)
-          break
-        }
+      if (indexObj.keys.find(c => c === column._upperName)) {
+        resultIdx.push(indexObj)
+        break
       }
     }
     return resultIdx

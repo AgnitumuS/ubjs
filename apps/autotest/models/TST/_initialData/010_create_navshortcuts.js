@@ -10,7 +10,7 @@
  */
 module.exports = function (session) {
   var
-    desktopID, folderID, conn = session.connection
+    desktopID, conn = session.connection
 
   desktopID = conn.lookup('ubm_desktop', 'ID', {expression: 'code', condition: 'equal', values: {code: 'tst_desktop'}})
   console.info('\tFill `Test` desktop')
@@ -68,7 +68,7 @@ module.exports = function (session) {
     }
   })
 
-  var displayOrder = 40;
+  let displayOrder = 40;
   ['tst_maindata', 'tst_mainunity', 'tst_dictionary', 'tst_IDMapping', 'tst_histDict'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
     conn.insert({
@@ -83,6 +83,19 @@ module.exports = function (session) {
       }
     })
     displayOrder = displayOrder + 10
+  })
+
+  console.log('\t\t\tcreate `Vue test` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_document-vue',
+      caption: 'VueJS form test',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({cmdType: 'showForm', formCode: 'tst_document-vue'}, null, '\t')
+    }
   })
 
   console.log('\t\t\tcreate `tst_onlyOffice` shortcut')

@@ -4,8 +4,6 @@
  * @module UBConnection
  * @memberOf module:@unitybase/ub-pub
  */
-
-/* global localStorage */
 const _ = require('lodash')
 const EventEmitter = require('./events')
 const ubUtils = require('./utils')
@@ -32,23 +30,10 @@ const AUTH_METHOD_URL = 'auth'
 const ANONYMOUS_USER = 'anonymous'
 const AUTH_SCHEMA_FOR_ANONYMOUS = 'None'
 
-/**
- * Default anonymous credential
- * @param {UBConnection} conn
- * @param {Boolean} isRepeat
- * @returns {*}
- */
-function anonymousRequestAuthParams (conn, isRepeat) {
-  if (isRepeat) {
-    throw new ubUtils.UBError('Access deny')
-  } else {
-    return Promise.resolve({authSchema: AUTH_SCHEMA_FOR_ANONYMOUS, login: ANONYMOUS_USER})
-  }
-}
-
-function parseUBErrorMessage(errMsg) {
+function parseUBErrorMessage (errMsg) {
   return JSON.parse('"' + errMsg.match(/<<<(.*)>>>/)[1] + '"')
 }
+const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.localStorage : false
 
 /**
  * @classdesc
@@ -149,20 +134,55 @@ function UBConnection (connectionParams) {
    * @type {UBDomain}
    */
   this.domain = null
+  /**
+   * Allow to override a connection requestAuthParams function passed as config to UBConnection instance
+   * @param {function} authParamsFunc Function with the same signature as requestAuthParams parameter in UBConnection constructor
+   */
+  this.setRequestAuthParamsFunction = function (authParamsFunc) {
+    requestAuthParams = authParamsFunc
+  }
 
   if (appName.charAt(0) !== '/') {
     appName = '/' + appName
   }
-  if (!requestAuthParams) {
-    requestAuthParams = anonymousRequestAuthParams
+  /**
+   * For a browser env. check silence kerberos login {@see UB.connect UB.connect} for details
+   * @param {UBConnection} conn
+   * @param {Boolean} isRepeat
+   * @returns {*}
+   */
+  function doOnCredentialsRequired (conn, isRepeat) {
+    let silenceKerberosLogin = LDS && LDS.getItem(ubUtils.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
+    let userDidLogout = LDS && LDS.getItem(ubUtils.LDS_KEYS.USER_DID_LOGOUT) === 'true'
+
+    // only anonymous authentication or requestAuthParams not passe in config
+    if (!conn.authMethods.length || !requestAuthParams) {
+      if (isRepeat) {
+        throw new ubUtils.UBError('Access deny')
+      } else {
+        return Promise.resolve({authSchema: AUTH_SCHEMA_FOR_ANONYMOUS, login: ANONYMOUS_USER})
+      }
+    }
+
+    if (silenceKerberosLogin && !isRepeat && !userDidLogout && (conn.authMethods.indexOf('Negotiate') >= 0)) {
+      return Promise.resolve({
+        authSchema: 'Negotiate',
+        login: '',
+        password: '',
+        registration: 0
+      })
+    }
+    return requestAuthParams(conn, isRepeat)
   }
+
   serverURL = host + appName
   /** UB Server URL with protocol and host.
    * @type {string}
    * @readonly
    */
   this.serverUrl = serverURL
-  baseURL = ((typeof window !== 'undefined') && (window.location.origin === host)) ? appName : serverURL
+  // for react native window exists but window.location - not
+  baseURL = ((typeof window !== 'undefined') && window.location && (window.location.origin === host)) ? appName : serverURL
   if (baseURL.charAt(baseURL.length - 1) !== '/') baseURL = baseURL + '/'
   /**
    * The base of all urls of your requests. Will be prepend to all urls while call UB.xhr
@@ -176,7 +196,7 @@ function UBConnection (connectionParams) {
    */
   this.appName = appName
 
-  this.allowSessionPersistent = connectionParams.allowSessionPersistent && (typeof localStorage !== 'undefined')
+  this.allowSessionPersistent = connectionParams.allowSessionPersistent && (LDS !== false)
   if (this.allowSessionPersistent) this.__sessionPersistKey = this.serverUrl + ':storedSession'
 
   this.cache = null
@@ -228,12 +248,14 @@ function UBConnection (connectionParams) {
   /**
    * Return custom data for logged in user, or {lang: 'en', login: 'anonymous'} in case not logged in
    *
-   * If key is provided - return only key part of user data:
-   *
-   *      $App.connection.userData('lang');
-   *      // or the same but dedicated alias
-   *      $App.connection.userLang()
-   *
+   * If key is provided - return only key part of user data. For a list of possible keys see
+   * <a href="http://unitybase.info/api/server-v5/Session.html#.uData">Session.uData</a> in server side documentation.
+   * @example
+
+$App.connection.userData('lang');
+// or the same but dedicated alias
+$App.connection.userLang()
+
    * @param {String} [key] Optional key
    * @returns {*}
    */
@@ -277,7 +299,7 @@ function UBConnection (connectionParams) {
     if (currentSession) return Promise.resolve(currentSession)
 
     if (this.allowSessionPersistent && !isRepeat) {
-      let storedSession = localStorage.getItem(this.__sessionPersistKey)
+      let storedSession = LDS.getItem(this.__sessionPersistKey)
       if (storedSession) {
         try {
           let parsed = JSON.parse(storedSession)
@@ -285,7 +307,7 @@ function UBConnection (connectionParams) {
           me.emit('authorized', me, currentSession)
           return Promise.resolve(currentSession)
         } catch (e) {
-          localStorage.removeItem(this.__sessionPersistKey) // wrong session persistent data
+          LDS.removeItem(this.__sessionPersistKey) // wrong session persistent data
         }
       }
     }
@@ -293,19 +315,28 @@ function UBConnection (connectionParams) {
     if (this._pendingAuthPromise) return this._pendingAuthPromise
 
     this.exchangeKeysPromise = null
-    this._pendingAuthPromise = requestAuthParams(this, isRepeat)
+    this._pendingAuthPromise = doOnCredentialsRequired(this, isRepeat)
       .then(function (authParams) {
         return me.doAuth(authParams).then(function (session) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
           currentSession = session
+          if (LDS) {
+            LDS.setItem(ubUtils.LDS_KEYS.LAST_LOGIN, session.logonname)
+            LDS.setItem(ubUtils.LDS_KEYS.LAST_AUTH_SCHEMA, session.authSchema)
+          }
+
           /**
            * Fired for {@link UBConnection} instance after success authorization. Accept 3 args (conn: UBConnection, session: UBSession, authParams)
            * @event authorized
            */
           me.emit('authorized', me, session, authParams)
+
           return session
         }).catch(function (reason) {
           me._pendingAuthPromise = null // must be before event emit to clear pending even in case of error in event handler
+          if (LDS) {
+            LDS.removeItem(ubUtils.LDS_KEYS.SILENCE_KERBEROS_LOGIN)
+          }
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
             /**
              * Fired for {@link UBConnection} instance in case of bad authorization Accept 2 args (reason, connection)
@@ -313,6 +344,7 @@ function UBConnection (connectionParams) {
              */
             me.emit('authorizationFail', reason, me)
           }
+        }).then(function () {
           return me.authorize(true)
         })
       })
@@ -437,7 +469,7 @@ function UBConnection (connectionParams) {
    * @param {String} [authParams.authSchema] Either 'UB' (default) or 'CERT'. On case of CERT UBDesktop service NPI extension must be installed in browser
    * @param {String} [authParams.login] Optional login
    * @param {String} [authParams.password] Optional password
-   * @returns {Promise} Authentication promise. Resolved to {@link UBSession} is auth success or rejected to {errMsg: string, errCode: number, errDetails: string} if fail
+   * @returns {Promise<UBSession>} Authentication promise. Resolved to {@link UBSession} is auth success or rejected to {errMsg: string, errCode: number, errDetails: string} if fail
    */
   this.doAuth = function (authParams) {
     authParams.authSchema = authParams.authSchema || 'UB'
@@ -482,7 +514,7 @@ function UBConnection (connectionParams) {
       (authResponse) => {
         let ubSession = doCreateNewSession.call(this, authResponse.data, authResponse.secretWord, authParams.authSchema)
         if (this.allowSessionPersistent) {
-          localStorage.setItem(
+          LDS.setItem(
             this.__sessionPersistKey,
             JSON.stringify({data: authResponse.data, secretWord: authResponse.secretWord, authSchema: authResponse.authSchema})
           )
@@ -517,7 +549,7 @@ function UBConnection (connectionParams) {
               errInfo.errMsg = codeMsg
             }
           }
-          if (this.allowSessionPersistent) localStorage.removeItem(this.__sessionPersistKey)
+          if (this.allowSessionPersistent) LDS.removeItem(this.__sessionPersistKey)
           throw new ubUtils.UBError(errInfo.errMsg, errInfo.errDetails, errInfo.errCode)
         } else {
           throw rejectReason // rethrow error
@@ -733,7 +765,7 @@ UBConnection.prototype.xhr = function (config) {
     }).catch(function (reason) { // in case of 401 - do auth and repeat request
       let errMsg = ''
       if (reason.status === 401) {
-        if (me.allowSessionPersistent) localStorage.removeItem(me.__sessionPersistKey) // addled session persisted data
+        if (me.allowSessionPersistent) LDS.removeItem(me.__sessionPersistKey) // addled session persisted data
         ubUtils.logDebug('unauth: %o', reason)
         if (me.isAuthorized()) {
           me.authorizationClear()
@@ -1207,10 +1239,10 @@ UBConnection.prototype._doSelectForCacheableEntity = function (serverRequest, ca
       // or SessionEntity cached not for current cache version
       (version && cacheType === UBCache.cacheTypes.SessionEntity && this.cachedSessionEntityRequested[cKey] !== version)
     ) {
-      // remove where order & limits
+      // remove where order logicalPredicates & limits
       let serverRequestWOLimits = {}
       Object.keys(serverRequest).forEach(function (key) {
-        if (['whereList', 'orderList', 'options'].indexOf(key) === -1) {
+        if (['whereList', 'orderList', 'options', 'logicalPredicates'].indexOf(key) === -1) {
           serverRequestWOLimits[key] = serverRequest[key]
         }
       })
@@ -1379,7 +1411,7 @@ UBConnection.prototype.crc32 = UBSession.prototype.crc32
  * Log out user from server
  */
 UBConnection.prototype.logout = function () {
-  if (this.allowSessionPersistent) localStorage.removeItem(this.__sessionPersistKey)
+  if (this.allowSessionPersistent) LDS.removeItem(this.__sessionPersistKey)
   if (!this.isAuthorized()) return Promise.resolve(true)
 
   let logoutPromise = this.post('logout', {})
@@ -1488,23 +1520,28 @@ UBConnection.prototype.Repository = function (entityName) {
  */
 UBConnection.prototype.SHA256 = SHA256
 
-const LDS = (typeof window !== 'undefined') && window.localStorage
 /**
  * see docs in ub-pub main module
  * @private
  * @param cfg
- * @param {string} cfg.host
- * @param {string} [cfg.path]
- * @param cfg.onCredentialRequired
- * @param {boolean} [cfg.allowSessionPersistent=false]
- * @param [cfg.onAuthorizationFail]
- * @param [cfg.onAuthorized]
- * @param [cfg.onNeedChangePassword]
- * @param [cfg.onGotApplicationConfig]
+ * @param {string} cfg.host Server host
+ * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
+ * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+ * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
+ *  In case user is logged out by server this persistent dos't work and UBConnection will call onCredentialRequired handler,
+ *  so user will be prompted for credentials
+ * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
+ * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
+ * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
+ * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
+ *  Accept one parameter - connection: UBConnection
+ *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
+ *  Should return a promise then done
  * @param [cfg.onGotApplicationDomain]
+ * @param {Object} [ubGlobal=null]
  * @return {Promise<UBConnection>}
  */
-function connect (cfg) {
+function connect (cfg, ubGlobal = null) {
   let config = this.config = _.clone(cfg)
 
   let connection = new UBConnection({
@@ -1513,6 +1550,8 @@ function connect (cfg) {
     requestAuthParams: config.onCredentialRequired,
     allowSessionPersistent: cfg.allowSessionPersistent
   })
+  // inject connection instance to global UB just after connection creation
+  if (ubGlobal) ubGlobal.connection = connection
   if (config.onAuthorizationFail) {
     connection.on('authorizationFail', config.onAuthorizationFail)
   }
@@ -1541,7 +1580,7 @@ function connect (cfg) {
     // try to determinate default user language
     let preferredLocale = null
     if (LDS) {
-      preferredLocale = LDS.getItem(connection.appName + 'preferredLocale')
+      preferredLocale = LDS.getItem(ubUtils.LDS_KEYS.PREFERRED_LOCALE)
     }
     if (!preferredLocale) {
       preferredLocale = connection.appConfig.defaultLang
@@ -1559,7 +1598,7 @@ function connect (cfg) {
   }).then(function () {
     // here we authorized and know a user-related data
     let myLocale = connection.userData('lang')
-    LDS && LDS.setItem(connection.appName + 'preferredLocale', myLocale)
+    LDS && LDS.setItem(ubUtils.LDS_KEYS.PREFERRED_LOCALE, myLocale)
     connection.preferredLocale = myLocale
     let domainPromise = connection.getDomainInfo()
     if (config.onGotApplicationDomain) {

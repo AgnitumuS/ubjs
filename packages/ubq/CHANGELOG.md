@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `mail` job rewritten to module. Use `"module": "@unitybase/ubq/ubqMailJob"` to override mail scheduler
  - `FTSReindexFromQueue` job rewritten to module. Use `"module": "@unitybase/ubq/ubqFTSJob"` to override FTS scheduler
 
+### Fixed
+ - [unitybase/ubjs#9] - null value in column "appname" violates not-null constraint for **linux** platform
+
 ## [4.2.0]
 ### Added
  - ability to pass a module to scheduler instead of function from global

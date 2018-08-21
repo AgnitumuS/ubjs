@@ -33,11 +33,9 @@ const converter = new XLSXfromHTML(xmldom.DOMParser, wb, [{name: 'Лист'}])
 converter.writeHtml({html: html, sourceData: data})
 console.log('1')
 
-var f
-wb.render().then(function (content) {
-  console.log('2')
-  content = Buffer.from(content)
-  f = content
-  fs.writeFileSync('./testReport.xlsx', content, 'binary')
-})
+var content = wb.render()
+console.log('2')
+content = Buffer.from(content)
+fs.writeFileSync('./testReport.xlsx', content, 'binary')
+
 //var b = f

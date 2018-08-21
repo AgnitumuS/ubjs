@@ -1,21 +1,23 @@
+/* global System, SystemJS */
 /**
  * @class UBReport
  * Client side report builder
  *
  */
 const Mustache = require('mustache')
+if (!SystemJS.has('mustache')) SystemJS.set('mustache', SystemJS.newModule(Mustache))
 const formatFunctions = require('./formatFunctions')
 const UB = require('@unitybase/ub-pub')
 const $App = require('@unitybase/adminui-pub')
 const _ = require('lodash')
- /**
-  * @constructor
-  * @param {String|Object} reportCode
-  * If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
-  * @param {String} [reportType='html'] Possible values: 'html'|'pdf'|'xlsx'
-  * @param {{}} params
-  * @param {String} [language=en]
-  */
+/**
+ * @constructor
+ * @param {String|Object} reportCode
+ * If reportCode type is Object it is a config object { code: String, type: String, params: String|Object }
+ * @param {String} [reportType='html'] Possible values: 'html'|'pdf'|'xlsx'
+ * @param {{}} params
+ * @param {String} [language=en]
+ */
 function UBReport (reportCode, reportType, params, language) {
   /**
    * Report code
@@ -49,19 +51,19 @@ function UBReport (reportCode, reportType, params, language) {
   }
 }
 
- /**
-  * @returns {Promise|String} If code run in server function return report data as String else return Promise.
-  * Promise.resolve function get parameter report data as String.
-  */
+/**
+* @returns {Promise|String} If code run in server function return report data as String else return Promise.
+* Promise.resolve function get parameter report data as String.
+*/
 UBReport.makeReport = function (reportCode, reportType, params) {
   const report = new UBReport(reportCode, reportType, params)
   return report.makeReport()
 }
 
- /**
-  * Load report template and code.
-  * @returns {Promise|Boolean}
-  */
+/**
+* Load report template and code.
+* @returns {Promise|Boolean}
+*/
 UBReport.prototype.init = function () {
   let me = this
   if (me.isInited) {
@@ -71,22 +73,17 @@ UBReport.prototype.init = function () {
     .attrs(['ID', 'report_code', 'name', 'template', 'code', 'model'])
     .where('[report_code]', '=', me.reportCode)
 
-  return repository.selectAsObject().then(function (store) {
-    me.reportRW = {
-      ID: store[0].ID,
-      name: store[0].name,
-      template: store[0].template,
-      code: store[0].code,
-      model: store[0].model,
-      report_code: me.reportCode
-    }
+  return repository.selectSingle().then(function (reportRow) {
+    me.reportRW = reportRow
 
-    return Promise.all([me.getDocument('template'), me.getDocument('code')])
-      .then(function (res) {
-        me.reportRW.templateData = res[0]
+    let model = $App.domainInfo.models[reportRow.model]
+    let reportCodePath = `${model.clientRequirePath}/reports/${me.reportCode}.js`
+
+    return Promise.all([me.getDocument('template'), SystemJS.import(reportCodePath)])
+      .then(function ([tpl, codeModule]) {
+        me.reportRW.templateData = tpl
         me.prepareTemplate()
-        me.reportRW.codeData = res[1]
-        me.prepareCode()
+        me.prepareCode(codeModule)
         me.isInited = true
         return true
       })
@@ -95,12 +92,12 @@ UBReport.prototype.init = function () {
 
 UBReport.prototype.prepareTemplate = function () {
   const reOptions = /(<!--%\w+?:(.+?)-->)/gi
-    // <!--{{userrole}}-->
+  // <!--{{userrole}}-->
   this.reportRW.templateData = this.reportRW.templateData.replace(/<!--({{.+?}})-->/g, '$1')
-    // <!--@name "123"-->
+  // <!--@name "123"-->
   this.reportRW.templateData = this.reportRW.templateData.replace(/<!--@\w+?[ ]*?".+?"-->/g, '')
 
-    // parse options
+  // parse options
   let matches = this.reportRW.templateData.match(reOptions)
   if (matches && matches.length) {
     matches.forEach((item) => {
@@ -108,14 +105,13 @@ UBReport.prototype.prepareTemplate = function () {
       itemVal = itemVal.split(':')
       this.reportOptions[itemVal[0]] = itemVal[1]
     })
-    // value = value.replace(reOptions, '');
   }
 }
 
 /**
  * @param {{key: value}} [params]
  * @returns {Promise}
- * Promise resolve object {reportCode: {String}, reportType: {String}, incomeParams: {Object}, reportOptions: {Object}, reportData: {String|ArrayBuffer}}
+ * Promise what resolves to object {reportCode: {String}, reportType: {String}, incomeParams: {Object}, reportOptions: {Object}, reportData: {String|ArrayBuffer}}
  */
 UBReport.prototype.makeReport = function (params) {
   const me = this
@@ -177,7 +173,8 @@ UBReport.prototype.buildHTML = function (reportData) {
   }
 
   formatFunctions.addBaseMustacheSysFunction(reportData)
-  formatFunctions.addMustacheSysFunction(reportData)
+  let lang = $App.connection.userLang()
+  formatFunctions.addMustacheSysFunction(reportData, lang)
   return Mustache.render(this.reportRW.templateData, reportData)
 }
 
@@ -223,7 +220,7 @@ UBReport.prototype.transformToPdf = function (html, options) {
         : [{fontName: 'TimesNewRoman', fontStyle: 'Normal'},
           {fontName: 'TimesNewRoman', fontStyle: 'Bold'},
           {fontName: 'TimesNewRoman', fontStyle: 'Italic'},
-        {fontName: 'TimesNewRoman', fontStyle: 'BoldItalic'}]
+          {fontName: 'TimesNewRoman', fontStyle: 'BoldItalic'}]
     }).then(() => PDF)
   }).then((PDF) => {
     let pdfConfig = {
@@ -265,7 +262,7 @@ UBReport.prototype.transformToPdf = function (html, options) {
 */
 UBReport.prototype.makeResult = function (reportData) {
   if (!reportData) {
-    throw new Error('Report ' + this.reportCode + ' return empty report')
+    throw new Error(`Report ${this.reportCode} return empty report`)
   }
   return {
     reportCode: this.reportCode,
@@ -276,26 +273,19 @@ UBReport.prototype.makeResult = function (reportData) {
   }
 }
 
- /**
-  * Apply user code to itself
-  * @private
-  */
-UBReport.prototype.prepareCode = function () {
+/**
+ * Apply user code to itself
+ * @param {Module} codeModule
+ * @private
+ */
+UBReport.prototype.prepareCode = function (codeModule) {
   const me = this
-  let exports = {}
-  if (me.reportRW.codeData && me.reportRW.codeData.length) {
-    // noinspection Eslint
-    (new Function('exports', '// ' + me.reportCode + '\r\n' + me.reportRW.codeData
-     ))(exports)
-    /* + "\n//# sourceURL="+ me.reportRW.codeUrl + '.js' */
-  } else {
-    throw new Error('Report code is invalid or empty. You should use code like: exports.reportCode={ prepareData:function }; ')
-  }
-
-  if (exports.reportCode) {
-    _.forEach(exports.reportCode, function (item, name) {
+  if (codeModule.reportCode) {
+    _.forEach(codeModule.reportCode, function (item, name) {
       me[name] = item
     })
+  } else {
+    throw new Error('Report code is invalid or empty. You should use code like: exports.reportCode={ prepareData:function }; ')
   }
 }
 
@@ -317,64 +307,64 @@ UBReport.prototype.buildReport = function (reportParams) {
   throw new UB.UBError('Function "buildReport" not defined in report code block')
 }
 
- /**
-  * This function used by ReportViewer.
-  * If function exists and return UBS.ReportParamForm or Array ReportViewer show this panel on the top of viewer form.
-  * Example
-  *
-  *      onParamPanelConfig: function() {
-  *           var paramForm = Ext.create('UBS.ReportParamForm', {
-  *           items: [{
-  *                  xtype: 'textfield',
-  *                  name: 'name',
-  *                  fieldLabel: 'Name'
-  *              }, {
-  *                  xtype: 'datefield',
-  *                  name: 'birthday',
-  *                  fieldLabel: 'Birthday'
-  *              }, ],
-  *              getParameters: function(owner) {
-  *                  var frm = owner.getForm();
-  *                  return {
-  *                      name: frm.findField('name').getValue(),
-  *                      birthday: frm.findField('birthday').getValue()
-  *                  };
-  *              }
-  *          });
-  *          return paramForm;
-  *      }
-  *
-  * or
-  *
-  *      onParamPanelConfig: function() {
-  *           return [{
-  *                  xtype: 'textfield',
-  *                  name: 'name',
-  *                  fieldLabel: 'Name'
-  *              }, {
-  *                  xtype: 'datefield',
-  *                  name: 'birthday',
-  *                  fieldLabel: 'Birthday'
-  *              } ];
-  *      }
-  *
-  *
-  * @cfg {function} onParamPanelConfig
-  */
+/**
+* This function used by ReportViewer.
+* If function exists and return UBS.ReportParamForm or Array ReportViewer show this panel on the top of viewer form.
+* Example
+*
+*      onParamPanelConfig: function() {
+*           var paramForm = Ext.create('UBS.ReportParamForm', {
+*           items: [{
+*                  xtype: 'textfield',
+*                  name: 'name',
+*                  fieldLabel: 'Name'
+*              }, {
+*                  xtype: 'datefield',
+*                  name: 'birthday',
+*                  fieldLabel: 'Birthday'
+*              }, ],
+*              getParameters: function(owner) {
+*                  var frm = owner.getForm();
+*                  return {
+*                      name: frm.findField('name').getValue(),
+*                      birthday: frm.findField('birthday').getValue()
+*                  };
+*              }
+*          });
+*          return paramForm;
+*      }
+*
+* or
+*
+*      onParamPanelConfig: function() {
+*           return [{
+*                  xtype: 'textfield',
+*                  name: 'name',
+*                  fieldLabel: 'Name'
+*              }, {
+*                  xtype: 'datefield',
+*                  name: 'birthday',
+*                  fieldLabel: 'Birthday'
+*              } ];
+*      }
+*
+*
+* @cfg {function} onParamPanelConfig
+*/
 
- /**
-  * Config for pdf can be edited in this function
-  *
-  * @cfg {function} onTransformConfig
-  * @param {Object} config
-  * @returns {Object}
-  */
+/**
+* Config for pdf can be edited in this function
+*
+* @cfg {function} onTransformConfig
+* @param {Object} config
+* @returns {Object}
+*/
 
- /**
-  * load document
-  * @param {String} attribute
-  * @returns {Promise|Object}
-  */
+/**
+* load document
+* @param {String} attribute
+* @returns {Promise<string|Buffer>}
+*/
 UBReport.prototype.getDocument = function (attribute) {
   let cfg = JSON.parse(this.reportRW[attribute])
 
@@ -404,6 +394,34 @@ UBReport.prototype.getDocument = function (attribute) {
     .then(response => response.data)
 }
 
+/**
+ * Return a table, cell col and row index for event occurred inside table cell
+ * @param {Event} e
+ * @return {{table: HTMLTableElement, row: HTMLTableRowElement, cell: HTMLTableCellElement, colIndex: number, rowIndex: number}}
+ */
+UBReport.cellInfo = function (e) {
+  let td = e.target
+  while (td && td.tagName !== 'TD') {
+    td = td.parentNode
+  }
+  let colIndex = td.cellIndex
+  let tr = td
+  while (tr && tr.tagName !== 'TR') {
+    tr = tr.parentNode
+  }
+  let rowIndex = tr.rowIndex
+  let tbl = tr
+  while (tbl && tbl.tagName !== 'TABLE') {
+    tbl = tbl.parentNode
+  }
+  return {
+    table: tbl,
+    row: tr,
+    cell: td,
+    colIndex: colIndex,
+    rowIndex: rowIndex
+  }
+}
 window.UBS = window.UBS || {}
 window.UBS.UBReport = UBReport
 module.exports = UBReport

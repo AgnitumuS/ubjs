@@ -1,3 +1,4 @@
+const _ = require('lodash')
 require('./UBAppConfig')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 /**
@@ -66,7 +67,8 @@ Ext.define('UB.core.UBUtil', {
     faHierarche: 0xf0e8,
     faPencilSquareO: 0xf044,
     faArrowLeft: 0xf060,
-    faTimes: 0xf00d // CLOSE action
+    faTimes: 0xf00d, // CLOSE action
+    faClone: 0xf24d
   },
 
   /**
@@ -166,10 +168,10 @@ Ext.define('UB.core.UBUtil', {
    */
   getWindowHeight: function () {
     return (window.innerHeight
-        ? window.innerHeight
-        : (document.documentElement && document.documentElement.clientHeight
-          ? document.documentElement.clientHeight
-          : (document.body.clientHeight ? document.body.clientHeight : 400))) - 200
+      ? window.innerHeight
+      : (document.documentElement && document.documentElement.clientHeight
+        ? document.documentElement.clientHeight
+        : (document.body.clientHeight ? document.body.clientHeight : 400))) - 200
   },
 
   /**
@@ -178,10 +180,10 @@ Ext.define('UB.core.UBUtil', {
    */
   getWindowWidth: function () {
     return (window.innerWidth
-        ? window.innerWidth
-        : (document.documentElement && document.documentElement.clientWidth
-          ? document.documentElement.clientWidth
-          : (document.body.clientWidth ? document.body.clientWidth : 800))) - 200
+      ? window.innerWidth
+      : (document.documentElement && document.documentElement.clientWidth
+        ? document.documentElement.clientWidth
+        : (document.body.clientWidth ? document.body.clientWidth : 800))) - 200
   },
 
   /**
@@ -190,7 +192,7 @@ Ext.define('UB.core.UBUtil', {
    * @return {Boolean}
    */
   allPropsEqual: function (objLeft, objRight) {
-    for (var p in objRight) {
+    for (let p in objRight) {
       if (objRight.hasOwnProperty(p) && (objLeft[p] !== objRight[p])) {
         return false
       }
@@ -560,6 +562,7 @@ Ext.define('UB.core.UBUtil', {
         ext = this.getComponentConfigByDataType(attribute.dataType, attribute.size)
         break
     }
+    if (attribute.readOnly) ext.readOnly = true
     return ext
   },
   /**
@@ -691,7 +694,7 @@ Ext.define('UB.core.UBUtil', {
       ubRequest: {
         entity: 'ubm_enum',
         method: UB.core.UBCommand.methodName.SELECT,
-        fieldList: (config && config.fieldList) ? config.fieldList : ['eGroup', 'code', 'name', 'shortName', 'sortOrder'],
+        fieldList: (config && config.fieldList) ? _.union(config.fieldList, ['eGroup', 'sortOrder']) : ['eGroup', 'code', 'name', 'shortName', 'sortOrder'],
         whereList: whereList,
         orderList: orderList,
         idProperty: 'code'

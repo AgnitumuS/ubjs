@@ -292,7 +292,7 @@ let xhrDefaults = {
     put: CONTENT_TYPE_APPLICATION_JSON,
     patch: CONTENT_TYPE_APPLICATION_JSON
   },
-  timeout: 120000
+  timeout: ubUtils.isReactNative ? 5000 : 120000 // do not freeze ReactNative app by long timeouts
 }
 
 /**

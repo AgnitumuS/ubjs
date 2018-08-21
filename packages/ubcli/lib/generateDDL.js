@@ -117,7 +117,9 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
         for (let part of nonEmptySorted) {
           for (let stmt of part.statements) {
             try {
-              stmt && conn.xhr({endpoint: 'runSQL', data: stmt, URLParams: {CONNECTION: connectionName}})
+              if (stmt) {
+                conn.xhr({endpoint: 'runSQL', data: stmt, URLParams: {CONNECTION: connectionName}})
+              }
             } catch (e) {
               if (!optimistic) {
                 throw e

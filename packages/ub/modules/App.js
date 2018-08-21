@@ -10,6 +10,7 @@ const EventEmitter = require('events').EventEmitter
 const THTTPResponse = require('./HTTPResponse')
 const THTTPRequest = require('./HTTPRequest')
 const dbConnections = require('./DBConnections')
+const blobStores = require('@unitybase/blob-stores')
 /**
  * UnityBase application
  *
@@ -136,33 +137,46 @@ App.launchEndpoint = function (endpointName) {
 const appBinding = process.binding('ub_app')
 /**
  * Register a server endpoint.
- * One on endpoint can be default - this endpoint will be used as a fallback in case URL do not start with any of known endpoints.
- * @example
+ * One of the endpoints can be default endpoint - it will be used as a fallback
+ * in case URL do not start with any of known endpoints name.
  *
- * // Write a custom request body to file FIXTURES/req and echo file back to client
- * // @param {THTTPRequest} req
- * // @param {THTTPResponse} resp
- * //
- * function echoToFile(req, resp) {
-   *    var fs = require('fs');
-   *    fs.writeFileSync(FIXTURES + 'req', req.read('bin'));
-   *    resp.statusCode = 200;
-   *    resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}));
-   * }
- * App.registerEndpoint('echoToFile', echoToFile);
+ * Exceptions inside endpoint handler are intercepted by UB server. In case exception is occurred
+ * server will rollback any active DB transactions and serialize an exception message
+ * to response depending on server execution mode:
+ *  - for `dev` mode - original exception text will be serialized (for debugging purpose)
+ *  - for production mode - in case exception message is wrapped into `<<<..>>>` then this message will be serialized,
+ *  if not - text will be always `Internal server error` (for security reason)
+ *
+ *  Recommended way to throw an handled error inside endpoint handler is `throw new UB.UBAbort('.....')`
+ *
+ * @example
+
+ // Write a custom request body to file FIXTURES/req and echo file back to client
+ // @param {THTTPRequest} req
+ // @param {THTTPResponse} resp
+ //
+ function echoToFile(req, resp) {
+   var fs = require('fs');
+   fs.writeFileSync(FIXTURES + 'req', req.read('bin'));
+   resp.statusCode = 200;
+   resp.writeEnd(fs.readFileSync(FIXTURES + 'req', {encoding: 'bin'}));
+ }
+ App.registerEndpoint('echoToFile', echoToFile);
+
  *
  * @param {String} endpointName
  * @param {Function} handler
- * @param {boolean} [requireAuthentication=true]
+ * @param {boolean} [authorizationRequired=true] If `true` UB will check for valid Authorization header before
+ *  execute endpoint handler
  * @param {boolean} [isDefault=false]
  * @memberOf App
  */
-App.registerEndpoint = function (endpointName, handler, requireAuthentication, isDefault) {
+App.registerEndpoint = function (endpointName, handler, authorizationRequired, isDefault) {
   if (!appBinding.endpoints[endpointName]) {
     appBinding.endpoints[endpointName] = handler
     return appBinding.registerEndpoint(
       endpointName,
-      requireAuthentication === undefined ? true : requireAuthentication,
+      authorizationRequired === undefined ? true : authorizationRequired,
       isDefault === true
     )
   }
@@ -223,7 +237,8 @@ App.package = appPkg
  * @readonly
  */
 App.staticPath = ''
-if (App.serverConfig.httpServer && App.serverConfig.httpServer['inetPub']) {
+if (App.serverConfig.httpServer && App.serverConfig.httpServer['inetPub'] &&
+  App.serverConfig.httpServer['inetPub'].trim()) {
   let sp = App.serverConfig.httpServer['inetPub']
   App.staticPath = path.isAbsolute(sp)
     ? sp
@@ -266,6 +281,13 @@ App.getUISettings = function () {
  * @readonly
  */
 App.serverURL = argv.serverURLFromConfig(App.serverConfig)
+
+/**
+ * URL that the User from the internet will use to access your server. To be used in case server is behind a reverse proxy
+ * @type {String}
+ * @readonly
+ */
+App.externalURL = App.serverConfig.httpServer.externalURL || App.serverURL
 
 /**
  * List of a local server IP addresses CRLF (or CR for non-windows) separated
@@ -476,5 +498,17 @@ App.emitterEnabled = true
  * @type {string}
  */
 App.serverPublicCert = _App.serverPublicCert
+
+/**
+ * BLOB stores methods. Usage:
+ *  - {@link module:@unitybase/blob-stores~getContent App.blobStores.getContent} to get BLOB content
+ *  - {@link module:@unitybase/blob-stores~putContent App.blobStores.putContent} to put BLOB content
+ *  - {@link module:@unitybase/blob-stores~markRevisionAsPermanent App.blobStores.markRevisionAsPermanent} to mark revision as permanent
+ */
+App.blobStores = {
+  getContent: blobStores.getContent,
+  putContent: blobStores.putContent,
+  markRevisionAsPermanent: blobStores.markRevisionAsPermanent
+}
 
 module.exports = App

@@ -395,7 +395,7 @@ class DDLGenerator {
         let indexDef = { name: dbKey, isUnique: true, keys: [], keyOptions: {} }
         _.forEach(fields, (options, field) => {
           let fieldKey = field
-          if (options.func && ((DDLGenerator.isOracle(dialect)) || (DDLGenerator.isPostgre(dialect)))) {
+          if (options.func && (DDLGenerator.isOracle(dialect))) {
             if (options.func.indexOf('{0}') === -1) {
               fieldKey = options.func + '(' + fieldKey + ')'
             } else {
@@ -431,7 +431,7 @@ class DDLGenerator {
             case 'INDEX':
               objDef = {name: dbKey, keys: [], isUnique: definition.isUnique}
               _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
-                if (fKeyOptions.func && ((DDLGenerator.isOracle(dialect)) || (DDLGenerator.isPostgre(dialect)))) {
+                if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
                   if (fKeyOptions.func.indexOf('{0}') === -1) {
                     fkeyText = fKeyOptions.func + '(' + fkeyText + ')'
                   } else {

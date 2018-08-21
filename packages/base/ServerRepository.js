@@ -49,20 +49,32 @@ class ServerRepository extends CustomRepository {
   }
 
   /**
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
+   *  names during transform array to object
    * @param {Boolean} [resultInPlainText=false] If true - result is {String}
    * @return {Array.<Object>|String}
    */
-  selectAsObject (resultInPlainText) {
+  selectAsObject (fieldAliases, resultInPlainText) {
     if (process.isServer) { // inside server thread
+      // check UB < 5.2 selectAsObject signature
+      if ((typeof fieldAliases === 'boolean') || (fieldAliases && resultInPlainText)) {
+        throw new Error('first parameter of ServerRepository should not be boolean. fieldAliases can not be combined with plain text result')
+      }
       let inst = new TubDataStore(this.entityName)
       inst.run('select', this.ubql())
-      let res = resultInPlainText ? inst.asJSONObject : JSON.parse(inst.asJSONObject)
+      let res
+      if (fieldAliases) {
+        res = {resultData: JSON.parse(inst.asJSONArray)}
+        res = LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)
+      } else {
+        res = resultInPlainText ? inst.asJSONObject : JSON.parse(inst.asJSONObject)
+      }
       inst.freeNative() // release memory ASAP
       return res
     } else {
       let conn = this.connection
       if (resultInPlainText) throw new Error('plainTextResult parameter not applicable in this context')
-      return LocalDataStore.selectResultToArrayOfObjects(conn.query(this.ubql()))
+      return LocalDataStore.selectResultToArrayOfObjects(conn.query(this.ubql()), fieldAliases)
     }
   }
 

@@ -1,0 +1,36 @@
+{
+  "name": "@unitybase/amqp",
+  "version": "1.0.5",
+  "description": "This library tries to mimic amqplib nodejs library API but in synchronous mode which is natural for UnityBase",
+  "main": "./ub-amqp.js",
+  "public": true,
+  "publishConfig": {
+    "registry": "http://registry.unitybase.info"
+  },
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/amqp",
+  "scripts": {
+    "build": "node ./bin/compile.js",
+    "test": "ub tests/main.js",
+    "example:hello-pub": "ub ./examples/hello/hello-pub.js",
+    "example:hello-sub": "ub ./examples/hello/hello-sub.js"
+  },
+  "author": "UnityBase team",
+  "license": "ISC",
+  "dependencies": {
+    "@unitybase/ub": "^5.0.31",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "@unitybase/fpc-utils": "^5.0.7",
+    "@unitybase/stubs": "^5.0.11"
+  },
+  "engines": {
+    "UnityBase": "^5.0"
+  },
+  "keywords": [
+    "UnityBase",
+    "RabbitMQ",
+    "amqp",
+    "amqplib"
+  ]
+}

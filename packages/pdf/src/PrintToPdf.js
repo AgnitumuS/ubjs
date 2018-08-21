@@ -41,7 +41,7 @@ function PrintToPdf (config) {
   this.page.format = config.format || 'a4'
   this.compress = (config.compress === false ? false : (config.compress || true))
   this.compressFont = (config.compressFont === false ? false : (config.compressFont || true))
-  this.compress = false
+//  this.compress = false
   this.pdf = new JsPDF(this.page.orientation, this.page.measure, this.page.format, this.compress)
   let pageSize = this.pdf.internal.pageSize
 
@@ -137,12 +137,17 @@ PrintToPdf.alignType = {center: 'center', left: 'left', right: 'right'}
 PrintToPdf.baseFontPath = 'models/PDF/fonts'
 
 /**
+ * Font definition for require at PrintToPdf
+ * @typedef {Object} pdfFontConfig
+ * @property {string} pdfFont.fontName font name
+ * @property {string} pdfFont.fontStyle font style
+ * @property {string} [pdfFont.path=PrintToPdf.baseFontPath] path to font file
+ */
+
+/**
  * load fonts
  * @param {Object} config
- * @param {Object|Array} config.fonts
- * @param {string} [config.fonts.path] (Optional) by default  models/PDF/fonts
- * @param {string} config.fonts.fontName
- * @param {string} config.fonts.fontStyle
+ * @param {Array<pdfFontConfig>|Object<pdfFontConfig>} config.fonts Fonts array
  * @param {Function} [config.onLoad] (Optional)  This parameter is deprecated
  * @param {Object} [config.scope] (Optional)
  * @returns {Promise|Boolean} Either Promise resolved to true for browser of true for server

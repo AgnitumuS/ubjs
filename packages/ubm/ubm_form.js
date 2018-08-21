@@ -203,7 +203,7 @@ function validateInput (aID, formCode, formEntity) {
  * @param {String} [defaultBody]
  */
 function getFormBodyTpl (fileName, defaultBody) {
-  let filePath = path.join(App.domainInfo.models['UBM'].realPublicPath, '_templates', fileName)
+  let filePath = path.join(App.domainInfo.models['UBM'].realPath, '_templates', fileName)
   return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : defaultBody
 }
 
@@ -254,14 +254,16 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     } else if (storedValue.formType === 'vue') {
       formScriptBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n}')
     }
-    let formCodeInfo = blobStores.putContent({
-      entity: entity.name,
-      attribute: 'formCode',
-      ID: ID,
-      fileName: storedValue.code + JS_FILE_TAIL,
-      relPath: codeOfModelToStore + '|' + REL_PATH_TAIL
-    }, formScriptBody)
-    newFormCodeMeta = JSON.stringify(formCodeInfo)
+    if (formScriptBody) {
+      let formCodeInfo = blobStores.putContent({
+        entity: entity.name,
+        attribute: 'formCode',
+        ID: ID,
+        fileName: storedValue.code + JS_FILE_TAIL,
+        relPath: codeOfModelToStore + '|' + REL_PATH_TAIL
+      }, formScriptBody)
+      newFormCodeMeta = JSON.stringify(formCodeInfo)
+    }
   } else { // for update operation load form definition body from store (temp or persistent if not modified)
     if (newFormDefMeta) { // if form definition modified
       formDefBody = blobStores.getContent({

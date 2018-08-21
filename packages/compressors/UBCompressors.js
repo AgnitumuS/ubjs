@@ -38,3 +38,47 @@ UBCompressors.gzipFile = binding.gzipFile
  * @param {String} fileNameTo
  */
 UBCompressors.gunzipFile = binding.gunzipFile
+
+class ZipReader {
+  constructor (pathToZip) {
+    this._reader = new binding.TubZipReader(pathToZip)
+    this.__files = undefined
+  }
+  freeNative () {
+    if (this._reader) this._reader.freeNative()
+  }
+  get fileCount () {
+    if (this.__files === undefined) {
+      this.__files = this._reader.fileNames()
+    }
+    return this.__files.length
+  }
+  get fileNames () {
+    if (this.__files === undefined) {
+      this.__files = this._reader.fileNames()
+    }
+    return this.__files
+  }
+  unZipToDir (fileIndex, dirPath) {
+    return this._reader.unZipToDir(fileIndex, dirPath)
+  }
+  unZipAllToDir (dirPath) {
+    return this._reader.unZipAllToDir(dirPath)
+  }
+}
+UBCompressors.ZipReader = ZipReader
+
+class ZipWriter {
+  constructor (pathToZip) {
+    this._writer = new binding.TubZipWriter(pathToZip)
+  }
+
+  freeNative () {
+    if (this._writer) this._writer.freeNative()
+  }
+
+  addFile (filePath) {
+    return this._writer.addFile(filePath)
+  }
+}
+UBCompressors.ZipWriter = ZipWriter
