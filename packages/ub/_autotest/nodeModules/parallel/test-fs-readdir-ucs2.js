@@ -1,9 +1,10 @@
 'use strict';
 
 const common = require('../common');
-if (!common.isLinux)
+if (!common.isLinux) {
   common.skip('Test is linux specific.');
-
+  return;
+}
 const path = require('path');
 const fs = require('fs');
 const assert = require('assert');
@@ -18,8 +19,10 @@ const fullpath = Buffer.concat([root, filebuff]);
 try {
   fs.closeSync(fs.openSync(fullpath, 'w+'));
 } catch (e) {
-  if (e.code === 'EINVAL')
+  if (e.code === 'EINVAL') {
     common.skip('test requires filesystem that supports UCS2');
+    return;
+  }
   throw e;
 }
 

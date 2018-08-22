@@ -26,9 +26,10 @@ const common = require('../common');
 
 // `fs.readFile('/')` does not fail on FreeBSD, because you can open and read
 // the directory there.
-if (common.isFreeBSD)
+if (common.isFreeBSD) {
   common.skip('platform not supported.');
-
+  return;
+}
 const assert = require('assert');
 const exec = require('child_process').exec;
 const fixtures = require('../common/fixtures');

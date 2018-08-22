@@ -3,7 +3,8 @@
 const common = require('../common');
 if (!common.isWindows) {
   common.skip('Test for Windows only');
-} else {
+  return;
+}
   const fixtures = require('../common/fixtures');
 
   const assert = require('assert');
@@ -22,8 +23,10 @@ if (!common.isWindows) {
     if (result.status === 0)
       break;
   }
-  if (i === driveLetters.length)
+  if (i === driveLetters.length) {
     common.skip('Cannot create subst drive');
+    return;
+  }
 
   // schedule cleanup (and check if all callbacks where called)
   process.on('exit', function() {
@@ -51,4 +54,3 @@ if (!common.isWindows) {
     assert(Buffer.isBuffer(result));
     assert(result.equals(filenameBuffer));
   }));
-}

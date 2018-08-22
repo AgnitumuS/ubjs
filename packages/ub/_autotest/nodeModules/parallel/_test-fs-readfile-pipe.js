@@ -24,9 +24,10 @@ const common = require('../common');
 
 // simulate `cat readfile.js | node readfile.js`
 
-if (common.isWindows || common.isAIX)
+if (common.isWindows || common.isAIX) {
   common.skip(`No /dev/stdin on ${process.platform}.`);
-
+  return;
+}
 const assert = require('assert');
 const fs = require('fs');
 
