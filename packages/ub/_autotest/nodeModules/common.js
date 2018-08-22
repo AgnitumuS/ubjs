@@ -19,15 +19,16 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var path = require('path')
-var assert = require('assert')
+const path = require('path')
+const fs = require('fs')
+const assert = require('assert')
 
 exports.testDir = path.dirname(__filename)
 exports.fixturesDir = path.join(exports.testDir, 'fixtures')
 exports.libDir = path.join(exports.testDir, '../lib')
 exports.tmpDir = path.join(exports.testDir, 'tmp')
 exports.PORT = +process.env.NODE_COMMON_PORT || 12346
-
+exports.isWindows = process.platform === 'win32'
 if (process.platform === 'win32') {
   exports.PIPE = '\\\\.\\pipe\\libuv-test'
 } else {
@@ -255,6 +256,15 @@ exports.platformTimeout = function (ms) {
     return 2 * ms;  // ARMv7
 */
   return ms // ARMv8+
+}
+
+exports.fileExists = function(pathname) {
+  try {
+    fs.accessSync(pathname);
+    return true;
+  } catch (err) {
+    return false;
+  }
 }
 
 exports.skip = function (msg) {
