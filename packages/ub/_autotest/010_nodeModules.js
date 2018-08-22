@@ -24,5 +24,5 @@ function run(folder, filter = /^test.*/) {
 
 let ok = true; debugger
 //ok = run(path.join(__dirname, 'nodeModules', 'simple')) && ok
-ok = run(path.join(__dirname, 'nodeModules', 'parallel'), /^test-fs-write.*/) && ok
+ok = run(path.join(__dirname, 'nodeModules', 'parallel'), /^test-fs-.*/) && ok
 assert(ok, 'Some nodeModules tests failed')
