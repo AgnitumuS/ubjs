@@ -35,10 +35,10 @@ assert.doesNotThrow(() => fs.exists(f));
 fs.exists(`${f}-NO`, common.mustCall(function(y) {
   assert.strictEqual(y, false);
 }));
-
+/* Not currently supported in UB
 fs.exists(new URL('https://foo'), common.mustCall(function(y) {
   assert.strictEqual(y, false);
 }));
-
+*/
 assert(fs.existsSync(f));
 assert(!fs.existsSync(`${f}-NO`));
