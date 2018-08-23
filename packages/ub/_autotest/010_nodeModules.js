@@ -6,8 +6,13 @@ const assert = require('assert')
 const fs = require('fs')
 const path = require('path')
 
+let info = {
+  total: 0,
+  failed: 0
+}
+
 function run(folder, filter = /^test.*/) {
-  let ok = true
+  let failed = 0
   let tests = fs.readdirSync(folder).sort()
   tests.filter(f => filter.test(f)).forEach(test => {
     console.log('Run', test)
@@ -16,13 +21,17 @@ function run(folder, filter = /^test.*/) {
       require(path.join(folder, test))
     } catch (e) {
       console.error(`failed with message "${e.message}" at` + (filename === test ? ` ${e.fileName}:${e.lineNumber}:${e.columnNumber}` : `\n${e.stack}`))
-      ok = false
+      failed++
     }
   })
-  return ok
+  info.total += tests.length
+  info.failed += failed
 }
 
-let ok = true; debugger
-//ok = run(path.join(__dirname, 'nodeModules', 'simple')) && ok
-ok = run(path.join(__dirname, 'nodeModules', 'parallel'), /^test-fs-.*/) && ok
-assert(ok, 'Some nodeModules tests failed')
+debugger
+//run(path.join(__dirname, 'nodeModules', 'simple'))
+run(path.join(__dirname, 'nodeModules', 'parallel'), /^test-fs-.*/)
+if (info.failed === 0)
+  console.log(`All ${info.total} nodeModule tests passed`)
+else
+  console.error(`${info.failed} of ${info.total} nodeModules tests failed`)
