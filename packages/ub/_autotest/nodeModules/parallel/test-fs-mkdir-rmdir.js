@@ -18,7 +18,7 @@ assert(common.fileExists(d));
 // Try creating again, it should fail with EEXIST
 assert.throws(function() {
   fs.mkdirSync(d);
-}, /EEXIST: file already exists, mkdir/);
+}, /EEXIST: File exists, mkdir/);
 // Remove the directory now
 fs.rmdirSync(d);
 // Make sure the directory does not exist

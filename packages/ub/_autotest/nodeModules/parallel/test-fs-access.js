@@ -112,8 +112,7 @@ assert.throws(
     assert.strictEqual(err.path, doesNotExist);
     assert.strictEqual(
       err.message,
-      'ENOENT: No such file or directory'
-      // `ENOENT: no such file or directory, access '${doesNotExist}'` -- this is a bit different under UB
+      `ENOENT: No such file or directory, access '${doesNotExist}'`
     );
     assert.strictEqual(err.constructor, Error);
     return true;
