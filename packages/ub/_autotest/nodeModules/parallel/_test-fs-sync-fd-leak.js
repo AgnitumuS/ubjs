@@ -22,7 +22,7 @@
 'use strict';
 require('../common');
 const assert = require('assert');
-const fs = require('fs');debugger
+const fs = require('fs');
 
 // ensure that (read|write|append)FileSync() closes the file descriptor
 fs.openSync = function() {

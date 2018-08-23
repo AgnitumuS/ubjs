@@ -109,7 +109,7 @@ assert.throws(
   () => { fs.accessSync(doesNotExist); },
   (err) => {
     assert.strictEqual(err.code, 'ENOENT');
-    assert.strictEqual(err.path, doesNotExist);debugger
+    assert.strictEqual(err.path, doesNotExist);
     assert.strictEqual(
       err.message,
       'ENOENT: No such file or directory'
