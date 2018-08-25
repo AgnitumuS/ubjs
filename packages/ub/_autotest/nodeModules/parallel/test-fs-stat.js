@@ -55,7 +55,7 @@ fs.open('.', 'r', undefined, common.mustCall(function(err, fd) {
 
   assert.strictEqual(this, global);
 }));
-
+debugger
 // fstatSync
 fs.open('.', 'r', undefined, common.mustCall(function(err, fd) {
   let stats;
@@ -82,15 +82,15 @@ fs.stat(__filename, common.mustCall(function(err, s) {
   const keys = [
     'dev', 'mode', 'nlink', 'uid',
     'gid', 'rdev', 'ino', 'size',
-    'atime', 'mtime', 'ctime', 'birthtime',
-    'atimeMs', 'mtimeMs', 'ctimeMs', 'birthtimeMs'
+    'atime', 'mtime', 'ctime', 'birthtime'/*,
+    'atimeMs', 'mtimeMs', 'ctimeMs', 'birthtimeMs'*/
   ];
   if (!common.isWindows) {
     keys.push('blocks', 'blksize');
   }
   const numberFields = [
-    'dev', 'mode', 'nlink', 'uid', 'gid', 'rdev', 'ino', 'size',
-    'atimeMs', 'mtimeMs', 'ctimeMs', 'birthtimeMs'
+    'dev', 'mode', 'nlink', 'uid', 'gid', 'rdev', 'ino', 'size'/*,
+    'atimeMs', 'mtimeMs', 'ctimeMs', 'birthtimeMs'*/
   ];
   const dateFields = ['atime', 'mtime', 'ctime', 'birthtime'];
   keys.forEach(function(k) {
