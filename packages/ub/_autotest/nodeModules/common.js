@@ -22,11 +22,14 @@
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
-
+var util = require('util')
 exports.testDir = path.dirname(__filename)
 exports.fixturesDir = path.join(exports.testDir, 'fixtures')
 exports.libDir = path.join(exports.testDir, '../lib')
 exports.tmpDir = path.join(exports.testDir, 'tmp')
+
+const noop = () => {}
+
 exports.PORT = +process.env.NODE_COMMON_PORT || 12346
 exports.isWindows = process.platform === 'win32'
 if (process.platform === 'win32') {
@@ -35,7 +38,6 @@ if (process.platform === 'win32') {
   exports.PIPE = exports.tmpDir + '/test.sock'
 }
 
-var util = require('util')
 for (var i in util) exports[i] = util[i]
 // for (var i in exports) global[i] = exports[i];
 
@@ -216,11 +218,23 @@ function runCallChecks (exitCode) {
   if (failed.length) process.exit(1)
 }
 
-exports.mustCall = function (fn, expected) {
-  if (typeof expected !== 'number') expected = 1
+exports.mustCall = function(fn, exact) {
+  return _mustCallInner(fn, exact, 'exact');
+};
 
-  var context = {
-    expected: expected,
+function _mustCallInner(fn, criteria = 1, field) {
+  if (typeof fn === 'number') {
+    criteria = fn;
+    fn = noop;
+  } else if (fn === undefined) {
+    fn = noop;
+  }
+
+  if (typeof criteria !== 'number')
+    throw new TypeError(`Invalid ${field} value: ${criteria}`);
+
+  const context = {
+    [field]: criteria,
     actual: 0,
     stack: (new Error()).stack,
     name: fn.name || '<anonymous>'
