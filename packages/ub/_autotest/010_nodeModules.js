@@ -28,9 +28,8 @@ function run(folder, filter = /^test.*/) {
   info.failed += failed
 }
 
-debugger
-//run(path.join(__dirname, 'nodeModules', 'simple'))
-run(path.join(__dirname, 'nodeModules', 'parallel'), /^test-fs-.*/)
+run(path.join(__dirname, 'nodeModules', 'simple'))
+run(path.join(__dirname, 'nodeModules', 'parallel')/*, /^test-fs-.*/)
 if (info.failed === 0)
   console.log(`All ${info.total} nodeModule tests passed`)
 else

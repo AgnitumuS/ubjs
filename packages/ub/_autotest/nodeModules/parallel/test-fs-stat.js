@@ -55,7 +55,7 @@ fs.open('.', 'r', undefined, common.mustCall(function(err, fd) {
 
   assert.strictEqual(this, global);
 }));
-debugger
+
 // fstatSync
 fs.open('.', 'r', undefined, common.mustCall(function(err, fd) {
   let stats;
