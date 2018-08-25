@@ -13,8 +13,8 @@ let info = {
 
 function run(folder, filter = /^test.*/) {
   let failed = 0
-  let tests = fs.readdirSync(folder).sort()
-  tests.filter(f => filter.test(f)).forEach(test => {
+  let tests = fs.readdirSync(folder).filter(f => filter.test(f)).sort()
+  tests.forEach(test => {
     console.log('Run', test)
     console.debug('Run', test)
     try {
