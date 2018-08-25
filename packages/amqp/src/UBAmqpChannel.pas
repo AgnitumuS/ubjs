@@ -204,7 +204,7 @@ begin
     LongBool(AExclusive).ToInteger, AArguments.AmqpTable);
   MaybeReleaseBuffersOnChannel();
   CheckResult(data);
-  FastSetString(Result, data.consumer_tag.bytes, data.consumer_tag.len);
+  SetString(Result, data.consumer_tag.bytes, data.consumer_tag.len);
 end;
 
 function TAmqpChannel.BasicConsumeMessage(
@@ -437,7 +437,7 @@ begin
     LongBool(AExclusive).ToInteger, LongBool(AAutoDelete).ToInteger,
     AArguments.AmqpTable);
   CheckRpcReply(amqp_get_rpc_reply(AmqpConnection));
-  FastSetString(Result, data.queue.bytes, data.queue.len);
+  SetString(Result, data.queue.bytes, data.queue.len);
   AMessageCount := data.message_count;
   AConsumerCount := data.consumer_count;
   MaybeReleaseBuffersOnChannel();
