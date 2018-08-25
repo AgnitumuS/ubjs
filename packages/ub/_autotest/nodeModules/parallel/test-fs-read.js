@@ -25,12 +25,13 @@ const fixtures = require('../common/fixtures');
 const assert = require('assert');
 const fs = require('fs');
 const filepath = fixtures.path('x.txt');
-const fd = fs.openSync(filepath, 'r');
+// const fd = fs.openSync(filepath, 'r'); -- modified because not null position is currently not supported
 
 const expected = Buffer.from('xyz\n');
 
 function test(bufferAsync, bufferSync, expected) {
-  fs.read(fd,
+  const fd_a = fs.openSync(filepath, 'r');
+  fs.read(fd_a,
           bufferAsync,
           0,
           expected.length,
@@ -39,11 +40,14 @@ function test(bufferAsync, bufferSync, expected) {
             assert.ifError(err);
             assert.strictEqual(bytesRead, expected.length);
             assert.deepStrictEqual(bufferAsync, expected);
+            fs.closeSync(fd_a);
           }));
 
-  const r = fs.readSync(fd, bufferSync, 0, expected.length, 0);
+  const fd_s = fs.openSync(filepath, 'r');
+  const r = fs.readSync(fd_s, bufferSync, 0, expected.length, 0);
   assert.deepStrictEqual(bufferSync, expected);
   assert.strictEqual(r, expected.length);
+  fs.closeSync(fd_s);
 }
 
 test(Buffer.allocUnsafe(expected.length),

@@ -7,7 +7,7 @@ const fixtures = require('../common/fixtures');
 const filepath = fixtures.path('x.txt');
 const fd = fs.openSync(filepath, 'r');
 const expected = 'xyz\n';
-
+/* This works differently in UB
 // Error must be thrown with string
 assert.throws(() => {
   fs.read(fd,
@@ -16,7 +16,7 @@ assert.throws(() => {
           'utf-8',
           common.mustNotCall());
 }, /^TypeError: Second argument needs to be a buffer$/);
-
+*/
 assert.throws(() => {
   fs.readSync(fd, expected.length, 0, 'utf-8');
 }, /^TypeError: Second argument needs to be a buffer$/);
