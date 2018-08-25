@@ -221,7 +221,7 @@ function TSMAmqpTable.Add(cx: PJSContext; argc: uintN;
     dval: TAmqpDecimalRec;
     bsval: RawByteString;
     l: uint32;
-    p: Puint8Vector;
+    p: pointer;
   begin
     case kind of
       Ord('t'): begin // boolean type. 0 = false, 1 = true @see amqp_boolean_t
@@ -316,7 +316,7 @@ function TSMAmqpTable.Add(cx: PJSContext; argc: uintN;
         valid := val.isObject and val.asObject.IsArrayBufferObject;
         if valid then begin
           val.asObject.GetBufferDataAndLength(p, l);
-          FastSetString(bsval, p, l);
+          SetString(bsval, p, l);
           Result := bsval;
         end;
       end;
