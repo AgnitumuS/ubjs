@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.4.7]
+### Fixed
+ - add logicalPredicates for request wehen choos "selectFromDictionary" on ubcombobox
+
 ## [5.4.5]
 ### Fixed
  - required label asterisk: aligned to left in case label on top; removed for checkbox
