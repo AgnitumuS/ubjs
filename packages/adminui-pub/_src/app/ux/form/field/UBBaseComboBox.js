@@ -394,7 +394,9 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
           entity: entityName,
           method: 'select',
           fieldList: fieldList,
-          whereList: store.ubRequest.whereList
+          whereList: store.ubRequest.whereList,
+          logicalPredicates: store.ubRequest.logicalPredicates,
+          __mip_ondate: store.ubRequest.__mip_ondate
         }]
       }
     }
