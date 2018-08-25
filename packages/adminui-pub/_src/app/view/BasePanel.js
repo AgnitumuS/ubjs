@@ -609,9 +609,9 @@ Ext.define('UB.view.BasePanel', {
     let me = this
     if (me.onClose && typeof me.onClose === 'function') {
       if (me.isDeleted) {
-        me.onClose(null, me.store, me.formWasSaved)
+        me.onClose(null, me.store, me.formWasSaved, me.record)
       } else {
-        me.onClose(me.isNewInstance ? null : me.instanceID, me.store, me.formWasSaved)
+        me.onClose(me.isNewInstance ? null : me.instanceID, me.store, me.formWasSaved, me.record)
       }
     }
     me.fireEvent('beforeClose', me)
