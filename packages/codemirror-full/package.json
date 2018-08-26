@@ -19,7 +19,9 @@
     "lodash": "^4"
   },
   "devDependencies": {
-    "cross-env": "^5.1.1"
+    "cross-env": "^5.1.1",
+    "codemirror": "5.26.0",
+    "jshint": "2.9.4"
   },
   "keywords": [
     "UnityBase",
