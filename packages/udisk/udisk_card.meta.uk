@@ -37,12 +37,6 @@
         "fileData": {
             "caption": "Файл",
             "description": "Файл"
-        },
-        "permission": {
-            "caption": "Права"
-        },
-        "permissionParent": {
-            "caption": "Права папки"
         }
      }
 }
