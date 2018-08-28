@@ -30,7 +30,7 @@ fs.readdir(readdirDir, common.mustCall(function(err, f) {
 // https://github.com/joyent/node/issues/1869
 assert.throws(function() {
   fs.readdirSync(__filename);
-}, /Error: ENOTDIR: Not a directory/);
+}, /Error: ENOTDIR: not a directory/);
 
 fs.readdir(__filename, common.mustCall(function(e) {
   assert.strictEqual(e.code, 'ENOTDIR');

@@ -18,7 +18,7 @@ assert(common.fileExists(d));
 // Try creating again, it should fail with EEXIST
 assert.throws(function() {
   fs.mkdirSync(d);
-}, common.isWindows ? /EEXIST: Cannot create a file when that file already exists., mkdir/ : /EEXIST: File exists, mkdir/);
+}, /EEXIST: file already exists, mkdir/);
 // Remove the directory now
 fs.rmdirSync(d);
 // Make sure the directory does not exist

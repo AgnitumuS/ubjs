@@ -112,9 +112,7 @@ assert.throws(
     assert.strictEqual(err.path, path._makeLong(doesNotExist));
     assert.strictEqual(
       err.message,
-      common.isWindows ?
-        `ENOENT: The system cannot find the file specified., access '${path._makeLong(doesNotExist)}'` :
-        `ENOENT: No such file or directory, access '${doesNotExist}'`
+      `ENOENT: no such file or directory, access '${path._makeLong(doesNotExist)}'`
     );
     assert.strictEqual(err.constructor, Error);
     return true;
