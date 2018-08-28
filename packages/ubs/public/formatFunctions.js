@@ -40,7 +40,11 @@ function formatMustache (lang, format, fixFormat) {
       else if (fixFormat === 'date' && !(value instanceof Date)) value = new Date(value)
     }
     if (typeof value === 'number') {
-      return formatByPattern.formatNumber(value, dataArr.length > 1 ? dataArr[1] : format || 'sum', lang)
+      let f = formatByPattern.formatNumber(value, dataArr.length > 1 ? dataArr[1] : format || 'sum', lang)
+      if ((format === 'sumDelim') && (value < 0)) {
+        f = '<span style="color: #ff0000;">' + f + '</span>'
+      }
+      return f
     } else if (value && value instanceof Date) {
       return formatByPattern.formatDate(value, dataArr.length > 1 ? dataArr[1] : (format || 'date'), lang)
     } else {
