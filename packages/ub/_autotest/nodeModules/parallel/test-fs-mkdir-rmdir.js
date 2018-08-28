@@ -18,7 +18,7 @@ assert(common.fileExists(d));
 // Try creating again, it should fail with EEXIST
 assert.throws(function() {
   fs.mkdirSync(d);
-}, /EEXIST: File exists, mkdir/);
+}, common.isWindows ? /EEXIST: Cannot create a file when that file already exists., mkdir/ : /EEXIST: File exists, mkdir/);
 // Remove the directory now
 fs.rmdirSync(d);
 // Make sure the directory does not exist
@@ -32,7 +32,7 @@ fs.mkdir(d, 0o666, common.mustCall(function(err) {
     assert.ok(err, 'got no error');
     assert.ok(/^EEXIST/.test(err.message), 'got no EEXIST message');
     assert.strictEqual(err.code, 'EEXIST', 'got no EEXIST code');
-    assert.strictEqual(err.path, d, 'got no proper path for EEXIST');
+    assert.strictEqual(err.path, path._makeLong(d), 'got no proper path for EEXIST');
 
     fs.rmdir(d, assert.ifError);
   }));
