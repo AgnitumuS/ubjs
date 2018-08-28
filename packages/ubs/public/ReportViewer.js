@@ -151,7 +151,7 @@ Ext.define('UBS.ReportViewer', {
       }
     }).then(function (paramsFormRequired) {
       if (paramsFormRequired) {
-        let paramsPassed = (Object.keys(me.report.incomeParams).length !== 0)
+        let paramsPassed = me.report.incomeParams && (Object.keys(me.report.incomeParams).length !== 0)
         if (!paramsPassed) return false // user enter params and press "show report" on params form
         let paramForm = me.down('reportparamform')
         paramForm.collapse(Ext.Component.DIRECTION_TOP, false)
