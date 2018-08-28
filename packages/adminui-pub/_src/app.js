@@ -461,7 +461,6 @@ function launchApp () {
       }
     })
 
-    Ext.util.CSS.refreshCache() // !!! Fix for 4.2.0 || в исходниках ExtJS согласно http://www.sencha.com/forum/showthread.php?251691-Ext.utils.CSS.getRule-always-throws-error&p=921906&viewfull=1#post921906
     delete Ext.tip.Tip.prototype.minWidth
 
     Ext.Ajax.timeout = 120000
