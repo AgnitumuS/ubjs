@@ -17,6 +17,10 @@ tmpdir.refresh();
 
 v.forEach((value) => {
   const fd = fs.openSync(filePath, 'w');
-  fs.writeSync(fd, value);
-  assert.strictEqual(fs.readFileSync(filePath).toString(), String(value));
+  try {
+    fs.writeSync(fd, value);
+    assert.strictEqual(fs.readFileSync(filePath).toString(), String(value));
+  } finally {
+    fs.closeSync(fd)
+  }
 });

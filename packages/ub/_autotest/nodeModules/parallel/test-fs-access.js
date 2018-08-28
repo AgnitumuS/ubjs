@@ -67,7 +67,7 @@ fs.access(__filename, fs.R_OK, common.mustCall((err) => {
 fs.access(doesNotExist, common.mustCall((err) => {
   assert.notStrictEqual(err, null, 'error should exist');
   assert.strictEqual(err.code, 'ENOENT');
-  assert.strictEqual(err.path, doesNotExist);
+  assert.strictEqual(err.path, path._makeLong(doesNotExist));
 }));
 
 fs.access(readOnlyFile, fs.F_OK | fs.R_OK, common.mustCall((err) => {
@@ -79,7 +79,7 @@ fs.access(readOnlyFile, fs.W_OK, common.mustCall((err) => {
     assert.ifError(err);
   } else {
     assert.notStrictEqual(err, null, 'error should exist');
-    assert.strictEqual(err.path, readOnlyFile);
+    assert.strictEqual(err.path, path._makeLong(readOnlyFile));
   }
 }));
 /* This currently work differently in UB
@@ -109,10 +109,12 @@ assert.throws(
   () => { fs.accessSync(doesNotExist); },
   (err) => {
     assert.strictEqual(err.code, 'ENOENT');
-    assert.strictEqual(err.path, doesNotExist);
+    assert.strictEqual(err.path, path._makeLong(doesNotExist));
     assert.strictEqual(
       err.message,
-      `ENOENT: No such file or directory, access '${doesNotExist}'`
+      common.isWindows ?
+        `ENOENT: The system cannot find the file specified., access '${path._makeLong(doesNotExist)}'` :
+        `ENOENT: No such file or directory, access '${doesNotExist}'`
     );
     assert.strictEqual(err.constructor, Error);
     return true;
