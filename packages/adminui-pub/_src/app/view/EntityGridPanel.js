@@ -1944,7 +1944,7 @@ Ext.define('UB.view.EntityGridPanel', {
     let action = this.actions[actionName]
     if (action) {
       if (action.forceHidden) return
-      action.disable()
+      if (!action.isDisabled()) action.disable()
     }
     if (!this.actionsKeyMap) return
     action = this.actionsKeyMap[actionName]
@@ -1961,7 +1961,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
     if (action) {
       if (action.forceHidden) return
-      action.setDisabled(false)
+      if (action.isDisabled()) action.setDisabled(false)
       action.forceHidden = false
     }
     if (!me.actionsKeyMap) return
