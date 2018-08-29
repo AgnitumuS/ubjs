@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.4.10]
+### Added
+- SpeedUp: prevern rerendering during disable/enable actions in EntityGridPanel if action already enabled/disabled
+
 ## [5.4.7]
 ### Fixed
  - add logicalPredicates for request wehen choos "selectFromDictionary" on ubcombobox
