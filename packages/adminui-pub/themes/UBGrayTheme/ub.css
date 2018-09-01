@@ -1366,8 +1366,10 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 .ub-float-toolbar {
     position: absolute;
     z-index: 999;
-    background-color: rgb(91, 71, 71);
+    background-color: #f0f3f3;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    bottom: 1rem;
+    right: 1rem;
     /*opacity: 0.8;*/
 }
 

@@ -1,3 +1,4 @@
+/* global Ext */
 require('../core/UBStoreManager')
 require('../core/UBUtil')
 require('./form/field/UBBoolBox')
@@ -117,9 +118,11 @@ Ext.define('UB.ux.Multifilter', {
         fieldList = me.gridOwner.store.ubRequest.fieldList
         if (fieldList.indexOf(attrChain[0]) > 0) {
           if (!filterGroups[attrChain[0]]) {
-            menuItems.push({ text:
-                            $App.domainInfo.get(me.gridOwner.entityName).getEntityAttribute(attrChain[0]).caption,
-            column: column })
+            menuItems.push({
+              text: $App.domainInfo.get(me.gridOwner.entityName)
+                .getEntityAttribute(attrChain[0]).caption,
+              column: column
+            })
             filterGroups[attrChain[0]] = true
           }
           // isDictFilter
@@ -128,18 +131,15 @@ Ext.define('UB.ux.Multifilter', {
         // isFirstInComplex = true;
       }
 
-      menuItems.push({ text: column.filterCaption || column.text ||
-            $App.domainInfo.get(me.gridOwner.entityName).getEntityAttribute(column.dataIndex).caption,
-      column: column })
+      menuItems.push({
+        text: column.filterCaption || column.text ||
+          $App.domainInfo.get(me.gridOwner.entityName)
+            .getEntityAttribute(column.dataIndex).caption,
+        column: column
+      })
     })
-    /*
-        menuItems.push({ text: 'all',
-            showAllItem: true });
-        */
     menu = Ext.create('Ext.menu.Menu', {
-      // width: 100,
       margin: '0 0 10 0',
-      // floating: false,  // usually you want this set to True (default)
       items: menuItems,
       listeners: {
         click: function (menu, item, e, eOpts) {
@@ -550,6 +550,10 @@ Ext.define('UB.ux.Multifilter', {
       showFilter = true, pnlFilters = {}, pnlFilterItem = {}, updateFilterCaption = false,
       itemExecuted = {}
 
+    // MPV - prevent unnecessary layout by adding empty filter panel
+    // COLUMN ALIGN BUG if uncomment below
+    // if (!filters.length && !me.filterPenel) return
+
     me.initBarControls()
     me.filterPenelFilters.items.each(function (item) {
       pnlFilters[item.filterID] = 1
@@ -607,14 +611,14 @@ Ext.define('UB.ux.Multifilter', {
                 toDate = item.relatedFilter.value
                 if (toDate) {
                   labelValue += ' ' + UB.i18n('po') + ' ' +
-                                        Ext.Date.format(item.isTime ? UB.core.UBUtil.addDays(toDate, -1) : toDate, 'd-m-Y')
+                    Ext.Date.format(item.isTime ? UB.core.UBUtil.addDays(toDate, -1) : toDate, 'd-m-Y')
                 }
               } else {
                 showFilter = false
               }
             } else if (item.filterType === 'to_date') {
               labelValue = UB.i18n('po') + ' ' +
-                                Ext.Date.format(item.isTime ? UB.core.UBUtil.addDays(item.value, -1) : item.value, 'd-m-Y')
+                Ext.Date.format(item.isTime ? UB.core.UBUtil.addDays(item.value, -1) : item.value, 'd-m-Y')
             } else if (item.filterType === 'from_date') {
               labelValue = UB.i18n('s') + ' ' + Ext.Date.format(item.value, 'd-m-Y')
             } else if (item.filterType === 'date') {
@@ -745,7 +749,8 @@ Ext.define('UB.ux.Multifilter', {
         {
           xtype: 'label',
           html: UB.i18n('filter') + ': ' // + filtersData.join(', ')
-        }, me.filterPenelFilters = Ext.create('Ext.toolbar.Toolbar', {
+        },
+        me.filterPenelFilters = Ext.create('Ext.toolbar.Toolbar', {
           cls: 'ub-grid-info-panel',
           border: 0,
           margin: 0,

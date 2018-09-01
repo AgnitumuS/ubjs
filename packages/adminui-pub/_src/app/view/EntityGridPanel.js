@@ -678,7 +678,7 @@ Ext.define('UB.view.EntityGridPanel', {
     let charWidth, columnParam, headerCharWidth, maxChars, columnLeft
     let columnParams = UB.view.EntityGridPanel.columnParams
 
-    if (me.stateLoadedFromStore && !force) {
+    if ((me.stateLoadedFromStore || (me.columns.length < 3)) && !force) {
       return
     }
     let boxWidth = me.getEl().getWidth()
@@ -1315,12 +1315,10 @@ Ext.define('UB.view.EntityGridPanel', {
   initPagingToolbar: function () {
     let me = this
     let el = me.getEl()
-    //let size = el.getSize()
 
     me.floatToolbarEl = Ext.DomHelper.append(el, {
       tag: 'div',
       cls: 'ub-float-toolbar'
-      // ,style: 'top: ' + (size.height - 30 - 20) + 'px; left: ' + (size.width - 300 - 20) + 'px; ' // width: 300px; height: 30px;
     }, true)
     if (!me.hidePagingBar) {
       me.pagingBar = Ext.create('UB.view.PagingToolbar', {
@@ -1341,14 +1339,6 @@ Ext.define('UB.view.EntityGridPanel', {
          */
         autoCalcTotal: me.autoCalcTotal,
         store: me.store // same store GridPanel is using
-      })
-
-      me.on('activate', function () {
-        me.on('afterlayout', function () {
-          if (!me.isDestroyed && me.pagingBar) {
-            me.pagingBar.updateTotal()
-          }
-        }, me, {single: true})
       })
 
       me.store.on('refresh', function () {

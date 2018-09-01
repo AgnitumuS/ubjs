@@ -322,6 +322,7 @@ Ext.define('UB.view.BasePanel', {
         bodyCls: 'ub-toolbar-header',
         title: me.title || ''
       })
+      me.headerPanel.titleCmp.setHeight(25)
       me.dockedItems.splice(0, 0, me.headerPanel)
     }
 
@@ -2450,10 +2451,11 @@ Ext.define('UB.view.BasePanel', {
       docActions.push(new Ext.Action({
         text: doc.caption,
         iconCls: 'iconDocument',
+        height: 32,
         key: key,
         menu: [{
           actionId: actions.scan + '_' + key,
-                    // disabled: UB.npDesktopServicePluginDownloadMessage(),
+          // disabled: UB.npDesktopServicePluginDownloadMessage(),
           iconCls: 'iconScanner',
           text: UB.i18n('skanirovat'),
           eventId: events.scan,
