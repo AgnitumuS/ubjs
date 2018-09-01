@@ -21,4 +21,3 @@ Ext.define('UB.view.UBBar', {
     this.callParent(arguments)
   }
 })
-

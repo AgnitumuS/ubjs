@@ -4,7 +4,6 @@ const UB = require('@unitybase/ub-pub')
  *  Paging tool bar for Grid.
  */
 Ext.define('UB.view.PagingToolbar', {
-  // extend: 'Ext.toolbar.Paging',
   extend: 'Ext.container.Container',
   alias: 'widget.pagingtb',
   requires: [
@@ -30,33 +29,9 @@ Ext.define('UB.view.PagingToolbar', {
       tooltip: UB.i18n('calcRowCount'),
       handler: me.calcTotalRow,
       scope: me,
-      margin: '0 0 0 0',
-      hidden: !!me.autoCalcTotal
+      height: 32,
+      margin: '0 0 0 0'
     })
-    me.labelCtrl = Ext.create('Ext.form.Label', {
-      text: '',
-      hidden: !me.autoCalcTotal,
-      cls: 'ub-total-row',
-      listeners: {
-        boxready: function () {
-          me.labelCtrl.getEl().set({'data-qtip': UB.i18n('totalRowCount')})
-        }
-      }
-    })
-    me.store.on('refresh', function () {
-      if (me.autoCalcTotal) {
-        if (me.store.totalCount < 0 && me.lastTotalCount === null) {
-          me.labelCtrl.hide()
-          me.buttonCount.show()
-          me.autoCalcTotal = false
-        }
-        if (me.store.totalCount >= 0) {
-          me.lastTotalCount = me.store.totalCount
-        }
-        me.setTotal(me.lastTotalCount !== null ? me.lastTotalCount : me.store.totalCount)
-        // me.calcTotalRow();
-      }
-    }, me)
 
     function requestChanged () {
       me.lastTotalCount = null
@@ -79,6 +54,7 @@ Ext.define('UB.view.PagingToolbar', {
       handler: function () { me.selectPage() },
       scope: me,
       cls: 'UB-paging-toolbar-page',
+      height: 32,
       margin: '0 0 0 0'
     })
 
@@ -88,6 +64,8 @@ Ext.define('UB.view.PagingToolbar', {
         xtype: 'button',
         tooltip: Ext.PagingToolbar.prototype.prevText,
         iconCls: Ext.baseCSSPrefix + 'tbar-page-prev',
+        width: 34,
+        height: 32,
         border: 0,
         disabled: false,
         handler: me.movePrevious,
@@ -99,13 +77,13 @@ Ext.define('UB.view.PagingToolbar', {
         xtype: 'button',
         tooltip: Ext.PagingToolbar.prototype.nextText,
         iconCls: Ext.baseCSSPrefix + 'tbar-page-next',
+        width: 34,
+        height: 32,
         disabled: false,
         handler: me.moveNext,
         scope: me
       },
-      { xtype: 'tbseparator' },
-      me.buttonCount,
-      me.labelCtrl
+      me.buttonCount
     ]
     me.callParent()
     if (me.store) {
@@ -148,26 +126,18 @@ Ext.define('UB.view.PagingToolbar', {
 
     me.buttonPage.setText(parseInt(me.store.currentPage, 10).toLocaleString())
     if (me.store.currentPage <= 1 && itemCount < me.store.pageSize) {
-      me.buttonCount.hide()
       me.setTotal(itemCount)
       return
     }
     if (me.store.totalCount !== undefined && me.store.totalCount >= 0) {
-      me.buttonCount.hide()
       me.setTotal(me.store.totalCount)
       me.lastTotalCount = me.store.totalCount
     }
-    if (!me.autoCalcTotal && me.labelCtrl.isVisible()) {
-      me.labelCtrl.hide()
-      me.buttonCount.show()
-      // MPV me.setWidth(me.baseWidth + me.buttonCount.getWidth())
+    if (!me.autoCalcTotal) {
       // change total to undefined
       me.fireEvent('totalChanged', null)
     }
     me.resumeLayouts()
-    if (me.rendered) {
-      Ext.AbstractComponent.updateLayout(me, true)
-    }
   },
 
   selectPage: function (basePage) {
@@ -175,7 +145,6 @@ Ext.define('UB.view.PagingToolbar', {
       menuItems = [], startItem,
       maxPage, isLastPage = false, endPage,
       itemCount = 7, itemBefore = 3, totalCount
-    // me.buttonPage.menu.removeAll();
 
     function onItemClick (item) {
       me.store.loadPage(item.itemNum)
@@ -263,6 +232,7 @@ Ext.define('UB.view.PagingToolbar', {
   },
 
   calcTotalRow: function () {
+    if (this.autoCalcTotal) return // already calculated
     let store = this.store
     if (!store.ubRequest.options) {
       store.ubRequest.options = {}
@@ -270,7 +240,6 @@ Ext.define('UB.view.PagingToolbar', {
     store.ubRequest.options.totalRequired = true
     this.autoCalcTotal = true
     store.load()
-    this.buttonCount.hide()
   },
 
   decreaseTotal: function () {
@@ -284,19 +253,21 @@ Ext.define('UB.view.PagingToolbar', {
   },
 
   setTotal: function (totalCount) {
-    var me = this
+    let me = this
+    let oldText = me.buttonCount.text || '   '
     let totalText = totalCount || totalCount === 0 ? Ext.util.Format.number(parseInt(totalCount, 10), '0,000') : '-'
-    me.labelCtrl.setText(totalText)
-    me.labelCtrl.show()
-    if (totalText.length > 3) { // prevent re-render
-      me.setWidth(me.baseWidth + (me.labelCtrl.rendered ? me.labelCtrl.getWidth() : 0))
+    me.buttonCount.setText(totalText)
+    me.buttonCount.setIconCls('')
+    me.buttonCount.setTooltip(UB.i18n('totalRowCount'))
+
+    if (totalText.length > oldText.length) { // prevent re-render
+      me.setWidth(me.baseWidth + (me.buttonCount.rendered ? me.buttonCount.getWidth() : 0))
     }
     me.fireEvent('totalChanged', totalCount)
     if (me.store.ubRequest && me.store.ubRequest.options) {
       me.store.ubRequest.options.totalRequired = false
     }
     me.lastTotal = totalCount
-    // me.autoCalcTotal = true;
   },
 
   // @private
@@ -310,7 +281,6 @@ Ext.define('UB.view.PagingToolbar', {
       pageCount: totalCount < 0 ? store.currentPage + 1 : Math.ceil(totalCount / store.pageSize),
       fromRecord: ((store.currentPage - 1) * store.pageSize) + 1,
       toRecord: Math.min(store.currentPage * store.pageSize, totalCount)
-
     }
   },
 
@@ -328,5 +298,5 @@ Ext.define('UB.view.PagingToolbar', {
         me.store.nextPage()
       }
     }
-  },
+  }
 })

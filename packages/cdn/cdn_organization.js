@@ -1,5 +1,4 @@
 const UB = require('@unitybase/ub')
-const App = UB.App
 const Session = UB.Session
 /* global cdn_organization ubs_settings ubs_numcounter */
 // eslint-disable-next-line camelcase
@@ -20,7 +19,7 @@ me.updateOrganizationCaption = function (ctx) {
   const organizationID = execParams.ID
   const supportedLangs = me.entity.connectionConfig.supportLang
 
-  const defaultSuffix = `_${App.defaultLang}^`
+  const defaultSuffix = `_${Session.userLang}^`
   const inserting = (ctx.mParams.method === 'insert')
   if (execParams.name) { // Here is the standard values for all "name" attributes ( "name_uk^" instead of "name", etc)
     execParams['name' + defaultSuffix] = execParams.name
@@ -28,12 +27,10 @@ me.updateOrganizationCaption = function (ctx) {
   }
   let orgFields = ['corrIndexID']
   supportedLangs.forEach(function (lang) {
-    let suffix = '_' + lang + '^'
+    let suffix = `_${lang}^`
     orgFields.push('name' + suffix)
-    if (!execParams['name' + suffix]) {
-      if (inserting) {
-        execParams['name' + suffix] = execParams['name' + defaultSuffix]
-      }
+    if (!execParams['name' + suffix] && inserting) {
+      execParams['name' + suffix] = execParams['name' + defaultSuffix]
     }
   })
 

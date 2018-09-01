@@ -24,10 +24,8 @@ Ext.define('UB.view.FullTextSearchWidget', {
   alias: 'widget.ubfulltextsearchwidget',
   requires: [
     'Ext.form.field.Text',
-        // 'UB.ux.data.UBStore',
     'Ext.data.Store',
     'Ext.button.Button'
-        // 'UB.view.SelectPeriodDialog'
   ],
   uses: ['UB.core.UBApp'],
 
@@ -171,7 +169,7 @@ Ext.define('UB.view.FullTextSearchWidget', {
     if (!value) {
       return
     }
-        // UB-1255 - complex attributes in snippet. LowerCase, multiline
+    // UB-1255 - complex attributes in snippet. LowerCase, multiline
     function replacer (matched, attrCode) {
       var attr
       attrCode = attrCode.split('.')[0]
@@ -196,9 +194,9 @@ Ext.define('UB.view.FullTextSearchWidget', {
     }
 
     fieldList = [
-            {name: 'ID', visibility: false},
-            {name: 'entity', visibility: false},
-            {name: 'entitydescr', visibility: true, description: UB.i18n('ftsFieldCaption')},
+      {name: 'ID', visibility: false},
+      {name: 'entity', visibility: false},
+      {name: 'entitydescr', visibility: true, description: UB.i18n('ftsFieldCaption')},
       {name: 'snippet', visibility: true, description: UB.i18n('ftsFieldSnippet'),
         format: function formatFTSResultData (value, metadata, record) {
           var entitySn = record.get('entity')
@@ -273,4 +271,3 @@ Ext.define('UB.view.FullTextSearchWidget', {
     })
   }
 })
-
