@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.4.10]
 ### Added
-- EntityGridPanel SpeedUp:
+- EntityGridPanel SpeedUp (up to 30%):
   - prevent re-rendering during disable/enable actions in  if action already enabled/disabled
   - pagination toolbar is completely rewritten
   - disableAutoSelectRow set tu `true` by default
