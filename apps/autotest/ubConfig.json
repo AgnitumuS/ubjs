@@ -116,6 +116,7 @@
 					"path": "./node_modules/@unitybase/adminui-vue"
 				},
 				{
+					//"name": "TST",
 					"path": "./models/TST"
 				}
 			],

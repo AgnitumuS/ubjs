@@ -8,13 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - EntityGridPanel initial rendering speed up:
  - 100ms by preventing insertion of empty Mutlifilter description panel in case filters are empty
- - 100ms by preventing re-layout for each column width changing during call to `optimizeColumnWidth`  
+ - 100ms by preventing re-layout for each column width changing during call to `optimizeColumnWidth`
+ - lazy creation of PaginationToolbar (not created at all if store not require it)   
 
 ## [5.4.10]
 ### Changed
 - EntityGridPanel initial rendering speed up (up to 30%):
   - prevent re-rendering during disable/enable actions in  if action already enabled/disabled
-  - pagination toolbar is completely rewritten
+  - **BREAKING** pagination toolbar  (`UB.view.PagingToolbar` `xtype: pagingtb`) is completely rewritten.
+    In rared case this component is used outside `adminui-pub` code should be rewriting  
   - disableAutoSelectRow set to `true` by default
 
 ## [5.4.7]

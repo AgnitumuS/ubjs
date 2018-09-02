@@ -50,8 +50,6 @@ Ext.define('UB.view.OverflowSelect', {
     beginLayout: function (ownerContext) {
         this.callParent(arguments);
 
-        ownerContext.innerCtScrollPos = this.getScrollPosition();
-
         // Before layout, we need to re-show all items which we may have hidden due to a
         // previous overflow...
         this.clearOverflow(ownerContext);
@@ -73,15 +71,6 @@ Ext.define('UB.view.OverflowSelect', {
             me.updateActivePosition(ownerContext);
         }
         this.callParent(arguments);
-    },
-
-
-    finishedLayout: function(ownerContext) {
-        var me = this,
-            layout = me.layout,
-            scrollPos = Math.min(me.getMaxScrollPosition(), ownerContext.innerCtScrollPos);
-
-        layout.innerCt[layout.names.setScrollLeft](scrollPos);
     },
 
     beginLayoutCycle: function (ownerContext, firstCycle) {
