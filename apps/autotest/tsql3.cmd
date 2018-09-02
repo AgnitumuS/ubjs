@@ -7,7 +7,7 @@ if [%UB_HOST%]==[] (
 )
 
 if [%UB_RP_CONFIG%]==[] (
-  SET UB_RP_CONFIG=./rp-config-disable.json
+  SET UB_RP_CONFIG=%CD%\rp-config-disable.json
 )
 
 if exist .\_autotestResults*.json del .\_autotestResults*.json
