@@ -4,16 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.4.11]
+## [5.5.0]
 ### Fixed
 - EntityGridPanel: prevent memory leak by destroying pagination bar if created
 - EntityGridPanel (Multifilter): prevent memory leak by destroying attributes menu if created
 
 ### Changed
 - EntityGridPanel initial rendering speed up:
- - 100ms by preventing insertion of empty Mutlifilter description panel in case filters are empty
- - 100ms by preventing re-layout for each column width changing during call to `optimizeColumnWidth`
- - lazy creation of PaginationToolbar (not created at all if store not require it)   
+  - preventing insertion of empty Mutlifilter description panel in case filters are empty (~100ms)
+  - preventing re-layout for each column width changing during call to `optimizeColumnWidth` (~100ms)
+  - lazy creation of PaginationToolbar (not created at all if store not require it) (~100ms)
+  - lazy creation of `Mutlifilter` attributes menu (10ms)   
 
 ## [5.4.10]
 ### Changed

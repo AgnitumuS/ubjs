@@ -35,10 +35,11 @@ Ext.define('UB.ux.Multifilter', {
   // layout:'column',
   filtersList: {},
   selectedColumn: null,
+  filterMenu: null,
 
   init: function (owner) {
     var
-      me = this, timeOut = 0, menu
+      me = this, timeOut = 0
 
     me.gridOwner = owner
     me.gridOwner.on({
@@ -72,28 +73,32 @@ Ext.define('UB.ux.Multifilter', {
     me.filterPrefix = 'context_' + Ext.id()
     me.filtersPanel = {}
 
-    me.filterMenu = menu = me.createSelectFilterMenu(function (menu, item, e, eOpts) {
-      Ext.suspendLayouts()
-      try {
-        me.hideAllPanel()
-        me.selectedColumn = item.column
-        me.createFilterPanel(item.column.dataIndex, item.column)
-      } finally {
-        Ext.resumeLayouts(true)
-      }
-      if (me.topfilterPenel.layout.overflowHandler.menuItems.length > 0) {
-        me.showContexFilterPanel()
-      }
-    })
-
     me.buttonSelectFilter = new Ext.button.Button({
       tooltip: UB.i18n('Filter by'),
       glyph: UB.core.UBUtil.glyphs.faFilter,
       handler: function () {
-        menu.showBy(me.buttonSelectFilter.el, me.menuAlign)
+        if (!me.filterMenu) {
+          me.filterMenu = me.createSelectFilterMenu(me.selectColumnMenuClick)
+        }
+        me.filterMenu.showBy(me.buttonSelectFilter.el, me.menuAlign)
       }
     })
     me.add(this.buttonSelectFilter)
+  },
+
+  selectColumnMenuClick: function (menu, item) {
+    let me = this
+    Ext.suspendLayouts()
+    try {
+      me.hideAllPanel()
+      me.selectedColumn = item.column
+      me.createFilterPanel(item.column.dataIndex, item.column)
+    } finally {
+      Ext.resumeLayouts(true)
+    }
+    if (me.topfilterPenel.layout.overflowHandler.menuItems.length > 0) {
+      me.showContexFilterPanel()
+    }
   },
 
   getItemMargin: function () {
