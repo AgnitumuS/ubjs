@@ -1,4 +1,4 @@
-<!--@mi_modifyDate "Sun Aug 12 2018 20:40:28 GMT+0300 (FLE Standard Time)"-->
+<!--@mi_modifyDate "Tue Aug 28 2018 20:55:01 GMT+0300 (FLE Standard Time)"-->
 <!--@name "click_sample"-->
 <!--@report_code "click_sample"-->
 <!--@model "UBS"-->
@@ -27,12 +27,24 @@
 <td style="text-align: right;">{{#$fn}}"num"{{/$fn}}</td>
 </tr>
 <tr>
+<td>$fn for negative</td>
+<td style="text-align: right;">{{#$fn}}"negNum"{{/$fn}}</td>
+</tr>
+<tr>
 <td>$fs</td>
 <td style="text-align: right;">{{#$fs}}"num"{{/$fs}}</td>
 </tr>
 <tr>
+<td>$fs for negatife</td>
+<td style="text-align: right;">{{#$fs}}"negNum"{{/$fs}}</td>
+</tr>
+<tr>
 <td>$crn</td>
 <td style="text-align: right;">{{#$crn}}"num"{{/$crn}}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td style="text-align: right;">&nbsp;</td>
 </tr>
 </tbody>
 </table>

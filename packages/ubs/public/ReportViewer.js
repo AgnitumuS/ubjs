@@ -150,9 +150,14 @@ Ext.define('UBS.ReportViewer', {
         return false
       }
     }).then(function (paramsFormRequired) {
-      if (paramsFormRequired) return false // user enter params and press "show report" on params form
+      if (paramsFormRequired) {
+        let paramsPassed = me.report.incomeParams && (Object.keys(me.report.incomeParams).length !== 0)
+        if (!paramsPassed) return false // user enter params and press "show report" on params form
+        let paramForm = me.down('reportparamform')
+        paramForm.collapse(Ext.Component.DIRECTION_TOP, false)
+      }
 
-      return me.report.makeReport()
+      return me.report.makeReport(me.report.incomeParams)
     }).done(function (data) {
       if (data && data.reportData) {
         me.showReport(data.reportData)
@@ -224,32 +229,11 @@ Ext.define('UBS.ReportViewer', {
           addStyleSheet(iFrameDoc, '@page{size: portrait;}')
         }
         if (me.report.onReportClick) { // add onclick handler for all <a href="">
-          var refs = iFrameDoc.getElementsByTagName('a')
+          let refs = iFrameDoc.getElementsByTagName('a')
           for (let i = 0, L = refs.length; i < L; i++) {
             refs[i].addEventListener('click', me.report.onReportClick, true)
           }
         }
-
-        // me.reportControl.setValue(data)
-        // let ed = me.reportControl.getEditor()
-        // if (ed && ed.dom) {
-        //   if (me.reportControl.orientation === 'landscape') {
-        //     ed.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-        //   } else if (me.reportControl.orientation === 'portrait') {
-        //     ed.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
-        //   }
-        // } else {
-        //   me.reportControl.on('setup', function (editor) {
-        //     editor.on('init', function () {
-        //       if (me.reportControl.orientation === 'landscape') {
-        //         editor.dom.loadCSS('/models/adminui-pub/css/print-landscape.css')
-        //       } else if (me.reportControl.orientation === 'portrait') {
-        //         editor.dom.loadCSS('/models/adminui-pub/css/print-portrait.css')
-        //       }
-        //     })
-        //   }, me, {single: true})
-        // }
-        // me.reportControl.show()
         break
     }
     if (me.getEl()) {

@@ -29,14 +29,6 @@ const argv = require('@unitybase/base').argv
 const RE_TRAILING_PATH_SEP = process.platform === 'win32' ? /\\$/ : /\/$/
 
 module.exports = function createStore (options) {
-  let
-    configFileName,
-    configPath,
-    config,
-    app,
-    storeNames,
-    selectedStores
-
   if (!options) {
     let opts = cmdLineOpt.describe('createStore',
       'Create internal store structure (folders) for specifies FileSystem store. Must be used on the same computer where UnityBase server installed',
@@ -47,15 +39,15 @@ module.exports = function createStore (options) {
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
-  storeNames = options.store
-  configFileName = argv.getConfigFileName()
+  let storeNames = options.store
+  let configFileName = argv.getConfigFileName()
 
   if (!configFileName) {
     throw new Error('Invalid server config path')
   }
 
-  config = argv.getServerConfiguration()
-  app = config.application
+  let config = argv.getServerConfiguration()
+  let app = config.application
 
   if (!app.blobStores) {
     throw new Error('No "blobStores" section inside application config')
@@ -64,9 +56,10 @@ module.exports = function createStore (options) {
     throw new Error('"blobStores" config section must be in 1.11 format - an non-empty ARRAY of named object')
   }
 
+  let selectedStores
   if (storeNames) {
     storeNames = storeNames.split(',')
-    selectedStores = _.filter(app.blobStores, function (store) {
+    selectedStores = app.blobStores.filter(function (store) {
       return (storeNames.indexOf(store.name) !== -1)
     })
     if (!selectedStores.length) {
@@ -76,7 +69,7 @@ module.exports = function createStore (options) {
     selectedStores = app.blobStores
   }
 
-  configPath = path.dirname(configFileName)
+  let configPath = path.dirname(configFileName)
 
   function createOneStore (cStore) {
     console.log('Start handle blobStore "%s"', cStore.name)

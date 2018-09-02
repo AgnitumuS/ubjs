@@ -1,3 +1,4 @@
+/* global saveAs, Ext */
 require('../core/UBStoreManager')
 require('../core/UBEnumManager')
 require('../ux/Multifilter')
@@ -12,7 +13,6 @@ require('../core/UBPanelMixin')
 
 const _ = require('lodash')
 
-/* global saveAs */
 /**
  * Display a grid based on entity content. Usually created as a result of `showList` command.
  * In case of master-detail relation use {@link UB.ux.UBDetailGrid UBDetailGrid} descendant.
@@ -40,6 +40,7 @@ Ext.define('UB.view.EntityGridPanel', {
   },
   selType: 'cellmodel',
   disableSearchBar: false,
+  disableAutoSelectRow: true,
   rowHeight: 28,
 
   uses: [
@@ -663,7 +664,7 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   /**
-   * Set optimal width for grid columnsbased on current gerin width & attribute types
+   * Set optimal width for grid columns based on current width & attribute types
    * @param {Boolean} [force=false] If false column width already loaded from local store -  do nothing.
    */
   optimizeColumnWidth: function (force) {
@@ -677,10 +678,10 @@ Ext.define('UB.view.EntityGridPanel', {
     let charWidth, columnParam, headerCharWidth, maxChars, columnLeft
     let columnParams = UB.view.EntityGridPanel.columnParams
 
-    let boxWidth = me.getEl().getWidth()
-    if (me.stateLoadedFromStore && !force) {
+    if ((me.stateLoadedFromStore || (me.columns.length < 3)) && !force) {
       return
     }
+    let boxWidth = me.getEl().getWidth()
     _.forEach(me.store.model.getFields(), function (item) {
       fields[item.name] = item
     })
@@ -1254,10 +1255,6 @@ Ext.define('UB.view.EntityGridPanel', {
      */
     me.addEvents('parentchange')
 
-    me.on('afterlayout', function () {
-      me.realignFloatPanel()
-    }, me)
-
     me.on('sortchange', function () {
       me.store.currentPage = 1
     })
@@ -1318,12 +1315,10 @@ Ext.define('UB.view.EntityGridPanel', {
   initPagingToolbar: function () {
     let me = this
     let el = me.getEl()
-    let size = el.getSize()
 
     me.floatToolbarEl = Ext.DomHelper.append(el, {
       tag: 'div',
-      cls: 'ub-float-toolbar',
-      style: 'top: ' + (size.height - 30 - 20) + 'px; left: ' + (size.width - 300 - 20) + 'px; ' // width: 300px; height: 30px;
+      cls: 'ub-float-toolbar'
     }, true)
     if (!me.hidePagingBar) {
       me.pagingBar = Ext.create('UB.view.PagingToolbar', {
@@ -1346,15 +1341,6 @@ Ext.define('UB.view.EntityGridPanel', {
         store: me.store // same store GridPanel is using
       })
 
-      me.on('activate', function () {
-        me.on('afterlayout', function () {
-          if (!me.isDestroyed && me.pagingBar) {
-            me.pagingBar.updateTotal()
-            me.realignFloatPanel()
-          }
-        }, me, {single: true})
-      })
-
       me.store.on('refresh', function () {
         if (me.store.currentPage === 1 && me.store.getCount() < me.minRowsPagingBarVisibled) {
           me.floatToolbarEl.hide()
@@ -1364,10 +1350,6 @@ Ext.define('UB.view.EntityGridPanel', {
           }
         }
       })
-      me.pagingBar.on('totalChanged', function () {
-        me.realignFloatPanel()
-      })
-      me.realignFloatPanel()
     }
   },
 
@@ -1388,19 +1370,6 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     }
     me.fireEvent('beforeClose', me)
-  },
-
-  realignFloatPanel: function () {
-    if (!this.floatToolbarEl) {
-      return
-    }
-    let size = this.floatToolbarEl.getSize()
-    let gridView = this.down(this.viewType)
-    let pos = gridView.getXY()
-    let posMe = this.getXY()
-
-    this.floatToolbarEl.dom.style.left = (gridView.el.dom.clientWidth + (pos[0] - posMe[0]) - size.width) + 'px'
-    this.floatToolbarEl.dom.style.top = (gridView.el.dom.clientHeight + (pos[1] - posMe[1]) - size.height) + 'px'
   },
 
   /**
@@ -1944,7 +1913,7 @@ Ext.define('UB.view.EntityGridPanel', {
     let action = this.actions[actionName]
     if (action) {
       if (action.forceHidden) return
-      action.disable()
+      if (!action.isDisabled()) action.disable()
     }
     if (!this.actionsKeyMap) return
     action = this.actionsKeyMap[actionName]
@@ -1961,7 +1930,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
     if (action) {
       if (action.forceHidden) return
-      action.setDisabled(false)
+      if (action.isDisabled()) action.setDisabled(false)
       action.forceHidden = false
     }
     if (!me.actionsKeyMap) return
@@ -2547,11 +2516,11 @@ Ext.define('UB.view.EntityGridPanel', {
 
   onRefresh: function () {
     let me = this
-    let actionRefresh = me.actions[UB.view.EntityGridPanel.actionId.refresh]
+    if (me._inRefresh) return
     let mainStore = me.store
     let cmdRefresh = []
 
-    actionRefresh.disable()
+    me._inRefresh = true // prevent layouts during actionRefresh.disable()
     Ext.iterate(me.stores, function (item, store) {
       if (store !== mainStore && store.ubRequest) {
         cmdRefresh.push(store.reload())
@@ -2560,7 +2529,7 @@ Ext.define('UB.view.EntityGridPanel', {
     Q.all(cmdRefresh).then(function () {
       return mainStore.reload()
     }).fin(function () {
-      actionRefresh.enable()
+      me._inRefresh = false //       actionRefresh.enable()
       me.down(me.viewType).focus() // 'gridview'
     })
   },

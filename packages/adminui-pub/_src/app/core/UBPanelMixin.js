@@ -282,7 +282,7 @@ Ext.define('UB.core.UBPanelMixin', {
   },
 
   createButtonWOText: function (action) {
-    return Ext.apply(Ext.create('Ext.button.Button', action), { text: action.initialConfig.showText ? action.initialConfig.actionText : '', tooltip: action.getText() })
+    return Ext.apply(Ext.create('Ext.button.Button', action), { width: 34, height: 32, text: action.initialConfig.showText ? action.initialConfig.actionText : '', tooltip: action.getText() })
   },
 
   createMenuItemLink: function () {

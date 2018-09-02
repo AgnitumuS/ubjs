@@ -147,6 +147,8 @@ Ext.define('UB.view.OverflowSelect', {
             plain: owner.usePlainButtons,
             ownerCt: owner, // To enable the Menu to ascertain a valid zIndexManager owner in the same tree
             ownerLayout: layout,
+            width: 34,
+            height: 32,
             iconCls: Ext.baseCSSPrefix + me.getOwnerType(owner) + '-more-icon',
             ui: owner instanceof Ext.toolbar.Toolbar ? 'default-toolbar' : 'default',
             menu: me.menu,
@@ -174,7 +176,7 @@ Ext.define('UB.view.OverflowSelect', {
         // Center the menuTrigger button only if we are not vertical.
         // TODO: Should we emulate align: 'middle' like this, or should we 'stretchmax' the menuTrigger?
         if (me.layout.direction !== 'vertical') {
-            posArgs[names.heightIndex] = (plan.maxSize - me.menuTrigger[names.getHeight]()) / 2;
+            posArgs[names.heightIndex] = (plan.maxSize - 32 /*me.menuTrigger[names.getHeight]()*/) / 2;
             me.menuTrigger.setPosition.apply(me.menuTrigger, posArgs);
         }
 
@@ -192,11 +194,12 @@ Ext.define('UB.view.OverflowSelect', {
             menuTrigger = me.menuTrigger,
             names = me.layout.names;
 
+        me.triggerTotalWidth = 42;
         // The rendering flag is set when getRenderTree is called which we do when returning markup string for the owning layout's "suffix"
-        if (menuTrigger.rendering) {
-            menuTrigger.finishRender();
-            me.triggerTotalWidth = menuTrigger[names.getWidth]() + menuTrigger.el.getMargin(names.parallelMargins);
-        }
+         if (menuTrigger.rendering) {
+             menuTrigger.finishRender();
+        //     me.triggerTotalWidth = menuTrigger[names.getWidth]() + menuTrigger.el.getMargin(names.parallelMargins);
+         }
     },
 
     _asLayoutRoot: { isRoot: true },

@@ -19,6 +19,7 @@
  */
 Ext.define('UBS.ReportParamForm', {
   extend: 'Ext.form.Panel',
+  xtype: 'reportparamform',
   layout: {
     type: 'vbox',
     align: 'stretch'

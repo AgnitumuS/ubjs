@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.7]
+### Added 
+- in HTML reports `$fs` function will display negative numbers using red text color
+  
+## [5.1.6]
+### Fixed
+- fix case when reportParams not passed to $App.doCommand for `showReport`
+   
+## [5.1.5]
+### Added
+- `showReport` command can silently (without asking used for input)
+create parametrised report in case `reportParams` parameter contains non-empty object
+
+```javascript
+    $App.doCommand({
+      "cmdType": "showReport",
+      "description": "OPTIONAL report form caption",
+      "cmdData": {
+        "reportCode": "test",
+        "reportType": "html",
+        "reportParams": {
+          "name": "Mark",
+          "birthday": new Date(),
+          "limitation": 2
+        }
+      }
+    })
+``` 
+
 ## [5.1.0]
 ### Changed
 - dramatically increase HTML report viewer by replacing TinyMCE to plain iframe

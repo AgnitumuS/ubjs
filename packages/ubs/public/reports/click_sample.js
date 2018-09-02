@@ -21,7 +21,8 @@ exports.reportCode = {
         let data = {
           countries: countries,
           date: new Date(),
-          num: 1234567.89
+          num: 1234567.89,
+          negNum: -1234567.89
         }
         let HTML = me.buildHTML(data)
         return HTML
