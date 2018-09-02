@@ -551,8 +551,7 @@ Ext.define('UB.ux.Multifilter', {
       itemExecuted = {}
 
     // MPV - prevent unnecessary layout by adding empty filter panel
-    // COLUMN ALIGN BUG if uncomment below
-    // if (!filters.length && !me.filterPenel) return
+    if (!filters.length && !me.filterPenel) return
 
     me.initBarControls()
     me.filterPenelFilters.items.each(function (item) {
