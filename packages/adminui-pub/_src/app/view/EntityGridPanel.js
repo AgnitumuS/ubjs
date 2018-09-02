@@ -793,10 +793,12 @@ Ext.define('UB.view.EntityGridPanel', {
     }
 
     fullSize = 0
+    me.suspendLayouts()
     _.forEach(columnNew, function (column) {
       fullSize += column.size * charWidth
       column.column.setWidth(column.size * charWidth + 8/* padding */)
     })
+    me.resumeLayouts()
   },
 
   /**

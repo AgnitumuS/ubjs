@@ -4,12 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.4.11]
+### Changed
+- EntityGridPanel initial rendering speed up:
+ - 100ms by preventing insertion of empty Mutlifilter description panel in case filters are empty
+ - 100ms by preventing re-layout for each column width changing during call to `optimizeColumnWidth`  
+
 ## [5.4.10]
-### Added
-- EntityGridPanel SpeedUp (up to 30%):
+### Changed
+- EntityGridPanel initial rendering speed up (up to 30%):
   - prevent re-rendering during disable/enable actions in  if action already enabled/disabled
   - pagination toolbar is completely rewritten
-  - disableAutoSelectRow set tu `true` by default
+  - disableAutoSelectRow set to `true` by default
 
 ## [5.4.7]
 ### Fixed
