@@ -3246,6 +3246,7 @@ Ext.define('UB.view.EntityGridPanel', {
       }
       store.clearListeners()
     }
+    if (me.pagingBar) me.pagingBar.destroy()
     me.callParent(arguments)
   },
 

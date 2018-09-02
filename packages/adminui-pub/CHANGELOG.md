@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.4.11]
+### Fixed
+- EntityGridPanel: prevent memory leak by destroying pagination bar if created
+
 ### Changed
 - EntityGridPanel initial rendering speed up:
  - 100ms by preventing insertion of empty Mutlifilter description panel in case filters are empty
