@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.4.11]
 ### Fixed
 - EntityGridPanel: prevent memory leak by destroying pagination bar if created
+- EntityGridPanel (Multifilter): prevent memory leak by destroying attributes menu if created
 
 ### Changed
 - EntityGridPanel initial rendering speed up:

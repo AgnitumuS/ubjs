@@ -72,7 +72,7 @@ Ext.define('UB.ux.Multifilter', {
     me.filterPrefix = 'context_' + Ext.id()
     me.filtersPanel = {}
 
-    menu = me.createSelectFilterMenu(function (menu, item, e, eOpts) {
+    me.filterMenu = menu = me.createSelectFilterMenu(function (menu, item, e, eOpts) {
       Ext.suspendLayouts()
       try {
         me.hideAllPanel()
@@ -165,6 +165,12 @@ Ext.define('UB.ux.Multifilter', {
     var me = this
 
     me.callParent()
+  },
+
+  destroy: function () {
+    if (this.filterMenu) {
+      this.filterMenu.destroy()
+    }
   },
 
   onFilterChange: function (store) {
