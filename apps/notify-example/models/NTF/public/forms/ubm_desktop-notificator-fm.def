@@ -1,0 +1,82 @@
+// @! "do not remove comments below unless you know what you do!"
+// @mi_modifyDate ""
+// @isDefault "false"
+// @entity "ubm_desktop"
+// @model "NTF"
+// @formType "custom"
+// @caption "Notificator"
+// @description "Notificator example form"
+
+exports.formDef = 'NTF.notificator'
+
+const { UBClientNotifier } = require('@unitybase/amqp-notify')
+
+Ext.define('NTF.notificator', {
+  extend: 'Ext.form.Panel',
+  autoScroll: true,
+  layout: 'border',
+  items: [{
+    xtype: 'box',
+    id: 'notification-log',
+    region: 'center',
+    text: 'Initializing...'
+  }, {
+    xtype: 'panel',
+    id: 'notification-stat',
+    region: 'south',
+    height: 40,
+    layout: {
+      type: 'hbox'
+    },
+    items: [{
+      xtype: 'textfield',
+      id: 'notification-text'
+    }, {
+      xtype: 'button',
+      text: 'Broadcast',
+      handler: function () {
+        var text = Ext.getCmp('notification-text').value
+        $App.connection.post('/broadcast', { text: text })
+      }
+    }, {
+      xtype: 'button',
+      text: 'Notify',
+      handler: function () {
+        var text = Ext.getCmp('notification-text').value
+        $App.connection.post('/notify', { text: text })
+      }
+    }]
+  }],
+
+  keepAliveIntervalID: null,
+
+  addLineToLog: function (htmlText) {
+    this.loggingEl.insertAdjacentHTML('afterbegin', '<div>' + htmlText + '<div>')
+  },
+
+  onMessage: function (message) {
+    let text = message.body.toString()
+    console.log(text)
+    this.addLineToLog(`<span style="color:green">${text}</span>`)
+  },
+
+  initComponent: function () {
+    this.loggingEl = null
+    this.on('boxready', this.initializeAfterBoxReady.bind(this))
+    this.callParent(arguments)
+  },
+
+  initializeAfterBoxReady: function () {
+    this.loggingEl = document.getElementById('notification-log')
+    this.statElm = document.getElementById('notification-stat')
+    this.notifier = new UBClientNotifier(this.onMessage.bind(this))
+    this.addLineToLog('<span style="color:green">Connected</span>')
+  },
+
+  onRemoved: function () {
+    if (this.notifier instanceof UBClientNotifier) {
+      this.notifier.disconnect()
+      this.notifier = undefined
+    }
+  }
+})

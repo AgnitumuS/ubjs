@@ -119,7 +119,7 @@ but "browser" section in package.json is not define. Will fallback to "browser":
       // let uiSettings = App.serverConfig.uiSettings
       // let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
       let cspHeaders =
-        "default-src 'self'; " +
+        "default-src 'self' ws:; " +
         // 'unsafe-inline' is removed in flavor of 'nonce-...'
         // TODO - remove 'unsafe-eval' after removing all `eval(` from Ext
         `script-src 'self' 'nonce-${cspNonce}' 'unsafe-eval';` +
