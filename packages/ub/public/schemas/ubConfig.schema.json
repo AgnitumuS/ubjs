@@ -905,6 +905,10 @@
               "type": "number",
               "description": "Number of categories (up to 4) for a favorites columnus",
               "default": 2
+            },
+            "amqpNotificationUrl": {
+              "type": "string",
+              "description": "The url for UBClientNotifier to connect to message broker using stomp protocol over web sockets, an example of valid url is 'ws://127.0.0.1:15674/ws' - this is for RabiitMQ with web stomp extension default configuration. For server part - set application.customSettings.amqpNotificationUrl"
             }
           }
         },

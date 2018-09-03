@@ -2,6 +2,7 @@
 
 A RabbitMQ client for UnityBase
 As UnityBase has synchronous nature, it is hard to even impossible to use existing RebbitMQ clients for node.js like amqplib. @unitybase/amqp client mimics amqplib interface as close as possible keeping different programming model in mind. Internally UB-AMQP uses rabbitmq-c library to connect to RabbitMQ.
+Besides the library, this package provides a server-side implementation of the server-to-client notifier - it is provided as UBServerNofifier class. Client part of the notifier is provided as @unitybase/amqp-notify package
 
 ## Project Status
 
@@ -9,6 +10,44 @@ As for the moment (July 2018) @unitybase/amqp is ready for experimental use
 Please note that not all tests are currently passing, but these tests are for extended use cases.
 The library interface is rather stable in terms of the list of methods and number of arguments passed. But default values for parameters and internal implementation could vary from build to build.
 SSL is also is not implemented currently
+
+## UBServerNotifier configuration
+
+There are some configuration options have to be turned in order to properly run the server-to-client notifier
+
+  1. An amqpNotificationUrl option of application/customSettings section in ubConfig.json should be specified.
+  This provides amqp compatible connection URL for server-side connection. It should look like ```amqp://user:pass@server/```
+  The username and corresponding password here should be defined in primary auth backend in amqp compatible server (verified with RabbitMQ only)
+  The user should be able to declare topic exchange and configure it, as well as publish messages to the exchange
+  2. This package provides an auth backend which is compatible with RabbitMQ rabbitmq_auth_backend_http plugin
+  This is a special implementation to support secure message routing to specific users managed within UnityBase
+  It is not intended to be used as stand-alone auth backend as it does not provide any auth configuration tools
+  In order to function properly, it is required to enable ```rabbitmq_auth_backend_http plugin``` in RabbitMQ and configure it according to the following example
+  HTTP auth backend must be placed at the beginning of the list, followed by some another backend
+
+``` conf
+# rabbitmq.conf
+#
+log.file.level = debug
+
+## Authentication & authorization
+
+# "http" is an alias for rabbit_auth_backend_http
+# rabbitmq_auth_backend_http plugin must be enabled before use
+auth_backends.1 = http
+# "internal" is an alias for rabbit_auth_backend_internal
+auth_backends.2 = internal
+
+# See HTTP backend docs and @unitybase/amqp nodejs package docs for details
+auth_http.http_method = post
+auth_http.user_path = http://localhost:8881/amqp-auth-user
+auth_http.vhost_path = http://localhost:8881/amqp-auth-vhost
+auth_http.resource_path = http://localhost:8881/amqp-auth-resource
+auth_http.topic_path = http://localhost:8881/amqp-auth-topic
+```
+
+This should be enough to send messages to specific users and broadcast messages with RabbitMQ server
+Look at the apps/notify-example sample application for complete notification example
 
 ## Examples
 
