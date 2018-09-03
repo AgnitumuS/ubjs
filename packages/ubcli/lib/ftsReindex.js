@@ -16,10 +16,7 @@ const argv = require('@unitybase/base').argv
 
 module.exports = function ftsReindex (cfg) {
   if (!cfg) {
-    let opts = options.describe('ftsReindex',
-        'Rebuild Full Text Search (FTS) index',
-        'ubcli'
-      )
+    let opts = options.describe('ftsReindex', 'Rebuild Full Text Search (FTS) index', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
       .add({short: 'e', long: 'entity', param: 'entityCode', defaultValue: '*', help: 'Entity code to rebuild index for. If FTS scope for entity = "Connection" then the same as -c'})
       .add({short: 'c', long: 'connection', param: 'ftsConnectionName', defaultValue: 'ftsDefault', help: 'Name of connection for index rebuild. ALL entity with this fts.connection will be re-indexed'})

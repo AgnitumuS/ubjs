@@ -65,7 +65,7 @@ function convert110To111 (old) {
     }
   }
 
-    // httpServer section
+  // httpServer section
   if (old.HTTPServerType && old.HTTPServerType !== 'stHTTPSys' && old.HTTPServerType !== 'HTTPSys') n.httpServer.serverType = old.HTTPServerType
   if (old.useHTTPS) n.httpServer.protocol = 'https'
   n.httpServer.host = old.serverDomainNames
@@ -101,7 +101,7 @@ function convert110To111 (old) {
     n.httpServer.compression = old.compression
   }
 
-    // logging section
+  // logging section
   if (old.logLevel) {
     if (old.logLevel.length === 26) {
       n.logging.levels = ['*']
@@ -119,7 +119,7 @@ function convert110To111 (old) {
   if (old.logStackTraceLevel) n.logging.stackTrackDepth = old.logStackTraceLevel
   if (oApp.enabledPerformanceCounters === false) n.logging.performanceCounters = false
 
-    // javascript section
+  // javascript section
   if (oApp.fullGCPeriod || old.contextRecyclingIntervalInMinutes) {
     n.javascript = {}
     if (old.scriptingTimeout) n.javascript.timeout = old.scriptingTimeout
@@ -127,7 +127,7 @@ function convert110To111 (old) {
     if (oApp.fullGCPeriod) n.javascript.fullGCPeriod = oApp.fullGCPeriod
   }
 
-    // security section
+  // security section
   if (oApp.authMethods) {
     n.security = {
       authenticationMethods: oApp.authMethods
@@ -157,8 +157,8 @@ function convert110To111 (old) {
     if (old.sessionKeyLifeTime) n.security.dstu.encryptionKeyLifeTime = old.sessionKeyLifeTime
   }
 
-    // application section
-    //  domain
+  // application section
+  //  domain
   if (!old.domainConfigs[oApp.domainName]) throw new Error('Domain definition for domain ' + oApp.domainName + ' not found in old config domainConfigs section')
   if (old.domainConfigs[oApp.domainName].models && Object.keys(old.domainConfigs[oApp.domainName].models).length) { // application have models defined
     var nApp = n.application = {}
@@ -170,7 +170,7 @@ function convert110To111 (old) {
     }
     if (oApp.implicitlyAddedMixins) nApp.domain.implicitlyAddedMixins = oApp.implicitlyAddedMixins
 
-        //  connections
+    //  connections
     if (oApp.connections) {
       nApp.connections = namedCollection2Array(oApp.connections)
       _.forEach(nApp.connections, function (conn) {
@@ -183,7 +183,7 @@ function convert110To111 (old) {
       })
     }
 
-        // blobStores
+    // blobStores
     if (oApp.storeConfigs) {
       nApp.blobStores = namedCollection2Array(oApp.storeConfigs)
       _.forEach(nApp.blobStores, function (store) {
@@ -196,12 +196,12 @@ function convert110To111 (old) {
       })
     }
 
-        //  customSettings
+    //  customSettings
     if (oApp.customSettings) {
       nApp.customSettings = oApp.customSettings
     }
 
-        //  fts
+    //  fts
     if (oApp.fts) {
       nApp.fts = {
         enabled: oApp.fts.enabled || false, async: oApp.fts.async || false
@@ -210,7 +210,7 @@ function convert110To111 (old) {
   }
 
   n.uiSettings = {}
-    // uiSettings
+  // uiSettings
   if (oApp.ubAppConfig) oApp.UBAppConfig = oApp.ubAppConfig
   if (oApp.UBAppConfig) {
     n.uiSettings.adminUI = oApp.UBAppConfig

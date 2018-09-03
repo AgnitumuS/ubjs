@@ -70,11 +70,9 @@ function doGenerateModels (modelsDir, conn, options) {
 }
 
 function createCommandEntity (modelsDir, options) {
-  var modelCmd,
-    entityName = 'ub_CommandEntity',
-    fileName
+  const entityName = 'ub_CommandEntity'
 
-  modelCmd = {
+  let modelCmd = {
     'caption': entityName,
     'description': entityName,
     'connectionName': options.targetDB,
@@ -91,9 +89,9 @@ function createCommandEntity (modelsDir, options) {
     },
     'options': {}
   }
-  fileName = path.join(modelsDir, 'ub_model_ub', entityName + '.meta')
+  let fileName = path.join(modelsDir, 'ub_model_ub', entityName + '.meta')
 
   fs.writeFileSync(fileName, JSON.stringify(modelCmd, null, '\t'), {encoding: 'utf-8'})
-    // console.log(fileName);
+  // console.log(fileName);
   return fileName
 }
