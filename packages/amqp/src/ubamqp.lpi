@@ -23,13 +23,13 @@
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
-            <Filename Value="../bin/$(TargetCPU)/"/>
+            <Filename Value="$(ProjPath)/../bin/$(TargetCPU)/ubamqp"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
             <Libraries Value="$Env(UB_SRC)/libs/Synopse/static/$(TargetCPU)-$(TargetOS)"/>
             <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;Delphi-RabbitMQ"/>
-            <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
+            <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
             <SyntaxOptions>
@@ -67,13 +67,13 @@
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
-            <Filename Value="../bin/$(TargetCPU)/"/>
+            <Filename Value="$(ProjPath)/../bin/$(TargetCPU)/ubamqp"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse;$(ProjOutDir)"/>
-            <Libraries Value="$Env(UB_SRC)/bin/fpc-linux"/>
+            <Libraries Value="$Env(UB_SRC)/bin/fpc-linux;../lib"/>
             <OtherUnitFiles Value="$Env(UB_SRC)/libs/Synopse/SyNode;$Env(UB_SRC)/libs/Synopse/SyNode/puv;$Env(UB_SRC)/libs/Synopse;$Env(UB_SRC)/libs/Synopse/SQLite3;Delphi-RabbitMQ"/>
-            <UnitOutputDirectory Value="../lib/$(TargetCPU)-$(TargetOS)"/>
+            <UnitOutputDirectory Value="$(ProjPath)/../lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="// check compilation executed under windows
 // TargetOS and SrcOS not work for this
