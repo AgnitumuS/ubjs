@@ -56,18 +56,18 @@ function getConfigFileName () {
 
   if (cfgFile) {
     if (!path.isAbsolute(cfgFile)) cfgFile = path.join(process.cwd(), cfgFile)
-    if (!fs.isFile(cfgFile)) {
+    if (!fs.existsSync(cfgFile)) {
       console.warn('passed -cfg file not exist ' + cfgFile)
       cfgFile = ''
     }
   }
   if (!cfgFile) {
-    cfgFile = process.cwd() + 'ubConfig.json'
-    cfgFile = fs.isFile(cfgFile) ? cfgFile : ''
+    cfgFile = path.join(process.cwd(), 'ubConfig.json')
+    cfgFile = fs.existsSync(cfgFile) ? cfgFile : ''
   }
   if (!cfgFile) {
     cfgFile = path.resolve(path.dirname(process.execPath), 'ubConfig.json')
-    cfgFile = fs.isFile(cfgFile) ? cfgFile : ''
+    cfgFile = fs.existsSync(cfgFile) ? cfgFile : ''
   }
   if (!cfgFile) throw new Error('Server configuration file not found')
   return cfgFile
@@ -232,7 +232,7 @@ function checkServerStarted (URL) {
   return false
 }
 
- /**
+/**
  * Will replace placeholders %VAR_NAME% to environment variable value
  * @private
  * @param {String} content
@@ -273,6 +273,29 @@ function replaceIncludeVariables (content) {
 }
 
 /**
+ * In case packageData.section contains relative path return package.name+path else path
+ * @private
+ * @param packageData
+ * @param model
+ * @param section
+ * @return {*|browser|{}}
+ */
+function checkPackageBrowserPath (packageData, model, section) {
+  let p = packageData.browser[section] || packageData.browser
+  if (!path.isAbsolute(p)) {
+    if (!packageData.name) {
+      let pKey = packageData.browser[section] ? `browser.${section}` : 'browser'
+      console.error(`package.json "${pKey}" section for ${model.name} model contains a relative path but package.json "name" section is empty\n
+Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevScript" or specify a "name" section in package.json`)
+      p = path.join(model.name, p).replace(/\\/g, '/')
+    } else {
+      p = path.join(packageData.name, p).replace(/\\/g, '/')
+    }
+  }
+  return p
+}
+
+/**
  * Read server configuration from file, resolved by argv.getConfigFileName
  * parse it in safe mode, replace environment variables by it values and return parsed config
  * @param {boolean} [forFutureSave=false] if true will return config ready to save back as new ubConfig
@@ -304,6 +327,7 @@ function getServerConfiguration (forFutureSave = false) {
     let packFN = path.join(p, 'package.json')
     if (fs.existsSync(packFN)) {
       let packageData = require(packFN)
+      if (!packageData.name) console.error(`"name" section is required for package.json in "${packFN}`)
       model.moduleName = packageData.name
       if (packageData.config && packageData.config.ubmodel) {
         let ubModelConfig = packageData.config.ubmodel
@@ -319,19 +343,17 @@ function getServerConfiguration (forFutureSave = false) {
       }
       // check browser settings
       if (packageData.browser) {
-        let dev = packageData.browser.dev || packageData.browser
-        dev = path.isAbsolute(dev) ? dev : path.join(packageData.name, dev).replace(/\\/g, '/')
-        let prod = packageData.browser.prod || packageData.browser
-        prod = path.isAbsolute(prod) ? prod : path.join(packageData.name, prod).replace(/\\/g, '/')
+        let dev = checkPackageBrowserPath(packageData, model, 'dev')
+        let prod = checkPackageBrowserPath(packageData, model, 'prod')
         if (!forFutureSave) model.browser = {dev, prod}
       }
       if (!forFutureSave) model.version = packageData.version
     }
   })
   if (!result.application.domain.supportedLanguages) {
-    let conns = result.application.connections
-    if (conns) {
-      result.application.domain.supportedLanguages = _(conns).map('supportLang').flatten().uniq().value()
+    let connections = result.application.connections
+    if (connections) {
+      result.application.domain.supportedLanguages = _(connections).map('supportLang').flatten().uniq().value()
     } else {
       result.application.domain.supportedLanguages = [result.application.defaultLang]
     }
@@ -349,14 +371,14 @@ function getServerConfiguration (forFutureSave = false) {
   return result
 }
 
- /**
+/**
  * Return a URL server actually listen on
  * @param {Object} config Server configuration
  */
 function serverURLFromConfig (config) {
   let httpCfg = config['httpServer'] || {}
   let rUrl = (httpCfg.protocol && httpCfg.protocol === 'https') ? 'https://' : 'http://'
-    // in case of serverDomainNames in [+, *] replace it to localhost
+  // in case of serverDomainNames in [+, *] replace it to localhost
   rUrl += httpCfg.host ? (httpCfg.host.length === 1 ? 'localhost' : httpCfg.host) : 'localhost'
   rUrl += httpCfg.port ? ':' + httpCfg.port : ':80'
   if (httpCfg.path) rUrl += '/' + httpCfg.path
