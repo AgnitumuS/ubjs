@@ -1,9 +1,15 @@
+/* eslint-disable one-var */
 /* global Ext */
 require('../core/UBStoreManager')
 require('../core/UBUtil')
 require('./form/field/UBBoolBox')
 require('./form/field/UBBoxSelect')
 require('./form/field/UBMultiSelectBox')
+const UB = require('@unitybase/ub-pub')
+const $App = require('@unitybase/adminui-pub')
+const UBDomain = require('@unitybase/cs-shared').UBDomain
+const _ = require('lodash')
+
 /**
  * Widget for grid filtration. Used in UB.view.EntityGridPanel toolbar.
  * This mixin will create toolbar on grid. When user select cell in grid the mixin will show a context filter in toolbar.
@@ -25,10 +31,9 @@ require('./form/field/UBMultiSelectBox')
 Ext.define('UB.ux.Multifilter', {
   extend: 'Ext.toolbar.Toolbar', // Ext.toolbar.Toolbar Ext.form.Panel
 
-  // height: 40,
   alias: 'plugin.multifilter',
   border: false,
-  margin: '0 0 0 3', // 30
+  margin: '0 0 0 3',
   padding: 0,
   cls: 'ub-multi-filter',
   bodyStyle: 'background: none;',
@@ -38,8 +43,8 @@ Ext.define('UB.ux.Multifilter', {
   filterMenu: null,
 
   init: function (owner) {
-    var
-      me = this, timeOut = 0
+    let me = this
+    let timeOut = 0
 
     me.gridOwner = owner
     me.gridOwner.on({
@@ -106,12 +111,12 @@ Ext.define('UB.ux.Multifilter', {
   },
 
   /**
-     *
-     * @param {Function} onClick
-     * @returns {Array}
-     */
+   *
+   * @param {Function} onClick
+   * @returns {Array}
+   */
   createSelectFilterMenu: function (onClick) {
-    var me = this, menuItems = [], menu, attrChain, fieldList, filterGroups = {}
+    let me = this, menuItems = [], menu, attrChain, fieldList, filterGroups = {}
     _.forEach(me.gridOwner.columns, function (column) {
       var fieldCfg = me.fieldsConfig[column.dataIndex] || {}
       if (fieldCfg.disabled || column.filterable === false) {
@@ -232,13 +237,12 @@ Ext.define('UB.ux.Multifilter', {
     filterItems = createFilterItems(panel.ubAttrName, panel.columnText)
 
     win = Ext.create('Ext.window.Window', {
-      // floating: true,    \
       padding: '10 5 10 5',
       height: 160,
       minWidth: 550,
       modal: true,
       overflowX: 'scroll',
-      layout: { type: 'hbox', align: 'middle'},
+      layout: {type: 'hbox', align: 'middle'},
       title: UB.i18n('search'),
       items: [
         button,
@@ -840,7 +844,7 @@ Ext.define('UB.ux.Multifilter', {
       if (!val) {
         return true
       }
-      var dateReg = /^\d{2}([.\/\-])\d{2}\1\d{4}$/
+      var dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/
       if (val.match(dateReg)) {
         return true
       }
@@ -943,7 +947,7 @@ Ext.define('UB.ux.Multifilter', {
           }
         })
       } else {
-        prevFilterFrom = allPrevFilter || {filterType: 'equal' }
+        prevFilterFrom = allPrevFilter || {filterType: 'equal'}
       }
       // prevFilter = prevFilter || {filterType: 'equal' };
       if (context.getInitParam) {
@@ -1171,7 +1175,7 @@ Ext.define('UB.ux.Multifilter', {
       var
         me = this,
         attribute = $App.domainInfo.get(entityName).attr(attrName),
-        cfg = { addnoFilterValue: true},
+        cfg = {addnoFilterValue: true},
         filterName = context.getFilterPrefix(attrName),
         prevFilter = context.getPrevFilter(filterName, attrName),
         control, createFilter, startSearch
@@ -1961,33 +1965,26 @@ Ext.define('UB.ux.Multifilter', {
     },
 
     getOnChangeHandler: function (filterName, attrName, context) {
-      // var me = this;
       return function (sender, newVal) {
-        var
-          dateFrom, dateTo
         if (!sender.isValid()) {
           return
         }
 
         if (sender.dateRole === 'fromDate') {
           sender.relatedPiker.setMinValue(newVal)
-          dateFrom = newVal
-          dateTo = sender.relatedPiker.getValue() || 0
         } else {
           sender.relatedPiker.setMaxValue(newVal)
-          dateTo = newVal
-          dateFrom = sender.relatedPiker.getValue() || 0
         }
       }
     },
 
     /**
-         * create input controls for date filters
-         * @param {String} entityName
-         * @param {String} attrName
-         * @param {Object} context
-         * @return {Array}
-         */
+     * create input controls for date filters
+     * @param {String} entityName
+     * @param {String} attrName
+     * @param {Object} context
+     * @return {Array}
+     */
     getDateFilterInputS: function (entityName, attrName, context) {
       var
         me = this, createFilter,
@@ -2022,10 +2019,10 @@ Ext.define('UB.ux.Multifilter', {
           }
         })
       } else {
-        prevFilter = allPrevFilter || {filterType: baseFilterType || 'date' }
+        prevFilter = allPrevFilter || {filterType: baseFilterType || 'date'}
         prevFilterDate = prevFilter
       }
-      prevFilter = prevFilter || {filterType: baseFilterType || 'date' }
+      prevFilter = prevFilter || {filterType: baseFilterType || 'date'}
 
       filterType = prevFilter.filterType || baseFilterType || 'date'
 
