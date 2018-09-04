@@ -11,6 +11,13 @@ require('./app/view/ErrorWindow')
 function launchApp () {
   // disable shadow for all floating window
   Ext.Window.prototype.floating = { shadow: false }
+  Ext.util.Floating.prototype.shadow = false
+  Ext.tip.QuickTip.prototype.shadow = false
+  Ext.tip.Tip.prototype.shadow = false
+  Ext.LoadMask.prototype.floating.shadow = false
+  Ext.menu.Menu.prototype.shadow = false
+  Ext.Editor.prototype.shadow = false
+  Ext.form.field.ComboBox.prototype.defaultListConfig.shadow = false
 
   let addResourceVersion = UB.addResourceVersion
   Ext.Loader.loadScriptBase = Ext.Loader.loadScript

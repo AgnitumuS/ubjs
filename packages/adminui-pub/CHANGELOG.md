@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.5.1]
 ### Fixed
 - **CRYTICAL** EntityGridPanel: prevent memory leak by destroying grid popup menu
+- optimization: prevent creation of div's for floating elements shadow - all shadows are made using pure CSS 
 
 ## [5.5.0]
 ### Fixed
