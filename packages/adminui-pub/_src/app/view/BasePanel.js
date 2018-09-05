@@ -22,16 +22,10 @@ require('./UploadFileAjax')
 require('../ux/UBTinyMCETextArea')
 require('../core/UBPanelMixin')
 require('../ux/form/UBPlanFactContainer')
-// TODO - move CommandBuilder requires to shortcut editor (after adding forms parsing via SystemJS)
-require('./CommandBuilder/EntitiesComboBox')
-require('./CommandBuilder/CommandTypeComboBox')
-require('./CommandBuilder/FormsComboBox')
-require('./CommandBuilder/EntityTreePanel')
-require('./CommandBuilder/AttributesGridPanel')
-require('../ux/form/field/AdvancedTextArea')
+
 const _ = require('lodash')
 
-/* global saveAs */
+/* global saveAs, Ext */
 /**
  * BasePanel provides a standard container for Entity-based forms. It is essentially a standard {@link Ext.form.Panel} which
  * creates his inner layout based on form definition file (`formCode`-fm.def) - a form View, and add behaviors based on

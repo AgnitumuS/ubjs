@@ -5,6 +5,8 @@
 // @formType "auto"
 // @caption ""
 // @description ""
+
+require('@unitybase/adminui-pub/_src/app/view/CommandBuilder/EntityTreePanel')
 exports.formDef = {
   // requiredFields: ['desktopID.code', 'parentID.code'],
   requiredFields: ['mi_treePath'],

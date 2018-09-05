@@ -8,6 +8,11 @@
 // @description "Form editor"
 
 require('@unitybase/adminui-pub/_src/app/ux/designer/VisualDesigner')
+require('@unitybase/adminui-pub/_src/app/view/CommandBuilder/EntitiesComboBox')
+require('@unitybase/adminui-pub/_src/app/view/CommandBuilder/CommandTypeComboBox')
+require('@unitybase/adminui-pub/_src/app/view/CommandBuilder/FormsComboBox')
+require('@unitybase/adminui-pub/_src/app/view/CommandBuilder/EntityTreePanel')
+require('@unitybase/adminui-pub/_src/app/view/CommandBuilder/AttributesGridPanel')
 const UB = require('@unitybase/ub-pub')
 
 exports.formDef = {
