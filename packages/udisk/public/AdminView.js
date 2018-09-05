@@ -1,4 +1,4 @@
-/* global saveAs, Ext, UDISK, UBNativeDocEdit, $App */
+/* global saveAs, Ext, UDISK, UBNativeDocEdit, $App, Blob */
 const UB = require('@unitybase/ub-pub')
 /**
  * Client form for UDISK
@@ -454,9 +454,8 @@ Ext.define('UDISK.AdminView', {
   },
 
   downloadFile: function (name, docSrc, id) {
-    var me = this, params, url
-    // docSrc = JSON.parse(docSrc);
-    params = {
+    let me = this
+    let params = {
       entity: me.entityName,
       attribute: 'fileData',
       id: id,
@@ -660,24 +659,17 @@ Ext.define('UDISK.AdminView', {
       text: UB.i18n('refresh'),
       eventId: 'refresh',
       handler: me.doRefresh,
-      // disabled: true,
       scope: me
     })
 
     me.actions.makeFolder = new Ext.Action({
       actionId: 'makeFolder',
       scale: 'medium',
-      // glyph: UB.core.UBUtil.glyphs.faFolder,
-      // glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-new-action',
       text: UB.i18n('udiskNewFolder'),
       tooltip: UB.i18n('udiskNewFolder'),
-      // tooltip: UB.i18n('makeFolder'), // + hotKeys[actions.saveAndClose].text,
-      // text: UB.i18n('makeFolder'),
       eventId: 'makeFolder',
-      // cls: 'makeFolder-action',
       handler: me.doMakeFolder,
-      // disabled: true,
       scope: me
     })
     me.actions.showHideTree = new Ext.Action({
@@ -690,13 +682,11 @@ Ext.define('UDISK.AdminView', {
       cls: 'showHideTree-action',
       handler: me.doShowHideTree,
       treeHidden: true,
-      // disabled: true,
       scope: me
     })
     me.actions.findItemInFolder = new Ext.Action({
       actionId: 'findItemInFolder',
       scale: 'medium',
-      // glyph: UB.core.UBUtil.glyphs.faHierarche,
       tooltip: UB.i18n('findItemInFolder'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('findItemInFolder'),
       eventId: 'findItemInFolder',
@@ -719,7 +709,6 @@ Ext.define('UDISK.AdminView', {
     me.actions.properties = new Ext.Action({
       actionId: 'properties',
       scale: 'medium',
-      // glyph: UB.core.UBUtil.glyphs.faPencil,
       tooltip: UB.i18n('udiskProperties'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('udiskProperties'),
       eventId: 'properties',
@@ -731,7 +720,6 @@ Ext.define('UDISK.AdminView', {
     me.actions.copy = new Ext.Action({
       actionId: 'copy',
       scale: 'medium',
-      // glyph: UB.core.UBUtil.glyphs.faPencil,
       tooltip: UB.i18n('udiskcopy'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('udiskcopy'),
       eventId: 'copy',
@@ -742,7 +730,6 @@ Ext.define('UDISK.AdminView', {
     me.actions.cut = new Ext.Action({
       actionId: 'cut',
       scale: 'medium',
-      // glyph: UB.core.UBUtil.glyphs.faPencil,
       tooltip: UB.i18n('udiskcut'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('udiskcut'),
       eventId: 'cut',
@@ -753,7 +740,6 @@ Ext.define('UDISK.AdminView', {
     me.actions.paste = new Ext.Action({
       actionId: 'paste',
       scale: 'medium',
-      // glyph: UB.core.UBUtil.glyphs.faPencil,
       tooltip: UB.i18n('udiskpaste'), // + hotKeys[actions.saveAndClose].text,
       text: UB.i18n('udiskpaste'),
       eventId: 'paset',
@@ -807,7 +793,6 @@ Ext.define('UDISK.AdminView', {
     me.actions.add = new Ext.Action({
       actionId: 'makeFolder',
       scale: 'medium',
-      // glyph: UB.core.UBUtil.glyphs.faFolder,
       glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-new-action',
       text: UB.i18n('udiskAdd'),
@@ -930,9 +915,6 @@ Ext.define('UDISK.AdminView', {
           me.templateActions[code] = new Ext.Action({
             actionId: code,
             scale: 'medium',
-            // glyph: UB.core.UBUtil.glyphs.faFolder,
-            // glyph: UB.core.UBUtil.glyphs.faPlusCircle,
-            // cls: 'add-new-action',
             actionParams: item,
             text: item.name,
             tooltip: item.name,
@@ -942,7 +924,6 @@ Ext.define('UDISK.AdminView', {
           })
           me.createMenu.add(me.templateActions[code])
         })
-        // me.diskType = result.diskType;
       }, function (reason) {
         console.error(reason)
         return true
