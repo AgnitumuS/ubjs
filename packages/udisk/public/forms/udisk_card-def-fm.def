@@ -4,9 +4,6 @@
 //@formType "custom"
 //@caption "udiskProperties"
 //@description "udiskProperties"
-//@code "udisk_card"
-//@ID "3000000007623"
-
 exports.formDef = 'UDISK.AdminFileEditForm'
 
 Ext.define('UDISK.AdminFileEditForm', {
