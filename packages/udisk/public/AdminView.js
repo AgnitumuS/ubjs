@@ -459,42 +459,18 @@ Ext.define('UDISK.AdminView', {
     params = {
       entity: me.entityName,
       attribute: 'fileData',
-      ID: id
-    }
-    if (docSrc.store) {
-      params.store = docSrc.store
-    }
-    if (docSrc.filename) {
-      params.filename = docSrc.filename
-    }
-    if (docSrc.origName) {
-      params.origName = docSrc.origName
-    }
-    if (docSrc.isDirty === true || docSrc.isDirty === false) {
-      params.isDirty = docSrc.isDirty
+      id: id,
+      isDirty: docSrc.isDirty === true
     }
 
-    url = Ext.String.urlAppend(
-      $App.connection.baseURL + 'getDocument',
-      Ext.Object.toQueryString(params)
-    )
-
-    $App.connection.get(url, {responseType: 'arraybuffer'})
-      .then(function (response) {
-        var blobData,
-          byteArray = response.data
+    $App.connection.getDocument(params, {resultIsBinary: true, bypassCache: true})
+      .then(function (dataAsArray) {
+        let blobData
         blobData = new Blob(
-          [byteArray],
+          [dataAsArray],
           {type: docSrc.ct}
         )
         saveAs(blobData, name || docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
-
-        /*
-                }).fail(function(reason){
-                    if (reason.status === 404){
-                        throw new UB.UBError(UB.i18n('documentNotFound'));
-                    }
-*/
       }).done()
   },
 
