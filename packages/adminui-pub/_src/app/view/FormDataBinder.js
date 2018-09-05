@@ -1,4 +1,5 @@
 /* global Ext */
+const _ = require('lodash')
 /**
  * Bind form controls and Record {@link Ext.data.Model}. It operates in mode two way binding.
  * Any changes in control immediately fall into the Record and any changes in record immediately fall into given form control.
@@ -211,7 +212,8 @@ Ext.define('UB.view.FormDataBinder', {
    * @param control
    */
   controlDataReady: function (control) {
-    var me = this, elmIdx
+    let me = this
+    let elmIdx
     me.notReadyControls--
     if (control && (elmIdx = me.notReadyControlList.indexOf(control)) >= 0) {
       me.notReadyControlList.splice(elmIdx, 1)
@@ -254,7 +256,7 @@ Ext.define('UB.view.FormDataBinder', {
         if (field.resetOriginalValue) {
           field.resetOriginalValue()
         }
-        if (result && Q.isPromise(result)) {
+        if (result && (typeof result.then === 'function')) { // Q.isPromise(result)
           me.notReadyControls += 1
           me.notReadyControlList.push(field)
           result.done(function () {
@@ -326,8 +328,8 @@ Ext.define('UB.view.FormDataBinder', {
    * @private
    */
   connectFieldsEvents: function () {
-    var me = this,
-      fields = me.getFields()
+    let me = this
+    let fields = me.getFields()
 
     me.connectedFields = {}
     _.forEach(fields, function (field) {
