@@ -26,7 +26,7 @@ require('../ux/form/UBPlanFactContainer')
 const _ = require('lodash')
 const UB = require('@unitybase/ub-pub')
 
-/* global saveAs, Ext, $App */
+/* global saveAs, Ext, $App, Blob */
 /**
  * BasePanel provides a standard container for Entity-based forms. It is essentially a standard {@link Ext.form.Panel} which
  * creates his inner layout based on form definition file (`formCode`-fm.def) - a form View, and add behaviors based on
@@ -533,15 +533,13 @@ Ext.define('UB.view.BasePanel', {
    * @param {Number|null} newInstanceID
    */
   setInstanceID: function (newInstanceID) {
-    var me = this
-    me.instanceID = newInstanceID
-    me.isEditMode = !!me.instanceID
-    me.addByCurrent = false
+    this.instanceID = newInstanceID
+    this.isEditMode = !!this.instanceID
+    this.addByCurrent = false
   },
 
   getInstanceID: function () {
-    var me = this
-    return me.instanceID || me.record.get('ID')
+    return this.instanceID || this.record.get('ID')
   },
 
   /**
@@ -679,7 +677,7 @@ Ext.define('UB.view.BasePanel', {
       })
     }).then(function (result) {
       if (result.resultLock && result.resultLock.success) {
-              // if exists temp lock this function clear it context
+        // if exists temp lock this function clear it context
         me.clearLockCtx()
         me.onGetLockInfo({
           lockInfo: result.resultLock.lockInfo
@@ -697,7 +695,7 @@ Ext.define('UB.view.BasePanel', {
       baseID = me.getInstanceID(), baseEntity = me.entityName
 
     if (!me.isEntityLockable) {
-      return Q.resolve(false)
+      return Promise.resolve(false)
     }
 
     if (me.domainEntity.mixins.softLock.lockIdentifier !== 'ID') {
@@ -2762,7 +2760,7 @@ Ext.define('UB.view.BasePanel', {
       me.on(events.deleteattachment, me.onDeleteAttachment, me)
       me.on(events.showOriginal, me.onShowOriginal, me)
       me.on(events.showVersions, me.onshowVersions, me)
-      me.on(events.downloadAttach, me.ondownloadAttach, me)
+      me.on(events.downloadAttach, me.onDownloadAttach, me)
     }
 
     if (me.hideActions && me.hideActions.length) {
@@ -2856,40 +2854,22 @@ Ext.define('UB.view.BasePanel', {
     }
   },
 
-  ondownloadAttach: function (action) {
-    var me = this, docSrc, params, url
+  onDownloadAttach: function (action) {
+    var me = this, docSrc, params
     docSrc = me.record.get(action.attribute)
     if (docSrc) {
       docSrc = JSON.parse(docSrc)
       params = {
         entity: me.entityName,
         attribute: action.attribute,
-        ID: me.getInstanceID()
+        id: me.getInstanceID(),
+        isDirty: docSrc.isDirty === true
       }
-      if (docSrc.store) {
-        params.store = docSrc.store
-      }
-      if (docSrc.filename) {
-        params.filename = docSrc.filename
-      }
-      if (docSrc.origName) {
-        params.origName = docSrc.origName
-      }
-      if (docSrc.isDirty === true || docSrc.isDirty === false) {
-        params.isDirty = docSrc.isDirty
-      }
-
-      url = Ext.String.urlAppend(
-        $App.connection.baseURL + 'getDocument',
-        Ext.Object.toQueryString(params)
-      )
-
-      $App.connection.get(url, {responseType: 'arraybuffer'})
-        .then(function (response) {
-          var blobData,
-            byteArray = response.data
+      $App.connection.getDocument(params, {resultIsBinary: true, bypassCache: true})
+        .then(function (dataAsArray) {
+          var blobData
           blobData = new Blob(
-            [byteArray],
+            [dataAsArray],
             {type: docSrc.ct}
           )
           saveAs(blobData, docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
@@ -2952,7 +2932,7 @@ Ext.define('UB.view.BasePanel', {
 
   onRefresh: function () {
     var me = this, promise
-    promise = me.isFormDirty() ? $App.dialogYesNo('areYouSure', 'formWasChanged') : Q.resolve(true)
+    promise = me.isFormDirty() ? $App.dialogYesNo('areYouSure', 'formWasChanged') : Promise.resolve(true)
     promise.done(function (res) {
       if (res) {
         me.fireEvent('beforeRefresh', me)

@@ -11,10 +11,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - **CRYTICAL** Multifilter: prevent memory leak for filter label toolbar (moved to data-qtip)
 
 ### Changed
+- all calls to `Q` in BasePanel replaced by native `Promise` 
 - `Ext.picker.Date` now use CSS shadow instead of creation div element
 - optimization: prevent creation of div's for floating elements shadow - all shadows are made using pure CSS
 - optimization: lazy loading of components required by form / shortcut editor (`app/view/CommandBuilder/*`)
 - optimization: remove unused `AdvancedTextArea` control  
+- optimization: BasePanel - prevent flashing layout twice in `onFormDataReady` handler
+- use `UBConnection.getDocument` in BasePanel to download document  
 
 ## [5.5.0]
 ### Fixed

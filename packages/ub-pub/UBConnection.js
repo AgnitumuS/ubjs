@@ -1355,6 +1355,7 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  *          console.log('Result is', typeof result, 'of length' , result.byteLength, 'bytes'); //output: Result is object of length 2741 bytes
  *       });
  *
+ * @method
  * @param {Object} params
  * @param {String} params.entity Code of entity to retrieve from
  * @param {String} params.attribute `document` type attribute code
