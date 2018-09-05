@@ -374,6 +374,9 @@ filling missing attribute information file image
                 case "revision":
                     diffAttr.caption = UB.i18n('auditImageRevision');
                     break;
+              case "v":
+                diffAttr.caption = UB.i18n('auditImageVersion');
+                break;
             }
         });
         
