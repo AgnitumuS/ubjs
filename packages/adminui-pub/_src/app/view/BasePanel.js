@@ -24,8 +24,9 @@ require('../core/UBPanelMixin')
 require('../ux/form/UBPlanFactContainer')
 
 const _ = require('lodash')
+const UB = require('@unitybase/ub-pub')
 
-/* global saveAs, Ext */
+/* global saveAs, Ext, $App */
 /**
  * BasePanel provides a standard container for Entity-based forms. It is essentially a standard {@link Ext.form.Panel} which
  * creates his inner layout based on form definition file (`formCode`-fm.def) - a form View, and add behaviors based on
@@ -431,8 +432,8 @@ Ext.define('UB.view.BasePanel', {
     me.record = UB.ux.data.UBStore.createRecord(me.entityName, me.fieldList)
     me.record.store.on('update', me.onRecordUpdate, me)
 
-    function doCompleteReady () {
-      Ext.suspendLayouts()
+    function doCompleteReady (skipLayoutSuspend) {
+      if (!skipLayoutSuspend) Ext.suspendLayouts()
       try {
         me.enableBinder() // для случая когда нет задержки в загрузке
         if (!me.initUBComponentFired) {
@@ -443,7 +444,7 @@ Ext.define('UB.view.BasePanel', {
           me.fireEvent('formDataReady')
         }
       } finally {
-        Ext.resumeLayouts(true)
+        if (!skipLayoutSuspend) Ext.resumeLayouts(true)
       }
       me.unmaskForm()
     }
@@ -467,7 +468,7 @@ Ext.define('UB.view.BasePanel', {
      * @property {UB.view.FormDataBinder} binder
      * Bind record and controls of form.
      */
-    me.binder = Ext.create('UB.view.FormDataBinder', {panel: me })
+    me.binder = Ext.create('UB.view.FormDataBinder', {panel: me})
     me.binder.on('controlChanged', me.controlChanged, me)
     me.binder.on('formDataReady', function () {
       me.formDataReady = true
@@ -475,7 +476,7 @@ Ext.define('UB.view.BasePanel', {
       Ext.suspendLayouts()
       try {
         if (me.rendered) {
-          doCompleteReady()
+          doCompleteReady(true)
         } else {
           me.on('afterrender', doCompleteReady, me, {single: true})
         }
@@ -2805,30 +2806,30 @@ Ext.define('UB.view.BasePanel', {
     }
 
     UB.Repository('ubm_form').attrs(['ID', 'code'])
-    .where('code', '=', me.formCode).select()
-    .done(function (result) {
-      var wnd = me.up('window'),
-        modal = wnd ? wnd.modal : false
-      if (!result || result.length < 1) {
-        throw new UB.UBError('formNotFound')
-      }
-      var config = {
-        cmdType: 'showForm',
-        description: '',
-        entity: 'ubm_form',
-        instanceID: result[0].ID,
-        isModal: modal,
-        isModalDialog: modal,
-        sender: me
-      }
+      .where('code', '=', me.formCode).select()
+      .done(function (result) {
+        var wnd = me.up('window'),
+          modal = wnd ? wnd.modal : false
+        if (!result || result.length < 1) {
+          throw new UB.UBError('formNotFound')
+        }
+        var config = {
+          cmdType: 'showForm',
+          description: '',
+          entity: 'ubm_form',
+          instanceID: result[0].ID,
+          isModal: modal,
+          isModalDialog: modal,
+          sender: me
+        }
 
-      if (!config.isModal) {
-        config.target = UB.core.UBApp.getViewport().getCenterPanel()
-        config.tabId = 'ubm_form' + result[0].ID
-      }
+        if (!config.isModal) {
+          config.target = UB.core.UBApp.getViewport().getCenterPanel()
+          config.tabId = 'ubm_form' + result[0].ID
+        }
 
-      $App.doCommand(config)
-    })
+        $App.doCommand(config)
+      })
   },
 
   onShowOriginal: function (action) {
@@ -2879,24 +2880,24 @@ Ext.define('UB.view.BasePanel', {
       }
 
       url = Ext.String.urlAppend(
-          $App.connection.baseURL + 'getDocument',
-          Ext.Object.toQueryString(params)
+        $App.connection.baseURL + 'getDocument',
+        Ext.Object.toQueryString(params)
       )
 
       $App.connection.get(url, {responseType: 'arraybuffer'})
-      .then(function (response) {
-        var blobData,
-          byteArray = response.data
-        blobData = new Blob(
-              [byteArray],
-              {type: docSrc.ct}
+        .then(function (response) {
+          var blobData,
+            byteArray = response.data
+          blobData = new Blob(
+            [byteArray],
+            {type: docSrc.ct}
           )
-        saveAs(blobData, docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
-      }).catch(function (reason) {
-        if (reason.status === 404) {
-          throw new UB.UBError(UB.i18n('documentNotFound'))
-        }
-      })
+          saveAs(blobData, docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
+        }).catch(function (reason) {
+          if (reason.status === 404) {
+            throw new UB.UBError(UB.i18n('documentNotFound'))
+          }
+        })
     } else {
       throw new UB.UBError('emptyContent')
     }
@@ -2937,9 +2938,7 @@ Ext.define('UB.view.BasePanel', {
 
         me.isDeleted = true
         me.fireEvent('afterdelete')
-                /**
-                * todo remove this call
-                */
+        // TODO remove this call
         Ext.callback(me.eventHandler, me, [me, 'afterdelete'])
       }).fin(function () {
         me.unmaskForm()
@@ -3079,7 +3078,7 @@ Ext.define('UB.view.BasePanel', {
     functionList.sort(function (a, b) {
       return (a[0] - b[0])
     })
-    promise = Q.resolve(true)
+    promise = Promise.resolve(true)
     _.forEach(functionList, function (item) {
       promise = promise.then(function () {
         return item[1]()
@@ -3093,10 +3092,10 @@ Ext.define('UB.view.BasePanel', {
       }
       if (!form.isValid()) {
         me.showValidationErrors()
-        return Q.resolve(-1)
+        return Promise.resolve(-1)
       }
       if (!form.isValid()) {
-        return Q.resolve(-1)
+        return Promise.resolve(-1)
       }
       /**
        * @deprecated  Use event beforeSaveForm instead
@@ -3104,12 +3103,12 @@ Ext.define('UB.view.BasePanel', {
        * Called before save form. To cancel save form return false.
        */
       if (_.isFunction(me.onBeforeSave)) {
-        return Q.resolve(me.onBeforeSave())
+        return Promise.resolve(me.onBeforeSave())
           .then(function (onBeforeSaveResult) {
             if (onBeforeSaveResult !== false) {
               return me.saveInstance()
             }
-            return Q.resolve(-1)
+            return Promise.resolve(-1)
           })
       } else {
         return me.saveInstance()
@@ -3120,7 +3119,7 @@ Ext.define('UB.view.BasePanel', {
   /**
    * Show horrible multiple toasts as validation errors.
    */
-  showValidationErrors: function() {
+  showValidationErrors: function () {
     const me = this
     me.getForm().getFields().each(function (item) {
       if (!item.isValid()) {
@@ -3177,12 +3176,12 @@ Ext.define('UB.view.BasePanel', {
     })
 
     if ((editedDocuments.length === 0) && !me.isFormDirty() && !me.__mip_ondate && !force) {
-      return Q.resolve(0)
+      return Promise.resolve(0)
     }
     me.maskForm(UB.appConfig.formSaveMaskDelay)
 
     // save form documents
-    return Q.all(editedDocuments.map(function (cmp) {
+    return Promise.all(editedDocuments.map(function (cmp) {
       return cmp.save(!!me.__mip_ondate)
     })).then(function () {
       // add document type attributes
@@ -3320,11 +3319,11 @@ Ext.define('UB.view.BasePanel', {
               editedDocuments.push(cmp)
             })
 
-            return Q.all(editedDocuments.map(function (cmp) {
+            return Promise.all(editedDocuments.map(function (cmp) {
               if (cmp.existData()) {
                 return cmp.save(true)
               } else {
-                return Q.resolve(null)
+                return Promise.resolve(null)
               }
             })).then(function () {
               _.forEach(me.documents, function (docAttribute, attributeCode) {
@@ -3359,8 +3358,8 @@ Ext.define('UB.view.BasePanel', {
     } else {
       _.forEach(data, function (value, field) {
         if ((value === '' || value === null || value === undefined) &&
-                    (me.extendedDataForSave[field] !== '' || me.extendedDataForSave[field] !== null || me.extendedDataForSave[field] !== undefined)
-                    ) {
+        (me.extendedDataForSave[field] !== '' || me.extendedDataForSave[field] !== null || me.extendedDataForSave[field] !== undefined)
+        ) {
           delete me.extendedDataForSave[field]
         } else {
           me.extendedDataForSave[field] = value
@@ -3431,10 +3430,10 @@ Ext.define('UB.view.BasePanel', {
     }
   },
 
-    /**
-     * Perform documet scan & post result to server
-     * @param {Ext.Action} action
-     */
+  /**
+   * Perform documet scan & post result to server
+   * @param {Ext.Action} action
+   */
   onScan: function (action) {
     var
       me = this,
@@ -3446,7 +3445,7 @@ Ext.define('UB.view.BasePanel', {
       id = instanceID
 
     function prepareFileName () {
-      var dateString = (new Date()).toLocaleString().replace(/[/\:.]/g, '-')
+      var dateString = (new Date()).toLocaleString().replace(/[/:.]/g, '-')
       return 'Scaned at ' + dateString + '.' + $App.__scanService.lastScanedFormat
     }
     ctrl.fireEvent('change')
@@ -3518,7 +3517,7 @@ Ext.define('UB.view.BasePanel', {
       if (!Ext.Object.getSize(oldValue)) {
         return
       }
-      newValue = Ext.apply(oldValue, { deleting: true, size: 0})
+      newValue = Ext.apply(oldValue, {deleting: true, size: 0})
       ctrl.setValue(newValue, me.getInstanceID())
     })
   },
@@ -3701,7 +3700,7 @@ Ext.define('UB.view.BasePanel', {
       promise = me.setEntityLocked()
       lockCreated = true
     } else {
-      promise = Q.resolve(true)
+      promise = Promise.resolve(true)
     }
 
     aclEntityName = me.entityName + '_acl'
@@ -3764,11 +3763,11 @@ Ext.define('UB.view.BasePanel', {
       cmdData: {
         params: [
           UB.Repository('uba_auditTrail')
-          .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
-          .where('[entity]', '=', me.entityName)
-          .where('[entityinfo_id]', '=', me.instanceID)
-          .orderByDesc('actionTime')
-          .ubRequest()
+            .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
+            .where('[entity]', '=', me.entityName)
+            .where('[entityinfo_id]', '=', me.instanceID)
+            .orderByDesc('actionTime')
+            .ubRequest()
         ]
       },
       cmpInitConfig: {
