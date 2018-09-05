@@ -18,6 +18,7 @@ function launchApp () {
   Ext.menu.Menu.prototype.shadow = false
   Ext.Editor.prototype.shadow = false
   Ext.form.field.ComboBox.prototype.defaultListConfig.shadow = false
+  Ext.picker.Date.prototype.shadow = false
 
   let addResourceVersion = UB.addResourceVersion
   Ext.Loader.loadScriptBase = Ext.Loader.loadScript
