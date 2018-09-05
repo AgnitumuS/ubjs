@@ -37,7 +37,9 @@ function formatMustache (lang, format, fixFormat) {
     let value = getDottedProperty(me, dataArr[0])
     if (fixFormat && (value !== undefined && value !== null)) {
       if (fixFormat === 'number') value = Number(value)
-      else if (fixFormat === 'date' && !(value instanceof Date)) value = new Date(value)
+      else if (fixFormat === 'date' && !(value instanceof Date)) {
+        value = value ? new Date(value) : ''
+      }
     }
     if (typeof value === 'number') {
       let f = formatByPattern.formatNumber(value, dataArr.length > 1 ? dataArr[1] : format || 'sum', lang)

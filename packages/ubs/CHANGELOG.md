@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.11]
+### Fixed
+- UBReport: in case `$fn` function argument is empty return empty string instead of `null`
+
 ## [5.1.7]
 ### Added 
 - in HTML reports `$fs` function will display negative numbers using red text color
