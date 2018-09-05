@@ -1,12 +1,11 @@
 /* eslint-disable one-var */
-/* global Ext */
+/* global Ext, $App */
 require('../core/UBStoreManager')
 require('../core/UBUtil')
 require('./form/field/UBBoolBox')
 require('./form/field/UBBoxSelect')
 require('./form/field/UBMultiSelectBox')
 const UB = require('@unitybase/ub-pub')
-const $App = require('@unitybase/adminui-pub')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 const _ = require('lodash')
 
@@ -41,6 +40,7 @@ Ext.define('UB.ux.Multifilter', {
   filtersList: {},
   selectedColumn: null,
   filterMenu: null,
+  topFilterPanel: null,
 
   init: function (owner) {
     let me = this
@@ -101,7 +101,7 @@ Ext.define('UB.ux.Multifilter', {
     } finally {
       Ext.resumeLayouts(true)
     }
-    if (me.topfilterPenel.layout.overflowHandler.menuItems.length > 0) {
+    if (me.topFilterPanel.layout.overflowHandler.menuItems.length > 0) {
       me.showContexFilterPanel()
     }
   },
@@ -181,6 +181,7 @@ Ext.define('UB.ux.Multifilter', {
     if (this.filterMenu) {
       this.filterMenu.destroy()
     }
+    this.clearFilterPanel()
   },
 
   onFilterChange: function (store) {
@@ -273,7 +274,7 @@ Ext.define('UB.ux.Multifilter', {
 
     me.baseToolbar = tBar
 
-    me.topfilterPenel = Ext.create('Ext.toolbar.Toolbar', {
+    me.topFilterPanel = Ext.create('Ext.toolbar.Toolbar', {
       border: 0,
       margin: 0,
       padding: 0,
@@ -282,8 +283,8 @@ Ext.define('UB.ux.Multifilter', {
       items: [me]
     })
 
-    if (me.topfilterPenel.layout) {
-      handler = me.topfilterPenel.layout.overflowHandler
+    if (me.topFilterPanel.layout) {
+      handler = me.topFilterPanel.layout.overflowHandler
       if (handler) {
         handler.getSuffixConfig = function () {
           var
@@ -310,7 +311,7 @@ Ext.define('UB.ux.Multifilter', {
       }
     }
 
-    tBar.insert(tBar.items.getCount() - 2, me.topfilterPenel)
+    tBar.insert(tBar.items.getCount() - 2, me.topFilterPanel)
     if (view) {
       view.on({
         // if user start to type something - go to filter panel
@@ -401,7 +402,7 @@ Ext.define('UB.ux.Multifilter', {
       filterPanel, items, fieldList,
       grid = me.gridOwner,
       entity = grid.entityName,
-      attribute, lbl, isDictFilter = false
+      attribute, isDictFilter = false
 
     attrChain = attrName.split('.')
     if (attrChain.length > 1 && !gridColumn.simpleFilter) {
@@ -422,20 +423,18 @@ Ext.define('UB.ux.Multifilter', {
 
     items = me.getFilterControls(entity, attrName, attribute, fieldCfg)
     items[0].hideLabel = true
-    items.unshift(lbl = Ext.create('Ext.form.Label', {
+    let lblText = gridColumn.filterCaption || (isDictFilter ? attribute.caption : null) || gridColumn.text
+    items.unshift(Ext.create('Ext.form.Label', {
       shrinkWrap: 0,
       margin: '0 0 0 3',
       width: 100,
-      text: gridColumn.filterCaption || (isDictFilter ? attribute.caption : null) || gridColumn.text,
+      text: lblText,
+      autoEl: {
+        tag: 'label',
+        'data-qtip': lblText
+      },
       style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
     }))
-    lbl.on('afterrender', function () {
-      Ext.create('Ext.tip.ToolTip', {
-        target: this.getEl(),
-        trackMouse: true,
-        html: this.text
-      })
-    }, lbl)
 
     filterPanel = Ext.create('Ext.toolbar.Toolbar', {
       border: 0,
@@ -613,8 +612,7 @@ Ext.define('UB.ux.Multifilter', {
       } else if (attribute.dataType === 'Enum') {
         labelValue = item.text
       } else {
-        var dt = UBDomain.getPhysicalDataType(attribute.dataType)
-        var toDate
+        let dt = UBDomain.getPhysicalDataType(attribute.dataType)
         switch (dt) {
           case 'date':
             if (item.filterType === 'period') {
@@ -622,7 +620,7 @@ Ext.define('UB.ux.Multifilter', {
                 if (item.value) {
                   labelValue = UB.i18n('s') + ' ' + Ext.Date.format(item.value, 'd-m-Y')
                 }
-                toDate = item.relatedFilter.value
+                let toDate = item.relatedFilter.value
                 if (toDate) {
                   labelValue += ' ' + UB.i18n('po') + ' ' +
                     Ext.Date.format(item.isTime ? UB.core.UBUtil.addDays(toDate, -1) : toDate, 'd-m-Y')
@@ -661,7 +659,7 @@ Ext.define('UB.ux.Multifilter', {
                   if (item.value) {
                     labelValue = item.value + ''
                   }
-                  toDate = item.relatedFilter.value
+                  let toDate = item.relatedFilter.value
                   if (toDate) {
                     labelValue += ' - ' + toDate
                   }
@@ -1858,12 +1856,6 @@ Ext.define('UB.ux.Multifilter', {
         editable: false,
         withoutIndent: true,
         listeners: {
-          afterrender: function (sender) {
-            Ext.create('Ext.tip.ToolTip', {
-              target: sender.getEl(),
-              html: labelText
-            })
-          },
           change: function (sender, newValue, oldValue, eOpts) {
             comboChanged(sender, newValue)
           }

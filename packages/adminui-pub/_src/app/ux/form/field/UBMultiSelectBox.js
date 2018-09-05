@@ -430,6 +430,11 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
       condition: id && Array.isArray(id) ? 'in' : 'equal',
       value: id
     }))
+  },
+  onDestroy: function () {
+    if (this.tipPhantomElement) {
+      this.tipPhantomElement.destroy()
+    }
+    this.callParent(arguments)
   }
-
 })

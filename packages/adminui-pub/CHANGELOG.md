@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.5.1]
 ### Fixed
 - **CRYTICAL** EntityGridPanel: prevent memory leak by destroying grid popup menu
+- **CRYTICAL** Multifilter: prevent memory leak by destroying all Multifilter panels on destroy
+- **CRYTICAL** Multifilter: prevent memory leak for filter label toolbar (moved to data-qtip)
 - optimization: prevent creation of div's for floating elements shadow - all shadows are made using pure CSS 
+
+### Changed
+- `Ext.picker.Date` now use CSS shadow instead of creation div element 
 
 ## [5.5.0]
 ### Fixed
