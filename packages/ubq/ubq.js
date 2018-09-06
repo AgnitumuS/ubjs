@@ -57,7 +57,7 @@ function startSchedulers () {
       }
     }
     if (!usersApiKeys[item.runAs]) {
-      console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user or it\'s apiKey(uba_user.uPasswordHashHexa) is empty. Item', item.name, 'DISABLED')
+      console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user or it\'s uba_user.uPasswordHashHexa is empty. Item', item.name, 'DISABLED')
       continue
     }
     cfgForWorker.push({
