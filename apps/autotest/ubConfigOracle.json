@@ -107,7 +107,7 @@
 					"path": "./node_modules/@unitybase/adminui-reg"
 				},
 				{
-					"name": "TST",
+					"name": "TST", // keep it for regression test purpose
 					"path": "./models/TST"
 				}
 			],
