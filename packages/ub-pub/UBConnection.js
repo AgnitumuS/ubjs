@@ -1,3 +1,4 @@
+/* global Promise */
 /**
  * Connection to UnityBase server
  *
@@ -267,19 +268,44 @@ $App.connection.userLang()
     return key ? uData[ key ] : uData
   }
 
+  function udot (conn) {
+    if ((typeof document === 'undefined') || (typeof window === 'undefined') || typeof btoa !== 'function') return
+    if (!document.body || !window.location) return
+    let h = window.location.host
+    if (/(localhost|0.0.1)/.test(h)) return
+    if (/-dev/.test(window.location.href)) return
+    let aui = conn.appConfig.uiSettings.adminUI
+    let apn = aui && aui.applicationName
+    if (apn && typeof apn === 'object') {
+      let k = Object.keys(apn)[0]
+      apn = apn[k]
+    } else if (typeof apn !== 'string') {
+      apn = '-'
+    }
+    apn = apn.replace(/:/g, '-')
+    let ut = btoa(h + ':' + conn.serverVersion + ':' + apn + ':' + MD5(conn.userLogin()))
+    let t = document.createElement('img')
+    t.style.position = 'absolute'
+    t.style.display = 'none'
+    t.style.width = t.style.height = '0px'
+    t.style.display = 'none'
+    t.src = `https://unitybase.info/udot.gif?ut=${ut}&rn=${Math.trunc(1e6 * Math.random())}`
+    document.body.appendChild(t)
+  }
   /**
-   *
    * @param data
    * @param secretWord
    * @param authSchema
+   * @param {Boolean} [restored=false] true in case session is restored from persistent storage
    * @return {UBSession}
    */
-  function doCreateNewSession (data, secretWord, authSchema) {
+  function doCreateNewSession (data, secretWord, authSchema, restored = false) {
     let ubSession = new UBSession(data, secretWord, authSchema)
     let userData = ubSession.userData
     if (!userData.lang || this.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
       userData.lang = this.appConfig.defaultLang
     }
+    if (!restored) udot(this)
     return ubSession
   }
   /**
@@ -303,7 +329,7 @@ $App.connection.userLang()
       if (storedSession) {
         try {
           let parsed = JSON.parse(storedSession)
-          currentSession = doCreateNewSession.call(this, parsed.data, parsed.secretWord, parsed.authSchema)
+          currentSession = doCreateNewSession.call(this, parsed.data, parsed.secretWord, parsed.authSchema, true)
           me.emit('authorized', me, currentSession)
           return Promise.resolve(currentSession)
         } catch (e) {

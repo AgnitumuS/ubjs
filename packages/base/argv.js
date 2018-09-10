@@ -327,7 +327,7 @@ function getServerConfiguration (forFutureSave = false) {
     let packFN = path.join(p, 'package.json')
     if (fs.existsSync(packFN)) {
       let packageData = require(packFN)
-      if (!packageData.name) console.error(`"name" section is required for package.json in "${packFN}`)
+      if (!packageData.name) console.error(`"name" section is required in package.json for "${packFN}`)
       model.moduleName = packageData.name
       if (packageData.config && packageData.config.ubmodel) {
         let ubModelConfig = packageData.config.ubmodel
