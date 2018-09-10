@@ -822,7 +822,7 @@
             },
             "loginURL": {
               "type": "string",
-              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page",
+              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page"
             },
             "customSidebar": {
               "type": "boolean",
