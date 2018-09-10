@@ -283,7 +283,7 @@ $App.connection.userLang()
       apn = '-'
     }
     apn = apn.replace(/:/g, '-')
-    let ut = btoa(`${h}:${conn.serverVersion}:${apn}:${MD5(conn.userLogin())}`)
+    let ut = btoa(`${conn.serverVersion}:${MD5(conn.userLogin())}:${apn}`)
     let t = document.createElement('img')
     t.style.position = 'absolute'
     t.style.display = 'none'
