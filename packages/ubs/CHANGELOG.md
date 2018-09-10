@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.12]
+### Fixed
+- UBReport: HTML report will replace `<!-- pagebreak -->` placeholder to special element before print
+ as in previous TinyMCE implementation  
+
 ## [5.1.11]
 ### Fixed
 - UBReport: in case `$fn` function argument is empty return empty string instead of `null`

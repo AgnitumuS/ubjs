@@ -35,6 +35,8 @@ td,th {
 const tableResizeCSS = '@media screen{th { resize: both; overflow: auto; }}'
 const printRepCSS = '@page{margin: 0mm;}' // this affects the margin in the printer settings
 const repCSS = baseRepCSS + tableResizeCSS + printRepCSS
+const HTML_PAGEBREAK_RE = new RegExp('<!-- pagebreak -->', 'gi')
+const HTML_PAGEBREAK_EL = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="mce-pagebreak"/>'
 
 /**
  * Inject CSS o the documnet
@@ -220,7 +222,7 @@ Ext.define('UBS.ReportViewer', {
       case 'html':
         let iFrame = me.reportControl.getEl().dom
         let iFrameDoc = iFrame.contentDocument
-        iFrameDoc.body.innerHTML = data
+        iFrameDoc.body.innerHTML = data.replace(HTML_PAGEBREAK_RE, HTML_PAGEBREAK_EL)
         addStyleSheet(iFrameDoc, repCSS)
         let orientation = me.report.reportOptions.pageOrientation
         if (orientation === 'landscape') {
