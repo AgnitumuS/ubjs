@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - UBReport: in case `$fn` function argument is empty return empty string instead of `null`
 - UBReportViewer: prevent multiple injection of the same CSS for HTML reports 
+- UBReportViewer: CSS for hiding header/footer and adding 1cm margins
 
 ## [5.1.12]
 ### Fixed
