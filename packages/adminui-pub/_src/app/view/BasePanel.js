@@ -134,7 +134,6 @@ Ext.define('UB.view.BasePanel', {
       refresh: 'refresh',
       scan: 'scan',
       attach: 'attach',
-      showOriginal: 'showOriginal',
       deleteAttachment: 'deleteAttachment',
       showVersions: 'showVersions',
       accessRight: 'accessRight',
@@ -152,7 +151,6 @@ Ext.define('UB.view.BasePanel', {
       refresh: 'refresh',
       scan: 'scan',
       attach: 'attach',
-      showOriginal: 'showOriginal',
       deleteattachment: 'deleteattachment',
       showVersions: 'showVersions',
       accessRight: 'accessRight',
@@ -2472,15 +2470,6 @@ Ext.define('UB.view.BasePanel', {
           attribute: key,
           scope: me
         }, {
-          xtype: 'menucheckitem',
-          actionId: actions.showOriginal + '_' + key,
-          eventId: events.showOriginal,
-          iconCls: 'icon-list',
-          text: UB.i18n('original'),
-          handler: me.onAction,
-          attribute: key,
-          scope: me
-        }, {
           actionId: actions.showVersions + '_' + key,
           iconCls: 'iconVersions',
           text: UB.i18n('showDocVersions'),
@@ -2758,7 +2747,6 @@ Ext.define('UB.view.BasePanel', {
       me.on(events.scan, me.onScan, me)
       me.on(events.attach, me.onAttach, me)
       me.on(events.deleteattachment, me.onDeleteAttachment, me)
-      me.on(events.showOriginal, me.onShowOriginal, me)
       me.on(events.showVersions, me.onshowVersions, me)
       me.on(events.downloadAttach, me.onDownloadAttach, me)
     }
@@ -2828,16 +2816,6 @@ Ext.define('UB.view.BasePanel', {
 
         $App.doCommand(config)
       })
-  },
-
-  onShowOriginal: function (action) {
-    var ctrl = this.getField(action.attribute)
-    if (action && action.checked) {
-      ctrl._forceMIME = ctrl.forceMIME
-      ctrl.setMIME(ctrl.originalMIME)
-    } else {
-      ctrl.setMIME(ctrl._forceMIME || ctrl.originalMIME)
-    }
   },
 
   onshowVersions: function (action) {

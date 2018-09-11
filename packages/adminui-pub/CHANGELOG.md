@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.5.3]
+### Changed
+- BasePanel action `showOriginal` (used in toolbar for Document type attributes) is removed (obsolete)  
+
 ## [5.5.1]
 ### Fixed
 - **CRYTICAL** EntityGridPanel: prevent memory leak by destroying grid popup menu
