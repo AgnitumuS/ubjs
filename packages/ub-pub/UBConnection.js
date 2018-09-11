@@ -270,7 +270,7 @@ $App.connection.userLang()
 
   function udot (conn) {
     if ((typeof document === 'undefined') || (typeof window === 'undefined') || typeof btoa !== 'function') return
-    if (!document.body || !window.location) return
+    if (!document.body || !window.location || !window.encodeURIComponent) return
     let h = window.location.host
     if (/(localhost|0.0.1)/.test(h)) return
     if (/-dev/.test(window.location.href)) return
@@ -282,7 +282,7 @@ $App.connection.userLang()
     } else if (typeof apn !== 'string') {
       apn = '-'
     }
-    apn = apn.replace(/:/g, '-')
+    apn = window.encodeURIComponent(apn)
     let ut = btoa(`${conn.serverVersion}:${MD5(conn.userLogin())}:${apn}`)
     let t = document.createElement('img')
     t.style.position = 'absolute'
