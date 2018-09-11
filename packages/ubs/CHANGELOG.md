@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.1.13]
 ### Fixed
 - UBReport: in case `$fn` function argument is empty return empty string instead of `null`
+- UBReportViewer: prevent multiple injection of the same CSS for HTML reports 
 
 ## [5.1.12]
 ### Fixed
@@ -31,19 +32,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 create parametrised report in case `reportParams` parameter contains non-empty object
 
 ```javascript
-    $App.doCommand({
-      "cmdType": "showReport",
-      "description": "OPTIONAL report form caption",
-      "cmdData": {
-        "reportCode": "test",
-        "reportType": "html",
-        "reportParams": {
-          "name": "Mark",
-          "birthday": new Date(),
-          "limitation": 2
-        }
-      }
-    })
+$App.doCommand({
+  "cmdType": "showReport",
+  "description": "OPTIONAL report form caption",
+  "cmdData": {
+    "reportCode": "test",
+    "reportType": "html",
+    "reportParams": {
+      "name": "Mark",
+      "birthday": new Date(),
+      "limitation": 2
+    }
+  }
+})
 ``` 
 
 ## [5.1.0]

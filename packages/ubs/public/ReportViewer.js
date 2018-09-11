@@ -1,4 +1,6 @@
+/* global Ext, Blob */
 require('./UBReport')
+const UB = require('@unitybase/ub-pub')
 const baseRepCSS = `body {
     background-color: #FFFFFF;
     color: #000000;
@@ -77,12 +79,13 @@ Ext.define('UBS.ReportViewer', {
   layout: {type: 'vbox', align: 'stretch'},
   width: 700,
   height: 500,
+  reportCSSAdded: false,
 
   /**
    * @cfg {UBS.UBReport} report
    */
   initComponent: function () {
-    var me = this, container, control
+    let me = this
 
     if (me.report && !me.reportType) {
       me.reportType = me.report.reportType
@@ -91,6 +94,7 @@ Ext.define('UBS.ReportViewer', {
     if (!me.reportType) {
       throw new Error('config parameter reportType is undefined')
     }
+    let container, control
     switch (me.reportType) {
       case 'pdf':
         control = container = Ext.create('UB.ux.PDFComponent', {
@@ -173,17 +177,17 @@ Ext.define('UBS.ReportViewer', {
   },
 
   /**
-   *
    * @param {UBS.ReportParamForm|Array} paramForm
    */
   addParamForm: function (paramForm) {
-    var me = this, prmCfg
+    var me = this
     if (paramForm instanceof Array) {
-      prmCfg = paramForm
+      let prmCfg = paramForm
       paramForm = Ext.create('UBS.ReportParamForm', {
         items: paramForm,
         getParameters: function (owner) {
-          var result = {}, frm = owner.getForm()
+          let result = {}
+          let frm = owner.getForm()
           _.forEach(prmCfg, function (item) {
             result[item.name] = frm.findField(item.name).getValue()
           })
@@ -201,12 +205,12 @@ Ext.define('UBS.ReportViewer', {
   },
 
   showReport: function (data) {
-    var me = this
+    let me = this
     switch (me.reportType) {
       case 'pdf':
         if (typeof (data) === 'string') {
-          var pdfLength = data.length
-          var pdfArray = new Uint8Array(new ArrayBuffer(pdfLength))
+          let pdfLength = data.length
+          let pdfArray = new Uint8Array(new ArrayBuffer(pdfLength))
 
           for (let i = 0; i < pdfLength; i++) {
             pdfArray[i] = data.charCodeAt(i)
@@ -223,12 +227,15 @@ Ext.define('UBS.ReportViewer', {
         let iFrame = me.reportControl.getEl().dom
         let iFrameDoc = iFrame.contentDocument
         iFrameDoc.body.innerHTML = data.replace(HTML_PAGEBREAK_RE, HTML_PAGEBREAK_EL)
-        addStyleSheet(iFrameDoc, repCSS)
-        let orientation = me.report.reportOptions.pageOrientation
-        if (orientation === 'landscape') {
-          addStyleSheet(iFrameDoc, '@page{size: landscape;}')
-        } else if (orientation === 'portrait') {
-          addStyleSheet(iFrameDoc, '@page{size: portrait;}')
+        if (!me.reportCSSAdded) {
+          addStyleSheet(iFrameDoc, repCSS)
+          let orientation = me.report.reportOptions.pageOrientation
+          if (orientation === 'landscape') {
+            addStyleSheet(iFrameDoc, '@page{size: landscape;}')
+          } else if (orientation === 'portrait') {
+            addStyleSheet(iFrameDoc, '@page{size: portrait;}')
+          }
+          me.reportCSSAdded = true
         }
         if (me.report.onReportClick) { // add onclick handler for all <a href="">
           let refs = iFrameDoc.getElementsByTagName('a')
