@@ -50,7 +50,7 @@ function formatMustache (lang, format, fixFormat) {
     } else if (value && value instanceof Date) {
       return formatByPattern.formatDate(value, dataArr.length > 1 ? dataArr[1] : (format || 'date'), lang)
     } else {
-      return String(value)
+      return value ? '' + value : ''
     }
   }
 }

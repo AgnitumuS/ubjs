@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.5.3]
+### Fixed
+ - UBOrgChart: fix node child's visualisation in case full child tree contains > 100 elements
+ 
 ### Changed
 - BasePanel action `showOriginal` (used in toolbar for Document type attributes) is removed (obsolete)  
 

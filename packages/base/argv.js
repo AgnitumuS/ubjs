@@ -332,7 +332,7 @@ function getServerConfiguration (forFutureSave = false) {
       if (packageData.config && packageData.config.ubmodel) {
         let ubModelConfig = packageData.config.ubmodel
         if (model.name) {
-          console.warn(`Warning: model name for model ${model.name} is configured in both "ubConfig" and model "package.json".
+          console.warn(`Warning: name for model ${model.name} is configured in both "ubConfig" and model "package.json".
   Will use name from package.json`)
         }
         model.name = ubModelConfig.name

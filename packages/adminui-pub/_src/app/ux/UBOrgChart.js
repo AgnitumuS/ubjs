@@ -1,8 +1,7 @@
-/* eslint-disable new-cap,no-new */
-/* global mxConstants, mxEvent, mxDivResizer, mxGraph, mxRubberband, mxOutline, mxUndoManager, mxClient, mxCompactTreeLayout, mxKeyHandler, mxEdgeStyle, mxUtils */
-/* global mxPrintPreview, mxCellOverlay, mxImage, mxPoint, mxGeometry, mxGeometry */
+/* eslint-disable new-cap */
+/* global $App, Ext, mxPrintPreview, mxCellOverlay, mxImage, mxPoint, mxGeometry mxConstants, mxEvent, mxDivResizer, mxGraph, mxRubberband, mxOutline, mxUndoManager, mxClient, mxCompactTreeLayout, mxKeyHandler, mxEdgeStyle, mxUtils, mxCodec, mxRectangle */
 const mxLoader = require('../../ux/form/mxGraph.js')
-
+const UB = require('@unitybase/ub-pub')
 /**
  * Organization Chart Diagram
  */
@@ -14,7 +13,7 @@ Ext.define('UB.ux.UBOrgChart', {
   layout: 'fit',
 
   loadData: function () {
-    var me = this
+    let me = this
     return this.xmInitPromise.then(() => {
       let diagramId
       let basepanel = me.up('basepanel')
@@ -27,10 +26,10 @@ Ext.define('UB.ux.UBOrgChart', {
             if (diagramData) me.rootElementID = diagramData.orgunitID
             return me.rootElementID
               ? UB.Repository('org_unit').attrs(['ID', 'mi_treePath']).selectById(me.rootElementID)
-                  .then((orgUnitData) => {
-                    if (orgUnitData) me.rootTreePath = orgUnitData.mi_treePath
-                    return true
-                  })
+                .then((orgUnitData) => {
+                  if (orgUnitData) me.rootTreePath = orgUnitData.mi_treePath
+                  return true
+                })
               : true
           })
       }
@@ -47,39 +46,32 @@ Ext.define('UB.ux.UBOrgChart', {
       query = query.where('[mi_treePath]', 'startWith', me.rootTreePath)
     }
 
-    return query.selectAsStore().then(me.makeTree.bind(me))
+    return query.selectAsObject().then(me.makeTree.bind(me))
   },
 
   treeData: [],
 
   makeTree: function (store) {
-    var me = this, data = {}, id, parentID, parentEl, idEl
+    let me = this
+    let data = {}
 
     me.treeData = []
 
-    let assignF = function (row, obj) {
-      obj.ID = row.get('ID')
-      obj.parentID = row.get('parentID')
-      obj.caption = row.get('caption')
-      obj.code = row.get('code')
-      obj.unitType = row.get('unitType')
-    }
-
-    store.each(function (row) {
-      id = row.get('ID')
-      parentID = row.get('parentID')
-      idEl = data[id]
+    store.forEach(function (row) {
+      let id = row.ID
+      let parentID = row.parentID
+      let idEl = data[id]
       if (!idEl) {
         idEl = data[id] = {child: []}
       }
-      assignF(row, idEl)
+      Object.assign(idEl, row)
       if (me.rootElementID && me.rootElementID === id) {
         parentID = null
         idEl.parentID = null
       }
 
       if (parentID) {
-        parentEl = data[parentID]
+        let parentEl = data[parentID]
         if (!parentEl) {
           parentEl = data[parentID] = {child: []}
         }
@@ -87,7 +79,7 @@ Ext.define('UB.ux.UBOrgChart', {
       } else {
         me.treeData.push(idEl)
       }
-    }, me)
+    })
     me.allData = data
   },
 
@@ -96,18 +88,21 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   showChild: function (parentCell, element, expandChild, deep, level) {
-    var me = this, cell, model
+    let me = this
+    let model
     if (!expandChild) {
       model = me.graph.getModel()
       model.beginUpdate()
     }
     try {
-      Ext.Array.each(element.child, function (item, index) {
-        cell = me.showElement(parentCell, item)
-        if (expandChild && (!deep || (deep > level))) {
-          me.showChild(cell, item, deep, level + 1)
-        }
-      }, me)
+      if (element.child) {
+        element.child.forEach(function (item) {
+          let cell = me.showElement(parentCell, item)
+          if (expandChild && (!deep || (deep > level))) {
+            me.showChild(cell, item, deep, level + 1)
+          }
+        })
+      }
     } finally {
       if (!expandChild) {
         model.endUpdate()
@@ -118,8 +113,10 @@ Ext.define('UB.ux.UBOrgChart', {
   defaultLayout: 'V', // vertical
 
   showTree: function () {
-    var me = this, cell, model = me.graph.getModel(),
-      deep = 1, level = 1, expandChild = true
+    let me = this
+    let deep = 1
+    let level = 1
+    let expandChild = true
 
     if (me.treeData.length === 1) {
       me.addChild(me.graph, null, me.treeData[0])
@@ -127,17 +124,18 @@ Ext.define('UB.ux.UBOrgChart', {
       me.initRoot(me.treeData)
     }
 
+    let model = me.graph.getModel()
     model.beginUpdate()
     try {
       if (me.treeData.length === 1) {
         me.showChild(me.rootVarex, expandChild, true, deep + 1, level)
       } else {
-        Ext.Array.each(me.treeData, function (item, index) {
-          cell = me.showElement(me.rootVarex, item)
+        me.treeData.forEach(function (item) {
+          let cell = me.showElement(me.rootVarex, item)
           if (expandChild && (!deep || (deep > level))) {
             me.showChild(cell, expandChild, true, deep, level)
           }
-        }, me)
+        })
       }
     } finally {
       model.endUpdate()
@@ -145,11 +143,10 @@ Ext.define('UB.ux.UBOrgChart', {
     me.autoLayout(me.rootVarex, me.defaultLayout)
     me.changeFired = false
     me.undoManager.clear()
-    // me.isGraphChanged = false;
   },
 
   initComponent: function () {
-    var me = this, id, html, outlineHtml
+    let me = this
     me.layout = 'fit'
 
     this.expandImage = $App.getImagePath('expandLG.png')
@@ -160,11 +157,12 @@ Ext.define('UB.ux.UBOrgChart', {
     me.tbar = me.createToolBar()
 
     me.idPrefix = Ext.id()
-    me.containerId = id = me.idPrefix + 'graph'
-    html = '<div id="' + id + '" class="graph-editor-holder" style="width: 100%; height: 100%; background-color: white; overflow: scroll; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" tabindex="0"></div>'
+    let id = me.idPrefix + 'graph'
+    me.containerId = id
+    let html = '<div id="' + id + '" class="graph-editor-holder" style="width: 100%; height: 100%; background-color: white; overflow: scroll; -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;" tabindex="0"></div>'
 
     me.outlineId = id = me.idPrefix + 'outline'
-    outlineHtml = '<div id="' + id + '" style="width: 100%; height: 100%; overflow: scroll;" ></div>'
+    let outlineHtml = '<div id="' + id + '" style="width: 100%; height: 100%; overflow: scroll;" ></div>'
 
     me.outlineWnd = Ext.create('Ext.Window', {
       title: UB.i18n('Overview'),
@@ -232,14 +230,13 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   initGraph: function () {
-    var me = this, container, graph, outline, style, layout,
-      mainWin, baseZIndex
+    let me = this
     me.graphDivEl = Ext.get(me.containerId)
-    mainWin = me.up('basewindow') || $App.getViewport()
+    let mainWin = me.up('basewindow') || $App.getViewport()
 
-    baseZIndex = mainWin.getEl().dom.style.zIndex || 1
+    let baseZIndex = mainWin.getEl().dom.style.zIndex || 1
 
-    container = me.graphDivEl.dom
+    let container = me.graphDivEl.dom
     container.style.position = 'absolute'
     container.style.overflow = 'hidden'
     container.style.left = '0px'
@@ -254,7 +251,7 @@ Ext.define('UB.ux.UBOrgChart', {
     // me.toolbarWnd.setXY([pnlBox.left, pnlBox.top]);
     me.outlineWnd.setXY([pnlBox.right - me.outlineWnd.width, pnlBox.top])
 
-    outline = document.getElementById(me.outlineId)
+    let outline = document.getElementById(me.outlineId)
     // outline.style.overflow = 'scroll';
 
     mxEvent.disableContextMenu(container)
@@ -263,7 +260,8 @@ Ext.define('UB.ux.UBOrgChart', {
     new mxDivResizer(outline)
 
     // Creates the graph inside the given container
-    me.graph = graph = new mxGraph(container)
+    let graph = new mxGraph(container)
+    me.graph = graph
 
     // Enables automatic sizing for vertices after editing and
     // panning by using the left mouse button.
@@ -311,7 +309,7 @@ Ext.define('UB.ux.UBOrgChart', {
     graph.setHtmlLabels(true)
 
     // Set some stylesheet options for the visual appearance of vertices
-    style = graph.getStylesheet().getDefaultVertexStyle()
+    let style = graph.getStylesheet().getDefaultVertexStyle()
     style[mxConstants.STYLE_SHAPE] = 'label'
     style[mxConstants.STYLE_WHITE_SPACE] = 'wrap'
 
@@ -374,7 +372,7 @@ Ext.define('UB.ux.UBOrgChart', {
     // Enables automatic layout on the graph and installs
     // a tree layout for all groups who's children are
     // being changed, added or removed.
-    layout = new mxCompactTreeLayout(graph, false)
+    let layout = new mxCompactTreeLayout(graph, false)
     layout.useBoundingBox = false
     layout.edgeRouting = false
     layout.levelDistance = 60
@@ -404,8 +402,8 @@ Ext.define('UB.ux.UBOrgChart', {
 
     // Installs a popup menu handler using local function (see below).
     graph.popupMenuHandler.factoryMethod = function (menu, cell, evt) {
-      var frmDom = mainWin.getEl().dom,
-        baseZ = frmDom.style.zIndex || 9999999999999
+      let frmDom = mainWin.getEl().dom
+      let baseZ = frmDom.style.zIndex || 9999999999999
       menu.div.parent = frmDom
       menu.zIndex = baseZ + 1
       menu.div.style.zIndex = baseZ + 1
@@ -470,24 +468,26 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   initRoot: function () {
-    var me = this, parent, graph = me.graph, w, v1, doc, node
+    let me = this
+    let graph = me.graph
+
     // Gets the default parent for inserting new cells. This
     // is normally the first child of the root (ie. layer 0).
-    parent = graph.getDefaultParent()
+    let parent = graph.getDefaultParent()
 
     if (!graph || !graph.container) { return }
 
     // Adds the root vertex of the tree
     graph.getModel().beginUpdate()
     try {
-      doc = mxUtils.createXmlDocument()
-      node = doc.createElement('ubOrgChart')
+      let doc = mxUtils.createXmlDocument()
+      let node = doc.createElement('ubOrgChart')
       node.setAttribute('label', UB.i18n('Organization'))
       node.setAttribute('unitType', 'ORG')
       node.setAttribute('isRoot', true)
 
-      w = graph.container.offsetWidth
-      v1 = graph.insertVertex(parent, 'treeRoot',
+      let w = graph.container.offsetWidth
+      let v1 = graph.insertVertex(parent, 'treeRoot',
         node, w / 2 - 30, 20, 140, 60)// , 'image=' + 'models/adminui-pub/themes/UBGrayTheme/ubimages/office.png'/* $App.getImagePath('office.png') */)
 
       graph.updateCellSize(v1)
@@ -517,12 +517,11 @@ Ext.define('UB.ux.UBOrgChart', {
     )
   },
 
-  dblClickAction: function (cell, evt) {
-    var me = this,
-      unitType = cell.getAttribute('unitType'),
-      ID = cell.getAttribute('ID'),
-      entity
-    entity = me.getEntityByUnitType(unitType)
+  dblClickAction: function (cell) {
+    let me = this
+    let unitType = cell.getAttribute('unitType')
+    let ID = cell.getAttribute('ID')
+    let entity = me.getEntityByUnitType(unitType)
     if (entity && ID) {
       me.openForm(entity, ID, null, function (sender) {
         me.refreshDiagram()
@@ -545,20 +544,16 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   openFormC: function (config) {
-    var form, formCode, description, cfg, isHistory, me = this,
-      sysEntities = UB.core.UBAppConfig.systemEntities
-
-    // entityCode, instanceID, initialFieldValues, onClose
-    isHistory = $App.domainInfo.get(config.entityCode).hasMixin('dataHistory')
-
+    let me = this
+    let formCode, description
     config.isModal = !Ext.isEmpty(config.isModal) ? config.isModal : true
 
-    form = UB.core.UBFormLoader.getFormByEntity(config.entityCode)
+    let form = UB.core.UBFormLoader.getFormByEntity(config.entityCode)
     if (form) {
-      formCode = form.get(sysEntities.form.fields.code)
-      description = UB.i18n(form.get(sysEntities.form.fields.description))
+      formCode = form.get('code')
+      description = UB.i18n(form.get('description'))
     }
-    cfg = {
+    let cfg = {
       cmdType: UB.core.UBCommand.commandType.showForm,
       formCode: formCode,
       description: description,
@@ -743,9 +738,10 @@ Ext.define('UB.ux.UBOrgChart', {
     }
   },
 
-  // Function to create the entries in the popupmenu
+  // Function to create the entries in the popup menu
   createPopupMenu: function (graph, menu, cell) {
-    var me = this, model = graph.getModel()
+    let me = this
+    let model = graph.getModel()
 
     if (!me.isLoadContent) {
       menu.addItem(UB.i18n('New organizational chart'), '', function () {
@@ -843,10 +839,12 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   setDetaileEdgeStyle: function (cell, style) {
-    var me = this, edges = [], edgeCount, model = me.graph.model
+    let me = this
+    let edges = []
+    let model = me.graph.model
 
     me.graph.traverse(cell, true, function (vertex) {
-      edgeCount = model.getEdgeCount(vertex)
+      let edgeCount = model.getEdgeCount(vertex)
       if (edgeCount > 0) {
         for (var i = 0; i < edgeCount; i++) {
           var e = model.getEdgeAt(vertex, i)
@@ -877,7 +875,8 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   addExpandOverlay: function (graph, cell, expanded) {
-    var me = this, overlay = new mxCellOverlay(new mxImage(expanded ? me.collapseImage : me.expandImage, 24, 24), expanded ? UB.i18n('Collapse') : UB.i18n('Expand'))
+    let me = this
+    let overlay = new mxCellOverlay(new mxImage(expanded ? me.collapseImage : me.expandImage, 24, 24), expanded ? UB.i18n('Collapse') : UB.i18n('Expand'))
     overlay.cursor = 'hand'
     overlay.align = mxConstants.ALIGN_CENTER
 
@@ -890,9 +889,8 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   addAddOverlay: function (graph, cell) {
-    var me = this, addOverlay
-
-    addOverlay = new mxCellOverlay(new mxImage(me.appendImage, 24, 24), UB.i18n('Append element'))
+    let me = this
+    let addOverlay = new mxCellOverlay(new mxImage(me.appendImage, 24, 24), UB.i18n('Append element'))
     addOverlay.cursor = 'hand'
     addOverlay.offset = new mxPoint(-4, 8)
     addOverlay.align = mxConstants.ALIGN_RIGHT
@@ -905,13 +903,13 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   addIconOverlay: function (cell) {
-    var me = this, unitType, addOverlay, image, name, orgUnity
-    unitType = cell.getAttribute('unitType')
-    name = cell.getAttribute('label')
+    let me = this
+    let unitType = cell.getAttribute('unitType')
+    let name = cell.getAttribute('label')
 
-    orgUnity = me.orgUnity[unitType]
-    image = orgUnity ? orgUnity.image : $App.getImagePath('office.png')
-    addOverlay = new mxCellOverlay(new mxImage(image, 24, 24), name)
+    let orgUnity = me.orgUnity[unitType]
+    let image = orgUnity ? orgUnity.image : $App.getImagePath('office.png')
+    let addOverlay = new mxCellOverlay(new mxImage(image, 24, 24), name)
     // addOverlay.cursor = 'hand';
     addOverlay.offset = new mxPoint(4, 8)
     addOverlay.align = mxConstants.ALIGN_LEFT
@@ -926,7 +924,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
   getAddOvelay: function (cell) {
     var me = this, result = null
-    if (!cell.overlays || cell.overlays.length === 0) {
+    if (!cell.overlays || !cell.overlays.length) {
       return null
     }
     Ext.Array.each(cell.overlays, function (elm) {
@@ -939,16 +937,10 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   getExpandOvelay: function (cell) {
-    var me = this, result = null
     if (!cell.overlays || cell.overlays.length === 0) {
       return null
     }
-    Ext.Array.each(cell.overlays, function (elm) {
-      if (elm.isExpandOvelay) {
-        result = elm
-        return false
-      }
-    }, me)
+    let result = cell.overlays.find(elm => elm.isExpandOvelay)
     return result
   },
 
@@ -962,8 +954,6 @@ Ext.define('UB.ux.UBOrgChart', {
     var me = this,
       ID = cell.getAttribute('ID'),
       element = me.allData[ID],
-      // minEdges = cell.isRoot ? 0 : 1,
-      // edgeCnt = cell.getEdgeCount(),
       model = me.graph.getModel(),
       expandOverlay,
       existsCell, eID, pt,
@@ -980,7 +970,7 @@ Ext.define('UB.ux.UBOrgChart', {
       model.beginUpdate()
       try {
         pt = {x: cell.geometry.x, y: cell.geometry.y + 120}
-        Ext.Array.each(element.child, function (childElm) {
+        element.child.forEach(function (childElm) {
           if (!existIDs[childElm.ID]) {
             me.showElement(cell, childElm, pt)
             cellToAdd.push(cell)
@@ -1033,8 +1023,6 @@ Ext.define('UB.ux.UBOrgChart', {
     }
 
     me.updateCell(cell)
-    // me.showChild( cell, element, false);
-    // me.deleteSubtree(me.graph, cell);
   },
 
   hideOrShowCells: function (graph, cell, show) {
@@ -1078,17 +1066,16 @@ Ext.define('UB.ux.UBOrgChart', {
         }
       }
     }
-    // добавляем новую связь
     me.addElementEdge(cell, newParent, item)
   },
 
   /**
-   * Добавить новый элемент на диаграму
+   * Add new element to diagram
    * @param {mxGraph} graph
-   * @param {mxCell} cell Главный элемент
-   * @param {Object} item Данные об элементе
-   * @param inUpdateMode
-   * @param {Object} pt позиция на листе
+   * @param {mxCell} cell Main element
+   * @param {Object} item Element data
+   * @param {boolean} [inUpdateMode=false]
+   * @param {Object} [pt] page position
    * @return {*}
    */
   addChild: function (graph, cell, item, inUpdateMode, pt) {
@@ -1196,9 +1183,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   getPreferredSizeForCell: function (cell) {
-    /*
-     max wide for cell in auto format mode
-     */
+    /* max wide for cell in auto format mode */
     var maxWidth = 100
     var result = null
 
@@ -1283,8 +1268,9 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   getValue: function () {
-    var me = this, enc = new mxCodec(),
-      data = enc.encode(me.graph.getModel())
+    let me = this
+    let enc = new mxCodec()
+    let data = enc.encode(me.graph.getModel())
     return mxUtils.getXml(data)
   },
 
@@ -1295,7 +1281,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   graphChanged: function () {
-    var me = this
+    let me = this
     if (!me.isLoadComlete) {
       return
     }
@@ -1478,7 +1464,7 @@ Ext.define('UB.ux.UBOrgChart', {
       if (cell.vertex) {
         ID = cell.getAttribute('ID')
         if (ID) { ID = ID * 1 }
-        isRoot = cell.getAttribute('isRoot')  // cell.id === 'treeRoot';
+        isRoot = cell.getAttribute('isRoot')
 
         if (isRoot) {
           me.rootVarex = cell
@@ -1489,7 +1475,7 @@ Ext.define('UB.ux.UBOrgChart', {
         }
         parentCell = me.findParentCell(cell)
         parentID = parentCell ? (parentCell.getAttribute('ID') || null) : null
-        if (parentID) { parentID = parentID * 1 }  // Number(parentID)
+        if (parentID) { parentID = parentID * 1 }
 
         hasItem = true
         elmTree = me.allData[ID]
@@ -1529,7 +1515,7 @@ Ext.define('UB.ux.UBOrgChart', {
     })
 
     // перенаправляем дугу, если сменлся родитель и если новый родитель на схеме иначе удаляем
-    Ext.Array.each(cellChParent, function (cell) {
+    cellChParent.forEach(function (cell) {
       ID = cell.getAttribute('ID')
       if (ID) { ID = ID * 1 }
       elmTree = me.allData[ID]
@@ -1539,8 +1525,7 @@ Ext.define('UB.ux.UBOrgChart', {
       } else {
         cellToDel.push(cell)
       }
-      // cell
-    }, me)
+    })
 
     me.graph.removeCells(cellToDel, true)
 
@@ -1641,13 +1626,13 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   createChildElement: function (cell, unitType) {
-    var me = this, entity, ID
-    entity = me.getEntityByUnitType(unitType)
-    ID = cell.getAttribute('ID')
+    let me = this
+    let entity = me.getEntityByUnitType(unitType)
+    let ID = cell.getAttribute('ID')
     ID = ID ? ID * 1 : null
     if (entity) {
       me.openForm(entity, null, {parentID: ID}, function (sender) {
-        var panel = sender.down('basepanel')
+        let panel = sender.down('basepanel')
         if (panel && panel.record) {
           me.checkElementId(panel.record.get('ID'), cell)
         }
@@ -1656,7 +1641,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   /**
-   * Отображает вновь добавленый элемент если он есть
+   * Display newly added element
    * @param ID
    * @param parentCell
    */
@@ -1691,15 +1676,15 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   initMetaInfo: function () {
-    var me = this,
-      unitType, unity, orgUnity
+    let me = this
+    let unity, orgUnity
 
     me.orgUnity = {}
     $App.domainInfo.eachEntity(function (metaObj, metaObjName) {
       if (metaObj.mixins && (unity = metaObj.mixins.unity) && unity.enabled &&
         unity.entity && (unity.entity.toLowerCase() === 'org_unit') &&
         unity.defaults) {
-        unitType = unity.defaults.unitType
+        let unitType = unity.defaults.unitType
         me.orgUnity[unitType] = orgUnity = {code: metaObjName, unitType: unitType, caption: metaObj.caption}
         switch (unitType) {
           case 'ORG':
