@@ -567,6 +567,11 @@
               "description": "timeout in seconds after witch client must change encryption key. 0 - unlimited"
             }
           }
+        },
+        "localIPs": {
+          "type": "string",
+          "default": "",
+          "description": "Semicolon delimited list of server IP addresses. <b>WARNING</b> To be used ONLY in case server can't resolve local addresses automatically. In case of wrong configuration unauthorised server access is possible"
         }
       }
     },
