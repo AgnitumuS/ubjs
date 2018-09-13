@@ -65,6 +65,7 @@ function addStyleSheet (doc, cssText) {
  *    report = Ext.create('UBS.UBReport', {
  *      code: 'test',
  *      type: 'pdf',
+ *      allowExcelExport: true,
  *      params: {userName: 'Helen'}
  *    });
  *    report.init().then(function(){
@@ -81,6 +82,7 @@ Ext.define('UBS.ReportViewer', {
   width: 700,
   height: 500,
   reportCSSAdded: false,
+  paramForm: null,
 
   /**
    * @cfg {UBS.UBReport} report
@@ -96,6 +98,7 @@ Ext.define('UBS.ReportViewer', {
       throw new Error('config parameter reportType is undefined')
     }
     let container, control
+    let excelBtn = null
     switch (me.reportType) {
       case 'pdf':
         control = container = Ext.create('UB.ux.PDFComponent', {
@@ -110,6 +113,16 @@ Ext.define('UBS.ReportViewer', {
             tag: 'iframe'
           }
         })
+        if (me.report.allowExportToExcel) {
+          excelBtn = {
+            xtype: 'button',
+            ui: 'default-toolbar',
+            text: UB.i18n('Excel'),
+            handler: function () {
+              me.exportToXLSX()
+            }
+          }
+        }
         container = Ext.create('Ext.panel.Panel', {
           layout: {
             type: 'vbox',
@@ -134,7 +147,7 @@ Ext.define('UBS.ReportViewer', {
                     let iFrame = me.reportControl.getEl().dom
                     iFrame.contentWindow.print()
                   }
-                }]
+                }, excelBtn]
             }]
         })
         break
@@ -177,6 +190,33 @@ Ext.define('UBS.ReportViewer', {
     me.callParent(arguments)
   },
 
+  exportToXLSX: function () {
+    let me = this
+    let repParams
+    // do we need to get parameters from parameters enter form?
+    if (me.paramForm && (!me.report.incomeParams || (Object.keys(me.report.incomeParams).length === 0))) {
+      if (!me.paramForm.isValid()) {
+        $App.dialogInfo('reportParamsRequired')
+        return
+      }
+      repParams = me.paramForm.getParameters(me.paramForm)
+    } else {
+      repParams = me.report.incomeParams
+    }
+    Ext.create('UBS.UBReport', {
+      code: me.report.reportCode,
+      type: 'xlsx',
+      params: repParams,
+      language: $App.connection.userLang()
+    }).makeReport().then(function (data) {
+      let blobData = new Blob(
+        [data.reportData],
+        {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+      )
+      window.saveAs(blobData, me.report.reportCode + '.xlsx')
+    })
+  },
+
   /**
    * @param {UBS.ReportParamForm|Array} paramForm
    */
@@ -196,6 +236,7 @@ Ext.define('UBS.ReportViewer', {
         }
       })
     }
+    me.paramForm = paramForm
     me.insert(0, paramForm)
     paramForm.on('buildReport', function (param, form) {
       me.getEl().mask(UB.i18n('pleaseWait'))
@@ -222,7 +263,7 @@ Ext.define('UBS.ReportViewer', {
           data = new Blob([data], { type: 'application/pdf' })
         }
 
-        me.reportControl.setSrc({ blobData: data })
+        me.reportControl.setSrc({blobData: data})
         break
       case 'html':
         let iFrame = me.reportControl.getEl().dom

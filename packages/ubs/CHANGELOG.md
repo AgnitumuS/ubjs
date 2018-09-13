@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.15]
+### Added 
+ - excel export button added to the ReportViewer in case `allowExportToExcel` report option is true (false by default) 
+ ```javascript
+$App.doCommand({
+  cmdType: 'showReport',
+  cmdData: {
+    reportCode: 'your-report-code',
+    reportType: 'html',
+    reportParams: {a: 'b'},
+    reportOptions: {
+      allowExportToExcel: true
+    }
+  }
+})
+```
+
 ## [5.1.13]
 ### Fixed
 - UBReport: in case `$fn` function argument is empty return empty string instead of `null`

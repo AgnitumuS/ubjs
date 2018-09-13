@@ -46,6 +46,7 @@ function UBReport (reportCode, reportType, params, language) {
     this.reportCode = reportCode.code
     this.reportType = reportCode.type || 'html'
     this.incomeParams = reportCode.params
+    this.allowExportToExcel = reportCode.allowExportToExcel
     this.lang = reportCode.language
     this.debug = reportCode.debug
   }

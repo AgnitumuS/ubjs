@@ -24,8 +24,19 @@ exports.reportCode = {
           num: 1234567.89,
           negNum: -1234567.89
         }
-        let HTML = me.buildHTML(data)
-        return HTML
+        switch (me.reportType) {
+          case 'pdf': 
+            result = me.buildHTML(data)
+            result = me.transformToPdf(result)
+            break
+          case 'html': 
+            result = me.buildHTML(data)
+            break
+          case 'xlsx':           
+            result = me.buildXLSX(data)
+            break
+        }        
+        return result   
       })
   },
   onReportClick: function (e) {

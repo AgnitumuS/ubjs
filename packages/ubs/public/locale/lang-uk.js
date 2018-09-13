@@ -20,7 +20,7 @@ UB.i18nExtend({
   checkSyntaxReport: 'Перевірити синтаксис',
   saveBeforeTestTitle: 'Тестування звіту',
   saveBeforeTestBody: 'Зберегти дані?',
-  reportIsEmpty: 'Функція buildReport повернула порожній звіт.',
+  reportIsEmpty: 'Функція buildReport повернула порожній звіт',
   beautifyReport: 'Авто формат',
   testReport: 'Виконати тест ({0})',
   selectReportType: 'Вибрати тип звіту',
@@ -29,5 +29,6 @@ UB.i18nExtend({
   reportBuilder: 'Конструктор звітів',
   actionAdd: 'Додати',
   actionDelete: 'Видалити',
-  reportParametersHeader: 'Параметри звіту'
+  reportParametersHeader: 'Параметри звіту',
+  reportParamsRequired: 'Спочатку заповніть обов\'язкові параметри'
 })

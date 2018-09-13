@@ -161,7 +161,7 @@ function wrapIterator (sourceObj, tempObj, templates, templatesData, path, minLe
         }
       }
     } else {
-      if (typeof item === 'object') {
+      if (item && typeof item === 'object') {
         tempObj[key] = {}
         wrapIterator(item, tempObj[key], templates, templatesData, newPath)
       }

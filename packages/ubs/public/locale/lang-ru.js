@@ -29,5 +29,6 @@ UB.i18nExtend({
   reportType: 'Тип отчета',
   actionAdd: 'Добавить',
   actionDelete: 'Удалить',
-  reportParametersHeader: 'Параметри отчета'
+  reportParametersHeader: 'Параметри отчета',
+  reportParamsRequired: 'Сначала заполните обязательные параметры'
 })

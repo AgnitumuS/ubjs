@@ -29,5 +29,6 @@ UB.i18nExtend({
   reportType: 'Hesabatın tipi',
   actionAdd: 'İşmarış əlavə etmək',
   actionDelete: 'İSMARIŞ LƏĞV ET',
-  reportParametersHeader: 'Parametrləri bildirin'
+  reportParametersHeader: 'Parametrləri bildirin',
+  reportParamsRequired: 'Сначала заполните обязательные параметры'
 })

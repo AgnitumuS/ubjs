@@ -29,5 +29,6 @@ UB.i18nExtend({
   reportType: 'Report type',
   actionAdd: 'Add',
   actionDelete: 'Delete',
-  reportParametersHeader: 'Report parameters'
+  reportParametersHeader: 'Report parameters',
+  reportParamsRequired: 'Please, fill required parameters first'
 })
