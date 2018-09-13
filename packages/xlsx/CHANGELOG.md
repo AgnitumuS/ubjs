@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.26]
+### Added
+ - support of `th` tag during export HTML table to XLSX
+
 ## [5.0.16]
 ### Fixed
  - removing special symbols from sheet name. XLSX format does not allow symbols []/\?:* in sheet name

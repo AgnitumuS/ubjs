@@ -521,7 +521,7 @@ class XLSXfromHTML {
     let startRow = ctxt.config.startRow || 0
     let colWidth = []
 
-    findNode(node, ctxt.config.sourceData ? ['td', 'iterator'] : 'td', cells)
+    findNode(node, ctxt.config.sourceData ? ['th', 'td', 'iterator'] : 'td', cells)
     let columnNum = startRow
     const cellsData = []
     let addItem = F => {
@@ -560,7 +560,7 @@ class XLSXfromHTML {
       }
     })
 
-    ctxt.spanMap.addRow(colWidth)
+    ctxt.spanMap.addRow(colWidth, node)
     ws.addRow(cellsData, null, minHeight ? {height: minHeight} : null)
   }
 }
