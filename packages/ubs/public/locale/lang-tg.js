@@ -21,7 +21,7 @@ UB.i18nExtend({
   beautifyReport: 'Авто формат',
   saveBeforeTestTitle: 'Тестирование отчета',
   saveBeforeTestBody: 'Сохранить данные?',
-  testReport: 'Протестировать',
+  testReport: 'Протестировать ({0})',
   reportIsEmpty: 'Функция buildReport вернула пустой отчет.',
   selectReportType: 'Выбрать тип отчета',
   Reports: 'Отчет',

@@ -22,7 +22,7 @@ UB.i18nExtend({
   saveBeforeTestBody: 'Зберегти дані?',
   reportIsEmpty: 'Функція buildReport повернула порожній звіт.',
   beautifyReport: 'Авто формат',
-  testReport: 'Виконати тест',
+  testReport: 'Виконати тест ({0})',
   selectReportType: 'Вибрати тип звіту',
   reportType: 'Тип звіту',
   Reports: 'Звіти',

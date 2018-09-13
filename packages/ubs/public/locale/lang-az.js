@@ -19,7 +19,7 @@ UB.i18nExtend({
   codePanelTitle: 'Кod',
   checkSyntaxReport: 'Sintaksis yoxla',
   beautifyReport: 'Avto format',
-  testReport: 'Test et',
+  testReport: 'Test et ({0})',
   saveBeforeTestTitle: 'Hesabatın test edilməsi',
   saveBeforeTestBody: 'Məlumatlar yadda saxlanılsın?',
   selectReportType: 'Hesabat tipini seç',

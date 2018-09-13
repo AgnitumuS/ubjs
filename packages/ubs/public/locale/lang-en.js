@@ -19,7 +19,7 @@ UB.i18nExtend({
   codePanelTitle: 'Code',
   checkSyntaxReport: 'Check syntax',
   beautifyReport: 'Beautify',
-  testReport: 'Test',
+  testReport: 'Test ({0})',
   saveBeforeTestTitle: 'Report testing',
   saveBeforeTestBody: 'Do you want save data?',
   selectReportType: 'Select report type',

@@ -25,23 +25,23 @@ exports.formDef = {
       xtype: 'tbseparator',
       orderId: 9
     }, {
-      text: UB.i18n('testReport') + '(html)',
+      text: UB.i18n('testReport', 'html'),
       orderId: 10,
       handler: function () { this.up('form').testReport('html', false) }
     }, {
-      text: UB.i18n('testReport') + '(pdf)',
+      text: UB.i18n('testReport', 'pdf'),
       orderId: 11,
       handler: function () { this.up('form').testReport('pdf', false) }
     }, {
-      text: UB.i18n('testReport') + '(xlsx)',
+      text: UB.i18n('testReport', 'xlsx)'),
       orderId: 11,
       handler: function () { this.up('form').testReport('xlsx', false) }
     },{
-      text: UB.i18n('testReport') + '(server html)',
+      text: UB.i18n('testReport', 'server html'),
       orderId: 12,
       handler: function () { this.up('form').testReport('html', true) }
     }, {
-      text: UB.i18n('testReport') + '(server pdf)',
+      text: UB.i18n('testReport', 'server pdf'),
       orderId: 13,
       handler: function () { this.up('form').testReport('pdf', true) }
     }]
