@@ -362,15 +362,15 @@ Ext.define('UB.core.UBApp', {
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
         return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
-            const pkiForAuth = UB.appConfig.uiSettings.adminUI.encryptionImplementation || 'clientRequire/@ub-d/nm-dstu/injectEncription.js'
+            const pkiForAuth = connection.appConfig.uiSettings.adminUI.encryptionImplementation || '@ub-d/nm-dstu/injectEncription.js'
             const libraryName = pkiForAuth.split('/')[2]
             var advParam = {
               getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
               getCertificates: UB.view.cryptoUI.SelectCert.getCertificates
             }
 
-            return UB.inject(pkiForAuth).then(() => {
-              window[libraryName].addEncryptionToConnection(connection, advParam)
+            return SystemJS.import(pkiForAuth).then((module) => {
+              module.addEncryptionToConnection(connection, advParam)
             })
           } else {
             return true

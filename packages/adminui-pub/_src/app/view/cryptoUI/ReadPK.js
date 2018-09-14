@@ -1,7 +1,9 @@
+/* global Ext, $App */
+const UB = require('@unitybase/ub-pub')
 /**
- * Created by xmax on 11.08.2017.
+ * Form for reading user private key (from file system store)
+ * @author xmax on 11.08.2017.
  */
-
 Ext.define('UB.view.cryptoUI.ReadPK', {
   extend: 'Ext.window.Window',
   alias: 'widget.readpkwindow',
@@ -17,9 +19,9 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
      * @return {Promise}
      */
     getPkParam: function () {
-      var readPkForm = Ext.create('UB.view.cryptoUI.ReadPK', {})
+      let readPkForm = Ext.create('UB.view.cryptoUI.ReadPK', {})
 
-      var readPk = new Promise(function (resolve, reject) {
+      let readPk = new Promise(function (resolve, reject) {
         readPkForm.deferred = {resolve: resolve, reject: reject}
       })
       readPkForm.show()
@@ -28,7 +30,6 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
     }
   },
 
-  //cls: 'ub-login-window',
   layout: 'anchor',
   buttonAlign: 'center',
   width: 500,
@@ -48,11 +49,9 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
   },
 
   initComponent: function () {
-    var
-      me = this
+    let me = this
 
     me.title = UB.i18n('ReadPkTitle')
-
     me.items = []
     me.buttons = [{
       text: UB.i18n('ok'),
@@ -62,13 +61,13 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
       handler: function () {
         this.submitForm()
       }
-    },{
+    }, {
       text: UB.i18n('сancel'),
       scope: this,
       minWidth: 150,
       margins: '0 0 10 0',
       handler: function () {
-        me.deferred.reject(new UB.UBAbortError)
+        me.deferred.reject(new UB.UBAbortError())
         me.close()
       }
     }]
@@ -78,34 +77,33 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
       name: 'document',
       allowBlank: false,
       allowOnlyWhitespace: false,
-      //inputType: 'file',
+      // inputType: 'file',
       labelClsExtra: 'fa fa-user-secret fa-2x',
       blankText: UB.i18n('obazatelnoePole'),
       requireText: UB.i18n('Select private key file'),
       labelWidth: 40,
       labelSeparator: '',
       fieldLabel: ' ',
-      // fieldLabel: UB.i18n('privateKeyFile'),
       anchor: '100%',
       buttonText: '',
       buttonConfig: {
-        iconCls:'iconAttach'
+        iconCls: 'iconAttach'
       },
       listeners: {
-        afterrender: function( sender ){
-          sender.getEl().dom.addEventListener('change', me.onFileSelect, false);
-          sender.inputEl.on('click',function(){
-            this.button.fileInputEl.dom.click();
-          },sender);
+        afterrender: function (sender) {
+          sender.getEl().dom.addEventListener('change', me.onFileSelect, false)
+          sender.inputEl.on('click', function () {
+            this.button.fileInputEl.dom.click()
+          }, sender)
         },
         scope: this
       }
-    });
+    })
 
     me.textFieldPassword = Ext.create('Ext.form.field.Text', {
       margin: '10 40 10 40',
       allowBlank: false,
-      //cls: 'ub-login-input',
+      // cls: 'ub-login-input',
       labelClsExtra: 'fa fa-key fa-2x',
       requireText: UB.i18n('Password'),
       fieldLabel: ' ',
@@ -113,7 +111,6 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
       labelWidth: 40,
       inputType: 'password',
       anchor: '100%',
-      // value: UB.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly,
       listeners: {
         keyup: {
           fn: $App.passwordKeyUpHandler
@@ -122,33 +119,32 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
       enableKeyEvents: true
     })
 
-      me.pnl = Ext.create('Ext.form.Panel', {
-        header: false,
-        padding: '20 50 30 50',
-        layout: {
-          type: 'vbox',
-          align: 'stretch'
-        },
-        items: [
-          me.fieldFile,
-          me.textFieldPassword
-        ]
-      })
+    me.pnl = Ext.create('Ext.form.Panel', {
+      header: false,
+      padding: '20 50 30 50',
+      layout: {
+        type: 'vbox',
+        align: 'stretch'
+      },
+      items: [
+        me.fieldFile,
+        me.textFieldPassword
+      ]
+    })
 
     me.items.push(me.pnl)
 
     me.callParent(arguments)
-
   },
 
-  onFileSelect: function(files){
+  onFileSelect: function (files) {
 
   },
 
   submitForm: function () {
     var me = this
     if (!me.fieldFile.isValid() || !me.textFieldPassword.isValid()) {
-      UB.showErrorWindow(UB.i18n('SelectPKAndPassMsg'))
+      UB.showErrorWindow('SelectPKAndPassMsg')
       return
     }
     me.deferred.resolve({

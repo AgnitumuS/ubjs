@@ -3,9 +3,6 @@
  * UnityBase Ukrainian translation
  */
 UB.i18nExtend({
-  SelectPKAndPassMsg: 'Виберіть файл та заповніть пароль ',
-  ReadPkTitle: 'Зчитування приватного ключа',
-  'Select private key file': 'Виберіть файл приватного ключа',
   emptyBarcodeSettings: 'Перед першим використанням друку штрих-коду, необхідно його налаштувати.',
   setScannerSettings: 'Перед першим використанням сканера, необхідно його налаштувати. Налаштувати можна <a href="/" onclick="{0} return false;">тут</a>.',
   showResultConfig: 'Перегляд конфигураії',
@@ -299,8 +296,6 @@ UB.i18nExtend({
   reason: 'Підстава',
   location: 'Місцезнаходження',
   author: 'Автор',
-  certificate: 'Сертифікат',
-  certificates: 'Сертифікати',
   signVerification: 'Перевірка підпису',
   // signsInDocument: 'Підписи в документі',
   UserWithoutOrgEmployeeNotAllowed: 'Користувач не перебуває в штаті організації (не співставлений з жодною штатною одиницею). Вхід заборонено.',

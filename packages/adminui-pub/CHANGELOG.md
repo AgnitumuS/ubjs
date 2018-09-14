@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.5.5]
 ### Fixed
  - allow passing of null/undefined into basePanel.hideActions array item
+ - certificates related i18 keys is moved into ub-pub
  
 ## [5.5.3]
 ### Fixed

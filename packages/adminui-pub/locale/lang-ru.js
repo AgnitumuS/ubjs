@@ -3,9 +3,6 @@
  * UnityBase Russian translation
  */
 UB.i18nExtend({
-  SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
-  ReadPkTitle: 'Считывание личного ключа',
-  'Select private key file': 'Виберіть файл приватного ключа',
   emptyBarcodeSettings: 'Перед использованием печати штрих кода, необходимо его настроить.',
   setScannerSettings: 'Перед первым использованием сканера, необходимо его настроить. Настроить можно <a href="/" onclick="{0} return false;">тут</a>.',
   showResultConfig: 'Просмотр конфигурации',
@@ -303,15 +300,13 @@ UB.i18nExtend({
   reason: 'Причина',
   location: 'Местоположение',
   author: 'Автор',
-  certificate: 'Сертификат',
-  certificates: 'Сертификаты',
   signVerification: 'Проверка подписи',
-    // signsInDocument: 'Подписи в документе',
+  // signsInDocument: 'Подписи в документе',
   UserWithoutOrgEmployeeNotAllowed: 'Пользователь не состоит в штате организации (не сопоставлен со штатной единицей). Вход запрещён.',
-    // search form (UBPreFilter)
+  // search form (UBPreFilter)
   search: 'Поиск',
   'Filter by': 'Фильтровать по',
-    // cancel: 'Отмена',
+  // cancel: 'Отмена',
   filterForm: 'Форма поиска',
   main: 'Основное',
   other: 'Другое',

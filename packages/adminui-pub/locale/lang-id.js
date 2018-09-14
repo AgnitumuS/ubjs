@@ -7,9 +7,6 @@ Copyright (c) 2014 InBase
  * English translation
  */
 UB.i18nExtend({
-  SelectPKAndPassMsg: 'Select a file and fill out the password',
-  ReadPkTitle: 'Зчитування приватного ключа',
-  'Select private key file': 'Виберіть файл приватного ключа',
   setScannerSettings: 'You must set scanner settings, before use it. Scanner settings are <a href="/" onclick="{0} return false;">here</a>.',
   showResultConfig: 'Show configuration',
   numberOfSignificantDigits: 'The number of significant digits exceeds the allowable',
@@ -292,12 +289,10 @@ UB.i18nExtend({
   reason: 'Reason',
   location: 'Location',
   author: 'Author',
-  certificate: 'Certificate',
-  certificates: 'Certificates',
   signVerification: 'Sign verification',
   signsInDocument: 'Signs',
   UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',
-    // search form (UBPreFilter)
+  // search form (UBPreFilter)
   search: 'Search',
   'Filter by': 'Filter by',
   filterForm: 'Search form',

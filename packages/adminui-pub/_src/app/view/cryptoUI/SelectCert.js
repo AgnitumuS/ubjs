@@ -1,7 +1,9 @@
+/* global Ext */
+const UB = require('@unitybase/ub-pub')
 /**
- * Created by xmax on 21.08.2017.
+ * Upload user certificates form
+ * @author xmax on 21.08.2017.
  */
-
 Ext.define('UB.view.cryptoUI.SelectCert', {
   extend: 'Ext.window.Window',
   alias: 'widget.selectcertwindow',
@@ -59,13 +61,13 @@ Ext.define('UB.view.cryptoUI.SelectCert', {
       handler: function () {
         this.submitForm()
       }
-    },{
+    }, {
       text: UB.i18n('Cancel'),
       scope: this,
       minWidth: 150,
       margins: '0 0 10 0',
       handler: function () {
-        me.deferred.reject(new UB.UBAbortError)
+        me.deferred.reject(new UB.UBAbortError())
         me.close()
       }
     }]
@@ -74,31 +76,27 @@ Ext.define('UB.view.cryptoUI.SelectCert', {
       margin: '10 80 10 80',
       name: 'document',
       allowBlank: false,
-      //inputType: 'file',
-      //labelClsExtra: 'fa fa-user-secret fa-2x',
       blankText: UB.i18n('obazatelnoePole'),
-      labelWidth: 40,
-      labelSeparator: '',
-      fieldLabel: UB.i18n('Certificates '),
+      requireText: UB.i18n('certificate'),
       // fieldLabel: UB.i18n('privateKeyFile'),
       anchor: '100%',
       buttonText: '',
       buttonConfig: {
-        iconCls:'iconAttach'
+        iconCls: 'iconAttach'
       },
       listeners: {
-        afterrender: function( sender ){
-          sender.getEl().dom.addEventListener('change', me.onFileSelect, false);
-          sender.inputEl.on('click',function(){
-            this.button.fileInputEl.dom.click();
-          },sender);
+        afterrender: function (sender) {
+          sender.getEl().dom.addEventListener('change', me.onFileSelect, false)
+          sender.inputEl.on('click', function () {
+            this.button.fileInputEl.dom.click()
+          }, sender)
         },
         scope: this
       }
-    });
+    })
 
     me.pnl = Ext.create('Ext.panel.Panel', {
-      //title: UB.i18n('useUBAuthenticationTitle'),
+      // title: UB.i18n('useUBAuthenticationTitle'),
       header: false,
       padding: '20 50 30 50',
       layout: {
@@ -112,7 +110,7 @@ Ext.define('UB.view.cryptoUI.SelectCert', {
           padding: '50 0 0 0',
           autoEl: {
             tag: 'div',
-            html: UB.i18n('useCertAuthenticatinUploadCert')
+            html: UB.i18n('selectSigningCertificate')
           }
         }
       ]
@@ -121,10 +119,9 @@ Ext.define('UB.view.cryptoUI.SelectCert', {
     me.items.push(me.pnl)
 
     me.callParent(arguments)
-
   },
 
-  onFileSelect: function(files){
+  onFileSelect: function (files) {
 
   },
 

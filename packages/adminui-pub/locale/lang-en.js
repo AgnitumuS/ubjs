@@ -7,9 +7,6 @@ Copyright (c) 2014 InBase
  * English translation
  */
 UB.i18nExtend({
-  SelectPKAndPassMsg: 'Select a file and fill out the password',
-  ReadPkTitle: 'Reading a private key',
-  'Select private key file': 'Select private key file',
   emptyBarcodeSettings: 'You must set barcode settings, before use it.',
   setScannerSettings: 'You must set scanner settings, before use it. Scanner settings are <a href="/" onclick="{0} return false;">here</a>.',
   showResultConfig: 'Show configuration',
@@ -293,8 +290,6 @@ UB.i18nExtend({
   reason: 'Reason',
   location: 'Location',
   author: 'Author',
-  certificate: 'Certificate',
-  certificates: 'Certificates',
   signVerification: 'Sign verification',
   signsInDocument: 'Signs',
   UserWithoutOrgEmployeeNotAllowed: 'Login for user without corresponding employee on staff not allowed',

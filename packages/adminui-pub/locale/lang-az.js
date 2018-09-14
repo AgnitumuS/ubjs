@@ -3,9 +3,6 @@
  * Translation into Azerbaijani
  */
 UB.i18nExtend({
-  SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
-  ReadPkTitle: 'Зчитування приватного ключа',
-  'Select private key file': 'Виберіть файл приватного ключа',
   emptyBarcodeSettings: 'You must set barcode settings, before use it.',
   setScannerSettings: 'Skanerdən istifadə etmək üçün öncə, onu sazlama lazımdır. Sazlamaq mümkündür <a href="/" onclick="{0} return false;">burada</a>.',
   showResultConfig: 'Konfiqurasiyaya baxış',
@@ -293,18 +290,16 @@ UB.i18nExtend({
   reason: 'Səbəb',
   location: 'Yerləşmə yeri',
   author: 'Müəllif',
-  certificate: 'Sertifikat',
-  certificates: 'Sertifikatlar',
   signVerification: 'İmzanın yoxlanması',
   documentNotFound: 'Məlumatlar server -də tapılmadı. Zəhmət olmasa administratora müraciət edin.',
   currentPageNumber: 'Hazırki səhifə',
 
-    // signsInDocument: 'Sənəddəki imzalar',
+  // signsInDocument: 'Sənəddəki imzalar',
   UserWithoutOrgEmployeeNotAllowed: 'İstifadəçinin ştat vahidi mövcud deyildir (ştat vahidi göstərilməyib). Giriş qadağandır.',
-    // search form (UBPreFilter) 'Axtarış forması'
+  // search form (UBPreFilter) 'Axtarış forması'
   search: 'Axtarış',
   'Filter by': 'Filtr',
-    // cancel: 'Ləğv et',
+  // cancel: 'Ləğv et',
   filterForm: 'Axtarış forması',
   main: 'Əsas',
   other: 'Digər',

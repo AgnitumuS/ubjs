@@ -43,5 +43,11 @@ UB.i18nExtend({
   'Access deny': 'Bu əməliyyat yerinə yetirmək üçün hüquqları yoxdur',
   ERR_REFERENCE_ERROR: 'əməliyyat bilmir - element digər şəxslərin istifadə olunur',
   VALUE_MUST_BE_UNIQUE: 'əməliyyat yerinə yetirmək üçün bilmir - unikal olmalıdır müəyyən dəyər, lakin digər şəxslərin istifadə olunur',
+  SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
+  ReadPkTitle: 'Зчитування приватного ключа',
+  'Select private key file': 'Виберіть файл приватного ключа',
+  selectSigningCertificate: 'Выберите файл с сертификатом для подписи',
+  certificate: 'Sertifikat',
+  certificates: 'Sertifikatlar'
 
 })
