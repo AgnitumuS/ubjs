@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.5.5]
+### Fixed
+ - allow passing of null/undefined into basePanel.hideActions array item
+ 
 ## [5.5.3]
 ### Fixed
  - UBOrgChart: fix node child's visualisation in case full child tree contains > 100 elements

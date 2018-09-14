@@ -2752,10 +2752,10 @@ Ext.define('UB.view.BasePanel', {
     }
 
     if (me.hideActions && me.hideActions.length) {
-      _.forEach(me.hideActions, function (actionName) {
-        var action = me.actions[actionName]
-        if (!action && actionName.substr(0, 9) === 'docAction') {
-          _.forEach(me.docActions, function (act) {
+      me.hideActions.forEach(function (actionName) {
+        let action = me.actions[actionName]
+        if (!action && actionName && actionName.substr(0, 9) === 'docAction' && me.docActions.length) {
+          me.docActions.forEach(function (act) {
             if (act.initialConfig && act.initialConfig.key) {
               if (actionName === ('docAction' + act.initialConfig.key)) {
                 action = act
