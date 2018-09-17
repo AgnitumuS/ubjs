@@ -69,7 +69,7 @@ Ext.define('NTF.notificator', {
   initializeAfterBoxReady: function () {
     this.loggingEl = document.getElementById('notification-log')
     this.statElm = document.getElementById('notification-stat')
-    this.notifier = new UBClientNotifier(this.onMessage.bind(this))
+    this.notifier = new UBClientNotifier('*', this.onMessage.bind(this))
     this.addLineToLog('<span style="color:green">Connected</span>')
   },
 
