@@ -4,16 +4,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.4.10]
-### Added
-- EntityGridPanel SpeedUp (up to 30%):
-  - prevent re-rendering during disable/enable actions in  if action already enabled/disabled
-  - pagination toolbar is completely rewritten
-  - disableAutoSelectRow set tu `true` by default
+## [5.5.3]
+### Fixed
+ - UBOrgChart: fix node child's visualisation in case full child tree contains > 100 elements
+ 
+### Changed
+- BasePanel action `showOriginal` (used in toolbar for Document type attributes) is removed (obsolete)  
 
+## [5.5.1]
+### Fixed
+- **CRITICAL** EntityGridPanel: prevent memory leak by destroying grid popup menu
+- **CRITICAL** Multifilter: prevent memory leak by destroying all Multifilter panels on destroy
+- **CRITICAL** Multifilter: prevent memory leak for filter label toolbar (moved to data-qtip)
+
+### Changed
+- all calls to `Q` in BasePanel replaced by native `Promise` 
+- `Ext.picker.Date` now use CSS shadow instead of creation div element
+- optimization: prevent creation of div's for floating elements shadow - all shadows are made using pure CSS
+- optimization: lazy loading of components required by form / shortcut editor (`app/view/CommandBuilder/*`)
+- optimization: remove unused `AdvancedTextArea` control  
+- optimization: BasePanel - prevent flashing layout twice in `onFormDataReady` handler
+- use `UBConnection.getDocument` in BasePanel to download document  
+
+## [5.5.0]
+### Fixed
+- **CRITICAL** EntityGridPanel: prevent memory leak by destroying pagination bar if created
+- **CRITICAL** EntityGridPanel (`Multifilter`): prevent memory leak by destroying attributes menu if created
+
+### Changed
+- EntityGridPanel initial rendering speed up (**up to 2 second!**):
+  - preventing insertion of empty Mutlifilter description panel in case filters are empty (~100ms)
+  - preventing re-layout for each column width changing during call to `optimizeColumnWidth` (~100ms)
+  - prevent re-rendering during disable/enable actions in  if action already enabled/disabled
+  - **BREAKING** pagination toolbar  (`UB.view.PagingToolbar` `xtype: pagingtb`) is completely rewritten.
+    In rared case this component is used outside `adminui-pub` code should be rewriting
+  - lazy creation of PaginationToolbar (not created at all if store not require it) (~100ms)
+  - lazy creation of `Mutlifilter` attributes menu (10ms)
+  - `disableAutoSelectRow` set to `true` by default   
+
+## [5.4.10]
+### Changed
+ ***please, do nou use this revision - upgrade to 5.5.0***
+
+  
 ## [5.4.7]
 ### Fixed
- - add logicalPredicates for request wehen choos "selectFromDictionary" on ubcombobox
+ - add logicalPredicates for request when choose "selectFromDictionary" on `ubcombobox`
 
 ## [5.4.5]
 ### Fixed

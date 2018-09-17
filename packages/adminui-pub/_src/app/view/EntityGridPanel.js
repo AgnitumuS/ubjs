@@ -793,10 +793,12 @@ Ext.define('UB.view.EntityGridPanel', {
     }
 
     fullSize = 0
+    me.suspendLayouts()
     _.forEach(columnNew, function (column) {
       fullSize += column.size * charWidth
       column.column.setWidth(column.size * charWidth + 8/* padding */)
     })
+    me.resumeLayouts()
   },
 
   /**
@@ -1312,7 +1314,9 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-  initPagingToolbar: function () {
+  lazyPagingToolbarInit: function() {
+    if (this.floatToolbarEl) return // already initialized
+
     let me = this
     let el = me.getEl()
 
@@ -1320,31 +1324,37 @@ Ext.define('UB.view.EntityGridPanel', {
       tag: 'div',
       cls: 'ub-float-toolbar'
     }, true)
-    if (!me.hidePagingBar) {
-      me.pagingBar = Ext.create('UB.view.PagingToolbar', {
-        renderTo: me.floatToolbarEl,
-        isPagingBar: true,
-        cls: 'ub-grid-info-panel-tb',
-        padding: '0 0 0 5',
-        /**
-         * @cfg {Boolean} autoCalcTotal default false
-         * If it is true show total row count in paging toolbar.
-         *
-         * To set this parameter in  {@link UB.core.UBCommand command} config use:
-         *
-         *       cmpInitConfig: {
+
+    me.pagingBar = Ext.create('UB.view.PagingToolbar', {
+      renderTo: me.floatToolbarEl,
+      isPagingBar: true,
+      cls: 'ub-grid-info-panel-tb',
+      padding: '0 0 0 5',
+      /**
+       * @cfg {Boolean} autoCalcTotal default false
+       * If it is true show total row count in paging toolbar.
+       *
+       * To set this parameter in  {@link UB.core.UBCommand command} config use:
+       *
+       *       cmpInitConfig: {
        *                      autoCalcTotal: true
        *       }
-         *
-         */
-        autoCalcTotal: me.autoCalcTotal,
-        store: me.store // same store GridPanel is using
-      })
+       *
+       */
+      autoCalcTotal: me.autoCalcTotal,
+      store: me.store // same store GridPanel is using
+    })
+  },
 
+  initPagingToolbar: function () {
+    let me = this
+
+    if (!me.hidePagingBar) {
       me.store.on('refresh', function () {
         if (me.store.currentPage === 1 && me.store.getCount() < me.minRowsPagingBarVisibled) {
-          me.floatToolbarEl.hide()
+          if (me.floatToolbarEl) me.floatToolbarEl.hide()
         } else {
+          me.lazyPagingToolbarInit()
           if (!me.floatToolbarEl.isVisible()) {
             me.floatToolbarEl.show()
           }
@@ -3236,6 +3246,8 @@ Ext.define('UB.view.EntityGridPanel', {
       }
       store.clearListeners()
     }
+    if (me.pagingBar) me.pagingBar.destroy()
+    if (me.menu) me.menu.destroy()
     me.callParent(arguments)
   },
 

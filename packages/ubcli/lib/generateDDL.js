@@ -91,6 +91,9 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
     }
   }
   entityNames = _.uniq(entityNames)
+  entityNames = entityNames.filter((eName) => {
+    return domain.get(eName).mixin('mStorage') !== undefined
+  })
   console.log('Check congruence for domain metadata and database structure for: ', entityNames)
 
   let Generator = require('./ddlGenerators/DDLGenerator')

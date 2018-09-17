@@ -43,7 +43,7 @@ function startSchedulers () {
         // eslint-disable-next-line no-eval
         canSchedule = eval(item.schedulingCondition)
       } catch (e) {
-        console.error('SCHEDULER: Invalid scheduleCondition for item', item.name, 'Item DISABLED')
+        console.error('SCHEDULER: Invalid expression in scheduleCondition for item', item.name, 'Item DISABLED')
       }
       if (!canSchedule) {
         console.info('SCHEDULER: scheduleCondition for item', item.name, 'evaluated to false. Item DISABLED')
@@ -57,7 +57,7 @@ function startSchedulers () {
       }
     }
     if (!usersApiKeys[item.runAs]) {
-      console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user or it\'s apiKey are empty. Item', item.name, 'DISABLED')
+      console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user or it\'s uba_user.uPasswordHashHexa is empty. Item', item.name, 'DISABLED')
       continue
     }
     cfgForWorker.push({

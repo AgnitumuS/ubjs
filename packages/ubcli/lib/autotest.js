@@ -27,7 +27,7 @@ module.exports = function autotest (options) {
   let debugOutput = []
 
   // set timeout 10 min
-  http.setGlobalConnectionDefaults({receiveTimeout: 10 * 60 * 1000});
+  http.setGlobalConnectionDefaults({receiveTimeout: 10 * 60 * 1000})
 
   if (!options) {
     let opts = cmdLineOpt.describe('autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')

@@ -1,3 +1,4 @@
+/* global Ext */
 /**
  * Footer summary grid panel.
  *
@@ -23,12 +24,6 @@
  */
 Ext.define('UB.view.GridSummary', {
   extend: 'Ext.container.Container',
-  /* requires: [
-  ],
-  uses: [
-  ], */
-  // border: false,
-
   alias: 'widget.gridsummury',
 
   cls: 'x-grid-row-summary',
@@ -44,7 +39,6 @@ Ext.define('UB.view.GridSummary', {
     backgroundColor: '#ffffff !important'
   },
   border: '1 0 0 0',
-  // weight: 100,
   summaryDataOnClient: false,
   initComponent: function () {
     let me = this
@@ -70,7 +64,7 @@ Ext.define('UB.view.GridSummary', {
           border: '1 1 0 0',
           // padding: 1,
           cls: 'x-grid-cell-summary x-grid-cell x-grid-cell-inner',
-          style: {textAlign: column.summaryType === 'count' ? 'right' : (column.align || 'left') },
+          style: { textAlign: column.summaryType === 'count' ? 'right' : (column.align || 'left') },
           width: column.getWidth()
         }))
       })
@@ -172,19 +166,8 @@ Ext.define('UB.view.GridSummary', {
         delete request.whereList
       }
 
-      /*
-      request.options = request.options || {}
-      request.options.start = request.options.start || 0
-      request.options.limit = 1
-      */
       $App.connection.select(request).done(function (response) {
         let record = {}
-        /*
-            resultSet = grid.getStore().getProxy().getReader().read({data: response.resultData.data})
-        if (resultSet.records.length < 1){
-            return
-        }
-        record =  resultSet.records[0] */
         if (!response.resultData || response.resultData.rowCount < 1) {
           return
         }
@@ -207,12 +190,8 @@ Ext.define('UB.view.GridSummary', {
                 target: el,
                 trackMouse: true,
                 html: UB.i18n(item.baseColumn.summaryType + 'ST')
-                // + ' ' + item.baseColumn.text
               })
             }
-            /* else {
-                                  item.toolTipe.getEl().setHTML(item.baseColumn.summaryType + ' ' + item.baseColumn.text)
-                                }  */
           }
         })
       })

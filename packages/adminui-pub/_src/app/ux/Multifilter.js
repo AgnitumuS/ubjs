@@ -1,9 +1,14 @@
-/* global Ext */
+/* eslint-disable one-var */
+/* global Ext, $App */
 require('../core/UBStoreManager')
 require('../core/UBUtil')
 require('./form/field/UBBoolBox')
 require('./form/field/UBBoxSelect')
 require('./form/field/UBMultiSelectBox')
+const UB = require('@unitybase/ub-pub')
+const UBDomain = require('@unitybase/cs-shared').UBDomain
+const _ = require('lodash')
+
 /**
  * Widget for grid filtration. Used in UB.view.EntityGridPanel toolbar.
  * This mixin will create toolbar on grid. When user select cell in grid the mixin will show a context filter in toolbar.
@@ -25,20 +30,21 @@ require('./form/field/UBMultiSelectBox')
 Ext.define('UB.ux.Multifilter', {
   extend: 'Ext.toolbar.Toolbar', // Ext.toolbar.Toolbar Ext.form.Panel
 
-  // height: 40,
   alias: 'plugin.multifilter',
   border: false,
-  margin: '0 0 0 3', // 30
+  margin: '0 0 0 3',
   padding: 0,
   cls: 'ub-multi-filter',
   bodyStyle: 'background: none;',
   // layout:'column',
   filtersList: {},
   selectedColumn: null,
+  filterMenu: null,
+  topFilterPanel: null,
 
   init: function (owner) {
-    var
-      me = this, timeOut = 0, menu
+    let me = this
+    let timeOut = 0
 
     me.gridOwner = owner
     me.gridOwner.on({
@@ -72,28 +78,32 @@ Ext.define('UB.ux.Multifilter', {
     me.filterPrefix = 'context_' + Ext.id()
     me.filtersPanel = {}
 
-    menu = me.createSelectFilterMenu(function (menu, item, e, eOpts) {
-      Ext.suspendLayouts()
-      try {
-        me.hideAllPanel()
-        me.selectedColumn = item.column
-        me.createFilterPanel(item.column.dataIndex, item.column)
-      } finally {
-        Ext.resumeLayouts(true)
-      }
-      if (me.topfilterPenel.layout.overflowHandler.menuItems.length > 0) {
-        me.showContexFilterPanel()
-      }
-    })
-
     me.buttonSelectFilter = new Ext.button.Button({
       tooltip: UB.i18n('Filter by'),
       glyph: UB.core.UBUtil.glyphs.faFilter,
       handler: function () {
-        menu.showBy(me.buttonSelectFilter.el, me.menuAlign)
+        if (!me.filterMenu) {
+          me.filterMenu = me.createSelectFilterMenu(me.selectColumnMenuClick)
+        }
+        me.filterMenu.showBy(me.buttonSelectFilter.el, me.menuAlign)
       }
     })
     me.add(this.buttonSelectFilter)
+  },
+
+  selectColumnMenuClick: function (menu, item) {
+    let me = this
+    Ext.suspendLayouts()
+    try {
+      me.hideAllPanel()
+      me.selectedColumn = item.column
+      me.createFilterPanel(item.column.dataIndex, item.column)
+    } finally {
+      Ext.resumeLayouts(true)
+    }
+    if (me.topFilterPanel.layout.overflowHandler.menuItems.length > 0) {
+      me.showContexFilterPanel()
+    }
   },
 
   getItemMargin: function () {
@@ -101,12 +111,12 @@ Ext.define('UB.ux.Multifilter', {
   },
 
   /**
-     *
-     * @param {Function} onClick
-     * @returns {Array}
-     */
+   *
+   * @param {Function} onClick
+   * @returns {Array}
+   */
   createSelectFilterMenu: function (onClick) {
-    var me = this, menuItems = [], menu, attrChain, fieldList, filterGroups = {}
+    let me = this, menuItems = [], menu, attrChain, fieldList, filterGroups = {}
     _.forEach(me.gridOwner.columns, function (column) {
       var fieldCfg = me.fieldsConfig[column.dataIndex] || {}
       if (fieldCfg.disabled || column.filterable === false) {
@@ -167,6 +177,13 @@ Ext.define('UB.ux.Multifilter', {
     me.callParent()
   },
 
+  destroy: function () {
+    if (this.filterMenu) {
+      this.filterMenu.destroy()
+    }
+    this.clearFilterPanel()
+  },
+
   onFilterChange: function (store) {
     store.totalRequired = false
   },
@@ -221,13 +238,12 @@ Ext.define('UB.ux.Multifilter', {
     filterItems = createFilterItems(panel.ubAttrName, panel.columnText)
 
     win = Ext.create('Ext.window.Window', {
-      // floating: true,    \
       padding: '10 5 10 5',
       height: 160,
       minWidth: 550,
       modal: true,
       overflowX: 'scroll',
-      layout: { type: 'hbox', align: 'middle'},
+      layout: {type: 'hbox', align: 'middle'},
       title: UB.i18n('search'),
       items: [
         button,
@@ -258,7 +274,7 @@ Ext.define('UB.ux.Multifilter', {
 
     me.baseToolbar = tBar
 
-    me.topfilterPenel = Ext.create('Ext.toolbar.Toolbar', {
+    me.topFilterPanel = Ext.create('Ext.toolbar.Toolbar', {
       border: 0,
       margin: 0,
       padding: 0,
@@ -267,8 +283,8 @@ Ext.define('UB.ux.Multifilter', {
       items: [me]
     })
 
-    if (me.topfilterPenel.layout) {
-      handler = me.topfilterPenel.layout.overflowHandler
+    if (me.topFilterPanel.layout) {
+      handler = me.topFilterPanel.layout.overflowHandler
       if (handler) {
         handler.getSuffixConfig = function () {
           var
@@ -295,7 +311,7 @@ Ext.define('UB.ux.Multifilter', {
       }
     }
 
-    tBar.insert(tBar.items.getCount() - 2, me.topfilterPenel)
+    tBar.insert(tBar.items.getCount() - 2, me.topFilterPanel)
     if (view) {
       view.on({
         // if user start to type something - go to filter panel
@@ -386,7 +402,7 @@ Ext.define('UB.ux.Multifilter', {
       filterPanel, items, fieldList,
       grid = me.gridOwner,
       entity = grid.entityName,
-      attribute, lbl, isDictFilter = false
+      attribute, isDictFilter = false
 
     attrChain = attrName.split('.')
     if (attrChain.length > 1 && !gridColumn.simpleFilter) {
@@ -407,20 +423,18 @@ Ext.define('UB.ux.Multifilter', {
 
     items = me.getFilterControls(entity, attrName, attribute, fieldCfg)
     items[0].hideLabel = true
-    items.unshift(lbl = Ext.create('Ext.form.Label', {
+    let lblText = gridColumn.filterCaption || (isDictFilter ? attribute.caption : null) || gridColumn.text
+    items.unshift(Ext.create('Ext.form.Label', {
       shrinkWrap: 0,
       margin: '0 0 0 3',
       width: 100,
-      text: gridColumn.filterCaption || (isDictFilter ? attribute.caption : null) || gridColumn.text,
+      text: lblText,
+      autoEl: {
+        tag: 'label',
+        'data-qtip': lblText
+      },
       style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
     }))
-    lbl.on('afterrender', function () {
-      Ext.create('Ext.tip.ToolTip', {
-        target: this.getEl(),
-        trackMouse: true,
-        html: this.text
-      })
-    }, lbl)
 
     filterPanel = Ext.create('Ext.toolbar.Toolbar', {
       border: 0,
@@ -551,8 +565,7 @@ Ext.define('UB.ux.Multifilter', {
       itemExecuted = {}
 
     // MPV - prevent unnecessary layout by adding empty filter panel
-    // COLUMN ALIGN BUG if uncomment below
-    // if (!filters.length && !me.filterPenel) return
+    if (!filters.length && !me.filterPenel) return
 
     me.initBarControls()
     me.filterPenelFilters.items.each(function (item) {
@@ -599,8 +612,7 @@ Ext.define('UB.ux.Multifilter', {
       } else if (attribute.dataType === 'Enum') {
         labelValue = item.text
       } else {
-        var dt = UBDomain.getPhysicalDataType(attribute.dataType)
-        var toDate
+        let dt = UBDomain.getPhysicalDataType(attribute.dataType)
         switch (dt) {
           case 'date':
             if (item.filterType === 'period') {
@@ -608,7 +620,7 @@ Ext.define('UB.ux.Multifilter', {
                 if (item.value) {
                   labelValue = UB.i18n('s') + ' ' + Ext.Date.format(item.value, 'd-m-Y')
                 }
-                toDate = item.relatedFilter.value
+                let toDate = item.relatedFilter.value
                 if (toDate) {
                   labelValue += ' ' + UB.i18n('po') + ' ' +
                     Ext.Date.format(item.isTime ? UB.core.UBUtil.addDays(toDate, -1) : toDate, 'd-m-Y')
@@ -647,7 +659,7 @@ Ext.define('UB.ux.Multifilter', {
                   if (item.value) {
                     labelValue = item.value + ''
                   }
-                  toDate = item.relatedFilter.value
+                  let toDate = item.relatedFilter.value
                   if (toDate) {
                     labelValue += ' - ' + toDate
                   }
@@ -830,7 +842,7 @@ Ext.define('UB.ux.Multifilter', {
       if (!val) {
         return true
       }
-      var dateReg = /^\d{2}([.\/\-])\d{2}\1\d{4}$/
+      var dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/
       if (val.match(dateReg)) {
         return true
       }
@@ -933,7 +945,7 @@ Ext.define('UB.ux.Multifilter', {
           }
         })
       } else {
-        prevFilterFrom = allPrevFilter || {filterType: 'equal' }
+        prevFilterFrom = allPrevFilter || {filterType: 'equal'}
       }
       // prevFilter = prevFilter || {filterType: 'equal' };
       if (context.getInitParam) {
@@ -1161,7 +1173,7 @@ Ext.define('UB.ux.Multifilter', {
       var
         me = this,
         attribute = $App.domainInfo.get(entityName).attr(attrName),
-        cfg = { addnoFilterValue: true},
+        cfg = {addnoFilterValue: true},
         filterName = context.getFilterPrefix(attrName),
         prevFilter = context.getPrevFilter(filterName, attrName),
         control, createFilter, startSearch
@@ -1844,12 +1856,6 @@ Ext.define('UB.ux.Multifilter', {
         editable: false,
         withoutIndent: true,
         listeners: {
-          afterrender: function (sender) {
-            Ext.create('Ext.tip.ToolTip', {
-              target: sender.getEl(),
-              html: labelText
-            })
-          },
           change: function (sender, newValue, oldValue, eOpts) {
             comboChanged(sender, newValue)
           }
@@ -1951,33 +1957,26 @@ Ext.define('UB.ux.Multifilter', {
     },
 
     getOnChangeHandler: function (filterName, attrName, context) {
-      // var me = this;
       return function (sender, newVal) {
-        var
-          dateFrom, dateTo
         if (!sender.isValid()) {
           return
         }
 
         if (sender.dateRole === 'fromDate') {
           sender.relatedPiker.setMinValue(newVal)
-          dateFrom = newVal
-          dateTo = sender.relatedPiker.getValue() || 0
         } else {
           sender.relatedPiker.setMaxValue(newVal)
-          dateTo = newVal
-          dateFrom = sender.relatedPiker.getValue() || 0
         }
       }
     },
 
     /**
-         * create input controls for date filters
-         * @param {String} entityName
-         * @param {String} attrName
-         * @param {Object} context
-         * @return {Array}
-         */
+     * create input controls for date filters
+     * @param {String} entityName
+     * @param {String} attrName
+     * @param {Object} context
+     * @return {Array}
+     */
     getDateFilterInputS: function (entityName, attrName, context) {
       var
         me = this, createFilter,
@@ -2012,10 +2011,10 @@ Ext.define('UB.ux.Multifilter', {
           }
         })
       } else {
-        prevFilter = allPrevFilter || {filterType: baseFilterType || 'date' }
+        prevFilter = allPrevFilter || {filterType: baseFilterType || 'date'}
         prevFilterDate = prevFilter
       }
-      prevFilter = prevFilter || {filterType: baseFilterType || 'date' }
+      prevFilter = prevFilter || {filterType: baseFilterType || 'date'}
 
       filterType = prevFilter.filterType || baseFilterType || 'date'
 

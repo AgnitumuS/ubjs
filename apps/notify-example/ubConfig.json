@@ -1,0 +1,99 @@
+{
+	"httpServer": {
+		"host": "+",
+		"port": "8881"
+	},
+	"logging": {
+		"path": ".\\logs",
+		"levels": [
+			"*"
+		],
+		"threadingModel": "IdentifiedInOnFile",
+		"stackTrackDepth": 20,
+		"rotationSizeInMB": 100,
+		"performanceCounters": false
+	},
+	"security": {
+		"authenticationMethods": [
+			"UB"
+		]
+	},
+	"uiSettings": {
+		"adminUI": {
+			"applicationName": "AMQP notification example",
+			"applicationTitle": "AdminUI",
+			"defaultPasswordForDebugOnly": "admin",
+			"themeName": "UBGrayTheme",
+			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			"endpoint": "ubadminui",
+			"loginURL": "/models/adminui-vue/views/ub-auth.html",
+			"messenger": {
+				"enabled": true,
+				"checkInterval": 30
+			},
+			"linter": { "asi": true, "sub": true },
+			"onlyOffice": {
+				"serverIP": "10.8.17.6:32771"
+			},
+			"amqpNotificationUrl": "ws://127.0.0.1:15674/ws"
+		},
+		"portalUI": {
+			"applicationName": "UBCore usage"
+		}
+	},
+	"application": {
+		"defaultLang": "en",
+		"rootHandler": "index.html",
+		"schedulers": {"enabled": false},
+		"domain": {
+			"models": [
+				{
+					"path": "./node_modules/@unitybase/ub"
+				},
+				{
+					"path": "./node_modules/@unitybase/uba"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubm"
+				},
+				{
+					"path": "./node_modules/@unitybase/ub-pub"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-pub"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-reg"
+				},
+				{
+					"path": "./node_modules/@unitybase/adminui-vue"
+				},
+				{
+					"name": "NTF",
+					"path": "./models/NTF"
+				}
+			]
+		},
+		"connections": [
+			{
+				"name": "main",
+				"driver": "SQLite3",
+				"isDefault": true,
+				"dialect": "SQLite3",
+				"databaseName": "./autotestDB.sqlite3",
+				"supportLang": ["en"],
+				"advSettings": "Synchronous=Off"
+			}
+		],
+		"blobStores": [
+			{
+				"name": "mdb",
+				"storeType": "Virtual",
+				"tempPath": "./_temp"
+			}
+		],
+		"customSettings": {
+			"amqpNotificationUrl": "amqp://localhost/"
+		}
+	}
+}

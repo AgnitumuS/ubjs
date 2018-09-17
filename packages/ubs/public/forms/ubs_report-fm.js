@@ -63,17 +63,20 @@ exports.formCode = {
               window.saveAs(blobData, me.record.get('report_code') + '.' + type)
             })
           return
+        } else {
+          $App.doCommand({
+            cmdType: 'showReport',
+            cmdData: {
+              reportCode: me.getField('report_code').getValue(),
+              reportType: type, // win.down('combobox').getValue(),
+              reportParams: {},
+              reportOptions: {
+                debug: true,
+                allowExportToExcel: true
+              }
+            }
+          })
         }
-
-        $App.doCommand({
-          'cmdType': 'showReport',
-          'cmdData': {
-            'reportCode': me.getField('report_code').getValue(),
-            'reportType': type, // win.down('combobox').getValue(),
-            'reportParams': {},
-            'reportOptions': {debug: true}
-          }
-        })
       }
     })
   }

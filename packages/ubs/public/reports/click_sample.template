@@ -1,4 +1,4 @@
-<!--@mi_modifyDate "Tue Aug 28 2018 20:55:01 GMT+0300 (FLE Standard Time)"-->
+<!--@mi_modifyDate "Thu Sep 13 2018 16:45:29 GMT+0300 (FLE Standard Time)"-->
 <!--@name "click_sample"-->
 <!--@report_code "click_sample"-->
 <!--@model "UBS"-->
@@ -7,7 +7,25 @@
 
 
 
-<!--%pageOrientation:landscape--><h1>Click handler sample</h1>
+<!--%pageOrientation:landscape-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>Click handler sample</h1>
 <h1>Formatting samples. Formats depends on user locale. Change user language to see different formatting</h1>
 <h2>Number formatting sample</h2>
 <table>

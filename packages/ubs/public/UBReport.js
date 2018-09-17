@@ -46,6 +46,7 @@ function UBReport (reportCode, reportType, params, language) {
     this.reportCode = reportCode.code
     this.reportType = reportCode.type || 'html'
     this.incomeParams = reportCode.params
+    this.allowExportToExcel = reportCode.allowExportToExcel
     this.lang = reportCode.language
     this.debug = reportCode.debug
   }
@@ -368,30 +369,13 @@ UBReport.prototype.buildReport = function (reportParams) {
 UBReport.prototype.getDocument = function (attribute) {
   let cfg = JSON.parse(this.reportRW[attribute])
 
-  let url = [$App.connection.baseURL, 'getDocument', '?entity=ubs_report&attribute=', attribute,
-    '&ID=', this.reportRW.ID]
-
-  if (cfg.store) {
-    url.push('&store=', cfg.store)
+  let params = {
+    entity: 'ubs_report',
+    attribute: attribute,
+    id: this.reportRW.ID,
+    isDirty: cfg.isDirty === true
   }
-  if (cfg.filename) {
-    url.push('&filename=', cfg.filename)
-  }
-  if (cfg.origName) {
-    url.push('&origName=', cfg.origName)
-  }
-  if (cfg.isDirty) {
-    url.push('&isDirty=', cfg.isDirty)
-  }
-  if (this.debug) {
-    url.push('&dtrPrm=', (new Date()).getTime())
-  }
-  url = url.join('')
-  this.reportRW[attribute + 'Url'] = url
-
-  let method = $App.connection.get
-  return method.call($App.connection, url, {responseType: 'text'})
-    .then(response => response.data)
+  return $App.connection.getDocument(params, {resultIsBinary: false})
 }
 
 /**

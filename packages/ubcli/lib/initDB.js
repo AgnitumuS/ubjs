@@ -33,7 +33,7 @@ const _ = require('lodash')
 const fs = require('fs')
 const http = require('http')
 module.exports = initDB
-  /**
+/**
  * @param {Object} cfg
  * @param {Number} [cfg.clientIdentifier=3] Identifier of the client.
  *    Must be between 2 and 8999. Number 1 is for UnityBase developer, 3 for test.
@@ -134,7 +134,8 @@ function initDB (cfg) {
     }
 
     newConfig.security = {}
-    newConfig.application.domain = { models: _.filter(config.application.domain.models, {name: 'UB'}) }
+    newConfig.application.domain = { models: _.filter(newConfig.application.domain.models, {name: 'UB'}) }
+    delete newConfig.application.domain.models[0].name
     if (cfg.dropDatabase || cfg.createDatabase) {
       dbaConn = _.cloneDeep(defaultDB)
       _.assign(dbaConn, {
@@ -175,7 +176,7 @@ function fillBuildInRoles (conn, dbDriverName) {
     auditTailColumns = ''
     auditTailValues = ''
   }
-    // build-in roles
+  // build-in roles
   for (let roleName in UBA_COMMON.ROLES) {
     let aRole = UBA_COMMON.ROLES[roleName]
     initSecurity.push(
@@ -184,7 +185,7 @@ function fillBuildInRoles (conn, dbDriverName) {
        values(${aRole.ID},'${aRole.NAME}','${aRole.DESCR}',${aRole.TIMEOUT},'${aRole.ENDPOINTS}'${auditTailValues})`
     )
   }
-    // build-in users
+  // build-in users
   for (let userName in UBA_COMMON.USERS) {
     let aUser = UBA_COMMON.USERS[userName]
     initSecurity.push(
@@ -193,7 +194,7 @@ function fillBuildInRoles (conn, dbDriverName) {
        values (${aUser.ID}, '${aUser.NAME}', '${aUser.NAME}', '${aUser.HASH}', 0, ''${auditTailValues})`
     )
   }
-    // grant roles to users and add admin ELS
+  // grant roles to users and add admin ELS
   initSecurity.push(
     /* grant all ELS methods for "Admin" role */
     `insert into uba_els (ID,code,description,disabled,entityMask,methodMask,ruleType,ruleRole${auditTailColumns}) 

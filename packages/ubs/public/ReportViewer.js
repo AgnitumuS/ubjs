@@ -1,4 +1,6 @@
+/* global Ext, Blob */
 require('./UBReport')
+const UB = require('@unitybase/ub-pub')
 const baseRepCSS = `body {
     background-color: #FFFFFF;
     color: #000000;
@@ -31,10 +33,13 @@ td,th {
     a {
       text-decoration: none
     }
+    @page { margin: 1cm; }
+    #Header, #Footer { display: none !important; }
 }`
 const tableResizeCSS = '@media screen{th { resize: both; overflow: auto; }}'
-const printRepCSS = '@page{margin: 0mm;}' // this affects the margin in the printer settings
-const repCSS = baseRepCSS + tableResizeCSS + printRepCSS
+const repCSS = baseRepCSS + tableResizeCSS
+const HTML_PAGEBREAK_RE = new RegExp('<!-- pagebreak -->', 'gi')
+const HTML_PAGEBREAK_EL = '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="mce-pagebreak"/>'
 
 /**
  * Inject CSS o the documnet
@@ -60,6 +65,7 @@ function addStyleSheet (doc, cssText) {
  *    report = Ext.create('UBS.UBReport', {
  *      code: 'test',
  *      type: 'pdf',
+ *      allowExcelExport: true,
  *      params: {userName: 'Helen'}
  *    });
  *    report.init().then(function(){
@@ -75,12 +81,14 @@ Ext.define('UBS.ReportViewer', {
   layout: {type: 'vbox', align: 'stretch'},
   width: 700,
   height: 500,
+  reportCSSAdded: false,
+  paramForm: null,
 
   /**
    * @cfg {UBS.UBReport} report
    */
   initComponent: function () {
-    var me = this, container, control
+    let me = this
 
     if (me.report && !me.reportType) {
       me.reportType = me.report.reportType
@@ -89,6 +97,8 @@ Ext.define('UBS.ReportViewer', {
     if (!me.reportType) {
       throw new Error('config parameter reportType is undefined')
     }
+    let container, control
+    let excelBtn = null
     switch (me.reportType) {
       case 'pdf':
         control = container = Ext.create('UB.ux.PDFComponent', {
@@ -103,6 +113,16 @@ Ext.define('UBS.ReportViewer', {
             tag: 'iframe'
           }
         })
+        if (me.report.allowExportToExcel) {
+          excelBtn = {
+            xtype: 'button',
+            ui: 'default-toolbar',
+            text: UB.i18n('Excel'),
+            handler: function () {
+              me.exportToXLSX()
+            }
+          }
+        }
         container = Ext.create('Ext.panel.Panel', {
           layout: {
             type: 'vbox',
@@ -127,7 +147,7 @@ Ext.define('UBS.ReportViewer', {
                     let iFrame = me.reportControl.getEl().dom
                     iFrame.contentWindow.print()
                   }
-                }]
+                }, excelBtn]
             }]
         })
         break
@@ -170,18 +190,45 @@ Ext.define('UBS.ReportViewer', {
     me.callParent(arguments)
   },
 
+  exportToXLSX: function () {
+    let me = this
+    let repParams
+    // do we need to get parameters from parameters enter form?
+    if (me.paramForm && (!me.report.incomeParams || (Object.keys(me.report.incomeParams).length === 0))) {
+      if (!me.paramForm.isValid()) {
+        $App.dialogInfo('reportParamsRequired')
+        return
+      }
+      repParams = me.paramForm.getParameters(me.paramForm)
+    } else {
+      repParams = me.report.incomeParams
+    }
+    Ext.create('UBS.UBReport', {
+      code: me.report.reportCode,
+      type: 'xlsx',
+      params: repParams,
+      language: $App.connection.userLang()
+    }).makeReport().then(function (data) {
+      let blobData = new Blob(
+        [data.reportData],
+        {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+      )
+      window.saveAs(blobData, me.report.reportCode + '.xlsx')
+    })
+  },
+
   /**
-   *
    * @param {UBS.ReportParamForm|Array} paramForm
    */
   addParamForm: function (paramForm) {
-    var me = this, prmCfg
+    var me = this
     if (paramForm instanceof Array) {
-      prmCfg = paramForm
+      let prmCfg = paramForm
       paramForm = Ext.create('UBS.ReportParamForm', {
         items: paramForm,
         getParameters: function (owner) {
-          var result = {}, frm = owner.getForm()
+          let result = {}
+          let frm = owner.getForm()
           _.forEach(prmCfg, function (item) {
             result[item.name] = frm.findField(item.name).getValue()
           })
@@ -189,6 +236,7 @@ Ext.define('UBS.ReportViewer', {
         }
       })
     }
+    me.paramForm = paramForm
     me.insert(0, paramForm)
     paramForm.on('buildReport', function (param, form) {
       me.getEl().mask(UB.i18n('pleaseWait'))
@@ -199,12 +247,12 @@ Ext.define('UBS.ReportViewer', {
   },
 
   showReport: function (data) {
-    var me = this
+    let me = this
     switch (me.reportType) {
       case 'pdf':
         if (typeof (data) === 'string') {
-          var pdfLength = data.length
-          var pdfArray = new Uint8Array(new ArrayBuffer(pdfLength))
+          let pdfLength = data.length
+          let pdfArray = new Uint8Array(new ArrayBuffer(pdfLength))
 
           for (let i = 0; i < pdfLength; i++) {
             pdfArray[i] = data.charCodeAt(i)
@@ -215,18 +263,21 @@ Ext.define('UBS.ReportViewer', {
           data = new Blob([data], { type: 'application/pdf' })
         }
 
-        me.reportControl.setSrc({ blobData: data })
+        me.reportControl.setSrc({blobData: data})
         break
       case 'html':
         let iFrame = me.reportControl.getEl().dom
         let iFrameDoc = iFrame.contentDocument
-        iFrameDoc.body.innerHTML = data
-        addStyleSheet(iFrameDoc, repCSS)
-        let orientation = me.report.reportOptions.pageOrientation
-        if (orientation === 'landscape') {
-          addStyleSheet(iFrameDoc, '@page{size: landscape;}')
-        } else if (orientation === 'portrait') {
-          addStyleSheet(iFrameDoc, '@page{size: portrait;}')
+        iFrameDoc.body.innerHTML = data.replace(HTML_PAGEBREAK_RE, HTML_PAGEBREAK_EL)
+        if (!me.reportCSSAdded) {
+          addStyleSheet(iFrameDoc, repCSS)
+          let orientation = me.report.reportOptions.pageOrientation
+          if (orientation === 'landscape') {
+            addStyleSheet(iFrameDoc, '@page{size: landscape;}')
+          } else if (orientation === 'portrait') {
+            addStyleSheet(iFrameDoc, '@page{size: portrait;}')
+          }
+          me.reportCSSAdded = true
         }
         if (me.report.onReportClick) { // add onclick handler for all <a href="">
           let refs = iFrameDoc.getElementsByTagName('a')

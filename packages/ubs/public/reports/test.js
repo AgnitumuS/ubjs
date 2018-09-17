@@ -83,11 +83,20 @@ exports.reportCode = {
             }
           }
         }
-        result = me.buildHTML(data)
-        if (me.reportType === 'pdf') {
-          result = me.transformToPdf(result)
-        }
-        return result
+        reportParams = data
+        switch (me.reportType) {
+          case 'pdf': 
+            result = me.buildHTML(reportParams)
+            result = me.transformToPdf(result)
+            break
+          case 'html': 
+            result = me.buildHTML(reportParams)
+            break
+          case 'xlsx':           
+            result = me.buildXLSX(reportParams)
+            break
+        }        
+        return result   
       })
   },
 

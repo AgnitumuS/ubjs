@@ -722,15 +722,6 @@ Ext.define('UB.ux.UBDocument', {
     Ext.callback(callback, scope, [resultValue.success])
   },
 
-  /**
-   * this one used in BasePanel.onShowOriginal
-   * @param {String} mime
-   */
-  setMIME: function (mime) {
-    this.forceMIME = mime || ''
-    this.setValue(this.lastOriginalValue, this.instanceID, true)
-  },
-
   disableActions: function (value) {
     if (this.action) {
       // this action has items in two places: toolbar and allMenuItems menu

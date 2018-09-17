@@ -567,6 +567,11 @@
               "description": "timeout in seconds after witch client must change encryption key. 0 - unlimited"
             }
           }
+        },
+        "localIPs": {
+          "type": "string",
+          "default": "",
+          "description": "Semicolon delimited list of server IP addresses. <b>WARNING</b> To be used ONLY in case server can't resolve local addresses automatically. In case of wrong configuration unauthorised server access is possible"
         }
       }
     },
@@ -822,7 +827,7 @@
             },
             "loginURL": {
               "type": "string",
-              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page",
+              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page"
             },
             "customSidebar": {
               "type": "boolean",
@@ -905,6 +910,10 @@
               "type": "number",
               "description": "Number of categories (up to 4) for a favorites columnus",
               "default": 2
+            },
+            "amqpNotificationUrl": {
+              "type": "string",
+              "description": "The url for UBClientNotifier to connect to message broker using stomp protocol over web sockets, an example of valid url is 'ws://127.0.0.1:15674/ws' - this is for RabiitMQ with web stomp extension default configuration. For server part - set application.customSettings.amqpNotificationUrl"
             }
           }
         },

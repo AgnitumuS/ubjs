@@ -1,5 +1,6 @@
 require('./ComponentInfo')
 require('./PropertyGrid')
+require('@unitybase/adminui-pub/_src/app/view/CommandBuilder/EntityTreePanel')
 
 /**
  * Visual form designer

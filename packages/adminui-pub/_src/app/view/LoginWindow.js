@@ -1,3 +1,4 @@
+/* global Ext */
 const UB = require('@unitybase/ub-pub')
 /**
  * User login window.
@@ -118,10 +119,11 @@ Ext.define('UB.view.LoginWindow', {
     }
     // form caption
     if (cfgAdminUI && cfgAdminUI.applicationName) {
-      if (typeof(cfgAdminUI.applicationName) === 'string')
+      if (typeof cfgAdminUI.applicationName === 'string') {
         applicationName = cfgAdminUI.applicationName
-      else if (_.isObject(cfgAdminUI.applicationName))
+      } else if (typeof cfgAdminUI.applicationName === 'object') {
         applicationName = cfgAdminUI.applicationName[locale]
+      }
     }
     if (applicationName) {
       me.items.push({

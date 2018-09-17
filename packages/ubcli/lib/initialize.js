@@ -44,10 +44,10 @@ module.exports = function initialize (cfg) {
     let domainConfig = appConfig.domain
 
     console.info('Scan models `_initialData` folders for initialization scripts')
-    if (!_.isArray(domainConfig['models'])) {
+    if (!Array.isArray(domainConfig['models'])) {
       throw new Error('Domain.models configuration MUST be an array on object')
     }
-    _.forEach(domainConfig['models'], function (modelConfig) {
+    domainConfig['models'].forEach(function (modelConfig) {
       let folderName = path.join(configDir, modelConfig.path, '_initialData')
 
       if ((!oneModel || (modelConfig.name === oneModel)) && fs.isDir(folderName)) {

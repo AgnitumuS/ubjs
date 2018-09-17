@@ -107,7 +107,6 @@
 					"path": "./node_modules/@unitybase/adminui-reg"
 				},
 				{
-					"name": "TST",
 					"path": "./models/TST"
 				}
 			],

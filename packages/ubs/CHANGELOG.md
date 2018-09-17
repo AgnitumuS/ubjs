@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.15]
+### Added 
+ - excel export button added to the ReportViewer in case `allowExportToExcel` report option is true (false by default) 
+ ```javascript
+$App.doCommand({
+  cmdType: 'showReport',
+  cmdData: {
+    reportCode: 'your-report-code',
+    reportType: 'html',
+    reportParams: {a: 'b'},
+    reportOptions: {
+      allowExportToExcel: true
+    }
+  }
+})
+```
+
+## [5.1.13]
+### Fixed
+- UBReport: in case `$fn` function argument is empty return empty string instead of `null`
+- UBReportViewer: prevent multiple injection of the same CSS for HTML reports 
+- UBReportViewer: CSS for hiding header/footer and adding 1cm margins
+
+## [5.1.12]
+### Fixed
+- UBReport: HTML report will replace `<!-- pagebreak -->` placeholder to special element before print
+ as in previous TinyMCE implementation  
+
+## [5.1.11]
+### Fixed
+- UBReport: in case `$fn` function argument is empty return empty string instead of `null`
+
 ## [5.1.7]
 ### Added 
 - in HTML reports `$fs` function will display negative numbers using red text color
@@ -18,19 +50,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 create parametrised report in case `reportParams` parameter contains non-empty object
 
 ```javascript
-    $App.doCommand({
-      "cmdType": "showReport",
-      "description": "OPTIONAL report form caption",
-      "cmdData": {
-        "reportCode": "test",
-        "reportType": "html",
-        "reportParams": {
-          "name": "Mark",
-          "birthday": new Date(),
-          "limitation": 2
-        }
-      }
-    })
+$App.doCommand({
+  "cmdType": "showReport",
+  "description": "OPTIONAL report form caption",
+  "cmdData": {
+    "reportCode": "test",
+    "reportType": "html",
+    "reportParams": {
+      "name": "Mark",
+      "birthday": new Date(),
+      "limitation": 2
+    }
+  }
+})
 ``` 
 
 ## [5.1.0]

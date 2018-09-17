@@ -89,13 +89,24 @@ class SpanMap {
    * @param {Number} columnsConfig[x].colSpan
    * @param {Number} [columnsConfig[x].width] optional
    * @param {Number} [columnsConfig[x].widthPercent] optional
+   * @param {HTMLElement} [node]
    */
-  addRow (columnsConfig) {
+  addRow (columnsConfig, node) {
     if (this.columnCount === null) {
       this.initColumnCount(columnsConfig)
     }
     // throw new Error('You must call method initColumnCount before')
-    if (columnsConfig.length > this.columnCount) throw new Error(`To many columns in row config. Max=${this.columnCount} Current=${columnsConfig.length}`)
+    if (columnsConfig.length > this.columnCount) {
+      if (node) {
+        throw new Error(
+          `Table row cells count should not exceed table header(or table first row) cells count.
+Node: "${node.innerHTML}"
+Table columns count: ${this.columnCount}, row columns count: ${columnsConfig.length}
+`)
+      } else {
+        throw new Error(`To many columns in row config. Max=${this.columnCount} Current=${columnsConfig.length}`)
+      }
+    }
     let rowNum = this.rowIndex
     // colNum, width, rowSpan, colSpan
     let spanRow = this.spanRows[rowNum]

@@ -1,4 +1,4 @@
-<!--@mi_modifyDate "Thu Aug 09 2018 20:51:53 GMT+0300 (FLE Standard Time)"-->
+<!--@mi_modifyDate "Thu Sep 13 2018 16:28:56 GMT+0300 (FLE Standard Time)"-->
 <!--@name "Report Builder manual"-->
 <!--@report_code "test"-->
 <!--@model "UBS"-->
@@ -56,7 +56,7 @@
 <p><strong>{{name}}</strong></p>
 <p><strong>{{name}}</strong></p>
 </td>
-<td style="width: 303px; border: 1px solid black; height: 85px;">&nbsp;{{currencyName}}&nbsp;{{#$fs}}"ID"{{/$fs}}</td>
+<td style="width: 303px; border: 1px solid black; height: 85px;">{{#$fs}}"ID"{{/$fs}}</td>
 </tr>
 <!--{{/countries}}-->
 <tr style="height: 25px;">

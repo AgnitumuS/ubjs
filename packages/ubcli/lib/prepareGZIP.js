@@ -49,7 +49,7 @@ module.exports = function prepareGZIP (cfg) {
     return
   }
 
-    // create regular expressions file name must be test with
+  // create regular expressions file name must be test with
   gzipRules.forEach(function (rule) {
     console.log('Apply rule:', rule.location, 'for files large when', largeWhen, 'bytes')
     rule.re = new RegExp(rule.location)
@@ -86,7 +86,8 @@ module.exports = function prepareGZIP (cfg) {
       if (fs.isDir(fullFileName)) {
         gzipFolder(fullFileName + '\\')
       } else {
-        ++totalCount; util.print('.')
+        ++totalCount
+        util.print('.')
         // console.debug('Try', fullFileName);
         if (_.some(gzipRules, function (rule) { return rule.re.test(fullFileName) })) { // some of usePreparedGzip rule is applied to this file
           sz = fs.statSync(fullFileName).size; totalSize += sz

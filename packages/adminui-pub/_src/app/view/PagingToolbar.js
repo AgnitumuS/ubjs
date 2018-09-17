@@ -98,6 +98,11 @@ Ext.define('UB.view.PagingToolbar', {
     me.addEvents('totalChanged')
   },
 
+  destroy: function () {
+    if (this.contextMenu) this.contextMenu.destroy()
+    this.callParent(arguments)
+  },
+
   /**
    * Move to the previous page, has the same effect as clicking the 'previous' button.
    * Fires the {@link #beforechange} event. If the event returns `false`, then
