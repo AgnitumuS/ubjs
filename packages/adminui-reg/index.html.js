@@ -120,6 +120,7 @@ but "browser" section in package.json is not define. Will fallback to "browser":
       // let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
       let cspHeaders =
         "default-src 'self' ws:; " +
+        "connect-src 'self' ws: blob:; " + // for we need blob: for UBDocument (ER diagrams, org chart etc.)
         // 'unsafe-inline' is removed in flavor of 'nonce-...'
         // TODO - remove 'unsafe-eval' after removing all `eval(` from Ext
         `script-src 'self' 'nonce-${cspNonce}' 'unsafe-eval';` +
@@ -167,7 +168,7 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
       resp.writeHead(`Location: ${App.externalURL}${adminUIEndpointName}`)
       return
     }
-    generateIndexPage(req, resp, 'index-dev.mustache', false)
+    generateIndexPage(req, resp, 'index-dev.mustache', true)
   } else {
     resp.writeEnd('Server working in production mode')
     resp.statusCode = 404

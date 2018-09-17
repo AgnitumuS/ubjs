@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.52]
+### Fixed 
+- allow blob: source for connect-src CSP rules. It required by UBDocument (ER diagrams, Org chart)
+
 ## [5.0.37]
 ### Fixed
 - allow blob: source for object-src and frame-src CSP rules. It required by pdf viewer
