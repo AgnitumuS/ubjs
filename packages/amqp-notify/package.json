@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/amqp-notify",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Server to client notification in UnityBase using amqp stomp protocol, client (browser) implementation",
   "main": "UBClientNotifier.js",
   "scripts": {},
