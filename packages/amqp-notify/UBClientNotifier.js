@@ -1,4 +1,3 @@
-const assert = require('assert')
 const _ = require('lodash')
 const { Stomp } = require('@stomp/stompjs/lib/stomp.js')
 const UB = require('@unitybase/ub-pub')
@@ -20,6 +19,8 @@ const AMQP_EXCHANGE_NAME = 'ub-amqp-notify'
  * An example of valid url: 'ws://127.0.0.1:15674/ws'
  * (this is the url for default RabbitMQ configuration)
  *
+ * Plase don't forget to create 'ub-amqp-notify' topic exchange before use!
+ *
  * @param {string} filter
  *   
  * @param {UBClientNotifier-onMessageCallback} onMessage
@@ -33,8 +34,8 @@ const AMQP_EXCHANGE_NAME = 'ub-amqp-notify'
  *   The vhost to be used, defaults to root vhost
  */
 function UBClientNotifier (filter, onMessage, opts={}) {
-  assert(filter !== '' && filter.indexOf('.') === -1, 'filter argument must be non empty string without dots')
-  assert(typeof onMessage === 'function', 'onMessage is a mandatory callback')
+  if (!(filter !== '' && filter.indexOf('.') === -1)) throw new Error('filter argument must be non empty string without dots')
+  if (typeof onMessage !== 'function') throw new Error('onMessage is a mandatory callback')
   let o = Object.assign(opts, {})
   _.defaults(o, {
     vhost: '/'

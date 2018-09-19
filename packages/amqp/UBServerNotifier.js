@@ -89,10 +89,24 @@ App.registerEndpoint('amqp-auth-topic', (req, resp) => {
   resp.writeEnd()
 }, false)
 
-const amqpUrl = App.serverConfig.application.customSettings.amqpNotificationUrl
-if (typeof amqpUrl === 'string') {
-  // The exchange should be declared at the server start
-  amqp.connect(amqpUrl).createChannel().declareExchange(AMQP_EXCHANGE_NAME, amqp.AmqpExchangeType.TOPIC)
+// A thread-wide channel instance
+let _channel
+function getChannel () {
+  if (!_channel) {
+    try {
+      let amqpUrl = App.serverConfig.application.customSettings.amqpNotificationUrl
+      if (typeof amqpUrl === 'string') {
+        let ch = amqp.connect(amqpUrl).createChannel()
+        // Here is not a good place to declare exchange - it must be defined at environment initialization (configuration) process
+        // ch.declareExchange(AMQP_EXCHANGE_NAME, amqp.AmqpExchangeType.TOPIC, { durable: true })
+        _channel = ch
+      }
+    } catch(e) {
+      console.error(e.toString())
+      console.error(e)
+    }
+  }
+  return _channel
 }
 
 /**
@@ -105,15 +119,11 @@ if (typeof amqpUrl === 'string') {
  * An example of valid url: 'amqp://localhost/'
  * (this is the url for default RabbitMQ configuration)
  *
+ * Plase don't forget to create 'ub-amqp-notify' topic exchange before use!
+ *
  * @class UBServerNotifier
  */
 class UBServerNotifier {
-  constructor () {
-    if (typeof amqpUrl === 'string') {
-      this._channel = amqp.connect(amqpUrl).createChannel()
-    }
-  }
-
   /**
    * Sending message to all existing clients
    *
@@ -126,8 +136,9 @@ class UBServerNotifier {
    * @memberof UBServerNotifier
    */
   broadcast (name, msg) {
-    if (this._channel && typeof name === 'string') {
-      this._channel.publish(AMQP_EXCHANGE_NAME, `${name}.bcst.bcst`, JSON.stringify(msg))
+    let ch = getChannel()
+    if (ch && typeof name === 'string') {
+      ch.publish(AMQP_EXCHANGE_NAME, `${name}.bcst.bcst`, JSON.stringify(msg))
     }
   }
 
@@ -149,9 +160,10 @@ class UBServerNotifier {
    * @memberof UBServerNotifier
    */
   notify (name, userID, msg) {
-    // TODO: to deside on anonimous users
-    if (this._channel && typeof name === 'string' && typeof userID === 'number') {
-      this._channel.publish(AMQP_EXCHANGE_NAME, `${name}.U${userID}.0`, JSON.stringify(msg))
+    let ch = getChannel()
+    if (ch && typeof name === 'string' && typeof userID === 'number') {
+      // TODO: to deside on anonimous users
+      ch.publish(AMQP_EXCHANGE_NAME, `${name}.U${userID}.0`, JSON.stringify(msg))
     }
   }
 }

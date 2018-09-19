@@ -62,5 +62,6 @@ Just try to start hello-sub.js in one terminal window first, then run hello-pub.
 ### In-browser notification example
 
 One of the reasons to use RabbitMQ is to establish server-to-client communication with guaranteed delivery. It is possible with RabbitMQ [web-stomp plugin](https://www.rabbitmq.com/web-stomp.html) and stomp client library (file stomp.js is bundled). This uses WebSockets as a delivery channel under the hood.
+Plase note that it is required to create 'ub-amqp-notify' topic exchange before notifier use!
 
 ![Screenshot of in-browser notification example running](lib/ub-amqp_inbrowser-notify.png)
