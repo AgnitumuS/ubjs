@@ -18,8 +18,10 @@ function setDescriptionAttribute (ctx) {
     .where('code', '=', execParams.acctype || instanceData.acctype)
     .selectScalar() || ''
   let currencyCode3 = (UB.Repository('cdn_currency').attrs(['code3'])
+    .misc({ __allowSelectSafeDeleted: true })
     .selectById(execParams.currencyID || instanceData.currencyID)).code3 || ''
   let bankDescription = (UB.Repository('cdn_bank').attrs(['description'])
+    .misc({ __allowSelectSafeDeleted: true })
     .selectById(execParams.bankID || instanceData.bankID)).description || ''
 
   execParams.description = accTypeName + ' ' +
@@ -31,6 +33,7 @@ function setDescriptionAttributeByCurrency (ctx) {
   let orgAccount = UB.Repository('org_orgaccount')
     .attrs(['ID', 'mi_modifyDate'])
     .where('currencyID', 'equal', ctx.mParams.execParams.ID)
+    .misc({ __allowSelectSafeDeleted: true })
     .selectAsObject()
 
   orgAccount.forEach((item) => {
