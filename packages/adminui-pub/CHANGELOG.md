@@ -18,9 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.5.1]
 ### Fixed
-- **CRYTICAL** EntityGridPanel: prevent memory leak by destroying grid popup menu
-- **CRYTICAL** Multifilter: prevent memory leak by destroying all Multifilter panels on destroy
-- **CRYTICAL** Multifilter: prevent memory leak for filter label toolbar (moved to data-qtip)
+- **CRITICAL** EntityGridPanel: prevent memory leak by destroying grid popup menu
+- **CRITICAL** Multifilter: prevent memory leak by destroying all Multifilter panels on destroy
+- **CRITICAL** Multifilter: prevent memory leak for filter label toolbar (moved to data-qtip)
 
 ### Changed
 - all calls to `Q` in BasePanel replaced by native `Promise` 
@@ -33,8 +33,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.5.0]
 ### Fixed
-- **CRYTICAL** EntityGridPanel: prevent memory leak by destroying pagination bar if created
-- **CRYTICAL** EntityGridPanel (`Multifilter`): prevent memory leak by destroying attributes menu if created
+- **CRITICAL** EntityGridPanel: prevent memory leak by destroying pagination bar if created
+- **CRITICAL** EntityGridPanel (`Multifilter`): prevent memory leak by destroying attributes menu if created
 
 ### Changed
 - EntityGridPanel initial rendering speed up (**up to 2 second!**):

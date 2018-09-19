@@ -1,4 +1,8 @@
-const { Stomp } = require('./node_modules/@stomp/stompjs/lib/stomp.js')
+const assert = require('assert')
+const _ = require('lodash')
+const { Stomp } = require('@stomp/stompjs/lib/stomp.js')
+const UB = require('@unitybase/ub-pub')
+
 const AMQP_EXCHANGE_NAME = 'ub-amqp-notify'
 
 /**
@@ -16,14 +20,26 @@ const AMQP_EXCHANGE_NAME = 'ub-amqp-notify'
  * An example of valid url: 'ws://127.0.0.1:15674/ws'
  * (this is the url for default RabbitMQ configuration)
  *
+ * @param {string} filter
+ *   
  * @param {UBClientNotifier-onMessageCallback} onMessage
  *   The callback to receive messages
- * @param {UBClientNotifier-onErrorCallback} [onError=undefined]
+ * @param {Object} [opts]
+ * @param {UBClientNotifier-onErrorCallback} [opts.onError=undefined]
  *   The callback to receive errors
- * @param {UBClientNotifier-onDebugCallback} [onDebug=undefined]
+ * @param {UBClientNotifier-onDebugCallback} [opts.onDebug=undefined]
  *   The callback to replace default debug handler
+ * @param {string} [opts.vhost='/']
+ *   The vhost to be used, defaults to root vhost
  */
-function UBClientNotifier (onMessage, onError = undefined, onDebug = undefined) {
+function UBClientNotifier (filter, onMessage, opts={}) {
+  assert(filter !== '' && filter.indexOf('.') === -1, 'filter argument must be non empty string without dots')
+  assert(typeof onMessage === 'function', 'onMessage is a mandatory callback')
+  let o = Object.assign(opts, {})
+  _.defaults(o, {
+    vhost: '/'
+  })
+
   let client
   let url = UB.connection.appConfig.uiSettings.adminUI.amqpNotificationUrl
   if (typeof UB !== 'undefined' && typeof url === 'string') {
@@ -34,20 +50,20 @@ function UBClientNotifier (onMessage, onError = undefined, onDebug = undefined) 
     client.heartbeat.outgoing = 10*1000
     client.heartbeat.incoming = 10*1000
 
-    if (typeof onDebug === 'function') {
-      client.debug = onDebug
+    if (typeof o.onDebug === 'function') {
+      client.debug = o.onDebug
     }
 
     let userData = UB.connection.userData()
     let userName = UB.connection.isAuthorized() ? 'U' + userData.userID : userData.login
     // Make sure the user has limited access rights
-    client.connect(userName, userData.login, onConnect, onError, '/') // TODO: replace with UB auth
+    client.connect(userName, userData.login, onConnect, o.onError, o.vhost) // TODO: replace with UB auth
 
     // Start subscribing to the chat queue
     function onConnect () {
-      client.subscribe(`/exchange/${AMQP_EXCHANGE_NAME}/*.bcst.bcst`, onMessage)
+      client.subscribe(`/exchange/${AMQP_EXCHANGE_NAME}/${filter}.bcst.bcst`, onMessage)
       if (UB.connection.isAuthorized()) {
-        client.subscribe(`/exchange/${AMQP_EXCHANGE_NAME}/*.${userName}.0`, onMessage)
+        client.subscribe(`/exchange/${AMQP_EXCHANGE_NAME}/${filter}.${userName}.0`, onMessage)
       }
     }
   }
