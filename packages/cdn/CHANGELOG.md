@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.52]
+### Fixed
+- cdn_bank formation of the description when the constituent attributes were deleted
+
 ## [5.0.28]
 ### Changed
 - cdn_region form marked as isDefault: false to allow override by other models

@@ -12,7 +12,8 @@ function setDescriptionAttribute (ctx) {
   const execParams = ctx.mParams.execParams
   let cityName = execParams.cityID || instanceData.cityID
     ? (UB.Repository('cdn_city').attrs('name')
-      .selectById(execParams.cityID || instanceData.cityID)).name || ''
+    .misc({ __allowSelectSafeDeleted: true })
+    .selectById(execParams.cityID || instanceData.cityID)).name || ''
     : ''
 
   execParams.description =
@@ -26,6 +27,7 @@ function setDescriptionAttributeByCity (ctx) {
   let cdnAccount = UB.Repository('cdn_bank')
     .attrs(['ID', 'mi_modifyDate'])
     .where('cityID', 'equal', ctx.mParams.execParams.ID)
+    .misc({ __allowSelectSafeDeleted: true })
     .selectAsObject()
   cdnAccount.forEach((item) => {
     // trigger update:before to set a description
