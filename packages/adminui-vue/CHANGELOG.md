@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.16]
+### Added
+ - vue based login now support `CERT2` authentication (available in UB DE)
+
 ## [1.0.11]
 ## Changed
  - update element-ui to 2.4.5 (2.4.6 not theme is compiled)

@@ -1,32 +1,33 @@
-﻿{ 
+{
 	"httpServer": {
+		//"serverType": "Socket",
+		"#include(%UB_RP_CONFIG%)"
 		"host": "+",
-		"port": "888",
+		"port": "8881",
 		"requestQueueLength": 1000,
 		"maxConnections": 0,
 		"allowCORSFrom": "*",
-		"inetPub": ".\\inetPub\\",
-		"headersPostprocessors": ["#include(%UB_HOME%\\defHeadersPostprocessors.json)"],
+		"inetPub": "./inetPub/",
 		"watchFileChanges": {
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 8
+		"threadPoolSize": 2
 	},
-	"wsServer": {
+	/*"wsServer": {
 		"host": "+",
 		"port": "888",
 		"path": "ws"
-	},
+	},*/
 	"logging": {
-		"path": ".\\logs",
+		"path": "./logs",
 		"levels": [
 			"*"
 		],
 		"threadingModel": "IdentifiedInOnFile",
 		"stackTrackDepth": 20,
 		"rotationSizeInMB": 100,
-		"performanceCounters": true
+		"performanceCounters": false
 	},
 	"javascript": {
 		"timeout": -1,
@@ -37,118 +38,89 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB", "Negotiate", "CERT"
+			"CERT2", "UB", "Negotiate"
 		],
 		"simpleCertAuth": true,
 		"dstu": {
-			"find	CertificateBySerial": true,
+			"findCertificateBySerial": true,
 			"iit": {
-				"libraryPath": "D:\\SVN\\M3\\trunk\\06-Source\\libs_vendor\\iit",
-				"keyPath": ".\\models\\TST\\_autotest\\iitKey\\Key-6.pfx",
-				"password": "12345678"
+				"libraryPath": "D:/dev/ub-all/ub-d/packages/iit-libbin/bin/x86_64_win",
+				"keyPath": "./Key-6.dat",
+				"password": "100874" // CHANGE TO ACTUAL
 			}
-		},
-		"ldapCatalogs": [
-			{
-				"name": "MYDOMAIN",
-				"host": "softline.main",
-				"port": "3268",
-				"useTLS": false,
-				"useSSL": false,
-				"useSasl": true
-			}
-		]
+		}
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": "Autotest UB SQLITE",
+			"applicationName": {"en": "Autotest UB SQLITE", "uk": "Автотест UB SQLITE"},
 			"applicationTitle": "AdminUI",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
-			"loginWindowTopLogoURL": "models/TST/UB200.png",
+			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			//"loginWindowTopLogoURL": "/img/m-docnet.png",
 			"endpoint": "ubadminui",
+			"loginURL": "/models/adminui-vue/views/ub-auth.html",
+			"customSidebar": false, // set to true to not create sidebar
+			"customNavbar": false, // set to true to not create navbar
+			"encryptionImplementation": "@ub-d/uac-crypto/dist/uac-crypto.min.js", //prod
+			//"encryptionImplementation": "@ub-d/uac-crypto", // adminui dev
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
 			},
-			"linter": { "asi": true, "sub": true }
+			"linter": { "asi": true, "sub": true },
+			"onlyOffice": {
+				"serverIP": "10.8.17.6:32771"
+			}
 		},
 		"portalUI": {
 			"applicationName": "UBCore usage"
 		}
 	},
 	"application": {
-		"defaultLang": "uk",
+		"defaultLang": "en",
 		"rootHandler": "index.html",
 		"schedulers": {"enabled": false},
 		"domain": {
 			"models": [
 				{
-					"name": "UB",
-					"path": "./node_modules/@unitybase/ub",
-					"moduleName": "@unitybase/ub"
+					"path": "./node_modules/@unitybase/ub"
 				},
 				{
-					"name": "UBA",
-					"path": "./node_modules/@unitybase/uba",
-					"moduleName": "@unitybase/uba"
+					"path": "./node_modules/@unitybase/uba"
 				},
 				{
-					"name": "UBS",
-					"path": "./node_modules/@unitybase/ubs",
-					"moduleName": "@unitybase/ubs"
+					"path": "./node_modules/@unitybase/ubs"
 				},
 				{
-					"name": "UBM",
-					"path": "./node_modules/@unitybase/ubm",
-					"moduleName": "@unitybase/ubm"
+					"path": "./node_modules/@unitybase/ubm"
 				},
 				{
-					"name": "UBQ",
-					"path": "./node_modules/@unitybase/ubq",
-					"moduleName": "@unitybase/ubq"
+					"path": "./node_modules/@unitybase/ubq"
 				},
 				{
-					"name": "CDN",
-					"path": "./node_modules/@unitybase/cdn",
-					"moduleName": "@unitybase/cdn"
+					"path": "./node_modules/@unitybase/cdn"
 				},
 				{
-					"name": "ORG",
-					"path": "./node_modules/@unitybase/org",
-					"moduleName": "@unitybase/org"
+					"path": "./node_modules/@unitybase/org"				
 				},
 				{
-					"name": "ub-pub",
-					"publicPath": "./node_modules/@unitybase/ub-pub",
-					"path": "_public_only_",
-					"moduleName": "@unitybase/ub-pub"
+					"path": "./node_modules/@unitybase/ub-pub"
 				},
 				{
-					"name": "adminui-pub",
-					"publicPath": "./node_modules/@unitybase/adminui-pub",
-					"path": "_public_only_",
-					"moduleName": "@unitybase/adminui-pub"
+					"path": "./node_modules/@unitybase/adminui-pub"
 				},
 				{
-					"name": "adminui-reg",
-					"path": "./node_modules/@unitybase/adminui-reg",
-					"moduleName": "@unitybase/adminui-reg"
-				},
-                                {
-					"name": "DSES",
-					"path": "./node_modules/@ub-e/dses",
-					"moduleName": "@ub-e/dses"
+					"path": "./node_modules/@unitybase/adminui-reg"
 				},
 				{
-					"name": "nm-dstu",
-					"publicPath": "./node_modules/@ub-d/nm-dstu",
-					"path": "_public_only_",
-					"moduleName": "@ub-d/nm-dstu"
+					"path": "./node_modules/@unitybase/adminui-vue"
 				},
 				{
-					"name": "TST",
-					"path": ".\\models\\TST"
+					//"name": "TST",
+					"path": "./models/TST"
+				}, {
+					"path": "./models/CRT"
 				}
 			],
 			"implicitlyAddedMixins": [
@@ -165,7 +137,7 @@
 				"driver": "SQLite3",
 				"isDefault": true,
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestDB.sqlite3",
+				"databaseName": "./autotestDB.sqlite3",
 				"supportLang": ["en", "uk"],
 				"advSettings": "Synchronous=Off"
 			},
@@ -173,50 +145,56 @@
 				"name": "ftsDefault",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestFTS.sqlite3",
+				"databaseName": "./autotestFTS.sqlite3",
 				"supportLang": [
-					"uk"
+					"en", "uk"
 				],
+				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			},
 			{
 				"name": "ftsSubjectSearch",
 				"driver": "SQLite3",
 				"dialect": "SQLite3",
-				"databaseName": ".\\autotestSubjectsFTS.sqlite3",
+				"databaseName": "./autotestSubjectsFTS.sqlite3",
 				"supportLang": [
-					"uk"
+					"en", "uk"
 				],
+				//"advSettings": "Synchronous=Off"
 				"advSettings": "Synchronous=Off,Tokenizer=stemka"
 			}
 		],
 		"blobStores": [
 			{
 				"name": "mdb",
-				"storeType": "Virtual"
+				"storeType": "Virtual",
+				"tempPath": "./_temp"
 			},
 			{
 				"name": "simple",
-				"path": ".\\documents\\simple\\",
+				"path": "./documents/simple",
+				"tempPath": "./documents/simple/_temp",
 				"isDefault": true,
-				"historyDepth": 0,
-				"storeSize": "Simple",
+				"historyDepth": 2,
+				"storeSize": "Medium",
 				"keepOriginalFileNames": false
 			},
 			{
 				"name": "avatars",
-					"path": ".\\documents\\avatars\\",
+				"path": "./documents/avatars",
+				"tempPath": "./documents/avatars/_temp",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false
 			}
 		],
 		"customSettings": {
-			"docuSign": {
-				"userName":"",
-				"password":"",
-				"integratorKey":"",
-				"apiUrl":"https://demo.docusign.net/restapi"
+			"cryptoService": {
+ 			  "trustedCACertificatesPath": "./trustedCerts",
+			  "tspServers": ["http://ca.informjust.ua/services/tsp/"],   
+			  //"cmpServers": ["http://acskidd.gov.ua/services/cmp/","http://ca.informjust.ua/services/cmp/"],
+			  "cmpServers": ["http://uakey.com.ua/services/cmp/","http://ca.informjust.ua/services/cmp/","http://acskidd.gov.ua/services/cmp/"],
+			  "useIITCMP": false
 			},
 			"mailerConfig": {
 				"targetHost": "mail.softline.main",

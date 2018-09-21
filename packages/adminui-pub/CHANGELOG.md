@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - allow passing of null/undefined into basePanel.hideActions array item
  - certificates related i18 keys is moved into ub-pub
  
+### Added
+ - support for `CERT2` auth
+ 
 ## [5.5.3]
 ### Fixed
  - UBOrgChart: fix node child's visualisation in case full child tree contains > 100 elements

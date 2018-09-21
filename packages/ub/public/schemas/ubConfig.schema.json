@@ -40,7 +40,7 @@
         "host": {
           "type": "string",
           "default": "+",
-          "description": "Host names for server. Could be either a fully qualified case-insensitive domain name, <br> an IPv4 or IPv6 literal string, <br> or a wildcard ('+' will bound to all domain names for the specified port, '*' will accept the request when no other listening hostnames match the request for that port"
+          "description": "Host names for server. Could be either a fully qualified case-insensitive domain name, <br> an IPv4 or IPv6 literal string, <br> or a wildcard ('+' will bound to all domain names for the specified port, '*' will accept the request when no other listening host names match the request for that port"
         },
         "port": {
           "type": "string",
@@ -107,7 +107,7 @@
                   },
                   "expires": {
                     "type": "number",
-                    "description": "Values in seconds for adding `Expires: ServerStartDate + expires` header. Do not set this value to more than one year (HTTP protocol not allow this).<br> Google recomendation: We prefer Expires over Cache-Control: max-age because it is is more widely supported see it <a href=\"https://developers.google.com/speed/docs/best-practices/caching\">here</a>"
+                    "description": "Values in seconds for adding `Expires: ServerStartDate + expires` header. Do not set this value to more than one year (HTTP protocol not allow this).<br> Google recommendation: We prefer Expires over Cache-Control: max-age because it is is more widely supported see it <a href=\"https://developers.google.com/speed/docs/best-practices/caching\">here</a>"
                   },
                   "addHeader": {
                     "type": "string",
@@ -421,7 +421,7 @@
         "debuggerListenOn": {
           "type": "string",
           "default": "6000",
-          "description": "[IP_Adress:]port whre remote debugger is listen on. If IP_Adress is omitted - 0.0.0.0 will be used. Debuger enabled only in -dev mode"
+          "description": "[IP_Adress:]port where remote debugger is listen on. If IP_Address is omitted - 0.0.0.0 will be used. Debugger enabled only in -dev mode"
         }
       }
     },
@@ -435,6 +435,7 @@
           "items": {
             "enum": [
               "CERT",
+              "CERT2",
               "Negotiate",
               "UBLDAP",
               "UB",
@@ -448,11 +449,6 @@
           "type": "boolean",
           "default": true,
           "description": "Will force a NTLM usage for Negotiate authentication method. If false - Kerberos will be used in most case"
-        },
-        "simpleCertAuth": {
-          "type": "boolean",
-          "default": false,
-          "description": "If `true` will not require password for CERT authentication (only secret key passrord is required)"
         },
         "ldapCatalogs": {
           "type": "array",
@@ -505,7 +501,7 @@
         },
         "dstu": {
           "type": "object",
-          "description": "For Ukraine govermenet services only",
+          "description": "For Ukraine government services only",
           "properties": {
             "iit": {
               "type": "object",
@@ -654,7 +650,7 @@
               },
               "statementCacheSize": {
                 "type": "number",
-                "description": "The number of prepared statements, cached by database driver on the client (UB) side. 0 - disable cache (for PostgreSQL in case of multitenancy etc.)",
+                "description": "The number of prepared statements, cached by database driver on the client (UB) side. 0 - disable cache (for PostgreSQL in case of multi-tenancy etc.)",
                 "default": 30
               },
               "driver": {
@@ -808,7 +804,7 @@
           "properties": {
             "applicationName": {
               "type": ["string", "object"],
-              "description": "Name of application for show on the login form. In case explicity defined as empty string - not shown in login form. For localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"miy dodatok\"}",
+              "description": "Name of application for show on the login form. In case explicity defined as empty string - not shown in login form. For localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"Мій додаток\"}",
               "default": "UnityBase"
             },
             "applicationTitle": {
@@ -908,7 +904,7 @@
             },
             "favoriteCategoryCount": {
               "type": "number",
-              "description": "Number of categories (up to 4) for a favorites columnus",
+              "description": "Number of categories (up to 4) for a favorites columns",
               "default": 2
             },
             "amqpNotificationUrl": {
