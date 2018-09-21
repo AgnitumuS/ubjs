@@ -484,7 +484,15 @@ $App.connection.userLang()
    * @returns {Promise}
    */
   this.authHandshakeCERT = function () {
-    throw new Error('authHandshakeCERT should be injected by "nm-dstu" model')
+    throw new Error('authHandshakeCERT should be injected first')
+  }
+
+  /**
+   * CERT2 auth schema implementation
+   * @returns {Promise}
+   */
+  this.authHandshakeCERT2 = function () {
+    throw new Error('authHandshakeCERT2 should be injected first')
   }
   /**
    * Do authentication in UnityBase server. Usually called from UBConnection #authorize method in case authorization expire or user not authorized.
@@ -514,6 +522,9 @@ $App.connection.userLang()
         break
       case 'CERT':
         promise = this.authHandshakeCERT(authParams)
+        break
+      case 'CERT2':
+        promise = this.authHandshakeCERT2(authParams)
         break
       case 'UBIP':
         promise = this.authHandshakeUBIP(authParams)

@@ -124,7 +124,7 @@
                     },
                     "associatedEntity": {
                         "type": "string",
-                        "description": "Required for `dataType=Entity|Many` - name of associated entity. On the database level we create indeх & constraint"
+                        "description": "Required for `dataType=Entity|Many` - name of associated entity. On the database level we create index & constraint"
                     },
                     "associationAttr": {
                         "type": "string",
@@ -152,7 +152,7 @@
                     "storeName": {
                         "type": "string",
                         "default": "",
-                        "description": "Possible for `dataType=Document` - name of store from `storeConfig` application config section. If emtpy - store with `isDefault=true` will be used"
+                        "description": "Possible for `dataType=Document` - name of store from `storeConfig` application config section. If empty - store with `isDefault=true` will be used"
                     },
                     "mapping": {
                         "type": "array",
@@ -283,16 +283,16 @@
                     },
                     "exprMethod": {
                       "type": "string",
-                      "description": "name of entity method, which create subquery structure. TODO - explain"
+                      "description": "name of entity method, which create sub-query structure. TODO - explain"
                     },
                     "selectionRule": {
                       "enum": ["Exist", "In"],
                       "default": "Exists",
-                      "description": "Rule for connect subquery by according aclRls table. `In` - connect by IN condition (example: ... AND mainEntity.ID IN (SELECT instanceID FROM aclRlsTable WHERE ...))\n`Exist` - connect by EXIST condition (example: ... AND EXISTS (SELECT 1 FROM aclRlsTable WHERE ...))"
+                      "description": "Rule for connect sub-query by according aclRls table. `In` - connect by IN condition (example: ... AND mainEntity.ID IN (SELECT instanceID FROM aclRlsTable WHERE ...))\n`Exist` - connect by EXIST condition (example: ... AND EXISTS (SELECT 1 FROM aclRlsTable WHERE ...))"
                     },
                     "model": {
                       "type": "string",
-                      "description": "model name where to place the entity for storing aclRLS. If empy will be calculated. TODO - explain or remove!"
+                      "description": "model name where to place the entity for storing aclRLS. If empty will be calculated. TODO - explain or remove!"
                     }
                   }
                 },
@@ -386,7 +386,7 @@
                     "scope": {
                       "enum": ["Connection", "Entity", "Custom"],
                       "default": "Connection",
-                      "description": "model of using fts datasource table in current fts index. Deprecated?"
+                      "description": "model of using fts data source table in current fts index. Deprecated?"
                     },
                     "connectionName": {
                       "type": "string",
@@ -406,7 +406,7 @@
                     },
                     "dateAttribute": {
                       "type": "string",
-                      "description": "Attribute to use as a DATE filter during FRS search. If empyy - filtration by date not supported"
+                      "description": "Attribute to use as a DATE filter during FRS search. If empty - filtration by date not supported"
                     },
                     "attrNameBracket": {
                       "type": "string",

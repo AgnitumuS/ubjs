@@ -87,6 +87,7 @@ Ext.define('UB.view.cryptoUI.SelectCert', {
       listeners: {
         afterrender: function (sender) {
           sender.getEl().dom.addEventListener('change', me.onFileSelect, false)
+          sender.inputEl.setAttribute('accept', '.cer')
           sender.inputEl.on('click', function () {
             this.button.fileInputEl.dom.click()
           }, sender)

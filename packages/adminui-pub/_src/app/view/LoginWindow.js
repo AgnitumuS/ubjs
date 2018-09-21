@@ -84,6 +84,177 @@ Ext.define('UB.view.LoginWindow', {
     }
   },
 
+  addCertAuthPanel (me, authItems, minAuthTabsHeight) {
+    let firstLogin = window.localStorage.getItem('firstLogin') === 'true'
+    let cfgAdminUI = UB.appConfig.uiSettings.adminUI
+    let authenticationCert = cfgAdminUI.authenticationCert || {}
+    let lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)
+
+    me.textFieldLoginCert = Ext.create('Ext.form.field.Text', {
+      margin: '0 80 0 80',
+      allowBlank: false,
+      cls: 'ub-login-input',
+      labelClsExtra: 'fa fa-user fa-2x',
+      requireText: UB.i18n('User'),
+      fieldLabel: ' ',
+      labelSeparator: '',
+      regex: authenticationCert.userNameRE ? new RegExp(authenticationCert.userNameRE) : null,
+      regexText: authenticationCert.userNameREMessage ? UB.i18n(authenticationCert.userNameREMessage) : null,
+      labelWidth: 40,
+      value: me.connection.lastLoginName || lastSavedLogin
+    })
+    me.textFieldPasswordCert = Ext.create('Ext.form.field.Text', {
+      margin: '10 80 10 80',
+      allowBlank: false,
+      cls: 'ub-login-input',
+
+      labelClsExtra: 'fa fa-key fa-2x',
+      requireText: UB.i18n('Password'),
+      fieldLabel: ' ',
+      labelSeparator: '',
+      labelWidth: 40,
+
+      inputType: 'password',
+      name: 'password',
+      anchor: '100%',
+      value: cfgAdminUI.defaultPasswordForDebugOnly
+    })
+
+    me.chkFirstLogin = Ext.create('Ext.form.field.Checkbox', {
+      margin: '10 80 10 125',
+      xtype: 'checkbox',
+      labelAlign: 'left',
+      labelCls: 'ub-login-label',
+      // boxLabelAlign: 'before',
+      labelWidth: 80,
+      checked: !!firstLogin,
+      boxLabel: UB.i18n('RegistrationMode')
+    })
+
+    let certItem = []
+    let useCertificateInfo = 'useCertificateInfo'
+    certItem.push(
+      me.textFieldLoginCert,
+      me.textFieldPasswordCert
+    )
+    if (authenticationCert.description) {
+      useCertificateInfo = authenticationCert.description
+    }
+    certItem.push(
+      me.chkFirstLogin,
+      {
+        xtype: 'component',
+        padding: '20 0 0 0',
+        autoEl: {
+          tag: 'div',
+          html: UB.i18n(useCertificateInfo)
+        }
+      }
+    )
+    me.pnlCert = Ext.create('Ext.panel.Panel', {
+      title: UB.i18n('useCertificateTitle'),
+      header: false,
+      authType: 'CERT',
+      padding: '20 50 0 50',
+
+      layout: {
+        type: 'vbox',
+        align: 'stretch'
+      },
+      items: certItem
+    })
+    authItems.push(me.pnlCert)
+    return minAuthTabsHeight + 80
+  },
+
+  addCert2AuthPanel (me, authItems, minAuthTabsHeight) {
+    let firstLogin = window.localStorage.getItem('firstLogin') === 'true'
+    let cfgAdminUI = UB.appConfig.uiSettings.adminUI
+    me.fieldKeyFile = Ext.create('Ext.form.field.File', {
+      margin: '5 40 0 40',
+      name: 'document',
+      allowBlank: false,
+      allowOnlyWhitespace: false,
+      // inputType: 'file',
+      labelClsExtra: 'fa fa-user-secret fa-2x',
+      blankText: UB.i18n('obazatelnoePole'),
+      requireText: UB.i18n('Select private key file'),
+      labelWidth: 40,
+      labelSeparator: '',
+      fieldLabel: ' ',
+      anchor: '100%',
+      buttonText: '',
+      buttonConfig: {
+        iconCls: 'iconAttach'
+      },
+      listeners: {
+        afterrender: function (sender) {
+          sender.getEl().dom.addEventListener('change', me.onFileSelect, false)
+          sender.inputEl.on('click', function () {
+            this.button.fileInputEl.dom.click()
+          }, sender)
+        },
+        scope: this
+      }
+    })
+
+    me.textFieldPasswordCert = Ext.create('Ext.form.field.Text', {
+      margin: '10 40 0 40',
+      allowBlank: false,
+      cls: 'ub-login-input',
+
+      labelClsExtra: 'fa fa-key fa-2x',
+      requireText: UB.i18n('Password'),
+      fieldLabel: ' ',
+      labelSeparator: '',
+      labelWidth: 40,
+
+      inputType: 'password',
+      name: 'password',
+      anchor: '100%',
+      value: cfgAdminUI.defaultPasswordForDebugOnly
+    })
+
+    me.chkFirstLogin = Ext.create('Ext.form.field.Checkbox', {
+      margin: '10 80 0 125',
+      xtype: 'checkbox',
+      labelAlign: 'left',
+      labelCls: 'ub-login-label',
+      // boxLabelAlign: 'before',
+      labelWidth: 80,
+      checked: !!firstLogin,
+      boxLabel: UB.i18n('RegistrationMode')
+    })
+
+    let certItem = [
+      me.fieldKeyFile,
+      me.textFieldPasswordCert,
+      me.chkFirstLogin,
+      {
+        xtype: 'component',
+        padding: '5 0 0 0',
+        autoEl: {
+          tag: 'div',
+          html: UB.i18n('useCertificateInfoSimple')
+        }
+      }
+    ]
+    me.pnlCert = Ext.create('Ext.panel.Panel', {
+      title: UB.i18n('useCertificateTitle'),
+      header: false,
+      authType: 'CERT2',
+      padding: '20 50 0 50',
+
+      layout: {
+        type: 'vbox',
+        align: 'stretch'
+      },
+      items: certItem
+    })
+    authItems.push(me.pnlCert)
+    return minAuthTabsHeight + 100
+  },
+
   initComponent: function () {
     var
       me = this,
@@ -94,7 +265,6 @@ Ext.define('UB.view.LoginWindow', {
       locale = this.connection.preferredLocale,
       applicationName
     var cfgAdminUI = UB.appConfig.uiSettings.adminUI
-    let firstLogin = window.localStorage.getItem('firstLogin') === 'true'
     let silenceKerberosLogin = window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
 
     me.items = []
@@ -135,92 +305,14 @@ Ext.define('UB.view.LoginWindow', {
       })
     }
 
-    // create auth tabs
-    var haveCERT = (authMethods.indexOf('CERT') >= 0)
+    let haveCERT = (authMethods.indexOf('CERT') >= 0)
     if (haveCERT) {
-      var authenticationCert = cfgAdminUI.authenticationCert || {}
+      minAuthTabsHeight = me.addCertAuthPanel(me, authItems, minAuthTabsHeight)
+    }
 
-      minAuthTabsHeight = 265 + 80
-      me.textFieldLoginCert = Ext.create('Ext.form.field.Text', {
-        margin: '0 80 0 80',
-        allowBlank: false,
-        cls: 'ub-login-input',
-        labelClsExtra: 'fa fa-user fa-2x',
-        requireText: UB.i18n('User'),
-        fieldLabel: ' ',
-        labelSeparator: '',
-        regex: authenticationCert.userNameRE ? new RegExp(authenticationCert.userNameRE) : null,
-        regexText: authenticationCert.userNameREMessage ? UB.i18n(authenticationCert.userNameREMessage) : null,
-        labelWidth: 40,
-        value: me.connection.lastLoginName || lastSavedLogin
-      })
-      me.textFieldPasswordCert = Ext.create('Ext.form.field.Text', {
-        margin: '10 80 10 80',
-        allowBlank: false,
-        cls: 'ub-login-input',
-
-        labelClsExtra: 'fa fa-key fa-2x',
-        requireText: UB.i18n('Password'),
-        fieldLabel: ' ',
-        labelSeparator: '',
-        labelWidth: 40,
-
-        inputType: 'password',
-        name: 'password',
-        anchor: '100%',
-        value: cfgAdminUI.defaultPasswordForDebugOnly
-      })
-
-      me.chkFirstLogin = Ext.create('Ext.form.field.Checkbox', {
-        margin: '10 80 10 125',
-        xtype: 'checkbox',
-        labelAlign: 'left',
-        labelCls: 'ub-login-label',
-        // boxLabelAlign: 'before',
-        labelWidth: 80,
-        checked: !!firstLogin,
-        boxLabel: UB.i18n('RegistrationMode')
-      })
-
-      var certItem = []
-      var useCertificateInfo = 'useCertificateInfoSimple'
-      if (!me.connection.simpleCertAuth) {
-        useCertificateInfo = 'useCertificateInfo'
-        certItem.push(
-          me.textFieldLoginCert,
-          me.textFieldPasswordCert
-        )
-      } else if (authenticationCert.requireUserName) {
-        useCertificateInfo = 'useCertificateInfoSimpleUserName'
-        certItem.push(me.textFieldLoginCert)
-      }
-      if (authenticationCert.description) {
-        useCertificateInfo = authenticationCert.description
-      }
-      certItem.push(
-        me.chkFirstLogin,
-        {
-          xtype: 'component',
-          padding: '20 0 0 0',
-          autoEl: {
-            tag: 'div',
-            html: UB.i18n(useCertificateInfo)
-          }
-        }
-      )
-      me.pnlCert = Ext.create('Ext.panel.Panel', {
-        title: UB.i18n('useCertificateTitle'),
-        header: false,
-        authType: 'CERT',
-        padding: '20 50 0 50',
-
-        layout: {
-          type: 'vbox',
-          align: 'stretch'
-        },
-        items: certItem
-      })
-      authItems.push(me.pnlCert)
+    let haveCERT2 = (authMethods.indexOf('CERT2') >= 0)
+    if (haveCERT2) {
+      minAuthTabsHeight = me.addCert2AuthPanel(me, authItems, minAuthTabsHeight)
     }
 
     var haveUB = (authMethods.indexOf('UB') >= 0)
@@ -422,16 +514,23 @@ Ext.define('UB.view.LoginWindow', {
         return
       }
     }
-    if (authType === 'CERT') {
+    if (authType === 'CERT2') {
+      if (!me.fieldKeyFile.validate()) return
+      if (!me.textFieldPasswordCert.validate()) return
+      window.localStorage.setItem('firstLogin', me.chkFirstLogin.checked)
+      me.deferred.resolve({
+        authSchema: authType,
+        keyFile: me.fieldKeyFile.fileInputEl.dom.files[0],
+        password: me.textFieldPasswordCert.getValue(),
+        registration: me.chkFirstLogin.checked ? 1 : 0
+      })
+    } else if (authType === 'CERT') {
       me.textFieldLoginCert.validate()
       me.textFieldPasswordCert.validate()
-      var authenticationCert = UB.appConfig.uiSettings.adminUI.authenticationCert || {}
-      if ((!me.connection.simpleCertAuth || authenticationCert.requireUserName) &&
-        !me.textFieldLoginCert.validate()) {
+      if (!me.textFieldLoginCert.validate()) {
         return
       }
-      if (!me.connection.simpleCertAuth &&
-        !me.textFieldPasswordCert.validate()) {
+      if (!me.textFieldPasswordCert.validate()) {
         return
       }
       login = Ext.String.trim(me.textFieldLoginCert.getValue() || '')

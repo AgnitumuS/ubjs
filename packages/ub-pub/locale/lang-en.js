@@ -17,7 +17,7 @@ UB.i18nExtend({
   useUBAuthenticationTitle: 'User&password',
   useCertificateTitle: 'Using certificate',
   useCertificateInfo: 'Authorization using electronic signature',
-  useCertificateInfoSimple: 'Authorization using electronic signature',
+  useCertificateInfoSimple: 'Authorization using electronic signature. Select Key, input password and press "Enter"',
   useCertificateInfoSimpleUserName: 'Authorization using electronic signature',
   IITCertCanceledByUser: 'Canceled by user',
   msgInvalidPlugin: 'Plugin version is out of date. You have version {0}, but version {1} is required. Automatically update occurs every 2 hours.' +
@@ -36,8 +36,12 @@ UB.i18nExtend({
   SelectPKAndPassMsg: 'Select a file and fill out the password',
   ReadPkTitle: 'Reading a private key',
   'Select private key file': 'Select private key file',
+  'Selected key file': 'Selected key file',
   selectSigningCertificate: 'Select certificate for signing',
   certificate: 'Certificate',
   certificates: 'Certificates',
+  'UacException BAD_PASSWORD : 1016': 'Invalid password or key is broken',
+  'uac_certStatusError': 'Certificate status is unknown',
+  'uac_certificateRevoked': 'The certificate was abandoned by the certification authority or key is expire'
 
 })

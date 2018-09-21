@@ -361,9 +361,9 @@ Ext.define('UB.core.UBApp', {
         // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
         // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
         return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
-          if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1)) {
+          if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1) ||
+            (connection.authMethods.indexOf('CERT2') !== -1)) {
             const pkiForAuth = connection.appConfig.uiSettings.adminUI.encryptionImplementation || '@ub-d/nm-dstu/injectEncription.js'
-            const libraryName = pkiForAuth.split('/')[2]
             var advParam = {
               getPkParam: UB.view.cryptoUI.ReadPK.getPkParam,
               getCertificates: UB.view.cryptoUI.SelectCert.getCertificates

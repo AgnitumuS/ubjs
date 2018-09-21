@@ -47,6 +47,7 @@ UB.i18nExtend({
   SelectPKAndPassMsg: 'Виберите файл и заполните пароль',
   ReadPkTitle: 'Считывание личного ключа',
   'Select private key file': 'Виберіть файл приватного ключа',
+  'Selected key file': 'Selected key file',
   selectSigningCertificate: 'Выберите файл с сертификатом для подписи',
   certificate: 'Сертификат',
   certificates: 'Сертификаты'
