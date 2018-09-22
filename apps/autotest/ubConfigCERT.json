@@ -45,8 +45,9 @@
 			"findCertificateBySerial": true,
 			"iit": {
 				"libraryPath": "D:/dev/ub-all/ub-d/packages/iit-libbin/bin/x86_64_win",
+				"librarySettings": "./",
 				"keyPath": "./Key-6.dat",
-				"password": "100874" // CHANGE TO ACTUAL
+				"password": "%KEY_PWD%"
 			}
 		}
 	},

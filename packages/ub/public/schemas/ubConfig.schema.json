@@ -510,6 +510,10 @@
                 "libraryPath": {
                   "type": "string"
                 },
+                "librarySettings": {
+                  "type": "string",
+                  "description": "path to folder with IIT library settings files ospus.ini or osplm.ini?. If empty - IIT will try to load settings from registry (under Windows) and this will cause a problems with registry virtualisation. If settings file not exist inside specified folder it will be created"
+                },
                 "mediaType": {
                   "type": "number",
                   "description": "порядковый индекс типа устройства начинактся с 0. на экране считать сверху вниз"
