@@ -95,7 +95,7 @@ Ext.define('UB.core.UBDataLoader', {
             storesToLoad =[],
             ubRequests = params.ubRequests;
 
-        if(_.isArray(ubRequests) && ubRequests.length) {
+        if(Array.isArray(ubRequests) && ubRequests.length) {
             for (var i = 0, len = ubRequests.length; i < len; ++i) {
                 config = {
                     ubRequest: ubRequests[i],
