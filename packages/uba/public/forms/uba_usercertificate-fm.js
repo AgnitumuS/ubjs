@@ -49,6 +49,7 @@ exports.formCode = {
     uploadCertBtn.on('click', function uploadCertBtnClick () {
       Ext.create('UB.view.UploadFileAjax', {
         entityName: 'uba_usercertificate',
+        accept: '.cer',
         scope: this,
         upLoad: function (btn) {
           var

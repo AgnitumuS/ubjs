@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.5.7]
+### Added
+ - `UploadFileAjax` component can optionally limits file extensions allowed for selection
+ ```javascript
+Ext.create('UB.view.UploadFileAjax', {
+  ...
+  accept: '.cer',
+  ...
+``` 
+ 
 ## [5.5.5]
 ### Fixed
  - allow passing of null/undefined into basePanel.hideActions array item

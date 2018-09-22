@@ -31,9 +31,12 @@ Ext.define('UB.view.UploadFileAjax', {
 
   padding: 1,
   uploadData: true,
+  /**
+   * @cgf accept Optional list of accepted file extensions. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Limiting_accepted_file_types
+   */
+  accept: '',
 
   initComponent: function () {
-    // <input type="file" id="files" name="files[]" multiple />
     this.fieldFile = Ext.create('Ext.form.field.File', {
       name: 'document',
       allowBlank: false,
@@ -48,6 +51,9 @@ Ext.define('UB.view.UploadFileAjax', {
       listeners: {
         afterrender: function (sender) {
           sender.getEl().dom.addEventListener('change', this.onFileSelect, false)
+          if (this.accept) {
+            sender.button.fileInputEl.dom.setAttribute('accept', this.accept)
+          }
           sender.inputEl.on('click', function () {
             this.button.fileInputEl.dom.click()
           }, sender)
