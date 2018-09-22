@@ -3,6 +3,7 @@ require('../core/UBAppConfig')
 require('../core/UBStoreManager')
 require('../core/UBUtilTree')
 require('../ux/tree/Column')
+const _ = require('lodash')
 /**
  * Navigation panel
  */
