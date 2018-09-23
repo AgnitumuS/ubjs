@@ -13,6 +13,7 @@ Ext.create('UB.view.UploadFileAjax', {
   accept: '.cer',
   ...
 ``` 
+ - application version (from package.json) is shown below login window (new feature `connection.appConfig.appVersion`) 
  
 ## [5.5.5]
 ### Fixed
