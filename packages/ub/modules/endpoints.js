@@ -244,6 +244,7 @@ function getAppInfoEp (req, resp) {
   let DSTU = serverConfig.security && serverConfig.security.dstu
 
   let appInfo = {
+    appVersion: App.package.version,
     serverVersion: process.version,
     defaultLang: serverConfig.application.defaultLang,
     simpleCertAuth: serverConfig.security.simpleCertAuth,

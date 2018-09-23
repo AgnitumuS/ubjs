@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.37]
+### Added
+ - `getDomainInfo` endpoint return a application version in `appVersion` key.
+ Version taken from application package.json version attribute.
+ Client side can read it from `connection.appConfig.appVersion`.
+
 ## [5.0.23]
 ### Changed
 - `allLocales` endpoint will join locales from all models (since login form localization moved to ub-pub

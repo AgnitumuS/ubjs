@@ -264,7 +264,7 @@ Ext.define('UB.view.LoginWindow', {
       lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN),
       locale = this.connection.preferredLocale,
       applicationName
-    var cfgAdminUI = UB.appConfig.uiSettings.adminUI
+    var cfgAdminUI = me.connection.appConfig.uiSettings.adminUI
     let silenceKerberosLogin = window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
 
     me.items = []
@@ -347,7 +347,7 @@ Ext.define('UB.view.LoginWindow', {
         labelWidth: 40,
         inputType: 'password',
         anchor: '100%',
-        value: UB.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly,
+        value: me.connection.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly,
         listeners: {
           keyup: {
             fn: $App.passwordKeyUpHandler
@@ -458,14 +458,14 @@ Ext.define('UB.view.LoginWindow', {
       me.items.push(authItems[0])
     }
 
-    if (UB.appConfig.uiSettings.adminUI && UB.appConfig.uiSettings.adminUI.loginWindowBottomLogoURL) {
+    if (me.connection.appConfig.uiSettings.adminUI && me.connection.appConfig.uiSettings.adminUI.loginWindowBottomLogoURL) {
       me.items.push(Ext.create('Ext.Img', {
-        src: UB.appConfig.uiSettings.adminUI.loginWindowBottomLogoURL,
+        src: me.connection.appConfig.uiSettings.adminUI.loginWindowBottomLogoURL,
         cls: 'logo-bottom'
       }))
     }
 
-    me.poweredByText = 'Powered by UnityBase ' + (me.connection.serverVersion ? me.connection.serverVersion : '')
+    me.poweredByText = `v${me.connection.appConfig.appVersion}. Powered by UnityBase ${me.connection.serverVersion}`
 
     me.on('boxready', function () {
       this.poweredBy = Ext.create('Ext.Component', {
@@ -500,11 +500,11 @@ Ext.define('UB.view.LoginWindow', {
   },
 
   submitLogin: function () {
-    var me = this,
-      login = '', password = '',
-      authType
+    let me = this
+    let login = ''
+    let password = ''
 
-    authType = me.authTabs ? me.authTabs.getActiveTab().authType : me.down('panel').authType
+    let authType = me.authTabs ? me.authTabs.getActiveTab().authType : me.down('panel').authType
     if (authType === 'UB') {
       me.textFieldLogin.validate()
       me.textFieldPassword.validate()
