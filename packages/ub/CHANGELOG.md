@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.37]
 ### Added
- - `getDomainInfo` endpoint return a application version in `appVersion` key.
+ - `getAppInfo` endpoint return a application version in `appVersion` key.
  Version taken from application package.json version attribute.
  Client side can read it from `connection.appConfig.appVersion`.
 
