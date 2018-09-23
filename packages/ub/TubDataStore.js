@@ -158,7 +158,7 @@ TubDataStore.initialize = function (source, keyMap) {
 }
 
 /**
- * Extended information about application domain
+ * Entity metadata
  * @member {UBEntity} entity
  * @memberOf TubDataStore.prototype
  */
