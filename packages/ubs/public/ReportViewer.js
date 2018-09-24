@@ -119,7 +119,7 @@ Ext.define('UBS.ReportViewer', {
             ui: 'default-toolbar',
             text: UB.i18n('Excel'),
             handler: function () {
-              me.exportToXLSX()
+              me.exportToXLSX(me.report.allowExportToExcel)
             }
           }
         }
@@ -190,7 +190,11 @@ Ext.define('UBS.ReportViewer', {
     me.callParent(arguments)
   },
 
-  exportToXLSX: function () {
+  /**
+   * Convert html report to excel
+   * @param {string} [excelFormat='xlsx']
+   */
+  exportToXLSX: function (excelFormat = 'xlsx') {
     let me = this
     let repParams
     // do we need to get parameters from parameters enter form?
@@ -205,15 +209,15 @@ Ext.define('UBS.ReportViewer', {
     }
     Ext.create('UBS.UBReport', {
       code: me.report.reportCode,
-      type: 'xlsx',
+      type: excelFormat,
       params: repParams,
       language: $App.connection.userLang()
     }).makeReport().then(function (data) {
       let blobData = new Blob(
         [data.reportData],
-        {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+        {type: excelFormat.toLowerCase() === 'xls' ? 'application/vnd.ms-excel' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
       )
-      window.saveAs(blobData, me.report.reportCode + '.xlsx')
+      window.saveAs(blobData, me.report.reportCode + '.' + excelFormat)
     })
   },
 
