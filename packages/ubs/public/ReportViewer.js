@@ -197,6 +197,7 @@ Ext.define('UBS.ReportViewer', {
   exportToXLSX: function (excelFormat = 'xlsx') {
     let me = this
     let repParams
+    if (excelFormat === true) excelFormat = 'xlsx'
     // do we need to get parameters from parameters enter form?
     if (me.paramForm && (!me.report.incomeParams || (Object.keys(me.report.incomeParams).length === 0))) {
       if (!me.paramForm.isValid()) {
