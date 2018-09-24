@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.17]
+### Changed
+ - `reportOptions.allowExportToExcel` allowed value changed from to 'xls' or 'xlsx'. ('xlsx' by default)
+   For 'xls' report will be saved as html but with **xls** extension - excell will convert such files on open
+   otherwise report will be regenerated as native **xlsx** file
+ ```javascript
+$App.doCommand({
+  cmdType: 'showReport',
+  cmdData: {
+    reportCode: 'your-report-code',
+    reportType: 'html',
+    reportParams: {a: 'b'},
+    reportOptions: {
+      allowExportToExcel: 'xls'
+    }
+  }
+})
+```
+
 ## [5.1.15]
 ### Added 
  - excel export button added to the ReportViewer in case `allowExportToExcel` report option is true (false by default) 
