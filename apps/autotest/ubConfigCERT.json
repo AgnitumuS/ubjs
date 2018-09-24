@@ -45,8 +45,8 @@
 			"findCertificateBySerial": true,
 			"iit": {
 				"libraryPath": "D:/dev/ub-all/ub-d/packages/iit-libbin/bin/x86_64_win",
-				"librarySettings": "./",
-				"keyPath": "./Key-6.dat",
+				"librarySettings": "./key",
+				"keyPath": "./key/Key-6.dat",
 				"password": "%KEY_PWD%"
 			}
 		}
@@ -195,7 +195,7 @@
 			  "tspServers": ["http://ca.informjust.ua/services/tsp/"],   
 			  //"cmpServers": ["http://acskidd.gov.ua/services/cmp/","http://ca.informjust.ua/services/cmp/"],
 			  "cmpServers": ["http://uakey.com.ua/services/cmp/","http://ca.informjust.ua/services/cmp/","http://acskidd.gov.ua/services/cmp/"],
-			  "useIITCMP": false
+			  "useIITCMP": true
 			},
 			"mailerConfig": {
 				"targetHost": "mail.softline.main",
