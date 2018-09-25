@@ -45,7 +45,7 @@ module.exports = function generateDoc (cfg) {
   session = argv.establishConnectionFromCmdLineAttributes(cfg)
 
   // must be required for translation
-  require('@unitybase/ub/i18n')
+  // require('@unitybase/ub/i18n')
 
   console.log('Session.uData: ', session.uData, typeof session.uData)
 
@@ -97,7 +97,8 @@ module.exports = function generateDoc (cfg) {
       i18n: function () {
         return function (word) {
           // console.log('translate for ', word, 'to', userLang);
-          return UB.i18n(word, userLang)
+          // return UB.i18n(word, userLang)
+          return word
         }
       }
     })
