@@ -913,7 +913,7 @@
             },
             "amqpNotificationUrl": {
               "type": "string",
-              "description": "The url for UBClientNotifier to connect to message broker using stomp protocol over web sockets, an example of valid url is 'ws://127.0.0.1:15674/ws' - this is for RabiitMQ with web stomp extension default configuration. For server part - set application.customSettings.amqpNotificationUrl"
+              "description": "A url for UBClientNotifier to connect to message broker using stomp protocol over web sockets. The special value, '*', means connecting to ws[s]://<host>/ws which is useful when nginx is used to proxify requests. An example of valid url is 'ws://127.0.0.1:15674/ws' - this is for RabiitMQ with web stomp extension default configuration. For server part - set application.customSettings.amqpNotificationUrl"
             }
           }
         },

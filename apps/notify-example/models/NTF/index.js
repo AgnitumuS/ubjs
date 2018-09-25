@@ -1,7 +1,7 @@
 const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = UB.Session
-const UBServerNotifier = require('@unitybase/amqp').UBServerNotifier
+const { UBServerNotifier } = require('@unitybase/amqp-notify')
 
 App.registerEndpoint('broadcast', broadcast, false)
 App.registerEndpoint('notify', notify, false)
