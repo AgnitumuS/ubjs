@@ -20,7 +20,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.3]
 ### Added
 - allow to override UBConnection requestAuthParams after connection is created (for custom UI for example)
-
 ```
   function myLoginForm(connection, isRepeat) {
     return new Promise((resolve, reject) => {

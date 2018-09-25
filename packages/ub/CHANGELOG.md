@@ -78,4 +78,3 @@ it's not exists(for example user create a ER diagram etc.)
 - `clientRequire` endpoint return correct mime type for files (using mime-db)
 - optimize `clientRequire` endpoint by caching resolved path's to globalCache
 - UB.UBAbort server side exception stack trace now independent of UB.js placement
-
