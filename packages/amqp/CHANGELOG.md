@@ -16,4 +16,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.7]
 ### Fixed
-- Ubuntu 18 support
+- Ubuntu v18 support
