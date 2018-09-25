@@ -282,8 +282,7 @@ $App.connection.userLang()
     } else if (typeof apn !== 'string') {
       apn = '-'
     }
-    apn = window.encodeURIComponent(apn)
-    let ut = btoa(`${conn.serverVersion}:${MD5(conn.userLogin())}:${apn}`)
+    let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(conn.userLogin())}:${apn}:${h}`))
     let t = document.createElement('img')
     t.style.position = 'absolute'
     t.style.display = 'none'
