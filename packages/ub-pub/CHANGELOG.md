@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.10]
+### Added
+ - translation for `MAX_TREEPATH_DEPTH_EXCEED`
+ 
 ## [5.2.8]
 ### Added
  - support for `CERT2` auth

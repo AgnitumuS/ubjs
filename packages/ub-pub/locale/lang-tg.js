@@ -50,6 +50,7 @@ UB.i18nExtend({
   'Selected key file': 'Selected key file',
   selectSigningCertificate: 'Выберите файл с сертификатом для подписи',
   certificate: 'Сертификат',
-  certificates: 'Сертификаты'
+  certificates: 'Сертификаты',
+  MAX_TREEPATH_DEPTH_EXCEED: 'Нельзя подчинить элемент данному родителю - это приведет к зацикливанию'
 
 })

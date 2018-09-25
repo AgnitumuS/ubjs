@@ -41,6 +41,7 @@ UB.i18nExtend({
   'Selected key file': 'Selected key file',
   selectSigningCertificate: 'Select certificate for signing',
   certificate: 'Certificate',
-  certificates: 'Certificates'
+  certificates: 'Certificates',
+  MAX_TREEPATH_DEPTH_EXCEED: 'You can not subordinate an element to this parent - this will result in a loop'
 
 })

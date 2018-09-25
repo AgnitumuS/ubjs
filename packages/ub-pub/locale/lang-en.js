@@ -42,6 +42,7 @@ UB.i18nExtend({
   certificates: 'Certificates',
   'UacException BAD_PASSWORD : 1016': 'Invalid password or key is broken',
   'uac_certStatusError': 'Certificate status is unknown',
-  'uac_certificateRevoked': 'The certificate was abandoned by the certification authority or key is expire'
+  'uac_certificateRevoked': 'The certificate was abandoned by the certification authority or key is expire',
+  MAX_TREEPATH_DEPTH_EXCEED: 'You can not subordinate an element to this parent - this will result in a loop'
 
 })
