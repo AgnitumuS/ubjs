@@ -9,7 +9,7 @@
 
 exports.formDef = 'NTF.notificator'
 
-const { UBClientNotifier } = require('@unitybase/amqp-notify')
+const { UBClientNotifier } = require('@unitybase/amqp-notify-pub')
 
 Ext.define('NTF.notificator', {
   extend: 'Ext.form.Panel',

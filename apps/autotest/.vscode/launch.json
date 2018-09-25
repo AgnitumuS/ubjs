@@ -9,7 +9,16 @@
             "addonPath": "${workspaceRoot}/",
             "host": "127.0.0.1",
             "port": 6000,
-            "sourceMaps": "client"
+            "sourceMaps": "client",
+            "log": {
+                "fileName": "${workspaceFolder}/vscode-firefox-debug.log",
+                "fileLevel": {
+                    "default": "Debug"
+                },
+                "consoleLevel": {
+                    "default": "Debug"
+                }
+            }
         }
     ]
 }
