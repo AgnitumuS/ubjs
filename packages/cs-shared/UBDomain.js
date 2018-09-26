@@ -236,7 +236,8 @@ UBDomain.ubDataTypes = {
   /** Bynary data. MSSQL: VARBINARY(MAX), ORACLE: BLOB, POSTGRE: BYTEA */
   BLOB: 'BLOB',
   /** Date (without time) in UTC (GMT+0) */
-  Date: 'Date'
+  Date: 'Date',
+  Json: 'Json'
 }
 
 UBDomain.prototype.ubDataTypes = UBDomain.ubDataTypes

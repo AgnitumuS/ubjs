@@ -526,6 +526,7 @@ class DDLGenerator {
         refTable = getTableDBName(attribute.entity.domain.get(attribute.associatedEntity))
         break
       case UBDomain.ubDataTypes.Document:
+      case UBDomain.ubDataTypes.Json:
         dataType = 'NVARCHAR'
         size = DDLGenerator.MAX_NVARCHAR[attribute.entity.connectionConfig.dialect]
         break

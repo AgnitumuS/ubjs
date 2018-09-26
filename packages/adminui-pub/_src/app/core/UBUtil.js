@@ -1,3 +1,4 @@
+/* global Ext */
 const _ = require('lodash')
 require('./UBAppConfig')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
@@ -20,14 +21,14 @@ Ext.define('UB.core.UBUtil', {
     faFilter: 0xf0b0,
     faRefresh: 0xf021,
     faEdit: 0xf044,
-    faPlusCircle: 0xf055,   // add
+    faPlusCircle: 0xf055, // add
     faTrashO: 0xf014, // delete
-    faEye: 0xf06e,  // showPreview
+    faEye: 0xf06e, // showPreview
     faLink: 0xf0c1,
     faSitemap: 0xf0e8, // details
-    faCheck: 0xf00c,    // select
+    faCheck: 0xf00c, // select
     faShareSquare: 0xf045, // save and close
-    faFloppy: 0xf0c7,  // save
+    faFloppy: 0xf0c7, // save
     faExternalLink: 0xf08e, // export
     faUp: 0xf062,
     faDown: 0xf063,
@@ -478,13 +479,9 @@ Ext.define('UB.core.UBUtil', {
    * @private
    */
   ubDt2Ext: function (attribute, attributeDefinition) {
-    var
-      ext,
-      associatedEntityDisplayField,
-      fieldListExist = Ext.isArray(attributeDefinition.fieldList) && (attributeDefinition.fieldList.length > 0),
-      ubDataTypes = UBDomain.ubDataTypes,
-      fieldList, whereList, orderList
+    const ubDataTypes = UBDomain.ubDataTypes
 
+    let ext
     switch (attribute.dataType) {
       case ubDataTypes.Enum:
         ext = this.getComponentConfig4Enum(attribute.enumGroup, attributeDefinition)
@@ -493,11 +490,12 @@ Ext.define('UB.core.UBUtil', {
         ext = this.getComponentConfig4Entity(attribute.associatedEntity, attributeDefinition)
         break
       case ubDataTypes.Many:
-        associatedEntityDisplayField = fieldListExist ? attributeDefinition.fieldList[0] : $App.domainInfo.get(attribute.associatedEntity).getDescriptionAttribute()
-        fieldList = ['ID'].concat(fieldListExist ? attributeDefinition.fieldList : [associatedEntityDisplayField])
-        whereList = attributeDefinition ? attributeDefinition.whereList : undefined
+        let fieldListExist = Array.isArray(attributeDefinition.fieldList) && (attributeDefinition.fieldList.length > 0)
+        let associatedEntityDisplayField = fieldListExist ? attributeDefinition.fieldList[0] : $App.domainInfo.get(attribute.associatedEntity).getDescriptionAttribute()
+        let fieldList = ['ID'].concat(fieldListExist ? attributeDefinition.fieldList : [associatedEntityDisplayField])
+        let whereList = attributeDefinition ? attributeDefinition.whereList : undefined
         fieldList = (attributeDefinition ? attributeDefinition.fieldList : null) || fieldList
-        orderList = (attributeDefinition ? attributeDefinition.orderList : undefined) ||
+        let orderList = (attributeDefinition ? attributeDefinition.orderList : undefined) ||
                 {'_asc': {expression: associatedEntityDisplayField, order: UB.core.UBCommand.order.sqlotAsc}}
 
         ext = {
@@ -530,11 +528,14 @@ Ext.define('UB.core.UBUtil', {
       case ubDataTypes.Text:
         ext = { xtype: 'textareafield' }
         break
+      case ubDataTypes.Json:
+        ext = { xtype: 'ubcodemirror' }
+        break
       case ubDataTypes.Date:
         ext = { xtype: 'ubdatefield', fieldType: ubDataTypes.Date, format: Ext.util.Format.dateFormat }
         break
       case ubDataTypes.DateTime:
-        ext = { xtype: 'ubdatetimefield', fieldType: ubDataTypes.DateTime /*, format: Ext.util.Format.date Format */}
+        ext = { xtype: 'ubdatetimefield', fieldType: ubDataTypes.DateTime } /*, format: Ext.util.Format.date Format */
         break
       case ubDataTypes.Currency:
         ext = {
