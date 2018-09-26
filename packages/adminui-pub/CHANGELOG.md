@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.5.8]
+### Fixed
+ - new version creation for *cached* entities with `dataHistory` mixin
+ 
 ## [5.5.7]
 ### Added
  - `UploadFileAjax` component can optionally limits file extensions allowed for selection

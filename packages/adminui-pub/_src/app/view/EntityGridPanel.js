@@ -1,4 +1,4 @@
-/* global saveAs, Ext */
+/* global saveAs, Ext, $App, UBDomain, Blob */
 require('../core/UBStoreManager')
 require('../core/UBEnumManager')
 require('../ux/Multifilter')
@@ -12,6 +12,7 @@ require('./InputDateWindow')
 require('../core/UBPanelMixin')
 
 const _ = require('lodash')
+const UB = require('@unitybase/ub-pub')
 
 /**
  * Display a grid based on entity content. Usually created as a result of `showList` command.
@@ -1314,7 +1315,7 @@ Ext.define('UB.view.EntityGridPanel', {
     }
   },
 
-  lazyPagingToolbarInit: function() {
+  lazyPagingToolbarInit: function () {
     if (this.floatToolbarEl) return // already initialized
 
     let me = this
@@ -2236,7 +2237,7 @@ Ext.define('UB.view.EntityGridPanel', {
     if (!me.rowEditing) {
       if (this.isHistory) {
         // this.onHistory();
-        var minDate = undefined
+        let minDate
         if (me.store.data.length > 0) {
           minDate = me.store.data.first().data['mi_dateFrom']
           me.store.data.each(function (item) {
@@ -2245,10 +2246,11 @@ Ext.define('UB.view.EntityGridPanel', {
         }
         Ext.create('UB.view.InputDateWindow', {
           callback: function (date) {
-            if (_.isUndefined(minDate) || date > minDate)
+            if (_.isUndefined(minDate) || date > minDate) {
               me.openForm({__mip_ondate: date, instanceID: me.miDataID})
-            else
+            } else {
               throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), minDate))
+            }
           },
           scope: me
         })
@@ -2373,7 +2375,7 @@ Ext.define('UB.view.EntityGridPanel', {
           _.forEach(transResult, function (resp) {
             waitList.push($App.connection.invalidateCache(resp))
           })
-          return Q.all(waitList).then(function () {
+          return Promise.all(waitList).then(function () {
             return transResult
           })
         }).done(function (transResult) {
@@ -2495,29 +2497,29 @@ Ext.define('UB.view.EntityGridPanel', {
     if (sel.length < 1) return
 
     UB.Repository(me.entityName)
-    .attrs(['ID', 'mi_data_id'])
-    .selectById(sel[0].get('ID'))
-    .then(function(record) {
-      return UB.Repository(me.entityName)
-        .attrs(['mi_dateFrom'])
-        .where('mi_data_id', '=', record['mi_data_id'])
-        .misc({__mip_recordhistory_all: true})
-        .orderByDesc('mi_dateFrom')
-        .limit(1)
-        .select()
-    })
-    .then(function (rows) {
-      var record = rows[0]
-      Ext.create('UB.view.InputDateWindow', {
-        callback: function (date) {
-          if (date > record['mi_dateFrom'])
-            me.onItemDblClick(me, sel[0], null, null, null, { __mip_ondate: date })
-          else
-            throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), record['mi_dateFrom']))
-        },
-        scope: me
+      .attrs(['ID', 'mi_data_id'])
+      .selectById(sel[0].get('ID'))
+      .then(function (record) {
+        return UB.Repository(me.entityName)
+          .attrs(['mi_dateFrom', 'mi_data_id'])
+          .where('mi_data_id', '=', record['mi_data_id'])
+          .misc({__mip_recordhistory_all: true})
+          .orderByDesc('mi_dateFrom')
+          .limit(1)
+          .select()
+      }).then(function (rows) {
+        var record = rows[0]
+        Ext.create('UB.view.InputDateWindow', {
+          callback: function (date) {
+            if (date > record['mi_dateFrom']) {
+              me.onItemDblClick(me, sel[0], null, null, null, {__mip_ondate: date})
+            } else {
+              throw new UB.UBError(UB.format(UB.i18n('dateIsTooEarly'), record['mi_dateFrom']))
+            }
+          },
+          scope: me
+        })
       })
-    })
   },
 
   onToolsClick: function () {
@@ -2536,7 +2538,7 @@ Ext.define('UB.view.EntityGridPanel', {
         cmdRefresh.push(store.reload())
       }
     })
-    Q.all(cmdRefresh).then(function () {
+    Promise.all(cmdRefresh).then(function () {
       return mainStore.reload()
     }).fin(function () {
       me._inRefresh = false //       actionRefresh.enable()
