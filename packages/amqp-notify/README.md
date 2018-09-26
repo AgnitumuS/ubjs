@@ -22,7 +22,9 @@ There are some configuration options have to be turned in order to properly run 
   In order to use it you must place the next code in the initialization of some model inside your application
 
   ``` JavaScript
-  require('@unitybase/amqp-notify')
+  const { registerAuthEndpoints } = require('@unitybase/amqp-notify')
+
+  registerAuthEndpoints()
   ```
 
   This is a special implementation to support secure message routing to specific users managed within UnityBase

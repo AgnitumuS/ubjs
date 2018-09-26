@@ -45,7 +45,7 @@ function UBClientNotifier (filter, onMessage, opts={}) {
   let url = UB.connection.appConfig.uiSettings.adminUI.amqpNotificationUrl
   if (typeof UB !== 'undefined' && typeof url === 'string') {
     if (url === '*') {
-      url = 'ws' + connection.serverUrl.slice(4) + 'ws' // remove http part, so in case http://.. we get ws://.., in case https://.. -> wss://..
+      url = 'ws' + UB.connection.serverUrl.slice(4) + 'ws' // remove http part, so in case http://.. we get ws://.., in case https://.. -> wss://..
     }
     client = Stomp.client(url)
 
