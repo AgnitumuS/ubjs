@@ -108,7 +108,7 @@
             "mapping": [{
               "name": "AnsiSQL",
               "expressionType": "Field",
-              "expression": "mi_modifyDate"
+              "expression": "bigintValue"
             }]
 		}
 	],
