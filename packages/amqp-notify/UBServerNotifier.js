@@ -1,10 +1,12 @@
-const UB = require('@unitybase/ub')
-const App = UB.App
 const amqp = require('@unitybase/amqp')
 const qs = require('querystring')
+//const UB = require('@unitybase/ub')
+//const App = UB.App
 
 const AMQP_EXCHANGE_NAME = 'ub-amqp-notify'
 const USERNAME_PATTERN = /U(\d+)/
+
+// = UB auth for RabbitMQ implementation ===========================================
 
 function parseParams(req) {
   switch (req.method) {
@@ -17,7 +19,7 @@ function parseParams(req) {
   }
 }
 
-App.registerEndpoint('amqp-auth-user', (req, resp) => {
+function handleAuthUser (req, resp) {
   let { username, password} = parseParams(req)
   console.log(`parameters: ${username}`)
 
@@ -33,8 +35,9 @@ App.registerEndpoint('amqp-auth-user', (req, resp) => {
   }
   resp.statusCode = 400
   resp.writeEnd()
-}, false)
-App.registerEndpoint('amqp-auth-vhost', (req, resp) => {
+}
+
+function handleAuthVHost (req, resp) {
   let { username, vhost, ip } = parseParams(req)
   console.log(`parameters: ${username}, ${vhost}, ${ip}`)
 
@@ -48,8 +51,9 @@ App.registerEndpoint('amqp-auth-vhost', (req, resp) => {
   }
   resp.statusCode = 400
   resp.writeEnd()
-}, false)
-App.registerEndpoint('amqp-auth-resource', (req, resp) => {
+}
+
+function handleAuthResource (req, resp) {
   let { username, vhost, resource, name, permission } = parseParams(req)
   console.log(`parameters: ${username}, ${vhost}, ${resource}, ${name}, ${permission}`)
 
@@ -68,8 +72,9 @@ App.registerEndpoint('amqp-auth-resource', (req, resp) => {
   }
   resp.statusCode = 400
   resp.writeEnd()
-}, false)
-App.registerEndpoint('amqp-auth-topic', (req, resp) => {
+}
+
+function handleAuthTopic (req, resp) {
   let { username, vhost, resource, name, permission, routing_key } = parseParams(req)
   console.log(`parameters: ${username}, ${vhost}, ${resource}, ${name}, ${permission}, ${routing_key}`)
 
@@ -87,14 +92,23 @@ App.registerEndpoint('amqp-auth-topic', (req, resp) => {
   }
   resp.statusCode = 400
   resp.writeEnd()
-}, false)
+}
+
+module.exports.registerAuthEndpoints = () => {
+  App.registerEndpoint('amqp-auth-user', handleAuthUser, false)
+  App.registerEndpoint('amqp-auth-vhost', handleAuthVHost, false)
+  App.registerEndpoint('amqp-auth-resource', handleAuthResource, false)
+  App.registerEndpoint('amqp-auth-topic', handleAuthTopic, false)
+}
+
+// = UBServerNotifier class implementation ==================================================
 
 // A thread-wide channel instance
 let _channel
 function getChannel () {
   if (!_channel) {
     try {
-      let amqpUrl = App.serverConfig.application.customSettings.amqpNotificationUrl
+      let amqpUrl = UB.App.serverConfig.application.customSettings.amqpNotificationUrl
       if (typeof amqpUrl === 'string') {
         let ch = amqp.connect(amqpUrl).createChannel()
         // Here is not a good place to declare exchange - it must be defined at environment initialization (configuration) process
