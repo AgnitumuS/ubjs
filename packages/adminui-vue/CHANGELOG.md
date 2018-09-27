@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - vue based login now support `CERT2` authentication (available in UB DE)
 
 ## [1.0.11]
-## Changed
+### Changed
  - update element-ui to 2.4.5 (2.4.6 not theme is compiled)
 
 ## [1.0.9]

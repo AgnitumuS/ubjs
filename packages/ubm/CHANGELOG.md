@@ -24,7 +24,6 @@ This change is required to prevent massive CLOB fetching (cmdData attribute)
  - showReport code snippet added to shortcut form
 
 ## [4.0.27]
-### Added
 
 ### Fixed
 - added unique index for instanceID + admSubjectID for ubm_desktop_adm.meta & ubm_navshortcut_adm.meta 

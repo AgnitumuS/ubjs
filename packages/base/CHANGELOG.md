@@ -75,7 +75,7 @@ case we updated something backwards
 ### Fixed
 - prevent ORA-00932 error - in case `Repository.where(attr, 'in', undefined)` -> replace it by (0=1) SQL statement
 
-## [4.1]
+## [4.1.0]
 ### Added
 - `argv.getConfigFileName` take a config from UB_CFG environment variable if `-cfg` cmd line switch omitted
 - `FileBaseStoreLoader.load()` now return data version in TubDataCache. 
