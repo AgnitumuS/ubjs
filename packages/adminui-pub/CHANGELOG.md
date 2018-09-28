@@ -282,35 +282,32 @@ Will speed up startup for applications with several models
 - TinyMCE upgraded to 4.7.13
 
 ## [4.3.2]
-## Fixed 
+### Fixed 
 - ubdetailgrid does not load store on boxready event if forceDataLoad is true 
 - ubboxselect erorr on getValue
 
 ## [4.2.56]
-## Fixed 
+### Fixed 
  - in case value is empty during form refresh, `ubboxselet.value` will be set to null
-
-## [4.2.56]
-## Fixed 
 - use custom fieldList for grid when choose "select From Dictionary" on ubcombobox for row editing grid
 - in UBComboBox remove clearValue when call doSetValue 
 
 ### Added
 - property BasePanel.formWasSaved. Becomes 'true' in case opened form was saved
 
-## Changed
+### Changed
 - removed execution of ubboxselect.setFocuse after store is loaded
 
 
 ## [4.2.54]
-## Fixed 
+### Fixed 
  - prevent double downloading of document when clicking on document link
  - prevent opening of new tab browser when click on document link in the inserting mode
 - `ubboxselect` can be used for attributes with dataType: Enum (will use this.valueField for data)
 
 
 ## [4.2.53]
-## Fixed 
+### Fixed 
  - setValue in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary'
  - clear Value in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
  - fix coping of line numbering for rowEditing ubdetailgrid
@@ -329,13 +326,13 @@ Will speed up startup for applications with several models
 ### Added
 - add line numbering for rowEditing ubdetailgrid
 
-## Fixed 
+### Fixed 
 - setValue() in ubcobbobox on ubdetailgrid with rowEditing plugin if use 'Select from dictionary' 
 - clearValue() in ubcobbobox befor row edit on ubdetailgrid with rowEditing plugin
 - entitygridpanel filters configuraion loading in case no filters is stored
 
 ## [4.2.45]
-## Changed
+### Changed
 - UBDocument.forceMIME is DEPRECATED and not handled anymore.
 - UBApp.runShortcutCommand now can accept a shortcut code to run
 ```javascript
@@ -348,12 +345,12 @@ To use in ubm_navshortcut place this code to the `ubm_navshortcut.cmdCode` attri
   {cmdType: 'showForm', formCode: function () { $App.runShortcutCommand('sia_docPayOrderOut') }}
 ```
 
-## Fixed
+### Fixed
 - EntityGridPanel `Export to Excel` action now enabled even in standard edition,
  since `xlsx` module added to `adminui-pub` as chunk
 
 ## [4.2.45]
-## Changed
+### Changed
 - `ubm_navshortcut` not not load `cmdData` attribute during startup, because this is CLOB,
 and fetching all CLOBS from table is very slow (at last for Oracle)
 
@@ -364,11 +361,11 @@ and fetching all CLOBS from table is very slow (at last for Oracle)
 - set `hideTrigger: true` by default for auto generated componets for numeric attributes
 
 ## [4.2.44]
-## Fixed
+### Fixed
 - set currency sign to '' for all languages to pass form validation for Currency attributes
 
 ## [4.2.43]
-## Fixed
+### Fixed
 - fix "Change's history" action executed from entityGridPanel in case fieldList
  already contains mi_date[From|To] in extended format {name: 'mi_dateFrom', description: UB.i18n('mi_dateFrom')} 
 
@@ -376,11 +373,11 @@ and fetching all CLOBS from table is very slow (at last for Oracle)
 - in case entityGridPanel columns caption is empty set it to UB.i18n(attributeCode)
  Usable for translating mixin's attributes like `mi_date*` etc.
 
-## Added
+### Added
 - translation for `mi_modifyDate` to global level of i18n    
 
 ## [4.2.41]
-## Fixed
+### Fixed
 - errors associated with editing data in the grid
 - errors associated with add new record from ubcombobox
 
@@ -405,10 +402,10 @@ and fetching all CLOBS from table is very slow (at last for Oracle)
   	      "entity": "tst_document",
   ```
 
-## Fixed
+### Fixed
   - prevent storing of `undefined` as a form value to localStore in case server is unavailable
    
-## Changed
+### Changed
   - Editor for attributes mapped to Currency type changed from spin edit to edit 
   - display value for Currency type will be formated accoding to [Ext.util.Format.currency](http://docs.sencha.com/extjs/4.2.2/#!/api/Ext.util.Format-method-currency)
    rules. Localization applied in `packages/adminui-pub/locale/lang-*.js`
@@ -542,7 +539,6 @@ and fetching all CLOBS from table is very slow (at last for Oracle)
 - "unable to change password at first logon" issue fixed 
 
 ## [4.2.15]
-### Added
 
 ### Fixed
 -  prevent open the same command in separate tabs in case it's opened from left or top menu
@@ -554,8 +550,6 @@ and fetching all CLOBS from table is very slow (at last for Oracle)
 - ignore attributes with property `defaultView: false` for automatically generated forms
 
 ## [4.2.13]
-### Added
-
 ### Fixed
 - UBReportEditor now draw a dashed border around sections (both paragraph and table row)
 
