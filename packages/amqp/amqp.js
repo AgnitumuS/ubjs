@@ -239,7 +239,7 @@ module.exports.AmqpExchangeType = AmqpExchangeType
 
 class AmqpConnection {
   /**
-   *Creates an instance of AmqpConnection.
+   * Creates an instance of AmqpConnection.
    * @param {!TSMAmqpConnection} nativeConnection
    * @memberof AmqpConnection
    * @private
@@ -251,13 +251,32 @@ class AmqpConnection {
   }
 
   /**
+   * Closes connection
+   * 
+   * @memberof AmqpConnection
+   */
+  close () {
+    this._nativeConn.close()
+  }
+
+  /**
    * Creates a new amqp channel
    *
    * @returns AmqpChannel
-   * @memberof AmqpChonnection
+   * @memberof AmqpConnection
    */
   createChannel () {
     return new AmqpChannel(new plugin.TSMAmqpChannel(this._nativeConn))
+  }
+
+  /**
+   * Checks whether connection is open
+   * 
+   * @returns boolean
+   * @memberof AmqpConnection
+   */
+  isOpen() {
+    return this._nativeConn.isOpen()
   }
 }
 

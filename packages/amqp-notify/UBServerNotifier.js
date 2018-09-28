@@ -103,16 +103,19 @@ module.exports.registerAuthEndpoints = () => {
 
 // = UBServerNotifier class implementation ==================================================
 
-// A thread-wide channel instance
+// A thread-wide connection and channel instances
+let _conn
 let _channel
 function getChannel () {
-  if (!_channel) {
+  if (!_channel || !_conn || !_conn.isOpen()) {
     try {
-      let amqpUrl = UB.App.serverConfig.application.customSettings.amqpNotificationUrl
+      let amqpUrl = App.serverConfig.application.customSettings.amqpNotificationUrl
       if (typeof amqpUrl === 'string') {
-        let ch = amqp.connect(amqpUrl).createChannel()
+        let conn = amqp.connect(amqpUrl)
+        let ch = conn.createChannel()
         // Here is not a good place to declare exchange - it must be defined at environment initialization (configuration) process
         // ch.declareExchange(AMQP_EXCHANGE_NAME, amqp.AmqpExchangeType.TOPIC, { durable: true })
+        _conn = conn
         _channel = ch
       }
     } catch(e) {
