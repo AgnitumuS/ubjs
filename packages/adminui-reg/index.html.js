@@ -168,7 +168,7 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
       resp.writeHead(`Location: ${App.externalURL}${adminUIEndpointName}`)
       return
     }
-    generateIndexPage(req, resp, 'index-dev.mustache', true)
+    generateIndexPage(req, resp, 'index-dev.mustache', false)
   } else {
     resp.writeEnd('Server working in production mode')
     resp.statusCode = 404
