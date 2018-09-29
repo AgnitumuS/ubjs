@@ -84,7 +84,7 @@
             <el-button type="secondary" plain style="width: 100%" @click.prevent="fileSelectClick">
               {{ keyFile ? $ut('Selected key file') + ' ' + keyFile.name : $ut('Select private key file') }}
             </el-button>
-            <input ref="keyFileInput" type="file" accept=".dat,.pfx,.cnt,.pk8,Key-6.dat,.jsk" @change="keyFileChange"/>
+            <input ref="keyFileInput" type="file" accept=".dat,.pfx,.cnt,.pk8,Key-6.dat,.jks" @change="keyFileChange"/>
           </el-form-item>
           <el-form-item>
             <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doCert2Login" type="password">

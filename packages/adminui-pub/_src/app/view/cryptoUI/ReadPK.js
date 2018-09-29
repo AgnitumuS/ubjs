@@ -92,7 +92,7 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
       listeners: {
         afterrender: function (sender) {
           sender.getEl().dom.addEventListener('change', me.onFileSelect, false)
-          sender.inputEl.setAttribute('accept', '.dat,.pfx,.cnt,.pk8,Key-6.dat,.jsk')
+          sender.inputEl.setAttribute('accept', '.dat,.pfx,.cnt,.pk8,Key-6.dat,.jks')
           sender.inputEl.on('click', function () {
             this.button.fileInputEl.dom.click()
           }, sender)
