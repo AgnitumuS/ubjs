@@ -67,6 +67,9 @@ type
 
   {$M+}
   TSMAmqpConnection = class(TAmqpConnection)
+  published
+    function close(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; overload; cdecl;
+    function isOpen(cx: PJSContext; argc: uintN; var vp: JSArgRec): Boolean; overload; cdecl;
   end;
   {$M-}
 
@@ -351,6 +354,39 @@ begin
     raise ESMException.Create('Invalid argument types while adding data to an amqp table');
 end;
 
+{ TSMAmqpConnection }
+
+function TSMAmqpConnection.close(cx: PJSContext; argc: uintN;
+  var vp: JSArgRec): Boolean; cdecl;
+begin
+  try
+    Result := True;
+    Close();
+    vp.rval := JSVAL_VOID;
+  except
+    on E: Exception do begin
+      Result := False;
+      vp.rval := JSVAL_VOID;
+      JSError(cx, E);
+    end;
+  end;
+end;
+
+function TSMAmqpConnection.isOpen(cx: PJSContext; argc: uintN;
+  var vp: JSArgRec): Boolean; cdecl;
+begin
+  try
+    Result := True;
+    vp.rval := IsConnected.ToJSVal;
+  except
+    on E: Exception do begin
+      Result := False;
+      vp.rval := JSVAL_VOID;
+      JSError(cx, E);
+    end;
+  end;
+end;
+
 { TSMAmqpChannel }
 
 function TSMAmqpChannel.basicAck(cx: PJSContext; argc: uintN;
@@ -569,6 +605,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types while publishing data to an amqp exchange');
     BasicPublish(exchange, routingKey, data, len, mandatory, False);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -594,6 +631,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument type for setting up amqp qos parameters');
     BasicQos(mpc);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -611,6 +649,7 @@ begin
     if (argc <> 0) then
       raise ESMException.Create('Recover operation does not need any parameters');
     BasicRecover();
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -638,6 +677,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types for rejecting message');
     BasicReject(deliveryTag, requeue);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -672,6 +712,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types while binding amqp exchanges');
     BindExchange(dst, src, pattern, args);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -706,6 +747,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types while binding to an amqp queue');
     BindQueue(qname, exchangeName, routingKey, args);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -746,6 +788,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types while declaring an amqp exchange');
     DeclareExchange(ename, etype, passive, durable, autodelete, internal, args);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -825,6 +868,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types to delete an amqp exchange');
     DeleteExchange(ename, ifUnused);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -879,6 +923,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument type for purging an amqp queue');
     PurgeQueue(qname);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -913,6 +958,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types while unbinding amqp exchanges');
     UnbindExchange(dst, src, pattern, args);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;
@@ -947,6 +993,7 @@ begin
     end else
       raise ESMException.Create('Invalid argument types while unbinding amqp queue');
     UnbindQueue(qname, ename, rk, args);
+    vp.rval := JSVAL_VOID;
   except
     on E: Exception do begin
       Result := False;

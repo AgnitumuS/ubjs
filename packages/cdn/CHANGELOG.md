@@ -26,6 +26,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `cdn_bank` `cityID` and `description` attributes
 - `cdn_currency` `curMult` attributes (Default multiplicity)
 
-## Changed
+### Changed
 - localization for cdn_orgaccount
 
