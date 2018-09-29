@@ -192,9 +192,12 @@
 		"customSettings": {
 			"cryptoService": {
  			  "trustedCACertificatesPath": "./trustedCerts",
-			  "tspServers": ["http://ca.informjust.ua/services/tsp/"],   
+			  "tspServers": ["http://acsk.privatbank.ua/services/tsp/", "http://ca.informjust.ua/services/tsp/"],
+			  "cmpServers": ["http://acsk.privatbank.ua/services/cmp","http://uakey.com.ua/services/cmp", "http://ca.informjust.ua/services/cmp/", "http://ca.mvs.gov.ua/services/cmp", "http://ca.ksystems.com.ua/services/cmp", "http://acskidd.gov.ua/services/cmp/"],
+
+			  //"tspServers": ["http://ca.informjust.ua/services/tsp/"],   
 			  //"cmpServers": ["http://acskidd.gov.ua/services/cmp/","http://ca.informjust.ua/services/cmp/"],
-			  "cmpServers": ["http://uakey.com.ua/services/cmp/","http://ca.informjust.ua/services/cmp/","http://acskidd.gov.ua/services/cmp/"],
+			  //"cmpServers": ["http://uakey.com.ua/services/cmp/","http://ca.informjust.ua/services/cmp/","http://acskidd.gov.ua/services/cmp/"],
 			  "useIITCMP": true
 			},
 			"mailerConfig": {
