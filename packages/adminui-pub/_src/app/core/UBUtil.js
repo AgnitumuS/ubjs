@@ -529,7 +529,7 @@ Ext.define('UB.core.UBUtil', {
         ext = { xtype: 'textareafield' }
         break
       case ubDataTypes.Json:
-        ext = { xtype: 'ubcodemirror' }
+        ext = { xtype: 'ubcodemirror', valueIsJson: true }
         break
       case ubDataTypes.Date:
         ext = { xtype: 'ubdatefield', fieldType: ubDataTypes.Date, format: Ext.util.Format.dateFormat }

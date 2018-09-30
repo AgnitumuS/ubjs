@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.0]
+### Added
+ - attributes of type `Json` now supported by adminUI
+ - New @cfg `valueIsJson` added to `UBCodeMirror`. If true value can be plain JS object. In other case - string 
+
+### Changed
+   
 ## [5.5.7]
 ### Added
  - `UploadFileAjax` component can optionally limits file extensions allowed for selection

@@ -919,6 +919,16 @@ function booleanParse (v) {
 }
 
 /**
+ * Convert UnityBase server Json response to Object, Return null in case of empty string
+ * @private
+ * @param v Value to convert
+ * @returns {*|null}
+ */
+function jsonParse (v) {
+  return v ? JSON.parse(v) : null
+}
+
+/**
  * Return array of conversion rules for raw server response data
  * @param {Array<string>} fieldList
  * @returns {Array<{index: number, convertFn: function}>}
@@ -946,6 +956,11 @@ UBEntity.prototype.getConvertRules = function (fieldList) {
           index: index,
           convertFn: booleanParse
         })
+      } else if (attribute.dataType === types.Json) {
+        rules.push({
+          index: index,
+          convertFn: jsonParse
+        })
       }
     }
   })
@@ -966,9 +981,12 @@ UBEntity.prototype.getDescriptionAttribute = function () {
 }
 
 /**
- * Returns information about attribute and attribute entity. Understand complex attributes like firmID.firmType.code
+ * Returns information about attribute and attribute entity. Understand complex attributes like `firmID.firmType.code`
  * @param {string} attributeName
  * @param {number} [depth=0] If 0 - last, -1 - before last, > 0 - first. Default 0.
+ *  - `0` means last attribute in chain (code from above)
+ *  - `-1` - before last (firmType from above)
+ *  - `>0` - first (firmID from above)
  * @return {{ entity: String, attribute: UBEntityAttribute, parentAttribute: UBEntityAttribute, attributeCode: String }|undefined}
  */
 UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
@@ -1032,18 +1050,22 @@ UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
 }
 
 /**
- * Returns entity attribute. Understand complex attributes like firmID.firmType.code
+ * Returns entity attribute. Understand complex attributes like `firmID.firmType.code`
  * @param {string} attributeName
- * @param {number} [recDepth=0] Current recursion depth. If 0 - last, -1 - before last, > 0 - root. Default 0.
+ * @param {number} [depth=0] Current recursion depth
+ *  - `0` means last attribute in chain (code from above)
+ *  - `-1` - before last (firmType from above)
+ *  - `>0` - first (firmID from above)
  * @return {UBEntityAttribute}
  */
-UBEntity.prototype.getEntityAttribute = function (attributeName, recDepth) {
-  return this.getEntityAttributeInfo(attributeName, recDepth).attribute
+UBEntity.prototype.getEntityAttribute = function (attributeName, depth) {
+  let info = this.getEntityAttributeInfo(attributeName, depth)
+  return info ? info.attribute : undefined
 }
 
 /**
  * Returns array of entity attribute`s names
- * @param {Object|Function} [predicate] In empty - will return all names
+ * @param {Object|Function} [predicate] See {@link UBEntity.filterAttribute}. If empty - will return all names
  * @returns {Array<string>}
  */
 UBEntity.prototype.getAttributeNames = function (predicate) {

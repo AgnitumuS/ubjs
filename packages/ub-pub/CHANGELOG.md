@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.12]
+### Added
+ - `UBConnection.update` and `UBConnection.insert` can accept Object as execParams value.
+ Such Objects will be stringified before passing request to server   
+
 ## [5.2.10]
 ### Added
  - translation for `MAX_TREEPATH_DEPTH_EXCEED`

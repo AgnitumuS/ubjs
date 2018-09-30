@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.10]
+### Added
+ - new convert rule is added for attributes of type `Json` in `getConvertRules` function  
+
 ## [5.0.9]
 ### Added 
  - `UBEntity.getEntityAttributeInfo` in case of request to inner keys of Json type attribute
