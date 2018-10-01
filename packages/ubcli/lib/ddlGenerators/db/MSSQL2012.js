@@ -343,6 +343,7 @@ class DBSQL2012 extends DBAbstract {
    * @override
    */
   genCodeAddColumn (table, column, delayedNotNull) {
+    debugger
     let typeDef = this.createTypeDefine(column)
     let nullable = column.allowNull || delayedNotNull ? ' null' : ' not null'
     let def = column.defaultValue ? ' default ' + column.defaultValue : ''
@@ -510,6 +511,7 @@ class DBSQL2012 extends DBAbstract {
       // 1. http://stackoverflow.com/questions/2133946/nvarcharmax-vs-ntext
       // 2. OLEDB provider raise 'Operand type clash: int is incompatible with ntext' for empty strings
       case 'BLOB': return 'VARBINARY(MAX)'
+      case 'JSON': return 'NVARCHAR'
       default: return dataType
     }
   }

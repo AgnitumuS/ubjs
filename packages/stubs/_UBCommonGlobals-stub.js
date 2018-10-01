@@ -304,7 +304,7 @@ process.isWebSocketEnabled = 0
 process.isDebug = 0
 
 /**
- * The UB process startup mode. One of "Service", "Console", "GUI", "CmdLine"
+ * The UB process startup mode. One of "Console", "CmdLine"
  * @type {String}
  * @readonly
  */

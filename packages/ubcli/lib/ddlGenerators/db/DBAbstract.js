@@ -308,7 +308,7 @@ class DBAbstract {
       if (asIs.caption !== mustBe.caption && mustBe.caption) {
         this.genCodeSetCaption(mustBe.name, null, mustBe.caption, asIs.caption)
       }
-
+      debugger
       this.compareColumns(mustBe, asIs)
 
       // drop PK if not equals or not exist in schema
@@ -577,6 +577,9 @@ class DBAbstract {
         break
       case 'BOOLEAN':
         res += '(1)'
+        break
+      case 'JSON':
+        if (column.size) res += `(${column.size.toString()})`
         break
     }
     return res

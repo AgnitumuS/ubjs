@@ -327,7 +327,7 @@ class DBSQLite3 extends DBAbstract {
   }
 
   /**
-   * convert universal types to database
+   * Convert universal types to database
    * @param {string} dataType
    * @return {string}
    */
