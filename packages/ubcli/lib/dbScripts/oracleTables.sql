@@ -1,12 +1,12 @@
 /* Create tables */
 create table uba_els (
 	ID NUMBER(19) not null,
-	code NVARCHAR2(32) null,
+	code NVARCHAR2(128) null,
 	description NVARCHAR2(255) not null,
 	disabled NUMBER(1) default 0 not null,
 	entityMask NVARCHAR2(128) not null,
 	methodMask NVARCHAR2(128) not null,
-	ruleType VARCHAR2(32) default 'A' not null,
+	ruleType NVARCHAR2(32) default 'A' not null,
 	ruleRole NUMBER(19) not null
 );
 /
