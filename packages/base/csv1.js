@@ -29,7 +29,7 @@
  *
  *       var csv = require('@unitybase/base').csv;
  *       // simple
- *       var rows = csv.parse('one,two,three\nfour,five,six')
+ *       var rows = csv.parse('one,two,three\nfour,five,six', ',')
  *       // rows equals [["one","two","three"],["four","five","six"]]
  *       // or read from file system
  *       var fs = require('fs'), f = fs.readFileSync('c:/csv.txt');

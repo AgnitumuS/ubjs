@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Added
+- `ubcli generateDDL` now support Json type attributes
+
+### Fixed
+ - database initialization scripts will create DDL for uba_els.code & uba_els.ruleType 
+ as NVARCHAR instead of VARCHAR as in current metadata
+
 ## [5.0.40]
 ### Fixed
 - `ubcli generateDDL` will skip DDL generation for entities without `mStorage` mixin [unitybase/ubjs#11]
