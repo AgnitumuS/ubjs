@@ -43,18 +43,18 @@ function testManyAttribute(conn){
 
     //console.debug('Проверка корректности агрегированного значения атрибута "manyValue"');
     var selected = conn.run({
-        entity: 'tst_maindata',
-		method: 'select',
-        fieldList: ['ID', 'manyValue'],
-		whereList: {
-			w1: {
-				expression: '[code]',
-				condition: '=',
-				values: {v1: 'Код1'}
+      entity: 'tst_maindata',
+			method: 'select',
+      fieldList: ['ID', 'manyValue'],
+			whereList: {
+				w1: {
+					expression: '[code]',
+					condition: '=',
+					values: {v1: 'Код1'}
+				}
 			}
-		}
     });
-	assert.equal(selected.resultData.data[0][1], '1,2', 'For row woth code="Код1" many must contein 2 value: 1 и 2');
+	assert.equal(selected.resultData.data[0][1], '1,2', 'For row with code="Код1" many must contain 2 value: 1 и 2');
 
     //console.debug('Проверка корректности фильтрации по атрибуту "manyValue" условием "IN". Важно одновременно этот же атрибут иметь в fieldList');
     var selected = conn.run({

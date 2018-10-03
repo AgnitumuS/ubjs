@@ -2,10 +2,6 @@
 <!--@name "Report Builder manual"-->
 <!--@report_code "test"-->
 <!--@model "UBS"-->
-<!--@ID "3632233996"-->
-
-
-
 
 <!--%pageOrientation:portrait--><h1 style="text-align: center;">Report <br />builder manual</h1>
 <p><span style="font-size: 10pt;">In UnityBase <strong>report is a <a href="https://github.com/janl/mustache.js">Mustache</a>! </strong>So you can use <strong>everything must</strong>ache is support.</span></p>

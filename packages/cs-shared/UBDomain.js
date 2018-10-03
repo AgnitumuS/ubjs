@@ -236,7 +236,9 @@ UBDomain.ubDataTypes = {
   /** Bynary data. MSSQL: VARBINARY(MAX), ORACLE: BLOB, POSTGRE: BYTEA */
   BLOB: 'BLOB',
   /** Date (without time) in UTC (GMT+0) */
-  Date: 'Date'
+  Date: 'Date',
+  /** Json stored in database. Postgres: JSONB, _MSSQL: NVARCHAR(4000), ORACLE: NVARCHAR2(2000) */
+  Json: 'Json'
 }
 
 UBDomain.prototype.ubDataTypes = UBDomain.ubDataTypes
@@ -918,6 +920,16 @@ function booleanParse (v) {
 }
 
 /**
+ * Convert UnityBase server Json response to Object, Return null in case of empty string
+ * @private
+ * @param v Value to convert
+ * @returns {*|null}
+ */
+function jsonParse (v) {
+  return v ? JSON.parse(v) : null
+}
+
+/**
  * Return array of conversion rules for raw server response data
  * @param {Array<string>} fieldList
  * @returns {Array<{index: number, convertFn: function}>}
@@ -945,6 +957,11 @@ UBEntity.prototype.getConvertRules = function (fieldList) {
           index: index,
           convertFn: booleanParse
         })
+      } else if (attribute.dataType === types.Json) {
+        rules.push({
+          index: index,
+          convertFn: jsonParse
+        })
       }
     }
   })
@@ -965,121 +982,91 @@ UBEntity.prototype.getDescriptionAttribute = function () {
 }
 
 /**
- * Returns information about attribute and attribute entity. Understand complex attributes like firmID.firmType.code
+ * Returns information about attribute and attribute entity. Understand complex attributes like `firmID.firmType.code`
  * @param {string} attributeName
- * @param {number} [depth=0] If 0 - last, -1 - before last, > 0 - root. Default 0.
- * @return {{ entity: String, attribute: UBEntityAttribute, attributeCode: String }|undefined}
+ * @param {number} [depth=0] If 0 - last, -1 - before last, > 0 - first. Default 0.
+ *  - `0` means last attribute in chain (code from above)
+ *  - `-1` - before last (firmType from above)
+ *  - `>0` - first (firmID from above)
+ * @return {{ entity: String, attribute: UBEntityAttribute, parentAttribute: UBEntityAttribute, attributeCode: String }|undefined}
  */
 UBEntity.prototype.getEntityAttributeInfo = function (attributeName, depth) {
-  let domainEntity = this
-  let attributeNameParts = attributeName.split('.')
-  let currentLevel = -(attributeNameParts.length - 1)
-  let complexAttr = []
-  let currentEntity = this.code
+  let currentEntity = this
+  let currentEntityCode = this.code
   /** @type UBEntityAttribute */
-  let attribute
-  let key
+  let parentAttribute = null
+  /** @type UBEntityAttribute */
+  let attribute = null
 
+  let attributeNameParts = []
+  let partsCount
+  let currentPart
+  if (attributeName.indexOf('.') === -1) {
+    currentPart = attributeName
+    partsCount = 1
+  } else {
+    attributeNameParts = attributeName.split('.')
+    partsCount = attributeNameParts.length
+    currentPart = attributeNameParts[0]
+  }
   if (depth && depth > 0) {
-    return { entity: currentEntity, attribute: domainEntity.attr(attributeNameParts[0]), attributeCode: attributeNameParts[0] }
+    return {
+      entity: currentEntityCode,
+      attribute: currentEntity.attr(currentPart),
+      parentAttribute: null,
+      attributeCode: currentPart
+    }
   }
+  if (depth === -1) partsCount -= 1 // request for before tail attribute
 
-  while (domainEntity && attributeNameParts.length) {
-    if (domainEntity && attributeNameParts.length === 1) {
-      complexAttr = attributeNameParts[0].split('@')
-      if (complexAttr.length > 1) {
-        domainEntity = this.domain.get(complexAttr[1]) // real entity is text after @
-        attributeName = complexAttr[0]
-      }
-      return { entity: currentEntity, attribute: domainEntity.attr(attributeName), attributeCode: attributeName }
+  let currentLevel = 0
+  while (currentEntity && currentLevel < partsCount) {
+    if (currentPart.indexOf('@') > -1) {
+      let complexAttr = currentPart.split('@')
+      currentEntityCode = complexAttr[1]
+      currentEntity = this.domain.get(currentEntityCode) // real entity is text after @ parentID.code@org_department
+      currentPart = complexAttr[0]
     }
-    key = attributeNameParts.shift()
-    complexAttr = key.split('@')
-    if (complexAttr.length > 1) {
-      currentEntity = complexAttr[1]
-      domainEntity = this.domain.get(currentEntity) // real entity is text after @
-      key = complexAttr[0]
-    }
-    attribute = domainEntity.attr(key)
-    if (attribute) { // check that attribute exists in domainEntity
-      if (currentLevel === (depth || 0)) {
-        return { entity: currentEntity, attribute: attribute, attributeCode: key }
-      }
-      attributeName = attributeNameParts[0]
-      if (attribute.dataType === 'Enum' && attributeName === 'name') {
-        return { entity: currentEntity, attribute: attribute, attributeCode: key }
-      } else {
-        currentEntity = attribute.associatedEntity
-        domainEntity = attribute.getAssociatedEntity()
-      }
+    parentAttribute = attribute
+    attribute = currentEntity.attributes[currentPart]
+    if (!attribute) return undefined // attribute not exists in currentEntity
+
+    if (attribute.dataType === 'Enum') { // stop on enums. Prev code will check for name also:  && attributeName === 'name'
+      break
+    } else if ((attribute.dataType === UBDomain.ubDataTypes.Json) &&
+      (currentLevel + 1 < partsCount)) { // request to the JSON key `attrOfTypeJson.foo`
+      parentAttribute = attribute
+      attribute = undefined
+      break
     } else {
-      return undefined
+      currentLevel += 1
+      if (currentLevel < partsCount) {
+        currentPart = attributeNameParts[currentLevel]
+        currentEntityCode = attribute.associatedEntity
+        currentEntity = attribute.getAssociatedEntity()
+      }
     }
-    currentLevel += 1
   }
-  return undefined
+  return { entity: currentEntityCode, attribute: attribute, parentAttribute: parentAttribute, attributeCode: currentPart }
 }
 
 /**
- * Returns entity attribute. Understand complex attributes like firmID.firmType.code
+ * Returns entity attribute. Understand complex attributes like `firmID.firmType.code`
  * @param {string} attributeName
- * @param {number} [recDepth=0] Current recursion depth. If 0 - last, -1 - before last, > 0 - root. Default 0.
+ * @param {number} [depth=0] Current recursion depth
+ *  - `0` means last attribute in chain (code from above)
+ *  - `-1` - before last (firmType from above)
+ *  - `>0` - first (firmID from above)
  * @return {UBEntityAttribute}
  */
-UBEntity.prototype.getEntityAttribute = function (attributeName, recDepth) {
-  let domainEntity = this
-  let attributeNameParts = attributeName.split('.')
-  let currentLevel = -(attributeNameParts.length - 1)
-  let complexAttr = []
-  let attribute
-  let key
-
-  if (recDepth && recDepth > 0) {
-    return domainEntity.attributes[attributeNameParts[0]]
-  }
-
-  // TODO: Make the same thing for other special chars (except @)
-  while (domainEntity && attributeNameParts.length) {
-    if (domainEntity && attributeNameParts.length === 1) {
-      complexAttr = attributeNameParts[0].split('@')
-      if (complexAttr.length > 1) {
-        domainEntity = this.domain.get(complexAttr[1]) // real entity is text after @
-        attributeName = complexAttr[0]
-      }
-      return domainEntity.attributes[attributeName]
-    }
-    key = attributeNameParts.shift()
-    complexAttr = key.split('@')
-    if (complexAttr.length > 1) {
-      domainEntity = this.domain.get(complexAttr[1]) // real entity is text after @
-      key = complexAttr[0]
-    }
-    attribute = domainEntity.attributes[key]
-    if (attribute) { // check that attribute exists in domainEntity
-      if (currentLevel === (recDepth || 0)) {
-        return attribute
-      }
-      attributeName = attributeNameParts[0]
-      if (attribute.dataType === UBDomain.ubDataTypes.Enum) {
-        if (attributeName === 'name') { // WTF?
-          return attribute
-        } else {
-          domainEntity = this.domain.get('ubm_enum')
-        }
-      } else {
-        domainEntity = this.domain.get(attribute.associatedEntity)
-      }
-    } else {
-      return undefined
-    }
-    currentLevel += 1
-  }
-  return undefined
+UBEntity.prototype.getEntityAttribute = function (attributeName, depth) {
+  let info = this.getEntityAttributeInfo(attributeName, depth)
+  return info ? info.attribute : undefined
 }
 
 /**
  * Returns array of entity attribute`s names
- * @param {Object|Function} [predicate] In empty - will return all names
+ * @param {Object|Function} [predicate] See {@link UBEntity.filterAttribute}. If empty - will return all names
  * @returns {Array<string>}
  */
 UBEntity.prototype.getAttributeNames = function (predicate) {
@@ -1095,7 +1082,7 @@ UBEntity.prototype.getAttributeNames = function (predicate) {
 }
 
 /**
- * For each attribute from `fieldList` chck it's type, and if this type is Entity - add entity code to then result
+ * For each attribute of type `Entity` from `fieldList` add entity code to result (duplicates are removed)
  * @param {Array<string>} [fieldList] If empty - all entity attributes will be used
  * @return {Array<string>}
  */
@@ -1103,15 +1090,10 @@ UBEntity.prototype.getEntityRequirements = function (fieldList) {
   let result = []
   fieldList = fieldList || this.getAttributeNames()
   for (let i = 0, L = fieldList.length; i < L; ++i) {
-    let fieldNameParts = fieldList[i].split('.')
-    let attr = this.getEntityAttribute(fieldNameParts[0])
-    if (attr.dataType === UBDomain.ubDataTypes.Entity) {
-      if (fieldNameParts.length > 1) {
-        let tail = [fieldNameParts.slice(1).join('.')]
-        result = _.union(result, attr.getAssociatedEntity().getEntityRequirements(tail))
-      } else {
-        result = _.union(result, [attr.associatedEntity])
-      }
+    let attr = this.getEntityAttribute(fieldList[i])
+    if (attr && (attr.dataType === UBDomain.ubDataTypes.Entity) &&
+      (result.indexOf(attr.associatedEntity) === -1)) {
+      result.push(attr.associatedEntity)
     }
   }
   return result
@@ -1119,16 +1101,16 @@ UBEntity.prototype.getEntityRequirements = function (fieldList) {
 
 /**
  * Checks entity has attribute(s) and throw error if not
- * @param {String|Array<string>} attributeName
+ * @param {String|Array<string>} attributeNames
  * @param {string} contextMessage
  */
-UBEntity.prototype.checkAttributeExist = function (attributeName, contextMessage) {
+UBEntity.prototype.checkAttributeExist = function (attributeNames, contextMessage) {
   let me = this
-  attributeName = !_.isArray(attributeName) ? [attributeName] : attributeName
-  _.forEach(attributeName, function (fieldName) {
+  attributeNames = !Array.isArray(attributeNames) ? [attributeNames] : attributeNames
+  attributeNames.forEach(function (fieldName) {
     if (!me.getEntityAttributeInfo(fieldName)) {
       throw new Error(contextMessage + (contextMessage ? ' ' : '') +
-            'The entity "' + me.code + '" does not have attribute "' + fieldName + '"')
+        'The entity "' + me.code + '" does not have attribute "' + fieldName + '"')
     }
   })
 }

@@ -36,7 +36,7 @@ create table uba_role (
 --next
 create table uba_els (
 	ID BIGINT not null PRIMARY KEY,
-	code VARCHAR(32) null, -- Code for ELS rule
+	code VARCHAR(128) null, -- Code for ELS rule
 	description VARCHAR(255) not null, -- Rule description
 	disabled SMALLINT default 0 not null, -- Rule is disabled
 	entityMask VARCHAR(128) not null, -- Entity mask

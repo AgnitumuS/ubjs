@@ -549,6 +549,7 @@ ORDER BY index_id, column_position`
       case 'TEXT': return 'TEXT'
       case 'DOCUMENT': return 'VARCHAR'
       case 'BLOB': return 'BYTEA'
+      case 'JSON': return 'JSONB'
       default: return dataType
     }
   }
@@ -583,6 +584,7 @@ ORDER BY index_id, column_position`
       case 'VARCHAR': return 'NVARCHAR'
       case 'TEXT': return 'TEXT'
       case 'BYTEA': return 'BLOB'
+      case 'JSONB': return 'JSON'
       default: return dataType
     }
   }
@@ -594,7 +596,7 @@ ORDER BY index_id, column_position`
    * @return {string}
    */
   createTypeDefine (column) {
-    if (column.dataType === 'BOOLEAN') { // prevent SMALLINT(1)
+    if ((column.dataType === 'BOOLEAN') || (column.dataType === 'JSON')) { // prevent SMALLINT(1) && JSONB(4000)
       return this.uniTypeToDataBase(column.dataType)
     } else {
       return super.createTypeDefine(column)

@@ -1081,6 +1081,35 @@ UBConnection.prototype.invalidateCache = function (serverResponse) {
 }
 
 /**
+ * Check execParams contains values of type Object and if Yes - return new execParams with stringified objects values
+ * else return false
+ * @private
+ * @param {Object} execParams
+ * @return {Object|false}
+ */
+function stringifyExecParamsValues (execParams) {
+  let keys = Object.keys(execParams)
+  let L = keys.length
+  let needTransform = false
+  for (let i = 0; i < L; i++) {
+    let v = execParams[keys[i]]
+    if ((typeof v === 'object') && !(v instanceof Date)) {
+      needTransform = true
+      break
+    }
+  }
+  if (!needTransform) return false
+  let newParams = {}
+  for (let i = 0; i < L; i++) {
+    let v = execParams[keys[i]]
+    newParams[keys[i]] = ((typeof v === 'object') && !(v instanceof Date))
+      ? JSON.stringify(v)
+      : v
+  }
+  return newParams
+}
+
+/**
  * Promise of running UBQL command with `update` method (asynchronously).
  * Difference from {@link UBConnection.query}:
  *
@@ -1106,6 +1135,10 @@ UBConnection.prototype.invalidateCache = function (serverResponse) {
 UBConnection.prototype.update = function (serverRequest, allowBuffer) {
   let me = this
   serverRequest.method = serverRequest.method || 'update'
+  if (serverRequest.execParams) {
+    let newEp = stringifyExecParamsValues(serverRequest.execParams)
+    if (newEp) serverRequest.execParams = newEp
+  }
   return me.query(serverRequest, allowBuffer)
     .then(me.convertResponseDataToJsTypes.bind(me))
     .then(me.invalidateCache.bind(me))
@@ -1141,6 +1174,10 @@ UBConnection.prototype.update = function (serverRequest, allowBuffer) {
 UBConnection.prototype.insert = function (serverRequest, allowBuffer) {
   let me = this
   serverRequest.method = serverRequest.method || 'insert'
+  if (serverRequest.execParams) {
+    let newEp = stringifyExecParamsValues(serverRequest.execParams)
+    if (newEp) serverRequest.execParams = newEp
+  }
   return me.query(serverRequest, allowBuffer)
     .then(me.convertResponseDataToJsTypes.bind(me))
     .then(me.invalidateCache.bind(me))

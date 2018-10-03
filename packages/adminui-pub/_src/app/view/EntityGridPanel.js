@@ -249,6 +249,7 @@ Ext.define('UB.view.EntityGridPanel', {
       fieldList = fieldList || UB.Utils.convertFieldListToExtended(entity.filterAttribute({defaultView: true}))
       // UIGridColumnClass
       for (let i = 0, len = fieldList.length; i < len; ++i) {
+        // TODO - code below should be moved to getEntityColumn (use parentAttribute inside instead of -1)
         let metaColumn = entity.getEntityAttributeInfo(fieldList[i].name, -1)
         if (metaColumn.attribute && metaColumn.attribute.customSettings && metaColumn.attribute.customSettings.UIGridColumnClass) { // === 'Favorites'
           columns.push({
@@ -350,24 +351,33 @@ Ext.define('UB.view.EntityGridPanel', {
       let formatC = field.format && !_.isFunction(field.format) ? field.format : null
       let domainEntity = domain.get(entityName)
 
-      let metaAttribute = domainEntity.getEntityAttributeInfo(fieldName)
-      if (!domainEntity || !metaAttribute || !metaAttribute.attribute) {
-        return null
+      let attributeInfo = domainEntity.getEntityAttributeInfo(fieldName)
+      if (!domainEntity || !attributeInfo) return null
+      let metaAttribute = attributeInfo.attribute
+      if (!metaAttribute) {
+        if (attributeInfo.parentAttribute && (attributeInfo.parentAttribute.dataType === UBDomain.ubDataTypes.Json)) {
+          metaAttribute = {
+            dataType: 'String'
+          }
+        } else {
+          return null
+        }
       }
-      metaAttribute = metaAttribute.attribute
 
       let fieldNameParts = fieldName.split('.')
       // create column caption
       let entityNameInn = entityName
       let columnCaption = ''
-      _.forEach(fieldNameParts, function (partName, idx) {
+      for (let i = 0, L = fieldNameParts.length; i < L; i++) {
+        let partName = fieldNameParts[i]
         let entityInn = domain.get(entityNameInn)
-        if (!entityInn) return
+        if (!entityInn) break
         let attr = entityInn.attributes[partName]
-        if (!attr) return
+        if (!attr) break
         entityNameInn = attr.associatedEntity
+        if (!entityNameInn) break
         columnCaption += (columnCaption ? '.' : '') + attr.caption
-      })
+      }
 
       if ((fieldNameParts.length === 1) && (field.visibility === false)) {
         return null

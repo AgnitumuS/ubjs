@@ -234,7 +234,7 @@ class DDLGenerator {
           }
           if (!strIComp(attrCode, m.expression) && entity.attributes[m.expression]) return // Entity attribute mapped to other attribute
           attrCode = m.expression // use a field name from mapping
-          if (tableDef.columnByName(attrCode)) return  // already added
+          if (tableDef.columnByName(attrCode)) return // already added
         }
         let attrName = attrCode.toUpperCase()
         let attrNameF = attrCode.toUpperCase()
@@ -534,6 +534,10 @@ class DDLGenerator {
         break
       case UBDomain.ubDataTypes.BLOB:
         dataType = 'BLOB'
+        break
+      case UBDomain.ubDataTypes.Json:
+        dataType = 'JSON'
+        size = DDLGenerator.MAX_NVARCHAR[attribute.entity.connectionConfig.dialect]
         break
       default:
         throw new Error(`Unknown data type "${attribute.dataType}" for "${attribute.entity.name}.${attribute.name}"`)

@@ -12,12 +12,12 @@ create table dbo.uba_als (
 -- drop table uba_els
 create table dbo.uba_els (
 	ID BIGINT not null,
-	code NVARCHAR(32) null,
+	code NVARCHAR(128) null,
 	description NVARCHAR(255) not null,
 	disabled NUMERIC(1) not null default 0,
 	entityMask NVARCHAR(128) not null,
 	methodMask NVARCHAR(128) not null,
-	ruleType VARCHAR(32) not null default 'A',
+	ruleType NVARCHAR(32) not null default 'A',
 	ruleRole BIGINT not null
 );
 -- drop table uba_role

@@ -3,7 +3,7 @@
 -- Create tables
 create table uba_els (
 	ID BIGINT not null,
-	code VARCHAR(32) null,
+	code VARCHAR(128) null,
 	description VARCHAR(255) not null,
 	disabled SMALLINT default 0 not null,
 	entityMask VARCHAR(128) not null,

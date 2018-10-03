@@ -64,7 +64,7 @@
                     },
                     "dataType": {
                         "type": "string",
-                        "enum": ["String", "Int", "BigInt", "Float", "Currency", "Boolean", "DateTime", "Text", "ID", "Entity", "Document", "Many", "Enum", "BLOB", "Date", "TimeLog"],
+                        "enum": ["String", "Int", "BigInt", "Float", "Currency", "Boolean", "DateTime", "Text", "ID", "Entity", "Document", "Many", "Enum", "BLOB", "Date", "TimeLog", "Json"],
                         "description": "Attribute data type",
                         "default": "String"
                     },

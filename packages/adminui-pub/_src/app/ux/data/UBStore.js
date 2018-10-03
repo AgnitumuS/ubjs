@@ -192,7 +192,15 @@ Ext.define('UB.ux.data.UBStore', {
           fields.push({
             name: fieldName,
             convert: null, // we convert all data just after server response
-            type: UBDomain.getPhysicalDataType(attribute.dataType),
+            type: attribute.physicalDataType,
+            useNull: true,
+            mapping: index
+          })
+        } else { // JSON
+          fields.push({
+            name: fieldName,
+            convert: null, // we convert all data just after server response
+            type: 'auto',
             useNull: true,
             mapping: index
           })

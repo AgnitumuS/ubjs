@@ -51,19 +51,37 @@ Ext.define('UB.ux.UBCodeMirror', {
    * CodeMirror editor mode ( javascript or yaml in current implementation)
    */
   editorMode: 'javascript',
+  /**
+   * If value expected to be JSON set this to true
+   * @cfg valueIsJson
+   */
+  valueIsJson: false,
+
+  jsonChanged: false,
 
   getValue: function () {
+    if (this.valueIsJson) return this.rawValue
     return this.codeMirrorInstance ? this.codeMirrorInstance.getValue() : this.rawValue
   },
 
   setValue: function (value) {
     this.rawValue = value
     if (this.codeMirrorInstance) {
-      this.codeMirrorInstance.setValue('' + value)
+      if (this.valueIsJson) {
+        this.codeMirrorInstance.setValue(value ? JSON.stringify(value) : '')
+      } else {
+        this.codeMirrorInstance.setValue('' + value)
+      }
       if (this.editorMode !== this.codeMirrorInstance.getOption('mode')) {
         this.codeMirrorInstance.setOption('mode', this.editorMode)
       }
     }
+  },
+
+  isEqual: function(value1, value2) {
+    return this.valueIsJson
+      ? JSON.stringify(value1) == JSON.stringify(value2)
+      : String(value1) === String(value2)
   },
 
   /**
@@ -162,7 +180,9 @@ Ext.define('UB.ux.UBCodeMirror', {
         CodeMirror.commands.codeSnippets = CodeMirror.showHint
         this.codeMirrorInstance = this.editor = CodeMirror(myElm, {
           mode: this.editorMode,
-          value: this.rawValue || '',
+          value: this.valueIsJson
+            ? this.rawValue ? JSON.stringify(this.rawValue) : ''
+            : (this.rawValue || ''),
           lineNumbers: true,
           lint: Object.assign({asi: true, esversion: 6}, $App.connection.appConfig.uiSettings.adminUI.linter),
           readOnly: false,
@@ -189,8 +209,18 @@ Ext.define('UB.ux.UBCodeMirror', {
         me.on('destroy', function () {
           if (this.editorTip) this.editorTip.destroy()
         }, me)
-        this.codeMirrorInstance.on('change', function () {
-          me.checkChange()
+        this.codeMirrorInstance.on('change', function (cmInstance) {
+          if (me.valueIsJson) {
+            try {
+              let v = cmInstance.getValue()
+              me.rawValue = JSON.parse(v)
+              me.checkChange()
+            } catch {
+
+            }
+          } else {
+            me.checkChange()
+          }
         })
       })
     }

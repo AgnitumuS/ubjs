@@ -3,7 +3,7 @@
 	"description": "ub test dictionary",
 	"connectionName": "",
 	"sqlAlias": "tdict",
-	"cacheType": "Session",
+	//"cacheType": "Session",
 	"descriptionAttribute": "caption",
 	"attributes": [
 		{
@@ -58,7 +58,13 @@
             "caption": "Test boolean column",
             "allowNull": true,
             "defaultValue": "0"
-        }
+        },
+		{
+			"name": "jsonColumn",
+			"dataType": "Json",
+			"caption": "Test JSON column",
+			"allowNull": true
+		}
 	],
 	"mixins": {
 		"mStorage": {
