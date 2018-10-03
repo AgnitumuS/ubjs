@@ -23,13 +23,17 @@ module.exports = function runJSONTest (options) {
 }
 
 /**
- * Issue UB-1219: Error during delete operation in case ID attribute is mapped
+ * Select for JSON attributes
  * @param {SyncConnection} conn
  */
 function testJsonAttr (conn) {
   // add new
-  let data = conn.Repository('tst_dictionary').attrs('jsonColumn.propI', 'jsonColumn.propS').where('jsonColumn.propI', '=', 10).selectAsObject()
+  let data = conn.Repository('tst_dictionary').attrs('jsonColumn', 'jsonColumn.propI', 'jsonColumn.propS').where('jsonColumn.propI', '=', 10).selectAsObject()
+  console.log(data)
   assert.equal(data.length, 1, 'One json with propI = 10')
+  // TODO parse as object and uncomment 2 line below
+  // assert.equal('' + data[0].jsonColumn.propI, '10', `integer part of Json attribute ${data[0].jsonColumn.propI} equal to '10' after selectAsObject()`)
+  // assert.equal(data[0].jsonColumn.propS, 'Привет', `string part of Json attribute ${data[0].jsonColumn.propS} is parsed after selectAsObject()`)
   data = conn.Repository('tst_dictionary').attrs('jsonColumn.propI', 'jsonColumn.propS').where('jsonColumn.propI', '>', 10).selectAsObject()
   assert.equal(data.length, 3, '3 json with propI > 10')
   data = conn.Repository('tst_dictionary').attrs('jsonColumn.propI', 'jsonColumn.propS').where('jsonColumn.propS', 'startsWith', 'Пр').selectAsObject({
