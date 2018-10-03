@@ -93,7 +93,8 @@ class TableDefinition {
    * @return {FieldDefinition}
    */
   columnByName (name) {
-    return _.find(this.columns, {_upperName: name.toUpperCase()})
+    let u = name.toUpperCase()
+    return this.columns.find(c => c._upperName === u)
   }
 
   /**

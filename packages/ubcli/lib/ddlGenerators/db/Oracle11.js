@@ -575,6 +575,7 @@ where
       case 'TEXT': return 'CLOB'
       case 'DOCUMENT': return 'VARCHAR2'
       case 'BLOB': return 'BLOB'
+      case 'JSON': return 'NVARCHAR2'
       default: return dataType
     }
   }
@@ -614,23 +615,6 @@ where
       default: return dataType
     }
   }
-
-  /**
-   * Generate a column type DDL part
-   * @override
-   * @param {FieldDefinition} column
-   * @return {string}
-   */
-  // createTypeDefine (column) {
-  //   // if (column.dataType === 'BOOLEAN') { // prevent SMALLINT(1)
-  //   //   return this.uniTypeToDataBase(column.dataType)
-  //   // } else
-  //   if ((column.dataType === 'NVARCHAR') && (column.size >= 2000)) {
-  //     return this.uniTypeToDataBase(column.dataType) + '(2000)' // Oracle NVARCHAR2 is maximum 2000 char length
-  //   } else {
-  //     return super.createTypeDefine(column)
-  //   }
-  // }
 }
 
 module.exports = DBOracle

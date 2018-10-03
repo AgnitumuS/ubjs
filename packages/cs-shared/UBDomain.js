@@ -237,6 +237,7 @@ UBDomain.ubDataTypes = {
   BLOB: 'BLOB',
   /** Date (without time) in UTC (GMT+0) */
   Date: 'Date',
+  /** Json stored in database. Postgres: JSONB, _MSSQL: NVARCHAR(4000), ORACLE: NVARCHAR2(2000) */
   Json: 'Json'
 }
 

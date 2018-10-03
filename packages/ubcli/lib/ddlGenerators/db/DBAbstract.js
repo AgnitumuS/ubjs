@@ -435,8 +435,11 @@ class DBAbstract {
         if (mustBeC.caption !== asIsC.caption) {
           this.genCodeSetCaption(mustBe.name, mustBeC.name, mustBeC.caption, asIsC.caption)
         }
-        // mustBeC exists in schema
-        let typeChanged = !strIComp(mustBeC.dataType, asIsC.dataType)
+        let asIsType = this.createTypeDefine(asIsC)
+        let mustBeType = this.createTypeDefine(mustBeC)
+        let typeChanged = (asIsType !== mustBeType)
+
+        // let typeChanged = !strIComp(mustBeC.dataType, asIsC.dataType)
         if (typeChanged && (asIsC.dataType === 'UVARCHAR' &&
           (mustBeC.dataType === 'NVARCHAR' || mustBeC.dataType === 'VARCHAR'))) {
           typeChanged = false
@@ -457,8 +460,6 @@ class DBAbstract {
 
         let allowNullChanged = mustBeC.allowNull !== asIsC.allowNull
 
-        let asIsType = this.createTypeDefine(asIsC)
-        let mustBeType = this.createTypeDefine(mustBeC)
         let mustBeColumn = `${mustBe.name}.${mustBeC.name}`
         if (typeChanged &&
           (mustBeC.dataType === 'INTEGER' || mustBeC.dataType === 'BIGINT' || mustBeC.dataType === 'NUMBER') &&

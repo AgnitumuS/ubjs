@@ -596,7 +596,7 @@ ORDER BY index_id, column_position`
    * @return {string}
    */
   createTypeDefine (column) {
-    if (column.dataType === 'BOOLEAN') { // prevent SMALLINT(1)
+    if ((column.dataType === 'BOOLEAN') || (column.dataType === 'JSON')) { // prevent SMALLINT(1) && JSONB(4000)
       return this.uniTypeToDataBase(column.dataType)
     } else {
       return super.createTypeDefine(column)
