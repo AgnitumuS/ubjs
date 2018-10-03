@@ -2,29 +2,8 @@
 <!--@name "click_sample"-->
 <!--@report_code "click_sample"-->
 <!--@model "UBS"-->
-<!--@ID "773725280"-->
-
-
-
 
 <!--%pageOrientation:landscape-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <h1>Click handler sample</h1>
 <h1>Formatting samples. Formats depends on user locale. Change user language to see different formatting</h1>
 <h2>Number formatting sample</h2>
