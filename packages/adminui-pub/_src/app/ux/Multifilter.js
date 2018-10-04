@@ -345,6 +345,7 @@ Ext.define('UB.ux.Multifilter', {
    * @param {String} entity
    * @param {String} attrName
    * @param {Object} attribute
+   * @param {Object} options
    * @returns {Array}
    */
   getFilterControls: function (entity, attrName, attribute, options) {
@@ -371,7 +372,6 @@ Ext.define('UB.ux.Multifilter', {
           items = me.getDateFilterInput(entity, attrName)
           break
         case 'boolean':
-          // items.push(new Ext.form.field.Checkbox());
           items = me.getBooleanFilterInput(entity, attrName)
           break
         default:
@@ -1173,21 +1173,22 @@ Ext.define('UB.ux.Multifilter', {
       var
         me = this,
         attribute = $App.domainInfo.get(entityName).attr(attrName),
-        cfg = {addnoFilterValue: true},
         filterName = context.getFilterPrefix(attrName),
         prevFilter = context.getPrevFilter(filterName, attrName),
         control, createFilter, startSearch
 
-      cfg.fieldLabel = attribute.caption
-      cfg.isFormField = context.isPreFilter
-      cfg.labelWidth = 100 // 'auto';
-      cfg.filterEmptyValue = 'no_filter'
-      cfg.value = cfg.filterEmptyValue
-      // cfg.margin = '0 15 0 0';
-      cfg.margin = context.getItemMargin()
-      cfg.width = this.filterTypeWidth
-      cfg.withoutIndent = true
-      cfg.addEmptyValue = attribute.allowNull
+      let cfg = {
+        addnoFilterValue: true,
+        fieldLabel: attribute.caption,
+        isFormField: context.isPreFilter,
+        labelWidth: 100,
+        filterEmptyValue: 'no_filter',
+        value: 'no_filter',
+        margin: context.getItemMargin(),
+        width: this.filterTypeWidth,
+        withoutIndent: true,
+        addEmptyValue: attribute.allowNull
+      }
       if (prevFilter) {
         cfg.value = prevFilter.value === 0 ? 0 : (prevFilter.value || prevFilter.filterType || 'no_filter')
       }
@@ -1256,15 +1257,15 @@ Ext.define('UB.ux.Multifilter', {
     },
 
     /**
-         *
-         * @param {String} entityName
-         * @param {String} attrName
-         * @param {String} enumGroup
-         * @param {Object} options
-         * @param {Array}  options.filters Array of filter for enum store
-         * @param {Object} context
-         * @returns {Array}
-         */
+     *
+     * @param {String} entityName
+     * @param {String} attrName
+     * @param {String} enumGroup
+     * @param {Object} options
+     * @param {Array}  options.filters Array of filter for enum store
+     * @param {Object} context
+     * @returns {Array}
+     */
     getEnumFilterInputS: function (entityName, attrName, enumGroup, options, context) {
       var
         me = this,
