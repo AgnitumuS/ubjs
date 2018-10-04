@@ -85,7 +85,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
     keys: [ attrName ]
   }
   if (isHistory) xDef.keys.push('mi_dateTo')
-    // xDef.keys.push('mi_data_id');
+  // xDef.keys.push('mi_data_id');
   if (storage.safeDelete) xDef.keys.push('mi_deleteDate')
   tableDef.addIndex(xDef)
 }
@@ -178,8 +178,8 @@ class DDLGenerator {
     for (let dbConnCfg of domain.connections) {
       if (tablesByConnection[dbConnCfg.name] && tablesByConnection[dbConnCfg.name].length) {
         /** @type DBAbstract */
-        let Maker = require(`./db/${dbConnCfg.dialect}`)
-        let maker = new Maker(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
+        let DatabaseInfo = require(`./db/${dbConnCfg.dialect}`)
+        let maker = new DatabaseInfo(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
         console.log(`Loading database metadata for connection ${maker.dbConnectionConfig.name} (${maker.dbConnectionConfig.dialect})...`)
         console.time('Loaded in')
         maker.loadDatabaseMetadata()
@@ -307,15 +307,6 @@ class DDLGenerator {
         }
       }
     )
-
-    if (entity.cacheType === UBDomain.EntityCacheTypes.Entity || entity.cacheType === UBDomain.EntityCacheTypes.SessionEntity) {
-      tableDef.addSequence({ name: 'S_' + tableDef.name.toUpperCase(), randomStart: true })
-    }
-
-    // for a primary key generators, what dose not mapped on the select statement
-    if (entity.mapping && entity.mapping.pkGenerator && (entity.mapping.pkGenerator.indexOf('select ') < 0)) {
-      tableDef.addSequence({ name: entity.mapping.pkGenerator.toUpperCase(), randomStart: false })
-    }
 
     if (entity.mixins.tree) {
       tableDef.addIndex({
@@ -695,6 +686,21 @@ DDLGenerator.MAX_NVARCHAR = {
   SQLite3: 4000,
   PostgreSQL: 4000,
   Firebird: 4000
+}
+
+DDLGenerator.SEQUENCES_SUPPORTED = {
+  AnsiSQL: false,
+  Oracle: true,
+  MSSQL: true,
+  MSSQL2008: true,
+  MSSQL2012: true,
+  Oracle9: true,
+  Oracle10: true,
+  Oracle11: true,
+  Oracle12: true,
+  SQLite3: false,
+  PostgreSQL: true,
+  Firebird: true
 }
 
 module.exports = DDLGenerator

@@ -448,6 +448,9 @@ class DBSQLite3 extends DBAbstract {
     // FK name is fake for SQLIte3, so warning doesn't matter
     // this.DDL.warnings.statements.push(`Attempt to drop a constraint ${constraintName} on table ${tableName}`)
   }
+  genCodeAddSequence (sequenceObj) {
+    // nothing to do
+  }
 
   genCodeDropDefault (table, column) {
     this.DDL.warnings.statements.push(`Attempt to drop a default for ${table.name}.${column.name}`)

@@ -444,10 +444,13 @@ class DBSQL2012 extends DBAbstract {
     )
   }
   /**
-   * @abstract
+   * @override
    */
-  genCodeAddSequence (table, sequenceObj) {
-    throw new Error('Abstract genCodeAddSequence')
+  genCodeAddSequence (sequenceObj) {
+    this.DDL.createSequence.statements.push(
+      `create sequence dbo.${sequenceObj}  as bigint start with 1 increment by 1 minvalue 1 maxvalue 999999999999999 cycle no cache`,
+      `SELECT next value FOR ${sequenceObj}` // UB-1311
+    )
   }
   /**
    * @abstract

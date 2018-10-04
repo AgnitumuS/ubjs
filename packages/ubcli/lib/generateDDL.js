@@ -170,6 +170,6 @@ function formatAsText (connectionName, connDDLs, warnings) {
   }
 
   return txtRes.length
-    ? '--##############     start script for conection "' + connectionName + '" #######\r\n' + txtRes.join('\r\n')
+    ? '--##############     start script for connection "' + connectionName + '" #######\r\n' + txtRes.join('\r\n')
     : ''
 }

@@ -71,7 +71,6 @@ class TableDefinition {
     /** @type {Array<FKAttributes>} */
     this.foreignKeys = []
     this.checkConstraints = []
-    this.sequences = []
     // other
     this.othersNames = {}
     this.isIndexOrganized = false
@@ -219,12 +218,6 @@ class TableDefinition {
 
   getCheckConstrByName (name) {
     return _.find(this.checkConstraints, {_upperName: name.toUpperCase()})
-  }
-
-  addSequence (obj) {
-    obj._upperName = obj.name.toUpperCase()
-    this.sequences.push(obj)
-    return obj
   }
 
   addOther (obj) {

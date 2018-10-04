@@ -504,10 +504,15 @@ where
   }
 
   /**
-   * @abstract
+   * @override
    */
-  genCodeAddSequence (table, sequenceObj) {
-    throw new Error('Abstract genCodeAddSequence')
+  genCodeAddSequence (sequenceObj) {
+    // "nocache" is important
+    // http://stackoverflow.com/questions/10210273/how-to-retrieve-the-current-value-of-an-oracle-sequence-without-increment-it
+    this.DDL.createSequence.statements.push(
+      `create sequence ${sequenceObj}  start with 1 maxvalue 999999999999999 minvalue 1 cycle nocache order`,
+      `SELECT ${sequenceObj}.nextval FROM dual` // UB-1311
+    )
   }
 
   /**

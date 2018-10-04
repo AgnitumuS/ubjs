@@ -486,10 +486,15 @@ ORDER BY index_id, column_position`
     )
   }
   /**
-   * @abstract
+   * @override
    */
-  genCodeAddSequence (table, sequenceObj) {
-    throw new Error('Abstract genCodeAddSequence')
+  genCodeAddSequence (sequenceObj) {
+    // "cache" = 1 is important to prevent getting the same value X times for nextval('myseq')
+    // http://www.postgresql.org/docs/9.3/static/functions-sequence.html
+    this.DDL.createSequence.statements.push(
+      `create sequence ${sequenceObj} increment 1 maxvalue 999999999999999 start 1 cycle cache 1`,
+      `SELECT ${sequenceObj}.nextval FROM dual` // UB-1311
+    )
   }
   /**
    * @abstract

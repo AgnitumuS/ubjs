@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - database initialization scripts will create DDL for uba_els.code & uba_els.ruleType 
  as NVARCHAR instead of VARCHAR as in current metadata
+ - return back creation of sequences for cached entities (lost during ub1.12 -> ub5 migration).
+  This patch speed up getting of cached entities cache version (especially for large tables)
+   and fix [unitybase/ubjs#15] for all DB except SQLite3 
 
 ## [5.0.40]
 ### Fixed

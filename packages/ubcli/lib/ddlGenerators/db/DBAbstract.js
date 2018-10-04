@@ -1,9 +1,10 @@
 const _ = require('lodash')
 const {strIComp} = require('../AbstractSchema')
+const UBDomain = require('@unitybase/cs-shared').UBDomain
 /**
- * Created by pavel.mash on 11.11.2016.
+ * Abstract class for database metadata
+ * @author pavel.mash on 11.11.2016
  */
-
 class DBAbstract {
   /**
    * @param {SyncConnection} conn
@@ -19,10 +20,30 @@ class DBAbstract {
     /** @type {Array<TableDefinition>} */
     this.dbTableDefs = []
     /**
-     * Array of upper-cased sequence names
+     * Array of upper-cased sequence names as is present in database
      * @type {Array<string>}
      */
     this.sequencesDefs = []
+    /**
+     * Array of upper-cased sequence names as is wanted by metadata
+     * @type {Array<string>}
+     */
+    this.wantedSequences = []
+    // calculate wanted sequences
+    referencedTables.forEach(tableDef => {
+      let entity = tableDef.__entity
+
+      // for a primary key generators, what don't mapped on the select statement
+      if (entity.mapping && entity.mapping.pkGenerator && (entity.mapping.pkGenerator.indexOf('select ') < 0)) {
+        this.wantedSequences.push(entity.mapping.pkGenerator.toUpperCase())
+      }
+      // for cached entities
+      if ((entity.cacheType === UBDomain.EntityCacheTypes.Entity) ||
+        (entity.cacheType === UBDomain.EntityCacheTypes.SessionEntity)
+      ) {
+        this.wantedSequences.push(`S_${tableDef.name.toUpperCase()}`)
+      }
+    })
     this.defaultLang = conn.getAppInfo().defaultLang
     this.isUnsafe = isUnsafe
     this.DDL = {
@@ -215,7 +236,7 @@ class DBAbstract {
   /**
    * @abstract
    */
-  genCodeAddSequence (table, sequenceObj) {
+  genCodeAddSequence (sequenceObj) {
     throw new Error('Abstract genCodeAddSequence')
   }
   /**
@@ -287,6 +308,11 @@ class DBAbstract {
       let asIs = _.find(this.dbTableDefs, {_upperName: mustBe._upperName})
       this.compareTableDefinitions(mustBe, asIs)
     }
+    this.wantedSequences.forEach(seq => {
+      if (this.sequencesDefs.indexOf(seq) === -1) {
+        this.genCodeAddSequence(seq)
+      }
+    })
   }
 
   /**
@@ -308,7 +334,7 @@ class DBAbstract {
       if (asIs.caption !== mustBe.caption && mustBe.caption) {
         this.genCodeSetCaption(mustBe.name, null, mustBe.caption, asIs.caption)
       }
-      debugger
+
       this.compareColumns(mustBe, asIs)
 
       // drop PK if not equals or not exist in schema
@@ -398,14 +424,6 @@ class DBAbstract {
         this.genCodeCreateCheckC(mustBe, mustBeChk)
       }
     }
-
-    // TODO sequences must be on the schema level
-    // mustBe.sequences.forEach(function (sequenceObj) {
-    //   obj = me.schema.sequences[sequenceObj.name.toUpperCase()]
-    //   if (!obj) {
-    //     me.genCodeAddSequence(mustBe, sequenceObj)
-    //   }
-    // })
 
     // others
     _.forEach(mustBe.othersNames, (otherObj) => {
