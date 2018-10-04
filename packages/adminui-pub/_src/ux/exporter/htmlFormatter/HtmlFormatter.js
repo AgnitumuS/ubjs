@@ -146,7 +146,7 @@ Ext.define('Ext.ux.exporter.htmlFormatter.HtmlFormatter', {
         value = record[ store.dataFieldsMap[col.dataIndex]]
         switch (me.eAttributes[col.dataIndex].dataType) {
           case UBDomain.ubDataTypes.Date:
-          case UBDomain.ubDataTypes.DateTime: value = new Date(value); break
+          case UBDomain.ubDataTypes.DateTime: value = value ? new Date(value) : value; break
           case UBDomain.ubDataTypes.Float:
           case UBDomain.ubDataTypes.Currency: value = parseFloat(value); break
           case UBDomain.ubDataTypes.Int: value = parseInt(value, 10); break

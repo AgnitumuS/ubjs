@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - attributes of type `Json` now supported by adminUI
  - New @cfg `valueIsJson` added to `UBCodeMirror`. If true value can be plain JS object. In other case - string 
 
+### Fixed
+ - grid export to HTML - empty (null) dated now exported as empty cell instead of 1970 year
+ 
 ## [5.5.8]
 ### Fixed
  - new version creation for *cached* entities with `dataHistory` mixin
