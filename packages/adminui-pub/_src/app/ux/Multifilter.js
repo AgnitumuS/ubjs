@@ -1223,7 +1223,7 @@ Ext.define('UB.ux.Multifilter', {
             filterType: fval,
             exactMatch: true,
             operator: '=',
-            value: fval,
+            value: fval === 1, // true or false
             userValue: control.inputEl ? control.inputEl.getValue() : fval
           })
         }

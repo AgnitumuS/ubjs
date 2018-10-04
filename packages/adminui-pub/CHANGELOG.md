@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - New @cfg `valueIsJson` added to `UBCodeMirror`. If true value can be plain JS object. In other case - string 
 
 ### Fixed
- - grid export to HTML - empty (null) dated now exported as empty cell instead of 1970 year
+ - grid export to HTML - empty (null) date now exported as empty cell instead of 1970 year
+ - cached entity filtration by boolean attribute from EntityGridPanel filter widget:
+ filtration value should be `true/false` instead `1/0`
  
 ## [5.5.8]
 ### Fixed
