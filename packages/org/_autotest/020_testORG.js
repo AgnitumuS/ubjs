@@ -31,9 +31,7 @@ try {
 }
 
 function testORG () {
-  'use strict'
-  var
-    empID = conn.lookup('org_employee', 'ID', {expression: 'code', condition: 'equal', values: {code: '12356456'}})
+  let empID = conn.lookup('org_employee', 'ID', {expression: 'code', condition: 'equal', values: {code: '12356456'}})
   if (!empID) {
     empID = conn.insert({
       entity: 'org_employee',
@@ -187,7 +185,7 @@ function testORG () {
       .attrs(['shortFIO_uk^'])
       .selectById(empID),
     updParams = {ID: empID}
-  if (empl['shortFIO_uk^'] == 'Приблудкин П.П.') {
+  if (empl['shortFIO_uk^'] === 'Приблудкин П.П.') {
     updParams['lastName_uk^'] = 'Чувырленко'
     updParams['firstName_uk^'] = 'Чезаре'
     updParams['middleName_uk^'] = 'Чезаревич'
@@ -208,9 +206,8 @@ function testORG () {
     updParams['lastName_en^'] = 'Pribludkin'
     updParams['shortFIO_en^'] = 'Pribludkin P.P.'
   }
-  conn.run({
+  conn.update({
     entity: 'org_employee',
-    method: 'update',
     fieldList: [],
     execParams: updParams,
     __skipOptimisticLock: true
@@ -219,7 +216,6 @@ function testORG () {
   checkCaption('org_employeeonstaff', empOnStaffID)
 
   console.debug('****************** End of ORG model test ************************')
-
 }
 
 function i18n (str, lang) {
