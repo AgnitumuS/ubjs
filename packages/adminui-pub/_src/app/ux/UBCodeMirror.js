@@ -215,7 +215,7 @@ Ext.define('UB.ux.UBCodeMirror', {
               let v = cmInstance.getValue()
               me.rawValue = JSON.parse(v)
               me.checkChange()
-            } catch {
+            } catch (e) {
 
             }
           } else {
