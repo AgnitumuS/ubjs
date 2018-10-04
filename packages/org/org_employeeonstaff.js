@@ -216,7 +216,8 @@ function assignCaptions (ctxt) {
   let employeeInfo = UB.Repository('org_employee').attrs(empFieldList).selectById(employeeID)
   supportedLangs.forEach(function (lang) {
     let suffix = '_' + lang + '^'
-    let empName = employeeInfo['shortFIO' + suffix]
+    // [unitybase/ubjs#14] - in case `shortFIO` is not defined use the `lastName` (it's not null attribute)
+    let empName = employeeInfo['shortFIO' + suffix] || employeeInfo['lastName' + suffix]
     let depName = depInfo['parentID.caption' + suffix]
     let eosType = ''
     if (eosTypeInfo) {
