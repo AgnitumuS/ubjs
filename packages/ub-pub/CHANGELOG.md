@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.14]
 ### Fixed
+ - `UBConnection.update` and `UBConnection.insert` should not stringify null values - in other case `null` become "null" string    
  - [unitybase/ubjs#16] - default indexedDB name is changed from `/` to `ub`, because FF can't create indexedDB with name `/` 
 
 ## [5.2.12]

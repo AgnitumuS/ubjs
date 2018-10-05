@@ -1094,7 +1094,7 @@ function stringifyExecParamsValues (execParams) {
   let needTransform = false
   for (let i = 0; i < L; i++) {
     let v = execParams[keys[i]]
-    if ((typeof v === 'object') && !(v instanceof Date)) {
+    if (v && (typeof v === 'object') && !(v instanceof Date)) {
       needTransform = true
       break
     }
