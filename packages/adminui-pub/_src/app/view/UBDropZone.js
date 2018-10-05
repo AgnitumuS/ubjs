@@ -1,3 +1,4 @@
+/* global Ext */
 /**
  * @class UB.view.UBDropZone
  * @singleton
@@ -75,8 +76,7 @@ Ext.define('UB.view.UBDropZone', {
   _enabled: true,
 
   constructor: function () {
-    var me = this
-    me.mixins.observable.constructor.call(me)
+    this.mixins.observable.constructor.call(this)
   },
 
   /**
@@ -105,8 +105,8 @@ Ext.define('UB.view.UBDropZone', {
    * @param {Object} config
    */
   addZoneHandlers: function (self, zone, config) {
-    var alwaysAllow = function (e) {
-      var dt = e.dataTransfer
+    let alwaysAllow = function (e) {
+      let dt = e.dataTransfer
       e.stopPropagation()
       e.preventDefault()
       dt.dropEffect = 'copy'
@@ -122,19 +122,19 @@ Ext.define('UB.view.UBDropZone', {
       return config.dragoverHandler(e)
     })
     zone.addEventListener('dragleave', function (e) {
-      var rect = zone.getBoundingClientRect()
+      let rect = zone.getBoundingClientRect()
       self.dzLeave()
       // dragleave occurs even if we go to child elements, so we must check we really go out from dropzone
       // Check the mouseEvent coordinates are outside of the zone
       if (e.clientX > (rect.left + rect.width) || e.clientX < rect.left ||
-                e.clientY > (rect.top + rect.height) || e.clientY < rect.top) {
+          e.clientY > (rect.top + rect.height) || e.clientY < rect.top) {
         zone.className = 'ub-dz-placeholder'
       }
       e.stopPropagation()
       e.preventDefault()
     })
     zone.addEventListener('drop', function (e) {
-      var res = false
+      let res = false
       e.stopPropagation() // do not pass to parent container
       if (!config.dropHandler) {
         UB.logError('no handler passed to UBDropZone config: ' + JSON.stringify(config))
@@ -151,12 +151,14 @@ Ext.define('UB.view.UBDropZone', {
    * Init DropZone. Call this after dom ready in your custom application.
    * We already done this in app.js for Ext-based client!
    *
-   *           UB.view.UBDropZone.init();
+   *     UB.view.UBDropZone.init()
    *
    * @method init
    */
   init: function () {
-    var body = document.body, me = this, mask, content
+    let body = document.body
+    let me = this
+    let mask, content
 
     me.mask = mask = document.createElement('div')
     mask.className = 'ub-mask'
@@ -192,9 +194,9 @@ Ext.define('UB.view.UBDropZone', {
       if (!me._enabled) {
         return
       }
-      var dt = event.dataTransfer, zone, i
+      let dt = event.dataTransfer
       event.preventDefault()
-      if (!me.isVisible() && (dt.types.length > 0) && (_.indexOf(dt.types, 'Files') !== -1)) { // in firefox we got several items in types
+      if (!me.isVisible() && (dt.types.length > 0) && (dt.types.indexOf('Files') !== -1)) { // in firefox we got several items in types
         /**
          * @event configureDropZone
          * @param {Array} dropTargetConfig
@@ -210,14 +212,13 @@ Ext.define('UB.view.UBDropZone', {
          *     }
          */
         me.fireEvent('configureDropZone', me.currentDropTargetConfig)
-        if (me.currentDropTargetConfig.length) {
-          UB.logDebug('add inner content')
+        if (me.currentDropTargetConfig && me.currentDropTargetConfig.length) {
           // activate only is somebody subscribe
-          _.forEach(me.currentDropTargetConfig, function (cfg) {
-            zone = document.createElement('div')
+          me.currentDropTargetConfig.forEach(function (cfg, i) {
+            let zone = document.createElement('div')
             zone.className = 'ub-dz-placeholder'
             zone.id = 'ub-dz-item-' + i
-            zone.innerHTML = UB.format('<i class="{0}"></i><br>{1}</div>', cfg.iconCls || 'fa fa-dropbox fa-5x', UB.i18n(cfg.message))
+            zone.innerHTML = `<i class="${cfg.iconCls || 'fa fa-dropbox fa-5x'}"></i><br>${UB.i18n(cfg.message)}</div>`
             content.appendChild(zone)
             me.addZoneHandlers(me, zone, cfg)
           })
@@ -227,23 +228,19 @@ Ext.define('UB.view.UBDropZone', {
     })
 
     body.addEventListener('dragover', function (event) {
-      var dt
-      if (!me._enabled) {
-        return
-      }
-      // if (me.isVisible()) {
+      if (!me._enabled) return
       event.preventDefault() // prevent default browser action (copy)
-      dt = event.dataTransfer
+      let dt = event.dataTransfer
       dt.dropEffect = 'none'
       return false
-      // }
     })
   },
 
   clearContent: function () {
-    var me = this, content = me.content
+    let me = this
+    let content = me.content
 
-    for (var i = content.childNodes.length - 1; i >= 0; i--) {
+    for (let i = content.childNodes.length - 1; i >= 0; i--) {
       content.removeChild(content.childNodes[i])
     }
     me.currentDropTargetConfig = []
