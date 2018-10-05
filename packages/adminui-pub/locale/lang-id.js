@@ -27,6 +27,7 @@ UB.i18nExtend({
   ru: 'Russian',
   az: 'Azerbaijani',
   id: 'Indonesia',
+  ka: 'Georgian',
   neizvestnajaOshibkaServera: 'Unknown server error',
   nevozmozhnoDecodirovat: "Can't decode",
   avtorizatsia: 'Authorization',
