@@ -34,5 +34,12 @@ UB.i18nExtend({
     errNotExsistsOKPO: '<<<Tidak ada kode OKPO>>>',
     errMustContainsOnly8Or10Symbols: '<<<Kode keharusan hanya 8 atau 10 simbol>>>',
     eof: 'EOF'
+  },
+  'ka': {
+    errUnableToPerformThisOperation: '<<<Unable to perform this operation. Contact the administrator>>>',
+    errNoRightsForInsUpdateGovOrg: '<<<You cannot perform this operation, because you don\'t have rights for adding/updating organization with government authority>>>',
+    errNotExsistsOKPO: '<<<Not exists OKPO code>>>',
+    errMustContainsOnly8Or10Symbols: '<<<Code must contains only 8 or 10 symbols>>>',
+    eof: 'EOF'
   }
 })

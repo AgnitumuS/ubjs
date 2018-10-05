@@ -1,6 +1,5 @@
 ﻿UB.i18nExtend({
     "en": {
-
         notAssigned: 'Not assigned',
         errAlreadyAssigned: '<<<This staff unit is already assigned>>>',
         errUserWithMultiplePermanentStaffUnitsNotAllowed: '<<<Impossible to logon, because the employee has multiple permanent assignments. Please contact your system administrator.>>>',
@@ -8,7 +7,6 @@
         eof: 'EOF'
     },
     'ru': {
-
         notAssigned: 'Не назначено',
         errAlreadyAssigned: '<<<На эту штатную единицу уже есть назначение>>>',
         errUserWithMultiplePermanentStaffUnitsNotAllowed: '<<<Вход в Систему невозможен, так как сотрудник имеет несколько постоянных назначений. Обратитесь, пожалуйста, к администратору.>>>',
@@ -34,6 +32,14 @@
         errAlreadyAssigned: '<<<Unit staf ini sudah ditetapkan>>>',
         errUserWithMultiplePermanentStaffUnitsNotAllowed: '<<<Mustahil untuk logon, karena karyawan memiliki beberapa tugas permanen. Silahkan hubungi administrator sistem Anda.>>>',
         AccessDeny: 'Akses menyangkal',
+        eof: 'EOF'
+    },
+    "ka": {
+
+        notAssigned: 'Not assigned',
+        errAlreadyAssigned: '<<<This staff unit is already assigned>>>',
+        errUserWithMultiplePermanentStaffUnitsNotAllowed: '<<<Impossible to logon, because the employee has multiple permanent assignments. Please contact your system administrator.>>>',
+        AccessDeny: 'Access deny',
         eof: 'EOF'
     }
 });
