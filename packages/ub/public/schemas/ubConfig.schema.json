@@ -764,7 +764,7 @@
               },
               "storeSize": {
                 "enum": ["Simple", "Medium", "Large", "Monthly", "Daily"],
-                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000\n| `Montly`| New subfolder `YYYYMM` for every month\n| `Daily`| New subfolder `YYYYMM` for every month and when new folder `DD` for every day",
+                "description": "Approximate number of files to store\n\n |Value  |Description\n|-\n| `Simple`|Up to 10000\n| `Medium`| Up to 500 000\n| `Large` | More when 500 000\n| `Monthly`| New subfolder `YYYYMM` for every month\n| `Daily`| New subfolder `YYYYMM` for every month and when new folder `DD` for every day",
                 "default": "Simple"
               },
               "keepOriginalFileNames":{
