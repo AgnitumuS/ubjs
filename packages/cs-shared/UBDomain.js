@@ -679,7 +679,7 @@ UBEntity.prototype.getEntityCaption = function () {
 /**
  * Get entity attribute by code. Return `undefined` if attribute is not found
  * @param {string} attributeCode
- * @param {Boolean} [simpleOnly=false] Check for complex attributes like `attr1.attr2.attr3`
+ * @param {Boolean} [simpleOnly=false] If `false`(default) - parse complex attributes like `attr1.attr2.attr3`
  * @returns {UBEntityAttribute}
  */
 UBEntity.prototype.attr = function (attributeCode, simpleOnly) {

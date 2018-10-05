@@ -364,23 +364,20 @@ Ext.define('UB.view.EntityGridPanel', {
         }
       }
 
-      let fieldNameParts = fieldName.split('.')
-      // create column caption
-      let entityNameInn = entityName
-      let columnCaption = ''
-      for (let i = 0, L = fieldNameParts.length; i < L; i++) {
-        let partName = fieldNameParts[i]
-        let entityInn = domain.get(entityNameInn)
-        if (!entityInn) break
-        let attr = entityInn.attributes[partName]
-        if (!attr) break
-        entityNameInn = attr.associatedEntity
-        if (!entityNameInn) break
-        columnCaption += (columnCaption ? '.' : '') + attr.caption
-      }
-
-      if ((fieldNameParts.length === 1) && (field.visibility === false)) {
+      if ((!attributeInfo.parentAttribute) && (field.visibility === false)) {
         return null
+      }
+      let columnCaption = ''
+      if (!field.description) { // column header not passed in config - calc it
+        // 3 level depth is enough here. in case `attr0.attr1.attr2.attr3` then mostly what developer already pass description
+        if (attributeInfo.parentAttribute) {
+          columnCaption = `${attributeInfo.parentAttribute.caption}.${attributeInfo.attribute.caption}`
+          // check 3 level depth
+          let prevAttrInfo = domainEntity.getEntityAttributeInfo(fieldName, -1)
+          if (prevAttrInfo.parentAttribute) columnCaption = `${prevAttrInfo.parentAttribute.caption}.${columnCaption}`
+        } else {
+          columnCaption = attributeInfo.attribute.caption
+        }
       }
 
       let column = {stateId: fieldName, fieldName: fieldName}

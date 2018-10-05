@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.6.2]
 ### Fixed
  - grid export to HTML - empty (null) Float/Currency/Int now exported as empty cell instead of "NaN"
+ - regression in generation grid column caption for `EntityGrinPanel`
 
 ## [5.6.0]
 ### Added
