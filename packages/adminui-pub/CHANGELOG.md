@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.2]
+### Fixed
+ - grid export to HTML - empty (null) Float/Currency/Int now exported as empty cell instead of "NaN"
+
 ## [5.6.0]
 ### Added
  - attributes of type `Json` now supported by adminUI
