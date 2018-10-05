@@ -613,12 +613,13 @@ $App.connection.userLang()
  * @returns {Promise}
  */
 UBConnection.prototype.initCache = function (userDbVersion) {
+  let dbName = this.baseURL === '/' ? 'UB' : this.baseURL
   /**
    * @property {UBCache} cache
    * @readonly
    * @type {UBCache}
    */
-  this.cache = new UBCache(this.baseURL, userDbVersion)
+  this.cache = new UBCache(dbName, userDbVersion)
   /**
    * List of keys, requested in the current user session.
    * Cleared each time login done

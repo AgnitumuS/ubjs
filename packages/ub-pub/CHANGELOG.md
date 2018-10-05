@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.14]
+### Fixed
+ - [unitybase/ubjs#16] - default indexedDB name is changed from `/` to `ub`, because FF can't create indexedDB with name `/` 
+
 ## [5.2.12]
 ### Added
  - `UBConnection.update` and `UBConnection.insert` can accept Object as execParams value.
