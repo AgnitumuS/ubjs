@@ -493,7 +493,7 @@ ORDER BY index_id, column_position`
     // http://www.postgresql.org/docs/9.3/static/functions-sequence.html
     this.DDL.createSequence.statements.push(
       `create sequence ${sequenceObj} increment 1 maxvalue 999999999999999 start 1 cycle cache 1`,
-      `SELECT ${sequenceObj}.nextval FROM dual` // UB-1311
+      `SELECT nextval('${sequenceObj}')` // UB-1311
     )
   }
   /**

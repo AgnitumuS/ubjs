@@ -3,7 +3,7 @@
 	"description": "ub test dictionary",
 	"connectionName": "",
 	"sqlAlias": "tdict",
-	//"cacheType": "Session",
+	"cacheType": "SessionEntity",
 	"descriptionAttribute": "caption",
 	"attributes": [
 		{
