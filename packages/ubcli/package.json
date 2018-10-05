@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubcli",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "A simple CLI for scaffolding UnityBase projects",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubcli",
   "publishConfig": {
@@ -20,7 +20,7 @@
     "@unitybase/base": "^5.0.24",
     "@unitybase/compressors": "^5.1.5",
     "@unitybase/cs-shared": "^5.0.9",
-    "@unitybase/ub": "^5.0.41",
+    "@unitybase/ub": "^5.0.42",
     "lodash": "^4",
     "mustache": "^2.3.0"
   },
