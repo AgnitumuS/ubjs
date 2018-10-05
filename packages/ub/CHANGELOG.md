@@ -4,13 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.43]
+### Changed
+- `docflow` related legacy code is removed from `RLS.js` (known as $ in "rls" mixin expression)
+ 
 ## [5.0.38]
 ### Fixed
- - domain documentation generator fixed `ubcli generateDoc -u admin -p admin` 
+- domain documentation generator fixed `ubcli generateDoc -u admin -p admin` 
 
 ## [5.0.37]
 ### Added
- - `getAppInfo` endpoint return a application version in `appVersion` key.
+- `getAppInfo` endpoint return a application version in `appVersion` key.
  Version taken from application package.json version attribute.
  Client side can read it from `connection.appConfig.appVersion`.
 
