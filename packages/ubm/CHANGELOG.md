@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.61]
+### Changed
+ - because of fix in `$.currentUserOrUserGroupInAdmSubtable` RLS macros rights for `ubm_navshortcut` & `ubm_desktop` 
+ now can be granted to `Everyone` `User` `Anonymous` 
+
 ## [5.0.12]
 ### Fixed
 - fix creation of a new pureExtJS form from adminUI
