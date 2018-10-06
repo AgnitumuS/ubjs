@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.44]
+### Changed
+ - `$.currentUserOrUserGroupInAdmSubtable` RLS macros will add all user roles including pseudo-roles `Everyone` `User` & `Anonymous`
+ Previous implementation did not check pseudo-roles.    
+
 ## [5.0.43]
 ### Changed
 - `docflow` related legacy code is removed from `RLS.js` (known as $ in "rls" mixin expression)

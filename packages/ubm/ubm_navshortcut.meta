@@ -92,7 +92,7 @@
       "safeDelete": true
     },
     "rls": {
-      "expression": "([$.currentOwner()] OR [$.currentUserInGroup(ubm_navshortcut,'Admin')] OR [$.currentUserOrUserGroupInAdmSubtable(ubm_navshortcut)])"
+      "expression": "`(${$.currentOwner()} OR ${$.currentUserInGroup(ubm_navshortcut,'Admin')} OR ${$.currentUserOrUserGroupInAdmSubtable(ubm_navshortcut)})`"
     },
     "tree": {
       "parentAttr": "parentID"

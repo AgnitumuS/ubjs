@@ -64,7 +64,7 @@ RLS.currentUserInGroup = function (sender, groupname) {
 *   no user group check performed!
 */
 RLS.userInAdmSubtable = function (sender, user) {
-  return `exists (select 1 from ' + sender.entity.name + '_adm admsubtable where admsubtable.instanceID = [ID] and admsubtable.admSubjID = :(${user}): )`
+  return `exists (select 1 from ' + sender.entity.name + '_adm uast where uast.instanceID = [ID] and uast.admSubjID = :(${user}): )`
 }
 
 RLS.isOracle = function (entity) {
@@ -76,7 +76,7 @@ RLS.isOracle = function (entity) {
 * _todo check oracle syntax!!
 */
 RLS.userOrUserGroupInAdmSubtable = function (sender, user) {
-  var result = `exists (select 1 from ${sender.entity.name}_adm admsubtable where admsubtable.instanceID = [ID] and admsubtable.admSubjID in (select ur.RoleID from uba_userrole ur where ur.UserID = :(${user}): union select ${user}`
+  var result = `exists (select 1 from ${sender.entity.name}_adm ast where ast.instanceID = [ID] and ast.admSubjID in (select ur.RoleID from uba_userrole ur where ur.UserID = :(${user}): union select ${user}`
   if (RLS.isOracle(sender.entity)) {
     return result + ' from dual ))'
   } else {
@@ -89,5 +89,9 @@ RLS.currentUserInAdmSubtable = function (sender) {
 }
 
 RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
-  return this.userOrUserGroupInAdmSubtable(sender, Session.userID)
+  let subjects = `ast.admSubjID = :(${Session.userID}):`
+  Session.uData.roleIDs.forEach(rID => {
+    subjects += ` OR ast.admSubjID = :(${rID}):`
+  })
+  return `exists (select 1 from ${sender.entity.name}_adm ast where ast.instanceID = [ID] and (${subjects}))`
 }

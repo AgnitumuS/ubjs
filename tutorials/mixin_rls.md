@@ -1,6 +1,6 @@
 ﻿# Mixin **rls** - Row Level Security (Безопастность уровня записей)
 
-## Общая информация
+## Introduction
   RLS is a security feature which allows developers to give access to a sub-set of data in their entity to others.
 Entity Level Security permission system don't distinguish between individual rows in a entity, so access is all-or-nothing. 
 Grant to `select` method on a entity will allow a user to access all rows of that entity. 
@@ -75,8 +75,10 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
     	}
     }
 
-  При каждом выполнении метода `select` отработает вычисление JavaScript выражения `"'([mi_owner] = :(' + Session.userID + '):)'"`, 
-  допустим Session.userID = 10, результат будет `([mi_owner] = :(10):)`, это выражение добавиться к условиям `where` выборки, сервер:
+  При каждом выполнении метода `select` отработает вычисление JavaScript выражения 
+  `"'([mi_owner] = :(' + Session.userID + '):)'"`, 
+  допустим Session.userID = 10, результат будет `([mi_owner] = :(10):)`,
+  это выражение добавиться к условиям `where` выборки, сервер:
    
    - заменит атрибут в квадратных скобках на его SQL alias: [mi_owner] -> tmd.mi_owner
    - inline parameter :(10): заменит на параметр SQL: :(10): -> ?
@@ -85,7 +87,8 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
   В результате в условие `where` на сервер БД уйдёт `(tmd.mi_owner = 10)`.
   
 ### Пример - использование ф-ии из пространства имен сущности
-  В примере выше мы указали в `rls.expression` непосредственно выражение. но в более сложных случаях предпочтительнее использовать вызов ф-ии:
+  В примере выше мы указали в `rls.expression` непосредственно выражение.
+  В более сложных случаях предпочтительнее использовать вызов ф-ии:
 
 **tst_maindata.meta**:
     
@@ -110,15 +113,17 @@ Grant to `select` method on a entity will allow a user to access all rows of tha
       }
     }
 
-Обратите внимание на то, как корректно вернуть что выражение всегда истино - '(1=1)' или ложно '(1=0)'. Такие выражения корректно отработают оптимизаторы любого сервера БД.    
+Обратите внимание на то, как корректно вернуть что выражение всегда истино - '(1=1)' или ложно '(1=0)'.
+Такие выражения корректно отработают оптимизаторы любого сервера БД.    
  
 ## Обратная совместимость с UB 1.9
-В версиях платформы < 1.10 выражение RLS необходимо было задавать в псевдокоде. Можно было вызвать только ф-ии из скоупа global.$. Пример до 1.10:
+В версиях платформы < 1.10 выражение RLS необходимо было задавать в псевдокоде.
+Можно было вызвать только ф-ии из скоупа global.$. Пример до 1.10:
     
     "expression": "([$.currentOwner()] OR [$.currentUserInGroup(ubm_desktop,'admins')] OR [$.currentUserOrUserGroupInAdmSubtable(ubm_desktop)])"
 
 Такой синтаксис **deprecated** и для обратной совместимости будет поддерживаеться до версии 1.12. Рекомендуем изменить:
  
-    "expression": "'(' + $.currentOwner() + ' OR  ' + $.currentUserInGroup(ubm_desktop,'admins') + ' OR '+  $.currentUserOrUserGroupInAdmSubtable(ubm_desktop) + ')'"
+    "expression": "`(${$.currentOwner()} OR ${$.currentUserInGroup(ubm_desktop,'admins')} OR ${$.currentUserOrUserGroupInAdmSubtable(ubm_desktop)})`"
                            
 А ещё лучше избегать скоупа $ и использовать скоуп той сущности, в которой реально определена ф-я (чтобы легко было искать реализацию).    
