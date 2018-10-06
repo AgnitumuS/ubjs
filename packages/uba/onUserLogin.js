@@ -3,6 +3,7 @@ const UB = require('@unitybase/ub')
 const App = UB.App
 const queryString = require('querystring')
 const Session = UB.Session
+const UBA_COMMON = require('./modules/uba_common')
 
 Session.on('login', onUserLogin)
 Session.on('loginFailed', onUserLoginFailed)
@@ -121,8 +122,17 @@ function onUserLogin (req) {
     console.error('Error getting userroles:', ex.toString())
   }
 
-  let tmpArr = []
-  let roleIDs = []
+  // add everyone role to uData
+  let tmpArr = [UBA_COMMON.ROLES.EVERYONE.NAME]
+  let roleIDs = [UBA_COMMON.ROLES.EVERYONE.ID]
+  // add Anonymous or User role to uData
+  if (Session.userID === UBA_COMMON.USERS.ANONYMOUS.ID) {
+    tmpArr.push(UBA_COMMON.ROLES.ANONYMOUS.NAME)
+    roleIDs.push(UBA_COMMON.ROLES.ANONYMOUS.ID)
+  } else {
+    tmpArr.push(UBA_COMMON.ROLES.USER.NAME)
+    roleIDs.push(UBA_COMMON.ROLES.USER.ID)
+  }
   while (!repo.eof) {
     let currentRole = repo.get('roleID.name')
     tmpArr.push(currentRole)

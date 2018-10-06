@@ -7,7 +7,6 @@ let _sessionCached = {
   uData: undefined,
   callerIP: undefined,
   userRoles: undefined,
-  userRoleNames: undefined,
   userLang: undefined
 }
 /**
@@ -276,7 +275,6 @@ Session.reset = function (sessionID, userID) {
   _sessionCached.uData = undefined
   _sessionCached.callerIP = undefined
   _sessionCached.userRoles = undefined
-  _sessionCached.userRoleNames = undefined
   _sessionCached.userLang = undefined
 }
 
@@ -315,13 +313,14 @@ Object.defineProperty(Session, 'userRoles', {
   enumerable: true,
   get: function () {
     if (_sessionCached.userRoles === undefined) {
-      _sessionCached.userRoles = sessionBinding.userRoles()
+      _sessionCached.userRoles = this.uData.roleIDs.join(',')
     }
     return _sessionCached.userRoles
   }
 })
 /**
  * Logged-in user role names in CSV format. ==="" if no authentication running
+ * @deprecated Use Session.uData.roles
  * @member {string} userRoleNames
  * @memberOf Session
  * @readonly
@@ -329,10 +328,7 @@ Object.defineProperty(Session, 'userRoles', {
 Object.defineProperty(Session, 'userRoleNames', {
   enumerable: true,
   get: function () {
-    if (_sessionCached.userRoleNames === undefined) {
-      _sessionCached.userRoleNames = sessionBinding.userRoleNames()
-    }
-    return _sessionCached.userRoleNames
+    return this.uData.roles
   }
 })
 

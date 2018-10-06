@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Changed
+ - Pseudo roles Everyone, Anonymous (if user is not logged in) or User (if logged in) 
+  are added to `Session.uData.roles` & `Session.uData.roleIDs`. In prev. implementation `uData` not contains this roles.   
+
 ## [5.0.32]
 ### Fixed
 - `uba_auditTrail-fm` fixed bug in case show changed values by attribute of type **document**
