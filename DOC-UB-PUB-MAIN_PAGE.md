@@ -1,11 +1,15 @@
-# <a href="https://unitybase.info/"> <img src="/favicon.ico" height="50"/></a> UnityBase
+<a href="https://unitybase.info/"> <img src="https://unitybase.info/favicon.ico" height="50"/></a>
 
-# `@unitybase/ub-pub`
+# `@unitybase/ub-pub` is a data layer for accessing UnityBase server from Browser or NodeJS
 
- Data layer for accessing UnityBase server from Browser or NodeJS
+## Connecting to UB server
+The main entry point is {@link connect connect} method.
 
-## Connection
-The main entry point is {@link connect connect} method
+** TIP ** : for NodeJS you need a XHR2 lib to be in global
+```javascript
+global.XMLHttpRequest = require('xhr2')
+```
+
 ```
   conts UB = require('@unitybase/ub-pub')
   const conn = UB.connect({
