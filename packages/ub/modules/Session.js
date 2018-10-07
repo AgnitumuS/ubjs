@@ -20,243 +20,6 @@ let _sessionCached = {
  * @mixes EventEmitter
  */
 const Session = {
-  /**
-   * Fires just after user successfully logged-in but before auth response is written to client.
-   * Model developer can subscribe to this event and add some model specific data to Session.uData.
-   *
-   * Since all uData content is passed to client and accessible on client via
-   *  $App.connection.userData(`someCustomProperty`) do not add there a security sensitive data.
-   *
-   * Standard models like `@unitybase/uba` and `@unitybase/org` are subscribed to this event and add
-   * most useful information to the uData - {@see Session.uData Session.uData} documentation.
-   * Never override `uData` using `Session.uData = {...}`, in this case you delete uData properties,
-   * defined in other application models.
-   * Instead define or remove properties using `Session.uData.myProperty = ...`
-   * or use `delete Session.uData.myProperty` if you need to undefine something.
-   *
-   * Example below add `someCustomProperty` to Session.uData:
-   *
-   *      // @param {THTTPRequest} req
-   *      Session.on('login', function (req) {
-   *          var uData = Session.uData
-   *          uData.someCustomProperty = 'Hello!'
-   *      })
-   *
-   * See real life example inside `@unitybase/org/org.js`.
-   * @event login
-   */
-
-  /**
-   * Fires in case new user registered in system and authentication schema support
-   * "registration" feature.
-   *
-   * Currently only CERT and UB schemas support this feature
-   *
-   * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
-   *
-   * For UB schema user registered means 'publicRegistration' endpoint has been called and user confirmed
-   * registration by email otp
-   *
-   * Inside event handler server-side Session object is in INCONSISTENT state and you must not use it!!
-   * Only parameter (stringified object), passed to event is valid user-relative information.
-   *
-   * For CERT schema parameter is look like
-   *      {
-   *          "authType": 'CERT',
-   *          "id_cert": '<id_cert>',
-   *          "user_name": '<user_name>',
-   *          "additional": '',
-   *          "certification_b64": '<certification_b64>'
-   *      }
-   *
-   * For UB schema parameter is look like
-   *      {
-   *          "authType": 'UB',
-   *          "publicRegistration": true,
-   *          userID,
-              userOtpData
-   *      }
-   *
-   * Each AUTH schema can pass his own object as a event parameter, but all schema add `authType`.
-   * Below is a sample code for CERT schema:
-   *
-   *      Session.on('registration', function(registrationParams){
-   *
-   *      }
-   *
-   * @event registration
-   */
-
-  /**
-   * Fires in case new user registered in system and authentication schema support
-   * "registration" feature.
-   *
-   * Currently only CERT schemas
-   *
-   * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
-   *
-   * Called before start event "registration" and before starting check the user. You can create new user inside this event.
-   *
-   * Parameter is look like
-   *
-   *      {
-   *          "authType": 'CERT',
-   *          "serialSign": '<serialSign>',
-   *          "name": '<user name>',
-   *          "additional": '',
-   *          "issuer": '<issuer>',
-   *          "serial": '<serial>',
-   *          "certification_b64": '<certification_b64>'
-   *      }
-   *
-   * Below is a sample code for CERT schema:
-   *
-   const iitCrypto = require('iitCrypto')
-   iitCrypto.init()
-
-   Session.on('newUserRegistration', function (registrationParams) {
-        let params = JSON.parse(registrationParams)
-        Session.runAsAdmin(function () {
-          var
-            storeCert, certData, certInfo,
-            certID, userID,
-            certParams, connectionName, roleStore,
-            certExist
-
-          let storeUser = UB.Repository('uba_user')
-            .attrs(['ID', 'name', 'mi_modifyDate'])
-            .where('name', '=', params.name).select()
-          let userExist = !storeUser.eof
-
-          if (userExist) {
-            userID = storeUser.get('ID')
-          }
-          storeCert = UB.Repository('uba_usercertificate')
-            .attrs(['ID', 'userID.name', 'disabled', 'revoked'])
-            .where('serial', '=', params.serialSign)
-          try {
-            if (!App.serverConfig.security.dstu.findCertificateBySerial) {
-              storeCert = storeCert.where('issuer_serial', '=', params.issuer)
-            }
-            storeCert = storeCert.select()
-            certExist = !storeCert.eof
-            if (certExist && ((storeCert.get('disabled') === 1) || (storeCert.get('revoked') === 1))) {
-              throw new Error('Certificate is disabled')
-            }
-            if (!userExist && certExist) {
-              throw new Error('Certificate already registered by another user')
-            }
-
-            if (certExist) {
-              throw new Error('Certificate already registered')
-              // throw new Error('User ' + params.name + ' already registred');
-            }
-          } finally {
-            storeUser.freeNative()
-            storeCert.freeNative()
-          }
-
-          certData = Buffer.from(params.certificationB64, 'base64')
-          certInfo = iitCrypto.parseCertificate(certData.buffer)
-
-          if (!userExist) {
-            storeUser = new TubDataStore('uba_user')
-            storeUser.run('insert', {
-              fieldList: ['ID'],
-              execParams: {
-                name: params.name,
-                email: certInfo.SubjEMail,
-                disabled: 0,
-                isPending: 0,
-                // random
-                uPasswordHashHexa: (new Date()).getTime().toString(27) + Math.round(Math.random() * 10000000000000000).toString(28),
-                // phone
-                // description:
-                firstName: certInfo.SubjFullName // certInfo.SubjOrg
-              }
-            })
-            userID = storeUser.get('ID')
-
-            roleStore = UB.Repository('uba_role')
-              .attrs(['ID', 'name'])
-              .where('name', 'in', ['Admin']).select()
-            while (!roleStore.eof) {
-              storeUser.run('insert', {
-                entity: 'uba_userrole',
-                execParams: {
-                  userID: userID,
-                  roleID: roleStore.get('ID')
-                }
-              })
-              roleStore.next()
-            }
-          }
-          storeCert = new TubDataStore('uba_usercertificate')
-          certID = storeCert.generateID()
-
-          certParams = new TubList()
-          certParams.ID = certID
-          certParams.userID = userID
-          certParams.issuer_serial = params.issuer
-          certParams.serial = params.serialSign
-          certParams.setBLOBValue('certificate', params.certificationB64)
-          // issuer_cn: certInfo.issuerCapt,
-          certParams.disabled = 0
-          certParams.revoked = 0
-
-          storeCert.run('insert', {
-            fieldList: ['ID'],
-            execParams: certParams
-          })
-
-          connectionName = App.byName('uba_user').connectionName
-          if (App.dbInTransaction(connectionName)) {
-            App.dbCommit(connectionName)
-          }
-          throw new Error('<UBInformation><<<Регистрация прошла успешно.>>>')
-        })
-      })
-   *
-   * @event newUserRegistration
-   */
-
-  /**
-   * Fires in case `auth` endpoint is called with authentication schema UB and userName is founded in database,
-   * but password is incorrect.
-   *
-   * If wrong passord is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
-   * user will be locked
-   *
-   * 2 parameters passes to this event userID(Number) and isUserLocked(Boolean)
-   *
-   *      Session.on('loginFailed', function(userID, isLocked){
-   *          if (isLocked)
-   *              console.log('User with id ', userID, 'entered wrong password and locked');
-   *          else
-   *              console.log('User with id ', userID, 'entered wrong password');
-   *      })
-   *
-   * @event loginFailed
-   */
-
-  /**
-   * Fires in case of any security violation:
-   *
-   *  - user is blocked or not exists (in uba_user)
-   *  - user provide wrong credential (password, domain, encripted secret key, certificate etc)
-   *  - for 2-factor auth schemas - too many sessions in pending state (max is 128)
-   *  - access to endpoint "%" deny for user (endpoint name not present in uba_role.allowedAppMethods for eny user roles)
-   *  - password for user is expired (see ubs_settings UBA.passwordPolicy.maxDurationDays key)
-   *  - entity method access deny by ELS (see rules in uba_els)
-   *
-   * 1 parameter passes to this event `reason: string`
-   *
-   *      Session.on('securityViolation', function(reason){
-   *          console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
-   *      })
-   *
-   * @event securityViolation
-   */
 }
 
 // add EventEmitter to Session object
@@ -452,5 +215,137 @@ Session.runAsUser = function (userID, func) {
   }
   return result
 }
+
+/**
+ * Fires just after user successfully logged-in but before auth response is written to client.
+ * Model developer can subscribe to this event and add some model specific data to Session.uData.
+ *
+ * Since all uData content is passed to client and accessible on client via
+ *  $App.connection.userData(`someCustomProperty`) do not add there a security sensitive data.
+ *
+ * Standard models like `@unitybase/uba` and `@unitybase/org` are subscribed to this event and add
+ * most useful information to the uData - {@see Session.uData Session.uData} documentation.
+ * Never override `uData` using `Session.uData = {...}`, in this case you delete uData properties,
+ * defined in other application models.
+ * Instead define or remove properties using `Session.uData.myProperty = ...`
+ * or use `delete Session.uData.myProperty` if you need to undefine something.
+ *
+ * Example below add `someCustomProperty` to Session.uData:
+ *
+ *      // @param {THTTPRequest} req
+ *      Session.on('login', function (req) {
+ *          var uData = Session.uData
+ *          uData.someCustomProperty = 'Hello!'
+ *      })
+ *
+ * See real life example inside `@unitybase/org/org.js`.
+ * @event login
+ * @memberOf Session
+ */
+
+/**
+ * Fires in case new user registered in system and authentication schema support
+ * "registration" feature.
+ *
+ * Currently only CERT and UB schemas support this feature
+ *
+ * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
+ *
+ * For UB schema user registered means 'publicRegistration' endpoint has been called and user confirmed
+ * registration by email otp
+ *
+ * Inside event handler server-side Session object is in INCONSISTENT state and you must not use it!!
+ * Only parameter (stringified object), passed to event is valid user-relative information.
+ *
+ * For CERT schema parameter is look like
+ *      {
+ *          "authType": 'CERT',
+ *          "id_cert": '<id_cert>',
+ *          "user_name": '<user_name>',
+ *          "additional": '',
+ *          "certification_b64": '<certification_b64>'
+ *      }
+ *
+ * For UB schema parameter is look like
+ *      {
+ *          "authType": 'UB',
+ *          "publicRegistration": true,
+ *          userID,
+              userOtpData
+ *      }
+ *
+ * Each AUTH schema can pass his own object as a event parameter, but all schema add `authType`.
+ * Below is a sample code for CERT schema:
+ *
+ *      Session.on('registration', function(registrationParams){
+ *
+ *      }
+ *
+ * @memberOf Session
+ * @event registration
+ */
+
+/**
+ * Legacy event **CERT authentication schema** only
+ *
+ * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
+ *
+ * Called before start event "registration" and before starting check the user. You can create new user inside this event.
+ *
+ * Parameter is look like
+ *
+ *      {
+ *          "authType": 'CERT',
+ *          "serialSign": '<serialSign>',
+ *          "name": '<user name>',
+ *          "additional": '',
+ *          "issuer": '<issuer>',
+ *          "serial": '<serial>',
+ *          "certification_b64": '<certification_b64>'
+ *      }
+ *
+ * @memberOf Session
+ * @event newUserRegistration
+ */
+
+/**
+ * Fires in case `auth` endpoint is called with authentication schema UB and userName is founded in database,
+ * but password is incorrect.
+ *
+ * If wrong passord is entered more  than `UBA.passwordPolicy.maxInvalidAttempts`(from ubs_settings) times
+ * user will be locked
+ *
+ * 2 parameters are passes to this event userID(Number) and isUserLocked(Boolean)
+ *
+ *      Session.on('loginFailed', function(userID, isLocked){
+ *          if (isLocked)
+ *              console.log('User with id ', userID, 'entered wrong password and locked');
+ *          else
+ *              console.log('User with id ', userID, 'entered wrong password');
+ *      })
+ *
+ * @memberOf Session
+ * @event loginFailed
+ */
+
+/**
+ * Fires in case of any security violation:
+ *
+ *  - user is blocked or not exists (in uba_user)
+ *  - user provide wrong credential (password, domain, encripted secret key, certificate etc)
+ *  - for 2-factor auth schemas - too many sessions in pending state (max is 128)
+ *  - access to endpoint "%" deny for user (endpoint name not present in uba_role.allowedAppMethods for eny user roles)
+ *  - password for user is expired (see ubs_settings UBA.passwordPolicy.maxDurationDays key)
+ *  - entity method access deny by ELS (see rules in uba_els)
+ *
+ * Single parameter is passes to this event `reason: string`
+ *
+ *      Session.on('securityViolation', function(reason){
+ *          console.log('Security violation for user with ID', Session.userID, 'from', Session.callerIP, 'reason', reason);
+ *      })
+ *
+ * @memberOf Session
+ * @event securityViolation
+ */
 
 module.exports = Session
