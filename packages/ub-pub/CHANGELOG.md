@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.16]
+### Changed
+ - @unitybase/ub-pub/UBConnection module is renamed to AsyncConnection.
+ Code what import connection directly like `conn = require('@unitybase/ub-pub/UBConnection')`
+ should use `conn = require('@unitybase/ub-pub').UBConnection` instead 
+ 
+
 ## [5.2.14]
 ### Fixed
  - `UBConnection.update` and `UBConnection.insert` should not stringify null values - in other case `null` become "null" string    

@@ -2,7 +2,7 @@
 const i18n = require('./i18n')
 const utils = require('./utils')
 const transport = require('./transport')
-const conn = require('./UBConnection')
+const conn = require('./AsyncConnection')
 const injection = require('./injection')
 const ClientRepository = require('./ClientRepository')
 const UBCache = require('./UBCache')
@@ -310,8 +310,10 @@ conn.then(function(conn){
    */
   ClientRepository: ClientRepository,
   /**
-   * Create a new instance of repository for a current connection. Defined only inside adminUI
-   * @param {String} entityCode name of Entity we create repository for
+   * Create a new instance of repository for a current connection.
+   * To be used after connection is created.
+   *
+   * @param {String} entityCode The name of the Entity for which the Repository is being created
    * @returns {ClientRepository}
    */
   Repository: function (entityCode) {

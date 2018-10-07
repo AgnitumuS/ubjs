@@ -1,8 +1,8 @@
 /* global Promise, btoa */
 /**
- * Connection to UnityBase server
+ * Connection to UnityBase server for asynchronous clients (NodeJS, Browser)
  *
- * @module UBConnection
+ * @module AsyncConnection
  * @memberOf module:@unitybase/ub-pub
  */
 const _ = require('lodash')
@@ -75,7 +75,7 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
 
        conn.on('authorized', function(ubConnection, session, authParams){console.debug(arguments)} );
  *
- * @class
+ * @class UBConnection
  * @mixes EventEmitter
  * @param {Object} connectionParams connection parameters
  * @param {String} connectionParams.host UnityBase server host
@@ -91,7 +91,7 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
  * @param {boolean} [connectionParams.allowSessionPersistent=false] See {@link connect} for details
  */
 function UBConnection (connectionParams) {
-  let host = connectionParams.host || 'http://localhost:888'
+  let host = connectionParams.host || 'http://localhost:8881'
   let appName = connectionParams.appName || '/'
   let requestAuthParams = connectionParams.requestAuthParams
   let baseURL, serverURL
@@ -106,9 +106,10 @@ function UBConnection (connectionParams) {
   _.assign(this, EventEmitter.prototype)
 
   /**
-   * Fired for {@link UBConnection} instance in case authenticaion type CERT and simpleCertAuth is true.
-   * Here you can extract user name from certificate. By default it EDPOU or DRFO or email.
+   * Fired for {@link UBConnection} instance in case authentication type CERT and simpleCertAuth is true.
+   * Here you can extract user name from certificate. By default it is EDPOU or DRFO or email.
    * Accept 3 args (conn: UBConnection, urlParams: Object, certInfo: Object)
+   * @  memberOf UBConnection
    * @event defineLoginName
    */
 
@@ -352,6 +353,7 @@ $App.connection.userLang()
 
           /**
            * Fired for {@link UBConnection} instance after success authorization. Accept 3 args (conn: UBConnection, session: UBSession, authParams)
+           * @memberOf UBConnection
            * @event authorized
            */
           me.emit('authorized', me, session, authParams)
@@ -1686,7 +1688,5 @@ function connect (cfg, ubGlobal = null) {
   })
 }
 
-module.exports = {
-  UBConnection,
-  connect
-}
+module.exports.UBConnection = UBConnection
+module.exports.connect = connect
