@@ -130,6 +130,8 @@ As a side effect @unitybase/ub-pub module contains "Promisified" API for HTTP re
  - {@link module:@unitybase/ub-pub#get get}: simplified `xhr` for GET
  - {@link module:@unitybase/ub-pub#post post}: simplified `xhr` for POST
 
+So you do not need axios etc. Just use a `UB.xhr`, `UB.get` or `UB.post`:
+
 ```
   conts UB = require('@unitybase/ub-pub')
   UB.get('https://unitybase.info').then(resp => console.log(resp.data))
