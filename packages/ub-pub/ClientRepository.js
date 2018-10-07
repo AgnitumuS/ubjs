@@ -9,12 +9,13 @@ const CustomRepository = csShared.CustomRepository
  */
 
 /**
+ * @classdesc
  * Repository for client-side data retrieve.
  * Implement:
  *
- *  - {@link ClientRepository#select} method able to return `array of object` representation of server entity
- *  - {@link ClientRepository#selectAsArray} method able to return `array of object` representation of server entity
- *  - {@link ClientRepository#selectAsStore} method able to return {UB.ux.data.UBStore} (applicable only for Ext-based client types)
+ *  - {@link ClientRepository#select select} method for retrieve `array of object` representation of server entity
+ *  - {@link ClientRepository#selectAsArray selectAsArray} method for retrieve `array of array` representation of server entity
+ *  - {@link ClientRepository#selectAsStore selectAsStore} method for retrieve {UB.ux.data.UBStore} (applicable only for Ext-based client types)
  *
  * Usually created using {@link UB#Repository UB.Repository} fabric function. Example:
  *
@@ -28,7 +29,7 @@ const CustomRepository = csShared.CustomRepository
  *       .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')
  *       .select().then(function(response){
  *          // here response is in [{ID: 10, code: 'value1'}, .... {}] format
- *       });;
+ *       })
  *
  *
  * @class ClientRepository

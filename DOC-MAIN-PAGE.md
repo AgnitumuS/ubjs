@@ -29,9 +29,10 @@ Form a business logic developer point of view UnityBase is:
 - method marked as <span class="member-attr api">api</span> is available from the client
 
 # Available server-side modules
-Also many of [nodejs modules](https://www.npmjs.com) are compatible with UnityBase. We are constantly working on enhancing the compatibility with nodejs.
+Many of [nodejs modules](https://www.npmjs.com) are compatible with UnityBase.
+We are constantly working on enhancing the compatibility with nodejs.
 
-This is a short list of the modules available in unityBase standard distribution:
+Below is a short list of the modules available in the UnityBase standard distribution:
 
  - {@link module:@unitybase/ub @unitybase/ub}: main entry point for the most of the applications
  - {@link module:@unitybase/ubcli @unitybase/ubcli}: command line utils for database initialization, synchronizing domain metadata with
@@ -61,9 +62,9 @@ The **complete list of available modules** is in [UnityBase packages registry](h
 
 # Get Started
 
-Read about UnityBase application initilization process in {@link module:@unitybase/ub @unitybase/ub} module documentation.
+Read about UnityBase application initialization process in {@link module:@unitybase/ub @unitybase/ub} module documentation.
 
-Check out UnityBase [**Getting Started**](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v4) guide
+Check out UnityBase [**Getting Started**](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v5) guide
 and [other guides](https://git-pub.intecracy.com/unitybase/samples).
 
 Explore [the project WiKi](https://git-pub.intecracy.com/unitybase/ubjs/wikis/home).
