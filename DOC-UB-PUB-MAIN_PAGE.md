@@ -78,6 +78,7 @@ for building {@link UBQL UBQL} JSON
 
 ```
 conn.Repository('my_entity').attrs(['ID', 'code'])
+ .attrs('attrOfEntityType.caption') // JOIN to other table
  .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
  .where('name', 'contains', 'Homer'). // name like '%homer%'
  //(birthday >= '2012-01-01') AND (birthday <= '2012-01-02')
