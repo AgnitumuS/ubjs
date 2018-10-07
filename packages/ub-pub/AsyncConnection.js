@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* global Promise, btoa */
 /**
  * Connection to UnityBase server for asynchronous clients (NodeJS, Browser)
@@ -39,41 +40,47 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
 /**
  * @classdesc
  *
- * Connection to the UnityBase server.
+ * Connection to the UnityBase server (for asynchronous cliebt like NodeJS or Browser)
  *
  * In case host set to value other then `location.host` server must be configured to accept
  * <a href="https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS">CORS</a> requests.
- * Usually it done via "HTTPAllowOrigin" server configuration option.
+ * This is usually done by setting "HTTPAllowOrigin" server configuration option.
  *
- * Usage sample:
+ * **Recommended way to create a UBConnection is** <a href="module-@unitybase_ub-pub.html">UB.connect method</a>
  *
+ * In case you need to create connection directly (for example in case of multiple connection from one page)
+ * the usage sample is:
+ *
+       const UB = require('@ubitybase/ub-pub')
+       const UBConnection = UB.UBConnection
        // connect using UBIP schema
        let conn = new UBConnection({
-           host: 'http://127.0.0.1:888',
-           requestAuthParams: function(conn, isRepeat){
-               if (isRepeat){
-                   throw new UB.UBAbortError('invalid credential')
-               } else {
-                   return Promise.resolve({authSchema: 'UBIP', login: 'admin'})
-               }
-            }
-       });
-       conn.query({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug);
+         host: 'http://127.0.0.1:888',
+         requestAuthParams: function(conn, isRepeat){
+           if (isRepeat){
+             throw new UB.UBAbortError('invalid credential')
+           } else {
+             return Promise.resolve({authSchema: 'UBIP', login: 'admin'})
+           }
+         }
+       })
+       conn.query({entity: 'uba_user', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
 
        // Anonymous connect. Allow access to entity methods, granted by ELS rules to `Anonymous` role
        // Request below will be success if we grant a `ubm_navshortcut.select` to `Anonymous` on the server side
        let conn = new UBConnection({
          host: 'http://127.0.0.1:888'
-       });
-       conn.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug);
+       })
+       conn.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
 
- * This class mixes an EventEmitter, so you can subscribe for `authorized` and `authorizationFail` events:
+ * UBConnection mixes an EventEmitter, so you can subscribe for {@link event:authorized authorized}
+ * and {@link event:authorizationFail authorizationFail} events:
  *
        conn.on('authorizationFail', function(reason){
             // indicate user credential is wrong
-       });
+       })
 
-       conn.on('authorized', function(ubConnection, session, authParams){console.debug(arguments)} );
+       conn.on('authorized', function(ubConnection, session, authParams){console.debug(arguments)} )
  *
  * @class UBConnection
  * @mixes EventEmitter
@@ -108,8 +115,8 @@ function UBConnection (connectionParams) {
   /**
    * Fired for {@link UBConnection} instance in case authentication type CERT and simpleCertAuth is true.
    * Here you can extract user name from certificate. By default it is EDPOU or DRFO or email.
+   *
    * Accept 3 args (conn: UBConnection, urlParams: Object, certInfo: Object)
-   * @  memberOf UBConnection
    * @event defineLoginName
    */
 
@@ -318,6 +325,8 @@ $App.connection.userLang()
    * Used inside {@link UBConnection#xhr}, therefore developer rarely call it directly.
    * @method
    * @param {boolean} [isRepeat] in case user provide wrong credential - we must show logon window
+   * @fires authorized
+   * @fires authorizationFail
    * @returns {Promise<UBSession>} Resolved to {UBSession} if auth success or rejected to `{errMsg: string, errCode: number, errDetails: string}` if fail
    */
   this.authorize = function (isRepeat) {
@@ -352,8 +361,9 @@ $App.connection.userLang()
           }
 
           /**
-           * Fired for {@link UBConnection} instance after success authorization. Accept 3 args (conn: UBConnection, session: UBSession, authParams)
-           * @memberOf UBConnection
+           * Fired for {@link UBConnection} instance after success authorization.
+           *
+           * Accept 3 args `(conn: UBConnection, session: UBSession, authParams)`
            * @event authorized
            */
           me.emit('authorized', me, session, authParams)
@@ -366,7 +376,9 @@ $App.connection.userLang()
           }
           if (!reason || !(reason instanceof ubUtils.UBAbortError)) {
             /**
-             * Fired for {@link UBConnection} instance in case of bad authorization Accept 2 args (reason, connection)
+             * Fired for {@link UBConnection} instance in case of bad authorization.
+             *
+             * Accept 2 args `(reason, connection: UBConnection)`
              * @event authorizationFail
              */
             me.emit('authorizationFail', reason, me)
@@ -773,6 +785,7 @@ UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
  *  call {UBConnection#authorize) and repeat the request
  *
  * @param config Request configuration as described in {transport.xhr}
+ * @fires passwordExpired
  * @return {Promise}
  */
 UBConnection.prototype.xhr = function (config) {
@@ -828,7 +841,8 @@ UBConnection.prototype.xhr = function (config) {
         /**
          * Fired for {@link UBConnection} instance in case user password is expired.
          * The only valid endpoint after this is `changePassword`
-         * Accept 1 arg (connection)
+         *
+         * Accept 1 arg `(connection: UBConnection)
          * @event passwordExpired
          */
         if ((errCode === 72) && me.emit('passwordExpired', me)) {
@@ -1607,11 +1621,11 @@ UBConnection.prototype.SHA256 = SHA256
  * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
  *  In case user is logged out by server this persistent dos't work and UBConnection will call onCredentialRequired handler,
  *  so user will be prompted for credentials
- * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link authorizationFail} event.
- * @param [cfg.onAuthorized] Callback for authorization success. See {@link authorized} event.
- * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link passwordExpired} event
+ * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link event:authorizationFail} event.
+ * @param [cfg.onAuthorized] Callback for authorization success. See {@link event:authorized} event.
+ * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link event:passwordExpired} event
  * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
- *  Accept one parameter - connection: UBConnection
+ *  Accept one parameter - `connection: UBConnection`
  *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
  *  Should return a promise then done
  * @param [cfg.onGotApplicationDomain]

@@ -279,9 +279,9 @@ conn.then(function(conn){
    * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
    *  In case user logged out by server side this type persistent not work and UBConnection will call onCredentialRequired handler,
    *  so user will be prompted for credentials
-   * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@event authorizationFail} event. Should handle all errors inside!
-   * @param [cfg.onAuthorized] Callback for authorization success. See {@event authorized} event.
-   * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@event passwordExpired} event
+   * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link event:authorizationFail} event. Should handle all errors inside!
+   * @param [cfg.onAuthorized] Callback for authorization success. See {@link event:authorized} event.
+   * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link event:passwordExpired} event
    * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
    *  Accept one parameter - connection: UBConnection
    *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 // stubs for documenting a UBQL. This file is not actually evaluated
 
 /**
@@ -60,8 +62,10 @@ class UBQLOrderItem {
 }
 
 /**
- * UnityBase Query Language.
- * In case this.method === 'select' `ubql` endpoint will transform it to the SQL select query
+ * @classdesc
+ * UnityBase Query Language formal definition. **Recommended way** to create a UBQL is {@link ClientRepository}.
+ *
+ * UBQL JSON representation can be retrieved from Repository using {@link ClientRepository#ubql ClientRepository.ubql()}
  * @class UBQL
  * @extends UBQLItem
  */

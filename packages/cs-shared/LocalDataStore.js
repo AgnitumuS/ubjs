@@ -269,7 +269,7 @@ function whereListToFunctions (ubql, fieldList) {
     fValue = _.values(clause.values)[0]
     filters.push(filterFabricFn(propIdx, clause.condition, fValue))
   }
-    // check for top level ID  - in this case add condition for filter by ID
+  // check for top level ID  - in this case add condition for filter by ID
   const reqID = ubql.ID
   if (reqID) {
     transformClause({expression: '[ID]', condition: 'equal', values: {ID: reqID}})
