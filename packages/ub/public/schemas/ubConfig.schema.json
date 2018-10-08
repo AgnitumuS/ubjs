@@ -144,7 +144,7 @@
         "requestQueueLength": {
           "type": "number",
           "default": 1000,
-          "description": "Only for HTTPSys server type. Request/responce queue length. <br> Increase this value in case of many 503 HTTP responses or in case in HTTP.sys log files (normally in _C:\\Windows\\System32\\LogFiles\\HTTPERR\\httperr\\*.log_) you see QueueFull messages"
+          "description": "Request queue length. <br> Increase this value in case of many invalid responses or in case in HTTP.sys log files (normally in _C:\\Windows\\System32\\LogFiles\\HTTPERR\\httperr\\*.log_) you see QueueFull messages. <br> In case of Linux and server is behind the reverse proxy we recommend do set this value to 100 to enable a quickly reballancing "
         },
         "maxBandwidth": {
           "type": "number",

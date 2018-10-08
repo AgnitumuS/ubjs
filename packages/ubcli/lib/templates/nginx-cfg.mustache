@@ -44,4 +44,14 @@ server {
     }
     {{/blobStores}}
 {{/sendFileHeader}}
+    #In case of load balancing upstream  in UB config httpServer.requestQueueLength should be decreased to 100
+    # and recommended config is:
+    #location / {
+    #  proxy_pass              http://balancing_upstream;
+    #  proxy_next_upstream     error timeout invalid_header;
+    #  proxy_connect_timeout   2;
+    #  proxy_set_header        Host            $host;
+    #  proxy_set_header        X-Real-IP       $remote_addr;
+    #  proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    #}
 }
