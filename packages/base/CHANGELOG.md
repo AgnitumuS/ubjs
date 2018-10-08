@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.56]
+### Changed
+- ServerRepository.selectSingle now accepts an optional fieldAliases parameter, which works just like in selectAsObject
+
 ## [5.0.17]
 ### Fixed
 - ServerRepository.selectAsObject now accept two optional parameters
