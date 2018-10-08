@@ -12,7 +12,7 @@ Unitybase is a full stack JavaScript framework for Enterprise. Its main purpose 
 
   - Download the last passed(!!!) version of  [Job artifacts](https://git-pub.intecracy.com/pavel.mash/ub-server-ee/pipelines)
   - unzip a UnityBase Standard Edition to the destination folder and add this folder to PATH
-  - _(optional step)_ To debug server-side JavaScript install [FireFox browser](https://www.mozilla.org/ru/firefox/new/)
+  - _(optional step)_ To debug server-side JavaScript install [FireFox v57.0.4](https://ftp.mozilla.org/pub/firefox/releases/57.0.4/)
 
 > In case you develop a module for UnityBase, please see [Contribution Guide](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/CONTRIBUTING.md).
 
