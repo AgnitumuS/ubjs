@@ -143,7 +143,7 @@ function getEmployeeList (staffUnitID, supportLang) {
     return result
   }
   let staffs = UB.Repository('org_employeeonstaff').attrs(staffsFieldList)
-    .where('[employeeOnStaffType]', 'in', ['PERMANENT', 'TEMPORARY'])
+    .where('[employeeOnStaffType]', '<>', 'ASSISTANT') // skip assistant for staff unit caption
     .where('[staffUnitID]', '=', staffUnitID)
     .orderBy('[employeeOnStaffType]').select()
   let staffsCount = staffs.rowCount
