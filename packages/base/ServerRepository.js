@@ -133,10 +133,12 @@ class ServerRepository extends CustomRepository {
    * Select a single row. If ubql result is empty - return {undefined}.
    *
    * WARNING method do not check repository conntains the single row and always return a first row from result.
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
+   *  names during transform array to object
    * @return {Object|undefined}
    */
-  selectSingle () {
-    return this.selectAsObject()[ 0 ]
+  selectSingle (fieldAliases) {
+    return this.selectAsObject(fieldAliases)[ 0 ]
   }
 
   /**
