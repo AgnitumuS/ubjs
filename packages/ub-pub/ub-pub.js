@@ -202,7 +202,7 @@ UB.get('downloads/cert/ACSK(old).cer', {responseType: 'arraybuffer'})
    *      XHR object. See <a href="https://developer.mozilla.org/en/http_access_control#section_5">requests with credentials</a>
    *      for more information.
    * @param  {String} [requestConfig.responseType] see <a href="https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType">responseType</a>.
-   * @param {Function} [requestConfig.onProgress] XHR onProgress callback, see <a href="https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent">ProgressEvent</url> for details.
+   * @param {Function} [requestConfig.onProgress] XHR onProgress callback, see <a href="https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent">ProgressEvent</a> for details.
    *      To be user instead obsolete Q Promise.progress()
    * @returns {Promise}
    */
