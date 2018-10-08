@@ -4,6 +4,9 @@
     "children": {
       "web_sockets": {
         "title": "WebSockets"
+      },
+      "reverse_proxy_nginx": {
+        "title": "Reverse proxy (Nginx)"
       }
     }
   },
@@ -63,6 +66,5 @@
         "title": "Using UnityBase modules"
       }
     }
-  
   }
 }
