@@ -97,10 +97,7 @@ class CustomRepository {
   }
 
   /**
-   * Adds attribute.
-   * Duplicate is not checked and caller will get server exception.
-   *
-   *      UB.Repository('tri_srf_reg').attrs('ID').attrs(['code', 'name']).attrs('fullName', 'newCode');
+   * Adds attribute(s) or expression(s).
    *
    * Can take expression as a field. In this case entity attribute name must be wrapped into [] brackets.
    * In case of client-side execution the only valid expression is one of:
@@ -109,11 +106,24 @@ class CustomRepository {
    *
    * @example
 
- // calculate sum of document payments
- UB.Repository('tri_srf_reg').attrs('SUM([payment])').where('documentID', '=', value)
+ // chaining
+ UB.Repository('uba_user').attrs('ID').attrs('name', 'firstName').attrs('disabled').selectAsObject()
 
- // In case of server-side execution any valid SQL expression is accepted:
+ // calculate sum over some attribute
+ UB.Repository('uba_user').attrs('SUM([disabled])').where('disabled', '=', true).selectScalar()
+
+ // In case of server-side execution any valid SQL expression is accepted by attr:
  UB.Repository('uba_user').attrs('[ID] / 100 + 1').selectAsArray()
+
+ // JOIN `uba_userrole.roleID` is a attribute of type Entity. ORM choose `left join` in case attribute is `allowNull: true`
+ UB.Repository('uba_userrole').attrs(['userID', 'userID.name']).selectAsObject()
+
+ // todo Define a way to join for UNITY (@)
+
+ // todo get values for attribute of type MANY
+
+ // Get attribute value for multilaguage ("isMultiLang": true in meta file) attribute other when current session language
+ UB.Repository('org_employee').attrs(['ID', 'lastName_en^']).selectAsObject()
 
    * @param {string|Array<string>} attr
    * @return {CustomRepository}
@@ -466,7 +476,7 @@ let store = UB.Repository('my_entity').attrs('id')
     return this
   }
 
-   /**
+  /**
    * How many rows to select
    * @example
 
