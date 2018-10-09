@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/cs-shared",
-  "version": "5.0.10",
+  "version": "5.0.11",
   "description": "Isomorphic classes shared between clients and server",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/cs-shared",
   "scripts": {},
