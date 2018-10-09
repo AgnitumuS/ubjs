@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.45]
+### Fixed
+ - **CRITICAL** endpoints `models`, `clientRequire` & `static` will return `Bad Request` in case
+ of access folder (not a file). 
+ This prevent exposing of internal location to caller in case `nginx` is used as reverse proxy.
+ The problem is how `nginx` handle `location` rule - in case we return 200 with `X-Accel-Redirect: path/to/folder`
+ `nginx` will return redirect (301) to `path/to/folder` + `/` with internal location inside.
+ 
+ For example without this patch request to `http://localhost/models/UB/schemas` will redirect client to 
+ `https://localhost/ubstatic-unitybase-info/app/node_modules/@unitybase/ub/public/schemas/` 
+
 ## [5.0.44]
 ### Changed
  - `$.currentUserOrUserGroupInAdmSubtable` RLS macros will add all user roles including pseudo-roles `Everyone` `User` & `Anonymous`
