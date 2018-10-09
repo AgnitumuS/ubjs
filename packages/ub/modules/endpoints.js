@@ -56,6 +56,10 @@ function resolveModelFile (reqPath, resp) {
     if (!fs.existsSync(entry.fullPath)) {
       return resp.notFound(`"${entry.fullPath}"`)
     }
+    let stat = fs.statSync(entry.fullPath)
+    if (stat.isDirectory()) {
+      return resp.badRequest(`Prevent access to folder "${entry.fullPath}"`)
+    }
     if (PROXY_SEND_FILE_HEADER) {
       entry.fullPath = path.relative(process.configPath, entry.fullPath)
     } else {
@@ -66,6 +70,7 @@ function resolveModelFile (reqPath, resp) {
     }
     App.globalCachePut(`UB_MODELS_REQ${reqPath}`, JSON.stringify(entry))
   } else {
+    console.debug('model file is resolved from cache')
     entry = JSON.parse(cached)
   }
   if (PROXY_SEND_FILE_HEADER) {
@@ -169,6 +174,8 @@ function clientRequireEp (req, resp) {
         if (fs.existsSync(pkgName)) {
           let pkgMain = JSON.parse(fs.readFileSync(pkgName, 'utf8')).main || './index.js'
           resolvedPath = path.join(resolvedPath, pkgMain)
+        } else {
+          return resp.badRequest(`package.json not found in folder "${resolvedPath}"`)
         }
       }
     } catch (e) {
@@ -344,6 +351,13 @@ function staticEp (req, resp) {
   if (!normalized.startsWith(App.staticPath)) {
     return resp.badRequest(`statics: resolved path "${normalized}" is not inside inetPub folder ${App.staticPath}`)
   }
+  if (!fs.existsSync(normalized)) {
+    return resp.notFound(`"${normalized}"`)
+  }
+  let stat = fs.statSync(normalized)
+  if (stat.isDirectory()) {
+    return resp.badRequest(`Prevent access to folder "${normalized}"`)
+  }
   if (PROXY_SEND_FILE_HEADER) {
     let relative = path.relative(process.configPath, normalized)
     let head = `${PROXY_SEND_FILE_HEADER}: /${PROXY_SEND_FILE_LOCATION_ROOT}/app/${relative}`
@@ -352,9 +366,6 @@ function staticEp (req, resp) {
     resp.writeEnd('')
     resp.statusCode = 200
   } else {
-    if (!fs.existsSync(normalized)) {
-      return resp.notFound(`"${normalized}"`)
-    }
     let ext = path.extname(normalized)
     let ct = mime.contentType(ext)
     resp.writeEnd(normalized)
