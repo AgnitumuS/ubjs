@@ -85,7 +85,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
     oldPwd = store.get('uPasswordHashHexa')
   }
 
-// eslint-disable-next-line camelcase
+  // eslint-disable-next-line camelcase
   let passwordPolicy = ubs_settings ? {
     minLength: ubs_settings.loadKey('UBA.passwordPolicy.minLength', 3),
     checkCmplexity: ubs_settings.loadKey('UBA.passwordPolicy.checkCmplexity', false),
@@ -181,15 +181,16 @@ function changePasswordEp (req, resp) {
   let pwd = params.pwd || ''
   let needChangePassword = params.needChangePassword || false
   let store = UB.DataStore('uba_user')
-  let roles, userID, oldPwd
+  let oldPwd
 
   if (!newPwd) throw new Error('newPwd parameter is required')
 
   let failException = null
+  let userID = Session.userID || UBA_COMMON.USERS.ANONYMOUS.ID
   try {
     if (forUser) {
-      roles = (Session.userRoleNames || '').split(',')
-      if ((roles.indexOf(UBA_COMMON.ROLES.ADMIN.NAME) === -1) && (roles.indexOf('accountAdmins') === -1)) {
+      let roles = (Session.uData.roles || '').split(',')
+      if (!(UBA_COMMON.isSuperUser() || (roles.indexOf('accountAdmins') !== -1))) {
         throw new Error(`Change password for other users allowed only for "${UBA_COMMON.ROLES.ADMIN.NAME}" or "accountAdmins" group members`)
       }
       UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)

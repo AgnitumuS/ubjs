@@ -108,7 +108,7 @@
 			"dataType": "String", "size": 255,
 			"defaultView": false,
 			"caption": "trusted IPs",
-			"documentation": "Semicolon separated list of allowed IPs for UBIP authentication schema. Warning! We recomend use it only for IPs from DMZ"
+			"documentation": "Semicolon separated list of allowed IPs for UBIP authentication schema. Warning! We recommend use it only for IPs from DMZ"
 		},
 		{
 			"name": "uPasswordHashHexa",

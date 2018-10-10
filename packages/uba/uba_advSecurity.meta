@@ -3,7 +3,7 @@
   "description": "Advanced security settings",
   "connectionName": "",
   "cacheType": "None",
-  "documentation": "For any authentication type add binding of user to IP address. For CERT additionaly add a binding to device fingerprint",
+  "documentation": "For any authentication type add binding of user to IP address. For CERT additionally adds a binding to device fingerprint",
   "attributes": [
     {
       "name": "userID",
@@ -45,8 +45,8 @@
       "dataType": "Boolean",
       "allowNull": false,
       "defaultValue": "0",
-      "caption": "Refresh fingerpring",
-      "documentation": "If turned on will refresh Fingerpring of user device on firs user logon"
+      "caption": "Refresh fingerprint",
+      "documentation": "If turned on will refresh Fingerprint of user device on firs user logon"
     }, {
       "name": "keyMediaName",
       "dataType": "String",

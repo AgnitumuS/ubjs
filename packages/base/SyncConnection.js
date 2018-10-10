@@ -205,7 +205,7 @@ function SyncConnection (options) {
             secretWord = request2.password // todo - must be pwdHash but UB server do not know it :( medium unsecured
           } else {
             request2.password = btoa(authParams.password)
-            secretWord = request2.password // todo -  very unsecured!!
+            secretWord = request2.password // todo -  very unsecured to be used only over SSL!!
           }
         } else {
           serverNonce = resp.result
