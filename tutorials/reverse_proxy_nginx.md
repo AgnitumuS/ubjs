@@ -80,6 +80,20 @@ sudo ln -s /etc/nginx/sites-available/default_server.cfg /etc/nginx/sites-enable
 sudo nginx -s reload 
 ```
 Для удобства эти команды выводятся в консоль после генерации конфига.
+
+В основном конфиге nginx в разделе http рекомендуется включить gzip:
+```
+gzip on;
+gzip_vary on;
+gzip_min_length 10240;
+gzip_proxied expired no-cache no-store private auth;
+gzip_types text/plain text/css text/xml application/javascript application/xml;
+gzip_disable "MSIE [1-6]\.";
+```
+Там же нужно отключить выдачу версии nginx в заголовках ответа:
+```
+server_tokens off;
+```
  
 #### Размер пересылаемых документов
 По умолчанию значение параметра `client_max_body_size` (максимальный объем body POST запроса) в Nginx равно 1MB, что, скорее всего, не хватит для пересылаемых документов.

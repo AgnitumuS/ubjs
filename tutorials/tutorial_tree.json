@@ -66,5 +66,13 @@
         "title": "Using UnityBase modules"
       }
     }
+  },
+  "administration": {
+    "title": "07 Administration",
+    "children": {
+      "public_key_authentication_from_Windows_to_Linux":{
+        "title": "SSH public key authentication"
+      }
+    }
   }
 }
