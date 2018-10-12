@@ -7,5 +7,42 @@
 		"singleton": true,
 		"runAs": "admin",
 		"logSuccessful": true
+	},
+        {
+		"name": "Scheduler for inplicit 16:40",
+		"cron": "0 40 16 * * *",
+		"command": "tst_service.schedulerTest",
+		"schedulingCondition": "true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
+	},
+        {
+		"name": "Scheduler for inplicit 16:40:30",
+		"cron": "30 40 16 * * *",
+		"command": "tst_service.schedulerTest",
+		"schedulingCondition": "true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
+	},
+        {
+		"name": "Scheduler for inplicit 17:00",
+		"cron": "0 0 17 * * *",
+		"command": "tst_service.schedulerTest",
+		"schedulingCondition": "true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
+	},
+{
+		"name": "Scheduler for inplicit 17:00:30",
+		"cron": "30 0 17 * * *",
+		"command": "tst_service.schedulerTest",
+		"schedulingCondition": "true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
 	}
+
 ]

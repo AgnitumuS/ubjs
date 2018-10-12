@@ -38,7 +38,7 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB", "Negotiate"
+			"UB2", "UB", "Negotiate"
 		],
 		"ldapCatalogs": [
 			{

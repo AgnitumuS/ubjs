@@ -19,6 +19,8 @@ const UBDomain = csShared.UBDomain
 const UBCache = require('./UBCache')
 const CryptoJSCore = require('@unitybase/cryptojs/core')
 const SHA256 = require('@unitybase/cryptojs/sha256')
+const AES = require('@unitybase/cryptojs/aes')
+
 const MD5 = require('@unitybase/cryptojs/md5')
 const UBNotifierWSProtocol = require('./UBNotifierWSProtocol')
 const ClientRepository = require('./ClientRepository')
@@ -472,7 +474,113 @@ $App.connection.userLang()
           secretWord = pwdForAuth // :( medium unsecured
         } else {
           pwdForAuth = window.btoa(authParams.password)
-          secretWord = pwdForAuth // todo -  very unsecured!!
+          secretWord = pwdForAuth // todo -  very unsecured use only over SSL!!
+        }
+      } else {
+        serverNonce = resp.data.result
+        if (!serverNonce) {
+          throw new Error('invalid auth response')
+        }
+        pwdHash = SHA256('salt' + authParams.password).toString()
+        let appForAuth = appName === '/' ? '/' : appName.replace(/\//g, '')
+        pwdForAuth = SHA256(appForAuth.toLowerCase() + serverNonce + clientNonce + authParams.login + pwdHash).toString()
+        secretWord = pwdHash
+      }
+      request.params.password = pwdForAuth
+      return me.post(AUTH_METHOD_URL, '', request).then(function (response) {
+        response.secretWord = secretWord
+        return response
+      })
+    })
+  }
+
+  this.AESDecrypt = function (msg, pass) {
+    let msgWa = CryptoJSCore.enc.Base64.parse(msg)
+    let iv = CryptoJSCore.lib.WordArray.create(msgWa.words.splice(0, 4)) // first 4 words is iv
+    msgWa.sigBytes -= 4 * 4
+
+    // var key = CryptoJS.PBKDF2(pass, salt, {
+    //   keySize: keySize/32,
+    //   iterations: iterations
+    // });
+
+    let decrypted = AES.decrypt(msgWa, pass, {
+      iv: iv,
+      padding: CryptoJSCore.pad.Pkcs7,
+      mode: CryptoJSCore.mode.CBC
+    })
+    return decrypted.toString()
+  }
+  /**
+   * UB2 Auth schema implementation
+   * @param authParams
+   * @returns {Promise}
+   */
+  this.authHandshakeUB2 = function (authParams) {
+    let me = this
+    let secretWord
+
+    if (!authParams.login || !authParams.password) {
+      return Promise.reject({errMsg: 'invalid user name or password'})
+    }
+    return this.post(AUTH_METHOD_URL, {login: authParams.login, stage: 1}, {
+      params: {
+        AUTHTYPE: 'UB2' //authParams.authSchema
+      }
+    }).then(function (resp) {
+      //let key = SHA256(CryptoJSCore.enc.Utf8.parse(authParams.password + ':' + authParams.login))
+      let key = SHA256(CryptoJSCore.enc.Utf8.parse('salt' + authParams.password))
+      let nonce = me.AESDecrypt(resp.data.nonce, key)
+      console.log(resp.data.nonce)
+      console.log(nonce)
+    })
+    debugger
+    var iv = CryptoJSCore.lib.WordArray.random(16) // 16 byte long iv for AES-CBC
+    let key = SHA256(CryptoJSCore.enc.Utf8.parse(authParams.password + ':' + authParams.login))
+    let msg = 'hello привет'
+    let encrypted = AES.encrypt(msg, key, {
+      iv: iv,
+      padding: CryptoJSCore.pad.Pkcs7,
+      mode: CryptoJSCore.mode.CBC
+    })
+    // append iv to to the ciphertext for use in decryption
+    let envelope = CryptoJSCore.enc.Base64.stringify(iv.concat(encrypted.ciphertext))
+    console.log(envelope)
+    return this.post(AUTH_METHOD_URL, '', {
+      params: {
+        AUTHTYPE: authParams.authSchema,
+        userName: authParams.login
+      }
+    }).then(function (resp) {
+      let serverNonce, pwdHash, pwdForAuth
+      let request = {
+        params: {
+          AUTHTYPE: authParams.authSchema,
+          userName: authParams.login,
+          password: ''
+        }
+      }
+      let clientNonce = SHA256(new Date().toISOString().substr(0, 16)).toString()
+      request.params.clientNonce = clientNonce
+      if (resp.data.connectionID) {
+        request.params.connectionID = resp.data.connectionID
+      }
+      // LDAP AUTH?
+      let realm = resp.data.realm
+      if (realm) {
+        serverNonce = resp.data.nonce
+        if (!serverNonce) {
+          throw new Error('invalid LDAP auth response')
+        }
+        if (resp.data.useSasl) {
+          pwdHash = MD5(authParams.login.split('\\')[1].toUpperCase() + ':' + realm + ':' + authParams.password)
+          // we must calculate md5(login + ':' + realm + ':' + password) in binary format
+          pwdHash.concat(CryptoJSCore.enc.Utf8.parse(':' + serverNonce + ':' + clientNonce))
+          pwdForAuth = MD5(pwdHash).toString()
+          secretWord = pwdForAuth // :( medium unsecured
+        } else {
+          pwdForAuth = window.btoa(authParams.password)
+          secretWord = pwdForAuth // todo -  very unsecured use only over SSL!!
         }
       } else {
         serverNonce = resp.data.result
