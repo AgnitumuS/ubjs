@@ -12,7 +12,7 @@
   },
   "public": false,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "main": "index.js",
   "browser": "/clientRequire/models/TST/initModel.js",

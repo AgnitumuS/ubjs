@@ -5,7 +5,7 @@
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/http-proxy",
   "public": true,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "main": "HttpProxy.js",
   "dependencies": {

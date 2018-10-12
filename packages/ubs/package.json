@@ -17,7 +17,7 @@
   },
   "public": true,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "main": "ubs.js",
   "browser": {

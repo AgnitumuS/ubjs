@@ -6,7 +6,7 @@
   "scripts": {},
   "public": true,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "main": "cs-shared.js",
   "dependencies": {

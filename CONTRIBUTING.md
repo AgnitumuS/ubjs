@@ -84,7 +84,7 @@ Publish a module
       
 To publish to a UnityBase repository you must authorize your requests
       
-      npm adduser --registry http://registry.unitybase.info
+      npm adduser --registry https://registry.unitybase.info
 
 ## Publishing using lerna
 
@@ -108,8 +108,16 @@ This option allows only the packages that have been explicitly updated to make a
  See [only-explicit-updates options explanation](https://github.com/staltz/lerna/blob/master/README.md#--only-explicit-updates)
 
 # Installing packages
+Create file .npmrc with next content:
 
-    npm set registry http://registry.unitybase.info
+    @unitybase:registry=https://registry.unitybase.info/
+    @ub-e:registry=https://registry.unitybase.info/
+    @ub-d:registry=https://registry.unitybase.info/
+
+This set a registry for a UnityBase scope.
+Now you can install packages:
+
+
     npm install @unitybase/ub --save
 
 
