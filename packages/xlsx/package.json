@@ -20,7 +20,7 @@
   },
   "public": true,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
     "@unitybase/base": "^5.0.26",

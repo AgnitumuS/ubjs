@@ -15,7 +15,7 @@
   },
   "public": true,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "main": "modelUB.js",
   "dependencies": {

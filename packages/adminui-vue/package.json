@@ -38,7 +38,7 @@
   },
   "public": true,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
     "@unitybase/cs-shared": "^5.0.11",

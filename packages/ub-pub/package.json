@@ -20,7 +20,7 @@
   },
   "public": true,
   "publishConfig": {
-    "registry": "http://registry.unitybase.info"
+    "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
     "@unitybase/cryptojs": "^1.0.13",
