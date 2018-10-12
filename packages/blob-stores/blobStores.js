@@ -200,6 +200,13 @@ function getRequestedBLOBInfo (parsedRequest) {
   if (parsedRequest.bsReq.isDirty) {
     storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   } else {
+    // check user have access to entity select method
+    if (!App.els(entity.code, 'select')) {
+      return {
+        success: false,
+        reason: `Access deny to ${entity.code}.select method`
+      }
+    }
     // check user have access to row and retrieve current blobInfo
     let blobInfoDS = Repository(entity.code).attrs(attribute.code).where('ID', '=', ID).selectAsObject()
     if (!blobInfoDS.length) {

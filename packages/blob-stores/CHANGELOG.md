@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.22]
+### Fixed
+ - **SECURITY** `getDocument` endpoint will check user have ELS right to entity `select` method before getting document ID.
+ Without this patch in case entity do not use RLS unauthorized access to document is possible      
+
 ## [5.0.12]
 ### Changed
 - file system based BLOB store will use default tempPath: `path.join(this.path, '_temp')` to prevent
