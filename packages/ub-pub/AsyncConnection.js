@@ -494,22 +494,36 @@ $App.connection.userLang()
     })
   }
 
-  this.AESDecrypt = function (msg, pass) {
+  /**
+   * Decrypt base64 encoded message with AES-CBC with Pkcs7 padding envelope. First 16 bytes of envelope expected to be iv.
+   * @param {string} msg Base64 encoded message
+   * @param {WordArray} key Encryption key as 256 byte word array
+   * @return {WordArray}
+   * @constructor
+   */
+  this.AESDecrypt = function (msg, key) {
     let msgWa = CryptoJSCore.enc.Base64.parse(msg)
-    let iv = CryptoJSCore.lib.WordArray.create(msgWa.words.splice(0, 4)) // first 4 words is iv
+    let iv = CryptoJSCore.lib.WordArray.create(msgWa.words.splice(0, 4)) // first 16 bytes (4 word) is iv
     msgWa.sigBytes -= 4 * 4
+    let cipher = CryptoJSCore.lib.CipherParams.create({ciphertext: msgWa, salt: null})
 
-    // var key = CryptoJS.PBKDF2(pass, salt, {
-    //   keySize: keySize/32,
-    //   iterations: iterations
-    // });
-
-    let decrypted = AES.decrypt(msgWa, pass, {
+    let decrypted = AES.decrypt(cipher, key, {
       iv: iv,
       padding: CryptoJSCore.pad.Pkcs7,
       mode: CryptoJSCore.mode.CBC
     })
-    return decrypted.toString()
+    return decrypted
+  }
+
+  this.AESEncrypt = function (msg, key) {
+    let iv = CryptoJSCore.lib.WordArray.random(16) // 16 byte long iv for AES-CBC
+    let encrypted = AES.encrypt(msg, key, {
+      iv: iv,
+      padding: CryptoJSCore.pad.Pkcs7,
+      mode: CryptoJSCore.mode.CBC
+    })
+    // append iv to to the ciphertext for use in decryption and return Base64 encoded string
+    return CryptoJSCore.enc.Base64.stringify(iv.concat(encrypted.ciphertext))
   }
   /**
    * UB2 Auth schema implementation
@@ -525,76 +539,29 @@ $App.connection.userLang()
     }
     return this.post(AUTH_METHOD_URL, {login: authParams.login, stage: 1}, {
       params: {
-        AUTHTYPE: 'UB2' //authParams.authSchema
+        AUTHTYPE: 'UB2' // authParams.authSchema
       }
     }).then(function (resp) {
       //let key = SHA256(CryptoJSCore.enc.Utf8.parse(authParams.password + ':' + authParams.login))
+      // TODO PBKDF2
+      // var key = CryptoJS.PBKDF2(pass, salt, {
+      //   keySize: keySize/32,
+      //   iterations: iterations
+      // });
+
       let key = SHA256(CryptoJSCore.enc.Utf8.parse('salt' + authParams.password))
       let nonce = me.AESDecrypt(resp.data.nonce, key)
-      console.log(resp.data.nonce)
-      console.log(nonce)
-    })
-    debugger
-    var iv = CryptoJSCore.lib.WordArray.random(16) // 16 byte long iv for AES-CBC
-    let key = SHA256(CryptoJSCore.enc.Utf8.parse(authParams.password + ':' + authParams.login))
-    let msg = 'hello привет'
-    let encrypted = AES.encrypt(msg, key, {
-      iv: iv,
-      padding: CryptoJSCore.pad.Pkcs7,
-      mode: CryptoJSCore.mode.CBC
-    })
-    // append iv to to the ciphertext for use in decryption
-    let envelope = CryptoJSCore.enc.Base64.stringify(iv.concat(encrypted.ciphertext))
-    console.log(envelope)
-    return this.post(AUTH_METHOD_URL, '', {
-      params: {
-        AUTHTYPE: authParams.authSchema,
-        userName: authParams.login
-      }
-    }).then(function (resp) {
-      let serverNonce, pwdHash, pwdForAuth
-      let request = {
-        params: {
-          AUTHTYPE: authParams.authSchema,
-          userName: authParams.login,
-          password: ''
-        }
-      }
-      let clientNonce = SHA256(new Date().toISOString().substr(0, 16)).toString()
-      request.params.clientNonce = clientNonce
-      if (resp.data.connectionID) {
-        request.params.connectionID = resp.data.connectionID
-      }
-      // LDAP AUTH?
-      let realm = resp.data.realm
-      if (realm) {
-        serverNonce = resp.data.nonce
-        if (!serverNonce) {
-          throw new Error('invalid LDAP auth response')
-        }
-        if (resp.data.useSasl) {
-          pwdHash = MD5(authParams.login.split('\\')[1].toUpperCase() + ':' + realm + ':' + authParams.password)
-          // we must calculate md5(login + ':' + realm + ':' + password) in binary format
-          pwdHash.concat(CryptoJSCore.enc.Utf8.parse(':' + serverNonce + ':' + clientNonce))
-          pwdForAuth = MD5(pwdHash).toString()
-          secretWord = pwdForAuth // :( medium unsecured
-        } else {
-          pwdForAuth = window.btoa(authParams.password)
-          secretWord = pwdForAuth // todo -  very unsecured use only over SSL!!
-        }
-      } else {
-        serverNonce = resp.data.result
-        if (!serverNonce) {
-          throw new Error('invalid auth response')
-        }
-        pwdHash = SHA256('salt' + authParams.password).toString()
-        let appForAuth = appName === '/' ? '/' : appName.replace(/\//g, '')
-        pwdForAuth = SHA256(appForAuth.toLowerCase() + serverNonce + clientNonce + authParams.login + pwdHash).toString()
-        secretWord = pwdHash
-      }
-      request.params.password = pwdForAuth
-      return me.post(AUTH_METHOD_URL, '', request).then(function (response) {
-        response.secretWord = secretWord
+      // for debugging
+      // let nonceStr = nonce.toString(CryptoJSCore.enc.Hex); console.log(nonceStr)
+      if (nonce.sigBytes !== 32) return Promise.reject({errMsg: 'invalid user name or password'})
+
+      let plainPasswordEnvelope = me.AESEncrypt(authParams.password, nonce)
+      return me.post(AUTH_METHOD_URL,
+        {login: authParams.login, stage: 2, pwd: plainPasswordEnvelope},
+        {params: { AUTHTYPE: 'UB2' }}
+      ).then(function (response) {
+        // TODO LDAP ?
+        response.secretWord = SHA256(NONCE + PLAIN_PASSWORD)
         return response
       })
     })
