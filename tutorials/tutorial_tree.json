@@ -47,6 +47,9 @@
       "primary_keys": {
         "title": "Primary keys"
       },
+      "mixin_mstorage": {
+        "title": "mStorage (CRUID)"
+      },
       "mixin_rls": {
         "title": "Row level security"
       },

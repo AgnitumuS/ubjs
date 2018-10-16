@@ -57,7 +57,7 @@
 
 Полная спецификация метафайла описывается следующей [JSON schema]:
 
- - [JSON схема (просмотр)](/models/UB/docson/index.html#../schemas/entity.schema.json) 
+ - [JSON схема (просмотр)](/docson/index.html#https://unitybase.info/models/UB/schemas/entity.schema.json) 
  - [JSON схема (исходник)](/models/UB/schemas/entity.schema.json)    
 
 ## Mixins (Миксины)
@@ -67,7 +67,7 @@ UnityBase содержит ряд готовых методов, решающи�
      
 В примере выше для сущности `film_film` мы подключили миксин `mStorage`. Собственно он добавил для нашей сущности методы для [CRUID операций](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
 
-### mStorage - Обеспечивает базовые операции с БД (ORM)
+### mStorage - Implements CRUID operations with entities (ORM)
 Добавляет методы:
 
     - addNew
@@ -75,6 +75,8 @@ UnityBase содержит ряд готовых методов, решающи�
     - insert
     - update 
     - delete
+
+Implements "Optimistic locking" and "Soft deletion" - check out [mStorage mixin guide](#!/guide/mixin_mstorage) for additional reading.      
     
 ### audit - Аудит уровня записи
 Обеспечивает запись всех низкоуровневых операций `insert`/`update`/`delete` в сущность аудита **ubs_audit**. 
