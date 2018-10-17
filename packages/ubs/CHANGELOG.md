@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.25]
+### Changed
+ - `ReportViewer` - styles for `td,th` is removed, so now table header will use body style (see ReportViewer.js line 6)
+
 ## [5.1.17]
 ### Changed
  - `reportOptions.allowExportToExcel` allowed value changed from to 'xls' or 'xlsx'. ('xlsx' by default)

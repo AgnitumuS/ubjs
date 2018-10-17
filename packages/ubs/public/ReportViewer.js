@@ -12,10 +12,6 @@ const baseRepCSS = `body {
     word-wrap: break-word;
     hyphens: auto
 }
-td,th {
-    font-family: Verdana,Arial,Helvetica,sans-serif;
-    font-size: 14px
-}
 .mce-pagebreak {
     cursor: default;
     display: block;
