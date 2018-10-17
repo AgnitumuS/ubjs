@@ -1,4 +1,6 @@
 build-doc:
+  tags:
+    - ub-linux-64
   script:
     - npm run build:doc
     - rsync -avz -e "ssh -p 2222" docs/{server-v5,ubpub-v5} gitlab-builder@registry-tst.unitybase.info:/home/ub-service/website/unitybase-info/inetPub/api
