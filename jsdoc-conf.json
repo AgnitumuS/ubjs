@@ -14,7 +14,6 @@
       "./packages/ubcli/bin",
       "./packages/ubcli/lib",
       "./packages/http-proxy",
-      "../ub-e/packages/ubcanvas/UBCanvas.js",
       "./packages/com-bridge/UBComBridge.js",
       "./packages/mailer",
       "./packages/openid-connect/openIDConnect.js",
@@ -24,8 +23,7 @@
       "./packages/cdn",
       "./packages/ubm",
       "./packages/org",
-      "./packages/ubs/modules/UBServerReport.js",
-      "../ub-e/packages/odata/OData.js"
+      "./packages/ubs/modules/UBServerReport.js"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
