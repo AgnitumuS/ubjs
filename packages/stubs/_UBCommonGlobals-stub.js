@@ -252,7 +252,7 @@ TubZipWriter.prototype.addFile = function (fileName) {}
 TubZipWriter.prototype.freeNative = function () {}
 
 /**
- * Fires for the {@link process} instance when application stop working for each Working Thread
+ * Fires in every thread for the {@link process} instance just before application stops
  *
  *      process.on('exit', function(){
  *          console.log('thread is terminated');
@@ -262,21 +262,21 @@ TubZipWriter.prototype.freeNative = function () {}
  */
 
 /**
- * The main executable full path (excluding .exe file name)
+ * The full path (excluding extension) to the UB executable
  * @type {String}
  * @readonly
  */
 process.binPath = ''
 
 /**
- * Path to config file process started with
+ * The path to the application configuration file
  * @type {String}
  * @readonly
  */
 process.configPath = ''
 
 /**
- * In case this is server-side thread === 1 else (client theread) ===  0
+ * In case this is server-side thread === 1 else (client thread) ===  0
  * @type {Number}
  * @readonly
  */

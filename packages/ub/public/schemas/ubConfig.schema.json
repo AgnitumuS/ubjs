@@ -932,7 +932,7 @@
     "licenseFilePath": {
       "type": "string",
       "description": "For EE/DE editions - path to license file",
-      "default": "./UB.lic"
+      "default": "./ubLicense.json"
     }
   }
 }

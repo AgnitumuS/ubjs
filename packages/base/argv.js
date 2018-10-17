@@ -380,7 +380,7 @@ function serverURLFromConfig (config) {
   let rUrl = (httpCfg.protocol && httpCfg.protocol === 'https') ? 'https://' : 'http://'
   // in case of serverDomainNames in [+, *] replace it to localhost
   rUrl += httpCfg.host ? (httpCfg.host.length === 1 ? 'localhost' : httpCfg.host) : 'localhost'
-  rUrl += httpCfg.port ? ':' + httpCfg.port : ':80'
+  if (httpCfg.port) rUrl += ':' + httpCfg.port
   if (httpCfg.path) rUrl += '/' + httpCfg.path
   return rUrl
 }
