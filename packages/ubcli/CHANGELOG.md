@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.4]
+### Fixed 
+ - `ubcli initDB -drop` for SQLite3 will also delete possible WAL logs (-wal and -shm files)
+ 
 ## [5.1.2]
 ### Fixed 
  - [unitybase/ubjs#15] - Postgre DDl generator must use `SELECT nextval('${sequenceObj}')` for sequence incrementing

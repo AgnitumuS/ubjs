@@ -1,10 +1,11 @@
+/* global stopServer, startServer */
 /**
  * Create SQLite3 database & database objects for a UnityBase ORM
  * @module cmd/initDB/sqlite3
  */
 
-var DBA_FAKE = '__dba'
-var fs = require('fs')
+const fs = require('fs')
+const path = require('path')
 
 /**
  * Drop a specified schema & role (databaseName)
@@ -12,8 +13,7 @@ var fs = require('fs')
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
-  var path = require('path')
-  var dbPath = path.join(process.configPath, databaseConfig.databaseName)
+  let dbPath = path.join(process.configPath, databaseConfig.databaseName)
   console.debug('Start drop a database', dbPath)
   if (fs.existsSync(dbPath)) {
     if (session.__serverStartedByMe) {
@@ -23,6 +23,17 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
     }
     if (!fs.unlinkSync(dbPath)) {
       throw new Error('Can not delete SQLite3 database file ' + dbPath + ' May be database in use?')
+    }
+    // drop WALs if any. Can appear after unsuccessfully termination on prev. UB session
+    if (fs.existsSync(dbPath + '-wal')) {
+      if (!fs.unlinkSync(dbPath + '-wal')) {
+        throw new Error('Can not delete SQLite3 WAL file ' + dbPath + '-wal May be database in use?')
+      }
+    }
+    if (fs.existsSync(dbPath + '-shm')) {
+      if (!fs.unlinkSync(dbPath + '-shm')) {
+        throw new Error('Can not delete SQLite3 SHM file ' + dbPath + '-shm May be database in use?')
+      }
     }
     startServer()
   }
@@ -40,7 +51,7 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
 function splitAndExec (stmts, syncConnection, dbConnectionName) {
   // git can replace \r\n by \n on windows
   let delimRe = /\r\n/.test(stmts) ? '--next\r\n' : '--next\n'
-  var statements = stmts.split(delimRe)
+  let statements = stmts.split(delimRe)
   statements.forEach(function (statement) {
     if (statement) {
       syncConnection.xhr({endpoint: 'runSQL', URLParams: {CONNECTION: dbConnectionName}, data: statement})
@@ -54,18 +65,15 @@ function splitAndExec (stmts, syncConnection, dbConnectionName) {
  * @param {Object} databaseConfig A database configuration
  */
 module.exports.createMinSchema = function createMinSchema (conn, clientNum, databaseConfig) {
-  var
-    path = require('path'),
-    fs = require('fs'),
-    script
+  let script
 
   script = 'create table seq_ubmain (client_num INTEGER) /* generateID = clientNum+currentTimeUnixEpoch*100 + 1...99 */'
   splitAndExec(script, conn, databaseConfig.name)
-    // set a initial ID value
-  script = UB.format('insert into seq_ubmain (client_num) values({0}0000000000)', clientNum)
+  // set a initial ID value
+  script = `insert into seq_ubmain (client_num) values(${clientNum}0000000000)`
   splitAndExec(script, conn, databaseConfig.name)
 
-    // TODO put clientNum to a table for a ID generator initialization
+  // TODO put clientNum to a table for a ID generator initialization
   script = fs.readFileSync(path.join(__dirname, 'sqlite3Tables.sql'), 'utf8')
   splitAndExec(script, conn, databaseConfig.name)
 }
