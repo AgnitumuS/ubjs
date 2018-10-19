@@ -18,9 +18,9 @@ We can do this by adding the user to the wheel group (which gives sudo access to
 ```
 sudo gpasswd -a username wheel
 ```
-Don't forget add user to group which managed your service (ub-service for ex)
+Don't forget add user to group which managed your service
 ```
-
+gpasswd groupname -a username
 ```
 
 #### Configure SSH
