@@ -491,12 +491,12 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
 }
 
 let __alreadyAdded = false
+let originalOnError = null
 /**
  * Intercept all unhandled errors including Promise unhandled rejections.
  * Errors will be parsed and passed to UB.showErrorWindow {@see setErrorReporter setErrorReporter}
  */
 function addBrowserUnhandledRejectionHandler (UBPub) {
-  let originalOnError = null
   if (typeof window === 'undefined' || UBPub.isReactNative || __alreadyAdded) return // non browser environment
   if (__alreadyAdded) console.error('module @unitybase/ub-pub imported several times. This is wrong situation and should be fixed by app developer. Try `npm ddp`')
   __alreadyAdded = true
@@ -509,6 +509,7 @@ function addBrowserUnhandledRejectionHandler (UBPub) {
       window.onerror.apply(UBPub, [ '', '', '', '', error ])
     }
   }
+
   // for unhandled rejection in bluebird/native promises (IE 10+)
   window.addEventListener('unhandledrejection', function (e) {
     // NOTE: e.preventDefault() must be manually called to prevent the default
@@ -522,63 +523,65 @@ function addBrowserUnhandledRejectionHandler (UBPub) {
     console.error('UNHANDLED', reason, promise)
   })
 
-  window.onerror = function (msg, file, line, column, errorObj) {
-    let message
-    let detail = ''
-
-    if (errorObj && utils.UBAbortError && errorObj instanceof utils.UBAbortError) {
-      console.log(errorObj)
-      return
-    }
-    let isHandled = errorObj && utils.UBError && errorObj instanceof utils.UBError
-
-    if (errorObj && Error && errorObj instanceof Error) {
-      message = errorObj.message
-      detail = ''
-      if (/q\.js/.test(file) === false) {
-        detail += 'file: "' + file + '" line: ' + line
-      }
-      let strace = errorObj.stack || ''
-      detail += strace.replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
-      detail = detail.replace(new RegExp(window.location.origin.replace(/:/g, '\\$&'), 'g'), '') // remove address if same as origin
-      detail = detail.replace(/\/[\w-]+\.js:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
-      detail = detail.replace(/\n/g, '<br>&nbsp;&nbsp;')
-    } else if (errorObj && errorObj.data && errorObj.data.errMsg) {
-      message = errorObj.data.errMsg
-    } else if (errorObj && errorObj.status === 0) { // long network request
-      message = 'serverIsBusy'
-      isHandled = true
-    } else if (errorObj && errorObj.errMsg) {
-      message = errorObj.errMsg
-      detail = errorObj.detail ? errorObj.detail : message
-    } else {
-      message = errorObj && (typeof errorObj === 'string') ? errorObj : msg
-    }
-    if (errorObj && errorObj.detail) {
-      detail = errorObj.detail + (detail ? '<br/>' + detail : '')
-      // 405 Method Not Allowed
-      if (errorObj.detail === 'Method Not Allowed') {
-        message = 'recordNotExistsOrDontHaveRights'
-      }
-    }
-    if (!message) {
-      message = 'internalServerError'
-    }
-
-    if (!isHandled) {
-      // MPV - message is already in datail (stack trace)
-      // detail = message + '<BR/> ' + detail;
-      message = 'unknownError'
-    }
-    try {
-      UBPub.showErrorWindow(message, '', '', detail)
-    } catch (err) {
-      window.alert(message)
-    }
-    if (originalOnError) originalOnError.call(window, msg, file, line, column, errorObj)
-  }
+  window.onerror = ubGlobalErrorHandler
 }
 addBrowserUnhandledRejectionHandler(module.exports)
+
+function ubGlobalErrorHandler (msg, file, line, column, errorObj) {
+  let message
+  let detail = ''
+
+  if (errorObj && utils.UBAbortError && errorObj instanceof utils.UBAbortError) {
+    console.log(errorObj)
+    return
+  }
+  let isHandled = errorObj && utils.UBError && errorObj instanceof utils.UBError
+
+  if (errorObj && Error && errorObj instanceof Error) {
+    message = errorObj.message
+    detail = ''
+    if (/q\.js/.test(file) === false) {
+      detail += 'file: "' + file + '" line: ' + line
+    }
+    let strace = errorObj.stack || ''
+    detail += strace.replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
+    detail = detail.replace(new RegExp(window.location.origin.replace(/:/g, '\\$&'), 'g'), '') // remove address if same as origin
+    detail = detail.replace(/\/[\w-]+\.js:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
+    detail = detail.replace(/\n/g, '<br>&nbsp;&nbsp;')
+  } else if (errorObj && errorObj.data && errorObj.data.errMsg) {
+    message = errorObj.data.errMsg
+  } else if (errorObj && errorObj.status === 0) { // long network request
+    message = 'serverIsBusy'
+    isHandled = true
+  } else if (errorObj && errorObj.errMsg) {
+    message = errorObj.errMsg
+    detail = errorObj.detail ? errorObj.detail : message
+  } else {
+    message = errorObj && (typeof errorObj === 'string') ? errorObj : msg
+  }
+  if (errorObj && errorObj.detail) {
+    detail = errorObj.detail + (detail ? '<br/>' + detail : '')
+    // 405 Method Not Allowed
+    if (errorObj.detail === 'Method Not Allowed') {
+      message = 'recordNotExistsOrDontHaveRights'
+    }
+  }
+  if (!message) {
+    message = 'internalServerError'
+  }
+
+  if (!isHandled) {
+    // MPV - message is already in datail (stack trace)
+    // detail = message + '<BR/> ' + detail;
+    message = 'unknownError'
+  }
+  try {
+    module.exports.showErrorWindow(message, '', '', detail)
+  } catch (err) {
+    window.alert(message)
+  }
+  if (originalOnError) originalOnError.apply(this, arguments)
+}
 
 if (typeof SystemJS !== 'undefined') { // browser
   if (!SystemJS.has('@unitybase/cryptojs')) SystemJS.set('@unitybase/cryptojs', SystemJS.newModule(CryptoJS))
