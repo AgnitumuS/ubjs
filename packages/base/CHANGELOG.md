@@ -4,7 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.0.56]
+## [5.0.27]
+### Changed
+- `argv.getServerConfiguration` will transform `blobStore.path` & `blobStore.tempPath` to absolute path
+ If path is relative it will be trnsformed to absolute starting from `process.configPath`.
+ So now paths inside `App.serverConfig.application.blobStores` is absolutes.
+
+## [5.0.26]
 ### Changed
 - ServerRepository.selectSingle now accepts an optional fieldAliases parameter, which works just like in selectAsObject
 

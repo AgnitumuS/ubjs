@@ -258,7 +258,7 @@ function replaceIncludeVariables (content) {
     } catch (e) {
       return 'INVALID INCLUDE ' + p1
     }
-    if (!path.isAbsolute(filePath)) filePath = path.join(process.configPath, filePath)
+    filePath = path.resolve(process.configPath, filePath)
     try {
       fs.statSync(filePath)
     } catch (e) {
@@ -323,7 +323,7 @@ function getServerConfiguration (forFutureSave = false) {
   // browser section may contains "prod" / "dev" key for production / development client execution
   result.application.domain.models.forEach((model) => {
     let p = (model.path === '_public_only_') ? model.publicPath : model.path
-    if (!path.isAbsolute(p)) p = path.join(process.configPath, p)
+    p = path.resolve(process.configPath, p)
     let packFN = path.join(p, 'package.json')
     if (fs.existsSync(packFN)) {
       let packageData = require(packFN)
@@ -348,6 +348,19 @@ function getServerConfiguration (forFutureSave = false) {
         if (!forFutureSave) model.browser = {dev, prod}
       }
       if (!forFutureSave) model.version = packageData.version
+    }
+  })
+  // normalize blobStores paths. In case path is relative transform it to absolure regarding to configPath
+  if (!result.application.blobStores) result.application.blobStores = []
+  result.application.blobStores.forEach(storeConfig => {
+    if (storeConfig.path) {
+      storeConfig.path = path.resolve(process.configPath, storeConfig.path)
+      if (!storeConfig.tempPath) {
+        storeConfig.tempPath = path.join(storeConfig.path, '_temp')
+      }
+    }
+    if (storeConfig.tempPath) {
+      storeConfig.tempPath = path.resolve(process.configPath, storeConfig.tempPath)
     }
   })
   if (!result.application.domain.supportedLanguages) {

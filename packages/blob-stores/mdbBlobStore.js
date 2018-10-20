@@ -26,16 +26,6 @@ const VERIFIED_PATH = {}
  */
 class MdbBlobStore extends BlobStoreCustom {
   /**
-   * @param {Object} storeConfig
-   * @param {App} appInstance
-   * @param {UBSession} sessionInstance
-   * @param storeConfig
-   */
-  constructor (storeConfig, appInstance, sessionInstance) {
-    super(storeConfig, appInstance, sessionInstance)
-    if (!this.tempFolder) this.tempFolder = os.tmpdir()
-  }
-  /**
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params
    * @param {UBEntityAttribute} attribute

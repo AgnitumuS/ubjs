@@ -37,10 +37,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
    */
   constructor (storeConfig, appInstance, sessionInstance) {
     super(storeConfig, appInstance, sessionInstance)
-    let storePath = this.config.path
-    if (!path.isAbsolute(storePath)) {
-      storePath = path.join(process.configPath, storePath)
-    }
+    let storePath = this.config.path // already normalized inside argv
     if (!fs.existsSync(storePath)) throw new Error(`BLOB store "${this.name}" path "${storePath}" not exists`)
     let fStat = fs.statSync(storePath)
     if (!fStat.isDirectory()) {
@@ -51,11 +48,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
      */
     this.fullStorePath = storePath
 
-    let tmpFolder = this.tempFolder
-    if (!tmpFolder) tmpFolder = path.join(storePath, '_temp')
-    if (!path.isAbsolute(tmpFolder)) {
-      tmpFolder = path.join(process.configPath, tmpFolder)
-    }
+    let tmpFolder = this.tempFolder // already normalized inside argv
     if (!fs.existsSync(tmpFolder)) {
       throw new Error(`Temp folder "${tmpFolder}" for BLOB store "${this.name}" doesn't exist. Check a "tempPath" store config parameter`)
     } else {
