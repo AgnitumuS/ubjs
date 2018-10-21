@@ -3,6 +3,7 @@ const options = require('./options')
 const fs = require('fs')
 const path = require('path')
 const http = require('http')
+const url = require('url')
 const SyncConnection = require('./SyncConnection')
 
 /**
@@ -378,9 +379,19 @@ function getServerConfiguration (forFutureSave = false) {
     result.uiSettings = {}
   }
   if (!result.security) result.security = {}
-  if (!result.httpServer) result.httpServer = {}
-  if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}
-  if (!result.httpServer.reverseProxy.sendFileLocationRoot) result.httpServer.reverseProxy.sendFileLocationRoot = 'ubstatic'
+  if (!result.httpServer) result.httpServer = {serverType: 'None'}
+  if (result.httpServer.serverType !== 'None') {
+    if (!result.httpServer.externalURL) result.httpServer.externalURL = serverURLFromConfig(result)
+    if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}
+    let rp = result.httpServer.reverseProxy
+    if (rp.kind === 'nginx') {
+      if (!rp.remoteIPHeader) rp.remoteIPHeader = 'X-Real-IP'
+      if (!rp.sendFileHeader) rp.sendFileHeader = 'X-Accel-Redirect'
+      if (!rp.sendFileLocationRoot) {
+        rp.sendFileLocationRoot = url.parse(result.httpServer.externalURL).hostname.replace(/\./g, '-')
+      }
+    }
+  }
   return result
 }
 

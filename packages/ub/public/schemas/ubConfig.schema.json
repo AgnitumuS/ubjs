@@ -82,7 +82,7 @@
         },
         "headersPostprocessors": {
           "type": "array",
-          "description": "Rules, applied to static-files responses. Response headers can be overrated here",
+          "description": "Rules, applied to static-files responses. Response headers can be overrated here. In case server is behind the nginx it is better to remove `headersPostprocessors` and generate ngonx config using `npx ubcli generateNginxCfg` command",
 
           "items": {
             "anyOf": [

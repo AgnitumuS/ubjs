@@ -7,10 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.1.4]
 ### Fixed 
  - `ubcli initDB -drop` for SQLite3 will also delete possible WAL logs (-wal and -shm files)
- 
+ - `ubcli generateNginxConfig` will add `expire` and `Cache-Control` for
+  internal locations to force browser to check resources on server is actual. For DEV modes
+  set expires to 0 in `../app` internal location
+
+### Changed
+ - `ubcli generateNginxConfig` now use `httpServer.externalURL` from server config for
+ generation of nginx proxy server_name.
+  - many improvements to nginx config generated `ubcli generateNginxConfig` - 
+  **we recommend to recreate reverse proxy configs** after upgrading ub server and all packages.
+
 ## [5.1.2]
 ### Fixed 
- - [unitybase/ubjs#15] - Postgre DDl generator must use `SELECT nextval('${sequenceObj}')` for sequence incrementing
+ - [unitybase/ubjs#15] - Postgre DDl generator must use `SELECT nextval('${sequenceObj}')`
+ for sequence incrementing
 
 ## [5.1.0]
 ### Added

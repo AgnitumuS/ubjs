@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.27]
 ### Changed
 - `argv.getServerConfiguration` will transform `blobStore.path` & `blobStore.tempPath` to absolute path
- If path is relative it will be trnsformed to absolute starting from `process.configPath`.
+ If path is relative it will be transformed to absolute starting from `process.configPath`.
  So now paths inside `App.serverConfig.application.blobStores` is absolutes.
+- `argv.getServerConfiguration` will add default for `httpServer.externalURL`
+- if `reverseProxy.kind` === `nginx` then default values for reverse proxy config are:
+  - `reverseProxy.remoteIPHeader`: 'X-Real-IP'
+  - `reverseProxy.sendFileHeader`: 'X-Accel-Redirect'
+  - `reverseProxy.sendFileLocationRoot`: HTTPServer.externalURL.hostname with dots replaced to '-' (http://myhost.com - > myhost-com)
+
+  Please, **upgrade ub server to at last 5.4.2** to default values work properly.
+
 
 ## [5.0.26]
 ### Changed

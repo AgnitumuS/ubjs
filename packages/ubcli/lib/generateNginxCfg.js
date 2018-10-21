@@ -12,39 +12,27 @@
 
  npx ubcli generateNginxCfg -?
 
- * Usage from code:
-
- const DDLGenerator = require('@unitybase/ubcli/generateDDL')
- var options = {
-          host: 'http://localhost:888',
-          user: "admin",
-          pwd:  "admin",
-          out:  process.cwd(),
-          autorun: true,
-          optimistic: false
-     }
- DDLGenerator(options)
-
  * @author pavel.mash 2018-04-07
- * @module generateDDL
+ * @module generateNginxCfg
  * @memberOf module:@unitybase/ubcli
  */
 const fs = require('fs')
 const path = require('path')
+const url = require('url')
 const {options, argv} = require('@unitybase/base')
 const mustache = require('mustache')
 
 module.exports = function generateNginxCfg (cfg) {
   if (!cfg) {
     let opts = options.describe('generateNginxCfg',
-      'Generate include for NGINX config based on reverseProxy section of application config',
+`Generate include for NGINX config based on reverseProxy section of application config.
+ host for nginx is taken from httpServer.externalURL parameter`,
       'ubcli'
     )
       .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'})
-      .add({short: 'host', long: 'host', param: 'hostName', defaultValue: 'default_server', help: 'Host nginx server configured for'})
-      .add({short: 'ssl', long: 'ssl', param: 'ssl', defaultValue: 'no', help: `Add ssl. yes|no|only. Of 'only' then do not add http listener`})
-      .add({short: 'sslkey', long: 'sslkey', param: 'pathToSSLKey', defaultValue: '', help: `Full path to ssl private key *.key file`})
-      .add({short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: `Full path to ssl public certificate key *.pem file`})
+      .add({short: 'r', long: 'sslRedirect', param: 'sslRedirect', defaultValue: false, help: `In case externalURL is https adds permanent redirect from http to https`})
+      .add({short: 'sslkey', long: 'sslkey', param: 'pathToSSLKey', defaultValue: '', help: `For https - full path to ssl private key *.key file`})
+      .add({short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: `For https - full path to ssl public certificate key *.pem file`})
       .add({short: 'ipv6', long: 'ipv6', defaultValue: false, help: `Bind to IPv6 address`})
       .add({short: 'maxDocBody', long: 'maxDocBody', param: 'maxDocBodySize', defaultValue: '5m', help: 'Max body size for setDocument endpoint. See http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size'})
       .add({short: 'out', long: 'out', param: 'outputPath', defaultValue: path.join(process.cwd(), 'ub-proxy.conf'), help: 'Full path to output file'})
@@ -55,24 +43,25 @@ module.exports = function generateNginxCfg (cfg) {
   let serverConfig = argv.getServerConfiguration()
   const reverseProxyCfg = serverConfig.httpServer.reverseProxy
   if (reverseProxyCfg.kind !== 'nginx') {
-    console.error('serverConfig.reverseProxy.kind !== \'nginx\'. Terminated')
+    console.error('httpServer.reverseProxy.kind !== \'nginx\' in server config. Terminated')
     return
   }
-  if ((cfg.ssl !== 'no') && (!cfg.sslkey)) {
-    console.error('ssl is ON but "sslkey" parameter is missing')
+  if (!serverConfig.httpServer.externalURL) {
+    console.error('httpServer.externalURL is not defined in server config. Terminated')
     return
   }
-  if ((cfg.ssl !== 'no') && (!cfg.sslcert)) {
-    console.error('ssl is ON but "sslcert" parameter is missing')
-    return
+  let URL = url.parse(serverConfig.httpServer.externalURL)
+  if (!URL.port) URL.port = (URL.protocol === 'https:') ? '443' : '80'
+  if (URL.protocol === 'https:') {
+    if (!cfg.sslkey) console.warn('external URL is configured to use https but sslkey parameter not passed - don\'t forgot to set it manually')
+    if (!cfg.sslcert) console.warn('external URL is configured to use https but sslcert parameter not passed - don\'t forgot to set it manually')
   }
   if (!reverseProxyCfg.sendFileHeader) console.warn('`reverseProxy.sendFileHeader` not defined in ub config. Skip internal locations generation')
   let vars = {
     ubURL: argv.serverURLFromConfig(serverConfig),
-    host: cfg.host,
+    nginxURL: URL,
     appPath: cfgPath.replace(/\\/g, '/'),
-    addHTTP: cfg.ssl !== 'only',
-    addHTTPS: cfg.ssl !== 'no',
+    sslRedirect: Boolean(cfg.sslRedirect),
     sslkey: cfg.sslkey,
     sslcert: cfg.sslcert,
     ipv6: cfg.ipv6,
@@ -106,8 +95,8 @@ Config generated and can be included inside nginx.conf:
   include ${cfg.out.replace(/\\/g, '/')};
   
 or linked to /etc/nginx/sites-enabled if you are on linux:
-  sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available/${cfg.host}.cfg
-  sudo ln -s /etc/nginx/sites-available/${cfg.host}.cfg /etc/nginx/sites-enabled
+  sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available
+  sudo ln -s /etc/nginx/sites-available/${path.basename(cfg.out)} /etc/nginx/sites-enabled
   sudo nginx -s reload
 `)
 }

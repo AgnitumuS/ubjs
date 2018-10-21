@@ -1,6 +1,1 @@
-		"reverseProxy": {
-                        "kind": "nginx",
-                        "remoteIPHeader": "X-Real-IP",
-                        "sendFileHeader": "X-Accel-Redirect",
-                        "sendFileLocationRoot": "ubstatic-autotest"
-                },
+		"reverseProxy": { "kind": "nginx" },
