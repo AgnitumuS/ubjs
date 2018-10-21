@@ -2,7 +2,7 @@
   "id": "https://unitybase.info/models/UB/schemas/ubConfig.schema.json",
   "$schema": "http://json-schema.org/schema#",
   "title": "UnityBase configuration",
-  "description": "Property values in the configuration may include: <ul><li>`%ENV_VAR%` - will be replaced by value of OS environment variable with the same name</li><li>`\"#include(pathToFile)\"` - will be replace by content of file `pathToFile`</li><li>Can be combined as such: `\"#include(%UB_HOME%\\models\\defHeadersPostprocessors.json)\"`</li></ul>",
+  "description": "Property values in the configuration may include: <ul><li>`%ENV_VAR%` - will be replaced by value of OS environment variable with the same name</li><li>`\"#include(pathToFile)\"` - will be replace by content of file `pathToFile`</li><li>Can be combined as such: `\"#include(%UB_HOME%/models/defHeadersPostprocessors.json)\"`</li></ul>",
   "type": "object",
   "additionalProperties": false,
   "required": [],
@@ -27,7 +27,7 @@
             "None"
           ],
           "default": "HTTPSys",
-          "description": "The type of HTTP server\n\n |Value  |Description\n|-\n| `None`|No HTTP server\n| `HTTPSys`| HTTP.sys kernel mode driver used. Fast, but require URL to be written to routing table using _ub -http register_ command \n| `Socket` | Plain socket. Require reverse proxy for production usage"
+          "description": "The type of HTTP server. For Windows default is HTTPSys, for Linux - Socket\n\n |Value  |Description\n|-\n| `None`|No HTTP server\n| `HTTPSys`| HTTP.sys kernel mode driver used. Fast, but require URL to be written to routing table using _ub -http register_ command \n| `Socket` | Plain socket. Require reverse proxy for production usage"
         },
         "protocol": {
           "enum": [
@@ -58,7 +58,7 @@
           "description": "URL that the User will use to access your server. To be used in case server is behind a reverse proxy"
         },
         "additionalURLs": {
-          "type": "Array",
+          "type": "array",
           "description": "Additional URLs to listen on. Must be registered MANUALLY in the HTTP.SYS routing table",
           "items": {
             "type": "string",
@@ -215,14 +215,14 @@
         },
         "reverseProxy": {
           "type": "object",
-          "description": "Required for `Socket` server",
+          "description": "Reverse proxy settings. Strictly recommended",
           "additionalProperties": false,
           "properties": {
             "kind": {
               "enum": [
                 "nginx"
               ],
-              "description": "Reserved"
+              "description": "Server what used as a reverse-proxy."
             },
             "remoteIPHeader": {
               "type": "string",
