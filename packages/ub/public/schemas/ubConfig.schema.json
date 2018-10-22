@@ -215,7 +215,7 @@
         },
         "reverseProxy": {
           "type": "object",
-          "description": "Reverse proxy settings. Strictly recommended",
+          "description": "Reverse proxy settings. It is strictly recommended to use reverse proxy on production",
           "additionalProperties": false,
           "properties": {
             "kind": {
@@ -227,16 +227,16 @@
             "remoteIPHeader": {
               "type": "string",
               "description": "The value of a custom HTTP header containing the real client IP. By default, the RemoteIP information will be retrieved from the socket layer - but if the server runs behind some proxy service, you should define here the HTTP header name which indicates the true remote client IP value, mostly as 'X-Real-IP' or 'X-Forwarded-For'",
-              "default": ""
+              "default": "X-Real-IP"
             },
             "sendFileHeader": {
               "type": "string",
-              "default": "",
+              "default": "X-Accel-Redirect",
               "description": "Send static files using reverse proxy X-Sendfile feature. For nginx should be `X-Accel-Redirect`"
             },
             "sendFileLocationRoot": {
               "type": "string",
-              "default": "ubstatic",
+              "default": "externalURL hostname with '.' replaced by '-' (http://test.com -> test-con)" ,
               "description": "Prefix added to the beginning of sendFileHeader location"
             }
           }
@@ -879,15 +879,15 @@
                   "description": "Show user name field when enabled simpleCerAuth"
                 },
                 "userNameRE": {
-                  "type": "String",
+                  "type": "string",
                   "description": "Regular expression for user name validation"
                 },
                 "userNameREMessage": {
-                  "type": "String",
+                  "type": "string",
                   "description": "Message for user name validation"
                 },
                 "description": {
-                  "type": "String",
+                  "type": "string",
                   "description": "Description that show below username and password"
                 }
               }
