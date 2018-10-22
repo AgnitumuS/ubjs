@@ -9,7 +9,6 @@
  Date: 10.08.13
 */
 
-
 /**
  * Load file content to string. Only for non-binary files!
  *
@@ -262,8 +261,14 @@ TubZipWriter.prototype.freeNative = function () {}
  */
 
 /**
- * The full path (excluding extension) to the UB executable
- * @type {String}
+ * Current process (ub executable)
+ * @namespace
+ * @global
+ */
+const process = function() {}
+/**
+ * The full path to the UB executable
+ * @type {string}
  * @readonly
  */
 process.binPath = ''
@@ -276,7 +281,7 @@ process.binPath = ''
 process.configPath = ''
 
 /**
- * In case this is server-side thread === 1 else (client thread) ===  0
+ * For server-side thread === 1, else (client thread) ===  0
  * @type {Number}
  * @readonly
  */
@@ -290,7 +295,7 @@ process.isServer = 0
 process.isWebSocketServer = 0
 
 /**
- * When WebSockets are enabled === 1 else not defined
+ * When WebSocket is enabled === 1 else not defined
  * @type {Number}
  * @readonly
  */
@@ -305,7 +310,7 @@ process.isDebug = 0
 
 /**
  * The UB process startup mode. One of "Console", "CmdLine"
- * @type {String}
+ * @type {string}
  * @readonly
  */
 process.startupMode = 'CmdLine'
