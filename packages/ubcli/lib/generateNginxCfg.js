@@ -30,6 +30,7 @@ module.exports = function generateNginxCfg (cfg) {
       'ubcli'
     )
       .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'})
+      .add({short: 'l', long: 'lb', param: 'enableLoadBalancing', defaultValue: false, searchInEnv: false, help: 'Add this key to add upstream config for load balancing'})
       .add({short: 'r', long: 'sslRedirect', param: 'sslRedirect', defaultValue: false, help: `In case externalURL is https adds permanent redirect from http to https`})
       .add({short: 'sslkey', long: 'sslkey', param: 'pathToSSLKey', defaultValue: '', help: `For https - full path to ssl private key *.key file`})
       .add({short: 'sslcert', long: 'sslcert', param: 'pathToSSLCert', defaultValue: '', help: `For https - full path to ssl public certificate key *.pem file`})
@@ -50,21 +51,25 @@ module.exports = function generateNginxCfg (cfg) {
     console.error('httpServer.externalURL is not defined in server config. Terminated')
     return
   }
-  let URL = url.parse(serverConfig.httpServer.externalURL)
-  if (!URL.port) URL.port = (URL.protocol === 'https:') ? '443' : '80'
-  if (URL.protocol === 'https:') {
+  let externalURL = url.parse(serverConfig.httpServer.externalURL)
+  if (!externalURL.port) externalURL.port = (externalURL.protocol === 'https:') ? '443' : '80'
+  if (externalURL.protocol === 'https:') {
     if (!cfg.sslkey) console.warn('external URL is configured to use https but sslkey parameter not passed - don\'t forgot to set it manually')
     if (!cfg.sslcert) console.warn('external URL is configured to use https but sslcert parameter not passed - don\'t forgot to set it manually')
   }
+  let ubURL = url.parse(argv.serverURLFromConfig(serverConfig))
+  if (!ubURL.port) ubURL.port = (ubURL.protocol === 'https:') ? '443' : '80'
   if (!reverseProxyCfg.sendFileHeader) console.warn('`reverseProxy.sendFileHeader` not defined in ub config. Skip internal locations generation')
   let vars = {
-    ubURL: argv.serverURLFromConfig(serverConfig),
-    nginxURL: URL,
+    ubURL: ubURL,
+    externalURL: externalURL,
     appPath: cfgPath.replace(/\\/g, '/'),
     sslRedirect: Boolean(cfg.sslRedirect),
     sslkey: cfg.sslkey,
     sslcert: cfg.sslcert,
     ipv6: cfg.ipv6,
+    lb: cfg.lb,
+    wsRoot: serverConfig.wsServer ? serverConfig.wsServer.path : '',
     remoteIPHeader: reverseProxyCfg.remoteIPHeader,
     maxDocBodySize: cfg.maxDocBody,
     sendFileHeader: reverseProxyCfg.sendFileHeader,

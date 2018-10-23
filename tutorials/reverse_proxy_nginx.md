@@ -1,125 +1,81 @@
-# UB-server + Nginx
-Рассмотрим пример работы UB-server`а в связке с Nginx-сервером в режиме [обратного прокси](https://ru.wikipedia.org/wiki/%D0%9E%D0%B1%D1%80%D0%B0%D1%82%D0%BD%D1%8B%D0%B9_%D0%BF%D1%80%D0%BE%D0%BA%D1%81%D0%B8).  Зaпросы клиента Nginx будет перенаправлять на сервер UB, и наоборот от UB к клиенту. Для этого нужно сконфигурировать UB и Nginx.
+# Using Nginx as a reverse proxy and load balance
 
-### UBconfig
-Пример конфига UB сервера:
+Using some kind of [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) 
+in combination with UnityBase application server is MUST HAVE for Socket type UB server (Linux, Windows) and optional
+but strongly recommended for HTTPSys base http server under Windows.
+    
+Reverse proxy can be used to:
+ - https termination
+ - handling static files (with gziping, streaming, partial downloads, cache)
+ - load balancing
+ - etc
+ 
+Below we describe how to configure nginx as a reverse proxy for ub 
 
-```js
+## Configuring UnityBase
+
+In the application config (ubConfig.json) add `externalURL` and `reverseProxy` keys:    
+
+```json
 {
   "httpServer": {
-    "reverseProxy": {
-      //Server type. At this moment only "nginx" is supported
-      "kind": "nginx",
-      //Custom HTTP header containing the real client IP
-      //Using for correct logging, otherwise 127.0.0.1 will be instead of user IP
-      "remoteIPHeader": "X-Real-IP",
-      //Send static files using reverse proxy X-Sendfile feature. For nginx should be X-Accel-Redirect
-      "sendFileHeader": "X-Accel-Redirect",
-      //Prefix added to the beginning of sendFileHeader location
-      "sendFileLocationRoot": "ubstatic-unitybase-info"
-    }
+    "externalURL": "https://myapp.mydomain.com",
+    "reverseProxy": {"kind": "nginx"}
   }
 }
 ```
-### Nginx config
-Конфиг для Nginx можно сгенерировать автоматически через `ubcli`:  
-```
-npx ubcli generateNginxCfg -out ub-proxy.conf
+
+`externalURL` is address of your application for the end-user (address they type in browser)
+ 
+## Configuring nginx
+`ubcli` tool have a command `generateNginxCfg` for creating a include for nginx based on application configuration.
+
+cd to your application folder and type  
+
+```bash
+npx ubcli generateNginxCfg
 ```  
 
-Для генерации нужен конфиг UB сервера. Он по-умолчанию `ubConfig.json`, либо равен параметру "UB_CFG" командной строки.
-Также можно передать параметром `-cfg [path]` в `ubcli`.  
-```
-npx ubcli generateNginxCfg -cfg ubConfig.json
+This command generate file `ub-proxy.conf` ready to be included into main nginx configuration.
+
+To see additional parameters what can be passed to `generateNginxCfg` type
+```bash
+npx ubcli generateNginxCfg --help
 ```  
 
-Полная справка и перечень параметров вызывается командой:  
-`ubcli generateNginxCfg -?`
+In case external url is use HTTPS protocol, you need to add `-sslkey path/to/key -sslcert path/to/cert`. 
+Also we recommend to add `-r` for adding redirection from http to https:
 
-После генерации файл конфига `ub-proxy.conf` выглядит так:
-
-```
-server {
-    listen       80 default_server;
-
-
-    #proxy all requests to the UB backend
-    location / {
-        proxy_pass          http://localhost:8881;
-        proxy_set_header	Host    $host;
-        proxy_set_header	X-Real-IP  $realip_remote_addr;
-        proxy_redirect      off;
-    }
-    #override client_max_body_size for setDocument endpoint
-    location /setDocument {
-        proxy_pass          http://localhost:8881;
-        proxy_set_header	Host    $host;
-        proxy_set_header	X-Real-IP  $realip_remote_addr;
-        proxy_redirect      off;
-        client_max_body_size    5m;
-    }
-    #application internal location for clientRequire, mdb, models etc
-    location  /ubstatic/app {
-        internal;
-        alias D:/projects/unitybase-info;
-    }
-    #BLOB stores internal locations
-    location  /ubstatic/avatars {
-        internal;
-        alias D:/projects/unitybase-info/blobStores/avatars/;
-    }
-}
+```bash
+npx ubcli -r generateNginxCfg -sslkey /usr/www/.ssh/web_key.key -sslcert /usr/www/.ssh/web_ker_cert.pem
 ```
 
-Этот конфиг должен быть включен в nginx.conf:  
-`include path/to/ub-proxy.conf;`  
-или symlink в /etc/nginx/sites-enabled если вы под линуксом:
+If you expect user need to store a big documents add `-maxDocBody XXXm` where XXX ia a maximum document size (in Mb) for upload.      
+
+Generated config is well documented - see comments inside for explanation of what we did there. 
+
+`ub-proxy.conf` we generate should be included into `nginx.conf`:  
+
+For Windows add this line to end of http section inside `nginx.conf`:
 ```
+include path/to/ub-proxy.conf;
+```
+and restart nginx.
+
+For unix symlink file into /etc/nginx/sites-enabled
+```bash
 sudo ln -s path/to/ub-proxy.conf /etc/nginx/sites-available/default_server.cfg 
 sudo ln -s /etc/nginx/sites-available/default_server.cfg /etc/nginx/sites-enabled 
 sudo nginx -s reload 
 ```
-Для удобства эти команды выводятся в консоль после генерации конфига.
 
-В основном конфиге nginx в разделе http рекомендуется включить gzip:
-```
-gzip on;
-gzip_vary on;
-gzip_min_length 10240;
-gzip_proxied expired no-cache no-store private auth;
-gzip_types text/plain text/css text/xml application/javascript application/xml;
-gzip_disable "MSIE [1-6]\.";
-```
-Там же нужно отключить выдачу версии nginx в заголовках ответа:
-```
-server_tokens off;
-```
- 
-#### Размер пересылаемых документов
-По умолчанию значение параметра `client_max_body_size` (максимальный объем body POST запроса) в Nginx равно 1MB, что, скорее всего, не хватит для пересылаемых документов.
-Поэтому, только для запросов, что отвечают за пересылку документов (они начинаются с `/setDocument`) можно установить свое значение.  
+## Load balancing
 
-Статические данные могут находиться в разных местах, и для их доступа используется конструкция типа:
-```
-location  /ubstatic/avatars {
-        internal;
-        alias D:/projects/unitybase-info/blobStores/avatars/;
-    }
-```
-Она генериуется `ubcli` на основе значений в параметре blobStores в конфигурации UB сервера. 
+Generated config is ready to be extended for load balancing.
 
-#### Несколько UB серверов
-Для разрешения конфликтов нужно в конфиге UB сервера прописывать разные параметры `sendFileLocationRoot`.
-Рекомендуется использовать шаблон типа: "ubstatic-название_проекта". Это же значение запишется при генерации в путь запроса к статическим файлам:
+Pass `-lb` option for adding load balancer specific settings to nginx config.
+```bash
+npx ubcli generateNginxCfg -lb
 ```
-#application internal location for clientRequire, mdb, models etc
-    location  /ubstatic-название_проекта/app {
-        internal;
-        alias D:/projects/unitybase-info;
-    }
-    #BLOB stores internal locations
-    location  /ubstatic-название_проекта/avatars {
-        internal;
-        alias D:/projects/unitybase-info/blobStores/avatars/;
-    }
-```
+
+in the generated config adds additional servers inside `upstream` section 
