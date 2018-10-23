@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.12]
+### Added
+ - `UBModel.version` attribute added. Accessible inside client and server.
+ Version is taken from model package.json `version` key.
+ Empty in case package.json not found or version is not specified.
+ **UB server must be >= 5.4.3**  
+ 
 ## [5.0.10]
 ### Added
  - new convert rule is added for attributes of type `Json` in `getConvertRules` function  

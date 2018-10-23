@@ -355,10 +355,11 @@ UBDomain.getPhysicalDataType = function (dataType) {
  * Instantiated in  {@link UBDomain#models UBDomain.models} and {@link UBDomain#orderedModels UBDomain.orderedModels}
  * @class
  * @param cfg
- * @param cfg.path
- * @param cfg.needInit
- * @param cfg.needLocalize
- * @param cfg.order
+ * @param {string} cfg.path
+ * @param {boolean} cfg.needInit
+ * @param {boolean} cfg.needLocalize
+ * @param {number} cfg.order
+ * @param {string} cfg.version
  * @param {string} [cfg.moduleName]
  * @param {string} [cfg.moduleSuffix]
  * @param {string} [cfg.clientRequirePath] if passed are used instead of moduleName + moduleSuffix
@@ -421,6 +422,14 @@ function UBModel (cfg, modelCode) {
      */
     this.realPath = cfg.realPath
   }
+  /**
+   * Model version as specified in `version` key of model package.json
+   * If package.json not found version is empty.
+   *
+   * Introduced in ub server@5.4.2
+   * @type {string}
+   */
+  this.version = cfg.version
 }
 UBModel.prototype.needInit = false
 UBModel.prototype.needLocalize = false
