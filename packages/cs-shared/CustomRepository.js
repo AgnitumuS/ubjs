@@ -332,8 +332,9 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
     return this.where(subQueryAttribute + condition + '[{master}.' + masterAttribute + ']', 'custom', undefined, clauseName)
   }
   /**
-   * Arrange `where expressions` in logical order. By default `where expressions` are joined by AND logical predicate.
+   * Arrange named `where expressions` in logical order. By default `where expressions` are joined by AND logical predicate.
    * It is possible to join it in custom order using `logic`.
+   * Pay attention to condition name we pass as a 4-th parameter to `.where()`
    *
    * @example
 
