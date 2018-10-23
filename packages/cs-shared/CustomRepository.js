@@ -120,7 +120,12 @@ class CustomRepository {
 
  // todo Define a way to join for UNITY (@)
 
- // todo get values for attribute of type MANY
+ // get values for attribute of type MANY
+ UB.Repository('tst_maindata')
+   .attrs('ID', 'manyValue', 'manyValue.caption')
+   .where('code', '=', 'Код1')
+   .selectAsObject({'manyValue.caption': 'captions'})
+ // result is `[{"ID":331947938939292,"manyValue":"1,2","captions":"caption 10,caption 20"}]`
 
  // Get attribute value for multilaguage ("isMultiLang": true in meta file) attribute other when current session language
  UB.Repository('org_employee').attrs(['ID', 'lastName_en^']).selectAsObject()
