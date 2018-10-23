@@ -82,5 +82,9 @@ module.exports = {
     return stringToFormat.replace(FORMAT_RE, function (m, i) {
       return values[i]
     })
-  }
+  },
+  /**
+   * File modified time for files installed by npm
+   */
+  NPM_EPOCH: new Date('1985-10-26T08:15:00Z').getTime()
 }

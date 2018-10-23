@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 /*
  Purpose of this file is to describe objects and functions added to both server-side JavaScript thread and command line
  JavaScript thread by UnityBase
@@ -265,7 +267,7 @@ TubZipWriter.prototype.freeNative = function () {}
  * @namespace
  * @global
  */
-const process = function() {}
+const process = {}
 /**
  * The full path to the UB executable
  * @type {string}
@@ -302,7 +304,7 @@ process.isWebSocketServer = 0
 process.isWebSocketEnabled = 0
 
 /**
- * `true` if server executed with `-dev` command line switch.
+ * === 1 if server executed with `-dev` command line switch.
  * @type {Number}
  * @readonly
  */

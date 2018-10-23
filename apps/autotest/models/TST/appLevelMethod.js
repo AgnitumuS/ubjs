@@ -61,7 +61,7 @@ tst_service.on('multiply:after', function (ctxt) {
 })
 
 /**
- * Perform logging of getDocumnet requests
+ * Perform logging of getDocument requests
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
  */
