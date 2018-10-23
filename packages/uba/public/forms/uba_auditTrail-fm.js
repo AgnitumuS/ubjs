@@ -1,4 +1,4 @@
-/* global Ext */
+/* global Ext, UB, $App */
 exports.formCode = {
   initUBComponent: function () {
     var me = this
@@ -219,9 +219,9 @@ exports.formCode = {
     }
   },
 
-  /*
-    fill grid rows
-    */
+  /**
+   * fill grid rows
+   */
   fillDiffObjToStore: function (grid, diffObj) {
     var me = this
 
@@ -265,12 +265,10 @@ exports.formCode = {
       })
   },
 
-  /*
-Create Diff object from values before update and after update
-*/
+  /**
+  * Create Diff object from values before update and after update
+  */
   getDiffObj: function (fromValue, toValue) {
-    var me = this
-
     var diffObj = {}
     _.forEach(_.keys(fromValue), function (key) {
       if (!diffObj[key]) {
@@ -293,9 +291,9 @@ Create Diff object from values before update and after update
     return Q.resolve(diffObj)
   },
 
-  /*
-filling the missing information, such as the title attribute, attribute type
-*/
+  /**
+   * filling missing information, such as the title attribute, attribute type
+   */
   resolveDiffObjInfo: function (diffObj) {
     var me = this
 
@@ -340,9 +338,9 @@ filling the missing information, such as the title attribute, attribute type
     return Q.resolve(diffObj)
   },
 
-  /*
-filling missing attribute information file image
-*/
+  /**
+   * filling missing attribute information file image
+  */
   resolveDiffObjAttachmentAttrs: function (diffObj) {
     _.forEach(_.keys(diffObj), function (key) {
       var diffAttr = diffObj[key]
@@ -383,7 +381,7 @@ filling missing attribute information file image
     return Q.resolve(diffObj)
   },
 
-  /* if the field "Entity" gets the value of this */
+  /** if the field "Entity" gets the value of this */
   resolveDiffObjEntity: function (diffAttr) {
     var me = this
 
@@ -490,7 +488,6 @@ filling missing attribute information file image
   },
 
   getEntityValueEnumByCode: function (value, enumGroup) {
-    var me = this
     var entityInfo = $App.domainInfo.get('ubm_enum')
 
     if (entityInfo && entityInfo.entityMethods.select) {
@@ -500,8 +497,7 @@ filling missing attribute information file image
         .where('code', '=', value)
         .selectAsObject().then(function (items) {
           if (items.length > 0) {
-            var rec = items[0]
-            return rec.name + ' (' + value + ')'
+            return items[0].name + ' (' + value + ')'
           } else {
             return value
           }
@@ -516,7 +512,7 @@ filling missing attribute information file image
       return Q.resolve(null)
     }
 
-    if (!window.$App.domainInfo.isEntityMethodsAccessible(associatedEntity, 'select')) {
+    if (!$App.domainInfo.isEntityMethodsAccessible(associatedEntity, 'select')) {
       return Q.resolve('')
     }
     var fieldDesc = descriptionAttribute || window.$App.domainInfo.get(associatedEntity).descriptionAttribute || 'ID'
@@ -535,10 +531,9 @@ filling missing attribute information file image
   },
 
   getEntityValueUserById: function (value) {
-    var
-      me = this
+    let me = this
 
-    if (window.$App.domainInfo.isEntityMethodsAccessible('org_employee', 'select')) {
+    if ($App.domainInfo.isEntityMethodsAccessible('org_employee', 'select')) {
       return me.getEntityOrgInfoByUserId(value)
     } else {
       return Q.resolve(null)
@@ -566,9 +561,9 @@ filling missing attribute information file image
     }
   },
 
-  /*
-coloring text
-*/
+  /**
+   * coloring text
+   */
   resolveDiffOp: function (o, lastOp, addColor, delColor, isDel) {
     var str = Ext.String.htmlEncode(o.atom)
 
@@ -615,9 +610,9 @@ coloring text
     }
   },
 
-  /*
-calculating a difference value between before and after
-*/
+  /**
+   * Calculating a difference value between before and after
+   */
   resolveDiffObjTexts: function (diffAttr) {
     var me = this
 
@@ -645,8 +640,6 @@ calculating a difference value between before and after
     return Q.resolve(diffAttr)
   },
 
-  /*
-*/
   splitByWords: function (text) {
     var lexems = []
 
@@ -682,7 +675,7 @@ calculating a difference value between before and after
     return lexems
   },
 
-  /* performs "select" to "Entity" attribute value and takes it */
+  /** performs "select" to "Entity" attribute value and takes it */
   setWindowCaption: function () {
     var me = this
     var entityInfo = $App.domainInfo.get(me.entityName)
