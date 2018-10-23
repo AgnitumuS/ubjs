@@ -1,3 +1,4 @@
+/* global nsha256, ncrc32 */
 const App = require('@unitybase/ub').App
 /**
  * Return models config for `admin-UI` web client
@@ -62,32 +63,26 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
       }
     }
 
-    // fill model versions
-    let models = App.domainInfo.models
-    let modelsConfig = App.serverConfig.application.domain.models
-    for (let modelName in models) {
-      let model = models[modelName]
-      let modelCfg = modelsConfig.find(m => m.name === modelName)
-      if (model.realPublicPath) {
-        let pver = modelCfg.version
-        view.modelVersions.push({
-          modelName: modelName,
-          modelVersion: pver
-        })
-      }
-    }
     // add admin-ui
+    let modelsConfig = App.serverConfig.application.domain.models
     const ADMINUI_MODEL = '@unitybase/adminui-pub'
     let modelCfg = modelsConfig.find(m => m.moduleName === ADMINUI_MODEL)
     view.adminUIModel = modelCfg.browser
     App.domainInfo.orderedModels.forEach((model) => {
+      // fill model versions
+      if (model.realPublicPath) {
+        view.modelVersions.push({
+          modelName: model.name,
+          modelVersion: model.version
+        })
+      }
       if (model.moduleName !== ADMINUI_MODEL) {
         let modelCfg = modelsConfig.find(m => m.name === model.name)
         if (modelCfg.browser) {
           view.modelInitialization.push(modelCfg.browser)
         } else if (model.needInit) { // ub 5.0.5 compatibility
           console.warn(`Compatibility warning! Model ${model.name} has browser initialization script,
-but "browser" section in package.json is not define. Will fallback to "browser": "./public/initModel.js"`)
+but "browser" section in package.json is not defined. Will fallback to "browser": "./public/initModel.js"`)
           let pathStart = /node_modules/.test(model.path)
             ? model.moduleName + '/public'
             : path.join('/clientRequire', model.path).replace(/\\/g, '/')
@@ -103,9 +98,9 @@ but "browser" section in package.json is not define. Will fallback to "browser":
     if (compiledIndex) {
       App.globalCachePut(compiledIndexKey, compiledIndex)
     }
-    console.log(`Generate ${indexName} from template ${path.join(adminUIPath, indexName)}`)
+    console.log(`${indexName} is generated from template ${path.join(adminUIPath, indexName)}`)
   } else {
-    console.debug('Use compiled %s', indexName)
+    console.debug('Compiled %s is used', indexName)
   }
   if (compiledIndex) {
     resp.writeEnd(compiledIndex)
