@@ -519,7 +519,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
   },
 
   /**
-   * @private
+   * @protected
    */
   clearIsPhantom: function () {
     let me = this

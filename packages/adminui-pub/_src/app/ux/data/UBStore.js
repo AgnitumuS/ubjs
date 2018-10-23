@@ -303,7 +303,7 @@ Ext.define('UB.ux.data.UBStore', {
   /**
    * Perform load of store. Return promise resolved to store itself then finish
    * @param {Object|Function} [options]
-   * @returns {Promise} resolved to store
+   * @returns {Promise<UBStore>}
    */
   load: function (options) {
     let me = this

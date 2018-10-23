@@ -256,7 +256,7 @@ Ext.define('UB.view.FormDataBinder', {
         if (field.resetOriginalValue) {
           field.resetOriginalValue()
         }
-        if (result && (typeof result.then === 'function')) { // Q.isPromise(result)
+        if (result && (typeof result.then === 'function')) {
           me.notReadyControls += 1
           me.notReadyControlList.push(field)
           result.done(function () {
