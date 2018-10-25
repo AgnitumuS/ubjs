@@ -1,6 +1,7 @@
+/* global Ext, UB, $App, Q */
 require('../../core/UBCommand')
 require('./proxy/UBProxy')
-const UBDomain = require('@unitybase/cs-shared').UBDomain
+// noinspection JSUnusedGlobalSymbols
 /**
  * Extend {@link Ext.data.Store} to easy use with UnityBase server:
  *
@@ -9,7 +10,6 @@ const UBDomain = require('@unitybase/cs-shared').UBDomain
  * - proxy is bounded to {@link UB.ux.data.proxy.UBProxy}
  * - refresh UBCache entry on `add` & `remove` operations
  */
-
 Ext.define('UB.ux.data.UBStore', {
   extend: 'Ext.data.Store',
   alias: 'store.ubstore',
@@ -19,6 +19,12 @@ Ext.define('UB.ux.data.UBStore', {
     'UB.core.UBStoreManager',
     'UB.core.UBEnumManager'
   ],
+
+  /**
+   * Maps of record, organized by ID's. Used to speed-up store.getById() operations
+   * @type {Object<number, Record>}
+   */
+  indexByID: null,
 
   statics: {
     /**
@@ -108,9 +114,8 @@ Ext.define('UB.ux.data.UBStore', {
       }
 
       if (!entity) {
-        throw new Error('Invalid entity code =' + entityName)
+        throw new Error(`Entity "${entityName}" doesn't exists in domain`)
       }
-      let mStorage = entity.mixins.mStorage
       let hasID = false
       let hasMD = false
       let result = []
@@ -122,6 +127,7 @@ Ext.define('UB.ux.data.UBStore', {
       if (!hasID) {
         result.push('ID')
       }
+      let mStorage = entity.mixins.mStorage
       if (mStorage && mStorage.simpleAudit && !hasMD) {
         result.push('mi_modifyDate')
       }
@@ -129,8 +135,7 @@ Ext.define('UB.ux.data.UBStore', {
     },
 
     /**
-     * Возвращает "нормализированное" наименование модели
-     *
+     * Return "full" model class string ('UB.model." + entityName)
      * @param {String} entityName
      * @return {String}
      */
@@ -139,11 +144,11 @@ Ext.define('UB.ux.data.UBStore', {
     },
 
     /**
-     * Возвращает имя модели. Если модель с данным именем не существует - она определяется.
+     * Return model class for specified entity and set of attributes
      *
      * @param {String} entityName
      * @param {String[]} [fieldList] (optional)
-     * @param {String} [idProperty] Default 'ID'
+     * @param {String} [idProperty='ID']
      * @return {String}
      */
     getEntityModel: function (entityName, fieldList, idProperty) {
@@ -180,33 +185,17 @@ Ext.define('UB.ux.data.UBStore', {
      */
     getEntityModelFields: function (entityName, fieldList) {
       let domainEntity = $App.domainInfo.get(entityName)
-
-      if (!Ext.isDefined(domainEntity)) {
-        throw new Error(UB.format('Entity "{0}" not found in Domain', entityName))
-      }
-
       let fields = []
       fieldList.forEach(function (fieldName, index) {
         let attribute = domainEntity.attr(fieldName)
-        if (attribute) {
-          fields.push({
-            name: fieldName,
-            convert: null, // we convert all data just after server response
-            type: attribute.physicalDataType,
-            useNull: true,
-            mapping: index
-          })
-        } else { // JSON
-          fields.push({
-            name: fieldName,
-            convert: null, // we convert all data just after server response
-            type: 'auto',
-            useNull: true,
-            mapping: index
-          })
-        }
+        fields.push({
+          name: fieldName,
+          convert: null, // we convert all data just after server response
+          type: attribute ? attribute.physicalDataType : 'auto', // for JSON attr type attribute can be undefined
+          useNull: true,
+          mapping: index
+        })
       })
-
       return fields
     }
   },
@@ -252,7 +241,6 @@ Ext.define('UB.ux.data.UBStore', {
     /**
      * @cfg {String} [idProperty] Id property for model.
      */
-
     if (!config.disablePaging) {
       me.pageSize = !me.pageSize ? UB.appConfig.storeDefaultPageSize : me.pageSize
     } else {
@@ -301,74 +289,82 @@ Ext.define('UB.ux.data.UBStore', {
   },
 
   /**
-   * Perform load of store. Return promise resolved to store itself then finish
+   * Load store and all sub-stores defined in this.linkedItemsLoadList
    * @param {Object|Function} [options]
-   * @returns {Promise<UBStore>}
+   * @returns {Promise<UBStore>} Promise resolved to this store when finished
    */
   load: function (options) {
-    if ((typeof options === 'function') || (options && options.callback)) {
-      throw new Error('UBStore.load(callback) is OBSOLETE. Use Promise style: UBStore.load().then(...)')
+    if (this.isDestroyed) {
+      return Promise.resolve(this)
     }
     let me = this
-    let deferred = Q.defer()
-    let optionsIsFunction = typeof options === 'function'
-    let myCallback, doneMain
-    let rList = []
-    let throwLoadError = me.throwLoadError
+    const optionsIsFunction = (typeof options === 'function')
 
-    if (me.isDestroyed) {
-      return Q.resolve(me)
-    }
-
-    myCallback = function (records, operation, success) {
+    let doneMain = function (records, operation, success) {
       if (success) {
-        Q.all(rList).done(function () {
-          doneMain(records, operation, success)
-        })
-      } else {
-        doneMain(records, operation, success)
-      }
-    }
-
-    doneMain = function (records, operation, success) {
-      if (success) {
-        if (operation.resultSet && operation.resultSet.resultLock) {
-          me.resultLock = operation.resultSet.resultLock
-        }
-        if (operation.resultSet && operation.resultSet.resultAls) {
-          me.resultAls = operation.resultSet.resultAls
+        if (operation.resultSet) {
+          if (operation.resultSet.resultLock) {
+            me.resultLock = operation.resultSet.resultLock
+          }
+          if (operation.resultSet.resultAls) {
+            me.resultAls = operation.resultSet.resultAls
+          }
         }
         deferred.resolve(me)
       } else {
-        if (throwLoadError) {
+        if (me.throwLoadError) {
           throw operation.getError()
         }
         deferred.reject(operation.getError())
       }
+      if (options && (options.callback || optionsIsFunction)) {
+        UB.logDebug('UBStore.load(callback) is DEPRECATED. Use Promise style: UBStore.load().then(...)')
+        if (!success) {
+          throw new Error(operation.getError())
+        }
+        if (optionsIsFunction) {
+          Ext.callback(options, null, [records, operation, success])
+        } else {
+          Ext.callback(options.callback, options.scope, [records, operation, success])
+        }
+      }
     }
     me.indexByID = null
+
+    me.loading = true
+
+    let deferred = Q.defer()
+    let rList = []
     if (me.linkedItemsLoadList) {
-      _.forEach(me.linkedItemsLoadList, function (item) {
+      let keys = Object.keys(me.linkedItemsLoadList)
+      keys.forEach(function (key) {
+        let item = me.linkedItemsLoadList[key]
         if (item && (item instanceof UB.ux.data.UBStore)) {
           rList.push(item.load())
         } else if (typeof (item) === 'function') {
           rList.push(item())
-        } else if (item && Q.isPromise(item)) {
+        } else if (item && (typeof item.then === 'function')) {
           rList.push(item)
         }
       })
     }
     let newOptions = {}
-    if (!optionsIsFunction && options) {
+    if (options && !optionsIsFunction) {
       UB.apply(newOptions, options)
     }
     if (this.disablePaging && !newOptions.limit) {
       newOptions.limit = -1
       newOptions.start = 0
     }
-    newOptions.callback = myCallback
+    newOptions.callback = doneMain
     delete newOptions.scope
-    this.callParent([newOptions])
+    if (rList.length) {
+      Promise.all(rList).then(function () {
+        me.superclass.load.call(me, newOptions)
+      })
+    } else {
+      this.callParent([newOptions])
+    }
     return deferred.promise
   },
 
@@ -378,32 +374,17 @@ Ext.define('UB.ux.data.UBStore', {
    * @returns {promise|*|Q.promise}
    */
   reload: function (options) {
-    let me = this
-    let deferred = Q.defer()
-    let newOptions = UB.apply({}, options)
-    let myCallback = function (records, operation, success) {
-      if (success) {
-        deferred.resolve(me)
-      } else {
-        deferred.reject('TODO pass here rejection reason')
-      }
-      if (options && options.callback) {
-        UB.logDebug('UBStore.reload(callback) is DEPRECATED. Use Promise style: UBStore.reload().then(...)')
-        Ext.callback(options.callback, options.scope, [records, operation, success])
-      }
+    if (options && options.callback) {
+      throw new Error('UBStore.reload(callback) is OBSOLETE. Use Promise style: UBStore.reload().then(...)')
     }
+    let me = this
     me.fireEvent('beforereload')
 
     me.loading = true
     me.indexByID = null
-    me.clearCache().done(function () {
-      if (!me.isDestroyed) { // when cache is clear user close form and store is destroyed
-        newOptions.callback = myCallback
-        delete newOptions.scope
-        me.superclass.reload.call(me, newOptions)
-      }
+    return me.clearCache().then(function () {
+      return me.load(options)
     })
-    return deferred.promise
   },
 
   clearProxyCache: function () {
@@ -415,7 +396,7 @@ Ext.define('UB.ux.data.UBStore', {
     }
   },
 
-  filter: function (options) {
+  filter: function (filters, value) {
     if (this.isDestroyed) return
     this.clearProxyCache()
     try {
@@ -424,7 +405,7 @@ Ext.define('UB.ux.data.UBStore', {
        * @type {boolean}
        */
       this.throwLoadError = true
-      this.callParent(arguments)
+      this.callParent([filters, value])
     } finally {
       this.throwLoadError = false
     }
@@ -448,7 +429,6 @@ Ext.define('UB.ux.data.UBStore', {
   },
 
   /**
-   *
    * @param {Ext.data.Store} store
    * @param {Ext.data.Operation} operation
    * @return {Boolean}
@@ -497,7 +477,7 @@ Ext.define('UB.ux.data.UBStore', {
    */
 
   /**
-   * Get the Record with the specified id.
+   * Get a Record with the specified id.
    *
    * @param {Number/Ext.data.Model} id The id of the Record to find.
    * @returns {Ext.data.Model}
@@ -507,7 +487,6 @@ Ext.define('UB.ux.data.UBStore', {
     if (id && id.getId) {
       id = id.getId()
     }
-
     if (!me.indexByID && me.createIndexByID) {
       me.indexByID = {}
       me.each(function (record) {

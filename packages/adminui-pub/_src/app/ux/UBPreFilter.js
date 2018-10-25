@@ -3,7 +3,8 @@ require('../core/UBStoreManager')
 require('../core/UBUtil')
 require('../view/BaseWindow')
 /**
- * Prefatory data filter for "showList" command. If used in navigation shortcut for `showList` command type will display pre-filtration form before the grid is display.
+ * Prefatory data filter for "showList" command. If used in navigation shortcut for `showList` command type
+ * and will display pre-filtration form before the grid is display.
  *
  * In case filter is configured in navigation shortcut definition you can pass either
  *
@@ -755,15 +756,16 @@ Ext.define('UB.ux.UBPreFilter', {
       }
 
       if (ftsPanelCfg) {
-        groupControls = [{
-          title: UB.i18n('UbPreFilterMainGroup'),
-          padding: '5 0 0 5',
-          flex: 1,
-          layout: { type: 'vbox', align: 'stretch' },
-          autoScroll: true,
-          items: results
-        },
-        ftsPanelCfg
+        groupControls = [
+          {
+            title: UB.i18n('UbPreFilterMainGroup'),
+            padding: '5 0 0 5',
+            flex: 1,
+            layout: { type: 'vbox', align: 'stretch' },
+            autoScroll: true,
+            items: results
+          },
+          ftsPanelCfg
         ]
         return {
           flex: 1,

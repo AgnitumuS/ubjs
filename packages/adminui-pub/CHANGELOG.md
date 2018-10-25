@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.6.4]
 ### Changed
- - **BREAKED** change - `UBStore.load(callback)` is obsolete and will throw error.
- Promisified calls should be used instead `store.load().then(...)`
+ - **BREAKING** change - `UBStore.reload(callback)` is obsolete and will throw error.
+     Promise style call should be used instead `store.reload().then(...)`.
 
+### Fixed
+ - UBStore will load `linkedItemsLoadList` before loading main store data. This fix displaying of empty lookup columns
+ in EntityGridPanel in case depended stores (for lookup data) query is slower when query to the store.
+ - remove potential second query for UBStore from EntityGridPanel `boxready` handler by set store.loading = true 
+  
 ## [5.6.2]
 ### Fixed
  - grid export to HTML - empty (null) Float/Currency/Int now exported as empty cell instead of "NaN"
@@ -31,7 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.5.7]
 ### Added
  - `UploadFileAjax` component can optionally limits file extensions allowed for selection
- ```javascript
+ ```
 Ext.create('UB.view.UploadFileAjax', {
   ...
   accept: '.cer',
@@ -355,13 +360,13 @@ Will speed up startup for applications with several models
 ### Changed
 - UBDocument.forceMIME is DEPRECATED and not handled anymore.
 - UBApp.runShortcutCommand now can accept a shortcut code to run
-```javascript
+```
    $App.runShortcutCommand('tst_document')
    //or
    $App.runShortcutCommand(30000012312)
 ```
 To use in ubm_navshortcut place this code to the `ubm_navshortcut.cmdCode` attribute:
-```javascript
+```
   {cmdType: 'showForm', formCode: function () { $App.runShortcutCommand('sia_docPayOrderOut') }}
 ```
 
