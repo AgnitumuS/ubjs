@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.4]
+### Changed
+ - **BREAKED** change - `UBStore.load(callback)` is obsolete and will throw error.
+ Promisified calls should be used instead `store.load().then(...)`
+
 ## [5.6.2]
 ### Fixed
  - grid export to HTML - empty (null) Float/Currency/Int now exported as empty cell instead of "NaN"

@@ -306,6 +306,9 @@ Ext.define('UB.ux.data.UBStore', {
    * @returns {Promise<UBStore>}
    */
   load: function (options) {
+    if ((typeof options === 'function') || (options && options.callback)) {
+      throw new Error('UBStore.load(callback) is OBSOLETE. Use Promise style: UBStore.load().then(...)')
+    }
     let me = this
     let deferred = Q.defer()
     let optionsIsFunction = typeof options === 'function'
@@ -341,17 +344,6 @@ Ext.define('UB.ux.data.UBStore', {
           throw operation.getError()
         }
         deferred.reject(operation.getError())
-      }
-      if (optionsIsFunction || (options && options.callback)) {
-        UB.logDebug('UBStore.load(callback) is DEPRECATED. Use Promise style: UBStore.load().then(...)')
-        if (!success) {
-          throw new Error(operation.getError())
-        }
-        if (optionsIsFunction) {
-          Ext.callback(options, null, [records, operation, success])
-        } else {
-          Ext.callback(options.callback, options.scope, [records, operation, success])
-        }
       }
     }
     me.indexByID = null
