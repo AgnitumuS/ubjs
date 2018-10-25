@@ -10,18 +10,18 @@
 ### Introduction
 Let's say we have entity `m_balance` with 2 attributes - `person` and `amount` and one row in DB (`Alice`, 100$).
 
-Manager Alex want to decrease Alice amount by 10$ and manager Bob by 5$. As a result Alice amount should be 85$.
+Manager Alex wants to decrease Alice's amount by 10$ and manager Bob - by 5$. As a result Alice's amount should be 85$.
 
- 1. on 12:00 manager Alex open Alice balance in browsed for editing.
-  He sees initial amount is 100$, decrease it by 10$ to 90$ and goes to drink coffee without saving form
- 2. on 12:01 user Bob open the same from in his browser for editing.
- He also sees initial amount is 100$ (because Alex do not save the record), decrease it by 5$ to 95$ and save record 
- 3. on 12:10 Bob returns from coffee, sees that he has not saved the form (with amount 90$) and save it
+ 1. at 12:00 manager Alex opens Alice's balance in browser for editing.
+  He sees that the initial amount is 100$, decreases it by 10$ to 90$ and goes to drink coffee without saving the form.
+ 2. on 12:01 user Bob opens the same form in his browser for editing.
+ He also sees that the initial amount is 100$ (because Alex did not save the record), decreases it by 5$ to 95$ and saves the record. 
+ 3. at 12:10 Alex returns from coffee break, sees that he has not saved the form (with amount 90$) and saves it.
 
-As a result Alice amount is equal to 90$ in database and **this is not a result we expect** :(
+As a result Alice's amount is equal to 90$ in the database and **this is not a result we expect** :(
 
-But if we enable **Optimistic locking** feature for `m_balance` entity on the step 3 Bob will receive a message
-_"Record was modified by another user"_. In this case he will refresh form, sees new amount 90$ modified by Alex,
+But if we enable **Optimistic locking** feature for `m_balance` entity, then on the step 3 Bob receives a message
+_"Record was modified by another user"_. In this case he will refresh the form, see the new amount 90$ modified by Alex,
 decrease it by 5$ to 85$ and save new amount.
     
 ### Implementation details
