@@ -543,7 +543,7 @@ UB.i18nExtend({
   // mxGraph (ER-diagram)
   'toolbar': 'toolbar',
   'entities': 'entities',
-  'AsTаble': 'AsTаble',
+  'AsTable': 'AsTable',
   'AsJSON': 'AsJSON',
   'Attributes': 'Attributes',
   'code': 'code',
@@ -632,6 +632,7 @@ if (typeof Ext !== 'undefined') {
         return Ext.Date.shortMonthNames[month]
       }
 
+      // noinspection NonAsciiCharacters
       Ext.Date.monthNumbers = {
         'Янв': 0,
         'Фев': 1,
@@ -689,7 +690,7 @@ if (typeof Ext !== 'undefined') {
       Ext.apply(Ext.util.Format, {
         thousandSeparator: ' ',
         decimalSeparator: ',',
-        currencySign: '', //\u0440\u0443\u0431',  // Russian Ruble
+        currencySign: '', // \u0440\u0443\u0431',  // Russian Ruble
         dateFormat: 'd.m.Y',
         timeFormat: 'G:i:s',
         datetimeFormat: 'd.m.Y H:i'

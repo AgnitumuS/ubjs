@@ -81,7 +81,7 @@ UB.i18nExtend({
   ssylka: 'Link',
   vneshnaja: 'External',
   vnutrennaja: 'Internal',
-  ChangesHistory: "Changes history",
+  ChangesHistory: 'Changes history',
   detali: 'Details',
   Filter: 'Filter',
   s: 'from',
@@ -538,7 +538,7 @@ UB.i18nExtend({
   // mxGraph (ER-diagram)
   'toolbar': 'toolbar',
   'entities': 'entities',
-  'AsTаble': 'AsTаble',
+  'AsTable': 'AsTable',
   'AsJSON': 'AsJSON',
   'Attributes': 'Attributes',
   'code': 'code',

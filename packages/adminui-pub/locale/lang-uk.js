@@ -545,7 +545,7 @@ UB.i18nExtend({
   // mxGraph (ER-diagram)
   'toolbar': 'toolbar',
   'entities': 'entities',
-  'AsTаble': 'AsTаble',
+  'AsTable': 'AsTable',
   'AsJSON': 'AsJSON',
   'Attributes': 'Attributes',
   'code': 'code',
@@ -605,6 +605,7 @@ if (typeof Ext !== 'undefined') {
     }
 
     if (Ext.Date) {
+      // noinspection NonAsciiCharacters
       Ext.Date.monthNumbers = {
         'Січ': 0,
         'Лют': 1,

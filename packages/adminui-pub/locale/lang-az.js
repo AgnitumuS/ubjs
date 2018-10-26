@@ -543,7 +543,7 @@ UB.i18nExtend({
   // mxGraph (ER-diagram)
   'toolbar': 'toolbar',
   'entities': 'entities',
-  'AsTаble': 'AsTаble',
+  'AsTable': 'AsTable',
   'AsJSON': 'AsJSON',
   'Attributes': 'Attributes',
   'code': 'code',
@@ -570,9 +570,6 @@ UB.i18nExtend({
  */
 if (typeof Ext !== 'undefined') {
   Ext.onReady(function () {
-    var cm = Ext.ClassManager
-    var exists = Ext.Function.bind(cm.get, cm)
-
     if (Ext.Updater) {
       Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Yüklənir ...</div>'
     }

@@ -83,7 +83,7 @@ UB.i18nExtend({
   ssylka: 'Link',
   vneshnaja: 'External',
   vnutrennaja: 'Internal',
-  ChangesHistory: "Changes history",
+  ChangesHistory: 'Changes history',
   detali: 'Details',
   Filter: 'Filter',
   s: 'from',
@@ -488,7 +488,7 @@ UB.i18nExtend({
   NewPassword: 'New password',
   RetypePassword: 'Retype password',
   HowToCreatePassword: 'How to create a good password?',
-  passwordRecommendation: 'Password length should be 6-20 charaters. <br > You can use digits, latin charecters and simbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordRecommendation: 'Password length should be 6-20 charaters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
   passwordsDoNotMatch: 'Passwords do not match',
   passwordChangedSuccessfully: 'Password changed successfully. Please logout to use new password',
 
@@ -539,7 +539,7 @@ UB.i18nExtend({
   // mxGraph (ER-diagram)
   'toolbar': 'toolbar',
   'entities': 'entities',
-  'AsTаble': 'AsTаble',
+  'AsTable': 'AsTable',
   'AsJSON': 'AsJSON',
   'Attributes': 'Attributes',
   'code': 'code',

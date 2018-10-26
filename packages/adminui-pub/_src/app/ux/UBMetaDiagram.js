@@ -1,9 +1,10 @@
-/* global UB, Q, Blob, mxEvent, mxUtils, mxEditor, mxRubberband, mxCodec, mxBasePath, mxVertexHandler, mxCellRenderer, mxCell, mxGeometry, mxPoint, console, isDeveloperMode, mxRubberband */
+/* global UB, Ext, $App, Q, Blob, mxEvent, mxUtils, mxEditor, mxRubberband, mxCodec, mxBasePath, mxVertexHandler, mxCellRenderer, mxCell, mxGeometry, mxPoint, console, isDeveloperMode, mxRubberband */
 /* eslint one-var: "off" */
 /* eslint new-cap: ["error", { "newIsCap": false }] */
 /* eslint no-unused-vars: "off" */
 
 const mxLoader = require('../../ux/form/mxGraph.js')
+const _ = require('lodash')
 
 /**
  * Metadata ER diagram editor.
@@ -731,7 +732,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
           region: 'center',
           items: [
             {
-              title: UB.i18n('AsTаble'),
+              title: UB.i18n('AsTable'),
               layout: { type: 'border' },
               items: [
                 gridProp = Ext.create('Ext.grid.Panel',
