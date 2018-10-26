@@ -593,18 +593,18 @@ exports.formCode = {
         }
       } else {
         /*
-                // put colored delete position (or add position), needs to be improved
-                if (lastOp.del) {
-                    return '';
-                } else {
-                    lastOp.del = true;
-                    if (isDel) {
-                        return "<span style='background-color:" + colorDel + "'>&nbsp;</span>";
-                    } else {
-                        return "<del><span style='background-color:" + colorDel + "'>&nbsp;</span></del>";
-                    }
-                }
-                */
+        // put colored delete position (or add position), needs to be improved
+        if (lastOp.del) {
+            return '';
+        } else {
+            lastOp.del = true;
+            if (isDel) {
+                return "<span style='background-color:" + colorDel + "'>&nbsp;</span>";
+            } else {
+                return "<del><span style='background-color:" + colorDel + "'>&nbsp;</span></del>";
+            }
+        }
+        */
         return ''
       }
     }

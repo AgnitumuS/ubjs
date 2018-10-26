@@ -13,7 +13,7 @@ $(function () {
       if (isRepeat) {
         throw new UB.AbortError('invalid')
       } else {
-        return Q.resolve({authSchema: 'UB', login: 'admin', password: 'admin'})
+        return Promise.resolve({authSchema: 'UB', login: 'admin', password: 'admin'})
       }
     }
   })
@@ -39,7 +39,8 @@ $(function () {
     })
     var dataGrid = $('#gridContainer').dxDataGrid({
       dataSource: dataSource,
-      columns: attributes4Select,
+      columns: attributes4Select,
+
       filterRow: {
         visible: true, applyFilter: 'auto'
       },
