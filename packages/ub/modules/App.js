@@ -12,10 +12,9 @@ const THTTPRequest = require('./HTTPRequest')
 const dbConnections = require('./DBConnections')
 const blobStores = require('@unitybase/blob-stores')
 /**
- * UnityBase application
- *
- * Developer can add his own application level methods using {@link App.registerEndpoint App.registerEndpoint}
- * and take a full control on HTTP request & response.
+ * @classdesc
+ * Singleton instance of UnityBase application. Allow direct access to the database connections, blob stores,
+ * HTTP endpoints (full control on HTTP request & response) registration, read domain and server config.
  *
  * Mixes EventEmitter, and server will emit:
  *
@@ -23,41 +22,40 @@ const blobStores = require('@unitybase/blob-stores')
  *  - `endpointName + ':after'` event in case neither exception is raised nor App.preventDefault()
  *  is called inside endpoint handler
  *
- * @example
+ *
+     const App = require('@unitybase/ub').App
+     // Register public (accessible without authentication) endpoint
+     App.registerEndpoint('echoToFile', echoToFile, false)
 
- const App = require('@unitybase/ub').App
- // Register public (accessible without authentication) endpoint
- App.registerEndpoint('echoToFile', echoToFile, false)
+     // write custom request body to file FIXTURES/req and echo file back to client
+     // @param {THTTPRequest} req
+     // @param {THTTPResponse} resp
+     function echoToFile (req, resp) {
+       var fs = require('fs')
+       fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
+       resp.statusCode = 200
+       resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), {encoding: 'bin'}))
+     }
 
- // write custom request body to file FIXTURES/req and echo file back to client
- // @param {THTTPRequest} req
- // @param {THTTPResponse} resp
- function echoToFile (req, resp) {
-   var fs = require('fs')
-   fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
-   resp.statusCode = 200
-   resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), {encoding: 'bin'}))
- }
+     //Before getDocument requests
+     //@param {THTTPRequest} req
+     //@param {THTTPResponse} resp
+     function doSomethingBeforeGetDocumentCall(req, resp){
+       console.log('User with ID', Session.userID, 'try to get document')
+     }
+     // Adds hook called before each call to getDocument endpoint
+     App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
 
- //Before getDocument requests
- //@param {THTTPRequest} req
- //@param {THTTPResponse} resp
- function doSomethingBeforeGetDocumentCall(req, resp){
-   console.log('User with ID', Session.userID, 'try to get document')
- }
- // Adds hook called before each call to getDocument endpoint
- App.on('getDocument:before', doSomethingBeforeGetDocumentCall)
-
- const querystring = require('querystring')
- //
- //After getDocument requests
- //@param {THTTPRequest} req
- //@param {THTTPResponse} resp
- function doSomethingAfterGetDocumentCall(req, resp){
-   params = querystring.parse(req.parameters)
-   console.log('User with ID', Session.userID, 'obtain document using params',  params)
- }
- App.on('getDocument:after', doSomethingAfterGetDocumentCall)
+     const querystring = require('querystring')
+     //
+     //After getDocument requests
+     //@param {THTTPRequest} req
+     //@param {THTTPResponse} resp
+     function doSomethingAfterGetDocumentCall(req, resp){
+       params = querystring.parse(req.parameters)
+       console.log('User with ID', Session.userID, 'obtain document using params',  params)
+     }
+     App.on('getDocument:after', doSomethingAfterGetDocumentCall)
 
  *
  * To prevent endpoint handler execution App.preventDefault() can be used inside `:before` handler.
@@ -183,21 +181,19 @@ App.registerEndpoint = function (endpointName, handler, authorizationRequired, i
 }
 
 /**
- * @param {String} methodName
  * @method addAppLevelMethod
  * @deprecated Use {@link App.registerEndpoint} instead
  * @memberOf App
  */
-App.addAppLevelMethod = function (methodName) {
+App.addAppLevelMethod = function () {
   throw new Error('App.addAppLevelMethod is obsolete. Use App.registerEndpoint instead')
 }
 /**
- * @param {String} methodName
  * @method serviceMethodByPassAuthentication
  * @deprecated Use {@link App.registerEndpoint} instead
  * @memberOf App
  */
-App.serviceMethodByPassAuthentication = function (methodName) {
+App.serviceMethodByPassAuthentication = function () {
   throw new Error('App.serviceMethodByPassAuthentication is obsolete. Use App.registerEndpoint instead')
 }
 
