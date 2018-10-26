@@ -5,10 +5,11 @@
 		"watchFileChanges": {
 			"enabled": false,
 			"hashingStrategy": "ModifyDate"
-		}
+		},
+		"threadPoolSize": 8
 	},
 	"logging": {
-		//"levels": ["*"],
+		"levels": [],
 		"path": "./logs",
 		"rotationSizeInMB": 100,
 		"performanceCounters": false
@@ -24,7 +25,6 @@
 		"domain": {
 			"models": [
 				{
-					"name": "UB",
 					"path": "./node_modules/@unitybase/ub"
 				},
 				{
@@ -49,14 +49,6 @@
 			{
 				"name": "mdb",
 				"storeType": "Virtual"
-			},
-			{
-				"name": "avatars",
-				"isDefault": true,
-				"path": "./stores/avatars",
-				"historyDepth": 0,
-				"storeSize": "Simple",
-				"keepOriginalFileNames": false
 			}
 		]
 	},

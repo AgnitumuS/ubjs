@@ -1,7 +1,8 @@
 {
 	"httpServer": {
+		"externalURL": "http://test.local",
 		//"serverType": "Socket",
-		"#include(%UB_RP_CONFIG%)"
+		//"reverseProxy": { "kind": "nginx" },
 		"host": "+",
 		"port": "8881",
 		"requestQueueLength": 1000,
@@ -12,18 +13,12 @@
 			"enabled": true,
 			"hashingStrategy": "ModifyDate"
 		},
-		"threadPoolSize": 2
+		"threadPoolSize": 8
 	},
-	/*"wsServer": {
-		"host": "+",
-		"port": "888",
-		"path": "ws"
-	},*/
 	"logging": {
 		"path": "./logs",
-		"levels": [
-			"*"
-		],
+		"levels": ["*"],
+		//"levels": [],
 		"threadingModel": "IdentifiedInOnFile",
 		"stackTrackDepth": 20,
 		"rotationSizeInMB": 100,
