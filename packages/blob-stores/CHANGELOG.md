@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.22]
 ### Fixed
  - **SECURITY** `getDocument` endpoint will check user have ELS right to entity `select` method before getting document ID.
- Without this patch in case entity do not use RLS unauthorized access to document is possible      
+ Without this patch in case entity do not use RLS unauthorized access to document is possible
+ - for file system based BLOB stores `setDocument` will throw error in case no disk space left
+ and remove corrupted temp file. The previous implementation could create zero-length 
+ or corrupted files without any exception.
 
 ## [5.0.12]
 ### Changed

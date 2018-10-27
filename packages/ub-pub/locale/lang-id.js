@@ -1,3 +1,4 @@
+/* global UB */
 UB.i18nExtend({
   Enter: 'Enter',
   Password: 'Password',
@@ -42,6 +43,7 @@ UB.i18nExtend({
   selectSigningCertificate: 'Select certificate for signing',
   certificate: 'Certificate',
   certificates: 'Certificates',
-  MAX_TREEPATH_DEPTH_EXCEED: 'You can not subordinate an element to this parent - this will result in a loop'
+  MAX_TREEPATH_DEPTH_EXCEED: 'You can not subordinate an element to this parent - this will result in a loop',
+  'Request Entity Too Large': 'The amount of data you are trying to upload to the server exceeds the limit'
 
 })
