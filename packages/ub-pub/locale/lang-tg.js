@@ -1,6 +1,7 @@
+/* global UB */
 UB.i18nExtend({
-  Enter: 'Даромад', //enter
-  Password: 'Пароль', //password
+  Enter: 'Даромад',
+  Password: 'Пароль',
   User: 'Пользователь', // login
   UBAuthTip: 'Номи корбар, паролро ворид кунед ва тугмаи "Даромад" -ро пахш кунед.', // useUBAuthenticatinInfo
   UBAuthHeader: 'Sign in with your <br/> {0} account',
@@ -51,6 +52,7 @@ UB.i18nExtend({
   selectSigningCertificate: 'Выберите файл с сертификатом для подписи',
   certificate: 'Сертификат',
   certificates: 'Сертификаты',
-  MAX_TREEPATH_DEPTH_EXCEED: 'Нельзя подчинить элемент данному родителю - это приведет к зацикливанию'
+  MAX_TREEPATH_DEPTH_EXCEED: 'Нельзя подчинить элемент данному родителю - это приведет к зацикливанию',
+  'Request Entity Too Large': 'Объем данных который Вы пытаетесь загрузить на сервер превышает установленный лимит'
 
 })

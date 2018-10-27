@@ -771,7 +771,7 @@ UBConnection.prototype.post = function (url, data, config) {
  * @param {Object} cfg
  * @return {boolean}
  */
-UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
+UBConnection.prototype.checkChannelEncryption = function () {
   return true
 }
 /**
@@ -831,6 +831,9 @@ UBConnection.prototype.xhr = function (config) {
         }
       }
 
+      if (reason.status === 413) { // Request Entity Too Large
+        throw new ubUtils.UBError('Request Entity Too Large')
+      }
       if (reason.data && reason.data.hasOwnProperty('errCode')) { // this is server side error response
         let errCode = reason.data.errCode
         let errDetails = errMsg = reason.data.errMsg

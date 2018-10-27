@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.17]
+### Added
+ - `UBConnection` will handle a `413 Request Entity Too Large` server-side error response and raise a UB.UBAbort message.
+ Such response occurs when user try to upload big files and server works behind nginx. To increase allowed payload size 
+ use `ubcli generateNginxCfg -maxDocBody XXXm`   
+
 ## [5.2.16]
 ### Changed
  - @unitybase/ub-pub/UBConnection module is renamed to AsyncConnection.

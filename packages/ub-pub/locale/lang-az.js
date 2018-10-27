@@ -1,3 +1,4 @@
+/* global UB */
 UB.i18nExtend({
   Enter: 'Daxil ol',
   Password: 'Parol',
@@ -50,6 +51,7 @@ UB.i18nExtend({
   selectSigningCertificate: 'Выберите файл с сертификатом для подписи',
   certificate: 'Sertifikat',
   certificates: 'Sertifikatlar',
-  MAX_TREEPATH_DEPTH_EXCEED: 'Нельзя подчинить элемент данному родителю - это приведет к зацикливанию'
+  MAX_TREEPATH_DEPTH_EXCEED: 'Нельзя подчинить элемент данному родителю - это приведет к зацикливанию',
+  'Request Entity Too Large': 'Serverə yükləməyə çalışdığınız məlumatların həcmi artıqdır'
 
 })
