@@ -343,8 +343,8 @@
         },
         "path": {
           "type": "string",
-          "default": "./logs",
-          "description": "Path to folder where server place log files (including rotated logs)"
+          "default": "",
+          "description": "Path to folder where server place log files (including rotated logs). Keep it empty to disable output of logs logs to the files"
         },
         "rotationSizeInMB": {
           "type": "number",
