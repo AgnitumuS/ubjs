@@ -79,7 +79,12 @@ class FileSystemBlobStore extends BlobStoreCustom {
   saveContentToTempStore (request, attribute, content) {
     let fn = this.getTempFileName(request)
     console.debug('temp file is written to', fn)
-    fs.writeFileSync(fn, content)
+    try {
+      fs.writeFileSync(fn, content)
+    } catch (e) {
+      if (fs.existsSync(fn)) fs.unlinkSync(fn)
+      throw e
+    }
     let origFn = request.fileName
     let ct = mime.contentType(path.extname(origFn))
     return {
