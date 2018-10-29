@@ -1,6 +1,6 @@
 {
 	"httpServer": {
-		"externalURL": "http://test.local",
+		//"externalURL": "http://localhost",
 		//"serverType": "Socket",
 		//"reverseProxy": { "kind": "nginx" },
 		"host": "+",
