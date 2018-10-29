@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.26]
 ### Added
- - vue based login now support `onNeedChangePassword` connection event and display the password change form to the user 
+ - vue based login now support `onNeedChangePassword` connection event and display the password change form to the user
+ 
+### Changed
+ - `element-ui` is upgraded to `2.4.9`   
  
 ## [1.0.16]
 ### Added
