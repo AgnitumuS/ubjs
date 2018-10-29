@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/cryptojs",
-  "version": "1.0.14-beta.0",
+  "version": "1.0.14",
   "description": "Temporary solution for cryptography. Clone from CryptoJS lib from google",
   "scripts": {},
   "public": true,
