@@ -45,6 +45,27 @@ UB.i18nExtend({
   'uac_certStatusError': 'Certificate status is unknown',
   'uac_certificateRevoked': 'The certificate was abandoned by the certification authority or key is expire',
   MAX_TREEPATH_DEPTH_EXCEED: 'You can not subordinate an element to this parent - this will result in a loop',
-  'Request Entity Too Large': 'Серверге жүктеп салғыңыз келетін деректердің саны шектен асады'
+  'Request Entity Too Large': 'Серверге жүктеп салғыңыз келетін деректердің саны шектен асады',
+
+  EnterNewPassword: 'Enter new password',
+  Change: 'Change',
+  NewPassword: 'New password',
+  RetypePassword: 'Retype password',
+  HowToCreatePassword: 'How to create a good password?',
+  passwordRecommendation: 'Password length should be 6-20 charaters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordsDoNotMatch: 'Passwords do not match',
+  passwordChangedSuccessfully: 'Password changed successfully. Please logout to use new password',
+
+  EnterOldPassword: 'Enter the current password',
+  OldPassword: 'Current password',
+  'Your password is expired. Please change password': 'Your password is expired. Please change password for continue working',
+  'Incorrect old password': 'Incorrect current password',
+  'Password is too short': 'Password is too short',
+  'Password is too simple': 'Password is too simple',
+  'Password is dictionary word': 'Password cannot be as word from dictionary',
+  'Password matches with login': 'Password matches with login',
+  'Previous password is not allowed': 'Password matches with one of the previous',
+  logout: 'Logout',
+  blankText: 'This is required field'
 
 })

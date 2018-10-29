@@ -39,7 +39,6 @@ UB.i18nExtend({
   Obshchee: 'General',
   neUdalosZagruzitFajlConfiguratsii: 'Failed to load config file.',
   missingDescriptionAttribute: '"Description attribute property" "{0}" for entity "{1}" point to missed attribute',
-  logout: 'Logout',
   userSettings: 'Settings',
   rabochiyStol: 'Desktop',
   informatsiyaOPrilozhenii: 'About',
@@ -482,25 +481,6 @@ UB.i18nExtend({
   'ubErrTheServerHasExceededMaximumNumberOfConnections': 'Server has exceed  maximum number of connections',
   'ubErrFtsForAppDisabled': 'fts for application is disabled',
   UbPreFilterMainGroup: 'by attributes',
-
-  EnterNewPassword: 'Enter new password',
-  Change: 'Change',
-  NewPassword: 'New password',
-  RetypePassword: 'Retype password',
-  HowToCreatePassword: 'How to create a good password?',
-  passwordRecommendation: 'Password length should be 6-20 charaters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
-  passwordsDoNotMatch: 'Passwords do not match',
-  passwordChangedSuccessfully: 'Password changed successfully. Please logout to use new password',
-
-  EnterOldPassword: 'Enter the current password',
-  OldPassword: 'Current password',
-  'Your password is expired. Please change password': 'Your password is expired. Please change password for continue working',
-  'Incorrect old password': 'Incorrect current password',
-  'Password is too short': 'Password is too short',
-  'Password is too simple': 'Password is too simple',
-  'Password is dictionary word': 'Password cannot be as word from dictionary',
-  'Password matches with login': 'Password matches with login',
-  'Previous password is not allowed': 'Password matches with one of the previous',
 
   // mxGraph (org chart)
   'Undo': 'Undo',

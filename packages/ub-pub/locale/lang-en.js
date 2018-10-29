@@ -45,6 +45,27 @@ UB.i18nExtend({
   'uac_certStatusError': 'Certificate status is unknown',
   'uac_certificateRevoked': 'The certificate was abandoned by the certification authority or key is expire',
   MAX_TREEPATH_DEPTH_EXCEED: 'You can not subordinate an element to this parent - this will result in a loop',
-  'Request Entity Too Large': 'The amount of data you are trying to upload to the server exceeds the limit. Operation aborted'
+  'Request Entity Too Large': 'The amount of data you are trying to upload to the server exceeds the limit. Operation aborted',
+
+  EnterNewPassword: 'Enter new password',
+  Change: 'Change',
+  NewPassword: 'New password',
+  RetypePassword: 'Retype password',
+  HowToCreatePassword: 'How to create a good password?',
+  passwordRecommendation: 'Password length should be 6-20 charaters. <br > You can use digits, latin characters and symbols: <br >! @ # $ % ^ & * ( ) _ - + : ; , . ',
+  passwordsDoNotMatch: 'Passwords do not match',
+  passwordChangedSuccessfully: 'Password changed successfully. Please logout to use new password',
+
+  EnterOldPassword: 'Enter the current password',
+  OldPassword: 'Current password',
+  'Your password is expired. Please change password': 'Your password is expired. To continue, you must change your password',
+  'Incorrect old password': 'Incorrect current password',
+  'Password is too short': 'New password is too short',
+  'Password is too simple': 'New password is too simple',
+  'Password is dictionary word': 'New password cannot be as word from dictionary',
+  'Password matches with login': 'New password matches with login',
+  'Previous password is not allowed': 'New password matches with one of the previous',
+  logout: 'Logout',
+  blankText : 'This field is required'
 
 })

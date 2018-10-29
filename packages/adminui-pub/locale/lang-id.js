@@ -37,7 +37,6 @@ UB.i18nExtend({
   Obshchee: 'General',
   neUdalosZagruzitFajlConfiguratsii: 'Failed to load config file.',
   missingDescriptionAttribute: '"Description attribute property" "{0}" for entity "{1}" point to missed attribute',
-  logout: 'Logout',
   userSettings: 'Settings',
   rabochiyStol: 'Desktop',
   informatsiyaOPrilozhenii: 'About',
@@ -481,25 +480,6 @@ UB.i18nExtend({
   'ubErrTheServerHasExceededMaximumNumberOfConnections': 'Server has exceed  maximum number of connections',
   'ubErrFtsForAppDisabled': 'fts for application is disabled',
   UbPreFilterMainGroup: 'by attributes',
-
-  EnterNewPassword: 'Masukan kata sandi baru',
-  Change: 'Perubahan',
-  NewPassword: 'Kata sandi baru',
-  RetypePassword: 'Ketik ulang kata sandi',
-  HowToCreatePassword: 'Cara membuat password yang baik?',
-  passwordRecommendation: 'Panjang password harus 6-20 karakter. <br> Anda dapat menggunakan angka, charecters latin dan simbol-simbol: <br>! @ # $% ^ & * () _ - +:; ,. ',
-  passwordsDoNotMatch: 'Sandi tidak cocok',
-  passwordChangedSuccessfully: 'Sandi berhasil diubah. Silakan logout untuk menggunakan password baru',
-
-  EnterOldPassword: 'Введите текущий пароль',
-  OldPassword: 'Текущий пароль',
-  'Your password is expired. Please change password': 'Ваш пароль устарел. Для продолжения работы необходимо изменить пароль',
-  'Incorrect old password': 'Неверный текущий пароль',
-  'Password is too short': 'Пароль слишком короткий',
-  'Password is too simple': 'Пароль не отвечает требованиям надежности',
-  'Password is dictionary word': 'Пароль не может быть словом со словаря',
-  'Password matches with login': 'Пароль не может совпадать с логином',
-  'Previous password is not allowed': 'Пароль совпадает с одним из предидущих',
 
   // mxGraph (org chart)
   'Undo': 'Undo',

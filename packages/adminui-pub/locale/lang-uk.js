@@ -37,7 +37,6 @@ UB.i18nExtend({
   Obshchee: 'Загальні',
   neUdalosZagruzitFajlConfiguratsii: 'Не вдалося завантажити файл конфігурації.',
   missingDescriptionAttribute: "Властивість 'descriptionAttribute': '{0}' у сутності '{1}' вказує на неіснуючий атрибут",
-  logout: 'Вихід',
   userSettings: 'Налаштування',
   rabochiyStol: 'Робочий стіл',
   informatsiyaOPrilozhenii: 'Про застосування',
@@ -489,24 +488,6 @@ UB.i18nExtend({
   keyAlreadyRegistered: 'Неможливо відправити заявку на реєстрацію ключа. Даний ключ вже зареєстрований в системі.',
 
   UbPreFilterMainGroup: 'По атрибутам',
-
-  EnterNewPassword: 'Задайте новий пароль',
-  Change: 'Змінити',
-  NewPassword: 'Новий пароль',
-  RetypePassword: 'Пароль повторно',
-  HowToCreatePassword: 'Як вибрати надійний пароль?',
-  passwordRecommendation: '* пароль має містити не менше ніж 6 символів . <br > * пароль має містити числа <br > * пароль має містити великі та маленькі символи латинського алфавіту  <br >пароль має містити спецсимволи: ! @ # $ % ^ & * ( ) _ - + : ; , . ',
-  passwordsDoNotMatch: 'Паролі не співпадають',
-  passwordChangedSuccessfully: 'Пароль змінено вдало. Для використання нових параметрів необхідно вийти з додатку',
-  EnterOldPassword: 'Вкажіть поточний пароль',
-  OldPassword: 'Поточний пароль',
-  'Your password is expired. Please change password': 'Ваш пароль є застарілим. Для продовження роботи потрібно змінити пароль',
-  'Incorrect old password': 'Поточний пароль вказано неправильно',
-  'Password is too short': 'Пароль занадто короткий',
-  'Password is too simple': 'Пароль не відповідає критеріям надійності',
-  'Password is dictionary word': 'Пароль не може бути словом із словника',
-  'Password matches with login': 'Пароль не може співпадати з логіном',
-  'Previous password is not allowed': 'Пароль співпадає з одним із попередніх',
 
   // mxGraph (org chart)
   'Undo': 'Скасувати',

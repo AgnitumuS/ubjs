@@ -499,7 +499,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         icon = Ext.window.MessageBox.INFO
         break
     }
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       Ext.MessageBox.show({
         modal: true,
         title: UB.i18n(title),
@@ -563,7 +563,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @returns {Promise} resolved to true then user click OK
    */
   dialogInfo: function (msg, title) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       Ext.MessageBox.show({
         modal: true,
         title: UB.i18n(title || 'info'),
@@ -1054,10 +1054,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       if (document.location && document.location.href && document.location.href.indexOf('#') > 0) {
         document.location.href = document.location.href.split('#')[0]
       } else {
-        document.location.href = document.location.href
+        document.location.reload(true)
       }
-      // }
-      // reload page without cache re-validation. instead of window.location.reload() what does.
     })
   },
 
