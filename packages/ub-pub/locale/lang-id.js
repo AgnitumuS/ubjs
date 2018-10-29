@@ -44,6 +44,27 @@ UB.i18nExtend({
   certificate: 'Certificate',
   certificates: 'Certificates',
   MAX_TREEPATH_DEPTH_EXCEED: 'You can not subordinate an element to this parent - this will result in a loop',
-  'Request Entity Too Large': 'The amount of data you are trying to upload to the server exceeds the limit'
+  'Request Entity Too Large': 'The amount of data you are trying to upload to the server exceeds the limit',
+
+  EnterNewPassword: 'Masukan kata sandi baru',
+  Change: 'Perubahan',
+  NewPassword: 'Kata sandi baru',
+  RetypePassword: 'Ketik ulang kata sandi',
+  HowToCreatePassword: 'Cara membuat password yang baik?',
+  passwordRecommendation: 'Panjang password harus 6-20 karakter. <br> Anda dapat menggunakan angka, charecters latin dan simbol-simbol: <br>! @ # $% ^ & * () _ - +:; ,. ',
+  passwordsDoNotMatch: 'Sandi tidak cocok',
+  passwordChangedSuccessfully: 'Sandi berhasil diubah. Silakan logout untuk menggunakan password baru',
+
+  EnterOldPassword: 'Введите текущий пароль',
+  OldPassword: 'Текущий пароль',
+  'Your password is expired. Please change password': 'Ваш пароль устарел. Для продолжения работы необходимо изменить пароль',
+  'Incorrect old password': 'Неверный текущий пароль',
+  'Password is too short': 'Пароль слишком короткий',
+  'Password is too simple': 'Пароль не отвечает требованиям надежности',
+  'Password is dictionary word': 'Пароль не может быть словом со словаря',
+  'Password matches with login': 'Пароль не может совпадать с логином',
+  'Previous password is not allowed': 'Пароль совпадает с одним из предидущих',
+  logout: 'Logout',
+  blankText: 'This is required field'
 
 })

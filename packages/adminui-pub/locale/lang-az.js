@@ -37,7 +37,6 @@ UB.i18nExtend({
   Obshchee: 'Ümumi',
   neUdalosZagruzitFajlConfiguratsii: 'Konfiqurasiya faylını yükləmək mümkün olmadı',
   missingDescriptionAttribute: "'{1}'in 'descriptionAttribute': '{0}' xassəsi mövcud olmayan atributa işarə edir",
-  logout: 'Çıxış',
   userSettings: 'Kökləmələr',
   rabochiyStol: 'İşçi masası',
   informatsiyaOPrilozhenii: 'Qoşma haqqında',
@@ -486,25 +485,6 @@ UB.i18nExtend({
   keyAlreadyRegistered: 'Açarı qeydiyyata almaq üçün müraciət etmək mümkün deyil. Bu açar artıq sistemdə qeydiyyata alınmışdır.',
 
   UbPreFilterMainGroup: 'Atributlar üzrə',
-
-  EnterNewPassword: 'Yeni şifrəni daxil edin',
-  Change: 'Dəyişdirmək',
-  NewPassword: 'Yeni parol',
-  RetypePassword: 'Parol təkrarən',
-  HowToCreatePassword: 'Etibarlı parolu necə seçməli?',
-  passwordRecommendation: '* Parol 6 simvoldan qısa olmalıdır. <br > * parol rəqəmlərdən ibarət olmalıdır  <br > * parol latın əlifbasının böyük və kiçik simvollardan ibarət olmalıdır <br >parol xüsusi simvollardan ibarət olmalıdır: ! @ # $ % ^ & * ( ) _ - + : ; , . ',
-  passwordsDoNotMatch: 'Parollar üst-üstə düşmür',
-  passwordChangedSuccessfully: 'Parol uğurla dəyişdirildi',
-
-  EnterOldPassword: 'Cari şifrəni daxil edin',
-  OldPassword: 'Cari şifrə',
-  'Your password is expired. Please change password': 'Sizin şifrəniz köhnəlmişdir. İşi davam etdirmək üçün şifrəni dəyişmək lazımdır',
-  'Incorrect old password': 'Yanlış şifrə',
-  'Password is too short': 'Şifrə çox qısadır',
-  'Password is too simple': 'Şifrə etibarlılıq tələblərinə cavab vermir',
-  'Password is dictionary word': 'Şifrə lüğətdəki söz ola bilməz',
-  'Password matches with login': 'Şifrə loginlə eyni ola bilməz',
-  'Previous password is not allowed': 'Şifrə əvvəlkilərdən biri ilə eynidir',
 
   // mxGraph (org chart)
   'Undo': 'Undo',
