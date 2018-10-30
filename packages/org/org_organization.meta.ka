@@ -1,0 +1,58 @@
+﻿{
+    "caption": "შიდა ორგანიზაციები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "parentID",
+            "caption": "ძირითადი"
+        },
+        {
+            "name": "code",
+            "caption": "შიდა კოდი"
+        },
+        {
+            "name": "OKPOCode",
+            "caption": "CCEO"
+        },
+        {
+            "name": "taxCode",
+            "caption": "საგადასახადო ნომერი"
+        },
+        {
+            "name": "vatCode",
+            "caption": "დღგ-ს ნომერი"
+        },
+        {
+            "name": "name",
+            "caption": "ორგანიზაციის ნომერი"
+        },
+        {
+            "name": "fullName",
+            "caption": "ორგანიზაციის სრული დასახელება"
+        },
+        {
+            "name": "nameGen",
+            "caption": "სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "nameDat",
+            "caption": "სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "სრული სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "სრული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "orgBusinessTypeID",
+            "caption": "ორგანიზაციის სახეობა"
+        },
+        {
+            "name": "orgOwnershipTypeID",
+            "caption": "საკუთრების ტიპი"
+        }
+    ]
+}

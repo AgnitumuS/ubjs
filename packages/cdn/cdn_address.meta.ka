@@ -1,0 +1,18 @@
+﻿{
+    "caption": "მისამართები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "addressType",
+            "caption": "მისამართის სახეობა"
+        },
+        {
+            "name": "value",
+            "caption": "მისამართი"
+        },
+        {
+            "name": "subjectID",
+            "caption": "სათაური"
+        }
+    ]
+}

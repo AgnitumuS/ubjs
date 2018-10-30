@@ -1,0 +1,62 @@
+﻿{
+    "caption": "თანამშრომლების რაოდენობა",
+    "description": "",
+    "attributes": [
+        {
+            "name": "parentID",
+            "caption": "ძირითადი"
+        },
+        {
+            "name": "code",
+            "caption": "შიდა კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "პერსონალის ქვეგანყოპილების დასახელება"
+        },
+        {
+            "name": "fullName",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "nameGen",
+            "caption": "პერსონალის ქვეგანყოპილების დასახელება ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "nameDat",
+            "caption": "პერსონალის ქვეგანყოპილების დასახელება მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "სრული სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "სრული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "caption",
+            "caption": "დასახელება"
+        },
+        {
+            "name": "professionExtID",
+            "caption": "პროფესია"
+        },
+        {
+            "name": "professionID",
+            "caption": "პოზიცია"
+        },
+        {
+            "name": "staffUnitTypeID",
+            "caption": "თანამდებობის ტიპი"
+        },
+        {
+            "name": "subordinationLevel",
+            "caption": "დაქვემდებარების დონე"
+        },
+        {
+            "name": "isBoss",
+            "caption": "ხელმძღვანელი"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+﻿{
+    "caption": "ორგანიზაციის სახეობები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "shortName",
+            "caption": "აკრონიმი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "fullName",
+            "caption": "შინაარსი"
+        },
+        {
+            "name": "isGovAuthority",
+            "caption": "უფლებამოსილი(მთავრობა)"
+        }
+    ]
+}

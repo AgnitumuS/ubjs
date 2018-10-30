@@ -1,0 +1,38 @@
+﻿{
+    "caption": "რეგიონი",
+    "description": "",
+    "attributes": [
+        {
+            "name": "parentAdminUnitID",
+            "caption": "ძირითადი"
+        },
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "regionTypeID",
+            "caption": "ტიპი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "caption",
+            "caption": "წარწერა"
+        },
+        {
+            "name": "fullName",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "phoneCode",
+            "caption": "ტელეფონის კოდი"
+        },
+        {
+            "name": "centerID",
+            "caption": "ცენტრი"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+﻿{
+    "caption": "საშტატო სახეობების ერთეულები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        }
+    ]
+}

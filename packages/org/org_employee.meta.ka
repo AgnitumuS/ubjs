@@ -1,0 +1,126 @@
+﻿{
+    "caption": "შიდა ორგანიზაციების თანამშრომლები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "userID",
+            "caption": "მომხმარებელი"
+        },
+        {
+            "name": "lastName",
+            "caption": "გვარი"
+        },
+        {
+            "name": "firstName",
+            "caption": "სახელი"
+        },
+        {
+            "name": "middleName",
+            "caption": "მოკლე სახელი"
+        },
+        {
+            "name": "birthDate",
+            "caption": "დაბადების თარიღი"
+        },
+        {
+            "name": "sexType",
+            "caption": "სქესი"
+        },
+        {
+            "name": "suffix",
+            "caption": "სუფიქსი"
+        },
+        {
+            "name": "shortFIO",
+            "caption": "გვარი ინიციალებით"
+        },
+        {
+            "name": "fullFIO",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "apply",
+            "caption": "ინტერპრეტაცია"
+        },
+        {
+            "name": "lastNameGen",
+            "caption": "გვარი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "lastNameDat",
+            "caption": "გვარი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "lastNameObj",
+            "caption": "გვარი წოდებით ბრუნვაში"
+        },
+        {
+            "name": "firstNameGen",
+            "caption": "სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "firstNameDat",
+            "caption": "სახელი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "firstNameObj",
+            "caption": "სახელი  წოდებით ბრუნვაში"
+        },
+        {
+            "name": "middleNameGen",
+            "caption": "შემოკლებული სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "middleNameDat",
+            "caption": "შემოკლებული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "middleNameObj",
+            "caption": "შემოკლებული სახელი წოდებით ბრუნვაში"
+        },
+        {
+            "name": "shortFIOGen",
+            "caption": "მოკლე სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "shortFIODat",
+            "caption": "მოკლე სახელი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "shortFIOObj",
+            "caption": "მოკლე სახელი  წოდებით ბრუნვაში"
+        },
+        {
+            "name": "fullFIOGen",
+            "caption": "სრული სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullFIODat",
+            "caption": "სრული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullFIOObj",
+            "caption": "სრული სახელი წოდებით ბრუნვაში"
+        },
+        {
+            "name": "applyGen",
+            "caption": "მკურნალობა ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "applyDat",
+            "caption": "მკურნალობა მიცემით ბრუნვაში"
+        },
+        {
+            "name": "applyObj",
+            "caption": "მკურნალობა წოდებით ბრუნვაში"
+        },
+        {
+            "name": "facsimile",
+            "caption": "ფაქსიმილია"
+        }
+    ]
+}

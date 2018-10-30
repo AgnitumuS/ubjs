@@ -1,0 +1,34 @@
+﻿{
+    "caption": "ქალაქები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "parentAdminUnitID",
+            "caption": "თავდაპირველი(საწყისი)"
+        },
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "caption",
+            "caption": "წარწერა"
+        },
+        {
+            "name": "postalCode",
+            "caption": "საფოსტო კოდი"
+        },
+        {
+            "name": "phoneCode",
+            "caption": "ტელეფონის კოდი"
+        },
+        {
+            "name": "cityTypeID",
+            "caption": "სახეობა"
+        }
+    ]
+}
