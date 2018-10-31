@@ -1,0 +1,54 @@
+﻿{
+    "caption": "შიდა განყოფილება",
+    "description": "",
+    "attributes": [
+        {
+            "name": "parentID",
+            "caption": "ძირითადი"
+        },
+        {
+            "name": "code",
+            "caption": "შიდა კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "განყოპილების დასახელება"
+        },
+        {
+            "name": "fullName",
+            "caption": "განყოპილების სრული დასახელება"
+        },
+        {
+            "name": "nameGen",
+            "caption": "განყოპილების დასახელება ნათესაობით ბრუნვაში "
+        },
+        {
+            "name": "nameDat",
+            "caption": "განყოპილების  დასახელება მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "განყოპილების სრული დასახელება ნათესაობით ბრუნვაში "
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "განყოპილების სრული დასახელება მიცემით ბრუნვაში"
+        },
+        {
+            "name": "depTypeID",
+            "caption": "განყოპილების ტიპი"
+        },
+        {
+            "name": "isClerical",
+            "caption": "ადამიანური რესურსების მართვის სპეციალისტი"
+        },
+        {
+            "name": "caption",
+            "caption": "წარწერა"
+        },
+        {
+            "name": "description",
+            "caption": "დეპარტამენტის აღწერა"
+        }
+    ]
+}

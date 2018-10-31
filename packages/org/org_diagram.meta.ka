@@ -1,0 +1,22 @@
+﻿{
+    "caption": "დიაგრამები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "orgunitID",
+            "caption": "ფესვი"
+        },
+        {
+            "name": "caption",
+            "caption": "სახელი"
+        },
+        {
+            "name": "isdefault",
+            "caption": "ნაგულისხმები"
+        },
+        {
+            "name": "document",
+            "caption": "ორგანიზაციული სქემა"
+        }
+    ]
+}

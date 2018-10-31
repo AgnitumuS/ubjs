@@ -1,0 +1,46 @@
+﻿{
+    "caption": "ქვეყნები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "fullName",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "intCode",
+            "caption": "ციფრული კოდი"
+        },
+        {
+            "name": "symbol2",
+            "caption": "ISO კოდი"
+        },
+        {
+            "name": "symbol3",
+            "caption": "IOC კოდი"
+        },
+        {
+            "name": "phoneCode",
+            "caption": "ტელეფონის კოდი"
+        },
+        {
+            "name": "currencyID",
+            "caption": "ვალუტა"
+        },
+        {
+            "name": "capitalID",
+            "caption": "დედაქალაქი(კაპიტალი)???"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
+        }
+    ]
+}

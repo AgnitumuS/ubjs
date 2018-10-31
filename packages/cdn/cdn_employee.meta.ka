@@ -1,0 +1,106 @@
+﻿{
+    "caption": "გარე ორგანიზაციების თანამშრომლები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "lastName",
+            "caption": "გვარი"
+        },
+        {
+            "name": "firstName",
+            "caption": "სახელი"
+        },
+        {
+            "name": "middleName",
+            "caption": "მამის სახელი"
+        },
+        {
+            "name": "sexType",
+            "caption": "სქესი"
+        },
+        {
+            "name": "uniqNum",
+            "caption": "თანამშრომლების რაოდენობა"
+        },
+        {
+            "name": "suffix",
+            "caption": "სუფიქსი"
+        },
+        {
+            "name": "shortFIO",
+            "caption": "გვარი ინიციალებით"
+        },
+        {
+            "name": "fullFIO",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "apply",
+            "caption": "დამუშავება"
+        },
+        {
+            "name": "lastNameGen",
+            "caption": "გვარი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "lastNameDat",
+            "caption": "გვარი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "firstNameGen",
+            "caption": "სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "firstNameDat",
+            "caption": "სახელი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "middleNameGen",
+            "caption": "მამის სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "middleNameDat",
+            "caption": "მამის სახელი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "shortFIOGen",
+            "caption": "შემოკლებული სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "shortFIODat",
+            "caption": "შემოკლებული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullFIOGen",
+            "caption": "გვარი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullFIODat",
+            "caption": "გვარი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "applyGen",
+            "caption": "დამუშავება ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "applyDat",
+            "caption": "დამუშავება მიცემით ბრუნვაში"
+        },
+        {
+            "name": "departmentID",
+            "caption": "დეპარტამენტი"
+        },
+        {
+            "name": "organizationID",
+            "caption": "ორგანიზაცია"
+        },
+        {
+            "name": "addrText",
+            "caption": "მისამართის ფორმულირება"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+﻿{
+    "caption": "ზიპ კოდი",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "ინდექსი"
+        },
+        {
+            "name": "streetID",
+            "caption": "ქუჩა"
+        }
+    ]
+}

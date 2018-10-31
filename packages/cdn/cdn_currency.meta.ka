@@ -1,0 +1,26 @@
+﻿{
+    "caption": "ვალუტა",
+    "description": "",
+    "attributes": [
+        {
+            "name": "intCode",
+            "caption": "ციფრული კოდი"
+        },
+        {
+            "name": "code3",
+            "caption": "3 სიმბოლოიანი კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "curMult",
+            "caption": "ნაგულისხმევი სიმრავლე"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
+        }
+    ]
+}

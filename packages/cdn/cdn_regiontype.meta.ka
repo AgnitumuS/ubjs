@@ -1,0 +1,14 @@
+﻿{
+    "caption": "რეგიონების სახეობები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        }
+    ]
+}

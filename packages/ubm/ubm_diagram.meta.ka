@@ -1,0 +1,26 @@
+﻿{
+    "caption": "ერთეულის დიაგრამა",
+    "description": "",
+    "attributes": [
+        {
+            "name": "ID",
+            "caption": "ID"
+        },
+        {
+            "name": "model",
+            "caption": "მოდელი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "document",
+            "caption": "დიაგრამა"
+        },
+        {
+            "name": "mi_modifyDate",
+            "caption": "მოდიფიცირების თარიღი"
+        }
+    ]
+}
