@@ -35,11 +35,10 @@
         eof: 'EOF'
     },
     "ka": {
-
-        notAssigned: 'Not assigned',
-        errAlreadyAssigned: '<<<This staff unit is already assigned>>>',
-        errUserWithMultiplePermanentStaffUnitsNotAllowed: '<<<Impossible to logon, because the employee has multiple permanent assignments. Please contact your system administrator.>>>',
-        AccessDeny: 'Access deny',
+        notAssigned: 'არ არის დანიშნული',
+        errAlreadyAssigned: '<<<ეს საშტატო ერთეული უკვე დანიშნულია>>>',
+        errUserWithMultiplePermanentStaffUnitsNotAllowed: '<<<სისტემაში შესვლა შეუძლებელია, რადგან თანამშრომელს გააჩნია რამოდენიმე მუდმივი დანიშნულება.>>>',
+        AccessDeny: 'ოპერაციის შესასრულებლად არ არის საკმარისი უფლებები',
         eof: 'EOF'
     }
 });

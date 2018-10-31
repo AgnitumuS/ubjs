@@ -36,10 +36,10 @@ UB.i18nExtend({
     eof: 'EOF'
   },
   'ka': {
-    errUnableToPerformThisOperation: '<<<Unable to perform this operation. Contact the administrator>>>',
-    errNoRightsForInsUpdateGovOrg: '<<<You cannot perform this operation, because you don\'t have rights for adding/updating organization with government authority>>>',
-    errNotExsistsOKPO: '<<<Not exists OKPO code>>>',
-    errMustContainsOnly8Or10Symbols: '<<<Code must contains only 8 or 10 symbols>>>',
+    errUnableToPerformThisOperation: '<<<ამ ოპერაციის შესრულება შეუძლებელია. დაუკავშირდით ადმინისტრატორს>>>',
+    errNoRightsForInsUpdateGovOrg: '<<<ამ ოპერაციის შესრულება შეუძლებელია, რადგან, თქვენ არ გაქვთ სახელმწიფო ორგანიზაციების დამატების ან რედაქტირების უფლება>>>',
+    errNotExsistsOKPO: '<<<არ არსებობს ააიპ(არასამეწარმეო (არაკომერციული) იურიდიული პირი) კოდი>>>',
+    errMustContainsOnly8Or10Symbols: '<<<კოდი უნდა შეიცავდეს მხოლოდ 8 ან 10 სიმბოლოს>>>',
     eof: 'EOF'
   }
 })
