@@ -33,6 +33,10 @@
         {
             "name": "cityID",
             "caption": "ქალაქი"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

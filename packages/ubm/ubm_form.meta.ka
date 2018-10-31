@@ -41,6 +41,10 @@
         {
             "name": "mi_modifyDate",
             "caption": "მოდიფიცირების თარიღი"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

@@ -21,6 +21,10 @@
         {
             "name": "defaultValue",
             "caption": "ნაგულისხმევი მნიშვნელობა"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

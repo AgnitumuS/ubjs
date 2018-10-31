@@ -97,6 +97,10 @@
         {
             "name": "addrText",
             "caption": "მისამართის ფორმულირება"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

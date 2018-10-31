@@ -17,6 +17,10 @@
         {
             "name": "buildingType",
             "caption": "სახეობა"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

@@ -29,6 +29,10 @@
         {
             "name": "fullNameDat",
             "caption": "სრული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "description",
+            "caption": "წარწერა"
         }
     ]
 }

@@ -25,6 +25,10 @@
         {
             "name": "ruleRole",
             "caption": "როლი "
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

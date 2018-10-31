@@ -21,6 +21,10 @@
         {
             "name": "acctype",
             "caption": "სახეობა"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

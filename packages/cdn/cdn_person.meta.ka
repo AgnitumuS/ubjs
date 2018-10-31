@@ -109,6 +109,10 @@
         {
             "name": "categoryID",
             "caption": "კატეგორია"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

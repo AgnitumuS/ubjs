@@ -57,6 +57,10 @@
         {
             "name": "lastPasswordChangeDate",
             "caption": "პაროლის შეცვლის ბოლო თარიგი"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

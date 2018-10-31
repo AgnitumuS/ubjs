@@ -9,6 +9,10 @@
         {
             "name": "name",
             "caption": "სახელი"
+        },
+        {
+            "name": "description",
+            "caption": "წარწერა"
         }
     ]
 }

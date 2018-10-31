@@ -45,6 +45,10 @@
         {
             "name": "caption",
             "caption": "წარწერა"
+        },
+        {
+            "name": "description",
+            "caption": "დეპარტამენტის აღწერა"
         }
     ]
 }

@@ -8,7 +8,7 @@
         },
         {
             "name": "OKPOCode",
-            "caption": "CCEO"
+            "caption": "საიდენტიფიკაციო კოდი"
         },
         {
             "name": "taxCode",
@@ -61,6 +61,10 @@
         {
             "name": "caption",
             "caption": "წარწერა"
+        },
+        {
+            "name": "description",
+            "caption": "ორგანიზაციის აღწერა"
         }
     ]
 }

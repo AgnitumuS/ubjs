@@ -13,6 +13,10 @@
         {
             "name": "allowedAppMethods",
             "caption": "რომელი აპლიკაციის დონის მეთოდები დაშვებულია (მძიმით გამოყოფილი სია)"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

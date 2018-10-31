@@ -17,6 +17,10 @@
         {
             "name": "curMult",
             "caption": "ნაგულისხმევი სიმრავლე"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

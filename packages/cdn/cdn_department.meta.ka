@@ -37,6 +37,10 @@
         {
             "name": "organizationID",
             "caption": "ორგანიზაცია"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

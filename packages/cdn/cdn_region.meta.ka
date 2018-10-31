@@ -33,6 +33,10 @@
         {
             "name": "centerID",
             "caption": "ცენტრი"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

@@ -121,6 +121,10 @@
         {
             "name": "facsimile",
             "caption": "ფაქსიმილია"
+        },
+        {
+            "name": "description",
+            "caption": "კომენტარი"
         }
     ]
 }

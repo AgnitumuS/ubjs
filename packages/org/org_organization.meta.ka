@@ -12,7 +12,7 @@
         },
         {
             "name": "OKPOCode",
-            "caption": "CCEO"
+            "caption": "საიდენტიფიკაციო კოდი"
         },
         {
             "name": "taxCode",
@@ -53,6 +53,10 @@
         {
             "name": "orgOwnershipTypeID",
             "caption": "საკუთრების ტიპი"
+        },
+        {
+            "name": "description",
+            "caption": "ორგანიზაციის აღწერა"
         }
     ]
 }

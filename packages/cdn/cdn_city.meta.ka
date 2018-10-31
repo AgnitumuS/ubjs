@@ -29,6 +29,10 @@
         {
             "name": "cityTypeID",
             "caption": "სახეობა"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

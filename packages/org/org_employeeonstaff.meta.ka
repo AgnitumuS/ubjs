@@ -21,6 +21,10 @@
         {
             "name": "caption",
             "caption": "დასახელება"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

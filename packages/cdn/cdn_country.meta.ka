@@ -37,6 +37,10 @@
         {
             "name": "capitalID",
             "caption": "დედაქალაქი(კაპიტალი)???"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }

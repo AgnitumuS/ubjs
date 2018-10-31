@@ -33,6 +33,10 @@
         {
             "name": "revocationDate",
             "caption": "გაუქმების თარიღი"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
         }
     ]
 }
