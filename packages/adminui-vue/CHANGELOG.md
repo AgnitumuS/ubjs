@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.27]
+### Fixed
+ - visibility of ExtJS SVG based charts internal content (lines, dots, etc).
+  Prevented CSS conflict between normalize.css & Ext chart svg's
+
 ## [1.0.26]
 ### Added
  - vue based login now support `onNeedChangePassword` connection event and display the password change form to the user

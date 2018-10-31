@@ -1,3 +1,8 @@
+/* fix conflict with normalize.css for buggy ExtJS SVG based charts */
+svg [hidden=false] {
+  display: inherit
+}
+
 /* Use a native font stack that selects the best font-family for each OS and device. Thnks to bootstrap4 */
 html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
