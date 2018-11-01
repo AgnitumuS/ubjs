@@ -1,0 +1,38 @@
+﻿{
+    "caption": "პოზიცია",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "fullName",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "nameGen",
+            "caption": "სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "nameDat",
+            "caption": "სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "სრული სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "სრული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "description",
+            "caption": "წარწერა"
+        }
+    ]
+}

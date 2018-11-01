@@ -1,0 +1,118 @@
+﻿{
+    "caption": "ფიზიკური პირები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "lastName",
+            "caption": "გვარი"
+        },
+        {
+            "name": "firstName",
+            "caption": "სახელი"
+        },
+        {
+            "name": "middleName",
+            "caption": "მოკლე სახელი"
+        },
+        {
+            "name": "identCard",
+            "caption": "საიდენტიფიკაციო კოდი"
+        },
+        {
+            "name": "workPlacePos",
+            "caption": "სამუშაოს ადგილი,პოზიცია"
+        },
+        {
+            "name": "birthDate",
+            "caption": "დაბადების თარიღი"
+        },
+        {
+            "name": "sexType",
+            "caption": "სქესი"
+        },
+        {
+            "name": "suffix",
+            "caption": "სუფიქსი"
+        },
+        {
+            "name": "shortFIO",
+            "caption": "მოკლე სახელი"
+        },
+        {
+            "name": "fullFIO",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "apply",
+            "caption": "მიმართვა"
+        },
+        {
+            "name": "photo",
+            "caption": "სურათი"
+        },
+        {
+            "name": "lastNameGen",
+            "caption": "გვარი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "lastNameDat",
+            "caption": "გვარი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "firstNameGen",
+            "caption": "სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "firstNameDat",
+            "caption": "სახელი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "middleNameGen",
+            "caption": "მამის სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "middleNameDat",
+            "caption": "მამის სახელი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "shortFIOGen",
+            "caption": "შემოკლებული სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "shortFIODat",
+            "caption": "შემოკლებული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullFIOGen",
+            "caption": "სრული სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullFIODat",
+            "caption": "სრული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "applyGen",
+            "caption": "მიმართვა ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "applyDat",
+            "caption": "იმართვა მიცემით ბრუნვაში"
+        },
+        {
+            "name": "regionID",
+            "caption": "რეგიონი"
+        },
+        {
+            "name": "socialstatusID",
+            "caption": "სოციალური სტატუსი"
+        },
+        {
+            "name": "categoryID",
+            "caption": "კატეგორია"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+﻿{
+    "caption": "შენობების ჩამონათვალი",
+    "description": "",
+    "attributes": [
+        {
+            "name": "streetID",
+            "caption": "ქუჩა"
+        },
+        {
+            "name": "postIndexID",
+            "caption": "ზიპ კოდი(საფოსტო კოდი)"
+        },
+        {
+            "name": "code",
+            "caption": "#"
+        },
+        {
+            "name": "buildingType",
+            "caption": "სახეობა"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
+        }
+    ]
+}

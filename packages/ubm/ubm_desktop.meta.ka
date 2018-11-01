@@ -1,0 +1,22 @@
+﻿{
+    "caption": "კომპიუტერები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "caption",
+            "caption": "კომპიუტერის დასახელება"
+        },
+        {
+            "name": "code",
+            "caption": "კოდი "
+        },
+        {
+            "name": "url",
+            "caption": "URL"
+        },
+        {
+            "name": "isDefault",
+            "caption": "ნაგულისხმევი"
+        }
+    ]
+}

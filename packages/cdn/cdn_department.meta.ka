@@ -1,0 +1,46 @@
+﻿{
+    "caption": "გარე განყოფილებები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "fullName",
+            "caption": "სრული სახელი"
+        },
+        {
+            "name": "nameGen",
+            "caption": "სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "nameDat",
+            "caption": "სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "გვარი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "გვარი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "depTypeID",
+            "caption": "სახეობა"
+        },
+        {
+            "name": "organizationID",
+            "caption": "ორგანიზაცია"
+        },
+        {
+            "name": "description",
+            "caption": "აღწერა"
+        }
+    ]
+}

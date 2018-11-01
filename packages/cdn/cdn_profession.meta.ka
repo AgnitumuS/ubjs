@@ -1,0 +1,18 @@
+﻿{
+    "caption": "პროფესიები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "კოდი"
+        },
+        {
+            "name": "name",
+            "caption": "სახელი"
+        },
+        {
+            "name": "description",
+            "caption": "წარწერა"
+        }
+    ]
+}

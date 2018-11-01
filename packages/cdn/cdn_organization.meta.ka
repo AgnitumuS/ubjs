@@ -1,0 +1,70 @@
+﻿{
+    "caption": "გარე ორგანიზაციები",
+    "description": "",
+    "attributes": [
+        {
+            "name": "code",
+            "caption": "შიდა კოდი"
+        },
+        {
+            "name": "OKPOCode",
+            "caption": "საიდენტიფიკაციო კოდი"
+        },
+        {
+            "name": "taxCode",
+            "caption": "საგადასახადოს#"
+        },
+        {
+            "name": "vatCode",
+            "caption": "დღგ#"
+        },
+        {
+            "name": "name",
+            "caption": "ორგანიზაციის დასახელება"
+        },
+        {
+            "name": "fullName",
+            "caption": "ორგანიზაციის სრული დასახელება"
+        },
+        {
+            "name": "nameGen",
+            "caption": "სახელი ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "nameDat",
+            "caption": "სახელი  მიცემით ბრუნვაში"
+        },
+        {
+            "name": "fullNameGen",
+            "caption": "სრული სახელი  ნათესაობით ბრუნვაში"
+        },
+        {
+            "name": "fullNameDat",
+            "caption": "სრული სახელი მიცემით ბრუნვაში"
+        },
+        {
+            "name": "orgBusinessTypeID",
+            "caption": "ორგანიზაციის სახეობა"
+        },
+        {
+            "name": "orgOwnershipTypeID",
+            "caption": "საკუთრების ტიპი"
+        },
+        {
+            "name": "corrIndexID",
+            "caption": "კორესპონდენტის ინდექსი"
+        },
+        {
+            "name": "addrText",
+            "caption": "მისამართის ფორმულირება"
+        },
+        {
+            "name": "caption",
+            "caption": "წარწერა"
+        },
+        {
+            "name": "description",
+            "caption": "ორგანიზაციის აღწერა"
+        }
+    ]
+}
