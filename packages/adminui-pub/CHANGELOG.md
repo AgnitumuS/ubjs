@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - visibility of ExtJS SVG based charts internal content (lines, dots, etc).
   Prevented CSS conflict between normalize.css & Ext chart svg's
+ - exporting of grids to Excel in case cgid contains UBBadge columns
 
 ## [5.6.4]
 ### Changed
