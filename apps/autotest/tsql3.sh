@@ -26,6 +26,9 @@ TESTCASE='drop database'
 rm -f ./*FTS.sqlite3*
 if [ ! $? = 0 ]; then err; fi
 
+rm -rf ./documents/simple
+if [ ! $? = 0 ]; then err; fi
+
 TESTCASE='init database'
 # Check whether UB_CFG set and contains a value, not spaces
 if [ -z ${UB_CFG+x} ] || [ -z "${UB_CFG// }" ]; then
