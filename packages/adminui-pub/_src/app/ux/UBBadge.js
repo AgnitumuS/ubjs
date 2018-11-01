@@ -86,6 +86,11 @@ Ext.define('UB.ux.UBBadge', {
 
       return function (text, columnInstance) {
         if (text == null) return null
+        if (columnInstance == null) {
+          // Export
+          const enumMember = enumGroup ? UB.core.UBEnumManager.getById(enumGroup, text) : null
+          return enumMember ? enumMember.data.name : text
+        }
 
         UB.ux.UBBadge.styleBadgeColumn(columnInstance)
 
