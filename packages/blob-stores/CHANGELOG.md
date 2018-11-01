@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.23]
+### Fixed
+ -  historical BLOB stores will try to estimate revision number using select from ub_blobHistory in case previous
+ BLOB store content is clean (use clear content for example).
+ Previous implementation set the revision to `1` and if such revision already exists
+ database on ub_blobHistory constraint fails.
+   
 ## [5.0.22]
 ### Fixed
  - **SECURITY** `getDocument` endpoint will check user have ELS right to entity `select` method before getting document ID.

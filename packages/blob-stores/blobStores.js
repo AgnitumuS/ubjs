@@ -441,6 +441,22 @@ function rotateHistory (store, attribute, ID, blobInfo) {
     }
   })
 }
+
+/**
+ * Get number of new revision for historical BLOB store attribute using BLOB history table.
+ * Used in case original BLOB content is emtpy (for example because user clear BLOB before)
+ * @param {UBEntityAttribute} attribute
+ * @param {number} ID
+ * @private
+ */
+function estimateNewRevisionNumber (attribute, ID) {
+  let maxNum = Repository(BLOB_HISTORY_STORE_NAME)
+    .attrs(['MAX([revision])'])
+    .where('instance', '=', ID)
+    .where('attribute', '=', attribute.name)
+    .selectScalar()
+  return maxNum ? maxNum + 1 : 1
+}
 /**
  * Server-side method for moving content defined by `dirtyItem` from temporary to permanent store.
  * For internal use only. In app logic use {@link TubDataStore#commitBLOBStores} method
@@ -460,11 +476,13 @@ function doCommit (attribute, ID, dirtyItem, oldItem) {
   }
   let newRevision = 1
   let oldItemStore
+  let store = getStore(attribute, dirtyItem)
   if (oldItem) {
     oldItemStore = getStore(attribute, oldItem)
     if (oldItem.revision) newRevision = oldItem.revision + 1
+  } else if (store.historyDepth) {
+    newRevision = estimateNewRevisionNumber(attribute, ID)
   }
-  let store = getStore(attribute, dirtyItem)
   let persistedItem = store.persist(attribute, ID, dirtyItem, newRevision)
   if (store.historyDepth) { // for historical stores add item to history
     rotateHistory(store, attribute, ID, persistedItem)
