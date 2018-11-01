@@ -23,8 +23,8 @@ Form a business logic developer point of view UnityBase is:
 
 # About this documentation
 
-- for entity meta file format see [entity json schema](http://lbovet.github.io/docson/index.html#https://unitybase.info/models/UB/schemas/entity.schema.json)
-- for application config (ubConfig) file format see [server config json schema](http://lbovet.github.io/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
+- for entity meta file format see [entity json schema](/docson/index.html#https://unitybase.info/models/UB/schemas/entity.schema.json)
+- for application config (ubConfig) file format see [server config json schema](/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
 - for a list of supported nodejs core modules see {@link module:buildin buildin}
 - method marked as <span class="member-attr api">api</span> is available from the client
 

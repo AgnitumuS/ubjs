@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  -  historical BLOB stores will try to estimate revision number using select from ub_blobHistory in case previous
  BLOB store content is clean (use clear content for example).
  Previous implementation set the revision to `1` and if such revision already exists
- database on ub_blobHistory constraint fails.
+ database on `ub_blobHistory` constraint fails.
    
 ## [5.0.22]
 ### Fixed
