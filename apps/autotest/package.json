@@ -56,6 +56,7 @@
     "vue": "^2.5.16"
   },
   "devDependencies": {
+    "@unitybase/hmr": "^1.0.20",
     "@unitybase/stubs": "^5.0.13",
     "@unitybase/ubcli": "^5.1.4",
     "systemjs-plugin-vue": "^1.2.0",
