@@ -4,9 +4,9 @@
   "description": "SystemJS plugin for single file Vue components. Works in browser with UnityBase adminUI",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production && webpack",
+    "build": "cross-env NODE_ENV=production webpack",
     "prepublish": "npm run build",
-    "analyse-boundle": "cross-env NODE_ENV=production && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
+    "analyse-boundle": "cross-env NODE_ENV=production webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
   },
   "repository": {
     "type": "git",

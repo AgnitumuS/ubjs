@@ -34,7 +34,7 @@ module.exports = {
       test: /\.css$/,
       use: [
         { loader: 'style-loader' },
-        { loader: 'css-loader' },
+        { loader: 'css-loader' }
       ]
     }, {
       // jsPDF use a zlib.js which does not export. Let's fix it
@@ -52,18 +52,19 @@ module.exports = {
       BOUNDLED_BY_WEBPACK: true
     }),
     new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      'screw-ie8': true,
       compress: {
-        sequences: true,
-        booleans: true,
-        loops: true,
         unused: false, // true
         warnings: true, // false,
         drop_console: false, // true,
         unsafe: true
-      }
+      },
+      output: {
+        comments: false
+      },
+      sourceMap: process.env.NODE_ENV !== 'production'
+    }),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
     })
   ]
 }
