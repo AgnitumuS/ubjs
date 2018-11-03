@@ -42,7 +42,12 @@ exports.formDef = {
       text: 'Grouped data',
       items: [
         {attributeName: 'docDate'},
-        {attributeName: 'docDateTime'}
+        {attributeName: 'docDateTime'},
+        {
+          xtype: 'component',
+          html: '<div></div>',
+          forVue: true
+        }
       ]
     },
     {
