@@ -4,13 +4,7 @@
 const webpack = require('webpack')
 const path = require('path')
 
-/**
- Set NODE_ENV=production for production build
- */
-if (process.env.NODE_ENV) process.env.NODE_ENV = process.env.NODE_ENV.trim()
-const PRODUCTION = (process.env.NODE_ENV === 'production')
-
-module.exports = {
+module.exports = (options = {}) => ({
   entry: {
     app: './adminui-vue.js'
   },
@@ -34,29 +28,32 @@ module.exports = {
   },
   module: {
     rules: [{
+      test: /\.vue$/,
+      use: ['vue-loader']
+    },
+    {
       test: /\.js$/,
-      loader: 'babel-loader',
-      exclude: [/node_modules/]
-    }, {
+      use: ['babel-loader'],
+      exclude: /node_modules/
+    },
+    {
       test: /\.css$/,
-      use: [
-        {
-          loader: 'style-loader/url',
-          options: {
-            hmr: false
-          }
-        },
-        {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]'
-          }
+      use: [{
+        loader: 'style-loader/url',
+        options: {
+          hmr: false
         }
-      ]
+      },
+      {
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]'
+        }
+      }]
     }]
   },
 
-  devtool: (PRODUCTION ? '' : 'eval'),
+  devtool: options.dev ? '#eval-source-map' : '#source-map',
 
   plugins: [
     new webpack.DefinePlugin({
@@ -70,7 +67,7 @@ module.exports = {
       output: {
         comments: false
       },
-      sourceMap: !PRODUCTION
+      sourceMap: options.dev
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
@@ -88,4 +85,4 @@ module.exports = {
     tls: 'empty',
     child_process: 'empty'
   }
-}
+})

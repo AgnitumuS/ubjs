@@ -31,5 +31,6 @@ require('./dist/adminui-vue.css')
 Vue.use(UB)
 Vue.use(ElementUI, {
   size: 'small', // set element-ui default size
-  i18n: UB.i18n.bind(UB) // redirect ElementUI localization to UB.i18n
+  i18n: UB.i18n.bind(UB), // redirect ElementUI localization to UB.i18n
+  zIndex: 300000 // lat's Vue popovers always be above Ext
 })
