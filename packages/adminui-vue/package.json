@@ -21,8 +21,8 @@
     "build:theme": "npm run build:el && npm run build:css",
     "build:el": "et -c theme/ub-el.scss -o dist",
     "build:css": "cleancss -o ./dist/adminui-vue.css ./node_modules/normalize.css/normalize.css ./theme/ub-body.css ./dist/index.css",
-    "build:js": "cross-env NODE_ENV=production && webpack",
-    "analyse-boundle": "cross-env NODE_ENV=production && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
+    "build:js": "cross-env NODE_ENV=production webpack",
+    "analyse-boundle": "cross-env NODE_ENV=production webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
   },
   "files": [
     "dist/adminui-vue.css",

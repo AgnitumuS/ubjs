@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.27]
+### Fixed
+ - fix webpack configuration for production build (decreate boundle size from 847Kb to 630Kb)
+
 ## [1.0.26]
 ### Added
  - vue based login now support `onNeedChangePassword` connection event and display the password change form to the user
