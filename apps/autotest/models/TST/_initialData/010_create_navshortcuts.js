@@ -95,7 +95,12 @@ module.exports = function (session) {
       cmdCode: JSON.stringify({cmdType: 'showList',
         cmdData: {params: [{ entity: 'tst_dictionary',
           method: 'select',
-          fieldList: ['ID', 'code', 'caption', 'filterValue', 'currencyValue', 'floatValue', 'calculated', 'booleanColumn', 'jsonColumn', 'jsonColumn.propI', 'jsonColumn.propS']}]}}, null, '\t')
+          fieldList: ['ID', 'code', 'caption', 'filterValue', 'currencyValue', 'floatValue', 'calculated', 'booleanColumn', 'jsonColumn',
+            {name: 'jsonColumn.propI', description: 'Int json property'},
+            {name: 'jsonColumn.propS', description: 'String json property'}
+          ]}]
+        }
+      }, null, '\t')
     }
   })
   displayOrder = displayOrder + 10
