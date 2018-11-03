@@ -26,6 +26,7 @@ function getDomainFolders (opts) {
     let models = res.data.models
     let folders = []
     for (let modelName in models) {
+      // noinspection JSUnfilteredForInLoop
       const model = models[modelName]
       let pp = model.realPublicPath
       if (pp) {
@@ -72,7 +73,7 @@ async function runServer (opts) {
   if (opts.poll) chokidarOpts.usePolling = true
   log('Watching:')
   log(pathsToWatch.join('\n'))
-  let watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('all', (event, onPath) => {
+  let watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('change', (event, onPath) => {
     let modelFolder = folders.find(f => onPath.startsWith(f.publicPath))
     if (!modelFolder) {
       log('Public path not found for', onPath)
@@ -107,7 +108,7 @@ async function runServer (opts) {
     log('New connection from', ws.clientIP)
   })
 
-  const interval = setInterval(function ping () {
+  setInterval(function ping () {
     wss.clients.forEach(function each (ws) {
       if (ws.isAlive === false) return ws.terminate()
 
