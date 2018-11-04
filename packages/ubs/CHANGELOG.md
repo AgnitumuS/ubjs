@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.26]
+### Changed
+ - `ubs.numcounter.autoIncrementalCodeLen` default value decreased from 12 to 6 - codes length `000001` is enough in most case 
+
 ## [5.1.25]
 ### Changed
  - `ReportViewer` - styles for `td,th` is removed, so now table header will use body style (see ReportViewer.js line 6)

@@ -113,7 +113,7 @@ me.generateAutoIncrementalCode = function (ctx, forAttribute = 'code') {
   const attr = ubEntity.attributes[forAttribute]
   let newAttrValue = execParams[forAttribute]
   if (execParams && (!newAttrValue || (attr.defaultValue && attr.defaultValue === execParams[forAttribute]))) {
-    const padTo = ubs_settings.loadKey('ubs.numcounter.autoIncrementalCodeLen', 12)
+    const padTo = ubs_settings.loadKey('ubs.numcounter.autoIncrementalCodeLen', 6)
     let newNum = '' + ubs_numcounter.getRegnum(entityCode, 1)
     execParams[forAttribute] = newNum.padStart(padTo, '0')
   }
