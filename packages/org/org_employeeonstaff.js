@@ -1,12 +1,12 @@
 ﻿const UB = require('@unitybase/ub')
 const App = UB.App
-/* global org_employeeonstaff TubDataStore */
+/* global org_employeeonstaff, TubDataStore, ubs_numcounter */
 // eslint-disable-next-line camelcase
 const me = org_employeeonstaff
 
 me.on('update:before', assignCaptions)
 me.on('update:after', doAfterUpdate)
-me.on('insert:before', assignCaptions)
+me.on('insert:before', generateDefaultCodeAndCaption)
 me.on('insert:after', doAfterInsert)
 me.on('delete:after', doAfterDelete)
 me.entity.addMethod('updatePendingStaffUnitCaptions')
@@ -175,6 +175,16 @@ function doAfterInsert (ctxt) {
 }
 
 /**
+ * Generate default tabNo (Employee #) and set multilingual captions to execParams.
+ * Called before insertion
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
+function generateDefaultCodeAndCaption (ctxt) {
+  ubs_numcounter.generateAutoIncrementalCode(ctxt, 'tabNo')
+  return assignCaptions(ctxt)
+}
+/**
  * Assigns properly values for all multilingual captions to execParams before insert or update
  * @private
  * @param {ubMethodParams} ctxt
@@ -225,4 +235,5 @@ function assignCaptions (ctxt) {
     }
     execParams['caption' + suffix] = empName + ' (' + tabNo + ',' + depName + ')' + eosType
   })
+  return true
 }

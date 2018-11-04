@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.24]
+### Added
+ - auto generation of `org_employeeonstaff.tabNo` attribute. Length of generated code id defined 
+ in `ubs_settings` `ubs.numcounter.autoIncrementalCodeLen` key. Default is 6 (codes like `000001`) 
+
 ## [5.1.22]
 ### Changed
  - creation of `org_staffunit.caption` will add all assigned staffs names to caption except assignments

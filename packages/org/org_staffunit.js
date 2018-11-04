@@ -61,7 +61,7 @@ function generateCodeAndAssignCaption (ctxt) {
 }
 
 /**
- * Sets properly values for all multilingual captions in execParams before update or insert
+ * Sets caption for all languages in execParams before update or insert
  * @private
  * @param {ubMethodParams} ctxt
  */
