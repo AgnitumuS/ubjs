@@ -69,14 +69,14 @@ function assignCaptions (ctxt) {
   const params = ctxt.mParams
   const execParams = params.execParams
   const ID = execParams.ID
-  let orgUnitID = execParams.parentID
-  let department = null
+  let parentID = execParams.parentID
+  let parentOrgOrDep = null
   let employeeList = {}
   let currentRow = {}
   const defaultSuffix = '_' + App.defaultLang + '^'
   const sLang = me.entity.connectionConfig.supportLang
   let needLoadStaffUnitRow = false
-  let depFieldList = []
+  let parentFieldList = ['unitType', 'parentID']
 
   if (execParams.name) {
     execParams['name' + defaultSuffix] = execParams.name
@@ -86,8 +86,8 @@ function assignCaptions (ctxt) {
   sLang.forEach(function (lang) {
     let suffix = '_' + lang + '^'
     staffUnitFieldList.push('name' + suffix)
-    depFieldList.push('caption' + suffix)
-    if (!orgUnitID) {
+    parentFieldList.push('caption' + suffix)
+    if (!parentID) {
       staffUnitFieldList.push('parentID.caption' + suffix)
     }
     if (!execParams['name' + suffix]) {
@@ -99,21 +99,33 @@ function assignCaptions (ctxt) {
     }
     employeeList[lang] = null
   })
-  if (orgUnitID) {
-    department = UB.Repository('org_unit').attrs(depFieldList).selectById(orgUnitID)
-  }
-  if (needLoadStaffUnitRow || !orgUnitID) {
+  if (needLoadStaffUnitRow || !parentID) {
     currentRow = UB.Repository(me.entity.name).attrs(staffUnitFieldList).selectById(ID)
+    parentID = currentRow['parentID']
   }
+  if (parentID) {
+    parentOrgOrDep = UB.Repository('org_unit').attrs(parentFieldList).selectById(parentID)
+    // search for first parent with type !== STAFF
+    while (parentOrgOrDep && (parentOrgOrDep['unitType'] === 'STAFF') && parentOrgOrDep['parentID']) {
+      parentOrgOrDep = UB.Repository('org_unit').attrs(parentFieldList).selectById(parentOrgOrDep['parentID'])
+    }
+    if (parentOrgOrDep && (parentOrgOrDep['unitType'] === 'STAFF')) {
+      // STAFF is a top level tree element
+      parentOrgOrDep = null
+    }
+  }
+
   if (params.method !== 'insert') {
     employeeList = getEmployeeList(ID, sLang)
   }
   sLang.forEach(function (lang) {
     let suffix = '_' + lang + '^'
-    let depName = department ? department['caption' + suffix] : currentRow['parentID.caption' + suffix]
+    let depName = parentOrgOrDep
+      ? parentOrgOrDep['caption' + suffix] + ' '
+      : ''
     let staffUnitName = execParams['name' + suffix] || currentRow['name' + suffix]
     execParams['caption' + suffix] = (employeeList[lang] || UB.i18n('notAssigned', lang)) +
-      ' (' + depName + ' ' + staffUnitName + ')'
+      ' (' + depName + staffUnitName + ')'
   })
   delete execParams.caption
 }

@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.1.24]
 ### Added
  - auto generation of `org_employeeonstaff.tabNo` attribute. Length of generated code id defined 
- in `ubs_settings` `ubs.numcounter.autoIncrementalCodeLen` key. Default is 6 (codes like `000001`) 
+ in `ubs_settings` `ubs.numcounter.autoIncrementalCodeLen` key. Default is 6 (codes like `000001`)
+ 
+### Changed
+ - `org_staffunit.caption` generation algorithm: take a parent name from first parent with type !== 'STAFF'
+  (instead of org_staffunit.parent)
 
 ## [5.1.22]
 ### Changed
