@@ -7,21 +7,21 @@
     "exclude": "node_modules"
   },
   "versions": {
-    "ub-server": "5.4.4",
-    "adminui-pub": "5.6.4",
+    "ub-server": "5.4.6",
+    "adminui-pub": "5.6.5",
     "adminui-reg": "5.0.52",
-    "adminui-vue": "1.0.26",
+    "adminui-vue": "1.0.27",
     "amqp": "1.0.15",
     "amqp-notify": "1.1.2",
     "amqp-notify-pub": "1.0.10",
     "base": "5.0.27",
-    "blob-stores": "5.0.22",
+    "blob-stores": "5.0.23",
     "cdn": "5.0.52",
     "com-bridge": "1.0.7",
     "compressors": "5.1.3",
     "cs-shared": "5.0.12",
     "mailer": "5.1.0",
-    "org": "5.1.22",
+    "org": "5.1.24",
     "pdf": "5.0.10",
     "ub": "5.0.45",
     "ub-pub": "5.2.17",
@@ -29,8 +29,9 @@
     "ubcli": "5.1.4",
     "ubm": "5.0.61",
     "ubq": "5.1.0",
-    "ubs": "5.1.25",
+    "ubs": "5.1.26",
     "xlsx": "5.0.26",
-    "systemjs-plugin-vue-ub": "1.2.2"
+    "systemjs-plugin-vue-ub": "1.2.2",
+    "hmr": "1.0.21"
   }
 }
