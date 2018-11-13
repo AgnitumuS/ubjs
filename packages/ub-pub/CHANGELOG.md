@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.19]
+### Added
+ - If quite the same request repeated 2 or more times in the last 100ms (so called monkey request) then 
+ it putted into the `console.error`    
+
 ## [5.2.17]
 ### Added
  - `UBConnection` will handle a `413 Request Entity Too Large` server-side error response and raise a UB.UBAbort message.
