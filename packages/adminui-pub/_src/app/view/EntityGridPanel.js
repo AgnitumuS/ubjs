@@ -495,8 +495,8 @@ Ext.define('UB.view.EntityGridPanel', {
           store.lookUpField = requirements[j]
           store.on('load', function (st, records, success) {
             if (success && records && records.length > 1000) {
-              console.error('Too large look up field for entity "' +
-                st.lookUpField + '". Look up entity ' + st.ubRequest.entity + ' Record count =' + records.length)
+              UB.logError('Too large look up field for entity "', st.lookUpField,
+                '". Look up entity', st.ubRequest.entity, 'Record count =', records.length)
             }
           }, store, { single: true })
           stores[storeMd5] = store
@@ -2536,20 +2536,25 @@ Ext.define('UB.view.EntityGridPanel', {
   onRefresh: function () {
     let me = this
     if (me._inRefresh) return
-    let mainStore = me.store
-    let cmdRefresh = []
 
     me._inRefresh = true // prevent layouts during actionRefresh.disable()
-    Ext.iterate(me.stores, function (item, store) {
-      if (store !== mainStore && store.ubRequest) {
-        cmdRefresh.push(store.reload())
-      }
-    })
-    Promise.all(cmdRefresh).then(function () {
-      return mainStore.reload()
-    }).fin(function () {
-      me._inRefresh = false //       actionRefresh.enable()
-      me.down(me.viewType).focus() // 'gridview'
+    // MPV 2018-11-13 in case store.linkedItemsLoadList is assigned we do not need to refresh the same stores twice
+    // let mainStore = me.store
+    // let cmdRefresh = []
+    // Ext.iterate(me.stores, function (item, store) {
+    //   if (store !== mainStore && store.ubRequest) {
+    //     cmdRefresh.push(store.reload())
+    //   }
+    // })
+    // Promise.all(cmdRefresh).then(function () {
+    //   return mainStore.reload()
+    // }).fin(function () {
+    //   me._inRefresh = false //       actionRefresh.enable()
+    //   me.down(me.viewType).focus() // 'gridview'
+    // })
+    return me.store.reload().fin(function () {
+      me._inRefresh = false
+      me.down(me.viewType).focus()
     })
   },
 

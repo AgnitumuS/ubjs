@@ -4,11 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.6]
+### Fixed
+ - EntityGridPanel - prevent monkey request in Refresh action by removing reloading of
+   EntityGridPanel.stores, because they already will be reloaded by UBStore.linkedItemsLoadList 
+ 
 ## [5.6.5]
 ### Fixed
  - visibility of ExtJS SVG based charts internal content (lines, dots, etc).
   Prevented CSS conflict between normalize.css & Ext chart svg's
- - exporting of grids to Excel in case cgid contains UBBadge columns
+ - exporting of grids to Excel in case grid contains UBBadge columns
 
 ## [5.6.4]
 ### Changed
