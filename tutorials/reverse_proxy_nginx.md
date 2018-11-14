@@ -1,4 +1,5 @@
 # Using Nginx as a reverse proxy and load balance
+![load balance](img/LoadBalancing.png)
 
 Using some kind of [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) 
 in combination with UnityBase application server is MUST HAVE for Socket type UB server (Linux, Windows) and optional
