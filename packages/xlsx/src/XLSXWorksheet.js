@@ -409,13 +409,13 @@ class XLSXWorksheet {
 
   /**
    * setup column properties
-   * @param {Object} config array [{column: 1, width: 200},{colnum: 2, width: 20}]
+   * @param {Object} config array [{column: 1, width: 200},{column: 2, width: 100},{column: 3, width: 20}]
    */
   setColsProperties (config) {
     let res = []
     // this.columnProperties
     res.push('<cols>')
-    config = config.sort(f => f.column)
+    config = config.sort((a, b) => a.column > b.column ? 1 : (a.column === b.column ? 0 : -1))
     config.forEach((column) => {
       if (typeof column.column !== 'number' || typeof column.width !== 'number') {
         throw new Error('Invalid parameters for XLSXWorksheet.setColsProperties')
