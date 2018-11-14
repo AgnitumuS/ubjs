@@ -1,6 +1,7 @@
 const common = require('../common')
 const assert = require('assert')
 const path = require('path')
+const os = require('os')
 const fixturesFolder = path.join(common.fixturesDir, 'UBTest')
 const fs = require('fs')
 
@@ -9,7 +10,8 @@ let content
 
 console.log('\t\tBuffer from base64')
 content = fs.readFileSync(path.join(fixturesFolder, 'testNoBOM.js'), {encoding: 'bin'})
-assert.ok(content.byteLength === 30, 'testNoBOM.js bin length should be 30 but actual ' + content.byteLength)
+const expectedLength = 29 + os.EOL.length
+assert.ok(content.byteLength === expectedLength, `testNoBOM.js bin length should be ${expectedLength} but actual ${content.byteLength}`)
 let b64 = Buffer.from(content, 'utf-8').toString('base64')
 let text = Buffer.from(content, 'utf-8').toString('utf-8')
 assert.ok(text === etalon, 'testNoBOM.js should be with 0A in the end')
