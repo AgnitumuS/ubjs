@@ -7,8 +7,10 @@ const fs = require('fs')
 const etalon = 'Привет! Hello!'
 let content
 
-content = fs.readFileSync(path.join(folder, 'ascii.txt'), {encoding: 'ascii'})
-assert.ok(content === etalon, 'ascii.txt fail')
+if (process.platform === 'win32') {
+  content = fs.readFileSync(path.join(folder, 'ascii.txt'), {encoding: 'ascii'})
+  assert.ok(content === etalon, 'ascii.txt fail')
+}
 
 content = fs.readFileSync(path.join(folder, 'файл.txt'), {encoding: 'utf-8'})
 assert.ok(content === etalon, 'файл.txt fail')

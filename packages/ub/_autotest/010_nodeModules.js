@@ -4,9 +4,9 @@ if (opt.switchIndex('skipModules') !== -1) return
 const fs = require('fs')
 const path = require('path')
 
-let tests = fs.readdirSync(path.dirname(__filename) + '/nodeModules/simple')
+let tests = fs.readdirSync(path.join(__dirname, 'nodeModules', 'simple'))
 tests.forEach(function (test) {
-  console.log('Run', test)
+  console.log('\t\tRun', test)
   console.debug('Run', test)
   require('./nodeModules/simple/' + test)
 })
