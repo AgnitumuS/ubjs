@@ -4,11 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.1]
+### Fixed 
+ - fix update/insert of uba_usercertificate (setBlob method)
+
 ## [5.1.0]
 ### Fixed 
  - fix logging of security violation in case user without admin role try
  to change password for another user
- - fix update/insert of uba_usercertificate (setBlob method)
 
 ### Changed
  - Pseudo roles Everyone, Anonymous (if user is not logged in) or User (if logged in)
