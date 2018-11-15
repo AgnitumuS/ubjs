@@ -19,7 +19,13 @@ let binFromB64 = Buffer.from(b64, 'base64')
 assert.ok(binFromB64.byteLength === content.byteLength, 'Buffer.from(.. base64) should not drop the last 0A')
 
 content = fs.readFileSync(path.join(fixturesFolder, 'hugeBase64_0A.txt'), {encoding: 'utf-8'})
+// transform internal representation of string from Latin1 to 2Bytechar
+// by adding and removing a non - latin character
+content = 'Пр' + content
+content = content.replace('Пр', '')
 let buf = Buffer.from(content, 'base64')
 let slice = new Uint8Array(buf)
 assert.ok(buf.byteLength === 66906, 'hugeBase64_0A.txt should be of length 66906 after decode from base64 but actual is ' + buf.byteLength)
 assert.ok(slice[slice.byteLength - 1] === 10, 'last character in decoded hugeBase64_0A.txt should be 0A but actual is' + slice[slice.byteLength - 1])
+
+fs.writeFileSync(path.join(fixturesFolder, 'hugeBase64_0A.pdf'), buf)
