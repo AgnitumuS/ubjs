@@ -307,7 +307,7 @@ class XLSXWorksheet {
             cell.value = cell.value.getXML()
           } else {
             if ((typeof cell.value !== 'undefined') && (cell.value !== null)) {
-              cell.value = `<t>${tools.escapeXML(cell.value)}</t>`
+              cell.value = `<t xml:space="preserve">${tools.escapeXML(cell.value)}</t>`
             }
           }
           valAsTagIs = true
