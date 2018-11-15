@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - preserve spaces is cells by default (required for creating indents)
 
+### Fixed
+ - columns properties was applied in incorrect order
+
 ## [5.0.26]
 ### Added
  - support of `th` tag during export HTML table to XLSX
