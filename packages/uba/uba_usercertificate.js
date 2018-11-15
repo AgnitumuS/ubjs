@@ -16,9 +16,7 @@ function setBlob (ctxt) {
   const execParams = ctxt.mParams.execParams
   Object.keys(execParams)
   if (execParams.certificate) {
-    let cert = Buffer.from(execParams.certificate) // 'base64'
-    cert = cert.buffer.slice(cert.byteOffset, cert.byteOffset + cert.byteLength)
-    execParams.setBLOBValue('certificate', cert) // base64
+    execParams.setBLOBValue('certificate', Buffer.from(execParams.certificate, 'base64'))
   }
 }
 

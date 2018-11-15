@@ -6,12 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.1.0]
 ### Fixed 
- - fix logging of security violation in case user without admin role try 
+ - fix logging of security violation in case user without admin role try
  to change password for another user
- 
+ - fix update/insert of uba_usercertificate (setBlob method)
+
 ### Changed
- - Pseudo roles Everyone, Anonymous (if user is not logged in) or User (if logged in) 
-  are added to `Session.uData.roles` & `Session.uData.roleIDs`. In prev. implementation `uData` not contains this roles.   
+ - Pseudo roles Everyone, Anonymous (if user is not logged in) or User (if logged in)
+  are added to `Session.uData.roles` & `Session.uData.roleIDs`. In prev. implementation `uData` not contains this roles
 
 ## [5.0.32]
 ### Fixed
