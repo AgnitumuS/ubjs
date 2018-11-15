@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.31]
+### Added
+ - preserve spaces is cells by default (required for creating indents)
+
 ## [5.0.26]
 ### Added
  - support of `th` tag during export HTML table to XLSX
