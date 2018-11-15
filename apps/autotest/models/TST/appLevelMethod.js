@@ -53,10 +53,10 @@ tst_clob.on('insert:before', function () {
 tst_clob.on('insert:after', function () {
   App.globalCachePut('eventEmitterLog', App.globalCacheGet('eventEmitterLog') + 'insert:after;')
 })
-tst_service.on('multiply:before', function (ctxt) {
+tst_service.on('multiply:before', function () {
   App.globalCachePut('eventEmitterLog', App.globalCacheGet('eventEmitterLog') + 'multiply:before;')
 })
-tst_service.on('multiply:after', function (ctxt) {
+tst_service.on('multiply:after', function () {
   App.globalCachePut('eventEmitterLog', App.globalCacheGet('eventEmitterLog') + 'multiply:after;')
 })
 
@@ -68,7 +68,9 @@ tst_service.on('multiply:after', function (ctxt) {
 function getDocumentLog (req, resp) {
   var querystring = require('querystring'),
     params = querystring.parse(req.parameters)
-  console.log('User with ID', Session.userID, 'obtain document using params', params)
+  if (resp.statusCode === 200) {
+    console.log('User with ID', Session.userID, 'obtain document using params', params)
+  }
 }
 App.on('getDocument:before', function (req, resp) { console.log('User with ID', Session.userID, 'try to obtain document') })
 App.on('getDocument:after', getDocumentLog)

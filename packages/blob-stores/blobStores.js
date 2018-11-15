@@ -284,6 +284,7 @@ function getDocumentEndpoint (req, resp) {
   if (!parsed.success) return resp.badRequest(parsed.reason)
   // check user have access to entity select method
   if (!App.els(parsed.attribute.entity.code, 'select')) {
+    console.error(`getDocument: Access deny to ${parsed.attribute.entity.code}.select method for user "${Session.uData.login}"`)
     return {
       success: false,
       reason: `Access deny to ${parsed.attribute.entity.code}.select method`

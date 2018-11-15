@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.23]
+### Added
+ - `getDocument` endpoint will put error to log in case user don't have ELS rights
+ for requested entity `select` method
+
+## [5.0.23]
 ### Fixed
  -  historical BLOB stores will try to estimate revision number using select from ub_blobHistory in case previous
  BLOB store content is clean (use clear content for example).
