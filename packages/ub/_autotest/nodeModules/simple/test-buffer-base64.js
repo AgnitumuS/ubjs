@@ -6,10 +6,12 @@ const fixturesFolder = path.join(common.fixturesDir, 'UBTest')
 const fs = require('fs')
 
 const etalon = `module.exports = 'withoutBOM'\n`
+
 let content
 
 console.log('\t\tBuffer from base64')
-content = fs.readFileSync(path.join(fixturesFolder, 'testNoBOM.js'), {encoding: 'bin'})
+
+content = fs.readFileSync(path.join(fixturesFolder, 'testNoBOM.js'))
 const expectedLength = 29 + os.EOL.length
 assert.ok(content.byteLength === expectedLength, `testNoBOM.js bin length should be ${expectedLength} but actual ${content.byteLength}`)
 let b64 = Buffer.from(content, 'utf-8').toString('base64')
@@ -22,8 +24,22 @@ content = fs.readFileSync(path.join(fixturesFolder, 'hugeBase64_0A.txt'), {encod
 // transform internal representation of string from Latin1 to 2Bytechar
 // by adding and removing a non - latin character
 content = 'Пр' + content
-content = content.replace('Пр', '')
+content = '\r\n' + content.replace('Пр', '') + '\r\n'
 let buf = Buffer.from(content, 'base64')
+
+if (true) {
+let c2 = content
+console.time('bb64')
+for(let i=0; i < 1100; i++)
+//  c2 += c2
+//console.time('bb64')
+  buf = Buffer.from(c2, 'base64')
+console.timeEnd('bb64')
+
+buf = Buffer.from(content, 'base64')
+}
+
+fs.writeFileSync(path.join(fixturesFolder, 'hugeBase64_0A_1.pdf'), buf)
 let slice = new Uint8Array(buf)
 assert.ok(buf.byteLength === 66906, 'hugeBase64_0A.txt should be of length 66906 after decode from base64 but actual is ' + buf.byteLength)
 assert.ok(slice[slice.byteLength - 1] === 10, 'last character in decoded hugeBase64_0A.txt should be 0A but actual is' + slice[slice.byteLength - 1])
