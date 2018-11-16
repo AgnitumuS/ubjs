@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.8]
+### Changed
+ - in case default form for entity is not defined and exists several forms 
+ `UB.core.UBFormLoader.getFormByEntity` will return form with smallest code (in alphabetic order) 
+   
 ## [5.6.6]
 ### Fixed
  - EntityGridPanel - prevent monkey request in Refresh action by removing reloading of

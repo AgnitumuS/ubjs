@@ -1,8 +1,8 @@
+/* global Ext, $App, SystemJS */
 require('./UBAppConfig')
 require('./UBService')
 require('./UBUtil')
 require('./UBCommand')
-const _ = require('lodash')
 const UB = require('@unitybase/ub-pub')
 
 /**
@@ -67,6 +67,11 @@ Ext.define('UB.core.UBFormLoader', {
           }
         }
       }
+    })
+    forms.sort(function (a, b) {
+      var c1 = a.get('code')
+      var c2 = b.get('code')
+      return c1 < c2 ? -1 : (c1 === c2 ? 0 : 1)
     })
     defaultForm = defaultForm || forms[0]
     return allForms ? forms : defaultForm
