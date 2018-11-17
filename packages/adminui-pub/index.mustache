@@ -70,6 +70,19 @@
 
       <!-- add promises to IE-->
       <script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
+      <!-- Promise unhandled rejection polyfill https://gist.github.com/rconnamacher/08c010eae3da8233d35500c9bbc8ba54 -->
+      <script>
+          if (window.onunhandledrejection === undefined) {
+              try {
+                  // Feature check: native ES6 inheritance is required for the Unhandled Rejection
+                  // polyfill because ES5 constructors cannot subclass builtins like Promise.
+                  new Function ("()=>class{}");
+
+                  // Feature check passed, polyfill will work
+                  document.write('<script src="models/adminui-pub/unhandledrejection-polyfill.js"></' + 'script>');
+              } catch (e) {}
+          }
+      </script>
 
       <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
       <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>

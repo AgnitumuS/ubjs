@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - add UbExtension.crx to the adminui-pub/ub-extension folder.
  Used by client who do not have access to the internet but need to install extension into Google Chrome.
 
+### Fixed
+ - add polyfill for Promise unhandledrejection event (for FireFox browser).
+ Without this polyfill Admin-ui can't show unhandledrejection's reason in message box
+   
 ## [5.6.6]
 ### Fixed
  - EntityGridPanel - prevent monkey request in Refresh action by removing reloading of
