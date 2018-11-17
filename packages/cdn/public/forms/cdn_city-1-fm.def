@@ -1,8 +1,40 @@
 // @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Fri Oct 26 2018 14:35:20 GMT+0300 (EEST)"
+// @mi_modifyDate "Sat Nov 17 2018 10:51:19 GMT+0200 (EET)"
 // @isDefault "true"
 // @entity "cdn_city"
 // @model "CDN"
 // @formType "auto"
 // @caption "locality_title"
 // @description "locality_title"
+exports.formDef = {
+
+    size: {
+        width: 400,
+        height: 350
+    },
+    parentConfig: {
+        layout: {
+            type: "vbox",
+            align: "stretch" //max
+        }
+    },
+
+    items: [
+        { attributeName: "caption", disabled: true},
+        { attributeName: "parentAdminUnitID", fieldList: ["name", "adminUnitType"],
+            whereList: {
+                "type": {
+                    expression: '[adminUnitType]',
+                    condition: 'in',
+                    values: {'adminUnitType': ['DISTRICT', 'COUNTRY']}
+                }
+            }
+        },
+        { attributeName: "code"},
+        { attributeName: "name"},
+        { attributeName: "description"},
+        { attributeName: "postalCode"},
+        { attributeName: "phoneCode"},
+        { attributeName: "cityTypeID"}
+    ]
+};
