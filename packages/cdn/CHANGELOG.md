@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.66]
+### Changed
+ - cdn_city: allow to select Country as a parent admin unit for city (filter on the form)
+ - cdn_region: allow to select any admin unit as a region parent (in prev implementation
+ select was limited by COUNTRY). See #19 for changes reasons
+  
 ## [5.0.52]
 ### Fixed
 - cdn_bank formation of the description when the constituent attributes were deleted
