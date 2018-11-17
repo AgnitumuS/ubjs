@@ -1,3 +1,4 @@
+/* global UBDomain */
 require('../ux/form/field/UBText')
 require('../ux/form/field/UBTextArea')
 require('../ux/form/field/UBBoxSelect')
@@ -828,7 +829,7 @@ Ext.define('UB.view.BasePanel', {
               me.record.get('mi_modifyDate').getTime() !==
               (result.resultData.data[0][result.resultData.fields.indexOf('mi_modifyDate')]).getTime()) {
           me.entityLocked = true // only for deleteLock
-          return me.deleteLock(true).then(function (result) {
+          return me.deleteLock(true).then(function () {
             throw new UB.UBError('changedByAnotherUserForLock')
           })
         }
@@ -2398,7 +2399,7 @@ Ext.define('UB.view.BasePanel', {
   },
 
   /**
-   * {@link UB.view.UBDropZone#configureDropZone} event handler.
+   * {@link UB.view.UBDropZone UB.view.UBDropZone.configureDropZone} event handler.
    * Add Drop configuration for all form Document type attributes.
    * Ignore attributes which corresponding component is disabled
    *
@@ -3292,10 +3293,8 @@ Ext.define('UB.view.BasePanel', {
             })
           }
           return 1
-        }).catch(function (error) {
-          me.unmaskForm()
-          throw error
         }).fin(function () {
+          me.unmaskForm()
           me.isSaveProcess = false
           // me.unmaskForm(); UBDF-1073
         })
