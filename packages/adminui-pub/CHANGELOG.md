@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.6.8]
 ### Changed
- - in case default form for entity is not defined and exists several forms 
- `UB.core.UBFormLoader.getFormByEntity` will return form with smallest code (in alphabetic order) 
-   
+ - in case default form for entity is not defined and exists several forms
+ `UB.core.UBFormLoader.getFormByEntity` will return form with smallest code (in alphabetic order)
+
+### Added
+ - add UbExtension.crx to the adminui-pub/ub-extension folder.
+ Used by client who do not have access to the internet but need to install extension into Google Chrome.
+
 ## [5.6.6]
 ### Fixed
  - EntityGridPanel - prevent monkey request in Refresh action by removing reloading of
