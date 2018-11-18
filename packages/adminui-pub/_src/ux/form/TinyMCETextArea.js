@@ -32,7 +32,7 @@
  - Storing and restoring cursor position by inserting of a place holder over a popup window.
  ------------------------------------------------------------------- */
 
-/* global tinymce */
+/* global tinymce, Ext */
 Ext.define('Ext.ux.form.TinyMCETextArea', {
 
   extend: 'Ext.form.field.TextArea',
@@ -59,7 +59,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
   tinyMCEConfig: {},
 
   ensureTinyMCELoaded: function () {
-    // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` conition variable
+    // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` condition variable
     // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
     window.BOUNDLED_BY_WEBPACK = false
     // eslint-disable-next-line no-undef
@@ -77,7 +77,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
     me.callParent(arguments)
 
-    me.on('blur', function (elm, ev, eOpts) {
+    me.on('blur', function () {
       var ctrl = document.getElementById(me.getInputId())
 
       if (me.wysiwygIntialized) {
@@ -196,7 +196,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
     // by click on the label
 
     if (me.labelEl) {
-      me.labelEl.on('click', function (ev, elm, opts) {
+      me.labelEl.on('click', function () {
         me.focus(false)
       }, me.labelEl)
     }
@@ -231,7 +231,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
       })
 
       // Catch and propagate the change event
-      ed.on('change', function (e) {
+      ed.on('change', function () {
         var oldval = me.getValue()
         var newval = ed.getContent()
 
@@ -246,7 +246,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
 
       // This ensures that the focusing the editor
       // bring the parent window to front
-      ed.on('focus', function (e) {
+      ed.on('focus', function () {
         var w = me.findParentByType('window')
         if (w) w.toFront(true)
       })
@@ -621,7 +621,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
     if (!parent) { return me.callParent(arguments) }
 
     if (me.rendered && !me.isDestroyed && !me.preventMark) {
-      var evHandler = function (args) {
+      var evHandler = function () {
         me.clearInvalid()
       }
       // Add/remove invalid class

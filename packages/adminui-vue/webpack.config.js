@@ -58,6 +58,7 @@ module.exports = (options = {}) => ({
   plugins: [
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true,
+      // VueJS use process.env.NODE_ENV to enable devtools
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new webpack.optimize.UglifyJsPlugin({
