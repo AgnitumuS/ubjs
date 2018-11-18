@@ -1,3 +1,5 @@
+/* global SystemJS, $App */
+const UB = require('@unitybase/ub-pub')
 exports.formCode = {
   propTree: null,
   codeTabs: null,
@@ -67,6 +69,8 @@ exports.formCode = {
       let jsImportPath = `${model.clientRequirePath}/forms/${formCode}-fm.js`
       SystemJS.reload(defImportPath)
       SystemJS.reload(jsImportPath)
+    } else {
+      $App.dialogInfo(`You are in PRODUCTION mode. Reload page to apply changes. Or use ${window.location.href}-dev URL for developer mode with hot module replacement`)
     }
     UB.core.UBStoreManager.getFormStore().reload()
   },
@@ -92,17 +96,15 @@ exports.formCode = {
   },
 
   onEntityTreePanelItemDblClick: function (tree, record) {
-    var
-      aTab = this.codeTabs.getActiveTab(),
-      aCodeMirror,
-      textToInsert = ''
+    let aTab = this.codeTabs.getActiveTab()
+    let textToInsert = ''
     if (record) {
       if (aTab.isDefifnition) { // definition === this.codeTabs.items.getAt(1)
         textToInsert = '{ attributeName: "' + record.get('id') + '"}'
       } else { // module
         textToInsert = "this.getField('" + record.get('id') + "')"
       }
-      aCodeMirror = aTab.down('ubcodemirror').codeMirrorInstance
+      let aCodeMirror = aTab.down('ubcodemirror').codeMirrorInstance
       aCodeMirror.replaceSelection(textToInsert)
       aCodeMirror.getInputField().focus()
     }
