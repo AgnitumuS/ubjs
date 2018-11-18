@@ -27,21 +27,18 @@ content = 'Пр' + content
 content = '\r\n' + content.replace('Пр', '') + '\r\n'
 let buf = Buffer.from(content, 'base64')
 
-if (true) {
-let c2 = content
-console.time('bb64')
-for(let i=0; i < 1100; i++)
-//  c2 += c2
-//console.time('bb64')
-  buf = Buffer.from(c2, 'base64')
-console.timeEnd('bb64')
+// uncomment below for performance test
+// let c2 = content
+// console.time('bb64')
+// for (let i = 0; i < 1100; i++)
+//   buf = Buffer.from(c2, 'base64')
+// console.timeEnd('bb64')
+//
+// buf = Buffer.from(content, 'base64')
 
-buf = Buffer.from(content, 'base64')
-}
-
-fs.writeFileSync(path.join(fixturesFolder, 'hugeBase64_0A_1.pdf'), buf)
+// fs.writeFileSync(path.join(fixturesFolder, 'hugeBase64_0A_1.pdf'), buf)
 let slice = new Uint8Array(buf)
 assert.ok(buf.byteLength === 66906, 'hugeBase64_0A.txt should be of length 66906 after decode from base64 but actual is ' + buf.byteLength)
 assert.ok(slice[slice.byteLength - 1] === 10, 'last character in decoded hugeBase64_0A.txt should be 0A but actual is' + slice[slice.byteLength - 1])
 
-fs.writeFileSync(path.join(fixturesFolder, 'hugeBase64_0A.pdf'), buf)
+// fs.writeFileSync(path.join(fixturesFolder, 'hugeBase64_0A.pdf'), buf)
