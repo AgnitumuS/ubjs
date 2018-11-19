@@ -207,30 +207,35 @@
                       <el-switch v-model="silenceKerberosLogin" :active-text="$ut('KerberosRemember')"></el-switch>
                   </div>
               </el-form-item>
-              <hr>
           </div>
 
           <div v-if="hasUB()">
-              <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
-                  <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-              </el-tooltip>
-              <p v-html="$ut('UBAuthHeader', appName)"></p>
-              <el-form-item></el-form-item>
-              <el-form-item prop="user">
-                  <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user">
-                      <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
-                  </el-input>
-              </el-form-item>
-              <el-form-item prop="pwd">
-                  <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin" type="password" autocomplete="off">
-                      <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
-                  </el-input>
-              </el-form-item>
-              <el-form-item>
-                  <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}</el-button>
-              </el-form-item>
-              <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
-              <div><a href="#">{{ $ut('UBAuthRegistration') }}</a></div>
+              <div v-if="hasCERT2() || hasNegotiate()">
+                  <hr>
+                  <el-switch v-model="ubAuthHidden" :active-text="$ut('AdditionalLoginOptions')"></el-switch>
+              <div>
+              <div v-if="ubAuthHidden">
+                  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+                      <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+                  </el-tooltip>
+                  <p v-html="$ut('UBAuthHeader', appName)"></p>
+                  <el-form-item></el-form-item>
+                  <el-form-item prop="user">
+                      <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user">
+                          <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
+                      </el-input>
+                  </el-form-item>
+                  <el-form-item prop="pwd">
+                      <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin" type="password" autocomplete="off">
+                          <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
+                      </el-input>
+                  </el-form-item>
+                  <el-form-item>
+                      <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}</el-button>
+                  </el-form-item>
+                  <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
+                  <div><a href="#">{{ $ut('UBAuthRegistration') }}</a></div>
+              </div>
           </div>
       </el-form>
       </div>
@@ -251,6 +256,7 @@
         appName: 'UnityBase',
         topLogoURL: '/models/ub-pub/img/ub-login-logo.png',
         silenceKerberosLogin: window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
+        ubAuthHidden: this.hasNegotiate() || this.hasCERT2(),
         userDidLogout: window.localStorage.getItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT) === 'true',
         authData: {user: '', pwd: ''},
         keyFile: null,
@@ -276,6 +282,9 @@
       }
     },
     methods: {
+      toggleOptions: function () {
+        this.ubAuthHidden = !this.ubAuthHidden
+      },
       hasNegotiate: function () {
         return !this.hasCERT2() && this.$UB.connection && (this.$UB.connection.authMethods.indexOf('Negotiate') !== -1)
       },

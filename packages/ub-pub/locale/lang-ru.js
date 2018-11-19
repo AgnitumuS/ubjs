@@ -14,6 +14,7 @@ UB.i18nExtend({
   KerberosTip: 'Вход с правами пользователя, который вошол в операционную систему. Компьютер должен быть в домене',
   Authentication: 'Аутентификация',
   RegistrationMode: 'Режим регистрации',
+  AdditionalLoginOptions: 'Дополнительные параметры входа',
   useOSCredentialTitle: 'Доменная',
   useUBAuthenticationTitle: 'По паролю',
   useCertificateTitle: 'По ключу',

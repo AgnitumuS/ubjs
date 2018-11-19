@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.31]
+### Changed
+ - adminui-vue auth form will hide ub auth under `options` if Kerberos or CERT2 is enabled
+
 ## [1.0.27]
 ### Fixed
  - let's ElementUI popups be above all Ext popups by setting initial ElementUI.zIndex to 300000
