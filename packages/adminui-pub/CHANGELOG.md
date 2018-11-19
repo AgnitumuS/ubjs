@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.9]
+### Fixed
+ - BasePanel toolbar icon appearance for tool buttons without text but with drop-down 
+
 ## [5.6.8]
 ### Changed
  - in case default form for entity is not defined and exists several forms

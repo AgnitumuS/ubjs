@@ -1,4 +1,4 @@
-/* global Ext */
+/* global Ext, UB, $App */
 require('./UBUtil')
 /**
  * Файл: UB.core.UBPanelMixin.js
@@ -94,7 +94,7 @@ Ext.define('UB.core.UBPanelMixin', {
       functions = me.functions
       for (var f in functions) {
         if (me.functions.hasOwnProperty(f)) {
-          if (_.isFunction(me[f])) {
+          if (typeof me[f] === 'function') {
             functions[f].$previous = me[f]
           }
           me[f] = functions[f]
@@ -282,7 +282,7 @@ Ext.define('UB.core.UBPanelMixin', {
   },
 
   createButtonWOText: function (action) {
-    return Ext.apply(Ext.create('Ext.button.Button', action), { width: 34, height: 32, text: action.initialConfig.showText ? action.initialConfig.actionText : '', tooltip: action.getText() })
+    return Ext.apply(Ext.create('Ext.button.Button', action), { height: 32, text: action.initialConfig.showText ? action.initialConfig.actionText : '', tooltip: action.getText() })
   },
 
   createMenuItemLink: function () {
@@ -305,7 +305,7 @@ Ext.define('UB.core.UBPanelMixin', {
       },
       listeners: {
         activate: function (item) {
-          item.menu.items.getAt(0).setValue(UB.format('{0}//{1}{2}#{3}', location.protocol, location.host, location.pathname, this.createCommandLink()))
+          item.menu.items.getAt(0).setValue(UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, this.createCommandLink()))
         },
         scope: this
       }
