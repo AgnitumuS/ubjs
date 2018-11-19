@@ -1,6 +1,6 @@
 {
   "name": "example-amqp-notify",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs",
   "private": true,
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.13",
-    "@unitybase/ubcli": "^5.1.7"
+    "@unitybase/ubcli": "^5.2.0"
   },
   "engines": {
     "ub": "^5.0"
