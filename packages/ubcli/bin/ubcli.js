@@ -14,14 +14,21 @@ const command = process.argv[2]
 
 // commands help
 if (!command || (['-?', '/?', '-help', '/help'].indexOf(command) !== -1)) {
-  let commands = fs.readdirSync(path.join(__dirname, '..', 'lib'))
+  let libsPath = path.join(__dirname, '..', 'lib')
+  let commands = fs.readdirSync(libsPath)
   console.info('Possible commands:')
   for (let cmd of commands) {
     if (cmd.endsWith('.js')) {
-      console.log('\t', cmd.replace(/\.js$/, ''))
+      let shortDoc = ' ' + cmd.replace(/\.js$/, '').padEnd(20, ' ')
+      try {
+        let descr = require(path.join(libsPath, cmd)).shortDoc
+        if (descr) shortDoc += ' - ' + descr
+      } catch (e) {
+      }
+      console.log(shortDoc)
     }
   }
-  console.log('\r\nRun ubcli commandName -? for a command help')
+  console.log('Run ubcli commandName -? for a command help')
 } else {
   const cmdModule = require(`../lib/${command}`)
   if (typeof cmdModule === 'function') cmdModule()

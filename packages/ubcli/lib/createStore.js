@@ -100,3 +100,5 @@ module.exports = function createStore (options) {
 
   selectedStores.forEach(createOneStore)
 }
+
+module.exports.shortDoc = 'Create internal BLOB store structure (folders) for specifies FileSystem store'

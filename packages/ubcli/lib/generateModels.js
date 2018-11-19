@@ -95,3 +95,5 @@ function createCommandEntity (modelsDir, options) {
   // console.log(fileName);
   return fileName
 }
+
+module.exports.shortDoc = 'Reverse model generation from a database tables'
