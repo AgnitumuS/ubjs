@@ -19,3 +19,4 @@ module.exports = function initialize (cfg) {
     throw new Error(`Somebody listen on ${cfg.host}. If this is UnityBase server - please, shut down it`)
   }
 }
+module.exports.shortDoc = `Throw error in case server is started`

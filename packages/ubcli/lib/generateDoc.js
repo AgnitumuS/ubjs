@@ -19,7 +19,7 @@ const mustache = require('mustache')
 module.exports = function generateDoc (cfg) {
   let
     session, conn,
-    outputFileName, userLang,
+    outputFileName,
     domainI18n,
     i, j, len, lenj, k, lenk
 
@@ -49,7 +49,6 @@ module.exports = function generateDoc (cfg) {
 
   console.log('Session.uData: ', session.uData, typeof session.uData)
 
-  userLang = session.uData ? (session.uData.lang || 'en') : 'en'
   conn = session.connection
   outputFileName = cfg.out
 
@@ -113,3 +112,5 @@ module.exports = function generateDoc (cfg) {
     }
   }
 }
+
+module.exports.shortDoc = 'Generate domain documentation into HTML file'

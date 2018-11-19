@@ -173,3 +173,5 @@ function formatAsText (connectionName, connDDLs, warnings) {
     ? '--##############     start script for connection "' + connectionName + '" #######\r\n' + txtRes.join('\r\n')
     : ''
 }
+
+module.exports.shortDoc = 'Compare database structure with application domain and generate SQL script for create missing/alter modified objects'

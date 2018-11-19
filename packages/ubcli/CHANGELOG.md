@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Added 
+ - `npx ubcli` will display short commands descriptions in addition to command names
+ - new command `meta-tr` added to `ubcli` to be used to transform *.meta attributes from Object to Array as
+ required by latest Entity JSON schema:
+```bash
+ npx ubcli meta-tr -m /home/mpv/dev/ubjs/apps/autotest/models/TST/tst_document.meta
+```   
+  
 ## [5.1.4]
 ### Fixed 
  - `ubcli initDB -drop` for SQLite3 will also delete possible WAL logs (-wal and -shm files)

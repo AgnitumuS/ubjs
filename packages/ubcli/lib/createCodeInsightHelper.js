@@ -200,3 +200,5 @@ module.exports = function createCodeInsightHelper (cfg) {
     processEntities(entities, currentPath, modelCfg.name, modelCfg.moduleName)
   })
 }
+
+module.exports.shortDoc = 'Create service scripts containing entity definition for code insight in WebStorm or other IDE work well'
