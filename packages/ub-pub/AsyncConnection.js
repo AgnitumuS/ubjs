@@ -974,13 +974,13 @@ UBConnection.prototype.processBuffer = function processBuffer () {
  *
  * Example:
  *
- *      //this two execution is passed to single ubql server execution
- *      $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
- *      $App.connection.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ *      // two query below are passed to server as single ubql
+ *      $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}, true).then(UB.logDebug)
+ *      $App.connection.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['*']}, true).then(UB.logDebug)
  *
- *      //but this request is passed in separate ubql (because allowBuffer false in first request
- *      $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}).then(UB.logDebug);
- *      $App.connection.query({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug);
+ *      // but in this case requests are passed in separate ubql (because allowBuffer is set to false in the first request
+ *      $App.connection.query({entity: 'uba_user', method: 'select', fieldList: ['*']}).then(UB.logDebug)
+ *      $App.connection.query({entity: 'ubm_desktop', method: 'select', fieldList: ['*']}, true).then(UB.logDebug)
  */
 UBConnection.prototype.query = function query (ubq, allowBuffer) {
   let me = this
@@ -1156,7 +1156,7 @@ UBConnection.prototype.update = function (serverRequest, allowBuffer) {
   let me = this
   serverRequest.method = serverRequest.method || 'update'
   if (serverRequest.execParams) {
-    let newEp = stringifyExecParamsValues(serverRequest.execParams)
+    let newEp = stringifyExecParamsValues(serverRequest.execParams, serverRequest.entity)
     if (newEp) serverRequest.execParams = newEp
   }
   return me.query(serverRequest, allowBuffer)
@@ -1195,7 +1195,7 @@ UBConnection.prototype.insert = function (serverRequest, allowBuffer) {
   let me = this
   serverRequest.method = serverRequest.method || 'insert'
   if (serverRequest.execParams) {
-    let newEp = stringifyExecParamsValues(serverRequest.execParams)
+    let newEp = stringifyExecParamsValues(serverRequest.execParams, serverRequest.entity)
     if (newEp) serverRequest.execParams = newEp
   }
   return me.query(serverRequest, allowBuffer)
