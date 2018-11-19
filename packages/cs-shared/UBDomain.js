@@ -1,4 +1,5 @@
 /* documentation verified by mpv on 2018-03-18 */
+/* global UB, App */
 const _ = require('lodash')
 
 /**

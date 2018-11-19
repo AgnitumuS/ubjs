@@ -1,3 +1,4 @@
+/* global Ext, UB, UBDomain */
 /**
  * UnityBase ext-based Date picker
  * @author Nozhenko I.
@@ -17,7 +18,7 @@ Ext.define('UB.ux.form.field.UBDate', {
     if (!val) {
       return true
     }
-    var dateReg = /^\d{2}([.\/\-])\d{2}\1\d{4}$/
+    var dateReg = /^\d{2}([./-])\d{2}\1\d{4}$/
     if (val.match(dateReg)) {
       return true
     }
