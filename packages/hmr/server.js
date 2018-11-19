@@ -73,7 +73,8 @@ async function runServer (opts) {
   if (opts.poll) chokidarOpts.usePolling = true
   log('Watching:')
   log(pathsToWatch.join('\n'))
-  let watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('change', (event, onPath) => {
+  let watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('change', (onPath) => {
+    const event = 'change'
     let modelFolder = folders.find(f => onPath.startsWith(f.publicPath))
     if (!modelFolder) {
       log('Public path not found for', onPath)
