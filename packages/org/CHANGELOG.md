@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.25]
+### Changed
+ - `org_employeeonstaff.caption` generation algorithm: in case `org_employeeonstaff.tabNo` is empty or whitespace - 
+ don't use it in forming `org_employeeonstaff.caption`    
+
 ## [5.1.24]
 ### Added
  - auto generation of `org_employeeonstaff.tabNo` attribute. Length of generated code id defined 
