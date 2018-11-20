@@ -233,7 +233,8 @@ function assignCaptions (ctxt) {
     if (eosTypeInfo) {
       eosType = ' - (' + eosTypeInfo['name' + suffix] + ')'
     }
-    execParams['caption' + suffix] = empName + ' (' + tabNo + ',' + depName + ')' + eosType
+    tabNo = ('' + tabNo).trim() ? tabNo + ', ' : ''
+    execParams['caption' + suffix] = `${empName} (${tabNo}${depName})${eosType}`
   })
   return true
 }
