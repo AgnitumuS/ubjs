@@ -144,7 +144,7 @@ Ext.define('UB.core.UBFormLoader', {
       }
       if (formType === 'custom') { // extract Ext class name from module and retrieve formView from Ext.ClassManager
         if (typeof formView.formDef !== 'string') {
-          console.error(`Custom form "${defImportPath}" must export a Ext class name as sting (Example: exports.formDef = 'UBM.userSettings')`)
+          console.error(`Custom form "${defImportPath}" must export a Ext class name as string (Example: exports.formDef = 'UBM.userSettings')`)
         }
         formView = me.getExtClassByName(formView.formDef)
       }
