@@ -71,7 +71,7 @@
       <!-- add promises to IE-->
       <script src="/clientRequire/es6-promise/dist/es6-promise.auto.min.js"></script>
       <!-- Promise unhandled rejection polyfill https://gist.github.com/rconnamacher/08c010eae3da8233d35500c9bbc8ba54 -->
-      <script>
+      <script type="text/javascript" nonce="{{cspNonce}}">
           if (window.onunhandledrejection === undefined) {
               try {
                   // Feature check: native ES6 inheritance is required for the Unhandled Rejection
@@ -79,7 +79,7 @@
                   new Function ("()=>class{}");
 
                   // Feature check passed, polyfill will work
-                  document.write('<script src="models/adminui-pub/unhandledrejection-polyfill.js"></' + 'script>');
+                  document.write('<script src="models/adminui-pub/unhandledrejection-polyfill.js" nonce="{{cspNonce}}"></' + 'script>');
               } catch (e) {}
           }
       </script>
@@ -94,7 +94,7 @@
                 css: 'systemjs-plugin-css/css.js'
             },
             meta: {
-                // '*': {nonce: '{{cspNonce}}'}  if this line is added SystemJS override window.onerror
+                // '*': {nonce: 'cspNonce'}  if this line is added (cspNonce is a mustache variable) SystemJS override window.onerror
                 '*.css': { loader: 'css' },
                 'codemirror/*.js': { format: 'cjs' },
                 'tinymce/*.js': { format: 'global' },
