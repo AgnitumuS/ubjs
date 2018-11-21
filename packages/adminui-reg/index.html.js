@@ -113,7 +113,7 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
       // let wsSrc = 'ws' + App.externalURL.slice(4)
       // let uiSettings = App.serverConfig.uiSettings
       // let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''
-      let wsNotifier = App.serverConfig.application.customSettings.amqpNotificationUrl || ''
+      let wsNotifier = App.serverConfig.uiSettings.adminUI.amqpNotificationUrl || ''
       let cspHeaders =
         "default-src 'self'; " +
         "connect-src 'self' blob: " + wsNotifier + '; ' + // we need blob: for UBDocument (ER diagrams, org chart etc.)
