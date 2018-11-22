@@ -53,6 +53,7 @@ module.exports = function generateNginxCfg (cfg) {
   }
   let externalURL = url.parse(serverConfig.httpServer.externalURL)
   if (!externalURL.port) externalURL.port = (externalURL.protocol === 'https:') ? '443' : '80'
+  if (externalURL.port === '443') externalURL.port = '443 ssl http2'
   if (externalURL.protocol === 'https:') {
     if (!cfg.sslkey) console.warn('external URL is configured to use https but sslkey parameter not passed - don\'t forgot to set it manually')
     if (!cfg.sslcert) console.warn('external URL is configured to use https but sslcert parameter not passed - don\'t forgot to set it manually')
@@ -95,13 +96,14 @@ module.exports = function generateNginxCfg (cfg) {
   if (!fs.writeFileSync(cfg.out, rendered)) {
     console.error(`Write to file ${cfg.out} fail`)
   }
+  let linkAsFileName = externalURL.host + '.cfg'
   console.info(`
 Config generated and can be included inside nginx.conf: 
   include ${cfg.out.replace(/\\/g, '/')};
   
 or linked to /etc/nginx/sites-enabled if you are on linux:
-  sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available
-  sudo ln -s /etc/nginx/sites-available/${path.basename(cfg.out)} /etc/nginx/sites-enabled
+  sudo ln -s ${cfg.out.replace(/\\\\/g, '/')} /etc/nginx/sites-available/${linkAsFileName}
+  sudo ln -s /etc/nginx/sites-available/${linkAsFileName} /etc/nginx/sites-enabled
   sudo nginx -s reload
 `)
 }
