@@ -3,7 +3,7 @@ const USERS = {
   ROOT: {
     ID: 7,
     NAME: 'root',
-    HASH: '-' // Root use nonce based password
+    HASH: '-' // Root uses nonce based password
   },
   ADMIN: {
     ID: 10,
