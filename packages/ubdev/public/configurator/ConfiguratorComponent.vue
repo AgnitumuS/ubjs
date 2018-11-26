@@ -13,10 +13,10 @@
 </template>
 
 <script>
-  import objCardComponent from "./ObjectCardComponent.vue";
-  import mixinsCardComponent from "./MixinsCardComponent.vue";
+  const objCardComponent = require("./ObjectCardComponent.vue");
+  const mixinsCardComponent = require("./MixinsCardComponent.vue");
 
-  export default {
+  module.exports = {
     props: {
       jsonObject: {
         type: [String, Object],
@@ -38,23 +38,23 @@
       outputJson: {
         get: function () {
           return JSON.stringify(this.metaObject, (key, value) => {
-            if (value !== "" && value !== null && value !== undefined && Object.keys(value).length != 0) return value;
+            if (value !== "" && value !== null && value !== undefined && Object.keys(value).length !== 0) return value;
           }, 2);
         },
         set: function (newValue) {
-          this.initMetaOnject(newValue);
+          this.initMetaObject(newValue);
         }
 
       }
     },
     created() {
       if (this.jsonObject) {
-        this.initMetaOnject(this.jsonObject);
+        this.initMetaObject(this.jsonObject);
       }
-      this.schemaObject = typeof this.schema === "string" ? JSON.parse(this.schema) : {...this.schema};
+      this.schemaObject = typeof this.schema === "string" ? JSON.parse(this.schema) : this.schema;
     },
     methods: {
-      initMetaOnject(json) {
+      initMetaObject(json) {
         this.metaObject = typeof json === "string" ? JSON.parse(json) : json;
         if (this.metaObject) {
           if (!Array.isArray(this.metaObject.attributes)) {

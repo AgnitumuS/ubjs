@@ -33,6 +33,7 @@
     "@unitybase/ubq": "^5.1.22",
     "@unitybase/ubs": "^5.1.32",
     "@unitybase/xlsx": "^5.0.33",
+    "@unitybase/ubdev": "^0.0.1",
     "asn1js": "^2.0.19",
     "bluebird": "^3.4.6",
     "bluebird-q": "^2.1.1",
