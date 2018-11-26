@@ -4,16 +4,16 @@
     "title": "UnityBase entity definition",
     "type": "object",
     "additionalProperties": false,
-    "required": [ "caption", "attributes"],
+    "required": ["caption", "attributes"],
     "defaultProperties": ["caption", "description", "descriptionAttribute", "documentation", "attributes"],
     "properties": {
         "caption": {
             "type": "string",
-	        "description": "Entity caption. Used in UI as a form/grid caption"
+            "description": "Entity caption. Used in UI as a form/grid caption"
         },
         "description": {
             "type": "string",
-	        "description": "Short information about entity. Used in hints/tips"
+            "description": "Short information about entity. Used in hints/tips"
         },
         "descriptionAttribute": {
             "type": "string",
@@ -53,14 +53,17 @@
             "items": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": [ "name", "dataType", "caption"],
+                "required": ["name", "dataType", "caption"],
                 "defaultProperties": ["name", "dataType", "caption"],
                 "headerTemplate": "{{i1}}.{{self.name}}({{self.dataType}})",
                 "properties": {
                     "name": {
                         "type": "string",
                         "maxLength": 20,
-                        "description": "Name of attribute"
+                        "description": "Name of attribute",
+                        "ui": {
+                            "disabled": true
+                        }
                     },
                     "dataType": {
                         "type": "string",
@@ -95,10 +98,6 @@
                         "default": true,
                         "description": "Allow `order by` clause by this attribute"
                     },
-                    "defaultValue": {
-                        "type": "string",
-                        "description": "Value of attribute by default. Server generates DDL: `DEFAULT defaultValue` in database. For a DateTime attributes macros 'currentDate' & 'maxDate' can be used"
-                    },
                     "defaultView": {
                         "type": "boolean",
                         "description": "If `true` - client shows this field in auto-build forms and in '*' select fields. Always false for `Entity` type attribute, `true` for other"
@@ -108,6 +107,10 @@
                         "default": false,
                         "description": "Attribute readOnly flag, only for client"
                     },
+                    "defaultValue": {
+                        "type": "string",
+                        "description": "Value of attribute by default. Server generates DDL: `DEFAULT defaultValue` in database. For a DateTime attributes macros 'currentDate' & 'maxDate' can be used"
+                    },
                     "customSettings": {
                         "type": "object",
                         "description": "Optional settings for attribute. Can be any valid JSON",
@@ -115,44 +118,76 @@
                     },
                     "size": {
                         "type": "number",
-                        "description": "Required for `dataType=String` - maximum length of string (in characters)"
+                        "description": "Required for `dataType=String` - maximum length of string (in characters)",
+                        "ui": {
+                            "forTypes": ["String"],
+                            "required": true
+                        }
                     },
                     "isMultiLang": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Required for `dataType=String` - provide ability to store attribute value using different languages, described in the application config. Fur multilingual attributes DDL generator add additional columns to database table with suffix _Lang (_ru, _uk etc)"
+                        "description": "Required for `dataType=String` - provide ability to store attribute value using different languages, described in the application config. Fur multilingual attributes DDL generator add additional columns to database table with suffix _Lang (_ru, _uk etc)",
+                        "ui": {
+                            "forTypes": ["String"],
+                            "required": true
+                        }
                     },
                     "associatedEntity": {
                         "type": "string",
-                        "description": "Required for `dataType=Entity|Many` - name of associated entity. On the database level we create index & constraint"
+                        "description": "Required for `dataType=Entity|Many` - name of associated entity. On the database level we create index & constraint",
+                        "ui": {
+                            "forTypes": ["Entity", "Many"],
+                            "required": true
+                        }
                     },
                     "associationAttr": {
                         "type": "string",
                         "description": "Required for `dataType=Entity` and attribute does not point to the entity primary key, when associated entity attribute name can be specified here",
-                        "default": "ID"
+                        "default": "ID",
+                        "ui": {
+                            "forTypes": ["Entity"]
+                        }
                     },
                     "generateFK": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Possible for `dataType=Entity` - set this to `false` to bypass foreign key generation on the database level"
+                        "description": "Possible for `dataType=Entity` - set this to `false` to bypass foreign key generation on the database level",
+                        "ui": {
+                            "forTypes": ["Entity"]
+                        }
                     },
                     "associationManyData": {
                         "type": "string",
-                        "description": "Required for `dataType=Many` - name of the many-to-many table. UB create system entity with this name and generate table during DDL generation"
+                        "description": "Required for `dataType=Many` - name of the many-to-many table. UB create system entity with this name and generate table during DDL generation",
+                        "ui": {
+                            "required": true,
+                            "forTypes": ["Many"]
+                        }
                     },
                     "enumGroup": {
                         "type": "string",
-                        "description": "Required for `dataType=Enum` - Group code from ubm_enum.eGroup"
+                        "description": "Required for `dataType=Enum` - Group code from ubm_enum.eGroup",
+                        "ui": {
+                            "required": true,
+                            "forTypes": ["Enum"]
+                        }
                     },
                     "cascadeDelete": {
                         "type": "boolean",
                         "default": false,
-                        "description": "Possible for `dataType=Entity` - enable cascade delete on application serve level (not on database level)"
+                        "description": "Possible for `dataType=Entity` - enable cascade delete on application serve level (not on database level)",
+                        "ui": {
+                            "forTypes": ["Entity"]
+                        }
                     },
                     "storeName": {
                         "type": "string",
                         "default": "",
-                        "description": "Possible for `dataType=Document` - name of store from `storeConfig` application config section. If empty - store with `isDefault=true` will be used"
+                        "description": "Possible for `dataType=Document` - name of store from `storeConfig` application config section. If empty - store with `isDefault=true` will be used",
+                        "ui": {
+                            "forTypes": ["Document"]
+                        }
                     },
                     "mapping": {
                         "type": "array",
@@ -161,7 +196,7 @@
                         "items": {
                             "type": "object",
                             "additionalProperties": false,
-                            "required": [ "name", "expression"],
+                            "required": ["name", "expression"],
                             "properties": {
                                 "name": {
                                     "type": "string",
@@ -190,7 +225,7 @@
             "items": {
                 "type": "object",
                 "additionalProperties": false,
-                "required": [ "name", "selectName", "execName"],
+                "required": ["name", "selectName", "execName"],
                 "properties": {
                     "name": {
                         "type": "string",
@@ -254,7 +289,7 @@
                 "rls": {
                     "type": "object",
                     "description": "Provide Row Level Security. See [RLS tutorial](https://unitybase.info/Server/index.html#!/guide/rls) for details",
-                    "required": [ "expression"],
+                    "required": ["expression"],
                     "properties": {
                         "historyType": {
                             "type": "string",
@@ -263,182 +298,182 @@
                     }
                 },
                 "aclRls": {
-                  "type": "object",
-                  "description": "Access Control List Row Level Security. WARNING - configuration will be changed",
-                  "properties":{
-                    "useUnityName": {
-                      "type": "boolean",
-                      "description": "In case this entity have a `unity` mixin and `useUnityName` is `true` then ACL will be stored for the parent entity. This important for situation of many descendants of one entity"
-                    },
-                    "onEntities": {
-                      "type": "array",
-                      "description": "Subjects (entity names) for ACL",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "entityConnectAttr": {
-                      "type": "string",
-                      "description": "this entity attribute name for join to acl entity. TODO - explain"
-                    },
-                    "exprMethod": {
-                      "type": "string",
-                      "description": "name of entity method, which create sub-query structure. TODO - explain"
-                    },
-                    "selectionRule": {
-                      "enum": ["Exist", "In"],
-                      "default": "Exists",
-                      "description": "Rule for connect sub-query by according aclRls table. `In` - connect by IN condition (example: ... AND mainEntity.ID IN (SELECT instanceID FROM aclRlsTable WHERE ...))\n`Exist` - connect by EXIST condition (example: ... AND EXISTS (SELECT 1 FROM aclRlsTable WHERE ...))"
-                    },
-                    "model": {
-                      "type": "string",
-                      "description": "model name where to place the entity for storing aclRLS. If empty will be calculated. TODO - explain or remove!"
+                    "type": "object",
+                    "description": "Access Control List Row Level Security. WARNING - configuration will be changed",
+                    "properties": {
+                        "useUnityName": {
+                            "type": "boolean",
+                            "description": "In case this entity have a `unity` mixin and `useUnityName` is `true` then ACL will be stored for the parent entity. This important for situation of many descendants of one entity"
+                        },
+                        "onEntities": {
+                            "type": "array",
+                            "description": "Subjects (entity names) for ACL",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "entityConnectAttr": {
+                            "type": "string",
+                            "description": "this entity attribute name for join to acl entity. TODO - explain"
+                        },
+                        "exprMethod": {
+                            "type": "string",
+                            "description": "name of entity method, which create sub-query structure. TODO - explain"
+                        },
+                        "selectionRule": {
+                            "enum": ["Exist", "In"],
+                            "default": "Exists",
+                            "description": "Rule for connect sub-query by according aclRls table. `In` - connect by IN condition (example: ... AND mainEntity.ID IN (SELECT instanceID FROM aclRlsTable WHERE ...))\n`Exist` - connect by EXIST condition (example: ... AND EXISTS (SELECT 1 FROM aclRlsTable WHERE ...))"
+                        },
+                        "model": {
+                            "type": "string",
+                            "description": "model name where to place the entity for storing aclRLS. If empty will be calculated. TODO - explain or remove!"
+                        }
                     }
-                  }
                 },
                 "als": {
-                  "type": "object",
-                  "description": "Attribute level security. TODO - explain",
-                  "properties": {
-                    "stateAttrName": {
-                      "type": "string",
-                      "description": "Attribute for automatic read current record state value. If empty, mixin read state value from entity `getRecordCurrState` method"
-                    },
-                    "stateEnumGroup": {
-                      "type": "string",
-                      "description": "`ubm_enum` group with possible entity states"
-                    },
-                    "optimistic": {
-                      "type": "boolean",
-                      "default": true,
-                      "description": "is attribute security level optimistic(true) or pessimistic(false)"
+                    "type": "object",
+                    "description": "Attribute level security. TODO - explain",
+                    "properties": {
+                        "stateAttrName": {
+                            "type": "string",
+                            "description": "Attribute for automatic read current record state value. If empty, mixin read state value from entity `getRecordCurrState` method"
+                        },
+                        "stateEnumGroup": {
+                            "type": "string",
+                            "description": "`ubm_enum` group with possible entity states"
+                        },
+                        "optimistic": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "is attribute security level optimistic(true) or pessimistic(false)"
+                        }
                     }
-                  }
                 },
                 "dataHistory": {
-                  "type": "object",
-                  "description": "Provide historical data storage",
-                  "properties": {
-                    "historyType": {
-                      "enum": ["NewBecomesActual", "OriginalRemainsActual"],
-                      "default": "NewBecomesActual",
-                      "description": "What record during `newversion` method call becomes actual\n\n|Value  |Description\n|-\n| `NewBecomesActual` | `newversion(__mip_ondate)` method will insert new row with actual data, set it actuality period to [__mip_ondate; infinity]. Original row actuality period is updated to [starDate; __mip_ondate)\n| `OriginalRemainsActual` | `newversion(__mip_ondate)` method will update a current row data, set current row actuality period to [__mip_ondate, infinity] and insert new row with original data and actuality period [startDate; __mip_ondate)"
+                    "type": "object",
+                    "description": "Provide historical data storage",
+                    "properties": {
+                        "historyType": {
+                            "enum": ["NewBecomesActual", "OriginalRemainsActual"],
+                            "default": "NewBecomesActual",
+                            "description": "What record during `newversion` method call becomes actual\n\n|Value  |Description\n|-\n| `NewBecomesActual` | `newversion(__mip_ondate)` method will insert new row with actual data, set it actuality period to [__mip_ondate; infinity]. Original row actuality period is updated to [starDate; __mip_ondate)\n| `OriginalRemainsActual` | `newversion(__mip_ondate)` method will update a current row data, set current row actuality period to [__mip_ondate, infinity] and insert new row with original data and actuality period [startDate; __mip_ondate)"
+                        }
                     }
-                  }
                 },
                 "unity": {
-                  "type": "object",
-                  "description": "`inheritance`",
-                  "required": [ "entity"],
-                  "properties": {
-                    "entity": {
-                      "type": "string",
-                      "description": "Parent entity code"
-                    },
-                    "attributeList": {
-                      "type": "array",
-                      "description": "List of parent entity attribute names to keep in sync with this entity",
-                      "_format": "table",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "mapping": {
-                      "type": "object",
-                      "description": "If this entity attribute names differ from parent you can specify mapping from self attributes to parent attributes in form `\"mapping\": {\"thisAttrName\": \"parentAttrName\", ....}"
-                    },
-                    "defaults": {
-                      "type": "object",
-                      "description": "The list of constants to be inserted into parent entity. Keys of `defaults` is a parent entity attribute names, key values is a constant to be inserted into this attribute"
+                    "type": "object",
+                    "description": "`inheritance`",
+                    "required": ["entity"],
+                    "properties": {
+                        "entity": {
+                            "type": "string",
+                            "description": "Parent entity code"
+                        },
+                        "attributeList": {
+                            "type": "array",
+                            "description": "List of parent entity attribute names to keep in sync with this entity",
+                            "_format": "table",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "mapping": {
+                            "type": "object",
+                            "description": "If this entity attribute names differ from parent you can specify mapping from self attributes to parent attributes in form `\"mapping\": {\"thisAttrName\": \"parentAttrName\", ....}"
+                        },
+                        "defaults": {
+                            "type": "object",
+                            "description": "The list of constants to be inserted into parent entity. Keys of `defaults` is a parent entity attribute names, key values is a constant to be inserted into this attribute"
+                        }
                     }
-                  }
                 },
                 "tree": {
-                  "type": "object",
-                  "description": "Materialized path mixin. Will add `mi_treePath` to entity attribute and store where current row `Materialized path` - a string representing row hierarchy `rootID/textLevelID/.../currentRowID`",
-                  "required": ["parentAttr"],
-                  "properties": {
-                    "parentAttr": {
-                      "type": "string",
-                      "description": "entity attribute code, where a `parentID` is stored"
-                    },
-                    "pathAttr": {
-                      "type": "string",
-                      "description": "Attribute used to build the path. Usually this is `ID`",
-                      "default": "ID"
-                    },
-                    "pathDelimiter": {
-                      "type": "string",
-                      "maxLength": 1,
-                      "description": "path delimiter",
-                      "default:": "/"
+                    "type": "object",
+                    "description": "Materialized path mixin. Will add `mi_treePath` to entity attribute and store where current row `Materialized path` - a string representing row hierarchy `rootID/textLevelID/.../currentRowID`",
+                    "required": ["parentAttr"],
+                    "properties": {
+                        "parentAttr": {
+                            "type": "string",
+                            "description": "entity attribute code, where a `parentID` is stored"
+                        },
+                        "pathAttr": {
+                            "type": "string",
+                            "description": "Attribute used to build the path. Usually this is `ID`",
+                            "default": "ID"
+                        },
+                        "pathDelimiter": {
+                            "type": "string",
+                            "maxLength": 1,
+                            "description": "path delimiter",
+                            "default:": "/"
+                        }
                     }
-                  }
                 },
                 "fts": {
-                  "type": "object",
-                  "description": "Full Text Search mixin. See [FTS tutorial](/api/server/#!/guide/fts) for details",
-                  "properties":{
-                    "dataProvider": {
-                      "enum": ["Mixin", "Entity"],
-                      "description": "How to obtain a data for full text index. \n\n|Value  |Description\n|-\n| `Mixin` | String for FTS are building automatically using `indexedAttributes` array. \n| `Entity` | developer must provide a entity method `getFTSData` which return a FTS string"
-                    },
-                    "scope": {
-                      "enum": ["Connection", "Entity", "Custom"],
-                      "default": "Connection",
-                      "description": "model of using fts data source table in current fts index. Deprecated?"
-                    },
-                    "connectionName": {
-                      "type": "string",
-                      "description": "Name of a `SQLite3` connection from `application.connections`",
-                      "default": "ftsDefault"
-                    },
-                    "indexedAttributes": {
-                      "type": "array",
-                      "description": "If `dataProvider` is set to `Mixin` - array of attribute names to include into FTS index",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "descriptionAttribute": {
-                      "type": "string",
-                      "description": "Attribute to display in a first column of search result. By default equal to entity `descriptionAttribute` property value"
-                    },
-                    "dateAttribute": {
-                      "type": "string",
-                      "description": "Attribute to use as a DATE filter during FRS search. If empty - filtration by date not supported"
-                    },
-                    "attrNameBracket": {
-                      "type": "string",
-                      "default": "z",
-                      "description": "If data provider is `Mixin` then every attribute name in indexed string will starting and closing with this value. Example: for attribute `name` index string will be \"znamez:'Some name'\""
+                    "type": "object",
+                    "description": "Full Text Search mixin. See [FTS tutorial](/api/server/#!/guide/fts) for details",
+                    "properties": {
+                        "dataProvider": {
+                            "enum": ["Mixin", "Entity"],
+                            "description": "How to obtain a data for full text index. \n\n|Value  |Description\n|-\n| `Mixin` | String for FTS are building automatically using `indexedAttributes` array. \n| `Entity` | developer must provide a entity method `getFTSData` which return a FTS string"
+                        },
+                        "scope": {
+                            "enum": ["Connection", "Entity", "Custom"],
+                            "default": "Connection",
+                            "description": "model of using fts data source table in current fts index. Deprecated?"
+                        },
+                        "connectionName": {
+                            "type": "string",
+                            "description": "Name of a `SQLite3` connection from `application.connections`",
+                            "default": "ftsDefault"
+                        },
+                        "indexedAttributes": {
+                            "type": "array",
+                            "description": "If `dataProvider` is set to `Mixin` - array of attribute names to include into FTS index",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "descriptionAttribute": {
+                            "type": "string",
+                            "description": "Attribute to display in a first column of search result. By default equal to entity `descriptionAttribute` property value"
+                        },
+                        "dateAttribute": {
+                            "type": "string",
+                            "description": "Attribute to use as a DATE filter during FRS search. If empty - filtration by date not supported"
+                        },
+                        "attrNameBracket": {
+                            "type": "string",
+                            "default": "z",
+                            "description": "If data provider is `Mixin` then every attribute name in indexed string will starting and closing with this value. Example: for attribute `name` index string will be \"znamez:'Some name'\""
+                        }
                     }
-                  }
                 },
                 "softLock": {
-                  "type": "object",
-                  "description": "Soft lock mixin. Server blocks record for entity by 'lockEntity' param and 'lockIdentifier' identifier. TODO - explain",
-                  "properties":{
-                    "lockIdentifier": {
-                      "type": "string",
-                      "description": "Attribute, that identifies entity record (for example `ID` for main entity or `docID` for detail entity)"
-                    },
-                    "lockEntity": {
-                      "type": "string",
-                      "description": "Entity, that will be locked (for detail entity can be differ with the current entity)"
+                    "type": "object",
+                    "description": "Soft lock mixin. Server blocks record for entity by 'lockEntity' param and 'lockIdentifier' identifier. TODO - explain",
+                    "properties": {
+                        "lockIdentifier": {
+                            "type": "string",
+                            "description": "Attribute, that identifies entity record (for example `ID` for main entity or `docID` for detail entity)"
+                        },
+                        "lockEntity": {
+                            "type": "string",
+                            "description": "Entity, that will be locked (for detail entity can be differ with the current entity)"
+                        }
                     }
-                  }
                 },
                 "clobTruncate": {
-                  "type": "object",
-                  "description": "mixin for truncate Oracle clob field data to short string",
-                  "properties":{
-                    "attributeList": {
-                      "type": "object",
-                      "description": "List of attributes for truncate: {\"attr1\": {\"size\": 100 }, ....}",
-                      "additionalProperties": true
+                    "type": "object",
+                    "description": "mixin for truncate Oracle clob field data to short string",
+                    "properties": {
+                        "attributeList": {
+                            "type": "object",
+                            "description": "List of attributes for truncate: {\"attr1\": {\"size\": 100 }, ....}",
+                            "additionalProperties": true
+                        }
                     }
-                  }
                 }
             }
         },
@@ -456,7 +491,7 @@
                             "type": "object",
                             "additionalProperties": false,
                             "description": "Attribute to be included in index",
-                            "properties":{
+                            "properties": {
                                 "sort": {
                                     "type": "string",
                                     "description": "Sort order",
@@ -480,7 +515,7 @@
             "properties": {
                 "nameOfYourFeature": {
                     "type": "object",
-                    "required": [ "type"],
+                    "required": ["type"],
                     "description": "Feature definition. DB object with the same name will be created in DB (index name, check name, FK name)",
                     "additionalProperties": true,
                     "properties": {
