@@ -23,9 +23,9 @@
 </template>
 
 <script>
-  import objectControl from "./ObjectControl.vue";
+  const objectControl = require("./ObjectControl.vue");
 
-  export default {
+  module.exports = {
     props: {
       currentRow: [Object, undefined],
       schema: {

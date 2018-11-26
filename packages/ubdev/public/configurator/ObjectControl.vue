@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table>
+    <table class="vue_ui_table_objectControll">
       <tr v-for="item in Object.keys(currentObj).map((key) => { return { name: key, value: currentObj[key] } })" :key="item.name"
         class="vue_ui_objectControl_row">
         <td class="vue_ui_objectControl_cell" style="width:35%">{{item.name}}:</td>
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-  export default {
+
+  module.exports = {
     props: {
       row: {
         type: Object,
@@ -79,7 +80,7 @@
     margin-bottom: 0px;
   }
 
-  table {
+  .vue_ui_table_objectControll {
     background-color: white;
     padding: 5px;
   }

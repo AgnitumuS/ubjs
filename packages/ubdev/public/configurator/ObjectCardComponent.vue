@@ -58,9 +58,9 @@
 </template>
 
 <script>
-  import propertyCardComponent from "./PropertyCardComponent.vue"
+  const propertyCardComponent = require("./PropertyCardComponent.vue");
 
-  export default {
+  module.exports = {
     props: {
       metaObject: {
         type: Object,
