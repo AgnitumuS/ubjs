@@ -5,9 +5,11 @@ const _ = require('lodash')
 const fs = require('fs')
 
 const UB = require('@unitybase/ub')
+const UBA = require('@unitybase/base').uba_common
 const App = UB.App
 const Session = UB.Session
 
+// eslint-disable-next-line no-undef,camelcase
 const me = tst_service
 
 tstm1.myFunc('fake')
@@ -164,22 +166,27 @@ me.handledExceptionTest = function (ctx) {
 }
 me.entity.addMethod('handledExceptionTest')
 
+function doAsUser () {
+  // uParam.ID = userID;
+  // uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
+  let store = UB.DataStore('uba_user')
+  store.run('update', {
+    fieldList: ['ID'],
+    '__skipOptimisticLock': true,
+    execParams: {ID: UBA.USERS.ADMIN.ID, name: UBA.USERS.ADMIN.NAME}
+  })
+  return JSON.stringify(Session.uData)
+}
 /**
  * Test Session.runAsAdmin
  * @param {ubMethodParams} ctx
  */
 me.runAsAdminTest = function (ctx) {
   let uDataBefore = _.cloneDeep(Session.uData)
-  let uDataInsidePseudoAdmin = Session.runAsAdmin(function () {
-    // uParam.ID = userID;
-    // uParam.mi_modifyDate = UB.Repository('uba_user').attrs(['ID','mi_modifyDate']).where('ID', '=', 'userID').select().get('mi_modifyDate');
-    let store = UB.DataStore('uba_user')
-    store.run('update', {
-      fieldList: ['ID'],
-      '__skipOptimisticLock': true,
-      execParams: {ID: 10, name: 'admin'}
-    })
-    return JSON.stringify(Session.uData)
+  let uDataInsidePseudoAdmin = Session.runAsAdmin(doAsUser)
+  let elsUID = UB.Repository('uba_user').attrs('ID').where('name', '=', 'testelsuser').selectScalar()
+  let uDatainsidePseudoAdmin2level = Session.runAsAdmin(function () {
+    return Session.runAsUser(elsUID, doAsUser)
   })
   let uDataAfter = Session.uData
   console.log('uDataInsidePseudoAdmin', uDataInsidePseudoAdmin)
@@ -187,6 +194,7 @@ me.runAsAdminTest = function (ctx) {
   ctx.mParams.runAsAdminUData.before = uDataBefore
   ctx.mParams.runAsAdminUData.after = uDataAfter
   ctx.mParams.runAsAdminUData.uDataInsidePseudoAdmin = uDataInsidePseudoAdmin
+  ctx.mParams.runAsAdminUData.uDataInsidePseudoAdmin2level = uDatainsidePseudoAdmin2level
 }
 me.entity.addMethod('runAsAdminTest')
 

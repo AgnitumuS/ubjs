@@ -181,7 +181,8 @@ Object.defineProperty(Session, 'callerIP', {
  */
 Session.setUser = sessionBinding.switchUser
 /**
- * Call function as admin.
+ * Call function as build-in `admin` user. `runAs*` functions allow maximum of 2 level depth of recursion.
+ *
  * Built-in "always alive"(newer expired) `admin` session is always created when the application starts,
  * so this is very cheap method - it will not trigger Session.login event every time context is switched (Session.setUser and Session.runAsUser does)
  * Can be used in scheduled tasks, not-authorized methods, etc. to obtain a `admin` Session context
@@ -199,7 +200,8 @@ Session.runAsAdmin = function (func) {
   return result
 }
 /**
- * Call function as custom user.
+ * Call function as a specified user. `runAs*` functions allow maximum of 2 level depth of recursion.
+ *
  * New session will be created. Will fire `login` event.
  * @param userID ID of  user
  * @param func Function to be called in user's session.
