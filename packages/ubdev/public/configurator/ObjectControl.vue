@@ -1,9 +1,9 @@
 <template>
   <div>
-    <table class="vue_ui_table_objectControll">
+    <table class="object-control__table">
       <tr v-for="item in Object.keys(currentObj).map((key) => { return { name: key, value: currentObj[key] } })" :key="item.name"
-        class="vue_ui_objectControl_row">
-        <td class="vue_ui_objectControl_cell" style="width:35%">{{item.name}}:</td>
+          class="object-control__row">
+        <td class="object-control__cell" style="width:35%">{{item.name}}:</td>
         <td style="width:55%">
           <el-input placeholder="Value" v-model="currentObj[item.name]" size="small" />
         </td>
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-
   module.exports = {
     props: {
       row: {
@@ -67,20 +66,20 @@
 </script>
 
 <style>
-  .vue_ui_objectControl_cell {
+  .object-control__cell {
     text-align: right !important;
     padding-right: 2% !important;
   }
 
-  .vue_ui_objectControl_row {
+  .object-control__row {
     margin-bottom: 5px;
   }
 
-  .vue_ui_objectControl_row :last-child {
+  .object-control__row :last-child {
     margin-bottom: 0px;
   }
 
-  .vue_ui_table_objectControll {
+  .object-control__table {
     background-color: white;
     padding: 5px;
   }
