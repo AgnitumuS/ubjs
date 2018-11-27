@@ -660,7 +660,17 @@ Ext.define('UB.ux.UBMetaDiagram', {
       if (cell) {
         var objectCode = cell.getAttribute('objectCode')
         if (objectCode) {
-          me.showEntityForm(objectCode)
+          if (UB.connection.domain.models.UBDEV) {
+            $App.doCommand({
+              "cmdType": "showForm",
+              "formCode": "ubdev_metadata",
+              "cmdData": {
+                "entityCode": objectCode
+              }
+            })
+          } else {
+            me.showEntityForm(objectCode)
+          }
         } else {
           if (editor.graph.isEnabled() && editor.graph.isCellEditable(cell)) {
             editor.graph.startEditingAtCell(cell)
