@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.6.12]
 ### Added
- - vue based form `mount` function accept `cmdData` as a parameter
+ - vue based form `mount` function accept `commandConfig` as a parameter
  ```javascript
 $App.doCommand({
   "cmdType": "showForm",
