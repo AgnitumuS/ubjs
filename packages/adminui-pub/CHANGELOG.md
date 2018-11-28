@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.12]
+### Added
+ - vue based form `mount` function accept `commandConfig` as a parameter
+ ```javascript
+$App.doCommand({
+  "cmdType": "showForm",
+  "formCode": "ubdev_metadata",
+  "cmdData": {
+    "entityCode": objectCode
+  }
+})
+```
+
 ## [5.6.10]
 ### Fixed
  - add nonce for unhandled rejection polyfill script to bypass a CSP rules in production mode  
