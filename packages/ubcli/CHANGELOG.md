@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.2]
+### Fixed
+ - `npx ubcli generateNgingCfg` will generate correct `ssl_ciphers` list
+ - `npx ubcli generateNgingCfg` will add `listen 443 ssl;` in case external URL is HTTPS
+ 
+### Changed
+ - `npx ubcli generateNgingCfg` will enable **HTTP 2.0** in case external URL is HTTPS  
+ - `ln -s` sample for nginx config will change config file name to the site host name. 
+   This help to manage a big productions configs.  
+
 ## [5.2.0]
 ### Added 
  - `npx ubcli` will display short commands descriptions in addition to command names

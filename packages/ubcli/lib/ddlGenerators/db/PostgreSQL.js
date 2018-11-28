@@ -264,12 +264,12 @@ ORDER BY index_id, column_position`
    */
   genCodeUpdate (table, column, updateType, value) {
     function quoteIfNeed (v) {
+      if (column.isString && v && /min\(code\)/.test(v)) return v // special case for updating enum - unitybase/ubjs#23
       return column.isString
         ? (!column.defaultValue && (column.refTable || column.enumGroup)
           ? v.replace(/'/g, "''")
           : "'" + v.replace(/'/g, '') + "'")
         : v
-      //  return ((!column.isString || (!column.defaultValue && (column.refTable || column.enumGroup))) ? v : "''" + v.replace(/'/g,'') + "''" );
     }
     switch (updateType) {
       case 'updConstComment':

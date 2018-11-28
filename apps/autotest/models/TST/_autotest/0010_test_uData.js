@@ -2,10 +2,8 @@
  * Created by pavel.mash on 25.05.2015.
  */
 const assert = require('assert')
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
-const path = require('path')
 const _ = require('lodash')
 const UBA = require('@unitybase/base').uba_common
 
@@ -41,6 +39,9 @@ module.exports = function runUDataTest (options) {
     })
     assert.deepEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
     let uDataInsidePseudoAdmin = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin)
+    let uDataInsidePseudoAdmin2level = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin2level)
+    assert.deepEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
+    assert.equal(uDataInsidePseudoAdmin2level.roles, 'Everyone,User,testRole,Admin', 'uData after 2 level of recursion runAs must be for testelsuser')
     // should be {"lang":"en","login":"admin","roles":"Admin","roleIDs":[1],"userID":10}
     assert.equal(uDataInsidePseudoAdmin.roles, UBA.ROLES.ADMIN.NAME)
     assert.deepEqual(uDataInsidePseudoAdmin.roleIDs, [UBA.ROLES.ADMIN.ID])
