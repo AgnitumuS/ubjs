@@ -4,7 +4,7 @@ const tpl = `<el-scrollbar style="height: 100%;"><configurator-component :fileNa
 
 const $App = require('@unitybase/adminui-pub')
 exports.mount = function (params) {
-  if (params && params.entityCode) {
+  if (params && params.cmdData && params.cmdData.entityCode) {
     let tab = $App.viewport.centralPanel.add({
       title: 'MetaEditor',
       style: {
@@ -17,7 +17,7 @@ exports.mount = function (params) {
       template: tpl,
       data: function () {
         return {
-          fileName: params.entityCode
+          fileName: params.cmdData.entityCode
         }
       }
     })
