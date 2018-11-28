@@ -4,7 +4,7 @@
     "attributes": [
         {
             "name": "name",
-            "caption": "შესვლა"
+            "caption": "მომხმარებლის შესვლა"
         },
         {
             "name": "firstName",

@@ -558,7 +558,7 @@ Ext.define('UB.core.UBCommand', {
 
         UB.core.UBFormLoader.getFormViewAndController({formCode: me.formCode}).then(function (formDefinition) {
           if (formDefinition.formType === 'vue') {
-            formDefinition.formController.mount()
+            formDefinition.formController.mount(me.commandConfig)
           } else {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)
           }
