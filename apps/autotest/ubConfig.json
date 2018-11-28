@@ -74,7 +74,7 @@
 	"application": {
 		"defaultLang": "en",
 		"rootHandler": "index.html",
-		"schedulers": {"enabled": false},
+		"schedulers": {"enabled": true},
 		"domain": {
 			"models": [
 				{

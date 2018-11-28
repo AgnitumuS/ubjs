@@ -7,5 +7,40 @@
 		"singleton": true,
 		"runAs": "admin",
 		"logSuccessful": true
+	},
+	{
+		"name": "Scheduler for testing purpose1",
+		"cron": "30 */1 * * * *",
+		"command": "tst_service.schedulerTest1",
+		"schedulingCondition": "ubs_settings.getSettingValue('doc.controlTask.autoCreate') || true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
+	},
+	{
+		"name": "Scheduler for testing purpose2",
+		"cron": "30 */1 * * * *",
+		"command": "tst_service.schedulerTest2",
+		"schedulingCondition": "ubs_settings.getSettingValue('doc.controlTask.autoCreate') || true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
+	},
+	{
+		"name": "Scheduler for testing purpose3",
+		"cron": "30 */1 * * * *",
+		"command": "tst_service.schedulerTest3",
+		"schedulingCondition": "ubs_settings.getSettingValue('doc.controlTask.autoCreate') || true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
+	},{
+		"name": "Scheduler for testing purpose4",
+		"cron": "30 */1 * * * *",
+		"command": "tst_service.schedulerTest4",
+		"schedulingCondition": "ubs_settings.getSettingValue('doc.controlTask.autoCreate') || true",
+		"singleton": true,
+		"runAs": "admin",
+		"logSuccessful": true
 	}
 ]

@@ -18,6 +18,7 @@ err()
 
 rm -f ./_autotestResults*.json
 rm -f ./last_result.log
+rm ./logs/*.log
 
 TESTCASE='hello'
 ub -e "console.log('Start autotest')"
