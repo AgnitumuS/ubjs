@@ -1,4 +1,10 @@
+/* global nsha256, Session */
 const USERS = {
+  ROOT: {
+    ID: 7,
+    NAME: 'root',
+    HASH: '-' // Root uses nonce based password
+  },
   ADMIN: {
     ID: 10,
     NAME: 'admin',
@@ -63,6 +69,14 @@ const ROLES = {
 }
 
 /**
+ * Check logged in user is superuser (member of Admin role or root)
+ * @returns {boolean}
+ */
+function isSuperUser () {
+  return Session.uData.roleIDs.indexOf(ROLES.ADMIN.ID) > -1
+}
+
+/**
  * Constants for administrative security model
  * @author pavel.mash 15.09.2016
  * @module uba_common
@@ -96,7 +110,7 @@ module.exports = {
     if (role === ROLES.USER.ID) {
       throw new Error(`<<<${ROLES.USER.ID} pseudo-role is assigned automatically>>>`)
     }
-    if ((role === ROLES.ADMIN.ID) && (Session.userRoleNames.split(',').indexOf(ROLES.ADMIN.NAME) === -1)) {
+    if ((role === ROLES.ADMIN.ID) && (!isSuperUser())) {
       throw new Error(`<<<Only members with ${ROLES.ADMIN.NAME} role are allowed for assign a ${ROLES.ADMIN.NAME} role to other members>>>`)
     }
   },
@@ -104,7 +118,5 @@ module.exports = {
    * Check logged in user is superuser (have a Admin role)
    * @returns {boolean}
    */
-  isSuperUser: function () {
-    return Session.uData.roleIDs.indexOf(ROLES.ADMIN.ID) > -1
-  }
+  isSuperUser: isSuperUser
 }

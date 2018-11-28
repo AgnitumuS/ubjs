@@ -3,6 +3,8 @@ const Worker = require('@unitybase/base').Worker
 const UB = require('@unitybase/ub')
 const App = UB.App
 
+if (!process.rootOTP) throw new Error('This version of @unitybase/ubq require UB>=5.6.1')
+
 if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
   if (process.startupMode === 'CmdLine') {
     App.globalCachePut(GLOBAL_CACHE_INITIALIZED_ENTRY, 'yes')
@@ -22,7 +24,7 @@ if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
  */
 function startSchedulers () {
   let cfgForWorker = []
-  let usersApiKeys = {}
+  let usersIDs = {}
 
   if (App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
     console.debug('SCHEDULER: UBQ.initializeSchedulers already executed')
@@ -32,7 +34,6 @@ function startSchedulers () {
   App.globalCachePut(GLOBAL_CACHE_INITIALIZED_ENTRY, 'yes')
   console.debug('SCHEDULER: executing UBQ.initializeSchedulers')
 
-  let store = UB.DataStore('uba_user')
   /** @type {Array<ubq_scheduler_ns>} */
   let schedulers = UB.Repository('ubq_scheduler').attrs('*').selectAsObject()
   for (let i = 0, l = schedulers.length; i < l; i++) {
@@ -50,14 +51,14 @@ function startSchedulers () {
         continue
       }
     }
-    if (!usersApiKeys.hasOwnProperty(item.runAs)) {
-      store.runSQL('select uPasswordHashHexa from uba_user where name = :user: AND disabled=0', {user: item.runAs})
-      if (!store.eof) {
-        usersApiKeys[item.runAs] = store.get(0)
+    if (!usersIDs.hasOwnProperty(item.runAs)) {
+      let uID = UB.Repository('uba_user').attrs('ID').where('name', '=', item.runAs).selectScalar()
+      if (uID) {
+        usersIDs[item.runAs] = uID
       }
     }
-    if (!usersApiKeys[item.runAs]) {
-      console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user or it\'s uba_user.uPasswordHashHexa is empty. Item', item.name, 'DISABLED')
+    if (!usersIDs[item.runAs]) {
+      console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user. Item', item.name, 'DISABLED')
       continue
     }
     cfgForWorker.push({
@@ -67,7 +68,7 @@ function startSchedulers () {
       module: item.module,
       singleton: item.singleton,
       runAs: item.runAs,
-      apiKey: usersApiKeys[item.runAs],
+      runAsID: usersIDs[item.runAs],
       logSuccessful: item.logSuccessful
     })
   }
