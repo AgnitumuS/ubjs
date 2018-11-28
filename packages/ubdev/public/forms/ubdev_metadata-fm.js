@@ -5,8 +5,10 @@ const tpl = `<el-scrollbar style="height: 100%;"><configurator-component :fileNa
 const $App = require('@unitybase/adminui-pub')
 exports.mount = function (params) {
   if (params && params.cmdData && params.cmdData.entityCode) {
+    let tabTitle = 'MetaEditor(' + params.cmdData.entityCode + ')'
     let tab = $App.viewport.centralPanel.add({
-      title: 'MetaEditor',
+      title: tabTitle,
+      tooltip: params.cmdData.entityCode,
       style: {
         'padding-top': '3px'
       },
