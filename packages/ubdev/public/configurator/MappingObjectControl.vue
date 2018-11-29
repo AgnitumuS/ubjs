@@ -5,44 +5,50 @@
         <el-row type="flex">
           <el-col>
             <el-select v-model="item.name" placeholder="Name">
-              <el-option v-for="value in schema.properties.name.enum" :key="value" :label="value" :value="value"></el-option>
+              <el-option v-for="value in schema.properties.name.enum" :key="value" :label="value"
+                         :value="value"></el-option>
             </el-select>
           </el-col>
           <el-col>
             <el-select v-model="item.expressionType" placeholder="ExpressionType">
-              <el-option v-for="value in schema.properties.expressionType.enum" :key="value" :label="value" :value="value"></el-option>
+              <el-option v-for="value in schema.properties.expressionType.enum" :key="value"
+                         :label="value" :value="value"></el-option>
             </el-select>
           </el-col>
         </el-row>
         <el-row>
           <el-col>
-            <el-input v-model="item.expression" placeholder="Expression" />
+            <el-input v-model="item.expression" placeholder="Expression"/>
           </el-col>
         </el-row>
         <el-row type="flex" justify="end">
-            <el-col :span="5">
-              <el-button type="danger" size="small" icon="el-icon-delete" @click="removeProperty(item)">Delete</el-button>
-            </el-col>
-          </el-row>
+          <el-col :span="5">
+            <el-button type="danger" size="small" icon="el-icon-delete" @click="removeProperty(item)">
+              Delete
+            </el-button>
+          </el-col>
+        </el-row>
       </el-card>
     </div>
     <div>
       <el-card shadow="never">
-          <el-row type="flex">
-              <el-col>
-                  <el-select v-model="currentDB" placeholder="Name">
-                      <el-option v-for="value in schema.properties.name.enum" :key="value" :label="value" :value="value"></el-option>
-                  </el-select>
-              </el-col>
-              <el-col>
-                  <el-select v-model="currentType" placeholder="ExpressionType">
-                      <el-option v-for="value in schema.properties.expressionType.enum" :key="value" :label="value" :value="value"></el-option>
-                  </el-select>
-              </el-col>
-          </el-row>
+        <el-row type="flex">
+          <el-col>
+            <el-select v-model="currentDB" placeholder="Name">
+              <el-option v-for="value in schema.properties.name.enum" :key="value" :label="value"
+                         :value="value"></el-option>
+            </el-select>
+          </el-col>
+          <el-col>
+            <el-select v-model="currentType" placeholder="ExpressionType">
+              <el-option v-for="value in schema.properties.expressionType.enum" :key="value"
+                         :label="value" :value="value"></el-option>
+            </el-select>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col>
-            <el-input v-model="currentValue" placeholder="Expression" />
+            <el-input v-model="currentValue" placeholder="Expression"/>
           </el-col>
         </el-row>
         <el-row type="flex" justify="end">
@@ -68,7 +74,7 @@
         required: true
       },
     },
-    data() {
+    data () {
       return {
         currentDB: null,
         currentType: null,
@@ -77,34 +83,34 @@
     },
     computed: {
       currentObj: {
-        get() {
+        get () {
           if (typeof this.row[this.propName] !== 'object') {
-            this.$emit('setPropValue', this.propName, []);
-            this.$forceUpdate();
+            this.$emit('setPropValue', this.propName, [])
+            this.$forceUpdate()
           }
-          return this.row[this.propName];
+          return this.row[this.propName]
         },
-        set(value) {
-          this.row[this.propName] = value;
+        set (value) {
+          this.row[this.propName] = value
         }
       }
     },
     methods: {
-      removeProperty(item) {
+      removeProperty (item) {
         this.currentObj = this.currentObj.filter((obj) => {
-          return item !== obj;
+          return item !== obj
         }, this)
       },
-      addProperty() {
+      addProperty () {
         if (this.currentDB && this.currentValue) {
           this.currentObj.push({
             name: this.currentDB,
             expressionType: this.currentType,
             expression: this.currentValue
           })
-          this.currentDB = null;
-          this.currentType = null;
-          this.currentValue = null;
+          this.currentDB = null
+          this.currentType = null
+          this.currentValue = null
         }
       }
     }

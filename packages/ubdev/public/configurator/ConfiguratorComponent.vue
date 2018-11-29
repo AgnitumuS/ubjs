@@ -4,7 +4,8 @@
       <objCardComponent :metaObject="metaObject" :fileName="fileName" :schema="schemeAttributes"></objCardComponent>
     </el-tab-pane>
     <el-tab-pane label="Mixins">
-      <mixinsCardComponent :mixins="metaObject.mixins" :schema="schemaObject.properties.mixins.properties"></mixinsCardComponent>
+      <mixinsCardComponent :mixins="metaObject.mixins"
+                           :schema="schemaObject.properties.mixins.properties"></mixinsCardComponent>
     </el-tab-pane>
     <el-tab-pane id="sourceTab" label="Source">
       <el-input :id="_uid" type="textarea" v-model="outputJson"></el-input>
@@ -13,8 +14,8 @@
 </template>
 
 <script>
-  const objCardComponent = require("./ObjectCardComponent.vue");
-  const mixinsCardComponent = require("./MixinsCardComponent.vue");
+  const objCardComponent = require('./ObjectCardComponent.vue')
+  const mixinsCardComponent = require('./MixinsCardComponent.vue')
 
   module.exports = {
     props: {
@@ -23,7 +24,7 @@
         required: true
       }
     },
-    data() {
+    data () {
       return {
         metaObject: null,
         schemaObject: null,
@@ -31,7 +32,7 @@
       }
     },
     computed: {
-      schemeAttributes() {
+      schemeAttributes () {
         return this.schemaObject.properties.attributes.items.properties
       },
       outputJson: {
@@ -40,7 +41,7 @@
             let minObj = {...this.metaObject}
             minObj.attributes.forEach((attribute) => {
               Object.keys(attribute).forEach((key) => {
-                let schemeAttr = this.schemeAttributes[key];
+                let schemeAttr = this.schemeAttributes[key]
                 if (!schemeAttr) this.$delete(attribute, key)
                 if (schemeAttr && schemeAttr.default && attribute[key] === schemeAttr.default) {
                   this.$delete(attribute, key)
@@ -51,21 +52,21 @@
           }
         },
         set: function (newValue) {
-          this.initMetaObject(newValue);
+          this.initMetaObject(newValue)
         }
       }
     },
-    created() {
+    created () {
       if (this.fileName) {
-        let entity = $App.domainInfo.get(this.fileName);
-        if (entity) this.initMetaObject(entity);
+        let entity = $App.domainInfo.get(this.fileName)
+        if (entity) this.initMetaObject(entity)
       }
-      UB.get("models/UB/schemas/entity.schema.json").then((response) => {
-        this.schemaObject = response.data;
+      UB.get('models/UB/schemas/entity.schema.json').then((response) => {
+        this.schemaObject = response.data
       })
     },
     methods: {
-      initCodeMirror() {
+      initCodeMirror () {
         if (!this.codeMirror) {
           System.import('@unitybase/codemirror-full').then((CodeMirror) => {
             var el = document.getElementById(this._uid)
@@ -94,18 +95,18 @@
           }, this)
         }
       },
-      jsonReplacer(key, value) {
+      jsonReplacer (key, value) {
         if (
-          (value !== "" && value !== null && value !== undefined && typeof value !== "object") ||
-          (typeof value === "object" && Object.keys(value).length !== 0)
-        ) return value;
+          (value !== '' && value !== null && value !== undefined && typeof value !== 'object') ||
+          (typeof value === 'object' && Object.keys(value).length !== 0)
+        ) return value
       },
-      refreshCodeMirror() {
-        setTimeout(function() {
+      refreshCodeMirror () {
+        setTimeout(function () {
           this.codeMirror.refresh()
-        }.bind(this),1)
+        }.bind(this), 1)
       },
-      reloadCodeMirrorData() {
+      reloadCodeMirrorData () {
         if (arguments[0].$attrs.id === 'sourceTab') {
           this.initCodeMirror()
           if (this.codeMirror) {
@@ -113,15 +114,15 @@
           }
         }
       },
-      initMetaObject(json) {
-        this.metaObject = typeof json === "string" ? JSON.parse(json) : {...json};
+      initMetaObject (json) {
+        this.metaObject = typeof json === 'string' ? JSON.parse(json) : {...json}
         if (this.metaObject) {
           if (!Array.isArray(this.metaObject.attributes)) {
             Object.keys(this.metaObject.attributes).forEach((propertyName) => {
-              if (!this.metaObject.attributes[propertyName]["name"])
-                this.$set(this.metaObject.attributes[propertyName], "name", propertyName);
-            });
-            this.$set(this.metaObject, "attributes", Object.values(this.metaObject.attributes));
+              if (!this.metaObject.attributes[propertyName]['name'])
+                this.$set(this.metaObject.attributes[propertyName], 'name', propertyName)
+            })
+            this.$set(this.metaObject, 'attributes', Object.values(this.metaObject.attributes))
           }
         }
       }
