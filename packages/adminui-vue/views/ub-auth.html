@@ -177,7 +177,7 @@
       </div>
       <div v-else>
       <el-form :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
-          <div v-if="hasCERT2()">
+          <div v-if="hasCERT2">
               <p class="auth-page__cert-info" v-html="$ut('useCertificateInfoSimple')"></p>
               <el-form-item>
                   <el-button type="secondary" plain style="width: 100%" @click.prevent="fileSelectClick">
@@ -195,7 +195,7 @@
               </el-form-item>
           </div>
 
-          <div v-if="hasNegotiate()">
+          <div v-if="hasNegotiate">
               <el-tooltip :content="$ut('KerberosTip')" placement="bottom" effect="light">
                   <i class="auth-page__tooltip fa fa-question-circle-o"></i>
               </el-tooltip>
@@ -209,12 +209,12 @@
               </el-form-item>
           </div>
 
-          <div v-if="hasUB()">
-              <div v-if="hasCERT2() || hasNegotiate()">
+          <div v-if="hasUB">
+              <div v-if="hasCERT2 || hasNegotiate">
                   <hr>
-                  <el-switch v-model="ubAuthHidden" :active-text="$ut('AdditionalLoginOptions')"></el-switch>
-              <div>
-              <div v-if="ubAuthHidden">
+                  <el-switch v-model="ubAuthVisible" :active-text="$ut('AdditionalLoginOptions')"></el-switch>
+              </div>
+              <div v-if="ubAuthVisible">
                   <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
                       <i class="auth-page__tooltip fa fa-question-circle-o"></i>
                   </el-tooltip>
@@ -257,6 +257,7 @@
         topLogoURL: '/models/ub-pub/img/ub-login-logo.png',
         silenceKerberosLogin: window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
         authMethods: null,
+        ubAuthVisible: true,
         userDidLogout: window.localStorage.getItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT) === 'true',
         authData: {user: '', pwd: ''},
         keyFile: null,
@@ -279,26 +280,26 @@
         } else {
           window.localStorage.removeItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT)
         }
+      },
+      hasNegotiate() {
+        this.ubAuthVisible = !(this.hasNegotiate || this.hasCERT2)
+      },
+      hasCERT2() {
+        this.ubAuthVisible = !(this.hasNegotiate || this.hasCERT2)
       }
     },
     computed: {
-      ubAuthHidden() {
-        return this.hasNegotiate() || this.hasCERT2()
+      hasNegotiate() {
+        return !this.hasCERT2 && this.authMethods && (this.authMethods.indexOf('Negotiate') !== -1)
+      },
+      hasUB() {
+        return !this.hasCERT2 && this.authMethods && (this.authMethods.indexOf('UB') !== -1)
+      },
+      hasCERT2() {
+        return this.authMethods && (this.authMethods.indexOf('CERT2') !== -1)
       }
     },
     methods: {
-      toggleOptions: function () {
-        this.ubAuthHidden = !this.ubAuthHidden
-      },
-      hasNegotiate: function () {
-        return !this.hasCERT2() && this.authMethods && (this.authMethods.indexOf('Negotiate') !== -1)
-      },
-      hasUB: function () {
-        return !this.hasCERT2() && this.authMethods && (this.authMethods.indexOf('UB') !== -1)
-      },
-      hasCERT2: function () {
-        return this.authMethods && (this.authMethods.indexOf('CERT2') !== -1)
-      },
       fileSelectClick: function () {
         this.$refs['keyFileInput'].click()
       },
