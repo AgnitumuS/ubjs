@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/draw-service",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Micro service for creating PNG picture based on series of commands",
   "main": "drawer.js",
   "scripts": {
