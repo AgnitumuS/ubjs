@@ -16,7 +16,7 @@
             <span style="float: left">{{ item }}</span>
           </el-option>
         </el-select>
-        <mappingObjectControl v-else-if="prop.name === 'mapping'" :row="currentRow" :propName="prop.name" v-on:setPropValue="setPropValue"></mappingObjectControl>
+        <mappingObjectControl v-else-if="prop.name === 'mapping'" :row="currentRow" :propName="prop.name" :schema="schema.mapping.items" v-on:setPropValue="setPropValue"></mappingObjectControl>
         <el-input v-else-if="!prop.enum" :type="prop.type === 'number' ? 'number' : 'text'" v-model="currentRow[prop.name]" />
       </el-form-item>
     </el-form>

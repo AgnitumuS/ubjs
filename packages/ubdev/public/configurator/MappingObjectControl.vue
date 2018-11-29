@@ -4,10 +4,14 @@
       <el-card shadow="never">
         <el-row type="flex">
           <el-col>
-            <el-input v-model="item.name" placeholder="Name" />
+            <el-select v-model="item.name" placeholder="Name">
+              <el-option v-for="value in schema.properties.name.enum" :key="value" :label="value" :value="value"></el-option>
+            </el-select>
           </el-col>
           <el-col>
-            <el-input v-model="item.expressionType" placeholder="ExpressionType" />
+            <el-select v-model="item.expressionType" placeholder="ExpressionType">
+              <el-option v-for="value in schema.properties.expressionType.enum" :key="value" :label="value" :value="value"></el-option>
+            </el-select>
           </el-col>
         </el-row>
         <el-row>
@@ -24,14 +28,18 @@
     </div>
     <div>
       <el-card shadow="never">
-        <el-row type="flex">
-          <el-col>
-            <el-input v-model="currentDB" placeholder="Name" />
-          </el-col>
-          <el-col>
-            <el-input v-model="currentType" placeholder="ExpressionType" />
-          </el-col>
-        </el-row>
+          <el-row type="flex">
+              <el-col>
+                  <el-select v-model="currentDB" placeholder="Name">
+                      <el-option v-for="value in schema.properties.name.enum" :key="value" :label="value" :value="value"></el-option>
+                  </el-select>
+              </el-col>
+              <el-col>
+                  <el-select v-model="currentType" placeholder="ExpressionType">
+                      <el-option v-for="value in schema.properties.expressionType.enum" :key="value" :label="value" :value="value"></el-option>
+                  </el-select>
+              </el-col>
+          </el-row>
         <el-row>
           <el-col>
             <el-input v-model="currentValue" placeholder="Expression" />
@@ -54,7 +62,11 @@
         type: Object,
         required: true
       },
-      propName: String
+      propName: String,
+      schema: {
+        type: Object,
+        required: true
+      },
     },
     data() {
       return {
@@ -84,7 +96,7 @@
         }, this)
       },
       addProperty() {
-        if (this.currentDB && this.currentType && this.currentValue) {
+        if (this.currentDB && this.currentValue) {
           this.currentObj.push({
             name: this.currentDB,
             expressionType: this.currentType,
