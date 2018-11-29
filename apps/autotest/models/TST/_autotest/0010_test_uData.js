@@ -41,7 +41,8 @@ module.exports = function runUDataTest (options) {
     let uDataInsidePseudoAdmin = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin)
     let uDataInsidePseudoAdmin2level = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin2level)
     assert.deepEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
-    assert.equal(uDataInsidePseudoAdmin2level.roles, 'Everyone,User,testRole,Admin', 'uData after 2 level of recursion runAs must be for testelsuser')
+    assert.equal(uDataInsidePseudoAdmin2level.roles, 'Everyone,User,testRole,Admin',
+      'uData after 2 level of recursion runAs must be "Everyone,User,testRole,Admin" but got ' + uDataInsidePseudoAdmin2level.roles)
     // should be {"lang":"en","login":"admin","roles":"Admin","roleIDs":[1],"userID":10}
     assert.equal(uDataInsidePseudoAdmin.roles, UBA.ROLES.ADMIN.NAME)
     assert.deepEqual(uDataInsidePseudoAdmin.roleIDs, [UBA.ROLES.ADMIN.ID])
