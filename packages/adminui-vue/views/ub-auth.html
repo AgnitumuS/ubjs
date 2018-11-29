@@ -256,7 +256,7 @@
         appName: 'UnityBase',
         topLogoURL: '/models/ub-pub/img/ub-login-logo.png',
         silenceKerberosLogin: window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
-        ubAuthHidden: this.hasNegotiate() || this.hasCERT2(),
+        authMethods: null,
         userDidLogout: window.localStorage.getItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT) === 'true',
         authData: {user: '', pwd: ''},
         keyFile: null,
@@ -281,18 +281,23 @@
         }
       }
     },
+    computed: {
+      ubAuthHidden() {
+        return this.hasNegotiate() || this.hasCERT2()
+      }
+    },
     methods: {
       toggleOptions: function () {
         this.ubAuthHidden = !this.ubAuthHidden
       },
       hasNegotiate: function () {
-        return !this.hasCERT2() && this.$UB.connection && (this.$UB.connection.authMethods.indexOf('Negotiate') !== -1)
+        return !this.hasCERT2() && this.authMethods && (this.authMethods.indexOf('Negotiate') !== -1)
       },
       hasUB: function () {
-        return !this.hasCERT2() && this.$UB.connection && (this.$UB.connection.authMethods.indexOf('UB') !== -1)
+        return !this.hasCERT2() && this.authMethods && (this.authMethods.indexOf('UB') !== -1)
       },
       hasCERT2: function () {
-        return this.$UB.connection && (this.$UB.connection.authMethods.indexOf('CERT2') !== -1)
+        return this.authMethods && (this.authMethods.indexOf('CERT2') !== -1)
       },
       fileSelectClick: function () {
         this.$refs['keyFileInput'].click()
