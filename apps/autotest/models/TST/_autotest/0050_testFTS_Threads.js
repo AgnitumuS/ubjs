@@ -21,27 +21,30 @@ const transLen = parseInt(options.switchValue('transLen') || '10', 10)
 let i
 
 try {
-  console.log('start ', numThreads, 'thread')
+  console.log('Start ', numThreads, 'writer worker(s)')
   // create threads
   // MPV -temporary disable multi-thread test while not fixed!
 
   let writerPath = require.resolve('./_FTS_workerWriter.js')
   writerPath = writerPath.replace(/\\/g, '/')
   for (i = 0; i < numThreads; i++) {
+    let name = 'ftsWriter' + i
     workers.push(new Worker({
-      name: 'ftsWriter' + i,
+      name: name,
       moduleName: writerPath
     }))
-    console.log('Create worker ', i)
+    console.log('Create worker', name)
   }
 
   // add reader thread
   let readerPath = require.resolve('./_FTS_workerReader.js')
   readerPath = readerPath.replace(/\\/g, '/')
+  let name = 'ftsReader' + i
   workers.push(new Worker({
-    name: 'ftsReader' + i,
+    name: name,
     moduleName: readerPath
   }))
+  console.log('Create worker', name)
 
   i = 0
   workers.forEach(function (worker) {
@@ -49,12 +52,12 @@ try {
       signal: 'start',
       folder: __dirname,
       thread: i,
-      beginFrom: i * 100 * 0,
+      beginFrom: 0, // i * 100 * 0,
       insertCount: 99,
       serverURL: serverURL,
       transLen: transLen
     })
-    console.log('Worker ', i, 'started')
+    console.log('Worker', worker.name, 'started')
     i++
   })
   // wait for done

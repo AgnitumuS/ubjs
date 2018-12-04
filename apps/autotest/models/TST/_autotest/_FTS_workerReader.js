@@ -1,3 +1,4 @@
+/* global postMessage, terminate */
 const SyncConnection = require('@unitybase/base').SyncConnection
 
 module.exports = {
@@ -46,6 +47,8 @@ function onProcessReaderWorker (message) {
       })
       if (!res.resultData || !res.resultData.data || !res.resultData.data.length) {
         throw new Error('invalidReadSearch')
+      } else {
+        console.log(`Read ${res.resultData.data.length} rows from FTS`)
       }
     }
     return 'done'

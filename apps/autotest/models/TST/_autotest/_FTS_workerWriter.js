@@ -1,3 +1,4 @@
+/* global postMessage, terminate */
 const SyncConnection = require('@unitybase/base').SyncConnection
 const fs = require('fs')
 const path = require('path')
@@ -66,6 +67,7 @@ function onProcessWorker (message) {
       })
       curTrLen++
       if (curTrLen === transLen || i === command.beginFrom + command.insertCount - 1) {
+        console.log(`Sending ${trans.length} rows to server for FTS`)
         connection.runList(trans); trans = []; curTrLen = 0
       }
     }
