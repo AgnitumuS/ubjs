@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.4]
 ### Changed
  - **BREAKING** change default floating scale precision from 4 to 6
+ - `initDB` will ignore `-host` parameter (always used a host from config)
+ - `initDB` will ignore `-u` parameter (always used a `admin`)
+ - `initDB` will set a default password for user `admin` as specified in `-p` command line parameter.
+   Previous implementation always set the `admin` password to `admin`  
  
 ### Added 
  - DDl generator will use floating scale precision from UBDomain.FLOATING_SCALE_PRECISION constant

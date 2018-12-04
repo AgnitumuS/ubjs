@@ -31,19 +31,20 @@ rem SET UB_DEV=true
 call npx ubcli createStore -cfg %UB_CFG% -noLogo
 @if errorlevel 1 goto err
 
-call npx ubcli initDB -host %UB_HOST% -cfg %UB_CFG% -u admin -p admin -drop -create
+SET PASSWORD_FOR_ADMIN=admin
+call npx ubcli initDB -host %UB_HOST% -cfg %UB_CFG% -p %PASSWORD_FOR_ADMIN% -drop -create
 @if errorlevel 1 goto err
 
 SET TESTCASE=generateDDL
-call npx ubcli generateDDL -host %UB_HOST% -cfg %UB_CFG% -u admin -p admin -autorun
+call npx ubcli generateDDL -host %UB_HOST% -cfg %UB_CFG% -u admin -p %PASSWORD_FOR_ADMIN% -autorun
 @if errorlevel 1 goto err
 
 SET TESTCASE=initialize
-call npx ubcli initialize -cfg %UB_CFG% -u admin -p admin -host %UB_HOST%
+call npx ubcli initialize -cfg %UB_CFG% -u admin -p %PASSWORD_FOR_ADMIN% -host %UB_HOST%
 @if errorlevel 1 goto err
 
 SET TESTCASE=autotest
-call npx ubcli autotest -cfg %UB_CFG% -u admin -p admin -host %UB_HOST% -noLogo -skipModules
+call npx ubcli autotest -cfg %UB_CFG% -u admin -p %PASSWORD_FOR_ADMIN% -host %UB_HOST% -noLogo -skipModules
 @if errorlevel 1 (
   type .\_autotestResults.json
   if not [%UB_TESTRES%]==[] rename .\_autotestResults.json _autotestResults%UB_TESTRES%.json
