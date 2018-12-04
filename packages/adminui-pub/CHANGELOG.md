@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.6.13]
 ### Changed
   - prevent entering a string with all whitespaces for **required** text fields by 
-  setting `allowOnlyWhitespace` to false for `Ext.form.field.Text` descendants 
-  inside `Ext.form.field.Text.setAllowBlank` overrided handler
-          
+   setting `allowOnlyWhitespace` to false for `Ext.form.field.Text` descendants 
+   inside `Ext.form.field.Text.setAllowBlank` overrided handler
+  - default precision for **Float** attribute set to 6 (instead of 4)
+  - default UI control for **Float** attribute now validate input 
+         
 ## [5.6.12]
 ### Added
  - vue based form `mount` function accept `commandConfig` as a parameter

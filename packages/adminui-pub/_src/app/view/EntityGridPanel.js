@@ -419,7 +419,7 @@ Ext.define('UB.view.EntityGridPanel', {
           break
         case ubDataTypes.Float :
           column.align = 'right'
-          column.renderer = Ext.util.Format.numberRenderer(formatC || '0,000.0000')
+          column.renderer = Ext.util.Format.numberRenderer(formatC || '0,000.' + ''.padStart(UBDomain.FLOATING_SCALE_PRECISION, '0'))
           break
         case ubDataTypes.Currency :
           column.align = 'right'

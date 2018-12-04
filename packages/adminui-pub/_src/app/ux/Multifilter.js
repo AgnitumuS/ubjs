@@ -344,7 +344,7 @@ Ext.define('UB.ux.Multifilter', {
   /**
    * @param {String} entity
    * @param {String} attrName
-   * @param {Object} attribute
+   * @param {UBEntityAttribute} attribute
    * @param {Object} options
    * @returns {Array}
    */
@@ -359,10 +359,10 @@ Ext.define('UB.ux.Multifilter', {
       items = me.getEnumFilterInput(entity, attrName, attributeBase.customSettings.UIGridColumnClass, options)
     } else if (attribute.associatedEntity) {
       items = me.getAssociationFilterInput(entity, attrName, options)
-    } else if (attribute.dataType === 'Enum') {
+    } else if (attribute.dataType === UBDomain.ubDataTypes.Enum) {
       items = me.getEnumFilterInput(entity, attrName)
     } else {
-      var dt = UBDomain.getPhysicalDataType(attribute.dataType)
+      var dt = attribute.physicalDataType
       switch (dt) {
         case 'float':
         case 'int':
@@ -612,7 +612,7 @@ Ext.define('UB.ux.Multifilter', {
       } else if (attribute.dataType === 'Enum') {
         labelValue = item.text
       } else {
-        let dt = UBDomain.getPhysicalDataType(attribute.dataType)
+        let dt = attribute.physicalDataType
         switch (dt) {
           case 'date':
             if (item.filterType === 'period') {
