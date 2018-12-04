@@ -102,7 +102,7 @@ server {
         proxy_pass          http://{{{sendFileLocationRoot}}};
     }
     {{#wsRoot}}
-    # proxy WebSokets
+    # proxy WebSockets
     location /{{{wsRoot}}} {
         proxy_pass          http://{{{sendFileLocationRoot}}};
         proxy_http_version  1.1;

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.4]
+### Changed
+ - **BREAKING** change default floating scale precision from 4 to 6
+ 
+### Added 
+ - DDl generator will use floating scale precision from UBDomain.FLOATING_SCALE_PRECISION constant
+ (6 by default)  
+
 ## [5.2.2]
 ### Fixed
  - `npx ubcli generateNgingCfg` will generate correct `ssl_ciphers` list
