@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    setting `allowOnlyWhitespace` to false for `Ext.form.field.Text` descendants 
    inside `Ext.form.field.Text.setAllowBlank` overrided handler
   - default precision for **Float** attribute set to 6 (instead of 4)
-  - default UI control for **Float** attribute now validate input 
+  - default UI control for **Float** attribute now validate input
+  - vue loader registration is moved form `adminui-vue` to `adminui-pub` 
          
 ## [5.6.12]
 ### Added

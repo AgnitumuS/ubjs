@@ -102,7 +102,10 @@
                   '*.min.js':   { format: 'cjs' },
                   'codemirror/*.js': { format: 'cjs' },
                   'file-saver': { format: 'cjs' },
-                  '*.def': {format: 'cjs'}
+                  '*.def': {format: 'cjs'},
+                  '*.vue': {
+                    'loader': '@unitybase/systemjs-plugin-vue-ub'
+                  }
                 },
                 packageConfigPaths: ['@unitybase/*/package.json', '@ub-e/*/package.json', '@ub-d/*/package.json']
             });

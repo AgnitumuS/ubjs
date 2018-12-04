@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.33]
+### Changed
+ - vue loader registration is moved form `adminui-vue` to `adminui-pub`
+  
 ### Fixed
- - set `ub-auth` page title to the `uiSettings.adminUI.applicationTitle` just after got an application info 
+ - set `ub-auth` page title to the `uiSettings.adminUI.applicationTitle` just after got an application info
+  
  
 ## [1.0.32]
 ### Fixed

@@ -5,17 +5,6 @@ window.process = {
   env: {}
 }
 const IS_SYSTEM_JS = (typeof SystemJS !== 'undefined')
-if (IS_SYSTEM_JS) {
-  SystemJS.config({
-    meta: {
-      '*.vue': {
-        'loader': window.isDeveloperMode
-          ? '@unitybase/systemjs-plugin-vue-ub'
-          : '@unitybase/systemjs-plugin-vue-ub/dist/system_plugin_vue_ub.min.js'
-      }
-    }
-  })
-}
 
 const Vue = require('vue')
 window.Vue = Vue
