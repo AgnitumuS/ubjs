@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.33]
+### Fixed
+ - set `ub-auth` page title to the `uiSettings.adminUI.applicationTitle` just after got an application info 
+ 
 ## [1.0.32]
 ### Fixed
  - error with hidden UB auth in case this is only one possible auth method
