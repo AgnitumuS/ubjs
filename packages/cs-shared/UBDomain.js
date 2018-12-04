@@ -243,6 +243,7 @@ UBDomain.ubDataTypes = {
 }
 
 UBDomain.prototype.ubDataTypes = UBDomain.ubDataTypes
+UBDomain.FLOATING_SCALE_PRECISION = UBDomain.prototype.FLOATING_SCALE_PRECISION = 6
 
 /**
  * Types of expressions in attribute mapping

@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ```
 Error: Invalid i18n for entity "tst_document" - attribute "superOld" not exist in meta or it's dataType is empty
 ```
+ - new constant UBDomain.FLOATING_SCALE_PRECISION === 6 to be used for DDL generation and UI scale precision 
+ for attributes of type **Float**
 
 ## [5.0.12]
 ### Added
