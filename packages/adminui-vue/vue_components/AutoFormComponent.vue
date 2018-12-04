@@ -15,17 +15,18 @@
                         style="margin-bottom: 5px;">
             <el-checkbox v-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Boolean'"
                          v-model="inputData[fieldName.attributeName]"></el-checkbox>
-            <el-date-picker v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'DateTime' || entitySchema.attributes[fieldName.attributeName].dataType === 'Date'"
-                            v-model="inputData[fieldName.attributeName]" :type="entitySchema.attributes[fieldName.attributeName].dataType.toLowerCase()"
-                            placeholder="Select date and time">
+            <el-date-picker
+                v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'DateTime' || entitySchema.attributes[fieldName.attributeName].dataType === 'Date'"
+                v-model="inputData[fieldName.attributeName]"
+                :type="entitySchema.attributes[fieldName.attributeName].dataType.toLowerCase()"
+                placeholder="Select date and time">
             </el-date-picker>
-            <el-select v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Enum'"
-                       v-model="inputData[fieldName.attributeName]"
-                       filterable reserve-keyword clearable placeholder="Please enter a keyword">
-              <el-option v-for="item in externalData[fieldName.attributeName]" :key="item.code"
-                         :label="item.name" :value="item.code">
-              </el-option>
-            </el-select>
+            <ub-remote-select-component v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Enum'"
+                                        v-model="inputData[fieldName.attributeName]"
+                                        :entityName="'ubm_enum'"
+                                        :customFilter="[{column: 'eGroup', condition: '=', value:entitySchema.attributes[fieldName.attributeName].enumGroup}]"
+                                        :primaryColumn="code"
+            ></ub-remote-select-component>
             <el-input v-else v-model="inputData[fieldName.attributeName]"></el-input>
           </el-form-item>
         </el-form>
@@ -35,6 +36,8 @@
 </template>
 
 <script>
+  const ubRemoteSelectComponent = require('./UbRemoteSelectComponent.vue')
+
   module.exports = {
     props: {
       fieldsToShow: {
@@ -51,20 +54,10 @@
       }
     },
     data: function () {
-      return {
-        externalData: {}
-      }
+      return {}
     },
-    mounted () {
-      Object.keys(this.entitySchema.attributes).forEach((attributeName) => {
-        var attr = this.entitySchema.attributes[attributeName]
-        if (attr.dataType === 'Enum') {
-          UB.Repository('ubm_enum').attrs(['code', 'name', 'eGroup']).where('eGroup', '=', attr.enumGroup).select()
-            .then((result) => {
-              this.externalData[attr.name] = result
-            })
-        }
-      })
+    components: {
+      'ub-remote-select-component': ubRemoteSelectComponent
     }
   }
 </script>
