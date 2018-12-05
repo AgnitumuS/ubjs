@@ -488,7 +488,7 @@ class DDLGenerator {
       case UBDomain.ubDataTypes.Float:
         dataType = 'FLOAT'
         size = 19
-        prec = 4
+        prec = UBDomain.FLOATING_SCALE_PRECISION
         break
       case UBDomain.ubDataTypes.Currency:
         dataType = 'CURRENCY'

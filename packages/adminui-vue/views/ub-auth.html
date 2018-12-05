@@ -364,6 +364,7 @@
           : adminUICfg.applicationName[conn.preferredLocale]
         if (appName) vm.appName = appName
       }
+      if (adminUICfg.applicationTitle) document.title = adminUICfg.applicationTitle
       if (adminUICfg.loginWindowTopLogoURL) vm.topLogoURL = adminUICfg.loginWindowTopLogoURL
       if (adminUICfg.defaultPasswordForDebugOnly) vm.authData.pwd = adminUICfg.defaultPasswordForDebugOnly
       let lastLogin = localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)

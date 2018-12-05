@@ -38,7 +38,10 @@ module.exports = Worker
 function Worker (paramsObj) {
   if (typeof (paramsObj) === 'object') {
     if (!paramsObj.name) paramsObj.name = 'Worker'
+    /** @property {Number} workerID Worker ID */
     this.workerID = bindings.createThread(paramsObj)
+    /** @property {string} name Worker name */
+    this.name = paramsObj.name
   } else if (typeof (paramsObj) === 'number') {
     this.workerID = paramsObj
   }

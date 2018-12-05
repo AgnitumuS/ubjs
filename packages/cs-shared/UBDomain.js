@@ -243,6 +243,7 @@ UBDomain.ubDataTypes = {
 }
 
 UBDomain.prototype.ubDataTypes = UBDomain.ubDataTypes
+UBDomain.FLOATING_SCALE_PRECISION = UBDomain.prototype.FLOATING_SCALE_PRECISION = 6
 
 /**
  * Types of expressions in attribute mapping
@@ -482,8 +483,15 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   let me = this
   let mixinNames, mixinInfo, i18nMixin, dialectProiority
 
-  if (i18n) {
+  if (i18n && ((typeof process === 'undefined') || !process.isServer)) { // merge i18n only on client side
     _.merge(entityInfo, i18n)
+    // verify entity is valid after merging i18n: at last all attributes have dataType
+    _.forEach(entityInfo.attributes, (attrDef, attrKey) => {
+      if (!attrDef.dataType) {
+        let eMsg = `Invalid i18n for entity "${entityCode}" - attribute "${attrKey}" not exist in meta or it's dataType is empty`
+        throw new Error(eMsg)
+      }
+    })
   }
   /**
    * Non enumerable (to prevent JSON.stringify circular ref) read only domain
@@ -853,6 +861,7 @@ UBEntity.prototype.haveAccessToMethods = function (methods) {
   return result
 }
 
+// noinspection JSUnusedLocalSymbols
 /**
  * Add entity level method. Client can call such methods remotely. Also such methods are the subjects of ELS.
  *

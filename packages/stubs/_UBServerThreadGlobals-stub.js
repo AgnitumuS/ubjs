@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 /*
   Purpose of this file is to describe objects and functions added to server-side JavaScript thread(s) by UnityBase server.
   All described here is native UB objects imported to SpiderMonkey (i.e. realisation is in Pascal or C).
@@ -328,9 +330,11 @@ const clobTruncate = {
  * Return zero based index of fieldName from current data store (-1 if not found)
  * @example
 
- var r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name']).where('[ID]', '=', 3000000002801).select();
- console.log(r.fieldIndexByName('mi_owner.name')); // 1
- console.log(r.fieldIndexByName('unexistedAttr')); // -1
+ let r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name'])
+   .where('[ID]', '=', 3000000002801)
+   .select()
+ console.log(r.fieldIndexByName('mi_owner.name')) // 1
+ console.log(r.fieldIndexByName('unexistedAttr')) // -1
 
  * @method fieldIndexByName
  * @memberOf TubDataStore.prototype

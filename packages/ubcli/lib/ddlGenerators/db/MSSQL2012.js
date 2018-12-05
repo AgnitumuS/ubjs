@@ -532,7 +532,7 @@ class DBSQL2012 extends DBAbstract {
       case 'BIGINT': return 'BIGINT'
       case 'DECIMAL':
       case 'NUMERIC':
-        if (prec === 19 && scale === 4) {
+        if (prec === 19 && scale > 2) {
           return 'FLOAT'
         }
         if (prec === 19 && scale === 2) {

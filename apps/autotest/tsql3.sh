@@ -48,19 +48,21 @@ fi
 npx ubcli createStore -cfg $UB_CFG -noLogo
 if [ ! $? = 0 ]; then err; fi
 
-npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -u admin -p admin -drop -create
+PASSWORD_FOR_ADMIN=admin
+
+npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_ADMIN -drop -create
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=generateDDL
-npx ubcli generateDDL -cfg $UB_CFG -u admin -p admin -autorun
+npx ubcli generateDDL -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -autorun
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=initialize
-npx ubcli initialize -cfg $UB_CFG -u admin -p admin
+npx ubcli initialize -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=autotest
-npx ubcli autotest -cfg $UB_CFG -u admin -p admin -noLogo -skipModules
+npx ubcli autotest -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -noLogo -skipModules
 if [ ! $? = 0 ]; then
   cat ./_autotestResults.json;
   if [ ! -z ${UB_TESTRES+x} ] && [ ! -z "${UB_TESTRES// }" ]; then

@@ -1,19 +1,16 @@
-/* global nsha256, Session */
+/* global Session, nsha256 */
 const USERS = {
   ROOT: {
     ID: 7,
-    NAME: 'root',
-    HASH: '-' // Root uses nonce based password
+    NAME: 'root'
   },
   ADMIN: {
     ID: 10,
-    NAME: 'admin',
-    HASH: nsha256('salt' + 'admin')
+    NAME: 'admin'
   },
   ANONYMOUS: {
     ID: 20,
-    NAME: 'anonymous',
-    HASH: '-' // impossible to log in
+    NAME: 'anonymous'
   }
 }
 const ROLES = {
@@ -90,6 +87,16 @@ module.exports = {
   ROLES: ROLES,
   /** Name of Audit Trail entity */
   AUDIT_TRAIL_ENTITY: 'uba_auditTrail',
+  /**
+   * Create a password hash for specified realm/login/password
+   * @param {string} aRealm reserved
+   * @param {string} aLogin User login
+   * @param {string} aPassword User password in plain text
+   * @returns {String}
+   */
+  ubAuthHash: function (aRealm, aLogin, aPassword) {
+    return nsha256('salt' + aPassword)
+  },
   /**
    * Do not allow assign of Everyone & Anonymous preudo-roles.
    * Allow assign `admins` role only by `admins` member.

@@ -239,6 +239,8 @@ function launchApp () {
           this.inputEl.removeCls(this.requiredCls)
           this.inputEl.dom.removeAttribute('placeholder')
         } else {
+          // do not allow to enter a string with all whitespaces
+          this.allowOnlyWhitespace = false
           this.inputEl.addCls(this.requiredCls)
           if (this.requireText) {
             this.inputEl.dom.setAttribute('placeholder', UB.i18n(this.requireText))
@@ -247,7 +249,7 @@ function launchApp () {
       }
     })
     Ext.override(Ext.grid.plugin.RowEditing, {
-      validateEdit: function() {
+      validateEdit: function () {
         let me = this
         let context = me.context
         return me.fireEvent('validateedit', me, context) !== false && !context.cancel && this.getEditor().completeEdit()

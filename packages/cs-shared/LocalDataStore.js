@@ -258,12 +258,12 @@ function whereListToFunctions (ubql, fieldList) {
     let property = clause.expression || ''
 
     if (clause.condition === 'custom') {
-      throw new Error('Condition "custom" is not supported for cached instances.')
+      throw new Error('Condition "custom" is not supported for cached entities')
     }
     property = (property.replace(/(\[)|(])/ig, '') || '').trim()
     propIdx = fieldList.indexOf(property)
     if (propIdx === -1) {
-      throw new Error('Filtering by field ' + property + ' is not allowed, because it is not in fieldList')
+      throw new Error('Filtering by attribute "' + property + '" what not in fieldList is not allowed for cached entities')
     }
 
     fValue = _.values(clause.values)[0]

@@ -21,7 +21,20 @@
 			"caption": "Caption",
 			"description": "Caption",
 			"allowNull": true,
-			"isMultiLang": true
+			"isMultiLang": true,
+            "customSettings": {
+              "upload": {
+                "name": "organizationCode",
+                "caption": "org_organization.code",
+                "additionalColumns": [
+                  {
+                    "name": "organizationName",
+                    "caption": "org_organization.name",
+                    "example": "AES-VCM Mong Duong Power"
+                  }
+                ]
+              }
+            }
 		},
 		{
 			"name": "filterValue",
