@@ -173,4 +173,5 @@ function orgOnUserLogin () {
     data.allPositions = JSON.stringify(tempPositionsArray) // stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
   }
 }
+// expose onUserLogin to allow override it in other models
 ORG.onUserLogin = orgOnUserLogin
