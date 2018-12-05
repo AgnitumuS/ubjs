@@ -10,7 +10,7 @@ ORG.checkOrgUnitRequired = true
 Session.on('login', orgOnUserLogin)
 
 /**
- * For a superuser (UBA_COMMON.USERS.ADMIN.ID) nothing happens here.
+ * For a superuser (UBA_COMMON.isSuperUser) all org related values are sets to '' or 0 (for IDs).
  *
  * Session 'login' event occurs every time when new user logs in.
  * Here we define logged-in user's FullName from org structure,
@@ -43,7 +43,7 @@ function orgOnUserLogin () {
   data.tempPositions = ''
   data.allPositions = ''
 
-  if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) return
+  if (UBA_COMMON.isSuperUser()) return
 
   try {
     staffs = UB.Repository('org_employeeonstaff')
