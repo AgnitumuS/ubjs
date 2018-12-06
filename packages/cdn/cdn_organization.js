@@ -3,6 +3,7 @@ const Session = UB.Session
 /* global cdn_organization ubs_settings ubs_numcounter */
 // eslint-disable-next-line camelcase
 const me = cdn_organization
+const _ = require('lodash')
 
 me.on('update:before', doBeforeUpdate)
 me.on('insert:before', doBeforeInsert)
@@ -73,6 +74,8 @@ function splitStringWithTrim (string2Split, separator) {
   return array
 }
 
+let allowAutoGenerateOKPO = null
+
 /**
  * @private
  * @param {ubMethodParams} ctxt
@@ -83,7 +86,7 @@ function checkCode (ctxt) {
   let execParams = mParams.execParams
 
   if (!execParams.OKPOCode) {
-    let allowAutoGenerateOKPO = ubs_settings.loadKey('cdn.organization.allowAutoGenerateOKPO', false)
+    if (allowAutoGenerateOKPO === null) allowAutoGenerateOKPO = ubs_settings.loadKey('cdn.organization.allowAutoGenerateOKPO', false)
     if (allowAutoGenerateOKPO) {
       execParams.OKPOCode = 'A' + ubs_numcounter.getRegnum(mParams.entity, 1000000)
     } else {
@@ -91,9 +94,9 @@ function checkCode (ctxt) {
     }
   }
 
-  if (execParams.OKPOCode.length !== 8 && execParams.OKPOCode.length !== 10) {
-    throw new UB.UBAbort(UB.i18n('errMustContainsOnly8Or10Symbols'))
-  }
+  // if (execParams.OKPOCode.length !== 8 && execParams.OKPOCode.length !== 10) {
+  //   throw new UB.UBAbort(UB.i18n('errMustContainsOnly8Or10Symbols'))
+  // }
 }
 
 /**
