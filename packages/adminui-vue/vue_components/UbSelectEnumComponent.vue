@@ -1,5 +1,7 @@
 <template>
-    <el-select v-model="resultData" filterable reserve-keyword clearable @change="$emit('input', resultData)" style="width: 100%">
+    <el-select v-model="resultData" filterable reserve-keyword clearable
+               @change="$emit('input', resultData)" style="width: 100%" v-loading="loading"
+               :class="`ub-select-enum--${_uid}`">
         <template slot-scope="scope">
             <el-option v-for="item in items" :key="item[primaryColumn]"
                        :label="item[displayValue]" :value="item[primaryColumn]">
@@ -10,7 +12,7 @@
 
 <script>
   module.exports = {
-    name: 'UbEnumSelectComponent',
+    name: 'UbSelectEnumComponent',
     props: {
       value: {
         type: String
@@ -29,7 +31,8 @@
       return {
         resultData: this.value,
         items: [],
-        entityName: 'ubm_enum'
+        entityName: 'ubm_enum',
+        loading: false
       }
     },
     computed: {
@@ -37,7 +40,24 @@
         return $App.domainInfo.get(this.entityName).descriptionAttribute
       }
     },
+    methods: {
+      initLoaderStyles () {
+        let control = document.querySelector(`.ub-select-enum--${this._uid} .el-loading-spinner`)
+        if (control) {
+          control.classList.add('ub-select-enum--loading-spinner')
+          let svg = control.querySelector('.circular')
+          if (svg) {
+            svg.style.height = '100%'
+          }
+        }
+      }
+    },
     mounted () {
+      setTimeout(function () {
+        this.initLoaderStyles()
+      }.bind(this), 1)
+
+      this.loading = true
       let promise = UB.Repository(this.entityName)
         .attrs(this.primaryColumn, this.displayValue, 'eGroup')
 
@@ -45,7 +65,16 @@
 
       promise.select().then((data) => {
         this.items = this.items.concat(data)
+        this.loading = false
       })
     }
   }
 </script>
+
+<style>
+    .ub-select-enum--loading-spinner {
+        top: 0;
+        margin-top: 0;
+        height: 100%;
+    }
+</style>

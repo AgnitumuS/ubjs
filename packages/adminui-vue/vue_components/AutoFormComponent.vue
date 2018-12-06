@@ -22,11 +22,15 @@
                                 :type="entitySchema.attributes[fieldName.attributeName].dataType.toLowerCase()"
                                 placeholder="Select date and time">
                         </el-date-picker>
-                        <ub-enum-select-component
+                        <ub-select-enum-component
                                 v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Enum'"
                                 v-model="inputData[fieldName.attributeName]"
                                 :eGroup="entitySchema.attributes[fieldName.attributeName].enumGroup"
-                        ></ub-enum-select-component>
+                        ></ub-select-enum-component>
+                        <ub-select-entity-component
+                                v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Entity'"
+                                v-model="inputData[fieldName.attributeName]"
+                        ></ub-select-entity-component>
                         <el-input v-else v-model="inputData[fieldName.attributeName]"></el-input>
                     </el-form-item>
                 </el-form>
@@ -36,7 +40,8 @@
 </template>
 
 <script>
-  const ubEnumSelectComponent = require('./UbEnumSelectComponent.vue')
+  const ubSelectEnumComponent = require('./UbSelectEnumComponent.vue')
+  const ubSelectEntityComponent = require('./UbSelectEntityComponent.vue')
 
   module.exports = {
     props: {
@@ -57,7 +62,8 @@
       return {}
     },
     components: {
-      'ub-enum-select-component': ubEnumSelectComponent
+      'ub-select-enum-component': ubSelectEnumComponent,
+      'ub-select-entity-component': ubSelectEntityComponent
     }
   }
 </script>
