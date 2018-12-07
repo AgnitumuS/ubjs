@@ -7,31 +7,41 @@
                 <el-button size="small"><i class="fa fa-trash-o"></i></el-button>
                 <el-button size="small"><i class="fa fa-cogs"></i></el-button>
             </el-header>
-            <el-main style="background-color:#f9f9f9">
+            <el-main>
                 <el-form label-position="left" label-width="150px">
                     <el-form-item v-for="fieldName in fieldsToShow"
-                                  :required="!entitySchema.attributes[fieldName.attributeName].allowNull"
-                                  :key="fieldName.attributeName"
-                                  :label="entitySchema.attributes[fieldName.attributeName].caption"
+                                  :required="!entitySchema.attributes[fieldName].allowNull"
+                                  :key="fieldName"
+                                  :label="entitySchema.attributes[fieldName].caption"
                                   style="margin-bottom: 5px;">
-                        <el-checkbox v-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Boolean'"
-                                     v-model="inputData[fieldName.attributeName]"></el-checkbox>
+                        <el-checkbox v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
+                                     v-model="inputData[fieldName]"></el-checkbox>
                         <el-date-picker
-                                v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'DateTime' || entitySchema.attributes[fieldName.attributeName].dataType === 'Date'"
-                                v-model="inputData[fieldName.attributeName]"
-                                :type="entitySchema.attributes[fieldName.attributeName].dataType.toLowerCase()"
+                                v-else-if="entitySchema.attributes[fieldName].dataType === 'DateTime' || entitySchema.attributes[fieldName].dataType === 'Date'"
+                                v-model="inputData[fieldName]"
+                                :type="entitySchema.attributes[fieldName].dataType.toLowerCase()"
                                 placeholder="Select date and time">
                         </el-date-picker>
                         <ub-select-enum-component
-                                v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Enum'"
-                                v-model="inputData[fieldName.attributeName]"
-                                :eGroup="entitySchema.attributes[fieldName.attributeName].enumGroup"
+                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
+                                v-model="inputData[fieldName]"
+                                :eGroup="entitySchema.attributes[fieldName].enumGroup"
                         ></ub-select-enum-component>
                         <ub-select-entity-component
-                                v-else-if="entitySchema.attributes[fieldName.attributeName].dataType === 'Entity'"
-                                v-model="inputData[fieldName.attributeName]"
+                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
+                                v-model="inputData[fieldName]"
                         ></ub-select-entity-component>
-                        <el-input v-else v-model="inputData[fieldName.attributeName]"></el-input>
+                        <el-input type='number'
+                                  v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
+                                  v-model="inputData[fieldName]"/>
+                        <el-input type='number' :step="'0.01'"
+                                  v-else-if="'Float' === entitySchema.attributes[fieldName].dataType" :controls="false"
+                                  v-model="inputData[fieldName]"/>
+                        <el-input type='number' :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
+                                  v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
+                                  :controls="false"
+                                  v-model="inputData[fieldName]"/>
+                        <el-input v-else v-model="inputData[fieldName]"></el-input>
                     </el-form-item>
                 </el-form>
             </el-main>
@@ -42,6 +52,7 @@
 <script>
   const ubSelectEnumComponent = require('./UbSelectEnumComponent.vue')
   const ubSelectEntityComponent = require('./UbSelectEntityComponent.vue')
+  const ubDomain = require('@unitybase/cs-shared').UBDomain
 
   module.exports = {
     props: {
@@ -59,7 +70,9 @@
       }
     },
     data: function () {
-      return {}
+      return {
+        'UBDomain': ubDomain
+      }
     },
     components: {
       'ub-select-enum-component': ubSelectEnumComponent,

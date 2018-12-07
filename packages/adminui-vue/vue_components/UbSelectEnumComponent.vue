@@ -1,6 +1,6 @@
 <template>
     <el-select v-model="resultData" filterable reserve-keyword clearable
-               @change="$emit('input', resultData)" style="width: 100%" v-loading="loading"
+               @change="$emit('input', resultData)" style="width: 100%" v-loading="loading" :disabled="loading"
                :class="`ub-select-enum--${_uid}`">
         <template slot-scope="scope">
             <el-option v-for="item in items" :key="item[primaryColumn]"
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+  require('../css/ub-select.css')
+
   module.exports = {
     name: 'UbSelectEnumComponent',
     props: {
@@ -44,7 +46,7 @@
       initLoaderStyles () {
         let control = document.querySelector(`.ub-select-enum--${this._uid} .el-loading-spinner`)
         if (control) {
-          control.classList.add('ub-select-enum--loading-spinner')
+          control.classList.add('ub-select__loading-spinner')
           let svg = control.querySelector('.circular')
           if (svg) {
             svg.style.height = '100%'
@@ -70,11 +72,3 @@
     }
   }
 </script>
-
-<style>
-    .ub-select-enum--loading-spinner {
-        top: 0;
-        margin-top: 0;
-        height: 100%;
-    }
-</style>
