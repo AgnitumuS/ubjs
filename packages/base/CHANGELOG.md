@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.33]
+### Changed
+ - `SyncConnection.setDocument` can accept optional `dataEncoding` parameter.
+ Set it to `base64` if content is a base64 encoded binary.  
+
 ## [5.0.28]
 ### Changed
   - `UBA_COMMON.isSuperUser` method now return `true` only is user is exactly `admin` or `root`.
