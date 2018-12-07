@@ -153,12 +153,8 @@ Ext.define('UB.view.UploadFileAjax', {
       }
     }
 
-    UB.connection.post('setDocument', ffile, {
-      params: params,
-      headers: {'Content-Type': 'application/octet-stream'},
-      onProgress: doOnProgress
-    }).then(function (response) {
-      Ext.callback(w.callback, w.scope, [response.data])
+    UB.connection.setDocument(ffile, params, doOnProgress).then(function (result) {
+      Ext.callback(w.callback, w.scope, [{errMsg: '', result: result, success: true}])
     }).fin(function () {
       w.close()
     })
