@@ -30,6 +30,7 @@
                         <ub-select-entity-component
                                 v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
                                 v-model="inputData[fieldName]"
+                                :entityName="entitySchema.attributes[fieldName].associatedEntity"
                         ></ub-select-entity-component>
                         <el-input type='number'
                                   v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"

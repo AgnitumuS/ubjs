@@ -1,16 +1,16 @@
 <template>
-    <el-select ref="selector" v-model="resultData" filterable remote reserve-keyword clearable
+    <el-select ref="selector" v-model="resultData" :filter-method="filterMethod" filterable reserve-keyword clearable
                @change="$emit('input', resultData)" style="width: 100%" v-loading="loading" :disabled="loading"
-               :class="`ub-select-entity--${this._uid}`">
+               :class="`ub-select-entity--${this._uid}`"
+               @focus="onFocus">
         <template slot-scope="scope">
-            <!--<el-option v-for="item in items" :key="item[primaryColumn]"-->
-            <!--:label="item[displayValue]" :value="item[primaryColumn]">-->
-            <!--</el-option>-->
-            <!--<el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">-->
-            <!--<el-button type="text" @click="loadNext">{{buttonMoreCaption}}</el-button>-->
-            <!--</el-row>-->
+            <el-option v-for="item in items" :key="item[primaryColumn]"
+                       :label="item[displayValue]" :value="item[primaryColumn]">
+            </el-option>
+            <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
+                <el-button type="text" @click="loadNext">{{buttonMoreCaption}}</el-button>
+            </el-row>
         </template>
-        <i slot="suffix" class="el-select__caret el-input__icon el-icon-arrow-up"></i>
     </el-select>
 </template>
 
@@ -21,26 +21,54 @@
     name: 'UbSelectEntityComponent',
     props: {
       value: {
-        type: String
+        type: [String, Number]
       },
-      // entityName: {
-      //   type: String,
-      //   required: true
-      // },
-      // customFilter: {
-      //   type: Array,
-      //   default () {
-      //     return []
-      //   }
-      // },
-      // primaryColumn: {
-      //   type: String,
-      //   default () {
-      //     return 'ID'
-      //   }
-      // }
+      entityName: {
+        type: String,
+        required: true
+      },
+      primaryColumn: {
+        type: String,
+        default () {
+          return 'ID'
+        }
+      }
     },
     methods: {
+      filterMethod () {
+        let itemsLength = this.items.length || 0
+        if (this.$refs.selector.selectedLabel !== this.oldValue) {
+          itemsLength = 0
+          let t = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(itemsLength).limit(this.itemCount)
+
+          if (this.$refs.selector.selectedLabel) {
+            t = t.where(this.displayValue, 'contains', this.$refs.selector.selectedLabel)
+          }
+
+          t.select()
+            .then((data) => {
+              if (this.items.length > 0) this.items = []
+              this.items.concat(data)
+            })
+        }
+      },
+      onFocus () {
+        let itemsLength = this.items.length || 0
+        if (itemsLength === 0 || this.$refs.selector.selectedLabel !== this.oldValue) {
+          itemsLength = 0
+          var t = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(itemsLength).limit(this.itemCount)
+
+          if (this.$refs.selector.selectedLabel) {
+            t = t.where(this.displayValue, 'contains', this.$refs.selector.selectedLabel)
+          }
+
+          t.select()
+            .then((data) => {
+              if (this.items.length > 0) this.items = []
+              this.items.concat(data)
+            })
+        }
+      },
       initLoaderStyles () {
         let control = document.querySelector(`.ub-select-entity--${this._uid} .el-loading-spinner`)
         if (control) {
@@ -60,10 +88,6 @@
         let itemsLength = this.items.length || 0
         let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(itemsLength).limit(this.itemCount)
 
-        this.customFilter.forEach((item) => {
-          promise = promise.attrs(item.column).where(item.column, item.condition, item.value)
-        })
-
         promise.select()
           .then((data) => {
             if (data.length > 0) this.items = this.items.concat(data)
@@ -73,6 +97,7 @@
     },
     data () {
       return {
+        oldValue: null,
         resultData: this.value,
         items: [],
         itemCount: 20,
@@ -90,11 +115,6 @@
       setTimeout(function () {
         this.initLoaderStyles()
       }.bind(this), 1)
-
-      this.loading = true
-      setTimeout(function () {
-        this.loading = false
-      }.bind(this), 450)
     }
   }
 </script>
