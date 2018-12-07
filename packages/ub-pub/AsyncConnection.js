@@ -308,8 +308,11 @@ $App.connection.userLang()
    */
   function doCreateNewSession (data, secretWord, authSchema, restored = false) {
     let ubSession = new UBSession(data, secretWord, authSchema)
+    // noinspection JSAccessibilityCheck
     let userData = ubSession.userData
+    // noinspection JSPotentiallyInvalidUsageOfThis
     if (!userData.lang || this.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
+      // noinspection JSPotentiallyInvalidUsageOfThis
       userData.lang = this.appConfig.defaultLang
     }
     if (!restored) udot(this)
@@ -765,13 +768,14 @@ UBConnection.prototype.post = function (url, data, config) {
   }))
 }
 
+// noinspection JSUnusedLocalSymbols
 /**
  *
  * @param {UBSession} session
  * @param {Object} cfg
  * @return {boolean}
  */
-UBConnection.prototype.checkChannelEncryption = function () {
+UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
   return true
 }
 /**
@@ -1453,8 +1457,10 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @param {String} params.entity Code of entity to retrieve from
  * @param {String} params.attribute `document` type attribute code
  * @param {Number} params.id Instance ID
- * @param {String} [params.forceMime] If passed and server support transformation from source MIME type to `forceMime` server perform transformation and return documenRt representation in the passed MIME
- * @param {Number} [params.revision] Optional revision of the documnet (if supported by server-side store configuration). Default is current revision.
+ * @param {String} [params.forceMime] If passed and server support transformation from source MIME type to `forceMime`
+ *   server perform transformation and return documenRt representation in the passed MIME
+ * @param {Number} [params.revision] Optional revision of the document (if supported by server-side store configuration).
+ *   Default is current revision.
  * @param {String} [params.fileName] ????
  * @param {Boolean} [params.isDirty=false] Optional ability to retrieve document in **dirty** state
  * @param {String} [params.store] ????
@@ -1485,6 +1491,39 @@ UBConnection.prototype.getDocument = function (params, options) {
     reqParams.params = params
   }
   return this.xhr(reqParams).then((response) => response.data)
+}
+
+/**
+ * Saves a file content to the TEMP store of the specified entity attribute of Document type.
+ *
+ * Should be called before insert of update. Result of this function is what shall be assigned to the
+ * attribute value during insert/update operation.
+ *
+ * @method
+ * @param {*} content BLOB attribute content
+ * @param {Object} params Additional parameters
+ * @param {string} params.entity Entity name
+ * @param {string} params.attribute Entity attribute name
+ * @param {number} params.id ID of the record
+ * @param {string} params.origName
+ * @param {string} [params.fileName] If not specified, `params.origName` will be used
+ * @param {string} [params.encoding] Encoding of `data`. Either omit for binary data
+ *   or set to `base64` for base64 encoded data
+ * @param {function} [onProgress] Optional onProgress callback
+ * @return {Promise<Object>} Promise resolved blob store metadata
+ */
+UBConnection.prototype.setDocument = function (content, params, onProgress) {
+  let xhrParams = {
+    url: 'setDocument',
+    method: 'POST',
+    data: content,
+    headers: {
+      'Content-Type': 'application/octet-stream'
+    },
+    params: params
+  }
+  if (onProgress) xhrParams.onProgress = onProgress
+  return this.xhr(xhrParams).then(serverResponse => serverResponse.data.result)
 }
 
 /**
