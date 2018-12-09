@@ -386,6 +386,7 @@ function getServerConfiguration (forFutureSave = false) {
     let rp = result.httpServer.reverseProxy
     if (rp.kind === 'nginx') {
       if (!rp.remoteIPHeader) rp.remoteIPHeader = 'X-Real-IP'
+      if (!rp.remoteConnIDHeader) rp.remoteConnIDHeader = 'X-Conn-ID'
       if (!rp.sendFileHeader) rp.sendFileHeader = 'X-Accel-Redirect'
       if (!rp.sendFileLocationRoot) {
         rp.sendFileLocationRoot = url.parse(result.httpServer.externalURL).hostname.replace(/\./g, '-')

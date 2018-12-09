@@ -72,6 +72,7 @@ module.exports = function generateNginxCfg (cfg) {
     lb: cfg.lb,
     wsRoot: serverConfig.wsServer ? serverConfig.wsServer.path : '',
     remoteIPHeader: reverseProxyCfg.remoteIPHeader,
+    remoteConnIDHeader: reverseProxyCfg.remoteConnIDHeader,
     maxDocBodySize: cfg.maxDocBody,
     sendFileHeader: reverseProxyCfg.sendFileHeader,
     sendFileLocationRoot: reverseProxyCfg.sendFileLocationRoot,

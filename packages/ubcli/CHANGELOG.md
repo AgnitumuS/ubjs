@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.6]
+### Added
+ - `generateNginxCfg` now support `reverseProxy.remoteConnIDHeader` and in case
+  it is not empty adds a `proxy_set_header {{remoteConnIDHeader}} $connection;`
+  section to nginx config 
+
 ## [5.2.4]
 ### Changed
  - **BREAKING** change default floating scale precision from 4 to 6
