@@ -6,6 +6,10 @@
   "private": true,
   "main": "appAutotest.js",
   "scripts": {
+    "profile-run": "valgrind --tool=callgrind --instr-atstart=no ub -dev",
+    "profile-start": "callgrind_control -i on",
+    "profile-stop": "callgrind_control -i on",
+    "profile-analyse": "kcachegrind",
     "test": "echo Manually run a .\\tsql3.cmd for test",
     "test:ui": "npx testcafe chrome ./_uiautotests/*.js --screenshots ./screenshots --screenshots-on-fails",
     "ddl": "npx ubcli generateDDL -u admin -p admin -autorun"
