@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `generateNginxCfg` now support `reverseProxy.remoteConnIDHeader` and in case
   it is not empty adds a `proxy_set_header {{remoteConnIDHeader}} $connection;`
-  section to nginx config 
+  section to nginx config
+
+### Changed
+ - in case invalid command is passed to `ubcli` human readable error will be shown
 
 ## [5.2.4]
 ### Changed
