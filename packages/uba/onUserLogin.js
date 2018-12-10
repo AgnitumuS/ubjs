@@ -113,13 +113,45 @@ function onUserLogin (req) {
   }
   let advCheckData = doCheckAdvancedSecurity(req)
   try {
-    repo = UB.Repository('uba_userrole')
-      .attrs(['ID', 'roleID.name', 'roleID'])
-      .where('[userID]', '=', Session.userID)
+    repo = UB.Repository('uba_role')
+      .attrs('ID', 'name')
+      .exists(
+        UB.Repository('uba_userrole')
+          .attrs('ID')
+          .where('userID', '=', Session.userID)
+          .correlation('roleID', 'ID'),
+        'userHasRole'
+      )
+      .exists(
+        UB.Repository('uba_grouprole')
+          .attrs('ID')
+          .exists(
+            UB.Repository('uba_usergroup')
+              .attrs('ID')
+              .where('userID', '=', Session.userID)
+              .correlation('groupID', 'groupID')
+          )
+          .correlation('roleID', 'ID'),
+        'groupHasRole'
+      )
+      .logic('(([userHasRole]) OR ([groupHasRole]))')
       .select()
   } catch (ex) {
     // this possible if we connect to empty database without uba_* tables
     console.error('Error getting userroles:', ex.toString())
+  }
+
+  if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) {
+    // Admin account is a special account, which is used in scenarios like application initialization, when
+    // database is not fully created yet.
+    data.groupIDs = []
+  } else {
+    data.groupIDs = UB.Repository('uba_usergroup')
+      .attrs('groupID')
+      .where('userID', '=', Session.userID)
+      .selectAsArray()
+      .resultData.data
+      .map(r => r[0])
   }
 
   // add everyone role to uData
@@ -134,9 +166,9 @@ function onUserLogin (req) {
     roleIDs.push(UBA_COMMON.ROLES.USER.ID)
   }
   while (!repo.eof) {
-    let currentRole = repo.get('roleID.name')
+    let currentRole = repo.get('name')
     tmpArr.push(currentRole)
-    roleIDs.push(repo.get('roleID'))
+    roleIDs.push(repo.get('ID'))
     repo.next()
   }
   data.roles = tmpArr.join(',')
