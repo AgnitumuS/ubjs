@@ -29,7 +29,21 @@ UB.core.UBCommand.showAutoForm = async function () {
   let entitySchema = $App.domainInfo.get(this.entity)
   let tabTitle = entitySchema.caption
   let pageColumns = Object.values(entitySchema.attributes).filter((at) => { return at.defaultView }).map((at) => { return at.name })
-  let data = await UB.Repository(this.entity).attrs(UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])).selectById(this.instanceID)
+  let data = {}
+  let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])
+  if (this.instanceID) {
+    data = await UB.Repository(this.entity).attrs(fieldList).selectById(this.instanceID)
+  } else {
+    let params = {
+      entity: this.entity,
+      fieldList: fieldList
+    }
+    var result = await $App.connection.addNew(params)
+    result.resultData.fields.forEach((item, key) => {
+      data[item] = result.resultData.data[0][key]
+    })
+  }
+
   let tab = $App.viewport.centralPanel.add({
     title: tabTitle,
     tooltip: tabTitle,
