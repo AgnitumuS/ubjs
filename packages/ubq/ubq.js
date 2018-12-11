@@ -3,7 +3,7 @@ const Worker = require('@unitybase/base').Worker
 const UB = require('@unitybase/ub')
 const App = UB.App
 
-if (!process.rootOTP) throw new Error('This version of @unitybase/ubq require UB>=5.6.1')
+if (!process.rootOTP) throw new Error('This version of @unitybase/ubq require version of UB server to be >= 5.6.1')
 
 if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
   if (process.startupMode === 'CmdLine') {

@@ -95,7 +95,7 @@ let doCheckAdvancedSecurity = null // calculate later
  * Add Session 'login' event listener
  * Session 'login' event occurred every time new user logged in
  * here we calculate logged-in user's roles,
- * result we put in Session.uData - only one session-depended server object
+ * result we put in Session.uData - only one session-dependent server object
  * @private
  * @param {THTTPRequest} req
  */
