@@ -32,16 +32,21 @@
                                 v-model="inputData[fieldName]"
                                 :entityName="entitySchema.attributes[fieldName].associatedEntity"
                         ></ub-select-entity-component>
+                        <ub-select-many-component
+                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
+                                v-model="inputData[fieldName]"
+                                :entityName="entitySchema.attributes[fieldName].associatedEntity"
+                        ></ub-select-many-component>
                         <el-input type='number'
                                   v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
-                                  v-model="inputData[fieldName]"/>
+                                  v-model="inputData[fieldName]"></el-input>
                         <el-input type='number' :step="'0.01'"
                                   v-else-if="'Float' === entitySchema.attributes[fieldName].dataType" :controls="false"
-                                  v-model="inputData[fieldName]"/>
+                                  v-model="inputData[fieldName]"></el-input>
                         <el-input type='number' :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
                                   v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
                                   :controls="false"
-                                  v-model="inputData[fieldName]"/>
+                                  v-model="inputData[fieldName]"></el-input>
                         <el-input v-else v-model="inputData[fieldName]"></el-input>
                     </el-form-item>
                 </el-form>
@@ -53,6 +58,7 @@
 <script>
   const ubSelectEnumComponent = require('./UbSelectEnumComponent.vue')
   const ubSelectEntityComponent = require('./UbSelectEntityComponent.vue')
+  const ubSelectManyComponent = require('./UbSelectManyComponent.vue')
   const ubDomain = require('@unitybase/cs-shared').UBDomain
 
   module.exports = {
@@ -77,7 +83,8 @@
     },
     components: {
       'ub-select-enum-component': ubSelectEnumComponent,
-      'ub-select-entity-component': ubSelectEntityComponent
+      'ub-select-entity-component': ubSelectEntityComponent,
+      'ub-select-many-component': ubSelectManyComponent
     }
   }
 </script>
