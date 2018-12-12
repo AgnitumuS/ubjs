@@ -79,6 +79,8 @@ function UBSession (authResponse, secretWord, authSchema) {
         return ''
       case 'UBIP':
         return this.logonname
+      case 'ROOT':
+        return process.rootOTP()
       default:
         let timeStampI = Math.floor((new Date()).getTime() / 1000)
         let hexaTime = hexa8(timeStampI)

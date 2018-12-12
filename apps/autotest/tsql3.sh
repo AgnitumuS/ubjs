@@ -54,7 +54,7 @@ npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_A
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=generateDDL
-npx ubcli generateDDL -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -autorun
+npx ubcli generateDDL -cfg $UB_CFG -autorun
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=initialize

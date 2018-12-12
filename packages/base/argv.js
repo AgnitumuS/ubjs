@@ -192,7 +192,11 @@ function establishConnectionFromCmdLineAttributes (config) {
   let conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
   let appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
-  if (appInfo.authMethods.indexOf('UB') !== -1) {
+  if (serverSession.__serverStartedByMe && config.user === 'root') {
+    conn.onRequestAuthParams = function () {
+      return {authSchema: 'ROOT'}
+    }
+  } else if (appInfo.authMethods.indexOf('UB') !== -1) {
     conn.onRequestAuthParams = function () {
       return {login: serverSession.USER, password: serverSession.PWD}
     }

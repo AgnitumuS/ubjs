@@ -109,4 +109,5 @@ or linked to /etc/nginx/sites-enabled if you are on linux:
 `)
 }
 
-module.exports.shortDoc = 'Generate include for NGINX config based on `reverseProxy` section of application config'
+module.exports.shortDoc = `Generate include for NGINX config based on
+\t\t\t'reverseProxy' section of application config`

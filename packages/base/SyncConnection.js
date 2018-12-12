@@ -178,6 +178,12 @@ function SyncConnection (options) {
         }
         resp = this.xhr({endpoint: 'auth', headers: {'Authorization': authParams.authSchema + ' ' + authParams.login}})
         ubSession = new UBSession(resp, '', authParams.authSchema)
+      } if (authParams.authSchema === 'ROOT') {
+        if (isRepeat) {
+          throw new Error('ROOT authentication must not return false on the prev.step')
+        }
+        resp = this.xhr({endpoint: 'auth?AUTHTYPE=ROOT', headers: {'Authorization': authParams.authSchema + ' ' + process.rootOTP()}})
+        ubSession = new UBSession(resp, '', authParams.authSchema)
       } else {
         resp = this.get('auth', {
           AUTHTYPE: authParams.authSchema || 'UB',

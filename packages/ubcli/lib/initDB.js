@@ -225,4 +225,5 @@ function fillBuildInRoles (conn, dbDriverName, adminPwd) {
   })
 }
 
-module.exports.shortDoc = 'Create a database (schema) and a minimal set of DB object for a UnityBase ORM'
+module.exports.shortDoc = `Create a database (schema) and a minimal set of DB
+\t\t\tobject for a UnityBase ORM`

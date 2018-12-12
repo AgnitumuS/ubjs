@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.15]
+### Added
+ - support for new authentication schema 'ROOT'. Server side in-proc server only
+
 ## [5.0.14]
 ### Added
  - client side `UBDomain` will throw error in case attribute exists in i18n but not defined in entity. Output sample:

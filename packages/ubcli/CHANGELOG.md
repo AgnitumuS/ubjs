@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.0]
+### Changed
+ - `generateDDL` command now work under `root` system account and can be executed only locally.
+ `-u` and `-p` command line switches not used anymore
+```
+npx ubcli generateDDL -cfg $UB_CFG -autorun
+```
+  Since `root` auth schema do not fire `Session.on('logon')` event developers can remove a conditions
+  for DDL generation (when database is not fully created yet) 
+```
+ if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) return
+```
+  from `Session.on('logon')` handlers
+  
 ## [5.2.6]
 ### Added
  - `generateNginxCfg` now support `reverseProxy.remoteConnIDHeader` and in case

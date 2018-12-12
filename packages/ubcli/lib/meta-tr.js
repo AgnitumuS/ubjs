@@ -39,4 +39,6 @@ module.exports = function metaTr (options) {
   fs.writeFileSync(options.meta, metaContent)
 }
 
-module.exports.shortDoc = 'Transform *.meta file attributes from Object to Array representation as defined in latest JSON schema for entity'
+module.exports.shortDoc =
+`Transform *.meta file attributes from Object to Array
+\t\t\trepresentation as defined in latest entity JSON schema`
