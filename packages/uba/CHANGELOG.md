@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Write to security audit when user is added/removed to/from group
 - Added localization to `uba_group` entity for en/uk/ru
 
+### Changed
+ - UBA model `Session.on('login')` handler now check advanced security only. All required uData properties 
+ are filled in UB model `Session._getRBACInfo` method (called by server during authorization stage) 
+
 ## [5.1.3]
 ### Fixed
  - uba_user.name attribute Georgian translation changed
