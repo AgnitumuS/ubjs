@@ -224,4 +224,4 @@ function convert110To111 (old) {
   return n
 }
 
-module.exports.shortDoc = 'Tool for converting UnityBase config from version <=1.11 to version 1.11'
+module.exports.shortDoc = `Tool for converting UB config from v<=1.11 to v1.11`

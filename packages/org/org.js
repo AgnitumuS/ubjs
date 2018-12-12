@@ -43,8 +43,6 @@ function orgOnUserLogin () {
   data.tempPositions = ''
   data.allPositions = ''
 
-  if (UBA_COMMON.isSuperUser()) return
-
   try {
     staffs = UB.Repository('org_employeeonstaff')
       .attrs(['ID', 'employeeOnStaffType', 'description', 'employeeID.userID', 'employeeID.shortFIO',

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Added
+ - handling of new authentication schema 'ROOT' in `argv.establishConnectionFromCmdLineAttributes`.
+ Can be used in case client and server is the same process (client explicitly call `startServer()`)
+
 ## [5.0.32]
 ### Changed
  - `SyncConnection.setDocument` can accept optional `dataEncoding` parameter.

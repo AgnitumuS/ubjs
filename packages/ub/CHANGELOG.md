@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Changed
+ - initial values of `Session.uData` now filled inside JS `Session._getRBACInfo` (`@unitybase/ub`)
+ instead of duplication of code inside UB server and `@unitybase/uba` model
+ - in case user is a member of **security group** (uba_group / uba_usergroup) then roles assigned 
+ to this groups will be added to the user roles. ELS for such a roles will be also applied to user.
+ **UB server must be upgraded to >= 5.7.3**  
+ 
+### Added
+ - `Session.uData.groupIDs` property - an array of group IDs user id assigned to
+ 
 ## [5.0.45]
 ### Fixed
  - **CRITICAL** endpoints `models`, `clientRequire` & `static` will return `Bad Request` in case

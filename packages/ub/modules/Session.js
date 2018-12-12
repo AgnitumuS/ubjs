@@ -1,5 +1,8 @@
 const sessionBinding = process.binding('ub_session')
 const EventEmitter = require('events').EventEmitter
+const UBA_COMMON = require('@unitybase/base').uba_common
+const Repository = require('@unitybase/base').ServerRepository.fabric
+const App = require('./App')
 
 // cache for lazy session props
 let _id, _userID
@@ -25,21 +28,6 @@ const Session = {
 // add EventEmitter to Session object
 EventEmitter.call(Session)
 Object.assign(Session, EventEmitter.prototype)
-
-/**
- * Called by server when server enter into new user context
- * @private
- * @param sessionID
- * @param userID
- */
-Session.reset = function (sessionID, userID) {
-  _id = sessionID
-  _userID = userID
-  _sessionCached.uData = undefined
-  _sessionCached.callerIP = undefined
-  _sessionCached.userRoles = undefined
-  _sessionCached.userLang = undefined
-}
 
 /**
  * Current session identifier. === 0 if session not started, ===1 in case authentication not used, >1 in case user authorized
@@ -120,10 +108,11 @@ Object.defineProperty(Session, 'userLang', {
  *
  * @member {Object} uData
  * @memberOf Session
- * @property {number} userID Logged in user ID. The same as Session.userID. Added by `uba` model
- * @property {string} login Logged in user name. Added by `uba` model
- * @property {string} roles Logged in user roles names separated by comma. In most case better to use uData.roleIDs array. Added by `uba` model
- * @property {Array<number>} roleIDs Array or role IDs for logged in user roles. Added by `uba` model
+ * @property {number} userID Logged in user ID. The same as Session.userID. Added by `ub` model
+ * @property {string} login Logged in user name. Added by `ub` model
+ * @property {string} roles Logged in user roles names separated by comma. In most case better to use uData.roleIDs array. Added by `ub` model
+ * @property {Array<number>} roleIDs Array or role IDs for logged in user roles. Added by `ub` model
+ * @property {Array<number>} groupIDs Array or group IDs for logged in user roles. Added by `ub` model
  * @property {string} [employeeShortFIO] Short name of employee. Added by `org` model
  * @property {string} [employeeFullFIO] Full name of employee
  * @property {number} [employeeID] Employee ID
@@ -349,5 +338,105 @@ Session.runAsUser = function (userID, func) {
  * @memberOf Session
  * @event securityViolation
  */
+
+/**
+ * Called by server when server enter into new user context
+ * @private
+ * @param sessionID
+ * @param userID
+ */
+Session.reset = function (sessionID, userID) {
+  _id = sessionID
+  _userID = userID
+  _sessionCached.uData = undefined
+  _sessionCached.callerIP = undefined
+  _sessionCached.userRoles = undefined
+  _sessionCached.userLang = undefined
+}
+
+/**
+ * Private method called by server during authorization process just after user credentials is verified
+ * but before session is actually created
+ *
+ * This method fills user details (role ID's, user data (uData)
+ * @param userID
+ * @returns {{uPasswordHashHexa: (String|*), lastPasswordChangeDate: Date, uData: {userID: *}}}
+ * @private
+ */
+Session._getRBACInfo = function (userID) {
+  let userInfo = Repository('uba_user')
+    .attrs(['name', 'uData', 'uPasswordHashHexa', 'lastPasswordChangeDate'])
+    .selectById(userID)
+  if (!userInfo) throw new Error(`User with ID=${userID} not found`)
+  let uData = {}
+  if (userInfo.uData) {
+    try {
+      uData = JSON.parse(userInfo.uData)
+      if (!uData.lang) uData.lang = App.serverConfig.application.defaultLang
+    } catch (e) {
+      console.error(`Invalid uData attribute content for user ${userInfo.name}: "${userInfo.uData}". Must be valid JSON`)
+    }
+  }
+  uData.userID = userID
+  uData.roleIDs = [UBA_COMMON.ROLES.EVERYONE.ID]
+  uData.login = userInfo.name
+  let result = {
+    uData: uData,
+    uPasswordHashHexa: userInfo.uPasswordHashHexa,
+    lastPasswordChangeDate: userInfo.lastPasswordChangeDate
+  }
+
+  let roleNamesArr = [UBA_COMMON.ROLES.EVERYONE.NAME]
+  if (userID === UBA_COMMON.USERS.ANONYMOUS.ID) {
+    roleNamesArr.push(UBA_COMMON.ROLES.ANONYMOUS.NAME)
+    uData.roleIDs.push(UBA_COMMON.ROLES.ANONYMOUS.ID)
+  } else {
+    roleNamesArr.push(UBA_COMMON.ROLES.USER.NAME)
+    uData.roleIDs.push(UBA_COMMON.ROLES.USER.ID)
+  }
+  let roles = Repository('uba_role')
+    .attrs('ID', 'name')
+    .exists(
+      Repository('uba_userrole')
+        .attrs('ID')
+        .where('userID', '=', userID)
+        .correlation('roleID', 'ID'),
+      'userHasRole'
+    )
+    .exists(
+      Repository('uba_grouprole')
+        .attrs('ID')
+        .exists(
+          Repository('uba_usergroup')
+            .attrs('ID')
+            .where('userID', '=', userID)
+            .correlation('groupID', 'groupID')
+        )
+        .correlation('roleID', 'ID'),
+      'groupHasRole'
+    )
+    .logic('(([userHasRole]) OR ([groupHasRole]))')
+    .selectAsObject()
+
+  roles.forEach(role => {
+    uData.roleIDs.push(role.ID)
+    roleNamesArr.push(role.name)
+  })
+  // if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) {
+  //   // Admin account is a special account, which is used in scenarios like application initialization, when
+  //   // database is not fully created yet.
+  //   data.groupIDs = []
+  // } else {
+  uData.groupIDs = Repository('uba_usergroup')
+    .attrs('groupID')
+    .where('userID', '=', userID)
+    .selectAsArray()
+    .resultData.data
+    .map(r => r[0])
+
+  uData.roles = roleNamesArr.join(',')
+
+  return result
+}
 
 module.exports = Session
