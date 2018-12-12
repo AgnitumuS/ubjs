@@ -22,21 +22,21 @@
                                 :type="entitySchema.attributes[fieldName].dataType.toLowerCase()"
                                 placeholder="Select date and time">
                         </el-date-picker>
-                        <ub-select-enum-component
+                        <ub-select-enum
                                 v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
                                 v-model="inputData[fieldName]"
                                 :eGroup="entitySchema.attributes[fieldName].enumGroup"
-                        ></ub-select-enum-component>
-                        <ub-select-entity-component
+                        ></ub-select-enum>
+                        <ub-select-entity
                                 v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
                                 v-model="inputData[fieldName]"
                                 :entityName="entitySchema.attributes[fieldName].associatedEntity"
-                        ></ub-select-entity-component>
-                        <ub-select-many-component
+                        ></ub-select-entity>
+                        <ub-select-many
                                 v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
                                 v-model="inputData[fieldName]"
                                 :entityName="entitySchema.attributes[fieldName].associatedEntity"
-                        ></ub-select-many-component>
+                        ></ub-select-many>
                         <el-input type='number'
                                   v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
                                   v-model="inputData[fieldName]"></el-input>
@@ -47,7 +47,16 @@
                                   v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
                                   :controls="false"
                                   v-model="inputData[fieldName]"></el-input>
-                        <el-input v-else v-model="inputData[fieldName]"></el-input>
+                        <el-input
+                                type="textarea"
+                                :autosize="{ minRows: 3, maxRows: 4}"
+                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
+                                v-model="inputData[fieldName]"></el-input>
+                        <ub-input v-else v-model="inputData[fieldName]"
+                                  :isMultiLang="entitySchema.attributes[fieldName].isMultiLang"
+                                  :entityName="entitySchema.name"
+                                  :attributeName="fieldName"
+                                  :primaryValue="inputData.ID"></ub-input>
                     </el-form-item>
                 </el-form>
             </el-main>
@@ -56,9 +65,10 @@
 </template>
 
 <script>
-  const ubSelectEnumComponent = require('./UbSelectEnumComponent.vue')
-  const ubSelectEntityComponent = require('./UbSelectEntityComponent.vue')
-  const ubSelectManyComponent = require('./UbSelectManyComponent.vue')
+  const ubSelectEnum = require('./vue_controls/UbSelectEnum.vue')
+  const ubSelectEntity = require('./vue_controls/UbSelectEntity.vue')
+  const ubSelectMany = require('./vue_controls/UbSelectMany.vue')
+  const ubInput = require('./vue_controls/UbInput.vue')
   const ubDomain = require('@unitybase/cs-shared').UBDomain
 
   module.exports = {
@@ -82,9 +92,10 @@
       }
     },
     components: {
-      'ub-select-enum-component': ubSelectEnumComponent,
-      'ub-select-entity-component': ubSelectEntityComponent,
-      'ub-select-many-component': ubSelectManyComponent
+      'ub-select-enum': ubSelectEnum,
+      'ub-select-entity': ubSelectEntity,
+      'ub-select-many': ubSelectMany,
+      'ub-input': ubInput
     }
   }
 </script>

@@ -1,17 +1,17 @@
 <template>
     <el-select ref="selector" v-model="resultData"
-               reserve-keyword clearable filterable
+               reserve-keyword clearable filterable multiple
                remote :remote-method="loadNextByInput"
                v-loading="loading" :disabled="loading"
                @change="onChange"
                v-on:click.native="onFocus"
                style="width: 100%"
-               :class="`ub-select-entity${this._uid}`">
+               :class="`ub-select-many${this._uid}`">
         <template slot-scope="scope">
             <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
                        :label="item[displayValue]" :value="item[primaryColumn]">
             </el-option>
-            <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
+            <el-row type="flex" justify="end" style="padding: 0 20px" v-if="hasData">
                 <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
             </el-row>
         </template>
@@ -19,10 +19,10 @@
 </template>
 
 <script>
-  require('../css/ub-select.css')
+  require('../../css/ub-select.css')
 
   module.exports = {
-    name: 'UbSelectEntityComponent',
+    name: 'UbSelectMany',
     props: {
       value: {
         type: [String, Number]
@@ -43,9 +43,8 @@
         this.initialItem = this.items.find((el) => {
           return el[this.primaryColumn] === data
         })
-        this.searchValue = this.initialItem ? this.initialItem[this.displayValue] : ''
-        this.items = []
-        this.$emit('input', data)
+        if (this.$refs.selector.query) this.items = []
+        this.$emit('input', data.join(','))
       },
       onFocus () {
         if (this.items.length === 0) {
@@ -53,7 +52,7 @@
         }
       },
       initLoaderStyles () {
-        let control = document.querySelector(`.ub-select-entity${this._uid} .el-loading-spinner`)
+        let control = document.querySelector(`.ub-select-many${this._uid} .el-loading-spinner`)
         if (control) {
           control.classList.add('ub-select__loading-spinner')
           let svg = control.querySelector('.circular')
@@ -64,13 +63,12 @@
       },
       getPromise: function (startFrom) {
         let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(startFrom || 0).limit(this.itemCount)
-        if (this.searchValue) {
-          promise = promise.where(this.displayValue, 'like', this.searchValue)
+        if (this.$refs.selector.query) {
+          promise = promise.where(this.displayValue, 'like', this.$refs.selector.query)
         }
         return promise
       },
       loadNextByInput: function (query) {
-        this.searchValue = query
         let promise = this.getPromise()
         promise.select().then((data) => {
           this.items = []
@@ -94,27 +92,29 @@
     data () {
       return {
         initialItem: null,
-        resultData: this.value,
         items: [],
+        resultData: [],
         itemCount: 20,
         hasData: true,
         buttonMoreCaption: UB.i18n('more'),
-        loading: false,
-        searchValue: ''
+        loading: false
       }
     },
     computed: {
+      valueArray () {
+        return this.value ? this.value.trim().split(',').map((item) => {
+          return typeof item !== 'number' ? parseInt(item) : item
+        }) : null
+      },
       displayValue () {
         return $App.domainInfo.get(this.entityName).descriptionAttribute
       },
-
       itemsToDisplay () {
-        if (this.initialItem) {
+        if (this.initialItem && this.initialItem.length > 0) {
           let filteredItems = this.items.filter((item) => {
-            return item[this.primaryColumn] !== this.initialItem[this.primaryColumn]
+            return !this.initialItem.map((ii) => {return ii[this.primaryColumn]}).includes(item[this.primaryColumn])
           })
-          filteredItems.unshift(this.initialItem)
-          return filteredItems
+          return this.initialItem.concat(filteredItems)
         }
         return this.items
       }
@@ -126,12 +126,10 @@
 
       if (this.value) {
         this.loading = true
-        UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).selectById(this.value).then((item) => {
-          if (item) {
-            this.initialItem = {}
-            this.initialItem[this.primaryColumn] = this.value
-            this.initialItem[this.displayValue] = item[this.displayValue]
-          }
+        UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).where(this.primaryColumn, 'in', this.valueArray).select().then((data) => {
+          this.initialItem = data
+          this.resultData = this.valueArray
+          this.$forceUpdate()
         }).finally(() => {
           this.loading = false
         })

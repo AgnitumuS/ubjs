@@ -11,10 +11,10 @@
 </template>
 
 <script>
-  require('../css/ub-select.css')
+  require('../../css/ub-select.css')
 
   module.exports = {
-    name: 'UbSelectEnumComponent',
+    name: 'UbSelectEnum',
     props: {
       value: {
         type: String
