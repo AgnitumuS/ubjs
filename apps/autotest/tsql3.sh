@@ -24,7 +24,7 @@ TESTCASE='hello'
 ub -e "console.log('Start autotest')"
 
 TESTCASE='drop database'
-rm -f ./*FTS.sqlite3*
+rm -f ./*.sqlite3*
 if [ ! $? = 0 ]; then err; fi
 
 rm -rf ./documents/simple
