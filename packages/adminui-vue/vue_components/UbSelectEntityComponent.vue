@@ -4,7 +4,7 @@
                remote :remote-method="loadNextByInput"
                v-loading="loading" :disabled="loading"
                @change="onChange"
-               @focus="onFocus"
+               :click.native="onFocus"
                style="width: 100%"
                :class="`ub-select-entity${this._uid}`">
         <template slot-scope="scope">
