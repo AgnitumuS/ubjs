@@ -115,8 +115,13 @@
         }
       },
       initMetaObject (json) {
-        this.metaObject = typeof json === 'string' ? JSON.parse(json) : {...json}
-        if (this.metaObject) {
+        let valid = true
+        try {
+          this.metaObject = typeof json === 'string' ? JSON.parse(json) : {...json}
+        } catch (e) {
+          valid = false
+        }
+        if (valid && this.metaObject) {
           if (!Array.isArray(this.metaObject.attributes)) {
             Object.keys(this.metaObject.attributes).forEach((propertyName) => {
               if (!this.metaObject.attributes[propertyName]['name'])
