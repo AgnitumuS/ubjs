@@ -85,12 +85,12 @@
 </template>
 
 <script>
-  const ubSelectEnum = require('./vue_controls/UbSelectEnum.vue')
-  const ubSelectEntity = require('./vue_controls/UbSelectEntity.vue')
-  const ubSelectMany = require('./vue_controls/UbSelectMany.vue')
-  const ubInput = require('./vue_controls/UbInput.vue')
-  const ubUploadDocument = require('./vue_controls/UbUploadDocument.vue')
-  const ubCodeMirror = require('./vue_controls/UbCodeMirror.vue')
+  const ubSelectEnum = require('./controls/UbSelectEnum.vue')
+  const ubSelectEntity = require('./controls/UbSelectEntity.vue')
+  const ubSelectMany = require('./controls/UbSelectMany.vue')
+  const ubInput = require('./controls/UbInput.vue')
+  const ubUploadDocument = require('./controls/UbUploadDocument.vue')
+  const ubCodeMirror = require('./controls/UbCodeMirror.vue')
   const ubDomain = require('@unitybase/cs-shared').UBDomain
 
   module.exports = {
