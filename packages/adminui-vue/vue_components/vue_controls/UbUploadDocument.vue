@@ -30,8 +30,6 @@
 
 <style>
     .ub-upload-document__a {
-        color: #606266;
-        padding-left: 4px;
         white-space: nowrap;
         cursor: pointer;
     }

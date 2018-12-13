@@ -65,6 +65,10 @@
                                 v-model="inputData[fieldName]"
                                 :docParams="{ entity: entitySchema.name, attribute: fieldName, ID: inputData.ID }"
                         ></ub-upload-document>
+                        <ub-code-mirror
+                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Json'"
+                                v-model="inputData[fieldName]"
+                        ></ub-code-mirror>
                         <ub-input
                                 v-else
                                 v-model="inputData[fieldName]"
@@ -86,6 +90,7 @@
   const ubSelectMany = require('./vue_controls/UbSelectMany.vue')
   const ubInput = require('./vue_controls/UbInput.vue')
   const ubUploadDocument = require('./vue_controls/UbUploadDocument.vue')
+  const ubCodeMirror = require('./vue_controls/UbCodeMirror.vue')
   const ubDomain = require('@unitybase/cs-shared').UBDomain
 
   module.exports = {
@@ -118,7 +123,8 @@
       'ub-select-entity': ubSelectEntity,
       'ub-select-many': ubSelectMany,
       'ub-input': ubInput,
-      'ub-upload-document': ubUploadDocument
+      'ub-upload-document': ubUploadDocument,
+      'ub-code-mirror': ubCodeMirror
     }
   }
 </script>
