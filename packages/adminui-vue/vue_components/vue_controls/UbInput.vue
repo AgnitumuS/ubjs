@@ -4,19 +4,20 @@
             <i v-if="isMultiLang"
                class="fa fa-globe"
                slot="suffix"
-               @click="dialogFormVisible = true"></i>
+               @click="initLocalizableFields"></i>
         </el-input>
         <el-dialog width="30%" :visible.sync="dialogFormVisible">
-            <el-form>
-                <el-form-item :label="localCaption" label-width="150px">
+            <el-form v-loading="loading">
+                <el-form-item style="font-weight:bold" :label="localCaption" label-width="100px">
                     <el-input v-model="currentValue" @change="$emit('input', currentValue)"></el-input>
                 </el-form-item>
-                <el-form-item v-for="(item, index) in localizableFields" :label="item.caption" label-width="150px">
+                <el-form-item v-for="item in Object.values(localizableFields)" :key="item.fieldName"
+                              :label="item.caption" label-width="100px">
                     <el-input v-model="item.value"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogFormVisible = false">Save</el-button>
+                <el-button type="primary" @click="saveLocalization">Save</el-button>
             </span>
         </el-dialog>
     </div>
@@ -29,6 +30,7 @@
       return {
         dialogFormVisible: false,
         localizableFields: {},
+        loading: false,
         localCaption: '',
         currentValue: this.value
       }
@@ -43,10 +45,13 @@
       attributeName: String,
       primaryValue: [String, Number]
     },
-    methods: {},
-    mounted () {
-      if (this.isMultiLang) {
-        this.localCaption = UB.i18n($App.connection.userLang())
+    methods: {
+      saveLocalization () {
+        this.dialogFormVisible = false
+        this.$emit('saveLocalization', this.localizableFields)
+      },
+      initLocalizableFields () {
+        this.dialogFormVisible = true
         this.loading = true
         let fieldList = []
         UB.appConfig.supportedLanguages.forEach((item) => {
@@ -54,22 +59,32 @@
             return
           }
           let fieldName = this.attributeName + '_' + item + '^'
-          this.localizableFields[fieldName] = {
-            location: item,
-            fieldName: fieldName,
-            caption: UB.i18n(item)
+          if (!Object.keys(this.localizableFields).includes(fieldName)) {
+            this.localizableFields[fieldName] = {
+              location: item,
+              fieldName: fieldName,
+              caption: UB.i18n(item)
+            }
+            fieldList.push(fieldName)
           }
-          fieldList.push(fieldName)
         })
-        UB.Repository(this.entityName).attrs(fieldList).selectById(this.primaryValue).then((item) => {
-          if (item) {
-            Object.keys(item).forEach((fieldName) => {
-              this.localizableFields[fieldName].value = item[fieldName]
-            })
-          }
-        }).finally(() => {
-          this.loading = false
-        })
+        if (fieldList.length > 0) {
+          UB.Repository(this.entityName).attrs(fieldList).selectById(this.primaryValue).then((item) => {
+            if (item) {
+              Object.keys(item).forEach((fieldName) => {
+                this.localizableFields[fieldName].value = item[fieldName]
+              })
+            }
+          }).finally(() => {
+            this.$forceUpdate()
+            this.loading = false
+          })
+        }
+      }
+    },
+    mounted () {
+      if (this.isMultiLang) {
+        this.localCaption = UB.i18n($App.connection.userLang())
       }
     }
   }
