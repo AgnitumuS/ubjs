@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Reverse proxy configuration
 if [ -z "$UB_RP_CONFIG" ]; then
