@@ -247,7 +247,7 @@ App.registerEndpoint('testServerSideBLOB', testServerSideBLOB, false)
  */
 function evaluateScript (req, resp) {
   if (App.localIPs.indexOf(Session.callerIP) === -1) {
-    throw new Error('SCHEDULER: remote execution is not allowed')
+    throw new Error('evaluateScript: remote execution is not allowed')
   }
   let script
   if (req.method === 'GET') {

@@ -1,10 +1,16 @@
+<!--@mi_modifyDate "Wed Oct 17 2018 22:40:52 GMT+0300 (FLE Standard Time)"-->
 <!--@name "XLSX example"-->
+<!--@report_code "xlsxExample"-->
 <!--@model "UBS"-->
+<!--@ID "1847324396"-->
+
+
+
 
 <!--%pageOrientation:portrait--><table style="word-break: break-all;" cellspacing="0" cellpadding="3px">
 <tbody>
 <tr style="height: 80px;">
-<td style="text-align: center; vertical-align: middle;" colspan="4">Заголовок таблицы</td>
+<td style="width: 100%; text-align: center; height: 18px; font-size: 10pt;" colspan="4"><span>Організація <strong>{{organization}}</strong> План рахунків <strong>БОЛД</strong> Джерело фінансування <strong>СОУРС</strong></span></td>
 </tr>
 <tr style="height: 40px;">
 <td style="width: 3px;">&nbsp;</td>
@@ -16,7 +22,7 @@
 <tr class="tinymce_templated" data-iterate-over="data">
 <td>&nbsp;</td>
 <td><em>{{name}} - <span style="color: #ff0000;">да</span></em></td>
-<td style="border: 1px solid #28b449; text-align: right;">{{count}} <strong>item</strong></td>
+<td style="border: 1px solid #28b449; text-align: right;">{{count}} <strong>ite m</strong></td>
 <td style="text-align: right;">{{sum}}</td>
 </tr>
 <!--{{/footer}}--> <!--{{#footer}}-->
@@ -33,7 +39,7 @@
 </tr>
 </tbody>
 </table>
-<p><br /> <br /> </p>
+<p><br /><br /></p>
 <table style="border-collapse: collapse; width: 100%; word-break: break-all; border: solid 1px black;" cellspacing="0" cellpadding="3px">
 <tbody>
 <tr>
@@ -45,8 +51,8 @@
 <tr style="height: 100px;">
 <td style="width: 10%; text-align: center; border: solid 1px;" rowspan="2">Рахунок</td>
 <td style="width: 30%; text-align: center; border: solid 1px;" rowspan="2">Найменування</td>
-<td style="width: 20%; text-align: center; border: solid 1px;" colspan="2">Сальдо на початок періоду</td>
-<td style="width: 20%; text-align: center; border: solid 1px;" colspan="2">Обороти за період</td>
+<td style="width: 20%; text-align: center; border: solid 1px;" colspan="2">Сальдо на <br />початок періоду</td>
+<td style="width: 20%; text-align: center; border: solid 1px;" colspan="2">Обороти за<br />період</td>
 <td style="width: 20%; text-align: center; border: solid 1px;" colspan="2">Сальдо на кінець періоду</td>
 </tr>
 <tr>
