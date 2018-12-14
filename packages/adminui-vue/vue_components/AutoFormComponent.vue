@@ -114,6 +114,9 @@
     },
     methods: {
       saveAndClose () {
+        this.save(() => {this.$emit('close')})
+      },
+      save (callback) {
         let changedColumns = {}
         this.fieldsToShow.forEach((field) => {
           if (this.inputData[field] !== this.oldData[field]) changedColumns[field] = this.inputData[field]
@@ -123,8 +126,8 @@
           Object.keys(this.additionalData).forEach((locColumn) => {
             let matches = locColumn.match(/(\w+)_\w\w\^/)
             if (matches && changedColumns.hasOwnProperty(matches[1])) {
-                changedColumns[`${matches[1]}_${$App.connection.userLang()}^`] = changedColumns[matches[0]]
-                delete changedColumns[matches[1]]
+              changedColumns[`${matches[1]}_${$App.connection.userLang()}^`] = changedColumns[matches[0]]
+              delete changedColumns[matches[1]]
             }
           })
           changedColumns.ID = this.inputData.ID
@@ -137,10 +140,10 @@
           }
           $App.connection.update(params)
             .then((result) => {
-              this.$emit('close')
+              callback.call()
             })
         } else {
-          this.$emit('close')
+          callback.call()
         }
       },
       saveLocalization (data) {
