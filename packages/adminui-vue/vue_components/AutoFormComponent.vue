@@ -3,7 +3,7 @@
         <el-container>
             <el-header style="background-color: #c0c0c0;line-height: 60px">
                 <el-button size="small"><i class="fa fa-refresh"></i></el-button>
-                <el-button size="small"><i class="fa fa-save"></i></el-button>
+                <el-button size="small" @click="saveAndClose"><i class="fa fa-save"></i></el-button>
                 <el-button size="small"><i class="fa fa-trash-o"></i></el-button>
                 <el-button size="small"><i class="fa fa-cogs"></i></el-button>
             </el-header>
@@ -106,16 +106,54 @@
       inputData: {
         type: [Object],
         required: true
+      },
+      isNew: {
+        type: Boolean,
+        default: false
       }
     },
     methods: {
+      saveAndClose () {
+        let changedColumns = {}
+        this.fieldsToShow.forEach((field) => {
+          if (this.inputData[field] !== this.oldData[field]) changedColumns[field] = this.inputData[field]
+        })
+        changedColumns = {...changedColumns, ...this.additionalData}
+        if (Object.keys(changedColumns).length > 0) {
+          Object.keys(this.additionalData).forEach((locColumn) => {
+            let matches = locColumn.match(/(\w+)_\w\w\^/)
+            if (matches && changedColumns.hasOwnProperty(matches[1])) {
+                changedColumns[`${matches[1]}_${$App.connection.userLang()}^`] = changedColumns[matches[0]]
+                delete changedColumns[matches[1]]
+            }
+          })
+          changedColumns.ID = this.inputData.ID
+          changedColumns.mi_modifyDate = this.inputData.mi_modifyDate
+          let params = {
+            fieldList: this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
+            entity: this.entitySchema.name,
+            method: this.isNew ? 'insert' : 'update',
+            execParams: changedColumns
+          }
+          $App.connection.update(params)
+            .then((result) => {
+              this.$emit('close')
+            })
+        } else {
+          this.$emit('close')
+        }
+      },
       saveLocalization (data) {
-        console.log(data)
+        Object.values(data).forEach((item) => {
+          this.additionalData[item.fieldName] = item.value
+        })
       }
     },
-    data: function () {
+    data () {
       return {
-        UBDomain: ubDomain
+        UBDomain: ubDomain,
+        oldData: {...this.inputData},
+        additionalData: {}
       }
     },
     components: {

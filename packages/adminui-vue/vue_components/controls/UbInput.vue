@@ -52,33 +52,35 @@
       },
       initLocalizableFields () {
         this.dialogFormVisible = true
-        this.loading = true
-        let fieldList = []
-        UB.appConfig.supportedLanguages.forEach((item) => {
-          if ($App.connection.userLang() === item) {
-            return
-          }
-          let fieldName = this.attributeName + '_' + item + '^'
-          if (!Object.keys(this.localizableFields).includes(fieldName)) {
-            this.localizableFields[fieldName] = {
-              location: item,
-              fieldName: fieldName,
-              caption: UB.i18n(item)
+        if (Object.keys(this.localizableFields).length === 0) {
+          this.loading = true
+          let fieldList = []
+          UB.appConfig.supportedLanguages.forEach((item) => {
+            if ($App.connection.userLang() === item) {
+              return
             }
-            fieldList.push(fieldName)
-          }
-        })
-        if (fieldList.length > 0) {
-          UB.Repository(this.entityName).attrs(fieldList).selectById(this.primaryValue).then((item) => {
-            if (item) {
-              Object.keys(item).forEach((fieldName) => {
-                this.localizableFields[fieldName].value = item[fieldName]
-              })
+            let fieldName = this.attributeName + '_' + item + '^'
+            if (!Object.keys(this.localizableFields).includes(fieldName)) {
+              this.localizableFields[fieldName] = {
+                location: item,
+                fieldName: fieldName,
+                caption: UB.i18n(item)
+              }
+              fieldList.push(fieldName)
             }
-          }).finally(() => {
-            this.$forceUpdate()
-            this.loading = false
           })
+          if (fieldList.length > 0) {
+            UB.Repository(this.entityName).attrs(fieldList).selectById(this.primaryValue).then((item) => {
+              if (item) {
+                Object.keys(item).forEach((fieldName) => {
+                  this.localizableFields[fieldName].value = item[fieldName]
+                })
+              }
+            }).finally(() => {
+              this.$forceUpdate()
+              this.loading = false
+            })
+          }
         }
       }
     },

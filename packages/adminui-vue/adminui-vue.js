@@ -30,6 +30,7 @@ UB.core.UBCommand.showAutoForm = async function () {
   let tabTitle = entitySchema.caption
   let pageColumns = Object.values(entitySchema.attributes).filter((at) => { return at.defaultView }).map((at) => { return at.name })
   let data = {}
+  let isNew = false
   let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])
   if (this.instanceID) {
     data = await UB.Repository(this.entity).attrs(fieldList).selectById(this.instanceID)
@@ -42,6 +43,7 @@ UB.core.UBCommand.showAutoForm = async function () {
     result.resultData.fields.forEach((item, key) => {
       data[item] = result.resultData.data[0][key]
     })
+    isNew = true
   }
 
   let tab = $App.viewport.centralPanel.add({
@@ -50,12 +52,14 @@ UB.core.UBCommand.showAutoForm = async function () {
     closable: true
   })
   let vm = new Vue({
-    template: `<el-scrollbar style='height: 100%;'><auto-form-component :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :inputData="inputData" /></el-scrollbar>`,
+    template: `<el-scrollbar style='height: 100%;'><auto-form-component :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :inputData="inputData" :isNew="isNew" @close="closeTab.call()"/></el-scrollbar>`,
     data: function () {
       return {
         fieldsToShow: pageColumns,
         entitySchema: entitySchema,
-        inputData: data
+        inputData: data,
+        isNew: isNew,
+        closeTab: function () { tab.close() }
       }
     },
     components: {'auto-form-component': autoFormComponent}
