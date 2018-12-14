@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.37]
+### Added 
+ - in case `reportOptions.showParamForm` is true, `reportViewer` will always display the report parameters form, 
+   otherwise, the report parameters form will be displayed only if the report option `reportParams` is empty 
+   (false by default) 
+ ```javascript
+$App.doCommand({
+  cmdType: 'showReport',
+  cmdData: {
+    reportCode: 'your-report-code',
+    reportType: 'html',
+    reportParams: {a: 'b'},
+    reportOptions: {
+      showParamForm: true
+    }
+  }
+})
+```
+
 ## [5.1.26]
 ### Changed
  - `ubs.numcounter.autoIncrementalCodeLen` default value decreased from 12 to 6 - codes length `000001` is enough in most case 

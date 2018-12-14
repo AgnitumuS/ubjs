@@ -62,6 +62,7 @@ function addStyleSheet (doc, cssText) {
  *      code: 'test',
  *      type: 'pdf',
  *      allowExcelExport: true,
+ *      showParamForm: true,
  *      params: {userName: 'Helen'}
  *    });
  *    report.init().then(function(){
@@ -168,7 +169,7 @@ Ext.define('UBS.ReportViewer', {
     }).then(function (paramsFormRequired) {
       if (paramsFormRequired) {
         let paramsPassed = me.report.incomeParams && (Object.keys(me.report.incomeParams).length !== 0)
-        if (!paramsPassed) return false // user enter params and press "show report" on params form
+        if (!paramsPassed || me.report.showParamForm) return false // user enter params and press "show report" on params form
         let paramForm = me.down('reportparamform')
         paramForm.collapse(Ext.Component.DIRECTION_TOP, false)
       }
