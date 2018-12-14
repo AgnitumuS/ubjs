@@ -10,7 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  instead of duplication of code inside UB server and `@unitybase/uba` model
  - in case user is a member of **security group** (uba_group / uba_usergroup) then roles assigned 
  to this groups will be added to the user roles. ELS for such a roles will be also applied to user.
- **UB server must be upgraded to >= 5.7.3**  
+ **UB server must be upgraded to >= 5.7.3**
+ - uData employeeShortFIO & employeeFullFIO now initialized from uba_user.firstName & uba_user.fullName.
+ In case `org` model is in domain then it will override employeeShortFIO & employeeFullFIO   
  
 ### Added
  - `Session.uData.groupIDs` property - an array of group IDs user id assigned to

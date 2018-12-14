@@ -62,7 +62,7 @@ function orgOnUserLogin () {
     if (ORG.checkOrgUnitRequired && (Session.uData.roleIDs.indexOf(UBA_COMMON.ROLES.ADMIN.ID) === -1)) {
       throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>. ' + lastError)
     } else {
-      data.employeeShortFIO = ''
+      // defined by ub model data.employeeShortFIO = ''
       data['orgUnitIDs'] = ''
       data.staffUnitID = -1
       data.employeeID = -1
