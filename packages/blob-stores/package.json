@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/blob-stores",
-  "version": "5.0.29",
+  "version": "5.0.30",
   "description": "BLOB stores implementation",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/blob-stores",
   "config": {},
@@ -13,8 +13,8 @@
   },
   "main": "blobStores.js",
   "dependencies": {
-    "@unitybase/base": "^5.0.32",
-    "@unitybase/cs-shared": "^5.0.14",
+    "@unitybase/base": "^5.1.0",
+    "@unitybase/cs-shared": "^5.0.15",
     "lodash": "^4",
     "mime-types": "^2.1.12"
   },
