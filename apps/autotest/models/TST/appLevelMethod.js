@@ -1,5 +1,7 @@
 /*
- * Created by pavel.mash on 10.10.2014.
+ * Created by pavel.mash on 10.10.2014
+ * Проверка русского комментария
+ * на несколько строк
  */
 const fs = require('fs')
 const assert = require('assert')

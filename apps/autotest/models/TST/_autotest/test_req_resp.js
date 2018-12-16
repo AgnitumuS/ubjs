@@ -85,13 +85,13 @@ function testRest (conn) {
     HTTPMethod: 'GET',
     data: 'put test data'
   })
-  assert.ok(typeof d === 'object', 'rest call convention fail')
+  assert.ok(typeof d1 === 'object', 'rest call convention fail')
   let d2 = conn.xhr({
     endpoint: 'rest/tst_service/restTest',
     HTTPMethod: 'POST',
     data: 'put test data'
   })
-  assert.ok(typeof d === 'object', 'rest call convention fail')
+  assert.ok(typeof d2 === 'object', 'rest call convention fail')
 }
 
 /**
