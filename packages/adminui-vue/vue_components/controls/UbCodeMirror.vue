@@ -12,7 +12,7 @@
     },
     data () {
       return {
-        currentValue: typeof this.value === 'object' ? JSON.stringify(this.value, null, 2) : this.value,
+        currentValue: this.value && typeof this.value === 'object' ? JSON.stringify(this.value, null, 2) : this.value,
         codeMirror: null
       }
     },

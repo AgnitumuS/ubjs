@@ -40,7 +40,6 @@
     },
     methods: {
       processFile () {
-        debugger
         this.loading = true
         let file = arguments[0].target.files[0]
         let params = {
