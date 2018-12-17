@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - if several default (isDefault=true) forms exists for an entity
   `UBFormLoader.getFormByEntity` will return a form from model with the biggest model order.
   This allow to override default forms in descending models [unitybase/ubjs#30]  
-  
+
+### Fixed
+  - allow negative values for fields with dataType `currency` or `float`
+    
 ## [5.6.15]
 ### Changed
   - use a new function `AsyncConnection.setDocument` for files uploading
