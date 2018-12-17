@@ -138,7 +138,7 @@ TubDataStore.initialize = function (source, keyMap) {
     } else {
       throw new Error('TubDataStore.initialize: invalid source format for TubDataStore.initialize')
     }
-  } else if ((typeof source === 'object') && (source.fieldCount > 0) && (source.rowCount > 0)) { // flatten
+  } else if ((typeof source === 'object') && (source.fieldCount > 0) && (source.rowCount >= 0)) { // flatten
     if (keyMap) {
       if (keyMap.length !== source.fieldCount) {
         throw new Error('TubDataStore.initialize: for flatten data keyMap length must be equal to fieldCount')

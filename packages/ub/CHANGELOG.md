@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.1]
+### Fixed
+ - `DataStore.initialize` will correctly init store from a flatten format in case rowCount = 0 [unitybase/ubjs#31]  
+
 ## [5.1.0]
 ### Changed
  - initial values of `Session.uData` now filled inside JS `Session._getRBACInfo` (`@unitybase/ub`)
