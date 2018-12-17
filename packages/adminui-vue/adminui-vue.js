@@ -29,7 +29,11 @@ if ($App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = async function () {
     let entitySchema = $App.domainInfo.get(this.entity)
     let tabTitle = entitySchema.caption
-    let pageColumns = Object.values(entitySchema.attributes).filter((at) => { return at.defaultView }).map((at) => { return at.name })
+    let pageColumns = Object.values(entitySchema.attributes).filter((at) => {
+      return at.defaultView
+    }).map((at) => {
+      return at.name
+    })
     let data = {}
     let isNew = false
     let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])
@@ -46,28 +50,39 @@ if ($App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
       })
       isNew = true
     }
-    let tab = $App.viewport.centralPanel.add({
-      title: tabTitle,
-      tooltip: tabTitle,
-      closable: true
-    })
-    let vm = new Vue({
-      template: `<el-scrollbar style='height: 100%;'><auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/></el-scrollbar>`,
-      data: function () {
-        return {
-          fieldsToShow: pageColumns,
-          entitySchema: entitySchema,
-          inputData: data,
-          isNew: isNew,
-          closeTab: function () { tab.close() }
+    let tabId = entitySchema.name + data.ID
+    let existsTab = Ext.getCmp(tabId)
+    if (existsTab) {
+      $App.viewport.centralPanel.setActiveTab(existsTab)
+    } else {
+      let tab = $App.viewport.centralPanel.add({
+        id: tabId,
+        title: tabTitle,
+        tooltip: tabTitle,
+        closable: true
+      })
+      let vm = new Vue({
+        template: `<el-scrollbar style='height: 100%;'><auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/></el-scrollbar>`,
+        data: function () {
+          return {
+            fieldsToShow: pageColumns,
+            entitySchema: entitySchema,
+            inputData: data,
+            isNew: isNew,
+            closeTab: function () {
+              tab.close()
+            }
+          }
+        },
+        components: {
+          'auto-form-component': autoFormComponent
         }
-      },
-      components: {'auto-form-component': autoFormComponent}
-    })
-    vm.$mount(`#${tab.getId()}-outerCt`)
-    tab.on('close', function () {
-      vm.$destroy()
-    })
-    $App.viewport.centralPanel.setActiveTab(tab)
+      })
+      vm.$mount(`#${tab.getId()}-outerCt`)
+      tab.on('close', function () {
+        vm.$destroy()
+      })
+      $App.viewport.centralPanel.setActiveTab(tab)
+    }
   }
 }
