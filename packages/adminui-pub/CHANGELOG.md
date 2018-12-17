@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.17]
+### Changed
+  - if several default (isDefault=true) forms exists for an entity
+  `UBFormLoader.getFormByEntity` will return a form from model with the biggest model order.
+  This allow to override default forms in descending models [unitybase/ubjs#30]  
+  
 ## [5.6.15]
 ### Changed
   - use a new function `AsyncConnection.setDocument` for files uploading
