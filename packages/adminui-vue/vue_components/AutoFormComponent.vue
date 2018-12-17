@@ -42,7 +42,8 @@
                         <el-input
                                 v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
                                 type='number'
-                                v-model="inputData[fieldName]"></el-input>
+                                v-model="inputData[fieldName]"
+                        ></el-input>
                         <el-input
                                 v-else-if="'Float' === entitySchema.attributes[fieldName].dataType"
                                 type='number'
@@ -54,12 +55,14 @@
                                 type='number'
                                 :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
                                 :controls="false"
-                                v-model="inputData[fieldName]"></el-input>
+                                v-model="inputData[fieldName]"
+                        ></el-input>
                         <el-input
                                 v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
                                 type="textarea"
                                 :autosize="{ minRows: 3, maxRows: 4}"
-                                v-model="inputData[fieldName]"></el-input>
+                                v-model="inputData[fieldName]"
+                        ></el-input>
                         <ub-upload-document
                                 v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
                                 v-model="inputData[fieldName]"
@@ -76,7 +79,8 @@
                                 :entityName="entitySchema.name"
                                 :attributeName="fieldName"
                                 :primaryValue="inputData.ID"
-                                @saveLocalization="saveLocalization"></ub-input>
+                                @saveLocalization="saveLocalization"
+                        ></ub-input>
                     </el-form-item>
                 </el-form>
             </el-main>

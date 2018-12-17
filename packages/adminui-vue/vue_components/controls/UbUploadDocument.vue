@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-loading="loading">
         <div v-if="value">
             <a @click="downloadFile"
                class="ub-upload-document__a">
@@ -33,13 +33,38 @@
         return typeof this.value === 'string' ? JSON.parse(this.value) : this.value
       }
     },
+    data () {
+      return {
+        loading: false
+      }
+    },
     methods: {
       processFile () {
-        //debugger
+        debugger
+        this.loading = true
+        let file = arguments[0].target.files[0]
+        let params = {
+          entity: this.docParams.entity,
+          attribute: this.docParams.attribute,
+          origName: file.name,
+          filename: file.name,
+          id: this.docParams.ID
+        }
+        UB.connection.post('setDocument', file, {
+          params: params,
+          headers: {'Content-Type': 'application/octet-stream'}
+        }).then(function (response) {
+          this.$emit('input', JSON.stringify(response.data.result))
+        }.bind(this)).finally(function () {
+          this.loading = false
+        }.bind(this))
       },
       downloadFile () {
+        this.loading = true
         $App.connection.getDocument(this.docParams).then(function (result) {
           saveAs(new Blob([result]), this.currentValue.origName)
+        }.bind(this)).finally(function () {
+          this.loading = false
         }.bind(this))
       },
       remove () {
