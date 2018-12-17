@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.17]
+### Fixed
+  - entering a negative value for field with dataType currency or float
+
 ## [5.6.15]
 ### Changed
   - use a new function `AsyncConnection.setDocument` for files uploading
