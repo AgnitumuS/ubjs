@@ -34,7 +34,10 @@
         resultData: this.value,
         items: [],
         entityName: 'ubm_enum',
-        loading: false
+        loading: false,
+        listener: function () {
+          this.initData()
+        }.bind(this)
       }
     },
     computed: {
@@ -52,23 +55,31 @@
             svg.style.height = '100%'
           }
         }
+      },
+      initData() {
+        this.loading = true
+        let promise = UB.Repository(this.entityName)
+          .attrs(this.primaryColumn, this.displayValue, 'eGroup')
+
+        if (this.eGroup) promise = promise.where('eGroup', '=', this.eGroup)
+
+        promise.select().then((data) => {
+          this.items = data
+          this.loading = false
+        })
       }
+    },
+    destroyed() {
+      $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
     mounted () {
       setTimeout(function () {
         this.initLoaderStyles()
       }.bind(this), 1)
 
-      this.loading = true
-      let promise = UB.Repository(this.entityName)
-        .attrs(this.primaryColumn, this.displayValue, 'eGroup')
+      $App.connection.on(`${this.entityName}:changed`, this.listener)
 
-      if (this.eGroup) promise = promise.where('eGroup', '=', this.eGroup)
-
-      promise.select().then((data) => {
-        this.items = this.items.concat(data)
-        this.loading = false
-      })
+      this.initData()
     }
   }
 </script>

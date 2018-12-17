@@ -1,21 +1,24 @@
 <template>
-    <el-select ref="selector" v-model="resultData"
-               reserve-keyword clearable filterable
-               remote :remote-method="loadNextByInput"
-               v-loading="loading" :disabled="loading"
-               @change="onChange"
-               v-on:click.native="onFocus"
-               style="width: 100%"
-               :class="`ub-select-entity${this._uid}`">
-        <template slot-scope="scope">
-            <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
-                       :label="item[displayValue]" :value="item[primaryColumn]">
-            </el-option>
-            <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
-                <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
-            </el-row>
-        </template>
-    </el-select>
+    <div>
+        <el-select ref="selector" v-model="resultData"
+                  reserve-keyword clearable filterable remote
+                  :remote-method="loadNextByInput"
+                  v-loading="loading"
+                  :disabled="loading"
+                  @change="onChange"
+                  v-on:click.native="onFocus"
+                  style="width: 100%"
+                  :class="`ub-select-entity${this._uid}`">
+            <template slot-scope="scope">
+                <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
+                          :label="item[displayValue]" :value="item[primaryColumn]">
+                </el-option>
+                <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
+                    <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
+                </el-row>
+            </template>
+        </el-select>
+    </div>
 </template>
 
 <script>
@@ -100,7 +103,10 @@
         hasData: true,
         buttonMoreCaption: UB.i18n('more'),
         loading: false,
-        searchValue: ''
+        searchValue: '',
+        listener: function () {
+          this.items = []
+        }.bind(this)
       }
     },
     computed: {
@@ -119,10 +125,15 @@
         return this.items
       }
     },
+    destroyed() {
+      $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
+    },
     mounted () {
       setTimeout(function () {
         this.initLoaderStyles()
       }.bind(this), 1)
+
+      $App.connection.on(`${this.entityName}:changed`, this.listener)
 
       if (this.value) {
         this.loading = true

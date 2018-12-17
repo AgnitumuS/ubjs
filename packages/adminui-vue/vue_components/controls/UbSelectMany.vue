@@ -97,7 +97,10 @@
         itemCount: 20,
         hasData: true,
         buttonMoreCaption: UB.i18n('more'),
-        loading: false
+        loading: false,
+        listener: function () {
+          this.items = []
+        }.bind(this)
       }
     },
     computed: {
@@ -119,10 +122,15 @@
         return this.items
       }
     },
+    destroyed() {
+      $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
+    },
     mounted () {
       setTimeout(function () {
         this.initLoaderStyles()
       }.bind(this), 1)
+
+      $App.connection.on(`${this.entityName}:changed`, this.listener)
 
       if (this.value) {
         this.loading = true
