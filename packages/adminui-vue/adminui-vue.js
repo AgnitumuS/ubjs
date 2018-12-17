@@ -24,50 +24,50 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
-const autoFormComponent = require('./vue_components/AutoFormComponent.vue')
-UB.core.UBCommand.showAutoForm = async function () {
-  let entitySchema = $App.domainInfo.get(this.entity)
-  let tabTitle = entitySchema.caption
-  let pageColumns = Object.values(entitySchema.attributes).filter((at) => { return at.defaultView }).map((at) => { return at.name })
-  let data = {}
-  let isNew = false
-  let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])
-  if (this.instanceID) {
-    data = await UB.Repository(this.entity).attrs(fieldList).selectById(this.instanceID)
-  } else {
-    let params = {
-      entity: this.entity,
-      fieldList: fieldList
-    }
-    var result = await $App.connection.addNew(params)
-    result.resultData.fields.forEach((item, key) => {
-      data[item] = result.resultData.data[0][key]
-    })
-    isNew = true
-  }
-
-  let tab = $App.viewport.centralPanel.add({
-    title: tabTitle,
-    tooltip: tabTitle,
-    closable: true
-  })
-  let vm = new Vue({
-    template: `<el-scrollbar style='height: 100%;'><auto-form-component :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :inputData="inputData" :isNew="isNew" @close="closeTab.call()"/></el-scrollbar>`,
-    data: function () {
-      return {
-        fieldsToShow: pageColumns,
-        entitySchema: entitySchema,
-        inputData: data,
-        isNew: isNew,
-        closeTab: function () { tab.close() }
+if ($App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
+  const autoFormComponent = require('./vue_components/AutoFormComponent.vue')
+  UB.core.UBCommand.showAutoForm = async function () {
+    let entitySchema = $App.domainInfo.get(this.entity)
+    let tabTitle = entitySchema.caption
+    let pageColumns = Object.values(entitySchema.attributes).filter((at) => { return at.defaultView }).map((at) => { return at.name })
+    let data = {}
+    let isNew = false
+    let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])
+    if (this.instanceID) {
+      data = await UB.Repository(this.entity).attrs(fieldList).selectById(this.instanceID)
+    } else {
+      let params = {
+        entity: this.entity,
+        fieldList: fieldList
       }
-    },
-    components: {'auto-form-component': autoFormComponent}
-  })
-  vm.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
-  // !! important
-  tab.on('close', function () {
-    vm.$destroy()
-  })
-  $App.viewport.centralPanel.setActiveTab(tab)
+      var result = await $App.connection.addNew(params)
+      result.resultData.fields.forEach((item, key) => {
+        data[item] = result.resultData.data[0][key]
+      })
+      isNew = true
+    }
+    let tab = $App.viewport.centralPanel.add({
+      title: tabTitle,
+      tooltip: tabTitle,
+      closable: true
+    })
+    let vm = new Vue({
+      template: `<el-scrollbar style='height: 100%;'><auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/></el-scrollbar>`,
+      data: function () {
+        return {
+          fieldsToShow: pageColumns,
+          entitySchema: entitySchema,
+          inputData: data,
+          isNew: isNew,
+          closeTab: function () { tab.close() }
+        }
+      },
+      components: {'auto-form-component': autoFormComponent}
+    })
+    vm.$mount(`#${tab.getId()}-outerCt`)
+    tab.on('close', function () {
+      vm.$destroy()
+    })
+    $App.viewport.centralPanel.setActiveTab(tab)
+  }
 }
