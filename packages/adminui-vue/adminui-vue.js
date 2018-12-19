@@ -25,7 +25,7 @@ Vue.use(ElementUI, {
 })
 
 if ($App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
-  const autoFormComponent = require('./vue_components/AutoFormComponent.vue')
+  const autoFormComponent = require('./components/AutoFormComponent.vue')
   UB.core.UBCommand.showAutoForm = async function () {
     let entitySchema = $App.domainInfo.get(this.entity)
     let tabTitle = entitySchema.caption
