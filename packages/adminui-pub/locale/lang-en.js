@@ -30,6 +30,7 @@ UB.i18nExtend({
   tg: 'Tajik',
   id: 'Indonesian',
   ka: 'Georgian',
+  ky: 'Kyrgyz',
   neizvestnajaOshibkaServera: 'Unknown server error',
   nevozmozhnoDecodirovat: "Can't decode",
   avtorizatsia: 'Authorization',

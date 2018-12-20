@@ -28,6 +28,7 @@ UB.i18nExtend({
   tg: 'Tajik',
   id: 'Indoneziya',
   ka: 'Georgian',
+  ky: 'Kyrgyz',
   neizvestnajaOshibkaServera: 'Serverdə naməlum səhv',
   nevozmozhnoDecodirovat: 'Kodunu açmaq mümkün deyil',
   avtorizatsia: 'Avtorizasiya',

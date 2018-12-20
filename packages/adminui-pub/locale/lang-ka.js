@@ -30,6 +30,7 @@ UB.i18nExtend({
   tg: 'ტაჯიკური',
   id: 'ინდონეზიური',
   ka: 'ქართული',
+  ky: 'ყირგიზული',
   neizvestnajaOshibkaServera: 'უცნობი სერვერის შეცდომა',
   nevozmozhnoDecodirovat: "დეკოდირება შეუძლებელია",
   avtorizatsia: 'ავტორიზაცია',
