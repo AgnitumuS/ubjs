@@ -1,17 +1,25 @@
 <template>
     <div>
         <el-select ref="selector" v-model="resultData"
-                  reserve-keyword clearable filterable remote
-                  :remote-method="loadNextByInput"
-                  v-loading="loading"
-                  :disabled="loading"
-                  @change="onChange"
-                  v-on:click.native="onFocus"
-                  style="width: 100%"
-                  :class="`ub-select-entity${this._uid}`">
+                   reserve-keyword clearable filterable remote
+                   :remote-method="loadNextByInput"
+                   v-loading="loading"
+                   :disabled="loading"
+                   v-on:mouseover.native="mouseOver"
+                   v-on:mouseout.native="mouseOver"
+                   @change="onChange"
+                   v-on:click.native="onFocus"
+                   style="width: 100%"
+                   :class="`ub-select-entity${this._uid}`">
+            <div slot="suffix" v-show="showActions">
+                <i class="ub-select-entity__suffix_icon el-icon-circle-plus-outline"></i>
+                <i class="ub-select-entity__suffix_icon el-icon-edit"></i>
+                <i class="ub-select-entity__suffix_icon el-icon-menu"></i>
+                <i class="ub-select-entity__suffix_icon el-icon-circle-close" v-if="this.resultData"></i>
+            </div>
             <template slot-scope="scope">
                 <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
-                          :label="item[displayValue]" :value="item[primaryColumn]">
+                           :label="item[displayValue]" :value="item[primaryColumn]">
                 </el-option>
                 <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
                     <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
@@ -42,6 +50,9 @@
       }
     },
     methods: {
+      mouseOver () {
+        this.showActions = !this.showActions
+      },
       onChange (data) {
         this.initialItem = this.items.find((el) => {
           return el[this.primaryColumn] === data
@@ -106,7 +117,8 @@
         searchValue: '',
         listener: function () {
           this.items = []
-        }.bind(this)
+        }.bind(this),
+        showActions: false
       }
     },
     computed: {
@@ -125,7 +137,7 @@
         return this.items
       }
     },
-    destroyed() {
+    destroyed () {
       $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
     mounted () {
@@ -150,3 +162,9 @@
     }
   }
 </script>
+
+<style>
+    .ub-select-entity__suffix_icon {
+        margin-right: 5px;
+    }
+</style>
