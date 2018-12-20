@@ -24,9 +24,9 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
-if ($App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
-  const autoFormComponent = require('./components/AutoFormComponent.vue')
+if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = async function () {
+    const autoFormComponent = require('./components/AutoFormComponent.vue')
     let entitySchema = $App.domainInfo.get(this.entity)
     let tabTitle = entitySchema.caption
     let pageColumns = Object.values(entitySchema.attributes).filter((at) => {
