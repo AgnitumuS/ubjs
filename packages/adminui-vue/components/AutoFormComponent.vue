@@ -162,10 +162,12 @@
             execParams: changedColumns
           }
           $App.connection.update(params)
-            .then(function (result) {
+            .then((result) => {
               callback.call(this, result, true)
-            }).then(() => {
-              $App.connection.emit(`${this.entitySchema.name}:changed`)
+              return result
+            })
+            .then((result) => {
+              $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
             })
         } else {
           callback.call(this, null, false)

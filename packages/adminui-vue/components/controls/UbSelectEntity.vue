@@ -5,17 +5,27 @@
                    :remote-method="loadNextByInput"
                    v-loading="loading"
                    :disabled="loading"
-                   v-on:mouseover.native="mouseOver"
-                   v-on:mouseout.native="mouseOver"
                    @change="onChange"
                    v-on:click.native="onFocus"
                    style="width: 100%"
                    :class="`ub-select-entity${this._uid}`">
-            <div slot="suffix" v-show="showActions">
-                <i class="ub-select-entity__suffix_icon el-icon-circle-plus-outline"></i>
-                <i class="ub-select-entity__suffix_icon el-icon-edit"></i>
-                <i class="ub-select-entity__suffix_icon el-icon-menu"></i>
-                <i class="ub-select-entity__suffix_icon el-icon-circle-close" v-if="this.resultData"></i>
+            <div slot="suffix">
+                <el-popover
+                    v-if="defaultActions"
+                    placement="bottom-end"
+                    v-model="popoverVisible">
+                    <el-table :data="defaultActions" @row-click="onActionClick" :show-header="false">
+                        <el-table-column property="caption" width="250" >
+                            <template slot-scope="scope">
+                                <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
+                                    <i :class="scope.row.icon"></i>
+                                    <span style="margin-left: 10px">{{ scope.row.caption }}</span>
+                                </div>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <i @click="showPopover" slot="reference" class="el-select__caret el-input__icon el-icon-menu"></i>
+                </el-popover>
             </div>
             <template slot-scope="scope">
                 <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
@@ -49,9 +59,37 @@
         }
       }
     },
+    data () {
+      return {
+        buttonMoreCaption: UB.i18n('more'),
+        hasData: true,
+        initialItem: null,
+        items: [],
+        itemCount: 20,
+        listener: function (id) {
+          if (id && this.resultData === null) this.resultData = id
+          if (id && id === this.resultData) {
+            this.setInitialItem(id)
+          } else {
+            this.items = []
+          }
+        }.bind(this),
+        loading: false,
+        popoverVisible: false,
+        resultData: this.value,
+        searchValue: ''
+      }
+    },
     methods: {
-      mouseOver () {
-        this.showActions = !this.showActions
+      onActionClick (data) {
+        if (data.enabled === undefined || data.enabled) {
+          data.handler.fn.call(data.handler.scope ? data.handler.scope : this)
+          this.popoverVisible = false
+        }
+      },
+      showPopover (event) {
+        event.stopPropagation()
+        this.popoverVisible = !this.popoverVisible
       },
       onChange (data) {
         this.initialItem = this.items.find((el) => {
@@ -103,25 +141,77 @@
             this.items.push(item)
           }.bind(this))
         })
-      }
-    },
-    data () {
-      return {
-        initialItem: null,
-        resultData: this.value,
-        items: [],
-        itemCount: 20,
-        hasData: true,
-        buttonMoreCaption: UB.i18n('more'),
-        loading: false,
-        searchValue: '',
-        listener: function () {
-          this.items = []
-        }.bind(this),
-        showActions: false
+      },
+      setInitialItem (id) {
+        this.loading = true
+        UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).selectById(id || this.value).then((item) => {
+          if (item) {
+            this.initialItem = {}
+            this.initialItem[this.primaryColumn] = item[this.primaryColumn]
+            this.initialItem[this.displayValue] = item[this.displayValue] ? item[this.displayValue] : item[this.primaryColumn]
+            this.$refs.selector.selectedLabel = item[this.displayValue]
+          }
+        }).finally(() => {
+          this.loading = false
+        })
       }
     },
     computed: {
+      defaultActions () {
+        return [
+          {
+            name: "ShowLookup",
+            caption: UB.i18n('selectFromDictionary'),
+            icon: 'fa fa-table',
+            handler: {
+              fn () {
+                debugger
+              }
+            }
+          },
+          {
+            name: "Edit",
+            caption: UB.i18n('editSelItem'),
+            icon: 'fa fa-pencil-square-o',
+            enabled: this.resultData ? true : false,
+            handler: {
+              fn () {
+                UB.core.UBApp.doCommand({
+                  cmdType: UB.core.UBCommand.commandType.showForm,
+                  entity: this.entityName,
+                  isModal: true,
+                  instanceID: this.resultData
+                })
+              }
+            }
+          },
+          {
+            name: "Add",
+            caption: UB.i18n('addNewItem'),
+            icon: 'fa fa-plus-circle',
+            handler: {
+              fn () {
+                UB.core.UBApp.doCommand({
+                  cmdType: UB.core.UBCommand.commandType.showForm,
+                  entity: this.entityName,
+                  isModal: true
+                })
+              }
+            }
+          },
+          {
+            name: "Clear",
+            caption: UB.i18n('clearSelection'),
+            icon: 'fa fa-eraser',
+            handler: {
+              fn () {
+                this.resultData = null
+                this.$refs.selector.emitChange(null)
+              }
+            }
+          }
+        ]
+      },
       displayValue () {
         return $App.domainInfo.get(this.entityName).descriptionAttribute
       },
@@ -148,23 +238,8 @@
       $App.connection.on(`${this.entityName}:changed`, this.listener)
 
       if (this.value) {
-        this.loading = true
-        UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).selectById(this.value).then((item) => {
-          if (item) {
-            this.initialItem = {}
-            this.initialItem[this.primaryColumn] = this.value
-            this.initialItem[this.displayValue] = item[this.displayValue]
-          }
-        }).finally(() => {
-          this.loading = false
-        })
+        this.setInitialItem()
       }
     }
   }
 </script>
-
-<style>
-    .ub-select-entity__suffix_icon {
-        margin-right: 5px;
-    }
-</style>
