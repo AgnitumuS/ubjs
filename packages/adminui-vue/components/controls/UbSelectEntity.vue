@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-select ref="selector" v-model="resultData"
-                   reserve-keyword clearable filterable remote
+                   reserve-keyword filterable remote
                    :remote-method="loadNextByInput"
                    v-loading="loading"
                    :disabled="loading"
@@ -11,11 +11,11 @@
                    :class="`ub-select-entity${this._uid}`">
             <div slot="suffix">
                 <el-popover
-                    v-if="defaultActions"
-                    placement="bottom-end"
-                    v-model="popoverVisible">
+                        v-if="defaultActions"
+                        placement="bottom-end"
+                        v-model="popoverVisible">
                     <el-table :data="defaultActions" @row-click="onActionClick" :show-header="false">
-                        <el-table-column property="caption" width="250" >
+                        <el-table-column property="caption" width="250">
                             <template slot-scope="scope">
                                 <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
                                     <i :class="scope.row.icon"></i>
@@ -160,7 +160,7 @@
       defaultActions () {
         return [
           {
-            name: "ShowLookup",
+            name: 'ShowLookup',
             caption: UB.i18n('selectFromDictionary'),
             icon: 'fa fa-table',
             handler: {
@@ -181,7 +181,7 @@
                     params: [{
                       entity: this.entityName,
                       method: 'select',
-                      fieldList: "*"
+                      fieldList: '*'
                     }]
                   }
                 })
@@ -189,7 +189,7 @@
             }
           },
           {
-            name: "Edit",
+            name: 'Edit',
             caption: UB.i18n('editSelItem'),
             icon: 'fa fa-pencil-square-o',
             enabled: !!this.resultData,
@@ -205,7 +205,7 @@
             }
           },
           {
-            name: "Add",
+            name: 'Add',
             caption: UB.i18n('addNewItem'),
             icon: 'fa fa-plus-circle',
             handler: {
@@ -219,7 +219,7 @@
             }
           },
           {
-            name: "Clear",
+            name: 'Clear',
             caption: UB.i18n('clearSelection'),
             icon: 'fa fa-eraser',
             enabled: !!this.resultData,
