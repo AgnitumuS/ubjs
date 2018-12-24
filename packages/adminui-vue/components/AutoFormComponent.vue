@@ -9,13 +9,13 @@
                 <el-button size="small"><i class="fa fa-cogs"></i></el-button> -->
             </el-header>
             <el-main>
-                <el-form label-position="left" label-width="150px">
+                <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
                     <el-form-item
                             v-for="fieldName in fieldsToShow"
-                            :required="!entitySchema.attributes[fieldName].allowNull && entitySchema.attributes[fieldName].dataType !== 'Boolean'"
+                            :prop="fieldName"
                             :key="fieldName"
-                            :label="entitySchema.attributes[fieldName].caption"
-                            style="margin-bottom: 5px;">
+                            :required="!entitySchema.attributes[fieldName].allowNull && entitySchema.attributes[fieldName].dataType !== 'Boolean'"
+                            :label="entitySchema.attributes[fieldName].caption">
                         <el-checkbox
                                 v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
                                 v-model="value[fieldName]"
@@ -101,6 +101,7 @@
   const ubDomain = require('@unitybase/cs-shared').UBDomain
 
   module.exports = {
+    name: 'AutoForm',
     props: {
       value: {
         type: [Object],
@@ -120,7 +121,7 @@
       }
     },
     computed: {
-      changedColumns() {
+      changedColumns () {
         let result = {}
         this.fieldsToShow.forEach((field) => {
           if (this.value[field] !== this.oldData[field]) result[field] = this.value[field]
@@ -132,7 +133,7 @@
       saveAndReload () {
         this.save((data, changed) => {
           if (changed) {
-            var object = {}
+            let object = {}
             data.resultData.data[0].forEach((item, index) => {
               object[data.resultData.fields[index]] = item
             })
@@ -144,34 +145,40 @@
         this.save(() => {this.$emit('close')})
       },
       save (callback) {
-        let changedColumns = {...this.changedColumns, ...this.additionalData}
-        if (Object.keys(changedColumns).length > 0) {
-          Object.keys(this.additionalData).forEach((locColumn) => {
-            let matches = locColumn.match(/(\w+)_\w\w\^/)
-            if (matches && changedColumns.hasOwnProperty(matches[1])) {
-              changedColumns[`${matches[1]}_${$App.connection.userLang()}^`] = changedColumns[matches[1]]
-              delete changedColumns[matches[1]]
+        this.$refs[this.$options.name].validate((valid) => {
+          if (valid) {
+            let changedColumns = {...this.changedColumns, ...this.additionalData}
+            if (Object.keys(changedColumns).length > 0) {
+              Object.keys(this.additionalData).forEach((locColumn) => {
+                let matches = locColumn.match(/(\w+)_\w\w\^/)
+                if (matches && changedColumns.hasOwnProperty(matches[1])) {
+                  changedColumns[`${matches[1]}_${$App.connection.userLang()}^`] = changedColumns[matches[1]]
+                  delete changedColumns[matches[1]]
+                }
+              })
+              changedColumns.ID = this.value.ID
+              changedColumns.mi_modifyDate = this.value.mi_modifyDate
+              let params = {
+                fieldList: this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
+                entity: this.entitySchema.name,
+                method: this.isNew ? 'insert' : 'update',
+                execParams: changedColumns
+              }
+              $App.connection.update(params)
+                .then((result) => {
+                  callback.call(this, result, true)
+                  return result
+                })
+                .then((result) => {
+                  $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
+                })
+            } else {
+              callback.call(this, null, false)
             }
-          })
-          changedColumns.ID = this.value.ID
-          changedColumns.mi_modifyDate = this.value.mi_modifyDate
-          let params = {
-            fieldList: this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
-            entity: this.entitySchema.name,
-            method: this.isNew ? 'insert' : 'update',
-            execParams: changedColumns
+          } else {
+            console.log('validation error')
           }
-          $App.connection.update(params)
-            .then((result) => {
-              callback.call(this, result, true)
-              return result
-            })
-            .then((result) => {
-              $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
-            })
-        } else {
-          callback.call(this, null, false)
-        }
+        })
       },
       saveLocalization (data) {
         Object.values(data).forEach((item) => {
