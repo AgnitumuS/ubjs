@@ -165,7 +165,26 @@
             icon: 'fa fa-table',
             handler: {
               fn () {
-                debugger
+                UB.core.UBApp.doCommand({
+                  entity: this.entityName,
+                  cmdType: UB.core.UBCommand.commandType.showList,
+                  description: $App.domainInfo.get(this.entityName, true).getEntityDescription(),
+                  isModal: true,
+                  sender: this,
+                  selectedInstanceID: this.resultData,
+                  onItemSelected: function ({data}) {
+                    this.setInitialItem(data[this.primaryColumn])
+                    this.resultData = data[this.primaryColumn]
+                    this.$refs.selector.emitChange(data[this.primaryColumn])
+                  }.bind(this),
+                  cmdData: {
+                    params: [{
+                      entity: this.entityName,
+                      method: 'select',
+                      fieldList: "*"
+                    }]
+                  }
+                })
               }
             }
           },
@@ -173,7 +192,7 @@
             name: "Edit",
             caption: UB.i18n('editSelItem'),
             icon: 'fa fa-pencil-square-o',
-            enabled: this.resultData ? true : false,
+            enabled: !!this.resultData,
             handler: {
               fn () {
                 UB.core.UBApp.doCommand({
@@ -203,6 +222,7 @@
             name: "Clear",
             caption: UB.i18n('clearSelection'),
             icon: 'fa fa-eraser',
+            enabled: !!this.resultData,
             handler: {
               fn () {
                 this.resultData = null
@@ -215,7 +235,6 @@
       displayValue () {
         return $App.domainInfo.get(this.entityName).descriptionAttribute
       },
-
       itemsToDisplay () {
         if (this.initialItem) {
           let filteredItems = this.items.filter((item) => {
