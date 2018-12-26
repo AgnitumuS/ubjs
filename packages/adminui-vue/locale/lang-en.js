@@ -106,5 +106,6 @@ UB.i18nExtend({
       noCheckedFormat: '{total} items', // to be translated
       hasCheckedFormat: '{checked}/{total} checked' // to be translated
     }
-  }
+  },
+  isRequiredFieldFmt: "{0} is required"
 })

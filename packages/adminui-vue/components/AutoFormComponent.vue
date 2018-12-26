@@ -17,7 +17,7 @@
                             :rules="[
                               { 
                                 required: !entitySchema.attributes[fieldName].allowNull && entitySchema.attributes[fieldName].dataType !== 'Boolean',
-                                message: `${entitySchema.attributes[fieldName].caption} is required`
+                                message: getRuleException(entitySchema.attributes[fieldName].caption)
                               }
                             ]"
                             :label="entitySchema.attributes[fieldName].caption">
@@ -129,12 +129,20 @@
       changedColumns () {
         let result = {}
         this.fieldsToShow.forEach((field) => {
-          if (this.value[field] !== this.oldData[field]) result[field] = this.value[field]
+          if (this.value[field] !== this.oldData[field]) {
+            if (['Int', 'BigInt'].includes(this.entitySchema.attributes[field].dataType)) this.value[field] = Math.round(this.value[field])
+            if ('Float' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field]*100)/100
+            if ('Currency' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field]*Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION))/Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)
+            result[field] = this.value[field]
+          }
         })
         return result
       }
     },
     methods: {
+      getRuleException (caption) {
+        return UB.format(UB.i18n('isRequiredFieldFmt'), caption)
+      },
       saveAndReload () {
         this.save((data, changed) => {
           if (changed) {

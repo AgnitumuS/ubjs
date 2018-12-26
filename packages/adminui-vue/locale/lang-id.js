@@ -106,5 +106,6 @@ UB.i18nExtend({
       noCheckedFormat: '{total} butir',
       hasCheckedFormat: '{checked}/{total} terpilih'
     }
-  }
+  },
+  isRequiredFieldFmt: "{0} wajib diisi"
 })

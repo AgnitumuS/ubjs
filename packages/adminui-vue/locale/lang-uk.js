@@ -106,5 +106,6 @@ UB.i18nExtend({
       noCheckedFormat: '{total} пунктів',
       hasCheckedFormat: '{checked}/{total} вибрано'
     }
-  }
+  },
+  isRequiredFieldFmt: "{0} обов\'язкове для заповнення"
 })

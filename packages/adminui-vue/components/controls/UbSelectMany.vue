@@ -137,7 +137,6 @@
         UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).where(this.primaryColumn, 'in', this.valueArray).select().then((data) => {
           this.initialItem = data
           this.resultData = this.valueArray
-          this.$forceUpdate()
         }).finally(() => {
           this.loading = false
         })
