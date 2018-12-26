@@ -14,7 +14,12 @@
                             v-for="fieldName in fieldsToShow"
                             :prop="fieldName"
                             :key="fieldName"
-                            :required="!entitySchema.attributes[fieldName].allowNull && entitySchema.attributes[fieldName].dataType !== 'Boolean'"
+                            :rules="[
+                              { 
+                                required: !entitySchema.attributes[fieldName].allowNull && entitySchema.attributes[fieldName].dataType !== 'Boolean',
+                                message: `${entitySchema.attributes[fieldName].caption} is required`
+                              }
+                            ]"
                             :label="entitySchema.attributes[fieldName].caption">
                         <el-checkbox
                                 v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
@@ -171,12 +176,11 @@
                 })
                 .then((result) => {
                   $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
+                  // $App.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
                 })
             } else {
               callback.call(this, null, false)
             }
-          } else {
-            console.log('validation error')
           }
         })
       },
