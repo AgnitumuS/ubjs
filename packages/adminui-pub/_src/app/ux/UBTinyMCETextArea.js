@@ -1,10 +1,9 @@
 require('../../ux/form/TinyMCETextArea')
-/* global tinymce */
+/* global tinymce, Ext, $App */
 /**
- * Файл: UB.ux.UBTinyMCETextArea.js
- * Автор: Игорь Ноженко
+ * @author Igor Nozhenko
  *
- * Расширение Ext.ux.form.TinyMCETextArea для конфигурации TinyMCE и отображения документов
+ * Extends Ext.ux.form.TinyMCETextArea to show a ubDocument
  */
 Ext.define('UB.ux.UBTinyMCETextArea', {
   extend: 'Ext.ux.form.TinyMCETextArea',
@@ -23,8 +22,8 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
         cellpadding: '3px',
         cellspacing: '0',
         border: '1px',
-        width: this.pageWidth && this.pageWidth > 20 ? this.pageWidth - 20 : 20,
-        style: {wordBreak: 'break-all'}
+        width: this.pageWidth && this.pageWidth > 20 ? this.pageWidth - 20 : 20
+        // this line broke table insertion ,style: {wordBreak: 'break-all'}
       },
       browser_spellcheck: true,
       toolbar1: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect | print',
