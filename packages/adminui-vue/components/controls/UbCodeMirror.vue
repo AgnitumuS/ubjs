@@ -30,7 +30,6 @@
                 tabSize: 2,
                 highlightSelectionMatches: {annotateScrollbar: true},
                 matchBrackets: true,
-                autofocus: true,
                 foldGutter: true,
                 gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
                 extraKeys: {
