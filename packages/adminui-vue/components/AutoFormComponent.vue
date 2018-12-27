@@ -1,94 +1,94 @@
 <template>
-    <div id="auto-form-app" v-if="fieldsToShow">
-        <el-container>
-            <el-header style="background-color: #c0c0c0;line-height: 60px">
-                <!-- <el-button size="small"><i class="fa fa-refresh"></i></el-button> -->
-                <el-button size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i></el-button>
-                <el-button size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
-                <!-- <el-button size="small"><i class="fa fa-trash-o"></i></el-button>
-                <el-button size="small"><i class="fa fa-cogs"></i></el-button> -->
-            </el-header>
-            <el-main>
-                <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
-                    <el-form-item
-                            v-for="fieldName in fieldsToShow"
-                            :prop="fieldName"
-                            :key="fieldName"
-                            :rules="getRules(fieldName)"
-                            :label="entitySchema.attributes[fieldName].caption">
-                        <el-checkbox
-                                v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
-                                v-model="value[fieldName]"
-                        ></el-checkbox>
-                        <el-date-picker
-                                v-else-if="entitySchema.attributes[fieldName].dataType === 'DateTime' || entitySchema.attributes[fieldName].dataType === 'Date'"
-                                v-model="value[fieldName]"
-                                :type="entitySchema.attributes[fieldName].dataType.toLowerCase()"
-                                placeholder="Select date and time"
-                        ></el-date-picker>
-                        <ub-select-enum
-                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
-                                v-model="value[fieldName]"
-                                :eGroup="entitySchema.attributes[fieldName].enumGroup"
-                        ></ub-select-enum>
-                        <ub-select-entity
-                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
-                                v-model="value[fieldName]"
-                                :entityName="entitySchema.attributes[fieldName].associatedEntity"
-                        ></ub-select-entity>
-                        <ub-select-many
-                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
-                                v-model="value[fieldName]"
-                                :entityName="entitySchema.attributes[fieldName].associatedEntity"
-                        ></ub-select-many>
-                        <el-input
-                                v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
-                                type='number'
-                                v-model="value[fieldName]"
-                        ></el-input>
-                        <el-input
-                                v-else-if="'Float' === entitySchema.attributes[fieldName].dataType"
-                                type='number'
-                                :step="'0.01'"
-                                :controls="false"
-                                v-model="value[fieldName]"
-                        ></el-input>
-                        <el-input
-                                v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
-                                type='number'
-                                :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
-                                :controls="false"
-                                v-model="value[fieldName]"
-                        ></el-input>
-                        <el-input
-                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
-                                type="textarea"
-                                :autosize="{ minRows: 3, maxRows: 4}"
-                                v-model="value[fieldName]"
-                        ></el-input>
-                        <ub-upload-document
-                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
-                                v-model="value[fieldName]"
-                                :docParams="{ entity: entitySchema.name, attribute: fieldName, ID: value.ID }"
-                        ></ub-upload-document>
-                        <ub-code-mirror
-                                v-else-if="entitySchema.attributes[fieldName].dataType === 'Json'"
-                                v-model="value[fieldName]"
-                        ></ub-code-mirror>
-                        <ub-input
-                                v-else
-                                v-model="value[fieldName]"
-                                :isMultiLang="entitySchema.attributes[fieldName].isMultiLang"
-                                :entityName="entitySchema.name"
-                                :attributeName="fieldName"
-                                :primaryValue="value.ID"
-                                @saveLocalization="saveLocalization"
-                        ></ub-input>
-                    </el-form-item>
-                </el-form>
-            </el-main>
-        </el-container>
-    </div>
+  <div id="auto-form-app" v-if="fieldsToShow">
+    <el-container>
+      <el-header style="background-color: #c0c0c0;line-height: 60px">
+        <!-- <el-button size="small"><i class="fa fa-refresh"></i></el-button> -->
+        <el-button size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i></el-button>
+        <el-button size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
+        <el-button size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
+        <!-- <el-button size="small"><i class="fa fa-cogs"></i></el-button> -->
+      </el-header>
+      <el-main>
+        <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
+          <el-form-item
+              v-for="fieldName in fieldsToShow"
+              :prop="fieldName"
+              :key="fieldName"
+              :rules="getRules(fieldName)"
+              :label="entitySchema.attributes[fieldName].caption">
+            <el-checkbox
+                v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
+                v-model="value[fieldName]"
+            ></el-checkbox>
+            <el-date-picker
+                v-else-if="entitySchema.attributes[fieldName].dataType === 'DateTime' || entitySchema.attributes[fieldName].dataType === 'Date'"
+                v-model="value[fieldName]"
+                :type="entitySchema.attributes[fieldName].dataType.toLowerCase()"
+                placeholder="Select date and time"
+            ></el-date-picker>
+            <ub-select-enum
+                v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
+                v-model="value[fieldName]"
+                :eGroup="entitySchema.attributes[fieldName].enumGroup"
+            ></ub-select-enum>
+            <ub-select-entity
+                v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
+                v-model="value[fieldName]"
+                :entityName="entitySchema.attributes[fieldName].associatedEntity"
+            ></ub-select-entity>
+            <ub-select-many
+                v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
+                v-model="value[fieldName]"
+                :entityName="entitySchema.attributes[fieldName].associatedEntity"
+            ></ub-select-many>
+            <el-input
+                v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
+                type='number'
+                v-model="value[fieldName]"
+            ></el-input>
+            <el-input
+                v-else-if="'Float' === entitySchema.attributes[fieldName].dataType"
+                type='number'
+                :step="'0.01'"
+                :controls="false"
+                v-model="value[fieldName]"
+            ></el-input>
+            <el-input
+                v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
+                type='number'
+                :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
+                :controls="false"
+                v-model="value[fieldName]"
+            ></el-input>
+            <el-input
+                v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
+                type="textarea"
+                :autosize="{ minRows: 3, maxRows: 4}"
+                v-model="value[fieldName]"
+            ></el-input>
+            <ub-upload-document
+                v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
+                v-model="value[fieldName]"
+                :docParams="{ entity: entitySchema.name, attribute: fieldName, ID: value.ID }"
+            ></ub-upload-document>
+            <ub-code-mirror
+                v-else-if="entitySchema.attributes[fieldName].dataType === 'Json'"
+                v-model="value[fieldName]"
+            ></ub-code-mirror>
+            <ub-input
+                v-else
+                v-model="value[fieldName]"
+                :isMultiLang="entitySchema.attributes[fieldName].isMultiLang"
+                :entityName="entitySchema.name"
+                :attributeName="fieldName"
+                :primaryValue="value.ID"
+                @saveLocalization="saveLocalization"
+            ></ub-input>
+          </el-form-item>
+        </el-form>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
 <script>
@@ -126,8 +126,8 @@
         this.fieldsToShow.forEach((field) => {
           if (this.value[field] !== this.oldData[field]) {
             if (['Int', 'BigInt'].includes(this.entitySchema.attributes[field].dataType)) this.value[field] = Math.round(this.value[field])
-            if ('Float' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field]*100)/100
-            if ('Currency' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field]*Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION))/Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)
+            if ('Float' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field] * 100) / 100
+            if ('Currency' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field] * Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)) / Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)
             result[field] = this.value[field]
           }
         })
@@ -136,7 +136,7 @@
     },
     methods: {
       getRules (fieldName) {
-        var rules = []
+        let rules = []
         if (!this.entitySchema.attributes[fieldName].allowNull && this.entitySchema.attributes[fieldName].dataType !== 'Boolean') {
           rules.push({
             required: true,
@@ -187,7 +187,7 @@
                 })
                 .then((result) => {
                   $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
-                  // $App.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
+                  $App.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
                 })
             } else {
               callback.call(this, null, false)
@@ -199,6 +199,25 @@
         Object.values(data).forEach((item) => {
           this.additionalData[item.fieldName] = item.value
         })
+      },
+      remove () {
+        $App.dialogYesNo('deletionDialogConfirmCaption', UB.format(UB.i18n('deleteFormConfirmCaption'), this.value[this.entitySchema.descriptionAttribute]))
+          .then(function (res) {
+            if (!res) { return }
+            let request = {
+              entity: this.entitySchema.name,
+              method: 'delete',
+              execParams: {
+                ID: this.value.ID
+              }
+            }
+            return $App.connection.doDelete(request).then(function (result) {
+              $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
+              $App.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
+              this.loading = false
+              this.$emit('close')
+            }.bind(this))
+          }.bind(this))
       }
     },
     data () {
