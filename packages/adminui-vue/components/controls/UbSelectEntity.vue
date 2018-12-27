@@ -2,11 +2,10 @@
     <div>
         <el-select ref="selector" v-model="resultData"
                    reserve-keyword filterable remote
-                   :remote-method="loadNextByInput"
-                   v-loading="loading"
-                   :disabled="loading"
+                   v-loading="loading" :disabled="loading"
                    @change="onChange"
                    v-on:click.native="onFocus"
+                   v-on:input.native="onInput"
                    style="width: 100%"
                    :class="`ub-select-entity${this._uid}`">
             <div slot="suffix">
@@ -81,6 +80,13 @@
       }
     },
     methods: {
+      onInput () {
+        if (!event.target.value) {
+          this.resultData = null
+          this.$refs.selector.emitChange(null)
+        }
+        this.loadNextByInput(event.target.value)
+      },
       onActionClick (data) {
         if (data.enabled === undefined || data.enabled) {
           data.handler.fn.call(data.handler.scope ? data.handler.scope : this)

@@ -1,6 +1,9 @@
 <template>
-    <el-select v-model="resultData" filterable reserve-keyword clearable
-               @change="$emit('input', resultData)" style="width: 100%" v-loading="loading" :disabled="loading"
+    <el-select v-model="resultData" filterable reserve-keyword clearable ref="selector"
+               @change="$emit('input', resultData)"
+               v-on:input.native="onInput"
+               v-loading="loading" :disabled="loading"
+               style="width: 100%"
                :class="`ub-select-enum${_uid}`">
         <template slot-scope="scope">
             <el-option v-for="item in items" :key="item[primaryColumn]"
@@ -46,6 +49,12 @@
       }
     },
     methods: {
+      onInput () {
+        if (!event.target.value) {
+          this.resultData = null
+          this.$refs.selector.emitChange(null)
+        }
+      },
       initLoaderStyles () {
         let control = document.querySelector(`.ub-select-enum${this._uid} .el-loading-spinner`)
         if (control) {

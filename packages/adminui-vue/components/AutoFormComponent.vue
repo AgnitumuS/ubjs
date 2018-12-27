@@ -140,7 +140,8 @@
         if (!this.entitySchema.attributes[fieldName].allowNull && this.entitySchema.attributes[fieldName].dataType !== 'Boolean') {
           rules.push({
             required: true,
-            message: UB.format(UB.i18n('isRequiredFieldFmt'), this.entitySchema.attributes[fieldName].caption)
+            message: UB.format(UB.i18n('isRequiredFieldFmt'), this.entitySchema.attributes[fieldName].caption),
+            trigger: 'blur'
           })
         }
         return rules
