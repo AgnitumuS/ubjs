@@ -22,8 +22,8 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
         cellpadding: '3px',
         cellspacing: '0',
         border: '1px',
-        width: this.pageWidth && this.pageWidth > 20 ? this.pageWidth - 20 : 20
-        // this line broke table insertion ,style: {wordBreak: 'break-all'}
+        width: this.pageWidth && this.pageWidth > 20 ? this.pageWidth - 20 : 20,
+        style: 'word-break: break-all'
       },
       browser_spellcheck: true,
       toolbar1: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect | print',
