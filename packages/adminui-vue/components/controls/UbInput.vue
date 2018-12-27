@@ -13,7 +13,7 @@
                 </el-form-item>
                 <el-form-item v-for="item in Object.values(localizableFields)" :key="item.fieldName"
                               :label="item.caption" label-width="100px">
-                    <el-input v-model="item.value"></el-input>
+                    <input class="el-input__inner" v-model="item.value"></input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
