@@ -46,10 +46,10 @@ exports.reportCode = {
   buildReport: function(reportParams){
     var reportData = this.buildHTML(reportParams)
     if (this.reportType === 'pdf') {
-        result = this.transformToPdf(reportData)
+        reportData = this.transformToPdf(reportData)
     }
-    return result
-  },
+    return reportData
+  }
   /** optional report click event handler
    * see click)sample report inside UBS model
    */
@@ -62,6 +62,7 @@ exports.reportCode = {
   // }  
 }
 `
+
 /**
  * Check integrity of file content. Passed as a callback to FileBasedStore.onBeforeRowAdd
  * @private
@@ -238,6 +239,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       {
         entity: entity.name,
         attribute: 'template',
+        fileName: storedValue.report_code + TEMPLATE_EXTENSION,
         ID: ID,
         isDirty: Boolean(newTemplateInfo)
       },
@@ -245,14 +247,15 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     )
     let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
     reportBody = reportBody.replace(clearAttrReg, '') // remove all old entity attributes
-    let attributes = entity.attributes
-    for (let attrName in attributes) {
-      let attr = attributes[attrName]
-      if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView || attrName === 'ID')) {
-        reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
-      }
+  }
+  let attributes = entity.attributes
+  for (let attrName in attributes) {
+    let attr = attributes[attrName]
+    if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView )&& attrName!= 'ID') {
+      reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
     }
   }
+
   let docInfo = App.blobStores.putContent({
     entity: entity.name,
     attribute: 'template',
