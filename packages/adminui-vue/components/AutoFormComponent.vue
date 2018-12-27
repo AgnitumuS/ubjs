@@ -1,12 +1,33 @@
 <template>
-  <div id="auto-form-app" v-if="fieldsToShow">
+  <div id="auto-form-app" v-if="fieldsToShow" v-loading="loading">
     <el-container>
       <el-header style="background-color: #c0c0c0;line-height: 60px">
+        <el-row type="flex" class="row-bg" justify="space-between">
+          <el-col>
+            <el-button size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i></el-button>
+            <el-button size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
+            <el-button size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
+          </el-col>
+          <el-col :span="2">
+            <el-popover
+                placement="bottom-end"
+                trigger="click">
+              <el-table :data="actions" @row-click="onActionClick" :show-header="false">
+                <el-table-column property="caption" width="200">
+                  <template slot-scope="scope">
+                    <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
+                      <i :class="scope.row.icon"></i>
+                      <span style="margin-left: 10px">{{ scope.row.caption }}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <i slot="reference" class="el-select__caret el-input__icon fa fa-cogs"></i>
+            </el-popover>
+            <!--<el-button size="small"><i class="fa fa-cogs"></i></el-button>-->
+          </el-col>
+        </el-row>
         <!-- <el-button size="small"><i class="fa fa-refresh"></i></el-button> -->
-        <el-button size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i></el-button>
-        <el-button size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
-        <el-button size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
-        <!-- <el-button size="small"><i class="fa fa-cogs"></i></el-button> -->
       </el-header>
       <el-main>
         <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
@@ -121,6 +142,159 @@
       }
     },
     computed: {
+      actions () {
+        let actions = [],
+          methodNames = UB.core.UBCommand.methodName
+
+        actions.push({
+          icon: 'fa fa-refresh',
+          caption: UB.i18n('obnovit'),
+          handler: {
+            fn () {
+              debugger
+            }
+          }
+        })
+        actions.push({
+          icon: 'fa fa-save',
+          caption: UB.i18n('sohranit'),
+          handler: {
+            fn () {
+              this.saveAndReload()
+            }
+          },
+          enabled: this.entitySchema.haveAccessToAnyMethods([methodNames.INSERT, methodNames.UPDATE]),
+        })
+        actions.push({
+          icon: 'fa fa-share-square-o',
+          caption: UB.i18n('saveAndClose'),
+          handler: {
+            fn () {
+              this.saveAndClose()
+            }
+          },
+          enabled: this.entitySchema.haveAccessToAnyMethods([methodNames.INSERT, methodNames.UPDATE]),
+        })
+
+        if ($App.domainInfo.isEntityMethodsAccessible('ubm_form', methodNames.UPDATE)) {
+          actions.push({
+            icon: 'fa fa-wrench',
+            caption: UB.i18n('formConstructor'),
+            handler: {
+              fn () {
+                debugger
+              }
+            }
+          })
+        }
+
+        actions.push({
+          icon: 'fa fa-trash-o',
+          caption: UB.i18n('Delete'),
+          handler: {
+            fn () {
+              this.remove()
+            }
+          },
+          enabled: this.entitySchema.haveAccessToMethod(methodNames.DELETE) && !this.entitySchema.isNew
+        })
+
+        // actions.push({
+        //   caption: UB.i18n('ssylka'),
+        //   handler: {
+        //     fn () {
+        //       return UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, this.createCommandLink())
+        //     }
+        //   }
+        // })
+
+        if (this.entitySchema.hasMixin('dataHistory')) {
+          actions.push({
+            icon: 'iconHistory',
+            caption: UB.i18n('ChangesHistory'),
+            handler: {
+              fn () {
+                debugger
+              }
+            }
+          })
+        }
+
+        if (this.entitySchema.hasMixin('audit')) {
+          actions.push({
+            icon: 'iconAudit',
+            caption: UB.i18n('showAudit'),
+            handler: {
+              fn () {
+                $App.doCommand({
+                  cmdType: 'showList',
+                  isModalDialog: true,
+                  hideActions: ['addNew', 'addNewByCurrent', 'edit', 'del', 'newVersion'],
+                  cmdData: {
+                    params: [
+                      UB.Repository('uba_auditTrail')
+                        .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
+                        .where('[entity]', '=', this.entitySchema.name)
+                        .where('[entityinfo_id]', '=', this.value.ID)
+                        .orderByDesc('actionTime')
+                        .ubRequest()
+                    ]
+                  },
+                  cmpInitConfig: {
+                    onItemDblClick: function (grid, record, item, index, e, eOpts) {
+                      this.doOnEdit(eOpts)
+                    }
+                  }
+                })
+              }
+            },
+            enabled: $App.domainInfo.isEntityMethodsAccessible('uba_auditTrail', 'select')
+          })
+        }
+
+        if (this.entitySchema.hasMixin('aclRls')) {
+          var aclEntityName = this.entitySchema.name + '_acl'
+          var entityM = this.entitySchema
+          if (entityM.mixins && entityM.mixins.aclRls && entityM.mixins.aclRls.useUnityName) {
+            aclEntityName = entityM.mixins.unity.entity + '_acl'
+          }
+
+          actions.push({
+            caption: UB.i18n('accessRight'),
+            handler: {
+              fn () {
+                debugger
+              }
+            },
+            enabled: $App.domainInfo.isEntityMethodsAccessible(aclEntityName, 'select')
+          })
+        }
+
+        if (this.entitySchema.hasMixin('softLock')) {
+          if (!this.entitySchema.isNew) {
+            actions.push({
+              caption: UB.i18n('lockBtn'),
+              handler: {
+                fn () {
+                  debugger
+                }
+              }
+            })
+          }
+          if (!this.entitySchema.isNew) {
+            actions.push({
+              caption: UB.i18n('unLockBtn'),
+              handler: {
+                fn () {
+                  debugger
+                }
+              }
+            })
+          }
+        }
+
+        return actions
+      },
       changedColumns () {
         let result = {}
         this.fieldsToShow.forEach((field) => {
@@ -135,6 +309,12 @@
       }
     },
     methods: {
+      onActionClick (data) {
+        if (data.enabled === undefined || data.enabled) {
+          data.handler.fn.call(data.handler.scope ? data.handler.scope : this)
+          this.popoverVisible = false
+        }
+      },
       getRules (fieldName) {
         let rules = []
         if (!this.entitySchema.attributes[fieldName].allowNull && this.entitySchema.attributes[fieldName].dataType !== 'Boolean') {
@@ -180,7 +360,11 @@
                 method: this.isNew ? 'insert' : 'update',
                 execParams: changedColumns
               }
+              this.loading = true
               $App.connection.update(params)
+                .finally(function () {
+                  this.loading = false
+                }.bind(this))
                 .then((result) => {
                   callback.call(this, result, true)
                   return result
@@ -201,9 +385,13 @@
         })
       },
       remove () {
+        this.loading = true
         $App.dialogYesNo('deletionDialogConfirmCaption', UB.format(UB.i18n('deleteFormConfirmCaption'), this.value[this.entitySchema.descriptionAttribute]))
           .then(function (res) {
-            if (!res) { return }
+            if (!res) {
+              this.loading = false
+              return
+            }
             let request = {
               entity: this.entitySchema.name,
               method: 'delete',
@@ -214,8 +402,9 @@
             return $App.connection.doDelete(request).then(function (result) {
               $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
               $App.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
-              this.loading = false
               this.$emit('close')
+            }.bind(this)).finally(function () {
+              this.loading = false
             }.bind(this))
           }.bind(this))
       }
@@ -224,7 +413,8 @@
       return {
         UBDomain: ubDomain,
         oldData: {...this.value},
-        additionalData: {}
+        additionalData: {},
+        loading: false
       }
     },
     components: {
