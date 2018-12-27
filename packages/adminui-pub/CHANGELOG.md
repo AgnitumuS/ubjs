@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - error during table insertion in the ReportBuilder UI component
  
+### Changed
+ - modal dialogs mask left-top position explicitly set to 0,0 - see [unitybase/ubjs!244] for details
+   
 ## [5.6.17]
 ### Changed
   - if several default (isDefault=true) forms exists for an entity
