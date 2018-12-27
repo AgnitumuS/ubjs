@@ -1,41 +1,41 @@
 <template>
-    <div>
-        <el-select ref="selector" v-model="resultData"
-                   reserve-keyword filterable remote
-                   v-loading="loading" :disabled="loading"
-                   @change="onChange"
-                   v-on:click.native="onFocus"
-                   v-on:input.native="onInput"
-                   style="width: 100%"
-                   :class="`ub-select-entity${this._uid}`">
-            <div slot="suffix">
-                <el-popover
-                        v-if="defaultActions"
-                        placement="bottom-end"
-                        v-model="popoverVisible">
-                    <el-table :data="defaultActions" @row-click="onActionClick" :show-header="false">
-                        <el-table-column property="caption" width="250">
-                            <template slot-scope="scope">
-                                <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
-                                    <i :class="scope.row.icon"></i>
-                                    <span style="margin-left: 10px">{{ scope.row.caption }}</span>
-                                </div>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                    <i @click="showPopover" slot="reference" class="el-select__caret el-input__icon el-icon-menu"></i>
-                </el-popover>
-            </div>
-            <template slot-scope="scope">
-                <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
-                           :label="item[displayValue]" :value="item[primaryColumn]">
-                </el-option>
-                <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
-                    <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
-                </el-row>
-            </template>
-        </el-select>
-    </div>
+  <div>
+    <el-select ref="selector" v-model="resultData"
+               reserve-keyword filterable remote
+               v-loading="loading" :disabled="loading"
+               @change="onChange"
+               v-on:click.native="onFocus"
+               v-on:input.native="onInput"
+               style="width: 100%"
+               :class="`ub-select-entity${this._uid}`">
+      <div slot="suffix">
+        <el-popover
+            v-if="rowActions"
+            placement="bottom-end"
+            v-model="popoverVisible">
+          <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
+            <el-table-column property="caption" width="250">
+              <template slot-scope="scope">
+                <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
+                  <i :class="scope.row.icon"></i>
+                  <span style="margin-left: 10px">{{ scope.row.caption }}</span>
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+          <i @click="showPopover" slot="reference" class="el-select__caret el-input__icon el-icon-menu"></i>
+        </el-popover>
+      </div>
+      <template slot-scope="scope">
+        <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
+                   :label="item[displayValue]" :value="item[primaryColumn]">
+        </el-option>
+        <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
+          <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
+        </el-row>
+      </template>
+    </el-select>
+  </div>
 </template>
 
 <script>
@@ -55,6 +55,18 @@
         type: String,
         default () {
           return 'ID'
+        }
+      },
+      useOwnActions: {
+        type: Boolean,
+        default () {
+          return false
+        }
+      },
+      actions: {
+        type: Array,
+        default () {
+          return []
         }
       }
     },
@@ -163,80 +175,81 @@
       }
     },
     computed: {
+      rowActions () {
+        return this.useOwnActions ? this.actions : this.defaultActions.concat(this.actions)
+      },
       defaultActions () {
-        return [
-          {
-            name: 'ShowLookup',
-            caption: UB.i18n('selectFromDictionary'),
-            icon: 'fa fa-table',
-            handler: {
-              fn () {
-                UB.core.UBApp.doCommand({
-                  entity: this.entityName,
-                  cmdType: UB.core.UBCommand.commandType.showList,
-                  description: $App.domainInfo.get(this.entityName, true).getEntityDescription(),
-                  isModal: true,
-                  sender: this,
-                  selectedInstanceID: this.resultData,
-                  onItemSelected: function ({data}) {
-                    this.setInitialItem(data[this.primaryColumn])
-                    this.resultData = data[this.primaryColumn]
-                    this.$refs.selector.emitChange(data[this.primaryColumn])
-                  }.bind(this),
-                  cmdData: {
-                    params: [{
-                      entity: this.entityName,
-                      method: 'select',
-                      fieldList: '*'
-                    }]
-                  }
-                })
-              }
-            }
-          },
-          {
-            name: 'Edit',
-            caption: UB.i18n('editSelItem'),
-            icon: 'fa fa-pencil-square-o',
-            enabled: !!this.resultData,
-            handler: {
-              fn () {
-                UB.core.UBApp.doCommand({
-                  cmdType: UB.core.UBCommand.commandType.showForm,
-                  entity: this.entityName,
-                  isModal: true,
-                  instanceID: this.resultData
-                })
-              }
-            }
-          },
-          {
-            name: 'Add',
-            caption: UB.i18n('addNewItem'),
-            icon: 'fa fa-plus-circle',
-            handler: {
-              fn () {
-                UB.core.UBApp.doCommand({
-                  cmdType: UB.core.UBCommand.commandType.showForm,
-                  entity: this.entityName,
-                  isModal: true
-                })
-              }
-            }
-          },
-          {
-            name: 'Clear',
-            caption: UB.i18n('clearSelection'),
-            icon: 'fa fa-eraser',
-            enabled: !!this.resultData,
-            handler: {
-              fn () {
-                this.resultData = null
-                this.$refs.selector.emitChange(null)
-              }
+        return [{
+          name: 'ShowLookup',
+          caption: UB.i18n('selectFromDictionary'),
+          icon: 'fa fa-table',
+          handler: {
+            fn () {
+              UB.core.UBApp.doCommand({
+                entity: this.entityName,
+                cmdType: UB.core.UBCommand.commandType.showList,
+                description: $App.domainInfo.get(this.entityName, true).getEntityDescription(),
+                isModal: true,
+                sender: this,
+                selectedInstanceID: this.resultData,
+                onItemSelected: function ({data}) {
+                  this.setInitialItem(data[this.primaryColumn])
+                  this.resultData = data[this.primaryColumn]
+                  this.$refs.selector.emitChange(data[this.primaryColumn])
+                }.bind(this),
+                cmdData: {
+                  params: [{
+                    entity: this.entityName,
+                    method: 'select',
+                    fieldList: '*'
+                  }]
+                }
+              })
             }
           }
-        ]
+        },
+        {
+          name: 'Edit',
+          caption: UB.i18n('editSelItem'),
+          icon: 'fa fa-pencil-square-o',
+          enabled: !!this.resultData,
+          handler: {
+            fn () {
+              UB.core.UBApp.doCommand({
+                cmdType: UB.core.UBCommand.commandType.showForm,
+                entity: this.entityName,
+                isModal: true,
+                instanceID: this.resultData
+              })
+            }
+          }
+        },
+        {
+          name: 'Add',
+          caption: UB.i18n('addNewItem'),
+          icon: 'fa fa-plus-circle',
+          handler: {
+            fn () {
+              UB.core.UBApp.doCommand({
+                cmdType: UB.core.UBCommand.commandType.showForm,
+                entity: this.entityName,
+                isModal: true
+              })
+            }
+          }
+        },
+        {
+          name: 'Clear',
+          caption: UB.i18n('clearSelection'),
+          icon: 'fa fa-eraser',
+          enabled: !!this.resultData,
+          handler: {
+            fn () {
+              this.resultData = null
+              this.$refs.selector.emitChange(null)
+            }
+          }
+        }]
       },
       displayValue () {
         return $App.domainInfo.get(this.entityName).descriptionAttribute
