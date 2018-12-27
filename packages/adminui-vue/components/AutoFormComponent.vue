@@ -14,12 +14,7 @@
                             v-for="fieldName in fieldsToShow"
                             :prop="fieldName"
                             :key="fieldName"
-                            :rules="[
-                              { 
-                                required: !entitySchema.attributes[fieldName].allowNull && entitySchema.attributes[fieldName].dataType !== 'Boolean',
-                                message: getRuleException(entitySchema.attributes[fieldName].caption)
-                              }
-                            ]"
+                            :rules="getRules(fieldName)"
                             :label="entitySchema.attributes[fieldName].caption">
                         <el-checkbox
                                 v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
@@ -140,8 +135,15 @@
       }
     },
     methods: {
-      getRuleException (caption) {
-        return UB.format(UB.i18n('isRequiredFieldFmt'), caption)
+      getRules (fieldName) {
+        var rules = []
+        if (!this.entitySchema.attributes[fieldName].allowNull && this.entitySchema.attributes[fieldName].dataType !== 'Boolean') {
+          rules.push({
+            required: true,
+            message: UB.format(UB.i18n('isRequiredFieldFmt'), this.entitySchema.attributes[fieldName].caption)
+          })
+        }
+        return rules
       },
       saveAndReload () {
         this.save((data, changed) => {
