@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.39]
+### Fixed
+ - syntax errors in the report initial template
+ - report saving
+
 ## [5.1.37]
 ### Added 
  - in case `reportOptions.showParamForm` is true, `reportViewer` will always display the report parameters form, 
