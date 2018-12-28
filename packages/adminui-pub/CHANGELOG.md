@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.19]
+### Changed
+ - sped-up `index.html` generation by replacing resource versions calculation algorithm from md5 to `version` from package.json
+
 ## [5.6.18]
 ### Fixed
  - error during table insertion in the ReportBuilder UI component

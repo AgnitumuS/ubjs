@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Changed
+ - sped-up index.html generation by replacing resource versions calculation algorithm from md5 to `version` from package.json   
+ 
 ## [5.0.69]
 ### Fixed
  - Content Security Policy for WebSocket should be limited to `uiSettings.adminUI.amqpNotificationUrl`

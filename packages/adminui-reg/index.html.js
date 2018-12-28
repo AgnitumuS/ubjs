@@ -15,22 +15,13 @@ const path = require('path')
  * @param {boolean} [addCSP=true] Add a CSP header
  */
 function generateIndexPage (req, resp, indexName, addCSP = true) {
-  let indexTpl, compiledIndex, compiledIndexKey
-
-  function md5 (fileName) {
-    let realPath = App.resolveStatic(fileName)
-    if (!realPath) {
-      console.error('invalid path %s', fileName)
-    }
-    // realMD5 = App.globalCacheGet('UB_STATIC.fileMD5_' + realPath);
-    let checksum = App.fileChecksum(realPath)
-    return checksum
-      ? fileName + '?ver=' + checksum
-      : fileName
+  function modelVer (modelCode) {
+    let m = App.domainInfo.models[modelCode]
+    return m ? `?ver=${m.version}` : '?ver=0'
   }
 
-  compiledIndexKey = 'UB_STATIC.compiled_index_' + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
-  compiledIndex = App.globalCacheGet(compiledIndexKey)
+  let compiledIndexKey = 'UB_STATIC.compiled_index_' + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
+  let compiledIndex = App.globalCacheGet(compiledIndexKey)
   if (!compiledIndex) {
     let uiSettings = App.serverConfig.uiSettings
     if (!uiSettings.adminUI) {
@@ -39,7 +30,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
       uiSettings.adminUI.themeName = 'UBGrayTheme'
     }
     let adminUIPath = path.dirname(require.resolve('@unitybase/adminui-pub'))
-    indexTpl = fs.readFileSync(path.join(adminUIPath, indexName), 'utf8')
+    let indexTpl = fs.readFileSync(path.join(adminUIPath, indexName), 'utf8')
 
     let cspNonce = nsha256('' + Date.now()).substr(0, 8)
     App.globalCachePut('INDEX_cspNonce', cspNonce)
@@ -51,15 +42,10 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
       modelInitialization: [],
       adminUIModel: '',
       cspNonce: cspNonce,
-      staticVersion: '' + ncrc32(0, App.globalCacheGet('UB_STATIC.modelsModifyDate')), // prev. App.folderChecksum(App.staticPath),
-      UB_API_PATH: App.serverConfig.httpServer.path || '/', //  serverURL.replace(/\/$/, ''),
-      md5template: function () {
-        return function (template) {
-          return md5(mustache.render(template, view))
-        }
-      },
-      md5: function () {
-        return md5
+      staticVersion: '' + ncrc32(0, App.globalCacheGet('UB_STATIC.modelsModifyDate')),
+      UB_API_PATH: App.serverConfig.httpServer.path || '/',
+      modelVer: function () {
+        return modelVer
       }
     }
 
