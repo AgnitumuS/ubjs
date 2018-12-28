@@ -66,9 +66,10 @@ const blobStores = require('@unitybase/blob-stores')
  // Initialize dataStore from Array-of-array data
  // in this case keyMap is mandatory.
  // In case of mapping from is zero-based index of source element in row array
- ds.initialize([
-   [10, 'Jon', 10], [20, 'Smith', 63]], ['ID', 'name', 'age']
- ])
+ ds.initialize(
+   [[10, 'Jon', 10], [20, 'Smith', 63]],
+   ['ID', 'name', 'age']
+ )
  // or use mapping
  ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
     ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}])
