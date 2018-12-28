@@ -107,5 +107,6 @@ UB.i18nExtend({
       hasCheckedFormat: '{checked}/{total} checked' // to be translated
     }
   },
-  isRequiredFieldFmt: "{0} is required"
+  isRequiredFieldFmt: '{0} is required',
+  linkCopiedText: 'Link copied to clipboard'
 })

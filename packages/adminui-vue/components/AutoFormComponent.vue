@@ -4,7 +4,8 @@
       <el-header style="background-color: #c0c0c0;line-height: 60px">
         <el-row type="flex" class="row-bg" justify="space-between">
           <el-col>
-            <el-button :disabled="!canSave" size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i></el-button>
+            <el-button :disabled="!canSave" size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i>
+            </el-button>
             <el-button :disabled="!canSave" size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
             <el-button :disabled="!canDelete" size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
           </el-col>
@@ -105,6 +106,8 @@
             ></ub-input>
           </el-form-item>
         </el-form>
+        <input type="hidden" id="linkToEntity"
+               :value="linkToEntity">
       </el-main>
     </el-container>
   </div>
@@ -196,14 +199,28 @@
           enabled: this.canDelete
         })
 
-        // actions.push({
-        //   caption: UB.i18n('ssylka'),
-        //   handler: {
-        //     fn () {
-        //       return UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, this.createCommandLink())
-        //     }
-        //   }
-        // })
+        actions.push({
+          icon: 'fa fa-link',
+          caption: UB.i18n('ssylka'),
+          handler: {
+            fn () {
+              let linkToEntityToCopy = document.querySelector('#linkToEntity')
+              linkToEntityToCopy.setAttribute('type', 'text')
+              linkToEntityToCopy.select()
+
+              let successful = document.execCommand('copy')
+              if (successful)
+                this.$notify({
+                  title: UB.i18n('ssylka'),
+                  message: UB.i18n('linkCopiedText'),
+                  duration: 5000
+                })
+
+              linkToEntityToCopy.setAttribute('type', 'hidden')
+              window.getSelection().removeAllRanges()
+            }
+          }
+        })
 
         if (this.entitySchema.hasMixin('dataHistory')) {
           actions.push({
@@ -404,6 +421,22 @@
               this.loading = false
             }.bind(this))
           }.bind(this))
+      },
+      getParamsToString () {
+        let prm = []
+        prm.push('cmdType=showForm')
+        prm.push(`entity=${this.entitySchema.name}`)
+        // TODO formCode
+        // if (me.commandConfig.formCode) {
+        //   prm.push('formCode' + '=' + me.commandConfig.formCode)
+        // }
+        prm.push(`instanceID=${this.value.ID}`)
+        // if (cc.cmdData && cc.cmdData.params && cc.cmdData.params.length > 0) {
+        //   param = cc.cmdData.params[0]
+        //   request = _.clone(param)
+        //   prm.push('params' + '=' + encodeURIComponent(JSON.stringify(request)))
+        // }
+        return prm.join('&')
       }
     },
     data () {
@@ -413,7 +446,8 @@
         additionalData: {},
         loading: false,
         canSave: this.entitySchema.haveAccessToAnyMethods([UB.core.UBCommand.methodName.INSERT, UB.core.UBCommand.methodName.UPDATE]),
-        canDelete: this.entitySchema.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE) && !this.isNew
+        canDelete: this.entitySchema.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE) && !this.isNew,
+        linkToEntity: UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, this.getParamsToString())
       }
     },
     components: {

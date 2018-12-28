@@ -107,5 +107,6 @@ UB.i18nExtend({
       hasCheckedFormat: '{checked}/{total} terpilih'
     }
   },
-  isRequiredFieldFmt: "{0} wajib diisi"
+  isRequiredFieldFmt: '{0} wajib diisi',
+  linkCopiedText: 'Tautan disalin ke papan klip'
 })

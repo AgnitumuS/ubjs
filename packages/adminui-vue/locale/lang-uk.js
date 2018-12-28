@@ -107,5 +107,6 @@ UB.i18nExtend({
       hasCheckedFormat: '{checked}/{total} вибрано'
     }
   },
-  isRequiredFieldFmt: "{0} обов\'язкове для заповнення"
+  isRequiredFieldFmt: '{0} обов\'язкове для заповнення',
+  linkCopiedText: 'Посилання скопійовано в буфер обміну'
 })
