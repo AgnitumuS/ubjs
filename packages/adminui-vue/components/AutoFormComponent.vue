@@ -4,9 +4,9 @@
       <el-header style="background-color: #c0c0c0;line-height: 60px">
         <el-row type="flex" class="row-bg" justify="space-between">
           <el-col>
-            <el-button size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i></el-button>
-            <el-button size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
-            <el-button size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
+            <el-button :disabled="!canSave" size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i></el-button>
+            <el-button :disabled="!canSave" size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
+            <el-button :disabled="!canDelete" size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
           </el-col>
           <el-col :span="2">
             <el-popover
@@ -24,10 +24,8 @@
               </el-table>
               <i slot="reference" class="el-select__caret el-input__icon fa fa-cogs"></i>
             </el-popover>
-            <!--<el-button size="small"><i class="fa fa-cogs"></i></el-button>-->
           </el-col>
         </el-row>
-        <!-- <el-button size="small"><i class="fa fa-refresh"></i></el-button> -->
       </el-header>
       <el-main>
         <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
@@ -143,8 +141,7 @@
     },
     computed: {
       actions () {
-        let actions = [],
-          methodNames = UB.core.UBCommand.methodName
+        let actions = []
 
         actions.push({
           icon: 'fa fa-refresh',
@@ -163,7 +160,7 @@
               this.saveAndReload()
             }
           },
-          enabled: this.entitySchema.haveAccessToAnyMethods([methodNames.INSERT, methodNames.UPDATE]),
+          enabled: this.canSave
         })
         actions.push({
           icon: 'fa fa-share-square-o',
@@ -173,10 +170,10 @@
               this.saveAndClose()
             }
           },
-          enabled: this.entitySchema.haveAccessToAnyMethods([methodNames.INSERT, methodNames.UPDATE]),
+          enabled: this.canSave
         })
 
-        if ($App.domainInfo.isEntityMethodsAccessible('ubm_form', methodNames.UPDATE)) {
+        if ($App.domainInfo.isEntityMethodsAccessible('ubm_form', UB.core.UBCommand.methodName.UPDATE)) {
           actions.push({
             icon: 'fa fa-wrench',
             caption: UB.i18n('formConstructor'),
@@ -196,7 +193,7 @@
               this.remove()
             }
           },
-          enabled: this.entitySchema.haveAccessToMethod(methodNames.DELETE) && !this.entitySchema.isNew
+          enabled: this.canDelete
         })
 
         // actions.push({
@@ -271,7 +268,7 @@
         }
 
         if (this.entitySchema.hasMixin('softLock')) {
-          if (!this.entitySchema.isNew) {
+          if (!this.isNew) {
             actions.push({
               caption: UB.i18n('lockBtn'),
               handler: {
@@ -281,7 +278,7 @@
               }
             })
           }
-          if (!this.entitySchema.isNew) {
+          if (!this.isNew) {
             actions.push({
               caption: UB.i18n('unLockBtn'),
               handler: {
@@ -414,7 +411,9 @@
         UBDomain: ubDomain,
         oldData: {...this.value},
         additionalData: {},
-        loading: false
+        loading: false,
+        canSave: this.entitySchema.haveAccessToAnyMethods([UB.core.UBCommand.methodName.INSERT, UB.core.UBCommand.methodName.UPDATE]),
+        canDelete: this.entitySchema.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE) && !this.isNew
       }
     },
     components: {
