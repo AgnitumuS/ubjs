@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.1]
+### Added
+ - `GC_KEYS` dictionary to store all known by UB global cache keys (ot prefixes) in the single place
+
 ## [5.1.0]
 ### Added
  - handling of new authentication schema 'ROOT' in `argv.establishConnectionFromCmdLineAttributes`.

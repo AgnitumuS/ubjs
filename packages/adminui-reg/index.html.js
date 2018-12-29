@@ -1,5 +1,6 @@
 /* global nsha256, ncrc32 */
 const App = require('@unitybase/ub').App
+const {GC_KEYS} = require('@unitybase/base')
 /**
  * Return models config for `admin-UI` web client
  * The purpose is to load model initialization script BEFORE application start
@@ -20,7 +21,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     return m ? `?ver=${m.version}` : '?ver=0'
   }
 
-  let compiledIndexKey = 'UB_STATIC.compiled_index_' + indexName + App.globalCacheGet('UB_STATIC.staticFoldersModifyDate') + App.globalCacheGet('UB_STATIC.modelsModifyDate')
+  let compiledIndexKey = GC_KEYS.COMPILED_INDEX_ + indexName
   let compiledIndex = App.globalCacheGet(compiledIndexKey)
   if (!compiledIndex) {
     let uiSettings = App.serverConfig.uiSettings
@@ -33,7 +34,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     let indexTpl = fs.readFileSync(path.join(adminUIPath, indexName), 'utf8')
 
     let cspNonce = nsha256('' + Date.now()).substr(0, 8)
-    App.globalCachePut('INDEX_cspNonce', cspNonce)
+    App.globalCachePut(GC_KEYS.COMPILED_INDEX_NONCE, cspNonce)
     // create view for mustache
     // noinspection JSUnusedGlobalSymbols
     let view = {
@@ -42,7 +43,7 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
       modelInitialization: [],
       adminUIModel: '',
       cspNonce: cspNonce,
-      staticVersion: '' + ncrc32(0, App.globalCacheGet('UB_STATIC.modelsModifyDate')),
+      staticVersion: '' + ncrc32(0, App.globalCacheGet(GC_KEYS.MODELS_MODIFY_DATE)),
       UB_API_PATH: App.serverConfig.httpServer.path || '/',
       modelVer: function () {
         return modelVer
@@ -95,7 +96,7 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
     // cache forever - do not cache index*.html
     let cspHeader = ''
     if (addCSP) {
-      let cspNonce = App.globalCacheGet('INDEX_cspNonce')
+      let cspNonce = App.globalCacheGet(GC_KEYS.COMPILED_INDEX_NONCE)
       // let wsSrc = 'ws' + App.externalURL.slice(4)
       // let uiSettings = App.serverConfig.uiSettings
       // let onlyOfficeServer = (uiSettings.adminUI.onlyOffice && uiSettings.adminUI.onlyOffice.serverIP) || ''

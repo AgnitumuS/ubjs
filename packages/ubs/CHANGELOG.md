@@ -15,7 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - add a warning about unnecessary `@report_code` and `@ID` metadata in the report template files; 
   ubs_report virtual entity ignore this template attributes and calculate it from template file name  
- 
+ - `ubs_report` cache now flushed for all thread in case insert or update is called. This solve possible
+  error when report created in one thread not visible to other until server restart
+  
 ## [5.1.39]
 ### Fixed
  - syntax errors in the report initial template

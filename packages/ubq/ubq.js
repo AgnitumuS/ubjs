@@ -1,16 +1,15 @@
-const GLOBAL_CACHE_INITIALIZED_ENTRY = 'UBQ.schedulersInitialized'
-const Worker = require('@unitybase/base').Worker
+const {Worker, GC_KEYS} = require('@unitybase/base')
 const UB = require('@unitybase/ub')
 const App = UB.App
 
 if (!process.rootOTP) throw new Error('This version of @unitybase/ubq require version of UB server to be >= 5.6.1')
 
-if (!App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
+if (!App.globalCacheGet(GC_KEYS.UBQ_SCHEDULER_INITIALIZED)) {
   if (process.startupMode === 'CmdLine') {
-    App.globalCachePut(GLOBAL_CACHE_INITIALIZED_ENTRY, 'yes')
+    App.globalCachePut(GC_KEYS.UBQ_SCHEDULER_INITIALIZED, 'yes')
     console.debug('SCHEDULER: disabled for command line startup')
   } else if (App.serverConfig.application.schedulers && (App.serverConfig.application.schedulers.enabled === false)) {
-    App.globalCachePut(GLOBAL_CACHE_INITIALIZED_ENTRY, 'yes')
+    App.globalCachePut(GC_KEYS.UBQ_SCHEDULER_INITIALIZED, 'yes')
     console.warn('SCHEDULER: disabled in application config (application.schedulers.enabled === false)')
   } else {
     App.once('domainIsLoaded', startSchedulers)
@@ -26,12 +25,12 @@ function startSchedulers () {
   let cfgForWorker = []
   let usersIDs = {}
 
-  if (App.globalCacheGet(GLOBAL_CACHE_INITIALIZED_ENTRY)) {
+  if (App.globalCacheGet(GC_KEYS.UBQ_SCHEDULER_INITIALIZED)) {
     console.debug('SCHEDULER: UBQ.initializeSchedulers already executed')
     return
   }
 
-  App.globalCachePut(GLOBAL_CACHE_INITIALIZED_ENTRY, 'yes')
+  App.globalCachePut(GC_KEYS.UBQ_SCHEDULER_INITIALIZED, 'yes')
   console.debug('SCHEDULER: executing UBQ.initializeSchedulers')
 
   /** @type {Array<ubq_scheduler_ns>} */

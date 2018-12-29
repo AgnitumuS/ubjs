@@ -1,6 +1,6 @@
 const path = require('path')
 const _ = require('lodash')
-const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
+const {FileBasedStoreLoader, GC_KEYS} = require('@unitybase/base')
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -63,7 +63,7 @@ function postProcessing (loader, fullFilePath, content, row) {
 function loadAllDiagrams () {
   let models = App.domainInfo.models
   let folders = []
-  let modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
+  let modelLastDate = new Date(App.globalCacheGet(GC_KEYS.MODELS_MODIFY_DATE)).getTime()
 
   console.debug('modelLastDate = ', modelLastDate)
   if (!resultDataCache || modelLoadDate < modelLastDate) {
@@ -71,6 +71,7 @@ function loadAllDiagrams () {
 
     resultDataCache = []
     for (let modelName in models) {
+      // noinspection JSUnfilteredForInLoop
       let model = models[modelName]
       let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
@@ -212,7 +213,9 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
   ctxt.dataStore.initialize([storedValue])
 
-  resultDataCache = null // drop cache. afterInsert call select and restore cache
+  console.debug('--== ubm_diagram: reset GC_KEYS.MODELS_MODIFY_DATE ==--')
+  // drop cache. afterInsert call select and restore cache
+  App.globalCachePut(GC_KEYS.MODELS_MODIFY_DATE, new Date().toISOString())
   return true
 }
 

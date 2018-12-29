@@ -4,7 +4,7 @@ const me = ubs_report
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
-const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
+const {FileBasedStoreLoader, GC_KEYS} = require('@unitybase/base')
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -121,7 +121,7 @@ function postProcessing (loader, fullFilePath, content, row) {
 function loadAll () {
   const models = App.domainInfo.models
   let folders = []
-  let modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
+  let modelLastDate = new Date(App.globalCacheGet(GC_KEYS.MODELS_MODIFY_DATE)).getTime()
 
   console.debug('modelLastDate = ', modelLastDate)
   if (!resultDataCache || modelLoadDate < modelLastDate) {
@@ -252,8 +252,10 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   }
   let attributes = entity.attributes
   for (let attrName in attributes) {
+    // noinspection JSUnfilteredForInLoop
     let attr = attributes[attrName]
     if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView) && (attrName !== 'ID')) {
+      // noinspection JSUnfilteredForInLoop
       reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
     }
   }
@@ -300,7 +302,9 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
   ctxt.dataStore.initialize([storedValue])
 
-  resultDataCache = null // drop cache. afterInsert call select and restore cache
+  console.debug('--== ubs_report: reset GC_KEYS.MODELS_MODIFY_DATE ==--')
+  // drop cache. afterInsert call select and restore cache
+  App.globalCachePut(GC_KEYS.MODELS_MODIFY_DATE, new Date().toISOString())
   return true
 }
 

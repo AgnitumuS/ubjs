@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.1.0]
 ### Changed
- - sped-up index.html generation by replacing resource versions calculation algorithm from md5 to `version` from package.json   
+ - sped-up index.html generation by replacing resource versions calculation algorithm from md5 to `version` from package.json
+ - re-generation of cached `index.html` based on file system changes events is **removed**. In case developer change
+ an `index.html` mustache template or update an application packages __server should be restarted__ to apply a new changes    
  
 ## [5.0.69]
 ### Fixed
