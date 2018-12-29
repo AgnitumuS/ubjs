@@ -79,11 +79,12 @@ function postProcessing (loader, fullFilePath, content, row) {
   // fill model attribute by current folder model name
   row.model = loader.processingRootFolder.model.name
 
-  // fill name attribute with file name w/o ".xml" extension
+  // fill name attribute with file name w/o ".TEMPLATE_EXTENSION" extension
   let fileName = path.basename(fullFilePath)
+  if (row.report_code) { console.warn(`Please, remove a line "<!--@report_code "${row.report_code}"-->" from a file ${fileName}. In UB@5 report code is a report file name without extension`) }
   row.report_code = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length)
 
-  if (row.ID) console.warn(`Please, remove a row "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB4 report ID is generated automatically as crc32(fileNameWoExtension)`)
+  if (row.ID) console.warn(`Please, remove a line "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB@5 report ID is generated automatically as crc32(fileNameWoExtension)`)
   row.ID = ncrc32(0, row.report_code)
 
   // fill formDef attribute value
@@ -127,6 +128,7 @@ function loadAll () {
     console.debug('load reports from models directory structure')
 
     for (let modelCode in models) {
+      // noinspection JSUnfilteredForInLoop
       let model = models[modelCode]
       let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
@@ -251,7 +253,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   let attributes = entity.attributes
   for (let attrName in attributes) {
     let attr = attributes[attrName]
-    if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView )&& attrName!= 'ID') {
+    if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView) && (attrName !== 'ID')) {
       reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
     }
   }

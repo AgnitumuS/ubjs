@@ -80,7 +80,7 @@ function postProcessing (loader, fullFilePath, content, row) {
       origName: fileName,
       ct: DFM_CONTENT_TYPE, // JSON_CONTENT_TYPE,
       size: jsFileStat.size,
-      md5: 'fb6a51668017be0950bd18c2fb0474a0',
+      md5: 'fakemd50000000000000000000000000',
       relPath: relPath
     })
     // check js file modification and if later when def file - replace mi_modifyDate
@@ -103,6 +103,7 @@ function loadAllForms () {
 
     resultDataCache = []
     for (let modelName in models) {
+      // noinspection JSUnfilteredForInLoop
       let model = models[modelName]
       let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
@@ -287,6 +288,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   formDefBody = formDefBody.replace(clearAttrReg, '') // remove all old entity attributes
   let addedAttr = ''
   for (let attrCode in entity.attributes) {
+    // noinspection JSUnfilteredForInLoop
     let attr = entity.attributes[attrCode]
     if (attr.dataType !== UBDomain.ubDataTypes.Document && attr.defaultView && attrCode !== 'ID' && attrCode !== 'code') {
       addedAttr = '// @' + attrCode + ' "' + storedValue[attrCode] + '"\r\n' + addedAttr

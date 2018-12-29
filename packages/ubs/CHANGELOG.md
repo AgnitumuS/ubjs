@@ -5,9 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.1.40]
+### Fixed
+ - Report editor form: fix unexpected report code cleanup on saving report
+ - Report editor form: add a TIP about changing report code; set a report code to read-only for existing reports
+  
 ### Added
  - `ubs_globalCache` virtual entity - expose a server-side global cache content (for debugging purpose)
 
+### Changed
+ - add a warning about unnecessary `@report_code` and `@ID` metadata in the report template files; 
+  ubs_report virtual entity ignore this template attributes and calculate it from template file name  
+ 
 ## [5.1.39]
 ### Fixed
  - syntax errors in the report initial template
