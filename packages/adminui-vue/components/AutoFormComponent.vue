@@ -460,3 +460,15 @@
     }
   }
 </script>
+
+<style>
+  .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:after {
+    content: '*';
+    color: #f56c6c;
+    margin-left: 4px;
+  }
+  .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+    content: '';
+    margin-right: 0px;
+  }
+</style>
