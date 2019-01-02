@@ -50,39 +50,43 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
       })
       isNew = true
     }
-    let tabId = entitySchema.name + data.ID
-    let existsTab = Ext.getCmp(tabId)
-    if (existsTab) {
-      $App.viewport.centralPanel.setActiveTab(existsTab)
-    } else {
-      let tab = $App.viewport.centralPanel.add({
-        id: tabId,
-        title: tabTitle,
-        tooltip: tabTitle,
-        closable: true
-      })
-      let vm = new Vue({
-        template: `<auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/>`,
-        data: function () {
-          return {
-            fieldsToShow: pageColumns,
-            entitySchema: entitySchema,
-            inputData: data,
-            isNew: isNew,
-            closeTab: function () {
-              tab.close()
+    if (data) {
+      let tabId = entitySchema.name + data.ID
+      let existsTab = Ext.getCmp(tabId)
+      if (existsTab) {
+        $App.viewport.centralPanel.setActiveTab(existsTab)
+      } else {
+        let tab = $App.viewport.centralPanel.add({
+          id: tabId,
+          title: tabTitle,
+          tooltip: tabTitle,
+          closable: true
+        })
+        let vm = new Vue({
+          template: `<auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/>`,
+          data: function () {
+            return {
+              fieldsToShow: pageColumns,
+              entitySchema: entitySchema,
+              inputData: data,
+              isNew: isNew,
+              closeTab: function () {
+                tab.close()
+              }
             }
+          },
+          components: {
+            'auto-form-component': autoFormComponent
           }
-        },
-        components: {
-          'auto-form-component': autoFormComponent
-        }
-      })
-      vm.$mount(`#${tab.getId()}-outerCt`)
-      tab.on('close', function () {
-        vm.$destroy()
-      })
-      $App.viewport.centralPanel.setActiveTab(tab)
+        })
+        vm.$mount(`#${tab.getId()}-outerCt`)
+        tab.on('close', function () {
+          vm.$destroy()
+        })
+        $App.viewport.centralPanel.setActiveTab(tab)
+      }
+    } else {
+      // TODO выдать ошибку
     }
   }
 }

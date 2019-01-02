@@ -4,9 +4,9 @@
       <el-header style="background-color: #c0c0c0;line-height: 60px">
         <el-row type="flex" class="row-bg" justify="space-between">
           <el-col>
-            <el-button :disabled="!canSave" size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i>
+            <el-button :disabled="!saveEnabled" size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i>
             </el-button>
-            <el-button :disabled="!canSave" size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
+            <el-button :disabled="!saveEnabled" size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
             <el-button :disabled="!canDelete" size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
           </el-col>
           <el-col :span="2">
@@ -145,6 +145,9 @@
       }
     },
     computed: {
+      saveEnabled () {
+        return this.canSave && Object.keys(this.changedColumns).length > 0
+      },
       actions () {
         let actions = []
 
@@ -165,7 +168,7 @@
               this.saveAndReload()
             }
           },
-          enabled: this.canSave
+          enabled: this.saveEnabled
         })
         actions.push({
           icon: 'fa fa-share-square-o',
@@ -175,7 +178,7 @@
               this.saveAndClose()
             }
           },
-          enabled: this.canSave
+          enabled: this.saveEnabled
         })
 
         if ($App.domainInfo.isEntityMethodsAccessible('ubm_form', UB.core.UBCommand.methodName.UPDATE)) {
@@ -350,6 +353,7 @@
               object[data.resultData.fields[index]] = item
             })
             this.$emit('input', object)
+            this.oldData = object
           }
         })
       },
@@ -428,16 +432,7 @@
         let prm = []
         prm.push('cmdType=showForm')
         prm.push(`entity=${this.entitySchema.name}`)
-        // TODO formCode
-        // if (me.commandConfig.formCode) {
-        //   prm.push('formCode' + '=' + me.commandConfig.formCode)
-        // }
         prm.push(`instanceID=${this.value.ID}`)
-        // if (cc.cmdData && cc.cmdData.params && cc.cmdData.params.length > 0) {
-        //   param = cc.cmdData.params[0]
-        //   request = _.clone(param)
-        //   prm.push('params' + '=' + encodeURIComponent(JSON.stringify(request)))
-        // }
         return prm.join('&')
       }
     },
