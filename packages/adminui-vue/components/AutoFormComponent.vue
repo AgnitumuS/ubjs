@@ -1,6 +1,6 @@
 <template>
-  <div id="auto-form-app" v-if="fieldsToShow" v-loading="loading">
-    <el-container>
+  <div id="auto-form-app" v-if="fieldsToShow" v-loading="loading" style="height: 100%">
+    <el-container style="height:100%">
       <el-header style="background-color: #c0c0c0;line-height: 60px">
         <el-row type="flex" class="row-bg" justify="space-between">
           <el-col>
@@ -28,86 +28,88 @@
           </el-col>
         </el-row>
       </el-header>
-      <el-main>
-        <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
-          <el-form-item
-              v-for="fieldName in fieldsToShow"
-              :prop="fieldName"
-              :key="fieldName"
-              :rules="getRules(fieldName)"
-              :label="entitySchema.attributes[fieldName].caption">
-            <el-checkbox
-                v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
-                v-model="value[fieldName]"
-            ></el-checkbox>
-            <el-date-picker
-                v-else-if="entitySchema.attributes[fieldName].dataType === 'DateTime' || entitySchema.attributes[fieldName].dataType === 'Date'"
-                v-model="value[fieldName]"
-                :type="entitySchema.attributes[fieldName].dataType.toLowerCase()"
-                placeholder="Select date and time"
-            ></el-date-picker>
-            <ub-select-enum
-                v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
-                v-model="value[fieldName]"
-                :eGroup="entitySchema.attributes[fieldName].enumGroup"
-            ></ub-select-enum>
-            <ub-select-entity
-                v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
-                v-model="value[fieldName]"
-                :entityName="entitySchema.attributes[fieldName].associatedEntity"
-            ></ub-select-entity>
-            <ub-select-many
-                v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
-                v-model="value[fieldName]"
-                :entityName="entitySchema.attributes[fieldName].associatedEntity"
-            ></ub-select-many>
-            <el-input
-                v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
-                type='number'
-                v-model="value[fieldName]"
-            ></el-input>
-            <el-input
-                v-else-if="'Float' === entitySchema.attributes[fieldName].dataType"
-                type='number'
-                :step="'0.01'"
-                :controls="false"
-                v-model="value[fieldName]"
-            ></el-input>
-            <el-input
-                v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
-                type='number'
-                :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
-                :controls="false"
-                v-model="value[fieldName]"
-            ></el-input>
-            <el-input
-                v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
-                type="textarea"
-                :autosize="{ minRows: 3, maxRows: 4}"
-                v-model="value[fieldName]"
-            ></el-input>
-            <ub-upload-document
-                v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
-                v-model="value[fieldName]"
-                :docParams="{ entity: entitySchema.name, attribute: fieldName, ID: value.ID }"
-            ></ub-upload-document>
-            <ub-code-mirror
-                v-else-if="entitySchema.attributes[fieldName].dataType === 'Json'"
-                v-model="value[fieldName]"
-            ></ub-code-mirror>
-            <ub-input
-                v-else
-                v-model="value[fieldName]"
-                :isMultiLang="entitySchema.attributes[fieldName].isMultiLang"
-                :entityName="entitySchema.name"
-                :attributeName="fieldName"
-                :primaryValue="value.ID"
-                @saveLocalization="saveLocalization"
-            ></ub-input>
-          </el-form-item>
-        </el-form>
-        <input type="hidden" id="linkToEntity"
-               :value="linkToEntity">
+      <el-main style="height:100%">
+        <el-scrollbar style='height: 100%;'>
+          <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
+            <el-form-item
+                v-for="fieldName in fieldsToShow"
+                :prop="fieldName"
+                :key="fieldName"
+                :rules="getRules(fieldName)"
+                :label="entitySchema.attributes[fieldName].caption">
+              <el-checkbox
+                  v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
+                  v-model="value[fieldName]"
+              ></el-checkbox>
+              <el-date-picker
+                  v-else-if="entitySchema.attributes[fieldName].dataType === 'DateTime' || entitySchema.attributes[fieldName].dataType === 'Date'"
+                  v-model="value[fieldName]"
+                  :type="entitySchema.attributes[fieldName].dataType.toLowerCase()"
+                  placeholder="Select date and time"
+              ></el-date-picker>
+              <ub-select-enum
+                  v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
+                  v-model="value[fieldName]"
+                  :eGroup="entitySchema.attributes[fieldName].enumGroup"
+              ></ub-select-enum>
+              <ub-select-entity
+                  v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
+                  v-model="value[fieldName]"
+                  :entityName="entitySchema.attributes[fieldName].associatedEntity"
+              ></ub-select-entity>
+              <ub-select-many
+                  v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
+                  v-model="value[fieldName]"
+                  :entityName="entitySchema.attributes[fieldName].associatedEntity"
+              ></ub-select-many>
+              <el-input
+                  v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
+                  type='number'
+                  v-model="value[fieldName]"
+              ></el-input>
+              <el-input
+                  v-else-if="'Float' === entitySchema.attributes[fieldName].dataType"
+                  type='number'
+                  :step="'0.01'"
+                  :controls="false"
+                  v-model="value[fieldName]"
+              ></el-input>
+              <el-input
+                  v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
+                  type='number'
+                  :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
+                  :controls="false"
+                  v-model="value[fieldName]"
+              ></el-input>
+              <el-input
+                  v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
+                  type="textarea"
+                  :autosize="{ minRows: 3, maxRows: 4}"
+                  v-model="value[fieldName]"
+              ></el-input>
+              <ub-upload-document
+                  v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
+                  v-model="value[fieldName]"
+                  :docParams="{ entity: entitySchema.name, attribute: fieldName, ID: value.ID }"
+              ></ub-upload-document>
+              <ub-code-mirror
+                  v-else-if="entitySchema.attributes[fieldName].dataType === 'Json'"
+                  v-model="value[fieldName]"
+              ></ub-code-mirror>
+              <ub-input
+                  v-else
+                  v-model="value[fieldName]"
+                  :isMultiLang="entitySchema.attributes[fieldName].isMultiLang"
+                  :entityName="entitySchema.name"
+                  :attributeName="fieldName"
+                  :primaryValue="value.ID"
+                  @saveLocalization="saveLocalization"
+              ></ub-input>
+            </el-form-item>
+          </el-form>
+          <input type="hidden" id="linkToEntity"
+                 :value="linkToEntity">
+        </el-scrollbar>
       </el-main>
     </el-container>
   </div>
@@ -462,12 +464,13 @@
 </script>
 
 <style>
-  .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:after {
+  .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:after {
     content: '*';
     color: #f56c6c;
     margin-left: 4px;
   }
-  .el-form-item.is-required:not(.is-no-asterisk)>.el-form-item__label:before {
+
+  .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
     content: '';
     margin-right: 0px;
   }

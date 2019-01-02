@@ -62,7 +62,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
         closable: true
       })
       let vm = new Vue({
-        template: `<el-scrollbar style='height: 100%;'><auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/></el-scrollbar>`,
+        template: `<auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/>`,
         data: function () {
           return {
             fieldsToShow: pageColumns,
