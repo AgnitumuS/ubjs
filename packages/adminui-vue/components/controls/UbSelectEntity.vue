@@ -1,40 +1,46 @@
 <template>
   <div>
-    <el-select ref="selector" v-model="resultData"
-               reserve-keyword filterable remote
-               v-loading="loading" :disabled="loading"
-               @change="onChange"
-               v-on:click.native="onFocus"
-               v-on:input.native="onInput"
-               style="width: 100%"
-               :class="`ub-select-entity${this._uid}`">
-      <div slot="suffix">
-        <el-popover
-            v-if="rowActions"
-            placement="bottom-end"
-            v-model="popoverVisible">
-          <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
-            <el-table-column property="caption" width="250">
-              <template slot-scope="scope">
-                <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
-                  <i :class="scope.row.icon"></i>
-                  <span style="margin-left: 10px">{{ scope.row.caption }}</span>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-          <i @click="showPopover" slot="reference" class="el-select__caret el-input__icon el-icon-menu"></i>
-        </el-popover>
-      </div>
-      <template slot-scope="scope">
-        <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
-                   :label="item[displayValue]" :value="item[primaryColumn]">
-        </el-option>
-        <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
-          <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
-        </el-row>
-      </template>
-    </el-select>
+    <el-tooltip :content="deletedCaption" placement="top" :disabled="!rowIsDeleted">
+      <el-select ref="selector" v-model="resultData"
+                 reserve-keyword filterable remote
+                 v-loading="loading" :disabled="loading"
+                 @change="onChange"
+                 v-on:click.native="onFocus"
+                 v-on:input.native="onInput"
+                 style="width: 100%"
+                 :class="`ub-select-entity${this._uid}`">
+        <div slot="suffix">
+          <el-popover
+              v-if="rowActions"
+              placement="bottom-end"
+              v-model="popoverVisible">
+            <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
+              <el-table-column property="caption" width="250">
+                <template slot-scope="scope">
+                  <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
+                    <i :class="scope.row.icon"></i>
+                    <span style="margin-left: 10px">{{ scope.row.caption }}</span>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+            <i @click="showPopover" slot="reference" class="el-select__caret el-input__icon el-icon-menu"></i>
+          </el-popover>
+        </div>
+        <div slot="prefix" v-if="rowIsDeleted">
+          <i style="margin-left: 5px" class="fa fa-ban"></i>
+        </div>
+        <template slot-scope="scope">
+          <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
+                     :label="item[displayValue]" :value="item[primaryColumn]"
+                     :disabled="item.removed">
+          </el-option>
+          <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
+            <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
+          </el-row>
+        </template>
+      </el-select>
+    </el-tooltip>
   </div>
 </template>
 
@@ -73,6 +79,8 @@
     data () {
       return {
         buttonMoreCaption: UB.i18n('more'),
+        deletedCaption: UB.i18n('elementIsNotActual'),
+        entitySchema: $App.domainInfo.get(this.entityName, true),
         hasData: true,
         initialItem: null,
         items: [],
@@ -162,11 +170,16 @@
       },
       setInitialItem (id) {
         this.loading = true
-        UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).selectById(id || this.value).then((item) => {
+        let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
+        if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
+          promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
+        }
+        promise.selectById(id || this.value).then((item) => {
           if (item) {
             this.initialItem = {}
             this.initialItem[this.primaryColumn] = item[this.primaryColumn]
             this.initialItem[this.displayValue] = item[this.displayValue] ? item[this.displayValue] : item[this.primaryColumn]
+            this.initialItem['removed'] = !!item['mi_deleteDate']
             this.$refs.selector.selectedLabel = item[this.displayValue]
           }
         }).finally(() => {
@@ -175,6 +188,9 @@
       }
     },
     computed: {
+      rowIsDeleted () {
+        return this.initialItem && this.initialItem.removed
+      },
       rowActions () {
         return this.useOwnActions ? this.actions : this.defaultActions.concat(this.actions)
       },
@@ -188,7 +204,7 @@
               UB.core.UBApp.doCommand({
                 entity: this.entityName,
                 cmdType: UB.core.UBCommand.commandType.showList,
-                description: $App.domainInfo.get(this.entityName, true).getEntityDescription(),
+                description: this.entitySchema.getEntityDescription(),
                 isModal: true,
                 sender: this,
                 selectedInstanceID: this.resultData,
@@ -252,7 +268,7 @@
         }]
       },
       displayValue () {
-        return $App.domainInfo.get(this.entityName).descriptionAttribute
+        return this.entitySchema.descriptionAttribute
       },
       itemsToDisplay () {
         if (this.initialItem) {
