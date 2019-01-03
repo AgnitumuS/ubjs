@@ -30,11 +30,17 @@ exports.formCode = {
       let model = $App.domainInfo.models[reportModelName]
       let reportCodePath = `${model.clientRequirePath}/reports/${reportCode}.js`
       SystemJS.reload(reportCodePath)
+    } else {
+      $App.dialogInfo(`You are in PRODUCTION mode. Reload page to apply changes. Or use ${window.location.href}-dev URL for developer mode with hot module replacement`)
     }
   },
 
   testReport: function (type, serverSide) {
     const me = this
+    if (serverSide && !window.isDeveloperMode) {
+      $App.dialogInfo('To test server-side report generation server should be started in `-dev` mode')
+      return
+    }
 
     let promise
     if (me.record.dirty) {
