@@ -2,7 +2,6 @@ const UBA_COMMON = require('@unitybase/base').uba_common
 const _ = require('lodash')
 const assert = require('assert')
 const ok = assert.ok
-const fs = require('fs')
 const cmdLineOpt = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
@@ -26,12 +25,12 @@ module.exports = function runOTPTest (options) {
     console.debug('start uba_otp test')
     testOtpEmail()
   } finally {
-    //session.logout()
+    // session.logout()
   }
   function testOtpEmail () {
     let userID, otp
     let otpKind = 'EMail'
-    let inst = conn.Repository('uba_user').attrs([ 'ID' ]).where('[name]', '=', 'otp_testUser1').select()
+    let inst = conn.Repository('uba_user').attrs([ 'ID' ]).where('[name]', '=', 'otp_testuser1').select()
 
     function genOtp (obj, lifeTime) {
       otp = conn.post('evaluateScript',

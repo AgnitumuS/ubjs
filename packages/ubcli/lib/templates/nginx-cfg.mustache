@@ -85,6 +85,9 @@ server {
     proxy_set_header    Host    $host;
     # Tell UB real IP address of client
     proxy_set_header    {{remoteIPHeader}}  $realip_remote_addr;
+    {{#remoteConnIDHeader}}
+    proxy_set_header    {{remoteConnIDHeader}}  $connection;
+    {{/remoteConnIDHeader}}
     proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
     # Do not rewrite a URL while pass it to UB
     proxy_redirect      off;

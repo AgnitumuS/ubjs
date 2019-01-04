@@ -10,7 +10,7 @@ ORG.checkOrgUnitRequired = true
 Session.on('login', orgOnUserLogin)
 
 /**
- * For a superuser (UBA_COMMON.USERS.ADMIN.ID) nothing happens here.
+ * For a superuser (UBA_COMMON.isSuperUser) all org related values are sets to '' or 0 (for IDs).
  *
  * Session 'login' event occurs every time when new user logs in.
  * Here we define logged-in user's FullName from org structure,
@@ -43,8 +43,6 @@ function orgOnUserLogin () {
   data.tempPositions = ''
   data.allPositions = ''
 
-  if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) return
-
   try {
     staffs = UB.Repository('org_employeeonstaff')
       .attrs(['ID', 'employeeOnStaffType', 'description', 'employeeID.userID', 'employeeID.shortFIO',
@@ -64,7 +62,7 @@ function orgOnUserLogin () {
     if (ORG.checkOrgUnitRequired && (Session.uData.roleIDs.indexOf(UBA_COMMON.ROLES.ADMIN.ID) === -1)) {
       throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>. ' + lastError)
     } else {
-      data.employeeShortFIO = ''
+      // defined by ub model data.employeeShortFIO = ''
       data['orgUnitIDs'] = ''
       data.staffUnitID = -1
       data.employeeID = -1
@@ -173,4 +171,5 @@ function orgOnUserLogin () {
     data.allPositions = JSON.stringify(tempPositionsArray) // stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
   }
 }
+// expose onUserLogin to allow override it in other models
 ORG.onUserLogin = orgOnUserLogin

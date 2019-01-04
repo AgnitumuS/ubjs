@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "5.2.22",
+  "version": "5.2.26",
   "description": "Data layer for accessing UnityBase server from Browser or NodeJS",
   "main": "./ub-pub.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub-pub",
@@ -24,12 +24,12 @@
   },
   "dependencies": {
     "@unitybase/cryptojs": "^1.0.14",
-    "@unitybase/cs-shared": "^5.0.14",
+    "@unitybase/cs-shared": "^5.0.15",
     "lodash": "^4"
   },
   "keywords": [
     "UnityBase",
-    "UB4",
+    "UB5",
     "nodeJS"
   ],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",

@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.35]
+### Changed
+ - since DDL generations now executed under `root` check for `admin` login 
+```
+if (UBA_COMMON.isSuperUser()) return
+```
+ is removed from org.js Session.on('login') handler 
+ 
+
+## [5.1.33]
+### Changed
+  - use `UBA_COMMON.isSuperUser()` to prevent ORG.orgOnUserLogin from execution for `admin`
+   or `root` because this users are used for DDL generation
+
 ## [5.1.25]
 ### Changed
  - `org_employeeonstaff.caption` generation algorithm: in case `org_employeeonstaff.tabNo` is empty or whitespace - 

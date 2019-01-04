@@ -26,6 +26,10 @@
             "caption": "Target pengguna",
             "description": "Nama pengguna yang datanya telah berubah"
         },
+        "targetGroup": {
+            "caption": "Kelompok sasaran",
+            "description": "Nama grup yang datanya telah diubah"
+        },
         "targetRole": {
             "caption": "peran Target",
             "description": "Nama peran yang datanya telah berubah"

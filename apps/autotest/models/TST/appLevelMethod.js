@@ -1,5 +1,7 @@
 /*
- * Created by pavel.mash on 10.10.2014.
+ * Created by pavel.mash on 10.10.2014
+ * Проверка русского комментария
+ * на несколько строк
  */
 const fs = require('fs')
 const assert = require('assert')
@@ -247,7 +249,7 @@ App.registerEndpoint('testServerSideBLOB', testServerSideBLOB, false)
  */
 function evaluateScript (req, resp) {
   if (App.localIPs.indexOf(Session.callerIP) === -1) {
-    throw new Error('SCHEDULER: remote execution is not allowed')
+    throw new Error('evaluateScript: remote execution is not allowed')
   }
   let script
   if (req.method === 'GET') {

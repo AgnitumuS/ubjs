@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Reverse proxy configuration
 if [ -z "$UB_RP_CONFIG" ]; then
@@ -24,7 +24,7 @@ TESTCASE='hello'
 ub -e "console.log('Start autotest')"
 
 TESTCASE='drop database'
-rm -f ./*FTS.sqlite3*
+rm -f ./*.sqlite3*
 if [ ! $? = 0 ]; then err; fi
 
 rm -rf ./documents/simple
@@ -54,7 +54,7 @@ npx ubcli initDB -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p $PASSWORD_FOR_A
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=generateDDL
-npx ubcli generateDDL -cfg $UB_CFG -u admin -p $PASSWORD_FOR_ADMIN -autorun
+npx ubcli generateDDL -cfg $UB_CFG -autorun
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=initialize

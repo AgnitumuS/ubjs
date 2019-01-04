@@ -66,11 +66,20 @@ const ROLES = {
 }
 
 /**
- * Check logged in user is superuser (member of Admin role or root)
+ * Check logged in user is a superuser (either `admin` or `root`)
  * @returns {boolean}
  */
 function isSuperUser () {
-  return Session.uData.roleIDs.indexOf(ROLES.ADMIN.ID) > -1
+  let uID = Session.uData.userID
+  return (uID === USERS.ROOT.ID) || (uID === USERS.ADMIN.ID)
+}
+
+/**
+ * Check logged in user have `admin` role
+ * @returns {boolean}
+ */
+function haveAdminRole () {
+  return Session.uData.roleIDs.includes(ROLES.ADMIN.ID)
 }
 
 /**
@@ -117,13 +126,18 @@ module.exports = {
     if (role === ROLES.USER.ID) {
       throw new Error(`<<<${ROLES.USER.ID} pseudo-role is assigned automatically>>>`)
     }
-    if ((role === ROLES.ADMIN.ID) && (!isSuperUser())) {
+    if ((role === ROLES.ADMIN.ID) && (!haveAdminRole())) {
       throw new Error(`<<<Only members with ${ROLES.ADMIN.NAME} role are allowed for assign a ${ROLES.ADMIN.NAME} role to other members>>>`)
     }
   },
   /**
-   * Check logged in user is superuser (have a Admin role)
+   * Check logged in user is a superuser (either `admin` or `root`)
    * @returns {boolean}
    */
-  isSuperUser: isSuperUser
+  isSuperUser: isSuperUser,
+  /**
+   * Check logged in user have `admin` role
+   * @returns {boolean}
+   */
+  haveAdminRole: haveAdminRole
 }

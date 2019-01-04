@@ -186,7 +186,7 @@ Options.prototype.usage = function usage () {
   })
   res = '  ' + res.join('\n  ')
   if (envs.length) {
-    res += '\n\n* will lookup a environment variable in case switch omitted: ' + JSON.stringify(envs)
+    res += '\n\n* will look for the following environment variables if the switch is not specified: ' + JSON.stringify(envs)
   }
   return res
 }

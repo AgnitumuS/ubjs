@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.1]
+### Added
+ - `GC_KEYS` dictionary to store all known by UB global cache keys (ot prefixes) in the single place
+
+## [5.1.0]
+### Added
+ - handling of new authentication schema 'ROOT' in `argv.establishConnectionFromCmdLineAttributes`.
+ Can be used in case client and server is the same process (client explicitly call `startServer()`)
+
+## [5.0.32]
+### Changed
+ - `SyncConnection.setDocument` can accept optional `dataEncoding` parameter.
+ Set it to `base64` if content is a base64 encoded binary.
+
+### Added
+ - default value (X-Conn-ID) for new `reverseProxy.remoteConnIDHeader` is added
+ to `argv.getServerConfiguration`
+
+## [5.0.28]
+### Changed
+  - `UBA_COMMON.isSuperUser` method now return `true` only is user is exactly `admin` or `root`.
+    Prev. implementation return `true` for any user what member of `admin` role. Method is useful 
+    for example to prevent Session.on(`login`) event handlers for DDL generations
+```
+const UBA_COMMON = require('@unitybase/base').uba_common
+Session.on('login', () => {
+  if (UBA_COMMON.isSuperUser()) return
+  // get data from other tables what may not exists while DDL is not ready
+})
+```
+
+### Added
+ - `UBA_COMMON.haveAdminRole` method is added - check logged in user is a member of `admin` role
+   
+  
 ## [5.0.27]
 ### Added
   - add `name` property to Worker for better debugging experience

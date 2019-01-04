@@ -59,6 +59,14 @@
     {
       "dataType": "String",
       "size": 128,
+      "caption": "Target group",
+      "description": "The group name for which the data has changed",
+      "allowNull": true,
+      "name": "targetGroup"
+    },
+    {
+      "dataType": "String",
+      "size": 128,
       "caption": "Target role",
       "description": "The role name for which the data has changed",
       "allowNull": true,

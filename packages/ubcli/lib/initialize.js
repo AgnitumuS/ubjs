@@ -93,4 +93,6 @@ module.exports = function initialize (cfg) {
   }
 }
 
-module.exports.shortDoc = 'Fill domain entities by it initial values: enumerate all (or specified in -m switch) models `_initialData` folders  and execute all `*.js` from there'
+module.exports.shortDoc = `Fill domain entities by it initial values:
+\t\t\tenumerate all (or specified in -m switch) models
+\t\t\t'_initialData' folders and execute all '*.js' from there`

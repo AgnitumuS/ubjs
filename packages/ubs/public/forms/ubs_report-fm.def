@@ -6,6 +6,9 @@
 // @formType "auto"
 // @caption "reportBuilder"
 // @description "reportBuilder"
+
+const UB = require('@unitybase/ub-pub')
+
 exports.formDef = {
   parentConfig: {
     layout: 'fit',
@@ -37,7 +40,7 @@ exports.formDef = {
       text: UB.i18n('testReport', 'xlsx'),
       orderId: 11,
       handler: function () { this.up('form').testReport('xlsx', false) }
-    },{
+    }, {
       text: UB.i18n('testReport', 'server html'),
       orderId: 12,
       handler: function () { this.up('form').testReport('html', true) }
@@ -57,7 +60,19 @@ exports.formDef = {
           height: 350,
           items: [
             { attributeName: 'model' },
-            { attributeName: 'report_code' },
+            {
+              layout: 'hbox',
+              items: [
+                {
+                  attributeName: 'report_code'
+                }, {
+                  xtype: 'ublabel',
+                  ubID: 'howToChangeCode',
+                  text: `To change existing report code rename both *.js and *.template files in folder 'yourModel/public/reports'`,
+                  margins: '10px 0 0 0'
+                }
+              ]
+            },
             { attributeName: 'name' },
             {
               xtype: 'label',

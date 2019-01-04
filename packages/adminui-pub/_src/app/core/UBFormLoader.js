@@ -55,25 +55,28 @@ Ext.define('UB.core.UBFormLoader', {
   getFormByEntity: function (entity, allForms) {
     let store = UB.core.UBStoreManager.getFormStore()
     let forms = []
-    let defaultForm = null
+    let defForms = []
 
     store.each(function (item) {
       if (item.get('entity') === entity) {
         forms.push(item)
-        if (item.get('isDefault') === true && !defaultForm) {
-          defaultForm = item
-          if (!allForms) { // Not need all forms, just first default
-            return false
-          }
+        if (item.get('isDefault') === true) {
+          defForms.push(item)
         }
       }
     })
     forms.sort(function (a, b) {
-      var c1 = a.get('code')
-      var c2 = b.get('code')
+      let c1 = a.get('code')
+      let c2 = b.get('code')
       return c1 < c2 ? -1 : (c1 === c2 ? 0 : 1)
     })
-    defaultForm = defaultForm || forms[0]
+    // in case of several default forms - use one from the LAST model to allow forms override
+    let models = UB.connection.domain.models
+    defForms.sort(function (a, b) {
+      // reverse order sort
+      return models[b.get('model')].order - models[a.get('model')].order
+    })
+    let defaultForm = defForms.length ? defForms[0] : forms[0]
     return allForms ? forms : defaultForm
   },
 

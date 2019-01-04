@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.23]
+### Added
+  - new function `AsyncConnection.setDocument` to easy call a `setDocument` endpoint
+  
 ## [5.2.19]
 ### Added
  - If quite the same request repeated 2 or more times in the last 100ms (so called monkey request) then 

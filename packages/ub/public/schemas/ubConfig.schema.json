@@ -229,6 +229,11 @@
               "description": "The value of a custom HTTP header containing the real client IP. By default, the RemoteIP information will be retrieved from the socket layer - but if the server runs behind some proxy service, you should define here the HTTP header name which indicates the true remote client IP value, mostly as 'X-Real-IP' or 'X-Forwarded-For'",
               "default": "X-Real-IP"
             },
+            "remoteConnIDHeader": {
+              "type": "string",
+              "description": "The value of a custom HTTP header containing the real client connection ID. Required for Kerberos/UBLDAP authentication and correct logging of real client connection ID. In case of nginx value is taken from $connection nginx variable",
+              "default": "X-Conn-IP"
+            },
             "sendFileHeader": {
               "type": "string",
               "default": "X-Accel-Redirect",

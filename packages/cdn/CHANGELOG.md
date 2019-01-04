@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.73]
+### Changed
+ - restriction for CCEO (OKPO) length (8 or 10 chars) is removed from `cdn_organization`
+
 ## [5.0.66]
 ### Changed
  - cdn_city: allow to select Country as a parent admin unit for city (filter on the form)

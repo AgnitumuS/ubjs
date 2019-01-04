@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.14]
+### Added
+- Arial GEO bold italic registration corrected
+
+## [5.0.13]
+### Added
+- New font set with Georgian language support for formatted pdf generation - Arial GEO
+
 ## [5.0.12]
 ### Added
 - Font SylfaenNormal with georgian characters

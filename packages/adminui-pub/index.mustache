@@ -42,10 +42,10 @@
             window.mxLoadResources = false;
         </script>
 
-        <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-all.css{{/md5template}}" />
-        <link rel="stylesheet" href="{{#md5}}models/adminui-pub/ub-css-all.css{{/md5}}"/>
+        <link rel="stylesheet" type="text/css" href="models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-all.css{{#modelVer}}adminui-pub{{/modelVer}}"/>
+        <link rel="stylesheet" href="models/adminui-pub/ub-css-all.css{{#modelVer}}adminui-pub{{/modelVer}}"/>
         <link rel="stylesheet" href="clientRequire/font-awesome/css/font-awesome.min.css"/>
-        <link rel="stylesheet" type="text/css" href="{{#md5template}}models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{/md5template}}" />
+        <link rel="stylesheet" type="text/css" href="models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/ub.css{{#modelVer}}adminui-pub{{/modelVer}}" />
 
         <style>
             .ub-logo-h {
@@ -84,8 +84,8 @@
           }
       </script>
 
-      <script src="{{#md5}}clientRequire/systemjs/dist/system.js{{/md5}}" type="text/javascript"></script>
-      <script charset="utf-8" src="{{#md5}}models/adminui-pub/dist/ext-all.min.js{{/md5}}"></script>
+      <script src="clientRequire/systemjs/dist/system.js" type="text/javascript"></script>
+      <script charset="utf-8" src="models/adminui-pub/dist/ext-all.min.js"></script>
       <script type="text/javascript" nonce="{{cspNonce}}">
         // set our baseURL reference path
         System.config({

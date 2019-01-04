@@ -546,6 +546,8 @@ Ext.define('UB.core.UBUtil', {
       case ubDataTypes.Currency:
       case ubDataTypes.Float:
         let decPrecision = (attribute.dataType === ubDataTypes.Currency) ? 2 : UBDomain.FLOATING_SCALE_PRECISION
+        let minValue = attribute.dataType === ubDataTypes.Currency ? -8999000000000000 : -8999000000000
+        let maxValue = attribute.dataType === ubDataTypes.Currency ? 8999000000000000 : 8999000000000
         ext = {
           xtype: 'numberfield',
           maxLength: 17,
@@ -555,8 +557,10 @@ Ext.define('UB.core.UBUtil', {
           mouseWheelEnabled: false,
           decimalPrecision: decPrecision,
           validator: function (val) {
-            if (Number(val.replace(/[^0-9]/, '')) < 8999000000000000) {
-              var rv = val.match(/[0-9]*[^0-9]{1}([0-9]+)/)
+            if (Number(val.replace(/[^0-9]/, '').replace(',', '.')) < maxValue &&
+              Number(val.replace(/[^0-9]/, '').replace(',', '.')) > minValue
+            ) {
+              let rv = val.replace('-', '').match(/[0-9]*[^0-9]{1}([0-9]+)/)
               if ((rv && rv.length > 1 && rv[1].length <= this.decimalPrecision) || !rv || rv.length === 1) {
                 return true
               }
@@ -564,8 +568,8 @@ Ext.define('UB.core.UBUtil', {
             return UB.i18n('numberOfSignificantDigits')
           },
           valueToRaw: UB.core.UBUtil.formatAsCurrency,
-          maxValue: 8999000000000000,
-          minValue: -8999000000000000
+          maxValue,
+          minValue
         }
         break
       default:

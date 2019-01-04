@@ -2377,23 +2377,17 @@ Ext.define('UB.view.BasePanel', {
         }
       }
     }
-    $App.connection.post('setDocument', file, {
-      params: {
-        entity: me.entityName,
-        attribute: attributeName,
-        id: id,
-        origName: file.name,
-        filename: file.name
-      },
-      headers: {
-        'Content-Type': 'application/octet-stream'
-      },
-      onProgress: doOnProgress
-    }).fin(function () {
+    $App.connection.setDocument(file, {
+      entity: me.entityName,
+      attribute: attributeName,
+      id: id,
+      origName: file.name,
+      filename: file.name
+    }, doOnProgress).fin(function () {
       clearInterval(waitIntervalID)
       waitBox.close()
-    }).done(function (serverResponse) {
-      ctrl.setValue(serverResponse.data.result, id)
+    }).done(function (result) {
+      ctrl.setValue(result, id)
       $App.dialogInfo('dropZoneOperationComplete')
     })
   },
@@ -3411,20 +3405,15 @@ Ext.define('UB.view.BasePanel', {
       title, {}, this.documents[action.attribute].documentMIME
     ).then(function (result) {
       var fName = prepareFileName()
-      return $App.connection.post('setDocument', UB.base64toArrayBuffer(result), {
-        params: {
-          entity: entityName,
-          attribute: attribute,
-          id: id,
-          origName: fName,
-          filename: fName
-        },
-        headers: {
-          'Content-Type': 'application/octet-stream'
-        }
+      return $App.connection.setDocument(UB.base64toArrayBuffer(result), {
+        entity: entityName,
+        attribute: attribute,
+        id: id,
+        origName: fName,
+        filename: fName
       })
-    }).then(function (serverResponse) {
-      ctrl.setValue(serverResponse.data.result, id)
+    }).then(function (result) {
+      ctrl.setValue(result, id)
     })
   },
 

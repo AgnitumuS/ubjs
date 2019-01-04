@@ -15,8 +15,10 @@ function runTest () {
   st.runSQL(`select id from uba_user where name = :("${UBA.USERS.ADMIN.NAME}"): and name = :('${UBA.USERS.ADMIN.NAME}'): and id = :(${UBA.USERS.ADMIN.ID}):`, {})
   assert.equal(st.rowCount, 1, `Simple inlined params. Expect 1 row, got ${st.rowCount}`)
 
-  st.runSQL('select id from uba_user where name = :name: or name = :name2:', {name: 'testelsuser', name2: 'admin'})
-  assert.equal(st.rowCount, 2, `Two named parameters. Expect 2 row, got ${st.rowCount}`)
+  let st2 = UB.DataStore('uba_user')
+  st2.runSQL('select id from uba_user where name = :name: or name = :name2:', {name: 'testelsuser', name2: 'admin'})
+  assert.equal(st2.rowCount, 2, `Two named parameters. Expect 2 row, got ${st2.rowCount}`)
+  assert.notEqual(st2.rowCount, st.rowCount, `Different object with the same prototype should have different prop vals but ${st.rowCount}=${st2.rowCount}`)
 
   st.runSQL('select id from uba_user where name = :name: and :name: = \'testelsuser\'', {name: 'testelsuser'})
   assert.equal(st.rowCount, 1, `Two same named parameters. Expect 1 row, got ${st.rowCount}`)

@@ -103,7 +103,7 @@ module.exports = function createCodeInsightHelper (cfg) {
 
   let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
 
-  function processEntities (entities, folderName, modelName, moduleName) {
+  function processEntities (entities, folderName, modelName) {
     let res, resFileName
 
     let modulePackage = require(path.join(folderName, 'package.json'))
@@ -201,4 +201,5 @@ module.exports = function createCodeInsightHelper (cfg) {
   })
 }
 
-module.exports.shortDoc = 'Create service scripts containing entity definition for code insight in WebStorm or other IDE work well'
+module.exports.shortDoc = `Create service scripts containing entity definition
+\t\t\tfor code insight in WebStorm or other IDE work well`

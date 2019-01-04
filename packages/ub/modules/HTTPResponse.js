@@ -76,7 +76,7 @@ class THTTPResponse {
     resp_writeEnd(data, encoding)
   }
   /**
-   * Perform a ETag based HTTP response caching.
+   * ETag based HTTP response caching.
    * Must be called after writeEnd called and and statusCode is defined.
    *
    * In case statusCode === 200 and response body length > 64 will

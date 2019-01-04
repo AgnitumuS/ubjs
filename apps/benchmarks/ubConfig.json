@@ -10,7 +10,7 @@
 	},
 	"logging": {
 		"levels": [],
-		"path": "./logs",
+		"path": "",
 		"rotationSizeInMB": 100,
 		"performanceCounters": false
 	},
@@ -18,7 +18,7 @@
 		"authenticationMethods": []
 	},
 	"javascript": {
-		"fullGCPeriod": 100000
+		"fullGCPeriod": 100
 	},
 	"application": {
 		"defaultLang": "en",
@@ -48,7 +48,8 @@
 		"blobStores": [
 			{
 				"name": "mdb",
-				"storeType": "Virtual"
+				"storeType": "Virtual",
+				"tempPath": "./logs"
 			}
 		]
 	},

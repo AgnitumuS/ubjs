@@ -31,6 +31,10 @@
             "caption": "სამიზნე მომხმარებელი"
         },
         {
+            "name": "targetGroup",
+            "caption": "სამიზნე ჯგუფი,"
+        },
+        {
             "name": "targetRole",
             "caption": "მიზანის როლი"
         },

@@ -66,9 +66,10 @@ const blobStores = require('@unitybase/blob-stores')
  // Initialize dataStore from Array-of-array data
  // in this case keyMap is mandatory.
  // In case of mapping from is zero-based index of source element in row array
- ds.initialize([
-   [10, 'Jon', 10], [20, 'Smith', 63]], ['ID', 'name', 'age']
- ])
+ ds.initialize(
+   [[10, 'Jon', 10], [20, 'Smith', 63]],
+   ['ID', 'name', 'age']
+ )
  // or use mapping
  ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
     ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}])
@@ -138,7 +139,7 @@ TubDataStore.initialize = function (source, keyMap) {
     } else {
       throw new Error('TubDataStore.initialize: invalid source format for TubDataStore.initialize')
     }
-  } else if ((typeof source === 'object') && (source.fieldCount > 0) && (source.rowCount > 0)) { // flatten
+  } else if ((typeof source === 'object') && (source.fieldCount > 0) && (source.rowCount >= 0)) { // flatten
     if (keyMap) {
       if (keyMap.length !== source.fieldCount) {
         throw new Error('TubDataStore.initialize: for flatten data keyMap length must be equal to fieldCount')

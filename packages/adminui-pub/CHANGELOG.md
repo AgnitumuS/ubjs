@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.19]
+### Changed
+ - sped-up `index.html` generation by replacing resource versions calculation algorithm from md5 to `version` from package.json
+
+## [5.6.18]
+### Fixed
+ - error during table insertion in the ReportBuilder UI component
+ 
+### Changed
+ - modal dialogs mask left-top position explicitly set to 0,0 - see [unitybase/ubjs!244] for details
+   
+## [5.6.17]
+### Changed
+  - if several default (isDefault=true) forms exists for an entity
+  `UBFormLoader.getFormByEntity` will return a form from model with the biggest model order.
+  This allow to override default forms in descending models [unitybase/ubjs#30]  
+
+### Fixed
+  - allow negative values for fields with dataType `currency` or `float`
+    
+## [5.6.15]
+### Changed
+  - use a new function `AsyncConnection.setDocument` for files uploading
+   
 ## [5.6.13]
 ### Changed
   - prevent entering a string with all whitespaces for **required** text fields by 

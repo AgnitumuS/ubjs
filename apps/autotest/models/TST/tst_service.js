@@ -224,3 +224,28 @@ me.restTest = function (ctx, req, resp) {
   resp.statusCode = 200
 }
 me.entity.addMethod('restTest')
+
+me.entity.addMethod('datesTest')
+/**
+ * @param {ubMethodParams} ctx
+ */
+me.datesTest = function (ctx) {
+  let multilyneString = `
+   cx: PJSContext;
+    Exp: PJSRootedObject;^
+    Req: PJSRootedObject;^
+    Module: PJSRootedObject;
+    filename: PWideChar;
+    dirname: PWideChar;^
+  asdasdas
+  asdasd
+  `
+  let params = ctx.mParams
+  let zDate = new Date('2017-01-01T00:00Z')
+  let uDate = new Date('2017-01-01T12:20Z')
+  params.zDate = zDate
+  params.uDate = uDate
+  params.dates = {
+    zDate, uDate
+  }
+}
