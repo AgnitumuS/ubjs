@@ -120,7 +120,7 @@ module.exports = {
    */
   base64FromAny: function (data) { return utils.base64FromAny(data) },
   /**
-   * Convert base54 encoded string to decoded array buffer
+   * Convert base64 encoded string to decoded array buffer
    * @param {String} base64
    * @returns {ArrayBuffer}
    */
