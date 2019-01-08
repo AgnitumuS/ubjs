@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tooltip :content="deletedCaption" placement="left" :disabled="!rowIsDeleted">
+    <el-tooltip :content="deletedCaption" placement="left" :disabled="!rowIsDeleted" :open-delay="200">
       <el-select ref="selector" v-model="resultData"
                  reserve-keyword filterable remote
                  v-loading="loading" :disabled="loading"
