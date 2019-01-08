@@ -108,5 +108,7 @@ UB.i18nExtend({
     }
   },
   isRequiredFieldFmt: '{0} is required',
-  linkCopiedText: 'Link copied to clipboard'
+  linkCopiedText: 'Link copied to clipboard',
+  createdEntityCaption: 'Created',
+  updatedEntityCaption: 'Updated'
 })

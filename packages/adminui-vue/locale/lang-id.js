@@ -108,5 +108,7 @@ UB.i18nExtend({
     }
   },
   isRequiredFieldFmt: '{0} wajib diisi',
-  linkCopiedText: 'Tautan disalin ke papan klip'
+  linkCopiedText: 'Tautan disalin ke papan klip',
+  createdEntityCaption: 'Dibuat',
+  updatedEntityCaption: 'Diperbarui'
 })

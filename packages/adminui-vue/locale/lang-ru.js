@@ -108,5 +108,7 @@ UB.i18nExtend({
     }
   },
   isRequiredFieldFmt: '{0} обязательно для заполнения',
-  linkCopiedText: 'Ссылка скопирована в буфер обмена'
+  linkCopiedText: 'Ссылка скопирована в буфер обмена',
+  createdEntityCaption: 'Создано',
+  updatedEntityCaption: 'Обновлено'
 })
