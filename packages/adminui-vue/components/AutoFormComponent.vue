@@ -1,35 +1,49 @@
 <template>
   <div id="auto-form-app" v-if="fieldsToShow" v-loading="loading" style="height: 100%">
-    <el-container style="height:100%">
-      <el-header style="background-color: #c0c0c0;line-height: 60px">
-        <el-row type="flex" class="row-bg" justify="space-between">
-          <el-col>
-            <el-button :disabled="!saveEnabled" size="small" @click="saveAndClose"><i class="fa fa-share-square-o"></i>
+    <div style="height:100%">
+      <div style="display: flex;justify-content: space-between;border-bottom: 1px solid rgba(66,73,86,.12);margin-bottom: 10px;padding: 0 16px">
+        <div style="display: flex">
+          <el-button :disabled="!saveEnabled" type="text" size="large" class="form-header__button" @click="saveAndClose">
+            <i class="fa fa-share-square-o"></i>
+          </el-button>
+          <el-button :disabled="!saveEnabled" type="text" size="large" class="form-header__button" @click="saveAndReload">
+            <i class="fa fa-save"></i>
+          </el-button>
+          <el-button :disabled="!canDelete" type="text" size="large" class="form-header__button" @click="remove">
+            <i class="fa fa-trash-o"></i>
+          </el-button>
+        </div>
+        <div style="display: flex">
+          <el-popover
+              placement="bottom-end"
+              trigger="click">
+            <el-table :data="actions" @row-click="onActionClick" :show-header="false">
+              <el-table-column property="caption" width="200">
+                <template slot-scope="scope">
+                  <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
+                    <i :class="scope.row.icon"></i>
+                    <span style="margin-left: 10px">{{ scope.row.caption }}</span>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-button type="text" slot="reference" size="large" class="form-header__button">
+              <i class="fa fa-cog" aria-hidden="true"></i>
             </el-button>
-            <el-button :disabled="!saveEnabled" size="small" @click="saveAndReload"><i class="fa fa-save"></i></el-button>
-            <el-button :disabled="!canDelete" size="small" @click="remove"><i class="fa fa-trash-o"></i></el-button>
-          </el-col>
-          <el-col :span="2">
-            <el-popover
-                placement="bottom-end"
-                trigger="click">
-              <el-table :data="actions" @row-click="onActionClick" :show-header="false">
-                <el-table-column property="caption" width="200">
-                  <template slot-scope="scope">
-                    <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
-                      <i :class="scope.row.icon"></i>
-                      <span style="margin-left: 10px">{{ scope.row.caption }}</span>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <i slot="reference" class="el-select__caret el-input__icon fa fa-cogs"></i>
-            </el-popover>
-          </el-col>
-        </el-row>
-      </el-header>
-      <el-main style="height:100%">
-        <el-scrollbar style='height: 100%;'>
+          </el-popover>
+          <div class="form-header__button__divider"></div>
+          <div class="form-header__date__container">
+            <div class="form-header__date">
+              <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate }}
+            </div>
+            <div class="form-header__date">
+              <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex;height: 90%;padding: 0 20px">
+        <el-scrollbar style="width:100%">
           <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
             <el-form-item
                 v-for="fieldName in fieldsToShow"
@@ -110,8 +124,8 @@
           <input type="hidden" id="linkToEntity"
                  :value="linkToEntity">
         </el-scrollbar>
-      </el-main>
-    </el-container>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -444,7 +458,9 @@
         loading: false,
         canSave: this.entitySchema.haveAccessToAnyMethods([UB.core.UBCommand.methodName.INSERT, UB.core.UBCommand.methodName.UPDATE]),
         canDelete: this.entitySchema.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE) && !this.isNew,
-        linkToEntity: UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, this.getParamsToString())
+        linkToEntity: UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, this.getParamsToString()),
+        createdEntityCaption: UB.i18n('createdEntityCaption'),
+        updatedEntityCaption: UB.i18n('updatedEntityCaption'),
       }
     },
     components: {
@@ -457,3 +473,38 @@
     }
   }
 </script>
+
+<style>
+  .form-header__button {
+    min-width: 24px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin: 0 12px;
+    color: #636d7c;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .form-header__button__divider{
+    width: 1px;
+    margin: 5px 0;
+    background-color: #424956;
+    opacity: 0.2;
+  }
+  .form-header__date__container{
+    margin: 0 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .form-header__date{
+    color: #323b45;
+    opacity: 0.54;
+    line-height: 2.5;
+    font-size: 9px;
+  }
+
+</style>
