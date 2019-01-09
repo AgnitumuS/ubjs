@@ -18,7 +18,7 @@
     },
     mounted () {
       if (!this.codeMirror) {
-        System.import('@unitybase/codemirror-full').then((CodeMirror) => {
+        SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
           if (CodeMirror) {
             var el = document.getElementById(this._uid)
             if (el) {
