@@ -37,6 +37,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
     let data = {}
     let isNew = false
     let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])
+    if (entitySchema.mixins.mStorage && entitySchema.mixins.mStorage.simpleAudit) fieldList.push('mi_createDate')
     if (this.instanceID) {
       data = await UB.Repository(this.entity).attrs(fieldList).selectById(this.instanceID)
     } else {

@@ -31,13 +31,13 @@
               <i class="fa fa-cog" aria-hidden="true"></i>
             </el-button>
           </el-popover>
-          <div class="form-header__button__divider"></div>
-          <div class="form-header__date__container">
+          <div class="form-header__button__divider" v-if="isSimpleAudit"></div>
+          <div class="form-header__date__container" v-if="isSimpleAudit">
             <div class="form-header__date">
-              <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate }}
+              <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate.toLocaleString() }}
             </div>
             <div class="form-header__date">
-              <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate }}
+              <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate.toLocaleString() }}
             </div>
           </div>
         </div>
@@ -159,21 +159,23 @@
       }
     },
     computed: {
+      isSimpleAudit () {
+        return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
+      },
       saveEnabled () {
         return this.canSave && Object.keys(this.changedColumns).length > 0
       },
       actions () {
         let actions = []
-
-        actions.push({
-          icon: 'fa fa-refresh',
-          caption: UB.i18n('obnovit'),
-          handler: {
-            fn () {
-              debugger
-            }
-          }
-        })
+        // actions.push({
+        //   icon: 'fa fa-refresh',
+        //   caption: UB.i18n('obnovit'),
+        //   handler: {
+        //     fn () {
+        //       debugger
+        //     }
+        //   }
+        // })
         actions.push({
           icon: 'fa fa-save',
           caption: UB.i18n('sohranit'),
@@ -194,19 +196,17 @@
           },
           enabled: this.saveEnabled
         })
-
-        if ($App.domainInfo.isEntityMethodsAccessible('ubm_form', UB.core.UBCommand.methodName.UPDATE)) {
-          actions.push({
-            icon: 'fa fa-wrench',
-            caption: UB.i18n('formConstructor'),
-            handler: {
-              fn () {
-                debugger
-              }
-            }
-          })
-        }
-
+        // if ($App.domainInfo.isEntityMethodsAccessible('ubm_form', UB.core.UBCommand.methodName.UPDATE)) {
+        //   actions.push({
+        //     icon: 'fa fa-wrench',
+        //     caption: UB.i18n('formConstructor'),
+        //     handler: {
+        //       fn () {
+        //         debugger
+        //       }
+        //     }
+        //   })
+        // }
         actions.push({
           icon: 'fa fa-trash-o',
           caption: UB.i18n('Delete'),
@@ -217,7 +217,6 @@
           },
           enabled: this.canDelete
         })
-
         actions.push({
           icon: 'fa fa-link',
           caption: UB.i18n('ssylka'),
@@ -226,7 +225,6 @@
               let linkToEntityToCopy = document.querySelector('#linkToEntity')
               linkToEntityToCopy.setAttribute('type', 'text')
               linkToEntityToCopy.select()
-
               let successful = document.execCommand('copy')
               if (successful)
                 this.$notify({
@@ -234,13 +232,11 @@
                   message: UB.i18n('linkCopiedText'),
                   duration: 5000
                 })
-
               linkToEntityToCopy.setAttribute('type', 'hidden')
               window.getSelection().removeAllRanges()
             }
           }
         })
-
         if (this.entitySchema.hasMixin('dataHistory')) {
           actions.push({
             icon: 'iconHistory',
@@ -252,7 +248,6 @@
             }
           })
         }
-
         if (this.entitySchema.hasMixin('audit')) {
           actions.push({
             icon: 'iconAudit',
@@ -284,14 +279,12 @@
             enabled: $App.domainInfo.isEntityMethodsAccessible('uba_auditTrail', 'select')
           })
         }
-
         if (this.entitySchema.hasMixin('aclRls')) {
           var aclEntityName = this.entitySchema.name + '_acl'
           var entityM = this.entitySchema
           if (entityM.mixins && entityM.mixins.aclRls && entityM.mixins.aclRls.useUnityName) {
             aclEntityName = entityM.mixins.unity.entity + '_acl'
           }
-
           actions.push({
             caption: UB.i18n('accessRight'),
             handler: {
@@ -302,7 +295,6 @@
             enabled: $App.domainInfo.isEntityMethodsAccessible(aclEntityName, 'select')
           })
         }
-
         if (this.entitySchema.hasMixin('softLock')) {
           if (!this.isNew) {
             actions.push({
@@ -325,7 +317,6 @@
             })
           }
         }
-
         return actions
       },
       changedColumns () {
@@ -498,13 +489,13 @@
     margin: 0 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
   }
   .form-header__date{
     color: #323b45;
     opacity: 0.54;
-    line-height: 2.5;
-    font-size: 9px;
+    line-height: 1.8;
+    font-size: 10px;
   }
 
 </style>
