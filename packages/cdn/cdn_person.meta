@@ -8,250 +8,265 @@
   "descriptionAttribute": "fullFIO",
   "attributes": [
     {
+      "name": "lastName",
       "dataType": "String",
       "size": 128,
       "caption": "Last name",
       "description": "Last name of the person",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "lastName"
+      "isMultiLang": true
     },
     {
+      "name": "firstName",
       "dataType": "String",
       "size": 128,
       "caption": "First name",
       "description": "First name of the person",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "firstName"
+      "isMultiLang": true
     },
     {
+      "name": "middleName",
       "dataType": "String",
       "size": 128,
       "caption": "Middle name",
       "description": "Middle name of the person",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "middleName"
+      "isMultiLang": true
     },
     {
+      "name": "identCard",
       "dataType": "String",
       "size": 255,
       "caption": "Identity card",
       "description": "Person's identity card",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "identCard"
+      "isMultiLang": true
     },
     {
+      "name": "workPlacePos",
       "dataType": "String",
       "size": 255,
       "caption": "Place of work, position",
       "description": "Place of work, position",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "workPlacePos"
+      "isMultiLang": true
     },
     {
+      "name": "birthDate",
       "dataType": "Date",
       "caption": "Birthday",
       "description": "Birthday of the person",
-      "allowNull": true,
-      "name": "birthDate"
+      "allowNull": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Description of the person",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "sexType",
       "dataType": "Enum",
       "enumGroup": "CDN_SEXTYPE",
       "caption": "Sex",
       "description": "Sex of the person",
       "allowNull": false,
-      "defaultValue": "?",
-      "name": "sexType"
+      "defaultValue": "?"
     },
     {
+      "name": "suffix",
       "dataType": "String",
       "size": 30,
       "caption": "Sufix",
       "description": "Sufix of the person",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "suffix"
+      "isMultiLang": true
     },
     {
+      "name": "shortFIO",
       "dataType": "String",
       "size": 256,
       "caption": "Short name",
       "description": "Example: Antonov I.P.",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "shortFIO"
+      "isMultiLang": true
     },
     {
+      "name": "fullFIO",
       "dataType": "String",
       "size": 512,
       "caption": "Full name",
       "description": "Example: Antonov Ivan Petrovich",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "fullFIO"
+      "isMultiLang": true
     },
     {
+      "name": "apply",
       "dataType": "String",
       "size": 100,
       "caption": "Apply",
       "description": "Apply to the person",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "apply"
+      "isMultiLang": true
     },
     {
+      "name": "photo",
       "dataType": "Document",
       "caption": "Photo",
       "description": "Person's photo",
       "allowNull": true,
-      "documentMIME": "image/jpeg",
-      "name": "photo"
+      "documentMIME": "image/jpeg"
     },
     {
+      "name": "lastNameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Last name in genitive",
       "description": "Person's last name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "lastNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "lastNameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Last name in dative",
       "description": "Person's last name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "lastNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "firstNameGen",
       "dataType": "String",
       "size": 128,
       "caption": "First name in genitive",
       "description": "Person's first name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "firstNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "firstNameDat",
       "dataType": "String",
       "size": 128,
       "caption": "First name in dative",
       "description": "Person's first name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "firstNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "middleNameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Middle name in genitive",
       "description": "Person's middle name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "middleNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "middleNameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Middle name in dative",
       "description": "Person's middle name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "middleNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "shortFIOGen",
       "dataType": "String",
       "size": 256,
       "caption": "Short name in genitive",
       "description": "Person's short name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "shortFIOGen"
+      "isMultiLang": true
     },
     {
+      "name": "shortFIODat",
       "dataType": "String",
       "size": 256,
       "caption": "Short name in dative",
       "description": "Person's short name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "shortFIODat"
+      "isMultiLang": true
     },
     {
+      "name": "fullFIOGen",
       "dataType": "String",
       "size": 512,
       "caption": "Full name in genitive",
       "description": "Person's full name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullFIOGen"
+      "isMultiLang": true
     },
     {
+      "name": "fullFIODat",
       "dataType": "String",
       "size": 512,
       "caption": "Full name in dative",
       "description": "Person's full name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullFIODat"
+      "isMultiLang": true
     },
     {
+      "name": "applyGen",
       "dataType": "String",
       "size": 100,
       "caption": "Apply in genitive",
       "description": "Apply to the person in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "applyGen"
+      "isMultiLang": true
     },
     {
+      "name": "applyDat",
       "dataType": "String",
       "size": 100,
       "caption": "Apply in dative",
       "description": "Apply to the person in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "applyDat"
+      "isMultiLang": true
     },
     {
+      "name": "regionID",
       "dataType": "Entity",
       "associatedEntity": "cdn_region",
       "caption": "Region",
       "description": "Person's region",
-      "allowNull": true,
-      "name": "regionID"
+      "allowNull": true
     },
     {
+      "name": "socialstatusID",
       "dataType": "Entity",
       "associatedEntity": "cdn_personsocialstatus",
       "caption": "Social status",
       "description": "Social status position",
-      "allowNull": true,
-      "name": "socialstatusID"
+      "allowNull": true
     },
     {
+      "name": "categoryID",
       "dataType": "Entity",
       "associatedEntity": "cdn_personcategory",
       "caption": "Category",
       "description": "Category position",
-      "allowNull": true,
-      "name": "categoryID"
+      "allowNull": true
+    },
+    {
+      "name": "nationality",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_country",
+      "caption": "Nationality",
+      "description": "Nationality",
+      "allowNull": true
+    },
+    {
+      "name": "resident",
+      "dataType": "Boolean",
+      "caption": "Resident?",
+      "description": "Is person a resident of our country",
+      "defaultValue": "0"
     }
   ],
   "mixins": {

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.0]
+### Added
+ - new attribute of cdn_person: resident: boolean; nationality -> cdn_country
+ 
 ## [5.0.73]
 ### Changed
  - restriction for CCEO (OKPO) length (8 or 10 chars) is removed from `cdn_organization`

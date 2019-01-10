@@ -113,6 +113,14 @@
         "categoryID": {
             "caption": "Kategori",
             "description": "posisi Kategori"
+        },
+        "nationality": {
+           "caption": "Kebangsaan",
+           "description": "Kebangsaan"
+        },
+        "resident": {
+           "caption": "Penduduk?",
+           "description": "Adalah orang penduduk negara kita"
         }
     }
 }

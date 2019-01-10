@@ -113,6 +113,16 @@
         {
             "name": "description",
             "caption": "აღწერა"
+        },
+        {
+          "name": "nationality",
+          "caption": "მოქალაქეობა",
+          "description": "მოქალაქეობა"
+        },
+        {
+          "name": "resident",
+          "caption": "მცხოვრები?",
+          "description": "არის ადამიანი ჩვენი ქვეყნის რეზიდენტი"
         }
     ]
 }
