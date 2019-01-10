@@ -31,6 +31,7 @@ html, body {
   color: #f56c6c;
   margin-left: 4px;
 }
+
 /* Hide required star on the left side of label */
 .el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label:before {
   content: '' !important;
@@ -40,41 +41,38 @@ html, body {
 .auto-form__header {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(66,73,86,.12);
+  border-bottom: 1px solid rgba(66, 73, 86, .12);
   margin-bottom: 10px;
   padding: 0 16px;
 }
+
 .auto-form__header__button {
   min-width: 24px;
-  font-size: 1.2em;
-  cursor: pointer;
-  margin: 0 12px;
-  color: #636d7c;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 1.2em !important;
+  margin: 0 12px !important;
 }
-.auto-form__header__button__divider{
+
+.auto-form__header__button__divider {
   width: 1px;
   margin: 5px 0;
   background-color: #424956;
   opacity: 0.2;
 }
-.auto-form__header__date__container{
+
+.auto-form__header__date__container {
   margin: 0 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.auto-form__header__date{
+
+.auto-form__header__date {
   color: #323b45;
   opacity: 0.54;
   line-height: 1.8;
   font-size: 10px;
 }
+
 .auto-form__main {
   display: flex;
   height: 90%;
