@@ -26,7 +26,11 @@ Vue.use(ElementUI, {
 
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = async function () {
-    const autoFormComponent = require('./components/AutoFormComponent.vue')
+    let autoFormComponent = require('./components/AutoFormComponent.vue')
+    window.BOUNDLED_BY_WEBPACK = false
+    if (BOUNDLED_BY_WEBPACK) {
+      autoFormComponent = autoFormComponent.default
+    }
     let entitySchema = $App.domainInfo.get(this.entity)
     let tabTitle = entitySchema.caption
     let pageColumns = Object.values(entitySchema.attributes).filter((at) => {

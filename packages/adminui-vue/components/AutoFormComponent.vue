@@ -130,13 +130,23 @@
 </template>
 
 <script>
-  const ubSelectEnum = require('./controls/UbSelectEnum.vue')
-  const ubSelectEntity = require('./controls/UbSelectEntity.vue')
-  const ubSelectMany = require('./controls/UbSelectMany.vue')
-  const ubInput = require('./controls/UbInput.vue')
-  const ubUploadDocument = require('./controls/UbUploadDocument.vue')
-  const ubCodeMirror = require('./controls/UbCodeMirror.vue')
+  let ubSelectEnum = require('./controls/UbSelectEnum.vue')
+  let ubSelectEntity = require('./controls/UbSelectEntity.vue')
+  let ubSelectMany = require('./controls/UbSelectMany.vue')
+  let ubInput = require('./controls/UbInput.vue')
+  let ubUploadDocument = require('./controls/UbUploadDocument.vue')
+  let ubCodeMirror = require('./controls/UbCodeMirror.vue')
   const ubDomain = require('@unitybase/cs-shared').UBDomain
+
+  window.BOUNDLED_BY_WEBPACK = false
+  if (BOUNDLED_BY_WEBPACK) {
+    ubSelectEnum = ubSelectEnum.default
+    ubSelectEntity = ubSelectEntity.default
+    ubSelectMany = ubSelectMany.default
+    ubInput = ubInput.default
+    ubUploadDocument = ubUploadDocument.default
+    ubCodeMirror = ubCodeMirror.default
+  }
 
   module.exports = {
     name: 'AutoForm',
