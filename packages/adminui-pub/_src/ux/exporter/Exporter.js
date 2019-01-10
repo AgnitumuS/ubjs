@@ -1,3 +1,4 @@
+/* global Ext, UB */
 /**
  * @class Ext.ux.Exporter
  * @author Ed Spencer (http://edspencer.net), with modifications from iwiznia.
@@ -106,7 +107,7 @@ Ext.define('Ext.ux.exporter.Exporter', {
         var len
         if (store.sorters && (len = store.sorters.length) > 0) {
           request.orderList = {}
-          for (i = 0; i < len; ++i) {
+          for (let i = 0; i < len; ++i) {
             sorterItem = store.sorters.get(i)
             request.orderList['x' + start++] = {
               expression: sorterItem.property,

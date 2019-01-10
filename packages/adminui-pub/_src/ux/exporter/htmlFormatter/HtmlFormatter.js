@@ -1,3 +1,4 @@
+/* global Ext, UBDomain*/
 /**
  * @class Ext.ux.Exporter.HTMLFormatter
  * @extends Ext.ux.Exporter.Formatter
@@ -136,14 +137,16 @@ Ext.define('Ext.ux.exporter.htmlFormatter.HtmlFormatter', {
    * @returns {String} The cells of the record
    */
   getCells: function (record, index, store) {
-    var me = this, cells = []
+    let me = this
+    let cells = []
     Ext.each(this.columns, function (col, iCol) {
-      var value, name = col.name || col.dataIndex
+      let value
+      let name = col.name || col.dataIndex
       if (!name) {
         return true
       }
       if (store.isRawData) {
-        value = record[ store.dataFieldsMap[col.dataIndex]]
+        value = record[store.dataFieldsMap[col.dataIndex]]
         switch (me.eAttributes[col.dataIndex].dataType) {
           case UBDomain.ubDataTypes.Date:
           case UBDomain.ubDataTypes.DateTime: value = value ? new Date(value) : value; break
@@ -154,15 +157,13 @@ Ext.define('Ext.ux.exporter.htmlFormatter.HtmlFormatter', {
       } else {
         value = record.get(name)
       }
-      if (_.isFunction(col.renderer)) {
-        value = col.renderer(value) // , {}, record, index, iCol, record.store
+      if (typeof col.renderer === 'function') {
+        value = col.renderer(value, null, record, index, iCol, store)
       }
 
       value = '<td class="TD">' + (value || '') + '</td>'
       cells.push(value)
     })
-
     return cells.join(this.separator)
   }
-
 })
