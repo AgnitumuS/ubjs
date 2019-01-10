@@ -1,15 +1,15 @@
 <template>
   <div id="auto-form-app" v-if="fieldsToShow" v-loading="loading" style="height: 100%">
     <div style="height:100%">
-      <div style="display: flex;justify-content: space-between;border-bottom: 1px solid rgba(66,73,86,.12);margin-bottom: 10px;padding: 0 16px">
+      <div class="auto-form__header">
         <div style="display: flex">
-          <el-button :disabled="!saveEnabled" type="text" size="large" class="form-header__button" @click="saveAndClose">
+          <el-button :disabled="!saveEnabled" type="text" size="large" class="auto-form__header__button" @click="saveAndClose">
             <i class="fa fa-share-square-o"></i>
           </el-button>
-          <el-button :disabled="!saveEnabled" type="text" size="large" class="form-header__button" @click="saveAndReload">
+          <el-button :disabled="!saveEnabled" type="text" size="large" class="auto-form__header__button" @click="saveAndReload">
             <i class="fa fa-save"></i>
           </el-button>
-          <el-button :disabled="!canDelete" type="text" size="large" class="form-header__button" @click="remove">
+          <el-button :disabled="!canDelete" type="text" size="large" class="auto-form__header__button" @click="remove">
             <i class="fa fa-trash-o"></i>
           </el-button>
         </div>
@@ -27,22 +27,22 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-button type="text" slot="reference" size="large" class="form-header__button">
+            <el-button type="text" slot="reference" size="large" class="auto-form__header__button">
               <i class="fa fa-cog" aria-hidden="true"></i>
             </el-button>
           </el-popover>
-          <div class="form-header__button__divider" v-if="isSimpleAudit"></div>
-          <div class="form-header__date__container" v-if="isSimpleAudit">
-            <div class="form-header__date">
+          <div class="auto-form__header__button__divider" v-if="isSimpleAudit"></div>
+          <div class="auto-form__header__date__container" v-if="isSimpleAudit">
+            <div class="auto-form__header__date">
               <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate.toLocaleString() }}
             </div>
-            <div class="form-header__date">
+            <div class="auto-form__header__date">
               <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate.toLocaleString() }}
             </div>
           </div>
         </div>
       </div>
-      <div style="display: flex;height: 90%;padding: 0 20px">
+      <div class="auto-form__main">
         <el-scrollbar style="width:100%">
           <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
             <el-form-item
@@ -474,38 +474,3 @@
     }
   }
 </script>
-
-<style>
-  .form-header__button {
-    min-width: 24px;
-    font-size: 1.2em;
-    cursor: pointer;
-    margin: 0 12px;
-    color: #636d7c;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .form-header__button__divider{
-    width: 1px;
-    margin: 5px 0;
-    background-color: #424956;
-    opacity: 0.2;
-  }
-  .form-header__date__container{
-    margin: 0 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .form-header__date{
-    color: #323b45;
-    opacity: 0.54;
-    line-height: 1.8;
-    font-size: 10px;
-  }
-
-</style>
