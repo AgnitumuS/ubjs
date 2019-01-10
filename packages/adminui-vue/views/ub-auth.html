@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; object-src 'none'; base-uri 'none'; style-src 'self' 'unsafe-inline' data:; font-src 'self' data:; frame-src 'none'; img-src 'self' https://unitybase.info data:;">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; object-src 'none'; base-uri 'none'; style-src 'self' 'unsafe-inline' data:; font-src 'self' data:; frame-src 'none'; img-src 'self' https://unitybase.info data:;">
   <!-- import CSS -->
   <!-- normalize browser CSS i.e. button should have the same font-family as body -->
   <link rel="stylesheet" href="/clientRequire/font-awesome/css/font-awesome.min.css"/>
@@ -20,12 +21,15 @@
     text-align: center;
     align-items: center;
   }
+
   #auth-page input[type="file"] {
-      display: none;
+    display: none;
   }
+
   .auth-page--left {
-      text-align: left;
+    text-align: left;
   }
+
   .auth-page__header {
     padding: 2rem 0 0 0;
     font-size: 1.5rem;
@@ -49,6 +53,7 @@
     margin: 2rem auto 1rem;
     height: 3rem;
   }
+
   .auth-page__logo {
     max-height: 3rem;
     max-width: fit-content;
@@ -62,40 +67,43 @@
 
 
 <template id="pwdChangeTpl">
-    <el-form :model="changePwd" size="mini" ref="changePwdForm"
-             :rules="changePwdRules" @submit.native.prevent label-width="45%">
-        <div v-if="changePwd.changedSuccessfully">
-            <p v-html="$ut('passwordChangedSuccessfully')"></p>
-            <el-button type="primary" plain style="min-width: 8rem" @click="doLogout">
-                {{ $ut('logout') }}
-            </el-button>
-        </div>
-        <div v-else>
-            <p v-html="$ut('Your password is expired. Please change password')"></p>
-            <el-tooltip placement="bottom" effect="light">
-                <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-                <div slot="content" v-html="$ut('passwordRecommendation')"></div>
-            </el-tooltip>
-            <el-form-item class="auth-page--left" :label="$ut('User')">
-                <span>{{changePwd.user}}</span>
-            </el-form-item>
+  <el-form :model="changePwd" size="mini" ref="changePwdForm"
+           :rules="changePwdRules" @submit.native.prevent label-width="45%">
+    <div v-if="changePwd.changedSuccessfully">
+      <p v-html="$ut('passwordChangedSuccessfully')"></p>
+      <el-button type="primary" plain style="min-width: 8rem" @click="doLogout">
+        {{ $ut('logout') }}
+      </el-button>
+    </div>
+    <div v-else>
+      <p v-html="$ut('Your password is expired. Please change password')"></p>
+      <el-tooltip placement="bottom" effect="light">
+        <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+        <div slot="content" v-html="$ut('passwordRecommendation')"></div>
+      </el-tooltip>
+      <el-form-item class="auth-page--left" :label="$ut('User')">
+        <span>{{changePwd.user}}</span>
+      </el-form-item>
 
-            <el-form-item :label="$ut('OldPassword')" prop="oldPwd">
-                <el-input :placeholder="$ut('EnterOldPassword')" v-model="changePwd.oldPwd" @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
-                </el-input>
-            </el-form-item>
-            <el-form-item :label="$ut('NewPassword')" prop="newPwd">
-                <el-input :placeholder="$ut('EnterNewPassword')" v-model="changePwd.newPwd" @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
-                </el-input>
-            </el-form-item>
-            <el-form-item :label="$ut('RetypePassword')" prop="newPwd2">
-                <el-input :placeholder="$ut('RetypePassword')" v-model="changePwd.newPwd2" @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
-                </el-input>
-            </el-form-item>
-            <el-button type="primary" plain style="min-width: 8rem" @click="doChangePassword">{{ $ut('Change') }}</el-button>
-            <el-button plain style="min-width: 8rem" @click="doLogout">{{ $ut('logout') }}</el-button>
-        </div>
-    </el-form>
+      <el-form-item :label="$ut('OldPassword')" prop="oldPwd">
+        <el-input :placeholder="$ut('EnterOldPassword')" v-model="changePwd.oldPwd"
+                  @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
+        </el-input>
+      </el-form-item>
+      <el-form-item :label="$ut('NewPassword')" prop="newPwd">
+        <el-input :placeholder="$ut('EnterNewPassword')" v-model="changePwd.newPwd"
+                  @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
+        </el-input>
+      </el-form-item>
+      <el-form-item :label="$ut('RetypePassword')" prop="newPwd2">
+        <el-input :placeholder="$ut('RetypePassword')" v-model="changePwd.newPwd2"
+                  @keyup.enter.native="doChangePassword" type="password" autocomplete="off">
+        </el-input>
+      </el-form-item>
+      <el-button type="primary" plain style="min-width: 8rem" @click="doChangePassword">{{ $ut('Change') }}</el-button>
+      <el-button plain style="min-width: 8rem" @click="doLogout">{{ $ut('logout') }}</el-button>
+    </div>
+  </el-form>
 </template>
 
 <script>
@@ -119,16 +127,22 @@
         }
       }
       return {
-        changePwd: {user: this.$UB.connection.userData('login'), oldPwd: this.oldPwd, newPwd: '', newPwd2: '', changedSuccessfully: false},
-        changePwdRules : {
+        changePwd: {
+          user: this.$UB.connection.userData('login'),
+          oldPwd: this.oldPwd,
+          newPwd: '',
+          newPwd2: '',
+          changedSuccessfully: false
+        },
+        changePwdRules: {
           oldPwd: [
-            { required: true, message: this.$ut('EnterOldPassword'), trigger: 'blur' }
+            {required: true, message: this.$ut('EnterOldPassword'), trigger: 'blur'}
           ],
           newPwd: [
-            { required: true, message: this.$ut('EnterNewPassword'), trigger: 'blur' }
+            {required: true, message: this.$ut('EnterNewPassword'), trigger: 'blur'}
           ],
           newPwd2: [
-            { validator: validatePass2, trigger: 'blur' }
+            {validator: validatePass2, trigger: 'blur'}
           ]
         }
       }
@@ -164,82 +178,89 @@
 <template id="ULoginPageTpl">
   <div id="auth-page" v-loading.fullscreen.lock="loading">
     <div v-if="!loading">
-    <el-row>
-      <el-col :span="24" class="auth-page__header">{{ $ut('Authentication') }}</el-col>
-    </el-row>
-    <div class="auth-page__container">
-      <div class="auth-page__logo-container">
-        <img :src="topLogoURL" class="auth-page__logo">
-      </div>
-      <hr>
-      <div v-if="changePwdActive">
+      <el-row>
+        <el-col :span="24" class="auth-page__header">{{ $ut('Authentication') }}</el-col>
+      </el-row>
+      <div class="auth-page__container">
+        <div class="auth-page__logo-container">
+          <img :src="topLogoURL" class="auth-page__logo">
+        </div>
+        <hr>
+        <div v-if="changePwdActive">
           <ub-change-password :old-pwd="authData.pwd"></ub-change-password>
-      </div>
-      <div v-else>
-      <el-form :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
-          <div v-if="hasCERT2">
+        </div>
+        <div v-else>
+          <el-form :model="authData" size="medium" @submit.native.prevent ref="authForm" :rules="authRules">
+            <div v-if="hasCERT2">
               <p class="auth-page__cert-info" v-html="$ut('useCertificateInfoSimple')"></p>
               <el-form-item>
-                  <el-button type="secondary" plain style="width: 100%" @click.prevent="fileSelectClick">
-                      {{ keyFile ? $ut('Selected key file') + ' ' + keyFile.name : $ut('Select private key file') }}
-                  </el-button>
-                  <input ref="keyFileInput" type="file" accept=".dat,.pfx,.cnt,.pk8,Key-6.dat,.jks" @change="keyFileChange"/>
+                <el-button type="secondary" plain style="width: 100%" @click.prevent="fileSelectClick">
+                  {{ keyFile ? $ut('Selected key file') + ' ' + keyFile.name : $ut('Select private key file') }}
+                </el-button>
+                <input ref="keyFileInput" type="file" accept=".dat,.pfx,.cnt,.pk8,Key-6.dat,.jks"
+                       @change="keyFileChange"/>
               </el-form-item>
               <el-form-item>
-                  <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doCert2Login" type="password" autocomplete="off">
-                      <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
-                  </el-input>
+                <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doCert2Login"
+                          type="password" autocomplete="off">
+                  <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
+                </el-input>
               </el-form-item>
               <el-form-item>
-                  <el-button type="primary" plain style="min-width: 8rem" @click="doCert2Login">{{ $ut('Enter') }}</el-button>
+                <el-button type="primary" plain style="min-width: 8rem" @click="doCert2Login">{{ $ut('Enter') }}
+                </el-button>
               </el-form-item>
-          </div>
+            </div>
 
-          <div v-if="hasNegotiate">
+            <div v-if="hasNegotiate">
               <el-tooltip :content="$ut('KerberosTip')" placement="bottom" effect="light">
-                  <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+                <i class="auth-page__tooltip fa fa-question-circle-o"></i>
               </el-tooltip>
               <p v-html="$ut('KerberosHeader')"></p>
               <el-form-item>
-                  <el-button type="primary" style="min-width: 8rem" @click="doNegotiateLogin">{{ $ut('UBAuthContinue') }}
-                  </el-button>
-                  <div>
-                      <el-switch v-model="silenceKerberosLogin" :active-text="$ut('KerberosRemember')"></el-switch>
-                  </div>
+                <el-button type="primary" style="min-width: 8rem" @click="doNegotiateLogin">{{ $ut('UBAuthContinue') }}
+                </el-button>
+                <div>
+                  <el-switch v-model="silenceKerberosLogin" :active-text="$ut('KerberosRemember')"></el-switch>
+                </div>
               </el-form-item>
-          </div>
+            </div>
 
-          <div v-if="hasUB">
+            <div v-if="hasUB">
               <div v-if="hasCERT2 || hasNegotiate">
-                  <hr>
-                  <el-switch v-model="ubAuthVisible" :active-text="$ut('AdditionalLoginOptions')"></el-switch>
+                <hr>
+                <el-switch v-model="ubAuthVisible" :active-text="$ut('AdditionalLoginOptions')"></el-switch>
               </div>
               <div v-if="ubAuthVisible">
-                  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
-                      <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-                  </el-tooltip>
-                  <p v-html="$ut('UBAuthHeader', appName)"></p>
-                  <el-form-item></el-form-item>
-                  <el-form-item prop="user">
-                      <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user">
-                          <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
-                      </el-input>
-                  </el-form-item>
-                  <el-form-item prop="pwd">
-                      <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin" type="password" autocomplete="off">
-                          <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
-                      </el-input>
-                  </el-form-item>
-                  <el-form-item>
-                      <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}</el-button>
-                  </el-form-item>
+                <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+                  <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+                </el-tooltip>
+                <p v-html="$ut('UBAuthHeader', appName)"></p>
+                <el-form-item></el-form-item>
+                <el-form-item prop="user">
+                  <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user">
+                    <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item prop="pwd">
+                  <el-input :placeholder="$ut('Password')" v-model="authData.pwd" @keyup.enter.native="doUBLogin"
+                            type="password" autocomplete="off">
+                    <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
+                  </el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}
+                  </el-button>
+                </el-form-item>
+                <div v-if="!hasNegotiate">
                   <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
                   <div><a href="#">{{ $ut('UBAuthRegistration') }}</a></div>
+                </div>
               </div>
-          </div>
-      </el-form>
+            </div>
+          </el-form>
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -263,12 +284,12 @@
         keyFile: null,
         injectionPromise: Promise.resolve(true),
         changePwdActive: false,
-        authRules : {
+        authRules: {
           user: [
-            { required: true, message: this.$ut('blankText'), trigger: 'blur' }
+            {required: true, message: this.$ut('blankText'), trigger: 'blur'}
           ],
           pwd: [
-            { required: true, message: this.$ut('EnterOldPassword'), trigger: 'blur' }
+            {required: true, message: this.$ut('EnterOldPassword'), trigger: 'blur'}
           ]
         }
       }
@@ -281,21 +302,21 @@
           window.localStorage.removeItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT)
         }
       },
-      hasNegotiate() {
+      hasNegotiate () {
         this.ubAuthVisible = !(this.hasNegotiate || this.hasCERT2)
       },
-      hasCERT2() {
+      hasCERT2 () {
         this.ubAuthVisible = !(this.hasNegotiate || this.hasCERT2)
       }
     },
     computed: {
-      hasNegotiate() {
+      hasNegotiate () {
         return !this.hasCERT2 && this.authMethods && (this.authMethods.indexOf('Negotiate') !== -1)
       },
-      hasUB() {
+      hasUB () {
         return !this.hasCERT2 && this.authMethods && (this.authMethods.indexOf('UB') !== -1)
       },
-      hasCERT2() {
+      hasCERT2 () {
         return this.authMethods && (this.authMethods.indexOf('CERT2') !== -1)
       }
     },
@@ -329,7 +350,7 @@
         if (!me.keyFile) {
           UB.showErrorWindow('Select private key file')
         } else {
-          this.injectionPromise.then(function(){
+          this.injectionPromise.then(function () {
             window.deferred.resolve({
               authSchema: 'CERT2',
               keyFile: me.keyFile,
@@ -342,7 +363,8 @@
   })
   vm.$mount('#app')
   window.deferred = {}
-  function errorReporter({errMsg, errCode, entityCode, detail}) {
+
+  function errorReporter ({errMsg, errCode, entityCode, detail}) {
     if (detail) console.error(detail)
     Vue.prototype.$message({
       showClose: true,
@@ -351,6 +373,7 @@
       type: 'error'
     })
   }
+
   UB.setErrorReporter(errorReporter)
   UB.connect({
     host: window.location.origin,
@@ -407,6 +430,7 @@
       })
       return vars
     }
+
     var returnUrl = getUrlVars()['returnUrl']
     window.location.href = decodeURIComponent(returnUrl)
   })
