@@ -1,26 +1,28 @@
 <template>
-    <div>
-        <el-input v-model="currentValue" @change="$emit('input', currentValue)">
-            <i v-if="isMultiLang"
-               class="fa fa-globe"
-               slot="suffix"
-               @click="initLocalizableFields"></i>
-        </el-input>
-        <el-dialog width="30%" :visible.sync="dialogFormVisible">
-            <el-form v-loading="loading">
-                <el-form-item style="font-weight:bold" :label="localCaption" label-width="100px">
-                    <el-input v-model="currentValue" @change="$emit('input', currentValue)"></el-input>
-                </el-form-item>
-                <el-form-item v-for="item in Object.values(localizableFields)" :key="item.fieldName"
-                              :label="item.caption" label-width="100px">
-                    <input class="el-input__inner" v-model="item.value" />
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
+  <div>
+    <el-input v-model="currentValue" @change="$emit('input', currentValue)">
+            <span slot="suffix"
+                  style="line-height: 32px">
+                <i v-if="isMultiLang"
+                   class="fa fa-globe"
+                   @click="initLocalizableFields"></i>
+            </span>
+    </el-input>
+    <el-dialog width="30%" :visible.sync="dialogFormVisible">
+      <el-form v-loading="loading">
+        <el-form-item style="font-weight:bold" :label="localCaption" label-width="100px">
+          <el-input v-model="currentValue" @change="$emit('input', currentValue)"></el-input>
+        </el-form-item>
+        <el-form-item v-for="item in Object.values(localizableFields)" :key="item.fieldName"
+                      :label="item.caption" label-width="100px">
+          <input class="el-input__inner" v-model="item.value"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="saveLocalization">Save</el-button>
             </span>
-        </el-dialog>
-    </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
