@@ -91,6 +91,7 @@
     },
     data () {
       return {
+        entitySchema: $App.domainInfo.get(this.entityName, true),
         initialItem: null,
         items: [],
         resultData: [],
@@ -134,7 +135,11 @@
 
       if (this.value) {
         this.loading = true
-        UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).where(this.primaryColumn, 'in', this.valueArray).select().then((data) => {
+        let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
+        if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
+          promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
+        }
+        promise.where(this.primaryColumn, 'in', this.valueArray).select().then((data) => {
           this.initialItem = data
           this.resultData = this.valueArray
         }).finally(() => {
