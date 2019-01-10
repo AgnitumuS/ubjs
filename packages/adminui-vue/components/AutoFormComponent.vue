@@ -44,7 +44,7 @@
       </div>
       <div class="auto-form__main">
         <el-scrollbar style="width:100%">
-          <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
+          <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px" style="margin-top: 10px">
             <el-form-item
                 v-for="fieldName in fieldsToShow"
                 :prop="fieldName"
