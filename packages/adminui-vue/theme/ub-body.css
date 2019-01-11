@@ -77,3 +77,15 @@ html, body {
   height: 90%;
   padding: 0 20px;
 }
+
+.ub-select-entity__menu-button {
+  right: 5px;
+  cursor: pointer;
+  top: 0;
+  transition: all .3s;
+  position: absolute;
+  -webkit-transition: all .3s;
+  height: 100%;
+  color: #c0c4cc;
+  text-align: center;
+}

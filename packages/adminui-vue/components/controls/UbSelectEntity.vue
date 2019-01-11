@@ -9,24 +9,6 @@
                  v-on:input.native="onInput"
                  style="width: 100%"
                  :class="`ub-select-entity${this._uid}`">
-        <div slot="suffix">
-          <el-popover
-              v-if="rowActions"
-              placement="bottom-end"
-              v-model="popoverVisible">
-            <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
-              <el-table-column property="caption" width="250">
-                <template slot-scope="scope">
-                  <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
-                    <i :class="scope.row.icon"></i>
-                    <span style="margin-left: 10px">{{ scope.row.caption }}</span>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
-            <i @click="showPopover" slot="reference" class="el-select__caret el-input__icon el-icon-menu"></i>
-          </el-popover>
-        </div>
         <div slot="prefix" v-if="rowIsDeleted">
           <i style="margin-left: 5px" class="fa fa-ban"></i>
         </div>
@@ -35,12 +17,30 @@
                      :label="item[displayValue]" :value="item[primaryColumn]"
                      :disabled="item.removed">
           </el-option>
-          <el-row type="flex" justify="end" style="padding: 0px 20px" v-if="hasData">
+          <el-row type="flex" justify="end" style="padding: 0 20px" v-if="hasData">
             <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
           </el-row>
         </template>
       </el-select>
     </el-tooltip>
+    <div class="ub-select-entity__menu-button">
+      <el-popover
+          v-if="rowActions"
+          placement="bottom-end"
+          v-model="popoverVisible">
+        <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
+          <el-table-column property="caption" width="250">
+            <template slot-scope="scope">
+              <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
+                <i :class="scope.row.icon"></i>
+                <span style="margin-left: 10px">{{ scope.row.caption }}</span>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <i @click="showPopover" style="min-width: 25px" slot="reference" class="el-icon-menu"></i>
+      </el-popover>
+    </div>
   </div>
 </template>
 
