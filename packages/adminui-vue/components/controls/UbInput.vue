@@ -11,13 +11,13 @@
         <el-form-item v-for="item in Object.values(localizableFields)" :key="item.fieldName"
                       :label="item.caption" label-width="100px">
           <div class="el-input el-input--small">
-            <input v-model="item.value" class="el-input__inner" />
+            <input v-model="item.value" class="el-input__inner"/>
           </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="saveLocalization">Save</el-button>
-            </span>
+        <el-button type="primary" @click="saveLocalization">Save</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
