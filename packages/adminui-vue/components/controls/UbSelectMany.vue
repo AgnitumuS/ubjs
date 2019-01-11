@@ -1,21 +1,22 @@
 <template>
-    <el-select ref="selector" v-model="resultData"
-               reserve-keyword clearable filterable multiple
-               remote :remote-method="loadNextByInput"
-               v-loading="loading" :disabled="loading"
-               @change="onChange"
-               v-on:focus="onFocus"
-               style="width: 100%"
-               :class="`ub-select-many${this._uid}`">
-        <template slot-scope="scope">
-            <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
-                       :label="item[displayValue]" :value="item[primaryColumn]">
-            </el-option>
-            <el-row type="flex" justify="end" style="padding: 0 20px" v-if="hasData">
-                <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
-            </el-row>
-        </template>
-    </el-select>
+  <el-select ref="selector" v-model="resultData"
+             reserve-keyword clearable filterable multiple
+             remote :remote-method="loadNextByInput"
+             v-loading="loading" :disabled="loading"
+             @change="onChange"
+             v-on:focus="onFocus"
+             style="width: 100%"
+             :class="`ub-select-many${this._uid}`">
+    <template slot-scope="scope">
+      <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
+                 :label="item[displayValue]" :value="item[primaryColumn]"
+                 :disabled="item.removed">
+      </el-option>
+      <el-row type="flex" justify="end" style="padding: 0 20px" v-if="hasData">
+        <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
+      </el-row>
+    </template>
+  </el-select>
 </template>
 
 <script>
@@ -123,7 +124,7 @@
         return this.items
       }
     },
-    destroyed() {
+    destroyed () {
       $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
     mounted () {
@@ -141,6 +142,9 @@
         }
         promise.where(this.primaryColumn, 'in', this.valueArray).select().then((data) => {
           this.initialItem = data
+          this.initialItem.forEach((item) => {
+            item.removed = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
+          })
           this.resultData = this.valueArray
         }).finally(() => {
           this.loading = false
