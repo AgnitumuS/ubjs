@@ -1,10 +1,7 @@
 <template>
   <div>
     <el-input v-model="currentValue" @change="$emit('input', currentValue)">
-      <span slot="append" v-if="isMultiLang">
-          <i class="fa fa-globe"
-             @click="initLocalizableFields"></i>
-      </span>
+      <el-button slot="append" v-if="isMultiLang" @click="initLocalizableFields" class="fa fa-globe"></el-button>
     </el-input>
     <el-dialog width="30%" :visible.sync="dialogFormVisible">
       <el-form v-loading="loading">
@@ -13,7 +10,9 @@
         </el-form-item>
         <el-form-item v-for="item in Object.values(localizableFields)" :key="item.fieldName"
                       :label="item.caption" label-width="100px">
-          <input class="el-input__inner" v-model="item.value"/>
+          <div class="el-input el-input--small">
+            <input v-model="item.value" class="el-input__inner" />
+          </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
