@@ -1,12 +1,10 @@
 <template>
   <div>
     <el-input v-model="currentValue" @change="$emit('input', currentValue)">
-            <span slot="suffix"
-                  style="line-height: 32px">
-                <i v-if="isMultiLang"
-                   class="fa fa-globe"
-                   @click="initLocalizableFields"></i>
-            </span>
+      <span slot="append" v-if="isMultiLang">
+          <i class="fa fa-globe"
+             @click="initLocalizableFields"></i>
+      </span>
     </el-input>
     <el-dialog width="30%" :visible.sync="dialogFormVisible">
       <el-form v-loading="loading">
