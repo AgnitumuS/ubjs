@@ -1,0 +1,37 @@
+{
+  "name": "@unitybase/ubdev",
+  "version": "0.0.1",
+  "description": "UnityBase developer tools",
+  "main": "ubdev.js",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubdev",
+  "config": {
+    "ubmodel": {
+      "name": "UBDEV"
+    }
+  },
+  "scripts": {
+    "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "lint": "eslint source test",
+    "test": "npm run test"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "https://registry.unitybase.info"
+  },
+  "dependencies": {
+    "@unitybase/adminui-vue": "^1.0.31",
+    "@unitybase/codemirror-full": "^1.2.18",
+    "@unitybase/cs-shared": "^5.0.13",
+    "@unitybase/ub-pub": "^5.2.21",
+    "@unitybase/ubm": "^5.0.69"
+  },
+  "keywords": [
+    "UnityBase",
+    "Development"
+  ],
+  "author": "UnityBase team (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
+  "devDependencies": {
+    "cross-env": "^5.1.1"
+  }
+}
