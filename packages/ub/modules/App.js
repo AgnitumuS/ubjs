@@ -367,7 +367,7 @@ App.globalCacheGet = function (key) {
 /**
  * Put value to global cache.
  * @param {String} key  Key to put into
- * @param {String} value Value To put into this key
+ * @param {String|null} value Value to put into this key. If === null then key will be remover from cache
  */
 App.globalCachePut = function (key, value) {
   _App.globalCachePut(key, value)
@@ -442,12 +442,15 @@ App.dbStartTransaction = function (connectionName) {
 }
 
 /**
- * Try retrieve  or create new session from request header
- * Return true if success
+ * Try retrieve  or create new session from request headers
+ * Return true if success, false if more auth handshakes is required
+ * In case of invalid credential throw security exception
+ * @param {boolean} noHTTPBodyInResp If true do not write a uData to the HTTP response
+ * @param {boolean} doSetOutCookie If true set a out authorization cookie on success response (Negotiate only)
  * @return {Boolean}
  */
-App.authFromRequest = function () {
-  return _App.authFromRequest()
+App.authFromRequest = function (noHTTPBodyInResp = false, doSetOutCookie = false) {
+  return _App.authFromRequest(noHTTPBodyInResp, doSetOutCookie)
 }
 /**
  * Logout (kill stored Sessions) all users with the same as

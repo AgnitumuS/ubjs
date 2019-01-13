@@ -150,10 +150,10 @@
   provider.properties = {
     'DAV:': {
       /**
-             * <D:collection /> if dirrectory and null in other case
-             * @param item
-             * @returns {String|null}
-             */
+       * <D:collection /> if dirrectory and null in other case
+       * @param item
+       * @returns {String|null}
+       */
       resourcetype: function (item) {
         return !provider.record || provider.record.get('isFolder') ? '<D:collection />' : null
       },

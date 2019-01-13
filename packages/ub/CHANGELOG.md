@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Added
+ - extended `App.authFromRequest` - added optional Cookies for Negotiate authentication (UB server should be updated to 5.7.7+)
+ - `THTTPResponse.getBodyForDebug` function
+ - `App.globalCachePut` will accept `null` as 2nd parameter. In this case key will be removed from globalCache (UBserver@5.7.7+)  
+
 ## [5.1.1]
 ### Fixed
- - `DataStore.initialize` will correctly init store from a flatten format in case rowCount = 0 [unitybase/ubjs#31]  
+ - `DataStore.initialize` will correctly init store from a flatten format in case rowCount = 0 [unitybase/ubjs#31]
 
 ## [5.1.0]
 ### Changed
@@ -16,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  to this groups will be added to the user roles. ELS for such a roles will be also applied to user.
  **UB server must be upgraded to >= 5.7.3**
  - uData employeeShortFIO & employeeFullFIO now initialized from uba_user.firstName & uba_user.fullName.
- In case `org` model is in domain then it will override employeeShortFIO & employeeFullFIO   
+ In case `org` model is in domain then it will override employeeShortFIO & employeeFullFIO
  
 ### Added
  - `Session.uData.groupIDs` property - an array of group IDs user id assigned to
