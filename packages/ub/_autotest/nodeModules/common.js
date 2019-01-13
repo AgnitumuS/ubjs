@@ -135,8 +135,6 @@ process.on('exit', function () {
     knownGlobals.push(sendMail)
     knownGlobals.push(sendUTFMail)
     knownGlobals.push(removeCommentsFromJSON)
-    knownGlobals.push(runInThisContext)
-    knownGlobals.push(runInVariableScopeContext)
     knownGlobals.push(ncrc32)
     knownGlobals.push(nsha256)
     knownGlobals.push(nhashFile)

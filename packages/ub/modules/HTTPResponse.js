@@ -1,5 +1,5 @@
 const {resp_writeHead, resp_write, resp_writeEnd, resp_writeBinaryBase64,
-  resp_validateETag, resp_getStatus, resp_setStatus} = process.binding('http_server')
+  resp_validateETag, resp_getStatus, resp_setStatus, resp_getBodyForDebug} = process.binding('http_server')
 
 /**
  * @classdesc
@@ -75,6 +75,15 @@ class THTTPResponse {
   writeEnd (data, encoding) {
     resp_writeEnd(data, encoding)
   }
+
+  /**
+   * For DEBUG PURPOSE ONLY
+   * Retrieve a response body created by writeEnd call
+   * @return {string}
+   */
+  getBodyForDebug () {
+    return resp_getBodyForDebug()
+  }
   /**
    * ETag based HTTP response caching.
    * Must be called after writeEnd called and and statusCode is defined.
@@ -101,7 +110,7 @@ class THTTPResponse {
   }
   /**
    * Write a HTTP 404 Not Found response. Return false
-   * @param {string} reason  If specified will be written to log as error
+   * @param {string} [reason]  If specified will be written to log as error
    * @return {boolean}
    */
   notFound (reason) {
@@ -113,7 +122,7 @@ class THTTPResponse {
   }
   /**
    * Write a HTTP 501 'Not Implemented response. Return false
-   * @param {string} reason  If specified will be written to log as error
+   * @param {string} [reason]  If specified will be written to log as error
    * @return {boolean}
    */
   notImplemented (reason) {
