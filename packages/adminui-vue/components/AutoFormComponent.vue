@@ -369,6 +369,7 @@
             })
             this.$emit('input', object)
             this.oldData = { ...object }
+            this.additionalData = {}
           }
         })
       },
