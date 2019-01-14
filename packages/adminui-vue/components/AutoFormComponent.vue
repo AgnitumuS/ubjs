@@ -173,7 +173,7 @@
         return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
       },
       saveEnabled () {
-        return this.canSave && Object.keys(this.changedColumns).length > 0
+        return this.canSave && ( Object.keys(this.changedColumns).length > 0 || Object.keys(this.additionalData).length > 0 )
       },
       actions () {
         let actions = []
@@ -416,7 +416,7 @@
       },
       saveLocalization (data) {
         Object.values(data).forEach((item) => {
-          this.additionalData[item.fieldName] = item.value
+          this.$set(this.additionalData, item.fieldName, item.value)
         })
       },
       remove () {
