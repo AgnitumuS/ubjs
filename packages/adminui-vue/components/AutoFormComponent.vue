@@ -34,10 +34,10 @@
           <div class="auto-form__header__button__divider" v-if="isSimpleAudit"></div>
           <div class="auto-form__header__date__container" v-if="isSimpleAudit">
             <div class="auto-form__header__date">
-              <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate.toLocaleString() }}
+              <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate ? value.mi_createDate.toLocaleString() : "" }}
             </div>
             <div class="auto-form__header__date">
-              <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate.toLocaleString() }}
+              <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate ? value.mi_modifyDate.toLocaleString() : "" }}
             </div>
           </div>
         </div>
@@ -368,7 +368,7 @@
               object[data.resultData.fields[index]] = item
             })
             this.$emit('input', object)
-            this.oldData = object
+            this.oldData = { ...object }
           }
         })
       },
