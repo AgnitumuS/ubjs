@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ubdev",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "UnityBase developer tools",
   "main": "ubdev.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ubdev",
@@ -19,11 +19,11 @@
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/adminui-vue": "^1.0.31",
+    "@unitybase/adminui-vue": "^1.0.38",
     "@unitybase/codemirror-full": "^1.2.18",
     "@unitybase/cs-shared": "^5.0.13",
-    "@unitybase/ub-pub": "^5.2.21",
-    "@unitybase/ubm": "^5.0.69"
+    "@unitybase/ub-pub": "^5.2.27",
+    "@unitybase/ubm": "^5.1.1"
   },
   "keywords": [
     "UnityBase",

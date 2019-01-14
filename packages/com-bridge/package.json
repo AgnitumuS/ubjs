@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/com-bridge",
-  "version": "5.0.13",
+  "version": "5.0.14",
   "description": "Use a COM objects directly from UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/com-bridge",
   "scripts": {
