@@ -1,0 +1,25 @@
+{
+  "caption": "Vətəndaşlıq",
+  "description": "Vətəndaşlıq",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod",
+      "description": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ad",
+      "description": "Ad"
+    },
+    {
+      "name": "nameM",
+      "caption": "Ad(kişi)",
+      "description": "Ad(kişi)"
+    },{
+      "name": "nameF",
+      "caption": "Ad(dişi)",
+      "description": "Ad(dişi)"
+    }
+  ]
+}

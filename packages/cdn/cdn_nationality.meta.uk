@@ -1,0 +1,25 @@
+{
+  "caption": "Національність",
+  "description": "Національність",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Код національності"
+    },
+    {
+      "name": "name",
+      "caption": "Найменування",
+      "description": "Найменування національності"
+    },
+    {
+      "name": "nameM",
+      "caption": "Назва(Ч)",
+      "description": "Найменування для чоловіків"
+    },{
+      "name": "nameF",
+      "caption": "Назва(Ж)",
+      "description": "Найменування для жінок"
+    }
+  ]
+}

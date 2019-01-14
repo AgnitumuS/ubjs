@@ -256,7 +256,7 @@
     {
       "name": "nationality",
       "dataType": "Entity",
-      "associatedEntity": "cdn_country",
+      "associatedEntity": "cdn_nationality",
       "caption": "Nationality",
       "description": "Nationality",
       "allowNull": true
@@ -267,6 +267,14 @@
       "caption": "Resident?",
       "description": "Is person a resident of our country",
       "defaultValue": "0"
+    },
+    {
+      "name": "classID",
+      "dataType": "Entity",
+      "associatedEntity": "cdn_personclass",
+      "caption": "Person classification",
+      "description": "Person classification",
+      "allowNull": true
     }
   ],
   "mixins": {

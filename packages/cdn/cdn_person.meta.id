@@ -121,6 +121,10 @@
         "resident": {
            "caption": "Penduduk?",
            "description": "Adalah orang penduduk negara kita"
+        },
+        "classID": {
+            "caption": "Klasifikasi orang",
+            "description": "Klasifikasi orang"
         }
     }
 }

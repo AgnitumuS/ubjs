@@ -122,6 +122,10 @@
         "resident": {
           "caption": "Sakin?",
           "description": "İnsanın ölkəmizdəki sakini varmı?"
+        },
+        "classID": {
+          "caption": "Şəxsiyyət təsnifatı",
+          "description": "Şəxsiyyət təsnifatı"
         }
     }
 }

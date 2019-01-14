@@ -1,0 +1,51 @@
+{
+  "caption": "Nationality",
+  "description": "Nationality",
+  "connectionName": "",
+  "cacheType": "SessionEntity",
+  "descriptionAttribute": "name",
+  "documentation": "",
+  "attributes": [
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 16,
+      "caption": "Code",
+      "description": "Nationality code",
+      "allowNull": false,
+      "isUnique": true
+    },
+    {
+      "name": "name",
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name",
+      "description": "Name of nationality",
+      "allowNull": false,
+      "isMultiLang": true
+    },
+    {
+      "name": "nameM",
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name(male)",
+      "description": "Nationality name for male",
+      "allowNull": true,
+      "isMultiLang": true
+    },{
+      "name": "nameF",
+      "dataType": "String",
+      "size": 128,
+      "caption": "Name(female)",
+      "description": "Nationality name for male",
+      "allowNull": true,
+      "isMultiLang": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
+}
