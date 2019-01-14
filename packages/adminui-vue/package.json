@@ -50,7 +50,7 @@
     "systemjs": "^0.20.18",
     "systemjs-plugin-css": "^0.1.32",
     "vue": "^2.5.17",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "2.5.17"
   },
   "keywords": [
     "UnityBase",

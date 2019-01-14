@@ -368,7 +368,7 @@
               object[data.resultData.fields[index]] = item
             })
             this.$emit('input', object)
-            this.oldData = { ...object }
+            this.oldData = Object.assign({}, object)
             this.additionalData = {}
           }
         })
@@ -379,7 +379,7 @@
       save (callback) {
         this.$refs[this.$options.name].validate((valid) => {
           if (valid) {
-            let changedColumns = {...this.changedColumns, ...this.additionalData}
+            let changedColumns = Object.assign({}, this.changedColumns, this.additionalData)
             if (Object.keys(changedColumns).length > 0) {
               Object.keys(this.additionalData).forEach((locColumn) => {
                 let matches = locColumn.match(/(\w+)_\w\w\^/)
@@ -455,7 +455,7 @@
     data () {
       return {
         UBDomain: ubDomain,
-        oldData: {...this.value},
+        oldData: Object.assign({}, this.value),
         additionalData: {},
         loading: false,
         canSave: this.entitySchema.haveAccessToAnyMethods([UB.core.UBCommand.methodName.INSERT, UB.core.UBCommand.methodName.UPDATE]),
