@@ -1,6 +1,6 @@
 {
   "name": "benchmarks",
-  "version": "5.0.72",
+  "version": "5.0.73",
   "description": "Benchmarks for UnityBase for a scenarios from the [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/).",
   "main": "index.js",
   "scripts": {
