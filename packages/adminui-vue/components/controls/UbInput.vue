@@ -69,10 +69,10 @@
             }
           })
           if (fieldList.length > 0) {
-            UB.Repository(this.entityName).attrs(fieldList).selectById(this.primaryValue).then((item) => {
+            UB.Repository(this.entityName).attrs([...fieldList, 'ID']).selectById(this.primaryValue).then((item) => {
               if (item) {
                 Object.keys(item).forEach((fieldName) => {
-                  this.localizableFields[fieldName].value = item[fieldName]
+                  if (fieldName !== 'ID') this.localizableFields[fieldName].value = item[fieldName]
                 })
               }
             }).finally(() => {
