@@ -3,6 +3,7 @@
  */
 const webpack = require('webpack')
 const path = require('path')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = (options = {}) => ({
   entry: {
@@ -61,14 +62,16 @@ module.exports = (options = {}) => ({
       // VueJS use process.env.NODE_ENV to enable devtools
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      output: {
-        comments: false
-      },
-      sourceMap: options.dev
+    new UglifyJsPlugin({
+      'uglifyOptions': {
+        compress: {
+          warnings: false
+        },
+        output: {
+          comments: false
+        },
+        sourceMap: options.dev
+      }
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true

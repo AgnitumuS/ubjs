@@ -25,7 +25,6 @@
     "prod": "./public/dist/ubs.main.min.js"
   },
   "dependencies": {
-    "@unitybase/adminui-pub": "^5.6.20",
     "@unitybase/base": "^5.1.1",
     "@unitybase/cs-shared": "^5.0.15",
     "@unitybase/pdf": "^5.0.15",

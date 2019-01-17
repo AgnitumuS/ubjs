@@ -106,5 +106,9 @@ UB.i18nExtend({
       noCheckedFormat: '{total} пунктів',
       hasCheckedFormat: '{checked}/{total} вибрано'
     }
-  }
+  },
+  isRequiredFieldFmt: '{0} обов\'язкове для заповнення',
+  linkCopiedText: 'Посилання скопійовано в буфер обміну',
+  createdEntityCaption: 'Створено',
+  updatedEntityCaption: 'Оновлено'
 })

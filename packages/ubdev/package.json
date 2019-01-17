@@ -19,7 +19,6 @@
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/adminui-vue": "^1.0.38",
     "@unitybase/codemirror-full": "^1.2.18",
     "@unitybase/cs-shared": "^5.0.13",
     "@unitybase/ub-pub": "^5.2.27",
