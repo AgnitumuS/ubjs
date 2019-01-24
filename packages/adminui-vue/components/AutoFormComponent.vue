@@ -257,10 +257,11 @@
             caption: UB.i18n('ChangesHistory'),
             handler: {
               fn () {
-                let fieldList = this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
+                let
+                  fieldList = this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
                   extendedFieldList = UB.core.UBUtil.convertFieldListToExtended(this.fieldsToShow)
 
-                if (!this.isNew) {
+                if (this.isNew) {
                   return
                 }
 
