@@ -28,7 +28,7 @@ UB.i18nExtend({
   tg: 'Таджикский',
   id: 'Индонезийский',
   ka: 'Грузинский',
-  ky: 'Киргизский',
+  ky: 'Кыргызский',
   neizvestnajaOshibkaServera: 'Неизвестная ошибка сервера',
   nevozmozhnoDecodirovat: 'Невозможно декодировать',
   avtorizatsia: 'Авторизация',
