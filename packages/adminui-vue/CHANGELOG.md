@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.40]
+### Added
+ - components folder is added to tarball for debugging purpose
+
 ## [1.0.34]
 ### Changed
  - hide `Forgot password?` and `Registration` on auth form when `Negotiate` enabled

@@ -29,6 +29,7 @@
     "dist/adminui-vue.min.js",
     "dist/fonts",
     "views/",
+    "components/",
     "locale",
     "adminui-vue.js",
     "webpack.config.js"
