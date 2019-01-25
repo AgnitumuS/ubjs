@@ -49,6 +49,7 @@ class XLSXWorkbook {
     this.sharedStringsArr = []
     this.sharedStringIndex = 0
     this.sharedStringTotal = 0
+    this.customProperties = {}
 
     /**
      * Compression for workbook
@@ -134,8 +135,13 @@ class XLSXWorkbook {
     let xlWorksheets
     let context
 
+    let hasCustomProps = Object.keys(this.customProperties).length > 0
+
     // Fully static
-    zip.folder('_rels').file('.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>')
+    zip.folder('_rels').file('.rels',
+      '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>' +
+      (hasCustomProps ? '<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties" Target="docProps/custom.xml"/>' : '') +
+      '</Relationships>')
     this.docProps = zip.folder('docProps')
 
     xl = zip.folder('xl')
@@ -158,7 +164,9 @@ class XLSXWorkbook {
     // { [Content_Types].xml
     zip.file('[Content_Types].xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' +
       context.contentTypes.join('') + '<Override PartName="/xl/theme/theme1.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/>' +
-      context.contentTypesTab.join('') + '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>')
+      context.contentTypesTab.join('') + '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>' +
+      (hasCustomProps ? '<Override PartName="/docProps/custom.xml" ContentType="application/vnd.openxmlformats-officedocument.custom-properties+xml"/>' : '') +
+      '</Types>')
     // }
     // { docProps/app.xml
     this.docProps.file('app.xml',
@@ -168,6 +176,15 @@ class XLSXWorkbook {
       context.props.join('</vt:lpstr><vt:lpstr>') +
       '</vt:lpstr></vt:vector></TitlesOfParts><LinksUpToDate>false</LinksUpToDate><SharedDoc>false</SharedDoc><HyperlinksChanged>false</HyperlinksChanged><AppVersion>1.0</AppVersion></Properties>')
     // }
+    if (hasCustomProps) {
+      // { docProps/custom.xml
+      this.docProps.file('custom.xml',
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+        '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">' +
+        this.compileCustomProps() +
+        '</Properties>')
+      // }
+    }
     // { xl/_rels/workbook.xml.rels
     xl.folder('_rels').file('workbook.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
       context.xlRels.join('') + '<Relationship Id="rId' + (context.xlRels.length + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>' +
@@ -195,6 +212,32 @@ class XLSXWorkbook {
    */
   setCompression (compression) {
     this.compression = compression
+  }
+
+  /**
+   * Sets custom property value
+   * @param {String} name
+   * @param {String|Date|Integer|Boolean} value
+   */
+  setCustomProperty (name, value) {
+    if (typeof name === 'string' && name.length > 0) {
+      this.customProperties[name] = (value === null || value === undefined) ? undefined : value
+    }
+  }
+
+  compileCustomProps () {
+    let pId = 1
+    return Object.keys(this.customProperties).map((p) => {
+      if (this.customProperties.hasOwnProperty(p)) {
+        let v = this.customProperties[p]
+        switch (typeof v) {
+          case 'string': return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:lpwstr>${v}</vt:lpwstr></property>`
+          case 'number': if (Number.isSafeInteger(v)) { return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:r8>${v}</vt:r8></property>` }
+          case 'object': if (v instanceof Date) { return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:filetime>${v.toUTCString()}</vt:filetime></property>` }
+          case 'boolean': return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:bool>${v}</vt:bool></property></Properties>`
+        }
+      }
+    }).join('')
   }
 
   compileWorksheets (context) {

@@ -18,15 +18,8 @@ class XLSXStyleControllerProtect extends XLSXBaseStyleController {
     let out = []
     let xkey
     let element = item.config
-    out.push('<protection>')
-    for (xkey in element) {
-      if (element.color.hasOwnProperty(xkey)) {
-        if (xkey === 'id' || xkey === 'code') {
-          continue
-        }
-        out.push(' ', xkey, '="', element[xkey], '" ')
-      }
-    }
+    out.push('<protection')
+    out.push(' ', element['type'], '="', element['value'] ? '1' : '0', '"')
     out.push('/>')
     return out.join('')
   }
