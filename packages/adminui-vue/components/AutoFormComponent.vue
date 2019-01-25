@@ -3,10 +3,12 @@
     <div style="height:100%">
       <div class="auto-form__header">
         <div style="display: flex">
-          <el-button :disabled="!saveEnabled" type="text" size="large" class="auto-form__header__button" @click="saveAndClose">
+          <el-button :disabled="!saveEnabled" type="text" size="large" class="auto-form__header__button"
+                     @click="saveAndClose">
             <i class="fa fa-share-square-o"></i>
           </el-button>
-          <el-button :disabled="!saveEnabled" type="text" size="large" class="auto-form__header__button" @click="saveAndReload">
+          <el-button :disabled="!saveEnabled" type="text" size="large" class="auto-form__header__button"
+                     @click="saveAndReload">
             <i class="fa fa-save"></i>
           </el-button>
           <el-button :disabled="!canDelete" type="text" size="large" class="auto-form__header__button" @click="remove">
@@ -34,23 +36,25 @@
           <div class="auto-form__header__button__divider" v-if="isSimpleAudit"></div>
           <div class="auto-form__header__date__container" v-if="isSimpleAudit">
             <div class="auto-form__header__date">
-              <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate ? value.mi_createDate.toLocaleString() : "" }}
+              <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate ? value.mi_createDate.toLocaleString() : '' }}
             </div>
             <div class="auto-form__header__date">
-              <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate ? value.mi_modifyDate.toLocaleString() : "" }}
+              <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate ? value.mi_modifyDate.toLocaleString() : '' }}
             </div>
           </div>
         </div>
       </div>
       <div class="auto-form__main">
         <el-scrollbar style="width:100%">
-          <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px" style="margin: 10px 20px 0 20px;">
+          <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px"
+                   style="margin: 10px 20px 0 20px;">
             <el-form-item
                 v-for="fieldName in fieldsToShow"
                 :prop="fieldName"
                 :key="fieldName"
                 :rules="getRules(fieldName)"
-                :label="entitySchema.attributes[fieldName].caption">
+                :label="entitySchema.attributes[fieldName].caption"
+                style="max-width: 600px">
               <el-checkbox
                   v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
                   v-model="value[fieldName]"
@@ -173,7 +177,7 @@
         return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
       },
       saveEnabled () {
-        return this.canSave && ( Object.keys(this.changedColumns).length > 0 || Object.keys(this.additionalData).length > 0 )
+        return this.canSave && (Object.keys(this.changedColumns).length > 0 || Object.keys(this.additionalData).length > 0)
       },
       actions () {
         let actions = []
@@ -249,11 +253,42 @@
         })
         if (this.entitySchema.hasMixin('dataHistory')) {
           actions.push({
-            icon: 'iconHistory',
+            icon: 'fa fa-history',
             caption: UB.i18n('ChangesHistory'),
             handler: {
               fn () {
-                debugger
+                let fieldList = this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
+                  extendedFieldList = UB.core.UBUtil.convertFieldListToExtended(this.fieldsToShow)
+
+                if (!this.isNew) {
+                  return
+                }
+
+                function configureMixinAttribute (attributeCode) {
+                  if (!extendedFieldList.find((field) => { return field.name === attributeCode })) {
+                    fieldList = [attributeCode].concat(fieldList)
+                    extendedFieldList = [{
+                      name: attributeCode,
+                      visibility: true,
+                      description: UB.i18n(attributeCode)
+                    }].concat(extendedFieldList)
+                  }
+                }
+                configureMixinAttribute('mi_dateTo')
+                configureMixinAttribute('mi_dateFrom')
+
+                $App.doCommand({
+                  cmdType: 'showList',
+                  isModal: true,
+                  cmdData: { params: [{
+                      entity: this.entitySchema.name, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
+                    }]},
+                  cmpInitConfig: {
+                    extendedFieldList: extendedFieldList
+                  },
+                  instanceID: this.value.ID,
+                  __mip_recordhistory: true
+                })
               }
             }
           })
