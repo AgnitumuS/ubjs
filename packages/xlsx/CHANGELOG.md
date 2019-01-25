@@ -4,12 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.0.40]
+## [5.0.41]
 ### Added
-  - custom properties
-    Example: wb.setCustomProperty('reportID', this.instanceID);
-  - sheet protection (password is not currently supported)
-    Example: ws.setWorksheetProtection({ objects: true, scenarios: true, formatColumns: false, formatRows: false, sort: false, autoFilter: false, pivotTables: false });
+  - adding custom properties to the xlsx document
+```
+  wb.setCustomProperty('reportID', this.instanceID)
+```
+ - sheet protection (password is not currently supported)
+```
+  ws.setWorksheetProtection({
+    objects: true,
+    scenarios: true,
+    formatColumns: false,
+    formatRows: false,
+    sort: false,
+    autoFilter: false,
+    pivotTables: false
+  })
+```
 
 ## [5.0.31]
 ### Added
