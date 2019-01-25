@@ -16,4 +16,16 @@ UB.i18nExtend({
         accessDeny: '<<<Əməliyyatı yerinə yetirmək üçün hüquqlarınız kifayyət etmir>>>',
         udiskUserMustHaveAccessToParent: '<<<İstifadəçi və yaxud rol bu qovluğa icazəsi olmalıdır>>>'
     }
+    'ka': {
+        accessDeny: '<<<Insufficient permissions for operation execution>>>',
+        udiskUserMustHaveAccessToParent: 'User or role must have access to folder'
+    },
+    'tg': {
+        accessDeny: '<<<Недостаточно прав для выполнения операции>>>',
+        udiskUserMustHaveAccessToParent: '<<<Пользователь или роль должны иметь доступ к папке>>>'
+    },
+    'ky': {
+        accessDeny: '<<<Недостаточно прав для выполнения операции>>>',
+        udiskUserMustHaveAccessToParent: '<<<Пользователь или роль должны иметь доступ к папке>>>'
+    },
 });
