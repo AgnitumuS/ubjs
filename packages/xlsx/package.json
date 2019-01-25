@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/xlsx",
-  "version": "5.0.39",
+  "version": "5.0.40",
   "description": "UnityBase Excel exporter",
   "main": "index.js",
   "config": {
