@@ -1,4 +1,6 @@
-// const {XLSXWorkbook} = require('@unitybase/xlsx')
+/* global Ext, $App */
+const UBDomain = require('@unitybase/cs-shared').UBDomain
+
 /**
  * @class Ext.ux.Exporter.ExcelFormatter
  * @extends Ext.ux.Exporter.Formatter
@@ -6,11 +8,6 @@
  */
 Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
   extend: 'Ext.ux.exporter.Formatter',
-    // requires: ['XLSX.csWorkbook'],
-    // uses: [
-        // 'models.XLSX.csWorkbook'
-        // "UB.ux.xlsx.Workbook"
-    // ],
   contentType: 'data:application/vnd.ms-excel;base64,',
   extension: 'xls',
 
@@ -20,7 +17,6 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
    * Make export
    * @param {Object} store
    * @param {Object} config
-   * @param {Function} callback
    */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
@@ -32,10 +28,11 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       return
     }
     var
-      wb, defFont, fstyle, ws, stmodel, columnTemplate, fields, nrowData, colParam = [],
+      wb, defFont, ws, stmodel, columnTemplate, fields, nrowData,
       borderFull, fldtitle, datestyleCol, entity, headerStyle, rowHeaderStyle, stl,
       styleWrapCol, styleCol, floatstyleCol, sumstyleCol, intstyleCol, entityName,
       eAttributes, modelFields
+    var colParam = []
     var XLSX = window.XLSX
     wb = new XLSX.XLSXWorkbook()
     wb.useSharedString = true
@@ -64,7 +61,6 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     sumstyleCol = stl.getStyle({ font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.sumFormat })
     intstyleCol = stl.getStyle({ font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.intFormat })
 
-    fstyle = stl.getStyle({ font: defFont })
     styleCol = stl.getStyle({ font: defFont, border: borderFull })
     styleWrapCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.wrapText})
     headerStyle = stl.getStyle({ font: stl.fonts.named.defBold, alignment: stl.alignments.named.HVcenter })
@@ -76,7 +72,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     }, this)
 
     function getTypeStyle (fld) {
-      var attribute = eAttributes[fld.name]
+      let attribute = eAttributes[fld.name]
       if (attribute) {
         switch (attribute.dataType) {  //   entity.attributes[fld.name].
           case UBDomain.ubDataTypes.Date: return datestyleCol
@@ -131,7 +127,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
 
     modelFields = {}
     function getModelField (fieldCode) {
-      var result
+      let result
       Ext.each(fields, function (fld) {
         if (fld.name === fieldCode) {
           result = fld
@@ -144,28 +140,26 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       modelFields[field.dataIndex] = getModelField(field.dataIndex)
     }, this)
 
-      // title ##################################################
+    // title ##################################################
     ws.addMerge({ colFrom: 1, colTo: config.columns.length })
     ws.addRow({ value: config.title, column: 1, style: headerStyle }, {}, { height: 40 })
 
-     // Header cells ##################################################
-      /* auto (Default, implies no conversion) string int float boolean date */
-
+    // Header cells ##################################################
+    /* auto (Default, implies no conversion) string int float boolean date */
     colParam.push({ column: 0, width: 1 })
     Ext.each(config.columns, function (field, index) {
-      var fld = modelFields[field.dataIndex]
+      let fld = modelFields[field.dataIndex]
       colParam.push({ column: index + 1, width: getWide(fld) })
       columnTemplate.push({ column: index + 1, style: getTypeStyle(fld) })
       fldtitle = Ext.String.capitalize(field.text || fld.name || '').replace(/_/g, ' ')
       nrowData.push({column: index + 1, value: fldtitle, style: rowHeaderStyle})
-          //  cols.push(this.buildColumn());
     }, this)
     ws.setColsProperties(colParam)
-      // Herader
+    // Header
     ws.addRow(nrowData, null, { height: 30 })
 
     function formatValue (fld, fvalue, dataRow) {
-      var value
+      let value
       if (entity) {
         switch (eAttributes[fld.dataIndex].dataType) {
           case UBDomain.ubDataTypes.Date:
@@ -175,15 +169,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
           case UBDomain.ubDataTypes.Int: value = fvalue
         }
       }
-        /*
-        modelFld = getModelField(fld.dataIndex);
-        if ( !value && (
-            (modelFld.type.type === 'date') || (modelFld.type.type === 'float') || (modelFld.type.type === 'int'))) {
-            value = fvalue;
-        }
-        */
       if (!value) {
-        if (_.isFunction(fld.renderer)) {
+        if (typeof fld.renderer === 'function') {
           value = fld.renderer(fvalue)
           value = Ext.String.htmlDecode(value)
         } else {
@@ -196,25 +183,16 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     // data row  ##################################################
     if (store.isRawData) {
       Ext.Array.each(store.data,
-            function (fdata, index) {
-              var fieldList = store.ubRequest.fieldList
-              nrowData = []
-              var iCol = 0
-              Ext.each(config.columns, function (fld) {
-                formatValue(fld, fdata[ store.dataFieldsMap[fld.dataIndex] ], nrowData)
-              }, this)
-              ws.addRow(nrowData, columnTemplate)
-                /*
-                if (index > 65533){
-                    ws.addRow({column: 1, value: 'the maximum number of entries is 65534'});
-                    return false;
-                }
-                */
-            }, this)
+        function (fdata, index) {
+          nrowData = []
+          Ext.each(config.columns, function (fld) {
+            formatValue(fld, fdata[ store.dataFieldsMap[fld.dataIndex] ], nrowData)
+          }, this)
+          ws.addRow(nrowData, columnTemplate)
+        }, this)
     } else {
       store.each(function (record, index) {
         nrowData = []
-        var iCol = 0
         Ext.each(config.columns, function (fld) {
           formatValue(fld, record.get(fld.dataIndex), nrowData)
         }, this)
