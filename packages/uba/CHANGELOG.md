@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.12]
+### Fixed
+ - allow Supervisor role to manage uba_grouprole
+ - allow Supervisor role read uba_userrole, uba_usergroup and uba_grouprole [unitybase/ubjs#33]
+ 
+### Changed
+ - add warning to ELS form about insecure usage of method mask in ELS rules [unitybase/ubjs#38]
+
 ## [5.1.7]
 ### Fixed
 - Write to security audit when group gets or lost a role
