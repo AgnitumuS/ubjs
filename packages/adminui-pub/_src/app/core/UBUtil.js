@@ -550,15 +550,14 @@ Ext.define('UB.core.UBUtil', {
         let maxValue = attribute.dataType === ubDataTypes.Currency ? 8999000000000000 : 8999000000000
         ext = {
           xtype: 'numberfield',
-          maxLength: 17,
           enforceMaxLength: true,
           hideTrigger: true,
           keyNavEnabled: false,
           mouseWheelEnabled: false,
           decimalPrecision: decPrecision,
           validator: function (val) {
-            if (Number(val.replace(/[^0-9]/, '').replace(',', '.')) < maxValue &&
-              Number(val.replace(/[^0-9]/, '').replace(',', '.')) > minValue
+            if (Number(val.replace(/[^0-9,.]/, '').replace(',', '.')) < maxValue &&
+              Number(val.replace(/[^0-9,.]/, '').replace(',', '.')) > minValue
             ) {
               let rv = val.replace('-', '').match(/[0-9]*[^0-9]{1}([0-9]+)/)
               if ((rv && rv.length > 1 && rv[1].length <= this.decimalPrecision) || !rv || rv.length === 1) {

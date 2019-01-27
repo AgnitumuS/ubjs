@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.23]
+### Fixed
+ - [unitybase/ubjs#41] - Float field validator should allow numbers with total char count > 17, for example `10,000,000.000001`  
+
 ## [5.6.20]
 ### Fixed
  - [unitybase/ubjs#36] - all exporters (Excel / CSV / HTML) will call a grid column render() function
