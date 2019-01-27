@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.6.23]
 ### Fixed
- - [unitybase/ubjs#41] - Float field validator should allow numbers with total char count > 17, for example `10,000,000.000001`  
+ - [unitybase/ubjs#41] - float field validator should allow numbers with total char count > 17, for example `10,000,000.000001`
+ - [unitybase/ubjs#42] - select row count on grid refresh only if rowCount calculation is turned ON either in ubRequest 
+ or by pressing Total button on PaginationToolbar  
 
 ## [5.6.20]
 ### Fixed
