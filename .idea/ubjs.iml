@@ -10,6 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/notify-example/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/docs" />
       <excludeFolder url="file://$MODULE_DIR$/packages/adminui-pub/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/adminui-vue/dist" />
       <excludeFolder url="file://$MODULE_DIR$/packages/ub-pub/dist" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
