@@ -655,7 +655,7 @@ inst.run('select', repo.ubql())
    * @param {Boolean} [flags.__mip_recordhistory_all=false] Ignore __mip_ondate and select all data (acts as select for entities without `dataHistory` mixin)
    * @param {Boolean} [flags.__mip_disablecache=false] For entities with cacheType in ["Session", "SessionEntity"] not check is data modified and always return result
    * @param {Boolean} [flags.__skipOptimisticLock=false] Skip optimistic lock for entities with `mStorage.simpleAudit = true`
-   * @param {Boolean} [flags.__allowSelectSafeDeleted=false] **Server-side only.**
+   * @param {Boolean} [flags.__allowSelectSafeDeleted=false] Include softly deleted rows to the result
    * @param {Boolean} [flags.__skipSelectAfterUpdate=false] **Server-side only.**
    * @param {Boolean} [flags.__skipSelectAfterInsert=false] **Server-side only.**
    * @param {Boolean} [flags.__skipRls=false] **Server-side only.**
