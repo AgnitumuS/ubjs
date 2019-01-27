@@ -158,7 +158,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     // Header
     ws.addRow(nrowData, null, { height: 30 })
 
-    function formatValue (fld, fvalue, dataRow) {
+    function formatValue (fld, fvalue, dataRow, recordIndex, origRowData) {
       let value
       if (entity) {
         switch (eAttributes[fld.dataIndex].dataType) {
@@ -171,7 +171,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       }
       if (!value) {
         if (typeof fld.renderer === 'function') {
-          value = fld.renderer(fvalue)
+          value = fld.renderer(fvalue, null, origRowData, recordIndex, fld.dataIndex, store)
           value = Ext.String.htmlDecode(value)
         } else {
           value = fvalue
@@ -186,7 +186,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
         function (fdata, index) {
           nrowData = []
           Ext.each(config.columns, function (fld) {
-            formatValue(fld, fdata[ store.dataFieldsMap[fld.dataIndex] ], nrowData)
+            formatValue(fld, fdata[ store.dataFieldsMap[fld.dataIndex] ], nrowData, index, fdata)
           }, this)
           ws.addRow(nrowData, columnTemplate)
         }, this)
@@ -194,7 +194,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       store.each(function (record, index) {
         nrowData = []
         Ext.each(config.columns, function (fld) {
-          formatValue(fld, record.get(fld.dataIndex), nrowData)
+          formatValue(fld, record.get(fld.dataIndex), nrowData, index, record)
         }, this)
         ws.addRow(nrowData, columnTemplate)
       }, this)
