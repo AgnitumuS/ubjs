@@ -1,3 +1,4 @@
+/* global $App, UB, Ext */
 require('./UBAppConfig')
 require('./UBStoreManager')
 require('./UBUtil')
@@ -464,7 +465,7 @@ Ext.define('UB.core.UBCommand', {
     me.showListParam = showListParam
 
     if (!showListParam) {
-      let errMsg = UB.format(UB.i18n('neizvestnnajaSushhnost'), 'showList', me.entity)
+      let errMsg = UB.format(UB.i18n('unknownEntityInCommand'), 'showList', me.entity)
       throw new UB.UBError(errMsg)
     }
     if ((showListParam.fieldList === '*') ||
@@ -539,8 +540,8 @@ Ext.define('UB.core.UBCommand', {
     let grid = Ext.create('UB.view.EntityGridPanel', config)
     me.bindFocus(grid)
 
-    if (_.isFunction(grid.customInit)) {
-      console.error('Function customInit is deprecated. You should use callback function initComponentStart in script file.')
+    if (typeof grid.customInit === 'function') {
+      console.error('Function customInit is deprecated. You should use callback function initComponentStart in script file')
       grid.customInit()
     }
     me.showCommandResult(grid, {

@@ -46,7 +46,7 @@ UB.i18nExtend({
   osnovnoeMenu: 'Основное меню',
   unknownCommand: 'Неизвестная команда',
   unknownCommandType: 'Неизвестный тип команды',
-  neizvestnnajaSushhnost: 'Неверно описана команда "{0}" для сущности "{1}". Атрибут entity указан неверно.',
+  unknownEntityInCommand: 'Неверно описана команда "{0}" для сущности "{1}". Атрибут entity указан неверно.',
   Entity: 'Сущность',
   komanda: 'Команда',
   tipKomandy: 'Тип',

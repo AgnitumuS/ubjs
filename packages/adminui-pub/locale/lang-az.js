@@ -44,7 +44,7 @@ UB.i18nExtend({
   osnovnoeMenu: 'Əsas menyu',
   unknownCommand: 'Naməlum komanda',
   unknownCommandType: 'Naməlum komanda tipi',
-  neizvestnnajaSushhnost: 'Invalid komanda göstərilir ""{1}" üçün komanda "{0}" yanlış təsvir olunub. Atribut entity yanlış göstərilib',
+  unknownEntityInCommand: 'Invalid komanda göstərilir ""{1}" üçün komanda "{0}" yanlış təsvir olunub. Atribut entity yanlış göstərilib',
   Entity: 'Mahiyyət',
   komanda: 'Komanda',
   tipKomandy: 'Tip',

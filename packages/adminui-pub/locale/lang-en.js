@@ -46,7 +46,7 @@ UB.i18nExtend({
   osnovnoeMenu: 'Main menu',
   unknownCommand: 'Unknown command',
   unknownCommandType: 'Unknown command type',
-  neizvestnnajaSushhnost: 'Incorrect definition for  "{0}" command. Entity attribute is invalid. "{1}" entity is not found.',
+  unknownEntityInCommand: 'Incorrect definition for  "{0}" command. Entity attribute is invalid. "{1}" entity is not found.',
   Entity: 'Entity',
   komanda: 'Command',
   tipKomandy: 'Type',

@@ -44,7 +44,7 @@ UB.i18nExtend({
   osnovnoeMenu: 'Головне меню',
   unknownCommand: 'Невідома команда',
   unknownCommandType: 'Невідомий тип команди',
-  neizvestnnajaSushhnost: 'Невірне визначення команди "{0}" для сутності "{1}". Атрибут entity має помилкове значення.',
+  unknownEntityInCommand: 'Невірне визначення команди "{0}" для сутності "{1}". Атрибут entity має помилкове значення.',
   Entity: 'Сутність',
   komanda: 'Команда',
   tipKomandy: 'Тип',
