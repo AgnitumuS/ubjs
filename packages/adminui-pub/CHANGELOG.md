@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - [unitybase/ubjs#41] - float field validator should allow numbers with total char count > 17, for example `10,000,000.000001`
  - [unitybase/ubjs#42] - select row count on grid refresh only if rowCount calculation is turned ON either in ubRequest 
- or by pressing Total button on PaginationToolbar  
+ or by pressing Total button on PaginationToolbar
+ - clear "soft deletion" mark for combobox in case ubRequest is changed and newly selected record is not longer deleted
 
 ## [5.6.20]
 ### Fixed
