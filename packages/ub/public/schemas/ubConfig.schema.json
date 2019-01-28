@@ -69,7 +69,7 @@
           "type": "number",
           "minimum": 1,
           "maximum": 64,
-          "description": "Working thread count. Default is `CPU count * 2`"
+          "description": "Working thread count. Default is SystemThreadCount available for application based on process affinity mask"
         },
         "inetPub": {
           "type": "string",
