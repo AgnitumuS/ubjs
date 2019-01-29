@@ -27,7 +27,8 @@
       <el-popover
           v-if="rowActions"
           placement="bottom-end"
-          v-model="popoverVisible">
+          v-model="popoverVisible"
+          trigger="click">
         <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
           <el-table-column property="caption" width="250">
             <template slot-scope="scope">
@@ -38,7 +39,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <i @click="showPopover" style="min-width: 25px" slot="reference" class="el-icon-menu"></i>
+        <i style="min-width: 25px" slot="reference" class="el-icon-menu"></i>
       </el-popover>
     </div>
   </div>
@@ -112,10 +113,6 @@
           data.handler.fn.call(data.handler.scope ? data.handler.scope : this)
           this.popoverVisible = false
         }
-      },
-      showPopover (event) {
-        event.stopPropagation()
-        this.popoverVisible = !this.popoverVisible
       },
       onChange (data) {
         this.initialItem = this.items.find((el) => {
