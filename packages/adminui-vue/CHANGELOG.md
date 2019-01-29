@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.34]
+### Changed
+- add title to Localizable Dialog in `UbInput` 
+
 ### Fixed
  - fix popovers collapse on `UbSelectEntity` control
  - add styles for low resolution screens in `UbInput` Localizable Dialog

@@ -1,22 +1,39 @@
 <template>
   <div>
-    <el-input v-model="currentValue" @change="$emit('input', currentValue)">
-      <el-button slot="append" v-if="isMultiLang" @click="initLocalizableFields" class="fa fa-globe"></el-button>
+    <el-input v-model="currentValue"
+              @change="$emit('input', currentValue)">
+      <el-button slot="append"
+                 v-if="isMultiLang"
+                 @click="initLocalizableFields"
+                 class="fa fa-globe"
+      ></el-button>
     </el-input>
-    <el-dialog width="30%" custom-class="ub-input__dialog" :visible.sync="dialogFormVisible">
+    <el-dialog width="30%"
+               custom-class="ub-input__dialog"
+               :visible.sync="dialogFormVisible"
+               :title="dialogTitle">
       <el-form v-loading="loading">
-        <el-form-item style="font-weight:bold" :label="localCaption" label-width="100px">
-          <el-input v-model="currentValue" @change="$emit('input', currentValue)"></el-input>
+        <el-form-item style="font-weight:bold"
+                      :label="localCaption"
+                      label-width="100px">
+          <el-input v-model="currentValue"
+                    @change="$emit('input', currentValue)"
+          ></el-input>
         </el-form-item>
-        <el-form-item v-for="item in Object.values(localizableFields)" :key="item.fieldName"
-                      :label="item.caption" label-width="100px">
+        <el-form-item v-for="item in Object.values(localizableFields)"
+                      :key="item.fieldName"
+                      :label="item.caption"
+                      label-width="100px">
           <div class="el-input el-input--small">
-            <input v-model="item.value" class="el-input__inner"/>
+            <input v-model="item.value"
+                   class="el-input__inner"/>
           </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="saveLocalization">Save</el-button>
+        <el-button type="primary"
+                   @click="saveLocalization"
+        >Save</el-button>
       </span>
     </el-dialog>
   </div>
@@ -32,6 +49,11 @@
         loading: false,
         localCaption: '',
         currentValue: this.value
+      }
+    },
+    computed: {
+      dialogTitle() {
+        return (Object.values($App.domainInfo.get(this.entityName).attributes).find(attr => attr.code === this.attributeName) || {}).caption
       }
     },
     props: {
