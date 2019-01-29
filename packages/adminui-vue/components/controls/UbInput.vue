@@ -3,7 +3,7 @@
     <el-input v-model="currentValue" @change="$emit('input', currentValue)">
       <el-button slot="append" v-if="isMultiLang" @click="initLocalizableFields" class="fa fa-globe"></el-button>
     </el-input>
-    <el-dialog width="30%" :visible.sync="dialogFormVisible">
+    <el-dialog width="30%" custom-class="ub-input__dialog" :visible.sync="dialogFormVisible">
       <el-form v-loading="loading">
         <el-form-item style="font-weight:bold" :label="localCaption" label-width="100px">
           <el-input v-model="currentValue" @change="$emit('input', currentValue)"></el-input>
