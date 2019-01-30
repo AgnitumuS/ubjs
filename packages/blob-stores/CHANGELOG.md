@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.34]
+### Fixed
+ - file name in Content-Disposition header should be wrapped in "", in other case comma or other
+ not allowed chars in file name can cause Chrome 72 to stop HTTP request)
+
 ## [5.0.29]
 ### Added
  - `setDocument` endpoint now can accept a BLOB attribute content as a `base64` encoded string. 

@@ -3396,8 +3396,7 @@ Ext.define('UB.view.BasePanel', {
       id = instanceID
 
     function prepareFileName () {
-      var dateString = (new Date()).toLocaleString().replace(/[/:.]/g, '-')
-      return 'Scaned at ' + dateString + '.' + $App.__scanService.lastScanedFormat
+      return `Scan-${Date.now()}-.${$App.__scanService.lastScanedFormat}`
     }
     ctrl.fireEvent('change')
 

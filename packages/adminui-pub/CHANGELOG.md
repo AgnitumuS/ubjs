@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.24]
+### Fixed
+ - potential error with invalid characters in scanned file name (,). Chrome72 do not allow `,` in Content-Disposition header 
+
 ## [5.6.23]
 ### Fixed
  - [unitybase/ubjs#41] - float field validator should allow numbers with total char count > 17, for example `10,000,000.000001`
