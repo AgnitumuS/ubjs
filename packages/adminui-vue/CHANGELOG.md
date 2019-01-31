@@ -11,15 +11,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.0.34]
 ### Changed
  - hide `Forgot password?` and `Registration` on auth form when `Negotiate` enabled
+ - add title to Localizable Dialog in `UbInput`
+
+### Fixed
+ - fix popovers collapse on `UbSelectEntity` control
+ - add styles for low resolution screens in `UbInput` Localizable Dialog
 
 ## [1.0.33]
 ### Changed
  - vue loader registration is moved form `adminui-vue` to `adminui-pub`
-  
+
 ### Fixed
  - set `ub-auth` page title to the `uiSettings.adminUI.applicationTitle` just after got an application info
-  
- 
+
 ## [1.0.32]
 ### Fixed
  - error with hidden UB auth in case this is only one possible auth method
