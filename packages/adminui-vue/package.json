@@ -30,6 +30,7 @@
     "dist/fonts",
     "views/",
     "components/",
+    "css/",
     "locale",
     "adminui-vue.js",
     "webpack.config.js"
