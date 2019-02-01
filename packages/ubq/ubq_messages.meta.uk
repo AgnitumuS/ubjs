@@ -1,26 +1,26 @@
 ﻿{
-    "caption": "შეტყობინების რიგი",
+    "caption": "Черга",
     "description": "",
     "attributes": [
         {
             "name": "queueCode",
-            "caption": "რიგის კოდი"
+            "caption": "Код черги"
         },
         {
             "name": "msgCmd",
-            "caption": "ბრძანება"
+            "caption": "Команда"
         },
         {
             "name": "msgData",
-            "caption": "მესიჯის თარიღი"
+            "caption": "Дані повідомлення"
         },
         {
             "name": "msgPriority",
-            "caption": "პრიორიტეტები"
+            "caption": "Пріорітет"
         },
         {
             "name": "completeDate",
-            "caption": "სრული თარიღი"
+            "caption": "Дата завершення"
         }
     ]
 }
