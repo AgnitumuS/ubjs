@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.1.0]
 ### Added
  - new cdn dictionaries: cdn_nationality, cdn_personclass
- - new attribute of cdn_person: resident: boolean; nationality -> cdn_nationality, classID -> cdn_personclass 
+ - new attribute of cdn_person: resident: boolean; nationality -> cdn_nationality, classID -> cdn_personclass
+### Changed
+ - Description attribute of cdn_currency is now multilingual
  
 ## [5.0.73]
 ### Changed
