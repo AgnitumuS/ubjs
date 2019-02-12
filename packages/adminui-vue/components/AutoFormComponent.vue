@@ -181,15 +181,6 @@
       },
       actions () {
         let actions = []
-        // actions.push({
-        //   icon: 'fa fa-refresh',
-        //   caption: UB.i18n('obnovit'),
-        //   handler: {
-        //     fn () {
-        //       debugger
-        //     }
-        //   }
-        // })
         actions.push({
           icon: 'fa fa-save',
           caption: UB.i18n('sohranit'),
@@ -239,8 +230,7 @@
               let linkToEntityToCopy = document.querySelector('#linkToEntity')
               linkToEntityToCopy.setAttribute('type', 'text')
               linkToEntityToCopy.select()
-              let successful = document.execCommand('copy')
-              if (successful)
+              if (document.execCommand('copy'))
                 this.$notify({
                   title: UB.i18n('ssylka'),
                   message: UB.i18n('linkCopiedText'),
@@ -257,14 +247,9 @@
             caption: UB.i18n('ChangesHistory'),
             handler: {
               fn () {
-                let
-                  fieldList = this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
+                if (this.isNew) return
+                let fieldList = this.fieldsToShow.concat(['ID', 'mi_modifyDate']),
                   extendedFieldList = UB.core.UBUtil.convertFieldListToExtended(this.fieldsToShow)
-
-                if (this.isNew) {
-                  return
-                }
-
                 function configureMixinAttribute (attributeCode) {
                   if (!extendedFieldList.find((field) => { return field.name === attributeCode })) {
                     fieldList = [attributeCode].concat(fieldList)
@@ -277,13 +262,14 @@
                 }
                 configureMixinAttribute('mi_dateTo')
                 configureMixinAttribute('mi_dateFrom')
-
                 $App.doCommand({
                   cmdType: 'showList',
                   isModal: true,
-                  cmdData: { params: [{
+                  cmdData: {
+                    params: [{
                       entity: this.entitySchema.name, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
-                    }]},
+                    }]
+                  },
                   cmpInitConfig: {
                     extendedFieldList: extendedFieldList
                   },
@@ -326,11 +312,8 @@
           })
         }
         if (this.entitySchema.hasMixin('aclRls')) {
-          var aclEntityName = this.entitySchema.name + '_acl'
-          var entityM = this.entitySchema
-          if (entityM.mixins && entityM.mixins.aclRls && entityM.mixins.aclRls.useUnityName) {
-            aclEntityName = entityM.mixins.unity.entity + '_acl'
-          }
+          let aclEntityName = this.entitySchema.mixins && this.entitySchema.mixins.aclRls && this.entitySchema.mixins.aclRls.useUnityName ?
+            this.entitySchema.mixins.unity.entity + '_acl' : this.entitySchema.name + '_acl'
           actions.push({
             caption: UB.i18n('accessRight'),
             handler: {
@@ -382,7 +365,6 @@
       onActionClick (data) {
         if (data.enabled === undefined || data.enabled) {
           data.handler.fn.call(data.handler.scope ? data.handler.scope : this)
-          this.popoverVisible = false
         }
       },
       getRules (fieldName) {
@@ -498,7 +480,7 @@
         canDelete: this.entitySchema.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE) && !this.isNew,
         linkToEntity: UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, this.getParamsToString()),
         createdEntityCaption: UB.i18n('createdEntityCaption'),
-        updatedEntityCaption: UB.i18n('updatedEntityCaption'),
+        updatedEntityCaption: UB.i18n('updatedEntityCaption')
       }
     },
     components: {
