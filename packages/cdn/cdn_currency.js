@@ -1,7 +1,7 @@
 /* global cdn_currency */
 // eslint-disable-next-line camelcase
 const me = cdn_currency
-const { App, Session } = UB = require('@unitybase/ub')
+const UB = require('@unitybase/ub')
 
 me.on('insert:before', setDescriptionAttribute)
 me.on('update:before', setDescriptionAttribute)
@@ -14,7 +14,7 @@ function setDescriptionAttribute (ctx) {
   const execParams = ctx.mParams.execParams
   const dataStore = ctx.dataStore
   let oldData = {}
-  const langs = App.serverConfig.application.domain.supportedLanguages
+  const langs = me.entity.connectionConfig.supportLang
   if (!dataStore.eof) {
     oldData.code3 = dataStore.get('code3')
     if (typeof execParams.code3 === 'string') {
@@ -26,7 +26,7 @@ function setDescriptionAttribute (ctx) {
   }
   const currencyCode = execParams.code3 || oldData.code3 || ''
   langs.forEach((l) => {
-    let newName = execParams[`name_${l}^`] || oldData[`name_${l}^`]
+    let newName = execParams[`name_${l}^`] || oldData[`name_${l}^`] || execParams['name'] || oldData['name']
     if (typeof newName === 'string') {
       execParams[`description_${l}^`] = `${currencyCode} - ${newName}`
     }
