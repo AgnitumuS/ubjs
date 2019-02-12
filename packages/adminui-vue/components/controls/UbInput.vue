@@ -105,6 +105,11 @@
         }
       }
     },
+    watch: {
+      value () {
+        this.currentValue = this.value
+      }
+    },
     mounted () {
       if (this.isMultiLang) {
         this.localCaption = UB.i18n($App.connection.userLang())
