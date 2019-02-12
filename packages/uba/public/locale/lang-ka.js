@@ -33,6 +33,8 @@
   SecurityAudit: 'უსაფრთხოების აუდიტი',
   'Record modified by another user': 'ჩანაწერი შეცვლილია სხვა მომხმარებლის მიერ',
   needChangePassword: 'სისტემაში ხელმეორედ შესვლისას, მომხმარებელმა უნდა შეცვალოს პაროლი',
+  checkAll: 'Check all',
+  roles: 'Roles',
 
     // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
