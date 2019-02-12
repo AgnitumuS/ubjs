@@ -47,7 +47,8 @@
             "description": "Description",
             "documentation": "Description",
             "defaultView": false,
-            "allowNull": false
+            "allowNull": false,
+            "isMultiLang": true
         }
     ],
     "mixins": {
