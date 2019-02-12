@@ -24,6 +24,9 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
+let entityEditor = require('./components/UbEntityEditComponent.vue')
+Vue.component('ub-entity-edit', entityEditor)
+
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
     let autoFormComponent = require('./components/AutoFormComponent.vue')
