@@ -43,6 +43,8 @@
             </div>
           </div>
         </div>
+        <input type="hidden" id="linkToEntity"
+               :value="linkToEntity">
       </div>
       <div class="auto-form__main">
         <el-scrollbar style="width:100%">
@@ -125,8 +127,6 @@
               ></ub-input>
             </el-form-item>
           </el-form>
-          <input type="hidden" id="linkToEntity"
-                 :value="linkToEntity">
         </el-scrollbar>
       </div>
     </div>

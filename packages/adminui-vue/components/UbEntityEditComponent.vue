@@ -3,7 +3,11 @@
     <div class="auto-form__header">
       Хедер будет тут
     </div>
-    <slot></slot>
+    <div class="auto-form__main">
+      <el-scrollbar style="width:100%">
+        <slot></slot>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 
