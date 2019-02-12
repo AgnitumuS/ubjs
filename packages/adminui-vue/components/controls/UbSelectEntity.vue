@@ -281,6 +281,12 @@
     destroyed () {
       $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
+    watch: {
+      value () {
+        this.resultData = this.value
+        this.setInitialItem()
+      }
+    },
     mounted () {
       setTimeout(function () {
         this.initLoaderStyles()
