@@ -27,6 +27,7 @@
       "dataType": "String",
       "size": 64,
       "caption": "Report code",
+      "defaultView": false,
       "allowNull": false
     },
     {
@@ -56,7 +57,8 @@
       "name": "mi_modifyDate",
       "dataType": "DateTime",
       "caption": "Modification date",
-      "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation"
+      "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation",
+      "defaultView": false
     }
   ]
 }

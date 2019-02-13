@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - for HTML report `this` inside `onReportClick` handler now instance of ReportViewer
  
+### Fixed
+ - prevent clean of report template data in case only code block of report is updated 
+ 
 ## [5.1.41]
 ### Added
  - Report editor form: show warning for server-side test and report reload in case server / client not in dev mode 
