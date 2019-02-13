@@ -1,16 +1,16 @@
 <template>
-    <el-select v-model="resultData" filterable reserve-keyword clearable ref="selector"
-               @change="$emit('input', resultData)"
-               v-on:input.native="onInput"
-               v-loading="loading" :disabled="loading"
-               style="width: 100%"
-               :class="`ub-select-enum${_uid}`">
-        <template slot-scope="scope">
-            <el-option v-for="item in items" :key="item[primaryColumn]"
-                       :label="item[displayValue]" :value="item[primaryColumn]">
-            </el-option>
-        </template>
-    </el-select>
+  <el-select v-model="resultData" filterable reserve-keyword clearable ref="selector"
+             @change="$emit('input', resultData)"
+             v-on:input.native="onInput"
+             v-loading="loading" :disabled="loading"
+             style="width: 100%"
+             :class="`ub-select-enum${_uid}`">
+    <template slot-scope="scope">
+      <el-option v-for="item in items" :key="item[primaryColumn]"
+                 :label="item[displayValue]" :value="item[primaryColumn]">
+      </el-option>
+    </template>
+  </el-select>
 </template>
 
 <script>
@@ -65,7 +65,7 @@
           }
         }
       },
-      initData() {
+      initData () {
         this.loading = true
         let promise = UB.Repository(this.entityName)
           .attrs(this.primaryColumn, this.displayValue, 'eGroup')
@@ -78,8 +78,13 @@
         })
       }
     },
-    destroyed() {
+    destroyed () {
       $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
+    },
+    watch: {
+      value () {
+        this.resultData = this.value
+      }
     },
     mounted () {
       setTimeout(function () {

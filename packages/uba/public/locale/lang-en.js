@@ -33,7 +33,9 @@ UB.i18nExtend({
   SecurityAudit: 'Secutity audit',
   'Record modified by another user': 'Record modified by another user',
   needChangePassword: 'User need to change password on next logon',
+  checkAll: 'Check all',
+  roles: 'Roles',
 
-    // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
+  // !!!  Do not change this last item. Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 })

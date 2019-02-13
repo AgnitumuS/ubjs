@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.44]
+### Added
+- watch for prop value changed in all controls
+- open dialog with iFrame for pdf files in `UbUploadDocument`
+
 ## [1.0.43]
 ### Fixed
  - add missing "css" folder to the published package
