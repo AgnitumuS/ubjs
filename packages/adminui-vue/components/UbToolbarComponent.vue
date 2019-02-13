@@ -117,9 +117,7 @@
           icon: 'fa fa-save',
           caption: UB.i18n('sohranit'),
           handler: {
-            fn () {
-              this.saveAndReload()
-            }
+            fn: function () { this.$emit('saveAndReload') }.bind(this)
           },
           enabled: this.saveEnabled
         })
@@ -127,9 +125,7 @@
           icon: 'fa fa-share-square-o',
           caption: UB.i18n('saveAndClose'),
           handler: {
-            fn () {
-              this.saveAndClose()
-            }
+            fn: function () { this.$emit('saveAndClose') }.bind(this)
           },
           enabled: this.saveEnabled
         })
@@ -148,9 +144,7 @@
           icon: 'fa fa-trash-o',
           caption: UB.i18n('Delete'),
           handler: {
-            fn () {
-              this.remove()
-            }
+            fn: function () { this.$emit('remove') }.bind(this)
           },
           enabled: this.canDelete
         })

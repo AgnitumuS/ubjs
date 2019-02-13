@@ -20,7 +20,7 @@
                     @change="$emit('input', currentValue)"
           ></el-input>
         </el-form-item>
-        <el-form-item v-for="item in Object.values(localizableFields)"
+        <el-form-item v-for="item in localizableFields"
                       :key="item.fieldName"
                       :label="item.caption"
                       label-width="100px">
@@ -48,11 +48,12 @@
         localizableFields: {},
         loading: false,
         localCaption: '',
-        currentValue: this.value
+        currentValue: this.value,
+        oldLocalization: {}
       }
     },
     computed: {
-      dialogTitle() {
+      dialogTitle () {
         return (Object.values($App.domainInfo.get(this.entityName).attributes).find(attr => attr.code === this.attributeName) || {}).caption
       }
     },
@@ -64,12 +65,22 @@
       },
       entityName: String,
       attributeName: String,
-      primaryValue: [String, Number]
+      primaryValue: [String, Number],
+      objectValue: Object
     },
     methods: {
       saveLocalization () {
+        let changedColumns = []
+        Object.keys(this.localizableFields).forEach(key => {
+          if (this.localizableFields[key].value !== this.oldLocalization[key].value) changedColumns.push(key)
+        })
+        if (changedColumns.length > 0) {
+          changedColumns.forEach(key => {
+            this.objectValue[key] = this.localizableFields[key].value
+          })
+          Object.keys(this.localizableFields).forEach(key => this.oldLocalization[key] = {value: this.localizableFields[key].value})
+        }
         this.dialogFormVisible = false
-        this.$emit('saveLocalization', this.localizableFields)
       },
       initLocalizableFields () {
         this.dialogFormVisible = true
@@ -94,7 +105,10 @@
             UB.Repository(this.entityName).attrs([...fieldList, 'ID']).selectById(this.primaryValue).then((item) => {
               if (item) {
                 Object.keys(item).forEach((fieldName) => {
-                  if (fieldName !== 'ID') this.localizableFields[fieldName].value = item[fieldName]
+                  if (fieldName !== 'ID') {
+                    this.localizableFields[fieldName].value = item[fieldName]
+                    this.oldLocalization[fieldName] = {value: item[fieldName]}
+                  }
                 })
               }
             }).finally(() => {

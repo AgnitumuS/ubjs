@@ -28,12 +28,15 @@
       entityName: String,
       instanceID: Number,
       useOnlyOwnActions: Boolean,
-      inputActions: Array
+      inputActions: Array,
+      save: Function,
+      currentTabId: String
     },
     data () {
       return {
         loading: false,
-        isNew: false
+        isNew: false,
+        oldData: Object.assign({}, this.value)
       }
     },
     computed: {
@@ -50,13 +53,27 @@
       entitySchema () {
         return $App.domainInfo.get(this.entityName)
       },
+      changedColumns () {
+        let result = {}
+        Object.keys(this.value).forEach(field => {
+          if (this.value[field] !== this.oldData[field]) {
+            if (this.entitySchema.attributes[field]) {
+              if (['Int', 'BigInt'].includes(this.entitySchema.attributes[field].dataType)) this.value[field] = Math.round(this.value[field])
+              if ('Float' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field] * 100) / 100
+              if ('Currency' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field] * Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)) / Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)
+            }
+            result[field] = this.value[field]
+          }
+        })
+        return result
+      },
       isChanged () {
-        return false
+        return Object.keys(this.changedColumns).length > 0
       }
     },
     methods: {
       saveAndReload () {
-        this.save((data, changed) => {
+        this.saveEntity((data, changed) => {
           if (changed) {
             let object = {}
             data.resultData.data[0].forEach((item, index) => {
@@ -64,51 +81,53 @@
             })
             this.$emit('input', object)
             this.oldData = Object.assign({}, object)
-            this.additionalData = {}
           }
         })
       },
       saveAndClose () {
-        this.save(() => {this.$emit('close')})
+        this.saveEntity(() => Ext.getCmp(this.currentTabId).close())
       },
-      save (callback) {
-        this.$refs[this.$options.name].validate((valid) => {
-          if (valid) {
-            let changedColumns = Object.assign({}, this.changedColumns, this.additionalData)
-            if (Object.keys(changedColumns).length > 0) {
-              Object.keys(this.additionalData).forEach((locColumn) => {
-                let matches = locColumn.match(/(\w+)_\w\w\^/)
-                if (matches && changedColumns.hasOwnProperty(matches[1])) {
-                  changedColumns[`${matches[1]}_${$App.connection.userLang()}^`] = changedColumns[matches[1]]
-                  delete changedColumns[matches[1]]
-                }
-              })
-              changedColumns.ID = this.value.ID
-              changedColumns.mi_modifyDate = this.value.mi_modifyDate
-              let params = {
-                fieldList: this.fields,
-                entity: this.entitySchema.name,
-                method: this.isNew ? 'insert' : 'update',
-                execParams: changedColumns
+      saveEntity (callback) {
+        let saveFn = function () {
+          let changedColumns = Object.assign({}, this.changedColumns)
+          if (Object.keys(changedColumns).length > 0) {
+            Object.keys(changedColumns).forEach(col => {
+              if (this.entitySchema.attributes[col].isMultiLang) {
+                changedColumns[`${col}_${$App.connection.userLang()}^`] = changedColumns[col]
+                delete changedColumns[col]
               }
-              this.loading = true
-              $App.connection.update(params)
-                .finally(function () {
-                  this.loading = false
-                }.bind(this))
-                .then((result) => {
-                  callback.call(this, result, true)
-                  return result
-                })
-                .then((result) => {
-                  $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
-                  $App.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
-                })
-            } else {
-              callback.call(this, null, false)
+            })
+            changedColumns.ID = this.value.ID
+            changedColumns.mi_modifyDate = this.value.mi_modifyDate
+            let params = {
+              fieldList: this.fields,
+              entity: this.entitySchema.name,
+              method: this.isNew ? 'insert' : 'update',
+              execParams: changedColumns
             }
+            this.loading = true
+            $App.connection.update(params)
+              .finally(function () {
+                this.loading = false
+              }.bind(this))
+              .then((result) => {
+                callback.call(this, result, true)
+                return result
+              })
+              .then((result) => {
+                $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
+                $App.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
+              })
+          } else {
+            callback.call(this, null, false)
           }
-        })
+        }
+        if (this.save) {
+          this.save(saveFn.bind(this))
+        } else {
+          saveFn()
+        }
+
       },
       remove () {
         this.loading = true
@@ -128,7 +147,7 @@
             return $App.connection.doDelete(request).then(function (result) {
               $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
               $App.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
-              this.$emit('close')
+              Ext.getCmp(this.currentTabId).close()
             }.bind(this)).finally(function () {
               this.loading = false
             }.bind(this))
@@ -142,8 +161,7 @@
         if (this.instanceID) {
           dataP = UB.Repository(this.entityName).attrs(this.fields).selectById(this.instanceID).then(function (resp) {
             this.$emit('input', resp)
-          }.bind(this)).finally(function () {
-            this.loading = false
+            this.oldData = Object.assign({}, resp)
           }.bind(this))
         } else {
           let parameters = {
@@ -156,14 +174,15 @@
               data[item] = result.resultData.data[0][key]
             })
             this.$emit('input', data)
-          }.bind(this)).finally(function () {
-            this.loading = false
+            this.oldData = Object.assign({}, data)
           }.bind(this))
           this.isNew = true
         }
+        dataP.finally(function (value) {
+          this.loading = false
+        }.bind(this))
       }
-    }
-    ,
+    },
     components: {
       toolbar
     }

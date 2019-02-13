@@ -177,7 +177,7 @@
             this.initialItem[this.primaryColumn] = item[this.primaryColumn]
             this.initialItem[this.displayValue] = item[this.displayValue] ? item[this.displayValue] : item[this.primaryColumn]
             this.initialItem['removed'] = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
-            this.$refs.selector.selectedLabel = item[this.displayValue]
+            if (this.$refs.selector) this.$refs.selector.selectedLabel = item[this.displayValue]
           }
         }).finally(() => {
           this.loading = false
