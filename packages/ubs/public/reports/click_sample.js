@@ -39,11 +39,6 @@ exports.reportCode = {
         return result
       })
   },
-  /**
-   * Executed when user click on hyperlink.
-   * Inside handler `this` is bind-ed to the ReportViewer instance
-   * @param e
-   */
   onReportClick: function (e) {
     // prevent default action
     e.preventDefault()
@@ -79,13 +74,14 @@ exports.reportCode = {
       this.contextMenu.showAt([e.x + this.el.getX(), e.y + this.el.getY()])
     }
   },
-  /**
-   * If `onAfterRender` present inside report code block, it will be called just after
-   * HTML report result is rendered
-   * @param iFrame
-   */
   onAfterRender: function (iFrame) {
+    // prevent content menu for all tr elements
+    function onTrContextmenu(e) {
+      e.preventDefault()
+    }
     const trList = iFrame.contentDocument.getElementsByTagName('tr')
-    console.log('There is', trList.length, 'rows in this report')
+    for (let i = 0, L = trList.length; i < L; i++) {
+      trList[i].addEventListener('contextmenu', onTrContextmenu)
+    }
   }
 }
