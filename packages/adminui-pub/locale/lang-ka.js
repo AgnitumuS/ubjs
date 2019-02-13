@@ -111,6 +111,7 @@ UB.i18nExtend({
   deleteConfirmationWithCaption: "ჩანაწერი {1} იქნება წაშლილი '{0}'. დარწმუნებული ხართ?",
   deleteFormConfirmCaption: "იქნება წაშლილი '{0}'. დარწმუნებული ხართ?",
   rowEditing: 'საჭიროა რედაქტირების მონაცემების შევსება',
+  notValidForColumns: "არ არის სწორი ღირებულებები სვეტში '{0}'",
   vyUvereny: 'დარწმუნებული ხართ?',
   formDefinition: "ინტერფეისის განმარტება",
   formModule: "მეთოდების განმარტება",
