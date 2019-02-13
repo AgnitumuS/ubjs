@@ -1,47 +1,48 @@
-<!--@mi_modifyDate "Thu Sep 13 2018 16:45:29 GMT+0300 (FLE Standard Time)"-->
+<!--@mi_modifyDate "Wed Feb 13 2019 19:54:33 GMT+0200 (EET)"-->
 <!--@name "click_sample"-->
 <!--@report_code "click_sample"-->
 <!--@model "UBS"-->
 
 <!--%pageOrientation:landscape-->
+
 <h1>Click handler sample</h1>
 <h1>Formatting samples. Formats depends on user locale. Change user language to see different formatting</h1>
 <h2>Number formatting sample</h2>
-<table>
+<table style="height: 144px;">
 <thead>
-<tr>
-<th>Formatting function</th>
-<th>Formatted</th>
+<tr style="height: 18px;">
+<th style="height: 18px; width: 157px;">Formatting function</th>
+<th style="height: 18px; width: 206px;">Formatted</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>as is</td>
-<td style="text-align: right;">{{num}}</td>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 157px;">as is</td>
+<td style="text-align: right; height: 18px; width: 206px;">{{num}}</td>
 </tr>
-<tr>
-<td>$fn</td>
-<td style="text-align: right;">{{#$fn}}"num"{{/$fn}}</td>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 157px;">$fn</td>
+<td style="text-align: right; height: 18px; width: 206px;">{{#$fn}}"num"{{/$fn}}</td>
 </tr>
-<tr>
-<td>$fn for negative</td>
-<td style="text-align: right;">{{#$fn}}"negNum"{{/$fn}}</td>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 157px;">$fn for negative</td>
+<td style="text-align: right; height: 18px; width: 206px;">{{#$fn}}"negNum"{{/$fn}}</td>
 </tr>
-<tr>
-<td>$fs</td>
-<td style="text-align: right;">{{#$fs}}"num"{{/$fs}}</td>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 157px;">$fs</td>
+<td style="text-align: right; height: 18px; width: 206px;">{{#$fs}}"num"{{/$fs}}</td>
 </tr>
-<tr>
-<td>$fs for negatife</td>
-<td style="text-align: right;">{{#$fs}}"negNum"{{/$fs}}</td>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 157px;">$fs for negative</td>
+<td style="text-align: right; height: 18px; width: 206px;">{{#$fs}}"negNum"{{/$fs}}</td>
 </tr>
-<tr>
-<td>$crn</td>
-<td style="text-align: right;">{{#$crn}}"num"{{/$crn}}</td>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 157px;">$crn</td>
+<td style="text-align: right; height: 18px; width: 206px;">{{#$crn}}"num"{{/$crn}}</td>
 </tr>
-<tr>
-<td>&nbsp;</td>
-<td style="text-align: right;">&nbsp;</td>
+<tr style="height: 18px;">
+<td style="height: 18px; width: 157px;">$crn negative</td>
+<td style="text-align: right; height: 18px; width: 206px;">{{#$crn}}"negNum"{{/$crn}}</td>
 </tr>
 </tbody>
 </table>
@@ -82,9 +83,9 @@
 </table>
 <h1>Click handler</h1>
 <p>How it works:</p>
-<p>In the HTML template variables values are binded to the data- attributes for row/column/cell table elements.<br />We <strong>strongly</strong> recommend to bind repeatable values for columns to the th element, for rows - to tr element to prevent data duplication inside rendered report.</p>
-<p>In report code block function with name `onReportClick` defined - it will be assigned as `click` handler to all anchors (a) HTML elements in the report.<br />Inside onReportClick handler we use `UBS.UBReport.cellInfo(e)` function to easy retrieve table/row/cell/rowIndex and colIndex for corresponding event and when use `HTMLElement.dataset` collection to ger parameters values.</p>
-<h2>Click on the country name below to open country form, or click on the owner name to open user form.</h2>
+<p>In the HTML template variables values are binded to the data- attributes for row/column/cell table elements.<br />We <strong>strongly</strong> recommend to bind repeatable values for columns to the TH element, for rows - to tr element to prevent data duplication inside rendered report.</p>
+<p>In report code block function with name `onReportClick` defined - it will be assigned as `click` handler to all anchors (a) HTML elements in the report.<br />Inside onReportClick handler we use `UBS.UBReport.cellInfo(e)` function to easy retrieve table/row/cell/rowIndex and colIndex for corresponding event and when use `HTMLElement.dataset` collection to get parameters values.</p>
+<h2>Click on the country name below to open country form, or click on the owner name to open popup menu with action list.</h2>
 <table style="width: 433px; height: 36px;">
 <thead>
 <tr style="height: 18px;">
