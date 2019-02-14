@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.6.26]
+### Changed
+ - base panel does not send `needAls: false` parameter for `select/insert/update` in case entity do not have ALS mixin
+ 
 ## [5.6.25]
 ### Changed
 - ubdetailgrid with RowEditing plugin : Changed data validation on the event 'validateedit'
