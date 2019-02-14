@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0]
-## Changed
+### Changed
  - vue updated 2.5.17 -> 2.6.6
  - elemet-ui updated 2.4.9 -> 2.5.4
 
