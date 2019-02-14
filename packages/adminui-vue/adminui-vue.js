@@ -25,6 +25,10 @@ Vue.use(ElementUI, {
 })
 
 let entityEditor = require('./components/UbEntityEditComponent.vue')
+window.BOUNDLED_BY_WEBPACK = false
+if (BOUNDLED_BY_WEBPACK) {
+  entityEditor = entityEditor.default
+}
 Vue.component('ub-entity-edit', entityEditor)
 
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
@@ -45,7 +49,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
         return
       }
     } else {
-      tabId = entitySchema.name + Math.random()
+      tabId = entitySchema.name + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     }
     let tab = $App.viewport.centralPanel.add({
       id: tabId,
@@ -66,7 +70,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
         'auto-form-component': autoFormComponent
       }
     })
-    vm.$mount(`#${tab.getId()}-outerCt`)
+    vm.$mount(`#${tabId}-outerCt`)
     tab.on('close', function () {
       vm.$destroy()
     })

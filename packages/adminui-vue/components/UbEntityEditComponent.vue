@@ -6,6 +6,7 @@
              :isChanged="isChanged"
              :useOnlyOwnActions="useOnlyOwnActions"
              :inputActions="inputActions"
+             :formCode="formCode"
              @saveAndClose="saveAndClose"
              @saveAndReload="saveAndReload"
              @remove="remove"
@@ -30,7 +31,8 @@
       useOnlyOwnActions: Boolean,
       inputActions: Array,
       save: Function,
-      currentTabId: String
+      currentTabId: String,
+      formCode: String
     },
     data () {
       return {
@@ -178,7 +180,7 @@
           }.bind(this))
           this.isNew = true
         }
-        dataP.finally(function (value) {
+        dataP.finally(function () {
           this.loading = false
         }.bind(this))
       }
