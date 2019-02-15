@@ -24,6 +24,19 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
+const Vuex = require('./node_modules/vuex/dist/vuex.common') // need to replace to 'vuex'
+const ClickOutside = require('./node_modules/vue-click-outside/index') // need to replace to 'vue-click-outside'
+window.Vuex = Vuex
+Vue.use(Vuex)
+Vue.use({
+  install(Vue){
+    Vue.directive('click-outside', ClickOutside)
+  }
+})
+
+const {replaceDefaultTabbar} = require('./components/tabbar/init')
+window.$App.on('applicationReady', replaceDefaultTabbar)
+
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
     let autoFormComponent = require('./components/AutoFormComponent.vue')
@@ -33,11 +46,9 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
     }
     let entitySchema = $App.domainInfo.get(this.entity)
     let tabTitle = entitySchema.caption
-    let pageColumns = Object.values(entitySchema.attributes).filter((at) => {
-      return at.defaultView
-    }).map((at) => {
-      return at.name
-    })
+    let pageColumns = Object.values(entitySchema.attributes)
+      .filter(at => at.defaultView)
+      .map(at => at.name)
     let data = {}
     let dataP
     let isNew = false
