@@ -24,12 +24,11 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
-const Vuex = require('./node_modules/vuex/dist/vuex.common') // need to replace to 'vuex'
-window.Vuex = Vuex
-Vue.use(Vuex)
-
 const {replaceDefaultTabbar} = require('./components/tabbar/init')
-window.$App.on('applicationReady', replaceDefaultTabbar)
+
+if (window.$App){
+  window.$App.on('applicationReady', replaceDefaultTabbar)
+}
 
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
