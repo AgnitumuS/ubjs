@@ -141,14 +141,12 @@ module.exports = {
 
   mounted() {
     window.addEventListener('mouseup', this.stopDrag)
-    window.addEventListener('mousemove', this.doDrag)
     this._oldWindowOnResize = window.onresize
     window.onresize = _.debounce(this.calcTabWidth, 300)
   },
 
   beforeDestroy() {
     window.removeEventListener('mouseup', this.stopDrag)
-    window.removeEventListener('mousemove', this.doDrag)
     window.onresize = this._oldWindowOnResize
     delete this._oldWindowOnResize
   },
@@ -177,21 +175,21 @@ module.exports = {
       this.positionActiveTab()
     },
 
-    startDrag(e) {
-      this.dragStart = e.clientX
+    startDrag({clientX}) {
+      window.addEventListener('mousemove', this.doDrag)
+      this.dragStart = clientX
       this.offsetStart = this.offset
       this.dragging = true
       this.disabledTabClick = false
       setTimeout(() => this.disabledTabClick = true, 200)
     },
 
-    doDrag(e) {
-      if (this.dragging) {
-        this.offset = Math.min(this.offsetStart + e.clientX - this.dragStart, 0)
-      }
+    doDrag({clientX}) {
+      this.offset = Math.min(this.offsetStart + clientX - this.dragStart, 0)
     },
 
     stopDrag() {
+      window.removeEventListener('mousemove', this.doDrag)
       this.dragging = false
       this.moveToView()
     },
