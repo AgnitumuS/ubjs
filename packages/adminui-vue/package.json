@@ -52,7 +52,6 @@
     "systemjs": "^0.20.18",
     "systemjs-plugin-css": "^0.1.32",
     "vue": "^2.6.6",
-    "vue-click-outside": "^1.0.7",
     "vue-template-compiler": "^2.6.6",
     "vuex": "^3.1.0"
   },

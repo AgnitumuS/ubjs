@@ -25,14 +25,8 @@ Vue.use(ElementUI, {
 })
 
 const Vuex = require('./node_modules/vuex/dist/vuex.common') // need to replace to 'vuex'
-const ClickOutside = require('./node_modules/vue-click-outside/index') // need to replace to 'vue-click-outside'
 window.Vuex = Vuex
 Vue.use(Vuex)
-Vue.use({
-  install(Vue){
-    Vue.directive('click-outside', ClickOutside)
-  }
-})
 
 const {replaceDefaultTabbar} = require('./components/tabbar/init')
 window.$App.on('applicationReady', replaceDefaultTabbar)

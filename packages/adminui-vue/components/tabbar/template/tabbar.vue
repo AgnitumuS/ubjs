@@ -38,18 +38,20 @@
         >
       </div>
     </div>
-    <div 
+
+    <el-popover 
       class="ub-tabbar__overflow"
-      v-click-outside="hideOverflowPopover"
+      placement="bottom"
+      trigger="click"
+      popper-class="ub-tabbar__overflow__tray"
       :class="{'hidden': this.visibleWidth >= this.tabsWidth}"
       >
       <div 
+        slot="reference"
         class="ub-tabbar__overflow__icon"
-        :class="{'active': overflowPopoverVisible}"
-        @click="overflowPopoverVisible = !overflowPopoverVisible"
         >
       </div>
-      <div class="ub-tabbar__overflow__tray" v-show="overflowPopoverVisible">
+      <div class="ub-tabbar__overflow__tabs">
         <tab 
           v-for="(tab, index) in tabs"
           :key="index"
@@ -60,7 +62,7 @@
           @close="handleClose"
           />
       </div>
-    </div>
+    </el-popover>
   </div>
 </template>
 
@@ -76,7 +78,6 @@ module.exports = {
 
   data(){
     return {
-      overflowPopoverVisible: false,
       dragging: false,
       dragStart: null,
       offsetStart: null,
@@ -184,10 +185,6 @@ module.exports = {
           this.changeActiveTab(index)
         }
       }
-    },
-
-    hideOverflowPopover() {
-      this.overflowPopoverVisible = false
     },
 
     handleClose(tabs, ignoreDrag) {

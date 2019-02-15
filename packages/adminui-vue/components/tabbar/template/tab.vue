@@ -1,6 +1,6 @@
 <template>
   <el-tooltip 
-    :disabled="tabData.title && tabData.title.length < 18" 
+    :disabled="inTray || tabData.title && tabData.title.length < 18" 
     :content="tabData.title" 
     placement="bottom"
     >
@@ -23,9 +23,9 @@
 <script>
 module.exports = {
   name: 'tab',
-  props: [
-    'tabData',
-    'inTray'
-  ]
+  props: {
+    tabData: Object,
+    inTray: Boolean
+  }
 }
 </script>
