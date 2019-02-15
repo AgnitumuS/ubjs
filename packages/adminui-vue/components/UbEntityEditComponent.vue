@@ -121,9 +121,9 @@
           } else {
             callback.call(this, null, false)
           }
-        }
+        }.bind(this)
         if (this.save) {
-          this.save(saveFn.bind(this))
+          this.save(saveFn)
         } else {
           saveFn()
         }
