@@ -1,8 +1,8 @@
 <template>
-  <div class="auto-form__header">
+  <div class="ub-toolbar">
     <div style="display: flex">
       <el-button v-for="button in buttons" :disabled="button.disabled" type="text" size="large"
-                 class="auto-form__header__button"
+                 class="ub-toolbar__button"
                  @click="button.action">
         <i :class="button.icon"></i>
       </el-button>
@@ -22,16 +22,16 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button type="text" slot="reference" size="large" class="auto-form__header__button">
+        <el-button type="text" slot="reference" size="large" class="ub-toolbar__button">
           <i class="fa fa-cog" aria-hidden="true"></i>
         </el-button>
       </el-popover>
-      <div class="auto-form__header__button__divider" v-if="isSimpleAudit"></div>
-      <div class="auto-form__header__date__container" v-if="isSimpleAudit">
-        <div class="auto-form__header__date">
+      <div class="ub-toolbar__button__divider" v-if="isSimpleAudit"></div>
+      <div class="ub-toolbar__date__container" v-if="isSimpleAudit">
+        <div class="ub-toolbar__date">
           <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate ? value.mi_createDate.toLocaleString() : '' }}
         </div>
-        <div class="auto-form__header__date">
+        <div class="ub-toolbar__date">
           <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate ? value.mi_modifyDate.toLocaleString() : '' }}
         </div>
       </div>

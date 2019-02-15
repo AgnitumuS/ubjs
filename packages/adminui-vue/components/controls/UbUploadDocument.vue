@@ -102,24 +102,3 @@
     }
   }
 </script>
-
-<style>
-  .ub-upload-document__a {
-    white-space: nowrap;
-    cursor: pointer;
-  }
-
-  .ub-upload-document__file-input input[type=file] {
-    font-size: 100px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-  }
-
-  .ub-upload-document__file-input {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-  }
-</style>

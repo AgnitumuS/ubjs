@@ -52,9 +52,3 @@
     }
   }
 </script>
-
-<style>
-    .ub-code-mirror {
-        line-height: 15px;
-    }
-</style>

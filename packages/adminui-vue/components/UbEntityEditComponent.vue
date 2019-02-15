@@ -1,5 +1,5 @@
 <template>
-  <div :loading="loading">
+  <div :loading="loading" style="height: 100%;">
     <toolbar v-model="value"
              :entityName="entityName"
              :isNew="isNew"
@@ -11,10 +11,8 @@
              @saveAndReload="saveAndReload"
              @remove="remove"
     ></toolbar>
-    <div class="ub-entity-edit__body">
-      <el-scrollbar style="width:100%">
-        <slot></slot>
-      </el-scrollbar>
+    <div class="ub-entity-edit__slot">
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -190,10 +188,3 @@
     }
   }
 </script>
-
-<style>
-  .ub-entity-edit__body {
-    margin: 10px 20px 0;
-  }
-
-</style>
