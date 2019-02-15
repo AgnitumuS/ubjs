@@ -46,8 +46,8 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
     }
     let entitySchema = $App.domainInfo.get(this.entity)
     let tabTitle = entitySchema.caption
-    let pageColumns = Object.values(entitySchema.attributes)
-      .filter(at => at.defaultView)
+    let pageColumns = entitySchema
+      .filterAttribute({defaultView: true})
       .map(at => at.name)
     let data = {}
     let dataP
