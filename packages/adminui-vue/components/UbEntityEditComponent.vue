@@ -20,6 +20,11 @@
 <script>
   let toolbar = require('./UbToolbarComponent.vue')
 
+  window.BOUNDLED_BY_WEBPACK = false
+  if (BOUNDLED_BY_WEBPACK) {
+    toolbar = toolbar.default
+  }
+
   module.exports = {
     name: 'UbEntityEditComponent',
     props: {
