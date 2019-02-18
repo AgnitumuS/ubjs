@@ -51,9 +51,7 @@
       isChanged: Boolean,
       useOnlyOwnActions: {
         type: Boolean,
-        default () {
-          return false
-        }
+        default: false
       },
       inputActions: {
         type: Array,
@@ -62,7 +60,10 @@
         }
       },
       inputButtons: {
-        type: Array
+        type: Array,
+        default () {
+          return []
+        }
       },
       formCode: String
     },
@@ -74,7 +75,10 @@
       }
     },
     computed: {
-      fields () {
+      entitySchema () {
+        return $App.domainInfo.get(this.entityName)
+      },
+      entityFields () {
         let pageColumns = Object.values(this.entitySchema.attributes).filter((at) => {
           return at.defaultView
         }).map((at) => {
@@ -84,11 +88,11 @@
         if (this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit) fieldList.push('mi_createDate')
         return fieldList
       },
-      buttons () {
-        return this.inputButtons && this.inputButtons > 0 ? this.inputButtons : this.defaultButtons
-      },
       canSave () {
         return this.entitySchema.haveAccessToAnyMethods([UB.core.UBCommand.methodName.INSERT, UB.core.UBCommand.methodName.UPDATE])
+      },
+      saveEnabled () {
+        return this.canSave && this.isChanged
       },
       canDelete () {
         return this.entitySchema.haveAccessToMethod(UB.core.UBCommand.methodName.DELETE) && !this.isNew
@@ -102,27 +106,6 @@
       },
       isSimpleAudit () {
         return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
-      },
-      entitySchema () {
-        return $App.domainInfo.get(this.entityName)
-      },
-      saveEnabled () {
-        return this.canSave && this.isChanged
-      },
-      defaultButtons () {
-        return [{
-          disabled: !this.saveEnabled,
-          icon: 'fa fa-share-square-o',
-          action: function () { this.$emit('saveAndClose') }.bind(this)
-        }, {
-          disabled: !this.saveEnabled,
-          icon: 'fa fa-save',
-          action: function () { this.$emit('saveAndReload') }.bind(this)
-        }, {
-          disabled: !this.canDelete,
-          icon: 'fa fa-trash-o',
-          action: function () { this.$emit('remove') }.bind(this)
-        }]
       },
       defaultActions () {
         let actions = []
@@ -221,8 +204,8 @@
             handler: {
               fn () {
                 if (this.isNew) return
-                let fieldList = this.fields,
-                  extendedFieldList = UB.core.UBUtil.convertFieldListToExtended(this.fields)
+                let fieldList = this.entityFields,
+                  extendedFieldList = UB.core.UBUtil.convertFieldListToExtended(this.entityFields)
 
                 function configureMixinAttribute (attributeCode) {
                   if (!extendedFieldList.find((field) => { return field.name === attributeCode })) {
@@ -325,6 +308,24 @@
       },
       actions () {
         return this.useOnlyOwnActions ? this.inputActions : [...this.defaultActions, ...this.inputActions]
+      },
+      defaultButtons () {
+        return [{
+          disabled: !this.saveEnabled,
+          icon: 'fa fa-share-square-o',
+          action: function () { this.$emit('saveAndClose') }.bind(this)
+        }, {
+          disabled: !this.saveEnabled,
+          icon: 'fa fa-save',
+          action: function () { this.$emit('saveAndReload') }.bind(this)
+        }, {
+          disabled: !this.canDelete,
+          icon: 'fa fa-trash-o',
+          action: function () { this.$emit('remove') }.bind(this)
+        }]
+      },
+      buttons () {
+        return this.inputButtons && this.inputButtons > 0 ? this.inputButtons : this.defaultButtons
       }
     },
     methods: {

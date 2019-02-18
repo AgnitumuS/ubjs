@@ -36,25 +36,6 @@
               :entityName="entitySchema.attributes[fieldName].associatedEntity"
           ></ub-select-many>
           <el-input
-              v-else-if="['Int', 'BigInt'].includes(entitySchema.attributes[fieldName].dataType)"
-              type='number'
-              v-model="value[fieldName]"
-          ></el-input>
-          <el-input
-              v-else-if="'Float' === entitySchema.attributes[fieldName].dataType"
-              type='number'
-              :step="'0.01'"
-              :controls="false"
-              v-model="value[fieldName]"
-          ></el-input>
-          <el-input
-              v-else-if="'Currency' === entitySchema.attributes[fieldName].dataType"
-              type='number'
-              :step="`0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION-1)}1`"
-              :controls="false"
-              v-model="value[fieldName]"
-          ></el-input>
-          <el-input
               v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
               type="textarea"
               :autosize="{ minRows: 3, maxRows: 4}"
@@ -72,7 +53,6 @@
           <ub-input
               v-else
               v-model="value[fieldName]"
-              :isMultiLang="entitySchema.attributes[fieldName].isMultiLang"
               :entityName="entitySchema.name"
               :attributeName="fieldName"
               :primaryValue="value.ID"
@@ -91,7 +71,6 @@
   let ubInput = require('./controls/UbInput.vue')
   let ubUploadDocument = require('./controls/UbUploadDocument.vue')
   let ubCodeMirror = require('./controls/UbCodeMirror.vue')
-  const ubDomain = require('@unitybase/cs-shared').UBDomain
 
   window.BOUNDLED_BY_WEBPACK = false
   if (BOUNDLED_BY_WEBPACK) {
@@ -147,7 +126,6 @@
     },
     data () {
       return {
-        UBDomain: ubDomain,
         value: {}
       }
     },

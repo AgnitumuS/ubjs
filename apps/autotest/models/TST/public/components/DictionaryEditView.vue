@@ -11,16 +11,22 @@
         <el-input v-model="entityData.filterValue"></el-input>
       </el-form-item>
       <el-form-item :label="entitySchema.attributes['currencyValue'].caption">
-        <el-input v-model="entityData.currencyValue"></el-input>
+        <ub-input v-model="entityData.currencyValue" :entityName="entityName" attributeName="currencyValue"></ub-input>
       </el-form-item>
       <el-form-item :label="entitySchema.attributes['floatValue'].caption">
-        <el-input v-model="entityData.floatValue"></el-input>
+        <ub-input v-model="entityData.floatValue" :entityName="entityName" attributeName="floatValue"></ub-input>
       </el-form-item>
     </el-form>
   </ub-entity-edit>
 </template>
 
 <script>
+  let ubInput = require('@unitybase/adminui-vue/components/controls/UbInput.vue')
+  window.BOUNDLED_BY_WEBPACK = false
+  if (BOUNDLED_BY_WEBPACK) {
+    ubInput = ubInput.default
+  }
+
   module.exports = {
     name: 'DepartmentEditView',
     props: {
@@ -42,6 +48,8 @@
         return $App.domainInfo.get(this.entityName)
       }
     },
-    components: {}
+    components: {
+      'ub-input': ubInput
+    }
   }
 </script>

@@ -45,7 +45,10 @@
       }
     },
     computed: {
-      fields () {
+      entitySchema () {
+        return $App.domainInfo.get(this.entityName)
+      },
+      entityFields () {
         let pageColumns = Object.values(this.entitySchema.attributes).filter((at) => {
           return at.defaultView
         }).map((at) => {
@@ -55,20 +58,11 @@
         if (this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit) fieldList.push('mi_createDate')
         return fieldList
       },
-      entitySchema () {
-        return $App.domainInfo.get(this.entityName)
-      },
       changedColumns () {
         let result = {}
         Object.keys(this.value).forEach(field => {
-          if (this.value[field] !== this.oldData[field]) {
-            if (this.entitySchema.attributes[field]) {
-              if (['Int', 'BigInt'].includes(this.entitySchema.attributes[field].dataType)) this.value[field] = Math.round(this.value[field])
-              if ('Float' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field] * 100) / 100
-              if ('Currency' === this.entitySchema.attributes[field].dataType) this.value[field] = Math.round(this.value[field] * Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)) / Math.pow(10, UBDomain.FLOATING_SCALE_PRECISION)
-            }
+          if (this.value[field] !== this.oldData[field])
             result[field] = this.value[field]
-          }
         })
         return result
       },
@@ -97,7 +91,7 @@
           let changedColumns = Object.assign({}, this.changedColumns)
           if (Object.keys(changedColumns).length > 0) {
             Object.keys(changedColumns).forEach(col => {
-              if (this.entitySchema.attributes[col].isMultiLang) {
+              if (this.entitySchema.attributes[col] && this.entitySchema.attributes[col].isMultiLang) {
                 changedColumns[`${col}_${$App.connection.userLang()}^`] = changedColumns[col]
                 delete changedColumns[col]
               }
@@ -105,7 +99,7 @@
             changedColumns.ID = this.value.ID
             changedColumns.mi_modifyDate = this.value.mi_modifyDate
             let params = {
-              fieldList: this.fields,
+              fieldList: this.entityFields,
               entity: this.entitySchema.name,
               method: this.isNew ? 'insert' : 'update',
               execParams: changedColumns
@@ -164,14 +158,14 @@
         let dataP
         this.loading = true
         if (this.instanceID) {
-          dataP = UB.Repository(this.entityName).attrs(this.fields).selectById(this.instanceID).then(function (resp) {
+          dataP = UB.Repository(this.entityName).attrs(this.entityFields).selectById(this.instanceID).then(function (resp) {
             this.$emit('input', resp)
             this.oldData = Object.assign({}, resp)
           }.bind(this))
         } else {
           let parameters = {
             entity: this.entityName,
-            fieldList: this.fields
+            fieldList: this.entityFields
           }
           dataP = $App.connection.addNew(parameters).then(function (result) {
             let data = {}

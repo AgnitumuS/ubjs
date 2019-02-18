@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-input v-model="currentValue"
-              @change="$emit('input', currentValue)">
+              @change="onChange" :type="fieldType" :controls="false" :step="step">
       <el-button slot="append"
                  v-if="isMultiLang"
                  @click="initLocalizableFields"
@@ -40,10 +40,13 @@
 </template>
 
 <script>
+  const ubDomain = require('@unitybase/cs-shared').UBDomain
+
   module.exports = {
     name: 'UbInput',
     data () {
       return {
+        UBDomain: ubDomain,
         dialogFormVisible: false,
         localizableFields: {},
         loading: false,
@@ -54,21 +57,50 @@
     },
     computed: {
       dialogTitle () {
-        return (Object.values($App.domainInfo.get(this.entityName).attributes).find(attr => attr.code === this.attributeName) || {}).caption
+        return (Object.values(this.entitySchema.attributes).find(attr => attr.code === this.attributeName) || {}).caption
+      },
+      entitySchema () {
+        return $App.domainInfo.get(this.entityName)
+      },
+      dataType () {
+        return this.entitySchema.attributes[this.attributeName].dataType
+      },
+      fieldType () {
+        return ['Int', 'BigInt', 'Float', 'Currency'].includes(this.dataType) ? 'number' : 'text'
+      },
+      step () {
+        let step = '0'
+        if ('Float' === this.dataType) step = '0.01'
+        if ('Currency' === this.dataType) step = `0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION - 1)}1`
+        return step
+      },
+      isMultiLang () {
+        return this.entitySchema.attributes[this.attributeName].isMultiLang
       }
     },
     props: {
-      value: String,
-      isMultiLang: {
-        type: Boolean,
-        default: false
+      value: [String, Number],
+      entityName: {
+        type: String,
+        required: true
       },
-      entityName: String,
-      attributeName: String,
+      attributeName: {
+        type: String,
+        required: true
+      },
       primaryValue: [String, Number],
       objectValue: Object
     },
     methods: {
+      onChange () {
+        if (['Int', 'BigInt'].includes(this.dataType))
+          this.currentValue = Math.round(this.currentValue)
+        if ('Float' === this.dataType)
+          this.currentValue = Math.round(this.currentValue * 100) / 100
+        if ('Currency' === this.dataType)
+          this.currentValue = Math.round(this.currentValue * Math.pow(10, this.UBDomain.FLOATING_SCALE_PRECISION)) / Math.pow(10, this.UBDomain.FLOATING_SCALE_PRECISION)
+        this.$emit('input', this.currentValue)
+      },
       saveLocalization () {
         let changedColumns = []
         Object.keys(this.localizableFields).forEach(key => {
@@ -76,7 +108,7 @@
         })
         if (changedColumns.length > 0) {
           changedColumns.forEach(key => {
-            this.objectValue[key] = this.localizableFields[key].value
+            this.$set(this.objectValue, key, this.localizableFields[key].value)
           })
           Object.keys(this.localizableFields).forEach(key => this.oldLocalization[key] = {value: this.localizableFields[key].value})
         }
