@@ -75,7 +75,7 @@ Ext.define('UB.view.Viewport', {
       id: 'ubCenterViewport',
       isMainTabPanel: true,
       deferredRender: false,
-      layout: 'fit',
+      region: 'center',
       maxTabWidth: 200,
       border: false,
       margin: '3, 0, 0, 0',
@@ -109,6 +109,7 @@ Ext.define('UB.view.Viewport', {
         {
           xtype: 'panel',
           region: 'center',
+          layout: 'border',
           items: [
             me.topPanel,
             me.centralPanel
