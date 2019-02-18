@@ -15,6 +15,7 @@
           class="ub-tab-slider__transition-group"
           >
           <tab 
+            ref="tab"
             v-for="(tab, index) in tabs"
             :key="tab.id"
             :tab-data="tab"
@@ -162,10 +163,12 @@ module.exports = {
 
     calcTabWidth() {
       const points = []
-      Array.prototype.forEach.call(this.$refs.tabInner.childNodes[0].childNodes, (item, index) => {
-        points.push(index === 0 ? item.offsetLeft : item.offsetLeft)
-      })
-
+      
+      for (const tab of this.$refs.tab){
+        const {offsetLeft} = tab.$el
+        points.push(offsetLeft)
+      }
+      
       this.setMeasurements({
         visibleWidth: this.$refs.tabWrap.offsetWidth,
         tabsWidth: this.$refs.tabInner.offsetWidth,
