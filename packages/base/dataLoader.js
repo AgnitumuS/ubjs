@@ -7,45 +7,45 @@ const path = require('path')
 /**
  * Utils for load data from different formats. You can find many examples of the use inside models `_initialData` folders.
  *
- * Example:
+ * @example
  *
-     const csvLoader = require('@unitybase/base').dataLoader
-     conn = session.connection;
-     csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-CDN.csv'),
-       'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3]
-     )
+const csvLoader = require('@unitybase/base').dataLoader
+conn = session.connection;
+csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-CDN.csv'),
+'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3]
+)
 
- * Example with data transformation - in this case we pass transformation function to mapping
- * array instead of CSV column index:
+ * @example
  *
-     var ukraineID = conn.lookup('cdn_country', 'ID',
-       {expression: 'code', condition: 'equal', values: {code: 'UKR'}}
-     );
-     if (!ukraineID) {
-          throw new Error('Country with code UKR not found');
-      }
+//data transformation - in this case we pass transformation function to mapping array instead of CSV column index:
+var ukraineID = conn.lookup('cdn_country', 'ID',
+  {expression: 'code', condition: 'equal', values: {code: 'UKR'}}
+);
+if (!ukraineID) {
+     throw new Error('Country with code UKR not found');
+ }
 
-     // CSV columns: code,regionType,name,fullName
-     // we map:
-     //  - parentAdminUnitID to id of Ukraine (constant)
-     //  - regionTypeID fo function what lookup region ID using region code from CSV file
-     csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_region_ukraine.csv', 'cdn_region',
-        ['parentAdminUnitID', 'code', 'regionTypeID', 'name', 'caption', 'fullName'],
-        [
-            function(){return ukraineID;},
-            0,
-            function(row){
-                var regionType;
-                regionType = conn.lookup('cdn_regiontype', 'ID', {expression: 'code', condition: 'equal', values: {code: row[1]}});
-                if (!regionType){
-                    throw new Error('Unknown region type ' + row[1]);
-                }
-                return regionType;
-            },
-            2, 2, 3
-        ],
-        1, ','
-     )
+// CSV columns: code,regionType,name,fullName
+// we map:
+//  - parentAdminUnitID to id of Ukraine (constant)
+//  - regionTypeID fo function what lookup region ID using region code from CSV file
+csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_region_ukraine.csv', 'cdn_region',
+   ['parentAdminUnitID', 'code', 'regionTypeID', 'name', 'caption', 'fullName'],
+   [
+       function(){return ukraineID;},
+       0,
+       function(row){
+           var regionType;
+           regionType = conn.lookup('cdn_regiontype', 'ID', {expression: 'code', condition: 'equal', values: {code: row[1]}});
+           if (!regionType){
+               throw new Error('Unknown region type ' + row[1]);
+           }
+           return regionType;
+       },
+       2, 2, 3
+   ],
+   1, ','
+)
 
  * @module dataLoader
  * @memberOf module:@unitybase/base
@@ -73,7 +73,7 @@ module.exports = {
  *
  * @param {Number} [startRow=0] Start from this CSV file row
  * @param {String} [delimiter=';'] CSV file delimiter
- * @param {Number} [transLen=1000} Maximum rows count to be inserted on the single database transaction
+ * @param {Number} [transLen=1000] Maximum rows count to be inserted on the single database transaction
  */
 function loadSimpleCSVData (conn, fileName, entityName, ettAttributes, mapping, startRow, delimiter, transLen) {
   mapping = mapping || ettAttributes.map((a, i) => i)

@@ -48,7 +48,7 @@ module.exports = {
   dataLoader: dataLoader,
   /**
    * ORM **select** method implementation using files as a data source.
-   * Used for loading files & transforming it content to {@link TubCachedData} format
+   * Used for loading files & transforming it content to {@link module:LocalDataStore.TubCachedData TubCachedData} format
    * @type {module:FileBasedStoreLoader}
    */
   FileBasedStoreLoader,

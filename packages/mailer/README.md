@@ -12,7 +12,7 @@ The right way is to **put the mail messages in the queue** and send them via sch
   - a `mail` scheduler job for sending mails from the queue (once a minute by default)
 
 Usage sample:
-```
+```js
   const UBMail = require('@unitybase/mailer')
   // send e-mail
   let sender = new UBMail.TubMailSender({

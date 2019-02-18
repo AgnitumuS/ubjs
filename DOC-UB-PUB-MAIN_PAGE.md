@@ -1,6 +1,7 @@
 <a href="https://unitybase.info/"> <img src="https://unitybase.info/favicon.ico" height="50"/></a>
 
-# `@unitybase/ub-pub` is a data layer for accessing UnityBase server from Browser or NodeJS
+# @unitybase/ub-pub
+Data layer for accessing UnityBase server from Browser or NodeJS
 
 ## Connecting to UB server
 The main entry point is {@link connect connect} method.
@@ -10,8 +11,8 @@ The main entry point is {@link connect connect} method.
 global.XMLHttpRequest = require('xhr2')
 ```
 
-```
-  conts UB = require('@unitybase/ub-pub')
+```javascript
+  const UB = require('@unitybase/ub-pub')
   const conn = UB.connect({
     host: 'https://myserver.com',
     onCredentialRequired: function(conn, isRepeat){
@@ -35,9 +36,9 @@ request buffering and proper data serialization.
 Connection contains the information about currently logged-in user.
 The application logic on the server side can add any custom properties
 required for application when user is already logged-in.
-Such properties are available on the client in {@link UBConnection@userData connection.userData()}}
+Such properties are available on the client in {@link class:UBConnection#userData connection.userData()}}
 
-```
+```javascript
   console.log(`
     Hello, ${conn.userLogin()}!
     We know that you are ${JSON.stringify(conn.userData())}
@@ -45,14 +46,14 @@ Such properties are available on the client in {@link UBConnection@userData conn
 ```
 
 ## Domain
-{@link UBConnection#domain connection.domain} contains information about the
+{@link class:UBConnection#domain connection.domain} contains information about the
 application domain - the list of models, entities, entities' attributes and methods.
 Domain is already localized to the language of logged-in user.
 
 This information should be used by the client application during building the UI.
 For example:
 
-```
+```javascript
 let usersEntity = conn.domain.get('uba_user')
 // localized caption of entity uba_user
 console.log(usersEntity.caption)
@@ -73,10 +74,10 @@ console.log(`Currently logged-in user
 
 In most cases client retrieves data from the server using {@link UBQL UBQL} (UnityBase Query Language) JSON.
 
-{@link UBConnection#Repository connection.Repository} fabric function is a helper
+{@link class:UBConnection#Repository connection.Repository} fabric function is a helper
 for building {@link UBQL UBQL} JSON
 
-```
+```javascript
 conn.Repository('my_entity').attrs(['ID', 'code'])
  .attrs('attrOfEntityType.caption') // JOIN to other table
  .where('code', 'in', ['1', '2', '3'])  // code in ('1', '2', '3')
@@ -103,7 +104,7 @@ This happens **automatically** - just write the code as usual and let the connec
 care about network performance. Run the code below in console and look into the Network -
 you will see the single HTTP request
 
-```
+```javascript
 Promise.all([
   conn.Repository('uba_user').attrs('ID').selectAsArray(),
   conn.Repository('uba_group').attrs('ID').selectAsObject()
@@ -118,7 +119,7 @@ without sending HTTP request over the wire. Internally the repository uses
 {@link module:@unitybase/cs-shared:LocalDataStorage LocalDataStorage} to filter and sort data locally.
 
 Test it from the console:
-```
+```javascript
 // first call to cached entity will get data from server
 UB.Repository('ubm_enum').attrs(['ID', 'code'])
  .where('code', 'startsWith', 'I').selectAsObject()
@@ -137,7 +138,7 @@ As a side effect @unitybase/ub-pub module contains "Promisified" API for HTTP re
 
 So you do not need axios etc. Just use a `UB.xhr`, `UB.get` or `UB.post`:
 
-```
+```javascript
   conts UB = require('@unitybase/ub-pub')
   UB.get('https://unitybase.info').then(resp => console.log(resp.data))
 ```

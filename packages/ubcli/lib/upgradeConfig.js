@@ -43,7 +43,7 @@ module.exports = function upgradeConfig (cfg) {
 /**
  * Convert named collection - {name1: {}, name2: {}} to array -> [{name: name1, ...}, ...]
  * Will mutate original!
- * @param namedCollection
+ * @param {object} namedCollection
  * @private
  */
 function namedCollection2Array (namedCollection) {

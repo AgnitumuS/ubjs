@@ -356,7 +356,7 @@ UBDomain.getPhysicalDataType = function (dataType) {
  * Model (logical group of entities).
  * Instantiated in  {@link UBDomain#models UBDomain.models} and {@link UBDomain#orderedModels UBDomain.orderedModels}
  * @class
- * @param cfg
+ * @param {object} cfg
  * @param {string} cfg.path
  * @param {boolean} cfg.needInit
  * @param {boolean} cfg.needLocalize
@@ -710,7 +710,7 @@ UBEntity.prototype.attr = function (attributeCode, simpleOnly) {
 
 /**
  * Get entity attribute by code. Throw error if attribute is not found.
- * @param attributeCode
+ * @param {string} attributeCode
  * @returns {UBEntityAttribute}
  */
 UBEntity.prototype.getAttribute = function (attributeCode) {
@@ -1233,7 +1233,7 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    */
   this.isUnique = (attributeInfo.isUnique === true)
   /**
-   * @type{string}
+   * @type {string}
    * @readonly
    */
   this.defaultValue = attributeInfo.defaultValue
@@ -1372,9 +1372,9 @@ UBEntityMixin.prototype.enabled = true
  * Mixin for persisting entity to a database
  * @class
  * @extends UBEntityMixin
- * @param mixinInfo
- * @param i18n
- * @param mixinCode
+ * @param {object} mixinInfo
+ * @param {object} i18n
+ * @param {string} mixinCode
  */
 function UBEntityStoreMixin (mixinInfo, i18n, mixinCode) {
   UBEntityMixin.apply(this, arguments)
@@ -1397,9 +1397,9 @@ UBEntityStoreMixin.prototype.safeDelete = false
  * Historical data storage mixin
  * @class
  * @extends UBEntityMixin
- * @param mixinInfo
- * @param i18n
- * @param mixinCode
+ * @param {object} mixinInfo
+ * @param {object} i18n
+ * @param {string} mixinCode
  * @constructor
  */
 function UBEntityHistoryMixin (mixinInfo, i18n, mixinCode) {
@@ -1416,9 +1416,9 @@ UBEntityHistoryMixin.prototype.historyType = 'common'
  * Access control list mixin
  * @class
  * @extends UBEntityMixin
- * @param mixinInfo
- * @param i18n
- * @param mixinCode
+ * @param {object} mixinInfo
+ * @param {object} i18n
+ * @param {string} mixinCode
  */
 function UBEntityAclRlsMixin (mixinInfo, i18n, mixinCode) {
   UBEntityMixin.apply(this, arguments)
@@ -1433,9 +1433,9 @@ UBEntityAclRlsMixin.prototype.aclRlsSelectionRule = 'exists'
  * Full text search mixin
  * @class
  * @extends UBEntityMixin
- * @param mixinInfo
- * @param i18n
- * @param mixinCode
+ * @param {object} mixinInfo
+ * @param {object} i18n
+ * @param {string} mixinCode
  */
 function UBEntityFtsMixin (mixinInfo, i18n, mixinCode) {
   UBEntityMixin.apply(this, arguments)
@@ -1454,9 +1454,9 @@ UBEntityFtsMixin.prototype.scope = 'connection' // sConnection
 UBEntityFtsMixin.prototype.dataProvider = 'mixin'// dcMixin
 /**
  * Attribute level security mixin
- * @param mixinInfo
- * @param i18n
- * @param mixinCode
+ * @param {object} mixinInfo
+ * @param {object} i18n
+ * @param {string} mixinCode
  * @constructor
  * @extends UBEntityMixin
  */
