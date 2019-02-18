@@ -7255,17 +7255,10 @@ a.x-tab {
  * @member Ext.button.Button
  */
 /* line 255, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small {
-  border-color: #cfd1d6;
-}
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-small {
-  border-radius: 5px;
   padding: 6px 6px 6px 8px;
-  border-width: 1px;
-  border-style: solid;
-  background-color: #eaeaea;
 }
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -8410,17 +8403,10 @@ a.x-tab {
 /*</if slicer>*/
 /* */
 /* line 255, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small {
-  border-color: #f0f3f3;
-}
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-small {
-  border-radius: 5px;
   padding: 6px 6px 6px 8px;
-  border-width: 1px;
-  border-style: solid;
-  background-color: transparent;
 }
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -8785,17 +8771,10 @@ a.x-tab {
 /*</if slicer>*/
 /* */
 /* line 255, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium {
-  border-color: #f0f3f3;
-}
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-medium {
-  border-radius: 5px;
   padding: 6px 6px 6px 8px;
-  border-width: 1px;
-  border-style: solid;
-  background-color: transparent;
 }
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -9677,7 +9656,7 @@ a.x-tab {
   border-color: silver;
   border-width: 0;
   background-image: none;
-  background-color: #f0f3f3;
+  background-color: #ffffff;
 }
 /* line 51, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-default .x-box-scroller {

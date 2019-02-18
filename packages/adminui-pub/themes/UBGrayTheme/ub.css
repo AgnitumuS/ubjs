@@ -783,12 +783,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .ub-header-menu-container {
-    /*color: #ffffff; */
-    /* background-color: #343945; */
-    background-color: #f3f3f4;
-    padding: 0.3em 0 0.5em 0.2em;             	
-    /* z-index: 7; */
-    box-shadow: rgba(0, 0, 0, 0.298039) 0 2px 3px 0;
+    padding: 0.3em 0 0.5em 0.2em;
 }
 
 #ubCenterViewport .x-tab-bar-strip-default {
@@ -1376,6 +1371,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 .ub-grid-info-panel-tb {
+    background-color: #f0f3f3;
     /*border-color: #e8e5d3;*/
     /*padding: 0 4px;*/
     /*border-width: 1px;*/
