@@ -351,7 +351,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .ub-tree-node .ub-tree-node-title-withicon {
     padding: 0 3px 0 20px;
-    padding-bottom: 0 !important;
 }
 
 .ub-tree-node-icon {
@@ -676,7 +675,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     -ms-user-select: none; /* IE 10+ */
 
     /* No support for these yet, use at own risk */
-    -o-user-select: none;
     user-select: none;
 }
 
@@ -815,16 +813,10 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .ub-header-menu-item .x-btn-default-toolbar-small .x-btn-inner {
     font-weight: 600;
-    /* color: rgba(255, 255, 255, 0.87); */
-    color: #0d47a1;
-    /* padding: 0 5px; */
 }
 
-.ub-header-menu-item .x-btn-default-toolbar-small .x-btn-inner {
-    /*color: #ffffff;*/
-}
 .ub-header-menu-item .ub-label {
-  color: #0d47a1;
+  color: #2f7c94;
 }
 
 .ub-menu-button {
@@ -1445,9 +1437,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 .ub-btn-rounded {
-    border-image-outset: 0;
     border-image-repeat: stretch;
-    border-image-slice: 100%;
     border-image-source: none;
     border-image-width: 1;
     border-radius: 50%;
