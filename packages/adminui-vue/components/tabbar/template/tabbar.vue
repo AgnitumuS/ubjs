@@ -164,9 +164,11 @@ module.exports = {
     calcTabWidth() {
       const points = []
       
-      for (const tab of this.$refs.tab){
-        const {offsetLeft} = tab.$el
-        points.push(offsetLeft)
+      if (this.$refs.tab){
+        for (const tab of this.$refs.tab){
+          const {offsetLeft} = tab.$el
+          points.push(offsetLeft)
+        }
       }
       
       this.setMeasurements({
