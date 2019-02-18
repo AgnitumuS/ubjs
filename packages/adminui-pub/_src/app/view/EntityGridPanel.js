@@ -1134,6 +1134,17 @@ Ext.define('UB.view.EntityGridPanel', {
         })
       })
       rowEditing.on('validateedit', function (editor, context) {
+        const errorCols = context.grid.columns.filter(function(col) {
+          return col.field.getValue() && col.field.lastSelection && !col.field.lastSelection.length
+        }).map(function (col) {
+          return col.text
+        })
+
+        if (errorCols.length) {
+          $App.dialogInfo(UB.format(UB.i18n('notValidForColumns'), `<br> ${errorCols.join('<br>')}`))
+          return false
+        }
+
         if (_.isFunction(me.onValidateEdit)) {
           let result = me.onValidateEdit(editor, context)
           if (result === false) {

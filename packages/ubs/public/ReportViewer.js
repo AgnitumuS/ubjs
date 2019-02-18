@@ -1,4 +1,5 @@
 /* global Ext, Blob */
+const _ = require('lodash')
 require('./UBReport')
 const UB = require('@unitybase/ub-pub')
 const baseRepCSS = `body {
@@ -80,7 +81,12 @@ Ext.define('UBS.ReportViewer', {
   height: 500,
   reportCSSAdded: false,
   paramForm: null,
-
+  /**
+   * Menu instance. Can be used as a popup action list when user click on link
+   * See report with code `click_sample` inside @untybase/ubs for usage example
+   * @type {Ext.menu.Menu}
+   */
+  contextMenu: null,
   /**
    * @cfg {UBS.UBReport} report
    */
@@ -110,6 +116,7 @@ Ext.define('UBS.ReportViewer', {
             tag: 'iframe'
           }
         })
+        me.contextMenu = Ext.create('Ext.menu.Menu')
         if (me.report.allowExportToExcel) {
           excelBtn = {
             xtype: 'button',
@@ -248,6 +255,11 @@ Ext.define('UBS.ReportViewer', {
     })
   },
 
+  htmlReportDocClick: function(e) {
+    if (this.contextMenu && this.contextMenu.isVisible) {
+      this.contextMenu.hide()
+    }
+  },
   showReport: function (data) {
     let me = this
     switch (me.reportType) {
@@ -284,8 +296,12 @@ Ext.define('UBS.ReportViewer', {
         if (me.report.onReportClick) { // add onclick handler for all <a href="">
           let refs = iFrameDoc.getElementsByTagName('a')
           for (let i = 0, L = refs.length; i < L; i++) {
-            refs[i].addEventListener('click', me.report.onReportClick, true)
+            refs[i].addEventListener('click', me.report.onReportClick.bind(me), true)
           }
+        }
+        iFrameDoc.addEventListener('click', me.htmlReportDocClick.bind(me), true)
+        if (me.report.onAfterRender) { // user-definer afterrender
+          me.report.onAfterRender(iFrame)
         }
         break
     }
@@ -299,5 +315,9 @@ Ext.define('UBS.ReportViewer', {
     if (!this.reportDone) {
       this.getEl().mask(UB.i18n('pleaseWait'))
     }
+  },
+  beforeDestroy: function () {
+    if (this.contextMenu) this.contextMenu.destroy()
+    this.callParent(arguments)
   }
 })

@@ -111,6 +111,7 @@ UB.i18nExtend({
   deleteConfirmationWithCaption: "Будет удалена запись {1} из '{0}'. Вы уверены?",
   deleteFormConfirmCaption: "Будет удалено '{0}'. Вы уверены?",
   rowEditing: 'Необходимо завершить редактирование данных',
+  notValidForColumns: "Недопустимые значения в колонках '{0}'",
   vyUvereny: 'Вы уверены?',
   formDefinition: 'Описание интерфейса',
   formModule: 'Описание методов',

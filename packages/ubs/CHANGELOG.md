@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Added
+ - new handler `onAfterRender` for reports. Will be called by ReportViewer just after HTML report result is rendered
+ - new property `ReportViewer.contextMenu` - can be used to show menu while user click on hyperlink inside rendered HTML report
+   See [click_sample.js](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/packages/ubs/public/reports/click_sample.js#L42) 
+   for usage example
+  
+### Changed
+ - for HTML report `this` inside `onReportClick` handler now instance of ReportViewer
+ 
+### Fixed
+ - prevent clean of report template data in case only code block of report is updated 
+ 
 ## [5.1.41]
 ### Added
  - Report editor form: show warning for server-side test and report reload in case server / client not in dev mode 

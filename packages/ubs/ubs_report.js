@@ -234,7 +234,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   })
   let newTemplateInfo = newValues.template
   let reportBody
-  if (isInsert || !newTemplateInfo) {
+  if (isInsert && !newTemplateInfo) {
     reportBody = ''
   } else {
     reportBody = App.blobStores.getContent(

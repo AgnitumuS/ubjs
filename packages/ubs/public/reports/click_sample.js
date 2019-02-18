@@ -1,4 +1,3 @@
-
 exports.reportCode = {
   /**
   * This function must be defined in report code block.
@@ -18,6 +17,7 @@ exports.reportCode = {
     let me = this
     return UB.Repository('cdn_country').attrs(['ID', 'name', 'mi_owner', 'mi_owner.name', 'mi_modifyDate']).selectAsObject({'mi_owner.name': 'ownerName'})
       .then(function (countries) {
+        let result
         let data = {
           countries: countries,
           date: new Date(),
@@ -25,26 +25,26 @@ exports.reportCode = {
           negNum: -1234567.89
         }
         switch (me.reportType) {
-          case 'pdf': 
+          case 'pdf':
             result = me.buildHTML(data)
             result = me.transformToPdf(result)
             break
-          case 'html': 
+          case 'html':
             result = me.buildHTML(data)
             break
-          case 'xlsx':           
+          case 'xlsx':
             result = me.buildXLSX(data)
             break
-        }        
-        return result   
+        }
+        return result
       })
   },
   onReportClick: function (e) {
     // prevent default action
     e.preventDefault()
-    // get table/cell/roe based on event target
+    // get table/cell/row based on event target
     let cellInfo = UBS.UBReport.cellInfo(e)
-    // get entity from a table header dataset (in HTML templete ht contains data-entity="entityCode"
+    // get entity from a table header dataset (in HTML templete <th> element contains data-entity="entityCode"
     let entity = cellInfo.table.rows[0].cells[cellInfo.colIndex].dataset.entity
     // get ID from clicked <a>. (in HTML template <a> element contains data-id="id value"
     let ID = parseInt(e.target.dataset.id, 10)
@@ -52,10 +52,36 @@ exports.reportCode = {
     // let dataFromRow = cellInfo.row.dataset.yourAttrName
     // to get data from clicked cell
     // let cellInfo.cell.dataset.yourAttributeName
-    $App.doCommand({
-      cmdType: 'showForm',
-      entity: entity,
-      instanceID: ID
-    })
+    if (cellInfo.colIndex === 1) {
+      // for first column there is only one action - execute it
+      $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+    } else {
+      // for second column show context menu and let user choose action
+      this.contextMenu.removeAll()
+      const menuItems = [{
+        text: `Action1 for row: ${cellInfo.rowIndex} col: ${cellInfo.colIndex}, ID: ${ID}`,
+        handler: () => $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+      }, {
+        text: `Another action`,
+        handler: () => $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+      }, {
+        xtype: 'menuseparator'
+      }, {
+        text: `And one more`,
+        handler: () => $App.doCommand({cmdType: 'showForm', entity: entity, instanceID: ID})
+      }]
+      this.contextMenu.add(menuItems)
+      this.contextMenu.showAt([e.x + this.el.getX(), e.y + this.el.getY()])
+    }
+  },
+  onAfterRender: function (iFrame) {
+    // prevent content menu for all tr elements
+    function onTrContextmenu(e) {
+      e.preventDefault()
+    }
+    const trList = iFrame.contentDocument.getElementsByTagName('tr')
+    for (let i = 0, L = trList.length; i < L; i++) {
+      trList[i].addEventListener('contextmenu', onTrContextmenu)
+    }
   }
 }

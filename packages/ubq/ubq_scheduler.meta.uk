@@ -1,0 +1,58 @@
+﻿{
+    "caption": "Планувальники задач",
+    "description": "",
+    "attributes": [
+        {
+            "name": "ID",
+            "caption": "ID"
+        },
+        {
+            "name": "name",
+            "caption": "Ім'я задачі"
+        },
+        {
+            "name": "schedulingCondition",
+            "caption": "Умова планування задачі"
+        },
+        {
+            "name": "cron",
+            "caption": "Cron запис"
+        },
+        {
+            "name": "description",
+            "caption": "Опис"
+        },
+        {
+            "name": "command",
+            "caption": "Команда"
+        },
+        {
+            "name": "module",
+            "caption": "Модуль"
+        },
+        {
+            "name": "singleton",
+            "caption": "Одиничний екземпляр"
+        },
+        {
+            "name": "runAs",
+            "caption": "Запустити як"
+        },
+        {
+            "name": "logSuccessful",
+            "caption": "Записувати успішне виконання"
+        },
+        {
+            "name": "overridden",
+            "caption": "Перезаписати"
+        },
+        {
+            "name": "originalModel",
+            "caption": "Оригінальна модель"
+        },
+        {
+            "name": "actualModel",
+            "caption": "Актуальна модель"
+        }
+    ]
+}

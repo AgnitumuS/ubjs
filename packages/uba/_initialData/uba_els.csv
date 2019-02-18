@@ -1,5 +1,6 @@
 code;entityMask;methodMask;ruleType;ruleRole;description
 UBA_USER_LANGCH_EVERYONE;uba_user;changeLanguage;A;User;Allow change language for Everyone
+UBA_USER_UDATACH_USERS;uba_user;setUDataKey;A;User;Allow set uData key for user
 UBA_USER_READ_USERS;uba_user;select;A;User;Allow read users for registered user
 UBA_USER_READ_GROUPS;uba_group;select;A;User;Allow read groups for registered user
 UBA_USER_EDIT_SUPERVISOR;uba_user;[iuda]*;A;Supervisor;Allow CUD operations on users for supervisor
