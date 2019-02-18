@@ -7,7 +7,7 @@ This model is a main entry point for a UnityBase server application.
 In term of UnityBase application is defined by:
  - configuration (ubConfig.json by default): file what
  describe settings for http server, logging, authorization methods,
- Domain, etc. See [server config json schema](http://lbovet.github.io/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
+ Domain, etc. See [server config json schema](https://unitybase.info/docson/index.html#https://unitybase.info/models/UB/schemas/ubConfig.schema.json)
  for full description
  - `package.json` - npm/yarn configuration used to give information to
  package manager that allows it to identify the project as well as
@@ -25,7 +25,7 @@ UB.start()
 ## Application initialization
 {@link module:@unitybase/ub~start UB.start} method of `@unitybase/ub` package will:
  - parse application config passed as `-cfg` command line parameter to `ub`
- and put parsed content to {@link App#serverConfig App.serverConfig}
+ and put parsed content to {@link class:App#serverConfig App.serverConfig}
  - create HTTP server and configure it using parameters from `httpServer` config section
 
 and perform steps below for every HTTP thread:
@@ -33,7 +33,7 @@ and perform steps below for every HTTP thread:
  - for each model from `application.domain.models` folders (except ones marked as `_public_only_`)
   load a model (see below)
  - register build-in UnityBase {@link module:@unitybase/ub.module:endpoints endpoints}
- - emit {@link event:domainIsLoaded App.domainIsLoaded} event
+ - emit {@link class:App#domainIsLoaded App.domainIsLoaded} event
 
 ## Model
 ### Server-side
@@ -48,7 +48,7 @@ Model is loaded in server thread memory(in order they defined in `application.do
 To simplify a ubConfig model `package.json` can contains `config.ubmodel` section what describe the
 model name and (optionally) ``"isPublic": true` for "browser-only" model
 
-``` package.json
+```json
 "config": {
     "ubmodel": {
       "name": "UBS"
@@ -57,7 +57,7 @@ model name and (optionally) ``"isPublic": true` for "browser-only" model
 ```
 
 for "browser-only" model:
-``` package.json
+```json
   "config": {
     "ubmodel": {
       "name": "adminui-pub",
@@ -67,7 +67,7 @@ for "browser-only" model:
 ```
 
 For such models only path to model should be added to the `application.domain.models` section of ubConfig.json:
-``` ubConfig.json
+```json
 	"application": {
         ...
 		"domain": {
@@ -84,13 +84,13 @@ what point to the model initialization script for browser
 
  - In case model is a published module (placed in the node_modules folder) path should be relative to the `package.json`:
 
- ```package.json
+ ```json
  "browser": "./public/initModel.js"
  ```
 
  - or for dev/prod scripts
 
- ```package.json
+ ```json
   "browser": {
     "dev": "./public/devEntryPoint.js"
     "prod": "./public/dist/modelBundle.js"
@@ -98,17 +98,17 @@ what point to the model initialization script for browser
  ```
 
  - In case model is in `models` folder p[ath must be absolute
- ```package.json
+ ```json
    "browser": "/clientRequire/models/TST/initModel.js",
  ```
 
 
 ## Endpoints
 UnityBase comes with simple one-level routing.
-{@link App.registerEndpoint App.registerEndpoint} method will add a handlers
+{@link class:App#registerEndpoint App.registerEndpoint} method will add a handlers
 functions for a first level of routing:
 
-```
+```js
 /**
  * Write a custom request body to file FIXTURES/req and echo file back to client
  * @param {THTTPRequest} req

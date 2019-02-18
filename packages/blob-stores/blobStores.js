@@ -2,7 +2,6 @@
  *
  * Server-side BLOB stores methods. Accessible via {@link App.blobStores}
  *
- * @example
 
     // get dirty (not committed yet) content of my_entity.docAttribute with ID = 12312 as ArrayBuffer
     let tmpContent = App.blobStores.getContent(

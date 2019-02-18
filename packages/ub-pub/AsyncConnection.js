@@ -1060,7 +1060,7 @@ UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
 
 /**
  * Promise of running UBQL command with `addNew` method (asynchronously).
- * Two difference from {@link UBConnection.query}:
+ * Two difference from {@link class:UBConnection.query UBConnection.query}:
  *
  * - ubRequest.method set to 'addnew'
  * - requests is always buffered in the 20ms period into one ubql call
@@ -1241,7 +1241,7 @@ UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
 
 /**
  * Promise of running UBQL (asynchronously).
- * Two difference from {@link UBConnection.query}:
+ * Two difference from {@link class:UBConnection.query UBConnection.query}:
  *
  * - ubRequest.method by default set to 'select'
  * - requests is always buffered in the 20ms period into one ubql call

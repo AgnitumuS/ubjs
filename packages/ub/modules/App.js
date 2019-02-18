@@ -182,7 +182,7 @@ App.registerEndpoint = function (endpointName, handler, authorizationRequired, i
 
 /**
  * @method addAppLevelMethod
- * @deprecated Use {@link App.registerEndpoint} instead
+ * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead
  * @memberOf App
  */
 App.addAppLevelMethod = function () {
@@ -190,7 +190,7 @@ App.addAppLevelMethod = function () {
 }
 /**
  * @method serviceMethodByPassAuthentication
- * @deprecated Use {@link App.registerEndpoint} instead
+ * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead
  * @memberOf App
  */
 App.serviceMethodByPassAuthentication = function () {
@@ -317,7 +317,7 @@ App.fileChecksum = function (pathToFile) {
 
 /**
  * A folder checksum (see fileChecksum for algorithm details)
- * @param pathToFolder
+ * @param {string} pathToFolder
  * @returns {string}
  */
 App.folderChecksum = function (pathToFolder) {
@@ -399,7 +399,7 @@ App.updateFTSIndex = function (entityName, instanceID) {
 App.dbConnections = dbConnections
 
 /**
- * Check database are used in current endpoint context and DB transaction is already active
+ * Check database are used in current endpoint context and DB transaction is already active.
  * @param {String} connectionName
  * @return {Boolean}
  */
@@ -442,9 +442,9 @@ App.dbStartTransaction = function (connectionName) {
 }
 
 /**
- * Try retrieve  or create new session from request headers
- * Return true if success, false if more auth handshakes is required
- * In case of invalid credential throw security exception
+ * Try retrieve  or create new session from request headers.
+ * Return `true` if success, `false` if more auth handshakes is required.
+ * In case of invalid credential throw security exception.
  * @param {boolean} noHTTPBodyInResp If true do not write a uData to the HTTP response
  * @param {boolean} doSetOutCookie If true set a out authorization cookie on success response (Negotiate only)
  * @return {Boolean}
@@ -481,7 +481,7 @@ App.els = function (entityCode, methodCode) {
 }
 
 /**
- * Is event emitter enabled for App singleton. Default is false
+ * Is event emitter enabled for App singleton. Default is `false`
  * @deprecated Starting from 1.11 this property ignored (always TRUE)
  * @type {Boolean}
  */
@@ -491,8 +491,8 @@ App.emitterEnabled = true
  * Defense edition only,
  * Base64 encoded public server certificate
  *
- * Contains non empty value in case security.dstu.trafficEncryption === true and
- * key name defined in security.dstu.novaLib.keyName
+ * Contains non empty value in case `security.dstu.trafficEncryption` === `true` and
+ * key name defined in `security.dstu.novaLib.keyName`
  *
  * @type {string}
  */

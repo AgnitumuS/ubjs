@@ -63,13 +63,14 @@ function UBSession (authResponse, secretWord, authSchema) {
 
   /**
    * Session signature for authorized request. Can be added as LAST parameter in url, or to Authorization header (preferred way)
+   * @example
    *
-   *      $App.connection.authorize().then(function(session){
-   *          // for URL
-   *          return 'session_signature=' + session.signature()
-   *          //for header
-   *          return {Authorization: session.authSchema + ' ' + session.signature()}
-   *      });
+   *$App.connection.authorize().then(function(session){
+   *    // for URL
+   *    return 'session_signature=' + session.signature()
+   *    //for header
+   *    return {Authorization: session.authSchema + ' ' + session.signature()}
+   *});
    *
    * @returns {string}
    */
@@ -98,10 +99,11 @@ function UBSession (authResponse, secretWord, authSchema) {
 
   /**
    * Return authorization header
+   * @example
    *
-   *      $App.connection.authorize().then(function(session){
-   *          return {Authorization: session.authHeader()}
-   *      });
+   * $App.connection.authorize().then(function(session){
+   *     return {Authorization: session.authHeader()}
+   * });
    *
    * @returns {string}
    */

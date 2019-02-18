@@ -13,19 +13,20 @@ and OData at the same time. Below is a protocols comparison
 By default all entities are accessible, but you can pass an `entitySetMapping` parameter during endpoint configuration
 to limit UB entities available through OData or create an alias for entities.
 
-	var OData = require('OData');
+```javascript
+var OData = require('OData');
 
-	var endpoint = OData.registerEndpoint({
-	    endpointName: 'ODataV4',
-	    namespace: 'autotest',
-	    //requireAuth: false,
-	    skipOptimisticLock: true
-	    //,entitySetMapping: {
-	    //    tst_ODataRef: App.domain.byName('tst_ODataRef'),
-	    //    tst_ODataSimple: App.domain.byName('tst_ODataSimple')
-	    //}
-	});
-
+var endpoint = OData.registerEndpoint({
+    endpointName: 'ODataV4',
+    namespace: 'autotest',
+    //requireAuth: false,
+    skipOptimisticLock: true
+    //,entitySetMapping: {
+    //    tst_ODataRef: App.domain.byName('tst_ODataRef'),
+    //    tst_ODataSimple: App.domain.byName('tst_ODataSimple')
+    //}
+});
+```
 
 ## OData & UBQL comparison
 
