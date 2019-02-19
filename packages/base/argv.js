@@ -153,6 +153,7 @@ function serverSessionFromCmdLineAttributes (config) {
  * @param {String} [config.user]
  * @param {String} [config.pwd]
  * @param {Boolean} [config.forceStartServer=false] If we sure local server not started - start it without checking. Faster because check take near 2 sec.
+ * @param {number} [config.timeout=30000] Receive timeout in ms
  * @return {ServerSession}
  */
 function establishConnectionFromCmdLineAttributes (config) {
