@@ -1,7 +1,7 @@
 const Template = require('./template.vue')
 
-module.exports = ({x,y}) => {
-  const Confirm = Vue.extend(Template)
+module.exports = ({x, y}) => {
+  const Confirm = window.Vue.extend(Template)
   let resolveConfirm
   const promise = new Promise(resolve => {
     resolveConfirm = resolve
@@ -9,14 +9,14 @@ module.exports = ({x,y}) => {
 
   const instance = new Confirm({
     el: document.createElement('div'),
-    data(){
-      return { 
+    data () {
+      return {
         visible: false,
         x,
         y
       }
     },
-    
+
     methods: {
       resolveConfirm
     }
