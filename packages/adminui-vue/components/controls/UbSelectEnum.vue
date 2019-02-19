@@ -45,7 +45,7 @@
     },
     computed: {
       displayValue () {
-        return $App.domainInfo.get(this.entityName).descriptionAttribute
+        return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
       }
     },
     methods: {
@@ -67,7 +67,7 @@
       },
       initData () {
         this.loading = true
-        let promise = UB.Repository(this.entityName)
+        let promise = this.$UB.Repository(this.entityName)
           .attrs(this.primaryColumn, this.displayValue, 'eGroup')
 
         if (this.eGroup) promise = promise.where('eGroup', '=', this.eGroup)
@@ -79,7 +79,7 @@
       }
     },
     destroyed () {
-      $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
+      this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
     watch: {
       value () {
@@ -91,7 +91,7 @@
         this.initLoaderStyles()
       }.bind(this), 1)
 
-      $App.connection.on(`${this.entityName}:changed`, this.listener)
+      this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
 
       this.initData()
     }

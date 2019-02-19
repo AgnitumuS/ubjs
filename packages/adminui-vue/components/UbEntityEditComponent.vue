@@ -46,7 +46,7 @@
     },
     computed: {
       entitySchema () {
-        return $App.domainInfo.get(this.entityName)
+        return this.$UB.connection.domain.get(this.entityName)
       },
       entityFields () {
         let pageColumns = Object.values(this.entitySchema.attributes).filter((at) => {
@@ -54,7 +54,7 @@
         }).map((at) => {
           return at.name
         })
-        let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entityName, pageColumns || [])
+        let fieldList = this.$UB.ux.data.UBStore.normalizeFieldList(this.entityName, pageColumns || [])
         if (this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit) fieldList.push('mi_createDate')
         return fieldList
       },
@@ -92,7 +92,7 @@
           if (Object.keys(changedColumns).length > 0) {
             Object.keys(changedColumns).forEach(col => {
               if (this.entitySchema.attributes[col] && this.entitySchema.attributes[col].isMultiLang) {
-                changedColumns[`${col}_${$App.connection.userLang()}^`] = changedColumns[col]
+                changedColumns[`${col}_${this.$UB.connection.userLang()}^`] = changedColumns[col]
                 delete changedColumns[col]
               }
             })
@@ -105,7 +105,7 @@
               execParams: changedColumns
             }
             this.loading = true
-            $App.connection.update(params)
+            this.$UB.connection.update(params)
               .finally(function () {
                 this.loading = false
               }.bind(this))
@@ -114,8 +114,8 @@
                 return result
               })
               .then((result) => {
-                $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
-                $App.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
+                this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
+                this.$UB.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
               })
           } else {
             callback.call(this, null, false)
@@ -130,7 +130,7 @@
       },
       remove () {
         this.loading = true
-        $App.dialogYesNo('deletionDialogConfirmCaption', UB.format(UB.i18n('deleteFormConfirmCaption'), this.value[this.entitySchema.descriptionAttribute]))
+        $App.dialogYesNo('deletionDialogConfirmCaption', this.$UB.format(this.$ut('deleteFormConfirmCaption'), this.value[this.entitySchema.descriptionAttribute]))
           .then(function (res) {
             if (!res) {
               this.loading = false
@@ -143,9 +143,9 @@
                 ID: this.value.ID
               }
             }
-            return $App.connection.doDelete(request).then(function (result) {
-              $App.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
-              $App.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
+            return this.$UB.connection.doDelete(request).then(function (result) {
+              this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
+              this.$UB.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
               Ext.getCmp(this.currentTabId).close()
             }.bind(this)).finally(function () {
               this.loading = false
@@ -158,7 +158,7 @@
         let dataP
         this.loading = true
         if (this.instanceID) {
-          dataP = UB.Repository(this.entityName).attrs(this.entityFields).selectById(this.instanceID).then(function (resp) {
+          dataP = this.$UB.Repository(this.entityName).attrs(this.entityFields).selectById(this.instanceID).then(function (resp) {
             this.$emit('input', resp)
             this.oldData = Object.assign({}, resp)
           }.bind(this))
@@ -167,7 +167,7 @@
             entity: this.entityName,
             fieldList: this.entityFields
           }
-          dataP = $App.connection.addNew(parameters).then(function (result) {
+          dataP = this.$UB.connection.addNew(parameters).then(function (result) {
             let data = {}
             result.resultData.fields.forEach((item, key) => {
               data[item] = result.resultData.data[0][key]

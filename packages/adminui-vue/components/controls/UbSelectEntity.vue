@@ -79,9 +79,9 @@
     },
     data () {
       return {
-        buttonMoreCaption: UB.i18n('more'),
-        deletedCaption: UB.i18n('elementIsNotActual'),
-        entitySchema: $App.domainInfo.get(this.entityName, true),
+        buttonMoreCaption: this.$ut('more'),
+        deletedCaption: this.$ut('elementIsNotActual'),
+        entitySchema: this.$UB.connection.domain.get(this.entityName, true),
         hasData: true,
         initialItem: null,
         items: [],
@@ -138,7 +138,7 @@
         }
       },
       getPromise: function (startFrom) {
-        let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(startFrom || 0).limit(this.itemCount)
+        let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(startFrom || 0).limit(this.itemCount)
         if (this.searchValue) {
           promise = promise.where(this.displayValue, 'like', this.searchValue)
         }
@@ -167,7 +167,7 @@
       },
       setInitialItem (id) {
         this.loading = true
-        let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
+        let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
         if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
           promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
         }
@@ -194,13 +194,13 @@
       defaultActions () {
         return [{
           name: 'ShowLookup',
-          caption: UB.i18n('selectFromDictionary'),
+          caption: this.$ut('selectFromDictionary'),
           icon: 'fa fa-table',
           handler: {
             fn () {
-              UB.core.UBApp.doCommand({
+              this.$UB.core.UBApp.doCommand({
                 entity: this.entityName,
-                cmdType: UB.core.UBCommand.commandType.showList,
+                cmdType: this.$UB.core.UBCommand.commandType.showList,
                 description: this.entitySchema.getEntityDescription(),
                 isModal: true,
                 sender: this,
@@ -223,13 +223,13 @@
         },
         {
           name: 'Edit',
-          caption: UB.i18n('editSelItem'),
+          caption: this.$ut('editSelItem'),
           icon: 'fa fa-pencil-square-o',
           enabled: !!this.resultData,
           handler: {
             fn () {
-              UB.core.UBApp.doCommand({
-                cmdType: UB.core.UBCommand.commandType.showForm,
+              this.$UB.core.UBApp.doCommand({
+                cmdType: this.$UB.core.UBCommand.commandType.showForm,
                 entity: this.entityName,
                 isModal: true,
                 instanceID: this.resultData
@@ -239,12 +239,12 @@
         },
         {
           name: 'Add',
-          caption: UB.i18n('addNewItem'),
+          caption: this.$ut('addNewItem'),
           icon: 'fa fa-plus-circle',
           handler: {
             fn () {
-              UB.core.UBApp.doCommand({
-                cmdType: UB.core.UBCommand.commandType.showForm,
+              this.$UB.core.UBApp.doCommand({
+                cmdType: this.$UB.core.UBCommand.commandType.showForm,
                 entity: this.entityName,
                 isModal: true
               })
@@ -253,7 +253,7 @@
         },
         {
           name: 'Clear',
-          caption: UB.i18n('clearSelection'),
+          caption: this.$ut('clearSelection'),
           icon: 'fa fa-eraser',
           enabled: !!this.resultData,
           handler: {
@@ -279,7 +279,7 @@
       }
     },
     destroyed () {
-      $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
+      this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
     watch: {
       value () {
@@ -292,7 +292,7 @@
         this.initLoaderStyles()
       }.bind(this), 1)
 
-      $App.connection.on(`${this.entityName}:changed`, this.listener)
+      this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
 
       if (this.value) {
         this.setInitialItem()

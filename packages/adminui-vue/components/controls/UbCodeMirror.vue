@@ -25,7 +25,7 @@
               this.codeMirror = CodeMirror.fromTextArea(el, {
                 mode: 'javascript',
                 lineNumbers: true,
-                lint: Object.assign({asi: true, esversion: 6}, $App.connection.appConfig.uiSettings.adminUI.linter),
+                lint: Object.assign({asi: true, esversion: 6}, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
                 readOnly: false,
                 tabSize: 2,
                 highlightSelectionMatches: {annotateScrollbar: true},

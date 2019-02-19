@@ -60,7 +60,7 @@
         return (Object.values(this.entitySchema.attributes).find(attr => attr.code === this.attributeName) || {}).caption
       },
       entitySchema () {
-        return $App.domainInfo.get(this.entityName)
+        return this.$UB.connection.domain.get(this.entityName)
       },
       dataType () {
         return this.entitySchema.attributes[this.attributeName].dataType
@@ -119,8 +119,8 @@
         if (Object.keys(this.localizableFields).length === 0) {
           this.loading = true
           let fieldList = []
-          UB.appConfig.supportedLanguages.forEach((item) => {
-            if ($App.connection.userLang() === item) {
+          this.$UB.appConfig.supportedLanguages.forEach((item) => {
+            if (this.$UB.connection.userLang() === item) {
               return
             }
             let fieldName = this.attributeName + '_' + item + '^'
@@ -128,13 +128,13 @@
               this.localizableFields[fieldName] = {
                 location: item,
                 fieldName: fieldName,
-                caption: UB.i18n(item)
+                caption: this.$ut(item)
               }
               fieldList.push(fieldName)
             }
           })
           if (fieldList.length > 0) {
-            UB.Repository(this.entityName).attrs([...fieldList, 'ID']).selectById(this.primaryValue).then((item) => {
+            this.$UB.Repository(this.entityName).attrs([...fieldList, 'ID']).selectById(this.primaryValue).then((item) => {
               if (item) {
                 Object.keys(item).forEach((fieldName) => {
                   if (fieldName !== 'ID') {
@@ -158,7 +158,7 @@
     },
     mounted () {
       if (this.isMultiLang) {
-        this.localCaption = UB.i18n($App.connection.userLang())
+        this.localCaption = this.$ut(this.$UB.connection.userLang())
       }
     }
   }

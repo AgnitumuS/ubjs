@@ -63,7 +63,7 @@
         }
       },
       getPromise: function (startFrom) {
-        let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(startFrom || 0).limit(this.itemCount)
+        let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(startFrom || 0).limit(this.itemCount)
         if (this.$refs.selector.query) {
           promise = promise.where(this.displayValue, 'like', this.$refs.selector.query)
         }
@@ -92,13 +92,13 @@
     },
     data () {
       return {
-        entitySchema: $App.domainInfo.get(this.entityName, true),
+        entitySchema: this.$UB.connection.domain.get(this.entityName, true),
         initialItem: null,
         items: [],
         resultData: [],
         itemCount: 20,
         hasData: true,
-        buttonMoreCaption: UB.i18n('more'),
+        buttonMoreCaption: this.$ut('more'),
         loading: false,
         listener: function () {
           this.items = []
@@ -112,7 +112,7 @@
         }) : null
       },
       displayValue () {
-        return $App.domainInfo.get(this.entityName).descriptionAttribute
+        return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
       },
       itemsToDisplay () {
         if (this.initialItem && this.initialItem.length > 0) {
@@ -125,18 +125,18 @@
       }
     },
     destroyed () {
-      $App.connection.removeListener(`${this.entityName}:changed`, this.listener)
+      this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
     mounted () {
       setTimeout(function () {
         this.initLoaderStyles()
       }.bind(this), 1)
 
-      $App.connection.on(`${this.entityName}:changed`, this.listener)
+      this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
 
       if (this.value) {
         this.loading = true
-        let promise = UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
+        let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
         if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
           promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
         }

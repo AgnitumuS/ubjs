@@ -67,7 +67,7 @@
           filename: file.name,
           id: this.docParams.ID
         }
-        UB.connection.post('setDocument', file, {
+        this.$UB.connection.post('setDocument', file, {
           params: params,
           headers: {'Content-Type': 'application/octet-stream'}
         }).then(function (response) {
@@ -78,7 +78,7 @@
       },
       downloadFile () {
         this.loading = true
-        $App.connection.getDocument(this.docParams, {
+        this.$UB.connection.getDocument(this.docParams, {
           resultIsBinary: true
         }).then(function (result) {
           let nameArray = this.currentValue.origName.split('.')
