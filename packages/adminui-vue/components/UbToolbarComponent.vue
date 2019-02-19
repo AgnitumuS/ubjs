@@ -111,7 +111,7 @@
         let actions = []
         actions.push({
           icon: 'fa fa-save',
-          caption: this.$ut('sohranit'),
+          caption: this.$ut('save'),
           handler: {
             fn: function () { this.$emit('saveAndReload') }.bind(this)
           },
