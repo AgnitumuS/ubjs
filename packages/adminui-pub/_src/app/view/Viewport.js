@@ -82,14 +82,6 @@ Ext.define('UB.view.Viewport', {
       margin: '3, 0, 0, 0',
       loader: { autoLoad: false },
       listeners: {
-        boxready: function () {
-          if (window.location.href && window.location.href.indexOf('#') > 0) {
-            var command = UB.core.UBCommand.getCommandByUrl(window.location.href, me.getCenterPanel())
-            if (command) {
-              $App.doCommand(command)
-            }
-          }
-        },
         add: function (sender, container, pos) {
           var barItm = me.centralPanel.tabBar.items.getAt(pos)
           barItm.on('boxready', function (sender) {
