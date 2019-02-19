@@ -89,20 +89,20 @@
         return fieldList
       },
       canSave () {
-        return this.entitySchema.haveAccessToAnyMethods([this.$UB.core.UBCommand.methodName.INSERT, this.$UB.core.UBCommand.methodName.UPDATE])
+        return this.entitySchema.haveAccessToAnyMethods(['insert', 'update'])
       },
       saveEnabled () {
         return this.canSave && this.isChanged
       },
       canDelete () {
-        return this.entitySchema.haveAccessToMethod(this.$UB.core.UBCommand.methodName.DELETE) && !this.isNew
+        return this.entitySchema.haveAccessToMethod('delete') && !this.isNew
       },
       linkToEntity () {
         let prm = []
         prm.push('cmdType=showForm')
         prm.push(`entity=${this.entitySchema.name}`)
         prm.push(`instanceID=${this.value.ID}`)
-        return this.$UB.format('{0}//{1}{2}#{3}', window.location.protocol, window.location.host, window.location.pathname, prm.join('&'))
+        return this.$UB.format(`${window.location.protocol}//${window.location.host}${window.location.pathname}#${prm.join('&')}`)
       },
       isSimpleAudit () {
         return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
@@ -125,7 +125,7 @@
           },
           enabled: this.saveEnabled
         })
-        if (this.$UB.connection.domain.isEntityMethodsAccessible('ubm_form', this.$UB.core.UBCommand.methodName.UPDATE)) {
+        if (this.$UB.connection.domain.isEntityMethodsAccessible('ubm_form', 'update')) {
           actions.push({
             icon: 'fa fa-wrench',
             caption: this.$ut('formConstructor'),
