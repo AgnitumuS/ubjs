@@ -10,7 +10,12 @@ module.exports = {
     document.body.appendChild(styles)
 
     new window.Vue({
-      render: (h) => h(Tabbar)
+      render: (h) => h(Tabbar),
+      mounted () {
+        const {offsetHeight} = this.$el
+        window.UB.core.UBApp.viewport.centralPanel.setMargin(`-${offsetHeight} 0 0 0`)
+        window.UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(offsetHeight)
+      }
     }).$mount(`#${id}`)
   }
 }
