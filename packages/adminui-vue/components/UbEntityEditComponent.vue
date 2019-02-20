@@ -49,9 +49,7 @@
         return this.$UB.connection.domain.get(this.entityName)
       },
       entityFields () {
-        let pageColumns = Object.values(this.entitySchema.attributes).filter((at) => {
-          return at.defaultView
-        }).map((at) => {
+        let pageColumns = this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
           return at.name
         })
         let fieldList = this.$UB.ux.data.UBStore.normalizeFieldList(this.entityName, pageColumns || [])
@@ -87,7 +85,7 @@
         this.saveEntity(() => Ext.getCmp(this.currentTabId).close())
       },
       saveEntity (callback) {
-        let saveFn = function () {
+        let saveFn = () => {
           let changedColumns = Object.assign({}, this.changedColumns)
           if (Object.keys(changedColumns).length > 0) {
             Object.keys(changedColumns).forEach(col => {
@@ -106,9 +104,9 @@
             }
             this.loading = true
             this.$UB.connection.update(params)
-              .finally(function () {
+              .finally(_ => {
                 this.loading = false
-              }.bind(this))
+              })
               .then((result) => {
                 callback.call(this, result, true)
                 return result
@@ -120,7 +118,7 @@
           } else {
             callback.call(this, null, false)
           }
-        }.bind(this)
+        }
         if (this.save) {
           this.save(saveFn)
         } else {
@@ -131,7 +129,7 @@
       remove () {
         this.loading = true
         $App.dialogYesNo('deletionDialogConfirmCaption', this.$UB.format(this.$ut('deleteFormConfirmCaption'), this.value[this.entitySchema.descriptionAttribute]))
-          .then(function (res) {
+          .then(res => {
             if (!res) {
               this.loading = false
               return
@@ -143,14 +141,14 @@
                 ID: this.value.ID
               }
             }
-            return this.$UB.connection.doDelete(request).then(function (result) {
+            return this.$UB.connection.doDelete(request).then(result => {
               this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
               this.$UB.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
               Ext.getCmp(this.currentTabId).close()
-            }.bind(this)).finally(function () {
+            }).finally(_ => {
               this.loading = false
-            }.bind(this))
-          }.bind(this))
+            })
+          })
       }
     },
     mounted () {
@@ -158,28 +156,28 @@
         let dataP
         this.loading = true
         if (this.instanceID) {
-          dataP = this.$UB.Repository(this.entityName).attrs(this.entityFields).selectById(this.instanceID).then(function (resp) {
+          dataP = this.$UB.Repository(this.entityName).attrs(this.entityFields).selectById(this.instanceID).then(resp => {
             this.$emit('input', resp)
             this.oldData = Object.assign({}, resp)
-          }.bind(this))
+          })
         } else {
           let parameters = {
             entity: this.entityName,
             fieldList: this.entityFields
           }
-          dataP = this.$UB.connection.addNew(parameters).then(function (result) {
+          dataP = this.$UB.connection.addNew(parameters).then(result => {
             let data = {}
             result.resultData.fields.forEach((item, key) => {
               data[item] = result.resultData.data[0][key]
             })
             this.$emit('input', data)
             this.oldData = Object.assign({}, data)
-          }.bind(this))
+          })
           this.isNew = true
         }
-        dataP.finally(function () {
+        dataP.finally(_ =>{
           this.loading = false
-        }.bind(this))
+        })
       }
     },
     components: {
