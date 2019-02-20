@@ -3,10 +3,6 @@ const $App = require('@unitybase/adminui-pub')
 
 exports.mount = function (params) {
   let tstDictionaryEdit = require('../components/DictionaryEditView.vue')
-  window.BOUNDLED_BY_WEBPACK = false
-  if (BOUNDLED_BY_WEBPACK) {
-    tstDictionaryEdit = tstDictionaryEdit.default
-  }
   let entitySchema = $App.domainInfo.get(params.entity)
   let tabId
   if (params.instanceID) {
