@@ -3,7 +3,7 @@
     <el-input v-model="currentValue"
               @change="onChange" :type="fieldType" :controls="false" :step="step">
       <el-button slot="append"
-                 v-if="isMultiLang"
+                 v-if="isMultiLang && objectValue"
                  @click="initLocalizableFields"
                  class="fa fa-globe"
       ></el-button>
