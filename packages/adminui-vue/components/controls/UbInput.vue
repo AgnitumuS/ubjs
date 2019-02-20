@@ -57,7 +57,7 @@
     },
     computed: {
       dialogTitle () {
-        return (Object.values(this.entitySchema.attributes).find(attr => attr.code === this.attributeName) || {}).caption
+        return this.entitySchema.getAttribute(this.attributeName).caption
       },
       entitySchema () {
         return this.$UB.connection.domain.get(this.entityName)
@@ -117,9 +117,9 @@
         this.dialogFormVisible = true
         if (Object.keys(this.localizableFields).length === 0) {
           this.loading = true
-          let fieldList = []
+          let fieldList = [], userLang = this.$UB.connection.userLang()
           this.$UB.appConfig.supportedLanguages.forEach((item) => {
-            if (this.$UB.connection.userLang() === item) {
+            if (userLang === item) {
               return
             }
             let fieldName = this.attributeName + '_' + item + '^'

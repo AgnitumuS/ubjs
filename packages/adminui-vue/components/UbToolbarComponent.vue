@@ -79,9 +79,7 @@
         return this.$UB.connection.domain.get(this.entityName)
       },
       entityFields () {
-        let pageColumns = Object.values(this.entitySchema.attributes).filter((at) => {
-          return at.defaultView
-        }).map((at) => {
+        let pageColumns = this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
           return at.name
         })
         let fieldList = this.$UB.ux.data.UBStore.normalizeFieldList(this.entityName, pageColumns || [])

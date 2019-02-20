@@ -116,9 +116,7 @@
         return this.$UB.connection.domain.get(this.entityName)
       },
       fieldsToShow () {
-        return Object.values(this.entitySchema.attributes).filter((at) => {
-          return at.defaultView
-        }).map((at) => {
+        return this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
           return at.name
         })
       }
