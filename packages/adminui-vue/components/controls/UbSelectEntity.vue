@@ -32,7 +32,7 @@
         <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
           <el-table-column property="caption" width="250">
             <template slot-scope="scope">
-              <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'">
+              <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'" style="cursor: pointer" class="ub-noselect">
                 <i :class="scope.row.icon"></i>
                 <span style="margin-left: 10px">{{ scope.row.caption }}</span>
               </div>
