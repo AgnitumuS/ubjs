@@ -102,7 +102,7 @@
         prm.push('cmdType=showForm')
         prm.push(`entity=${this.entitySchema.name}`)
         prm.push(`instanceID=${this.value.ID}`)
-        return this.$UB.format(`${window.location.protocol}//${window.location.host}${window.location.pathname}#${prm.join('&')}`)
+        return `${window.location.protocol}//${window.location.host}${window.location.pathname}#${prm.join('&')}`
       },
       isSimpleAudit () {
         return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
