@@ -55,7 +55,6 @@
               v-model="value[fieldName]"
               :entityName="entitySchema.name"
               :attributeName="fieldName"
-              :primaryValue="value.ID"
               :objectValue="value"
           ></ub-input>
         </el-form-item>

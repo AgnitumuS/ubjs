@@ -88,7 +88,6 @@
         type: String,
         required: true
       },
-      primaryValue: [String, Number],
       objectValue: Object
     },
     methods: {
@@ -134,7 +133,7 @@
             }
           })
           if (fieldList.length > 0) {
-            this.$UB.Repository(this.entityName).attrs([...fieldList, 'ID']).selectById(this.primaryValue).then((item) => {
+            this.$UB.Repository(this.entityName).attrs([...fieldList, 'ID']).selectById(this.objectValue.ID).then((item) => {
               if (item) {
                 Object.keys(item).forEach((fieldName) => {
                   if (fieldName !== 'ID') {
