@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.6.26]
+### Added
+ - UB favicon.ico added to adminui-pub
+
 ### Fixed
  - fix opening form from link (check viewport is exists) 
  
