@@ -22,8 +22,8 @@
             :class="{'active': current === index}"
             @close="handleClose"
             @open="handleTabClick"
-            @right-click="handleTabRightClick"
-            />
+            @right-click="handleTabRightClick">
+          </tab>
         </transition-group>
       </div>
       <div 
@@ -60,8 +60,8 @@
           in-tray
           :class="{'active': current === index}"
           @open="handleTabClick"
-          @close="handleClose"
-          />
+          @close="handleClose">
+         </tab>
       </div>
     </el-popover>
   </div>
