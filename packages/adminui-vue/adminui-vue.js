@@ -26,7 +26,7 @@ Vue.use(ElementUI, {
 
 const {replaceDefaultTabbar} = require('./components/tabbar/init')
 
-if (window.$App){
+if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultTabbar)
 }
 

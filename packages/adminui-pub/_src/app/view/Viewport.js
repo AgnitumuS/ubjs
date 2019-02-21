@@ -114,7 +114,7 @@ Ext.define('UB.view.Viewport', {
             me.topPanel,
             me.centralPanel
           ]
-        },
+        }
       ]
     })
     this.callParent(arguments)
