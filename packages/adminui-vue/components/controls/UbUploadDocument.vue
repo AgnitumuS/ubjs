@@ -78,7 +78,8 @@
       },
       downloadFile () {
         this.loading = true
-        this.$UB.connection.getDocument(this.docParams, {
+        let params = this.currentValue.isDirty ? {...this.docParams, isDirty: true} : this.docParams
+        this.$UB.connection.getDocument(params, {
           resultIsBinary: true
         }).then(result => {
           let nameArray = this.currentValue.origName.split('.')
