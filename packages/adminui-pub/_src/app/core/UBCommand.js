@@ -651,7 +651,7 @@ Ext.define('UB.core.UBCommand', {
     }
     if (me.tabId) {
       let tab = Ext.getCmp(me.tabId)
-      if (!tab && me.instanceID) { // специально для тестировщиков которые открывают из реестра еще раз только чтосохраненный документ
+      if (!tab && me.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только чтосохраненный документ
         tab = $App.viewport.centralPanel.down('basepanel[instanceID=' + me.instanceID + ']')
       }
       if (tab) {

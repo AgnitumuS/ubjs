@@ -33,7 +33,6 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @param {Object} storeConfig
    * @param {App} appInstance
    * @param {UBSession} sessionInstance
-   * @param storeConfig
    */
   constructor (storeConfig, appInstance, sessionInstance) {
     super(storeConfig, appInstance, sessionInstance)

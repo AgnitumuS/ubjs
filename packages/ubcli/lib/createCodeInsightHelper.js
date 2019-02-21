@@ -68,7 +68,7 @@ module.exports = function createCodeInsightHelper (cfg) {
   /**
    * Convert named collection - {name1: {}, name2: {}} to array -> [{name: name1, ...}, ...]
    * Will mutate original!
-   * @param namedCollection
+   * @param {object} namedCollection
    */
   function namedCollection2Array (namedCollection) {
     let result = []

@@ -1,10 +1,10 @@
 /**
  * gzip / gunzip / bunzip support
  *
- * Usage sample:
+ * @example
  *
- *      var compressors = require('@unitybase/compressors');
- *      compressors.unBzipM2
+ * var compressors = require('@unitybase/compressors');
+ * compressors.unBzipM2
  *
  * @module @unitybase/compressors
  */
@@ -19,7 +19,7 @@ let UBCompressors = module.exports
  * Decompress files from Megapolis2(TM) bzip format(first 4 bytes are length of uncompressed files)
  * @method unBzipM2
  * @param {ArrayBuffer} buffer
- * @return ArrayBuffer
+ * @return {ArrayBuffer}
  */
 UBCompressors.unBzipM2 = binding.unBzipM2
 

@@ -1,7 +1,7 @@
 The module for working with COM objects
 
  Usage sample:
-```
+```js
 const wdExportFormatPDF = 17 // PDF
 const COM = require('@unitybase/com-bridge')
 const path = require('path')

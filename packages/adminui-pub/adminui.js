@@ -59,3 +59,13 @@ launchApp()
 
 module.exports = $App
 if (!SystemJS.has('@unitybase/adminui-pub')) SystemJS.set('@unitybase/adminui-pub', SystemJS.newModule($App))
+if (window.location.href && window.location.href.indexOf('#') > 0) {
+  $App.on('applicationReady', () => {
+    if (window.location.href && window.location.href.indexOf('#') > 0) {
+      let command = UB.core.UBCommand.getCommandByUrl(window.location.href, UB.core.UBApp.getViewport().getCenterPanel())
+      if (command) {
+        $App.doCommand(command)
+      }
+    }
+  })
+}

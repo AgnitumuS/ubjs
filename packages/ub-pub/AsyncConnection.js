@@ -40,13 +40,13 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
 /**
  * @classdesc
  *
- * Connection to the UnityBase server (for asynchronous cliebt like NodeJS or Browser)
+ * Connection to the UnityBase server (for asynchronous client like NodeJS or Browser)
  *
  * In case host set to value other then `location.host` server must be configured to accept
  * <a href="https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS">CORS</a> requests.
  * This is usually done by setting "HTTPAllowOrigin" server configuration option.
  *
- * **Recommended way to create a UBConnection is** <a href="module-@unitybase_ub-pub.html">UB.connect method</a>
+   * **Recommended way to create a UBConnection is** {@link module:@unitybase/ub-pub.html#connect UB.connect} method
  *
  * In case you need to create connection directly (for example in case of multiple connection from one page)
  * the usage sample is:
@@ -1060,7 +1060,7 @@ UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
 
 /**
  * Promise of running UBQL command with `addNew` method (asynchronously).
- * Two difference from {@link UBConnection.query}:
+ * Two difference from {@link class:UBConnection.query UBConnection.query}:
  *
  * - ubRequest.method set to 'addnew'
  * - requests is always buffered in the 20ms period into one ubql call
@@ -1241,7 +1241,7 @@ UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
 
 /**
  * Promise of running UBQL (asynchronously).
- * Two difference from {@link UBConnection.query}:
+ * Two difference from {@link class:UBConnection.query UBConnection.query}:
  *
  * - ubRequest.method by default set to 'select'
  * - requests is always buffered in the 20ms period into one ubql call

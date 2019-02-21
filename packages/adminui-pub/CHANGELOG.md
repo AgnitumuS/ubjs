@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.6.26]
+### Added
+ - UB favicon.ico added to adminui-pub
+
+### Fixed
+ - fix opening form from link (check viewport is exists) 
+ 
 ### Changed
  - base panel does not send `needAls: false` parameter for `select/insert/update` in case entity do not have ALS mixin
  

@@ -346,10 +346,11 @@ TubDataStore.fieldIndexByName = function(fieldName){}
  * @example
 
 let store = new TubDataStore('doc_attachment');
-store.run('update', {execParams: {
-  ID: 1,
-  approved: 0
-}
+store.run('update', {
+  execParams: {
+    ID: 1,
+    approved: 0
+  }
 })
 store.run('anyEntityMethod', {param1: 'valueOfParam1', ...})
 
@@ -500,7 +501,7 @@ TubDataStore.currentDataName = '<xml>...</xml>'
  */
 TubDataStore.rowCount = 0
 /**
- * Total record count if store are filled with {@link CustomRepository#withTotal Repository.withTotal()} option.
+ * Total record count if store are filled with {@link class:CustomRepository#withTotal Repository.withTotal()} option.
  * If DataStore is not initialized or empty or initialized without withTotal() will return -1.
  * @member {Number} totalRowCount
  * @memberOf TubDataStore.prototype

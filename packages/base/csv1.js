@@ -25,18 +25,18 @@
  *
  * Adopted for UnityBase by pavel.mash
  *
- * Usage sample:
+ * @example
  *
- *       var csv = require('@unitybase/base').csv;
- *       // simple
- *       var rows = csv.parse('one,two,three\nfour,five,six', ',')
- *       // rows equals [["one","two","three"],["four","five","six"]]
- *       // or read from file system
- *       var fs = require('fs'), f = fs.readFileSync('c:/csv.txt');
- *       var rows = csv.parse(f);
- *       for( var i =0; i < rows.length; i++){
- *          console.log(rows[i]);
- *       }
+ * var csv = require('@unitybase/base').csv;
+ * // simple
+ * var rows = csv.parse('one,two,three\nfour,five,six', ',')
+ * // rows equals [["one","two","three"],["four","five","six"]]
+ * // or read from file system
+ * var fs = require('fs'), f = fs.readFileSync('c:/csv.txt');
+ * var rows = csv.parse(f);
+ * for( var i =0; i < rows.length; i++){
+ *    console.log(rows[i]);
+ * }
  *
  * @module csv1
  * @memberOf module:@unitybase/base
@@ -74,7 +74,7 @@ var PRE_TOKEN = 0,
   POST_RECORD = 4
 /**
  * <a href="http://www.ietf.org/rfc/rfc4180.txt">rfc4180</a> standard csv parse
- * with options for strictness and data type conversion
+ * with options for strictness and data type conversion.
  * By default, will automatically type-cast numeric an boolean values.
  *
  * @method parse

@@ -52,6 +52,10 @@ if (UBA_COMMON.isSuperUser()) return
  - generation of `org_employeeonstaff.caption`: in case `org_employee.shortFIO` is empty - use `org_employee.lastName`
  [unitybase/ubjs#14]. Deletion of `org_employeeonstaff` is fixed inside server ( ub >= v5.3.3) 
 
+## [5.1.12]
+### Fixed
+ - org_orgaccount formation of the description when the constituent attributes were deleted
+
 ## [5.1.0]
 ### Fixed
  - syntax error in org_employeenstaff.caption isMultilang attribute
