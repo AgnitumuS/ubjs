@@ -80,6 +80,7 @@ Ext.define('UB.ux.Multifilter', {
 
     me.buttonSelectFilter = new Ext.button.Button({
       tooltip: UB.i18n('Filter by'),
+      scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faFilter,
       handler: function () {
         if (!me.filterMenu) {
