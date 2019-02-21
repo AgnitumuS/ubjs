@@ -1,4 +1,8 @@
-const Template = require('./template.vue')
+let Template = require('./template.vue')
+
+if (BOUNDLED_BY_WEBPACK) {
+  Template = Template.default
+}
 
 module.exports = ({x, y}) => {
   const Confirm = window.Vue.extend(Template)

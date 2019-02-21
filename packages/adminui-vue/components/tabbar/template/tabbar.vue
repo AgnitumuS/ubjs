@@ -68,8 +68,12 @@
 </template>
 
 <script>
-const Tab = require('./tab.vue')
+let Tab = require('./tab.vue')
 const context = require('../../tabbar-context/index')
+
+if (BOUNDLED_BY_WEBPACK) {
+  Tab = Tab.default
+}
 
 module.exports = {
   name: 'tabbar',
