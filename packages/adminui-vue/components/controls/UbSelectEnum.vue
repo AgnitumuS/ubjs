@@ -87,9 +87,9 @@
       }
     },
     mounted () {
-      setTimeout(function () {
+      setTimeout(_ => {
         this.initLoaderStyles()
-      }.bind(this), 1)
+      }, 1)
 
       this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
 

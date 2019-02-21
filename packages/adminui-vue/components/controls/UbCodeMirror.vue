@@ -20,7 +20,7 @@
       if (!this.codeMirror) {
         SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
           if (CodeMirror) {
-            var el = document.getElementById(this._uid)
+            let el = document.getElementById(this._uid)
             if (el) {
               this.codeMirror = CodeMirror.fromTextArea(el, {
                 mode: 'javascript',
@@ -36,7 +36,7 @@
                   'Ctrl-Space': 'autocomplete'
                 }
               })
-              this.codeMirror.on('change', function (cmInstance) {
+              this.codeMirror.on('change', cmInstance => {
                 let value, valid = true
                 try {
                   value = typeof this.value === 'object' ? JSON.parse(cmInstance.getValue()) : cmInstance.getValue()
@@ -44,7 +44,7 @@
                   valid = false
                 }
                 if (valid) this.$emit('input', value)
-              }.bind(this))
+              })
             }
           }
         }, this)

@@ -70,17 +70,17 @@
         this.$UB.connection.post('setDocument', file, {
           params: params,
           headers: {'Content-Type': 'application/octet-stream'}
-        }).then(function (response) {
+        }).then(response => {
           this.$emit('input', JSON.stringify(response.data.result))
-        }.bind(this)).finally(function () {
+        }).finally(_ => {
           this.loading = false
-        }.bind(this))
+        })
       },
       downloadFile () {
         this.loading = true
         this.$UB.connection.getDocument(this.docParams, {
           resultIsBinary: true
-        }).then(function (result) {
+        }).then(result => {
           let nameArray = this.currentValue.origName.split('.')
           let extension = nameArray[nameArray.length - 1]
           if (extension === 'pdf') {
@@ -89,9 +89,9 @@
           } else {
             saveAs(new Blob([result]), this.currentValue.origName)
           }
-        }.bind(this)).finally(function () {
+        }).finally(_ => {
           this.loading = false
-        }.bind(this))
+        })
       },
       removeUrl () {
         window.URL.revokeObjectURL(this.documentURL)

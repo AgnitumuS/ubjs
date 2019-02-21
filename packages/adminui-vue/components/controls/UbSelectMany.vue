@@ -71,22 +71,22 @@
       },
       loadNextByInput: function (query) {
         let promise = this.getPromise()
-        promise.select().then((data) => {
+        promise.select().then(data => {
           this.items = []
           this.hasData = data.length === this.itemCount
-          data.forEach(function (item) {
+          data.forEach(item => {
             this.items.push(item)
-          }.bind(this))
+          })
         })
       },
       loadNextButtonClick () {
         let itemsLength = this.items.length || 0
         let promise = this.getPromise(itemsLength)
-        promise.select().then((data) => {
+        promise.select().then(data => {
           this.hasData = data.length === this.itemCount
-          data.forEach(function (item) {
+          data.forEach(item => {
             this.items.push(item)
-          }.bind(this))
+          })
         })
       }
     },
@@ -128,9 +128,9 @@
       this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
     },
     mounted () {
-      setTimeout(function () {
+      setTimeout(_ => {
         this.initLoaderStyles()
-      }.bind(this), 1)
+      }, 1)
 
       this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
 

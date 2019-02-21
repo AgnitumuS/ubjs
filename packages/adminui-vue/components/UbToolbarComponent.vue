@@ -144,7 +144,7 @@
 
                 this.$UB.Repository('ubm_form').attrs(['ID', 'code'])
                   .where('code', '=', this.formCode).select()
-                  .done(function (result) {
+                  .done(result => {
                     if (!result || result.length < 1) {
                       this.$notify({
                         title: this.$ut('formNotFound'),
@@ -163,7 +163,7 @@
                     }
 
                     $App.doCommand(config)
-                  }.bind(this))
+                  })
               }
             }
           })

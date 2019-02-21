@@ -13,7 +13,7 @@ exports.mount = function (params) {
       return
     }
   } else {
-    tabId = entitySchema.name + Math.random()
+    tabId = entitySchema.name + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
   }
   let tab = $App.viewport.centralPanel.add({
     id: tabId,
@@ -35,7 +35,7 @@ exports.mount = function (params) {
       'dictionary-edit-form': tstDictionaryEdit
     }
   })
-  vm.$mount(`#${tab.getId()}-outerCt`)
+  vm.$mount(`#${tabId}-outerCt`)
   tab.on('close', function () {
     vm.$destroy()
   })

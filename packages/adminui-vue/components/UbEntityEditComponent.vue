@@ -171,7 +171,7 @@
               data[item] = result.resultData.data[0][key]
             })
             this.$emit('input', data)
-            this.oldData = Object.assign({}, data)
+            this.oldData = {}
           })
           this.isNew = true
         }
