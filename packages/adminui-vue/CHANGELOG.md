@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.1.0]
 ### Changed
  - vue updated 2.5.17 -> 2.6.6
- - elemet-ui updated 2.4.9 -> 2.5.4
+ - element-ui updated 2.4.9 -> 2.5.4
 
 ## [1.0.44]
 ### Added
