@@ -100,9 +100,9 @@
         hasData: true,
         buttonMoreCaption: this.$ut('more'),
         loading: false,
-        listener: function () {
+        listener: _ => {
           this.items = []
-        }.bind(this)
+        }
       }
     },
     computed: {

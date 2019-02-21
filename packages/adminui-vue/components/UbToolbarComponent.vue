@@ -111,7 +111,7 @@
           icon: 'fa fa-save',
           caption: this.$ut('save'),
           handler: {
-            fn: function () { this.$emit('saveAndReload') }.bind(this)
+            fn: _ => { this.$emit('saveAndReload') }
           },
           enabled: this.saveEnabled
         })
@@ -119,7 +119,7 @@
           icon: 'fa fa-share-square-o',
           caption: this.$ut('saveAndClose'),
           handler: {
-            fn: function () { this.$emit('saveAndClose') }.bind(this)
+            fn: _ => { this.$emit('saveAndClose') }
           },
           enabled: this.saveEnabled
         })
@@ -172,7 +172,7 @@
           icon: 'fa fa-trash-o',
           caption: this.$ut('Delete'),
           handler: {
-            fn: function () { this.$emit('remove') }.bind(this)
+            fn: _ => { this.$emit('remove') }
           },
           enabled: this.canDelete
         })
@@ -311,15 +311,15 @@
         return [{
           disabled: !this.saveEnabled,
           icon: 'fa fa-share-square-o',
-          action: function () { this.$emit('saveAndClose') }.bind(this)
+          action: _ => { this.$emit('saveAndClose') }
         }, {
           disabled: !this.saveEnabled,
           icon: 'fa fa-save',
-          action: function () { this.$emit('saveAndReload') }.bind(this)
+          action: _ => { this.$emit('saveAndReload') }
         }, {
           disabled: !this.canDelete,
           icon: 'fa fa-trash-o',
-          action: function () { this.$emit('remove') }.bind(this)
+          action: _ => { this.$emit('remove') }
         }]
       },
       buttons () {

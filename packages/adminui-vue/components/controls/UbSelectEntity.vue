@@ -86,14 +86,14 @@
         initialItem: null,
         items: [],
         itemCount: 20,
-        listener: function (id) {
+        listener: id => {
           if (id && this.resultData === null) this.resultData = id
           if (id && id === this.resultData) {
             this.setInitialItem(id)
           } else {
             this.items = []
           }
-        }.bind(this),
+        },
         loading: false,
         popoverVisible: false,
         resultData: this.value,
@@ -205,11 +205,11 @@
                 isModal: true,
                 sender: this,
                 selectedInstanceID: this.resultData,
-                onItemSelected: function ({data}) {
+                onItemSelected: ({data}) => {
                   this.setInitialItem(data[this.primaryColumn])
                   this.resultData = data[this.primaryColumn]
                   this.$refs.selector.emitChange(data[this.primaryColumn])
-                }.bind(this),
+                },
                 cmdData: {
                   params: [{
                     entity: this.entityName,

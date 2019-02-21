@@ -38,9 +38,9 @@
         items: [],
         entityName: 'ubm_enum',
         loading: false,
-        listener: function () {
+        listener: _ => {
           this.initData()
-        }.bind(this)
+        }
       }
     },
     computed: {
