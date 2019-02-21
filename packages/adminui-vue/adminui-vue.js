@@ -33,7 +33,7 @@ if (window.$App) {
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
     let autoFormComponent = require('./components/AutoFormComponent.vue')
-    window.BOUNDLED_BY_WEBPACK = false
+    // window.BOUNDLED_BY_WEBPACK = false
     if (BOUNDLED_BY_WEBPACK) {
       autoFormComponent = autoFormComponent.default
     }

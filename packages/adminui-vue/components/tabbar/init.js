@@ -1,6 +1,10 @@
 require('./css/index.css')
+// window.BOUNDLED_BY_WEBPACK = true // temporary
+let Tabbar = require('./template/tabbar.vue')
 
-const Tabbar = require('./template/tabbar.vue')
+if (BOUNDLED_BY_WEBPACK) {
+  Tabbar = Tabbar.default
+}
 
 module.exports = {
   replaceDefaultTabbar () {
