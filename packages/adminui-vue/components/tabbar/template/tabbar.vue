@@ -375,7 +375,7 @@ module.exports = {
            /* Add a new tab to the end of tab list */
           this.tabs.push({
             id: tab.id,
-            title: `<span style="color: red">${tab.title}</span>`,
+            title: tab.title,
             point: null
           })
           this.measurementPending = true
