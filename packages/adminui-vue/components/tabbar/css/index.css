@@ -3,6 +3,7 @@
   display:flex;
   justify-content: space-between;
   background: #fff;
+  border-bottom: 1px solid rgba(var(--blue), 0.12);
 }
 
 .ub-tab-slider__ctrl{
