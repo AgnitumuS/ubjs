@@ -142,7 +142,6 @@
   let ubCodeMirror = require('./controls/UbCodeMirror.vue')
   const ubDomain = require('@unitybase/cs-shared').UBDomain
 
-  // window.BOUNDLED_BY_WEBPACK = false
   if (BOUNDLED_BY_WEBPACK) {
     ubSelectEnum = ubSelectEnum.default
     ubSelectEntity = ubSelectEntity.default

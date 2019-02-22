@@ -6,6 +6,14 @@ window.process = {
 }
 const IS_SYSTEM_JS = (typeof SystemJS !== 'undefined')
 
+/*
+* The BOUNDLED_BY_WEBPACK variable is available only when a project is being built by a webpack. 
+* But not available in dev mode. 
+* Please note that BOUNDLED_BY_WEBPACK and window.BOUNDLED_BY_WEBPACK is not the same
+* But if BOUNDLED_BY_WEBPACK is undefined app will use window.BOUNDLED_BY_WEBPACK
+*/
+window.BOUNDLED_BY_WEBPACK = false
+
 const Vue = require('vue')
 window.Vue = Vue
 // next 2 lines for modules what use ES6 import `import Vue from 'vue' (not recommended for use)

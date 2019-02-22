@@ -22,7 +22,7 @@
             :class="{'active': current === index}"
             @close="handleClose"
             @open="handleTabClick"
-            @right-click="handleTabRightClick"
+            @right-click="$refs.context.show"
             />
         </transition-group>
       </div>
@@ -64,21 +64,24 @@
           />
       </div>
     </el-popover>
+
+    <tabbar-context ref="context" @close="selectContext"/>
   </div>
 </template>
 
 <script>
 let Tab = require('./tab.vue')
-const context = require('../../tabbar-context/index')
+let TabbarContext = require('./tabbar-context.vue')
 
 if (BOUNDLED_BY_WEBPACK) {
   Tab = Tab.default
+  TabbarContext = TabbarContext.default
 }
 
 module.exports = {
   name: 'tabbar',
 
-  components: {Tab},
+  components: {Tab, TabbarContext},
 
   data(){
     return {
@@ -222,9 +225,7 @@ module.exports = {
       }
     },
 
-    async handleTabRightClick(e, tab){
-      const action = await context(e)
-
+    selectContext(action, tab){
       if (action === 'closeOther'){
         const other = this.tabs.filter(t => t.id !== tab.id)
         this.handleClose(other, true)
@@ -236,7 +237,6 @@ module.exports = {
         this.handleClose([tab], true)
       }
     },
-
 
     moveToView() {
       if (this.tabsWidth <= this.visibleWidth || this.offset > 0) {

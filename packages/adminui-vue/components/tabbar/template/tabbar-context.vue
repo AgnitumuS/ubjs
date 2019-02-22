@@ -1,7 +1,7 @@
 <template>
   <div 
     class="ub-tabbar__context-menu" 
-    v-if="visible" 
+    v-show="visible" 
     :style="{
       top: y + 'px',
       left: x + 'px'    
@@ -27,30 +27,40 @@
 module.exports = {
   name: 'tabbar-context',
 
+  data(){
+    return {
+      visible: false,
+      x: 0,
+      y: 0,
+      tab: null
+    }
+  },
+
   methods: {
     close(action){
-      this.resolveConfirm(action)
+      this.$emit('close', action, this.tab)
       this.visible = false
-      this.$nextTick(this.$destroy)
     },
 
-    clickOutside(e){
-      if (!e.target.closest('.ub-tabbar__context-menu')){
-        this.close()
+    clickOutside({target}){
+      const outsideContext = !target.closest('.ub-tabbar__context-menu')
+      const outsideTab = !target.closest('.ub-tabbar__tab')
+      if (outsideContext && outsideTab){
+        this.visible = false
       }
+    },
+
+    show({x, y}, tab){
+      this.visible = true
+      this.x = x
+      this.y = y
+      this.tab = tab
     }
   },
 
   mounted(){
-    this.$nextTick(() => {
-      window.addEventListener('click', this.clickOutside)
-      window.addEventListener('contextmenu', this.clickOutside)
-    })
+    window.addEventListener('click', this.clickOutside)
+    window.addEventListener('contextmenu', this.clickOutside)
   },
-
-  beforeDestroy(){
-    window.removeEventListener('click', this.clickOutside)
-    window.removeEventListener('contextmenu', this.clickOutside)
-  }
 }
 </script>
