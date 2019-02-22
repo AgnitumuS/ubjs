@@ -1,0 +1,28 @@
+{
+  "name": "storybook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "start-storybook -s ./public,./static -p 9001 -c storybook",
+    "build": "build-storybook -s ./public,./static -o .out -c ./storybook"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@storybook/storybook-deployer": "^2.8.1",
+    "@storybook/vue": "^4.1.4",
+    "babel-loader": "^8.0.5",
+    "babel-preset-vue": "^2.0.2",
+    "vue-loader": "^15.6.4",
+    "vue-template-compiler": "^2.6.6"
+  },
+  "dependencies": {
+    "@unitybase/adminui-vue": "^1.0.37",
+    "@unitybase/ub-pub": "^5.2.26",
+    "element-ui": "^2.4.11",
+    "vue": "^2.6.6",
+    "vue-json-tree-view": "^2.1.4"
+  }
+}
