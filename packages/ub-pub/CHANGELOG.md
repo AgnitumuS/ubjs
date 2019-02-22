@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.29]
+### Fixed
+ - WebStorm code insight now work inside vue classes for this.$UB
+
 ## [5.2.23]
 ### Added
   - new function `AsyncConnection.setDocument` to easy call a `setDocument` endpoint
