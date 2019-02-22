@@ -71,7 +71,6 @@
   let ubUploadDocument = require('./controls/UbUploadDocument.vue')
   let ubCodeMirror = require('./controls/UbCodeMirror.vue')
 
-  window.BOUNDLED_BY_WEBPACK = false
   if (BOUNDLED_BY_WEBPACK) {
     ubSelectEnum = ubSelectEnum.default
     ubSelectEntity = ubSelectEntity.default

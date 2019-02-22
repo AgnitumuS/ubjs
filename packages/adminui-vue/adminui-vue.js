@@ -6,6 +6,14 @@ window.process = {
 }
 const IS_SYSTEM_JS = (typeof SystemJS !== 'undefined')
 
+/*
+* The BOUNDLED_BY_WEBPACK variable is available only when a project is being built by a webpack.
+* But not available in dev mode.
+* Please note that BOUNDLED_BY_WEBPACK and window.BOUNDLED_BY_WEBPACK is not the same
+* But if BOUNDLED_BY_WEBPACK is undefined app will use window.BOUNDLED_BY_WEBPACK
+*/
+window.BOUNDLED_BY_WEBPACK = false
+
 const Vue = require('vue')
 window.Vue = Vue
 // next 2 lines for modules what use ES6 import `import Vue from 'vue' (not recommended for use)
@@ -24,8 +32,13 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
+const {replaceDefaultTabbar} = require('./components/tabbar/init')
+
+if (window.$App) {
+  window.$App.on('applicationReady', replaceDefaultTabbar)
+}
+
 let entityEditor = require('./components/UbEntityEditComponent.vue')
-window.BOUNDLED_BY_WEBPACK = false
 if (BOUNDLED_BY_WEBPACK) {
   entityEditor = entityEditor.default
 }
@@ -34,7 +47,7 @@ Vue.component('ub-entity-edit', entityEditor)
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
     let autoFormComponent = require('./components/AutoFormComponent.vue')
-    window.BOUNDLED_BY_WEBPACK = false
+    // window.BOUNDLED_BY_WEBPACK = false
     if (BOUNDLED_BY_WEBPACK) {
       autoFormComponent = autoFormComponent.default
     }
