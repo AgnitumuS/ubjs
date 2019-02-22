@@ -1,4 +1,6 @@
+/* global BOUNDLED_BY_WEBPACK */
 require('./css/index.css')
+const Vue = require('vue')
 
 let Tabbar = require('./template/tabbar.vue')
 
@@ -13,7 +15,7 @@ module.exports = {
     styles.innerHTML = `#${id}{display:none !important}`
     document.body.appendChild(styles)
 
-    new window.Vue({
+    new Vue({
       render: (h) => h(Tabbar),
       mounted () {
         const {offsetHeight} = this.$el
