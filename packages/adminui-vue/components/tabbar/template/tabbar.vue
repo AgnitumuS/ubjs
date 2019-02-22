@@ -24,6 +24,7 @@
             @open="handleTabClick"
             @right-click="$refs.context.show"
             />
+          </tab>
         </transition-group>
       </div>
       <div 
@@ -60,8 +61,8 @@
           in-tray
           :class="{'active': current === index}"
           @open="handleTabClick"
-          @close="handleClose"
-          />
+          @close="handleClose">
+         </tab>
       </div>
     </el-popover>
 
