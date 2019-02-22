@@ -4147,9 +4147,6 @@ img {
 .x-border-box,
 .x-border-box * {
   box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
 }
 
 /* line 17, ../../../../ext/packages/ext-theme-base/sass/src/Component.scss */
@@ -7255,17 +7252,10 @@ a.x-tab {
  * @member Ext.button.Button
  */
 /* line 255, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-small {
-  border-color: #cfd1d6;
-}
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-small {
-  border-radius: 5px;
   padding: 6px 6px 6px 8px;
-  border-width: 1px;
-  border-style: solid;
-  background-color: #eaeaea;
 }
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -7378,7 +7368,7 @@ a.x-tab {
 /* line 262, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-default-small .x-btn-inner {
   font-weight: 600;
-  color: #0d47a1;
+  color: #2f7c94;
   padding: 0 5px;
 }
 /* line 270, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -7760,7 +7750,7 @@ a.x-tab {
 .x-btn-default-medium .x-btn-inner {
   font-size: 14px;
   font-weight: 600;
-  color: #0d47a1;
+  color: #2f7c94;
   padding: 0 8px;
 }
 /* line 270, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -8147,7 +8137,7 @@ a.x-tab {
 .x-btn-default-large .x-btn-inner {
   font-size: 16px;
   font-weight: 600;
-  color: #0d47a1;
+  color: #2f7c94;
   padding: 0 10px;
 }
 /* line 270, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -8410,17 +8400,10 @@ a.x-tab {
 /*</if slicer>*/
 /* */
 /* line 255, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-small {
-  border-color: #f0f3f3;
-}
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-small {
-  border-radius: 5px;
   padding: 6px 6px 6px 8px;
-  border-width: 1px;
-  border-style: solid;
-  background-color: transparent;
 }
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -8785,17 +8768,10 @@ a.x-tab {
 /*</if slicer>*/
 /* */
 /* line 255, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-btn-default-toolbar-medium {
-  border-color: #f0f3f3;
-}
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-toolbar-medium {
-  border-radius: 5px;
   padding: 6px 6px 6px 8px;
-  border-width: 1px;
-  border-style: solid;
-  background-color: transparent;
 }
 
 /* line 187, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -9677,7 +9653,7 @@ a.x-tab {
   border-color: silver;
   border-width: 0;
   background-image: none;
-  background-color: #f0f3f3;
+  background-color: #ffffff;
 }
 /* line 51, ../../../../ext/packages/ext-theme-neutral/sass/src/toolbar/Toolbar.scss */
 .x-toolbar-default .x-box-scroller {
@@ -12727,7 +12703,7 @@ a.x-color-picker-item:hover {
 .x-grid-cell-special {
   border-color: #ededed;
   border-style: solid;
-  border-right-width: 1px 0;
+  border-right-width: 1px;
 }
 
 /* line 228, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Table.scss */
@@ -12737,7 +12713,6 @@ a.x-color-picker-item:hover {
 
 /* line 241, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Table.scss */
 .x-grid-row .x-grid-cell-selected {
-  color: "none";
   background-color: #d6ecd4;
 }
 
@@ -13601,7 +13576,7 @@ a.x-color-picker-item:hover {
 /* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */
 .x-menu {
   border-style: solid;
-  border-width: 1;
+  border-width: 1px;
   border-color: #a9b3c8;
 }
 
@@ -15373,11 +15348,11 @@ a.x-color-picker-item:hover {
 
 /* line 496, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-over .x-tab-inner {
-  color: #0d47a1;
+  color: #2f7c94;
 }
 /* line 511, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-tab-default-over .x-tab-glyph {
-  color: #0d47a1;
+  color: #2f7c94;
 }
 /* line 518, ../../../../ext/packages/ext-theme-neutral/sass/src/tab/Tab.scss */
 .x-ie8m .x-tab-default-over .x-tab-glyph {

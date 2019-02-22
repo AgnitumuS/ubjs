@@ -72,14 +72,13 @@ Ext.define('UB.view.Viewport', {
      * @property {Ext.tab.Panel} centralPanel
      */
     me.centralPanel = Ext.create('Ext.tab.Panel', {
-      region: 'center',
       id: 'ubCenterViewport',
       isMainTabPanel: true,
       deferredRender: false,
-      layout: 'fit',
+      region: 'center',
       maxTabWidth: 200,
       border: false,
-      margin: '3, 0, 0, 0',
+      margin: '1, 0, 0, 0',
       loader: { autoLoad: false },
       listeners: {
         add: function (sender, container, pos) {
@@ -98,9 +97,16 @@ Ext.define('UB.view.Viewport', {
     Ext.apply(me, {
       layout: 'border',
       items: [
-        me.topPanel,
         me.leftPanel,
-        me.centralPanel
+        {
+          xtype: 'panel',
+          region: 'center',
+          layout: 'border',
+          items: [
+            me.topPanel,
+            me.centralPanel
+          ]
+        }
       ]
     })
     this.callParent(arguments)
