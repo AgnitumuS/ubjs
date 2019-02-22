@@ -32,12 +32,12 @@
       "name": "sessionTimeout"
     },
     {
+      "name": "allowedAppMethods",
       "dataType": "String",
       "size": 2000,
-      "caption": "Which application level methods are allowed (comma separated list)",
+      "caption": "Allowed endpoints (comma separated list)",
       "documentation": "",
-      "description": "",
-      "name": "allowedAppMethods"
+      "description": ""
     }
   ],
   "mixins": {
