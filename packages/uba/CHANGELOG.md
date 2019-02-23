@@ -63,7 +63,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.1.32]
 ### Changed
-- `uba_als.code` length increased to 128 to allow developer to create a unixue ELS rule codes based on code = role.name + entity.name + method.name pattern
+- `uba_als.code` length increased to 128 to allow developer to create a unique ELS rule codes based on code = role.name + entity.name + method.name pattern
 
 ## [4.1.22]
 ### Added
