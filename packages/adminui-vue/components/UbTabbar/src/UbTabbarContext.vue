@@ -1,23 +1,32 @@
 <template>
-  <div 
-    class="ub-tabbar__context-menu" 
-    v-show="visible" 
+  <div
+    v-show="visible"
+    class="ub-tabbar__context-menu"
     :style="{
       top: y + 'px',
-      left: x + 'px'    
-    }" 
+      left: x + 'px'
+    }"
+  >
+    <div
+      class="ub-tabbar__context-menu__item"
+      @click="close('close')"
     >
-    <div @click="close('close')" class="ub-tabbar__context-menu__item">
       {{ $ut('close') }}
     </div>
-    
-    <div @click="close('closeOther')" class="ub-tabbar__context-menu__item">
+
+    <div
+      class="ub-tabbar__context-menu__item"
+      @click="close('closeOther')"
+    >
       {{ $ut('closeOther') }}
     </div>
 
-    <div class="ub-tabbar__context-menu__divider"></div>
+    <div class="ub-tabbar__context-menu__divider" />
 
-    <div @click="close('closeAll')" class="ub-tabbar__context-menu__item">
+    <div
+      class="ub-tabbar__context-menu__item"
+      @click="close('closeAll')"
+    >
       {{ $ut('closeAll') }}
     </div>
   </div>
@@ -25,9 +34,9 @@
 
 <script>
 module.exports = {
-  name: 'tabbar-context',
+  name: 'UbTabbarContext',
 
-  data(){
+  data () {
     return {
       visible: false,
       x: 0,
@@ -37,20 +46,20 @@ module.exports = {
   },
 
   methods: {
-    close(action){
+    close (action) {
       this.$emit('close', action, this.tab)
       this.visible = false
     },
 
-    clickOutside({target}){
+    clickOutside ({target}) {
       const outsideContext = !target.closest('.ub-tabbar__context-menu')
       const outsideTab = !target.closest('.ub-tabbar__tab')
-      if (outsideContext && outsideTab){
+      if (outsideContext && outsideTab) {
         this.visible = false
       }
     },
 
-    show({x, y}, tab){
+    show ({x, y}, tab) {
       this.visible = true
       this.x = x
       this.y = y
@@ -58,9 +67,9 @@ module.exports = {
     }
   },
 
-  mounted(){
+  mounted () {
     window.addEventListener('click', this.clickOutside)
     window.addEventListener('contextmenu', this.clickOutside)
-  },
+  }
 }
 </script>

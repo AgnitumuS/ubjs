@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.29]
 ### Fixed
  - WebStorm code insight now work inside vue classes for this.$UB
+### Changed
+ - `AsyncConnection.appConfig.applicationName` now localized to user language according to 
+ settings from `ubConfig`
 
 ## [5.2.23]
 ### Added
