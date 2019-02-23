@@ -2,7 +2,7 @@
  * Helper for manipulation with data, stored locally in ({@link TubCachedData} format).
  *
  * This module shared between client & server. In case of server we use it together with {@link dataLoader},
- * in case of client - inside {@link SyncConnection#select} to handle operations with entity data cached in IndexedDB.
+ * in case of client - inside {@link class:SyncConnection#select SyncConnection.select} to handle operations with entity data cached in IndexedDB.
  *
  * For server-side samples see ubm_forms.doSelect method implementation.
  *
@@ -258,12 +258,12 @@ function whereListToFunctions (ubql, fieldList) {
     let property = clause.expression || ''
 
     if (clause.condition === 'custom') {
-      throw new Error('Condition "custom" is not supported for cached instances.')
+      throw new Error('Condition "custom" is not supported for cached entities')
     }
     property = (property.replace(/(\[)|(])/ig, '') || '').trim()
     propIdx = fieldList.indexOf(property)
     if (propIdx === -1) {
-      throw new Error('Filtering by field ' + property + ' is not allowed, because it is not in fieldList')
+      throw new Error('Filtering by attribute "' + property + '" what not in fieldList is not allowed for cached entities')
     }
 
     fValue = _.values(clause.values)[0]
@@ -279,27 +279,28 @@ function whereListToFunctions (ubql, fieldList) {
 }
 
 /**
- * Transform result of {@link SyncConnection#select} response
+ * Transform result of {@link class:SyncConnection#select SyncConnection.select} response
  * from Array of Array representation to Array of Object.
+ * @example
  *
- *      LocalDataStore.selectResultToArrayOfObjects({resultData: {
- *          data: [['row1_attr1Val', 1], ['row2_attr2Val', 22]],
- *          fields: ['attrID.name', 'attr2']}
- *      });
- *      // result is:
- *      // [{"attrID.name": "row1_attr1Val", attr2: 1},
- *      //  {"attrID.name": "row2_attr2Val", attr2: 22}
- *      // ]
+ * LocalDataStore.selectResultToArrayOfObjects({resultData: {
+ *     data: [['row1_attr1Val', 1], ['row2_attr2Val', 22]],
+ *     fields: ['attrID.name', 'attr2']}
+ * });
+ * // result is:
+ * // [{"attrID.name": "row1_attr1Val", attr2: 1},
+ * //  {"attrID.name": "row2_attr2Val", attr2: 22}
+ * // ]
  *
- *      // object keys simplify by passing fieldAliases
- *      LocalDataStore.selectResultToArrayOfObjects({resultData: {
- *          data: [['row1_attr1Val', 1], ['row2_attr2Val', 22]],
- *          fields: ['attrID.name', 'attr2']}
- *      }, {'attrID.name': 'attr1Name'});
- *      // result is:
- *      // [{attr1Name: "row1_attr1Val", attr2: 1},
- *      //  {attr1Name: "row2_attr2Val", attr2: 22}
- *      // ]
+ * // object keys simplify by passing fieldAliases
+ * LocalDataStore.selectResultToArrayOfObjects({resultData: {
+ *     data: [['row1_attr1Val', 1], ['row2_attr2Val', 22]],
+ *     fields: ['attrID.name', 'attr2']}
+ * }, {'attrID.name': 'attr1Name'});
+ * // result is:
+ * // [{attr1Name: "row1_attr1Val", attr2: 1},
+ * //  {attr1Name: "row2_attr2Val", attr2: 22}
+ * // ]
  *
  * @param {{resultData: TubCachedData}} selectResult
  * @param {Object<string, string>} [fieldAlias] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
@@ -325,18 +326,20 @@ module.exports.selectResultToArrayOfObjects = function (selectResult, fieldAlias
 }
 
 /**
- * Flatten cached data (or result of {@link LocalDataStore#doFilterAndSort}.resultData )
+ * Flatten cached data (or result of {@link module:LocalDataStore#doFilterAndSort LocalDataStore.doFilterAndSort}.resultData )
  * to Object expected by TubDataStore.initialize Flatten format (faster than [{}..] format).
+ * CachedData may contain more field or field in order not in requestedFieldList - in this case we use expectedFieldList.
  *
-        //consider we have cached data in variable filteredData.resultData
-        // to initialize dataStore with cached data:
-        mySelectMethod = function(ctxt){
-            var fieldList = ctxt.mParams.fieldList;
-            resp = LocalDataStore.flatten(fieldList, filteredData.resultData);
-            ctxt.dataStore.initFromJSON(resp);
-        }
+ * @example
+ * // consider we have cached data in variable filteredData.resultData
+ * // to initialize dataStore with cached data:
+ * mySelectMethod = function(ctxt){
+ *     var fieldList = ctxt.mParams.fieldList;
+ *     resp = LocalDataStore.flatten(fieldList, filteredData.resultData);
+ *     ctxt.dataStore.initFromJSON(resp);
+ * }
  *
- * cachedData may contain more field or field in order not in requestedFieldList - in this case we use expectedFieldList
+ *
  * @param {Array.<string>} requestedFieldList Array of attributes to transform to. Can be ['*'] - in this case we return all cached attributes
  * @param {TubCachedData} cachedData
  * @result {{fieldCount: number, rowCount: number, values: array.<*>}}
@@ -383,11 +386,13 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
 }
 
 /**
- * Reverse conversion to {@link LocalDataStore#selectResultToArrayOfObjects}
- * Transform array of object to array of array using passed attributes array
+ * Reverse conversion to {@link module:LocalDataStore#selectResultToArrayOfObjects LocalDataStore.selectResultToArrayOfObjects}.
  *
- *      LocalDataStore.arrayOfObjectsToSelectResult([{a: 1, b: 'as'}, {b: 'other', a: 12}], ['a', 'b']);
- *      // result is: [[1,"as"],[12,"other"]]
+ *
+ * @example
+ * //Transform array of object to array of array using passed attributes array
+ * LocalDataStore.arrayOfObjectsToSelectResult([{a: 1, b: 'as'}, {b: 'other', a: 12}], ['a', 'b']);
+ * // result is: [[1, "as"], [12, "other"]]
  *
  * @param {Array.<Object>} arrayOfObject
  * @param {Array.<String>} attributeNames

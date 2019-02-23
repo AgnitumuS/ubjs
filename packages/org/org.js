@@ -10,7 +10,7 @@ ORG.checkOrgUnitRequired = true
 Session.on('login', orgOnUserLogin)
 
 /**
- * For a superuser (UBA_COMMON.USERS.ADMIN.ID) nothing happens here.
+ * For a superuser (UBA_COMMON.isSuperUser) all org related values are sets to '' or 0 (for IDs).
  *
  * Session 'login' event occurs every time when new user logs in.
  * Here we define logged-in user's FullName from org structure,
@@ -43,8 +43,6 @@ function orgOnUserLogin () {
   data.tempPositions = ''
   data.allPositions = ''
 
-  if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) return
-
   try {
     staffs = UB.Repository('org_employeeonstaff')
       .attrs(['ID', 'employeeOnStaffType', 'description', 'employeeID.userID', 'employeeID.shortFIO',
@@ -64,7 +62,7 @@ function orgOnUserLogin () {
     if (ORG.checkOrgUnitRequired && (Session.uData.roleIDs.indexOf(UBA_COMMON.ROLES.ADMIN.ID) === -1)) {
       throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>. ' + lastError)
     } else {
-      data.employeeShortFIO = ''
+      // defined by ub model data.employeeShortFIO = ''
       data['orgUnitIDs'] = ''
       data.staffUnitID = -1
       data.employeeID = -1
@@ -72,6 +70,7 @@ function orgOnUserLogin () {
   } else {
     let permStaffUnitIDsArray = []
     let tempStaffUnitIDsArray = []
+    let allStaffUnitIDsArray = []
     let tempEmployeeOnStaffIDsArray = []
     let tempPositionsArray = []
     let assistantStaffUnitIDsArray = []
@@ -83,7 +82,6 @@ function orgOnUserLogin () {
     let parentUnityEntity = null
     let employeeOnStaffType = ''
     let permanentOrgUnitIDs = []
-    let currPositionObj, currStaffUnitID, currEmployeeOnStaffID
 
     let firstStaff = staffs[0]
     data.employeeShortFIO = firstStaff['employeeID.shortFIO']
@@ -109,9 +107,12 @@ function orgOnUserLogin () {
       orgUnitIDs = _.union(orgUnitIDs, tmpArr)
       employeeOnStaffType = staff['employeeOnStaffType']
 
+      let currStaffUnitID = staff['staffUnitID']
+      allStaffUnitIDsArray.push(currStaffUnitID)
+      let currEmployeeOnStaffID = staff['ID']
       if (employeeOnStaffType === 'PERMANENT') {
-        staffUnitID = staff['staffUnitID'] // permanentStaffUnit
-        employeeOnStaffID = staff['ID'] // permanent employeeOnStaff
+        staffUnitID = currStaffUnitID // permanentStaffUnit
+        employeeOnStaffID = currEmployeeOnStaffID // permanent employeeOnStaff
         parentID = staff['staffUnitID.parentID']
         parentUnityEntity = staff['staffUnitID.parentID.mi_unityEntity']
         permStaffUnitIDsArray.push(staffUnitID)
@@ -119,31 +120,25 @@ function orgOnUserLogin () {
         data.staffUnitName = staff['staffUnitID.name']
         permanentOrgUnitIDs = tmpArr
       } else if (employeeOnStaffType === 'TEMPORARY') {
-        currStaffUnitID = staff['staffUnitID']
-        currEmployeeOnStaffID = staff['ID']
         tempStaffUnitIDsArray.push(currStaffUnitID)
         tempEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID)
-        currPositionObj = {
+        tempPositionsArray.push({
           staffUnitID: staff['staffUnitID'],
           employeeOnStaffID: staff['ID'],
           staffUnitFullName: staff['staffUnitID.fullName'],
           staffUnitName: staff['staffUnitID.name'],
           employeeOnStaffDescription: staff['description']
-        }
-        tempPositionsArray.push(currPositionObj)
+        })
       } else if (employeeOnStaffType === 'ASSISTANT') {
-        currStaffUnitID = staff['staffUnitID']
-        currEmployeeOnStaffID = staff['ID']
         assistantStaffUnitIDsArray.push(currStaffUnitID)
         assistantEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID)
-        currPositionObj = {
+        assistantPositionsArray.push({
           staffUnitID: staff['staffUnitID'],
           employeeOnStaffID: staff['ID'],
           staffUnitFullName: staff['staffUnitID.fullName'],
           staffUnitName: staff['staffUnitID.name'],
           employeeOnStaffDescription: staff['description']
-        }
-        assistantPositionsArray.push(currPositionObj)
+        })
       }
     }
 
@@ -160,17 +155,16 @@ function orgOnUserLogin () {
     data.tempEmployeeOnStaffIDs = tempEmployeeOnStaffIDsArray.join(',') // array of temporary employeeOnStaffIDs
     data.assistantStaffUnitIDs = assistantStaffUnitIDsArray.join(',') // array of assistant staffUnitIDs
     data.assistantEmployeeOnStaffIDs = assistantEmployeeOnStaffIDsArray.join(',') // array of assistant employeeOnStaffIDs
-    tempStaffUnitIDsArray = _.union(tempStaffUnitIDsArray, assistantStaffUnitIDsArray)
-    tempStaffUnitIDsArray.push(staffUnitID)
     tempEmployeeOnStaffIDsArray = _.union(tempEmployeeOnStaffIDsArray, assistantEmployeeOnStaffIDsArray)
-    data.allStaffUnitIDs = tempStaffUnitIDsArray.join(',') // array of all (permanent + temporary + assistant) staffUnitIDs
+    data.allStaffUnitIDs = allStaffUnitIDsArray.join(',') // array of all (permanent + temporary + assistant) staffUnitIDs
     tempEmployeeOnStaffIDsArray.push(employeeOnStaffID)
     data.allEmployeeOnStaffIDs = tempEmployeeOnStaffIDsArray.join(',') // array of all (permanent + temporary + assistant) employeeOnStaffIds
-    data.tempPositions = JSON.stringify(tempPositionsArray) // stringified array ob temporary position objects: {staffUnitID, employeeOnStaffID}
-    data.assistantPositions = JSON.stringify(assistantPositionsArray) // stringified array ob assistant position objects: {staffUnitID, employeeOnStaffID}
+    data.tempPositions = JSON.stringify(tempPositionsArray) // stringified array of temporary position objects: {staffUnitID, employeeOnStaffID}
+    data.assistantPositions = JSON.stringify(assistantPositionsArray) // stringified array of assistant position objects: {staffUnitID, employeeOnStaffID}
     tempPositionsArray = _.union(tempPositionsArray, assistantPositionsArray)
     tempPositionsArray.push({staffUnitID: staffUnitID, employeeOnStaffID: employeeOnStaffID})
     data.allPositions = JSON.stringify(tempPositionsArray) // stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
   }
 }
+// expose onUserLogin to allow override it in other models
 ORG.onUserLogin = orgOnUserLogin

@@ -1,5 +1,4 @@
 <!--@name "HTML to PDF test"-->
-<!--@report_code "tst_html_to_pdf"-->
 <!--@model "TST"-->
 
 <!--%pageOrientation:landscape--><h1>Cell merge</h1>

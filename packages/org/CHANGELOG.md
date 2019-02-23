@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.42]
+### Fixed
+ - typo in org_unit shortcut uk localization [UBDF-8687]
+
+## [5.1.39]
+### Fixed
+  - uData.allStaffUnitIDs will contains ALL stuff unit ID's not only permanent/assistant/temp as reported in [unitybase/ubjs#37]
+  
+## [5.1.35]
+### Changed
+ - since DDL generations now executed under `root` check for `admin` login 
+```
+if (UBA_COMMON.isSuperUser()) return
+```
+ is removed from org.js Session.on('login') handler 
+ 
+
+## [5.1.33]
+### Changed
+  - use `UBA_COMMON.isSuperUser()` to prevent ORG.orgOnUserLogin from execution for `admin`
+   or `root` because this users are used for DDL generation
+
+## [5.1.25]
+### Changed
+ - `org_employeeonstaff.caption` generation algorithm: in case `org_employeeonstaff.tabNo` is empty or whitespace - 
+ don't use it in forming `org_employeeonstaff.caption`    
+
 ## [5.1.24]
 ### Added
  - auto generation of `org_employeeonstaff.tabNo` attribute. Length of generated code id defined 
@@ -24,6 +51,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - generation of `org_employeeonstaff.caption`: in case `org_employee.shortFIO` is empty - use `org_employee.lastName`
  [unitybase/ubjs#14]. Deletion of `org_employeeonstaff` is fixed inside server ( ub >= v5.3.3) 
+
+## [5.1.12]
+### Fixed
+ - org_orgaccount formation of the description when the constituent attributes were deleted
 
 ## [5.1.0]
 ### Fixed

@@ -73,3 +73,5 @@ module.exports = function ftsReindex (cfg) {
     }
   }
 }
+
+module.exports.shortDoc = 'Rebuild Full Text Search (FTS) indexes'

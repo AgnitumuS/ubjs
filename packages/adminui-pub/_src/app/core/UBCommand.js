@@ -1,3 +1,4 @@
+/* global $App, UB, Ext */
 require('./UBAppConfig')
 require('./UBStoreManager')
 require('./UBUtil')
@@ -70,6 +71,17 @@ Ext.define('UB.core.UBCommand', {
     },
 
     /**
+     * Create and render automatically generated form
+     */
+    showAutoForm: function () {
+      let defaultItems = UB.core.UBCommand.createDefaultItems(this.entity, this.parentContext)
+      this.windowCommandCode = UB.core.UBUtil.getNameMd5(this.entity + Ext.String.capitalize(this.commandType), defaultItems)
+      this.description = $App.domainInfo.get(this.entity).caption
+      this.isDefaultForm = true
+      this.onShowFormRun(defaultItems)
+    },
+
+    /**
      * Create default form items for automatically generated form
      * @param {String} entityName
      * @param {Object} parentContext
@@ -85,10 +97,10 @@ Ext.define('UB.core.UBCommand', {
       }
       _.forEach(entity.attributes, function (attribute, attrName) {
         if (attribute.defaultView !== false && !privateRe.test(attrName) && (!parentContext || !parentContext.hasOwnProperty(attrName))) {
-          items.push({ attributeName: attrName, anchor: '100%' })
+          items.push({attributeName: attrName, anchor: '100%'})
         }
       })
-      return { items: items }
+      return {items: items}
     },
 
     /**
@@ -133,7 +145,7 @@ Ext.define('UB.core.UBCommand', {
       whereList = whereList || {}
       itemName = itemName || 'c' + (Ext.Object.getSize(whereList) + 1)
       condition = condition || UB.core.UBCommand.condition.sqlecEqual
-      whereList[itemName] = { expression: '[' + attributeName + ']', condition: condition, values: {} }
+      whereList[itemName] = {expression: '[' + attributeName + ']', condition: condition, values: {}}
       whereList[itemName].values[attributeName] = attributeValue
 
       return whereList
@@ -235,6 +247,7 @@ Ext.define('UB.core.UBCommand', {
         })
         return result
       }
+
       let command = parseParam(url.split('&'))
 
       if (command.params) {
@@ -369,9 +382,11 @@ Ext.define('UB.core.UBCommand', {
       me.entity = me.entity || me.commandData.entity || (me.commandData.params ? me.commandData.params[0].entity : null)
       me.commandConfig.entity = me.entity
     } else {
-      me.commandData = { params: [
-        { entity: me.entity, method: UB.core.UBCommand.methodName.SELECT, fieldList: '*' }
-      ]}
+      me.commandData = {
+        params: [
+          {entity: me.entity, method: UB.core.UBCommand.methodName.SELECT, fieldList: '*'}
+        ]
+      }
     }
 
     switch (me.commandType) {
@@ -450,11 +465,11 @@ Ext.define('UB.core.UBCommand', {
     me.showListParam = showListParam
 
     if (!showListParam) {
-      let errMsg = UB.format(UB.i18n('neizvestnnajaSushhnost'), 'showList', me.entity)
+      let errMsg = UB.format(UB.i18n('unknownEntityInCommand'), 'showList', me.entity)
       throw new UB.UBError(errMsg)
     }
     if ((showListParam.fieldList === '*') ||
-        (Array.isArray(showListParam.fieldList) && (showListParam.fieldList.length === 1) && (showListParam.fieldList[0] === '*'))
+      (Array.isArray(showListParam.fieldList) && (showListParam.fieldList.length === 1) && (showListParam.fieldList[0] === '*'))
     ) {
       showListParam.fieldList = $App.domainInfo.get(me.entity).getAttributeNames({defaultView: true})
     }
@@ -525,8 +540,8 @@ Ext.define('UB.core.UBCommand', {
     let grid = Ext.create('UB.view.EntityGridPanel', config)
     me.bindFocus(grid)
 
-    if (_.isFunction(grid.customInit)) {
-      console.error('Function customInit is deprecated. You should use callback function initComponentStart in script file.')
+    if (typeof grid.customInit === 'function') {
+      console.error('Function customInit is deprecated. You should use callback function initComponentStart in script file')
       grid.customInit()
     }
     me.showCommandResult(grid, {
@@ -548,17 +563,13 @@ Ext.define('UB.core.UBCommand', {
       // me.description = me.description || (me.formParam ? me.formParam.description : undefined)
       me.caption = me.caption || (me.formParam ? me.formParam.caption : undefined)
       if (!Ext.isDefined(me.formCode)) {
-        let defaultItems = UB.core.UBCommand.createDefaultItems(me.entity, me.parentContext)
-        me.windowCommandCode = UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), defaultItems)
-        me.description = $App.domainInfo.get(me.entity).caption
-        me.isDefaultForm = true
-        me.onShowFormRun(defaultItems)
+        UB.core.UBCommand.showAutoForm.call(me)
       } else {
         me.windowCommandCode = me.formCode
 
         UB.core.UBFormLoader.getFormViewAndController({formCode: me.formCode}).then(function (formDefinition) {
           if (formDefinition.formType === 'vue') {
-            formDefinition.formController.mount()
+            formDefinition.formController.mount(me.commandConfig)
           } else {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)
           }
@@ -640,7 +651,7 @@ Ext.define('UB.core.UBCommand', {
     }
     if (me.tabId) {
       let tab = Ext.getCmp(me.tabId)
-      if (!tab && me.instanceID) { // специально для тестировщиков которые открывают из реестра еще раз только чтосохраненный документ
+      if (!tab && me.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только чтосохраненный документ
         tab = $App.viewport.centralPanel.down('basepanel[instanceID=' + me.instanceID + ']')
       }
       if (tab) {
@@ -693,11 +704,11 @@ Ext.define('UB.core.UBCommand', {
     options = options || {}
 
     let title = options.title ||
-       (me.caption || (me.formParam
-         ? (me.formParam.caption || me.formParam.description)
-         : null) ||
-       $App.domainInfo.get(me.entity).caption) +
-       parentName + history
+      (me.caption || (me.formParam
+        ? (me.formParam.caption || me.formParam.description)
+        : null) ||
+        $App.domainInfo.get(me.entity).caption) +
+      parentName + history
 
     if (!me.createOnly) {
       if (!result.target) {

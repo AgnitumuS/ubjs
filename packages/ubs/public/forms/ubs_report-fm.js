@@ -1,23 +1,48 @@
-/* global SystemJS */
+/* global SystemJS, $App, Ext, Blob */
+const UB = require('@unitybase/ub-pub')
 exports.formCode = {
   initUBComponent: function () {
-    this.down('label[ubID="newFormTip"]').setVisible(this.isNewInstance)
+    const me = this
+    me.down('label[ubID="newFormTip"]').setVisible(me.isNewInstance)
+    me.getField('report_code').addListener('change', me.onCodeChanged, me)
+    if (!me.isEditMode) { // new form
+      me.record.set('ID', null) // ID will be calculated as crc32(code)
+    } else {
+      me.getUBCmp('attrReport_code').setReadOnly(true)
+      me.getUBCmp('attrModel').setReadOnly(true)
+    }
+    $App.connection.authorize().then(function (session) { me.CRC32 = session.crc32 })
+  },
+
+  onCodeChanged: function (field, newValue) {
+    if (this.isEditMode) {
+      throw new UB.UBError(`To change existing report code rename both *.js and *.template files in folder 'yourModel/public/reports'`)
+    }
+    this.record.set('ID', this.CRC32(newValue))
+    this.getUBCmp('attrTemplate').setOrigName(newValue.length > 0 ? newValue + '.template' : newValue)
+    this.getUBCmp('attrCode').setOrigName(newValue.length > 0 ? newValue + '.js' : newValue)
   },
 
   onAfterSave: function () {
     if (SystemJS.reload && !window.__systemHmrUBConnected) {
       let reportModelName = this.record.get('model')
-      let reportCode = this.record.get('code')
+      let reportCode = this.record.get('report_code')
       let model = $App.domainInfo.models[reportModelName]
       let reportCodePath = `${model.clientRequirePath}/reports/${reportCode}.js`
       SystemJS.reload(reportCodePath)
+    } else {
+      $App.dialogInfo(`You are in PRODUCTION mode. Reload page to apply changes. Or use ${window.location.href}-dev URL for developer mode with hot module replacement`)
     }
   },
 
   testReport: function (type, serverSide) {
-    var me = this
+    const me = this
+    if (serverSide && !window.isDeveloperMode) {
+      $App.dialogInfo('To test server-side report generation server should be started in `-dev` mode')
+      return
+    }
 
-    var promise
+    let promise
     if (me.record.dirty) {
       promise = $App.dialogYesNo('saveBeforeTestTitle', 'saveBeforeTestBody')
         .then(function (choice) {
@@ -54,15 +79,13 @@ exports.formCode = {
             type: type,
             params: {},
             language: $App.connection.userLang()
-          }).makeReport()
-            .then(function (data) {
-              var blobData = new Blob(
-                [data.reportData],
-                {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
-              )
-              window.saveAs(blobData, me.record.get('report_code') + '.' + type)
-            })
-          return
+          }).makeReport().then(function (data) {
+            let blobData = new Blob(
+              [data.reportData],
+              {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+            )
+            window.saveAs(blobData, me.record.get('report_code') + '.' + type)
+          })
         } else {
           $App.doCommand({
             cmdType: 'showReport',

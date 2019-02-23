@@ -114,6 +114,18 @@
         "categoryID": {
             "caption": "Category",
             "description": "Category position"
+        },
+        "nationality": {
+          "caption": "Nationality",
+          "description": "Nationality"
+        },
+        "resident": {
+          "caption": "Resident?",
+          "description": "Is person a resident of our country"
+        },
+        "classID": {
+            "caption": "Person classification",
+            "description": "Person classification"
         }
     }
 }

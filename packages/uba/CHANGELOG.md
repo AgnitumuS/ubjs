@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.15]
+### Added
+ - new API method `uba_user.setUDataKey(key, value)` - set key value inside `uba_user.uData` and store new JSON do DB
+ 
+## [5.1.14]
+### Added
+ - **Attribute Level Security editor** (can be ronned from ALS grid).
+ This editor is a direct replacement of desktop ALS application.
+ `adminui-vue` model must be added to application domain for this feature.
+
+## [5.1.12]
+### Fixed
+ - allow Supervisor role to manage uba_grouprole
+ - allow Supervisor role read uba_userrole, uba_usergroup and uba_grouprole [unitybase/ubjs#33]
+ 
+### Changed
+ - add warning to ELS form about insecure usage of method mask in ELS rules [unitybase/ubjs#38]
+
+## [5.1.7]
+### Fixed
+- Write to security audit when group gets or lost a role
+- Write to security audit when user is added/removed to/from group
+- Added localization to `uba_group` entity for en/uk/ru
+
+### Changed
+ - UBA model `Session.on('login')` handler now check advanced security only. All required uData properties 
+ are filled in UB model `Session._getRBACInfo` method (called by server during authorization stage) 
+
+## [5.1.3]
+### Fixed
+ - uba_user.name attribute Georgian translation changed
+
 ## [5.1.1]
 ### Fixed 
  - fix update/insert of uba_usercertificate (setBlob method)
@@ -31,7 +63,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.1.32]
 ### Changed
-- `uba_als.code` length increased to 128 to allow developer to create a unixue ELS rule codes based on code = role.name + entity.name + method.name pattern
+- `uba_als.code` length increased to 128 to allow developer to create a unique ELS rule codes based on code = role.name + entity.name + method.name pattern
 
 ## [4.1.22]
 ### Added

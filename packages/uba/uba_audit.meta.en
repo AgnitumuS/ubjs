@@ -33,6 +33,10 @@
             "caption": "Target user",
             "description": "The user name for which the data has changed"
         },
+        "targetGroup": {
+            "caption": "Target group",
+            "description": "The group name for which the data has changed"
+        },
         "targetRole": {
             "caption": "Target role",
             "description": "The role name for which the data has changed"

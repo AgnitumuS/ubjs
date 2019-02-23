@@ -4,6 +4,96 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.7.0]
+### Changed
+ - left navigation panel aligned to full screen height
+ - all toolbars (application top bar and form's toolbar) color changed to white
+ - border around toolbar buttons is removed
+ 
+## [5.6.26]
+### Added
+ - UB favicon.ico added to adminui-pub
+
+### Fixed
+ - fix opening form from link (check viewport is exists) 
+ 
+### Changed
+ - base panel does not send `needAls: false` parameter for `select/insert/update` in case entity do not have ALS mixin
+ 
+## [5.6.25]
+### Changed
+- ubdetailgrid with RowEditing plugin : Changed data validation on the event 'validateedit'
+
+## [5.6.24]
+### Fixed
+ - potential error with invalid characters in scanned file name (,). Chrome72 do not allow `,` in Content-Disposition header 
+
+## [5.6.23]
+### Fixed
+ - [unitybase/ubjs#41] - float field validator should allow numbers with total char count > 17, for example `10,000,000.000001`
+ - [unitybase/ubjs#42] - select row count on grid refresh only if rowCount calculation is turned ON either in ubRequest 
+ or by pressing Total button on PaginationToolbar
+ - clear "soft deletion" mark for combobox in case ubRequest is changed and newly selected record is not longer deleted
+
+## [5.6.20]
+### Fixed
+ - [unitybase/ubjs#36] - all exporters (Excel / CSV / HTML) will call a grid column render() function
+ with parameters `col.renderer(value, null, record, rowIndex, colIndex, store)`
+
+## [5.6.19]
+### Changed
+ - sped-up `index.html` generation by replacing resource versions calculation algorithm from md5 to `version` from package.json
+
+## [5.6.18]
+### Fixed
+ - error during table insertion in the ReportBuilder UI component
+ 
+### Changed
+ - modal dialogs mask left-top position explicitly set to 0,0 - see [unitybase/ubjs!244] for details
+   
+## [5.6.17]
+### Changed
+  - if several default (isDefault=true) forms exists for an entity
+  `UBFormLoader.getFormByEntity` will return a form from model with the biggest model order.
+  This allow to override default forms in descending models [unitybase/ubjs#30]  
+
+### Fixed
+  - allow negative values for fields with dataType `currency` or `float`
+    
+## [5.6.15]
+### Changed
+  - use a new function `AsyncConnection.setDocument` for files uploading
+   
+## [5.6.13]
+### Changed
+  - prevent entering a string with all whitespaces for **required** text fields by 
+   setting `allowOnlyWhitespace` to false for `Ext.form.field.Text` descendants 
+   inside `Ext.form.field.Text.setAllowBlank` overrided handler
+  - default precision for **Float** attribute set to 6 (instead of 4)
+  - default UI control for **Float** attribute now validate input
+  - vue loader registration is moved form `adminui-vue` to `adminui-pub` 
+         
+## [5.6.12]
+### Added
+ - vue based form `mount` function accept `commandConfig` as a parameter
+ ```javascript
+$App.doCommand({
+  "cmdType": "showForm",
+  "formCode": "ubdev_metadata",
+  "cmdData": {
+    "entityCode": objectCode
+  }
+})
+```
+
+## [5.6.10]
+### Fixed
+ - add nonce for unhandled rejection polyfill script to bypass a CSP rules in production mode  
+
+## [5.6.9]
+### Fixed
+ - BasePanel toolbar icon appearance for tool buttons without text but with drop-down 
+
 ## [5.6.8]
 ### Changed
  - in case default form for entity is not defined and exists several forms

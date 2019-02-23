@@ -33,7 +33,6 @@ class FileSystemBlobStore extends BlobStoreCustom {
    * @param {Object} storeConfig
    * @param {App} appInstance
    * @param {UBSession} sessionInstance
-   * @param storeConfig
    */
   constructor (storeConfig, appInstance, sessionInstance) {
     super(storeConfig, appInstance, sessionInstance)
@@ -139,13 +138,13 @@ class FileSystemBlobStore extends BlobStoreCustom {
         console.debug(`<- `, head)
         head += `\r\nContent-Type: ${ct}`
         if (blobInfo && blobInfo.origName) {
-          head += `\r\nContent-Disposition: attachment;filename='${blobInfo.origName}`
+          head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
         }
         resp.writeHead(head)
         resp.writeEnd('')
       } else {
         if (blobInfo && blobInfo.origName) {
-          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename='${blobInfo.origName}`)
+          resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`)
         } else {
           resp.writeHead(`Content-Type: !STATICFILE\r\nContent-Type: ${ct}`)
         }

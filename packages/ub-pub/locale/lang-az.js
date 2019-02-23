@@ -14,6 +14,7 @@ UB.i18nExtend({
   KerberosTip: 'Əməliyyat sisteminin girişi zamanı göstərilən istifadəçi adı və paroldan istifadə etməklə giriş.Kompüter domeninə qoşulmuş olmalıdır',
   Authentication: 'Authentication',
   RegistrationMode: 'Qeydiyyat rejimi',
+  AdditionalLoginOptions: 'Əlavə giriş variantları',
   useOSCredentialTitle: 'Domen',
   useUBAuthenticationTitle: 'Parol üzrə',
   useCertificateTitle: 'Açar üzrə',

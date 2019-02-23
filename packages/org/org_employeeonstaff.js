@@ -224,6 +224,7 @@ function assignCaptions (ctxt) {
 
   let depInfo = UB.Repository('org_staffunit').attrs(depFieldList).selectById(staffUnitID)
   let employeeInfo = UB.Repository('org_employee').attrs(empFieldList).selectById(employeeID)
+  if (!employeeInfo) return // employee can be deleted - issue unitybase/ubjs#46
   supportedLangs.forEach(function (lang) {
     let suffix = '_' + lang + '^'
     // [unitybase/ubjs#14] - in case `shortFIO` is not defined use the `lastName` (it's not null attribute)
@@ -233,7 +234,8 @@ function assignCaptions (ctxt) {
     if (eosTypeInfo) {
       eosType = ' - (' + eosTypeInfo['name' + suffix] + ')'
     }
-    execParams['caption' + suffix] = empName + ' (' + tabNo + ',' + depName + ')' + eosType
+    tabNo = ('' + tabNo).trim() ? tabNo + ', ' : ''
+    execParams['caption' + suffix] = `${empName} (${tabNo}${depName})${eosType}`
   })
   return true
 }

@@ -4,7 +4,7 @@ const me = ubs_report
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
-const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
+const {FileBasedStoreLoader, GC_KEYS} = require('@unitybase/base')
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -46,10 +46,10 @@ exports.reportCode = {
   buildReport: function(reportParams){
     var reportData = this.buildHTML(reportParams)
     if (this.reportType === 'pdf') {
-        result = this.transformToPdf(reportData)
+        reportData = this.transformToPdf(reportData)
     }
-    return result
-  },
+    return reportData
+  }
   /** optional report click event handler
    * see click)sample report inside UBS model
    */
@@ -62,6 +62,7 @@ exports.reportCode = {
   // }  
 }
 `
+
 /**
  * Check integrity of file content. Passed as a callback to FileBasedStore.onBeforeRowAdd
  * @private
@@ -78,11 +79,12 @@ function postProcessing (loader, fullFilePath, content, row) {
   // fill model attribute by current folder model name
   row.model = loader.processingRootFolder.model.name
 
-  // fill name attribute with file name w/o ".xml" extension
+  // fill name attribute with file name w/o ".TEMPLATE_EXTENSION" extension
   let fileName = path.basename(fullFilePath)
+  if (row.report_code) { console.warn(`Please, remove a line "<!--@report_code "${row.report_code}"-->" from a file ${fileName}. In UB@5 report code is a report file name without extension`) }
   row.report_code = fileName.substring(0, fileName.length - TEMPLATE_EXTENSION.length)
 
-  if (row.ID) console.warn(`Please, remove a row "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB4 report ID is generated automatically as crc32(fileNameWoExtension)`)
+  if (row.ID) console.warn(`Please, remove a line "<!--@ID "${row.ID}"-->" from a file ${fileName}. In UB@5 report ID is generated automatically as crc32(fileNameWoExtension)`)
   row.ID = ncrc32(0, row.report_code)
 
   // fill formDef attribute value
@@ -119,13 +121,14 @@ function postProcessing (loader, fullFilePath, content, row) {
 function loadAll () {
   const models = App.domainInfo.models
   let folders = []
-  let modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
+  let modelLastDate = new Date(App.globalCacheGet(GC_KEYS.MODELS_MODIFY_DATE)).getTime()
 
   console.debug('modelLastDate = ', modelLastDate)
   if (!resultDataCache || modelLoadDate < modelLastDate) {
     console.debug('load reports from models directory structure')
 
     for (let modelCode in models) {
+      // noinspection JSUnfilteredForInLoop
       let model = models[modelCode]
       let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
@@ -231,13 +234,14 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   })
   let newTemplateInfo = newValues.template
   let reportBody
-  if (isInsert || !newTemplateInfo) {
+  if (isInsert && !newTemplateInfo) {
     reportBody = ''
   } else {
     reportBody = App.blobStores.getContent(
       {
         entity: entity.name,
         attribute: 'template',
+        fileName: storedValue.report_code + TEMPLATE_EXTENSION,
         ID: ID,
         isDirty: Boolean(newTemplateInfo)
       },
@@ -245,14 +249,17 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
     )
     let clearAttrReg = new RegExp(FileBasedStoreLoader.XML_ATTRIBURE_REGEXP, 'gm') // seek for <!--@attr "bla bla"-->CRLF
     reportBody = reportBody.replace(clearAttrReg, '') // remove all old entity attributes
-    let attributes = entity.attributes
-    for (let attrName in attributes) {
-      let attr = attributes[attrName]
-      if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView || attrName === 'ID')) {
-        reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
-      }
+  }
+  let attributes = entity.attributes
+  for (let attrName in attributes) {
+    // noinspection JSUnfilteredForInLoop
+    let attr = attributes[attrName]
+    if (attr.dataType !== UBDomain.ubDataTypes.Document && (attr.defaultView) && (attrName !== 'ID')) {
+      // noinspection JSUnfilteredForInLoop
+      reportBody = '<!--@' + attrName + ' "' + storedValue[attrName] + '"-->\r\n' + reportBody
     }
   }
+
   let docInfo = App.blobStores.putContent({
     entity: entity.name,
     attribute: 'template',
@@ -295,7 +302,9 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
   ctxt.dataStore.initialize([storedValue])
 
-  resultDataCache = null // drop cache. afterInsert call select and restore cache
+  console.debug('--== ubs_report: reset GC_KEYS.MODELS_MODIFY_DATE ==--')
+  // drop cache. afterInsert call select and restore cache
+  App.globalCachePut(GC_KEYS.MODELS_MODIFY_DATE, new Date().toISOString())
   return true
 }
 

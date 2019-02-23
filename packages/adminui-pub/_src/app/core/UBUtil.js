@@ -1,7 +1,16 @@
-/* global Ext */
+/* global Ext, UB, $App */
 const _ = require('lodash')
 require('./UBAppConfig')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
+
+const ALLOWED_MISC = [
+  '__mip_ondate ',
+  '__mip_recordhistory',
+  '__mip_recordhistory_all',
+  '__mip_disablecache',
+  '__allowSelectSafeDeleted'
+]
+
 /**
  * File: UB.core.UBUtil.js
  * Author Nozhenko Igor
@@ -131,7 +140,7 @@ Ext.define('UB.core.UBUtil', {
       val = val.join(',')
     }
 
-    return typeof val === 'string' ? val.replace(/\[([^\]]*?)\]/g, '$1') : val
+    return typeof val === 'string' ? val.replace(/\[([^\]]*?)]/g, '$1') : val
   },
 
   /**
@@ -207,19 +216,16 @@ Ext.define('UB.core.UBUtil', {
    * @return {String}
    */
   getNameMd5: function (name, more) {
-    var
-      param,
-      addStr = '',
-      strEnd
+    let addStr = ''
 
     if (arguments.length === 0) {
       return undefined
     }
 
     name = arguments[0]
-    for (var i = 1, len = arguments.length; i < len; ++i) {
-      param = arguments[i]
-      strEnd = Ext.isArray(param) ? param.join(',') : (Ext.isObject(param) ? Ext.JSON.encode(param) : param)
+    for (let i = 1, len = arguments.length; i < len; ++i) {
+      let param = arguments[i]
+      let strEnd = Ext.isArray(param) ? param.join(',') : (Ext.isObject(param) ? Ext.JSON.encode(param) : param)
       addStr = this.gatherStr(addStr, '_', strEnd)
     }
 
@@ -538,25 +544,31 @@ Ext.define('UB.core.UBUtil', {
         ext = { xtype: 'ubdatetimefield', fieldType: ubDataTypes.DateTime } /*, format: Ext.util.Format.date Format */
         break
       case ubDataTypes.Currency:
+      case ubDataTypes.Float:
+        let decPrecision = (attribute.dataType === ubDataTypes.Currency) ? 2 : UBDomain.FLOATING_SCALE_PRECISION
+        let minValue = attribute.dataType === ubDataTypes.Currency ? -8999000000000000 : -8999000000000
+        let maxValue = attribute.dataType === ubDataTypes.Currency ? 8999000000000000 : 8999000000000
         ext = {
           xtype: 'numberfield',
-          maxLength: 17,
           enforceMaxLength: true,
           hideTrigger: true,
           keyNavEnabled: false,
           mouseWheelEnabled: false,
+          decimalPrecision: decPrecision,
           validator: function (val) {
-            if (Number(val.replace(/[^0-9]/, '')) < 8999000000000000) {
-              var rv = val.match(/[0-9]*[^0-9]{1}([0-9]+)/)
-              if ((rv && rv.length > 1 && rv[1].length < 3) || !rv || rv.length === 1) {
+            if (Number(val.replace(/[^0-9,.]/, '').replace(',', '.')) < maxValue &&
+              Number(val.replace(/[^0-9,.]/, '').replace(',', '.')) > minValue
+            ) {
+              let rv = val.replace('-', '').match(/[0-9]*[^0-9]{1}([0-9]+)/)
+              if ((rv && rv.length > 1 && rv[1].length <= this.decimalPrecision) || !rv || rv.length === 1) {
                 return true
               }
             }
             return UB.i18n('numberOfSignificantDigits')
           },
           valueToRaw: UB.core.UBUtil.formatAsCurrency,
-          maxValue: 8999000000000000,
-          minValue: -8999000000000000
+          maxValue,
+          minValue
         }
         break
       default:
@@ -579,16 +591,15 @@ Ext.define('UB.core.UBUtil', {
    * @param {Number} [size] (optional) in case dataType = String - length of attribute
    */
   getComponentConfigByDataType: function (dataType, size) {
-    var
-      configs = {
-        'int': { xtype: 'numberfield', allowDecimals: false, hideTrigger: true },
-        'float': { xtype: 'numberfield', hideTrigger: true },
-        'date': { xtype: 'ubdatefield', format: Ext.util.Format.dateFormat },
-        'boolean': {xtype: 'checkboxfield'},
-        'string': {xtype: 'ubtextfield', enforceMaxLength: true}
-      },
-      physicalType = UBDomain.getPhysicalDataType(dataType),
-      config = configs[physicalType] || { xtype: 'ubtextfield' }
+    let configs = {
+      'int': { xtype: 'numberfield', allowDecimals: false, hideTrigger: true },
+      'float': { xtype: 'numberfield', hideTrigger: true },
+      'date': { xtype: 'ubdatefield', format: Ext.util.Format.dateFormat },
+      'boolean': {xtype: 'checkboxfield'},
+      'string': {xtype: 'ubtextfield', enforceMaxLength: true}
+    }
+    let physicalType = UBDomain.getPhysicalDataType(dataType)
+    let config = configs[physicalType] || { xtype: 'ubtextfield' }
 
     if (physicalType === 'string') {
       config = size > 256 ? { xtype: 'ubtextareafield', rows: 3 } : { xtype: 'ubtextfield' }
@@ -617,18 +628,10 @@ Ext.define('UB.core.UBUtil', {
    * @param {Object} [config.orderList] Custom order list for combo. By default combo sorted by first attribute (usually this is description attribute)
    */
   getComponentConfig4Entity: function (entityCode, config) {
-    var
-      res, entity, ubRequest,
-      whereList = config ? config.whereList : undefined,
-      fieldList = config ? config.fieldList : null,
-      orderList = config ? config.orderList : undefined,
-      allowedMiscellaneous = [
-        '__mip_ondate ',
-        '__mip_recordhistory',
-        '__mip_recordhistory_all',
-        '__mip_disablecache',
-        '__allowSelectSafeDeleted'
-      ]
+    let entity
+    let whereList = config ? config.whereList : undefined
+    let fieldList = config ? config.fieldList : null
+    let orderList = config ? config.orderList : undefined
 
     if (typeof (entityCode) === 'string') {
       entity = $App.domainInfo.get(entityCode)
@@ -641,7 +644,7 @@ Ext.define('UB.core.UBUtil', {
       fieldList = ['ID'].concat(fieldList)
     }
 
-    ubRequest = {
+    let ubRequest = {
       entity: entity.code,
       method: UB.core.UBCommand.methodName.SELECT,
       fieldList: fieldList,
@@ -649,13 +652,13 @@ Ext.define('UB.core.UBUtil', {
       orderList: orderList || {_asc: {expression: fieldList[1], order: UB.core.UBCommand.order.sqlotAsc}}
     }
 
-    _.forEach(allowedMiscellaneous, function (misc) {
+    _.forEach(ALLOWED_MISC, function (misc) {
       if (config && config[misc] !== undefined) {
         ubRequest[misc] = config[misc]
       }
     })
 
-    res = {
+    return {
       xtype: 'ubcombobox',
       store: Ext.create('UB.ux.data.UBStore', {
         ubRequest: ubRequest,
@@ -667,8 +670,6 @@ Ext.define('UB.core.UBUtil', {
       fieldList: fieldList,
       entityName: entity.code
     }
-
-    return res
   },
 
   /**
@@ -680,10 +681,10 @@ Ext.define('UB.core.UBUtil', {
    *
    */
   getComponentConfig4Enum: function (enumGroup, config) {
-    var
-      store,
-      whereList = config && config.whereList ? config.whereList : {},
-      orderList = config && config.orderList ? config.orderList : {byOrder: {expression: 'sortOrder', order: 'asc'}}
+    let whereList = config && config.whereList ? config.whereList : {}
+    let orderList = config && config.orderList
+      ? config.orderList
+      : {byOrder: {expression: 'sortOrder', order: 'asc'}}
 
     whereList.enumGroupFilter = {
       expression: '[eGroup]',
@@ -691,7 +692,7 @@ Ext.define('UB.core.UBUtil', {
       values: { eGroup: enumGroup }
     }
 
-    store = Ext.create('UB.ux.data.UBStore', {
+    let store = Ext.create('UB.ux.data.UBStore', {
       ubRequest: {
         entity: 'ubm_enum',
         method: UB.core.UBCommand.methodName.SELECT,
@@ -741,26 +742,21 @@ Ext.define('UB.core.UBUtil', {
    * @return {Array}
    */
   getEntityAttributesTreeData: function (entityName, parentEntityName, level) {
-    var
-      data = [],
-      node, entity,
-      Entity = UBDomain.ubDataTypes.Entity
+    let data = []
+    let entity
 
-    if (typeof (entityName) === 'string') {
+    if (typeof entityName === 'string') {
       entity = $App.domainInfo.get(entityName)
     } else {
       entity = entityName
     }
 
-    if (!entity) {
-      return data
-    }
-    if (level > 3) { // possible self circle so limit deep by 3 - it enough in real system usage
+    if ((!entity) || (level > 3)) { // possible self circle so limit deep by 3 - it enough in real system usage
       return data
     }
 
     entity.eachAttribute(function (attr, attrName) {
-      node = {
+      let node = {
         id: UB.core.UBUtil.gatherStr(parentEntityName, '.', attrName),
         text: (attr.caption ? attr.caption + '[' + attrName + ']' : attrName),
         leaf: attr.dataType !== UBDomain.ubDataTypes.Entity,
@@ -770,8 +766,8 @@ Ext.define('UB.core.UBUtil', {
         node.text = '<b>' + node.text + '<b>'
       }
 
-      if ((attr.dataType === Entity) &&
-                (entityName !== attr.associatedEntity)) { // self circle entity
+      if ((attr.dataType === UBDomain.ubDataTypes.Entity) &&
+          (entityName !== attr.associatedEntity)) { // self circle entity
         node.children = UB.core.UBUtil.getEntityAttributesTreeData(attr.associatedEntity, node.id, level + 1)
       }
       data.push(node)

@@ -21,7 +21,7 @@ const App = require('./App')
 const Session = require('./Session')
 const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('./httpUtils')
 const ubErrors = require('./ubErrors')
-const UBA_COMMON = require('@unitybase/base').uba_common
+const {uba_common, GC_KEYS} = require('@unitybase/base')
 const queryString = require('querystring')
 const appBinding = process.binding('ub_app')
 /**
@@ -35,7 +35,7 @@ function resolveModelFile (reqPath, resp) {
     fullPath: ''
   }
   // cache actual file path & type for success models/* request
-  let cached = App.globalCacheGet(`UB_MODELS_REQ${reqPath}`)
+  let cached = App.globalCacheGet(`${GC_KEYS.UB_MODELS_REQ_}${reqPath}`)
   if (!cached) {
     let parts = reqPath.replace(/\\/g, '/').split('/')
     let modelName = parts.shift()
@@ -68,7 +68,7 @@ function resolveModelFile (reqPath, resp) {
         entry.mimeHead = 'Content-Type: ' + ct
       }
     }
-    App.globalCachePut(`UB_MODELS_REQ${reqPath}`, JSON.stringify(entry))
+    App.globalCachePut(`${GC_KEYS.UB_MODELS_REQ_}${reqPath}`, JSON.stringify(entry))
   } else {
     console.debug('model file is resolved from cache')
     entry = JSON.parse(cached)
@@ -136,7 +136,7 @@ function clientRequireEp (req, resp) {
   }
   let reqPath = req.decodedUri
   // cache actual file path & type for success clientRequire/* request
-  let cached = App.globalCacheGet(`UB_CLIENT_REQ${reqPath}`)
+  let cached = App.globalCacheGet(`${GC_KEYS.UB_CLIENT_REQ_}${reqPath}`)
   let entry = {
     fullPath: ''
   }
@@ -218,7 +218,7 @@ function clientRequireEp (req, resp) {
         entry.mimeHead = 'Content-Type: ' + ct
       }
     }
-    App.globalCachePut(`UB_CLIENT_REQ${reqPath}`, JSON.stringify(entry))
+    App.globalCachePut(`${GC_KEYS.UB_CLIENT_REQ_}${reqPath}`, JSON.stringify(entry))
     console.debug(`Resolve ${reqPath} -> ${resolvedPath}`)
   } else {
     entry = JSON.parse(cached)
@@ -316,7 +316,7 @@ function getDomainInfoEp (req, resp) {
 
   let params = queryString.parse(req.parameters)
   let isExtended = (params['extended'] === 'true')
-  if (isExtended && authenticationHandled && !UBA_COMMON.isSuperUser()) {
+  if (isExtended && authenticationHandled && !uba_common.isSuperUser()) {
     return resp.badRequest('Extended domain info allowed only for member of admin group of if authentication is disabled')
   }
   if (!params['userName'] || params['userName'] !== Session.uData.login) {
@@ -448,7 +448,6 @@ function restEp (req, resp) {
   return true
 }
 
-const CACHE_LOCALE_KEY_PREFIX = 'UB.LOCALE.'
 /**
  * Return a single localization script bundled from all models public/locale/lang-${Session.userLang} scripts
  * excluding adminui-pub what injected before login window
@@ -460,14 +459,13 @@ const CACHE_LOCALE_KEY_PREFIX = 'UB.LOCALE.'
  * @private
  */
 function allLocalesEp (req, resp) {
-  let cached
   const parameters = queryString.parse(req.parameters)
-  let lang = parameters.lang
+  const lang = parameters.lang
   if (!lang || lang.length > 5) return resp.badRequest('lang parameter required')
   let supportedLanguages = App.serverConfig.application.domain.supportedLanguages || ['en']
   if (supportedLanguages.indexOf(lang) === -1) return resp.badRequest('unsupported language')
 
-  cached = App.globalCacheGet(`${CACHE_LOCALE_KEY_PREFIX}${lang}`)
+  let cached = App.globalCacheGet(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`)
   if (!cached) {
     cached = ' '
     App.domainInfo.orderedModels.forEach((model) => {
@@ -479,7 +477,7 @@ function allLocalesEp (req, resp) {
         }
       }
     })
-    App.globalCachePut(`${CACHE_LOCALE_KEY_PREFIX}${lang}`, cached)
+    App.globalCachePut(`${GC_KEYS.UB_LOCALE_REQ_}${lang}`, cached)
   }
   resp.writeEnd(cached)
   resp.statusCode = 200

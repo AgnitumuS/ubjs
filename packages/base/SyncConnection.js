@@ -178,6 +178,12 @@ function SyncConnection (options) {
         }
         resp = this.xhr({endpoint: 'auth', headers: {'Authorization': authParams.authSchema + ' ' + authParams.login}})
         ubSession = new UBSession(resp, '', authParams.authSchema)
+      } if (authParams.authSchema === 'ROOT') {
+        if (isRepeat) {
+          throw new Error('ROOT authentication must not return false on the prev.step')
+        }
+        resp = this.xhr({endpoint: 'auth?AUTHTYPE=ROOT', headers: {'Authorization': authParams.authSchema + ' ' + process.rootOTP()}})
+        ubSession = new UBSession(resp, '', authParams.authSchema)
       } else {
         resp = this.get('auth', {
           AUTHTYPE: authParams.authSchema || 'UB',
@@ -493,16 +499,18 @@ SyncConnection.prototype.logout = function () {
 }
 
 /**
- * Set document method saves a file content as a potential value of the specified entity instance attribute,
- * the value is saved to temp store.
+ * Saves a file content as a potential value of the specified entity instance attribute to the TEMP store.
+ *
  * Call this function before entity insert of update. Result of this function is what shall be assigned to the
  * attribute value, to "execParams".
  * @param {string} entity Entity name
  * @param {string} attribute Entity attribute name
  * @param {number} id ID of the record
- * @param {ArrayBuffer} data File content
+ * @param {ArrayBuffer|string} data File content
  * @param {string} origName
  * @param {string} [fileName] If not specified, origName will be used.
+ * @param {string} dataEncoding Specify `data` parameter encoding. Either omit for binary data
+ *   or set to `base64` for base64 encoded data
  * @return {string}
  *
  * @example
@@ -519,18 +527,20 @@ SyncConnection.prototype.logout = function () {
       execParams: {ID, configuration: tempStoreResult, mi_modifyDate}
     })
  */
-SyncConnection.prototype.setDocument = function (entity, attribute, id, data, origName, fileName) {
+SyncConnection.prototype.setDocument = function (entity, attribute, id, data, origName, fileName, dataEncoding) {
+  let urlParams = {
+    entity,
+    attribute,
+    id,
+    origName: origName || fileName,
+    filename: fileName || origName
+  }
+  if (dataEncoding) urlParams.encoding = dataEncoding
   const setDocumentResponse = this.xhr({
     HTTPMethod: 'POST',
     endpoint: 'setDocument',
     data,
-    URLParams: {
-      entity,
-      attribute,
-      id,
-      origName: origName || fileName,
-      filename: fileName || origName
-    }
+    URLParams: urlParams
   })
   return JSON.stringify(setDocumentResponse.result)
 }
@@ -581,7 +591,7 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @param {Object} [options] Additional request options
  * @param {Boolean} [options.resultIsBinary=false] if true - return document content as arrayBuffer
  * @param {Boolean} [options.bypassCache] HTTP POST verb will be used instead of GET for bypass browser cache
- * @returns {Promise} Resolved to document content (either ArrayBuffer in case options.resultIsBinary===true or text/json)
+ * @returns {ArrayBuffer|String} Document content (either ArrayBuffer in case options.resultIsBinary===true or text/json)
  */
 SyncConnection.prototype.getDocument = function (params, options) {
   let opt = Object.assign({}, options)
@@ -602,8 +612,7 @@ SyncConnection.prototype.getDocument = function (params, options) {
   } else {
     reqParams.URLParams = params
   }
-  let docContent = this.xhr(reqParams)
-  return docContent
+  return this.xhr(reqParams)
 }
 
 /**

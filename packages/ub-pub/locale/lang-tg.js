@@ -14,6 +14,7 @@ UB.i18nExtend({
   KerberosTip: 'Login with the user rights entered into the operating system. The computer must be included in the domain',
   Authentication: 'Authentication',
   RegistrationMode: 'Режим регистрации',
+  AdditionalLoginOptions: 'Вариантҳои иловагии вурудӣ',
   useOSCredentialTitle: 'Доменная',
   useUBAuthenticationTitle: 'По паролю',
   useCertificateTitle: 'По ключу',

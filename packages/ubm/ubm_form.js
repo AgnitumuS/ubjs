@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 
-const FileBasedStoreLoader = require('@unitybase/base').FileBasedStoreLoader
+const {FileBasedStoreLoader, GC_KEYS} = require('@unitybase/base')
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -53,7 +53,7 @@ function postProcessing (loader, fullFilePath, content, row) {
 
   row.code = fileName.substring(0, fileName.length - 7)
   if (row.ID) console.warn(`Please, remove a row "//@ID ${row.ID}" from a file ${fileName}. In UB4 form ID is generated automatically as crc32(code)`)
-  row.ID = ncrc32(0, row.code)
+  row.ID = ncrc32(0, row.code + (row.model || ''))
 
   // form can be stored in other model than entity
   // we fill relPath in form "modelName"|"path inside model public folder" as expected by mdb virtual store
@@ -80,7 +80,7 @@ function postProcessing (loader, fullFilePath, content, row) {
       origName: fileName,
       ct: DFM_CONTENT_TYPE, // JSON_CONTENT_TYPE,
       size: jsFileStat.size,
-      md5: 'fb6a51668017be0950bd18c2fb0474a0',
+      md5: 'fakemd50000000000000000000000000',
       relPath: relPath
     })
     // check js file modification and if later when def file - replace mi_modifyDate
@@ -92,7 +92,7 @@ function postProcessing (loader, fullFilePath, content, row) {
 }
 
 function loadAllForms () {
-  let modelLastDate = new Date(App.globalCacheGet('UB_STATIC.modelsModifyDate')).getTime()
+  let modelLastDate = new Date(App.globalCacheGet(GC_KEYS.MODELS_MODIFY_DATE)).getTime()
 
   console.debug('modelLastDate = ', modelLastDate)
   let models = App.domainInfo.models
@@ -103,6 +103,7 @@ function loadAllForms () {
 
     resultDataCache = []
     for (let modelName in models) {
+      // noinspection JSUnfilteredForInLoop
       let model = models[modelName]
       let mPath = path.join(model.realPublicPath, REL_PATH_TAIL)
       folders.push({
@@ -228,14 +229,14 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       storedValue[key] = val
     }
   })
+  let formEntity = App.domainInfo.get(storedValue.entity)
+  let codeOfModelToStore = storedValue.model || formEntity.modelName
   if (isInsert) {
-    ID = ncrc32(0, storedValue.code)
+    ID = ncrc32(0, storedValue.code + codeOfModelToStore)
     storedValue.ID = ID
   }
-  let formEntity = App.domainInfo.get(storedValue.entity)
   let newFormDefMeta = newValues.formDef
   let newFormCodeMeta = newValues.formCode
-  let codeOfModelToStore = storedValue.model || formEntity.modelName
   let formDefBody
   let formScriptBody
   if (isInsert) { // for insert operation create a boilerplate for form definition & form script
@@ -287,8 +288,10 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   formDefBody = formDefBody.replace(clearAttrReg, '') // remove all old entity attributes
   let addedAttr = ''
   for (let attrCode in entity.attributes) {
+    // noinspection JSUnfilteredForInLoop
     let attr = entity.attributes[attrCode]
     if (attr.dataType !== UBDomain.ubDataTypes.Document && attr.defaultView && attrCode !== 'ID' && attrCode !== 'code') {
+      // noinspection JSUnfilteredForInLoop
       addedAttr = '// @' + attrCode + ' "' + storedValue[attrCode] + '"\r\n' + addedAttr
     }
   }
@@ -328,8 +331,9 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   ctxt.dataStore.commitBLOBStores(fakeCtx, isInsert === false)
   ctxt.dataStore.initialize([storedValue])
 
-  console.debug('--== ubm_form: resultDataCache cleared ==--')
-  resultDataCache = null // drop cache. afterInsert call select and restore cache
+  console.debug('--== ubm_form: reset GC_KEYS.MODELS_MODIFY_DATE ==--')
+  // drop cache. afterInsert call select and restore cache
+  App.globalCachePut(GC_KEYS.MODELS_MODIFY_DATE, new Date().toISOString())
   return true
 }
 

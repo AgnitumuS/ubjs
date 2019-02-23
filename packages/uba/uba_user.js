@@ -10,6 +10,7 @@ const http = require('http')
 App.registerEndpoint('changePassword', changePasswordEp)
 
 me.entity.addMethod('changeLanguage')
+me.entity.addMethod('setUDataKey')
 me.entity.addMethod('publicRegistration')
 
 me.on('insert:before', checkDuplicateUser)
@@ -237,6 +238,36 @@ function changePasswordEp (req, resp) {
 }
 
 /**
+ * Change uba_user.uData JSON key to value
+ * @param {string} key
+ * @param {*} value
+ */
+function internalSetUDataKey (key, value) {
+  let userID = Session.userID
+  let user = UB.Repository('uba_user').attrs(['name', 'uData', 'mi_modifyDate']).where('ID', '=', userID).select()
+  if (user.eof) {
+    throw new Error('user is unknown or not logged in')
+  }
+  let newUData
+  try {
+    newUData = JSON.parse(user.get('uData'))
+  } catch (e) {
+    newUData = {}
+  }
+  if (!newUData) {
+    newUData = {}
+  }
+  newUData[key] = value
+  user.run('update', {
+    execParams: {
+      ID: userID,
+      uData: JSON.stringify(newUData),
+      mi_modifyDate: user.get('mi_modifyDate')
+    }
+  })
+}
+
+/**
  * Change (or set) current user language.
  * After call to this method UI must logout user and reload itself.
  *
@@ -253,36 +284,38 @@ function changeLanguage (ctxt) {
   if (!newLang) {
     throw new Error('newLang parameter is required')
   }
-  let userID = Session.userID
-  let user = UB.Repository('uba_user').attrs(['name', 'uData', 'mi_modifyDate']).where('ID', '=', userID).select()
-  if (user.eof) {
-    throw new Error('user is unknown or not logged in')
-  }
 
-  let supportedLangs = user.entity.connectionConfig.supportLang
+  let supportedLangs = uba_user.entity.connectionConfig.supportLang
   if (supportedLangs.indexOf(newLang) < 0) {
     throw new Error(`Language "${newLang}" not supported`)
   }
-
-  let newUData
-  try {
-    newUData = JSON.parse(user.get('uData'))
-  } catch (e) {
-    newUData = {}
-  }
-  if (!newUData) {
-    newUData = {}
-  }
-  newUData.lang = newLang
-  user.run('update', {
-    execParams: {
-      ID: userID,
-      uData: JSON.stringify(newUData),
-      mi_modifyDate: user.get('mi_modifyDate')
-    }
-  })
+  internalSetUDataKey('lang', newLang)
 }
 me.changeLanguage = changeLanguage
+
+/**
+ * Set key value inside `uba_user.uData` and store new JSON do DB.
+ * All other uData JSON keys will remain unchanged.
+ *
+ * **WARNING** - overall length of uba_user.uData is 2000 characters, so only short values should be stored there
+ *
+ * @param {ubMethodParams} ctxt
+ * @param {String} ctxt.mParams.key key to change
+ * @param {String} ctxt.mParams.value new value
+ * @memberOf uba_user_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @published
+ */
+function setUDataKey (ctxt) {
+  let params = ctxt.mParams
+  const key = params.key
+  const value = params.value
+  if (!key) throw new Error('key parameter is required')
+  if (value === undefined) throw new Error('value parameter is required')
+
+  internalSetUDataKey(key, value)
+}
+me.setUDataKey = setUDataKey
 
 /**
  * After inserting new user - log event to uba_audit

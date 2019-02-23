@@ -1,3 +1,4 @@
+/* eslint-disable one-var */
 /* global UBDomain */
 require('../ux/form/field/UBText')
 require('../ux/form/field/UBTextArea')
@@ -99,7 +100,7 @@ const UB = require('@unitybase/ub-pub')
  *
  * #Events
  *
- * Base panel inherit all {@link Ext.form.Panel Ext.form.Panel} events, but also add some hi-level event, such as {@link UB.view.BasePanel#recordloaded} e.t.c.
+ * Base panel inherit all {@link Ext.form.Panel Ext.form.Panel} events, but also add some hi-level event, such as `UB.view.BasePanel.recordloaded` e.t.c.
  * See <a href="https://enviance.softline.kiev.ua/confluence/pages/viewpage.action?pageId=87229917">this article</a> for detailed explanation
  * and events section in this documentation.
  *
@@ -248,7 +249,7 @@ Ext.define('UB.view.BasePanel', {
   formWasSaved: false,
 
   initComponent: function () {
-    var me = this
+    let me = this
     if (me.dfm && me.dfm.parentConfig) {
       Ext.apply(me, me.dfm.parentConfig)
     }
@@ -282,11 +283,10 @@ Ext.define('UB.view.BasePanel', {
      * @property {Object} documents
      */
     me.documents = {}
-    _.forEach(me.domainEntity.filterAttribute({dataType: 'Document'}), function (attr) {
+    me.domainEntity.filterAttribute({dataType: 'Document'}).forEach(attr => {
       me.documents[attr.code] = attr
     })
-    // domain.getEntityAttributesWithDataTypeAdtDocument(me.entityName);
-    me.documentsCount = Ext.Object.getSize(me.documents)
+    me.documentsCount = Object.keys(me.documents).length
 
     me.hasDataHistoryMixin = me.domainEntity.hasMixin('dataHistory')
     // since by default audit is enabled, we do not write it in the domainInfo. So mixin present only if in meta: audit: {enabled: false}
@@ -325,7 +325,7 @@ Ext.define('UB.view.BasePanel', {
      * Called when initComponent start.
      * You can extend form config here.
      */
-    if (me.initComponentStart && _.isFunction(me.initComponentStart)) {
+    if (me.initComponentStart && (typeof me.initComponentStart === 'function')) {
       Ext.callback(me.initComponentStart, me)
     }
 
@@ -552,15 +552,11 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onRecordUpdate: function (store, record) {
-    var me = this, dirty
-    if (me.record !== record) {
-      return
-    }
-    if (me.isInnerChangingRecord) {
-      return
-    }
+    let me = this
+    if (me.record !== record) return
+    if (me.isInnerChangingRecord) return
 
-    dirty = me.isFormDirty()
+    let dirty = me.isFormDirty()
     if ((!me.fireDirty && dirty) || (me.fireDirty && !dirty)) {
       me.fireDirty = !me.fireDirty
       this.updateActions()
@@ -802,7 +798,6 @@ Ext.define('UB.view.BasePanel', {
           entity: me.entityName,
           execParams: execParams,
           fieldList: me.fieldList,
-          // alsNeed: me.hasEntityALS,
           lockType: 'ltTemp'
         }
         promise = $App.connection.addNew(ubRequest)
@@ -810,7 +805,6 @@ Ext.define('UB.view.BasePanel', {
         ubRequest = {
           entity: me.entityName,
           fieldList: ['ID', 'mi_modifyDate'],
-          // alsNeed: me.hasEntityALS,
           lockType: 'ltTemp',
           ID: me.instanceID
         }
@@ -953,16 +947,17 @@ Ext.define('UB.view.BasePanel', {
   deleteLock: function (force) {
     var
       removeLock = false,
-      me = this,
-      promise = Promise.resolve(me.isEntityLockable && me.entityLocked),
-      baseProperty, baseID = me.getInstanceID(), baseEntity = me.entityName
+      me = this
 
     if (me.hasPersistLock || me.startDeleteLock || !me.isEntityLockable || !me.entityLocked) {
       return Promise.resolve(false)
     }
 
+    let baseID = me.getInstanceID()
+    let baseEntity = me.entityName
+
     if (me.domainEntity.mixins.softLock.lockIdentifier !== 'ID') {
-      baseProperty = me.domainEntity.mixins.softLock.lockIdentifier.split('.')
+      let baseProperty = me.domainEntity.mixins.softLock.lockIdentifier.split('.')
       if (baseProperty.length > 0) {
         baseProperty = baseProperty[0]
       }
@@ -971,6 +966,7 @@ Ext.define('UB.view.BasePanel', {
     }
 
     me.startDeleteLock = true
+    let promise = Promise.resolve(me.isEntityLockable && me.entityLocked)
     return $App.connection.run({
       method: 'isLocked',
       entity: baseEntity,
@@ -1011,18 +1007,17 @@ Ext.define('UB.view.BasePanel', {
   },
 
   setTitle: function (aTitle, fullTitle) {
-    var me = this,
-      wnd = me.getFormWin(),
-      placeholder = me.placeholder
+    let me = this
     me._formFullTitle = fullTitle
     me._formTitle = aTitle
+    let wnd = me.getFormWin()
     if (wnd) {
       wnd.setTitle(fullTitle || aTitle)
     } else {
       if (me.headerPanel) {
         me.headerPanel.setTitle(fullTitle || aTitle) // setText(fullTitle ? fullTitle : aTitle, false);
-        if (placeholder && placeholder.setTooltip) {
-          placeholder.setTooltip(aTitle)
+        if (me.placeholder && me.placeholder.setTooltip) {
+          me.placeholder.setTooltip(aTitle)
         }
       }
       me.callParent(arguments)
@@ -1030,11 +1025,10 @@ Ext.define('UB.view.BasePanel', {
   },
 
   getFormTitle: function () {
-    var me = this,
-      wnd = me.getFormWin(),
-      placeholder = me.placeholder
+    let me = this
+    let wnd = me.getFormWin()
     return me._formFullTitle || me._formTitle || me.title || (wnd ? wnd.title : null) ||
-            (placeholder ? placeholder.title : null)
+            (me.placeholder ? me.placeholder.title : null)
   },
 
   addNewVersionToTitle: function () {
@@ -1053,11 +1047,8 @@ Ext.define('UB.view.BasePanel', {
    * Set all editable form controls to `edit allowed` state
    */
   enableEdit: function () {
-    var
-      me = this,
-      fields = me.fields,
-      len = fields.length
-    for (var i = 0; i < len; ++i) {
+    let fields = this.fields
+    for (let i = 0, len = fields.length; i < len; ++i) {
       if (fields[i].setReadOnly) {
         if (Ext.isDefined(fields[i].initialReadOnly) && !fields[i].initialReadOnly) {
           fields[i].setReadOnly(false)
@@ -1070,18 +1061,15 @@ Ext.define('UB.view.BasePanel', {
    * Set all editable form controls to readOnly state
    */
   disableEdit: function () {
-    var
-      me = this,
-      fields = me.fields,
-      len = fields.length
-    for (var i = 0; i < len; ++i) {
+    let fields = this.fields
+    for (let i = 0, len = fields.length; i < len; ++i) {
       if (fields[i].setReadOnly) {
         fields[i].setReadOnly(true)
       }
     }
   },
   getCanEdit: function () {
-    var me = this
+    let me = this
     return Ext.isDefined(me.isEditable) ? me.isEditable() : (!Ext.isDefined(me.canEdit) || me.canEdit)
   },
 
@@ -1091,7 +1079,7 @@ Ext.define('UB.view.BasePanel', {
    */
 
   setupParentContainer: function () {
-    var me = this
+    let me = this
     if (me.isDetail) {
       me.target.ownerCt.mainEntityGridPanel.on('parentchange', me.onParentChange, me)
       me.mainEntityGridPanel = me.target.ownerCt.mainEntityGridPanel
@@ -1442,10 +1430,8 @@ Ext.define('UB.view.BasePanel', {
   },
 
   switchTabs: function (ctrl, isShiftKey) {
-    var tabPanel,
-      me = this
-
-    tabPanel = ctrl.up('tabpanel')
+    let me = this
+    let tabPanel = ctrl.up('tabpanel')
     if (isShiftKey && tabPanel) return
     if (!tabPanel) {
       if (!(tabPanel = me.down('tabpanel'))) {
@@ -1633,11 +1619,9 @@ Ext.define('UB.view.BasePanel', {
    * @param {Boolean} [isRefresh] default False
    */
   setDetails: function (record, isRefresh) {
-    var
-      details = this.details,
-      i, len
+    let details = this.details
     if (record) {
-      for (i = 0, len = details.length; i < len; ++i) {
+      for (let i = 0, len = details.length; i < len; ++i) {
         if (isRefresh) {
           details[i].onRefreshDetail(record, this.entityName)
         } else {
@@ -1652,20 +1636,14 @@ Ext.define('UB.view.BasePanel', {
     return this.lm
   },
 
-  /**
-   * @param {Ext.Component} panel
-   * @param {Object} eOpts
-   */
-  onAfterRender: function (panel, eOpts) {
-    var
-      wnd,
-      me = this
+  onAfterRender: function () {
+    let me = this
 
     if (!me.formDataReady) {
       me.maskForm()
     }
 
-    wnd = me.getFormWin() // me.up('window');
+    let wnd = me.getFormWin() // me.up('window');
     if (wnd) {
       me.mon(wnd, 'beforeclose', me.beforeClose, me)
     }
@@ -1676,7 +1654,7 @@ Ext.define('UB.view.BasePanel', {
   },
 
   startLoadFormData: function () {
-    var me = this
+    let me = this
     if (me.entityName) {
       if (me.__mip_ondate) me.addNewVersionToTitle()
 
@@ -1697,20 +1675,19 @@ Ext.define('UB.view.BasePanel', {
   },
 
   /**
-   * load inital data for new instance
+   * load initial data for new instance
    */
   initEmptyFormData: function () {
-    var me = this,
-      params,
-      execParams
+    let me = this
 
     me.addCreatingToTitle()
-    params = {
+    let params = {
       entity: me.entityName,
-      alsNeed: me.hasEntityALS,
       fieldList: me.fieldList
     }
+    if (me.hasEntityALS) params.alsNeed = true
 
+    let execParams
     if (me.parentContext) {
       execParams = me.parentContext
     }
@@ -1749,7 +1726,7 @@ Ext.define('UB.view.BasePanel', {
    * Name of method to delete form data.
    */
   formRequestConfig: function (type, cfg) {
-    var me = this
+    let me = this
     if (me.selectMethod && type === 'select') {
       cfg.method = me.selectMethod
     }
@@ -1762,6 +1739,7 @@ Ext.define('UB.view.BasePanel', {
     if (me.deleteMethod && type === 'delete') {
       cfg.method = me.deleteMethod
     }
+    if (!me.hasEntityALS) delete cfg.alsNeed // decrease traffic
     return cfg
   },
 
@@ -1789,12 +1767,8 @@ Ext.define('UB.view.BasePanel', {
       )
     }
 
-    Promise.all(requests).done(function (res) {
-      var result = res[0], lockInfo = res[1]
-
-      if (me.isDestroyed) {
-        return
-      }
+    Promise.all(requests).done(function ([result, lockInfo]) {
+      if (me.isDestroyed) return
       if (result && result.resultData.data.length) {
         if (me.addByCurrent) {
           // create record based on grin selection
@@ -1953,8 +1927,8 @@ Ext.define('UB.view.BasePanel', {
       })
 
       if (me.hideActions && me.hideActions.length) {
-        _.forEach(me.hideActions, function (actionName) {
-          var actionKM = me.actionsKeyMap[actionName]
+        me.hideActions.forEach(actionName => {
+          let actionKM = me.actionsKeyMap[actionName]
           if (actionKM) {
             actionKM.disable()
           }
@@ -1965,7 +1939,7 @@ Ext.define('UB.view.BasePanel', {
   },
 
   addCreatingToTitle: function () {
-    var me = this
+    let me = this
 
     me.on('afterrender', function () {
       me.setTitle(me.getFormTitle() + UB.format(' ({0})', UB.i18n('dobavlenie')))
@@ -1976,7 +1950,7 @@ Ext.define('UB.view.BasePanel', {
    * Set initial fieldValues for new instance entity
    */
   addInitialFieldValues: function () {
-    var me = this
+    let me = this
     if (!me.initialFieldValues || !me.isNewInstance) return
 
     Ext.Object.each(me.initialFieldValues, function (fieldName, fieldValue) {
@@ -2001,17 +1975,13 @@ Ext.define('UB.view.BasePanel', {
    * @returns {Ext.Component}
    */
   getField: function (attributeCode) {
-    var me = this
-    return me.ubAttributeMap[attributeCode] || this.binder.getFields()[attributeCode]
+    return this.ubAttributeMap[attributeCode] || this.binder.getFields()[attributeCode]
   },
 
   initUBControlMap: function () {
-    var
-      me = this,
-      ubAttributeName = UB.view.BasePanel.defaultUBName,
-      formFields
+    let me = this
 
-    formFields = me.getForm().getFields().items
+    let formFields = me.getForm().getFields().items
     /**
      * @property {Object.<string, control>} ubNameMap
      * Associative array of form fields.
@@ -2029,7 +1999,7 @@ Ext.define('UB.view.BasePanel', {
     me.fields = []
 
     _.forEach(formFields, function (field) {
-      var ubName = field[ubAttributeName]
+      let ubName = field[UB.view.BasePanel.defaultUBName]
       if (field.attributeName) {
         me.ubAttributeMap[field.attributeName] = field
       }
@@ -2040,7 +2010,7 @@ Ext.define('UB.view.BasePanel', {
     })
 
     _.each(me.documents, function (val, name) {
-      var cmp = me.ubNameMap[me.attrName(name)]
+      let cmp = me.ubNameMap[me.attrName(name)]
       if (cmp) {
         cmp.isUBDocumentCtrl = true
       }
@@ -2057,7 +2027,7 @@ Ext.define('UB.view.BasePanel', {
   /**
    * Checks that 'ubdocument' attribute is complex (has '.' in attributeName)
    * If attribute is complex - adds associating attribute to fieldList ('attributeNames' array)
-   * For examample: for complex attribute 'recStageID.docID.document' it adds 'recStageID.docID' attribute to fieldList
+   * For example: for complex attribute 'recStageID.docID.document' it adds 'recStageID.docID' attribute to fieldList
    * @param {Array} componentList
    * @param {Array} attributeNames
    * @param {number} len length of 'componentList' array
@@ -2137,10 +2107,10 @@ Ext.define('UB.view.BasePanel', {
    * @param {String} attributeName
    */
   updateAls: function (field, attributeName) {
-    var me = this, allowBlank, als, isLockedByAls, attrInfo
-    als = me.record.resultAls ? (me.record.resultAls[attributeName] || '') : 'SUM'
-    isLockedByAls = als.indexOf('U') === -1
-    attrInfo = me.domainEntity.attr(attributeName)
+    let me = this
+    let als = me.record.resultAls ? (me.record.resultAls[attributeName] || '') : 'SUM'
+    let isLockedByAls = als.indexOf('U') === -1
+    let attrInfo = me.domainEntity.attr(attributeName)
     if (isLockedByAls && !field.readOnly && field.setReadOnly) { // isDisabled()
       field.setReadOnly(true)
       field.wasLockedByMixin = true
@@ -2151,7 +2121,7 @@ Ext.define('UB.view.BasePanel', {
     if ((me.isNewInstance && !me.entityMethods.insert) || (!me.isNewInstance && !me.entityMethods.update)) {
       field.setReadOnly(true)
     }
-    allowBlank = field.allowBlank
+    let allowBlank = field.allowBlank
     if (me.record.resultAls && als) {
       allowBlank = als.indexOf('M') === -1
     }
@@ -2169,23 +2139,20 @@ Ext.define('UB.view.BasePanel', {
    * @return {Object}
    */
   getFieldValues: function (record, fieldList, withoutAdtDocument) {
-    var
-      result = {},
-      ADT_DOC = UBDomain.ubDataTypes.Document
+    let result = {}
 
-    for (var i = 0, len = fieldList.length; i < len; ++i) {
-      if (withoutAdtDocument && this.domainEntity.attr(fieldList[i]).dataType === ADT_DOC) continue
+    for (let i = 0, len = fieldList.length; i < len; ++i) {
+      if (withoutAdtDocument && this.domainEntity.attr(fieldList[i]).dataType === UBDomain.ubDataTypes.Document) continue
       result[fieldList[i]] = record.get(fieldList[i])
     }
     return result
   },
 
   getFieldListWithoutAdtDocument: function (fieldList) {
-    var
-      result = [],
-      ADT_DOC = UBDomain.ubDataTypes.Document
+    let result = []
+    const ADT_DOC = UBDomain.ubDataTypes.Document
 
-    for (var i = 0, len = fieldList.length; i < len; ++i) {
+    for (let i = 0, len = fieldList.length; i < len; ++i) {
       if (this.domainEntity.attr(fieldList[i]).dataType === ADT_DOC) {
         continue
       }
@@ -2377,23 +2344,17 @@ Ext.define('UB.view.BasePanel', {
         }
       }
     }
-    $App.connection.post('setDocument', file, {
-      params: {
-        entity: me.entityName,
-        attribute: attributeName,
-        id: id,
-        origName: file.name,
-        filename: file.name
-      },
-      headers: {
-        'Content-Type': 'application/octet-stream'
-      },
-      onProgress: doOnProgress
-    }).fin(function () {
+    $App.connection.setDocument(file, {
+      entity: me.entityName,
+      attribute: attributeName,
+      id: id,
+      origName: file.name,
+      filename: file.name
+    }, doOnProgress).fin(function () {
       clearInterval(waitIntervalID)
       waitBox.close()
-    }).done(function (serverResponse) {
-      ctrl.setValue(serverResponse.data.result, id)
+    }).done(function (result) {
+      ctrl.setValue(result, id)
       $App.dialogInfo('dropZoneOperationComplete')
     })
   },
@@ -2646,7 +2607,7 @@ Ext.define('UB.view.BasePanel', {
       return
     }
 
-    for (var i = 0, len = items.length; i < len; ++i) {
+    for (let i = 0, len = items.length; i < len; ++i) {
       item = items[i]
       if (isMainForm) {
         currentIsMainForm = !isForm(item.xtype)
@@ -2654,8 +2615,14 @@ Ext.define('UB.view.BasePanel', {
       if (Ext.isString(item.attributeName)) {
         // here we check, that attribute exists in entity. works only for simple attributes
         if (entity.attr(item.attributeName)) {
-          me.baseFieldList.push(item.isMultilang ? { isMultilang: true, attributeName: item.attributeName } : item.attributeName)
-          Ext.applyIf(item, Ext.applyIf(UB.core.UBUtil.attribute2cmpConfig(entity, item), { ubName: ubCommand.getUBCmpUBName(item.attributeName) }))
+          me.baseFieldList.push(item.isMultilang
+            ? {isMultilang: true, attributeName: item.attributeName}
+            : item.attributeName)
+          Ext.applyIf(item, Ext.applyIf(
+            UB.core.UBUtil.attribute2cmpConfig(entity, item),
+            {ubName: ubCommand.getUBCmpUBName(item.attributeName)})
+          )
+          // eslint-disable-next-line brace-style
         }
         // here we check, that complex attribute exists in entity
         // and all attributes in attributeNameParts (attributeName.split('.')) are also exist in their's entities
@@ -2676,7 +2643,7 @@ Ext.define('UB.view.BasePanel', {
         }
       }
 
-      if (Ext.isArray(item.items)) {
+      if (Array.isArray(item.items)) {
         this.prepareDfmItems(item.items, currentIsMainForm)
       } else if (Ext.isObject(item.items)) { // Ext allow to for 1 element pass a items: {attributeName: 'caption'}
         this.prepareDfmItems([item.items], currentIsMainForm)
@@ -2834,11 +2801,11 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onDownloadAttach: function (action) {
-    var me = this, docSrc, params
-    docSrc = me.record.get(action.attribute)
+    let me = this
+    let docSrc = me.record.get(action.attribute)
     if (docSrc) {
       docSrc = JSON.parse(docSrc)
-      params = {
+      let params = {
         entity: me.entityName,
         attribute: action.attribute,
         id: me.getInstanceID(),
@@ -2846,8 +2813,7 @@ Ext.define('UB.view.BasePanel', {
       }
       $App.connection.getDocument(params, {resultIsBinary: true, bypassCache: true})
         .then(function (dataAsArray) {
-          var blobData
-          blobData = new Blob(
+          let blobData = new Blob(
             [dataAsArray],
             {type: docSrc.ct}
           )
@@ -2910,8 +2876,8 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onRefresh: function () {
-    var me = this, promise
-    promise = me.isFormDirty() ? $App.dialogYesNo('areYouSure', 'formWasChanged') : Promise.resolve(true)
+    let me = this
+    let promise = me.isFormDirty() ? $App.dialogYesNo('areYouSure', 'formWasChanged') : Promise.resolve(true)
     promise.done(function (res) {
       if (res) {
         me.fireEvent('beforeRefresh', me)
@@ -2954,9 +2920,9 @@ Ext.define('UB.view.BasePanel', {
   },
 
   loadInstance: function () {
-    var me = this, request
+    let me = this
 
-    request = [$App.connection.select(me.formRequestConfig('select', {
+    let request = [$App.connection.select(me.formRequestConfig('select', {
       entity: me.entityName,
       fieldList: me.fieldList,
       ID: me.instanceID,
@@ -2972,9 +2938,7 @@ Ext.define('UB.view.BasePanel', {
     }
 
     me.formDataReady = false
-    Promise.all(request).done(function (res) {
-      var result = res[0],
-        lockInfo = res[1]
+    Promise.all(request).done(function ([result, lockInfo]) {
       me.disableBinder()
       UB.ux.data.UBStore.resultDataRow2Record(result, me.record)
       me.record.resultData = result.resultData
@@ -3028,17 +2992,16 @@ Ext.define('UB.view.BasePanel', {
    * @returns {Promise}
    */
   saveForm: function () {
-    var
-      me = this,
-      form = me.getForm(),
-      promise, functionList = []
+    let me = this
+    let form = me.getForm()
+    let functionList = []
 
     me.fireEvent('beforeSaveForm', functionList)
     functionList.sort(function (a, b) {
       return (a[0] - b[0])
     })
-    promise = Promise.resolve(true)
-    _.forEach(functionList, function (item) {
+    let promise = Promise.resolve(true)
+    functionList.forEach(item => {
       promise = promise.then(function () {
         return item[1]()
       })
@@ -3058,10 +3021,10 @@ Ext.define('UB.view.BasePanel', {
       }
       /**
        * @deprecated  Use event beforeSaveForm instead
-       * @cfg {Callback} onBeforeSave
+       * @cfg {function} onBeforeSave
        * Called before save form. To cancel save form return false.
        */
-      if (_.isFunction(me.onBeforeSave)) {
+      if (typeof me.onBeforeSave === 'function') {
         return Promise.resolve(me.onBeforeSave())
           .then(function (onBeforeSaveResult) {
             if (onBeforeSaveResult !== false) {
@@ -3179,14 +3142,14 @@ Ext.define('UB.view.BasePanel', {
       let langFields = []
       if (me.extendedDataForSave) {
         _.forEach(me.extendedDataForSave, function (value, property) {
-          var matchRes = property.match(/(\w+)_\w\w\^/)
+          let matchRes = property.match(/(\w+)_\w\w\^/)
           if (matchRes && matchRes.length > 1) {
             if (langFields.indexOf(matchRes[1]) < 0) {
               langFields.push(matchRes[1])
             }
           }
         })
-        _.forEach(langFields, function (langField) {
+        langFields.forEach(langField => {
           if (values && values.hasOwnProperty(langField)) {
             values[langField + '_' + $App.connection.userLang() + '^'] = values[langField]
             delete values[langField]
@@ -3199,9 +3162,9 @@ Ext.define('UB.view.BasePanel', {
         fieldList: me.fieldList,
         entity: me.entityName,
         method: me.__mip_ondate && !me.addByCurrent ? 'newversion' : (me.isEditMode ? 'update' : 'insert'),
-        alsNeed: me.hasEntityALS,
         execParams: values
       }
+      if (me.hasEntityALS) params.alsNeed = true
       params.__mip_ondate = me.__mip_ondate
       params = me.formRequestConfig('save', params)
       me.fireEvent('beforesave', me, params)
@@ -3402,8 +3365,7 @@ Ext.define('UB.view.BasePanel', {
       id = instanceID
 
     function prepareFileName () {
-      var dateString = (new Date()).toLocaleString().replace(/[/:.]/g, '-')
-      return 'Scaned at ' + dateString + '.' + $App.__scanService.lastScanedFormat
+      return `Scan-${Date.now()}-.${$App.__scanService.lastScanedFormat}`
     }
     ctrl.fireEvent('change')
 
@@ -3411,20 +3373,15 @@ Ext.define('UB.view.BasePanel', {
       title, {}, this.documents[action.attribute].documentMIME
     ).then(function (result) {
       var fName = prepareFileName()
-      return $App.connection.post('setDocument', UB.base64toArrayBuffer(result), {
-        params: {
-          entity: entityName,
-          attribute: attribute,
-          id: id,
-          origName: fName,
-          filename: fName
-        },
-        headers: {
-          'Content-Type': 'application/octet-stream'
-        }
+      return $App.connection.setDocument(UB.base64toArrayBuffer(result), {
+        entity: entityName,
+        attribute: attribute,
+        id: id,
+        origName: fName,
+        filename: fName
       })
-    }).then(function (serverResponse) {
-      ctrl.setValue(serverResponse.data.result, id)
+    }).then(function (result) {
+      ctrl.setValue(result, id)
     })
   },
 
@@ -3463,10 +3420,9 @@ Ext.define('UB.view.BasePanel', {
 
     ctrl.fireEvent('change')
     $App.dialogYesNo('ochistit', 'vyHotiteUdalitSoderzhimoeDocumenta').done(function (res) {
-      var oldValue, newValue
-      if (!res) { return }
+      if (!res) return
 
-      oldValue = ctrl.getValue()
+      let oldValue = ctrl.getValue()
       if (Ext.isString(oldValue) && oldValue.length) {
         oldValue = Ext.JSON.decode(oldValue, true)
       }
@@ -3474,7 +3430,7 @@ Ext.define('UB.view.BasePanel', {
       if (!Ext.Object.getSize(oldValue)) {
         return
       }
-      newValue = Ext.apply(oldValue, {deleting: true, size: 0})
+      let newValue = Ext.apply(oldValue, {deleting: true, size: 0})
       ctrl.setValue(newValue, me.getInstanceID())
     })
   },
@@ -3483,9 +3439,9 @@ Ext.define('UB.view.BasePanel', {
    * Create invisible mask to lock interface. To delete mask use method unmaskForm.
    */
   lockInterface: function () {
-    var maskEl, el = this.getEl()
+    let el = this.getEl()
     if (el) {
-      maskEl = el.mask()
+      let maskEl = el.mask()
       maskEl.addCls('ub-invisible-mask')
     }
   },
@@ -3494,32 +3450,30 @@ Ext.define('UB.view.BasePanel', {
    * Create mask with delay to lock interface. To delete mask use method unmaskForm.
    */
   maskForm: function (delay) {
-    var me = this, el
+    let me = this
     clearTimeout(me.maskTimeout || 0)
-    delay = delay || 1
 
     me.maskTimeout = setTimeout(function () {
-      el = me.getEl()
+      let el = me.getEl()
       if (el) {
         el.mask(UB.i18n('loadingData'))
       }
-    }, delay)
+    }, delay || 1)
   },
 
   /**
    * Delete mask created by lockInterface or maskForm methods.
    */
   unmaskForm: function () {
-    var me = this, el
-    clearTimeout(me.maskTimeout || 0)
-    el = me.getEl()
+    clearTimeout(this.maskTimeout || 0)
+    let el = this.getEl()
     if (el) {
       el.unmask()
     }
   },
 
   beforeDestroy: function () {
-    var me = this
+    let me = this
     if (this.mainEntityGridPanel) {
       this.mainEntityGridPanel.un('parentchange', this.onParentChange, this)
       this.mainEntityGridPanel.actions[UB.view.EntityGridPanel.actionId.showPreview].setDisabled(false)

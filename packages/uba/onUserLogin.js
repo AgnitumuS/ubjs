@@ -3,7 +3,6 @@ const UB = require('@unitybase/ub')
 const App = UB.App
 const queryString = require('querystring')
 const Session = UB.Session
-const UBA_COMMON = require('./modules/uba_common')
 
 Session.on('login', onUserLogin)
 Session.on('loginFailed', onUserLoginFailed)
@@ -53,7 +52,7 @@ function checkAdvancedSecurity (req) {
 
   if (advData.refreshFp || advData.fp) { // fp required
     fp = urlParams.FP
-    if (!fp) throw new Error('Fingerprint requred but not passed in FP URL params')
+    if (!fp) throw new Error('Fingerprint is required but not passed in the FP URL params')
   }
   if (advData.refreshFp) {
     updateParams.fp = fp
@@ -65,7 +64,7 @@ function checkAdvancedSecurity (req) {
   let keyMediaName = ''
   if (advData.refreshKeyMedia || advData.keyMediaName) { // keyMediaName required
     keyMediaName = urlParams.KMN
-    if (!keyMediaName) throw new Error('keyMediaName requred but not passed in KMN URL params')
+    if (!keyMediaName) throw new Error('keyMediaName is required but not passed in the KMN URL params')
   }
   if (advData.refreshKeyMedia) {
     updateParams.keyMediaName = keyMediaName
@@ -95,53 +94,18 @@ let doCheckAdvancedSecurity = null // calculate later
  * Add Session 'login' event listener
  * Session 'login' event occurred every time new user logged in
  * here we calculate logged-in user's roles,
- * result we put in Session.uData - only one session-depended server object
+ * result we put in Session.uData - only one session-dependent server object
  * @private
  * @param {THTTPRequest} req
  */
 function onUserLogin (req) {
   console.debug('Call JS method: UBA.onUserLogin')
-  let data = Session.uData
-  let repo = null
-
-  let userInfo = UB.Repository('uba_user').attrs('name').selectById(Session.userID)
-  data.login = userInfo.name || Session.userID
   if (!doCheckAdvancedSecurity) {
     doCheckAdvancedSecurity = App.domainInfo.has('uba_advSecurity')
       ? checkAdvancedSecurity
       : function () { return {enabled: false} }
   }
   let advCheckData = doCheckAdvancedSecurity(req)
-  try {
-    repo = UB.Repository('uba_userrole')
-      .attrs(['ID', 'roleID.name', 'roleID'])
-      .where('[userID]', '=', Session.userID)
-      .select()
-  } catch (ex) {
-    // this possible if we connect to empty database without uba_* tables
-    console.error('Error getting userroles:', ex.toString())
-  }
-
-  // add everyone role to uData
-  let tmpArr = [UBA_COMMON.ROLES.EVERYONE.NAME]
-  let roleIDs = [UBA_COMMON.ROLES.EVERYONE.ID]
-  // add Anonymous or User role to uData
-  if (Session.userID === UBA_COMMON.USERS.ANONYMOUS.ID) {
-    tmpArr.push(UBA_COMMON.ROLES.ANONYMOUS.NAME)
-    roleIDs.push(UBA_COMMON.ROLES.ANONYMOUS.ID)
-  } else {
-    tmpArr.push(UBA_COMMON.ROLES.USER.NAME)
-    roleIDs.push(UBA_COMMON.ROLES.USER.ID)
-  }
-  while (!repo.eof) {
-    let currentRole = repo.get('roleID.name')
-    tmpArr.push(currentRole)
-    roleIDs.push(repo.get('roleID'))
-    repo.next()
-  }
-  data.roles = tmpArr.join(',')
-  data.userID = Session.userID
-  data.roleIDs = roleIDs
 
   if (ubaAuditPresent) { // uba_audit exists
     try {
@@ -150,10 +114,10 @@ function onUserLogin (req) {
           entity: 'uba_user',
           entityinfo_id: Session.userID,
           actionType: 'LOGIN',
-          actionUser: data.login,
+          actionUser: Session.uData.login,
           actionTime: new Date(),
           remoteIP: Session.callerIP,
-          targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : data.login,
+          targetUser: (advCheckData.enabled && advCheckData.kmn) ? advCheckData.kmn : Session.uData.login,
           targetRole: (advCheckData.enabled && advCheckData.fpa) ? advCheckData.fpa.slice(0, 127) : '',
           fromValue: req.headers
         }

@@ -1,0 +1,35 @@
+{
+  "caption": "Person classification",
+  "description": "Person classification",
+  "documentation": "Internal classification of persons",
+  "connectionName": "",
+  "cacheType": "SessionEntity",
+  "descriptionAttribute": "name",
+  "attributes": [
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code",
+      "description": "Code",
+      "allowNull": false,
+      "isMultiLang": false,
+      "isUnique": true
+    },
+    {
+      "name": "name",
+      "dataType": "String",
+      "size": 100,
+      "caption": "Name",
+      "description": "Name",
+      "allowNull": false,
+      "isMultiLang": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true,
+      "safeDelete": true
+    }
+  }
+}

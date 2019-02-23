@@ -278,7 +278,9 @@ var
   Method:tagFUNCDESC;
 
   obj: PJSObject;
-  prop_ids: JSIdArray;
+  prop_ids: PJSIdArray;
+  prop_ids_Length: size_t;
+  prop_ids_vector: PjsidVector;
   PropNameVal: jsval;
  
   NamedPropsCount: integer;
@@ -302,24 +304,24 @@ begin
       if (argc=1) and (params[0].isObject) and not (params[0].isString)
           and not params[0].asObject.isDate(cx) then begin
         obj := params[0].asObject;
-        prop_ids := obj.Enumerate(cx );
+        prop_ids := obj.Enumerate(cx, prop_ids_Length, prop_ids_vector);
         try
-          NamedPropsCount := prop_ids.length;
+          NamedPropsCount := prop_ids_length;
           PropsCount := NamedPropsCount;
           GetMem(Names, Sizeof(POleStr)*(NamedPropsCount+1));
           GetMem(IDs, Sizeof(TMemberID)*(NamedPropsCount+1));
           GetMem(rgvarg, Sizeof(TVariantArg)*(PropsCount));
 
           for i := 0 to PropsCount-1 do begin
-            Assert(cx.IdToValue(prop_ids.vector[i], PropNameVal));
+            Assert(cx.IdToValue(prop_ids_vector[i], PropNameVal));
             Names^[PropsCount-i] := PWideChar(PropNameVal.asJSString.ToSynUnicode(cx));
-            obj.GetPropertyById(cx, prop_ids.vector[i], val);
+            obj.GetPropertyById(cx, prop_ids_vector[i], val);
 
             OleVar := JSValToOleVariant(cx, val);
             rgvarg[PropsCount-1-i] := tagVariant(OleVar);
           end;
         finally
-//          JS_DestroyIdArray(cx, prop_ids);
+          JS_DestroyAutoIdVector(prop_ids);
         end;
       end else begin
 

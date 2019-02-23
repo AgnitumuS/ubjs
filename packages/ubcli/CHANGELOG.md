@@ -4,6 +4,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.0]
+### Changed
+ - `generateDDL` command now work under `root` system account and can be executed only locally.
+ `-u` and `-p` command line switches not used anymore
+```
+npx ubcli generateDDL -cfg $UB_CFG -autorun
+```
+  Since `root` auth schema do not fire `Session.on('logon')` event developers can remove a conditions
+  for DDL generation (when database is not fully created yet) 
+```
+ if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) return
+```
+  from `Session.on('logon')` handlers
+  
+## [5.2.6]
+### Added
+ - `generateNginxCfg` now support `reverseProxy.remoteConnIDHeader` and in case
+  it is not empty adds a `proxy_set_header {{remoteConnIDHeader}} $connection;`
+  section to nginx config
+
+### Changed
+ - in case invalid command is passed to `ubcli` human readable error will be shown
+
+## [5.2.4]
+### Changed
+ - **BREAKING** change default floating scale precision from 4 to 6
+ - `initDB` will ignore `-host` parameter (always used a host from config)
+ - `initDB` will ignore `-u` parameter (always used a `admin`)
+ - `initDB` will set a default password for user `admin` as specified in `-p` command line parameter.
+   Previous implementation always set the `admin` password to `admin`  
+ 
+### Added 
+ - DDl generator will use floating scale precision from UBDomain.FLOATING_SCALE_PRECISION constant
+ (6 by default)  
+
+## [5.2.2]
+### Fixed
+ - `npx ubcli generateNgingCfg` will generate correct `ssl_ciphers` list
+ - `npx ubcli generateNgingCfg` will add `listen 443 ssl;` in case external URL is HTTPS
+ 
+### Changed
+ - `npx ubcli generateNgingCfg` will enable **HTTP 2.0** in case external URL is HTTPS  
+ - `ln -s` sample for nginx config will change config file name to the site host name. 
+   This help to manage a big productions configs.  
+
+## [5.2.0]
+### Added 
+ - `npx ubcli` will display short commands descriptions in addition to command names
+ - new command `meta-tr` added to `ubcli` to be used to transform *.meta attributes from Object to Array as
+ required by latest Entity JSON schema:
+```bash
+ npx ubcli meta-tr -m /home/mpv/dev/ubjs/apps/autotest/models/TST/tst_document.meta
+```   
+  
 ## [5.1.4]
 ### Fixed 
  - `ubcli initDB -drop` for SQLite3 will also delete possible WAL logs (-wal and -shm files)

@@ -114,6 +114,18 @@
         "categoryID": {
             "caption": "Kateqoriya",
             "description": "Kateqoriya"
+        },
+        "nationality": {
+          "caption": "Vətəndaşlıq",
+          "description": "Vətəndaşlıq"
+        },
+        "resident": {
+          "caption": "Sakin?",
+          "description": "İnsanın ölkəmizdəki sakini varmı?"
+        },
+        "classID": {
+          "caption": "Şəxsiyyət təsnifatı",
+          "description": "Şəxsiyyət təsnifatı"
         }
     }
 }

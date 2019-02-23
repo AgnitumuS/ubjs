@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Category of persons",
-    "description": "Ctegory of persons",
+    "description": "Category of persons",
     "documentation": "The directory stores a list of categories or physical persons",
     "attributes": {
         "code": {

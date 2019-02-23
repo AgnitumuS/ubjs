@@ -58,6 +58,7 @@
 			"loginURL": "/models/adminui-vue/views/ub-auth.html",
 			"customSidebar": false, // set to true to not create sidebar
 			"customNavbar": false, // set to true to not create navbar
+			"vueAutoForms": true,
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30
@@ -109,6 +110,9 @@
 				},
 				{
 					"path": "./node_modules/@unitybase/adminui-vue"
+				},
+				{
+					"path": "./node_modules/@unitybase/ubdev"
 				},
 				{
 					//"name": "TST",

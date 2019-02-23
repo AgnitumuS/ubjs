@@ -7,4 +7,5 @@ _autotestResults.json
 ub-proxy.conf
 screenshots/
 _temp/
+callgrind*
 

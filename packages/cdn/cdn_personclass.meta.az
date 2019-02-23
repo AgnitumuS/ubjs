@@ -1,0 +1,15 @@
+﻿{
+    "caption": "Şəxsiyyət təsnifatı",
+    "description": "Şəxsiyyət təsnifatı",
+    "documentation": "Şəxsiyyət təsnifatı",
+    "attributes": {
+        "code": {
+            "caption": "Kod",
+            "description": "Kod"
+        },
+        "name": {
+            "caption": "Ad",
+            "description": "Ad"
+        }
+    }
+}

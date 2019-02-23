@@ -4,7 +4,7 @@ Data layer for accessing UnityBase server from Browser or NodeJS
 
 NodeJS example:
 
-```
+```javascript
 global.XMLHttpRequest = require('xhr2')
 
 const UB = require('@unitybase/ub-pub')

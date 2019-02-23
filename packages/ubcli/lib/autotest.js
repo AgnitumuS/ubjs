@@ -161,3 +161,6 @@ module.exports = function autotest (options) {
     }
   }
 }
+
+module.exports.shortDoc = `Run auto test by enumerating all models '_autotest' 
+\t\t\tfolders and execute all *.js from there`

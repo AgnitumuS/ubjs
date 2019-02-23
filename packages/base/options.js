@@ -1,28 +1,29 @@
 /**
  * Parse a command line options & environment variables and create a configuration object.
  *
-     const cmdLineOpt = require('@unitybase/base').options
-     const argv = require('@unitybase/base').argv
-
-     let paramsDescription = cmdLineOpt.describe('cmd/generateDDL',
-      'Check database structure for application domain. ' +
-      'Generate DDL (both create and alter) if need and optionally run it'
-     ).add(
-        argv.establishConnectionFromCmdLineAttributes._cmdLineParams
-     ).add({
-       short: 'm',  long: 'models', param: 'modelsList', defaultValue: '*',
-       help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'
-     }).add({
-       short: 'e',  long: 'entities', param: 'entitiesList', defaultValue: '*',
-       help: 'Comma separated entity names list for DDL generation'
-     }).add({
-       short: 'out',  long: 'out', param: 'outputPath', defaultValue: process.cwd(),
-       help: 'Folder to output generated DDLs (one file per connection)'
-     }).add({
-       short: 'autorun',  long: 'autorun', defaultValue: false,
-       help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'
-     })
-     let passedOptions = paramsDescription.parseVerbose({}, true)
+ * @example
+ * const cmdLineOpt = require('@unitybase/base').options
+ * const argv = require('@unitybase/base').argv
+ *
+ * let paramsDescription = cmdLineOpt.describe('cmd/generateDDL',
+ *  'Check database structure for application domain. ' +
+ *  'Generate DDL (both create and alter) if need and optionally run it'
+ * ).add(
+ *    argv.establishConnectionFromCmdLineAttributes._cmdLineParams
+ * ).add({
+ *   short: 'm',  long: 'models', param: 'modelsList', defaultValue: '*',
+ *   help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'
+ * }).add({
+ *   short: 'e',  long: 'entities', param: 'entitiesList', defaultValue: '*',
+ *   help: 'Comma separated entity names list for DDL generation'
+ * }).add({
+ *   short: 'out',  long: 'out', param: 'outputPath', defaultValue: process.cwd(),
+ *   help: 'Folder to output generated DDLs (one file per connection)'
+ * }).add({
+ *   short: 'autorun',  long: 'autorun', defaultValue: false,
+ *   help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'
+ * })
+ * let passedOptions = paramsDescription.parseVerbose({}, true)
 
  * @module options
  * @memberOf module:@unitybase/base
@@ -34,8 +35,8 @@
  * Internal class for parsing command line options. Created by {@link options#describe options.describe} method
  * @class
  * @access package
- * @param commandName
- * @param commandDescription
+ * @param {string} commandName
+ * @param {string} commandDescription
  * @param {String} [cli='ub'] An executable used to execute a command `commandName`. For example: `ubcli`
  * @constructor
  */
@@ -170,7 +171,7 @@ Options.prototype.usage = function usage () {
   console.info('\nwhere:')
   let envs = []
   let res = []
-    // create a parameters description
+  // create a parameters description
   this.options.forEach(function (option) {
     let elm = '-' + option.short
     if (option.short !== option.long) elm += ' | ' + option.long
@@ -186,7 +187,7 @@ Options.prototype.usage = function usage () {
   })
   res = '  ' + res.join('\n  ')
   if (envs.length) {
-    res += '\n\n* will lookup a environment variable in case switch omitted: ' + JSON.stringify(envs)
+    res += '\n\n* will look for the following environment variables if the switch is not specified: ' + JSON.stringify(envs)
   }
   return res
 }
@@ -197,7 +198,7 @@ Options.prototype.usage = function usage () {
 
  const cmdLineOpt = require('cmd/options')
  let paramsDescription = cmdLineOpt.describe('cmd/createStore',
-   'Create internal store structure (folders) for specifies FileSystem store'
+ 'Create internal store structure (folders) for specifies FileSystem store'
  ).add({
    short: 'cfg',  long: 'cfg', param: 'serverConfig', defaultValue: 'ubConfig.json',
    help: 'Server config'
@@ -222,7 +223,7 @@ exports.describe = function describe (commandName = '', commandDescription = '',
  *      -switchName
  *      or
  *      /switchName
- * @param switchName
+ * @param {string} switchName
  * @returns {Number} switch index if found or -1 otherwise
  */
 exports.switchIndex = function switchIndex (switchName) {
@@ -236,7 +237,7 @@ const switchIndex = exports.switchIndex
  *      -switchName Value
  *      or
  *      /switchName Value
- * @param switchName
+ * @param {string} switchName
  * @returns {String|undefined} switch value or `undefined` in case switch not found or switch not have value
  */
 exports.switchValue = function switchValue (switchName) {

@@ -41,4 +41,15 @@ function testJsonAttr (conn) {
   })
   assert.equal(data.length, 2, '2 json with propS starts with "Пр"')
   assert.equal(data[0].S, 'Привет', 'first json propS is "Привет"')
+
+  let datesRes
+  function datesSerialize () {
+    datesRes = conn.query({
+      entity: 'tst_service',
+      method: 'datesTest',
+      data: 'put test data'
+    })
+  }
+  assert.doesNotThrow(datesSerialize, 'Dates should be serialized correctly')
+  assert.notEqual(datesRes.dates.zDate.toString(), 'Invalid Date', 'Dates should be serialized correctly but got' + datesRes)
 }

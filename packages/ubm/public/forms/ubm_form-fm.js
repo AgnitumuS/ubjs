@@ -5,10 +5,10 @@ exports.formCode = {
   codeTabs: null,
 
   initUBComponent: function () {
-    var me = this
+    const me = this
 
     // remove document-menu buttons
-    var tbar = this.query('[ubID=mainToolbar]')[0]
+    let tbar = this.query('[ubID=mainToolbar]')[0]
     tbar.remove(tbar.items.getAt(2))
     tbar.remove(tbar.items.getAt(2))
 
@@ -51,7 +51,7 @@ exports.formCode = {
     $App.connection.authorize().then(function (session) { me.CRC32 = session.crc32 })
   },
 
-  onCodeChanged: function (field, newValue, oldValue, eOpts) {
+  onCodeChanged: function (field, newValue) {
     if (this.isEditMode) {
       throw new UB.UBError('To change form code rename both *-fm.js and *-fm.def files in folder "yourModel\\public\\forms"')
     }
@@ -76,7 +76,7 @@ exports.formCode = {
   },
 
   onEntityChanged: function (field, newValue) {
-    var me = this, codeParts, newCode
+    const me = this
 
     if ($App.connection.domain.entities[newValue]) {
       me.entityCode = newValue
@@ -85,9 +85,9 @@ exports.formCode = {
       if (me.record.get('formType') === 'auto') {
         me.designer.setEntityCode(newValue)
       }
-      codeParts = me.getField('code').getValue().split('-')
+      let codeParts = me.getField('code').getValue().split('-')
       codeParts[0] = newValue
-      newCode = codeParts.join('-')
+      let newCode = codeParts.join('-')
       if (newCode !== me.getField('code').getValue()) {
         me.getField('code').setValue(newCode)
       }

@@ -28,6 +28,8 @@ ws.addRow(
         {column: 4, style: fstyle1}
     ]
 )
+ws.setWorksheetProtection({ objects: true, scenarios: true, formatColumns: false, formatRows: false, sort: false, autoFilter: false, pivotTables: false });
+wb.setCustomProperty('reportID', 3000000001010);
 let content = wb.render()
 fs.writeFileSync('./example.xlsx', content, 'binary')
 ```

@@ -12,17 +12,42 @@ const command = process.argv[2]
  * @module @unitybase/ubcli
  */
 
-// commands help
-if (!command || (['-?', '/?', '-help', '/help'].indexOf(command) !== -1)) {
-  let commands = fs.readdirSync(path.join(__dirname, '..', 'lib'))
+/**
+ * Show usage
+ */
+function showUsage () {
+  let libsPath = path.join(__dirname, '..', 'lib')
+  let commands = fs.readdirSync(libsPath)
   console.info('Possible commands:')
   for (let cmd of commands) {
     if (cmd.endsWith('.js')) {
-      console.log('\t', cmd.replace(/\.js$/, ''))
+      let shortDoc = ' ' + cmd.replace(/\.js$/, '').padEnd(20, ' ')
+      try {
+        let descr = require(path.join(libsPath, cmd)).shortDoc
+        if (descr) shortDoc += ' - ' + descr
+      } catch (e) {
+      }
+      console.log(shortDoc)
     }
   }
-  console.log('\r\nRun ubcli commandName -? for a command help')
-} else {
-  const cmdModule = require(`../lib/${command}`)
-  if (typeof cmdModule === 'function') cmdModule()
+  console.log('Run ubcli commandName -? for a command help')
 }
+
+function ubcli () {
+  if (!command || (['-?', '/?', '-help', '/help'].indexOf(command) !== -1)) {
+    showUsage()
+  } else {
+    try {
+      const resolved = require.resolve(`../lib/${command}`)
+      console.log('RESOLVED TO', resolved)
+    } catch (e) {
+      showUsage()
+      console.error(`Invalid command "${command}". See above for possible commands`)
+      return
+    }
+    const cmdModule = require(`../lib/${command}`)
+    if (typeof cmdModule === 'function') cmdModule()
+  }
+}
+
+module.exports = ubcli

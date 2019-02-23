@@ -2,7 +2,6 @@
  *
  * Server-side BLOB stores methods. Accessible via {@link App.blobStores}
  *
- * @example
 
     // get dirty (not committed yet) content of my_entity.docAttribute with ID = 12312 as ArrayBuffer
     let tmpContent = App.blobStores.getContent(
@@ -327,7 +326,9 @@ function getContent (request, options) {
  * Return a JSON with blob store item info {@link BlobStoreItem}
  *
  * Accept 3 mandatory parameter: entity,attribute,ID
- * and 1 optional parameter: fileName
+ * and 2 optional parameter: fileName, encoding
+ *
+ * Encoding should be either omitted or `base64` in case body is base64 encoded BLOB
  *
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
@@ -352,7 +353,12 @@ function setDocumentEndpoint (req, resp) {
   let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeCode]
   if (!store) return resp.badRequest(`Blob store ${storeCode} not found in application config`)
-  let content = req.read('bin')
+  let content
+  if (request.encoding === 'base64') {
+    content = req.read('base64')
+  } else {
+    content = req.read('bin')
+  }
   let blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
   resp.writeEnd({success: true, errMsg: '', result: blobStoreItem})

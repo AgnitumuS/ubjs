@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.15]
+### Added
+ - support for new authentication schema 'ROOT'. Server side in-proc server only
+
+## [5.0.14]
+### Added
+ - client side `UBDomain` will throw error in case attribute exists in i18n but not defined in entity. Output sample:
+```
+Error: Invalid i18n for entity "tst_document" - attribute "superOld" not exist in meta or it's dataType is empty
+```
+ - new constant UBDomain.FLOATING_SCALE_PRECISION === 6 to be used for DDL generation and UI scale precision 
+ for attributes of type **Float**
+
 ## [5.0.12]
 ### Added
  - `UBModel.version` attribute added. Accessible inside client and server.

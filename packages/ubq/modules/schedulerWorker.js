@@ -1,5 +1,5 @@
 /* global terminate */
-const SyncConnection = require('@unitybase/base').SyncConnection
+const http = require('http')
 const cron = require('node-cron')
 
 /**
@@ -14,31 +14,31 @@ function runSchedulersCircle (message) {
     let p = 0
   }
   */
-  const serverURL = message.serverURL
+  const serverURL = message.serverURL + '/rest/ubq_messages/executeSchedulerTask?async=true'
   const config = message.config
   let jobs = []
 
   function safeSendAsyncRequest (cfgIdx) {
     try {
-      let conn = new SyncConnection(serverURL)
       let cfg = config[cfgIdx]
-      conn.onRequestAuthParams = function () {
-        return {authSchema: 'UB', login: cfg.runAs, apiKey: cfg.apiKey}
-      }
-      console.log('SCHEDULER: Job', cfg.name, 'started at', new Date())
-      console.debug('Job defined as:', cfg)
-      conn.xhr({
-        endpoint: 'rest/ubq_messages/executeSchedulerTask',
+      let request = http.request({
+        URL: serverURL,
         method: 'POST',
-        URLParams: {async: true},
-        data: {
-          schedulerName: cfg.name,
-          command: cfg.command,
-          module: cfg.module,
-          singleton: cfg.singleton === 1,
-          logSuccessful: cfg.logSuccessful === 1
+        headers: {
+          'Authorization': 'ROOT ' + process.rootOTP(),
+          'Content-Type': 'application/json'
         }
       })
+      request.end({
+        schedulerName: cfg.name,
+        command: cfg.command,
+        module: cfg.module,
+        singleton: cfg.singleton === 1,
+        logSuccessful: cfg.logSuccessful === 1,
+        runAs: cfg.runAs,
+        runAsID: cfg.runAsID
+      })
+      console.log('SCHEDULER: Job command for', cfg.name, 'sent at', new Date())
     } catch (e) {
       console.error(e)
     }
@@ -56,8 +56,8 @@ function runSchedulersCircle (message) {
     let job = cron.schedule(
       config[i].cron,
       safeSendAsyncRequest.bind(null, i),
-      // OBSOLETE cronJobStopped.bind(null, i),
       true /* Start the job right now */
+      // OBSOLETE cronJobStopped.bind(null, i),
       // OBSOLETE '' /* local timezone */
     )
     jobs.push(job)

@@ -5,6 +5,14 @@ Micro service for creating PNG picture based on series of commands
 ```bash
 npm i @unitybase/draw-service
 node ./node_modules/@unitybase/draw-service
+```
+To use custom port (default is 8882) or custom font (default is times)
+
+```bash
+npm i @unitybase/draw-service
+PORT=8883 FONT=path/to/your/font.ttf  node ./node_modules/@unitybase/draw-service
+```
+
 
 ```javascript
 cmd = {
@@ -32,11 +40,11 @@ cmd = {
   ]
 }
 
-fetch('http://localhost:8882', {method: 'POST', body: JSON.stringify(cmd)}).then((imageBin) => {...})
+fetch('http://localhost:8882', {method: 'POST', body: JSON.stringify(cmd)}).then((imageBin) => {doSomething(imageBin)})
 ```
 
 Can draw text, png image, rect - see `./text/test.js` for sample
 
 ## Limitations
- - supports only Times New Roman font family
+ - supports only ONE font (Times New Roman by default). Or font the path to whitch one is passed in FONT env variable
  - small font size can cause bad antialiasing

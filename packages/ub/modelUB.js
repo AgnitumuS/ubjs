@@ -184,7 +184,7 @@ function normalizeEnums () {
 function initializeDomain () {
   const {addEntityMethod} = process.binding('ub_app')
   const {getDomainInfo} = process.binding('ub_app')
-// create scope for all domain objects
+  // create scope for all domain objects
   const tempDomain = new UBDomain(JSON.parse(getDomainInfo(true)))
   tempDomain.eachEntity(entity => {
     let e = global[entity.code] = { }
@@ -236,7 +236,9 @@ function ns (namespacePath) {
  * @type Session
  * @deprecated Use `const Session = require('@unitybase/ub').Session`
  */
-global.Session = Session
+Object.defineProperty(global, 'Session', {
+  value: Session
+})
 
 // legacy 1.12
 require('./modules/RLS')

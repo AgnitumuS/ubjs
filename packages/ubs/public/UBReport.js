@@ -42,11 +42,19 @@ function UBReport (reportCode, reportType, params, language) {
   this.reportOptions = {}
   this.lang = language
 
+  /**
+   * In case is true, `reportViewer` will always display the report parameters form,
+   * otherwise, the report parameters form will be displayed only if the report option `reportParams` is empty.
+   * @property {boolean} [showParamForm=false]
+   */
+  this.showParamForm = false
+
   if (typeof reportCode === 'object') {
     this.reportCode = reportCode.code
     this.reportType = reportCode.type || 'html'
     this.incomeParams = reportCode.params
     this.allowExportToExcel = reportCode.allowExportToExcel
+    this.showParamForm = reportCode.showParamForm || false
     this.lang = reportCode.language
     this.debug = reportCode.debug
   }

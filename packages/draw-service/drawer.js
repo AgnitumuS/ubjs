@@ -4,10 +4,10 @@ const uint32 = require('pureimage/src/uint32')
 const opentype = require('opentype.js')
 
 module.exports.drawPicture = drawPicture
-
-let fnt = PImage.registerFont('fonts/times.ttf', 'Times New Roman')
+let fontPath = process.env.FONT || './fonts/times.ttf'
+let fnt = PImage.registerFont(fontPath, 'Times New Roman')
 // dirty hack to load font synchronously
-let opFont = opentype.loadSync('fonts/times.ttf')
+let opFont = opentype.loadSync(fontPath)
 fnt.loaded = true
 fnt.font = opFont
 

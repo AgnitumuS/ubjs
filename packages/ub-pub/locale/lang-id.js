@@ -14,6 +14,7 @@ UB.i18nExtend({
   KerberosTip: 'Login with the user rights entered into the operating system. The computer must be included in the domain',
   Authentication: 'Authentication',
   RegistrationMode: 'Registration mode',
+  AdditionalLoginOptions: 'Opsi masuk tambahan',
   useOSCredentialTitle: 'Domain',
   useUBAuthenticationTitle: 'User&password',
   useCertificateTitle: 'Using certificate',

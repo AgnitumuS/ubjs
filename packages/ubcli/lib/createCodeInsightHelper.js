@@ -68,7 +68,7 @@ module.exports = function createCodeInsightHelper (cfg) {
   /**
    * Convert named collection - {name1: {}, name2: {}} to array -> [{name: name1, ...}, ...]
    * Will mutate original!
-   * @param namedCollection
+   * @param {object} namedCollection
    */
   function namedCollection2Array (namedCollection) {
     let result = []
@@ -103,7 +103,7 @@ module.exports = function createCodeInsightHelper (cfg) {
 
   let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'codeInsightHelper.mustache'), 'utf8')
 
-  function processEntities (entities, folderName, modelName, moduleName) {
+  function processEntities (entities, folderName, modelName) {
     let res, resFileName
 
     let modulePackage = require(path.join(folderName, 'package.json'))
@@ -200,3 +200,6 @@ module.exports = function createCodeInsightHelper (cfg) {
     processEntities(entities, currentPath, modelCfg.name, modelCfg.moduleName)
   })
 }
+
+module.exports.shortDoc = `Create service scripts containing entity definition
+\t\t\tfor code insight in WebStorm or other IDE work well`

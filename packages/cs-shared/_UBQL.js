@@ -63,9 +63,9 @@ class UBQLOrderItem {
 
 /**
  * @classdesc
- * UnityBase Query Language formal definition. **Recommended way** to create a UBQL is {@link ClientRepository}.
+ * UnityBase Query Language formal definition. **Recommended way** to create a UBQL is {@link class:ClientRepository ClientRepository}.
  *
- * UBQL JSON representation can be retrieved from Repository using {@link ClientRepository#ubql ClientRepository.ubql()}
+ * UBQL JSON representation can be retrieved from Repository using {@link class:ClientRepository#ubql ClientRepository.ubql()}
  * @class UBQL
  * @extends UBQLItem
  */

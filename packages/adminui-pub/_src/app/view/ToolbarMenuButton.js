@@ -48,6 +48,7 @@ Ext.define('UB.view.ToolbarMenuButton', {
 
   viewPortResize: function (owner, width) {
     var leftPanel = this.getLeftPanel()
+    var dynPanel = this.dynPanel
     var isHidden
     if (leftPanel) {
       isHidden = leftPanel.isHidden()
@@ -57,6 +58,9 @@ Ext.define('UB.view.ToolbarMenuButton', {
       if ((width > UB.view.ToolbarMenuButton.minWidthScreen) && !this.innerHide && isHidden) {
         leftPanel.show()
       }
+    }
+    if (dynPanel) {
+      dynPanel.hide()
     }
   },
 
@@ -106,8 +110,8 @@ Ext.define('UB.view.ToolbarMenuButton', {
             shim: true
           },
           closeAction: 'hide',
-          height: vBox.height - mBox.bottom, // vBox.height
-          width: 300,
+          height: vBox.height - mBox.bottom - 1, // vBox.height - 1px because if will dont do this top panel will be replaced to top by 1 px
+          width: 225, // 300
           border: true,
           flex: 1
         })

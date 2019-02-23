@@ -47,7 +47,7 @@
       "description": "",
       "allowNull": false,
       "name": "entityMask",
-      "documentation": "<h4>Masks wildchars:</h4> <ul>
+      "documentation": "<h4>Masks wildchars (<strong>to prevent security issues we strongly recommend to use full method name instead of mask</strong>):</h4> <ul>
         <li>*	   	Matches any contiguous characters</li>
         <li>?	   	Matches any single characer</li>
         <li>[abc]  	Matches a or b or c at that position</li>

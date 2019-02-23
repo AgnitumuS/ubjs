@@ -20,7 +20,7 @@ for (let i = 0; i < 100; i++) {
 /**
  * Ancestor for Browser/NodeJS ClientRepository and server side ServerRepository.
  *
- * Do not use it directly, use {@link UB.Repository UB.Repository} on server side
+ * Do not use it directly, use {@link module:@unitybase/ub.Repository UB.Repository} on server side
  */
 class CustomRepository {
   /**
@@ -158,7 +158,7 @@ class CustomRepository {
    *        .where('dateTimeValue', '<', '#currentdate')
    *
    *  - `in` and 'notIn` conditions can take a sub-repository as a values parameter value.
-   *  See {@link CustomRepository#exists} for sample
+   *  See {@link class:CustomRepository#exists CustomRepository.exists} for sample
    *
    * @example
 
@@ -320,7 +320,7 @@ UB.Repository('uba_user').attrs(['ID', 'name']) //select users
    * @param {string} subQueryAttribute
    * @param {string} masterAttribute
    * @param {WhereCondition|String} [condition=eq] A subset from WhereCondition list applicable for correlation join
-   * @param {string} [clauseName] Optional clause name to be used in {@link CustomRepository#logic logic}.
+   * @param {string} [clauseName] Optional clause name to be used in {@link class:CustomRepository#logic logic}.
    *   If not passed unique clause names ('c1', 'c2', ...) where will be generated
    * @return {CustomRepository}
    */
@@ -576,7 +576,7 @@ inst.run('select', repo.ubql())
    *  - etc.
    *
    * @abstract
-   * @param [storeConfig]
+   * @param {Object} [storeConfig] optional config passed to store constructor
    */
   selectAsStore (storeConfig) {
     throw new Error('abstract')
@@ -586,7 +586,7 @@ inst.run('select', repo.ubql())
    * Must be implemented in descendants as a alias to the most appropriate method
    *
    * @abstract
-   * @param [storeConfig]
+   * @param {Object} [storeConfig] optional config passed to store constructor
    */
   select (storeConfig) {
     throw new Error('abstract')
@@ -655,7 +655,7 @@ inst.run('select', repo.ubql())
    * @param {Boolean} [flags.__mip_recordhistory_all=false] Ignore __mip_ondate and select all data (acts as select for entities without `dataHistory` mixin)
    * @param {Boolean} [flags.__mip_disablecache=false] For entities with cacheType in ["Session", "SessionEntity"] not check is data modified and always return result
    * @param {Boolean} [flags.__skipOptimisticLock=false] Skip optimistic lock for entities with `mStorage.simpleAudit = true`
-   * @param {Boolean} [flags.__allowSelectSafeDeleted=false] **Server-side only.**
+   * @param {Boolean} [flags.__allowSelectSafeDeleted=false] Include softly deleted rows to the result
    * @param {Boolean} [flags.__skipSelectAfterUpdate=false] **Server-side only.**
    * @param {Boolean} [flags.__skipSelectAfterInsert=false] **Server-side only.**
    * @param {Boolean} [flags.__skipRls=false] **Server-side only.**

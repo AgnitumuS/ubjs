@@ -38,7 +38,6 @@ Ext.define('UB.view.PagingToolbar', {
       if (!me.store.ubRequest.options) {
         me.store.ubRequest.options = {}
       }
-      me.store.ubRequest.options.totalRequired = true
     }
 
     me.store.on('beforereload', requestChanged, me)
@@ -110,13 +109,12 @@ Ext.define('UB.view.PagingToolbar', {
    * @return {Boolean} `true` if the load was passed to the store.
    */
   movePrevious: function () {
-    var me = this,
-      store = me.store,
-      prev = store.currentPage - 1
+    let me = this
+    let prev = me.store.currentPage - 1
 
     if (prev > 0) {
       if (me.fireEvent('beforechange', me, prev) !== false) {
-        store.previousPage()
+        me.store.previousPage()
         return true
       }
     }
@@ -124,10 +122,10 @@ Ext.define('UB.view.PagingToolbar', {
   },
 
   onStoreLoad: function () {
-    var me = this, itemCount
+    let me = this
     me.suspendLayouts()
 
-    itemCount = me.store.getCount()
+    let itemCount = me.store.getCount()
 
     me.buttonPage.setText(parseInt(me.store.currentPage, 10).toLocaleString())
     if (me.store.currentPage <= 1 && itemCount < me.store.pageSize) {
@@ -146,10 +144,12 @@ Ext.define('UB.view.PagingToolbar', {
   },
 
   selectPage: function (basePage) {
-    var me = this,
-      menuItems = [], startItem,
-      maxPage, isLastPage = false, endPage,
-      itemCount = 7, itemBefore = 3, totalCount
+    let me = this
+    let menuItems = []
+    let startItem, maxPage, endPage, totalCount
+    let isLastPage = false
+    let itemCount = 7
+    let itemBefore = 3
 
     function onItemClick (item) {
       me.store.loadPage(item.itemNum)
@@ -192,7 +192,7 @@ Ext.define('UB.view.PagingToolbar', {
         })
       }
     }
-    for (var i = startItem; i <= maxPage; i++) {
+    for (let i = startItem; i <= maxPage; i++) {
       menuItems.push({
         // xtype: 'button',
         text: i,
@@ -269,16 +269,13 @@ Ext.define('UB.view.PagingToolbar', {
       me.setWidth(me.baseWidth + (me.buttonCount.rendered ? me.buttonCount.getWidth() : 0))
     }
     me.fireEvent('totalChanged', totalCount)
-    if (me.store.ubRequest && me.store.ubRequest.options) {
-      me.store.ubRequest.options.totalRequired = false
-    }
     me.lastTotal = totalCount
   },
 
   // @private
   getPageData: function () {
-    var store = this.store,
-      totalCount = store.getTotalCount()
+    let store = this.store
+    let totalCount = store.getTotalCount()
 
     return {
       total: totalCount,
@@ -293,10 +290,10 @@ Ext.define('UB.view.PagingToolbar', {
    * Move to the next page, has the same effect as clicking the 'next' button.
    */
   moveNext: function () {
-    var me = this,
-      pageData = me.getPageData(),
-      total = pageData.pageCount,
-      next = me.store.currentPage + 1
+    let me = this
+    let pageData = me.getPageData()
+    let total = pageData.pageCount
+    let next = me.store.currentPage + 1
 
     if (pageData.total < 0 || next <= total) {
       if (me.fireEvent('beforechange', me, next) !== false) {

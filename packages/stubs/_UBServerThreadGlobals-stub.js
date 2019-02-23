@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 /*
   Purpose of this file is to describe objects and functions added to server-side JavaScript thread(s) by UnityBase server.
   All described here is native UB objects imported to SpiderMonkey (i.e. realisation is in Pascal or C).
@@ -328,9 +330,11 @@ const clobTruncate = {
  * Return zero based index of fieldName from current data store (-1 if not found)
  * @example
 
- var r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name']).where('[ID]', '=', 3000000002801).select();
- console.log(r.fieldIndexByName('mi_owner.name')); // 1
- console.log(r.fieldIndexByName('unexistedAttr')); // -1
+ let r = UB.Repository('cdn_organization').attrs(['ID', 'mi_owner.name'])
+   .where('[ID]', '=', 3000000002801)
+   .select()
+ console.log(r.fieldIndexByName('mi_owner.name')) // 1
+ console.log(r.fieldIndexByName('unexistedAttr')) // -1
 
  * @method fieldIndexByName
  * @memberOf TubDataStore.prototype
@@ -342,10 +346,11 @@ TubDataStore.fieldIndexByName = function(fieldName){}
  * @example
 
 let store = new TubDataStore('doc_attachment');
-store.run('update', {execParams: {
-  ID: 1,
-  approved: 0
-}
+store.run('update', {
+  execParams: {
+    ID: 1,
+    approved: 0
+  }
 })
 store.run('anyEntityMethod', {param1: 'valueOfParam1', ...})
 
@@ -496,7 +501,7 @@ TubDataStore.currentDataName = '<xml>...</xml>'
  */
 TubDataStore.rowCount = 0
 /**
- * Total record count if store are filled with {@link CustomRepository#withTotal Repository.withTotal()} option.
+ * Total record count if store are filled with {@link class:CustomRepository#withTotal Repository.withTotal()} option.
  * If DataStore is not initialized or empty or initialized without withTotal() will return -1.
  * @member {Number} totalRowCount
  * @memberOf TubDataStore.prototype

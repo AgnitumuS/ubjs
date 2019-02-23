@@ -32,27 +32,32 @@ const http = require('http')
 const options = require('@unitybase/base').options
 const argv = require('@unitybase/base').argv
 
-module.exports = function generateDDL (cgf) {
-  if (!cgf) {
+module.exports = function generateDDL (cfg) {
+  if (!cfg) {
     let opts = options.describe('generateDDL',
-      'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it',
+      'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it\nShould be executed from application folder',
       'ubcli'
     )
-      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+      .add({short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL'})
+      .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'})
       .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'})
       .add({short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation'})
       .add({short: 'out', long: 'out', param: 'outputPath', defaultValue: process.cwd(), help: 'Folder to output generated DDLs (one file per connection)'})
       .add({short: 'autorun', long: 'autorun', defaultValue: false, help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'})
       .add({short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION'})
-    cgf = opts.parseVerbose({}, true)
-    if (!cgf) return
+    cfg = opts.parseVerbose({}, true)
+    if (!cfg) return
   }
+  if (!process.rootOTP) throw new Error('This version of @unitybase/ubcli require version of UB server to be >= 5.7.3')
+
+  cfg.forceStartServer = true
+  cfg.user = 'root'
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   http.setGlobalConnectionDefaults({receiveTimeout: 120000})
-  let session = argv.establishConnectionFromCmdLineAttributes(cgf)
+  let session = argv.establishConnectionFromCmdLineAttributes(cfg)
   let conn = session.connection
   try {
-    runDDLGenerator(conn, cgf['autorun'], cgf['entities'], cgf.models, cgf['out'], cgf['optimistic'])
+    runDDLGenerator(conn, cfg['autorun'], cfg['entities'], cfg.models, cfg['out'], cfg['optimistic'])
   } finally {
     if (session && session.logout) {
       session.logout()
@@ -173,3 +178,7 @@ function formatAsText (connectionName, connDDLs, warnings) {
     ? '--##############     start script for connection "' + connectionName + '" #######\r\n' + txtRes.join('\r\n')
     : ''
 }
+
+module.exports.shortDoc = `Compare database structure with application domain and
+\t\t\tgenerate SQL script for altering DB. Can be executed
+\t\t\tlocally and when the server is stopped`

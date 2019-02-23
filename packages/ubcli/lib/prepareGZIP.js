@@ -110,3 +110,5 @@ module.exports = function prepareGZIP (cfg) {
     totalGZCount, totalCount, totalSize, totalGZSize, totalGZSize ? totalGZSize - totalSize : 0
   )
 }
+
+module.exports.shortDoc = `Deprecated. GZIP static files`

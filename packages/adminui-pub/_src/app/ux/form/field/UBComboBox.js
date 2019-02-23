@@ -574,47 +574,42 @@ Ext.define('UB.ux.form.field.UBComboBox', {
         fn: function () {
           if (store.getCount() === 0) {
             let entity = UB.connection.domain.get(me.getEntity(), true)
-            // load deleted row or not actual historical
-            if (!me.setIsActualValue && ((entity.hasMixin('mStorage') && entity.mixin('mStorage').safeDelete) ||
-                entity.hasMixin('dataHistory'))) {
-              UB.connection.select({
-                entity: me.getEntity(),
-                fieldList: store.ubRequest.fieldList, // [me.valueField, me.displayField ],
-                __allowSelectSafeDeleted: true,
-                ID: id
-              }).done(function (result) {
-                if (store.isDestroyed) {
-                  return
-                }
-                let record = Ext.create(store.model)
-                // UB.ux.data.UBStore.createRecord(me.getEntity(), [me.valueField, me.displayField ], false);
-                if (!UB.ux.data.UBStore.resultDataRow2Record(result, record)) {
-                  doSetValue(null, true)
-                  return
-                }
-                UB.ux.data.UBStore.resetRecord(record)
-                store.add(record, true) // we MUST save cache here! In other case clearCache works some ms and formDataReady fires BEFORE store was actually loaded
-                doSetValue(record)
-                me.fieldCls += ' ub-combo-deleted'
-                if (me.rendered) {
-                  let input = Ext.get(me.getInputId())
-                  input.addCls('ub-combo-deleted')
-                }
-                me.phantomSelectedElement = true
-                me.tipPhantomElement = Ext.create('Ext.tip.ToolTip', {
-                  target: me.getInputId(),
-                  html: UB.i18n('elementIsNotActual')
-                })
+            // Trying to load a filtered out row (probably deleted or historically not actual)
+            UB.connection.select({
+              entity: me.getEntity(),
+              fieldList: store.ubRequest.fieldList, // [me.valueField, me.displayField ],
+              __allowSelectSafeDeleted: true,
+              ID: id
+            }).done(function (result) {
+              if (store.isDestroyed) {
+                return
+              }
+              let record = Ext.create(store.model)
+              if (!UB.ux.data.UBStore.resultDataRow2Record(result, record)) {
+                doSetValue(null, true)
+                return
+              }
+              UB.ux.data.UBStore.resetRecord(record)
+              store.add(record, true) // we MUST save cache here! Otherwise clearCache makes its deal and formDataReady fires BEFORE store was actually loaded
+              doSetValue(record)
+              me.fieldCls += ' ub-combo-deleted'
+              if (me.rendered) {
+                let input = Ext.get(me.getInputId())
+                input.addCls('ub-combo-deleted')
+              }
+              me.phantomSelectedElement = true
+              me.tipPhantomElement = Ext.create('Ext.tip.ToolTip', {
+                target: me.getInputId(),
+                html: UB.i18n('elementIsNotActual')
               })
-            } else {
-              doSetValue(null, true)
-            }
+            })
           } else if (store.getCount() === 1) {
             doSetValue(store.getAt(0))
+            me.clearIsPhantom()
           } else {
             doSetValue()
+            me.clearIsPhantom() // ?? not sure if we need this here
           }
-          me.setIsActualValue = false
         },
         single: true
       }

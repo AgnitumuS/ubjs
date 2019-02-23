@@ -351,7 +351,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .ub-tree-node .ub-tree-node-title-withicon {
     padding: 0 3px 0 20px;
-    padding-bottom: 0 !important;
 }
 
 .ub-tree-node-icon {
@@ -676,7 +675,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     -ms-user-select: none; /* IE 10+ */
 
     /* No support for these yet, use at own risk */
-    -o-user-select: none;
     user-select: none;
 }
 
@@ -783,12 +781,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 }
 
 .ub-header-menu-container {
-    /*color: #ffffff; */
-    /* background-color: #343945; */
-    background-color: #f3f3f4;
-    padding: 0.3em 0 0.5em 0.2em;             	
-    /* z-index: 7; */
-    box-shadow: rgba(0, 0, 0, 0.298039) 0 2px 3px 0;
+    padding: 0.3em 0 0.3em 0.2em;
 }
 
 #ubCenterViewport .x-tab-bar-strip-default {
@@ -820,16 +813,10 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 
 .ub-header-menu-item .x-btn-default-toolbar-small .x-btn-inner {
     font-weight: 600;
-    /* color: rgba(255, 255, 255, 0.87); */
-    color: #0d47a1;
-    /* padding: 0 5px; */
 }
 
-.ub-header-menu-item .x-btn-default-toolbar-small .x-btn-inner {
-    /*color: #ffffff;*/
-}
 .ub-header-menu-item .ub-label {
-  color: #0d47a1;
+  color: #2f7c94;
 }
 
 .ub-menu-button {
@@ -1170,6 +1157,8 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
     background: black;
     cursor: default;
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     z-index: 1000000;
@@ -1374,6 +1363,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 .ub-grid-info-panel-tb {
+    background-color: #f0f3f3;
     /*border-color: #e8e5d3;*/
     /*padding: 0 4px;*/
     /*border-width: 1px;*/
@@ -1447,9 +1437,7 @@ div[class~="tree_wrap"] div[class~="x-grid-cell-inner"]
 }
 
 .ub-btn-rounded {
-    border-image-outset: 0;
     border-image-repeat: stretch;
-    border-image-slice: 100%;
     border-image-source: none;
     border-image-width: 1;
     border-radius: 50%;
@@ -1512,10 +1500,6 @@ input.x-form-field-text{
 .save-and-close-action.x-disabled .x-btn-icon-el,
 .refresh-action.x-disabled .x-btn-icon-el{
     color: #585d5a;
-}
-
-.refresh-action .x-btn-icon-el{
-    color: #439fe0;
 }
 
 .add-new-action .x-btn-icon-el{

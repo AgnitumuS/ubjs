@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.34]
+### Fixed
+ - file name in Content-Disposition header should be wrapped in "", in other case comma or other
+ not allowed chars in file name can cause Chrome 72 to stop HTTP request)
+
+## [5.0.29]
+### Added
+ - `setDocument` endpoint now can accept a BLOB attribute content as a `base64` encoded string. 
+  In this case new parameter `encoding=base64` should be added to setDocument URL.
+  Content will be decoded before written to actual storing location.
+  
+  Also Sync & AsyncConnection's setDocument method is modified to support new parameter.
+  
+  Feature is useful for clients with limited binary (arrayBuffer) functionality, such as **React Native** 
+
 ## [5.0.23]
 ### Added
  - `getDocument` endpoint will put error to log in case user don't have ELS rights

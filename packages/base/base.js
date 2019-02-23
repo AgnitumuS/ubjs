@@ -48,7 +48,7 @@ module.exports = {
   dataLoader: dataLoader,
   /**
    * ORM **select** method implementation using files as a data source.
-   * Used for loading files & transforming it content to {@link TubCachedData} format
+   * Used for loading files & transforming it content to {@link module:LocalDataStore.TubCachedData TubCachedData} format
    * @type {module:FileBasedStoreLoader}
    */
   FileBasedStoreLoader,
@@ -86,5 +86,31 @@ module.exports = {
   /**
    * File modified time for files installed by npm
    */
-  NPM_EPOCH: new Date('1985-10-26T08:15:00Z').getTime()
+  NPM_EPOCH: new Date('1985-10-26T08:15:00Z').getTime(),
+  /**
+   * Well known keys used to store data in the App.globalCache
+   */
+  GC_KEYS: {
+    /**
+     * Key for storing last modification date-time of the models files.
+     * Used by ubm_form / ubs_report virtual entities to refresh a server-side in-memory form/report cache.
+     * Virtual entities what depends on file system should refresh this value on insert/update/delete
+     */
+    MODELS_MODIFY_DATE: 'UB_STATIC.modelsModifyDate',
+    /** Key prefix for storing a compiled index.html (used by adminui-reg). Actual index name added after this text */
+    COMPILED_INDEX_: 'UB_STATIC.compiled_index_',
+    /** Key for storing CSP NONCE generated for compiled index.html */
+    COMPILED_INDEX_NONCE: 'UB_STATIC.index_cspNonce',
+    /** Key prefix for storing actual file path & type for success request to `models` endpoint */
+    UB_MODELS_REQ_: 'UB.MODELS_REQ_',
+    /** Key prefix for cache actual file path & type for success request to `clientRequire` endpoint */
+    UB_CLIENT_REQ_: 'UB.CLIENT_REQ_',
+    /** Key prefix for cache `allLocales` endpoint. Suffix is a language */
+    UB_LOCALE_REQ_: 'UB.LOCALE_',
+
+    /** Key prefix for storing flags for running schedulers tasks; Value === 1 in case task in running */
+    UBQ_TASK_RUNNING_: 'UBQ.TASK_RUNNING_',
+    /** In case schedulers Worker is initialized value is `yes` */
+    UBQ_SCHEDULER_INITIALIZED: 'UBQ.schedulersInitialized'
+  }
 }

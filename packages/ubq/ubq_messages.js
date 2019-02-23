@@ -1,6 +1,7 @@
 ﻿const UB = require('@unitybase/ub')
 const App = UB.App
 const Session = require('@unitybase/ub').Session
+const {uba_common, GC_KEYS} = require('@unitybase/base')
 /* global ubq_messages */
 // eslint-disable-next-line camelcase
 let me = ubq_messages
@@ -11,6 +12,8 @@ const HOST_NAME = os.hostname() || 'unknown'
 me.entity.addMethod('executeSchedulerTask')
 me.entity.addMethod('addqueue')
 me.entity.addMethod('success')
+
+const statInst = UB.DataStore('ubq_runstat')
 
 /**
  * Mark queue task as successfully executed
@@ -127,19 +130,20 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
   let logText, err
   let statParams
 
-  if (App.localIPs.indexOf(Session.callerIP) === -1) {
-    throw new Error('SCHEDULER: remote execution is not allowed')
+  if ((Session.userID !== uba_common.USERS.ROOT.ID) || (App.localIPs.indexOf(Session.callerIP) === -1)) {
+    throw new Error('SCHEDULER: remote or non root execution is not allowed')
   }
 
   let task = JSON.parse(req.read())
   let taskName = task.schedulerName || 'unknownTask'
   let isSingleton = (task.singleton !== false)
-  if (isSingleton && (App.globalCacheGet(taskName) === '1')) {
+  let runAsID = task.runAsID
+  if (isSingleton && (App.globalCacheGet(`${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`) === '1')) {
     console.warn('SCHEDULER: task %s is already running', taskName)
     return false
   }
   if (isSingleton) {
-    App.globalCachePut(taskName, '1')
+    App.globalCachePut(`${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`, '1')
   }
   err = ''
   try {
@@ -156,7 +160,11 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
       err = `SCHEDULER: invalid command (function ${task.command || task.module} not found)`
     } else {
       try {
-        logText = entryPoint()
+        if (runAsID === uba_common.USERS.ADMIN.ID) {
+          logText = Session.runAsAdmin(entryPoint)
+        } else {
+          logText = Session.runAsUser(runAsID, entryPoint)
+        }
         App.dbCommit()
       } catch (e) {
         err = e.toString()
@@ -164,7 +172,6 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
       }
     }
     let endTime = new Date()
-    let statInst = UB.DataStore('ubq_runstat')
     if (task.logSuccessful || err !== '') {
       statParams = {
         appName: HOST_NAME,
@@ -185,7 +192,7 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
     }
   } finally {
     if (isSingleton) {
-      App.globalCachePut(taskName, '0')
+      App.globalCachePut(`${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`, '0')
     }
   }
   resp.statusCode = 200

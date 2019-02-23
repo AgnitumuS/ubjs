@@ -4,21 +4,22 @@ const {sleep} = process.binding('syNode')
 /**
  * Create a worker to execute a script in a dedicated thread.
  *
- * The flow:
- *
-        const Worker = require('@unitybase/base').Worker
-        // create a new thread in suspended state.
-        // Evaluate a body of a function runSomething into newly created JavaScript context
-        let w =  new Worker({name: 'WorkerName', onmessage: runSomething});
-        // resume the thread and call a `onmessage` function with parameter, passed to postMessage
-        w.postMessage({action: 'start', param: 'bla-bla'}); // wake up the thread and call a
-
- * If *onmessage* handler execution fail then worker call *onerror* handler.
- * When thread terminates and Terminate handler assigned worker thread call *onterminate* handler.
+ * If `onmessage` handler execution fail then worker call `onerror` handler.
+ * When thread terminates and Terminate handler assigned worker thread call `onterminate` handler.
  *
  * In handlers you can use 2 methods:
- *  - *postMessage(message)* for posting messages from worker thread. You can get this message by function getMessage of worker object
- *  - *terminate()* for terminating current worker thread
+ *  - `postMessage(message)` for posting messages from worker thread. You can get this message by function getMessage of worker object
+ *  - `terminate()` for terminating current worker thread
+ *
+ * @example
+ *
+ * //The flow:
+ * const Worker = require('@unitybase/base').Worker
+ * // create a new thread in suspended state.
+ * // Evaluate a body of a function runSomething into newly created JavaScript context
+ * let w =  new Worker({name: 'WorkerName', onmessage: runSomething});
+ * // resume the thread and call a `onmessage` function with parameter, passed to postMessage
+ * w.postMessage({action: 'start', param: 'bla-bla'}); // wake up the thread and call a
  *
  * @module worker
  * @memberOf module:@unitybase/base
@@ -33,12 +34,15 @@ module.exports = Worker
  * @param {Object|Number} paramsObj Parameters object for create new Worker or WorkerID for use existing Worker
  * @param {String} [paramsObj.name='Worker'] Name of Worker for debugger
  * @param {String|Function} paramsObj.moduleName Module name. Module must export 3 function: onmessage, onterminate and onerror
- * @param paramsObj.message Message. If assigned then post this message after start thread
+ * @param {*} paramsObj.message Message. If assigned then post this message after start thread
  */
 function Worker (paramsObj) {
   if (typeof (paramsObj) === 'object') {
     if (!paramsObj.name) paramsObj.name = 'Worker'
+    /** @property {Number} workerID Worker ID */
     this.workerID = bindings.createThread(paramsObj)
+    /** @property {string} name Worker name */
+    this.name = paramsObj.name
   } else if (typeof (paramsObj) === 'number') {
     this.workerID = paramsObj
   }

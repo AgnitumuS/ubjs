@@ -1,0 +1,16 @@
+.ub-select__loading-spinner {
+    top: 0;
+    margin-top: 0;
+    height: 100%;
+}
+
+@media screen and (max-width: 1300px) {
+    .ub-input__dialog {
+        width: 50% !important;
+    }
+}
+@media screen and (max-width: 700px) {
+    .ub-input__dialog {
+        width: 90% !important;
+    }
+}

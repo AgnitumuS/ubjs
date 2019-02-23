@@ -4,6 +4,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Added
+ - new handler `onAfterRender` for reports. Will be called by ReportViewer just after HTML report result is rendered
+ - new property `ReportViewer.contextMenu` - can be used to show menu while user click on hyperlink inside rendered HTML report
+   See [click_sample.js](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/packages/ubs/public/reports/click_sample.js#L42) 
+   for usage example
+  
+### Changed
+ - for HTML report `this` inside `onReportClick` handler now instance of ReportViewer
+ 
+### Fixed
+ - prevent clean of report template data in case only code block of report is updated 
+ 
+## [5.1.41]
+### Added
+ - Report editor form: show warning for server-side test and report reload in case server / client not in dev mode 
+
+## [5.1.40]
+### Fixed
+ - Report editor form: fix unexpected report code cleanup on saving report
+ - Report editor form: add a TIP about changing report code; set a report code to read-only for existing reports
+  
+### Added
+ - `ubs_globalCache` virtual entity - expose a server-side global cache content (for debugging purpose)
+
+### Changed
+ - add a warning about unnecessary `@report_code` and `@ID` metadata in the report template files; 
+  ubs_report virtual entity ignore this template attributes and calculate it from template file name  
+ - `ubs_report` cache now flushed for all thread in case insert or update is called. This solve possible
+  error when report created in one thread not visible to other until server restart
+  
+## [5.1.39]
+### Fixed
+ - syntax errors in the report initial template
+ - report saving
+
+## [5.1.37]
+### Added 
+ - in case `reportOptions.showParamForm` is true, `reportViewer` will always display the report parameters form, 
+   otherwise, the report parameters form will be displayed only if the report option `reportParams` is empty 
+   (false by default) 
+ ```javascript
+$App.doCommand({
+  cmdType: 'showReport',
+  cmdData: {
+    reportCode: 'your-report-code',
+    reportType: 'html',
+    reportParams: {a: 'b'},
+    reportOptions: {
+      showParamForm: true
+    }
+  }
+})
+```
+
 ## [5.1.26]
 ### Changed
  - `ubs.numcounter.autoIncrementalCodeLen` default value decreased from 12 to 6 - codes length `000001` is enough in most case 

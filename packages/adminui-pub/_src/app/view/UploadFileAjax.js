@@ -17,7 +17,7 @@ const UB = require('@unitybase/ub-pub')
  *                   UB.showResponseError(result);
  *               }
  *           }
- *       });
+ *       })
  */
 Ext.define('UB.view.UploadFileAjax', {
   extend: 'Ext.window.Window',
@@ -86,12 +86,6 @@ Ext.define('UB.view.UploadFileAjax', {
         scope: this,
         handler: this.upLoad
       }
-        //                , {
-        //                text: Ext.MessageBox.buttonText.cancel,
-        //                handler: function(btn) {
-        //                    btn.up('window').close();
-        //                }
-        //            }
       ]
     })
 
@@ -103,37 +97,38 @@ Ext.define('UB.view.UploadFileAjax', {
   },
 
   upLoad: function (btn) {
-    var
-      w = btn.up('window'), inputDom, params, ffile, pBar, waiterStarted = false, progressStarted = false
+    let w = btn.up('window')
+    let waiterStarted = false
+    let progressStarted = false
 
-    inputDom = this.fieldFile.fileInputEl.dom // getEl()
-    pBar = this.progressBar
+    let inputDom = this.fieldFile.fileInputEl.dom // getEl()
+    let pBar = this.progressBar
 
     if (inputDom.files.length === 0) { // !form.isValid()
       return
     }
     btn.disable()
-    ffile = inputDom.files[0]
+    let ffile = inputDom.files[0]
     if (!this.uploadData) {
       Ext.callback(w.callback, w.scope, [ffile])
       w.close()
       return
     }
 
-    params = {
+    let params = {
       /**
-             * @cfg {String} entityName
-             */
+       * @cfg {String} entityName
+       */
       entity: this.entityName,
       /**
-             * @cfg {String} attribute
-             */
+       * @cfg {String} attribute
+       */
       attribute: this.attribute,
       origName: ffile.name,
       filename: ffile.name,
       /**
-             * @cfg {Number} instanceID
-             */
+       * @cfg {Number} instanceID
+       */
       id: this.instanceID
     }
 
@@ -158,15 +153,10 @@ Ext.define('UB.view.UploadFileAjax', {
       }
     }
 
-    UB.connection.post('setDocument', ffile, {
-      params: params,
-      headers: {'Content-Type': 'application/octet-stream'},
-      onProgress: doOnProgress
-    }).then(function (response) {
-      Ext.callback(w.callback, w.scope, [response.data])
+    UB.connection.setDocument(ffile, params, doOnProgress).then(function (result) {
+      Ext.callback(w.callback, w.scope, [{errMsg: '', result: result, success: true}])
     }).fin(function () {
       w.close()
     })
   }
-
 })

@@ -1,0 +1,8 @@
+// @! "do not remove comments below unless you know what you do!"
+// @mi_modifyDate "Mon Nov 26 2018 16:08:02 GMT+0200 (FLE Standard Time)"
+// @isDefault "false"
+// @entity "ubdev_metadata"
+// @model "UBDEV"
+// @formType "vue"
+// @caption "Metadata editor"
+// @description "Entity metadata editor"

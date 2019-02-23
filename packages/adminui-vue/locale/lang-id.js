@@ -106,5 +106,9 @@ UB.i18nExtend({
       noCheckedFormat: '{total} butir',
       hasCheckedFormat: '{checked}/{total} terpilih'
     }
-  }
+  },
+  isRequiredFieldFmt: '{0} wajib diisi',
+  linkCopiedText: 'Tautan disalin ke papan klip',
+  createdEntityCaption: 'Dibuat',
+  updatedEntityCaption: 'Diperbarui'
 })

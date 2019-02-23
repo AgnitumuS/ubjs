@@ -419,7 +419,7 @@ Ext.define('UB.view.EntityGridPanel', {
           break
         case ubDataTypes.Float :
           column.align = 'right'
-          column.renderer = Ext.util.Format.numberRenderer(formatC || '0,000.0000')
+          column.renderer = Ext.util.Format.numberRenderer(formatC || '0,000.' + ''.padStart(UBDomain.FLOATING_SCALE_PRECISION, '0'))
           break
         case ubDataTypes.Currency :
           column.align = 'right'
@@ -1134,6 +1134,17 @@ Ext.define('UB.view.EntityGridPanel', {
         })
       })
       rowEditing.on('validateedit', function (editor, context) {
+        const errorCols = context.grid.columns.filter(function(col) {
+          return col.field.getValue() && col.field.lastSelection && !col.field.lastSelection.length
+        }).map(function (col) {
+          return col.text
+        })
+
+        if (errorCols.length) {
+          $App.dialogInfo(UB.format(UB.i18n('notValidForColumns'), `<br> ${errorCols.join('<br>')}`))
+          return false
+        }
+
         if (_.isFunction(me.onValidateEdit)) {
           let result = me.onValidateEdit(editor, context)
           if (result === false) {

@@ -85,13 +85,13 @@ function testRest (conn) {
     HTTPMethod: 'GET',
     data: 'put test data'
   })
-  assert.ok(typeof d === 'object', 'rest call convention fail')
+  assert.ok(typeof d1 === 'object', 'rest call convention fail')
   let d2 = conn.xhr({
     endpoint: 'rest/tst_service/restTest',
     HTTPMethod: 'POST',
     data: 'put test data'
   })
-  assert.ok(typeof d === 'object', 'rest call convention fail')
+  assert.ok(typeof d2 === 'object', 'rest call convention fail')
 }
 
 /**
@@ -105,9 +105,9 @@ function testUnicode (conn) {
   function systemExc () {
     conn.query({entity: 'tst_service', method: 'throwTest', isSystem: true})
   }
-  assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide system errros in production mode')
+  assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide system errors in production mode')
   function usualExc () {
     conn.query({entity: 'tst_service', method: 'throwTest'})
   }
-  assert.throws(systemExc, /HTTP Error 500 - Internal Server Error/, 'Should hide JS errros in production mode')
+  assert.throws(usualExc, /HTTP Error 500 - Internal Server Error/, 'Should hide JS errors in production mode')
 }

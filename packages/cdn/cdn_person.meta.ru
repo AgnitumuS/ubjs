@@ -114,6 +114,18 @@
         "categoryID": {
             "caption": "Категория",
             "description": "Категория"
-        }
+        },
+         "nationality": {
+           "caption": "Национальность",
+           "description": "Национальность"
+         },
+         "resident": {
+           "caption": "Резидент?",
+           "description": "Человек - резидент нашей страны"
+         },
+         "classID": {
+            "caption": "Классификация",
+            "description": "Классификация"
+         }
     }
 }

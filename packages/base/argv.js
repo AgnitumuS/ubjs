@@ -10,31 +10,31 @@ const SyncConnection = require('./SyncConnection')
  *
  * Command-line utils for connecting to a UnityBase server
  * @example
-
-  const argv = require('@unitybase/base').argv
-  // connect to server
-  let session = argv.establishConnectionFromCmdLineAttributes()
-  console.log('Session.uData:', session.uData, typeof session.uData, session.uData.lang)
-
-  let userLang = session.uData.lang
-  let conn = session.connection
-  // obtain domain information
-  const domainInfo = conn.getDomainInfo()
-
+ *
+ * const argv = require('@unitybase/base').argv
+ * // connect to server
+ * let session = argv.establishConnectionFromCmdLineAttributes()
+ * console.log('Session.uData:', session.uData, typeof session.uData, session.uData.lang)
+ *
+ * let userLang = session.uData.lang
+ * let conn = session.connection
+ * // obtain domain information
+ * const domainInfo = conn.getDomainInfo()
+ *
  * @module argv
  * @memberOf module:@unitybase/base
  */
 module.exports = {
   safeParseJSONfile: safeParseJSONfile,
   /**
-   * @deprecated Use `options.switchIndex' instead
-   * @param switchName
+   * @deprecated Use `options.switchIndex` instead.
+   * @param {string} switchName
    * @returns {Number} switch index if found or -1 otherwise
    */
   findCmdLineSwitch: options.switchIndex,
   /**
-   * @deprecated Use `options.switchValue' instead
-   * @param switchName
+   * @deprecated Use `options.switchValue` instead.
+   * @param {string} switchName
    * @returns {String} switch value or `undefined` in case switch not found or switch not have value
    */
   findCmdLineSwitchValue: options.switchValue,
@@ -152,7 +152,8 @@ function serverSessionFromCmdLineAttributes (config) {
  * @param {String} [config.host]
  * @param {String} [config.user]
  * @param {String} [config.pwd]
- * @param {Boolean} [config.forceStartServer=false} If we sure local server not started - start it without checking. Faster because check take near 2 sec.
+ * @param {Boolean} [config.forceStartServer=false] If we sure local server not started - start it without checking. Faster because check take near 2 sec.
+ * @param {number} [config.timeout=30000] Receive timeout in ms
  * @return {ServerSession}
  */
 function establishConnectionFromCmdLineAttributes (config) {
@@ -192,7 +193,11 @@ function establishConnectionFromCmdLineAttributes (config) {
   let conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
   let appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
-  if (appInfo.authMethods.indexOf('UB') !== -1) {
+  if (serverSession.__serverStartedByMe && config.user === 'root') {
+    conn.onRequestAuthParams = function () {
+      return {authSchema: 'ROOT'}
+    }
+  } else if (appInfo.authMethods.indexOf('UB') !== -1) {
     conn.onRequestAuthParams = function () {
       return {login: serverSession.USER, password: serverSession.PWD}
     }
@@ -297,9 +302,9 @@ Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevSc
 }
 
 /**
- * Read server configuration from file, resolved by argv.getConfigFileName
+ * Read server configuration from file, resolved by {@link getConfigFileName}
  * parse it in safe mode, replace environment variables by it values and return parsed config
- * @param {boolean} [forFutureSave=false] if true will return config ready to save back as new ubConfig
+ * @param {boolean} [forFutureSave=false] If true will return config ready to save back as new ubConfig
  *  (do not add props model.browser & model.version)
  * @return {Object}
  */
@@ -386,6 +391,7 @@ function getServerConfiguration (forFutureSave = false) {
     let rp = result.httpServer.reverseProxy
     if (rp.kind === 'nginx') {
       if (!rp.remoteIPHeader) rp.remoteIPHeader = 'X-Real-IP'
+      if (!rp.remoteConnIDHeader) rp.remoteConnIDHeader = 'X-Conn-ID'
       if (!rp.sendFileHeader) rp.sendFileHeader = 'X-Accel-Redirect'
       if (!rp.sendFileLocationRoot) {
         rp.sendFileLocationRoot = url.parse(result.httpServer.externalURL).hostname.replace(/\./g, '-')

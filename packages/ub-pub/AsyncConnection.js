@@ -40,13 +40,13 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
 /**
  * @classdesc
  *
- * Connection to the UnityBase server (for asynchronous cliebt like NodeJS or Browser)
+ * Connection to the UnityBase server (for asynchronous client like NodeJS or Browser)
  *
  * In case host set to value other then `location.host` server must be configured to accept
  * <a href="https://developer.mozilla.org/en-US/docs/HTTP/Access_control_CORS">CORS</a> requests.
  * This is usually done by setting "HTTPAllowOrigin" server configuration option.
  *
- * **Recommended way to create a UBConnection is** <a href="module-@unitybase_ub-pub.html">UB.connect method</a>
+   * **Recommended way to create a UBConnection is** {@link module:@unitybase/ub-pub.html#connect UB.connect} method
  *
  * In case you need to create connection directly (for example in case of multiple connection from one page)
  * the usage sample is:
@@ -308,8 +308,11 @@ $App.connection.userLang()
    */
   function doCreateNewSession (data, secretWord, authSchema, restored = false) {
     let ubSession = new UBSession(data, secretWord, authSchema)
+    // noinspection JSAccessibilityCheck
     let userData = ubSession.userData
+    // noinspection JSPotentiallyInvalidUsageOfThis
     if (!userData.lang || this.appConfig.supportedLanguages.indexOf(userData.lang) === -1) {
+      // noinspection JSPotentiallyInvalidUsageOfThis
       userData.lang = this.appConfig.defaultLang
     }
     if (!restored) udot(this)
@@ -765,13 +768,14 @@ UBConnection.prototype.post = function (url, data, config) {
   }))
 }
 
+// noinspection JSUnusedLocalSymbols
 /**
  *
  * @param {UBSession} session
  * @param {Object} cfg
  * @return {boolean}
  */
-UBConnection.prototype.checkChannelEncryption = function () {
+UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
   return true
 }
 /**
@@ -1056,7 +1060,7 @@ UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
 
 /**
  * Promise of running UBQL command with `addNew` method (asynchronously).
- * Two difference from {@link UBConnection.query}:
+ * Two difference from {@link class:UBConnection.query UBConnection.query}:
  *
  * - ubRequest.method set to 'addnew'
  * - requests is always buffered in the 20ms period into one ubql call
@@ -1237,7 +1241,7 @@ UBConnection.prototype.doDelete = function (serverRequest, allowBuffer) {
 
 /**
  * Promise of running UBQL (asynchronously).
- * Two difference from {@link UBConnection.query}:
+ * Two difference from {@link class:UBConnection.query UBConnection.query}:
  *
  * - ubRequest.method by default set to 'select'
  * - requests is always buffered in the 20ms period into one ubql call
@@ -1453,8 +1457,10 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @param {String} params.entity Code of entity to retrieve from
  * @param {String} params.attribute `document` type attribute code
  * @param {Number} params.id Instance ID
- * @param {String} [params.forceMime] If passed and server support transformation from source MIME type to `forceMime` server perform transformation and return documenRt representation in the passed MIME
- * @param {Number} [params.revision] Optional revision of the documnet (if supported by server-side store configuration). Default is current revision.
+ * @param {String} [params.forceMime] If passed and server support transformation from source MIME type to `forceMime`
+ *   server perform transformation and return documenRt representation in the passed MIME
+ * @param {Number} [params.revision] Optional revision of the document (if supported by server-side store configuration).
+ *   Default is current revision.
  * @param {String} [params.fileName] ????
  * @param {Boolean} [params.isDirty=false] Optional ability to retrieve document in **dirty** state
  * @param {String} [params.store] ????
@@ -1485,6 +1491,39 @@ UBConnection.prototype.getDocument = function (params, options) {
     reqParams.params = params
   }
   return this.xhr(reqParams).then((response) => response.data)
+}
+
+/**
+ * Saves a file content to the TEMP store of the specified entity attribute of Document type.
+ *
+ * Should be called before insert of update. Result of this function is what shall be assigned to the
+ * attribute value during insert/update operation.
+ *
+ * @method
+ * @param {*} content BLOB attribute content
+ * @param {Object} params Additional parameters
+ * @param {string} params.entity Entity name
+ * @param {string} params.attribute Entity attribute name
+ * @param {number} params.id ID of the record
+ * @param {string} params.origName
+ * @param {string} [params.fileName] If not specified, `params.origName` will be used
+ * @param {string} [params.encoding] Encoding of `data`. Either omit for binary data
+ *   or set to `base64` for base64 encoded data
+ * @param {function} [onProgress] Optional onProgress callback
+ * @return {Promise<Object>} Promise resolved blob store metadata
+ */
+UBConnection.prototype.setDocument = function (content, params, onProgress) {
+  let xhrParams = {
+    url: 'setDocument',
+    method: 'POST',
+    data: content,
+    headers: {
+      'Content-Type': 'application/octet-stream'
+    },
+    params: params
+  }
+  if (onProgress) xhrParams.onProgress = onProgress
+  return this.xhr(xhrParams).then(serverResponse => serverResponse.data.result)
 }
 
 /**

@@ -8,11 +8,11 @@ const blobStores = require('@unitybase/blob-stores')
  * Contains several data collection stored in the heap of ub application (i.e not use a JS engine memory and since not a subject of GC)
  *
  * Use it to:
- *  - execute any entity method using {@link TubDataStore#run}
- *  - execute any SQL statement using {@link TubDataStore#runSQL} or {@link TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)
- *  - store several named data collection using {@link TubDataStore#currentDataName} (data stored inside server memory, not in JS, this is very good for GC)
- *  - iterate other collection rows using {@link TubDataStore#next}, eof, e.t.c and retrieve row data using TubDataStore.get
- *  - serialize data to XML {@link TubDataStore#asXMLPersistent} or JSON in array-of-array {@link TubDataStore#asJSONArray} on array-of-object {@link TubDataStore#asJSONObject} format
+ *  - execute any entity method using {@link class:TubDataStore#run TubDataStore.run}
+ *  - execute any SQL statement using {@link class:TubDataStore#runSQL TubDataStore.runSQL} or {@link class:TubDataStore#execSQL TubDataStore.execSQL} (we strongly recommend usage of ORM instead SQL)
+ *  - store several named data collection using {@link class:TubDataStore#currentDataName TubDataStore.currentDataName} (data stored inside server memory, not in JS, this is very good for GC)
+ *  - iterate other collection rows using {@link class:TubDataStore#next TubDataStore.next}, eof, e.t.c and retrieve row data using {@link class:TubDataStore#get TubDataStore.get}
+ *  - serialize data to XML {@link class:TubDataStore#asXMLPersistent TubDataStore.asXMLPersistent} or JSON in array-of-array {@link class:TubDataStore#asJSONArray TubDataStore.asJSONArray} on array-of-object {@link class:TubDataStore#asJSONObject TubDataStore.asJSONObject} format
  *
  *  To retrieve data from database using build-in ORM (execute entity `select` method) preferred way is
  *  to use {@link module:@unitybase/ub#Repository UB.Repository} fabric function.
@@ -66,15 +66,16 @@ const blobStores = require('@unitybase/blob-stores')
  // Initialize dataStore from Array-of-array data
  // in this case keyMap is mandatory.
  // In case of mapping from is zero-based index of source element in row array
- ds.initialize([
-   [10, 'Jon', 10], [20, 'Smith', 63]], ['ID', 'name', 'age']
- ])
+ ds.initialize(
+   [[10, 'Jon', 10], [20, 'Smith', 63]],
+   ['ID', 'name', 'age']
+ )
  // or use mapping
  ds.initialize([[10, 'Jon', 10], [20, 'Smith', 63]],
     ['ID', {from: 2, to: 'age'}, {from: 1, to: 'name'}])
 
  * @method initialize
- * @memberOf TubDataStore.prototype
+ * @memberOf TubDataStore
  * @param {Object|Array} source
  * @param {Array.<String|Object>} [keyMap] Optional mapping of source field names to new field names
  * @returns {TubDataStore}
@@ -138,7 +139,7 @@ TubDataStore.initialize = function (source, keyMap) {
     } else {
       throw new Error('TubDataStore.initialize: invalid source format for TubDataStore.initialize')
     }
-  } else if ((typeof source === 'object') && (source.fieldCount > 0) && (source.rowCount > 0)) { // flatten
+  } else if ((typeof source === 'object') && (source.fieldCount > 0) && (source.rowCount >= 0)) { // flatten
     if (keyMap) {
       if (keyMap.length !== source.fieldCount) {
         throw new Error('TubDataStore.initialize: for flatten data keyMap length must be equal to fieldCount')

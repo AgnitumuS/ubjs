@@ -45,8 +45,12 @@ module.exports = initDB
  */
 function initDB (cfg) {
   if (!cfg) {
-    let opts = options.describe('initDB', 'Prepare a new database for a UB ORM', 'ubcli')
-      .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
+    let opts = options.describe('initDB',
+      `Prepare a new database for a UB ORM. Creates a user "${UBA_COMMON.USERS.ADMIN.NAME}" with password specified in -p parameter`, 'ubcli')
+      .add([
+        {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: `Password for "${UBA_COMMON.USERS.ADMIN.NAME}"`},
+        {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'},
+        {short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms'}])
       .add({short: 'c',
         long: 'clientIdentifier',
         param: 'clientIdentifier',
@@ -61,7 +65,7 @@ function initDB (cfg) {
       .add({
         short: 'conn',
         long: 'connectionName',
-        param: 'additional connection name',
+        param: 'additional_connection_name',
         defaultValue: '',
         searchInEnv: false,
         help: 'Create a empty database for secondary connection with specified name'
@@ -76,6 +80,8 @@ function initDB (cfg) {
   let originalConfigFileName = argv.getConfigFileName()
   let config = argv.getServerConfiguration(true)
   cfg.host = argv.serverURLFromConfig(config)
+  cfg.user = UBA_COMMON.USERS.ADMIN.NAME
+  console.log(`Use host "${cfg.host}" as specified in config "${originalConfigFileName}"`)
 
   // database are slow :( Increase timeout to 2 minutes
   http.setGlobalConnectionDefaults({receiveTimeout: 2 * 60 * 1000})
@@ -109,7 +115,7 @@ function initDB (cfg) {
       console.info('Creating a minimal set of database objects...')
       generator.createMinSchema(conn, cfg.clientIdentifier, connectionToCreateDB)
       console.info('Creating a superuser..')
-      fillBuildInRoles(conn, dbDriverName)
+      fillBuildInRoles(conn, dbDriverName, cfg.pwd)
     }
     console.info('Database is ready. Run a `ubcli generateDDL` command to create a database tables for a domain')
   } finally {
@@ -161,9 +167,10 @@ function initDB (cfg) {
  * Create a Everyone & admin roles and a SuperUser named admin with password `admin`
  * @param {SyncConnection} conn
  * @param {String} dbDriverName
+ * @param {string} adminPwd Password for "admin" user
  * @private
  */
-function fillBuildInRoles (conn, dbDriverName) {
+function fillBuildInRoles (conn, dbDriverName, adminPwd) {
   let initSecurity = []
   let isoDate, auditTailColumns, auditTailValues
 
@@ -188,10 +195,13 @@ function fillBuildInRoles (conn, dbDriverName) {
   // build-in users
   for (let userName in UBA_COMMON.USERS) {
     let aUser = UBA_COMMON.USERS[userName]
+    let uPwdHash = (aUser.NAME === UBA_COMMON.USERS.ADMIN.NAME)
+      ? UBA_COMMON.ubAuthHash('', UBA_COMMON.USERS.ADMIN.NAME, adminPwd)
+      : '-'
     initSecurity.push(
       `insert into uba_subject (ID,code,name,sType,mi_unityentity) values(${aUser.ID}, '${aUser.NAME}', '${aUser.NAME}', 'U', 'UBA_USER')`,
       `insert into uba_user (ID, name, description, upasswordhashhexa, disabled, udata${auditTailColumns}) 
-       values (${aUser.ID}, '${aUser.NAME}', '${aUser.NAME}', '${aUser.HASH}', 0, ''${auditTailValues})`
+       values (${aUser.ID}, '${aUser.NAME}', '${aUser.NAME}', '${uPwdHash}', 0, ''${auditTailValues})`
     )
   }
   // grant roles to users and add admin ELS
@@ -214,3 +224,6 @@ function fillBuildInRoles (conn, dbDriverName) {
     })
   })
 }
+
+module.exports.shortDoc = `Create a database (schema) and a minimal set of DB
+\t\t\tobject for a UnityBase ORM`

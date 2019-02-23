@@ -1,4 +1,4 @@
-/* global Ext, UB, $App, UBDomain */
+/* global Ext, UB, $App */
 require('../core/UBStoreManager')
 require('../core/UBUtil')
 require('../view/BaseWindow')
@@ -792,6 +792,11 @@ Ext.define('UB.ux.UBPreFilter', {
     }
   },
 
+  /**
+   * @param {UBEntityAttribute} attribute
+   * @param {string} attrName
+   * @returns {null}
+   */
   createFilter: function (attribute, attrName) {
     let me = this
     let items = []
@@ -810,14 +815,12 @@ Ext.define('UB.ux.UBPreFilter', {
       items = me.getAssociationFilterInput(entity, attrName, initParam)
       items[1].flex = 100
       items[2].flex = 100
-      // items[1].width = '50%';
     } else if (attribute.dataType === 'Enum') {
       items = me.getEnumFilterInput(entity, attrName, undefined, initParam)
       items[1].flex = 100
       items[2].flex = 100
-      // items[1].width = '50%';
     } else {
-      var dt = UBDomain.getPhysicalDataType(attribute.dataType)
+      var dt = attribute.physicalDataType
       switch (dt) {
         case 'float':
         case 'int':
@@ -832,7 +835,6 @@ Ext.define('UB.ux.UBPreFilter', {
         default:
           items = me.getPlainTextFilter(entity, attrName)
           items[1].flex = 100
-                    // items[1].width = '50%';
       }
     }
     if (initParam.caption) {
@@ -862,7 +864,6 @@ Ext.define('UB.ux.UBPreFilter', {
         width: '100%',
         fit: 1,
         margin: '0 0 10 0',
-        // columnWidth: 1,
         collapsible: false,
         border: false,
         bodyBorder: false

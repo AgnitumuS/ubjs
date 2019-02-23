@@ -90,6 +90,20 @@ class XLSXWorksheet {
     result += this.dataRows.join('')
     result += '</sheetData>'
 
+    if (this.protection) {
+      let out = []
+      let xkey
+      let element = this.protection
+      out.push('<sheetProtection sheet="1"')
+      for (xkey in element) {
+        if (element.hasOwnProperty(xkey)) {
+          out.push(' ', xkey, '="', element[xkey] ? '1' : '0', '"')
+        }
+      }
+      out.push('/>')
+      result += out.join('')
+    }
+
     if (this.merge.length > 0) {
       result += '<mergeCells count="' + this.merge.length.toString() + '">' +
         this.merge.join('') + '</mergeCells>'
@@ -491,6 +505,32 @@ class XLSXWorksheet {
    */
   setOrientation (orientation) {
     this.orientation = orientation
+  }
+
+  /**
+   * Sets worksheet protection parameters
+   * password is not currently supported
+   * config = null means remove protection
+   *
+   * @param {Object} config
+   * @param {Boolean} [config.formatCells=false]
+   * @param {Boolean} [config.formatColumns=false]
+   * @param {Boolean} [config.formatRows=false]
+   * @param {Boolean} [config.insertColumns=false]
+   * @param {Boolean} [config.insertRows=false]
+   * @param {Boolean} [config.insertHyperlinks=false]
+   * @param {Boolean} [config.deleteColumns=false]
+   * @param {Boolean} [config.deleteRows=false]
+   * @param {Boolean} [config.selectLockedCells=true]
+   * @param {Boolean} [config.sort=false]
+   * @param {Boolean} [config.autoFilter=false]
+   * @param {Boolean} [config.pivotTables=false]
+   * @param {Boolean} [config.selectUnlockedCells=true]
+   * @param {Boolean} [config.objects=true]
+   * @param {Boolean} [config.scenarios=true]
+   */
+  setWorksheetProtection (config) {
+    this.protection = config === null ? null : Object.assign({}, config)
   }
 
   /**

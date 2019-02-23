@@ -43,7 +43,7 @@ module.exports = function upgradeConfig (cfg) {
 /**
  * Convert named collection - {name1: {}, name2: {}} to array -> [{name: name1, ...}, ...]
  * Will mutate original!
- * @param namedCollection
+ * @param {object} namedCollection
  * @private
  */
 function namedCollection2Array (namedCollection) {
@@ -223,3 +223,5 @@ function convert110To111 (old) {
 
   return n
 }
+
+module.exports.shortDoc = `Tool for converting UB config from v<=1.11 to v1.11`

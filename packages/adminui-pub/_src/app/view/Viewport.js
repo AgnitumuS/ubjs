@@ -72,24 +72,15 @@ Ext.define('UB.view.Viewport', {
      * @property {Ext.tab.Panel} centralPanel
      */
     me.centralPanel = Ext.create('Ext.tab.Panel', {
-      region: 'center',
       id: 'ubCenterViewport',
       isMainTabPanel: true,
       deferredRender: false,
-      layout: 'fit',
+      region: 'center',
       maxTabWidth: 200,
       border: false,
-      margin: '3, 0, 0, 0',
+      margin: '1, 0, 0, 0',
       loader: { autoLoad: false },
       listeners: {
-        boxready: function () {
-          if (window.location.href && window.location.href.indexOf('#') > 0) {
-            var command = UB.core.UBCommand.getCommandByUrl(window.location.href, me.getCenterPanel())
-            if (command) {
-              $App.doCommand(command)
-            }
-          }
-        },
         add: function (sender, container, pos) {
           var barItm = me.centralPanel.tabBar.items.getAt(pos)
           barItm.on('boxready', function (sender) {
@@ -106,9 +97,16 @@ Ext.define('UB.view.Viewport', {
     Ext.apply(me, {
       layout: 'border',
       items: [
-        me.topPanel,
         me.leftPanel,
-        me.centralPanel
+        {
+          xtype: 'panel',
+          region: 'center',
+          layout: 'border',
+          items: [
+            me.topPanel,
+            me.centralPanel
+          ]
+        }
       ]
     })
     this.callParent(arguments)

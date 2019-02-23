@@ -261,7 +261,7 @@ module.exports = function (session) {
                   'params': [{
                     'entity': 'uba_audit',
                     'method': 'select',
-                    'fieldList': ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetRole']
+                    'fieldList': ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetGroup', 'targetRole']
                   }]
                 }
            }, null, '\t')

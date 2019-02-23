@@ -1,7 +1,6 @@
 const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const fs = require('fs')
-const os = require('os')
 
 // model's public folder may not exists - in this we will create it
 // during `getPermanentFileName` and cache verified path's here
@@ -25,6 +24,20 @@ const VERIFIED_PATH = {}
  * @singleton
  */
 class MdbBlobStore extends BlobStoreCustom {
+  /**
+   * @param {Object} storeConfig
+   * @param {App} appInstance
+   * @param {UBSession} sessionInstance
+   */
+  constructor (storeConfig, appInstance, sessionInstance) {
+    super(storeConfig, appInstance, sessionInstance)
+    let tmpFolder = this.tempFolder // already normalized inside argv
+    if (!tmpFolder || !fs.existsSync(tmpFolder)) {
+      throw new Error(`Temp folder '${tmpFolder}' for BLOB store '${this.name}' doesn't exist.
+      Please, set a 'tempPath' store config parameter to existing folder,
+      for example 'tempPath': './_temp'`)
+    }
+  }
   /**
    * @inheritDoc
    * @param {BlobStoreRequest} request Request params

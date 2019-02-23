@@ -305,7 +305,7 @@ class DBSQLite3 extends DBAbstract {
       case 'NUMERIC':
         if (prec === 19 && scale === 2) {
           return 'CURRENCY'
-        } else if (prec === 19 && scale === 4) {
+        } else if (prec === 19 && scale > 2) {
           return 'FLOAT'
         } else {
           return 'BIGINT'

@@ -14,49 +14,51 @@
       "name": "ID"
     },
     {
+      "name": "model",
       "dataType": "String",
       "size": 16,
       "allowNull": false,
       "defaultValue": "UBS",
       "caption": "Model",
-      "description": "Model code where to store report",
-      "name": "model"
+      "description": "Model code where to store report"
     },
     {
+      "name": "report_code",
       "dataType": "String",
       "size": 64,
       "caption": "Report code",
-      "allowNull": false,
-      "name": "report_code"
+      "defaultView": false,
+      "allowNull": false
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 64,
       "caption": "Name",
-      "allowNull": false,
-      "name": "name"
+      "allowNull": false
     },
     {
+      "name": "template",
       "dataType": "Document",
       "caption": "Template",
       "description": "Template",
       "allowNull": true,
-      "storeName": "mdb",
-      "name": "template"
+      "storeName": "mdb"
     },
     {
+      "name": "code",
       "dataType": "Document",
       "caption": "Javascript code",
       "description": "Javascript code",
       "allowNull": true,
-      "storeName": "mdb",
-      "name": "code"
+      "storeName": "mdb"
     },
     {
+      "name": "mi_modifyDate",
       "dataType": "DateTime",
       "caption": "Modification date",
       "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation",
-      "name": "mi_modifyDate"
+      "defaultView": false
     }
   ]
 }
