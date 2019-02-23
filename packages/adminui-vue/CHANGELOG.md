@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `adminui-vue` model replace Ext-JS based relogon window with VueJS implementation.
   See `components/UbRelogon`
  
+### Fixed
+ - authorization form validation message localisation
+  
 ## [1.1.0]
 ### Changed
  - vue updated 2.5.17 -> 2.6.6

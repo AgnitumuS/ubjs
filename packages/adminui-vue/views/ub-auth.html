@@ -400,6 +400,8 @@
         })
       }
       return UB.inject('/models/ub-pub/locale/lang-' + conn.preferredLocale + '.js').then(function () {
+        if (vm.authRules.user) vm.authRules.user[0].message = vm.$ut('blankText')
+        if(vm.authRules.pwd) vm.authRules.pwd[0].message = vm.$ut('EnterOldPassword')
         vm.loading = false
       })
     },
