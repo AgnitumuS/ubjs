@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.7]
+### Changed
+ - ubm_form.ID calculated as `crc32(form_code + form_model)` instead of `crc32(form_code)` to prevent
+ ID's conflict between overrated forms
+ 
 ## [5.1.0]
 ### Changed
  - `ubm_form` & `ubm_diagram` cache now flushed for all thread in case insert or update is called. This solve possible
