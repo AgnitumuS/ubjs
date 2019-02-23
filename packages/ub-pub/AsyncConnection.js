@@ -1723,6 +1723,15 @@ function connect (cfg, ubGlobal = null) {
       preferredLocale = connection.appConfig.defaultLang
     }
     connection.preferredLocale = preferredLocale
+    // localize application mae
+
+    let adminUICfg = connection.appConfig.uiSettings.adminUI
+    if (adminUICfg.applicationName) {
+      let appName = (typeof adminUICfg.applicationName === 'string')
+        ? adminUICfg.applicationName
+        : adminUICfg.applicationName[connection.preferredLocale]
+      if (appName) connection.appConfig.applicationName = appName
+    }
     return config.onGotApplicationConfig ? config.onGotApplicationConfig(connection) : true
   }).then(function () {
     return connection.initCache(connection.appConfig.userDbVersion)

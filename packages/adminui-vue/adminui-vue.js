@@ -7,8 +7,8 @@ window.process = {
 const IS_SYSTEM_JS = (typeof SystemJS !== 'undefined')
 
 /*
-* The BOUNDLED_BY_WEBPACK variable is available only when a project is being built by a webpack. 
-* But not available in dev mode. 
+* The BOUNDLED_BY_WEBPACK variable is available only when a project is being built by a webpack.
+* But not available in dev mode.
 * Please note that BOUNDLED_BY_WEBPACK and window.BOUNDLED_BY_WEBPACK is not the same
 * But if BOUNDLED_BY_WEBPACK is undefined app will use window.BOUNDLED_BY_WEBPACK
 */
@@ -32,10 +32,12 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
-const {replaceDefaultTabbar} = require('./components/tabbar/init')
+const {replaceDefaultTabbar} = require('./components/UbTabbar/init')
+const {replaceDefaultRelogin} = require('./components/UbRelogin/init')
 
 if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultTabbar)
+  window.$App.on('applicationReady', replaceDefaultRelogin)
 }
 
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
@@ -85,7 +87,9 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
         closable: true
       })
       let vm = new Vue({
-        template: `<auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/>`,
+        components: {
+          'auto-form-component': autoFormComponent
+        },
         data: function () {
           return {
             fieldsToShow: pageColumns,
@@ -97,9 +101,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
             }
           }
         },
-        components: {
-          'auto-form-component': autoFormComponent
-        }
+        template: `<auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/>`
       })
       vm.$mount(`#${tab.getId()}-outerCt`)
       tab.on('close', function () {

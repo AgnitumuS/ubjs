@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.2.0]
 ### Changed
- - `adminui-vue` model replace a top Ext-JS based tabbar with tabbar implemented using VueJS 
+ - `adminui-vue` model replace a top Ext-JS based tabbar with tabbar implemented using VueJS.
+  See `components/UbTabbar`
+ - `adminui-vue` model replace Ext-JS based relogon window with VueJS implementation.
+  See `components/UbRelogon`
  
 ## [1.1.0]
 ### Changed

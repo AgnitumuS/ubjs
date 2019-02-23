@@ -330,8 +330,6 @@
       doNegotiateLogin: function () {
         window.deferred.resolve({
           authSchema: 'Negotiate',
-          login: '',
-          password: '',
           registration: 0
         })
       },
@@ -380,13 +378,8 @@
     allowSessionPersistent: true,
     onGotApplicationConfig: function (conn) {
       vm.authMethods = conn.authMethods || []
+      vm.appName = conn.appConfig.applicationName
       let adminUICfg = conn.appConfig.uiSettings.adminUI
-      if (adminUICfg.applicationName) {
-        let appName = (typeof adminUICfg.applicationName === 'string')
-          ? adminUICfg.applicationName
-          : adminUICfg.applicationName[conn.preferredLocale]
-        if (appName) vm.appName = appName
-      }
       if (adminUICfg.applicationTitle) document.title = adminUICfg.applicationTitle
       if (adminUICfg.loginWindowTopLogoURL) vm.topLogoURL = adminUICfg.loginWindowTopLogoURL
       if (adminUICfg.defaultPasswordForDebugOnly) vm.authData.pwd = adminUICfg.defaultPasswordForDebugOnly
