@@ -21,7 +21,6 @@
 
     <el-form-item>
       <el-input
-        autofocus="true"
         :placeholder="$ut('User')"
         disabled
         :value="login"
@@ -34,6 +33,7 @@
 
     <el-form-item prop="password">
       <el-input
+        autofocus="true"
         v-model="authData.password"
         :placeholder="$ut('Password')"
         type="password"
@@ -70,7 +70,7 @@ module.exports = {
   data () {
     return {
       authData: {
-        password: ''
+        password: this.$UB.connection.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly
       },
       authRules: {
         password: [
@@ -95,6 +95,9 @@ module.exports = {
             login: this.login,
             password: this.authData.password
           })
+          if (!this.$UB.connection.appConfig.uiSettings.adminUI.defaultPasswordForDebugOnly) {
+            this.authData.password = ''
+          }
           this.$emit('close')
         } else {
           return false

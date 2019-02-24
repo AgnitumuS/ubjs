@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.2]
+### Fixed
+ - relogon form: default focused element should be password
+ - relogon form: password should be cleaned after submit 
+ 
 ## [1.2.0]
 ### Changed
  - `adminui-vue` model replace a top Ext-JS based tabbar with tabbar implemented using VueJS.
