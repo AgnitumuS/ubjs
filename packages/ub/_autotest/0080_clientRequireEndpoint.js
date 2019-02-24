@@ -77,6 +77,6 @@ module.exports = function runTest (options) {
     )
 
     ok(conn.get(`clientRequire/@unitybase/ub/public/schemas/entity.schema.json`), 'Access to public model folder must be allowed')
-    ok(conn.get(`clientRequire/@unitybase/cs-shared/LocalDataStore`), 'Access module not defined as model be allowed')
+    ok(conn.get(`clientRequire/@unitybase/cs-shared/LocalDataStore`), 'Access to module not defined as model must be allowed')
   }
 }
