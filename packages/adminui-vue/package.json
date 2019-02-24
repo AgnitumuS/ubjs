@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-vue",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "UnityBase admin UI extended with Vue + ElementUI",
   "main": "adminui-vue.js",
   "browser": {
@@ -43,9 +43,9 @@
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/cs-shared": "^5.0.16",
+    "@unitybase/cs-shared": "^5.0.17",
     "@unitybase/systemjs-plugin-vue-ub": "^1.2.3",
-    "@unitybase/ub-pub": "^5.2.28",
+    "@unitybase/ub-pub": "^5.2.29",
     "element-ui": "^2.5.4",
     "font-awesome": "^4.7.0",
     "lodash": "^4",
