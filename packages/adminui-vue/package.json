@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "npm run build:theme && npm run build:js",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "gen-el-vars": "et -i theme/ub-el.scss",
     "build:theme": "npm run build:el && npm run build:css",
     "build:el": "et -c theme/ub-el.scss -o dist",
@@ -27,6 +27,7 @@
   "files": [
     "dist/adminui-vue.css",
     "dist/adminui-vue.min.js",
+    "dist/ub*.css",
     "dist/fonts",
     "views/",
     "components/",
@@ -74,5 +75,6 @@
     "uglifyjs-webpack-plugin": "^1.3.0",
     "vue-loader": "^14.2.4",
     "webpack-bundle-analyzer": "^2.13.1"
-  }
+  },
+  "gitHead": "62789c110a91027bf5407a10f9706eb2a4254e19"
 }
