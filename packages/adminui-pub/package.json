@@ -24,7 +24,7 @@
     "build:watch": "webpack --progress --colors --watch",
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "test": "npm run test"
   },
   "public": true,

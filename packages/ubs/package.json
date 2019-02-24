@@ -12,7 +12,7 @@
     "test": "ubcli autotest -m UBS -skipModules",
     "build": "cross-env-shell NODE_ENV=production \"cd ./public && webpack\"",
     "build:watch": "cd ./public && webpack --progress --colors --watch",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
   },
   "public": true,

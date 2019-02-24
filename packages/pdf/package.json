@@ -16,7 +16,7 @@
     "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
     "test": "npm run test",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "public": true,
   "publishConfig": {
