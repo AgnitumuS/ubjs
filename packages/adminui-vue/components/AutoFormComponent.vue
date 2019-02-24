@@ -64,74 +64,74 @@
 </template>
 
 <script>
-  let ubSelectEnum = require('./controls/UbSelectEnum.vue')
-  let ubSelectEntity = require('./controls/UbSelectEntity.vue')
-  let ubSelectMany = require('./controls/UbSelectMany.vue')
-  let ubInput = require('./controls/UbInput.vue')
-  let ubUploadDocument = require('./controls/UbUploadDocument.vue')
-  let ubCodeMirror = require('./controls/UbCodeMirror.vue')
+let ubSelectEnum = require('./controls/UbSelectEnum.vue')
+let ubSelectEntity = require('./controls/UbSelectEntity.vue')
+let ubSelectMany = require('./controls/UbSelectMany.vue')
+let ubInput = require('./controls/UbInput.vue')
+let ubUploadDocument = require('./controls/UbUploadDocument.vue')
+let ubCodeMirror = require('./controls/UbCodeMirror.vue')
 
-  if (BOUNDLED_BY_WEBPACK) {
-    ubSelectEnum = ubSelectEnum.default
-    ubSelectEntity = ubSelectEntity.default
-    ubSelectMany = ubSelectMany.default
-    ubInput = ubInput.default
-    ubUploadDocument = ubUploadDocument.default
-    ubCodeMirror = ubCodeMirror.default
-  }
+if (BOUNDLED_BY_WEBPACK) {
+  ubSelectEnum = ubSelectEnum.default
+  ubSelectEntity = ubSelectEntity.default
+  ubSelectMany = ubSelectMany.default
+  ubInput = ubInput.default
+  ubUploadDocument = ubUploadDocument.default
+  ubCodeMirror = ubCodeMirror.default
+}
 
-  module.exports = {
-    name: 'AutoForm',
-    props: {
-      entityName: {
-        type: String,
-        required: true
-      },
-      instanceID: Number,
-      currentTabId: String
+module.exports = {
+  name: 'AutoForm',
+  props: {
+    entityName: {
+      type: String,
+      required: true
     },
-    methods: {
-      getRules (fieldName) {
-        let rules = []
-        if (!this.entitySchema.attributes[fieldName].allowNull && this.entitySchema.attributes[fieldName].dataType !== 'Boolean') {
-          rules.push({
-            required: true,
-            message: this.$UB.format(this.$ut('isRequiredFieldFmt'), this.entitySchema.attributes[fieldName].caption),
-            trigger: 'blur'
-          })
+    instanceID: Number,
+    currentTabId: String
+  },
+  methods: {
+    getRules (fieldName) {
+      let rules = []
+      if (!this.entitySchema.attributes[fieldName].allowNull && this.entitySchema.attributes[fieldName].dataType !== 'Boolean') {
+        rules.push({
+          required: true,
+          message: this.$UB.format(this.$ut('isRequiredFieldFmt'), this.entitySchema.attributes[fieldName].caption),
+          trigger: 'blur'
+        })
+      }
+      return rules
+    },
+    save (callback) {
+      this.$refs[this.$options.name].validate((valid) => {
+        if (valid) {
+          callback()
         }
-        return rules
-      },
-      save (callback) {
-        this.$refs[this.$options.name].validate((valid) => {
-          if (valid) {
-            callback()
-          }
-        })
-      }
-    },
-    computed: {
-      entitySchema () {
-        return this.$UB.connection.domain.get(this.entityName)
-      },
-      fieldsToShow () {
-        return this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
-          return at.name
-        })
-      }
-    },
-    data () {
-      return {
-        value: {}
-      }
-    },
-    components: {
-      'ub-select-enum': ubSelectEnum,
-      'ub-select-entity': ubSelectEntity,
-      'ub-select-many': ubSelectMany,
-      'ub-input': ubInput,
-      'ub-upload-document': ubUploadDocument,
-      'ub-code-mirror': ubCodeMirror
+      })
     }
+  },
+  computed: {
+    entitySchema () {
+      return this.$UB.connection.domain.get(this.entityName)
+    },
+    fieldsToShow () {
+      return this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
+        return at.name
+      })
+    }
+  },
+  data () {
+    return {
+      value: {}
+    }
+  },
+  components: {
+    'ub-select-enum': ubSelectEnum,
+    'ub-select-entity': ubSelectEntity,
+    'ub-select-many': ubSelectMany,
+    'ub-input': ubInput,
+    'ub-upload-document': ubUploadDocument,
+    'ub-code-mirror': ubCodeMirror
   }
+}
 </script>
