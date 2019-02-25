@@ -42,7 +42,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <i style="min-width: 25px" slot="reference" class="el-icon-menu"></i>
+        <i ref="menuButton" style="min-width: 25px" slot="reference" class="el-icon-menu"></i>
       </el-popover>
     </div>
   </div>
@@ -298,6 +298,7 @@ module.exports = {
 
     this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
 
+    if (this.$refs.menuButton) this.$refs.menuButton.setAttribute('tabindex', -1)
     if (this.value) {
       this.setInitialItem()
     }

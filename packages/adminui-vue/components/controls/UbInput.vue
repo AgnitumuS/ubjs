@@ -10,6 +10,7 @@
                  slot="append"
                  class="fa fa-globe"
                  :disabled="disabled"
+                 tabindex="-1"
                  @click="initLocalizableFields"
       ></el-button>
     </el-input>

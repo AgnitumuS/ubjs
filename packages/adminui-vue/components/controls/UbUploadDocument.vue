@@ -19,7 +19,7 @@
     </div>
     <div v-else class="ub-upload-document__file-input">
       <el-button class="el-icon-plus" size="mini" circle></el-button>
-      <input type="file" @change="processFile($event)"/>
+      <input type="file" @change="processFile($event)" tabindex="-1" />
     </div>
   </div>
 </template>
