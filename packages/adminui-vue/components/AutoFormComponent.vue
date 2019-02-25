@@ -1,7 +1,11 @@
 <template>
   <div id="auto-form-app" v-if="fieldsToShow" style="height: 100%;">
-    <ub-entity-edit v-model="value" :entity-name="entityName" :instanceID="instanceID" :save="save"
-                    :current-tab-id="currentTabId" :external-data="externalData">
+    <ub-entity-edit v-model="value"
+                    :entity-name="entityName"
+                    :instanceID="instanceID"
+                    :save="save"
+                    :current-tab-id="currentTabId"
+                    :external-data="externalData">
       <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
         <el-form-item
           v-for="fieldName in fieldsToShow"
@@ -91,6 +95,7 @@ module.exports = {
       type: String,
       required: true
     },
+    /* externalData - parameters from parent context. When we create related object - disable related fields and fill with parent data */
     externalData: Object,
     instanceID: Number,
     currentTabId: String
