@@ -21,7 +21,7 @@
     "lodash": "^4",
     "standard": "*",
     "style-loader": "^0.18.2",
-    "ub-jsdoc": "^1.7.1",
+    "ub-jsdoc": "^2.0.0",
     "uglify-js": "^3.0.26",
     "uglifycss": "*",
     "webpack": "^3.12.0",
