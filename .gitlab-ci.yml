@@ -4,8 +4,12 @@ build-doc:
   script:
     - npm i
     - cp -rf ./node_modules/ub-jsdoc/templateHelper.js-patched ./node_modules/jsdoc/lib/jsdoc/util/templateHelper.js
+    - wget -O samples-master.zip https://git-pub.intecracy.com/unitybase/samples/-/archive/master/samples-master.zip
+    - unzip -o samples-master.zip
+    - mkdir -p gettingstarted
+    - cp -r samples-master/courses/tutorial-v5/* gettingstarted
     - npm run build:doc
-    - rsync -avz -e "ssh -p 2222" docs/{server-v5,ubpub-v5} gitlab-builder@registry-tst.unitybase.info:/home/ub-service/website/unitybase-info/inetPub/api
+    - rsync -avz -e "ssh -p 2222" docs/{server-v5,ubpub-v5,gettingstarted} gitlab-builder@registry.unitybase.info:/home/ub-service/website/unitybase-info/inetPub/api
   when: manual
   only:
     - master
