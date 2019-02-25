@@ -2,37 +2,40 @@
   <div style="position: relative">
     <el-tooltip :content="deletedCaption" placement="left" :disabled="!rowIsDeleted" :open-delay="200">
       <el-select ref="selector" v-model="resultData"
-                 reserve-keyword filterable remote
-                 v-loading="loading" :disabled="loading"
-                 @change="onChange"
-                 v-on:click.native="onFocus"
-                 v-on:input.native="onInput"
+                 v-loading="loading" reserve-keyword filterable remote
+                 :disabled="loading || disabled"
+                 :class="`ub-select-entity${this._uid}`"
                  style="width: 100%"
-                 :class="`ub-select-entity${this._uid}`">
-        <div slot="prefix" v-if="rowIsDeleted">
+                 @change="onChange"
+                 @click.native="onFocus"
+                 @input.native="onInput">
+        <div v-if="rowIsDeleted" slot="prefix">
           <i style="margin-left: 5px" class="fa fa-ban"></i>
         </div>
         <template>
-          <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
-                     :label="item[displayValue]" :value="item[primaryColumn]"
-                     :disabled="item.removed">
-          </el-option>
-          <el-row type="flex" justify="end" style="padding: 0 20px" v-if="hasData">
+          <el-option v-for="item in itemsToDisplay"
+                     :key="item[primaryColumn]"
+                     :label="item[displayValue]"
+                     :value="item[primaryColumn]"
+                     :disabled="item.removed"
+          ></el-option>
+          <el-row v-if="hasData" type="flex" justify="end" style="padding: 0 20px">
             <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
           </el-row>
         </template>
       </el-select>
     </el-tooltip>
     <div class="ub-select-entity__menu-button">
-      <el-popover
-          v-if="rowActions"
-          placement="bottom-end"
-          v-model="popoverVisible"
-          trigger="click">
-        <el-table :data="rowActions" @row-click="onActionClick" :show-header="false">
+      <el-popover v-if="rowActions"
+                  v-model="popoverVisible"
+                  placement="bottom-end"
+                  disabled="disabled"
+                  trigger="click">
+        <el-table :data="rowActions" :show-header="false" @row-click="onActionClick">
           <el-table-column property="caption" width="250">
             <template slot-scope="scope">
-              <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'" style="cursor: pointer" class="ub-noselect">
+              <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'"
+                   style="cursor: pointer" class="ub-noselect">
                 <i :class="scope.row.icon"></i>
                 <span style="margin-left: 10px">{{ scope.row.caption }}</span>
               </div>
@@ -64,6 +67,7 @@ module.exports = {
         return 'ID'
       }
     },
+    disabled: Boolean,
     useOwnActions: {
       type: Boolean,
       default () {

@@ -71,12 +71,13 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
       closable: true
     })
     let vm = new Vue({
-      template: `<auto-form-component :entityName="entityName" :instanceID="instanceID" :currentTabId="currentTabId"></auto-form-component>`,
+      template: `<auto-form-component :entityName="entityName" :instanceID="instanceID" :currentTabId="currentTabId" :externalData="externalData"></auto-form-component>`,
       data: function () {
         return {
           entityName: params.entity,
           instanceID: params.instanceID,
-          currentTabId: tabId
+          currentTabId: tabId,
+          externalData: params.parentContext
         }
       },
       components: {

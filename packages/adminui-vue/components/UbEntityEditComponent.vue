@@ -1,12 +1,12 @@
 <template>
   <div :loading="loading" style="height: 100%;">
     <toolbar v-model="value"
-             :entityName="entityName"
-             :isNew="isNew"
-             :isChanged="isChanged"
-             :useOnlyOwnActions="useOnlyOwnActions"
-             :inputActions="inputActions"
-             :formCode="formCode"
+             :entity-name="entityName"
+             :is-new="isNew"
+             :is-changed="isChanged"
+             :use-only-own-actions="useOnlyOwnActions"
+             :input-actions="inputActions"
+             :form-code="formCode"
              @saveAndClose="saveAndClose"
              @saveAndReload="saveAndReload"
              @remove="remove"
@@ -29,6 +29,7 @@ module.exports = {
   props: {
     value: Object,
     entityName: String,
+    externalData: Object,
     instanceID: Number,
     useOnlyOwnActions: Boolean,
     inputActions: Array,
@@ -161,6 +162,9 @@ module.exports = {
         let parameters = {
           entity: this.entityName,
           fieldList: this.entityFields
+        }
+        if (this.externalData) {
+          parameters.execParams = this.externalData
         }
         dataP = this.$UB.connection.addNew(parameters).then(result => {
           let data = {}

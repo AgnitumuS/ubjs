@@ -1,11 +1,16 @@
 <template>
   <div>
     <el-input v-model="currentValue"
-              @change="onChange" :type="fieldType" :controls="false" :step="step">
-      <el-button slot="append"
-                 v-if="isMultiLang && objectValue"
-                 @click="initLocalizableFields"
+              :controls="false"
+              :type="fieldType"
+              :step="step"
+              :disabled="disabled"
+              @change="onChange">
+      <el-button v-if="isMultiLang && objectValue"
+                 slot="append"
                  class="fa fa-globe"
+                 :disabled="disabled"
+                 @click="initLocalizableFields"
       ></el-button>
     </el-input>
     <el-dialog width="30%"
@@ -88,6 +93,7 @@ module.exports = {
       type: String,
       required: true
     },
+    disabled: Boolean,
     objectValue: Object
   },
   methods: {

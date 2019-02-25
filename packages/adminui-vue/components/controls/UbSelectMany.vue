@@ -1,17 +1,21 @@
 <template>
-  <el-select ref="selector" v-model="resultData"
-             reserve-keyword clearable filterable multiple
-             remote :remote-method="loadNextByInput"
-             v-loading="loading" :disabled="loading"
-             @change="onChange"
-             v-on:focus="onFocus"
+  <el-select ref="selector"
+             v-model="resultData"
+             v-loading="loading"
+             reserve-keyword clearable filterable multiple remote
+             :remote-method="loadNextByInput"
+             :disabled="loading || disabled"
+             :class="`ub-select-many${this._uid}`"
              style="width: 100%"
-             :class="`ub-select-many${this._uid}`">
+             @change="onChange"
+             @focus="onFocus">
     <template>
-      <el-option v-for="item in itemsToDisplay" :key="item[primaryColumn]"
-                 :label="item[displayValue]" :value="item[primaryColumn]"
-                 :disabled="item.removed">
-      </el-option>
+      <el-option v-for="item in itemsToDisplay"
+                 :key="item[primaryColumn]"
+                 :label="item[displayValue]"
+                 :value="item[primaryColumn]"
+                 :disabled="item.removed"
+      ></el-option>
       <el-row type="flex" justify="end" style="padding: 0 20px" v-if="hasData">
         <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
       </el-row>
@@ -32,6 +36,7 @@ module.exports = {
       type: String,
       required: true
     },
+    disabled: Boolean,
     primaryColumn: {
       type: String,
       default () {

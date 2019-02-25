@@ -1,14 +1,19 @@
 <template>
-  <el-select v-model="resultData" filterable reserve-keyword clearable ref="selector"
-             @change="$emit('input', resultData)"
-             v-on:input.native="onInput"
-             v-loading="loading" :disabled="loading"
+  <el-select ref="selector"
+             v-model="resultData"
+             v-loading="loading"
+             filterable reserve-keyword clearable
+             :disabled="loading || disabled"
+             :class="`ub-select-enum${_uid}`"
              style="width: 100%"
-             :class="`ub-select-enum${_uid}`">
+             @change="$emit('input', resultData)"
+             @input.native="onInput">
     <template>
-      <el-option v-for="item in items" :key="item[primaryColumn]"
-                 :label="item[displayValue]" :value="item[primaryColumn]">
-      </el-option>
+      <el-option v-for="item in items"
+                 :key="item[primaryColumn]"
+                 :label="item[displayValue]"
+                 :value="item[primaryColumn]"
+      ></el-option>
     </template>
   </el-select>
 </template>
@@ -25,6 +30,7 @@ module.exports = {
     eGroup: {
       type: String
     },
+    disabled: Boolean,
     primaryColumn: {
       type: String,
       default () {
