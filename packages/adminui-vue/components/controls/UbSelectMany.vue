@@ -16,7 +16,7 @@
                  :value="item[primaryColumn]"
                  :disabled="item.removed"
       ></el-option>
-      <el-row type="flex" justify="end" style="padding: 0 20px" v-if="hasData">
+      <el-row v-if="hasData" type="flex" justify="end" style="padding: 0 20px">
         <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
       </el-row>
     </template>
@@ -112,7 +112,7 @@ module.exports = {
   },
   computed: {
     valueArray () {
-      return this.value ? this.value.trim().split(',').map((item) => {
+      return this.value ? this.value.trim().split(',').map(item => {
         return typeof item !== 'number' ? parseInt(item) : item
       }) : null
     },
@@ -122,7 +122,7 @@ module.exports = {
     itemsToDisplay () {
       if (this.initialItem && this.initialItem.length > 0) {
         let filteredItems = this.items.filter((item) => {
-          return !this.initialItem.map((ii) => { return ii[this.primaryColumn] }).includes(item[this.primaryColumn])
+          return !this.initialItem.map(ii => { return ii[this.primaryColumn] }).includes(item[this.primaryColumn])
         })
         return this.initialItem.concat(filteredItems)
       }
@@ -138,7 +138,8 @@ module.exports = {
     }, 1)
 
     this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
-
+    // this.$refs.selector.$refs.reference._vnode.children[1].data.attrs.tabindex = '-1'
+    // this.$refs.selector.$refs.reference.$refs.input.setAttribute('tabindex', '-1')
     if (this.value) {
       this.loading = true
       let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)

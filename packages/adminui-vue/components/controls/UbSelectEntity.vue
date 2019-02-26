@@ -298,6 +298,7 @@ module.exports = {
 
     this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
 
+    /* In case to disable focus on menu button by Tab - add tabindex attr to menu */
     if (this.$refs.menuButton) this.$refs.menuButton.setAttribute('tabindex', -1)
     if (this.value) {
       this.setInitialItem()
