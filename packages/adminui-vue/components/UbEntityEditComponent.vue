@@ -1,5 +1,5 @@
 <template>
-  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.ctrl.enter="saveAndClose" @keyup.ctrl.46="remove">
+  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.83="saveAndReload" @keyup.alt.enter="saveAndClose" @keyup.alt.46="remove">
     <toolbar v-model="value"
              :entity-name="entityName"
              :is-new="isNew"
@@ -175,16 +175,6 @@ module.exports = {
       dataP.finally(_ => {
         this.loading = false
       })
-    }
-    this.$refs.entityEdit.onkeydown = event => {
-      if (event.ctrlKey) {
-        switch (String.fromCharCode(event.which).toLowerCase()) {
-          case 's':
-            event.preventDefault()
-            this.saveAndReload()
-            break
-        }
-      }
     }
   },
   components: {

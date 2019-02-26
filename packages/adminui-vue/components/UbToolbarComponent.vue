@@ -108,13 +108,13 @@ module.exports = {
       return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
     },
     saveAndCloseCaption () {
-      return this.$ut('saveAndClose') + ' (Ctrl + Enter)'
+      return this.$ut('saveAndClose') + ' (Alt + Enter)'
     },
     saveAndReloadCaption () {
-      return this.$ut('save') + ' (Ctrl + S)'
+      return this.$ut('save') + ' (Alt + S)'
     },
     removeCaption () {
-      return this.$ut('Delete') + ' (Ctrl + Delete)'
+      return this.$ut('Delete') + ' (Alt + Delete)'
     },
     defaultActions () {
       let actions = []
