@@ -45,6 +45,9 @@ module.exports = {
     }
   },
   computed: {
+    currentTab () {
+      return $App.viewport.centralPanel.queryById(this.currentTabId)
+    },
     entitySchema () {
       return this.$UB.connection.domain.get(this.entityName)
     },
@@ -79,7 +82,7 @@ module.exports = {
       })
     },
     saveAndClose () {
-      this.saveEntity(() => Ext.getCmp(this.currentTabId).close())
+      this.saveEntity(() => this.currentTab.close())
     },
     saveEntity (callback) {
       let changedColumns = Object.assign({}, this.changedColumns)
@@ -138,7 +141,7 @@ module.exports = {
           return this.$UB.connection.doDelete(request).then(result => {
             this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
             this.$UB.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
-            Ext.getCmp(this.currentTabId).close()
+            this.currentTab.close()
           }).finally(_ => {
             this.loading = false
           })
@@ -176,6 +179,35 @@ module.exports = {
         this.loading = false
       })
     }
+    this.currentTab.on('beforeClose', function () {
+      if (!this.currentTab.forceClose && Object.keys(this.changedColumns).length > 0) {
+        $App.viewport.centralPanel.setActiveTab(this.currentTab)
+        Ext.Msg.confirm({
+          buttons: Ext.MessageBox.YESNOCANCEL,
+          icon: Ext.MessageBox.WARNING,
+          buttonText: {
+            yes: this.$ut('save'),
+            no: this.$ut('doNotSave'),
+            cancel: this.$ut('cancel')
+          },
+          minWidth: 320,
+          title: this.$ut('unsavedData'),
+          msg: this.$ut('confirmSave'),
+          fn: btn => {
+            if (btn === 'yes') {
+              this.currentTab.forceClose = true
+              this.saveAndClose()
+            }
+            if (btn === 'no') {
+              this.currentTab.forceClose = true
+              this.currentTab.close()
+            }
+          }
+        })
+        return false
+      }
+      return true
+    }, this)
   },
   components: {
     toolbar
