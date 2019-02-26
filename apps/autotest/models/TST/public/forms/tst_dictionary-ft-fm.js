@@ -4,19 +4,15 @@ const $App = require('@unitybase/adminui-pub')
 exports.mount = function (params) {
   let tstDictionaryEdit = require('../components/DictionaryEditView.vue')
   let entitySchema = $App.domainInfo.get(params.entity)
-  let tabId
   if (params.instanceID) {
-    tabId = entitySchema.name + params.instanceID
-    let existsTab = Ext.getCmp(tabId)
+    let existsTab = Ext.getCmp(params.tabId)
     if (existsTab) {
       $App.viewport.centralPanel.setActiveTab(existsTab)
       return
     }
-  } else {
-    tabId = entitySchema.name + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
   }
   let tab = $App.viewport.centralPanel.add({
-    id: tabId,
+    id: params.tabId,
     title: entitySchema.caption,
     tooltip: entitySchema.caption,
     closable: true
@@ -27,7 +23,7 @@ exports.mount = function (params) {
       return {
         entityName: params.entity,
         instanceID: typeof params.instanceID === 'string' ? parseInt(params.instanceID) : params.instanceID,
-        currentTabId: tabId,
+        currentTabId: params.tabId,
         formCode: params.formCode
       }
     },
@@ -35,7 +31,7 @@ exports.mount = function (params) {
       'dictionary-edit-form': tstDictionaryEdit
     }
   })
-  vm.$mount(`#${tabId}-outerCt`)
+  vm.$mount(`#${params.tabId}-outerCt`)
   tab.on('close', function () {
     vm.$destroy()
   })

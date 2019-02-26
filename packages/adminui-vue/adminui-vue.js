@@ -53,20 +53,17 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
     }
     let params = this
     let entitySchema = $App.domainInfo.get(params.entity)
-    let tabId
     if (params.instanceID) {
-      tabId = entitySchema.name + params.instanceID
-      let existsTab = Ext.getCmp(tabId)
+      let existsTab = Ext.getCmp(params.tabId)
       if (existsTab) {
         $App.viewport.centralPanel.setActiveTab(existsTab)
         return
       }
-    } else {
-      tabId = entitySchema.name + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     }
+
     let tab = $App.viewport.centralPanel.add({
-      id: tabId,
-      title: entitySchema.caption,
+      id: params.tabId,
+      title: params.instanceID,
       tooltip: entitySchema.caption,
       closable: true
     })
@@ -76,7 +73,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
         return {
           entityName: params.entity,
           instanceID: params.instanceID,
-          currentTabId: tabId,
+          currentTabId: params.tabId,
           externalData: params.parentContext
         }
       },
@@ -84,7 +81,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
         'auto-form-component': autoFormComponent
       }
     })
-    vm.$mount(`#${tabId}-outerCt`)
+    vm.$mount(`#${params.tabId}-outerCt`)
     tab.on('close', function () {
       vm.$destroy()
     })
