@@ -131,7 +131,7 @@ module.exports = {
     value () {
       this.resultData = this.value ? this.value.trim().split(',').map(item => {
         return typeof item !== 'number' ? parseInt(item) : item
-      }) : null
+      }) : []
       this.setInitialItem()
     }
   },
