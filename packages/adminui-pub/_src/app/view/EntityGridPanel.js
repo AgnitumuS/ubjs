@@ -995,6 +995,9 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     }
     me.entity = $App.domainInfo.get(me.entityName)
+    UB.connection.on(`${me.entityName}:changed`, () => {
+      me.onRefresh()
+    })
     if (!me.entity) {
       throw new Error('You must specify entity')
     }
