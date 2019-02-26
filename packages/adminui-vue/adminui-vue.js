@@ -63,7 +63,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
 
     let tab = $App.viewport.centralPanel.add({
       id: params.tabId,
-      title: params.instanceID,
+      title: entitySchema.caption,
       tooltip: entitySchema.caption,
       closable: true
     })
