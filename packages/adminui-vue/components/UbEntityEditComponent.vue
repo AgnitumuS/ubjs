@@ -1,5 +1,5 @@
 <template>
-  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.ctrl.enter="saveAndClose" @keyup.ctrl.delete="remove">
+  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.ctrl.enter="saveAndClose" @keyup.ctrl.46="remove">
     <toolbar v-model="value"
              :entity-name="entityName"
              :is-new="isNew"
