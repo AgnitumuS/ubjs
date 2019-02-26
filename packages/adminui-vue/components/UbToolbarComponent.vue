@@ -1,7 +1,7 @@
 <template>
   <div class="ub-toolbar">
     <div style="display: flex">
-      <el-tooltip v-for="button in buttons" :key="button.id" :content="button.tooltip" placement="bottom" open-delay="300">
+      <el-tooltip v-for="button in buttons" :key="button.id" :content="button.tooltip" placement="bottom" :open-delay="300">
         <el-button :disabled="button.disabled" type="text" size="large"
                    class="ub-toolbar__button"
                    @click="button.action">
@@ -11,15 +11,15 @@
     </div>
     <div style="display: flex">
       <el-popover
-          placement="bottom-end"
-          v-model="showPopover"
-          trigger="click">
+        placement="bottom-end"
+        v-model="showPopover"
+        trigger="click">
         <el-table :data="actions" @row-click="onActionClick" :show-header="false">
           <el-table-column property="caption" width="200">
             <template slot-scope="scope">
               <div :style="scope.row.enabled === undefined || scope.row.enabled ? 'cursor: pointer' : 'opacity: 0.5'">
                 <i :class="scope.row.icon"></i>
-                <span style="margin-left: 10px">{{ scope.row.caption }}</span>
+                <span style="margin-left: 10px" class="ub-noselect">{{ scope.row.caption }}</span>
               </div>
             </template>
           </el-table-column>
@@ -107,11 +107,20 @@ module.exports = {
     isSimpleAudit () {
       return this.entitySchema.mixins.mStorage && this.entitySchema.mixins.mStorage.simpleAudit
     },
+    saveAndCloseCaption () {
+      return this.$ut('saveAndClose') + ' (Ctrl + Enter)'
+    },
+    saveAndReloadCaption () {
+      return this.$ut('save') + ' (Ctrl + S)'
+    },
+    removeCaption () {
+      return this.$ut('Delete') + ' (Ctrl + Delete)'
+    },
     defaultActions () {
       let actions = []
       actions.push({
         icon: 'fa fa-save',
-        caption: this.$ut('save'),
+        caption: this.saveAndReloadCaption,
         handler: {
           fn: _ => { this.$emit('saveAndReload') }
         },
@@ -119,7 +128,7 @@ module.exports = {
       })
       actions.push({
         icon: 'fa fa-share-square-o',
-        caption: this.$ut('saveAndClose'),
+        caption: this.saveAndCloseCaption,
         handler: {
           fn: _ => { this.$emit('saveAndClose') }
         },
@@ -172,7 +181,7 @@ module.exports = {
       }
       actions.push({
         icon: 'fa fa-trash-o',
-        caption: this.$ut('Delete'),
+        caption: this.removeCaption,
         handler: {
           fn: _ => { this.$emit('remove') }
         },
@@ -316,19 +325,19 @@ module.exports = {
         disabled: !this.saveEnabled,
         icon: 'fa fa-share-square-o',
         action: _ => { this.$emit('saveAndClose') },
-        tooltip: this.$ut('saveAndClose')
+        tooltip: this.saveAndCloseCaption
       }, {
         id: 2,
         disabled: !this.saveEnabled,
         icon: 'fa fa-save',
         action: _ => { this.$emit('saveAndReload') },
-        tooltip: this.$ut('save')
+        tooltip: this.saveAndReloadCaption
       }, {
         id: 3,
         disabled: !this.canDelete,
         icon: 'fa fa-trash-o',
         action: _ => { this.$emit('remove') },
-        tooltip: this.$ut('Delete')
+        tooltip: this.removeCaption
       }]
     },
     buttons () {

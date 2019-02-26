@@ -1,5 +1,5 @@
 <template>
-  <div :loading="loading" style="height: 100%;">
+  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.ctrl.enter="saveAndClose" @keyup.ctrl.delete="remove">
     <toolbar v-model="value"
              :entity-name="entityName"
              :is-new="isNew"
@@ -69,24 +69,22 @@ module.exports = {
   },
   methods: {
     saveAndReload () {
-      this.saveEntity((data, changed) => {
-        if (changed) {
-          let object = {}
-          data.resultData.data[0].forEach((item, index) => {
-            object[data.resultData.fields[index]] = item
-          })
-          this.$emit('input', object)
-          this.oldData = Object.assign({}, object)
-        }
+      this.saveEntity(data => {
+        let object = {}
+        data.resultData.data[0].forEach((item, index) => {
+          object[data.resultData.fields[index]] = item
+        })
+        this.$emit('input', object)
+        this.oldData = Object.assign({}, object)
       })
     },
     saveAndClose () {
       this.saveEntity(() => Ext.getCmp(this.currentTabId).close())
     },
     saveEntity (callback) {
-      let saveFn = () => {
-        let changedColumns = Object.assign({}, this.changedColumns)
-        if (Object.keys(changedColumns).length > 0) {
+      let changedColumns = Object.assign({}, this.changedColumns)
+      if (Object.keys(changedColumns).length > 0) {
+        let saveFn = () => {
           Object.keys(changedColumns).forEach(col => {
             if (this.entitySchema.attributes[col] && this.entitySchema.attributes[col].isMultiLang) {
               changedColumns[`${col}_${this.$UB.connection.userLang()}^`] = changedColumns[col]
@@ -107,21 +105,19 @@ module.exports = {
               this.loading = false
             })
             .then((result) => {
-              callback.call(this, result, true)
+              callback.call(this, result)
               return result
             })
             .then((result) => {
               this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
               this.$UB.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
             })
-        } else {
-          callback.call(this, null, false)
         }
-      }
-      if (this.save) {
-        this.save(saveFn)
-      } else {
-        saveFn()
+        if (this.save) {
+          this.save(saveFn)
+        } else {
+          saveFn()
+        }
       }
     },
     remove () {
@@ -179,6 +175,16 @@ module.exports = {
       dataP.finally(_ => {
         this.loading = false
       })
+    }
+    this.$refs.entityEdit.onkeydown = event => {
+      if (event.ctrlKey) {
+        switch (String.fromCharCode(event.which).toLowerCase()) {
+          case 's':
+            event.preventDefault()
+            this.saveAndReload()
+            break
+        }
+      }
     }
   },
   components: {
