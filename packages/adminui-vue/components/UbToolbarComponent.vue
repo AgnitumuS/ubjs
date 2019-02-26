@@ -1,11 +1,13 @@
 <template>
   <div class="ub-toolbar">
     <div style="display: flex">
-      <el-button v-for="button in buttons" :disabled="button.disabled" type="text" size="large" :key="button.id"
-                 class="ub-toolbar__button"
-                 @click="button.action">
-        <i :class="button.icon"></i>
-      </el-button>
+      <el-tooltip v-for="button in buttons" :key="button.id" :content="button.tooltip" placement="bottom" open-delay="300">
+        <el-button :disabled="button.disabled" type="text" size="large"
+                   class="ub-toolbar__button"
+                   @click="button.action">
+          <i :class="button.icon"></i>
+        </el-button>
+      </el-tooltip>
     </div>
     <div style="display: flex">
       <el-popover
@@ -313,17 +315,20 @@ module.exports = {
         id: 1,
         disabled: !this.saveEnabled,
         icon: 'fa fa-share-square-o',
-        action: _ => { this.$emit('saveAndClose') }
+        action: _ => { this.$emit('saveAndClose') },
+        tooltip: this.$ut('saveAndClose')
       }, {
         id: 2,
         disabled: !this.saveEnabled,
         icon: 'fa fa-save',
-        action: _ => { this.$emit('saveAndReload') }
+        action: _ => { this.$emit('saveAndReload') },
+        tooltip: this.$ut('save')
       }, {
         id: 3,
         disabled: !this.canDelete,
         icon: 'fa fa-trash-o',
-        action: _ => { this.$emit('remove') }
+        action: _ => { this.$emit('remove') },
+        tooltip: this.$ut('Delete')
       }]
     },
     buttons () {
