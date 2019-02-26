@@ -45,6 +45,23 @@ module.exports = {
     }
   },
   methods: {
+    setInitialItem () {
+      if (this.value) {
+        this.loading = true
+        let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
+        if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
+          promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
+        }
+        promise.where(this.primaryColumn, 'in', this.resultData).select().then((data) => {
+          this.initialItem = data
+          this.initialItem.forEach((item) => {
+            item.removed = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
+          })
+        }).finally(() => {
+          this.loading = false
+        })
+      }
+    },
     onChange (data) {
       this.initialItem = this.items.find((el) => {
         return el[this.primaryColumn] === data
@@ -110,12 +127,15 @@ module.exports = {
       }
     }
   },
-  computed: {
-    valueArray () {
-      return this.value ? this.value.trim().split(',').map(item => {
+  watch: {
+    value () {
+      this.resultData = this.value ? this.value.trim().split(',').map(item => {
         return typeof item !== 'number' ? parseInt(item) : item
       }) : null
-    },
+      this.setInitialItem()
+    }
+  },
+  computed: {
     displayValue () {
       return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
     },
@@ -140,22 +160,7 @@ module.exports = {
     this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
     // this.$refs.selector.$refs.reference._vnode.children[1].data.attrs.tabindex = '-1'
     // this.$refs.selector.$refs.reference.$refs.input.setAttribute('tabindex', '-1')
-    if (this.value) {
-      this.loading = true
-      let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
-      if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
-        promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
-      }
-      promise.where(this.primaryColumn, 'in', this.valueArray).select().then((data) => {
-        this.initialItem = data
-        this.initialItem.forEach((item) => {
-          item.removed = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
-        })
-        this.resultData = this.valueArray
-      }).finally(() => {
-        this.loading = false
-      })
-    }
+    this.setInitialItem()
   }
 }
 </script>
