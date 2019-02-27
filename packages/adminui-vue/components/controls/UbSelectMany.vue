@@ -36,13 +36,7 @@ module.exports = {
       type: String,
       required: true
     },
-    disabled: Boolean,
-    primaryColumn: {
-      type: String,
-      default () {
-        return 'ID'
-      }
-    }
+    disabled: Boolean
   },
   methods: {
     setInitialItem () {
@@ -114,6 +108,7 @@ module.exports = {
   },
   data () {
     return {
+      primaryColumn: 'ID',
       entitySchema: this.$UB.connection.domain.get(this.entityName, true),
       initialItem: null,
       items: [],

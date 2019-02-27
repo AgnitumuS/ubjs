@@ -26,10 +26,10 @@
       </el-select>
     </el-tooltip>
     <div class="ub-select-entity__menu-button">
-      <el-popover v-if="rowActions"
+      <el-popover v-if="rowActions && rowActions.length > 0"
                   v-model="popoverVisible"
                   placement="bottom-end"
-                  disabled="disabled"
+                  :disabled="disabled"
                   trigger="click">
         <el-table :data="rowActions" :show-header="false" @row-click="onActionClick">
           <el-table-column property="caption" width="250">
@@ -42,7 +42,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <i ref="menuButton" style="min-width: 25px" slot="reference" class="el-icon-menu"></i>
+        <i ref="menuButton" slot="reference" style="min-width: 25px" class="el-icon-menu"></i>
       </el-popover>
     </div>
   </div>
@@ -61,12 +61,6 @@ module.exports = {
       type: String,
       required: true
     },
-    primaryColumn: {
-      type: String,
-      default () {
-        return 'ID'
-      }
-    },
     disabled: Boolean,
     useOwnActions: {
       type: Boolean,
@@ -83,6 +77,7 @@ module.exports = {
   },
   data () {
     return {
+      primaryColumn: 'ID',
       buttonMoreCaption: this.$ut('more'),
       deletedCaption: this.$ut('elementIsNotActual'),
       entitySchema: this.$UB.connection.domain.get(this.entityName, true),
