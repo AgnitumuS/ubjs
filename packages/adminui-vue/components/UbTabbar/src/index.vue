@@ -151,6 +151,7 @@ module.exports = {
   },
 
   mounted () {
+    this.initCreatedTabs()
     window.addEventListener('mouseup', this.stopDrag)
     this._oldWindowOnResize = window.onresize
     window.onresize = window._.debounce(this.calcTabWidth, 300)
@@ -356,6 +357,32 @@ module.exports = {
       this.moveToView()
     },
 
+    addTab (tab) {
+      // When an ExtJS tab changes its title, need to sync it with tabbar
+      tab.addListener('titlechange', (UBTab, newText) => {
+        const tab = this.tabs.find(t => t.id === UBTab.id)
+        if (tab) {
+          tab.title = newText
+          // this.measurementPending = true
+        }
+      })
+
+      /* Add a new tab to the end of tab list */
+      this.tabs.push({
+        id: tab.id,
+        title: tab.title,
+        point: null
+      })
+      // this.measurementPending = true
+    },
+
+    initCreatedTabs () {
+      const createdTabs = window.$App.viewport.centralPanel.items.items
+      for (const tab of createdTabs) {
+        this.addTab(tab)
+      }
+    },
+
     subscribeCentralPanelEvents () {
       window.$App.viewport.centralPanel.on({
         /**
@@ -364,22 +391,7 @@ module.exports = {
          * @param tab
          */
         add (sender, tab) {
-          // When an ExtJS tab changes its title, need to sync it with tabbar
-          tab.addListener('titlechange', (UBTab, newText) => {
-            const tab = this.tabs.find(t => t.id === UBTab.id)
-            if (tab) {
-              tab.title = newText
-              this.measurementPending = true
-            }
-          })
-
-          /* Add a new tab to the end of tab list */
-          this.tabs.push({
-            id: tab.id,
-            title: tab.title,
-            point: null
-          })
-          this.measurementPending = true
+          this.addTab(tab)
         },
 
         remove (sender, tab) {
