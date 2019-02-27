@@ -568,7 +568,7 @@ module.exports = {
   transform: translateY(30px);
 }
 
-.tab-anim-leave-active{
+.ub-tabbar__tab.tab-anim-leave-active{
   transition: all .23s;
   position: absolute;
   top: 0
