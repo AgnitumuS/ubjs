@@ -47,7 +47,8 @@ module.exports = function () {
     .where('[queueCode]', '=', 'mail')
     .where('[completeDate]', 'isNull')
     .limit(100)
-    // .orderByDesc('[msgPriority]')
+    // handle messages In the order of their arrival
+    .orderBy('[ID]')
     .select()
 
   if (inst.eof) {
