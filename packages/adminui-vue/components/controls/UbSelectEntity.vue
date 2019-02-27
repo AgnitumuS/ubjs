@@ -76,6 +76,7 @@ module.exports = {
   data () {
     return {
       primaryColumn: 'ID',
+      waitingNewEntity: false,
       buttonMoreCaption: this.$ut('more'),
       deletedCaption: this.$ut('elementIsNotActual'),
       entitySchema: this.$UB.connection.domain.get(this.entityName, true),
@@ -83,12 +84,18 @@ module.exports = {
       initialItem: null,
       items: [],
       itemCount: 20,
-      listener: id => {
-        if (id && this.resultData === null) this.resultData = id
-        if (id && id === this.resultData) {
+      handleEntityChanged: id => {
+        if (this.resultData === id) {
           this.setInitialItem(id)
         } else {
           this.items = []
+        }
+      },
+      handleEntityInserted: id => {
+        if (this.waitingNewEntity) {
+          this.resultData = id
+          this.waitingNewEntity = false
+          this.setInitialItem(id)
         }
       },
       loading: false,
@@ -241,6 +248,7 @@ module.exports = {
         icon: 'fa fa-plus-circle',
         handler: {
           fn () {
+            this.waitingNewEntity = true
             this.$UB.core.UBApp.doCommand({
               cmdType: this.$UB.core.UBCommand.commandType.showForm,
               entity: this.entityName,
@@ -279,6 +287,7 @@ module.exports = {
   },
   destroyed () {
     this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
+    this.$UB.connection.removeListener(`${this.entityName}:insert`, this.listener)
   },
   watch: {
     value () {
@@ -291,7 +300,8 @@ module.exports = {
       this.initLoaderStyles()
     }, 1)
 
-    this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
+    this.$UB.connection.on(`${this.entityName}:changed`, this.handleEntityChanged)
+    this.$UB.connection.on(`${this.entityName}:insert`, this.handleEntityInserted)
 
     /* In case to disable focus on menu button by Tab - add tabindex attr to menu */
     if (this.$refs.menuButton) this.$refs.menuButton.setAttribute('tabindex', -1)
