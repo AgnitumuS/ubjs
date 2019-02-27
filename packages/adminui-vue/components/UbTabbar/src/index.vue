@@ -418,3 +418,163 @@ module.exports = {
   }
 }
 </script>
+
+<style>
+.ub-tabbar{
+  padding: 8px;
+  display:flex;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid rgba(var(--blue), 0.12);
+}
+
+.ub-tab-slider__ctrl{
+  position: absolute;
+  top: 0;
+  width: 35px;
+  height: 100%;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.ub-tab-slider__ctrl__prev{
+  background: linear-gradient(to left, transparent, #fefefe 45%);
+  left: 0;
+  justify-content: flex-start;
+}
+
+.ub-tab-slider__ctrl__prev:after,
+.ub-tab-slider__ctrl__next:after{
+  color: rgba(var(--blue), 1);
+  font-size: 20px;
+}
+
+.ub-tab-slider__ctrl__prev:after{
+  content: '<';
+}
+.ub-tab-slider__ctrl__next:after{
+  content: '>';
+}
+
+.ub-tab-slider__ctrl__next{
+  background: linear-gradient(to right, transparent, #fefefe 45%);
+  right: 0;
+}
+
+.ub-tabbar__tabs-wrap{
+  position: relative;
+  width: 100%;
+  height: 32px;
+  overflow: hidden;
+}
+
+.ub-tab-slider{
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition:transform .2s;
+}
+
+.ub-tab-slider.disabled-transition{
+  transition: none;
+}
+
+.ub-tabbar__overflow{
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  margin-left: 30px;
+  position: relative;
+}
+
+.ub-tabbar__overflow.hidden{
+  visibility: collapse
+}
+
+.ub-tabbar__overflow__icon{
+  border: solid 1px rgba(var(--dark-blue), 0.54);
+  transition: .1s;
+  transition-property: background-color, border-color;
+  border-radius: 16px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top:0;
+  left:0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.ub-tabbar__overflow__icon:after{
+    content: '...';
+    color: rgba(var(--blue), 1);
+    font-size: 24px;
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.ub-tabbar__overflow__icon:hover{
+  background-color: rgba(var(--green), 0.16);
+  border-color: rgba(var(--dark-blue), 0.54);
+}
+
+.ub-tabbar__overflow__icon.active{
+  background-color: rgba(var(--blue), 1);
+  border-color: rgba(var(--blue), 1);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ub-tabbar__overflow__icon.active:after{
+  color: rgba(252, 252, 249, 0.87)
+}
+
+.ub-tabbar__overflow__tray{
+  background-color: rgba(var(--blue), 1);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24);
+  padding: 8px 0;
+  border: none;
+  line-height: 1;
+}
+
+.ub-tabbar__overflow__tray[x-placement^=bottom] .popper__arrow::after{
+  border-bottom-color: rgba(var(--blue), 1);
+}
+
+.ub-tabbar__overflow__tabs{
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tab-anim-move {
+  transition: .23s;
+}
+
+.ub-tabbar__tab{
+  transition:transform .23s, opacity .23s;
+}
+
+.tab-anim-enter,
+.tab-anim-leave-to{
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.tab-anim-leave-active{
+  transition: all .23s;
+  position: absolute;
+  top: 0
+}
+
+.ub-tab-slider__transition-group{
+  display: flex
+}
+</style>
