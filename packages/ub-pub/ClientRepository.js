@@ -17,7 +17,7 @@ const CustomRepository = csShared.CustomRepository
  *  - {@link ClientRepository#selectAsArray selectAsArray} method for retrieve `array of array` representation of server entity
  *  - {@link ClientRepository#selectAsStore selectAsStore} method for retrieve {UB.ux.data.UBStore} (applicable only for Ext-based client types)
  *
- * Usually created using {@link UB#Repository UB.Repository} fabric function. Example:
+ * Usually created using {@link UB.Repository UB.Repository} fabric function. Example:
  *
  *      var store = UB.Repository('my_entity').attrs(['ID', 'code'])
  *       .where('code', 'includes', ['1', '2', '3'])  // code in ('1', '2', '3')
