@@ -1065,7 +1065,13 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         return
       }
       const commandConfig = UB.core.UBCommand.getCommandByUrl(window.location.href, $App.getViewport().centralPanel)
-      commandConfig.tabId = 'navigator' + getShortcutID(commandConfig.entity)
+
+      if (commandConfig.instanceID) {
+        commandConfig.tabId = commandConfig.entity + commandConfig.instanceID
+      } else {
+        commandConfig.tabId = 'navigator' + getShortcutID(commandConfig.entity)
+      }
+
       UB.core.UBApp.doCommand(commandConfig)
     }
   },
@@ -1077,7 +1083,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 
 module.exports = UB.core.UBApp
 
-function getShortcutID (code) {
+function getShortcutID (code, instanceID) {
   const store = UB.core.UBStoreManager.getNavigationShortcutStore()
   const rowNum = store.findExact('code', code)
 
