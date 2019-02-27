@@ -7,18 +7,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.2.2]
 ### Fixed
  - relogon form: default focused element should be password
- - relogon form: password should be cleaned after submit 
- 
+ - relogon form: password should be cleaned after submit
+ - `adminui-vue` model replace Ext-JS based dialogs with VueJS implementation.
+  List of methods which was changed:
+    - `Ext.Msg.confirm`
+    - `$App.dialogYesNo`
+    - `$App.dialogInfo`
+    - `$App.dialogError`
+    - `window.onerror`
+    - `Ext.override` -> `UB.view.BasePanel` -> `showValidationErrors`
+
 ## [1.2.0]
 ### Changed
  - `adminui-vue` model replace a top Ext-JS based tabbar with tabbar implemented using VueJS.
   See `components/UbTabbar`
  - `adminui-vue` model replace Ext-JS based relogon window with VueJS implementation.
   See `components/UbRelogon`
- 
+
 ### Fixed
  - authorization form validation message localisation
-  
+
 ## [1.1.0]
 ### Changed
  - vue updated 2.5.17 -> 2.6.6
