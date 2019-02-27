@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.36]
+### Added
+ - new method `blobStore.writeDocumentToResp` to respond to a parsed Document request
+
 ## [5.0.34]
 ### Fixed
  - file name in Content-Disposition header should be wrapped in "", in other case comma or other
