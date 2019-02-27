@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.31]
+### Fixed
+ - **CRITICAL** `ClientRepository.selectScalar` return `undefined` for cached entities
+ even if row exists
+
 ## [5.2.29]
 ### Fixed
  - WebStorm code insight now work inside vue classes for this.$UB
+
 ### Changed
  - `AsyncConnection.appConfig.applicationName` now localized to user language according to 
  settings from `ubConfig`

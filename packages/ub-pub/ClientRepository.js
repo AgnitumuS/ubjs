@@ -156,7 +156,7 @@ class ClientRepository extends CustomRepository {
    */
   selectScalar () {
     return this.selectAsArray().then(function (result) {
-      return (result.resultData.rowCount > 0) ? result.resultData.data[ 0 ][ 0 ] : undefined
+      return (result.resultData.data.length) ? result.resultData.data[ 0 ][ 0 ] : undefined
     })
   }
 
