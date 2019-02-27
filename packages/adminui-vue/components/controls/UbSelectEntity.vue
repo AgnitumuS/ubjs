@@ -286,8 +286,8 @@ module.exports = {
     }
   },
   destroyed () {
-    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
-    this.$UB.connection.removeListener(`${this.entityName}:insert`, this.listener)
+    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.handleEntityChanged)
+    this.$UB.connection.removeListener(`${this.entityName}:insert`, this.handleEntityInserted)
   },
   watch: {
     value () {
