@@ -107,7 +107,7 @@ module.exports = {
     saveLocalization () {
       let changedColumns = []
       Object.keys(this.localizableFields).forEach(key => {
-        if (this.localizableFields[key].value !== this.oldLocalization[key].value) changedColumns.push(key)
+        if (!this.oldLocalization[key] || this.localizableFields[key].value !== this.oldLocalization[key].value) changedColumns.push(key)
       })
       if (changedColumns.length > 0) {
         changedColumns.forEach(key => {

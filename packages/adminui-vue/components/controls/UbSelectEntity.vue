@@ -9,9 +9,7 @@
                  @change="onChange"
                  @click.native="onFocus"
                  @input.native="onInput">
-        <div v-if="rowIsDeleted" slot="prefix">
-          <i style="margin-left: 5px" class="fa fa-ban"></i>
-        </div>
+        <i v-if="rowIsDeleted" slot="prefix" class="fa fa-ban el-input__icon"></i>
         <template>
           <el-option v-for="item in itemsToDisplay"
                      :key="item[primaryColumn]"
@@ -26,10 +24,10 @@
       </el-select>
     </el-tooltip>
     <div class="ub-select-entity__menu-button">
-      <el-popover v-if="rowActions"
+      <el-popover v-if="rowActions && rowActions.length > 0"
                   v-model="popoverVisible"
                   placement="bottom-end"
-                  disabled="disabled"
+                  :disabled="disabled"
                   trigger="click">
         <el-table :data="rowActions" :show-header="false" @row-click="onActionClick">
           <el-table-column property="caption" width="250">
@@ -42,7 +40,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <i ref="menuButton" style="min-width: 25px" slot="reference" class="el-icon-menu"></i>
+        <i ref="menuButton" slot="reference" style="min-width: 25px" class="el-icon-menu"></i>
       </el-popover>
     </div>
   </div>
@@ -61,12 +59,6 @@ module.exports = {
       type: String,
       required: true
     },
-    primaryColumn: {
-      type: String,
-      default () {
-        return 'ID'
-      }
-    },
     disabled: Boolean,
     useOwnActions: {
       type: Boolean,
@@ -83,6 +75,8 @@ module.exports = {
   },
   data () {
     return {
+      primaryColumn: 'ID',
+      waitingNewEntity: false,
       buttonMoreCaption: this.$ut('more'),
       deletedCaption: this.$ut('elementIsNotActual'),
       entitySchema: this.$UB.connection.domain.get(this.entityName, true),
@@ -90,12 +84,18 @@ module.exports = {
       initialItem: null,
       items: [],
       itemCount: 20,
-      listener: id => {
-        if (id && this.resultData === null) this.resultData = id
-        if (id && id === this.resultData) {
+      handleEntityChanged: id => {
+        if (this.resultData === id) {
           this.setInitialItem(id)
         } else {
           this.items = []
+        }
+      },
+      handleEntityInserted: id => {
+        if (this.waitingNewEntity) {
+          this.resultData = id
+          this.waitingNewEntity = false
+          this.setInitialItem(id)
         }
       },
       loading: false,
@@ -247,6 +247,7 @@ module.exports = {
         icon: 'fa fa-plus-circle',
         handler: {
           fn () {
+            this.waitingNewEntity = true
             this.$UB.core.UBApp.doCommand({
               cmdType: this.$UB.core.UBCommand.commandType.showForm,
               entity: this.entityName,
@@ -283,7 +284,8 @@ module.exports = {
     }
   },
   destroyed () {
-    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
+    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.handleEntityChanged)
+    this.$UB.connection.removeListener(`${this.entityName}:insert`, this.handleEntityInserted)
   },
   watch: {
     value () {
@@ -296,7 +298,8 @@ module.exports = {
       this.initLoaderStyles()
     }, 1)
 
-    this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
+    this.$UB.connection.on(`${this.entityName}:changed`, this.handleEntityChanged)
+    this.$UB.connection.on(`${this.entityName}:insert`, this.handleEntityInserted)
 
     /* In case to disable focus on menu button by Tab - add tabindex attr to menu */
     if (this.$refs.menuButton) this.$refs.menuButton.setAttribute('tabindex', -1)

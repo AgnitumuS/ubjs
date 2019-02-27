@@ -82,14 +82,17 @@ module.exports = {
       })
     },
     saveAndClose () {
-      this.saveEntity(() => this.currentTab.close())
+      this.saveEntity(_ => {
+        this.currentTab.forceClose = true
+        this.currentTab.close()
+      })
     },
     saveEntity (callback) {
       let changedColumns = Object.assign({}, this.changedColumns)
       if (Object.keys(changedColumns).length > 0) {
         let saveFn = () => {
           Object.keys(changedColumns).forEach(col => {
-            if (this.entitySchema.attributes[col] && this.entitySchema.attributes[col].isMultiLang) {
+            if (this.entitySchema.attributes[col] && this.entitySchema.attributes[col].isMultiLang && Object.keys(changedColumns).some(key => key.indexOf(`${col}_`) !== -1)) {
               changedColumns[`${col}_${this.$UB.connection.userLang()}^`] = changedColumns[col]
               delete changedColumns[col]
             }
