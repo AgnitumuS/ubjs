@@ -9,9 +9,7 @@
                  @change="onChange"
                  @click.native="onFocus"
                  @input.native="onInput">
-        <div v-if="rowIsDeleted" slot="prefix">
-          <i style="margin-left: 5px" class="fa fa-ban"></i>
-        </div>
+        <i v-if="rowIsDeleted" slot="prefix" class="fa fa-ban el-input__icon"></i>
         <template>
           <el-option v-for="item in itemsToDisplay"
                      :key="item[primaryColumn]"
@@ -231,7 +229,8 @@ module.exports = {
               cmdType: this.$UB.core.UBCommand.commandType.showForm,
               entity: this.entityName,
               isModal: true,
-              instanceID: this.resultData
+              instanceID: this.resultData,
+              tabId: this.entityName + this.resultData
             })
           }
         }
@@ -245,7 +244,8 @@ module.exports = {
             this.$UB.core.UBApp.doCommand({
               cmdType: this.$UB.core.UBCommand.commandType.showForm,
               entity: this.entityName,
-              isModal: true
+              isModal: true,
+              tabId: this.entityName + 'ext' + Ext.id(null, 'addNew')
             })
           }
         }

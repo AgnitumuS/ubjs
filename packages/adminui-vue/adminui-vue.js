@@ -46,21 +46,19 @@ Vue.component('ub-entity-edit', entityEditor)
 
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
+    let params = this
+    let existsTab = Ext.getCmp(params.tabId)
+    if (existsTab) {
+      $App.viewport.centralPanel.setActiveTab(existsTab)
+      return
+    }
+
     let autoFormComponent = require('./components/AutoFormComponent.vue')
     // window.BOUNDLED_BY_WEBPACK = false
     if (BOUNDLED_BY_WEBPACK) {
       autoFormComponent = autoFormComponent.default
     }
-    let params = this
     let entitySchema = $App.domainInfo.get(params.entity)
-    if (params.instanceID) {
-      let existsTab = Ext.getCmp(params.tabId)
-      if (existsTab) {
-        $App.viewport.centralPanel.setActiveTab(existsTab)
-        return
-      }
-    }
-
     let tab = $App.viewport.centralPanel.add({
       id: params.tabId,
       title: entitySchema.caption,

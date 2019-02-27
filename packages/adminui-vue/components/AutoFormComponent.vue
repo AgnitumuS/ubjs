@@ -96,7 +96,12 @@ module.exports = {
       required: true
     },
     /* externalData - parameters from parent context. When we create related object - disable related fields and fill with parent data */
-    externalData: Object,
+    externalData: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
     instanceID: Number,
     currentTabId: String
   },
