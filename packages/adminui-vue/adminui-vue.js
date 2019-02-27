@@ -34,10 +34,12 @@ Vue.use(ElementUI, {
 
 const replaceDefaultTabbar = require('./components/UbTabbar/init')
 const replaceDefaultRelogin = require('./components/UbRelogin/init')
+const replaceDefaultDialogs = require('./components/UbDialog/init')
 
 if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)
+  window.$App.on('applicationReady', replaceDefaultDialogs)
 }
 
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
