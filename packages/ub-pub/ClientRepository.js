@@ -96,7 +96,7 @@ class ClientRepository extends CustomRepository {
    *      UB.Repository('uba_user').attrs(['ID', 'name', 'ID.name'])
    *      .selectAsArray().then(UB.logDebug);
    *      // {"entity":"uba_user","fieldList":["ID","name","ID.name"],"method":"select",
-   *      // "resultData":{"fields":["ID","name","ID.name"],"rowCount":1,
+   *      // "resultData":{"fields":["ID","name","ID.name"],
    *      // "data":[[10,"admin","admin"]]},"total":1}
    *
    * But resultData is always present
