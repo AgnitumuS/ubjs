@@ -290,3 +290,16 @@ function dbRaw (req, resp) {
   resp.writeEnd({id: dataStore.get(0), name: dataStore.get(1)})
 }
 App.registerEndpoint('dbRaw', dbRaw, false)
+
+/**
+ * Single database query (ORM)  for performance test
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function db (req, resp) {
+  let data = UB.Repository('uba_user').attrs(['ID', 'name']).selectAsObject()
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd(data[0])
+}
+App.registerEndpoint('db', db, false)
