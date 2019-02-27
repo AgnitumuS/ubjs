@@ -47,6 +47,11 @@ Vue.component('ub-entity-edit', entityEditor)
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
     let params = this
+
+    if (!params.tabId) {
+      params.tabId = params.entity
+      params.tabId += params.instanceID ? params.instanceID : 'ext' + Ext.id(null, 'addNew')
+    }
     let existsTab = Ext.getCmp(params.tabId)
     if (existsTab) {
       $App.viewport.centralPanel.setActiveTab(existsTab)

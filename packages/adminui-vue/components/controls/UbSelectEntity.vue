@@ -236,8 +236,7 @@ module.exports = {
               cmdType: this.$UB.core.UBCommand.commandType.showForm,
               entity: this.entityName,
               isModal: true,
-              instanceID: this.resultData,
-              tabId: this.entityName + this.resultData
+              instanceID: this.resultData
             })
           }
         }
@@ -252,8 +251,7 @@ module.exports = {
             this.$UB.core.UBApp.doCommand({
               cmdType: this.$UB.core.UBCommand.commandType.showForm,
               entity: this.entityName,
-              isModal: true,
-              tabId: this.entityName + 'ext' + Ext.id(null, 'addNew')
+              isModal: true
             })
           }
         }

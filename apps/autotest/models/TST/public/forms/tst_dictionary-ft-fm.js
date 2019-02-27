@@ -2,12 +2,16 @@ const Vue = require('vue')
 const $App = require('@unitybase/adminui-pub')
 
 exports.mount = function (params) {
+  if (!params.tabId) {
+    params.tabId = params.entity
+    params.tabId += params.instanceID ? params.instanceID : 'ext' + Ext.id(null, 'addNew')
+  }
+
   let existsTab = Ext.getCmp(params.tabId)
   if (existsTab) {
     $App.viewport.centralPanel.setActiveTab(existsTab)
     return
   }
-
   let tstDictionaryEdit = require('../components/DictionaryEditView.vue')
   let entitySchema = $App.domainInfo.get(params.entity)
 
