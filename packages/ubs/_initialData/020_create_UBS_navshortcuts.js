@@ -1,3 +1,7 @@
+const { dataLoader, csv } = require('@unitybase/base')
+const fs = require('fs')
+const path = require('path')
+
 /**
  * @author pavel.mash
  * Fill navigation shortcuts for UBM model
@@ -210,4 +214,15 @@ module.exports = function (session) {
       }, null, '\t')
     }
   })
+
+  console.log('\t\t\tSetting up default ubs navigation shortcuts access rights')
+  dataLoader.loadSimpleCSVData(conn,
+    path.join(__dirname, 'ubm_navshortcut_adm.csv'),
+    'ubm_navshortcut_adm',
+    'instanceID;admSubjID'.split(';'),
+    [
+      dataLoader.lookup(conn, 'ubm_navshortcut', 'code', 0),
+      dataLoader.lookup(conn, 'uba_subject', 'code', 1)
+    ],
+    1)
 }

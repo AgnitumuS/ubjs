@@ -53,7 +53,7 @@ function postProcessing (loader, fullFilePath, content, row) {
 
   row.code = fileName.substring(0, fileName.length - 7)
   if (row.ID) console.warn(`Please, remove a row "//@ID ${row.ID}" from a file ${fileName}. In UB4 form ID is generated automatically as crc32(code)`)
-  row.ID = ncrc32(0, row.code)
+  row.ID = ncrc32(0, row.code + (row.model || ''))
 
   // form can be stored in other model than entity
   // we fill relPath in form "modelName"|"path inside model public folder" as expected by mdb virtual store
@@ -229,14 +229,14 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       storedValue[key] = val
     }
   })
+  let formEntity = App.domainInfo.get(storedValue.entity)
+  let codeOfModelToStore = storedValue.model || formEntity.modelName
   if (isInsert) {
-    ID = ncrc32(0, storedValue.code)
+    ID = ncrc32(0, storedValue.code + codeOfModelToStore)
     storedValue.ID = ID
   }
-  let formEntity = App.domainInfo.get(storedValue.entity)
   let newFormDefMeta = newValues.formDef
   let newFormCodeMeta = newValues.formCode
-  let codeOfModelToStore = storedValue.model || formEntity.modelName
   let formDefBody
   let formScriptBody
   if (isInsert) { // for insert operation create a boilerplate for form definition & form script

@@ -1,90 +1,92 @@
 <template>
   <div class="ub-tabbar">
-    <div class="ub-tabbar__tabs-wrap" ref="tabWrap">
-      <div 
+    <div
+      ref="tabWrap"
+      class="ub-tabbar__tabs-wrap"
+    >
+      <div
         ref="tabInner"
         :class="{'disabled-transition': dragging}"
         :style="{transform: `translateX(${ offset }px)`}"
-        @mousedown="startDrag"
         class="ub-tab-slider"
-        >
+        @mousedown="startDrag"
+      >
         <transition-group
-          @before-leave="beforeLeaveAnimation"
-          @after-leave="afterLeaveAnimation"
           name="tab-anim"
           class="ub-tab-slider__transition-group"
-          >
-          <tab 
-            ref="tabs"
+          @before-leave="beforeLeaveAnimation"
+          @after-leave="afterLeaveAnimation"
+        >
+          <ub-tab
             v-for="(tab, index) in tabs"
+            ref="tabs"
             :key="tab.id"
             :tab-data="tab"
             :class="{'active': current === index}"
             @close="handleClose"
             @open="handleTabClick"
             @right-click="$refs.context.show"
-            />
-          </tab>
+          />
         </transition-group>
       </div>
-      <div 
+      <div
         v-show="sliderPrevVisible"
-        @click="navigate(1)"
         class="ub-tab-slider__ctrl ub-tab-slider__ctrl__prev"
-        >
-      </div>
-      <div 
+        @click="navigate(1)"
+      />
+      <div
         v-show="sliderNextVisible"
-        @click="navigate(-1)"
         class="ub-tab-slider__ctrl ub-tab-slider__ctrl__next"
-        >
-      </div>
+        @click="navigate(-1)"
+      />
     </div>
 
-    <el-popover 
+    <el-popover
       class="ub-tabbar__overflow"
       placement="bottom"
       trigger="click"
       popper-class="ub-tabbar__overflow__tray"
       :class="{'hidden': this.visibleWidth >= this.tabsWidth}"
-      >
-      <div 
+    >
+      <div
         slot="reference"
         class="ub-tabbar__overflow__icon"
-        >
-      </div>
+      />
       <div class="ub-tabbar__overflow__tabs">
-        <tab 
+        <ub-tab
           v-for="(tab, index) in tabs"
           :key="index"
           :tab-data="tab"
           in-tray
           :class="{'active': current === index}"
           @open="handleTabClick"
-          @close="handleClose">
-         </tab>
+          @close="handleClose"
+        />
       </div>
     </el-popover>
 
-    <tabbar-context ref="context" @close="selectContext"/>
+    <ub-tabbar-context
+      ref="context"
+      @close="selectContext"
+    />
   </div>
 </template>
 
 <script>
-let Tab = require('./tab.vue')
-let TabbarContext = require('./tabbar-context.vue')
+let UbTab = require('./UbTab.vue')
+let UbTabbarContext = require('./UbTabbarContext.vue')
 
 if (BOUNDLED_BY_WEBPACK) {
-  Tab = Tab.default
-  TabbarContext = TabbarContext.default
+  UbTab = UbTab.default
+  UbTabbarContext = UbTabbarContext.default
 }
 
 module.exports = {
-  name: 'tabbar',
+  name: 'UbTabbar',
 
-  components: {Tab, TabbarContext},
+  components: {UbTab, UbTabbarContext},
 
-  data(){
+  data () {
     return {
       dragging: false,
       dragStart: null,
@@ -124,17 +126,17 @@ module.exports = {
   },
 
   computed: {
-    sliderPrevVisible() {
+    sliderPrevVisible () {
       return this.visibleWidth < this.tabsWidth && this.offset < 0
     },
 
-    sliderNextVisible() {
+    sliderNextVisible () {
       return this.visibleWidth < this.tabsWidth && this.tabsWidth + this.offset > this.visibleWidth
     }
   },
 
   watch: {
-    measurementPending(isPending) {
+    measurementPending (isPending) {
       if (isPending) {
         // $nextTick is strictly required here, to allow DOM changes to be completed.
         // This code is often called after tab is added or removed or other DOM changes made, which might
@@ -144,106 +146,101 @@ module.exports = {
     }
   },
 
-  created(){
+  created () {
     this.subscribeCentralPanelEvents()
   },
 
-  mounted() {
+  mounted () {
+    this.initCreatedTabs()
     window.addEventListener('mouseup', this.stopDrag)
     this._oldWindowOnResize = window.onresize
-    window.onresize = _.debounce(this.calcTabWidth, 300)
+    window.onresize = window._.debounce(this.calcTabWidth, 300)
   },
 
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('mouseup', this.stopDrag)
     window.onresize = this._oldWindowOnResize
     delete this._oldWindowOnResize
   },
 
   methods: {
-    beforeLeaveAnimation(el) {
+    beforeLeaveAnimation (el) {
       el.style.left = el.offsetLeft + 'px'
     },
 
-    afterLeaveAnimation() {
+    afterLeaveAnimation () {
       this.calcTabWidth()
     },
 
-    calcTabWidth() {
+    calcTabWidth () {
       const points = []
-      
-      if (this.$refs.tabs){
-        for (const tab of this.$refs.tabs){
+      if (this.$refs.tabs) {
+        for (const tab of this.$refs.tabs) {
           const {offsetLeft} = tab.$el
           points.push(offsetLeft)
         }
       }
-      
       this.setMeasurements({
         visibleWidth: this.$refs.tabWrap.offsetWidth,
         tabsWidth: this.$refs.tabInner.offsetWidth,
         points
       })
-      
       this.positionActiveTab()
     },
 
-    startDrag({clientX}) {
+    startDrag ({clientX}) {
       window.addEventListener('mousemove', this.doDrag)
       this.dragStart = clientX
       this.offsetStart = this.offset
       this.dragging = true
       this.disabledTabClick = false
-      setTimeout(() => this.disabledTabClick = true, 200)
+      setTimeout(() => { this.disabledTabClick = true }, 200)
     },
 
-    doDrag({clientX}) {
+    doDrag ({clientX}) {
       this.offset = Math.min(this.offsetStart + clientX - this.dragStart, 0)
     },
 
-    stopDrag() {
+    stopDrag () {
       window.removeEventListener('mousemove', this.doDrag)
       this.dragging = false
       this.moveToView()
     },
 
-    handleTabClick(tab, ignoreDrag = false) {
+    handleTabClick (tab, ignoreDrag = false) {
       if (ignoreDrag || !this.disabledTabClick) {
         const index = this.tabs.indexOf(tab)
         if (index !== -1) {
-          $App.viewport.centralPanel.setActiveTab(index)
+          window.$App.viewport.centralPanel.setActiveTab(index)
         }
       }
     },
 
-    handleClose(tabs, ignoreDrag) {
+    handleClose (tabs, ignoreDrag) {
       if (!this.disabledTabClick || ignoreDrag) {
         for (const tabId of tabs.map(t => t.id)) {
-          const currentTab = $App.viewport.centralPanel.queryById(tabId)
+          const currentTab = window.$App.viewport.centralPanel.queryById(tabId)
 
           currentTab.close()
         }
       }
     },
 
-    selectContext(action, tab){
-      if (action === 'closeOther'){
+    selectContext (action, tab) {
+      if (action === 'closeOther') {
         const other = this.tabs.filter(t => t.id !== tab.id)
         this.handleClose(other, true)
-
-      } else if (action === 'closeAll'){
+      } else if (action === 'closeAll') {
         this.handleClose(this.tabs, true)
-
-      } else if (action === 'close'){
+      } else if (action === 'close') {
         this.handleClose([tab], true)
       }
     },
 
-    moveToView() {
+    moveToView () {
       if (this.tabsWidth <= this.visibleWidth || this.offset > 0) {
         // Content fully fits into visible area, or it is a positive offset, which should not be
         this.offset = 0
-
       } else if (this.tabsWidth + this.offset <= this.visibleWidth) {
         // Content does not fit, but the right border of the tabs ends within the visible area, so
         // shift content so that right border of content hits the right border of the visible area.
@@ -251,7 +248,7 @@ module.exports = {
       }
     },
 
-    navigate(direction) {
+    navigate (direction) {
       this.offset += direction * this.visibleWidth * 0.3
       this.moveToView()
     },
@@ -259,7 +256,7 @@ module.exports = {
     /**
      * Reaction on change of the active tab.  Await for measurements, if needed.
      */
-    onChangeActiveTab(tabId) {
+    onChangeActiveTab (tabId) {
       let index = this.tabs.findIndex(t => t.id === tabId)
 
       /* Change index of currently selected tab */
@@ -284,7 +281,7 @@ module.exports = {
     /**
      * Make the current tab visible
      */
-    positionActiveTab() {
+    positionActiveTab () {
       const SLIDER_WIDTH = 35
 
       if (this.measurementPending) {
@@ -316,7 +313,7 @@ module.exports = {
         const prevSliderWidth = prevSliderVisible ? SLIDER_WIDTH : 0
 
         const nextSliderVisible = current + 2 < tabs.length ||
-          tabRight - tabLeft - prevSliderWidth > visibleWidth
+                tabRight - tabLeft - prevSliderWidth > visibleWidth
         const nextSliderWidth = nextSliderVisible ? SLIDER_WIDTH : 0
 
         if (current !== 0) {
@@ -347,7 +344,7 @@ module.exports = {
     /**
      * Set measurements of the DOM.
      */
-    setMeasurements({visibleWidth, tabsWidth, points}) {
+    setMeasurements ({visibleWidth, tabsWidth, points}) {
       this.visibleWidth = visibleWidth
       this.tabsWidth = tabsWidth
       for (let i = 0; i < points.length; i++) {
@@ -360,33 +357,44 @@ module.exports = {
       this.moveToView()
     },
 
-    subscribeCentralPanelEvents(){
-      $App.viewport.centralPanel.on({
+    addTab (tab) {
+      // When an ExtJS tab changes its title, need to sync it with tabbar
+      tab.addListener('titlechange', (UBTab, newText) => {
+        const tab = this.tabs.find(t => t.id === UBTab.id)
+        if (tab) {
+          tab.title = newText
+          // this.measurementPending = true
+        }
+      })
+
+      /* Add a new tab to the end of tab list */
+      this.tabs.push({
+        id: tab.id,
+        title: tab.title,
+        point: null
+      })
+      // this.measurementPending = true
+    },
+
+    initCreatedTabs () {
+      const createdTabs = window.$App.viewport.centralPanel.items.items
+      for (const tab of createdTabs) {
+        this.addTab(tab)
+      }
+    },
+
+    subscribeCentralPanelEvents () {
+      window.$App.viewport.centralPanel.on({
         /**
          * React on adding a new tab to ExtJS "centralPanel".
          * @param sender
          * @param tab
          */
-        add(sender, tab) {
-          // When an ExtJS tab changes its title, need to sync it with tabbar
-          tab.addListener('titlechange', (UBTab, newText) => {
-            const tab = this.tabs.find(t => t.id === UBTab.id)
-            if (tab) {
-              tab.title = newText
-              this.measurementPending = true
-            }
-          })
-
-           /* Add a new tab to the end of tab list */
-          this.tabs.push({
-            id: tab.id,
-            title: tab.title,
-            point: null
-          })
-          this.measurementPending = true
+        add (sender, tab) {
+          this.addTab(tab)
         },
 
-        remove(sender, tab) {
+        remove (sender, tab) {
           const {tabs, current} = this
           const index = tabs.findIndex(t => t.id === tab.id)
           if (index !== -1) {
@@ -400,7 +408,7 @@ module.exports = {
           }
         },
 
-        async tabchange(sender, tab) {
+        async tabchange (sender, tab) {
           this.onChangeActiveTab(tab.id)
         },
 
@@ -410,3 +418,163 @@ module.exports = {
   }
 }
 </script>
+
+<style>
+.ub-tabbar{
+  padding: 8px;
+  display:flex;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid rgba(var(--blue), 0.12);
+}
+
+.ub-tab-slider__ctrl{
+  position: absolute;
+  top: 0;
+  width: 35px;
+  height: 100%;
+  display:flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.ub-tab-slider__ctrl__prev{
+  background: linear-gradient(to left, transparent, #fefefe 45%);
+  left: 0;
+  justify-content: flex-start;
+}
+
+.ub-tab-slider__ctrl__prev:after,
+.ub-tab-slider__ctrl__next:after{
+  color: rgba(var(--blue), 1);
+  font-size: 20px;
+}
+
+.ub-tab-slider__ctrl__prev:after{
+  content: '<';
+}
+.ub-tab-slider__ctrl__next:after{
+  content: '>';
+}
+
+.ub-tab-slider__ctrl__next{
+  background: linear-gradient(to right, transparent, #fefefe 45%);
+  right: 0;
+}
+
+.ub-tabbar__tabs-wrap{
+  position: relative;
+  width: 100%;
+  height: 32px;
+  overflow: hidden;
+}
+
+.ub-tab-slider{
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition:transform .2s;
+}
+
+.ub-tab-slider.disabled-transition{
+  transition: none;
+}
+
+.ub-tabbar__overflow{
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  margin-left: 30px;
+  position: relative;
+}
+
+.ub-tabbar__overflow.hidden{
+  visibility: collapse
+}
+
+.ub-tabbar__overflow__icon{
+  border: solid 1px rgba(var(--dark-blue), 0.54);
+  transition: .1s;
+  transition-property: background-color, border-color;
+  border-radius: 16px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top:0;
+  left:0;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.ub-tabbar__overflow__icon:after{
+    content: '...';
+    color: rgba(var(--blue), 1);
+    font-size: 24px;
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.ub-tabbar__overflow__icon:hover{
+  background-color: rgba(var(--green), 0.16);
+  border-color: rgba(var(--dark-blue), 0.54);
+}
+
+.ub-tabbar__overflow__icon.active{
+  background-color: rgba(var(--blue), 1);
+  border-color: rgba(var(--blue), 1);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ub-tabbar__overflow__icon.active:after{
+  color: rgba(252, 252, 249, 0.87)
+}
+
+.ub-tabbar__overflow__tray{
+  background-color: rgba(var(--blue), 1);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24);
+  padding: 8px 0;
+  border: none;
+  line-height: 1;
+}
+
+.ub-tabbar__overflow__tray[x-placement^=bottom] .popper__arrow::after{
+  border-bottom-color: rgba(var(--blue), 1);
+}
+
+.ub-tabbar__overflow__tabs{
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tab-anim-move {
+  transition: .23s;
+}
+
+.ub-tabbar__tab{
+  transition:transform .23s, opacity .23s;
+}
+
+.tab-anim-enter,
+.tab-anim-leave-to{
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.ub-tabbar__tab.tab-anim-leave-active{
+  transition: all .23s;
+  position: absolute;
+  top: 0
+}
+
+.ub-tab-slider__transition-group{
+  display: flex
+}
+</style>

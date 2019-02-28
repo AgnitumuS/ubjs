@@ -261,9 +261,7 @@ Ext.define('UB.view.LoginWindow', {
       authMethods = me.connection.authMethods,
       authItems = [],
       minAuthTabsHeight = 265,
-      lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN),
-      locale = this.connection.preferredLocale,
-      applicationName
+      lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)
     var cfgAdminUI = me.connection.appConfig.uiSettings.adminUI
     let silenceKerberosLogin = window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
 
@@ -288,22 +286,14 @@ Ext.define('UB.view.LoginWindow', {
       }))
     }
     // form caption
-    if (cfgAdminUI && cfgAdminUI.applicationName) {
-      if (typeof cfgAdminUI.applicationName === 'string') {
-        applicationName = cfgAdminUI.applicationName
-      } else if (typeof cfgAdminUI.applicationName === 'object') {
-        applicationName = cfgAdminUI.applicationName[locale]
+    let applicationName = me.connection.appConfig.applicationName
+    me.items.push({
+      xtype: 'component',
+      autoEl: {
+        tag: 'h2',
+        html: applicationName
       }
-    }
-    if (applicationName) {
-      me.items.push({
-        xtype: 'component',
-        autoEl: {
-          tag: 'h2',
-          html: applicationName
-        }
-      })
-    }
+    })
 
     let haveCERT = (authMethods.indexOf('CERT') >= 0)
     if (haveCERT) {

@@ -286,7 +286,10 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
     response = request.end()
     if (response.statusCode === 200) {
       responseData = JSON.parse(response._http.responseText)
-      userID = provider.getUserID(responseData)
+      userID = provider.getUserID(responseData, {resp: resp, code: code, state: state, provider: provider, redirectUrl: redirectUrl, orign: orign})
+      if (userID === false) {
+        return
+      }
 
       if (!userID) {
         notifyProviderError(resp, provider)
@@ -321,7 +324,7 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
       }
     }
   } else {
-    console.error('OpenIDConnect provider return invalid response', response.statusCode, '. Headers:', response.headers())
+    console.error('OpenIDConnect provider return invalid response', response.statusCode, '. Headers:', response.headers)
     notifyProviderError(resp, provider)
   }
 }

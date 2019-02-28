@@ -19,7 +19,7 @@ let _globalVueInstance = null
  * Data layer for accessing UnityBase server from Browser or NodeJS
  * @module @unitybase/ub-pub
  */
-module.exports = {
+let UB = module.exports = {
   /**
    * Return locale-specific resource from it identifier. `localeString` must be:
    *
@@ -429,40 +429,6 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    */
   MD5: MD5,
   /**
-   * Vue JS integration
-   *  - inject UB localization {@link UB.i18n UB.i18n} to global Vue instance as $ut:
-   *  - inject `@unitybase/ub-pub` to global Vue instance as $UB
-   *
-   * @example
-
-  const Vue = require('vue')
-  const UB = require('@unitybase/ub-pub')
-  Vue.use(UB)
-
-  // localization of vue template
-  <button >{{ $ut('Enter') }}</button>
-  // in case translation result is HTML + use formatting
-  <p v-html="$ut('UBAuthHeader', appName)"></p>
-  // inside binding
-  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
-  // inside vue methods
-  this.$ut('UBAuthTip')
-
-  // using UB inside vue methods
-  methods: {
-     hasNegotiate: function () {
-       return this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
-     }
-  }
-
-   * @param vue
-   */
-  install: function (vue) {
-    _globalVueInstance = vue
-    vue.prototype.$UB = module.exports
-    vue.prototype.$ut = module.exports.i18n
-  },
-  /**
    * localDataStorage keys used by @unitybase-ub-pub (in case of browser environment)
    * @readonly
    * @enum
@@ -488,6 +454,43 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
    * @private
    */
   Utils: {}
+}
+
+/**
+ * Vue JS integration
+ *  - inject UB localization {@link UB.i18n UB.i18n} to global Vue instance as $ut:
+ *  - inject `@unitybase/ub-pub` to global Vue instance as $UB
+ *
+ * @example
+
+ const Vue = require('vue')
+ const UB = require('@unitybase/ub-pub')
+ Vue.use(UB)
+
+ // localization of vue template
+ <button >{{ $ut('Enter') }}</button>
+ // in case translation result is HTML + use formatting
+ <p v-html="$ut('UBAuthHeader', appName)"></p>
+ // inside binding
+ <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+ // inside vue methods
+ this.$ut('UBAuthTip')
+
+ // using UB inside vue methods
+ methods: {
+     hasNegotiate: function () {
+       return this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
+     }
+  }
+
+ * @param vue
+ */
+UB.install = function (vue) {
+  _globalVueInstance = vue
+  // install method is moved out of module.exports to allow WebStorm code insight inside vue work `this.$UB.?`
+  vue.prototype.$UB = UB
+  /** @inheritDoc */
+  vue.prototype.$ut = UB.i18n
 }
 
 let __alreadyAdded = false
