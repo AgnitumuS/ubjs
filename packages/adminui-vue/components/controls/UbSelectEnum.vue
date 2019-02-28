@@ -25,7 +25,7 @@ module.exports = {
   name: 'UbSelectEnum',
   props: {
     value: {
-      type: String
+      type: [String, Number]
     },
     eGroup: {
       type: String
