@@ -3,7 +3,7 @@
     <h1>UbSelect</h1>
     <ub-select-enum
       v-model="value"
-      style="width:50%"
+      style="width:500px"
       :disabled="disabled"
       :e-group="eGroup"
       :primary-column="primaryColumn"
@@ -11,14 +11,14 @@
     <h2>Props</h2>
     <ul>
       <li>
-        <span class="input-story__prop required">value - String *</span>
+        <span class="input-story__prop required">value - String, Number *</span>
         <el-tooltip effect="light" content="Required" placement="right" :open-delay="100">
           <el-input style="width: 300px" v-model="value"></el-input>
         </el-tooltip>
       </li>
       <li>
         <span class="input-story__prop">eGroup - String</span>
-        <el-input style="width: 300px" v-model="eGroup"></el-input>
+        <el-input disabled style="width: 300px" v-model="eGroup"></el-input>
       </li>
       <li>
         <span class="input-story__prop">disabled - Boolean</span>
@@ -26,11 +26,12 @@
       </li>
       <li>
         <span class="input-story__prop">primaryColumn - String (default - code)</span>
-        <el-input style="width: 300px" v-model="primaryColumn"></el-input>
+        <el-select style="width: 300px" v-model="primaryColumn">
+          <el-option value="code"></el-option>
+          <el-option value="name"></el-option>
+        </el-select>
       </li>
     </ul>
-    <h2>Entity Schema</h2>
-    <tree-view :data="entitySchema" :options="{maxDepth: 7}"></tree-view>
   </div>
 </template>
 
@@ -43,10 +44,10 @@ export default {
   },
   data () {
     return {
-      value: '1',
+      value: 'TST2',
       disabled: false,
-      eGroup: '',
-      primaryColumn: null
+      eGroup: 'TEST_GROUP_1',
+      primaryColumn: 'code'
     }
   }
 }

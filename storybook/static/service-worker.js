@@ -54,6 +54,147 @@ self.addEventListener('fetch', event => {
   if (event.request.url.includes('getDomainInfo')) {
     event.respondWith(new Response(JSON.stringify({
       'domain': {
+        'ubm_enum': {
+          'modelName': 'UBM',
+          'caption': 'Enumerated values',
+          'description': 'Enumerated values',
+          'documentation': 'On the UI used as a lookup for attributes with dataType `Enum`',
+          'connectionName': 'main',
+          'cacheType': 'SessionEntity',
+          'sqlAlias': 'enu',
+          'descriptionAttribute': 'name',
+          'attributes': {
+            'ID': {'dataType': 'ID', 'allowNull': false, 'defaultView': false, 'name': 'ID'},
+            'eGroup': {
+              'dataType': 'String',
+              'size': 32,
+              'caption': 'Group',
+              'description': 'Group of enumeration',
+              'allowNull': false,
+              'name': 'eGroup'
+            },
+            'code': {
+              'dataType': 'String',
+              'size': 32,
+              'caption': 'Code',
+              'description': 'Value code',
+              'allowNull': false,
+              'name': 'code'
+            },
+            'shortName': {
+              'dataType': 'String',
+              'size': 128,
+              'caption': 'Short name',
+              'isMultiLang': true,
+              'name': 'shortName'
+            },
+            'name': {
+              'dataType': 'String',
+              'size': 255,
+              'caption': 'Value name',
+              'allowNull': false,
+              'isMultiLang': true,
+              'name': 'name'
+            },
+            'sortOrder': {
+              'dataType': 'Int',
+              'caption': 'Order #',
+              'allowNull': false,
+              'defaultValue': '100',
+              'documentation': 'This attribute is used for ordering enum on UI select. Default = 100 for easy change order to be more or less',
+              'name': 'sortOrder'
+            },
+            'mi_owner': {
+              'dataType': 'Entity',
+              'associatedEntity': 'uba_user',
+              'description': 'Row owner',
+              'allowNull': false,
+              'defaultView': false,
+              'readOnly': true,
+              'name': 'mi_owner'
+            },
+            'mi_createDate': {
+              'dataType': 'DateTime',
+              'description': 'Creation date',
+              'allowNull': false,
+              'defaultValue': 'currentDate',
+              'defaultView': false,
+              'readOnly': true,
+              'name': 'mi_createDate'
+            },
+            'mi_createUser': {
+              'dataType': 'Entity',
+              'associatedEntity': 'uba_user',
+              'description': 'User who create row',
+              'allowNull': false,
+              'defaultView': false,
+              'readOnly': true,
+              'name': 'mi_createUser'
+            },
+            'mi_modifyDate': {
+              'dataType': 'DateTime',
+              'description': 'Modification date',
+              'allowNull': false,
+              'defaultValue': 'currentDate',
+              'defaultView': false,
+              'readOnly': true,
+              'name': 'mi_modifyDate'
+            },
+            'mi_modifyUser': {
+              'dataType': 'Entity',
+              'associatedEntity': 'uba_user',
+              'description': 'User who modify row',
+              'allowNull': false,
+              'defaultView': false,
+              'readOnly': true,
+              'name': 'mi_modifyUser'
+            },
+            'mi_deleteDate': {
+              'dataType': 'DateTime',
+              'description': 'Deletion date',
+              'allowNull': false,
+              'defaultValue': 'maxDate',
+              'defaultView': false,
+              'readOnly': true,
+              'name': 'mi_deleteDate'
+            },
+            'mi_deleteUser': {
+              'dataType': 'Entity',
+              'associatedEntity': 'uba_user',
+              'description': 'User who delete row',
+              'defaultView': false,
+              'readOnly': true,
+              'name': 'mi_deleteUser'
+            }
+          },
+          'mixins': {'mStorage': {'simpleAudit': true, 'safeDelete': true, 'enabled': true}},
+          'isFTSDataTable': false,
+          'name': 'ubm_enum',
+          'entityMethods': {'select': 1, 'insert': 1, 'update': 1, 'addnew': 1, 'delete': 1},
+          'i18n': {
+            'caption': 'Enumerated values',
+            'description': 'Enumerated values',
+            'attributes': {
+              'eGroup': {
+                'caption': 'Group',
+                'description': ''
+              },
+              'code': {
+                'caption': 'Code',
+                'description': 'Value code'
+              },
+              'shortName': {
+                'caption': 'Short name'
+              },
+              'name': {
+                'caption': 'Value name'
+              },
+              'sortOrder': {
+                'caption': 'Order #'
+              }
+            }
+          }
+        },
         'tst_blob': {
           'modelName': 'TST',
           'caption': 'BLOBTest',
@@ -1450,6 +1591,21 @@ self.addEventListener('fetch', event => {
               'rowCount': 1,
               'data': [
                 ['Текст заголовка', 'Тақырып мәтіні', 1]
+              ]
+            }
+          })
+        } else if (element.entity === 'ubm_enum') {
+          result.push({
+            'entity': element.entity,
+            'method': element.method,
+            'fieldList': element.fieldList,
+            'resultData': {
+              'fields': element.fieldList,
+              'rowCount': 3,
+              'data': [
+                ['TST1', 'Test1', 'TEST_GROUP_1'],
+                ['TST2', 'Long enumeration caption for test must be last in order', 'TEST_GROUP_1'],
+                ['TST3', 'Test Enum 3', 'TEST_GROUP_1']
               ]
             }
           })

@@ -3,7 +3,7 @@
     <h1>UbSelect</h1>
     <ub-select-entity
       v-model="value"
-      style="width:50%"
+      style="width:500px"
       :entity-name="entityName"
       :use-own-actions="useOwnActions"
       :actions="actions"

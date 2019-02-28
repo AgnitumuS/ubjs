@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>UbInput</h1>
-    <ub-input style="width:50%" v-model="objectValue[attributeName]"
+    <ub-input v-model="objectValue[attributeName]"
+              style="width:500px"
               :entityName="entityName"
               :disabled="disabled"
               :attributeName="attributeName"
