@@ -175,7 +175,8 @@ module.exports = {
       if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
         promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
       }
-      promise.selectById(id || this.value).then((item) => {
+      id = id || this.value
+      promise.selectById(parseInt(id)).then((item) => {
         if (item) {
           this.initialItem = {}
           this.initialItem[this.primaryColumn] = item[this.primaryColumn]
