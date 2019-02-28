@@ -51,6 +51,58 @@ self.addEventListener('fetch', event => {
       }
     }))
   }
+  if (event.request.url.includes('setDocument')) {
+    event.respondWith(event.request.blob().then(function (data) {
+      let result = {
+        result: {
+          'store': 'simple',
+          'fName': 'doc.docx',
+          'origName': 'doc.docx',
+          'ct': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'size': 119137,
+          'md5': '',
+          'isDirty': true
+        }
+      }
+      return new Response(JSON.stringify(result), {
+        status: 200,
+        statusText: 'OK',
+        headers: {
+          'Accept-Encoding': 'gzip',
+          'Access-Control-Allow-Methods': 'POST, PUT, GET, DELETE, LOCK, OPTIONS',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Max-Age': 1728000,
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      })
+    }))
+  }
+  if (event.request.url.includes('getDocument')) {
+    event.respondWith(event.request.blob().then(function (data) {
+      let result = {
+        result: {
+          'store': 'simple',
+          'fName': 'doc.docx',
+          'origName': 'doc.docx',
+          'ct': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'size': 119137,
+          'md5': '',
+          'isDirty': true
+        }
+      }
+      return new Response(JSON.stringify(result), {
+        status: 200,
+        statusText: 'OK',
+        headers: {
+          'Accept-Encoding': 'gzip',
+          'Access-Control-Allow-Methods': 'POST, PUT, GET, DELETE, LOCK, OPTIONS',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Max-Age': 1728000,
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      })
+    }))
+  }
   if (event.request.url.includes('getDomainInfo')) {
     event.respondWith(new Response(JSON.stringify({
       'domain': {
