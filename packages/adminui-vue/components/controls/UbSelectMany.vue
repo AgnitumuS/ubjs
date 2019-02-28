@@ -41,6 +41,9 @@ module.exports = {
   methods: {
     setInitialItem () {
       if (this.value) {
+        if (this.value !== this.resultData.join(',')) {
+          this.setResultData()
+        }
         this.loading = true
         let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
         if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
