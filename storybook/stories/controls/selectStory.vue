@@ -41,13 +41,15 @@
             <el-button type="primary" icon="el-icon-close" @click="actions=[]">Clear user actions</el-button>
           </div>
           <div style="width: 500px; display: inline-block">
-            <span class="input-story__prop">caption</span>
+            <h4>New Action</h4>
+            <span class="select-story__action-param">caption</span>
             <el-input style="width: 300px" v-model="newAction.caption"></el-input>
-            <span class="input-story__prop">icon</span>
+            <span class="select-story__action-param">icon</span>
             <el-input style="width: 300px" v-model="newAction.icon"></el-input>
-            <span class="input-story__prop">enabled</span>
+            <span class="select-story__action-param">enabled</span>
             <el-checkbox v-model="newAction.enabled"></el-checkbox>
-            <p>handler.fn()</p>
+            <br>
+            <span class="select-story__action-param">handler.fn()</span>
             <el-input style="width: 300px" v-model="newAction.handlerFN"></el-input>
             <br><br>
             <el-button type="success" icon="el-icon-plus" @click="addAction">Add</el-button>
@@ -105,3 +107,11 @@
     }
   }
 </script>
+
+<style>
+  .select-story__action-param {
+    width: 100px;
+    display: inline-block;
+    margin-top: 10px;
+  }
+</style>
