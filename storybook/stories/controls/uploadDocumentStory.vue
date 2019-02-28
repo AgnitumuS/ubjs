@@ -3,29 +3,29 @@
     <h1>UbSelect</h1>
     <ub-upload-document
       v-model="value"
+      :doc-params="docParams"
+      :i-frame-height="iFrameHeight"
+      :i-frame-weight="iFrameWeight"
     ></ub-upload-document>
     <h2>Props</h2>
     <ul>
       <li>
-        <span class="input-story__prop required">value - String, Number *</span>
-        <el-tooltip effect="light" content="Required" placement="right" :open-delay="100">
-          <el-input style="width: 300px" v-model="value"></el-input>
-        </el-tooltip>
+        <span class="input-story__prop required">value - Object *</span>
+        <el-input :disabled="true" type="textarea" :rows="6" style="width: 300px"
+                  v-model="JSON.stringify(value, null, 2)"></el-input>
       </li>
       <li>
-        <span class="input-story__prop">eGroup - String</span>
-        <el-input disabled style="width: 300px" v-model="eGroup"></el-input>
+        <span class="input-story__prop required">docParams - Object *</span>
+        <el-input :disabled="true" type="textarea" :rows="6" style="width: 300px"
+                  v-model="JSON.stringify(docParams, null, 2)"></el-input>
       </li>
       <li>
-        <span class="input-story__prop">disabled - Boolean</span>
-        <el-checkbox v-model="disabled"></el-checkbox>
+        <span class="input-story__prop">iFrameHeight - String</span>
+        <el-input style="width: 300px" v-model="iFrameHeight"></el-input>
       </li>
       <li>
-        <span class="input-story__prop">primaryColumn - String (default - code)</span>
-        <el-select style="width: 300px" v-model="primaryColumn">
-          <el-option value="code"></el-option>
-          <el-option value="name"></el-option>
-        </el-select>
+        <span class="input-story__prop">iFrameWeight - String</span>
+        <el-input style="width: 300px" v-model="iFrameWeight"></el-input>
       </li>
     </ul>
   </div>
@@ -40,7 +40,10 @@ export default {
   },
   data () {
     return {
-      value: ''
+      value: null,
+      docParams: { entity: 'tst_maindata', attribute: 'fileStoreSimple', ID: 332307333382255 },
+      iFrameHeight: '650px',
+      iFrameWeight: '100%'
     }
   }
 }

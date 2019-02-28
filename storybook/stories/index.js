@@ -22,3 +22,5 @@ storiesOf('Vue Controls', module).addDecorator(paddedList)
   .add('Many', () => selectManyStory)
   .add('CodeMirror', () => codeMirrorStory)
   .add('UploadDocument', () => uploadDocumentStory)
+
+storiesOf('Vue Components', module).addDecorator(paddedList)
