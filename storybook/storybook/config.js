@@ -1,15 +1,15 @@
-import { configure } from '@storybook/vue';
+import { configure } from '@storybook/vue'
 
-import Vue from 'vue';
-import UB from '@unitybase/ub-pub';
+import Vue from 'vue'
+import UB from '@unitybase/ub-pub'
 
-import Element from 'element-ui';
+import Element from 'element-ui'
 Vue.use(Element, {
   size: 'small',
   i18n: UB.i18n.bind(UB)
-});
+})
 
-import TreeView from "vue-json-tree-view"
+import TreeView from 'vue-json-tree-view'
 Vue.use(TreeView)
 
 let connect = UB.connect({
@@ -20,7 +20,7 @@ let connect = UB.connect({
   onAuthorized: function (conn) {},
   onAuthorizationFail: function (reason, conn) {},
   onNeedChangePassword: null,
-  onGotApplicationConfig: function ( /** @type {UBConnection} */ connection) {
+  onGotApplicationConfig: function (/** @type {UBConnection} */ connection) {
     _.defaultsDeep(connection.appConfig, {
       comboPageSize: 30,
       maxMainWindowTabOpened: 40,
@@ -46,24 +46,35 @@ let connect = UB.connect({
   }
 })
 connect.then(function () {
+  UB.core.UBApp = {
+    doCommand (config) {
+      alert(config.cmdType)
+    }
+  }
+  UB.core.UBCommand = {
+    commandType: {
+      showForm: 'showForm',
+      showList: 'showList'
+    }
+  }
   this.Vue.use(UB)
-  configure(function loadStories() {
-    require('../stories');
-  }, module);
+  configure(function loadStories () {
+    require('../stories')
+  }, module)
 }.bind({
   Vue: Vue
 }))
 
-import '../src/font-awesome/css/font-awesome.min.css';
-import '@unitybase/adminui-vue/dist/adminui-vue.css';
+import '../src/font-awesome/css/font-awesome.min.css'
+import '@unitybase/adminui-vue/dist/adminui-vue.css'
 
 if ('serviceWorker' in navigator) {
-  console.log('CLIENT: service worker registration in progress.');
+  console.log('CLIENT: service worker registration in progress.')
   navigator.serviceWorker.register('/service-worker.js').then(function () {
-    console.log('CLIENT: service worker registration complete.');
+    console.log('CLIENT: service worker registration complete.')
   }, function () {
-    console.log('CLIENT: service worker registration failure.');
-  });
+    console.log('CLIENT: service worker registration failure.')
+  })
 } else {
-  console.log('CLIENT: service worker is not supported.');
+  console.log('CLIENT: service worker is not supported.')
 }
