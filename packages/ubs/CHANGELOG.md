@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.3]
+### Added
+ - navshortcuts access initialization for Supervisor role
+ 
 ## [5.2.0]
 ### Added
  - new handler `onAfterRender` for reports. Will be called by ReportViewer just after HTML report result is rendered

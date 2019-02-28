@@ -17,7 +17,7 @@ const CustomRepository = csShared.CustomRepository
  *  - {@link ClientRepository#selectAsArray selectAsArray} method for retrieve `array of array` representation of server entity
  *  - {@link ClientRepository#selectAsStore selectAsStore} method for retrieve {UB.ux.data.UBStore} (applicable only for Ext-based client types)
  *
- * Usually created using {@link UB#Repository UB.Repository} fabric function. Example:
+ * Usually created using {@link UB.Repository UB.Repository} fabric function. Example:
  *
  *      var store = UB.Repository('my_entity').attrs(['ID', 'code'])
  *       .where('code', 'includes', ['1', '2', '3'])  // code in ('1', '2', '3')
@@ -96,7 +96,7 @@ class ClientRepository extends CustomRepository {
    *      UB.Repository('uba_user').attrs(['ID', 'name', 'ID.name'])
    *      .selectAsArray().then(UB.logDebug);
    *      // {"entity":"uba_user","fieldList":["ID","name","ID.name"],"method":"select",
-   *      // "resultData":{"fields":["ID","name","ID.name"],"rowCount":1,
+   *      // "resultData":{"fields":["ID","name","ID.name"],
    *      // "data":[[10,"admin","admin"]]},"total":1}
    *
    * But resultData is always present
@@ -156,7 +156,7 @@ class ClientRepository extends CustomRepository {
    */
   selectScalar () {
     return this.selectAsArray().then(function (result) {
-      return (result.resultData.rowCount > 0) ? result.resultData.data[ 0 ][ 0 ] : undefined
+      return (result.resultData.data.length) ? result.resultData.data[ 0 ][ 0 ] : undefined
     })
   }
 

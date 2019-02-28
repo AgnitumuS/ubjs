@@ -32,10 +32,14 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
-const {replaceDefaultTabbar} = require('./components/tabbar/init')
+const replaceDefaultTabbar = require('./components/UbTabbar/init')
+const replaceDefaultRelogin = require('./components/UbRelogin/init')
+const replaceDefaultDialogs = require('./components/UbDialog/init')
 
 if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultTabbar)
+  window.$App.on('applicationReady', replaceDefaultRelogin)
+  window.$App.on('applicationReady', replaceDefaultDialogs)
 }
 
 let entityEditor = require('./components/UbEntityEditComponent.vue')

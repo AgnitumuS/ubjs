@@ -249,6 +249,33 @@ function getRequestedBLOBInfo (parsedRequest) {
     store
   }
 }
+
+/**
+ * Obtains document content from blobStore and send it to response.
+ *
+ * @param {BlobStoreRequest} requestParams
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function writeDocumentToResp (requestParams, req, resp) {
+  let parsed = parseBlobRequestParams(requestParams)
+  if (!parsed.success) return resp.badRequest(parsed.reason)
+  // check user have access to entity select method
+  if (!App.els(parsed.attribute.entity.code, 'select')) {
+    console.error(`getDocument: Access deny to ${parsed.attribute.entity.code}.select method for user "${Session.uData.login}"`)
+    return {
+      success: false,
+      reason: `Access deny to ${parsed.attribute.entity.code}.select method`
+    }
+  }
+  let requested = getRequestedBLOBInfo(parsed)
+  if (!requested.success) {
+    return resp.badRequest(requested.reason)
+  }
+  // call store implementation method
+  return requested.store.fillResponse(parsed.bsReq, requested.blobInfo, req, resp)
+}
+
 /**
  * Obtains document content from blobStore and send it to response.
  *
@@ -279,22 +306,7 @@ function getDocumentEndpoint (req, resp) {
     return resp.badRequest('invalid HTTP verb' + req.method)
   }
 
-  let parsed = parseBlobRequestParams(params)
-  if (!parsed.success) return resp.badRequest(parsed.reason)
-  // check user have access to entity select method
-  if (!App.els(parsed.attribute.entity.code, 'select')) {
-    console.error(`getDocument: Access deny to ${parsed.attribute.entity.code}.select method for user "${Session.uData.login}"`)
-    return {
-      success: false,
-      reason: `Access deny to ${parsed.attribute.entity.code}.select method`
-    }
-  }
-  let requested = getRequestedBLOBInfo(parsed)
-  if (!requested.success) {
-    return resp.badRequest(requested.reason)
-  }
-  // call store implementation method
-  return requested.store.fillResponse(parsed.bsReq, requested.blobInfo, req, resp)
+  return writeDocumentToResp(params, req, resp)
 }
 
 /**
@@ -544,6 +556,7 @@ function markRevisionAsPermanent (request) {
 
 module.exports = {
   getDocumentEndpoint,
+  writeDocumentToResp,
   setDocumentEndpoint,
   markRevisionAsPermanent,
   getContent,

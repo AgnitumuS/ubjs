@@ -289,8 +289,10 @@ module.exports = {
   },
   watch: {
     value () {
-      this.resultData = this.value
-      this.setInitialItem()
+      if (this.resultData != this.value) {
+        this.resultData = this.value
+        this.setInitialItem()
+      }
     }
   },
   mounted () {

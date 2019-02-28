@@ -274,3 +274,32 @@ let proxy = new HttpProxy({
   targetURL: 'http://localhost:889/',
   nonAuthorizedURLs: [/./]
 })
+
+const SQL = 'select id, name from uba_user'
+const dataStore = UB.DataStore('uba_user')
+
+/**
+ * Single database query (RAW) for performance test
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function dbRaw (req, resp) {
+  dataStore.runSQL(SQL, {})
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({id: dataStore.get(0), name: dataStore.get(1)})
+}
+App.registerEndpoint('dbRaw', dbRaw, false)
+
+/**
+ * Single database query (ORM)  for performance test
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function db (req, resp) {
+  let data = UB.Repository('uba_user').attrs(['ID', 'name']).selectAsObject()
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd(data[0])
+}
+App.registerEndpoint('db', db, false)

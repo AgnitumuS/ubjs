@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.14]
+### Changed
+ - Mail scheduler job will handle messages in the order
+ of their arrival - added `.orderBy('[ID]')`
+       
 ## [5.2.11]
 ### Added
  - Ukrainian localization

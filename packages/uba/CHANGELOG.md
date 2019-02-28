@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.17]
+### Added
+ - navshortcuts access initialization for Supervisor role
+ 
 ## [5.1.15]
 ### Added
  - new API method `uba_user.setUDataKey(key, value)` - set key value inside `uba_user.uData` and store new JSON do DB
@@ -63,7 +67,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.1.32]
 ### Changed
-- `uba_als.code` length increased to 128 to allow developer to create a unixue ELS rule codes based on code = role.name + entity.name + method.name pattern
+- `uba_als.code` length increased to 128 to allow developer to create a unique ELS rule codes based on code = role.name + entity.name + method.name pattern
 
 ## [4.1.22]
 ### Added

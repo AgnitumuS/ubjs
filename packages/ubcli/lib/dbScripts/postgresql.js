@@ -16,7 +16,7 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
   let conn = session.connection
   conn.xhr({
     endpoint: 'runSQL',
-    URLParams: {CONNECTION: DBA_FAKE},
+    URLParams: { CONNECTION: DBA_FAKE },
     data: `DROP SCHEMA IF EXISTS ${databaseConfig.userID} CASCADE; DROP USER IF EXISTS ${databaseConfig.userID};`
   })
 }
@@ -29,7 +29,7 @@ module.exports.dropDatabase = function dropDatabase (session, databaseConfig) {
 module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
   conn.xhr({
     endpoint: 'runSQL',
-    URLParams: {CONNECTION: DBA_FAKE},
+    URLParams: { CONNECTION: DBA_FAKE },
     data: `CREATE ROLE ${databaseConfig.userID} LOGIN PASSWORD '${databaseConfig.password}' VALID UNTIL 'infinity'; CREATE SCHEMA ${databaseConfig.userID} AUTHORIZATION ${databaseConfig.userID};`
   })
 }
@@ -44,19 +44,19 @@ module.exports.createMinSchema = function createMinSchema (conn, clientNum, data
   let sequences = 'CREATE SEQUENCE SEQ_UBMAIN INCREMENT 1 MAXVALUE   {0}4999999999 START   {0}0000000000 CYCLE CACHE 1; CREATE SEQUENCE SEQ_UBMAIN_BY1 INCREMENT 1 MAXVALUE {0}999999999999 START {0}500000000000 CYCLE CACHE 1;'
   conn.xhr({
     endpoint: 'runSQL',
-    URLParams: {CONNECTION: databaseConfig.name},
+    URLParams: { CONNECTION: databaseConfig.name },
     data: UB.format(sequences, clientNum)
   })
   let script = fs.readFileSync(path.join(__dirname, 'postgresqlObjects.sql'), 'utf8')
   conn.xhr({
     endpoint: 'runSQL',
-    URLParams: {CONNECTION: databaseConfig.name},
+    URLParams: { CONNECTION: databaseConfig.name },
     data: script
   })
   script = fs.readFileSync(path.join(__dirname, 'postgresqlTables.sql'), 'utf8')
   conn.xhr({
     endpoint: 'runSQL',
-    URLParams: {CONNECTION: databaseConfig.name},
+    URLParams: { CONNECTION: databaseConfig.name },
     data: script
   })
 }

@@ -35,7 +35,7 @@
   ],
   "opts": {
     "template": "./node_modules/ub-jsdoc",
-    "readme": "./DOC-MAIN-PAGE.md",
+    "readme": "./DOC-UB-SERVER-MAIN-PAGE.md",
     "encoding": "utf8",
     "destination": "./docs/server-v5",
     "recurse": false,
@@ -73,7 +73,9 @@
     "default": {
       "outputSourceFiles": true,
       "staticFiles": {
-	"include": ["./tutorials"],
+        "include": [
+          "./tutorials"
+        ],
         "excludePattern": "\\.md$"
       }
     }
