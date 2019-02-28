@@ -4,6 +4,7 @@ import {
 
 import inputStory from './controls/inputStory.vue'
 import selectStory from './controls/selectStory.vue'
+import enumStory from './controls/enumStory'
 
 const paddedList = () => {
   return {
@@ -14,3 +15,4 @@ const paddedList = () => {
 storiesOf('Vue Controls', module).addDecorator(paddedList)
   .add('Input', () => inputStory)
   .add('Select', () => selectStory)
+  .add('Enum', () => enumStory)
