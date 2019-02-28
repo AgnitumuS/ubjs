@@ -4,7 +4,7 @@
     <ub-select-entity
       v-model="value"
       style="width:500px"
-      :entity-name="entityName"
+      :entity-name="entitySchema"
       :use-own-actions="useOwnActions"
       :actions="actions"
       :disabled="disabled"

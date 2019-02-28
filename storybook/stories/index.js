@@ -3,8 +3,9 @@ import {
 } from '@storybook/vue'
 
 import inputStory from './controls/inputStory.vue'
-import selectStory from './controls/selectStory.vue'
-import enumStory from './controls/enumStory'
+import selectStory from './controls/selectEntityStory.vue'
+import enumStory from './controls/selectEnumStory'
+import selectManyStory from './controls/selectManyStory'
 
 const paddedList = () => {
   return {
@@ -16,3 +17,4 @@ storiesOf('Vue Controls', module).addDecorator(paddedList)
   .add('Input', () => inputStory)
   .add('Select', () => selectStory)
   .add('Enum', () => enumStory)
+  .add('Many', () => selectManyStory)
