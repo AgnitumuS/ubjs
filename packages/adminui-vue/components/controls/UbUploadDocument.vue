@@ -30,7 +30,6 @@ module.exports = {
   props: {
     value: [Object, String],
     docParams: Object,
-    inputFile: null,
     iFrameHeight: {
       type: String,
       default () {
