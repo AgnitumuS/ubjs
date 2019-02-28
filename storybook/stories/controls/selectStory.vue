@@ -32,8 +32,27 @@
         <el-checkbox v-model="useOwnActions"></el-checkbox>
       </li>
       <li>
-        <span class="input-story__prop">actions - Array</span>
-        <el-input type="textarea" :rows="6" style="width: 300px" v-model="JSON.stringify(actions, null, 2)"></el-input>
+        <div style="display: flex;">
+          <div style="width: 500px; display: inline-block">
+            <span class="input-story__prop">actions - Array of Objects</span>
+            <el-input :disabled="true" type="textarea" :rows="6" style="width: 300px"
+                      v-model="JSON.stringify(actions, null, 2)"></el-input>
+            <br><br>
+            <el-button type="primary" icon="el-icon-close" @click="actions=[]">Clear user actions</el-button>
+          </div>
+          <div style="width: 500px; display: inline-block">
+            <span class="input-story__prop">caption</span>
+            <el-input style="width: 300px" v-model="newAction.caption"></el-input>
+            <span class="input-story__prop">icon</span>
+            <el-input style="width: 300px" v-model="newAction.icon"></el-input>
+            <span class="input-story__prop">enabled</span>
+            <el-checkbox v-model="newAction.enabled"></el-checkbox>
+            <p>handler.fn()</p>
+            <el-input style="width: 300px" v-model="newAction.handlerFN"></el-input>
+            <br><br>
+            <el-button type="success" icon="el-icon-plus" @click="addAction">Add</el-button>
+          </div>
+        </div>
       </li>
     </ul>
     <h2>Entity Schema</h2>
@@ -42,40 +61,47 @@
 </template>
 
 <script>
-import UbSelectEntity from '@unitybase/adminui-vue/components/controls/UbSelectEntity.vue'
+  import UbSelectEntity from '@unitybase/adminui-vue/components/controls/UbSelectEntity.vue'
 
-export default {
-  components: {
-    UbSelectEntity
-  },
-  computed: {
-    entitySchema () {
-      return JSON.parse(JSON.stringify(this.$UB.connection.domain.get(this.entityName)))
-    }
-  },
-  data () {
-    return {
-      entityName: 'tst_dictionary',
-      value: 1,
-      disabled: false,
-      useOwnActions: false,
-      actions: [{
-        name: 'Edit',
-        caption: this.$ut('editSelItem'),
-        icon: 'fa fa-pencil-square-o',
-        enabled: !!this.resultData,
-        handler: {
-          fn () {
-            this.$UB.core.UBApp.doCommand({
-              cmdType: this.$UB.core.UBCommand.commandType.showForm,
-              entity: this.entityName,
-              isModal: true,
-              instanceID: this.resultData
-            })
+  export default {
+    components: {
+      UbSelectEntity
+    },
+    data () {
+      return {
+        entityName: 'tst_dictionary',
+        value: 1,
+        disabled: false,
+        useOwnActions: false,
+        actions: [],
+        newAction: {
+          caption: 'Test',
+          icon: 'fa fa-ban',
+          enabled: true,
+          handlerFN: 'alert(1123)',
+          handler: {
+            fn () {}
           }
         }
-      }]
+      }
+    },
+    computed: {
+      entitySchema () {
+        return JSON.parse(JSON.stringify(this.$UB.connection.domain.get(this.entityName)))
+      }
+    },
+    methods: {
+      addAction () {
+        let action = {...this.newAction}
+        let handler = action.handlerFN
+        action.handler.fn = () => {eval(handler)}
+        delete action.handlerFN
+        this.actions.push(action)
+        this.newAction.caption = ''
+        this.newAction.icon = ''
+        this.newAction.enabled = true
+        this.newAction.handlerFN = 'alert(1123)'
+      }
     }
   }
-}
 </script>
