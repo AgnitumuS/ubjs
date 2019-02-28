@@ -252,7 +252,7 @@ let _ubNotifierInstance = process.isWebSocketEnabled ? undefined : null
  * Returned {@link JsonMessagesProtocol} instance methods is limited
  * by {@link WSProtocol#getUserSessions}, {@link WSProtocol#sendTo} and {@link WSProtocol#broadcast}
  *
- * See {@tutorial web_sockets.md } for detailed descripiuon
+ * See {@tutorial web_sockets} for detailed description
  *
  * @return {JsonMessagesProtocol}
  */
