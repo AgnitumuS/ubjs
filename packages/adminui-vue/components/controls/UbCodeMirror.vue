@@ -22,36 +22,36 @@ module.exports = {
   },
   mounted () {
     if (!this.codeMirror) {
-      SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
-        if (CodeMirror) {
-          let el = document.getElementById(this._uid)
-          if (el) {
-            this.codeMirror = CodeMirror.fromTextArea(el, {
-              mode: 'javascript',
-              lineNumbers: true,
-              lint: Object.assign({asi: true, esversion: 6}, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
-              readOnly: false,
-              tabSize: 2,
-              highlightSelectionMatches: {annotateScrollbar: true},
-              matchBrackets: true,
-              foldGutter: true,
-              gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
-              extraKeys: {
-                'Ctrl-Space': 'autocomplete'
-              }
-            })
-            this.codeMirror.on('change', cmInstance => {
-              let value; let valid = true
-              try {
-                value = typeof this.value === 'object' ? JSON.parse(cmInstance.getValue()) : cmInstance.getValue()
-              } catch (e) {
-                valid = false
-              }
-              if (valid) this.$emit('input', value)
-            })
-          }
+      let CodeMirror = require('@unitybase/codemirror-full')
+      if (CodeMirror) {
+        let el = document.getElementById(this._uid)
+        if (el) {
+          this.codeMirror = CodeMirror.fromTextArea(el, {
+            mode: 'javascript',
+            lineNumbers: true,
+            lint: Object.assign({asi: true, esversion: 6}, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
+            readOnly: false,
+            tabSize: 2,
+            highlightSelectionMatches: {annotateScrollbar: true},
+            matchBrackets: true,
+            foldGutter: true,
+            gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+            extraKeys: {
+              'Ctrl-Space': 'autocomplete'
+            }
+          })
+          this.codeMirror.on('change', cmInstance => {
+            let value
+            let valid = true
+            try {
+              value = typeof this.value === 'object' ? JSON.parse(cmInstance.getValue()) : cmInstance.getValue()
+            } catch (e) {
+              valid = false
+            }
+            if (valid) this.$emit('input', value)
+          })
         }
-      }, this)
+      }
     }
   }
 }
