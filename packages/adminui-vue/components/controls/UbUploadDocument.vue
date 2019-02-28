@@ -29,7 +29,10 @@ module.exports = {
   name: 'UbUploadDocument',
   props: {
     value: [Object, String],
-    docParams: Object,
+    docParams: {
+      type: Object,
+      required: true
+    },
     iFrameHeight: {
       type: String,
       default () {
