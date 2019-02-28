@@ -6,6 +6,7 @@ import inputStory from './controls/inputStory.vue'
 import selectStory from './controls/selectEntityStory.vue'
 import enumStory from './controls/selectEnumStory'
 import selectManyStory from './controls/selectManyStory'
+import codeMirrorStory from './controls/codeMirrorStory'
 
 const paddedList = () => {
   return {
@@ -18,3 +19,4 @@ storiesOf('Vue Controls', module).addDecorator(paddedList)
   .add('Select', () => selectStory)
   .add('Enum', () => enumStory)
   .add('Many', () => selectManyStory)
+  .add('CodeMirror', () => codeMirrorStory)
