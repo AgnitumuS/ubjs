@@ -104,6 +104,11 @@ module.exports = {
           this.items.push(item)
         })
       })
+    },
+    setResultData () {
+      this.resultData = this.value ? this.value.trim().split(',').map(item => {
+        return typeof item !== 'number' ? parseInt(item) : item
+      }) : []
     }
   },
   data () {
@@ -112,7 +117,7 @@ module.exports = {
       entitySchema: this.$UB.connection.domain.get(this.entityName, true),
       initialItem: null,
       items: [],
-      resultData: [],
+      resultData: this.setResultData(),
       itemCount: 20,
       hasData: true,
       buttonMoreCaption: this.$ut('more'),
@@ -124,10 +129,10 @@ module.exports = {
   },
   watch: {
     value () {
-      this.resultData = this.value ? this.value.trim().split(',').map(item => {
-        return typeof item !== 'number' ? parseInt(item) : item
-      }) : []
-      this.setInitialItem()
+      if (this.value !== this.resultData.join(',')) {
+        this.setResultData()
+        this.setInitialItem()
+      }
     }
   },
   computed: {
