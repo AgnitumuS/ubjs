@@ -160,7 +160,7 @@ Ext.define('UB.ux.UBCodeMirror', {
     var me = this
     if (!this.codeMirrorInstance) return
 
-    System.import('js-beautify/js/lib/beautify').then(function (beautify) {
+    SystemJS.import('js-beautify/js/lib/beautify').then(function (beautify) {
       var txt = me.codeMirrorInstance.getValue()
       txt = beautify.js_beautify(txt, {
         'indent_size': 2,
@@ -175,7 +175,7 @@ Ext.define('UB.ux.UBCodeMirror', {
       var myElm = this.getEl().dom
       var me = this
 
-      System.import('@unitybase/codemirror-full').then((CodeMirror) => {
+      SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
         window.CodeMirror = CodeMirror
         CodeMirror.commands.codeSnippets = CodeMirror.showHint
         this.codeMirrorInstance = this.editor = CodeMirror(myElm, {

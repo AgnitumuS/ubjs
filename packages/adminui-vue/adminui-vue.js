@@ -20,11 +20,17 @@ window.Vue = Vue
 Vue.__useDefault = Vue
 Vue.default = Vue
 if (IS_SYSTEM_JS && !SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule(Vue))
-const ElementUI = require('element-ui/lib/index.js')
+const ElementUI = require('element-ui') // adminui-pub maps element-ui -> element-ui/lib/index.js for SystemJS
 window.ElementUI = ElementUI
 if (IS_SYSTEM_JS && !SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(ElementUI))
 
-require('./dist/adminui-vue.css')
+require('normalize.css/normalize.css')
+require('./theme/ub-body.css')
+require('./theme/el-theme-compiled.css')
+if (BOUNDLED_BY_WEBPACK) {
+  // webpack MiniCssExtractPlugin extract all styles (for vue SFC), so we need to inject dist/adminui-vue.css
+  UB.inject('/clientRequire/@unitybase/adminui-vue/dist/adminui-vue.min.css')
+}
 Vue.use(UB)
 Vue.use(ElementUI, {
   size: 'small', // set element-ui default size

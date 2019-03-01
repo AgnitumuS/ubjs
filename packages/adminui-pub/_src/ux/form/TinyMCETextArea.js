@@ -59,17 +59,7 @@ Ext.define('Ext.ux.form.TinyMCETextArea', {
   tinyMCEConfig: {},
 
   ensureTinyMCELoaded: function () {
-    // while boundled by WebPack we add a `BOUNDLED_BY_WEBPACK: true` condition variable
-    // using webpack.DefinePlugin, so conditions below will be replaced by if(false) and if (true)
-    window.BOUNDLED_BY_WEBPACK = false
-    // eslint-disable-next-line no-undef
-    if (BOUNDLED_BY_WEBPACK) {
-      return System.import('./tinyMCE-async-all')
-    }
-    // eslint-disable-next-line no-undef
-    if (!BOUNDLED_BY_WEBPACK) {
-      return System.import('@unitybase/adminui-pub/_src/ux/form/tinyMCE-async-all')
-    }
+    return SystemJS.import('@unitybase/adminui-pub/_src/ux/form/tinyMCE-async-all')
   },
 
   afterRender: function () {

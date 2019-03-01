@@ -1,7 +1,6 @@
 /**
  * Created by pavel.mash on 04.09.2016.
  */
-const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
@@ -15,13 +14,10 @@ module.exports = {
     libraryTarget: 'umd'
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/,
-      query: {
-        presets: ['es2015']
-      }
+      exclude: /node_modules/
     }, {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
@@ -34,23 +30,5 @@ module.exports = {
       amd: 'lodash',
       root: '_'
     }
-  },
-  devtool: 'cheap-module-source-map',
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      'screw-ie8': true,
-      // compress: false
-      compress: {
-        sequences: true,
-        booleans: true,
-        loops: true,
-        unused: false, // true
-        warnings: true, // false,
-        drop_console: false, // true,
-        unsafe: true
-      }
-    })
-  ]
+  }
 }

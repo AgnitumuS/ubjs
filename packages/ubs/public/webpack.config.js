@@ -24,12 +24,7 @@ module.exports = {
     rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: [/node_modules/],
-      query: {
-        // MPV - IMPORTANT to remove a 'use strict' in boundle, in other case Ext.callParent not work,
-        // because in strict mode Fintion.calle in undefined, but this technic in used internalty by Ext.callParent
-        presets: ['es2015-without-strict']
-      }
+      exclude: [/node_modules/]
     }, {
       test: /\.css$/,
       use: [
@@ -40,9 +35,6 @@ module.exports = {
       // jsPDF use a zlib.js which does not export. Let's fix it
       test: /zlib/,
       use: 'exports-loader?DecodeStream,FlateStream'
-      // adds below code the file's source:
-      //  exports["DecodeStream"] = DecodeStream;
-      //  exports["FlateStream"] = FlateStream;
     }]
   },
   // devtool: 'source-map',
@@ -50,18 +42,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        unused: false, // true
-        warnings: true, // false,
-        drop_console: false, // true,
-        unsafe: true
-      },
-      output: {
-        comments: false
-      },
-      sourceMap: process.env.NODE_ENV !== 'production'
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
