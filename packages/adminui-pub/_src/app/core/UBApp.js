@@ -608,7 +608,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * Example:
    *
    *      $App.dialogError('recordNotExistsOrDontHaveRights')
-   *          .done(me.closeWindow.bind(me));
+   *          .then(me.closeWindow.bind(me));
    *
    * @param {String} msg
    * @param {String} [title] Default is 'error'
@@ -904,7 +904,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    *          whereList: {byCode3: {
    *              expression: '[code3]', condition: 'equal', values: {code3: 'USD'}
    *          }}
-   *       }).done(function(result){
+   *       }).then(function(result){
    *          if (result.resultData.data.length === 1){
    *             $App.doCommand({
    *                 cmdType: 'showForm',

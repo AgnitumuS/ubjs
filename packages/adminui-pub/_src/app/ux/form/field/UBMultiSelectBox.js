@@ -64,18 +64,18 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
   },
 
   onTriggerClick: function () {
-    var me = this, win,
-      storeMain,
-      bBar,
-      searchCtrl, doQueryTask, storeSel,
-      allGrid, isInitialSelect = false,
-      request
+    var me = this; var win
+    var storeMain
+    var bBar
+    var searchCtrl; var doQueryTask; var storeSel
+    var allGrid; var isInitialSelect = false
+    var request
 
     function updateSelection () {
       var selModel = allGrid.getSelectionModel()
       isInitialSelect = true
       storeSel.each(function (record) {
-        var rec, idx = -1
+        var rec; var idx = -1
         rec = storeMain.findRecord(me.valueField, record.get(me.valueField))
         if (rec) {
           idx = storeMain.indexOf(rec)
@@ -190,8 +190,8 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
           expression: '[' + me.valueField + ']',
           values: valuesExpr
         }
-        Ext.create('UB.ux.data.UBStore', {ubRequest: request}).load()
-          .done(function (store) {
+        Ext.create('UB.ux.data.UBStore', { ubRequest: request }).load()
+          .then(function (store) {
             storeSel.add(store.getRange(0, store.getCount() - 1))
             updateSelection()
           })
@@ -215,7 +215,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
       layout: 'fit',
       title: UB.i18n('selectElements') + (me.fieldLabel ? ' - ' + me.fieldLabel : ''),
       items: [{
-        layout: {type: 'hbox', align: 'stretch'},
+        layout: { type: 'hbox', align: 'stretch' },
         items: [ Ext.widget('grid', {
           xtype: 'grid',
           hideHeaders: true,
@@ -239,8 +239,8 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
             cellclick: function (grd, td, cellIndex, record, tr, rowIndex, e, eOpts) {
               if (cellIndex === 0) {
                 storeSel.remove(record)
-                var idx = -1, selModel = allGrid.getSelectionModel(),
-                  rec = storeMain.findRecord(me.valueField, record.get(me.valueField))
+                var idx = -1; var selModel = allGrid.getSelectionModel()
+                var rec = storeMain.findRecord(me.valueField, record.get(me.valueField))
                 if (rec) {
                   idx = storeMain.indexOf(rec)
                 }
@@ -304,7 +304,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
         text: UB.i18n('selectAll'),
         tooltip: UB.i18n('selectAllOnPage'),
         handler: function () {
-          var sm = allGrid.getSelectionModel(), items = [], rec
+          var sm = allGrid.getSelectionModel(); var items = []; var rec
           sm.selectAll(true)
           sm.selected.each(function (record) {
             rec = storeSel.findRecord(me.valueField, record.get(me.valueField))
@@ -386,7 +386,7 @@ Ext.define('UB.ux.form.field.UBMultiSelectBox', {
                 fieldList: store.ubRequest.fieldList, // [me.valueField, me.displayField ],
                 __allowSelectSafeDeleted: true,
                 ID: id
-              }).done(function (result) {
+              }).then(function (result) {
                 if (store.isDestroyed) {
                   return
                 }

@@ -137,7 +137,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
     }, me)
   },
 
-    // for get focus in BasePanel
+  // for get focus in BasePanel
   getFocusEl: function () {
     return this.iframe
   },
@@ -206,18 +206,17 @@ Ext.define('UB.ux.form.HtmlEditor', {
     }
 
     function makePDF (htmlText) {
-      PDF.init().done(function () {
+      PDF.init().then(function () {
         PDF.csPrintToPdf.requireFonts({
           fonts: [
-            {fontName: 'TimesNewRoman', fontStyle: 'Normal'},
-            {fontName: 'TimesNewRoman', fontStyle: 'Bold'},
-            {fontName: 'TimesNewRoman', fontStyle: 'Italic'}
+            { fontName: 'TimesNewRoman', fontStyle: 'Normal' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Italic' }
           ],
           onLoad: function () {
             var pdf = Ext.create('PDF.csPrintToPdf', {
-              font: {name: 'TimesNewRoman', size: 10, type: 'Normal'},
-              margin: {top: 11, right: 8, bottom: 8, left: 20},
-                              // margin: {left: 50, right: 80},
+              font: { name: 'TimesNewRoman', size: 10, type: 'Normal' },
+              margin: { top: 11, right: 8, bottom: 8, left: 20 },
               bottomColontitle: {
                 height: 8,
                 font: { size: 7, wide: 0 }
@@ -234,9 +233,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
                 }
               }
             })
-                          // pdf.writeSimpleText({text: 'Test ', wordWrap: false, splitOnPage: false, align: 'left', width: 150});
-            pdf.writeHtml({html: htmlText})
-                          // window.open(pdf.output('blobUrl'), '_blank');
+            pdf.writeHtml({ html: htmlText })
             showInPDF(pdf.output('blobUrl'))
           }
         })
@@ -257,11 +254,11 @@ Ext.define('UB.ux.form.HtmlEditor', {
       overflowY: 'auto',
       stateful: true,
       stateId: 'HtmlEditorForm',
-            // layout: { type: 'fit', align: 'stretch' },
-      layout: {type: 'hbox', pack: 'center', align: 'stretch'},
+      // layout: { type: 'fit', align: 'stretch' },
+      layout: { type: 'hbox', pack: 'center', align: 'stretch' },
       items: [
         pnl = Ext.create('UB.ux.UBTinyMCETextArea', {
-                   // flex: 1,
+          // flex: 1,
           width: me.pageWidth,
           tinyMCEConfig: me.tinyMCEEditorConfig,
           value: me.getRawValue()
@@ -295,12 +292,12 @@ Ext.define('UB.ux.form.HtmlEditor', {
       ],
       listeners: {
         afterrender: function () {
-                    // me.tinyMCEConfig.selector = '#' + pnl.getEl().id;
-                    // me.initEditor();
+          // me.tinyMCEConfig.selector = '#' + pnl.getEl().id;
+          // me.initEditor();
         },
         beforeclose: function () {
-                    // var result = pnl.getValue();
-                    // me.setValue(result);
+          // var result = pnl.getValue();
+          // me.setValue(result);
 
         }
       }

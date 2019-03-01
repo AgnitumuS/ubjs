@@ -444,7 +444,7 @@ Ext.define('UB.ux.data.UBStore', {
    */
   remove: function (records) {
     let me = this
-    me.clearCache().done(function () {
+    me.clearCache().then(function () {
       if (!me.isDestroyed) { // when cache is clear user close form and store is destroyed
         // me.callParent([records]) is not right way to call callParent from callback
         // right way is below
@@ -463,7 +463,7 @@ Ext.define('UB.ux.data.UBStore', {
       return this.callParent(arguments)
     }
     // todo add method must return Ext.data.Model[]
-    me.clearCache().done(function () {
+    me.clearCache().then(function () {
       if (!me.isDestroyed) { // when cache is clear user close form and store is destroyed
         me.superclass.add.call(me, model)
       }

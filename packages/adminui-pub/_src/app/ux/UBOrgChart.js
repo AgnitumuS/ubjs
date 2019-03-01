@@ -438,7 +438,7 @@ Ext.define('UB.ux.UBOrgChart', {
     graph.getPreferredSizeForCell = Ext.bind(me.getPreferredSizeForCell, graph)
 
     if (me.graph && me.dataUrl && !me.isActulData) {
-      me.startLoadData().done(function (result) {
+      me.startLoadData().then(function (result) {
         if (me.loadDataDefer) {
           me.loadDataDefer.resolve(result)
         }
@@ -1384,7 +1384,7 @@ Ext.define('UB.ux.UBOrgChart', {
       me.undoManager.clear()
       me.isActulData = true
       return true
-    }).done(function () {
+    }).then(function () {
       try {
         me.loadData().then(() => {
           try {

@@ -192,7 +192,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
     }, me)
 
     if (objExists) {
-      $App.dialogError('Object exist in diagram').done()
+      $App.dialogError('Object exist in diagram')
       return false
     }
     doc = mxUtils.createXmlDocument()

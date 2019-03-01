@@ -259,7 +259,7 @@ Ext.define('UB.view.FormDataBinder', {
         if (result && (typeof result.then === 'function')) {
           me.notReadyControls += 1
           me.notReadyControlList.push(field)
-          result.done(function () {
+          result.then(function () {
             me.controlDataReady(field)
           })
         }
