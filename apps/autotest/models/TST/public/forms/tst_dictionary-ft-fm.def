@@ -1,25 +1,8 @@
 // @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Wed Sep 26 2018 19:30:02 GMT+0300 (FLE Standard Time)"
+// @mi_modifyDate "Fri Jan 04 2019 15:23:33 GMT+0200 (Oeieyiaey (ceia))"
 // @isDefault "false"
 // @entity "tst_dictionary"
 // @model "TST"
-// @formType "auto"
+// @formType "vue"
 // @caption " sdsdsds"
 // @description "sadsa sa"
-exports.formDef = {
-	items: [
-	  { attributeName: "code" /*Code*/},
-      { attributeName: "caption" /*Caption*/},
-    { attributeName: "filterValue" /*filterValue*/},
-    { attributeName: "currencyValue" /*Currency Data*/},
-    { attributeName: "floatValue" /*Float Data*/},
-    { attributeName: "calculated" /*Назва*/},
-    {
-      xtype: 'component',
-      html: '<div></div>',
-      forVue: true
-    },
-    { attributeName: "booleanColumn" /*Test boolean column*/},
-    { attributeName: "jsonColumn", height: 100}
-	]
-};

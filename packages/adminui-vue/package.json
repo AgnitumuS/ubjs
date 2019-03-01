@@ -37,6 +37,7 @@
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
+    "@unitybase/codemirror-full": "^1.2.20",
     "@unitybase/cs-shared": "^5.0.17",
     "@unitybase/systemjs-plugin-vue-ub": "^1.2.4",
     "@unitybase/ub-pub": "^5.2.30",

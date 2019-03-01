@@ -48,74 +48,56 @@ if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultDialogs)
 }
 
+let entityEditor = require('./components/UbEntityEditComponent.vue')
+if (BOUNDLED_BY_WEBPACK) {
+  entityEditor = entityEditor.default
+}
+Vue.component('ub-entity-edit', entityEditor)
+
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   UB.core.UBCommand.showAutoForm = function () {
+    let params = this
+
+    if (!params.tabId) {
+      params.tabId = params.entity
+      params.tabId += params.instanceID ? params.instanceID : 'ext' + Ext.id(null, 'addNew')
+    }
+    let existsTab = Ext.getCmp(params.tabId)
+    if (existsTab) {
+      $App.viewport.centralPanel.setActiveTab(existsTab)
+      return
+    }
+
     let autoFormComponent = require('./components/AutoFormComponent.vue')
     // window.BOUNDLED_BY_WEBPACK = false
     if (BOUNDLED_BY_WEBPACK) {
       autoFormComponent = autoFormComponent.default
     }
-    let entitySchema = $App.domainInfo.get(this.entity)
-    let tabTitle = entitySchema.caption
-    let pageColumns = entitySchema
-      .filterAttribute({defaultView: true})
-      .map(at => at.name)
-    let data = {}
-    let dataP
-    let isNew = false
-    let fieldList = UB.ux.data.UBStore.normalizeFieldList(this.entity, pageColumns || [])
-    if (entitySchema.mixins.mStorage && entitySchema.mixins.mStorage.simpleAudit) fieldList.push('mi_createDate')
-    if (this.instanceID) {
-      dataP = UB.Repository(this.entity).attrs(fieldList).selectById(this.instanceID).then(resp => { data = resp })
-    } else {
-      let params = {
-        entity: this.entity,
-        fieldList: fieldList
-      }
-      dataP = $App.connection.addNew(params).then(result => {
-        result.resultData.fields.forEach((item, key) => {
-          data[item] = result.resultData.data[0][key]
-        })
-        return true
-      })
-      isNew = true
-    }
-    dataP.then(() => {
-      if (!data) { /* TODO выдать ошибку */ }
-      let tabId = entitySchema.name + data.ID
-      let existsTab = Ext.getCmp(tabId)
-      if (existsTab) {
-        $App.viewport.centralPanel.setActiveTab(existsTab)
-        return
-      }
-      let tab = $App.viewport.centralPanel.add({
-        id: tabId,
-        title: tabTitle,
-        tooltip: tabTitle,
-        closable: true
-      })
-      let vm = new Vue({
-        components: {
-          'auto-form-component': autoFormComponent
-        },
-        data: function () {
-          return {
-            fieldsToShow: pageColumns,
-            entitySchema: entitySchema,
-            inputData: data,
-            isNew: isNew,
-            closeTab: function () {
-              tab.close()
-            }
-          }
-        },
-        template: `<auto-form-component v-model="inputData" :fieldsToShow="fieldsToShow" :entitySchema="entitySchema" :isNew="isNew" @close="closeTab.call()"/>`
-      })
-      vm.$mount(`#${tab.getId()}-outerCt`)
-      tab.on('close', function () {
-        vm.$destroy()
-      })
-      $App.viewport.centralPanel.setActiveTab(tab)
+    let entitySchema = $App.domainInfo.get(params.entity)
+    let tab = $App.viewport.centralPanel.add({
+      id: params.tabId,
+      title: entitySchema.caption,
+      tooltip: entitySchema.caption,
+      closable: true
     })
+    let vm = new Vue({
+      template: `<auto-form-component :entityName="entityName" :instanceID="instanceID" :currentTabId="currentTabId" :externalData="externalData"></auto-form-component>`,
+      data: function () {
+        return {
+          entityName: params.entity,
+          instanceID: params.instanceID,
+          currentTabId: params.tabId,
+          externalData: params.parentContext
+        }
+      },
+      components: {
+        'auto-form-component': autoFormComponent
+      }
+    })
+    vm.$mount(`#${params.tabId}-outerCt`)
+    tab.on('close', function () {
+      vm.$destroy()
+    })
+    $App.viewport.centralPanel.setActiveTab(tab)
   }
 }
