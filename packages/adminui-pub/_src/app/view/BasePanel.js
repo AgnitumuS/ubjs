@@ -2778,7 +2778,7 @@ Ext.define('UB.view.BasePanel', {
         }
 
         if (!config.isModal) {
-          config.target = UB.core.UBApp.getViewport().getCenterPanel()
+          config.target = UB.core.UBApp.getViewport().centralPanel
           config.tabId = 'ubm_form' + result[0].ID
         }
 
