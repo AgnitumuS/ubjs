@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>UbSelect</h1>
+    <h1>UbCodeMirror</h1>
     <ub-code-mirror
       v-model="value"
     ></ub-code-mirror>

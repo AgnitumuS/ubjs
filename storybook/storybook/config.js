@@ -4,12 +4,18 @@ import Vue from 'vue'
 import UB from '@unitybase/ub-pub'
 
 import Element from 'element-ui'
+import { saveAsFn } from 'file-saver'
+
+import '../src/font-awesome/css/font-awesome.min.css'
+import '@unitybase/adminui-vue/dist/adminui-vue.css'
+
+import TreeView from 'vue-json-tree-view'
+
 Vue.use(Element, {
   size: 'small',
   i18n: UB.i18n.bind(UB)
 })
 
-import TreeView from 'vue-json-tree-view'
 Vue.use(TreeView)
 
 let connect = UB.connect({
@@ -58,15 +64,13 @@ connect.then(function () {
     }
   }
   this.Vue.use(UB)
+  Window.saveAs = saveAsFn
   configure(function loadStories () {
     require('../stories')
   }, module)
 }.bind({
   Vue: Vue
 }))
-
-import '../src/font-awesome/css/font-awesome.min.css'
-import '@unitybase/adminui-vue/dist/adminui-vue.css'
 
 if ('serviceWorker' in navigator) {
   console.log('CLIENT: service worker registration in progress.')

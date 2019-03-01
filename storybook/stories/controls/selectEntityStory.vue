@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>UbSelect</h1>
+    <h1>UbSelectEntity</h1>
     <ub-select-entity
       v-model="value"
       style="width:500px"

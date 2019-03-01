@@ -56,8 +56,8 @@ self.addEventListener('fetch', event => {
       let result = {
         result: {
           'store': 'simple',
-          'fName': 'doc.docx',
-          'origName': 'doc.docx',
+          'fName': 'doc.txt',
+          'origName': 'doc.txt',
           'ct': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           'size': 119137,
           'md5': '',
@@ -78,27 +78,17 @@ self.addEventListener('fetch', event => {
     }))
   }
   if (event.request.url.includes('getDocument')) {
-    event.respondWith(event.request.blob().then(function (data) {
-      let result = {
-        result: {
-          'store': 'simple',
-          'fName': 'doc.docx',
-          'origName': 'doc.docx',
-          'ct': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          'size': 119137,
-          'md5': '',
-          'isDirty': true
-        }
-      }
-      return new Response(JSON.stringify(result), {
+    event.respondWith(event.request.text().then(function (data) {
+      let result = new Blob(['test'], {
+        type: 'text/plain;charset=utf-8'
+      })
+      return new Response(result, {
         status: 200,
         statusText: 'OK',
         headers: {
-          'Accept-Encoding': 'gzip',
-          'Access-Control-Allow-Methods': 'POST, PUT, GET, DELETE, LOCK, OPTIONS',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Max-Age': 1728000,
-          'Content-Type': 'application/json; charset=UTF-8'
+          'Content-Type': 'application/json; charset=UTF-8',
+          'ETag': '"DAFE9E0A"',
+          'Server': 'UnityBase Microsoft-HTTPAPI/2.0'
         }
       })
     }))
