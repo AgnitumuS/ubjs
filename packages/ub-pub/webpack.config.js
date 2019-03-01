@@ -1,6 +1,5 @@
 // Created by pavel.mash on 04.09.2016.
 
-const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
@@ -20,32 +19,12 @@ module.exports = {
     }
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: /node_modules/,
-      query: {
-        presets: ['es2015']
-      }
+      exclude: /node_modules/
     }]
   },
-  devtool: 'cheap-source-map',
 
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        unused: false, // true
-        warnings: true, // false,
-        drop_console: false, // true,
-        unsafe: true
-      },
-      output: {
-        comments: false
-      },
-      sourceMap: process.env.NODE_ENV !== 'production'
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
-  ]
+  plugins: [  ]
 }

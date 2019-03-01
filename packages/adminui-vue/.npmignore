@@ -1,4 +1,4 @@
 node_modules
-theme
 wp_stats.json
-dist
+_el-theme
+*.tgz

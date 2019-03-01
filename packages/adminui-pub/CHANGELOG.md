@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.0]
+### Added
+ - `element-ui` library registered is SystemJS.map (used in DEV mode of adminui-vue) 
+  
+### Changed
+ - **BREAKING** `window.JSZip` is removed
+ - UBTheme.css removed (deprecated)
+ - css for Right-To-Left locales are removed (nobody uses it)
+ - packages updated `bluebird 3.4.6 -> 3.5.3`, `codemirror 5.20.2 -> 5.44.0`, `es6-promise 4.1.1 -> 4.2.6`
+ - webpack@4 is used for production build
+ - all production css are optimized using -O2 optimization level
+ - CodeMirror, TineMCE & mxGraph now not included in boundle and loaded on demand from their own packages
+ - removed most of IE11- hacks from Ext-all (-4Kb)
+
 ## [5.7.0]
 ### Changed
  - left navigation panel aligned to full screen height

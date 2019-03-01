@@ -1,5 +1,5 @@
 const UbDialog = require('./index')
-const {Notification} = require('element-ui/lib/index')
+const { Notification } = require('element-ui')
 const UB = require('@unitybase/ub-pub')
 
 module.exports = function () {

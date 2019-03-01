@@ -2,7 +2,7 @@ module.exports = {
   initAndCall: function () {
     window.mxImageBasePath = 'models/adminui-pub/resources/images'
     window.mxBasePath = 'models/adminui-pub/resources'
-    return System.import('mxgraph-js')
+    return SystemJS.import('mxgraph-js')
       .then(function (mxgraph) {
         if (window.mxGraph) return mxgraph
         // expose to global to allow mxGraph work correctly

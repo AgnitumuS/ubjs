@@ -3,7 +3,8 @@
  */
 const webpack = require('webpack')
 const path = require('path')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = (options = {}) => ({
   entry: {
@@ -30,7 +31,7 @@ module.exports = (options = {}) => ({
   module: {
     rules: [{
       test: /\.vue$/,
-      use: ['vue-loader']
+      loader: 'vue-loader'
     },
     {
       test: /\.js$/,
@@ -38,43 +39,33 @@ module.exports = (options = {}) => ({
       exclude: /node_modules/
     },
     {
-      test: /\.css$/,
+      test: /\.css$/, // results css are injected inside adminui-vue.js using UB.inject
+      use: [
+        MiniCssExtractPlugin.loader,
+        'css-loader'
+      ]
+    },
+    {
+      test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
       use: [{
-        loader: 'style-loader/url',
-        options: {
-          hmr: false
-        }
-      },
-      {
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]'
+          name: '[name].[ext]',
+          outputPath: 'fonts/'
         }
       }]
     }]
   },
 
-  devtool: options.dev ? '#eval-source-map' : '#source-map',
-
   plugins: [
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'adminui-vue.css'
+    }),
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true,
       // VueJS use process.env.NODE_ENV to enable devtools
       'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-    new UglifyJsPlugin({
-      'uglifyOptions': {
-        compress: {
-          warnings: false
-        },
-        output: {
-          comments: false
-        },
-        sourceMap: options.dev
-      }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
     })
   ],
   node: {

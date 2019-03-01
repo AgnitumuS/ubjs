@@ -4,12 +4,6 @@
 const webpack = require('webpack')
 const path = require('path')
 
-/**
- Set NODE_ENV=production for production build
- */
-if (process.env.NODE_ENV) process.env.NODE_ENV = process.env.NODE_ENV.trim()
-const PRODUCTION = (process.env.NODE_ENV === 'production')
-
 module.exports = {
   entry: {
     app: './index.js'
@@ -30,12 +24,7 @@ module.exports = {
     rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: [/node_modules/],
-      query: {
-        // MPV - IMPORTANT to remove a 'use strict' in boundle, in other case Ext.callParent not work,
-        // because in strict mode Fintion.calle in undefined, but this technic in used internalty by Ext.callParent
-        presets: ['es2015-without-strict']
-      }
+      exclude: [/node_modules/]
     }, {
       test: /\.css$/,
       use: [
@@ -54,39 +43,10 @@ module.exports = {
       ]
     }]
   },
-  // devtool: 'eval',
-  // devtool: 'source-map',
-  // devtool: 'cheap-module-source-map',
-  devtool: (PRODUCTION ? 'cheap-source-map' : 'eval'),
-
   plugins: [
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true,
       'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      children: true
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      'screw-ie8': true,
-      sourceMap: !PRODUCTION,
-      compress: PRODUCTION
-        ? {
-          sequences: true,
-          booleans: true,
-          loops: true,
-          unused: false, // true
-          warnings: !PRODUCTION, // false,
-          drop_console: false, // true,
-          unsafe: true
-        }
-        : false,
-      output: {
-        ascii_only: true // for TinyMCE
-      }
     })
   ],
   node: {
