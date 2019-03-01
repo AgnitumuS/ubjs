@@ -1,19 +1,43 @@
 const Vue = require('vue')
-exports.formCode = {
-  initUBComponent: function () {
-    let me = this
-    let htmlEl = this.query('[forVue]')[0].getEl().dom.firstChild
-    me.vm = new Vue({
-      template: `<el-date-picker type="date" v-model="docDate"></el-date-picker>`,
-      el: htmlEl,
-      data: function () {
-        return {
-          docDate: new Date()
-        }
-      }
-    })
-    me.on('destroy', () => {
-      me.vm.$destroy()
-    })
+const $App = require('@unitybase/adminui-pub')
+
+exports.mount = function (params) {
+  if (!params.tabId) {
+    params.tabId = params.entity
+    params.tabId += params.instanceID ? params.instanceID : 'ext' + Ext.id(null, 'addNew')
   }
+
+  let existsTab = Ext.getCmp(params.tabId)
+  if (existsTab) {
+    $App.viewport.centralPanel.setActiveTab(existsTab)
+    return
+  }
+  let tstDictionaryEdit = require('../components/DictionaryEditView.vue')
+  let entitySchema = $App.domainInfo.get(params.entity)
+
+  let tab = $App.viewport.centralPanel.add({
+    id: params.tabId,
+    title: entitySchema.caption,
+    tooltip: entitySchema.caption,
+    closable: true
+  })
+  let vm = new Vue({
+    template: `<dictionary-edit-form :entityName="entityName" :instanceID="instanceID" :currentTabId="currentTabId" :formCode="formCode"></dictionary-edit-form>`,
+    data () {
+      return {
+        entityName: params.entity,
+        instanceID: typeof params.instanceID === 'string' ? parseInt(params.instanceID) : params.instanceID,
+        currentTabId: params.tabId,
+        formCode: params.formCode
+      }
+    },
+    components: {
+      'dictionary-edit-form': tstDictionaryEdit
+    }
+  })
+  vm.$mount(`#${params.tabId}-outerCt`)
+  tab.on('close', function () {
+    vm.$destroy()
+  })
+  $App.viewport.centralPanel.setActiveTab(tab)
 }

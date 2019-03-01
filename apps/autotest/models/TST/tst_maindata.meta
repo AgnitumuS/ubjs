@@ -79,6 +79,13 @@
 			"defaultValue": "0"
 		},
 		{
+            "name": "fileStoreSimple",
+            "dataType": "Document",
+            "caption": "Simple",
+            "description": "Document stored to simple store",
+            "storeName": "simple"
+        },
+		{
 			"name": "manyValue",
             "dataType": "Many",
             "associatedEntity": "tst_dictionary",
@@ -117,6 +124,7 @@
 			"simpleAudit": true,
 			"safeDelete": true
 		},
+		"dataHistory": {},
 		"unity": { 
 			"entity": "tst_mainunity",
 			"attributeList": ["code", "caption"],

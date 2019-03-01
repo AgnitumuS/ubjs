@@ -613,6 +613,8 @@ Ext.define('UB.view.EntityGridPanel', {
    *
    */
 
+  onEntityChangedListener: null,
+
   applyState: function () {
     this.callParent(arguments)
     this.stateLoadedFromStore = true
@@ -995,6 +997,10 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     }
     me.entity = $App.domainInfo.get(me.entityName)
+    me.onEntityChangedListener = function () {
+      this.onRefresh()
+    }.bind(me)
+    UB.connection.on(`${me.entityName}:changed`, me.onEntityChangedListener)
     if (!me.entity) {
       throw new Error('You must specify entity')
     }
@@ -3273,6 +3279,7 @@ Ext.define('UB.view.EntityGridPanel', {
     }
     if (me.pagingBar) me.pagingBar.destroy()
     if (me.menu) me.menu.destroy()
+    UB.connection.removeListener(`${me.entityName}:changed`, me.onEntityChangedListener)
     me.callParent(arguments)
   },
 
