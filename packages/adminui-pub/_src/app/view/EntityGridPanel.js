@@ -2030,7 +2030,7 @@ Ext.define('UB.view.EntityGridPanel', {
     } else {
       savePromise = Promise.resolve(0)
     }
-    savePromise.done(function (saveStatus) {
+    savePromise.then(function (saveStatus) {
       if (saveStatus === -1) return
 
       let context = me.parentContext ? Ext.clone(me.parentContext) : {}
@@ -2402,7 +2402,7 @@ Ext.define('UB.view.EntityGridPanel', {
           return Promise.all(waitList).then(function () {
             return transResult
           })
-        }).done(function (transResult) {
+        }).then(function (transResult) {
           let store = me.store
           let idx = null
           _.forEach(transResult, function (resp) {
@@ -2602,7 +2602,7 @@ Ext.define('UB.view.EntityGridPanel', {
       entity: me.entityName,
       fieldList: ['ID', 'mi_data_id'],
       ID: me.isInHistory ? me.miDataID : sel[0].get('ID')
-    }).done(function (response) {
+    }).then(function (response) {
       let rows = UB.core.UBCommand.resultDataRow2Object(response)
       $App.doCommand({
         cmdType: 'showList',
@@ -3343,7 +3343,7 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: baseEntity,
         ID: baseID
       })
-    }).done(function (result) {
+    }).then(function (result) {
       if (result.resultLock && result.resultLock.success) {
         $App.dialogInfo('lockSuccessCreated')
       }
@@ -3430,7 +3430,7 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: baseEntity,
         ID: baseID
       })
-    }).done(function (result) {
+    }).then(function (result) {
       if (result.resultLock && result.resultLock.success) {
         $App.dialogInfo('lockSuccessDeleted')
       }

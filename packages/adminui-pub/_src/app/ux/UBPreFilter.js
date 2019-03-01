@@ -170,7 +170,7 @@ Ext.define('UB.ux.UBPreFilter', {
       $App.dialogError('doNotSelectedConfigName')
       return
     }
-    $App.dialogYesNo('attention', 'deleteConfirm').done(function (result) {
+    $App.dialogYesNo('attention', 'deleteConfirm').then(function (result) {
       if (result) {
         me.deleteSettings(configName, function () {
           me.configBox.clearValue()
@@ -202,7 +202,7 @@ Ext.define('UB.ux.UBPreFilter', {
     }, me)
 
     let data = JSON.stringify(resItm)
-    me.saveSettings(configName, data, false).done(function () {
+    me.saveSettings(configName, data, false).then(function () {
       window.localStorage.setItem(UB.ux.UBPreFilter.storeKeyPrefix + me.configName, configName)
       me.refreshConfig()
     })
@@ -264,7 +264,7 @@ Ext.define('UB.ux.UBPreFilter', {
     let me = this
     let vForm = me.filterWin.down('form')
     if (vForm.isDirty()) {
-      $App.dialogYesNo('attention', 'filterWasChangedConfirm').done(function (result) {
+      $App.dialogYesNo('attention', 'filterWasChangedConfirm').then(function (result) {
         if (result) {
           me.loadConfig()
         } else {
@@ -310,7 +310,7 @@ Ext.define('UB.ux.UBPreFilter', {
         control.resetOriginalValue()
       }
     }
-    me.loadSettings(configName).done(function (store) {
+    me.loadSettings(configName).then(function (store) {
       var record
       if (store.getCount() !== 0) {
         record = store.getAt(0)
@@ -408,7 +408,7 @@ Ext.define('UB.ux.UBPreFilter', {
   deleteSettings: function (key, onDelete) {
     let me = this
 
-    me.loadSettings(key).done(function (store) {
+    me.loadSettings(key).then(function (store) {
       var record
       if (store.getCount() !== 0) {
         record = store.getAt(0)
@@ -418,7 +418,7 @@ Ext.define('UB.ux.UBPreFilter', {
             ID: record.get('ID'),
             mi_modifyDate: record.get('mi_modifyDate')
           }
-        }).done(function () {
+        }).then(function () {
           if (onDelete) {
             onDelete.call(me)
           }
@@ -618,7 +618,7 @@ Ext.define('UB.ux.UBPreFilter', {
         }
       }
     }, me)
-    me.refreshConfig().done(function () {
+    me.refreshConfig().then(function () {
       me.loadLastConfig()
     })
   },

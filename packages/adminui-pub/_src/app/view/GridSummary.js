@@ -166,7 +166,7 @@ Ext.define('UB.view.GridSummary', {
         delete request.whereList
       }
 
-      $App.connection.select(request).done(function (response) {
+      $App.connection.select(request).then(function (response) {
         let record = {}
         if (!response.resultData || response.resultData.rowCount < 1) {
           return
