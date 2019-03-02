@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/systemjs-plugin-vue-ub",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "SystemJS plugin for single file Vue components. Works in browser with UnityBase adminUI",
   "main": "index.js",
   "scripts": {

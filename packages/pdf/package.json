@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/pdf",
-  "version": "5.0.17",
+  "version": "5.0.18",
   "description": "PDF creation library",
   "main": "index.js",
   "config": {
@@ -33,7 +33,5 @@
     "UB5"
   ],
   "author": "UnityBase team (https://unitybase.info)",
-  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
-  "devDependencies": {
-  }
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
 }
