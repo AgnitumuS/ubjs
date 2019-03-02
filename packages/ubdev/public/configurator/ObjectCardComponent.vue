@@ -62,66 +62,64 @@
 </template>
 
 <script>
-  const propertyCardComponent = require('./PropertyCardComponent.vue')
+const propertyCardComponent = require('./PropertyCardComponent.vue')
 
-  module.exports = {
-    props: {
-      metaObject: {
-        type: Object,
-        required: true
-      },
-      schema: {
-        type: Object,
-        required: true
-      },
-      fileName: String
+module.exports = {
+  props: {
+    metaObject: {
+      type: Object,
+      required: true
     },
-    data () {
-      return {
-        showMainProperties: false,
-        newAttrName: '',
-        currentRow: {}
-      }
+    schema: {
+      type: Object,
+      required: true
     },
-    methods: {
-      addAttribute () {
-        if (this.newAttrName) {
-          var obj = {
-            name: this.newAttrName
-          }
-          this.metaObject.attributes.push(obj)
-          this.$refs.attrTable.setCurrentRow(obj)
-          this.newAttrName = ''
-        }
-      },
-      changeProps (row) {
-        this.currentRow = row
-      },
-      deleteRow (index) {
-        this.$confirm('Are you sure to delete this property?', {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-        })
-          .then(_ => {
-            var key = Object.keys(this.metaObject.attributes)[index]
-            this.$delete(this.metaObject.attributes, key)
-          })
-          .catch(_ => {})
-      },
-      formatTypeCell (row) {
-        var result = row.dataType
-        if (row.dataType === 'String') result = `${row.dataType} (${row.size})`
-        if (row.dataType === 'Entity') result = `${row.dataType} → ${row.associatedEntity}`
-        return result
-      }
-    },
-    mounted () {
-      if (this.metaObject.attributes) {
-        this.$refs.attrTable.setCurrentRow(this.metaObject.attributes[0])
-      }
-    },
-    components: {
-      propertyCardComponent
+    fileName: String
+  },
+  data () {
+    return {
+      showMainProperties: false,
+      newAttrName: '',
+      currentRow: {}
     }
+  },
+  methods: {
+    addAttribute () {
+      if (this.newAttrName) {
+        var obj = {
+          name: this.newAttrName
+        }
+        this.metaObject.attributes.push(obj)
+        this.$refs.attrTable.setCurrentRow(obj)
+        this.newAttrName = ''
+      }
+    },
+    changeProps (row) {
+      this.currentRow = row
+    },
+    deleteRow (index) {
+      this.$confirm('Are you sure to delete this property?', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel'
+      }).then(_ => {
+        var key = Object.keys(this.metaObject.attributes)[index]
+        this.$delete(this.metaObject.attributes, key)
+      }).catch(_ => {})
+    },
+    formatTypeCell (row) {
+      var result = row.dataType
+      if (row.dataType === 'String') result = `${row.dataType} (${row.size})`
+      if (row.dataType === 'Entity') result = `${row.dataType} → ${row.associatedEntity}`
+      return result
+    }
+  },
+  mounted () {
+    if (this.metaObject.attributes) {
+      this.$refs.attrTable.setCurrentRow(this.metaObject.attributes[0])
+    }
+  },
+  components: {
+    propertyCardComponent
   }
+}
 </script>

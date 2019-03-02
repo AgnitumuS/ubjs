@@ -68,111 +68,111 @@
 </template>
 
 <script>
-  const objectControl = require('./ObjectControl.vue')
+const objectControl = require('./ObjectControl.vue')
 
-  module.exports = {
-    props: {
-      mixins: {
-        type: Object,
-        required: true
-      },
-      schema: {
-        type: Object,
-        required: true
-      }
+module.exports = {
+  props: {
+    mixins: {
+      type: Object,
+      required: true
     },
-    data () {
-      return {
-        popoverAddMixinVisible: false,
-        popoverAddPropVisible: false,
-        currentMixin: null,
-        currentMixinName: null
-      }
+    schema: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      popoverAddMixinVisible: false,
+      popoverAddPropVisible: false,
+      currentMixin: null,
+      currentMixinName: null
+    }
+  },
+  methods: {
+    showMixinData (name) {
+      this.currentMixin = this.mixins[name]
+      this.currentMixinName = name
+      this.popoverAddPropVisible = false
+      this.popoverAddMixinVisible = false
     },
-    methods: {
-      showMixinData (name) {
-        this.currentMixin = this.mixins[name]
-        this.currentMixinName = name
-        this.popoverAddPropVisible = false
-        this.popoverAddMixinVisible = false
-      },
-      addMixin (mixin) {
-        this.$set(this.mixins, mixin.name, {})
-        this.currentMixin = {}
-        this.showMixinData(mixin.name)
-      },
-      addProperty (property) {
-        var value = ''
-        if (property.type === 'boolean') value = false
-        if (property.type === 'array') value = []
-        if (property.type === 'object') value = {}
-        this.$set(this.currentMixin, property.name, value)
-        this.popoverAddPropVisible = false
-      },
-      deleteMixin () {
-        this.$delete(this.mixins, this.currentMixinName)
-        this.currentMixin = null
-        this.currentMixinName = null
-        this.setFirstMixinEdit()
-      },
-      deleteProperty (row) {
-        if (row.name) this.$delete(this.currentMixin, row.name)
-      },
-      setFirstMixinEdit () {
-        var keys = Object.keys(this.mixins)
-        if (keys.length > 0) this.showMixinData(keys[0])
-      }
+    addMixin (mixin) {
+      this.$set(this.mixins, mixin.name, {})
+      this.currentMixin = {}
+      this.showMixinData(mixin.name)
     },
-    mounted () {
+    addProperty (property) {
+      var value = ''
+      if (property.type === 'boolean') value = false
+      if (property.type === 'array') value = []
+      if (property.type === 'object') value = {}
+      this.$set(this.currentMixin, property.name, value)
+      this.popoverAddPropVisible = false
+    },
+    deleteMixin () {
+      this.$delete(this.mixins, this.currentMixinName)
+      this.currentMixin = null
+      this.currentMixinName = null
       this.setFirstMixinEdit()
     },
-    computed: {
-      schemaArray () {
-        return Object.keys(this.schema).map(function (key) {
-          return {
-            name: key,
-            fields: this.schema[key].properties,
-            description: this.schema[key].description
-          }
-        }, this)
-      },
-      moreMixins () {
-        return this.schemaArray.filter((item) => {
-          return !Object.keys(this.mixins).includes(item.name)
-        })
-      },
-      currentMixinInfo () {
-        return this.schemaArray.filter(item => {
-          return item.name === this.currentMixinName
-        }, this)[0]
-      },
-      includedProperties () {
-        return Object.keys(this.currentMixinInfo.fields)
-          .filter((name) => {
-            return Object.keys(this.currentMixin).includes(name)
-          }, this)
-          .map((name) => {
-            return {
-              name,
-              ...this.currentMixinInfo.fields[name]
-            }
-          })
-      },
-      otherProperties () {
-        return Object.keys(this.currentMixinInfo.fields)
-          .filter((name) => {
-            return !Object.keys(this.currentMixin).includes(name)
-          }, this)
-          .map((name) => {
-            return {
-              name,
-              ...this.currentMixinInfo.fields[name]
-            }
-          })
-      }
+    deleteProperty (row) {
+      if (row.name) this.$delete(this.currentMixin, row.name)
     },
-    components: {
-      objectControl
+    setFirstMixinEdit () {
+      var keys = Object.keys(this.mixins)
+      if (keys.length > 0) this.showMixinData(keys[0])
     }
+  },
+  mounted () {
+    this.setFirstMixinEdit()
+  },
+  computed: {
+    schemaArray () {
+      return Object.keys(this.schema).map(function (key) {
+        return {
+          name: key,
+          fields: this.schema[key].properties,
+          description: this.schema[key].description
+        }
+      }, this)
+    },
+    moreMixins () {
+      return this.schemaArray.filter((item) => {
+        return !Object.keys(this.mixins).includes(item.name)
+      })
+    },
+    currentMixinInfo () {
+      return this.schemaArray.filter(item => {
+        return item.name === this.currentMixinName
+      }, this)[0]
+    },
+    includedProperties () {
+      return Object.keys(this.currentMixinInfo.fields)
+        .filter((name) => {
+          return Object.keys(this.currentMixin).includes(name)
+        }, this)
+        .map((name) => {
+          return {
+            name,
+            ...this.currentMixinInfo.fields[name]
+          }
+        })
+    },
+    otherProperties () {
+      return Object.keys(this.currentMixinInfo.fields)
+        .filter((name) => {
+          return !Object.keys(this.currentMixin).includes(name)
+        }, this)
+        .map((name) => {
+          return {
+            name,
+            ...this.currentMixinInfo.fields[name]
+          }
+        })
+    }
+  },
+  components: {
+    objectControl
   }
+}
 </script>
