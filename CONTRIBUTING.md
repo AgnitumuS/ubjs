@@ -15,22 +15,28 @@ lerna bootstrap
 ```
 
 Starting from 2019-03-01 all subpackages use `webpack@4` for build.
- 
+
 To prevent installing webpack and all other needed stuffs in every packages/* folder and to avoid
 installing it globally we set all build-related tools into the `devDependency` section of `ubjs/package.json`.
 
-Before execution of any build commands like `npm run build` or `lerna bootstrap` first install ubjs 
+Before execution of any build commands like `npm run build` or `lerna bootstrap` first install ubjs
 project dependencies
- 
-```bash
-cd ubjs
-npm i
-```  
-and when add a ubjs/node_modules/.bin to PATH (locally)
 
 ```bash
 cd ubjs
+npm i
+```
+and when add a ubjs/node_modules/.bin to PATH (locally)
+
+On Linux
+```bash
+cd ubjs
 PATH=`pwd`/node_modules/.bin:$PATH
+```
+On Wndows:
+```
+cd ubjs
+SET PATH=%CD%\node_modules\.bin;%PATH%
 ```
 
 Verify webpack is accessible
@@ -38,7 +44,7 @@ Verify webpack is accessible
  webpack --version
 ```
 should output version >= 2.29.6
- 
+
 
 To execute a autotest
 ```
