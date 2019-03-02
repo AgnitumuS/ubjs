@@ -24,12 +24,12 @@ module.exports = {
     rules: [{
       test: /\.js$/,
       loader: 'babel-loader',
-      exclude: [/node_modules/],
+      exclude: [/node_modules/]/*,
       query: {
         // MPV - IMPORTANT to remove a 'use strict' in boundle, in other case Ext.callParent not work,
         // because in strict mode Fintion.calle in undefined, but this technic in used internalty by Ext.callParent
         presets: ['es2015-without-strict']
-      }
+      }*/
     }, {
       test: /\.css$/,
       use: ['style-loader', 'css-loader']
