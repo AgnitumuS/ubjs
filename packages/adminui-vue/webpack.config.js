@@ -26,7 +26,13 @@ module.exports = (options = {}) => ({
   externals: {
     lodash: '_',
     '@unitybase/ub-pub': 'UB',
-    '@unitybase/adminui-pub': '$App'
+    '@unitybase/adminui-pub': '$App',
+    '@unitybase/codemirror-full': {
+      commonjs: '@unitybase/codemirror-full',
+      commonjs2: '@unitybase/codemirror-full',
+      amd: '@unitybase/codemirror-full',
+      root: 'CodeMirror'
+    }
   },
   module: {
     rules: [{
