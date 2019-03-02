@@ -7,14 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.3.0]
 ### Fixed
  - relogon form should not close on Esc
-    
+
 ### Changed
  - **BREAKING** dialogs functions now return native Promise - without a legacy `.done` method.
  All occurrence of `.done` should be replaced to `.then()[.catch()]`
  - webpack4 is used for compile production mode
  - updated vue@2.6.6 -> vue@2.6.7
  - upgraded vue-loader@14.2.4 -> vue-loader@15.6.4
- 
+
 ## [1.2.2]
 ### Fixed
  - relogon form: default focused element should be password
