@@ -15,9 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - packages updated `bluebird 3.4.6 -> 3.5.3`, `codemirror 5.20.2 -> 5.44.0`, `es6-promise 4.1.1 -> 4.2.6`
  - webpack@4 is used for production build
  - all production css are optimized using -O2 optimization level
- - CodeMirror, TineMCE & mxGraph now not included in boundle and loaded on demand from their own packages
+ - CodeMirror & mxGraph now not included in boundle and loaded on demand from their own packages
  - removed most of IE11- hacks from Ext-all (-4Kb)
-
+ - `Ext.data.proxy.Rest`, `Ext.data.reader.Xml`, `Ext.data.writer.Xml`, and `Ext.data.XmlStore` are removed
+ - support for IE < 11 is removed from Ext.Array
+ 
 ## [5.7.0]
 ### Changed
  - left navigation panel aligned to full screen height
