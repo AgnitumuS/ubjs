@@ -335,7 +335,7 @@ TMimePartBind.encoding = ''
 
 /**
  * String representation of used Mime charset in part. (i.e. 'iso-8859-1')
- * Writing to this property automaticly generate value of @link(CharsetCode).
+ * Writing to this property automaticly generate value of {@link class:TMimePartBind#charsetCode charsetCode}.
  * Charset is used only for text parts.
  *
  * @type {String}
@@ -495,7 +495,7 @@ TMimePartBind.subLevel = 0
 TMimePartBind.maxSubLevel = 0
 
 /**
- * When is True, then this part maybe(!) have included some uuencoded binary
+ * When is True, then this part maybe(!) have included some unencoded binary
  * data
  *
  * @type {Boolean}

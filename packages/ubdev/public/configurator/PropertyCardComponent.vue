@@ -31,45 +31,44 @@
 </template>
 
 <script>
-  const objectControl = require('./ObjectControl.vue')
-  const mappingObjectControl = require('./MappingObjectControl.vue')
+const objectControl = require('./ObjectControl.vue')
+const mappingObjectControl = require('./MappingObjectControl.vue')
 
-  module.exports = {
-    props: {
-      currentRow: [Object, undefined],
-      schema: {
-        type: Object,
-        required: true
-      }
-    },
-    data () {
-      return {}
-    },
-    methods: {
-      setPropValue (name, value) {
-        this.$set(this.currentRow, name, value)
-      }
-    },
-    computed: {
-      currentSchema () {
-        return Object.keys(this.schema)
-          .filter((schemaName) => {
-            return (this.schema[schemaName].ui && this.schema[schemaName].ui.forTypes && this.schema[schemaName].ui.forTypes
-                .includes(this.currentRow.dataType)) ||
-              (this.schema[schemaName].ui && !this.schema[schemaName].ui.forTypes) ||
-              !this.schema[schemaName].ui
-          }, this)
-          .map((schemaName) => {
-            return {
-              name: schemaName,
-              ...this.schema[schemaName]
-            }
-          })
-      }
-    },
-    components: {
-      objectControl,
-      mappingObjectControl
+module.exports = {
+  props: {
+    currentRow: [Object, undefined],
+    schema: {
+      type: Object,
+      required: true
     }
+  },
+  data () {
+    return {}
+  },
+  methods: {
+    setPropValue (name, value) {
+      this.$set(this.currentRow, name, value)
+    }
+  },
+  computed: {
+    currentSchema () {
+      return Object.keys(this.schema)
+        .filter((schemaName) => {
+          let ui = this.schema[schemaName].ui
+          return (ui && ui.forTypes && ui.forTypes.includes(this.currentRow.dataType)) ||
+            (ui && !ui.forTypes) || !ui
+        }, this)
+        .map((schemaName) => {
+          return {
+            name: schemaName,
+            ...this.schema[schemaName]
+          }
+        })
+    }
+  },
+  components: {
+    objectControl,
+    mappingObjectControl
   }
+}
 </script>

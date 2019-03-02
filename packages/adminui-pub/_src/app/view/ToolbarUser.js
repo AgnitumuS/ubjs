@@ -51,7 +51,7 @@ Ext.define('UB.view.ToolbarUser', {
                     pwd: result.pwd,
                     needChangePassword: result.needChangePassword
                   }
-                }).done(function () {
+                }).then(function () {
                   $App.dialogInfo('passwordChangedSuccessfully')
                 })
               }
@@ -65,7 +65,7 @@ Ext.define('UB.view.ToolbarUser', {
               text: UB.i18n('clearLocalStore'),
               iconCls: 'iconData',
               handler: function () {
-                $App.connection.cacheClearAll().done(function () {
+                $App.connection.cacheClearAll().then(function () {
                   Ext.create('widget.uxNotification', {
                     title: UB.i18n('executed'),
                     position: 't',

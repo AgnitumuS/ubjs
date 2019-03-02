@@ -24,10 +24,10 @@ Ext.define('UB.view.LoginWindow', {
      * @return {Promise}
      */
     DoLogon: function (connection, isRepeat) {
-      let loginWindow = Ext.create('UB.view.LoginWindow', {connection: connection})
+      let loginWindow = Ext.create('UB.view.LoginWindow', { connection: connection })
 
       let loginPromise = new Promise(function (resolve, reject) {
-        loginWindow.deferred = {resolve: resolve, reject: reject}
+        loginWindow.deferred = { resolve: resolve, reject: reject }
       })
       // user already authorized but session expire
       // disable userName & auth tabs so user can only repeat then same auth
@@ -257,11 +257,11 @@ Ext.define('UB.view.LoginWindow', {
 
   initComponent: function () {
     var
-      me = this,
-      authMethods = me.connection.authMethods,
-      authItems = [],
-      minAuthTabsHeight = 265,
-      lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)
+      me = this
+    var authMethods = me.connection.authMethods
+    var authItems = []
+    var minAuthTabsHeight = 265
+    var lastSavedLogin = window.localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)
     var cfgAdminUI = me.connection.appConfig.uiSettings.adminUI
     let silenceKerberosLogin = window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
 
@@ -400,7 +400,7 @@ Ext.define('UB.view.LoginWindow', {
 
     var haveOpenIDConnect = (authMethods.indexOf('OpenIDConnect') >= 0)
     if (haveOpenIDConnect) {
-      UB.get('openIDConnect', {responceType: 'json'}).done(function (responce) {
+      UB.get('openIDConnect', { responceType: 'json' }).then(function (responce) {
         var OpenIDConnectProviders = responce.data
         var radioGroup = {
           xtype: 'radiogroup',
@@ -412,7 +412,7 @@ Ext.define('UB.view.LoginWindow', {
         }
 
         OpenIDConnectProviders.forEach(function (provider) {
-          radioGroup.items.push({boxLabel: UB.i18n(provider), name: 'providerName', inputValue: provider})
+          radioGroup.items.push({ boxLabel: UB.i18n(provider), name: 'providerName', inputValue: provider })
         })
         if (radioGroup.items.length) {
           radioGroup.items[0].checked = true
@@ -526,7 +526,7 @@ Ext.define('UB.view.LoginWindow', {
       login = Ext.String.trim(me.textFieldLoginCert.getValue() || '')
       password = Ext.String.trim(me.textFieldPasswordCert.getValue() || '')
       window.localStorage.setItem('firstLogin', me.chkFirstLogin.checked)
-      UB.inject('models/UBA/BigInteger.js').done(function () {
+      UB.inject('models/UBA/BigInteger.js').then(function () {
         /**
          * Build password hash as in ERC
          * @param pwd
@@ -534,7 +534,7 @@ Ext.define('UB.view.LoginWindow', {
          * @private
          */
         function ERC_encodePassword (pwd) {
-          var maxLen = 30, buff, i, c
+          var maxLen = 30; var buff; var i; var c
           var res = bigInt.one // require('bigint').one;
           buff = pwd
           while (buff.length < maxLen) {
@@ -561,10 +561,10 @@ Ext.define('UB.view.LoginWindow', {
       url = url.substr(0, url.lastIndexOf('/')) + '/openIDConnect/' + selectedBtn.providerName
 
       function getWindowConfig () {
-        var width = 600,
-          height = 525,
-          left = Math.floor(window.screenX + (window.outerWidth - width) / 2),
-          top = Math.floor(window.screenY + (window.outerHeight - height) / 2)
+        var width = 600
+        var height = 525
+        var left = Math.floor(window.screenX + (window.outerWidth - width) / 2)
+        var top = Math.floor(window.screenY + (window.outerHeight - height) / 2)
 
         return 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',toolbar=0,scrollbars=1,status=1,resizable=1,location=1,menuBar=0'
       }

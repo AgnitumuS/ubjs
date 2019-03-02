@@ -10,16 +10,46 @@ git clone https://gitlab.intecracy.com/unitybase/ub-e.git
 rem In case you have access to UB Defense - clone it
 git clone https://gitlab.intecracy.com/unitybase/ub-d.git
 cd ubjs
-npm run bootstrap
+npm i
+lerna bootstrap
 ```
+
+Starting from 2019-03-01 all subpackages use `webpack@4` for build.
+ 
+To prevent installing webpack and all other needed stuffs in every packages/* folder and to avoid
+installing it globally we set all build-related tools into the `devDependency` section of `ubjs/package.json`.
+
+Before execution of any build commands like `npm run build` or `lerna bootstrap` first install ubjs 
+project dependencies
+ 
+```bash
+cd ubjs
+npm i
+```  
+and when add a ubjs/node_modules/.bin to PATH (locally)
+
+```bash
+cd ubjs
+PATH=`pwd`/node_modules/.bin:$PATH
+```
+
+Verify webpack is accessible
+```
+ webpack --version
+```
+should output version >= 2.29.6
+ 
 
 To execute a autotest
 ```
 cd apps\autotest
 tsql3.cmd
-ub -dev
+// should output N of N passed success
+
+// run ub in dev move with console debug logs
+ub -cd -dev
 ```
-Point your browser (Chrome or FireFox) to http://localhost:888/ubadminui-dev to access AuminUI (admin/admin)
+Point your browser (Chrome or FireFox) to http://localhost:8881/ubadminui-dev to access AuminUI (admin/admin)
 
 
 To run a [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/)
@@ -27,7 +57,7 @@ To run a [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benc
 ```
 cd apps\benchmarks
 prepare.cmd
-ub -c
+ub
 ```
 
 See benchmarking instruction in [benchmarks/README.md](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/apps/benchmarks/README.md)

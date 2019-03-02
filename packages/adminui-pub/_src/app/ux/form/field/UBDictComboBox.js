@@ -226,16 +226,16 @@ Ext.define('UB.ux.form.field.UBDictComboBox', {
             values: val
           }
         }
-      }).done(function (response) {
+      }).then(function (response) {
         if (response && response.resultData.data.length) {
-          var records = store.add(UB.core.UBCommand.resultDataRow2Object(response), true)
+          let records = store.add(UB.core.UBCommand.resultDataRow2Object(response), true)
           me.setValue(records[0])
-          return
+          return true
         }
         if (me.doQueryFillOtherAttribute) {
-          $App.dialogYesNo('', UB.format(UB.i18n(me.messageFillOtherAttribute), me.getFieldLabel(),
+          $App.dialogYesNo('', UB.i18n(me.messageFillOtherAttribute, me.getFieldLabel(),
             $App.domainInfo.get(entityName, true).getEntityCaption())
-          ).done(function (result) {
+          ).then(function (result) {
             if (result) {
               Ext.defer(function () {
                 this.addDictItem({ caption: this.getRawValue() })

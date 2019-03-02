@@ -573,14 +573,13 @@ Ext.define('UB.ux.form.field.UBComboBox', {
       load: {
         fn: function () {
           if (store.getCount() === 0) {
-            let entity = UB.connection.domain.get(me.getEntity(), true)
             // Trying to load a filtered out row (probably deleted or historically not actual)
             UB.connection.select({
               entity: me.getEntity(),
               fieldList: store.ubRequest.fieldList, // [me.valueField, me.displayField ],
               __allowSelectSafeDeleted: true,
               ID: id
-            }).done(function (result) {
+            }).then(function (result) {
               if (store.isDestroyed) {
                 return
               }

@@ -58,11 +58,6 @@
     max-height: 3rem;
     max-width: fit-content;
   }
-
-  .auth-page__tooltip {
-    position: absolute;
-    margin-left: 140px;
-  }
 </style>
 
 
@@ -213,9 +208,11 @@
             </div>
 
             <div v-if="hasNegotiate">
-              <el-tooltip :content="$ut('KerberosTip')" placement="bottom" effect="light">
-                <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-              </el-tooltip>
+              <div class="auth-page__text">
+                <el-tooltip :content="$ut('KerberosTip')" placement="bottom" effect="light">
+                  <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+                </el-tooltip>
+              </div>
               <p v-html="$ut('KerberosHeader')"></p>
               <el-form-item>
                 <el-button type="primary" style="min-width: 8rem" @click="doNegotiateLogin">{{ $ut('UBAuthContinue') }}
@@ -232,9 +229,11 @@
                 <el-switch v-model="ubAuthVisible" :active-text="$ut('AdditionalLoginOptions')"></el-switch>
               </div>
               <div v-if="ubAuthVisible">
-                <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
-                  <i class="auth-page__tooltip fa fa-question-circle-o"></i>
-                </el-tooltip>
+                <div class="auth-page__text">
+                  <el-tooltip :content="$ut('UBAuthTip')" placement="bottom" effect="light">
+                    <i class="auth-page__tooltip fa fa-question-circle-o"></i>
+                  </el-tooltip>
+                </div>
                 <p v-html="$ut('UBAuthHeader', appName)"></p>
                 <el-form-item></el-form-item>
                 <el-form-item prop="user">

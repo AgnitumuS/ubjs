@@ -297,7 +297,7 @@ const tree = {
 }
 
 /**
- * Mixin. Full Text Search. See {@tutorial fts} for details
+ * Mixin. Full Text Search. See {@tutorial mixins_fts} for details
  *
  * @mixin
  */
