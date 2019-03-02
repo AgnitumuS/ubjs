@@ -4,6 +4,7 @@
     width="340px"
     :visible.sync="visible"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
   >
     <div
       slot="title"
@@ -70,7 +71,7 @@ module.exports = {
 
   created () {
     this.$UB.connection.setRequestAuthParamsFunction((connection /*, isRepeat */) => {
-      connection._events.authorizationFail = ({message}) => {
+      connection._events.authorizationFail = ({ message }) => {
         this.$message.error({
           message: this.$ut(message),
           customClass: 'auth-error-notify',

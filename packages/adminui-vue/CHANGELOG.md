@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.0]
+### Fixed
+ - relogon form should not close on Esc
+    
 ### Changed
  - **BREAKING** dialogs functions now return native Promise - without a legacy `.done` method.
  All occurrence of `.done` should be replaced to `.then()[.catch()]`
