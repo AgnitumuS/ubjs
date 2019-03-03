@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.1]
+### Changed
+ - update vue@2.6.7 -> 2.6.8
+ - set fixed version of element-ui@2.5.4 because of theme bug in 2.6.x
+
 ## [1.3.0]
 ### Fixed
  - relogon form should not close on Esc
