@@ -4,12 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.1]
+### Changed
+ - remove preset-es215-without-strict from webpack config - webpack4 do all well w/o this preset
+
+## [5.8.0]
+### Added
+ - `element-ui` library registered is SystemJS.map (used in DEV mode of adminui-vue)
+
+### Changed
+ - **BREAKING** `window.JSZip` is removed
+ - UBTheme.css removed (deprecated)
+ - css for Right-To-Left locales are removed (nobody uses it)
+ - packages updated `bluebird 3.4.6 -> 3.5.3`, `codemirror 5.20.2 -> 5.44.0`, `es6-promise 4.1.1 -> 4.2.6`
+ - webpack@4 is used for production build
+ - all production css are optimized using -O2 optimization level
+ - CodeMirror & mxGraph now not included in boundle and loaded on demand from their own packages
+ - removed most of IE11- hacks from Ext-all (-4Kb)
+ - `Ext.data.proxy.Rest`, `Ext.data.reader.Xml`, `Ext.data.writer.Xml`, and `Ext.data.XmlStore` are removed
+ - support for IE < 11 is removed from Ext.Array
+
 ## [5.7.0]
 ### Changed
  - left navigation panel aligned to full screen height
  - all toolbars (application top bar and form's toolbar) color changed to white
  - border around toolbar buttons is removed
- 
+
+### Fixed
+ - fix opening form constructor in form settings
+
 ## [5.6.26]
 ### Added
  - UB favicon.ico added to adminui-pub

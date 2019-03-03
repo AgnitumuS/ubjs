@@ -62,57 +62,57 @@
 </template>
 
 <script>
-  module.exports = {
-    props: {
-      row: {
-        type: Object,
-        required: true
-      },
-      propName: String,
-      schema: {
-        type: Object,
-        required: true
-      },
+module.exports = {
+  props: {
+    row: {
+      type: Object,
+      required: true
     },
-    data () {
-      return {
-        currentDB: null,
-        currentType: null,
-        currentValue: null
-      }
-    },
-    computed: {
-      currentObj: {
-        get () {
-          if (typeof this.row[this.propName] !== 'object') {
-            this.$emit('setPropValue', this.propName, [])
-            this.$forceUpdate()
-          }
-          return this.row[this.propName]
-        },
-        set (value) {
-          this.row[this.propName] = value
+    propName: String,
+    schema: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      currentDB: null,
+      currentType: null,
+      currentValue: null
+    }
+  },
+  computed: {
+    currentObj: {
+      get () {
+        if (typeof this.row[this.propName] !== 'object') {
+          this.$emit('setPropValue', this.propName, [])
+          this.$forceUpdate()
         }
-      }
-    },
-    methods: {
-      removeProperty (item) {
-        this.currentObj = this.currentObj.filter((obj) => {
-          return item !== obj
-        }, this)
+        return this.row[this.propName]
       },
-      addProperty () {
-        if (this.currentDB && this.currentValue) {
-          this.currentObj.push({
-            name: this.currentDB,
-            expressionType: this.currentType,
-            expression: this.currentValue
-          })
-          this.currentDB = null
-          this.currentType = null
-          this.currentValue = null
-        }
+      set (value) {
+        this.row[this.propName] = value
+      }
+    }
+  },
+  methods: {
+    removeProperty (item) {
+      this.currentObj = this.currentObj.filter((obj) => {
+        return item !== obj
+      }, this)
+    },
+    addProperty () {
+      if (this.currentDB && this.currentValue) {
+        this.currentObj.push({
+          name: this.currentDB,
+          expressionType: this.currentType,
+          expression: this.currentValue
+        })
+        this.currentDB = null
+        this.currentType = null
+        this.currentValue = null
       }
     }
   }
+}
 </script>

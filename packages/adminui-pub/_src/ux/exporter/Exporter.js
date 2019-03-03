@@ -119,7 +119,7 @@ Ext.define('Ext.ux.exporter.Exporter', {
         // request.limit = 65000;
         delete request.limit
 
-        $App.connection.select(request).done(function (result) {
+        $App.connection.select(request).then(function (result) {
           // Ext.Array.each( result.resultData.fields , function(fld, index){
           Ext.Array.each(request.fieldList, function (fld, index) {
             rfields[fld] = index

@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub-pub",
-  "version": "5.2.30",
+  "version": "5.2.31",
   "description": "Data layer for accessing UnityBase server from Browser or NodeJS",
   "main": "./ub-pub.js",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub-pub",
@@ -11,9 +11,9 @@
     }
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack",
+    "build": "webpack --mode production",
     "build:doc": "jsdoc -c ./jsdoc-conf.json --package ./package.json",
-    "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
     "lint": "eslint source test",
     "prepare": "npm run build",
     "test": "npm run test"
@@ -33,8 +33,5 @@
     "nodeJS"
   ],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
-  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0 OR MIT)",
-  "devDependencies": {
-    "cross-env": "^5.1.1"
-  }
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0 OR MIT)"
 }

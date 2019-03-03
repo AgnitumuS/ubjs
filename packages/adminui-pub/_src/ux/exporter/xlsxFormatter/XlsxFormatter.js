@@ -20,7 +20,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
    */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
-      System.import('@unitybase/xlsx/dist/xlsx-all.min.js').then((XLSX) => {
+      SystemJS.import('@unitybase/xlsx/dist/xlsx-all.min.js').then((XLSX) => {
         window.XLSX = XLSX
         Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded = true
         this.format(store, config)

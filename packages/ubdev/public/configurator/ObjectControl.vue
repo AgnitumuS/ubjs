@@ -28,42 +28,42 @@
 </template>
 
 <script>
-  module.exports = {
-    props: {
-      row: {
-        type: Object,
-        required: true
-      },
-      propName: String
+module.exports = {
+  props: {
+    row: {
+      type: Object,
+      required: true
     },
-    data () {
-      return {
-        currentKey: null,
-        currentValue: null
-      }
+    propName: String
+  },
+  data () {
+    return {
+      currentKey: null,
+      currentValue: null
+    }
+  },
+  methods: {
+    removeProperty (key) {
+      this.$delete(this.currentObj, key)
     },
-    methods: {
-      removeProperty (key) {
-        this.$delete(this.currentObj, key)
-      },
-      addProperty () {
-        if (this.currentKey) {
-          this.$set(this.currentObj, this.currentKey, this.currentValue)
-          this.currentKey = null
-          this.currentValue = null
-        }
-      }
-    },
-    computed: {
-      currentObj () {
-        if (typeof this.row[this.propName] !== 'object') {
-          this.$emit('setPropValue', this.propName, {})
-          this.$forceUpdate()
-        }
-        return this.row[this.propName]
+    addProperty () {
+      if (this.currentKey) {
+        this.$set(this.currentObj, this.currentKey, this.currentValue)
+        this.currentKey = null
+        this.currentValue = null
       }
     }
+  },
+  computed: {
+    currentObj () {
+      if (typeof this.row[this.propName] !== 'object') {
+        this.$emit('setPropValue', this.propName, {})
+        this.$forceUpdate()
+      }
+      return this.row[this.propName]
+    }
   }
+}
 </script>
 
 <style>
@@ -77,7 +77,7 @@
   }
 
   .object-control__row :last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   .object-control__table {

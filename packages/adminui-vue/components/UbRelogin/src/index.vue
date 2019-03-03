@@ -4,6 +4,7 @@
     width="340px"
     :visible.sync="visible"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
   >
     <div
       slot="title"
@@ -70,7 +71,7 @@ module.exports = {
 
   created () {
     this.$UB.connection.setRequestAuthParamsFunction((connection /*, isRepeat */) => {
-      connection._events.authorizationFail = ({message}) => {
+      connection._events.authorizationFail = ({ message }) => {
         this.$message.error({
           message: this.$ut(message),
           customClass: 'auth-error-notify',
@@ -87,3 +88,61 @@ module.exports = {
   }
 }
 </script>
+
+<style>
+.auth-page--left {
+  text-align: left;
+}
+
+.auth-page__header {
+  font-size: 1.5rem;
+  font-weight: 100;
+  text-align: center;
+}
+
+.auth-page__cert-info {
+  text-align: left;
+  line-height: 1.25rem;
+}
+
+.auth-page__container {
+  width: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth-page__logo-container {
+  max-width: 210px;
+  margin: 0 auto 1rem;
+  height: 3rem;
+  text-align: center;
+}
+
+.auth-page__logo {
+  max-height: 3rem;
+  max-width: fit-content;
+}
+
+.auth-page__tooltip {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.auth-error-notify{
+  z-index: 400000 !important;
+}
+
+.auth-page__text{
+  position: relative;
+  text-align: center;
+  font-size: 16px;
+}
+
+.auth-page__submit-btn{
+  min-width: 8rem;
+  margin: 0 auto;
+  display: block;
+}
+</style>

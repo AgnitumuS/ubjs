@@ -73,3 +73,31 @@ module.exports = {
   }
 }
 </script>
+
+<style>
+.ub-tabbar__context-menu {
+  background-color: #fff;
+  width: 200px;
+  padding: 8px 0;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 99;;
+}
+
+.ub-tabbar__context-menu__item {
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.ub-tabbar__context-menu__item:hover {
+  background-color: #f8f8f8;
+}
+
+.ub-tabbar__context-menu__divider {
+  border-bottom: 1px solid #eee;
+  margin: 8px 0;
+}  
+</style>

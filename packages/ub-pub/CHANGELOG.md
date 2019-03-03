@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **CRITICAL** `ClientRepository.selectScalar` return `undefined` for cached entities
  even if row exists
 
+### Changed
+ - use webpack4 for production build
+
 ## [5.2.29]
 ### Fixed
  - WebStorm code insight now work inside vue classes for this.$UB

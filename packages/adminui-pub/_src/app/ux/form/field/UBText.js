@@ -130,7 +130,7 @@ Ext.define('UB.ux.form.field.UBText', {
         ID: basePanel.instanceID
       })
         .then(UB.LocalDataStore.selectResultToArrayOfObjects)
-        .done(function (data) {
+        .then(function (data) {
           var row = data && data.length > 0 ? data[0] : {}
           _.forEach(UB.appConfig.supportedLanguages, function (lang) {
             if ($App.connection.userLang() === lang) {

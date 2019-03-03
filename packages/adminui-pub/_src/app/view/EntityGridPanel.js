@@ -613,6 +613,8 @@ Ext.define('UB.view.EntityGridPanel', {
    *
    */
 
+  onEntityChangedListener: null,
+
   applyState: function () {
     this.callParent(arguments)
     this.stateLoadedFromStore = true
@@ -995,6 +997,10 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     }
     me.entity = $App.domainInfo.get(me.entityName)
+    me.onEntityChangedListener = function () {
+      this.onRefresh()
+    }.bind(me)
+    UB.connection.on(`${me.entityName}:changed`, me.onEntityChangedListener)
     if (!me.entity) {
       throw new Error('You must specify entity')
     }
@@ -2024,7 +2030,7 @@ Ext.define('UB.view.EntityGridPanel', {
     } else {
       savePromise = Promise.resolve(0)
     }
-    savePromise.done(function (saveStatus) {
+    savePromise.then(function (saveStatus) {
       if (saveStatus === -1) return
 
       let context = me.parentContext ? Ext.clone(me.parentContext) : {}
@@ -2396,7 +2402,7 @@ Ext.define('UB.view.EntityGridPanel', {
           return Promise.all(waitList).then(function () {
             return transResult
           })
-        }).done(function (transResult) {
+        }).then(function (transResult) {
           let store = me.store
           let idx = null
           _.forEach(transResult, function (resp) {
@@ -2596,7 +2602,7 @@ Ext.define('UB.view.EntityGridPanel', {
       entity: me.entityName,
       fieldList: ['ID', 'mi_data_id'],
       ID: me.isInHistory ? me.miDataID : sel[0].get('ID')
-    }).done(function (response) {
+    }).then(function (response) {
       let rows = UB.core.UBCommand.resultDataRow2Object(response)
       $App.doCommand({
         cmdType: 'showList',
@@ -3273,6 +3279,7 @@ Ext.define('UB.view.EntityGridPanel', {
     }
     if (me.pagingBar) me.pagingBar.destroy()
     if (me.menu) me.menu.destroy()
+    UB.connection.removeListener(`${me.entityName}:changed`, me.onEntityChangedListener)
     me.callParent(arguments)
   },
 
@@ -3336,7 +3343,7 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: baseEntity,
         ID: baseID
       })
-    }).done(function (result) {
+    }).then(function (result) {
       if (result.resultLock && result.resultLock.success) {
         $App.dialogInfo('lockSuccessCreated')
       }
@@ -3423,7 +3430,7 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: baseEntity,
         ID: baseID
       })
-    }).done(function (result) {
+    }).then(function (result) {
       if (result.resultLock && result.resultLock.success) {
         $App.dialogInfo('lockSuccessDeleted')
       }

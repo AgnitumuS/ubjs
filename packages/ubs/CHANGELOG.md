@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.3]
 ### Added
  - navshortcuts access initialization for Supervisor role
+
+### Changed
+ - use webpack4 for production build
  
 ## [5.2.0]
 ### Added

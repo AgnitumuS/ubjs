@@ -445,7 +445,7 @@ Ext.define('UB.core.UBApp', {
       me.viewport.show()
       me.fireEvent('desktopChanged', UB.core.UBAppConfig.desktop) // keep UB.core.UBAppConfig
       me.fireEvent('applicationReady')
-      me.checkQueryString()
+      me.locationHashChanged()
       me.hideLogo()
     }).catch(function (reason) {
       me.hideLogo()
@@ -608,7 +608,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * Example:
    *
    *      $App.dialogError('recordNotExistsOrDontHaveRights')
-   *          .done(me.closeWindow.bind(me));
+   *          .then(me.closeWindow.bind(me));
    *
    * @param {String} msg
    * @param {String} [title] Default is 'error'
@@ -904,7 +904,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    *          whereList: {byCode3: {
    *              expression: '[code3]', condition: 'equal', values: {code3: 'USD'}
    *          }}
-   *       }).done(function(result){
+   *       }).then(function(result){
    *          if (result.resultData.data.length === 1){
    *             $App.doCommand({
    *                 cmdType: 'showForm',
@@ -1064,7 +1064,15 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       if (!window.location.href.split('#')[1]) {
         return
       }
-      UB.core.UBApp.doCommand(UB.core.UBCommand.getCommandByUrl(window.location.href, $App.getViewport().centralPanel))
+      const commandConfig = UB.core.UBCommand.getCommandByUrl(window.location.href, $App.getViewport().centralPanel)
+
+      if (commandConfig.instanceID) {
+        commandConfig.tabId = commandConfig.entity + commandConfig.instanceID
+      } else {
+        commandConfig.tabId = 'navigator' + getShortcutID(commandConfig.entity)
+      }
+
+      UB.core.UBApp.doCommand(commandConfig)
     }
   },
 
@@ -1074,3 +1082,12 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 })
 
 module.exports = UB.core.UBApp
+
+function getShortcutID (code, instanceID) {
+  const store = UB.core.UBStoreManager.getNavigationShortcutStore()
+  const rowNum = store.findExact('code', code)
+
+  return rowNum !== -1
+    ? store.getAt(rowNum).get('ID')
+    : Ext.id()
+}

@@ -20,11 +20,24 @@
 			"caption": "Caption",
 			"allowNull": true,
 			"isMultiLang": true
-		}
+		},
+		"mi_wfState": {
+            "dataType": "Enum",
+            "enumGroup": "AUDIT_ACTION",
+            "caption": "Состояние",
+            "allowNull": true,
+            "defaultValue": "INSERT"
+        }
 	},
 	"mixins": {
+        "als": {
+            "enabled": true,
+            "stateAttrName": "mi_wfState",
+            "stateEnumGroup": "AUDIT_ACTION",
+            "optimistic": true
+        },
 		"mStorage": {
-			"simpleAudit": true,
+			"simpleAudit": false,
 			"safeDelete": true
         }
 	}

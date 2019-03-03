@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.45]
+### Changed
+ - use webpack4 for production build
+
 ## [5.0.41]
 ### Added
   - adding custom properties to the xlsx document

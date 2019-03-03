@@ -42,7 +42,8 @@ if (!Promise.prototype.done) {
   Promise.prototype.done = Promise.prototype.then
 }
 
-window.JSZip = require('jszip/dist/jszip.js') // for xlsx-pub. require('jszip') dose not work
+// commented by MPV on 2019-03-01 - required in ubs
+// window.JSZip = require('jszip/dist/jszip.js') // for xlsx-pub. require('jszip') dose not work
 window.saveAs = fileSaver.saveAs
 
 Ext.Loader.setConfig({
@@ -59,13 +60,3 @@ launchApp()
 
 module.exports = $App
 if (!SystemJS.has('@unitybase/adminui-pub')) SystemJS.set('@unitybase/adminui-pub', SystemJS.newModule($App))
-if (window.location.href && window.location.href.indexOf('#') > 0) {
-  $App.on('applicationReady', () => {
-    if (window.location.href && window.location.href.indexOf('#') > 0) {
-      let command = UB.core.UBCommand.getCommandByUrl(window.location.href, UB.core.UBApp.getViewport().getCenterPanel())
-      if (command) {
-        $App.doCommand(command)
-      }
-    }
-  })
-}

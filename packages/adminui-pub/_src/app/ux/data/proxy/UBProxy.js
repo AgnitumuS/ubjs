@@ -206,7 +206,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
         serverRequest.options.start = 0
       }
     }
-    UB.connection.select(serverRequest).done(function (response) {
+    UB.connection.select(serverRequest).then(function (response) {
       resultSet = me.getReader().read({data: response.resultData.data})
       if (fnFilters.length > 0) {
         me.applyFilterFn(resultSet, fnFilters)

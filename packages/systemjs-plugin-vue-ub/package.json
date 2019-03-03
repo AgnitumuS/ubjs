@@ -1,12 +1,12 @@
 {
   "name": "@unitybase/systemjs-plugin-vue-ub",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "SystemJS plugin for single file Vue components. Works in browser with UnityBase adminUI",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack",
+    "build": "webpack --mode production",
     "prepare": "npm run build",
-    "analyse-boundle": "cross-env NODE_ENV=production webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
+    "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
   },
   "repository": {
     "type": "git",
