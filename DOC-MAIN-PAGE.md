@@ -9,7 +9,7 @@ From the low level point of view UnityBase is a asynchronous non-blocking HTTP(S
  - build-in Database access for a most known RDBMS
  - build-in file systems access
 
-<img src="img/UB-Server-Architecture-v4.png" alt="UB4 Server Architecture">
+<img src="img/UB-Server-Architecture-v5.png" alt="UB5 Server Architecture">
 
 Form a business logic developer point of view UnityBase is:
  - an DBMS agnostic ORM what work over application Domain metadata
