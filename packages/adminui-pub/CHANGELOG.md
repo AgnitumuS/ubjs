@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.1]
+### Changed
+ - remove preset-es215-without-strict from webpack config - webpack4 do all well w/o this preset
+
 ## [5.8.0]
 ### Added
- - `element-ui` library registered is SystemJS.map (used in DEV mode of adminui-vue) 
-  
+ - `element-ui` library registered is SystemJS.map (used in DEV mode of adminui-vue)
+
 ### Changed
  - **BREAKING** `window.JSZip` is removed
  - UBTheme.css removed (deprecated)
@@ -19,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - removed most of IE11- hacks from Ext-all (-4Kb)
  - `Ext.data.proxy.Rest`, `Ext.data.reader.Xml`, `Ext.data.writer.Xml`, and `Ext.data.XmlStore` are removed
  - support for IE < 11 is removed from Ext.Array
- 
+
 ## [5.7.0]
 ### Changed
  - left navigation panel aligned to full screen height
@@ -28,7 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - fix opening form constructor in form settings
- 
+
 ## [5.6.26]
 ### Added
  - UB favicon.ico added to adminui-pub
