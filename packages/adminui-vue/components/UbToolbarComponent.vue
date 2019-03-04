@@ -47,15 +47,18 @@
 module.exports = {
   name: 'UbToolbarComponent',
   props: {
-    value: [String, Number],
-    entityName: String,
+    value: {
+      type: [String, Number],
+      required: true
+    },
+    entityName: {
+      type: String,
+      required: true
+    },
     simpleAudit: Object,
     isNew: Boolean,
     isChanged: Boolean,
-    useOnlyOwnActions: {
-      type: Boolean,
-      default: false
-    },
+    useOnlyOwnActions: Boolean,
     inputActions: {
       type: Array,
       default () {
@@ -156,7 +159,7 @@ module.exports = {
 
               this.$UB.Repository('ubm_form').attrs(['ID', 'code'])
                 .where('code', '=', this.formCode).select()
-                .done(result => {
+                .then(result => {
                   if (!result || result.length < 1) {
                     this.$notify({
                       title: this.$ut('formNotFound'),
@@ -342,7 +345,7 @@ module.exports = {
       }]
     },
     buttons () {
-      return this.inputButtons && this.inputButtons > 0 ? this.inputButtons : this.defaultButtons
+      return this.inputButtons && this.inputButtons.length > 0 ? this.inputButtons : this.defaultButtons
     }
   },
   methods: {
