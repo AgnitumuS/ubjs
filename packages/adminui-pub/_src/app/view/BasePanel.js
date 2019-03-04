@@ -881,8 +881,10 @@ Ext.define('UB.view.BasePanel', {
     me.lockButton.removeCls('ub-persistlockinfo')
     if (me.hasPersistLock) {
       me.lockButton.addCls('ub-persistlockinfo')
-      me.lockButton.setText(UB.format(UB.i18n('persistLockInfo'),
-      me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+      me.lockButton.setText(UB.i18n('persistLockInfo',
+        me.record.lockInfo.lockUser,
+        Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s'))
+      )
       me.lockButton.show()
     } else if (me.entityLocked) {
       me.lockButton.setText(UB.i18n('entityLockedOwn'))
@@ -890,13 +892,17 @@ Ext.define('UB.view.BasePanel', {
     } else if (me.record.lockInfo && me.record.lockInfo.lockExists && me.record.lockInfo.lockType === 'Temp') {
       // show message only if not in this session
       if (!UB.ux.LockManager.existLock(me.entityName, me.record.lockInfo.lockValue)) {
-        me.lockButton.setText(UB.format(UB.i18n('tempSoftLockInfo'),
-        me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+        me.lockButton.setText(UB.i18n('tempSoftLockInfo',
+          me.record.lockInfo.lockUser,
+          Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s'))
+        )
         me.lockButton.show()
       }
     } else if (me.record.lockInfo && me.record.lockInfo.lockExists && me.record.lockInfo.lockType === 'Persist') {
-      me.lockButton.setText(UB.format(UB.i18n('softLockInfo'),
-      me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+      me.lockButton.setText(UB.i18n('softLockInfo',
+        me.record.lockInfo.lockUser,
+        Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s'))
+      )
       me.lockButton.show()
     } else {
       if (me.lockButton.isVisible()) {
