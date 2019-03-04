@@ -22,6 +22,7 @@
     "@unitybase/adminui-vue": "^1.0.37",
     "@unitybase/ub-pub": "^5.2.26",
     "element-ui": "^2.4.11",
+    "file-saver": "^2.0.1",
     "vue": "^2.6.6",
     "vue-json-tree-view": "^2.1.4"
   }

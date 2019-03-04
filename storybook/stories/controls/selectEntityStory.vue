@@ -63,49 +63,49 @@
 </template>
 
 <script>
-  import UbSelectEntity from '@unitybase/adminui-vue/components/controls/UbSelectEntity.vue'
+import UbSelectEntity from '@unitybase/adminui-vue/components/controls/UbSelectEntity.vue'
 
-  export default {
-    components: {
-      UbSelectEntity
-    },
-    data () {
-      return {
-        entityName: 'tst_dictionary',
-        value: 1,
-        disabled: false,
-        useOwnActions: false,
-        actions: [],
-        newAction: {
-          caption: 'Test',
-          icon: 'fa fa-ban',
-          enabled: true,
-          handlerFN: 'alert(1123)',
-          handler: {
-            fn () {}
-          }
+export default {
+  components: {
+    UbSelectEntity
+  },
+  data () {
+    return {
+      entityName: 'tst_dictionary',
+      value: 1,
+      disabled: false,
+      useOwnActions: false,
+      actions: [],
+      newAction: {
+        caption: 'Test',
+        icon: 'fa fa-ban',
+        enabled: true,
+        handlerFN: 'alert(1123)',
+        handler: {
+          fn () {}
         }
       }
-    },
-    computed: {
-      entitySchema () {
-        return JSON.parse(JSON.stringify(this.$UB.connection.domain.get(this.entityName)))
-      }
-    },
-    methods: {
-      addAction () {
-        let action = {...this.newAction}
-        let handler = action.handlerFN
-        action.handler.fn = () => {eval(handler)}
-        delete action.handlerFN
-        this.actions.push(action)
-        this.newAction.caption = ''
-        this.newAction.icon = ''
-        this.newAction.enabled = true
-        this.newAction.handlerFN = 'alert(1123)'
-      }
+    }
+  },
+  computed: {
+    entitySchema () {
+      return JSON.parse(JSON.stringify(this.$UB.connection.domain.get(this.entityName)))
+    }
+  },
+  methods: {
+    addAction () {
+      let action = {...this.newAction}
+      let handler = action.handlerFN
+      action.handler.fn = () => {eval(handler)}
+      delete action.handlerFN
+      this.actions.push(action)
+      this.newAction.caption = ''
+      this.newAction.icon = ''
+      this.newAction.enabled = true
+      this.newAction.handlerFN = 'alert(1123)'
     }
   }
+}
 </script>
 
 <style>

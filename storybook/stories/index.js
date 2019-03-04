@@ -1,13 +1,11 @@
-import {
-  storiesOf
-} from '@storybook/vue'
-
+import { storiesOf } from '@storybook/vue'
 import inputStory from './controls/inputStory.vue'
 import selectStory from './controls/selectEntityStory.vue'
 import enumStory from './controls/selectEnumStory'
 import selectManyStory from './controls/selectManyStory'
 import codeMirrorStory from './controls/codeMirrorStory'
 import uploadDocumentStory from './controls/uploadDocumentStory'
+import toolbarStory from './components/toolbarStory'
 
 const paddedList = () => {
   return {
@@ -15,7 +13,8 @@ const paddedList = () => {
   }
 }
 
-storiesOf('Vue Controls', module).addDecorator(paddedList)
+storiesOf('Vue Controls', module)
+  .addDecorator(paddedList)
   .add('Input', () => inputStory)
   .add('Select', () => selectStory)
   .add('Enum', () => enumStory)
@@ -23,4 +22,6 @@ storiesOf('Vue Controls', module).addDecorator(paddedList)
   .add('CodeMirror', () => codeMirrorStory)
   .add('UploadDocument', () => uploadDocumentStory)
 
-storiesOf('Vue Components', module).addDecorator(paddedList)
+storiesOf('Vue Components', module)
+  .addDecorator(paddedList)
+  .add('ToolBar', () => toolbarStory)

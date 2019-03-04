@@ -96,6 +96,131 @@ self.addEventListener('fetch', event => {
   if (event.request.url.includes('getDomainInfo')) {
     event.respondWith(new Response(JSON.stringify({
       'domain': {
+        'ubm_form': {
+          'modelName': 'UBM',
+          'caption': 'Form',
+          'description': 'Definition of interface forms',
+          'connectionName': 'main',
+          'cacheType': 'SessionEntity',
+          'sqlAlias': 'form',
+          'descriptionAttribute': 'code',
+          'attributes': {
+            'ID': {'dataType': 'ID', 'caption': 'ID', 'allowNull': false, 'isUnique': true, 'name': 'ID'},
+            'code': {
+              'dataType': 'String',
+              'size': 64,
+              'caption': 'Form code',
+              'allowNull': false,
+              'isUnique': true,
+              'name': 'code'
+            },
+            'description': {'dataType': 'String', 'size': 255, 'caption': 'Description', 'name': 'description'},
+            'caption': {
+              'dataType': 'String',
+              'size': 128,
+              'caption': 'Form caption',
+              'description': 'Keep it empty to use entity name as form caption',
+              'name': 'caption'
+            },
+            'formType': {
+              'dataType': 'Enum',
+              'caption': 'Form type',
+              'allowNull': false,
+              'defaultValue': 'auto',
+              'enumGroup': 'FORM_TYPE',
+              'name': 'formType'
+            },
+            'formDef': {
+              'dataType': 'Document',
+              'caption': 'Form definition',
+              'description': 'Form interface definition',
+              'allowSort': false,
+              'storeName': 'mdb',
+              'name': 'formDef'
+            },
+            'formCode': {
+              'dataType': 'Document',
+              'caption': 'Form script',
+              'description': 'JS form client logic',
+              'allowSort': false,
+              'storeName': 'mdb',
+              'name': 'formCode'
+            },
+            'model': {
+              'dataType': 'String',
+              'size': 32,
+              'caption': 'Model',
+              'description': 'Model where form is stored',
+              'documentation': 'Model where form is stored. If empty - entity model is used. The purpose of this attribute is to develop a form for entities form other models',
+              'name': 'model'
+            },
+            'entity': {
+              'dataType': 'String',
+              'size': 32,
+              'caption': 'Entity',
+              'description': 'Entity code',
+              'documentation': 'This value is used for fount default entity form',
+              'name': 'entity'
+            },
+            'isDefault': {
+              'dataType': 'Boolean',
+              'caption': 'Is default',
+              'description': 'Is this is default entity form',
+              'allowNull': false,
+              'defaultValue': '0',
+              'documentation': 'On AdminUI execution of `doCommand.showForm` without passing a form code as a parameter client seek for form for entity, and if exist > 1 form - form with isDefault=true is selected',
+              'name': 'isDefault'
+            },
+            'mi_modifyDate': {
+              'dataType': 'DateTime',
+              'caption': 'Modification date',
+              'documentation': 'Emulate a mStorage.mi_modifyDate for cache version calculation',
+              'name': 'mi_modifyDate'
+            }
+          },
+          'mixins': {},
+          'isFTSDataTable': false,
+          'name': 'ubm_form',
+          'entityMethods': {'select': 1, 'update': 1, 'insert': 1, 'addnew': 1},
+          'i18n': {
+            'caption': 'Form',
+            'description': 'Definition of interface forms',
+            'attributes': {
+              'code': {
+                'caption': 'Form code'
+              },
+              'description': {
+                'caption': 'Description'
+              },
+              'caption': {
+                'caption': 'Form title'
+              },
+              'formType': {
+                'caption': 'Form type',
+                'description': 'Form definition type (auto or custom)'
+              },
+              'formDef': {
+                'caption': 'Form definition',
+                'description': 'Form interface definition'
+              },
+              'formCode': {
+                'caption': 'Form script',
+                'description': 'JS worm client logic'
+              },
+              'model': {
+                'caption': 'Model'
+              },
+              'entity': {
+                'caption': 'Entity',
+                'description': 'Entity code'
+              },
+              'isDefault': {
+                'caption': 'By default',
+                'description': 'Default entity form'
+              }
+            }
+          }
+        },
         'ubm_enum': {
           'modelName': 'UBM',
           'caption': 'Enumerated values',

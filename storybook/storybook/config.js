@@ -1,19 +1,16 @@
 import { configure } from '@storybook/vue'
-
 import Vue from 'vue'
 import UB from '@unitybase/ub-pub'
-
 import Element from 'element-ui'
 import { saveAsFn } from 'file-saver'
-
 import '../src/font-awesome/css/font-awesome.min.css'
 import '@unitybase/adminui-vue/dist/adminui-vue.css'
-
 import TreeView from 'vue-json-tree-view'
+import locale from 'element-ui/lib/locale/lang/en'
 
 Vue.use(Element, {
   size: 'small',
-  i18n: UB.i18n.bind(UB)
+  locale
 })
 
 Vue.use(TreeView)
@@ -63,6 +60,7 @@ connect.then(function () {
       showList: 'showList'
     }
   }
+  window.UB = UB
   this.Vue.use(UB)
   Window.saveAs = saveAsFn
   configure(function loadStories () {

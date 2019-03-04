@@ -45,47 +45,47 @@
 </template>
 
 <script>
-  import UbInput from '@unitybase/adminui-vue/components/controls/UbInput.vue'
+import UbInput from '@unitybase/adminui-vue/components/controls/UbInput.vue'
 
-  export default {
-    components: {
-      UbInput
-    },
-    data () {
-      return {
-        attributeName: 'caption',
-        entityName: 'tst_maindata',
-        disabled: false,
-        objectValue: {
-          'caption': 'Caption text',
-          'code': 'Code text',
-          ID: 1
-        }
-      }
-    },
-    computed: {
-      entitySchema () {
-        return JSON.parse(JSON.stringify(this.$UB.connection.domain.get(this.entityName)))
-      },
-      objectValueJSON: {
-        get () {
-          return JSON.stringify(this.objectValue, null, 2)
-        },
-        set (value) {
-          try {
-            this.objectValue = JSON.parse(value)
-          } catch (e) {
-            console.log('INVALID JSON')
-          }
-        }
-      }
-    },
-    methods: {
-      refresh () {
-        this.control = {...this.form}
+export default {
+  components: {
+    UbInput
+  },
+  data () {
+    return {
+      attributeName: 'caption',
+      entityName: 'tst_maindata',
+      disabled: false,
+      objectValue: {
+        'caption': 'Caption text',
+        'code': 'Code text',
+        ID: 1
       }
     }
+  },
+  computed: {
+    entitySchema () {
+      return JSON.parse(JSON.stringify(this.$UB.connection.domain.get(this.entityName)))
+    },
+    objectValueJSON: {
+      get () {
+        return JSON.stringify(this.objectValue, null, 2)
+      },
+      set (value) {
+        try {
+          this.objectValue = JSON.parse(value)
+        } catch (e) {
+          console.log('INVALID JSON')
+        }
+      }
+    }
+  },
+  methods: {
+    refresh () {
+      this.control = {...this.form}
+    }
   }
+}
 </script>
 
 <style>
