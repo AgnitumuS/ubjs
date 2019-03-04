@@ -28,13 +28,13 @@
           <i class="fa fa-cog" aria-hidden="true"></i>
         </el-button>
       </el-popover>
-      <div class="ub-toolbar__button__divider" v-if="isSimpleAudit"></div>
-      <div class="ub-toolbar__date__container" v-if="isSimpleAudit">
+      <div class="ub-toolbar__button__divider" v-if="isSimpleAudit && simpleAudit"></div>
+      <div class="ub-toolbar__date__container" v-if="isSimpleAudit && simpleAudit">
         <div class="ub-toolbar__date">
-          <b>{{createdEntityCaption}}:</b> {{ value.mi_createDate ? value.mi_createDate.toLocaleString() : '' }}
+          <b>{{createdEntityCaption}}:</b> {{ simpleAudit.mi_createDate ? simpleAudit.mi_createDate.toLocaleString() : '' }}
         </div>
         <div class="ub-toolbar__date">
-          <b>{{updatedEntityCaption}}:</b> {{ value.mi_modifyDate ? value.mi_modifyDate.toLocaleString() : '' }}
+          <b>{{updatedEntityCaption}}:</b> {{ simpleAudit.mi_modifyDate ? simpleAudit.mi_modifyDate.toLocaleString() : '' }}
         </div>
       </div>
     </div>
@@ -47,8 +47,9 @@
 module.exports = {
   name: 'UbToolbarComponent',
   props: {
-    value: Object,
+    value: [String, Number],
     entityName: String,
+    simpleAudit: Object,
     isNew: Boolean,
     isChanged: Boolean,
     useOnlyOwnActions: {
@@ -101,7 +102,7 @@ module.exports = {
       let prm = []
       prm.push('cmdType=showForm')
       prm.push(`entity=${this.entitySchema.name}`)
-      prm.push(`instanceID=${this.value.ID}`)
+      prm.push(`instanceID=${this.value}`)
       return `${window.location.protocol}//${window.location.host}${window.location.pathname}#${prm.join('&')}`
     },
     isSimpleAudit () {
@@ -241,7 +242,7 @@ module.exports = {
                 cmpInitConfig: {
                   extendedFieldList: extendedFieldList
                 },
-                instanceID: this.value.ID,
+                instanceID: this.value,
                 __mip_recordhistory: true
               })
             }
@@ -263,7 +264,7 @@ module.exports = {
                     this.$UB.Repository('uba_auditTrail')
                       .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
                       .where('[entity]', '=', this.entityName)
-                      .where('[entityinfo_id]', '=', this.value.ID)
+                      .where('[entityinfo_id]', '=', this.value)
                       .orderByDesc('actionTime')
                       .ubRequest()
                   ]

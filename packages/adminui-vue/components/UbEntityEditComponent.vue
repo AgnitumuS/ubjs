@@ -1,9 +1,10 @@
 <template>
   <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.83="saveAndReload" @keyup.alt.enter="saveAndClose" @keyup.alt.46="remove">
-    <toolbar v-model="value"
+    <toolbar v-model="value.ID"
              :entity-name="entityName"
              :is-new="isNew"
              :is-changed="isChanged"
+             :simple-audit="{mi_createDate: value.mi_createDate, mi_modifyDate: value.mi_modifyDate}"
              :use-only-own-actions="useOnlyOwnActions"
              :input-actions="inputActions"
              :form-code="formCode"
