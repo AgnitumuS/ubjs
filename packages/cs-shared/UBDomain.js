@@ -498,7 +498,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @property {UBDomain} domain
    * @readonly
    */
-  Object.defineProperty(this, 'domain', {enumerable: false, value: domain})
+  Object.defineProperty(this, 'domain', { enumerable: false, value: domain })
   /**
    * @type {string}
    * @readonly
@@ -548,7 +548,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @type {DBConnectionConfig}
    * @readonly
    */
-  this.connectionConfig = (this.connectionName && this.domain.connections) ? _.find(this.domain.connections, {name: this.connectionName}) : undefined
+  this.connectionConfig = (this.connectionName && this.domain.connections) ? _.find(this.domain.connections, { name: this.connectionName }) : undefined
   /**
    * Optional mapping of entity to physical data (for extended domain info only).
    * Calculated from a entity mapping collection in accordance with application connection configuration
@@ -1177,7 +1177,7 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    * @property {UBEntity} entity
    * @readonly
    */
-  Object.defineProperty(this, 'entity', {enumerable: false, value: entity})
+  Object.defineProperty(this, 'entity', { enumerable: false, value: entity })
   /**
    * Data type
    * @type {UBDomain.ubDataTypes}
