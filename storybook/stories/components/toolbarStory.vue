@@ -35,8 +35,8 @@
       </li>
       <li>
         <span class="input-story__prop">simpleAudit - Object (object with dates for entities with mStorage.simpleAudit == true)</span>
-        <span style="width: 120px;display: inline-block">mi_createDate:</span><el-date-picker type="datetime" v-model="value.mi_createDate"></el-date-picker><br>
-        <span style="width: 120px;display: inline-block">mi_modifyDate:</span><el-date-picker type="datetime" v-model="value.mi_modifyDate"></el-date-picker>
+        <span style="width: 120px;display: inline-block;font-size: 0.9em">mi_createDate:</span><el-date-picker type="datetime" v-model="value.mi_createDate"></el-date-picker><br>
+        <span style="width: 120px;display: inline-block;font-size: 0.9em">mi_modifyDate:</span><el-date-picker type="datetime" v-model="value.mi_modifyDate"></el-date-picker>
       </li>
       <li>
         <span class="input-story__prop">formCode - String</span>
