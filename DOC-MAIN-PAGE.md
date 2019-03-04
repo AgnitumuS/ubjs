@@ -16,8 +16,7 @@ In this section, you can find the necessary documentation to work with UnityBase
 
 ---
 ## Briefly
-Unitybase is a full stack JavaScript framework for Enterprise. It's main
-purpose is to provide a set of modules for rapid development of RMS / EDRMS class software.
+The main purpose of UnityBase is to provide a set of modules for rapid development of RMS and EDRMS class software.
 
 From the low level point of view UnityBase is a asynchronous non-blocking HTTP(S) server with a:
 
@@ -25,9 +24,9 @@ From the low level point of view UnityBase is a asynchronous non-blocking HTTP(S
  - build-in Database access for a most known RDBMS
  - build-in file systems access
 
-<img src="server-v5/img/UB-Server-Architecture-v4.png" alt="UB4 Server Architecture">
+<img src="server-v5/img//UB-Server-Architecture-v5.png" alt="UB5 Server Architecture">
 
-Form a business logic developer point of view UnityBase is:
+Form a developer point of view UnityBase is:
  - an DBMS agnostic ORM what work over application Domain metadata
  - a set of tools for
    - synchronizing a physical database structure with Domain metadata
