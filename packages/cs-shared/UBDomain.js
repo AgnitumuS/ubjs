@@ -353,6 +353,27 @@ UBDomain.getPhysicalDataType = function (dataType) {
 }
 
 /**
+ * Function used as replacer for JSON.stringify inside toJSON methods
+ * @private
+ * @returns {*}
+ */
+UBDomain.jsonReplacer = function (k, v) {
+  // eslint-disable-next-line no-proto
+  let jr = this.__proto__.forJSONReplacer
+  if (jr) {
+    // skip props marked as null inside forJSONReplacer collection
+    if (jr.hasOwnProperty(k) && jr[k] === null) return undefined
+    // skip boolean props mach forJSONReplacer boolean values
+    if (typeof v === 'boolean' && v === jr[k]) return undefined
+  }
+  // skip '', 0
+  if (typeof v !== 'boolean' && !v) return undefined
+  // skip empty customSettings
+  if (k === 'customSettings' && !Object.keys(v).length) return undefined
+  return v
+}
+
+/**
  * Model (logical group of entities).
  * Instantiated in  {@link UBDomain#models UBDomain.models} and {@link UBDomain#orderedModels UBDomain.orderedModels}
  * @class
@@ -443,19 +464,12 @@ UBModel.prototype.realPublicPath = ''
  */
 function UBEntityAttributes () {}
 /**
- * Return a JSON representation of all entity attributes
+ * Return a JSON representation of all attributes
+ * WITHOUT properties which have default values
  * @returns {object}
  */
 UBEntityAttributes.prototype.asJSON = function () {
-  let result = {}
-  _.forEach(this, function (prop, propName) {
-    if (prop.asJSON) {
-      result[propName] = prop.asJSON()
-    } else {
-      result[propName] = prop
-    }
-  })
-  return result
+  return JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
 }
 
 /** @class */
@@ -646,6 +660,16 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   this.entityMethods = entityMethods || {}
 }
 
+// default UBEntity props - used by JSON.stringify replacer to produce entity JSON representation
+UBEntity.prototype.forJSONReplacer = {
+  code: null,
+  modelName: null,
+  cacheType: 'None',
+  isFTSDataTable: null,
+  blobAttributes: null,
+  entityMethods: null
+}
+
 /**
  * Entity caption
  * @type {string}
@@ -769,19 +793,13 @@ UBEntity.prototype.checkMixin = function (mixinCode) {
   }
 }
 
+/**
+ * Return a JSON representation entity
+ * WITHOUT properties which have default values
+ * @returns {object}
+ */
 UBEntity.prototype.asJSON = function () {
-  let result = { code: this.code }
-  _.forEach(this, function (prop, propName) {
-    if (propName === 'domain') {
-      return
-    }
-    if (prop.asJSON) {
-      result[propName] = prop.asJSON()
-    } else {
-      result[propName] = prop
-    }
-  })
-  return result
+  return JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
 }
 
 /**
@@ -1319,6 +1337,20 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
   this.physicalDataType = UBDomain.getPhysicalDataType(this.dataType || 'String')
 }
 
+// default UBEntityAttribute props - used by JSON.stringify replacer to produce entity JSON representation
+UBEntityAttribute.prototype.forJSONReplacer = {
+  code: null,
+  allowNull: true,
+  allowSort: true,
+  isUnique: false,
+  readOnly: false,
+  isMultiLang: false,
+  cascadeDelete: false,
+  generateFK: true,
+  defaultView: true,
+  physicalDataType: null
+}
+
 /**
  * Return associated entity or `null` if type of attribute !==`Entity`.
  * @returns {UBEntity}
@@ -1327,19 +1359,13 @@ UBEntityAttribute.prototype.getAssociatedEntity = function () {
   return this.associatedEntity ? this.entity.domain.get(this.associatedEntity) : null
 }
 
+/**
+ * Return a JSON representation of attribute
+ * WITHOUT properties which have default values
+ * @returns {object}
+ */
 UBEntityAttribute.prototype.asJSON = function () {
-  let result = {}
-  _.forEach(this, function (prop, propName) {
-    if (propName === 'entity') {
-      return
-    }
-    if (prop.asJSON) {
-      result[propName] = prop.asJSON()
-    } else {
-      result[propName] = prop
-    }
-  })
-  return result
+  return JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
 }
 
 /**
@@ -1360,6 +1386,11 @@ function UBEntityMixin (mixinInfo, i18n, mixinCode) {
   if (i18n) {
     _.assign(this, i18n)
   }
+}
+
+UBEntityMixin.prototype.forJSONReplacer = {
+  enabled: true,
+  code: null
 }
 
 /**
