@@ -360,7 +360,7 @@ Ext.define('UB.core.UBCommand', {
     me.autoFilter = config.autoFilter
     me.details = config.details
     me.selectedInstanceID = config.selectedInstanceID
-    me.tabId = config.tabId
+    me.tabId = config.tabId ? '' + config.tabId : config.tabId
     me.customActions = config.customActions
     me.sender = config.sender
     me.onClose = config.onClose
