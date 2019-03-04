@@ -46,6 +46,7 @@
     "lodash": "^4",
     "systemjs": "^0.20.18",
     "systemjs-plugin-css": "^0.1.32",
+    "normalize.css": "^8.0.1",
     "vue": "^2.6.8",
     "vue-template-compiler": "^2.6.8"
   },
@@ -60,7 +61,6 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "element-theme": "^2.0.1",
     "element-theme-chalk": "2.5.4",
-    "normalize.css": "^8.0.1",
     "shx": "^0.3.2",
     "vue-loader": "^15.7.0"
   },

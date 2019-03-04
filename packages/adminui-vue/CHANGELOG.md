@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - update vue@2.6.7 -> 2.6.8
  - set fixed version of element-ui@2.5.4 because of theme bug in 2.6.x
 
+### Fixed
+ - move `normalize.css` to dependencies from devDependencies to allow use a `-dev` mode
+ even if modules are installed with `NODE_ENV=production`
+
 ## [1.3.0]
 ### Fixed
  - relogon form should not close on Esc
