@@ -68,7 +68,6 @@ self.addEventListener('fetch', event => {
         status: 200,
         statusText: 'OK',
         headers: {
-          'Accept-Encoding': 'gzip',
           'Access-Control-Allow-Methods': 'POST, PUT, GET, DELETE, LOCK, OPTIONS',
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Max-Age': 1728000,
@@ -87,8 +86,7 @@ self.addEventListener('fetch', event => {
         statusText: 'OK',
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-          'ETag': '"DAFE9E0A"',
-          'Server': 'UnityBase Microsoft-HTTPAPI/2.0'
+          'Server': 'UnityBase'
         }
       })
     }))
@@ -105,7 +103,7 @@ self.addEventListener('fetch', event => {
           'sqlAlias': 'form',
           'descriptionAttribute': 'code',
           'attributes': {
-            'ID': {'dataType': 'ID', 'caption': 'ID', 'allowNull': false, 'isUnique': true, 'name': 'ID'},
+            'ID': { 'dataType': 'ID', 'caption': 'ID', 'allowNull': false, 'isUnique': true, 'name': 'ID' },
             'code': {
               'dataType': 'String',
               'size': 64,
@@ -114,7 +112,7 @@ self.addEventListener('fetch', event => {
               'isUnique': true,
               'name': 'code'
             },
-            'description': {'dataType': 'String', 'size': 255, 'caption': 'Description', 'name': 'description'},
+            'description': { 'dataType': 'String', 'size': 255, 'caption': 'Description', 'name': 'description' },
             'caption': {
               'dataType': 'String',
               'size': 128,
@@ -181,7 +179,7 @@ self.addEventListener('fetch', event => {
           'mixins': {},
           'isFTSDataTable': false,
           'name': 'ubm_form',
-          'entityMethods': {'select': 1, 'update': 1, 'insert': 1, 'addnew': 1},
+          'entityMethods': { 'select': 1, 'update': 1, 'insert': 1, 'addnew': 1 },
           'i18n': {
             'caption': 'Form',
             'description': 'Definition of interface forms',
@@ -231,7 +229,7 @@ self.addEventListener('fetch', event => {
           'sqlAlias': 'enu',
           'descriptionAttribute': 'name',
           'attributes': {
-            'ID': {'dataType': 'ID', 'allowNull': false, 'defaultView': false, 'name': 'ID'},
+            'ID': { 'dataType': 'ID', 'allowNull': false, 'defaultView': false, 'name': 'ID' },
             'eGroup': {
               'dataType': 'String',
               'size': 32,
@@ -334,10 +332,10 @@ self.addEventListener('fetch', event => {
               'name': 'mi_deleteUser'
             }
           },
-          'mixins': {'mStorage': {'simpleAudit': true, 'safeDelete': true, 'enabled': true}},
+          'mixins': { 'mStorage': { 'simpleAudit': true, 'safeDelete': true, 'enabled': true } },
           'isFTSDataTable': false,
           'name': 'ubm_enum',
-          'entityMethods': {'select': 1, 'insert': 1, 'update': 1, 'addnew': 1, 'delete': 1},
+          'entityMethods': { 'select': 1, 'insert': 1, 'update': 1, 'addnew': 1, 'delete': 1 },
           'i18n': {
             'caption': 'Enumerated values',
             'description': 'Enumerated values',
@@ -1691,15 +1689,15 @@ self.addEventListener('fetch', event => {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'ETag': '"DAFE9E0A"',
-        'Server': 'UnityBase Microsoft-HTTPAPI/2.0'
+        'Server': 'UnityBase'
       }
     }))
   }
   if (event.request.url.includes('ubql')) {
-    event.respondWith(event.request.json().then(function (data) {
+    event.respondWith(event.request.json().then(function (ubqls) {
       let result = []
-      data.forEach(element => {
-        if (element.entity === 'tst_dictionary') {
+      ubqls.forEach(ubql => {
+        if (ubql.entity === 'tst_dictionary') {
           let data = [
             [1, 'Заголовок 101', new Date(2020, 2, 27, 10, 0, 0, 0)],
             [2, 'Заголовок 102', new Date(2020, 2, 27, 10, 0, 0, 0)],
@@ -1731,7 +1729,7 @@ self.addEventListener('fetch', event => {
             [31, 'Заголовок 1131', new Date(2020, 2, 27, 10, 0, 0, 0)],
             [32, 'Заголовок 1132', new Date(2020, 2, 27, 10, 0, 0, 0)]
           ]
-          if (element.__allowSelectSafeDeleted) {
+          if (ubql.__allowSelectSafeDeleted) {
             data.push(
               [4, 'Заголовок 104', new Date(2018, 2, 27, 10, 0, 0, 0)],
               [7, 'Заголовок 108', new Date(2018, 2, 27, 10, 0, 0, 0)],
@@ -1739,8 +1737,8 @@ self.addEventListener('fetch', event => {
             )
           }
           result.push({
-            'entity': element.entity,
-            'method': element.method,
+            'entity': ubql.entity,
+            'method': ubql.method,
             'fieldList': ['ID', 'caption', 'mi_deleteDate'],
             'resultData': {
               'fields': ['ID', 'caption', 'mi_deleteDate'],
@@ -1748,26 +1746,26 @@ self.addEventListener('fetch', event => {
               'data': data
             }
           })
-        } else if (element.entity === 'tst_maindata') {
+        } else if (ubql.entity === 'tst_maindata') {
           result.push({
-            'entity': element.entity,
-            'method': element.method,
-            'fieldList': element.fieldList,
+            'entity': ubql.entity,
+            'method': ubql.method,
+            'fieldList': ubql.fieldList,
             'resultData': {
-              'fields': element.fieldList,
+              'fields': ubql.fieldList,
               'rowCount': 1,
               'data': [
                 ['Текст заголовка', 'Тақырып мәтіні', 1]
               ]
             }
           })
-        } else if (element.entity === 'ubm_enum') {
+        } else if (ubql.entity === 'ubm_enum') {
           result.push({
-            'entity': element.entity,
-            'method': element.method,
-            'fieldList': element.fieldList,
+            'entity': ubql.entity,
+            'method': ubql.method,
+            'fieldList': ubql.fieldList,
             'resultData': {
-              'fields': element.fieldList,
+              'fields': ubql.fieldList,
               'rowCount': 3,
               'data': [
                 ['TST1', 'Test1', 'TEST_GROUP_1'],
@@ -1778,14 +1776,14 @@ self.addEventListener('fetch', event => {
           })
         } else {
           result.push({
-            'entity': element.entity,
-            'method': element.method,
-            'fieldList': element.fieldList,
+            'entity': ubql.entity,
+            'method': ubql.method,
+            'fieldList': ubql.fieldList,
             'resultData': {
-              'fields': element.fieldList,
+              'fields': ubql.fieldList,
               'rowCount': 1,
               'data': [
-                element.fieldList
+                ubql.fieldList
               ]
             }
           })
