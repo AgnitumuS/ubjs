@@ -35,14 +35,14 @@ module.exports = function () {
   }
 
   window.$App.dialogInfo = async (msg, title = 'info') => {
-    await UbDialog({
+    const answer = await UbDialog({
       title,
       msg,
       buttonText: {
         yes: 'ok'
       }
     })
-    return Promise.resolve(true)
+    return Promise.resolve(answer === 'accept')
   }
 
   window.$App.dialogError = async (msg, title = 'error', isDevInfo) => {
