@@ -237,7 +237,7 @@
                 <p v-html="$ut('UBAuthHeader', appName)"></p>
                 <el-form-item></el-form-item>
                 <el-form-item prop="user">
-                  <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user">
+                  <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user" @keyup.enter.native="doUBLogin">
                     <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
                   </el-input>
                 </el-form-item>
