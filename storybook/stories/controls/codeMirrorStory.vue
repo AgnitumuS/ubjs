@@ -16,7 +16,7 @@ export default {
   },
   data () {
     return {
-      value: this.$UB.connection.domain.get('tst_dictionary')
+      value: this.$UB.connection.domain.get('tst_dictionary').asPlainJSON()
     }
   }
 }

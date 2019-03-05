@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     entitySchema () {
-      return JSON.parse(JSON.stringify(this.$UB.connection.domain.get(this.entityName)))
+      return this.$UB.connection.domain.get(this.entityName).asPlainJSON(false)
     },
     objectValueJSON: {
       get () {
