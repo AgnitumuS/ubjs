@@ -3,10 +3,12 @@
     <h1>UbInput</h1>
     <ub-input v-model="objectValue[attributeName]"
               style="width:500px"
-              :entityName="entityName"
+              :entity-name="entityName"
               :disabled="disabled"
-              :attributeName="attributeName"
-              :objectValue="objectValue"></ub-input>
+              :attribute-name="attributeName"
+              :object-value="objectValue"
+              @input="inputFn"
+    ></ub-input>
     <h2>Props</h2>
     <ul>
       <li>
@@ -46,6 +48,7 @@
 
 <script>
 import UbInput from '@unitybase/adminui-vue/components/controls/UbInput.vue'
+import { action } from '@storybook/addon-actions'
 
 export default {
   components: {
@@ -81,6 +84,7 @@ export default {
     }
   },
   methods: {
+    inputFn: action('Entered value'),
     refresh () {
       this.control = {...this.form}
     }

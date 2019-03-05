@@ -6,6 +6,7 @@
       :doc-params="docParams"
       :i-frame-height="iFrameHeight"
       :i-frame-weight="iFrameWeight"
+      @input="inputFn"
     ></ub-upload-document>
     <br>
     <el-checkbox v-model="loadPdf">Try PDF</el-checkbox>
@@ -35,6 +36,7 @@
 
 <script>
 import UbUploadDocument from '@unitybase/adminui-vue/components/controls/UbUploadDocument.vue'
+import { action } from '@storybook/addon-actions'
 
 export default {
   components: {
@@ -58,10 +60,13 @@ export default {
       }
     }
   },
+  methods: {
+    inputFn: action('Entered value')
+  },
   data () {
     return {
       value: null,
-      docParams: {entity: 'tst_maindata', attribute: 'fileStoreSimple', ID: 332307333382255},
+      docParams: { entity: 'tst_maindata', attribute: 'fileStoreSimple', ID: 332307333382255 },
       iFrameHeight: '650px',
       iFrameWeight: '100%',
       loadPdf: false

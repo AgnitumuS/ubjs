@@ -8,6 +8,7 @@
       :use-own-actions="useOwnActions"
       :actions="actions"
       :disabled="disabled"
+      @input="inputFn"
     ></ub-select-entity>
     <h2>Props</h2>
     <ul>
@@ -48,9 +49,6 @@
             <el-input style="width: 300px" v-model="newAction.icon"></el-input>
             <span class="select-story__action-param">enabled</span>
             <el-checkbox v-model="newAction.enabled"></el-checkbox>
-            <br>
-            <span class="select-story__action-param">handler.fn()</span>
-            <el-input style="width: 300px" v-model="newAction.handlerFN"></el-input>
             <br><br>
             <el-button type="success" icon="el-icon-plus" @click="addAction">Add</el-button>
           </div>
@@ -64,6 +62,7 @@
 
 <script>
 import UbSelectEntity from '@unitybase/adminui-vue/components/controls/UbSelectEntity.vue'
+import { action } from '@storybook/addon-actions'
 
 export default {
   components: {
@@ -80,9 +79,8 @@ export default {
         caption: 'Test',
         icon: 'fa fa-ban',
         enabled: true,
-        handlerFN: 'alert(1123)',
         handler: {
-          fn () {}
+          fn: action(`action clicked`)
         }
       }
     }
@@ -93,16 +91,13 @@ export default {
     }
   },
   methods: {
+    inputFn: action('Entered value'),
     addAction () {
-      let action = {...this.newAction}
-      let handler = action.handlerFN
-      action.handler.fn = () => {eval(handler)}
-      delete action.handlerFN
+      let action = { ...this.newAction }
       this.actions.push(action)
       this.newAction.caption = ''
       this.newAction.icon = ''
       this.newAction.enabled = true
-      this.newAction.handlerFN = 'alert(1123)'
     }
   }
 }

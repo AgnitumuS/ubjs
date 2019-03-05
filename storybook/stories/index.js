@@ -6,6 +6,7 @@ import selectManyStory from './controls/selectManyStory'
 import codeMirrorStory from './controls/codeMirrorStory'
 import uploadDocumentStory from './controls/uploadDocumentStory'
 import toolbarStory from './components/toolbarStory'
+import entityEditStory from './components/entityEditStory'
 
 const paddedList = () => {
   return {
@@ -25,3 +26,4 @@ storiesOf('Vue Controls', module)
 storiesOf('Vue Components', module)
   .addDecorator(paddedList)
   .add('ToolBar', () => toolbarStory)
+  .add('EntityEdit', () => entityEditStory)

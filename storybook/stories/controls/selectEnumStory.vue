@@ -7,6 +7,7 @@
       :disabled="disabled"
       :e-group="eGroup"
       :primary-column="primaryColumn"
+      @input="inputFn"
     ></ub-select-enum>
     <h2>Props</h2>
     <ul>
@@ -37,10 +38,14 @@
 
 <script>
 import UbSelectEnum from '@unitybase/adminui-vue/components/controls/UbSelectEnum.vue'
+import { action } from '@storybook/addon-actions'
 
 export default {
   components: {
     UbSelectEnum
+  },
+  methods: {
+    inputFn: action('Entered value')
   },
   data () {
     return {

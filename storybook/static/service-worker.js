@@ -103,7 +103,7 @@ self.addEventListener('fetch', event => {
           'sqlAlias': 'form',
           'descriptionAttribute': 'code',
           'attributes': {
-            'ID': { 'dataType': 'ID', 'caption': 'ID', 'allowNull': false, 'isUnique': true, 'name': 'ID' },
+            'ID': {'dataType': 'ID', 'caption': 'ID', 'allowNull': false, 'isUnique': true, 'name': 'ID'},
             'code': {
               'dataType': 'String',
               'size': 64,
@@ -112,7 +112,7 @@ self.addEventListener('fetch', event => {
               'isUnique': true,
               'name': 'code'
             },
-            'description': { 'dataType': 'String', 'size': 255, 'caption': 'Description', 'name': 'description' },
+            'description': {'dataType': 'String', 'size': 255, 'caption': 'Description', 'name': 'description'},
             'caption': {
               'dataType': 'String',
               'size': 128,
@@ -179,7 +179,7 @@ self.addEventListener('fetch', event => {
           'mixins': {},
           'isFTSDataTable': false,
           'name': 'ubm_form',
-          'entityMethods': { 'select': 1, 'update': 1, 'insert': 1, 'addnew': 1 },
+          'entityMethods': {'select': 1, 'update': 1, 'insert': 1, 'addnew': 1},
           'i18n': {
             'caption': 'Form',
             'description': 'Definition of interface forms',
@@ -229,7 +229,7 @@ self.addEventListener('fetch', event => {
           'sqlAlias': 'enu',
           'descriptionAttribute': 'name',
           'attributes': {
-            'ID': { 'dataType': 'ID', 'allowNull': false, 'defaultView': false, 'name': 'ID' },
+            'ID': {'dataType': 'ID', 'allowNull': false, 'defaultView': false, 'name': 'ID'},
             'eGroup': {
               'dataType': 'String',
               'size': 32,
@@ -332,10 +332,10 @@ self.addEventListener('fetch', event => {
               'name': 'mi_deleteUser'
             }
           },
-          'mixins': { 'mStorage': { 'simpleAudit': true, 'safeDelete': true, 'enabled': true } },
+          'mixins': {'mStorage': {'simpleAudit': true, 'safeDelete': true, 'enabled': true}},
           'isFTSDataTable': false,
           'name': 'ubm_enum',
-          'entityMethods': { 'select': 1, 'insert': 1, 'update': 1, 'addnew': 1, 'delete': 1 },
+          'entityMethods': {'select': 1, 'insert': 1, 'update': 1, 'addnew': 1, 'delete': 1},
           'i18n': {
             'caption': 'Enumerated values',
             'description': 'Enumerated values',
@@ -1746,7 +1746,7 @@ self.addEventListener('fetch', event => {
               'data': data
             }
           })
-        } else if (ubql.entity === 'tst_maindata') {
+        } else if (ubql.entity === 'tst_maindata' && ubql.fieldList.length === 3) {
           result.push({
             'entity': ubql.entity,
             'method': ubql.method,
@@ -1756,6 +1756,19 @@ self.addEventListener('fetch', event => {
               'rowCount': 1,
               'data': [
                 ['Текст заголовка', 'Тақырып мәтіні', 1]
+              ]
+            }
+          })
+        } else if (ubql.entity === 'tst_maindata' && ubql.fieldList.length > 3) {
+          result.push({
+            'entity': ubql.entity,
+            'method': ubql.method,
+            'fieldList': ubql.fieldList,
+            'resultData': {
+              'fields': ubql.fieldList,
+              'rowCount': 1,
+              'data': [
+                ['Code 3', 'Caption text', null, 3, null, null, null, 'TST1', null, 0, null, '1,4', null, 0, 0, 332320988692649, '2019-03-04T10:59:03Z', '2019-03-04T10:59:03Z']
               ]
             }
           })

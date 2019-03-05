@@ -72,6 +72,7 @@
 
 <script>
 import toolbar from '@unitybase/adminui-vue/components/UbToolbarComponent.vue'
+import { action } from '@storybook/addon-actions'
 
 export default {
   components: {
@@ -97,10 +98,10 @@ export default {
     addAction () {
       let id = this.inputActions.length
       this.inputActions.push({
-        icon: 'fa-thermometer-half',
+        icon: 'fa fa-thermometer-half',
         caption: id + ' action',
         handler: {
-          fn: _ => { alert(id + ' action clicked') }
+          fn: action(`${id} action click`)
         },
         enabled: id % 2 === 0
       })
@@ -111,8 +112,8 @@ export default {
         id: id,
         disabled: id % 2 === 1,
         icon: 'fa fa-microchip',
-        action: _ => { alert(id + 'button clicked') },
-        tooltip: id + 'button'
+        action: action(`${id} button click`),
+        tooltip: id + ' button'
       })
     },
     clearActions () {
@@ -121,15 +122,9 @@ export default {
     clearButtons () {
       this.inputButtons = []
     },
-    saveAndClose () {
-      alert(`It's save and close emitted`)
-    },
-    saveAndReload () {
-      alert(`It's save and reload emitted`)
-    },
-    remove () {
-      alert(`It's remove emitted`)
-    }
+    saveAndClose: action('It\'s save and close emitted'),
+    saveAndReload: action('It\'s save and reload emitted'),
+    remove: action('It\'s remove emitted')
   }
 }
 </script>

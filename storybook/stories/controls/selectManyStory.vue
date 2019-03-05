@@ -5,7 +5,8 @@
       v-model="value"
       style="width:500px"
       :disabled="disabled"
-      :entityName="entityName"
+      :entity-name="entityName"
+      @input="inputFn"
     ></ub-select-many>
     <h2>Props</h2>
     <ul>
@@ -33,6 +34,7 @@
 
 <script>
 import UbSelectMany from '@unitybase/adminui-vue/components/controls/UbSelectMany.vue'
+import { action } from '@storybook/addon-actions'
 
 export default {
   components: { UbSelectMany },
@@ -42,6 +44,9 @@ export default {
       value: '1,2',
       disabled: false
     }
+  },
+  methods: {
+    inputFn: action('Entered value')
   },
   computed: {
     entitySchema () {

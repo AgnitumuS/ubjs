@@ -7,6 +7,7 @@ import '../src/font-awesome/css/font-awesome.min.css'
 import '@unitybase/adminui-vue/dist/adminui-vue.css'
 import TreeView from 'vue-json-tree-view'
 import locale from 'element-ui/lib/locale/lang/en'
+import { action } from '@storybook/addon-actions'
 
 Vue.use(Element, {
   size: 'small',
@@ -50,9 +51,7 @@ let connect = UB.connect({
 })
 connect.then(function () {
   UB.core.UBApp = {
-    doCommand (config) {
-      alert(config.cmdType)
-    }
+    doCommand: action('doCommand')
   }
   UB.core.UBCommand = {
     commandType: {
@@ -60,7 +59,52 @@ connect.then(function () {
       showList: 'showList'
     }
   }
+  UB.ux.data = {
+    UBStore: {
+      normalizeFieldList (entityName, fieldList) {
+        let entity
+        if (typeof (entityName) === 'string') {
+          entity = UB.connection.domain.get(entityName)
+        } else {
+          entity = entityName
+        }
+
+        if (!entity) {
+          throw new Error(`Entity "${entityName}" doesn't exists in domain`)
+        }
+        let hasID = false
+        let hasMD = false
+        let result = []
+        fieldList.forEach(function (field) {
+          result.push(field)
+          hasID = hasID || field === 'ID' || field.name === 'ID'
+          hasMD = hasMD || field === 'mi_modifyDate' || field.name === 'mi_modifyDate'
+        })
+        if (!hasID) {
+          result.push('ID')
+        }
+        let mStorage = entity.mixins.mStorage
+        if (mStorage && mStorage.simpleAudit && !hasMD) {
+          result.push('mi_modifyDate')
+        }
+        return result
+      }
+    }
+  }
+  window.$App = {
+    viewport: {
+      centralPanel: {
+        queryById () {
+          return {
+            close: action('closeTab'),
+            on: action('onTab')
+          }
+        }
+      }
+    }
+  }
   window.UB = UB
+  window.BOUNDLED_BY_WEBPACK = true
   this.Vue.use(UB)
   Window.saveAs = saveAsFn
   configure(function loadStories () {
