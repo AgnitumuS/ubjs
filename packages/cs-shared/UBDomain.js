@@ -824,8 +824,7 @@ UBEntity.prototype.asPlainJSON = function (attributesAsArray = true, removeAttrs
   // transform {ID: {}, } -> [{name: 'ID',..},..]
   let newAttributes = []
   for (let attrName in entityJSON.attributes) {
-    let oldAttr = entityJSON.attributes[attrName]
-    let attr = Object.assign({ name: attrName }, oldAttr)
+    let attr = Object.assign({ name: attrName }, entityJSON.attributes[attrName]) // move name to the first position in JSON
     if (attr.mapping) {
       if (!Array.isArray(attr.mapping)) {
         let newMappings = []
@@ -1382,6 +1381,7 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
 // default UBEntityAttribute props - used by JSON.stringify replacer to produce entity JSON representation
 UBEntityAttribute.prototype.forJSONReplacer = {
   code: null,
+  name: null,
   allowNull: true,
   allowSort: true,
   isUnique: false,

@@ -33,7 +33,7 @@
 <script>
 const objCardComponent = require('./ObjectCardComponent.vue')
 const mixinsCardComponent = require('./MixinsCardComponent.vue')
-const {UBDomain} = require('@unitybase/cs-shared')
+const { UBDomain } = require('@unitybase/cs-shared')
 
 module.exports = {
   props: {
@@ -57,18 +57,7 @@ module.exports = {
       get: function () {
         if (!this.metaObject) return
         let e = new UBDomain.UBEntity(this.metaObject)
-        return JSON.stringify(e.asJSON(), null, '  ')
-        // let minObj = { ...this.metaObject }
-        // minObj.attributes.forEach((attribute) => {
-        //   Object.keys(attribute).forEach((key) => {
-        //     let schemeAttr = this.schemeAttributes[key]
-        //     if (!schemeAttr) this.$delete(attribute, key)
-        //     if (schemeAttr && schemeAttr.default && attribute[key] === schemeAttr.default) {
-        //       this.$delete(attribute, key)
-        //     }
-        //   }, this)
-        // }, this)
-        // return JSON.stringify(minObj, this.jsonReplacer, 2)
+        return JSON.stringify(e.asPlainJSON(false), null, '  ')
       },
       set: function (newValue) {
         this.initMetaObject(newValue)
@@ -111,12 +100,6 @@ module.exports = {
         }.bind(this))
         this.refreshCodeMirror()
       })
-    },
-    jsonReplacer (key, value) {
-      if (
-        (value !== '' && value !== null && value !== undefined && typeof value !== 'object') ||
-        (typeof value === 'object' && Object.keys(value).length !== 0)
-      ) return value
     },
     refreshCodeMirror () {
       setTimeout(function () {
