@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.18]
 ### Added
- - new method asJSON() for UBEntity & UBEntityAttribute - return a 
+ - new method asPlainJSON() for UBEntity & UBEntityAttribute - return a 
  JSON representation WITHOUT properties which have default values.
  Very close to data stored in meta file
+ 
+### Changed
+ - remove obsolete UBEntity & UBEntityAttribute `asJSON` method
  
 ## [5.0.15]
 ### Added

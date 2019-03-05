@@ -468,7 +468,7 @@ function UBEntityAttributes () {}
  * WITHOUT properties which have default values
  * @returns {object}
  */
-UBEntityAttributes.prototype.asJSON = function () {
+UBEntityAttributes.prototype.asPlainJSON = function () {
   return JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
 }
 
@@ -495,7 +495,7 @@ function UBEntityMapping (maping) {
  */
 function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   let me = this
-  let mixinNames, mixinInfo, i18nMixin, dialectProiority
+  let mixinNames, mixinInfo, i18nMixin
 
   if (i18n && ((typeof process === 'undefined') || !process.isServer)) { // merge i18n only on client side
     _.merge(entityInfo, i18n)
@@ -562,7 +562,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    * @type {DBConnectionConfig}
    * @readonly
    */
-  this.connectionConfig = (this.connectionName && this.domain.connections) ? _.find(this.domain.connections, { name: this.connectionName }) : undefined
+  this.connectionConfig = (this.connectionName && this.domain && this.domain.connections) ? _.find(this.domain.connections, { name: this.connectionName }) : undefined
   /**
    * Optional mapping of entity to physical data (for extended domain info only).
    * Calculated from a entity mapping collection in accordance with application connection configuration
@@ -577,8 +577,8 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
     })
     if (mappingKeys.length) {
       let me = this
-      dialectProiority = UBDomain.dialectsPriority[this.connectionConfig.dialect]
-      _.forEach(dialectProiority, function (dialect) {
+      let dialectPriority = UBDomain.dialectsPriority[this.connectionConfig.dialect]
+      _.forEach(dialectPriority, function (dialect) {
         if (entityInfo.mapping[dialect]) {
           me.mapping = new UBEntityMapping(entityInfo.mapping[dialect])
           return false
@@ -609,7 +609,9 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
    */
   this.blobAttributes = []
 
+  let attributesIsArray = Array.isArray(entityInfo.attributes)
   _.forEach(entityInfo.attributes, (attributeInfo, attributeCode) => {
+    if (attributesIsArray) attributeCode = attributeInfo.code || attributeInfo.name
     let attr = new UBEntityAttribute(attributeInfo, attributeCode, me)
     // record history mixin set a dateTo automatically, so let's allow blank mi_dateTo on UI
     // but for DDL generator mi_dateTo must be not null, so change only for browser side
@@ -793,13 +795,53 @@ UBEntity.prototype.checkMixin = function (mixinCode) {
   }
 }
 
+const STD_MIXINS_ATTRIBUTES = [
+  'mi_owner', 'mi_createDate', 'mi_createUser', 'mi_modifyDate', 'mi_modifyUser',
+  'mi_deleteDate', 'mi_deleteUser',
+  'mi_data_id', 'mi_dateFrom', 'mi_dateTo',
+  'mi_unityEntity', 'mi_treePath'
+]
 /**
- * Return a JSON representation entity
- * WITHOUT properties which have default values
- * @returns {object}
+ * Return a JSON representation entity WITHOUT properties which have default values
+ * Result is very close to meta file.
+ *
+ * **WARNING** use carefully inside server thread - method is slow
+ *
+ * @param {boolean} [attributesAsArray=true]
+ * @param {boolean} [removeAttrsAddedByMixin=true]
+ * @returns {any}
  */
-UBEntity.prototype.asJSON = function () {
-  return JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
+UBEntity.prototype.asPlainJSON = function (attributesAsArray = true, removeAttrsAddedByMixin = true) {
+  let entityJSON = JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
+  if (removeAttrsAddedByMixin && entityJSON.dsType !== 'Virtual') {
+    _.forEach(entityJSON.attributes, (attrVal, attrCode) => {
+      if (attrCode.startsWith('mi_') && STD_MIXINS_ATTRIBUTES.includes(attrCode)) {
+        delete entityJSON.attributes[attrCode]
+      }
+    })
+  }
+  if (!attributesAsArray) return entityJSON
+  // transform {ID: {}, } -> [{name: 'ID',..},..]
+  let newAttributes = []
+  for (let attrName in entityJSON.attributes) {
+    let oldAttr = entityJSON.attributes[attrName]
+    let attr = Object.assign({ name: attrName }, oldAttr)
+    if (attr.mapping) {
+      if (!Array.isArray(attr.mapping)) {
+        let newMappings = []
+        for (let dialectName in attr.mapping) {
+          // noinspection JSUnfilteredForInLoop
+          let oldDialect = attr.mapping[dialectName]
+          let newDialect = Object.assign({ name: dialectName }, oldDialect)
+          newMappings.push(newDialect)
+        }
+        attr.mapping = newMappings
+      }
+    }
+    newAttributes.push(attr)
+  }
+  entityJSON.attributes = newAttributes
+  return entityJSON
 }
 
 /**
@@ -1364,7 +1406,7 @@ UBEntityAttribute.prototype.getAssociatedEntity = function () {
  * WITHOUT properties which have default values
  * @returns {object}
  */
-UBEntityAttribute.prototype.asJSON = function () {
+UBEntityAttribute.prototype.asPlainJSON = function () {
   return JSON.parse(JSON.stringify(this, UBDomain.jsonReplacer))
 }
 
