@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.2]
+### Changed
+ - tabId parameter of `$App.doCommand` should be of type string.
+ Explicit typecast of `tabId` to string added to prevent "unclosable" tab error 
+ 
 ## [5.8.1]
 ### Changed
  - remove preset-es215-without-strict from webpack config - webpack4 do all well w/o this preset

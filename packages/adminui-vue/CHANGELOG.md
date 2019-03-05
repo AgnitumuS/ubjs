@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - move `normalize.css` to dependencies from devDependencies to allow use a `-dev` mode
  even if modules are installed with `NODE_ENV=production`
+ - `dialogInfo` return false in case user close dialog without pressing "ok" button (regression)
 
 ## [1.3.0]
 ### Fixed

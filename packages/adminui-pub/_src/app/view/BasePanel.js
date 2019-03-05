@@ -283,7 +283,7 @@ Ext.define('UB.view.BasePanel', {
      * @property {Object} documents
      */
     me.documents = {}
-    me.domainEntity.filterAttribute({dataType: 'Document'}).forEach(attr => {
+    me.domainEntity.filterAttribute({ dataType: 'Document' }).forEach(attr => {
       me.documents[attr.code] = attr
     })
     me.documentsCount = Object.keys(me.documents).length
@@ -467,7 +467,7 @@ Ext.define('UB.view.BasePanel', {
      * @property {UB.view.FormDataBinder} binder
      * Bind record and controls of form.
      */
-    me.binder = Ext.create('UB.view.FormDataBinder', {panel: me})
+    me.binder = Ext.create('UB.view.FormDataBinder', { panel: me })
     me.binder.on('controlChanged', me.controlChanged, me)
     me.binder.on('formDataReady', function () {
       me.formDataReady = true
@@ -477,7 +477,7 @@ Ext.define('UB.view.BasePanel', {
         if (me.rendered) {
           doCompleteReady(true)
         } else {
-          me.on('afterrender', doCompleteReady, me, {single: true})
+          me.on('afterrender', doCompleteReady, me, { single: true })
         }
         showItems()
       } finally {
@@ -733,13 +733,12 @@ Ext.define('UB.view.BasePanel', {
    * @returns {*}
    */
   onGetLockInfo: function (result) {
-    var me = this
-    me.record.lockInfo = result ? (result.lockInfo || {}) : {}
-    me.hasPersistLock =
-            (me.record.lockInfo.isLocked || me.record.lockInfo.lockExists) &&
-            me.record.lockInfo.lockType === 'Persist' &&
-            me.record.lockInfo.lockUser === $App.connection.userLogin()
-    me.updateLockButton()
+    this.record.lockInfo = result ? (result.lockInfo || {}) : {}
+    let li = this.record.lockInfo
+    this.hasPersistLock = (li.isLocked || li.lockExists) &&
+      (li.lockType === 'Persist') &&
+      (li.lockUser === $App.connection.userLogin())
+    this.updateLockButton()
   },
 
   /**
@@ -817,7 +816,9 @@ Ext.define('UB.view.BasePanel', {
       }).then(function (result) {
         if (!result.resultLock.success) {
           me.entityLocked = false
-          throw new UB.UBError(UB.format(UB.i18n('doNotGetLock'), result.resultLock.lockUser, Math.floor((new Date() - result.resultLock.lockTime) / 1000)))
+          throw new UB.UBError(
+            UB.i18n('doNotGetLock', result.resultLock.lockUser, Math.floor((new Date() - result.resultLock.lockTime) / 1000))
+          )
         }
         if (!me.isNewInstance &&
               me.record.get('mi_modifyDate').getTime() !==
@@ -849,8 +850,7 @@ Ext.define('UB.view.BasePanel', {
         me.updateLockButton()
         me.updateActions('entityRequiredLock', false)
         return true
-      })
-      .fin(function () {
+      }).fin(function () {
         me.lockingProcessStarted = false
       })
     })
@@ -875,14 +875,16 @@ Ext.define('UB.view.BasePanel', {
       }
       if (me.headerPanel) header = me.headerPanel
       if (header) {
-        me.lockButton = header.insert(1, { xtype: 'label', style: {fontWeight: 'bold'}, text: UB.i18n('entityLockedOwn') })
+        me.lockButton = header.insert(1, { xtype: 'label', style: { fontWeight: 'bold' }, text: UB.i18n('entityLockedOwn') })
       }
     }
     me.lockButton.removeCls('ub-persistlockinfo')
     if (me.hasPersistLock) {
       me.lockButton.addCls('ub-persistlockinfo')
-      me.lockButton.setText(UB.format(UB.i18n('persistLockInfo'),
-      me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+      me.lockButton.setText(UB.i18n('persistLockInfo',
+        me.record.lockInfo.lockUser,
+        Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s'))
+      )
       me.lockButton.show()
     } else if (me.entityLocked) {
       me.lockButton.setText(UB.i18n('entityLockedOwn'))
@@ -890,13 +892,17 @@ Ext.define('UB.view.BasePanel', {
     } else if (me.record.lockInfo && me.record.lockInfo.lockExists && me.record.lockInfo.lockType === 'Temp') {
       // show message only if not in this session
       if (!UB.ux.LockManager.existLock(me.entityName, me.record.lockInfo.lockValue)) {
-        me.lockButton.setText(UB.format(UB.i18n('tempSoftLockInfo'),
-        me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+        me.lockButton.setText(UB.i18n('tempSoftLockInfo',
+          me.record.lockInfo.lockUser,
+          Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s'))
+        )
         me.lockButton.show()
       }
     } else if (me.record.lockInfo && me.record.lockInfo.lockExists && me.record.lockInfo.lockType === 'Persist') {
-      me.lockButton.setText(UB.format(UB.i18n('softLockInfo'),
-      me.record.lockInfo.lockUser, Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s')))
+      me.lockButton.setText(UB.i18n('softLockInfo',
+        me.record.lockInfo.lockUser,
+        Ext.Date.format(new Date(me.record.lockInfo.lockTime), 'd.m.Y H:i:s'))
+      )
       me.lockButton.show()
     } else {
       if (me.lockButton.isVisible()) {
@@ -919,11 +925,10 @@ Ext.define('UB.view.BasePanel', {
    * @private
    */
   removeEntityLock: function () {
-    var me = this
-    if (!me.isEntityLockable) return
-    me.entityLocked = false
-    me.updateLockButton()
-    me.updateActions('entityRequiredLock', true)
+    if (!this.isEntityLockable) return
+    this.entityLocked = false
+    this.updateLockButton()
+    this.updateActions('entityRequiredLock', true)
   },
 
   /**
@@ -992,7 +997,7 @@ Ext.define('UB.view.BasePanel', {
               ID: baseID
             }).then(function (result) {
               me.record.lockInfo = (result && result.resultLock && result.resultLock.lockInfo)
-                                    ? result.resultLock.lockInfo : {}
+                ? result.resultLock.lockInfo : {}
               return result && result.resultLock ? result.resultLock.success : false
             })
           })
@@ -1028,7 +1033,7 @@ Ext.define('UB.view.BasePanel', {
     let me = this
     let wnd = me.getFormWin()
     return me._formFullTitle || me._formTitle || me.title || (wnd ? wnd.title : null) ||
-            (me.placeholder ? me.placeholder.title : null)
+      (me.placeholder ? me.placeholder.title : null)
   },
 
   addNewVersionToTitle: function () {
@@ -1036,11 +1041,11 @@ Ext.define('UB.view.BasePanel', {
 
     me.on('afterrender', function () {
       me.setTitle(me._formTitle,
-          UB.format('{0} ({1} {2})',
-              me._formFullTitle || me._formTitle,
-              UB.i18n('novajaVersija'),
-              Ext.Date.format(me.__mip_ondate, 'd.m.Y')))
-    }, me, {single: true})
+        UB.format('{0} ({1} {2})',
+          me._formFullTitle || me._formTitle,
+          UB.i18n('novajaVersija'),
+          Ext.Date.format(me.__mip_ondate, 'd.m.Y')))
+    }, me, { single: true })
   },
 
   /**
@@ -1119,7 +1124,7 @@ Ext.define('UB.view.BasePanel', {
     me.isNewInstance = false
     me.reloadTimeoutID = setTimeout(reloadRecord, 700)
   },
-    /* ******************************** end of method's block ************************/
+  /* ******************************** end of method's block ************************/
 
   /**
    * @private
@@ -1820,7 +1825,7 @@ Ext.define('UB.view.BasePanel', {
       UB.ux.data.UBStore.resultDataRow2Record(result, me.record)
       me.instanceID = me.record.get('ID') || me.instanceID
       if (result.method === UB.core.UBCommand.methodName.ADDNEW) {
-        let dateAttrs = _.filter($App.domainInfo.entities[result.entity].attributes, {dataType: 'Date'})
+        let dateAttrs = _.filter($App.domainInfo.entities[result.entity].attributes, { dataType: 'Date' })
         dateAttrs.forEach(function (item) {
           if (me.record.get(item.name) && _.isDate(me.record.get(item.name))) {
             let date = me.record.get(item.name)
@@ -1890,7 +1895,7 @@ Ext.define('UB.view.BasePanel', {
             fn: function () {
               me.onAction(me.actions[UB.view.BasePanel.actionId.saveAndClose].initialConfig)
             }
-          }]})
+          }] })
       me.actionsKeyMap[actions.save] = new Ext.util.KeyMap({
         target: me.getEl(),
         binding: [{
@@ -1901,7 +1906,7 @@ Ext.define('UB.view.BasePanel', {
             e.stopEvent()
             me.onAction(me.actions[UB.view.BasePanel.actionId.save].initialConfig) // .items[0]
           }
-        }]})
+        }] })
       me.actionsKeyMap[actions.refresh] = new Ext.util.KeyMap({
         target: me.getEl(),
         binding: [{
@@ -1912,7 +1917,7 @@ Ext.define('UB.view.BasePanel', {
             e.stopEvent()
             me.onRefresh()
           }
-        }]})
+        }] })
       me.actionsKeyMap[actions.fDelete] = new Ext.util.KeyMap({
         target: me.getEl(),
         binding: [{
@@ -1943,7 +1948,7 @@ Ext.define('UB.view.BasePanel', {
 
     me.on('afterrender', function () {
       me.setTitle(me.getFormTitle() + UB.format(' ({0})', UB.i18n('dobavlenie')))
-    }, me, {single: true})
+    }, me, { single: true })
   },
 
   /**
@@ -2616,11 +2621,11 @@ Ext.define('UB.view.BasePanel', {
         // here we check, that attribute exists in entity. works only for simple attributes
         if (entity.attr(item.attributeName)) {
           me.baseFieldList.push(item.isMultilang
-            ? {isMultilang: true, attributeName: item.attributeName}
+            ? { isMultilang: true, attributeName: item.attributeName }
             : item.attributeName)
           Ext.applyIf(item, Ext.applyIf(
             UB.core.UBUtil.attribute2cmpConfig(entity, item),
-            {ubName: ubCommand.getUBCmpUBName(item.attributeName)})
+            { ubName: ubCommand.getUBCmpUBName(item.attributeName) })
           )
           // eslint-disable-next-line brace-style
         }
@@ -2630,7 +2635,7 @@ Ext.define('UB.view.BasePanel', {
         else if (entity.attr(item.attributeName)) {
           me.baseFieldList.push(item.isMultilang ? { isMultilang: true, attributeName: item.attributeName } : item.attributeName)
           var cmpConfig = UB.core.UBUtil.attribute2cmpConfig(entity, item)
-          Ext.applyIf(item, Ext.applyIf(cmpConfig, {ubName: ubCommand.getUBCmpUBName(item.attributeName)}))
+          Ext.applyIf(item, Ext.applyIf(cmpConfig, { ubName: ubCommand.getUBCmpUBName(item.attributeName) }))
         } else {
           Ext.apply(item, {
             xtype: 'label',
@@ -2810,11 +2815,11 @@ Ext.define('UB.view.BasePanel', {
         id: me.getInstanceID(),
         isDirty: docSrc.isDirty === true
       }
-      $App.connection.getDocument(params, {resultIsBinary: true, bypassCache: true})
+      $App.connection.getDocument(params, { resultIsBinary: true, bypassCache: true })
         .then(function (dataAsArray) {
           let blobData = new Blob(
             [dataAsArray],
-            {type: docSrc.ct}
+            { type: docSrc.ct }
           )
           saveAs(blobData, docSrc.origName || docSrc.filename || me.getInstanceID() + '_' + docSrc.ct)
         }).catch(function (reason) {
@@ -3424,7 +3429,7 @@ Ext.define('UB.view.BasePanel', {
         if (!Ext.Object.getSize(oldValue)) {
           return
         }
-        let newValue = Ext.apply(oldValue, {deleting: true, size: 0})
+        let newValue = Ext.apply(oldValue, { deleting: true, size: 0 })
         ctrl.setValue(newValue, me.getInstanceID())
       })
   },
@@ -3566,7 +3571,7 @@ Ext.define('UB.view.BasePanel', {
     }
 
     function configureMixinAttribute (attributeCode) {
-      if (_.findIndex(extendedFieldList, {name: attributeCode}) < 0) {
+      if (_.findIndex(extendedFieldList, { name: attributeCode }) < 0) {
         fieldList = [attributeCode].concat(fieldList)
         extendedFieldList = [{
           name: attributeCode,
@@ -3583,7 +3588,7 @@ Ext.define('UB.view.BasePanel', {
       isModal: true,
       cmdData: { params: [{
         entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
-      }]},
+      }] },
       cmpInitConfig: {
         extendedFieldList: extendedFieldList
       },
@@ -3643,7 +3648,7 @@ Ext.define('UB.view.BasePanel', {
               }
             }
           }
-        ]},
+        ] },
         isModalDialog: true,
         parentContext: { instanceID: me.instanceID },
         hideActions: ['addNewByCurrent'],

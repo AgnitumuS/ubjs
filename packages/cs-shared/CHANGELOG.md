@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.18]
+### Added
+ - new method asPlainJSON() for UBEntity & UBEntityAttribute - return a 
+ JSON representation WITHOUT properties which have default values.
+ Very close to data stored in meta file
+ 
+### Changed
+ - remove obsolete UBEntity & UBEntityAttribute `asJSON` method
+ 
 ## [5.0.15]
 ### Added
  - support for new authentication schema 'ROOT'. Server side in-proc server only

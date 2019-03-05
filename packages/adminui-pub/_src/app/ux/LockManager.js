@@ -19,20 +19,17 @@ UB.ux.LockManager.schedulers = {}
  * @returns {Object} Instance context
  */
 UB.ux.LockManager.getContext = function (entity, record, addEmptyCtx) {
-  var
-    entityCtx, lockEntity,
-    entityMeta, slMixin, idCtx, id, lockFields
-
-  entityMeta = $App.domainInfo.get(entity)
+  let entityMeta = $App.domainInfo.get(entity)
   entityMeta.checkMixin('softLock')
-  slMixin = entityMeta.mixins.softLock
-  lockEntity = slMixin.lockEntity
-  lockFields = slMixin.lockIdentifier.split('.')
-  entityCtx = this.entities[lockEntity]
+  let slMixin = entityMeta.mixins.softLock
+  let lockEntity = slMixin.lockEntity
+  let lockFields = slMixin.lockIdentifier.split('.')
+  let entityCtx = this.entities[lockEntity]
   if (!entityCtx) {
     entityCtx = this.entities[lockEntity] = {}
   }
 
+  let id
   if (typeof record !== 'object') {
     id = record
   } else {
@@ -42,7 +39,7 @@ UB.ux.LockManager.getContext = function (entity, record, addEmptyCtx) {
     id = record.get(lockFields[0])
   }
 
-  idCtx = entityCtx[id]
+  let idCtx = entityCtx[id]
   if (!idCtx && addEmptyCtx) {
     idCtx = entityCtx[id] = []
   }
@@ -55,17 +52,14 @@ UB.ux.LockManager.getContext = function (entity, record, addEmptyCtx) {
  * @returns {Boolean}
  */
 UB.ux.LockManager.existLock = function (entity, ID) {
-  var
-    slMixin, entityMeta, entityCtx, idCtx
-
-  entityMeta = $App.domainInfo.get(entity)
+  let entityMeta = $App.domainInfo.get(entity)
   entityMeta.checkMixin('softLock')
-  slMixin = entityMeta.mixins.softLock
-  entityCtx = this.entities[slMixin.lockEntity]
+  let slMixin = entityMeta.mixins.softLock
+  let entityCtx = this.entities[slMixin.lockEntity]
   if (!entityCtx) {
     return false
   }
-  idCtx = entityCtx[ID]
+  let idCtx = entityCtx[ID]
   return idCtx && idCtx.length > 0
 }
 
@@ -80,19 +74,16 @@ UB.ux.LockManager.existLock = function (entity, ID) {
  * @returns {Object}
  */
 UB.ux.LockManager.addLock = function (lockInfo) {
-  var me = this
-  var ctx, idCtx, rDate
-
-  ctx = me.getContext(lockInfo.entity, lockInfo.instance, true)
-  idCtx = ctx.idCtx
-  rDate = new Date()
+  let ctx = this.getContext(lockInfo.entity, lockInfo.instance, true)
+  let idCtx = ctx.idCtx
+  let rDate = new Date()
   ctx.lockIdentifier = lockInfo.lockIdentifier
   ctx.lockID = rDate.getTime() + '_' + idCtx.length
   ctx.onLockLoss = lockInfo.onLockLoss
   ctx.scope = lockInfo.scope
   ctx.entity = lockInfo.entity
   idCtx.push(ctx)
-  me.initUpdateLock(ctx)
+  this.initUpdateLock(ctx)
   return ctx
 }
 
@@ -103,7 +94,7 @@ UB.ux.LockManager.addLock = function (lockInfo) {
 */
 UB.ux.LockManager.checkUnlock = function (entity, ID) {
   let me = this
-  let ctx = me.addLock({entity: entity, instance: ID, scope: me})
+  let ctx = me.addLock({ entity: entity, instance: ID, scope: me })
   if (me.deleteLock(ctx) === true) {
     $App.connection.query({
       entity: entity,
@@ -152,7 +143,7 @@ UB.ux.LockManager.initUpdateLock = function (lockCtx) {
   if (scheduler) {
     return
   }
-  me.schedulers[lockCtx.schedulerID] = scheduler = {lockCtx: lockCtx}
+  me.schedulers[lockCtx.schedulerID] = scheduler = { lockCtx: lockCtx }
   scheduler.updateLockID = setInterval(function () {
     me.updateLock(lockCtx)
   }, me.lockTimeout)
@@ -178,9 +169,7 @@ UB.ux.LockManager.stopUpdateLock = function (lockCtx) {
  * @returns {boolean}
  */
 UB.ux.LockManager.fireOnLockLoss = function (lockCtx) {
-  var me = this
-
-  let entityCtx = me.entities[lockCtx.lockEntity]
+  let entityCtx = this.entities[lockCtx.lockEntity]
   if (!entityCtx) return false
 
   let idCtx = entityCtx[lockCtx.id]
@@ -188,7 +177,7 @@ UB.ux.LockManager.fireOnLockLoss = function (lockCtx) {
   for (let i = 0, L = idCtx.length; i < L; i++) {
     let ctx = idCtx[i]
     if (ctx.onLockLoss) {
-      Ext.callback(ctx.onLockLoss, ctx.scope || me, [ctx])
+      Ext.callback(ctx.onLockLoss, ctx.scope || this, [ctx])
     }
   }
 }
@@ -197,7 +186,7 @@ UB.ux.LockManager.fireOnLockLoss = function (lockCtx) {
  * @param {Object} lockCtx
  */
 UB.ux.LockManager.updateLock = function (lockCtx) {
-  var me = this
+  let me = this
   $App.connection.query({
     entity: lockCtx.lockEntity,
     method: 'renewLock',
@@ -220,17 +209,15 @@ UB.ux.LockManager.updateLock = function (lockCtx) {
  *
  */
 UB.ux.LockManager.forceUpdateAllLock = function () {
-  var me = this
-  var entity, id, entityCtx, idCtx, lockCtx
-
-  for (entity in me.entities) {
+  let me = this
+  for (let entity in me.entities) {
     if (me.entities.hasOwnProperty(entity)) {
-      entityCtx = me.entities[entity]
-      for (id in entityCtx) {
+      let entityCtx = me.entities[entity]
+      for (let id in entityCtx) {
         if (entityCtx.hasOwnProperty(id)) {
-          idCtx = entityCtx[id]
+          let idCtx = entityCtx[id]
           if (idCtx && idCtx.lentgth > 0) {
-            lockCtx = idCtx[0]
+            let lockCtx = idCtx[0]
             me.stopUpdateLock(lockCtx)
             me.updateLock(lockCtx)
             me.initUpdateLock(lockCtx)

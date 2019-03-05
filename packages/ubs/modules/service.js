@@ -189,7 +189,7 @@ exports.Service = {
   getWhere: function (ctxt, resultParams, aliases) {
     var
       wList = ctxt.mParams.whereList,
-      attrs = JSON.parse(ctxt.dataStore.entity.attributes.asJSON),
+      attrs = ctxt.dataStore.entity.attributes,
       where = '', values, attr, w, fld, dType, q
 
     for (w in wList) {

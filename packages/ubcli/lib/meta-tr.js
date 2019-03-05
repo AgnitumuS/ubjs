@@ -4,7 +4,7 @@ const fs = require('fs')
 module.exports = function metaTr (options) {
   if (!options) {
     let opts = cmdLineOpt.describe('meta-tr', '*.meta transformation to fit a latest meta JSON schema', 'ub')
-      .add({short: 'm', long: 'meta', param: 'metaFile', defaultValue: '*.meta', help: 'Path to *.meta file to transform'})
+      .add({ short: 'm', long: 'meta', param: 'metaFile', defaultValue: '*.meta', help: 'Path to *.meta file to transform' })
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
@@ -18,14 +18,14 @@ module.exports = function metaTr (options) {
   let newAttributes = []
   for (let attrName in jsonC.attributes) {
     let oldAttr = jsonC.attributes[attrName]
-    let attr = Object.assign({name: attrName}, oldAttr)
+    let attr = Object.assign({ name: attrName }, oldAttr)
     if (attr.mapping) {
       if (!Array.isArray(attr.mapping)) {
         let newMappings = []
         for (let dialectName in attr.mapping) {
           // noinspection JSUnfilteredForInLoop
           let oldDialect = attr.mapping[dialectName]
-          let newDialect = Object.assign({name: dialectName}, oldDialect)
+          let newDialect = Object.assign({ name: dialectName }, oldDialect)
           newMappings.push(newDialect)
         }
         attr.mapping = newMappings

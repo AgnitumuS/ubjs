@@ -53,3 +53,8 @@ workspace.xml
 dist
 ub-css-all.css
 el-css
+
+#theme build artifact
+_el-theme/
+theme/el-theme-compiled.css
+theme/fonts/
