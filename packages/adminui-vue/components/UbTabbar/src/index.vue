@@ -363,7 +363,7 @@ module.exports = {
         const tab = this.tabs.find(t => t.id === UBTab.id)
         if (tab) {
           tab.title = newText
-          // this.measurementPending = true
+          this.measurementPending = true
         }
       })
 
@@ -373,7 +373,8 @@ module.exports = {
         title: tab.title,
         point: null
       })
-      // this.measurementPending = true
+      
+      this.measurementPending = true
     },
 
     initCreatedTabs () {
