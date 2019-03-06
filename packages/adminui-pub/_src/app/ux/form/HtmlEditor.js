@@ -1,5 +1,4 @@
 require('../UBTinyMCETextArea')
-/* global PDF */
 /**
  * This control render html with the ability to edit it. Html rendered with fixed width (parameter pageWidth).
  * When html more then control space it render scroll bar. Also implemented the ability to call a full-fledged
@@ -206,37 +205,40 @@ Ext.define('UB.ux.form.HtmlEditor', {
     }
 
     function makePDF (htmlText) {
-      PDF.init().then(function () {
-        PDF.csPrintToPdf.requireFonts({
+      SystemJS.import('@unitybase/pdf').then((PDF) => {
+        return PDF.PrintToPdf.requireFonts({
           fonts: [
             { fontName: 'TimesNewRoman', fontStyle: 'Normal' },
             { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
-            { fontName: 'TimesNewRoman', fontStyle: 'Italic' }
-          ],
-          onLoad: function () {
-            var pdf = Ext.create('PDF.csPrintToPdf', {
-              font: { name: 'TimesNewRoman', size: 10, type: 'Normal' },
-              margin: { top: 11, right: 8, bottom: 8, left: 20 },
-              bottomColontitle: {
-                height: 8,
-                font: { size: 7, wide: 0 }
-              },
-              listeners: {
-                initColontitle: function (obj, result) {
-                  if (!result.colontitle.isTop) {
-                    result.align = PDF.csPrintToPdf.alignType.center
-                    result.text = ' page ' + result.pageNumber + ' of ' + result.totalPages
-                  } else {
-                    result.align = PDF.csPrintToPdf.alignType.center
-                    result.text = 'test report - page ' + result.pageNumber + ' of ' + result.totalPages
-                  }
-                }
+            { fontName: 'TimesNewRoman', fontStyle: 'Italic' },
+            { fontName: 'TimesNewRoman', fontStyle: 'BoldItalic' }
+          ]
+        }).then(() => PDF)
+      }).then((PDF) => {
+        let pdfConfig = {
+          font: { name: 'TimesNewRoman', size: 10, type: 'Normal' },
+          margin: { top: 11, right: 8, bottom: 8, left: 20 },
+          bottomColontitle: {
+            height: 8,
+            font: { size: 7, wide: 0 }
+          },
+          listeners: {
+            initColontitle: function (obj, result) {
+              if (!result.colontitle.isTop) {
+                result.align = PDF.PrintToPdf.alignType.center
+                result.text = ' page ' + result.pageNumber + ' of ' + result.totalPages
+              } else {
+                result.align = PDF.PrintToPdf.alignType.center
+                result.text = 'test report - page ' + result.pageNumber + ' of ' + result.totalPages
               }
-            })
-            pdf.writeHtml({ html: htmlText })
-            showInPDF(pdf.output('blobUrl'))
+            }
           }
+        }
+        let pdf = new PDF.PrintToPdf(pdfConfig)
+        pdf.writeHtml({
+          html: htmlText
         })
+        showInPDF(pdf.output('blobUrl'))
       })
     }
 
@@ -266,7 +268,7 @@ Ext.define('UB.ux.form.HtmlEditor', {
       ],
       buttons: [
         {
-          disabled: !window.PDF,
+          //disabled: !window.PDF,
           text: UB.i18n('preViewInPDF'),
           handler: function () {
             makePDF(pnl.getValue())

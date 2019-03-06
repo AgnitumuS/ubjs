@@ -9,8 +9,8 @@ Ext.define('UB.ux.UBReportEditor', {
   alias: 'widget.ubreporteditor',
 
   statics: {
-    portrait: {width: 793},
-    landscape: {width: 1121},
+    portrait: { width: 793 },
+    landscape: { width: 1121 },
 
     paste_postprocess: function (plugin, args) {
       UB.ux.UBReportEditor.filter_node(args.node)
@@ -193,7 +193,7 @@ Ext.define('UB.ux.UBReportEditor', {
         colSpan[p] = []
       }
       rowCountR = 0
-            // create span maps
+      // create span maps
       rowCount = tbody.childNodes.length
       for (let p = 0; p < rowCount; p++) {
         row = tbody.childNodes[p]
@@ -201,7 +201,7 @@ Ext.define('UB.ux.UBReportEditor', {
           continue
         }
         rowCountR++
-                // calc cell count
+        // calc cell count
         if (!calc) {
           for (q = 0; q < row.childNodes.length; q++) {
             cell = row.childNodes[q]
@@ -235,7 +235,7 @@ Ext.define('UB.ux.UBReportEditor', {
 
           cSpan = getAttributeInt(cell, 'colspan', 0)
           rSpan = getAttributeInt(cell, 'rowspan', 0)
-                    // check valid rowSpan
+          // check valid rowSpan
           if (rSpan > 1) {
             if (rSpan - 1 + p >= rowCount) {
               rSpan = (rowCount - p) || 1
@@ -296,7 +296,7 @@ Ext.define('UB.ux.UBReportEditor', {
             }
           }
           if (cSpan > 1) {
-                        // cCntR += cSpan - 1;
+            // cCntR += cSpan - 1;
             for (qq = q + 1; qq < q + cSpan; qq++) {
               colSpan[p][qq] = 1
             }
@@ -307,7 +307,7 @@ Ext.define('UB.ux.UBReportEditor', {
           updateAttributeInt(cellLast, 'colspan', colCount - cCntR + 1)
         }
       }
-      return {colCount: colCount, rowCount: rowCountR}
+      return { colCount: colCount, rowCount: rowCountR }
     }
 
   },
