@@ -72,21 +72,12 @@
 </template>
 
 <script>
-let ubSelectEnum = require('./controls/UbSelectEnum.vue')
-let ubSelectEntity = require('./controls/UbSelectEntity.vue')
-let ubSelectMany = require('./controls/UbSelectMany.vue')
-let ubInput = require('./controls/UbInput.vue')
-let ubUploadDocument = require('./controls/UbUploadDocument.vue')
-let ubCodeMirror = require('./controls/UbCodeMirror.vue')
-
-if (BOUNDLED_BY_WEBPACK) {
-  ubSelectEnum = ubSelectEnum.default
-  ubSelectEntity = ubSelectEntity.default
-  ubSelectMany = ubSelectMany.default
-  ubInput = ubInput.default
-  ubUploadDocument = ubUploadDocument.default
-  ubCodeMirror = ubCodeMirror.default
-}
+const ubSelectEnum = require('./controls/UbSelectEnum.vue').default
+const ubSelectEntity = require('./controls/UbSelectEntity.vue').default
+const ubSelectMany = require('./controls/UbSelectMany.vue').default
+const ubInput = require('./controls/UbInput.vue').default
+const ubUploadDocument = require('./controls/UbUploadDocument.vue').default
+const ubCodeMirror = require('./controls/UbCodeMirror.vue').default
 
 module.exports = {
   name: 'AutoForm',

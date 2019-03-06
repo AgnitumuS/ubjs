@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - tabId parameter of `$App.doCommand` should be of type string.
  Explicit typecast of `tabId` to string added to prevent "unclosable" tab error 
+ - **BREAKING** `vue` forms definition extension changed from `js` to `vue`. Existed `vue` forms should be renamed manually 
+ `git mv my_entity-fm.js my_entity-fm.vue`
  
 ## [5.8.1]
 ### Changed

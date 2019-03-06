@@ -1,8 +1,4 @@
-let UbRelogin = require('./src/index.vue')
-
-if (BOUNDLED_BY_WEBPACK) {
-  UbRelogin = UbRelogin.default
-}
+const UbRelogin = require('./src/index.vue').default
 
 module.exports = function () {
   const id = 'relogin'

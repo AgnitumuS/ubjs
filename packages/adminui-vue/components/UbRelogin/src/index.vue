@@ -32,15 +32,9 @@
 </template>
 
 <script>
-let UbAuthCert2 = require('./UbAuthCert2.vue')
-let UbAuthUb = require('./UbAuthUb.vue')
-let UbAuthNegotiate = require('./UbAuthNegotiate.vue')
-
-if (BOUNDLED_BY_WEBPACK) {
-  UbAuthCert2 = UbAuthCert2.default
-  UbAuthUb = UbAuthUb.default
-  UbAuthNegotiate = UbAuthNegotiate.default
-}
+const UbAuthCert2 = require('./UbAuthCert2.vue').default
+const UbAuthUb = require('./UbAuthUb.vue').default
+const UbAuthNegotiate = require('./UbAuthNegotiate.vue').default
 
 module.exports = {
   name: 'UbRelogin',

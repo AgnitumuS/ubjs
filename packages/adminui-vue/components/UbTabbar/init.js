@@ -1,11 +1,5 @@
-/* global BOUNDLED_BY_WEBPACK */
 const Vue = require('vue')
-
-let UbTabbar = require('./src/index.vue')
-
-if (BOUNDLED_BY_WEBPACK) {
-  UbTabbar = UbTabbar.default
-}
+const UbTabbar = require('./src/index.vue').default
 
 module.exports = function () {
   const { id } = window.UB.core.UBApp.viewport.centralPanel.tabBar

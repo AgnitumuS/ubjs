@@ -1,9 +1,5 @@
-<template>
-  <p class="hello">Hello, {{ whom }}!</p>
-</template>
-
 <script>
-module.exports = {
+module.exports.default = {
   name: 'TstHello',
   props: {
     whom: {
@@ -16,6 +12,12 @@ module.exports = {
   }
 }
 </script>
+
+<template>
+  <p class="hello">
+    Hello, {{ whom }}!
+  </p>
+</template>
 
 <style>
 .hello {

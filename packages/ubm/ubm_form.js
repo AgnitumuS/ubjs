@@ -12,9 +12,11 @@ const blobStores = App.blobStores
 const mStorage = UB.mixins.mStorage
 
 const DFM_CONTENT_TYPE = 'text/javascript; charset=UTF-8'
+const VUE_CONTENT_TYPE = 'script/x-vue'
 const REL_PATH_TAIL = 'forms'
 const DEF_FILE_TAIL = '-fm.def'
 const JS_FILE_TAIL = '-fm.js'
+const VUE_FILE_TAIL = '-fm.vue'
 
 /* global ubm_form ncrc32 */
 // eslint-disable-next-line camelcase
@@ -71,14 +73,15 @@ function postProcessing (loader, fullFilePath, content, row) {
     row.model = loader.processingRootFolder.model.name
   }
   // in case form js exist - fill formCode
-  fileName = fileName.substring(0, fileName.length - DEF_FILE_TAIL.length) + JS_FILE_TAIL
+  let fileTail = row.formType === 'vue' ? VUE_FILE_TAIL : JS_FILE_TAIL
+  fileName = fileName.substring(0, fileName.length - DEF_FILE_TAIL.length) + fileTail
   jsFilePath = path.join(path.dirname(fullFilePath), fileName)
   if (fs.existsSync(jsFilePath)) { // file exists
     let jsFileStat = fs.statSync(jsFilePath)
     row.formCode = JSON.stringify({
       fName: fileName,
       origName: fileName,
-      ct: DFM_CONTENT_TYPE, // JSON_CONTENT_TYPE,
+      ct: row.formType === 'vue' ? VUE_CONTENT_TYPE : DFM_CONTENT_TYPE,
       size: jsFileStat.size,
       md5: 'fakemd50000000000000000000000000',
       relPath: relPath

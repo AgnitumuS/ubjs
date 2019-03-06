@@ -18,11 +18,7 @@
 </template>
 
 <script>
-let toolbar = require('./UbToolbarComponent.vue')
-
-if (BOUNDLED_BY_WEBPACK) {
-  toolbar = toolbar.default
-}
+const toolbar = require('./UbToolbarComponent.vue').default
 
 module.exports = {
   name: 'UbEntityEditComponent',

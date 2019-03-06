@@ -1,20 +1,21 @@
-var fs = {}
+/* global SystemJS */
+// var fs = {}
 var vueCompiler = require('vue-template-compiler/browser.js')
 // var falafel = require('falafel')
 // var rewriteCSS = requir e('./lib/style-rewriter.js')
-var genId = require('./lib/gen-id.js')
+// var genId = require('./lib/gen-id.js')
 var defaultLangs = require('./lib/langs/index.js')
 var normalizeImport = require('./lib/normalize-import')
 
 exports.translate = function (load, opts) {
   opts = opts || {}
-  if (fs.existsSync && fs.existsSync('vue.config.js')) {
-    return normalizeImport('vue.config.js').then(vueOpts => {
-      return compile(load, opts, vueOpts)
-    })
-  } else {
-    return compile(load, opts, this.vue || {})
-  }
+  // if (fs.existsSync && fs.existsSync('vue.config.js')) {
+  //   return normalizeImport('vue.config.js').then(vueOpts => {
+  //     return compile(load, opts, vueOpts)
+  //   })
+  // } else {
+  return compile(load, opts, this.vue || {})
+  // }
 }
 
 function compile (load, opts, vueOpts) {
@@ -50,7 +51,7 @@ function compile (load, opts, vueOpts) {
     // style
     var hasScoped = sfc.styles.some(s => s.scoped)
     if (hasScoped) console.error('Scoped style not supported. Use BEM')
-    var scopeId = hasScoped ? 'data-v-' + genId(load.name) : null
+    // var scopeId = hasScoped ? 'data-v-' + genId(load.name) : null
     if (sfc.styles.length) {
       var style = Promise.all(sfc.styles.map(s => {
       // Original: return rewriteCSS(scopeId, s, load.name, opts.minify, vueOpts)
@@ -73,34 +74,22 @@ function compile (load, opts, vueOpts) {
     }
     // script
     let script = sfc.script ? sfc.script.content : ''
+    script = script.replace(/export default/, 'module.exports.default =')
+    script = script.replace(/(module\.exports =)/,
+      `module.exports.default =`)
     if (sfc.template) {
-      // MPV falafel require acron and it's bug, so lets do a siple parsing
-      script = script || 'module.exports = {}'
-      script = script.replace(/module.exports = {/,
-        `module.exports = {render:__renderFns__.render,` +
+      const EXPORTS_RE = /module\.exports\.default = {/
+      // MPV falafel require acron and it's buggy, so lets do a simple parsing
+      script = script || 'module.exports.default = {}'
+      if (!EXPORTS_RE.test(script)) {
+        let msg = `Invalid "script" section for ${load.address}
+In UB script section of vue component should contains "module.exports.default = {" or "export default {" phrase`
+        console.error(msg)
+      }
+      script = script.replace(EXPORTS_RE,
+        `module.exports.default = {render:__renderFns__.render,` +
         `staticRenderFns:__renderFns__.staticRenderFns,`
       )
-      // script = script || 'export default {}'
-      // script = falafel(script, {
-      //   ecmaVersion: 6,
-      //   sourceType: 'module'
-      // }, node => {
-      //   if (node.type === 'ObjectExpression') {
-      //     if (node.parent && (
-      //       node.parent.type === 'ExportDefaultDeclaration' || (
-      //         node.parent.type === 'AssignmentExpression' &&
-      //         node.parent.left.source() === 'module.exports'
-      //       )
-      //     )) {
-      //       node.update(node.source().replace(/^\{/,
-      //         `{render:__renderFns__.render,` +
-      //         `staticRenderFns:__renderFns__.staticRenderFns,` +
-      //         (scopeId ? `_scopeId:"${scopeId}",` : '')
-      //       ))
-      //     }
-      //   }
-      // })
-
       script = `var __renderFns__ = SystemJS.get(${JSON.stringify(templateModuleName)});` + script
     }
     return script

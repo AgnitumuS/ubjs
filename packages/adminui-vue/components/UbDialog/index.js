@@ -1,8 +1,5 @@
 const Vue = require('vue')
-let UbDialogTemplate = require('./template.vue')
-if (BOUNDLED_BY_WEBPACK) {
-  UbDialogTemplate = UbDialogTemplate.default
-}
+const UbDialogTemplate = require('./template.vue').default
 
 module.exports = ({title, msg, buttonText, type = 'info', isDevInfo = false}) => {
   const UbDialog = Vue.extend(UbDialogTemplate)
