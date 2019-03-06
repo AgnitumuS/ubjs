@@ -26,7 +26,7 @@ Ext.define('UB.ux.UBTinyMCETextArea', {
         style: 'word-break: break-all'
       },
       browser_spellcheck: true,
-      toolbar1: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect | print',
+      toolbar1: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect forecolor | print',
       plugins: [
         'advlist autolink lists charmap print preview hr anchor pagebreak', // link image
         'searchreplace wordcount visualblocks visualchars code ', // fullscreen
