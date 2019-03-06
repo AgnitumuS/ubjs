@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>UbEntityEdit</h1>
-    <el-card class="box-card">
+    <el-card class="box-card" style="width: 1000px;">
       <ub-entity-edit v-model="value"
                       :entity-name="entityName"
                       :instanceID="instanceID"
@@ -13,7 +13,7 @@
                       :external-data="externalData"
                       :form-code="formCode"
                       @input="inputFn">
-        <div style="display: flex; justify-content: space-evenly">
+        <div style="display: flex; justify-content: space-between;flex-wrap: wrap">
           <ub-input v-model="value.caption" :entityName="entityName" attributeName="caption" :objectValue="value"
                     style="min-width: 300px"></ub-input>
           <ub-input v-model="value.code" :entityName="entityName" attributeName="code" :objectValue="value"
@@ -31,8 +31,8 @@
       <li>
         <span class="input-story__prop required">value - Object *</span>
         <el-tooltip effect="light" content="Required" placement="right" :open-delay="100">
-        <el-input :disabled="true" type="textarea" :rows="6" style="width: 300px"
-                  v-model="JSON.stringify(value, null, 2)"></el-input>
+          <el-input :disabled="true" type="textarea" :rows="6" style="width: 300px"
+                    v-model="JSON.stringify(value, null, 2)"></el-input>
         </el-tooltip>
       </li>
       <li>
@@ -47,17 +47,17 @@
       </li>
       <li>
         <span class="input-story__prop">currentTabId - String</span>
-        <span style="font-size: 0.9em;margin-bottom: 5px;display: block">used to act with tab (close on save, add handler on tab closing)</span>
+        <p style="margin: 0;color: rgba(98,20,17,0.78);font-size: 0.9em">used to act with tab (close on save, add handler on tab closing)</p>
         <el-input disabled style="width: 300px" v-model="currentTabId"></el-input>
       </li>
       <li>
         <span class="input-story__prop">externalData - Object</span>
-        <span style="font-size: 0.9em;margin-bottom: 5px;display: block">used to fill props by parent for new entities</span>
+        <p style="margin: 0;color: rgba(98,20,17,0.78);font-size: 0.9em">used to fill props by parent for new entities</p>
       </li>
       <li>
         <span class="input-story__prop">save - Function</span>
-        <span style="font-size: 0.9em;margin-bottom: 5px;display: block">function that calls before save and have a param with callback function (to add validation on fields)</span>
-        <span style="font-size: 0.9em;margin-bottom: 5px;display: block">Example: </span>
+        <p style="margin: 0;color: rgba(98,20,17,0.78);font-size: 0.9em">function that calls before save and have a param with callback function</p>
+        <span style="font-size: 0.9em;display: block">Example: </span>
         <pre><code>save (callback) {
     this.$refs[this.$options.name].validate((valid) => {
       if (valid) {
@@ -88,7 +88,7 @@
     <div style="padding: 0 30px;">
       <p>This component helps in creating cards on VueJS.</p>
       <p style="margin-bottom: 0">While it mounted and value doesn't have properties then component loads data by instanceID (or create new entity if instanceID is empty) and set it to value.</p>
-      <p style="font-size: 0.9em; color: #000;margin-top: 0">value is required! you can set it by your own or send empty object like output parameter</p>
+      <p style="font-size: 0.9em; color: rgba(98,20,17,0.78);margin-top: 0">value is required! you can set it by your own or send empty object like output parameter</p>
       <p>All logic with saving/removing implemented inside the component. If you want to add additional logic before saving (validation for example) then you can use save prop of component.
         Function that you send in this property will be executed while one of savings is emitted.
         It has callback property with parent save implementation, you should call it in case to save entity or write your own saving.</p>
