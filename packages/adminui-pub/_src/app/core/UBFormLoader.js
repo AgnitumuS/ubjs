@@ -131,11 +131,11 @@ Ext.define('UB.core.UBFormLoader', {
     let formModelName = record.get('model')
     let model = $App.domainInfo.models[formModelName]
     let defImportPath = `${model.clientRequirePath}/forms/${config.formCode}-fm.def`
-    let jsImportPath = `${model.clientRequirePath}/forms/${config.formCode}-fm.js`
+    let jsImportPath = `${model.clientRequirePath}/forms/${config.formCode}-fm.${formType === 'vue' ? 'vue' : 'js'}`
     if (formType === 'custom') {
       jsImportPath = '' // custom forms always in one *.def file
     } else if (formType === 'vue' || formType === 'module') {
-      defImportPath = '' // vue & module forms always in one *.js file
+      defImportPath = '' // vue & module forms always in one *.vue or *.js file
     }
     if (!formJSReference) jsImportPath = ''
     let pJS, pDef

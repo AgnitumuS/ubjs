@@ -33,8 +33,8 @@
 
     <el-form-item prop="password">
       <el-input
-        autofocus="true"
         v-model="authData.password"
+        autofocus="true"
         :placeholder="$ut('Password')"
         type="password"
         autocomplete="off"
@@ -74,7 +74,7 @@ module.exports = {
       },
       authRules: {
         password: [
-          {required: true, message: this.$ut('EnterOldPassword'), trigger: 'blur'}
+          { required: true, message: this.$ut('EnterOldPassword'), trigger: 'blur' }
         ]
       }
     }

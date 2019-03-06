@@ -25,7 +25,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   name: 'UbTab',
   props: {
     tabData: Object,

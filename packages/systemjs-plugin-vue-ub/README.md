@@ -6,9 +6,9 @@ Cloned from [systemjs-plugin-vue](https://github.com/vuejs/systemjs-plugin-vue) 
 
 Limitations:
  - scoped CSS not supported. We strongly recommend to use [BEM](http://getbem.com/introduction/) as css naming convention.
- For example if componentName is MyComponnet then Block name shoul be `my-component`:
+ For example if componentName is MyComponnet then Block name should be `my-component`:
 
-````
+```
 <style>
   .my-component {
     font-size: 3em;
@@ -17,9 +17,12 @@ Limitations:
 </style>
 ```
 
-- CSS preprocessors not supported
-- ES6 export/import not supported. Use CommonJS syntax
-- parser for script section is pretty dumb. To work correctly `module.exports = {` section should exists EXACTLY (including spaces)
+- CSS preprocessors not supported - use BEM
+- ES6 import not supported. Use CommonJS syntax. ES6 `export default` is supported for Vue SFC - parser will replace it to `module.exports.default =`)
+- parser for script section is pretty dumb. To work correctly `module.exports.defauilf = {` or `export default {` section should exists EXACTLY (including spaces)
+- vue component definition accessible inside `default` so should be imported as 
+  `const MyComponent = require('./MyComponent.vue').default`
+
 
 Working sample
 
@@ -31,7 +34,7 @@ Working sample
 </template>
 
 <script>
-module.exports = {
+module.exports.default = {
   name: 'TstHello',
   props: {
     whom: {

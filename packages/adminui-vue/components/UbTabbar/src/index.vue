@@ -73,15 +73,10 @@
 </template>
 
 <script>
-let UbTab = require('./UbTab.vue')
-let UbTabbarContext = require('./UbTabbarContext.vue')
+const UbTab = require('./UbTab.vue').default
+const UbTabbarContext = require('./UbTabbarContext.vue').default
 
-if (BOUNDLED_BY_WEBPACK) {
-  UbTab = UbTab.default
-  UbTabbarContext = UbTabbarContext.default
-}
-
-module.exports = {
+export default {
   name: 'UbTabbar',
 
   components: {UbTab, UbTabbarContext},

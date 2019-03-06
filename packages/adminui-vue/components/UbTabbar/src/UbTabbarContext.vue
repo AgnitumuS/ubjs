@@ -33,7 +33,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   name: 'UbTabbarContext',
 
   data () {
@@ -99,5 +99,5 @@ module.exports = {
 .ub-tabbar__context-menu__divider {
   border-bottom: 1px solid #eee;
   margin: 8px 0;
-}  
+}
 </style>

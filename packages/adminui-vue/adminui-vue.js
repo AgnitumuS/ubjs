@@ -1,4 +1,4 @@
-/* global SystemJS, Ext, $App, BOUNDLED_BY_WEBPACK */
+/* global SystemJS, Ext, $App */
 const UB = require('@unitybase/ub-pub')
 // vue internally use process.env.NODE_ENV !== 'production'
 window.process = {
@@ -48,10 +48,7 @@ if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultDialogs)
 }
 
-let entityEditor = require('./components/UbEntityEditComponent.vue')
-if (BOUNDLED_BY_WEBPACK) {
-  entityEditor = entityEditor.default
-}
+const entityEditor = require('./components/UbEntityEditComponent.vue').default
 Vue.component('ub-entity-edit', entityEditor)
 
 if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
@@ -68,11 +65,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
       return
     }
 
-    let autoFormComponent = require('./components/AutoFormComponent.vue')
-    // window.BOUNDLED_BY_WEBPACK = false
-    if (BOUNDLED_BY_WEBPACK) {
-      autoFormComponent = autoFormComponent.default
-    }
+    const autoFormComponent = require('./components/AutoFormComponent.vue').default
     let entitySchema = $App.domainInfo.get(params.entity)
     let tab = $App.viewport.centralPanel.add({
       id: params.tabId,

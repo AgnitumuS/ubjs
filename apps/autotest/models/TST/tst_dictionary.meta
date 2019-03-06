@@ -1,105 +1,117 @@
 ﻿{
-	"caption": "tst_dictionary",
-	"description": "ub test dictionary",
-	"connectionName": "",
-	"sqlAlias": "tdict",
-	"cacheType": "SessionEntity",
-	"descriptionAttribute": "caption",
-	"attributes": [
-		{
-		  "name": "code",
-          "dataType": "String",
-          "size": 32,
-          "caption": "Code",
-          "description": "Code",
-          "allowNull": false
-		},
-		{
-			"name": "caption",
-			"dataType": "String",
-			"size": 255,
-			"caption": "Caption",
-			"description": "Caption",
-			"allowNull": true,
-			"isMultiLang": true,
-            "customSettings": {
-              "upload": {
-                "name": "organizationCode",
-                "caption": "org_organization.code",
-                "additionalColumns": [
-                  {
-                    "name": "organizationName",
-                    "caption": "org_organization.name",
-                    "example": "AES-VCM Mong Duong Power"
-                  }
-                ]
-              }
+  "caption": "tst_dictionary",
+  "description": "ub test dictionary",
+  "connectionName": "",
+  "sqlAlias": "tdict",
+  "cacheType": "SessionEntity",
+  "descriptionAttribute": "caption",
+  "attributes": [
+    {
+      "name": "code",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code",
+      "description": "Code",
+      "allowNull": false
+    },
+    {
+      "name": "caption",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Caption",
+      "description": "Caption",
+      "allowNull": true,
+      "isMultiLang": true,
+      "customSettings": {
+        "upload": {
+          "name": "organizationCode",
+          "caption": "org_organization.code",
+          "additionalColumns": [
+            {
+              "name": "organizationName",
+              "caption": "org_organization.name",
+              "example": "AES-VCM Mong Duong Power"
             }
-		},
-		{
-			"name": "filterValue",
-			"dataType": "BigInt",
-			"caption": "filterValue",
-			"description": "",
-			"allowNull": false
-		},
-		{
-			"name": "currencyValue",
-			"dataType": "Currency",
-			"caption": "Currency Data"
-		},
-		{
-			"name": "floatValue",
-			"dataType": "Float",
-			"caption": "Float Data"
-		},
-		 {
-			 "name": "calculated",
-			 "dataType": "String",
-			"size": 255,
-			"caption": "Назва",
-			"mapping": [
-				{ "name": "AnsiSQL", "expressionType": "Expression", "expression": "[code] || ' ' || [caption]" },
-				{
-					"name": "MSSQL", "expressionType": "Expression", "expression": "[code] + ' ' + [caption]"
-				}
-			]
-		},
-		{
-			"name": "booleanColumn",
-			"dataType": "Boolean",
-            "caption": "Test boolean column",
-            "allowNull": true,
-            "defaultValue": "0"
+          ]
+        }
+      }
+    },
+    {
+      "name": "filterValue",
+      "dataType": "BigInt",
+      "caption": "filterValue",
+      "description": "",
+      "allowNull": false
+    },
+    {
+      "name": "currencyValue",
+      "dataType": "Currency",
+      "caption": "Currency Data"
+    },
+    {
+      "name": "floatValue",
+      "dataType": "Float",
+      "caption": "Float Data"
+    },
+    {
+      "name": "intValue",
+      "dataType": "Int",
+      "caption": "Int Data",
+      "defaultValue": "0"
+    },
+    {
+      "name": "calculated",
+      "dataType": "String",
+      "size": 255,
+      "caption": "Назва",
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Expression",
+          "expression": "[code] || ' ' || [caption]"
         },
-		{
-			"name": "jsonColumn",
-			"dataType": "Json",
-			"caption": "Test JSON column",
-			"allowNull": true
-		}
-	],
-	"mixins": {
-		"mStorage": {
-			"simpleAudit": true
-		}
-	},
-	"dbKeys": {
-		"UIDX_CFV": {
-			"code": {},
-			"filterValue": {}
-		}
-	},
-	"dbExtensions": {
-		"UIDX_CODE": {
-			"MSSQL": {
-				"expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(code, filterValue)",
-				"exprtype": "index"
-			},
-			"Oracle": {
-				"expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(UPPER(code), filterValue)",
-				"exprtype": "index"
-			}
-		}
-	}
+        {
+          "name": "MSSQL",
+          "expressionType": "Expression",
+          "expression": "[code] + ' ' + [caption]"
+        }
+      ]
+    },
+    {
+      "name": "booleanColumn",
+      "dataType": "Boolean",
+      "caption": "Test boolean column",
+      "allowNull": true,
+      "defaultValue": "0"
+    },
+    {
+      "name": "jsonColumn",
+      "dataType": "Json",
+      "caption": "Test JSON column",
+      "allowNull": true
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true
+    }
+  },
+  "dbKeys": {
+    "UIDX_CFV": {
+      "code": {},
+      "filterValue": {}
+    }
+  },
+  "dbExtensions": {
+    "UIDX_CODE": {
+      "MSSQL": {
+        "expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(code, filterValue)",
+        "exprtype": "index"
+      },
+      "Oracle": {
+        "expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(UPPER(code), filterValue)",
+        "exprtype": "index"
+      }
+    }
+  }
 }
