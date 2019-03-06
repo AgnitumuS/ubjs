@@ -724,7 +724,7 @@
               },
               "advSettings": {
                 "type": "string",
-                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 32|64 bit libpq.dll`| \"LibLocation=C:\\Program Files\\PostgreSQL (x86)\\9.3\\bin\\libpq.dll\"\n| `Oracle`| Combination of `MANY=hint` `ONE=hint` `INLINE_IN` `USE_WALLET`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \"MANY=\\/*+ NO_CPU_COSTING *\\/,ONE=\\/*+ NO_CPU_COSTING *\\/INLINE_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
+                "description": "Advanced driver settings\n\n |DBMS| Value  | Description \n|-\n|`Postgre`|LibLocation=`Path to 64bit libpq.dll`| \"LibLocation=C:/Program Files/PostgreSQL (x86)/10/bin/libpq.dll\"\n| `Oracle`| Combination of `MANY=hint` `ONE=hint` `INLINE_IN` `USE_WALLET`<br>INLINE_IN - do not use array bindings for `in` and `not in` condition<br>(UB5 only) LibLocation=`Path to folder with oci.dll(windows only)` | \"MANY=\\/*+ NO_CPU_COSTING *\\/,ONE=\\/*+ NO_CPU_COSTING *\\/INLINE_IN,USE_WALLET,LibLocation=/usr/lib/oracle/11.2/clien64/lib\" \n| `SQLIte3` | [Synchronous=Full or Off or Normal],[Tokenizer=stemka,TokenizerParams=\"stem=yes or no\" \"lang=uk or ru or en\"]"
               }
             }
           }
