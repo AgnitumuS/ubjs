@@ -48,20 +48,20 @@ function initDB (cfg) {
     let opts = options.describe('initDB',
       `Prepare a new database for a UB ORM. Creates a user "${UBA_COMMON.USERS.ADMIN.NAME}" with password specified in -p parameter`, 'ubcli')
       .add([
-        {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: `Password for "${UBA_COMMON.USERS.ADMIN.NAME}"`},
-        {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'},
-        {short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms'}])
-      .add({short: 'c',
+        { short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: `Password for "${UBA_COMMON.USERS.ADMIN.NAME}"` },
+        { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
+        { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' }])
+      .add({ short: 'c',
         long: 'clientIdentifier',
         param: 'clientIdentifier',
         defaultValue: 3,
         searchInEnv: false,
-        help: 'Identifier of the client. Must be between 2 and 8999. \n\t1 is for UnityBase developer, 3 for test. \n\tNumbers > 100 is for real installations'
+        help: 'Identifier of the client. Must be between 2 and 8999. \n\t\t1 is for UnityBase developer, 3 for test. \n\t\tNumbers > 100 is for real installations'
       })
-      .add({short: 'drop', long: 'dropDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Drop a database/schema first'})
-      .add({short: 'create', long: 'createDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Create a new database/schema'})
-      .add({short: 'dba', long: 'dba', param: 'DBA_user_name', defaultValue: '', searchInEnv: true, help: 'A DBA name. Used in case `createDatabase=true`'})
-      .add({short: 'dbaPwd', long: 'dbaPwd', param: 'DBA_password', defaultValue: '', searchInEnv: true, help: 'A DBA password. Used in case `createDatabase=true`'})
+      .add({ short: 'drop', long: 'dropDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Drop a database/schema first' })
+      .add({ short: 'create', long: 'createDatabase', param: '', defaultValue: false, searchInEnv: false, help: 'Create a new database/schema' })
+      .add({ short: 'dba', long: 'dba', param: 'DBA_user_name', defaultValue: '', searchInEnv: true, help: 'A DBA name. Used in case `createDatabase=true`' })
+      .add({ short: 'dbaPwd', long: 'dbaPwd', param: 'DBA_password', defaultValue: '', searchInEnv: true, help: 'A DBA password. Used in case `createDatabase=true`' })
       .add({
         short: 'conn',
         long: 'connectionName',
@@ -84,7 +84,7 @@ function initDB (cfg) {
   console.log(`Use host "${cfg.host}" as specified in config "${originalConfigFileName}"`)
 
   // database are slow :( Increase timeout to 2 minutes
-  http.setGlobalConnectionDefaults({receiveTimeout: 2 * 60 * 1000})
+  http.setGlobalConnectionDefaults({ receiveTimeout: 2 * 60 * 1000 })
 
   if (argv.checkServerStarted(cfg.host)) {
     // throw new Error('Please, shutdown a server on ' + cfg.host + ' before run this command');
@@ -130,17 +130,17 @@ function initDB (cfg) {
   function createFakeConfig (config, originalConfigFileName, connectionName = '') {
     let newConfig = _.cloneDeep(config)
     let dbaConn
-    let defaultDB = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+    let defaultDB = _.find(config.application.connections, { isDefault: true }) || config.application.connections[0]
 
     if (connectionName) {
-      defaultDB = _.find(config.application.connections, {name: connectionName})
+      defaultDB = _.find(config.application.connections, { name: connectionName })
       if (!defaultDB) throw new Error(`Database connection @${connectionName} not found in application.connections`)
     } else {
-      defaultDB = _.find(config.application.connections, {isDefault: true}) || config.application.connections[0]
+      defaultDB = _.find(config.application.connections, { isDefault: true }) || config.application.connections[0]
     }
 
     newConfig.security = {}
-    newConfig.application.domain = { models: _.filter(newConfig.application.domain.models, {name: 'UB'}) }
+    newConfig.application.domain = { models: _.filter(newConfig.application.domain.models, { name: 'UB' }) }
     delete newConfig.application.domain.models[0].name
     if (cfg.dropDatabase || cfg.createDatabase) {
       dbaConn = _.cloneDeep(defaultDB)
@@ -220,7 +220,7 @@ function fillBuildInRoles (conn, dbDriverName, adminPwd) {
 
   initSecurity.forEach(function (stmt) {
     conn.xhr({
-      endpoint: 'runSQL', URLParams: {CONNECTION: 'main'}, data: stmt
+      endpoint: 'runSQL', URLParams: { CONNECTION: 'main' }, data: stmt
     })
   })
 }

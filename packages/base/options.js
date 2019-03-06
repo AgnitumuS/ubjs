@@ -131,7 +131,8 @@ Options.prototype.parse = function parse (defaults, errors) {
 Options.prototype.parseVerbose = function parseVerbose (defaults, outputParsed) {
   let result
   let errors = []
-  if (switchIndex('?') !== -1 || switchIndex('help') !== -1) {
+  if (switchIndex('?') !== -1 || switchIndex('help') !== -1 ||
+    switchIndex('-help') !== -1) {
     console.log(this.usage())
   } else {
     result = this.parse(defaults, errors)
@@ -174,12 +175,13 @@ Options.prototype.usage = function usage () {
   // create a parameters description
   this.options.forEach(function (option) {
     let elm = '-' + option.short
-    if (option.short !== option.long) elm += ' | ' + option.long
+    // prevent bad formatted output
+    // if (option.short !== option.long) elm += ' | ' + option.long
     if (option.searchInEnv) elm += '*'
     elm += ' '.repeat(elm.length > PARAM_IDENT - 1 ? 1 : PARAM_IDENT - elm.length) + option.help
     res.push(elm)
     if (typeof option.defaultValue !== 'undefined') {
-      res.push(' '.repeat(PARAM_IDENT + 5) + 'Default: ' + ((option.defaultValue === '') ? '""' : option.defaultValue))
+      res.push(' '.repeat(PARAM_IDENT + 1) + 'Default: ' + ((option.defaultValue === '') ? '""' : option.defaultValue))
     }
     if (option.searchInEnv) {
       envs.push('UB_' + option.long.toUpperCase())

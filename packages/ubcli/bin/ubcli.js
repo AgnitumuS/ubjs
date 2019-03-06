@@ -34,7 +34,7 @@ function showUsage () {
 }
 
 function ubcli () {
-  if (!command || (['-?', '/?', '-help', '/help'].indexOf(command) !== -1)) {
+  if (!command || (['-?', '/?', '-help', '/help', '--help'].indexOf(command) !== -1)) {
     showUsage()
   } else {
     try {
