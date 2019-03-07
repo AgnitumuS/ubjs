@@ -102,7 +102,7 @@ class ServerRepository extends CustomRepository {
   }
 
   /**
-   * Create new, or use passed as parameter {@link TubDataStore} and run {@link class:TubDataStore#select TubDataStore.select} method passing result of {@link class:CustomRepository#getRunListItem CustomRepository.getRunListItem} as config.
+   * Create new, or use passed as parameter {@link TubDataStore} and run {@link class:TubDataStore#select TubDataStore.select} method passing result of {@link class:CustomRepository#ubql CustomRepository.ubql()} as config.
    * Do not work for remote connection.
    *
    * @param {TubDataStore} [instance] Optional instance for in-thread execution context. If passed - run select for it (not create new instance) and return instance as a result.

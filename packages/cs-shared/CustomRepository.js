@@ -10,7 +10,7 @@ const _ = require('lodash')
 const bracketsRe = /\[.*]/
 // in case values for where is null we transform condition to allowed null comparison with warning.
 // If condition not in conditionInCaseValueIsNull object keys we raise error
-const conditionInCaseValueIsNull = {equal: 'isNull', notEqual: 'notIsNull', custom: 'custom'}
+const conditionInCaseValueIsNull = { equal: 'isNull', notEqual: 'notIsNull', custom: 'custom' }
 
 const cNames = []
 for (let i = 0; i < 100; i++) {
@@ -215,7 +215,7 @@ UB.Repository('my_entity').attrs('id')
       console.warn('Condition "in" is passed to CustomRepository.where but values is null or undefined -> condition transformed to (0=1). Check your logic')
       expression = '0'
       condition = WhereCondition.equal
-      values = {a: 1}
+      values = { a: 1 }
     } else if (condition === 'in' && (!Array.isArray(values))) {
       console.debug('Condition "in" is passed to CustomRepository.where but values is not an array -> condition transformed to equal. Check your logic')
       condition = WhereCondition.equal
@@ -223,12 +223,12 @@ UB.Repository('my_entity').attrs('id')
       console.warn('Condition "in" is passed to CustomRepository.where but value is empty array -> condition transformed to "0=1". Check your logic')
       expression = '0'
       condition = WhereCondition.equal
-      values = {a: 1}
+      values = { a: 1 }
     } else if (condition === 'notIn' && (!values || !values.length)) {
       console.warn('Condition "notIn" is passed to CustomRepository.where but value is empty array -> condition transformed to "1=1". Check your logic')
       expression = '1'
       condition = WhereCondition.equal
-      values = {a: 1}
+      values = { a: 1 }
     } else if (values === null && (condition !== 'isNull' || condition !== 'notIsNull')) {
       let wrongCondition = condition
       values = undefined
@@ -382,6 +382,7 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
     return this
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Adds join condition. Fix some known issues
    *
@@ -540,6 +541,7 @@ inst.run('select', repo.ubql())
     return req
   }
 
+  // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants and return (or resolved for async clients)
    * to `array of object` representation of result, like this
@@ -554,6 +556,7 @@ inst.run('select', repo.ubql())
   selectAsObject (fieldAliases) {
     throw new Error('abstract')
   }
+  // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants and return (or resolved for async clients)
    * to `array of array` representation of result, like this
@@ -565,7 +568,7 @@ inst.run('select', repo.ubql())
   selectAsArray () {
     throw new Error('abstract')
   }
-
+  // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants and return (or resolved for async clients)
    * to `DataSet` class instance, implemented in caller level. It can be:
@@ -581,7 +584,7 @@ inst.run('select', repo.ubql())
   selectAsStore (storeConfig) {
     throw new Error('abstract')
   }
-
+  // noinspection JSMethodCanBeStatic
   /**
    * Must be implemented in descendants as a alias to the most appropriate method
    *
@@ -592,6 +595,7 @@ inst.run('select', repo.ubql())
     throw new Error('abstract')
   }
 
+  // noinspection JSMethodCanBeStatic
   /**
    * Select a single row. If ubql result is empty - return `undefined`
    * @example
@@ -608,6 +612,7 @@ inst.run('select', repo.ubql())
     throw new Error('abstract')
   }
 
+  // noinspection JSMethodCanBeStatic
   /**
    * Execute select and returns a value of the first attribute from the first row
    * @example
@@ -625,6 +630,7 @@ inst.run('select', repo.ubql())
     throw new Error('abstract')
   }
 
+  // noinspection JSMethodCanBeStatic
   /**
    * Select a single row by ID. If result is empty - returns `undefined`
    * If result is not empty - returns a object
@@ -667,6 +673,7 @@ inst.run('select', repo.ubql())
     return this
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Calculate total row number. WARNING!! This is VERY slow operation on DB level in case of many record
    *
