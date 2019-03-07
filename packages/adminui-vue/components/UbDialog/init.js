@@ -62,25 +62,61 @@ module.exports = function () {
   }
 
   window.onerror = (...args) => {
+    // all styles placed in ./template.vue
     const err = args[4]
     if (err) {
-      const onCotext = ({ctrlKey}) => {
-        const devInfo = `${err.detail}<br>${err.stack}`.replace(/\\n(?!\d)/g, '\n\t\t')
-        if (ctrlKey) {
-          window.$App.dialogError(devInfo, err.name, true)
-        }
-      }
+      const devBtnID = 'ub-notification__error__dev-btn'
+      const showMessBtnID = 'ub-notification__error__show-mess-btn'
+      const devBtn = `
+      <i 
+        title="${UB.i18n('showDeveloperDetail')}"
+        class="fa fa-wrench" 
+        data-id="${devBtnID}"
+      ></i>
+      `
+      const showMessBtn = `
+      <i 
+        title="${UB.i18n('showFullScreen')}"
+        class="fa fa-window-restore" 
+        data-id="${showMessBtnID}"
+      ></i>
+      `
+      const footer = `
+      <div class="ub-notification__error__btn-group">
+        ${showMessBtn + devBtn}
+      </div>
+      `
+
+      const message = `
+      <div class="ub-notification__error__content">
+        ${UB.i18n(err.message)}
+      </div>
+      ${footer}
+      `
       const instance = Notification.error({
         title: UB.i18n('error'),
-        message: UB.i18n(err.message),
+        message,
         dangerouslyUseHTMLString: true,
-        customClass: 'ub-notification__error', // styles placed in ./template.vue
+        customClass: 'ub-notification__error',
+        duration: 30000,
         onClose () {
-          instance.$el.removeEventListener('contextmenu', onCotext)
-        },
-        duration: 30000
+          devBtnEl.removeEventListener('click', devBtnListener)
+          showMessBtnEl.removeEventListener('click', showMessBtnListener)
+        }
       })
-      instance.$el.addEventListener('contextmenu', onCotext)
+
+      const devBtnEl = instance.$el.querySelector(`[data-id=${devBtnID}]`)
+      const showMessBtnEl = instance.$el.querySelector(`[data-id=${showMessBtnID}]`)
+      const devBtnListener = (e) => {
+        const devInfo = `${err.detail}<br>${err.stack}`.replace(/\\n(?!\d)/g, '\n\t\t')
+        window.$App.dialogError(devInfo, err.name, true)
+      }
+      const showMessBtnListener = (e) => {
+        window.$App.dialogError(UB.i18n(err.message), err.name)
+        instance.close()
+      }
+      devBtnEl.addEventListener('click', devBtnListener)
+      showMessBtnEl.addEventListener('click', showMessBtnListener)
     }
   }
 

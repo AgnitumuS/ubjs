@@ -539,6 +539,8 @@ UB.i18nExtend({
 
   dateIsTooEarly: 'თარიღი უნდა იყოს მეტი {0}',
 
+  showFullScreen: 'Show full screen',
+
   // !!!
     // Do not change this last item.
     // Put your new items before EOF for SVN auto merge reason.
