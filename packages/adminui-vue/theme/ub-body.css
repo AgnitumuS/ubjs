@@ -84,7 +84,8 @@ html, body {
 
 .ub-select-entity__menu-button {
   display: flex;
-  right: 5px;
+  right: 0px;
+  width: 44px;
   cursor: pointer;
   top: 0;
   transition: all .3s;
@@ -127,4 +128,12 @@ html, body {
 
 .ub-noselect {
   user-select: none;
+}
+
+.ub-icon-menu {
+  display: flex !important;
+  width: 25px;
+  min-height: 32px;
+  justify-content: center;
+  align-items: center;
 }

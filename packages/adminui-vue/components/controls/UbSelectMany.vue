@@ -8,7 +8,8 @@
              :class="`ub-select-many${this._uid}`"
              style="width: 100%"
              @change="onChange"
-             @focus="onFocus">
+             @click.native="onFocus"
+             @focus.native="onFocus">
     <template>
       <el-option v-for="item in itemsToDisplay"
                  :key="item[primaryColumn]"
