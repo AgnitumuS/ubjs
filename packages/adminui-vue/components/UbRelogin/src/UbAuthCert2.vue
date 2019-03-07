@@ -50,7 +50,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   name: 'UbAuthCert2',
 
   data () {

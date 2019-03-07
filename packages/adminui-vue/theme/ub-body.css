@@ -1,11 +1,11 @@
-/* Use rgb code for use rgba colors. Example color: rgba(var(--blue), 0.5);*/
+/* Use rgb code for use rgba colors. Example color: rgba(var(--bg), 0.5);*/
 :root{
-  --blue: 47, 64, 80;
-  --dark-blue: 41, 56, 70;
-  --green: 66, 183, 115;
-  --red: 245, 108, 108;
-  --grey: 144, 147, 153;
-  --yellow: 230, 162, 60;
+  --bg: 47, 64, 80;
+  --bg-dark: 41, 56, 70;
+  --primary: 64, 158, 255;
+  --danger: 245, 108, 108;
+  --info: 144, 147, 153;
+  --warning: 230, 162, 60;
 }
 
 /* Use a native font stack that selects the best font-family for each OS and device. Thnks to bootstrap4 */

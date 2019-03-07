@@ -538,6 +538,8 @@ UB.i18nExtend({
   'enabled': 'enabled',
 
   dateIsTooEarly: 'The date must be greater than {0}',
+  
+  quickAccessButtons: 'Quick access buttons',
 
   showFullScreen: 'Show full screen',
 

@@ -1,0 +1,355 @@
+<template>
+  <div
+    class="ub-sidebar"
+    :style="{
+      width: sidebarWidth + 'px'
+    }"
+  >
+    <div
+      class="ub-sidebar__desktop-select"
+      :class="[isCollapsed && 'collapsed']"
+    >
+      <el-tooltip
+        v-show="isCollapsed"
+        :content="$ut('rabochiyStol')"
+        placement="right"
+      >
+        <el-button
+          icon="fa fa-desktop"
+          class="ub-sidebar__desktop-select__button"
+          @click="$refs.select.$el.click()"
+        />
+      </el-tooltip>
+
+      <el-select
+        ref="select"
+        v-model="selectedDesktop"
+        style="width: 100%"
+        placeholder="Desktop"
+        @change="saveInLocalStorage"
+      >
+        <el-option
+          v-for="item in desktops"
+          :key="item.ID"
+          :label="item.caption"
+          :value="item.ID"
+        />
+      </el-select>
+    </div>
+
+    <slot />
+
+    <el-menu
+      background-color="#2f4050"
+      text-color="#fff"
+      active-text-color="#409EFF"
+      unique-opened
+      :collapse="isCollapsed"
+      :collapse-transition="false"
+      class="ub-sidebar__main-menu"
+      :default-openeds="defaultOpeneds"
+      @open="setActiveFolder"
+    >
+      <ub-sidebar-item
+        v-for="item in activeShortcuts"
+        :key="item.ID"
+        :item="item"
+        :context-show="$refs.context.show"
+        :context-disabled="isCollapsed"
+      />
+    </el-menu>
+
+    <ub-context
+      ref="context"
+      :items="contextItems"
+      click-outside-targets=".el-menu-item, .el-submenu__title"
+      @select="selectContext"
+    />
+  </div>
+</template>
+
+<script>
+const UbSidebarItem = require('./UbSidebarItem.vue').default
+const UbContext = require('../../controls/UbContext.vue').default
+const UB = require('@unitybase/ub-pub')
+
+export default {
+  name: 'UbSidebar',
+  components: { UbSidebarItem, UbContext },
+
+  data () {
+    return {
+      shortcuts: [],
+      desktops: [],
+      selectedDesktop: null,
+      isCollapsed: false,
+      sidebarWidth: null,
+      SIDEBAR_FULL_WIDTH: 300,
+      SIDEBAR_COLLAPSED_WIDTH: 76
+    }
+  },
+
+  watch: {
+    isCollapsed (value) {
+      this.setLayoutMargin(value ? this.SIDEBAR_COLLAPSED_WIDTH : this.SIDEBAR_FULL_WIDTH)
+    }
+  },
+
+  computed: {
+    defaultOpeneds () {
+      const arr = localStorage.getItem('portal:sidebar:activeShortcutFolder')
+      return arr ? JSON.parse(arr) : []
+    },
+
+    activeShortcuts () {
+      return this.buildInheritance(this.shortcuts).filter(({ desktopID }) => this.selectedDesktop === desktopID)
+    },
+
+    contextItems () {
+      return [{
+        label: 'Edit',
+        action: 'edit',
+        iconCls: 'el-icon-edit'
+      }, {
+        label: 'dobavitYarlik',
+        action: 'addShortcut',
+        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('insert'),
+        iconCls: 'el-icon-circle-plus'
+      }, {
+        label: 'dobavitDirectoriu',
+        action: 'addFolder',
+        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('insert'),
+        iconCls: 'fa fa-folder'
+      }, {
+        label: '-'
+      }, {
+        label: 'Delete',
+        action: 'deleteShortcut',
+        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('delete'),
+        iconCls: 'el-icon-delete'
+      }]
+    }
+  },
+
+  methods: {
+    async loadDesktops () {
+      const desktops = await this.$UB.connection.Repository('ubm_desktop')
+        .attrs('ID', 'caption', 'isDefault')
+        .orderBy('caption')
+        .select()
+
+      const defaultDesktop = desktops.filter(d => d.isDefault)
+      const userLogin = UB.connection.userData().login
+      const localStorageDesktop = +window.localStorage.getItem(`${userLogin}:desktop`)
+
+      if (localStorageDesktop) {
+        this.selectedDesktop = localStorageDesktop
+      } else if (defaultDesktop.length === 1) {
+        this.selectedDesktop = defaultDesktop[0].ID
+      } else {
+        this.selectedDesktop = desktops[0].ID
+      }
+
+      this.desktops = desktops
+    },
+
+    async loadShortcuts () {
+      const shortcuts = await this.$UB.connection.Repository('ubm_navshortcut')
+        .attrs('ID', 'parentID', 'caption', 'desktopID', 'iconCls', 'inWindow', 'isCollapsed', 'displayOrder', 'isFolder')
+        .orderBy('desktopID').orderBy('parentID')
+        .orderBy('displayOrder').orderBy('caption')
+        .select()
+
+      this.shortcuts = shortcuts
+    },
+
+    buildInheritance (items, ID = null) {
+      const childs = items.filter(a => a.parentID === ID)
+
+      return childs.map(a => ({
+        ...a,
+        childs: this.buildInheritance(items, a.ID)
+      }))
+    },
+
+    saveInLocalStorage (ID) {
+      const userLogin = UB.connection.userData().login
+      window.localStorage.setItem(`${userLogin}:desktop`, ID)
+    },
+
+    setLayoutMargin (margin) {
+      $App.viewport.layout.centerRegion.getEl().setStyle({ paddingLeft: `${margin}px` })
+      $App.viewport.layout.centerRegion.doLayout()
+      this.sidebarWidth = margin
+    },
+
+    async selectContext (action, { ID, desktopID, parentID, isFolder }) {
+      const command = {
+        cmdType: 'showForm',
+        entity: 'ubm_navshortcut',
+        store: this.$UB.core.UBStoreManager.getNavigationShortcutStore()
+      }
+
+      if (action === 'edit') {
+        command.instanceID = ID
+      }
+
+      if (action === 'addShortcut') {
+        command.desktopID = desktopID
+        if (parentID) {
+          command.parentID = parentID
+        }
+        if (isFolder) {
+          command.isFolder = isFolder
+        }
+      }
+
+      if (action === 'addFolder') {
+        command.desktopID = desktopID
+        if (parentID) {
+          command.parentID = parentID
+        }
+        command.isFolder = true
+      }
+
+      if (action === 'deleteShortcut') {
+        const confirm = await this.$notify({
+          title: 'deletionDialogConfirmCaption',
+          msg: 'vyUvereny',
+          type: 'question',
+          buttonText: {
+            yes: 'da',
+            cancel: 'net'
+          }
+        })
+
+        if (confirm === 'accept') {
+          await $App.connection.doDelete({
+            entity: 'ubm_navshortcut',
+            execParams: {
+              ID
+            }
+          })
+          const index = this.shortcuts.findIndex(s => s.ID === ID)
+          if (index !== -1) {
+            this.shortcuts.splice(index, 1)
+          }
+        }
+        return
+      }
+
+      $App.doCommand(command)
+    },
+
+    setActiveFolder (ID, arr) {
+      localStorage.setItem('portal:sidebar:activeShortcutFolder', JSON.stringify(arr))
+    }
+  },
+
+  mounted () {
+    this.loadDesktops()
+    this.loadShortcuts()
+    $App.on({
+      'portal:sidebar:appendSlot': (Component, bindings) => {
+        this.$slots.default = this.$createElement(Component, bindings)
+      },
+
+      'portal:sidebar:collapse': () => {
+        this.isCollapsed = !this.isCollapsed
+      }
+    })
+    this.setLayoutMargin(this.SIDEBAR_FULL_WIDTH)
+  }
+}
+</script>
+
+<style>
+.ub-sidebar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #2f4050;
+  display: flex;
+  flex-direction: column;
+  z-index: 300000;
+}
+
+.ub-sidebar .el-menu::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(var(--bg-dark), 0.2);
+}
+
+.ub-sidebar .el-menu::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  background-color: #b0b3b5;
+  transition:background-color .1s;
+}
+
+.ub-sidebar .el-menu-item [class*=fa-],
+.ub-sidebar .el-submenu [class*=fa-] {
+  vertical-align: middle;
+  margin-right: 5px;
+  width: 24px;
+  min-width: 24px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.ub-sidebar .el-submenu__title,
+.ub-sidebar .el-menu-item{
+  display: flex;
+  align-items: center;
+}
+
+.ub-sidebar .el-menu--collapse .el-submenu__title,
+.ub-sidebar .el-menu--collapse .el-menu-item{
+  justify-content: center;
+}
+
+.ub-sidebar .el-menu-item>span,
+.ub-sidebar .el-submenu__title>span{
+  line-height: 1.2;
+  white-space: pre-wrap;
+}
+
+.ub-sidebar.collapsed {
+  width: 70px;
+}
+
+.ub-sidebar .el-submenu__title .el-submenu__icon-arrow {
+ transform: rotateZ(-90deg);
+}
+
+.ub-sidebar .el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow {
+  transform: rotateZ(0deg);
+}
+
+.ub-sidebar__desktop-select{
+  padding: 12px;
+}
+
+.ub-sidebar__main-menu{
+  border-right: 0;
+  margin: 12px auto;
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.ub-sidebar__desktop-select.collapsed .el-input__suffix,
+.ub-sidebar__desktop-select.collapsed .el-input__inner{
+  display: none;
+}
+
+.ub-sidebar__desktop-select.collapsed .el-select{
+  display: block;
+}
+
+.ub-sidebar__desktop-select__button{
+  margin: 0 auto;
+  display: block;
+}
+</style>

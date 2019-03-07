@@ -5,8 +5,11 @@
     @close="cancel"
     @closed="doDestroy"
   >
-    <div class="ub-dialog__title" slot="title">
-      <i :class="`ub-dialog__info-icon el-icon-${type}`"/>
+    <div
+      slot="title"
+      class="ub-dialog__title"
+    >
+      <i :class="`ub-dialog__info-icon el-icon-${type}`" />
       <span>{{ $ut(title) }}</span>
     </div>
 
@@ -45,7 +48,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   name: 'UbDialog',
   data () {
     return {
@@ -114,15 +117,15 @@ module.exports = {
 .ub-dialog__info-icon {
   font-size: 32px;
   margin-right: 12px;
-  color: rgb(var(--grey));
+  color: rgb(var(--info));
 }
 
 .ub-dialog__info-icon.el-icon-error{
-  color: rgb(var(--red));
+  color: rgb(var(--danger));
 }
 
 .ub-dialog__info-icon.el-icon-question{
-  color: rgb(var(--yellow));
+  color: rgb(var(--warning));
 }
 
 .ub-notification__error {

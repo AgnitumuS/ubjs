@@ -541,6 +541,8 @@ UB.i18nExtend({
   'enabled': 'enabled',
 
   dateIsTooEarly: 'Дата должна быть больше {0}',
+  
+  quickAccessButtons: 'Quick access buttons', // TO DO: locale
 
   showFullScreen: 'Show full screen',
 
