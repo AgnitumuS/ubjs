@@ -1,6 +1,7 @@
+<!--suppress CssUnusedSymbol -->
 <template>
   <el-submenu
-    v-if="item.childs.length > 0"
+    v-if="item.children.length > 0"
     :index="String(item.ID)"
     popper-class="ub-sidebar__popup-menu"
     @contextmenu.native="contextDisabled ? null : contextOnTitle($event)"
@@ -14,7 +15,7 @@
       {{ item.caption }}
     </div>
     <ub-sidebar-item
-      v-for="child in item.childs"
+      v-for="child in item.children"
       :key="child.ID"
       :item="child"
       :context-show="contextShow"
