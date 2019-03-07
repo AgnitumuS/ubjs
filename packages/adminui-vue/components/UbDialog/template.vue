@@ -130,6 +130,45 @@ module.exports = {
   border-color: hsl(0, 87%, 96%);
 }
 
+.ub-notification__error__btn-group{
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+
+.ub-notification__error__btn-group i{
+  display: block;
+  margin-left: 20px;
+  font-size: 18px;
+  color: rgba(var(--blue), 0.5);
+  cursor: pointer;
+}
+
+.ub-notification__error__btn-group i:hover{
+  color: rgb(var(--blue));
+}
+
+.ub-notification__error__content{
+  --font-size: 14px;
+  --line-height: 1.3;
+  --lines-to-show: 5;
+
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-height: calc(var(--font-size) * var(--line-height) * var(--lines-to-show)); /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  -webkit-line-clamp: var(--lines-to-show);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ub-notification__error__content p{
+  display: inline
+}
+
 .ub-error-dialog__dev{
   white-space: pre;
   overflow: auto;
