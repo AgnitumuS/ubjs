@@ -141,17 +141,16 @@ module.exports = {
         }
       }
     },
-    getPromise: function (startFrom) {
-      let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(startFrom || 0).limit(this.itemCount)
-      if (this.searchValue) {
-        promise = promise.where(this.displayValue, 'like', this.searchValue)
-      }
-      return promise
+    getRepository: function (startFrom) {
+      return this.$UB.Repository(this.entityName)
+        .attrs(this.primaryColumn, this.displayValue)
+        .start(startFrom || 0)
+        .limit(this.itemCount)
+        .whereIf(this.searchValue, this.displayValue, 'like', this.searchValue)
     },
     loadNextByInput: function (query) {
       this.searchValue = query
-      let promise = this.getPromise()
-      promise.select().then((data) => {
+      this.getRepository().select().then((data) => {
         this.items = []
         this.hasData = data.length === this.itemCount
         data.forEach(item => {
@@ -161,8 +160,7 @@ module.exports = {
     },
     loadNextButtonClick () {
       let itemsLength = this.items.length || 0
-      let promise = this.getPromise(itemsLength)
-      promise.select().then((data) => {
+      this.getRepository(itemsLength).select().then((data) => {
         this.hasData = data.length === this.itemCount
         data.forEach(item => {
           this.items.push(item)
@@ -171,22 +169,23 @@ module.exports = {
     },
     setInitialItem (id) {
       this.loading = true
-      let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
-      if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
-        promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
-      }
-      id = id || this.value
-      promise.selectById(parseInt(id)).then((item) => {
-        if (item) {
-          this.initialItem = {}
-          this.initialItem[this.primaryColumn] = item[this.primaryColumn]
-          this.initialItem[this.displayValue] = item[this.displayValue] ? item[this.displayValue] : item[this.primaryColumn]
-          this.initialItem['removed'] = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
-          if (this.$refs.selector) this.$refs.selector.selectedLabel = item[this.displayValue]
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      let isSafeDelete = this.entitySchema.attributes['mi_deleteDate']
+      id = parseInt(id || this.value, 10)
+      this.$UB.Repository(this.entityName)
+        .attrs(this.primaryColumn, this.displayValue)
+        .attrsIf(isSafeDelete, 'mi_deleteDate')
+        .miscIf(isSafeDelete, {__allowSelectSafeDeleted: true})
+        .selectById(id).then((item) => {
+          if (item) {
+            this.initialItem = {}
+            this.initialItem[this.primaryColumn] = item[this.primaryColumn]
+            this.initialItem[this.displayValue] = item[this.displayValue] ? item[this.displayValue] : item[this.primaryColumn]
+            this.initialItem['removed'] = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
+            if (this.$refs.selector) this.$refs.selector.selectedLabel = item[this.displayValue]
+          }
+        }).finally(() => {
+          this.loading = false
+        })
     }
   },
   computed: {

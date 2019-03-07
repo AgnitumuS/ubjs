@@ -349,13 +349,11 @@ Ext.define('UB.ux.UBPreFilter', {
    */
   loadSettings: function (key) {
     let me = this
-    let repo = UB.Repository('ubs_filter').attrs(['ID', 'code', 'name', 'filter', 'isGlobal', 'owner', 'mi_modifyDate'])
+    return UB.Repository('ubs_filter')
+      .attrs(['ID', 'code', 'name', 'filter', 'isGlobal', 'owner', 'mi_modifyDate'])
       .where('code', '=', me.configName)
-
-    if (key) {
-      repo = repo.where('name', '=', key)
-    }
-    return repo.selectAsStore()
+      .whereIf(key, 'name', '=', key)
+      .selectAsStore()
   },
 
   /**

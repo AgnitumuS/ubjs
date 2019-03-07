@@ -311,30 +311,25 @@ Ext.define('UB.ux.form.field.UBBoxSelect', {
       ids = id.replace(/"/g, '').split(',')
     }
 
-    var repo = UB.Repository(originalReq.entity).attrs(originalReq.fieldList)
-    if (ids.length > 1) {
-      repo = repo.where('[' + this.valueField + ']', 'in', ids)
-    } else {
-      repo = repo.where('[' + this.valueField + ']', '=', ids[0])
-    }
-    if (this.enumGroupFilter) {
-      repo = repo.where('[eGroup]', '=', this.enumGroupFilter)
-    }
-    repo.selectAsStore().then(function (store) {
-      var values = []
-      store.each(function (record) {
-        values.push(record)
+    UB.Repository(originalReq.entity).attrs(originalReq.fieldList)
+      .whereIf(ids.length > 1, '[' + this.valueField + ']', 'in', ids)
+      .whereIf(ids.length === 1,'[' + this.valueField + ']', '=', ids[0])
+      .whereIf(this.enumGroupFilter, '[eGroup]', '=', this.enumGroupFilter)
+      .selectAsStore().then(function (store) {
+        var values = []
+        store.each(function (record) {
+          values.push(record)
+        })
+        if (me.store) { // in case of Save&close action store can be null here
+          me.setValue(values)
+          if (isDefault) {
+            me.resetOriginalValue()
+          }
+          if (onLoadValue) {
+            Ext.callback(onLoadValue, scope || me, [me])
+          }
+        }
       })
-      if (me.store) { // in case of Save&close action store can be null here
-        me.setValue(values)
-        if (isDefault) {
-          me.resetOriginalValue()
-        }
-        if (onLoadValue) {
-          Ext.callback(onLoadValue, scope || me, [me])
-        }
-      }
-    })
   },
 
   beforequery: function (queryEvent) {

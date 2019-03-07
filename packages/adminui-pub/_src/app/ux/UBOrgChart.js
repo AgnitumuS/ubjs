@@ -38,15 +38,12 @@ Ext.define('UB.ux.UBOrgChart', {
 
   doLoadData: function () {
     let me = this
-    let query = UB.Repository('org_unit')
+    return UB.Repository('org_unit')
       .attrs(['ID', 'parentID', 'code', 'caption', 'unitType', 'mi_treePath'])
       .orderBy('mi_treePath')
-
-    if (me.rootTreePath) { // rootElementID
-      query = query.where('[mi_treePath]', 'startWith', me.rootTreePath)
-    }
-
-    return query.selectAsObject().then(me.makeTree.bind(me))
+      .whereIf(me.rootTreePath, '[mi_treePath]', 'startWith', me.rootTreePath)
+      .selectAsObject()
+      .then(me.makeTree.bind(me))
   },
 
   treeData: [],

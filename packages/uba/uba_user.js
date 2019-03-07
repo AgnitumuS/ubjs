@@ -31,11 +31,11 @@ function checkDuplicateUser (ctxt) {
   let newName = params.name
   let ID = params.ID
   if (newName) {
-    let repo = UB.Repository('uba_user').attrs('ID').where('name', '=', newName.toLowerCase())
-    if (ID) {
-      repo = repo.where('ID', '<>', ID)
-    }
-    let store = repo.select()
+    let store = UB.Repository('uba_user').attrs('ID')
+      .where('name', '=', newName.toLowerCase())
+      .whereIf(ID,'ID', '<>', ID)
+      .select()
+
     if (!store.eof) {
       throw new UB.UBAbort('<<<Duplicate user name (may be in different case)>>>')
     }
@@ -542,9 +542,10 @@ function processRegistrationStep2 (resp, otp, login) {
       userOtpData
     })
   } else {
-        // check that login is correct
+    // check that login is correct
     Session.runAsAdmin(function () {
-      UB.Repository('uba_user').attrs(['ID']).where('name', '=', login).select(store)
+      UB.Repository('uba_user').attrs(['ID']).where('name', '=', login)
+        .select(store)
     })
 
     if (store.eof) {
