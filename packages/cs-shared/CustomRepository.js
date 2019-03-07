@@ -130,20 +130,42 @@ class CustomRepository {
  // Get attribute value for multilaguage ("isMultiLang": true in meta file) attribute other when current session language
  UB.Repository('org_employee').attrs(['ID', 'lastName_en^']).selectAsObject()
 
-   * @param {string|Array<string>} attr
+   * @param {string|Array<string>} attrs
    * @return {CustomRepository}
    */
-  attrs (attr) {
-    const L = arguments.length
+  attrs (...attrs) {
+    const L = attrs.length
     for (let i = 0; i < L; i++) {
-      let attrI = arguments[i]
-      if (Array.isArray(attrI)) {
-        this.fieldList = this.fieldList.concat(attrI)
+      if (Array.isArray(attrs[i])) {
+        this.fieldList = this.fieldList.concat(attrs[i])
       } else {
-        this.fieldList.push(attrI)
+        this.fieldList.push(attrs[i])
       }
     }
     return this
+  }
+
+  /**
+   * Helper method for {@link class:CustomRepository#attrs CustomRepository.attrs}.
+   * Calls `attrs` in case addingCondition is <a href=https://developer.mozilla.org/en-US/docs/Glossary/truthy>truthy</a>
+   *
+   * @example
+
+   let isPessimisticLock = !!UB.connection.domain.get('uba_user').attributes.mi_modifyDate
+   // with whereIf
+   let repo = UB.Repository('uba_user').attrs('ID').attrsIf(isPessimisticLock, 'mi_modifyDate')
+   //without whereIf
+   let repo = UB.Repository('uba_user').attrs('ID')
+   if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')
+
+   * @param {*} addingCondition Attributes will be added only in case addingCondition is truthy
+   * @param {string|Array<string>} attrs
+   * @return {CustomRepository}attrs
+   */
+  attrsIf (addingCondition, ...attrs) {
+    return addingCondition
+      ? this.attrs.apply(this, attrs)
+      : this
   }
 
   /**
@@ -181,7 +203,9 @@ UB.Repository('my_entity').attrs('id')
    * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
    * @param {*} [values] Condition value. If `undefined` values not passed to ubql
    * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
-   *   If not passed where will generate unique clause named 'c1', 'c2', ......
+   *   If not passed unique clause name will be generated ('_1', '_2', ..).
+   *   In case a condition with the same name exists, it will be overwritten.
+   *
    * @return {CustomRepository}
    */
   where (expression, condition, values, clauseName) {
@@ -261,6 +285,34 @@ UB.Repository('my_entity').attrs('id')
     }
     this.whereList[clauseName] = whereItem
     return this
+  }
+
+  /**
+   * Helper method for {@link class:CustomRepository#where CustomRepository.where}.
+   * Calls `where` in case addingCondition is <a href=https://developer.mozilla.org/en-US/docs/Glossary/truthy>truthy</a>
+   *
+   * @example
+
+   let filterString = 'foundAllLikeThis' // or may be empty string
+   // with whereIf
+   let repo = UB.Repository('my_entity').attrs('ID').whereIf(filterString, 'myAttr', 'like', filterString)
+
+   //without whereIf
+   let repo = UB.Repository('my_entity').attrs('ID')
+   if (filterString) repo = repo.where('myAttr', 'like', filterString)
+
+   * @param {*} addingCondition Where expression will be added only in case addingCondition is truthy
+   * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
+   * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
+   * @param {*} [values] Condition value. If `undefined` values not passed to ubql
+   * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
+   *   If not passed where will generate unique clause named 'c1', 'c2', ......
+   * @return {CustomRepository}
+   */
+  whereIf (addingCondition, expression, condition, values, clauseName) {
+    return addingCondition
+      ? this.where(expression, condition, values, clauseName)
+      : this
   }
 
   /**
@@ -669,6 +721,19 @@ inst.run('select', repo.ubql())
    * @return {CustomRepository}
    */
   misc (flags) {
+    _.assign(this.__misc, flags)
+    return this
+  }
+
+  /**
+   * Helper method for {@link class:CustomRepository#misc CustomRepository.misc}.
+   * Calls `misc` in case addingCondition is <a href=https://developer.mozilla.org/en-US/docs/Glossary/truthy>truthy</a>
+   *
+   * @param {*} addingCondition flags will be applied only in case addingCondition is truthy
+   * @param {Object} flags
+   * @return {CustomRepository}
+   */
+  miscIf (addingCondition, flags) {
     _.assign(this.__misc, flags)
     return this
   }
