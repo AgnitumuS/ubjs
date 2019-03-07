@@ -40,12 +40,32 @@ Vue.use(ElementUI, {
 
 const replaceDefaultTabbar = require('./components/UbTabbar/init')
 const replaceDefaultRelogin = require('./components/UbRelogin/init')
-const replaceDefaultDialogs = require('./components/UbDialog/init')
+const { replaceDefaultDialogs, notifyComponent } = require('./components/UbDialog/init')
+const addSidebar = require('./components/UbSidebar/init')
+
+Vue.use(notifyComponent)
 
 if (window.$App) {
+  $App.on('buildMainMenu', items => {
+    items.splice(0, 2) // remove top panel ExtJS hamburher menu button
+  })
   window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)
   window.$App.on('applicationReady', replaceDefaultDialogs)
+  if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
+    window.$App.on('applicationReady', addSidebar)
+  }
+  /* 
+    Example:
+
+    window.$App.on('applicationReady', () => {
+      const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
+      $App.fireEvent('portal:sidebar:appendSlot', SidebarSlotExample, { some attrs })
+
+      const TabbarSlotExample = require('./samples/TabbarSlotExample.vue').default
+      $App.fireEvent('portal:tabbar:appendSlot', TabbarSlotExample, { some attrs })
+    })
+  */
 }
 
 const entityEditor = require('./components/UbEntityEditComponent.vue').default
@@ -74,7 +94,9 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
       closable: true
     })
     let vm = new Vue({
-      template: `<auto-form-component :entityName="entityName" :instanceID="instanceID" :currentTabId="currentTabId" :externalData="externalData"></auto-form-component>`,
+      components: {
+        'auto-form-component': autoFormComponent
+      },
       data: function () {
         return {
           entityName: params.entity,
@@ -83,9 +105,7 @@ if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
           externalData: params.parentContext
         }
       },
-      components: {
-        'auto-form-component': autoFormComponent
-      }
+      template: `<auto-form-component :entityName="entityName" :instanceID="instanceID" :currentTabId="currentTabId" :externalData="externalData"></auto-form-component>`
     })
     vm.$mount(`#${params.tabId}-outerCt`)
     tab.on('close', function () {

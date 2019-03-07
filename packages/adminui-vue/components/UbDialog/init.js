@@ -2,7 +2,7 @@ const UbDialog = require('./index')
 const { Notification } = require('element-ui')
 const UB = require('@unitybase/ub-pub')
 
-module.exports = function () {
+const replaceDefaultDialogs = () => {
   window.Ext.Msg.confirm = async ({ title, msg, fn: callback, buttonText }) => {
     const answer = await UbDialog({
       title,
@@ -166,4 +166,13 @@ function formatLinks (htmlStr) {
   }
 
   return temporaryEl.innerHTML
+}
+
+module.exports = {
+  replaceDefaultDialogs,
+  notifyComponent: {
+    install (Vue) {
+      Vue.prototype.$notify = UbDialog
+    }
+  }
 }

@@ -538,6 +538,8 @@ UB.i18nExtend({
   'enabled': 'ჩართულია',
 
   dateIsTooEarly: 'თარიღი უნდა იყოს მეტი {0}',
+  
+  quickAccessButtons: 'Quick access buttons', // TO DO: locale
 
   showFullScreen: 'Show full screen',
 

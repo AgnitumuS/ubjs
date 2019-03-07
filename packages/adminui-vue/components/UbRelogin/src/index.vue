@@ -36,7 +36,7 @@ const UbAuthCert2 = require('./UbAuthCert2.vue').default
 const UbAuthUb = require('./UbAuthUb.vue').default
 const UbAuthNegotiate = require('./UbAuthNegotiate.vue').default
 
-module.exports = {
+export default {
   name: 'UbRelogin',
 
   components: {

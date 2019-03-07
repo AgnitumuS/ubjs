@@ -1,5 +1,11 @@
 <template>
   <div class="ub-tabbar">
+    <i
+      icon="fa fa-bars"
+      class="fa fa-bars ub-tabbar__collapse-button"
+      @click="$UB.core.UBApp.fireEvent('portal:sidebar:collapse')"
+    />
+
     <div
       ref="tabWrap"
       class="ub-tabbar__tabs-wrap"
@@ -29,14 +35,14 @@
           />
         </transition-group>
       </div>
-      <div
+      <i
         v-show="sliderPrevVisible"
-        class="ub-tab-slider__ctrl ub-tab-slider__ctrl__prev"
+        class="ub-tab-slider__ctrl el-icon-arrow-left ub-tab-slider__ctrl__prev"
         @click="navigate(1)"
       />
-      <div
+      <i
         v-show="sliderNextVisible"
-        class="ub-tab-slider__ctrl ub-tab-slider__ctrl__next"
+        class="ub-tab-slider__ctrl el-icon-arrow-right ub-tab-slider__ctrl__next"
         @click="navigate(-1)"
       />
     </div>
@@ -48,10 +54,13 @@
       popper-class="ub-tabbar__overflow__tray"
       :class="{'hidden': this.visibleWidth >= this.tabsWidth}"
     >
-      <div
+      <el-button
         slot="reference"
-        class="ub-tabbar__overflow__icon"
+        icon="el-icon-more"
+        circle
+        class="ub-tabbar__button"
       />
+
       <div class="ub-tabbar__overflow__tabs">
         <ub-tab
           v-for="(tab, index) in tabs"
@@ -65,21 +74,25 @@
       </div>
     </el-popover>
 
-    <ub-tabbar-context
+    <slot />
+
+    <ub-context
       ref="context"
-      @close="selectContext"
+      :items="contextItems"
+      click-outside-targets=".ub-tabbar__tab"
+      @select="selectContext"
     />
   </div>
 </template>
 
 <script>
 const UbTab = require('./UbTab.vue').default
-const UbTabbarContext = require('./UbTabbarContext.vue').default
+const UbContext = require('../../controls/UbContext.vue').default
 
 export default {
   name: 'UbTabbar',
 
-  components: {UbTab, UbTabbarContext},
+  components: { UbTab, UbContext },
 
   data () {
     return {
@@ -116,7 +129,20 @@ export default {
        * pending, it could be used to "setTimeout" changing offset, instead of immediately do it, to allow for
        * making measurements first.
        */
-      activeTabPending: false
+      activeTabPending: false,
+
+      contextItems: [{
+        label: 'close',
+        action: 'close'
+      }, {
+        label: 'closeOther',
+        action: 'closeOther'
+      }, {
+        label: '-'
+      }, {
+        label: 'closeAll',
+        action: 'closeAll'
+      }]
     }
   },
 
@@ -143,6 +169,9 @@ export default {
 
   created () {
     this.subscribeCentralPanelEvents()
+    $App.on('portal:tabbar:appendSlot', (Component, bindings) => {
+      this.$slots.default = this.$createElement(Component, bindings)
+    })
   },
 
   mounted () {
@@ -171,7 +200,7 @@ export default {
       const points = []
       if (this.$refs.tabs) {
         for (const tab of this.$refs.tabs) {
-          const {offsetLeft} = tab.$el
+          const { offsetLeft } = tab.$el
           points.push(offsetLeft)
         }
       }
@@ -183,7 +212,7 @@ export default {
       this.positionActiveTab()
     },
 
-    startDrag ({clientX}) {
+    startDrag ({ clientX }) {
       window.addEventListener('mousemove', this.doDrag)
       this.dragStart = clientX
       this.offsetStart = this.offset
@@ -192,7 +221,7 @@ export default {
       setTimeout(() => { this.disabledTabClick = true }, 200)
     },
 
-    doDrag ({clientX}) {
+    doDrag ({ clientX }) {
       this.offset = Math.min(this.offsetStart + clientX - this.dragStart, 0)
     },
 
@@ -339,7 +368,7 @@ export default {
     /**
      * Set measurements of the DOM.
      */
-    setMeasurements ({visibleWidth, tabsWidth, points}) {
+    setMeasurements ({ visibleWidth, tabsWidth, points }) {
       this.visibleWidth = visibleWidth
       this.tabsWidth = tabsWidth
       for (let i = 0; i < points.length; i++) {
@@ -368,7 +397,7 @@ export default {
         title: tab.title,
         point: null
       })
-      
+
       this.measurementPending = true
     },
 
@@ -391,7 +420,7 @@ export default {
         },
 
         remove (sender, tab) {
-          const {tabs, current} = this
+          const { tabs, current } = this
           const index = tabs.findIndex(t => t.id === tab.id)
           if (index !== -1) {
             /* Remove a tab by its Id */
@@ -421,7 +450,7 @@ export default {
   display:flex;
   justify-content: space-between;
   background: #fff;
-  border-bottom: 1px solid rgba(var(--blue), 0.12);
+  border-bottom: 1px solid rgba(var(--bg), 0.12);
 }
 
 .ub-tab-slider__ctrl{
@@ -440,19 +469,6 @@ export default {
   background: linear-gradient(to left, transparent, #fefefe 45%);
   left: 0;
   justify-content: flex-start;
-}
-
-.ub-tab-slider__ctrl__prev:after,
-.ub-tab-slider__ctrl__next:after{
-  color: rgba(var(--blue), 1);
-  font-size: 20px;
-}
-
-.ub-tab-slider__ctrl__prev:after{
-  content: '<';
-}
-.ub-tab-slider__ctrl__next:after{
-  content: '>';
 }
 
 .ub-tab-slider__ctrl__next{
@@ -490,50 +506,8 @@ export default {
   visibility: collapse
 }
 
-.ub-tabbar__overflow__icon{
-  border: solid 1px rgba(var(--dark-blue), 0.54);
-  transition: .1s;
-  transition-property: background-color, border-color;
-  border-radius: 16px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top:0;
-  left:0;
-  z-index: 10;
-  cursor: pointer;
-}
-
-.ub-tabbar__overflow__icon:after{
-    content: '...';
-    color: rgba(var(--blue), 1);
-    font-size: 24px;
-    position: absolute;
-    top: -6px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    pointer-events: none;
-}
-
-.ub-tabbar__overflow__icon:hover{
-  background-color: rgba(var(--green), 0.16);
-  border-color: rgba(var(--dark-blue), 0.54);
-}
-
-.ub-tabbar__overflow__icon.active{
-  background-color: rgba(var(--blue), 1);
-  border-color: rgba(var(--blue), 1);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.ub-tabbar__overflow__icon.active:after{
-  color: rgba(252, 252, 249, 0.87)
-}
-
 .ub-tabbar__overflow__tray{
-  background-color: rgba(var(--blue), 1);
+  background-color: rgba(var(--bg), 1);
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24);
   padding: 8px 0;
   border: none;
@@ -541,7 +515,7 @@ export default {
 }
 
 .ub-tabbar__overflow__tray[x-placement^=bottom] .popper__arrow::after{
-  border-bottom-color: rgba(var(--blue), 1);
+  border-bottom-color: rgba(var(--bg), 1);
 }
 
 .ub-tabbar__overflow__tabs{
@@ -572,5 +546,20 @@ export default {
 
 .ub-tab-slider__transition-group{
   display: flex
+}
+
+.ub-tabbar__collapse-button{
+  margin-right: 12px;
+  font-size: 24px;
+  width: 24px;
+  color: rgba(var(--info), 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ub-tabbar__collapse-button:hover{
+  color: rgb(var(--info));
 }
 </style>

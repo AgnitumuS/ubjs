@@ -544,11 +544,11 @@ UB.i18nExtend({
 
   dateIsTooEarly: 'Дата должна быть больше {0}',
 
-  showFullScreen: 'Show full screen',
+  quickAccessButtons: 'Quick access buttons', // TO DO: locale
 
   // !!!
-    // Do not change this last item.
-    // Put your new items before EOF for SVN auto merge reason.
+  // Do not change this last item.
+  // Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 })
 

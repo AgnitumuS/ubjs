@@ -1,7 +1,7 @@
 const Vue = require('vue')
 const UbDialogTemplate = require('./template.vue').default
 
-module.exports = ({title, msg, buttonText, type = 'info', isDevInfo = false}) => {
+module.exports = ({ title, msg, buttonText, type = 'info', isDevInfo = false }) => {
   const UbDialog = Vue.extend(UbDialogTemplate)
   let resolveConfirm
   const promise = new Promise(resolve => {

@@ -6,15 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.2]
 ### Added
- - buttons `show error on full screen` and `show info for developer` added to Error notification popup
+ - `sidebar` component
+ - `$notify` method to Vue.prototype
+- buttons `show error on full screen` and `show info for developer` added to Error notification popup
 
 ### Changed
  - `vue` forms definition extension changed from `js` to `vue`. Existed `vue` forms should be renamed manually 
     `git mv my_entity-fm.js my_entity-fm.vue`
  - due to modifications in vue runtime parser all imports of `vue` files must be done as
  `const cmpName = require('cmpName.vue').default`
- - `Notification error` - text height limited to 5 rows
-   
+ - renamed CSS variables according twitter-bootstrap
+
 ### Fixed
  - ub-auth page will handle pressing of Enter key in UB authorization scheme user name field
  - UbSelectEntity vue component:

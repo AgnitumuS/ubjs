@@ -543,6 +543,8 @@ UB.i18nExtend({
   'enabled': 'enabled',
 
   dateIsTooEarly: 'Дата должна быть больше {0}',
+  
+  quickAccessButtons: 'Кнопки быстрого вызова',
 
   showFullScreen: 'Показать на весь экран',
 
