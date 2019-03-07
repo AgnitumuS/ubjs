@@ -1,4 +1,3 @@
-/* global BOUNDLED_BY_WEBPACK */
 const Vue = require('vue')
 
 const UbSidebar = require('./src/index.vue').default

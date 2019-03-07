@@ -78,20 +78,16 @@ export default {
   components: { UbSidebarItem, UbContext },
 
   data () {
+    const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed') === 'true'
+    const isCollapsed = window.innerWidth < 1024 ? true : savedCollapse
     return {
       shortcuts: [],
       desktops: [],
       selectedDesktop: null,
-      isCollapsed: false,
+      isCollapsed,
       sidebarWidth: null,
       SIDEBAR_FULL_WIDTH: 300,
       SIDEBAR_COLLAPSED_WIDTH: 76
-    }
-  },
-
-  watch: {
-    isCollapsed (value) {
-      this.setLayoutMargin(value ? this.SIDEBAR_COLLAPSED_WIDTH : this.SIDEBAR_FULL_WIDTH)
     }
   },
 
@@ -131,6 +127,30 @@ export default {
     }
   },
 
+  watch: {
+    isCollapsed (value) {
+      window.localStorage.setItem('portal:sidebar:isCollapsed', value)
+      this.setLayoutMargin(value ? this.SIDEBAR_COLLAPSED_WIDTH : this.SIDEBAR_FULL_WIDTH)
+    }
+  },
+
+  mounted () {
+    this.loadDesktops()
+    this.loadShortcuts()
+    $App.on({
+      'portal:sidebar:appendSlot': (Component, bindings) => {
+        this.$slots.default = this.$createElement(Component, bindings)
+      },
+
+      'portal:sidebar:collapse': () => {
+        this.isCollapsed = !this.isCollapsed
+      }
+    })
+
+    const width = this.isCollapsed ? this.SIDEBAR_COLLAPSED_WIDTH : this.SIDEBAR_FULL_WIDTH
+    this.setLayoutMargin(width)
+  },
+
   methods: {
     async loadDesktops () {
       const desktops = await this.$UB.connection.Repository('ubm_desktop')
@@ -138,37 +158,33 @@ export default {
         .orderBy('caption')
         .select()
 
-      const defaultDesktop = desktops.filter(d => d.isDefault)
       const userLogin = UB.connection.userData().login
-      const localStorageDesktop = +window.localStorage.getItem(`${userLogin}:desktop`)
-
-      if (localStorageDesktop) {
-        this.selectedDesktop = localStorageDesktop
-      } else if (defaultDesktop.length === 1) {
-        this.selectedDesktop = defaultDesktop[0].ID
-      } else {
-        this.selectedDesktop = desktops[0].ID
+      let preferredDesktop = +window.localStorage.getItem(`${userLogin}:desktop`)
+      // desktop can be deleted
+      if (!preferredDesktop || !desktops.find(i => i.ID === preferredDesktop)) {
+        let defaultDesktop = desktops.find(d => d.isDefault)
+        preferredDesktop = defaultDesktop ? defaultDesktop.ID : null
       }
+      if (!preferredDesktop) preferredDesktop = desktops.length && desktops[0].ID
+      if (preferredDesktop) this.selectedDesktop = preferredDesktop
 
       this.desktops = desktops
     },
 
     async loadShortcuts () {
-      const shortcuts = await this.$UB.connection.Repository('ubm_navshortcut')
+      this.shortcuts = await this.$UB.connection.Repository('ubm_navshortcut')
         .attrs('ID', 'parentID', 'caption', 'desktopID', 'iconCls', 'inWindow', 'isCollapsed', 'displayOrder', 'isFolder')
         .orderBy('desktopID').orderBy('parentID')
         .orderBy('displayOrder').orderBy('caption')
         .select()
-
-      this.shortcuts = shortcuts
     },
 
     buildInheritance (items, ID = null) {
-      const childs = items.filter(a => a.parentID === ID)
+      const children = items.filter(a => a.parentID === ID)
 
-      return childs.map(a => ({
+      return children.map(a => ({
         ...a,
-        childs: this.buildInheritance(items, a.ID)
+        children: this.buildInheritance(items, a.ID)
       }))
     },
 
@@ -244,21 +260,6 @@ export default {
     setActiveFolder (ID, arr) {
       localStorage.setItem('portal:sidebar:activeShortcutFolder', JSON.stringify(arr))
     }
-  },
-
-  mounted () {
-    this.loadDesktops()
-    this.loadShortcuts()
-    $App.on({
-      'portal:sidebar:appendSlot': (Component, bindings) => {
-        this.$slots.default = this.$createElement(Component, bindings)
-      },
-
-      'portal:sidebar:collapse': () => {
-        this.isCollapsed = !this.isCollapsed
-      }
-    })
-    this.setLayoutMargin(this.SIDEBAR_FULL_WIDTH)
   }
 }
 </script>

@@ -8,21 +8,23 @@
       left: x + 'px'
     }"
   >
-    <div
-      v-for="item in items"
-      v-if="item.label !== '-'"
-      :key="item.action"
-      class="ub-context-menu__item"
-      :class="[item.disabled && 'disabled']"
-      @click="close(item)"
-    >
-      <i :class="item.iconCls" />
-      <span>{{ $ut(item.label) }}</span>
-    </div>
-    <div
-      v-else
-      class="ub-context-menu__divider"
-    />
+    <template v-for="item in items">
+      <div
+        v-if="item.label !== '-'"
+        :key="item.action"
+        class="ub-context-menu__item"
+        :class="[item.disabled && 'disabled']"
+        @click="close(item)"
+      >
+        <i :class="item.iconCls" />
+        <span>{{ $ut(item.label) }}</span>
+      </div>
+      <div
+        v-else
+        :key="item.action"
+        class="ub-context-menu__divider"
+      />
+    </template>
   </div>
 </template>
 
@@ -44,6 +46,11 @@ export default {
       y: 0,
       targetData: null
     }
+  },
+
+  mounted () {
+    window.addEventListener('click', this.clickOutside)
+    window.addEventListener('contextmenu', this.clickOutside)
   },
 
   methods: {
@@ -76,11 +83,6 @@ export default {
         }
       })
     }
-  },
-
-  mounted () {
-    window.addEventListener('click', this.clickOutside)
-    window.addEventListener('contextmenu', this.clickOutside)
   }
 }
 </script>
