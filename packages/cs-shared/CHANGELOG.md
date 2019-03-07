@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - new method asPlainJSON() for UBEntity & UBEntityAttribute - return a 
  JSON representation WITHOUT properties which have default values.
  Very close to data stored in meta file
+ - helper `Repository.attrsIf()`
+    ```javascript
+    let isPessimisticLock = !!UB.connection.domain.get('uba_user').attributes.mi_modifyDate
+    // with whereIf
+    let repo = UB.Repository('uba_user').attrs('ID').attrsIf(isPessimisticLock, 'mi_modifyDate')
+    //without whereIf
+    let repo = UB.Repository('uba_user').attrs('ID')
+    if (isPessimisticLock) repo = repo.attrs('mi_modifyDate')  
+    ```
+ - helper `Repository.whereIf()`
+    ```javascript
+    let filterString = 'foundAllLikeThis' // or may be empty string
+    // with whereIf
+    let repo = UB.Repository('my_entity').attrs('ID')
+      .whereIf(filterString, 'myAttr', 'like', filterString)
+    
+    //without whereIf
+    let repo = UB.Repository('my_entity').attrs('ID')
+    if (filterString) repo = repo.where('myAttr', 'like', filterString)
+    ```
+ - helper `Repository.miscIf()`  
  
 ### Changed
  - remove obsolete UBEntity & UBEntityAttribute `asJSON` method

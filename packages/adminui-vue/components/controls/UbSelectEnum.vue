@@ -73,15 +73,13 @@ module.exports = {
     },
     initData () {
       this.loading = true
-      let promise = this.$UB.Repository(this.entityName)
+      this.$UB.Repository(this.entityName)
         .attrs(this.primaryColumn, this.displayValue, 'eGroup')
-
-      if (this.eGroup) promise = promise.where('eGroup', '=', this.eGroup)
-
-      promise.select().then((data) => {
-        this.items = data
-        this.loading = false
-      })
+        .whereIf(this.eGroup, 'eGroup', '=', this.eGroup)
+        .select().then((data) => {
+          this.items = data
+          this.loading = false
+        })
     }
   },
   destroyed () {

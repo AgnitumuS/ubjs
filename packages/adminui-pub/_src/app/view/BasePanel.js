@@ -3677,7 +3677,7 @@ Ext.define('UB.view.BasePanel', {
             .where('[entity]', '=', me.entityName)
             .where('[entityinfo_id]', '=', me.instanceID)
             .orderByDesc('actionTime')
-            .ubRequest()
+            .ubql()
         ]
       },
       cmpInitConfig: {

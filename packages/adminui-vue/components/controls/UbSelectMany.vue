@@ -45,18 +45,19 @@ module.exports = {
           this.setResultData()
         }
         this.loading = true
-        let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
-        if (Object.keys(this.entitySchema.mixins.mStorage || {}).includes('safeDelete') && this.entitySchema.mixins.mStorage.safeDelete === true) {
-          promise = promise.attrs('mi_deleteDate').misc({__allowSelectSafeDeleted: true})
-        }
-        promise.where(this.primaryColumn, 'in', this.resultData).select().then((data) => {
-          this.initialItem = data
-          this.initialItem.forEach((item) => {
-            item.removed = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
+        let isSafeDelete = this.entitySchema.attributes['mi_deleteDate']
+        this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
+          .attrsIf(isSafeDelete, 'mi_deleteDate')
+          .miscIf(isSafeDelete, {__allowSelectSafeDeleted: true})
+          .where(this.primaryColumn, 'in', this.resultData)
+          .select().then((data) => {
+            this.initialItem = data
+            this.initialItem.forEach((item) => {
+              item.removed = !!item['mi_deleteDate'] && item['mi_deleteDate'] < new Date()
+            })
+          }).finally(() => {
+            this.loading = false
           })
-        }).finally(() => {
-          this.loading = false
-        })
       }
     },
     onChange (data) {
@@ -81,32 +82,32 @@ module.exports = {
         }
       }
     },
-    getPromise: function (startFrom) {
-      let promise = this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue).start(startFrom || 0).limit(this.itemCount)
-      if (this.$refs.selector.query) {
-        promise = promise.where(this.displayValue, 'like', this.$refs.selector.query)
-      }
-      return promise
+    getRepository: function (startFrom) {
+      return this.$UB.Repository(this.entityName)
+        .attrs(this.primaryColumn, this.displayValue)
+        .start(startFrom || 0)
+        .limit(this.itemCount)
+        .whereIf(this.$refs.selector.query, this.displayValue, 'like', this.$refs.selector.query)
     },
     loadNextByInput: function () {
-      let promise = this.getPromise()
-      promise.select().then(data => {
-        this.items = []
-        this.hasData = data.length === this.itemCount
-        data.forEach(item => {
-          this.items.push(item)
+      this.getRepository()
+        .select().then(data => {
+          this.items = []
+          this.hasData = data.length === this.itemCount
+          data.forEach(item => {
+            this.items.push(item)
+          })
         })
-      })
     },
     loadNextButtonClick () {
       let itemsLength = this.items.length || 0
-      let promise = this.getPromise(itemsLength)
-      promise.select().then(data => {
-        this.hasData = data.length === this.itemCount
-        data.forEach(item => {
-          this.items.push(item)
+      this.getRepository(itemsLength)
+        .select().then(data => {
+          this.hasData = data.length === this.itemCount
+          data.forEach(item => {
+            this.items.push(item)
+          })
         })
-      })
     },
     setResultData () {
       this.resultData = this.value ? this.value.trim().split(',').map(item => {
