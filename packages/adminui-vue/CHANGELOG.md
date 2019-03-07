@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    
 ### Fixed
  - ub-auth page will handle pressing of Enter key in UB authorization scheme user name field
+ - UbSelectEntity vue component:
+    - added shortcuts for popup actions
+    - "blink" area around popup actions button is removed
+ - UBToolbarComponent.vue - "Save" and "Save and close" color changed to btn-primary (green)
  
 ## [1.3.1]
 ### Changed

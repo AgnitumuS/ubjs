@@ -2,8 +2,11 @@
   <div class="ub-toolbar">
     <div style="display: flex">
       <el-tooltip v-for="button in buttons" :key="button.id" :content="button.tooltip" placement="bottom" :open-delay="300">
-        <el-button :disabled="button.disabled" type="text" size="large"
+        <el-button :disabled="button.disabled"
+                   size="large"
+                   type="text"
                    class="ub-toolbar__button"
+                   :style="{color : button.disabled ? '#c0c4cc' : button.color}"
                    @click="button.action">
           <i :class="button.icon"></i>
         </el-button>
@@ -323,12 +326,14 @@ module.exports = {
       return [{
         id: 1,
         disabled: !this.saveEnabled,
+        color: '#5daf34',
         icon: 'fa fa-share-square-o',
         action: _ => { this.$emit('saveAndClose') },
         tooltip: this.saveAndCloseCaption
       }, {
         id: 2,
         disabled: !this.saveEnabled,
+        color: '#5daf34',
         icon: 'fa fa-save',
         action: _ => { this.$emit('saveAndReload') },
         tooltip: this.saveAndReloadCaption

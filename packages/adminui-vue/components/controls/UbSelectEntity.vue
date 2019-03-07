@@ -1,14 +1,20 @@
 <template>
   <div style="position: relative">
     <el-tooltip :content="deletedCaption" placement="left" :disabled="!rowIsDeleted" :open-delay="200">
-      <el-select ref="selector" v-model="resultData"
+      <el-select :id="`ub-selector${this._uid}`" ref="selector" v-model="resultData"
                  v-loading="loading" reserve-keyword filterable remote
                  :disabled="loading || disabled"
                  :class="`ub-select-entity${this._uid}`"
                  style="width: 100%"
                  @change="onChange"
+                 @focus="focused = true"
+                 @blur="focused = false"
+                 @focus.native="onFocus"
                  @click.native="onFocus"
-                 @input.native="onInput">
+                 @input.native="onInput"
+                 @keyup.native.alt.69="editItem"
+                 @keyup.native.exact.120="showDictionary"
+                 @keyup.native.alt.8="clear">
         <i v-if="rowIsDeleted" slot="prefix" class="fa fa-ban el-input__icon"></i>
         <template>
           <el-option v-for="item in itemsToDisplay"
@@ -23,10 +29,16 @@
         </template>
       </el-select>
     </el-tooltip>
-    <div class="ub-select-entity__menu-button">
+    <div class="ub-select-entity__menu-button" style="pointer-events: none;">
+      <i
+        :style="{'transform':focused ? 'rotateZ(0deg)':'rotateZ(180deg)'}"
+        style="transition: transform .3s; display: flex; height: 30px;align-items: center;pointer-events: none;"
+        class="el-icon-arrow-up"
+      />
       <el-popover v-if="rowActions && rowActions.length > 0"
                   v-model="popoverVisible"
                   placement="bottom-end"
+                  style="pointer-events: auto;"
                   :disabled="disabled"
                   trigger="click">
         <el-table :data="rowActions" :show-header="false" @row-click="onActionClick">
@@ -40,7 +52,11 @@
             </template>
           </el-table-column>
         </el-table>
-        <i ref="menuButton" slot="reference" style="min-width: 25px" class="el-icon-menu"></i>
+        <div ref="menuButton" slot="reference" style="width: 30px;">
+          <div class="ub-icon-menu">
+            <i class="el-icon-menu"></i>
+          </div>
+        </div>
       </el-popover>
     </div>
   </div>
@@ -75,6 +91,7 @@ module.exports = {
   },
   data () {
     return {
+      focused: false,
       primaryColumn: 'ID',
       waitingNewEntity: false,
       buttonMoreCaption: this.$ut('more'),
@@ -105,6 +122,44 @@ module.exports = {
     }
   },
   methods: {
+    showDictionary () {
+      this.$UB.core.UBApp.doCommand({
+        entity: this.entityName,
+        cmdType: this.$UB.core.UBCommand.commandType.showList,
+        description: this.entitySchema.getEntityDescription(),
+        isModal: true,
+        sender: this,
+        selectedInstanceID: this.resultData,
+        onItemSelected: ({data}) => {
+          this.setInitialItem(data[this.primaryColumn])
+          this.resultData = data[this.primaryColumn]
+          this.$refs.selector.emitChange(data[this.primaryColumn])
+        },
+        cmdData: {
+          params: [{
+            entity: this.entityName,
+            method: 'select',
+            fieldList: '*'
+          }]
+        }
+      })
+    },
+    editItem () {
+      if (this.resultData) {
+        this.$UB.core.UBApp.doCommand({
+          cmdType: this.$UB.core.UBCommand.commandType.showForm,
+          entity: this.entityName,
+          isModal: true,
+          instanceID: this.resultData
+        })
+      }
+    },
+    clear () {
+      if (this.resultData) {
+        this.resultData = null
+        this.$refs.selector.emitChange(null)
+      }
+    },
     onInput () {
       if (!event.target.value) {
         this.resultData = null
@@ -127,6 +182,7 @@ module.exports = {
       this.$emit('input', data)
     },
     onFocus () {
+      this.focused = this.$refs.selector.visible
       if (this.items.length === 0) {
         this.loadNextButtonClick()
       }
@@ -198,47 +254,19 @@ module.exports = {
     defaultActions () {
       return [{
         name: 'ShowLookup',
-        caption: this.$ut('selectFromDictionary'),
+        caption: this.$ut('selectFromDictionary') + ' (F9)',
         icon: 'fa fa-table',
         handler: {
-          fn () {
-            this.$UB.core.UBApp.doCommand({
-              entity: this.entityName,
-              cmdType: this.$UB.core.UBCommand.commandType.showList,
-              description: this.entitySchema.getEntityDescription(),
-              isModal: true,
-              sender: this,
-              selectedInstanceID: this.resultData,
-              onItemSelected: ({data}) => {
-                this.setInitialItem(data[this.primaryColumn])
-                this.resultData = data[this.primaryColumn]
-                this.$refs.selector.emitChange(data[this.primaryColumn])
-              },
-              cmdData: {
-                params: [{
-                  entity: this.entityName,
-                  method: 'select',
-                  fieldList: '*'
-                }]
-              }
-            })
-          }
+          fn: this.showDictionary
         }
       },
       {
         name: 'Edit',
-        caption: this.$ut('editSelItem'),
+        caption: this.$ut('editSelItem') + ' (Alt+E)',
         icon: 'fa fa-pencil-square-o',
         enabled: !!this.resultData,
         handler: {
-          fn () {
-            this.$UB.core.UBApp.doCommand({
-              cmdType: this.$UB.core.UBCommand.commandType.showForm,
-              entity: this.entityName,
-              isModal: true,
-              instanceID: this.resultData
-            })
-          }
+          fn: this.editItem
         }
       },
       {
@@ -258,14 +286,11 @@ module.exports = {
       },
       {
         name: 'Clear',
-        caption: this.$ut('clearSelection'),
+        caption: this.$ut('clearSelection') + ' (Alt+BackSpace)',
         icon: 'fa fa-eraser',
         enabled: !!this.resultData,
         handler: {
-          fn () {
-            this.resultData = null
-            this.$refs.selector.emitChange(null)
-          }
+          fn: this.clear
         }
       }]
     },
@@ -308,6 +333,12 @@ module.exports = {
     if (this.value) {
       this.setInitialItem()
     }
+
+    this.$refs.selector.$el.addEventListener('keydown', function (e) {
+      if (e.keyCode === 69 && e.altKey) {
+        e.preventDefault()
+      }
+    }, false)
   }
 }
 </script>
