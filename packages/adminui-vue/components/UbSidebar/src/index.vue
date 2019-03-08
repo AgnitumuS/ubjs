@@ -86,7 +86,7 @@ export default {
       selectedDesktop: null,
       isCollapsed,
       sidebarWidth: null,
-      SIDEBAR_FULL_WIDTH: 300,
+      SIDEBAR_FULL_WIDTH: 240,
       SIDEBAR_COLLAPSED_WIDTH: 76
     }
   },
