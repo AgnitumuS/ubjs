@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 
-const {FileBasedStoreLoader, GC_KEYS} = require('@unitybase/base')
+const { FileBasedStoreLoader, GC_KEYS } = require('@unitybase/base')
 const csShared = require('@unitybase/cs-shared')
 const UBDomain = csShared.UBDomain
 const LocalDataStore = csShared.LocalDataStore
@@ -191,10 +191,10 @@ function validateInput (aID, formCode, formEntity) {
   ) {
     throw new Error(`<<<Invalid form code format. Must be "${formEntity}-FormVersion" where FormVersion is any character string>>>`)
   }
-  let theSameCode = LocalDataStore.doFilterAndSort(resultDataCache, {whereList: {
-    byID: {expression: 'ID', condition: 'notEqual', values: {ID: aID}},
-    byCode: {expression: 'code', condition: 'equal', values: {code: formCode}}
-  }})
+  let theSameCode = LocalDataStore.doFilterAndSort(resultDataCache, { whereList: {
+    byID: { expression: 'ID', condition: 'notEqual', values: { ID: aID } },
+    byCode: { expression: 'code', condition: 'equal', values: { code: formCode } }
+  } })
   if (theSameCode.total !== 0) {
     throw new Error('<<<Form with code "' + formCode + '" already exist>>>')
   }
@@ -263,7 +263,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
         entity: entity.name,
         attribute: 'formCode',
         ID: ID,
-        fileName: storedValue.code + JS_FILE_TAIL,
+        fileName: storedValue.code + (storedValue.formType === 'vue' ? VUE_FILE_TAIL : JS_FILE_TAIL),
         relPath: codeOfModelToStore + '|' + REL_PATH_TAIL
       }, formScriptBody)
       newFormCodeMeta = JSON.stringify(formCodeInfo)
@@ -275,14 +275,14 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
         attribute: 'formDef',
         ID: ID,
         isDirty: true
-      }, {encoding: 'utf-8'})
+      }, { encoding: 'utf-8' })
     } else {
       formDefBody = blobStores.getContent({
         entity: entity.name,
         attribute: 'formDef',
         ID: ID,
         isDirty: false
-      }, {encoding: 'utf-8'}) //, JSON.parse(storedValue.formDef),
+      }, { encoding: 'utf-8' }) //, JSON.parse(storedValue.formDef),
     }
   }
 
@@ -318,7 +318,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   if (newFormCodeMeta) { // in case form script is modified add a relPath
     let parsed = JSON.parse(newFormCodeMeta)
     parsed.relPath = codeOfModelToStore + '|' + REL_PATH_TAIL
-    parsed.fName = storedValue.code + JS_FILE_TAIL
+    parsed.fName = storedValue.code + (storedValue.formType === 'vue' ? VUE_FILE_TAIL : JS_FILE_TAIL)
     newFormCodeMeta = JSON.stringify(parsed)
     storedValue.formCode = newFormCodeMeta
   } else {

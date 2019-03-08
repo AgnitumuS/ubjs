@@ -47,7 +47,7 @@ Vue.use(notifyComponent)
 
 if (window.$App) {
   $App.on('buildMainMenu', items => {
-    items.splice(0, 2) // remove top panel ExtJS hamburher menu button
+    items.splice(0, 1) // remove top panel ExtJS hamburher menu button
   })
   window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)

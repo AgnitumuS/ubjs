@@ -90,6 +90,9 @@ module.exports.mount = function (params) {
           <el-form-item :label="entitySchema.attributes['caption'].caption">
             <el-input v-model="entityData.caption" />
           </el-form-item>
+          <el-form-item :label="entitySchema.attributes['booleanColumn'].caption">
+            <el-input v-model="entityData.booleanColumn" />
+          </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item :label="entitySchema.attributes['filterValue'].caption">

@@ -27,7 +27,7 @@ exports.mount = function () {
   let tab = $App.viewport.centralPanel.add({
     title: 'VueJS form',
     style: {
-      padding: '1em' // since we replace panel inner content below, set paddings here
+      padding: '1em' // we replace panel inner content below so set paddings here
     },
     closable: true
   })
