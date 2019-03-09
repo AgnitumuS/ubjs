@@ -30,11 +30,7 @@
       </el-select>
     </el-tooltip>
     <div class="ub-select-entity__menu-button" style="pointer-events: none;">
-      <i
-        :style="{'transform':focused ? 'rotateZ(0deg)':'rotateZ(180deg)'}"
-        style="transition: transform .3s; display: flex; height: 30px;align-items: center;pointer-events: none;"
-        class="el-icon-arrow-up"
-      />
+      <i class="el-icon-arrow-down" />
       <el-popover v-if="rowActions && rowActions.length > 0"
                   v-model="popoverVisible"
                   placement="bottom-end"

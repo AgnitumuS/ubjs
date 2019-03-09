@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.3]
+# Changed
+- Vue forms will use `Alt+R` for "Remove" instead  of Alt+Del because DEl and Backspace because
+ on Mac keyboards the key normally identified as "backspace" on PC keyboards is called "delete"
+- popover button animation removed for vue select (in remote mode)  
+ 
 ## [1.3.2]
 ### Added
  - new Vue base `sidebar` component (left menu). Enabling by setting
