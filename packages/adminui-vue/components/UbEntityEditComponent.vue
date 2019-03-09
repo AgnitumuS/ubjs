@@ -1,22 +1,29 @@
 <template>
-  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.s="saveAndReload"
-       @keyup.alt.enter="saveAndClose" @keyup.alt.r="remove">
-    <toolbar v-if="value.ID"
-             v-model="value.ID"
-             :entity-name="entityName"
-             :is-new="isNew"
-             :is-changed="isChanged"
-             :simple-audit="{mi_createDate: value.mi_createDate, mi_modifyDate: value.mi_modifyDate}"
-             :use-only-own-actions="useOnlyOwnActions"
-             :input-actions="inputActions"
-             :input-buttons="inputButtons"
-             :form-code="formCode"
-             @saveAndClose="saveAndClose"
-             @saveAndReload="saveAndReload"
-             @remove="remove"
-    ></toolbar>
+  <div
+    ref="entityEdit"
+    :loading="loading"
+    style="height: 100%;"
+    @keyup.alt.s="saveAndReload"
+    @keyup.alt.enter="saveAndClose"
+    @keyup.alt.r="remove"
+  >
+    <toolbar
+      v-if="value.ID"
+      v-model="value.ID"
+      :entity-name="entityName"
+      :is-new="isNew"
+      :is-changed="isChanged"
+      :simple-audit="{mi_createDate: value.mi_createDate, mi_modifyDate: value.mi_modifyDate}"
+      :use-only-own-actions="useOnlyOwnActions"
+      :input-actions="inputActions"
+      :input-buttons="inputButtons"
+      :form-code="formCode"
+      @saveAndClose="saveAndClose"
+      @saveAndReload="saveAndReload"
+      @remove="remove"
+    />
     <div class="ub-entity-edit__slot">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -57,7 +64,7 @@ module.exports = {
       return this.$UB.connection.domain.get(this.entityName)
     },
     entityFields () {
-      let pageColumns = this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
+      let pageColumns = this.entitySchema.filterAttribute({ defaultView: true }).map((at) => {
         return at.name
       })
       let fieldList = this.$UB.ux.data.UBStore.normalizeFieldList(this.entityName, pageColumns || [])
