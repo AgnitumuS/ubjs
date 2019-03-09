@@ -69,10 +69,13 @@ let UB = module.exports = {
     return new TubDataStore(entityCode)
   },
   /**
-   * Translate message specified language using data, prepared by `UB.i18nExtend`
-   * To add model-depended values in your model use {@link module:@unitybase/ub#i18nExtend UB.i18nExtend}
+   * Return locale-specific resource from it identifier.
+   * Resources are defined by {@link module:@unitybase/ub#i18nExtend UB.i18nExtend}
+   *
+   * In opposite to client-side i18n server side function do not allow formatting.
+   *
    * @param {String} msg Message to translate
-   * @param {String} [lang] language to translate to. if not passed - current user session language used, or default application language if not logged in
+   * @param {String} [lang] language to translate to. if empty - current user session language is used
    */
   i18n: function i18n (msg, lang) {
     lang = lang || Session.userLang || App.defaultLang
