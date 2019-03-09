@@ -1,0 +1,43 @@
+{
+  "name": "@unitybase/portal-ui",
+  "version": "0.0.2",
+  "description": "UnityBase potral UI",
+  "main": "portal-ui.js",
+  "browser": {
+    "dev": "potral-ui.js",
+    "prod": "./dist/portal-ui.min.js"
+  },
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/portal-ui",
+  "config": {
+    "ubmodel": {
+      "name": "portal-ui",
+      "isPublic": true
+    }
+  },
+  "scripts": {
+    "build": "",
+    "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "prepare": "npm run build"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "https://registry.unitybase.info"
+  },
+  "dependencies": {
+    "@unitybase/cs-shared": "^5.0.18"
+  },
+  "keywords": [
+    "UnityBase",
+    "Portal UI"
+  ],
+  "author": "UnityBase team (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
+  "peerDependencies": {
+    "clean-css-cli": "^4.2.1",
+    "css-loader": "^2.1.0",
+    "uglify-js": "^3.4.9",
+    "webpack": "^4.29.6",
+    "webpack-bundle-analyzer": "^3.0.4",
+    "webpack-cli": "^3.2.3"
+  }
+}
