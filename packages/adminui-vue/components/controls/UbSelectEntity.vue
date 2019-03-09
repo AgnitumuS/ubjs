@@ -1,56 +1,102 @@
 <template>
   <div style="position: relative">
-    <el-tooltip :content="deletedCaption" placement="left" :disabled="!rowIsDeleted" :open-delay="200">
-      <el-select :id="`ub-selector${this._uid}`" ref="selector" v-model="resultData"
-                 v-loading="loading" reserve-keyword filterable remote
-                 :disabled="loading || disabled"
-                 :class="`ub-select-entity${this._uid}`"
-                 style="width: 100%"
-                 @change="onChange"
-                 @focus="focused = true"
-                 @blur="focused = false"
-                 @focus.native="onFocus"
-                 @click.native="onFocus"
-                 @input.native="onInput"
-                 @keyup.native.alt.e="editItem"
-                 @keyup.native.exact.f9="showDictionary"
-                 @keyup.native.alt.backspace="clear">
-        <i v-if="rowIsDeleted" slot="prefix" class="fa fa-ban el-input__icon"></i>
+    <el-tooltip
+      :content="deletedCaption"
+      placement="left"
+      :disabled="!rowIsDeleted"
+      :open-delay="200"
+    >
+      <el-select
+        :id="`ub-selector${this._uid}`"
+        ref="selector"
+        v-model="resultData"
+        v-loading="loading"
+        reserve-keyword
+        filterable
+        remote
+        :disabled="loading || disabled"
+        :class="`ub-select-entity${this._uid}`"
+        style="width: 100%"
+        @change="onChange"
+        @focus="focused = true"
+        @blur="focused = false"
+        @focus.native="onFocus"
+        @click.native="onFocus"
+        @input.native="onInput"
+        @keyup.native.alt.e="editItem"
+        @keyup.native.exact.f9="showDictionary"
+        @keyup.native.alt.backspace="clear"
+      >
+        <i
+          v-if="rowIsDeleted"
+          slot="prefix"
+          class="fa fa-ban el-input__icon"
+        />
         <template>
-          <el-option v-for="item in itemsToDisplay"
-                     :key="item[primaryColumn]"
-                     :label="item[displayValue]"
-                     :value="item[primaryColumn]"
-                     :disabled="item.removed"
-          ></el-option>
-          <el-row v-if="hasData" type="flex" justify="end" style="padding: 0 20px">
-            <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
+          <el-option
+            v-for="item in itemsToDisplay"
+            :key="item[primaryColumn]"
+            :label="item[displayValue]"
+            :value="item[primaryColumn]"
+            :disabled="item.removed"
+          />
+          <el-row
+            v-if="hasData"
+            type="flex"
+            justify="end"
+            style="padding: 0 20px"
+          >
+            <el-button
+              type="text"
+              @click="loadNextButtonClick"
+            >
+              {{ buttonMoreCaption }}
+            </el-button>
           </el-row>
         </template>
       </el-select>
     </el-tooltip>
-    <div class="ub-select-entity__menu-button" style="pointer-events: none;">
+    <div
+      class="ub-select-entity__menu-button"
+      style="pointer-events: none;"
+    >
       <i class="el-icon-arrow-down" />
-      <el-popover v-if="rowActions && rowActions.length > 0"
-                  v-model="popoverVisible"
-                  placement="bottom-end"
-                  style="pointer-events: auto;"
-                  :disabled="disabled"
-                  trigger="click">
-        <el-table :data="rowActions" :show-header="false" @row-click="onActionClick">
-          <el-table-column property="caption" width="250">
+      <el-popover
+        v-if="rowActions && rowActions.length > 0"
+        v-model="popoverVisible"
+        placement="bottom-end"
+        style="pointer-events: auto;"
+        :disabled="disabled"
+        trigger="click"
+      >
+        <el-table
+          :data="rowActions"
+          :show-header="false"
+          @row-click="onActionClick"
+        >
+          <el-table-column
+            property="caption"
+            width="250"
+          >
             <template slot-scope="scope">
-              <div :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'"
-                   style="cursor: pointer" class="ub-noselect">
-                <i :class="scope.row.icon"></i>
+              <div
+                :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'"
+                style="cursor: pointer"
+                class="ub-noselect"
+              >
+                <i :class="scope.row.icon" />
                 <span style="margin-left: 10px">{{ scope.row.caption }}</span>
               </div>
             </template>
           </el-table-column>
         </el-table>
-        <div ref="menuButton" slot="reference" style="width: 30px;">
+        <div
+          ref="menuButton"
+          slot="reference"
+          style="width: 30px;"
+        >
           <div class="ub-icon-menu">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-menu" />
           </div>
         </div>
       </el-popover>
@@ -126,7 +172,7 @@ module.exports = {
         isModal: true,
         sender: this,
         selectedInstanceID: this.resultData,
-        onItemSelected: ({data}) => {
+        onItemSelected: ({ data }) => {
           this.setInitialItem(data[this.primaryColumn])
           this.resultData = data[this.primaryColumn]
           this.$refs.selector.emitChange(data[this.primaryColumn])
@@ -226,7 +272,7 @@ module.exports = {
       this.$UB.Repository(this.entityName)
         .attrs(this.primaryColumn, this.displayValue)
         .attrsIf(isSafeDelete, 'mi_deleteDate')
-        .miscIf(isSafeDelete, {__allowSelectSafeDeleted: true})
+        .miscIf(isSafeDelete, { __allowSelectSafeDeleted: true })
         .selectById(id).then((item) => {
           if (item) {
             this.initialItem = {}
