@@ -127,7 +127,7 @@ module.exports = {
       hasData: true,
       buttonMoreCaption: this.$ut('more'),
       loading: false,
-      listener: _ => {
+      listener: () => {
         this.items = []
       }
     }
@@ -158,7 +158,7 @@ module.exports = {
     this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
   },
   mounted () {
-    setTimeout(_ => {
+    setTimeout(() => {
       this.initLoaderStyles()
     }, 1)
 

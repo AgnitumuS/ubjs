@@ -94,7 +94,7 @@ module.exports = {
       })
     },
     saveAndClose () {
-      this.saveEntity(_ => {
+      this.saveEntity(() => {
         this.currentTab.forceClose = true
         this.currentTab.close()
       })
@@ -119,7 +119,7 @@ module.exports = {
           }
           this.loading = true
           this.$UB.connection.update(params)
-            .finally(_ => {
+            .finally(() => {
               this.loading = false
             })
             .then((result) => {
@@ -157,7 +157,7 @@ module.exports = {
             this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
             this.$UB.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
             this.currentTab.close()
-          }).finally(_ => {
+          }).finally(() => {
             this.loading = false
           })
         })
@@ -190,7 +190,7 @@ module.exports = {
         })
         this.isNew = true
       }
-      dataP.finally(_ => {
+      dataP.finally(() => {
         this.loading = false
       })
     }

@@ -363,7 +363,7 @@ module.exports = {
     }
   },
   mounted () {
-    setTimeout(_ => {
+    setTimeout(() => {
       this.initLoaderStyles()
     }, 1)
 

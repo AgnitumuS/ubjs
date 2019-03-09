@@ -129,7 +129,7 @@ module.exports = {
         icon: 'fa fa-save',
         caption: this.saveAndReloadCaption,
         handler: {
-          fn: _ => { this.$emit('saveAndReload') }
+          fn: () => { this.$emit('saveAndReload') }
         },
         enabled: this.saveEnabled
       })
@@ -137,7 +137,7 @@ module.exports = {
         icon: 'fa fa-share-square-o',
         caption: this.saveAndCloseCaption,
         handler: {
-          fn: _ => { this.$emit('saveAndClose') }
+          fn: () => { this.$emit('saveAndClose') }
         },
         enabled: this.saveEnabled
       })
@@ -190,7 +190,7 @@ module.exports = {
         icon: 'fa fa-trash-o',
         caption: this.removeCaption,
         handler: {
-          fn: _ => { this.$emit('remove') }
+          fn: () => { this.$emit('remove') }
         },
         enabled: this.canDelete
       })
@@ -332,20 +332,20 @@ module.exports = {
         disabled: !this.saveEnabled,
         color: '#5daf34',
         icon: 'fa fa-share-square-o',
-        action: _ => { this.$emit('saveAndClose') },
+        action: () => { this.$emit('saveAndClose') },
         tooltip: this.saveAndCloseCaption
       }, {
         id: 2,
         disabled: !this.saveEnabled,
         color: '#5daf34',
         icon: 'fa fa-save',
-        action: _ => { this.$emit('saveAndReload') },
+        action: () => { this.$emit('saveAndReload') },
         tooltip: this.saveAndReloadCaption
       }, {
         id: 3,
         disabled: !this.canDelete,
         icon: 'fa fa-trash-o',
-        action: _ => { this.$emit('remove') },
+        action: () => { this.$emit('remove') },
         tooltip: this.removeCaption
       }]
     },
