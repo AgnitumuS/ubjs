@@ -1,11 +1,15 @@
 <template>
-  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.83="saveAndReload" @keyup.alt.enter="saveAndClose" @keyup.alt.46="remove">
-    <toolbar v-model="value"
+  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.83="saveAndReload"
+       @keyup.alt.enter="saveAndClose" @keyup.alt.46="remove">
+    <toolbar v-if="value.ID"
+             v-model="value.ID"
              :entity-name="entityName"
              :is-new="isNew"
              :is-changed="isChanged"
+             :simple-audit="{mi_createDate: value.mi_createDate, mi_modifyDate: value.mi_modifyDate}"
              :use-only-own-actions="useOnlyOwnActions"
              :input-actions="inputActions"
+             :input-buttons="inputButtons"
              :form-code="formCode"
              @saveAndClose="saveAndClose"
              @saveAndReload="saveAndReload"
@@ -24,11 +28,15 @@ module.exports = {
   name: 'UbEntityEditComponent',
   props: {
     value: Object,
-    entityName: String,
+    entityName: {
+      type: String,
+      required: true
+    },
     externalData: Object,
     instanceID: Number,
     useOnlyOwnActions: Boolean,
     inputActions: Array,
+    inputButtons: Array,
     save: Function,
     currentTabId: String,
     formCode: String
