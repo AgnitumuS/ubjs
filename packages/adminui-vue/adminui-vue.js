@@ -46,26 +46,25 @@ const addSidebar = require('./components/UbSidebar/init')
 Vue.use(notifyComponent)
 
 if (window.$App) {
-  $App.on('buildMainMenu', items => {
-    items.splice(0, 1) // remove top panel ExtJS hamburher menu button
-  })
   window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)
   window.$App.on('applicationReady', replaceDefaultDialogs)
   if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
     window.$App.on('applicationReady', addSidebar)
-  }
-  /* 
-    Example:
-
-    window.$App.on('applicationReady', () => {
-      const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
-      $App.fireEvent('portal:sidebar:appendSlot', SidebarSlotExample, { some attrs })
-
-      const TabbarSlotExample = require('./samples/TabbarSlotExample.vue').default
-      $App.fireEvent('portal:tabbar:appendSlot', TabbarSlotExample, { some attrs })
+    $App.on('buildMainMenu', items => {
+      items.splice(0, 1) // remove top panel ExtJS hamburger menu button
     })
-  */
+    // Example:
+    //
+    // window.$App.on('applicationReady', () => {
+    //   const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
+    //   $App.fireEvent('portal:sidebar:appendSlot', SidebarSlotExample, { some attrs })
+    //
+    //   const TabbarSlotExample = require('./samples/TabbarSlotExample.vue').default
+    //   $App.fireEvent('portal:tabbar:appendSlot', TabbarSlotExample, { some attrs })
+    // })
+  }
+
 }
 
 const entityEditor = require('./components/UbEntityEditComponent.vue').default

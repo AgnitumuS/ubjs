@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.3.2]
 ### Added
- - `sidebar` component
+ - new Vue base `sidebar` component (left menu). Enabling by setting
+ `UB.connection.appConfig.uiSettings.adminUI.customSidebar` to `true` in app config
  - `$notify` method to Vue.prototype
 - buttons `show error on full screen` and `show info for developer` added to Error notification popup
 

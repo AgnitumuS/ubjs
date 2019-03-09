@@ -1,7 +1,7 @@
 <template>
   <div class="ub-tabbar">
     <i
-      icon="fa fa-bars"
+      v-if="withHamburger"
       class="fa fa-bars ub-tabbar__collapse-button"
       @click="$UB.core.UBApp.fireEvent('portal:sidebar:collapse')"
     />
@@ -93,6 +93,10 @@ export default {
   name: 'UbTabbar',
 
   components: { UbTab, UbContext },
+
+  props: {
+    withHamburger: Boolean
+  },
 
   data () {
     return {
