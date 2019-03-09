@@ -132,7 +132,7 @@ module.exports = {
     },
     remove () {
       this.loading = true
-      $App.dialogYesNo('deletionDialogConfirmCaption', this.$UB.format(this.$ut('deleteFormConfirmCaption'), this.value[this.entitySchema.descriptionAttribute]))
+      $App.dialogYesNo('deletionDialogConfirmCaption', this.$ut('deleteFormConfirmCaption', this.value[this.entitySchema.descriptionAttribute]))
         .then(res => {
           if (!res) {
             this.loading = false
