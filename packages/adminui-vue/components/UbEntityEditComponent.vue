@@ -23,6 +23,7 @@
 
 <script>
 const toolbar = require('./UbToolbarComponent.vue').default
+const dialog = require('./UbDialog/index.js')
 
 module.exports = {
   name: 'UbEntityEditComponent',
@@ -189,26 +190,22 @@ module.exports = {
     this.currentTab.on('beforeClose', function () {
       if (!this.currentTab.forceClose && Object.keys(this.changedColumns).length > 0) {
         $App.viewport.centralPanel.setActiveTab(this.currentTab)
-        Ext.Msg.confirm({
-          buttons: Ext.MessageBox.YESNOCANCEL,
-          icon: Ext.MessageBox.WARNING,
+        dialog({
+          title: this.$ut('unsavedData'),
+          msg: this.$ut('confirmSave'),
+          type: 'warning',
           buttonText: {
             yes: this.$ut('save'),
             no: this.$ut('doNotSave'),
             cancel: this.$ut('cancel')
-          },
-          minWidth: 320,
-          title: this.$ut('unsavedData'),
-          msg: this.$ut('confirmSave'),
-          fn: btn => {
-            if (btn === 'yes') {
-              this.currentTab.forceClose = true
-              this.saveAndClose()
-            }
-            if (btn === 'no') {
-              this.currentTab.forceClose = true
-              this.currentTab.close()
-            }
+          }
+        }).then(btn => {
+          if (btn === 'yes') {
+            this.currentTab.forceClose = true
+            this.saveAndClose()
+          } else if (btn === 'no') {
+            this.currentTab.forceClose = true
+            this.currentTab.close()
           }
         })
         return false
