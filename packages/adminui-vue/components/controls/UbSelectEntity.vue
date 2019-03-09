@@ -12,9 +12,9 @@
                  @focus.native="onFocus"
                  @click.native="onFocus"
                  @input.native="onInput"
-                 @keyup.native.alt.69="editItem"
-                 @keyup.native.exact.120="showDictionary"
-                 @keyup.native.alt.8="clear">
+                 @keyup.native.alt.e="editItem"
+                 @keyup.native.exact.f9="showDictionary"
+                 @keyup.native.alt.backspace="clear">
         <i v-if="rowIsDeleted" slot="prefix" class="fa fa-ban el-input__icon"></i>
         <template>
           <el-option v-for="item in itemsToDisplay"

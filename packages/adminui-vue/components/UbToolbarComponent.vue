@@ -121,7 +121,7 @@ module.exports = {
       return this.$ut('save') + ' (Alt + S)'
     },
     removeCaption () {
-      return this.$ut('Delete') + ' (Alt + Delete)'
+      return this.$ut('Delete') + ' (Alt + R)'
     },
     defaultActions () {
       let actions = []

@@ -1,6 +1,6 @@
 <template>
-  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.83="saveAndReload"
-       @keyup.alt.enter="saveAndClose" @keyup.alt.46="remove">
+  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.s="saveAndReload"
+       @keyup.alt.enter="saveAndClose" @keyup.alt.r="remove">
     <toolbar v-if="value.ID"
              v-model="value.ID"
              :entity-name="entityName"
