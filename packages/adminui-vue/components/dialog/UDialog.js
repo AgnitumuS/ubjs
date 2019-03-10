@@ -1,5 +1,7 @@
 const Vue = require('vue')
+const UB = require('@unitybase/ub-pub')
 const UDialog = require('./UDialog.vue').default
+const { Notification } = require('element-ui')
 
 /**
  * Show modal dialog with 3 optional button
@@ -111,9 +113,63 @@ function dialogError (msg, title = 'error', isDevInfo = false) {
   })
 }
 
+/**
+ * Vue based erro reported. To be used by ub-pub.setErrorReporter
+ * @param {String} errMsg
+ * @param errCode
+ * @param entityCode
+ * @param {string} detail
+ */
+function errorReporter ({ errMsg, errCode, entityCode, detail }) {
+  // all styles placed in ./template.vue
+  const devBtnID = 'ub-notification__error__dev-btn'
+  const showMessBtnID = 'ub-notification__error__show-mess-btn'
+  const devBtn = `<i title="${UB.i18n('showDeveloperDetail')}" class="fa fa-wrench" data-id="${devBtnID}"></i>`
+  const showMessBtn = `<i title="${UB.i18n('showFullScreen')}" class="fa fa-window-restore" data-id="${showMessBtnID}"></i>`
+  const footer = `<div class="ub-notification__error__btn-group">${showMessBtn + devBtn}</div>`
+  const message = `<div class="ub-notification__error__content">${errMsg}</div>${footer}`
+
+  const instance = Notification.error({
+    title: UB.i18n('error'),
+    message,
+    dangerouslyUseHTMLString: true,
+    customClass: 'ub-notification__error',
+    duration: 30000,
+    onClose () {
+      devBtnEl.removeEventListener('click', devBtnListener)
+      showMessBtnEl.removeEventListener('click', showMessBtnListener)
+    }
+  })
+
+  const devBtnEl = instance.$el.querySelector(`[data-id=${devBtnID}]`)
+  const showMessBtnEl = instance.$el.querySelector(`[data-id=${showMessBtnID}]`)
+  const devBtnListener = () => {
+    return dialogError(detail, 'error', true)
+  }
+  const showMessBtnListener = () => {
+    dialogError(errMsg, 'error')
+    instance.close()
+  }
+  devBtnEl.addEventListener('click', devBtnListener)
+  showMessBtnEl.addEventListener('click', showMessBtnListener)
+}
+
+/**
+ *  Inject $dialog into Vie prototype. To be used as Vue.use(dialog)
+ *  @param {Vue} Vue
+ * */
+function install (Vue) {
+  Vue.prototype.$dialog = dialog
+  Vue.prototype.$dialogError = dialogError
+  Vue.prototype.$dialogInfo = dialogInfo
+  Vue.prototype.$dialogYesNo = dialogYesNo
+}
+
 module.exports = {
   dialog,
   dialogError,
   dialogInfo,
-  dialogYesNo
+  dialogYesNo,
+  errorReporter,
+  install
 }
