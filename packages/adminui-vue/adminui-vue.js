@@ -71,8 +71,8 @@ if (window.$App) {
     //   const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
     //   $App.fireEvent('portal:sidebar:appendSlot', SidebarSlotExample, { some attrs })
     //
-    //   const TabbarSlotExample = require('./samples/TabbarSlotExample.vue').default
-    //   $App.fireEvent('portal:tabbar:appendSlot', TabbarSlotExample, { some attrs })
+    //   const TabbarSlotExample = require('./samples/NavbarSlotExample.vue').default
+    //   $App.fireEvent('portal:navbar:appendSlot', NavbarSlotExample, { some attrs })
     // })
   }
 

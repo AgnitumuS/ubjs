@@ -173,7 +173,7 @@ export default {
 
   created () {
     this.subscribeCentralPanelEvents()
-    $App.on('portal:tabbar:appendSlot', (Component, bindings) => {
+    $App.on('portal:navbar:appendSlot', (Component, bindings) => {
       this.$slots.default = this.$createElement(Component, bindings)
     })
   },
@@ -386,7 +386,7 @@ export default {
     },
 
     addTab (tab) {
-      // When an ExtJS tab changes its title, need to sync it with tabbar
+      // When an ExtJS tab changes its title, need to sync it with navbar tab
       tab.addListener('titlechange', (UBTab, newText) => {
         const tab = this.tabs.find(t => t.id === UBTab.id)
         if (tab) {
