@@ -56,6 +56,7 @@ function domainBasedLocalization (localeString) {
  */
 module.exports.i18n = function i18n (localeString, ...formatArgs) {
   if (localeString == null) return localeString
+  if (typeof localeString !== 'string') return 'i18n: await string but got ' + JSON.stringify(localeString)
   let res = __i18n[localeString]
   if (res === undefined) res = _.get(__i18n, localeString)
   if (res === undefined) res = domainBasedLocalization(localeString)

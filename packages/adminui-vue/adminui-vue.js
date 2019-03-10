@@ -49,13 +49,19 @@ if (window.Ext) {
 
 const replaceDefaultTabbar = require('./components/UbTabbar/init')
 const replaceDefaultRelogin = require('./components/UbRelogin/init')
-const addSidebar = require('./components/UbSidebar/init')
+const Sidebar = require('./components/sidebar/USidebar.vue').default
 
+function addVueSidebar () {
+  const SidebarConstructor = Vue.extend(Sidebar)
+  const instance = new SidebarConstructor()
+  const vm = instance.$mount()
+  document.body.append(vm.$el)
+}
 if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)
   if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
-    window.$App.on('applicationReady', addSidebar)
+    window.$App.on('applicationReady', addVueSidebar)
     $App.on('buildMainMenu', items => {
       items.splice(0, 1) // remove top panel ExtJS hamburger menu button
     })
