@@ -1,22 +1,29 @@
 <template>
-  <div ref="entityEdit" :loading="loading" style="height: 100%;" @keyup.alt.s="saveAndReload"
-       @keyup.alt.enter="saveAndClose" @keyup.alt.r="remove">
-    <toolbar v-if="value.ID"
-             v-model="value.ID"
-             :entity-name="entityName"
-             :is-new="isNew"
-             :is-changed="isChanged"
-             :simple-audit="{mi_createDate: value.mi_createDate, mi_modifyDate: value.mi_modifyDate}"
-             :use-only-own-actions="useOnlyOwnActions"
-             :input-actions="inputActions"
-             :input-buttons="inputButtons"
-             :form-code="formCode"
-             @saveAndClose="saveAndClose"
-             @saveAndReload="saveAndReload"
-             @remove="remove"
-    ></toolbar>
+  <div
+    ref="entityEdit"
+    :loading="loading"
+    style="height: 100%;"
+    @keyup.alt.s="saveAndReload"
+    @keyup.alt.enter="saveAndClose"
+    @keyup.alt.r="remove"
+  >
+    <toolbar
+      v-if="value.ID"
+      v-model="value.ID"
+      :entity-name="entityName"
+      :is-new="isNew"
+      :is-changed="isChanged"
+      :simple-audit="{mi_createDate: value.mi_createDate, mi_modifyDate: value.mi_modifyDate}"
+      :use-only-own-actions="useOnlyOwnActions"
+      :input-actions="inputActions"
+      :input-buttons="inputButtons"
+      :form-code="formCode"
+      @saveAndClose="saveAndClose"
+      @saveAndReload="saveAndReload"
+      @remove="remove"
+    />
     <div class="ub-entity-edit__slot">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -56,7 +63,7 @@ module.exports = {
       return this.$UB.connection.domain.get(this.entityName)
     },
     entityFields () {
-      let pageColumns = this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
+      let pageColumns = this.entitySchema.filterAttribute({ defaultView: true }).map((at) => {
         return at.name
       })
       let fieldList = this.$UB.ux.data.UBStore.normalizeFieldList(this.entityName, pageColumns || [])
@@ -86,7 +93,7 @@ module.exports = {
       })
     },
     saveAndClose () {
-      this.saveEntity(_ => {
+      this.saveEntity(() => {
         this.currentTab.forceClose = true
         this.currentTab.close()
       })
@@ -111,7 +118,7 @@ module.exports = {
           }
           this.loading = true
           this.$UB.connection.update(params)
-            .finally(_ => {
+            .finally(() => {
               this.loading = false
             })
             .then((result) => {
@@ -132,7 +139,7 @@ module.exports = {
     },
     remove () {
       this.loading = true
-      $App.dialogYesNo('deletionDialogConfirmCaption', this.$UB.format(this.$ut('deleteFormConfirmCaption'), this.value[this.entitySchema.descriptionAttribute]))
+      this.$dialogYesNo('deletionDialogConfirmCaption', this.$ut('deleteFormConfirmCaption', this.value[this.entitySchema.descriptionAttribute]))
         .then(res => {
           if (!res) {
             this.loading = false
@@ -149,7 +156,7 @@ module.exports = {
             this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
             this.$UB.connection.emit(`${this.entitySchema.name}:delete`, result.execParams.ID)
             this.currentTab.close()
-          }).finally(_ => {
+          }).finally(() => {
             this.loading = false
           })
         })
@@ -182,33 +189,29 @@ module.exports = {
         })
         this.isNew = true
       }
-      dataP.finally(_ => {
+      dataP.finally(() => {
         this.loading = false
       })
     }
     this.currentTab.on('beforeClose', function () {
       if (!this.currentTab.forceClose && Object.keys(this.changedColumns).length > 0) {
         $App.viewport.centralPanel.setActiveTab(this.currentTab)
-        Ext.Msg.confirm({
-          buttons: Ext.MessageBox.YESNOCANCEL,
-          icon: Ext.MessageBox.WARNING,
-          buttonText: {
+        this.$dialog({
+          title: this.$ut('unsavedData'),
+          msg: this.$ut('confirmSave'),
+          type: 'warning',
+          buttons: {
             yes: this.$ut('save'),
             no: this.$ut('doNotSave'),
             cancel: this.$ut('cancel')
-          },
-          minWidth: 320,
-          title: this.$ut('unsavedData'),
-          msg: this.$ut('confirmSave'),
-          fn: btn => {
-            if (btn === 'yes') {
-              this.currentTab.forceClose = true
-              this.saveAndClose()
-            }
-            if (btn === 'no') {
-              this.currentTab.forceClose = true
-              this.currentTab.close()
-            }
+          }
+        }).then(btn => {
+          if (btn === 'yes') {
+            this.currentTab.forceClose = true
+            this.saveAndClose()
+          } else if (btn === 'no') {
+            this.currentTab.forceClose = true
+            this.currentTab.close()
           }
         })
         return false

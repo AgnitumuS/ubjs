@@ -1,48 +1,84 @@
 <template>
   <div class="ub-toolbar">
     <div style="display: flex">
-      <el-tooltip v-for="button in buttons" :key="button.id" :content="button.tooltip" placement="bottom" :open-delay="300">
-        <el-button :disabled="button.disabled"
-                   size="large"
-                   type="text"
-                   class="ub-toolbar__button"
-                   :style="{color : button.disabled ? '#c0c4cc' : button.color}"
-                   @click="button.action">
-          <i :class="button.icon"></i>
+      <el-tooltip
+        v-for="button in buttons"
+        :key="button.id"
+        :content="button.tooltip"
+        placement="bottom"
+        :open-delay="300"
+      >
+        <el-button
+          :disabled="button.disabled"
+          size="large"
+          type="text"
+          class="ub-toolbar__button"
+          :style="{color : button.disabled ? '#c0c4cc' : button.color}"
+          @click="button.action"
+        >
+          <i :class="button.icon" />
         </el-button>
       </el-tooltip>
     </div>
     <div style="display: flex">
       <el-popover
-        placement="bottom-end"
         v-model="showPopover"
-        trigger="click">
-        <el-table :data="actions" @row-click="onActionClick" :show-header="false">
-          <el-table-column property="caption" width="200">
+        placement="bottom-end"
+        trigger="click"
+      >
+        <el-table
+          :data="actions"
+          :show-header="false"
+          @row-click="onActionClick"
+        >
+          <el-table-column
+            property="caption"
+            width="200"
+          >
             <template slot-scope="scope">
               <div :style="scope.row.enabled === undefined || scope.row.enabled ? 'cursor: pointer' : 'opacity: 0.5'">
-                <i :class="scope.row.icon"></i>
-                <span style="margin-left: 10px" class="ub-noselect">{{ scope.row.caption }}</span>
+                <i :class="scope.row.icon" />
+                <span
+                  style="margin-left: 10px"
+                  class="ub-noselect"
+                >{{ scope.row.caption }}</span>
               </div>
             </template>
           </el-table-column>
         </el-table>
-        <el-button type="text" slot="reference" size="large" class="ub-toolbar__button">
-          <i class="fa fa-cog" aria-hidden="true"></i>
+        <el-button
+          slot="reference"
+          type="text"
+          size="large"
+          class="ub-toolbar__button"
+        >
+          <i
+            class="fa fa-cog"
+            aria-hidden="true"
+          />
         </el-button>
       </el-popover>
-      <div class="ub-toolbar__button__divider" v-if="isSimpleAudit && simpleAudit"></div>
-      <div class="ub-toolbar__date__container" v-if="isSimpleAudit && simpleAudit">
+      <div
+        v-if="isSimpleAudit && simpleAudit"
+        class="ub-toolbar__button__divider"
+      />
+      <div
+        v-if="isSimpleAudit && simpleAudit"
+        class="ub-toolbar__date__container"
+      >
         <div class="ub-toolbar__date">
-          <b>{{createdEntityCaption}}:</b> {{ simpleAudit.mi_createDate ? simpleAudit.mi_createDate.toLocaleString() : '' }}
+          <b>{{ createdEntityCaption }}:</b> {{ simpleAudit.mi_createDate ? simpleAudit.mi_createDate.toLocaleString() : '' }}
         </div>
         <div class="ub-toolbar__date">
-          <b>{{updatedEntityCaption}}:</b> {{ simpleAudit.mi_modifyDate ? simpleAudit.mi_modifyDate.toLocaleString() : '' }}
+          <b>{{ updatedEntityCaption }}:</b> {{ simpleAudit.mi_modifyDate ? simpleAudit.mi_modifyDate.toLocaleString() : '' }}
         </div>
       </div>
     </div>
-    <input type="hidden" id="linkToEntity"
-           :value="linkToEntity">
+    <input
+      id="linkToEntity"
+      type="hidden"
+      :value="linkToEntity"
+    >
   </div>
 </template>
 
@@ -88,7 +124,7 @@ module.exports = {
       return this.$UB.connection.domain.get(this.entityName)
     },
     entityFields () {
-      let pageColumns = this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
+      let pageColumns = this.entitySchema.filterAttribute({ defaultView: true }).map((at) => {
         return at.name
       })
       let fieldList = this.$UB.ux.data.UBStore.normalizeFieldList(this.entityName, pageColumns || [])
@@ -129,7 +165,7 @@ module.exports = {
         icon: 'fa fa-save',
         caption: this.saveAndReloadCaption,
         handler: {
-          fn: _ => { this.$emit('saveAndReload') }
+          fn: () => { this.$emit('saveAndReload') }
         },
         enabled: this.saveEnabled
       })
@@ -137,7 +173,7 @@ module.exports = {
         icon: 'fa fa-share-square-o',
         caption: this.saveAndCloseCaption,
         handler: {
-          fn: _ => { this.$emit('saveAndClose') }
+          fn: () => { this.$emit('saveAndClose') }
         },
         enabled: this.saveEnabled
       })
@@ -190,7 +226,7 @@ module.exports = {
         icon: 'fa fa-trash-o',
         caption: this.removeCaption,
         handler: {
-          fn: _ => { this.$emit('remove') }
+          fn: () => { this.$emit('remove') }
         },
         enabled: this.canDelete
       })
@@ -242,7 +278,7 @@ module.exports = {
                 isModal: true,
                 cmdData: {
                   params: [{
-                    entity: this.entityName, method: this.$UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
+                    entity: this.entityName, method: 'select', fieldList: fieldList
                   }]
                 },
                 cmpInitConfig: {
@@ -272,7 +308,7 @@ module.exports = {
                       .where('[entity]', '=', this.entityName)
                       .where('[entityinfo_id]', '=', this.value)
                       .orderByDesc('actionTime')
-                      .ubRequest()
+                      .ubql()
                   ]
                 },
                 cmpInitConfig: {
@@ -287,8 +323,9 @@ module.exports = {
         })
       }
       if (this.entitySchema.hasMixin('aclRls')) {
-        let aclEntityName = this.entitySchema.mixins && this.entitySchema.mixins.aclRls && this.entitySchema.mixins.aclRls.useUnityName
-          ? this.entitySchema.mixins.unity.entity + '_acl' : this.entitySchema.name + '_acl'
+        let mixins = this.entitySchema.mixins
+        let aclEntityName = mixins && mixins.aclRls && mixins.aclRls.useUnityName
+          ? mixins.unity.entity + '_acl' : this.entitySchema.name + '_acl'
         actions.push({
           caption: this.$ut('accessRight'),
           handler: {
@@ -332,20 +369,20 @@ module.exports = {
         disabled: !this.saveEnabled,
         color: '#5daf34',
         icon: 'fa fa-share-square-o',
-        action: _ => { this.$emit('saveAndClose') },
+        action: () => { this.$emit('saveAndClose') },
         tooltip: this.saveAndCloseCaption
       }, {
         id: 2,
         disabled: !this.saveEnabled,
         color: '#5daf34',
         icon: 'fa fa-save',
-        action: _ => { this.$emit('saveAndReload') },
+        action: () => { this.$emit('saveAndReload') },
         tooltip: this.saveAndReloadCaption
       }, {
         id: 3,
         disabled: !this.canDelete,
         icon: 'fa fa-trash-o',
-        action: _ => { this.$emit('remove') },
+        action: () => { this.$emit('remove') },
         tooltip: this.removeCaption
       }]
     },

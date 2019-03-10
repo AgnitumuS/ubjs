@@ -74,7 +74,7 @@ module.exports = {
         headers: {'Content-Type': 'application/octet-stream'}
       }).then(response => {
         this.$emit('input', JSON.stringify(response.data.result))
-      }).finally(_ => {
+      }).finally(() => {
         this.loading = false
       })
     },
@@ -92,7 +92,7 @@ module.exports = {
         } else {
           saveAs(new Blob([result]), this.currentValue.origName)
         }
-      }).finally(_ => {
+      }).finally(() => {
         this.loading = false
       })
     },

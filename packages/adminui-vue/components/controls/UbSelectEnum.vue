@@ -44,7 +44,7 @@ module.exports = {
       items: [],
       entityName: 'ubm_enum',
       loading: false,
-      listener: _ => {
+      listener: () => {
         this.initData()
       }
     }
@@ -91,7 +91,7 @@ module.exports = {
     }
   },
   mounted () {
-    setTimeout(_ => {
+    setTimeout(() => {
       this.initLoaderStyles()
     }, 1)
 
