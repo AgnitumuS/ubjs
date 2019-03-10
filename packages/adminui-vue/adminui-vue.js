@@ -43,11 +43,12 @@ const dialogs = require('./components/dialog/UDialog')
 Vue.use(dialogs)
 UB.setErrorReporter(dialogs.errorReporter)
 if (window.Ext) {
-  const replaceExtJSDialogs = require('./utils/replaceExtJSDialogs').replaceExtJSDialogs
+  const replaceExtJSDialogs = require('./utils/replaceExtJSWidgets').replaceExtJSDialogs
+  const replaceExtJSNavbar = require('./utils/replaceExtJSWidgets').replaceExtJSNavbar
   window.$App.on('applicationReady', replaceExtJSDialogs)
+  window.$App.on('applicationReady', replaceExtJSNavbar)
 }
 
-const replaceDefaultTabbar = require('./components/navbar/init')
 const replaceDefaultRelogin = require('./components/UbRelogin/init')
 const Sidebar = require('./components/sidebar/USidebar.vue').default
 
@@ -57,8 +58,8 @@ function addVueSidebar () {
   const vm = instance.$mount()
   document.body.append(vm.$el)
 }
+
 if (window.$App) {
-  window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)
   if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
     window.$App.on('applicationReady', addVueSidebar)
