@@ -52,7 +52,7 @@
       placement="bottom"
       trigger="click"
       popper-class="u-navbar__overflow__tray"
-      :class="{'hidden': this.visibleWidth >= this.tabsWidth}"
+      :class="{'hidden': visibleWidth >= tabsWidth}"
     >
       <el-button
         slot="reference"
