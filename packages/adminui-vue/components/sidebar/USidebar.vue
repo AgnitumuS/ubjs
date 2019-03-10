@@ -69,9 +69,9 @@
 </template>
 
 <script>
+const UB = require('@unitybase/ub-pub')
 const USidebarItem = require('./USidebarItem.vue').default
 const UbContext = require('../controls/UbContext.vue').default
-const UB = require('@unitybase/ub-pub')
 
 export default {
   name: 'USidebar',
@@ -110,12 +110,12 @@ export default {
         action: 'edit',
         iconCls: 'el-icon-edit'
       }, {
-        label: 'dobavitYarlik',
+        label: 'addShortcut',
         action: 'addShortcut',
         disabled: !canAdd,
         iconCls: 'el-icon-circle-plus'
       }, {
-        label: 'dobavitDirectoriu',
+        label: 'addFolder',
         action: 'addFolder',
         disabled: !canAdd,
         iconCls: 'fa fa-folder'

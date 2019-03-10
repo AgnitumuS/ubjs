@@ -145,7 +145,7 @@ Ext.define('UB.view.NavigationPanel', {
     var addShortcutAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faLink,
       actionID: 'addShortcut',
-      text: UB.i18n('dobavitYarlik'),
+      text: UB.i18n('addShortcut'),
       disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
         let rec = me.contextMenu.currentRecord
@@ -166,7 +166,7 @@ Ext.define('UB.view.NavigationPanel', {
     var addFolderAction = new Ext.Action({
       glyph: UB.core.UBUtil.glyphs.faFolder,
       actionID: 'addFolder',
-      text: UB.i18n('dobavitDirectoriu'),
+      text: UB.i18n('addFolder'),
       disabled: !navShortcutEntity.haveAccessToMethod('insert'),
       handler: function () {
         let rec = me.contextMenu.currentRecord
