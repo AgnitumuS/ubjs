@@ -17,7 +17,7 @@ Limitations:
 </style>
 ```
 
-- CSS preprocessors not supported - use BEM
+- CSS preprocessors not supported - use BEM + CSS variables
 - ES6 import not supported. Use CommonJS syntax. ES6 `export default` is supported for Vue SFC - parser will replace it to `module.exports.default =`)
 - parser for script section is pretty dumb. To work correctly `module.exports.defauilf = {` or `export default {` section should exists EXACTLY (including spaces)
 - vue component definition accessible inside `default` so should be imported as 
