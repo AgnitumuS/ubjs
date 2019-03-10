@@ -1,5 +1,5 @@
 const Vue = require('vue')
-const UbTabbar = require('./src/index.vue').default
+const UbTabbar = require('./UNavbar.vue').default
 const UB = require('@unitybase/ub-pub')
 
 module.exports = function () {

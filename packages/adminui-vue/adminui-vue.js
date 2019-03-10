@@ -47,7 +47,7 @@ if (window.Ext) {
   window.$App.on('applicationReady', replaceExtJSDialogs)
 }
 
-const replaceDefaultTabbar = require('./components/UbTabbar/init')
+const replaceDefaultTabbar = require('./components/navbar/init')
 const replaceDefaultRelogin = require('./components/UbRelogin/init')
 const Sidebar = require('./components/sidebar/USidebar.vue').default
 

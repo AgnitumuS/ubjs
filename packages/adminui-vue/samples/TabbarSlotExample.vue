@@ -1,25 +1,25 @@
 <template>
-  <div class="ub-tabbar__right-side__buttons">
+  <div class="u-navbar__right-side__buttons">
     <el-button
       icon="el-icon-bell"
       circle
-      class="ub-tabbar__button"
+      class="u-navbar__button"
     />
 
     <el-button
       icon="fa fa-search"
       circle
-      class="ub-tabbar__button"
+      class="u-navbar__button"
     />
 
     <el-dropdown
       size="big"
-      class="ub-tabbar__user-dropdown"
+      class="u-navbar__user-dropdown"
     >
       <el-button
         icon="fa fa-user"
         circle
-        class="ub-tabbar__button"
+        class="u-navbar__button"
       />
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item>Action 1</el-dropdown-item>
@@ -43,17 +43,17 @@ export default {
 </script>
 
 <style>
-.ub-tabbar__right-side__buttons{
+.u-navbar__right-side__buttons{
   display: flex;
   padding-left: 10px;
 }
 
-.ub-tabbar__button{
+.u-navbar__button{
   width: 32px;
   height: 32px;
 }
 
-.ub-tabbar__user-dropdown{
+.u-navbar__user-dropdown{
   margin-left: 10px;
 }
 </style>
