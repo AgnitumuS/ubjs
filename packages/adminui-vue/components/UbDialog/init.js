@@ -112,7 +112,7 @@ const replaceDefaultDialogs = () => {
         window.$App.dialogError(devInfo, err.name, true)
       }
       const showMessBtnListener = (e) => {
-        window.$App.dialogError(UB.i18n(err.message), err.name)
+        window.$App.dialogError(err.message, err.name)
         instance.close()
       }
       devBtnEl.addEventListener('click', devBtnListener)
