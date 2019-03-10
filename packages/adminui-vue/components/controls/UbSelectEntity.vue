@@ -62,7 +62,7 @@
     >
       <i class="el-icon-arrow-down" />
       <el-popover
-        v-if="rowActions && rowActions.length > 0"
+        v-if="rowActions && rowActions.length"
         v-model="popoverVisible"
         placement="bottom-end"
         style="pointer-events: auto;"
