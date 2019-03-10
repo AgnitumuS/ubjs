@@ -43,7 +43,7 @@ function replaceExtJSDialogs () {
 
         Notification.error({
           title: UB.i18n('error'),
-          message: UB.i18n('oshibkaVvoda', me.domainEntity.caption) + '<br>' + fieldLinks,
+          message: UB.i18n('fieldValidationError', me.domainEntity.caption) + '<br>' + fieldLinks,
           dangerouslyUseHTMLString: true,
           duration: 15000
         })

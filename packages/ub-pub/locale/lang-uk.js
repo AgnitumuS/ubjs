@@ -84,6 +84,7 @@ UB.i18nExtend({
   'Password matches with login': 'Пароль не може співпадати з логіном',
   'Previous password is not allowed': 'Пароль співпадає з одним із попередніх',
   logout: 'Вихід',
+  fieldValidationError: 'Неможливо зберегти картку <b>{0}</b>.<br > Невірно заповнено поле ',
   blankText: 'Це поле є обов’язковим для заповнення'
 
 })

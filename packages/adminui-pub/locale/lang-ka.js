@@ -128,7 +128,6 @@ UB.i18nExtend({
   exportXls: 'გადატანა "Excel"',
   exportCsv: 'გადატანა CSV',
   'export': 'გადატანა',
-  oshibkaVvoda: 'შეუძლებელია დამახსოვრება <b>{0}</b> ბარათი.<br > არასწორი ველი',
   currentPageNumber: 'მიმდინარე გვერდი',
   persistLockInfo: 'თქვენ დააყენეთ მუდმივი დაბლოკვა {1}',
   softLockInfo: 'ჩანაწერი ჩაკეტილია მომხმარებლის მიერ{0} at {1}',

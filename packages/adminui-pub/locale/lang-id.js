@@ -126,7 +126,6 @@ UB.i18nExtend({
   exportXls: 'Export to "Excel"',
   exportCsv: 'Export to CSV',
   'export': 'Export',
-  oshibkaVvoda: 'Can not save <b>{0}</b> card.<br > Invalid field',
   currentPageNumber: 'Current page',
   persistLockInfo: 'You was set permanent lock at {1}',
   softLockInfo: 'The record was locked by user {0} at {1}',
