@@ -30,7 +30,6 @@
 
 <script>
 const toolbar = require('./UbToolbarComponent.vue').default
-const dialog = require('./UbDialog/index.js')
 
 module.exports = {
   name: 'UbEntityEditComponent',
@@ -140,7 +139,7 @@ module.exports = {
     },
     remove () {
       this.loading = true
-      $App.dialogYesNo('deletionDialogConfirmCaption', this.$ut('deleteFormConfirmCaption', this.value[this.entitySchema.descriptionAttribute]))
+      this.$dialogYesNo('deletionDialogConfirmCaption', this.$ut('deleteFormConfirmCaption', this.value[this.entitySchema.descriptionAttribute]))
         .then(res => {
           if (!res) {
             this.loading = false
@@ -197,11 +196,11 @@ module.exports = {
     this.currentTab.on('beforeClose', function () {
       if (!this.currentTab.forceClose && Object.keys(this.changedColumns).length > 0) {
         $App.viewport.centralPanel.setActiveTab(this.currentTab)
-        dialog({
+        this.$dialog({
           title: this.$ut('unsavedData'),
           msg: this.$ut('confirmSave'),
           type: 'warning',
-          buttonText: {
+          buttons: {
             yes: this.$ut('save'),
             no: this.$ut('doNotSave'),
             cancel: this.$ut('cancel')
