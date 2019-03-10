@@ -78,8 +78,9 @@ export default {
   components: { UbSidebarItem, UbContext },
 
   data () {
-    const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed') === 'true'
-    const isCollapsed = window.innerWidth < 1024 ? true : savedCollapse
+    let isCollapsed = window.innerWidth < 1024
+    const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed')
+    if (savedCollapse) isCollapsed = (savedCollapse === 'true')
     return {
       shortcuts: [],
       desktops: [],
