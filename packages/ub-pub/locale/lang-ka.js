@@ -1,4 +1,8 @@
 ﻿UB.i18nExtend({
+  Yes: 'დიახ',
+  No: 'არა',
+  ok: 'კეთილი',
+  cancel: 'გაუქმება',
   Enter: 'შესვლა',
   Password: 'პაროლი',
   User: 'მომხმარებლის სახელი', // login

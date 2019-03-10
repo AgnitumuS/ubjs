@@ -1,5 +1,9 @@
 /* global UB */
 UB.i18nExtend({
+  Yes: 'Bəli',
+  No: 'Xeyr',
+  ok: 'ОK',
+  cancel: 'Ləğv',
   Enter: 'Daxil ol',
   Password: 'Parol',
   User: 'İstifadəçi',

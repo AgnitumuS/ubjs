@@ -22,8 +22,8 @@ Ext.define('UB.ux.form.field.UBBoolBox', {
     me.valueField = 'value'
 
     let data = [
-      {value: 1, name: UB.i18n('da')},
-      {value: 0, name: UB.i18n('net')}
+      {value: 1, name: UB.i18n('Yes')},
+      {value: 0, name: UB.i18n('No')}
     ]
 
     if (me.addEmptyValue) {

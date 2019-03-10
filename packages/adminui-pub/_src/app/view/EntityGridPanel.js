@@ -431,8 +431,8 @@ Ext.define('UB.view.EntityGridPanel', {
           break
         case ubDataTypes.Boolean :
           column.xtype = 'booleancolumn'
-          column.trueText = UB.i18n('da')
-          column.falseText = UB.i18n('net')
+          column.trueText = UB.i18n('Yes')
+          column.falseText = UB.i18n('No')
           break
         case ubDataTypes.String:
         case ubDataTypes.Text:

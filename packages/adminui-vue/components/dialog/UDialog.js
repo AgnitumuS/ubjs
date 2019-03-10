@@ -50,8 +50,8 @@ function dialogYesNo (title, msg) {
     msg,
     type: 'question',
     buttons: {
-      yes: 'da',
-      cancel: 'net'
+      yes: 'Yes',
+      cancel: 'No'
     }
   }).then(r => r === 'yes')
 }

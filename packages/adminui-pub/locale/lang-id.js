@@ -145,8 +145,6 @@ UB.i18nExtend({
   neNaidenShablon: 'Cannot find template for node: {0} with node type: {1}',
   da: 'Yes',
   net: 'No',
-  ok: 'Ok',
-  cancel: 'Cancel',
   showLetters: 'Show symbols',
   original: 'Original',
   tabsCountLimitExceeded: 'Too many tabs open',

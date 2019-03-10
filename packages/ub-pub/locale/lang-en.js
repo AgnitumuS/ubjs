@@ -1,5 +1,9 @@
 /* global UB */
 UB.i18nExtend({
+  Yes: 'Yes',
+  No: 'No',
+  ok: 'Ok',
+  cancel: 'Cancel',
   Enter: 'Enter',
   Password: 'Password',
   User: 'User name', // login

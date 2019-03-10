@@ -132,8 +132,6 @@ UB.i18nExtend({
   OpenIDConnect: 'OpenID',
   authOpenIDConnectFail: "OpenID provider can't authorize your request",
   oshibkaVvoda: '<b>{0}</b>.<br > kartını yadda saxlamaq mümkün deyil. Yanlış doldurulmuş xana',
-  ok: 'ОK',
-  cancel: 'Ləğv',
   da: 'Bəli',
   net: 'Xeyr',
   formConstructor: 'Forma konstruktoru',

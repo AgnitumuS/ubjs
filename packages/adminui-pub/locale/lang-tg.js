@@ -134,8 +134,6 @@ UB.i18nExtend({
   currentPageNumber: 'Текущая страница',
 
   oshibkaVvoda: 'Невозможно сохранить карточку <b>{0}</b>.<br > Неверно заполнено поле',
-  ok: 'ОК',
-  cancel: 'Отмена',
   da: 'Да',
   net: 'Нет',
   showLetters: 'Показывать символы',

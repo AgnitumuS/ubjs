@@ -147,8 +147,6 @@ UB.i18nExtend({
   neNaidenShablon: 'ვერ პოულობს შაბლონის კვანძს: {0} კვანძის ტიპით: {1}',
   da: 'დიახ',
   net: 'არა',
-  ok: 'კეთილი',
-  cancel: 'გაუქმება',
   showLetters: 'სიმბოლოების ჩვენება',
   original: 'ირიგინალი',
   tabsCountLimitExceeded: 'ძალიან ბევრი ჩანართების გახსნა',
