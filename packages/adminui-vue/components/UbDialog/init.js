@@ -1,65 +1,24 @@
-const UbDialog = require('./index')
+const { dialog, dialogInfo, dialogYesNo, dialogError} = require('./index')
 const { Notification } = require('element-ui')
 const UB = require('@unitybase/ub-pub')
 
 const replaceDefaultDialogs = () => {
-  window.Ext.Msg.confirm = async ({ title, msg, fn: callback, buttonText }) => {
-    const answer = await UbDialog({
+  // rename buttonText - > buttons, fn -> callback and call `dialog`
+  window.Ext.Msg.confirm = function ({ title, msg, fn: callback, buttonText: buttons }) {
+    return dialog({
       title,
       msg,
-      buttonText
+      buttons,
+      type: 'info'
+    }).then(r => {
+      if (callback) callback(r)
+      return r
     })
-
-    let value = ''
-    if (answer === 'accept') {
-      value = 'yes'
-    }
-    if (answer === 'decline') {
-      value = 'no'
-    }
-
-    callback(value)
   }
 
-  window.$App.dialogYesNo = async (title, msg) => {
-    const answer = await UbDialog({
-      title,
-      msg,
-      type: 'question',
-      buttonText: {
-        yes: 'da',
-        cancel: 'net'
-      }
-    })
-    return Promise.resolve(answer === 'accept')
-  }
-
-  window.$App.dialogInfo = async (msg, title = 'info') => {
-    const answer = await UbDialog({
-      title,
-      msg,
-      buttonText: {
-        yes: 'ok'
-      }
-    })
-    return Promise.resolve(answer === 'accept')
-  }
-
-  window.$App.dialogError = async (msg, title = 'error', isDevInfo) => {
-    const regExp = /^<<<([\S|\s]+)>>>$/
-    msg = msg.replace(regExp, '$1')
-    msg = formatLinks(msg)
-    await UbDialog({
-      title,
-      msg,
-      type: 'error',
-      isDevInfo,
-      buttonText: {
-        yes: 'ok'
-      }
-    })
-    return Promise.resolve(true)
-  }
+  window.$App.dialogYesNo = dialogYesNo
+  window.$App.dialogInfo = dialogInfo
+  window.$App.dialogError = dialogError
 
   window.onerror = (...args) => {
     // all styles placed in ./template.vue
@@ -150,29 +109,11 @@ const replaceDefaultDialogs = () => {
   })
 }
 
-function formatLinks (htmlStr) {
-  const temporaryEl = document.createElement('div')
-  temporaryEl.innerHTML = htmlStr
-  const links = temporaryEl.querySelectorAll('a[data-entity][data-id]')
-  for (const link of links) {
-    const entity = link.getAttribute('data-entity')
-    const instanceID = link.getAttribute('data-id')
-    const action = `$App.doCommand({
-      cmdType: 'showForm',
-      entity: '${entity}',
-      instanceID: ${instanceID}
-    })`
-    link.setAttribute('onclick', action)
-  }
-
-  return temporaryEl.innerHTML
-}
-
 module.exports = {
   replaceDefaultDialogs,
   notifyComponent: {
     install (Vue) {
-      Vue.prototype.$notify = UbDialog
+      Vue.prototype.$notify = dialog
     }
   }
 }
