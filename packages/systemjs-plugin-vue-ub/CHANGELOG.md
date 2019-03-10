@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.1]
+### Changed
+ - code simplified - all unsupported and unused features are removed from code
+ - vue compiler padding changed from `line` to `space`
+
 ## [1.3.0]
 ### Added
  - ES6 `export default` support for Vue SFC - parser will replace it to `module.exports.default =` in dev mode
