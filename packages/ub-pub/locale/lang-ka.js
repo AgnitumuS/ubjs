@@ -1,4 +1,8 @@
 ﻿UB.i18nExtend({
+  Yes: 'დიახ',
+  No: 'არა',
+  ok: 'კეთილი',
+  cancel: 'გაუქმება',
   Enter: 'შესვლა',
   Password: 'პაროლი',
   User: 'მომხმარებლის სახელი', // login
@@ -66,6 +70,7 @@
   'Password matches with login': 'პაროლი შეესაბამება შესვლას',
   'Previous password is not allowed': 'წინა პაროლი არ არის დაშვებული',
   logout: 'გამოსვლა',
+  fieldValidationError: 'შეუძლებელია დამახსოვრება <b>{0}</b> ბარათი.<br > არასწორი ველი',
   blankText: 'This is required field'
 
 })

@@ -2,8 +2,8 @@
   <el-dialog
     :width="isDevInfo ? '90%' : '500px'"
     :visible.sync="visible"
+    :append-to-body="true"
     @close="cancel"
-    @closed="doDestroy"
   >
     <div
       slot="title"
@@ -26,22 +26,22 @@
         @click="copyClipboard"
       />
       <el-button
-        v-if="buttonText.cancel"
+        v-if="buttons.cancel"
         @click="cancel"
       >
-        {{ $ut(buttonText.cancel) }}
+        {{ $ut(buttons.cancel) }}
       </el-button>
       <el-button
-        v-if="buttonText.no"
+        v-if="buttons.no"
         @click="decline"
       >
-        {{ $ut(buttonText.no) }}
+        {{ $ut(buttons.no) }}
       </el-button>
       <el-button
         type="primary"
         @click="accept"
       >
-        {{ $ut(buttonText.yes) }}
+        {{ $ut(buttons.yes) }}
       </el-button>
     </template>
   </el-dialog>
@@ -49,32 +49,33 @@
 
 <script>
 export default {
-  name: 'UbDialog',
+  name: 'UDialog',
   data () {
     return {
+      title: '',
+      msg: '',
+      buttons: {},
+      type: 'info',
+      isDevInfo: false,
+      resolver: null,
       visible: false
     }
   },
 
   methods: {
-    doDestroy () {
-      this.$destroy(true)
-      this.$el.remove()
-    },
-
     decline () {
-      this.resolveConfirm('decline')
-      this.visible = false
+      this.resolver('no')
+      this.$destroy()
     },
 
     accept () {
-      this.resolveConfirm('accept')
-      this.visible = false
+      this.resolver('yes')
+      this.$destroy()
     },
 
     cancel () {
-      this.resolveConfirm('cancel')
-      this.visible = false
+      this.resolver('cancel')
+      this.$destroy()
     },
 
     copyClipboard () {
@@ -95,10 +96,6 @@ export default {
       }
       window.getSelection().removeAllRanges()
     }
-  },
-
-  mounted () {
-    this.visible = true
   }
 }
 </script>

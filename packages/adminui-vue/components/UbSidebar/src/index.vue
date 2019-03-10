@@ -229,17 +229,12 @@ export default {
       }
 
       if (action === 'deleteShortcut') {
-        const confirm = await this.$notify({
+        const confirm = await this.$dialogYesNo({
           title: 'deletionDialogConfirmCaption',
-          msg: 'vyUvereny',
-          type: 'question',
-          buttonText: {
-            yes: 'da',
-            cancel: 'net'
-          }
+          msg: 'vyUvereny'
         })
 
-        if (confirm === 'accept') {
+        if (confirm) {
           await $App.connection.doDelete({
             entity: 'ubm_navshortcut',
             execParams: {

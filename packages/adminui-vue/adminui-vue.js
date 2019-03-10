@@ -38,17 +38,22 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
+const dialogs = require('./components/dialog/UDialog')
+// add $dialog* to Vue prototype
+Vue.use(dialogs)
+UB.setErrorReporter(dialogs.errorReporter)
+if (window.Ext) {
+  const replaceExtJSDialogs = require('./utils/replaceExtJSDialogs').replaceExtJSDialogs
+  window.$App.on('applicationReady', replaceExtJSDialogs)
+}
+
 const replaceDefaultTabbar = require('./components/UbTabbar/init')
 const replaceDefaultRelogin = require('./components/UbRelogin/init')
-const { replaceDefaultDialogs, notifyComponent } = require('./components/UbDialog/init')
 const addSidebar = require('./components/UbSidebar/init')
-
-Vue.use(notifyComponent)
 
 if (window.$App) {
   window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)
-  window.$App.on('applicationReady', replaceDefaultDialogs)
   if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
     window.$App.on('applicationReady', addSidebar)
     $App.on('buildMainMenu', items => {

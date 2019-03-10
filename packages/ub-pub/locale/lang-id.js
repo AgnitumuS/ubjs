@@ -1,5 +1,9 @@
 /* global UB */
 UB.i18nExtend({
+  Yes: 'Yes',
+  No: 'No',
+  ok: 'Ok',
+  cancel: 'Cancel',
   Enter: 'Enter',
   Password: 'Password',
   User: 'User name', // login
@@ -66,6 +70,7 @@ UB.i18nExtend({
   'Password matches with login': 'Пароль не может совпадать с логином',
   'Previous password is not allowed': 'Пароль совпадает с одним из предидущих',
   logout: 'Logout',
+  fieldValidationError: 'Can not save <b>{0}</b> card.<br > Invalid field',
   blankText: 'This is required field'
 
 })

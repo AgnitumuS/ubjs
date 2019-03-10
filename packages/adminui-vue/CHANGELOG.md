@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  on Mac keyboards the key normally identified as "backspace" on PC keyboards is called "delete"
 - popover button animation removed for vue select (in remote mode)  
  
+## [1.3.3]
+## Changed
+ - prevent override Vue.prototype.$notify introduced by El, instead inject UDialog as `$dialog`
+
+## Added
+ -  Vue.prototype.$dialog, $dialogYesNo, #dialogInfo, $dialogError
+ 
 ## [1.3.2]
 ### Added
  - new Vue base `sidebar` component (left menu). Enabling by setting
