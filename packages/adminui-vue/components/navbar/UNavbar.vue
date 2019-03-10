@@ -1,34 +1,34 @@
 <template>
-  <div class="ub-tabbar">
+  <div class="u-navbar">
     <i
       v-if="withHamburger"
-      class="fa fa-bars ub-tabbar__collapse-button"
+      class="fa fa-bars u-navbar__collapse-button"
       @click="$UB.core.UBApp.fireEvent('portal:sidebar:collapse')"
     />
 
     <div
       ref="tabWrap"
-      class="ub-tabbar__tabs-wrap"
+      class="u-navbar__tabs-wrap"
     >
       <div
         ref="tabInner"
         :class="{'disabled-transition': dragging}"
         :style="{transform: `translateX(${ offset }px)`}"
-        class="ub-tab-slider"
+        class="u-navbar-tab-slider"
         @mousedown="startDrag"
       >
         <transition-group
           name="tab-anim"
-          class="ub-tab-slider__transition-group"
+          class="u-navbar-tab-slider__transition-group"
           @before-leave="beforeLeaveAnimation"
           @after-leave="afterLeaveAnimation"
         >
-          <ub-tab
-            v-for="(tab, index) in tabs"
+          <u-navbar-tab
+            v-for="(tab, idx) in tabs"
             ref="tabs"
             :key="tab.id"
             :tab-data="tab"
-            :class="{'active': current === index}"
+            :class="{'active': current === idx}"
             @close="handleClose"
             @open="handleTabClick"
             @right-click="$refs.context.show"
@@ -37,37 +37,37 @@
       </div>
       <i
         v-show="sliderPrevVisible"
-        class="ub-tab-slider__ctrl el-icon-arrow-left ub-tab-slider__ctrl__prev"
+        class="u-navbar-tab-slider__ctrl el-icon-arrow-left u-navbar-tab-slider__ctrl__prev"
         @click="navigate(1)"
       />
       <i
         v-show="sliderNextVisible"
-        class="ub-tab-slider__ctrl el-icon-arrow-right ub-tab-slider__ctrl__next"
+        class="u-navbar-tab-slider__ctrl el-icon-arrow-right u-navbar-tab-slider__ctrl__next"
         @click="navigate(-1)"
       />
     </div>
 
     <el-popover
-      class="ub-tabbar__overflow"
+      class="u-navbar__overflow"
       placement="bottom"
       trigger="click"
-      popper-class="ub-tabbar__overflow__tray"
-      :class="{'hidden': this.visibleWidth >= this.tabsWidth}"
+      popper-class="u-navbar__overflow__tray"
+      :class="{'hidden': visibleWidth >= tabsWidth}"
     >
       <el-button
         slot="reference"
         icon="el-icon-more"
         circle
-        class="ub-tabbar__button"
+        class="u-navbar__button"
       />
 
-      <div class="ub-tabbar__overflow__tabs">
-        <ub-tab
-          v-for="(tab, index) in tabs"
-          :key="index"
+      <div class="u-navbar__overflow__tabs">
+        <u-navbar-tab
+          v-for="(tab, idx) in tabs"
+          :key="idx"
           :tab-data="tab"
           in-tray
-          :class="{'active': current === index}"
+          :class="{'active': current === idx}"
           @open="handleTabClick"
           @close="handleClose"
         />
@@ -79,20 +79,20 @@
     <ub-context
       ref="context"
       :items="contextItems"
-      click-outside-targets=".ub-tabbar__tab"
+      click-outside-targets=".u-navbar__tab"
       @select="selectContext"
     />
   </div>
 </template>
 
 <script>
-const UbTab = require('./UbTab.vue').default
-const UbContext = require('../../controls/UbContext.vue').default
+const UNavbarTab = require('./UNavbarTab.vue').default
+const UbContext = require('../controls/UbContext.vue').default
 
 export default {
-  name: 'UbTabbar',
+  name: 'UNavbar',
 
-  components: { UbTab, UbContext },
+  components: { UNavbarTab, UbContext },
 
   props: {
     withHamburger: Boolean
@@ -173,7 +173,7 @@ export default {
 
   created () {
     this.subscribeCentralPanelEvents()
-    $App.on('portal:tabbar:appendSlot', (Component, bindings) => {
+    $App.on('portal:navbar:appendSlot', (Component, bindings) => {
       this.$slots.default = this.$createElement(Component, bindings)
     })
   },
@@ -237,9 +237,9 @@ export default {
 
     handleTabClick (tab, ignoreDrag = false) {
       if (ignoreDrag || !this.disabledTabClick) {
-        const index = this.tabs.indexOf(tab)
-        if (index !== -1) {
-          window.$App.viewport.centralPanel.setActiveTab(index)
+        const idx = this.tabs.indexOf(tab)
+        if (idx !== -1) {
+          window.$App.viewport.centralPanel.setActiveTab(idx)
         }
       }
     },
@@ -285,15 +285,15 @@ export default {
      * Reaction on change of the active tab.  Await for measurements, if needed.
      */
     onChangeActiveTab (tabId) {
-      let index = this.tabs.findIndex(t => t.id === tabId)
+      let idx = this.tabs.findIndex(t => t.id === tabId)
 
       /* Change index of currently selected tab */
-      if (index < 0 || this.tabs.length === 0) {
-        index = 0
-      } else if (index >= this.tabs.length) {
-        index = this.tabs.length - 1
+      if (idx < 0 || this.tabs.length === 0) {
+        idx = 0
+      } else if (idx >= this.tabs.length) {
+        idx = this.tabs.length - 1
       }
-      this.current = index
+      this.current = idx
 
       if (this.measurementPending) {
         if (!this.activeTabPending) {
@@ -386,7 +386,7 @@ export default {
     },
 
     addTab (tab) {
-      // When an ExtJS tab changes its title, need to sync it with tabbar
+      // When an ExtJS tab changes its title, need to sync it with navbar tab
       tab.addListener('titlechange', (UBTab, newText) => {
         const tab = this.tabs.find(t => t.id === UBTab.id)
         if (tab) {
@@ -425,13 +425,13 @@ export default {
 
         remove (sender, tab) {
           const { tabs, current } = this
-          const index = tabs.findIndex(t => t.id === tab.id)
-          if (index !== -1) {
+          const idx = tabs.findIndex(t => t.id === tab.id)
+          if (idx !== -1) {
             /* Remove a tab by its Id */
-            this.tabs.splice(index, 1)
+            this.tabs.splice(idx, 1)
             this.measurementPending = true
 
-            if (current > index) {
+            if (current > idx) {
               this.onChangeActiveTab(tabs[current - 1].id)
             }
           }
@@ -449,7 +449,7 @@ export default {
 </script>
 
 <style>
-.ub-tabbar{
+.u-navbar{
   padding: 8px;
   display:flex;
   justify-content: space-between;
@@ -457,7 +457,7 @@ export default {
   border-bottom: 1px solid rgba(var(--bg), 0.12);
 }
 
-.ub-tab-slider__ctrl{
+.u-navbar-tab-slider__ctrl{
   position: absolute;
   top: 0;
   width: 35px;
@@ -469,36 +469,36 @@ export default {
   cursor: pointer;
 }
 
-.ub-tab-slider__ctrl__prev{
+.u-navbar-tab-slider__ctrl__prev{
   background: linear-gradient(to left, transparent, #fefefe 45%);
   left: 0;
   justify-content: flex-start;
 }
 
-.ub-tab-slider__ctrl__next{
+.u-navbar-tab-slider__ctrl__next{
   background: linear-gradient(to right, transparent, #fefefe 45%);
   right: 0;
 }
 
-.ub-tabbar__tabs-wrap{
+.u-navbar__tabs-wrap{
   position: relative;
   width: 100%;
   height: 32px;
   overflow: hidden;
 }
 
-.ub-tab-slider{
+.u-navbar-tab-slider{
   position: absolute;
   top: 0;
   left: 0;
   transition:transform .2s;
 }
 
-.ub-tab-slider.disabled-transition{
+.u-navbar-tab-slider.disabled-transition{
   transition: none;
 }
 
-.ub-tabbar__overflow{
+.u-navbar__overflow{
   width: 32px;
   min-width: 32px;
   height: 32px;
@@ -506,11 +506,11 @@ export default {
   position: relative;
 }
 
-.ub-tabbar__overflow.hidden{
+.u-navbar__overflow.hidden{
   visibility: collapse
 }
 
-.ub-tabbar__overflow__tray{
+.u-navbar__overflow__tray{
   background-color: rgba(var(--bg), 1);
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24);
   padding: 8px 0;
@@ -518,11 +518,11 @@ export default {
   line-height: 1;
 }
 
-.ub-tabbar__overflow__tray[x-placement^=bottom] .popper__arrow::after{
+.u-navbar__overflow__tray[x-placement^=bottom] .popper__arrow::after{
   border-bottom-color: rgba(var(--bg), 1);
 }
 
-.ub-tabbar__overflow__tabs{
+.u-navbar__overflow__tabs{
   max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -532,7 +532,7 @@ export default {
   transition: .23s;
 }
 
-.ub-tabbar__tab{
+.u-navbar__tab{
   transition:transform .23s, opacity .23s;
 }
 
@@ -542,17 +542,17 @@ export default {
   transform: translateY(30px);
 }
 
-.ub-tabbar__tab.tab-anim-leave-active{
+.u-navbar__tab.tab-anim-leave-active{
   transition: all .23s;
   position: absolute;
   top: 0
 }
 
-.ub-tab-slider__transition-group{
+.u-navbar-tab-slider__transition-group{
   display: flex
 }
 
-.ub-tabbar__collapse-button{
+.u-navbar__collapse-button{
   margin-right: 12px;
   font-size: 24px;
   width: 24px;
@@ -563,7 +563,7 @@ export default {
   cursor: pointer;
 }
 
-.ub-tabbar__collapse-button:hover{
+.u-navbar__collapse-button:hover{
   color: rgb(var(--info));
 }
 </style>

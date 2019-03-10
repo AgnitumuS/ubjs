@@ -1,7 +1,9 @@
-const dialogs = require('../components/dialog/UDialog')
-const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
-const { Notification } = require('element-ui')
 const UB = require('@unitybase/ub-pub')
+const Vue = require('vue')
+const { Notification } = require('element-ui')
+const dialogs = require('../components/dialog/UDialog')
+const UNavbar = require('../components/navbar/UNavbar.vue').default
+const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
@@ -52,6 +54,26 @@ function replaceExtJSDialogs () {
   })
 }
 
+function replaceExtJSNavbar () {
+  const id = UB.core.UBApp.viewport.centralPanel.tabBar.id
+  const styles = document.createElement('style')
+  styles.innerHTML = `#${id}{display:none !important}`
+  document.body.appendChild(styles)
+
+  new Vue({
+    mounted () {
+      const { offsetHeight } = this.$el
+      window.UB.core.UBApp.viewport.centralPanel.setMargin(`-${offsetHeight} 0 0 0`)
+      window.UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(offsetHeight)
+    },
+    render: (h) => h(UNavbar, {
+      props: {
+        withHamburger: UB.connection.appConfig.uiSettings.adminUI.customSidebar
+      }
+    })
+  }).$mount(`#${id}`)
+}
 module.exports = {
-  replaceExtJSDialogs
+  replaceExtJSDialogs,
+  replaceExtJSNavbar
 }
