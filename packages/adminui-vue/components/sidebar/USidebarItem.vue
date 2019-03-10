@@ -14,7 +14,7 @@
     <div class="ub-submenu__on-colapsed__title">
       {{ item.caption }}
     </div>
-    <ub-sidebar-item
+    <u-sidebar-item
       v-for="child in item.children"
       :key="child.ID"
       :item="child"
@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: 'UbSidebarItem',
+  name: 'USidebarItem',
   props: {
     item: Object,
     contextShow: Function,
