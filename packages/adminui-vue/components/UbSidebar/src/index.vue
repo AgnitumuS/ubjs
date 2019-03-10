@@ -99,10 +99,11 @@ export default {
     },
 
     activeShortcuts () {
-      return this.buildInheritance(this.shortcuts).filter(({ desktopID }) => this.selectedDesktop === desktopID)
+      return this.buildInheritance(this.shortcuts).filter(item => this.selectedDesktop === item.desktopID)
     },
 
     contextItems () {
+      let canAddShortcut = this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('insert')
       return [{
         label: 'Edit',
         action: 'edit',
@@ -110,12 +111,12 @@ export default {
       }, {
         label: 'dobavitYarlik',
         action: 'addShortcut',
-        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('insert'),
+        disabled: !canAddShortcut,
         iconCls: 'el-icon-circle-plus'
       }, {
         label: 'dobavitDirectoriu',
         action: 'addFolder',
-        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('insert'),
+        disabled: !canAddShortcut,
         iconCls: 'fa fa-folder'
       }, {
         label: '-'
