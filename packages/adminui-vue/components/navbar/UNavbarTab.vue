@@ -8,16 +8,16 @@
       v-html="tabData.title"
     />
     <div
-      :class="[inTray ? 'ub-tabbar__tab-tray' : 'ub-tabbar__tab']"
+      :class="[inTray ? 'u-navbar__tab-tray' : 'u-navbar__tab']"
       @click="$emit('open', tabData, inTray)"
       @click.right="$emit('right-click', $event, tabData)"
     >
       <div
-        class="ub-tabbar__tab__title"
+        class="u-navbar__tab__title"
         v-html="tabData.title"
       />
       <div
-        class="ub-tabbar__tab__close"
+        class="u-navbar__tab__close"
         @click.stop="$emit('close', [tabData], inTray)"
       />
     </div>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: 'UbTab',
+  name: 'UNavbarTab',
   props: {
     tabData: Object,
     inTray: Boolean
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style>
-.ub-tabbar__tab{
+.u-navbar__tab{
   height: 32px;
   padding-left: 12px;
   padding-right: 28px;
@@ -53,28 +53,28 @@ export default {
   max-width: 170px;
 }
 
-.ub-tabbar__tab:last-child{
+.u-navbar__tab:last-child{
   margin-right: 0
 }
 
-.ub-tabbar__tab:hover{
+.u-navbar__tab:hover{
   background-color: rgba(var(--primary), 0.16);
   border-color: rgba(var(--bg-dark), 0.54);
 }
 
-.ub-tabbar__tab.active{
+.u-navbar__tab.active{
   background-color: rgba(var(--bg), 1);
   color: #fff;
   cursor: default;
 }
 
-.ub-tabbar__tab__title{
+.u-navbar__tab__title{
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 8px 0;
 }
 
-.ub-tabbar__tab__close{
+.u-navbar__tab__close{
   cursor: pointer;
   position: absolute;
   height: 100%;
@@ -86,13 +86,13 @@ export default {
   justify-content: center;
 }
 
-.ub-tabbar__tab__close:after{
+.u-navbar__tab__close:after{
   content: '✖';
   font-weight: 300;
   font-size: 11px;
 }
 
-.ub-tabbar__tab-tray{
+.u-navbar__tab-tray{
   height: 32px;
   padding-right: 95px;
   padding-left: 40px;
@@ -108,16 +108,16 @@ export default {
   max-width: 300px;
 }
 
-.ub-tabbar__tab-tray:hover,
-.ub-tabbar__tab-tray.active{
+.u-navbar__tab-tray:hover,
+.u-navbar__tab-tray.active{
   color: #ffffff;
 }
 
-.ub-tabbar__tab-tray.active{
+.u-navbar__tab-tray.active{
   border-color: #fff;
   background-color: rgba(var(--bg-dark), 1);
 }
-.ub-tabbar__tab-tray:hover{
+.u-navbar__tab-tray:hover{
   border-color: rgba(var(--primary), 1);
   background-color: rgba(var(--bg-dark), 1);
 }

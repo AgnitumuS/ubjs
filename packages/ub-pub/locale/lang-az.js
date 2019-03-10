@@ -1,5 +1,9 @@
 /* global UB */
 UB.i18nExtend({
+  Yes: 'Bəli',
+  No: 'Xeyr',
+  ok: 'ОK',
+  cancel: 'Ləğv',
   Enter: 'Daxil ol',
   Password: 'Parol',
   User: 'İstifadəçi',
@@ -74,6 +78,7 @@ UB.i18nExtend({
   'Password matches with login': 'Şifrə loginlə eyni ola bilməz',
   'Previous password is not allowed': 'Şifrə əvvəlkilərdən biri ilə eynidir',
   logout: 'Çıxış',
+  fieldValidationError: '<b>{0}</b>.<br > kartını yadda saxlamaq mümkün deyil. Yanlış doldurulmuş xana',
   blankText: 'Bu xana mütləq doldurulmalıdır'
 
 })

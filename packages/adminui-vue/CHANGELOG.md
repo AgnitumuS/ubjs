@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  on Mac keyboards the key normally identified as "backspace" on PC keyboards is called "delete"
 - popover button animation removed for vue select (in remote mode)  
  
+## [1.3.3]
+## Changed
+ - prevent override Vue.prototype.$notify introduced by El, instead inject UDialog as `$dialog`
+
+## Added
+ -  Vue.prototype.$dialog, $dialogYesNo, #dialogInfo, $dialogError
+ 
 ## [1.3.2]
 ### Added
  - new Vue base `sidebar` component (left menu). Enabling by setting
@@ -67,8 +74,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.2.0]
 ### Changed
- - `adminui-vue` model replace a top Ext-JS based tabbar with tabbar implemented using VueJS.
-  See `components/UbTabbar`
+ - `adminui-vue` model replace a top Ext-JS based navbar with navbar implemented using VueJS.
+  See `components/navbar`
  - `adminui-vue` model replace Ext-JS based relogon window with VueJS implementation.
   See `components/UbRelogon`
 

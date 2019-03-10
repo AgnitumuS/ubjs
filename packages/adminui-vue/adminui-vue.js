@@ -38,19 +38,31 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
-const replaceDefaultTabbar = require('./components/UbTabbar/init')
-const replaceDefaultRelogin = require('./components/UbRelogin/init')
-const { replaceDefaultDialogs, notifyComponent } = require('./components/UbDialog/init')
-const addSidebar = require('./components/UbSidebar/init')
+const dialogs = require('./components/dialog/UDialog')
+// add $dialog* to Vue prototype
+Vue.use(dialogs)
+UB.setErrorReporter(dialogs.errorReporter)
+if (window.Ext) {
+  const replaceExtJSDialogs = require('./utils/replaceExtJSWidgets').replaceExtJSDialogs
+  const replaceExtJSNavbar = require('./utils/replaceExtJSWidgets').replaceExtJSNavbar
+  window.$App.on('applicationReady', replaceExtJSDialogs)
+  window.$App.on('applicationReady', replaceExtJSNavbar)
+}
 
-Vue.use(notifyComponent)
+const replaceDefaultRelogin = require('./components/UbRelogin/init')
+const Sidebar = require('./components/sidebar/USidebar.vue').default
+
+function addVueSidebar () {
+  const SidebarConstructor = Vue.extend(Sidebar)
+  const instance = new SidebarConstructor()
+  const vm = instance.$mount()
+  document.body.append(vm.$el)
+}
 
 if (window.$App) {
-  window.$App.on('applicationReady', replaceDefaultTabbar)
   window.$App.on('applicationReady', replaceDefaultRelogin)
-  window.$App.on('applicationReady', replaceDefaultDialogs)
   if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
-    window.$App.on('applicationReady', addSidebar)
+    window.$App.on('applicationReady', addVueSidebar)
     $App.on('buildMainMenu', items => {
       items.splice(0, 1) // remove top panel ExtJS hamburger menu button
     })
@@ -60,8 +72,8 @@ if (window.$App) {
     //   const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
     //   $App.fireEvent('portal:sidebar:appendSlot', SidebarSlotExample, { some attrs })
     //
-    //   const TabbarSlotExample = require('./samples/TabbarSlotExample.vue').default
-    //   $App.fireEvent('portal:tabbar:appendSlot', TabbarSlotExample, { some attrs })
+    //   const TabbarSlotExample = require('./samples/NavbarSlotExample.vue').default
+    //   $App.fireEvent('portal:navbar:appendSlot', NavbarSlotExample, { some attrs })
     // })
   }
 

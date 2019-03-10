@@ -322,7 +322,7 @@ UB.toast = function(cfg){
         iconCls: 'ux-notification-icon-error',
         bodyPadding: 5,
         items: [{
-            html: UB.format( UB.i18n('oshibkaVvoda'), cfg.entityTitle),
+            html: UB.i18n('fieldValidationError', cfg.entityTitle),
             border: false
         }, {
             xtype: 'box',

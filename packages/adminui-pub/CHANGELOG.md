@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.3]
+### Changed 
+ - i18 key `oshibkaVvoda` renamed to `fieldValidationError` and moved to up-pub
+ 
 ## [5.8.2]
 ### Changed
  - tabId parameter of `$App.doCommand` should be of type string.

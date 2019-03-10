@@ -360,7 +360,7 @@ function setDocumentEndpoint (req, resp) {
   if (!parsed.success) return resp.badRequest(parsed.reason)
   let attribute = parsed.attribute
   if (attribute.entity.isUnity) {
-    return resp.badRequest(`Direct modification of UNITY entity ${attribute.entity.code} not allowed`)
+    return resp.badRequest(`Direct modification of then UNITY entity ${attribute.entity.code} is not allowed`)
   }
   let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeCode]
@@ -397,7 +397,7 @@ function putContent (request, content) {
   if (!parsed.success) throw new Error(parsed.reason)
   let attribute = parsed.attribute
   if (attribute.entity.isUnity) {
-    throw new Error(`Direct modification of UNITY entity ${attribute.entity.code} not allowed`)
+    throw new Error(`Direct modification of the UNITY entity ${attribute.entity.code} is not allowed`)
   }
   let storeCode = attribute.storeName || blobStoresMap.defaultStoreName
   let store = blobStoresMap[storeCode]

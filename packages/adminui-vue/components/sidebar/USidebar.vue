@@ -50,7 +50,7 @@
       :default-openeds="defaultOpeneds"
       @open="setActiveFolder"
     >
-      <ub-sidebar-item
+      <u-sidebar-item
         v-for="item in activeShortcuts"
         :key="item.ID"
         :item="item"
@@ -69,17 +69,18 @@
 </template>
 
 <script>
-const UbSidebarItem = require('./UbSidebarItem.vue').default
-const UbContext = require('../../controls/UbContext.vue').default
 const UB = require('@unitybase/ub-pub')
+const USidebarItem = require('./USidebarItem.vue').default
+const UbContext = require('../controls/UbContext.vue').default
 
 export default {
-  name: 'UbSidebar',
-  components: { UbSidebarItem, UbContext },
+  name: 'USidebar',
+  components: { USidebarItem, UbContext },
 
   data () {
-    const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed') === 'true'
-    const isCollapsed = window.innerWidth < 1024 ? true : savedCollapse
+    let isCollapsed = window.innerWidth < 1024
+    const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed')
+    if (savedCollapse) isCollapsed = (savedCollapse === 'true')
     return {
       shortcuts: [],
       desktops: [],
@@ -98,30 +99,32 @@ export default {
     },
 
     activeShortcuts () {
-      return this.buildInheritance(this.shortcuts).filter(({ desktopID }) => this.selectedDesktop === desktopID)
+      return this.buildInheritance(this.shortcuts).filter(item => this.selectedDesktop === item.desktopID)
     },
 
     contextItems () {
+      let canAdd = this.$UB.connection.domain.entities['ubm_navshortcut'].haveAccessToMethod('insert')
+      let canDelete = this.$UB.connection.domain.entities['ubm_navshortcut'].haveAccessToMethod('delete')
       return [{
         label: 'Edit',
         action: 'edit',
         iconCls: 'el-icon-edit'
       }, {
-        label: 'dobavitYarlik',
+        label: 'addShortcut',
         action: 'addShortcut',
-        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('insert'),
+        disabled: !canAdd,
         iconCls: 'el-icon-circle-plus'
       }, {
-        label: 'dobavitDirectoriu',
+        label: 'addFolder',
         action: 'addFolder',
-        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('insert'),
+        disabled: !canAdd,
         iconCls: 'fa fa-folder'
       }, {
         label: '-'
       }, {
         label: 'Delete',
         action: 'deleteShortcut',
-        disabled: !this.$UB.connection.domain.entities.ubm_navshortcut.haveAccessToMethod('delete'),
+        disabled: !canDelete,
         iconCls: 'el-icon-delete'
       }]
     }
@@ -202,8 +205,7 @@ export default {
     async selectContext (action, { ID, desktopID, parentID, isFolder }) {
       const command = {
         cmdType: 'showForm',
-        entity: 'ubm_navshortcut',
-        store: this.$UB.core.UBStoreManager.getNavigationShortcutStore()
+        entity: 'ubm_navshortcut'
       }
 
       if (action === 'edit') {
@@ -229,17 +231,9 @@ export default {
       }
 
       if (action === 'deleteShortcut') {
-        const confirm = await this.$notify({
-          title: 'deletionDialogConfirmCaption',
-          msg: 'vyUvereny',
-          type: 'question',
-          buttonText: {
-            yes: 'da',
-            cancel: 'net'
-          }
-        })
+        const confirm = await this.$dialogYesNo('areYouSure', 'deletionDialogConfirmCaption')
 
-        if (confirm === 'accept') {
+        if (confirm) {
           await $App.connection.doDelete({
             entity: 'ubm_navshortcut',
             execParams: {

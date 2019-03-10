@@ -7,14 +7,14 @@
     @contextmenu.native="contextDisabled ? null : contextOnTitle($event)"
   >
     <template slot="title">
-      <i :class="item.iconCls || item.parentID || 'fa fa-file'" />
+      <i :class="getIcon(item)" />
       <span>{{ item.caption }}</span>
     </template>
 
     <div class="ub-submenu__on-colapsed__title">
       {{ item.caption }}
     </div>
-    <ub-sidebar-item
+    <u-sidebar-item
       v-for="child in item.children"
       :key="child.ID"
       :item="child"
@@ -29,14 +29,14 @@
     @click="openLink(item)"
     @contextmenu.native="contextDisabled ? null : contextShow($event, item)"
   >
-    <i :class="item.iconCls || item.parentID || 'fa fa-file'" />
+    <i :class="getIcon(item)" />
     <span slot="title">{{ item.caption }}</span>
   </el-menu-item>
 </template>
 
 <script>
 export default {
-  name: 'UbSidebarItem',
+  name: 'USidebarItem',
   props: {
     item: Object,
     contextShow: Function,
@@ -46,6 +46,10 @@ export default {
   methods: {
     openLink ({ ID, inWindow }) {
       $App.runShortcutCommand(ID, inWindow)
+    },
+
+    getIcon(item) {
+      return item.iconCls || (item.parentID ? '' : (item.isFolder ? 'fa fa-folder' : 'fa fa-file-text-o'))
     },
 
     /* Need to do this hack because we cant bind event in slot */

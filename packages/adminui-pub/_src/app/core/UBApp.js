@@ -527,7 +527,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    *
    * @param {String} title
    * @param {String} msg
-   * @returns {Promise} resolved to true | false depending on user choice
+   * @returns {Promise<boolean>} resolved to true | false depending on user choice
    */
   dialogYesNo: function (title, msg) {
     return new Promise(function (resolve) {

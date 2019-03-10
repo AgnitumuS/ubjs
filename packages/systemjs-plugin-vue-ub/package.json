@@ -31,12 +31,9 @@
   },
   "homepage": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/systemjs-plugin-vue-ub#readme",
   "dependencies": {
-    "cssnano": "^3.7.1",
-    "lru-cache": "^4.0.1",
     "vue-template-compiler": "^2"
   },
-  "devDependencies": {
-    "cross-env": "^5.2.0",
+  "peerDependencies": {
     "webpack-bundle-analyzer": "^2.13.1"
   }
 }
