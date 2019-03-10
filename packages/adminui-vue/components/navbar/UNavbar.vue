@@ -24,11 +24,11 @@
           @after-leave="afterLeaveAnimation"
         >
           <u-navbar-tab
-            v-for="(tab, index) in tabs"
+            v-for="(tab, idx) in tabs"
             ref="tabs"
             :key="tab.id"
             :tab-data="tab"
-            :class="{'active': current === UNavbar}"
+            :class="{'active': current === idx}"
             @close="handleClose"
             @open="handleTabClick"
             @right-click="$refs.context.show"
@@ -63,11 +63,11 @@
 
       <div class="u-navbar__overflow__tabs">
         <u-navbar-tab
-          v-for="(tab, index) in tabs"
-          :key="UNavbar"
+          v-for="(tab, idx) in tabs"
+          :key="idx"
           :tab-data="tab"
           in-tray
-          :class="{'active': current === UNavbar}"
+          :class="{'active': current === idx}"
           @open="handleTabClick"
           @close="handleClose"
         />
@@ -237,9 +237,9 @@ export default {
 
     handleTabClick (tab, ignoreDrag = false) {
       if (ignoreDrag || !this.disabledTabClick) {
-        const index = this.tabs.indexOf(tab)
-        if (UNavbar !== -1) {
-          window.$App.viewport.centralPanel.setActiveTab(UNavbar)
+        const idx = this.tabs.indexOf(tab)
+        if (idx !== -1) {
+          window.$App.viewport.centralPanel.setActiveTab(idx)
         }
       }
     },
@@ -285,15 +285,15 @@ export default {
      * Reaction on change of the active tab.  Await for measurements, if needed.
      */
     onChangeActiveTab (tabId) {
-      let index = this.tabs.findIndex(t => t.id === tabId)
+      let idx = this.tabs.findIndex(t => t.id === tabId)
 
       /* Change index of currently selected tab */
-      if (UNavbar < 0 || this.tabs.length === 0) {
-        UNavbar = 0
-      } else if (UNavbar >= this.tabs.length) {
-        UNavbar = this.tabs.length - 1
+      if (idx < 0 || this.tabs.length === 0) {
+        idx = 0
+      } else if (idx >= this.tabs.length) {
+        idx = this.tabs.length - 1
       }
-      this.current = UNavbar
+      this.current = idx
 
       if (this.measurementPending) {
         if (!this.activeTabPending) {
@@ -425,13 +425,13 @@ export default {
 
         remove (sender, tab) {
           const { tabs, current } = this
-          const index = tabs.findIndex(t => t.id === tab.id)
-          if (UNavbar !== -1) {
+          const idx = tabs.findIndex(t => t.id === tab.id)
+          if (idx !== -1) {
             /* Remove a tab by its Id */
-            this.tabs.splice(UNavbar, 1)
+            this.tabs.splice(idx, 1)
             this.measurementPending = true
 
-            if (current > UNavbar) {
+            if (current > idx) {
               this.onChangeActiveTab(tabs[current - 1].id)
             }
           }
