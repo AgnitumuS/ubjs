@@ -9,7 +9,7 @@ module.exports = function metaTr (options) {
     if (!options) return
   }
 
-  let metaContent = fs.readFileSync(options.meta)
+  let metaContent = fs.readFileSync(options.meta, { encoding: 'utf-8' })
   let jsonC = JSON.parse(metaContent)
   if (Array.isArray(jsonC.attributes)) {
     console.info('metafile attributes are already converted to array')
