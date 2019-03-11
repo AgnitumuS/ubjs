@@ -33,6 +33,16 @@ Ext.define('UB.view.Viewport', {
         margin: '3, 5, 0, 0',
         border: false
       })
+    } else {
+      me.leftPanel = Ext.create('Ext.panel.Panel', {
+        header: false,
+        region: 'west',
+        width: 240,
+        sizes: {
+          full: 240,
+          collapsed: 76
+        }
+      })
     }
     if (UB.connection.appConfig.uiSettings.adminUI.customNavbar !== true) {
       me.topPanel = Ext.create('UB.view.MainToolbar', {
