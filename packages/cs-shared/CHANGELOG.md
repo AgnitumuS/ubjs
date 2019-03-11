@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.0.19]
+### Fixed
+ - addingCondition now checked in `CustomRepository.miscIf` 
+ 
+### Added
+ - `CustomRepository.clone()` method
+ ```javascript
+  let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
+  let repo2 = repo1.clone()
+  repo1.orderBy('code')
+  repo1.selectAsObject() // return ordered users with ID > 15
+
+  repo2.attrs('name').where('ID', '>', 100, 'byID')
+  repo2.selectAsObject() // return unordered users with their names and ID > 100
+ ```
+ 
+### Changed
+ - `CustomRepository.misc` `will remove option in case it value is `false` instead of setting it to `false`
+ This reduce resulting UBQL size
+ 
+ - `CustomRepository.orderBy(attrd, direction)` accept null as `direction`.
+  In this case ordering by `attr` will be removed
+  ```javascript
+   let repo = UB.Repository('my_entity').attrs('ID').orderBy('code')
+   let orderedData = await repo.selectAsObject() // ordered. await is for client-side only
+   repo.orderBy('code', null) // remove order by code
+   let unorderedData = await repo.selectAsObject() // NOT ordered
+  ```
+
+ 
 ## [5.0.18]
 ### Added
  - new method asPlainJSON() for UBEntity & UBEntityAttribute - return a 

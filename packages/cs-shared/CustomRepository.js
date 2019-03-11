@@ -462,23 +462,34 @@ UB.Repository('tst_document').attrs(['ID', '[caregory.code]'])
    * Sorting
    * @example
 
-UB.CustomRepository('my_entity').attrs('ID').orderBy('code')
+   let repo = UB.Repository('my_entity').attrs('ID').orderBy('code')
+   let orderedData = await repo.selectAsObject() // ordered. await is for client-side only
+   repo.orderBy('code', null) // remove order by code
+   let unorderedData = await repo.selectAsObject() // NOT ordered
 
    * @param {string} attr Sorted attribute
-   * @param {string} [direction='asc'] Sort direction ('asc'|'desc')
+   * @param {string|null} [direction='asc'] Sort direction ('asc'|'desc'). If `null` - remove sorting by this attr
    * @return {CustomRepository}
    */
   orderBy (attr, direction) {
-    direction = direction || 'asc'
-    this.orderList.push({
-      expression: attr,
-      order: direction
-    })
+    if (direction === null) {
+      let i = this.orderList.findIndex(oi => oi.expression === attr)
+      if (i !== -1) this.orderList.splice(i, 1)
+    } else {
+      direction = direction || 'asc'
+      this.orderList.push({
+        expression: attr,
+        order: direction
+      })
+    }
     return this
   }
 
   /**
    * Adds descend sorting. The same as orderBy(attr, 'desc')
+   *
+   * To remove such sorting call orderBy(attr, null)
+   *
    * @example
 
 UB.Repository('my_entity').attrs('ID')
@@ -721,7 +732,15 @@ inst.run('select', repo.ubql())
    * @return {CustomRepository}
    */
   misc (flags) {
-    _.assign(this.__misc, flags)
+    for (let key in flags) {
+      if (flags.hasOwnProperty(key)) {
+        if (!flags[key]) {
+          delete this.__misc[key]
+        } else {
+          this.__misc[key] = flags[key]
+        }
+      }
+    }
     return this
   }
 
@@ -734,8 +753,11 @@ inst.run('select', repo.ubql())
    * @return {CustomRepository}
    */
   miscIf (addingCondition, flags) {
-    _.assign(this.__misc, flags)
-    return this
+    if (addingCondition) {
+      return this.misc(flags)
+    } else {
+      return this
+    }
   }
 
   // noinspection JSUnusedGlobalSymbols
@@ -759,6 +781,23 @@ inst.run('select', repo.ubql())
   withTotal () {
     this.options.totalRequired = true
     return this
+  }
+
+  /**
+   * Creates a clone of this repository
+   * @example
+
+   let repo1 = UB.Repository('uba_user').attrs('ID', 'code').where('ID', '>', 15, 'byID')
+   let repo2 = repo1.clone()
+   repo1.orderBy('code')
+   repo2.attrs('name').where('ID', '>', 100, 'byID')
+   repo1.selectAsObject() // return ordered users with ID > 15
+   repo2.selectAsObject() // return unordered users with their names and ID > 100
+
+   * @return {CustomRepository}
+   */
+  clone () {
+    return _.cloneDeep(this)
   }
 }
 
