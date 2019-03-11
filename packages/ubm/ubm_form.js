@@ -240,7 +240,7 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
   }
   let newFormDefMeta = newValues.formDef
   let newFormCodeMeta = newValues.formCode
-  let formDefBody
+  let formDefBody = ''
   let formScriptBody
   if (isInsert) { // for insert operation create a boilerplate for form definition & form script
     if (storedValue.formType === 'auto') {
@@ -249,14 +249,15 @@ function doUpdateInsert (ctxt, storedValue, isInsert) {
       let codeParts = storedValue.code.split('-')
       let className = formEntity.modelName + '.' + (codeParts[1] ? codeParts[1] : 'BetterToSetFormCodeToEntity-ClassName')
       formDefBody = getFormBodyTpl('new_customForm.mustache', '').replace('{{className}}', className)
-    } else if (storedValue.formType === 'vue') {
-      formDefBody = getFormBodyTpl('new_vueFormDef.mustache', '')
     }
+
     // and for form script
     if (storedValue.formType === 'auto') {
       formScriptBody = getFormBodyTpl('new_autoFormJS.mustache', 'exports.formCode = {\r\n}')
     } else if (storedValue.formType === 'vue') {
       formScriptBody = getFormBodyTpl('new_vueFormJS.mustache', 'exports.formCode = {\r\n\tinitUBComponent: function () {\r\n\r\n\t}\r\n}')
+    } else if (storedValue.formType === 'module') {
+      formScriptBody = getFormBodyTpl('new_moduleFormJS.mustache', '')
     }
     if (formScriptBody) {
       let formCodeInfo = blobStores.putContent({

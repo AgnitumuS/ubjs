@@ -97,10 +97,10 @@ Ext.define('UB.core.UBCommand', {
       }
       _.forEach(entity.attributes, function (attribute, attrName) {
         if (attribute.defaultView !== false && !privateRe.test(attrName) && (!parentContext || !parentContext.hasOwnProperty(attrName))) {
-          items.push({attributeName: attrName, anchor: '100%'})
+          items.push({ attributeName: attrName, anchor: '100%' })
         }
       })
-      return {items: items}
+      return { items: items }
     },
 
     /**
@@ -145,7 +145,7 @@ Ext.define('UB.core.UBCommand', {
       whereList = whereList || {}
       itemName = itemName || 'c' + (Ext.Object.getSize(whereList) + 1)
       condition = condition || UB.core.UBCommand.condition.sqlecEqual
-      whereList[itemName] = {expression: '[' + attributeName + ']', condition: condition, values: {}}
+      whereList[itemName] = { expression: '[' + attributeName + ']', condition: condition, values: {} }
       whereList[itemName].values[attributeName] = attributeValue
 
       return whereList
@@ -384,7 +384,7 @@ Ext.define('UB.core.UBCommand', {
     } else {
       me.commandData = {
         params: [
-          {entity: me.entity, method: UB.core.UBCommand.methodName.SELECT, fieldList: '*'}
+          { entity: me.entity, method: UB.core.UBCommand.methodName.SELECT, fieldList: '*' }
         ]
       }
     }
@@ -471,7 +471,7 @@ Ext.define('UB.core.UBCommand', {
     if ((showListParam.fieldList === '*') ||
       (Array.isArray(showListParam.fieldList) && (showListParam.fieldList.length === 1) && (showListParam.fieldList[0] === '*'))
     ) {
-      showListParam.fieldList = $App.domainInfo.get(me.entity).getAttributeNames({defaultView: true})
+      showListParam.fieldList = $App.domainInfo.get(me.entity).getAttributeNames({ defaultView: true })
     }
 
     me.windowCommandCode = me.commandCode || UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), showListParam.fieldList)
@@ -567,8 +567,8 @@ Ext.define('UB.core.UBCommand', {
       } else {
         me.windowCommandCode = me.formCode
 
-        UB.core.UBFormLoader.getFormViewAndController({formCode: me.formCode}).then(function (formDefinition) {
-          if (formDefinition.formType === 'vue') {
+        UB.core.UBFormLoader.getFormViewAndController({ formCode: me.formCode }).then(function (formDefinition) {
+          if ((formDefinition.formType === 'vue') || (formDefinition.formType === 'module')) {
             formDefinition.formController.mount(me.commandConfig)
           } else {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)
@@ -580,7 +580,7 @@ Ext.define('UB.core.UBCommand', {
 
   onFormCodeRun: function () {
     let me = this
-    UB.core.UBFormLoader.getFormViewAndController({formCode: me.formCode}).then(function (form) {
+    UB.core.UBFormLoader.getFormViewAndController({ formCode: me.formCode }).then(function (form) {
       me.onShowFormRun(form.formView, form.formController)
     })
   },
