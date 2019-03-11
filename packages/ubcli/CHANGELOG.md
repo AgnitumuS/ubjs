@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.11]
+### Fixed
+ - `npx ubcli meta-tr` command now work correctly. Meta content encoding before using `JSON.parse()` was fixed
+ 
 ## [5.3.0]
 ### Changed
  - `generateDDL` command now work under `root` system account and can be executed only locally.
