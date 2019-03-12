@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "systemjs": "^0.20.19",
-    "ub-jsdoc": "^2.0.4"
+    "ub-jsdoc": "^2.0.7"
   }
 }
