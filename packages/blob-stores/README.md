@@ -5,8 +5,8 @@ this attribute should be defined. Content (data stored in database) of
 such attributes is a meta-information about file - a serialized
 {@link BlobStoreItem} object, not an actual file content.
 
-In case entity is stored in the database using {mStorage} mixin, DDL generator
-create nvarchar(2000) field in database and store there {BlobStoreItem} serialized to JSON.
+In case entity is stored in the database using {@link mStorage} mixin, DDL generator
+create nvarchar(2000) field in database and store there {@link BlobStoreItem} serialized to JSON.
 
 For Virtual entity developer should implement `select` method and fill {@link BlobStoreItem} manually
 (for example by parsing file content as done in **ubm_form**).

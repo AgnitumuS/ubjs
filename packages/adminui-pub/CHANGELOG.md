@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **BREAKING** `vue` forms definition extension changed from `js` to `vue`. Existed `vue` forms should be renamed manually 
  `git mv my_entity-fm.js my_entity-fm.vue`
  
-## Added
+### Added
  - Font color selection button added to `UB.ux.form.HtmlEditor`
  - Preview in PDF button now enabled in `UB.ux.form.HtmlEditor` (package @unitybase/pdf should be in package.json for this feature)
   
