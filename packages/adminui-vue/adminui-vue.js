@@ -49,12 +49,18 @@ if (window.Ext) {
   window.$App.on('applicationReady', replaceExtJSNavbar)
 }
 
-const replaceDefaultRelogin = require('./components/UbRelogin/init')
 const Sidebar = require('./components/sidebar/USidebar.vue').default
-
 function addVueSidebar () {
   const SidebarConstructor = Vue.extend(Sidebar)
   const instance = new SidebarConstructor()
+  const vm = instance.$mount()
+  document.body.append(vm.$el)
+}
+
+const Relogin = require('./components/relogin/URelogin.vue').default
+function replaceDefaultRelogin () {
+  const ReloginConstructor = Vue.extend(Relogin)
+  const instance = new ReloginConstructor()
   const vm = instance.$mount()
   document.body.append(vm.$el)
 }
@@ -76,7 +82,6 @@ if (window.$App) {
     //   $App.fireEvent('portal:navbar:appendSlot', NavbarSlotExample, { some attrs })
     // })
   }
-
 }
 
 const entityEditor = require('./components/UbEntityEditComponent.vue').default
