@@ -109,7 +109,7 @@ UB.i18nExtend({
   deleteConfirmationWithCaption: "Record {1} will be deleted from the '{0}'. Are You sure?",
   deleteFormConfirmCaption: "Will be deleted '{0}'. Are You sure?",
   rowEditing: 'Need to complete editing data',
-  notValidForColumns: "Invalid values in columns '{0}'",
+  notValidForColumns: "Invalid values in columns {0}",
   vyUvereny: 'Are You sure?',
   formDefinition: "Interface's definition",
   formModule: "Methods' definition",

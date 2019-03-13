@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.8.3]
 ### Changed 
  - i18 key `oshibkaVvoda` renamed to `fieldValidationError` and moved to up-pub
+ - changed 'notValidForColumns' message template for all locales
  
 ## [5.8.2]
 ### Changed
