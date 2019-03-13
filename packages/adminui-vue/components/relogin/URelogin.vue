@@ -22,7 +22,7 @@
       </div>
       <hr>
       <component
-        :is="'ub-auth-' + authSchema"
+        :is="'u-auth-' + authSchema"
         :login="login"
         :resolve-auth="resolveAuth"
         @close="visible = false"
@@ -32,17 +32,17 @@
 </template>
 
 <script>
-const UbAuthCert2 = require('./UbAuthCert2.vue').default
-const UbAuthUb = require('./UbAuthUb.vue').default
-const UbAuthNegotiate = require('./UbAuthNegotiate.vue').default
+const UAuthCert2 = require('./UAuthCert2.vue').default
+const UAuthUb = require('./UAuthUb.vue').default
+const UAuthNegotiate = require('./UAuthNegotiate.vue').default
 
 export default {
-  name: 'UbRelogin',
+  name: 'URelogin',
 
   components: {
-    UbAuthCert2,
-    UbAuthUb,
-    UbAuthNegotiate
+    UAuthCert2,
+    UAuthUb,
+    UAuthNegotiate
   },
 
   data () {

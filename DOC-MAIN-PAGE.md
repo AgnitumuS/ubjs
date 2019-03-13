@@ -20,18 +20,18 @@ The main purpose of UnityBase is to provide a set of modules for rapid developme
 
 From the low level point of view UnityBase is a asynchronous non-blocking HTTP(S) server with a:
 
- - build-in synchronous multi-thread JavaScript engine [SpiderMonkey](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey)
- - build-in Database access for a most known RDBMS
- - build-in file systems access
+ - Built-in synchronous multi-thread JavaScript engine [SpiderMonkey](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey)
+ - Built-in Database access for a most known RDBMS
+ - Built-in file systems access
 
 <img src="server-v5/img//UB-Server-Architecture-v5.png" alt="UB5 Server Architecture">
 
 Form a developer point of view UnityBase is:
- - an DBMS agnostic ORM what work over application Domain metadata
- - a set of tools for
+ - An DBMS agnostic ORM what work over application Domain metadata
+ - A set of tools for
    - synchronizing a physical database structure with Domain metadata
    - generating REST API based on Domain metadata
    - generating developer documentation from Domain metadata
- - authorization, authentication, role based access control, row level security, audit trail, etc
- - a set of ready to use entities appropriate for the majority of enterprise systems
- - automatically generated admin UI based on Domain
+ - Authorization, authentication, role based access control, row level security, audit trail, etc
+ - A set of ready to use entities appropriate for the majority of enterprise systems
+ - Automatically generated admin UI based on Domain
