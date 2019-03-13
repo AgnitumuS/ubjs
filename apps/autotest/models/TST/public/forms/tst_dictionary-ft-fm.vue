@@ -83,7 +83,8 @@ module.exports.mount = function (params) {
       label-position="left"
     >
       <el-row :gutter="20">
-        <el-col :span="12">
+        <!--responsive. for large screen a half of screen width, for small - full width -->
+        <el-col :lg="12" :sm="24">
           <el-form-item :label="entitySchema.attributes['code'].caption">
             <el-input v-model="entityData.code" />
           </el-form-item>
@@ -94,7 +95,7 @@ module.exports.mount = function (params) {
             <el-input v-model="entityData.booleanColumn" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :lg="12" :sm="24">
           <el-form-item :label="entitySchema.attributes['filterValue'].caption">
             <el-input v-model="entityData.filterValue" />
           </el-form-item>
