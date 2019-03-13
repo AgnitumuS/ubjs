@@ -126,6 +126,9 @@ server {
         # 10 minutes browser cache expires
         # for development environment replace by expires -1;
         expires 600;
+        add_header X-Frame-Options sameorigin;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header X-Content-Type-Options nosniff;
         alias {{{appPath}}};
     }
     # BLOB stores internal locations

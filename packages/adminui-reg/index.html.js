@@ -116,7 +116,7 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
         'plugin-types application/pdf'
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
     }
-    resp.writeHead('Content-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT' + cspHeader)
+    resp.writeHead('X-Frame-Options: sameorigin\r\nX-Content-Type-Options: nosniff\r\nX-XSS-Protection: 1; mode=block\r\nContent-Type: text/html\r\nCache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache\r\nExpires: Fri, 01 Jan 1990 00:00:00 GMT' + cspHeader)
   } else {
     resp.statusCode = 404
   }

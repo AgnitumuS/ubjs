@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.3.11]
 ### Fixed
  - `npx ubcli meta-tr` command now work correctly. Meta content encoding before using `JSON.parse()` was fixed
+
+### Added
+ - `npx ubcli generateNginxCfg` will add a Clickjacking/sniffing/XSS protections for /app internal URL.
+ This protect both login page (custom and build-in) form such kinds of attacks 
  
 ## [5.3.0]
 ### Changed
