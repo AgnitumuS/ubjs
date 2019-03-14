@@ -110,5 +110,12 @@ UB.i18nExtend({
   isRequiredFieldFmt: '{0} обязательно для заполнения',
   linkCopiedText: 'Ссылка скопирована в буфер обмена',
   createdEntityCaption: 'Создано',
-  updatedEntityCaption: 'Обновлено'
+  updatedEntityCaption: 'Обновлено',
+
+  searchByDateRange: 'Date range',
+  forAllTime: 'For all time',
+  lastMonth: 'Last Month',
+  lastQuarter: 'Last quarter',
+  last6Month: 'Last 6 month',
+  thisYear: 'This year'
 })

@@ -110,5 +110,12 @@ UB.i18nExtend({
   isRequiredFieldFmt: '{0} wajib diisi',
   linkCopiedText: 'Tautan disalin ke papan klip',
   createdEntityCaption: 'Dibuat',
-  updatedEntityCaption: 'Diperbarui'
+  updatedEntityCaption: 'Diperbarui',
+
+  searchByDateRange: 'Date range',
+  forAllTime: 'For all time',
+  lastMonth: 'Last Month',
+  lastQuarter: 'Last quarter',
+  last6Month: 'Last 6 month',
+  thisYear: 'This year'
 })
