@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="ub-sidebar"
-    :style="{
-      width: sidebarWidth + 'px'
-    }"
-  >
+  <div class="ub-sidebar">
     <div
       class="ub-sidebar__desktop-select"
       :class="[isCollapsed && 'collapsed']"
@@ -78,17 +73,11 @@ export default {
   components: { USidebarItem, UbContext },
 
   data () {
-    let isCollapsed = window.innerWidth < 1024
-    const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed')
-    if (savedCollapse) isCollapsed = (savedCollapse === 'true')
     return {
       shortcuts: [],
       desktops: [],
       selectedDesktop: null,
-      isCollapsed,
-      sidebarWidth: null,
-      SIDEBAR_FULL_WIDTH: 240,
-      SIDEBAR_COLLAPSED_WIDTH: 76
+      isCollapsed: null
     }
   },
 
@@ -133,13 +122,15 @@ export default {
   watch: {
     isCollapsed (value) {
       window.localStorage.setItem('portal:sidebar:isCollapsed', value)
-      this.setLayoutMargin(value ? this.SIDEBAR_COLLAPSED_WIDTH : this.SIDEBAR_FULL_WIDTH)
+      const {full, collapsed} = $App.viewport.leftPanel.sizes
+      $App.viewport.leftPanel.setWidth(value ? collapsed : full)
     }
   },
 
   mounted () {
     this.loadDesktops()
     this.loadShortcuts()
+    this.initCollapseState()
     $App.on({
       'portal:sidebar:appendSlot': (Component, bindings) => {
         this.$slots.default = this.$createElement(Component, bindings)
@@ -150,8 +141,6 @@ export default {
       }
     })
 
-    const width = this.isCollapsed ? this.SIDEBAR_COLLAPSED_WIDTH : this.SIDEBAR_FULL_WIDTH
-    this.setLayoutMargin(width)
   },
 
   methods: {
@@ -196,10 +185,12 @@ export default {
       window.localStorage.setItem(`${userLogin}:desktop`, ID)
     },
 
-    setLayoutMargin (margin) {
-      $App.viewport.layout.centerRegion.getEl().setStyle({ paddingLeft: `${margin}px` })
-      $App.viewport.layout.centerRegion.doLayout()
-      this.sidebarWidth = margin
+    initCollapseState () {
+      let isCollapsed = window.innerWidth < 1024
+      const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed')
+      if (savedCollapse) isCollapsed = (savedCollapse === 'true')
+
+      this.isCollapsed = isCollapsed
     },
 
     async selectContext (action, { ID, desktopID, parentID, isFolder }) {
@@ -260,9 +251,6 @@ export default {
 
 <style>
 .ub-sidebar{
-  position: fixed;
-  top: 0;
-  left: 0;
   height: 100%;
   background: #2f4050;
   display: flex;

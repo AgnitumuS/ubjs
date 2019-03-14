@@ -52,9 +52,10 @@ if (window.Ext) {
 const Sidebar = require('./components/sidebar/USidebar.vue').default
 function addVueSidebar () {
   const SidebarConstructor = Vue.extend(Sidebar)
-  const instance = new SidebarConstructor()
-  const vm = instance.$mount()
-  document.body.append(vm.$el)
+  const {id} = $App.viewport.leftPanel
+  new SidebarConstructor({
+    el: `#${id}-body`
+  })
 }
 
 const Relogin = require('./components/relogin/URelogin.vue').default
