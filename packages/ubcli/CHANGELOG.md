@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `npx ubcli generateNginxCfg` will add a Clickjacking/sniffing/XSS protections for /app internal URL.
  This protect both login page (custom and build-in) form such kinds of attacks 
- - new option `-t` or `tests` added to `npx ubcli autotest` for specified test files run
+ - new option `-t` or `tests` for `npx ubcli autotest` allow to specify comma separated tests files to execute
  
 ## [5.3.0]
 ### Changed
