@@ -110,5 +110,12 @@ UB.i18nExtend({
   isRequiredFieldFmt: '{0} is required',
   linkCopiedText: 'Link copied to clipboard',
   createdEntityCaption: 'Created',
-  updatedEntityCaption: 'Updated'
+  updatedEntityCaption: 'Updated',
+
+  searchByDateRange: 'Date range',
+  forAllTime: 'For all time',
+  lastMonth: 'Last Month',
+  lastQuarter: 'Last quarter',
+  last6Month: 'Last 6 month',
+  thisYear: 'This year'
 })

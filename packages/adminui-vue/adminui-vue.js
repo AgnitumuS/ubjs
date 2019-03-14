@@ -73,6 +73,13 @@ if (window.$App) {
     $App.on('buildMainMenu', items => {
       items.splice(0, 1) // remove top panel ExtJS hamburger menu button
     })
+
+    // Default navbar slot
+    window.$App.on('applicationReady', () => {
+      const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
+      $App.fireEvent('portal:navbar:appendSlot', UNavbarDefaultSlot, {})
+    })
+    
     // Example:
     //
     // window.$App.on('applicationReady', () => {
