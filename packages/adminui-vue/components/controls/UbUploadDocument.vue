@@ -1,25 +1,48 @@
 <template>
   <div v-loading="loading">
     <div v-if="value">
-      <el-dialog :title="currentValue.origName" :visible.sync="dialogVisible" class="ub-upload-document__dialog"
-                 @closed="removeUrl">
-        <iframe :height="iFrameHeight" :width="iFrameWeight" type="application/pdf" :src="documentURL"></iframe>
+      <el-dialog
+        :title="currentValue.origName"
+        :visible.sync="dialogVisible"
+        class="ub-upload-document__dialog"
+        @closed="removeUrl"
+      >
+        <iframe
+          :height="iFrameHeight"
+          :width="iFrameWeight"
+          type="application/pdf"
+          :src="documentURL"
+        />
       </el-dialog>
-      <a @click="downloadFile"
-         class="ub-upload-document__a">
-        <i class="el-icon-document"></i>
-        {{this.currentValue.origName}}
+      <a
+        class="ub-upload-document__a"
+        @click="downloadFile"
+      >
+        <i class="el-icon-document" />
+        {{ this.currentValue.origName }}
       </a>
-      <el-button class="el-icon-circle-close-outline"
-                 @click="remove"
-                 style="border: none"
-                 size="mini"
-                 circle
-      ></el-button>
+      <el-button
+        class="el-icon-circle-close-outline"
+        style="border: none"
+        size="mini"
+        circle
+        @click="remove"
+      />
     </div>
-    <div v-else class="ub-upload-document__file-input">
-      <el-button class="el-icon-plus" size="mini" circle></el-button>
-      <input type="file" @change="processFile($event)" tabindex="-1" />
+    <div
+      v-else
+      class="ub-upload-document__file-input"
+    >
+      <el-button
+        class="el-icon-plus"
+        size="mini"
+        circle
+      />
+      <input
+        type="file"
+        tabindex="-1"
+        @change="processFile($event)"
+      >
     </div>
   </div>
 </template>
@@ -71,7 +94,7 @@ module.exports = {
       }
       this.$UB.connection.post('setDocument', file, {
         params: params,
-        headers: {'Content-Type': 'application/octet-stream'}
+        headers: { 'Content-Type': 'application/octet-stream' }
       }).then(response => {
         this.$emit('input', JSON.stringify(response.data.result))
       }).finally(() => {
@@ -87,7 +110,7 @@ module.exports = {
         let nameArray = this.currentValue.origName.split('.')
         let extension = nameArray[nameArray.length - 1]
         if (extension === 'pdf') {
-          this.documentURL = window.URL.createObjectURL(new Blob([result], {type: 'application/pdf'}))
+          this.documentURL = window.URL.createObjectURL(new Blob([result], { type: 'application/pdf' }))
           this.dialogVisible = true
         } else {
           saveAs(new Blob([result]), this.currentValue.origName)

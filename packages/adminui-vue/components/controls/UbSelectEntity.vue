@@ -1,71 +1,70 @@
 <template>
-  <div style="position: relative">
-    <el-tooltip
-      :content="deletedCaption"
-      placement="left"
-      :disabled="!rowIsDeleted"
-      :open-delay="200"
+  <!-- Without `position: relative` menu items floats to the right side of screen (check on storybook) -->
+  <div
+    style="position: relative"
+    :title="rowIsDeleted ? deletedCaption : ''"
+  >
+    <el-select
+      :id="`ub-selector${this._uid}`"
+      ref="selector"
+      v-model="resultData"
+      :loading="loading"
+      :placeholder="placeholder"
+      filterable
+      remote
+      reserve-keyword
+      :remote-method="remoteMethod"
+      :disabled="loading || disabled"
+      :automatic-dropdown="false"
+      :class="`ub-select-entity${this._uid}`"
+      style="width: 100%"
+      @change="onChange"
+      @keyup.native.alt.e="editItem"
+      @keyup.native.exact.f9="showDictionary"
+      @keyup.native.alt.backspace="clear"
     >
-      <el-select
-        :id="`ub-selector${this._uid}`"
-        ref="selector"
-        v-model="resultData"
-        v-loading="loading"
-        reserve-keyword
-        filterable
-        remote
-        :disabled="loading || disabled"
-        :class="`ub-select-entity${this._uid}`"
-        style="width: 100%"
-        @change="onChange"
-        @focus="focused = true"
-        @blur="focused = false"
-        @focus.native="onFocus"
-        @click.native="onFocus"
-        @input.native="onInput"
-        @keyup.native.alt.e="editItem"
-        @keyup.native.exact.f9="showDictionary"
-        @keyup.native.alt.backspace="clear"
-      >
-        <i
-          v-if="rowIsDeleted"
-          slot="prefix"
-          class="fa fa-ban el-input__icon"
+      <i
+        v-if="rowIsDeleted"
+        slot="prefix"
+        class="fa fa-ban el-input__icon"
+      />
+      <template>
+        <el-option
+          v-for="item in itemsToDisplay"
+          :key="item[primaryColumn]"
+          :label="item[displayValue]"
+          :value="item[primaryColumn]"
+          :disabled="item.removed"
         />
-        <template>
-          <el-option
-            v-for="item in itemsToDisplay"
-            :key="item[primaryColumn]"
-            :label="item[displayValue]"
-            :value="item[primaryColumn]"
-            :disabled="item.removed"
-          />
-          <el-row
-            v-if="hasData"
-            type="flex"
-            justify="end"
-            style="padding: 0 20px"
+        <el-row
+          v-if="hasData"
+          type="flex"
+          justify="end"
+          style="padding: 0 20px"
+        >
+          <el-button
+            type="text"
+            @click="loadNextButtonClick"
           >
-            <el-button
-              type="text"
-              @click="loadNextButtonClick"
-            >
-              {{ buttonMoreCaption }}
-            </el-button>
-          </el-row>
-        </template>
-      </el-select>
-    </el-tooltip>
+            {{ buttonMoreCaption }}
+          </el-button>
+        </el-row>
+      </template>
+    </el-select>
     <div
       class="ub-select-entity__menu-button"
       style="pointer-events: none;"
     >
-      <i class="el-icon-arrow-down" />
+      <div
+        class="ub-icon-menu"
+        @click="openDropDown"
+      >
+        <i class="el-icon-arrow-down" />
+      </div>
       <el-popover
         v-if="rowActions && rowActions.length"
         v-model="popoverVisible"
         placement="bottom-end"
-        style="pointer-events: auto;"
         :disabled="disabled"
         trigger="click"
       >
@@ -76,7 +75,7 @@
         >
           <el-table-column
             property="caption"
-            width="250"
+            width="270"
           >
             <template slot-scope="scope">
               <div
@@ -93,7 +92,6 @@
         <div
           ref="menuButton"
           slot="reference"
-          style="width: 30px;"
         >
           <div class="ub-icon-menu">
             <i class="el-icon-menu" />
@@ -129,11 +127,11 @@ module.exports = {
       default () {
         return []
       }
-    }
+    },
+    placeholder: String
   },
   data () {
     return {
-      focused: false,
       primaryColumn: 'ID',
       waitingNewEntity: false,
       buttonMoreCaption: this.$ut('more'),
@@ -159,11 +157,23 @@ module.exports = {
       },
       loading: false,
       popoverVisible: false,
-      resultData: this.value,
-      searchValue: ''
+      resultData: this.value
     }
   },
   methods: {
+    remoteMethod (input) {
+      if (input) this.loadNextByInput(input)
+      if (input === '') this.items = []
+    },
+    openDropDown () {
+      if (this.items.length === 0) {
+        this.loadNextButtonClick(() => {
+          this.$refs.selector.focus()
+        })
+      } else {
+        this.$refs.selector.focus()
+      }
+    },
     showDictionary () {
       this.$UB.core.UBApp.doCommand({
         entity: this.entityName,
@@ -200,14 +210,8 @@ module.exports = {
       if (this.resultData) {
         this.resultData = null
         this.$refs.selector.emitChange(null)
+        this.items = []
       }
-    },
-    onInput () {
-      if (!event.target.value) {
-        this.resultData = null
-        this.$refs.selector.emitChange(null)
-      }
-      this.loadNextByInput(event.target.value)
     },
     onActionClick (data) {
       if (data.enabled === undefined || data.enabled) {
@@ -219,15 +223,8 @@ module.exports = {
       this.initialItem = this.items.find((el) => {
         return el[this.primaryColumn] === data
       })
-      this.searchValue = this.initialItem ? this.initialItem[this.displayValue] : ''
       this.items = []
       this.$emit('input', data)
-    },
-    onFocus () {
-      this.focused = this.$refs.selector.visible
-      if (this.items.length === 0) {
-        this.loadNextButtonClick()
-      }
     },
     initLoaderStyles () {
       let control = document.querySelector(`.ub-select-entity${this._uid} .el-loading-spinner`)
@@ -244,10 +241,9 @@ module.exports = {
         .attrs(this.primaryColumn, this.displayValue)
         .start(startFrom || 0)
         .limit(this.itemCount)
-        .whereIf(this.searchValue, this.displayValue, 'like', this.searchValue)
+        .whereIf(this.$refs.selector.selectedLabel, this.displayValue, 'like', this.$refs.selector.selectedLabel)
     },
     loadNextByInput: function (query) {
-      this.searchValue = query
       this.getRepository().select().then((data) => {
         this.items = []
         this.hasData = data.length === this.itemCount
@@ -256,13 +252,14 @@ module.exports = {
         })
       })
     },
-    loadNextButtonClick () {
+    loadNextButtonClick (callback) {
       let itemsLength = this.items.length || 0
       this.getRepository(itemsLength).select().then((data) => {
         this.hasData = data.length === this.itemCount
         data.forEach(item => {
           this.items.push(item)
         })
+        if (typeof callback === 'function') callback.call()
       })
     },
     setInitialItem (id) {
@@ -376,6 +373,7 @@ module.exports = {
       this.setInitialItem()
     }
 
+    /* Remove browser shortcut Alt+E */
     this.$refs.selector.$el.addEventListener('keydown', function (e) {
       if (e.keyCode === 69 && e.altKey) {
         e.preventDefault()

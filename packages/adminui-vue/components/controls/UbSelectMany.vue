@@ -1,24 +1,41 @@
 <template>
-  <el-select ref="selector"
-             v-model="resultData"
-             v-loading="loading"
-             reserve-keyword clearable filterable multiple remote
-             :remote-method="loadNextByInput"
-             :disabled="loading || disabled"
-             :class="`ub-select-many${this._uid}`"
-             style="width: 100%"
-             @change="onChange"
-             @click.native="onFocus"
-             @focus.native="onFocus">
+  <el-select
+    ref="selector"
+    v-model="resultData"
+    v-loading="loading"
+    reserve-keyword
+    clearable
+    filterable
+    multiple
+    remote
+    :remote-method="loadNextByInput"
+    :disabled="loading || disabled"
+    :class="`ub-select-many${this._uid}`"
+    style="width: 100%"
+    @change="onChange"
+    @click.native="onFocus"
+    @focus.native="onFocus"
+  >
     <template>
-      <el-option v-for="item in itemsToDisplay"
-                 :key="item[primaryColumn]"
-                 :label="item[displayValue]"
-                 :value="item[primaryColumn]"
-                 :disabled="item.removed"
-      ></el-option>
-      <el-row v-if="hasData" type="flex" justify="end" style="padding: 0 20px">
-        <el-button type="text" @click="loadNextButtonClick">{{buttonMoreCaption}}</el-button>
+      <el-option
+        v-for="item in itemsToDisplay"
+        :key="item[primaryColumn]"
+        :label="item[displayValue]"
+        :value="item[primaryColumn]"
+        :disabled="item.removed"
+      />
+      <el-row
+        v-if="hasData"
+        type="flex"
+        justify="end"
+        style="padding: 0 20px"
+      >
+        <el-button
+          type="text"
+          @click="loadNextButtonClick"
+        >
+          {{ buttonMoreCaption }}
+        </el-button>
       </el-row>
     </template>
   </el-select>
@@ -49,7 +66,7 @@ module.exports = {
         let isSafeDelete = this.entitySchema.attributes['mi_deleteDate']
         this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
           .attrsIf(isSafeDelete, 'mi_deleteDate')
-          .miscIf(isSafeDelete, {__allowSelectSafeDeleted: true})
+          .miscIf(isSafeDelete, { __allowSelectSafeDeleted: true })
           .where(this.primaryColumn, 'in', this.resultData)
           .select().then((data) => {
             this.initialItem = data

@@ -1,44 +1,60 @@
 <template>
   <div>
-    <el-input v-model="currentValue"
-              :controls="false"
-              :type="fieldType"
-              :step="step"
-              :disabled="disabled"
-              @change="onChange">
-      <el-button v-if="isMultiLang && objectValue"
-                 slot="append"
-                 class="fa fa-globe"
-                 :disabled="disabled"
-                 tabindex="-1"
-                 @click="initLocalizableFields"
-      ></el-button>
+    <el-input
+      v-model="currentValue"
+      :controls="false"
+      :type="fieldType"
+      :step="step"
+      :disabled="disabled"
+      @change="onChange"
+    >
+      <el-button
+        v-if="isMultiLang && objectValue"
+        slot="append"
+        class="fa fa-globe"
+        :disabled="disabled"
+        tabindex="-1"
+        @click="initLocalizableFields"
+      />
     </el-input>
-    <el-dialog width="30%"
-               custom-class="ub-input__dialog"
-               :visible.sync="dialogFormVisible"
-               :title="dialogTitle">
+    <el-dialog
+      width="30%"
+      custom-class="ub-input__dialog"
+      :visible.sync="dialogFormVisible"
+      :title="dialogTitle"
+    >
       <el-form v-loading="loading">
-        <el-form-item style="font-weight:bold"
-                      :label="localCaption"
-                      label-width="100px">
-          <el-input v-model="currentValue"
-                    @change="$emit('input', currentValue)"
-          ></el-input>
+        <el-form-item
+          style="font-weight:bold"
+          :label="localCaption"
+          label-width="100px"
+        >
+          <el-input
+            v-model="currentValue"
+            @change="$emit('input', currentValue)"
+          />
         </el-form-item>
-        <el-form-item v-for="item in localizableFields"
-                      :key="item.fieldName"
-                      :label="item.caption"
-                      label-width="100px">
+        <el-form-item
+          v-for="item in localizableFields"
+          :key="item.fieldName"
+          :label="item.caption"
+          label-width="100px"
+        >
           <div class="el-input el-input--small">
-            <input v-model="item.value"
-                   class="el-input__inner"/>
+            <input
+              v-model="item.value"
+              class="el-input__inner"
+            >
           </div>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary"
-                   @click="saveLocalization"
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="saveLocalization"
         >Save</el-button>
       </span>
     </el-dialog>
@@ -143,7 +159,7 @@ module.exports = {
               Object.keys(item).forEach((fieldName) => {
                 if (fieldName !== 'ID') {
                   this.localizableFields[fieldName].value = item[fieldName]
-                  this.oldLocalization[fieldName] = {value: item[fieldName]}
+                  this.oldLocalization[fieldName] = { value: item[fieldName] }
                 }
               })
             }
