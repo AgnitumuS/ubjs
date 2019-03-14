@@ -10,8 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - Vue forms will use `Alt+R` for "Remove" instead  of Alt+Del because DEl and Backspace because
  on Mac keyboards the key normally identified as "backspace" on PC keyboards is called "delete"
  - popover button animation removed for vue select (in remote mode)  
+
 ### Added
- -  Vue.prototype.$dialog, $dialogYesNo, #dialogInfo, $dialogError
+ - Vue.prototype.$dialog, $dialogYesNo, #dialogInfo, $dialogError
+ - controls for Vue based navbar component: 
+   - UNavbarNotificationButton - `ubm_messages` notifications
+   - UNavbarSearchButton - Full Text Search (+ shortcut `Ctrl + F`)
+   - UNavbarUserButton - actions for logged in user
  
 ## [1.3.2]
 ### Added
