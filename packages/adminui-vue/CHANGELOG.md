@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - UNavbarSearchButton - Full Text Search (+ shortcut `Ctrl + F`)
    - UNavbarUserButton - actions for logged in user
  
+### Fixed
+ - Vue control UbSelectEntity now use ElSelect `remote-method` for fetching data
+ - behavior of UbSelectEntity changed to be as close to desktop select as possible
+  
 ## [1.3.2]
 ### Added
  - new Vue base `sidebar` component (left menu). Enabling by setting
