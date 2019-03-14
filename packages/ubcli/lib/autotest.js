@@ -1,3 +1,4 @@
+/* global stopServer */
 /**
  * Run automatic test by enumerating all *models* & *modules* `_autotest` folders and execute all *.js from there.
  *
@@ -12,7 +13,6 @@
  * @module autotest
  * @memberOf module:@unitybase/ubcli
  */
-const _ = require('lodash')
 const fs = require('fs')
 const util = require('util')
 const path = require('path')
@@ -27,13 +27,14 @@ module.exports = function autotest (options) {
   let debugOutput = []
 
   // set timeout 10 min
-  http.setGlobalConnectionDefaults({receiveTimeout: 10 * 60 * 1000})
+  http.setGlobalConnectionDefaults({ receiveTimeout: 10 * 60 * 1000 })
 
   if (!options) {
     let opts = cmdLineOpt.describe('autotest', 'Run autotest for application using scripts from models `_autotest` folders', 'ubcli')
       .add(argv.establishConnectionFromCmdLineAttributes._cmdLineParams)
-      .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names list for run autotest'})
-      .add({short: 'skipModules', long: 'skipModules', defaultValue: false, help: 'Do not run autotest for a build-in modules'})
+      .add({ short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names list for run autotest' })
+      .add({ short: 't', long: 'tests', param: 'filesList', searchInEnv: true, defaultValue: '*', help: 'Comma separated file names to run autotest' })
+      .add({ short: 'skipModules', long: 'skipModules', defaultValue: false, help: 'Do not run autotest for a build-in modules' })
     options = opts.parseVerbose({}, true)
     if (!options) return
   }
@@ -42,8 +43,6 @@ module.exports = function autotest (options) {
   console.debug = function () {
     debugOutput.push(util.format.apply(this, arguments))
   }
-
-  let session = argv.serverSessionFromCmdLineAttributes(options)
 
   let configFileName = argv.getConfigFileName()
   let configDir = path.dirname(configFileName)
@@ -79,20 +78,25 @@ module.exports = function autotest (options) {
 
   let inModels = options.models
   let models = domainConfig['models']
-  if (!_.isArray(models)) {
+  if (!Array.isArray(models)) {
     throw new Error('models configuration MUST be an array on object')
   }
 
   if (inModels) {
-    models = _.filter(models, function (modelConfig) { return inModels.indexOf(modelConfig.name) >= 0 })
+    models = models.filter(modelConfig => inModels.includes(modelConfig.name))
   }
 
-  _.forEach(models, function (modelConfig) {
+  models.forEach(modelConfig => {
     let folderName = path.join(configDir, modelConfig.path, '_autotest')
 
     if (fs.isDir(folderName)) {
+      let inFiles = options.tests
       let files = fs.readdirSync(folderName)
-      files = _.filter(files, function (item) { return /\.js$/.test(item) }).sort()
+      files = files.filter(item => item.endsWith('.js')).sort()
+      if (inFiles) {
+        inFiles = inFiles.split(',').map(item => (item.endsWith('.js') ? item : item + '.js'))
+        files = files.filter(item => inFiles.includes(item))
+      }
       if (files.length) {
         files.forEach(function (file) {
           requireAndRun(folderName, modelConfig.name, file)
@@ -110,7 +114,7 @@ module.exports = function autotest (options) {
   // return console.debug back
   console.debug = realConsoleDebug
 
-  let failed = _.filter(testResults, {result: false})
+  let failed = testResults.filter(r => !r.result)
   global._timerLoop.setTimeoutWithPriority(
     function () {
       process.on('exit', function () {
@@ -145,12 +149,12 @@ module.exports = function autotest (options) {
         if (typeof testModule === 'function') {
           testModule(options)
         }
-        res = {folder: modelName, file: file, result: true}
+        res = { folder: modelName, file: file, result: true }
       } catch (e) {
         stack = e.stack
         lineNumRe = new RegExp(file + ':(\\d)')
         lineNum = lineNumRe.exec(stack)
-        res = {folder: modelName, file: file, result: false, msg: e.toString()}
+        res = { folder: modelName, file: file, result: false, msg: e.toString() }
         if (lineNum) { res.errorLine = parseInt(lineNum[1], 10) }
         res.stack = stack.split('\n')
       }
