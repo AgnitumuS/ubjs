@@ -175,6 +175,7 @@ export default {
     this.subscribeCentralPanelEvents()
     $App.on('portal:navbar:appendSlot', (Component, bindings) => {
       this.$slots.default = this.$createElement(Component, bindings)
+      this.$forceUpdate()
     })
   },
 
