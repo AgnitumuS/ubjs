@@ -190,6 +190,7 @@ module.exports = {
         this.isNew = true
       }
       dataP.finally(() => {
+        this.$emit('dataLoaded')
         this.loading = false
       })
     }

@@ -1,62 +1,74 @@
 <template>
-  <div id="auto-form-app" v-if="fieldsToShow" style="height: 100%;">
-    <ub-entity-edit v-model="value"
-                    :entity-name="entityName"
-                    :instanceID="instanceID"
-                    :save="save"
-                    :current-tab-id="currentTabId"
-                    :external-data="externalData">
-      <el-form :ref="$options.name" :model="value" label-position="left" label-width="150px">
+  <div
+    v-if="fieldsToShow"
+    id="auto-form-app"
+    style="height: 100%"
+  >
+    <ub-entity-edit
+      v-model="value"
+      :entity-name="entityName"
+      :instance-i-d="instanceID"
+      :save="save"
+      :current-tab-id="currentTabId"
+      :external-data="externalData"
+    >
+      <el-form
+        :ref="$options.name"
+        :model="value"
+        label-position="left"
+        label-width="150px"
+      >
         <el-form-item
           v-for="fieldName in fieldsToShow"
           :key="fieldName"
           :prop="fieldName"
           :rules="getRules(fieldName)"
           :label="entitySchema.attributes[fieldName].caption"
-          style="max-width: 600px">
+          style="max-width: 600px"
+        >
           <el-checkbox
             v-if="entitySchema.attributes[fieldName].dataType === 'Boolean'"
             v-model="value[fieldName]"
-          ></el-checkbox>
+          />
           <el-date-picker
             v-else-if="entitySchema.attributes[fieldName].dataType === 'DateTime' || entitySchema.attributes[fieldName].dataType === 'Date'"
             v-model="value[fieldName]"
             :type="entitySchema.attributes[fieldName].dataType.toLowerCase()"
             placeholder="Select date and time"
-          ></el-date-picker>
+          />
           <ub-select-enum
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
             v-model="value[fieldName]"
             :e-group="entitySchema.attributes[fieldName].enumGroup"
             :disabled="externalData.hasOwnProperty(fieldName)"
-          ></ub-select-enum>
+          />
           <ub-select-entity
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
             v-model="value[fieldName]"
             :entity-name="entitySchema.attributes[fieldName].associatedEntity"
             :disabled="externalData.hasOwnProperty(fieldName)"
-          ></ub-select-entity>
+          />
           <ub-select-many
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
             v-model="value[fieldName]"
             :entity-name="entitySchema.attributes[fieldName].associatedEntity"
             :disabled="externalData.hasOwnProperty(fieldName)"
-          ></ub-select-many>
+          />
           <el-input
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
             v-model="value[fieldName]"
             type="textarea"
             :autosize="{ minRows: 3, maxRows: 4}"
-          ></el-input>
+          />
           <ub-upload-document
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
             v-model="value[fieldName]"
             :doc-params="{ entity: entitySchema.name, attribute: fieldName, ID: value.ID }"
-          ></ub-upload-document>
+          />
           <ub-code-mirror
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Json'"
             v-model="value[fieldName]"
-          ></ub-code-mirror>
+          />
           <ub-input
             v-else
             v-model="value[fieldName]"
@@ -64,7 +76,7 @@
             :attribute-name="fieldName"
             :object-value="value"
             :disabled="externalData.hasOwnProperty(fieldName)"
-          ></ub-input>
+          />
         </el-form-item>
       </el-form>
     </ub-entity-edit>
@@ -121,7 +133,7 @@ module.exports = {
       return this.$UB.connection.domain.get(this.entityName)
     },
     fieldsToShow () {
-      return this.entitySchema.filterAttribute({defaultView: true}).map((at) => {
+      return this.entitySchema.filterAttribute({ defaultView: true }).map((at) => {
         return at.name
       })
     }

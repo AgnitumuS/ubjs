@@ -8,6 +8,7 @@
       :use-own-actions="useOwnActions"
       :actions="actions"
       :disabled="disabled"
+      :placeholder="placeholder || 'Select'"
       @input="inputFn"
     ></ub-select-entity>
     <h2>Props</h2>
@@ -23,6 +24,10 @@
         <el-tooltip effect="light" content="Required" placement="right" :open-delay="100">
           <el-input :disabled="true" style="width: 300px" v-model="entityName"></el-input>
         </el-tooltip>
+      </li>
+      <li>
+        <span class="input-story__prop">placeholder - String</span>
+        <el-input style="width: 300px" v-model="placeholder"></el-input>
       </li>
       <li>
         <span class="input-story__prop">disabled - Boolean</span>
@@ -74,6 +79,7 @@ export default {
       value: 1,
       disabled: false,
       useOwnActions: false,
+      placeholder: null,
       actions: [],
       newAction: {
         caption: 'Test',

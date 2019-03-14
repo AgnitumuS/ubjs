@@ -1,19 +1,24 @@
 <template>
-  <el-select ref="selector"
-             v-model="resultData"
-             v-loading="loading"
-             filterable reserve-keyword clearable
-             :disabled="loading || disabled"
-             :class="`ub-select-enum${_uid}`"
-             style="width: 100%"
-             @change="$emit('input', resultData)"
-             @input.native="onInput">
+  <el-select
+    ref="selector"
+    v-model="resultData"
+    v-loading="loading"
+    filterable
+    reserve-keyword
+    clearable
+    :disabled="loading || disabled"
+    :class="`ub-select-enum${_uid}`"
+    style="width: 100%"
+    @change="$emit('input', resultData)"
+    @input.native="onInput"
+  >
     <template>
-      <el-option v-for="item in items"
-                 :key="item[primaryColumn]"
-                 :label="item[displayValue]"
-                 :value="item[primaryColumn]"
-      ></el-option>
+      <el-option
+        v-for="item in items"
+        :key="item[primaryColumn]"
+        :label="item[displayValue]"
+        :value="item[primaryColumn]"
+      />
     </template>
   </el-select>
 </template>
