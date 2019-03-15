@@ -5,6 +5,7 @@ window.process = {
   env: {}
 }
 const IS_SYSTEM_JS = (typeof SystemJS !== 'undefined')
+const isExt = (typeof window.Ext !== 'undefined')
 
 /*
 * The BOUNDLED_BY_WEBPACK variable is available only when a project is being built by a webpack.
@@ -42,17 +43,17 @@ const dialogs = require('./components/dialog/UDialog')
 // add $dialog* to Vue prototype
 Vue.use(dialogs)
 UB.setErrorReporter(dialogs.errorReporter)
-if (window.Ext) {
+if (isExt) {
   const replaceExtJSDialogs = require('./utils/replaceExtJSWidgets').replaceExtJSDialogs
   const replaceExtJSNavbar = require('./utils/replaceExtJSWidgets').replaceExtJSNavbar
-  window.$App.on('applicationReady', replaceExtJSDialogs)
-  window.$App.on('applicationReady', replaceExtJSNavbar)
+  $App.on('applicationReady', replaceExtJSDialogs)
+  $App.on('applicationReady', replaceExtJSNavbar)
 }
 
 const Sidebar = require('./components/sidebar/USidebar.vue').default
 function addVueSidebar () {
   const SidebarConstructor = Vue.extend(Sidebar)
-  const {id} = $App.viewport.leftPanel
+  const id = $App.viewport.leftPanel.id
   new SidebarConstructor({
     el: `#${id}-body`
   })
@@ -66,7 +67,39 @@ function replaceDefaultRelogin () {
   document.body.append(vm.$el)
 }
 
+const magicLink = require('./utils/magicLinks')
+magicLink.install()
+magicLink.addCommand('setFocus', magicLinkFocusCommand)
+
+function magicLinkAdminUiCommand (params) {
+  $App.doCommand(params)
+}
+
+/**
+ * Magic link to focus DOM/Ext element with specified id
+ * @example
+
+ <a href="#' data-cmd-type='setFocus" data-elm-id="my-html-element-id">focus other</a>
+
+ * @param {Object} params
+ * @param {string} params.elmId
+ * @param {EventTarget} target
+ */
+function magicLinkFocusCommand (params, target) {
+  let extCmp = isExt && Ext.getCmp(params.elmId)
+  if (extCmp) { // try Ext
+    Ext.callback(extCmp.focus, extCmp, [], 100)
+  } else { // try DOM
+    let domElm = document.getElementById(params.elmId)
+    if (domElm && domElm.focus) domElm.focus()
+  }
+}
+
 if (window.$App) {
+  magicLink.addCommand('showForm', magicLinkAdminUiCommand)
+  magicLink.addCommand('showList', magicLinkAdminUiCommand)
+  magicLink.addCommand('showReport', magicLinkAdminUiCommand)
+
   window.$App.on('applicationReady', replaceDefaultRelogin)
   if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
     window.$App.on('applicationReady', addVueSidebar)
@@ -79,7 +112,6 @@ if (window.$App) {
       const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
       $App.fireEvent('portal:navbar:appendSlot', UNavbarDefaultSlot, {})
     })
-    
     // Example:
     //
     // window.$App.on('applicationReady', () => {
