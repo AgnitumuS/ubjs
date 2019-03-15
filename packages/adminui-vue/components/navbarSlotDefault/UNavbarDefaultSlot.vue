@@ -45,9 +45,4 @@ export default {
   font-size: 14px;
   left:2px;
 }
-
-.ub-navbar__button{
-  width: 32px;
-  height: 32px;
-}
 </style>

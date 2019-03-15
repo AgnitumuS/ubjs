@@ -8,12 +8,22 @@
     @command="dropdownHandler"
   >
     <el-button
-      icon="fa fa-user"
       circle
-      class="ub-navbar__button"
-    />
-    <el-dropdown-menu slot="dropdown" class="ub-navbar__menu-dropdown">
-      <el-dropdown-item disabled>
+      style="padding: 2px"
+    >
+      <div
+        v-if="svgIcon"
+        v-html="svgIcon"
+      />
+    </el-button>
+    <el-dropdown-menu
+      slot="dropdown"
+      class="ub-navbar__menu-dropdown"
+    >
+      <el-dropdown-item
+        style="text-align: center"
+        disabled
+      >
         {{ userName }}
       </el-dropdown-item>
 
@@ -105,23 +115,31 @@ export default {
   data () {
     const checkboxValue = window.localStorage[this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN] === 'true'
     const checkboxVisible = this.$UB.connection.authMethods.indexOf('Negotiate') > 0
+    const userName = this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
     return {
       checkboxValue,
       checkboxVisible,
-      supportedLanguages: this.$UB.appConfig.supportedLanguages
+      userName,
+      iconClass: 'fa fa-user',
+      svgIcon: '',
+      supportedLanguages: this.$UB.connection.appConfig.supportedLanguages
     }
   },
 
   computed: {
-    userName () {
-      return this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
-    }
   },
 
   watch: {
     checkboxValue (value) {
       window.localStorage.setItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, value)
     }
+  },
+
+  mounted () {
+    System.import('jdenticon/dist/jdenticon.min.js').then(jdenticon => {
+      this.iconClass = ''
+      this.svgIcon = jdenticon.toSvg(this.userName, 26)
+    })
   },
 
   methods: {

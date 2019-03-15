@@ -6,26 +6,31 @@
     trigger="click"
     :hide-on-click="false"
     @command="dropdownHandler"
-  > 
-    <el-badge type="info" :value="0">
+  >
+    <el-badge
+      type="info"
+      :value="0"
+    >
       <el-button
         icon="el-icon-bell"
         circle
-        class="ub-navbar__button"
       />
     </el-badge>
 
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item command="hide" @click.native="showList">
-        {{$ut('messageHistory')}}
+      <el-dropdown-item
+        command="hide"
+        @click.native="showList"
+      >
+        {{ $ut('messageHistory') }}
       </el-dropdown-item>
 
-      <el-dropdown-item 
+      <el-dropdown-item
+        v-if="$UB.connection.domain.isEntityMethodsAccessible('ubs_message_edit', ['insert', 'update'])"
         command="hide"
         @click.native="add"
-        v-if="$UB.connection.domain.isEntityMethodsAccessible('ubs_message_edit', ['insert', 'update'])"
       >
-        {{$ut('actionAdd')}}
+        {{ $ut('actionAdd') }}
       </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>

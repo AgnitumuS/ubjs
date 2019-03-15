@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - controls for Vue based navbar component: 
    - UNavbarNotificationButton - `ubm_messages` notifications
    - UNavbarSearchButton - Full Text Search (+ shortcut `Ctrl + F`)
-   - UNavbarUserButton - actions for logged in user
+   - UNavbarUserButton - actions for logged in user  
  
 ### Fixed
  - Vue control UbSelectEntity now use ElSelect `remote-method` for fetching data

@@ -14,7 +14,6 @@
       <el-button
         icon="fa fa-search"
         circle
-        class="ub-navbar__button"
       />
     </el-tooltip>
 
