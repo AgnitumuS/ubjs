@@ -166,13 +166,11 @@ module.exports = {
       if (input === '') this.items = []
     },
     openDropDown () {
-      if (this.items.length === 0) {
-        this.loadNextButtonClick(() => {
-          this.$refs.selector.focus()
-        })
-      } else {
+      this.items = []
+      this.loadNextButtonClick(() => {
         this.$refs.selector.focus()
-      }
+      })
+      this.$refs.selector.focus()
     },
     showDictionary () {
       this.$UB.core.UBApp.doCommand({
@@ -223,7 +221,6 @@ module.exports = {
       this.initialItem = this.items.find((el) => {
         return el[this.primaryColumn] === data
       })
-      this.items = []
       this.$emit('input', data)
     },
     initLoaderStyles () {
@@ -241,7 +238,7 @@ module.exports = {
         .attrs(this.primaryColumn, this.displayValue)
         .start(startFrom || 0)
         .limit(this.itemCount)
-        .whereIf(this.$refs.selector.selectedLabel, this.displayValue, 'like', this.$refs.selector.selectedLabel)
+        .whereIf(this.$refs.selector.selectedLabel && (!this.initialItem || this.$refs.selector.selectedLabel !== this.initialItem[this.displayValue]), this.displayValue, 'like', this.$refs.selector.selectedLabel)
     },
     loadNextByInput: function (query) {
       this.getRepository().select().then((data) => {
