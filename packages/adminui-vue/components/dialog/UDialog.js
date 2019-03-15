@@ -72,25 +72,6 @@ function dialogInfo (msg, title = 'info') {
   }).then(r => r === 'yes')
 }
 
-// TODO - inline script don`t work in production mode - REWRITE
-function formatLinks (htmlStr) {
-  const temporaryEl = document.createElement('div')
-  temporaryEl.innerHTML = htmlStr
-  const links = temporaryEl.querySelectorAll('a[data-entity][data-id]')
-  for (const link of links) {
-    const entity = link.getAttribute('data-entity')
-    const instanceID = link.getAttribute('data-id')
-    const action = `$App.doCommand({
-      cmdType: 'showForm',
-      entity: '${entity}',
-      instanceID: ${instanceID}
-    })`
-    link.setAttribute('onclick', action)
-  }
-
-  return temporaryEl.innerHTML
-}
-
 /**
  * Show error dialog. msg is translated using UB.i18n
  * @param {string} msg
@@ -101,7 +82,6 @@ function formatLinks (htmlStr) {
 function dialogError (msg, title = 'error', isDevInfo = false) {
   const USER_MESSAGE_RE = /^<<<([\S|\s]+)>>>$/
   msg = msg.replace(USER_MESSAGE_RE, '$1')
-  msg = formatLinks(msg)
   return dialog({
     title,
     msg,

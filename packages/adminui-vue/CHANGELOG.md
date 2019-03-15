@@ -16,11 +16,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - controls for Vue based navbar component: 
    - UNavbarNotificationButton - `ubm_messages` notifications
    - UNavbarSearchButton - Full Text Search (+ shortcut `Ctrl + F`)
-   - UNavbarUserButton - actions for logged in user  
+   - UNavbarUserButton - actions for logged in user
+ - "Magic links" (see adminui-vue/utils/magicLinks.js for details)
+  ```html
+    <a href="#" data-cmd-type="showForm" data-entity="ubm_navshortcut", data-instance-id=332352169869385>
+       Edit existed shortcut with specified ID
+   </a>
+  ```
  
 ### Fixed
  - Vue control UbSelectEntity now use ElSelect `remote-method` for fetching data
  - behavior of UbSelectEntity changed to be as close to desktop select as possible
+ - links for set focus on attribute with invalid value and for execution of command
+ now work in production mode (inline JS is removed in flavor of magic link)
   
 ## [1.3.2]
 ### Added
