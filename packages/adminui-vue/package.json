@@ -43,6 +43,7 @@
     "@unitybase/ub-pub": "^5.2.32",
     "element-ui": "2.5.4",
     "font-awesome": "^4.7.0",
+    "jdenticon": "^2.1.1",
     "lodash": "^4",
     "normalize.css": "^8.0.1",
     "systemjs": "^0.20.18",
