@@ -1,8 +1,8 @@
-<template>
+ub-selector<template>
   <!-- Without `position: relative` menu items floats to the right side of screen (check on storybook) -->
   <div
     style="position: relative"
-    :title="rowIsDeleted ? deletedCaption : ''"
+    :title="rowIsDeleted ? $ut('elementIsNotActual') : ''"
   >
     <el-select
       :id="`ub-selector${this._uid}`"
@@ -12,7 +12,6 @@
       :placeholder="placeholder"
       filterable
       remote
-      reserve-keyword
       :remote-method="remoteMethod"
       :disabled="loading || disabled"
       :automatic-dropdown="false"
@@ -32,8 +31,8 @@
         <el-option
           v-for="item in itemsToDisplay"
           :key="item[primaryColumn]"
-          :label="item[displayValue]"
           :value="item[primaryColumn]"
+          :label="item[displayValue]"
           :disabled="item.removed"
         />
         <el-row
@@ -46,7 +45,7 @@
             type="text"
             @click="loadNextButtonClick"
           >
-            {{ buttonMoreCaption }}
+            {{ $ut('more') }}
           </el-button>
         </el-row>
       </template>
@@ -57,7 +56,7 @@
     >
       <div
         class="ub-icon-menu"
-        @click="openDropDown"
+        @click="toggleDropDown"
       >
         <i class="el-icon-arrow-down" />
       </div>
@@ -134,8 +133,6 @@ module.exports = {
     return {
       primaryColumn: 'ID',
       waitingNewEntity: false,
-      buttonMoreCaption: this.$ut('more'),
-      deletedCaption: this.$ut('elementIsNotActual'),
       entitySchema: this.$UB.connection.domain.get(this.entityName, true),
       hasData: true,
       initialItem: null,
@@ -161,11 +158,12 @@ module.exports = {
     }
   },
   methods: {
-    remoteMethod (input) {
-      if (input) this.loadNextByInput(input)
-      if (input === '') this.items = []
+    remoteMethod (query) {
+      if (query) this.loadNextByInput(query)
+      if (query === '') this.items = []
     },
-    openDropDown () {
+    toggleDropDown () {
+      // TODO this.$refs.selector.toggleMenu()
       this.items = []
       this.loadNextButtonClick(() => {
         this.$refs.selector.focus()

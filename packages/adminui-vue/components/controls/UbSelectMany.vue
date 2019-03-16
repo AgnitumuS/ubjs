@@ -34,7 +34,7 @@
           type="text"
           @click="loadNextButtonClick"
         >
-          {{ buttonMoreCaption }}
+          {{ $ut('more') }}
         </el-button>
       </el-row>
     </template>
@@ -142,7 +142,6 @@ module.exports = {
       resultData: this.setResultData(),
       itemCount: 20,
       hasData: true,
-      buttonMoreCaption: this.$ut('more'),
       loading: false,
       listener: () => {
         this.items = []
