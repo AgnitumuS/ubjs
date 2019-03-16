@@ -36,7 +36,7 @@ ub-selector<template>
           :disabled="item.removed"
         />
         <el-row
-          v-if="hasData"
+          v-if="morePagesAvailable"
           type="flex"
           justify="end"
           style="padding: 0 20px"
@@ -103,6 +103,7 @@ ub-selector<template>
 
 <script>
 require('../../css/ub-select.css')
+const PAGE_SIZE = 20
 
 module.exports = {
   name: 'UbSelectEntity',
@@ -134,10 +135,9 @@ module.exports = {
       primaryColumn: 'ID',
       waitingNewEntity: false,
       entitySchema: this.$UB.connection.domain.get(this.entityName, true),
-      hasData: true,
+      morePagesAvailable: false,
       initialItem: null,
       items: [],
-      itemCount: 20,
       handleEntityChanged: id => {
         if (this.resultData === id) {
           this.setInitialItem(id)
@@ -235,13 +235,13 @@ module.exports = {
       return this.$UB.Repository(this.entityName)
         .attrs(this.primaryColumn, this.displayValue)
         .start(startFrom || 0)
-        .limit(this.itemCount)
+        .limit(PAGE_SIZE)
         .whereIf(this.$refs.selector.selectedLabel && (!this.initialItem || this.$refs.selector.selectedLabel !== this.initialItem[this.displayValue]), this.displayValue, 'like', this.$refs.selector.selectedLabel)
     },
     loadNextByInput: function (query) {
       this.getRepository().select().then((data) => {
         this.items = []
-        this.hasData = data.length === this.itemCount
+        this.morePagesAvailable = (data.length === PAGE_SIZE)
         data.forEach(item => {
           this.items.push(item)
         })
@@ -250,7 +250,7 @@ module.exports = {
     loadNextButtonClick (callback) {
       let itemsLength = this.items.length || 0
       this.getRepository(itemsLength).select().then((data) => {
-        this.hasData = data.length === this.itemCount
+        this.morePagesAvailable = (data.length === PAGE_SIZE)
         data.forEach(item => {
           this.items.push(item)
         })
