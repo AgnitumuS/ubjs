@@ -1,3 +1,4 @@
+/* global $App, Ext */
 const UB = require('@unitybase/ub-pub')
 const Vue = require('vue')
 const { Notification } = require('element-ui')
@@ -7,7 +8,7 @@ const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
-  window.Ext.Msg.confirm = function ({ title, msg, fn: callback, buttonText: buttons }) {
+  Ext.Msg.confirm = function ({ title, msg, fn: callback, buttonText: buttons }) {
     return dialog({
       title,
       msg,
@@ -19,11 +20,11 @@ function replaceExtJSDialogs () {
     })
   }
 
-  window.$App.dialogYesNo = dialogYesNo
-  window.$App.dialogInfo = dialogInfo
-  window.$App.dialogError = dialogError
+  $App.dialogYesNo = dialogYesNo
+  $App.dialogInfo = dialogInfo
+  $App.dialogError = dialogError
 
-  window.Ext.override(UB.view.BasePanel, {
+  Ext.override(UB.view.BasePanel, {
     showValidationErrors () {
       const errors = []
       let focusCalled = false
@@ -31,7 +32,8 @@ function replaceExtJSDialogs () {
       this.getForm().getFields().each(item => {
         if (!item.isValid()) {
           if (!focusCalled) {
-            item.focus()
+            // in case item not rendered yet give it a chance - Ext.callback with delay
+            Ext.callback(item.focus, item, [], 100)
             focusCalled = true
           }
           errors.push(item)
@@ -39,8 +41,7 @@ function replaceExtJSDialogs () {
       })
       if (errors.length) {
         const fieldLinks = errors.map(f => {
-          // TODO - rewrite using onclick handler - inline JS this don'n work in production mode
-          return `<a href="#" onclick="document.getElementById('${f.inputEl.id}').focus()">${f.fieldLabel}</a>`
+          return `<a href="#" data-cmd-type="setFocus" data-elm-id="${f.id}">${f.fieldLabel}</a>`
         }).join(', ')
 
         Notification.error({
@@ -73,6 +74,7 @@ function replaceExtJSNavbar () {
     })
   }).$mount(`#${id}`)
 }
+
 module.exports = {
   replaceExtJSDialogs,
   replaceExtJSNavbar

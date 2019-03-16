@@ -302,7 +302,7 @@ Ext.define('UB.core.UBCommand', {
      * @cfg {Object} [commandContext]
      */
     me.commandContext = config.commandContext
-    me.instanceID = config.instanceID
+    me.instanceID = config.instanceID || config.instanceId
     if (Ext.isDefined(me.instanceID) && Ext.isString(me.instanceID)) {
       try {
         me.instanceID = parseFloat(me.instanceID)

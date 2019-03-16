@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   
 ### Changed 
  - i18 key `oshibkaVvoda` renamed to `fieldValidationError` and moved to up-pub
+ - changed 'notValidForColumns' message template for all locales
+ 
+### Added
+ - new alias `instanceId` for `$App.showForm` command can be used instead of `instanceID`.
+ Useful inside data attributes (see "magic links" in adminui-vue) 
  
 ## [5.8.2]
 ### Changed
