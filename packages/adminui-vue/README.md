@@ -56,7 +56,7 @@ To use it in `adminUI` based apps in ubConfig
 See `/views/ub-auth.html` for sample
 
 ### Compiled Vue app
-In case you embedd a compiled Vue app into adminUI:
+In case you embed a compiled Vue app into adminUI:
 
 - define output section in the webpack config to prevent loading modules twice:
 ```
@@ -79,10 +79,27 @@ In case you embedd a compiled Vue app into adminUI:
     'vue': 'Vue',
     'element-ui': 'ElementUI',
   },
-
+```
 
 # Contribution
+## Debugging
+ For better debugging experience we recommend to rebuild element-ui in development mode.
+ Use `element-ui` brunch for version specified in `adminui-vue` package.json (2.5.4 in a moment of writing this manual)
+ 
+ ```bash
+  git clone https://github.com/ElemeFE/element.git
+  cd element
+  git checkout v2.5.4
+  npm i
+  npm run clean && npm run build:file && npx webpack --config build/webpack.conf.js --mode development
+```
 
+ and copy /lib/index.js into your project. In my case project is located in `~/dev/ubjs/apps/autotest`  
+ 
+ ```bash
+ cp ./lib/index.js ~/dev/ubjs/apps/autotest/node_modules/element-ui/lib
+ ```
+ 
 ## Theme
 Generate variables 
 ```
