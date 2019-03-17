@@ -30,12 +30,22 @@ function testIDMapping (conn) {
   let ID = conn.insert({
     entity: 'tst_IDMapping',
     fieldList: ['ID'],
-    execParams: { code: 'testIDMap'}
+    execParams: { code: 'testIDMap' }
   })
   // delete it
   conn.query({
     entity: 'tst_IDMapping',
     method: 'delete',
-    execParams: {ID: ID}
+    execParams: { ID: ID }
+  })
+  // update parentID for UI tests
+  let md = conn.Repository('tst_maindata').attrs('ID', 'mi_modifyDate').limit(2).selectAsObject()
+  conn.update({
+    entity: 'tst_maindata',
+    execParams: {
+      ID: md[0].ID,
+      parent: md[1].ID,
+      mi_modifyDate: md[0].mi_modifyDate
+    }
   })
 }
