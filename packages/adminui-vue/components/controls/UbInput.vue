@@ -2,11 +2,8 @@
   <div>
     <el-input
       v-model="currentValue"
-      :controls="false"
-      :type="fieldType"
-      :step="step"
-      :disabled="disabled"
-      @change="onChange"
+      v-bind="$attrs"
+      v-on="$listeners"
     >
       <el-button
         v-if="isMultiLang && objectValue"
@@ -62,13 +59,10 @@
 </template>
 
 <script>
-const ubDomain = require('@unitybase/cs-shared').UBDomain
-
 module.exports = {
   name: 'UbInput',
   data () {
     return {
-      UBDomain: ubDomain,
       dialogFormVisible: false,
       localizableFields: {},
       loading: false,
@@ -84,24 +78,12 @@ module.exports = {
     entitySchema () {
       return this.$UB.connection.domain.get(this.entityName)
     },
-    dataType () {
-      return this.entitySchema.attributes[this.attributeName].dataType
-    },
-    fieldType () {
-      return ['Int', 'BigInt', 'Float', 'Currency'].includes(this.dataType) ? 'number' : 'text'
-    },
-    step () {
-      let step = '0'
-      if (this.dataType === 'Float') step = '0.01'
-      if (this.dataType === 'Currency') step = `0.${'0'.repeat(UBDomain.FLOATING_SCALE_PRECISION - 1)}1`
-      return step
-    },
     isMultiLang () {
       return this.entitySchema.attributes[this.attributeName].isMultiLang
     }
   },
   props: {
-    value: [String, Number],
+    value: [String],
     entityName: {
       type: String,
       required: true
@@ -110,16 +92,10 @@ module.exports = {
       type: String,
       required: true
     },
-    disabled: Boolean,
+    // TODO this property is for multilang attributes. Rewrite because nobody know how to bind this
     objectValue: Object
   },
   methods: {
-    onChange () {
-      if (['Int', 'BigInt'].includes(this.dataType)) this.currentValue = Math.round(this.currentValue)
-      if (this.dataType === 'Float') this.currentValue = Math.round(this.currentValue * 100) / 100
-      if (this.dataType === 'Currency') this.currentValue = Math.round(this.currentValue * Math.pow(10, this.UBDomain.FLOATING_SCALE_PRECISION)) / Math.pow(10, this.UBDomain.FLOATING_SCALE_PRECISION)
-      this.$emit('input', this.currentValue)
-    },
     saveLocalization () {
       let changedColumns = []
       Object.keys(this.localizableFields).forEach(key => {
@@ -172,8 +148,8 @@ module.exports = {
     }
   },
   watch: {
-    value () {
-      this.currentValue = this.value
+    value (val, oldVal) {
+      this.currentValue = val
     }
   },
   mounted () {

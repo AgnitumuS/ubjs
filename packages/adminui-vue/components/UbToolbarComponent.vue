@@ -87,8 +87,7 @@ module.exports = {
   name: 'UbToolbarComponent',
   props: {
     instanceId: {
-      type: [Number],
-      required: true
+      type: [Number]
     },
     entityName: {
       type: String,
