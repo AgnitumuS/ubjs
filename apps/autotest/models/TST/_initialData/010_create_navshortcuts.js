@@ -11,7 +11,7 @@
 module.exports = function (session) {
   let conn = session.connection
 
-  let desktopID = conn.lookup('ubm_desktop', 'ID', {expression: 'code', condition: 'equal', values: {code: 'tst_desktop'}})
+  let desktopID = conn.lookup('ubm_desktop', 'ID', { expression: 'code', condition: 'equal', values: { code: 'tst_desktop' } })
   console.info('\tFill `Test` desktop')
   if (!desktopID) {
     console.info('\t\tcreate new `Test` desktop')
@@ -37,7 +37,7 @@ module.exports = function (session) {
       caption: 'Document test',
       iconCls: 'fa fa-folder',
       displayOrder: 10,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'tst_document', method: 'select', fieldList: ['favorites.code', 'docDate', 'code', 'description', 'fileStoreSimple']}]}}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'tst_document', method: 'select', fieldList: ['favorites.code', 'docDate', 'code', 'description', 'fileStoreSimple'] }] } }, null, '\t')
     }
   })
 
@@ -50,7 +50,7 @@ module.exports = function (session) {
       code: 'tst_clob',
       caption: 'CLOB test',
       displayOrder: 20,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'tst_clob', method: 'select', fieldList: ['code', 'description', 'text100', 'text2']}]}}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'tst_clob', method: 'select', fieldList: ['code', 'description', 'text100', 'text2'] }] } }, null, '\t')
     }
   })
 
@@ -63,12 +63,12 @@ module.exports = function (session) {
       code: 'tst_IITSign',
       caption: 'test IIT Sign',
       displayOrder: 30,
-      cmdCode: JSON.stringify({cmdType: 'showForm', formCode: 'tst_service-IITSign'}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showForm', formCode: 'tst_service-IITSign' }, null, '\t')
     }
   })
 
   let displayOrder = 40;
-  ['tst_maindata', 'tst_mainunity', 'tst_IDMapping', 'tst_histDict'].forEach(function (entityCode) {
+  ['tst_mainunity', 'tst_IDMapping', 'tst_histDict'].forEach(function (entityCode) {
     console.log('\t\t\tcreate `', entityCode, '` shortcut')
     conn.insert({
       fieldList: ['ID'],
@@ -78,11 +78,26 @@ module.exports = function (session) {
         code: entityCode,
         caption: entityCode,
         displayOrder: displayOrder,
-        cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: entityCode, method: 'select', fieldList: '*'}]}}, null, '\t')
+        cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: entityCode, method: 'select', fieldList: '*' }] } }, null, '\t')
       }
     })
     displayOrder = displayOrder + 10
   })
+  console.log('\t\t\tcreate tst_maindata shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_maindata',
+      iconCls: 'fa fa-database',
+      caption: 'tst_maindata',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'tst_maindata', method: 'select', fieldList: '*' }] } }, null, '\t')
+    }
+  })
+  displayOrder = displayOrder + 10
+
   console.log('\t\t\tcreate `', 'tst_dictionary', '` shortcut')
   conn.insert({
     fieldList: ['ID'],
@@ -90,15 +105,16 @@ module.exports = function (session) {
     execParams: {
       desktopID: desktopID,
       code: 'tst_dictionary',
+      iconCls: 'fa fa-book',
       caption: 'tst_dictionary',
       displayOrder: displayOrder,
-      cmdCode: JSON.stringify({cmdType: 'showList',
-        cmdData: {params: [{ entity: 'tst_dictionary',
+      cmdCode: JSON.stringify({ cmdType: 'showList',
+        cmdData: { params: [{ entity: 'tst_dictionary',
           method: 'select',
           fieldList: ['ID', 'code', 'caption', 'filterValue', 'currencyValue', 'floatValue', 'calculated', 'booleanColumn', 'jsonColumn',
-            {name: 'jsonColumn.propI', description: 'Int json property'},
-            {name: 'jsonColumn.propS', description: 'String json property'}
-          ]}]
+            { name: 'jsonColumn.propI', description: 'Int json property' },
+            { name: 'jsonColumn.propS', description: 'String json property' }
+          ] }]
         }
       }, null, '\t')
     }
@@ -113,7 +129,7 @@ module.exports = function (session) {
       code: 'tst_document-vue',
       caption: 'VueJS form test',
       displayOrder: displayOrder,
-      cmdCode: JSON.stringify({cmdType: 'showForm', formCode: 'tst_document-vue'}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showForm', formCode: 'tst_document-vue' }, null, '\t')
     }
   })
 
@@ -126,7 +142,7 @@ module.exports = function (session) {
       code: 'tst_onlyOffice',
       caption: 'tst_onlyOffice',
       displayOrder: displayOrder,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'tst_onlyoffice', method: 'select', fieldList: ['ID', 'caption']}]}}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'tst_onlyoffice', method: 'select', fieldList: ['ID', 'caption'] }] } }, null, '\t')
     }
   })
 }
