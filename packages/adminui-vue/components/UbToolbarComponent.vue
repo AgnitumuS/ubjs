@@ -86,8 +86,8 @@
 module.exports = {
   name: 'UbToolbarComponent',
   props: {
-    value: {
-      type: [String, Number],
+    instanceId: {
+      type: [Number],
       required: true
     },
     entityName: {
@@ -144,7 +144,7 @@ module.exports = {
       let prm = []
       prm.push('cmdType=showForm')
       prm.push(`entity=${this.entitySchema.name}`)
-      prm.push(`instanceID=${this.value}`)
+      prm.push(`instanceID=${this.instanceId}`)
       return `${window.location.protocol}//${window.location.host}${window.location.pathname}#${prm.join('&')}`
     },
     isSimpleAudit () {
@@ -284,7 +284,7 @@ module.exports = {
                 cmpInitConfig: {
                   extendedFieldList: extendedFieldList
                 },
-                instanceID: this.value,
+                instanceID: this.instanceId,
                 __mip_recordhistory: true
               })
             }
@@ -306,7 +306,7 @@ module.exports = {
                     this.$UB.Repository('uba_auditTrail')
                       .attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
                       .where('[entity]', '=', this.entityName)
-                      .where('[entityinfo_id]', '=', this.value)
+                      .where('[entityinfo_id]', '=', this.instanceId)
                       .orderByDesc('actionTime')
                       .ubql()
                   ]
