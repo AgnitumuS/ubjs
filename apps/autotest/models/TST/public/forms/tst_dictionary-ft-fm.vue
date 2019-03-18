@@ -104,7 +104,7 @@ module.exports.mount = function (params) {
         </el-col>
         <el-col :lg="12" :sm="24">
           <el-form-item :label="entitySchema.attributes['filterValue'].caption">
-            <el-input v-model="instance.filterValue" />
+            <u-input-number :entity-name="entityName" attribute-name="filterValue" v-model="instance.filterValue" />
           </el-form-item>
           <el-form-item :label="entitySchema.attributes['currencyValue'].caption">
             <u-input-number
