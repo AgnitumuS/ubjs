@@ -6,9 +6,8 @@
   >
     <el-select
       :id="`ub-selector${this._uid}`"
-      v-bind="$attrs"
-      v-on="$listeners"
       ref="selector"
+      v-bind="$attrs"
       :value="value"
       :loading="loading"
       filterable
@@ -19,6 +18,7 @@
       :class="`ub-select-entity${this._uid}`"
       style="width: 100%"
       @change="onChange"
+      v-on="$listeners"
       @keyup.native.alt.e="handleEditItem"
       @keyup.native.exact.f9="handleShowDictionary"
       @keyup.native.alt.backspace="handleClearClick"
@@ -265,13 +265,13 @@ module.exports = {
         row.handler.fn.call(row.handler.scope ? row.handler.scope : this, event)
         this.popoverVisible = false
       }
-    },
-    onChange (data) {
-      // this.initialItem = this.items.find((el) => {
-      //   return el[this.primaryColumn] === data
-      // })
-      // this.$emit('input', data)
     }
+    // ,onChange (data) {
+    //   this.initialItem = this.items.find((el) => {
+    //     return el[this.primaryColumn] === data
+    //   })
+    //   this.$emit('input', data)
+    // }
     // ,
     // initLoaderStyles () {
     //   let control = document.querySelector(`.ub-select-entity${this._uid} .el-loading-spinner`)
