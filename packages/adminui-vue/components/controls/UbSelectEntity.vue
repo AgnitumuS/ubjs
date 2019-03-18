@@ -11,7 +11,6 @@
       ref="selector"
       :value="value"
       :loading="loading"
-      :placeholder="placeholder"
       filterable
       remote
       :remote-method="remoteMethod"
@@ -130,8 +129,7 @@ module.exports = {
       default () {
         return []
       }
-    },
-    placeholder: String
+    }
   },
   data () {
     return {
