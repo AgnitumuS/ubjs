@@ -3,7 +3,6 @@
     ref="selector"
     v-model="resultData"
     v-loading="loading"
-    reserve-keyword
     clearable
     filterable
     multiple
