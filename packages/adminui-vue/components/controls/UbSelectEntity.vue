@@ -56,6 +56,7 @@
       class="ub-select-entity__menu-button"
       style="pointer-events: none;"
     >
+      <!--<el-button tabindex="-1" icon="el-icon-arrow-down" @click="toggleDropDown" />-->
       <div
         class="ub-icon-menu"
         @click="toggleDropDown"
@@ -196,14 +197,13 @@ module.exports = {
       if (!this.dataPage.length) {
         this.loading = true
         this.remoteMethod()
-          .finally(() => { this.loading = false })
+          .finally(() => {
+            this.loading = false
+            this.$refs.selector.toggleMenu()
+          })
+      } else {
+        this.$refs.selector.toggleMenu()
       }
-      this.$refs.selector.toggleMenu()
-      // this.items = []
-      // this.loadNextButtonClick(() => {
-      //   this.$refs.selector.focus()
-      // })
-      // this.$refs.selector.focus()
     },
     loadNextPage () {
       this.dataPageNum++
