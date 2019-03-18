@@ -117,6 +117,7 @@ module.exports = {
       type: String,
       required: true
     },
+    // repeat it here and pass down to ElEdit because we need to disable toggle & actions
     disabled: Boolean,
     useOwnActions: {
       type: Boolean,

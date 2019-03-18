@@ -3,6 +3,7 @@
     <el-input
       v-model="currentValue"
       v-bind="$attrs"
+      :disabled="disabled"
       v-on="$listeners"
     >
       <el-button
@@ -92,6 +93,8 @@ module.exports = {
       type: String,
       required: true
     },
+    // repeat it here and pass down to ElEdit because we need to disable multi-lang button
+    disabled: Boolean,
     // TODO this property is for multilang attributes. Rewrite because nobody know how to bind this
     objectValue: Object
   },
