@@ -83,6 +83,7 @@ In case you embed a compiled Vue app into adminUI:
 
 # Contribution
 ## Debugging
+### ElemetUI in debug mode 
  For better debugging experience we recommend to rebuild element-ui in development mode.
  Use `element-ui` brunch for version specified in `adminui-vue` package.json (2.5.4 in a moment of writing this manual)
  
@@ -99,7 +100,15 @@ In case you embed a compiled Vue app into adminUI:
  ```bash
  cp ./lib/index.js ~/dev/ubjs/apps/autotest/node_modules/element-ui/lib
  ```
+
+### Prevent debugger to dig into vue sources
+ While debugging a components source you can prevent debugger to dig into vue sources.
  
+ To do this in Source tab of debugger press F1 to open `Preferences`,
+ select `Blackboxing` on the left and add a pattern `vue.common.dev.js$`.
+ 
+ After this `Step into` (F11) will skip vue sources
+   
 ## Theme
 Generate variables 
 ```
