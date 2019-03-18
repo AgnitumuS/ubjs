@@ -3,8 +3,6 @@
     ref="selector"
     v-model="resultData"
     v-loading="loading"
-    filterable
-    reserve-keyword
     clearable
     :disabled="loading || disabled"
     :class="`ub-select-enum${_uid}`"
@@ -26,12 +24,15 @@
 <script>
 require('../../css/ub-select.css')
 
+const ENUM_ENTITY = 'ubm_enum'
+
 module.exports = {
   name: 'UbSelectEnum',
   props: {
     value: {
       type: [String, Number]
     },
+    // TODO - pass entityCode, add attrCode, clearable only in case attr allow null
     eGroup: {
       type: String
     },
@@ -47,16 +48,12 @@ module.exports = {
     return {
       resultData: this.value,
       items: [],
-      entityName: 'ubm_enum',
-      loading: false,
-      listener: () => {
-        this.initData()
-      }
+      loading: false
     }
   },
   computed: {
     displayValue () {
-      return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
+      return this.$UB.connection.domain.get(ENUM_ENTITY).descriptionAttribute
     }
   },
   methods: {
@@ -66,19 +63,9 @@ module.exports = {
         this.$refs.selector.emitChange(null)
       }
     },
-    initLoaderStyles () {
-      let control = document.querySelector(`.ub-select-enum${this._uid} .el-loading-spinner`)
-      if (control) {
-        control.classList.add('ub-select__loading-spinner')
-        let svg = control.querySelector('.circular')
-        if (svg) {
-          svg.style.height = '100%'
-        }
-      }
-    },
-    initData () {
+    loadData () {
       this.loading = true
-      this.$UB.Repository(this.entityName)
+      this.$UB.Repository(ENUM_ENTITY)
         .attrs(this.primaryColumn, this.displayValue, 'eGroup')
         .whereIf(this.eGroup, 'eGroup', '=', this.eGroup)
         .select().then((data) => {
@@ -88,7 +75,7 @@ module.exports = {
     }
   },
   destroyed () {
-    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
+    this.$UB.connection.removeListener(`${ENUM_ENTITY}:changed`, this.loadData)
   },
   watch: {
     value () {
@@ -96,13 +83,8 @@ module.exports = {
     }
   },
   mounted () {
-    setTimeout(() => {
-      this.initLoaderStyles()
-    }, 1)
-
-    this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
-
-    this.initData()
+    this.$UB.connection.on(`${ENUM_ENTITY}:changed`, this.loadData)
+    this.loadData()
   }
 }
 </script>
