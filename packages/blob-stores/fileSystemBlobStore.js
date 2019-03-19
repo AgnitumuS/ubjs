@@ -313,6 +313,11 @@ class FileSystemBlobStore extends BlobStoreCustom {
       fn = `${blobItem.revision || 1}${ext}` // actual file name is `revision number + ext`
       relPath = path.join(relPath, fileFolder)
     }
+    if (process.platform === 'nix') {
+      if (relPath.indexOf('\\') !== -1) { // in case file written from Windows relPath contains win separator
+        relPath = relPath.replace(/\\/g, '/')
+      }
+    }
     return path.join(this.fullStorePath, relPath, fn)
   }
 }
