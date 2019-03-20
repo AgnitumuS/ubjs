@@ -5,12 +5,13 @@
     style="height: 100%"
   >
     <ub-entity-edit
-      v-model="value"
+      :instance="value"
       :entity-name="entityName"
-      :instance-i-d="instanceID"
+      :instance-id="instanceID"
       :save="save"
       :current-tab-id="currentTabId"
       :external-data="externalData"
+      @data-loaded="assignInstanceData"
     >
       <el-form
         :ref="$options.name"
@@ -18,6 +19,7 @@
         label-position="left"
         label-width="150px"
       >
+        <!--TODO replace style max-width with el-row md=12 sm 24-->
         <el-form-item
           v-for="fieldName in fieldsToShow"
           :key="fieldName"
@@ -60,6 +62,13 @@
             type="textarea"
             :autosize="{ minRows: 3, maxRows: 4}"
           />
+          <u-input-number
+            v-else-if="['Int','BigInt','Float','Currency','ID'].includes(entitySchema.attributes[fieldName].dataType)"
+            v-model="value[fieldName]"
+            :entity-name="entitySchema.name"
+            :attribute-name="fieldName"
+            :disabled="externalData.hasOwnProperty(fieldName)"
+          />
           <ub-upload-document
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
             v-model="value[fieldName]"
@@ -90,6 +99,7 @@ const ubSelectMany = require('./controls/UbSelectMany.vue').default
 const ubInput = require('./controls/UbInput.vue').default
 const ubUploadDocument = require('./controls/UbUploadDocument.vue').default
 const ubCodeMirror = require('./controls/UbCodeMirror.vue').default
+const UInputNumber = require('./controls/UInputNumber.vue').default
 
 module.exports = {
   name: 'AutoForm',
@@ -126,6 +136,9 @@ module.exports = {
           callback()
         }
       })
+    },
+    assignInstanceData (data) {
+      this.value = data
     }
   },
   computed: {
@@ -149,7 +162,8 @@ module.exports = {
     'ub-select-many': ubSelectMany,
     'ub-input': ubInput,
     'ub-upload-document': ubUploadDocument,
-    'ub-code-mirror': ubCodeMirror
+    'ub-code-mirror': ubCodeMirror,
+    UInputNumber
   }
 }
 </script>

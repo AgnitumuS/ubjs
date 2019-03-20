@@ -3,7 +3,6 @@
     ref="selector"
     v-model="resultData"
     v-loading="loading"
-    reserve-keyword
     clearable
     filterable
     multiple
@@ -18,7 +17,7 @@
   >
     <template>
       <el-option
-        v-for="item in itemsToDisplay"
+        v-for="item in availableOptions"
         :key="item[primaryColumn]"
         :label="item[displayValue]"
         :value="item[primaryColumn]"
@@ -34,7 +33,7 @@
           type="text"
           @click="loadNextButtonClick"
         >
-          {{ buttonMoreCaption }}
+          {{ $ut('more') }}
         </el-button>
       </el-row>
     </template>
@@ -129,7 +128,7 @@ module.exports = {
     },
     setResultData () {
       this.resultData = this.value ? this.value.trim().split(',').map(item => {
-        return typeof item !== 'number' ? parseInt(item) : item
+        return typeof item !== 'number' ? parseInt(item, 10) : item
       }) : []
     }
   },
@@ -142,7 +141,6 @@ module.exports = {
       resultData: this.setResultData(),
       itemCount: 20,
       hasData: true,
-      buttonMoreCaption: this.$ut('more'),
       loading: false,
       listener: () => {
         this.items = []
@@ -161,7 +159,7 @@ module.exports = {
     displayValue () {
       return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
     },
-    itemsToDisplay () {
+    availableOptions () {
       if (this.initialItem && this.initialItem.length > 0) {
         let filteredItems = this.items.filter((item) => {
           return !this.initialItem.map(ii => { return ii[this.primaryColumn] }).includes(item[this.primaryColumn])
@@ -180,8 +178,6 @@ module.exports = {
     }, 1)
 
     this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
-    // this.$refs.selector.$refs.reference._vnode.children[1].data.attrs.tabindex = '-1'
-    // this.$refs.selector.$refs.reference.$refs.input.setAttribute('tabindex', '-1')
     this.setInitialItem()
   }
 }

@@ -34,7 +34,7 @@ function testManyAttribute (conn) {
     method: 'select',
     fieldList: ['ID', 'manyValue']
   })
-  assert.equal(selected.resultData.rowCount, 16, 'Total row count in "tst_maindata" must be 16')
+  assert.equal(selected.resultData.rowCount, 23, 'Total row count in "tst_maindata" must be 23')
 
   // console.debug('Проверка корректности агрегированного значения атрибута "manyValue"');
   selected = conn.run({
@@ -80,7 +80,7 @@ function testManyAttribute (conn) {
     }
   })
   // Должно быть 14 записей
-  assert.equal(selected.resultData.rowCount, 13, '"manyValue NOT IN (6)" condition must rerurn 13 row')
+  assert.equal(selected.resultData.rowCount, 20, '"manyValue NOT IN (6)" condition must returns 20 row')
 
   // console.debug('Проверка корректности фильтрации по атрибуту "manyValue" условием "IS NULL". Важно одновременно этот же атрибут иметь в fieldList');
   selected = conn.run({
@@ -108,7 +108,7 @@ function testManyAttribute (conn) {
       }
     }
   })
-  assert.equal(selected.resultData.rowCount, 16, '"manyValue IS NOT NULL" condition with manyValue in fieldList must return 16 row')
+  assert.equal(selected.resultData.rowCount, 23, '"manyValue IS NOT NULL" condition with manyValue in fieldList must return 23 row')
   selected = conn.Repository('tst_maindata').attrs('ID', 'manyValue.caption').where('code', '=', 'Код1').selectAsObject()
   assert.equal(selected[0]['manyValue.caption'], 'caption 10,caption 20', 'select manyValue.caption')
 }
