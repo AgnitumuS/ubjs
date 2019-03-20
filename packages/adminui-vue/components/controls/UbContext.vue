@@ -2,6 +2,7 @@
   <div
     v-show="visible"
     ref="context"
+    v-clickoutside="hideOnClickOutside"
     class="ub-context-menu"
     :style="{
       top: y + 'px',
@@ -14,7 +15,7 @@
         :key="item.action"
         class="ub-context-menu__item"
         :class="[item.disabled && 'disabled']"
-        @click="close(item)"
+        @click="itemSelected(item)"
       >
         <i :class="item.iconCls" />
         <span>{{ $ut(item.label) }}</span>
@@ -29,12 +30,33 @@
 </template>
 
 <script>
+const Vue = require('vue')
+// dirty hack to retrieve a Clicoutside directive not exposed by Elements
+const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clickoutside
+
+/**
+ * Show popup on mouse position
+ *
+ * @example
+   <div>
+     <u-navbar-tab @right-click="$refs.context.show">
+     <ub-context
+       ref="context"
+       :items="contextItems"
+       @select="selectContext"
+     />
+    </div>
+ */
 export default {
   name: 'UbContext',
+  directives: { Clickoutside },
   props: {
-    items: Array,
-    clickOutsideTargets: {
-      type: String,
+    /**
+     * Popup menu items
+     * @type {Array<{label: string, action: string, disabled?: boolean}>}
+     */
+    items: {
+      type: Array,
       required: true
     }
   },
@@ -42,34 +64,28 @@ export default {
   data () {
     return {
       visible: false,
+      /** is context menu in process of showing */
+      showing: false,
       x: 0,
       y: 0,
       targetData: null
     }
   },
 
-  mounted () {
-    window.addEventListener('click', this.clickOutside)
-    window.addEventListener('contextmenu', this.clickOutside)
-  },
-
   methods: {
-    close ({ action, disabled }) {
+    itemSelected ({ action, disabled }) {
       if (!disabled) {
         this.$emit('select', action, this.targetData)
       }
       this.visible = false
     },
 
-    clickOutside ({ target, type }) {
-      const outsideContext = !target.closest('.ub-context-menu')
-      const outsideTarget = !target.closest(this.clickOutsideTargets) || type === 'click'
-      if (outsideContext && outsideTarget) {
-        this.visible = false
-      }
+    hideOnClickOutside () {
+      if (!this.showing) this.visible = false
     },
 
     show ({ x, y }, targetData) {
+      this.showing = true
       this.visible = true
       this.x = x
       this.y = y
@@ -81,6 +97,7 @@ export default {
         if (underBottom) {
           this.y = window.innerHeight - contextHeight
         }
+        this.showing = false
       })
     }
   }
