@@ -15,3 +15,10 @@ code;caption;nonNullDict_ID;nullDict_ID;enumValue;booleanValue;manyValue;dateTim
 Код14;Заголовок 113;2;2;TST1;0;3,6;null
 #Код15;#Заголовок 114;3;null;TST3;0;3,4;#maxdate
 #Код16;#Заголовок 115;4;4;TST3;0;3,5;#currentdate
+Код17;Заголовок 116;4;null;TST1;0;3,2;null
+Код18;Заголовок 117;5;null;TST1;0;3,2;null
+Код19;Заголовок 118;6;6;TST1;0;3,2;null
+Код20;Заголовок 119;1;null;TST1;0;3,2;null
+Код21;Заголовок 120;2;2;TST1;0;3,2;null
+Код22;#Заголовок 121;3;null;TST3;0;3,2;null
+Код23;#Заголовок 122;4;4;TST3;0;3,2;null

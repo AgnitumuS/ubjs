@@ -6,12 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [1.3.3]
 ### Changed
+ - UbEntityEdit `value` property renamed to `instance` 
+ - UbInput now use HOC pattern over ElInput
+ - ToolbarComponent property `value` renamed to `instanceId`. To be used as `<u-form-toolbar :instance-id="formData.ID"...>`
  - prevent override Vue.prototype.$notify introduced by El, instead inject UDialog as `$dialog`
  - Vue forms will use `Alt+R` for "Remove" instead  of Alt+Del because DEl and Backspace because
  on Mac keyboards the key normally identified as "backspace" on PC keyboards is called "delete"
  - popover button animation removed for vue select (in remote mode)  
 
 ### Added
+ - UInputNumber component - editor for Numeric field (Int, BinInt, Currency, Float, ID); HOC over ElInputNumber
  - Vue.prototype.$dialog, $dialogYesNo, #dialogInfo, $dialogError
  - controls for Vue based navbar component: 
    - UNavbarNotificationButton - `ubm_messages` notifications

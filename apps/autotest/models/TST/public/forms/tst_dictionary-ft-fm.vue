@@ -1,7 +1,8 @@
 <script>
 const Vue = require('vue')
 const $App = require('@unitybase/adminui-pub')
-const ubInput = require('@unitybase/adminui-vue/components/controls/UbInput.vue').default
+const UbInput = require('@unitybase/adminui-vue/components/controls/UbInput.vue').default
+const UInputNumber = require('@unitybase/adminui-vue/components/controls/UInputNumber.vue').default
 
 const TstDictionaryFt = module.exports.default = {
   name: 'TstDictionaryFt',
@@ -16,7 +17,7 @@ const TstDictionaryFt = module.exports.default = {
   },
   data () {
     return {
-      entityData: {}
+      instance: {}
     }
   },
   computed: {
@@ -24,8 +25,13 @@ const TstDictionaryFt = module.exports.default = {
       return this.$UB.connection.domain.get(this.entityName)
     }
   },
+  methods: {
+    assignInstanceData (instanceData) {
+      this.instance = instanceData
+    }
+  },
   components: {
-    'ub-input': ubInput
+    UbInput, UInputNumber
   }
 }
 
@@ -70,15 +76,16 @@ module.exports.mount = function (params) {
 
 <template>
   <ub-entity-edit
-    v-model="entityData"
     :entity-name="entityName"
-    :instance-i-d="instanceID"
+    :instance-id="instanceID"
+    :instance="instance"
     :current-tab-id="currentTabId"
     :form-code="formCode"
+    @data-loaded="assignInstanceData"
   >
     <el-form
       ref="form"
-      :model="entityData"
+      :model="instance"
       label-width="140px"
       label-position="left"
     >
@@ -86,29 +93,29 @@ module.exports.mount = function (params) {
         <!--responsive. for large screen a half of screen width, for small - full width -->
         <el-col :lg="12" :sm="24">
           <el-form-item :label="entitySchema.attributes['code'].caption">
-            <el-input v-model="entityData.code" />
+            <ub-input :entity-name="entityName" attribute-name="code" v-model="instance.code" />
           </el-form-item>
           <el-form-item :label="entitySchema.attributes['caption'].caption">
-            <el-input v-model="entityData.caption" />
+            <ub-input :entity-name="entityName" attribute-name="caption" v-model="instance.caption" :object-value="instance"/>
           </el-form-item>
           <el-form-item :label="entitySchema.attributes['booleanColumn'].caption">
-            <el-input v-model="entityData.booleanColumn" />
+            <el-checkbox v-model="instance.booleanColumn" />
           </el-form-item>
         </el-col>
         <el-col :lg="12" :sm="24">
           <el-form-item :label="entitySchema.attributes['filterValue'].caption">
-            <el-input v-model="entityData.filterValue" />
+            <u-input-number :entity-name="entityName" attribute-name="filterValue" v-model="instance.filterValue" />
           </el-form-item>
           <el-form-item :label="entitySchema.attributes['currencyValue'].caption">
-            <ub-input
-              v-model="entityData.currencyValue"
+            <u-input-number
+              v-model="instance.currencyValue"
               :entity-name="entityName"
               attribute-name="currencyValue"
             />
           </el-form-item>
           <el-form-item :label="entitySchema.attributes['floatValue'].caption">
-            <ub-input
-              v-model="entityData.floatValue"
+            <u-input-number
+              v-model="instance.floatValue"
               :entity-name="entityName"
               attribute-name="floatValue"
             />
