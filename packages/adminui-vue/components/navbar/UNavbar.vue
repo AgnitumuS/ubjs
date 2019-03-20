@@ -79,7 +79,6 @@
     <ub-context
       ref="context"
       :items="contextItems"
-      click-outside-targets=".u-navbar__tab"
       @select="selectContext"
     />
   </div>

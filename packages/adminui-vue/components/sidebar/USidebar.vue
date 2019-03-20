@@ -57,7 +57,6 @@
     <ub-context
       ref="context"
       :items="contextItems"
-      click-outside-targets=".el-menu-item, .el-submenu__title"
       @select="selectContext"
     />
   </div>
