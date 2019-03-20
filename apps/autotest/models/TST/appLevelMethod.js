@@ -303,3 +303,16 @@ function db (req, resp) {
   resp.writeEnd(data[0])
 }
 App.registerEndpoint('db', db, false)
+
+/**
+ * Single database query (ORM)  for performance test
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function dbLong (req, resp) {
+  let data = UB.Repository('tst_document').attrs('*').selectAsObject()
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd(data)
+}
+App.registerEndpoint('dbLong', dbLong, false)

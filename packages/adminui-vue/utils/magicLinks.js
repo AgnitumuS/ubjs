@@ -34,7 +34,7 @@ const commands = {}
  * Adds a global onclick event listener
  */
 function install () {
-  document.body.addEventListener('click', checkClickOnMagicLink, false)
+  if (document) document.addEventListener('click', checkClickOnMagicLink, false)
 }
 
 /**
