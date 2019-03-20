@@ -5,7 +5,6 @@
     v-loading="loading"
     clearable
     :disabled="loading || disabled"
-    :class="`ub-select-enum${_uid}`"
     style="width: 100%"
     @change="$emit('input', resultData)"
     @input.native="onInput"

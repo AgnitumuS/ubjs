@@ -140,7 +140,6 @@ module.exports = {
     return {
       primaryColumn: 'ID',
       waitingNewEntity: false,
-      entitySchema: this.$UB.connection.domain.get(this.entityName, true),
       morePagesAvailable: false,
       /** items witch are selected (single item in case multiple=false) */
       selectedItems: [],
@@ -227,8 +226,7 @@ module.exports = {
     handleShowDictionary () {
       this.$UB.core.UBApp.doCommand({
         entity: this.entityName,
-        cmdType: this.$UB.core.UBCommand.commandType.showList,
-        description: this.entitySchema.getEntityDescription(),
+        cmdType: 'showList',
         isModal: true,
         sender: this,
         selectedInstanceID: this.value,
@@ -265,6 +263,9 @@ module.exports = {
     }
   },
   computed: {
+    entity () {
+      return this.$UB.connection.domain.get(this.entityName, true)
+    },
     /** available options - intersection of selectedItems and dataPage */
     availableOptions () {
       return this.dataPage.concat(
@@ -322,7 +323,7 @@ module.exports = {
       }]
     },
     displayValue () {
-      return this.entitySchema.descriptionAttribute
+      return this.entity.descriptionAttribute
     }
   },
   destroyed () {

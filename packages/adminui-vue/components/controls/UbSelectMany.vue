@@ -17,7 +17,7 @@
   >
     <template>
       <el-option
-        v-for="item in itemsToDisplay"
+        v-for="item in availableOptions"
         :key="item[primaryColumn]"
         :label="item[displayValue]"
         :value="item[primaryColumn]"
@@ -159,7 +159,7 @@ module.exports = {
     displayValue () {
       return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
     },
-    itemsToDisplay () {
+    availableOptions () {
       if (this.initialItem && this.initialItem.length > 0) {
         let filteredItems = this.items.filter((item) => {
           return !this.initialItem.map(ii => { return ii[this.primaryColumn] }).includes(item[this.primaryColumn])
