@@ -128,7 +128,7 @@ module.exports = {
     },
     setResultData () {
       this.resultData = this.value ? this.value.trim().split(',').map(item => {
-        return typeof item !== 'number' ? parseInt(item) : item
+        return typeof item !== 'number' ? parseInt(item, 10) : item
       }) : []
     }
   },
