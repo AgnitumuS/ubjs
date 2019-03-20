@@ -178,8 +178,6 @@ module.exports = {
     }, 1)
 
     this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
-    // this.$refs.selector.$refs.reference._vnode.children[1].data.attrs.tabindex = '-1'
-    // this.$refs.selector.$refs.reference.$refs.input.setAttribute('tabindex', '-1')
     this.setInitialItem()
   }
 }
