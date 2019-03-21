@@ -117,10 +117,6 @@ module.exports = {
     value: {
       type: [String, Number]
     },
-    _nonObs: {
-      type: Object,
-      default: function () { return { a: 1 } }
-    },
     entityName: {
       type: String,
       required: true
@@ -257,7 +253,8 @@ module.exports = {
       }
     },
     handleClearClick (event) {
-      this.$refs.selector.handleClearClick(event)
+      this.$refs.selector.$emit('input', null)
+      //   this.$refs.selector.handleClearClick(event)
     },
     onActionClick (row, event) {
       if (row.enabled === undefined || row.enabled) {
