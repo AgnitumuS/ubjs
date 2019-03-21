@@ -17,7 +17,7 @@
     </el-input>
     <el-dialog
       width="30%"
-      custom-class="ub-input__dialog"
+      custom-class="u-input__multilang-dialog"
       :visible.sync="dialogFormVisible"
       :title="dialogTitle"
     >
@@ -59,9 +59,22 @@
   </div>
 </template>
 
+<style>
+  @media screen and (max-width: 1300px) {
+    .u-input__multilang-dialog {
+      width: 50% !important;
+    }
+  }
+  @media screen and (max-width: 700px) {
+    .u-input__multilang-dialog {
+      width: 90% !important;
+    }
+  }
+</style>
+
 <script>
 module.exports = {
-  name: 'UbInput',
+  name: 'UInput',
   data () {
     return {
       dialogFormVisible: false,

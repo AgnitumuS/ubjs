@@ -1,14 +1,14 @@
 <template>
   <div>
-    <h1>UbInput</h1>
-    <ub-input v-model="objectValue[attributeName]"
+    <h1>UInput</h1>
+    <u-input v-model="objectValue[attributeName]"
               style="width:500px"
               :entity-name="entityName"
               :disabled="disabled"
               :attribute-name="attributeName"
               :object-value="objectValue"
               @input="inputFn"
-    ></ub-input>
+    ></u-input>
     <h2>Props</h2>
     <ul>
       <li>
@@ -47,12 +47,12 @@
 </template>
 
 <script>
-import UbInput from '@unitybase/adminui-vue/components/controls/UbInput.vue'
+import UInput from '@unitybase/adminui-vue/components/controls/UInput.vue'
 import { action } from '@storybook/addon-actions'
 
 export default {
   components: {
-    UbInput
+    UInput
   },
   data () {
     return {

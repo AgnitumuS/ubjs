@@ -13,6 +13,8 @@
       <excludeFolder url="file://$MODULE_DIR$/packages/adminui-vue/dist" />
       <excludeFolder url="file://$MODULE_DIR$/packages/ub-pub/dist" />
       <excludeFolder url="file://$MODULE_DIR$/packages/ubs/public/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/storybook/.cache" />
+      <excludeFolder url="file://$MODULE_DIR$/storybook/.out" />
       <excludeFolder url="file://$MODULE_DIR$/storybook/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />

@@ -3,7 +3,7 @@
     v-show="visible"
     ref="context"
     v-clickoutside="hideOnClickOutside"
-    class="ub-context-menu"
+    class="u-context-menu"
     :style="{
       top: y + 'px',
       left: x + 'px'
@@ -13,7 +13,7 @@
       <div
         v-if="item.label !== '-'"
         :key="item.action"
-        class="ub-context-menu__item"
+        class="u-context-menu__item"
         :class="[item.disabled && 'disabled']"
         @click="itemSelected(item)"
       >
@@ -23,7 +23,7 @@
       <div
         v-else
         :key="item.action"
-        class="ub-context-menu__divider"
+        class="u-context-menu__divider"
       />
     </template>
   </div>
@@ -40,7 +40,7 @@ const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clicko
  * @example
    <div>
      <u-navbar-tab @right-click="$refs.context.show">
-     <ub-context
+     <u-context
        ref="context"
        :items="contextItems"
        @select="selectContext"
@@ -48,7 +48,7 @@ const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clicko
     </div>
  */
 export default {
-  name: 'UbContext',
+  name: 'UContextMenu',
   directives: { Clickoutside },
   props: {
     /**
@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style>
-.ub-context-menu {
+.u-context-menu {
   background-color: #fff;
   width: 200px;
   padding: 8px 0;
@@ -117,20 +117,20 @@ export default {
   z-index: 300000;
 }
 
-.ub-context-menu__item {
+.u-context-menu__item {
   cursor: pointer;
   padding: 8px 16px;
 }
 
-.ub-context-menu__item:hover {
+.u-context-menu__item:hover {
   background-color: #f8f8f8;
 }
 
-.ub-context-menu__item.disabled {
+.u-context-menu__item.disabled {
   color: rgb(var(--info));
 }
 
-.ub-context-menu__divider {
+.u-context-menu__divider {
   border-bottom: 1px solid #eee;
   margin: 8px 0;
 }

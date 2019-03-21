@@ -76,7 +76,7 @@
 
     <slot />
 
-    <ub-context
+    <u-context-menu
       ref="context"
       :items="contextItems"
       @select="selectContext"
@@ -86,12 +86,12 @@
 
 <script>
 const UNavbarTab = require('./UNavbarTab.vue').default
-const UbContext = require('../controls/UbContext.vue').default
-
+const UContextMenu = require('../controls/UContextMenu.vue').default
+const { debounce } = require('throttle-debounce')
 export default {
   name: 'UNavbar',
 
-  components: { UNavbarTab, UbContext },
+  components: { UNavbarTab, UContextMenu },
 
   props: {
     withHamburger: Boolean
@@ -182,7 +182,7 @@ export default {
     this.initCreatedTabs()
     window.addEventListener('mouseup', this.stopDrag)
     this._oldWindowOnResize = window.onresize
-    window.onresize = window._.debounce(this.calcTabWidth, 300)
+    window.onresize = debounce(300, () => { this.calcTabWidth() })
   },
 
   beforeDestroy () {

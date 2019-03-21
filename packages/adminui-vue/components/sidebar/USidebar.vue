@@ -54,7 +54,7 @@
       />
     </el-menu>
 
-    <ub-context
+    <u-context-menu
       ref="context"
       :items="contextItems"
       @select="selectContext"
@@ -65,11 +65,11 @@
 <script>
 const UB = require('@unitybase/ub-pub')
 const USidebarItem = require('./USidebarItem.vue').default
-const UbContext = require('../controls/UbContext.vue').default
+const UContextMenu = require('../controls/UContextMenu.vue').default
 
 export default {
   name: 'USidebar',
-  components: { USidebarItem, UbContext },
+  components: { USidebarItem, UContextMenu },
 
   data () {
     return {

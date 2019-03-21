@@ -1,8 +1,9 @@
 <script>
 const Vue = require('vue')
 const $App = require('@unitybase/adminui-pub')
-const UbInput = require('@unitybase/adminui-vue/components/controls/UbInput.vue').default
+const UInput = require('@unitybase/adminui-vue/components/controls/UInput.vue').default
 const UInputNumber = require('@unitybase/adminui-vue/components/controls/UInputNumber.vue').default
+const UCodeMirror = require('@unitybase/adminui-vue/components/controls/UCodeMirror.vue').default
 
 const TstDictionaryFt = module.exports.default = {
   name: 'TstDictionaryFt',
@@ -31,7 +32,7 @@ const TstDictionaryFt = module.exports.default = {
     }
   },
   components: {
-    UbInput, UInputNumber
+    UInput, UInputNumber, UCodeMirror
   }
 }
 
@@ -93,10 +94,10 @@ module.exports.mount = function (params) {
         <!--responsive. for large screen a half of screen width, for small - full width -->
         <el-col :lg="12" :sm="24">
           <el-form-item :label="entitySchema.attributes['code'].caption">
-            <ub-input :entity-name="entityName" attribute-name="code" v-model="instance.code" />
+            <u-input :entity-name="entityName" attribute-name="code" v-model="instance.code" />
           </el-form-item>
           <el-form-item :label="entitySchema.attributes['caption'].caption">
-            <ub-input :entity-name="entityName" attribute-name="caption" v-model="instance.caption" :object-value="instance"/>
+            <u-input :entity-name="entityName" attribute-name="caption" v-model="instance.caption" :object-value="instance"/>
           </el-form-item>
           <el-form-item :label="entitySchema.attributes['booleanColumn'].caption">
             <el-checkbox v-model="instance.booleanColumn" />
@@ -118,6 +119,16 @@ module.exports.mount = function (params) {
               v-model="instance.floatValue"
               :entity-name="entityName"
               attribute-name="floatValue"
+            />
+          </el-form-item>
+        </el-col>
+          <el-col>
+           <el-form-item :label="entitySchema.attributes['jsonColumn'].caption">
+            <u-code-mirror
+              v-model="instance.jsonColumn"
+              :entity-name="entityName"
+              attribute-name="jsonColumn"
+              :value-is-json="true"
             />
           </el-form-item>
         </el-col>

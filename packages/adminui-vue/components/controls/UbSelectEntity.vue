@@ -117,6 +117,10 @@ module.exports = {
     value: {
       type: [String, Number]
     },
+    _nonObs: {
+      type: Object,
+      default: function () { return { a: 1 } }
+    },
     entityName: {
       type: String,
       required: true
