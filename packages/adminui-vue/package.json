@@ -45,6 +45,7 @@
     "font-awesome": "^4.7.0",
     "jdenticon": "^2.1.1",
     "lodash": "^4",
+    "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "systemjs": "^0.20.18",
     "systemjs-plugin-css": "^0.1.32",
