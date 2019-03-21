@@ -14,10 +14,10 @@
                       :form-code="formCode"
                       @input="inputFn">
         <div style="display: flex; justify-content: space-between;flex-wrap: wrap">
-          <ub-input v-model="value.caption" :entityName="entityName" attributeName="caption" :objectValue="value"
-                    style="min-width: 300px"></ub-input>
-          <ub-input v-model="value.code" :entityName="entityName" attributeName="code" :objectValue="value"
-                    style="min-width: 300px"></ub-input>
+          <u-input v-model="value.caption" :entityName="entityName" attributeName="caption" :objectValue="value"
+                    style="min-width: 300px"></u-input>
+          <u-input v-model="value.code" :entityName="entityName" attributeName="code" :objectValue="value"
+                    style="min-width: 300px"></u-input>
           <ub-select-entity
             v-model="value.nullDict_ID"
             style="min-width: 300px"
@@ -98,7 +98,7 @@
 
 <script>
 import ubEntityEdit from '@unitybase/adminui-vue/components/UbEntityEditComponent.vue'
-import UbInput from '@unitybase/adminui-vue/components/controls/UbInput.vue'
+import UInput from '@unitybase/adminui-vue/components/controls/UInput.vue'
 import UbSelectEntity from '@unitybase/adminui-vue/components/controls/UbSelectEntity.vue'
 import { action } from '@storybook/addon-actions'
 import { linkTo } from '@storybook/addon-links'
@@ -106,7 +106,7 @@ import { linkTo } from '@storybook/addon-links'
 export default {
   components: {
     ubEntityEdit,
-    UbInput,
+    UInput,
     UbSelectEntity
   },
   data () {

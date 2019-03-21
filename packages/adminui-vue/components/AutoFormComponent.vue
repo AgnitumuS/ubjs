@@ -74,11 +74,11 @@
             v-model="value[fieldName]"
             :doc-params="{ entity: entitySchema.name, attribute: fieldName, ID: value.ID }"
           />
-          <ub-code-mirror
+          <u-code-mirror
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Json'"
             v-model="value[fieldName]"
           />
-          <ub-input
+          <u-input
             v-else
             v-model="value[fieldName]"
             :entity-name="entitySchema.name"
@@ -96,9 +96,9 @@
 const ubSelectEnum = require('./controls/UbSelectEnum.vue').default
 const ubSelectEntity = require('./controls/UbSelectEntity.vue').default
 const ubSelectMany = require('./controls/UbSelectMany.vue').default
-const ubInput = require('./controls/UbInput.vue').default
+const UInput = require('./controls/UInput.vue').default
 const ubUploadDocument = require('./controls/UbUploadDocument.vue').default
-const ubCodeMirror = require('./controls/UbCodeMirror.vue').default
+const UCodeMirror = require('./controls/UCodeMirror.vue').default
 const UInputNumber = require('./controls/UInputNumber.vue').default
 
 module.exports = {
@@ -160,9 +160,9 @@ module.exports = {
     'ub-select-enum': ubSelectEnum,
     'ub-select-entity': ubSelectEntity,
     'ub-select-many': ubSelectMany,
-    'ub-input': ubInput,
+    UInput,
     'ub-upload-document': ubUploadDocument,
-    'ub-code-mirror': ubCodeMirror,
+    UCodeMirror,
     UInputNumber
   }
 }

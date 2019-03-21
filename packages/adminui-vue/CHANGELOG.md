@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
+## [1.4.0]
+### Changed
+ - UbContext -> UContextMenu
+ - UbCodeMirror -> UCodeMirror
+ - UbInput -> UInput
+
+### Added
+ - `throttle-debounce` miro package added. Also it is exported by adminui-vue as throttleDebounce 
+  
 ## [1.3.3]
 ### Changed
  - UbEntityEdit `value` property renamed to `instance` 

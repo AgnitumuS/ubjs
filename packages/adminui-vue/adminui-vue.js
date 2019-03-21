@@ -15,12 +15,21 @@ const isExt = (typeof window.Ext !== 'undefined')
 */
 window.BOUNDLED_BY_WEBPACK = false
 
+const throttleDebounce = require('throttle-debounce')
+if (IS_SYSTEM_JS && !SystemJS.has('throttle-debounce')) SystemJS.set('throttle-debounce', SystemJS.newModule(throttleDebounce))
+/**
+ * throttle-debounce see <a href=https://github.com/niksy/throttle-debounce>original doc</a>
+ * @type {{throttle?, debounce?}}
+ */
+module.exports.throttleDebounce = throttleDebounce
+
 const Vue = require('vue')
 window.Vue = Vue
 // next 2 lines for modules what use ES6 import `import Vue from 'vue' (not recommended for use)
 Vue.__useDefault = Vue
 Vue.default = Vue
 if (IS_SYSTEM_JS && !SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule(Vue))
+
 const ElementUI = require('element-ui') // adminui-pub maps element-ui -> element-ui/lib/index.js for SystemJS
 window.ElementUI = ElementUI
 if (IS_SYSTEM_JS && !SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(ElementUI))
