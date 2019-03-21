@@ -61,7 +61,7 @@
       </el-button>
     </el-popover>
 
-    <u-navbar-notifications-popup v-model="historyVisible" />
+    <u-navbar-notifications-popup v-model="historyVisible" :messages="messages"/>
   </div>
 </template>
 
@@ -153,10 +153,41 @@ export default {
 }
 
 .notifications__item{
-  padding: 10px 5px;
+  padding: 10px;
+  padding-left: 20px;
   border-bottom: 1px solid rgba(var(--info), 0.05);
+  position: relative;
+  cursor: pointer;
   /*max-height: 100px;*/
   /*overflow: hidden;*/
+}
+
+.notifications__item.active{
+  background: rgba(var(--info), 0.05);
+}
+
+.notifications__item:hover{
+  background: rgba(var(--info), 0.1);
+}
+
+.notifications__item.unread:hover{
+  background: rgba(var(--primary), 0.1);
+}
+
+.notifications__item.unread{
+  background: rgba(var(--primary), 0.05);
+}
+
+.notifications__item.unread:before{
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: rgb(var(--primary));
+  border-radius: 100px;
+  position: absolute;
+  top: 50%;
+  margin-top: -4px;
+  left: 10px;
 }
 
 .notifications__item:last-child{
