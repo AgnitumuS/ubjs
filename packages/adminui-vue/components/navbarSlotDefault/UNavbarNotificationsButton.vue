@@ -3,9 +3,10 @@
     <el-popover
       v-model="isVisible"
       placement="bottom-end"
-      width="300"
+      width="400"
       trigger="click"
       popper-class="notifications__popover"
+      @show="getUnreadList"
     >
       <el-badge
         slot="reference"
@@ -19,7 +20,7 @@
       </el-badge>
 
       <div class="notifications__add-btn-wrap">
-        <span class="notifications__title-list-count">5 new messages</span>
+        <span class="notifications__title-list-count">{{ messagesUnreadOnInit.length }} new messages</span>
 
         <el-button
           v-if="$UB.connection.domain.isEntityMethodsAccessible('ubs_message_edit', ['insert', 'update'])"
@@ -33,45 +34,62 @@
         </el-button>
       </div>
 
-      <div class="notifications__list">
-        <div
-          v-for="item in messages"
+      <div v-if="isVisible" class="notifications__list">
+        <u-navbar-notifications-item
+          v-for="item in messagesUnreadOnInit"
+          :id="String(item.ID)"
           :key="item.ID"
-          class="notifications__item"
-        >
-          <div class="notifications__item__header">
-            <i class="notifications__item__icon el-icon-warning" />
-            <span class="notifications__item__type">System message</span>
-            <span class="notifications__item__date">
-              {{ $moment(item.date).format('DD.MM.YYYY') }}
-            </span>
-          </div>
-          <div class="notifications__item__text">
-            {{ item.text }}
-          </div>
-        </div>
+          :date="item.date"
+          :unread="item.unread"
+          :type="item.type"
+          :text="item.text"
+          @click.native="showHistory(item.ID)"
+        />
+      </div>
+
+      <div v-if="messagesUnreadOnInit.length < 1">
+        Empty
       </div>
 
       <el-button
         plain
         class="notifications__btn-show-all"
-        @click="showHistory"
+        @click="showHistory()"
       >
         {{ $ut('messageHistory') }}
       </el-button>
     </el-popover>
 
-    <u-navbar-notifications-popup v-model="historyVisible" :messages="messages"/>
+    <u-navbar-notifications-popup
+      v-model="historyVisible"
+      :current-mess="currentMess"
+    >
+      <u-navbar-notifications-item
+        v-for="item in messages"
+        :id="String(item.ID)"
+        :key="item.ID"
+        :date="item.date"
+        :unread="item.unread"
+        :type="item.type"
+        :text="item.text"
+        :is-active="item.ID == active"
+        @click.native="markRead(item.ID)"
+      />
+    </u-navbar-notifications-popup>
   </div>
 </template>
 
 <script>
 const UNavbarNotificationsPopup = require('./UNavbarNotificationsPopup.vue').default
+const UNavbarNotificationsItem = require('./UNavbarNotificationsItem.vue').default
 
 export default {
   name: 'UNavbarNotificationsButton',
 
-  components: { UNavbarNotificationsPopup },
+  components: {
+    UNavbarNotificationsPopup,
+    UNavbarNotificationsItem
+  },
 
   data () {
     return {
@@ -79,30 +97,49 @@ export default {
       historyVisible: false,
       messages: [{
         ID: 1,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
+        text: '<span style="color: red; font-size:25px;">Lorem ipsum dolor</span> sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? <span style="color: green; font-size:25px;">Voluptatibus, repellendus doloribus illo!</span>',
         type: 'user',
-        date: new Date(2009, 1, 1)
+        date: new Date(2009, 1, 1),
+        unread: !false
       }, {
         ID: 2,
         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
         type: 'system',
-        date: new Date(2019, 4, 5)
+        date: new Date(2019, 4, 5),
+        unread: !false
       }, {
         ID: 3,
         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
         type: 'warning',
-        date: new Date(2012, 3, 2)
+        date: new Date(2012, 3, 2),
+        unread: false
       }, {
         ID: 4,
         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
         type: 'information',
-        date: new Date(2012, 3, 2)
+        date: new Date(2012, 3, 2),
+        unread: false
       }, {
         ID: 5,
         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
         type: 'system',
-        date: new Date(2012, 3, 2)
-      }]
+        date: new Date(2012, 3, 2),
+        unread: false
+      }],
+      messagesUnreadOnInit: [],
+      overflowedList: [],
+      active: null
+    }
+  },
+
+  computed: {
+    currentMess () {
+      const mess = this.messages.find(m => m.ID === this.active)
+      if (mess) {
+        return mess.text
+      } else {
+        return ''
+      }
     }
   },
 
@@ -121,9 +158,29 @@ export default {
       Ext.ComponentQuery.query('[$className=UBS.MessageBar]')[0].showHistory()
     },
 
-    showHistory () {
+    showHistory (ID) {
+      this.markRead(ID)
       this.isVisible = false
       this.historyVisible = true
+    },
+
+    markRead (ID) {
+      const index = this.messages.findIndex(m => m.ID === ID)
+      if (ID) {
+        this.active = ID
+      } else {
+        this.active = this.messages[0].ID
+      }
+      this.active = ID
+      if (index !== -1) {
+        this.messages[index].unread = false
+      }
+    },
+
+    getUnreadList () {
+      this.messagesUnreadOnInit.splice(0, this.messagesUnreadOnInit.length)
+      const overflowedList = this.messages.filter(m => m.unread)
+      this.messagesUnreadOnInit.push(...overflowedList)
     }
   }
 }
@@ -150,78 +207,6 @@ export default {
   background-clip: padding-box;
   background-color: rgba(var(--bg), 0.2);
   transition:background-color .1s;
-}
-
-.notifications__item{
-  padding: 10px;
-  padding-left: 20px;
-  border-bottom: 1px solid rgba(var(--info), 0.05);
-  position: relative;
-  cursor: pointer;
-  /*max-height: 100px;*/
-  /*overflow: hidden;*/
-}
-
-.notifications__item.active{
-  background: rgba(var(--info), 0.05);
-}
-
-.notifications__item:hover{
-  background: rgba(var(--info), 0.1);
-}
-
-.notifications__item.unread:hover{
-  background: rgba(var(--primary), 0.1);
-}
-
-.notifications__item.unread{
-  background: rgba(var(--primary), 0.05);
-}
-
-.notifications__item.unread:before{
-  content: '';
-  width: 8px;
-  height: 8px;
-  background: rgb(var(--primary));
-  border-radius: 100px;
-  position: absolute;
-  top: 50%;
-  margin-top: -4px;
-  left: 10px;
-}
-
-.notifications__item:last-child{
-  border-bottom: none;
-}
-
-.notifications__item__header{
-  display: flex;
-  align-items: center;
-  margin-bottom: 7px;
-}
-
-.notifications__item__icon{
-  font-size: 16px;
-  color: rgb(var(--danger));
-  margin-left: 10px;
-}
-
-.notifications__item__type{
-  font-size: 11px;
-  color: rgba(var(--info), 0.8);
-  padding-left: 7px;
-}
-
-.notifications__item__text{
-  font-size: 13px;
-  color: rgb(var(--info));
-  padding-left: 10px;
-}
-
-.notifications__item__date{
-  font-size: 11px;
-  color: rgba(var(--info), 0.8);
-  margin-left: auto;
 }
 
 .notifications__add-btn-wrap{
