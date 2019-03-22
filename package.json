@@ -34,7 +34,8 @@
     "build:doc-server": "jsdoc -c ./jsdoc-conf.json",
     "build:doc-ubpub": "jsdoc -c ./jsdoc-conf-ubpub.json",
     "build:adminuidoc": "jsdoc -c ./jsdoc-adminui-conf.json",
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "build:for-ci": "lerna run build:native"
   },
   "engines": {
     "npm": "^5"
