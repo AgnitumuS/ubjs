@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "ubcli autotest -m UBS -skipModules",
-    "build": "cross-env-shell NODE_ENV=production \"cd ./public && webpack\"",
+    "build": "cross-env-shell NODE_ENV=production \"cd ./public && webpack --mode production\"",
     "build:watch": "cd ./public && webpack --progress --colors --watch",
     "prepare": "npm run build",
     "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
@@ -33,13 +33,14 @@
     "@unitybase/uba": "^5.1.19",
     "@unitybase/xlsx": "^5.0.47",
     "mime-types": "^2.1.14",
-    "mustache": "^2.3.0",
+    "mustache": "^3.0.1",
     "when": "1.8.1",
     "xmldom": "^0.1.27"
   },
-  "devDependencies": {
+  "optionalDependencies": {
     "@unitybase/stubs": "^5.0.16",
-    "cross-env": "^5.1.1"
+    "cross-env": "^5",
+    "exports-loader": "^0.7.0"
   },
   "keywords": [
     "UnityBase",

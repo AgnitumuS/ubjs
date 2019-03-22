@@ -16,7 +16,7 @@
     "@unitybase/base": "^5.1.6",
     "@unitybase/cs-shared": "^5.0.19",
     "lodash": "^4",
-    "mime-types": "^2.1.12"
+    "mime-types": "^2.1.14"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.16"

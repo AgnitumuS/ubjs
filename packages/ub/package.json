@@ -23,7 +23,7 @@
     "@unitybase/blob-stores": "^5.0.38",
     "@unitybase/cs-shared": "^5.0.19",
     "lodash": "^4",
-    "mime-types": "^2.1.12"
+    "mime-types": "^2.1.14"
   },
   "devDependencies": {
     "@unitybase/cryptojs": "^1.0.14",

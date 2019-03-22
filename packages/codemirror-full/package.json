@@ -6,7 +6,7 @@
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/codemirror-full",
   "scripts": {
     "build": "webpack --mode production",
-    "analyse-boundle": "webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "analyse-boundle": "webpack --profile --json > /tmp/wp_stats.json && webpack-bundle-analyzer /tmp/wp_stats.json",
     "test": "npm run test",
     "prepare": "npm run build"
   },
@@ -18,8 +18,14 @@
     "codemirror": "^5.44.0",
     "lodash": "^4"
   },
-  "devDependencies": {
-    "jshint": "2.9.4"
+  "optionalDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-loader": "^8.0.5",
+    "jshint": "2.9.4",
+    "webpack": "^4.29.6",
+    "webpack-bundle-analyzer": "^3",
+    "webpack-cli": "^3.2.3"
   },
   "keywords": [
     "UnityBase",
