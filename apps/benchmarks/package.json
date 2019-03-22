@@ -24,7 +24,7 @@
     "@unitybase/dml-generator": "^5.0.39",
     "@unitybase/ub": "^5.2.8",
     "@unitybase/ub-pub": "^5.2.33",
-    "mustache": "^2.3.2"
+    "mustache": "^3.0.1"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.16",

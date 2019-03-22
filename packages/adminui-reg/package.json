@@ -22,7 +22,7 @@
     "@unitybase/adminui-pub": "^5.8.3",
     "@unitybase/base": "^5.1.6",
     "@unitybase/ub": "^5.2.8",
-    "mustache": "^2.3.0"
+    "mustache": "^3.0.1"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.0.16"

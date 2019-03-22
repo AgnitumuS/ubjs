@@ -130,7 +130,6 @@ const MODULES_ROOT = path.join(process.configPath, 'node_modules')
  * @param {THTTPResponse} resp
  */
 function clientRequireEp (req, resp) {
-  console.log(`Call clientRequire`)
   if ((req.method !== 'GET') && (req.method !== 'HEAD')) {
     return resp.badRequest('invalid request method ' + req.method)
   }
