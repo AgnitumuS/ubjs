@@ -33,13 +33,17 @@ me.entity.addMethod('sleep3sec')
  * @param {THTTPResponse} resp Command to execute
  */
 me.sleep3sec = function (ctx, req, resp) {
-  sleep(3)
-  resp.statusCode = 200
-  resp.writeEnd({result: true})
+  sleep(3000)
+  if (resp) { // called as rest endpoint
+    resp.statusCode = 200
+    resp.writeEnd({ result: true })
+  } else {
+    ctx.mParams.result = true
+  }
 }
 
 me.schedulerTest = function (ctx) {
-  console.log('SCHEDULLER: log message from a test scheduller')
+  console.log('SCHEDULER: log message from a test scheduler')
   let store = UB.DataStore('uba_user')
   return 'test scheduler executed at' + new Date() + store.currentDataName
 }
@@ -52,7 +56,7 @@ me.uDataTest = function (ctx) {
   const sessionData = Session.uData
   assert.deepEqual(sessionData.tstNumArray, [1, 2, 3])
   assert.deepEqual(sessionData.tstStrArray, ['1', '2', '3'])
-  assert.deepEqual(sessionData.tstNested, {a: 1, b: '2'})
+  assert.deepEqual(sessionData.tstNested, { a: 1, b: '2' })
   assert.ok(!sessionData.hasOwnProperty('addedNotInOnLogin'), 'uData persisted only in Session.on("login")')
   Session.uData.addedNotInOnLogin = 'must not persis between calls'
 }
@@ -78,7 +82,7 @@ me.entity.addMethod('testDataStoreInitialization')
  * @param {ubMethodParams} ctx
  */
 me.testDataStoreInitialization = function (ctx) {
-  let objArr = [{ID: 1, b: 'aaa'}, {ID: 2}]
+  let objArr = [{ ID: 1, b: 'aaa' }, { ID: 2 }]
   ctx.dataStore.initFromJSON(objArr)
 }
 
@@ -101,7 +105,7 @@ me.testServerReportPDF = function (ctx) {
   report.done(function (result) {
     if (result.reportType === 'pdf') {
       console.log('Generate PDF of', result.reportData.byteLength)
-             // fs.writeFileSync('d:\\result.pdf', result.reportData );
+      // fs.writeFileSync('d:\\result.pdf', result.reportData );
     } else {
       console.log('Generate HTML of', result.reportData.length)
       fs.writeFileSync('d:\\result.html', result.reportData)
@@ -173,7 +177,7 @@ function doAsUser () {
   store.run('update', {
     fieldList: ['ID'],
     '__skipOptimisticLock': true,
-    execParams: {ID: UBA.USERS.ADMIN.ID, name: UBA.USERS.ADMIN.NAME}
+    execParams: { ID: UBA.USERS.ADMIN.ID, name: UBA.USERS.ADMIN.NAME }
   })
   return JSON.stringify(Session.uData)
 }
@@ -202,9 +206,9 @@ me.dmlGeneratorTest = function (ctx) {
   const generator = require('@unitybase/dml-generator')
   ctx.mParams.resultSQL = generator.mssql.biuldSelectSql('tst_maindata', {
     fieldList: ['parent1@tst_maindata.manyValue.mi_modifyUser.name'],
-    whereList: {c1: {
-      expression: 'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition: 'equal', values: {c1: 'admin'}
-    }}})
+    whereList: { c1: {
+      expression: 'parent1@tst_maindata.manyValue.mi_modifyUser.name', condition: 'equal', values: { c1: 'admin' }
+    } } })
   ctx.mParams.sql2 = generator.mssql.biuldSelectSql('tst_maindata',
     UB.Repository('tst_maindata')
       .attrs('[nonNullDict_ID.caption]', '[nonNullDict_ID.caption_en^]', 'nonNullDict_ID.filterValue', 'nonNullDict_ID.floatValue')
@@ -220,7 +224,7 @@ me.entity.addMethod('dmlGeneratorTest')
  * @param {THTTPResponse} resp
  */
 me.restTest = function (ctx, req, resp) {
-  resp.writeEnd({headers: req.headers})
+  resp.writeEnd({ headers: req.headers })
   resp.statusCode = 200
 }
 me.entity.addMethod('restTest')
