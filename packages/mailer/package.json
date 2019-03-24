@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/mailer",
-  "version": "5.1.6",
+  "version": "5.1.5",
   "description": "UnityBase SMTP/POP3",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer",
   "scripts": {

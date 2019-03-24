@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/pdf",
-  "version": "5.0.19",
+  "version": "5.0.18",
   "description": "PDF creation library",
   "main": "index.js",
   "config": {
