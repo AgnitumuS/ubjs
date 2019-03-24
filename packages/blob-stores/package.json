@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/blob-stores",
-  "version": "5.0.39",
+  "version": "5.0.40",
   "description": "BLOB stores implementation",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/blob-stores",
   "config": {},
