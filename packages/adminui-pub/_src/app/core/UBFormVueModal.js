@@ -1,8 +1,6 @@
 const Vue = require('vue')
 
 function mountModal ({ FormComponent, title }) {
-  const div = document.createElement('div')
-  document.body.append(div)
   const instance = new Vue({
     components: { FormComponent },
     data () {
@@ -22,7 +20,7 @@ function mountModal ({ FormComponent, title }) {
       </el-dialog>
     `
   })
-  instance.$mount(div)
+  instance.$mount()
 
   instance.dialogVisible = true
 }

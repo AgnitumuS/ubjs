@@ -148,21 +148,24 @@ export default {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
+        isModal: true,
         entity: 'ubs_message_edit'
       })
     },
 
-    showList () {
+    showHistory () {
       this.isVisible = false
-      // TEMPORARY
-      Ext.ComponentQuery.query('[$className=UBS.MessageBar]')[0].showHistory()
+      $App.doCommand({
+        cmdType: 'showForm',
+        cmdCode: 'ubs_message'
+      })
     },
 
-    showHistory (ID) {
-      this.markRead(ID)
-      this.isVisible = false
-      this.historyVisible = true
-    },
+    // showHistory (ID) {
+    //   this.markRead(ID)
+    //   this.isVisible = false
+    //   this.historyVisible = true
+    // },
 
     markRead (ID) {
       const index = this.messages.findIndex(m => m.ID === ID)
