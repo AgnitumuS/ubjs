@@ -12,6 +12,9 @@ const _ = require('lodash')
  *
  * Execute a command (showForm, showList, shoeReport)
  */
+
+const mountVueForm = require('./UBFormVueModal')
+
 Ext.define('UB.core.UBCommand', {
   uses: [
     'UB.core.UBApp',
@@ -569,7 +572,11 @@ Ext.define('UB.core.UBCommand', {
 
         UB.core.UBFormLoader.getFormViewAndController({ formCode: me.formCode }).then(function (formDefinition) {
           if ((formDefinition.formType === 'vue') || (formDefinition.formType === 'module')) {
-            formDefinition.formController.mount(me.commandConfig)
+            mountVueForm({
+              FormComponent: formDefinition.formController.default,
+              title: me.formParam.caption,
+              isModal: me.isModal
+            })
           } else {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)
           }
