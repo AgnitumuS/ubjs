@@ -2,7 +2,6 @@
   "version": "independent",
   "packages": [
     "packages/*",
-    "apps/*",
-    "storybook"
+    "apps/*"
   ]
 }

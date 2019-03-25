@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "5.8.3",
+  "version": "5.8.4",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "browser": {
@@ -32,11 +32,11 @@
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/codemirror-full": "^1.2.21",
+    "@unitybase/codemirror-full": "^1.2.22",
     "@unitybase/cs-shared": "^5.0.19",
     "@unitybase/ub-pub": "^5.2.33",
-    "@unitybase/ubm": "^5.1.11",
-    "@unitybase/xlsx": "^5.0.47",
+    "@unitybase/ubm": "^5.1.12",
+    "@unitybase/xlsx": "^5.0.48",
     "bluebird": "^3.5.3",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.44.0",
@@ -46,7 +46,7 @@
     "js-beautify": "^1.6.12",
     "jszip": "2.6.0",
     "lodash": "^4",
-    "mustache": "^2.3.0",
+    "mustache": "^3.0.1",
     "mxgraph-js": "^1.0.1",
     "systemjs": "^0.20.18",
     "systemjs-hmr": "^2.0.9",
@@ -59,16 +59,21 @@
   ],
   "author": "UnityBase team (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
-  "peerDependencies": {
+  "optionalDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-loader": "^8.0.5",
     "clean-css-cli": "^4.2.1",
-    "cross-env": "^5.2.0",
+    "cross-env": "^5",
     "css-loader": "^2.1.0",
+    "exports-loader": "^0.7.0",
     "file-loader": "^3.0.1",
+    "imports-loader": "^0.8.0",
     "mini-css-extract-plugin": "^0.5.0",
-    "shx": "^0.2.2",
+    "shx": "^0.3.2",
     "uglify-js": "^3.4.9",
     "webpack": "^4.29.6",
-    "webpack-bundle-analyzer": "^3.0.4",
+    "webpack-bundle-analyzer": "^3",
     "webpack-cli": "^3.2.3"
   }
 }

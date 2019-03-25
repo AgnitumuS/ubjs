@@ -1,6 +1,10 @@
 <script>
 const UBDomain = require('@unitybase/cs-shared').UBDomain
 
+// TODO - use el-input and implement:
+//   - formatting output according to current user locale,
+//   - filter only numeric keys (and separator if float/currency)
+//   - optional right-alignment?
 /**
  * Editor for Numeric data types: 'Int', 'BigInt', 'ID', Float, Currency
  * HOC for ElInputNumber. Knows about precisions of each data type. Aligned to right

@@ -11,7 +11,7 @@
  *       // UB client will show message inside <<<>>> to user (and translate it using UB.i18n)
  *       const UB = require('@unitybase/ub')
  *       throw new UB.UBAbort('<<<textToDisplayForClient>>>')
- *       // for API methods we do not need <<<>>>
+ *       // In case message should not be shown to the end used by ub-pub globalExceptionHandler `<<<>>>` can be omitted
  *       throw new UB.UBAbort('wrongParameters')
  *
  * @param {String} [message] Message

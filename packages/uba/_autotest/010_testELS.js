@@ -1,3 +1,4 @@
+/* global sleep */
 /**
  * @author pavel.mash
  * Date: 09.10.14
@@ -40,13 +41,14 @@ module.exports = function runELSTest (options) {
     let addedArray = []
 
     function relogon (credential) {
-      let opts = _.merge({}, options, {forceStartServer: true}, credential)
+      let opts = _.merge({}, options, { forceStartServer: true }, credential)
       session.logout() // shut down server
+      sleep(1000) // slow down server restart to prevent conflicts inside ID generator for SQLite3
       session = argv.establishConnectionFromCmdLineAttributes(opts)
       conn = session.connection
     }
 
-    let testUserID = conn.lookup('uba_user', 'ID', {expression: 'name', condition: 'equal', values: {name: 'testelsuser'}})
+    let testUserID = conn.lookup('uba_user', 'ID', { expression: 'name', condition: 'equal', values: { name: 'testelsuser' } })
 
     if (testUserID) {
       console.warn('\t\tSkip ELS test - uba_user "testelsuser" already exists. Test can be run only once after app initialization')
@@ -96,7 +98,7 @@ module.exports = function runELSTest (options) {
 
     assert.throws(function () { grantRoleToUser(testRole1[0], testUserID) }, /.*/, 'must deny duplicate roles adding')
     console.debug('Start re-logon using testelsuser user')
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
 
     /* deprecated since 1.8. Now Everyone role add getDomainInfo rights
      assert.throws(function(){
@@ -121,7 +123,7 @@ module.exports = function runELSTest (options) {
     })
 
     console.debug('Test new role do not hav permissions')
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
     if (domainInfo.has(TEST_ENTITY)) {
       throw new Error('no permission by default, but actual is: ' + JSON.stringify(domainInfo.get(TEST_ENTITY).entityMethods))
@@ -152,7 +154,7 @@ module.exports = function runELSTest (options) {
     relogon()
     ok(addUBSAuditPermission('select', 'A'), 'must allow insert permission for testelsuser to ' + TEST_ENTITY)
     ok(addUBSAuditPermission('addnew', 'A'), 'must allow insert permission for testelsuser to ' + TEST_ENTITY)
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     assert.ok(conn.Repository(TEST_ENTITY).attrs('ID').select(), 'must allow select permission for testelsuser ' + TEST_ENTITY)
     domainInfo = conn.getDomainInfo()
     assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'addnew'].sort(), 'testelsuser have only ' + TEST_ENTITY + '.select & addnew permission')
@@ -160,14 +162,14 @@ module.exports = function runELSTest (options) {
     console.debug('Add Compliment rule for testElsRole to' + TEST_ENTITY + '.addnew and verify it')
     relogon()
     ok(addUBSAuditPermission('addnew', 'C'), 'must allow insert permission for testelsuser to ' + TEST_ENTITY)
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
     assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods), ['select'], 'testelsuser have only ' + TEST_ENTITY + '.select permission')
 
     relogon()
     console.debug('Check beforeinsert indirect execution if insert is granted')
     ok(addUBSAuditPermission('insert', 'A'), 'add insert permission for testelsuser to ' + TEST_ENTITY)
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     ok(conn.insert({
       entity: 'uba_role',
       fieldList: ['ID'],
@@ -180,10 +182,10 @@ module.exports = function runELSTest (options) {
 
     console.debug('Add', UBA_COMMON.ROLES.ADMIN.NAME, 'role for testelsuser and verify addnew method, complimented for role testElsRole is accessible via admin allow role')
     relogon()
-    let adminRoleID = conn.lookup('uba_role', 'ID', {expression: 'name', condition: 'equal', values: {nameVal: UBA_COMMON.ROLES.ADMIN.NAME}})
+    let adminRoleID = conn.lookup('uba_role', 'ID', { expression: 'name', condition: 'equal', values: { nameVal: UBA_COMMON.ROLES.ADMIN.NAME } })
     ok(adminRoleID, `role "${UBA_COMMON.ROLES.ADMIN.NAME}" not found in uba_role`)
     ok(grantRoleToUser(adminRoleID, testUserID), `role "${UBA_COMMON.ROLES.ADMIN.NAME}" not added for user testelsuser`)
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
     assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'update', 'addnew', 'delete'].sort(), TEST_ENTITY + ' permission for 5 method')
 
@@ -203,7 +205,7 @@ module.exports = function runELSTest (options) {
     domainInfo = conn.getDomainInfo()
     assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), TEST_ENTITY + ' permission do not have addnew for admin')
 
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
     assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), +TEST_ENTITY + ' permission do not have addnew for testelsuser')
 

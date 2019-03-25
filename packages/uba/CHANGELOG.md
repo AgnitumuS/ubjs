@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.20]
+### Added
+ - `uba_auditTrail.request_id` attribute - a unique request identifier.
+  Can be used eg for revert all changes made by a single `ubql` call. Require ub sevrer@5.7.18.
+
 ## [5.1.17]
 ### Added
  - navshortcuts access initialization for Supervisor role
@@ -14,7 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [5.1.14]
 ### Added
- - **Attribute Level Security editor** (can be ronned from ALS grid).
+ - **Attribute Level Security editor** (can be executed from ALS grid).
  This editor is a direct replacement of desktop ALS application.
  `adminui-vue` model must be added to application domain for this feature.
 
