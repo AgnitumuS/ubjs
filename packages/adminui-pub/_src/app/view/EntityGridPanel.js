@@ -827,12 +827,12 @@ Ext.define('UB.view.EntityGridPanel', {
     if (me.rowEditing) {
       cfg.fieldList.forEach(function (item) {
         let entity = $App.domainInfo.get(cfg.entity)
-        let attributeName = (item.indexOf('.') + 1 ? item.substring(0, item.indexOf('.')) : item)
+        let dotPosition = item.indexOf('.')
+        let attributeName = (dotPosition !== -1 ? item.substring(0, dotPosition) : item)
         let entityAttribute = entity.attributes[attributeName]
-        if (_.includes([UBDomain.ubDataTypes.Entity], entityAttribute.dataType)) {
-          if (item.indexOf('.') + 1) {
-            cfg.fieldList.push(attributeName)
-          }
+        if (entityAttribute && (entityAttribute.dataType === UBDomain.ubDataTypes.Entity) &&
+          (dotPosition !== -1) && !cfg.fieldList.includes(attributeName)) {
+          cfg.fieldList.push(attributeName)
         }
       })
     }
