@@ -133,17 +133,36 @@ export default {
   },
 
   methods: {
-    addUser () {
-      console.log(this.userModel)
-      const user = this.$UB.connection
+    async addUser () {
+      const user = await this.$UB.connection
         .Repository('uba_user')
-        .attrs('ID', 'login')
-        .
+        .attrs('ID', 'name')
         .selectById(this.userModel)
+      const notExist = this.selectedUsers.findIndex(u => u.ID === user.ID) === -1
+      if (notExist) {
+        this.selectedUsers.push(user)
+      }
+      this.userModel = null
     },
 
-    addByRole () {
-      console.log(this.roleModel)
+    async addByRole () {
+      const users = await this.$UB.connection
+        .Repository('uba_userrole')
+        .attrs('ID', 'roleID', 'userID', 'userID.name')
+        .where('roleID', '=', this.roleModel)
+        .select()
+
+      for (const user of users) {
+        const notExist = this.selectedUsers.findIndex(u => u.ID === user.ID) === -1
+        if (notExist) {
+          this.selectedUsers.push({
+            ID: user.ID,
+            name: user['userID.name']
+          })
+        }
+      }
+
+      this.roleModel = null
     }
   }
 }

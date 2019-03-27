@@ -34,11 +34,13 @@
         </el-button>
       </div>
 
-      <div v-if="isVisible" class="notifications__list">
+      <div
+        v-if="isVisible"
+        class="notifications__list"
+      >
         <div
           v-for="item in messagesUnreadOnInit"
           :key="item.ID"
-          @click="showHistory(item.ID)"
           ref="el"
           class="notifications__item"
           :class="{
@@ -46,6 +48,7 @@
             'overflowed': /*isOverflowed*/ false,
             'active': false/*isActive*/
           }"
+          @click="showHistory(item.ID)"
         >
           <div class="notifications__item__header">
             <i class="notifications__item__icon el-icon-warning" />
