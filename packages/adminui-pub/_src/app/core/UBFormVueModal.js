@@ -11,20 +11,37 @@ function mountModal ({ FormComponent, title, commandConfig }) {
       }
     },
     methods: {
-      async beforeClose (done) {
-        const confirm = await this.$dialogYesNo('title', 'msg')
-        if (confirm) done()
+      beforeClose (done) {
+        const child = this.$refs.child.beforeClose
+        if (child) {
+          this.$refs.child.beforeClose(done)
+        } else {
+          done()
+        }
       }
     },
+    // render: (h) => {
+    //   return h('ElDialog', {
+    //     props: {
+    //       title,
+    //       'visible.sync': this.dialogVisible,
+    //       width: '90%',
+    //       beforeClose: this.beforeClose
+    //     },
+    //     on: {
+    //       close: this.$destroy
+    //     }
+    //   })
+    // }
     template: `
       <el-dialog
         :title="title"
         :visible.sync="dialogVisible"
         width="90%"
         @closed="$destroy()"
+        :before-close="beforeClose"
       >
-        <!-- :before-close="beforeClose" -->
-        <form-component :command-config="commandConfig"/>
+        <form-component ref="child" :command-config="commandConfig"/>
       </el-dialog>
     `
   }).$mount()

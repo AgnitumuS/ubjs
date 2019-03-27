@@ -6,20 +6,27 @@
           required
           label="Type"
         >
-          <ub-select-enum
-            v-model="type"
-            :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
+          <ub-error-wrap :error="$v.type.$error && 'please fill this field'">
+            <ub-select-enum
+              v-model="type"
+              :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
+              @select="$v.type.$touch()"
             />
+          </ub-error-wrap>
         </ub-form-row>
         <ub-form-row
           required
           label="Message"
         >
-          <el-input
-            type="textarea"
-            :rows="7"
-            resize="none"
-          />
+          <ub-error-wrap :error="$v.text.$error && 'please fill this field'">
+            <el-input
+              v-model="text"
+              type="textarea"
+              :rows="7"
+              resize="none"
+              @change="$v.text.$touch()"
+            />
+          </ub-error-wrap>
         </ub-form-row>
         <ub-form-row label="By date range">
           <el-date-picker
@@ -86,6 +93,7 @@
       <el-button
         type="primary"
         size="big"
+        @click="save"
       >
         Send
       </el-button>
@@ -94,6 +102,8 @@
 </template>
 
 <script>
+const required = require('vuelidate/lib/validators/required').default
+
 export default {
   data () {
     return {
@@ -101,6 +111,7 @@ export default {
       userModel: null,
       type: null,
       selectedUsers: [],
+      text: '',
       dateRange: null,
       pickerOptions: {
         shortcuts: [{
@@ -130,6 +141,11 @@ export default {
         }]
       }
     }
+  },
+
+  validations: {
+    type: { required },
+    text: { required }
   },
 
   methods: {
@@ -163,6 +179,15 @@ export default {
       }
 
       this.roleModel = null
+    },
+
+    beforeClose (done) {
+      setTimeout(done, 2000)
+    },
+
+    save () {
+      this.$v.$touch()
+      console.log(this.$v)
     }
   }
 }

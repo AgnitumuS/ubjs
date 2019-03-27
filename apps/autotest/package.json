@@ -61,7 +61,8 @@
     "throttle-debounce": "^2.1.0",
     "tinymce": "^4.5.1",
     "vue": "^2.6.6",
-    "vue-template-compiler": "^2.6.6"
+    "vue-template-compiler": "^2.6.6",
+    "vuelidate": "^0.7.4"
   },
   "devDependencies": {
     "@unitybase/hmr": "^1.0.36",

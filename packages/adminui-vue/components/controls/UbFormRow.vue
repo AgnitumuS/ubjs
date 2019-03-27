@@ -22,7 +22,6 @@ export default {
 <style>
 .ub-form-row{
   display: flex;
-  align-items: center;
 }
 
 .ub-form-row + .ub-form-row{
@@ -34,6 +33,7 @@ export default {
   width: 110px;
   min-width: 110px;
   padding-right: 8px;
+  padding-top: 7px;
 }
 
 .ub-form-row__content{

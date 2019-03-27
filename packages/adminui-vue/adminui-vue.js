@@ -58,6 +58,10 @@ Vue.use({
 const UbComponents = require('./ub-components')
 Vue.use(UbComponents)
 
+const Vuelidate = require('vuelidate/lib/index').default
+if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', SystemJS.newModule(Vuelidate))
+Vue.use(Vuelidate)
+
 const dialogs = require('./components/dialog/UDialog')
 // add $dialog* to Vue prototype
 Vue.use(dialogs)

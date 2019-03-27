@@ -51,7 +51,8 @@
     "systemjs-plugin-css": "^0.1.32",
     "throttle-debounce": "^2.1.0",
     "vue": "^2.6.8",
-    "vue-template-compiler": "^2.6.8"
+    "vue-template-compiler": "^2.6.8",
+    "vuelidate": "^0.7.4"
   },
   "keywords": [
     "UnityBase",
