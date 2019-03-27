@@ -35,16 +35,36 @@
       </div>
 
       <div v-if="isVisible" class="notifications__list">
-        <u-navbar-notifications-item
+        <div
           v-for="item in messagesUnreadOnInit"
-          :id="String(item.ID)"
           :key="item.ID"
-          :date="item.date"
-          :unread="item.unread"
-          :type="item.type"
-          :text="item.text"
-          @click.native="showHistory(item.ID)"
-        />
+          @click="showHistory(item.ID)"
+          ref="el"
+          class="notifications__item"
+          :class="{
+            'unread': item.unread,
+            'overflowed': /*isOverflowed*/ false,
+            'active': false/*isActive*/
+          }"
+        >
+          <div class="notifications__item__header">
+            <i class="notifications__item__icon el-icon-warning" />
+            <span class="notifications__item__type">{{item.type}}</span>
+            <span class="notifications__item__date">
+              {{ $moment(item.date).format('DD.MM.YYYY') }}
+            </span>
+          </div>
+          <div
+            class="notifications__item__text"
+            v-html="item.text"
+          />
+          <button
+            v-show="/*isOverflowed*/ false"
+            class="notifications__item__btn-overflow"
+          >
+            Полностью...
+          </button>
+        </div>
       </div>
 
       <div v-if="messagesUnreadOnInit.length < 1">
@@ -59,42 +79,23 @@
         {{ $ut('messageHistory') }}
       </el-button>
     </el-popover>
-
-    <u-navbar-notifications-popup
-      v-model="historyVisible"
-      :current-mess="currentMess"
-    >
-      <u-navbar-notifications-item
-        v-for="item in messages"
-        :id="String(item.ID)"
-        :key="item.ID"
-        :date="item.date"
-        :unread="item.unread"
-        :type="item.type"
-        :text="item.text"
-        :is-active="item.ID == active"
-        @click.native="markRead(item.ID)"
-      />
-    </u-navbar-notifications-popup>
   </div>
 </template>
 
 <script>
-const UNavbarNotificationsPopup = require('./UNavbarNotificationsPopup.vue').default
-const UNavbarNotificationsItem = require('./UNavbarNotificationsItem.vue').default
+/*
+get overflowed
+if (this.$refs.el.offsetHeight > 120) {
+  this.isOverflowed = true
+}
+*/
 
 export default {
   name: 'UNavbarNotificationsButton',
 
-  components: {
-    UNavbarNotificationsPopup,
-    UNavbarNotificationsItem
-  },
-
   data () {
     return {
       isVisible: false,
-      historyVisible: false,
       messages: [{
         ID: 1,
         text: '<span style="color: red; font-size:25px;">Lorem ipsum dolor</span> sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? <span style="color: green; font-size:25px;">Voluptatibus, repellendus doloribus illo!</span>',
@@ -127,7 +128,6 @@ export default {
         unread: false
       }],
       messagesUnreadOnInit: [],
-      overflowedList: [],
       active: null
     }
   },
@@ -153,19 +153,15 @@ export default {
       })
     },
 
-    showHistory () {
+    showHistory (active) {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
-        cmdCode: 'ubs_message'
+        isModal: true,
+        entity: 'ubs_message',
+        active
       })
     },
-
-    // showHistory (ID) {
-    //   this.markRead(ID)
-    //   this.isVisible = false
-    //   this.historyVisible = true
-    // },
 
     markRead (ID) {
       const index = this.messages.findIndex(m => m.ID === ID)
@@ -227,5 +223,104 @@ export default {
   color: rgba(var(--info), 0.7);
   font-size: 11px;
   padding-left: 10px;
+}
+
+/* item */
+.notifications__item{
+  padding: 10px;
+  padding-left: 20px;
+  border-bottom: 1px solid rgba(var(--info), 0.05);
+  position: relative;
+  cursor: pointer;
+}
+
+.notifications__item__btn-overflow{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  padding-top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgb(var(--info));
+  border: none;
+  background: linear-gradient(to bottom, transparent, white 50%);
+  pointer-events: none;
+}
+
+.notifications__item.unread .notifications__item__btn-overflow{
+  background: linear-gradient(to bottom, transparent, #f5faff 50%);
+}
+
+.notifications__item.overflowed{
+  overflow: hidden;
+  max-height: 120px;
+}
+
+.notifications__item:hover .notifications__item__btn-overflow{
+  color: rgb(var(--primary));
+}
+
+.notifications__item.active{
+  background: rgba(var(--info), 0.05);
+}
+
+.notifications__item:hover{
+  background: rgba(var(--info), 0.1);
+}
+
+.notifications__item.unread:hover{
+  background: rgba(var(--primary), 0.1);
+}
+
+.notifications__item.unread{
+  background: rgba(var(--primary), 0.05);
+}
+
+.notifications__item.unread:before{
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: rgb(var(--primary));
+  border-radius: 100px;
+  position: absolute;
+  top: 50%;
+  margin-top: -4px;
+  left: 10px;
+}
+
+.notifications__item:last-child{
+  border-bottom: none;
+}
+
+.notifications__item__header{
+  display: flex;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.notifications__item__icon{
+  font-size: 16px;
+  color: rgb(var(--danger));
+  margin-left: 10px;
+}
+
+.notifications__item__type{
+  font-size: 11px;
+  color: rgba(var(--info), 0.8);
+  padding-left: 7px;
+}
+
+.notifications__item__text{
+  font-size: 13px;
+  color: rgb(var(--info));
+  padding-left: 10px;
+}
+
+.notifications__item__date{
+  font-size: 11px;
+  color: rgba(var(--info), 0.8);
+  margin-left: auto;
 }
 </style>

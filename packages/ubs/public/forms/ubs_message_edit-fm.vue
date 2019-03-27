@@ -1,6 +1,95 @@
 <template>
   <div>
-    Edit form (add new mess)
+    <div class="ub-notification__add__container">
+      <div class="ub-notification__add__message">
+        <ub-form-row
+          required
+          label="Type"
+        >
+          <ub-select-enum
+            v-model="type"
+            :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
+            />
+        </ub-form-row>
+        <ub-form-row
+          required
+          label="Message"
+        >
+          <el-input
+            type="textarea"
+            :rows="7"
+            resize="none"
+          />
+        </ub-form-row>
+        <ub-form-row label="By date range">
+          <el-date-picker
+            v-model="dateRange"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="-"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+            :picker-options="pickerOptions"
+          />
+        </ub-form-row>
+      </div>
+      <div class="ub-notification__add__users">
+        <ub-form-row label="Add by role">
+          <div class="ub-notification__users__add-row">
+            <ub-select-entity
+              v-model="roleModel"
+              entity-name="uba_role"
+            />
+            <el-button @click="addByRole">Add</el-button>
+          </div>
+        </ub-form-row>
+        <ub-form-row label="Add user">
+          <div class="ub-notification__users__add-row">
+            <ub-select-entity
+              v-model="userModel"
+              entity-name="uba_user"
+            />
+            <el-button @click="addUser">Add</el-button>
+          </div>
+        </ub-form-row>
+
+        <div class="ub-notification__users-list__title">
+          Selected users:
+        </div>
+        <div class="ub-notification__add__users-list">
+          <template v-if="selectedUsers.length">
+            <div
+              v-for="user in selectedUsers"
+              :key="user.ID"
+              class="ub-notification__users-list__item"
+            >
+              {{ user.name }}
+              <el-button
+                type="danger"
+                plain
+                icon="el-icon-delete"
+                size="mini"
+              />
+            </div>
+          </template>
+          <div
+            v-else
+            class="ub-notification__users-list__empty"
+          >
+            All users
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ub-notification__add__footer">
+      <el-button
+        type="primary"
+        size="big"
+      >
+        Send
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -8,7 +97,117 @@
 export default {
   data () {
     return {
+      roleModel: null,
+      userModel: null,
+      type: null,
+      selectedUsers: [],
+      dateRange: null,
+      pickerOptions: {
+        shortcuts: [{
+          text: 'Last week',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: 'Last month',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
+          }
+        }, {
+          text: 'Last 3 months',
+          onClick (picker) {
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
+          }
+        }]
+      }
+    }
+  },
+
+  methods: {
+    addUser () {
+      console.log(this.userModel)
+      const user = this.$UB.connection
+        .Repository('uba_user')
+        .attrs('ID', 'login')
+        .
+        .selectById(this.userModel)
+    },
+
+    addByRole () {
+      console.log(this.roleModel)
     }
   }
 }
 </script>
+
+<style>
+.ub-notification__add__container{
+  display: flex;
+  height: 50vh;
+  padding-bottom: 20px;
+}
+
+.ub-notification__add__footer{
+  text-align: right;
+}
+
+.ub-notification__add__users-list{
+  border-top: 1px solid rgba(var(--info), 0.3);
+  margin-top: 10px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.ub-notification__add__message{
+  flex-grow: 1;
+  padding-right: 20px
+}
+
+.ub-notification__add__users{
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  border-left: 1px solid rgba(var(--info), 0.3);
+}
+
+.ub-notification__users__add-row{
+  display: flex;
+}
+
+.ub-notification__users__add-row .el-button{
+  margin-left: 8px;
+}
+
+.ub-notification__users-list__title{
+  color: rgb(var(--info));
+  padding-top: 20px;
+}
+
+.ub-notification__users-list__empty{
+  text-align: center;
+  color: rgb(var(--info));
+  padding: 20px;
+  font-size: 17px;
+}
+
+.ub-notification__users-list__item{
+  border-bottom: 1px solid rgba(var(--info), 0.1);
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.ub-notification__users-list__item .el-button{
+  margin-left: auto;
+}
+</style>

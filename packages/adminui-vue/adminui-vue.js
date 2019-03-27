@@ -55,6 +55,9 @@ Vue.use({
   }
 })
 
+const UbComponents = require('./ub-components')
+Vue.use(UbComponents)
+
 const dialogs = require('./components/dialog/UDialog')
 // add $dialog* to Vue prototype
 Vue.use(dialogs)
@@ -68,7 +71,7 @@ if (isExt) {
   $App.on('applicationReady', () => {
     $App.doCommand({
       cmdType: 'showForm',
-      isModal: !true,
+      isModal: true,
       entity: 'ubs_message_edit'
     })
   })

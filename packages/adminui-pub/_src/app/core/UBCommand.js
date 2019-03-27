@@ -575,7 +575,8 @@ Ext.define('UB.core.UBCommand', {
             mountVueForm({
               FormComponent: formDefinition.formController.default,
               title: me.formParam.caption,
-              isModal: me.isModal
+              isModal: me.isModal,
+              commandConfig: me.commandConfig
             })
           } else {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)

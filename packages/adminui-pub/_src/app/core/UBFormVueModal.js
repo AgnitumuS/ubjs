@@ -1,12 +1,19 @@
 const Vue = require('vue')
 
-function mountModal ({ FormComponent, title }) {
+function mountModal ({ FormComponent, title, commandConfig }) {
   const instance = new Vue({
     components: { FormComponent },
     data () {
       return {
         dialogVisible: false,
-        title
+        title,
+        commandConfig
+      }
+    },
+    methods: {
+      async beforeClose (done) {
+        const confirm = await this.$dialogYesNo('title', 'msg')
+        if (confirm) done()
       }
     },
     template: `
@@ -16,16 +23,16 @@ function mountModal ({ FormComponent, title }) {
         width="90%"
         @closed="$destroy()"
       >
-        <form-component />
+        <!-- :before-close="beforeClose" -->
+        <form-component :command-config="commandConfig"/>
       </el-dialog>
     `
-  })
-  instance.$mount()
-
+  }).$mount()
+  document.body.append(instance.$el)
   instance.dialogVisible = true
 }
 
-function mountTab ({ FormComponent, title }) {
+function mountTab ({ FormComponent, title, commandConfig }) {
   const tab = $App.viewport.centralPanel.add({
     title,
     style: {
@@ -33,7 +40,13 @@ function mountTab ({ FormComponent, title }) {
     },
     closable: true
   })
-  const instance = new Vue(FormComponent)
+  const instance = new Vue({
+    render: (h) => h(FormComponent, {
+      props: {
+        commandConfig
+      }
+    })
+  })
   instance.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   tab.on('close', () => {
     instance.$destroy()

@@ -4,5 +4,5 @@
 // @entity "ubs_message_edit"
 // @model "UBS"
 // @formType "vue"
-// @caption "Message edit"
+// @caption "Message send"
 // @description ""
