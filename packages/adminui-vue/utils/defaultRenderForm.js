@@ -1,14 +1,12 @@
 const Vue = require('vue')
 const { Dialog } = require('element-ui')
 
-function mountModal ({ FormComponent, title, commandConfig }) {
+function mountModal (Component, title) {
   const instance = new Vue({
-    components: { FormComponent },
+    components: { Component },
     data () {
       return {
-        dialogVisible: false,
-        title,
-        commandConfig
+        dialogVisible: false
       }
     },
     methods: {
@@ -26,20 +24,20 @@ function mountModal ({ FormComponent, title, commandConfig }) {
         props: {
           title,
           visible: this.dialogVisible,
-          width: '90%',
+          width: '80%',
           beforeClose: this.beforeClose
         },
         on: {
-          closed: () => this.$destroy(),
+          closed: () => { this.$destroy() },
           'update:visible': (val) => {
             this.dialogVisible = val
           }
         }
       }, [
-        h(FormComponent, {
+        h(Component, {
           ref: 'child',
-          props: {
-            commandConfig
+          on: {
+            close: () => { this.dialogVisible = false }
           }
         })
       ])
@@ -49,7 +47,7 @@ function mountModal ({ FormComponent, title, commandConfig }) {
   instance.dialogVisible = true
 }
 
-function mountTab ({ FormComponent, title, commandConfig }) {
+function mountTab (Component, title) {
   const tab = $App.viewport.centralPanel.add({
     title,
     style: {
@@ -58,11 +56,7 @@ function mountTab ({ FormComponent, title, commandConfig }) {
     closable: true
   })
   const instance = new Vue({
-    render: (h) => h(FormComponent, {
-      props: {
-        commandConfig
-      }
-    })
+    render: (h) => h(Component)
   })
   instance.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   tab.on('close', () => {
@@ -71,12 +65,12 @@ function mountTab ({ FormComponent, title, commandConfig }) {
   $App.viewport.centralPanel.setActiveTab(tab)
 }
 
-module.exports = (config) => {
-  if (!config.FormComponent) throw new Error('FormComponent is required')
+module.exports = (Component, { isModal, title }) => {
+  if (!Component) throw new Error('FormComponent is required')
 
-  if (config.isModal) {
-    mountModal(config)
+  if (isModal) {
+    mountModal(Component, title)
   } else {
-    mountTab(config)
+    mountTab(Component, title)
   }
 }

@@ -103,8 +103,13 @@
 
 <script>
 const required = require('vuelidate/lib/validators/required').default
+const defaultRenderForm = require('@unitybase/adminui-vue/utils/defaultRenderForm')
 
-export default {
+module.exports.mount = (params) => {
+  defaultRenderForm(module.exports.default, params)
+}
+
+module.exports.default = {
   data () {
     return {
       roleModel: null,
@@ -181,17 +186,18 @@ export default {
       this.roleModel = null
     },
 
-    beforeClose (done) {
-      this.$v.$touch()
-      if (!this.$v.$error) {
-        console.log('done')
-        done()
+    async beforeClose (done) {
+      const confirm = await $App.dialogYesNo('Close modal', 'Are you sure?')
+      if (confirm) {
+        this.$v.$touch()
+        if (!this.$v.$error) {
+          done()
+        }
       }
     },
 
     save () {
-      this.$v.$touch()
-      if (this.$v.$error) return false
+      this.$emit('close')
     }
   }
 }

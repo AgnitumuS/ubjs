@@ -16,7 +16,13 @@
 </template>
 
 <script>
-export default {
+const defaultRenderForm = require('@unitybase/adminui-vue/utils/defaultRenderForm')
+
+module.exports.mount = (params) => {
+  defaultRenderForm(params, module.exports.default)
+}
+
+module.exports.default = {
   props: {
     commandConfig: Object
   },
