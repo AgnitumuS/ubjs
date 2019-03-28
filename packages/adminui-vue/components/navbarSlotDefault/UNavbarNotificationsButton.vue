@@ -6,12 +6,11 @@
       width="400"
       trigger="click"
       popper-class="notifications__popover"
-      @show="getUnreadList"
     >
       <el-badge
         slot="reference"
-        type="info"
-        :value="0"
+        :type="messages.length === 0 ? 'info' : 'danger'"
+        :value="messages.length"
       >
         <el-button
           icon="el-icon-bell"
@@ -20,7 +19,7 @@
       </el-badge>
 
       <div class="notifications__add-btn-wrap">
-        <span class="notifications__title-list-count">{{ messagesUnreadOnInit.length }} new messages</span>
+        <span class="notifications__title-list-count">{{ messages.length }} new messages</span>
 
         <el-button
           v-if="$UB.connection.domain.isEntityMethodsAccessible('ubs_message_edit', ['insert', 'update'])"
@@ -35,16 +34,16 @@
       </div>
 
       <div
-        v-if="isVisible"
+        v-if="messages.length > 0"
         class="notifications__list"
       >
         <div
-          v-for="item in messagesUnreadOnInit"
+          v-for="item in messages"
           :key="item.ID"
           ref="el"
           class="notifications__item"
           :class="{
-            'unread': item.unread,
+            'unread': item['recipients.acceptDate'] === null,
             'overflowed': /*isOverflowed*/ false,
             'active': false/*isActive*/
           }"
@@ -52,14 +51,14 @@
         >
           <div class="notifications__item__header">
             <i class="notifications__item__icon el-icon-warning" />
-            <span class="notifications__item__type">{{item.type}}</span>
+            <span class="notifications__item__type">{{item.messageType}}</span>
             <span class="notifications__item__date">
-              {{ $moment(item.date).format('DD.MM.YYYY') }}
+              {{ $moment(item.startDate).format('DD.MM.YYYY') }}
             </span>
           </div>
           <div
             class="notifications__item__text"
-            v-html="item.text"
+            v-html="item.messageBody"
           />
           <button
             v-show="/*isOverflowed*/ false"
@@ -70,8 +69,11 @@
         </div>
       </div>
 
-      <div v-if="messagesUnreadOnInit.length < 1">
-        Empty
+      <div
+        v-else
+        class="notifications__list__empty"
+      >
+        You have no new messages
       </div>
 
       <el-button
@@ -99,51 +101,12 @@ export default {
   data () {
     return {
       isVisible: false,
-      messages: [{
-        ID: 1,
-        text: '<span style="color: red; font-size:25px;">Lorem ipsum dolor</span> sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? <span style="color: green; font-size:25px;">Voluptatibus, repellendus doloribus illo!</span>',
-        type: 'user',
-        date: new Date(2009, 1, 1),
-        unread: !false
-      }, {
-        ID: 2,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
-        type: 'system',
-        date: new Date(2019, 4, 5),
-        unread: !false
-      }, {
-        ID: 3,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
-        type: 'warning',
-        date: new Date(2012, 3, 2),
-        unread: false
-      }, {
-        ID: 4,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
-        type: 'information',
-        date: new Date(2012, 3, 2),
-        unread: false
-      }, {
-        ID: 5,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id, dolores iusto unde est ipsam soluta laborum? Voluptatibus, repellendus doloribus illo!',
-        type: 'system',
-        date: new Date(2012, 3, 2),
-        unread: false
-      }],
-      messagesUnreadOnInit: [],
-      active: null
+      messages: []
     }
   },
 
-  computed: {
-    currentMess () {
-      const mess = this.messages.find(m => m.ID === this.active)
-      if (mess) {
-        return mess.text
-      } else {
-        return ''
-      }
-    }
+  created () {
+    this.getMessages()
   },
 
   methods: {
@@ -151,38 +114,26 @@ export default {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
-        isModal: true,
         entity: 'ubs_message_edit'
       })
     },
 
-    showHistory (active) {
+    showHistory (ID) {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
-        isModal: true,
         entity: 'ubs_message',
-        active
+        messageIdOnOpen: ID
       })
     },
 
-    markRead (ID) {
-      const index = this.messages.findIndex(m => m.ID === ID)
-      if (ID) {
-        this.active = ID
-      } else {
-        this.active = this.messages[0].ID
-      }
-      this.active = ID
-      if (index !== -1) {
-        this.messages[index].unread = false
-      }
-    },
-
-    getUnreadList () {
-      this.messagesUnreadOnInit.splice(0, this.messagesUnreadOnInit.length)
-      const overflowedList = this.messages.filter(m => m.unread)
-      this.messagesUnreadOnInit.push(...overflowedList)
+    async getMessages () {
+      const messages = await this.$UB.connection
+        .Repository('ubs_message')
+        .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate')
+        .where('recipients.acceptDate', 'isNull')
+        .select()
+      this.messages.push(...messages)
     }
   }
 }
@@ -226,6 +177,13 @@ export default {
   color: rgba(var(--info), 0.7);
   font-size: 11px;
   padding-left: 10px;
+}
+
+.notifications__list__empty{
+  text-align: center;
+  padding: 20px;
+  color: rgb(var(--info));
+  border-top: 1px solid rgba(var(--info), 0.15);
 }
 
 /* item */

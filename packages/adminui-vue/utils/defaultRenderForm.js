@@ -1,31 +1,21 @@
 const Vue = require('vue')
 const { Dialog } = require('element-ui')
 
-function mountModal (Component, title) {
+function mountModal (Form, title) {
   const instance = new Vue({
-    components: { Component },
+    Components: { Form },
     data () {
       return {
         dialogVisible: false
       }
     },
-    methods: {
-      beforeClose (done) {
-        const child = this.$refs.child.beforeClose
-        if (child) {
-          this.$refs.child.beforeClose(done)
-        } else {
-          done()
-        }
-      }
-    },
     render (h) {
       return h(Dialog, {
+        ref: 'dialog',
         props: {
           title,
           visible: this.dialogVisible,
-          width: '80%',
-          beforeClose: this.beforeClose
+          width: '80%'
         },
         on: {
           closed: () => { this.$destroy() },
@@ -34,12 +24,7 @@ function mountModal (Component, title) {
           }
         }
       }, [
-        h(Component, {
-          ref: 'child',
-          on: {
-            close: () => { this.dialogVisible = false }
-          }
-        })
+        h(Form)
       ])
     }
   }).$mount()
@@ -47,7 +32,7 @@ function mountModal (Component, title) {
   instance.dialogVisible = true
 }
 
-function mountTab (Component, title) {
+function mountTab (Form, title) {
   const tab = $App.viewport.centralPanel.add({
     title,
     style: {
@@ -56,7 +41,7 @@ function mountTab (Component, title) {
     closable: true
   })
   const instance = new Vue({
-    render: (h) => h(Component)
+    render: (h) => h(Form)
   })
   instance.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   tab.on('close', () => {
@@ -65,12 +50,12 @@ function mountTab (Component, title) {
   $App.viewport.centralPanel.setActiveTab(tab)
 }
 
-module.exports = (Component, { isModal, title }) => {
-  if (!Component) throw new Error('FormComponent is required')
+module.exports = (Form, { isModal, title }) => {
+  if (!Form) throw new Error('FormForm is required')
 
   if (isModal) {
-    mountModal(Component, title)
+    mountModal(Form, title)
   } else {
-    mountTab(Component, title)
+    mountTab(Form, title)
   }
 }

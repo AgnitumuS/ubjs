@@ -75,8 +75,7 @@ if (isExt) {
   $App.on('applicationReady', () => {
     $App.doCommand({
       cmdType: 'showForm',
-      isModal: true,
-      entity: 'ubs_message_edit'
+      entity: 'ubs_message'
     })
   })
 }

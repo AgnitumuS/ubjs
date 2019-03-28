@@ -1,35 +1,119 @@
 <template>
-  <div>
-    <!-- notifications-history__popup -->
+  <el-dialog
+    :visible.sync="visible"
+    custom-class="notifications-history__popup"
+    :title="title"
+  >
     <div class="notifications-history">
-      <div
-        class="notifications-history__list"
-      >
-        {{commandConfig.active}}
+      <template v-if="messages.length > 0">
+        <div
+          class="notifications-history__list"
+        >
+          <div
+            v-for="item in messages"
+            :key="item.ID"
+            ref="el"
+            class="notifications__item"
+            :class="{
+              'unread': item['recipients.acceptDate'] === null,
+              'overflowed': /*isOverflowed*/ false,
+              'active': activeID === item.ID
+            }"
+            @click="activeID = item.ID"
+          >
+            <div class="notifications__item__header">
+              <i class="notifications__item__icon el-icon-warning" />
+              <span class="notifications__item__type">{{item.messageType}}</span>
+              <span class="notifications__item__date">
+                {{ $moment(item.startDate).format('DD.MM.YYYY') }}
+              </span>
+            </div>
+            <div
+              class="notifications__item__text"
+              v-html="item.messageBody"
+            />
+            <button
+              v-show="/*isOverflowed*/ false"
+              class="notifications__item__btn-overflow"
+            >
+              Полностью...
+            </button>
+          </div>
+        </div>
+        <div
+          class="notifications-history__detail"
+          v-html="currentMess.messageBody"
+        />
+      </template>
+      <div v-else>
+        Empty
       </div>
-      <div
-        class="notifications-history__detail"
-        v-html="currentMess"
-      />
     </div>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
 const defaultRenderForm = require('@unitybase/adminui-vue/utils/defaultRenderForm')
 
-module.exports.mount = (params) => {
-  defaultRenderForm(params, module.exports.default)
+module.exports.mount = ({ title, messageIdOnOpen }) => {
+  const instance = new Vue({
+    render: h => h(module.exports.default, {
+      props: {
+        title,
+        messageIdOnOpen
+      }
+    })
+  }).$mount()
+  document.body.append(instance.$el)
 }
 
 module.exports.default = {
   props: {
-    commandConfig: Object
+    messageIdOnOpen: Number,
+    title: String
   },
 
   data () {
     return {
-      currentMess: 123
+      visible: false,
+      messages: [],
+      activeID: null
+    }
+  },
+
+  computed: {
+    currentMess () {
+      const index = this.messages.findIndex(m => m.ID === this.activeID)
+      if (index !== -1) {
+        return this.messages[index]
+      } else {
+        return {}
+      }
+    }
+  },
+
+  async created () {
+    await this.getMessages()
+    if (this.messages.length) {
+      if (this.messageIdOnOpen) {
+        this.activeID = this.messageIdOnOpen
+      } else {
+        this.activeID = this.messages[0].ID
+      }
+    }
+  },
+
+  mounted () {
+    this.visible = true
+  },
+
+  methods: {
+    async getMessages () {
+      const messages = await this.$UB.connection
+        .Repository('ubs_message')
+        .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate')
+        .select()
+      this.messages.push(...messages)
     }
   }
 }

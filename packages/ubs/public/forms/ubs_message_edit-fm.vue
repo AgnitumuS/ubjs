@@ -1,16 +1,22 @@
 <template>
-  <div>
+  <el-dialog
+    :visible.sync="visible"
+    :title="title"
+    width="70%"
+    :before-close="beforeClose"
+    @closed="$destroy()"
+  >
     <div class="ub-notification__add__container">
       <div class="ub-notification__add__message">
         <ub-form-row
           required
           label="Type"
         >
-          <ub-error-wrap :error="$v.type.$error && 'please fill this field'">
+          <ub-error-wrap :error="$v.messageType.$error && 'please fill this field'">
             <ub-select-enum
-              v-model="type"
+              v-model="messageType"
               :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
-              @select="$v.type.$touch()"
+              @select="$v.messageType.$touch()"
             />
           </ub-error-wrap>
         </ub-form-row>
@@ -18,13 +24,13 @@
           required
           label="Message"
         >
-          <ub-error-wrap :error="$v.text.$error && 'please fill this field'">
+          <ub-error-wrap :error="$v.messageBody.$error && 'please fill this field'">
             <el-input
-              v-model="text"
+              v-model="messageBody"
               type="textarea"
               :rows="7"
               resize="none"
-              @change="$v.text.$touch()"
+              @change="$v.messageBody.$touch()"
             />
           </ub-error-wrap>
         </ub-form-row>
@@ -77,6 +83,7 @@
                 plain
                 icon="el-icon-delete"
                 size="mini"
+                @click="removeUser(user.ID)"
               />
             </div>
           </template>
@@ -98,26 +105,41 @@
         Send
       </el-button>
     </div>
-  </div>
+  </el-dialog>
 </template>
 
 <script>
+const Vue = require('vue')
 const required = require('vuelidate/lib/validators/required').default
-const defaultRenderForm = require('@unitybase/adminui-vue/utils/defaultRenderForm')
 
-module.exports.mount = (params) => {
-  defaultRenderForm(module.exports.default, params)
+module.exports.mount = ({ title }) => {
+  const instance = new Vue({
+    render: h => h(module.exports.default, {
+      props: {
+        title
+      }
+    })
+  }).$mount()
+  document.body.append(instance.$el)
 }
 
 module.exports.default = {
+  props: {
+    title: String
+  },
+
   data () {
     return {
       roleModel: null,
       userModel: null,
-      type: null,
+      messageType: null,
       selectedUsers: [],
-      text: '',
+      messageBody: '',
+      visible: false,
       dateRange: null,
+      ID: null,
+      mi_modifyDate: null,
+      fieldList: ['complete', 'messageType', 'startDate', 'expireDate', 'messageBody', 'ID', 'mi_modifyDate'],
       pickerOptions: {
         shortcuts: [{
           text: 'Last week',
@@ -149,8 +171,16 @@ module.exports.default = {
   },
 
   validations: {
-    type: { required },
-    text: { required }
+    messageType: { required },
+    messageBody: { required }
+  },
+
+  created () {
+    this.addNew()
+  },
+
+  mounted () {
+    this.visible = true
   },
 
   methods: {
@@ -163,6 +193,7 @@ module.exports.default = {
       if (notExist) {
         this.selectedUsers.push(user)
       }
+
       this.userModel = null
     },
 
@@ -177,7 +208,7 @@ module.exports.default = {
         const notExist = this.selectedUsers.findIndex(u => u.ID === user.ID) === -1
         if (notExist) {
           this.selectedUsers.push({
-            ID: user.ID,
+            ID: user.userID,
             name: user['userID.name']
           })
         }
@@ -186,18 +217,84 @@ module.exports.default = {
       this.roleModel = null
     },
 
-    async beforeClose (done) {
-      const confirm = await $App.dialogYesNo('Close modal', 'Are you sure?')
-      if (confirm) {
-        this.$v.$touch()
-        if (!this.$v.$error) {
-          done()
-        }
+    removeUser (ID) {
+      const index = this.selectedUsers.findIndex(u => u.ID === ID)
+      if (index !== -1) {
+        this.selectedUsers.splice(index, 1)
       }
     },
 
-    save () {
-      this.$emit('close')
+    async beforeClose (done) {
+      const confirm = await $App.dialogYesNo('Close modal', 'Are you sure?')
+      if (confirm) done()
+    },
+
+    async save () {
+      this.$v.$touch()
+      if (this.$v.$error) return false
+      await this.insertMessage()
+      await this.insertRecipients()
+      this.visible = false
+    },
+
+    async addNew () {
+      const resp = await this.$UB.connection.addNew({
+        entity: 'ubs_message_edit',
+        fieldList: this.fieldList
+      })
+      const parsedResp = this.$UB.LocalDataStore.selectResultToArrayOfObjects(resp)
+      this.ID = parsedResp[0].ID
+      this.mi_modifyDate = parsedResp[0].mi_modifyDate
+    },
+
+    async insertMessage () {
+      const dates = {}
+      if (this.dateRange !== null) {
+        dates.startDate = this.dateRange[0]
+        dates.expireDate = this.dateRange[1]
+      } else {
+        dates.startDate = new Date(1970, 0)
+        dates.expireDate = new Date(3000, 0)
+      }
+      await this.$UB.connection.insert({
+        entity: 'ubs_message_edit',
+        fieldList: this.fieldList,
+        execParams: {
+          ID: this.ID,
+          complete: true,
+          messageType: this.messageType,
+          ...dates,
+          messageBody: this.messageBody,
+          mi_modifyDate: this.mi_modifyDate
+        }
+      })
+    },
+
+    async insertRecipients () {
+      const users = []
+      if (this.selectedUsers.length) {
+        for (const user of this.selectedUsers) {
+          users.push(user.ID)
+        }
+      } else {
+        const allUsers = await this.$UB.connection
+          .Repository('uba_user')
+          .attrs('ID')
+          .selectAsArray()
+        for (const item of allUsers.resultData.data) {
+          users.push(item[0])
+        }
+      }
+      await this.$UB.connection
+        .runTrans(users.map(userID => ({
+          method: 'insert',
+          entity: 'ubs_message_recipient',
+          fieldList: ['ID', 'userID', 'messageID'],
+          execParams: {
+            messageID: this.ID,
+            userID
+          }
+        })))
     }
   }
 }
