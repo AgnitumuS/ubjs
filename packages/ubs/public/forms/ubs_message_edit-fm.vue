@@ -182,12 +182,16 @@ export default {
     },
 
     beforeClose (done) {
-      setTimeout(done, 2000)
+      this.$v.$touch()
+      if (!this.$v.$error) {
+        console.log('done')
+        done()
+      }
     },
 
     save () {
       this.$v.$touch()
-      console.log(this.$v)
+      if (this.$v.$error) return false
     }
   }
 }

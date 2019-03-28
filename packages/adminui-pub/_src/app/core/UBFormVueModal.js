@@ -1,4 +1,5 @@
 const Vue = require('vue')
+const { Dialog } = require('element-ui')
 
 function mountModal ({ FormComponent, title, commandConfig }) {
   const instance = new Vue({
@@ -20,30 +21,29 @@ function mountModal ({ FormComponent, title, commandConfig }) {
         }
       }
     },
-    // render: (h) => {
-    //   return h('ElDialog', {
-    //     props: {
-    //       title,
-    //       'visible.sync': this.dialogVisible,
-    //       width: '90%',
-    //       beforeClose: this.beforeClose
-    //     },
-    //     on: {
-    //       close: this.$destroy
-    //     }
-    //   })
-    // }
-    template: `
-      <el-dialog
-        :title="title"
-        :visible.sync="dialogVisible"
-        width="90%"
-        @closed="$destroy()"
-        :before-close="beforeClose"
-      >
-        <form-component ref="child" :command-config="commandConfig"/>
-      </el-dialog>
-    `
+    render (h) {
+      return h(Dialog, {
+        props: {
+          title,
+          visible: this.dialogVisible,
+          width: '90%',
+          beforeClose: this.beforeClose
+        },
+        on: {
+          closed: () => this.$destroy(),
+          'update:visible': (val) => {
+            this.dialogVisible = val
+          }
+        }
+      }, [
+        h(FormComponent, {
+          ref: 'child',
+          props: {
+            commandConfig
+          }
+        })
+      ])
+    }
   }).$mount()
   document.body.append(instance.$el)
   instance.dialogVisible = true
