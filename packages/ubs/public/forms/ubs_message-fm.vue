@@ -162,7 +162,7 @@ module.exports.default = {
         'portal:notify:newMess': (message) => {
           this.messages.push(message)
         },
-        'portal:notify:markRead': (ID, acceptDate) => {
+        'portal:notify:readed': (ID, acceptDate) => {
           const index = this.messages.findIndex(m => m.ID === ID)
           if (index !== -1) {
             this.messages[index]['recipients.acceptDate'] = acceptDate
@@ -172,17 +172,7 @@ module.exports.default = {
     },
 
     async markRead (mess) {
-      const resp = await this.$UB.connection.query({
-        entity: 'ubs_message_recipient',
-        method: 'accept',
-        execParams: {
-          ID: mess['recipients.ID']
-        }
-      })
-
-      if (resp.resultData) {
-        $App.fireEvent('portal:notify:markRead', mess.ID, new Date())
-      }
+      $App.fireEvent('portal:notify:markAsReaded', mess)
     },
 
     setActive (mess) {

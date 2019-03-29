@@ -153,7 +153,7 @@ Ext.define('UBS.MessageBar', {
     let me = this
     me.processRequestStarted = true
     let request = UB.Repository('ubs_message').using('getCached')
-      .attrs(['messageBody', 'complete', 'messageType', 'startDate', 'expireDate',
+      .attrs(['ID', 'messageBody', 'complete', 'messageType', 'startDate', 'expireDate',
         'recipients.ID', 'recipients.acceptDate', 'recipients.userID'])
       .where('[recipients.acceptDate]', 'isNull')
       .orderBy('startDate').ubql()

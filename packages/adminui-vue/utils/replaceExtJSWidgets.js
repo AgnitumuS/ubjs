@@ -75,7 +75,42 @@ function replaceExtJSNavbar () {
   }).$mount(`#${id}`)
 }
 
+function getTypeLocaleString (type) {
+  const capitalizeStr = type.charAt(0).toUpperCase() + type.slice(1)
+  return 'msgType' + capitalizeStr
+}
+
+function replaceExtJSMessageBarDialog () {
+  $App.on('portal:notify:markAsReaded', async (mess) => {
+    const resp = await UB.connection.query({
+      entity: 'ubs_message_recipient',
+      method: 'accept',
+      execParams: {
+        ID: mess['recipients.ID']
+      }
+    })
+
+    if (resp.resultData) {
+      $App.fireEvent('portal:notify:readed', mess.ID, new Date())
+    }
+  })
+
+  UBS.MessageBar.override({
+    async doOnMessageRetrieved (messages) {
+      for (const mess of messages) {
+        if (mess.messageType !== 'information') {
+          const confirm = await $App.dialogInfo(mess.messageBody, getTypeLocaleString(mess.messageType))
+          if (confirm) {
+            $App.fireEvent('portal:notify:markAsReaded', mess)
+          }
+        }
+      }
+    }
+  })
+}
+
 module.exports = {
   replaceExtJSDialogs,
-  replaceExtJSNavbar
+  replaceExtJSNavbar,
+  replaceExtJSMessageBarDialog
 }

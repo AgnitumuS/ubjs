@@ -67,17 +67,14 @@ const dialogs = require('./components/dialog/UDialog')
 Vue.use(dialogs)
 UB.setErrorReporter(dialogs.errorReporter)
 if (isExt) {
-  const replaceExtJSDialogs = require('./utils/replaceExtJSWidgets').replaceExtJSDialogs
-  const replaceExtJSNavbar = require('./utils/replaceExtJSWidgets').replaceExtJSNavbar
+  const {
+    replaceExtJSDialogs,
+    replaceExtJSNavbar,
+    replaceExtJSMessageBarDialog
+  } = require('./utils/replaceExtJSWidgets')
   $App.on('applicationReady', replaceExtJSDialogs)
   $App.on('applicationReady', replaceExtJSNavbar)
-  // TEMPORARY
-  $App.on('applicationReady', () => {
-    $App.doCommand({
-      cmdType: 'showForm',
-      entity: 'ubs_message'
-    })
-  })
+  $App.on('applicationReady', replaceExtJSMessageBarDialog)
 }
 
 const Sidebar = require('./components/sidebar/USidebar.vue').default

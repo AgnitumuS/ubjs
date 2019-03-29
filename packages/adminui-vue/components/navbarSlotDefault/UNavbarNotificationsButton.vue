@@ -181,9 +181,12 @@ export default {
       $App.on({
         'portal:notify:newMess': (message) => {
           this.messages.push(message)
-          this.$message('New message')
+          this.$notify({
+            title: 'New message',
+            type: 'info'
+          })
         },
-        'portal:notify:markRead': (ID, acceptDate) => {
+        'portal:notify:readed': (ID, acceptDate) => {
           const index = this.messages.findIndex(m => m.ID === ID)
           if (index !== -1) {
             this.messages[index]['recipients.acceptDate'] = acceptDate
