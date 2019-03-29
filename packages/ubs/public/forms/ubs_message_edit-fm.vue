@@ -37,13 +37,13 @@
         <ub-form-row label="By date range">
           <el-date-picker
             v-model="dateRange"
-            type="daterange"
-            align="right"
+            type="datetimerange"
             unlink-panels
             range-separator="-"
             start-placeholder="Start date"
             end-placeholder="End date"
             :picker-options="pickerOptions"
+            :clearable="false"
           />
         </ub-form-row>
       </div>
@@ -136,33 +136,35 @@ module.exports.default = {
       selectedUsers: [],
       messageBody: '',
       visible: false,
-      dateRange: null,
+      dateRange: [new Date(), new Date(new Date().getFullYear() + 1, 0)],
       ID: null,
       mi_modifyDate: null,
-      fieldList: ['complete', 'messageType', 'startDate', 'expireDate', 'messageBody', 'ID', 'mi_modifyDate'],
       pickerOptions: {
+        disabledDate: (time) => {
+          return this.$moment().isAfter(time, 'day')
+        },
         shortcuts: [{
-          text: 'Last week',
+          text: 'Next week',
           onClick (picker) {
             const end = new Date()
             const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 7)
             picker.$emit('pick', [start, end])
           }
         }, {
-          text: 'Last month',
+          text: 'Next month',
           onClick (picker) {
             const end = new Date()
             const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
             picker.$emit('pick', [start, end])
           }
         }, {
-          text: 'Last 3 months',
+          text: 'Next 3 months',
           onClick (picker) {
             const end = new Date()
             const start = new Date()
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            end.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
             picker.$emit('pick', [start, end])
           }
         }]
@@ -240,7 +242,7 @@ module.exports.default = {
     async addNew () {
       const resp = await this.$UB.connection.addNew({
         entity: 'ubs_message_edit',
-        fieldList: this.fieldList
+        fieldList: ['complete', 'messageType', 'startDate', 'expireDate', 'messageBody', 'ID', 'mi_modifyDate']
       })
       const parsedResp = this.$UB.LocalDataStore.selectResultToArrayOfObjects(resp)
       this.ID = parsedResp[0].ID
@@ -248,22 +250,18 @@ module.exports.default = {
     },
 
     async insertMessage () {
-      const dates = {}
-      if (this.dateRange !== null) {
-        dates.startDate = this.dateRange[0]
-        dates.expireDate = this.dateRange[1]
-      } else {
-        dates.startDate = new Date(1970, 0)
-        dates.expireDate = new Date(3000, 0)
+      if (this.dateRange === null) {
+        this.dateRange = [new Date(), new Date(new Date().getFullYear() + 1, 0)]
       }
       await this.$UB.connection.insert({
         entity: 'ubs_message_edit',
-        fieldList: this.fieldList,
+        fieldList: ['complete', 'messageType', 'startDate', 'expireDate', 'messageBody', 'ID', 'mi_modifyDate'],
         execParams: {
           ID: this.ID,
           complete: true,
           messageType: this.messageType,
-          ...dates,
+          startDate: this.dateRange[0],
+          expireDate: this.dateRange[1],
           messageBody: this.messageBody,
           mi_modifyDate: this.mi_modifyDate
         }

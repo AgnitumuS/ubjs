@@ -3,6 +3,7 @@
     :visible.sync="visible"
     custom-class="notifications-history__popup"
     :title="title"
+    @open="checkOverflowed"
   >
     <div class="notifications-history">
       <template v-if="messages.length > 0">
@@ -12,18 +13,24 @@
           <div
             v-for="item in messages"
             :key="item.ID"
-            ref="el"
+            ref="message"
+            :data-id="item.ID"
             class="notifications__item"
             :class="{
               'unread': item['recipients.acceptDate'] === null,
-              'overflowed': /*isOverflowed*/ false,
+              'overflowed': item.isOverflowed,
               'active': activeID === item.ID
             }"
-            @click="activeID = item.ID"
+            @click="setActive(item)"
           >
             <div class="notifications__item__header">
-              <i class="notifications__item__icon el-icon-warning" />
-              <span class="notifications__item__type">{{item.messageType}}</span>
+              <i
+                class="notifications__item__icon"
+                :class="getIconClsByType(item.messageType)"
+              />
+              <span class="notifications__item__type">
+                {{ getTypeLocaleString(item.messageType) }}
+              </span>
               <span class="notifications__item__date">
                 {{ $moment(item.startDate).format('DD.MM.YYYY') }}
               </span>
@@ -33,7 +40,7 @@
               v-html="item.messageBody"
             />
             <button
-              v-show="/*isOverflowed*/ false"
+              v-show="item.isOverflowed"
               class="notifications__item__btn-overflow"
             >
               Полностью...
@@ -45,15 +52,18 @@
           v-html="currentMess.messageBody"
         />
       </template>
-      <div v-else>
-        Empty
+      <div
+        v-else
+        class="notifications-history__empty"
+      >
+        Message history is empty
       </div>
     </div>
   </el-dialog>
 </template>
 
 <script>
-const defaultRenderForm = require('@unitybase/adminui-vue/utils/defaultRenderForm')
+const Vue = require('vue')
 
 module.exports.mount = ({ title, messageIdOnOpen }) => {
   const instance = new Vue({
@@ -93,13 +103,16 @@ module.exports.default = {
   },
 
   async created () {
+    this.addNotificationListeners()
     await this.getMessages()
+    let mess = {}
     if (this.messages.length) {
       if (this.messageIdOnOpen) {
-        this.activeID = this.messageIdOnOpen
+        mess = this.messages.find(m => m.ID === this.messageIdOnOpen)
       } else {
-        this.activeID = this.messages[0].ID
+        mess = this.messages.find(m => m.ID === this.messages[0].ID)
       }
+      this.setActive(mess)
     }
   },
 
@@ -108,12 +121,81 @@ module.exports.default = {
   },
 
   methods: {
+    checkOverflowed () {
+      /*
+       * used 'open' and setTimeout, because event 'opened' didn't emitted
+       */
+      setTimeout(() => {
+        if (this.$refs.message === undefined) return
+        for (const message of this.$refs.message) {
+          if (message.offsetHeight > 120) {
+            const ID = +message.getAttribute('data-id')
+            const index = this.messages.findIndex(m => m.ID === ID)
+            if (index !== -1) {
+              this.$set(this.messages[index], 'isOverflowed', true)
+            }
+          }
+        }
+      }, 300)
+    },
+
+    getIconClsByType (type) {
+      return {
+        information: 'el-icon-info',
+        warning: 'el-icon-warning',
+        system: 'el-icon-error',
+        user: 'el-icon-message'
+      }[type]
+    },
+
     async getMessages () {
       const messages = await this.$UB.connection
         .Repository('ubs_message')
-        .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate')
+        .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate', 'recipients.ID')
+        .orderByDesc('startDate')
         .select()
       this.messages.push(...messages)
+    },
+
+    addNotificationListeners () {
+      $App.on({
+        'portal:notify:newMess': (message) => {
+          this.messages.push(message)
+        },
+        'portal:notify:markRead': (ID, acceptDate) => {
+          const index = this.messages.findIndex(m => m.ID === ID)
+          if (index !== -1) {
+            this.messages[index]['recipients.acceptDate'] = acceptDate
+          }
+        }
+      })
+    },
+
+    async markRead (mess) {
+      const resp = await this.$UB.connection.query({
+        entity: 'ubs_message_recipient',
+        method: 'accept',
+        execParams: {
+          ID: mess['recipients.ID']
+        }
+      })
+
+      if (resp.resultData) {
+        $App.fireEvent('portal:notify:markRead', mess.ID, new Date())
+      }
+    },
+
+    setActive (mess) {
+      this.activeID = mess.ID
+
+      if (mess['recipients.acceptDate'] === null) {
+        this.markRead(mess)
+      }
+    },
+
+    getTypeLocaleString (type) {
+      const capitalizeStr = type.charAt(0).toUpperCase() + type.slice(1)
+      return this.$ut('msgType' + capitalizeStr)
     }
   }
 }
@@ -154,4 +236,15 @@ module.exports.default = {
   text-align: right;
   padding: 20px;
 }
+
+.notifications-history__empty{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: rgb(var(--info));
+}
+/* styles for notifications item placed in \adminui-vue\components\navbarSlotDefault\UNavbarNotificationsButton.vue */
 </style>

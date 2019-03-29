@@ -6,11 +6,12 @@
       width="400"
       trigger="click"
       popper-class="notifications__popover"
+      @after-enter="checkOverflowed"
     >
       <el-badge
         slot="reference"
-        :type="messages.length === 0 ? 'info' : 'danger'"
-        :value="messages.length"
+        :type="unreadMessagesCount === 0 ? 'info' : 'danger'"
+        :value="unreadMessagesCount"
       >
         <el-button
           icon="el-icon-bell"
@@ -19,7 +20,7 @@
       </el-badge>
 
       <div class="notifications__add-btn-wrap">
-        <span class="notifications__title-list-count">{{ messages.length }} new messages</span>
+        <span class="notifications__title-list-count">{{ unreadMessagesCount }} new messages</span>
 
         <el-button
           v-if="$UB.connection.domain.isEntityMethodsAccessible('ubs_message_edit', ['insert', 'update'])"
@@ -40,18 +41,23 @@
         <div
           v-for="item in messages"
           :key="item.ID"
-          ref="el"
+          ref="message"
+          :data-id="item.ID"
           class="notifications__item"
           :class="{
             'unread': item['recipients.acceptDate'] === null,
-            'overflowed': /*isOverflowed*/ false,
-            'active': false/*isActive*/
+            'overflowed': item.isOverflowed
           }"
           @click="showHistory(item.ID)"
         >
           <div class="notifications__item__header">
-            <i class="notifications__item__icon el-icon-warning" />
-            <span class="notifications__item__type">{{item.messageType}}</span>
+            <i
+              class="notifications__item__icon"
+              :class="getIconClsByType(item.messageType)"
+            />
+            <span class="notifications__item__type">
+              {{ getTypeLocaleString(item.messageType) }}
+            </span>
             <span class="notifications__item__date">
               {{ $moment(item.startDate).format('DD.MM.YYYY') }}
             </span>
@@ -61,7 +67,7 @@
             v-html="item.messageBody"
           />
           <button
-            v-show="/*isOverflowed*/ false"
+            v-show="item.isOverflowed"
             class="notifications__item__btn-overflow"
           >
             Полностью...
@@ -105,11 +111,45 @@ export default {
     }
   },
 
+  computed: {
+    unreadMessagesCount () {
+      return this.messages.filter(m => m['recipients.acceptDate'] === null).length
+    }
+  },
+
   created () {
+    this.addNotificationListeners()
     this.getMessages()
   },
 
   methods: {
+    checkOverflowed () {
+      if (this.$refs.message === undefined) return
+      for (const message of this.$refs.message) {
+        if (message.offsetHeight > 120) {
+          const ID = +message.getAttribute('data-id')
+          const index = this.messages.findIndex(m => m.ID === ID)
+          if (index !== -1) {
+            this.$set(this.messages[index], 'isOverflowed', true)
+          }
+        }
+      }
+    },
+
+    getTypeLocaleString (type) {
+      const capitalizeStr = type.charAt(0).toUpperCase() + type.slice(1)
+      return this.$ut('msgType' + capitalizeStr)
+    },
+
+    getIconClsByType (type) {
+      return {
+        information: 'el-icon-info',
+        warning: 'el-icon-warning',
+        system: 'el-icon-error',
+        user: 'el-icon-message'
+      }[type]
+    },
+
     add () {
       this.isVisible = false
       $App.doCommand({
@@ -132,8 +172,24 @@ export default {
         .Repository('ubs_message')
         .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate')
         .where('recipients.acceptDate', 'isNull')
+        .orderByDesc('startDate')
         .select()
       this.messages.push(...messages)
+    },
+
+    addNotificationListeners () {
+      $App.on({
+        'portal:notify:newMess': (message) => {
+          this.messages.push(message)
+          this.$message('New message')
+        },
+        'portal:notify:markRead': (ID, acceptDate) => {
+          const index = this.messages.findIndex(m => m.ID === ID)
+          if (index !== -1) {
+            this.messages[index]['recipients.acceptDate'] = acceptDate
+          }
+        }
+      })
     }
   }
 }
@@ -186,7 +242,7 @@ export default {
   border-top: 1px solid rgba(var(--info), 0.15);
 }
 
-/* item */
+/* notifications item */
 .notifications__item{
   padding: 10px;
   padding-left: 20px;
@@ -263,8 +319,16 @@ export default {
 
 .notifications__item__icon{
   font-size: 16px;
-  color: rgb(var(--danger));
+  color: rgb(var(--info));
   margin-left: 10px;
+}
+
+.notifications__item__icon.el-icon-error{
+  color: rgb(var(--danger));
+}
+
+.notifications__item__icon.el-icon-warning{
+  color: rgb(var(--warning));
 }
 
 .notifications__item__type{
