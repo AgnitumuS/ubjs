@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'UbFormRow',
+  name: 'UFormRow',
   props: {
     label: String,
     required: Boolean
@@ -30,8 +30,8 @@ export default {
 
 .ub-form-row__label{
   color: rgb(var(--info));
-  width: 110px;
-  min-width: 110px;
+  width: 120px;
+  min-width: 120px;
   padding-right: 8px;
   padding-top: 7px;
 }

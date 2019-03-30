@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - UbContext -> UContextMenu
  - UbCodeMirror -> UCodeMirror
  - UbInput -> UInput
+ - All Vue components now will be inited in `packages/adminui-vue/ub-components.js`
 
 ### Added
  - `throttle-debounce` miro package added. Also it is exported by adminui-vue as throttleDebounce 
+ - added `UFormRow` component. When you need to add label in right side of form item
+ - added `UErrorWrap` component. Wrap any element and show error from prop under element 
   
 ## [1.3.3]
 ### Changed

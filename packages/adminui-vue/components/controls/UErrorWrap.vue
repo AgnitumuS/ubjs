@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'UbErrorWrap',
+  name: 'UErrorWrap',
   props: {
     error: [String, Boolean]
   }

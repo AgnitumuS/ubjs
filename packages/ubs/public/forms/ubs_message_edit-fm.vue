@@ -8,23 +8,23 @@
   >
     <div class="ub-notification__add__container">
       <div class="ub-notification__add__message">
-        <ub-form-row
+        <u-form-row
           required
           :label="$ut('messageType')"
         >
-          <ub-error-wrap :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))">
+          <u-error-wrap :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))">
             <ub-select-enum
               v-model="messageType"
               :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
               @select="$v.messageType.$touch()"
             />
-          </ub-error-wrap>
-        </ub-form-row>
-        <ub-form-row
+          </u-error-wrap>
+        </u-form-row>
+        <u-form-row
           required
           label="message"
         >
-          <ub-error-wrap :error="$v.messageBody.$error && $ut('isRequiredFieldFmt', $ut('message'))">
+          <u-error-wrap :error="$v.messageBody.$error && $ut('isRequiredFieldFmt', $ut('message'))">
             <el-input
               v-model="messageBody"
               type="textarea"
@@ -32,9 +32,9 @@
               resize="none"
               @change="$v.messageBody.$touch()"
             />
-          </ub-error-wrap>
-        </ub-form-row>
-        <ub-form-row :label="$ut('byDateRange')">
+          </u-error-wrap>
+        </u-form-row>
+        <u-form-row :label="$ut('byDateRange')">
           <el-date-picker
             v-model="dateRange"
             type="datetimerange"
@@ -45,10 +45,10 @@
             :picker-options="pickerOptions"
             :clearable="false"
           />
-        </ub-form-row>
+        </u-form-row>
       </div>
       <div class="ub-notification__add__users">
-        <ub-form-row :label="$ut('addByRole')">
+        <u-form-row :label="$ut('addByRole')">
           <div class="ub-notification__users__add-row">
             <ub-select-entity
               v-model="roleModel"
@@ -58,8 +58,8 @@
               {{ $ut('actionAdd') }}
             </el-button>
           </div>
-        </ub-form-row>
-        <ub-form-row :label="$ut('addUser')">
+        </u-form-row>
+        <u-form-row :label="$ut('addUser')">
           <div class="ub-notification__users__add-row">
             <ub-select-entity
               v-model="userModel"
@@ -69,7 +69,7 @@
               {{ $ut('actionAdd') }}
             </el-button>
           </div>
-        </ub-form-row>
+        </u-form-row>
 
         <div class="ub-notification__users-list__title">
           {{ $ut('selectedUsers') }}:
