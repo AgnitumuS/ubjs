@@ -78,6 +78,10 @@ module.exports.mount = ({ messageIdOnOpen }) => {
 
 module.exports.default = {
   props: {
+    /**
+     * ID of message which open on init
+     * @type {Number}
+     */
     messageIdOnOpen: Number
   },
 
@@ -85,7 +89,13 @@ module.exports.default = {
     return {
       visible: false,
       messages: [],
-      activeID: null
+      activeID: null,
+      ICON_TYPES: {
+        information: 'el-icon-info',
+        warning: 'el-icon-warning',
+        system: 'el-icon-error',
+        user: 'el-icon-message'
+      }
     }
   },
 
@@ -138,12 +148,7 @@ module.exports.default = {
     },
 
     getIconClsByType (type) {
-      return {
-        information: 'el-icon-info',
-        warning: 'el-icon-warning',
-        system: 'el-icon-error',
-        user: 'el-icon-message'
-      }[type]
+      return this.ICON_TYPES[type]
     },
 
     async getMessages () {

@@ -132,6 +132,10 @@ module.exports.default = {
       selectedUsers: [],
       messageBody: '',
       visible: false,
+      /**
+       * by default from now to next year
+       * @type {Array}
+       */
       dateRange: [new Date(), new Date(new Date().getFullYear() + 1, 0)],
       ID: null,
       mi_modifyDate: null,

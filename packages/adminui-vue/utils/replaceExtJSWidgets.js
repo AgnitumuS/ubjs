@@ -98,6 +98,10 @@ function replaceExtJSMessageBarDialog () {
   /* Global UBS */
   UBS.MessageBar.override({
     async doOnMessageRetrieved (messages) {
+      /**
+       *  show all messages type except information
+       *  mark as read after user accepts dialog
+       */
       for (const mess of messages) {
         if (mess.messageType !== 'information') {
           const confirm = await $App.dialogInfo(mess.messageBody, getTypeLocaleString(mess.messageType))
