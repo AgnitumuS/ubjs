@@ -131,7 +131,6 @@ function replaceExtJSMessageBarDialog () {
 module.exports = {
   replaceExtJSDialogs,
   replaceExtJSNavbar,
-  replaceAutoForms
-  replaceExtJSNavbar,
+  replaceAutoForms,
   replaceExtJSMessageBarDialog
 }
