@@ -10,7 +10,7 @@
       :instance-id="instanceID"
       :save="save"
       :current-tab-id="currentTabId"
-      :external-data="externalData"
+      :parent-context="parentContext"
       @data-loaded="assignInstanceData"
     >
       <el-form
@@ -42,19 +42,19 @@
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Enum'"
             v-model="value[fieldName]"
             :e-group="entitySchema.attributes[fieldName].enumGroup"
-            :disabled="externalData.hasOwnProperty(fieldName)"
+            :disabled="parentContext.hasOwnProperty(fieldName)"
           />
           <ub-select-entity
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Entity'"
             v-model="value[fieldName]"
             :entity-name="entitySchema.attributes[fieldName].associatedEntity"
-            :disabled="externalData.hasOwnProperty(fieldName)"
+            :disabled="parentContext.hasOwnProperty(fieldName)"
           />
           <ub-select-many
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Many'"
             v-model="value[fieldName]"
             :entity-name="entitySchema.attributes[fieldName].associatedEntity"
-            :disabled="externalData.hasOwnProperty(fieldName)"
+            :disabled="parentContext.hasOwnProperty(fieldName)"
           />
           <el-input
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Text'"
@@ -67,7 +67,7 @@
             v-model="value[fieldName]"
             :entity-name="entitySchema.name"
             :attribute-name="fieldName"
-            :disabled="externalData.hasOwnProperty(fieldName)"
+            :disabled="parentContext.hasOwnProperty(fieldName)"
           />
           <ub-upload-document
             v-else-if="entitySchema.attributes[fieldName].dataType === 'Document'"
@@ -84,7 +84,7 @@
             :entity-name="entitySchema.name"
             :attribute-name="fieldName"
             :object-value="value"
-            :disabled="externalData.hasOwnProperty(fieldName)"
+            :disabled="parentContext.hasOwnProperty(fieldName)"
           />
         </el-form-item>
       </el-form>
@@ -108,8 +108,11 @@ module.exports = {
       type: String,
       required: true
     },
-    /* externalData - parameters from parent context. When we create related object - disable related fields and fill with parent data */
-    externalData: {
+    /**
+     * Parameters from parent context.
+     * When we create related object - disable related fields and fill with parent data
+     */
+    parentContext: {
       type: Object,
       default () {
         return {}

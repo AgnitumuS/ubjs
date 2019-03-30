@@ -555,7 +555,7 @@ Ext.define('UB.core.UBCommand', {
 
     // form code can be function - in this case execute it. {cmdType: "showForm", formCode: function(){...}
     me.formCode = me.formCode || (me.formParam ? me.formParam.formCode : undefined)
-    if (_.isFunction(me.formCode)) {
+    if (typeof me.formCode === 'function') {
       me.windowCommandCode = UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), me.formCode.toString())
       me.formCode(me.entity, me.instanceID, me.onFormCodeRun, me)
     } else {
@@ -568,11 +568,16 @@ Ext.define('UB.core.UBCommand', {
         me.windowCommandCode = me.formCode
 
         UB.core.UBFormLoader.getFormViewAndController({ formCode: me.formCode }).then(function (formDefinition) {
-          if ((formDefinition.formType === 'vue') || (formDefinition.formType === 'module')) {
+          if (formDefinition.formType === 'vue') {
+            if (!$App.connection.domain.models['adminui-vue']) {
+              Error('To show a Vue forms @unitybase/adminui-vue model should be in application domain')
+            }
             formDefinition.formController.mount({
               ...me.commandConfig,
               title: me.formParam.caption
             })
+          } else if (formDefinition.formType === 'module') {
+            formDefinition.formController.mount(me.commandConfig)
           } else {
             me.onShowFormRun(formDefinition.formView, formDefinition.formController)
           }

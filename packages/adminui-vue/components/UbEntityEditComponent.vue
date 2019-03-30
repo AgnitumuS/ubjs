@@ -11,7 +11,7 @@
       :instance-id="instance.ID"
       :entity-name="entityName"
       :is-new="isNew"
-      :is-changed="isChanged"
+      :is-dirty="isDirty"
       :simple-audit="{mi_createDate: instance.mi_createDate, mi_modifyDate: instance.mi_modifyDate}"
       :use-only-own-actions="useOnlyOwnActions"
       :input-actions="inputActions"
@@ -42,7 +42,7 @@ module.exports = {
       type: String,
       required: true
     },
-    externalData: Object,
+    parentContext: Object,
     instanceId: Number,
     useOnlyOwnActions: Boolean,
     inputActions: Array,
@@ -80,67 +80,73 @@ module.exports = {
       })
       return result
     },
-    isChanged () {
+    isDirty () {
       return Object.keys(this.changedColumns).length > 0
     }
   },
   methods: {
     saveAndReload () {
-      this.saveEntity(data => {
-        let object = {}
-        data.resultData.data[0].forEach((item, index) => {
-          object[data.resultData.fields[index]] = item
-        })
-        this.$emit('data-loaded', object)
-        this.originalData = Object.assign({}, object)
+      this.loading = true
+      this.saveChanges().then(newData => {
+        this.$emit('data-loaded', newData)
+        this.originalData = Object.assign({}, newData)
+      }).finally(() => {
+        this.loading = false
       })
     },
     saveAndClose () {
-      this.saveEntity(() => {
-        this.currentTab.forceClose = true
-        this.currentTab.close()
+      this.loading = true
+      this.saveChanges().then(() => {
+        let tab = this.currentTab
+        if (tab) {
+          tab.forceClose = true
+          tab.close()
+        } else {
+          // we are inside dialog - search for it
+          let d = this.$parent
+          while (typeof d !== 'undefined' && typeof d.dialogVisible === 'undefined') d = d.$parent
+          if (d) d.dialogVisible = false
+        }
+      }).finally(() => {
+        this.loading = false
       })
     },
-    saveEntity (callback) {
+    /** Save changes to server
+     * @return {Promise<Boolean|Object>} False in case data is not modified, otherwise - new data
+     */
+    saveChanges () {
       let changedColumns = Object.assign({}, this.changedColumns)
-      if (Object.keys(changedColumns).length) {
-        let saveFn = () => {
-          Object.keys(changedColumns).forEach(col => {
-            if (this.entitySchema.attributes[col] && this.entitySchema.attributes[col].isMultiLang && Object.keys(changedColumns).some(key => key.indexOf(`${col}_`) !== -1)) {
-              changedColumns[`${col}_${this.$UB.connection.userLang()}^`] = changedColumns[col]
-              delete changedColumns[col]
-            }
-          })
-          changedColumns.ID = this.instance.ID
-          if (this.instance.mi_modifyDate) {
-            changedColumns.mi_modifyDate = this.instance.mi_modifyDate
-          }
-          let params = {
-            fieldList: this.entityFields,
-            entity: this.entitySchema.name,
-            method: this.isNew ? 'insert' : 'update',
-            execParams: changedColumns
-          }
-          this.loading = true
-          this.$UB.connection.update(params)
-            .finally(() => {
-              this.loading = false
-            })
-            .then((result) => {
-              callback.call(this, result)
-              return result
-            })
-            .then((result) => {
-              this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
-              this.$UB.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
-            })
+      if (!this.isDirty) return Promise.resolve(false) // no changes
+
+      Object.keys(changedColumns).forEach(col => {
+        if (this.entitySchema.attributes[col] && this.entitySchema.attributes[col].isMultiLang && Object.keys(changedColumns).some(key => key.indexOf(`${col}_`) !== -1)) {
+          changedColumns[`${col}_${this.$UB.connection.userLang()}^`] = changedColumns[col]
+          delete changedColumns[col]
         }
-        if (this.save) {
-          this.save(saveFn)
-        } else {
-          saveFn()
-        }
+      })
+      changedColumns.ID = this.instance.ID
+      if (this.instance.mi_modifyDate) {
+        changedColumns.mi_modifyDate = this.instance.mi_modifyDate
       }
+      let params = {
+        fieldList: this.entityFields,
+        entity: this.entitySchema.name,
+        method: this.isNew ? 'insert' : 'update',
+        execParams: changedColumns
+      }
+      return this.$UB.connection.update(params)
+        .then((result) => {
+          this.$UB.connection.emit(`${this.entitySchema.name}:changed`, result.execParams.ID)
+          this.$UB.connection.emit(`${this.entitySchema.name}:${this.isNew ? 'insert' : 'update'}`, result.execParams.ID)
+          let newData = {}
+          let resultData = result.resultData
+          resultData.data[0].forEach((item, index) => {
+            newData[resultData.fields[index]] = item
+          })
+          return newData
+        }).finally(() => {
+          this.loading = false
+        })
     },
     remove () {
       this.loading = true
@@ -180,8 +186,8 @@ module.exports = {
         entity: this.entityName,
         fieldList: this.entityFields
       }
-      if (this.externalData) {
-        parameters.execParams = this.externalData
+      if (this.parentContext) {
+        parameters.execParams = this.parentContext
       }
       dataP = this.$UB.connection.addNew(parameters).then(result => {
         let data = {}
@@ -193,41 +199,15 @@ module.exports = {
       this.isNew = true
     }
     dataP.then(resp => {
-      this.originalData = Object.assign({}, resp)
+      if (!this.isNew) {
+        this.originalData = Object.assign({}, resp)
+      }
       // this.instance = resp
       // this.$emit('input', resp)
       this.$emit('data-loaded', resp)
     }).finally(() => {
       this.loading = false
     })
-  },
-
-  mounted () {
-    this.currentTab.on('beforeClose', function () {
-      if (!this.currentTab.forceClose && Object.keys(this.changedColumns).length > 0) {
-        $App.viewport.centralPanel.setActiveTab(this.currentTab)
-        this.$dialog({
-          title: this.$ut('unsavedData'),
-          msg: this.$ut('confirmSave'),
-          type: 'warning',
-          buttons: {
-            yes: this.$ut('save'),
-            no: this.$ut('doNotSave'),
-            cancel: this.$ut('cancel')
-          }
-        }).then(btn => {
-          if (btn === 'yes') {
-            this.currentTab.forceClose = true
-            this.saveAndClose()
-          } else if (btn === 'no') {
-            this.currentTab.forceClose = true
-            this.currentTab.close()
-          }
-        })
-        return false
-      }
-      return true
-    }, this)
   },
   components: {
     toolbar

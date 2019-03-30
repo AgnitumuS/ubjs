@@ -4,7 +4,9 @@ const Vue = require('vue')
 const { Notification } = require('element-ui')
 const dialogs = require('../components/dialog/UDialog')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
+const autoFormComponent = require('../components/AutoFormComponent.vue').default
 const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
+const mountHelpers = require('./mountHelpers')
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
@@ -75,6 +77,18 @@ function replaceExtJSNavbar () {
   }).$mount(`#${id}`)
 }
 
+function replaceAutoForms () {
+  let params = this
+
+  if (mountHelpers.activateIfMounted(params)) return
+
+  let mountParams = {
+    FormComponent: autoFormComponent,
+    showFormParams: params
+  }
+  mountHelpers.mount(mountParams)
+}
+
 function getTypeLocaleString (type) {
   const capitalizeStr = type.charAt(0).toUpperCase() + type.slice(1)
   return 'msgType' + capitalizeStr
@@ -116,6 +130,8 @@ function replaceExtJSMessageBarDialog () {
 
 module.exports = {
   replaceExtJSDialogs,
+  replaceExtJSNavbar,
+  replaceAutoForms
   replaceExtJSNavbar,
   replaceExtJSMessageBarDialog
 }

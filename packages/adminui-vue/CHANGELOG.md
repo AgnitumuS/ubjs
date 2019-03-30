@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
+## [1.4.1]
+### Added
+ - `Vuex` now imported inside `@unitybase/adminui-vue`. In other models:
+   - for **dev** mode can be required directly ``` Vuex = require('vuex') ```
+   - in case model is boundled by webpack `Vuex` should be in `externals` section of webpack config
+   ```json
+   externals: {
+       lodash: '_',
+       '@unitybase/ub-pub': 'UB',
+       '@unitybase/adminui-pub': '$App',
+       'vuex': {
+         commonjs: 'vuex',
+         commonjs2: 'vuex',
+         amd: 'vuex',
+         root: 'Vuex'
+       }
+     }
+   ```  
+ - new `mountHelpers` module - to be used inside form's `mount` function:
+  ```javascript
+    const AdminUiVue = require('@unitybase/adminui-vue')
+    module.exports.mount = function (params) {
+      if (AdminUiVue.mountHelpers.activateIfMounted(params)) return
+      let mountParams = {
+        FormComponent: TstDictionaryFt,
+        showFormParams: params
+      }
+      AdminUiVue.mountHelpers.mount(mountParams)
+    }
+  ```     
 ## [1.4.0]
 ### Changed
  - UbContext -> UContextMenu
@@ -12,7 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - All Vue components now will be inited in `packages/adminui-vue/ub-components.js`
 
 ### Added
- - `throttle-debounce` miro package added. Also it is exported by adminui-vue as throttleDebounce 
+ - `throttle-debounce` micro package added. Exported by adminui-vue as throttleDebounce  
  - added `UFormRow` component. When you need to add label in right side of form item
  - added `UErrorWrap` component. Wrap any element and show error from prop under element 
   
