@@ -95,6 +95,7 @@ function replaceExtJSMessageBarDialog () {
     }
   })
 
+  /* Global UBS */
   UBS.MessageBar.override({
     async doOnMessageRetrieved (messages) {
       for (const mess of messages) {

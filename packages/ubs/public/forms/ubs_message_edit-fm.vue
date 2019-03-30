@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="visible"
-    :title="title"
+    :title="$ut('messageSendTitle')"
     width="70%"
     :before-close="beforeClose"
     @closed="$destroy()"
@@ -10,9 +10,9 @@
       <div class="ub-notification__add__message">
         <ub-form-row
           required
-          label="Type"
+          :label="$ut('messageType')"
         >
-          <ub-error-wrap :error="$v.messageType.$error && 'please fill this field'">
+          <ub-error-wrap :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))">
             <ub-select-enum
               v-model="messageType"
               :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
@@ -22,9 +22,9 @@
         </ub-form-row>
         <ub-form-row
           required
-          label="Message"
+          label="message"
         >
-          <ub-error-wrap :error="$v.messageBody.$error && 'please fill this field'">
+          <ub-error-wrap :error="$v.messageBody.$error && $ut('isRequiredFieldFmt', $ut('message'))">
             <el-input
               v-model="messageBody"
               type="textarea"
@@ -34,41 +34,45 @@
             />
           </ub-error-wrap>
         </ub-form-row>
-        <ub-form-row label="By date range">
+        <ub-form-row :label="$ut('byDateRange')">
           <el-date-picker
             v-model="dateRange"
             type="datetimerange"
             unlink-panels
             range-separator="-"
-            start-placeholder="Start date"
-            end-placeholder="End date"
+            :start-placeholder="$ut('startDate')"
+            :end-placeholder="$ut('endDate')"
             :picker-options="pickerOptions"
             :clearable="false"
           />
         </ub-form-row>
       </div>
       <div class="ub-notification__add__users">
-        <ub-form-row label="Add by role">
+        <ub-form-row :label="$ut('addByRole')">
           <div class="ub-notification__users__add-row">
             <ub-select-entity
               v-model="roleModel"
               entity-name="uba_role"
             />
-            <el-button @click="addByRole">Add</el-button>
+            <el-button @click="addByRole">
+              {{ $ut('actionAdd') }}
+            </el-button>
           </div>
         </ub-form-row>
-        <ub-form-row label="Add user">
+        <ub-form-row :label="$ut('addUser')">
           <div class="ub-notification__users__add-row">
             <ub-select-entity
               v-model="userModel"
               entity-name="uba_user"
             />
-            <el-button @click="addUser">Add</el-button>
+            <el-button @click="addUser">
+              {{ $ut('actionAdd') }}
+            </el-button>
           </div>
         </ub-form-row>
 
         <div class="ub-notification__users-list__title">
-          Selected users:
+          {{ $ut('selectedUsers') }}:
         </div>
         <div class="ub-notification__add__users-list">
           <template v-if="selectedUsers.length">
@@ -91,7 +95,7 @@
             v-else
             class="ub-notification__users-list__empty"
           >
-            All users
+            {{ $ut('allUsers') }}
           </div>
         </div>
       </div>
@@ -102,7 +106,7 @@
         size="big"
         @click="save"
       >
-        Send
+        {{ $ut('send') }}
       </el-button>
     </div>
   </el-dialog>
@@ -112,22 +116,14 @@
 const Vue = require('vue')
 const required = require('vuelidate/lib/validators/required').default
 
-module.exports.mount = ({ title }) => {
+module.exports.mount = () => {
   const instance = new Vue({
-    render: h => h(module.exports.default, {
-      props: {
-        title
-      }
-    })
+    render: h => h(module.exports.default)
   }).$mount()
   document.body.append(instance.$el)
 }
 
 module.exports.default = {
-  props: {
-    title: String
-  },
-
   data () {
     return {
       roleModel: null,
@@ -144,7 +140,7 @@ module.exports.default = {
           return this.$moment().isAfter(time, 'day')
         },
         shortcuts: [{
-          text: 'Next week',
+          text: this.$ut('nextWeek'),
           onClick (picker) {
             const end = new Date()
             const start = new Date()
@@ -152,7 +148,7 @@ module.exports.default = {
             picker.$emit('pick', [start, end])
           }
         }, {
-          text: 'Next month',
+          text: this.$ut('nextMonth'),
           onClick (picker) {
             const end = new Date()
             const start = new Date()
@@ -160,7 +156,7 @@ module.exports.default = {
             picker.$emit('pick', [start, end])
           }
         }, {
-          text: 'Next 3 months',
+          text: this.$ut('next3Months'),
           onClick (picker) {
             const end = new Date()
             const start = new Date()
@@ -227,7 +223,7 @@ module.exports.default = {
     },
 
     async beforeClose (done) {
-      const confirm = await $App.dialogYesNo('Close modal', 'Are you sure?')
+      const confirm = await $App.dialogYesNo('close', 'vyUvereny')
       if (confirm) done()
     },
 

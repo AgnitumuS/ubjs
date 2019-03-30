@@ -1,5 +1,6 @@
 const Vue = require('vue')
 const { Dialog } = require('element-ui')
+const UB = require('@unitybase/up-pub')
 
 function mountModal (Form, title) {
   const instance = new Vue({
@@ -13,7 +14,7 @@ function mountModal (Form, title) {
       return h(Dialog, {
         ref: 'dialog',
         props: {
-          title,
+          title: UB.i18n(title),
           visible: this.dialogVisible,
           width: '80%'
         },
@@ -34,7 +35,7 @@ function mountModal (Form, title) {
 
 function mountTab (Form, title) {
   const tab = $App.viewport.centralPanel.add({
-    title,
+    title: UB.i18n(title),
     style: {
       padding: '1em' // we replace panel inner content below so set paddings here
     },

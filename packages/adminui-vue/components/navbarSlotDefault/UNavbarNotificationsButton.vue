@@ -20,7 +20,9 @@
       </el-badge>
 
       <div class="notifications__add-btn-wrap">
-        <span class="notifications__title-list-count">{{ unreadMessagesCount }} new messages</span>
+        <span class="notifications__title-list-count">
+          {{ $ut('newMessages', unreadMessagesCount) }}
+        </span>
 
         <el-button
           v-if="$UB.connection.domain.isEntityMethodsAccessible('ubs_message_edit', ['insert', 'update'])"
@@ -70,7 +72,7 @@
             v-show="item.isOverflowed"
             class="notifications__item__btn-overflow"
           >
-            Полностью...
+            {{ $ut('showFull') }}
           </button>
         </div>
       </div>
@@ -79,7 +81,7 @@
         v-else
         class="notifications__list__empty"
       >
-        You have no new messages
+        {{ $ut('youHaveNoNewMessages') }}
       </div>
 
       <el-button
@@ -94,13 +96,6 @@
 </template>
 
 <script>
-/*
-get overflowed
-if (this.$refs.el.offsetHeight > 120) {
-  this.isOverflowed = true
-}
-*/
-
 export default {
   name: 'UNavbarNotificationsButton',
 

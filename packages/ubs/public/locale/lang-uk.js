@@ -30,5 +30,24 @@ UB.i18nExtend({
   actionAdd: 'Додати',
   actionDelete: 'Видалити',
   reportParametersHeader: 'Параметри звіту',
-  reportParamsRequired: 'Спочатку заповніть обов\'язкові параметри'
+  reportParamsRequired: 'Спочатку заповніть обов\'язкові параметри',
+
+  newMessages: '{0} нових повідомлень',
+  youHaveNoNewMessages: 'У вас нема нових повідомлень',
+  showFull: 'Показати повністю',
+  messageHistoryIsEmpty: 'Історія повідомлень пуста',
+  byDateRange: 'По періоду',
+  startDate: 'Дата початку',
+  endDate: 'Дата кінця',
+  addByRole: 'Додати по ролі',
+  addUser: 'Додати користувача',
+  selectedUsers: 'Вибрані користувачі',
+  allUsers: 'Всі користувачі',
+  send: 'Надіслати',
+  nextWeek: 'Наступний тиждень',
+  nextMonth: 'Наступний мiсяць',
+  next3Months: 'Наступні 3 місяці',
+  messageType: 'Тип',
+  messageHistoryTitle: 'Історія',
+  messageSendTitle: 'Відправка повідомлення'
 })

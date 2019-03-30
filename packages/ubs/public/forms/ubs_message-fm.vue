@@ -2,7 +2,7 @@
   <el-dialog
     :visible.sync="visible"
     custom-class="notifications-history__popup"
-    :title="title"
+    :title="$ut('messageHistoryTitle')"
     @open="checkOverflowed"
   >
     <div class="notifications-history">
@@ -43,7 +43,7 @@
               v-show="item.isOverflowed"
               class="notifications__item__btn-overflow"
             >
-              Полностью...
+              {{ $ut('showFull') }}
             </button>
           </div>
         </div>
@@ -56,7 +56,7 @@
         v-else
         class="notifications-history__empty"
       >
-        Message history is empty
+        {{ $ut('messageHistoryIsEmpty') }}
       </div>
     </div>
   </el-dialog>
@@ -65,11 +65,10 @@
 <script>
 const Vue = require('vue')
 
-module.exports.mount = ({ title, messageIdOnOpen }) => {
+module.exports.mount = ({ messageIdOnOpen }) => {
   const instance = new Vue({
     render: h => h(module.exports.default, {
       props: {
-        title,
         messageIdOnOpen
       }
     })
@@ -79,8 +78,7 @@ module.exports.mount = ({ title, messageIdOnOpen }) => {
 
 module.exports.default = {
   props: {
-    messageIdOnOpen: Number,
-    title: String
+    messageIdOnOpen: Number
   },
 
   data () {
