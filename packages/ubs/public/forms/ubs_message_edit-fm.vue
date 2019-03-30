@@ -6,8 +6,8 @@
     :before-close="beforeClose"
     @closed="$destroy()"
   >
-    <div class="ub-notification__add__container">
-      <div class="ub-notification__add__message">
+    <el-row :gutter="20">
+      <el-col :span="16">
         <u-form-row
           required
           :label="$ut('messageType')"
@@ -46,34 +46,40 @@
             :clearable="false"
           />
         </u-form-row>
-      </div>
-      <div class="ub-notification__add__users">
+      </el-col>
+      <el-col :span="8">
         <u-form-row :label="$ut('addByRole')">
-          <div class="ub-notification__users__add-row">
-            <ub-select-entity
-              v-model="roleModel"
-              entity-name="uba_role"
-            />
-            <el-button @click="addByRole">
-              {{ $ut('actionAdd') }}
-            </el-button>
-          </div>
+          <el-row :gutter="10">
+            <el-col :span="16">
+              <ub-select-entity
+                v-model="roleModel"
+                entity-name="uba_role"
+              />
+            </el-col>
+            <el-col :span="8">
+              <el-button @click="addByRole" style="width: 100%">
+                {{ $ut('actionAdd') }}
+              </el-button>
+            </el-col>
+          </el-row>
         </u-form-row>
         <u-form-row :label="$ut('addUser')">
-          <div class="ub-notification__users__add-row">
-            <ub-select-entity
-              v-model="userModel"
-              entity-name="uba_user"
-            />
-            <el-button @click="addUser">
-              {{ $ut('actionAdd') }}
-            </el-button>
-          </div>
+          <el-row :gutter="10">
+            <el-col :span="16">
+              <ub-select-entity
+                v-model="userModel"
+                entity-name="uba_user"
+              />
+            </el-col>
+            <el-col :span="8">
+              <el-button @click="addUser" style="width: 100%">
+                {{ $ut('actionAdd') }}
+              </el-button>
+            </el-col>
+          </el-row>
         </u-form-row>
 
-        <div class="ub-notification__users-list__title">
-          {{ $ut('selectedUsers') }}:
-        </div>
+        <u-form-row :label="$ut('selectedUsers')" />
         <div class="ub-notification__add__users-list">
           <template v-if="selectedUsers.length">
             <div
@@ -87,20 +93,21 @@
                 plain
                 icon="el-icon-delete"
                 size="mini"
+                style="margin-left: auto"
                 @click="removeUser(user.ID)"
               />
             </div>
           </template>
           <div
             v-else
-            class="ub-notification__users-list__empty"
+            class="ub-empty-text"
           >
             {{ $ut('allUsers') }}
           </div>
         </div>
-      </div>
-    </div>
-    <div class="ub-notification__add__footer">
+      </el-col>
+    </el-row>
+    <div slot="footer">
       <el-button
         type="primary"
         size="big"
@@ -207,7 +214,7 @@ module.exports.default = {
         .select()
 
       for (const user of users) {
-        const notExist = this.selectedUsers.findIndex(u => u.ID === user.ID) === -1
+        const notExist = this.selectedUsers.findIndex(u => u.ID === user.userID) === -1
         if (notExist) {
           this.selectedUsers.push({
             ID: user.userID,
@@ -299,54 +306,12 @@ module.exports.default = {
 </script>
 
 <style>
-.ub-notification__add__container{
-  display: flex;
-  height: 50vh;
-  padding-bottom: 20px;
-}
-
-.ub-notification__add__footer{
-  text-align: right;
-}
-
 .ub-notification__add__users-list{
   border-top: 1px solid rgba(var(--info), 0.3);
   margin-top: 10px;
   flex-grow: 1;
   overflow-y: auto;
-}
-
-.ub-notification__add__message{
-  flex-grow: 1;
-  padding-right: 20px
-}
-
-.ub-notification__add__users{
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  padding-left: 20px;
-  border-left: 1px solid rgba(var(--info), 0.3);
-}
-
-.ub-notification__users__add-row{
-  display: flex;
-}
-
-.ub-notification__users__add-row .el-button{
-  margin-left: 8px;
-}
-
-.ub-notification__users-list__title{
-  color: rgb(var(--info));
-  padding-top: 20px;
-}
-
-.ub-notification__users-list__empty{
-  text-align: center;
-  color: rgb(var(--info));
-  padding: 20px;
-  font-size: 17px;
+  max-height: 170px;
 }
 
 .ub-notification__users-list__item{
@@ -354,9 +319,5 @@ module.exports.default = {
   padding: 5px;
   display: flex;
   align-items: center;
-}
-
-.ub-notification__users-list__item .el-button{
-  margin-left: auto;
 }
 </style>

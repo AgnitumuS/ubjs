@@ -145,3 +145,10 @@ html, body {
   justify-content: center;
   align-items: center;
 }
+
+.ub-empty-text{
+  text-align: center;
+  color: rgb(var(--info));
+  padding: 20px;
+  font-size: 17px;
+}

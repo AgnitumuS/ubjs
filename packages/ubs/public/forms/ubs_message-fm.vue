@@ -54,7 +54,7 @@
       </template>
       <div
         v-else
-        class="notifications-history__empty"
+        class="ub-empty-text"
       >
         {{ $ut('messageHistoryIsEmpty') }}
       </div>
@@ -221,23 +221,6 @@ module.exports.default = {
   font-size: 15px;
   padding: 20px;
   line-height: 1.4;
-}
-
-.notifications-history__detail__date{
-  font-size: 13px;
-  color: rgb(var(--info));
-  text-align: right;
-  padding: 20px;
-}
-
-.notifications-history__empty{
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  color: rgb(var(--info));
 }
 /* styles for notifications item placed in \adminui-vue\components\navbarSlotDefault\UNavbarNotificationsButton.vue */
 </style>
