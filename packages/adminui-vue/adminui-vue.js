@@ -23,12 +23,21 @@ if (IS_SYSTEM_JS && !SystemJS.has('throttle-debounce')) SystemJS.set('throttle-d
  */
 module.exports.throttleDebounce = throttleDebounce
 
+module.exports.mountHelpers = require('./utils/mountHelpers')
+
 const Vue = require('vue')
 window.Vue = Vue
 // next 2 lines for modules what use ES6 import `import Vue from 'vue' (not recommended for use)
 Vue.__useDefault = Vue
 Vue.default = Vue
 if (IS_SYSTEM_JS && !SystemJS.has('vue')) SystemJS.set('vue', SystemJS.newModule(Vue))
+
+const Vuex = require('vuex')
+window.Vuex = Vuex
+// next 2 lines for modules what use ES6 import `import Vuex from 'vuex' (not recommended for use)
+Vuex.__useDefault = Vuex
+Vuex.default = Vuex
+if (IS_SYSTEM_JS && !SystemJS.has('vuex')) SystemJS.set('vuex', SystemJS.newModule(Vuex))
 
 const ElementUI = require('element-ui') // adminui-pub maps element-ui -> element-ui/lib/index.js for SystemJS
 window.ElementUI = ElementUI
@@ -136,46 +145,7 @@ if (window.$App) {
 const entityEditor = require('./components/UbEntityEditComponent.vue').default
 Vue.component('ub-entity-edit', entityEditor)
 
-if (window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
-  UB.core.UBCommand.showAutoForm = function () {
-    let params = this
-
-    if (!params.tabId) {
-      params.tabId = params.entity
-      params.tabId += params.instanceID ? params.instanceID : 'ext' + Ext.id(null, 'addNew')
-    }
-    let existsTab = Ext.getCmp(params.tabId)
-    if (existsTab) {
-      $App.viewport.centralPanel.setActiveTab(existsTab)
-      return
-    }
-
-    const autoFormComponent = require('./components/AutoFormComponent.vue').default
-    let entitySchema = $App.domainInfo.get(params.entity)
-    let tab = $App.viewport.centralPanel.add({
-      id: params.tabId,
-      title: entitySchema.caption,
-      tooltip: entitySchema.caption,
-      closable: true
-    })
-    let vm = new Vue({
-      components: {
-        'auto-form-component': autoFormComponent
-      },
-      data: function () {
-        return {
-          entityName: params.entity,
-          instanceID: params.instanceID,
-          currentTabId: params.tabId,
-          externalData: params.parentContext
-        }
-      },
-      template: `<auto-form-component :entityName="entityName" :instanceID="instanceID" :currentTabId="currentTabId" :externalData="externalData"></auto-form-component>`
-    })
-    vm.$mount(`#${params.tabId}-outerCt`)
-    tab.on('close', function () {
-      vm.$destroy()
-    })
-    $App.viewport.centralPanel.setActiveTab(tab)
-  }
+if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
+  const replaceAutoForms = require('./utils/replaceExtJSWidgets').replaceAutoForms
+  UB.core.UBCommand.showAutoForm = replaceAutoForms
 }

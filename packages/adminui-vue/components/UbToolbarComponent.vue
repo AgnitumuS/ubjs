@@ -95,7 +95,7 @@ module.exports = {
     },
     simpleAudit: Object,
     isNew: Boolean,
-    isChanged: Boolean,
+    isDirty: Boolean,
     useOnlyOwnActions: Boolean,
     inputActions: {
       type: Array,
@@ -134,7 +134,7 @@ module.exports = {
       return this.entitySchema.haveAccessToAnyMethods(['insert', 'update'])
     },
     saveEnabled () {
-      return this.canSave && this.isChanged
+      return this.canSave && this.isDirty
     },
     canDelete () {
       return this.entitySchema.haveAccessToMethod('delete') && !this.isNew

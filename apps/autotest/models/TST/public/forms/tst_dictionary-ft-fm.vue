@@ -4,6 +4,7 @@ const $App = require('@unitybase/adminui-pub')
 const UInput = require('@unitybase/adminui-vue/components/controls/UInput.vue').default
 const UInputNumber = require('@unitybase/adminui-vue/components/controls/UInputNumber.vue').default
 const UCodeMirror = require('@unitybase/adminui-vue/components/controls/UCodeMirror.vue').default
+const AdminUiVue = require('@unitybase/adminui-vue')
 
 const TstDictionaryFt = module.exports.default = {
   name: 'TstDictionaryFt',
@@ -37,41 +38,13 @@ const TstDictionaryFt = module.exports.default = {
 }
 
 module.exports.mount = function (params) {
-  if (!params.tabId) {
-    params.tabId = params.entity
-    params.tabId += params.instanceID ? params.instanceID : 'ext' + Ext.id(null, 'addNew')
+  debugger
+  if (AdminUiVue.mountHelpers.activateIfMounted(params)) return
+  let mountParams = {
+    FormComponent: TstDictionaryFt,
+    showFormParams: params
   }
-
-  let existsTab = Ext.getCmp(params.tabId)
-  if (existsTab) {
-    $App.viewport.centralPanel.setActiveTab(existsTab)
-    return
-  }
-  let entitySchema = $App.domainInfo.get(params.entity)
-
-  let tab = $App.viewport.centralPanel.add({
-    id: params.tabId,
-    title: entitySchema.caption,
-    tooltip: entitySchema.caption,
-    closable: true
-  })
-  let vm = new Vue({
-    render (h) {
-      return h(TstDictionaryFt, {
-        props: {
-          entityName: params.entity,
-          instanceID: typeof params.instanceID === 'string' ? parseInt(params.instanceID) : params.instanceID,
-          currentTabId: params.tabId,
-          formCode: params.formCode
-        }
-      })
-    }
-  })
-  vm.$mount(`#${params.tabId}-outerCt`)
-  tab.on('close', function () {
-    vm.$destroy()
-  })
-  $App.viewport.centralPanel.setActiveTab(tab)
+  AdminUiVue.mountHelpers.mount(mountParams)
 }
 </script>
 
