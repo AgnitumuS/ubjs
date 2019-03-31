@@ -32,7 +32,7 @@
                 {{ getTypeLocaleString(item.messageType) }}
               </span>
               <span class="notifications__item__date">
-                {{ $moment(item.startDate).format('DD.MM.YYYY') }}
+                {{ $moment(item.startDate).format('L') }}
               </span>
             </div>
             <div
@@ -58,7 +58,6 @@
       >
         {{ $ut('messageHistoryIsEmpty') }}
       </div>
-    </div>
   </el-dialog>
 </template>
 

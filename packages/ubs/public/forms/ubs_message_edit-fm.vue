@@ -122,6 +122,7 @@
 <script>
 const Vue = require('vue')
 const required = require('vuelidate/lib/validators/required').default
+// const { mount } = require('@unitybase/adminui-vue/utils/mountHelpers')
 
 module.exports.mount = () => {
   const instance = new Vue({

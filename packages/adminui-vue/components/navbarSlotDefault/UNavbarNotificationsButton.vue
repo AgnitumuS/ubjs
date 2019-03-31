@@ -19,7 +19,7 @@
         />
       </el-badge>
 
-      <div class="notifications__add-btn-wrap">
+      <div class="notifications__popover__header">
         <span class="notifications__title-list-count">
           {{ $ut('newMessages', unreadMessagesCount) }}
         </span>
@@ -61,7 +61,7 @@
               {{ getTypeLocaleString(item.messageType) }}
             </span>
             <span class="notifications__item__date">
-              {{ $moment(item.startDate).format('DD.MM.YYYY') }}
+              {{ $moment(item.startDate).format('L') }}
             </span>
           </div>
           <div
@@ -79,7 +79,7 @@
 
       <div
         v-else
-        class="notifications__list__empty"
+        class="ub-empty-text"
       >
         {{ $ut('youHaveNoNewMessages') }}
       </div>
@@ -216,11 +216,12 @@ export default {
   transition:background-color .1s;
 }
 
-.notifications__add-btn-wrap{
+.notifications__popover__header{
   display: flex;
   padding: 5px;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid rgba(var(--info), 0.15);
 }
 
 .notifications__btn-show-all{
@@ -231,13 +232,6 @@ export default {
   color: rgba(var(--info), 0.7);
   font-size: 11px;
   padding-left: 10px;
-}
-
-.notifications__list__empty{
-  text-align: center;
-  padding: 20px;
-  color: rgb(var(--info));
-  border-top: 1px solid rgba(var(--info), 0.15);
 }
 
 /* notifications item */
