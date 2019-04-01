@@ -140,7 +140,8 @@ function showFormParamsToComponentProps (showFormParams) {
     currentTabId: showFormParams.tabId,
     formCode: showFormParams.formCode,
     commandConfig: showFormParams.commandConfig,
-    parentContext: showFormParams.parentContext
+    parentContext: showFormParams.parentContext,
+    ...showFormParams.props
   }
 }
 

@@ -158,7 +158,9 @@ export default {
       $App.doCommand({
         cmdType: 'showForm',
         entity: 'ubs_message',
-        messageIdOnOpen: ID
+        props: {
+          messageIdOnOpen: ID
+        }
       })
     },
 
