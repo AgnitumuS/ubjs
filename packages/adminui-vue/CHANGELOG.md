@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     }
   ```
  - added `UForm` component. Wrap for UFormRow which can set label width for child `UFormRow`s
- 
+
 ## [1.4.0]
 ### Changed
  - UbContext -> UContextMenu
