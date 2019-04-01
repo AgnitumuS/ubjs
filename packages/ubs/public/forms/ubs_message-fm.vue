@@ -1,81 +1,74 @@
 <template>
-  <el-dialog
-    :visible.sync="visible"
-    custom-class="notifications-history__popup"
-    :title="$ut('messageHistoryTitle')"
-    @open="checkOverflowed"
-  >
-    <div class="notifications-history">
-      <template v-if="messages.length > 0">
-        <div
-          class="notifications-history__list"
-        >
-          <div
-            v-for="item in messages"
-            :key="item.ID"
-            ref="message"
-            :data-id="item.ID"
-            class="notifications__item"
-            :class="{
-              'unread': item['recipients.acceptDate'] === null,
-              'overflowed': item.isOverflowed,
-              'active': activeID === item.ID
-            }"
-            @click="setActive(item)"
-          >
-            <div class="notifications__item__header">
-              <i
-                class="notifications__item__icon"
-                :class="getIconClsByType(item.messageType)"
-              />
-              <span class="notifications__item__type">
-                {{ getTypeLocaleString(item.messageType) }}
-              </span>
-              <span class="notifications__item__date">
-                {{ $moment(item.startDate).format('L') }}
-              </span>
-            </div>
-            <div
-              class="notifications__item__text"
-              v-html="item.messageBody"
-            />
-            <button
-              v-show="item.isOverflowed"
-              class="notifications__item__btn-overflow"
-            >
-              {{ $ut('showFull') }}
-            </button>
-          </div>
-        </div>
-        <div
-          class="notifications-history__detail"
-          v-html="currentMess.messageBody"
-        />
-      </template>
+  <div class="notifications-history">
+    <template v-if="messages.length > 0">
       <div
-        v-else
-        class="ub-empty-text"
+        class="notifications-history__list"
       >
-        {{ $ut('messageHistoryIsEmpty') }}
+        <div
+          v-for="item in messages"
+          :key="item.ID"
+          ref="message"
+          :data-id="item.ID"
+          class="notifications__item"
+          :class="{
+            'unread': item['recipients.acceptDate'] === null,
+            'overflowed': item.isOverflowed,
+            'active': activeID === item.ID
+          }"
+          @click="setActive(item)"
+        >
+          <div class="notifications__item__header">
+            <i
+              class="notifications__item__icon"
+              :class="getIconClsByType(item.messageType)"
+            />
+            <span class="notifications__item__type">
+              {{ getTypeLocaleString(item.messageType) }}
+            </span>
+            <span class="notifications__item__date">
+              {{ $moment(item.startDate).format('L') }}
+            </span>
+          </div>
+          <div
+            class="notifications__item__text"
+            v-html="item.messageBody"
+          />
+          <button
+            v-show="item.isOverflowed"
+            class="notifications__item__btn-overflow"
+          >
+            {{ $ut('showFull') }}
+          </button>
+        </div>
       </div>
-  </el-dialog>
+      <div
+        class="notifications-history__detail"
+        v-html="currentMess.messageBody"
+      />
+    </template>
+    <div
+      v-else
+      class="ub-empty-text"
+    >
+      {{ $ut('messageHistoryIsEmpty') }}
+    </div>
+  </div>
 </template>
 
 <script>
 const Vue = require('vue')
+const AdminUiVue = require('@unitybase/adminui-vue')
 
-module.exports.mount = ({ messageIdOnOpen }) => {
-  const instance = new Vue({
-    render: h => h(module.exports.default, {
-      props: {
-        messageIdOnOpen
-      }
-    })
-  }).$mount()
-  document.body.append(instance.$el)
+module.exports.mount = function (params) {
+  if (AdminUiVue.mountHelpers.activateIfMounted(params)) return
+  let mountParams = {
+    FormComponent: UbsMessage,
+    showFormParams: params
+  }
+  AdminUiVue.mountHelpers.mount(mountParams)
 }
 
-module.exports.default = {
+const UbsMessage = module.exports.default = {
   props: {
     /**
      * ID of message which open on init
@@ -109,41 +102,28 @@ module.exports.default = {
     }
   },
 
-  async created () {
+  created () {
     this.addNotificationListeners()
-    await this.getMessages()
-    let mess = {}
-    if (this.messages.length) {
-      if (this.messageIdOnOpen) {
-        mess = this.messages.find(m => m.ID === this.messageIdOnOpen)
-      } else {
-        mess = this.messages.find(m => m.ID === this.messages[0].ID)
-      }
-      this.setActive(mess)
-    }
   },
 
-  mounted () {
+  async mounted () {
     this.visible = true
+    await this.getMessages()
+    this.checkOverflowed()
   },
 
   methods: {
     checkOverflowed () {
-      /*
-       * used 'open' and setTimeout, because event 'opened' didn't emitted
-       */
-      setTimeout(() => {
-        if (this.$refs.message === undefined) return
-        for (const message of this.$refs.message) {
-          if (message.offsetHeight > 120) {
-            const ID = +message.getAttribute('data-id')
-            const index = this.messages.findIndex(m => m.ID === ID)
-            if (index !== -1) {
-              this.$set(this.messages[index], 'isOverflowed', true)
-            }
+      if (this.$refs.message === undefined) return
+      for (const message of this.$refs.message) {
+        if (message.offsetHeight > 120) {
+          const ID = +message.getAttribute('data-id')
+          const index = this.messages.findIndex(m => m.ID === ID)
+          if (index !== -1) {
+            this.$set(this.messages[index], 'isOverflowed', true)
           }
         }
-      }, 300)
+      }
     },
 
     getIconClsByType (type) {
@@ -157,6 +137,15 @@ module.exports.default = {
         .orderByDesc('startDate')
         .select()
       this.messages.push(...messages)
+      let mess = {}
+      if (this.messages.length) {
+        if (this.messageIdOnOpen) {
+          mess = this.messages.find(m => m.ID === this.messageIdOnOpen)
+        } else {
+          mess = this.messages.find(m => m.ID === this.messages[0].ID)
+        }
+        this.setActive(mess)
+      }
     },
 
     addNotificationListeners () {
@@ -194,12 +183,6 @@ module.exports.default = {
 </script>
 
 <style>
-.notifications-history__popup .el-dialog__body{
-  padding: 0;
-  border-top: 1px solid rgba(var(--info), 0.15);
-  height: 60vh;
-}
-
 .notifications-history{
   display: flex;
   height: 100%;

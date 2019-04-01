@@ -1,11 +1,5 @@
 <template>
-  <el-dialog
-    :visible.sync="visible"
-    :title="$ut('messageSendTitle')"
-    width="70%"
-    :before-close="beforeClose"
-    @closed="$destroy()"
-  >
+  <div>
     <el-row :gutter="20">
       <el-col :span="16">
         <u-form-row
@@ -16,7 +10,7 @@
             <ub-select-enum
               v-model="messageType"
               :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
-              @select="$v.messageType.$touch()"
+              @input="$v.messageType.$touch()"
             />
           </u-error-wrap>
         </u-form-row>
@@ -107,7 +101,11 @@
         </div>
       </el-col>
     </el-row>
-    <div slot="footer">
+    <br>
+    <el-row
+      type="flex"
+      justify="end"
+    >
       <el-button
         type="primary"
         size="big"
@@ -115,23 +113,33 @@
       >
         {{ $ut('send') }}
       </el-button>
-    </div>
-  </el-dialog>
+    </el-row>
+  </div>
 </template>
 
 <script>
-const Vue = require('vue')
 const required = require('vuelidate/lib/validators/required').default
-// const { mount } = require('@unitybase/adminui-vue/utils/mountHelpers')
+const AdminUiVue = require('@unitybase/adminui-vue')
 
-module.exports.mount = () => {
-  const instance = new Vue({
-    render: h => h(module.exports.default)
-  }).$mount()
-  document.body.append(instance.$el)
+module.exports.mount = function (params) {
+  if (AdminUiVue.mountHelpers.activateIfMounted(params)) return
+  let mountParams = {
+    FormComponent: UbsMessageEdit,
+    showFormParams: params
+  }
+  AdminUiVue.mountHelpers.mount(mountParams)
 }
 
-module.exports.default = {
+const UbsMessageEdit = module.exports.default = {
+  props: {
+    entityName: {
+      type: String,
+      required: true
+    },
+    instanceID: Number,
+    currentTabId: String,
+    formCode: String
+  },
   data () {
     return {
       roleModel: null,
@@ -139,7 +147,6 @@ module.exports.default = {
       messageType: null,
       selectedUsers: [],
       messageBody: '',
-      visible: false,
       /**
        * by default from now to next year
        * @type {Array}
@@ -189,11 +196,11 @@ module.exports.default = {
     this.addNew()
   },
 
-  mounted () {
-    this.visible = true
-  },
-
   methods: {
+    isDirty () {
+      return this.$v.$anyDirty
+    },
+
     async addUser () {
       const user = await this.$UB.connection
         .Repository('uba_user')
@@ -241,10 +248,11 @@ module.exports.default = {
 
     async save () {
       this.$v.$touch()
-      if (this.$v.$error) return false
+      if (this.$v.$anyError) return 'error'
       await this.insertMessage()
       await this.insertRecipients()
-      this.visible = false
+      this.$emit('close')
+      this.$v.$reset()
     },
 
     async addNew () {
