@@ -1,10 +1,28 @@
 <template>
   <div class="ub-form-row">
-    <div class="ub-form-row__label">
+    <div
+      class="ub-form-row__label"
+      :style="labelWidthCss"
+    >
       {{ $ut(label) }}: <span v-show="required" class="ub-form-row__label__required-mark">*</span>
     </div>
     <div class="ub-form-row__content">
-      <slot />
+      <div
+        class="ub-error-wrap"
+        :class="{
+          'is-error': error
+        }"
+      >
+        <slot />
+        <transition name="el-zoom-in-top">
+          <div
+            v-show="error"
+            class="ub-error-wrap__text"
+          >
+            {{ error ? $ut(error) : '' }}
+          </div>
+        </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -13,8 +31,27 @@
 export default {
   name: 'UFormRow',
   props: {
+    error: [String, Boolean],
     label: String,
-    required: Boolean
+    required: Boolean,
+    labelWidth: Number
+  },
+
+  inject: {
+    formLabelWidth: {
+      from: 'labelWidth',
+      default: 120
+    }
+  },
+
+  computed: {
+    labelWidthCss () {
+      const width = this.labelWidth || this.formLabelWidth
+      return `
+        width: ${width}px;
+        min-width: ${width}px;
+      `
+    }
   }
 }
 </script>
@@ -30,8 +67,8 @@ export default {
 
 .ub-form-row__label{
   color: rgb(var(--info));
-  width: 120px;
-  min-width: 120px;
+  /*width: 120px;*/
+  /*min-width: 120px;*/
   padding-right: 8px;
   padding-top: 7px;
 }
@@ -42,5 +79,22 @@ export default {
 
 .ub-form-row__label__required-mark{
   color: rgb(var(--danger));
+}
+
+.ub-error-wrap{
+  padding-bottom: 16px;
+  position: relative;
+}
+
+.ub-error-wrap__text{
+  color: rgb(var(--danger));
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.ub-error-wrap.is-error .el-input__inner,
+.ub-error-wrap.is-error .el-textarea__inner{
+  border-color: rgb(var(--danger));
 }
 </style>

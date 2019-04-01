@@ -1,32 +1,30 @@
 <template>
-  <div>
+  <u-form>
     <el-row :gutter="20">
       <el-col :span="16">
         <u-form-row
           required
           :label="$ut('messageType')"
+          :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))"
         >
-          <u-error-wrap :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))">
-            <ub-select-enum
-              v-model="messageType"
-              :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
-              @input="$v.messageType.$touch()"
-            />
-          </u-error-wrap>
+          <ub-select-enum
+            v-model="messageType"
+            :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
+            @input="$v.messageType.$touch()"
+          />
         </u-form-row>
         <u-form-row
           required
           label="message"
+          :error="$v.messageBody.$error && $ut('isRequiredFieldFmt', $ut('message'))"
         >
-          <u-error-wrap :error="$v.messageBody.$error && $ut('isRequiredFieldFmt', $ut('message'))">
-            <el-input
-              v-model="messageBody"
-              type="textarea"
-              :rows="7"
-              resize="none"
-              @change="$v.messageBody.$touch()"
-            />
-          </u-error-wrap>
+          <el-input
+            v-model="messageBody"
+            type="textarea"
+            :rows="7"
+            resize="none"
+            @change="$v.messageBody.$touch()"
+          />
         </u-form-row>
         <u-form-row :label="$ut('byDateRange')">
           <el-date-picker
@@ -114,7 +112,7 @@
         {{ $ut('send') }}
       </el-button>
     </el-row>
-  </div>
+  </u-form>
 </template>
 
 <script>
