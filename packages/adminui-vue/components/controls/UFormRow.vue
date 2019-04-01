@@ -3,6 +3,7 @@
     <div
       class="ub-form-row__label"
       :style="labelWidthCss"
+      :title="$ut(label)"
     >
       {{ $ut(label) }}: <span v-show="required" class="ub-form-row__label__required-mark">*</span>
     </div>
@@ -67,8 +68,9 @@ export default {
 
 .ub-form-row__label{
   color: rgb(var(--info));
-  /*width: 120px;*/
-  /*min-width: 120px;*/
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   padding-right: 8px;
   padding-top: 7px;
 }

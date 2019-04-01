@@ -84,13 +84,6 @@ if (isExt) {
   $App.on('applicationReady', replaceExtJSDialogs)
   $App.on('applicationReady', replaceExtJSNavbar)
   $App.on('applicationReady', replaceExtJSMessageBarDialog)
-  $App.on('applicationReady', () => {
-    $App.doCommand({
-      cmdType: 'showForm',
-      entity: 'ubs_message_edit',
-      isModal: false
-    })
-  })
 }
 
 const Sidebar = require('./components/sidebar/USidebar.vue').default

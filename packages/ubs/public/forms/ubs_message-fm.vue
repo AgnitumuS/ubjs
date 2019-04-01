@@ -1,5 +1,5 @@
 <template>
-  <div class="notifications-history">
+  <div class="notifications-history" v-loading="loading">
     <template v-if="messages.length > 0">
       <div
         class="notifications-history__list"
@@ -80,6 +80,7 @@ const UbsMessage = module.exports.default = {
   data () {
     return {
       visible: false,
+      loading: false,
       messages: [],
       activeID: null,
       ICON_TYPES: {
@@ -131,6 +132,7 @@ const UbsMessage = module.exports.default = {
     },
 
     async getMessages () {
+      this.loading = true
       const messages = await this.$UB.connection
         .Repository('ubs_message')
         .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate', 'recipients.ID')
@@ -146,6 +148,7 @@ const UbsMessage = module.exports.default = {
         }
         this.setActive(mess)
       }
+      this.loading = false
     },
 
     addNotificationListeners () {

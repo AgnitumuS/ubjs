@@ -1,5 +1,5 @@
 <template>
-  <u-form>
+  <u-form v-loading="loading">
     <el-row :gutter="20">
       <el-col :span="16">
         <u-form-row
@@ -145,6 +145,7 @@ const UbsMessageEdit = module.exports.default = {
       messageType: null,
       selectedUsers: [],
       messageBody: '',
+      loading: false,
       /**
        * by default from now to next year
        * @type {Array}
@@ -200,6 +201,7 @@ const UbsMessageEdit = module.exports.default = {
     },
 
     async addUser () {
+      this.loading = true
       const user = await this.$UB.connection
         .Repository('uba_user')
         .attrs('ID', 'name')
@@ -208,11 +210,12 @@ const UbsMessageEdit = module.exports.default = {
       if (notExist) {
         this.selectedUsers.push(user)
       }
-
       this.userModel = null
+      this.loading = false
     },
 
     async addByRole () {
+      this.loading = true
       const users = await this.$UB.connection
         .Repository('uba_userrole')
         .attrs('ID', 'roleID', 'userID', 'userID.name')
@@ -230,6 +233,7 @@ const UbsMessageEdit = module.exports.default = {
       }
 
       this.roleModel = null
+      this.loading = false
     },
 
     removeUser (ID) {
@@ -247,13 +251,16 @@ const UbsMessageEdit = module.exports.default = {
     async save () {
       this.$v.$touch()
       if (this.$v.$anyError) return 'error'
+      this.loading = true
       await this.insertMessage()
       await this.insertRecipients()
       this.$emit('close')
       this.$v.$reset()
+      this.loading = false
     },
 
     async addNew () {
+      this.loading = true
       const resp = await this.$UB.connection.addNew({
         entity: 'ubs_message_edit',
         fieldList: ['complete', 'messageType', 'startDate', 'expireDate', 'messageBody', 'ID', 'mi_modifyDate']
@@ -261,6 +268,7 @@ const UbsMessageEdit = module.exports.default = {
       const parsedResp = this.$UB.LocalDataStore.selectResultToArrayOfObjects(resp)
       this.ID = parsedResp[0].ID
       this.mi_modifyDate = parsedResp[0].mi_modifyDate
+      this.loading = false
     },
 
     async insertMessage () {
