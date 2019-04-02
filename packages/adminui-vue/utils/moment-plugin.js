@@ -7,8 +7,11 @@ const UB = require('@unitybase/ub-pub')
 
 async function setLocale (lang) {
   if (lang === 'en') return
-  const langData = await SystemJS.import(`moment/locale/${lang}`)
-  moment.locale(langData._config.abbr, langData._config)
+  // moment locales are in BROKEN UMD format and require ('../moment') inside
+  // to prevent loading of moment.js twice fallback to global + UB.inject
+  window.moment = moment
+  await UB.inject(`clientRequire/moment/locale/${lang}.js`)
+  moment.locale(lang)
 }
 
 module.exports = {
