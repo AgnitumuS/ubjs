@@ -169,7 +169,7 @@ class ClientRepository extends CustomRepository {
    * @return {Promise} Promise, resolved to {Object|undefined}
    */
   selectById (ID, fieldAliases) {
-    return this.where('[ID]', '=', ID).selectSingle()
+    return this.where('[ID]', '=', ID).selectSingle(fieldAliases)
   }
 }
 
