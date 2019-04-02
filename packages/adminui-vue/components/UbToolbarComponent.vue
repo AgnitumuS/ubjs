@@ -67,10 +67,10 @@
         class="ub-toolbar__date__container"
       >
         <div class="ub-toolbar__date">
-          <b>{{ createdEntityCaption }}:</b> {{ simpleAudit.mi_createDate ? simpleAudit.mi_createDate.toLocaleString() : '' }}
+          <b>{{ createdEntityCaption }}:</b> {{ simpleAudit.mi_createDate ? $moment(simpleAudit.mi_createDate).format('lll') : '' }}
         </div>
         <div class="ub-toolbar__date">
-          <b>{{ updatedEntityCaption }}:</b> {{ simpleAudit.mi_modifyDate ? simpleAudit.mi_modifyDate.toLocaleString() : '' }}
+          <b>{{ updatedEntityCaption }}:</b> {{ simpleAudit.mi_modifyDate ? $moment(simpleAudit.mi_modifyDate).format('lll') : '' }}
         </div>
       </div>
     </div>

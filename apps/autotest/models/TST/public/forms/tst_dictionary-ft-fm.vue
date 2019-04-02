@@ -38,7 +38,6 @@ const TstDictionaryFt = module.exports.default = {
 }
 
 module.exports.mount = function (params) {
-  debugger
   if (AdminUiVue.mountHelpers.activateIfMounted(params)) return
   let mountParams = {
     FormComponent: TstDictionaryFt,
