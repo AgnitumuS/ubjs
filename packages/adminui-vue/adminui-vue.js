@@ -43,8 +43,9 @@ const ElementUI = require('element-ui') // adminui-pub maps element-ui -> elemen
 window.ElementUI = ElementUI
 if (IS_SYSTEM_JS && !SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(ElementUI))
 
-const Moment = require('moment')
-if (IS_SYSTEM_JS && !SystemJS.has('moment')) SystemJS.set('moment', SystemJS.newModule(Moment))
+const moment = require('./utils/plugins/moment')
+Vue.use(moment)
+
 require('normalize.css/normalize.css')
 require('./theme/ub-body.css')
 require('./theme/el-theme-compiled.css')
@@ -57,11 +58,6 @@ Vue.use(ElementUI, {
   size: 'small', // set element-ui default size
   i18n: UB.i18n.bind(UB), // redirect ElementUI localization to UB.i18n
   zIndex: 300000 // lat's Vue popovers always be above Ext
-})
-Vue.use({
-  install (Vue) {
-    Vue.prototype.$moment = Moment
-  }
 })
 
 const UbComponents = require('./ub-components')
