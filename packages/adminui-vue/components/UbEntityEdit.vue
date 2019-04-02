@@ -32,7 +32,7 @@
 const toolbar = require('./UbToolbarComponent.vue').default
 
 module.exports = {
-  name: 'UbEntityEditComponent',
+  name: 'UbEntityEdit',
   props: {
     instance: {
       type: Object,
