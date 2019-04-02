@@ -1,11 +1,19 @@
 module.exports = {
   name: 'UForm',
   props: {
-    labelWidth: [String, Number]
+    labelWidth: {
+      type: Number,
+      default: 120
+    },
+    labelPosition: {
+      type: String,
+      default: 'left'
+    }
   },
   provide () {
     return {
-      ...(this.labelWidth && { labelWidth: this.labelWidth })
+      labelWidth: this.labelWidth,
+      labelPosition: this.labelPosition
     }
   },
   render (h) {

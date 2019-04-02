@@ -6,7 +6,6 @@
         :key="button.id"
         :content="button.tooltip"
         placement="bottom"
-        :open-delay="300"
       >
         <el-button
           :disabled="button.disabled"

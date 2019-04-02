@@ -13,7 +13,6 @@
       @data-loaded="assignInstanceData"
     >
       <u-form
-        label-position="left"
         :label-width="150"
       >
         <!--TODO replace style max-width with el-row md=12 sm 24-->

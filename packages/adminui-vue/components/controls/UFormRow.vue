@@ -2,10 +2,14 @@
   <div class="ub-form-row">
     <div
       class="ub-form-row__label"
+      :class="{
+        'ub-form-row__label__right': labelPositionComputed === 'right',
+        required
+      }"
       :style="labelWidthCss"
       :title="$ut(label)"
     >
-      {{ $ut(label) }}: <span v-show="required" class="ub-form-row__label__required-mark">*</span>
+      <span>{{ $ut(label) }}</span>
     </div>
     <div class="ub-form-row__content">
       <div
@@ -40,8 +44,10 @@ export default {
 
   inject: {
     formLabelWidth: {
-      from: 'labelWidth',
-      default: 120
+      from: 'labelWidth'
+    },
+    formLabelPosition: {
+      from: 'labelPosition'
     }
   },
 
@@ -52,6 +58,10 @@ export default {
         width: ${width}px;
         min-width: ${width}px;
       `
+    },
+
+    labelPositionComputed () {
+      return this.labelPosition || this.formLabelPosition
     }
   }
 }
@@ -69,18 +79,37 @@ export default {
 .ub-form-row__label{
   color: rgb(var(--info));
   white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
   padding-right: 8px;
   padding-top: 7px;
+  display: flex;
+}
+
+.ub-form-row__label__right{
+  justify-content: flex-end;
+}
+
+.ub-form-row__label span{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ub-form-row__label:after{
+  content: ':';
+}
+
+.ub-form-row__label.required:before {
+  content: '*';
+  color: rgb(var(--danger));
+  margin: 0 2px;
+  order: 1;
+}
+
+.ub-form-row__label__right.required:before{
+  order: 2;
 }
 
 .ub-form-row__content{
   flex-grow: 1;
-}
-
-.ub-form-row__label__required-mark{
-  color: rgb(var(--danger));
 }
 
 .ub-error-wrap{
