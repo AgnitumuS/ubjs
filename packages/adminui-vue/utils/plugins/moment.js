@@ -4,7 +4,6 @@ const moment = require('moment/min/moment.min')
 if (IS_SYSTEM_JS && !SystemJS.has('moment')) SystemJS.set('moment', SystemJS.newModule(moment))
 
 const UB = require('@unitybase/ub-pub')
-const userLang = UB.connection.userLang()
 
 async function setLocale (lang) {
   if (lang === 'en') return
@@ -14,7 +13,8 @@ async function setLocale (lang) {
 
 module.exports = {
   async install (Vue) {
-    await setLocale(userLang)
+    // connection may not exists on login form
+    if (UB.connection) await setLocale(UB.connection.userLang())
     Vue.prototype.$moment = moment
   }
 }
