@@ -1,6 +1,6 @@
 /* global SystemJS */
 const IS_SYSTEM_JS = (typeof SystemJS !== 'undefined')
-const moment = require('moment/min/moment.min')
+const moment = require('moment')
 if (IS_SYSTEM_JS && !SystemJS.has('moment')) SystemJS.set('moment', SystemJS.newModule(moment))
 
 const UB = require('@unitybase/ub-pub')
