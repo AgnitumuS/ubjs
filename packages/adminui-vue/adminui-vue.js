@@ -49,8 +49,8 @@ Vue.use(ElementUI, {
   zIndex: 300000 // lat's Vue popovers always be above Ext
 })
 
-const moment = require('./utils/plugins/moment')
-Vue.use(moment)
+const momentPlugin = require('./utils/moment-plugin')
+Vue.use(momentPlugin)
 
 require('normalize.css/normalize.css')
 require('./theme/ub-body.css')
