@@ -7,6 +7,7 @@ const UB = require('@unitybase/ub-pub')
 const userLang = UB.connection.userLang()
 
 async function setLocale (lang) {
+  if (lang === 'en') return
   const langData = await SystemJS.import(`moment/locale/${lang}`)
   moment.locale(langData._config.abbr, langData._config)
 }
