@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.33]
 ### Changed
  - separate stack trace in developer error reporter onto lines for better readability
-
+### Added
+ - optional parameter **fieldAliases** for `ClientRepository.selectById` method
+ 
 ## [5.2.31]
 ### Fixed
  - **CRITICAL** `ClientRepository.selectScalar` return `undefined` for cached entities

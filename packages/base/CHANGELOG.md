@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.7]
+### Added
+ - optional parameter **fieldAliases** for `ServerRepository.selectById` method 
+
 ## [5.1.5]
 ### Fixed
  - @unitybase/base.options will accept `--help` for show help (also `-help` and `-?` is supported)
