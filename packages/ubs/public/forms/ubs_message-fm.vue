@@ -1,5 +1,8 @@
 <template>
-  <div class="notifications-history" v-loading="loading">
+  <div
+    v-loading="loading"
+    class="notifications-history"
+  >
     <template v-if="messages.length > 0">
       <div
         class="notifications-history__list"
@@ -56,7 +59,6 @@
 </template>
 
 <script>
-const Vue = require('vue')
 const AdminUiVue = require('@unitybase/adminui-vue')
 
 module.exports.mount = function (params) {
@@ -114,6 +116,9 @@ const UbsMessage = module.exports.default = {
   },
 
   methods: {
+    /**
+     * add property isOverflowed' to all notification refs, which have height more than 120px
+     */
     checkOverflowed () {
       if (this.$refs.message === undefined) return
       for (const message of this.$refs.message) {
@@ -130,7 +135,10 @@ const UbsMessage = module.exports.default = {
     getIconClsByType (type) {
       return this.ICON_TYPES[type]
     },
-
+    /**
+     * get messages list from DB and set active message
+     * if 'messageIdOnOpen' is defined will set it, by default set 0
+     */
     async getMessages () {
       this.loading = true
       const messages = await this.$UB.connection
@@ -151,6 +159,10 @@ const UbsMessage = module.exports.default = {
       this.loading = false
     },
 
+    /**
+     * adds listners on user recived new message
+     * and message read status is changed
+     */
     addNotificationListeners () {
       $App.on({
         'portal:notify:newMess': (message) => {
@@ -168,7 +180,11 @@ const UbsMessage = module.exports.default = {
     async markRead (mess) {
       $App.fireEvent('portal:notify:markAsReaded', mess)
     },
-
+    /**
+     * set active message and mark as readed
+     * if message is unreaded
+     * @param {Object} mess
+     */
     setActive (mess) {
       this.activeID = mess.ID
 
@@ -176,7 +192,12 @@ const UbsMessage = module.exports.default = {
         this.markRead(mess)
       }
     },
-
+    /**
+     * capitalize first letter of type
+     * concat with locale key
+     * @param  {String} type
+     * @return {String}      i18n locale
+     */
     getTypeLocaleString (type) {
       const capitalizeStr = type.charAt(0).toUpperCase() + type.slice(1)
       return this.$ut('msgType' + capitalizeStr)

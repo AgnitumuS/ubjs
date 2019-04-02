@@ -154,6 +154,11 @@ const UbsMessageEdit = module.exports.default = {
       ID: null,
       mi_modifyDate: null,
       pickerOptions: {
+        /**
+         * disable all dates before today
+         * @param  {Date} time
+         * @return {Boolean}
+         */
         disabledDate: (time) => {
           return this.$moment().isAfter(time, 'day')
         },
@@ -199,7 +204,10 @@ const UbsMessageEdit = module.exports.default = {
     isDirty () {
       return this.$v.$anyDirty
     },
-
+    /**
+     * adds a new user to the list only if it is not in the list.
+     * cleans `userModel`
+     */
     async addUser () {
       this.loading = true
       const user = await this.$UB.connection
@@ -213,7 +221,10 @@ const UbsMessageEdit = module.exports.default = {
       this.userModel = null
       this.loading = false
     },
-
+    /**
+     * adds new users to the list only if it is not in the list.
+     * cleans `roleModel`
+     */
     async addByRole () {
       this.loading = true
       const users = await this.$UB.connection
@@ -235,19 +246,28 @@ const UbsMessageEdit = module.exports.default = {
       this.roleModel = null
       this.loading = false
     },
-
+    /**
+     * remove current user by ID
+     * @param  {Number} ID
+     */
     removeUser (ID) {
       const index = this.selectedUsers.findIndex(u => u.ID === ID)
       if (index !== -1) {
         this.selectedUsers.splice(index, 1)
       }
     },
-
+    /**
+     * show dialog before close form
+     * @param  {Function} done callback which called when user click on some action
+     */
     async beforeClose (done) {
       const confirm = await $App.dialogYesNo('close', 'vyUvereny')
       if (confirm) done()
     },
-
+    /**
+     * validate form before send save requests.
+     * Then close form
+     */
     async save () {
       this.$v.$touch()
       if (this.$v.$anyError) return 'error'
@@ -258,7 +278,9 @@ const UbsMessageEdit = module.exports.default = {
       this.$v.$reset()
       this.loading = false
     },
-
+    /**
+     * creates ID and mi_modifyDate form new form
+     */
     async addNew () {
       this.loading = true
       const resp = await this.$UB.connection.addNew({
@@ -270,7 +292,10 @@ const UbsMessageEdit = module.exports.default = {
       this.mi_modifyDate = parsedResp[0].mi_modifyDate
       this.loading = false
     },
-
+    /**
+     * insert message to DB.
+     * if dateRange is unset - will set range from today to start of next year
+     */
     async insertMessage () {
       if (this.dateRange === null) {
         this.dateRange = [new Date(), new Date(new Date().getFullYear() + 1, 0)]
@@ -289,7 +314,10 @@ const UbsMessageEdit = module.exports.default = {
         }
       })
     },
-
+    /**
+     * if selectedUsers is empty will be attach all users to current record
+     * else will attach just selected users
+     */
     async insertRecipients () {
       const users = []
       if (this.selectedUsers.length) {
