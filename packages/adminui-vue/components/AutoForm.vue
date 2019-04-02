@@ -1,10 +1,9 @@
 <template>
   <div
     v-if="fieldsToShow"
-    id="auto-form-app"
     style="height: 100%"
   >
-    <ub-entity-edit
+    <u-entity-edit
       :instance="value"
       :entity-name="entityName"
       :instance-id="instanceID"
@@ -88,19 +87,11 @@
           />
         </el-form-item>
       </el-form>
-    </ub-entity-edit>
+    </u-entity-edit>
   </div>
 </template>
 
 <script>
-const ubSelectEnum = require('./controls/UbSelectEnum.vue').default
-const ubSelectEntity = require('./controls/UbSelectEntity.vue').default
-const ubSelectMany = require('./controls/UbSelectMany.vue').default
-const UInput = require('./controls/UInput.vue').default
-const ubUploadDocument = require('./controls/UbUploadDocument.vue').default
-const UCodeMirror = require('./controls/UCodeMirror.vue').default
-const UInputNumber = require('./controls/UInputNumber.vue').default
-
 module.exports = {
   name: 'AutoForm',
   props: {
@@ -158,15 +149,6 @@ module.exports = {
     return {
       value: {}
     }
-  },
-  components: {
-    'ub-select-enum': ubSelectEnum,
-    'ub-select-entity': ubSelectEntity,
-    'ub-select-many': ubSelectMany,
-    UInput,
-    'ub-upload-document': ubUploadDocument,
-    UCodeMirror,
-    UInputNumber
   }
 }
 </script>

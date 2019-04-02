@@ -4,7 +4,7 @@ const Vue = require('vue')
 const { Notification } = require('element-ui')
 const dialogs = require('../components/dialog/UDialog')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
-const autoFormComponent = require('../components/AutoFormComponent.vue').default
+const autoForm = require('../components/AutoForm.vue').default
 const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
 const mountHelpers = require('./mountHelpers')
 
@@ -83,7 +83,7 @@ function replaceAutoForms () {
   if (mountHelpers.activateIfMounted(params)) return
 
   let mountParams = {
-    FormComponent: autoFormComponent,
+    FormComponent: autoForm,
     showFormParams: params
   }
   mountHelpers.mount(mountParams)
