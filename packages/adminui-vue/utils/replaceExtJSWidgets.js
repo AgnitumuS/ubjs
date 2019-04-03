@@ -79,7 +79,12 @@ function replaceExtJSNavbar () {
 
 function replaceAutoForms () {
   let params = this
-
+  if (!params.title) {
+    params.title = $App.domainInfo.get(params.entity).caption
+    if (!params.commandConfig.instanceID) {
+      params.title += ` (${UB.i18n('dobavlenie')})`
+    }
+  }
   if (mountHelpers.activateIfMounted(params)) return
 
   let mountParams = {
