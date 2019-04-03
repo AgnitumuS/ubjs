@@ -669,9 +669,11 @@ inst.run('select', repo.ubql())
 
    * **WARNING** method does not check if result contains the single row and always returns a first row from result
    * @abstract
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
+   *   during transform array to object. See {@link selectAsObject}
    * @return {*|undefined}
    */
-  selectSingle () {
+  selectSingle (fieldAliases) {
     throw new Error('abstract')
   }
 
@@ -704,9 +706,11 @@ inst.run('select', repo.ubql())
 
    * @abstract
    * @param {Number} ID Row identifier
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
+   *   during transform array to object. See {@link selectAsObject}
    * @return {Object|undefined}
    */
-  selectById (ID) {
+  selectById (ID, fieldAliases) {
     throw new Error('abstract')
   }
 

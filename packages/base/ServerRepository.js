@@ -156,10 +156,12 @@ class ServerRepository extends CustomRepository {
    * Select a single row by ID. If ubql result is empty - return {undefined}.
    *
    * @param {Number} ID Row identifier
+   * @param {Object<string, string>} [fieldAliases] Optional object to change attribute
+   *  names during transform array to object
    * @return {Object|undefined}
    */
-  selectById (ID) {
-    return this.where('[ID]', '=', ID).selectSingle()
+  selectById (ID, fieldAliases) {
+    return this.where('[ID]', '=', ID).selectSingle(fieldAliases)
   }
 }
 /**

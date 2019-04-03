@@ -398,7 +398,8 @@ Ext.define('UB.ux.form.field.UBBaseComboBox', {
           logicalPredicates: store.ubRequest.logicalPredicates,
           __mip_ondate: store.ubRequest.__mip_ondate
         }]
-      }
+      },
+      hideActions: me.hideActions
     }
     var filters = store.filters.clone()
     filters.removeAtKey(me.userFilterId)
