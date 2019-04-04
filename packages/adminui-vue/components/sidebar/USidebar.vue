@@ -132,15 +132,24 @@ export default {
     this.loadShortcuts()
     this.initCollapseState()
     $App.on({
-      'portal:sidebar:appendSlot': (Component, bindings) => {
+      'portal:sidebar:defineSlot': (Component, bindings) => {
         this.$slots.default = this.$createElement(Component, bindings)
+        this.$forceUpdate()
+      },
+
+      'portal:sidebar:appendSlot': (Component, bindings) => {
+        if (Array.isArray(this.$slots.default)) {
+          this.$slots.default.push(this.$createElement(Component, bindings))
+        } else {
+          this.$slots.default = [this.$slots.default, this.$createElement(Component, bindings)]
+        }
+        this.$forceUpdate()
       },
 
       'portal:sidebar:collapse': () => {
         this.isCollapsed = !this.isCollapsed
       }
     })
-
   },
 
   methods: {

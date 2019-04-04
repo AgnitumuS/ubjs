@@ -172,9 +172,20 @@ export default {
 
   created () {
     this.subscribeCentralPanelEvents()
-    $App.on('portal:navbar:appendSlot', (Component, bindings) => {
-      this.$slots.default = this.$createElement(Component, bindings)
-      this.$forceUpdate()
+    $App.on({
+      'portal:navbar:appendSlot': (Component, bindings) => {
+        if (Array.isArray(this.$slots.default)) {
+          this.$slots.default.push(this.$createElement(Component, bindings))
+        } else {
+          this.$slots.default = [this.$slots.default, this.$createElement(Component, bindings)]
+        }
+        this.$forceUpdate()
+      },
+
+      'portal:navbar:defineSlot': (Component, bindings) => {
+        this.$slots.default = this.$createElement(Component, bindings)
+        this.$forceUpdate()
+      }
     })
   },
 
