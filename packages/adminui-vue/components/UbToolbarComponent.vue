@@ -97,6 +97,7 @@ module.exports = {
     isNew: Boolean,
     isChanged: Boolean,
     useOnlyOwnActions: Boolean,
+    useOnlyOwnButtons: Boolean,
     inputActions: {
       type: Array,
       default () {
@@ -362,6 +363,9 @@ module.exports = {
     actions () {
       return this.useOnlyOwnActions ? this.inputActions : [...this.defaultActions, ...this.inputActions]
     },
+    buttons () {
+      return this.useOnlyOwnButtons ? this.inputButtons : [...this.defaultButtons, ...this.inputButtons]
+    },
     defaultButtons () {
       return [{
         id: 1,
@@ -384,9 +388,6 @@ module.exports = {
         action: () => { this.$emit('remove') },
         tooltip: this.removeCaption
       }]
-    },
-    buttons () {
-      return this.inputButtons && this.inputButtons.length > 0 ? this.inputButtons : this.defaultButtons
     }
   },
   methods: {
