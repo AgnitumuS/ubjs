@@ -81,6 +81,19 @@ if (isExt) {
   $App.on('applicationReady', replaceExtJSDialogs)
   $App.on('applicationReady', replaceExtJSNavbar)
   $App.on('applicationReady', replaceExtJSMessageBarDialog)
+  $App.on('applicationReady', () => {
+    $App.doCommand({
+      addByCurrent: undefined,
+      cmdType: "showForm",
+      description: undefined,
+      detailAttribute: undefined,
+      entity: "uba_userrole",
+      formCode: undefined,
+      instanceID: undefined,
+      isModal: !false,
+      isModalDialog: false
+    })
+  })
 }
 
 const Sidebar = require('./components/sidebar/USidebar.vue').default

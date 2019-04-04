@@ -1,5 +1,7 @@
 const Vue = require('vue')
 const Dialog = require('element-ui').Dialog
+const Vuex = require('vuex')
+const { createInstanceModule, mergeStore } = require('./storeInstanceModule')
 
 /**
  * Mount helpers for Vue components
@@ -64,17 +66,28 @@ function mount (commandConfig) {
 function mountModal (mountParams) {
   let title = mountParams.showFormParams.title
   const FormComponent = mountParams.FormComponent
+  if (mountParams.store) {
+    const instanceModule = createInstanceModule(mountParams.store)
+    mountParams.store = new Vuex.Store(instanceModule)
+  }
   const instance = new Vue({
+    store: mountParams.store,
     data () {
       return {
-        dialogVisible: false
+        dialogVisible: false,
+        title
+      }
+    },
+    methods: {
+      setTitle (value) {
+        this.title = value
       }
     },
     render (h) {
       return h(Dialog, {
         ref: 'dialog',
         props: {
-          title,
+          title: this.title,
           visible: this.dialogVisible,
           width: '80%',
           beforeClose: onBeforeDialogClose
@@ -100,6 +113,10 @@ function mountModal (mountParams) {
   instance.$mount()
   document.body.append(instance.$el)
   instance.dialogVisible = true
+
+  if (mountParams.store) {
+    subscribeFormChanges.call(instance, mountParams.store)
+  }
 }
 
 /**
@@ -119,10 +136,17 @@ function mountTab (mountParams) {
     },
     closable: true
   })
+  if (mountParams.store) {
+    const instanceModule = createInstanceModule(mountParams.store)
+    mountParams.store = new Vuex.Store(instanceModule)
+    subscribeFormChanges.call(tab, mountParams.store)
+  }
+
   const instance = new Vue({
     render: (h) => h(FormComponent, {
       props: showFormParamsToComponentProps(mountParams.showFormParams) // pass props programmatically
-    })
+    }),
+    store: mountParams.store
   })
   instance.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   tab.on('close', () => {
@@ -232,4 +256,27 @@ function onBeforeTabClose () {
   } else {
     return true
   }
+}
+
+/**
+ * subscribe to change isDrity or title
+ * @param  {VuexStore} store    subscribe target
+ * @param  {Function} setTitle method which call when title is change
+ */
+function subscribeFormChanges (store, setTitle) {
+  store.watch(
+    (state, getters) => {
+      return {
+        isDirty: getters.isDirty,
+        formTitle: state.formTitle
+      }
+    },
+    ({ isDirty, formTitle }) => {
+      if (isDirty) {
+        this.setTitle(formTitle + ' *')
+      } else {
+        this.setTitle(formTitle)
+      }
+    }
+  )
 }

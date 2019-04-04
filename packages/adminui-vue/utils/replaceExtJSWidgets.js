@@ -91,6 +91,12 @@ function replaceAutoForms () {
     FormComponent: autoForm,
     showFormParams: params
   }
+
+  mountParams.store = {
+    state: {
+      formTitle: params.title
+    }
+  }
   mountHelpers.mount(mountParams)
 }
 
