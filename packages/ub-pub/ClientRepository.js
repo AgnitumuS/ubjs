@@ -17,13 +17,13 @@ const CustomRepository = csShared.CustomRepository
  *  - {@link ClientRepository#selectAsArray selectAsArray} method for retrieve `array of array` representation of server entity
  *  - {@link ClientRepository#selectAsStore selectAsStore} method for retrieve {UB.ux.data.UBStore} (applicable only for Ext-based client types)
  *
- * Usually created using {@link UB.Repository UB.Repository} fabric function. Example:
+ * Usually created using {@link module:@unitybase/ub#Repository UB.Repository} fabric function. Example:
  *
  *      var store = UB.Repository('my_entity').attrs(['ID', 'code'])
  *       .where('code', 'includes', ['1', '2', '3'])  // code in ('1', '2', '3')
  *       .where('name', 'contains', 'Homer'). // name like '%homer%'
- *        //(birtday >= '2012-01-01') AND (birtday <= '2012-01-02')
- *       .where('birtday', 'geq', new Date()).where('birtday', 'leq', new Date() + 10)
+ *        //(birthday >= '2012-01-01') AND (birthday <= '2012-01-02')
+ *       .where('birthday', 'geq', new Date()).where('birthday', 'leq', new Date() + 10)
  *       .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
  *       .where('', 'match', 'myvalue'). // for condition match expression not need
  *       .logic('(byStrfType OR bySrfKindID)AND(dasdsa)')

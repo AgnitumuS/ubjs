@@ -233,8 +233,14 @@ const softLock = {
 
 /**
  * Mixin. Provide Row Level Security.
+ *
  * Will override `select` method and add a SQL expression returned by function specified in `rls.expression`
  * to `where` section for each `select` operation.
+ *
+ * Scenarios where RLS might be useful:
+ *    Show only tasks assigned to a current user, disallow to see any other tasks
+ *    Show only menu items, available to the roles of the current ser
+ *    Show only documents, where the current user is a participant
  *
  * See tutorial {@tutorial mixin_rls} for details.
  * @mixin
