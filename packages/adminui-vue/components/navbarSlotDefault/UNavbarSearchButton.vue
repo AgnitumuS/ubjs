@@ -10,6 +10,7 @@
     <el-tooltip
       slot="reference"
       :content="$ut('search') + ' (Ctrl + F)'"
+      :enterable="false"
     >
       <el-button
         icon="fa fa-search"

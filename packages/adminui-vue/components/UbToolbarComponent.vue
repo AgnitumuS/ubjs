@@ -7,6 +7,7 @@
         :content="button.tooltip"
         placement="bottom"
         :open-delay="300"
+        :enterable="false"
       >
         <el-button
           :disabled="button.disabled"

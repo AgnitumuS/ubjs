@@ -8,6 +8,7 @@
         v-show="isCollapsed"
         :content="$ut('rabochiyStol')"
         placement="right"
+        :enterable="false"
       >
         <el-button
           icon="fa fa-desktop"
