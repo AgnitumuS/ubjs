@@ -373,7 +373,6 @@ function buildExecParams (trackedObj) {
  * @return {*}
  */
 function mapInstanceFields (moduleOrArr, arr) {
-  console.log(moduleOrArr)
   let module, properties
   if (Array.isArray(moduleOrArr)) {
     module = null

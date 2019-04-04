@@ -4,7 +4,7 @@
     style="height: 100%"
   >
     <u-entity-edit
-      :instance="value"
+      :instance="$store.state.data"
       :entity-name="entityName"
       :instance-id="instanceID"
       :before-save="beforeSave"
@@ -19,17 +19,11 @@
         <u-form-row
           v-for="field in fieldsToShow"
           :key="field"
-          :required="isRequired(field)"
+          :required="true"
           :label="entitySchema.attributes[field].caption"
           style="max-width: 600px"
-          :error="$v.value[field].$error && $ut('isRequiredFieldFmt', entitySchema.attributes[field].caption)"
         >
-          <el-checkbox
-            v-if="entitySchema.attributes[field].dataType === 'Boolean'"
-            v-model="value[field]"
-            @change="$v.value[field].$touch()"
-          />
-          <el-date-picker
+          <!-- <el-date-picker
             v-else-if="entitySchema.attributes[field].dataType === 'DateTime' || entitySchema.attributes[field].dataType === 'Date'"
             v-model="value[field]"
             :type="entitySchema.attributes[field].dataType.toLowerCase()"
@@ -42,15 +36,14 @@
             :e-group="entitySchema.attributes[field].enumGroup"
             :disabled="parentContext.hasOwnProperty(field)"
             @input="$v.value[field].$touch()"
-          />
+          /> -->
           <ub-select-entity
-            v-else-if="entitySchema.attributes[field].dataType === 'Entity'"
-            v-model="value[field]"
             :entity-name="entitySchema.attributes[field].associatedEntity"
             :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
+            :value="storeGetter(field)"
+            @input="storeSetter(field, $event)"
           />
-          <ub-select-many
+          <!-- <ub-select-many
             v-else-if="entitySchema.attributes[field].dataType === 'Many'"
             v-model="value[field]"
             :entity-name="entitySchema.attributes[field].associatedEntity"
@@ -91,7 +84,7 @@
             :object-value="value"
             :disabled="parentContext.hasOwnProperty(field)"
             @input="$v.value[field].$touch()"
-          />
+          /> -->
         </u-form-row>
       </u-form>
     </u-entity-edit>
@@ -122,25 +115,27 @@ module.exports = {
     currentTabId: String
   },
 
-  data () {
-    return {
-      value: {}
-    }
-  },
-
   computed: {
     entitySchema () {
       return this.$UB.connection.domain.get(this.entityName)
     },
 
     fieldsToShow () {
-      return this.entitySchema.filterAttribute({ defaultView: true }).map((at) => {
-        return at.name
-      })
+      return this.entitySchema
+        .filterAttribute({ defaultView: true })
+        .map((at) => at.name)
     }
   },
 
   methods: {
+    storeGetter (key) {
+      return this.$store.state.data[key]
+    },
+
+    storeSetter (key, value) {
+      this.$store.commit('SET_DATA', { key, value })
+    },
+
     beforeSave (callback) {
       this.$v.$touch()
       if (!this.$v.$error) {
@@ -149,32 +144,7 @@ module.exports = {
     },
 
     assignInstanceData (data) {
-      this.$set(this, 'value', data)
-    },
-    /**
-     * check is attribute allowNull and not Boolean
-     * @param  {String}  field Field name
-     * @return {Boolean}
-     */
-    isRequired (field) {
-      const attr = this.entitySchema.attributes[field]
-      const isRequired = !attr.allowNull
-      const notBoolean = attr.dataType !== 'Boolean'
-
-      return isRequired && notBoolean
-    }
-  },
-
-  validations () {
-    return {
-      value: this.fieldsToShow.reduce((params, field) => {
-        if (this.isRequired(field)) {
-          params[field] = { required }
-        } else {
-          params[field] = {}
-        }
-        return params
-      }, {})
+      this.$store.commit('LOAD_DATA', data)
     }
   }
 }
