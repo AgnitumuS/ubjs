@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/ub",
-  "version": "5.2.9",
+  "version": "5.2.10",
   "description": "Build-in UnityBase model",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/ub",
   "config": {
@@ -19,9 +19,9 @@
   },
   "main": "modelUB.js",
   "dependencies": {
-    "@unitybase/base": "^5.1.6",
-    "@unitybase/blob-stores": "^5.0.40",
-    "@unitybase/cs-shared": "^5.0.19",
+    "@unitybase/base": "^5.1.7",
+    "@unitybase/blob-stores": "^5.0.41",
+    "@unitybase/cs-shared": "^5.0.20",
     "lodash": "^4",
     "mime-types": "^2.1.14"
   },
