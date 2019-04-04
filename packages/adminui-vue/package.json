@@ -45,12 +45,14 @@
     "font-awesome": "^4.7.0",
     "jdenticon": "^2.1.1",
     "lodash": "^4",
+    "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "systemjs": "^0.20.18",
     "systemjs-plugin-css": "^0.1.32",
     "throttle-debounce": "^2.1.0",
     "vue": "^2.6.8",
     "vue-template-compiler": "^2.6.8",
+    "vuelidate": "^0.7.4",
     "vuex": "^3.1.0"
   },
   "keywords": [

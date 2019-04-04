@@ -1,0 +1,6 @@
+//@! "do not remove comments below unless you know what you do!"
+//@isDefault "false"
+//@entity "ubs_message"
+//@formType "vue"
+//@caption "Message history"
+//@description ""

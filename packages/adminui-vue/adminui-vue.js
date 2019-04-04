@@ -43,6 +43,15 @@ const ElementUI = require('element-ui') // adminui-pub maps element-ui -> elemen
 window.ElementUI = ElementUI
 if (IS_SYSTEM_JS && !SystemJS.has('element-ui')) SystemJS.set('element-ui', SystemJS.newModule(ElementUI))
 
+Vue.use(ElementUI, {
+  size: 'small', // set element-ui default size
+  i18n: UB.i18n.bind(UB), // redirect ElementUI localization to UB.i18n
+  zIndex: 300000 // lat's Vue popovers always be above Ext
+})
+
+const momentPlugin = require('./utils/moment-plugin')
+Vue.use(momentPlugin)
+
 require('normalize.css/normalize.css')
 require('./theme/ub-body.css')
 require('./theme/el-theme-compiled.css')
@@ -51,21 +60,27 @@ if (BOUNDLED_BY_WEBPACK) {
   UB.inject('/clientRequire/@unitybase/adminui-vue/dist/adminui-vue.min.css')
 }
 Vue.use(UB)
-Vue.use(ElementUI, {
-  size: 'small', // set element-ui default size
-  i18n: UB.i18n.bind(UB), // redirect ElementUI localization to UB.i18n
-  zIndex: 300000 // lat's Vue popovers always be above Ext
-})
+
+const UbComponents = require('./utils/install-ub-components')
+Vue.use(UbComponents)
+
+const Vuelidate = require('vuelidate/lib/index').default
+if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', SystemJS.newModule(Vuelidate))
+Vue.use(Vuelidate)
 
 const dialogs = require('./components/dialog/UDialog')
 // add $dialog* to Vue prototype
 Vue.use(dialogs)
 UB.setErrorReporter(dialogs.errorReporter)
 if (isExt) {
-  const replaceExtJSDialogs = require('./utils/replaceExtJSWidgets').replaceExtJSDialogs
-  const replaceExtJSNavbar = require('./utils/replaceExtJSWidgets').replaceExtJSNavbar
+  const {
+    replaceExtJSDialogs,
+    replaceExtJSNavbar,
+    replaceExtJSMessageBarDialog
+  } = require('./utils/replaceExtJSWidgets')
   $App.on('applicationReady', replaceExtJSDialogs)
   $App.on('applicationReady', replaceExtJSNavbar)
+  $App.on('applicationReady', replaceExtJSMessageBarDialog)
 }
 
 const Sidebar = require('./components/sidebar/USidebar.vue').default
@@ -141,9 +156,6 @@ if (window.$App) {
     // })
   }
 }
-
-const entityEditor = require('./components/UbEntityEditComponent.vue').default
-Vue.component('ub-entity-edit', entityEditor)
 
 if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   const replaceAutoForms = require('./utils/replaceExtJSWidgets').replaceAutoForms

@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.2.3]
 ### Added
  - navshortcuts access initialization for Supervisor role
+ - added vue form 'Messages history'
+ - added vue form 'Send message'
 
 ### Changed
  - use webpack4 for production build
- 
+
 ## [5.2.0]
 ### Added
  - new handler `onAfterRender` for reports. Will be called by ReportViewer just after HTML report result is rendered

@@ -3,8 +3,8 @@
     ref="entityEdit"
     :loading="loading"
     style="height: 100%;"
-    @keyup.alt.s="saveAndReload"
-    @keyup.alt.enter="saveAndClose"
+    @keyup.alt.s="beforeSave(saveAndReload)"
+    @keyup.alt.enter="beforeSave(saveAndClose)"
     @keyup.alt.r="remove"
   >
     <toolbar
@@ -17,8 +17,8 @@
       :input-actions="inputActions"
       :input-buttons="inputButtons"
       :form-code="formCode"
-      @saveAndClose="saveAndClose"
-      @saveAndReload="saveAndReload"
+      @saveAndClose="beforeSave(saveAndClose)"
+      @saveAndReload="beforeSave(saveAndReload)"
       @remove="remove"
     />
     <div class="ub-entity-edit__slot">
@@ -32,7 +32,7 @@
 const toolbar = require('./UbToolbarComponent.vue').default
 
 module.exports = {
-  name: 'UbEntityEditComponent',
+  name: 'UEntityEdit',
   props: {
     instance: {
       type: Object,
@@ -47,7 +47,10 @@ module.exports = {
     useOnlyOwnActions: Boolean,
     inputActions: Array,
     inputButtons: Array,
-    save: Function,
+    beforeSave: {
+      type: Function,
+      default: (cb) => { cb() }
+    },
     currentTabId: String,
     formCode: String
   },

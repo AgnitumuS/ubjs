@@ -33,15 +33,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
       }
       AdminUiVue.mountHelpers.mount(mountParams)
     }
-  ```     
+  ```
+ - added `UForm` component. Wrap for UFormRow which can set label width for child `UFormRow`s
+
 ## [1.4.0]
 ### Changed
  - UbContext -> UContextMenu
  - UbCodeMirror -> UCodeMirror
  - UbInput -> UInput
+ - All Vue components now will be inited in `packages/adminui-vue/ub-components.js`
 
 ### Added
- - `throttle-debounce` micro package added. Exported by adminui-vue as throttleDebounce 
+ - `throttle-debounce` micro package added. Exported by adminui-vue as throttleDebounce  
+ - added `UFormRow` component. When you need to add label in right side of form item
+ - added `UErrorWrap` component. Wrap any element and show error from prop under element 
   
 ## [1.3.3]
 ### Changed

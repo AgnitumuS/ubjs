@@ -30,5 +30,24 @@
   actionAdd: 'დამატება',
   actionDelete: 'წაშლა',
   reportParametersHeader: 'შეატყობინეთ პარამეტრებს',
-  reportParamsRequired: 'გთხოვთ, შეავსოთ აუცილებელი პარამეტრების პირველ რიგში'
+  reportParamsRequired: 'გთხოვთ, შეავსოთ აუცილებელი პარამეტრების პირველ რიგში',
+
+  newMessages: '{0} new messages',
+  youHaveNoNewMessages: 'You have no new messages',
+  showFull: 'Show full',
+  messageHistoryIsEmpty: 'Message history is empty',
+  byDateRange: 'By date range',
+  startDate: 'Start date',
+  endDate: 'End date',
+  addByRole: 'Add by role',
+  addUser: 'Add user',
+  selectedUsers: 'Selected users',
+  allUsers: 'All users',
+  send: 'Send',
+  nextWeek: 'Next week',
+  nextMonth: 'Next month',
+  next3Months: 'Next 3 months',
+  messageType: 'Type',
+  messageHistoryTitle: 'History',
+  messageSendTitle: 'Send message'
 })

@@ -32,7 +32,7 @@ function activateIfMounted (commandConfig) {
 TODO - describe form interace (or even Vuex module interface)
 form interface
 isDirty
-saveChanges -> promise
+save -> promise
  */
 
 /**
@@ -41,11 +41,14 @@ saveChanges -> promise
  * @param {Object} commandConfig.FormComponent Form Component to render (Vue SFC)
  *   Component must contains:
  *    - either computed property or method `isDirty` - called by tab/window to check form is Dirty
- *    - async method `saveChanges`  - called by tab/window to save form data
+ *    - async method `save`  - called by tab/window to save form data
  * @param {Object} commandConfig.showFormParams ShowForm params
  */
 function mount (commandConfig) {
   if (!commandConfig.FormComponent) throw new Error('FormComponent is required')
+  if (!commandConfig.showFormParams) {
+    commandConfig.showFormParams = {}
+  }
   if (commandConfig.showFormParams.isModal) {
     mountModal(commandConfig)
   } else {
@@ -60,10 +63,8 @@ function mount (commandConfig) {
  */
 function mountModal (mountParams) {
   let title = mountParams.showFormParams.title
-  let FormComponent = mountParams.FormComponent
-  let componentProps = showFormParamsToComponentProps(mountParams.showFormParams)
+  const FormComponent = mountParams.FormComponent
   const instance = new Vue({
-    Components: { FormComponent },
     data () {
       return {
         dialogVisible: false
@@ -85,7 +86,14 @@ function mountModal (mountParams) {
           }
         }
       }, [
-        h(FormComponent, { attrs: { ...componentProps } })
+        h(FormComponent, {
+          props: showFormParamsToComponentProps(mountParams.showFormParams),
+          on: {
+            close: () => {
+              this.dialogVisible = false
+            }
+          }
+        })
       ])
     }
   })
@@ -111,14 +119,16 @@ function mountTab (mountParams) {
     },
     closable: true
   })
-  let componentProps = showFormParamsToComponentProps(mountParams.showFormParams)
   const instance = new Vue({
-    render: (h) => h(FormComponent, { attrs: { ...componentProps } }) // pass props programmatically
+    render: (h) => h(FormComponent, {
+      props: showFormParamsToComponentProps(mountParams.showFormParams) // pass props programmatically
+    })
   })
   instance.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   tab.on('close', () => {
     instance.$destroy()
   })
+
   tab.on('beforeClose', onBeforeTabClose.bind(instance))
   $App.viewport.centralPanel.setActiveTab(tab)
 }
@@ -130,7 +140,8 @@ function showFormParamsToComponentProps (showFormParams) {
     currentTabId: showFormParams.tabId,
     formCode: showFormParams.formCode,
     commandConfig: showFormParams.commandConfig,
-    parentContext: showFormParams.parentContext
+    parentContext: showFormParams.parentContext,
+    ...showFormParams.props
   }
 }
 
@@ -139,7 +150,7 @@ function showFormParamsToComponentProps (showFormParams) {
  * @param {function} done Dialog clone function
  * @private
  */
-function onBeforeDialogClose (done) {
+async function onBeforeDialogClose (done) {
   let dataComponent = this
   while (dataComponent && (typeof dataComponent.isDirty === 'undefined') && dataComponent.$children) {
     if (dataComponent.$children.length) {
@@ -152,7 +163,7 @@ function onBeforeDialogClose (done) {
 
   let isDirty = typeof dataComponent.isDirty === 'function' ? dataComponent.isDirty() : dataComponent.isDirty
   if (isDirty) {
-    this.$dialog({
+    const answer = await this.$dialog({
       title: this.$ut('unsavedData'),
       msg: this.$ut('confirmSave'),
       type: 'warning',
@@ -161,15 +172,15 @@ function onBeforeDialogClose (done) {
         no: this.$ut('doNotSave'),
         cancel: this.$ut('cancel')
       }
-    }).then(result => {
-      if (result === 'yes') {
-        dataComponent.saveChanges().then(() => {
-          done()
-        }) // this.saveAndClose()
-      } else if (result === 'no') {
+    })
+    if (answer === 'yes') {
+      const validation = await dataComponent.save()
+      if (validation !== 'error') {
         done()
       }
-    })
+    } else if (answer === 'no') {
+      done()
+    }
   } else {
     done()
   }
@@ -204,13 +215,15 @@ function onBeforeTabClose () {
         no: this.$ut('doNotSave'),
         cancel: this.$ut('cancel')
       }
-    }).then(result => {
-      if (result === 'yes') {
-        dataComponent.saveChanges().then(() => {
-          currentTab.forceClose = true
-          currentTab.close()
-        }) // this.saveAndClose()
-      } else if (result === 'no') {
+    }).then(answer => {
+      if (answer === 'yes') {
+        dataComponent.save().then(validation => {
+          if (validation !== 'error') {
+            currentTab.forceClose = true
+            currentTab.close()
+          }
+        })
+      } else if (answer === 'no') {
         currentTab.forceClose = true
         currentTab.close()
       }

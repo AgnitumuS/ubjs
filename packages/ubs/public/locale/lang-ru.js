@@ -30,5 +30,24 @@ UB.i18nExtend({
   actionAdd: 'Добавить',
   actionDelete: 'Удалить',
   reportParametersHeader: 'Параметри отчета',
-  reportParamsRequired: 'Сначала заполните обязательные параметры'
+  reportParamsRequired: 'Сначала заполните обязательные параметры',
+
+  newMessages: '{0} новых сообщений',
+  youHaveNoNewMessages: 'У вас нет новых сообщений',
+  showFull: 'Показать полностью',
+  messageHistoryIsEmpty: 'История сообщений пуста',
+  byDateRange: 'По периоду',
+  startDate: 'Дата начала',
+  endDate: 'Дата конца',
+  addByRole: 'Добавить по роли',
+  addUser: 'Добавить пользователя',
+  selectedUsers: 'Выбранные пользователи',
+  allUsers: 'Все пользователи',
+  send: 'Отправить',
+  nextWeek: 'Следующая неделя',
+  nextMonth: 'Следующий месяц',
+  next3Months: 'Следующие 3 месяца',
+  messageType: 'Тип',
+  messageHistoryTitle: 'История',
+  messageSendTitle: 'Отправка сообщения'
 })

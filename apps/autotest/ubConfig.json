@@ -33,7 +33,7 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB" //, "Negotiate"
+			"UB" , "Negotiate"
 		],
 		"ldapCatalogs": [
 			{
@@ -57,7 +57,7 @@
 			"endpoint": "ubadminui",
 			"loginURL": "/models/adminui-vue/views/ub-auth.html",
 			"customSidebar": true, // set to true to not create sidebar
-			"customNavbar": false, // set to true to not create navbar
+			"customNavbar": true, // set to true to not create navbar
 			"vueAutoForms": true,
 			"messenger": {
 				"enabled": true,
