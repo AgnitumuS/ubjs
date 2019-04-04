@@ -24,31 +24,14 @@
       }
     }
   },
-  "delayed_operations": {
-    "title": "03 Delayed operations",
-    "children": {
-      "schedulers": {
-        "title": "Schedulers"
-      }
-    }
-  },
-  "odata": {
-    "title": "04 OData"
-  },
-  "DocuSign": {
-    "title": "05 DocuSign"
-  },
-  "other_workInProgress": {
-    "title": "06 Other(work in progress)",
+  "ORM": {
+    "title": "03 ORM",
     "children": {
       "entites": {
         "title": "Entites"
       },
-      "primary_keys": {
-        "title": "Primary keys"
-      },
       "mixin_mstorage": {
-        "title": "mStorage (CRUID)"
+        "title": "mStorage (CRUD)"
       },
       "mixin_rls": {
         "title": "Row level security"
@@ -56,6 +39,31 @@
       "mixins_fts": {
         "title": "Full text search"
       },
+      "primary_keys": {
+        "title": "Primary keys"
+      },
+      "database_tuning": {
+        "title": "Tuning queries performance"
+      }
+    }
+  },
+  "delayed_operations": {
+    "title": "04 Delayed operations",
+    "children": {
+      "schedulers": {
+        "title": "Schedulers"
+      }
+    }
+  },
+  "odata": {
+    "title": "05 OData"
+  },
+  "DocuSign": {
+    "title": "06 DocuSign"
+  },
+  "other_workInProgress": {
+    "title": "07 Other(work in progress)",
+    "children": {
       "web_dav": {
         "title": "Web DAV access"
       },

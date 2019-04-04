@@ -104,6 +104,7 @@ class TableDefinition {
    * @property {boolean} [isUnique=false]
    * @property {boolean} [isDisabled=false]
    * @property {boolean} [isConstraint=false]
+   * @property {string} indexType One of CATALOGUE,FTS or null for usual indexes
    */
 
   /**
@@ -117,6 +118,7 @@ class TableDefinition {
     obj.isDisabled = obj.isDisabled || false
     obj.isConstraint = obj.isConstraint || false
     obj._upperName = obj.name.toUpperCase()
+    obj.indexType = obj.indexType || null
     if (obj.keys && obj.keys.length) obj.keys = obj.keys.map(name => name.toUpperCase())
     if (checkName) {
       existed = _.findIndex(this.indexes, {_upperName: obj._upperName})
