@@ -13,7 +13,6 @@
       remote
       :remote-method="remoteMethod"
       :disabled="loading || disabled"
-      :automatic-dropdown="false"
       class="ub-select-entity"
       style="width: 100%"
       v-on="$listeners"
@@ -351,6 +350,40 @@ module.exports = {
     }
   },
   mounted () {
+    /**
+     * replace default focus callback
+     * in el-select component
+     * @param  {Object} event
+     */
+    function replaceHandleFocus (event) {
+      /**
+       * open dropdown when user start typing
+       * @param  {String} 'input'  event
+       * @param  {Funcion} (       callback
+       */
+      this.$refs.reference.$once('input', () => {
+        this.visible = true
+        this.menuVisibleOnFocus = true
+      })
+      if (!this.softFocus) {
+        this.$emit('focus', event)
+      } else {
+        this.softFocus = false
+      }
+    }
+    /**
+     * define readonly computed property for turn on input edit
+     * @param  {VueInstance} this.$refs.selector scope
+     * @param  {String} 'readonly'          property name
+     * @param  {Function} 'get'             replace getter
+     */
+    Object.defineProperty(this.$refs.selector, 'readonly', {
+      get () {
+        return false
+      }
+    })
+    this.$refs.selector.handleFocus = replaceHandleFocus.bind(this.$refs.selector)
+
     this.$UB.connection.on(`${this.entityName}:changed`, this.handleEntityChanged)
     this.$UB.connection.on(`${this.entityName}:insert`, this.handleEntityInserted)
 
