@@ -2,6 +2,7 @@
   <el-tooltip
     :disabled="inTray || tabData.title && tabData.title.length < 18"
     placement="bottom"
+    :enterable="false"
   >
     <span
       slot="content"

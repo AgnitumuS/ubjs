@@ -9,6 +9,7 @@
       :enterable="false"
       :content="item.label"
       placement="top"
+      :enterable="false"
     >
       <i
         :class="item.iconCls"
@@ -27,6 +28,7 @@
     <el-tooltip
       :content="$ut('quickAccessButtons')"
       placement="right"
+      :enterable="false"
     >
       <i class="fa fa-bolt" />
     </el-tooltip>
