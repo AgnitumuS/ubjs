@@ -48,8 +48,7 @@ module.exports.createDatabase = function createDatabase (conn, databaseConfig) {
   })
 
   let grants = [
-    'GRANT CONNECT TO {0}',
-    'GRANT RESOURCE TO {0}',
+    'GRANT RESOURCE, CONNECT, CTXAPP TO {0}',
     'ALTER USER {0} DEFAULT ROLE ALL',
     'GRANT ALTER ANY INDEX TO {0}',
     'GRANT ALTER ANY PROCEDURE TO {0}',

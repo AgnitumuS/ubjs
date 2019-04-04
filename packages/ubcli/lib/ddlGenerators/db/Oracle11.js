@@ -175,6 +175,7 @@ and uc.constraint_type='P'`
 select 
   ui.index_name as index_id,
   ui.index_name,
+  ui.ITYP_NAME AS index_type,
   decode(ui.uniqueness,'UNIQUE',1,0) as is_unique,
   case when uic.column_name like 'SYS_N%' then 
     F_ColumnNameForIdx(ui.index_name, ui.table_name, uic.column_position)
@@ -207,6 +208,7 @@ order
           isUnique: indexesFromDb[i]['IS_UNIQUE'] !== 0,
           isDisabled: false, // indexesFromDb[i][ 'is_disabled' ] !== 0,
           isConstraint: false, // indexesFromDb[i][ 'is_unique_constraint' ] !== 0,
+          indexType: indexesFromDb[i]['INDEX_TYPE'] === 'CTXCAT' ? 'CATALOGUE' : null,
           keys: []
         }
         // index may consist of several keys (one row for each key)
@@ -525,9 +527,9 @@ where
   /** @override */
   genCodeCreateIndex (table, indexSH, comment) {
     let commentText = comment ? `-- ${comment} \n` : ''
-    this.DDL.createIndex.statements.push(
-      `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on ${table.name}(${indexSH.keys.join(',')})`
-    )
+    let idxDDL = `${commentText}create ${indexSH.isUnique ? 'unique' : ''} index ${indexSH.name} on ${table.name}(${indexSH.keys.join(',')})`
+    if (indexSH.indexType === 'CATALOGUE') idxDDL += ' INDEXTYPE IS CTXSYS.CTXCAT'
+    this.DDL.createIndex.statements.push(idxDDL)
   }
 
   /**
@@ -618,6 +620,22 @@ where
       case 'CLOB': return 'TEXT'
       case 'BLOB': return 'BLOB'
       default: return dataType
+    }
+  }
+
+  /**
+   * Generate a column type DDL part
+   * @override
+   * @param {FieldDefinition} column
+   * @return {string}
+   */
+  createTypeDefine (column) {
+    if (column.dataType === 'VARCHAR') { // VARCHAR(x CHAR)
+      let res = this.uniTypeToDataBase(column.dataType)
+      res += `(${column.size.toString()} CHAR)`
+      return res
+    } else {
+      return super.createTypeDefine(column)
     }
   }
 }

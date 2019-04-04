@@ -1376,6 +1376,12 @@ function UBEntityAttribute (attributeInfo, attributeCode, entity) {
    * @readonly
    */
   this.physicalDataType = UBDomain.getPhysicalDataType(this.dataType || 'String')
+  /**
+   * Index of type CATALOGUE exists for attribute
+   * @property {boolean} hasCatalogueIndex
+   * @readonly
+   */
+  this.hasCatalogueIndex = attributeInfo.hasCatalogueIndex === true
 }
 
 // default UBEntityAttribute props - used by JSON.stringify replacer to produce entity JSON representation

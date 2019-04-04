@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.12]
+### Added
+ - support for Oracle Text and CTXCAT indexes (require Oracle Text to be enabled - see https://docs.oracle.com/cd/E11882_01/install.112/e27508/initmedia.htm#DFSIG269)
+
 ## [5.3.11]
 ### Fixed
  - `npx ubcli meta-tr` command now work correctly. Meta content encoding before using `JSON.parse()` was fixed
@@ -163,7 +167,7 @@ npx ubcli generateDDL -cfg $UB_CFG -autorun
 
 ## [1.0.41]
 ### Changed
-- ublci `createCodeInsightHelper` command now generate entities stubs using **stanrard JS** code style
+- ublci `createCodeInsightHelper` command now generate entities stubs using **standard JS** code style
 
 ## [1.0.36]
 ### Added
@@ -171,7 +175,7 @@ npx ubcli generateDDL -cfg $UB_CFG -autorun
 
 ## [1.0.34]
 ### Fixed
-- prepareGZIP command now work propertly (adding @unitybase/compressors dependency)
+- prepareGZIP command now work properly (adding @unitybase/compressors dependency)
 
 
 ## [1.0.28]
@@ -179,7 +183,7 @@ npx ubcli generateDDL -cfg $UB_CFG -autorun
 - ability to create a empty database for non-default connection using `-conn` initDB parameter: `ubcli initDB -conn connectionName -create -drop`. 
 
 ### Fixed
-- show a connection name duting database drop/create operations
+- show a connection name during database drop/create operations
 
 ## [1.0.26]
 ### Added

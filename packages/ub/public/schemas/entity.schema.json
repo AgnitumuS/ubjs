@@ -520,7 +520,7 @@
                     "properties": {
                         "type": {
                             "type": "string",
-                            "enum": ["INDEX", "FK", "CHECK"],
+                            "enum": ["INDEX", "FK", "CHECK", "CATALOGUE", "OTHER"],
                             "description": "Feature type"
                         },
                         "definition": {

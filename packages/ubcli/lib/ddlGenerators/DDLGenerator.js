@@ -420,7 +420,9 @@ class DDLGenerator {
           let definition = commands.definition
           switch (commands.type) {
             case 'INDEX':
+            case 'CATALOGUE':
               objDef = {name: dbKey, keys: [], isUnique: definition.isUnique}
+              if (commands.type === 'CATALOGUE') objDef.indexType = commands.type
               _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
                 if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
                   if (fKeyOptions.func.indexOf('{0}') === -1) {
@@ -469,6 +471,9 @@ class DDLGenerator {
     switch (attribute.dataType) {
       case UBDomain.ubDataTypes.String:
         dataType = 'NVARCHAR'
+        if (attribute.hasCatalogueIndex && DDLGenerator.isOracle(attribute.entity.connectionConfig.dialect)) {
+          dataType = 'VARCHAR' // Oracle can't create CTXCAT index for NVARCHAR
+        }
         size = attribute.size
         if (attribute.size > DDLGenerator.MAX_NVARCHAR[attribute.entity.connectionConfig.dialect]) {
           throw new Error(`Specified length of attribute "${attribute.entity.name}.${attribute.name}" too long for ${attribute.entity.connectionConfig.dialect}. Max value is ${DDLGenerator.MAX_NVARCHAR[attribute.entity.connectionConfig.dialect]}`)

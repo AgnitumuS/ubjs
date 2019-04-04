@@ -103,14 +103,13 @@
     }
   },
   "dbExtensions": {
-    "UIDX_CODE": {
+		"UIDX_TST_DICT_CODE": {
+			"type": "INDEX",
       "MSSQL": {
-        "expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(code, filterValue)",
-        "exprtype": "index"
+				"expression": "CREATE UNIQUE INDEX UIDX_TST_DICT_CODE on tst_dictionary(code, filterValue)"
       },
       "Oracle": {
-        "expression": "CREATE UNIQUE INDEX UIDX_CODE on tst_dictionary(UPPER(code), filterValue)",
-        "exprtype": "index"
+				"expression": "CREATE UNIQUE INDEX UIDX_TST_DICT_CODE on tst_dictionary(UPPER(code), filterValue)"
       }
     }
   }
