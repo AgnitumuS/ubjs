@@ -14,6 +14,7 @@
       :is-dirty="isDirty"
       :simple-audit="{mi_createDate: instance.mi_createDate, mi_modifyDate: instance.mi_modifyDate}"
       :use-only-own-actions="useOnlyOwnActions"
+      :use-only-own-buttons="useOnlyOwnButtons"
       :input-actions="inputActions"
       :input-buttons="inputButtons"
       :form-code="formCode"
@@ -45,6 +46,7 @@ module.exports = {
     parentContext: Object,
     instanceId: Number,
     useOnlyOwnActions: Boolean,
+    useOnlyOwnButtons: Boolean,
     inputActions: Array,
     inputButtons: Array,
     beforeSave: {
