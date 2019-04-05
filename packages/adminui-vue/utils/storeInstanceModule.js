@@ -63,6 +63,9 @@ function isEqual (arg1, arg2) {
  */
 
 function change (state, key, value) {
+  if (state.$v && state.$v[key]) {
+    state.$v[key].$touch()
+  }
   if (!isEqual(state.data[key], value)) {
     if (!(key in state.originalData)) {
       // No value in "originalData" - edited for the first time, so save old value to "originalData"

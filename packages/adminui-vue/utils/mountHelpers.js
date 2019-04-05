@@ -261,9 +261,8 @@ function onBeforeTabClose () {
 /**
  * subscribe to change isDrity or title
  * @param  {VuexStore} store    subscribe target
- * @param  {Function} setTitle method which call when title is change
  */
-function subscribeFormChanges (store, setTitle) {
+function subscribeFormChanges (store) {
   store.watch(
     (state, getters) => {
       return {

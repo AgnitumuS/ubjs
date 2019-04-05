@@ -159,7 +159,6 @@ module.exports = {
   methods: {
     storeSetter (key, value) {
       this.$store.commit('SET_DATA', { key, value })
-      this.$v[key].$touch()
     },
 
     beforeSave (callback) {
