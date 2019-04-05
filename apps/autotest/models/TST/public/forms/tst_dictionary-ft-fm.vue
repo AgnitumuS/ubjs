@@ -8,6 +8,7 @@
     :before-save="beforeSave"
     @data-loaded="assignInstanceData"
   >
+    <!-- hide form before validation init -->
     <u-form
       v-if="$v"
       :label-width="140"

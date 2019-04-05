@@ -35,6 +35,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     }
   ```
  - added `UForm` component. Wrap for UFormRow which can set label width for child `UFormRow`s
+ - added `storeInstanceModule`. Vuex store which track all form changes
+ - added `storeValidationPlugin`. Vuex store plugin which validate instance module changes
 
 ### Changed
  - `portal:navbar:appendSlot` now append child to navbar
