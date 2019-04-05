@@ -36,6 +36,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   ```
  - added `UForm` component. Wrap for UFormRow which can set label width for child `UFormRow`s
 
+### Changed
+ - `portal:navbar:appendSlot` now append child to navbar
+ - `portal:navbar:defineSlot` define slot with new child (renamed `appendSlot` -> `defineSlot`)
+ - `portal:sidebar:appendSlot` now append child to sidebar
+ - `portal:sidebar:defineSlot` define slot with new child (renamed `appendSlot` -> `defineSlot`)
+
 ## [1.4.0]
 ### Changed
  - UbContext -> UContextMenu

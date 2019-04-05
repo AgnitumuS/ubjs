@@ -156,16 +156,16 @@ if (window.$App) {
     // Default navbar slot
     window.$App.on('applicationReady', () => {
       const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
-      $App.fireEvent('portal:navbar:appendSlot', UNavbarDefaultSlot, {})
+      $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
     })
     // Example:
     //
     // window.$App.on('applicationReady', () => {
     //   const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
-    //   $App.fireEvent('portal:sidebar:appendSlot', SidebarSlotExample, { some attrs })
+    //   $App.fireEvent('portal:sidebar:defineSlot', SidebarSlotExample, { some attrs })
     //
     //   const TabbarSlotExample = require('./samples/NavbarSlotExample.vue').default
-    //   $App.fireEvent('portal:navbar:appendSlot', NavbarSlotExample, { some attrs })
+    //   $App.fireEvent('portal:navbar:defineSlot', NavbarSlotExample, { some attrs })
     // })
   }
 }

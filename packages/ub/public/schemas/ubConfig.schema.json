@@ -577,6 +577,11 @@
           "type": "string",
           "default": "",
           "description": "Semicolon delimited list of server IP addresses. <b>WARNING</b> To be used ONLY in case server can't resolve local addresses automatically. In case of wrong configuration unauthorised server access is possible"
+        },
+        "skipCheckingCallerAndSessionIpEquality": {
+          "type": "boolean",
+          "default": false,
+          "description": "In case some middleware intercepts Authorization requests and redirect it to UB Session IP (IP address from which session is created) may differ from CallerIP (IP address of middleware). To allow such a requests set this parameter to `true`. **WARNING** vulnerability to token interception attacks"
         }
       }
     },

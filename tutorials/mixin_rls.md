@@ -1,129 +1,143 @@
-﻿# Mixin **rls** - Row Level Security (Безопастность уровня записей)
+﻿
+# Mixin **rls** - Row Level Security
 
-## Introduction
-  RLS is a security feature which allows developers to give access to a sub-set of data in their entity to others.
-Entity Level Security permission system don't distinguish between individual rows in a entity, so access is all-or-nothing. 
-Grant to `select` method on a entity will allow a user to access all rows of that entity. 
+Row-level security (RLS) is functionality built into UnityBase server core, which allows to filter rows available for the current user.
 
-  RLS _supplements_ these with an additional layer of access controls on a per-row basis, so requirements such as 
-"a manager can only view sensitive employee information for those employees who report to them" can be specified and enforced by the ORM.
+Scenarios where RLS might be useful:
+* Show only tasks assigned to a current user, disallow to see any other tasks
+* Show only menu items, available to the roles of the current ser
+* Show only documents, where the current user is a participant
 
- 
-## Детали реализации
-  Миксин перекрывает метод `select` и при каждом вызове добавляет в перечень условий результат выполнения(eval) JavaScript кода, указанного в конфиге `rls.expression`.
-   
-  Безопастность обновлений (update) обеспечивается автоматически, так как перед update mStorage всегда делает select чтобы получить значение полей записи ДО обновления, 
-и если этот select вернет пустую выборку будет сгенерированно исключение.     
-   
-### TIPS   
-   
-- Поскольку выражение из `rls.expression` вызывается при каждом формированни `select`, желательно в этом выражении не делать длительных операций. 
-Используете кеш {@link TubApp#globalCachePut App.globalCachePut/get} либо переменные в global (не забываем что глобал общий - используйте префиксы переменных!)
+## When to use RLS
 
-- Чтобы сослаться на атрибуты сущности, в результирующем выражении заключайте название атрибута в квадратные скобки:
-  - **`"[code] = '1234'"`** правильно - в результирующий SQL будет подставлен атрибут с алиасом таблицы `tab1.code = '1234'`  
-  - _**`"code = '1234'"`**_ **НЕправильно** - в результирующий SQL будет подставлено `code = '1234'` и получим _Ambiguous columns_
-        
-- Используйте параметры. Поскольку результат выражения - строка, используйте механизм задания inline параметров, поддерживаемый парсером, 
-а именно - заключайте параметры в `:(  ):`, например
-  - **`'([mi_owner] = :(' + Session.userID + '): )'`** будет преобразованно в параметризированный запрос `tabAlias.mi_owner = ?` и в качестве параметра
-  передан ID пользователя (например, 100)
-  - _**`'([mi_owner] = ' + Session.userID + ' )'`**_ будет преобразованно в **НЕпараметризированный** запрос `tabAlias.mi_owner = 100` 
-  и как результат - новый prepare, build execution plan и забивание кеша стейтвемнов на уровне сервера БД
-  - для передачи строки в качестве инлайн параметра обрамляем строку в кавычки (одинарные или двойные): `"'([groupCode]=:(\"govRankKind\"):)'"`
+Row-level security filters row, but that is not just filtering functionality.  Use RLS, when application needs not just filter rows for user in specific scenarios, but consistently apply data visibility rules across application.
 
-- чтобы вернуть истину - возвращайте выражение `'(1=1)'`, ложь - `'(0=1)'`. Это позволит другим разработчикам комбинировать ваши RLS например так: 
-"expression": "entity1.getRLS() + ' AND ' + entity2.getRls()", если ваше выражение будет возвращатьпустую строку, а не `(0=1)`, то оператор AND сломается.
+To just filter rows on a specific form, use `whereList` parameter of query.
+
+## Configuring RLS for an entity
+
+Configuration of RLS consists of the following steps:
+* Create a javascript file for the entity
+* Define a function, which builds a RLS expression
+* Configure entity
+
+## Create a javascript file for the entity
+
+UnityBase entities are defined as `.meta` files, in json format.  Existance of `.meta` file is enough to make the entity function.  But, in case, when any custom functionality is needed for an entity, a complimentary `.js` file is needed.
+So, if `.js` file not exists yet created one.  For example, for `msg_Message.meta` file, create a `msg_Message.js` file.
+
+## Define a function, which builds a RLS expression
+
+Add a function inside the `.js` file created, which would return SQL expression to filter the rows as required by RLS rules for this entity.
+Code example of what the function should look like:
+```javascript
+const uba_common = require('@unitybase/uba/modules/uba_common');
+
+function getAdmSubjIDs() {
+ return [
+  Session.userID,
+  ...Session.uData.groupIDs,
+  ...Session.uData.roleIDs
+ ];
+}
+
+function rlsSql() {
+ if (uba_common.isSuperUser()) return '1=1';
+
+ return `([recipientID] = :(${Session.userID}): OR EXISTS ` +
+  '(' +
+  'SELECT 1 FROM msg_Message_adm msgAdm ' +
+  'WHERE msgAdm.objectID = [ID] ' +
+  `AND msgAdm.subjectID IN (${getAdmSubjIDs().join(',')})` +
+  '))';
+}
+msg_Message.rlsSql = rlsSql;
+```
+
+Here are some points worth mentioning about the code sample above:
+* The SQL expression will be used inside `WHERE` clause of request.   It will be applied to any `SELECT` and `UPDATE` statement done for the entity.
+* The SQL shall be compatible with database vendors supported by UnityBase: SQL Server, Oracle, PostgreSQL and SqLite3, so avoid using vendor-specific features.
+  * An exception to this rule is when the the database vendor to be used in known in advance and the code won't be used by projects using other database vendors.
+* Each entity has a module object, available in global context.  This means, that for entity defined in `msg_Message.meta` file, there will be `msg_Message` global variable, available in any server-side script, without `require`.  Our goal is to add to that object a function, which would return the RLS SQL expression.
+* Notice the syntax `:(aValueHere):` - it is how the result query will be parameterized.  Just insert a value embraced with colons and braces and it will be added to result database request as a parameter, instead of inline value.
+  * It is considered to be a good practice to parameterize queries.
+  * Notice that array is not parameterized - that is because arrays parameterization is not supported yet.
+
+## Administrative Subjects
+
+Notice that the sample defines `getAdmSubjIDs` function, which returns list of subjects of the current user.
+Subject is a terminology used in [Access Control List](https://en.wikipedia.org/wiki/Access_control_list) paradigm.  In general subject is answer on question "who?".
+
+In UnityBase, subjects are users, roles, groups.  If UnityBase `ORG` model is used to manage organizational structure - it adds more subject types, like employees and organizational units.  It is also possible to add your own custom subject types.
 
 
-## Конфигурирование
-  В файле описания сущности в секции `mixins` добавляем `rls` и описывем параметр `expression` - произвольное JS выражение, 
-  возвращающее строку - кусочек where, подставляемый в select.
-    
-###Пример - фильтрация только по "своим" записям
-Сущность **tst_maindata.meta**:
-   
-    {
-    	"caption": "ub test main data",
-    	"sqlAlias": "tmd",
-    	"descriptionAttribute": "caption",
-    	"attributes": {
-    		"code":
-    		{
-    			"dataType": "String",
-    			"size": 32,
-    			"caption": "Code",
-    			"allowNull": false
-    		},
-    		"caption":
-    		{
-    			"dataType": "String",
-    			"size": 255,
-    			"caption": "Caption",
-    			"allowNull": true,
-    			"isMultiLang": true
-    		}
-    	},
-    	"mixins": {
-    		"mStorage": {
-    			"simpleAudit": true,
-    			"safeDelete": true
-    		},
-    		"rls": {
-    			"expression": "`([mi_owner] = :(${Session.userID}):)`"
-    		}	
-    	}
-    }
+Using administrative subjects to define RLS is extremely flexible and powerful. 
 
-  При каждом выполнении метода `select` отработает вычисление JavaScript выражения 
-  `"'([mi_owner] = :(' + Session.userID + '):)'"`, 
-  допустим Session.userID = 10, результат будет `([mi_owner] = :(10):)`,
-  это выражение добавиться к условиям `where` выборки, сервер:
-   
-   - заменит атрибут в квадратных скобках на его SQL alias: [mi_owner] -> tmd.mi_owner
-   - inline parameter :(10): заменит на параметр SQL: :(10): -> ?
-   - добавит получившееся выражение к `where`  через **AND** 
-  
-  В результате в условие `where` на сервер БД уйдёт `(tmd.mi_owner = 10)`.
-  
-### Пример - использование ф-ии из пространства имен сущности
-  В примере выше мы указали в `rls.expression` непосредственно выражение.
-  В более сложных случаях предпочтительнее использовать вызов ф-ии:
 
-**tst_maindata.meta**:
-    
-    ....
-    "rls": {
-        "expression": "tst_maindata.getMainDataRLS()"
-    }
- 
-**tst_maindata.js**:
+A user may represent a series of subjects:
+* the user itself
+* any role assigned to the user
+* any group the user is member of
 
-    var me = tst_maindata;
-    me.getMainDataRLS = function(){
-      console.log('!!!!!!!!!!!!!', this.entity.name); // -> tst_maindata
-      return `([mi_owner] = :(${Session.userID}):)`
-    }
- 
-    me.denyNonLocal = function(){
-      if (App.localIPs.indexOf(Session.callerIP) === -1) {
-        return '(1=1)';
-      } else {
-        return '(1=0)';
-      }
-    }
 
-Обратите внимание на то, как корректно вернуть что выражение всегда истино - '(1=1)' или ложно '(1=0)'.
-Такие выражения корректно отработают оптимизаторы любого сервера БД.    
- 
-## Обратная совместимость с UB 1.9
-В версиях платформы < 1.10 выражение RLS необходимо было задавать в псевдокоде.
-Можно было вызвать только ф-ии из скоупа global.$. Пример до 1.10:
-    
-    "expression": "([$.currentOwner()] OR [$.currentUserInGroup(ubm_desktop,'admins')] OR [$.currentUserOrUserGroupInAdmSubtable(ubm_desktop)])"
+All we need to check to decide if the row should be visible to a user - is whether row is visible to any of the subjects the user represents.
 
-Такой синтаксис **deprecated** и для обратной совместимости будет поддерживаеться до версии 1.12. Рекомендуем изменить:
- 
-    "expression": "`(${$.currentOwner()} OR ${$.currentUserInGroup(ubm_desktop,'admins')} OR ${$.currentUserOrUserGroupInAdmSubtable(ubm_desktop)})`"
-                           
-А ещё лучше избегать скоупа $ и использовать скоуп той сущности, в которой реально определена ф-я (чтобы легко было искать реализацию).    
+
+Union of all subjects are stored in `uba_subject` entity - all the users, groups and roles are stored and maintained here.
+So, when create a mapping entity, which defines relation between objects and subjects - the ACL entity, its `subjectID` attribute usually points to the `uba_subject` entity.
+
+Example of ACL entity:
+```json
+{
+	"connectionName": "",
+	"sqlAlias": "msgAdm",
+
+	"caption": "Message ACL",
+	"descriptionAttribute": "subjectID",
+
+	"mixins": {
+		"mStorage": {
+			"simpleAudit": true,
+			"safeDelete": false
+		}
+	},
+
+	"attributes": {
+		"objectID": {
+			"dataType": "Entity", "associatedEntity": "msg_Message", "cascadeDelete": true,
+			"caption": "Object"
+		},
+		"subjectID": {
+			"dataType": "Entity", "associatedEntity": "uba_subject",
+			"caption": "Subject"
+		}
+	}
+}
+```
+
+## Using `Session` object
+
+There is a globally available object `Session`.  The following properties are useful for developing functions, which build RLS expression:
+* `userID`
+* `userRoleNames` - a string - comma-separated role names.  Not very usable "as is", but role membership may be checked without any query to DB by role name using the following code snippet:
+
+```javascript
+Session.userRoleNames.split(',').find(r => r === 'roleName') != null
+```
+* `uData` - a structure with other usefule properties like:
+  * `uData.roleIDs` - array of numbers - IDs of roles assigned to the current user
+  * `uData.groupIDs` - array of numbers - IDs of groups the current user is member of
+
+
+## Configure entity
+
+Add `rls` configuration to the `mixins` section of the `.meta` file:
+```
+"mixins": {
+  "rls": {
+   "expression": "msg_Message.rlsSql()"
+  }
+ }
+```
+
+The value of `expression` property is just a javascript expression returning SQL.  Because we defined the `rlsSql` function and added it to globally available entity module object, it is available to be used here.
