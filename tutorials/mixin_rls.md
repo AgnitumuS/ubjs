@@ -1,4 +1,5 @@
-﻿# Mixin **rls** - Row Level Security
+﻿
+# Mixin **rls** - Row Level Security
 
 Row-level security (RLS) is functionality built into UnityBase server core, which allows to filter rows available for the current user.
 
@@ -7,13 +8,13 @@ Scenarios where RLS might be useful:
 * Show only menu items, available to the roles of the current ser
 * Show only documents, where the current user is a participant
 
-# When to use RLS
+## When to use RLS
 
 Row-level security filters row, but that is not just filtering functionality.  Use RLS, when application needs not just filter rows for user in specific scenarios, but consistently apply data visibility rules across application.
 
 To just filter rows on a specific form, use `whereList` parameter of query.
 
-# Configuring RLS for an entity
+## Configuring RLS for an entity
 
 Configuration of RLS consists of the following steps:
 * Create a javascript file for the entity
@@ -62,7 +63,7 @@ Here are some points worth mentioning about the code sample above:
   * It is considered to be a good practice to parameterize queries.
   * Notice that array is not parameterized - that is because arrays parameterization is not supported yet.
 
-### Administrative Subjects
+## Administrative Subjects
 
 Notice that the sample defines `getAdmSubjIDs` function, which returns list of subjects of the current user.
 Subject is a terminology used in [Access Control List](https://en.wikipedia.org/wiki/Access_control_list) paradigm.  In general subject is answer on question "who?".
@@ -114,7 +115,7 @@ Example of ACL entity:
 }
 ```
 
-### Using `Session` object
+## Using `Session` object
 
 There is a globally available object `Session`.  The following properties are useful for developing functions, which build RLS expression:
 * `userID`
