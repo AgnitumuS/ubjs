@@ -41,6 +41,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `portal:navbar:defineSlot` define slot with new child (renamed `appendSlot` -> `defineSlot`)
  - `portal:sidebar:appendSlot` now append child to sidebar
  - `portal:sidebar:defineSlot` define slot with new child (renamed `appendSlot` -> `defineSlot`)
+ - **BREAKING** renamed:
+  - UbSelectEntity -> USelectEntity
+  - UbSelectEnum -> USelectEnum
+  - UbSelectMany -> UbSelectMany
+  - UbUploadDocument -> UUploadDocument
 
 ## [1.4.0]
 ### Changed

@@ -49,7 +49,7 @@
 
 <script>
 module.exports = {
-  name: 'UbUploadDocument',
+  name: 'UUploadDocument',
   props: {
     value: [Object, String],
     docParams: {

@@ -7,7 +7,7 @@
           :label="$ut('messageType')"
           :error="$v.messageType.$error && $ut('isRequiredFieldFmt', $ut('messageType'))"
         >
-          <ub-select-enum
+          <u-select-enum
             v-model="messageType"
             :e-group="$UB.connection.domain.entities.ubs_message.attributes.messageType.enumGroup"
             @input="$v.messageType.$touch()"
@@ -43,7 +43,7 @@
         <u-form-row :label="$ut('addByRole')">
           <el-row :gutter="10">
             <el-col :span="16">
-              <ub-select-entity
+              <u-select-entity
                 v-model="roleModel"
                 entity-name="uba_role"
               />
@@ -58,7 +58,7 @@
         <u-form-row :label="$ut('addUser')">
           <el-row :gutter="10">
             <el-col :span="16">
-              <ub-select-entity
+              <u-select-entity
                 v-model="userModel"
                 entity-name="uba_user"
               />
