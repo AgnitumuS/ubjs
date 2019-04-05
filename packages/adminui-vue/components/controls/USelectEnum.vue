@@ -26,7 +26,7 @@ require('../../css/ub-select.css')
 const ENUM_ENTITY = 'ubm_enum'
 
 module.exports = {
-  name: 'UbSelectEnum',
+  name: 'USelectEnum',
   props: {
     value: {
       type: [String, Number]

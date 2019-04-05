@@ -111,7 +111,7 @@ require('../../css/ub-select.css')
 const PAGE_SIZE = 20
 
 module.exports = {
-  name: 'UbSelectEntity',
+  name: 'USelectEntity',
   props: {
     value: {
       type: [String, Number]

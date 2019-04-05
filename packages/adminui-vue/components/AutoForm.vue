@@ -36,21 +36,21 @@
             placeholder="Select date and time"
             @change="$v.value[field].$touch()"
           />
-          <ub-select-enum
+          <u-select-enum
             v-else-if="entitySchema.attributes[field].dataType === 'Enum'"
             v-model="value[field]"
             :e-group="entitySchema.attributes[field].enumGroup"
             :disabled="parentContext.hasOwnProperty(field)"
             @input="$v.value[field].$touch()"
           />
-          <ub-select-entity
+          <u-select-entity
             v-else-if="entitySchema.attributes[field].dataType === 'Entity'"
             v-model="value[field]"
             :entity-name="entitySchema.attributes[field].associatedEntity"
             :disabled="parentContext.hasOwnProperty(field)"
             @input="$v.value[field].$touch()"
           />
-          <ub-select-many
+          <u-select-many
             v-else-if="entitySchema.attributes[field].dataType === 'Many'"
             v-model="value[field]"
             :entity-name="entitySchema.attributes[field].associatedEntity"
@@ -72,7 +72,7 @@
             :disabled="parentContext.hasOwnProperty(field)"
             @input="$v.value[field].$touch()"
           />
-          <ub-upload-document
+          <u-upload-document
             v-else-if="entitySchema.attributes[field].dataType === 'Document'"
             v-model="value[field]"
             :doc-params="{ entity: entitySchema.name, attribute: field, ID: value.ID }"

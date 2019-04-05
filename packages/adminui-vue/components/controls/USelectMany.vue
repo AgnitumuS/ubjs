@@ -44,7 +44,7 @@
 require('../../css/ub-select.css')
 
 module.exports = {
-  name: 'UbSelectMany',
+  name: 'USelectMany',
   props: {
     value: {
       type: [String, Number]
