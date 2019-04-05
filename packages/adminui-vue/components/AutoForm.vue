@@ -15,76 +15,82 @@
       <u-form
         :label-width="150"
       >
-        <!--TODO replace style max-width with el-row md=12 sm 24-->
         <u-form-row
-          v-for="field in fieldsToShow"
-          :key="field"
-          :required="true"
-          :label="entitySchema.attributes[field].caption"
+          v-for="[key, value] in fields"
+          :key="key"
+          :required="requiredFields.includes(key)"
+          :label="entitySchema.attributes[key].caption"
           style="max-width: 600px"
+          :error="$v[key].$error && $ut('isRequiredFieldFmt', entitySchema.attributes[key].caption)"
         >
-          <!-- <el-date-picker
-            v-else-if="entitySchema.attributes[field].dataType === 'DateTime' || entitySchema.attributes[field].dataType === 'Date'"
-            v-model="value[field]"
-            :type="entitySchema.attributes[field].dataType.toLowerCase()"
+          <el-checkbox
+            v-if="entitySchema.attributes[key].dataType === 'Boolean'"
+            :value="value"
+            @input="storeSetter(key, $event)"
+          />
+          <el-date-picker
+            v-else-if="entitySchema.attributes[key].dataType === 'DateTime' || entitySchema.attributes[key].dataType === 'Date'"
+            :value="value"
+            :type="entitySchema.attributes[key].dataType.toLowerCase()"
             placeholder="Select date and time"
-            @change="$v.value[field].$touch()"
+            @input="storeSetter(key, $event)"
           />
           <ub-select-enum
-            v-else-if="entitySchema.attributes[field].dataType === 'Enum'"
-            v-model="value[field]"
-            :e-group="entitySchema.attributes[field].enumGroup"
-            :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
-          /> -->
-          <ub-select-entity
-            :entity-name="entitySchema.attributes[field].associatedEntity"
-            :disabled="parentContext.hasOwnProperty(field)"
-            :value="storeGetter(field)"
-            @input="storeSetter(field, $event)"
+            v-else-if="entitySchema.attributes[key].dataType === 'Enum'"
+            :value="value"
+            :e-group="entitySchema.attributes[key].enumGroup"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
           />
-          <!-- <ub-select-many
-            v-else-if="entitySchema.attributes[field].dataType === 'Many'"
-            v-model="value[field]"
-            :entity-name="entitySchema.attributes[field].associatedEntity"
-            :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
+          <ub-select-entity
+            v-else-if="entitySchema.attributes[key].dataType === 'Entity'"
+            :value="value"
+            :entity-name="entitySchema.attributes[key].associatedEntity"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
+          />
+          <ub-select-many
+            v-else-if="entitySchema.attributes[key].dataType === 'Many'"
+            :value="value"
+            :entity-name="entitySchema.attributes[key].associatedEntity"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
           />
           <el-input
-            v-else-if="entitySchema.attributes[field].dataType === 'Text'"
-            v-model="value[field]"
+            v-else-if="entitySchema.attributes[key].dataType === 'Text'"
+            :value="value"
             type="textarea"
             :autosize="{ minRows: 3, maxRows: 4}"
-            @change="$v.value[field].$touch()"
+            @input="storeSetter(key, $event)"
           />
           <u-input-number
-            v-else-if="['Int','BigInt','Float','Currency','ID'].includes(entitySchema.attributes[field].dataType)"
-            v-model="value[field]"
+            v-else-if="['Int','BigInt','Float','Currency','ID'].includes(entitySchema.attributes[key].dataType)"
+            :value="value"
             :entity-name="entitySchema.name"
-            :attribute-name="field"
-            :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
+            :attribute-name="key"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
           />
           <ub-upload-document
-            v-else-if="entitySchema.attributes[field].dataType === 'Document'"
-            v-model="value[field]"
-            :doc-params="{ entity: entitySchema.name, attribute: field, ID: value.ID }"
-            @input="$v.value[field].$touch()"
+            v-else-if="entitySchema.attributes[key].dataType === 'Document'"
+            :value="value"
+            :doc-params="{ entity: entitySchema.name, attribute: key, ID: value.ID }"
+            @input="storeSetter(key, $event)"
           />
           <u-code-mirror
-            v-else-if="entitySchema.attributes[field].dataType === 'Json'"
-            v-model="value[field]"
-            @input="$v.value[field].$touch()"
+            v-else-if="entitySchema.attributes[key].dataType === 'Json'"
+            :value="value"
+            @input="storeSetter(key, $event)"
           />
           <u-input
             v-else
-            v-model="value[field]"
+            :value="value"
             :entity-name="entitySchema.name"
-            :attribute-name="field"
-            :object-value="value"
-            :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
-          /> -->
+            :attribute-name="key"
+            :object-value="$store.state.data"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
+          />
         </u-form-row>
       </u-form>
     </u-entity-edit>
@@ -92,8 +98,6 @@
 </template>
 
 <script>
-const required = require('vuelidate/lib/validators/required').default
-
 module.exports = {
   name: 'AutoForm',
   props: {
@@ -124,16 +128,38 @@ module.exports = {
       return this.entitySchema
         .filterAttribute({ defaultView: true })
         .map((at) => at.name)
+    },
+
+    $v () {
+      return this.$store.state.$v
+    },
+
+    fields () {
+      return Object.entries(this.$store.state.data)
+        .filter(([key]) => this.fieldsToShow.includes(key))
+    },
+
+    /**
+     * check is attribute allowNull and not Boolean
+     * @return {Array} array of required fields
+     */
+    requiredFields () {
+      return this.fieldsToShow.map(field => {
+        const attr = this.entitySchema.attributes[field]
+        const isRequired = !attr.allowNull
+        const notBoolean = attr.dataType !== 'Boolean'
+
+        if (isRequired && notBoolean) {
+          return field
+        }
+      })
     }
   },
 
   methods: {
-    storeGetter (key) {
-      return this.$store.state.data[key]
-    },
-
     storeSetter (key, value) {
       this.$store.commit('SET_DATA', { key, value })
+      this.$v[key].$touch()
     },
 
     beforeSave (callback) {
@@ -144,7 +170,11 @@ module.exports = {
     },
 
     assignInstanceData (data) {
-      this.$store.commit('LOAD_DATA', data)
+      // init all entity fields in instance module
+      this.$store.dispatch('loadDataWithValidation', {
+        data,
+        requiredFields: this.requiredFields
+      })
     }
   }
 }

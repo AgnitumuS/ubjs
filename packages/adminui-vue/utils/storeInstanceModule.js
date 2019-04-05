@@ -133,7 +133,13 @@ function createInstanceModule (store) {
       /**
        * Detailed collections (if any)
        */
-      collections: {}
+      collections: {},
+
+      /**
+       * validation Object link
+       * will inited by store validation plugin
+       */
+      $v: null
     },
 
     getters: {
@@ -322,10 +328,38 @@ function createInstanceModule (store) {
         for (const field of fields) {
           Vue.set(state.touchedData, field, state.data[field])
         }
+      },
+
+      /**
+       * Set vuelidate validation object
+       * which returned by validation plugin
+       * @param {VuexTrackedInstance} state
+       * @param {ValidationObject} $v
+       */
+      SET_VALIDATION_OBJECT (state, $v) {
+        Vue.set(state, '$v', $v)
       }
     },
 
-    actions: store.actions,
+    actions: {
+      ...store.actions,
+
+      /**
+       * storeValidationPlugin is subscribed for this action
+       * and will get data from function payload
+       * @param  {Function} options.commit
+       * @param  {Object}   options.data            data
+       * @param  {Array}    options.requiredFields  list of required fields
+       * @param  {Boolean}  options.isPartialLoad   indicates which mutation will be called
+       */
+      loadDataWithValidation ({ commit }, { data, requiredFields, isPartialLoad }) {
+        if (isPartialLoad) {
+          commit('LOAD_DATA_PARTIAL', data)
+        } else {
+          commit('LOAD_DATA', data)
+        }
+      }
+    },
 
     plugins: [storeValidationPlugin]
   }
