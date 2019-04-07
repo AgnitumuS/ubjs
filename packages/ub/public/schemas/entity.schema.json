@@ -49,7 +49,7 @@
         "attributes": {
             "type": "array",
             "_format": "table",
-            "description": "Entity attributes, can be either array or object with keys=attributeName",
+            "description": "Array of entity attributes definitions",
             "items": {
                 "type": "object",
                 "additionalProperties": false,
