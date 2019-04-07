@@ -4,9 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.11]
+### Added
+ - Entity metadata merging: in case descendant model contains entity with the same name as
+ original model they `*.meta` files will be **MERGED** (before this patch descendant overrides parent).
+ This allow to **override only part of meta-file attributes/properties in descendants**.
+ 
 ## [5.2.5]
 ### Fixed
- - removed extra files from boundle
+ - removed extra files from bundle
 
 ## [5.2.4]
 ### Changed

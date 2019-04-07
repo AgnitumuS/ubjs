@@ -37,7 +37,6 @@ const _ = require('lodash')
  * @param {object} domainInfo.entityMethods entities methods access rights for current user
  * @param {object} domainInfo.models information about domain models
  * @param {object} domainInfo.i18n entities localization to current user language
- * @param {object} domainInfo.forceMIMEConvertors list of registered server-side MIME converters for document type attribute content
  * @class
  */
 function UBDomain (domainInfo) {
