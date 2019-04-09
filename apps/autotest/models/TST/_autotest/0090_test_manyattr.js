@@ -120,8 +120,21 @@ function testManyAttribute (conn) {
       manyValue2: '3,4'
     }
   })
-  selected = conn.Repository('tst_maindata').attrs('manyValue', 'manyValue2').where('code', '=', 'test2Many')
+  selected = conn.Repository('tst_maindata').attrs('ID', 'manyValue', 'manyValue2', 'mi_modifyDate').where('code', '=', 'test2Many')
     .selectSingle()
   assert.equal(selected.manyValue, '1,2', 'For row with code="test2Many" many must contain 2 value: 1 & 2')
   assert.equal(selected.manyValue2, '3,4', 'For row with code="test2Many" many2 must contain 2 value: 3 & 4')
+  conn.update({
+    entity: 'tst_maindata',
+    execParams: {
+      ID: selected.ID,
+      manyValue: '5,6',
+      manyValue2: '7',
+      mi_modifyDate: selected.mi_modifyDate
+    }
+  })
+  selected = conn.Repository('tst_maindata').attrs('ID', 'manyValue', 'manyValue2').where('code', '=', 'test2Many')
+    .selectSingle()
+  assert.equal(selected.manyValue, '5,6', 'For row with code="test2Many" many must contain 2 value: 5 & 6')
+  assert.equal(selected.manyValue2, '7', 'For row with code="test2Many" many2 must contain 2 value: 7')
 }
