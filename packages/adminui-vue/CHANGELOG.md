@@ -49,6 +49,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - UbSelectMany -> UbSelectMany
   - UbUploadDocument -> UUploadDocument
 
+### Fixed
+ - set correct zIndex when open UB dialogs from magicLinks
+
 ## [1.4.0]
 ### Changed
  - UbContext -> UContextMenu
