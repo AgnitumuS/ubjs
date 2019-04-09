@@ -23,6 +23,9 @@
 
  *
  */
+
+const Vue = require('vue')
+
 module.exports = {
   addCommand,
   install
@@ -50,12 +53,18 @@ function addCommand (command, handler) {
  *
  * @param {Event} e
  */
+
 function checkClickOnMagicLink (e) {
   let target = e.target
   if (target.nodeName !== 'A') return
   if (!target.href.endsWith('#')) return
   let intercepted = false
   let params = dataAttributesToObject(target.dataset)
+  // Create fake (hidden) message and get it zIndex
+  params.zIndex = Vue.prototype.$message({
+    customClass: 'ub-fake-notification'
+  }).dom.style.zIndex
+
   if (!params.cmdType && params.entity && params.id) { // legacy data-entity + data-id
     console.warn('Deprecated magic link format data-entity + data-id. Use <a href="#" data-cmd-type="showForm" data-entity="entityCode" data-instance-id=1233>')
     params.cmdType = 'showForm'

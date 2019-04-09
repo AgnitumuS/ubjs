@@ -152,3 +152,7 @@ html, body {
   padding: 20px;
   font-size: 14px;
 }
+
+.ub-fake-notification{
+  display: none !important;
+}
