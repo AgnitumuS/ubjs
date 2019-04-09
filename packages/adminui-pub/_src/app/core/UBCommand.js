@@ -824,6 +824,9 @@ Ext.define('UB.core.UBCommand', {
     if (result.window && !disableAutoShow) {
       result.window.show()
     }
+    if (me.commandConfig.zIndex) {
+      result.window.setZIndex(me.commandConfig.zIndex)
+    }
     Ext.callback(me.callback, me.scope || me, [result])
   },
 
