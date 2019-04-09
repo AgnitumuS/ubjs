@@ -36,25 +36,25 @@
             @input="storeSetter(key, $event)"
           />
           <u-select-enum
-            v-else-if="entitySchema.attributes[field].dataType === 'Enum'"
-            v-model="value[field]"
-            :e-group="entitySchema.attributes[field].enumGroup"
-            :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
+            v-else-if="entitySchema.attributes[key].dataType === 'Enum'"
+            :value="value"
+            :e-group="entitySchema.attributes[key].enumGroup"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
           />
           <u-select-entity
-            v-else-if="entitySchema.attributes[field].dataType === 'Entity'"
-            v-model="value[field]"
-            :entity-name="entitySchema.attributes[field].associatedEntity"
-            :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
+            v-else-if="entitySchema.attributes[key].dataType === 'Entity'"
+            :value="value"
+            :entity-name="entitySchema.attributes[key].associatedEntity"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
           />
           <u-select-many
-            v-else-if="entitySchema.attributes[field].dataType === 'Many'"
-            v-model="value[field]"
-            :entity-name="entitySchema.attributes[field].associatedEntity"
-            :disabled="parentContext.hasOwnProperty(field)"
-            @input="$v.value[field].$touch()"
+            v-else-if="entitySchema.attributes[key].dataType === 'Many'"
+            :value="value"
+            :entity-name="entitySchema.attributes[key].associatedEntity"
+            :disabled="parentContext.hasOwnProperty(key)"
+            @input="storeSetter(key, $event)"
           />
           <el-input
             v-else-if="entitySchema.attributes[key].dataType === 'Text'"
@@ -72,10 +72,10 @@
             @input="storeSetter(key, $event)"
           />
           <u-upload-document
-            v-else-if="entitySchema.attributes[field].dataType === 'Document'"
-            v-model="value[field]"
-            :doc-params="{ entity: entitySchema.name, attribute: field, ID: value.ID }"
-            @input="$v.value[field].$touch()"
+            v-else-if="entitySchema.attributes[key].dataType === 'Document'"
+            :value="value"
+            :doc-params="{ entity: entitySchema.name, attribute: key, ID: value.ID }"
+            @input="storeSetter(key, $event)"
           />
           <u-code-mirror
             v-else-if="entitySchema.attributes[key].dataType === 'Json'"
