@@ -35,11 +35,11 @@ function testUbmForm (conn) {
   if (!tstClobFormRow) throw new Error('Form with code `tst_clob` not found')
   let defJson = JSON.parse(tstClobFormRow.formDef)
   let defContent = conn.getDocument({entity: ENTITY, attribute: 'formDef', ID: tstClobFormRow.ID}, {resultIsBinary: true})
-  assert.equal(defContent.byteLength, defJson.size, `Size of actual form def content should be the same as stored in metadata`)
+  assert.equal(defContent.byteLength, defJson.size, `Size of actual 'tst_clob' form def content (${defContent.byteLength} should be the same as stored in metadata (${defJson.size})`)
 
   let codeJson = JSON.parse(tstClobFormRow.formCode)
   let codeContent = conn.getDocument({entity: ENTITY, attribute: 'formCode', ID: tstClobFormRow.ID}, {resultIsBinary: true})
-  assert.equal(codeContent.byteLength, codeJson.size, `Size of actual form code content should be the same as stored in metadata`)
+  assert.equal(codeContent.byteLength, codeJson.size, `Size of actual 'tst_clob' form code content (${defContent.byteLength} should be the same as stored in metadata (${codeJson.size})`)
 }
 
 /**
