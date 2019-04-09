@@ -111,4 +111,17 @@ function testManyAttribute (conn) {
   assert.equal(selected.resultData.rowCount, 23, '"manyValue IS NOT NULL" condition with manyValue in fieldList must return 23 row')
   selected = conn.Repository('tst_maindata').attrs('ID', 'manyValue.caption').where('code', '=', 'Код1').selectAsObject()
   assert.equal(selected[0]['manyValue.caption'], 'caption 10,caption 20', 'select manyValue.caption')
+  conn.insert({
+    entity: 'tst_maindata',
+    execParams: {
+      code: 'test2Many',
+      nonNullDict_ID: 1,
+      manyValue: '1,2',
+      manyValue2: '3,4'
+    }
+  })
+  selected = conn.Repository('tst_maindata').attrs('manyValue', 'manyValue2').where('code', '=', 'test2Many')
+    .selectSingle()
+  assert.equal(selected.manyValue, '1,2', 'For row with code="test2Many" many must contain 2 value: 1 & 2')
+  assert.equal(selected.manyValue2, '3,4', 'For row with code="test2Many" many2 must contain 2 value: 3 & 4')
 }
