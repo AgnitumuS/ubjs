@@ -7,7 +7,7 @@ module.exports = {
       require('../components/controls/UUploadDocument.vue').default,
       require('../components/controls/UCodeMirror.vue').default,
       require('../components/controls/UInputNumber.vue').default,
-      require('../components/controls/UForm'),
+      require('../components/controls/UForm/index.js'),
       require('../components/controls/USelectEnum.vue').default,
       require('../components/controls/UInput.vue').default,
       require('../components/UEntityEdit.vue').default

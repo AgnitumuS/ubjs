@@ -1,7 +1,7 @@
 <template>
-  <u-form v-loading="loading">
-    <el-row :gutter="20">
-      <el-col :span="16">
+  <u-form v-loading="loading" style="overflow:auto; height: 100%">
+    <el-row :gutter="20" style="width: 100%">
+      <el-col :lg="16">
         <u-form-row
           required
           :label="$ut('messageType')"
@@ -39,7 +39,7 @@
           />
         </u-form-row>
       </el-col>
-      <el-col :span="8">
+      <el-col :lg="8">
         <u-form-row :label="$ut('addByRole')">
           <el-row :gutter="10">
             <el-col :span="16">

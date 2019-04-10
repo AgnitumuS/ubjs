@@ -96,6 +96,7 @@
 </template>
 
 <script>
+/* global $App */
 export default {
   name: 'UNavbarNotificationsButton',
 
@@ -149,7 +150,7 @@ export default {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
-        entity: 'ubs_message_edit',
+        entity: 'ubs_message_edit'
       })
     },
 
