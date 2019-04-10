@@ -1,6 +1,5 @@
-const {req_read, reg_getHeaders, reg_getMethod, reg_getUrl,
-  reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters
-} = process.binding('http_server')
+// eslint-disable-next-line camelcase
+const { req_read, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters } = process.binding('http_server')
 
 /**
  * @classdesc

@@ -1,5 +1,6 @@
-const {resp_writeHead, resp_write, resp_writeEnd, resp_writeBinaryBase64,
-  resp_validateETag, resp_getStatus, resp_setStatus, resp_getBodyForDebug} = process.binding('http_server')
+
+// eslint-disable-next-line camelcase
+const { resp_writeHead, resp_write, resp_writeEnd, resp_writeBinaryBase64, resp_validateETag, resp_getStatus, resp_setStatus, resp_getBodyForDebug } = process.binding('http_server')
 
 /**
  * @classdesc

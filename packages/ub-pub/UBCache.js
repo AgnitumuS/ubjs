@@ -70,7 +70,7 @@ function UBCache (dbName, version) {
       reject(e) // openRequest.error.name
     }
     openRequest.onblocked = function () {
-      reject({errMsg: 'databaseIsBlocked', errDetails: 'we need to upgrade database, but some other browser tab also open it'})
+      reject({ errMsg: 'databaseIsBlocked', errDetails: 'we need to upgrade database, but some other browser tab also open it' })
     }
     openRequest.onsuccess = function withStoreOnSuccess () {
       resolve(openRequest.result)
@@ -207,7 +207,7 @@ UBCache.prototype.get = function (key, storeName = 'userData') {
         resolve(req.result)
       }
       req.onerror = function getItemOnError () {
-        reject({errMsg: req.error.name})
+        reject({ errMsg: req.error.name })
       }
     })
   })
@@ -402,7 +402,7 @@ UBCache.prototype.remove = function (key, storeName = 'userData') {
           resolve(true) // empty array passed - nothing to delete
         }
       } else {
-        reject({errMsg: 'invalid key for UBCache.remove call'})
+        reject({ errMsg: 'invalid key for UBCache.remove call' })
       }
     })
   })
@@ -432,4 +432,3 @@ UBCache.prototype.removeIfMach = function (regExp, storeName) {
     return me.remove(machKeys, storeName)
   })
 }
-

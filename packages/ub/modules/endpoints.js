@@ -19,9 +19,10 @@ const mime = require('mime-types')
 const WebSockets = require('./web-sockets')
 const App = require('./App')
 const Session = require('./Session')
-const {PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT} = require('./httpUtils')
+const { PROXY_SEND_FILE_HEADER, PROXY_SEND_FILE_LOCATION_ROOT } = require('./httpUtils')
 const ubErrors = require('./ubErrors')
-const {uba_common, GC_KEYS} = require('@unitybase/base')
+// eslint-disable-next-line camelcase
+const { uba_common, GC_KEYS } = require('@unitybase/base')
 const queryString = require('querystring')
 const appBinding = process.binding('ub_app')
 /**

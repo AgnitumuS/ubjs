@@ -138,7 +138,7 @@ function WebSocketTransport (props) {
  */
 function JsonMessagesProtocol (namedAs) {
   let me = this
-  let _jsonProtocol = new WebSocketTransport({name: namedAs, handledAs: 'Json'})
+  let _jsonProtocol = new WebSocketTransport({ name: namedAs, handledAs: 'Json' })
 
   /**
    * Send specified command to recipient. Return `true` if data has been successfully sent (no guaranty it is received by client)
@@ -148,7 +148,7 @@ function JsonMessagesProtocol (namedAs) {
    * @return {Boolean}
    */
   this.sendCommand = function (command, recipient, params) {
-    return _jsonProtocol.sendTo(recipient, {command: command, params: params})
+    return _jsonProtocol.sendTo(recipient, { command: command, params: params })
   }
 
   /**
@@ -168,7 +168,7 @@ function JsonMessagesProtocol (namedAs) {
    * @param {*} params Any value
    */
   this.broadcast = function (command, params) {
-    return _jsonProtocol.broadcast({command: command, params: params})
+    return _jsonProtocol.broadcast({ command: command, params: params })
   }
 
   if (process.isWebSocketServer) {
@@ -188,11 +188,11 @@ function JsonMessagesProtocol (namedAs) {
       try {
         msg = JSON.parse(rawData)
       } catch (err) {
-        connection.send({command: 'error', params: {description: 'Invalid params: ' + rawData}})
+        connection.send({ command: 'error', params: { description: 'Invalid params: ' + rawData } })
         return
       }
       if (!me.emit(msg.command, connection, msg.params)) {
-        connection.send({command: 'error', params: {description: 'Invalid command: ' + msg.command}})
+        connection.send({ command: 'error', params: { description: 'Invalid command: ' + msg.command } })
       }
     }
 
@@ -208,7 +208,7 @@ function JsonMessagesProtocol (namedAs) {
        */
       me.emit('connect', connection)
       connection.send({
-        command: 'accepted', params: {connectionID: connection.session.id}
+        command: 'accepted', params: { connectionID: connection.session.id }
       })
     }
     /**

@@ -43,7 +43,7 @@ class DBConnection {
      * @private
      * @property dbIndexSymbol
      */
-    Object.defineProperty(this, DB_INDEX, {value: index})
+    Object.defineProperty(this, DB_INDEX, { value: index })
   }
   /**
    * Is database in transaction
@@ -80,7 +80,7 @@ class DBConnection {
    * @returns {string}
    */
   run (sql, params) {
-    const {parsedSql, parsedParams} = this.parseSQL(sql, params)
+    const { parsedSql, parsedParams } = this.parseSQL(sql, params)
     return binding.run(this[DB_INDEX], parsedSql, parsedParams)
   }
   /**
@@ -90,7 +90,7 @@ class DBConnection {
    * @returns {boolean}
    */
   exec (sql, params) {
-    const {parsedSql, parsedParams} = this.parseSQL(sql, params)
+    const { parsedSql, parsedParams } = this.parseSQL(sql, params)
     return binding.exec(this[DB_INDEX], parsedSql, parsedParams)
   }
   /**
@@ -201,7 +201,7 @@ class DBConnection {
             throw new Error('Error parsing inline parameter')
           }
           parsedParams.push(inlineParamValue)
-          paramPositions.push({paramStart: paramStart - 2, paramEnd: paramEnd + 2})
+          paramPositions.push({ paramStart: paramStart - 2, paramEnd: paramEnd + 2 })
         } else {
           // UB :paramName: - replace by ? and add a named param to AOutParams
           const paramStart = i
@@ -219,7 +219,7 @@ class DBConnection {
             } else {
               parsedParams.push(paramValue)
             }
-            paramPositions.push({paramStart: paramStart - 1, paramEnd: paramEnd + 1})
+            paramPositions.push({ paramStart: paramStart - 1, paramEnd: paramEnd + 1 })
           }
         }
       } else if (ch === chQuestionMark) {
@@ -244,10 +244,10 @@ class DBConnection {
       startPos = paramPositions[curParam].paramEnd
     }
     if (sqlParts.length === 0) {
-      return {parsedSql: sql, parsedParams: parsedParams}
+      return { parsedSql: sql, parsedParams: parsedParams }
     } else {
       sqlParts.push(sql.slice(startPos, sql.length))
-      return {parsedSql: sqlParts.join(''), parsedParams: parsedParams}
+      return { parsedSql: sqlParts.join(''), parsedParams: parsedParams }
     }
   }
 }
@@ -255,7 +255,7 @@ class DBConnection {
 const connections = {}
 const connBinding = binding.connections
 for (let index in connBinding) {
-  Object.defineProperty(connections, connBinding[index], {value: new DBConnection(parseInt(index, 10)), enumerable: true})
+  Object.defineProperty(connections, connBinding[index], { value: new DBConnection(parseInt(index, 10)), enumerable: true })
 }
 
 module.exports = connections
