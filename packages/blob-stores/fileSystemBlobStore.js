@@ -135,11 +135,11 @@ class FileSystemBlobStore extends BlobStoreCustom {
       if (this.PROXY_SEND_FILE_HEADER) {
         let storeRelPath = path.relative(this.fullStorePath, filePath)
         let head = `${this.PROXY_SEND_FILE_HEADER}: /${this.PROXY_SEND_FILE_LOCATION_ROOT}/${this.name}/${storeRelPath}`
-        console.debug(`<- `, head)
         head += `\r\nContent-Type: ${ct}`
         if (blobInfo && blobInfo.origName) {
           head += `\r\nContent-Disposition: attachment;filename="${blobInfo.origName}"`
         }
+        console.debug(`<- `, head)
         resp.writeHead(head)
         resp.writeEnd('')
       } else {
