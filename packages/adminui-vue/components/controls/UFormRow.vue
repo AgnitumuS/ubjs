@@ -33,13 +33,35 @@
 </template>
 
 <script>
+/**
+ * Need to create form row with label
+ */
 export default {
   name: 'UFormRow',
   props: {
-    error: [String, Boolean],
+    /**
+     * If is set will be show error text
+     */
+    error: {
+      type: [String, Boolean],
+      default: false
+    },
     label: String,
+    /**
+     * Show * red symbol after label
+     */
     required: Boolean,
-    labelWidth: Number
+    /**
+     * Set label width. If set in wrap `<u-form>` component
+     * will override be this prop
+     */
+    labelWidth: Number,
+    /**
+     * Set label position. If set in wrap `<u-form>` component
+     * will override be this prop
+     * `left/right`
+     */
+    labelPosition: String
   },
 
   inject: {
@@ -129,3 +151,37 @@ export default {
   border-color: rgb(var(--danger));
 }
 </style>
+
+<docs>
+### Error
+
+```vue
+<template>
+  <u-form-row
+    required
+    :error="showError && 'Please fill this field'"
+  >
+    <el-input />
+  </u-form-row>
+
+  <el-button-group>
+    <el-button @click="showError = true">
+      Show error
+    </el-button>
+    <el-button @click="showError = false">
+      Hide error
+    </el-button>
+  </el-button-group>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      showError: true
+    }
+  }
+}
+</script>
+```
+</docs>
