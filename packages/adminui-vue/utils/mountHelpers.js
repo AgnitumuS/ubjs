@@ -89,7 +89,7 @@ function mountModal (mountParams) {
         props: {
           title: this.title,
           visible: this.dialogVisible,
-          width: '80%',
+          width: mountParams.showFormParams.modalWidth || '80%',
           beforeClose: onBeforeDialogClose
         },
         on: {
