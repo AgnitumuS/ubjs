@@ -399,11 +399,12 @@ SyncConnection.prototype.xhr = function (options) {
     if (options.responseType === 'arraybuffer') {
       result = resp.read('bin')
     } else if (((resp.headers['content-type'] || '').indexOf('json') >= 0) && !options.simpleTextResult) {
-      result = JSON.parse(resp.read())
+      let txtRes = resp.read()
+      result = txtRes ? JSON.parse(resp.read()) : null
     } else {
-      result = resp.read() // return string readed as UTF-8
+      result = resp.read() // return string reads as UTF-8
     }
-  } else if (status === 401 && me.isAuthorized()) { // relogin
+  } else if (status === 401 && me.isAuthorized()) { // re-login
     if (me._inRelogin) {
       me._inRelogin = false
       throw new Error('invalid user name or password')

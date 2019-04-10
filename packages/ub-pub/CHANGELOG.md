@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.35]
+### Changed
+ - in case response body is empty `AsyncConnection.xhr` will return null even if `Content-Type` header is iset to `*json`
+
 ## [5.2.33]
 ### Changed
  - separate stack trace in developer error reporter onto lines for better readability

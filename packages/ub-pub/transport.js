@@ -282,7 +282,7 @@ let xhrDefaults = {
       ? JSON.stringify(data) : data
   }],
   transformResponse: [function (data, headers) {
-    if (typeof data === 'string' && (headers('content-type') || '').indexOf('json') >= 0) {
+    if (data && (typeof data === 'string') && (headers('content-type') || '').indexOf('json') >= 0) {
       data = JSON.parse(data)
     }
     return data
