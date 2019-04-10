@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - fixed `ubs_message_edit` form layout on small screens
  - added `storeInstanceModule`. Vuex store which track all form changes
  - added `storeValidationPlugin`. Vuex store plugin which validate instance module changes
+ - `UFormRow` now can be used without `UForm` wrapper  
 
 ### Changed
  - `portal:navbar:appendSlot` now append child to navbar

@@ -55,35 +55,46 @@ export default {
      * Set label width. If set in wrap `<u-form>` component
      * will override be this prop
      */
-    labelWidth: Number,
+    labelWidth: {
+      type: Number,
+      default () {
+        return this.formLabelWidth || 120
+      }
+    },
     /**
      * Set label position. If set in wrap `<u-form>` component
      * will override be this prop
      * `left/right`
      */
-    labelPosition: String
+    labelPosition: {
+      type: String,
+      default () {
+        return this.formLabelPosition || 'left'
+      }
+    }
   },
 
   inject: {
     formLabelWidth: {
-      from: 'labelWidth'
+      from: 'labelWidth',
+      default: false
     },
     formLabelPosition: {
-      from: 'labelPosition'
+      from: 'labelPosition',
+      default: false
     }
   },
 
   computed: {
     labelWidthCss () {
-      const width = this.labelWidth || this.formLabelWidth
       return `
-        width: ${width}px;
-        min-width: ${width}px;
+        width: ${this.labelWidth}px;
+        min-width: ${this.labelWidth}px;
       `
     },
 
     labelPositionComputed () {
-      return this.labelPosition || this.formLabelPosition
+      return this.labelPosition
     }
   }
 }
