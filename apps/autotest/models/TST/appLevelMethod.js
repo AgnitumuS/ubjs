@@ -297,7 +297,7 @@ App.registerEndpoint('dbRaw', dbRaw, false)
  * @param {THTTPResponse} resp
  */
 function db (req, resp) {
-  let data = UB.Repository('uba_user').attrs(['ID', 'name']).selectAsObject()
+  let data = UB.Repository('uba_user').attrs(['ID', 'name']).where('ID', '>', 0).selectAsObject()
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
   resp.writeEnd(data[0])
