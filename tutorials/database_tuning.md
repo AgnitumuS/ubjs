@@ -1,5 +1,3 @@
-# In this tutorial
-
 [[toc]]
 
 ##  General tips
