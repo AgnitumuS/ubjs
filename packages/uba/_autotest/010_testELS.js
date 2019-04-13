@@ -43,7 +43,7 @@ module.exports = function runELSTest (options) {
     function relogon (credential) {
       let opts = _.merge({}, options, { forceStartServer: true }, credential)
       session.logout() // shut down server
-      sleep(1000) // slow down server restart to prevent conflicts inside ID generator for SQLite3
+      //sleep(1000) // slow down server restart to prevent conflicts inside ID generator for SQLite3
       session = argv.establishConnectionFromCmdLineAttributes(opts)
       conn = session.connection
     }
