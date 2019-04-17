@@ -88,6 +88,14 @@ module.exports = function runTest (options) {
       .selectAsArray()
     assert.equal(res.resultData.rowCount, 1, 'IN condition for subrepository fails')
 
+    // group by
+    res = conn.Repository('uba_user')
+      .attrs([ 'ID', 'name' ])
+      // .where('[ID]', 'in', [10, 20])
+      .where('ID', 'in', conn.Repository('uba_user').attrs([ 'ID' ]).limit(1))
+      .groupBy([ 'ID', 'name' ])
+      .selectAsArray()
+
     // exists
     // who do not login during this year
     res = conn.Repository('uba_user')
