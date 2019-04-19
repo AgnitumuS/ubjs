@@ -36,6 +36,7 @@
       "json",
       "number",
       "object",
+      "promise",
       "regexp",
       "string",
       "undefined",
