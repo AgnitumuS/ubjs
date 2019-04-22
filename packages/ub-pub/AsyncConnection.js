@@ -1141,19 +1141,25 @@ function stringifyExecParamsValues (execParams) {
  * - `Date` & 'DateTime' entity attributes are converted from ISO8601 text representation to javaScript Date object
  * - if necessary it will clear cache
  *
+ * In case `fieldList` is passed - result will contains updated values for attributes specified in `fieldList`
+ *
  * Example:
  *
- *      $App.connection.update({entity: 'uba_user', fieldList: ['ID','name'], execParams: {ID: 1, name:'newName'}}).then(UB.logDebug);
+ *      $App.connection.update({
+ *        entity: 'uba_user',
+ *        fieldList: ['ID','name'],
+ *        execParams: {ID: 1, name:'newName'}
+ *      }).then(UB.logDebug);
  *
- * @param {Object} serverRequest    Request to execute
- * @param {String} serverRequest.entity Entity to execute the method
+ * @param {Object} serverRequest          Request to execute
+ * @param {String} serverRequest.entity   Entity to execute the method
  * @param {String} [serverRequest.method] Method of entity to executed. Default to 'update'
  * @param {Array.<string>} serverRequest.fieldList
  * @param {Object} [serverRequest.execParams]
  * @param {Object} [serverRequest.options]
  * @param {String} [serverRequest.lockType]
  * @param {Boolean} [serverRequest.alsNeed]
- * @param {Boolean} [allowBuffer] Default - false. Allow several "in the same time" request to be buffered to one transaction.
+ * @param {Boolean} [allowBuffer=false] Allow several "in the same time" request to be buffered to one transaction.
  * @returns {Promise}
  */
 UBConnection.prototype.update = function (serverRequest, allowBuffer) {
