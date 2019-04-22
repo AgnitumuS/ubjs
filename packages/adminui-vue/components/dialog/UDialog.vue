@@ -38,6 +38,7 @@
         {{ $ut(buttons.no) }}
       </el-button>
       <el-button
+        autofocus
         type="primary"
         @click="accept"
       >

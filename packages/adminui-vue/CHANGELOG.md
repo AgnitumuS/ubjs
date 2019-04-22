@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - added `storeInstanceModule`. Vuex store which track all form changes
  - added `storeValidationPlugin`. Vuex store plugin which validate instance module changes
  - `UFormRow` now can be used without `UForm` wrapper  
+ - fixed autofocus to accept button in `UDialog`
 
 ### Changed
  - `portal:navbar:appendSlot` now append child to navbar

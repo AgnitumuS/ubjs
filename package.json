@@ -41,6 +41,6 @@
     "npm": "^5"
   },
   "dependencies": {
-    "ub-jsdoc": "^2.1.3"
+    "ub-jsdoc": "^2.1.4"
   }
 }
