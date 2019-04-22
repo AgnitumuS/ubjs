@@ -1,0 +1,27 @@
+{
+    "caption": "AclRls test",
+    "attributes": [
+        {
+            "name": "caption",
+            "dataType": "String",
+            "size": 255,
+            "caption": "Заголовок",
+            "description": "Заголовок документа",
+            "allowNull": false,
+            "defaultValue": "Договор",
+            "isMultiLang": true
+        }
+    ],
+    "mixins": {
+        "mStorage": {
+            "simpleAudit": true,
+            "safeDelete": true
+        },
+        "aclRls": {
+            "useUnityName": false,
+            "onEntities": ["org_unit", "uba_subject"],
+            "entityConnectAttr": "[ID]",
+            //,            "exprMethod": "doc_currentOrgUnitAndAdmSubj"
+        }
+    }
+}
