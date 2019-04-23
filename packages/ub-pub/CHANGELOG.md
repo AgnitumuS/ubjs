@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.36]
+### Added
+ - new methods added to the client side `Connection` **`addNewAsObject`, `runTransAsObject`, `updateAsObject`, `insertAsObject`**
+   Result data of this methods is an Object (the same as in selectAsObject()) instead of Array (the same as in .selectAsArray())
+   
+   Useful for non-ExtJS clients, Vue for example. See documentation for detail:
+   
+   ```javascript
+   UB.connection.updateAsObject({
+     entity: 'uba_user',
+     fieldList: ['ID','name','mi_modifyDate', 'isPending'],
+     execParams: {ID: 33246, name:'newName', mi_modifyDate:"2019-04-23T13:00:00Z"}
+   }).then(UB.logDebug)
+   // will return plain object 
+   // {"ID": 332462122205200, "name": newName", "mi_modifyDate": new Date("2019-04-23T13:03:51Z"), isPending: false})
+   ```   
+ 
 ## [5.2.35]
 ### Changed
  - in case response body is empty `AsyncConnection.xhr` will return null even if `Content-Type` header is iset to `*json`

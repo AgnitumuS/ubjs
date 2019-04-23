@@ -14,13 +14,13 @@
     ],
     "mixins": {
         "mStorage": {
-            "simpleAudit": true,
-            "safeDelete": true
+            "simpleAudit": false,
+            "safeDelete": false
         },
         "aclRls": {
             "useUnityName": false,
             "onEntities": ["org_unit", "uba_subject"],
-            "entityConnectAttr": "[ID]",
+            "entityConnectAttr": "[ID]"
             //,            "exprMethod": "doc_currentOrgUnitAndAdmSubj"
         }
     }

@@ -169,7 +169,7 @@ function UBConnection (connectionParams) {
       if (isRepeat) {
         throw new ubUtils.UBError('Access deny')
       } else {
-        return Promise.resolve({authSchema: AUTH_SCHEMA_FOR_ANONYMOUS, login: ANONYMOUS_USER})
+        return Promise.resolve({ authSchema: AUTH_SCHEMA_FOR_ANONYMOUS, login: ANONYMOUS_USER })
       }
     }
 
@@ -409,10 +409,10 @@ $App.connection.userLang()
    */
   this.authHandshakeUBIP = function (authParams) {
     if (!authParams.login) {
-      return Promise.reject({errMsg: 'invalid user name'})
+      return Promise.reject({ errMsg: 'invalid user name' })
     }
 
-    return this.post(AUTH_METHOD_URL, '', {headers: {Authorization: authParams.authSchema + ' ' + authParams.login}})
+    return this.post(AUTH_METHOD_URL, '', { headers: { Authorization: authParams.authSchema + ' ' + authParams.login } })
   }
 
   /**
@@ -438,7 +438,7 @@ $App.connection.userLang()
     let secretWord
 
     if (!authParams.login || !authParams.password) {
-      return Promise.reject({errMsg: 'invalid user name or password'})
+      return Promise.reject({ errMsg: 'invalid user name or password' })
     }
 
     return this.post(AUTH_METHOD_URL, '', {
@@ -525,13 +525,13 @@ $App.connection.userLang()
     authParams.authSchema = authParams.authSchema || 'UB'
 
     if (this.isAuthorized()) {
-      return Promise.reject({errMsg: 'invalid auth call', errDetails: 'contact developers'})
+      return Promise.reject({ errMsg: 'invalid auth call', errDetails: 'contact developers' })
     }
 
     let promise
     switch (authParams.authSchema) {
       case AUTH_SCHEMA_FOR_ANONYMOUS:
-        promise = Promise.resolve({data: {result: '0+0', uData: JSON.stringify({login: ANONYMOUS_USER})}, secretWord: ''})
+        promise = Promise.resolve({ data: { result: '0+0', uData: JSON.stringify({ login: ANONYMOUS_USER }) }, secretWord: '' })
         break
       case 'UB':
         promise = this.authHandshakeUB(authParams)
@@ -560,7 +560,7 @@ $App.connection.userLang()
         })
         break
       default:
-        promise = Promise.reject({errMsg: 'invalid authentication schema ' + authParams.authSchema})
+        promise = Promise.reject({ errMsg: 'invalid authentication schema ' + authParams.authSchema })
         break
     }
     promise = promise.then(
@@ -569,7 +569,7 @@ $App.connection.userLang()
         if (this.allowSessionPersistent) {
           LDS.setItem(
             this.__sessionPersistKey,
-            JSON.stringify({data: authResponse.data, secretWord: authResponse.secretWord, authSchema: authResponse.authSchema})
+            JSON.stringify({ data: authResponse.data, secretWord: authResponse.secretWord, authSchema: authResponse.authSchema })
           )
         }
         return ubSession
@@ -794,7 +794,7 @@ UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
  */
 UBConnection.prototype.xhr = function (config) {
   let me = this
-  let cfg = _.assign({headers: {}}, config)
+  let cfg = _.assign({ headers: {} }, config)
   let url = cfg.url
   let promise
 
@@ -889,25 +889,25 @@ UBConnection.prototype.getAppInfo = function () {
        * @property {Boolean} trafficEncryption
        * The base of all urls of your requests. Will be prepend to all urls.
        * @readonly */
-      Object.defineProperty(me, 'trafficEncryption', {enumerable: true, writable: false, value: appInfo.trafficEncryption || false})
+      Object.defineProperty(me, 'trafficEncryption', { enumerable: true, writable: false, value: appInfo.trafficEncryption || false })
       /** The server certificate for cryptographic operations (base46 encoded)
        * @property {Boolean} serverCertificate
        * @readonly */
-      Object.defineProperty(me, 'serverCertificate', {enumerable: true, writable: false, value: appInfo.serverCertificate || ''})
-      Object.defineProperty(me, 'encryptionKeyLifetime', {enumerable: true, writable: false, value: appInfo.encryptionKeyLifetime || 0})
-      Object.defineProperty(me, 'authMethods', {enumerable: true, writable: false, value: appInfo.authMethods})
-      Object.defineProperty(me, 'simpleCertAuth', {enumerable: true, writable: false, value: appInfo.simpleCertAuth || false})
+      Object.defineProperty(me, 'serverCertificate', { enumerable: true, writable: false, value: appInfo.serverCertificate || '' })
+      Object.defineProperty(me, 'encryptionKeyLifetime', { enumerable: true, writable: false, value: appInfo.encryptionKeyLifetime || 0 })
+      Object.defineProperty(me, 'authMethods', { enumerable: true, writable: false, value: appInfo.authMethods })
+      Object.defineProperty(me, 'simpleCertAuth', { enumerable: true, writable: false, value: appInfo.simpleCertAuth || false })
 
       /**
        * An array of WebSocket protocol names supported by server
        * @property {Array<String>} supportedWSProtocols
        */
-      Object.defineProperty(me, 'supportedWSProtocols', {enumerable: true, writable: false, value: appInfo.supportedWSProtocols || []})
+      Object.defineProperty(me, 'supportedWSProtocols', { enumerable: true, writable: false, value: appInfo.supportedWSProtocols || [] })
       /** UnityBase server version
        * @property {String} serverVersion
        * @readonly
        */
-      Object.defineProperty(me, 'serverVersion', {enumerable: true, writable: false, value: appInfo.serverVersion || ''})
+      Object.defineProperty(me, 'serverVersion', { enumerable: true, writable: false, value: appInfo.serverVersion || '' })
       ubUtils.apply(me.appConfig, appInfo.uiSettings.adminUI)
       return appInfo
     })
@@ -919,8 +919,8 @@ UBConnection.prototype.getAppInfo = function () {
  */
 UBConnection.prototype.getDomainInfo = function () {
   let me = this
-  return me.get('getDomainInfo', {params: {
-    v: 4, userName: this.userLogin()}
+  return me.get('getDomainInfo', { params: {
+    v: 4, userName: this.userLogin() }
   }).then(function (response) {
     let result = response.data
     let domain = new UBDomain(result)
@@ -1060,6 +1060,9 @@ UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
 
 /**
  * Promise of running UBQL command with `addNew` method (asynchronously).
+ *
+ * Response "data" is an array of default values for row.
+ *
  * Two difference from {@link class:UBConnection.query UBConnection.query}:
  *
  * - ubRequest.method set to 'addnew'
@@ -1068,23 +1071,49 @@ UBConnection.prototype.doFilterAndSort = function (cachedData, ubql) {
  *
  * Example:
  *
- *      $App.connection.addNew({entity: 'uba_user', fieldList: ['*']}).then(UB.logDebug);
+ *      $App.connection.addNew({entity: 'uba_user', fieldList: ['*']}).then(UB.logDebug)
+ *      // [{"entity":"uba_user","fieldList":["ID","isPending"],"method":"addnew","resultData":{"fields":["ID","isPending"],"rowCount": 1, "data":[[332462711046145,0]]}}]
  *
  * @param {Object} serverRequest    Request to execute
  * @param {String} serverRequest.entity Entity to execute the method
- * @param {String} [serverRequest.method] Method of entity to executed. Default to 'select'
  * @param {Array.<string>} serverRequest.fieldList
  * @param {Object} [serverRequest.execParams]
  * @param {Object} [serverRequest.options]
  * @param {String} [serverRequest.lockType]
  * @param {Boolean} [serverRequest.alsNeed]
- * @returns {Promise}
+ * @returns {Promise<Object>}
  */
 UBConnection.prototype.addNew = function (serverRequest) {
   let me = this
   serverRequest.method = 'addnew'
   return me.query(serverRequest, true)
     .then(me.convertResponseDataToJsTypes.bind(me))
+}
+
+/**
+ * Promise of running UBQL command with `addNew` method (asynchronously).
+ *
+ * Result is Object with default values for row.
+ *
+ * Example:
+ *
+ *      $App.connection.addNewAsObject({"entity":"uba_user"}).then(UB.logDebug)
+ *      // result is {ID: 332462709833729, isPending: false}
+ *
+ * @param {Object} serverRequest    Request to execute
+ * @param {String} serverRequest.entity Entity to execute the method
+ * @param {Array.<string>} serverRequest.fieldList
+ * @param {Object} [serverRequest.execParams]
+ * @param {Object} [serverRequest.options]
+ * @param {String} [serverRequest.lockType]
+ * @param {Boolean} [serverRequest.alsNeed]
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @return {Promise<Object>}
+ */
+UBConnection.prototype.addNewAsObject = function (serverRequest, fieldAliases) {
+  return this.addNew(serverRequest).then(function (res) {
+    return LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+  })
 }
 
 /**
@@ -1142,25 +1171,27 @@ function stringifyExecParamsValues (execParams) {
  * - if necessary it will clear cache
  *
  * In case `fieldList` is passed - result will contains updated values for attributes specified in `fieldList`
+ *  in Array representation
  *
  * Example:
  *
  *      $App.connection.update({
  *        entity: 'uba_user',
- *        fieldList: ['ID','name'],
- *        execParams: {ID: 1, name:'newName'}
+ *        fieldList: ['ID','name', 'mi_modifyDate'],
+ *        execParams: {ID: 332462122205200, name:'test', mi_modifyDate:"2019-04-23T13:00:00Z"}
  *      }).then(UB.logDebug);
+ *      // [{"entity":"uba_user","fieldList":["ID","name","mi_modifyDate"],"execParams":{"ID":332462122205200,"name":"test","mi_modifyDate":"2019-04-23T13:03:51Z","mi_modifyUser":10},"method":"update","resultData":{"fields":["ID","name","mi_modifyDate"],"rowCount": 1, "data":[[332462122205200,"test","2019-04-23T13:03:51Z"]]}}]
  *
  * @param {Object} serverRequest          Request to execute
  * @param {String} serverRequest.entity   Entity to execute the method
- * @param {String} [serverRequest.method] Method of entity to executed. Default to 'update'
- * @param {Array.<string>} serverRequest.fieldList
- * @param {Object} [serverRequest.execParams]
+ * @param {String} [serverRequest.method='update'] Method of entity to executed
+ * @param {Array.<string>} [serverRequest.fieldList]
+ * @param {Object} serverRequest.execParams Values to update. ID should be present
  * @param {Object} [serverRequest.options]
  * @param {String} [serverRequest.lockType]
  * @param {Boolean} [serverRequest.alsNeed]
  * @param {Boolean} [allowBuffer=false] Allow several "in the same time" request to be buffered to one transaction.
- * @returns {Promise}
+ * @returns {Promise<Object>}
  */
 UBConnection.prototype.update = function (serverRequest, allowBuffer) {
   let me = this
@@ -1175,6 +1206,38 @@ UBConnection.prototype.update = function (serverRequest, allowBuffer) {
 }
 
 /**
+ * Promise of running UBQL command with `update` method (asynchronously).
+ *
+ * In case `fieldList` is passed - result will contains updated values for attributes specified in `fieldList` as Object
+ *
+ * Example:
+ *
+ *      $App.connection.updateAsObject({
+ *        entity: 'uba_user',
+ *        fieldList: ['ID','name','mi_modifyDate', 'isPending'],
+ *        execParams: {ID: 33246, name:'newName', mi_modifyDate:"2019-04-23T13:00:00Z"}
+ *      }).then(UB.logDebug);
+ *      // {"ID": 332462122205200, "name": newName", "mi_modifyDate": new Date("2019-04-23T13:03:51Z"), isPending: false}
+ *
+ * @param {Object} serverRequest          Request to execute
+ * @param {String} serverRequest.entity   Entity to execute the method
+ * @param {String} [serverRequest.method='update'] Method of entity to executed
+ * @param {Array.<string>} [serverRequest.fieldList]
+ * @param {Object} serverRequest.execParams Values to update. ID should be present
+ * @param {Object} [serverRequest.options]
+ * @param {String} [serverRequest.lockType]
+ * @param {Boolean} [serverRequest.alsNeed]
+ * @param {Boolean} [allowBuffer=false] Allow several "in the same time" request to be buffered to one transaction.
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @returns {Promise<Object>}
+ */
+UBConnection.prototype.updateAsObject = function (serverRequest, fieldAliases, allowBuffer) {
+  return this.update(serverRequest, allowBuffer).then(function (res) {
+    return LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+  })
+}
+
+/**
  * Promise of running UnityBase UBQL command with `insert` method (asynchronously).
  * Difference from {@link UBConnection.query}:
  *
@@ -1184,14 +1247,14 @@ UBConnection.prototype.update = function (serverRequest, allowBuffer) {
  *
  * @param {Object} serverRequest    Request to execute
  * @param {String} serverRequest.entity Entity to execute the method
- * @param {String} [serverRequest.method] Method of entity to executed. Default to 'insert'
+ * @param {String} [serverRequest.method='insert'] Method of entity to executed
  * @param {Array.<string>} serverRequest.fieldList
  * @param {Object} [serverRequest.execParams]
  * @param {Object} [serverRequest.options]
  * @param {String} [serverRequest.lockType]
  * @param {Boolean} [serverRequest.alsNeed]
  *
- * @param {Boolean} [allowBuffer] Default - false. Allow several "in the same time" request to be buffered to one transaction.
+ * @param {Boolean} [allowBuffer=false] Allow several "in the same time" request to be buffered to one transaction.
  *
  * @method
  * @returns {Promise}
@@ -1211,6 +1274,41 @@ UBConnection.prototype.insert = function (serverRequest, allowBuffer) {
   return me.query(serverRequest, allowBuffer)
     .then(me.convertResponseDataToJsTypes.bind(me))
     .then(me.invalidateCache.bind(me))
+}
+
+/**
+ * Promise of running UnityBase UBQL command with `insert` method (asynchronously).
+ *
+ * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ *
+ * @param {Object} serverRequest    Request to execute
+ * @param {String} serverRequest.entity Entity to execute the method
+ * @param {String} [serverRequest.method='insert'] Method of entity to executed
+ * @param {Array.<string>} [serverRequest.fieldList] Attributes to be returned in result
+ * @param {Object} serverRequest.execParams Attributes values to be inserted. If `ID` is omitted it will be autogenerated
+ * @param {Object} [serverRequest.options]
+ * @param {String} [serverRequest.lockType]
+ * @param {Boolean} [serverRequest.alsNeed]
+ *
+ * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names during transform array to object. Keys are original names, values - new names
+ * @param {Boolean} [allowBuffer=false] Allow several "in the same time" request to be buffered to one transaction.
+ *
+ * @method
+ * @returns {Promise<Object>}
+ *
+ * Example:
+ *
+ *   $App.connection.insertAsObject({"entity":"uba_user","fieldList":['ID', 'name', 'mi_modifyDate'], execParams: {name: 'insertedName'}}).then(UB.logDebug)
+ *   // {ID: 332462911062017, mi_modifyDate: Tue Apr 23 2019 17:04:30 GMT+0300 (Eastern European Summer Time), name: "insertedname"}
+ *
+ *
+ */
+UBConnection.prototype.insertAsObject = function (serverRequest, fieldAliases, allowBuffer) {
+  return this.insert(serverRequest, allowBuffer).then(function (res) {
+    return (res.resultData && res.resultData.data && res.resultData.data.length)
+      ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+      : null
+  })
 }
 
 /**
@@ -1392,8 +1490,8 @@ UBConnection.prototype._cacheVersionedResponse = function (serverResponse, store
     return this.cache.get(cKey, storeName)
   } else {
     return this.cache.put([
-      {key: cKey + ':v', value: serverResponse.version},
-      {key: cKey, value: serverResponse.resultData}
+      { key: cKey + ':v', value: serverResponse.version },
+      { key: cKey, value: serverResponse.resultData }
     ], storeName).then(() => {
       this.cachedSessionEntityRequested[cKey] = serverResponse.version
       return serverResponse.resultData
@@ -1411,7 +1509,7 @@ UBConnection.prototype._cacheVersionedResponse = function (serverResponse, store
 UBConnection.selectResultToArrayOfObjects = LocalDataStore.selectResultToArrayOfObjects
 
 /**
- * Execute numbers of ubRequest in one server request (one transaction)
+ * Group several ubRequest into one server request (executed in singe transaction on server side)
  *
  *      $App.connection.runTrans([
  *           { entity: 'my_entity', method: 'update', ID: 1, execParams: {code: 'newCode'} },
@@ -1422,8 +1520,73 @@ UBConnection.selectResultToArrayOfObjects = LocalDataStore.selectResultToArrayOf
  * @param {Array.<ubRequest>} ubRequestArray
  * @returns {Promise} Resolved to response.data
  */
-UBConnection.prototype.runTrans = function run (ubRequestArray) {
+UBConnection.prototype.runTrans = function (ubRequestArray) {
   return this.post('ubql', ubRequestArray).then((response) => response.data)
+}
+
+/**
+ * Group several ubRequest into one server request (executed in singe transaction on server side)
+ *
+ * Each response will be returned in the same array position as corresponding request.
+ *
+ * In case response contains `resultData` property of type {data: fields: } it will be converted to array-of-object dataStore format
+ *
+ * In case method is insert or update array is replaced by first element. Example below use one entity,
+ *   but real app can use any combination of entities and methods
+ *
+       $App.connection.runTransAsObject([
+         {entity: "tst_aclrls", method: 'insert', fieldList: ['ID', 'caption'], execParams: {caption: 'inserted1'}},
+         {entity: "tst_aclrls", method: 'insert', opaqueParam: 'insertWoFieldList', execParams: {caption: 'inserted2'}},
+         {entity: "tst_aclrls", method: 'update', fieldList: ['ID', 'caption'], execParams: {ID: 332463213805569, caption: 'updated1'}},
+         {entity: "tst_aclrls", method: 'delete', execParams: {ID: 332463213805572}}]
+       ).then(UB.logDebug)
+       // result is:
+       [{
+          "entity": "tst_aclrls","method": "insert","fieldList": ["ID","caption"],"execParams": {"caption": "inserted1","ID": 332463256010753},
+          "resultData": {"ID": 332463256010753,"caption": "inserted1"}
+         },
+         {
+          "entity": "tst_aclrls","method": "insert","opaqueParam": "insertWoFieldList","execParams": {"caption": "inserted2","ID": 332463256010756},"fieldList": []
+         },
+         {
+          "entity": "tst_aclrls","method": "update","fieldList": ["ID","caption"],"execParams": {"ID": 332463213805569,"caption": "updated1"},
+          "resultData": {"ID": 332463213805569,"caption": "updated1"}
+         },
+         {
+          "entity": "tst_aclrls","method": "delete","execParams": {"ID": 332463213805572},
+          "ID": 332463213805572
+         }
+       ]
+ *
+ * @method
+ * @param {Array.<ubRequest>} ubRequestArray
+ * @param {Array.<Object<string, string>>} [fieldAliasesArray] Optional array of object to change attribute names during transform.
+ *   Keys are original names, values - new names
+ * @return {Promise<Array<Object>>}
+ */
+UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliasesArray = []) {
+  let me = this
+  return this.post('ubql', ubRequestArray).then((response) => {
+    let mutatedEntitiesNames = {}
+    let respArr = response.data
+    respArr.forEach((resp, idx) => {
+      let isInsUpd = ((resp.method === 'insert') || (resp.method === 'update'))
+      if (resp.entity && (isInsUpd || (resp.method === 'delete'))) {
+        mutatedEntitiesNames[resp.entity] = true
+      }
+      if (resp.resultData && resp.resultData.data && resp.resultData.data && resp.resultData.fields) {
+        me.convertResponseDataToJsTypes(resp) // mutate resp
+        let asObjectArr = LocalDataStore.selectResultToArrayOfObjects(resp, fieldAliasesArray[idx])
+        resp.resultData = isInsUpd ? asObjectArr[0] : asObjectArr
+      }
+    })
+    Object.keys(mutatedEntitiesNames).forEach(eName => {
+      // ignore cache refresh promises results - let's it work on background
+      // noinspection JSIgnoredPromiseFromCall
+      me.invalidateCache({ entity: eName })
+    })
+    return respArr
+  })
 }
 
 const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty', 'forceMime', 'fileName', 'store', 'revision']

@@ -145,4 +145,17 @@ module.exports = function (session) {
       cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'tst_onlyoffice', method: 'select', fieldList: ['ID', 'caption'] }] } }, null, '\t')
     }
   })
+
+  console.log('\t\t\tcreate `tst_aclrls` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_aclrls',
+      caption: 'tst_aclrls',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'tst_aclrls', method: 'select', fieldList: ['*'] }] } }, null, '\t')
+    }
+  })
 }
