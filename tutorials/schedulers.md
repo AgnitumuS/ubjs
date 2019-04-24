@@ -1,4 +1,6 @@
-﻿UnityBase comes with build-in scheduler - the mechanism for scheduling repetitive tasks.
+﻿[[toc]]
+
+UnityBase comes with build-in scheduler - the mechanism for scheduling repetitive tasks.
 This tutorial is a step-by-step instruction of setting up the schedulers in your application.
 
 ## Pre-requirements

@@ -1,3 +1,5 @@
+[[toc]]
+
 To configure ssh authentication with public keys follow next steps. (All commands on CentOS example)
 
 ## On Linux server

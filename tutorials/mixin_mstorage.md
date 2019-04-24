@@ -1,3 +1,5 @@
+[[toc]]
+
 # Mixin **mStorage** - Implements CRUID operations with entities (ORM)
 
 ## CRUID

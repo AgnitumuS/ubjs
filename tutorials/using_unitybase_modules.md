@@ -1,4 +1,6 @@
-﻿# Manage a remote server using console
+﻿[[toc]]
+
+# Manage a remote server using console
 
 Usually we manage a windows-based environment using Remote Desktop Connection (log in to the GUI mode and use a mouse to do somethoing).
 

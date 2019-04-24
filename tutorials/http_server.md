@@ -1,4 +1,6 @@
-﻿Since `Windows XP SP2` and `Windows Server 2003`, the Operating System provides a kernel stack to handle HTTP requests.
+﻿[[toc]]
+
+Since `Windows XP SP2` and `Windows Server 2003`, the Operating System provides a kernel stack to handle HTTP requests.
 This `http.sys` driver is in fact a full featured HTTP server, running in kernel mode.
 It is part of the networking subsystem of the Windows operating system, as a core component.
 UnityBase implement a thow kind of HTTP server:
@@ -51,13 +53,13 @@ command will add / remove UnityBase server URI to `http.sys` routing table usin
 You must run this command under `cmd.exe` that ran with checked "Run as administrator" option.
 Create on your Desktop a new shortcut, type cmd.exe in Targer field, click to Advanced button and check "Run as administrator":
 
-<img src="img/runAsAdmin.png" alt="run as administrator">
+![run as administrator](img/runAsAdmin.png)
 
 Run shortcut, `cd` to UB folder and execute
 
     >ub -http register
 
-<img src="img/ubHTTPRegister.png" alt="HTTP server register">
+![HTTP server register](img/ubHTTPRegister.png) 
 
 
 ## Tuning a HTTP.sys

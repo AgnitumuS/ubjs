@@ -1,4 +1,6 @@
-﻿# Подсистема отчетности
+﻿[[toc]]
+
+# Подсистема отчетности
 
 ## Общая информация
 Предназначена для создания отчетов в разных форматах. На данный момент поддерживаются HTML и PDF. В подсистему входят: 
@@ -24,61 +26,73 @@
 
 ## Включение подсистемы
 В конфигурационном файле UB:
-Подключить модель UBS.
-
+Подключить модель UBS
+```json
       	"domainConfigs": {
 		"AppName": {
 			"models": {
 				"UBS": 		{ "path": "UB\\models\\UBS" }
 			 }}
         }
-
+```
 Если предпологается выгрузка в PDF то нужно включить модель PDF
 
 Ярлык для реестра отчетов
 
-	{"cmdType": "showList",
-	 "cmdData":{ 
-	     "params":[{ 
-	         "entity": "ubs_report", 
-	          "method": "select", 
-	          "fieldList": ["ID", "model", "report_code", "name"]         
-	     }]
-	 }
-      	}
-	
+```json
+    {
+          "cmdType": "showList",
+          "cmdData": {
+            "params": [
+              {
+                "entity": "ubs_report",
+                "method": "select",
+                "fieldList": [
+                  "ID",
+                  "model",
+                  "report_code",
+                  "name"
+                ]
+              }
+            ]
+          }
+        }
+```	
+
+
 ## Возмжности и ограничения
 
 Каринки задаются только в формате base64.
 
-###HTML
+### HTML
 
  - Ограничен возможностями языка HTML 
  - Нельзя задать колонтитулы
  - Нельзя задать специальную разметку при разрыве страницы. Например не разрывные блоки или строки таблицы
 
-###PDF 
+### PDF 
 
  - Ограниченый перечень тегов и атрибутов HTML. Полный перечень можно посмотреть {@link PDF.csPrintToPdf#writeHtml PDF.csPrintToPdf.writeHtml}
  - Ограниченные возможности расположения элементов. (нельзя использовать блочные элементы внутри строчного элемента) 
  - Поддержка колонтитулов. Задаются в програмном коде.
- - Неразрывные ячейки таблицы. Задается при промощи атрибута стиля disable-split: true.
- - Не поддерживается использование блочных элемнтов внутри строковых (inline)
+ - Неразрывные ячейки таблицы. Задается при промощи атрибута стиля `disable-split: true`.
+ - Не поддерживается использование блочных элемнтов внутри строковых (`inline`)
  - Рядки таблиц должны всегда иметь ширину
 
 Сквозные строки таблицы. Будут выводится на каждой сранице где присутствует таблица. 
-Задается при промощи атрибута стиля top-through-line: true.
+Задается при промощи атрибута стиля `top-through-line: true`.
 
-       <tr style="disable-split: true; top-through-line: true;">
+`<tr style="disable-split: true; top-through-line: true;">`
 
 Не разрывные строки таблицы. Можно указать не разрывать n строк в начале или в конце таблицы.
 
-      <table style="indissoluble-first-rows: 5; indissoluble-end-rows: 6;">
+`<table style="indissoluble-first-rows: 5; indissoluble-end-rows: 6;">`
 	
 ## Настройка ПДФ отчетов (колонтитулы, отступы листа, шрифты)
 
-На данный момент колонтитулы, отступы листа и шрифты можно настроить только в коде. Для этого служит конфигурационная функция onTransformConfig.
+На данный момент колонтитулы, отступы листа и шрифты можно настроить только в коде. Для этого служит конфигурационная функция `onTransformConfig`.
 
+```js
             onTransformConfig: function(config){
                   config.margin = {top: 10, right: 8, bottom: 8, left: 20};  // page padding
                   config.topColontitle = {
@@ -103,76 +117,82 @@
                   };
                 return config;
             }
-
+```
 Полный перечень настроек можно посмотреть [здесь](index.html#!/api/PDF.csPrintToPdf).
 
 ## Настройка панели параметров
 
 В коде отчета можно настроить панель для ввода параметров отчета. Эти настройки будет использовать просмотрщик отчетов.
-Для этого нужно в событии onParamPanelConfig создать нужную панель.
-
-            onParamPanelConfig: function() {
-                var paramForm = Ext.create('UBS.ReportParamForm', {
-                    items: [{
-                        xtype: 'textfield',
-                        name: 'name',
-                        fieldLabel: 'Name'
-                    }, {
-                        xtype: 'datefield',
-                        name: 'birthday',
-                        fieldLabel: 'Birthday',
-                        allowBlank: false,
-                        value: new Date()
-                    },{
-                        xtype: 'numberfield',
-                        name: 'limitation',
-                        fieldLabel: 'Limit to'
-                    }
-                    ],
-                    getParameters: function(owner) {
-                        var frm = owner.getForm();
-                        return {
-                            name: frm.findField('name').getValue(),
-                            birthday: frm.findField('birthday').getValue(),
-                            limitation: frm.findField('limitation').getValue()
-                        };
-                    }
-                });
-                return paramForm;
-            }
-
+Для этого нужно в событии `onParamPanelConfig` создать нужную панель.
+```js
+onParamPanelConfig: function () {
+  var paramForm = Ext.create('UBS.ReportParamForm', {
+    items: [{
+      xtype: 'textfield',
+      name: 'name',
+      fieldLabel: 'Name'
+    }, {
+      xtype: 'datefield',
+      name: 'birthday',
+      fieldLabel: 'Birthday',
+      allowBlank: false,
+      value: new Date()
+    }, {
+      xtype: 'numberfield',
+      name: 'limitation',
+      fieldLabel: 'Limit to'
+    }
+    ],
+    getParameters: function (owner) {
+      var frm = owner.getForm()
+      return {
+        name: frm.findField('name').getValue(),
+        birthday: frm.findField('birthday').getValue(),
+        limitation: frm.findField('limitation').getValue()
+      }
+    }
+  })
+  return paramForm
+}
+```
 Либо то же самое в упрощенном варианте:
 
-            onParamPanelConfig: function() {
-                  return  [{
-                        xtype: 'textfield',
-                        name: 'name',
-                        fieldLabel: 'Name'
-                    }, {
-                        xtype: 'datefield',
-                        name: 'birthday',
-                        fieldLabel: 'Birthday',
-                        allowBlank: false,
-                        value: new Date()
-                    },{
-                        xtype: 'numberfield',
-                        name: 'limitation',
-                        fieldLabel: 'Limit to'
-                    }
-                    ];
-            }
+```js
+onParamPanelConfig: function () {
+  return [{
+    xtype: 'textfield',
+    name: 'name',
+    fieldLabel: 'Name'
+  }, {
+    xtype: 'datefield',
+    name: 'birthday',
+    fieldLabel: 'Birthday',
+    allowBlank: false,
+    value: new Date()
+  }, {
+    xtype: 'numberfield',
+    name: 'limitation',
+    fieldLabel: 'Limit to'
+  }
+  ]
+}
+```
 
 ## Запуск отчета из ярлыка
 
 Пример:
-
-        {"cmdType": "showReport",
-           "cmdData": {
-               "reportCode": "test",
-               "reportType": "pdf",
-               "ReportParams": {"test": 1}
-           }
-        }
+```json
+{
+  "cmdType": "showReport",
+  "cmdData": {
+    "reportCode": "test",
+    "reportType": "pdf",
+    "ReportParams": {
+      "test": 1
+    }
+  }
+}
+```
 
 `reportCode` - код отчета
 `reportType` - формат
@@ -181,30 +201,29 @@
 ## Программный запуск формирования отчета
 
 Пример для запуска на сервере:
-
-          var UBReport = require('models/UBS/public/UBReport.js');
-          var report = UBReport.makeReport('test','pdf',{});
-           report.done(function(result){
-             var fs = require('fs');
-             if (result.reportType === 'pdf'){
-                 toLog(result.reportData.byteLength);
-                 fs.writeFileSync('d:\\result.pdf', result.reportData );
-             } else {
-                 toLog(result.reportData.length);
-                 fs.writeFileSync('d:\\result.html', result.reportData );
-             }
-          });
+```js
+var UBReport = require('models/UBS/public/UBReport.js')
+var report = UBReport.makeReport('test', 'pdf', {})
+report.done(function (result) {
+  var fs = require('fs')
+  if (result.reportType === 'pdf') {
+    toLog(result.reportData.byteLength)
+    fs.writeFileSync('d:\\result.pdf', result.reportData)
+  } else {
+    toLog(result.reportData.length)
+    fs.writeFileSync('d:\\result.html', result.reportData)
+  }
+})
+```
 
 На клиенте(WEB):
+```js
+UBS.UBReport.makeReport('test', 'pdf', {}).done(function (report) {
+  var outputBlob = new Blob(
+    [report.reportData],
+    {type: 'application/pdf'}
+  )
 
-        UBS.UBReport.makeReport('test','pdf',{}).done(function(report){
-                       var outputBlob = new Blob(
-                        [report.reportData],
-                        {type: "application/pdf"}
-                    );
-
-                    window.open( window.URL.createObjectURL(outputBlob), 'blank');
-        });
-
-
-
+  window.open(window.URL.createObjectURL(outputBlob), 'blank')
+})
+```

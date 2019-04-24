@@ -1,3 +1,5 @@
+[[toc]]
+
 For easy communication between external services and UnityBase server in UB>=1.9 we implement authorization based on client IP address.
 
 ## Enable IP based authorization
