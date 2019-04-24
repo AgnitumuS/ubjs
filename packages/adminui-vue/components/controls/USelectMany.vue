@@ -40,6 +40,42 @@
   </el-select>
 </template>
 
+<docs>
+  UbSelectEnum:
+
+  ```vue
+  <template>
+    <u-select-many
+            v-model="value"
+            style="width:500px"
+            :disabled="disabled"
+            :entity-name="entityName"
+            @input="inputFn"
+    ></u-select-many>
+  </template>
+  <script>
+    export default {
+      data () {
+        return {
+          entityName: 'tst_dictionary',
+          value: '1,2',
+          disabled: false
+        }
+      },
+      methods: {
+        inputFn: console.log('Entered value')
+      },
+      computed: {
+        entitySchema () {
+          return this.$UB.connection.domain.get(this.entityName).asPlainJSON(false)
+        }
+      }
+    }
+  </script>
+  ```
+
+</docs>
+
 <script>
 require('../../css/ub-select.css')
 
