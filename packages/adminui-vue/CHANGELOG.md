@@ -3,7 +3,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
- 
+
+## [1.4.3]
+### Changed
+ - migrate from "babel-plugin-transform-object-rest-spread": "^6.26.0 -> "@babel/plugin-proposal-object-rest-spread": "^7.4.3 
+  for boundler
+
 ## [1.4.1]
 ### Added
  - `Vuex` now imported inside `@unitybase/adminui-vue`. In other models:
