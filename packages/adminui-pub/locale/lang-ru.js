@@ -65,7 +65,7 @@ UB.i18nExtend({
   Edit: 'Редактировать',
   Delete: 'Удалить',
   vseDeystviya: 'Все действия',
-  sohranitIZakryt: 'Сохранить и закрыть',
+  saveAndClose: 'Сохранить и закрыть',
   ustanovit: 'Установить',
   iskatV: 'Искать в',
   iskatChto: 'Что искать',
