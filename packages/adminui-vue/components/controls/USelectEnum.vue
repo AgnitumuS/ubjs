@@ -20,6 +20,38 @@
   </el-select>
 </template>
 
+<docs>
+  UbSelectEnum:
+
+  ```vue
+  <template>
+    <u-select-enum
+            v-model="value"
+            style="width:500px"
+            :disabled="disabled"
+            :e-group="eGroup"
+            :primary-column="primaryColumn"
+            @input="inputFn"
+    ></u-select-enum>
+  </template>
+  <script>
+    export default {
+      methods: {
+        inputFn: console.log('Entered value')
+      },
+      data () {
+        return {
+          value: 'TST2',
+          disabled: false,
+          eGroup: 'TEST_GROUP_1',
+          primaryColumn: 'code'
+        }
+      }
+    }
+  </script>
+  ```
+
+</docs>
 <script>
 require('../../css/ub-select.css')
 

@@ -21,7 +21,9 @@
     "build:theme": "npm run build:el",
     "build:el": "et -c theme/ub-el.scss -o _el-theme && shx cp ./_el-theme/index.css ./theme/el-theme-compiled.css && shx mkdir -p ./theme/fonts && shx cp ./_el-theme/fonts/* ./theme/fonts",
     "build:js": "webpack --mode production && cleancss -O2 -o ./dist/adminui-vue.min.css ./dist/adminui-vue.css",
-    "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json"
+    "analyse-boundle": "webpack --mode production --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
+    "styleguide:server": "vue-styleguidist server",
+    "styleguide": "vue-styleguidist build && npx http-server styleguide/"
   },
   "element-theme": {
     "browsers": [
@@ -63,11 +65,12 @@
   "author": "UnityBase team (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)",
   "devDependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
     "element-theme": "^2.0.1",
     "element-theme-chalk": "2.5.4",
     "shx": "^0.3.2",
-    "vue-loader": "^15.7.0"
+    "vue-loader": "^15.7.0",
+    "vue-styleguidist": "^3.10.2"
   },
   "optionalDependencies": {
     "clean-css-cli": "^4.2.1",

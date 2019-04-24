@@ -101,21 +101,71 @@
 </template>
 
 <style>
-  .ub-select-entity .el-input__inner {
-    cursor: text;
-  }
+    .ub-select-entity .el-input__inner {
+        cursor: text;
+    }
 </style>
 
+<docs>
+    UbSelectEntity:
+
+    ```vue
+    <template>
+        <u-select-entity
+                v-model="value"
+                style="width:500px"
+                :entity-name="entityName"
+                :use-own-actions="useOwnActions"
+                :actions="actions"
+                :disabled="disabled"
+                :placeholder="placeholder || 'Select'"
+                @input="inputFn"
+        ></u-select-entity>
+    </template>
+    <script>
+      export default {
+        data () {
+          return {
+            entityName: 'tst_dictionary',
+            value: 1,
+            disabled: false,
+            useOwnActions: false,
+            placeholder: null,
+            actions: []
+          }
+        },
+        computed: {
+          entitySchema () {
+            return this.$UB.connection.domain.get(this.entityName).asPlainJSON(false)
+          }
+        },
+        methods: {
+          inputFn: console.log('Entered value')
+        }
+      }
+    </script>
+    ```
+
+</docs>
 <script>
 require('../../css/ub-select.css')
 const PAGE_SIZE = 20
 
+/**
+   * Component for select entity.
+   */
 module.exports = {
   name: 'USelectEntity',
   props: {
+    /**
+       * Array with entity names and ids
+       */
     value: {
       type: [String, Number]
     },
+    /**
+       * Name of Entity.
+       */
     entityName: {
       type: String,
       required: true
