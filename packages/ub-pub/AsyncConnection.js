@@ -1208,7 +1208,8 @@ UBConnection.prototype.update = function (serverRequest, allowBuffer) {
 /**
  * Promise of running UBQL command with `update` method (asynchronously).
  *
- * In case `fieldList` is passed - result will contains updated values for attributes specified in `fieldList` as Object
+ * In case `fieldList` is passed - result will contains updated values for attributes specified in `fieldList` as Object;
+ *   >If `fieldList` is not passed or empty - return `null`
  *
  * Example:
  *
@@ -1233,7 +1234,9 @@ UBConnection.prototype.update = function (serverRequest, allowBuffer) {
  */
 UBConnection.prototype.updateAsObject = function (serverRequest, fieldAliases, allowBuffer) {
   return this.update(serverRequest, allowBuffer).then(function (res) {
-    return LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+    return (res.resultData && res.resultData.data && res.resultData.data.length)
+      ? LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)[0]
+      : null
   })
 }
 
