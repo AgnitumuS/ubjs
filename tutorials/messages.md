@@ -1,4 +1,6 @@
-﻿# Настройка и использование системы уведомлений
+﻿[[toc]]
+
+# Настройка и использование системы уведомлений
 
   **WARNING** Starting from UB 1.11 notification updates is sending by ubNotifier WebSocket protocol.
   To receive notifications on the `adminUI`:
@@ -124,7 +126,7 @@
 При получении сообщения с типом "Информация" увеличивается счетчик не прочитанных сообщений в виджете.
 
 При получении любого другого сообщение оно сразу выводится. По нажатию кнопки "ОК" сообщение считается прочитанным.
-<img src="img/sysMessageSample.png">
+![sysMessageSample](img/sysMessageSample.png) 
 
 Также сообщения можно просмотреть в реестре истории сообщений.
-<img src="img/getMessageInfo.png">
+![getMessageInfo](img/getMessageInfo.png) 

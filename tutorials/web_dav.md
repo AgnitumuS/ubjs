@@ -8,7 +8,7 @@ npm i --save @ub-e/web-dav
 And use it in your model main file with appropriate provider.
 Sample below expose all application files to internet - do not do this in production environment
  
-```
+```js
 const WebDav = require('@ub-e/web-dav')
 const FsProvider = require('@ub-e/web-dav/providers/webDavFileSystemProvider')
 WebDav.registerEndpoint('folders')

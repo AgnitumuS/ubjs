@@ -1,3 +1,5 @@
+[[toc]]
+
 # Работа с полнотекстовып поиском (FTS)
 
 ## Общая информация
@@ -248,7 +250,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
 
 ### Поиск по всем сущностям одного индекса
 При подключении fts в сущностях, и указании атрибутов для индексирования, создается таблица в файле полнотекстового поиска, которая содержит индексируемые данные
-<img src="img/FTSIndexedData.png">
+![FTSIndexedData](img/FTSIndexedData.png)
 
 Поиск по всем сущностям в данном конекшине - используем метод `fts_ftsDefault.fts`:
 
@@ -284,7 +286,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
     });
 
 В результате получим следующий функционал
-<img src="img/FTSToolbarWidget.png">
+![FTSToolbarWidget](img/FTSToolbarWidget.png)
 
 Двойной клик на строчке грида с результатами поиска откроет форму по умолчанию соответствующей сущности.
 
@@ -298,7 +300,7 @@ SQLite БД полнотекстового поиска, т.к. токенайз
 	var me = this;
 	me.textBox = Ext.create('Ext.form.field.Text', {
             enableKeyEvents: true,
-            fieldLabel: UB.i18n('myFieldLabel'),            
+            fieldLabel: UB.i18n('myFieldLabel'),
             style: "color: black; border-width: 5px;",
             fieldStyle: "border-width: 0px;",
             listeners: {
@@ -369,10 +371,10 @@ SQLite БД полнотекстового поиска, т.к. токенайз
     }
 
 для сущностей с миксином `fts` добавляется отдельная вкладка "Полнотекстовый поиск":
-<img src="img/FTSAutofilter.png">
+![FTSAutofilter](img/FTSAutofilter.png)
 
 Для гридов, отфильтрованным полнотекстовым поиском - соответствующая индикация:
-<img src="img/FTSAutofilterResult.png">
+![FTSAutofilterResult](img/FTSAutofilterResult.png)
 
 На програмном уровне формируется запрос, аналогичный описанному в "Поиск по конкретной сущности".
 

@@ -1,3 +1,5 @@
+[[toc]]
+
 # Using Nginx as a reverse proxy and load balance
 ![load balance](img/LoadBalancing.png)
 

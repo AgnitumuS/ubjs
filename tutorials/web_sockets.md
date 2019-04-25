@@ -1,8 +1,10 @@
-﻿  With help of [WebSockets] developer can implement a two-way Server<->Client communication,
+﻿[[toc]]
+
+With help of [WebSockets] developer can implement a two-way Server<->Client communication,
 for example sent a notification from server to client when some task are finished on the server-side
 or when some data is changed etc.
 
-  [WebSockets] specification itself do not provide neither security nor data format recommendation for such communication,
+[WebSockets] specification itself do not provide neither security nor data format recommendation for such communication,
 so in UnityBase we implement a simple JSON messaging protocol and secure it using build-in UnityBase auth mechanisms.
 
 ## System requirements & limitations
@@ -17,7 +19,7 @@ several instance of server & load balancing are required.
   On the JsonMessagesProtocol#broadcast operation we discover a linear latency growing during increasing
 a number of active connection (the worst case are measured):
 
-<img src="img/LatencyGraph.png">
+![LatencyGraph](img/LatencyGraph.png)
 
   The JsonMessagesProtocol#sendCommand latency is practically independent of the number of connections and
 remains within 2-50ms., so our recommendation is to limit a JsonMessagesProtocol#broadcast usage

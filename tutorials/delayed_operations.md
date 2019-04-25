@@ -1,4 +1,6 @@
-﻿As described in an [Architecture](/docs/architecture.html), when UnityBase is running
+﻿[[toc]]
+
+As described in an [Architecture](/docs/architecture.html), when UnityBase is running
 in the HTTP server mode, it picks up the pool of independent working thread
 responsible for processing the HTTP requests - let's call it the HTTP workers.
 
@@ -78,7 +80,7 @@ More generally, it's a common pattern throughout systems to have a work queue th
 the work consumers. The producers insert work into a work queue and the consumers pop work from the queue,
 performing the required tasks.
 
-<img src="img/ubQueue.png" alt="UnityBase queue schema">
+![UnityBase queue schema](img/ubQueue.png)
 
 UnityBase provides a UBQ model - a set of entities & components for management of asynchronous task execution.
 A producer (either UB HTTP worker or external system) can put (insert) a work into the queue using `ubq_messages.addqueue`

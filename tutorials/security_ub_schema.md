@@ -1,4 +1,6 @@
-## **UB** authentication schema
+[[toc]]
+
+## UB authentication schema
 
 Actually this is modified DIGEST schema with SHA256 hash algorithm and modified authorization mechanism.
 In case of this schema usage UnityBase store client passwords hash in `upasswordHashHexa` attribute of `uba_user` entity.

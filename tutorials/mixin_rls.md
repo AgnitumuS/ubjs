@@ -1,5 +1,6 @@
-﻿
-# Mixin **rls** - Row Level Security
+﻿[[toc]]
+
+# Mixin RLS - Row Level Security
 
 Row-level security (RLS) is functionality built into UnityBase server core, which allows to filter rows available for the current user.
 
