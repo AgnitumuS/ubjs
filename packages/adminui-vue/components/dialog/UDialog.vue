@@ -4,6 +4,7 @@
     :visible.sync="visible"
     :append-to-body="true"
     @close="cancel"
+    @open="setFocus"
   >
     <div
       slot="title"
@@ -38,7 +39,7 @@
         {{ $ut(buttons.no) }}
       </el-button>
       <el-button
-        autofocus
+        ref="acceptButton"
         type="primary"
         @click="accept"
       >
@@ -96,6 +97,12 @@ export default {
         console.log('Can`t copy, boss')
       }
       window.getSelection().removeAllRanges()
+    },
+
+    async setFocus () {
+      await this.$nextTick()
+      const acceptButton = this.$refs.acceptButton
+      acceptButton.$el.focus()
     }
   }
 }

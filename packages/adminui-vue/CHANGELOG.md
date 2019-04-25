@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - migrate from "babel-plugin-transform-object-rest-spread": "^6.26.0 -> "@babel/plugin-proposal-object-rest-spread": "^7.4.3 
   for boundler
+ - update element-ui@2.4.3 -> 2.8.0
+ - update element-theme-chalk@2.4.3 -> 2.8.0
+
+### Fixed
+ - `UDialog` fixed autofocus on accept button 
 
 ## [1.4.1]
 ### Added
