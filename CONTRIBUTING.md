@@ -33,7 +33,7 @@ On Linux
 cd ubjs
 PATH=`pwd`/node_modules/.bin:$PATH
 ```
-On Wndows:
+On Windows:
 ```
 cd ubjs
 SET PATH=%CD%\node_modules\.bin;%PATH%

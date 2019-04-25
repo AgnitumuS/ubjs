@@ -3,8 +3,8 @@
   "private": true,
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
+    "@babel/core": "^7.4.3",
+    "babel-loader": "^8.0.5",
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
@@ -41,6 +41,6 @@
     "npm": "^5"
   },
   "dependencies": {
-    "ub-jsdoc": "^2.1.5"
+    "ub-jsdoc": "^2.1.6"
   }
 }
