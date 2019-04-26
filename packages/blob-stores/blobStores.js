@@ -159,14 +159,14 @@ function initBLOBStores (appInstance, sessionInstance) {
  */
 function parseBlobRequestParams (params) {
   let ID = parseInt(params.ID || params.id)
-  if (ID <= 0) return {success: false, reason: 'incorrect ID value'}
+  if (ID <= 0) return { success: false, reason: 'incorrect ID value' }
   if (!params.entity || !params.attribute) {
-    return {success: false, reason: 'One of required parameters (entity,attribute) not found'}
+    return { success: false, reason: 'One of required parameters (entity,attribute) not found' }
   }
   let entity = App.domainInfo.get(params.entity)
   let attribute = entity.getAttribute(params.attribute)
   if (attribute.dataType !== UBDomain.ubDataTypes.Document) {
-    return {success: false, reason: `Invalid getDocument Request to non-document attribute ${params.entity}.${params.attribute}`}
+    return { success: false, reason: `Invalid getDocument Request to non-document attribute ${params.entity}.${params.attribute}` }
   }
   let bsReq = {
     ID: ID,
@@ -178,7 +178,7 @@ function parseBlobRequestParams (params) {
     revision: params.revision ? parseInt(params.revision, 10) : undefined,
     extra: params.extra
   }
-  return {success: true, bsReq: bsReq, attribute: attribute}
+  return { success: true, bsReq: bsReq, attribute: attribute }
 }
 
 /**
@@ -373,7 +373,7 @@ function setDocumentEndpoint (req, resp) {
   }
   let blobStoreItem = store.saveContentToTempStore(parsed.bsReq, attribute, content)
   resp.statusCode = 200
-  resp.writeEnd({success: true, errMsg: '', result: blobStoreItem})
+  resp.writeEnd({ success: true, errMsg: '', result: blobStoreItem })
 }
 
 /**
@@ -446,7 +446,7 @@ function rotateHistory (store, attribute, ID, blobInfo) {
     // delete persisted item
     store.doDeletion(attribute, ID, historicalBlobInfo)
     // and information about history from ub_blobHistory
-    dataStore.run('delete', {execParams: {ID: item['ID']}})
+    dataStore.run('delete', { execParams: { ID: item['ID'] } })
   }
   let archivedBlobInfo = store.doArchive(attribute, ID, blobInfo)
   // insert new historical item
@@ -545,10 +545,10 @@ function markRevisionAsPermanent (request) {
     .selectScalar()
   if (histID) {
     let dataStore = getBlobHistoryDataStore()
-    dataStore.run('update', {execParams: {
+    dataStore.run('update', { execParams: {
       ID: histID,
       permanent: 1
-    }})
+    } })
   } else {
     console.error(`Revision ${r.bsReq.revision} not exists for ${r.attribute.entity.name}.${r.attribute.name} with ID ${r.bsReq.ID}`)
   }
