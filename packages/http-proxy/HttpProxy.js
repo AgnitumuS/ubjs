@@ -24,6 +24,9 @@
 const http = require('http')
 const EventEmitter = require('events').EventEmitter
 const UBA_COMMON = require('@unitybase/base').uba_common
+const UB = require('@unitybase/ub')
+const App = UB.App
+const Session = UB.Session
 
 /**
  * @class
