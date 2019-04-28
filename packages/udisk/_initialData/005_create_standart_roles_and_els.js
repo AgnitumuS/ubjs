@@ -9,24 +9,23 @@
  * @param {cmd.argv.serverSession} session
  */
 module.exports = function (session) {
-  var conn = session.connection, roleID,
-    desktopID, folderID, roles = {}
+  const conn = session.connection
+  let roles = {}
 
   console.log('\t\tcreate `users` role')
-  roleID = conn.insert({
+  let roleID = conn.insert({
     entity: 'uba_role',
     fieldList: ['ID'],
     execParams: {
       name: 'udiskPublicUsers',
       description: 'public udisk users',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
 
   roles.publicUser = roleID
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_public_users',
       entityMask: 'udisk_card',
@@ -38,7 +37,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_public_usersp',
       entityMask: 'udisk_permission',
@@ -55,14 +53,13 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskPublicAdmins',
       description: 'public udisk admins',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
   roles.publicAdmin = roleID
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_public_admins',
       entityMask: 'udisk_card',
@@ -74,7 +71,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_public_adminsp',
       entityMask: 'udisk_permission',
@@ -91,14 +87,13 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskPublicAdminsDenyContent',
       description: 'public udisk micro admins',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
   roles.publicAdminDC = roleID
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_public_adminsda',
       entityMask: 'udisk_card',
@@ -110,7 +105,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_public_adminsdap',
       entityMask: 'udisk_permission',
@@ -127,14 +121,13 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskServiceUsers',
       description: 'Service udisk users',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
   roles.serviceUser = roleID
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_service_user',
       entityMask: 'udisk_servicecard',
@@ -146,7 +139,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_service_userp',
       entityMask: 'udisk_srvpermission',
@@ -163,7 +155,7 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskServiceAdmins',
       description: 'Service udisk admins',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
 
@@ -171,7 +163,6 @@ module.exports = function (session) {
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_service_admin',
       entityMask: 'udisk_servicecard',
@@ -183,7 +174,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_service_adminp',
       entityMask: 'udisk_srvpermission',
@@ -200,7 +190,7 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskServiceAdminsDenyContent',
       description: 'Service udisk micro admins',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
 
@@ -208,7 +198,6 @@ module.exports = function (session) {
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_service_admindc',
       entityMask: 'udisk_servicecard',
@@ -220,7 +209,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_service_admindcp',
       entityMask: 'udisk_srvpermission',
@@ -237,7 +225,7 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskSecretUsers',
       description: 'Secret udisk users',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
 
@@ -245,7 +233,6 @@ module.exports = function (session) {
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_secret_user',
       entityMask: 'udisk_secretcard',
@@ -257,7 +244,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_secret_userp',
       entityMask: 'udisk_spermission',
@@ -274,7 +260,7 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskSecretAdmins',
       description: 'Secret udisk admins',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
 
@@ -282,7 +268,6 @@ module.exports = function (session) {
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_secret_admin',
       entityMask: 'udisk_secretcard',
@@ -294,7 +279,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_secret_adminp',
       entityMask: 'udisk_spermission',
@@ -311,7 +295,7 @@ module.exports = function (session) {
     execParams: {
       name: 'udiskSecretAdminsDenyContent',
       description: 'Secret udisk micro admins',
-	    sessionTimeout: 30
+      sessionTimeout: 30
     }
   })
 
@@ -319,7 +303,6 @@ module.exports = function (session) {
 
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_secret_admindc',
       entityMask: 'udisk_secretcard',
@@ -331,7 +314,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'uba_els',
-    fieldList: 'code;entityMask;methodMask;ruleType;ruleRole;description'.split(';'),
     execParams: {
       code: 'udisk_secret_admindcp',
       entityMask: 'udisk_spermission',
@@ -342,10 +324,10 @@ module.exports = function (session) {
     }
   })
 
-  desktopID = conn.lookup('ubm_desktop', 'ID', {expression: 'code', condition: 'equal', values: {code: 'udisk_desktop'}})
+  let desktopID = conn.lookup('ubm_desktop', 'ID', { expression: 'code', condition: 'equal', values: { code: 'udisk_desktop' } })
   console.info('\tFill desktop')
   if (!desktopID) {
-    console.info('\t\tcreate new `Administrator` desktop')
+    console.info('\t\tcreate new `UDisk` desktop')
     desktopID = conn.insert({
       entity: 'ubm_desktop',
       fieldList: ['ID'],
@@ -361,7 +343,6 @@ module.exports = function (session) {
   Object.keys(roles).forEach(function (roleCode) {
     conn.insert({
       entity: 'ubm_desktop_adm',
-      fieldList: ['ID'],
       execParams: {
         instanceID: desktopID,
         admSubjID: roles[roleCode]
@@ -369,7 +350,7 @@ module.exports = function (session) {
     })
   })
 
-  folderID = null
+  let folderID = null
   var newFolderID
   console.log('\t\t\tcreate `UDISK` shortcut')
 
@@ -383,13 +364,12 @@ module.exports = function (session) {
       caption: 'UDISK',
       iconCls: 'fa',
       displayOrder: 10,
-      cmdCode: JSON.stringify({'cmdType': 'showForm', 'formCode': 'udisk_card', 'entity': 'udisk_card'})
+      cmdCode: JSON.stringify({ 'cmdType': 'showForm', 'formCode': 'udisk_card', 'entity': 'udisk_card' })
     }
   })
 
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.publicUser
@@ -406,17 +386,16 @@ module.exports = function (session) {
       caption: 'UDISK admin',
       iconCls: 'fa',
       displayOrder: 10,
-      cmdCode: JSON.stringify({'cmdType': 'showForm',
+      cmdCode: JSON.stringify({ 'cmdType': 'showForm',
         'formCode': 'udisk_card',
         'entity': 'udisk_card',
         'description': 'udisk_card_adm',
-        'cmpInitConfig': { 'mode': 'admin'} })
+        'cmpInitConfig': { 'mode': 'admin' } })
     }
   })
 
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.publicAdmin
@@ -424,7 +403,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.publicAdminDC
@@ -432,7 +410,6 @@ module.exports = function (session) {
   })
 
   // service
-
   newFolderID = conn.insert({
     fieldList: ['ID'],
     entity: 'ubm_navshortcut',
@@ -443,13 +420,12 @@ module.exports = function (session) {
       caption: 'Service UDISK',
       iconCls: 'fa',
       displayOrder: 10,
-      cmdCode: JSON.stringify({'cmdType': 'showForm', 'formCode': 'udisk_card', 'entity': 'udisk_servicecard'})
+      cmdCode: JSON.stringify({ 'cmdType': 'showForm', 'formCode': 'udisk_card', 'entity': 'udisk_servicecard' })
     }
   })
 
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.serviceUser
@@ -466,17 +442,16 @@ module.exports = function (session) {
       caption: 'Service UDISK admin',
       iconCls: 'fa',
       displayOrder: 10,
-      cmdCode: JSON.stringify({'cmdType': 'showForm',
+      cmdCode: JSON.stringify({ 'cmdType': 'showForm',
         'formCode': 'udisk_card',
         'entity': 'udisk_servicecard',
         'description': 'Service UDISK admin',
-        'cmpInitConfig': { 'mode': 'admin'} })
+        'cmpInitConfig': { 'mode': 'admin' } })
     }
   })
 
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.serviceAdmin
@@ -484,7 +459,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.serviceAdminDC
@@ -502,7 +476,7 @@ module.exports = function (session) {
       caption: 'Secret UDISK',
       iconCls: 'fa',
       displayOrder: 10,
-      cmdCode: JSON.stringify({'cmdType': 'showForm', 'formCode': 'udisk_card', 'entity': 'udisk_secretcard'})
+      cmdCode: JSON.stringify({ 'cmdType': 'showForm', 'formCode': 'udisk_card', 'entity': 'udisk_secretcard' })
     }
   })
 
@@ -525,17 +499,16 @@ module.exports = function (session) {
       caption: 'Secret UDISK admin',
       iconCls: 'fa',
       displayOrder: 10,
-      cmdCode: JSON.stringify({'cmdType': 'showForm',
+      cmdCode: JSON.stringify({ 'cmdType': 'showForm',
         'formCode': 'udisk_card',
         'entity': 'udisk_secretcard',
         'description': 'Secret UDISK admin',
-        'cmpInitConfig': { 'mode': 'admin'} })
+        'cmpInitConfig': { 'mode': 'admin' } })
     }
   })
 
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.secretAdmin
@@ -543,7 +516,6 @@ module.exports = function (session) {
   })
   conn.insert({
     entity: 'ubm_navshortcut_adm',
-    fieldList: ['ID'],
     execParams: {
       instanceID: newFolderID,
       admSubjID: roles.secretAdminDC
