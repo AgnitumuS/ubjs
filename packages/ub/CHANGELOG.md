@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.12]
+### Fixed
+ - Windows: `UB.UBAbort` server-side exception fileName & lineNum now valid in case
+ file name is absolute path starts with drive letter. Prev. implementation puts drive letter instead of fileName 
+
 ## [5.2.11]
 ### Added
  - Entity metadata merging: in case descendant model contains entity with the same name as

@@ -26,10 +26,18 @@ function UBAbort (message) {
   // FF, IE 10+ and Safari 6+. Fallback for others
   let tmpStack = (new Error()).stack.split('\n').slice(1)
   let realErr = tmpStack.find((str) => str.indexOf('@') > 0) // search for a first error outside of ub core modules
-  let re = /^(.*?)@(.*?):(.*?)$/.exec(realErr) // [undef, undef, this.fileName, this.lineNumber] = re
-  this.fileName = re[2]
-  this.lineNumber = re[3]
+  // realErr ~ 'func@fileName:line:col'; fileName can contains :
+  // eslint-disable-next-line no-unused-vars
+  let [funcN, rest] = realErr.split('@')
   this.stack = tmpStack.join('\n')
+  if (rest) {
+    let parts = rest.split(':')
+    this.lineNumber = parseInt(parts[parts.length - 2])
+    this.fileName = parts.slice(0, -2).join(':')
+  } else {
+    this.fileName = ''
+    this.lineNumber = 0
+  }
   // original FF version:
   // this.stack = (new Error()).stack;
 }
