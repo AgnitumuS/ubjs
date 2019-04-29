@@ -1,3 +1,4 @@
+/* eslint-disable node/no-deprecated-api */
 /**
  * User: felix
  * Date: 26.01.14
@@ -35,8 +36,7 @@ module.exports = function runTest (options) {
   function testCommon (conn) {
     let res
 
-    console.debug('Test where item condition "LIKE"')
-
+    console.debug('Parameter with : inside')
     assert.doesNotThrow(
       function () {
         conn.Repository('uba_user').attrs('ID', 'name').where('name', 'in', [ 'as:da', 'admin' ]).selectAsArray()
@@ -44,6 +44,7 @@ module.exports = function runTest (options) {
       'string parameters with : inside must not throw'
     )
 
+    console.debug('Case sensitive LIKE')
     res = conn.Repository('uba_user')
       .attrs([ 'ID' ])
       .where('[name]', 'like', uba.USERS.ADMIN.NAME)
@@ -51,6 +52,7 @@ module.exports = function runTest (options) {
       .selectAsArray()
     assert.equal(res.resultData.rowCount, 1, 'case sensitive LIKE fails')
 
+    console.debug('Case insensitive LIKE')
     res = conn.Repository('uba_user')
       .attrs([ 'ID' ])
       .where('[name]', 'like', uba.USERS.ADMIN.NAME.toUpperCase())
@@ -65,6 +67,7 @@ module.exports = function runTest (options) {
       .selectAsArray()
     assert.equal(res.resultData.rowCount, 1, 'mixed case insensitive LIKE fails')
 
+    console.debug('IN condition for array of Numbers')
     res = conn.Repository('uba_user')
       .attrs([ 'ID' ])
       .where('[ID]', 'in', [uba.USERS.ADMIN.ID, uba.USERS.ANONYMOUS.ID])
@@ -72,46 +75,9 @@ module.exports = function runTest (options) {
       .selectAsArray()
     assert.equal(res.resultData.rowCount, 2, 'IN condition for array of Numbers fails')
 
-    res = conn.Repository('uba_user')
-      .attrs([ 'ID' ])
-      .where('name', 'in', [uba.USERS.ADMIN.NAME, uba.USERS.ANONYMOUS.NAME])
-      .limit(3)
-      .selectAsArray()
-    assert.equal(res.resultData.rowCount, 2, 'IN condition for array if String fails')
-
-    // in subquery
-    res = conn.Repository('uba_user')
-      .attrs([ 'ID' ])
-      // .where('[ID]', 'in', [10, 20])
-      .where('ID', 'in', conn.Repository('uba_user').attrs([ 'ID' ]).limit(1))
-      .limit(3)
-      .selectAsArray()
-    assert.equal(res.resultData.rowCount, 1, 'IN condition for subrepository fails')
-
-    // group by
-    res = conn.Repository('uba_user')
-      .attrs([ 'ID', 'name' ])
-      // .where('[ID]', 'in', [10, 20])
-      .where('ID', 'in', conn.Repository('uba_user').attrs([ 'ID' ]).limit(1))
-      .groupBy([ 'ID', 'name' ])
-      .orderBy('name')
-      .selectAsArray()
-
-    // exists
-    // who do not login during this year
-    res = conn.Repository('uba_user')
-      .attrs([ 'ID' ])
-      .notExists(
-        conn.Repository('uba_audit')
-          .correlation('actionUser', 'name')  // not a simple expression!
-          .where('[actionTime]', '>', new Date(2016, 1, 1))
-          .where('[actionType]', '=', 'LOGIN')
-      )
-      // but modify some data
-      .exists(
-        conn.Repository('uba_auditTrail')
-          .where('[{master}.ID] =[ID]', 'custom') // here we link to uba_user.ID
-          .where('[actionTime]', '>', new Date(2016, 1, 1))
-      ).select()
+    console.debug('Where item condition without values')
+    assert.throws(() => {
+      conn.Repository('uba_user').attrs('ID').where('ID', '=', undefined).select()
+    }, /Where item with condition "equal" must contains "values" part/, 'throws a string instead of error dont raise AV')
   }
 }
