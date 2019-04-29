@@ -49,7 +49,7 @@ function udiskController (diskEntity) {
     if (userHasAnyRole(adminRole, adminDCRole)) {
       params.__skipRls = true
     } else {
-      throw new Error('Access deny')
+      throw new UB.UBAbort('<<<Access deny>>>')
     }
     store.run('select', params)
     if (store.lockResult) {
@@ -70,7 +70,7 @@ function udiskController (diskEntity) {
       params.__skipRls = true
       params.execParams.__skipRls = true
     } else {
-      throw new Error('Access deny')
+      throw new UB.UBAbort('<<<Access deny>>>')
     }
     cStore = UB.Repository(entityName)
       .attrs(['ID', 'isFolder'])
@@ -89,7 +89,7 @@ function udiskController (diskEntity) {
       throw new Error('<<<udiskCanChangeOnlyEmptyFolder>>>')
     }
 
-    store = UB.DataStore(entityName)
+    let store = UB.DataStore(entityName)
     store.execSQL(`delete from ${entityName} where id = :ID:`, params.execParams)
     // store.run('delete', params);
   }
