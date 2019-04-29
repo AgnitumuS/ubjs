@@ -2665,27 +2665,9 @@ Ext.define('UB.view.EntityGridPanel', {
   onAudit: function () {
     var me = this
     var sel = this.getSelectionModel().getSelection()
-    var fieldList = ['actionTime', 'actionType', 'actionUser', 'remoteIP']
 
     if (sel.length < 1) {
       return
-    }
-
-    var whereList = {
-      entityExpr: {
-        expression: '[entity]',
-        condition: 'equal',
-        values: {
-          entity: me.entityName
-        }
-      },
-      parentExpr: {
-        expression: '[entityinfo_id]',
-        condition: 'equal',
-        values: {
-          entityinfo_id: sel[0].get('ID')
-        }
-      }
     }
 
     $App.doCommand({
@@ -2694,12 +2676,11 @@ Ext.define('UB.view.EntityGridPanel', {
       hideActions: ['addNew', 'addNewByCurrent', 'edit', 'del', 'newVersion'],
       cmdData: {
         params: [
-          {
-            entity: 'uba_auditTrail',
-            method: UB.core.UBCommand.methodName.SELECT,
-            fieldList: fieldList,
-            whereList: whereList
-          }
+          UB.Repository('uba_auditTrail').attrs(['actionTime', 'actionType', 'actionUser', 'remoteIP'])
+            .where('entity', '=', me.entityName)
+            .where('entityinfo_id', '=', sel[0].get('ID'))
+            .orderByDesc('actionTime')
+            .ubql()
         ]
       },
       cmpInitConfig: {
@@ -2709,7 +2690,7 @@ Ext.define('UB.view.EntityGridPanel', {
         afterInit: function () {
           let grid = this
           let grouper
-          grid.store.sort('actionTime', 'DESC')
+          // prevent two request grid.store.sort('actionTime', 'DESC')
           grid.store.oldGroup = grid.store.group
           grid.store.group = function (groupers, direction, suppressEvent) {
             let me = this

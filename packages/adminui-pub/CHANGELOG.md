@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.7]
+### Fixed
+ - prevent two server query for Audit Trail grid by moving sort to the UBQL
+ 
 ## [5.8.4]
 ### Changed
  - upgrade mustache 2.3.0 -> 3.0.1 
