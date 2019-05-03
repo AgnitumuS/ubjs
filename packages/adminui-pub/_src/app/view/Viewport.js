@@ -37,8 +37,7 @@ Ext.define('UB.view.Viewport', {
       me.leftPanel = Ext.create('Ext.panel.Panel', {
         header: false,
         region: 'west',
-        width: 240,
-        sizes: {
+        defaultSizes: {
           full: 240,
           collapsed: 76
         }
