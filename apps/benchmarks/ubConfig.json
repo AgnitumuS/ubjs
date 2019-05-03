@@ -18,7 +18,7 @@
 		"authenticationMethods": []
 	},
 	"javascript": {
-		"fullGCPeriod": 100
+		"fullGCPeriod": 1000000
 	},
 	"application": {
 		"defaultLang": "en",
