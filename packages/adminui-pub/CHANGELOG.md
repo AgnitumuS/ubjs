@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added 
  - `isModal` parameter for vue forms
 
+### Fixed
+ - removed stacked width in customSidebar option
+
 ## [5.8.3]
 ### Fixed
  - `$App.doCommand` instantiate form with type `module` by calling `mount` function (as for vue form)

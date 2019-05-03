@@ -64,6 +64,8 @@
 </template>
 
 <script>
+/* global $App */
+
 const UB = require('@unitybase/ub-pub')
 const USidebarItem = require('./USidebarItem.vue').default
 const UContextMenu = require('../controls/UContextMenu.vue').default
@@ -122,7 +124,7 @@ export default {
   watch: {
     isCollapsed (value) {
       window.localStorage.setItem('portal:sidebar:isCollapsed', value)
-      const {full, collapsed} = $App.viewport.leftPanel.sizes
+      const { full, collapsed } = $App.viewport.leftPanel.defaultSizes
       $App.viewport.leftPanel.setWidth(value ? collapsed : full)
     }
   },
