@@ -1,5 +1,5 @@
 // eslint-disable-next-line camelcase
-const { req_read, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters } = process.binding('http_server')
+const { req_read, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI, reg_getParameters, reg_getDecodedParameters, req_writeToFile } = process.binding('http_server')
 
 /**
  * @classdesc
@@ -18,6 +18,16 @@ class THTTPRequest {
   read (encoding) {
     return req_read(encoding)
   }
+
+  /**
+   * Write request body content (as binary) to a file. Return true on success
+   * @param {string} fullFilePath
+   * @return {boolean}
+   */
+  writeToFile (fullFilePath) {
+    return req_writeToFile(fullFilePath)
+  }
+
   /**
    * HTTP request headers
    * @type {string}
