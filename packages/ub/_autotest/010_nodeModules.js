@@ -1,6 +1,5 @@
 const opt = require('@unitybase/base').options
 // disable NODE.JS tests if auto tests executed with -skipModules command line switch
-if (opt.switchIndex('skipModules') !== -1) return
 const fs = require('fs')
 const path = require('path')
 
@@ -10,6 +9,8 @@ tests.forEach(function (test) {
   console.debug('Run', test)
   require('./nodeModules/simple/' + test)
 })
+
+if (opt.switchIndex('skipModules') !== -1) return
 
 let parallelFolder = path.join(__dirname, 'nodeModules', 'parallel')
 tests = fs.readdirSync(parallelFolder).sort()
