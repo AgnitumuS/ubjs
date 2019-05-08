@@ -117,14 +117,12 @@ TubMailReceiver.reconnect = function () {}
  * Mail SMTP sender object
  * @constructor
  * @param {Object} paramsObj parameters object
- * @param {String} paramsObj.host host of mail server
- * @param {String} paramsObj.port port of mail server
- * @param {String} [paramsObj.user = ''] user login on mail server
- * @param {String} [paramsObj.password = ''] user password on mail server
- * @param {Boolean} [paramsObj.tls = false] use tls. In {@link UBMail} tls is
- *    not implemented so you will get an exception when set this value true.
- *    For using tls use {@link UBMail_openssl} class
- * @param {Boolean} [paramsObj.auth = false] is need user authentication
+ * @param {String} paramsObj.host mail server host
+ * @param {String} paramsObj.port mail server port
+ * @param {String} [paramsObj.user = ''] mail server login
+ * @param {String} [paramsObj.password = ''] mail server password
+ * @param {Boolean} [paramsObj.tls = false] use tls. OpenSSL libraries version >= 0.9.7 must be installed - see package README.md for details
+ * @param {Boolean} [paramsObj.auth = false] authentication required
  */
 function TubMailSenderBind (paramsObj) {}
 
