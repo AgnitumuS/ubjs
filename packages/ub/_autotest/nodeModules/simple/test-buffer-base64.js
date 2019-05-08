@@ -5,7 +5,7 @@ const os = require('os')
 const fixturesFolder = path.join(common.fixturesDir, 'UBTest')
 const fs = require('fs')
 
-const etalon = `module.exports = 'withoutBOM'\n`
+const etalon = `module.exports = 'withoutBOM'${os.EOL}`
 
 let content
 

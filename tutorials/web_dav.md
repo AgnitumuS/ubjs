@@ -1,4 +1,4 @@
-## Using WebDav
+## WebDav (UB Enterprise Edition)
 
 Add @ub-e/web-dav module to your app
 ```bash

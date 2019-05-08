@@ -15,6 +15,9 @@ if (process.platform === 'win32') {
 content = fs.readFileSync(path.join(folder, 'файл.txt'), {encoding: 'utf-8'})
 assert.ok(content === etalon, 'файл.txt fail')
 
+content = fs.readFileSync(path.join(folder, 'файл.txt'))
+assert.ok(content.byteLength === 20, 'файл.txt byte length fail')
+
 content = fs.readFileSync(path.join(folder, 'utf8wBOM.txt'), {encoding: 'utf-8'})
 assert.ok(content === etalon, 'utf8wBOM.txt fail')
 
