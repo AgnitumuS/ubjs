@@ -48,6 +48,7 @@
 			"simpleAudit": false,
 			"safeDelete" : false
 		},
+		"audit": {"enabled": false}, // test disabled audit mixin
 		"clobTruncate": {
 			/*"attributeList": [
 				{"name": "text100", "size": 100},
