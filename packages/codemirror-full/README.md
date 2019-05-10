@@ -9,5 +9,5 @@ We can't  bundle an original version of CodeMirror for several reasons:
  - we can't use jshint from SystemJS because it requires node's build-in
  module "events"
 
-Also we mode a JSHint to the devDependencies, because npm version of jshint is HUGE (100Mb)
+Starting from "jshint": "^2.10.2" size problem is solved (before 2.10 -  we mode a JSHint to the devDependencies, because npm version of jshint is HUGE (100Mb))
 
