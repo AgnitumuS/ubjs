@@ -26,12 +26,12 @@
 			"caption": "SourceID",
 			"description": "Test mapping of ID to another columns",
 			"allowNull": false
-                }
+        }
 	],
 	"mixins": {
 		"mStorage": {
 			"simpleAudit":false,
 			"safeDelete":false
-        	}
+        }
 	}
 }
