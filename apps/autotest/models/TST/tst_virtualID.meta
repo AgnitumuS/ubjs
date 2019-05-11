@@ -2,7 +2,6 @@
 	"caption": "ID mapped",
 	"description": "Test for mapped ID [UB-1219]",
 	"connectionName": "",
-	// "descriptionAttribute": "code",
 	"documentation": "",
 	"attributes": [
 		{
@@ -13,9 +12,12 @@
 			"description": "Ідентифікатор запису",
 			"isUnique": false,
 			"documentation": "Ідентифікатор запису",
-			"mapping": {
-				"AnsiSQL": { "expressionType": "Field", "expression": "srcID" }
-			}
+			"mapping": [
+				{
+					"name": "AnsiSQL",
+					"expressionType": "Field", "expression": "srcID",
+				}
+			]
 		},
 		{
 			"name": "srcID",
