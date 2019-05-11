@@ -15,7 +15,8 @@
 			"mapping": [
 				{
 					"name": "AnsiSQL",
-					"expressionType": "Field", "expression": "srcID",
+					"expressionType": "Field",
+					"expression": "srcID"
 				}
 			]
 		},
