@@ -117,7 +117,7 @@ exports.setGlobalConnectionDefaults = function setGlobalConnectionDefaults (defa
  * @param {Boolean} [options.keepAlive=false] Use keep Alive HTTP protocol feature if server support it.
  * @param {Number} [options.sendTimeout=30000] Send timeout in ms.
  * @param {Number} [options.receiveTimeout=30000] Receive timeout in ms.
- * @param {Number} [options.connectTimeout=30000] Connect timeout in ms.
+ * @param {Number} [options.connectTimeout=30000] Connect timeout in ms. Under windows the smallest possible value is 2000 (hardcoded by MS in TCP/IP SYN/ACK exchange)
  * @return {ClientRequest}
  */
 exports.request = function request (options) {
