@@ -12,7 +12,6 @@ module.exports = UBNativeMessage
 const ubUtils = require('./utils')
 const i18n = require('./i18n').i18n
 const EventEmitter = require('./events')
-const _ = require('lodash')
 /**
  * Native messages feature description
  * @typedef {Object} NMFeatureConfig
@@ -92,7 +91,7 @@ function UBNativeMessage (featureConfig) {
   }
 
   EventEmitter.call(me)
-  _.assign(me, EventEmitter.prototype)
+  Object.assign(me, EventEmitter.prototype)
 
   /**
    * Feature version. Defined after success connect() call.
@@ -107,7 +106,7 @@ function UBNativeMessage (featureConfig) {
   if (ubUtils.isSecureBrowser) {
     me.eventElm = {}
     EventEmitter.call(me.eventElm)
-    _.assign(me.eventElm, EventEmitter.prototype)
+    Object.assign(me.eventElm, EventEmitter.prototype)
     me.eventElm.addEventListener = me.eventElm.addListener
   } else {
     me.eventElm = document.getElementById('ubExtensionPageMessageObj')
@@ -173,7 +172,7 @@ function UBNativeMessage (featureConfig) {
             }
           }
           pending.partials[currentPart] = data
-          if (_.indexOf(pending.partials, undefined) === -1) { // all parts come - ready to resolve. lodash using is important here - Array.indexOf not wok with `undefined`
+          if (!pending.partials.includes(undefined)) { // all parts come - ready to resolve
             data = pending.partials.join('')
             delete me.pendingMessages[messageID]
             if ((data.charAt(0) === '{') || (data.charAt(0) === '[')) { // data is JSON
@@ -321,7 +320,7 @@ UBNativeMessage.prototype.doOnDisconnect = function (reason) {
   me.pendingMessages = {} // prevent several rejection
   me.connected = false
   if (rejections) {
-    _.forEach(rejections, function (pendingRequest) {
+    Object.keys(rejections).forEach(function (pendingRequest) {
       if (pendingRequest && pendingRequest.deffer) {
         pendingRequest.deffer.reject(reason)
       }

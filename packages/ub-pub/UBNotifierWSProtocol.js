@@ -65,7 +65,7 @@ function UBNotifierWSProtocol (connection) {
   this.supported = supported
 
   EventEmitter.call(this)
-  _.assign(this, EventEmitter.prototype)
+  Object.assign(this, EventEmitter.prototype)
 
   var
     doDebug = function () {},
