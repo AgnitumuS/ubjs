@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.37]
+### Fixed
+ - ClientRepository.clone() - prevent deep cloning of connection property
+ 
+### Changed
+ - remove usage of `lodash` whenever possible
+
 ## [5.2.36]
 ### Added
  - new methods added to the client side `Connection` **`addNewAsObject`, `runTransAsObject`, `updateAsObject`, `insertAsObject`**

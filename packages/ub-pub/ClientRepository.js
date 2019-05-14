@@ -40,7 +40,11 @@ const CustomRepository = csShared.CustomRepository
 class ClientRepository extends CustomRepository {
   constructor (connection, entityName) {
     super(entityName)
-    this.connection = connection
+    /**
+     * @property {UBConnection} connection
+     * @private
+     */
+    Object.defineProperty(this, 'connection', { enumerable: false, writable: false, value: connection })
   }
 
   /**

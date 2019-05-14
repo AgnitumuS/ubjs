@@ -6,7 +6,6 @@
  * @module AsyncConnection
  * @memberOf module:@unitybase/ub-pub
  */
-const _ = require('lodash')
 const EventEmitter = require('./events')
 const ubUtils = require('./utils')
 const i18n = require('./i18n').i18n
@@ -110,7 +109,7 @@ function UBConnection (connectionParams) {
   let currentSession
 
   EventEmitter.call(this)
-  _.assign(this, EventEmitter.prototype)
+  Object.assign(this, EventEmitter.prototype)
 
   /**
    * Fired for {@link UBConnection} instance in case authentication type CERT and simpleCertAuth is true.
@@ -747,7 +746,7 @@ UBConnection.prototype.cacheClearAll = function () {
  * @returns {Promise} Future object
  */
 UBConnection.prototype.get = function (url, config) {
-  return this.xhr(_.assign({}, config, {
+  return this.xhr(Object.assign({}, config, {
     method: 'GET',
     url: url
   }))
@@ -761,7 +760,7 @@ UBConnection.prototype.get = function (url, config) {
  * @returns {Promise} Future object
  */
 UBConnection.prototype.post = function (url, data, config) {
-  return this.xhr(_.assign({}, config, {
+  return this.xhr(Object.assign({}, config, {
     method: 'POST',
     url: url,
     data: data
@@ -794,7 +793,7 @@ UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
  */
 UBConnection.prototype.xhr = function (config) {
   let me = this
-  let cfg = _.assign({ headers: {} }, config)
+  let cfg = Object.assign({ headers: {} }, config)
   let url = cfg.url
   let promise
 
@@ -938,8 +937,8 @@ UBConnection.prototype.processBuffer = function processBuffer () {
   // get ready to new buffer queue
   this._bufferTimeoutID = 0
   this._bufferedRequests = []
-
-  this.post('ubql', _.map(bufferCopy, 'request')).then(
+  let reqData = bufferCopy.map(r => r.request)
+  this.post('ubql', reqData).then(
     (responses) => {
       // we expect responses in order we send requests to server
       bufferCopy.forEach(function (bufferedRequest, num) {
@@ -1643,7 +1642,7 @@ const ALLOWED_GET_DOCUMENT_PARAMS = ['entity', 'attribute', 'ID', 'id', 'isDirty
  * @returns {Promise} Resolved to document content (either ArrayBuffer in case options.resultIsBinary===true or text/json)
  */
 UBConnection.prototype.getDocument = function (params, options) {
-  let opt = _.defaults({}, options)
+  let opt = Object.assign({}, options)
   let reqParams = {
     url: 'getDocument',
     method: opt.bypassCache ? 'POST' : 'GET'
@@ -1652,7 +1651,7 @@ UBConnection.prototype.getDocument = function (params, options) {
     reqParams.responseType = 'arraybuffer'
   }
   if (opt.bypassCache) {
-    reqParams.data = _.clone(params)
+    reqParams.data = Object.assign({}, params)
     Object.keys(reqParams.data).forEach(function (key) {
       if (ALLOWED_GET_DOCUMENT_PARAMS.indexOf(key) === -1) {
         delete reqParams.data[key]
@@ -1847,7 +1846,7 @@ UBConnection.prototype.SHA256 = SHA256
  * @return {Promise<UBConnection>}
  */
 function connect (cfg, ubGlobal = null) {
-  let config = this.config = _.clone(cfg)
+  let config = this.config = Object.assign({}, cfg)
 
   let connection = new UBConnection({
     host: config.host,
@@ -1869,7 +1868,7 @@ function connect (cfg, ubGlobal = null) {
 
   return connection.getAppInfo().then(function (appInfo) {
     // apply a default app settings to the gerAppInfo result
-    connection.appConfig = _.defaults(_.clone(appInfo), {
+    connection.appConfig = Object.assign({
       applicationName: 'UnityBase',
       applicationTitle: 'UnityBase',
       loginWindowTopLogoURL: '',
@@ -1879,7 +1878,7 @@ function connect (cfg, ubGlobal = null) {
       defaultLang: 'en',
       supportedLanguages: ['en'],
       uiSettings: {}
-    })
+    }, appInfo)
     // create ubNotifier after retrieve appInfo (we need to know supported WS protocols)
     connection.ubNotifier = new UBNotifierWSProtocol(connection)
     // try to determinate default user language

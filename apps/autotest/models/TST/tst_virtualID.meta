@@ -1,0 +1,37 @@
+﻿{
+	"caption": "ID mapped",
+	"description": "Test for mapped ID [UB-1219]",
+	"connectionName": "",
+	"documentation": "",
+	"attributes": [
+		{
+			"name": "ID",
+			"caption": "Ідентифікатор запису",
+			"dataType": "BigInt",
+			"allowNull": false,
+			"description": "Ідентифікатор запису",
+			"isUnique": false,
+			"documentation": "Ідентифікатор запису",
+			"mapping": [
+				{
+					"name": "AnsiSQL",
+					"expressionType": "Field",
+					"expression": "srcID"
+				}
+			]
+		},
+		{
+			"name": "srcID",
+			"dataType": "BigInt",
+			"caption": "SourceID",
+			"description": "Test mapping of ID to another columns",
+			"allowNull": false
+        }
+	],
+	"mixins": {
+		"mStorage": {
+			"simpleAudit":false,
+			"safeDelete":false
+        }
+	}
+}

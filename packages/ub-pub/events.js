@@ -16,7 +16,7 @@
  var EventEmitter = UB.EventEmitter;
  // add EventEmitter to myObject
  EventEmitter.call(myObject);
- _.assign(myObject, EventEmitter.prototype);
+ Object.assign(myObject, EventEmitter.prototype);
 
  * In case object created via constructor function
 
