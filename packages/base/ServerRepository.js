@@ -42,10 +42,10 @@ class ServerRepository extends CustomRepository {
   constructor (connection, entityName) {
     super(entityName)
     /**
-     * @type {SyncConnection}
+     * @property {SyncConnection} connection
      * @private
      */
-    this.connection = connection
+    Object.defineProperty(this, 'connection', { enumerable: false, writable: false, value: connection })
   }
 
   /**

@@ -801,7 +801,10 @@ inst.run('select', repo.ubql())
    * @return {CustomRepository}
    */
   clone () {
-    return _.cloneDeep(this)
+    let cloned = _.cloneDeep(this)
+    // prevent deep clone of connection property
+    Object.defineProperty(cloned, 'connection', { enumerable: false, writable: false, value: this.connection })
+    return cloned
   }
 }
 
