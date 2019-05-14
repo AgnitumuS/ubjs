@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.37]
+### Fixed
+ - ClientRepository.clone() - prevent deep cloning of connection property
+ 
 ### Changed
  - remove usage of `lodash` whenever possible
 
