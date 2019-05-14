@@ -2537,13 +2537,13 @@ Ext.define('UB.view.BasePanel', {
       attributeNames = [],
       requiredFields, fields
 
-    fields = me.baseFieldList.map(function (field) {
-      if (typeof (field) === 'string') {
-        return field
-      } else {
-        return field.attributeName
-      }
-    })
+    fields = me.baseFieldList
+      ? me.baseFieldList.map(function (field) {
+        return (typeof field === 'string')
+          ? field
+          : field.attributeName
+      })
+      : []
     fields = _.uniq(fields)
     attributeNames = UB.ux.data.UBStore.normalizeFieldList(this.entityName, fields || [])
     if (me.parentContext) {
