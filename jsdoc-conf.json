@@ -23,7 +23,10 @@
       "./packages/cdn",
       "./packages/ubm",
       "./packages/org",
-      "./packages/ubs/modules/UBServerReport.js"
+      "./packages/ubs/modules/UBServerReport.js",
+      "../bpm/packages/messaging/exchange",
+      "../bpm/packages/messaging/notification",
+      "../bpm/packages/messaging"
     ],
     "includePattern": ".+\\.js(m|x)?$"
   },
