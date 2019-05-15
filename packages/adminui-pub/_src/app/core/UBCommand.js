@@ -824,8 +824,9 @@ Ext.define('UB.core.UBCommand', {
     if (result.window && !disableAutoShow) {
       result.window.show()
     }
-    if (me.commandConfig.zIndex) {
-      result.window.setZIndex(me.commandConfig.zIndex)
+    if ($App.connection.domain.models['adminui-vue'] && window.Vue !== undefined && me.commandConfig.isModal) {
+      const zIndex = window.Vue.prototype.$zIndex()
+      Ext.WindowManager.setBase(zIndex)
     }
     Ext.callback(me.callback, me.scope || me, [result])
   },

@@ -9,88 +9,136 @@
     remote
     :remote-method="loadNextByInput"
     :disabled="loading || disabled"
-    :class="`ub-select-many${this._uid}`"
+    :class="`ub-select-many${_uid}`"
     style="width: 100%"
     @change="onChange"
     @click.native="onFocus"
     @focus.native="onFocus"
   >
-    <template>
-      <el-option
-        v-for="item in availableOptions"
-        :key="item[primaryColumn]"
-        :label="item[displayValue]"
-        :value="item[primaryColumn]"
-        :disabled="item.removed"
-      />
-      <el-row
-        v-if="hasData"
-        type="flex"
-        justify="end"
-        style="padding: 0 20px"
+    <el-option
+      v-for="item in availableOptions"
+      :key="item[primaryColumn]"
+      :label="item[displayValue]"
+      :value="item[primaryColumn]"
+      :disabled="item.removed"
+    />
+    <el-row
+      v-if="hasData"
+      type="flex"
+      justify="end"
+      style="padding: 0 20px"
+    >
+      <el-button
+        type="text"
+        @click="loadNextButtonClick"
       >
-        <el-button
-          type="text"
-          @click="loadNextButtonClick"
-        >
-          {{ $ut('more') }}
-        </el-button>
-      </el-row>
-    </template>
+        {{ $ut('more') }}
+      </el-button>
+    </el-row>
   </el-select>
 </template>
 
-<docs>
-  UbSelectEnum:
-
-  ```vue
-  <template>
-    <u-select-many
-            v-model="value"
-            style="width:500px"
-            :disabled="disabled"
-            :entity-name="entityName"
-            @input="inputFn"
-    ></u-select-many>
-  </template>
-  <script>
-    export default {
-      data () {
-        return {
-          entityName: 'tst_dictionary',
-          value: '1,2',
-          disabled: false
-        }
-      },
-      methods: {
-        inputFn: console.log('Entered value')
-      },
-      computed: {
-        entitySchema () {
-          return this.$UB.connection.domain.get(this.entityName).asPlainJSON(false)
-        }
-      }
-    }
-  </script>
-  ```
-
-</docs>
-
 <script>
-require('../../css/ub-select.css')
-
-module.exports = {
+/**
+* Component for select UB many type property.
+*/
+export default {
   name: 'USelectMany',
   props: {
+    /**
+     * Array of selected IDs as string joined by ,
+     * @model
+     */
     value: {
-      type: [String, Number]
+      type: String
     },
-    entityName: {
-      type: String,
+    /**
+     * Name of entity or UB.Repository
+     */
+    entity: {
+      type: [String, Object],
       required: true
     },
+    /**
+     * Set disabled status
+     */
     disabled: Boolean
   },
+
+  data () {
+    return {
+      primaryColumn: 'ID',
+      initialItem: null,
+      items: [],
+      resultData: this.setResultData(),
+      itemCount: 20,
+      hasData: true,
+      loading: false,
+      listener: () => {
+        this.items = []
+      }
+    }
+  },
+
+  computed: {
+    initRepository () {
+      if (typeof this.entity === 'string') {
+        return this.$UB.Repository(this.entity)
+      } else {
+        return this.entity
+      }
+    },
+
+    entityName () {
+      return this.initRepository.entityName
+    },
+
+    entitySchema () {
+      return this.$UB.connection.domain.get(this.entityName)
+    },
+
+    displayValue () {
+      return this.entitySchema.descriptionAttribute
+    },
+
+    repository () {
+      const hasPrimaryColumn = !this.initRepository.fieldList.includes(this.primaryColumn)
+      const hasDisplayValue = !this.initRepository.fieldList.includes(this.displayValue)
+      return this.initRepository
+        .attrsIf(hasPrimaryColumn, this.primaryColumn)
+        .attrsIf(hasDisplayValue, this.displayValue)
+    },
+
+    availableOptions () {
+      if (this.initialItem && this.initialItem.length > 0) {
+        let filteredItems = this.items.filter((item) => {
+          return !this.initialItem.map(ii => { return ii[this.primaryColumn] }).includes(item[this.primaryColumn])
+        })
+        return this.initialItem.concat(filteredItems)
+      }
+      return this.items
+    }
+  },
+
+  watch: {
+    value () {
+      if (this.value !== this.resultData.join(',')) {
+        this.setResultData()
+        this.setInitialItem()
+      }
+    }
+  },
+
+  mounted () {
+    // this.$nextTick(this.initLoaderStyles)
+    this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
+    this.setInitialItem()
+  },
+
+  destroyed () {
+    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
+  },
+
   methods: {
     setInitialItem () {
       if (this.value) {
@@ -99,7 +147,7 @@ module.exports = {
         }
         this.loading = true
         let isSafeDelete = this.entitySchema.attributes['mi_deleteDate']
-        this.$UB.Repository(this.entityName).attrs(this.primaryColumn, this.displayValue)
+        this.repository
           .attrsIf(isSafeDelete, 'mi_deleteDate')
           .miscIf(isSafeDelete, { __allowSelectSafeDeleted: true })
           .where(this.primaryColumn, 'in', this.resultData)
@@ -113,6 +161,7 @@ module.exports = {
           })
       }
     },
+
     onChange (data) {
       this.initialItem = this.items.find((el) => {
         return el[this.primaryColumn] === data
@@ -120,11 +169,13 @@ module.exports = {
       if (this.$refs.selector.query) this.items = []
       this.$emit('input', data.join(','))
     },
+
     onFocus () {
       if (this.items.length === 0) {
         this.loadNextButtonClick()
       }
     },
+
     initLoaderStyles () {
       let control = document.querySelector(`.ub-select-many${this._uid} .el-loading-spinner`)
       if (control) {
@@ -135,15 +186,16 @@ module.exports = {
         }
       }
     },
-    getRepository: function (startFrom) {
-      return this.$UB.Repository(this.entityName)
-        .attrs(this.primaryColumn, this.displayValue)
+
+    getItems (startFrom) {
+      return this.repository
         .start(startFrom || 0)
         .limit(this.itemCount)
         .whereIf(this.$refs.selector.query, this.displayValue, 'like', this.$refs.selector.query)
     },
-    loadNextByInput: function () {
-      this.getRepository()
+
+    loadNextByInput () {
+      this.getItems()
         .select().then(data => {
           this.items = []
           this.hasData = data.length === this.itemCount
@@ -152,9 +204,10 @@ module.exports = {
           })
         })
     },
+
     loadNextButtonClick () {
       let itemsLength = this.items.length || 0
-      this.getRepository(itemsLength)
+      this.getItems(itemsLength)
         .select().then(data => {
           this.hasData = data.length === this.itemCount
           data.forEach(item => {
@@ -162,59 +215,42 @@ module.exports = {
           })
         })
     },
+
     setResultData () {
       this.resultData = this.value ? this.value.trim().split(',').map(item => {
         return typeof item !== 'number' ? parseInt(item, 10) : item
       }) : []
     }
-  },
-  data () {
-    return {
-      primaryColumn: 'ID',
-      entitySchema: this.$UB.connection.domain.get(this.entityName, true),
-      initialItem: null,
-      items: [],
-      resultData: this.setResultData(),
-      itemCount: 20,
-      hasData: true,
-      loading: false,
-      listener: () => {
-        this.items = []
-      }
-    }
-  },
-  watch: {
-    value () {
-      if (this.value !== this.resultData.join(',')) {
-        this.setResultData()
-        this.setInitialItem()
-      }
-    }
-  },
-  computed: {
-    displayValue () {
-      return this.$UB.connection.domain.get(this.entityName).descriptionAttribute
-    },
-    availableOptions () {
-      if (this.initialItem && this.initialItem.length > 0) {
-        let filteredItems = this.items.filter((item) => {
-          return !this.initialItem.map(ii => { return ii[this.primaryColumn] }).includes(item[this.primaryColumn])
-        })
-        return this.initialItem.concat(filteredItems)
-      }
-      return this.items
-    }
-  },
-  destroyed () {
-    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.listener)
-  },
-  mounted () {
-    setTimeout(() => {
-      this.initLoaderStyles()
-    }, 1)
-
-    this.$UB.connection.on(`${this.entityName}:changed`, this.listener)
-    this.setInitialItem()
   }
 }
 </script>
+
+<style>
+.ub-select__loading-spinner {
+  top: 0;
+  margin-top: 0;
+  height: 100%;
+}
+</style>
+
+<docs>
+UbSelectEnum:
+
+```vue
+<template>
+  <u-select-many
+    v-model="value"
+    entity="tst_dictionary"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: '1,2'
+      }
+    }
+  }
+</script>
+```
+</docs>

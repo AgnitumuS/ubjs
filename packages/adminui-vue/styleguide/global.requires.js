@@ -1,20 +1,19 @@
 import Vue from 'vue'
 import UB from '@unitybase/ub-pub'
+import Vuex from 'vuex'
 import Element from 'element-ui'
-// import { saveAsFn } from 'file-saver'
 import 'font-awesome/css/font-awesome.css'
-import '../../dist/adminui-vue.css'
-// import TreeView from 'vue-json-tree-view'
+import '../dist/adminui-vue.css'
 import locale from 'element-ui/lib/locale/lang/en'
-// import { action } from '@storybook/addon-actions'
 
 Vue.use(Element, {
   size: 'small',
   locale
 })
+Vue.use(Vuex)
 Vue.use(UB)
-// Vue.use(TreeView)
 window.UB = UB
+
 if ('serviceWorker' in navigator) {
   console.log('CLIENT: service worker registration in progress.')
   navigator.serviceWorker.register('/service-worker.js').then(function () {
@@ -26,7 +25,7 @@ if ('serviceWorker' in navigator) {
   console.log('CLIENT: service worker is not supported.')
 }
 
-let connect = UB.connect({
+UB.connect({
   host: 'http://localhost:8080',
   path: '',
   onCredentialRequired: false,
@@ -58,8 +57,7 @@ let connect = UB.connect({
     UB.appConfig = connection.appConfig
     return null
   }
-})
-connect.then(function () {
+}).then(() => {
   UB.core.UBApp = {
     doCommand: console.log
   }
@@ -115,9 +113,4 @@ connect.then(function () {
   }
 
   window.BOUNDLED_BY_WEBPACK = true
-  // this.Vue.use(UB)
-  // Window.saveAs = saveAsFn
-  // configure(function loadStories () {
-  //   require('../stories')
-  // }, module)
 })

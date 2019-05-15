@@ -1,444 +1,561 @@
 <template>
-  <!-- Without `position: relative` menu items floats to the right side of screen (check on storybook) -->
-  <div
-    style="position: relative"
-    :title="rowIsDeleted ? $ut('elementIsNotActual') : ''"
-  >
-    <el-select
-      ref="selector"
-      v-bind="$attrs"
-      :value="value"
-      :loading="loading"
-      filterable
-      remote
-      :remote-method="remoteMethod"
-      :disabled="loading || disabled"
-      class="ub-select-entity"
-      style="width: 100%"
-      v-on="$listeners"
-      @keydown.native.alt.e.prevent="handleEditItem"
-      @keyup.native.exact.f9="handleShowDictionary"
-      @keyup.native.alt.backspace="handleClearClick"
+  <div>
+    <el-popover
+      v-if="!disabled"
+      v-model="dropdownVisible"
+      placement="bottom-start"
+      :width="popperWidth"
+      :popper-options="{
+        appendToBody: true
+      }"
+      trigger="manual"
+      popper-class="ub-select__options__reset-padding"
+      :tabindex="-1"
+      :disabled="disabled"
+      @show="onShowDropdown"
+      @hide="removeClickOutsideListener"
+      @keydown.native.exact.down="changeSelected(1)"
+      @keydown.native.exact.up="changeSelected(-1)"
+      @keydown.native.enter="chooseOption"
+      @keydown.native.esc.capture="cancelInput"
+      @keydown.native.tab="leaveInput"
     >
-      <i
-        v-if="rowIsDeleted"
-        slot="prefix"
-        class="fa fa-ban el-input__icon"
-      />
-      <template>
-        <el-option
-          v-for="item in availableOptions"
-          :key="item[primaryColumn]"
-          :value="item[primaryColumn]"
-          :label="item[displayValue]"
-          :disabled="item.removed"
-        />
+      <div
+        slot="reference"
+        class="ub-select__container"
+      >
+        <el-input
+          ref="input"
+          v-model="queryDisplayValue"
+          :class="{
+            'ub-select__deleted-value': isSafeDeletedValue && !isFocused
+          }"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
+          @keydown.native.exact.e.ctrl.prevent="handleEditItem"
+          @keydown.native.exact.f9="handleShowDictionary"
+          @keydown.native.exact.delete.ctrl="handleClearClick"
+          @keydown.native.exact.down.alt="onKeydownAltDown"
+          @keydown.native.exact.up.prevent
+          @keydown.native.exact.down.prevent
+        >
+          <el-tooltip
+            v-if="isSafeDeletedValue"
+            slot="prefix"
+            :content="$ut('selectedValueWasDeleted')"
+            :enterable="false"
+          >
+            <i class="el-input__icon el-icon-delete" />
+          </el-tooltip>
+          <i
+            slot="suffix"
+            class="el-input__icon"
+            style="cursor: pointer;"
+            :class="inputIconCls"
+            @click="toggleDropdown"
+          />
+          <el-dropdown
+            v-if="actions.length > 0"
+            slot="suffix"
+            trigger="click"
+            :tabindex="-1"
+          >
+            <i
+              class="el-icon-menu ub-select__menu-icon"
+            />
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item
+                v-for="action in actions"
+                :key="action.name"
+                :icon="action.icon"
+                :disabled="action.disabled"
+                @click.native="action.handler"
+              >
+                {{ $ut(action.caption) }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-input>
+      </div>
+
+      <div
+        v-if="options.length > 0"
+        ref="options"
+        class="ub-select__list-options"
+      >
+        <div
+          v-for="option in options"
+          :key="option[modelAttr]"
+          :ref="`option_${option[modelAttr]}`"
+          class="ub-select__option"
+          :class="{
+            'active': option[modelAttr] === value,
+            'selected': option[modelAttr] === selectedOption
+          }"
+          @click="chooseOption"
+          @mouseenter="selectedOption = option[modelAttr]"
+        >
+          {{ option[displayColumn] }}
+        </div>
         <el-row
-          v-if="morePagesAvailable"
           type="flex"
-          justify="end"
-          style="padding: 0 20px"
         >
           <el-button
-            type="text"
-            :disabled="loading"
-            @click="fetchNextPage"
+            v-if="moreVisible"
+            size="mini"
+            style="margin: 5px"
+            @click="showMore"
           >
             {{ $ut('more') }}
           </el-button>
         </el-row>
-      </template>
-    </el-select>
-    <div
-      class="ub-select-entity__menu-button"
-      style="pointer-events: none;"
-    >
-      <div
-        class="ub-icon-menu"
-        @click="toggleDropDown"
-      >
-        <i class="el-icon-arrow-down" />
       </div>
-      <el-popover
-        v-if="rowActions && rowActions.length"
-        v-model="popoverVisible"
-        placement="bottom-end"
-        :disabled="disabled"
-        trigger="click"
+      <div
+        v-else
+        style="text-align: center; padding: 10px"
       >
-        <el-table
-          :data="rowActions"
-          :show-header="false"
-          @row-click="onActionClick"
-        >
-          <el-table-column
-            property="caption"
-            width="270"
-          >
-            <template slot-scope="scope">
-              <div
-                :style="scope.row.enabled === undefined || scope.row.enabled ? '' : 'opacity: 0.5'"
-                style="cursor: pointer"
-                class="ub-noselect"
-              >
-                <i :class="scope.row.icon" />
-                <span style="margin-left: 10px">{{ scope.row.caption }}</span>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div
-          ref="menuButton"
-          slot="reference"
-        >
-          <div class="ub-icon-menu">
-            <i class="el-icon-menu" />
-          </div>
-        </div>
-      </el-popover>
-    </div>
+        {{ $ut('el.select.noData') }}
+      </div>
+    </el-popover>
+
+    <el-input
+      v-else
+      disabled
+      :value="queryDisplayValue"
+      suffix-icon="el-icon-arrow-down"
+    />
   </div>
 </template>
 
-<style>
-    .ub-select-entity .el-input__inner {
-        cursor: text;
-    }
-</style>
-
-<docs>
-    UbSelectEntity:
-
-    ```vue
-    <template>
-        <u-select-entity
-                v-model="value"
-                style="width:500px"
-                :entity-name="entityName"
-                :use-own-actions="useOwnActions"
-                :actions="actions"
-                :disabled="disabled"
-                :placeholder="placeholder || 'Select'"
-                @input="inputFn"
-        ></u-select-entity>
-    </template>
-    <script>
-      export default {
-        data () {
-          return {
-            entityName: 'tst_dictionary',
-            value: 1,
-            disabled: false,
-            useOwnActions: false,
-            placeholder: null,
-            actions: []
-          }
-        },
-        computed: {
-          entitySchema () {
-            return this.$UB.connection.domain.get(this.entityName).asPlainJSON(false)
-          }
-        },
-        methods: {
-          inputFn: console.log('Entered value')
-        }
-      }
-    </script>
-    ```
-
-</docs>
 <script>
-require('../../css/ub-select.css')
-const PAGE_SIZE = 20
+const { debounce } = require('throttle-debounce')
 
-/**
-   * Component for select entity.
-   */
-module.exports = {
+export default {
   name: 'USelectEntity',
   props: {
     /**
-       * Array with entity names and ids
+       * Selected entity ID
+       * @model
        */
     value: {
-      type: [String, Number]
-    },
-    /**
-       * Name of Entity.
-       */
-    entityName: {
-      type: String,
-      required: true
-    },
-    // repeat it here and pass down to ElEdit because we need to disable toggle & actions
-    disabled: Boolean,
-    useOwnActions: {
-      type: Boolean,
+      type: [Number, String],
       default () {
-        return false
+        return null
       }
     },
-    actions: {
+    /**
+     * attribute which is the value for v-model
+     */
+    modelAttr: {
+      type: String,
+      default: 'ID'
+    },
+    /**
+     * Name of entity. If repository is set entityName will be ignored
+     */
+    entityName: String,
+    /**
+     * Function which return UBRepository
+     */
+    repository: Function,
+    // repeat it here and pass down to ElEdit because we need to disable toggle & actions
+    /**
+     * Set disable status
+     */
+    disabled: Boolean,
+
+    /**
+     * Remove default actions in "more" button
+     */
+    removeDefaultActions: Boolean,
+
+    /**
+     * Add actions to "more" button
+     */
+    additionalActions: {
       type: Array,
       default () {
         return []
       }
     }
   },
+
   data () {
     return {
-      primaryColumn: 'ID',
-      waitingNewEntity: false,
-      morePagesAvailable: false,
-      /** items witch are selected (single item in case multiple=false) */
-      selectedItems: [],
-      /** page n data loaded from remote */
-      dataPage: [],
-      dataPageNum: 0,
-      prevQuery: null,
-      initialItem: null,
-      toggledManually: false,
-      items: [],
-      handleEntityChanged: id => {
-        if (this.value === id) {
-          this.fetchSelectedItems(id)
-        } else {
-          this.items = []
-        }
-      },
-      handleEntityInserted: id => {
-        if (this.waitingNewEntity) {
-          this.$refs.selector.$emit('input', id)
-          this.waitingNewEntity = false
-        }
-      },
       loading: false,
-      popoverVisible: false
+      query: '',
+      options: [],
+      pageNum: 0,
+      pageSize: 20,
+      moreVisible: false,
+      dropdownVisible: false,
+      popperWidth: 300, // by default 300, will change after popper show
+      selectedOption: null,
+      onEdit: false,
+      prevQuery: '',
+      isSafeDeletedValue: false,
+      isFocused: false
     }
   },
-  methods: {
-    fetchDataPage (query) {
-      return this.$UB.Repository(this.entityName)
-        .attrs(this.primaryColumn, this.displayValue)
-        .whereIf(query, this.displayValue, 'like', query)
-        .start(this.dataPageNum * PAGE_SIZE)
-        .limit(PAGE_SIZE)
-        .selectAsObject().then(data => {
-          this.morePagesAvailable = (data.length === PAGE_SIZE)
-          this.dataPage = data
-        }).finally(() => {
-          this.loading = false
-        })
-    },
-    remoteMethod (query) {
-      // if focused on Tab ElSelect fires Change (input debounce should not fire on Tab there)
-      // so in case query here is equal to selectedItems[0] displayValue do nothing
-      if (this.selectedItems.length && this.selectedItems[0][this.displayValue] === query) return
-      this.prevQuery = query
-      this.dataPageNum = 0
-      return this.fetchDataPage(query)
-    },
-    fetchSelectedItems () {
-      this.loading = true
-      return this.$UB.Repository(this.entityName)
-        .attrs(this.primaryColumn, this.displayValue)
-        .where(this.primaryColumn, '=', this.value)
-        .selectAsObject().then(data => {
-          this.selectedItems = data
-        }).finally(() => {
-          this.loading = false
-        })
-    },
-    fetchNextPage () {
-      this.dataPageNum++
-      return this.fetchDataPage(this.prevQuery)
-    },
-    toggleDropDown () {
-      let elSelect = this.$refs.selector
-      if (elSelect.selectDisabled) return
-      if (this.toggledManually) { // el-select lost focus ant dropdown disappear
-        this.toggledManually = false
+
+  computed: {
+    entity () {
+      if (this.repository) {
+        return this.repository().entityName
       } else {
-        this.toggledManually = true
-        if (!this.dataPage.length) {
-          this.loading = true
-          this.remoteMethod()
-            .finally(() => {
-              this.loading = false
-              elSelect.visible = !elSelect.visible
-            })
-        } else {
-          elSelect.visible = !elSelect.visible
-        }
+        return this.entityName
       }
     },
+
+    entitySchema () {
+      return this.$UB.connection.domain.get(this.entity)
+    },
+
+    displayColumn () {
+      return this.entitySchema.descriptionAttribute
+    },
+
+    isExistDeleteDate () {
+      return 'mi_deleteDate' in this.entitySchema.attributes
+    },
+
+    inputIconCls () {
+      let icon
+      const arrowPrefix = 'el-icon-arrow-'
+
+      if (this.dropdownVisible) {
+        icon = arrowPrefix + 'up'
+      } else {
+        icon = arrowPrefix + 'down'
+      }
+
+      if (this.loading) {
+        icon = 'el-icon-loading'
+      }
+
+      return icon
+    },
+
+    defaultActions () {
+      if (this.removeDefaultActions) {
+        return []
+      }
+      return [{
+        name: 'ShowLookup',
+        caption: this.$ut('selectFromDictionary') + ' (F9)',
+        icon: 'fa fa-table',
+        handler: this.handleShowDictionary
+      },
+      {
+        name: 'Edit',
+        caption: this.$ut('editSelItem') + ' (Ctrl+E)',
+        icon: 'fa fa-pencil-square-o',
+        disabled: !this.value,
+        handler: this.handleEditItem
+      },
+      {
+        name: 'Add',
+        caption: this.$ut('addNewItem'),
+        icon: 'fa fa-plus-circle',
+        handler: this.handleAddNewItem
+      },
+      {
+        name: 'Clear',
+        caption: this.$ut('clearSelection') + ' (Ctrl+BackSpace)',
+        icon: 'fa fa-eraser',
+        disabled: !this.value,
+        handler: this.handleClearClick
+      }]
+    },
+
+    actions () {
+      return this.defaultActions.concat(this.additionalActions)
+    },
+
+    queryDisplayValue: {
+      get () {
+        return this.query
+      },
+
+      set (value) {
+        this.query = value
+        if (!this.dropdownVisible) {
+          this.dropdownVisible = true
+        }
+        this.debouncedFetch(value)
+      }
+    }
+  },
+
+  watch: {
+    value: {
+      immediate: true,
+      handler: 'setQueryByValue'
+    }
+  },
+
+  methods: {
+    getRepository () {
+      if (this.repository) {
+        return this.repository()
+      } else {
+        return this.$UB.Repository(this.entityName)
+          .attrs(this.modelAttr, this.displayColumn)
+      }
+    },
+
+    async fetchPage (query, pageNum = 0) {
+      this.loading = true
+      this.prevQuery = query
+      this.pageNum = pageNum
+
+      const data = await this.getRepository()
+        .whereIf(query, this.displayColumn, 'like', query)
+        .start(pageNum * this.pageSize)
+        .limit(this.pageSize + 1)
+        .select()
+
+      if (data.length <= this.pageSize) {
+        this.moreVisible = false
+      } else {
+        this.moreVisible = true
+        data.length -= 1
+      }
+      if (pageNum === 0) {
+        this.options.splice(0, this.options.length)
+      }
+      this.options.push(...data)
+      if (this.options.length) {
+        const currentValueIndex = this.options.findIndex(i => i[this.modelAttr] === this.value)
+        const index = currentValueIndex === -1 ? 0 : currentValueIndex
+        this.selectedOption = this.options[index][this.modelAttr]
+      } else {
+        this.selectedOption = this.value
+      }
+
+      this.loading = false
+    },
+
+    debouncedFetch: debounce(120, async function (query) {
+      await this.fetchPage(query)
+    }),
+
+    async fetchDisplayValue (value) {
+      this.loading = true
+      const data = await this.getRepository()
+        .where(this.modelAttr, '=', value)
+        .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
+        .misc({
+          __allowSelectSafeDeleted: true
+        })
+        .selectSingle()
+      this.loading = false
+
+      return data
+    },
+
+    setQueryByValue (value) {
+      if (value !== undefined && value !== null) {
+        const index = this.options.findIndex(o => o[this.modelAttr] === value)
+        if (index !== -1) {
+          const option = this.options[index]
+          this.query = option[this.displayColumn]
+          this.setSafeDeleteValue(option)
+        } else {
+          this.fetchDisplayValue(value)
+            .then(option => {
+              if (option) {
+                this.query = option[this.displayColumn]
+                this.setSafeDeleteValue(option)
+              } else {
+                throw new Error(`Missing value '${value}' in entity '${this.entity}'`)
+              }
+            })
+        }
+      } else {
+        this.query = ''
+      }
+    },
+
+    setSafeDeleteValue (option) {
+      if (option.mi_deleteDate) {
+        const isDeleted = option.mi_deleteDate.getTime() < Date.now()
+        this.isSafeDeletedValue = isDeleted
+      } else {
+        this.isSafeDeletedValue = false
+      }
+    },
+
+    onShowDropdown () {
+      this.popperWidth = this.$refs.input.$el.offsetWidth
+      this.addClickOutsideListener()
+    },
+
+    addClickOutsideListener () {
+      document.body.addEventListener('click', this.clickOutside)
+    },
+
+    removeClickOutsideListener () {
+      document.body.removeEventListener('click', this.clickOutside)
+    },
+
+    clickOutside ({ target }) {
+      const isInput = this.$refs.input.$el.contains(target)
+
+      if (!isInput) {
+        this.selectedOption = this.value
+        this.dropdownVisible = false
+        this.setQueryByValue(this.value)
+      }
+    },
+
+    cancelInput (e) {
+      if (this.dropdownVisible) {
+        /*
+         * need to stopPropagation only if this is necessary,
+         * otherwise the handler will intercept other actions on the ESC,
+         * for example, closing dialog
+         */
+        e.stopPropagation()
+        this.selectedOption = this.value
+        this.dropdownVisible = false
+        this.setQueryByValue(this.value)
+      }
+    },
+
+    leaveInput () {
+      if (this.dropdownVisible) {
+        this.chooseOption()
+      }
+    },
+
+    onKeydownAltDown ({ key, altKey }) {
+      if (key === 'ArrowDown' && altKey && !this.dropdownVisible) {
+        this.dropdownVisible = true
+        this.fetchPage()
+      }
+    },
+
+    async showMore () {
+      await this.fetchPage(this.prevQuery, this.pageNum + 1)
+      const { scrollHeight } = this.$refs.options
+      this.$refs.options.scrollTop = scrollHeight
+    },
+
+    toggleDropdown () {
+      this.dropdownVisible = !this.dropdownVisible
+      if (this.dropdownVisible) {
+        this.fetchPage()
+      } else {
+        this.setQueryByValue(this.value)
+      }
+    },
+
+    changeSelected (direction) {
+      const index = this.options.findIndex(o => o[this.modelAttr] === this.selectedOption)
+      const nextIndex = index + direction
+      const lessMin = nextIndex < 0
+      const moreMax = nextIndex > this.options.length - 1
+      const inRange = !lessMin && !moreMax
+      if (inRange) {
+        this.selectedOption = this.options[nextIndex][this.modelAttr]
+      }
+      if (this.dropdownVisible) {
+        const el = this.$refs[`option_${this.selectedOption}`][0]
+        el.scrollIntoView({ block: 'nearest' })
+      }
+    },
+
+    chooseOption () {
+      this.$emit('input', this.selectedOption)
+      this.setQueryByValue(this.selectedOption)
+      this.dropdownVisible = false
+    },
+
     handleShowDictionary () {
       this.$UB.core.UBApp.doCommand({
-        entity: this.entityName,
+        entity: this.entity,
         cmdType: 'showList',
         isModal: true,
         sender: this,
         selectedInstanceID: this.value,
         onItemSelected: ({ data }) => {
-          this.$refs.selector.$emit('input', data[this.primaryColumn])
+          this.$emit('input', data[this.modelAttr])
         },
         cmdData: {
           params: [{
-            entity: this.entityName,
+            entity: this.entity,
             method: 'select',
             fieldList: '*'
           }]
         }
       })
     },
+
     handleEditItem () {
-      if (this.value) {
-        this.$UB.core.UBApp.doCommand({
-          cmdType: this.$UB.core.UBCommand.commandType.showForm,
-          entity: this.entityName,
-          isModal: true,
-          instanceID: this.value
-        })
-      }
-    },
-    handleClearClick (event) {
-      this.$refs.selector.$emit('input', null)
-      //   this.$refs.selector.handleClearClick(event)
-    },
-    onActionClick (row, event) {
-      if (row.enabled === undefined || row.enabled) {
-        row.handler.fn.call(row.handler.scope ? row.handler.scope : this, event)
-        this.popoverVisible = false
-      }
-    }
-  },
-  computed: {
-    entity () {
-      return this.$UB.connection.domain.get(this.entityName, true)
-    },
-    /** available options - intersection of selectedItems and dataPage */
-    availableOptions () {
-      return this.dataPage.concat(
-        this.selectedItems.filter(i => !this.dataPage.some(dpI => dpI[this.primaryColumn] === i[this.primaryColumn]))
-      )
-    },
-    rowIsDeleted () {
-      let i = this.selectedItems[0]
-      return i && i['mi_deleteDate'] && (i['mi_deleteDate'] < new Date())
-    },
-    rowActions () {
-      return this.useOwnActions ? this.actions : this.defaultActions.concat(this.actions)
-    },
-    defaultActions () {
-      return [{
-        name: 'ShowLookup',
-        caption: this.$ut('selectFromDictionary') + ' (F9)',
-        icon: 'fa fa-table',
-        handler: {
-          fn: this.handleShowDictionary
-        }
-      },
-      {
-        name: 'Edit',
-        caption: this.$ut('editSelItem') + ' (Alt+E)',
-        icon: 'fa fa-pencil-square-o',
-        enabled: !!this.value,
-        handler: {
-          fn: this.handleEditItem
-        }
-      },
-      {
-        name: 'Add',
-        caption: this.$ut('addNewItem'),
-        icon: 'fa fa-plus-circle',
-        handler: {
-          fn () {
-            this.waitingNewEntity = true
-            this.$UB.core.UBApp.doCommand({
-              cmdType: this.$UB.core.UBCommand.commandType.showForm,
-              entity: this.entityName,
-              isModal: true
-            })
-          }
-        }
-      },
-      {
-        name: 'Clear',
-        caption: this.$ut('clearSelection') + ' (Alt+BackSpace)',
-        icon: 'fa fa-eraser',
-        enabled: !!this.value,
-        handler: {
-          fn: this.handleClearClick
-        }
-      }]
-    },
-    displayValue () {
-      return this.entity.descriptionAttribute
-    }
-  },
-  destroyed () {
-    this.$UB.connection.removeListener(`${this.entityName}:changed`, this.handleEntityChanged)
-    this.$UB.connection.removeListener(`${this.entityName}:insert`, this.handleEntityInserted)
-  },
-  watch: {
-    value (val, oldVal) {
-      // TODO multiple
-      if (!val) {
-        this.selectedItems = []
-      } else if (!this.selectedItems.length || val !== this.selectedItems[this.primaryColumn]) {
-        // check selected item already in dataPage
-        let item
-        if (this.dataPage.length) {
-          item = this.dataPage.find(e => e[this.primaryColumn] === val)
-          if (item) {
-            this.selectedItems = [item]
-          }
-        }
-        // not in dataPage yet - fetch from remote
-        if (!item) this.fetchSelectedItems()
-      }
-    }
-  },
-  mounted () {
-    /**
-     * replace default focus callback
-     * in el-select component
-     * @param  {Object} event
-     */
-    function replaceHandleFocus (event) {
-      /**
-       * open dropdown when user start typing
-       * @param  {String} 'input'  event
-       * @param  {Funcion} (       callback
-       */
-      this.$refs.reference.$once('input', () => {
-        this.visible = true
-        this.menuVisibleOnFocus = true
+      this.$UB.core.UBApp.doCommand({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.entity,
+        isModal: true,
+        instanceID: this.value
       })
-      if (!this.softFocus) {
-        this.$emit('focus', event)
-      } else {
-        this.softFocus = false
+    },
+
+    handleAddNewItem () {
+      this.$UB.core.UBApp.doCommand({
+        cmdType: this.$UB.core.UBCommand.commandType.showForm,
+        entity: this.entity,
+        isModal: true
+      })
+    },
+
+    handleClearClick () {
+      this.$emit('input', null)
+      if (this.dropdownVisible) {
+        this.fetchPage()
       }
     }
-    /**
-     * define readonly computed property for turn on input edit
-     * @param  {VueInstance} this.$refs.selector scope
-     * @param  {String} 'readonly'          property name
-     * @param  {Function} 'get'             replace getter
-     */
-    Object.defineProperty(this.$refs.selector, 'readonly', {
-      get () {
-        return false
-      }
-    })
-    this.$refs.selector.handleFocus = replaceHandleFocus.bind(this.$refs.selector)
-
-    this.$UB.connection.on(`${this.entityName}:changed`, this.handleEntityChanged)
-    this.$UB.connection.on(`${this.entityName}:insert`, this.handleEntityInserted)
-
-    // prevent menu button to got focus by Tab
-    if (this.$refs.menuButton) this.$refs.menuButton.setAttribute('tabindex', -1)
   }
 }
 </script>
+
+<style>
+.ub-select__list-options{
+  max-height: 200px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.ub-select__option{
+  padding: 7px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ub-select__option.selected{
+  background: rgba(var(--primary), 0.1);
+}
+
+.ub-select__option.active{
+  color: rgb(var(--primary));
+}
+
+.ub-select__container{
+  position: relative;
+}
+
+.ub-select__options__reset-padding{
+  padding: 0;
+}
+
+.ub-select__menu-icon {
+  padding: 0 10px;
+  color: rgb(var(--info));
+  cursor: pointer;
+}
+
+.ub-select__deleted-value input{
+  color: rgb(var(--info));
+  text-decoration: line-through;
+}
+</style>

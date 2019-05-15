@@ -6,7 +6,7 @@ self.addEventListener('activate', function (event) {
   console.log('Service Worker activating.')
 })
 self.addEventListener('fetch', event => {
-  console.log('fetch')
+  console.log('fetch ', event)
   if (event.request.url.includes('getAppInfo')) {
     event.respondWith(new Response(JSON.stringify({
       'appVersion': '5.0.81',

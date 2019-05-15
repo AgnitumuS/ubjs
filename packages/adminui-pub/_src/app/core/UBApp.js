@@ -1068,6 +1068,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 
       if (commandConfig.instanceID) {
         commandConfig.tabId = commandConfig.entity + commandConfig.instanceID
+        commandConfig.instanceID = +commandConfig.instanceID
       } else {
         commandConfig.tabId = 'navigator' + getShortcutID(commandConfig.entity)
       }

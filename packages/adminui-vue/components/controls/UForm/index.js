@@ -30,6 +30,35 @@ module.exports = {
     }
   },
   render (h) {
-    return h('div', this.$slots.default)
+    return h('form', {
+      attrs: {
+        tabindex: 1 // need to catch focus on form for handle keydown events on form
+      },
+      style: {
+        overflow: 'auto',
+        padding: '1em',
+        flexGrow: '1'
+      }
+    }, this.$slots.default)
+  },
+
+  mounted () {
+    this.setFocus()
+  },
+
+  methods: {
+    async setFocus () {
+      /*
+       * added $nextTick because when UForm isMounted, its childrens are not yet,
+       * so you need to wait until the whole tree is built
+       */
+      await this.$nextTick()
+      for (const el of this.$el.elements) {
+        if (!el.disabled) {
+          el.focus()
+          break
+        }
+      }
+    }
   }
 }

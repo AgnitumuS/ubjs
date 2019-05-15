@@ -121,3 +121,202 @@ Edit theme/ub-el.scss. Build it:
 npm run build:theme
 ```
 
+# Helper modules
+
+## Get started
+```javascript
+const UB = require('@unitybase/ub-pub')
+const { formBoilerplate } = require('@unitybase/adminui-vue')
+
+module.exports.mount = function (params) {
+  // Запрос для мастер записи
+  const masterRequest = UB.connection
+    .Repository(params.entity)
+    .attrs('ID', 'code', 'caption')
+
+  /**
+   * Запрос для инициализации мастер записей, для них будут созданы пустые массивы в сторе,
+   * но загрузятся они только если вызвать экшн dispatch('loadCollections', ['todo']), массив с именами коллекций
+   */
+  const collectionRequests = {
+    todo: UB.connection
+      .Repository('tst_dictionary_todo')
+      .attrs('ID', 'objectID', 'name', 'status')
+      .where('objectID', '=', params.instanceID)
+  }
+
+  formBoilerplate({
+    params,
+    FormComponent: MyCustomVueForm,
+    masterRequest,
+    collectionRequests
+  })
+}
+const MyCustomVueForm = {
+  name: 'MyCustomVueForm',
+  data () {},
+  computed: {}
+  // ...
+}
+```
+
+## Подключение помодульно
+  Модуль mount является самостоятельным и может как использоваться так и нет
+  Остальные 3 модуля последовательно связаны друг с другом, instance -> processing -> validation
+  Tо есть можно использовать instance отдельно, но processing без instance нельзя (только на свой стах и риск, если соблюдать все requirement этого модуля)
+  validation зависит и от instance, и от processing 
+
+### Модуль mount
+  `const mountHelpers = require('/utils/mountHelpers')`
+  принимает в себя mountParams, в котором ожидает получить такие параметры
+  ```javascript
+  {
+    showFormParams: {
+      title: String, // заголовок формы
+      isModal: Boolean, // рендерит форму в таб или в модалку
+      modalWidth: String // ширина модалки
+    },
+    /**
+     * компонент формы
+     * форма перед закрытием проверяет грязная (isDirty) ли она, по этому желательно в компоненте иметь метод isDirty()
+     * через props в форму передаются такие параметры (формируются из mountParams.showFormParams) но желательно их не использовать, а получить из стора
+     *  - entityName    | код сущности
+     *  - instanceID    | ID записи
+     *  - currentTabId  | (temp devInfo) постараюсь избавится от этих параметров 
+     *  - formCode      | код формы
+     *  - commandConfig | (temp devInfo) постараюсь избавится от этих параметров 
+     *  - parentContext | (temp devInfo) постараюсь избавится от этих параметров 
+     */
+    FormComponent: <VueComponent>,
+    FormComponentProps: Object, // дополнительные props, опционально
+    store: Object <VuexStore>, // store формы, опционально
+  }
+  ```
+  Маунт provide-ит в в тот компонент которым мы ему передали объект с экшенами которые позволяют управлять тайтлом и закрытием формы
+
+  Пример: (при условии что все модули подключены и в начальном `const storeConfig = { formTitle: params.title }` мы установили тайтл)
+  ```vue
+    <template>
+      <div>
+        <button @click="$formServices.close">
+          Close with question if form dirty
+        </button>
+        <button @click="$formServices.forceClose">
+          Force close
+        </button>
+
+        <el-input v-model="caption" />
+      </div>
+    </template>
+
+    <script>
+    const { mapInstanceFields } = require('...')
+
+    export default {
+      inject: ['$formServices'],
+
+      computed: mapInstanceFields(['caption']),
+
+      created () {
+        this.$store.watch(
+          (state, getters) => ({
+            isDirty: getters.isDirty,
+            isNew: state.isNew
+          }),
+          ({ isDirty, isNew }) => {
+            let title = this.$store.state.formTitle
+            if (isDirty) {
+              title = `* ${title}`
+            }
+            if (isNew) {
+              title += ` (${this.$ut('dobavlenie')})`
+            }
+            this.$formServices.setTitle(title)
+          }
+        )
+      }
+    }
+    </script>
+  ```
+
+### Модуль Instance-store 
+  `const { createInstanceModule } = require('@unitybase/adminui-vue')`
+  Мержит тот стор который в него передали в instance-module
+  Позволяет трекать измененные поля формы
+
+### Модуль процессинга
+  `const { processingModule } = require('@unitybase/adminui-vue')`
+  Используется только со стором который построен на основе instance-module
+  Мержит стор и добавляет в него экшены такие как load, update, addNew, save в которых лежат UB запросы построенные на основе instance-module data 
+  добавляет в стейт стора loading, error и isNew состояния. С помощью error например заблокировать всю форму и вывести красный хедер у формы что ошибка при загрузке данных
+  добавляет геттеры canDelete, canSave, canRefresh
+
+### Модуль валидации
+  `const { validateEntitySchema, validationInjectMixin } = require('@unitybase/adminui-vue')`
+  Функция которая на основе данных в instance модуле и entitySchema создает объект валидации `$v` - vuelidate
+  полученый объект через provide будет прокидыватся в компонент
+  Если есть необходимость использовать кастомную валидацю, то нужно передать в `mount.validator` кастомный `$v`, для того что б работала валидация перед закрытием формы или когда вызывается `$formServices.close()`
+
+### Пример использования всех 4 модулей
+```javascript
+const UB = require('@unitybase/ub-pub')
+const Vuex = require('vuex')
+const {
+  mountHelpers,
+  createInstanceModule,
+  processingModule,
+  validateEntitySchema,
+  validationInjectMixin
+} = require('@unitybase/adminui-vue')
+
+module.exports.mount = function (params) {
+  // активировать таб если форма уже открыта
+  if (mountHelpers.activateIfMounted(params)) return
+
+  // для примера получаем все поля сущности (можно указать свой список)
+  const fieldList = UB.connection.domain.get(params.entity).getAttributeNames()
+  // формируем запрос для мастер записи
+  const masterRequest = UB.connection.Repository(params.entity).attrs(fieldList)
+
+  /**
+   * создаем store config, в функцию можно передать свой стор,
+   * она его смержит и добавит необходимые параметры
+   */
+  const assignInstance = createInstanceModule()
+  /**
+   * мержим стор с модулем процессинга
+   * 2 параметром передаем запрос для мастер записи,
+   * 3 параметром можно передать массив запросов для коллекций
+   */
+  const assignProcessing = processingModule(assignInstance, masterRequest)
+  const store = new Vuex.Store(assignProcessing)
+
+  /*
+   * вызываем экшн инициализации,
+   * который либо вызовет addNew и заполнит поля стандартными значениями,
+   * либо загрузит данные по конкретному ID
+   */
+  store.dispatch('init', params.instanceID)
+  /*
+   * создает сущность которая трекает стор и на основе entitySchema мастер сущности создает правила валидации
+   * вернет Vue instance в котором лежит $v
+   * модуль mount будет provide-ить _validation функцию из которой мы сможем достать $v (рекомендовано использовать validationInjectMixin)
+   */
+  const validator = validateEntitySchema(store)
+
+  mountHelpers.mount({
+    FormComponent: MyCustomVueForm,
+    showFormParams: params,
+    store,
+    validator
+  })
+}
+
+const MyCustomVueForm = {
+  name: 'MyCustomVueForm',
+  inject: [validationInjectMixin], // нужно что б в форме был доступен объект $v
+  data () {},
+  computed: {}
+  // ...
+}
+```

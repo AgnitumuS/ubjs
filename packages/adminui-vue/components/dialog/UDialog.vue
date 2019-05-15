@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-hold-focus
     :width="isDevInfo ? '90%' : '500px'"
     :visible.sync="visible"
     :append-to-body="true"
@@ -52,6 +53,7 @@
 <script>
 export default {
   name: 'UDialog',
+
   data () {
     return {
       title: '',

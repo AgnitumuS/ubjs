@@ -3,21 +3,20 @@ const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
-  // components: './components/controls/*(UbSelectEntity|UbSelectEnum|UbSelectMany|UbUploadDocument|UCodeMirror).vue',
-  components: './components/controls/*(USelectEntity|USelectEnum|USelectMany|UUploadDocument|UCodeMirror).vue',
-  // components: './components/controls/*',
-  require: [path.join(__dirname, './doc/static/global.requires.js')],
+  components: [
+    './components/controls/USelectEntity.vue',
+    './components/controls/USelectEnum.vue',
+    './components/controls/USelectMany.vue',
+    './components/controls/UUploadDocument.vue',
+    './components/controls/UCodeMirror.vue',
+    './components/controls/UInput/index.vue',
+    './components/controls/UForm/index.js',
+    './components/controls/UFormRow.vue',
+    './components/UToolbar/index.vue'
+  ],
+  require: [path.join(__dirname, './styleguide/global.requires.js')],
+  renderRootJsx: path.join(__dirname, './styleguide/styleguide.root.js'),
   webpackConfig: {
-    entry: {
-      app: './adminui-vue.js'
-    },
-    output: {
-      path: path.join(__dirname, 'dist'),
-      library: 'unitybase_adminui_vue',
-      libraryTarget: 'var',
-      filename: 'adminui-vue.min.js',
-      publicPath: '/clientRequire/@unitybase/adminui-vue/dist/'
-    },
     resolve: {
       extensions: ['.js', '.vue', '.json'],
       alias: {

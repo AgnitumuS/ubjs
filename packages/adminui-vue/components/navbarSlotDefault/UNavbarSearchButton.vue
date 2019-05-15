@@ -123,7 +123,7 @@ export default {
   },
 
   mounted () {
-    window.addEventListener('keydown', (e) => {
+    document.body.addEventListener('keydown', (e) => {
       const { code, ctrlKey } = e
       if (code === 'KeyF' && ctrlKey) {
         e.preventDefault()

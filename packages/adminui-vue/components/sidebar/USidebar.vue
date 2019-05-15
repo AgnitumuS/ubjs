@@ -36,9 +36,10 @@
     <slot />
 
     <el-menu
-      background-color="#2f4050"
-      text-color="#fff"
-      active-text-color="#409EFF"
+      ref="menu"
+      background-color="rgb(var(--bg))"
+      text-color="rgb(var(--text-contrast))"
+      active-text-color="rgb(var(--primary))"
       unique-opened
       :collapse="isCollapsed"
       :collapse-transition="false"
@@ -76,7 +77,7 @@ export default {
 
   data () {
     return {
-      shortcuts: [],
+      menu: [],
       desktops: [],
       selectedDesktop: null,
       isCollapsed: null
@@ -90,7 +91,11 @@ export default {
     },
 
     activeShortcuts () {
-      return this.buildInheritance(this.shortcuts).filter(item => this.selectedDesktop === item.desktopID)
+      if (!this.menu.length && this.selectedDesktop) {
+        return this.menu[this.selectedDesktop]
+      } else {
+        return []
+      }
     },
 
     contextItems () {
@@ -130,8 +135,7 @@ export default {
   },
 
   mounted () {
-    this.loadDesktops()
-    this.loadShortcuts()
+    this.initMenu()
     this.initCollapseState()
     $App.on({
       'portal:sidebar:defineSlot': (Component, bindings) => {
@@ -150,6 +154,11 @@ export default {
 
       'portal:sidebar:collapse': () => {
         this.isCollapsed = !this.isCollapsed
+      }
+    })
+    Object.defineProperty(this.$refs.menu, 'hoverBackground', {
+      get () {
+        return 'rgb(var(--bg-hover))'
       }
     })
   },
@@ -171,24 +180,43 @@ export default {
       if (!preferredDesktop) preferredDesktop = desktops.length && desktops[0].ID
       if (preferredDesktop) this.selectedDesktop = preferredDesktop
 
-      this.desktops = desktops
+      return desktops
     },
 
-    async loadShortcuts () {
-      this.shortcuts = await this.$UB.connection.Repository('ubm_navshortcut')
+    loadShortcuts () {
+      return this.$UB.connection.Repository('ubm_navshortcut')
         .attrs('ID', 'parentID', 'caption', 'desktopID', 'iconCls', 'inWindow', 'isCollapsed', 'displayOrder', 'isFolder')
         .orderBy('desktopID').orderBy('parentID')
         .orderBy('displayOrder').orderBy('caption')
         .select()
     },
 
-    buildInheritance (items, ID = null) {
-      const children = items.filter(a => a.parentID === ID)
-
-      return children.map(a => ({
-        ...a,
-        children: this.buildInheritance(items, a.ID)
-      }))
+    initMenu () {
+      Promise.all([
+        this.loadDesktops(),
+        this.loadShortcuts()
+      ]).then(([desktops, shortcuts]) => {
+        const menu = {}
+        for (const desktop of desktops) {
+          menu[desktop.ID] = []
+        }
+        for (const shortcut of shortcuts) {
+          if (shortcut.parentID) {
+            const parent = shortcuts.find(s => s.ID === shortcut.parentID)
+            if (parent.children) {
+              parent.children.push(shortcut)
+            } else {
+              parent.children = [shortcut]
+            }
+          } else {
+            if (shortcut.desktopID in menu) {
+              menu[shortcut.desktopID].push(shortcut)
+            }
+          }
+        }
+        this.desktops = desktops
+        this.menu = menu
+      })
     },
 
     saveInLocalStorage (ID) {
@@ -263,7 +291,7 @@ export default {
 <style>
 .ub-sidebar{
   height: 100%;
-  background: #2f4050;
+  background: rgb(var(--bg));
   display: flex;
   flex-direction: column;
   z-index: 300000;
@@ -272,7 +300,7 @@ export default {
 .ub-sidebar .el-menu::-webkit-scrollbar {
   width: 12px;
   height: 12px;
-  background-color: rgba(var(--bg-dark), 0.2);
+  background-color: rgba(var(--bg-hover), 0.2);
 }
 
 .ub-sidebar .el-menu::-webkit-scrollbar-thumb {

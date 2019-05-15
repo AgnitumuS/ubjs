@@ -4,15 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.4.3]
+## [1.5.0]
+### Fixed
+ - `UDialog` fixed autofocus on accept button
+ - `adminui-vue` will increase zIndex of Ext.WindowManager every time vue form opened on modal   
+
 ### Changed
+ - lazy loading of `@unitybase/codemirror-full` for UCodeMirror control
  - migrate from "babel-plugin-transform-object-rest-spread": "^6.26.0 -> "@babel/plugin-proposal-object-rest-spread": "^7.4.3 
   for boundler
- - update element-ui@2.4.3 -> 2.8.0
- - update element-theme-chalk@2.4.3 -> 2.8.0
+ - `UInput` was changed, now implemented with instance module
+ - `UInputNumber` removed, now old `UInput` and `UInputNumber` united in new `UInput` component
+ - `UCodeMirror` changed border color
+ - `UFormRow` now can pass true/false/String to error prop. If set true will be show default text
+ - `UEntityEdit` removed
+ - `UbToolbarComponent` removed
+ - update element-ui@2.4.3 -> 2.8.2
+ - update element-theme-chalk@2.4.3 -> 2.8.2
+ - !Breaking! `USelectEntity`, `USelectMany` changed prop entityName to entity. Now can take entityName string or UB.Repository object
 
-### Fixed
- - `UDialog` fixed autofocus on accept button 
+### Added
+ - form boilerplate [Docs](https://git-pub.intecracy.com/unitybase/ubjs/blob/164f10d15a1753be6505d9dd5b87d570f4404cf0/packages/adminui-vue/README.md#helper-modules)
+ - `UToolbar` component. That is related with processing module in form boilerplate
+ - `v-hold-focus` directive. Intercepts the tab keydown event on this element and does not allow the focus to leave it
 
 ## [1.4.1]
 ### Added
@@ -20,7 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - for **dev** mode can be required directly ``` Vuex = require('vuex') ```
    - in case model is boundled by webpack `Vuex` should be in `externals` section of webpack config
    ```json
-   externals: {
+     externals: {
        lodash: '_',
        '@unitybase/ub-pub': 'UB',
        '@unitybase/adminui-pub': '$App',

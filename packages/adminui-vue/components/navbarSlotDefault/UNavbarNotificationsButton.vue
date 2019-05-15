@@ -166,12 +166,14 @@ export default {
     },
 
     async getMessages () {
-      const messages = await this.$UB.connection
+      const request = this.$UB
         .Repository('ubs_message')
         .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate')
         .where('recipients.acceptDate', 'isNull')
         .orderByDesc('startDate')
-        .select()
+        .ubRequest()
+      // get data by connection.query to avoid query buffering
+      const messages = await this.$UB.connection.query(request).then(this.$UB.LocalDataStore.selectResultToArrayOfObjects)
       this.messages.push(...messages)
     },
 

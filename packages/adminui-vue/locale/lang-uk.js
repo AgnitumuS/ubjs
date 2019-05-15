@@ -117,5 +117,10 @@ UB.i18nExtend({
   lastMonth: 'За останній місяць',
   lastQuarter: 'За останній квартал',
   last6Month: 'За останні 6 місяців',
-  thisYear: 'За цей рік'
+  thisYear: 'За цей рік',
+
+  successfullySaved: 'Збережено',
+  formWasRefreshed: 'Форма була оновлена',
+  recordDeletedSuccessfully: 'Запис успішно видалено',
+  selectedValueWasDeleted: 'Обраний запис видалено'
 })

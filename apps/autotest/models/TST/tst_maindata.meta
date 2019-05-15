@@ -71,7 +71,7 @@
 			"enumGroup": "TEST_GROUP_1",
 			"caption": "enumValue",
 			"allowNull": false,
-			"defaultValue": "ONE"
+			"defaultValue": "Test Enum 3"
 		},
 		{
 			"name": "dateTimeValue",
