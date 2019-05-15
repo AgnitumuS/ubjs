@@ -51,7 +51,7 @@ module.exports.doFilterAndSort = function (cachedData, ubql) {
   let filteredData = this.doFiltration(cachedData, ubql)
   let totalLength = filteredData.length
   this.doSorting(filteredData, cachedData, ubql)
-    // apply options start & limit
+  // apply options start & limit
   if (ubql.options) {
     rangeStart = ubql.options.start || 0
     if (ubql.options.limit) {
@@ -75,7 +75,7 @@ module.exports.doFilterAndSort = function (cachedData, ubql) {
  * @param {Number} IDValue row ID.
  */
 module.exports.byID = function (cachedData, IDValue) {
-  return this.doFilterAndSort(cachedData, {ID: IDValue})
+  return this.doFilterAndSort(cachedData, { ID: IDValue })
 }
 
 /**
@@ -263,16 +263,16 @@ function whereListToFunctions (ubql, fieldList) {
     property = (property.replace(/(\[)|(])/ig, '') || '').trim()
     propIdx = fieldList.indexOf(property)
     if (propIdx === -1) {
-      throw new Error('Filtering by attribute "' + property + '" what not in fieldList is not allowed for cached entities')
+      throw new Error(`Filtering by attribute "${property}" what not in fieldList is not allowed for cached entity "${ubql.entity}"`)
     }
-
-    fValue = _.values(clause.values)[0]
+    // support for future (UB 5.10) where with "value" instead of "values"
+    fValue = (clause.value !== undefined) ? clause.value : clause.values[Object.keys(clause.values)[0]] // _.values(clause.values)[0]
     filters.push(filterFabricFn(propIdx, clause.condition, fValue))
   }
   // check for top level ID  - in this case add condition for filter by ID
   const reqID = ubql.ID
   if (reqID) {
-    transformClause({expression: '[ID]', condition: 'equal', values: {ID: reqID}})
+    transformClause({ expression: '[ID]', condition: 'equal', values: { ID: reqID } })
   }
   _.forEach(whereList, transformClause)
   return filters
@@ -358,7 +358,7 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
     throw new Error('fieldList not exist or empty')
   }
 
-    // client ask for all attributes
+  // client ask for all attributes
   if (requestedFieldList.length === 1 && requestedFieldList[0] === '*') {
     requestedFieldList = cachedData.fields
   }
@@ -382,7 +382,7 @@ module.exports.flatten = function (requestedFieldList, cachedData) {
       resultData[pos++] = row[ fldIdxArr[col] ]
     }
   }
-  return {fieldCount: fieldCount, rowCount: rowCount, values: resultData}
+  return { fieldCount: fieldCount, rowCount: rowCount, values: resultData }
 }
 
 /**

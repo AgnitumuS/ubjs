@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.0.22]
 ### Fixed
  - CustomRepository.clone() - prevent deep cloning of connection property
+ - error message for filtering by non-existed attribute in LocalDataStore will include entity name 
 
 ## [5.0.19]
 ### Fixed
