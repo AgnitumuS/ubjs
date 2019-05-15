@@ -1,15 +1,11 @@
 module.exports = {
-  buildExecParams,
   createInstanceModule,
   mapInstanceFields,
   computedVuex
 }
 
 const Vue = require('vue')
-const _isEmpty = require('lodash/isEmpty')
-const _isDate = require('lodash/isDate')
 const moment = require('moment')
-const { storeValidationPlugin } = require('./storeValidationPlugin')
 /**
  * @typedef {object} VuexTrackedInstance
  * @property {boolean} isNew        Indicator of whether master instance was loaded or it is newly created
@@ -48,11 +44,30 @@ function isEqual (arg1, arg2) {
     }
     return arg1.filter(i => !arg2.includes(i))
       .concat(arg2.filter(i => !arg1.includes(i))).length === 0
-  } else if (_isDate(arg1) || _isDate(arg2)) {
+  } else if (isDate(arg1) || isDate(arg2)) {
     return moment(arg1).isSame(arg2)
   } else {
     return arg1 === arg2
   }
+}
+
+/**
+ * Check value is Date
+ * @param  {Date}    date
+ * @return {Boolean}
+ */
+function isDate (date) {
+  return date instanceof Date && !isNaN(date)
+}
+
+/**
+ * Check obj is empty
+ * @param  {Any}     obj
+ * @return {Boolean}
+ */
+function isEmpty (obj) {
+  if (obj === null) return true
+  return typeof obj === 'object' && Object.keys(obj).length === 0
 }
 
 /**
@@ -63,9 +78,6 @@ function isEqual (arg1, arg2) {
  */
 
 function change (state, key, value) {
-  if (state.$v && state.$v[key]) {
-    state.$v[key].$touch()
-  }
   if (!isEqual(state.data[key], value)) {
     if (!(key in state.originalData)) {
       // No value in "originalData" - edited for the first time, so save old value to "originalData"
@@ -75,7 +87,6 @@ function change (state, key, value) {
       Vue.delete(state.originalData, key)
     }
 
-    Vue.set(state.touchedData, key, value)
     Vue.set(state.data, key, value)
   }
 }
@@ -86,7 +97,6 @@ function change (state, key, value) {
  * The state consists of the following properties:
  * - data: it is an object with actual (to be shown on UI) data values, regardless if values are untouched by user
  *     or already edited.
- * - touchedData: this object is initially empty, but as user starts editing, it is filled by original values. They will be cleared after save or refresh.
  * - originalData: this object is initially empty, but as user starts editing, it is filled by original values, as
  *     they loaded from DB, so that it would be always possible to say if a certain attribute was changed or not.
  *     If after some editing, value returned to its original state, value is deleted from this object.
@@ -99,22 +109,18 @@ function change (state, key, value) {
  *     "data" and "originalData" properties for item.  Item also has "isNew" property, indicating if item was added
  *     after original loading of collection or not.
  *     The "deleted"
- */
-
-/**
+ *
  * merge base store with instance module store
  * @param  {Object} store Vuex store config
  * @return {Object}       Modified store config
  */
-function createInstanceModule (store) {
+function createInstanceModule (store = {}) {
   return {
     /**
      * @type {VuexTrackedInstance}
      */
     state: {
       ...(typeof store.state === 'function' ? store.state() : store.state),
-
-      isNew: true,
 
       /**
        * Properties as they are in DB.
@@ -127,22 +133,9 @@ function createInstanceModule (store) {
       originalData: {},
 
       /**
-      * Properties, which were focused at least once by user.
-      * Performing operation will force all fields to be "touched" regardless of user action.
-      * This create smooth user experience, when validation kicks as user travels the form, not all fields at once.
-      */
-      touchedData: {},
-
-      /**
        * Detailed collections (if any)
        */
-      collections: {},
-
-      /**
-       * validation Object link
-       * will inited by store validation plugin
-       */
-      $v: null
+      collections: {}
     },
 
     getters: {
@@ -153,7 +146,7 @@ function createInstanceModule (store) {
        * @return {boolean}
        */
       isDirty (state) {
-        if (!_isEmpty(state.originalData)) {
+        if (!isEmpty(state.originalData)) {
           return true
         }
         for (const collection of Object.values(state.collections)) {
@@ -161,7 +154,7 @@ function createInstanceModule (store) {
             return true
           }
           for (const item of collection.items) {
-            if (item.isNew || !_isEmpty(item.originalData)) {
+            if (item.isNew || !isEmpty(item.originalData)) {
               return true
             }
           }
@@ -184,15 +177,6 @@ function createInstanceModule (store) {
       },
 
       /**
-       * Set "IsNew" flag for the master record.
-       * @param {VuexTrackedInstance} state
-       * @param {boolean} isNew
-       */
-      IS_NEW (state, isNew) {
-        state.isNew = isNew
-      },
-
-      /**
        * Load initial state of tracked master entity, all at once.
        * @param {VuexTrackedInstance} state
        * @param {object} loadedState
@@ -200,7 +184,6 @@ function createInstanceModule (store) {
       LOAD_DATA (state, loadedState) {
         state.data = loadedState
         Vue.set(state, 'originalData', {})
-        Vue.set(state, 'touchedData', {})
       },
 
       /**
@@ -211,10 +194,7 @@ function createInstanceModule (store) {
       LOAD_DATA_PARTIAL (state, loadedState) {
         for (const [key, value] of Object.entries(loadedState)) {
           change(state, key, value)
-        }
-        for (const key of Object.keys(loadedState)) {
           Vue.delete(state.originalData, key)
-          Vue.delete(state.touchedData, key)
         }
       },
 
@@ -274,17 +254,36 @@ function createInstanceModule (store) {
       /**
        * Set original state of collection items
        * @param {VuexTrackedInstance} state
-       * @param {string} collection
+       * @param {String} collection
        * @param {Array} items
+       * @param {String} entity
        */
-      LOAD_COLLECTION (state, { collection, items: itemStates }) {
+      LOAD_COLLECTION (state, { collection, items: itemStates, entity }) {
         const items = itemStates.map(item => ({
           data: item,
-          originalData: {},
-          touchedData: {}
+          originalData: {}
         }))
-        const collectionObj = { items, deleted: [] }
+        const collectionObj = { items, deleted: [], entity, key: collection }
         Vue.set(state.collections, collection, collectionObj)
+      },
+
+      /**
+       * Update collection data.
+       * Removed originalData for props which updated
+       * Remove isNew status.
+       * @param {VuexTrackedInstance} state
+       * @param {String} options.collection  collection
+       * @param {Number} options.index       index in collection
+       * @param {Object} options.loadedState loaded state
+       */
+      LOAD_COLLECTION_PARTIAL (state, { collection, index, loadedState }) {
+        const collectionInstance = state.collections[collection]
+
+        for (const [key, value] of Object.entries(loadedState)) {
+          change(collectionInstance.items[index], key, value)
+          Vue.delete(collectionInstance.items[index].originalData, key)
+          collectionInstance.items[index].isNew = false
+        }
       },
 
       /**
@@ -298,7 +297,7 @@ function createInstanceModule (store) {
           // Lazy create collection
           Vue.set(state.collections, collection, { items: [], deleted: [] })
         }
-        state.collections[collection].items.push({ data: itemState, originalData: {}, isNew: true, touchedData: {} })
+        state.collections[collection].items.push({ data: itemState, originalData: {}, isNew: true })
       },
 
       /**
@@ -318,96 +317,28 @@ function createInstanceModule (store) {
         }
       },
 
-      REMOVE_ALL_COLLECTION_ITEMS (state, { collection }) {
-        if (collection in state.collections) {
-          const removedItems = state.collections[collection].items
-          state.collections[collection].deleted = removedItems
-          state.collections[collection].items = []
-        }
-      },
-
-      SET_DIRTY (state, fields) {
-        Vue.set(state, 'touchedData', {})
-        for (const field of fields) {
-          Vue.set(state.touchedData, field, state.data[field])
-        }
-      },
-
       /**
-       * Set vuelidate validation object
-       * which returned by validation plugin
+       * Clear deleted items in all collections, after sending removal requests
        * @param {VuexTrackedInstance} state
-       * @param {ValidationObject} $v
        */
-      SET_VALIDATION_OBJECT (state, $v) {
-        Vue.set(state, '$v', $v)
+      CLEAR_ALL_DELETED_ITEMS (state) {
+        for (const collection of Object.keys(state.collections)) {
+          Vue.set(state.collections[collection], 'deleted', [])
+        }
       }
     },
 
     actions: {
-      ...store.actions,
-
-      /**
-       * storeValidationPlugin is subscribed for this action
-       * and will get data from function payload
-       * @param  {Function} options.commit
-       * @param  {Object}   options.data            data
-       * @param  {Array}    options.requiredFields  list of required fields
-       * @param  {Boolean}  options.isPartialLoad   indicates which mutation will be called
-       */
-      loadDataWithValidation ({ commit }, { data, requiredFields, isPartialLoad }) {
-        if (isPartialLoad) {
-          commit('LOAD_DATA_PARTIAL', data)
-        } else {
-          commit('LOAD_DATA', data)
-        }
-      }
-    },
-
-    plugins: [storeValidationPlugin]
-  }
-}
-
-const mixinAttrs = new Set()
-mixinAttrs.add('mi_createDate')
-mixinAttrs.add('mi_createUser')
-mixinAttrs.add('mi_modifyDate')
-mixinAttrs.add('mi_modifyUser')
-
-/**
- * Build "execParams" out of the state tracked by "instance" module.
- * @param {VuexTrackedObject} trackedObj
- * @return {object|null}
- */
-function buildExecParams (trackedObj) {
-  if (trackedObj.isNew) {
-    const execParams = {}
-    for (const [attr, value] of Object.entries(trackedObj.data)) {
-      if (!mixinAttrs.has(attr)) {
-        execParams[attr] = value
-      }
+      ...store.actions
     }
-    return execParams
   }
-
-  if (_isEmpty(trackedObj.originalData)) {
-    return null
-  }
-
-  const execParams = {
-    ID: trackedObj.data.ID,
-    mi_modifyDate: trackedObj.data.mi_modifyDate
-  }
-  for (const key of Object.keys(trackedObj.originalData)) {
-    execParams[key] = trackedObj.data[key]
-  }
-  return execParams
 }
 
 /**
+ * Making dynamic set(), get() method for state of vuex
+ * for instance fields
  * @param {string[]|string} moduleOrArr
  * @param {string[]} [arr]
- * @return {*}
  */
 function mapInstanceFields (moduleOrArr, arr) {
   let module, properties
@@ -430,6 +361,9 @@ function mapInstanceFields (moduleOrArr, arr) {
         }
       },
       set (value) {
+        if (this.$v && key in this.$v) {
+          this.$v[key].$touch()
+        }
         if (module) {
           this.$store.commit(`${module}/SET_DATA`, { key, value })
         } else {

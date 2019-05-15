@@ -1,12 +1,24 @@
-/* global $App, Ext */
+module.exports = {
+  replaceExtJSDialogs,
+  replaceExtJSNavbar,
+  replaceAutoForms,
+  replaceExtJSMessageBarDialog
+}
+
+/* global $App, Ext, UBS */
+
 const UB = require('@unitybase/ub-pub')
 const Vue = require('vue')
+const Vuex = require('vuex')
 const { Notification } = require('element-ui')
 const dialogs = require('../components/dialog/UDialog')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
 const autoForm = require('../components/AutoForm.vue').default
 const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
-const mountHelpers = require('./mountHelpers')
+const mountHelpers = require('./formBoilerplate/mount')
+const { createInstanceModule } = require('./formBoilerplate/instance')
+const { processingModule } = require('./formBoilerplate/processing')
+const { validateEntitySchema } = require('./formBoilerplate/validation')
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
@@ -78,26 +90,41 @@ function replaceExtJSNavbar () {
 }
 
 function replaceAutoForms () {
-  let params = this
-  if (!params.title) {
-    params.title = $App.domainInfo.get(params.entity).caption
-    if (!params.commandConfig.instanceID) {
-      params.title += ` (${UB.i18n('dobavlenie')})`
-    }
-  }
+  const params = this
   if (mountHelpers.activateIfMounted(params)) return
 
-  let mountParams = {
-    FormComponent: autoForm,
-    showFormParams: params
+  if (!params.title) {
+    params.title = UB.connection.domain.get(params.entity).caption
   }
 
-  mountParams.store = {
+  const storeConfig = {
     state: {
       formTitle: params.title
     }
   }
-  mountHelpers.mount(mountParams)
+  const fieldList = UB.connection.domain.get(params.entity).getAttributeNames()
+  const masterRequest = UB.connection.Repository(params.entity).attrs(fieldList)
+
+  const assignInstance = createInstanceModule(storeConfig)
+  const assignProcessing = processingModule(assignInstance, masterRequest)
+  const store = new Vuex.Store(assignProcessing)
+  const validator = validateEntitySchema(store)
+
+  store.dispatch('init', params.instanceID).then(() => {
+    if (params.parentContext) {
+      store.commit('LOAD_DATA_PARTIAL', params.parentContext)
+    }
+  })
+
+  mountHelpers.mount({
+    FormComponent: autoForm,
+    showFormParams: {
+      ...params,
+      modalClass: 'ub-dialog__reset-padding'
+    },
+    store,
+    validator
+  })
 }
 
 function getTypeLocaleString (type) {
@@ -120,7 +147,6 @@ function replaceExtJSMessageBarDialog () {
     }
   })
 
-  /* Global UBS */
   UBS.MessageBar.override({
     async doOnMessageRetrieved (messages) {
       /**
@@ -137,11 +163,4 @@ function replaceExtJSMessageBarDialog () {
       }
     }
   })
-}
-
-module.exports = {
-  replaceExtJSDialogs,
-  replaceExtJSNavbar,
-  replaceAutoForms,
-  replaceExtJSMessageBarDialog
 }

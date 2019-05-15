@@ -1,7 +1,7 @@
 <!--suppress CssUnusedSymbol -->
 <template>
   <el-submenu
-    v-if="item.children.length > 0"
+    v-if="item.children"
     :index="String(item.ID)"
     popper-class="ub-sidebar__popup-menu"
     @contextmenu.native="contextDisabled ? null : contextOnTitle($event)"

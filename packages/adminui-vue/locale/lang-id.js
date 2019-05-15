@@ -117,5 +117,10 @@ UB.i18nExtend({
   lastMonth: 'Last Month',
   lastQuarter: 'Last quarter',
   last6Month: 'Last 6 month',
-  thisYear: 'This year'
+  thisYear: 'This year',
+
+  successfullySaved: 'Successfully saved',
+  formWasRefreshed: 'Form was refreshed',
+  recordDeletedSuccessfully: 'Record deleted successfully',
+  selectedValueWasDeleted: 'Selected value was deleted'
 })

@@ -1,9 +1,9 @@
 // @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Wed Jan 30 2019 15:38:32 GMT+0200 (EET)"
+// @mi_modifyDate "Fri Apr 19 2019 20:15:23 GMT+0300 (FLE Standard Time)"
 // @isDefault "true"
 // @entity "tst_document"
 // @model "TST"
-// @formType "auto"
+// @formType "vue"
 // @caption "tst_document.meta"
 // @description "Document type attribute test"
 const UB = require('@unitybase/ub-pub')

@@ -22,8 +22,12 @@ if (IS_SYSTEM_JS && !SystemJS.has('throttle-debounce')) SystemJS.set('throttle-d
  * @type {{throttle?, debounce?}}
  */
 module.exports.throttleDebounce = throttleDebounce
-
-module.exports.mountHelpers = require('./utils/mountHelpers')
+const formBoilerplate = require('./utils/formBoilerplate/index')
+module.exports = {
+  ...module.exports,
+  ...formBoilerplate
+}
+if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
 const Vue = require('vue')
 window.Vue = Vue
@@ -160,4 +164,16 @@ if (window.$App) {
 if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
   const replaceAutoForms = require('./utils/replaceExtJSWidgets').replaceAutoForms
   UB.core.UBCommand.showAutoForm = replaceAutoForms
+}
+
+// Create fake (hidden) message and get it zIndex
+Vue.prototype.$zIndex = () => Vue.prototype.$message({
+  customClass: 'ub-fake-notification'
+}).dom.style.zIndex
+
+Vue.config.warnHandler = (err, vm, info) => {
+  setTimeout(() => {
+    console.error(err, vm, info)
+    window.onerror.apply(UB, [err, info, '', '', new UB.UBError(err, info)])
+  }, 0)
 }

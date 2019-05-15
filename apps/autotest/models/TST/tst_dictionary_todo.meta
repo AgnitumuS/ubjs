@@ -1,0 +1,46 @@
+{
+  "caption": "tst_dictionary_todo",
+  "description": "ub test dictionary todo",
+  "connectionName": "",
+  "descriptionAttribute": "name",
+  "attributes": [
+    {
+      "name": "name",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code",
+      "description": "Code",
+      "allowNull": false,
+      "defaultValue": "test default value"
+    },
+    {
+      "name": "objectID",
+      "dataType": "Entity",
+      "associatedEntity": "tst_dictionary",
+      "cascadeDelete": false,
+      "caption": "Object"
+    },
+    {
+      "name": "status",
+      "dataType": "Boolean",
+      "caption": "Done status",
+      "defaultValue": "0"
+    },
+    {
+      "name": "link",
+      "dataType": "Entity",
+      "associatedEntity": "tst_document",
+      "cascadeDelete": false,
+      "caption": "Link to entity"
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true
+    }
+  },
+  "dbKeys": {
+  },
+  "dbExtensions": {
+  }
+}

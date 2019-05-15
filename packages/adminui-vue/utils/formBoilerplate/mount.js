@@ -1,7 +1,8 @@
+/* global $App, Ext */
 const Vue = require('vue')
+const UB = require('@unitybase/ub-pub')
 const Dialog = require('element-ui').Dialog
-const Vuex = require('vuex')
-const { createInstanceModule, mergeStore } = require('./storeInstanceModule')
+const { dialog: $dialog } = require('../../components/dialog/UDialog')
 
 /**
  * Mount helpers for Vue components
@@ -62,13 +63,20 @@ function mount (commandConfig) {
  * Mount form in modal Dialog
  * @param mountParams
  * @private
+ * @param {String} mountParams.showFormPrams.title       form title
+ * @param {String} mountParams.showFormPrams.modalClass  wrapper class for modal dialog
+ * @param {String} mountParams.showFormPrams.modalWidth  width for modal dialog
  */
 function mountModal (mountParams) {
   let title = mountParams.showFormParams.title
   const FormComponent = mountParams.FormComponent
-  if (mountParams.store) {
-    const instanceModule = createInstanceModule(mountParams.store)
-    mountParams.store = new Vuex.Store(instanceModule)
+
+  let modalClass = mountParams.showFormParams.modalClass || ''
+  let modalWidth = mountParams.showFormParams.modalWidth
+  modalClass += ' ub-dialog__min-width'
+
+  if (!modalWidth) {
+    modalClass = ' ub-dialog__max-width'
   }
   const instance = new Vue({
     store: mountParams.store,
@@ -78,19 +86,57 @@ function mountModal (mountParams) {
         title
       }
     },
+    computed: {
+      isDirty () {
+        if (this.$store) {
+          return this.$store.getters.isDirty
+        } else {
+          return false
+        }
+      }
+    },
     methods: {
       setTitle (value) {
         this.title = value
       }
     },
+    provide () {
+      return {
+        _validation: () => mountParams.validator,
+        $formServices: {
+          setTitle: this.setTitle,
+          close: () => {
+            beforeClose({
+              save: () => this.$store.dispatch('save', mountParams.validator),
+              close: () => {
+                this.dialogVisible = false
+              },
+              isDirty: this.$store.getters.isDirty
+            })
+          },
+          forceClose: () => {
+            this.dialogVisible = false
+          }
+        },
+        showFormParams: mountParams.showFormParams
+      }
+    },
     render (h) {
       return h(Dialog, {
         ref: 'dialog',
+        class: modalClass,
         props: {
           title: this.title,
           visible: this.dialogVisible,
-          width: mountParams.showFormParams.modalWidth || '80%',
-          beforeClose: onBeforeDialogClose
+          width: modalWidth,
+          closeOnClickModal: false,
+          beforeClose: (done) => {
+            beforeClose({
+              save: () => this.$store.dispatch('save', mountParams.validator),
+              close: done,
+              isDirty: this.$store.getters.isDirty
+            })
+          }
         },
         on: {
           closed: () => { this.$destroy() },
@@ -113,10 +159,6 @@ function mountModal (mountParams) {
   instance.$mount()
   document.body.append(instance.$el)
   instance.dialogVisible = true
-
-  if (mountParams.store) {
-    subscribeFormChanges.call(instance, mountParams.store)
-  }
 }
 
 /**
@@ -131,29 +173,46 @@ function mountTab (mountParams) {
   const tab = $App.viewport.centralPanel.add({
     title,
     id: tabId,
-    style: {
-      padding: '1em' // we replace panel inner content below so set padding's here
-    },
     closable: true
   })
-  if (mountParams.store) {
-    const instanceModule = createInstanceModule(mountParams.store)
-    mountParams.store = new Vuex.Store(instanceModule)
-    subscribeFormChanges.call(tab, mountParams.store)
-  }
+  const store = mountParams.store
 
   const instance = new Vue({
     render: (h) => h(FormComponent, {
       props: showFormParamsToComponentProps(mountParams.showFormParams) // pass props programmatically
     }),
-    store: mountParams.store
+    provide: {
+      _validation: () => mountParams.validator,
+      $formServices: {
+        setTitle: tab.setTitle.bind(tab),
+        close: tab.close.bind(tab),
+        forceClose () {
+          tab.forceClose = true
+          tab.close()
+        }
+      },
+      showFormParams: mountParams.showFormParams
+    },
+    store
   })
   instance.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   tab.on('close', () => {
     instance.$destroy()
   })
 
-  tab.on('beforeClose', onBeforeTabClose.bind(instance))
+  tab.on('beforeClose', (currentTab) => {
+    if (currentTab.forceClose) return true
+
+    beforeClose({
+      save: () => store.dispatch('save', mountParams.validator),
+      close: () => {
+        tab.forceClose = true
+        tab.close()
+      },
+      isDirty: store.getters.isDirty
+    })
+    return false
+  })
   $App.viewport.centralPanel.setActiveTab(tab)
 }
 
@@ -170,112 +229,31 @@ function showFormParamsToComponentProps (showFormParams) {
 }
 
 /**
- * Check dialog data is Dirty and ask for saving
- * @param {function} done Dialog clone function
- * @private
+ * Check form isDirty then ask user what he want to do
+ * @param  {Function} param.save
+ * @param  {Function} param.close
+ * @param  {Boolean}  param.isDirty
  */
-async function onBeforeDialogClose (done) {
-  let dataComponent = this
-  while (dataComponent && (typeof dataComponent.isDirty === 'undefined') && dataComponent.$children) {
-    if (dataComponent.$children.length) {
-      dataComponent = dataComponent.$children[0]
-    } else {
-      dataComponent = undefined
-    }
-  }
-  if (!dataComponent || (typeof dataComponent.isDirty === 'undefined')) done() // no data component
-
-  let isDirty = typeof dataComponent.isDirty === 'function' ? dataComponent.isDirty() : dataComponent.isDirty
+async function beforeClose ({ save, close, isDirty }) {
   if (isDirty) {
-    const answer = await this.$dialog({
-      title: this.$ut('unsavedData'),
-      msg: this.$ut('confirmSave'),
+    const answer = await $dialog({
+      title: UB.i18n('unsavedData'),
+      msg: UB.i18n('confirmSave'),
       type: 'warning',
       buttons: {
-        yes: this.$ut('save'),
-        no: this.$ut('doNotSave'),
-        cancel: this.$ut('cancel')
+        yes: UB.i18n('save'),
+        no: UB.i18n('doNotSave'),
+        cancel: UB.i18n('cancel')
       }
     })
+
     if (answer === 'yes') {
-      const validation = await dataComponent.save()
-      if (validation !== 'error') {
-        done()
-      }
-    } else if (answer === 'no') {
-      done()
+      save().then(close)
+    }
+    if (answer === 'no') {
+      close()
     }
   } else {
-    done()
+    close()
   }
-}
-
-/**
- * Check tab data is Dirty and ask for saving
- * @private
- */
-function onBeforeTabClose () {
-  let dataComponent = this
-  while (dataComponent && (typeof dataComponent.isDirty === 'undefined') && dataComponent.$children) {
-    if (dataComponent.$children.length) {
-      dataComponent = dataComponent.$children[0]
-    } else {
-      dataComponent = undefined
-    }
-  }
-  if (!dataComponent || (typeof dataComponent.isDirty === 'undefined')) return true // no data component
-  let currentTab = $App.viewport.centralPanel.queryById(dataComponent.currentTabId)
-  if (currentTab.forceClose) return true
-
-  let isDirty = typeof dataComponent.isDirty === 'function' ? dataComponent.isDirty() : dataComponent.isDirty
-  if (isDirty) {
-    $App.viewport.centralPanel.setActiveTab(currentTab)
-    this.$dialog({
-      title: this.$ut('unsavedData'),
-      msg: this.$ut('confirmSave'),
-      type: 'warning',
-      buttons: {
-        yes: this.$ut('save'),
-        no: this.$ut('doNotSave'),
-        cancel: this.$ut('cancel')
-      }
-    }).then(answer => {
-      if (answer === 'yes') {
-        dataComponent.save().then(validation => {
-          if (validation !== 'error') {
-            currentTab.forceClose = true
-            currentTab.close()
-          }
-        })
-      } else if (answer === 'no') {
-        currentTab.forceClose = true
-        currentTab.close()
-      }
-    })
-    return false
-  } else {
-    return true
-  }
-}
-
-/**
- * subscribe to change isDrity or title
- * @param  {VuexStore} store    subscribe target
- */
-function subscribeFormChanges (store) {
-  store.watch(
-    (state, getters) => {
-      return {
-        isDirty: getters.isDirty,
-        formTitle: state.formTitle
-      }
-    },
-    ({ isDirty, formTitle }) => {
-      if (isDirty) {
-        this.setTitle(formTitle + ' *')
-      } else {
-        this.setTitle(formTitle)
-      }
-    }
-  )
 }

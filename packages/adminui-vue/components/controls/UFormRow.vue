@@ -24,7 +24,7 @@
             v-show="error"
             class="ub-error-wrap__text"
           >
-            {{ error ? $ut(error) : '' }}
+            {{ errorText }}
           </div>
         </transition>
       </div>
@@ -40,7 +40,9 @@ export default {
   name: 'UFormRow',
   props: {
     /**
-     * If is set will be show error text
+     * If is set String param will be show error text
+     * If set false will hide error
+     * If set true will show default error text $ut('obazatelnoePole')
      */
     error: {
       type: [String, Boolean],
@@ -95,6 +97,17 @@ export default {
 
     labelPositionComputed () {
       return this.labelPosition
+    },
+
+    errorText () {
+      if (this.error) {
+        if (typeof this.error === 'boolean') {
+          return this.$ut('obazatelnoePole')
+        } else {
+          return this.$ut(this.error)
+        }
+      }
+      return ''
     }
   }
 }
@@ -168,21 +181,24 @@ export default {
 
 ```vue
 <template>
-  <u-form-row
-    required
-    :error="showError && 'Please fill this field'"
-  >
-    <el-input />
-  </u-form-row>
+  <div>
+    <u-form-row
+      required
+      :error="showError"
+      label="temp label"
+    >
+      <el-input />
+    </u-form-row>
 
-  <el-button-group>
-    <el-button @click="showError = true">
-      Show error
-    </el-button>
-    <el-button @click="showError = false">
-      Hide error
-    </el-button>
-  </el-button-group>
+    <el-button-group>
+      <el-button @click="showError = true">
+        Show error
+      </el-button>
+      <el-button @click="showError = false">
+        Hide error
+      </el-button>
+    </el-button-group>
+  </div>
 </template>
 
 <script>

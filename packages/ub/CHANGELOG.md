@@ -5,9 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.12]
+
+### Added
+ - new method `THTTPRequest.writeToFile(fullFilePath)` - write request body content (as binary) to a file.
+ Return `true` on success. Can be used to bypass moving body content between native<->JS
+ if conversion of the request body is not required.  
+
 ### Fixed
  - Windows: `UB.UBAbort` server-side exception fileName & lineNum now valid in case
  file name is absolute path starts with drive letter. Prev. implementation puts drive letter instead of fileName 
+
 
 ## [5.2.11]
 ### Added

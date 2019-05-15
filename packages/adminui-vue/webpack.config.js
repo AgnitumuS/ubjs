@@ -26,13 +26,7 @@ module.exports = (options = {}) => ({
   externals: {
     lodash: '_',
     '@unitybase/ub-pub': 'UB',
-    '@unitybase/adminui-pub': '$App',
-    '@unitybase/codemirror-full': {
-      commonjs: '@unitybase/codemirror-full',
-      commonjs2: '@unitybase/codemirror-full',
-      amd: '@unitybase/codemirror-full',
-      root: 'CodeMirror'
-    }
+    '@unitybase/adminui-pub': '$App'
   },
   module: {
     rules: [{
@@ -72,7 +66,8 @@ module.exports = (options = {}) => ({
       BOUNDLED_BY_WEBPACK: true,
       // VueJS use process.env.NODE_ENV to enable devtools
       'process.env.NODE_ENV': JSON.stringify('production')
-    })
+    }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
   ],
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

@@ -42,12 +42,12 @@ export default {
   padding-right: 28px;
   border-radius: 16px;
   background-color: #fdfdfd;
-  border: solid 1px rgba(var(--bg-dark), 0.54);
+  border: solid 1px rgba(var(--bg-hover), 0.54);
   user-select:none;
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  color: rgba(var(--bg-dark), 0.87);
+  color: rgba(var(--bg-hover), 0.87);
   position: relative;
   white-space:nowrap;
   margin-right: 8px;
@@ -60,7 +60,7 @@ export default {
 
 .u-navbar__tab:hover{
   background-color: rgba(var(--primary), 0.16);
-  border-color: rgba(var(--bg-dark), 0.54);
+  border-color: rgba(var(--bg-hover), 0.54);
 }
 
 .u-navbar__tab.active{
@@ -116,10 +116,10 @@ export default {
 
 .u-navbar__tab-tray.active{
   border-color: #fff;
-  background-color: rgba(var(--bg-dark), 1);
+  background-color: rgba(var(--bg-hover), 1);
 }
 .u-navbar__tab-tray:hover{
   border-color: rgba(var(--primary), 1);
-  background-color: rgba(var(--bg-dark), 1);
+  background-color: rgba(var(--bg-hover), 1);
 }
 </style>

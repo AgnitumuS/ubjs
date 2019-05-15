@@ -1,121 +1,88 @@
 <template>
-  <el-select
-    ref="selector"
-    v-model="resultData"
-    v-loading="loading"
-    clearable
-    :disabled="loading || disabled"
-    style="width: 100%"
-    @change="$emit('input', resultData)"
-    @input.native="onInput"
-  >
-    <template>
-      <el-option
-        v-for="item in items"
-        :key="item[primaryColumn]"
-        :label="item[displayValue]"
-        :value="item[primaryColumn]"
-      />
-    </template>
-  </el-select>
+  <u-select-entity
+    :repository="getEnumRequest"
+    :value="value"
+    :model-attr="modelAttr"
+    @input="$emit('input', $event)"
+  />
 </template>
 
-<docs>
-  UbSelectEnum:
-
-  ```vue
-  <template>
-    <u-select-enum
-            v-model="value"
-            style="width:500px"
-            :disabled="disabled"
-            :e-group="eGroup"
-            :primary-column="primaryColumn"
-            @input="inputFn"
-    ></u-select-enum>
-  </template>
-  <script>
-    export default {
-      methods: {
-        inputFn: console.log('Entered value')
-      },
-      data () {
-        return {
-          value: 'TST2',
-          disabled: false,
-          eGroup: 'TEST_GROUP_1',
-          primaryColumn: 'code'
-        }
-      }
-    }
-  </script>
-  ```
-
-</docs>
 <script>
-require('../../css/ub-select.css')
-
-const ENUM_ENTITY = 'ubm_enum'
-
-module.exports = {
+/**
+* Component for select UB enum.
+*/
+export default {
   name: 'USelectEnum',
   props: {
+    /**
+     * Selected item ID
+     * @model
+     */
     value: {
-      type: [String, Number]
+      type: [Number, String],
+      default () {
+        return null
+      }
     },
     // TODO - pass entityCode, add attrCode, clearable only in case attr allow null
+    /**
+     * Enum group from dictionary 'ubm_enum'
+     */
     eGroup: {
-      type: String
-    },
-    disabled: Boolean,
-    primaryColumn: {
       type: String,
-      default () {
-        return 'code'
-      }
-    }
+      required: true
+    },
+    /**
+     * Set disabled status
+     */
+    disabled: Boolean
   },
+
   data () {
     return {
-      resultData: this.value,
-      items: [],
-      loading: false
+      modelAttr: 'code',
+      enumEntity: 'ubm_enum'
     }
   },
+
   computed: {
-    displayValue () {
-      return this.$UB.connection.domain.get(ENUM_ENTITY).descriptionAttribute
-    }
-  },
-  methods: {
-    onInput () {
-      if (!event.target.value) {
-        this.resultData = null
-        this.$refs.selector.emitChange(null)
-      }
+    entitySchema () {
+      return this.$UB.connection.domain.get(this.enumEntity)
     },
-    loadData () {
-      this.loading = true
-      this.$UB.Repository(ENUM_ENTITY)
-        .attrs(this.primaryColumn, this.displayValue, 'eGroup')
-        .whereIf(this.eGroup, 'eGroup', '=', this.eGroup)
-        .select().then((data) => {
-          this.items = data
-          this.loading = false
-        })
+
+    displayAttr () {
+      return this.entitySchema.descriptionAttribute
     }
   },
-  destroyed () {
-    this.$UB.connection.removeListener(`${ENUM_ENTITY}:changed`, this.loadData)
-  },
-  watch: {
-    value () {
-      this.resultData = this.value
+
+  methods: {
+    getEnumRequest () {
+      return this.$UB.Repository(this.enumEntity)
+        .attrs('eGroup', this.modelAttr, this.displayAttr)
+        .where('eGroup', '=', this.eGroup)
     }
-  },
-  mounted () {
-    this.$UB.connection.on(`${ENUM_ENTITY}:changed`, this.loadData)
-    this.loadData()
   }
 }
 </script>
+
+<docs>
+UbSelectEnum:
+
+```vue
+<template>
+  <u-select-enum
+    v-model="value"
+    e-group="FORM_TYPE"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: null
+      }
+    }
+  }
+</script>
+```
+</docs>
