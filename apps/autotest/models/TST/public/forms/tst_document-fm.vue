@@ -131,7 +131,8 @@
 
 <script>
 const {
-  mountHelpers,
+  activateIfMounted,
+  mountForm,
   createInstanceModule,
   processingModule,
   mapInstanceFields,
@@ -142,7 +143,7 @@ const Vuex = require('vuex')
 const { mapGetters } = Vuex
 
 module.exports.mount = function (params) {
-  if (mountHelpers.activateIfMounted(params)) return
+  if (activateIfMounted(params)) return
 
   const fieldList = UB.connection.domain.get(params.entity).getAttributeNames()
   const masterRequest = UB.connection.Repository(params.entity).attrs(fieldList)
@@ -154,7 +155,7 @@ module.exports.mount = function (params) {
   store.dispatch('init', params.instanceID)
   const validator = validateEntitySchema(store)
 
-  mountHelpers.mount({
+  mountForm({
     FormComponent: TstDocument,
     showFormParams: params,
     store,

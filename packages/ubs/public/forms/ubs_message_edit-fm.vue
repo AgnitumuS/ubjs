@@ -120,12 +120,12 @@ const required = require('vuelidate/lib/validators/required').default
 const AdminUiVue = require('@unitybase/adminui-vue')
 
 module.exports.mount = function (params) {
-  if (AdminUiVue.mountHelpers.activateIfMounted(params)) return
+  if (AdminUiVue.activateIfMounted(params)) return
   let mountParams = {
     FormComponent: UbsMessageEdit,
     showFormParams: params
   }
-  AdminUiVue.mountHelpers.mount(mountParams)
+  AdminUiVue.mountForm(mountParams)
 }
 
 const UbsMessageEdit = module.exports.default = {

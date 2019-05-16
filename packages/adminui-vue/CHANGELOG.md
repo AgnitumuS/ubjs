@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.1]
+### Fixed
+ - changed before close function in mount module, can except empty store or store without save action
+
+### Changed
+ - `mount` module. Renamed `mount -> mountForm`
+ - `formBoilerplate` exports `activateIfMounted` and `mountForm`, instead `mountHelpers`
+
 ## [1.5.0]
 ### Fixed
  - `UDialog` fixed autofocus on accept button

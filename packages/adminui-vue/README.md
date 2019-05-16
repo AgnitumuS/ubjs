@@ -167,7 +167,7 @@ const MyCustomVueForm = {
   validation зависит и от instance, и от processing 
 
 ### Модуль mount
-  `const mountHelpers = require('/utils/mountHelpers')`
+  `const { mountForm, activateIfMounted} = require('@unitybase/adminui-vue')`
   принимает в себя mountParams, в котором ожидает получить такие параметры
   ```javascript
   {
@@ -262,7 +262,8 @@ const MyCustomVueForm = {
 const UB = require('@unitybase/ub-pub')
 const Vuex = require('vuex')
 const {
-  mountHelpers,
+  activateIfMounted,
+  mountForm,
   createInstanceModule,
   processingModule,
   validateEntitySchema,
@@ -271,7 +272,7 @@ const {
 
 module.exports.mount = function (params) {
   // активировать таб если форма уже открыта
-  if (mountHelpers.activateIfMounted(params)) return
+  if (activateIfMounted(params)) return
 
   // для примера получаем все поля сущности (можно указать свой список)
   const fieldList = UB.connection.domain.get(params.entity).getAttributeNames()
@@ -304,7 +305,7 @@ module.exports.mount = function (params) {
    */
   const validator = validateEntitySchema(store)
 
-  mountHelpers.mount({
+  mountForm({
     FormComponent: MyCustomVueForm,
     showFormParams: params,
     store,
