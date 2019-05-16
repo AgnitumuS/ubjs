@@ -8,16 +8,10 @@
     >
       <el-row :gutter="20">
         <el-col :lg="12">
-          <u-form-row
-            :label="getLabel('code')"
-            required
-            :error="$v.code.$error"
-          >
-            <u-input
-              v-model="code"
-              attribute-name="code"
-            />
-          </u-form-row>
+          <u-auto-field
+            v-model="code"
+            code="code"
+          />
 
           <u-form-row :label="getLabel('caption')">
             <u-input
