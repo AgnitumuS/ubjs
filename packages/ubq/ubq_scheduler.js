@@ -16,9 +16,16 @@ me.entity.addMethod('select')
 // here we store loaded schedulers
 let resultDataCache = null
 const FILE_NAME_TEMPLATE = '_schedulers.json'
+const ATTRIBUTES_NAMES = me.entity.getAttributeNames()
 
-// calculate default value for entity attributes
-let attributes = me.entity.attributes
+let defaultValues = {}
+ATTRIBUTES_NAMES.forEach(attrName => {
+  let attr = me.entity.attributes[attrName]
+  if (attr.defaultValue) {
+    defaultValues[attrName] = attr.defaultValue
+  }
+})
+
 /**
  * Load a schedulers from a file. Override a already loaded schedulers if need
  * @private
@@ -41,14 +48,18 @@ function loadOneFile (model, loadedData) {
     }
     for (let i = 0, L = content.length; i < L; i++) {
       let item = content[i]
-      let existedItem = _.find(loadedData, {name: item.name})
-      _.defaults(item, defaultValues)
+      let existedItem = _.find(loadedData, { name: item.name })
+      if (!existedItem) { // assign defaults for new items only
+        _.defaults(item, defaultValues)
+      } else {
+        existedItem.originalModel = existedItem.actualModel
+      }
       item.actualModel = modelName
       if (!schedulersEnabled) {
         item.schedulingCondition = FALSE_CONDITION
       }
       if (existedItem) { // override
-        _.assign(existedItem, item)
+        Object.assign(existedItem, item)
         existedItem.overridden = '1'
       } else {
         item.ID = ncrc32(0, item.name)
@@ -59,12 +70,6 @@ function loadOneFile (model, loadedData) {
     console.error('SCHEDULER: Invalid config in %. Error: %. File is ignored', fn, e.toString())
   }
 }
-
-let defaultValues = _(attributes).toArray().filter('defaultValue').value()
-  .reduce(function (result, attr) {
-    result[attr.name] = attr.defaultValue
-    return result
-  }, {})
 
 function loadAll () {
   let models = App.domainInfo.models
@@ -77,11 +82,10 @@ function loadAll () {
       loadOneFile(model, loadedData)
     }
 
-    let attrList = Object.keys(attributes)
     resultDataCache = {
       version: 0,
-      fields: attrList,
-      data: LocalDataStore.arrayOfObjectsToSelectResult(loadedData, attrList)
+      fields: ATTRIBUTES_NAMES,
+      data: LocalDataStore.arrayOfObjectsToSelectResult(loadedData, ATTRIBUTES_NAMES)
     }
   } else {
     console.debug('ubq_scheduler: already loaded')

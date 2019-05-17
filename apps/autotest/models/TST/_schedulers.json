@@ -42,5 +42,10 @@
 		"singleton": true,
 		"runAs": "admin",
 		"logSuccessful": true
+	},
+	{
+    	    "name": "mail",
+            "cron": "10 */1 * * * *"
 	}
+
 ]

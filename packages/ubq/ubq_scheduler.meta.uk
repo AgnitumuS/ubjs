@@ -8,11 +8,11 @@
         },
         {
             "name": "name",
-            "caption": "Ім'я задачі"
+            "caption": "Назва задачі"
         },
         {
             "name": "schedulingCondition",
-            "caption": "Умова планування задачі"
+            "caption": "Умова планування"
         },
         {
             "name": "cron",
@@ -36,15 +36,15 @@
         },
         {
             "name": "runAs",
-            "caption": "Запустити як"
+            "caption": "Запускати від імені"
         },
         {
             "name": "logSuccessful",
-            "caption": "Записувати успішне виконання"
+            "caption": "Логувати успішні виконання"
         },
         {
             "name": "overridden",
-            "caption": "Перезаписати"
+            "caption": "Перевизначено"
         },
         {
             "name": "originalModel",

@@ -1,4 +1,4 @@
-const {Worker, GC_KEYS} = require('@unitybase/base')
+const { Worker, GC_KEYS } = require('@unitybase/base')
 const UB = require('@unitybase/ub')
 const App = UB.App
 
@@ -86,6 +86,6 @@ function startSchedulers () {
   //    w.terminate();
   // });
 
-  w.postMessage({serverURL: App.serverURL, config: cfgForWorker})
+  w.postMessage({ serverURL: App.serverURL, config: cfgForWorker })
   console.debug('SCHEDULER: leave queueWorkerInitialization')
 }

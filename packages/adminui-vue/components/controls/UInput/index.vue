@@ -6,8 +6,7 @@
     :type="type"
     :step="step"
     v-bind="$attrs"
-    @input="onInput"
-    @change="onChange"
+    @change="rounding($event)"
   >
     <locale-button
       v-if="isMultiLang"
@@ -38,7 +37,10 @@ export default {
     /*
      * @model
      */
-    value: [String, Number],
+    value: {
+      type: [String, Number],
+      required: true
+    },
     /*
      * attribute name in entitySchema
      */
@@ -50,12 +52,29 @@ export default {
 
   data () {
     return {
-      numberTypes: ['Int', 'BigInt', 'Float', 'Currency', 'ID'],
-      model: ''
+      numberTypes: ['Int', 'BigInt', 'Float', 'Currency', 'ID']
     }
   },
 
   computed: {
+    model: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        if (value === '') {
+          this.$emit('input', null)
+          return
+        }
+
+        if (this.type === 'number') {
+          this.$emit('input', +value)
+        } else {
+          this.$emit('input', value)
+        }
+      }
+    },
+
     step () {
       if (this.dataType === 'Float') {
         return 1 / 10 ** (this.$UB.connection.domain.FLOATING_SCALE_PRECISION - 1)
@@ -90,37 +109,15 @@ export default {
     }
   },
 
-  watch: {
-    value: {
-      immediate: true,
-      handler  (value) {
-        this.model = value
-      }
-    }
-  },
-
   methods: {
-    onInput (value) {
-      if (this.type !== 'number') {
-        this.$emit('input', value)
-      }
-    },
-
-    onChange (event) {
-      if (this.type === 'number') {
-        const value = this.rounding(event)
-        this.model = value
-        this.$emit('input', value)
-      }
-    },
-
     rounding (value) {
       if (value === null || value === '') {
         return null
       }
       const digit = Number(value)
       const preciseness = 10 ** this.precision
-      return Math.round((digit * preciseness)) / preciseness
+      const rounded = Math.round((digit * preciseness)) / preciseness
+      this.$emit('input', rounded)
     }
   }
 }
