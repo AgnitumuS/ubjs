@@ -15,7 +15,7 @@ const dialogs = require('../components/dialog/UDialog')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
 const autoForm = require('../components/AutoForm.vue').default
 const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
-const mountHelpers = require('./formBoilerplate/mount')
+const { mountForm, activateIfMounted } = require('./formBoilerplate/mount')
 const { createInstanceModule } = require('./formBoilerplate/instance')
 const { processingModule } = require('./formBoilerplate/processing')
 const { validateEntitySchema } = require('./formBoilerplate/validation')
@@ -91,7 +91,7 @@ function replaceExtJSNavbar () {
 
 function replaceAutoForms () {
   const params = this
-  if (mountHelpers.activateIfMounted(params)) return
+  if (activateIfMounted(params)) return
 
   if (!params.title) {
     params.title = UB.connection.domain.get(params.entity).caption
@@ -116,7 +116,7 @@ function replaceAutoForms () {
     }
   })
 
-  mountHelpers.mount({
+  mountForm({
     FormComponent: autoForm,
     showFormParams: {
       ...params,
