@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `mount` module. Renamed `mount -> mountForm`
  - `formBoilerplate` exports `activateIfMounted` and `mountForm`, instead `mountHelpers`
+ - `UInput` - in case type===number will emit value in each input event instead of change
 
 ## [1.5.0]
 ### Fixed
