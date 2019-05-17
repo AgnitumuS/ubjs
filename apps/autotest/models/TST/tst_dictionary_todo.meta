@@ -1,6 +1,7 @@
 {
   "caption": "tst_dictionary_todo",
   "description": "ub test dictionary todo",
+  "sqlAlias": "tdict_td",
   "connectionName": "",
   "descriptionAttribute": "name",
   "attributes": [
