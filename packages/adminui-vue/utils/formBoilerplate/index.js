@@ -1,13 +1,13 @@
 const Vue = require('vue')
 const Vuex = require('vuex')
 const instance = require('./instance')
-const mountHelpers = require('./mount')
+const mount = require('./mount')
 const processing = require('./processing')
 const validation = require('./validation')
 
 module.exports = {
   ...instance,
-  mountHelpers,
+  ...mount,
   ...processing,
   ...validation,
   formBoilerplate
@@ -28,7 +28,7 @@ function formBoilerplate ({
   collectionRequests
 }) {
   // will activate tab if form already mounted
-  if (mountHelpers.activateIfMounted(params)) return
+  if (mount.activateIfMounted(params)) return
 
   const assignInstance = instance.createInstanceModule()
   const assignProcessing = processing.processingModule(assignInstance, masterRequest, collectionRequests)
@@ -41,7 +41,7 @@ function formBoilerplate ({
     ...component
   })
 
-  mountHelpers.mount({
+  mount.mountForm({
     FormComponent,
     showFormParams: params,
     store,

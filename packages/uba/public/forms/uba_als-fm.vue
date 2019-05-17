@@ -167,12 +167,12 @@ const actionComponent = require('../components/RoleActionsComponent.vue').defaul
 const AdminUiVue = require('@unitybase/adminui-vue')
 
 module.exports.mount = function (params) {
-  if (AdminUiVue.mountHelpers.activateIfMounted(params)) return
+  if (AdminUiVue.activateIfMounted(params)) return
   let mountParams = {
     FormComponent: AlsComponent,
     showFormParams: params
   }
-  AdminUiVue.mountHelpers.mount(mountParams)
+  AdminUiVue.mountForm(mountParams)
 }
 
 const AlsComponent = module.exports.default = {

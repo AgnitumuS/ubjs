@@ -6,11 +6,11 @@ const { dialog: $dialog } = require('../../components/dialog/UDialog')
 
 /**
  * Mount helpers for Vue components
- * @module mountHelpers
+ * @module mount
  */
 module.exports = {
   activateIfMounted,
-  mount
+  mountForm
 }
 
 /**
@@ -47,7 +47,7 @@ save -> promise
  *    - async method `save`  - called by tab/window to save form data
  * @param {Object} commandConfig.showFormParams ShowForm params
  */
-function mount (commandConfig) {
+function mountForm (commandConfig) {
   if (!commandConfig.FormComponent) throw new Error('FormComponent is required')
   if (!commandConfig.showFormParams) {
     commandConfig.showFormParams = {}
@@ -107,11 +107,11 @@ function mountModal (mountParams) {
           setTitle: this.setTitle,
           close: () => {
             beforeClose({
-              save: () => this.$store.dispatch('save', mountParams.validator),
+              validator: mountParams.validator,
               close: () => {
                 this.dialogVisible = false
               },
-              isDirty: this.$store.getters.isDirty
+              store: this.$store
             })
           },
           forceClose: () => {
@@ -132,9 +132,9 @@ function mountModal (mountParams) {
           closeOnClickModal: false,
           beforeClose: (done) => {
             beforeClose({
-              save: () => this.$store.dispatch('save', mountParams.validator),
+              validator: mountParams.validator,
               close: done,
-              isDirty: this.$store.getters.isDirty
+              store: this.$store
             })
           }
         },
@@ -204,12 +204,12 @@ function mountTab (mountParams) {
     if (currentTab.forceClose) return true
 
     beforeClose({
-      save: () => store.dispatch('save', mountParams.validator),
+      validator: mountParams.validator,
+      store,
       close: () => {
         tab.forceClose = true
         tab.close()
-      },
-      isDirty: store.getters.isDirty
+      }
     })
     return false
   })
@@ -234,23 +234,31 @@ function showFormParamsToComponentProps (showFormParams) {
  * @param  {Function} param.close
  * @param  {Boolean}  param.isDirty
  */
-async function beforeClose ({ save, close, isDirty }) {
-  if (isDirty) {
-    const answer = await $dialog({
-      title: UB.i18n('unsavedData'),
-      msg: UB.i18n('confirmSave'),
-      type: 'warning',
-      buttons: {
-        yes: UB.i18n('save'),
-        no: UB.i18n('doNotSave'),
-        cancel: UB.i18n('cancel')
-      }
-    })
+async function beforeClose ({ store, close, validator }) {
+  if (store) {
+    if (store.getters.isDirty) {
+      const answer = await $dialog({
+        title: UB.i18n('unsavedData'),
+        msg: UB.i18n('confirmSave'),
+        type: 'warning',
+        buttons: {
+          yes: UB.i18n('save'),
+          no: UB.i18n('doNotSave'),
+          cancel: UB.i18n('cancel')
+        }
+      })
 
-    if (answer === 'yes') {
-      save().then(close)
-    }
-    if (answer === 'no') {
+      if (answer === 'yes') {
+        if ('save' in store._actions) {
+          store.dispatch('save', validator).then(close)
+        } else {
+          close()
+        }
+      }
+      if (answer === 'no') {
+        close()
+      }
+    } else {
       close()
     }
   } else {
