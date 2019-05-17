@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.1]
 ### Changed
- - `UInput` - type number emit value by input event instead change
+ - `UInput` - in case type===number will emit value in each input event instead of change
 
 ## [1.5.0]
 ### Fixed
