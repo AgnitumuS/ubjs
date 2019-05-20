@@ -47,15 +47,15 @@
         code="caption"
       />
 
-      <u-auto-field
-        v-model="desktopID"
-        code="desktopID"
-      />
+      <!--<u-auto-field-->
+        <!--v-model="desktopID"-->
+        <!--code="desktopID"-->
+      <!--/>-->
 
-      <u-auto-field
-        v-model="parentID"
-        code="parentID"
-      />
+      <!--<u-auto-field-->
+        <!--v-model="parentID"-->
+        <!--code="parentID"-->
+      <!--/>-->
 
       <u-auto-field
         v-model="iconCls"
