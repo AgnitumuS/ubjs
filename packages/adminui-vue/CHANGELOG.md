@@ -7,12 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.5.1]
 ### Fixed
  - changed before close function in mount module, can except empty store or store without save action
+ - `UInput` - fixed bug when user open popup then will send empty locale after form saved 
 
 ### Changed
  - `mount` module. Renamed `mount -> mountForm`
  - `formBoilerplate` exports `activateIfMounted` and `mountForm`, instead `mountHelpers`
  - `UInput` - in case type===number will emit value in each input event instead of change
+ - `Uinput` - added validation to locale fields if master field is required and form not new
  
+### Added
+ - `UAutoField` - component renders form field according to the attribute type
+
 ## [1.5.0]
 ### Fixed
  - `UDialog` fixed autofocus on accept button

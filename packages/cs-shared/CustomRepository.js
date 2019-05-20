@@ -179,7 +179,7 @@ class CustomRepository {
    *        .where('dateValue', '=', '#maxdate')
    *        .where('dateTimeValue', '<', '#currentdate')
    *
-   *  - `in` and 'notIn` conditions can take a sub-repository as a values parameter value.
+   *  - `in` and 'notIn` conditions can take a sub-repository as a value parameter value.
    *  See {@link class:CustomRepository#exists CustomRepository.exists} for sample
    *
    * @example
@@ -201,15 +201,15 @@ UB.Repository('my_entity').attrs('id')
 
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
    * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
-   * @param {*} [values] Condition value. If `undefined` values not passed to ubql
+   * @param {*} [value] Condition value. If `undefined` value not passed to ubql
    * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
    *   If not passed unique clause name will be generated ('_1', '_2', ..).
    *   In case a condition with the same name exists, it will be overwritten.
    *
    * @return {CustomRepository}
    */
-  where (expression, condition, values, clauseName) {
-    let subQueryType
+  where (expression, condition, value, clauseName) {
+    const UBQL2 = this.UBQLv2
     if (!clauseName) { // generate unique clause name
       clauseName = cNames[++this._whereLength]
       while (this.whereList[clauseName]) {
@@ -225,37 +225,38 @@ UB.Repository('my_entity').attrs('id')
     if (!condition) {
       throw new Error('Unknown conditions')
     }
-    if (((condition === 'in') || (condition === 'notIn')) && (values instanceof CustomRepository)) { // subquery
+    let subQueryType
+    if (((condition === 'in') || (condition === 'notIn')) && (value instanceof CustomRepository)) { // subquery
       subQueryType = condition // remember sub-query type
       condition = 'subquery'
-      values = values.ubql() // get a subquery definition from a sub-repository
+      value = value.ubql() // get a subquery definition from a sub-repository
     } else if (condition === 'subquery') {
       subQueryType = originalCondition
-      if (values instanceof CustomRepository) {
-        values = values.ubql() // get a subquery definition from a sub-repository
+      if (value instanceof CustomRepository) {
+        value = value.ubql() // get a subquery definition from a sub-repository
       }
-    } else if ((condition === 'in' || condition === 'notIn') && (values === null || values === undefined)) {
+    } else if ((condition === 'in' || condition === 'notIn') && (value === null || value === undefined)) {
       // prevent ORA-00932 error - in case value is undefined instead of array
-      console.warn('Condition "in" is passed to CustomRepository.where but values is null or undefined -> condition transformed to (0=1). Check your logic')
+      console.warn('Condition "in" is passed to CustomRepository.where but value is null or undefined -> condition transformed to (0=1). Check your logic')
       expression = '0'
       condition = WhereCondition.equal
-      values = { a: 1 }
-    } else if (condition === 'in' && (!Array.isArray(values))) {
-      console.debug('Condition "in" is passed to CustomRepository.where but values is not an array -> condition transformed to equal. Check your logic')
+      value = UBQL2 ? 1 : { a: 1 }
+    } else if (condition === 'in' && (!Array.isArray(value))) {
+      console.debug('Condition "in" is passed to CustomRepository.where but value is not an array -> condition transformed to equal. Check your logic')
       condition = WhereCondition.equal
-    } else if (condition === 'in' && (!values || !values.length)) {
+    } else if (condition === 'in' && (!value || !value.length)) {
       console.warn('Condition "in" is passed to CustomRepository.where but value is empty array -> condition transformed to "0=1". Check your logic')
       expression = '0'
       condition = WhereCondition.equal
-      values = { a: 1 }
-    } else if (condition === 'notIn' && (!values || !values.length)) {
+      value = UBQL2 ? 1 : { a: 1 }
+    } else if (condition === 'notIn' && (!value || !value.length)) {
       console.warn('Condition "notIn" is passed to CustomRepository.where but value is empty array -> condition transformed to "1=1". Check your logic')
       expression = '1'
       condition = WhereCondition.equal
-      values = { a: 1 }
-    } else if (values === null && (condition !== 'isNull' || condition !== 'notIsNull')) {
+      value = UBQL2 ? 1 : { a: 1 }
+    } else if (value === null && (condition !== 'isNull' || condition !== 'notIsNull')) {
       let wrongCondition = condition
-      values = undefined
+      value = undefined
       condition = conditionInCaseValueIsNull[wrongCondition]
       if (condition) {
         console.warn('Condition ' + wrongCondition + 'is passed to CustomRepository.where but value is null -> condition transformed to ' + condition + '. Check your logic')
@@ -263,15 +264,15 @@ UB.Repository('my_entity').attrs('id')
         throw new Error('Condition ' + wrongCondition + 'is passed to CustomRepository.where but value is null')
       }
     }
-    if (condition === 'in' && (values.length === 1)) {
+    if (condition === 'in' && (value.length === 1)) {
       // console.warn('Condition "in" is passed to CustomRepository.where but value is an array on ONE item -> condition transformed to "equal". Check your logic')
       condition = WhereCondition.equal
-      values = values[0]
+      value = value[0]
     }
-    if (values !== undefined && (typeof (values) !== 'object' || Array.isArray(values) || _.isDate(values))) {
+    if (!UBQL2 && (value !== undefined && (typeof (value) !== 'object' || Array.isArray(value) || _.isDate(value)))) {
       let obj = {}
-      obj[clauseName] = values
-      values = obj
+      obj[clauseName] = value
+      value = obj
     }
     let whereItem = {
       expression: expression,
@@ -280,8 +281,12 @@ UB.Repository('my_entity').attrs('id')
     if (condition === 'subquery') {
       whereItem.subQueryType = subQueryType
     }
-    if (values !== undefined) {
-      whereItem.values = values
+    if (value !== undefined) {
+      if (UBQL2) {
+        whereItem.value = value
+      } else {
+        whereItem.values = value
+      }
     }
     this.whereList[clauseName] = whereItem
     return this
@@ -945,6 +950,12 @@ CustomRepository.prototype.WhereCondition = {
   /** @description Custom condition. For Server-side call only. For this condition `expression` can be any SQL statement */
   'custom': 'custom'
 }
+
+/**
+ * Server side support UBQL v2 version (value in whereList)
+ * @type {boolean}
+ */
+CustomRepository.prototype.UBQLv2 = true
 
 /**
  * Abstract Custom repository (extended by serverRepository & ClientRepository)

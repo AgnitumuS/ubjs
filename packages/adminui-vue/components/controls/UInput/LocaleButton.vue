@@ -10,14 +10,20 @@
       :visible.sync="showModal"
       width="500px"
       append-to-body
+      :close-on-click-modal="false"
       @open="initLangs"
     >
       <u-form-row
-        v-for="item in langsData"
+        v-for="(item, index) in langsData"
         :key="item.lang"
         :label="item.lang"
+        :required="$v.langsData.$each[index].value.$params.hasOwnProperty('required')"
+        :error="$v.langsData.$each[index].value.$error"
       >
-        <el-input v-model="item.value" />
+        <el-input
+          v-model="item.value"
+          @keyup.native="$v.langsData.$each[index].value.$touch()"
+        />
       </u-form-row>
 
       <el-button
@@ -33,6 +39,7 @@
 
 <script>
 const { mapState, mapGetters } = require('vuex')
+const required = require('vuelidate/lib/validators/required').default
 
 export default {
   name: 'LocaleButton',
@@ -50,7 +57,7 @@ export default {
 
   computed: {
     ...mapState(['isNew']),
-    ...mapGetters(['entityName']),
+    ...mapGetters(['entityName', 'entitySchema']),
 
     supportedLanguages () {
       return this.$UB.connection.appConfig.supportedLanguages
@@ -85,31 +92,45 @@ export default {
 
     isLoaded () {
       return this.localeAttrs.every(item => item.attr in this.$store.state.data)
+    },
+
+    isMasterAttrRequired () {
+      return this.entitySchema.attributes[this.attributeName].allowNull === false
+    }
+  },
+
+  validations () {
+    const isRequired = !this.isNew && this.isMasterAttrRequired
+    const value = isRequired ? { required } : {}
+
+    return {
+      langsData: {
+        $each: { value }
+      }
     }
   },
 
   methods: {
     save () {
-      this.showModal = false
-      for (const { attr, value } of this.langsData) {
-        this.$store.commit('SET_DATA', {
-          key: attr,
-          value
-        })
+      this.$v.$touch()
+      if (!this.$v.$error) {
+        this.$v.$reset()
+        this.showModal = false
+        for (const { attr, value } of this.langsData) {
+          if (value !== null && value !== '') {
+            this.$store.commit('SET_DATA', {
+              key: attr,
+              value
+            })
+          }
+        }
       }
     },
 
     async initLangs () {
       // fetch data if not loaded
       if (!this.isLoaded) {
-        if (this.isNew) {
-          // if new fill create empty fields in instance module
-          const initialData = this.localeAttrs.reduce((obj, item) => {
-            obj[item.attr] = ''
-            return obj
-          }, {})
-          this.$store.commit('LOAD_DATA_PARTIAL', initialData)
-        } else {
+        if (!this.isNew) {
           // fetch localized fields
           const fieldList = ['ID']
           fieldList.push(
