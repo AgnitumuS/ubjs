@@ -132,3 +132,28 @@ export default {
   }
 }
 </script>
+
+<docs>
+  Automaticly create field from entity schema and validate it
+
+  ### Basic usage:
+
+  ```vue
+  <template>
+    <u-auto-field
+      v-model="code"
+      code="code"
+    />
+  </template>
+
+  <script>
+    export default {
+      data () {
+        return {
+          code: ''
+        }
+      }
+    }
+  </script>
+  ```
+</docs>
