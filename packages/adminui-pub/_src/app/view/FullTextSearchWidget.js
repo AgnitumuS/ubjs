@@ -186,7 +186,6 @@ Ext.define('UB.view.FullTextSearchWidget', {
       me = this,
       text = me.textBox.getValue(),
       tab,
-      request,
       fieldList
 
     if (!text) {
@@ -209,28 +208,14 @@ Ext.define('UB.view.FullTextSearchWidget', {
       }
     ]
 
-    request = {
-      entity: 'fts_' + me.ftsConnection,
-      method: 'fts',
-      fieldList: UB.core.UBUtil.convertFieldListToNameList(fieldList),
-      whereList: {
-        match: {
-          condition: 'match',
-          values: {any: text}
-        }
-      }
-    }
-
+    let repo = this.$UB.Repository('fts_' + me.ftsConnection)
+      .using('fts')
+      .where('', 'match', text)
     if (me.periodContext && me.periodContext.dateFrom && me.periodContext.dateTo) {
-      request.whereList.between = {
-        condition: 'between',
-        values: {
-          v1: me.periodContext.dateFrom,
-          v2: me.periodContext.dateTo
-        }
-      }
+      repo = repo.where('ftsDate', '>=', me.periodContext.dateFrom)
+        .where('ftsDate', '<=', me.periodContext.dateTo)
     }
-
+    let request = repo.ubql()
     request.fieldList = fieldList
 
     tab = Ext.getCmp('FullTextSearchWidgetResult')

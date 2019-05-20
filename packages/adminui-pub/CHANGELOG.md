@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.9]
+### Added
+ - support for UBQL v2 (value instead of values in whereList)
+
 ## [5.8.8]
 ### Fixed
  - potential error inside BasePanel.getFieldList for custom forms

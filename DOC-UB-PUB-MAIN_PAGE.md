@@ -85,7 +85,7 @@ conn.Repository('my_entity').attrs(['ID', 'code'])
  //(birthday >= '2012-01-01') AND (birthday <= '2012-01-02')
  .where('birthday', 'geq', new Date()).where('birthday', 'leq', new Date() + 10)
  .where('[age] -10', '>=', {age: 15}, 'byAge') // (age + 10 >= 15)
- .where('', 'match', 'myvalue'). // FTS query
+ .where('', 'match', 'myvalue') // FTS query
  .selectAsObject().then(function(response){
     // here response is in [{ID: 10, code: 'value1'}, .... {}] format
  })

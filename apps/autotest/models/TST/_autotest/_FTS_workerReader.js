@@ -26,14 +26,14 @@ function onProcessReaderWorker (message) {
   const serverURL = message['serverURL']
   let _conn = new SyncConnection(serverURL)
   _conn.onRequestAuthParams = function () {
-    return {authSchema: 'UB', login: 'admin', password: 'admin'}
+    return { authSchema: 'UB', login: 'admin', password: 'admin' }
   }
 
   let startTime = Date.now()
   console.debug('\tFTS read test')
   let res = testReadFTS(_conn)
 
-  postMessage({signal: res, thread: command.thread, timeSpend: Date.now() - startTime})
+  postMessage({ signal: res, thread: command.thread, timeSpend: Date.now() - startTime })
   terminate()
 
   function testReadFTS (connection) {
@@ -42,8 +42,8 @@ function onProcessReaderWorker (message) {
         entity: 'fts_ftsDefault',
         method: 'fts',
         fieldList: ['ID', 'entity', 'entitydescr', 'snippet'],
-        whereList: {match: {condition: 'match', values: {'any': 'Україна'}}},
-        options: {limit: 100, start: 0}
+        whereList: { match: { condition: 'match', value: 'Україна' } },
+        options: { limit: 100, start: 0 }
       })
       if (!res.resultData || !res.resultData.data || !res.resultData.data.length) {
         throw new Error('invalidReadSearch')

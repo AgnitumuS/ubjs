@@ -908,6 +908,8 @@ UBConnection.prototype.getAppInfo = function () {
        */
       Object.defineProperty(me, 'serverVersion', { enumerable: true, writable: false, value: appInfo.serverVersion || '' })
       ubUtils.apply(me.appConfig, appInfo.uiSettings.adminUI)
+      let v = appInfo.serverVersion.split('.')
+      ClientRepository.prototype.UBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
       return appInfo
     })
 }

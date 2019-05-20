@@ -4,7 +4,7 @@ const csShared = require('@unitybase/cs-shared')
 const UBSession = csShared.UBSession
 const UBDomain = csShared.UBDomain
 const CryptoJS = require('@unitybase/cryptojs/core')
-const {ServerRepository} = require('./ServerRepository')
+const { ServerRepository } = require('./ServerRepository')
 
 CryptoJS.MD5 = require('@unitybase/cryptojs/md5')
 // regular expression for URLs server not require authorization.
@@ -81,10 +81,13 @@ function SyncConnection (options) {
   this.onRequestAuthParams = null
 
   /**
-   * @deprecated Do not use this property doe to memory overuse - see http://forum.ub.softline.kiev.ua/viewtopic.php?f=12&t=85
+   * @deprecated Do not use this property due to memory overuse - see http://forum.ub.softline.kiev.ua/viewtopic.php?f=12&t=85
    * @private
    */
   appInfo = this.get('getAppInfo') // non-auth request
+
+  let v = appInfo.serverVersion.split('.')
+  ServerRepository.prototype.UBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
 
   /**
    * Return information about how application is configured as returned by `getAppInfo` endpoint
@@ -176,13 +179,13 @@ function SyncConnection (options) {
         if (isRepeat) {
           throw new Error('UBIP authentication must not return false on the prev.step')
         }
-        resp = this.xhr({endpoint: 'auth', headers: {'Authorization': authParams.authSchema + ' ' + authParams.login}})
+        resp = this.xhr({ endpoint: 'auth', headers: { 'Authorization': authParams.authSchema + ' ' + authParams.login } })
         ubSession = new UBSession(resp, '', authParams.authSchema)
       } if (authParams.authSchema === 'ROOT') {
         if (isRepeat) {
           throw new Error('ROOT authentication must not return false on the prev.step')
         }
-        resp = this.xhr({endpoint: 'auth?AUTHTYPE=ROOT', headers: {'Authorization': authParams.authSchema + ' ' + process.rootOTP()}})
+        resp = this.xhr({ endpoint: 'auth?AUTHTYPE=ROOT', headers: { 'Authorization': authParams.authSchema + ' ' + process.rootOTP() } })
         ubSession = new UBSession(resp, '', authParams.authSchema)
       } else {
         resp = this.get('auth', {
@@ -305,9 +308,9 @@ function SyncConnection (options) {
       request = this.Repository(aEntity).attrs(lookupAttribute).limit(1).ubql()
 
       if (typeof aCondition === 'string') {
-        request.whereList = {lookup: {expression: aCondition, condition: 'custom'}}
+        request.whereList = { lookup: { expression: aCondition, condition: 'custom' } }
       } else if (aCondition.expression && (typeof aCondition.expression === 'string')) {
-        request.whereList = {lookup: aCondition}
+        request.whereList = { lookup: aCondition }
       } else {
         request.whereList = aCondition
       }
@@ -333,9 +336,9 @@ function SyncConnection (options) {
  */
 SyncConnection.prototype.query = function (ubq) {
   if (Array.isArray(ubq)) {
-    return this.xhr({endpoint: this.queryMethod, data: ubq})
+    return this.xhr({ endpoint: this.queryMethod, data: ubq })
   } else {
-    return this.xhr({endpoint: this.queryMethod, data: [ubq]})[0]
+    return this.xhr({ endpoint: this.queryMethod, data: [ubq] })[0]
   }
 }
 
@@ -453,7 +456,7 @@ SyncConnection.prototype.get = function (endpoint, URLParams) {
  * @returns {ArrayBuffer|Object|String|Array<object>}
  */
 SyncConnection.prototype.post = function (endpoint, data) {
-  return this.xhr({endpoint: endpoint, data: data})
+  return this.xhr({ endpoint: endpoint, data: data })
 }
 
 /**
@@ -464,7 +467,7 @@ SyncConnection.prototype.post = function (endpoint, data) {
  * @returns {Object}
  */
 SyncConnection.prototype.runList = function (runListData) {
-  return this.xhr({endpoint: this.queryMethod, data: runListData})
+  return this.xhr({ endpoint: this.queryMethod, data: runListData })
 }
 
 /**
@@ -472,7 +475,7 @@ SyncConnection.prototype.runList = function (runListData) {
  * @returns {*} body of HTTP request result. If !simpleTextResult and response type is json - then parsed to object
  */
 SyncConnection.prototype.runCustom = function (endpoint, aBody, aURLParams, simpleTextResult, aHTTPMethod) {
-  return this.xhr({HTTPMethod: aHTTPMethod || 'POST', endpoint: endpoint, URLParams: aURLParams, data: aBody, simpleTextResult: simpleTextResult})
+  return this.xhr({ HTTPMethod: aHTTPMethod || 'POST', endpoint: endpoint, URLParams: aURLParams, data: aBody, simpleTextResult: simpleTextResult })
   // throw new Error ('Use one of runList/run/post/xhr SyncConnection methods');
 }
 
@@ -484,7 +487,7 @@ SyncConnection.prototype.runCustom = function (endpoint, aBody, aURLParams, simp
  * @returns {Object}
  */
 SyncConnection.prototype.run = function (request) {
-  return this.xhr({endpoint: this.queryMethod, data: [request]})[0]
+  return this.xhr({ endpoint: this.queryMethod, data: [request] })[0]
 }
 
 /**

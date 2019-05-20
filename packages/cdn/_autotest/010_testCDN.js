@@ -36,7 +36,7 @@ function testCDN(){
         }
     });
     ok(simpsonID, 'can`t insert person Simpson');
-    var phoneTypeID = conn.lookup('cdn_contacttype', 'ID', {expression: 'code', condition: 'equal', values: {code: 'phone'}});
+    var phoneTypeID = conn.lookup('cdn_contacttype', 'ID', {expression: 'code', condition: 'equal', value: 'phone'});
     ok(phoneTypeID, 'cdn_contacttype with code `phone` must exists');
     var num = '555-3223';
     var simpsonPhoneID = conn.insert({
