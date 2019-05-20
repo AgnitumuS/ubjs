@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - changed before close function in mount module, can except empty store or store without save action
 
 ### Added
- - `UAutoField` - component renders form field according to the type of this field in the entity scheme
+ - `UAutoField` - component renders form field according to the attribute type
 
 ### Changed
  - `mount` module. Renamed `mount -> mountForm`
