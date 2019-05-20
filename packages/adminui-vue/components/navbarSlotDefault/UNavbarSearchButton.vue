@@ -172,27 +172,15 @@ export default {
         }
       }]
 
-      const request = {
-        entity: 'fts_' + this.currentMode,
-        method: 'fts',
-        fieldList,
-        whereList: {
-          match: {
-            condition: 'match',
-            values: { any: this.query }
-          }
-        }
-      }
-
+      let repo = this.$UB.Repository('fts_' + this.currentMode)
+        .using('fts')
+        .where('', 'match', this.query)
       if (this.isPeriod && this.period) {
-        request.whereList.between = {
-          condition: 'between',
-          values: {
-            v1: this.period[0],
-            v2: this.period[1]
-          }
-        }
+        repo = repo.where('ftsDate', '>=', this.period[0])
+          .where('ftsDate', '<=', this.period[1])
       }
+      let ubql = repo.ubql()
+      ubql.fieldList = fieldList
 
       const tab = Ext.getCmp('FullTextSearchWidgetResult')
       if (tab) {
@@ -226,7 +214,7 @@ export default {
           }
         },
         cmdData: {
-          params: [request]
+          params: [ubql]
         }
       })
       this.doClose()

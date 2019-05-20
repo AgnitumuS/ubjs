@@ -79,5 +79,23 @@ module.exports = function runTest (options) {
     assert.throws(() => {
       conn.Repository('uba_user').attrs('ID').where('ID', '=', undefined).select()
     }, /Where item with condition "equal" must contains "values" part/, 'throws a string instead of error dont raise AV')
+
+    conn.Repository('uba_user').attrs(['ID', 'name']) // select users
+    // who are not disabled
+      .where('disabled', '=', 0)
+      // who do not login during this year
+      .notExists(
+        conn.Repository('uba_audit')
+          .correlation('actionUser', 'name') // here we link to uba_user.name
+          .where('actionTime', '>', new Date(2016, 1, 1))
+          .where('actionType', '=', 'LOGIN')
+      )
+      // but modify some data
+      .exists(
+        conn.Repository('uba_auditTrail')
+          .correlation('actionUser', 'ID') // here we link to uba_user.ID
+          .where('actionTime', '>', new Date(2016, 1, 1))
+      )
+      .select()
   }
 }

@@ -24,7 +24,7 @@ module.exports = function (session) {
   csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_country.csv', 'cdn_country', 'code;name;fullName;intCode;symbol2;symbol3'.split(';'), [4, 0, 1, 2, 3, 4], 1)
 
   console.info('\t\tRegions of Ukraine (cdn_region)')
-  var ukraineID = conn.lookup('cdn_country', 'ID', {expression: 'code', condition: 'equal', values: {code: 'UKR'}})
+  var ukraineID = conn.lookup('cdn_country', 'ID', {expression: 'code', condition: 'equal', value: 'UKR'})
   if (!ukraineID) {
     throw new Error('Country with code UKR not found')
   }
