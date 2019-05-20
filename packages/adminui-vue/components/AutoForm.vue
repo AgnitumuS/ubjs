@@ -5,7 +5,7 @@
       <u-form-row
         v-for="key in fields"
         :key="key"
-        :label="key"
+        :label="entitySchema.name + '.' + key"
         :required="$v[key].$params.hasOwnProperty('required')"
         :error="$v[key].$error"
       >
