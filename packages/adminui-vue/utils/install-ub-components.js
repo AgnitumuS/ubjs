@@ -9,7 +9,8 @@ module.exports = {
       require('../components/controls/UForm/index.js'),
       require('../components/controls/USelectEnum.vue').default,
       require('../components/controls/UInput/index.vue').default,
-      require('../components/UToolbar/index.vue').default
+      require('../components/UToolbar/index.vue').default,
+      require('../components/UAutoField.vue').default
     ]
     for (const component of components) {
       Vue.component(component.name, component)

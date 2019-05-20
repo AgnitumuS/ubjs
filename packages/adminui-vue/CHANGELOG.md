@@ -8,11 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - changed before close function in mount module, can except empty store or store without save action
 
+### Added
+ - `UAutoField` - component renders form field according to the type of this field in the entity scheme
+
 ### Changed
  - `mount` module. Renamed `mount -> mountForm`
  - `formBoilerplate` exports `activateIfMounted` and `mountForm`, instead `mountHelpers`
  - `UInput` - in case type===number will emit value in each input event instead of change
-
+ 
 ## [1.5.0]
 ### Fixed
  - `UDialog` fixed autofocus on accept button
