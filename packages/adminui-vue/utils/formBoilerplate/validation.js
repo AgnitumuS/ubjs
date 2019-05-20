@@ -6,12 +6,11 @@ const required = require('vuelidate/lib/validators/required').default
  * Track Instance module data and validate it
  * Check entity schema attributes and set required to
  * props which have !allowNull param and defaultView is true
- * @param  {VuexStore} store
+ * @param  {VuexStore} store vuex store
  * @return {VueInstance} Instance which contains $v, validation object
  */
 function validateEntitySchema (store) {
   const entitySchema = store.getters.entitySchema
-  const attrs = entitySchema.getAttributeNames()
   const requiredFields = entitySchema
     .filterAttribute(attr => attr.defaultView && !attr.allowNull)
     .map(a => a.name)
@@ -25,12 +24,16 @@ function validateEntitySchema (store) {
     computed: {
       values () {
         return this.$store.state.data
+      },
+
+      fieldList () {
+        return this.$store.getters.fieldList
       }
     },
 
     validations () {
       return {
-        values: attrs.reduce((obj, field) => {
+        values: this.fieldList.reduce((obj, field) => {
           const isRequired = requiredFields.includes(field)
           obj[field] = isRequired ? { required } : {}
 

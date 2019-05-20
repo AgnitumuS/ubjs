@@ -6,7 +6,7 @@
     :type="type"
     :step="step"
     v-bind="$attrs"
-    @change="rounding($event)"
+    v-on="listeners"
   >
     <locale-button
       v-if="isMultiLang"
@@ -38,7 +38,6 @@ export default {
      * @model
      */
     value: {
-      type: [String, Number],
       required: true
     },
     /*
@@ -106,6 +105,17 @@ export default {
     type () {
       const isNumber = this.numberTypes.includes(this.dataType)
       return isNumber ? 'number' : 'text'
+    },
+
+    listeners () {
+      if (this.type === 'number') {
+        return {
+          ...this.$listeners,
+          change: this.rounding
+        }
+      } else {
+        return this.$listeners
+      }
     }
   },
 
@@ -113,6 +123,9 @@ export default {
     rounding (value) {
       if (value === null || value === '') {
         return null
+      }
+      if (this.type !== 'number'){
+        return value
       }
       const digit = Number(value)
       const preciseness = 10 ** this.precision

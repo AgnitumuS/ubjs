@@ -76,7 +76,7 @@ function mountModal (mountParams) {
   modalClass += ' ub-dialog__min-width'
 
   if (!modalWidth) {
-    modalClass = ' ub-dialog__max-width'
+    modalClass += ' ub-dialog__max-width'
   }
   const instance = new Vue({
     store: mountParams.store,
