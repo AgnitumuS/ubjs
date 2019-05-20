@@ -38,7 +38,6 @@ export default {
      * @model
      */
     value: {
-      type: [String, Number],
       required: true
     },
     /*
