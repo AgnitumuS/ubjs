@@ -19,7 +19,7 @@
     "jshint": "^2.10.2",
     "lodash": "^4"
   },
-  "optionalDependencies": {
+  "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "babel-loader": "^8.0.5",

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.3]
+### Changed
+ - `optionalDependencies` are moved to `devDependencies` to prevent install it even when `NODE_ENV=production`
+ 
 ## [1.3.1]
 ### Changed
  - code simplified - all unsupported and unused features are removed from code

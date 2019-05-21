@@ -37,7 +37,7 @@
     "when": "1.8.1",
     "xmldom": "^0.1.27"
   },
-  "optionalDependencies": {
+  "devDependencies": {
     "@unitybase/stubs": "^5.0.18",
     "cross-env": "^5",
     "exports-loader": "^0.7.0"

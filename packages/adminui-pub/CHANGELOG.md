@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.10]
+### Changed
+ - `optionalDependencies` are moved to `devDependencies` to prevent install it even when `NODE_ENV=production`    
+
 ## [5.8.9]
 ### Fixed
  - fixed z index manager on click dropdown or datepicker in UB dialogs

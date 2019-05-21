@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.2]
+### Changed
+ - `optionalDependencies` are moved to `devDependencies` to prevent install it even when `NODE_ENV=production`
+ 
 ## [1.5.1]
 ### Fixed
  - changed before close function in mount module, can except empty store or store without save action

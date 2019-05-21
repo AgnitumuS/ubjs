@@ -70,9 +70,7 @@
     "element-theme-chalk": "^2.8.2",
     "shx": "^0.3.2",
     "vue-loader": "^15.7.0",
-    "vue-styleguidist": "^3.10.2"
-  },
-  "optionalDependencies": {
+    "vue-styleguidist": "^3.10.2",
     "clean-css-cli": "^4.2.1",
     "cross-env": "^5",
     "css-loader": "^2.1.0",

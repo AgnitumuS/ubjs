@@ -32,8 +32,5 @@
   "homepage": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/systemjs-plugin-vue-ub#readme",
   "dependencies": {
     "vue-template-compiler": "^2.6.8"
-  },
-  "optionalDependencies": {
-    "webpack-bundle-analyzer": "^3"
   }
 }
