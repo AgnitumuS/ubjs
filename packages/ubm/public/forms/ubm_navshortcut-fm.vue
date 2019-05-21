@@ -52,36 +52,21 @@
 
       <shortcut-tree />
 
-      <u-form-row
-        :label="entitySchema.attributes.iconCls.caption"
-      >
-        <el-row
-          :gutter="10"
-          type="flex"
-          align="middle"
-        >
-          <el-col :span="12">
-            <el-input v-model="iconCls" />
-          </el-col>
-          <el-col :span="12">
-            <i
-              :class="iconCls"
-              style="font-size: 32px;"
-            />
-          </el-col>
-        </el-row>
-      </u-form-row>
+      <shortcut-icon-select />
 
       <u-auto-field
         v-model="displayOrder"
         code="displayOrder"
       />
 
+      <select-rights />
+
       <el-row>
         <el-col :span="4">
           three
         </el-col>
         <el-col :span="20">
+          <!--          <pre>{{ cmdCode }}</pre>-->
           <u-code-mirror v-model="cmdCode" />
         </el-col>
       </el-row>
@@ -91,6 +76,9 @@
 
 <script>
 const ShortcutTree = require('./components/ShortcutTree.vue').default
+const SelectRights = require('./components/SelectRights.vue').default
+const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
+
 const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
@@ -113,6 +101,13 @@ module.exports.mount = function (params) {
     .Repository(params.entity)
     .attrs(fieldList)
 
+  const collectionRequests = {
+    rightsSubjects: UB.connection
+      .Repository('ubm_navshortcut_adm')
+      .attrs('ID', 'instanceID', 'admSubjID')
+      .where('instanceID', '=', params.instanceID)
+  }
+
   params.title = 'Shortcut edit' // temp
   params.isModal = true
   params.modalClass = 'ub-dialog__reset-padding'
@@ -120,14 +115,18 @@ module.exports.mount = function (params) {
   formBoilerplate({
     params,
     FormComponent: UbmNavshortcut,
-    masterRequest
+    masterRequest,
+    collectionRequests
   })
 }
 
 const UbmNavshortcut = module.exports.default = {
   name: 'UbmNavshortcut',
-
-  components: { ShortcutTree },
+  components: {
+    ShortcutTree,
+    SelectRights,
+    ShortcutIconSelect
+  },
 
   computed: {
     ...mapInstanceFields(fieldList),
@@ -142,6 +141,3 @@ const UbmNavshortcut = module.exports.default = {
   }
 }
 </script>
-
-<style>
-</style>
