@@ -22,7 +22,10 @@
             />
           </el-col>
 
-          <el-col :span="6" :offset="2">
+          <el-col
+            :span="6"
+            :offset="2"
+          >
             <el-switch
               v-model="isFolder"
               :active-text="getLabel('isFolder')"
@@ -47,20 +50,27 @@
         code="caption"
       />
 
-      <!--<u-auto-field-->
-        <!--v-model="desktopID"-->
-        <!--code="desktopID"-->
-      <!--/>-->
+      <shortcut-tree />
 
-      <!--<u-auto-field-->
-        <!--v-model="parentID"-->
-        <!--code="parentID"-->
-      <!--/>-->
-
-      <u-auto-field
-        v-model="iconCls"
-        code="iconCls"
-      />
+      <u-form-row
+        :label="entitySchema.attributes.iconCls.caption"
+      >
+        <el-row
+          :gutter="10"
+          type="flex"
+          align="middle"
+        >
+          <el-col :span="12">
+            <el-input v-model="iconCls" />
+          </el-col>
+          <el-col :span="12">
+            <i
+              :class="iconCls"
+              style="font-size: 32px;"
+            />
+          </el-col>
+        </el-row>
+      </u-form-row>
 
       <u-auto-field
         v-model="displayOrder"
@@ -80,9 +90,11 @@
 </template>
 
 <script>
+const ShortcutTree = require('./components/ShortcutTree.vue').default
 const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
+
 const fieldList = [
   'ID',
   'desktopID',
@@ -114,6 +126,8 @@ module.exports.mount = function (params) {
 
 const UbmNavshortcut = module.exports.default = {
   name: 'UbmNavshortcut',
+
+  components: { ShortcutTree },
 
   computed: {
     ...mapInstanceFields(fieldList),
