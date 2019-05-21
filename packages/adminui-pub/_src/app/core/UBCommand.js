@@ -825,9 +825,14 @@ Ext.define('UB.core.UBCommand', {
       result.window.show()
     }
     if ($App.connection.domain.models['adminui-vue'] && window.Vue !== undefined && me.commandConfig.isModal) {
+      // get zIndex from Element ui z index manager
       const zIndex = window.Vue.prototype.$zIndex()
-      Ext.WindowManager.setBase(zIndex)
+      // replace base Ext zIndex
+      result.window.addListener('statesave', () => {
+        result.setZIndex(zIndex)
+      })
     }
+
     Ext.callback(me.callback, me.scope || me, [result])
   },
 

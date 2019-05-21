@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.8.9]
+### Fixed
+ - fixed z index manager on click dropdown or datepicker in UB dialogs
+ 
 ### Added
  - support for UBQL v2 (value instead of values in whereList)
 
