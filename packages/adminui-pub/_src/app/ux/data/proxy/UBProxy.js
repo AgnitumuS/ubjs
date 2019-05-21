@@ -73,9 +73,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
     ubFiltersItemToUBWhereListItem: function (fItem, dataType) {
       var
         conditions = UB.core.UBCommand.condition,
-        ubWLItem = {
-          values: {}
-        }
+        ubWLItem = {}
 
       ubWLItem.expression = '[' + fItem.property + ']'
       if (dataType === UBDomain.ubDataTypes.String) {
@@ -115,21 +113,25 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
         ubWLItem.condition = fItem.condition
       }
       ubWLItem.condition = ubWLItem.condition || conditions.sqlecEqual
-      ubWLItem.values[fItem.property] = fItem.value
-      // for special filter type. (for example fts)
-      switch (fItem.condition) {
-        case 'match':
-          ubWLItem = {
-            condition: 'match',
-            values: {'any': fItem.value}
-          }
-          break
-        case 'between':
-          ubWLItem = {
-            condition: 'between',
-            values: {'v1': fItem.valueFrom, 'v2': fItem.valueTo}
-          }
-          break
+      if (UB.connection.UBQLv2) {
+        ubWLItem.value = fItem.value
+      } else {
+        ubWLItem.values[fItem.property] = fItem.value
+        // for special filter type. (for example fts)
+        switch (fItem.condition) {
+          case 'match':
+            ubWLItem = {
+              condition: 'match',
+              values: { 'any': fItem.value }
+            }
+            break
+          case 'between':
+            ubWLItem = {
+              condition: 'between',
+              values: { 'v1': fItem.valueFrom, 'v2': fItem.valueTo }
+            }
+            break
+        }
       }
       return ubWLItem
     }
@@ -141,10 +143,10 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
    * @param {Ext.data.Operation} operation
    */
   onException: function (proxy, response, operation) {
-    throw new Error({errMsg: operation.getError()})
+    throw new Error({ errMsg: operation.getError() })
   },
 
-/**
+  /**
  * Take Ext.data.Operation and perform actual request using UnityBase cache rules.
  * For cached entities - do all filtration on client, for non-cached - on server
  * @override
@@ -207,7 +209,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
       }
     }
     UB.connection.select(serverRequest).then(function (response) {
-      resultSet = me.getReader().read({data: response.resultData.data})
+      resultSet = me.getReader().read({ data: response.resultData.data })
       if (fnFilters.length > 0) {
         me.applyFilterFn(resultSet, fnFilters)
       }

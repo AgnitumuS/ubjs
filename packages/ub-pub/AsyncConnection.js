@@ -909,7 +909,12 @@ UBConnection.prototype.getAppInfo = function () {
       Object.defineProperty(me, 'serverVersion', { enumerable: true, writable: false, value: appInfo.serverVersion || '' })
       ubUtils.apply(me.appConfig, appInfo.uiSettings.adminUI)
       let v = appInfo.serverVersion.split('.')
-      ClientRepository.prototype.UBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
+      let isUBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
+      /** UBQL v2 (value instead of values)
+       * @property {Boolean} UBQLv2
+       * @readonly */
+      Object.defineProperty(me, 'UBQLv2', { enumerable: true, writable: false, value: isUBQLv2 })
+      ClientRepository.prototype.UBQLv2 = isUBQLv2
       return appInfo
     })
 }

@@ -199,10 +199,14 @@ Ext.define('UB.core.UBCommand', {
           }
           let item = result['__MD' + i] = {
             expression: detailField,
-            condition: 'equal',
-            values: {}
+            condition: 'equal'
           }
-          item.values[detailFields[i]] = record ? record.get(masterFields[i]) : 0
+          let masterID = record ? record.get(masterFields[i]) : 0
+          if (UB.connection.UBQLv2) {
+            item.value = masterID
+          } else {
+            item.values[detailFields[i]] = masterID
+          }
         }
       }
       return result
