@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/adminui-pub",
-  "version": "5.8.10",
+  "version": "5.8.11",
   "description": "UnityBase admin UI",
   "main": "adminui.js",
   "browser": {
@@ -34,9 +34,9 @@
   "dependencies": {
     "@unitybase/codemirror-full": "^1.2.24",
     "@unitybase/cs-shared": "^5.1.0",
-    "@unitybase/ub-pub": "^5.3.0",
-    "@unitybase/ubm": "^5.1.18",
-    "@unitybase/xlsx": "^5.0.52",
+    "@unitybase/ub-pub": "^5.3.1",
+    "@unitybase/ubm": "^5.1.19",
+    "@unitybase/xlsx": "^5.0.53",
     "bluebird": "^3.5.3",
     "bluebird-q": "^2.1.1",
     "codemirror": "^5.44.0",
