@@ -49,6 +49,7 @@
     "jdenticon": "^2.1.1",
     "jszip": "2.6.0",
     "lodash": "^4",
+    "moment": "^2.24.0",
     "mustache": "^2.3.0",
     "mxgraph-js": "^1.0.1",
     "node-cron": "^1.1.2",
