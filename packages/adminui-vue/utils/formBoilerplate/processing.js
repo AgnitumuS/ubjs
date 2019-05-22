@@ -418,15 +418,28 @@ function processingModule (store, initMasterRequest, initCollectionsRequests = {
         const answer = await $App.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
 
         if (answer) {
+          commit('LOADING', {
+            isLoading: true,
+            target: 'delete'
+          })
           await UB.connection.doDelete({
             entity: getters.entityName,
             execParams: { ID: state.data.ID }
           })
             .catch((err) => {
+              commit('LOADING', {
+                isLoading: false,
+                target: 'delete'
+              })
               commit('ERROR', true)
               window.onerror.apply(UB, [ '', '', '', '', err ])
               throw err
             })
+
+          commit('LOADING', {
+            isLoading: false,
+            target: 'delete'
+          })
 
           $formServices.forceClose()
 
@@ -468,15 +481,24 @@ function processingModule (store, initMasterRequest, initCollectionsRequests = {
        * @param {Object} options.execParams if we need to create new item with specified params
        */
       async addCollectionItem ({ commit }, { collection, execParams }) {
-        const entityName = initCollectionsRequests[collection].entityName
+        commit('LOADING', {
+          isLoading: true,
+          target: 'addCollectionItem'
+        })
+        const entity = initCollectionsRequests[collection].entityName
         const fieldList = initCollectionsRequests[collection].fieldList
         const item = await UB.connection.addNewAsObject({
-          entity: entityName,
+          entity,
           fieldList,
           execParams
         })
 
         commit('ADD_COLLECTION_ITEM', { collection, item })
+
+        commit('LOADING', {
+          isLoading: false,
+          target: 'addCollectionItem'
+        })
       }
     }
   }

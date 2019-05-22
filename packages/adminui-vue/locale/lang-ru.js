@@ -122,5 +122,6 @@ UB.i18nExtend({
   successfullySaved: 'Сохранено',
   formWasRefreshed: 'Форма была обновлена',
   recordDeletedSuccessfully: 'Запись успешно удалена',
-  selectedValueWasDeleted: 'Выбраное значение удалено'
+  selectedValueWasDeleted: 'Выбраное значение удалено',
+  recordWasDeleted: 'Запись была удалена'
 })

@@ -88,7 +88,7 @@ if (isExt) {
   $App.on('applicationReady', () => {
     $App.doCommand({
       cmdType: 'showForm',
-      instanceID: 332524658819137,
+      instanceID: 332545044414526,
       entity: 'ubm_navshortcut'
     })
   })

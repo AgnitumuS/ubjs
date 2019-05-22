@@ -3,12 +3,10 @@
     <u-toolbar :validation="$v" />
 
     <u-form
-      v-loading.body="loading"
+      v-loading="loading"
       :label-width="160"
     >
-      <u-form-row
-        label="ID"
-      >
+      <u-form-row label="ID">
         <el-row
           :gutter="10"
           type="flex"
@@ -40,6 +38,7 @@
           </el-col>
         </el-row>
       </u-form-row>
+
       <u-auto-field
         v-model="code"
         code="code"
@@ -58,9 +57,16 @@
         v-model="displayOrder"
         code="displayOrder"
       />
-
-      <select-rights />
-
+      <u-form-row label="selectedRights">
+        <u-select-multiple
+          :value="selectedRights"
+          entity-name="uba_subject"
+          @input="changeRights"
+        />
+      </u-form-row>
+      <pre>
+  {{ this.$store.state.collections.rightsSubjects }}
+</pre>
       <el-row>
         <el-col :span="4">
           three
@@ -76,11 +82,10 @@
 
 <script>
 const ShortcutTree = require('./components/ShortcutTree.vue').default
-const SelectRights = require('./components/SelectRights.vue').default
 const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
 
 const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
-const { mapGetters } = require('vuex')
+const { mapGetters, mapMutations, mapActions } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
 const fieldList = [
@@ -124,19 +129,50 @@ const UbmNavshortcut = module.exports.default = {
   name: 'UbmNavshortcut',
   components: {
     ShortcutTree,
-    SelectRights,
     ShortcutIconSelect
   },
 
   computed: {
     ...mapInstanceFields(fieldList),
 
-    ...mapGetters(['entitySchema', 'loading'])
+    ...mapGetters(['entitySchema', 'loading']),
+
+    selectedRights () {
+      return this.$store.state.collections.rightsSubjects.items.map(i => i.data.admSubjID)
+    }
+  },
+
+  created () {
+    this.$store.dispatch('loadCollections', ['rightsSubjects'])
   },
 
   methods: {
+    ...mapMutations([ 'REMOVE_COLLECTION_ITEM' ]),
+
+    ...mapActions(['addCollectionItem']),
+
     getLabel (attr) {
       return this.entitySchema.attributes[attr].caption
+    },
+
+    changeRights (arr, option, isChecked) {
+      if (isChecked) {
+        this.addCollectionItem({
+          collection: 'rightsSubjects',
+          execParams: {
+            admSubjID: option,
+            instanceID: this.$store.state.data.ID
+          }
+        })
+      } else {
+        const index = this.selectedRights.indexOf(option)
+        if (index !== -1) {
+          this.REMOVE_COLLECTION_ITEM({
+            collection: 'rightsSubjects',
+            index: index
+          })
+        }
+      }
     }
   }
 }
