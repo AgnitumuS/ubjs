@@ -87,7 +87,11 @@ function SyncConnection (options) {
   appInfo = this.get('getAppInfo') // non-auth request
 
   let v = appInfo.serverVersion.split('.')
-  ServerRepository.prototype.UBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
+  /**
+   * Server support UBQL v2 (value instead of values)
+   * @property {Boolean} UBQLv2
+   * @readonly */
+  this.UBQLv2 = ((v[0] >= 'v5') && (v[1] >= 10))
 
   /**
    * Return information about how application is configured as returned by `getAppInfo` endpoint

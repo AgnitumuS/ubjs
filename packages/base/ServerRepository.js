@@ -8,6 +8,9 @@ const csShared = require('@unitybase/cs-shared')
 const CustomRepository = csShared.CustomRepository
 const LocalDataStore = csShared.LocalDataStore
 
+let v = process.version.split('.')
+const LOCAL_SERVER_UBQL_V2 = ((v[0] >= 'v5') && (v[1] >= 10))
+
 /* global TubDataStore */
 /**
  * @classdesc
@@ -46,6 +49,7 @@ class ServerRepository extends CustomRepository {
      * @private
      */
     Object.defineProperty(this, 'connection', { enumerable: false, writable: false, value: connection })
+    this.UBQLv2 = connection ? connection.UBQLv2 : LOCAL_SERVER_UBQL_V2
   }
 
   /**
