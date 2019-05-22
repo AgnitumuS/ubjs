@@ -13,7 +13,7 @@
       :tabindex="-1"
       :disabled="disabled"
       @show="onShowDropdown"
-      @hide="removeClickOutsideListener"
+      @hide="afterHide"
       @keydown.native.exact.down="changeSelected(1)"
       @keydown.native.exact.up="changeSelected(-1)"
       @keydown.native.enter="chooseOption"
@@ -22,40 +22,43 @@
     >
       <div
         slot="reference"
-        class="ub-select__container"
+        ref="input"
+        class="ub-select-multiple__container"
       >
-        <el-tag
-          v-for="option in displayedOptions"
-          :key="option.ID"
-          :type="option.isDeleted ? 'danger' : 'info'"
-          closable
-          size="mini"
-          @close="removeOption(option.ID)"
-        >
-          <el-tooltip
-            v-if="option.isDeleted"
-            :content="$ut('recordWasDeleted')"
-            :enterable="false"
+        <div class="ub-select-multiple__input-wrap">
+          <el-tag
+            v-for="option in displayedOptions"
+            :key="option.ID"
+            :type="option.isDeleted ? 'danger' : 'info'"
+            closable
+            size="mini"
+            class="ub-select-multiple__tag"
+            @close="removeOption(option.ID)"
           >
-            <i class="el-icon-delete" />
-          </el-tooltip>
-          {{ option.label }}
-        </el-tag>
-        <el-input
-          ref="input"
-          v-model="queryDisplayValue"
-          @keydown.native.exact.down.alt="onKeydownAltDown"
-          @keydown.native.exact.up.prevent
-          @keydown.native.exact.down.prevent
-        >
-          <i
-            slot="suffix"
-            class="el-input__icon"
-            style="cursor: pointer;"
-            :class="inputIconCls"
-            @click="toggleDropdown"
-          />
-        </el-input>
+            <el-tooltip
+              v-if="option.isDeleted"
+              :content="$ut('recordWasDeleted')"
+              :enterable="false"
+            >
+              <i class="el-icon-delete" />
+            </el-tooltip>
+            {{ option.label }}
+          </el-tag>
+
+          <input
+            v-model="queryDisplayValue"
+            class="ub-select-multiple__input"
+            @keydown.native.exact.down.alt="onKeydownAltDown"
+            @keydown.native.exact.up.prevent
+            @keydown.native.exact.down.prevent
+          >
+        </div>
+        <i
+          class="ub-select-multiple__icon"
+          style="cursor: pointer;"
+          :class="inputIconCls"
+          @click="toggleDropdown"
+        />
       </div>
 
       <div
@@ -338,8 +341,13 @@ export default {
     },
 
     onShowDropdown () {
-      this.popperWidth = this.$refs.input.$el.offsetWidth
+      this.popperWidth = this.$refs.input.offsetWidth
       this.addClickOutsideListener()
+    },
+
+    afterHide () {
+      this.removeClickOutsideListener()
+      this.query = ''
     },
 
     addClickOutsideListener () {
@@ -351,7 +359,7 @@ export default {
     },
 
     clickOutside ({ target }) {
-      const isInput = this.$refs.input.$el.contains(target)
+      const isInput = this.$refs.input.contains(target)
 
       if (!isInput) {
         this.selectedOption = this.value
@@ -431,45 +439,43 @@ export default {
 }
 </script>
 
-<!--
 <style>
-  .ub-select__list-options{
-    max-height: 200px;
-    overflow-y: auto;
-    position: relative;
-  }
+.ub-select-multiple__container{
+  display: flex;
+  border: 1px solid #DCDFE6; // temp
+  border-radius: 4px;
+  padding-left: 5px;
+}
 
-  .ub-select__option{
-    padding: 7px 10px;
-    font-size: 14px;
-    cursor: pointer;
-  }
+.ub-select-multiple__container.is-focused{
 
-  .ub-select__option.selected{
-    background: rgba(var(&#45;&#45;primary), 0.1);
-  }
+}
 
-  .ub-select__option.active{
-    color: rgb(var(&#45;&#45;primary));
-  }
+.ub-select-multiple__tag {
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
 
-  .ub-select__container{
-    position: relative;
-  }
+.ub-select-multiple__input-wrap{
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  margin-top: 4px;
+}
 
-  .ub-select__options__reset-padding{
-    padding: 0;
-  }
+.ub-select-multiple__input{
+  border: none;
+  flex-grow: 1;
+  min-width: 150px;
+  background: none;
+  margin-bottom: 4px;
+}
 
-  .ub-select__menu-icon {
-    padding: 0 10px;
-    color: rgb(var(&#45;&#45;info));
-    cursor: pointer;
-  }
-
-  .ub-select__deleted-value input{
-    color: rgb(var(&#45;&#45;info));
-    text-decoration: line-through;
-  }
+.ub-select-multiple__icon{
+  min-height: 100%;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
--->
