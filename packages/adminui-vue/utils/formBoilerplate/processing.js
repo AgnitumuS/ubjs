@@ -481,10 +481,6 @@ function processingModule (store, initMasterRequest, initCollectionsRequests = {
        * @param {Object} options.execParams if we need to create new item with specified params
        */
       async addCollectionItem ({ commit }, { collection, execParams }) {
-        commit('LOADING', {
-          isLoading: true,
-          target: 'addCollectionItem'
-        })
         const entity = initCollectionsRequests[collection].entityName
         const fieldList = initCollectionsRequests[collection].fieldList
         const item = await UB.connection.addNewAsObject({
@@ -494,11 +490,6 @@ function processingModule (store, initMasterRequest, initCollectionsRequests = {
         })
 
         commit('ADD_COLLECTION_ITEM', { collection, item })
-
-        commit('LOADING', {
-          isLoading: false,
-          target: 'addCollectionItem'
-        })
       }
     }
   }

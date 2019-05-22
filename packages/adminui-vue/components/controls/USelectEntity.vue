@@ -460,7 +460,7 @@ export default {
       if (inRange) {
         this.selectedOption = this.options[nextIndex][this.modelAttr]
       }
-      if (this.dropdownVisible) {
+      if (this.dropdownVisible && this.options.length > 0) {
         const el = this.$refs[`option_${this.selectedOption}`][0]
         el.scrollIntoView({ block: 'nearest' })
       }

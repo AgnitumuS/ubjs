@@ -270,7 +270,7 @@ export default {
         const index = currentValueIndex === -1 ? 0 : currentValueIndex
         this.selectedOption = this.options[index][this.modelAttr]
       } else {
-        this.selectedOption = this.value
+        this.selectedOption = null
       }
 
       this.loading = false
@@ -360,6 +360,7 @@ export default {
     },
 
     chooseOption () {
+      if (this.selectedOption === null) return
       const isChecked = this.value.includes(this.selectedOption)
       if (isChecked) {
         this.removeOption(this.selectedOption)
@@ -421,7 +422,7 @@ export default {
       if (inRange) {
         this.selectedOption = this.options[nextIndex][this.modelAttr]
       }
-      if (this.dropdownVisible) {
+      if (this.dropdownVisible && this.options.length > 0) {
         const el = this.$refs[`option_${this.selectedOption}`][0]
         el.scrollIntoView({ block: 'nearest' })
       }

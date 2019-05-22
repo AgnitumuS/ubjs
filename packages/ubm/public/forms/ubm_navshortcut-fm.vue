@@ -132,6 +132,12 @@ const UbmNavshortcut = module.exports.default = {
     ShortcutIconSelect
   },
 
+  data () {
+    return {
+      isPending: false
+    }
+  },
+
   computed: {
     ...mapInstanceFields(fieldList),
 
@@ -155,15 +161,19 @@ const UbmNavshortcut = module.exports.default = {
       return this.entitySchema.attributes[attr].caption
     },
 
-    changeRights (arr, option, isChecked) {
+    async changeRights (arr, option, isChecked) {
       if (isChecked) {
-        this.addCollectionItem({
-          collection: 'rightsSubjects',
-          execParams: {
-            admSubjID: option,
-            instanceID: this.$store.state.data.ID
-          }
-        })
+        if (!this.isPending){
+          this.isPending = true
+          await this.addCollectionItem({
+            collection: 'rightsSubjects',
+            execParams: {
+              admSubjID: option,
+              instanceID: this.$store.state.data.ID
+            }
+          })
+          this.isPending = false
+        }
       } else {
         const index = this.selectedRights.indexOf(option)
         if (index !== -1) {
