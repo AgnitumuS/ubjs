@@ -114,7 +114,15 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
       }
       ubWLItem.condition = ubWLItem.condition || conditions.sqlecEqual
       if (UB.connection.UBQLv2) {
-        ubWLItem.value = fItem.value
+        if (fItem.value === null) {
+          if (ubWLItem.condition === conditions.sqlecNotEqual) {
+            ubWLItem.condition = conditions.sqlecNotIsNull
+          } else if (ubWLItem.condition === conditions.sqlecEqual) {
+            ubWLItem.condition = conditions.sqlecIsNull
+          }
+        } else {
+          ubWLItem.value = fItem.value
+        }
       } else {
         ubWLItem.values[fItem.property] = fItem.value
         // for special filter type. (for example fts)

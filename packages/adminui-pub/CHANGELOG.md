@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.8.11]
 ### Changed
- - add support for UBQLv2 into `UBDetailGrid` and `UBProxy` (use value in where expression instead of values: {}) 
+ - add support for UBQLv2 into `UBDetailGrid` and `UBProxy` (use value in where expression instead of values: {})
+ - ExtJS store filter with `null` value will be transformed to `IsNull` / `NotIsNull` UBQL condition   
 
 ## [5.8.10]
 ### Changed

@@ -78,7 +78,7 @@ module.exports = function runTest (options) {
     console.debug('Where item condition without values')
     assert.throws(() => {
       conn.Repository('uba_user').attrs('ID').where('ID', '=', undefined).select()
-    }, /Where item with condition "equal" must contains "values" part/, 'throws a string instead of error dont raise AV')
+    }, /Where item with condition "equal" must contains/, 'throws a string instead of error dont raise AV')
 
     conn.Repository('uba_user').attrs(['ID', 'name']) // select users
     // who are not disabled
