@@ -3,6 +3,7 @@
     :value="selectedRecords"
     :entity-name="subjectEntityName"
     @input="changeCollection"
+    :disabled="disabled"
   />
 </template>
 
@@ -21,7 +22,9 @@ export default {
     collectionName: {
       type: String,
       required: true
-    }
+    },
+
+    disabled: Boolean
   },
 
   data () {

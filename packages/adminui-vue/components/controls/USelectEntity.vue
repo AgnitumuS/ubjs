@@ -185,20 +185,22 @@ export default {
       loading: false,
       query: '',
       options: [],
-      pageNum: 0,
-      pageSize: 20,
-      moreVisible: false,
+      pageNum: 0, // page which load. will change if you click more btn
+      pageSize: 20, // count of options which loads by 1 request
+      moreVisible: false, // shows when the request has an answer what is the next page
       dropdownVisible: false,
       popperWidth: 300, // by default 300, will change after popper show
-      selectedOption: null,
-      onEdit: false,
-      prevQuery: '',
+      selectedOption: null, // ID of option which user hover or focused by arrows
+      prevQuery: '', // when user click show more need to track prev query value for send same request to next page
       isSafeDeletedValue: false,
       isFocused: false
     }
   },
 
   computed: {
+    /**
+     * @returns {String} Entity name
+     */
     entity () {
       if (this.repository) {
         return this.repository().entityName
@@ -272,6 +274,10 @@ export default {
       return this.defaultActions.concat(this.additionalActions)
     },
 
+    /**
+     * need for update displayed query if original option query changed
+     * but show dropdown and fetch date just if changed queryDisplayValue
+     */
     queryDisplayValue: {
       get () {
         return this.query
@@ -288,6 +294,7 @@ export default {
   },
 
   watch: {
+    // when value (ID) changed need to get formatted label
     value: {
       immediate: true,
       handler: 'setQueryByValue'
@@ -354,6 +361,13 @@ export default {
       return data
     },
 
+    /**
+     * get value label
+     * if function cant find label in loaded options
+     * it will be fetch it from server
+     *
+     * @param {number} value ID
+     */
     setQueryByValue (value) {
       if (value !== undefined && value !== null) {
         const index = this.options.findIndex(o => o[this.modelAttr] === value)
@@ -377,6 +391,7 @@ export default {
       }
     },
 
+    // set delete status if record is deleted safely
     setSafeDeleteValue (option) {
       if (option.mi_deleteDate) {
         const isDeleted = option.mi_deleteDate.getTime() < Date.now()
@@ -442,6 +457,7 @@ export default {
       this.$refs.options.scrollTop = scrollHeight
     },
 
+    // shows all search result when click on dropdown arrow
     toggleDropdown () {
       this.dropdownVisible = !this.dropdownVisible
       if (this.dropdownVisible) {
@@ -451,6 +467,10 @@ export default {
       }
     },
 
+    /**
+     * emits when user press arrows
+     * @param {number} direction available params -1/1 for up/down
+     */
     changeSelected (direction) {
       const index = this.options.findIndex(o => o[this.modelAttr] === this.selectedOption)
       const nextIndex = index + direction
@@ -466,6 +486,7 @@ export default {
       }
     },
 
+    // emits when user click on option or click enter when option is focused
     chooseOption () {
       this.$emit('input', this.selectedOption)
       this.setQueryByValue(this.selectedOption)
@@ -473,46 +494,54 @@ export default {
     },
 
     handleShowDictionary () {
-      this.$UB.core.UBApp.doCommand({
-        entity: this.entity,
-        cmdType: 'showList',
-        isModal: true,
-        sender: this,
-        selectedInstanceID: this.value,
-        onItemSelected: ({ data }) => {
-          this.$emit('input', data[this.modelAttr])
-        },
-        cmdData: {
-          params: [{
-            entity: this.entity,
-            method: 'select',
-            fieldList: '*'
-          }]
-        }
-      })
+      if (!this.removeDefaultActions) {
+        this.$UB.core.UBApp.doCommand({
+          entity: this.entity,
+          cmdType: 'showList',
+          isModal: true,
+          sender: this,
+          selectedInstanceID: this.value,
+          onItemSelected: ({ data }) => {
+            this.$emit('input', data[this.modelAttr])
+          },
+          cmdData: {
+            params: [{
+              entity: this.entity,
+              method: 'select',
+              fieldList: '*'
+            }]
+          }
+        })
+      }
     },
 
     handleEditItem () {
-      this.$UB.core.UBApp.doCommand({
-        cmdType: this.$UB.core.UBCommand.commandType.showForm,
-        entity: this.entity,
-        isModal: true,
-        instanceID: this.value
-      })
+      if (!this.removeDefaultActions) {
+        this.$UB.core.UBApp.doCommand({
+          cmdType: this.$UB.core.UBCommand.commandType.showForm,
+          entity: this.entity,
+          isModal: true,
+          instanceID: this.value
+        })
+      }
     },
 
     handleAddNewItem () {
-      this.$UB.core.UBApp.doCommand({
-        cmdType: this.$UB.core.UBCommand.commandType.showForm,
-        entity: this.entity,
-        isModal: true
-      })
+      if (!this.removeDefaultActions) {
+        this.$UB.core.UBApp.doCommand({
+          cmdType: this.$UB.core.UBCommand.commandType.showForm,
+          entity: this.entity,
+          isModal: true
+        })
+      }
     },
 
     handleClearClick () {
-      this.$emit('input', null)
-      if (this.dropdownVisible) {
-        this.fetchPage()
+      if (!this.removeDefaultActions) {
+        this.$emit('input', null)
+        if (this.dropdownVisible) {
+          this.fetchPage()
+        }
       }
     }
   }

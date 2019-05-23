@@ -3,6 +3,7 @@
     :repository="getEnumRequest"
     :value="value"
     :model-attr="modelAttr"
+    remove-default-actions
     @input="$emit('input', $event)"
   />
 </template>
@@ -24,7 +25,6 @@ export default {
         return null
       }
     },
-    // TODO - pass entityCode, add attrCode, clearable only in case attr allow null
     /**
      * Enum group from dictionary 'ubm_enum'
      */

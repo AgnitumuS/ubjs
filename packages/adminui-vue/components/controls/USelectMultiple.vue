@@ -106,18 +106,38 @@
       </div>
     </el-popover>
 
-    <el-input
+    <div
       v-else
-      disabled
-      :value="queryDisplayValue"
-      suffix-icon="el-icon-arrow-down"
-    />
+      class="ub-select-multiple__container disabled"
+    >
+      <div class="ub-select-multiple__input-wrap">
+        <el-tag
+          v-for="option in displayedOptions"
+          :key="option.ID"
+          :type="option.isDeleted ? 'danger' : 'info'"
+          size="mini"
+          class="ub-select-multiple__tag"
+        >
+          <el-tooltip
+            v-if="option.isDeleted"
+            :content="$ut('recordWasDeleted')"
+            :enterable="false"
+          >
+            <i class="el-icon-delete" />
+          </el-tooltip>
+          {{ option.label }}
+        </el-tag>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 const { debounce } = require('throttle-debounce')
 
+/**
+ * When you need to select few values from entity use multiple select.
+ */
 export default {
   name: 'USelectMultiple',
   props: {
@@ -130,46 +150,48 @@ export default {
       required: true
     },
     /**
-       * attribute which is the value for v-model
-       */
+     * attribute which is the value for v-model
+     */
     modelAttr: {
       type: String,
       default: 'ID'
     },
     /**
-       * Name of entity. If repository is set entityName will be ignored
-       */
+     * Name of entity. If repository is set entityName will be ignored
+     */
     entityName: String,
     /**
-       * Function which return UBRepository
-       */
+     * Function which return UBRepository
+     */
     repository: Function,
     // repeat it here and pass down to ElEdit because we need to disable toggle & actions
     /**
-       * Set disable status
-       */
+     * Set disable status
+     */
     disabled: Boolean
   },
 
   data () {
     return {
       loading: false,
-      query: '',
+      query: '', // search query
       options: [],
-      pageNum: 0,
-      pageSize: 20,
-      moreVisible: false,
+      pageNum: 0, // page which load. will change if you click more btn
+      pageSize: 20, // count of options which loads by 1 request
+      moreVisible: false, // shows when the request has an answer what is the next page
       dropdownVisible: false,
       popperWidth: 300, // by default 300, will change after popper show
-      selectedOption: null,
-      onEdit: false,
-      prevQuery: '',
+      selectedOption: null, // ID of option which user hover or focused by arrows
+      prevQuery: '', // when user click show more need to track prev query value for send same request to next page
       displayedOptions: [],
       isFocused: false
     }
   },
 
   computed: {
+    /**
+     * @returns {String} Entity name
+     */
     entity () {
       if (this.repository) {
         return this.repository().entityName
@@ -182,6 +204,7 @@ export default {
       return this.$UB.connection.domain.get(this.entity)
     },
 
+    // display value attribute definition
     displayColumn () {
       return this.entitySchema.descriptionAttribute
     },
@@ -207,6 +230,10 @@ export default {
       return icon
     },
 
+    /**
+     * need for update displayed query if original option query changed
+     * but show dropdown and fetch date just if changed queryDisplayValue
+     */
     queryDisplayValue: {
       get () {
         return this.query
@@ -223,14 +250,19 @@ export default {
   },
 
   watch: {
+    /**
+     * when value changed need to check is item added or removed
+     * if added need to push formatted values (ID, label) to displayOptions
+     * if removed -> splice from displayOptions
+     */
     value: {
       immediate: true,
       async handler (newVal, oldVal = []) {
         const isAdded = newVal.length > oldVal.length
         if (isAdded) {
           const addedItems = newVal.filter(a => !oldVal.includes(a))
-          const formatedItems = await this.getFormatedOptions(addedItems) // temp
-          this.displayedOptions.push(...formatedItems)
+          const formattedItems = await this.getFormattedOptions(addedItems) // temp
+          this.displayedOptions.push(...formattedItems)
         } else {
           const removedItems = oldVal.filter(a => !newVal.includes(a))
           for (const item of removedItems) {
@@ -302,7 +334,14 @@ export default {
       return data
     },
 
-    async getFormatedOptions (IDs) {
+    /**
+     * Get label and isDeleted status for displayedOptions
+     * fetch labels from server just if is not already fetched in options
+     *
+     * @param {array<number>} IDs list of IDs
+     * @returns {Promise<Array>}
+     */
+    async getFormattedOptions (IDs) {
       const result = []
       for (const ID of IDs) {
         const option = this.options.find(o => o[this.modelAttr] === ID)
@@ -326,7 +365,7 @@ export default {
         for (const responseItem of responseData) {
           const option = result.find(i => i.ID === responseItem[this.modelAttr])
           option.label = responseItem[this.displayColumn]
-          if (responseItem.mi_deleteDate) {
+          if (this.isExistDeleteDate) {
             const isDeleted = responseItem.mi_deleteDate.getTime() < Date.now()
             if (isDeleted) {
               option.isDeleted = true
@@ -334,6 +373,7 @@ export default {
           }
         }
 
+        // if requested data length and responsed is different need to show error with fields which are missing
         if (responseData.length !== willFetched.length) {
           const missingValues = willFetched.filter(ID => {
             const includesInResponse = responseData.findIndex(i => i[this.modelAttr] === ID) !== -1
@@ -372,6 +412,7 @@ export default {
       }
     },
 
+    // emits when user click on option or click enter when option is focused
     chooseOption () {
       if (this.selectedOption === null) return
       const isChecked = this.value.includes(this.selectedOption)
@@ -389,10 +430,10 @@ export default {
     cancelInput (e) {
       if (this.dropdownVisible) {
         /*
-           * need to stopPropagation only if this is necessary,
-           * otherwise the handler will intercept other actions on the ESC,
-           * for example, closing dialog
-           */
+         * need to stopPropagation only if this is necessary,
+         * otherwise the handler will intercept other actions on the ESC,
+         * for example, closing dialog
+         */
         e.stopPropagation()
         this.selectedOption = this.value
         this.dropdownVisible = false
@@ -426,6 +467,10 @@ export default {
       }
     },
 
+    /**
+     * emits when user press arrows
+     * @param {number} direction available params -1/1 for up/down
+     */
     changeSelected (direction) {
       const index = this.options.findIndex(o => o[this.modelAttr] === this.selectedOption)
       const nextIndex = index + direction
@@ -450,6 +495,11 @@ export default {
   border: 1px solid #DCDFE6;
   border-radius: 4px;
   padding-left: 5px;
+}
+
+.ub-select-multiple__container.disabled{
+  background: rgba(var(--info), 0.1);
+  cursor: not-allowed;
 }
 
 .ub-select-multiple__container.is-focused{
