@@ -51,7 +51,7 @@
 
       <shortcut-tree />
 
-      <shortcut-icon-select @select="iconCls = $event"/>
+      <shortcut-icon-select @select="iconCls = $event" />
 
       <u-auto-field
         v-model="displayOrder"
@@ -59,10 +59,9 @@
       />
 
       <u-form-row label="selectedRights">
-        <u-select-multiple
-          :value="selectedRights"
-          entity-name="uba_subject"
-          @input="changeRights"
+        <u-select-collection
+          model-attr="admSubjID"
+          collection-name="rightsSubjects"
         />
       </u-form-row>
 
@@ -84,7 +83,7 @@ const ShortcutTree = require('./components/ShortcutTree.vue').default
 const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
 
 const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
-const { mapGetters, mapMutations, mapActions } = require('vuex')
+const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
 const fieldList = [
@@ -131,57 +130,15 @@ const UbmNavshortcut = module.exports.default = {
     ShortcutIconSelect
   },
 
-  data () {
-    return {
-      isPending: false
-    }
-  },
-
   computed: {
     ...mapInstanceFields(fieldList),
 
-    ...mapGetters(['entitySchema', 'loading']),
-
-    selectedRights () {
-      return this.$store.state.collections.rightsSubjects.items.map(i => i.data.admSubjID)
-    }
-  },
-
-  created () {
-    this.$store.dispatch('loadCollections', ['rightsSubjects'])
+    ...mapGetters(['entitySchema', 'loading'])
   },
 
   methods: {
-    ...mapMutations([ 'REMOVE_COLLECTION_ITEM' ]),
-
-    ...mapActions(['addCollectionItem']),
-
     getLabel (attr) {
       return this.entitySchema.attributes[attr].caption
-    },
-
-    async changeRights (arr, option, isChecked) {
-      if (isChecked) {
-        if (!this.isPending) {
-          this.isPending = true
-          await this.addCollectionItem({
-            collection: 'rightsSubjects',
-            execParams: {
-              admSubjID: option,
-              instanceID: this.$store.state.data.ID
-            }
-          })
-          this.isPending = false
-        }
-      } else {
-        const index = this.selectedRights.indexOf(option)
-        if (index !== -1) {
-          this.REMOVE_COLLECTION_ITEM({
-            collection: 'rightsSubjects',
-            index: index
-          })
-        }
-      }
     }
   }
 }

@@ -11,7 +11,8 @@ module.exports = {
       require('../components/controls/UInput/index.vue').default,
       require('../components/UToolbar/index.vue').default,
       require('../components/UAutoField.vue').default,
-      require('../components/controls/USelectMultiple.vue').default
+      require('../components/controls/USelectMultiple.vue').default,
+      require('../components/controls/USelectCollection.vue').default
     ]
     for (const component of components) {
       Vue.component(component.name, component)
