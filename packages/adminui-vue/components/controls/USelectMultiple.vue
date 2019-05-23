@@ -3,7 +3,6 @@
     <el-popover
       v-if="!disabled"
       v-model="dropdownVisible"
-      placement="bottom-start"
       :width="popperWidth"
       :popper-options="{
         appendToBody: true
@@ -24,6 +23,9 @@
         slot="reference"
         ref="input"
         class="ub-select-multiple__container"
+        :class="{
+          'is-focused': isFocused || dropdownVisible
+        }"
       >
         <div class="ub-select-multiple__input-wrap">
           <el-tag
@@ -48,6 +50,8 @@
           <input
             v-model="queryDisplayValue"
             class="ub-select-multiple__input"
+            @focus="isFocused = true"
+            @blur="isFocused = false"
             @keydown.native.exact.down.alt="onKeydownAltDown"
             @keydown.native.exact.up.prevent
             @keydown.native.exact.down.prevent
@@ -160,7 +164,8 @@ export default {
       selectedOption: null,
       onEdit: false,
       prevQuery: '',
-      displayedOptions: []
+      displayedOptions: [],
+      isFocused: false
     }
   },
 
@@ -442,40 +447,43 @@ export default {
 <style>
 .ub-select-multiple__container{
   display: flex;
-  border: 1px solid #DCDFE6; // temp
+  border: 1px solid #DCDFE6;
   border-radius: 4px;
   padding-left: 5px;
 }
 
 .ub-select-multiple__container.is-focused{
-
+  border-color: rgb(var(--primary))
 }
 
 .ub-select-multiple__tag {
   margin-right: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 
 .ub-select-multiple__input-wrap{
   display: flex;
   flex-wrap: wrap;
   flex-grow: 1;
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 .ub-select-multiple__input{
   border: none;
   flex-grow: 1;
-  min-width: 150px;
+  min-width: 100px;
   background: none;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  height: 20px;
 }
 
 .ub-select-multiple__icon{
   min-height: 100%;
-  min-width: 40px;
+  min-width: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #C0C4CC;
 }
 </style>

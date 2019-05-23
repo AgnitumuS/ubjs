@@ -436,6 +436,8 @@ function processingModule (store, initMasterRequest, initCollectionsRequests = {
               throw err
             })
 
+          UB.connection.emit(`${getters.entityName}:changed`)
+
           commit('LOADING', {
             isLoading: false,
             target: 'delete'

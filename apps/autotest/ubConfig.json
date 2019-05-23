@@ -33,7 +33,7 @@
 	},
 	"security": {
 		"authenticationMethods": [
-			"UB" /*, "Negotiate"*/
+			"UB" , "Negotiate"
 		],
 		"ldapCatalogs": [
 			{
@@ -97,7 +97,7 @@
 					"path": "./node_modules/@unitybase/cdn"
 				},
 				{
-					"path": "./node_modules/@unitybase/org"				
+					"path": "./node_modules/@unitybase/org"
 				},
 				{
 					"path": "./node_modules/@unitybase/ub-pub"
@@ -198,7 +198,7 @@
 				"user": "",
 				"password": "",
 				"autoTLS": false,
-				"auth": false 
+				"auth": false
 			}
 		}
 	}

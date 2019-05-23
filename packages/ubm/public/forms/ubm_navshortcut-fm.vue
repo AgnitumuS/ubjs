@@ -51,12 +51,13 @@
 
       <shortcut-tree />
 
-      <shortcut-icon-select />
+      <shortcut-icon-select @select="iconCls = $event"/>
 
       <u-auto-field
         v-model="displayOrder"
         code="displayOrder"
       />
+
       <u-form-row label="selectedRights">
         <u-select-multiple
           :value="selectedRights"
@@ -64,9 +65,7 @@
           @input="changeRights"
         />
       </u-form-row>
-      <pre>
-  {{ this.$store.state.collections.rightsSubjects }}
-</pre>
+
       <el-row>
         <el-col :span="4">
           three
@@ -163,7 +162,7 @@ const UbmNavshortcut = module.exports.default = {
 
     async changeRights (arr, option, isChecked) {
       if (isChecked) {
-        if (!this.isPending){
+        if (!this.isPending) {
           this.isPending = true
           await this.addCollectionItem({
             collection: 'rightsSubjects',
