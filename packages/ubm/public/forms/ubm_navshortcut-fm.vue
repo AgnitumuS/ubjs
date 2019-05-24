@@ -67,11 +67,16 @@
       </u-form-row>
 
       <el-row>
-        <el-col :span="4">
-          three
+        <el-col :span="5">
+          <el-tree
+            ref="tree"
+            :data="cmdCodeAttrs"
+            default-expand-all
+            :expand-on-click-node="false"
+            @node-click="selectNode"
+          />
         </el-col>
-        <el-col :span="20">
-          <!--          <pre>{{ cmdCode }}</pre>-->
+        <el-col :span="19">
           <u-code-mirror v-model="cmdCode" />
         </el-col>
       </el-row>
@@ -134,12 +139,37 @@ const UbmNavshortcut = module.exports.default = {
   computed: {
     ...mapInstanceFields(fieldList),
 
-    ...mapGetters(['entitySchema', 'loading'])
+    ...mapGetters(['entitySchema', 'loading']),
+
+    cmdCodeName () {
+      return 'uba_user'
+    },
+
+    cmdCodeEntitySchema () {
+      return this.$UB.connection.domain.get(this.cmdCodeName)
+    },
+
+    cmdCodeAttrs () {
+      console.log(this.cmdCodeEntitySchema)
+      return [{
+        label: 'Level one 1',
+        children: [{
+          label: 'Level two 1-1',
+          children: [{
+            label: 'Level three 1-1-1'
+          }]
+        }]
+      }]
+    }
   },
 
   methods: {
     getLabel (attr) {
       return this.entitySchema.attributes[attr].caption
+    },
+
+    selectNode (node) {
+      console.log(node)
     }
   }
 }
