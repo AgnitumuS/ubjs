@@ -81,27 +81,35 @@ export default {
     ...mapMutations([ 'REMOVE_COLLECTION_ITEM' ]),
     ...mapActions(['addCollectionItem']),
 
-    async changeCollection (arr, option, isChecked) {
+    async changeCollection (arr) {
+      const isChecked = arr.length > this.selectedRecords.length
       if (isChecked) {
         // block addNew request before previous request is pending
         if (!this.isPending) {
           this.isPending = true
-          await this.addCollectionItem({
-            collection: this.collectionName,
-            execParams: {
-              [this.subjectAttr]: option,
-              [this.objectIDName]: this.$store.state.data.ID
-            }
+          const options = arr.filter(o => !this.selectedRecords.includes(o))
+          const requests = options.map(option => {
+            return this.addCollectionItem({
+              collection: this.collectionName,
+              execParams: {
+                [this.subjectAttr]: option,
+                [this.objectIDName]: this.$store.state.data.ID
+              }
+            })
           })
+          await Promise.all(requests)
           this.isPending = false
         }
       } else {
-        const index = this.selectedRecords.indexOf(option)
-        if (index !== -1) {
-          this.REMOVE_COLLECTION_ITEM({
-            collection: this.collectionName,
-            index: index
-          })
+        const options = this.selectedRecords.filter(o => !arr.includes(o))
+        for (const option of options) {
+          const index = this.selectedRecords.indexOf(option)
+          if (index !== -1) {
+            this.REMOVE_COLLECTION_ITEM({
+              collection: this.collectionName,
+              index: index
+            })
+          }
         }
       }
     }

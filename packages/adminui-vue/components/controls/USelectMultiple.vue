@@ -58,8 +58,12 @@
           >
         </div>
         <i
+          v-if="clearable && value.length > 0"
+          class="ub-select-multiple__icon el-icon-close"
+          @click="$emit('input', [])"
+        />
+        <i
           class="ub-select-multiple__icon"
-          style="cursor: pointer;"
           :class="inputIconCls"
           @click="toggleDropdown"
         />
@@ -171,7 +175,12 @@ export default {
     /**
      * Set disable status
      */
-    disabled: Boolean
+    disabled: Boolean,
+
+    /**
+     * Add clear icon
+     */
+    clearable: Boolean
   },
 
   data () {
@@ -422,12 +431,12 @@ export default {
       if (isChecked) {
         this.removeOption(this.selectedOption)
       } else {
-        this.$emit('input', this.value.concat(this.selectedOption), this.selectedOption, true)
+        this.$emit('input', this.value.concat(this.selectedOption))
       }
     },
 
     removeOption (ID) {
-      this.$emit('input', this.value.filter(i => i !== ID), ID, false)
+      this.$emit('input', this.value.filter(i => i !== ID))
     },
 
     cancelInput (e) {
@@ -538,6 +547,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: #C0C4CC;
+  cursor: pointer;
 }
 </style>
 
@@ -613,6 +623,27 @@ For example when you need instead `ID` like `code`.
     data () {
       return {
         value: []
+      }
+    }
+  }
+</script>
+```
+
+### Clearable
+
+```vue
+<template>
+  <u-select-multiple
+    v-model="model"
+    entity-name="tst_dictionary"
+    clearable
+  />>
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: [1,2,3]
       }
     }
   }
