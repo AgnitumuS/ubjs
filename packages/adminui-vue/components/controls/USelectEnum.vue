@@ -66,7 +66,7 @@ export default {
 </script>
 
 <docs>
-UbSelectEnum:
+Based on `u-select-entity` accordingly have all same props
 
 ```vue
 <template>

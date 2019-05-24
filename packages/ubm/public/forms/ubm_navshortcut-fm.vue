@@ -60,7 +60,7 @@
 
       <u-form-row label="selectedRights">
         <u-select-collection
-          model-attr="admSubjID"
+          subject-attr="admSubjID"
           collection-name="rightsSubjects"
         />
       </u-form-row>

@@ -389,7 +389,7 @@ export default {
 </style>
 
 <docs>
-### Usage:
+### Usage
 ```vue
 <template>
   <div class="ub-form-container">
@@ -406,6 +406,28 @@ const { validationInjectMixin } = require('../../utils/formBoilerplate/index')
 export default {
   mixins: [validationInjectMixin] // provide $v
 }
+</script>
+```
+
+### Slots
+```vue
+<template>
+  <div class="ub-form-container">
+    <u-toolbar>
+      <button slot="left">left side btn</button>
+      <button slot="right">right side btn</button>
+      <button slot="dropdown">dropdown btn</button>
+    </u-toolbar>
+    <u-form>
+      <!-- Your form -->
+    </u-form>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'Toolbar'
+  }
 </script>
 ```
 </docs>

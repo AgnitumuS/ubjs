@@ -1,4 +1,12 @@
+This component has tree destinations:
+ - focus first available element on mount
+ - control label width
+ - control label label position
+ 
 ### Basic usage
+
+All labels will have 150 width instead last, the option `u-form-row` will override `u-form` label-width
+
 ```vue
 <template>
   <u-form :label-width="150">

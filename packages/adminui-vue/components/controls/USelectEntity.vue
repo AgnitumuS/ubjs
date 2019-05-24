@@ -588,3 +588,209 @@ export default {
   text-decoration: line-through;
 }
 </style>
+
+<docs>
+One of these options is required:
+  - `entity-name`
+  - `repository`
+
+### Use as `entity-name`
+
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    entity-name="tst_maindata"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: null
+      }
+    }
+  }
+</script>
+```
+
+### Use as `repository`
+Need to set function which returns UB Repository
+
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    :repository="getRepo"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: null
+      }
+    },
+
+    methods: {
+      getRepo () {
+        return $UB.Repository('tst_maindata')
+          .attrs('ID', 'code', 'caption')
+          .where('parent', '=', 31231221312312) // TODO: set valid ID
+      }
+    }
+  }
+</script>
+```
+
+### Custom `modelAttr`
+Need when you need to change default model propery.
+Its like attribute `value` in native `<option>` tag.
+For example when you need instead `ID` like `code`.
+
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    entity-name="tst_maindata"
+    model-attr="code"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: null
+      }
+    }
+  }
+</script>
+```
+
+### Change default actions
+
+#### Remove default actions
+
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    entity-name="tst_maindata"
+    remove-default-actions
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: null
+      }
+    }
+  }
+</script>
+```
+
+#### Add actions
+
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    entity-name="tst_maindata"
+    :additional-actions="actions"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: null
+      }
+    },
+
+    computed: {
+      actions () {
+        return [{
+          name: 'test action',
+          caption: 'Test action caption',
+          icon: 'el-icon-grape',
+          handler: () => {
+            console.log('click test action')
+          }
+        }, {
+          name: 'test action 2',
+          caption: 'Test action 2 caption',
+          icon: 'el-icon-milk-tea',
+          handler: () => {
+            console.log('click test action 2')
+          }
+        }]
+      }
+    }
+  }
+</script>
+```
+
+#### Just custom actions
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    entity-name="tst_maindata"
+    :additional-actions="actions"
+    remove-default-actions
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: null
+      }
+    },
+
+    computed: {
+      actions () {
+        return [{
+          name: 'test action',
+          caption: 'Test action caption',
+          icon: 'el-icon-grape',
+          handler: () => {
+            console.log('click test action')
+          }
+        }, {
+          name: 'test action 2',
+          caption: 'Test action 2 caption',
+          icon: 'el-icon-milk-tea',
+          handler: () => {
+            console.log('click test action 2')
+          }
+        }]
+      }
+    }
+  }
+</script>
+```
+
+### Disabled
+
+```vue
+<template>
+  <u-select-entity
+    v-model="value"
+    entity-name="tst_dictionary"
+    disabled
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        value: 1
+      }
+    }
+  }
+</script>
+```
+
+</docs>

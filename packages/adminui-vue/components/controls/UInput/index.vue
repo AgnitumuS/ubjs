@@ -124,7 +124,7 @@ export default {
       if (value === null || value === '') {
         return null
       }
-      if (this.type !== 'number'){
+      if (this.type !== 'number') {
         return value
       }
       const digit = Number(value)
@@ -148,7 +148,7 @@ export default {
 Component will automaticly check data type by attribute name in entitySchema
 Required to have entitySchema in $store.getters
 
-### Basic usage:
+### Basic usage
 
 ```vue
 <template>
@@ -166,6 +166,49 @@ export default {
     }
   }
 }
+</script>
+```
+
+### When attribute type is number
+
+```vue
+<template>
+  <u-input
+    v-model="currencyValue"
+    attribute-name="currencyValue"
+  />
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        currencyValue: null
+      }
+    }
+  }
+</script>
+```
+
+### Disabled
+
+```vue
+<template>
+  <u-input
+    v-model="caption"
+    attribute-name="caption"
+    disabled
+  />
+</template>
+
+<script>
+  export default {
+    data () {
+      return {
+        caption: ''
+      }
+    }
+  }
 </script>
 ```
 </docs>

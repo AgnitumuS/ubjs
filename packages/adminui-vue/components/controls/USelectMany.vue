@@ -39,7 +39,7 @@ export default {
 </script>
 
 <docs>
-UbSelectEnum:
+Based on `u-select-multiple` accordingly have all same props
 
 ```vue
 <template>
