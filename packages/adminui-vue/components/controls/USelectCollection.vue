@@ -12,7 +12,8 @@
 const { mapMutations, mapActions } = require('vuex')
 
 /**
- * The component allows you to bind and decouple collection entries to the master record.
+ * Component is responsible for display a collection of a details from master-detail relation inside a multiselect.
+ * Acts like a control for "Many" data type, but can be bound to any detailed entity.
  */
 export default {
   name: 'USelectCollection',
@@ -151,6 +152,7 @@ export default {
       masterRequest,
       collectionRequests
     })
+  }
 
   const SelectCollectionExample = module.exports.default = {
     // component

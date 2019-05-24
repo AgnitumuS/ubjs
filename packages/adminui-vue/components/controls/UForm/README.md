@@ -1,7 +1,7 @@
-This component has tree destinations:
- - focus first available element on mount
- - control label width
- - control label label position
+This component is intended for:
+ - set focus to the first available component on mount
+ - set's a labels width
+ - set's a labels position
  
 ### Basic usage
 
