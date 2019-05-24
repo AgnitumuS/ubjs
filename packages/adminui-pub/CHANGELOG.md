@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - enum combobox will use UBQLv2 if accessible
  - UBProxy will skip disabled store filters while building UBQL from filter list.
  Previous implementation adds wrong empty filter in this case
+ - in `UBDetailTree.onDeleteItem` replaced confirm dialog **Ext.Msg.confirm(...)** to **$App.dialogYesNo(...)** for compatibility with `@unitybase/adminui-vue` 
 
 ## [5.8.11]
 ### Changed
