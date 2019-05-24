@@ -124,6 +124,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
           ubWLItem.value = fItem.value
         }
       } else {
+        if (!ubWLItem.values) ubWLItem.values = {}
         ubWLItem.values[fItem.property] = fItem.value
         // for special filter type. (for example fts)
         switch (fItem.condition) {
