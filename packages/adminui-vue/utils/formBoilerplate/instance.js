@@ -355,9 +355,9 @@ function mapInstanceFields (moduleOrArr, arr) {
     obj[key] = {
       get () {
         if (module) {
-          return this.$store.state[module].data[key] || ''
+          return this.$store.state[module].data[key]
         } else {
-          return this.$store.state.data[key] || ''
+          return this.$store.state.data[key]
         }
       },
       set (value) {
