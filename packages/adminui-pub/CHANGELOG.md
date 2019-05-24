@@ -4,7 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.12]
+### Fixed
+ - enum combobox will use UBQLv2 if accessible
+ - UBProxy will skip disabled store filters while building UBQL from filter list.
+ Previous implementation adds wrong empty filter in this case
+ - in `UBDetailTree.onDeleteItem` replaced confirm dialog **Ext.Msg.confirm(...)** to **$App.dialogYesNo(...)** for compatibility with `@unitybase/adminui-vue` 
+
+### Changed
+ - change zIndex for Ext forms only in case `appConfig.uiSettings.adminUI.vueAutoForms` is set to `true`.
+ In other case all Vue forms will be on front of Ext forms 
+ 
+## [5.8.11]
+### Changed
+ - add support for UBQLv2 into `UBDetailGrid` and `UBProxy` (use value in where expression instead of values: {})
+ - ExtJS store filter with `null` value will be transformed to `IsNull` / `NotIsNull` UBQL condition   
+
+## [5.8.10]
+### Changed
+ - `optionalDependencies` are moved to `devDependencies` to prevent install it even when `NODE_ENV=production`    
+
 ## [5.8.9]
+### Fixed
+ - fixed z index manager on click dropdown or datepicker in UB dialogs
+ 
 ### Added
  - support for UBQL v2 (value instead of values in whereList)
 

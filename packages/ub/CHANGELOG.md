@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.12]
-
 ### Added
  - new method `THTTPRequest.writeToFile(fullFilePath)` - write request body content (as binary) to a file.
  Return `true` on success. Can be used to bypass moving body content between native<->JS

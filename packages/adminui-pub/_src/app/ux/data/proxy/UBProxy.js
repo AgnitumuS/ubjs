@@ -73,9 +73,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
     ubFiltersItemToUBWhereListItem: function (fItem, dataType) {
       var
         conditions = UB.core.UBCommand.condition,
-        ubWLItem = {
-          values: {}
-        }
+        ubWLItem = {}
 
       ubWLItem.expression = '[' + fItem.property + ']'
       if (dataType === UBDomain.ubDataTypes.String) {
@@ -115,21 +113,33 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
         ubWLItem.condition = fItem.condition
       }
       ubWLItem.condition = ubWLItem.condition || conditions.sqlecEqual
-      ubWLItem.values[fItem.property] = fItem.value
-      // for special filter type. (for example fts)
-      switch (fItem.condition) {
-        case 'match':
-          ubWLItem = {
-            condition: 'match',
-            values: {'any': fItem.value}
+      if (UB.connection.UBQLv2) {
+        if (fItem.value === null) {
+          if (ubWLItem.condition === conditions.sqlecNotEqual) {
+            ubWLItem.condition = conditions.sqlecNotIsNull
+          } else if (ubWLItem.condition === conditions.sqlecEqual) {
+            ubWLItem.condition = conditions.sqlecIsNull
           }
-          break
-        case 'between':
-          ubWLItem = {
-            condition: 'between',
-            values: {'v1': fItem.valueFrom, 'v2': fItem.valueTo}
-          }
-          break
+        } else {
+          ubWLItem.value = fItem.value
+        }
+      } else {
+        ubWLItem.values[fItem.property] = fItem.value
+        // for special filter type. (for example fts)
+        switch (fItem.condition) {
+          case 'match':
+            ubWLItem = {
+              condition: 'match',
+              values: { 'any': fItem.value }
+            }
+            break
+          case 'between':
+            ubWLItem = {
+              condition: 'between',
+              values: { 'v1': fItem.valueFrom, 'v2': fItem.valueTo }
+            }
+            break
+        }
       }
       return ubWLItem
     }
@@ -141,10 +151,10 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
    * @param {Ext.data.Operation} operation
    */
   onException: function (proxy, response, operation) {
-    throw new Error({errMsg: operation.getError()})
+    throw new Error({ errMsg: operation.getError() })
   },
 
-/**
+  /**
  * Take Ext.data.Operation and perform actual request using UnityBase cache rules.
  * For cached entities - do all filtration on client, for non-cached - on server
  * @override
@@ -207,7 +217,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
       }
     }
     UB.connection.select(serverRequest).then(function (response) {
-      resultSet = me.getReader().read({data: response.resultData.data})
+      resultSet = me.getReader().read({ data: response.resultData.data })
       if (fnFilters.length > 0) {
         me.applyFilterFn(resultSet, fnFilters)
       }
@@ -255,24 +265,25 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
    * @return {Object}
    */
   operationFilter2WhereList: function (operation, entityName, fnFilters) {
-    var len, i, result, filterItem, start = 100, filter
-    if (operation.filters && (len = operation.filters.length) > 0) {
-      result = {}
-      for (i = 0; i < len; ++i) {
-        filterItem = operation.filters[i]
-        if (fnFilters && filterItem.initialConfig.filterFn && !filterItem.initialConfig.property) {
-          fnFilters.push(filterItem.initialConfig.filterFn)
-          continue
-        }
-        if (!filterItem.disabled && !filterItem.property) {
-          throw new Error('invalid filter')
-        }
-        filter = UB.ux.data.proxy.UBProxy.ubFiltersItemToUBWhereListItem(
-          filterItem,
-          $App.domainInfo.get(entityName).attr(filterItem.property).dataType
-        )
-        result['x' + (start++)] = filter
+    var filterItem, start = 100, filter
+    if (!operation.filters) return
+    let L = operation.filters.length
+    if (!(L > 0)) return
+    let result = {}
+    for (let i = 0; i < L; ++i) {
+      filterItem = operation.filters[i]
+      if (filterItem.disabled) continue
+      if (fnFilters && filterItem.initialConfig.filterFn && !filterItem.initialConfig.property) {
+        fnFilters.push(filterItem.initialConfig.filterFn)
+        continue
       }
+      if (!filterItem.property) throw new Error('invalid filter: "filterItem.property" must have a value')
+
+      filter = UB.ux.data.proxy.UBProxy.ubFiltersItemToUBWhereListItem(
+        filterItem,
+        $App.domainInfo.get(entityName).attr(filterItem.property).dataType
+      )
+      result['x' + (start++)] = filter
     }
     return result
   },

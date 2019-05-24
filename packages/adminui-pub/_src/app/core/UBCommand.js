@@ -199,10 +199,14 @@ Ext.define('UB.core.UBCommand', {
           }
           let item = result['__MD' + i] = {
             expression: detailField,
-            condition: 'equal',
-            values: {}
+            condition: 'equal'
           }
-          item.values[detailFields[i]] = record ? record.get(masterFields[i]) : 0
+          let masterID = record ? record.get(masterFields[i]) : 0
+          if (UB.connection.UBQLv2) {
+            item.value = masterID
+          } else {
+            item.values[detailFields[i]] = masterID
+          }
         }
       }
       return result
@@ -824,10 +828,16 @@ Ext.define('UB.core.UBCommand', {
     if (result.window && !disableAutoShow) {
       result.window.show()
     }
-    if ($App.connection.domain.models['adminui-vue'] && window.Vue !== undefined && me.commandConfig.isModal) {
+    if ($App.connection.domain.models['adminui-vue'] && (window.Vue !== undefined) &&
+      (me.commandConfig.isModal) && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
+      // get zIndex from Element ui z index manager
       const zIndex = window.Vue.prototype.$zIndex()
-      Ext.WindowManager.setBase(zIndex)
+      // replace base Ext zIndex
+      result.window.addListener('statesave', () => {
+        result.setZIndex(zIndex)
+      })
     }
+
     Ext.callback(me.callback, me.scope || me, [result])
   },
 

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.11]
+### Fixed
+ - ServerRepository will check UBQLv2 compatibility core both remote and local connection.
+ This fix issue `where item with condition "equal" must contains "values" part"` in case ub server version is <5.10 but
+ package `@unitybase/ub` is >=5.2.11  
+
 ## [5.1.9]
 ### Fixed
  - ServerRepository.clone() - prevent deep cloning of connection property

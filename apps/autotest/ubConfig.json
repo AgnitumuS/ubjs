@@ -111,9 +111,15 @@
 				{
 					"path": "./node_modules/@unitybase/adminui-vue"
 				},
+				/*{
+					"path": "./node_modules/@unitybase/udisk"
+				},*/
 				{
 					"path": "./node_modules/@unitybase/ubdev"
 				},
+				/*{
+					"path": "./node_modules/@ub-e/ocr"
+				},*/
 				{
 					//"name": "TST",
 					"path": "./models/TST"
@@ -185,6 +191,10 @@
 			}
 		],
 		"customSettings": {
+			"OCR": {
+			  "dataPath": "C:\\dev\\TTesseractOCR4\\bin\\tessdata",
+			  "languages": "ukr+eng"
+			},
 			"docuSign": {
 				"userName":"",
 				"password":"",

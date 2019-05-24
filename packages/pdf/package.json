@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/pdf",
-  "version": "5.0.19",
+  "version": "5.0.20",
   "description": "PDF creation library",
   "main": "index.js",
   "config": {
@@ -28,7 +28,7 @@
     "lodash": "^4",
     "xmldom": "^0.1.27"
   },
-  "optionalDependencies": {
+  "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "babel-loader": "^8.0.5",

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.12]
+### Changed
+ - `optionalDependencies` are moved to `devDependencies` to prevent install it even when `NODE_ENV=production`
+ 
 ## [5.2.3]
 ### Added
  - navshortcuts access initialization for Supervisor role
