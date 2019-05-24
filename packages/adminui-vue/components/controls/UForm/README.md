@@ -1,4 +1,12 @@
+This component is intended for:
+ - set focus to the first available component on mount
+ - set's a labels width
+ - set's a labels position
+ 
 ### Basic usage
+
+All labels will have 150 width instead last, the option `u-form-row` will override `u-form` label-width
+
 ```vue
 <template>
   <u-form :label-width="150">
