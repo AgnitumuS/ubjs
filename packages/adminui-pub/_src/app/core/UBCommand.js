@@ -145,9 +145,12 @@ Ext.define('UB.core.UBCommand', {
       whereList = whereList || {}
       itemName = itemName || 'c' + (Ext.Object.getSize(whereList) + 1)
       condition = condition || UB.core.UBCommand.condition.sqlecEqual
-      whereList[itemName] = { expression: '[' + attributeName + ']', condition: condition, values: {} }
-      whereList[itemName].values[attributeName] = attributeValue
-
+      if (UB.connection.UBQLv2) {
+        whereList[itemName] = { expression: '[' + attributeName + ']', condition: condition, value: attributeValue }
+      } else {
+        whereList[itemName] = { expression: '[' + attributeName + ']', condition: condition, values: {} }
+        whereList[itemName].values[attributeName] = attributeValue
+      }
       return whereList
     },
 
@@ -205,6 +208,7 @@ Ext.define('UB.core.UBCommand', {
           if (UB.connection.UBQLv2) {
             item.value = masterID
           } else {
+            if (!item.values) item.values = {}
             item.values[detailFields[i]] = masterID
           }
         }
