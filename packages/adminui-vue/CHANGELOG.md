@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.5.3]
 ### Fixed
  - `processing` emit update grid and add loading status when dispatch 'deleteInstance'
+ 
+### Added
+ - added `u-select-multiple` component. Its multi-select for UB entity 
+ - added `u-select-collection` component. Inherited from `u-select-multiple`. Component is responsible for display a collection of a details from master-detail relation inside a multiselect. Acts like a control for "Many" data type, but can be bound to any detailed entity 
+
+### Changed
+ - `u-select-entity` added 'clearable' option
+ - rewritten `u-select-many`. Now this component inherited from `u-select-multiple` 
 
 ## [1.5.2]
 ### Changed

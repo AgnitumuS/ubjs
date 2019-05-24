@@ -31,7 +31,7 @@
     <u-select-many
       v-else-if="dataType === 'Many'"
       v-model="model"
-      :entity="associatedEntity"
+      :entity-name="associatedEntity"
       :disabled="disabled"
     />
     <el-input
