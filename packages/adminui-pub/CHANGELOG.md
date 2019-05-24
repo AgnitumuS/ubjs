@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  Previous implementation adds wrong empty filter in this case
  - in `UBDetailTree.onDeleteItem` replaced confirm dialog **Ext.Msg.confirm(...)** to **$App.dialogYesNo(...)** for compatibility with `@unitybase/adminui-vue` 
 
+### Changed
+ - change zIndex for Ext forms only in case `appConfig.uiSettings.adminUI.vueAutoForms` is set to `true`.
+ In other case all Vue forms will be on front of Ext forms 
+ 
 ## [5.8.11]
 ### Changed
  - add support for UBQLv2 into `UBDetailGrid` and `UBProxy` (use value in where expression instead of values: {})
