@@ -21,6 +21,7 @@
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/weekly_updates" />
     </content>
+    <content url="file://$MODULE_DIR$/apps/autotest/node_modules/@ub-e/web-dav" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
