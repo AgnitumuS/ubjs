@@ -122,5 +122,6 @@ UB.i18nExtend({
   successfullySaved: 'Successfully saved',
   formWasRefreshed: 'Form was refreshed',
   recordDeletedSuccessfully: 'Record deleted successfully',
-  selectedValueWasDeleted: 'Selected value was deleted'
+  selectedValueWasDeleted: 'Selected value was deleted',
+  recordWasDeleted: 'Record was deleted'
 })

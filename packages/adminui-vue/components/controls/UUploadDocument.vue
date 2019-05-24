@@ -177,3 +177,51 @@ export default {
   }
 }
 </script>
+
+<docs>
+### Basic usage
+
+```vue
+<template>
+  <u-upload-document
+    v-model="model"
+    entity-name="tst_document"
+    file-store="fileStoreSimple"
+    :doc-id="$store.state.data.ID"
+    :disabled="disabled"
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        model: null
+      }
+    }
+  }
+</script>
+```
+
+### Disabled
+
+```vue
+<template>
+  <u-upload-document
+    v-model="model"
+    entity-name="tst_document"
+    file-store="fileStoreSimple"
+    :doc-id="$store.state.data.ID"
+    disabled
+  />
+</template>
+<script>
+  export default {
+    data () {
+      return {
+        model: null
+      }
+    }
+  }
+</script>
+```
+</docs>
