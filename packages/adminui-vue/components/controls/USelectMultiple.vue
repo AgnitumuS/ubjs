@@ -52,9 +52,9 @@
             class="ub-select-multiple__input"
             @focus="isFocused = true"
             @blur="isFocused = false"
-            @keydown.native.exact.down.alt="onKeydownAltDown"
-            @keydown.native.exact.up.prevent
-            @keydown.native.exact.down.prevent
+            @keydown.exact.down.alt="onKeydownAltDown"
+            @keydown.exact.up.prevent
+            @keydown.exact.down.prevent
           >
         </div>
         <i
@@ -142,13 +142,14 @@ export default {
   name: 'USelectMultiple',
   props: {
     /**
-       * Selected entity ID
-       * @model
-       */
+     * Selected entity ID
+     * @model
+     */
     value: {
       type: Array,
       required: true
     },
+
     /**
      * attribute which is the value for v-model
      */
@@ -156,15 +157,17 @@ export default {
       type: String,
       default: 'ID'
     },
+
     /**
      * Name of entity. If repository is set entityName will be ignored
      */
     entityName: String,
+
     /**
      * Function which return UBRepository
      */
     repository: Function,
-    // repeat it here and pass down to ElEdit because we need to disable toggle & actions
+
     /**
      * Set disable status
      */
@@ -447,8 +450,8 @@ export default {
       }
     },
 
-    onKeydownAltDown ({ key, altKey }) {
-      if (key === 'ArrowDown' && altKey && !this.dropdownVisible) {
+    onKeydownAltDown () {
+      if (!this.dropdownVisible) {
         this.dropdownVisible = true
         this.fetchPage()
       }

@@ -444,8 +444,8 @@ export default {
       }
     },
 
-    onKeydownAltDown ({ key, altKey }) {
-      if (key === 'ArrowDown' && altKey && !this.dropdownVisible) {
+    onKeydownAltDown () {
+      if (!this.dropdownVisible) {
         this.dropdownVisible = true
         this.fetchPage()
       }
