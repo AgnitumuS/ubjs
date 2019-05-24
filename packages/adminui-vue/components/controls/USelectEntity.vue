@@ -48,6 +48,13 @@
             <i class="el-input__icon el-icon-delete" />
           </el-tooltip>
           <i
+            v-if="clearable && value !== null && value !== '' && value !== undefined"
+            slot="suffix"
+            style="cursor: pointer;"
+            class="el-input__icon el-icon-close"
+            @click="$emit('input', null)"
+          />
+          <i
             slot="suffix"
             class="el-input__icon"
             style="cursor: pointer;"
@@ -177,7 +184,12 @@ export default {
       default () {
         return []
       }
-    }
+    },
+
+    /**
+     * Add clear icon
+     */
+    clearable: Boolean
   },
 
   data () {
