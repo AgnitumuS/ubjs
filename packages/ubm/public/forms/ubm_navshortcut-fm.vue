@@ -62,6 +62,7 @@
         <u-select-collection
           subject-attr="admSubjID"
           collection-name="rightsSubjects"
+          clearable
         />
       </u-form-row>
 

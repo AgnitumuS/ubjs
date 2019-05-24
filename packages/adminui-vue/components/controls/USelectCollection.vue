@@ -3,6 +3,7 @@
     :value="selectedRecords"
     :entity-name="subjectEntityName"
     :disabled="disabled"
+    :clearable="clearable"
     @input="changeCollection"
   />
 </template>
@@ -37,7 +38,12 @@ export default {
     /**
      * Set disable status
      */
-    disabled: Boolean
+    disabled: Boolean,
+
+    /**
+     * Add clear icon
+     */
+    clearable: Boolean
   },
 
   data () {
