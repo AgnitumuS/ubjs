@@ -22,11 +22,13 @@ module.exports = {
       default: 'javascript'
     }
   },
+
   data () {
     return {
       textValue: this.value && typeof this.value === 'object' ? JSON.stringify(this.value, null, 2) : this.value
     }
   },
+
   mounted () {
     // do not put _codeMirror inside data to prevent it observation
     // Vue initialize reactivity BEFORE created(), so all NEW object properties assigned here is not reactive
@@ -35,10 +37,10 @@ module.exports = {
       this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
         mode: this.mode,
         lineNumbers: true,
-        lint: Object.assign({asi: true, esversion: 6}, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
+        lint: Object.assign({ asi: true, esversion: 6 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
         readOnly: false,
         tabSize: 2,
-        highlightSelectionMatches: {annotateScrollbar: true},
+        highlightSelectionMatches: { annotateScrollbar: true },
         matchBrackets: true,
         foldGutter: true,
         gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
@@ -46,6 +48,7 @@ module.exports = {
           'Ctrl-Space': 'autocomplete'
         }
       })
+      this.updateValue(this.value)
       this._codeMirror.on('change', debounce(300, cmInstance => {
         try {
           let newValFromCm = cmInstance.getValue()
@@ -59,23 +62,28 @@ module.exports = {
       }))
     })
   },
+
   watch: {
-    value (newVal) {
-      if (!this._codeMirror) return
-      let newValAsText = typeof newVal === 'object' ? JSON.stringify(newVal, null, 2) : newVal
-      if (newValAsText !== this.textValue) {
-        this.textValue = newValAsText
-        this._codeMirror.setValue(newValAsText)
-      }
-    },
+    value: 'updateValue',
+
     editorMode (newVal) {
       if (!this._codeMirror) return
       if (newVal !== this._codeMirror.getOption('mode')) {
         this._codeMirror.setOption('mode', newVal)
       }
     }
-  }
+  },
 
+  methods: {
+    updateValue (newVal) {
+      if (!this._codeMirror) return
+      let newValAsText = typeof newVal === 'object' ? JSON.stringify(newVal, null, 2) : newVal
+      if (newValAsText !== this.textValue) {
+        this.textValue = newValAsText
+        this._codeMirror.setValue(newValAsText)
+      }
+    }
+  }
 }
 </script>
 
