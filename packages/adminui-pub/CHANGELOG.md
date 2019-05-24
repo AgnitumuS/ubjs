@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.12]
+### Fixed
+ - enum combobox will use UBQLv2 if accessible
+ - UBProxy will skip disabled store filters while building UBQL from filter list.
+ Previous implementation adds wrong empty filter in this case
+
 ## [5.8.11]
 ### Changed
  - add support for UBQLv2 into `UBDetailGrid` and `UBProxy` (use value in where expression instead of values: {})

@@ -441,7 +441,7 @@ Ext.define('UB.core.UBUtil', {
   */
   convertFieldListToExtended: function (fieldList) {
     return fieldList.map(function (field) {
-      return (typeof field === 'string') ? {name: field} : field
+      return (typeof field === 'string') ? { name: field } : field
     })
   },
 
@@ -502,7 +502,7 @@ Ext.define('UB.core.UBUtil', {
         let whereList = attributeDefinition ? attributeDefinition.whereList : undefined
         fieldList = (attributeDefinition ? attributeDefinition.fieldList : null) || fieldList
         let orderList = (attributeDefinition ? attributeDefinition.orderList : undefined) ||
-                {'_asc': {expression: associatedEntityDisplayField, order: UB.core.UBCommand.order.sqlotAsc}}
+                { '_asc': { expression: associatedEntityDisplayField, order: UB.core.UBCommand.order.sqlotAsc } }
 
         ext = {
           xtype: 'ubboxselect', // "comboboxselect"
@@ -595,8 +595,8 @@ Ext.define('UB.core.UBUtil', {
       'int': { xtype: 'numberfield', allowDecimals: false, hideTrigger: true },
       'float': { xtype: 'numberfield', hideTrigger: true },
       'date': { xtype: 'ubdatefield', format: Ext.util.Format.dateFormat },
-      'boolean': {xtype: 'checkboxfield'},
-      'string': {xtype: 'ubtextfield', enforceMaxLength: true}
+      'boolean': { xtype: 'checkboxfield' },
+      'string': { xtype: 'ubtextfield', enforceMaxLength: true }
     }
     let physicalType = UBDomain.getPhysicalDataType(dataType)
     let config = configs[physicalType] || { xtype: 'ubtextfield' }
@@ -649,7 +649,7 @@ Ext.define('UB.core.UBUtil', {
       method: UB.core.UBCommand.methodName.SELECT,
       fieldList: fieldList,
       whereList: whereList,
-      orderList: orderList || {_asc: {expression: fieldList[1], order: UB.core.UBCommand.order.sqlotAsc}}
+      orderList: orderList || { _asc: { expression: fieldList[1], order: UB.core.UBCommand.order.sqlotAsc } }
     }
 
     _.forEach(ALLOWED_MISC, function (misc) {
@@ -684,12 +684,20 @@ Ext.define('UB.core.UBUtil', {
     let whereList = config && config.whereList ? config.whereList : {}
     let orderList = config && config.orderList
       ? config.orderList
-      : {byOrder: {expression: 'sortOrder', order: 'asc'}}
+      : { byOrder: { expression: 'sortOrder', order: 'asc' } }
 
-    whereList.enumGroupFilter = {
-      expression: '[eGroup]',
-      condition: 'equal',
-      values: { eGroup: enumGroup }
+    if (UB.connection.UBQLv2) {
+      whereList.enumGroupFilter = {
+        expression: '[eGroup]',
+        condition: 'equal',
+        value: enumGroup
+      }
+    } else {
+      whereList.enumGroupFilter = {
+        expression: '[eGroup]',
+        condition: 'equal',
+        values: { eGroup: enumGroup }
+      }
     }
 
     let store = Ext.create('UB.ux.data.UBStore', {
