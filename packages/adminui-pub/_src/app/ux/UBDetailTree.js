@@ -71,17 +71,13 @@ Ext.define('UB.ux.UBDetailTree', {
         resizable: false,
         templates: null,
         renderer: function (value, metaData, record/*, rowIdx, colIdx, store, view */) {
-          var
-            result,
-            template = this.templates[record.raw.nodeType]
+          var template = this.templates[record.raw.nodeType]
           if (!template) {
             var msg = Ext.util.Format.format(UB.i18n('neNaidenShablon'), record.raw.ID, record.raw.nodeType)
             UB.showErrorWindow(msg)
             throw new Error(msg)
           }
-          result = template.apply(record.raw)
-
-          return result
+          return template.apply(record.raw)
         }
       }
     ]
@@ -417,41 +413,24 @@ Ext.define('UB.ux.UBDetailTree', {
   },
 
   onDeleteItem: function () {
-    var
-      me = this,
-      behaviors = me.behaviors,
-      selection = me.getSelectionModel().getSelection()[0]
+    const me = this
+    const behaviors = me.behaviors
+    const selection = me.getSelectionModel().getSelection()[0]
 
-    if (!selection) {
-      return
-    }
+    if (!selection) return
 
-    Ext.Msg.confirm({
-      title: UB.i18n('deletionDialogConfirmCaption'),
-      msg: UB.i18n('vyUvereny'),
-      buttons: Ext.Msg.YESNO,
-      icon: Ext.Msg.QUESTION,
-      scope: me,
-      fn: function (buttonId, text, opt) {
-        var
-          param,
-          deleteMethod = UB.core.UBCommand.methodName.DELETE,
-          entity = behaviors[selection.raw.nodeType].entity
-
-        if (buttonId !== 'yes') {
-          return
-        }
-
-        param = {
-          entity: entity,
-          method: deleteMethod,
-          execParams: {ID: selection.raw.ID}
-        }
-
-        me.maskTree()
-        UB.core.UBService.runList([param], Ext.Function.bind(me.afterDelete, me, [entity], true), me)
-      }
-    })
+    return $App.dialogYesNo('deletionDialogConfirmCaption', 'areYouSure')
+      .then(choise => {
+        if (choise) {
+          const param = {
+            entity: behaviors[selection.raw.nodeType].entity,
+            method: UB.core.UBCommand.methodName.DELETE,
+            execParams: { ID: selection.raw.ID }
+          }
+          me.maskTree()
+          UB.core.UBService.runList([param], Ext.Function.bind(me.afterDelete, me, [param.entity], true), me)
+        } else return
+      })
   },
 
   afterDelete: function (response, request, entity) {
