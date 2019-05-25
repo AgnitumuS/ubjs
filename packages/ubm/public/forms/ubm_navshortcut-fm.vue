@@ -68,20 +68,7 @@
 
       <el-row>
         <el-col :span="12">
-          <el-tree
-            ref="tree"
-            :data="cmdCodeAttrs"
-            :expand-on-click-node="false"
-            :props="{
-              label: 'text'
-            }"
-            @node-click="selectNode"
-          >
-            <span
-              slot-scope="{ node }"
-              v-html="node.label"
-            />
-          </el-tree>
+          <shortcut-cmd-code-snippet />
         </el-col>
         <el-col :span="12">
           <u-code-mirror v-model="cmdCode" />
@@ -94,6 +81,7 @@
 <script>
 const ShortcutTree = require('./components/ShortcutTree.vue').default
 const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
+const ShortcutCmdCodeSnippet = require('./components/ShortcutCmdCodeSnippet.vue').default
 
 const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
@@ -140,34 +128,18 @@ const UbmNavshortcut = module.exports.default = {
   name: 'UbmNavshortcut',
   components: {
     ShortcutTree,
-    ShortcutIconSelect
+    ShortcutIconSelect,
+    ShortcutCmdCodeSnippet
   },
 
   computed: {
     ...mapInstanceFields(fieldList),
-
-    ...mapGetters(['entitySchema', 'loading']),
-
-    cmdCodeName () {
-      return 'uba_user'
-    },
-
-    cmdCodeEntitySchema () {
-      return this.$UB.connection.domain.get(this.cmdCodeName)
-    },
-
-    cmdCodeAttrs () {
-      return UB.core.UBUtil.getEntityAttributesTreeData('ubm_navshortcut_adm', '', 1)
-    }
+    ...mapGetters(['entitySchema', 'loading'])
   },
 
   methods: {
     getLabel (attr) {
       return this.entitySchema.attributes[attr].caption
-    },
-
-    selectNode (node) {
-      console.log(node)
     }
   }
 }
