@@ -46,6 +46,7 @@
     "element-ui": "^2.8.2",
     "font-awesome": "^4.7.0",
     "jdenticon": "^2.1.1",
+    "js-beautify": "^1.10.0",
     "lodash": "^4",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",

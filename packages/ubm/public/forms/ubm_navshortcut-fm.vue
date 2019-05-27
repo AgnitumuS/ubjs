@@ -6,74 +6,76 @@
       v-loading="loading"
       :label-width="160"
     >
-      <u-form-row label="ID">
-        <el-row
-          :gutter="10"
-          type="flex"
-          align="middle"
-          justify="space-between"
+      <el-tabs>
+        <el-tab-pane :label="$ut('main')">
+          <u-form-row label="ID">
+            <el-row
+              :gutter="10"
+              type="flex"
+              align="middle"
+              justify="space-between"
+            >
+              <el-col :span="8">
+                <el-input
+                  readonly
+                  :value="ID"
+                />
+              </el-col>
+
+              <el-col
+                :span="6"
+                :offset="2"
+              >
+                <el-switch
+                  v-model="isFolder"
+                  :active-text="getLabel('isFolder')"
+                />
+              </el-col>
+
+              <el-col :span="8">
+                <el-switch
+                  v-model="inWindow"
+                  :active-text="getLabel('inWindow')"
+                />
+              </el-col>
+            </el-row>
+          </u-form-row>
+
+          <u-auto-field
+            v-model="code"
+            code="code"
+          />
+
+          <u-auto-field
+            v-model="caption"
+            code="caption"
+          />
+
+          <shortcut-tree />
+
+          <shortcut-icon-select @select="iconCls = $event" />
+
+          <u-auto-field
+            v-model="displayOrder"
+            code="displayOrder"
+          />
+
+          <u-form-row label="selectedRights">
+            <u-select-collection
+              subject-attr="admSubjID"
+              collection-name="rightsSubjects"
+              clearable
+            />
+          </u-form-row>
+        </el-tab-pane>
+
+        <el-tab-pane
+          :label="getLabel('cmdCode')"
+          lazy
         >
-          <el-col :span="8">
-            <el-input
-              readonly
-              :value="ID"
-            />
-          </el-col>
-
-          <el-col
-            :span="6"
-            :offset="2"
-          >
-            <el-switch
-              v-model="isFolder"
-              :active-text="getLabel('isFolder')"
-            />
-          </el-col>
-
-          <el-col :span="8">
-            <el-switch
-              v-model="inWindow"
-              :active-text="getLabel('inWindow')"
-            />
-          </el-col>
-        </el-row>
-      </u-form-row>
-
-      <u-auto-field
-        v-model="code"
-        code="code"
-      />
-
-      <u-auto-field
-        v-model="caption"
-        code="caption"
-      />
-
-      <shortcut-tree />
-
-      <shortcut-icon-select @select="iconCls = $event" />
-
-      <u-auto-field
-        v-model="displayOrder"
-        code="displayOrder"
-      />
-
-      <u-form-row label="selectedRights">
-        <u-select-collection
-          subject-attr="admSubjID"
-          collection-name="rightsSubjects"
-          clearable
-        />
-      </u-form-row>
-
-      <el-row>
-        <el-col :span="12">
-          <shortcut-cmd-code-snippet />
-        </el-col>
-        <el-col :span="12">
-          <u-code-mirror v-model="cmdCode" />
-        </el-col>
-      </el-row>
+          <shortcut-cmd-code />
+        </el-tab-pane>
+      </el-tabs>
     </u-form>
   </div>
 </template>
@@ -81,7 +83,7 @@
 <script>
 const ShortcutTree = require('./components/ShortcutTree.vue').default
 const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
-const ShortcutCmdCodeSnippet = require('./components/ShortcutCmdCodeSnippet.vue').default
+const ShortcutCmdCode = require('./components/ShortcutCmdCode.vue').default
 
 const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
@@ -129,7 +131,7 @@ const UbmNavshortcut = module.exports.default = {
   components: {
     ShortcutTree,
     ShortcutIconSelect,
-    ShortcutCmdCodeSnippet
+    ShortcutCmdCode
   },
 
   computed: {
