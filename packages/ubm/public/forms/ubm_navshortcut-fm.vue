@@ -123,6 +123,16 @@ module.exports.mount = function (params) {
     FormComponent: UbmNavshortcut,
     masterRequest,
     collectionRequests
+  }).then((store) => {
+    if (params.isFolder) {
+      store.commit('SET_DATA', { key: 'isFolder', value: params.isFolder })
+    }
+    if (params.desktopID) {
+      store.commit('SET_DATA', { key: 'desktopID', value: params.desktopID })
+    }
+    if (params.parentID) {
+      store.commit('SET_DATA', { key: 'parentID', value: params.parentID })
+    }
   })
 }
 

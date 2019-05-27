@@ -1,6 +1,9 @@
 <template>
   <div class="ub-code-mirror">
-    <el-tooltip :enterable="false">
+    <el-tooltip
+      :enterable="false"
+      placement="left"
+    >
       <template slot="content">
         <h5>Helpers</h5>
         <ul>

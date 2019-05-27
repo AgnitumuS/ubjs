@@ -15,13 +15,14 @@ module.exports = {
 
 /**
  * Helper for all boilerplate functions which
- * @param  {Object}              options
- * @param  {Object}              options.params             ShowForm params
- * @param  {VueComponent}        options.FormComponent      Component which will be rendered
+ * @param  {Object}                  options
+ * @param  {Object}                  options.params             ShowForm params
+ * @param  {VueComponent}            options.FormComponent      Component which will be rendered
  * @param  {ClientRepository}        options.masterRequest      Request for master record
  * @param  {Array<ClientRepository>} options.collectionRequests Initialization for collection requests
+ * @return {Promise.<VuexStore>}
  */
-function formBoilerplate ({
+async function formBoilerplate ({
   params,
   FormComponent: component,
   masterRequest,
@@ -30,12 +31,12 @@ function formBoilerplate ({
   // will activate tab if form already mounted
   if (mount.activateIfMounted(params)) return
 
-  const assignInstance = instance.createInstanceModule()
+  const assignInstance = instance.createInstanceModule(params.store)
   const assignProcessing = processing.processingModule(assignInstance, masterRequest, collectionRequests)
   const store = new Vuex.Store(assignProcessing)
   const validator = validation.validateEntitySchema(store)
 
-  store.dispatch('init', params.instanceID)
+  await store.dispatch('init', params.instanceID)
   const FormComponent = Vue.extend({
     mixins: [validation.validationInjectMixin],
     ...component
@@ -47,4 +48,6 @@ function formBoilerplate ({
     store,
     validator
   })
+
+  return store
 }
