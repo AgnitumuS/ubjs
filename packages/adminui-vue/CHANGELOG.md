@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.5]
+### Changed
+ - `u-code-mirror` - added shortcuts tooltip
+ - `u-code-mirror` - added key bindings according old codeMirror 
+
 ## [1.5.3]
 ### Fixed
  - `processing` emit update grid and add loading status when dispatch 'deleteInstance'

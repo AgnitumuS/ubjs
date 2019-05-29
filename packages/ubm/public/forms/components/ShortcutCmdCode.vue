@@ -1,5 +1,8 @@
 <template>
-  <el-row>
+  <el-row
+    type="flex"
+    style="height: 100%"
+  >
     <el-col :span="6">
       <div
         ref="snippet"
@@ -20,10 +23,14 @@
         </el-tree>
       </div>
     </el-col>
-    <el-col :span="18">
+    <el-col
+      :span="18"
+      style="height: 100%"
+    >
       <u-code-mirror
         ref="codeMirror"
         v-model="cmdCode"
+        style="height: 100%"
         @loaded="setSnippetHeight"
       />
     </el-col>

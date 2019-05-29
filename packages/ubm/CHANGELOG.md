@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.20]
+### Changed
+ - changed `ubn_navshortcut` form to vue
+
 ## [5.1.11]
 ### Fixed
  - insertion of form with type `module` do not throw error
