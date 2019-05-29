@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.22]
-## Fixed
+### Fixed
  - potential issue with wrong properties values inside overrided schedulers (for example "singleton" may unexpectedly became false) 
  - for overrided schedulers fill `originalModel` attribute
  
