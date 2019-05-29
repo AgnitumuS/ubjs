@@ -314,7 +314,7 @@ function udiskController (diskEntity) {
     var fileNames = execParams.fileNames
     var selected = execParams.selected
     var action = execParams.action
-    var targetFolderID = execParams.targetFolderID
+    var targetFolderID = execParams.targetFolderID || null
     var sourceFolderID = execParams.sourceFolderID
     var cStore; var cardStore; var allFiles = {}; var fileInfo
     var suffix; var newName; var srcFN; var srcExt
@@ -323,7 +323,7 @@ function udiskController (diskEntity) {
     if (!selected || selected.length <= 0) {
       throw new Error('Invalid value of selected parameter')
     }
-    if (!targetFolderID) {
+    if (!targetFolderID && targetFolderID !== null) {
       throw new Error('Invalid value of targetFolderID parameter')
     }
     cStore = UB.DataStore(entityName)
