@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.19]
+### Fixed
+ - in case ID attribute explicitly specified in meta file and mapped to another attribute whose isUnique===false
+ then then the primary key for such an entity is not created 
+
 ## [5.3.12]
 ### Added
  - support for Oracle Text and CTXCAT indexes (require Oracle Text to be enabled - see https://docs.oracle.com/cd/E11882_01/install.112/e27508/initmedia.htm#DFSIG269)

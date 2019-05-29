@@ -4,7 +4,7 @@
  */
 const _ = require('lodash')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
-const {TableDefinition, strIComp} = require('./AbstractSchema')
+const { TableDefinition, strIComp } = require('./AbstractSchema')
 
 /**
  * Return name of a table for entity (depending of a mapping)
@@ -354,8 +354,16 @@ class DDLGenerator {
         })
       }
     }
-
-    tableDef.primaryKey = {name: 'PK_' + sqlAlias, keys: [getAttributeDBName(entity, 'ID')]} // [UB-1386]
+    if (entity.attributes['ID']) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
+      let createPK = true
+      let m = entity.attributes['ID'].mapping
+      if (m && m.expressionType === 'Field') {
+        if (entity.attributes[m.expression]) createPK = entity.attributes[m.expression].isUnique
+      }
+      if (createPK) {
+        tableDef.primaryKey = { name: 'PK_' + sqlAlias, keys: [getAttributeDBName(entity, 'ID')] } // [UB-1386]
+      }
+    }
 
     this.addCustomElements(tableDef, entity)
 
@@ -421,7 +429,7 @@ class DDLGenerator {
           switch (commands.type) {
             case 'INDEX':
             case 'CATALOGUE':
-              objDef = {name: dbKey, keys: [], isUnique: definition.isUnique}
+              objDef = { name: dbKey, keys: [], isUnique: definition.isUnique }
               if (commands.type === 'CATALOGUE') objDef.indexType = commands.type
               _.forEach(definition.keys, (fKeyOptions, fkeyText) => {
                 if (fKeyOptions.func && DDLGenerator.isOracle(dialect)) {
@@ -439,17 +447,17 @@ class DDLGenerator {
               tableDef.addIndex(objDef, true)
               break
             case 'CHECK':
-              objDef = {name: dbKey, type: 'custom', expression: definition.check}
+              objDef = { name: dbKey, type: 'custom', expression: definition.check }
               tableDef.addCheckConstr(objDef, true)
               break
             case 'FK':
-              objDef = {name: dbKey, keys: [ definition.key ], references: definition.references, generateFK: true}
+              objDef = { name: dbKey, keys: [ definition.key ], references: definition.references, generateFK: true }
               this.relatedEntities.push(objDef.references)
               tableDef.addFK(objDef, true)
               break
           }
         } else {
-          objDef = {name: dbKey, expression: commands[ DDLGenerator.dbDialectes[ dialect ] ]}
+          objDef = { name: dbKey, expression: commands[ DDLGenerator.dbDialectes[ dialect ] ] }
           tableDef.addOther(objDef)
         }
       })
@@ -578,7 +586,7 @@ class DDLGenerator {
       dataType: 'BIGINT',
       allowNull: false
     })
-    tableDef.primaryKey = {name: 'PK_' + attribute.associationManyData, keys: [ 'sourceID', 'destID' ]}
+    tableDef.primaryKey = { name: 'PK_' + attribute.associationManyData, keys: [ 'sourceID', 'destID' ] }
     tableDef.addFK({
       name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
       keys: [ 'sourceID'.toUpperCase() ],
