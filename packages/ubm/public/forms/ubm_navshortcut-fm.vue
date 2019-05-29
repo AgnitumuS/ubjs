@@ -6,8 +6,11 @@
       v-loading="loading"
       :label-width="160"
     >
-      <el-tabs>
-        <el-tab-pane :label="$ut('main')">
+      <el-tabs @tab-click="setCodeCmdHeight">
+        <el-tab-pane
+          ref="main"
+          :label="$ut('main')"
+        >
           <u-form-row label="ID">
             <el-row
               :gutter="10"
@@ -60,7 +63,7 @@
             code="displayOrder"
           />
 
-          <u-form-row label="selectedRights">
+          <u-form-row label="navShortcutRights">
             <u-select-collection
               subject-attr="admSubjID"
               collection-name="rightsSubjects"
@@ -70,6 +73,7 @@
         </el-tab-pane>
 
         <el-tab-pane
+          ref="cmdCode"
           :label="getLabel('cmdCode')"
           lazy
         >
@@ -144,6 +148,12 @@ const UbmNavshortcut = module.exports.default = {
     ShortcutCmdCode
   },
 
+  data () {
+    return {
+      mainHeight: null // get form height after mount
+    }
+  },
+
   computed: {
     ...mapInstanceFields(fieldList),
     ...mapGetters(['entitySchema', 'loading'])
@@ -152,7 +162,20 @@ const UbmNavshortcut = module.exports.default = {
   methods: {
     getLabel (attr) {
       return this.entitySchema.attributes[attr].caption
+    },
+
+    // on tab change set height to cmdCode pane
+    async setCodeCmdHeight () {
+      await this.$nextTick()
+      if (this.$refs.cmdCode.$el) {
+        this.$refs.cmdCode.$el.style.height = this.mainHeight + 'px'
+      }
     }
+  },
+
+  async mounted () {
+    await this.$nextTick()
+    this.mainHeight = this.$refs.main.$el.offsetHeight
   }
 }
 </script>

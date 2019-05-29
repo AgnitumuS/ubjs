@@ -12,9 +12,7 @@
         slot="append"
         icon="el-icon-edit"
         @click="dialogVisible = true"
-      >
-        {{ $ut('Edit') }}
-      </el-button>
+      />
     </el-input>
 
     <el-dialog

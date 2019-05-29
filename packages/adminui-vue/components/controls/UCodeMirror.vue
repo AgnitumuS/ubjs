@@ -85,7 +85,7 @@ module.exports = {
           'Ctrl-B': this.doBeautify
         }
       })
-      this._codeMirror.setValue(this.value)
+      this._codeMirror.setValue(this.value || '')
       this._codeMirror.on('change', debounce(300, cmInstance => {
         try {
           let newValFromCm = cmInstance.getValue()
