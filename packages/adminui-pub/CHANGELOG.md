@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.15]
+### Fixed
+ - update `UBExtension.crx` to allow install Chrome extension for Chrome >= 74 in offline mode
+
 ## [5.8.14]
 ### Fixed
  - master-detail where expression transformation fixed for cases when server do not support UBQLv2
