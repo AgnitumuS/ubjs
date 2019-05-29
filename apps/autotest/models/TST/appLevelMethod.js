@@ -316,3 +316,18 @@ function dbLong (req, resp) {
   resp.writeEnd(data)
 }
 App.registerEndpoint('dbLong', dbLong, false)
+
+
+/**
+ * Single database query (ORM)  for performance test
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ */
+function arrayBind (req, resp) {
+  let s = UB.DataStore('uba_user')
+  s.execSQL('insert into uba_user (ID, name) values (?,?)', {ids: [1, 2], names: ['aa', 'bb']})
+  resp.statusCode = 200
+  resp.writeHead('Content-Type: application/json; charset=UTF-8')
+  resp.writeEnd({ok: true})
+}
+App.registerEndpoint('arrayBind', arrayBind, false)
