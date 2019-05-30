@@ -266,7 +266,11 @@ function whereListToFunctions (ubql, fieldList) {
       throw new Error(`Filtering by attribute "${property}" what not in fieldList is not allowed for cached entity "${ubql.entity}"`)
     }
     // support for future (UB 5.10) where with "value" instead of "values"
-    fValue = (clause.value !== undefined) ? clause.value : clause.values[Object.keys(clause.values)[0]] // _.values(clause.values)[0]
+    if (clause.value !== undefined) {
+      fValue = clause.value
+    } else if (clause.values !== undefined) {
+      fValue = clause.values[Object.keys(clause.values)[0]]
+    }
     filters.push(filterFabricFn(propIdx, clause.condition, fValue))
   }
   // check for top level ID  - in this case add condition for filter by ID

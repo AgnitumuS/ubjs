@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.1]
+### Fixed
+ - error in LocalDataStore filter fabric for `isNull`/`isNotNull` conditions (used inside filtering of cached entities on the client side)   
+ 
 ## [5.1.0]
 ### Added
   - support for UBQL v2 (value instead of values in whereList)
@@ -41,7 +45,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    repo.orderBy('code', null) // remove order by code
    let unorderedData = await repo.selectAsObject() // NOT ordered
   ```
-
  
 ## [5.0.18]
 ### Added
