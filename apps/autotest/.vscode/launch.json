@@ -4,21 +4,21 @@
         {
             "type": "firefox",
             "request": "attach",
-            "name": "SyNode",
-            "addonType": "webExtension",
-            "addonPath": "${workspaceRoot}/",
+            "name": "UB",
+            // "addonType": "webExtension",
+            // "addonPath": "${workspaceRoot}/",
             "host": "127.0.0.1",
             "port": 6000,
             "sourceMaps": "client",
-            "log": {
-                "fileName": "${workspaceFolder}/vscode-firefox-debug.log",
-                "fileLevel": {
-                    "default": "Debug"
-                },
-                "consoleLevel": {
-                    "default": "Debug"
-                }
-            }
+            // "log": {
+            //     "fileName": "${workspaceFolder}/vscode-firefox-debug.log",
+            //     "fileLevel": {
+            //         "default": "Debug"
+            //     },
+            //     "consoleLevel": {
+            //         "default": "Debug"
+            //     }
+            // }
         }
     ]
 }
