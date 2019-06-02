@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.17]
+### Fixed
+ - remove exception then user press Tab on last element inside BasePanel
+
 ## [5.8.16]
 ### Changed
  - EntityGrinPanel will skip columns auto fit in case column width (or flex) is already defined 
