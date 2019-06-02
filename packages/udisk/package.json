@@ -18,10 +18,12 @@
   "main": "udisk.js",
   "browser": "./public/udisk-public.js",
   "dependencies": {
-    "@unitybase/adminui-pub": "^5.8.16",
     "@unitybase/base": "^5.1.12",
     "@unitybase/ub": "^5.2.16",
     "lodash": "^4"
+  },
+  "peerDependencies": {
+    "@unitybase/adminui-pub": "^5.8.16"
   },
   "keywords": [
     "UnityBase",
