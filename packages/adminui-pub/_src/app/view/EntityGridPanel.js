@@ -312,10 +312,10 @@ Ext.define('UB.view.EntityGridPanel', {
         }
       }
 
-      // auto fit columns in case count 1 or 2
+      // auto fit columns in case count 1 or 2 and width || flex is not set
       if (columns.length < 3) {
         columns.forEach(function (column) {
-          if (!column.flex) {
+          if (!column.flex && !column.width) {
             column.flex = 1
             delete column.stateId
           }
