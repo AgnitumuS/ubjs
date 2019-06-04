@@ -18,6 +18,15 @@
 	"singleton": true,
 	"runAs": "admin",
 	"logSuccessful": false
+  },
+  {
+    "name": "ubqMessagesCleanup",
+	"schedulingCondition": "true",
+	"cron": "15 15 5 * * *",
+	"description": "Truncate ubq_messages table if there are no non-pending tasks",
+	"module": "./ubqCleanupJob",
+	"singleton": true,
+	"runAs": "admin",
+	"logSuccessful": true
   }
-
 ]

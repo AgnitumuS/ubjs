@@ -4,10 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.26]
+### Added
+ - new scheduler `ubqMessagesCleanup` for truncating ubq_messages table (if there are no non-pending tasks).
+ Scheduled at 5:15AM by default. 
+
 ## [5.2.22]
 ### Fixed
  - potential issue with wrong properties values inside overrided schedulers (for example "singleton" may unexpectedly became false) 
- - for overrided schedulers fill `originalModel` attribute
+ - for overrated schedulers fill `originalModel` attribute
  
 ### Changed
  - correct Ukrainian translation for `ubq_scheduler` attributes
