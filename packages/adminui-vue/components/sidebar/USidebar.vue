@@ -203,6 +203,7 @@ export default {
         for (const shortcut of shortcuts) {
           if (shortcut.parentID) {
             const parent = shortcuts.find(s => s.ID === shortcut.parentID)
+            if (!parent) continue // parent folder is not accessible due to RLS - skip shortcut
             if (parent.children) {
               parent.children.push(shortcut)
             } else {
