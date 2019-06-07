@@ -182,6 +182,16 @@ export default {
         this.$forceUpdate()
       },
 
+      'portal:navbar:prependSlot': (Component, bindings) => {
+        if (Array.isArray(this.$slots.default)) {
+          // this.$slots.default.push(this.$createElement(Component, bindings))
+          this.$slots.default = this.$slots.default.slice().unshift(this.$createElement(Component, bindings)) // prepend data to array
+        } else {
+          this.$slots.default = [this.$createElement(Component, bindings), this.$slots.default]
+        }
+        this.$forceUpdate()
+      },
+
       'portal:navbar:defineSlot': (Component, bindings) => {
         this.$slots.default = this.$createElement(Component, bindings)
         this.$forceUpdate()

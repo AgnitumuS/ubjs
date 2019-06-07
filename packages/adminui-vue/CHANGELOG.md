@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.5.6]
 ### Fixed
  - USidebar: if parent folder is not accessible due to RLS - skip shortcut
+  
+### Added
+ - new event fired by Sidebar in case desktop is changed: `$App.fireEvent('portal:sidebar:desktopChanged', ID)`
+ - UNavbar will handle new event `portal:navbar:prependSlot` - prepend some elements on the left of existed navbar slot elements  
 
 ## [1.5.3]
 ### Fixed

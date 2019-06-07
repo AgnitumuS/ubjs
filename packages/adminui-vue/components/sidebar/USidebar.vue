@@ -22,7 +22,6 @@
         v-model="selectedDesktop"
         style="width: 100%"
         placeholder="Desktop"
-        @change="saveInLocalStorage"
       >
         <el-option
           v-for="item in desktops"
@@ -131,6 +130,11 @@ export default {
       window.localStorage.setItem('portal:sidebar:isCollapsed', value)
       const { full, collapsed } = $App.viewport.leftPanel.defaultSizes
       $App.viewport.leftPanel.setWidth(value ? collapsed : full)
+    },
+    selectedDesktop (value) {
+      if (!value) return
+      $App.fireEvent('portal:sidebar:desktopChanged', value)
+      this.saveInLocalStorage(value)
     }
   },
 
