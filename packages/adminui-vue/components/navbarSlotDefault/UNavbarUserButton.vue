@@ -21,17 +21,19 @@
       class="ub-navbar__menu-dropdown"
     >
       <el-dropdown-item
-        style="text-align: center"
         disabled
       >
+        <i class="fa fa-user" />
         {{ userName }}
       </el-dropdown-item>
 
-      <el-dropdown-item v-if="checkboxVisible">
-        <el-checkbox v-model="checkboxValue">
+      <el-dropdown-item v-if="negotiateEnabled">
+        <el-checkbox v-model="silenceKerberosLogin">
           {{ $ut('KerberosRememberUserMenu') }}
         </el-checkbox>
       </el-dropdown-item>
+
+      <slot />
 
       <el-dropdown-item
         divided
@@ -104,6 +106,13 @@
         <i class="fa fa-sign-out" />
         {{ $ut('logout') }}
       </el-dropdown-item>
+      <el-dropdown-item
+        divider
+        disabled
+      >
+        <i class="fa fa-info" />
+        {{ appVersion }}
+      </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -113,13 +122,16 @@ export default {
   name: 'UNavbarUserButton',
 
   data () {
-    const checkboxValue = window.localStorage[this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN] === 'true'
-    const checkboxVisible = this.$UB.connection.authMethods.indexOf('Negotiate') > 0
+    const silenceKerberosLogin = window.localStorage[this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN] === 'true'
+    const negotiateEnabled = this.$UB.connection.authMethods.indexOf('Negotiate') > 0
     const userName = this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
+    const cfg = this.$UB.connection.appConfig
+    const appVersion = `${cfg.serverVersion} / ${cfg.appVersion}`
     return {
-      checkboxValue,
-      checkboxVisible,
+      silenceKerberosLogin,
+      negotiateEnabled,
       userName,
+      appVersion,
       iconClass: 'fa fa-user',
       svgIcon: '',
       supportedLanguages: this.$UB.connection.appConfig.supportedLanguages
@@ -130,9 +142,22 @@ export default {
   },
 
   watch: {
-    checkboxValue (value) {
+    silenceKerberosLogin (value) {
       window.localStorage.setItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN, value)
     }
+  },
+
+  created () {
+    $App.on({
+      'portal:navbar:userButton:appendSlot': (Component, bindings) => {
+        if (Array.isArray(this.$slots.default)) {
+          this.$slots.default.push(this.$createElement(Component, bindings))
+        } else {
+          this.$slots.default = [this.$slots.default, this.$createElement(Component, bindings)]
+        }
+        this.$forceUpdate()
+      }
+    })
   },
 
   mounted () {
