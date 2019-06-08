@@ -126,7 +126,8 @@ export default {
     const negotiateEnabled = this.$UB.connection.authMethods.indexOf('Negotiate') > 0
     const userName = this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
     const cfg = this.$UB.connection.appConfig
-    const appVersion = `${cfg.serverVersion} / ${cfg.appVersion}`
+    let customVersion = this.$UB.connection.userData('appVersion')
+    const appVersion = customVersion || `${cfg.serverVersion} / ${cfg.appVersion}`
     return {
       silenceKerberosLogin,
       negotiateEnabled,

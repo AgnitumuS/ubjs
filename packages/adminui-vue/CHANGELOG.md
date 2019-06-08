@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - new event fired by Sidebar in case desktop is changed: `$App.fireEvent('portal:sidebar:desktopChanged', ID)`
  - UNavbar will handle new event `portal:navbar:prependSlot` - prepend some elements on the left of existed navbar slot elements
- - UNavbar will handle new event `portal:navbar:userButton:appendSlot` - insert some elements into user menu 
+ - UNavbar will handle new event `portal:navbar:userButton:appendSlot` - insert some elements into user menu
+ - Version item is added to the UNavbar user button menu. Application can define custom version number in uData `appVersion` key 
 
 ## [1.5.3]
 ### Fixed
