@@ -9,7 +9,6 @@
       :enterable="false"
       :content="item.label"
       placement="top"
-      :enterable="false"
     >
       <i
         :class="item.iconCls"
@@ -50,12 +49,6 @@
 export default {
   name: 'SidebarSlotExample',
 
-  computed: {
-    isCollapsed () {
-      return this.$parent.isCollapsed
-    }
-  },
-
   data () {
     return {
       quickAccessMenu: [{
@@ -74,6 +67,12 @@ export default {
         iconCls: 'el-icon-star-on',
         label: 'Favorite'
       }]
+    }
+  },
+
+  computed: {
+    isCollapsed () {
+      return this.$parent.isCollapsed
     }
   }
 }

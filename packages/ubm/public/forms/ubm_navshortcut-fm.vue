@@ -1,0 +1,181 @@
+<template>
+  <div class="ub-form-container">
+    <u-toolbar :validation="$v" />
+
+    <u-form
+      v-loading="loading"
+      :label-width="160"
+    >
+      <el-tabs @tab-click="setCodeCmdHeight">
+        <el-tab-pane
+          ref="main"
+          :label="$ut('main')"
+        >
+          <u-form-row label="ID">
+            <el-row
+              :gutter="10"
+              type="flex"
+              align="middle"
+              justify="space-between"
+            >
+              <el-col :span="8">
+                <el-input
+                  readonly
+                  :value="ID"
+                />
+              </el-col>
+
+              <el-col
+                :span="6"
+                :offset="2"
+              >
+                <el-switch
+                  v-model="isFolder"
+                  :active-text="getLabel('isFolder')"
+                />
+              </el-col>
+
+              <el-col :span="8">
+                <el-switch
+                  v-model="inWindow"
+                  :active-text="getLabel('inWindow')"
+                />
+              </el-col>
+            </el-row>
+          </u-form-row>
+
+          <u-auto-field
+            v-model="code"
+            code="code"
+          />
+
+          <u-auto-field
+            v-model="caption"
+            code="caption"
+          />
+
+          <shortcut-tree />
+
+          <shortcut-icon-select @select="iconCls = $event" />
+
+          <u-auto-field
+            v-model="displayOrder"
+            code="displayOrder"
+          />
+
+          <u-form-row label="navShortcutRights">
+            <u-select-collection
+              subject-attr="admSubjID"
+              collection-name="rightsSubjects"
+              clearable
+            />
+          </u-form-row>
+        </el-tab-pane>
+
+        <el-tab-pane
+          ref="cmdCode"
+          :label="getLabel('cmdCode')"
+          lazy
+        >
+          <shortcut-cmd-code />
+        </el-tab-pane>
+      </el-tabs>
+    </u-form>
+  </div>
+</template>
+
+<script>
+const ShortcutTree = require('./components/ShortcutTree.vue').default
+const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
+const ShortcutCmdCode = require('./components/ShortcutCmdCode.vue').default
+
+const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { mapGetters } = require('vuex')
+const UB = require('@unitybase/ub-pub')
+
+const fieldList = [
+  'ID',
+  'desktopID',
+  'parentID',
+  'code',
+  'isFolder',
+  'caption',
+  'cmdCode',
+  'inWindow',
+  'displayOrder',
+  'iconCls'
+]
+
+module.exports.mount = function (params) {
+  const masterRequest = UB.connection
+    .Repository(params.entity)
+    .attrs(fieldList)
+
+  const collectionRequests = {
+    rightsSubjects: UB.connection
+      .Repository('ubm_navshortcut_adm')
+      .attrs('ID', 'instanceID', 'admSubjID')
+      .where('instanceID', '=', params.instanceID)
+  }
+
+  params.title = 'Shortcut edit' // temp
+  params.isModal = true
+  params.modalClass = 'ub-dialog__reset-padding'
+
+  formBoilerplate({
+    params,
+    FormComponent: UbmNavshortcut,
+    masterRequest,
+    collectionRequests
+  }).then((store) => {
+    if (params.isFolder) {
+      store.commit('SET_DATA', { key: 'isFolder', value: params.isFolder })
+    }
+    if (params.desktopID) {
+      store.commit('SET_DATA', { key: 'desktopID', value: params.desktopID })
+    }
+    if (params.parentID) {
+      store.commit('SET_DATA', { key: 'parentID', value: params.parentID })
+    }
+  })
+}
+
+const UbmNavshortcut = module.exports.default = {
+  name: 'UbmNavshortcut',
+  components: {
+    ShortcutTree,
+    ShortcutIconSelect,
+    ShortcutCmdCode
+  },
+
+  data () {
+    return {
+      mainHeight: null // get form height after mount
+    }
+  },
+
+  computed: {
+    ...mapInstanceFields(fieldList),
+    ...mapGetters(['entitySchema', 'loading'])
+  },
+
+  methods: {
+    getLabel (attr) {
+      return this.entitySchema.attributes[attr].caption
+    },
+
+    // on tab change set height to cmdCode pane
+    async setCodeCmdHeight () {
+      await this.$nextTick()
+      if (this.$refs.cmdCode.$el) {
+        this.$refs.cmdCode.$el.style.height = this.mainHeight + 'px'
+      }
+    }
+  },
+
+  async mounted () {
+    await this.$nextTick()
+    this.mainHeight = this.$refs.main.$el.offsetHeight
+  }
+}
+</script>

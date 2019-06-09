@@ -93,7 +93,8 @@
   ],
   "mixins": {
     "mStorage": {
-      "simpleAudit": true
+      "simpleAudit": true,
+      "safeDelete": true
     }
   },
   "dbKeys": {

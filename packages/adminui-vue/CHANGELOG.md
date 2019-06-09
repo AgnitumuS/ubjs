@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - UNavbar will handle new event `portal:navbar:userButton:appendSlot` - insert some elements into user menu
  - Version item is added to the UNavbar user button menu. Application can define custom version number in uData `appVersion` key 
 
+## [1.5.5]
+### Changed
+ - `u-code-mirror` - added shortcuts tooltip
+ - `u-code-mirror` - added key bindings according old codeMirror 
+
 ## [1.5.3]
 ### Fixed
  - `processing` emit update grid and add loading status when dispatch 'deleteInstance'
@@ -35,14 +40,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - changed before close function in mount module, can except empty store or store without save action
  - `UInput` - fixed bug when user open popup then will send empty locale after form saved 
 
-### Added
- - `UAutoField` - component renders form field according to the attribute type
-
 ### Changed
  - `mount` module. Renamed `mount -> mountForm`
  - `formBoilerplate` exports `activateIfMounted` and `mountForm`, instead `mountHelpers`
  - `UInput` - in case type===number will emit value in each input event instead of change
  - `Uinput` - added validation to locale fields if master field is required and form not new
+ 
+### Added
+ - `UAutoField` - component renders form field according to the attribute type
 
 ## [1.5.0]
 ### Fixed

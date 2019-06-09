@@ -249,19 +249,12 @@ export default {
 
       if (action === 'addShortcut') {
         command.desktopID = desktopID
-        if (parentID) {
-          command.parentID = parentID
-        }
-        if (isFolder) {
-          command.isFolder = isFolder
-        }
+        command.parentID = isFolder ? ID : parentID
       }
 
       if (action === 'addFolder') {
         command.desktopID = desktopID
-        if (parentID) {
-          command.parentID = parentID
-        }
+        command.parentID = isFolder ? ID : parentID
         command.isFolder = true
       }
 
