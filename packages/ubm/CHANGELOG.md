@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.1.20]
+## [5.1.21]
 ### Changed
- - changed `ubn_navshortcut` form to vue
+ - `ubm_navshortcut` form rewritten to Vue
 
 ## [5.1.11]
 ### Fixed
