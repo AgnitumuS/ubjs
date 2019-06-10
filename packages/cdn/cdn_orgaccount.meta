@@ -33,7 +33,7 @@
 		{
 			"name": "code",
 			"dataType": "String",
-			"size": 20,
+			"size": 29,
 			"caption": "Code",
 			"description": "Code of the account",
 			"allowNull": false

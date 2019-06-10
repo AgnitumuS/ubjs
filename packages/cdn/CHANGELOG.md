@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.15]
+### Changed
+ - cdn_orgaccount code length changed 20 -> 29  
+ 
 ## [5.1.5]
 ### Changed
  - File cnd_person.meta.ka fixed
