@@ -106,8 +106,13 @@ Ext.define('UB.ux.UBCodeMirror', {
       return response
     }
 
-    if (cfg.contentType && cfg.contentType.endsWith('yaml')) {
+    let ct = cfg.contentType || ''
+    if (ct.endsWith('yaml')) {
       this.editorMode = 'yaml'
+    } else if (ct.endsWith('x-vue')) {
+      this.editorMode = {
+        name: 'vue'
+      }
     } else {
       this.editorMode = 'javascript'
     }

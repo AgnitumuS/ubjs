@@ -20,6 +20,7 @@ require('codemirror/addon/dialog/dialog')
 require('codemirror/addon/dialog/dialog.css')
 require('codemirror/mode/javascript/javascript')
 require('codemirror/mode/yaml/yaml')
+require('codemirror/mode/vue/vue')
 
 require('codemirror/addon/hint/show-hint')
 //require('codemirror/addon/hint/show-hint.css')

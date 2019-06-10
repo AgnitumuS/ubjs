@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.19]
+### Added
+  - UBDocument will create CodeMirror for `text/javascript` & `script/x-vue` MIME types
+  - UBCodeMirror recognize `sctipt/x-vue` / `text/x-vue` content types - Vue style will be used in this case
+
 ## [5.8.17]
 ### Fixed
  - remove exception then user press Tab on last element inside BasePanel

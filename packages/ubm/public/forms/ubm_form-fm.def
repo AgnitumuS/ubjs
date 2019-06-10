@@ -140,7 +140,8 @@ exports.formDef = {
         attributeName: 'formCode',
         expanded: true,
         bypassCache: true,
-        documentMIME: 'application/json',
+        // prefer server-side content-type (for script/x-vue)
+        // documentMIME: 'application/json',
         keepCmpOnRefresh: true,
         height: '100%',
         flex: 1,
