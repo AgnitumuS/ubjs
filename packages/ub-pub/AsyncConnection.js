@@ -402,6 +402,14 @@ $App.connection.userLang()
   }
 
   /**
+   * Switch current session. Use only on server side
+   * @param {UBSession} session
+   */
+  this.switchCurrentSession = function (session) {
+    currentSession = session
+  }
+
+  /**
    * UBIP Auth schema implementation
    * @param authParams
    * @returns {Promise}

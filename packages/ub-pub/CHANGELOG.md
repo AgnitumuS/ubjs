@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.3]
+### Added
+ - new `switchCurrentSession` method added to the UBConnection. It is necessary to be able to quickly switch between user sessions without reconnecting on server side.
+
 ## [5.3.1]
 ### Added
  - new property `AsyncConnection.UBQLv2` - true in case server support `value:` instead of `values:{}` in where item
