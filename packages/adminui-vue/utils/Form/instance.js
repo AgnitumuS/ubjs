@@ -1,16 +1,12 @@
-module.exports = {
-  createInstanceModule,
-  mapInstanceFields,
-  computedVuex
-}
+module.exports = createInstanceModule
 
 const Vue = require('vue')
 const moment = require('moment')
 /**
  * @typedef {object} VuexTrackedInstance
  * @property {boolean} isNew        Indicator of whether master instance was loaded or it is newly created
- * @property {object} data          Master record instance, current values, as shall be shown on UI
- * @property {object} originalData  Shadow copy of modified attributes
+ * @property {object}  data         Master record instance, current values, as shall be shown on UI
+ * @property {object}  originalData Shadow copy of modified attributes
  * @property {object<string, VuexTrackedCollection>} collections   List of tracked detain collections
  */
 
@@ -23,13 +19,13 @@ const moment = require('moment')
 
 /**
  * @typedef {object} VuexTrackedObject
- * @property {boolean} isNew        Indicator of whether master instance was loaded or it is newly created
- * @property {object} data          Master record instance, current values, as shall be shown on UI
- * @property {object} originalData  Shadow copy of modified attributes
+ * @property {boolean} isNew         Indicator of whether master instance was loaded or it is newly created
+ * @property {object}  data          Master record instance, current values, as shall be shown on UI
+ * @property {object}  originalData  Shadow copy of modified attributes
  */
 
 /**
- * A helper method to equal 2 params, can equal arrays.
+ * A helper method to equal 2 params, can equal arrays or dates
  * @param {*} arg1
  * @param {*} arg2
  */
@@ -111,17 +107,14 @@ function change (state, key, value) {
  *     The "deleted"
  *
  * merge base store with instance module store
- * @param  {Object} store Vuex store config
  * @return {Object}       Modified store config
  */
-function createInstanceModule (store = {}) {
+function createInstanceModule () {
   return {
     /**
      * @type {VuexTrackedInstance}
      */
     state: {
-      ...(typeof store.state === 'function' ? store.state() : store.state),
-
       /**
        * Properties as they are in DB.
        */
@@ -139,8 +132,6 @@ function createInstanceModule (store = {}) {
     },
 
     getters: {
-      ...store.getters,
-
       /**
        * @param {VuexTrackedInstance} state
        * @return {boolean}
@@ -164,8 +155,6 @@ function createInstanceModule (store = {}) {
     },
 
     mutations: {
-      ...store.mutations,
-
       /**
        * Set base state values
        * @param {VuexTrackedInstance} state
@@ -302,13 +291,14 @@ function createInstanceModule (store = {}) {
 
       /**
        * Remove an item from a collection.
-       * If remove an added item, no need to track the deletion.  If remove originally loaded record, remember the
+       * If remove an added item, no need to track the deletion.
+       * If remove originally loaded record, remember the
        * deletion to track it as a change.
        * @param {VuexTrackedInstance} state
        * @param {string} collection  Collection name.
        * @param {number} index       Index of item inside collection to remove.
        */
-      REMOVE_COLLECTION_ITEM (state, { collection, index }) {
+      DELETE_COLLECTION_ITEM (state, { collection, index }) {
         if (collection in state.collections) {
           const removedItem = state.collections[collection].items.splice(index, 1)[0]
           if (removedItem && !removedItem.isNew) {
@@ -325,76 +315,25 @@ function createInstanceModule (store = {}) {
         for (const collection of Object.keys(state.collections)) {
           Vue.set(state.collections[collection], 'deleted', [])
         }
-      }
-    },
-
-    actions: {
-      ...store.actions
-    }
-  }
-}
-
-/**
- * Making dynamic set(), get() method for state of vuex
- * for instance fields
- * @param {string[]|string} moduleOrArr
- * @param {string[]} [arr]
- */
-function mapInstanceFields (moduleOrArr, arr) {
-  let module, properties
-  if (Array.isArray(moduleOrArr)) {
-    module = null
-    properties = moduleOrArr
-  } else {
-    module = moduleOrArr
-    properties = arr
-  }
-
-  const obj = {}
-  for (const key of properties) {
-    obj[key] = {
-      get () {
-        if (module) {
-          return this.$store.state[module].data[key]
-        } else {
-          return this.$store.state.data[key]
-        }
       },
-      set (value) {
-        if (this.$v && key in this.$v) {
-          this.$v[key].$touch()
-        }
-        if (module) {
-          this.$store.commit(`${module}/SET_DATA`, { key, value })
-        } else {
-          this.$store.commit(`SET_DATA`, { key, value })
+
+      /**
+       * Remove all items from a collection.
+       * If remove an added item, no need to track the deletion.
+       * If remove originally loaded record, remember the
+       * deletion to track it as a change.
+       * @param state
+       * @param {string} collectionName Name of collection
+       */
+      DELETE_ALL_COLLECTION_ITEMS (state, collectionName) {
+        if (collectionName in state.collections) {
+          const collection = state.collections[collectionName]
+          const deleted = collection.items
+            .splice(0, collection.items.length)
+            .filter(i => !i.isNew)
+          collection.deleted.push(...deleted)
         }
       }
     }
   }
-  return obj
-}
-
-/**
- * Making dynamic set(), get() method for state of vuex
- * @param {string|string[]} arg1
- * @param {string[]} [arg2]
- */
-function computedVuex (arg1, arg2) {
-  const isModule = typeof arg1 === 'string'
-  const moduleName = isModule ? arg1 : ''
-  const arr = isModule ? arg2 : arg1
-
-  const obj = {}
-  for (const key of arr) {
-    obj[key] = {
-      get () {
-        return moduleName ? this.$store.state[moduleName][key] : this.$store.state[key]
-      },
-      set (value) {
-        this.$store.commit(moduleName ? moduleName + '/SET' : 'SET', { key, value })
-      }
-    }
-  }
-  return obj
 }

@@ -49,5 +49,6 @@ UB.i18nExtend({
   next3Months: 'Наступні 3 місяці',
   messageType: 'Тип',
   messageHistoryTitle: 'Історія',
-  messageSendTitle: 'Відправка повідомлення'
+  messageSendTitle: 'Відправка повідомлення',
+  messageSentSuccessfully: 'Повідомлення успішно відправлено'
 })

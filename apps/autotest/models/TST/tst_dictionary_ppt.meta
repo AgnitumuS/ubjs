@@ -1,0 +1,34 @@
+{
+  "caption": "tst_dictionary_ppt",
+  "description": "ub test dictionary participants",
+  "sqlAlias": "tdict_ppt",
+  "connectionName": "",
+  "descriptionAttribute": "subjectID",
+  "attributes": [
+    {
+      "name": "objectID",
+      "dataType": "Entity",
+      "associatedEntity": "tst_dictionary",
+      "cascadeDelete": false,
+      "caption": "Object"
+    },
+    {
+      "name": "subjectID",
+      "dataType": "Entity",
+      "associatedEntity": "uba_user",
+      "caption": "Subject of users",
+      "description": "",
+      "cascadeDelete": true,
+      "allowNull": false
+    }
+  ],
+  "mixins": {
+    "mStorage": {
+      "simpleAudit": true
+    }
+  },
+  "dbKeys": {
+  },
+  "dbExtensions": {
+  }
+}

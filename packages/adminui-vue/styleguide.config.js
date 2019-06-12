@@ -12,7 +12,7 @@ module.exports = {
     './components/controls/UInput/index.vue',
     './components/controls/UForm/index.js',
     './components/controls/UFormRow.vue',
-    './components/UToolbar/index.vue'
+    './components/UToolbar/UToolbar.vue'
   ],
   require: [path.join(__dirname, './styleguide/global.requires.js')],
   renderRootJsx: path.join(__dirname, './styleguide/styleguide.root.js'),

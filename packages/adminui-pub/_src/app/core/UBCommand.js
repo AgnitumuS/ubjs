@@ -567,6 +567,20 @@ Ext.define('UB.core.UBCommand', {
       me.windowCommandCode = UB.core.UBUtil.getNameMd5(me.entity + Ext.String.capitalize(me.commandType), me.formCode.toString())
       me.formCode(me.entity, me.instanceID, me.onFormCodeRun, me)
     } else {
+      // check form is already instantiated for passed entity + instanceId
+      let cfg = me.commandConfig
+      if (!cfg.tabId) {
+        cfg.tabId = cfg.entity + (cfg.instanceID ? cfg.instanceID : 'ext' + Ext.id(null, 'addNew'))
+      }
+      let existedTab = Ext.getCmp(cfg.tabId)
+      if (!existedTab && cfg.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только что сохраненный документ
+        existedTab = $App.viewport.centralPanel.down(`basepanel[instanceID=${cfg.instanceID}]`)
+      }
+      if (existedTab) {
+        $App.viewport.centralPanel.setActiveTab(existedTab)
+        return
+      }
+
       me.formParam = me.getFormParam()
       // me.description = me.description || (me.formParam ? me.formParam.description : undefined)
       me.caption = me.caption || (me.formParam ? me.formParam.caption : undefined)
@@ -664,18 +678,6 @@ Ext.define('UB.core.UBCommand', {
     // BVV add for preview form------------------------------------------------25-09-2013
     if (me.isDetail) {
       formConfig.height = UB.appConfig.gridDefaultDetailViewHeight
-    }
-    if (me.tabId) {
-      let tab = Ext.getCmp(me.tabId)
-      if (!tab && me.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только чтосохраненный документ
-        tab = $App.viewport.centralPanel.down('basepanel[instanceID=' + me.instanceID + ']')
-      }
-      if (tab) {
-        tab.ownerCt.setActiveTab(tab)
-        return
-      }
-      formConfig.id = me.tabId
-      formConfig.closable = true
     }
     // BVV add for preview form------------------------------------------------25-09-2013
     let form

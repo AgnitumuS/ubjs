@@ -44,7 +44,7 @@
     <u-upload-document
       v-else-if="dataType === 'Document'"
       v-model="model"
-      :entity-name="entityName"
+      :entity-name="entity"
       :file-store="code"
       :doc-id="$store.state.data.ID"
       :disabled="disabled"
@@ -64,9 +64,6 @@
 </template>
 
 <script>
-const { validationInjectMixin } = require('../utils/formBoilerplate/validation')
-const { mapGetters } = require('vuex')
-
 /**
  * Automaticly create field from entity schema
  * and validate it
@@ -74,7 +71,7 @@ const { mapGetters } = require('vuex')
 export default {
   name: 'UAutoField',
 
-  mixins: [validationInjectMixin],
+  inject: ['$v', 'entity', 'entitySchema'],
 
   props: {
     /**
@@ -111,8 +108,6 @@ export default {
         this.$emit('input', value)
       }
     },
-
-    ...mapGetters(['entitySchema', 'entityName']),
 
     dataType () {
       return this.entitySchema.attributes[this.code].dataType

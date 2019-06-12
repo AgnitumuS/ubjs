@@ -54,7 +54,7 @@ export default {
      */
     required: Boolean,
     /**
-     * Set label width. If set in wrap `<u-form>` component
+     * Set label width. If set in wrap `<u-form-container>` component
      * will override be this prop
      */
     labelWidth: {
@@ -64,7 +64,7 @@ export default {
       }
     },
     /**
-     * Set label position. If set in wrap `<u-form>` component
+     * Set label position. If set in wrap `<u-form-container>` component
      * will override be this prop
      * `left/right`
      */

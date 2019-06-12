@@ -104,6 +104,7 @@ const { mapInstanceFields } = require('@unitybase/adminui-vue')
 
 export default {
   name: 'ShortcutIconSelect',
+  inject: ['entitySchema'],
 
   data () {
     return {
@@ -118,7 +119,7 @@ export default {
 
   computed: {
     ...mapInstanceFields(['iconCls']),
-    ...mapGetters(['entitySchema', 'loading']),
+    ...mapGetters(['loading']),
 
     getElIcons () {
       return this.elIcons.filter(this.iconFilter)

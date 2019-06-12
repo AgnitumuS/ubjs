@@ -22,11 +22,11 @@ if (IS_SYSTEM_JS && !SystemJS.has('throttle-debounce')) SystemJS.set('throttle-d
  * @type {{throttle?, debounce?}}
  */
 module.exports.throttleDebounce = throttleDebounce
-const formBoilerplate = require('./utils/formBoilerplate/index')
-module.exports = {
-  ...module.exports,
-  ...formBoilerplate
-}
+module.exports.Form = require('./utils/Form/Form')
+const { mapInstanceFields, computedVuex } = require('./utils/Form/helpers')
+module.exports.mapInstanceFields = mapInstanceFields
+module.exports.computedVuex = computedVuex
+
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
 const Vue = require('vue')
