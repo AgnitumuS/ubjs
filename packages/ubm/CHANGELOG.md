@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.1.24]
 ### Fixed
  - added missed caption for `ubm_navshortcut` form
+ - VueJS form template modified according to current form boilerplate
 
 ## [5.1.22]
 ### Fixed

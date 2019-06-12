@@ -111,12 +111,13 @@ module.exports.mount = function ({
   entity,
   instanceID,
   formCode,
+  rootComponent,
   isFolder,
   desktopID,
   parentID
 }) {
   Form({
-    component: UbmNavshortcut,
+    component: rootComponent,
     entity,
     instanceID,
     title,
@@ -148,7 +149,7 @@ module.exports.mount = function ({
     .mount()
 }
 
-const UbmNavshortcut = module.exports.default = {
+module.exports.default = {
   name: 'UbmNavshortcut',
   components: {
     ShortcutTree,
