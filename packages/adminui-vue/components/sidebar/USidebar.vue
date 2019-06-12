@@ -325,8 +325,20 @@ export default {
 
 .ub-sidebar .el-menu-item>span,
 .ub-sidebar .el-submenu__title>span{
-  line-height: 1.2;
+  --line-height: 1.2;
+  --lines-count: 3;
+
+  line-height: var(--line-height);
+  -webkit-line-clamp: var(--lines-count);
+  max-height: calc(var(--line-height) * var(--lines-count) * 1rem);
+
   white-space: pre-wrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+
+   padding-right: 20px; /* text not overlap the arrow */
 }
 
 .ub-sidebar.collapsed {
