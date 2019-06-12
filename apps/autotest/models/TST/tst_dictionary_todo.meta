@@ -19,7 +19,8 @@
       "dataType": "Entity",
       "associatedEntity": "tst_dictionary",
       "cascadeDelete": false,
-      "caption": "Object"
+      "caption": "Object",
+      "allowNull": false
     },
     {
       "name": "status",

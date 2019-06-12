@@ -117,6 +117,7 @@
 
 <script>
 const { mapMutations, mapActions } = require('vuex')
+const { mapInstanceFields } = require('@unitybase/adminui-vue')
 
 export default {
   name: 'LazyCollection',
@@ -131,7 +132,9 @@ export default {
   computed: {
     todoList () {
       return this.$store.state.collections.todo.items
-    }
+    },
+
+    ...mapInstanceFields(['ID'])
   },
 
   // created will called after tab is opened first time because current tab-pane is lazy
