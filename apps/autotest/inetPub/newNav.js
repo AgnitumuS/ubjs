@@ -1,15 +1,8 @@
 const ElementUI = require('element-ui')
 const UB = require('@unitybase/ub-pub')
 window.UB = UB
-//import App from './App.vue';
 
 Vue.use(ElementUI)
-
-// var vm = new Vue({
-//   components: {SidebarItem},
-//   template: '<sidebar></sidebar>'
-// })
-// window.vm = vm
 
 var vm = new Vue({
   el: '#app',
