@@ -59,15 +59,16 @@
 </template>
 
 <script>
-const AdminUiVue = require('@unitybase/adminui-vue')
+const { Form } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function (params) {
-  if (AdminUiVue.activateIfMounted(params)) return
-  let mountParams = {
-    FormComponent: UbsMessage,
-    showFormParams: params
-  }
-  AdminUiVue.mountForm(mountParams)
+module.exports.mount = function ({ title, entity, instanceID, props }) {
+  Form({
+    component: UbsMessage,
+    props,
+    entity,
+    instanceID,
+    title
+  }).mount()
 }
 
 const UbsMessage = module.exports.default = {

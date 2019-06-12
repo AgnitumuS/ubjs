@@ -49,5 +49,6 @@
   next3Months: 'Next 3 months',
   messageType: 'Type',
   messageHistoryTitle: 'History',
-  messageSendTitle: 'Send message'
+  messageSendTitle: 'Send message',
+  messageSentSuccessfully: 'Message has been sent successfully'
 })

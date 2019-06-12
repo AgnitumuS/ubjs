@@ -9,7 +9,7 @@ All labels will have 150 width instead last, the option `u-form-row` will overri
 
 ```vue
 <template>
-  <u-form :label-width="150">
+  <u-form-container :label-width="150">
     <u-form-row label="Name">
       <el-input v-model="name" />
     </u-form-row>
@@ -28,7 +28,7 @@ All labels will have 150 width instead last, the option `u-form-row` will overri
     >
       <el-checkbox v-model="checkbox" />
     </u-form-row>
-  </u-form>
+  </u-form-container>
 </template>
 
 <script>

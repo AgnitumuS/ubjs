@@ -15,10 +15,7 @@ const dialogs = require('../components/dialog/UDialog')
 const UNavbar = require('../components/navbar/UNavbar.vue').default
 const autoForm = require('../components/AutoForm.vue').default
 const { dialog, dialogInfo, dialogYesNo, dialogError } = dialogs
-const { mountForm, activateIfMounted } = require('./formBoilerplate/mount')
-const { createInstanceModule } = require('./formBoilerplate/instance')
-const { processingModule } = require('./formBoilerplate/processing')
-const { validateEntitySchema } = require('./formBoilerplate/validation')
+const Form = require('./Form/Form')
 
 function replaceExtJSDialogs () {
   // rename buttonText - > buttons, fn -> callback and call `dialog`
@@ -90,41 +87,27 @@ function replaceExtJSNavbar () {
 }
 
 function replaceAutoForms () {
-  const params = this
-  if (activateIfMounted(params)) return
+  const { entity, instanceID, parentContext, isModal } = this
 
-  if (!params.title) {
-    params.title = UB.connection.domain.get(params.entity).caption
-  }
-
-  const storeConfig = {
-    state: {
-      formTitle: params.title
-    }
-  }
-  const fieldList = UB.connection.domain.get(params.entity).getAttributeNames()
-  const masterRequest = UB.connection.Repository(params.entity).attrs(fieldList)
-
-  const assignInstance = createInstanceModule(storeConfig)
-  const assignProcessing = processingModule(assignInstance, masterRequest)
-  const store = new Vuex.Store(assignProcessing)
-  const validator = validateEntitySchema(store)
-
-  store.dispatch('init', params.instanceID).then(() => {
-    if (params.parentContext) {
-      store.commit('LOAD_DATA_PARTIAL', params.parentContext)
-    }
+  Form({
+    component: autoForm,
+    props: { parentContext },
+    entity,
+    instanceID,
+    title: UB.connection.domain.get(entity).caption,
+    isModal,
+    modalClass: 'ub-dialog__reset-padding'
   })
-
-  mountForm({
-    FormComponent: autoForm,
-    showFormParams: {
-      ...params,
-      modalClass: 'ub-dialog__reset-padding'
-    },
-    store,
-    validator
-  })
+    .instance()
+    .processing({
+      inited (store) {
+        if (parentContext) {
+          store.commit('LOAD_DATA_PARTIAL', parentContext)
+        }
+      }
+    })
+    .validation()
+    .mount()
 }
 
 function getTypeLocaleString (type) {

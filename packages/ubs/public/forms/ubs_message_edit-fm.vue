@@ -1,6 +1,12 @@
 <template>
-  <u-form v-loading="loading" style="overflow:auto; height: 100%">
-    <el-row :gutter="20" style="width: 100%">
+  <u-form-container
+    v-loading="loading"
+    style="overflow:auto; height: 100%"
+  >
+    <el-row
+      :gutter="20"
+      style="width: 100%"
+    >
       <el-col :lg="16">
         <u-form-row
           required
@@ -49,7 +55,10 @@
               />
             </el-col>
             <el-col :span="8">
-              <el-button @click="addByRole" style="width: 100%">
+              <el-button
+                style="width: 100%"
+                @click="addByRole"
+              >
                 {{ $ut('actionAdd') }}
               </el-button>
             </el-col>
@@ -64,7 +73,10 @@
               />
             </el-col>
             <el-col :span="8">
-              <el-button @click="addUser" style="width: 100%">
+              <el-button
+                style="width: 100%"
+                @click="addUser"
+              >
                 {{ $ut('actionAdd') }}
               </el-button>
             </el-col>
@@ -112,32 +124,24 @@
         {{ $ut('send') }}
       </el-button>
     </el-row>
-  </u-form>
+  </u-form-container>
 </template>
 
 <script>
 const required = require('vuelidate/lib/validators/required').default
-const AdminUiVue = require('@unitybase/adminui-vue')
+const { Form } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function (params) {
-  if (AdminUiVue.activateIfMounted(params)) return
-  let mountParams = {
-    FormComponent: UbsMessageEdit,
-    showFormParams: params
-  }
-  AdminUiVue.mountForm(mountParams)
+module.exports.mount = function ({ title, entity, instanceID, formCode }) {
+  Form({
+    component: UbsMessageEdit,
+    entity,
+    instanceID,
+    title,
+    formCode
+  }).mount()
 }
 
 const UbsMessageEdit = module.exports.default = {
-  props: {
-    entityName: {
-      type: String,
-      required: true
-    },
-    instanceID: Number,
-    currentTabId: String,
-    formCode: String
-  },
   data () {
     return {
       roleModel: null,
@@ -190,6 +194,8 @@ const UbsMessageEdit = module.exports.default = {
       }
     }
   },
+
+  inject: ['$formServices'],
 
   validations: {
     messageType: { required },
@@ -274,7 +280,11 @@ const UbsMessageEdit = module.exports.default = {
       this.loading = true
       await this.insertMessage()
       await this.insertRecipients()
-      this.$emit('close')
+      this.$formServices.forceClose()
+      this.$notify({
+        type: 'success',
+        message: this.$ut('messageSentSuccessfully')
+      })
       this.$v.$reset()
       this.loading = false
     },

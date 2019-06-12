@@ -72,13 +72,11 @@
 
 <script>
 const { mapInstanceFields } = require('@unitybase/adminui-vue')
-const { validationInjectMixin } = require('@unitybase/adminui-vue/utils/formBoilerplate/index')
-const { mapGetters } = require('vuex')
 
 export default {
   name: 'ShortcutTree',
 
-  mixins: [validationInjectMixin],
+  inject: ['$v', 'entitySchema'],
 
   data () {
     return {
@@ -94,7 +92,6 @@ export default {
 
   computed: {
     ...mapInstanceFields(['parentID', 'desktopID']),
-    ...mapGetters(['entitySchema']),
 
     activeShortcut () {
       if (this.loading) return {}

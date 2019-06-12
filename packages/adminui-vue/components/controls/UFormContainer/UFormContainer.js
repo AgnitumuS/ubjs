@@ -4,7 +4,7 @@
  * child `u-form-row` components
  */
 module.exports = {
-  name: 'UForm',
+  name: 'UFormContainer',
   props: {
     /**
      * Set label width to child `<u-form-row>`'s

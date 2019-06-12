@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.5]
 ### Changed
+ - refactor `formBoilerplate` to constructor `Form` [docs and examples](https://git-pub.intecracy.com/unitybase/ubjs/blob/11e529331f78313c4fd483e660ccad9a4e65a73f/packages/adminui-vue/utils/Form/README.md)
+ - `u-form` component renamed to `u-form-container`
  - `u-code-mirror` - added shortcuts tooltip
  - `u-code-mirror` - added key bindings according old codeMirror 
 
@@ -39,6 +41,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - changed before close function in mount module, can except empty store or store without save action
  - `UInput` - fixed bug when user open popup then will send empty locale after form saved 
+
+### Added
+ - `UAutoField` - component renders form field according to the attribute type
 
 ### Changed
  - `mount` module. Renamed `mount -> mountForm`

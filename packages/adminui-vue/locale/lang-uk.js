@@ -123,5 +123,8 @@ UB.i18nExtend({
   formWasRefreshed: 'Форма була оновлена',
   recordDeletedSuccessfully: 'Запис успішно видалено',
   selectedValueWasDeleted: 'Обраний запис видалено',
-  recordWasDeleted: 'Запис було видалено'
+  recordWasDeleted: 'Запис було видалено',
+  validationError: 'Неможливо зберегти, поля з помилкою - {0}',
+  formCrashTitle: 'Форма зломалась',
+  formCrashBody: 'Щось пішло не так, перезавантажте форму або зверніться до системного адміністратора'
 })

@@ -30,8 +30,8 @@ const LocaleButton = require('./LocaleButton.vue').default
  */
 export default {
   name: 'UInput',
-
   components: { LocaleButton },
+  inject: ['entitySchema'],
 
   props: {
     /*
@@ -90,10 +90,6 @@ export default {
       return 0
     },
 
-    entitySchema () {
-      return this.$store.getters.entitySchema
-    },
-
     dataType () {
       return this.entitySchema.attributes[this.attributeName].dataType
     },
@@ -146,7 +142,6 @@ export default {
 
 <docs>
 Component will automaticly check data type by attribute name in entitySchema
-Required to have entitySchema in $store.getters
 
 ### Basic usage
 

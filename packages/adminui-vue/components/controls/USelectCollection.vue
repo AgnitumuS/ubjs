@@ -17,6 +17,9 @@ const { mapMutations, mapActions } = require('vuex')
  */
 export default {
   name: 'USelectCollection',
+  inject: {
+    masterEntityName: 'entity'
+  },
 
   props: {
     /**
@@ -54,20 +57,24 @@ export default {
   },
 
   computed: {
+    collectionData () {
+      return this.$store.state.collections[this.collectionName]
+    },
+
     entityName () {
-      return this.$store.state.collections[this.collectionName].entity
+      return this.collectionData.entity
     },
 
     entitySchema () {
       return this.$UB.connection.domain.get(this.entityName)
     },
 
-    masterEntityName () {
-      return this.$store.getters.entityName
+    isLazyCollection () {
+      return this.collectionData.lazy
     },
 
     selectedRecords () {
-      return this.$store.state.collections[this.collectionName].items
+      return this.collectionData.items
         .map(i => i.data[this.subjectAttr])
     },
 
@@ -81,11 +88,13 @@ export default {
   },
 
   created () {
-    this.$store.dispatch('loadCollections', [this.collectionName])
+    if (this.isLazyCollection) {
+      this.$store.dispatch('loadCollections', [this.collectionName])
+    }
   },
 
   methods: {
-    ...mapMutations([ 'REMOVE_COLLECTION_ITEM' ]),
+    ...mapMutations([ 'DELETE_COLLECTION_ITEM' ]),
     ...mapActions(['addCollectionItem']),
 
     async changeCollection (arr) {
@@ -112,7 +121,7 @@ export default {
         for (const option of options) {
           const index = this.selectedRecords.indexOf(option)
           if (index !== -1) {
-            this.REMOVE_COLLECTION_ITEM({
+            this.DELETE_COLLECTION_ITEM({
               collection: this.collectionName,
               index: index
             })
@@ -134,29 +143,31 @@ export default {
 </template>
 
 <script>
-  module.exports.mount = function (params) {
-    const masterRequest = UB.connection
-      .Repository(params.entity)
-      .attrs(fieldList)
-
-    const collectionRequests = {
-      rightsSubjects: UB.connection
-        .Repository('ubm_navshortcut_adm')
-        .attrs('ID', 'instanceID', 'admSubjID')
-        .where('instanceID', '=', params.instanceID)
-    }
-
-    formBoilerplate({
-      params,
-      FormComponent: SelectCollectionExample,
-      masterRequest,
-      collectionRequests
+const { Form } = require('@unitybase/adminui-vue')
+module.exports.mount = function ({ title, entity, instanceID, formCode }) {
+  Form({
+    component: SelectCollectionExample,
+    entity,
+    instanceID,
+    title,
+    formCode
+  })
+    .instance()
+    .processing({
+      collections: {
+        rightsSubjects: UB.connection
+          .Repository('ubm_navshortcut_adm')
+          .attrs('ID', 'instanceID', 'admSubjID')
+          .where('instanceID', '=', params.instanceID)
+      }
     })
-  }
+    .validation()
+    .mount()
+}
 
-  const SelectCollectionExample = module.exports.default = {
-    // component
-  }
+const SelectCollectionExample = module.exports.default = {
+  // component
+}
 </script>
 ```
 </docs>

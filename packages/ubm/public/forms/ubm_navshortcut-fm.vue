@@ -1,8 +1,8 @@
 <template>
   <div class="ub-form-container">
-    <u-toolbar :validation="$v" />
+    <u-toolbar />
 
-    <u-form
+    <u-form-container
       v-loading="loading"
       :label-width="160"
     >
@@ -80,7 +80,7 @@
           <shortcut-cmd-code />
         </el-tab-pane>
       </el-tabs>
-    </u-form>
+    </u-form-container>
   </div>
 </template>
 
@@ -89,7 +89,7 @@ const ShortcutTree = require('./components/ShortcutTree.vue').default
 const ShortcutIconSelect = require('./components/ShortcutIconSelect.vue').default
 const ShortcutCmdCode = require('./components/ShortcutCmdCode.vue').default
 
-const { formBoilerplate, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
@@ -106,38 +106,46 @@ const fieldList = [
   'iconCls'
 ]
 
-module.exports.mount = function (params) {
-  const masterRequest = UB.connection
-    .Repository(params.entity)
-    .attrs(fieldList)
-
-  const collectionRequests = {
-    rightsSubjects: UB.connection
-      .Repository('ubm_navshortcut_adm')
-      .attrs('ID', 'instanceID', 'admSubjID')
-      .where('instanceID', '=', params.instanceID)
-  }
-
-  params.title = 'Shortcut edit' // temp
-  params.isModal = true
-  params.modalClass = 'ub-dialog__reset-padding'
-
-  formBoilerplate({
-    params,
-    FormComponent: UbmNavshortcut,
-    masterRequest,
-    collectionRequests
-  }).then((store) => {
-    if (params.isFolder) {
-      store.commit('SET_DATA', { key: 'isFolder', value: params.isFolder })
-    }
-    if (params.desktopID) {
-      store.commit('SET_DATA', { key: 'desktopID', value: params.desktopID })
-    }
-    if (params.parentID) {
-      store.commit('SET_DATA', { key: 'parentID', value: params.parentID })
-    }
+module.exports.mount = function ({
+  title,
+  entity,
+  instanceID,
+  formCode,
+  isFolder,
+  desktopID,
+  parentID
+}) {
+  Form({
+    component: UbmNavshortcut,
+    entity,
+    instanceID,
+    title,
+    formCode,
+    isModal: true,
+    modalClass: 'ub-dialog__reset-padding'
   })
+    .instance()
+    .processing({
+      inited (store) {
+        if (isFolder) {
+          store.commit('SET_DATA', { key: 'isFolder', value: isFolder })
+        }
+        if (desktopID) {
+          store.commit('SET_DATA', { key: 'desktopID', value: desktopID })
+        }
+        if (parentID) {
+          store.commit('SET_DATA', { key: 'parentID', value: parentID })
+        }
+      },
+      collections: {
+        rightsSubjects: UB.connection
+          .Repository('ubm_navshortcut_adm')
+          .attrs('ID', 'instanceID', 'admSubjID')
+          .where('instanceID', '=', instanceID)
+      }
+    })
+    .validation()
+    .mount()
 }
 
 const UbmNavshortcut = module.exports.default = {
@@ -147,6 +155,7 @@ const UbmNavshortcut = module.exports.default = {
     ShortcutIconSelect,
     ShortcutCmdCode
   },
+  inject: ['entitySchema'],
 
   data () {
     return {
@@ -156,7 +165,7 @@ const UbmNavshortcut = module.exports.default = {
 
   computed: {
     ...mapInstanceFields(fieldList),
-    ...mapGetters(['entitySchema', 'loading'])
+    ...mapGetters(['loading'])
   },
 
   methods: {

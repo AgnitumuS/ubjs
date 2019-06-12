@@ -6,10 +6,10 @@ module.exports = {
       require('../components/controls/UFormRow.vue').default,
       require('../components/controls/UUploadDocument.vue').default,
       require('../components/controls/UCodeMirror.vue').default,
-      require('../components/controls/UForm/index.js'),
+      require('../components/controls/UFormContainer/UFormContainer.js'),
       require('../components/controls/USelectEnum.vue').default,
-      require('../components/controls/UInput/index.vue').default,
-      require('../components/UToolbar/index.vue').default,
+      require('../components/controls/UInput/UInput.vue').default,
+      require('../components/UToolbar/UToolbar.vue').default,
       require('../components/UAutoField.vue').default,
       require('../components/controls/USelectMultiple.vue').default,
       require('../components/controls/USelectCollection.vue').default

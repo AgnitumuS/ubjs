@@ -123,5 +123,8 @@ UB.i18nExtend({
   formWasRefreshed: 'Form was refreshed',
   recordDeletedSuccessfully: 'Record deleted successfully',
   selectedValueWasDeleted: 'Selected value was deleted',
-  recordWasDeleted: 'Record was deleted'
+  recordWasDeleted: 'Record was deleted',
+  validationError: 'Unable to save, error in fields - {0}',
+  formCrashTitle: 'Form was crashed',
+  formCrashBody: 'Something going wrong please reload form or contact system administrator'
 })

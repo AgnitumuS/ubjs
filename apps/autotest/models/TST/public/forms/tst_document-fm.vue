@@ -1,8 +1,8 @@
 <template>
   <div class="ub-form-container">
-    <u-toolbar :validation="$v" />
+    <u-toolbar />
 
-    <u-form>
+    <u-form-container>
       <el-row>
         <el-col :lg="8">
           <u-form-row
@@ -101,7 +101,7 @@
       <u-form-row :label="getLabel('fileStoreSimple')">
         <u-upload-document
           v-model="fileStoreSimple"
-          :entity-name="entityName"
+          :entity-name="entity"
           file-store="fileStoreSimple"
           :doc-id="ID"
         />
@@ -125,47 +125,30 @@
           </u-form-row>
         </el-col>
       </el-row>
-    </u-form>
+    </u-form-container>
   </div>
 </template>
 
 <script>
-const {
-  activateIfMounted,
-  mountForm,
-  createInstanceModule,
-  processingModule,
-  mapInstanceFields,
-  validateEntitySchema,
-  validationInjectMixin
-} = require('@unitybase/adminui-vue/utils/formBoilerplate/index')
-const Vuex = require('vuex')
-const { mapGetters } = Vuex
+const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function (params) {
-  if (activateIfMounted(params)) return
-
-  const fieldList = UB.connection.domain.get(params.entity).getAttributeNames()
-  const masterRequest = UB.connection.Repository(params.entity).attrs(fieldList)
-
-  const assignInstance = createInstanceModule()
-  const assignProcessing = processingModule(assignInstance, masterRequest)
-  const store = new Vuex.Store(assignProcessing)
-
-  store.dispatch('init', params.instanceID)
-  const validator = validateEntitySchema(store)
-
-  mountForm({
-    FormComponent: TstDocument,
-    showFormParams: params,
-    store,
-    validator
+module.exports.mount = function ({ title, entity, instanceID, formCode }) {
+  Form({
+    component: TstDocument,
+    entity,
+    instanceID,
+    title,
+    formCode
   })
+    .instance()
+    .processing()
+    .validation()
+    .mount()
 }
 
 const TstDocument = module.exports.default = {
   name: 'TstDocument',
-  mixins: [validationInjectMixin],
+  inject: ['$v', 'entitySchema', 'entity'],
 
   computed: {
     ...mapInstanceFields([
@@ -182,9 +165,7 @@ const TstDocument = module.exports.default = {
       'fileStoreSimple',
       'person',
       'employee'
-    ]),
-
-    ...mapGetters(['entitySchema', 'entityName'])
+    ])
   },
 
   methods: {
