@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.1]
+### Fixed
+ - `USidebar` - item text is now hidden if overflow exceeds 3 lines
+ - `USidebar` - prevent work break inside menu
+
 ## [1.6.0]
 ### Changed
  - **BREAKING** refactor `formBoilerplate` to constructor `Form` [docs and examples](https://git-pub.intecracy.com/unitybase/ubjs/blob/11e529331f78313c4fd483e660ccad9a4e65a73f/packages/adminui-vue/utils/Form/README.md)
@@ -11,12 +16,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.6]
 ### Fixed
- - USidebar: if parent folder is not accessible due to RLS - skip shortcut
+ - `USidebar` - if parent folder is not accessible due to RLS - skip shortcut
   
 ### Added
  - new event fired by Sidebar in case desktop is changed: `$App.fireEvent('portal:sidebar:desktopChanged', ID)`
- - UNavbar will handle new event `portal:navbar:prependSlot` - prepend some elements on the left of existed navbar slot elements
- - UNavbar will handle new event `portal:navbar:userButton:appendSlot` - insert some elements into user menu
+ - `UNavbar` will handle new event `portal:navbar:prependSlot` - prepend some elements on the left of existed navbar slot elements
+ - `UNavbar` will handle new event `portal:navbar:userButton:appendSlot` - insert some elements into user menu
  - Version item is added to the UNavbar user button menu. Application can define custom version number in uData `appVersion` key 
 
 ## [1.5.5]
