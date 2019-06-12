@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.0]
+### Changed
+ - **BREAKING** refactor `formBoilerplate` to constructor `Form` [docs and examples](https://git-pub.intecracy.com/unitybase/ubjs/blob/11e529331f78313c4fd483e660ccad9a4e65a73f/packages/adminui-vue/utils/Form/README.md)
+ - **BREAKING** `u-form` component renamed to `u-form-container`
+
 ## [1.5.6]
 ### Fixed
  - USidebar: if parent folder is not accessible due to RLS - skip shortcut
@@ -16,8 +21,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.5]
 ### Changed
- - refactor `formBoilerplate` to constructor `Form` [docs and examples](https://git-pub.intecracy.com/unitybase/ubjs/blob/11e529331f78313c4fd483e660ccad9a4e65a73f/packages/adminui-vue/utils/Form/README.md)
- - `u-form` component renamed to `u-form-container`
  - `u-code-mirror` - added shortcuts tooltip
  - `u-code-mirror` - added key bindings according old codeMirror 
 
