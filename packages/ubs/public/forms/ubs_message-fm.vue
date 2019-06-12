@@ -61,9 +61,9 @@
 <script>
 const { Form } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, entity, instanceID, props }) {
+module.exports.mount = function ({ title, entity, instanceID, props, rootComponent }) {
   Form({
-    component: UbsMessage,
+    component: rootComponent,
     props,
     entity,
     instanceID,
@@ -71,7 +71,7 @@ module.exports.mount = function ({ title, entity, instanceID, props }) {
   }).mount()
 }
 
-const UbsMessage = module.exports.default = {
+module.exports.default = {
   props: {
     /**
      * ID of message which open on init

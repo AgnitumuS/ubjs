@@ -3,7 +3,7 @@ const $App = require('@unitybase/adminui-pub')
 const Vue = require('vue')
 const TstForm = require('../components/TstForm.vue').default
 
-const TstDocumentVue = module.exports.default = {
+module.exports.default = {
   components: { TstForm },
   data: function () {
     return {
@@ -23,7 +23,7 @@ const TstDocumentVue = module.exports.default = {
   }
 }
 
-exports.mount = function () {
+module.exports.mount = function ({ rootComponent }) {
   let tab = $App.viewport.centralPanel.add({
     title: 'VueJS form',
     style: {
@@ -31,7 +31,7 @@ exports.mount = function () {
     },
     closable: true
   })
-  let vm = new Vue(TstDocumentVue)
+  let vm = new Vue(rootComponent)
   vm.$mount(`#${tab.getId()}-outerCt`) // simplify layouts by replacing Ext Panel inned content
   // !! important
   tab.on('close', function () {

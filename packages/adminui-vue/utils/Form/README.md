@@ -11,88 +11,94 @@ Cоздает стор для формы и рендерит ее в таб ил
 ```javascript
 const Form = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, entity, instanceID }) {
+module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
   Form({
-    component: MyCustomVueComponent,
+    component: rootComponent,
     entity,
     instanceID,
     title
   }).mount()
 }
-const MyCustomVueComponent = module.exports.default ={
+module.exports.default ={
   name: 'MyCustomVueComponent'
 }
 ```
 
 ## Пример полного использования
 ```javascript
-Form({
-  component: MyCustomVueComponent,
-  entity,
-  instanceID,
-  title: 'Any custom title',
-  isModal: true,
-  modalClass: 'test-class', // кастомный класс для модального окна
-  modalWidth: '900px', // ширина модального окна
-  formCode
-})
-  .store({ // .store можно не использовать если не требуется иметь дополнительные параметры в нем
-    state: {},
-    getters: {},
-    mutations: {},
-    //...
+module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
+  Form({
+    component: rootComponent,
+    entity,
+    instanceID,
+    title: 'Any custom title',
+    isModal: true,
+    modalClass: 'test-class', // кастомный класс для модального окна
+    modalWidth: '900px', // ширина модального окна
+    formCode
   })
-  .instance()
-  .processing({
-    // хуки
-    // стор создан, данные еще не загружены
-    beforeInit: (store) => { 
-      console.log('before init')
-    },
-    // после выполнения load или create в зависимости от isNew
-    inited: (store) => {
-      console.log('inited')
-    },
-    // до сохранения и валидации
-    beforeSave: (store) => {
-      console.log('before save')
-    },
-    // после успешного сохранения
-    saved: (store) => {
-      console.log('saved')
-    },
-    // хуки **конец**
-    masterFieldList: ['ID', 'name', 'age', 'phone'], // можно не указывать
-    /**
-    * collections - запросы для связаных с формой записей.
-    * Принимает данные вида {[ключ коллекции]: [UB repository]}
-    * Если нужно что б данные в коллекции были загружены не сразу а по какому то событию, то можно добавить коллецию
-    * указав данные в таком виде {
-    *   [ключ коллекции]: {
-    *     repository: [UB repository],
-    *     lazy: true
-    *   }
-    * }
-    * В этом случае данные будут загружены только после вызова экшена loadCollections, 
-    * который принимает в себя массив ключей коллекций, пример: loadCollections(['todo'])
-    */
-    collections: {
-      todo: {
-        repository:  UB.connection
-          .Repository('tst_dictionary_todo')
-          .attrs('ID', 'objectID', 'name', 'status', 'link')
-          .where('objectID', '=', instanceID),
-        lazy: true
+    .store({ // .store можно не использовать если не требуется иметь дополнительные параметры в нем
+      state: {},
+      getters: {},
+      mutations: {},
+      //...
+    })
+    .instance()
+    .processing({
+      // хуки
+      // стор создан, данные еще не загружены
+      beforeInit: (store) => { 
+        console.log('before init')
       },
-        
-      dueDate: UB.connection
-        .Repository('tst_due_date')
-        .attrs('ID', 'dateFrom', 'dateTo', 'status')
-        .where('dateTo', '<', Date.now())
-    }
-  })
-  .validation()
-  .mount()
+      // после выполнения load или create в зависимости от isNew
+      inited: (store) => {
+        console.log('inited')
+      },
+      // до сохранения и валидации
+      beforeSave: (store) => {
+        console.log('before save')
+      },
+      // после успешного сохранения
+      saved: (store) => {
+        console.log('saved')
+      },
+      // хуки **конец**
+      masterFieldList: ['ID', 'name', 'age', 'phone'], // можно не указывать
+      /**
+      * collections - запросы для связаных с формой записей.
+      * Принимает данные вида {[ключ коллекции]: [UB repository]}
+      * Если нужно что б данные в коллекции были загружены не сразу а по какому то событию, то можно добавить коллецию
+      * указав данные в таком виде {
+      *   [ключ коллекции]: {
+      *     repository: [UB repository],
+      *     lazy: true
+      *   }
+      * }
+      * В этом случае данные будут загружены только после вызова экшена loadCollections, 
+      * который принимает в себя массив ключей коллекций, пример: loadCollections(['todo'])
+      */
+      collections: {
+        todo: {
+          repository:  UB.connection
+            .Repository('tst_dictionary_todo')
+            .attrs('ID', 'objectID', 'name', 'status', 'link')
+            .where('objectID', '=', instanceID),
+          lazy: true
+        },
+          
+        dueDate: UB.connection
+          .Repository('tst_due_date')
+          .attrs('ID', 'dateFrom', 'dateTo', 'status')
+          .where('dateTo', '<', Date.now())
+      }
+    })
+    .validation()
+    .mount()
+}
+
+module.exports.default ={
+  name: 'MyCustomVueComponent'
+}
 ```
 
 ## Предупреждение
@@ -157,7 +163,7 @@ Form({
   commit('LOADING', {
     isLoading: true,
     target: 'loadSomeRepo'
-  }
+  })
 
   await UB.Repository('some_repo')
     .attrs('*')

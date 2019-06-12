@@ -132,9 +132,9 @@
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, entity, instanceID, formCode }) {
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
   Form({
-    component: TstDocument,
+    component: rootComponent,
     entity,
     instanceID,
     title,
@@ -146,7 +146,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode }) {
     .mount()
 }
 
-const TstDocument = module.exports.default = {
+module.exports.default = {
   name: 'TstDocument',
   inject: ['$v', 'entitySchema', 'entity'],
 

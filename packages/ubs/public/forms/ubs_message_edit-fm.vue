@@ -131,9 +131,9 @@
 const required = require('vuelidate/lib/validators/required').default
 const { Form } = require('@unitybase/adminui-vue')
 
-module.exports.mount = function ({ title, entity, instanceID, formCode }) {
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
   Form({
-    component: UbsMessageEdit,
+    component: rootComponent,
     entity,
     instanceID,
     title,
@@ -141,7 +141,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode }) {
   }).mount()
 }
 
-const UbsMessageEdit = module.exports.default = {
+module.exports.default = {
   data () {
     return {
       roleModel: null,

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.17]
+### Changed
+ - `Subjects` folder icon changed to `fa fa-user-circle-o` to prevent conflict with `Territorial` icon
+
 ## [5.1.15]
 ### Changed
  - cdn_orgaccount code length changed 20 -> 29  

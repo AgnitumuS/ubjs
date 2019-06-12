@@ -1,10 +1,37 @@
-﻿exports.formCode = {
-    data: {
-        message: 'Hello Vue.js!'
-    },
-    methods:{
-		btnClick: function(model){
-			$App.dialogInfo(model.$data.message).done(function(){model.$data.message = model.$data.message + '!' });
-        }
-    }
+﻿<template>
+<div class="ub-form-container">
+  <u-toolbar />
+
+  <u-form-container v-loading="loading">
+     <!-- place form layout here -->
+  </u-form-container>
+</div>
+</template>
+
+<script>
+const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { mapGetters } = require('vuex')
+const UB = require('@unitybase/ub-pub')
+
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
+  Form({
+    component: rootComponent,
+    entity,
+    instanceID,
+    title,
+    formCode
+  })
+    .instance()
+    .processing()
+    .validation()
+    .mount()
 }
+
+module.exports.default = {
+  inject: ['$v', 'entitySchema'],
+  computed: {
+    ...mapInstanceFields(['ID'/* add fields here */]),
+    ...mapGetters(['loading'])
+  }
+}
+</script>

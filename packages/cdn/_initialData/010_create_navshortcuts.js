@@ -172,7 +172,7 @@ var
             caption:    'Subjects',
             isFolder:   true,
             isCollapsed:false,
-            iconCls:    'fa fa-globe',
+            iconCls:    'fa fa-user-circle-o',
             displayOrder: 10
         }
     });

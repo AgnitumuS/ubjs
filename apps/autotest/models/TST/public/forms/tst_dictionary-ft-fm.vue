@@ -123,9 +123,9 @@ const fieldList = [
   'jsonColumn'
 ]
 
-module.exports.mount = function ({ title, entity, instanceID, formCode }) {
+module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
   Form({
-    component: TstDictionary,
+    component: rootComponent,
     entity,
     instanceID,
     title,
@@ -152,7 +152,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode }) {
     .mount()
 }
 
-const TstDictionary = module.exports.default = {
+module.exports.default = {
   name: 'TstDictionary',
   components: { LazyCollection },
 
