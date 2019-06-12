@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.24]
+### Fixed
+ - added missed caption for `ubm_navshortcut` form
+
 ## [5.1.22]
 ### Fixed
  - Form editor now recognize a Vue form syntax (mixed HTML + js) 

@@ -245,20 +245,14 @@ export default {
 
       if (action === 'edit') {
         command.instanceID = ID
-      }
-
-      if (action === 'addShortcut') {
+      } else if (action === 'addShortcut') {
         command.desktopID = desktopID
         command.parentID = isFolder ? ID : parentID
-      }
-
-      if (action === 'addFolder') {
+      } else if (action === 'addFolder') {
         command.desktopID = desktopID
         command.parentID = isFolder ? ID : parentID
         command.isFolder = true
-      }
-
-      if (action === 'deleteShortcut') {
+      } else if (action === 'deleteShortcut') {
         const confirm = await this.$dialogYesNo('areYouSure', 'deletionDialogConfirmCaption')
 
         if (confirm) {
