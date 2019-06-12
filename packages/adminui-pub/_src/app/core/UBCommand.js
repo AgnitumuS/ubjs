@@ -596,7 +596,8 @@ Ext.define('UB.core.UBCommand', {
             }
             formDefinition.formController.mount({
               ...me.commandConfig,
-              title: me.formParam.caption
+              title: me.formParam.caption,
+              rootComponent: formDefinition.formController.default
             })
           } else if (formDefinition.formType === 'module') {
             formDefinition.formController.mount(me.commandConfig)
