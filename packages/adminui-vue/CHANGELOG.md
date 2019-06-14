@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - `Form->processing` changed all hooks to async, now can await result
  - `Form->processing` if beforeSave hook returns false, saving will be canceled
+  - Shortcut edit window now shown inside tab instead of modal
  
 ### Added
  - `Form->processing` added hooks:
