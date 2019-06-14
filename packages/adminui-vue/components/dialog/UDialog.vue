@@ -17,7 +17,8 @@
 
     <div
       ref="msg"
-      :class="{'ub-error-dialog__dev': isDevInfo, 'ub-dialog_break-word': true}"
+      class="ub-dialog_break-word"
+      :class="{'ub-error-dialog__dev': isDevInfo}"
       v-html="$ut(msg)"
     />
 
