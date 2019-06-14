@@ -1,27 +1,32 @@
 module.exports = {
   install (Vue) {
-    const components = [
-      require('../components/controls/USelectEntity.vue').default,
-      require('../components/controls/USelectMany.vue').default,
-      require('../components/controls/UFormRow.vue').default,
-      require('../components/controls/UUploadDocument.vue').default,
-      require('../components/controls/UCodeMirror.vue').default,
-      require('../components/controls/UFormContainer/UFormContainer.js'),
-      require('../components/controls/USelectEnum.vue').default,
-      require('../components/controls/UInput/UInput.vue').default,
-      require('../components/UToolbar/UToolbar.vue').default,
-      require('../components/UAutoField.vue').default,
-      require('../components/controls/USelectMultiple.vue').default,
-      require('../components/controls/USelectCollection.vue').default
-    ]
-    for (const component of components) {
-      Vue.component(component.name, component)
-    }
-    const directives = [
-      require('../directives/HoldFocus.js')
-    ]
-    for (const directive of directives) {
-      Vue.directive(directive.name, directive)
-    }
+    // below we export and register each component separately to allow WebStorm IDE correctly recognige registered U* components
+    const UFormContainer = require('../components/controls/UFormContainer/UFormContainer.js').default
+    const USelectEntity = require('../components/controls/USelectEntity.vue').default
+    const USelectMany = require('../components/controls/USelectMany.vue').default
+    const UFormRow = require('../components/controls/UFormRow.vue').default
+    const UUploadDocument = require('../components/controls/UUploadDocument.vue').default
+    const UCodeMirror = require('../components/controls/UCodeMirror.vue').default
+    const USelectEnum = require('../components/controls/USelectEnum.vue').default
+    const UInput = require('../components/controls/UInput/UInput.vue').default
+    const UToolbar = require('../components/UToolbar/UToolbar.vue').default
+    const UAutoField = require('../components/UAutoField.vue').default
+    const USelectMultiple = require('../components/controls/USelectMultiple.vue').default
+    const USelectCollection = require('../components/controls/USelectCollection.vue').default
+    Vue.component(UFormContainer.name, UFormContainer)
+    Vue.component(USelectEntity.name, USelectEntity)
+    Vue.component(USelectMany.name, USelectMany)
+    Vue.component(UFormRow.name, UFormRow)
+    Vue.component(UUploadDocument.name, UUploadDocument)
+    Vue.component(UCodeMirror.name, UCodeMirror)
+    Vue.component(USelectEnum.name, USelectEnum)
+    Vue.component(UInput.name, UInput)
+    Vue.component(UToolbar.name, UToolbar)
+    Vue.component(UAutoField.name, UAutoField)
+    Vue.component(USelectMultiple.name, USelectMultiple)
+    Vue.component(USelectCollection.name, USelectCollection)
+
+    const HoldFocus = require('../directives/HoldFocus')
+    Vue.directive(HoldFocus.name, HoldFocus)
   }
 }

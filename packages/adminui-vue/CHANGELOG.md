@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.2]
 ### Fixed
  - do not break words in the $App.dialog* messages (word-break should be break-word instead of break-all) [UBDF-9571]
+ - WebStorm IDE now recognize U* components inside templates instead of error "unknown HTML tag"
  
 ### Changed
  - `Form->processing` changed all hooks to async, now can await result
@@ -110,7 +111,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `Vuex` now imported inside `@unitybase/adminui-vue`. In other models:
    - for **dev** mode can be required directly ``` Vuex = require('vuex') ```
    - in case model is boundled by webpack `Vuex` should be in `externals` section of webpack config
-   ```json
+   ```
      externals: {
        lodash: '_',
        '@unitybase/ub-pub': 'UB',
