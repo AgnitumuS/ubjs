@@ -9,7 +9,7 @@ Cоздает стор для формы и рендерит ее в таб ил
 ## Пример минимального использования
 
 ```javascript
-const Form = require('@unitybase/adminui-vue')
+const { Form } = require('@unitybase/adminui-vue')
 
 module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
   Form({
