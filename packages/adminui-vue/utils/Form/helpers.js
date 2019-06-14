@@ -237,8 +237,14 @@ function isRepository (obj) {
  * @param {function} hook
  * @param {VuexStore} store
  */
-function hookWrap (hook = () => {}, store) {
-  hook(store)
+async function hookWrap (hook = () => {}, store) {
+  const result = hook(store)
+  if (result instanceof Promise) {
+    await result
+    return result
+  } else {
+    return result
+  }
 }
 
 /**
