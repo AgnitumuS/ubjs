@@ -120,7 +120,11 @@ class UForm {
     beforeInit,
     inited,
     beforeSave,
-    saved
+    saved,
+    beforeCreate,
+    created,
+    beforeLoad,
+    loaded
   } = {}) {
     if (!this.canProcessingInit) {
       throw new Error(`You can use ".processing()" only after ".instance()" and before ".mount()". Or ".processing()" is already initialized`)
@@ -155,10 +159,14 @@ class UForm {
       instanceID: this.instanceID,
       collections,
       validator: () => this.validator,
-      beforeInit: () => { hookWrap(beforeInit, this.$store) },
-      inited: () => { hookWrap(inited, this.$store) },
-      beforeSave: () => { hookWrap(beforeSave, this.$store) },
-      saved: () => { hookWrap(saved, this.$store) }
+      beforeInit: hookWrap.bind(null, beforeInit, this.$store),
+      inited: hookWrap.bind(null, inited, this.$store),
+      beforeSave: hookWrap.bind(null, beforeSave, this.$store),
+      saved: hookWrap.bind(null, saved, this.$store),
+      beforeCreate: hookWrap.bind(null, beforeCreate, this.$store),
+      created: hookWrap.bind(null, created, this.$store),
+      beforeLoad: hookWrap.bind(null, beforeLoad, this.$store),
+      loaded: hookWrap.bind(null, loaded, this.$store)
     })
     mergeStore(this.storeConfig, processingModule)
 

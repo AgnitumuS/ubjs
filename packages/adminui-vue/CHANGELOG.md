@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.2]
+### Changed
+ - `Form->processing` changed all hooks to async, now can await result
+ - `Form->processing` if beforeSave hook returns false, saving will be canceled
+ 
+### Added
+ - `Form->processing` added hooks:
+   - beforeCreate
+   - created
+   - beforeLoad
+   - loaded 
+
 ## [1.6.1]
 ### Fixed
  - `USidebar` - item text is now hidden if overflow exceeds 3 lines
