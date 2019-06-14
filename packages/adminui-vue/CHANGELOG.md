@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.3]
+### Fixed
+ - fix UFormContainer registration issue introduced in 1.6.2
+ 
 ## [1.6.2]
 ### Fixed
  - do not break words in the $App.dialog* messages (word-break should be break-word instead of break-all) [UBDF-9571]
