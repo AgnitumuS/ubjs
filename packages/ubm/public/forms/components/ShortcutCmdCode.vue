@@ -7,7 +7,9 @@
       <div
         ref="snippet"
         class="ub-navshortcut__cmd-code__snippet"
+        tabindex="-1"
       >
+        <h2> {{$ut('Attributes')}}</h2>
         <el-tree
           ref="tree"
           :data="cmdCodeAttrs"
@@ -27,6 +29,7 @@
       :span="18"
       style="height: 100%"
     >
+      <h2> {{$ut('ubm_navshortcut.cmdCode')}}</h2>
       <u-code-mirror
         ref="codeMirror"
         v-model="cmdCode"
