@@ -64,8 +64,7 @@ This change is required to prevent massive CLOB fetching (cmdData attribute)
 
 ## [4.0.39]
 ### Added
- - userful code snippets added to a form builder for def and js parts
-
+ - useful code snippets added to a form builder for def and js parts
 
 ## [4.0.36]
 ### Added
