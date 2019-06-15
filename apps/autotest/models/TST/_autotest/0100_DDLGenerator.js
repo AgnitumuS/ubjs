@@ -27,7 +27,7 @@ module.exports = function runFTSTest (options) {
  * @param {SyncConnection} conn
  */
 function runTest (conn) {
-  let dictID = conn.lookup('tst_dictionary', 'ID', {expression: 'code', condition: 'equal', values: {code: 'code10'}})
+  let dictID = conn.lookup('tst_dictionary', 'ID', { expression: 'code', condition: 'equal', values: { code: 'code10' } })
   assert.throws(function () {
     conn.run({
       entity: 'tst_dictionary',
@@ -48,6 +48,6 @@ function runTest (conn) {
   console.log('check ubm_desktop is overrided by TST model')
   data = conn.Repository('ubm_desktop').attrs(['ID', 'overrided']).limit(1).selectAsObject()
 
-    // testcase for TubDataStore.generateDDL() call in case data store is created in one context but called in other
+  // testcase for TubDataStore.generateDDL() call in case data store is created in one context but called in other
   conn.get('getIDTest')
 }

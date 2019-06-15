@@ -94,7 +94,7 @@
   "mixins": {
     "mStorage": {
       "simpleAudit": true,
-      "safeDelete": true
+      "safeDelete": false // should be false for autotes
     }
   },
   "dbKeys": {
