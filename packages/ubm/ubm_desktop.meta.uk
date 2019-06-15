@@ -1,19 +1,23 @@
-﻿{
-    "caption": "Робочий стіл",
-    "description": "Робочі столи програми",
-    "attributes": {
-        "caption": {
-            "caption": "Назва десктопу"
-        },
-        "code": {
-            "caption": "Код"
-        },
-        "url": {
-            "caption": "URL",
-            "description": "URL статичної сторінки сервера, яка відображається в центрі екрану при виборі робочого столу"
-        },
-        "isDefault": {
-            "caption": "За замовчуванням?"
-        }
+{
+  "caption": "Робочий стіл",
+  "description": "Робочі столи програми",
+  "attributes": [
+    {
+      "name": "caption",
+      "caption": "Назва десктопу"
+    },
+    {
+      "name": "code",
+      "caption": "Код"
+    },
+    {
+      "name": "url",
+      "caption": "URL",
+      "description": "URL статичної сторінки сервера, яка відображається в центрі екрану при виборі робочого столу"
+    },
+    {
+      "name": "isDefault",
+      "caption": "За замовчуванням?"
     }
+  ]
 }

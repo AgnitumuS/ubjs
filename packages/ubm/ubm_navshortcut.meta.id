@@ -1,36 +1,45 @@
-﻿{
-    "caption": "Jalan pintas",
-    "description": "Shortcut untuk memulai fungsi",
-    "attributes": {
-        "desktopID": {
-            "caption": "Desktop"
-        },
-        "parentID": {
-            "caption": "folder shortcut"
-        },
-        "code": {
-            "caption": "Kode"
-        },
-        "isFolder": {
-            "caption": "Apakah folder?"
-        },
-        "caption": {
-            "caption": "caption shortcut"
-        },
-        "cmdCode": {
-            "caption": "kode perintah"
-        },
-        "inWindow": {
-            "caption": "Di jendela baru",
-            "description": "Tampilan di jendela baru"
-        },
-        "isCollapsed": {
-            "caption": "Jatuh",
-            "description": "Tampilkan runtuh pada awal pertama"
-        },
-        "displayOrder": {
-            "caption": "№ rangka",
-            "description": "Agar tampilan (dalam node saat)"
-        }
+{
+  "caption": "Jalan pintas",
+  "description": "Shortcut untuk memulai fungsi",
+  "attributes": [
+    {
+      "name": "desktopID",
+      "caption": "Desktop"
+    },
+    {
+      "name": "parentID",
+      "caption": "folder shortcut"
+    },
+    {
+      "name": "code",
+      "caption": "Kode"
+    },
+    {
+      "name": "isFolder",
+      "caption": "Apakah folder?"
+    },
+    {
+      "name": "caption",
+      "caption": "caption shortcut"
+    },
+    {
+      "name": "cmdCode",
+      "caption": "kode perintah"
+    },
+    {
+      "name": "inWindow",
+      "caption": "Di jendela baru",
+      "description": "Tampilan di jendela baru"
+    },
+    {
+      "name": "isCollapsed",
+      "caption": "Jatuh",
+      "description": "Tampilkan runtuh pada awal pertama"
+    },
+    {
+      "name": "displayOrder",
+      "caption": "№ rangka",
+      "description": "Agar tampilan (dalam node saat)"
     }
+  ]
 }

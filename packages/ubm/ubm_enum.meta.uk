@@ -1,22 +1,27 @@
-﻿{
-    "caption": "Перераховані значення",
-    "description": "Перераховані значення",
-    "attributes": {
-        "eGroup": {
-            "caption": "Група"
-        },
-        "code": {
-            "caption": "Код",
-            "description": "Код значення"
-        },
-        "shortName": {
-            "caption": "Коротка назва"
-        },
-        "name": {
-            "caption": "Назва значення"
-        },
-        "sortOrder": {
-            "caption": "№ п/п"
-        }
+{
+  "caption": "Перераховані значення",
+  "description": "Перераховані значення",
+  "attributes": [
+    {
+      "name": "eGroup",
+      "caption": "Група"
+    },
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Код значення"
+    },
+    {
+      "name": "shortName",
+      "caption": "Коротка назва"
+    },
+    {
+      "name": "name",
+      "caption": "Назва значення"
+    },
+    {
+      "name": "sortOrder",
+      "caption": "№ п/п"
     }
+  ]
 }

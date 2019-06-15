@@ -1,11 +1,13 @@
-﻿{
-    "caption": "Администрирование рабочих столов",
-    "attributes": {
-        "instanceID": {
-            "caption": "Рабочий стол"
-        },
-        "admSubjID": {
-            "caption": "Субъект администрирования"
-        }
+{
+  "caption": "Администрирование рабочих столов",
+  "attributes": [
+    {
+      "name": "instanceID",
+      "caption": "Рабочий стол"
+    },
+    {
+      "name": "admSubjID",
+      "caption": "Субъект администрирования"
     }
+  ]
 }

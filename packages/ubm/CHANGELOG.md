@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.26]
+### Changed
+ - UBM model lang files are converted to array-of-object format
+
 ## [5.1.25]
 ### Changed
  - Shortcut edit/creation form now showed in tab instead of modal window 
