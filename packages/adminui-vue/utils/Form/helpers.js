@@ -170,19 +170,28 @@ function mergeStore (target, source) {
   if (source.state) {
     if (target.state) {
       if (typeof target.state === 'function') {
-        target.state = Object.assign({}, target.state(), source.state)
+        const targetState = target.state()
+        target.state = () => ({
+          ...source.state,
+          ...targetState
+        })
       } else {
-        Object.assign(target.state, source.state)
+        target.state = () => ({
+          ...source.state,
+          ...target.state
+        })
       }
     } else {
-      target.state = source.state
+      target.state = () => ({
+        ...source.state
+      })
     }
   }
 
   function assignWith (key) {
     if (source[key]) {
       if (target[key]) {
-        Object.assign(target[key], source[key])
+        Object.assign(target[key], source[key], target[key])
       } else {
         target[key] = source[key]
       }
