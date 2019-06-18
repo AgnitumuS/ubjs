@@ -19,8 +19,8 @@ const LOCAL_SERVER_UBQL_V2 = ((v[0] >= 'v5') && (v[1] >= 10))
  *
  * Usually is created by using one of the fabric functions:
  *
- *   - {@link UB.Repository UB.Repository} for entities from this server instance
- *   - {@link SyncConnection#Repository conn.Repository} for access remote UB server
+ *   - {@link module:@unitybase/ub#Repository UB.Repository} for entities from this server instance
+ *   - {@link class:SyncConnection#Repository conn.Repository} for access remote UB server
  *
 
      let store = UB.Repository('my_entity')
