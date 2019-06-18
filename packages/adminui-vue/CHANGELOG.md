@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - "Always use domain for login" checkbox should be visible in navbar User menu in case "Negotiate" auth is enabled for app [UBDF-9586]
  - `class UForm` fixed the problem when two identical forms have a common store state and replace each other's data
  - `class UForm` Now any method or state property of the UForm store can be overwritten by local form store
+ - `u-select-enum` fixed disabled prop
+
 
 ## [1.6.3]
 ### Fixed
