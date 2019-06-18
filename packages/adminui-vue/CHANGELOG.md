@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.2]
+### Fixed
+ - `u-select-enum` fixed disabled prop
+
 ## [1.6.1]
 ### Fixed
  - `USidebar` - item text is now hidden if overflow exceeds 3 lines

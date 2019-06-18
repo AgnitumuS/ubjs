@@ -3,6 +3,7 @@
     :repository="getEnumRequest"
     :value="value"
     :model-attr="modelAttr"
+    :disabled="disabled"
     remove-default-actions
     @input="$emit('input', $event)"
   />
