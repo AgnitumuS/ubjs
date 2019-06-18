@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.4]
+### Fixed
+ - "Always use domain for login" checkbox should be visible in navbar User menu in case "Negotiate" auth is enabled for app [UBDF-9586]
+
 ## [1.6.3]
 ### Fixed
  - fix UFormContainer registration issue introduced in 1.6.2
@@ -196,7 +200,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - UNavbarUserButton - actions for logged in user
  - "Magic links" (see adminui-vue/utils/magicLinks.js for details)
   ```html
-    <a href="#" data-cmd-type="showForm" data-entity="ubm_navshortcut", data-instance-id=332352169869385>
+    <a href="#" data-cmd-type="showForm" data-entity="ubm_navshortcut" data-instance-id=332352169869385>
        Edit existed shortcut with specified ID
    </a>
   ```

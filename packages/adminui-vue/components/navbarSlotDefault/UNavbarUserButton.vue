@@ -27,7 +27,7 @@
         {{ userName }}
       </el-dropdown-item>
 
-      <el-dropdown-item v-if="negotiateEnabled">
+      <el-dropdown-item v-if="negotiateAvailable">
         <el-checkbox v-model="silenceKerberosLogin">
           {{ $ut('KerberosRememberUserMenu') }}
         </el-checkbox>
@@ -123,14 +123,14 @@ export default {
 
   data () {
     const silenceKerberosLogin = window.localStorage[this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN] === 'true'
-    const negotiateEnabled = this.$UB.connection.authMethods.indexOf('Negotiate') > 0
+    const negotiateAvailable = this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
     const userName = this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
     const cfg = this.$UB.connection.appConfig
     let customVersion = this.$UB.connection.userData('appVersion')
     const appVersion = customVersion || `${cfg.serverVersion} / ${cfg.appVersion}`
     return {
       silenceKerberosLogin,
-      negotiateEnabled,
+      negotiateAvailable: negotiateAvailable,
       userName,
       appVersion,
       iconClass: 'fa fa-user',
