@@ -6,7 +6,7 @@
     >
       <el-tooltip
         v-show="isCollapsed"
-        :content="$ut('rabochiyStol')"
+        :content="$ut('Desktop')"
         placement="right"
         :enterable="false"
       >

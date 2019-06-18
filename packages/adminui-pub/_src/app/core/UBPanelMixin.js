@@ -288,7 +288,7 @@ Ext.define('UB.core.UBPanelMixin', {
   createMenuItemLink: function () {
     this.actions.commandLink = new Ext.Action({
       actionId: 'commandLink',
-      text: UB.i18n('ssylka'),
+      text: UB.i18n('link'),
       hideOnClick: false,
       // iconCls: 'iconLink',
       glyph: UB.core.UBUtil.glyphs.faShare,
@@ -300,7 +300,7 @@ Ext.define('UB.core.UBPanelMixin', {
           selectOnFocus: true,
           readOnly: true,
           minWidth: 200,
-          fieldLabel: UB.i18n('vneshnaja')
+          fieldLabel: UB.i18n('External')
         }]
       },
       listeners: {
@@ -363,7 +363,7 @@ Ext.define('UB.core.UBPanelMixin', {
     }
 
     return Ext.create('Ext.menu.Item', {
-      text: UB.i18n('detali'),
+      text: UB.i18n('Details'),
       hideOnClick: false,
       glyph: UB.core.UBUtil.glyphs.faCaretSquareODown,
       actionId: UB.core.UBPanelMixin.actionId.showDetail,

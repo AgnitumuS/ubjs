@@ -42,7 +42,7 @@ export default {
     /**
      * If is set String param will be show error text
      * If set false will hide error
-     * If set true will show default error text $ut('obazatelnoePole')
+     * If set true will show default error text $ut('requiredField')
      */
     error: {
       type: [String, Boolean],
@@ -102,7 +102,7 @@ export default {
     errorText () {
       if (this.error) {
         if (typeof this.error === 'boolean') {
-          return this.$ut('obazatelnoePole')
+          return this.$ut('requiredField')
         } else {
           return this.$ut(this.error)
         }

@@ -41,7 +41,7 @@ Ext.define('UB.view.UploadFileAjax', {
       name: 'document',
       allowBlank: false,
       // inputType: 'file',
-      blankText: UB.i18n('obazatelnoePole'),
+      blankText: UB.i18n('requiredField'),
       fieldLabel: UB.i18n('vyberiteFayl'),
       anchor: '100%',
       buttonText: '',

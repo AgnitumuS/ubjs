@@ -356,7 +356,7 @@ function createProcessingModule ({
        */
       async refresh ({ state, getters, commit, dispatch }) {
         if (getters.isDirty) {
-          const result = await $App.dialogYesNo('obnovit', 'formWasChanged')
+          const result = await $App.dialogYesNo('refresh', 'formWasChanged')
 
           if (!result) return
         }

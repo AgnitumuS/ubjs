@@ -2191,7 +2191,7 @@ Ext.define('UB.view.BasePanel', {
         actionId: actions.save,
         scale: 'medium',
         glyph: UB.core.UBUtil.glyphs.faFloppy,
-        text: UB.i18n('sohranit') + hotKeys[actions.save].text,
+        text: UB.i18n('save') + hotKeys[actions.save].text,
         cls: 'save-action',
         eventId: events.save,
         handler: me.onAction,
@@ -2252,7 +2252,7 @@ Ext.define('UB.view.BasePanel', {
       actionId: actions.refresh,
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faRefresh,
-      text: UB.i18n('obnovit') + hotKeys[actions.refresh].text,
+      text: UB.i18n('refresh') + hotKeys[actions.refresh].text,
       cls: 'refresh-action',
       eventId: events.refresh,
       handler: me.onAction,
@@ -2431,7 +2431,7 @@ Ext.define('UB.view.BasePanel', {
         }, {
           actionId: actions.deleteAttachment + '_' + key,
           iconCls: 'iconClear',
-          text: UB.i18n('ochistit'),
+          text: UB.i18n('clear'),
           eventId: events.deleteattachment,
           handler: me.onAction,
           attribute: key,
@@ -3417,7 +3417,7 @@ Ext.define('UB.view.BasePanel', {
       ctrl = me.getField(action.attribute)
 
     ctrl.fireEvent('change')
-    $App.dialogYesNo('ochistit', 'vyHotiteUdalitSoderzhimoeDocumenta')
+    $App.dialogYesNo('clear', 'vyHotiteUdalitSoderzhimoeDocumenta')
       .then(function (res) {
         if (!res) return
 

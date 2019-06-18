@@ -23,7 +23,7 @@ Ext.define('UB.view.InputDateWindow', {
             me = this,
             fieldDate = Ext.create('Ext.form.field.Date', {
                 allowBlank: false,
-                blankText: UB.i18n('obazatelnoePole'),
+                blankText: UB.i18n('requiredField'),
                 fieldLabel: UB.i18n('aktualnoS'),
                 anchor: '100%',
                 value: new Date(),
