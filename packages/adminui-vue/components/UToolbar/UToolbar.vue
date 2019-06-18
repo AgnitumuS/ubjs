@@ -310,11 +310,6 @@ export default {
               .orderByDesc('actionTime')
               .ubql()
           ]
-        },
-        cmpInitConfig: {
-          onItemDblClick (grid, record, item, index, e, eOpts) {
-            this.doOnEdit(eOpts)
-          }
         }
       })
     },
