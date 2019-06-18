@@ -6,80 +6,66 @@
       v-loading="loading"
       :label-width="160"
     >
-      <el-tabs @tab-click="setCodeCmdHeight">
-        <el-tab-pane
-          ref="main"
-          :label="$ut('main')"
+      <u-form-row label="ID">
+        <el-row
+          :gutter="10"
+          type="flex"
+          align="middle"
+          justify="space-between"
         >
-          <u-form-row label="ID">
-            <el-row
-              :gutter="10"
-              type="flex"
-              align="middle"
-              justify="space-between"
-            >
-              <el-col :span="8">
-                <el-input
-                  readonly
-                  :value="ID"
-                />
-              </el-col>
-
-              <el-col
-                :span="6"
-                :offset="2"
-              >
-                <el-switch
-                  v-model="isFolder"
-                  :active-text="getLabel('isFolder')"
-                />
-              </el-col>
-
-              <el-col :span="8">
-                <el-switch
-                  v-model="inWindow"
-                  :active-text="getLabel('inWindow')"
-                />
-              </el-col>
-            </el-row>
-          </u-form-row>
-
-          <u-auto-field
-            v-model="code"
-            code="code"
-          />
-
-          <u-auto-field
-            v-model="caption"
-            code="caption"
-          />
-
-          <shortcut-tree />
-
-          <shortcut-icon-select @select="iconCls = $event" />
-
-          <u-auto-field
-            v-model="displayOrder"
-            code="displayOrder"
-          />
-
-          <u-form-row label="navShortcutRights">
-            <u-select-collection
-              subject-attr="admSubjID"
-              collection-name="rightsSubjects"
-              clearable
+          <el-col :span="8">
+            <el-input
+              readonly
+              :value="ID"
             />
-          </u-form-row>
-        </el-tab-pane>
+          </el-col>
 
-        <el-tab-pane
-          ref="cmdCode"
-          :label="getLabel('cmdCode')"
-          lazy
-        >
-          <shortcut-cmd-code />
-        </el-tab-pane>
-      </el-tabs>
+          <el-col
+            :span="6"
+            :offset="2"
+          >
+            <el-switch
+              v-model="isFolder"
+              :active-text="$ut('ubm_navshortcut.isFolder')"
+            />
+          </el-col>
+
+          <el-col :span="8">
+            <el-switch
+              v-model="inWindow"
+              :active-text="$ut('ubm_navshortcut.inWindow')"
+            />
+          </el-col>
+        </el-row>
+      </u-form-row>
+
+      <u-auto-field
+        v-model="code"
+        code="code"
+      />
+
+      <u-auto-field
+        v-model="caption"
+        code="caption"
+      />
+
+      <shortcut-tree />
+
+      <shortcut-icon-select @select="iconCls = $event" />
+
+      <u-auto-field
+        v-model="displayOrder"
+        code="displayOrder"
+      />
+
+      <u-form-row label="navShortcutRights">
+        <u-select-collection
+          subject-attr="admSubjID"
+          collection-name="rightsSubjects"
+          clearable
+        />
+      </u-form-row>
+      <shortcut-cmd-code />
     </u-form-container>
   </div>
 </template>
@@ -112,9 +98,7 @@ module.exports.mount = function ({
   instanceID,
   formCode,
   rootComponent,
-  isFolder,
-  desktopID,
-  parentID
+  parentContext
 }) {
   Form({
     component: rootComponent,
@@ -122,21 +106,12 @@ module.exports.mount = function ({
     instanceID,
     title,
     formCode,
-    isModal: true,
     modalClass: 'ub-dialog__reset-padding'
   })
     .instance()
     .processing({
       inited (store) {
-        if (isFolder) {
-          store.commit('SET_DATA', { key: 'isFolder', value: isFolder })
-        }
-        if (desktopID) {
-          store.commit('SET_DATA', { key: 'desktopID', value: desktopID })
-        }
-        if (parentID) {
-          store.commit('SET_DATA', { key: 'parentID', value: parentID })
-        }
+        if (parentContext) store.commit('ASSIGN_DATA', { loadedState: parentContext })
       },
       collections: {
         rightsSubjects: UB.connection
@@ -168,24 +143,5 @@ module.exports.default = {
     ...mapInstanceFields(fieldList),
     ...mapGetters(['loading'])
   },
-
-  methods: {
-    getLabel (attr) {
-      return this.entitySchema.attributes[attr].caption
-    },
-
-    // on tab change set height to cmdCode pane
-    async setCodeCmdHeight () {
-      await this.$nextTick()
-      if (this.$refs.cmdCode.$el) {
-        this.$refs.cmdCode.$el.style.height = this.mainHeight + 'px'
-      }
-    }
-  },
-
-  async mounted () {
-    await this.$nextTick()
-    this.mainHeight = this.$refs.main.$el.offsetHeight
-  }
 }
 </script>

@@ -1,22 +1,27 @@
-﻿{
-    "caption": "Köçürülən qiymətlər",
-    "description": "Köçürülən qiymətlər",
-    "attributes": {
-        "eGroup": {
-            "caption": "Qrup"
-        },
-        "code": {
-            "caption": "Коd",
-            "description": "Qiymətin kodu"
-        },
-        "shortName": {
-            "caption": "Qısa ad"
-        },
-        "name": {
-            "caption": "Qiymətin adı"
-        },
-        "sortOrder": {
-            "caption": "Sıra №si"
-        }
+{
+  "caption": "Köçürülən qiymətlər",
+  "description": "Köçürülən qiymətlər",
+  "attributes": [
+    {
+      "name": "eGroup",
+      "caption": "Qrup"
+    },
+    {
+      "name": "code",
+      "caption": "Коd",
+      "description": "Qiymətin kodu"
+    },
+    {
+      "name": "shortName",
+      "caption": "Qısa ad"
+    },
+    {
+      "name": "name",
+      "caption": "Qiymətin adı"
+    },
+    {
+      "name": "sortOrder",
+      "caption": "Sıra №si"
     }
+  ]
 }

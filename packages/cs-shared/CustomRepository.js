@@ -294,7 +294,7 @@ UB.Repository('my_entity').attrs('id')
 
   /**
    * Helper method for {@link class:CustomRepository#where CustomRepository.where}.
-   * Calls `where` in case addingCondition is <a href=https://developer.mozilla.org/en-US/docs/Glossary/truthy>truthy</a>
+   * Calls `where` in case addingCondition is <a href='https://developer.mozilla.org/en-US/docs/Glossary/truthy'>truthy</a>
    *
    * @example
 
@@ -308,7 +308,7 @@ UB.Repository('my_entity').attrs('id')
 
    * @param {*} addingCondition Where expression will be added only in case addingCondition is truthy
    * @param {string} expression   Attribute name (with or without []) or valid expression with attributes in []
-   * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link CustomRepository#WhereCondition WhereCondition}
+   * @param {CustomRepository.WhereCondition|String} condition  Any value from {@link class:CustomRepository#WhereCondition WhereCondition}
    * @param {*} [values] Condition value. If `undefined` values not passed to ubql
    * @param {string} [clauseName] Optional clause name to be used in {CustomRepository.logicalPredicates}
    *   If not passed where will generate unique clause named 'c1', 'c2', ......

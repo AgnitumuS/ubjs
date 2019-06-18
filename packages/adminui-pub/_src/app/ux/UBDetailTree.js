@@ -131,7 +131,7 @@ Ext.define('UB.ux.UBDetailTree', {
       actionId: actions.addNew,
       glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-new-action',
-      tooltip: UB.i18n('dobavit'), // + hotKeys[actions.addNew].text,
+      tooltip: UB.i18n('actionAdd'), // + hotKeys[actions.addNew].text,
       eventId: events.addnew,
       disabled: true,
       // handler: me.onAction,
@@ -143,7 +143,7 @@ Ext.define('UB.ux.UBDetailTree', {
       actionId: actions.refresh,
       glyph: UB.core.UBUtil.glyphs.faRefresh,
       cls: 'refresh-action',
-      tooltip: UB.i18n('obnovit'), // + hotKeys[actions.refresh].text,
+      tooltip: UB.i18n('refresh'), // + hotKeys[actions.refresh].text,
       eventId: events.refresh,
       handler: me.onAction,
       scope: me

@@ -1512,7 +1512,7 @@ Ext.define('UB.view.EntityGridPanel', {
       glyph: UB.core.UBUtil.glyphs.faPlusCircle,
       cls: 'add-new-action',
 
-      text: UB.i18n('dobavit') + hotKeys[actions.addNew].text,
+      text: UB.i18n('actionAdd') + hotKeys[actions.addNew].text,
       eventId: events.addnew,
       handler: me.onAction,
       disabled: !me.entity.haveAccessToMethods([methodNames.ADDNEW, methodNames.INSERT]),
@@ -1617,7 +1617,7 @@ Ext.define('UB.view.EntityGridPanel', {
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faRefresh,
       cls: 'refresh-action',
-      text: UB.i18n('obnovit') + hotKeys[actions.refresh].text,
+      text: UB.i18n('refresh') + hotKeys[actions.refresh].text,
       eventId: events.refresh,
       handler: me.onAction,
       scope: me
@@ -1702,7 +1702,7 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.actions[actions.optimizeWidth] = new Ext.Action({
       actionId: actions.optimizeWidth,
-      text: UB.i18n('gridPptimizeWidth'),
+      text: UB.i18n('gridOptimizeWidth'),
       eventId: events.optimizeWidth,
       handler: me.onAction,
       scope: me

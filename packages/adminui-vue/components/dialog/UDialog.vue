@@ -17,7 +17,8 @@
 
     <div
       ref="msg"
-      :class="isDevInfo && 'ub-error-dialog__dev'"
+      class="ub-dialog_break-word"
+      :class="{'ub-error-dialog__dev': isDevInfo}"
       v-html="$ut(msg)"
     />
 
@@ -111,6 +112,10 @@ export default {
 </script>
 
 <style>
+.ub-dialog_break-word {
+  word-break: break-word;
+}
+
 .ub-dialog__title {
   display: flex;
   align-items: center;

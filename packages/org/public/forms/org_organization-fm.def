@@ -22,7 +22,7 @@ exports.formDef = {
             xtype: 'tabpanel',
             items: [
                 {
-                    title: UB.i18n('Obshchee'), // "Атрибуты"
+                    title: UB.i18n('General'), // "Атрибуты"
                     layout: {
                         type: 'vbox',
                         align: "stretch",

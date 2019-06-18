@@ -79,7 +79,7 @@ Ext.define('UB.view.cryptoUI.ReadPK', {
       allowOnlyWhitespace: false,
       // inputType: 'file',
       labelClsExtra: 'fa fa-user-secret fa-2x',
-      blankText: UB.i18n('obazatelnoePole'),
+      blankText: UB.i18n('requiredField'),
       requireText: UB.i18n('Select private key file'),
       labelWidth: 40,
       labelSeparator: '',

@@ -1,11 +1,13 @@
-﻿{
-    "caption": "Administering of desktops",
-    "attributes": {
-        "instanceID": {
-            "caption": "Desktop"
-        },
-        "admSubjID": {
-            "caption": "Admin subject"
-        }
+{
+  "caption": "Administering of desktops",
+  "attributes": [
+    {
+      "name": "instanceID",
+      "caption": "Desktop"
+    },
+    {
+      "name": "admSubjID",
+      "caption": "Admin subject"
     }
+  ]
 }

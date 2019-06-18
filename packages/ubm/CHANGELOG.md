@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.26]
+### Changed
+ - UBM model lang files are converted to array-of-object format
+
+## [5.1.25]
+### Changed
+ - Shortcut edit/creation form now showed in tab instead of modal window 
+ 
 ## [5.1.24]
 ### Fixed
  - added missed caption for `ubm_navshortcut` form
@@ -56,8 +64,7 @@ This change is required to prevent massive CLOB fetching (cmdData attribute)
 
 ## [4.0.39]
 ### Added
- - userful code snippets added to a form builder for def and js parts
-
+ - useful code snippets added to a form builder for def and js parts
 
 ## [4.0.36]
 ### Added

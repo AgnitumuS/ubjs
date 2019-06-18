@@ -76,7 +76,7 @@ Ext.define('UB.view.cryptoUI.SelectCert', {
       margin: '10 80 10 80',
       name: 'document',
       allowBlank: false,
-      blankText: UB.i18n('obazatelnoePole'),
+      blankText: UB.i18n('requiredField'),
       requireText: UB.i18n('certificate'),
       // fieldLabel: UB.i18n('privateKeyFile'),
       anchor: '100%',

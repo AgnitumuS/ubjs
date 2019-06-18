@@ -32,10 +32,14 @@ function createProcessingModule ({
   validator,
   instanceID,
   entitySchema,
-  beforeInit = () => {},
-  inited = () => {},
-  beforeSave = () => {},
-  saved = () => {}
+  beforeInit,
+  inited,
+  beforeCreate,
+  created,
+  beforeLoad,
+  loaded,
+  beforeSave,
+  saved
 }) {
   const autoLoadedCollections = Object.entries(initCollectionsRequests)
     .filter(([coll, collData]) => !collData.lazy)
@@ -118,7 +122,9 @@ function createProcessingModule ({
        * dispatch create or load action
        */
       async init ({ state, commit, dispatch }) {
-        beforeInit()
+        if (beforeInit) {
+          await beforeInit()
+        }
         commit('IS_NEW', !instanceID)
 
         if (state.isNew) {
@@ -127,7 +133,9 @@ function createProcessingModule ({
           await dispatch('load')
           await dispatch('loadCollections', autoLoadedCollections)
         }
-        inited()
+        if (inited) {
+          await inited()
+        }
       },
 
       /**
@@ -135,6 +143,9 @@ function createProcessingModule ({
        * that are response by the server
        */
       async create ({ commit }) {
+        if (beforeCreate) {
+          await beforeCreate()
+        }
         commit('LOADING', {
           isLoading: true,
           target: 'create'
@@ -146,6 +157,9 @@ function createProcessingModule ({
             fieldList
           })
           commit('LOAD_DATA', data)
+          if (created) {
+            await created()
+          }
         } catch (err) {
           commit('ERROR', true)
           UB.showErrorWindow(err)
@@ -161,6 +175,9 @@ function createProcessingModule ({
        * Load instance data by record ID
        */
       async load ({ commit }) {
+        if (beforeLoad) {
+          await beforeLoad()
+        }
         commit('LOADING', {
           isLoading: true,
           target: 'loadMaster'
@@ -173,6 +190,9 @@ function createProcessingModule ({
             .selectById(instanceID)
 
           commit('LOAD_DATA', data)
+          if (loaded) {
+            await loaded()
+          }
         } catch (err) {
           commit('ERROR', true)
           UB.showErrorWindow(err)
@@ -253,7 +273,12 @@ function createProcessingModule ({
        * build requests for master and collections records
        */
       async save ({ state, commit, dispatch }) {
-        beforeSave()
+        if (beforeSave) {
+          const answer = await beforeSave()
+          if (answer === false) {
+            return
+          }
+        }
         const $v = validator()
         if ($v) {
           $v.$touch()
@@ -310,7 +335,9 @@ function createProcessingModule ({
             type: 'success',
             message: UB.i18n('successfullySaved')
           })
-          saved()
+          if (saved) {
+            await saved()
+          }
         } catch (err) {
           commit('ERROR', true)
           UB.showErrorWindow(err)
@@ -329,7 +356,7 @@ function createProcessingModule ({
        */
       async refresh ({ state, getters, commit, dispatch }) {
         if (getters.isDirty) {
-          const result = await $App.dialogYesNo('obnovit', 'formWasChanged')
+          const result = await $App.dialogYesNo('refresh', 'formWasChanged')
 
           if (!result) return
         }
@@ -418,9 +445,9 @@ function createProcessingModule ({
       /**
        * Sends addNew request then fetch default params
        * and push it in collection
-       * @param {[type]} options.commit     [description]
-       * @param {String} options.collection Collection name
-       * @param {Object} options.execParams if we need to create new item with specified params
+       * @param commit
+       * @param {String} collection Collection name
+       * @param {Object} execParams if we need to create new item with specified params
        */
       async addCollectionItem ({ commit }, { collection, execParams }) {
         const repo = initCollectionsRequests[collection].repository

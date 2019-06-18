@@ -114,13 +114,31 @@ class UForm {
     return this
   }
 
+  /**
+   * @param {Object} cfg
+   * @param {Array<string>} cfg.masterFieldList
+   * @param cfg.collections
+   * @param {function} cfg.beforeInit
+   * @param {function} cfg.inited
+   * @param {function} cfg.beforeSave
+   * @param {function} cfg.saved
+   * @param {function} cfg.beforeCreate
+   * @param {function} cfg.created
+   * @param {function} cfg.beforeLoad
+   * @param {function} cfg.loaded
+   * @returns {UForm}
+   */
   processing ({
     masterFieldList,
     collections = {},
     beforeInit,
     inited,
     beforeSave,
-    saved
+    saved,
+    beforeCreate,
+    created,
+    beforeLoad,
+    loaded
   } = {}) {
     if (!this.canProcessingInit) {
       throw new Error(`You can use ".processing()" only after ".instance()" and before ".mount()". Or ".processing()" is already initialized`)
@@ -155,10 +173,14 @@ class UForm {
       instanceID: this.instanceID,
       collections,
       validator: () => this.validator,
-      beforeInit: () => { hookWrap(beforeInit, this.$store) },
-      inited: () => { hookWrap(inited, this.$store) },
-      beforeSave: () => { hookWrap(beforeSave, this.$store) },
-      saved: () => { hookWrap(saved, this.$store) }
+      beforeInit: () => hookWrap(beforeInit, this.$store),
+      inited: () => hookWrap(inited, this.$store),
+      beforeSave: () => hookWrap(beforeSave, this.$store),
+      saved: () => hookWrap(saved, this.$store),
+      beforeCreate: () => hookWrap(beforeCreate, this.$store),
+      created: () => hookWrap(created, this.$store),
+      beforeLoad: () => hookWrap(beforeLoad, this.$store),
+      loaded: () => hookWrap(loaded, this.$store)
     })
     mergeStore(this.storeConfig, processingModule)
 

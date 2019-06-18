@@ -363,7 +363,7 @@ Ext.define('UBM.scanerSettings', {
                         xtype: 'button',
                         //width: 25,
                         ubID: 'FRScan.btnRefreshScaners',
-                        tooltip: UB.i18n('obnovit'), //'Перечитать сканеры',//localize+-
+                        tooltip: UB.i18n('refresh'), //'Перечитать сканеры',//localize+-
                         //iconCls: 'iconRefresh'
                         glyph: UB.core.UBUtil.glyphs.faRefresh
                     }]
@@ -689,7 +689,7 @@ Ext.define('UBM.scanerSettings', {
                     xtype: 'button',
                     //width: 25,
                     ubID: 'UBScan.btnRefreshScaners',
-                    tooltip: UB.i18n('obnovit'), //'Перечитать сканеры',
+                    tooltip: UB.i18n('refresh'), //'Перечитать сканеры',
                     //iconCls: 'iconRefresh'
                     glyph: UB.core.UBUtil.glyphs.faRefresh
                 }]

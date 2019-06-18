@@ -4,7 +4,7 @@ const fs = require('fs')
 module.exports = function metaTr (options) {
   if (!options) {
     let opts = cmdLineOpt.describe('meta-tr', '*.meta transformation to fit a latest meta JSON schema', 'ub')
-      .add({ short: 'm', long: 'meta', param: 'metaFile', defaultValue: '*.meta', help: 'Path to *.meta file to transform' })
+      .add({ short: 'm', long: 'meta', param: 'metaFile', help: 'Path to *.meta or *.meta.lang file to transform' })
     options = opts.parseVerbose({}, true)
     if (!options) return
   }

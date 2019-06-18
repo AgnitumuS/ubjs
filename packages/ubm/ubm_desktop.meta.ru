@@ -1,19 +1,23 @@
-﻿{
-    "caption": "Рабочий стол",
-    "description": "Рабочие столы приложения",
-    "attributes": {
-        "caption": {
-            "caption": "Название десктопа"
-        },
-        "code": {
-            "caption": "Код"
-        },
-        "url": {
-            "caption": "URL",
-            "description": "URL статической страницы сервера, отображаемой в центре экрана при выборе рабочего стола"
-        },
-        "isDefault": {
-            "caption": "По умолчанию?"
-        }
+{
+  "caption": "Рабочий стол",
+  "description": "Рабочие столы приложения",
+  "attributes": [
+    {
+      "name": "caption",
+      "caption": "Название десктопа"
+    },
+    {
+      "name": "code",
+      "caption": "Код"
+    },
+    {
+      "name": "url",
+      "caption": "URL",
+      "description": "URL статической страницы сервера, отображаемой в центре экрана при выборе рабочего стола"
+    },
+    {
+      "name": "isDefault",
+      "caption": "По умолчанию?"
     }
+  ]
 }

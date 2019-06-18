@@ -65,8 +65,7 @@
 
 <script>
 /**
- * Automaticly create field from entity schema
- * and validate it
+ * Create a form component and validators based on entity attribute type
  */
 export default {
   name: 'UAutoField',
@@ -129,7 +128,7 @@ export default {
 </script>
 
 <docs>
-  Automaticly create field from entity schema and validate it
+  Create a form component and validators based on entity attribute type
 
   ### Basic usage:
 

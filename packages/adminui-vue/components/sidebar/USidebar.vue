@@ -6,7 +6,7 @@
     >
       <el-tooltip
         v-show="isCollapsed"
-        :content="$ut('rabochiyStol')"
+        :content="$ut('Desktop')"
         placement="right"
         :enterable="false"
       >
@@ -242,22 +242,21 @@ export default {
         cmdType: 'showForm',
         entity: 'ubm_navshortcut'
       }
-
       if (action === 'edit') {
         command.instanceID = ID
-      } else if (action === 'addShortcut') {
-        command.desktopID = desktopID
-        command.parentID = isFolder ? ID : parentID
-      } else if (action === 'addFolder') {
-        command.desktopID = desktopID
-        command.parentID = isFolder ? ID : parentID
-        command.isFolder = true
+      } else if ((action === 'addShortcut') || (action === 'addFolder')) {
+        command.parentContext = {
+          desktopID: desktopID,
+          parentID: isFolder ? ID : parentID,
+          isFolder: action === 'addFolder'
+        }
       } else if (action === 'deleteShortcut') {
         const confirm = await this.$dialogYesNo('areYouSure', 'deletionDialogConfirmCaption')
 
         if (confirm) {
           await $App.connection.doDelete({
             entity: 'ubm_navshortcut',
+            target: $App.viewport.centralPanel,
             execParams: {
               ID
             }

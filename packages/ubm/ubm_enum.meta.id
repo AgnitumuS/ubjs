@@ -1,22 +1,27 @@
-﻿{
-    "caption": "nilai-nilai yang disebutkan",
-    "description": "nilai-nilai yang disebutkan",
-    "attributes": {
-        "eGroup": {
-            "caption": "Kelompok"
-        },
-        "code": {
-            "caption": "Kode",
-            "description": "kode nilai"
-        },
-        "shortName": {
-            "caption": "Nama pendek"
-        },
-        "name": {
-            "caption": "nama nilai"
-        },
-        "sortOrder": {
-            "caption": "№ rangka"
-        }
+{
+  "caption": "nilai-nilai yang disebutkan",
+  "description": "nilai-nilai yang disebutkan",
+  "attributes": [
+    {
+      "name": "eGroup",
+      "caption": "Kelompok"
+    },
+    {
+      "name": "code",
+      "caption": "Kode",
+      "description": "kode nilai"
+    },
+    {
+      "name": "shortName",
+      "caption": "Nama pendek"
+    },
+    {
+      "name": "name",
+      "caption": "nama nilai"
+    },
+    {
+      "name": "sortOrder",
+      "caption": "№ rangka"
     }
+  ]
 }

@@ -9,7 +9,7 @@ Cоздает стор для формы и рендерит ее в таб ил
 ## Пример минимального использования
 
 ```javascript
-const Form = require('@unitybase/adminui-vue')
+const { Form } = require('@unitybase/adminui-vue')
 
 module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
   Form({
@@ -45,24 +45,10 @@ module.exports.mount = function ({ title, entity, instanceID, rootComponent }) {
     })
     .instance()
     .processing({
-      // хуки
-      // стор создан, данные еще не загружены
-      beforeInit: (store) => { 
-        console.log('before init')
+      // пример хука, список хуков описан ниже в processing
+      async beforeSave (store) {
+        return $App.dialogYesNo('custom before save', 'are you sure?')
       },
-      // после выполнения load или create в зависимости от isNew
-      inited: (store) => {
-        console.log('inited')
-      },
-      // до сохранения и валидации
-      beforeSave: (store) => {
-        console.log('before save')
-      },
-      // после успешного сохранения
-      saved: (store) => {
-        console.log('saved')
-      },
-      // хуки **конец**
       masterFieldList: ['ID', 'name', 'age', 'phone'], // можно не указывать
       /**
       * collections - запросы для связаных с формой записей.
@@ -182,6 +168,18 @@ module.exports.default ={
  - `loadCollections` - данные в этих коллекциях будут загружены только тогда когда вручную будет вызван этот экшн.
   Это сделано специально для того что б загружать связаные записи только тогда когда они необходимы,
   например когда данные записи коллекции находятся на вкладке которая не включена при открытии формы.
+
+#### hooks
+Хук может быть обычной функцией или async (функция которая возвращает промис)
+
+ - **beforeInit**
+ - **inited**
+ - **beforeSave** - если функция вернет false save не будет выполнен 
+ - **saved**
+ - **beforeCreate** 
+ - **created**
+ - **beforeLoad** 
+ - **loaded**
 
 ### Validation
   На основе данных в instance модуле и entitySchema создает объект валидации `$v` - [vuelidate](https://github.com/vuelidate/vuelidate)

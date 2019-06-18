@@ -104,7 +104,7 @@ export default {
 
     dropdownButtons () {
       const buttons = [{
-        caption: this.$ut('obnovit') + ' (Ctrl + R)',
+        caption: this.$ut('refresh') + ' (Ctrl + R)',
         iconCls: 'fa fa-refresh',
         handler: () => this.refresh(),
         disabled: !this.canRefresh
@@ -122,7 +122,7 @@ export default {
 
       buttons.push({
         iconCls: 'fa fa-link',
-        caption: this.$ut('ssylka'),
+        caption: this.$ut('link'),
         handler: this.copyLink
       })
 
@@ -256,7 +256,7 @@ export default {
       if (document.execCommand('copy')) {
         document.body.removeChild(input)
         this.$notify({
-          title: this.$ut('ssylka'),
+          title: this.$ut('link'),
           message: this.$ut('linkCopiedText'),
           duration: 5000
         })
@@ -310,11 +310,6 @@ export default {
               .orderByDesc('actionTime')
               .ubql()
           ]
-        },
-        cmpInitConfig: {
-          onItemDblClick (grid, record, item, index, e, eOpts) {
-            this.doOnEdit(eOpts)
-          }
         }
       })
     },

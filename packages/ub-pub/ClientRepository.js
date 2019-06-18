@@ -13,11 +13,11 @@ const CustomRepository = csShared.CustomRepository
  * Repository for client-side data retrieve.
  * Implement:
  *
- *  - {@link ClientRepository#select select} method for retrieve `array of object` representation of server entity
- *  - {@link ClientRepository#selectAsArray selectAsArray} method for retrieve `array of array` representation of server entity
- *  - {@link ClientRepository#selectAsStore selectAsStore} method for retrieve {UB.ux.data.UBStore} (applicable only for Ext-based client types)
+ *  - {@link class:ClientRepository#select select} method for retrieve `array of object` representation of server entity
+ *  - {@link class:ClientRepository#selectAsArray selectAsArray} method for retrieve `array of array` representation of server entity
+ *  - {@link class:ClientRepository#selectAsStore selectAsStore} method for retrieve {UB.ux.data.UBStore} (applicable only for Ext-based client types)
  *
- * Usually created using {@link module:@unitybase/ub#Repository UB.Repository} fabric function. Example:
+ * Usually created using <a href='../server-v5/ServerRepository.html'>UB.Repository</a> fabric function. Example:
  *
  *      var store = UB.Repository('my_entity').attrs(['ID', 'code'])
  *       .where('code', 'includes', ['1', '2', '3'])  // code in ('1', '2', '3')
@@ -131,7 +131,7 @@ class ClientRepository extends CustomRepository {
   }
 
   /**
-   * Alias to {@link ClientRepository#selectAsObject ClientRepository.selectAsObject}
+   * Alias to {@link class:ClientRepository#selectAsObject selectAsObject}
    */
   select (fieldAliases) {
     return this.selectAsObject(fieldAliases)
@@ -143,7 +143,7 @@ class ClientRepository extends CustomRepository {
    * WARNING method do not check repository contains the single row and always return
    * a first row from result.
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
-   *   during transform array to object. See {@link selectAsObject}
+   *   during transform array to object. See {@link class:ClientRepository#selectAsObject selectAsObject}
    * @return {Promise} Promise, resolved to {Object|undefined}
    */
   selectSingle (fieldAliases) {
@@ -169,7 +169,7 @@ class ClientRepository extends CustomRepository {
    *
    * @param {Number} ID Row identifier
    * @param {Object<string, string>} [fieldAliases] Optional object to change attribute names
-   *   during transform array to object. See {@link selectAsObject}
+   *   during transform array to object. See {@link class:ClientRepository#selectAsObject selectAsObject}
    * @return {Promise} Promise, resolved to {Object|undefined}
    */
   selectById (ID, fieldAliases) {

@@ -216,19 +216,16 @@ function createInstanceModule () {
       },
 
       /**
-       * Just like "SET", but assign multiple values at once passed as an object.
+       * Just like "SET_DATA", but assign multiple values at once passed as an object.
        * @param {VuexTrackedInstance} state
-       * @param {object} loadedState
+       * @param {object} payload
+       * @param {object} [payload.collection] optional collection (if not passed update master store)
+       * @param {object} [payload.index] optional collection item index. required in case collection is passed
+       * @param {object} payload.loadedState
        */
       ASSIGN_DATA (state, { collection, index, loadedState }) {
-        for (const [key, value] of Object.entries(loadedState)) {
-          if (typeof collection !== 'string') {
-            // Change the Master record
-            change(state, key, value)
-            return
-          }
-
-          // Item of a detail collection
+        let stateToChange
+        if (collection) {
           if (!(collection in state.collections)) {
             throw new Error(`Collection "${collection}" was not loaded or created!`)
           }
@@ -236,7 +233,13 @@ function createInstanceModule () {
           if (!(index in collectionInstance.items)) {
             throw new Error(`Collection "${collection}" does not have index: ${index}!`)
           }
-          change(collectionInstance.items[index], key, value)
+          stateToChange = collectionInstance.items[index]
+        } else {
+          stateToChange = state
+        }
+
+        for (const [key, value] of Object.entries(loadedState)) {
+          change(stateToChange, key, value)
         }
       },
 
