@@ -121,7 +121,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `Vuex` now imported inside `@unitybase/adminui-vue`. In other models:
    - for **dev** mode can be required directly ``` Vuex = require('vuex') ```
    - in case model is boundled by webpack `Vuex` should be in `externals` section of webpack config
-   ```json
+   ```
      externals: {
        lodash: '_',
        '@unitybase/ub-pub': 'UB',
@@ -201,7 +201,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - UNavbarUserButton - actions for logged in user
  - "Magic links" (see adminui-vue/utils/magicLinks.js for details)
   ```html
-    <a href="#" data-cmd-type="showForm" data-entity="ubm_navshortcut", data-instance-id=332352169869385>
+    <a href="#" data-cmd-type="showForm" data-entity="ubm_navshortcut" data-instance-id=332352169869385>
        Edit existed shortcut with specified ID
    </a>
   ```
