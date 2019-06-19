@@ -39,24 +39,15 @@
         </el-row>
       </u-form-row>
 
-      <u-auto-field
-        v-model="code"
-        code="code"
-      />
+      <u-auto-field attribute-name="code" />
 
-      <u-auto-field
-        v-model="caption"
-        code="caption"
-      />
+      <u-auto-field attribute-name="caption" />
 
       <shortcut-tree />
 
       <shortcut-icon-select @select="iconCls = $event" />
 
-      <u-auto-field
-        v-model="displayOrder"
-        code="displayOrder"
-      />
+      <u-auto-field attribute-name="displayOrder" />
 
       <u-form-row label="navShortcutRights">
         <u-select-collection
@@ -78,19 +69,6 @@ const ShortcutCmdCode = require('./components/ShortcutCmdCode.vue').default
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
-
-const fieldList = [
-  'ID',
-  'desktopID',
-  'parentID',
-  'code',
-  'isFolder',
-  'caption',
-  'cmdCode',
-  'inWindow',
-  'displayOrder',
-  'iconCls'
-]
 
 module.exports.mount = function ({
   title,
@@ -140,7 +118,15 @@ module.exports.default = {
   },
 
   computed: {
-    ...mapInstanceFields(fieldList),
+    ...mapInstanceFields([
+      'ID',
+      'desktopID',
+      'parentID',
+      'isFolder',
+      'cmdCode',
+      'inWindow',
+      'iconCls'
+    ]),
     ...mapGetters(['loading'])
   },
 }

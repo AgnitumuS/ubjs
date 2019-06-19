@@ -55,7 +55,6 @@ export default {
     }
   },
 
-  computed: {
     model: {
       get () {
         return this.value

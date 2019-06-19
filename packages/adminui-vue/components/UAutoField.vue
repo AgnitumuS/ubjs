@@ -1,8 +1,8 @@
 <template>
   <u-form-row
     :label="label"
-    :required="$v[code].$params.hasOwnProperty('required')"
-    :error="$v[code].$error"
+    :required="$v[attributeName].$params.hasOwnProperty('required')"
+    :error="$v[attributeName].$error"
   >
     <el-checkbox
       v-if="dataType === 'Boolean'"
@@ -19,7 +19,7 @@
     <u-select-enum
       v-else-if="dataType === 'Enum'"
       v-model="model"
-      :e-group="entitySchema.attributes[code].enumGroup"
+      :e-group="entitySchema.attributes[attributeName].enumGroup"
       :disabled="disabled"
     />
     <u-select-entity
@@ -45,7 +45,7 @@
       v-else-if="dataType === 'Document'"
       v-model="model"
       :entity-name="entity"
-      :file-store="code"
+      :file-store="attributeName"
       :doc-id="$store.state.data.ID"
       :disabled="disabled"
     />
@@ -57,7 +57,7 @@
     <u-input
       v-else
       v-model="model"
-      :attribute-name="code"
+      :attribute-name="attributeName"
       :disabled="disabled"
     />
   </u-form-row>
@@ -74,15 +74,9 @@ export default {
 
   props: {
     /**
-     * @model
+     * attribute name
      */
-    value: {
-      required: true
-    },
-    /**
-     * attribute code
-     */
-    code: {
+    attributeName: {
       type: String,
       required: true
     },
@@ -101,23 +95,28 @@ export default {
   computed: {
     model: {
       get () {
-        return this.value
+        return this.$store.state.data[this.attributeName]
       },
+
       set (value) {
-        this.$emit('input', value)
+        if (this.$v) {
+          this.$v[this.attributeName].$touch()
+        }
+        this.$store.commit(`SET_DATA`, { key: this.attributeName, value })
       }
-    },
+    }
+    ,
 
     dataType () {
-      return this.entitySchema.attributes[this.code].dataType
+      return this.entitySchema.attributes[this.attributeName].dataType
     },
 
     associatedEntity () {
-      return this.entitySchema.attributes[this.code].associatedEntity
+      return this.entitySchema.attributes[this.attributeName].associatedEntity
     },
 
     label () {
-      return this.entitySchema.attributes[this.code].caption
+      return this.entitySchema.attributes[this.attributeName].caption
     },
 
     isDate () {
@@ -134,20 +133,7 @@ export default {
 
   ```vue
   <template>
-    <u-auto-field
-      v-model="code"
-      code="code"
-    />
+    <u-auto-field attribute-name="code" />
   </template>
-
-  <script>
-    export default {
-      data () {
-        return {
-          code: ''
-        }
-      }
-    }
-  </script>
   ```
 </docs>

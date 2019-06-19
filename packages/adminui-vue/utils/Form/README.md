@@ -211,10 +211,7 @@ module.exports.default ={
 
       <!-- обертка для u-form-row которая смотрит на атрибут в сущности -->
       <!--и по его типу рендерит нужный html и определяет валидацию -->
-      <u-auto-field
-        v-model="caption"
-        code="caption"
-      />
+      <u-auto-field attribute-name="code" />
     </u-form-container>
   </div>
 </template>
