@@ -2,7 +2,7 @@
 /**
  * User: felix
  * Date: 26.01.14
- * This test connect to UB server and do select for all entities
+ * Check various SQL builder cases
  */
 const assert = require('assert')
 const cmdLineOpt = require('@unitybase/base').options

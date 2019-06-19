@@ -5,10 +5,6 @@ const App = require('@unitybase/ub').App
 // let res
 
 function runTest () {
-  // let prm = {
-  //   name: 'admin'
-  // }
-
   const db = App.dbConnections['main']
 
   // console.time('parseSQL')

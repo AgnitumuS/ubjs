@@ -9,7 +9,7 @@ const UBDomain = require('@unitybase/cs-shared').UBDomain
 const EventEmitter = require('events').EventEmitter
 const THTTPResponse = require('./HTTPResponse')
 const THTTPRequest = require('./HTTPRequest')
-const dbConnections = require('./DBConnections')
+const createDBConnections = require('./DBConnections')
 const blobStores = require('@unitybase/blob-stores')
 /**
  * @classdesc
@@ -336,7 +336,7 @@ Object.defineProperty(App, 'domain', {
   }
 })
 
-const {getDomainInfo} = process.binding('ub_app')
+const { getDomainInfo } = process.binding('ub_app')
 let _domainCache
 /**
  * Extended information about application domain (metadata)
@@ -396,7 +396,7 @@ App.updateFTSIndex = function (entityName, instanceID) {
  * Databases connections
  * @type {Object<string, DBConnection>}
  */
-App.dbConnections = dbConnections
+App.dbConnections = createDBConnections(App.domainInfo.connections)
 
 /**
  * Check database are used in current endpoint context and DB transaction is already active.

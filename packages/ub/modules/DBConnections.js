@@ -24,6 +24,11 @@ const chELw = 101
 const chSpace = 32
 const chLF = 10
 const chCR = 13
+
+const PG_SAVEPOINT_START = 'SAVEPOINT ubapp_tmp_batch_sp'
+const PG_SAVEPOINT_RELEASE = 'RELEASE ubapp_tmp_batch_sp'
+const PG_SAVEPOINT_ROLLBACK = 'ROLLBACK TO ubapp_tmp_batch_sp'
+
 /**
  * @typedef {Object} parsedSQLResult
  * @property {string} parsedSql
@@ -37,13 +42,20 @@ class DBConnection {
   /**
    * @private
    * @param {number} index
+   * @param {DBConnectionConfig} cfg
    */
-  constructor (index) {
+  constructor (index, cfg) {
     /**
      * @private
      * @property dbIndexSymbol
      */
     Object.defineProperty(this, DB_INDEX, { value: index })
+    /**
+     * Database connection config as defined in Domain
+     * @property {DBConnectionConfig} config
+     */
+    Object.defineProperty(this, 'config', { enumerable: true, value: cfg })
+    this.isPostgreSQL = (this.config.dialect === 'PostgreSQL')
   }
   /**
    * Is database in transaction
@@ -86,12 +98,48 @@ class DBConnection {
   /**
    * Execute sql
    * @param {string} sql
-   * @param {Object} params
+   * @param {Array} params
    * @returns {boolean}
    */
   exec (sql, params) {
     const { parsedSql, parsedParams } = this.parseSQL(sql, params)
-    return binding.exec(this[DB_INDEX], parsedSql, parsedParams)
+    return this.execParsed(parsedSql, parsedParams)
+  }
+
+  /**
+   * Execute parsed (without inline parameters) sql statement
+   * @param {string} sqlStatement
+   * @param {Array} params
+   * @returns {boolean}
+   */
+  execParsed (sqlStatement, params) {
+    return binding.exec(this[DB_INDEX], sqlStatement, params)
+  }
+
+  /**
+   * For Postgres wrap a func call into temporary savepoint.
+   * In case func throws savepoint is rollback'ed and error is re-trowed, otherwise checkpoint is released.
+   * For other RDBMS execute func as is.
+   *
+   * Return a func result.
+   * @param {function} func
+   * @return {*}
+   */
+  savepointWrap (func) {
+    if (this.isPostgreSQL) {
+      let res
+      try {
+        this.execParsed(PG_SAVEPOINT_START, [])
+        res = func()
+        this.execParsed(PG_SAVEPOINT_RELEASE, [])
+        return res
+      } catch (e) {
+        this.execParsed(PG_SAVEPOINT_ROLLBACK, [])
+        throw e
+      }
+    } else {
+      return func()
+    }
   }
   /**
    * Generate ID for entity
@@ -252,10 +300,20 @@ class DBConnection {
   }
 }
 
-const connections = {}
-const connBinding = binding.connections
-for (let index in connBinding) {
-  Object.defineProperty(connections, connBinding[index], { value: new DBConnection(parseInt(index, 10)), enumerable: true })
+/**
+ * Create a DBConnection for each connection config item
+ * @protected
+ * @param {Array<DBConnectionConfig>} connectionsConfig
+ * @return {Object<string, DBConnection>}
+ */
+function createDBConnections (connectionsConfig) {
+  let connections = {}
+  const connBinding = binding.connections
+  connectionsConfig.forEach((cfg, idx) => {
+    if (connBinding[idx] !== cfg.name) throw new Error(`internal error: domain config database connection name "${cfg.name}" with index ${idx} does not match database binding name "${connBinding[idx]}"`)
+    Object.defineProperty(connections, cfg.name, { value: new DBConnection(idx, cfg), enumerable: true })
+  })
+  return connections
 }
 
-module.exports = connections
+module.exports = createDBConnections
