@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `class UForm` Now any method or state property of the UForm store can be overwritten by local form store
  - `u-select-enum` fixed disabled prop
 
+### Changed
+ - `u-sidebar` changed sidebar item height to auto, paddings reduced
 
 ## [1.6.3]
 ### Fixed
