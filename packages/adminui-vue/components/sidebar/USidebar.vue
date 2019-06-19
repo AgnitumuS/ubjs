@@ -327,7 +327,7 @@ export default {
 .ub-sidebar .el-menu-item{
   display: flex;
   height: auto;
-  line-height: 1.3;
+  line-height: 1.5;
   padding: 8px 0;
   display: flex;
   align-items: center;
