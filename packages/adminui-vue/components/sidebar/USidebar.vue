@@ -349,10 +349,6 @@ export default {
   right: 6px;
 }
 
-.ub-sidebar.collapsed {
-  width: 70px;
-}
-
 .ub-sidebar .el-submenu__title .el-submenu__icon-arrow {
  transform: rotateZ(-90deg);
 }
@@ -363,6 +359,10 @@ export default {
 
 .ub-sidebar__desktop-select{
   padding: 12px;
+}
+
+.ub-sidebar__desktop-select.collapsed{
+  padding: 12px 0;
 }
 
 .ub-sidebar__main-menu{
