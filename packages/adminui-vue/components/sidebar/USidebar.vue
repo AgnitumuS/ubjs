@@ -301,20 +301,38 @@ export default {
   transition:background-color .1s;
 }
 
+.ub-sidebar .el-menu-item .el-tooltip{
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
 .ub-sidebar .el-menu-item [class*=fa-],
 .ub-sidebar .el-submenu [class*=fa-] {
   vertical-align: middle;
-  margin-right: 5px;
   width: 24px;
   min-width: 24px;
   text-align: center;
   font-size: 18px;
 }
 
+.ub-sidebar .el-menu-item [class*=fa-],
+.ub-sidebar .el-submenu [class*=fa-],
+.ub-sidebar .el-menu-item [class^="el-icon-"],
+.ub-sidebar .el-submenu [class^="el-icon-"] {
+  margin-right: 5px!important;
+}
+
 .ub-sidebar .el-submenu__title,
 .ub-sidebar .el-menu-item{
   display: flex;
+  height: auto;
+  line-height: 1.3;
+  padding: 8px 0;
+  display: flex;
   align-items: center;
+  white-space: pre-wrap;
+  min-height: 32px;
 }
 
 .ub-sidebar .el-menu--collapse .el-submenu__title,
@@ -322,22 +340,13 @@ export default {
   justify-content: center;
 }
 
-.ub-sidebar .el-menu-item>span,
-.ub-sidebar .el-submenu__title>span{
-  --line-height: 1.2;
-  --lines-count: 3;
+.ub-sidebar .el-menu-item,
+.ub-sidebar .el-submenu__title{
+  padding-right: 15px;
+}
 
-  line-height: var(--line-height);
-  -webkit-line-clamp: var(--lines-count);
-  max-height: calc(var(--line-height) * var(--lines-count) * 1rem);
-
-  white-space: pre-wrap;
-  overflow:hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-
-   padding-right: 20px; /* text not overlap the arrow */
+.ub-sidebar .el-submenu__icon-arrow{
+  right: 6px;
 }
 
 .ub-sidebar.collapsed {
