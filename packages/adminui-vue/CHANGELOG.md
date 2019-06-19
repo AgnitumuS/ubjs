@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.5]
+### Changed
+ - `USelectEntity` modelAttr renamed to valueAttribute
+ - `USelectMultiple` modelAttr renamed to valueAttribute
+ 
+### Added
+ - `USelectEntity`, `USelectMultiple` added prop displayAttribute - attribute which is display value of options
+
 ## [1.6.4]
 ### Fixed
  - "Always use domain for login" checkbox should be visible in navbar User menu in case "Negotiate" auth is enabled for app [UBDF-9586]

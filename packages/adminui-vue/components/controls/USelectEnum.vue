@@ -2,7 +2,7 @@
   <u-select-entity
     :repository="getEnumRequest"
     :value="value"
-    :model-attr="modelAttr"
+    :value-attribute="valueAttribute"
     :disabled="disabled"
     remove-default-actions
     @input="$emit('input', $event)"
@@ -41,7 +41,7 @@ export default {
 
   data () {
     return {
-      modelAttr: 'code',
+      valueAttribute: 'code',
       enumEntity: 'ubm_enum'
     }
   },
@@ -51,7 +51,7 @@ export default {
       return this.$UB.connection.domain.get(this.enumEntity)
     },
 
-    displayAttr () {
+    displayAttribute () {
       return this.entitySchema.descriptionAttribute
     }
   },
@@ -59,7 +59,7 @@ export default {
   methods: {
     getEnumRequest () {
       return this.$UB.Repository(this.enumEntity)
-        .attrs('eGroup', this.modelAttr, this.displayAttr)
+        .attrs('eGroup', this.valueAttribute, this.displayAttribute)
         .where('eGroup', '=', this.eGroup)
     }
   }
