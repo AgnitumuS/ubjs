@@ -6,6 +6,7 @@
     :disabled="disabled"
     remove-default-actions
     @input="$emit('input', $event)"
+    :filterable="filterable"
   />
 </template>
 
@@ -36,7 +37,12 @@ export default {
     /**
      * Set disabled status
      */
-    disabled: Boolean
+    disabled: Boolean,
+
+    /**
+     * whether Select is filterable
+     */
+    filterable: {}
   },
 
   data () {
