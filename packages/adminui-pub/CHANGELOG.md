@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.24]
+### Changed
+ - changed sidebar collapsed width from 76px to 50px
+
 ## [5.8.23]
 ### Changed
  - huge cleanup of i18n keys: most translit keys are removed; unused keys are removed 

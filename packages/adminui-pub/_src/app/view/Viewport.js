@@ -39,7 +39,7 @@ Ext.define('UB.view.Viewport', {
         region: 'west',
         defaultSizes: {
           full: 240,
-          collapsed: 76
+          collapsed: 50
         }
       })
     }
