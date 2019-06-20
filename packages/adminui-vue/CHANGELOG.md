@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.5]
 ### Changed
  - !!Breaking!! `u-input` does not supports v-model, now gets and sets value from store automatically
+ - !!Breaking!! `u-auto-field` removed v-model, now gets and sets value from store automatically
+ - !!Breaking!! `u-auto-field` renamed prop `code` to `attribute-name`
 
 ### Added
  - `u-base-input` - when using type="number", helps to establish the precision of rounding and step

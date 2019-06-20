@@ -18,10 +18,7 @@
         <el-tab-pane label="Main">
           <el-row :gutter="20">
             <el-col :lg="12">
-              <u-auto-field
-                v-model="code"
-                code="code"
-              />
+              <u-auto-field attribute-name="code"/>
 
               <u-form-row :label="`${entity}.caption`">
                 <u-input attribute-name="caption"/>
@@ -90,18 +87,6 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 const LazyCollection = require('../components/LazyCollection.vue').default
-const fieldList = [
-  'ID',
-  'code',
-  'caption',
-  'filterValue',
-  'currencyValue',
-  'floatValue',
-  'intValue',
-  'calculated',
-  'booleanColumn',
-  'jsonColumn'
-]
 
 module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
   Form({
@@ -139,7 +124,17 @@ module.exports.default = {
   inject: ['$v', 'entity'],
 
   computed: {
-    ...mapInstanceFields(fieldList),
+    ...mapInstanceFields([
+      'ID',
+      'caption',
+      'filterValue',
+      'currencyValue',
+      'floatValue',
+      'intValue',
+      'calculated',
+      'booleanColumn',
+      'jsonColumn'
+    ]),
 
     ...mapGetters(['loading']),
 

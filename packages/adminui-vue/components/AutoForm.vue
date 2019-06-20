@@ -4,12 +4,10 @@
 
     <u-form-container v-loading.body="loading">
       <u-auto-field
-        v-for="code in fields"
-        :key="code"
-        :value="$store.state.data[code]"
-        :code="code"
-        :disabled="parentContext.hasOwnProperty(code)"
-        @input="$store.commit('SET_DATA', { key: code, value: $event })"
+        v-for="attributeName in fields"
+        :key="attributeName"
+        :attribute-name="attributeName"
+        :disabled="parentContext.hasOwnProperty(attributeName)"
       />
     </u-form-container>
   </div>
