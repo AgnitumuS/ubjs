@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - `u-base-input` - when using type="number", helps to establish the precision of rounding and step
  - `USelectEntity`, `USelectMultiple` added prop displayAttribute - attribute which is display value of options
- - `u-select-entity`, `u-select-enum` added `filterable` prop. Whether Select is filterable
+ - `u-select-entity`, `u-select-enum` added `editable` prop. False to prevent the user from typing text directly into the field; the field can only have its value set via selecting a value from the picker. In this state, the picker can also be opened by clicking directly on the input field itself. True by default for u-select-entity, false by default for u-select-enum 
 
 ## [1.6.4]
 ### Fixed
