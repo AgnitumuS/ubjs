@@ -208,7 +208,7 @@ function mergeStore (target, source) {
  * @param param
  */
 function required (param) {
-  throw new Error(`Param ${param} is required`)
+  throw new Error(`Parameter "${param}" is required`)
 }
 
 /**

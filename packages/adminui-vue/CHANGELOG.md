@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `u-base-input` - when using type="number", helps to establish the precision of rounding and step
  - `USelectEntity`, `USelectMultiple` added prop displayAttribute - attribute which is display value of options
  - `u-select-entity`, `u-select-enum` added `filterable` prop. Whether Select is filterable
+ - expose `mountUtils` in `@unitybase/adminui-vue` exports to be used for mounting custom Vue forms
 
 ## [1.6.4]
 ### Fixed

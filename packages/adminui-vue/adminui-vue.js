@@ -26,6 +26,7 @@ module.exports.Form = require('./utils/Form/Form')
 const { mapInstanceFields, computedVuex } = require('./utils/Form/helpers')
 module.exports.mapInstanceFields = mapInstanceFields
 module.exports.computedVuex = computedVuex
+module.exports.mountUtils = require('./utils/Form/mount')
 
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
