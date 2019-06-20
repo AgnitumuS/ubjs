@@ -76,18 +76,18 @@
       >
         <div
           v-for="option in options"
-          :key="option[modelAttr]"
-          :ref="`option_${option[modelAttr]}`"
+          :key="option[valueAttribute]"
+          :ref="`option_${option[valueAttribute]}`"
           class="ub-select__option"
           :class="{
-            'active': option[modelAttr] === value,
-            'selected': option[modelAttr] === selectedOption
+            'active': option[valueAttribute] === value,
+            'selected': option[valueAttribute] === selectedOption
           }"
           @click="chooseOption"
-          @mouseenter="selectedOption = option[modelAttr]"
+          @mouseenter="selectedOption = option[valueAttribute]"
         >
-          <el-checkbox :value="value.includes(option[modelAttr])" />
-          {{ option[displayColumn] }}
+          <el-checkbox :value="value.includes(option[valueAttribute])" />
+          {{ option[getDisplayAttribute] }}
         </div>
         <el-row
           type="flex"
@@ -157,10 +157,15 @@ export default {
     /**
      * attribute which is the value for v-model
      */
-    modelAttr: {
+    valueAttribute: {
       type: String,
       default: 'ID'
     },
+
+    /**
+     * attribute which is display value of options
+     */
+    displayAttribute: String,
 
     /**
      * Name of entity. If repository is set entityName will be ignored
@@ -217,7 +222,10 @@ export default {
     },
 
     // display value attribute definition
-    displayColumn () {
+    getDisplayAttribute () {
+      if (this.displayAttribute !== undefined) {
+        return this.displayAttribute
+      }
       return this.entitySchema.descriptionAttribute
     },
 
@@ -292,7 +300,7 @@ export default {
         return this.repository()
       } else {
         return this.$UB.Repository(this.entityName)
-          .attrs(this.modelAttr, this.displayColumn)
+          .attrs(this.valueAttribute, this.getDisplayAttribute)
       }
     },
 
@@ -302,7 +310,7 @@ export default {
       this.pageNum = pageNum
 
       const data = await this.getRepository()
-        .whereIf(query, this.displayColumn, 'like', query)
+        .whereIf(query, this.getDisplayAttribute, 'like', query)
         .start(pageNum * this.pageSize)
         .limit(this.pageSize + 1)
         .select()
@@ -318,9 +326,9 @@ export default {
       }
       this.options.push(...data)
       if (this.options.length) {
-        const currentValueIndex = this.options.findIndex(i => i[this.modelAttr] === this.value)
+        const currentValueIndex = this.options.findIndex(i => i[this.valueAttribute] === this.value)
         const index = currentValueIndex === -1 ? 0 : currentValueIndex
-        this.selectedOption = this.options[index][this.modelAttr]
+        this.selectedOption = this.options[index][this.valueAttribute]
       } else {
         this.selectedOption = null
       }
@@ -335,7 +343,7 @@ export default {
     async fetchDisplayValues (IDs) {
       this.loading = true
       const data = await this.getRepository()
-        .where(this.modelAttr, 'in', IDs)
+        .where(this.valueAttribute, 'in', IDs)
         .attrsIf(this.isExistDeleteDate, 'mi_deleteDate')
         .misc({
           __allowSelectSafeDeleted: true
@@ -356,11 +364,11 @@ export default {
     async getFormattedOptions (IDs) {
       const result = []
       for (const ID of IDs) {
-        const option = this.options.find(o => o[this.modelAttr] === ID)
+        const option = this.options.find(o => o[this.valueAttribute] === ID)
         if (option) {
           result.push({
             ID,
-            label: option[this.displayColumn]
+            label: option[this.getDisplayAttribute]
           })
         } else {
           result.push({
@@ -375,8 +383,8 @@ export default {
       if (willFetched.length > 0) {
         const responseData = await this.fetchDisplayValues(willFetched)
         for (const responseItem of responseData) {
-          const option = result.find(i => i.ID === responseItem[this.modelAttr])
-          option.label = responseItem[this.displayColumn]
+          const option = result.find(i => i.ID === responseItem[this.valueAttribute])
+          option.label = responseItem[this.getDisplayAttribute]
           if (this.isExistDeleteDate) {
             const isDeleted = responseItem.mi_deleteDate.getTime() < Date.now()
             if (isDeleted) {
@@ -388,7 +396,7 @@ export default {
         // if requested data length and responsed is different need to show error with fields which are missing
         if (responseData.length !== willFetched.length) {
           const missingValues = willFetched.filter(ID => {
-            const includesInResponse = responseData.findIndex(i => i[this.modelAttr] === ID) !== -1
+            const includesInResponse = responseData.findIndex(i => i[this.valueAttribute] === ID) !== -1
             return !includesInResponse
           })
           throw new Error(`Missing values '${missingValues}' in entity '${this.entity}'`)
@@ -484,13 +492,13 @@ export default {
      * @param {number} direction available params -1/1 for up/down
      */
     changeSelected (direction) {
-      const index = this.options.findIndex(o => o[this.modelAttr] === this.selectedOption)
+      const index = this.options.findIndex(o => o[this.valueAttribute] === this.selectedOption)
       const nextIndex = index + direction
       const lessMin = nextIndex < 0
       const moreMax = nextIndex > this.options.length - 1
       const inRange = !lessMin && !moreMax
       if (inRange) {
-        this.selectedOption = this.options[nextIndex][this.modelAttr]
+        this.selectedOption = this.options[nextIndex][this.valueAttribute]
       }
       if (this.dropdownVisible && this.options.length > 0) {
         const el = this.$refs[`option_${this.selectedOption}`][0]
@@ -605,7 +613,7 @@ Need to set function which returns UB Repository
 </script>
 ```
 
-### Custom `modelAttr`
+### Custom `valueAttribute`
 Need when you need to change default model propery.
 Its like attribute `value` in native `<option>` tag.
 For example when you need instead `ID` like `code`.
@@ -615,7 +623,7 @@ For example when you need instead `ID` like `code`.
   <u-select-multiple
     v-model="model"
     entity-name="tst_dictionary"
-    model-attr="code"
+    value-attribute="code"
   />>
 </template>
 <script>

@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - !!Breaking!! `u-input` does not supports v-model, now gets and sets value from store automatically
  - !!Breaking!! `u-auto-field` removed v-model, now gets and sets value from store automatically
  - !!Breaking!! `u-auto-field` renamed prop `code` to `attribute-name`
-
+ - `USelectEntity` modelAttr renamed to valueAttribute
+ - `USelectMultiple` modelAttr renamed to valueAttribute
+ 
 ### Added
  - `u-base-input` - when using type="number", helps to establish the precision of rounding and step
+ - `USelectEntity`, `USelectMultiple` added prop displayAttribute - attribute which is display value of options
 
 ## [1.6.4]
 ### Fixed
