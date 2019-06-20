@@ -56,7 +56,7 @@
     />
     <u-input
       v-else
-      :attribute-name="code"
+      :attribute-name="attributeName"
       :disabled="disabled"
     />
   </u-form-row>
