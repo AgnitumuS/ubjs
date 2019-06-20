@@ -34,6 +34,9 @@
           ref="tree"
           :data="desktops"
           default-expand-all
+          highlight-current
+          :current-node-key="selectedShortcut.hasOwnProperty('ID') ? selectedShortcut.ID : null"
+          node-key="ID"
           :expand-on-click-node="false"
           :props="{
             label: 'caption'

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.27]
+### Changed
+ - shortcut editor form: highlight currently selected folder in ShortcutTree control
+
 ## [5.1.26]
 ### Changed
  - UBM model lang files are converted to array-of-object format
