@@ -30,6 +30,8 @@
           :class="{
             'ub-select__deleted-value': isSafeDeletedValue && !isFocused
           }"
+          :readonly="!filterable"
+          @click.native="filterable || toggleDropdown()"
           @focus="isFocused = true"
           @blur="isFocused = false"
           @keydown.native.exact.e.ctrl.prevent="handleEditItem"
@@ -59,7 +61,7 @@
             class="el-input__icon"
             style="cursor: pointer;"
             :class="inputIconCls"
-            @click="toggleDropdown"
+            @click.stop="toggleDropdown"
           />
           <el-dropdown
             v-if="actions.length > 0"
@@ -193,7 +195,15 @@ export default {
     /**
      * Add clear icon
      */
-    clearable: Boolean
+    clearable: Boolean,
+
+    /**
+     * whether Select is filterable
+     */
+    filterable: {
+      type: Boolean,
+      default: true
+    }
   },
 
   data () {
