@@ -163,6 +163,7 @@
 </template>
 
 <script>
+/* global saveAs */
 const actionComponent = require('../components/RoleActionsComponent.vue').default
 const adminUiVue = require('@unitybase/adminui-vue')
 
@@ -176,14 +177,6 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
     title
   })
 }
-// module.exports.mount = function (params) {
-//   if (AdminUiVue.activateIfMounted(params)) return
-//   let mountParams = {
-//     FormComponent: AlsComponent,
-//     showFormParams: params
-//   }
-//   AdminUiVue.mountForm(mountParams)
-// }
 
 module.exports.default = {
   name: 'AlsComponent',
