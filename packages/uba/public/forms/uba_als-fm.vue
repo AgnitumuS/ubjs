@@ -1,10 +1,10 @@
 <template>
-  <div id="AlsComponent">
+  <div>
     <el-select
       v-model="selectedEntity"
       filterable
       clearable
-      :placeholder="entityCaption"
+      :placeholder="$ut('entity')"
     >
       <el-option
         v-for="entity in entityList"
@@ -48,7 +48,7 @@
         icon="el-icon-plus"
         @click="popoverVisible = !popoverVisible"
       >
-        {{ addCaption }}
+        {{ $ut('actionAdd') }}
       </el-button>
     </el-popover>
     <el-button
@@ -58,7 +58,7 @@
       :disabled="!needSave"
       @click="save"
     >
-      {{ saveCaption }}
+      {{ $ut('save') }}
     </el-button>
     <el-button
       v-if="selectedState"
@@ -129,13 +129,13 @@
         :span="6"
         style="padding-left: 30px"
       >
-        <h4>{{ rolesCaption }}:</h4>
+        <h4>{{ $ut('roles') }}:</h4>
         <el-checkbox
           v-model="checkAll"
           :indeterminate="isIndeterminate"
           @change="handleCheckAllChange"
         >
-          <strong>{{ checkAllCaption }}</strong>
+          <strong>{{ $ut('checkAll') }}</strong>
         </el-checkbox>
         <el-checkbox-group
           v-model="checkedRoles"
@@ -164,24 +164,34 @@
 
 <script>
 const actionComponent = require('../components/RoleActionsComponent.vue').default
-const AdminUiVue = require('@unitybase/adminui-vue')
+const adminUiVue = require('@unitybase/adminui-vue')
 
-module.exports.mount = function (params) {
-  if (AdminUiVue.activateIfMounted(params)) return
-  let mountParams = {
-    FormComponent: AlsComponent,
-    showFormParams: params
-  }
-  AdminUiVue.mountForm(mountParams)
+module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, rootComponent }) {
+  adminUiVue.mountUtils.mountTab({
+    component: rootComponent,
+    tabId: tabId,
+    entity,
+    instanceID,
+    formCode,
+    title
+  })
 }
+// module.exports.mount = function (params) {
+//   if (AdminUiVue.activateIfMounted(params)) return
+//   let mountParams = {
+//     FormComponent: AlsComponent,
+//     showFormParams: params
+//   }
+//   AdminUiVue.mountForm(mountParams)
+// }
 
-const AlsComponent = module.exports.default = {
+module.exports.default = {
   name: 'AlsComponent',
   data () {
     return {
       popoverVisible: false,
-      entityList: $App.domainInfo.filterEntities(e => e.mixins.als),
-      alsEntity: $App.domainInfo.get('uba_als'),
+      entityList: this.$UB.connection.domain.filterEntities(e => e.mixins.als),
+      alsEntity: this.$UB.connection.domain.get('uba_als'),
       roleList: [],
       stateList: [],
       selectedEntity: null,
@@ -193,12 +203,6 @@ const AlsComponent = module.exports.default = {
       createdRights: [],
       deletedRights: [],
       checkAll: false,
-      addCaption: UB.i18n('actionAdd'),
-      checkAllCaption: UB.i18n('checkAll'),
-      deleteCaption: UB.i18n('Delete'),
-      entityCaption: UB.i18n('entity'),
-      rolesCaption: UB.i18n('roles'),
-      saveCaption: UB.i18n('save'),
       generateDiffFileCaption: 'Save diff in file',
       fieldList: ['ID', 'attribute', 'state', 'roleName', 'actions'],
       usedAttributes: [],
@@ -216,7 +220,7 @@ const AlsComponent = module.exports.default = {
   },
   computed: {
     attributeList () {
-      return this.selectedEntity ? Object.keys($App.domainInfo.get(this.selectedEntity).attributes) : []
+      return this.selectedEntity ? Object.keys(this.$UB.connection.domain.get(this.selectedEntity).attributes) : []
     },
     changedRights () {
       let rows = []
@@ -247,10 +251,10 @@ const AlsComponent = module.exports.default = {
       this.createdRights = []
       this.selectedState = null
       if (this.selectedEntity) {
-        $App.connection.run({ entity: this.selectedEntity, method: 'getallroles' }).then(response => {
+        this.$UB.connection.run({ entity: this.selectedEntity, method: 'getallroles' }).then(response => {
           this.roleList = response.alsRoleAllValues
         })
-        $App.connection.run({ entity: this.selectedEntity, method: 'getallstates' }).then(response => {
+        this.$UB.connection.run({ entity: this.selectedEntity, method: 'getallstates' }).then(response => {
           this.stateList = response.alsStateAllValues
         })
       } else {
@@ -347,7 +351,7 @@ const AlsComponent = module.exports.default = {
           method: 'insert',
           execParams: row
         }))
-        $App.connection.runTrans(requests).then(this.loadRightsFromDB.bind(this)).then(_ => this.createdRights = this.createdRights.filter(cr => cr.actions === 0))
+        this.$UB.connection.runTrans(requests).then(this.loadRightsFromDB.bind(this)).then(() => { this.createdRights = this.createdRights.filter(cr => cr.actions === 0) })
       }
     },
     addRow (attr) {
