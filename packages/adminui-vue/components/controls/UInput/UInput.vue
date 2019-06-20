@@ -1,19 +1,17 @@
 <template>
-  <el-input
-    ref="input"
+  <u-base-input
     v-model="model"
-    class="ub-input"
-    :type="type"
-    :step="step"
+    :type="getType"
+    :step="getStep"
+    :precision="getPrecision"
     v-bind="$attrs"
-    v-on="listeners"
   >
     <locale-button
-      v-if="isMultiLang"
+      v-if="getMultilang"
       slot="append"
       :attribute-name="attributeName"
     />
-  </el-input>
+  </u-base-input>
 </template>
 
 <script>
@@ -28,53 +26,45 @@ const LocaleButton = require('./LocaleButton.vue').default
  *
  * After save will put data in store, and processing module will build request for all locales
  */
+
+const numberTypes = ['Int', 'BigInt', 'Float', 'Currency', 'ID']
+
 export default {
   name: 'UInput',
   components: { LocaleButton },
-  inject: ['entitySchema'],
+  inject: ['entitySchema', '$v'],
 
   props: {
-    /*
-     * @model
-     */
-    value: {
-      required: true
-    },
-    /*
+    /**
      * attribute name in entitySchema
      */
     attributeName: {
       type: String,
       required: true
-    }
-  },
-
-  data () {
-    return {
-      numberTypes: ['Int', 'BigInt', 'Float', 'Currency', 'ID']
-    }
+    },
+    /**
+     * overwrite "step", which was getting from entitySchema by attribute name
+     */
+    step: Number,
+    /**
+     * overwrite "precision", which was getting from entitySchema by attribute name
+     */
+    precision: Number,
+    /**
+     * use :multilang="false" if you need hide locale button in multilang attribute
+     */
+    multilang: {},
+    /**
+     * overwrite "type", which was getting from entitySchema by attribute name
+     */
+    type: String
   },
 
   computed: {
-    model: {
-      get () {
-        return this.value
-      },
-      set (value) {
-        if (value === '') {
-          this.$emit('input', null)
-          return
-        }
-
-        if (this.type === 'number') {
-          this.$emit('input', +value)
-        } else {
-          this.$emit('input', value)
-        }
+    getStep () {
+      if (this.step !== undefined) {
+        return this.step
       }
-    },
-
-    step () {
       if (this.dataType === 'Float') {
         return 1 / 10 ** (this.$UB.connection.domain.FLOATING_SCALE_PRECISION - 1)
       }
@@ -84,7 +74,10 @@ export default {
       return 1
     },
 
-    precision () {
+    getPrecision () {
+      if (this.precision !== undefined) {
+        return this.precision
+      }
       if (this.dataType === 'Float') return this.$UB.connection.domain.FLOATING_SCALE_PRECISION
       if (this.dataType === 'Currency') return 2
       return 0
@@ -94,51 +87,36 @@ export default {
       return this.entitySchema.attributes[this.attributeName].dataType
     },
 
-    isMultiLang () {
+    getMultilang () {
+      if (this.multilang !== undefined) {
+        return this.multilang
+      }
       return this.entitySchema.attributes[this.attributeName].isMultiLang
     },
 
-    type () {
-      const isNumber = this.numberTypes.includes(this.dataType)
+    getType () {
+      if (this.type !== undefined) {
+        return this.type
+      }
+      const isNumber = numberTypes.includes(this.dataType)
       return isNumber ? 'number' : 'text'
     },
 
-    listeners () {
-      if (this.type === 'number') {
-        return {
-          ...this.$listeners,
-          change: this.rounding
-        }
-      } else {
-        return this.$listeners
-      }
-    }
-  },
+    model: {
+      get () {
+        return this.$store.state.data[this.attributeName]
+      },
 
-  methods: {
-    rounding (value) {
-      if (value === null || value === '') {
-        return null
+      set (value) {
+        if (this.$v) {
+          this.$v[this.attributeName].$touch()
+        }
+        this.$store.commit(`SET_DATA`, { key: this.attributeName, value })
       }
-      if (this.type !== 'number') {
-        return value
-      }
-      const digit = Number(value)
-      const preciseness = 10 ** this.precision
-      const rounded = Math.round((digit * preciseness)) / preciseness
-      this.$emit('input', rounded)
     }
   }
 }
 </script>
-
-<style>
-.ub-input input::-webkit-inner-spin-button,
-.ub-input input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-</style>
 
 <docs>
 Component will automaticly check data type by attribute name in entitySchema
@@ -147,42 +125,16 @@ Component will automaticly check data type by attribute name in entitySchema
 
 ```vue
 <template>
-  <u-input
-    v-model="caption"
-    attribute-name="caption"
-  />
+  <u-input attribute-name="caption" />
 </template>
-
-<script>
-export default {
-  data () {
-    return {
-      caption: ''
-    }
-  }
-}
-</script>
 ```
 
 ### When attribute type is number
 
 ```vue
 <template>
-  <u-input
-    v-model="currencyValue"
-    attribute-name="currencyValue"
-  />
+  <u-input attribute-name="currencyValue" />
 </template>
-
-<script>
-  export default {
-    data () {
-      return {
-        currencyValue: null
-      }
-    }
-  }
-</script>
 ```
 
 ### Disabled
@@ -190,20 +142,9 @@ export default {
 ```vue
 <template>
   <u-input
-    v-model="caption"
     attribute-name="caption"
     disabled
   />
 </template>
-
-<script>
-  export default {
-    data () {
-      return {
-        caption: ''
-      }
-    }
-  }
-</script>
 ```
 </docs>

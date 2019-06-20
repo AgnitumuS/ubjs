@@ -38,11 +38,12 @@
 </template>
 
 <script>
-const { mapState, mapGetters } = require('vuex')
+const { mapState } = require('vuex')
 const required = require('vuelidate/lib/validators/required').default
 
 export default {
   name: 'LocaleButton',
+  inject: ['entity', 'entitySchema'],
 
   props: {
     attributeName: String
@@ -57,7 +58,6 @@ export default {
 
   computed: {
     ...mapState(['isNew']),
-    ...mapGetters(['entityName', 'entitySchema']),
 
     supportedLanguages () {
       return this.$UB.connection.appConfig.supportedLanguages
@@ -137,7 +137,7 @@ export default {
             ...this.localeAttrs.map(item => item.attr)
           )
           const data = await this.$UB.connection.query({
-            entity: this.entityName,
+            entity: this.entity,
             ID: this.$store.state.data.ID,
             fieldList,
             method: 'select'

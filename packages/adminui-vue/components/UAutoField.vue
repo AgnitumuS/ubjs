@@ -56,7 +56,6 @@
     />
     <u-input
       v-else
-      v-model="model"
       :attribute-name="code"
       :disabled="disabled"
     />

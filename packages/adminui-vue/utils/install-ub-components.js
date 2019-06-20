@@ -13,6 +13,7 @@ module.exports = {
     const UAutoField = require('../components/UAutoField.vue').default
     const USelectMultiple = require('../components/controls/USelectMultiple.vue').default
     const USelectCollection = require('../components/controls/USelectCollection.vue').default
+    const UBaseInput = require('../components/controls/UBaseInput.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -25,6 +26,7 @@ module.exports = {
     Vue.component(UAutoField.name, UAutoField)
     Vue.component(USelectMultiple.name, USelectMultiple)
     Vue.component(USelectCollection.name, USelectCollection)
+    Vue.component(UBaseInput.name, UBaseInput)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)
