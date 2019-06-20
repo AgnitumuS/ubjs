@@ -23,60 +23,40 @@
                 code="code"
               />
 
-              <u-form-row :label="getLabel('caption')">
-                <u-input
-                  v-model="caption"
-                  :entity="entity"
-                  attribute-name="caption"
-                />
+              <u-form-row :label="`${entity}.caption`">
+                <u-input attribute-name="caption"/>
               </u-form-row>
 
               <u-form-row
                 required
-                :label="getLabel('filterValue')"
+                :label="`${entity}.filterValue`"
                 :error="$v.filterValue.$error"
               >
-                <u-input
-                  v-model="filterValue"
-                  attribute-name="filterValue"
-                  type="number"
-                />
+                <u-input attribute-name="filterValue"/>
               </u-form-row>
 
-              <u-form-row :label="getLabel('currencyValue')">
-                <u-input
-                  v-model="currencyValue"
-                  attribute-name="currencyValue"
-                  type="number"
-                />
+              <u-form-row :label="`${entity}.currencyValue`">
+                <u-input attribute-name="currencyValue"/>
               </u-form-row>
             </el-col>
 
             <el-col :lg="12">
-              <u-form-row :label="getLabel('floatValue')">
-                <u-input
-                  v-model="floatValue"
-                  attribute-name="floatValue"
-                  type="number"
-                />
+              <u-form-row :label="`${entity}.floatValue`">
+                <u-input attribute-name="floatValue"/>
               </u-form-row>
 
-              <u-form-row :label="getLabel('intValue')">
-                <u-input
-                  v-model="intValue"
-                  attribute-name="intValue"
-                  type="number"
-                />
+              <u-form-row :label="`${entity}.intValue`">
+                <u-input attribute-name="intValue"/>
               </u-form-row>
 
-              <u-form-row :label="getLabel('calculated')">
+              <u-form-row :label="`${entity}.calculated`">
                 <el-input
                   :value="calculated"
                   disabled
                 />
               </u-form-row>
 
-              <u-form-row :label="getLabel('booleanColumn')">
+              <u-form-row :label="`${entity}.booleanColumn`">
                 <el-checkbox v-model="booleanColumn" />
               </u-form-row>
             </el-col>
@@ -90,7 +70,7 @@
             />
           </u-form-row>
 
-          <u-form-row :label="getLabel('jsonColumn')">
+          <u-form-row :label="`${entity}.jsonColumn`">
             <u-code-mirror v-model="jsonColumn" />
           </u-form-row>
         </el-tab-pane>
@@ -156,7 +136,7 @@ module.exports.default = {
   name: 'TstDictionary',
   components: { LazyCollection },
 
-  inject: ['$v', 'entity', 'entitySchema'],
+  inject: ['$v', 'entity'],
 
   computed: {
     ...mapInstanceFields(fieldList),
@@ -164,12 +144,6 @@ module.exports.default = {
     ...mapGetters(['loading']),
 
     ...mapState(['formCrashed'])
-  },
-
-  methods: {
-    getLabel (attr) {
-      return this.entitySchema.attributes[attr].caption
-    }
   }
 }
 </script>
