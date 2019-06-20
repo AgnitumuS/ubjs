@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.22]
+### Added
+ - Now `meta-tr` supports path to file or directory contained `*.meta*` files as parameter 
+ ```
+ npx ubcli meta-tr -m C:\myFolder\myApp\models\tstModel
+ ```
+
 ## [5.3.19]
 ### Fixed
  - in case ID attribute explicitly specified in meta file and mapped to another attribute whose isUnique===false
