@@ -6,7 +6,7 @@
     :disabled="disabled"
     remove-default-actions
     @input="$emit('input', $event)"
-    :filterable="filterable"
+    :editable="editable"
   />
 </template>
 
@@ -40,9 +40,14 @@ export default {
     disabled: Boolean,
 
     /**
-     * whether Select is filterable
+     * False to prevent the user from typing text directly into the field;
+     * the field can only have its value set via selecting a value from the picker.
+     * In this state, the picker can also be opened by clicking directly on the input field itself.
      */
-    filterable: {}
+    editable: {
+      type: Boolean,
+      default: false
+    }
   },
 
   data () {
