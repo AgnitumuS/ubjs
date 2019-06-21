@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.5]
 ### Changed
- - !!Breaking!! `u-input` does not supports v-model, now gets and sets value from store automatically
- - !!Breaking!! `u-auto-field` removed v-model, now gets and sets value from store automatically
- - !!Breaking!! `u-auto-field` renamed prop `code` to `attribute-name`
+ - **Breaking** `u-input` does not supports v-model, now gets and sets value from store automatically
+ - **Breaking** `u-auto-field` removed v-model, now gets and sets value from store automatically
+ - **Breaking** `u-auto-field` renamed prop `code` to `attribute-name`
  - `USelectEntity` modelAttr renamed to valueAttribute
  - `USelectMultiple` modelAttr renamed to valueAttribute
  
