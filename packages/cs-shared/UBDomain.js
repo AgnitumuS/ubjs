@@ -1395,7 +1395,8 @@ UBEntityAttribute.prototype.forJSONReplacer = {
   cascadeDelete: false,
   generateFK: true,
   defaultView: true,
-  physicalDataType: null
+  physicalDataType: null,
+  hasCatalogueIndex: null
 }
 
 /**
