@@ -62,7 +62,7 @@
 </template>
 
 <script>
-module.exports = {
+module.exports.default = {
   props: {
     row: {
       type: Object,

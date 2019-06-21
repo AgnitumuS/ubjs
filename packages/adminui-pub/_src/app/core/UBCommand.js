@@ -236,7 +236,7 @@ Ext.define('UB.core.UBCommand', {
 
       function parseParam (prm) {
         let result = {}
-        _.forEach(prm, function (item) {
+        prm.forEach(function (item) {
           if (!item) {
             throwI()
           }

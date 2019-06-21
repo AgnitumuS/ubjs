@@ -19,7 +19,7 @@
           </div>
         </el-form>
         <el-row type="flex" justify="center">
-          <el-button v-if="showMainProperties" style="border: 0ch" type="default" icon="el-icon-arrow-up"
+          <el-button v-if="showMainProperties" style="border: 0" type="default" icon="el-icon-arrow-up"
                      v-on:click="showMainProperties = !showMainProperties"/>
           <el-button v-else style="border: 0ch" type="default" icon="el-icon-arrow-down"
                      v-on:click="showMainProperties = !showMainProperties"/>
@@ -55,16 +55,20 @@
     <el-col :span="9">
       <el-card style="margin-left:10px" shadow="hover">
         <h3>Properties</h3>
-        <propertyCardComponent :currentRow="currentRow" :schema="schema"/>
+        <property-card :currentRow="currentRow" :schema="schema"/>
       </el-card>
     </el-col>
   </el-row>
 </template>
 
 <script>
-const propertyCardComponent = require('./PropertyCardComponent.vue')
+const PropertyCard = require('./PropertyCardComponent.vue').default
 
-module.exports = {
+module.exports.default = {
+  name: 'ObjectCard',
+  components: {
+    PropertyCard
+  },
   props: {
     metaObject: {
       type: Object,
@@ -117,9 +121,6 @@ module.exports = {
     if (this.metaObject.attributes) {
       this.$refs.attrTable.setCurrentRow(this.metaObject.attributes[0])
     }
-  },
-  components: {
-    propertyCardComponent
   }
 }
 </script>

@@ -2,40 +2,50 @@
   <el-tabs
     v-if="metaObject && schemaObject"
     type="border-card"
-    @tab-click="reloadCodeMirrorData"
+    @tab-click="onTabChanged"
   >
     <el-tab-pane label="Entity">
-      <objCardComponent
+      <object-card
         :meta-object="metaObject"
         :file-name="fileName"
         :schema="schemeAttributes"
       />
     </el-tab-pane>
     <el-tab-pane label="Mixins">
-      <mixinsCardComponent
+      <mixins-card
         :mixins="metaObject.mixins"
         :schema="schemaObject.properties.mixins.properties"
       />
     </el-tab-pane>
     <el-tab-pane
-      id="sourceTab"
+      ref="sourceTab"
       label="Source"
     >
-      <el-input
-        :id="_uid"
-        v-model="outputJson"
-        type="textarea"
+      <u-code-mirror
+          ref="codeMirror"
+          v-model="outputJson"
+          style="height: 800px"
       />
+<!--      <el-input-->
+<!--        :id="_uid"-->
+<!--        v-model="outputJson"-->
+<!--        type="textarea"-->
+<!--      />-->
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-const objCardComponent = require('./ObjectCardComponent.vue')
-const mixinsCardComponent = require('./MixinsCardComponent.vue')
+const ObjectCard = require('./ObjectCardComponent.vue').default
+const MixinsCard = require('./MixinsCardComponent.vue').default
 const { UBDomain } = require('@unitybase/cs-shared')
 
-module.exports = {
+module.exports.default = {
+  name: 'ConfiguratorComponent',
+  components: {
+    ObjectCard,
+    MixinsCard
+  },
   props: {
     fileName: {
       type: [String],
@@ -46,7 +56,8 @@ module.exports = {
     return {
       metaObject: null,
       schemaObject: null,
-      codeMirror: null
+      codeMirror: null,
+      jsonRefreshcounter: 1
     }
   },
   computed: {
@@ -55,9 +66,10 @@ module.exports = {
     },
     outputJson: {
       get: function () {
+        if (this.jsonRefreshcounter === 1) {} // recompute if changed
         if (!this.metaObject) return
         let e = new UBDomain.UBEntity(this.metaObject)
-        return JSON.stringify(e.asPlainJSON(false), null, '  ')
+        return JSON.stringify(e.asPlainJSON(true), null, '  ')
       },
       set: function (newValue) {
         this.initMetaObject(newValue)
@@ -74,46 +86,55 @@ module.exports = {
     })
   },
   methods: {
-    initCodeMirror () {
-      if (this.codeMirror) return
-      System.import('@unitybase/codemirror-full').then((CodeMirror) => {
-        var el = document.getElementById(this._uid)
-        if (!el) return
-        this.codeMirror = CodeMirror.fromTextArea(el, {
-          mode: 'javascript',
-          lineNumbers: true,
-          lint: Object.assign({ asi: true, esversion: 6 }, $App.connection.appConfig.uiSettings.adminUI.linter),
-          readOnly: false,
-          tabSize: 2,
-          highlightSelectionMatches: { annotateScrollbar: true },
-          matchBrackets: true,
-          autofocus: true,
-          foldGutter: true,
-          gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
-          extraKeys: {
-            'Ctrl-Space': 'autocomplete'
-          }
-        })
-        this.codeMirror.on('change', function (cmInstance) {
-          if (this.outputJson !== cmInstance.getValue()) this.outputJson = cmInstance.getValue()
-          this.refreshCodeMirror()
-        }.bind(this))
-        this.refreshCodeMirror()
-      })
-    },
-    refreshCodeMirror () {
-      setTimeout(function () {
-        this.codeMirror.refresh()
-      }.bind(this), 1)
-    },
-    reloadCodeMirrorData () {
-      if (arguments[0].$attrs.id === 'sourceTab') {
-        this.initCodeMirror()
-        if (this.codeMirror) {
-          if (this.codeMirror.doc.getValue() !== this.outputJson) this.codeMirror.doc.setValue(this.outputJson)
-        }
+    onTabChanged (tab) {
+      if (tab._uid === this.$refs.sourceTab._uid) {
+        setTimeout(function () {
+          this.$refs.codeMirror.editorInstance.refresh()
+        }.bind(this), 1)
       }
+
+      // this.jsonRefreshcounter += 1
     },
+    // initCodeMirror () {
+    //   if (this.codeMirror) return
+    //   System.import('@unitybase/codemirror-full').then((CodeMirror) => {
+    //     var el = document.getElementById(this._uid)
+    //     if (!el) return
+    //     this.codeMirror = CodeMirror.fromTextArea(el, {
+    //       mode: 'javascript',
+    //       lineNumbers: true,
+    //       lint: Object.assign({ asi: true, esversion: 6 }, $App.connection.appConfig.uiSettings.adminUI.linter),
+    //       readOnly: false,
+    //       tabSize: 2,
+    //       highlightSelectionMatches: { annotateScrollbar: true },
+    //       matchBrackets: true,
+    //       autofocus: true,
+    //       foldGutter: true,
+    //       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
+    //       extraKeys: {
+    //         'Ctrl-Space': 'autocomplete'
+    //       }
+    //     })
+    //     this.codeMirror.on('change', function (cmInstance) {
+    //       if (this.outputJson !== cmInstance.getValue()) this.outputJson = cmInstance.getValue()
+    //       this.refreshCodeMirror()
+    //     }.bind(this))
+    //     this.refreshCodeMirror()
+    //   })
+    // },
+    // refreshCodeMirror () {
+    //   setTimeout(function () {
+    //     this.codeMirror.refresh()
+    //   }.bind(this), 1)
+    // },
+    // reloadCodeMirrorData () {
+    //   if (arguments[0].$attrs.id === 'sourceTab') {
+    //     this.initCodeMirror()
+    //     if (this.codeMirror) {
+    //       if (this.codeMirror.doc.getValue() !== this.outputJson) this.codeMirror.doc.setValue(this.outputJson)
+    //     }
+    //   }
+    // },
     initMetaObject (json) {
       let valid = true
       try {
@@ -130,10 +151,6 @@ module.exports = {
         }
       }
     }
-  },
-  components: {
-    objCardComponent,
-    mixinsCardComponent
   }
 }
 </script>

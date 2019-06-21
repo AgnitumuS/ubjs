@@ -96,7 +96,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
               html: toolbarHtml,
               listeners: {
                 boxready: function (sender) {
-                                        // Ext.get(me.toolbarId).dom.appendChild(me.editor.toolbar.toolbar.container);
+                  // Ext.get(me.toolbarId).dom.appendChild(me.editor.toolbar.toolbar.container);
                 },
                 scope: me
               }
@@ -110,7 +110,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
           split: true,
           height: 160,
           fit: 2,
-                    // layout: 'fit',
+          // layout: 'fit',
           html: outlineHtml
         }
       ]
@@ -179,7 +179,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
     var me = this, vertex, doc, node, metaObj, objLinks = {}, linkmetaObj, lnkType,
       objCode = config.objectName, objExists = false, lnk
 
-        // find exist UB obj
+    // find exist UB obj
     Ext.Object.each(me.editor.graph.model.cells, function (id, cell) {
       var objectCode = cell.getAttribute('objectCode')
       if (!objectCode) {
@@ -247,7 +247,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
         return true
       }
 
-            // other objects inherited from me
+      // other objects inherited from me
       if (linkmetaObj.mixins && linkmetaObj.mixins.unity && /* linkmetaObj.mixins.unity.enabled && */
                 linkmetaObj.mixins.unity.entity === objCode) {
         lnkType = { linkType: 'inheritance',
@@ -258,13 +258,13 @@ Ext.define('UB.ux.UBMetaDiagram', {
         me.editor.graph.addEdge(me.createEdge(lnkType), null, cell, vertex)
       }
 
-           // obj link to other
+      // obj link to other
       if (objLinks[objectCode]) {
         Ext.Array.each(objLinks[objectCode], function (val) {
           me.editor.graph.addEdge(me.createEdge(val), null, vertex, cell)
         }, me)
       }
-            // other objs link to me (if is not inner link)
+      // other objs link to me (if is not inner link)
       if (objectCode !== objCode) {
         linkmetaObj.eachAttribute(function (attr, attrCode) {
           if (Ext.String.startsWith(attrCode, 'mi_', true)) {
@@ -297,7 +297,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
 
     if (param.linkType === 'association') {
       assoc = new mxCell(node, new mxGeometry(0, 0, 0, 0),
-                'endArrow=open;endSize=10;edgeStyle=orthogonalEdgeStyle;')
+        'endArrow=open;endSize=10;edgeStyle=orthogonalEdgeStyle;')
       assoc.geometry.setTerminalPoint(new mxPoint(0, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(80, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(160, 0), false)
@@ -305,7 +305,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
     }
     if (param.linkType === 'composition') {
       assoc = new mxCell(node, new mxGeometry(0, 0, 0, 0),
-                'endArrow=diamond;endSize=14;endFill=0;edgeStyle=orthogonalEdgeStyle;')
+        'endArrow=diamond;endSize=14;endFill=0;edgeStyle=orthogonalEdgeStyle;')
       assoc.geometry.setTerminalPoint(new mxPoint(0, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(80, 0), true)
       assoc.geometry.setTerminalPoint(new mxPoint(160, 0), false)
@@ -331,12 +331,12 @@ Ext.define('UB.ux.UBMetaDiagram', {
       var subsystem = objVal.modelName
       var parentNode = subsystems[subsystem]
       if (!parentNode) {
-        parentNode = {text: subsystem, expanded: false, children: [], icon: null}
+        parentNode = { text: subsystem, expanded: false, children: [], icon: null }
         subsystems[subsystem] = parentNode
         detail.push(parentNode)
-        parentNode.children.push({text: objName, leaf: true, icon: null, objCode: objName})
+        parentNode.children.push({ text: objName, leaf: true, icon: null, objCode: objName })
       } else {
-        parentNode.children.push({text: objName, leaf: true, icon: null, objCode: objName})
+        parentNode.children.push({ text: objName, leaf: true, icon: null, objCode: objName })
       }
     })
 
@@ -366,7 +366,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
             dragE.setHeight(itemE.getHeight())
             fXY = e.getXY()
             dragE.position('absolute', basewindow.dom.style.zIndex + 2, fXY[0], fXY[1])
-            me.dragDropObj = {objectName: record.get('text'), dragElm: dragElm}
+            me.dragDropObj = { objectName: record.get('text'), dragElm: dragElm }
           }
         },
         scope: me
@@ -443,24 +443,24 @@ Ext.define('UB.ux.UBMetaDiagram', {
         doInit()
         return Q.resolve(true)
       } else {
-        return $App.connection.get(me.dataUrl, {responseType: 'arraybuffer'})
-        .then(function (response) {
-          var blobData, pdfArray = response.data
-          blobData = new Blob(
-                [pdfArray],
-                {type: cfg.contentType}
+        return $App.connection.get(me.dataUrl, { responseType: 'arraybuffer' })
+          .then(function (response) {
+            var blobData, pdfArray = response.data
+            blobData = new Blob(
+              [pdfArray],
+              { type: cfg.contentType }
             )
-          me.updateDataBlob(blobData)
-          doInit()
-        }).fail(function (reason) {
-          if (reason.status === 404) {
-            if (cfg.onContentNotFound) {
-              cfg.onContentNotFound()
-            } else {
-              UB.showErrorWindow('<span style="color: red">' + UB.i18n('documentNotFound') + '<span/>')
+            me.updateDataBlob(blobData)
+            doInit()
+          }).fail(function (reason) {
+            if (reason.status === 404) {
+              if (cfg.onContentNotFound) {
+                cfg.onContentNotFound()
+              } else {
+                UB.showErrorWindow('<span style="color: red">' + UB.i18n('documentNotFound') + '<span/>')
+              }
             }
-          }
-        })
+          })
       }
     } else {
       me.objUrl = me.dataUrl
@@ -489,7 +489,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
         return true
       }
       metaObj = $App.domainInfo.get(objCode)
-           // удаляем устаревшие элементы в схеме
+      // удаляем устаревшие элементы в схеме
       if (!metaObj) {
         me.editor.graph.removeCells([cell], true)
         return true
@@ -547,9 +547,9 @@ Ext.define('UB.ux.UBMetaDiagram', {
           }
         }
       }
-       // добавляем отсутствующие элементы в схеме
+      // добавляем отсутствующие элементы в схеме
       if (!hasInheritage && metaObj.mixins && metaObj.mixins.unity &&
-               /** metaObj.mixins.unity.enabled &&**/ graphObject[metaObj.mixins.unity.entity]) {
+      /** metaObj.mixins.unity.enabled &&**/ graphObject[metaObj.mixins.unity.entity]) {
         var val = { linkType: 'inheritance', srcObj: objCode, srcProp: 'ID', destObj: metaObj.mixins.unity.entity, destProp: 'ID' }
         me.editor.graph.addEdge(me.createEdge(val), null, cell, graphObject[metaObj.mixins.unity.entity])
       }
@@ -579,7 +579,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
     var
       config = mxUtils.load('models/adminui-pub/resources/config/ubmetaeditor.xml').getDocumentElement(),
       me = this, editor, graph, div, mainWin
-        // workfloweditor.xml
+      // workfloweditor.xml
 
     mainWin = me.getContainer()
 
@@ -662,11 +662,10 @@ Ext.define('UB.ux.UBMetaDiagram', {
         if (objectCode) {
           if (UB.connection.domain.models.UBDEV) {
             $App.doCommand({
-              "cmdType": "showForm",
-              "formCode": "ubdev_metadata",
-              "cmdData": {
-                "entityCode": objectCode
-              }
+              cmdType: 'showForm',
+              formCode: 'ubdev_metadata',
+              tabId: 'meta-edit-' + objectCode,
+              parentContext: { entityCode: objectCode }
             })
           } else {
             me.showEntityForm(objectCode)
@@ -707,7 +706,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
     if (!me.editEntityFrm) {
       storeData = Ext.create('Ext.data.Store', {
         fields: ['code', 'caption', 'size', 'dataType', 'associatedEntity', 'accessType', 'allowNull', 'isUnique', 'defaultValue', 'allowSort'],
-        data: {attributes: [{}]}, // colData,
+        data: { attributes: [{}] }, // colData,
         proxy: {
           type: 'memory',
           reader: {
@@ -821,7 +820,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
                         select: function (grd, record/*, index, eOpts */) {
                           edtMixin.setValue(record.get('code') + ' =\n' +
                             JSON.stringify(
-                                me.editEntityFrmEditor.selEntity.mixins[record.get('code')], null, '\t')
+                              me.editEntityFrmEditor.selEntity.mixins[record.get('code')], null, '\t')
                           )
                         },
                         scope: me
@@ -867,14 +866,14 @@ Ext.define('UB.ux.UBMetaDiagram', {
         store.clearFilter(true)
         var valueftr = new RegExp(value, 'i')
         store.filter([
-          {filterFn: function (item) {
+          { filterFn: function (item) {
             return valueftr.test(item.get('code')) ||
               valueftr.test(item.get('caption')) ||
               valueftr.test(item.get('dataType')) ||
               valueftr.test(item.get('associatedEntity')) ||
               valueftr.test(item.get('size')) ||
               valueftr.test(item.get('accessType'))
-          }}
+          } }
         ])
       }
     }
@@ -898,20 +897,20 @@ Ext.define('UB.ux.UBMetaDiagram', {
       })
 
       me.editEntityFrm.setTitle(entityCode)
-      me.editEntityFrmEditor.fColGrd.getStore().loadRawData({attributes: colData}, false)
-      me.editEntityFrmEditor.fmixGrid.getStore().loadRawData({mixins: mixinData}, false)
+      me.editEntityFrmEditor.fColGrd.getStore().loadRawData({ attributes: colData }, false)
+      me.editEntityFrmEditor.fmixGrid.getStore().loadRawData({ mixins: mixinData }, false)
       me.editEntityFrm.down('[itemId=edtAttr]').setValue(' ')
       me.editEntityFrm.down('[itemId=edtMixin]').setValue(' ')
       me.editEntityFrm.show()
     }
   },
 
-    //    .isGraphEvent = function(evt)
+  //    .isGraphEvent = function(evt)
   isGraphEvent: function (evt, handler) {
     var source = mxEvent.getSource(evt)
 
-        // Accepts events from the target object or
-        // in-place editing inside graph
+    // Accepts events from the target object or
+    // in-place editing inside graph
     if ((source === handler.target || source.parentNode === handler.target) ||
         (handler.graph.cellEditor !== null && source === handler.graph.cellEditor.textarea)) {
       return true
@@ -927,7 +926,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       elt = elt.parentNode
     }
 
-        // Accepts events from inside the container
+    // Accepts events from inside the container
     elt = source
 
     while (elt !== null) {
@@ -1051,10 +1050,10 @@ Ext.define('UB.ux.UBMetaDiagram', {
         }
         isEntity = attr.dataType === 'Entity'
         ftype = attr.dataType === 'Enum' ? 'Enum ' + attr.enumGroup + ''
-                : (isEntity ? '<B>' + attr.associatedEntity + '</B>' : attr.dataType)
+          : (isEntity ? '<B>' + attr.associatedEntity + '</B>' : attr.dataType)
         htmlt.push('<tr><td>', attrCode, '</td><td style="padding:2px;">', ftype, '</td></tr>')
       })
-        // Add mixins images
+      // Add mixins images
       var cellMixinImages = []
       _.forEach(ubObj.mixins, function (mixinConfig, mixinName) {
         if (mixinConfig.enabled) {
@@ -1127,7 +1126,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       // of the tasks window on every change of the
       // model, selection or root.
       var funct = mxUtils.bind(me, function (/* sender */) {
-                // mxEvent.release(div);
+        // mxEvent.release(div);
         me.taskEl.innerHTML = ''
         me.editor.createTasks(me.taskEl)
       })
@@ -1209,7 +1208,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
 
   beforeDestroy: function () {
     var
-            me = this
+      me = this
     if (me.editor) { me.editor.destroy() }
     if (me.tasksWnd) { me.tasksWnd.destroy() }
 
@@ -1230,7 +1229,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       data = enc.encode(me.editor.graph.getModel())
     return mxUtils.getXml(data)
 
-        // return this.initialValue;
+    // return this.initialValue;
   },
 
   resetOriginalValue: function () {

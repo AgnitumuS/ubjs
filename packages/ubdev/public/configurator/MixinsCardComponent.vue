@@ -68,9 +68,10 @@
 </template>
 
 <script>
-const objectControl = require('./ObjectControl.vue')
+const objectControl = require('./ObjectControl.vue').default
 
-module.exports = {
+module.exports.default = {
+  name: 'MixinsCard',
   props: {
     mixins: {
       type: Object,

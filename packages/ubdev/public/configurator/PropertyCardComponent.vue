@@ -31,10 +31,11 @@
 </template>
 
 <script>
-const objectControl = require('./ObjectControl.vue')
-const mappingObjectControl = require('./MappingObjectControl.vue')
+const objectControl = require('./ObjectControl.vue').default
+const mappingObjectControl = require('./MappingObjectControl.vue').default
 
-module.exports = {
+module.exports.default = {
+  name: 'PropertyCard',
   props: {
     currentRow: [Object, undefined],
     schema: {
