@@ -94,7 +94,7 @@ function dialogError (msg, title = 'error', isDevInfo = false) {
 }
 
 /**
- * Vue based erro reported. To be used by ub-pub.setErrorReporter
+ * Vue based error reported. To be used by ub-pub.setErrorReporter
  * @param {String} errMsg
  * @param errCode
  * @param entityCode

@@ -15,10 +15,10 @@
         :required="prop.ui && prop.ui.required"
         :style="prop.type === 'boolean' ? 'display:inline-block' : ''"
       >
-        <el-checkbox
+        <el-switch
           v-if="prop.type === 'boolean'"
           v-model="currentRow[prop.name]"
-          style="width:2rem"
+          style="padding-right: 10px"
         />
         <object-control
           v-else-if="prop.type === 'object'"

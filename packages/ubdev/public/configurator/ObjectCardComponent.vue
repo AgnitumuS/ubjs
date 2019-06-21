@@ -53,16 +53,15 @@
         <el-input
           v-model="newAttrName"
           style="width:50%"
-        />
-        <el-button
-          :disabled="!newAttrName"
-          type="default"
-          icon="el-icon-plus"
-          style="margin-left: 5px"
-          @click="addAttribute"
+          placeholder="enter attribute code for adding"
         >
-          Add Attribute
-        </el-button>
+          <el-button
+            slot="append"
+            :disabled="!newAttrName"
+            icon="el-icon-plus"
+            @click="addAttribute"
+          />
+        </el-input>
         <el-table
           id="attrTable"
           ref="attrTable"
@@ -97,17 +96,13 @@
           </el-table-column>
           <el-table-column
             fixed="right"
-            label="Operations"
-            min-width="90"
           >
             <template slot-scope="scope">
               <el-button
                 type="text"
-                size="small"
+                icon="el-icon-delete"
                 @click="deleteRow(scope.$index)"
-              >
-                Delete
-              </el-button>
+              />
             </template>
           </el-table-column>
         </el-table>

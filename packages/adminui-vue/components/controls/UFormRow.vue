@@ -34,7 +34,7 @@
 
 <script>
 /**
- * Need to create form row with label
+ * Form row with a label
  */
 export default {
   name: 'UFormRow',

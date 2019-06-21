@@ -15,6 +15,7 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, parentConte
 }
 
 module.exports.default = {
+  name: 'MetadataEditor',
   components: { ConfiguratorComponent },
   props: {
     fileName: String
