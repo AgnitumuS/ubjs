@@ -1,26 +1,58 @@
 <template>
   <div>
     <table class="object-control__table">
-      <tr v-for="item in Object.keys(currentObj).map((key) => { return { name: key, value: currentObj[key] } })"
-          :key="item.name"
-          class="object-control__row">
-        <td class="object-control__cell" style="width:35%">{{item.name}}:</td>
+      <tr
+        v-for="item in Object.keys(currentObj).map((key) => { return { name: key, value: currentObj[key] } })"
+        :key="item.name"
+        class="object-control__row"
+      >
+        <td
+          class="object-control__cell"
+          style="width:35%"
+        >
+          {{ item.name }}:
+        </td>
         <td style="width:55%">
-          <el-input placeholder="Value" v-model="currentObj[item.name]" size="small"/>
+          <el-input
+            v-model="currentObj[item.name]"
+            placeholder="Value"
+            size="small"
+          />
         </td>
         <td style="width:10%">
-          <el-button type="danger" size="small" icon="el-icon-delete" slot="reference" @click="removeProperty(name)"/>
+          <el-button
+            slot="reference"
+            type="danger"
+            size="small"
+            icon="el-icon-delete"
+            @click="removeProperty(name)"
+          />
         </td>
       </tr>
       <tr>
         <td style="width:35%">
-          <el-input size="small" v-model="currentKey" placeholder="Key" style="width:100%"/>
+          <el-input
+            v-model="currentKey"
+            size="small"
+            placeholder="Key"
+            style="width:100%"
+          />
         </td>
         <td style="width:55%">
-          <el-input size="small" v-model="currentValue" placeholder="Value"/>
+          <el-input
+            v-model="currentValue"
+            size="small"
+            placeholder="Value"
+          />
         </td>
         <td style="width:10%">
-          <el-button type="success" size="small" icon="el-icon-check" slot="reference" @click="addProperty"/>
+          <el-button
+            slot="reference"
+            type="success"
+            size="small"
+            icon="el-icon-check"
+            @click="addProperty"
+          />
         </td>
       </tr>
     </table>
@@ -29,6 +61,7 @@
 
 <script>
 module.exports.default = {
+  name: 'ObjectControl',
   props: {
     row: {
       type: Object,
