@@ -34,6 +34,7 @@
         ref="codeMirror"
         v-model="cmdCode"
         style="height: 100%"
+        :hintsFunction="doOnShowHints"
         @loaded="setSnippetHeight"
       />
     </el-col>
@@ -97,6 +98,47 @@ export default {
         const { offsetHeight } = this.$refs.codeMirror.$el
         const height = offsetHeight < 200 ? 200 : offsetHeight
         this.$refs.snippet.style.height = `${height}px`
+      }
+    },
+
+    doOnShowHints (cm) {
+      return {
+        list: [{
+          displayText: 'showList',
+          text: JSON.stringify({
+            'cmdType': 'showList',
+            'cmdData': {
+              'params': [{
+                'entity': 'TYPE-ENTITY-CODE',
+                'method': 'select',
+                'fieldList': ['Dbl-CLICK on left prop panel to add attribute']
+              }]
+            }
+          }, null, '  ')
+        }, {
+          displayText: 'showForm',
+          text: JSON.stringify({
+            'cmdType': 'showForm',
+            'formCode': 'TYPE HERE A FORM CODE FROM UBM_FORM or remove this line to use a default form for entity',
+            'entity': 'TYPE HERE A ENTITY CODE',
+            'instanceID': 'REPLACE IT by ID value (to edit element) or remove this line'
+          }, null, '  ')
+        }, {
+          displayText: 'showReport',
+          text: JSON.stringify({
+            cmdType: 'showReport',
+            description: 'OPTIONAL report form caption',
+            cmdData: {
+              reportCode: 'type here report code',
+              reportType: 'html or pdf',
+              reportParams: { // if passed report viewer will skip showing parameters enter form to user
+                paramName: 'param value'
+              }
+            }
+          }, null, '  ')
+        }],
+        from: cm.getCursor(), // this._codeMirror
+        to: cm.getCursor()
       }
     }
   }

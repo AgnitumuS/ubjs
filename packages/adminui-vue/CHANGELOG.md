@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `USelectEntity`, `USelectMultiple` added prop displayAttribute - attribute which is display value of options
  - `u-select-entity`, `u-select-enum` added `editable` prop. False to prevent the user from typing text directly into the field; the field can only have its value set via selecting a value from the picker. In this state, the picker can also be opened by clicking directly on the input field itself. True by default for u-select-entity, false by default for u-select-enum
  - expose `mountUtils` in `@unitybase/adminui-vue` exports to be used for mounting custom Vue forms
+ - new prop UCodeMirror.hintsFunction - accept a function for hint generation. See `ShortcutCmdCode.vue` in UMB model for usage sample
  
 ### Fixed
  - UCodeMirror now handle `editorMode` prop and perform a syntax highlight for content depending on mode (default is javascript)   

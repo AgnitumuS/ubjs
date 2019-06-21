@@ -128,6 +128,6 @@ module.exports.default = {
       'iconCls'
     ]),
     ...mapGetters(['loading'])
-  },
+  }
 }
 </script>
