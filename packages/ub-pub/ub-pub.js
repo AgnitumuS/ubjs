@@ -577,7 +577,12 @@ function ubGlobalErrorHandler (msg, file, line, column, errorObj) {
   }
 
   if (!isHandled) {
-    // MPV - message is already in datail (stack trace)
+    if (message === 'ResizeObserver loop limit exceeded') { // see https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
+      console.warn(message)
+      return
+    }
+    if (!detail) detail = message
+    // MPV - message is already in detail (stack trace or message in case stack is not available)
     // detail = message + '<BR/> ' + detail;
     message = 'unknownError'
   }

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.5]
+### Fixed
+ - global exception interceptor will ignore `ResizeObserver loop limit exceeded` exception.
+ [See explanation why](https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded)
+ - global exception interceptor will use message as a details in case of unhandled rejection without stack (browser exception for example). 
+ This prevent appears of error window with empty details. 
+
 ## [5.3.3]
 ### Added
  - new `switchCurrentSession` method added to the UBConnection. It is necessary to be able to quickly switch between user sessions without reconnecting on server side.
@@ -323,5 +330,3 @@ witch depends on how languages configured for database connections
 ## [4.1.5]
 ### Added
 - parameter `onAuthorized` added to `UBConnection.connect` - Callback for authorization success. See `authorized` event
-
-
