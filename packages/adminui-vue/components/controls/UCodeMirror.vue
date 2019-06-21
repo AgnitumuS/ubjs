@@ -70,7 +70,7 @@ module.exports = {
     // eslint-disable-next-line no-undef
     SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
       this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
-        mode: this.mode,
+        mode: this.editorMode,
         lineNumbers: true,
         lint: Object.assign({ asi: true, esversion: 6 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
         readOnly: false,
@@ -99,6 +99,14 @@ module.exports = {
       }))
       this.$emit('loaded')
     })
+  },
+
+  computed: {
+    editorInstance: {
+      get: function () {
+        return this._codeMirror
+      }
+    }
   },
 
   watch: {
