@@ -114,9 +114,6 @@
 				/*{
 					"path": "./node_modules/@unitybase/udisk"
 				},*/
-				{
-					"path": "./node_modules/@unitybase/ubdev"
-				},
 				/*{
 					"path": "./node_modules/@ub-e/ocr"
 				},*/

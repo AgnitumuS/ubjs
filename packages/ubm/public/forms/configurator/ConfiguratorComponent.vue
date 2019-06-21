@@ -22,9 +22,9 @@
       label="Source"
     >
       <u-code-mirror
-          ref="codeMirror"
-          v-model="outputJson"
-          style="height: 800px"
+        ref="codeMirror"
+        v-model="outputJson"
+        style="height: 800px"
       />
     </el-tab-pane>
   </el-tabs>
@@ -71,10 +71,10 @@ module.exports.default = {
   },
   created () {
     if (this.fileName) {
-      let entity = $App.domainInfo.get(this.fileName)
+      let entity = this.$UB.connection.domain.get(this.fileName)
       if (entity) this.initMetaObject(entity)
     }
-    UB.get('models/UB/schemas/entity.schema.json').then((response) => {
+    this.$UB.connection.get('models/UB/schemas/entity.schema.json').then((response) => {
       this.schemaObject = response.data
     })
   },

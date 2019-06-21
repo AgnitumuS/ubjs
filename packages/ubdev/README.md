@@ -1,5 +1,7 @@
 # Developer tools for UnityBase
 
+** THIS MODEL IS NOT REQUIRED YET ** entity editor is moved into UMB model
+
 ## Usage
 ```bash
   npm i @unitybase/ubdev
@@ -21,5 +23,5 @@
 
 
 ## Features
- - Entity editor (available on double-click on entity inside ER diagram)
+ - **MOVED INTO UMB model** Entity editor (available on double-click on entity inside ER diagram)
  - Work In Progress

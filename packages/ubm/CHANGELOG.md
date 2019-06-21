@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.1.27]
 ### Changed
  - shortcut editor form: highlight currently selected folder in ShortcutTree control
+ - Entity metadata editor is moved form ubdev model into UMB. double-click on entity inside diagram opens entity metadata editor 
 
 ## [5.1.26]
 ### Changed

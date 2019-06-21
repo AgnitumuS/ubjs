@@ -663,7 +663,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
           if (UB.connection.domain.models.UBDEV) {
             $App.doCommand({
               cmdType: 'showForm',
-              formCode: 'ubdev_metadata',
+              formCode: 'ubm_form-entityEdit',
               tabId: 'meta-edit-' + objectCode,
               parentContext: { entityCode: objectCode }
             })

@@ -1,6 +1,6 @@
 <script>
 const adminUiVue = require('@unitybase/adminui-vue')
-const ConfiguratorComponent = require('../configurator/ConfiguratorComponent.vue').default
+const ConfiguratorComponent = require('./configurator/ConfiguratorComponent.vue').default
 
 module.exports.mount = function ({ title, tabId, entity, instanceID, parentContext, formCode, rootComponent }) {
   let tabTitle = 'Entity editor(' + parentContext.entityCode + ')'
