@@ -441,7 +441,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       if (blobData) {
         me.updateDataBlob(blobData)
         doInit()
-        return Q.resolve(true)
+        return Promise.resolve(true)
       } else {
         return $App.connection.get(me.dataUrl, { responseType: 'arraybuffer' })
           .then(function (response) {
@@ -466,7 +466,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       me.objUrl = me.dataUrl
     }
     doInit()
-    return Q.resolve(true)
+    return Promise.resolve(true)
   },
 
   validateDiagram: function () {

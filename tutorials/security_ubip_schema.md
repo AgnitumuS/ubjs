@@ -40,7 +40,7 @@ to your HTTP requests.
             if (isRepeat){ 
 				throw new UB.AbortError('invalid') 
 			} else { 
-				return Q.resolve({authSchema: 'UBIP', login: 'admin'}); 
+				return Promise.resolve({authSchema: 'UBIP', login: 'admin'}); 
 			} 
         }
     });

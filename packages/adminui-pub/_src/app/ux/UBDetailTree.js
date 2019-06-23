@@ -459,7 +459,7 @@ Ext.define('UB.ux.UBDetailTree', {
     if (basepanel) {
       promise = basepanel.saveForm()
     } else {
-      promise = Q.resolve(1)
+      promise = Promise.resolve(1)
     }
     promise.then(function (saveStatus) {
       if (saveStatus < 0) {
@@ -539,7 +539,7 @@ Ext.define('UB.ux.UBDetailTree', {
     if (basepanel) {
       promise = basepanel.saveForm()
     } else {
-      promise = Q.resolve(1)
+      promise = Promise.resolve(1)
     }
     promise.then(function (saveStatus) {
       if (saveStatus < 0) {

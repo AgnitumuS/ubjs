@@ -178,7 +178,7 @@ UBServerReport.prototype.makeReport = function (params) {
   let report
   let errInsidePromise
   // convert to value
-  if (Q.isPromise(promiseOrData)) {
+  if (promiseOrData && (typeof promiseOrData.then === 'function')) {
     promiseOrData.then(
       data => { report = data },
       err => { errInsidePromise = err }

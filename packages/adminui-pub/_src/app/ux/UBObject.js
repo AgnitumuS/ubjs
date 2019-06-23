@@ -67,7 +67,7 @@ Ext.define('UB.ux.UBObject', {
       objEl.dom.type = this.type
       objEl.dom.data = this.data
     }
-    return Q.resolve(true)
+    return Promise.resolve(true)
   },
   // {width: "100%", height: "100%"}
   setXSize: function (prm) {

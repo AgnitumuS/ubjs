@@ -92,7 +92,7 @@ me.testDataStoreInitialization = function (ctx) {
  *    let arr = []; for(var i=0; i< 25; i++){
  *      arr.push($App.connection.run({entity: 'tst_service', method: 'testServerReportPDF'}));
  *    }
- *    Q.all(arr).done(UB.logDebug)
+ *    Promise.all(arr).then(UB.logDebug)
  *
  * @param {ubMethodParams} ctx
  */

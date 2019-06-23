@@ -21,7 +21,7 @@ exports.formCode = {
 
   addRemoveRole: function (isAdd) {
     var me = this; var roles; var pr
-    pr = me.isNewInstance ? me.saveForm() : Q.resolve(1)
+    pr = me.isNewInstance ? me.saveForm() : Promise.resolve(1)
     if (me.isNewInstance) {
 
       // UB.showErrorWindow('Save this notification message before add users to it');

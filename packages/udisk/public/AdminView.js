@@ -502,7 +502,7 @@ Ext.define('UDISK.AdminView', {
   },
 
   onFileGridDblClick: function (grid, record, item, index, e, eOpts) {
-    var me = this, promise = Q.resolve(true)
+    var me = this, promise = Promise.resolve(true)
 
     if (record.get('isFolder')) {
       me.lastSelectedFolderId = me.selectedFolderID
@@ -1061,22 +1061,22 @@ Ext.define('UDISK.AdminView', {
     var
       me = this, newID, mi_modifyDate,
       title = UB.i18n('skanirovanieAtributa'),
-      dlgDefer, resDS
+      resDS
 
     $App.scan(title, {})
       .then(function (result) {
         var fileName = UB.i18n('udiskScan') + ' ' + Ext.Date.format(new Date(), 'd.m.y G:i') + '.PDF'
-        dlgDefer = Q.defer()
 
-        Ext.Msg.prompt(UB.i18n('udiskNewFileName'), UB.i18n('udiskNewFileNamePrompt'), function (btn, text) {
-          if (btn === 'ok') {
-            fileName = text
-            dlgDefer.resolve(fileName)
-          } else {
-            dlgDefer.reject(new UB.UBAbortError())
-          }
-        }, me, false, fileName)
-        return dlgDefer.promise.then(function () {
+        return new Promise((resolve, reject) => {
+          Ext.Msg.prompt(UB.i18n('udiskNewFileName'), UB.i18n('udiskNewFileNamePrompt'), function (btn, text) {
+            if (btn === 'ok') {
+              fileName = text
+              resolve(fileName)
+            } else {
+              reject(new UB.UBAbortError())
+            }
+          }, me, false, fileName)
+        }).then(function () {
           return $App.connection.addNew({
             entity: me.entityName,
             method: 'addNew',
