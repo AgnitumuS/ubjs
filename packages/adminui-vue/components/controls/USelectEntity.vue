@@ -618,6 +618,10 @@ export default {
   color: rgb(var(--info));
   text-decoration: line-through;
 }
+
+.ub-select__container input[readonly=readonly] {
+  cursor: pointer;
+}
 </style>
 
 <docs>
