@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.7]
 ### Fixed
- - UBSelect* - set cursor to `pointer` in case `editable=false`
+ - UBSelect* - set cursor to `pointer` in case `editable` prop is `false`
  
 ## [1.6.6]
 ### Fixed

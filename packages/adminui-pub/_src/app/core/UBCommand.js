@@ -576,7 +576,7 @@ Ext.define('UB.core.UBCommand', {
       if (!existedTab) {
         existedTab = $App.viewport.centralPanel.down(`basepanel[tabID=${cfg.tabId}]`) // Ext forms sets basePanel.tabId
       }
-      // MPV 2019-06-24: code below is replaced by basepanel[tabID=.. above
+      // MPV 2019-06-24: code below is replaced by searching using tabId (or id for Vue)
       // if (!existedTab && cfg.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только что сохраненный документ
       //   existedTab = $App.viewport.centralPanel.down(`basepanel[instanceID=${cfg.instanceID}]`)
       // }
