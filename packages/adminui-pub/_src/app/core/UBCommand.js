@@ -818,8 +818,6 @@ Ext.define('UB.core.UBCommand', {
 
           if (!Ext.isDefined(me.tabId)) {
             result.target.removeAll()
-          } else {
-            result.id = me.tabId
           }
 
           if (result.target.setActiveTab) {
