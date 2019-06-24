@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/stubs",
-  "version": "5.0.18",
+  "version": "5.0.19",
   "description": "Definition (stubs) for build-in UnityBase modules & globals",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/stubs",
   "scripts": {
