@@ -128,7 +128,7 @@ UBWriter.prototype.write = function (data, encoding) {}
  * @classdesc
  *  Named collection of parameters.
  *
- *  Think of it as an pain JavaScript object with property values that are stored in the `native` code,
+ *  Think of it as an plain JavaScript object with property values that are stored in the `native` code,
  *  not inside a JavaScript runtime
  * @extends {TubNamedCollection}
  * @class TubList
