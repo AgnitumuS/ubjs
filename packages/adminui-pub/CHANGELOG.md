@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.8.25]
 ### Fixed
- - do not show error in case user click on empty sidebar folder  
+ - do not show error in case user click on empty sidebar folder
+ - while checking what tab is already opened inside Viewport `basepanel.tabId` will be used for **Ext** forms and `html element id` for **Vue** forms.
+ Heuristic what use `basepanel.instanceID` is removed    
  
 ## [5.8.24]
 ### Changed

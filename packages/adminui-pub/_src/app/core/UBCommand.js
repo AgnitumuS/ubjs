@@ -572,10 +572,14 @@ Ext.define('UB.core.UBCommand', {
       if (!cfg.tabId) {
         cfg.tabId = cfg.entity + (cfg.instanceID ? cfg.instanceID : 'ext' + Ext.id(null, 'addNew'))
       }
-      let existedTab = Ext.getCmp(cfg.tabId)
-      if (!existedTab && cfg.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только что сохраненный документ
-        existedTab = $App.viewport.centralPanel.down(`basepanel[instanceID=${cfg.instanceID}]`)
+      let existedTab = Ext.getCmp(cfg.tabId) // Vue forms sets id for Tab
+      if (!existedTab) {
+        existedTab = $App.viewport.centralPanel.down(`basepanel[tabID=${cfg.tabId}]`) // Ext forms sets basePanel.tabId
       }
+      // MPV 2019-06-24: code below is replaced by basepanel[tabID=.. above
+      // if (!existedTab && cfg.instanceID && $App.viewport) { // специально для тестировщиков которые открывают из реестра еще раз только что сохраненный документ
+      //   existedTab = $App.viewport.centralPanel.down(`basepanel[instanceID=${cfg.instanceID}]`)
+      // }
       if (existedTab) {
         $App.viewport.centralPanel.setActiveTab(existedTab)
         return
@@ -814,6 +818,8 @@ Ext.define('UB.core.UBCommand', {
 
           if (!Ext.isDefined(me.tabId)) {
             result.target.removeAll()
+          } else {
+            result.id = me.tabId
           }
 
           if (result.target.setActiveTab) {
