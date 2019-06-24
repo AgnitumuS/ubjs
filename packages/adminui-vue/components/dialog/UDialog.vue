@@ -178,6 +178,7 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 250px;
 }
 
 .ub-notification__error__content p{
