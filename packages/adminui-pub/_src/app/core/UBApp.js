@@ -415,7 +415,7 @@ Ext.define('UB.core.UBApp', {
     }).then(function () {
       return UB.core.UBDataLoader.loadStores({
         ubRequests: ['ubm_desktop', 'ubm_form', 'ubm_enum'].map(function (item) {
-          let res = {entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames()}
+          let res = { entity: item, method: 'select', fieldList: me.domainInfo.get(item).getAttributeNames() }
           if (item === 'ubm_desktop') {
             res.orderList = {
               ord: {
@@ -748,7 +748,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       }
 
       function askInsertPaper () {
-        return $App.dialog('scan', 'noPaperInScanner', {buttons: 9, icon: 'INFO'}).then(function (btn) {
+        return $App.dialog('scan', 'noPaperInScanner', { buttons: 9, icon: 'INFO' }).then(function (btn) {
           if (btn === 'ok') {
             return doContinue()
           } else if (btn === 'cancel') {
@@ -758,7 +758,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       }
 
       function checkContinue () {
-        return $App.dialog('scan', 'doYouWantResume', {buttons: 14}).then(function (btn) {
+        return $App.dialog('scan', 'doYouWantResume', { buttons: 14 }).then(function (btn) {
           if (btn === 'yes') {
             return doContinue()
           }
@@ -964,6 +964,10 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
     }
     let cmdCodePromise = UB.core.UBStoreManager.getNavshortcutCommandText(shortcutID)
     cmdCodePromise.then(function (parsedCmdCode) {
+      if (parsedCmdCode === null) {
+        console.warn(`Command for shortcut ${shortcutIDOrCode} is empty or this is empty folder`)
+        return
+      }
       let commandConfig = _.clone(parsedCmdCode)
       if (!inWindow) {
         commandConfig.tabId = 'navigator' + shortcutID
@@ -997,7 +1001,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         description: config.description,
         formCode: config.formCode,
         customParams: config.customParams,
-        deferred: {resolve: resolve, reject: reject} // result form MUST resolve or reject this deffer
+        deferred: { resolve: resolve, reject: reject } // result form MUST resolve or reject this deffer
       }
       if (!cmdConfig.formCode) {
         reject(new Error('invalid config for showModal. formCode if undefined'))
@@ -1044,7 +1048,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    */
   logout: function () {
     let p = this.connection ? this.connection.logout() : Promise.resolve(true)
-    p.catch(e => true).then(function () {
+    p.catch(() => true).then(function () {
       // MPV TODO Secure browser
       // if (UB.isSecureBrowser) {
       //     var remote = require('electron').remote;
@@ -1084,7 +1088,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 
 module.exports = UB.core.UBApp
 
-function getShortcutID (code, instanceID) {
+function getShortcutID (code /* , instanceID */) {
   const store = UB.core.UBStoreManager.getNavigationShortcutStore()
   const rowNum = store.findExact('code', code)
 
