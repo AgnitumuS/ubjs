@@ -65,7 +65,7 @@ class ServerRepository extends CustomRepository {
         throw new Error('first parameter of ServerRepository should not be boolean. fieldAliases can not be combined with plain text result')
       }
       let inst = new TubDataStore(this.entityName)
-      inst.run('select', this.ubql())
+      inst.run(this.method, this.ubql())
       let res
       if (fieldAliases) {
         res = {resultData: JSON.parse(inst.asJSONArray)}
@@ -89,7 +89,7 @@ class ServerRepository extends CustomRepository {
   selectAsArray (resultInPlainText) {
     if (process.isServer) { // inside server thread
       let inst = new TubDataStore(this.entityName)
-      inst.run('select', this.ubql())
+      inst.run(this.method, this.ubql())
       let res = resultInPlainText ? inst.asJSONArray : { resultData: JSON.parse(inst.asJSONArray) }
       if ((!resultInPlainText) && (this.options && this.options.totalRequired)) {
         inst.currentDataName = '__totalRecCount'
@@ -120,7 +120,7 @@ class ServerRepository extends CustomRepository {
       inst = this.selectAsObject()
     } else {
       inst = instance || new TubDataStore(this.entityName)
-      inst.run('select', this.ubql())
+      inst.run(this.method, this.ubql())
     }
     return inst
   }
