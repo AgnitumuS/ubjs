@@ -90,7 +90,7 @@ function ncrc32 (initialValue, data) { return 0 }
 /**
  * Native SHA256 implementation. Much (x10) faster compared to JS implementation
  * @param {String|ArrayBuffer|ArrayBufferView} data Data to calculate SHA256. In case of string will be transformed to UFT8 before calculation
- * @returns {String} hexa string SHA256 representation
+ * @returns {String} string (in hex) with SHA256 representation
  */
 function nsha256 (data) { return 'a0' }
 
