@@ -765,7 +765,7 @@ Ext.define('UB.core.UBUtil', {
 
     entity.eachAttribute(function (attr, attrName) {
       let node = {
-        id: UB.core.UBUtil.gatherStr(parentEntityName, '.', attrName),
+        id: (parentEntityName ? parentEntityName + '.' : '') + attrName,
         text: (attr.caption ? attr.caption + '[' + attrName + ']' : attrName),
         leaf: attr.dataType !== UBDomain.ubDataTypes.Entity,
         parentId: parentEntityName || entityName

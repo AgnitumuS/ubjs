@@ -63,10 +63,6 @@ export default {
       } else {
         return []
       }
-    },
-
-    availableEntities () {
-      return Object.keys(this.$UB.connection.domain.entities)
     }
   },
 
@@ -88,7 +84,7 @@ export default {
 
     getEntityName () {
       const res = entityRe.exec(this.cmdCode)
-      if (res && this.availableEntities.includes(res[1]) && res[1] !== '') {
+      if (res && res[1] && this.$UB.connection.domain.has(res[1])) {
         this.entityName = res[1]
       }
     },
