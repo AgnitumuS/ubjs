@@ -180,6 +180,8 @@ module.exports.default ={
  - **created**
  - **beforeLoad** 
  - **loaded**
+ - **beforeDelete**
+ - **deleted**
 
 ### Validation
   На основе данных в instance модуле и entitySchema создает объект валидации `$v` - [vuelidate](https://github.com/vuelidate/vuelidate)

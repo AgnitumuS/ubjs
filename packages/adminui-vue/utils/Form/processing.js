@@ -23,6 +23,8 @@ const { buildExecParams, buildCollectionRequests, isExistAttr } = require('./hel
  * @param {function} [inited] Callback which will be emit when data is inited
  * @param {function} [beforeSave] Callback which will be emit before save
  * @param {function} [saved] Callback which will be emit when data was saved
+ * @param {function} [beforeDelete] Callback which will be emit before delete
+ * @param {function} [deleted] Callback which will be emit when data was deleted
  * @return {object} Vue store cfg
  */
 function createProcessingModule ({
@@ -39,7 +41,9 @@ function createProcessingModule ({
   beforeLoad,
   loaded,
   beforeSave,
-  saved
+  saved,
+  beforeDelete,
+  deleted
 }) {
   const autoLoadedCollections = Object.entries(initCollectionsRequests)
     .filter(([coll, collData]) => !collData.lazy)
@@ -387,6 +391,12 @@ function createProcessingModule ({
        * @param  {Function} closeForm Close form without confirmation
        */
       async deleteInstance ({ state, getters, commit }, closeForm = () => {}) {
+        if (beforeDelete) {
+          const answer = await beforeDelete()
+          if (answer === false) {
+            return
+          }
+        }
         const answer = await $App.dialogYesNo('deletionDialogConfirmCaption', 'vyHotiteUdalitSoderzhimoeDocumenta')
 
         if (answer) {
@@ -407,6 +417,9 @@ function createProcessingModule ({
               type: 'success',
               message: UB.i18n('recordDeletedSuccessfully')
             })
+            if (deleted) {
+              await deleted()
+            }
           } catch (err) {
             commit('ERROR', true)
             UB.showErrorWindow(err)
