@@ -126,6 +126,8 @@ class UForm {
    * @param {function} cfg.created
    * @param {function} cfg.beforeLoad
    * @param {function} cfg.loaded
+   * @param {function} cfg.beforeDelete
+   * @param {function} cfg.deleted
    * @returns {UForm}
    */
   processing ({
@@ -138,7 +140,9 @@ class UForm {
     beforeCreate,
     created,
     beforeLoad,
-    loaded
+    loaded,
+    beforeDelete,
+    deleted
   } = {}) {
     if (!this.canProcessingInit) {
       throw new Error(`You can use ".processing()" only after ".instance()" and before ".mount()". Or ".processing()" is already initialized`)
@@ -180,7 +184,9 @@ class UForm {
       beforeCreate: () => hookWrap(beforeCreate, this.$store),
       created: () => hookWrap(created, this.$store),
       beforeLoad: () => hookWrap(beforeLoad, this.$store),
-      loaded: () => hookWrap(loaded, this.$store)
+      loaded: () => hookWrap(loaded, this.$store),
+      beforeDelete: () => hookWrap(beforeDelete, this.$store),
+      deleted: () => hookWrap(deleted, this.$store)
     })
     mergeStore(this.storeConfig, processingModule)
 
