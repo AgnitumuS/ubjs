@@ -80,28 +80,28 @@ class UForm {
     this.isProcessingUsed = false
     this.isValidationUsed = false
 
-    this.canStoreInit = true
-    this.canInstanceInit = true
+    this.storeInitialized = false
+    this.instanceInitilized = true
     this.canProcessingInit = false
     this.canValidationInit = false
   }
 
   store (storeConfig = {}) {
-    if (!this.canStoreInit) {
-      throw new Error(`You can use ".store()" only before ".instance()". Or ".store()" is already initialized`)
+    if (this.storeInitialized) {
+      throw new Error(`Store is already initialized. TIP: ".store()" should be called before ".instance()"`)
     }
-    this.canStoreInit = false
+    this.storeInitialized = true
 
     this.storeConfig = storeConfig
     return this
   }
 
   instance () {
-    if (!this.canInstanceInit) {
-      throw new Error(`You already initialize ".instance()"`)
+    if (this.instanceInitilized) {
+      throw new Error(`"UForm.instance()" should be called once`)
     }
-    this.canStoreInit = false
-    this.canInstanceInit = false
+    this.storeInitialized = true
+    this.instanceInitilized = false
     this.canProcessingInit = true
 
     if (!this.storeConfig) {
