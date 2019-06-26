@@ -15,7 +15,7 @@
       <el-col :md="12" :lg="7">
         <u-auto-field attribute-name="code" />
       </el-col>
-      <el-col :sm="6">
+      <el-col :md="12" :lg="6">
         <u-auto-field attribute-name="ID" readonly />
       </el-col>
     </el-row>
