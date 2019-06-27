@@ -1,10 +1,10 @@
 # Описание
-Cоздает стор для формы и рендерит ее в таб или модальное окно.
+Создает стор для формы и рендерит ее в таб или модальное окно.
 Стор отслеживает изменения формы и строит запросы на изменение формы.
 В форме доступна валидация и ее проверка перед сохранением.
 
 > Пример на живой форме
-> apps\autotest\models\TST\public\forms\tst_dictionary-ft-fm.vue
+> apps/autotest/models/TST/public/forms/tst_dictionary-ft-fm.vue
 
 ## Пример минимального использования
 
@@ -202,7 +202,7 @@ module.exports.default ={
       v-loading.body="loading"
       :label-width="160"
     >
-      <!-- рядок формы с лейблом -->
+      <!-- строка формы с заголовком (label) -->
       <u-form-row
         :label="getLabel('code')"
         required
