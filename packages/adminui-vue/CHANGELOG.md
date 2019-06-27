@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.10]
+### Fixed
+ - moment usage fix: now `const momemnt = require('moment')` in underline models works as expected and 
+ use `moment` instance already injected by adminui-vue  
+
 ## [1.6.8]
 ### Added
  - `Form->processing` added hooks:

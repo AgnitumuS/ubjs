@@ -467,7 +467,7 @@ Ext.create('UB.view.UploadFileAjax', {
 
 ## [5.1.3]
 ### Fixed
-- remove displaying of "undefine" in UBDetailTree in minified version of adminUI
+- remove displaying of "undefined" in UBDetailTree in minified version of adminUI
 
 ## [5.1.2]
 ### Changed

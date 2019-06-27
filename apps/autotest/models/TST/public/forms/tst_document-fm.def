@@ -1,81 +1,8 @@
 // @! "do not remove comments below unless you know what you do!"
-// @mi_modifyDate "Fri Apr 19 2019 20:15:23 GMT+0300 (FLE Standard Time)"
+// @mi_modifyDate "Wed Jun 12 2019 21:52:34 GMT+0300 (FLE Standard Time)"
 // @isDefault "true"
 // @entity "tst_document"
 // @model "TST"
 // @formType "vue"
 // @caption "tst_document.meta"
 // @description "Document type attribute test"
-const UB = require('@unitybase/ub-pub')
-exports.formDef = {
-  items: [
-    {
-      layout: {type: 'hbox'},
-      items: [
-        {
-          xtype: 'ub-badge',
-          text: UB.i18n('red inverted'),
-          invert: true,
-          cssClass: 'red'
-        }, {
-          xtype: 'ub-badge',
-          text: UB.i18n('red'),
-          invert: false,
-          cssClass: 'red'
-        }, {
-          xtype: 'ub-badge',
-          text: UB.i18n('green inverted'),
-          invert: true,
-          cssClass: 'green'
-        }, {
-          xtype: 'ub-badge',
-          text: UB.i18n('green'),
-          invert: false,
-          cssClass: 'green'
-        }
-      ]
-    },
-    {attributeName: 'code'},
-    {attributeName: 'description', width: 800},
-    {
-      xtype: 'ubfieldset',
-      text: 'Grouped data',
-      items: [
-        {attributeName: 'docDate'},
-        {attributeName: 'docDateTime'},
-        {
-          xtype: 'component',
-          html: '<div></div>',
-          forVue: true
-        }
-      ]
-    },
-    {
-      xtype: 'grid',
-      store: new UB.ux.data.UBStore({
-        ubRequest: UB.Repository('tst_document').attrs(['ID', 'docDate', 'code', 'description']).ubql()
-      }),
-      columns: [{
-        text: 'ID',
-        width: 100,
-        sortable: false,
-        dataIndex: 'ID'
-      }, {
-        text: 'Other attrs',
-        columns: [{
-          text: 'docDate',
-          width: 250,
-          sortable: true,
-          dataIndex: 'docDate'
-        }, {
-          text: 'code',
-          width: 180,
-          sortable: true,
-          dataIndex: 'code'
-        }]
-      }],
-      height: 200
-    },
-    {attributeName: 'fileStoreSimple', expanded: true, height: 500}
-  ]
-}
