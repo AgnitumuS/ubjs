@@ -2,6 +2,8 @@ unit uUBComBridge;
 
 interface
 
+{$I SyNode.inc}
+
 uses
   SyNodePluginIntf;
 
@@ -71,8 +73,10 @@ const
   jsCOM_classOps: JSClassOps = (
 //    addProperty:        JS_PropertyStub;
 //    delProperty:        JS_DeletePropertyStub;
+{$IFNDEF SM60}
     getProperty:        COM_GetProperty;
     setProperty:        COM_SetProperty;
+{$ENDIF}
     enumerate:          COM_Enumerate; 
     resolve:            COM_ResolveObject;
 //    convert:            JS_ConvertStub;

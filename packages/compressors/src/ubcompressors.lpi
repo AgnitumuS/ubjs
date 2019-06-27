@@ -61,9 +61,9 @@ end;"/>
               <ShowHints Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CustomOptions Value="-dSM52"/>
+            <CustomOptions Value="-dSM60"/>
             <OtherDefines Count="1">
-              <Define0 Value="SM52"/>
+              <Define0 Value="SM60"/>
             </OtherDefines>
           </Other>
         </CompilerOptions>
@@ -106,7 +106,7 @@ end;"/>
               <ShowHints Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CustomOptions Value="-dSM52"/>
+            <CustomOptions Value="-dSM60"/>
           </Other>
         </CompilerOptions>
       </Item3>
@@ -171,7 +171,7 @@ end;"/>
       </Options>
     </Linking>
     <Other>
-      <CustomOptions Value="-dSM52"/>
+      <CustomOptions Value="-dSM60"/>
     </Other>
   </CompilerOptions>
   <Debugging>

@@ -2,6 +2,8 @@ unit uUBMail;
 
 interface
 
+{$I SyNode.inc}
+
 uses
   SyNodePluginIntf;
 
@@ -459,7 +461,9 @@ end;
 const
 {$IFDEF SM52}
   jsMimePartSubParts_classOps: JSClassOps = (
+  {$IFNDEF SM60}
     getProperty: MimePartSubPartsReader;
+  {$ENDIF}
     finalize: MimePartSubPartsDestroy; // call then JS object GC
   );
   jsMimePartSubParts_class: JSClass = (name: 'MimePartSubParts';

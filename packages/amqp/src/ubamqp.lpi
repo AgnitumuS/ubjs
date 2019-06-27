@@ -59,7 +59,7 @@
               <ShowHints Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CustomOptions Value="-dSM52"/>
+            <CustomOptions Value="-dSM60"/>
           </Other>
         </CompilerOptions>
       </Item2>
@@ -109,7 +109,7 @@ end;"/>
               <ShowHints Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CustomOptions Value="-dSM52"/>
+            <CustomOptions Value="-dSM60"/>
           </Other>
         </CompilerOptions>
       </Item3>
@@ -190,11 +190,13 @@ end;"/>
     </CodeGeneration>
     <Linking>
       <Options>
+        <PassLinkerOptions Value="True"/>
+        <LinkerOptions Value="-verbose"/>
         <ExecutableType Value="Library"/>
       </Options>
     </Linking>
     <Other>
-      <CustomOptions Value="-dSM52"/>
+      <CustomOptions Value="-dSM60"/>
     </Other>
   </CompilerOptions>
 </CONFIG>
