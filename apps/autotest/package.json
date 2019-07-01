@@ -1,6 +1,6 @@
 {
   "name": "autotest",
-  "version": "5.0.124",
+  "version": "5.0.125",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -15,9 +15,9 @@
     "ddl": "npx ubcli generateDDL -u admin -p admin -autorun"
   },
   "dependencies": {
-    "@unitybase/adminui-pub": "^5.8.28",
-    "@unitybase/adminui-reg": "^5.1.37",
-    "@unitybase/adminui-vue": "^1.6.9",
+    "@unitybase/adminui-pub": "^5.8.29",
+    "@unitybase/adminui-reg": "^5.1.38",
+    "@unitybase/adminui-vue": "^1.6.10",
     "@unitybase/base": "^5.1.17",
     "@unitybase/cdn": "^5.1.22",
     "@unitybase/codemirror-full": "^1.2.25",
@@ -33,8 +33,8 @@
     "@unitybase/ub": "^5.2.21",
     "@unitybase/ub-pub": "^5.3.5",
     "@unitybase/uba": "^5.1.32",
-    "@unitybase/ubdev": "^0.0.31",
-    "@unitybase/ubm": "^5.1.30",
+    "@unitybase/ubdev": "^0.0.32",
+    "@unitybase/ubm": "^5.1.31",
     "@unitybase/ubq": "^5.2.31",
     "@unitybase/ubs": "^5.2.21",
     "@unitybase/xlsx": "^5.0.59",
