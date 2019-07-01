@@ -839,7 +839,7 @@ Ext.define('UB.core.UBCommand', {
     if (result.window && !disableAutoShow) {
       result.window.show()
     }
-    if ($App.connection.domain.models['adminui-vue'] && (window.Vue !== undefined) &&
+    if (result.window && $App.connection.domain.models['adminui-vue'] && (window.Vue !== undefined) &&
       (me.commandConfig.isModal) && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
       // get zIndex from Element ui z index manager
       const zIndex = window.Vue.prototype.$zIndex()

@@ -167,10 +167,16 @@ if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAuto
   UB.core.UBCommand.showAutoForm = replaceAutoForms
 }
 
-// Create fake (hidden) message and get it zIndex
-Vue.prototype.$zIndex = () => Vue.prototype.$message({
-  customClass: 'ub-fake-notification'
-}).dom.style.zIndex
+/**
+ * Create fake (hidden) message and return it zIndex
+ * This hack is required to obtain current ElementUI zIndex
+ */
+Vue.prototype.$zIndex = () => {
+  let vm = Vue.prototype.$message({
+    customClass: 'ub-fake-notification'
+  })
+  return vm.$el.style.zIndex
+}
 
 Vue.config.warnHandler = (err, vm, info) => {
   setTimeout(() => {

@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.10]
 ### Fixed
  - moment usage fix: now `const momemnt = require('moment')` in underline models works as expected and 
- use `moment` instance already injected by adminui-vue  
+ use `moment` instance already injected by adminui-vue
+ - fix `can not read property style of undefined` in `Vue.prototype.$zIndex`  
 
 ## [1.6.8]
 ### Added

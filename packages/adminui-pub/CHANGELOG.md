@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.8.29]
+### Fixed
+ - prevent changing of zIndex according to current Vue zIndex for forms with both `isModel: true` and `target` defined.
+ Actually this is not a modal form, but rather form embedded into another form.
+
 ## [5.8.25]
 ### Fixed
  - do not show error in case user click on empty sidebar folder
