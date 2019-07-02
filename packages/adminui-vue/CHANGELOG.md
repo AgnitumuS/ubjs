@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.12]
+### Fixed
+ - translation of attributes inside Full Text Search widget snippets (FTS return attributes in lower case) 
+
 ## [1.6.11]
 ### Fixed
  - fix exception `"UForm.instance()" should be called once` - occurred during opening of vue form (introduced in 1.6.10)

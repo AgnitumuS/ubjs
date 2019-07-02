@@ -66,6 +66,9 @@
 </template>
 
 <script>
+/* global $App, Ext */
+const SNIPED_RE = new RegExp('Z(.*?)Z:', 'gim')
+
 export default {
   name: 'UNavbarSearchButton',
 
@@ -220,15 +223,20 @@ export default {
       this.doClose()
     },
 
+    /**
+     * Replace attribute codes wrapped in Z..Z (lower cased in snipped) by their captions
+     * @param {string} value
+     * @param {UBEntity} metaObject
+     * @return {*}
+     */
     updateSnippet (value, metaObject) {
-      const snippetRe = new RegExp('Z(.*?)Z:', 'gim')
-      if (!value) {
-        return
-      }
+      if (!value) return
+
       // UB-1255 - complex attributes in snippet. LowerCase, multiline
-      return value.replace(snippetRe, (matched, attrCode) => {
+      return value.replace(SNIPED_RE, (matched, attrCode) => {
         attrCode = attrCode.split('.')[0]
-        const attr = metaObject.attributes[attrCode]
+        // FTS returns attributes in lower case. First try to get as is. If not fount - search with lower case
+        const attr = metaObject.attributes[attrCode] || metaObject.filterAttribute(a => a.code.toLowerCase() === attrCode)[0]
         return '<br/><span style="color: blue">' + (attr ? (attr.caption || attr.description) : attrCode) + '</span>&nbsp'
       })
     },
