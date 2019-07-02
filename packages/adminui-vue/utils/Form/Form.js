@@ -81,7 +81,7 @@ class UForm {
     this.isValidationUsed = false
 
     this.storeInitialized = false
-    this.instanceInitilized = true
+    this.instanceInitilized = false
     this.canProcessingInit = false
     this.canValidationInit = false
   }
