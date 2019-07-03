@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.9.0]
+### Changed
+ - **BREAKING** `UBStore.load` will return a native Promise instead of Q.Promise from bluebird-q
+ - `UBStore.reload` will return a native Promise instead of Q.Promise. **WARNING** `UBStore.reload` clears an entity cache
+ and should be used VERY RARELY. For example to refresh store because of changes in ubRequest `store.load()` is enough.
+ Even if store already loaded it will be refreshed during load() call.
+ 
 ## [5.8.29]
 ### Fixed
  - prevent changing of zIndex according to current Vue zIndex for forms with both `isModel: true` and `target` defined.

@@ -1,4 +1,4 @@
-/* global Ext, UB, $App, Q */
+/* global Ext, UB, $App */
 require('../../core/UBCommand')
 require('./proxy/UBProxy')
 // noinspection JSUnusedGlobalSymbols
@@ -300,78 +300,80 @@ Ext.define('UB.ux.data.UBStore', {
     let me = this
     const optionsIsFunction = (typeof options === 'function')
 
-    let doneMain = function (records, operation, success) {
-      if (success) {
-        if (operation.resultSet) {
-          if (operation.resultSet.resultLock) {
-            me.resultLock = operation.resultSet.resultLock
+    return new Promise(function (resolve, reject) {
+      let doneMain = function (records, operation, success) {
+        if (success) {
+          if (operation.resultSet) {
+            if (operation.resultSet.resultLock) {
+              me.resultLock = operation.resultSet.resultLock
+            }
+            if (operation.resultSet.resultAls) {
+              me.resultAls = operation.resultSet.resultAls
+            }
           }
-          if (operation.resultSet.resultAls) {
-            me.resultAls = operation.resultSet.resultAls
-          }
-        }
-        deferred.resolve(me)
-      } else {
-        if (me.throwLoadError) {
-          throw operation.getError()
-        }
-        deferred.reject(operation.getError())
-      }
-      if (options && (options.callback || optionsIsFunction)) {
-        UB.logDebug('UBStore.load(callback) is DEPRECATED. Use Promise style: UBStore.load().then(...)')
-        if (!success) {
-          throw new Error(operation.getError())
-        }
-        if (optionsIsFunction) {
-          Ext.callback(options, null, [records, operation, success])
+          resolve(me)
         } else {
-          Ext.callback(options.callback, options.scope, [records, operation, success])
+          if (me.throwLoadError) {
+            throw operation.getError()
+          }
+          reject(operation.getError())
+        }
+        if (options && (options.callback || optionsIsFunction)) {
+          UB.logDebug('UBStore.load(callback) is DEPRECATED. Use Promise style: UBStore.load().then(...)')
+          if (!success) {
+            throw new Error(operation.getError())
+          }
+          if (optionsIsFunction) {
+            Ext.callback(options, null, [records, operation, success])
+          } else {
+            Ext.callback(options.callback, options.scope, [records, operation, success])
+          }
         }
       }
-    }
-    me.indexByID = null
+      me.indexByID = null
 
-    me.loading = true
+      me.loading = true
 
-    let deferred = Q.defer()
-    let rList = []
-    if (me.linkedItemsLoadList) {
-      let keys = Object.keys(me.linkedItemsLoadList)
-      keys.forEach(function (key) {
-        let item = me.linkedItemsLoadList[key]
-        if (item && (item instanceof UB.ux.data.UBStore)) {
-          rList.push(item.load())
-        } else if (typeof (item) === 'function') {
-          rList.push(item())
-        } else if (item && (typeof item.then === 'function')) {
-          rList.push(item)
-        }
-      })
-    }
-    let newOptions = {}
-    if (options && !optionsIsFunction) {
-      UB.apply(newOptions, options)
-    }
-    if (this.disablePaging && !newOptions.limit) {
-      newOptions.limit = -1
-      newOptions.start = 0
-    }
-    newOptions.callback = doneMain
-    delete newOptions.scope
-    if (rList.length) {
-      Promise.all(rList).then(function () {
-        me.superclass.load.call(me, newOptions)
-      })
-    } else {
-      this.callParent([newOptions])
-    }
-    return deferred.promise
+      let rList = []
+      if (me.linkedItemsLoadList) {
+        let keys = Object.keys(me.linkedItemsLoadList)
+        keys.forEach(function (key) {
+          let item = me.linkedItemsLoadList[key]
+          if (item && (item instanceof UB.ux.data.UBStore)) {
+            rList.push(item.load())
+          } else if (typeof (item) === 'function') {
+            rList.push(item())
+          } else if (item && (typeof item.then === 'function')) {
+            rList.push(item)
+          }
+        })
+      }
+      let newOptions = {}
+      if (options && !optionsIsFunction) {
+        UB.apply(newOptions, options)
+      }
+      if (this.disablePaging && !newOptions.limit) {
+        newOptions.limit = -1
+        newOptions.start = 0
+      }
+      newOptions.callback = doneMain
+      delete newOptions.scope
+      if (rList.length) {
+        Promise.all(rList).then(function () {
+          me.superclass.load.call(me, newOptions)
+        })
+      } else {
+        me.superclass.load.call(me, newOptions) // this.callParent([newOptions])
+      }
+    })
   },
 
   /**
-   * Perform reload of store. Return promise resolved to store itself then finish
+   * Perform reload of store. CLEAR CACHE for current entity and related entities (unity).
+   * In most case store.load() is enought - it will reload store even if already loaded.
+   * Return promise resolved to store itself then load is completed.
    * @param [options]
-   * @returns {promise|*|Q.promise}
+   * @returns {Promise<UBStore>}
    */
   reload: function (options) {
     if (options && options.callback) {
