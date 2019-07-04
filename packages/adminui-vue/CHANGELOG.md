@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.12]
 ### Fixed
- - translation of attributes inside Full Text Search widget snippets (FTS return attributes in lower case) 
+ - translation of attributes inside Full Text Search widget snippets (FTS return attributes in lower case)
+ - ub-auth login form: add more space between password field and "Login" button in case of http: to prevent overlap of
+ login button by browser "unsecure" warning  
 
 ## [1.6.11]
 ### Fixed

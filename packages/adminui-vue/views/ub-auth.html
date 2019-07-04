@@ -236,6 +236,7 @@
                 </div>
                 <p v-html="$ut('UBAuthHeader', appName)"></p>
                 <el-form-item></el-form-item>
+                <el-form-item v-if="isHttp"></el-form-item>
                 <el-form-item prop="user">
                   <el-input autofocus="true" :placeholder="$ut('User')" v-model="authData.user" @keyup.enter.native="doUBLogin">
                     <template slot="prepend"><i class="fa fa-fw fa-user"></i></template>
@@ -247,6 +248,8 @@
                     <template slot="prepend"><i class="fa fa-fw fa-key"></i></template>
                   </el-input>
                 </el-form-item>
+                <el-form-item></el-form-item>
+                <el-form-item v-if="isHttp"></el-form-item>
                 <el-form-item>
                   <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}
                   </el-button>
@@ -317,6 +320,10 @@
       },
       hasCERT2 () {
         return this.authMethods && (this.authMethods.indexOf('CERT2') !== -1)
+      },
+      isHttp () {
+        // in case of http: browser "unsecure" warning overlap an Enter button
+        return location.protocol === 'http:'
       }
     },
     methods: {
