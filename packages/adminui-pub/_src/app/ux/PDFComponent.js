@@ -50,19 +50,19 @@ Ext.define('UB.ux.PDFComponent', {
     return me.dataBlob
   },
 
-  updateDataBlob: function (inblob) {
-    var me = this
-    if (!me.useBlobForData) {
+  updateDataBlob: function (inBlob) {
+    if (!this.useBlobForData) {
       Ext.Error.raise('object does not use Blob')
     }
-    if (me.dataBlob && !Ext.isEmpty(this.objUrl)) {
+    if (this.dataBlob && !Ext.isEmpty(this.objUrl)) {
       window.URL.revokeObjectURL(this.objUrl)
     }
-    me.data = null
-    me.dataBlob = inblob
-    me.objUrl = window.URL.createObjectURL(inblob)
-    me.data = me.objUrl + '#view=Fit'
-    // + '#jk=' + (new Date()).getMinutes()+ '' + (new Date()).getSeconds() + '' + (new Date()).getMilliseconds();
+    this.data = null
+    this.dataBlob = inBlob
+    this.objUrl = window.URL.createObjectURL(inBlob)
+    let viewerCfg = UB.connection.appConfig.uiSettings.adminUI.pdfViewer
+    let urlSuffix = (viewerCfg && viewerCfg.uriSuffix) || '#view=Fit'
+    this.data = this.objUrl + urlSuffix
   },
 
   onDestroy: function () {

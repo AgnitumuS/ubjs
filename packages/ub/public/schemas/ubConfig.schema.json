@@ -808,7 +808,7 @@
     },
     "uiSettings": {
       "type": "object",
-      "description": "Settings, passed to UI in getAppInfo method. We recommend to place here ONLY parameters, necessary for UI initialization",
+      "description": "Settings, passed to UI in getAppInfo method. We recommend to place here ONLY parameters, necessary for UI initialization. Client-side app can access this settings using UB.connection.appConfig.uiSettings",
       "additionalProperties": false,
       "properties": {
         "adminUI": {
@@ -818,7 +818,7 @@
           "properties": {
             "applicationName": {
               "type": ["string", "object"],
-              "description": "Name of application for show on the login form. In case explicity defined as empty string - not shown in login form. For localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"Мій додаток\"}",
+              "description": "Name of application for show on the login form. In case explicitly defined as empty string - not shown in login form. For localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"Мій додаток\"}",
               "default": "UnityBase"
             },
             "applicationTitle": {
@@ -924,6 +924,17 @@
             "amqpNotificationUrl": {
               "type": "string",
               "description": "A url for UBClientNotifier to connect to message broker using stomp protocol over web sockets. The special value, '*', means connecting to ws[s]://<host>/ws which is useful when nginx is used to proxify requests. An example of valid url is 'ws://127.0.0.1:15674/ws' - this is for RabiitMQ with web stomp extension default configuration. For server part - set application.customSettings.amqpNotificationUrl"
+            },
+            "pdfViewer": {
+              "type": "object",
+              "description": "Configuration options for pdf viewer",
+              "properties": {
+                "uriSuffix": {
+                  "type": "string",
+                  "description": "Additional parameters passed to PDF viewer ULR. See https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf for details",
+                  "default": "#view=Fit"
+                }
+              }
             }
           }
         },

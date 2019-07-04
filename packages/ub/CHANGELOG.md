@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.22]
+### Added
+ - update ubConfig JSON schema about new key `uiSettings.adminUI.pdfViewer.uriSuffix`
+
 ## [5.2.18]
 ### Added
  - `App.dbConnection['..'].savepointWrap` function: rollback a part of transaction for PostgreSQL.

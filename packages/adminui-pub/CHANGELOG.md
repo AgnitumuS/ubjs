@@ -10,7 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UBStore.reload` will return a native Promise instead of Q.Promise. **WARNING** `UBStore.reload` clears an entity cache
  and should be used VERY RARELY. For example to refresh store because of changes in ubRequest `store.load()` is enough.
  Even if store already loaded it will be refreshed during load() call.
- 
+
+## Added
+ - new key in ubConfig `uiSettings.adminUI.pdfViewer.uriSuffix` - value passed directly to the PDF viewer URL.
+ See [PDF open parameters](https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf) documentation for possible values.
+ Default is `#view=Fit`   
+  
 ## [5.8.29]
 ### Fixed
  - prevent changing of zIndex according to current Vue zIndex for forms with both `isModel: true` and `target` defined.
