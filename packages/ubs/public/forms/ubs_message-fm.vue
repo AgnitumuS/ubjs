@@ -72,6 +72,7 @@ module.exports.mount = function ({ title, entity, instanceID, props, rootCompone
 }
 
 module.exports.default = {
+  name: 'ubsMessageFm',
   props: {
     /**
      * ID of message which open on init
@@ -144,6 +145,7 @@ module.exports.default = {
       this.loading = true
       const messages = await this.$UB.connection
         .Repository('ubs_message')
+        .using('getCached')
         .attrs('ID', 'messageBody', 'messageType', 'startDate', 'expireDate', 'recipients.acceptDate', 'recipients.ID')
         .orderByDesc('startDate')
         .select()
@@ -161,8 +163,8 @@ module.exports.default = {
     },
 
     /**
-     * adds listners on user recived new message
-     * and message read status is changed
+     * Adds listeners for new message receiving by user
+     * and for message status changing
      */
     addNotificationListeners () {
       $App.on({
@@ -182,8 +184,7 @@ module.exports.default = {
       $App.fireEvent('portal:notify:markAsReaded', mess)
     },
     /**
-     * set active message and mark as readed
-     * if message is unreaded
+     * set active message and mark as read if message is read
      * @param {Object} mess
      */
     setActive (mess) {
@@ -194,10 +195,9 @@ module.exports.default = {
       }
     },
     /**
-     * capitalize first letter of type
-     * concat with locale key
+     * capitalize first letter of type concat with locale key
      * @param  {String} type
-     * @return {String}      i18n locale
+     * @return {String} i18n locale
      */
     getTypeLocaleString (type) {
       const capitalizeStr = type.charAt(0).toUpperCase() + type.slice(1)

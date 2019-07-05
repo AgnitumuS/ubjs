@@ -1,11 +1,11 @@
 {
   "caption": "Message recipient",
-  "description": "System messanges recipient",
+  "description": "System messages recipients",
   "connectionName": "",
   "sqlAlias": "msg_rc",
   "cacheType": "None",
   "descriptionAttribute": "ID",
-  "documentation": "System messages recipient",
+  "documentation": "System messages recipients",
   "attributes": [
     {
       "dataType": "Entity",

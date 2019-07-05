@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - translation of attributes inside Full Text Search widget snippets (FTS return attributes in lower case)
  - ub-auth login form: add more space between password field and "Login" button in case of http: to prevent overlap of
- login button by browser "unsecure" warning  
+ login button by browser "not secure connection" warning  
+ - Vue based user messages notification widget do not throw `ELS - access deny` error for non-privileged users
 
 ## [1.6.11]
 ### Fixed

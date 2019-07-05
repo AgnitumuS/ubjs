@@ -1,6 +1,6 @@
 {
   "caption": "Message",
-  "description": "System messanges",
+  "description": "System messages",
   "connectionName": "",
   "sqlAlias": "msg",
   "cacheType": "None",
