@@ -137,7 +137,7 @@ export default {
 
     initIcons () {
       for (const ss of document.styleSheets) {
-        for (const r of ss.rules) {
+        for (const r of ss.cssRules) {
           if (r.selectorText) {
             if (r.selectorText.startsWith('.el-icon')) {
               const icon = r.selectorText.split(':')[0].substr(1)
