@@ -16,7 +16,8 @@ Ext.define('UB.view.Viewport', {
     UB.view.Viewport.main = this
 
     me.leftPanel = Ext.create('Ext.Component', {
-      html: '<div id="sidebar-placeholder" style="width:240px">Either @unitybase/adminui-vue should be added into domain or some model should replace #sidebar-placeholder by actual menu</div>',
+      width: 240,
+      html: '<div id="sidebar-placeholder">Either @unitybase/adminui-vue should be added into domain or some model should replace #sidebar-placeholder by actual menu</div>',
       region: 'west',
       defaultSizes: {
         full: 240,

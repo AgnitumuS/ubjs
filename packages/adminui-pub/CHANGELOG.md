@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.1]
+### Fixed
+ - sidebar width should be max 240px and should not depend on shortcut text length
+
 ## [5.10.0]
 ### Changed
  - **BREAKING** `adminui-pub` model does not create a navbar and sidebar anymore.
