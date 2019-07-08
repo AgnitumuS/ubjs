@@ -1,6 +1,6 @@
 /* global nsha256, ncrc32 */
 const App = require('@unitybase/ub').App
-const {GC_KEYS} = require('@unitybase/base')
+const { GC_KEYS } = require('@unitybase/base')
 /**
  * Return models config for `admin-UI` web client
  * The purpose is to load model initialization script BEFORE application start
@@ -26,9 +26,16 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
   if (!compiledIndex) {
     let uiSettings = App.serverConfig.uiSettings
     if (!uiSettings.adminUI) {
-      uiSettings.adminUI = {themeName: 'UBGrayTheme'}
+      uiSettings.adminUI = { themeName: 'UBGrayTheme' }
     } else if (!uiSettings.adminUI.themeName) {
       uiSettings.adminUI.themeName = 'UBGrayTheme'
+    }
+    if (!uiSettings.adminUI.loginURL) {
+      if (App.domainInfo.models['adminui-vue']) {
+        uiSettings.adminUI.loginURL = '/models/adminui-vue/views/ub-auth.html'
+      } else {
+        uiSettings.adminUI.loginURL = '/models/adminui-pub/login-stub.html'
+      }
     }
     let adminUIPath = path.dirname(require.resolve('@unitybase/adminui-pub'))
     let indexTpl = fs.readFileSync(path.join(adminUIPath, indexName), 'utf8')

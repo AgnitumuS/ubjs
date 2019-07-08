@@ -780,10 +780,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
     font-weight: 600;
 }
 
-.ub-header-menu-container {
-    padding: 0.3em 0 0.3em 0.2em;
-}
-
 #ubCenterViewport .x-tab-bar-strip-default {
     background-color: white;
 }

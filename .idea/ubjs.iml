@@ -3,6 +3,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/autotest/_uiautotests" />
       <excludeFolder url="file://$MODULE_DIR$/apps/autotest/documents" />
       <excludeFolder url="file://$MODULE_DIR$/apps/autotest/logs" />
       <excludeFolder url="file://$MODULE_DIR$/apps/autotest/node_modules" />

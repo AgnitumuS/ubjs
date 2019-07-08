@@ -5,7 +5,7 @@ module.exports = {
   replaceExtJSMessageBarDialog
 }
 
-/* global $App, Ext, UBS */
+/* global $App, Ext */
 
 const UB = require('@unitybase/ub-pub')
 const Vue = require('vue')
@@ -80,7 +80,7 @@ function replaceExtJSNavbar () {
     },
     render: (h) => h(UNavbar, {
       props: {
-        withHamburger: UB.connection.appConfig.uiSettings.adminUI.customSidebar
+        withHamburger: true // UB.connection.appConfig.uiSettings.adminUI.customSidebar
       }
     })
   }).$mount(`#${id}`)
@@ -110,11 +110,6 @@ function replaceAutoForms () {
     .mount()
 }
 
-function getTypeLocaleString (type) {
-  const capitalizeStr = type.charAt(0).toUpperCase() + type.slice(1)
-  return 'msgType' + capitalizeStr
-}
-
 function replaceExtJSMessageBarDialog () {
   $App.on('portal:notify:markAsReaded', async (mess) => {
     const resp = await UB.connection.query({
@@ -130,20 +125,21 @@ function replaceExtJSMessageBarDialog () {
     }
   })
 
-  UBS.MessageBar.override({
-    async doOnMessageRetrieved (messages) {
-      /**
-       *  show all messages type except information
-       *  mark as read after user accepts dialog
-       */
-      for (const mess of messages) {
-        if (mess.messageType !== 'information') {
-          const confirm = await $App.dialogInfo(mess.messageBody, getTypeLocaleString(mess.messageType))
-          if (confirm) {
-            $App.fireEvent('portal:notify:markAsReaded', mess)
-          }
-        }
-      }
-    }
-  })
+  // TODO doOnMessageRetrieved
+  // UBS.MessageBar.override({
+  //   async doOnMessageRetrieved (messages) {
+  //     /**
+  //      *  show all messages type except information
+  //      *  mark as read after user accepts dialog
+  //      */
+  //     for (const mess of messages) {
+  //       if (mess.messageType !== 'information') {
+  //         const confirm = await $App.dialogInfo(mess.messageBody, getTypeLocaleString(mess.messageType))
+  //         if (confirm) {
+  //           $App.fireEvent('portal:notify:markAsReaded', mess)
+  //         }
+  //       }
+  //     }
+  //   }
+  // })
 }

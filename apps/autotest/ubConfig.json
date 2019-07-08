@@ -53,11 +53,7 @@
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
-			//"loginWindowTopLogoURL": "/img/m-docnet.png",
 			"endpoint": "ubadminui",
-			"loginURL": "/models/adminui-vue/views/ub-auth.html",
-			"customSidebar": true, // set to true to not create sidebar
-			"customNavbar": true, // set to true to not create navbar
 			"vueAutoForms": true,
 			"messenger": {
 				"enabled": true,

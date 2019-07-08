@@ -1,6 +1,5 @@
 /* global Ext, $App, SystemJS */
 const UB = require('@unitybase/ub-pub')
-require('../view/LoginWindow.js')
 require('../../ux/window/Notification')
 require('../view/Viewport')
 require('../core/UBDataLoader.js')
@@ -308,7 +307,7 @@ Ext.define('UB.core.UBApp', {
     return UB.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
-      onCredentialRequired: UB.view.LoginWindow.DoLogon,
+      onCredentialRequired: () => { alert('UB.connection.setRequestAuthParamsFunction() not called') },
       allowSessionPersistent: isExternalLogin, // see uiSettings.adminUI.loginURL
       onAuthorized: function (conn) {
         if (isExternalLogin) { // external login page
@@ -358,8 +357,6 @@ Ext.define('UB.core.UBApp', {
         // UB 1.12 compatibility
         UB.appConfig = connection.appConfig
         // TODO - remove because mutation of other objects is bad idea
-        // UB.appConfig.defaultLang =  core.appConfig.defaultLang;
-        // UB.appConfig.supportedLanguages = core.appConfig.supportedLanguages;
         return UB.inject('models/ub-pub/locale/lang-' + connection.preferredLocale + '.js').then(() => {
           if (connection.trafficEncryption || (connection.authMethods.indexOf('CERT') !== -1) ||
             (connection.authMethods.indexOf('CERT2') !== -1)) {
@@ -385,14 +382,12 @@ Ext.define('UB.core.UBApp', {
       me.ubNotifier = connection.ubNotifier
       let myLocale = connection.preferredLocale
       me.domainInfo = connection.domain
-      let models = me.domainInfo.models
+      let orderedModels = me.domainInfo.orderedModels
 
       // for each model configure Ext.loader
-      _.forEach(models, function (item, key) { item.key = key }) // move names inside elements
-      models = _.sortBy(models, 'order') // sort models by order
-      _.forEach(models, function (model) {
-        if (model.path && model.key !== 'UB') {
-          Ext.Loader.setPath(model.key, model.path)
+      orderedModels.forEach(function (model) {
+        if (model.path && model.name !== 'UB') {
+          Ext.Loader.setPath(model.name, model.path)
         }
       })
       // load localization script (bundled from all models on the server side)

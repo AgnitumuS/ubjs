@@ -91,9 +91,8 @@ if (isExt) {
 const Sidebar = require('./components/sidebar/USidebar.vue').default
 function addVueSidebar () {
   const SidebarConstructor = Vue.extend(Sidebar)
-  const id = $App.viewport.leftPanel.id
   new SidebarConstructor({
-    el: `#${id}-body`
+    el: `#sidebar-placeholder`
   })
 }
 
@@ -139,27 +138,25 @@ if (window.$App) {
   magicLink.addCommand('showReport', magicLinkAdminUiCommand)
 
   window.$App.on('applicationReady', replaceDefaultRelogin)
-  if (UB.connection.appConfig.uiSettings.adminUI.customSidebar) {
-    window.$App.on('applicationReady', addVueSidebar)
-    $App.on('buildMainMenu', items => {
-      items.splice(0, 1) // remove top panel ExtJS hamburger menu button
-    })
+  window.$App.on('applicationReady', addVueSidebar)
+  $App.on('buildMainMenu', items => {
+    items.splice(0, 1) // remove top panel ExtJS hamburger menu button
+  })
 
-    // Default navbar slot
-    window.$App.on('applicationReady', () => {
-      const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
-      $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
-    })
-    // Example:
-    //
-    // window.$App.on('applicationReady', () => {
-    //   const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
-    //   $App.fireEvent('portal:sidebar:defineSlot', SidebarSlotExample, { some attrs })
-    //
-    //   const TabbarSlotExample = require('./samples/NavbarSlotExample.vue').default
-    //   $App.fireEvent('portal:navbar:defineSlot', NavbarSlotExample, { some attrs })
-    // })
-  }
+  // Default navbar slot
+  window.$App.on('applicationReady', () => {
+    const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
+    $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
+  })
+  // Example:
+  //
+  // window.$App.on('applicationReady', () => {
+  //   const SidebarSlotExample = require('./samples/SidebarSlotExample.vue').default
+  //   $App.fireEvent('portal:sidebar:defineSlot', SidebarSlotExample, { some attrs })
+  //
+  //   const TabbarSlotExample = require('./samples/NavbarSlotExample.vue').default
+  //   $App.fireEvent('portal:navbar:defineSlot', NavbarSlotExample, { some attrs })
+  // })
 }
 
 if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {

@@ -839,16 +839,6 @@
               "type": "string",
               "description": "A custom login page.  If specified, unauthorized users will be redirected to this page"
             },
-            "customSidebar": {
-              "type": "boolean",
-              "default": false,
-              "description": "In case of true adminUI will not create a sidebar (instance of UB.view.LeftPanel)"
-            },
-            "customNavbar": {
-              "type": "boolean",
-              "default": false,
-              "description": "In case of true adminUI will not create a navbar (instance of UB.view.MainToolbar)"
-            },
             "loginWindowTopLogoURL": {
               "type": "string",
               "description": "Optional URL for a logo to display on the top of login form. Logo stretched to 150px height, so it is a good idea for logo to be 150x150px"
