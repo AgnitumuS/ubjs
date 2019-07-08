@@ -26,7 +26,6 @@
 			"themeName": "UBGrayTheme",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
 			"endpoint": "ubadminui",
-			"loginURL": "/models/adminui-vue/views/ub-auth.html",
 			"messenger": {
 				"enabled": true,
 				"checkInterval": 30

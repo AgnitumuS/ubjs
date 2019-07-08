@@ -352,7 +352,7 @@ Ext.define('UB.ux.data.UBStore', {
       if (options && !optionsIsFunction) {
         UB.apply(newOptions, options)
       }
-      if (this.disablePaging && !newOptions.limit) {
+      if (me.disablePaging && !newOptions.limit) {
         newOptions.limit = -1
         newOptions.start = 0
       }
@@ -360,10 +360,10 @@ Ext.define('UB.ux.data.UBStore', {
       delete newOptions.scope
       if (rList.length) {
         Promise.all(rList).then(function () {
-          me.superclass.load.call(me, newOptions)
+          me.superclass.load.call(me, newOptions) // me._loadInternal(newOptions)
         })
       } else {
-        me.superclass.load.call(me, newOptions) // this.callParent([newOptions])
+        me.superclass.load.call(me, newOptions) // me._loadInternal(newOptions) // me.callParent([newOptions])
       }
     })
   },

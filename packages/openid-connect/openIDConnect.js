@@ -16,7 +16,7 @@ const App = UB.App
         client_id: '350085411136-lpj0qvr87ce0r0ae0a3imcm25joj2t2o.apps.googleusercontent.com',
         client_secret: 'dF4qmUxhHoBAj-E1R8YZUCqA',
         getOnFinishAction: function (response) {
-          return 'opener.UB.view.LoginWindow.onFinishOpenIDAuth(' + JSON.stringify(response) + '); close();'
+          return 'opener.$App.onFinishOpenIDAuth(' + JSON.stringify(response) + '); close();'
         },
         getUserID: function(userInfo) {
           let inst = UB.Repository('uba_user').attrs(['ID'])

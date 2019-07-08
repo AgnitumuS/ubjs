@@ -30,8 +30,6 @@ self.addEventListener('fetch', event => {
           'loginWindowTopLogoURL': '/models/ub-pub/img/ub-login-logo.png',
           'endpoint': 'ubadminui',
           'loginURL': '/models/adminui-vue/views/ub-auth.html',
-          'customSidebar': false,
-          'customNavbar': false,
           'vueAutoForms': true,
           'messenger': {
             'enabled': true,

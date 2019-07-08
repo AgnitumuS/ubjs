@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.0]
+### Changed
+ - **BREAKING** `adminui-pub` model does not create a navbar and sidebar anymore.
+ Consider either to add a `@unitybase/adminui-vue` to the domain or write your own navbar and sidebar
+ - **BREAKING** `UB.view.LoginWindow` is removed. External HTML form should be used for initial login
+ (already implemented in `@unitybase/adminui-vue`).
+ Re-login form can be added by call to `UB.connection.setRequestAuthParamsFunction()` (already done in adminui-vue).    
+ - sidebar mount point now a div with ID `sidebar-placeholder`
+ - Ext components removed: 'UB.view.FullTextSearchWidget', 'UB.view.LeftPanel', 'UB.view.MainToolbar',
+ 'UB.view.NavigationPanel', 'UB.view.SelectPeriodDialog', 'UB.view.ToolbarMenu', 'UB.view.ToolbarMenuButton',
+ 'UB.view.ToolbarUser', "UB.view.ToolbarWidget"
+ - viewport internal HTML layout is simplified (unneeded nested divs are removed)
+ - `customSidebar` and `customNavbar` adminUI configuration keys are removed from application config (always true)
+ 
+### Fixed
+ - fix invalid use of this in `UBStore.load` what cause a unexpected limit by 25 rows (introduced in 5.9.0) 
+
 ## [5.9.0]
 ### Changed
  - **BREAKING** `UBStore.load` will return a native Promise instead of Q.Promise from bluebird-q

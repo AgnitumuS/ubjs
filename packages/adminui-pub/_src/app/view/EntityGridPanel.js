@@ -1,5 +1,6 @@
 /* global saveAs, Ext, $App, UBDomain, Blob */
 require('../core/UBStoreManager')
+require('../core/UBFormLoader')
 require('../core/UBEnumManager')
 require('../ux/Multifilter')
 require('./PagingToolbar')

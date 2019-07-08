@@ -377,6 +377,37 @@ function launchApp () {
       }
     })
 
+    /**
+     * Fix ext bug - On error no red border.
+     */
+    Ext.define('Ext.ux.form.CheckboxGroupFix', {
+      override: 'Ext.form.CheckboxGroup',
+      initComponent: function () {
+        var me = this
+        me.invalidCls = me.invalidCls ? me.invalidCls : Ext.baseCSSPrefix + 'form-invalid'
+        me.callParent(arguments)
+      }
+    })
+
+    /**
+     * patch for target control rendered in bottom of screen.
+     */
+    Ext.define('UB.ux.UBToolTipOverride', {
+      override: 'Ext.tip.ToolTip',
+      getTargetXY: function () {
+        var
+          me = this,
+          resXY = this.callParent(arguments),
+          constr = Ext.getBody().getViewSize()
+        if (me.targetXY) {
+          if (resXY[1] + me.getHeight() > constr.height ) {
+            resXY[1] = me.targetXY[1] - 15 - me.getHeight()
+          }
+        }
+        return resXY
+      }
+    })
+
     Ext.override(Ext.panel.Panel, {
       initTools: function () {
         let me = this

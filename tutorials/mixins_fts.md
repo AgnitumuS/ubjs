@@ -271,19 +271,11 @@ SQLite БД полнотекстового поиска, т.к. токенайз
 
 
 ### Виджет для верхнего тулбара
-Виджет полнотекстового поиска UB.view.FullTextSearchWidget для верхнего тулбара позволяет пользователю искать
+Виджет полнотекстового поиска packages/adminui-vue/components/navbarSlotDefault/UNavbarSearchButton.vue
+ для верхнего тулбара позволяет пользователю искать
 по всем сущностям выбранного коннекшина.
 На програмном уровне делает запрос, аналогичный описанному в "Посиск по всем сущностям одного индекса"
 
-Добвить виджет на тулбар можно в клиентском коде инициализации Вашей модели (`YourModel/public/initModel.js`)
-следующим образом:
-
-    $App.on('buildMainMenu', function(items){
-      items.push(
-          Ext.create('UB.view.FullTextSearchWidget')
-      );
-      return false;
-    });
 
 В результате получим следующий функционал
 ![FTSToolbarWidget](img/FTSToolbarWidget.png)

@@ -125,7 +125,7 @@ oIdEndPoint.registerProvider('Google', {
   client_id: '350085411136-lpj0qvr87ce0r0ae0a3imcm25joj2t2o.apps.googleusercontent.com',
   client_secret: 'dF4qmUxhHoBAj-E1R8YZUCqA',
   getOnFinishAction: function (response) {
-    return 'opener.UB.view.LoginWindow.onFinishOpenIDAuth'
+    return 'opener.$App.onFinishOpenIDAuth'
   },
   getUserID: function (userInfo) {
     let inst = UB.Repository('uba_user').attrs(['ID'])

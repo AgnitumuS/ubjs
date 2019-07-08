@@ -58,11 +58,7 @@
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
-			//"loginWindowTopLogoURL": "/img/m-docnet.png",
 			"endpoint": "ubadminui",
-			"loginURL": "/models/adminui-vue/views/ub-auth.html",
-			"customSidebar": false, // set to true to not create sidebar
-			"customNavbar": false, // set to true to not create navbar
 			"encryptionImplementation": "@ub-d/uac-crypto/dist/uac-crypto.min.js", //prod
 			//"encryptionImplementation": "@ub-d/uac-crypto", // adminui dev
 			"messenger": {

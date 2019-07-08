@@ -2,13 +2,8 @@ const UB = require('@unitybase/ub-pub')
 require('./OverflowSelect') // MPV Important for rollup'ed version
 require('./UBBar')
 require('../core/UBStoreManager')
-require('./MainToolbar')
-require('./NavigationPanel')
-require('./LeftPanel')
 require('../../ux/window/Notification')
-require('../../ux/form/CheckboxGroupFix')
-require('../ux/UBToolTipOverride')
-/* global Ext $App */
+/* global Ext */
 /**
  * UnityBase Ext-based client main viewport
  */
@@ -19,62 +14,15 @@ Ext.define('UB.view.Viewport', {
   initComponent: function () {
     var me = this
     UB.view.Viewport.main = this
-    $App.on({
-      updateCenterPanel: me.onUpdateCenterPanel,
-      desktopChanged: me.onDesktopChanged,
-      scope: me
+
+    me.leftPanel = Ext.create('Ext.Component', {
+      html: '<div id="sidebar-placeholder" style="width:240px">Either @unitybase/adminui-vue should be added into domain or some model should replace #sidebar-placeholder by actual menu</div>',
+      region: 'west',
+      defaultSizes: {
+        full: 240,
+        collapsed: 50
+      }
     })
-
-    if (UB.connection.appConfig.uiSettings.adminUI.customSidebar !== true) {
-      me.leftPanel = Ext.create('UB.view.LeftPanel', {
-        header: false,
-        region: 'west',
-        width: 225, // 280
-        margin: '3, 5, 0, 0',
-        border: false
-      })
-    } else {
-      me.leftPanel = Ext.create('Ext.panel.Panel', {
-        header: false,
-        region: 'west',
-        defaultSizes: {
-          full: 240,
-          collapsed: 50
-        }
-      })
-    }
-    if (UB.connection.appConfig.uiSettings.adminUI.customNavbar !== true) {
-      me.topPanel = Ext.create('UB.view.MainToolbar', {
-        region: 'north',
-        collapsible: false,
-        border: false,
-        margin: '0, 0, 0, 0'
-      })
-    }
-
-    me.contextMenu = Ext.create('Ext.menu.Menu', {items: [{
-      text: UB.i18n('close'),
-      scope: me,
-      handler: function () {
-        me.centralPanel.remove(me.centralPanel.items.getAt(me.contextMenu.itemPos))
-      }
-    }, {
-      text: UB.i18n('closeOther'),
-      scope: me,
-      handler: function () {
-        me.centralPanel.items.each(function (cmp, index) {
-          if (index !== me.contextMenu.itemPos) {
-            me.centralPanel.remove(cmp)
-          }
-        })
-      }
-    }, {
-      text: UB.i18n('closeAll'),
-      scope: me,
-      handler: function () {
-        me.centralPanel.removeAll()
-      }
-    }]})
 
     /**
      * Central panel instance - this is a place where other components opens
@@ -88,40 +36,19 @@ Ext.define('UB.view.Viewport', {
       maxTabWidth: 200,
       border: false,
       margin: '1, 0, 0, 0',
-      loader: { autoLoad: false },
-      listeners: {
-        add: function (sender, container, pos) {
-          var barItm = me.centralPanel.tabBar.items.getAt(pos)
-          barItm.on('boxready', function (sender) {
-            sender.getEl().on('contextmenu', function (e) {
-              me.contextMenu.itemPos = pos
-              me.contextMenu.showAt(e.getXY())
-            }, me)
-          }, me)
-        },
-        scope: me
-      }
+      loader: { autoLoad: false }
     })
 
     Ext.apply(me, {
       layout: 'border',
       items: [
         me.leftPanel,
-        {
-          xtype: 'panel',
-          region: 'center',
-          layout: 'border',
-          items: [
-            me.topPanel,
-            me.centralPanel
-          ]
-        }
+        me.centralPanel
       ]
     })
     this.callParent(arguments)
 
     this.on('destroy', function () {
-      this.topPanel = null
       this.leftPanel = null
       UB.view.Viewport.main = null
       UB.view.Viewport.centerPanel = null
@@ -138,26 +65,5 @@ Ext.define('UB.view.Viewport', {
 
   getLeftPanel: function () {
     return this.leftPanel
-  },
-
-  onUpdateCenterPanel: function (url) {
-    let centerPanel = this.centralPanel
-    if (!centerPanel) return
-    if (typeof url === 'string') {
-      centerPanel.getLoader().load({url: url})
-    } else {
-      centerPanel.add(url)
-    }
-  },
-
-  onDesktopChanged: function (desktop) {
-    var desktopId = parseInt(desktop, 10)
-    var record = UB.core.UBStoreManager.getDesktopStore().getById(desktopId)
-    var url
-
-    if (!record || !(url = record.get('Url'))) {
-      return
-    }
-    this.onUpdateCenterPanel(url)
   }
 })

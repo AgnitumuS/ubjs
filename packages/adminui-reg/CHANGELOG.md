@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Changed
+ - Ext based login form is removed. In case `uiSettings.adminUI.loginURL` is not defined and `adminui-vue` is in domain then 
+  vue-based login form will be used, if `loginURL` not defined and `adminui-vue` not in domain - error page will be displayed 
+  
 ## [5.1.13]
 ### Changed
  - upgrade mustache 2.3.0 -> 3.0.1 
