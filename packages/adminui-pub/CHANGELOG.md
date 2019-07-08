@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  and should be used VERY RARELY. For example to refresh store because of changes in ubRequest `store.load()` is enough.
  Even if store already loaded it will be refreshed during load() call.
 
-## Added
+### Added
  - new key in ubConfig `uiSettings.adminUI.pdfViewer.uriSuffix` - value passed directly to the PDF viewer URL.
  See [PDF open parameters](https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdf_open_parameters.pdf) documentation for possible values.
  Default is `#view=Fit`   
