@@ -4,7 +4,8 @@
   "description": "Benchmarks for UnityBase for a scenarios from the [TechEmpower Web Framework Benchmarks](https://www.techempower.com/benchmarks/).",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "init_lin_pg": "UB_CFG=ubConfigPostgre.json DBA=postgres DBA_PWD=postgres ./prepare.sh -cd"
   },
   "private": true,
   "repository": {

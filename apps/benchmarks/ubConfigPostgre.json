@@ -1,16 +1,16 @@
 {
 	"httpServer": {
 		"host": "+",
-		"port": "888",
-		"inetPub": ".\\img\\",
+		"port": "8881",
+		"inetPub": "./img",
 		"watchFileChanges": {
 			"enabled": false,
 			"hashingStrategy": "ModifyDate"
 		}
 	},
 	"logging": {
-		"levels": ["*"],
-		"path": ".\\logs",
+		"levels": [],
+		"path": "./logs",
 		"rotationSizeInMB": 100,
 		"performanceCounters": false
 	},
@@ -43,23 +43,24 @@
 				"dialect": "PostgreSQL",
 				"serverName": "postgresql://localhost:5432",
 				"databaseName": "postgres",
-				"userID": "ub_twp",
-				"password": "ub_twp",
+				"userID": "benchmarkdbuse",
+				"password": "benchmarkdbuser",
 				"supportLang": [
 					"en"
 				],
-				"advSettings": "LibLocation=D:\\apps\\PostgreSQL10\\bin\\libpq.dll"
+				"advSettings": "LibLocation=libpq.so"
 			}
 		],
 		"blobStores": [
 			{
 				"name": "mdb",
-				"storeType": "Virtual"
+				"storeType": "Virtual",
+				"tempPath": "./_temp"
 			},
 			{
 				"name": "avatars",
 				"isDefault": true,
-				"path": ".\\stores\\avatars\\",
+				"path": "./stores/avatars",
 				"historyDepth": 0,
 				"storeSize": "Simple",
 				"keepOriginalFileNames": false

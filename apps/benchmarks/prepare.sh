@@ -29,7 +29,7 @@ TESTCASE='init database'
 npx ubcli createStore -cfg $UB_CFG -noLogo
 if [ ! $? = 0 ]; then err; fi
 
-npx ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $DBA -dbaPwd $DBA_PWD -u admin -p admin -drop -create
+npx ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $DBA -dbaPwd $DBA_PWD -u admin -p admin -drop -create -cd
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE=generateDDL

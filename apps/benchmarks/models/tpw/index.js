@@ -123,7 +123,7 @@ var queryString = require('querystring')
 function queries (req, resp) {
   var
 	  params = queryString.parse(req.parameters),
-	  repeatNum = params['queries'] || 1,
+	  repeatNum = params['q'] || 1,
 	  result = [],
 	  data,
 	  i
@@ -147,7 +147,7 @@ App.registerEndpoint('queries', queries, false)
 function queriesRaw (req, resp) {
   var
 	  params = queryString.parse(req.parameters),
-	  repeatNum = params['queries'] || 1,
+	  repeatNum = params['q'] || 1,
 	  result = [],
 	  i
 
