@@ -14,39 +14,39 @@
     from role Allowed methods",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 128,
       "caption": "Rule code",
       "description": "Code for ELS rule",
       "allowNull": true,
-      "name": "code",
       "documentation": "This field is used by migrations for automatically update rules. It recommended to use your model code as rule prefix.
         We do not set this attribute to unique, because some external models use the same code for different rules.
         But all UnityBase models set this attribute to unique value"
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Rule description",
-      "allowNull": false,
-      "name": "description"
+      "allowNull": false
     },
     {
+      "name": "disabled",
       "dataType": "Boolean",
       "caption": "Disabled",
       "description": "Rule is disabled",
       "allowNull": false,
-      "defaultValue": "0",
-      "name": "disabled"
+      "defaultValue": "0"
     },
     {
+      "name": "entityMask",
       "dataType": "String",
       "size": 128,
       "caption": "Entity mask",
       "description": "",
       "allowNull": false,
-      "name": "entityMask",
       "documentation": "<h4>Masks wildchars (<strong>to prevent security issues we strongly recommend to use full method name instead of mask</strong>):</h4> <ul>
         <li>*	   	Matches any contiguous characters</li>
         <li>?	   	Matches any single characer</li>
@@ -59,29 +59,29 @@
         Example: [iu]* match any string start from either 'i' or 'u' like: 'insetr', 'inner', 'update',..."
     },
     {
+      "name": "methodMask",
       "dataType": "String",
       "size": 128,
       "caption": "Method mask",
       "description": "",
-      "allowNull": false,
-      "name": "methodMask"
+      "allowNull": false
     },
     {
+      "name": "ruleType",
       "dataType": "Enum",
       "caption": "Rule type",
       "description": "Is this ALLOW rule(A) or DENY rule(D) or Complements(C) rule",
       "enumGroup": "UBA_RULETYPE",
       "allowNull": false,
-      "defaultValue": "A",
-      "name": "ruleType"
+      "defaultValue": "A"
     },
     {
+      "name": "ruleRole",
       "dataType": "Entity",
       "associatedEntity": "uba_role",
       "caption": "Role",
       "description": "Role for which the rule applies",
-      "allowNull": false,
-      "name": "ruleRole"
+      "allowNull": false
     }
   ],
   "mixins": {

@@ -8,25 +8,25 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 128,
       "caption": "Subject code",
-      "allowNull": false,
-      "name": "code"
+      "allowNull": false
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Login",
-      "allowNull": false,
-      "name": "name"
+      "allowNull": false
     },
     {
+      "name": "sType",
       "dataType": "String",
       "size": 1,
       "caption": "Subject type",
-      "allowNull": false,
-      "name": "sType"
+      "allowNull": false
     }
   ],
   "mixins": {

@@ -12,20 +12,20 @@
   },
   "attributes": [
     {
+      "name": "userID",
       "dataType": "Entity",
       "associatedEntity": "uba_user",
       "cascadeDelete": true,
       "allowNull": false,
-      "caption": "User",
-      "name": "userID"
+      "caption": "User"
     },
     {
+      "name": "groupID",
       "dataType": "Entity",
       "associatedEntity": "uba_group",
       "cascadeDelete": true,
       "allowNull": false,
-      "caption": "Group",
-      "name": "groupID"
+      "caption": "Group"
     }
   ],
   "dbKeys": {

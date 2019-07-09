@@ -8,73 +8,73 @@
   "documentation": "used for Certificate authentification ",
   "attributes": [
     {
+      "name": "userID",
       "dataType": "Entity",
       "associatedEntity": "uba_user",
       "caption": "User",
       "description": "",
-      "allowNull": false,
-      "name": "userID"
+      "allowNull": false
     },
     {
+      "name": "issuer_serial",
       "dataType": "String",
       "size": 512,
       "caption": "Issuer",
       "description": "Issuer tag of cerificate",
-      "allowNull": false,
-      "name": "issuer_serial"
+      "allowNull": false
     },
     {
+      "name": "issuer_cn",
       "dataType": "String",
       "size": 512,
       "caption": "Issuer caption",
       "description": "",
-      "allowNull": true,
-      "name": "issuer_cn"
+      "allowNull": true
     },
     {
+      "name": "serial",
       "dataType": "String",
       "size": 100,
       "caption": "Serial number",
       "description": "Serial number of cerificate",
-      "allowNull": false,
-      "name": "serial"
+      "allowNull": false
     },
     {
+      "name": "certificate",
       "dataType": "BLOB",
       "caption": "Certificate",
       "description": "Binary data of certificate",
       "allowNull": false,
-      "isUnique": false,
-      "name": "certificate"
+      "isUnique": false
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 512,
-      "caption": "Description",
-      "name": "description"
+      "caption": "Description"
     },
     {
+      "name": "disabled",
       "dataType": "Boolean",
       "caption": "Disabled",
       "description": "disabled",
       "allowNull": false,
-      "defaultValue": "0",
-      "name": "disabled"
+      "defaultValue": "0"
     },
     {
+      "name": "revoked",
       "dataType": "Boolean",
       "caption": "Revoked",
       "description": "Revoked",
       "allowNull": false,
-      "defaultValue": "0",
-      "name": "revoked"
+      "defaultValue": "0"
     },
     {
+      "name": "revocationDate",
       "dataType": "DateTime",
       "caption": "Revocation date",
       "description": "Revocation date",
-      "allowNull": true,
-      "name": "revocationDate"
+      "allowNull": true
     }
   ],
   "dbKeys": {

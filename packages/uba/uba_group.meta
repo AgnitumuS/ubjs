@@ -23,28 +23,28 @@
   },
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 50,
       "caption": "Code",
       "description": "Group code. Used by APIs and scripts",
       "documentation": "Unique group code. Used by APIs and scripts",
       "isUnique": true,
-      "allowNull": false,
-      "name": "code"
+      "allowNull": false
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "allowNull": false,
       "isUnique": true,
-      "caption": "Name",
-      "name": "name"
+      "caption": "Name"
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 256,
-      "caption": "Description",
-      "name": "description"
+      "caption": "Description"
     }
   ]
 }

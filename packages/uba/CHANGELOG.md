@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.1.35]
 ### Fixed
- - localization of tabs for uba_user form [#51] 
+ - localization of tabs for uba_user form [#51]
+ - "name" property for attributes moved to the first line of attribute object for all `uba_*.meta`   
 
 ## [5.1.20]
 ### Added

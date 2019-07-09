@@ -7,22 +7,22 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "groupID",
       "dataType": "Entity",
       "associatedEntity": "uba_group",
       "caption": "Group",
       "cascadeDelete": true,
       "defaultView": true,
-      "allowNull": false,
-      "name": "groupID"
+      "allowNull": false
     },
     {
+      "name": "roleID",
       "dataType": "Entity",
       "associatedEntity": "uba_role",
       "caption": "Role",
       "description": "",
       "defaultView": true,
-      "allowNull": false,
-      "name": "roleID"
+      "allowNull": false
     }
   ],
   "mixins": {

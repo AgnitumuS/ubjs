@@ -8,28 +8,28 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Role",
       "description": "",
       "allowNull": false,
-      "isUnique": true,
-      "name": "name"
+      "isUnique": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 256,
       "caption": "Description",
-      "allowNull": false,
-      "name": "description"
+      "allowNull": false
     },
     {
+      "name": "sessionTimeout",
       "dataType": "Int",
       "caption": "Session duration",
       "description": "Time after which the session is deleted by timeout (in minutes)",
       "allowNull": false,
-      "defaultValue": "30",
-      "name": "sessionTimeout"
+      "defaultValue": "30"
     },
     {
       "name": "allowedAppMethods",
