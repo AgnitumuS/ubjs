@@ -2,7 +2,7 @@ Set of dictionaries appropriate for majority of enterprise systems.
 
 For internal organization structure see `@ubitybase/org` module
 
-# Used `ubs_setting` keys
+#### Used `ubs_setting` keys
 
  - `cdn.organization.accessAddGovByRoles` - comma separated use role names for whom is allowed 
  to add/edit organization with `isGovAuthority == true`. If empty - allowed for any role
