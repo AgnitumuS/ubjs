@@ -49,6 +49,9 @@ let UB = module.exports = {
  UB.i18n('loginPage.user', {user: 'Pol}) // Dear Pol
  UB.i18n('loginPage') // return object {welcome: "Welcome to our app", user: "Dear {user}"}
 
+ UB.i18n('uba_user') // -> "Users" (caption from uba_use.meta)
+ UB.i18n('uba_user.firstName') // -> "First Name" (caption of uba_user.firstName attribute)
+
    *
    * @param {String} localeString
    * @param {...*} formatArgs Format args
