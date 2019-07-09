@@ -79,7 +79,7 @@ exports.formDef = {
         xtype: 'tabpanel',
         items: [{
             flex: 1,
-            title: 'Role',
+            title: UB.i18n('uba_userrole'), //'Role',
             xtype: "ubdetailgrid",
             entity: "uba_userrole",
             entityConfig: {
@@ -92,7 +92,7 @@ exports.formDef = {
         }, {
             flex: 1,
             xtype: "ubdetailgrid",
-            title: 'Group',
+            title: UB.i18n('uba_usergroup'),
             entity: "uba_usergroup",
             entityConfig: {
                 entity: "uba_usergroup",
@@ -103,7 +103,7 @@ exports.formDef = {
             detailFields: ["userID"]
         },{
             flex: 1,
-            title: 'Certificate',
+            title: UB.i18n('uba_usercertificate'),
             xtype: "ubdetailgrid",
             entity: "uba_usercertificate",
             entityConfig: {
