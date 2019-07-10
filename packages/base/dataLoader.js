@@ -127,14 +127,14 @@ function loadArrayData (conn, dataArray, entityName, ettAttributes, mapping, tra
     cmdArray = []
     // fill add new array and get ID's
     for (curTransCnt = 0; (curTransCnt < transLen) && (i + curTransCnt < dataLength); ++curTransCnt) {
-      cmdArray.push({entity: entityName, method: 'addnew', fieldList: ['ID'], __nativeDatasetFormat: true})
+      cmdArray.push({ entity: entityName, method: 'addnew', fieldList: ['ID'], __nativeDatasetFormat: true })
     }
     idList = conn.query(cmdArray)
-        // fill insert array
+    // fill insert array
     cmdArray = []
     for (curTransCnt = 0; (curTransCnt < transLen) && (i < dataLength); ++curTransCnt, ++i) {
       currentRecord = dataArray[i]
-      cmdIdx = cmdArray.push({entity: entityName, method: 'insert', execParams: {ID: idList[curTransCnt].resultData[0].ID}})
+      cmdIdx = cmdArray.push({ entity: entityName, method: 'insert', execParams: { ID: idList[curTransCnt].resultData[0].ID } })
       cmd = cmdArray[cmdIdx - 1]
       for (a = 0; a < attrCnt; ++a) {
         curMapObj = mapping[a]
@@ -199,16 +199,22 @@ function localizeEntity (session, config, locale) {
     }
 
     _.forEach(keys, function (key, idx) {
-      let lookupValue = {}
-      lookupValue[key] = keyValues[idx]
-      whereCondition['F' + key] = {
-        expression: '[' + key + ']', condition: 'equal', values: lookupValue
+      if (conn.UBQLv2) {
+        whereCondition['F' + key] = {
+          expression: '[' + key + ']', condition: 'equal', value: keyValues[idx]
+        }
+      } else {
+        let lookupValue = {}
+        lookupValue[key] = keyValues[idx]
+        whereCondition['F' + key] = {
+          expression: '[' + key + ']', condition: 'equal', values: lookupValue
+        }
       }
     })
 
     idValue = conn.lookup(config.entity, 'ID', whereCondition)
     if (idValue) {
-       // add language prefix
+      // add language prefix
       _.forEach(oneRow.execParams, function (value, key) {
         if (lang === defaultLang) {
           execParams[key] = value // update language
@@ -273,10 +279,10 @@ function lookup (conn, entityName, attributeName, colIndex, doNotUseCache) {
   function doLookup (conn, entityName, attributeName, colIndex, row) {
     function buildWhereList (attrs, indexes) {
       return attrs
-                .reduce(
-                    (r, a, i) => r.where(a, '=', row[indexes[i]]),
-                    Repository(entityName))
-                .ubql().whereList
+        .reduce(
+          (r, a, i) => r.where(a, '=', row[indexes[i]]),
+          Repository(entityName))
+        .ubql().whereList
     }
 
     const isMultiKeys = _.isArray(attributeName)
@@ -286,8 +292,8 @@ function lookup (conn, entityName, attributeName, colIndex, doNotUseCache) {
     }
 
     const whereList = isMultiKeys
-            ? buildWhereList(attributeName, colIndex)
-            : buildWhereList([attributeName], [colIndex])
+      ? buildWhereList(attributeName, colIndex)
+      : buildWhereList([attributeName], [colIndex])
 
     return conn.lookup(entityName, 'ID', whereList, doNotUseCache)
   }

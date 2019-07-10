@@ -296,8 +296,8 @@ function SyncConnection (options) {
    * @param {String} aEntity - entity to lookup
    * @param {String} lookupAttribute - attribute to lookup
    * @param {String|Object} aCondition - lookup condition. String in case of custom expression,
-   *      or whereListItem {expression: condition: values: },
-   *      or whereList {condition1: {expression: condition: values: }, condition2: {}, ....}
+   *      or whereListItem {expression: condition: value: },
+   *      or whereList {condition1: {expression: condition: value: }, condition2: {}, ....}
    * @param {Boolean} [doNotUseCache=false]
    * @return {*} `lookupAttribute` value of first result row or null if not found.
    */
