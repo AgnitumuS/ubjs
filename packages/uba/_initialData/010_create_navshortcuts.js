@@ -23,7 +23,7 @@ module.exports = function (session) {
   desktopID = conn.lookup('ubm_desktop', 'ID', {
     expression: 'code',
     condition: 'equal',
-    values: {code: 'adm_desktop'}
+    values: { code: 'adm_desktop' }
   })
   console.info('\tFill `Administrator` desktop')
   if (!desktopID) {
@@ -68,9 +68,9 @@ module.exports = function (session) {
       displayOrder: 10,
       cmdCode: JSON.stringify({
         cmdType: 'showList',
-        cmdData: {params: [{
+        cmdData: { params: [{
           entity: 'uba_user', method: 'select', fieldList: ['disabled', 'isPending', 'name', 'firstName', 'lastName']
-        }]}
+        }] }
       }, null, '\t')
     }
   })
@@ -84,10 +84,11 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_userrole',
       caption: 'User roles',
+      iconCls: 'el-icon-office-building',
       displayOrder: 20,
       cmdCode: JSON.stringify({
         cmdType: 'showList',
-        cmdData: {params: [{entity: 'uba_userrole', method: 'select', fieldList: ['userID', 'roleID']}]}
+        cmdData: { params: [{ entity: 'uba_userrole', method: 'select', fieldList: ['userID', 'roleID'] }] }
       }, null, '\t')
     }
   })
@@ -103,7 +104,7 @@ module.exports = function (session) {
       caption: 'Group list',
       iconCls: 'fa fa-group',
       displayOrder: 30,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'uba_group', method: 'select', fieldList: ['name', 'description', 'code']}]}}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'uba_group', method: 'select', fieldList: ['name', 'description', 'code'] }] } }, null, '\t')
     }
   })
 
@@ -118,7 +119,7 @@ module.exports = function (session) {
       caption: 'Advanced security',
       displayOrder: 15,
       iconCls: 'fa fa-user-secret',
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'uba_advSecurity', method: 'select', fieldList: ['*'] }]}}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'uba_advSecurity', method: 'select', fieldList: ['*'] }] } }, null, '\t')
     }
   })
 
@@ -130,9 +131,19 @@ module.exports = function (session) {
       desktopID: desktopID,
       parentID: folderID,
       code: 'uba_usergroup',
+      iconCls: 'el-icon-school',
       caption: 'User groups',
       displayOrder: 40,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'uba_usergroup', method: 'select', fieldList: ['userID', 'groupID']}]}}, null, '\t')
+      cmdCode: JSON.stringify({
+        cmdType: 'showList',
+        cmdData: {
+          params: [{
+            entity: 'uba_usergroup',
+            method: 'select',
+            fieldList: ['userID', 'groupID']
+          }]
+        }
+      }, null, '\t')
     }
   })
 
@@ -187,7 +198,7 @@ module.exports = function (session) {
       caption: 'System roles',
       iconCls: 'fa fa-users',
       displayOrder: 10,
-      cmdCode: JSON.stringify({cmdType: 'showList', cmdData: {params: [{entity: 'uba_role', method: 'select', fieldList: '*'}]}}, null, '\t')
+      cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'uba_role', method: 'select', fieldList: '*' }] } }, null, '\t')
     }
   })
 
@@ -200,6 +211,7 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_els',
       caption: 'Entity level security',
+      iconCls: 'fa fa-shield',
       displayOrder: 20,
       cmdCode: JSON.stringify({
         cmdType: 'showList',
@@ -223,10 +235,11 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_als',
       caption: 'Attribute level security',
+      iconCls: 'fa fa-share-alt',
       displayOrder: 30,
       cmdCode: JSON.stringify({
         cmdType: 'showList',
-        cmdData: {params: [{entity: 'uba_als', method: 'select', fieldList: '*'}]}
+        cmdData: { params: [{ entity: 'uba_als', method: 'select', fieldList: '*' }] }
       }, null, '\t')
     }
   })
@@ -244,7 +257,7 @@ module.exports = function (session) {
       displayOrder: 40,
       cmdCode: JSON.stringify({
         cmdType: 'showList',
-        cmdData: {params: [{entity: 'uba_otp', method: 'select', fieldList: '*'}]}
+        cmdData: { params: [{ entity: 'uba_otp', method: 'select', fieldList: '*' }] }
       }, null, '\t')
     }
   })
@@ -260,15 +273,15 @@ module.exports = function (session) {
       caption: 'Security audit',
       displayOrder: 60,
       iconCls: 'fa fa-lock',
-      cmdCode: JSON.stringify({'cmdType': 'showList',
-                'cmdData': {
-                  'params': [{
-                    'entity': 'uba_audit',
-                    'method': 'select',
-                    'fieldList': ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetGroup', 'targetRole']
-                  }]
-                }
-           }, null, '\t')
+      cmdCode: JSON.stringify({ 'cmdType': 'showList',
+        'cmdData': {
+          'params': [{
+            'entity': 'uba_audit',
+            'method': 'select',
+            'fieldList': ['entity', 'entityinfo_id', 'actionType', 'actionUser', 'actionTime', 'remoteIP', 'targetUser', 'targetGroup', 'targetRole']
+          }]
+        }
+      }, null, '\t')
     }
   })
 
@@ -299,11 +312,12 @@ module.exports = function (session) {
       parentID: folderID,
       code: 'uba_auditTrail',
       caption: 'Audit Trail',
+      iconCls: 'el-icon-s-unfold',
       displayOrder: 40,
       cmdCode: JSON.stringify({
         cmdType: 'showList',
         autoFilter: true,
-        cmdData: {params: [{entity: 'uba_auditTrail', method: 'select', fieldList: '*'}]}
+        cmdData: { params: [{ entity: 'uba_auditTrail', method: 'select', fieldList: '*' }] }
       }, null, '\t')
     }
   })

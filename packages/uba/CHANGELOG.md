@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Added
+ - Administration subjects names (uba_subject.name) support localization (multilang)
+ - Roles descriptions (uba_role.description) and Groups names (uba_group.name) supports localization (multilang)
+ - build-in roles localization for uk & ru
+ - icons added for shortcuts from Security group 
+
 ## [5.1.35]
 ### Fixed
  - localization of tabs for uba_user form [#51]

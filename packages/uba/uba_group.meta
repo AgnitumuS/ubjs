@@ -35,6 +35,7 @@
     {
       "name": "name",
       "dataType": "String",
+      "isMultiLang": true,
       "size": 128,
       "allowNull": false,
       "isUnique": true,

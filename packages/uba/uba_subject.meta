@@ -17,6 +17,7 @@
     {
       "name": "name",
       "dataType": "String",
+      "isMultiLang": true,
       "size": 128,
       "caption": "Login",
       "allowNull": false

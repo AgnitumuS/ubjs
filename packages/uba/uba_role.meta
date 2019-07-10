@@ -19,6 +19,7 @@
     {
       "name": "description",
       "dataType": "String",
+      "isMultiLang": true,
       "size": 256,
       "caption": "Description",
       "allowNull": false
