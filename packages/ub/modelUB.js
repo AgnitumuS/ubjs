@@ -13,8 +13,12 @@ const ws = require('./modules/web-sockets')
 const mI18n = require('./modules/i18n')
 const modelLoader = require('./modules/modelLoader')
 const mStorage = require('./mixins/mStorage')
+const _ = require('lodash')
 
-//if (typeof global['UB'] !== 'undefined') throw new Error('@unitybase/ub already required')
+const LANGS_SET = new Set(App.serverConfig.application.domain.supportedLanguages)
+const FORMAT_RE = /{([0-9a-zA-Z_]+)}/g
+
+// if (typeof global['UB'] !== 'undefined') throw new Error('@unitybase/ub already required')
 /**
  * @module @unitybase/ub
  */
@@ -72,15 +76,45 @@ let UB = module.exports = {
    * Return locale-specific resource from it identifier.
    * Resources are defined by {@link module:@unitybase/ub#i18nExtend UB.i18nExtend}
    *
-   * In opposite to client-side i18n server side function do not allow formatting.
+   * In case firs element of args is a string with locale code supported by application then translate to specified locale,
+   * in other case - to locale of the current user (user who done the request to the server)
+   *
+   * Localized string can be optionally formatted by position args:
+   *
+   *     UB.i18nExtend({
+   *       "en": { greeting: 'Hello {0}, welcome to {1}' },
+   *       "ru": { greeting: 'Привет {0}, добро пожаловать в {1}' }
+   *     })
+   *     UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "Hello Mark, welcome to Kiev"
+   *     UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
    *
    * @param {String} msg Message to translate
-   * @param {String} [lang] language to translate to. if empty - current user session language is used
+   * @param {...*} args Format args
+   * @returns {*}
    */
-  i18n: function i18n (msg, lang) {
-    lang = lang || Session.userLang || App.defaultLang
+  i18n: function i18n (msg, ...args) {
+    let lang = args[0]
+    if (lang && LANGS_SET.has(lang)) {
+      args.shift() // first element is language
+    } else {
+      lang = Session.userLang || App.defaultLang
+    }
     let res = mI18n.lookup(lang, msg)
-    return res || msg
+    if (args && args.length && (typeof res === 'string')) {
+      // key-value object
+      if ((args.length === 1) && (typeof args[0] === 'object')) {
+        let first = args[0]
+        return res.replace(FORMAT_RE, function (m, k) {
+          return _.get(first, k)
+        })
+      } else { // array of values
+        return res.replace(FORMAT_RE, function (m, i) {
+          return args[i]
+        })
+      }
+    } else {
+      return res
+    }
   },
   /**
    * Merge localizationObject to UB.i18n
@@ -106,9 +140,12 @@ console.log(UB.i18n(yourMessage, 'uk'))
    * exclude `modules` and `node_modules` subfolder's.
    * From 'public' subfolder only cs*.js are required.
    * To be called in model index.js as such:
-   *   const modelLoader = require('@unitybase/ub).modelLoader
+   *
+   *   const UB = require('@unitybase/ub')
+   *   UB.loadLegacyModules(__dirname)
    *
    * For new models we recommend to require non-entity modules manually
+   *
    * @param {String} folderPath
    * @param {Boolean} isFromPublicFolder
    * @param {number} depth Current recursion depth

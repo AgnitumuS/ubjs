@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.24]
+### Changed
+ - server-side UB.i18n now support formatting (like client side i18n). Sample:
+```js
+UB.i18nExtend({
+  "en": { greeting: 'Hello {0}, welcome to {1}' },
+  "ru": { greeting: 'Привет {0}, добро пожаловать в {1}' }
+})
+UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "Hello Mark, welcome to Kiev"
+UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
+```
+
 ## [5.2.22]
 ### Added
  - update ubConfig JSON schema about new key `uiSettings.adminUI.pdfViewer.uriSuffix`
