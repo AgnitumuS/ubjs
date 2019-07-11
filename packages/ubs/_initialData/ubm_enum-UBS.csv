@@ -8,9 +8,9 @@ AUDIT_ACTION;LOGIN_LOCKED;Locked user login attempt failed;6
 AUDIT_ACTION;SECURITY_VIOLATION;Security violation;7
 AUDIT_ACTION;DOWNLOAD;File downloaded;8
 AUDIT_ACTION;PRINT;File printed;9
-SOFTLOCK_TYPE;ltNone;Not locked;10
-SOFTLOCK_TYPE;ltPersist;Persistent;20
-SOFTLOCK_TYPE;ltTemp;Temporary;30
+SOFTLOCK_TYPE;None;Not locked;10
+SOFTLOCK_TYPE;Persist;Persistent;20
+SOFTLOCK_TYPE;Temp;Temporary;30
 UBS_MESSAGE_TYPE;user;User;40
 UBS_MESSAGE_TYPE;system;System;45
 UBS_MESSAGE_TYPE;warning;Warning;50

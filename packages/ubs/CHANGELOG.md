@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.24]
+### Added
+ - scheduler job `ubsSoftLockCleanup` added to the UBS model.
+ Will delete all expired non persistent lock from `ubs_softLock` table. By default scheduled to run every day at 05:15:25
+ 
+### Fixed
+ - keys for SOFTLOCK_TYPE enum changed `ltNone->None` `ltPersist->Persist` `ltTemp->Temp`     
+
 ## [5.2.23]
 ### Changed
  - 'UBS.MessageBar' is deleted. New implementation is inside `@unitybase/adminui-vue` model 
