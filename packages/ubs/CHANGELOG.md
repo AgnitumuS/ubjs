@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - scheduler job `ubsSoftLockCleanup` added to the UBS model.
  Will delete all expired non persistent lock from `ubs_softLock` table. By default scheduled to run every day at 05:15:25
- 
+
 ### Fixed
- - keys for SOFTLOCK_TYPE enum changed `ltNone->None` `ltPersist->Persist` `ltTemp->Temp`     
+ - keys for SOFTLOCK_TYPE enum changed `ltNone->None` `ltPersist->Persist` `ltTemp->Temp`
+ - ExtJS based messages sending form (bell on toolbar) is removed - only Vue form is left
 
 ## [5.2.23]
 ### Changed
