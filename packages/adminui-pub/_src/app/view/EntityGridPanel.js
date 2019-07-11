@@ -1563,7 +1563,7 @@ Ext.define('UB.view.EntityGridPanel', {
       scale: 'medium',
       glyph: UB.core.UBUtil.glyphs.faEye,
 
-      text: UB.i18n('pokazatPrevu'),
+      text: UB.i18n('showPreview'),
       eventId: events.showPreview,
       handler: me.onAction,
       disabled: false,

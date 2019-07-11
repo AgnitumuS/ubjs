@@ -73,7 +73,7 @@ Ext.define('UB.ux.UBDetailTree', {
         renderer: function (value, metaData, record/*, rowIdx, colIdx, store, view */) {
           var template = this.templates[record.raw.nodeType]
           if (!template) {
-            var msg = Ext.util.Format.format(UB.i18n('neNaidenShablon'), record.raw.ID, record.raw.nodeType)
+            var msg = Ext.util.Format.format(UB.i18n('nodeTemplateNotFound'), record.raw.ID, record.raw.nodeType)
             UB.showErrorWindow(msg)
             throw new Error(msg)
           }

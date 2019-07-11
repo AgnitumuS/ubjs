@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.2]
+### Changed
+ - rename `pokazatPrevu` -> `showPreview`, `neNaidenShablon` -> `nodeTemplateNotFound` in i18n
+
 ## [5.10.1]
 ### Fixed
  - sidebar width should be max 240px and should not depend on shortcut text length

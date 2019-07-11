@@ -92,7 +92,7 @@ UB.i18nExtend({
   redactirovat: 'Edit shortcut',
   addShortcut: 'Add shortcut',
   addFolder: 'Add folder',
-  pokazatPrevu: 'Show preview',
+  showPreview: 'Show preview',
   exportXls: 'Export to "Excel"',
   exportCsv: 'Export to CSV',
   'export': 'Export',
@@ -111,7 +111,7 @@ UB.i18nExtend({
   recordNotLocked: 'The record is not locked',
   tempLockExistForThisUser: 'The current user is currently editing an entry in another tab or window on another computer does',
 
-  neNaidenShablon: 'Cannot find template for node: {0} with node type: {1}',
+  nodeTemplateNotFound: 'Cannot find template for node: {0} with node type: {1}',
   da: 'Yes',
   net: 'No',
   showLetters: 'Show symbols',

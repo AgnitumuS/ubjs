@@ -92,7 +92,7 @@ UB.i18nExtend({
   redactirovat: 'Redaktə et',
   addShortcut: 'Yarlıq əlavə et',
   addFolder: 'Qovluq artır',
-  pokazatPrevu: 'Baxış',
+  showPreview: 'Baxış',
   exportXls: 'Excel-ə eksport',
   exportCsv: 'CSV-yə eksport',
   exportHtml: 'Html-ya eksport',

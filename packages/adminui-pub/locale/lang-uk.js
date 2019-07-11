@@ -92,7 +92,7 @@ UB.i18nExtend({
   redactirovat: 'Редагувати',
   addShortcut: 'Додати ярлик',
   addFolder: 'Додати групу',
-  pokazatPrevu: 'Перегляд',
+  showPreview: 'Перегляд',
   exportXls: 'Експорт в "Excel"',
   exportCsv: 'Експорт у CSV',
   exportHtml: 'Експорт у Html',

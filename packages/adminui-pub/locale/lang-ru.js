@@ -95,7 +95,7 @@ UB.i18nExtend({
   redactirovat: 'Редактировать',
   addShortcut: 'Добавить ярлык',
   addFolder: 'Добавить папку',
-  pokazatPrevu: 'Просмотр',
+  showPreview: 'Просмотр',
   exportXls: 'Экспорт в "Excel"',
   exportCsv: 'Экспорт в CSV',
   exportHtml: 'Экспорт в Html',

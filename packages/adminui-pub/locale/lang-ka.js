@@ -94,7 +94,7 @@ UB.i18nExtend({
   redactirovat: 'მალსახმობის რედაქტირება',
   addShortcut: 'მალსახმობის დამატება',
   addFolder: 'საქაღალდის დამატება',
-  pokazatPrevu: 'გადახედვის ჩვენება',
+  showPreview: 'გადახედვის ჩვენება',
   exportXls: 'გადატანა "Excel"',
   exportCsv: 'გადატანა CSV',
   'export': 'გადატანა',
@@ -113,7 +113,7 @@ UB.i18nExtend({
   recordNotLocked: 'ჩანაწერი არ არის ჩაკეტილი',
   tempLockExistForThisUser: 'მიმდინარე მომხმარებელი ამ წუთას ახორციელებს ჩანაწერის რედაქტირებას სხვა ფაილში ან ფანჯარაში სხვა კომპიუტერში',
 
-  neNaidenShablon: 'ვერ პოულობს შაბლონის კვანძს: {0} კვანძის ტიპით: {1}',
+  nodeTemplateNotFound: 'ვერ პოულობს შაბლონის კვანძს: {0} კვანძის ტიპით: {1}',
   da: 'დიახ',
   net: 'არა',
   showLetters: 'სიმბოლოების ჩვენება',
