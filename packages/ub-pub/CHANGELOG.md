@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.6]
+### Changed
+ - error message is added into detailed exception information with h2 HTML tag to be shown in "Details for developer"
+ window together with stack trace
+ - prevent put empty `file: line:` into exception details in case file name and line number is not available in error stack trace
+ - highlight file names in the error stack trace even if it's name not ends wih `.js` extension     
+  
 ## [5.3.5]
 ### Fixed
  - global exception interceptor will ignore `ResizeObserver loop limit exceeded` exception.

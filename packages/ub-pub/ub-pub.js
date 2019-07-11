@@ -546,7 +546,7 @@ function ubGlobalErrorHandler (msg, file, line, column, errorObj) {
   if (errorObj && Error && errorObj instanceof Error) {
     message = errorObj.message
     detail = ''
-    if (/q\.js/.test(file) === false) {
+    if (file && (/q\.js/.test(file) === false)) {
       detail += 'file: "' + file + '" line: ' + line
     }
     let strace = errorObj.stack || ''
@@ -554,7 +554,7 @@ function ubGlobalErrorHandler (msg, file, line, column, errorObj) {
       .replace(/\?ubver=\w*/g, '').replace(/\?ver=\w*/g, '') // remove any versions
       .replace(/\\n(?!\d)/g, '\n\t') // beatify stack trace
     detail = detail.replace(new RegExp(window.location.origin.replace(/:/g, '\\$&'), 'g'), '') // remove address if same as origin
-    detail = detail.replace(/\/[\w-]+\.js:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
+    detail = detail.replace(/\/[\w-]+(\.js)?:/g, '<b>$&</b>&nbsp;line ') // file name is BOLD
     detail = detail.replace(/\n/g, '<br>&nbsp;&nbsp;')
   } else if (errorObj && errorObj.data && errorObj.data.errMsg) {
     message = errorObj.data.errMsg
@@ -584,9 +584,11 @@ function ubGlobalErrorHandler (msg, file, line, column, errorObj) {
       console.warn(message)
       return
     }
-    if (!detail) detail = message
-    // MPV - message is already in detail (stack trace or message in case stack is not available)
-    // detail = message + '<BR/> ' + detail;
+    if (!detail) {
+      detail = message
+    } else {
+      detail = `<h4>${message}</h4>${detail}`
+    }
     message = 'unknownError'
   }
   try {
