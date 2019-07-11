@@ -1,2 +1,4 @@
 code;entityMask;methodMask;ruleType;ruleRole;description
 UBM_READ_ANONYMOUS;ubm*;select;A;Anonymous;Allow read all UBM model entities for Anonymous for test purpose
+TST_DOCUMENT_READ_USER;tst_document;select;A;User;Allow read all tst_document for User
+TST_CATEGORY_READ_USER;tst_category;select;A;User;Allow read all tst_category for User

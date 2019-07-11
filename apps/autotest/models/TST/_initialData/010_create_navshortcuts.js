@@ -3,6 +3,8 @@
  * Fill navigation shortcuts for TST model
  */
 
+const dataLoader = require('@unitybase/base').dataLoader
+
 /**
  * Initial script for create desktop navigation shortcuts for TST model
  * Used by `ubcli initialize` command
@@ -158,4 +160,28 @@ module.exports = function (session) {
       cmdCode: JSON.stringify({ cmdType: 'showList', cmdData: { params: [{ entity: 'tst_aclrls', method: 'select', fieldList: ['*'] }] } }, null, '\t')
     }
   })
+
+  console.log('\t\t\tSetting up default TST navigation shortcuts access rights')
+  dataLoader.loadArrayData(conn,
+    [['tst_desktop', 'User']],
+    'ubm_desktop_adm',
+    'instanceID;admSubjID'.split(';'),
+    [
+      dataLoader.lookup(conn, 'ubm_desktop', 'code', 0),
+      dataLoader.lookup(conn, 'uba_subject', 'code', 1)
+    ],
+    1)
+  dataLoader.loadArrayData(conn,
+    [
+      ['tst_document', 'User'],
+      ['tst_document-vue', 'User'],
+      ['tst_dictionary', 'User'],
+    ],
+    'ubm_navshortcut_adm',
+    'instanceID;admSubjID'.split(';'),
+    [
+      dataLoader.lookup(conn, 'ubm_navshortcut', 'code', 0),
+      dataLoader.lookup(conn, 'uba_subject', 'code', 1)
+    ],
+    1)
 }
