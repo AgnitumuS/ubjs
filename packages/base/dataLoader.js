@@ -19,7 +19,7 @@ csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-CDN.csv'),
  *
 //data transformation - in this case we pass transformation function to mapping array instead of CSV column index:
 var ukraineID = conn.lookup('cdn_country', 'ID',
-  {expression: 'code', condition: 'equal', values: {code: 'UKR'}}
+  {expression: 'code', condition: 'equal', value'UKR'}
 );
 if (!ukraineID) {
      throw new Error('Country with code UKR not found');
@@ -36,7 +36,7 @@ csvLoader.loadSimpleCSVData(conn, __dirname + '/cdn_region_ukraine.csv', 'cdn_re
        0,
        function(row){
            var regionType;
-           regionType = conn.lookup('cdn_regiontype', 'ID', {expression: 'code', condition: 'equal', values: {code: row[1]}});
+           regionType = conn.lookup('cdn_regiontype', 'ID', {expression: 'code', condition: 'equal', value: row[1]});
            if (!regionType){
                throw new Error('Unknown region type ' + row[1]);
            }

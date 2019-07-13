@@ -33,6 +33,9 @@ module.exports = function runTest (options) {
     // session.logout()
   }
 
+  /**
+   * @param {SyncConnection} conn
+   */
   function testCommon (conn) {
     let res
 
@@ -97,5 +100,10 @@ module.exports = function runTest (options) {
           .where('actionTime', '>', new Date(2016, 1, 1))
       )
       .select()
+
+    console.debug('Unsupported whereItem condition')
+    assert.throws(() => {
+      conn.query({ entity: 'uba_user', method: 'select', fieldList: ['ID','name'], whereList: { byName: { expression: '[name]', condition: 'equals', value: 'admin' } } })
+    }, /whereList: invalid condition/, 'throws in case of invalid condition in whereList')
   }
 }

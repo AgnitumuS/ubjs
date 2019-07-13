@@ -290,8 +290,8 @@ function SyncConnection (options) {
    *          );
    *      // or pass condition directly
    *      var adminID = conn.lookup('uba_user', 'ID', {
-   *             expression: 'name', condition: 'equal', values: {nameVal: 'admin'}
-   *          });
+   *          expression: 'name', condition: 'equal', value: 'admin'}
+   *        });
    *
    * @param {String} aEntity - entity to lookup
    * @param {String} lookupAttribute - attribute to lookup
