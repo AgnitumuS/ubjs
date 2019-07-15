@@ -22,7 +22,11 @@ function buildExecParams (trackedObj, entity) {
   if (trackedObj.isNew) {
     return Object.entries(trackedObj.data)
       .reduce((execParams, [attr, value]) => {
-        execParams[attr] = value
+        if (attr.indexOf('.') === -1) {
+          // Do NOT put into execParams attributes with dot - they might be loaded for displaying purposes only, but
+          // they shall never be inserted or updated.
+          execParams[attr] = value
+        }
         return execParams
       }, {})
   }
