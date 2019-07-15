@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - added `filter i18n` to UB.install. Can be used as $ut replacement
 ```vuejs
 <div> {{ 'uba_user' | i18n}} </div 
-```vuejs
+```
 is equal to
 ```js
 <div> {{ $ut('uba_user') }} </div 
