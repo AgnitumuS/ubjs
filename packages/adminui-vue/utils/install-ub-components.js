@@ -10,6 +10,7 @@ module.exports = {
     const USelectEnum = require('../components/controls/USelectEnum.vue').default
     const UInput = require('../components/controls/UInput/UInput.vue').default
     const UToolbar = require('../components/UToolbar/UToolbar.vue').default
+    const UToolbarButton = require('../components/UToolbar/UToolbarButton.vue').default
     const UAutoField = require('../components/UAutoField.vue').default
     const USelectMultiple = require('../components/controls/USelectMultiple.vue').default
     const USelectCollection = require('../components/controls/USelectCollection.vue').default
@@ -23,6 +24,7 @@ module.exports = {
     Vue.component(USelectEnum.name, USelectEnum)
     Vue.component(UInput.name, UInput)
     Vue.component(UToolbar.name, UToolbar)
+    Vue.component(UToolbarButton.name, UToolbarButton)
     Vue.component(UAutoField.name, UAutoField)
     Vue.component(USelectMultiple.name, USelectMultiple)
     Vue.component(USelectCollection.name, USelectCollection)

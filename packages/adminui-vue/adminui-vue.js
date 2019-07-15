@@ -22,11 +22,33 @@ if (IS_SYSTEM_JS && !SystemJS.has('throttle-debounce')) SystemJS.set('throttle-d
  * @type {{throttle?, debounce?}}
  */
 module.exports.throttleDebounce = throttleDebounce
-module.exports.Form = require('./utils/Form/Form')
+const Form = require('./utils/Form/Form')
+/**
+ * Create a new instance of UForm
+ * @param {object} cfg Config
+ * @param {VueComponent} cfg.component Form component
+ * @param {object} [cfg.props] Form component props
+ * @param {string} [cfg.title] Form title
+ * @param {string} cfg.entity Entity name of master record
+ * @param {number} [cfg.instanceID] Instance ID
+ * @param {boolean} [cfg.isModal] Switch mount to modal or tab
+ * @param {string} [cfg.modalClass] Modal class
+ * @param {string} [cfg.modalWidth] Modal width
+ * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
+ * @returns {UForm}
+ */
+module.exports.Form = Form
 const { mapInstanceFields, computedVuex } = require('./utils/Form/helpers')
 module.exports.mapInstanceFields = mapInstanceFields
 module.exports.computedVuex = computedVuex
 module.exports.mountUtils = require('./utils/Form/mount')
+
+const dialogs = require('./components/dialog/UDialog')
+const { dialog, dialogError, dialogInfo, dialogYesNo } = dialogs // destructive assignment for WebStorm parameter parsing
+module.exports.dialog = dialog
+module.exports.dialogError = dialogError
+module.exports.dialogInfo = dialogInfo
+module.exports.dialogYesNo = dialogYesNo
 
 if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')) SystemJS.set('@unitybase/adminui-vue', SystemJS.newModule(module.exports))
 
@@ -73,10 +95,10 @@ const Vuelidate = require('vuelidate/lib/index').default
 if (IS_SYSTEM_JS && !SystemJS.has('vuelidate')) SystemJS.set('vuelidate', SystemJS.newModule(Vuelidate))
 Vue.use(Vuelidate)
 
-const dialogs = require('./components/dialog/UDialog')
 // add $dialog* to Vue prototype
 Vue.use(dialogs)
 UB.setErrorReporter(dialogs.errorReporter)
+
 if (isExt) {
   const {
     replaceExtJSDialogs,

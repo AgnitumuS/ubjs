@@ -1,6 +1,13 @@
 <template>
   <div class="ub-form-container">
-    <u-toolbar />
+    <u-toolbar>
+      <button
+        slot="left"
+        @click="showDialog"
+      >
+        Show dialog
+      </button>
+    </u-toolbar>
 
     <u-form-container>
       <el-row>
@@ -130,10 +137,10 @@
 </template>
 
 <script>
-const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
+const adminUiVue = require('@unitybase/adminui-vue')
 
 module.exports.mount = function ({ title, entity, instanceID, formCode, rootComponent }) {
-  Form({
+  adminUiVue.Form({
     component: rootComponent,
     entity,
     instanceID,
@@ -151,7 +158,7 @@ module.exports.default = {
   inject: ['$v', 'entitySchema', 'entity'],
 
   computed: {
-    ...mapInstanceFields([
+    ...adminUiVue.mapInstanceFields([
       'ID',
       'code',
       'docDate',
@@ -175,6 +182,12 @@ module.exports.default = {
 
     getEntity (attr) {
       return this.entitySchema.attributes[attr].associatedEntity
+    },
+
+    showDialog () {
+      // line below is for testing purpose
+      // better to use this.dialogInfo('uba_user') inside Vue instance
+      return adminUiVue.dialogInfo('uba_user')
     }
   }
 }
