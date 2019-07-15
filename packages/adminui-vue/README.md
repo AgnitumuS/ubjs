@@ -6,8 +6,13 @@ This model extend UnityBase adminUI by Vue + ElementUI libraries
 ## JavaScript
  - Vue (exported as global Vue variable and registered in SystemJS as 'vue')
  - ElementUI (exported as global ElementUI variable and registered in SystemJS as 'element-ui')
- - UB.i18n intergated into Vue as `$ut`
+ - UB.i18n integrated into Vue as `$ut`
  - UB injected into Vue.prototype as `$UB`
+ - `i18n` filter available in vue templates. Lines below produce the same output
+ ```vue
+  <div> {{ 'uba_user' | i18n}} </div>
+  <div> {{ $ut('uba_user') }} </div>
+```
 
 ## CSS
  - `dist/adminui-vue.css` theme include normalize.css && modified element-theme-chalk
