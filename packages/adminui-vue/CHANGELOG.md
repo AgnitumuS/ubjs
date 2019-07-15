@@ -13,6 +13,13 @@ adminUiVue.dialogInfo('Hello')
 // inside Vue instance the same can be called as this.$dialogInfo
 ```
 
+### Changed
+ - default repository for `USelectEntity` & `USelectMultiple` is sorter by description attribute.
+ Pass your repository for custom sorting (or to remove sorting) 
+
+### Fixed
+ - `USelectEnum` is sorted by `ubm_enum.sortOrder` 
+
 ## [1.6.12]
 ### Fixed
  - translation of attributes inside Full Text Search widget snippets (FTS return attributes in lower case)
