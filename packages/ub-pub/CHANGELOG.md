@@ -12,7 +12,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - highlight file names in the error stack trace even if it's name not ends wih `.js` extension     
  
 ### Added
- - added `filter i18n` to UB.install
+ - added `filter i18n` to UB.install. Can be used as $ut replacement
+```vuejs
+<div> {{ 'uba_user' | i18n}} </div 
+```vuejs
+is equal to
+```js
+<div> {{ $ut('uba_user') }} </div 
+```
   
 ## [5.3.5]
 ### Fixed
