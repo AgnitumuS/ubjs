@@ -20,11 +20,6 @@ const {
 const createValidator = require('./validation')
 const UB = require('@unitybase/ub-pub')
 
-/**
- * Create a new instance of UForm
- * @param {object} cfg Config
- * @returns {UForm}
- */
 function Form (cfg) {
   return new UForm(cfg)
 }
@@ -46,7 +41,7 @@ class UForm {
    * @param {boolean} [cfg.isModal] Switch mount to modal or tab
    * @param {string} [cfg.modalClass] Modal class
    * @param {string} [cfg.modalWidth] Modal width
-   * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar.
+   * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
    */
   constructor ({
     component = required('component'),

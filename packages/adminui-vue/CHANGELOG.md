@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.14]
+### Added
+ - exports `dialog`, `dialogError`, `dialogInfo`, `dialogYesNo` functions from `adminui-vue`. To be used outside Vue instance:
+```javascript
+const adminUiVue = require('@unitybase/adminui-vue')
+adminUiVue.dialogInfo('Hello')
+// inside Vue instance the same can be called as this.$dialogInfo
+```
+
 ## [1.6.12]
 ### Fixed
  - translation of attributes inside Full Text Search widget snippets (FTS return attributes in lower case)
