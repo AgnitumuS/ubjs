@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  window together with stack trace
  - prevent put empty `file: line:` into exception details in case file name and line number is not available in error stack trace
  - highlight file names in the error stack trace even if it's name not ends wih `.js` extension     
+ 
+### Added
+ - added `filter i18n` to UB.install
   
 ## [5.3.5]
 ### Fixed

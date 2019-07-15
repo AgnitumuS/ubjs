@@ -488,12 +488,13 @@ Promise.all([UB.inject('css/first.css'), UB.inject('css/second.css')])
 
  * @param vue
  */
-UB.install = function (vue) {
-  _globalVueInstance = vue
+UB.install = function (Vue) {
+  _globalVueInstance = Vue
   // install method is moved out of module.exports to allow WebStorm code insight inside vue work `this.$UB.?`
-  vue.prototype.$UB = UB
+  Vue.prototype.$UB = UB
   /** @inheritDoc */
-  vue.prototype.$ut = UB.i18n
+  Vue.prototype.$ut = UB.i18n
+  Vue.filter('i18n', UB.i18n)
 }
 
 let __alreadyAdded = false
