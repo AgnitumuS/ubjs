@@ -337,8 +337,13 @@ export default {
       if (this.repository) {
         return this.repository()
       } else {
-        return this.$UB.Repository(this.entityName)
-          .attrs(this.valueAttribute, this.getDisplayAttribute)
+        let displayAttribute = this.getDisplayAttribute
+        let repo = this.$UB.Repository(this.entityName)
+          .attrs(this.valueAttribute, displayAttribute)
+        if (displayAttribute) {
+          repo = repo.orderBy(displayAttribute)
+        }
+        return repo
       }
     },
 
