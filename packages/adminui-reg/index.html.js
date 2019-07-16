@@ -160,7 +160,14 @@ App.registerEndpoint(adminUIEndpointName + '-dev', function (req, resp) {
     }
     generateIndexPage(req, resp, 'index-dev.mustache', false)
   } else {
-    resp.writeEnd('Server working in production mode')
+    const prodWarning = `
+<html><body>
+<h1>Debug mode not allowed</h1>
+<p>To enable <strong>dev</strong> mode server should be started with <u>-dev</u> switch. Type <strong>ub --help</strong> for details</p>
+<p><strong>Warning: in developer mode server runs in single-threaded mode and allows unsafe code execution - <u>NEVER do such on production</u></strong></p>
+</body></html>`
+    resp.writeHead('Content-Type: text/html; charset=UTF-8')
+    resp.writeEnd(prodWarning)
     resp.statusCode = 404
   }
 }, false)
