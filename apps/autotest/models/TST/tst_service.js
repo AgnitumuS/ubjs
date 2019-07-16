@@ -54,9 +54,9 @@ me.entity.addMethod('uDataTest')
  */
 me.uDataTest = function (ctx) {
   const sessionData = Session.uData
-  assert.deepEqual(sessionData.tstNumArray, [1, 2, 3])
-  assert.deepEqual(sessionData.tstStrArray, ['1', '2', '3'])
-  assert.deepEqual(sessionData.tstNested, { a: 1, b: '2' })
+  assert.deepStrictEqual(sessionData.tstNumArray, [1, 2, 3])
+  assert.deepStrictEqual(sessionData.tstStrArray, ['1', '2', '3'])
+  assert.deepStrictEqual(sessionData.tstNested, { a: 1, b: '2' })
   assert.ok(!sessionData.hasOwnProperty('addedNotInOnLogin'), 'uData persisted only in Session.on("login")')
   Session.uData.addedNotInOnLogin = 'must not persis between calls'
 }

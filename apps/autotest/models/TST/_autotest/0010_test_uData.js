@@ -20,7 +20,7 @@ module.exports = function runUDataTest (options) {
   let conn = session.connection
 
   function relogon (credential) {
-    let opts = _.merge({}, options, {forceStartServer: true}, credential)
+    let opts = _.merge({}, options, { forceStartServer: true }, credential)
     session.logout() // shut down server
     // console.log('new options:', opts)
     session = argv.establishConnectionFromCmdLineAttributes(opts)
@@ -31,21 +31,21 @@ module.exports = function runUDataTest (options) {
    * Test uData is restored after Session.runAsAdmin call
    */
   function testUDataPersistence () {
-    relogon({user: 'testelsuser', pwd: 'testElsPwd'})
+    relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     // check it filled
     let resp = conn.query({
       entity: 'tst_service',
       method: 'runAsAdminTest'
     })
-    assert.deepEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
+    assert.deepStrictEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
     let uDataInsidePseudoAdmin = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin)
     let uDataInsidePseudoAdmin2level = JSON.parse(resp.runAsAdminUData.uDataInsidePseudoAdmin2level)
-    assert.deepEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
+    assert.deepStrictEqual(resp.runAsAdminUData.before, resp.runAsAdminUData.after, 'uData before and after runAsAdmin must be equal')
     assert.ok(/testRole/.test(uDataInsidePseudoAdmin2level.roles),
       'uData after 2 level of recursion runAs must contains "testRole" but got ' + uDataInsidePseudoAdmin2level.roles)
     // should be {"lang":"en","login":"admin","roles":"Admin","roleIDs":[1],"userID":10}
-    assert.equal(uDataInsidePseudoAdmin.roles, UBA.ROLES.ADMIN.NAME)
-    assert.deepEqual(uDataInsidePseudoAdmin.roleIDs, [UBA.ROLES.ADMIN.ID])
+    assert.strictEqual(uDataInsidePseudoAdmin.roles, UBA.ROLES.ADMIN.NAME)
+    assert.deepStrictEqual(uDataInsidePseudoAdmin.roleIDs, [UBA.ROLES.ADMIN.ID])
   }
 
   console.debug('test_uData')
@@ -71,13 +71,4 @@ function testUData (conn) {
     entity: 'tst_service',
     method: 'uDataTest'
   })
-}
-
-function testDataStore (conn) {
-  assert.throws(function () {
-    conn.run({
-      entity: 'tst_service',
-      method: 'testDataStoreInitialization'
-    })
-  }, /Wrong JSON/, 'Wrong JSON do not raise AV')
 }
