@@ -202,6 +202,24 @@ me.runAsAdminTest = function (ctx) {
 }
 me.entity.addMethod('runAsAdminTest')
 
+/**
+ * Test Session.runAsUser restore session in case login method fails
+ * @param {ubMethodParams} ctx
+ */
+me.runAsUserFailsTest = function (ctx) {
+  ctx.mParams.runAsUserData = {}
+  console.log('User ID before runAs', Session.userID)
+  try {
+    let admin2ID = UB.Repository('uba_user').attrs('ID').where('name', '=', 'admin2').selectScalar()
+    Session.runAsUser(admin2ID, doAsUser)
+  } catch (e) {
+    ctx.mParams.runAsUserData.error = e.toString()
+  }
+  console.log('User ID after runAs', Session.userID)
+  ctx.mParams.runAsUserData.userAfterFailedLogin = Session.userID
+}
+me.entity.addMethod('runAsUserFailsTest')
+
 me.dmlGeneratorTest = function (ctx) {
   const generator = require('@unitybase/dml-generator')
   ctx.mParams.resultSQL = generator.mssql.biuldSelectSql('tst_maindata', {
