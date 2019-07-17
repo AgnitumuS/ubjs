@@ -1,6 +1,7 @@
 const _ = require('lodash')
-const {strIComp} = require('../AbstractSchema')
+const { strIComp } = require('../AbstractSchema')
 const UBDomain = require('@unitybase/cs-shared').UBDomain
+const VARCHAR_MAX_RE = /\(.+\)/
 /**
  * Abstract class for database metadata
  * @author pavel.mash on 11.11.2016
@@ -305,7 +306,7 @@ class DBAbstract {
     for (let mustBe of this.refTableDefs) {
       if (!mustBe.doComparision) continue
       this.normalizeDefaults(mustBe)
-      let asIs = _.find(this.dbTableDefs, {_upperName: mustBe._upperName})
+      let asIs = _.find(this.dbTableDefs, { _upperName: mustBe._upperName })
       this.compareTableDefinitions(mustBe, asIs)
     }
     this.wantedSequences.forEach(seq => {
@@ -598,7 +599,7 @@ class DBAbstract {
         res += '(1)'
         break
       case 'JSON':
-        if (column.size) res += `(${column.size.toString()})`
+        if (column.size && !VARCHAR_MAX_RE.test(res)) res += `(${column.size.toString()})`
         break
     }
     return res

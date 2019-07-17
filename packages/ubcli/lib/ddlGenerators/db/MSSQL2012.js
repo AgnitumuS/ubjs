@@ -513,7 +513,7 @@ class DBSQL2012 extends DBAbstract {
       // 1. http://stackoverflow.com/questions/2133946/nvarcharmax-vs-ntext
       // 2. OLEDB provider raise 'Operand type clash: int is incompatible with ntext' for empty strings
       case 'BLOB': return 'VARBINARY(MAX)'
-      case 'JSON': return 'NVARCHAR'
+      case 'JSON': return 'NVARCHAR(MAX)'
       default: return dataType
     }
   }
