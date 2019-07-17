@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.34]
+### Fixed
+ - FTS scheduler job will skip FTS commands for entities what not in domain (this prevents AV inside updateFTSIndex)
+
 ## [5.2.26]
 ### Added
  - new scheduler `ubqMessagesCleanup` for truncating ubq_messages table (if there are no non-pending tasks).
