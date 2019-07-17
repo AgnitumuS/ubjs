@@ -11,7 +11,7 @@ function testOnUserLogin () {
   _.defaults(Session.uData, {
     tstNumArray: [1, 2, 3],
     tstStrArray: ['1', '2', '3'],
-    tstNested: {a: 1, b: '2'}
+    tstNested: { a: 1, b: '2' }
   })
 }
 

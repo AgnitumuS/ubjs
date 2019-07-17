@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.24]
+### Fixed
+ - `Session.runAsUser` & `Session.runAsAdmin` should restore original session even if one of `login` handler fails for passed user
+ 
 ### Changed
  - server-side UB.i18n now support formatting (like client side i18n). Sample:
 ```js

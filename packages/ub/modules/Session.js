@@ -180,8 +180,8 @@ Session.setUser = sessionBinding.switchUser
  */
 Session.runAsAdmin = function (func) {
   let result
-  sessionBinding.switchToAdmin()
   try {
+    sessionBinding.switchToAdmin()
     result = func()
   } finally {
     sessionBinding.switchToOriginal()
@@ -198,8 +198,8 @@ Session.runAsAdmin = function (func) {
  */
 Session.runAsUser = function (userID, func) {
   let result
-  sessionBinding.switchUser(userID)
   try {
+    sessionBinding.switchUser(userID)
     result = func()
   } finally {
     sessionBinding.switchToOriginal()

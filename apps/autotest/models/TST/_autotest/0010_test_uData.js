@@ -48,10 +48,25 @@ module.exports = function runUDataTest (options) {
     assert.deepStrictEqual(uDataInsidePseudoAdmin.roleIDs, [UBA.ROLES.ADMIN.ID])
   }
 
+  /**
+   * Test Session.runAsUser restore session in case login method fails
+   */
+  function testRunAsUserRestoreSessionOnFailInsideLogin () {
+    relogon({ user: 'admin', pwd: 'admin' })
+    let resp = conn.query({
+      entity: 'tst_service',
+      method: 'runAsUserFailsTest'
+    })
+    assert.strictEqual(resp.runAsUserData.userAfterFailedLogin, UBA.USERS.ADMIN.ID,
+      'In case runAsUser fails inside login session should be restored, should be ' + UBA.USERS.ADMIN.ID + ' but got ' + resp.runAsUserData.userAfterFailedLogin)
+  }
+
   console.debug('test_uData')
   testUData(conn)
   console.debug('test_uData persistance')
   testUDataPersistence()
+  console.debug('Test Session.runAsUser restore session in case login method fails')
+  testRunAsUserRestoreSessionOnFailInsideLogin()
   // console.debug('test data store')
   // testDataStore(conn)
 }

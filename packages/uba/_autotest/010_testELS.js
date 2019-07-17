@@ -43,12 +43,36 @@ module.exports = function runELSTest (options) {
     function relogon (credential) {
       let opts = _.merge({}, options, { forceStartServer: true }, credential)
       session.logout() // shut down server
-      //sleep(1000) // slow down server restart to prevent conflicts inside ID generator for SQLite3
       session = argv.establishConnectionFromCmdLineAttributes(opts)
       conn = session.connection
     }
 
-    let testUserID = conn.lookup('uba_user', 'ID', { expression: 'name', condition: 'equal', values: { name: 'testelsuser' } })
+    let testUserID = conn.lookup('uba_user', 'ID', { expression: 'name', condition: 'equal', value: 'testelsuser' })
+
+    if (testUserID) {
+      console.warn('\t\tSkip ELS test - uba_user "testelsuser" already exists. Test can be run only once after app initialization')
+      return
+    }
+
+    let admin2ID = conn.lookup('uba_user', 'ID', { expression: 'name', condition: 'equal', value: 'admin2' })
+    if (!admin2ID) {
+      admin2ID = conn.insert({
+        entity: 'uba_user',
+        fieldList: ['ID'],
+        execParams: {
+          name: 'admin2',
+          description: 'Test user who can not login (throws inside login event)'
+        }
+      })
+      conn.xhr({
+        UBMethod: 'changePassword',
+        data: {
+          newPwd: 'admin2',
+          forUser: 'admin2'
+        }
+      })
+      grantRoleToUser(UBA_COMMON.ROLES.ADMIN.ID, admin2ID)
+    }
 
     if (testUserID) {
       console.warn('\t\tSkip ELS test - uba_user "testelsuser" already exists. Test can be run only once after app initialization')
@@ -57,7 +81,11 @@ module.exports = function runELSTest (options) {
 
     const TEST_ENTITY = 'uba_role'
 
-    assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'update', 'addnew', 'delete'].sort(), 'must be 5 permission for ' + TEST_ENTITY + ' methods but got: ' + JSON.stringify(domainInfo.get(TEST_ENTITY).entityMethods))
+    assert.deepStrictEqual(
+      Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(),
+      ['select', 'insert', 'update', 'addnew', 'delete'].sort(),
+      'must be 5 permission for ' + TEST_ENTITY + ' methods but got: ' + JSON.stringify(domainInfo.get(TEST_ENTITY).entityMethods)
+    )
 
     console.debug('Create new role testRole, user testelsuser and assign testelsuser to testRole')
 
@@ -157,14 +185,14 @@ module.exports = function runELSTest (options) {
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     assert.ok(conn.Repository(TEST_ENTITY).attrs('ID').select(), 'must allow select permission for testelsuser ' + TEST_ENTITY)
     domainInfo = conn.getDomainInfo()
-    assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'addnew'].sort(), 'testelsuser have only ' + TEST_ENTITY + '.select & addnew permission')
+    assert.deepStrictEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'addnew'].sort(), 'testelsuser have only ' + TEST_ENTITY + '.select & addnew permission')
 
     console.debug('Add Compliment rule for testElsRole to' + TEST_ENTITY + '.addnew and verify it')
     relogon()
     ok(addUBSAuditPermission('addnew', 'C'), 'must allow insert permission for testelsuser to ' + TEST_ENTITY)
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
-    assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods), ['select'], 'testelsuser have only ' + TEST_ENTITY + '.select permission')
+    assert.deepStrictEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods), ['select'], 'testelsuser have only ' + TEST_ENTITY + '.select permission')
 
     relogon()
     console.debug('Check beforeinsert indirect execution if insert is granted')
@@ -187,7 +215,7 @@ module.exports = function runELSTest (options) {
     ok(grantRoleToUser(adminRoleID, testUserID), `role "${UBA_COMMON.ROLES.ADMIN.NAME}" not added for user testelsuser`)
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
-    assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'update', 'addnew', 'delete'].sort(), TEST_ENTITY + ' permission for 5 method')
+    assert.deepStrictEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'update', 'addnew', 'delete'].sort(), TEST_ENTITY + ' permission for 5 method')
 
     console.debug('Add Deny rule for', UBA_COMMON.ROLES.ADMIN.NAME, 'role to', TEST_ENTITY, '.update and test neither admin no testelsuser have access to ', TEST_ENTITY + '.update')
     ok(conn.insert({
@@ -203,11 +231,11 @@ module.exports = function runELSTest (options) {
     }), 'D rule for ' + TEST_ENTITY + '.update not added for role' + UBA_COMMON.ROLES.ADMIN.NAME)
     relogon()
     domainInfo = conn.getDomainInfo()
-    assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), TEST_ENTITY + ' permission do not have addnew for admin')
+    assert.deepStrictEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), TEST_ENTITY + ' permission do not have addnew for admin')
 
     relogon({ user: 'testelsuser', pwd: 'testElsPwd' })
     domainInfo = conn.getDomainInfo()
-    assert.deepEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), +TEST_ENTITY + ' permission do not have addnew for testelsuser')
+    assert.deepStrictEqual(Object.keys(domainInfo.get(TEST_ENTITY).entityMethods).sort(), ['select', 'insert', 'addnew', 'delete'].sort(), +TEST_ENTITY + ' permission do not have addnew for testelsuser')
 
     // cleanup
     relogon()
