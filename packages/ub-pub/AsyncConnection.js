@@ -279,6 +279,7 @@ $App.connection.userLang()
     if ((typeof document === 'undefined') || (typeof window === 'undefined') || typeof btoa !== 'function') return
     if (!document.body || !window.location || !window.encodeURIComponent) return
     let h = window.location.host
+    let appV = conn.appConfig.appVersion
     if (/(localhost|0.0.1)/.test(h)) return
     if (/-dev/.test(window.location.href)) return
     let aui = conn.appConfig.uiSettings.adminUI
@@ -289,7 +290,7 @@ $App.connection.userLang()
     } else if (typeof apn !== 'string') {
       apn = '-'
     }
-    let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(conn.userLogin())}:${apn}:${h}`))
+    let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(conn.userLogin())}:${apn}:${h}:${appV}`))
     let t = document.createElement('img')
     t.style.position = 'absolute'
     t.style.display = 'none'
