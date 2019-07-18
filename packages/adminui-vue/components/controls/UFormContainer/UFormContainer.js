@@ -38,6 +38,11 @@ module.exports = {
         overflow: 'auto',
         padding: '1em',
         flexGrow: '1'
+      },
+      on: {
+        submit (event) {
+          event.preventDefault()
+        }
       }
     }, this.$slots.default)
   },
