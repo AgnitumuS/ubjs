@@ -13,6 +13,9 @@ adminUiVue.dialogInfo('Hello')
 // inside Vue instance the same can be called as this.$dialogInfo
 ```
 
+### Fixed
+ - `UFormContainer` should prevent submitting of form in case user press Enter key while input on form is focused 
+
 ### Changed
  - default repository for `USelectEntity` & `USelectMultiple` is sorter by description attribute.
  Pass your repository for custom sorting (or to remove sorting) 
