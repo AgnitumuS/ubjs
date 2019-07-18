@@ -19,6 +19,23 @@ UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "H
 UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
 ```
 
+### Added
+ - new configuration key `security.domainMap` - rules for transformation of fully qualified domain names to NT4-style.
+ To be used for Negotiate authentication under Linux in case domain name contains dots.
+ For example to prevent transformation of `user@MYCOMPANY.COM` -> `MYCOMPANY\\user` (default behavior) the following can be configured:
+ ```JSON5
+{
+  //....
+  "security": {
+    "authenticationMethods": ["UB", "Negotiate"],
+    "domainMap": {
+      "MYCOMPANY.COM": "MYCOMPANY.COM"
+    }
+  }
+}
+```    
+ In this case Negotiated user name will be  `MYCOMPANY.COM\\user`
+
 ## [5.2.22]
 ### Added
  - update ubConfig JSON schema about new key `uiSettings.adminUI.pdfViewer.uriSuffix`
