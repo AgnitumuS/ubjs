@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/udisk",
-  "version": "5.0.71",
+  "version": "5.0.72",
   "description": "UnityBase udisk",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/udisk",
   "config": {
@@ -18,8 +18,8 @@
   "main": "udisk.js",
   "browser": "./public/udisk-public.js",
   "dependencies": {
-    "@unitybase/base": "^5.1.17",
-    "@unitybase/ub": "^5.2.23",
+    "@unitybase/base": "^5.1.18",
+    "@unitybase/ub": "^5.2.24",
     "lodash": "^4"
   },
   "peerDependencies": {
