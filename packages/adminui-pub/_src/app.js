@@ -3,6 +3,7 @@ const UB = require('@unitybase/ub-pub')
 const $App = require('./app/core/UBApp')
 require('./app/view/UBDropZone')
 require('./app/view/ErrorWindow')
+require('./app/core/UBUtilTree')
 
 /**
  * Main UnityBase Ext-based client file

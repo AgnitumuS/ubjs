@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.10.2]
 ### Changed
  - rename `pokazatPrevu` -> `showPreview`, `neNaidenShablon` -> `nodeTemplateNotFound` in i18n
+ 
+### Fixed
+ - return back `UB.core.UBUtilTree` (used in udisk)  
 
 ## [5.10.1]
 ### Fixed
