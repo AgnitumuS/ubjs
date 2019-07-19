@@ -275,7 +275,7 @@ $App.connection.userLang()
     return key ? uData[ key ] : uData
   }
 
-  function udot (conn) {
+  function udot (conn, lg) {
     if ((typeof document === 'undefined') || (typeof window === 'undefined') || typeof btoa !== 'function') return
     if (!document.body || !window.location || !window.encodeURIComponent) return
     let h = window.location.host
@@ -290,7 +290,7 @@ $App.connection.userLang()
     } else if (typeof apn !== 'string') {
       apn = '-'
     }
-    let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(conn.userLogin())}:${apn}:${h}:${appV}`))
+    let ut = btoa(window.encodeURIComponent(`${conn.serverVersion}:${MD5(lg)}:${apn}:${h}:${appV}`))
     let t = document.createElement('img')
     t.style.position = 'absolute'
     t.style.display = 'none'
@@ -315,7 +315,7 @@ $App.connection.userLang()
       // noinspection JSPotentiallyInvalidUsageOfThis
       userData.lang = this.appConfig.defaultLang
     }
-    if (!restored) udot(this)
+    if (!restored) udot(this, userData.login)
     return ubSession
   }
   /**
