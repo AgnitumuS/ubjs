@@ -21,7 +21,8 @@ adminUiVue.dialogInfo('Hello')
  Pass your repository for custom sorting (or to remove sorting) 
 
 ### Fixed
- - `USelectEnum` is sorted by `ubm_enum.sortOrder` 
+ - `USelectEnum` is sorted by `ubm_enum.sortOrder`
+ - `processing` - excluded fields mi_createDate, mi_createUser, mi_deleteDate, mi_deleteUser, mi_modifyUser, mi_owner from insert request
 
 ## [1.6.12]
 ### Fixed

@@ -13,33 +13,55 @@ module.exports = {
 
 const UB = require('@unitybase/ub-pub')
 
+const SYSTEM_FIELDS = new Set([
+  'mi_createDate',
+  'mi_createUser',
+  'mi_deleteDate',
+  'mi_deleteUser',
+  'mi_modifyUser',
+  'mi_owner'
+])
+
+/**
+ * "execParams" and "fieldList"
+ *
+ * @typedef {object} UbQueryParams
+ * @property {object} execParams
+ * @property {array} fieldList
+ */
+
 /**
  * Build "execParams" out of the state tracked by "instance" module.
+ *
  * @param {VuexTrackedObject} trackedObj
- * @return {object|null}
+ * @param {string} entity
+ * @return {object|null} execParams
  */
 function buildExecParams (trackedObj, entity) {
+  const execParams = {}
   if (trackedObj.isNew) {
-    return Object.entries(trackedObj.data)
-      .reduce((execParams, [attr, value]) => {
-        execParams[attr] = value
-        return execParams
-      }, {})
+    for (const [key, value] of Object.entries(trackedObj.data)) {
+      if (!SYSTEM_FIELDS.has(key) && !key.includes('.')) {
+        execParams[key] = value
+      }
+    }
+    return execParams
   }
 
   if (!Object.keys(trackedObj.originalData).length) {
     return null
   }
 
-  const execParams = {
-    ID: trackedObj.data.ID
-  }
+  execParams.ID = trackedObj.data.ID
   const isExistModifyDate = isExistAttr(entity, 'mi_modifyDate')
   if (isExistModifyDate) {
     execParams.mi_modifyDate = trackedObj.data.mi_modifyDate
   }
+
   for (const key of Object.keys(trackedObj.originalData)) {
-    execParams[key] = trackedObj.data[key]
+    if (!key.includes('.')) {
+      execParams[key] = trackedObj.data[key]
+    }
   }
   return execParams
 }
@@ -56,10 +78,10 @@ function buildDeleteRequest (entity, ID) {
 
 /**
  * @param {VuexTrackedCollection} collection
- * @param {string} entity
+ * @param {array} fieldList
  * @return {Array}
  */
-function buildCollectionRequests (collection) {
+function buildCollectionRequests (collection, fieldList) {
   const requests = []
   if (collection) {
     if (collection.deleted) {
@@ -69,13 +91,13 @@ function buildCollectionRequests (collection) {
     }
     if (collection.items) {
       for (const item of collection.items) {
-        const itemExecParams = buildExecParams(item, collection.entity)
-        if (itemExecParams) {
+        const execParams = buildExecParams(item, collection.entity)
+        if (execParams) {
           requests.push({
             entity: collection.entity,
             method: item.isNew ? 'insert' : 'update',
-            execParams: itemExecParams,
-            fieldList: Object.keys(itemExecParams),
+            execParams,
+            fieldList,
             collection: collection.key
           })
         }

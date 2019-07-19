@@ -15,6 +15,8 @@ const moment = require('moment')
  * @property {Array<VuexTrackedObject>} items    Current items, as it shall be shown on UI
  * @property {Array<VuexTrackedObject>} deleted  Deleted items, except items which are added
  *   (not originally loaded)
+ * @property {string} key Custom unique key which is set on init collection
+ * @property {string} entity Entity code
  */
 
 /**
