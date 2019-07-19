@@ -303,7 +303,7 @@ function createProcessingModule ({
         })
         const masterExecParams = buildExecParams(state, masterEntityName)
         const collectionsRequests = Object.values(state.collections)
-          .flatMap(collection => buildCollectionRequests(collection))
+          .flatMap(collection => buildCollectionRequests(collection, initCollectionsRequests[collection.key].repository.fieldList))
 
         try {
           /**
@@ -315,7 +315,7 @@ function createProcessingModule ({
               entity: masterEntityName,
               method: state.isNew ? 'insert' : 'update',
               execParams: masterExecParams,
-              fieldList: Object.keys(masterExecParams)
+              fieldList
             }
 
             const [masterResponse, ...collectionsResponse] = await UB.connection
