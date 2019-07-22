@@ -8,225 +8,225 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "lastName",
       "dataType": "String",
       "size": 128,
       "caption": "Last name",
       "description": "Employee last name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "lastName"
+      "isMultiLang": true
     },
     {
+      "name": "firstName",
       "dataType": "String",
       "size": 128,
       "caption": "First name",
       "description": "Employee first name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "firstName"
+      "isMultiLang": true
     },
     {
+      "name": "middleName",
       "dataType": "String",
       "size": 128,
       "caption": "Middle name",
       "description": "Employee middle name",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "middleName"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Employee description",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "sexType",
       "dataType": "Enum",
       "enumGroup": "CDN_SEXTYPE",
       "caption": "Sex",
       "description": "Employee sex",
       "allowNull": false,
-      "defaultValue": "?",
-      "name": "sexType"
+      "defaultValue": "?"
     },
     {
+      "name": "uniqNum",
       "dataType": "String",
       "size": 255,
       "caption": "Employee number",
       "description": "Employee number",
-      "allowNull": true,
-      "name": "uniqNum"
+      "allowNull": true
     },
     {
+      "name": "suffix",
       "dataType": "String",
       "size": 30,
       "caption": "Suffix",
       "description": "Suffix",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "suffix"
+      "isMultiLang": true
     },
     {
+      "name": "shortFIO",
       "dataType": "String",
       "size": 100,
       "caption": "Last name with initials",
       "description": "Example: A.Ivanov",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "shortFIO"
+      "isMultiLang": true
     },
     {
+      "name": "fullFIO",
       "dataType": "String",
       "size": 100,
       "caption": "Full name",
       "description": "Example: Anton Olegovich Ivanov",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "fullFIO"
+      "isMultiLang": true
     },
     {
+      "name": "apply",
       "dataType": "String",
       "size": 100,
       "caption": "Treatment",
       "description": "Describes how to treat to this person",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "apply"
+      "isMultiLang": true
     },
     {
+      "name": "lastNameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Last name in genitive",
       "description": "Employee last name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "lastNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "lastNameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Last name in dative",
       "description": "Employee last name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "lastNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "firstNameGen",
       "dataType": "String",
       "size": 128,
       "caption": "First name in genitive",
       "description": "Employee first name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "firstNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "firstNameDat",
       "dataType": "String",
       "size": 128,
       "caption": "First name in dative",
       "description": "Employee first name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "firstNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "middleNameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Middle name in genitive",
       "description": "Employee middle name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "middleNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "middleNameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Middle name in dative",
       "description": "Employee middle name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "middleNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "shortFIOGen",
       "dataType": "String",
       "size": 256,
       "caption": "Short name in genitive",
       "description": "Employee short name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "shortFIOGen"
+      "isMultiLang": true
     },
     {
+      "name": "shortFIODat",
       "dataType": "String",
       "size": 256,
       "caption": "Short name in dative",
       "description": "Employee short name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "shortFIODat"
+      "isMultiLang": true
     },
     {
+      "name": "fullFIOGen",
       "dataType": "String",
       "size": 512,
       "caption": "Full name in genitive",
       "description": "Employee full name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullFIOGen"
+      "isMultiLang": true
     },
     {
+      "name": "fullFIODat",
       "dataType": "String",
       "size": 512,
       "caption": "Full name in dative",
       "description": "Employee full name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullFIODat"
+      "isMultiLang": true
     },
     {
+      "name": "applyGen",
       "dataType": "String",
       "size": 100,
       "caption": "Treatment in genitive",
       "description": "Describes how to treat to this person in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "applyGen"
+      "isMultiLang": true
     },
     {
+      "name": "applyDat",
       "dataType": "String",
       "size": 100,
       "caption": "Treatment in dative",
       "description": "Describes how to treat to this person in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "applyDat"
+      "isMultiLang": true
     },
     {
+      "name": "departmentID",
       "dataType": "Entity",
       "associatedEntity": "cdn_department",
       "caption": "Department",
       "description": "Department of external organization, which employee belongs",
-      "allowNull": true,
-      "name": "departmentID"
+      "allowNull": true
     },
     {
+      "name": "organizationID",
       "dataType": "Entity",
       "associatedEntity": "cdn_organization",
       "caption": "Organization",
       "description": "External organization, which employee belongs",
-      "allowNull": false,
-      "name": "organizationID"
+      "allowNull": false
     },
     {
+      "name": "addrText",
       "dataType": "Text",
       "caption": "Addressee formulation",
       "description": "Formulation of the recipient, that will appear in the formation of outgoing document",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "addrText"
+      "isMultiLang": true
     }
   ],
   "mixins": {

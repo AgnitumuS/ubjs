@@ -7,23 +7,23 @@
   "descriptionAttribute": "name",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 32,
       "caption": "Code",
       "description": "Code of the department type",
       "allowNull": false,
       "isMultiLang": false,
-      "isUnique": true,
-      "name": "code"
+      "isUnique": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 100,
       "caption": "Name",
       "description": "Name of the department type",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     }
   ],
   "mixins": {

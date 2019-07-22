@@ -1,26 +1,31 @@
-﻿{
-    "caption": "jenis organisasi",
-    "description": "Organisasi jenis kamus",
-    "attributes": {
-        "code": {
-            "caption": "Kode",
-            "description": "Kode jenis organisasi"
-        },
-        "shortName": {
-            "caption": "Acronim",
-            "description": "Acronim dari jenis organisasi"
-        },
-        "name": {
-            "caption": "Nama",
-            "description": "Nama jenis organisasi"
-        },
-        "fullName": {
-            "caption": "Deskripsi",
-            "description": "Deskripsi tipe organisasi"
-        },
-        "isGovAuthority": {
-            "caption": "otoritas Gubernur",
-            "description": "Masuk, bahwa organisasi jenis ini adalah otoritas pemerintah"
-        }
+{
+  "caption": "jenis organisasi",
+  "description": "Organisasi jenis kamus",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kode",
+      "description": "Kode jenis organisasi"
+    },
+    {
+      "name": "shortName",
+      "caption": "Acronim",
+      "description": "Acronim dari jenis organisasi"
+    },
+    {
+      "name": "name",
+      "caption": "Nama",
+      "description": "Nama jenis organisasi"
+    },
+    {
+      "name": "fullName",
+      "caption": "Deskripsi",
+      "description": "Deskripsi tipe organisasi"
+    },
+    {
+      "name": "isGovAuthority",
+      "caption": "otoritas Gubernur",
+      "description": "Masuk, bahwa organisasi jenis ini adalah otoritas pemerintah"
     }
+  ]
 }

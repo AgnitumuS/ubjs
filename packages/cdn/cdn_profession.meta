@@ -8,25 +8,26 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Code",
       "description": "Code",
       "allowNull": false,
       "defaultValue": "----",
-      "isUnique": true,
-      "name": "code"
+      "isUnique": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "description": "Name of profession",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "caption": "Caption",
       "dataType": "String",
       "size": 128,
@@ -37,8 +38,7 @@
           "expressionType": "Expression",
           "expression": "[name]"
         }
-      ],
-      "name": "description"
+      ]
     }
   ],
   "mixins": {

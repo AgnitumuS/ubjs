@@ -1,26 +1,32 @@
-﻿{
-    "caption": "Unit Admin",
-    "description": "Unit Admin (negara, wilayah, kota)",
-    "attributes": {
-        "parentAdminUnitID": {
-            "caption": "Induk",
-            "description": "Induk"
-        },
-        "code": {
-            "caption": "Kode",
-            "description": "kode internal"
-        },
-        "name": {
-            "caption": "Nama"
-        },
-        "fullName": {
-            "caption": "Nama lengkap"
-        },
-        "adminUnitType": {
-            "caption": "Admin jenis unit"
-        },
-        "caption": {
-            "caption": "caption"
-        }
+{
+  "caption": "Unit Admin",
+  "description": "Unit Admin (negara, wilayah, kota)",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Induk",
+      "description": "Induk"
+    },
+    {
+      "name": "code",
+      "caption": "Kode",
+      "description": "kode internal"
+    },
+    {
+      "name": "name",
+      "caption": "Nama"
+    },
+    {
+      "name": "fullName",
+      "caption": "Nama lengkap"
+    },
+    {
+      "name": "adminUnitType",
+      "caption": "Admin jenis unit"
+    },
+    {
+      "name": "caption",
+      "caption": "caption"
     }
+  ]
 }

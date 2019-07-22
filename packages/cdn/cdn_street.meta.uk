@@ -1,26 +1,31 @@
-﻿{
-    "caption": "Список вулиць",
-    "description": "Список вулиць",
-    "attributes": {
-        "name": {
-            "caption": "Назва",
-            "description": "Назва вулиці"
-        },
-        "fullName": {
-            "caption": "Повна назва",
-            "description": "Повна назва"
-        },
-        "code": {
-            "caption": "Код",
-            "description": "Код"
-        },
-        "streetType": {
-            "caption": "Тип",
-            "description": "Тип"
-        },
-        "cityID": {
-            "caption": "Нас. пункт",
-            "description": "Населений пункт"
-        }
+{
+  "caption": "Список вулиць",
+  "description": "Список вулиць",
+  "attributes": [
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва вулиці"
+    },
+    {
+      "name": "fullName",
+      "caption": "Повна назва",
+      "description": "Повна назва"
+    },
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Код"
+    },
+    {
+      "name": "streetType",
+      "caption": "Тип",
+      "description": "Тип"
+    },
+    {
+      "name": "cityID",
+      "caption": "Нас. пункт",
+      "description": "Населений пункт"
     }
+  ]
 }

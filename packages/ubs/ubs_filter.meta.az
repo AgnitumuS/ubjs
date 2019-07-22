@@ -1,22 +1,27 @@
-﻿{
-    "caption": "Yadda saxlanmış filtrlər",
-    "description": "Yadda saxlanmış filtrlər",
-    "attributes": {
-        "code": {
-            "caption": "Коd",
-            "description": "Filtr qrupunun kodu"
-        },
-        "name": {
-            "caption": "Filtrin adı"
-        },
-        "filter": {
-            "caption": "Filtrin mətni"
-        },
-        "isGlobal": {
-            "caption": "Ümumi?"
-        },
-        "owner": {
-            "caption": "Sahib"
-        }
+{
+  "caption": "Yadda saxlanmış filtrlər",
+  "description": "Yadda saxlanmış filtrlər",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Коd",
+      "description": "Filtr qrupunun kodu"
+    },
+    {
+      "name": "name",
+      "caption": "Filtrin adı"
+    },
+    {
+      "name": "filter",
+      "caption": "Filtrin mətni"
+    },
+    {
+      "name": "isGlobal",
+      "caption": "Ümumi?"
+    },
+    {
+      "name": "owner",
+      "caption": "Sahib"
     }
+  ]
 }

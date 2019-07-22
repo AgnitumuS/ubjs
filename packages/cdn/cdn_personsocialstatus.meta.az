@@ -1,15 +1,17 @@
-﻿{
-    "caption": "Sosial status",
-    "description": "Sosial vəziyyəti Handbook",
-    "documentation": "Kataloq şəxslər üçün sosial statusu siyahısı depolar",
-    "attributes": {
-        "code": {
-            "caption": "Kod",
-            "description": "Kod"
-        },
-        "name": {
-            "caption": "Ad",
-            "description": "Ad"
-        }
+{
+  "caption": "Sosial status",
+  "description": "Sosial vəziyyəti Handbook",
+  "documentation": "Kataloq şəxslər üçün sosial statusu siyahısı depolar",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod",
+      "description": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ad",
+      "description": "Ad"
     }
+  ]
 }

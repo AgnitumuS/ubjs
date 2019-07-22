@@ -1,26 +1,31 @@
-﻿{
-    "caption": "Currencies",
-    "description": "Currencies dictionary",
-    "attributes": {
-        "intCode": {
-            "caption": "Digital code",
-            "description": "Digital code of currency"
-        },
-        "code3": {
-            "caption": "3-character code",
-            "description": "3-character code of currency"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "Name of currency"
-        },
-        "curMult":{
-            "caption": "Default multiplicity",
-            "description": "Default multiplicity"
-        },
-        "description": {
-            "caption": "Description",
-            "description": "Description"
-        }
+{
+  "caption": "Currencies",
+  "description": "Currencies dictionary",
+  "attributes": [
+    {
+      "name": "intCode",
+      "caption": "Digital code",
+      "description": "Digital code of currency"
+    },
+    {
+      "name": "code3",
+      "caption": "3-character code",
+      "description": "3-character code of currency"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of currency"
+    },
+    {
+      "name": "curMult",
+      "caption": "Default multiplicity",
+      "description": "Default multiplicity"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "Description"
     }
+  ]
 }

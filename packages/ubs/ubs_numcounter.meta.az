@@ -1,14 +1,16 @@
-﻿{
-    "caption": "Qeydiyyat açarları sayğacı",
-    "description": "Qeydiyyat açarları sayğacı",
-    "attributes": {
-        "regKey": {
-            "caption": "Qeydiyyat açarı",
-            "description": "Qeydiyyat açarı"
-        },
-        "counter": {
-            "caption": "Sayğac",
-            "description": "Sayğac"
-        }
+{
+  "caption": "Qeydiyyat açarları sayğacı",
+  "description": "Qeydiyyat açarları sayğacı",
+  "attributes": [
+    {
+      "name": "regKey",
+      "caption": "Qeydiyyat açarı",
+      "description": "Qeydiyyat açarı"
+    },
+    {
+      "name": "counter",
+      "caption": "Sayğac",
+      "description": "Sayğac"
     }
+  ]
 }

@@ -1,14 +1,16 @@
-﻿{
-    "caption": "Registration key counter",
-    "description": "Registration key counter",
-    "attributes": {
-        "regKey": {
-            "caption": "Registration key",
-            "description": "Registration key"
-        },
-        "counter": {
-            "caption": "Counter",
-            "description": "Counter"
-        }
+{
+  "caption": "Registration key counter",
+  "description": "Registration key counter",
+  "attributes": [
+    {
+      "name": "regKey",
+      "caption": "Registration key",
+      "description": "Registration key"
+    },
+    {
+      "name": "counter",
+      "caption": "Counter",
+      "description": "Counter"
     }
+  ]
 }

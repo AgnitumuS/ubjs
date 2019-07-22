@@ -1,26 +1,31 @@
-﻿{
-    "caption": "Валюти",
-    "description": "Довідник валют",
-    "attributes": {
-        "intCode": {
-            "caption": "Цифровий код",
-            "description": "Цифровий код валюти"
-        },
-        "code3": {
-            "caption": "Код 3-х символьний",
-            "description": "3-х символьний код валюти"
-        },
-        "name": {
-            "caption": "Назва",
-            "description": "Назва валюти"
-        },
-        "curMult":{
-            "caption": "Кратність",
-            "description": "Кратність"
-        },
-        "description": {
-            "caption": "Опис",
-            "description": "Опис (для вибору зі списку)"
-        }
+{
+  "caption": "Валюти",
+  "description": "Довідник валют",
+  "attributes": [
+    {
+      "name": "intCode",
+      "caption": "Цифровий код",
+      "description": "Цифровий код валюти"
+    },
+    {
+      "name": "code3",
+      "caption": "Код 3-х символьний",
+      "description": "3-х символьний код валюти"
+    },
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва валюти"
+    },
+    {
+      "name": "curMult",
+      "caption": "Кратність",
+      "description": "Кратність"
+    },
+    {
+      "name": "description",
+      "caption": "Опис",
+      "description": "Опис (для вибору зі списку)"
     }
+  ]
 }

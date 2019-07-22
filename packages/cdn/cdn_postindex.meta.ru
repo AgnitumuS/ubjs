@@ -1,17 +1,20 @@
-﻿{
-    "caption": "Почтовые индексы",
-    "description": "Почтовые индексы",
-    "attributes": {
-        "code": {
-            "caption": "Индекс",
-            "description": "Индекс"
-        },
-        "streetID": {
-            "caption": "Улица"
-        },
-        "description": {
-            "caption": "Описание",
-            "description": "Описание"
-        }
+{
+  "caption": "Почтовые индексы",
+  "description": "Почтовые индексы",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Индекс",
+      "description": "Индекс"
+    },
+    {
+      "name": "streetID",
+      "caption": "Улица"
+    },
+    {
+      "name": "description",
+      "caption": "Описание",
+      "description": "Описание"
     }
+  ]
 }

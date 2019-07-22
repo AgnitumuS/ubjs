@@ -1,36 +1,44 @@
-﻿{
-    "caption": "kota",
-    "description": "direktori kota",
-    "attributes": {
-        "parentAdminUnitID": {
-            "caption": "Induk"
-        },
-        "code": {
-            "caption": "Kode",
-            "description": "kode kota"
-        },
-        "name": {
-            "caption": "Nama",
-            "description": "Nama Kota"
-        },
-        "caption": {
-            "caption": "caption"
-        },
-        "description": {
-            "caption": "Deskripsi",
-            "description": "deskripsi kota"
-        },
-        "postalCode": {
-            "caption": "Kode Pos",
-            "description": "kode pos kota"
-        },
-        "phoneCode": {
-            "caption": "kode telepon",
-            "description": "Kota kode telepon"
-        },
-        "cityTypeID": {
-            "caption": "Mengetik",
-            "description": "Jenis kota"
-        }
+{
+  "caption": "kota",
+  "description": "direktori kota",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Induk"
+    },
+    {
+      "name": "code",
+      "caption": "Kode",
+      "description": "kode kota"
+    },
+    {
+      "name": "name",
+      "caption": "Nama",
+      "description": "Nama Kota"
+    },
+    {
+      "name": "caption",
+      "caption": "caption"
+    },
+    {
+      "name": "description",
+      "caption": "Deskripsi",
+      "description": "deskripsi kota"
+    },
+    {
+      "name": "postalCode",
+      "caption": "Kode Pos",
+      "description": "kode pos kota"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "kode telepon",
+      "description": "Kota kode telepon"
+    },
+    {
+      "name": "cityTypeID",
+      "caption": "Mengetik",
+      "description": "Jenis kota"
     }
+  ]
 }

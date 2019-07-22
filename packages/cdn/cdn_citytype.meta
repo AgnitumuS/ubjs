@@ -8,23 +8,23 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Code",
       "description": "Internal code of city type",
       "allowNull": false,
       "isMultiLang": false,
-      "isUnique": true,
-      "name": "code"
+      "isUnique": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "description": "City type name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     }
   ],
   "mixins": {

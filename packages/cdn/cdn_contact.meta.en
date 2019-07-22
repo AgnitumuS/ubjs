@@ -1,12 +1,14 @@
-﻿{
-    "caption": "Contacts",
-    "description": "Contacts directory",
-    "attributes": {
-        "contactTypeID": {
-            "caption": "Contact type"
-        },
-        "value": {
-            "caption": "Contact"
-        }
+{
+  "caption": "Contacts",
+  "description": "Contacts directory",
+  "attributes": [
+    {
+      "name": "contactTypeID",
+      "caption": "Contact type"
+    },
+    {
+      "name": "value",
+      "caption": "Contact"
     }
+  ]
 }

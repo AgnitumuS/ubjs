@@ -1,30 +1,36 @@
-﻿{
-    "caption": "pengaturan",
-    "description": "Entitas dengan informasi tentang sistem pengaturan",
-    "attributes": {
-        "settingKey": {
-            "caption": "Kunci",
-            "description": "kunci pengaturan"
-        },
-        "name": {
-            "caption": "Nama",
-            "description": "nama pengaturan"
-        },
-        "description": {
-            "caption": "Deskripsi",
-            "description": "Deskripsi"
-        },
-        "type": {
-            "caption": "Mengetik",
-            "description": "Jenis nilai"
-        },
-        "settingValue": {
-            "caption": "Nilai",
-            "description": "Nilai"
-        },
-        "defaultValue": {
-            "caption": "nilai default",
-            "description": "nilai default"
-        }
+{
+  "caption": "pengaturan",
+  "description": "Entitas dengan informasi tentang sistem pengaturan",
+  "attributes": [
+    {
+      "name": "settingKey",
+      "caption": "Kunci",
+      "description": "kunci pengaturan"
+    },
+    {
+      "name": "name",
+      "caption": "Nama",
+      "description": "nama pengaturan"
+    },
+    {
+      "name": "description",
+      "caption": "Deskripsi",
+      "description": "Deskripsi"
+    },
+    {
+      "name": "type",
+      "caption": "Mengetik",
+      "description": "Jenis nilai"
+    },
+    {
+      "name": "settingValue",
+      "caption": "Nilai",
+      "description": "Nilai"
+    },
+    {
+      "name": "defaultValue",
+      "caption": "nilai default",
+      "description": "nilai default"
     }
+  ]
 }

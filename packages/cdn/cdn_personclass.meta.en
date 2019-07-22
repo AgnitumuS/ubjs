@@ -1,15 +1,17 @@
-﻿{
-    "caption": "Person classification",
-    "description": "Person classification",
-    "documentation": "Internal classification of persons",
-    "attributes": {
-        "code": {
-            "caption": "Code",
-            "description": "Code"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "Name of category"
-        }
+{
+  "caption": "Person classification",
+  "description": "Person classification",
+  "documentation": "Internal classification of persons",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of category"
     }
+  ]
 }

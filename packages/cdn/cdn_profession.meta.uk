@@ -1,17 +1,20 @@
-﻿{
-    "caption": "Професії",
-    "description": "Довідник професій",
-    "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Код професії"
-        },
-        "name": {
-            "caption": "Назва",
-            "description": "Назва професії"
-        },
-        "description": {
-            "caption": "Заголовок"
-        }
+{
+  "caption": "Професії",
+  "description": "Довідник професій",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Код професії"
+    },
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва професії"
+    },
+    {
+      "name": "description",
+      "caption": "Заголовок"
     }
+  ]
 }

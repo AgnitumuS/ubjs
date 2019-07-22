@@ -1,37 +1,45 @@
-﻿{
-    "caption": "Positions",
-    "description": "List of positions",
-    "attributes": {
-        "code": {
-            "caption": "Code",
-            "description": "Code of position"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "Position name"
-        },
-        "fullName": {
-            "caption": "Full name",
-            "description": "Position full name"
-        },
-        "nameGen": {
-            "caption": "Name in genitive case",
-            "description": "Position name in genitive case"
-        },
-        "nameDat": {
-            "caption": "Name in dative case",
-            "description": "Position name in dative case"
-        },
-        "fullNameGen": {
-            "caption": "Full name in genitive case",
-            "description": "Position full name in genitive case"
-        },
-        "description": {
-            "caption": "Caption"
-        },
-        "fullNameDat": {
-            "caption": "Full name in dative case",
-            "description": "Position full name in dative case"
-        }
+{
+  "caption": "Positions",
+  "description": "List of positions",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of position"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Position name"
+    },
+    {
+      "name": "fullName",
+      "caption": "Full name",
+      "description": "Position full name"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Name in genitive case",
+      "description": "Position name in genitive case"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Name in dative case",
+      "description": "Position name in dative case"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Full name in genitive case",
+      "description": "Position full name in genitive case"
+    },
+    {
+      "name": "description",
+      "caption": "Caption"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Full name in dative case",
+      "description": "Position full name in dative case"
     }
+  ]
 }

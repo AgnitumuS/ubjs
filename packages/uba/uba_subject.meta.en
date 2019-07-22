@@ -1,17 +1,20 @@
-﻿{
-    "caption": "Administration subjects",
-    "description": "Administration subjects",
-    "attributes": {
-	"code":	{
-	  "caption": "Code"
-	},
-        "name": {
-            "caption": "Login",
-            "description": "Login"
-        },
-        "sType": {
-            "caption": "Subject type",
-            "description": "Subject type"
-        }
+{
+  "caption": "Administration subjects",
+  "description": "Administration subjects",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Login",
+      "description": "Login"
+    },
+    {
+      "name": "sType",
+      "caption": "Subject type",
+      "description": "Subject type"
     }
+  ]
 }

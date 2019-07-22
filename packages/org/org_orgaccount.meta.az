@@ -1,30 +1,36 @@
-﻿{
-    "caption": "Hesablaşma hesabları",
-    "description": "Təşkilatların hesablaşma hesabları üzrə sorğu kitabçaları",
-    "attributes": {
-        "organizationID": {
-            "caption": "Təşkilat",
-            "description": "Təşkilat"
-        },
-        "currencyID": {
-            "caption": "Valyuta",
-            "description": "Hesab valyutası"
-        },
-        "bankID": {
-            "caption": "Bank",
-            "description": "Hesabın açıldığı bank"
-        },
-        "code": {
-            "caption": "Hesab kodu",
-            "description": "Hesab kodu (hesabın nömrəsi)"
-        },
-        "description": {
-            "caption": "Təsvir",
-            "description": "Təyinatın təsviri"
-        },
-        "acctype": {
-            "caption": "Hesab tipi",
-            "description": "Hesab tipi"
-        }
+{
+  "caption": "Hesablaşma hesabları",
+  "description": "Təşkilatların hesablaşma hesabları üzrə sorğu kitabçaları",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "Təşkilat",
+      "description": "Təşkilat"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Valyuta",
+      "description": "Hesab valyutası"
+    },
+    {
+      "name": "bankID",
+      "caption": "Bank",
+      "description": "Hesabın açıldığı bank"
+    },
+    {
+      "name": "code",
+      "caption": "Hesab kodu",
+      "description": "Hesab kodu (hesabın nömrəsi)"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir",
+      "description": "Təyinatın təsviri"
+    },
+    {
+      "name": "acctype",
+      "caption": "Hesab tipi",
+      "description": "Hesab tipi"
     }
+  ]
 }

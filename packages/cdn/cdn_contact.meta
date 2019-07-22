@@ -8,26 +8,26 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "contactTypeID",
       "dataType": "Entity",
       "associatedEntity": "cdn_contacttype",
       "caption": "Contact type",
-      "allowNull": false,
-      "name": "contactTypeID"
+      "allowNull": false
     },
     {
+      "name": "value",
       "dataType": "String",
       "size": 255,
       "caption": "Contact",
       "allowNull": false,
-      "isMultiLang": false,
-      "name": "value"
+      "isMultiLang": false
     },
     {
+      "name": "subjectID",
       "dataType": "BigInt",
       "caption": "Subject",
       "allowNull": false,
-      "documentation": "Reference to contact owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in delete:before manually",
-      "name": "subjectID"
+      "documentation": "Reference to contact owner. No database constraint here, since we don't know all entities what want to store contacts. Entity developer must remove contacts in delete:before manually"
     }
   ],
   "mixins": {

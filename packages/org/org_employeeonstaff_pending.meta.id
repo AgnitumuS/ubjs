@@ -1,18 +1,21 @@
-﻿{
-    "caption": "Tugas dengan tanggal tertunda",
-    "description": "Tugas dengan tanggal tertunda",
-    "attributes": {
-        "emponstaffID": {
-            "caption": "Tugas",
-            "description": "Tugas"
-        },
-        "startDate": {
-            "caption": "Mulai",
-            "description": "tanggal mulai tugas"
-        },
-        "endDate": {
-            "caption": "Akhir",
-            "description": "tanggal akhir tugas"
-        }
+{
+  "caption": "Tugas dengan tanggal tertunda",
+  "description": "Tugas dengan tanggal tertunda",
+  "attributes": [
+    {
+      "name": "emponstaffID",
+      "caption": "Tugas",
+      "description": "Tugas"
+    },
+    {
+      "name": "startDate",
+      "caption": "Mulai",
+      "description": "tanggal mulai tugas"
+    },
+    {
+      "name": "endDate",
+      "caption": "Akhir",
+      "description": "tanggal akhir tugas"
     }
+  ]
 }

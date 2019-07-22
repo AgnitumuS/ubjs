@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.0]
+### Changed
+ - all meta files and they localization transformed to array-of-attributes format
+
 ## [5.1.33]
 ### Fixed
  - icon selection in umb_navshortcur form now works in fireFox 

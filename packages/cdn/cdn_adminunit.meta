@@ -8,53 +8,53 @@
   "documentation": "Main parent for countries, regions and cities",
   "attributes": [
     {
+      "name": "parentAdminUnitID",
       "dataType": "Entity",
       "associatedEntity": "cdn_adminunit",
       "caption": "Parent",
       "description": "Parent",
-      "allowNull": true,
-      "name": "parentAdminUnitID"
+      "allowNull": true
     },
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Code",
       "description": "Internal code",
       "allowNull": false,
-      "isUnique": true,
-      "name": "code"
+      "isUnique": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
       "size": 255,
       "caption": "Full name",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "adminUnitType",
       "dataType": "Enum",
       "enumGroup": "CDN_ADMINUNITTYPE",
       "caption": "Admin unit type",
       "documentation": "String representation of unit's type for fast queries",
-      "allowNull": false,
-      "name": "adminUnitType"
+      "allowNull": false
     },
     {
+      "name": "caption",
       "dataType": "String",
       "size": 1024,
       "caption": "Caption",
       "allowNull": true,
-      "isMultilang": true,
-      "name": "caption"
+      "isMultiLang": true
     }
   ],
   "mixins": {

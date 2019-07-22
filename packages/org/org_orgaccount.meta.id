@@ -1,29 +1,35 @@
-﻿{
-    "caption": "Akun saat ini",
-    "description": "Organisasi giro kamus",
-    "attributes": {
-        "organizationID": {
-            "caption": "Organisasi",
-            "description": "Organisasi"
-        },
-        "currencyID": {
-            "caption": "Mata uang",
-            "description": "Mata uang dari rekening"
-        },
-        "bankID": {
-            "caption": "Bank",
-            "description": "Bank of account"
-        },
-        "code": {
-            "caption": "Kode",
-            "description": "Kode akun"
-        },
-        "description": {
-            "caption": "Komentar"
-        },
-        "acctype": {
-            "caption": "Mengetik",
-            "description": "Jenis account"
-        }
+{
+  "caption": "Akun saat ini",
+  "description": "Organisasi giro kamus",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "Organisasi",
+      "description": "Organisasi"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Mata uang",
+      "description": "Mata uang dari rekening"
+    },
+    {
+      "name": "bankID",
+      "caption": "Bank",
+      "description": "Bank of account"
+    },
+    {
+      "name": "code",
+      "caption": "Kode",
+      "description": "Kode akun"
+    },
+    {
+      "name": "description",
+      "caption": "Komentar"
+    },
+    {
+      "name": "acctype",
+      "caption": "Mengetik",
+      "description": "Jenis account"
     }
+  ]
 }

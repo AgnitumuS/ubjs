@@ -1,26 +1,31 @@
-﻿{
-    "caption": "Valyutalar",
-    "description": "Valyutalar üzrə sorğu kitabçası",
-    "attributes": {
-        "intCode": {
-            "caption": "Rəqəmsal kod",
-            "description": "Rəqəmsal kod"
-        },
-        "code3": {
-            "caption": "3 simvollu kod",
-            "description": "valyutanın 3 simvollu kodu"
-        },
-        "name": {
-            "caption": "Ad",
-            "description": "Valyutanın adı"
-        },
-        "curMult":{
-            "caption": "Çoxsaylılıq",
-            "description": "КÇoxsaylılıq"
-        },
-        "description": {
-            "caption": "Təsvir",
-            "description": "Təyinatın təsviri"
-        }
+{
+  "caption": "Valyutalar",
+  "description": "Valyutalar üzrə sorğu kitabçası",
+  "attributes": [
+    {
+      "name": "intCode",
+      "caption": "Rəqəmsal kod",
+      "description": "Rəqəmsal kod"
+    },
+    {
+      "name": "code3",
+      "caption": "3 simvollu kod",
+      "description": "valyutanın 3 simvollu kodu"
+    },
+    {
+      "name": "name",
+      "caption": "Ad",
+      "description": "Valyutanın adı"
+    },
+    {
+      "name": "curMult",
+      "caption": "Çoxsaylılıq",
+      "description": "КÇoxsaylılıq"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir",
+      "description": "Təyinatın təsviri"
     }
+  ]
 }

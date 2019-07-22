@@ -1,67 +1,82 @@
-﻿{
-    "caption": "Staff units",
-    "description": "List of staff units",
-    "documentation":"This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
-    "attributes": {
-        "parentID": {
-            "caption": "Parent",
-            "description": "Parent"
-        },
-        "code": {
-            "caption": "Internal code",
-            "description": "Staff unit internal code"
-        },
-        "name": {
-            "caption": "Staff unit name",
-            "description": "Name of staff unit without the quotes and abbreviations"
-        },
-        "fullName": {
-            "caption": "Full name",
-            "description": "Staff unit full name"
-        },
-        "description": {
-            "caption": "Staff unit description",
-            "description": "Staff unit description"
-        },
-        "nameGen": {
-            "caption": "Staff unit name in genitive case",
-            "description": "Name of staff unit without the quotes and abbreviations in genitive case"
-        },
-        "nameDat": {
-            "caption": "Staff unit name in dative case",
-            "description": "Name of staff unit without the quotes and abbreviations in dative case"
-        },
-        "fullNameGen": {
-            "caption": "Full name in genitive case",
-            "description": "Staff unit full name in genitive case"
-        },
-        "fullNameDat": {
-            "caption": "Full name in dative case",
-            "description": "Full name in dative case"
-        },
-        "caption": {
-            "caption": "Caption",
-            "description": "Caption"
-        },
-        "professionExtID": {
-            "caption": "Profession",
-            "description": "Profession"
-        },
-        "professionID": {
-            "caption": "Position",
-            "description": "Position"
-        },
-        "staffUnitTypeID": {
-            "caption": "Staff unit type",
-            "description": "Staff unit type"
-        },
-        "subordinationLevel": {
-            "caption": "Subordination level",
-            "description": "If level is lower - then staff unit is more important"
-        },
-        "isBoss": {
-            "caption": "Boss",
-            "description": "Boss"
-        }
+{
+  "caption": "Staff units",
+  "description": "List of staff units",
+  "documentation": "This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Parent",
+      "description": "Parent"
+    },
+    {
+      "name": "code",
+      "caption": "Internal code",
+      "description": "Staff unit internal code"
+    },
+    {
+      "name": "name",
+      "caption": "Staff unit name",
+      "description": "Name of staff unit without the quotes and abbreviations"
+    },
+    {
+      "name": "fullName",
+      "caption": "Full name",
+      "description": "Staff unit full name"
+    },
+    {
+      "name": "description",
+      "caption": "Staff unit description",
+      "description": "Staff unit description"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Staff unit name in genitive case",
+      "description": "Name of staff unit without the quotes and abbreviations in genitive case"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Staff unit name in dative case",
+      "description": "Name of staff unit without the quotes and abbreviations in dative case"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Full name in genitive case",
+      "description": "Staff unit full name in genitive case"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Full name in dative case",
+      "description": "Full name in dative case"
+    },
+    {
+      "name": "caption",
+      "caption": "Caption",
+      "description": "Caption"
+    },
+    {
+      "name": "professionExtID",
+      "caption": "Profession",
+      "description": "Profession"
+    },
+    {
+      "name": "professionID",
+      "caption": "Position",
+      "description": "Position"
+    },
+    {
+      "name": "staffUnitTypeID",
+      "caption": "Staff unit type",
+      "description": "Staff unit type"
+    },
+    {
+      "name": "subordinationLevel",
+      "caption": "Subordination level",
+      "description": "If level is lower - then staff unit is more important"
+    },
+    {
+      "name": "isBoss",
+      "caption": "Boss",
+      "description": "Boss"
     }
+  ]
 }

@@ -1,22 +1,26 @@
-﻿{
-    "caption": "Форма власності",
-    "description": "Довідник форм власності організацій",
-    "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Внутрішній код форм власності"
-        },
-        "shortName": {
-            "caption": "Абревіатура",
-            "description": "Абревіатура форми власності"
-        },
-        "name": {
-            "caption": "Назва",
-            "description": "Назва форм власності"
-        },
-        "fullName": {
-            "caption": "Повна назва",
-            "description": "Повна назва форм власності"
-        }
+{
+  "caption": "Форма власності",
+  "description": "Довідник форм власності організацій",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Внутрішній код форм власності"
+    },
+    {
+      "name": "shortName",
+      "caption": "Абревіатура",
+      "description": "Абревіатура форми власності"
+    },
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва форм власності"
+    },
+    {
+      "name": "fullName",
+      "caption": "Повна назва",
+      "description": "Повна назва форм власності"
     }
+  ]
 }

@@ -1,18 +1,21 @@
-﻿{
-    "caption": "Təxirə salınmış tarixli təyinatlar",
-    "description": "Təxirə salınmış tarixli təyinatlar",
-    "attributes": {
-        "emponstaffID": {
-            "caption": "Təyinat",
-            "description": "Təyinat"
-        },
-        "startDate": {
-            "caption": "Başlanma tarixi",
-            "description": "Təyinatın başlanma tarixi"
-        },
-        "endDate": {
-            "caption": "Son",
-            "description": "Təyinatın sonu tarixi"
-        }
+{
+  "caption": "Təxirə salınmış tarixli təyinatlar",
+  "description": "Təxirə salınmış tarixli təyinatlar",
+  "attributes": [
+    {
+      "name": "emponstaffID",
+      "caption": "Təyinat",
+      "description": "Təyinat"
+    },
+    {
+      "name": "startDate",
+      "caption": "Başlanma tarixi",
+      "description": "Təyinatın başlanma tarixi"
+    },
+    {
+      "name": "endDate",
+      "caption": "Son",
+      "description": "Təyinatın sonu tarixi"
     }
+  ]
 }

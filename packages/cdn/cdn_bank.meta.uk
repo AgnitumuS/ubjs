@@ -1,40 +1,49 @@
-﻿{
-    "caption": "Банки",
-    "description": "Довідник банків",
-    "attributes": {
-        "MFO": {
-            "caption": "МФО",
-            "description": "МФО банка"
-        },
-        "code": {
-            "caption": "ЄДРПОУ",
-            "description": "Код ЄДРПОУ"
-        },
-        "name": {
-            "caption": "Робоча назва",
-            "description": "Назва без лапок і форм власності. Для зручності при пошуку."
-        },
-        "fullName": {
-            "caption": "Повна назва",
-            "description": "Повна назва, яка вказана у свідоцтві про реєстрацію. Використовується у звітах."
-        },
-        "phones": {
-            "caption": "Телефони"
-        },
-        "address": {
-            "caption": "Адреса"
-        },
-        "countryID": {
-            "caption": "Країна",
-            "description": "Країна реєстрації"
-        },
-        "cityID": {
-            "caption": "Місто",
-            "description": "Місто реєстрації"
-        },
-        "description": {
-            "caption": "Опис",
-            "description": "Опис (для вибору зі списку)"
-        }
+{
+  "caption": "Банки",
+  "description": "Довідник банків",
+  "attributes": [
+    {
+      "name": "MFO",
+      "caption": "МФО",
+      "description": "МФО банка"
+    },
+    {
+      "name": "code",
+      "caption": "ЄДРПОУ",
+      "description": "Код ЄДРПОУ"
+    },
+    {
+      "name": "name",
+      "caption": "Робоча назва",
+      "description": "Назва без лапок і форм власності. Для зручності при пошуку."
+    },
+    {
+      "name": "fullName",
+      "caption": "Повна назва",
+      "description": "Повна назва, яка вказана у свідоцтві про реєстрацію. Використовується у звітах."
+    },
+    {
+      "name": "phones",
+      "caption": "Телефони"
+    },
+    {
+      "name": "address",
+      "caption": "Адреса"
+    },
+    {
+      "name": "countryID",
+      "caption": "Країна",
+      "description": "Країна реєстрації"
+    },
+    {
+      "name": "cityID",
+      "caption": "Місто",
+      "description": "Місто реєстрації"
+    },
+    {
+      "name": "description",
+      "caption": "Опис",
+      "description": "Опис (для вибору зі списку)"
     }
+  ]
 }

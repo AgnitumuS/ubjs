@@ -1,21 +1,25 @@
-﻿{
-    "caption": "Діаграми",
-    "description": "Діаграми",
-    "attributes": {
-        "orgunitID": {
-            "caption": "Корінь"
-        },
-        "caption": {
-            "caption": "Назва",
-            "description": "Назва"
-        },
-        "isdefault": {
-            "caption": "За замовченням",
-            "description": "За замовченням"
-        },
-        "document": {
-            "caption": "Органограма",
-            "description": "Органограма"
-        }
+{
+  "caption": "Діаграми",
+  "description": "Діаграми",
+  "attributes": [
+    {
+      "name": "orgunitID",
+      "caption": "Корінь"
+    },
+    {
+      "name": "caption",
+      "caption": "Назва",
+      "description": "Назва"
+    },
+    {
+      "name": "isdefault",
+      "caption": "За замовченням",
+      "description": "За замовченням"
+    },
+    {
+      "name": "document",
+      "caption": "Органограма",
+      "description": "Органограма"
     }
+  ]
 }

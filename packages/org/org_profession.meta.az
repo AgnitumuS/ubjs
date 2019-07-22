@@ -1,37 +1,45 @@
-﻿{
-    "caption": "Vəzifələr",
-    "description": "Vəzifələr üzrə sorğu kitabçası",
-    "attributes": {
-        "code": {
-            "caption": "Коd",
-            "description": "Vəzifənin kodu"
-        },
-        "name": {
-            "caption": "Ad",
-            "description": "Vəzifənin adı"
-        },
-        "fullName": {
-            "caption": "Tam ad",
-            "description": "Vəzifənin tam adı"
-        },
-        "nameGen": {
-            "caption": "Yiyəlik halda ad",
-            "description": "Yiyəlik halda vəzifənin adı"
-        },
-        "nameDat": {
-            "caption": "Yönlük halda ad",
-            "description": "Yönlük halda vəzifənin adı"
-        },
-        "fullNameGen": {
-            "caption": "Yiyəlik halda tam ad",
-            "description": "Yiyəlik halda vəzifənin tam adı"
-        },
-        "fullNameDat": {
-            "caption": "Yönlük halda tam ad",
-            "description": "Yönlük halda vəzifənin tam adı"
-        },
-        "description": {
-            "caption": "Ad və kod"
-        }
+{
+  "caption": "Vəzifələr",
+  "description": "Vəzifələr üzrə sorğu kitabçası",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Коd",
+      "description": "Vəzifənin kodu"
+    },
+    {
+      "name": "name",
+      "caption": "Ad",
+      "description": "Vəzifənin adı"
+    },
+    {
+      "name": "fullName",
+      "caption": "Tam ad",
+      "description": "Vəzifənin tam adı"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Yiyəlik halda ad",
+      "description": "Yiyəlik halda vəzifənin adı"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Yönlük halda ad",
+      "description": "Yönlük halda vəzifənin adı"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Yiyəlik halda tam ad",
+      "description": "Yiyəlik halda vəzifənin tam adı"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Yönlük halda tam ad",
+      "description": "Yönlük halda vəzifənin tam adı"
+    },
+    {
+      "name": "description",
+      "caption": "Ad və kod"
     }
+  ]
 }

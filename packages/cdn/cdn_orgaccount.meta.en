@@ -1,30 +1,36 @@
-﻿{
-    "caption": "Current accounts",
-    "description": "Organization's current accounts dictionary",
-    "attributes": {
-        "organizationID": {
-            "caption": "Organization",
-            "description": "Organization"
-        },
-        "currencyID": {
-            "caption": "Currency",
-            "description": "Currency of the account"
-        },
-        "bankID": {
-            "caption": "Bank",
-            "description": "Bank of the account"
-        },
-        "code": {
-            "caption": "Code",
-            "description": "Code of the account"
-        },
-        "acctype": {
-            "caption": "Type",
-            "description": "Type of the account"
-        },
-        "description": {
-            "caption": "Description",
-            "description": "Description"
-        }
+{
+  "caption": "Current accounts",
+  "description": "Organization's current accounts dictionary",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "Organization",
+      "description": "Organization"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Currency",
+      "description": "Currency of the account"
+    },
+    {
+      "name": "bankID",
+      "caption": "Bank",
+      "description": "Bank of the account"
+    },
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of the account"
+    },
+    {
+      "name": "acctype",
+      "caption": "Type",
+      "description": "Type of the account"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "Description"
     }
+  ]
 }
