@@ -4,6 +4,7 @@ const fs = require('fs')
 
 const fileList = []
 
+const META_RE = /\.meta($|\...$)/
 /**
  * Creates a file path list for a directory (recursively)
  * @param {string} initialDirectory - path of initial directory
@@ -15,7 +16,7 @@ function readDirectoryFiles (initialDirectory) {
     if (fs.statSync(elementPath).isDirectory()) {
       readDirectoryFiles(elementPath)
     }
-    if (fs.statSync(elementPath).isFile() && elementPath.indexOf('.meta') > 3) {
+    if (fs.statSync(elementPath).isFile() && META_RE.test(elementPath)) {
       fileList.push(elementPath)
     }
   })
@@ -24,8 +25,8 @@ function readDirectoryFiles (initialDirectory) {
 module.exports = function metaTr (options) {
   if (!options) {
     let opts = cmdLineOpt.describe('meta-tr', '*.meta transformation to fit a latest meta JSON schema', 'ub')
-      .add({ short: 'm', long: 'meta', param: 'metaFile', help: `Path to *.meta or *.meta.lang file or 
-       to the directory contained *.meta files to transform` })
+      .add({ short: 'm', long: 'meta', param: 'metaFile', help: `Path to *.meta or *.meta.lang file or to the folder;
+       In case of folder all *.meta* files will be transformed recursively` })
     options = opts.parseVerbose({}, true)
     if (!options) return
   }

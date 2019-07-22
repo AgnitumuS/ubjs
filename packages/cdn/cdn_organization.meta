@@ -8,141 +8,141 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Internal code",
       "description": "Organization internal code",
-      "allowNull": true,
-      "name": "code"
+      "allowNull": true
     },
     {
+      "name": "OKPOCode",
       "dataType": "String",
       "size": 16,
       "caption": "CCEO",
       "description": "Common classifier of enterprises and organizations (CCEO)",
       "allowNull": true,
-      "isUnique": true,
-      "name": "OKPOCode"
+      "isUnique": true
     },
     {
+      "name": "taxCode",
       "dataType": "String",
       "size": 32,
       "caption": "Tax #",
       "description": "Tax number",
-      "allowNull": true,
-      "name": "taxCode"
+      "allowNull": true
     },
     {
+      "name": "vatCode",
       "dataType": "String",
       "size": 32,
       "caption": "VAT #",
       "description": "VAT (value-added tax) registration certificate number",
-      "allowNull": true,
-      "name": "vatCode"
+      "allowNull": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Organization name",
       "description": "Name of organization without the quotes and abbreviations",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
       "size": 255,
       "caption": "Organization full name",
       "description": "Full name of organization, as it's specified in the certificate of registration",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "nameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Name in genitive case",
       "description": "Organization name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameGen"
+      "isMultiLang": true
     },
     {
+      "name": "nameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Name in dative case",
       "description": "Organization name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameDat"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameGen",
       "dataType": "String",
       "size": 255,
       "caption": "Full name in genitive case",
       "description": "Full name of organization, as it's specified in the certificate of registration, in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameDat",
       "dataType": "String",
       "size": 255,
       "caption": "Full name in dative case",
       "description": "Full name of organization, as it's specified in the certificate of registration, in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Organization description",
       "description": "Organization description",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "orgBusinessTypeID",
       "dataType": "Entity",
       "associatedEntity": "cdn_orgbusinesstype",
       "caption": "Organization type",
       "description": "Organization type",
-      "allowNull": true,
-      "name": "orgBusinessTypeID"
+      "allowNull": true
     },
     {
+      "name": "orgOwnershipTypeID",
       "dataType": "Entity",
       "associatedEntity": "cdn_orgownershiptype",
       "caption": "Ownership type",
       "description": "Ownership type",
-      "allowNull": true,
-      "name": "orgOwnershipTypeID"
+      "allowNull": true
     },
     {
+      "name": "corrIndexID",
       "dataType": "Entity",
       "associatedEntity": "cdn_corrindex",
       "caption": "Index of correspondent",
       "description": "Index of correspondent",
-      "allowNull": true,
-      "name": "corrIndexID"
+      "allowNull": true
     },
     {
+      "name": "addrText",
       "dataType": "Text",
       "caption": "Addressee formulation",
       "description": "Formulation of the recipient, that will appear in the formation of outgoing document",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "addrText"
+      "isMultiLang": true
     },
     {
+      "name": "caption",
       "dataType": "String",
       "size": 255,
       "caption": "Caption",
       "description": "Caption",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "caption"
+      "isMultiLang": true
     }
   ],
   "mixins": {

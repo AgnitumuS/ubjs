@@ -1,39 +1,49 @@
-﻿{
-    "caption": "Audit",
-    "attributes": {
-        "entity": {
-            "caption": "Entity"
-        },
-        "entityinfo_id": {
-            "caption": "Instance ID"
-        },
-        "actionType": {
-            "caption": "Action",
-            "description": "Action"
-        },
-        "actionUser": {
-            "caption": "User",
-            "description": "User"
-        },
-        "actionTime": {
-            "caption": "Action time",
-            "description": "Action time"
-        },
-        "remoteIP": {
-            "caption": "Remote IP"
-        },
-        "fromValue": {
-            "caption": "Old values"
-        },
-        "toValue": {
-            "caption": "New values"
-        },
-        "parentEntity": {
-            "caption": "Parent entity name"
-        },
-        "parentEntityInfo_id": {
-            "caption": "Parent instance ID"
-        }
+{
+  "caption": "Audit",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Entity"
     },
-    "description": "Data changes audit"
+    {
+      "name": "entityinfo_id",
+      "caption": "Instance ID"
+    },
+    {
+      "name": "actionType",
+      "caption": "Action",
+      "description": "Action"
+    },
+    {
+      "name": "actionUser",
+      "caption": "User",
+      "description": "User"
+    },
+    {
+      "name": "actionTime",
+      "caption": "Action time",
+      "description": "Action time"
+    },
+    {
+      "name": "remoteIP",
+      "caption": "Remote IP"
+    },
+    {
+      "name": "fromValue",
+      "caption": "Old values"
+    },
+    {
+      "name": "toValue",
+      "caption": "New values"
+    },
+    {
+      "name": "parentEntity",
+      "caption": "Parent entity name"
+    },
+    {
+      "name": "parentEntityInfo_id",
+      "caption": "Parent instance ID"
+    }
+  ],
+  "description": "Data changes audit"
 }

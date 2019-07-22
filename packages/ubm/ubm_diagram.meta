@@ -7,41 +7,41 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "ID",
       "dataType": "ID",
       "allowNull": false,
       "isUnique": true,
-	  "caption": "ID",
-      "name": "ID"
+      "caption": "ID"
     },
     {
+      "name": "model",
       "dataType": "String",
       "size": 16,
       "allowNull": false,
       "defaultValue": "UBM",
       "caption": "Model",
-      "description": "Model code where to store diagram",
-      "name": "model"
+      "description": "Model code where to store diagram"
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 64,
       "caption": "Name",
-      "allowNull": false,
-      "name": "name"
+      "allowNull": false
     },
     {
+      "name": "document",
       "dataType": "Document",
       "caption": "Diagram",
       "description": "Diagram",
       "allowNull": true,
-      "storeName": "mdb",
-      "name": "document"
+      "storeName": "mdb"
     },
     {
+      "name": "mi_modifyDate",
       "dataType": "DateTime",
       "caption": "Modification date",
-      "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation",
-      "name": "mi_modifyDate"
+      "documentation": "Emulate a mStorage.mi_modifyDate for cache version calculation"
     }
   ]
 }

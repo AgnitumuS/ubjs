@@ -94,6 +94,14 @@ function ncrc32 (initialValue, data) { return 0 }
  */
 function nsha256 (data) { return 'a0' }
 
+/**
+ * Calculate checksum of file content
+ * @param {string} fullFileName
+ * @param {string} algo Hash algorithm. Can be one of "MD5","SHA1","SHA256","SHA384","SHA512","SHA3_256","SHA3_512"
+ * @return {string}
+ */
+function nhashFile (fullFileName, algo) { return '' }
+
 // Classes definition. Must be AFTER global function definition for correct documentation generation
 
 /**

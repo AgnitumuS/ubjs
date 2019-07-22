@@ -1,42 +1,51 @@
-﻿{
-    "caption": "Регіони",
-    "description": "Довідник регіонів",
-    "attributes": {
-        "regionTypeID": {
-            "caption": "Тип",
-            "description": "Тип регіону"
-        },
-        "name": {
-            "caption": "Назва",
-            "description": "Назва регіону"
-        },
-        "fullName": {
-            "caption": "Повна назва",
-            "description": "Повна офіційна назва регіону"
-        },
-        "description": {
-            "caption": "Опис",
-            "description": "Опис регіону"
-        },
-        "phoneCode": {
-            "caption": "Телефонний код",
-            "description": "Телефонний код регіону"
-        },
-        "centerID": {
-            "caption": "Центр",
-            "description": "Центр регіону"
-        },
-        "parentAdminUnitID": {
-            "caption": "Предок",
-            "description": "Предок"
-        },
-        "code": {
-            "caption": "Код",
-            "description": "Внутрішній код"
-        },
-        "caption": {
-            "caption": "Заголовок",
-            "description": "Заголовок"
-        }
+{
+  "caption": "Регіони",
+  "description": "Довідник регіонів",
+  "attributes": [
+    {
+      "name": "regionTypeID",
+      "caption": "Тип",
+      "description": "Тип регіону"
+    },
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва регіону"
+    },
+    {
+      "name": "fullName",
+      "caption": "Повна назва",
+      "description": "Повна офіційна назва регіону"
+    },
+    {
+      "name": "description",
+      "caption": "Опис",
+      "description": "Опис регіону"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Телефонний код",
+      "description": "Телефонний код регіону"
+    },
+    {
+      "name": "centerID",
+      "caption": "Центр",
+      "description": "Центр регіону"
+    },
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Предок",
+      "description": "Предок"
+    },
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Внутрішній код"
+    },
+    {
+      "name": "caption",
+      "caption": "Заголовок",
+      "description": "Заголовок"
     }
+  ]
 }

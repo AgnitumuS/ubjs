@@ -1,17 +1,20 @@
-﻿{
-    "caption": "Poçt indeksləri",
-    "description": "Poçt indeksləri",
-    "attributes": {
-        "code": {
-            "caption": "İndeks",
-            "description": "İndeks"
-        },
-        "streetID": {
-            "caption": "Küçə"
-        },
-        "description": {
-            "caption": "Təsvir",
-            "description": "Təsvir"
-        }
+{
+  "caption": "Poçt indeksləri",
+  "description": "Poçt indeksləri",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "İndeks",
+      "description": "İndeks"
+    },
+    {
+      "name": "streetID",
+      "caption": "Küçə"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir",
+      "description": "Təsvir"
     }
+  ]
 }

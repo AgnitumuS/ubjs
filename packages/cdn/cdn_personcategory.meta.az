@@ -1,15 +1,17 @@
-﻿{
-    "caption": "Kateqoriya",
-    "description": "Kateqoriya",
-    "documentation": "Kataloq şəxslər üçün kateqoriyalar siyahısını saklar",
-    "attributes": {
-        "code": {
-            "caption": "Kod",
-            "description": "Kod"
-        },
-        "name": {
-            "caption": "Ad",
-            "description": "Ad"
-        }
+{
+  "caption": "Kateqoriya",
+  "description": "Kateqoriya",
+  "documentation": "Kataloq şəxslər üçün kateqoriyalar siyahısını saklar",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kod",
+      "description": "Kod"
+    },
+    {
+      "name": "name",
+      "caption": "Ad",
+      "description": "Ad"
     }
+  ]
 }

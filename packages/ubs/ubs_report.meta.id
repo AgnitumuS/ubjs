@@ -1,24 +1,29 @@
-﻿{
-    "caption": "laporan template",
-    "description": "laporan template",
-    "attributes": {
-        "model": {
-            "caption": "Model",
-            "description": "Kode Model tempat untuk menyimpan laporan"
-        },
-        "report_code": {
-            "caption": "laporan kode"
-        },
-        "name": {
-            "caption": "Nama"
-        },
-        "template": {
-            "caption": "Template",
-            "description": "Template"
-        },
-        "code": {
-            "caption": "kode Javascript",
-            "description": "kode Javascript"
-        }
+{
+  "caption": "laporan template",
+  "description": "laporan template",
+  "attributes": [
+    {
+      "name": "model",
+      "caption": "Model",
+      "description": "Kode Model tempat untuk menyimpan laporan"
+    },
+    {
+      "name": "report_code",
+      "caption": "laporan kode"
+    },
+    {
+      "name": "name",
+      "caption": "Nama"
+    },
+    {
+      "name": "template",
+      "caption": "Template",
+      "description": "Template"
+    },
+    {
+      "name": "code",
+      "caption": "kode Javascript",
+      "description": "kode Javascript"
     }
+  ]
 }

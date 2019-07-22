@@ -1,66 +1,81 @@
-﻿{
-    "caption": "unit staf",
-    "description": "Daftar unit staf",
-    "attributes": {
-        "parentID": {
-            "caption": "Induk",
-            "description": "Induk"
-        },
-        "code": {
-            "caption": "kode internal",
-            "description": "Unit Staf kode internal"
-        },
-        "name": {
-            "caption": "Staf nama Unit",
-            "description": "Nama unit staf tanpa tanda kutip dan singkatan"
-        },
-        "fullName": {
-            "caption": "Nama lengkap",
-            "description": "Unit Staf nama lengkap"
-        },
-        "description": {
-            "caption": "Unit staf deskripsi",
-            "description": "Unit staf deskripsi"
-        },
-        "nameGen": {
-            "caption": "Nama unit staf dalam kasus genitif",
-            "description": "Nama unit staf tanpa tanda kutip dan singkatan dalam kasus genitif"
-        },
-        "nameDat": {
-            "caption": "Nama unit staf di dativus",
-            "description": "Nama unit staf tanpa tanda kutip dan singkatan di dativus"
-        },
-        "fullNameGen": {
-            "caption": "nama lengkap dalam kasus genitif",
-            "description": "Unit Staf nama lengkap dalam kasus genitif"
-        },
-        "fullNameDat": {
-            "caption": "nama lengkap di dativus",
-            "description": "Unit Staf nama lengkap di dativus"
-        },
-        "caption": {
-            "caption": "caption",
-            "description": "caption"
-        },
-        "professionExtID": {
-            "caption": "Profesi",
-            "description": "Profesi"
-        },
-        "professionID": {
-            "caption": "Posisi",
-            "description": "Posisi"
-        },
-        "staffUnitTypeID": {
-            "caption": "Staf jenis unit",
-            "description": "Staf jenis unit"
-        },
-        "subordinationLevel": {
-            "caption": "tingkat subordinasi",
-            "description": "Jika tingkat lebih rendah - maka satuan staf yang lebih penting"
-        },
-        "isBoss": {
-            "caption": "Bos",
-            "description": "Bos"
-        }
+{
+  "caption": "unit staf",
+  "description": "Daftar unit staf",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Induk",
+      "description": "Induk"
+    },
+    {
+      "name": "code",
+      "caption": "kode internal",
+      "description": "Unit Staf kode internal"
+    },
+    {
+      "name": "name",
+      "caption": "Staf nama Unit",
+      "description": "Nama unit staf tanpa tanda kutip dan singkatan"
+    },
+    {
+      "name": "fullName",
+      "caption": "Nama lengkap",
+      "description": "Unit Staf nama lengkap"
+    },
+    {
+      "name": "description",
+      "caption": "Unit staf deskripsi",
+      "description": "Unit staf deskripsi"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Nama unit staf dalam kasus genitif",
+      "description": "Nama unit staf tanpa tanda kutip dan singkatan dalam kasus genitif"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Nama unit staf di dativus",
+      "description": "Nama unit staf tanpa tanda kutip dan singkatan di dativus"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "nama lengkap dalam kasus genitif",
+      "description": "Unit Staf nama lengkap dalam kasus genitif"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "nama lengkap di dativus",
+      "description": "Unit Staf nama lengkap di dativus"
+    },
+    {
+      "name": "caption",
+      "caption": "caption",
+      "description": "caption"
+    },
+    {
+      "name": "professionExtID",
+      "caption": "Profesi",
+      "description": "Profesi"
+    },
+    {
+      "name": "professionID",
+      "caption": "Posisi",
+      "description": "Posisi"
+    },
+    {
+      "name": "staffUnitTypeID",
+      "caption": "Staf jenis unit",
+      "description": "Staf jenis unit"
+    },
+    {
+      "name": "subordinationLevel",
+      "caption": "tingkat subordinasi",
+      "description": "Jika tingkat lebih rendah - maka satuan staf yang lebih penting"
+    },
+    {
+      "name": "isBoss",
+      "caption": "Bos",
+      "description": "Bos"
     }
+  ]
 }

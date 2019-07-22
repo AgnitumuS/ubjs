@@ -7,11 +7,11 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "ID",
       "dataType": "ID",
       "allowNull": false,
       "isUnique": true,
-      "caption": "ID",
-      "name": "ID"
+      "caption": "ID"
     },
     {
       "name": "model",

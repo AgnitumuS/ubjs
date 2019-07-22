@@ -1,30 +1,38 @@
-﻿{
-    "caption": "Сертифікати",
-    "description": "Сертифікати користувача",
-    "attributes": {
-        "userID": {
-            "caption": "Користувач"
-        },
-        "issuer_serial": {
-            "caption": "Серійний ключ ЦСК"
-        },
-        "issuer_cn": {
-            "caption": "Назва ЦСК"
-        },
-        "serial": {
-            "caption": "Серійний номер"
-        },
-        "certificate": {
-            "caption": "Сертифікат"
-        },
-        "description": {
-            "caption": "Опис"
-        },
-        "disabled": {
-            "caption": "Відключений"
-        },
-        "revoked": {
-            "caption": "Відкликаний"
-        }
+{
+  "caption": "Сертифікати",
+  "description": "Сертифікати користувача",
+  "attributes": [
+    {
+      "name": "userID",
+      "caption": "Користувач"
+    },
+    {
+      "name": "issuer_serial",
+      "caption": "Серійний ключ ЦСК"
+    },
+    {
+      "name": "issuer_cn",
+      "caption": "Назва ЦСК"
+    },
+    {
+      "name": "serial",
+      "caption": "Серійний номер"
+    },
+    {
+      "name": "certificate",
+      "caption": "Сертифікат"
+    },
+    {
+      "name": "description",
+      "caption": "Опис"
+    },
+    {
+      "name": "disabled",
+      "caption": "Відключений"
+    },
+    {
+      "name": "revoked",
+      "caption": "Відкликаний"
     }
+  ]
 }

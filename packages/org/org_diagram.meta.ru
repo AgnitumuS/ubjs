@@ -1,21 +1,25 @@
-﻿{
-    "caption": "Диаграммы",
-    "description": "Диаграммы",
-    "attributes": {
-        "orgunitID": {
-            "caption": "Корень"
-        },
-        "caption": {
-            "caption": "Название",
-            "description": "Название"
-        },
-        "isdefault": {
-            "caption": "По умолчанию",
-            "description": "По умолчанию"
-        },
-        "document": {
-            "caption": "Органограмма",
-            "description": "Органограмма"
-        }
+{
+  "caption": "Диаграммы",
+  "description": "Диаграммы",
+  "attributes": [
+    {
+      "name": "orgunitID",
+      "caption": "Корень"
+    },
+    {
+      "name": "caption",
+      "caption": "Название",
+      "description": "Название"
+    },
+    {
+      "name": "isdefault",
+      "caption": "По умолчанию",
+      "description": "По умолчанию"
+    },
+    {
+      "name": "document",
+      "caption": "Органограмма",
+      "description": "Органограмма"
     }
+  ]
 }

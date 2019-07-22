@@ -1,16 +1,19 @@
-﻿{
-    "caption": "Отримувачі повідомлень",
-    "description": "Отримувачі повідомлень",
-    "documentation": "Отримувачі повідомлень",
-    "attributes": {
-        "messageID": {
-            "caption": "Повідомлення"
-        },
-        "userID": {
-            "caption": "Користувач"
-        },
-        "acceptDate": {
-            "caption": "Дата підтвердження"
-        }
+{
+  "caption": "Отримувачі повідомлень",
+  "description": "Отримувачі повідомлень",
+  "documentation": "Отримувачі повідомлень",
+  "attributes": [
+    {
+      "name": "messageID",
+      "caption": "Повідомлення"
+    },
+    {
+      "name": "userID",
+      "caption": "Користувач"
+    },
+    {
+      "name": "acceptDate",
+      "caption": "Дата підтвердження"
     }
+  ]
 }

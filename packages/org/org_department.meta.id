@@ -1,54 +1,66 @@
-﻿{
-    "caption": "departemen internal",
-    "description": "departemen internal",
-    "attributes": {
-        "parentID": {
-            "caption": "Induk",
-            "description": "Induk"
-        },
-        "code": {
-            "caption": "kode internal",
-            "description": "kode internal"
-        },
-        "name": {
-            "caption": "Nama departemen",
-            "description": "Nama departemen tanpa tanda kutip dan singkatan"
-        },
-        "fullName": {
-            "caption": "Departemen nama lengkap",
-            "description": "Departemen nama lengkap"
-        },
-        "description": {
-            "caption": "deskripsi departemen",
-            "description": "deskripsi departemen"
-        },
-        "nameGen": {
-            "caption": "Nama departemen dalam kasus genitif",
-            "description": "nama departemen tanpa tanda kutip dan singkatan dalam kasus genitif"
-        },
-        "nameDat": {
-            "caption": "Nama departemen di dativus",
-            "description": "nama departemen tanpa tanda kutip dan singkatan di dativus"
-        },
-        "fullNameGen": {
-            "caption": "Departemen nama lengkap dalam kasus genitif",
-            "description": "Departemen nama lengkap dalam kasus genitif"
-        },
-        "fullNameDat": {
-            "caption": "Departemen nama lengkap di dativus",
-            "description": "Departemen nama lengkap di dativus"
-        },
-        "depTypeID": {
-            "caption": "Jenis departemen",
-            "description": "Jenis departemen"
-        },
-        "isClerical": {
-            "caption": "Clerical?",
-            "description": "mark Unit Clerical"
-        },
-        "caption": {
-            "caption": "caption",
-            "description": "caption"
-        }
+{
+  "caption": "departemen internal",
+  "description": "departemen internal",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "Induk",
+      "description": "Induk"
+    },
+    {
+      "name": "code",
+      "caption": "kode internal",
+      "description": "kode internal"
+    },
+    {
+      "name": "name",
+      "caption": "Nama departemen",
+      "description": "Nama departemen tanpa tanda kutip dan singkatan"
+    },
+    {
+      "name": "fullName",
+      "caption": "Departemen nama lengkap",
+      "description": "Departemen nama lengkap"
+    },
+    {
+      "name": "description",
+      "caption": "deskripsi departemen",
+      "description": "deskripsi departemen"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Nama departemen dalam kasus genitif",
+      "description": "nama departemen tanpa tanda kutip dan singkatan dalam kasus genitif"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Nama departemen di dativus",
+      "description": "nama departemen tanpa tanda kutip dan singkatan di dativus"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Departemen nama lengkap dalam kasus genitif",
+      "description": "Departemen nama lengkap dalam kasus genitif"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Departemen nama lengkap di dativus",
+      "description": "Departemen nama lengkap di dativus"
+    },
+    {
+      "name": "depTypeID",
+      "caption": "Jenis departemen",
+      "description": "Jenis departemen"
+    },
+    {
+      "name": "isClerical",
+      "caption": "Clerical?",
+      "description": "mark Unit Clerical"
+    },
+    {
+      "name": "caption",
+      "caption": "caption",
+      "description": "caption"
     }
+  ]
 }

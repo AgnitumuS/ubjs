@@ -1,31 +1,37 @@
-﻿{
-    "caption": "Assignments of internal organization",
-    "description": "List of internal organization assignments",
-    "documentation": "The denouement essence, which indicates which employee on which staff unit works (appointment). There is also a type of assignment (temporary, permanent, part-time, etc.)",
-    "attributes": {
-        "tabNo": {
-            "caption": "Employee №",
-            "description": "Employee number"
-        },
-        "employeeID": {
-            "caption": "Employee",
-            "description": "Employee"
-        },
-        "staffUnitID": {
-            "caption": "Staff unit",
-            "description": "Internal organization staff unit"
-        },
-        "employeeOnStaffType": {
-            "caption": "Assignment type",
-            "description": "Assignment type"
-        },
-        "description": {
-            "caption": "Description",
-            "description": "Assignment description"
-        },
-        "caption": {
-            "caption": "Caption",
-            "description": "Caption"
-        }
+{
+  "caption": "Assignments of internal organization",
+  "description": "List of internal organization assignments",
+  "documentation": "The denouement essence, which indicates which employee on which staff unit works (appointment). There is also a type of assignment (temporary, permanent, part-time, etc.)",
+  "attributes": [
+    {
+      "name": "tabNo",
+      "caption": "Employee №",
+      "description": "Employee number"
+    },
+    {
+      "name": "employeeID",
+      "caption": "Employee",
+      "description": "Employee"
+    },
+    {
+      "name": "staffUnitID",
+      "caption": "Staff unit",
+      "description": "Internal organization staff unit"
+    },
+    {
+      "name": "employeeOnStaffType",
+      "caption": "Assignment type",
+      "description": "Assignment type"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "Assignment description"
+    },
+    {
+      "name": "caption",
+      "caption": "Caption",
+      "description": "Caption"
     }
+  ]
 }

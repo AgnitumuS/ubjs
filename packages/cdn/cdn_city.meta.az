@@ -1,36 +1,44 @@
-﻿{
-    "caption": "Yaşayış məntəqələri",
-    "description": "Yaşayış məntəqələri üzrə sorğu kitabçası",
-    "attributes": {
-        "parentAdminUnitID": {
-            "caption": "Əcdad"
-        },
-        "code": {
-            "caption": "Kod",
-            "description": "Yaşayış məntəqəsinin kodu"
-        },
-        "name": {
-            "caption": "Ad",
-            "description": "Yaşayış məntəqəsinin adı"
-        },
-        "caption": {
-            "caption": "Başlıq"
-        },
-        "description": {
-            "caption": "Təsvir",
-            "description": "Yaşayış məntəqəsinin adı"
-        },
-        "postalCode": {
-            "caption": "Poçt kodu",
-            "description": "Yaşayış məntəqəsinin poçt kodu"
-        },
-        "phoneCode": {
-            "caption": "Telefon kodu",
-            "description": "Yaşayış məntəqəsinin telefon kodu"
-        },
-        "cityTypeID": {
-            "caption": "Yaşayış məntəqəsinin kodu",
-            "description": "Yaşayış məntəqəsinin tipi"
-        }
+{
+  "caption": "Yaşayış məntəqələri",
+  "description": "Yaşayış məntəqələri üzrə sorğu kitabçası",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Əcdad"
+    },
+    {
+      "name": "code",
+      "caption": "Kod",
+      "description": "Yaşayış məntəqəsinin kodu"
+    },
+    {
+      "name": "name",
+      "caption": "Ad",
+      "description": "Yaşayış məntəqəsinin adı"
+    },
+    {
+      "name": "caption",
+      "caption": "Başlıq"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir",
+      "description": "Yaşayış məntəqəsinin adı"
+    },
+    {
+      "name": "postalCode",
+      "caption": "Poçt kodu",
+      "description": "Yaşayış məntəqəsinin poçt kodu"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Telefon kodu",
+      "description": "Yaşayış məntəqəsinin telefon kodu"
+    },
+    {
+      "name": "cityTypeID",
+      "caption": "Yaşayış məntəqəsinin kodu",
+      "description": "Yaşayış məntəqəsinin tipi"
     }
+  ]
 }

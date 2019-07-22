@@ -1,46 +1,56 @@
-﻿{
-    "caption": "Kənar şöbələr",
-    "description": "Kənar şöbələr üzrə sorğu kitabçası",
-    "attributes": {
-        "code": {
-            "caption": "Daxili kod",
-            "description": "Şöbə daxili kodu"
-        },
-        "name": {
-            "caption": "Şöbənin adı",
-            "description": "Abbreviatura və dırnaq işarəsi olmadan ad"
-        },
-        "fullName": {
-            "caption": "Tam ad",
-            "description": "Şöbənin tam adı"
-        },
-        "description": {
-            "caption": "Şöbənin təsviri",
-            "description": "Təsvir"
-        },
-        "nameGen": {
-            "caption": "Yiyəlik halda bölmənin adı",
-            "description": "Abbreviatura və dırnaq işarəsi olmadan yiyəlik halda ad"
-        },
-        "nameDat": {
-            "caption": "Yönlük halda bölmənin adı",
-            "description": "Abbreviatura və dırnaq işarəsi olmadan yönlük halda ad"
-        },
-        "fullNameGen": {
-            "caption": "Yiyəlik halda bölmənin tam adı",
-            "description": "Yiyəlik halda bölmənin tam adı"
-        },
-        "fullNameDat": {
-            "caption": "Yönlük halda bölmənin tam adı",
-            "description": "Yönlük halda bölmənin tam adı"
-        },
-        "depTypeID": {
-            "caption": "Şöbənin tipi",
-            "description": "Şöbənin tipi"
-        },
-        "organizationID": {
-            "caption": "Təşkilat",
-            "description": "Şöbənin daxil olduğu təşkilat"
-        }
+{
+  "caption": "Kənar şöbələr",
+  "description": "Kənar şöbələr üzrə sorğu kitabçası",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Daxili kod",
+      "description": "Şöbə daxili kodu"
+    },
+    {
+      "name": "name",
+      "caption": "Şöbənin adı",
+      "description": "Abbreviatura və dırnaq işarəsi olmadan ad"
+    },
+    {
+      "name": "fullName",
+      "caption": "Tam ad",
+      "description": "Şöbənin tam adı"
+    },
+    {
+      "name": "description",
+      "caption": "Şöbənin təsviri",
+      "description": "Təsvir"
+    },
+    {
+      "name": "nameGen",
+      "caption": "Yiyəlik halda bölmənin adı",
+      "description": "Abbreviatura və dırnaq işarəsi olmadan yiyəlik halda ad"
+    },
+    {
+      "name": "nameDat",
+      "caption": "Yönlük halda bölmənin adı",
+      "description": "Abbreviatura və dırnaq işarəsi olmadan yönlük halda ad"
+    },
+    {
+      "name": "fullNameGen",
+      "caption": "Yiyəlik halda bölmənin tam adı",
+      "description": "Yiyəlik halda bölmənin tam adı"
+    },
+    {
+      "name": "fullNameDat",
+      "caption": "Yönlük halda bölmənin tam adı",
+      "description": "Yönlük halda bölmənin tam adı"
+    },
+    {
+      "name": "depTypeID",
+      "caption": "Şöbənin tipi",
+      "description": "Şöbənin tipi"
+    },
+    {
+      "name": "organizationID",
+      "caption": "Təşkilat",
+      "description": "Şöbənin daxil olduğu təşkilat"
     }
+  ]
 }

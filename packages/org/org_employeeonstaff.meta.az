@@ -1,31 +1,37 @@
-﻿{
-    "caption": "Daxili təşkilatın təyinatları",
-    "description": "Daxili təşkilatın təyinatları üzrə sorğu kitabçası",
-    "documentation": "Hansı işçinin hansı ştat vahidində işlədiyini göstərən açıqlama (təyinat). Həmçinin təyinat tipi də mövcuddur (müvəqqəti, daimi, yarımştat və s.)",
-    "attributes": {
-        "tabNo": {
-            "caption": "Tabel №si",
-            "description": "Tabel nömrəsi"
-        },
-        "employeeID": {
-            "caption": "Əməkdaş",
-            "description": "Əməkdaş"
-        },
-        "staffUnitID": {
-            "caption": "Ştat vahid",
-            "description": "Daxili təşkilatın ştat vahidi"
-        },
-        "employeeOnStaffType": {
-            "caption": "Təyinat tipi",
-            "description": "Təyinat tipi"
-        },
-        "description": {
-            "caption": "Təsvir",
-            "description": "Təyinatın təsviri"
-        },
-        "caption": {
-            "caption": "Başlıq",
-            "description": "Başlıq"
-        }
+{
+  "caption": "Daxili təşkilatın təyinatları",
+  "description": "Daxili təşkilatın təyinatları üzrə sorğu kitabçası",
+  "documentation": "Hansı işçinin hansı ştat vahidində işlədiyini göstərən açıqlama (təyinat). Həmçinin təyinat tipi də mövcuddur (müvəqqəti, daimi, yarımştat və s.)",
+  "attributes": [
+    {
+      "name": "tabNo",
+      "caption": "Tabel №si",
+      "description": "Tabel nömrəsi"
+    },
+    {
+      "name": "employeeID",
+      "caption": "Əməkdaş",
+      "description": "Əməkdaş"
+    },
+    {
+      "name": "staffUnitID",
+      "caption": "Ştat vahid",
+      "description": "Daxili təşkilatın ştat vahidi"
+    },
+    {
+      "name": "employeeOnStaffType",
+      "caption": "Təyinat tipi",
+      "description": "Təyinat tipi"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir",
+      "description": "Təyinatın təsviri"
+    },
+    {
+      "name": "caption",
+      "caption": "Başlıq",
+      "description": "Başlıq"
     }
+  ]
 }

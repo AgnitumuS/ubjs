@@ -1,48 +1,59 @@
-﻿{
-    "caption": "Audit",
-    "description": "Audit",
-    "attributes": {
-        "entity": {
-            "caption": "Maddə",
-            "description": "Maddə"
-        },
-        "entityinfo_id": {
-            "caption": "Maddənin ID qeydləri",
-            "description": "Maddənin ID qeydləri"
-        },
-        "actionType": {
-            "caption": "Əməliyyat",
-            "description": "Fəaliyyət"
-        },
-        "actionUser": {
-            "caption": "İstifadəçi",
-            "description": "İstifadəçi"
-        },
-        "actionTime": {
-            "caption": "Əməliyyat vaxtı",
-            "description": "Fəaliyyət vaxtı"
-        },
-        "remoteIP": {
-            "caption": "IP ünvan",
-            "description": "Çağırışçı tərəfin IP ünvanı"
-        },
-        "fromValue": {
-            "caption": "Qiymətdən"
-        },
-        "toValue": {
-            "caption": "Qiymətə"
-        },
-        "targetUser": {
-            "caption": "Hədəf istifadəçi",
-            "description": "Məlumatları dəyişmiş istifadəçi adı"
-        },
-        "targetGroup": {
-            "caption": "Hədəf qrupu",
-            "description": "Məlumatın dəyişdiyi qrup adı"
-        },
-        "targetRole": {
-            "caption": "Hədəf rol",
-            "description": "Məlumatları dəyişdirmiş istifadəçi rolu"
-        }
+{
+  "caption": "Audit",
+  "description": "Audit",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Maddə",
+      "description": "Maddə"
+    },
+    {
+      "name": "entityinfo_id",
+      "caption": "Maddənin ID qeydləri",
+      "description": "Maddənin ID qeydləri"
+    },
+    {
+      "name": "actionType",
+      "caption": "Əməliyyat",
+      "description": "Fəaliyyət"
+    },
+    {
+      "name": "actionUser",
+      "caption": "İstifadəçi",
+      "description": "İstifadəçi"
+    },
+    {
+      "name": "actionTime",
+      "caption": "Əməliyyat vaxtı",
+      "description": "Fəaliyyət vaxtı"
+    },
+    {
+      "name": "remoteIP",
+      "caption": "IP ünvan",
+      "description": "Çağırışçı tərəfin IP ünvanı"
+    },
+    {
+      "name": "fromValue",
+      "caption": "Qiymətdən"
+    },
+    {
+      "name": "toValue",
+      "caption": "Qiymətə"
+    },
+    {
+      "name": "targetUser",
+      "caption": "Hədəf istifadəçi",
+      "description": "Məlumatları dəyişmiş istifadəçi adı"
+    },
+    {
+      "name": "targetGroup",
+      "caption": "Hədəf qrupu",
+      "description": "Məlumatın dəyişdiyi qrup adı"
+    },
+    {
+      "name": "targetRole",
+      "caption": "Hədəf rol",
+      "description": "Məlumatları dəyişdirmiş istifadəçi rolu"
     }
+  ]
 }

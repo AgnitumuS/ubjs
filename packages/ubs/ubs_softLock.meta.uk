@@ -1,26 +1,31 @@
-﻿{
-    "caption": "Soft lock",
-    "description": "Soft lock",
-    "attributes": {
-        "entity": {
-            "caption": "Сутність",
-            "description": "Сутність"
-        },
-        "lockID": {
-            "caption": "ID запису",
-            "description": "ID запису сутності"
-        },
-        "lockUser": {
-            "caption": "Користувач",
-            "description": "Користувач, який заблокував запис"
-        },
-        "lockType": {
-            "caption": "Тип блокування",
-            "description": "Тип блокування"
-        },
-        "lockTime": {
-            "caption": "Час блокування",
-            "description": "Час блокування"
-        }
+{
+  "caption": "Soft lock",
+  "description": "Soft lock",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Сутність",
+      "description": "Сутність"
+    },
+    {
+      "name": "lockID",
+      "caption": "ID запису",
+      "description": "ID запису сутності"
+    },
+    {
+      "name": "lockUser",
+      "caption": "Користувач",
+      "description": "Користувач, який заблокував запис"
+    },
+    {
+      "name": "lockType",
+      "caption": "Тип блокування",
+      "description": "Тип блокування"
+    },
+    {
+      "name": "lockTime",
+      "caption": "Час блокування",
+      "description": "Час блокування"
     }
+  ]
 }

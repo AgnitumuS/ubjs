@@ -1,14 +1,16 @@
-﻿{
-    "caption": "Kategori orang",
-    "description": "Ctegory orang",
-    "attributes": {
-        "code": {
-            "caption": "Kode",
-            "description": "Kode"
-        },
-        "name": {
-            "caption": "Nama",
-            "description": "Nama kategori"
-        }
+{
+  "caption": "Kategori orang",
+  "description": "Ctegory orang",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kode",
+      "description": "Kode"
+    },
+    {
+      "name": "name",
+      "caption": "Nama",
+      "description": "Nama kategori"
     }
+  ]
 }

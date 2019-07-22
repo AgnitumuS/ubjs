@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.29]
+### Fixed
+ - in case executed for folder `ubcli meta-tr` will skip files what contains meta in name but not a metafile itself (bla-bla.metadata for example)
+
 ## [5.3.28]
 ### Changed
  - `MSSQL2012` dialect will use `NVARCHAR(MAX)` instead of `NVARCHAR(4000)` for JSON 

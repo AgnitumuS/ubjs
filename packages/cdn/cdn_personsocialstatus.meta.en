@@ -1,15 +1,17 @@
-﻿{
-    "caption": "Social status",
-    "description": "Dictionary of social status",
-    "documentation": "The directory stores a list of social status for individuals",
-    "attributes": {
-        "code": {
-            "caption": "Code",
-            "description": "Code"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "Name of social status"
-        }
+{
+  "caption": "Social status",
+  "description": "Dictionary of social status",
+  "documentation": "The directory stores a list of social status for individuals",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of social status"
     }
+  ]
 }

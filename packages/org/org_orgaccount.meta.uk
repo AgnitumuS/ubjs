@@ -1,30 +1,36 @@
-﻿{
-    "caption": "Розрахункові рахунки організації",
-    "description": "Довідник розрахункових рахунків організації",
-    "attributes": {
-        "organizationID": {
-           "caption": "Організація",
-           "description": "Організація"
-        },
-        "currencyID": {
-            "caption": "Валюта",
-            "description": "Валюта рахунку"
-        },
-        "bankID": {
-            "caption": "Банк",
-            "description": "Банк, де відкрито рахунок"
-        },
-        "code": {
-            "caption": "Код рахунку",
-            "description": "Код рахунку (номер рахунку)"
-        },
-        "description": {
-            "caption": "Опис",
-            "description": "Опис (для вибору зі списку)"
-        },
-        "acctype": {
-            "caption": "Тип рахунку",
-            "description": "Тип рахунку"
-        }
+{
+  "caption": "Розрахункові рахунки організації",
+  "description": "Довідник розрахункових рахунків організації",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "Організація",
+      "description": "Організація"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Валюта",
+      "description": "Валюта рахунку"
+    },
+    {
+      "name": "bankID",
+      "caption": "Банк",
+      "description": "Банк, де відкрито рахунок"
+    },
+    {
+      "name": "code",
+      "caption": "Код рахунку",
+      "description": "Код рахунку (номер рахунку)"
+    },
+    {
+      "name": "description",
+      "caption": "Опис",
+      "description": "Опис (для вибору зі списку)"
+    },
+    {
+      "name": "acctype",
+      "caption": "Тип рахунку",
+      "description": "Тип рахунку"
     }
+  ]
 }

@@ -1,36 +1,44 @@
-﻿{
-    "caption": "Cities",
-    "description": "Cities directory",
-    "attributes": {
-        "parentAdminUnitID": {
-            "caption": "Parent"
-        },
-        "code": {
-            "caption": "Code",
-            "description": "City code"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "City name"
-        },
-        "caption": {
-            "caption": "Caption"
-        },
-        "description": {
-            "caption": "Description",
-            "description": "City description"
-        },
-        "postalCode": {
-            "caption": "Postal code",
-            "description": "City postal code"
-        },
-        "phoneCode": {
-            "caption": "Phone code",
-            "description": "City phone code"
-        },
-        "cityTypeID": {
-            "caption": "Type",
-            "description": "City type"
-        }
+{
+  "caption": "Cities",
+  "description": "Cities directory",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Parent"
+    },
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "City code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "City name"
+    },
+    {
+      "name": "caption",
+      "caption": "Caption"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "City description"
+    },
+    {
+      "name": "postalCode",
+      "caption": "Postal code",
+      "description": "City postal code"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Phone code",
+      "description": "City phone code"
+    },
+    {
+      "name": "cityTypeID",
+      "caption": "Type",
+      "description": "City type"
     }
+  ]
 }

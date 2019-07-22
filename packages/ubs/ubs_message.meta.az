@@ -1,26 +1,32 @@
-﻿{
-    "caption": "İsmarışlar",
-    "description": "Sistem ismarışları",
-    "documentation": "Системные сообщения",
-    "attributes": {
-        "messageBody": {
-            "caption": "İsmarış"
-        },
-        "complete": {
-            "caption": "İsmarışı çatdırmaq"
-        },
-        "messageType": {
-            "caption": "Növ"
-        },
-        "startDate": {
-            "caption": "Bu tarixdən qüvvədədir"
-        },
-        "expireDate": {
-            "caption": "Bu tarixədək qüvvədədir"
-        },
-        "recipients": {
-            "caption": "İsmarışı alanlar",
-            "description": "İsmarışı alanlar"
-        }
+{
+  "caption": "İsmarışlar",
+  "description": "Sistem ismarışları",
+  "documentation": "Системные сообщения",
+  "attributes": [
+    {
+      "name": "messageBody",
+      "caption": "İsmarış"
+    },
+    {
+      "name": "complete",
+      "caption": "İsmarışı çatdırmaq"
+    },
+    {
+      "name": "messageType",
+      "caption": "Növ"
+    },
+    {
+      "name": "startDate",
+      "caption": "Bu tarixdən qüvvədədir"
+    },
+    {
+      "name": "expireDate",
+      "caption": "Bu tarixədək qüvvədədir"
+    },
+    {
+      "name": "recipients",
+      "caption": "İsmarışı alanlar",
+      "description": "İsmarışı alanlar"
     }
+  ]
 }

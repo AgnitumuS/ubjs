@@ -1,17 +1,20 @@
-﻿{
-    "caption": "Стандартные профессии",
-    "description": "Справочник стандартных профессий",
-    "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Код профессии"
-        },
-        "name": {
-            "caption": "Название",
-            "description": "Название профессии"
-        },
-        "description": {
-            "caption": "Заголовок"
-        }
+{
+  "caption": "Стандартные профессии",
+  "description": "Справочник стандартных профессий",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Код профессии"
+    },
+    {
+      "name": "name",
+      "caption": "Название",
+      "description": "Название профессии"
+    },
+    {
+      "name": "description",
+      "caption": "Заголовок"
     }
+  ]
 }

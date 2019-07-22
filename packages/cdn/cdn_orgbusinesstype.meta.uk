@@ -1,26 +1,31 @@
-﻿{
-    "caption": "Типи організацій",
-    "description": "Довідник типів організацій",
-    "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Внутрішній код типу організації"
-        },
-        "shortName": {
-            "caption": "Абревіатура",
-            "description": "Абревіатура типу організації"
-        },
-        "name": {
-            "caption": "Назва",
-            "description": "Назва типу організації"
-        },
-        "fullName": {
-            "caption": "Опис",
-            "description": "Опис типу організації"
-        },
-        "isGovAuthority": {
-            "caption": "Держ. Орган",
-            "description": "Ознака, що організація вказаного типу є державним органом"
-        }
+{
+  "caption": "Типи організацій",
+  "description": "Довідник типів організацій",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Внутрішній код типу організації"
+    },
+    {
+      "name": "shortName",
+      "caption": "Абревіатура",
+      "description": "Абревіатура типу організації"
+    },
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва типу організації"
+    },
+    {
+      "name": "fullName",
+      "caption": "Опис",
+      "description": "Опис типу організації"
+    },
+    {
+      "name": "isGovAuthority",
+      "caption": "Держ. Орган",
+      "description": "Ознака, що організація вказаного типу є державним органом"
     }
+  ]
 }

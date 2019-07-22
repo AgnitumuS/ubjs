@@ -1,42 +1,51 @@
-﻿{
-    "caption": "Regions",
-    "description": "Regions dictionary",
-    "attributes": {
-        "regionTypeID": {
-            "caption": "Type",
-            "description": "Type of region"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "Name of region"
-        },
-        "fullName": {
-            "caption": "Full name",
-            "description": "Full name of region"
-        },
-        "description": {
-            "caption": "Description",
-            "description": "Description of region"
-        },
-        "phoneCode": {
-            "caption": "Phone code",
-            "description": "Phone code of region"
-        },
-        "centerID": {
-            "caption": "Center",
-            "description": "Center of region"
-        },
-        "parentAdminUnitID": {
-            "caption": "Parent",
-            "description": "Parent"
-        },
-        "code": {
-            "caption": "Code",
-            "description": "Internal code"
-        },
-        "caption": {
-            "caption": "Caption",
-            "description": "Caption"
-        }
+{
+  "caption": "Regions",
+  "description": "Regions dictionary",
+  "attributes": [
+    {
+      "name": "regionTypeID",
+      "caption": "Type",
+      "description": "Type of region"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of region"
+    },
+    {
+      "name": "fullName",
+      "caption": "Full name",
+      "description": "Full name of region"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "Description of region"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Phone code",
+      "description": "Phone code of region"
+    },
+    {
+      "name": "centerID",
+      "caption": "Center",
+      "description": "Center of region"
+    },
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Parent",
+      "description": "Parent"
+    },
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Internal code"
+    },
+    {
+      "name": "caption",
+      "caption": "Caption",
+      "description": "Caption"
     }
+  ]
 }

@@ -1,24 +1,29 @@
-﻿{
-    "caption": "Daftar bangunan",
-    "description": "Daftar bangunan",
-    "attributes": {
-        "streetID": {
-            "caption": "jalan"
-        },
-        "postIndexID": {
-            "caption": "Indeks"
-        },
-        "code": {
-            "caption": "num",
-            "description": "Kode"
-        },
-        "description": {
-            "caption": "Deskripsi",
-            "description": "Deskripsi"
-        },
-        "buildingType": {
-            "caption": "Mengetik",
-            "description": "Mengetik"
-        }
+{
+  "caption": "Daftar bangunan",
+  "description": "Daftar bangunan",
+  "attributes": [
+    {
+      "name": "streetID",
+      "caption": "jalan"
+    },
+    {
+      "name": "postIndexID",
+      "caption": "Indeks"
+    },
+    {
+      "name": "code",
+      "caption": "num",
+      "description": "Kode"
+    },
+    {
+      "name": "description",
+      "caption": "Deskripsi",
+      "description": "Deskripsi"
+    },
+    {
+      "name": "buildingType",
+      "caption": "Mengetik",
+      "description": "Mengetik"
     }
+  ]
 }

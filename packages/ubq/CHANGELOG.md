@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.35]
+### Changed
+ - all meta files and they localization transformed to array-of-attributes format
+
 ## [5.2.34]
 ### Fixed
  - FTS scheduler job will skip FTS commands for entities what not in domain (this prevents AV inside updateFTSIndex)

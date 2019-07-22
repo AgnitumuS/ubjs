@@ -7,70 +7,70 @@
   "cacheType": "SessionEntity",
   "attributes": [
     {
+      "name": "parentAdminUnitID",
       "dataType": "Entity",
       "associatedEntity": "cdn_adminunit",
       "caption": "Parent",
-      "allowNull": false,
-      "name": "parentAdminUnitID"
+      "allowNull": false
     },
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Code",
       "description": "City code",
       "allowNull": false,
-      "isUnique": true,
-      "name": "code"
+      "isUnique": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "description": "City name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "caption",
       "dataType": "String",
       "size": 255,
       "caption": "Caption",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "caption"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "City description",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "postalCode",
       "dataType": "String",
       "size": 64,
       "caption": "Postal code",
       "description": "City postal code",
-      "allowNull": true,
-      "name": "postalCode"
+      "allowNull": true
     },
     {
+      "name": "phoneCode",
       "dataType": "String",
       "size": 64,
       "caption": "Phone code",
       "description": "City phone code",
-      "allowNull": true,
-      "name": "phoneCode"
+      "allowNull": true
     },
     {
+      "name": "cityTypeID",
       "dataType": "Entity",
       "associatedEntity": "cdn_citytype",
       "caption": "Type",
       "description": "City type",
-      "allowNull": true,
-      "name": "cityTypeID"
+      "allowNull": true
     }
   ],
   "mixins": {

@@ -1,46 +1,57 @@
-﻿{
-    "caption": "Audit",
-    "attributes": {
-        "entity": {
-            "caption": "Entity"
-        },
-        "entityinfo_id": {
-            "caption": "Instance ID"
-        },
-        "actionType": {
-            "caption": "Action",
-            "description": "Action"
-        },
-        "actionUser": {
-            "caption": "User",
-            "description": "User"
-        },
-        "actionTime": {
-            "caption": "Action time",
-            "description": "Action time"
-        },
-        "remoteIP": {
-            "caption": "Remote IP",
-            "description": "Caller remote IP address"
-        },
-        "fromValue": {
-            "caption": "Old values"
-        },
-        "toValue": {
-            "caption": "New values"
-        },
-        "targetUser": {
-            "caption": "Target user",
-            "description": "The user name for which the data has changed"
-        },
-        "targetGroup": {
-            "caption": "Target group",
-            "description": "The group name for which the data has changed"
-        },
-        "targetRole": {
-            "caption": "Target role",
-            "description": "The role name for which the data has changed"
-        }
+{
+  "caption": "Audit",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Entity"
     },
-    "description": "Security changes audit"
+    {
+      "name": "entityinfo_id",
+      "caption": "Instance ID"
+    },
+    {
+      "name": "actionType",
+      "caption": "Action",
+      "description": "Action"
+    },
+    {
+      "name": "actionUser",
+      "caption": "User",
+      "description": "User"
+    },
+    {
+      "name": "actionTime",
+      "caption": "Action time",
+      "description": "Action time"
+    },
+    {
+      "name": "remoteIP",
+      "caption": "Remote IP",
+      "description": "Caller remote IP address"
+    },
+    {
+      "name": "fromValue",
+      "caption": "Old values"
+    },
+    {
+      "name": "toValue",
+      "caption": "New values"
+    },
+    {
+      "name": "targetUser",
+      "caption": "Target user",
+      "description": "The user name for which the data has changed"
+    },
+    {
+      "name": "targetGroup",
+      "caption": "Target group",
+      "description": "The group name for which the data has changed"
+    },
+    {
+      "name": "targetRole",
+      "caption": "Target role",
+      "description": "The role name for which the data has changed"
+    }
+  ],
+  "description": "Security changes audit"
 }

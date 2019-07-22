@@ -8,24 +8,24 @@
   "documentation": "System messages recipients",
   "attributes": [
     {
+      "name": "messageID",
       "dataType": "Entity",
       "associatedEntity": "ubs_message",
       "caption": "Message",
-      "allowNull": false,
-      "name": "messageID"
+      "allowNull": false
     },
     {
+      "name": "userID",
       "dataType": "Entity",
       "associatedEntity": "uba_user",
       "caption": "User",
-      "allowNull": false,
-      "name": "userID"
+      "allowNull": false
     },
     {
+      "name": "acceptDate",
       "dataType": "DateTime",
       "caption": "Accept date",
-      "allowNull": true,
-      "name": "acceptDate"
+      "allowNull": true
     }
   ],
   "mixins": {
