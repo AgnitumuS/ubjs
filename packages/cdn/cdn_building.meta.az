@@ -1,24 +1,29 @@
-﻿{
-    "caption": "Evlərin siyahısı",
-    "description": "Evlərin siyahısı",
-    "attributes": {
-        "streetID": {
-            "caption": "Küçə"
-        },
-        "postIndexID": {
-            "caption": "İndeks"
-        },
-        "code": {
-            "caption": "nöm.",
-            "description": "Kod"
-        },
-        "description": {
-            "caption": "Təsvir",
-            "description": "Təsvir"
-        },
-        "buildingType": {
-            "caption": "Növ",
-            "description": "Növ"
-        }
+{
+  "caption": "Evlərin siyahısı",
+  "description": "Evlərin siyahısı",
+  "attributes": [
+    {
+      "name": "streetID",
+      "caption": "Küçə"
+    },
+    {
+      "name": "postIndexID",
+      "caption": "İndeks"
+    },
+    {
+      "name": "code",
+      "caption": "nöm.",
+      "description": "Kod"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir",
+      "description": "Təsvir"
+    },
+    {
+      "name": "buildingType",
+      "caption": "Növ",
+      "description": "Növ"
     }
+  ]
 }

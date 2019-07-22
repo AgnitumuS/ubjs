@@ -1,21 +1,25 @@
-﻿{
-    "caption": "Diagrams",
-    "description": "Diagrams",
-    "attributes": {
-        "orgunitID": {
-            "caption": "Root"
-        },
-        "caption": {
-            "caption": "Name",
-            "description": "Name"
-        },
-        "isdefault": {
-            "caption": "Default",
-            "description": "Default"
-        },
-        "document": {
-            "caption": "Organization chart",
-            "description": "Organization chart"
-        }
+{
+  "caption": "Diagrams",
+  "description": "Diagrams",
+  "attributes": [
+    {
+      "name": "orgunitID",
+      "caption": "Root"
+    },
+    {
+      "name": "caption",
+      "caption": "Name",
+      "description": "Name"
+    },
+    {
+      "name": "isdefault",
+      "caption": "Default",
+      "description": "Default"
+    },
+    {
+      "name": "document",
+      "caption": "Organization chart",
+      "description": "Organization chart"
     }
+  ]
 }

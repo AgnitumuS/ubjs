@@ -1,22 +1,27 @@
-﻿{
-    "caption": "Сообщения",
-    "description": "Системные сообщения",
-    "documentation": "Системные сообщения",
-    "attributes": {
-        "messageBody": {
-            "caption": "Сообщение"
-        },
-        "complete": {
-            "caption": "Готово к отправке"
-        },
-        "messageType": {
-            "caption": "Тип"
-        },
-        "startDate": {
-            "caption": "Действительно с"
-        },
-        "expireDate": {
-            "caption": "Действительно по"
-        }
+{
+  "caption": "Сообщения",
+  "description": "Системные сообщения",
+  "documentation": "Системные сообщения",
+  "attributes": [
+    {
+      "name": "messageBody",
+      "caption": "Сообщение"
+    },
+    {
+      "name": "complete",
+      "caption": "Готово к отправке"
+    },
+    {
+      "name": "messageType",
+      "caption": "Тип"
+    },
+    {
+      "name": "startDate",
+      "caption": "Действительно с"
+    },
+    {
+      "name": "expireDate",
+      "caption": "Действительно по"
     }
+  ]
 }

@@ -1,40 +1,49 @@
-﻿{
-    "caption": "cabang bank",
-    "description": "direktori cabang bank",
-    "attributes": {
-        "MFO": {
-            "caption": "Kode Bank",
-            "description": "kode cabang Bank"
-        },
-        "code": {
-            "caption": "kode organisasi",
-            "description": "kode organisasi Bank"
-        },
-        "name": {
-            "caption": "Nama",
-            "description": "Nama tanpa tanda kutip dan kepemilikan. Untuk mencari data."
-        },
-        "fullName": {
-            "caption": "Nama lengkap",
-            "description": "Penuh resmi nama bank. Untuk menampilkan dalam laporan."
-        },
-        "phones": {
-            "caption": "telepon"
-        },
-        "address": {
-            "caption": "Alamat"
-        },
-        "countryID": {
-            "caption": "Negara",
-            "description": "negara Pendaftaran"
-        },
-        "cityID": {
-            "caption": "Kota",
-            "description": "Kota"
-        },
-        "description": {
-           "caption": "Komentar",
-           "description": "Komentar"
-        }
+{
+  "caption": "cabang bank",
+  "description": "direktori cabang bank",
+  "attributes": [
+    {
+      "name": "MFO",
+      "caption": "Kode Bank",
+      "description": "kode cabang Bank"
+    },
+    {
+      "name": "code",
+      "caption": "kode organisasi",
+      "description": "kode organisasi Bank"
+    },
+    {
+      "name": "name",
+      "caption": "Nama",
+      "description": "Nama tanpa tanda kutip dan kepemilikan. Untuk mencari data."
+    },
+    {
+      "name": "fullName",
+      "caption": "Nama lengkap",
+      "description": "Penuh resmi nama bank. Untuk menampilkan dalam laporan."
+    },
+    {
+      "name": "phones",
+      "caption": "telepon"
+    },
+    {
+      "name": "address",
+      "caption": "Alamat"
+    },
+    {
+      "name": "countryID",
+      "caption": "Negara",
+      "description": "negara Pendaftaran"
+    },
+    {
+      "name": "cityID",
+      "caption": "Kota",
+      "description": "Kota"
+    },
+    {
+      "name": "description",
+      "caption": "Komentar",
+      "description": "Komentar"
     }
+  ]
 }

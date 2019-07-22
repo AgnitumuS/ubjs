@@ -1,22 +1,27 @@
-﻿{
-    "caption": "Attribute level security (ALS)",
-    "description": "Рівень атрибутивної безпеки",
-    "documentation": "",
-    "attributes": {
-        "entity": {
-            "caption": "Сутність"
-        },
-        "attribute": {
-            "caption": "Атрибут"
-        },
-        "state": {
-            "caption": "Код стану"
-        },
-        "roleName": {
-            "caption": "Назва ролі"
-        },
-        "actions": {
-            "caption": "Дозволені дії"
-        }
+{
+  "caption": "Attribute level security (ALS)",
+  "description": "Рівень атрибутивної безпеки",
+  "documentation": "",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Сутність"
+    },
+    {
+      "name": "attribute",
+      "caption": "Атрибут"
+    },
+    {
+      "name": "state",
+      "caption": "Код стану"
+    },
+    {
+      "name": "roleName",
+      "caption": "Назва ролі"
+    },
+    {
+      "name": "actions",
+      "caption": "Дозволені дії"
     }
+  ]
 }

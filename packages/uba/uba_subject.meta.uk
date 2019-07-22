@@ -1,17 +1,20 @@
-﻿{
-    "caption": "Суб'єкти адміністрування",
-    "description": "Суб'єкти адміністрування - об'єднують Ролі та Користувачів",
-    "attributes": {
-	"code":	{
-	  "caption": "Код"
-	},
-        "name": {
-            "caption": "Логін",
-            "description": ""
-        },
-        "sType": {
-            "caption": "Тип суб'єкта",
-            "description": ""
-        }
+{
+  "caption": "Суб'єкти адміністрування",
+  "description": "Суб'єкти адміністрування - об'єднують Ролі та Користувачів",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код"
+    },
+    {
+      "name": "name",
+      "caption": "Логін",
+      "description": ""
+    },
+    {
+      "name": "sType",
+      "caption": "Тип суб'єкта",
+      "description": ""
     }
+  ]
 }

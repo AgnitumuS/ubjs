@@ -1,36 +1,46 @@
-﻿{
-    "caption": "Audit",
-    "description": "Audit",
-    "attributes": {
-        "entity": {
-            "caption": "Kesatuan"
-        },
-        "entityinfo_id": {
-            "caption": "instance ID"
-        },
-        "actionType": {
-            "caption": "Tindakan"
-        },
-        "actionUser": {
-            "caption": "pemakai"
-        },
-        "actionTime": {
-            "caption": "waktu Action"
-        },
-        "remoteIP": {
-            "caption": "terpencil IP"
-        },
-        "fromValue": {
-            "caption": "nilai-nilai lama"
-        },
-        "toValue": {
-            "caption": "nilai-nilai baru"
-        },
-        "parentEntity": {
-            "caption": "Induk nama entitas"
-        },
-        "parentEntityInfo_id": {
-            "caption": "Induk contoh ID"
-        }
+{
+  "caption": "Audit",
+  "description": "Audit",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Kesatuan"
+    },
+    {
+      "name": "entityinfo_id",
+      "caption": "instance ID"
+    },
+    {
+      "name": "actionType",
+      "caption": "Tindakan"
+    },
+    {
+      "name": "actionUser",
+      "caption": "pemakai"
+    },
+    {
+      "name": "actionTime",
+      "caption": "waktu Action"
+    },
+    {
+      "name": "remoteIP",
+      "caption": "terpencil IP"
+    },
+    {
+      "name": "fromValue",
+      "caption": "nilai-nilai lama"
+    },
+    {
+      "name": "toValue",
+      "caption": "nilai-nilai baru"
+    },
+    {
+      "name": "parentEntity",
+      "caption": "Induk nama entitas"
+    },
+    {
+      "name": "parentEntityInfo_id",
+      "caption": "Induk contoh ID"
     }
+  ]
 }

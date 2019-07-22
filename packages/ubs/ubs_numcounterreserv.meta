@@ -6,35 +6,35 @@
   "cacheType": "None",
   "attributes": [
     {
+      "name": "regKey",
       "dataType": "String",
       "size": 255,
       "caption": "Reg key",
       "description": "Registration key",
       "allowNull": false,
-      "isMultiLang": false,
-      "name": "regKey"
+      "isMultiLang": false
     },
     {
+      "name": "counter",
       "dataType": "ID",
       "caption": "Counter",
       "description": "Reserved counter value",
-      "allowNull": false,
-      "name": "counter"
+      "allowNull": false
     },
     {
+      "name": "reservedDate",
       "dataType": "String",
       "size": 255,
       "caption": "Reserved date",
       "description": "Reserved date for document",
-      "allowNull": true,
-      "name": "reservedDate"
+      "allowNull": true
     },
     {
+      "name": "note",
       "dataType": "String",
       "size": 255,
       "caption": "Note",
-      "description": "Description of reserved number (Department name, etc)",
-      "name": "note"
+      "description": "Description of reserved number (Department name, etc)"
     }
   ],
   "mixins": {

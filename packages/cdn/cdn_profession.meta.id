@@ -1,17 +1,20 @@
-﻿{
-    "caption": "profesi standar",
-    "description": "Kamus profesi standar",
-    "attributes": {
-        "code": {
-            "caption": "Kode",
-            "description": "Kode"
-        },
-        "name": {
-            "caption": "Nama",
-            "description": "Nama profesi"
-        },
-        "description": {
-            "caption": "caption"
-        }
+{
+  "caption": "profesi standar",
+  "description": "Kamus profesi standar",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Kode",
+      "description": "Kode"
+    },
+    {
+      "name": "name",
+      "caption": "Nama",
+      "description": "Nama profesi"
+    },
+    {
+      "name": "description",
+      "caption": "caption"
     }
+  ]
 }

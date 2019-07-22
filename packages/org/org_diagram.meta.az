@@ -1,21 +1,25 @@
-﻿{
-    "caption": "Diaqramlar",
-    "description": "Diaqramlar",
-    "attributes": {
-        "orgunitID": {
-            "caption": "Kök"
-        },
-        "caption": {
-            "caption": "Ad",
-            "description": "Ad"
-        },
-        "isdefault": {
-            "caption": "Susmaya görə",
-            "description": "Susmaya görə"
-        },
-        "document": {
-            "caption": "Orqanoqram",
-            "description": "Orqanoqram"
-        }
+{
+  "caption": "Diaqramlar",
+  "description": "Diaqramlar",
+  "attributes": [
+    {
+      "name": "orgunitID",
+      "caption": "Kök"
+    },
+    {
+      "name": "caption",
+      "caption": "Ad",
+      "description": "Ad"
+    },
+    {
+      "name": "isdefault",
+      "caption": "Susmaya görə",
+      "description": "Susmaya görə"
+    },
+    {
+      "name": "document",
+      "caption": "Orqanoqram",
+      "description": "Orqanoqram"
     }
+  ]
 }

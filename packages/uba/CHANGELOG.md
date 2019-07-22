@@ -5,13 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.2.0]
+### Changed
+ - all meta files and they localization transformed to array-of-attributes format
+ 
+## [5.1.35]
 ### Added
  - Administration subjects names (uba_subject.name) support localization (multilang)
  - Roles descriptions (uba_role.description) and Groups names (uba_group.name) supports localization (multilang)
  - build-in roles localization for uk & ru
  - icons added for shortcuts from Security group 
 
-## [5.1.35]
 ### Fixed
  - localization of tabs for uba_user form [#51]
  - "name" property for attributes moved to the first line of attribute object for all `uba_*.meta`   

@@ -8,46 +8,46 @@
   "descriptionAttribute": "fullName",
   "attributes": [
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "description": "Street name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
       "size": 128,
       "caption": "Full name",
       "description": "Street full name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "code",
       "dataType": "String",
       "size": 6,
       "caption": "Code",
       "description": "Code",
-      "allowNull": true,
-      "name": "code"
+      "allowNull": true
     },
     {
+      "name": "streetType",
       "dataType": "Enum",
       "enumGroup": "STREET_TYPE",
       "caption": "Type",
       "description": "Type",
-      "allowNull": true,
-      "name": "streetType"
+      "allowNull": true
     },
     {
+      "name": "cityID",
       "dataType": "Entity",
       "associatedEntity": "cdn_city",
       "caption": "City",
       "description": "City",
-      "allowNull": true,
-      "name": "cityID"
+      "allowNull": true
     }
   ],
   "mixins": {

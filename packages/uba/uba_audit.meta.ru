@@ -1,48 +1,59 @@
-﻿{
-    "caption": "Аудит",
-    "description": "Аудит изменений",
-    "attributes": {
-        "entity": {
-            "caption": "Сущность",
-            "description": "Сущность"
-        },
-        "entityinfo_id": {
-            "caption": "ID записи сущности",
-            "description": "ID записи сущности"
-        },
-        "actionType": {
-            "caption": "Действие",
-            "description": "Действие"
-        },
-        "actionUser": {
-            "caption": "Пользователь",
-            "description": "Пользователь"
-        },
-        "actionTime": {
-            "caption": "Время действия",
-            "description": "Время действия"
-        },
-        "remoteIP": {
-            "caption": "IP адрес",
-            "description": "IP адрес вызывающей стороны"
-        },
-        "fromValue": {
-            "caption": "Было значение"
-        },
-        "toValue": {
-            "caption": "Стало значение"
-        },
-        "targetUser": {
-            "caption": "Целевой пользователь",
-            "description": "Имя пользователя, для которого изменились данные"
-        },
-        "targetGroup": {
-            "caption": "Целевая группа",
-            "description": "Группа, для которой изменились данные"
-        },
-        "targetRole": {
-            "caption": "Целевая роль",
-            "description": "Роль пользователя, для которой изменились данные"
-        }
+{
+  "caption": "Аудит",
+  "description": "Аудит изменений",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Сущность",
+      "description": "Сущность"
+    },
+    {
+      "name": "entityinfo_id",
+      "caption": "ID записи сущности",
+      "description": "ID записи сущности"
+    },
+    {
+      "name": "actionType",
+      "caption": "Действие",
+      "description": "Действие"
+    },
+    {
+      "name": "actionUser",
+      "caption": "Пользователь",
+      "description": "Пользователь"
+    },
+    {
+      "name": "actionTime",
+      "caption": "Время действия",
+      "description": "Время действия"
+    },
+    {
+      "name": "remoteIP",
+      "caption": "IP адрес",
+      "description": "IP адрес вызывающей стороны"
+    },
+    {
+      "name": "fromValue",
+      "caption": "Было значение"
+    },
+    {
+      "name": "toValue",
+      "caption": "Стало значение"
+    },
+    {
+      "name": "targetUser",
+      "caption": "Целевой пользователь",
+      "description": "Имя пользователя, для которого изменились данные"
+    },
+    {
+      "name": "targetGroup",
+      "caption": "Целевая группа",
+      "description": "Группа, для которой изменились данные"
+    },
+    {
+      "name": "targetRole",
+      "caption": "Целевая роль",
+      "description": "Роль пользователя, для которой изменились данные"
     }
+  ]
 }

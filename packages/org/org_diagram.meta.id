@@ -1,21 +1,25 @@
-﻿{
-    "caption": "diagram",
-    "description": "diagram",
-    "attributes": {
-        "orgunitID": {
-            "caption": "Akar"
-        },
-        "caption": {
-            "caption": "Nama",
-            "description": "Nama"
-        },
-        "isdefault": {
-            "caption": "kegagalan",
-            "description": "kegagalan"
-        },
-        "document": {
-            "caption": "bagan organisasi",
-            "description": "bagan organisasi"
-        }
+{
+  "caption": "diagram",
+  "description": "diagram",
+  "attributes": [
+    {
+      "name": "orgunitID",
+      "caption": "Akar"
+    },
+    {
+      "name": "caption",
+      "caption": "Nama",
+      "description": "Nama"
+    },
+    {
+      "name": "isdefault",
+      "caption": "kegagalan",
+      "description": "kegagalan"
+    },
+    {
+      "name": "document",
+      "caption": "bagan organisasi",
+      "description": "bagan organisasi"
     }
+  ]
 }

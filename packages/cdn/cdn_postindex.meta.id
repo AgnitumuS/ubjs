@@ -1,17 +1,20 @@
-﻿{
-    "caption": "indeks posting",
-    "description": "indeks posting",
-    "attributes": {
-        "code": {
-            "caption": "Indeks",
-            "description": "Indeks"
-        },
-        "streetID": {
-            "caption": "jalan"
-        },
-        "description": {
-            "caption": "Deskripsi",
-            "description": "Deskripsi"
-        }
+{
+  "caption": "indeks posting",
+  "description": "indeks posting",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Indeks",
+      "description": "Indeks"
+    },
+    {
+      "name": "streetID",
+      "caption": "jalan"
+    },
+    {
+      "name": "description",
+      "caption": "Deskripsi",
+      "description": "Deskripsi"
     }
+  ]
 }

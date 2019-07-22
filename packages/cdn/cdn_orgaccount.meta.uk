@@ -1,30 +1,36 @@
-﻿{
-    "caption": "Розрахункові рахунки контрагентів",
-    "description": "Довідник розрахункових рахунків контрагентів",
-    "attributes": {
-        "organizationID": {
-            "caption": "Контрагент",
-            "description": "Контрагент"
-        },
-        "currencyID": {
-            "caption": "Валюта",
-            "description": "Валюта рахунку"
-        },
-        "bankID": {
-            "caption": "Банк",
-            "description": "Банк, де відкрито рахунок"
-        },
-        "code": {
-            "caption": "Код рахунку",
-            "description": "Код рахунку (номер рахунку)"
-        },
-        "acctype": {
-            "caption": "Тип рахунку",
-            "description": "Тип рахунку"
-        },
-        "description": {
-            "caption": "Опис",
-            "description": "Опис (для вибору зі списку)"
-        }
+{
+  "caption": "Розрахункові рахунки контрагентів",
+  "description": "Довідник розрахункових рахунків контрагентів",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "Контрагент",
+      "description": "Контрагент"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Валюта",
+      "description": "Валюта рахунку"
+    },
+    {
+      "name": "bankID",
+      "caption": "Банк",
+      "description": "Банк, де відкрито рахунок"
+    },
+    {
+      "name": "code",
+      "caption": "Код рахунку",
+      "description": "Код рахунку (номер рахунку)"
+    },
+    {
+      "name": "acctype",
+      "caption": "Тип рахунку",
+      "description": "Тип рахунку"
+    },
+    {
+      "name": "description",
+      "caption": "Опис",
+      "description": "Опис (для вибору зі списку)"
     }
+  ]
 }

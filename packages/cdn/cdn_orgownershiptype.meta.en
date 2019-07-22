@@ -1,22 +1,26 @@
-﻿{
-    "caption": "Types of ownership",
-    "description": "Types of ownership",
-    "attributes": {
-        "code": {
-            "caption": "Code",
-            "description": "Code of the ownership type"
-        },
-        "shortName": {
-            "caption": "Acronim",
-            "description": "Acronim of the ownership type"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "Name of the ownership type"
-        },
-        "fullName": {
-            "caption": "Full name",
-            "description": "Full name of the ownership type"
-        }
+{
+  "caption": "Types of ownership",
+  "description": "Types of ownership",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of the ownership type"
+    },
+    {
+      "name": "shortName",
+      "caption": "Acronim",
+      "description": "Acronim of the ownership type"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of the ownership type"
+    },
+    {
+      "name": "fullName",
+      "caption": "Full name",
+      "description": "Full name of the ownership type"
     }
+  ]
 }

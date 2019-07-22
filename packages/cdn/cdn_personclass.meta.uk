@@ -1,15 +1,17 @@
-﻿{
-    "caption": "Класифікатор фіз.осіб",
-    "description": "Класифікатор фіз.осіб",
-    "documentation": "Внутрішній класифікатор фіз.осіб",
-    "attributes": {
-        "code": {
-            "caption": "Код",
-            "description": "Внутрішній код"
-        },
-        "name": {
-            "caption": "Назва",
-            "description": "Назва"
-        }
+{
+  "caption": "Класифікатор фіз.осіб",
+  "description": "Класифікатор фіз.осіб",
+  "documentation": "Внутрішній класифікатор фіз.осіб",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Внутрішній код"
+    },
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва"
     }
+  ]
 }

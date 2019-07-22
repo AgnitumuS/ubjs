@@ -1,42 +1,51 @@
-﻿{
-    "caption": "Regionlar",
-    "description": "Regionlar üzrə sorğu kitabçası",
-    "attributes": {
-        "regionTypeID": {
-            "caption": "Region tipi",
-            "description": "Region tipi"
-        },
-        "name": {
-            "caption": "Ad",
-            "description": "Regionun adı"
-        },
-        "fullName": {
-            "caption": "Tam ad",
-            "description": "Regionun tam rəsmi adı"
-        },
-        "description": {
-            "caption": "Təsvir",
-            "description": "Regionun təsviri"
-        },
-        "phoneCode": {
-            "caption": "Telefon kodu",
-            "description": "Regionun telefon kodu"
-        },
-        "centerID": {
-            "caption": "Mərkəz",
-            "description": "Regionun mərkəzi"
-        },
-        "caption": {
-            "caption": "Başlıq",
-            "description": "Başlıq"
-        },
-        "parentAdminUnitID": {
-            "caption": "Əcdad",
-            "description": "Əcdad"
-        },
-        "code": {
-            "caption": "Kod",
-            "description": "Daxili kod"
-        }
+{
+  "caption": "Regionlar",
+  "description": "Regionlar üzrə sorğu kitabçası",
+  "attributes": [
+    {
+      "name": "regionTypeID",
+      "caption": "Region tipi",
+      "description": "Region tipi"
+    },
+    {
+      "name": "name",
+      "caption": "Ad",
+      "description": "Regionun adı"
+    },
+    {
+      "name": "fullName",
+      "caption": "Tam ad",
+      "description": "Regionun tam rəsmi adı"
+    },
+    {
+      "name": "description",
+      "caption": "Təsvir",
+      "description": "Regionun təsviri"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Telefon kodu",
+      "description": "Regionun telefon kodu"
+    },
+    {
+      "name": "centerID",
+      "caption": "Mərkəz",
+      "description": "Regionun mərkəzi"
+    },
+    {
+      "name": "caption",
+      "caption": "Başlıq",
+      "description": "Başlıq"
+    },
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Əcdad",
+      "description": "Əcdad"
+    },
+    {
+      "name": "code",
+      "caption": "Kod",
+      "description": "Daxili kod"
     }
+  ]
 }

@@ -7,81 +7,81 @@
   "cacheType": "Entity",
   "attributes": [
     {
+      "name": "parentAdminUnitID",
       "dataType": "Entity",
       "associatedEntity": "cdn_adminunit",
       "caption": "Parent",
       "description": "Parent",
-      "allowNull": false,
-      "name": "parentAdminUnitID"
+      "allowNull": false
     },
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Code",
       "description": "Internal code",
       "allowNull": false,
-      "isUnique": true,
-      "name": "code"
+      "isUnique": true
     },
     {
+      "name": "regionTypeID",
       "dataType": "Entity",
       "associatedEntity": "cdn_regiontype",
       "caption": "Type",
       "description": "Type of region",
-      "allowNull": true,
-      "name": "regionTypeID"
+      "allowNull": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "description": "Name of region",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "caption",
       "dataType": "String",
       "size": 255,
       "caption": "Caption",
       "description": "Caption",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "caption"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
       "size": 255,
       "caption": "Full name",
       "description": "Official name",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Description",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "phoneCode",
       "dataType": "String",
       "size": 64,
       "caption": "Phone code",
       "description": "Phone code of region",
-      "allowNull": true,
-      "name": "phoneCode"
+      "allowNull": true
     },
     {
+      "name": "centerID",
       "dataType": "Entity",
       "associatedEntity": "cdn_city",
       "caption": "Center",
       "description": "Center of region",
-      "allowNull": true,
-      "name": "centerID"
+      "allowNull": true
     }
   ],
   "mixins": {

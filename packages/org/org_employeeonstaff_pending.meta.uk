@@ -1,18 +1,21 @@
-﻿{
-    "caption": "Призначення з відкладеною датою",
-    "description": "Призначення з відкладеною датою",
-    "attributes": {
-        "emponstaffID": {
-            "caption": "Призначення",
-            "description": "Призначення"
-        },
-        "startDate": {
-            "caption": "Початок",
-            "description": "Початок дії призначення"
-        },
-        "endDate": {
-            "caption": "Закінчення",
-            "description": "Закінчення дії призначення"
-        }
+{
+  "caption": "Призначення з відкладеною датою",
+  "description": "Призначення з відкладеною датою",
+  "attributes": [
+    {
+      "name": "emponstaffID",
+      "caption": "Призначення",
+      "description": "Призначення"
+    },
+    {
+      "name": "startDate",
+      "caption": "Початок",
+      "description": "Початок дії призначення"
+    },
+    {
+      "name": "endDate",
+      "caption": "Закінчення",
+      "description": "Закінчення дії призначення"
     }
+  ]
 }

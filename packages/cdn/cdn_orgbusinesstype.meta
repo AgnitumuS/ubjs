@@ -7,49 +7,49 @@
   "descriptionAttribute": "name",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 32,
       "caption": "Code",
       "description": "Code of the organization type",
       "allowNull": false,
       "isMultiLang": false,
-      "isUnique": true,
-      "name": "code"
+      "isUnique": true
     },
     {
+      "name": "shortName",
       "dataType": "String",
       "size": 32,
       "caption": "Acronim",
       "description": "Acronim of the organization type",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "shortName"
+      "isMultiLang": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 100,
       "caption": "Name",
       "description": "Name of the organization type",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Description of the organization type",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "isGovAuthority",
       "dataType": "Boolean",
       "caption": "Gov. authority",
       "description": "Sign, that the organization of this type is a government authority",
       "allowNull": false,
-      "defaultValue": "0",
-      "name": "isGovAuthority"
+      "defaultValue": "0"
     }
   ],
   "mixins": {

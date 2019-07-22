@@ -1,15 +1,18 @@
-﻿{
-    "caption": "penerima pesan",
-    "description": "penerima pesan sistem",
-    "attributes": {
-        "messageID": {
-            "caption": "Pesan"
-        },
-        "userID": {
-            "caption": "pemakai"
-        },
-        "acceptDate": {
-            "caption": "tanggal menerima"
-        }
+{
+  "caption": "penerima pesan",
+  "description": "penerima pesan sistem",
+  "attributes": [
+    {
+      "name": "messageID",
+      "caption": "Pesan"
+    },
+    {
+      "name": "userID",
+      "caption": "pemakai"
+    },
+    {
+      "name": "acceptDate",
+      "caption": "tanggal menerima"
     }
+  ]
 }

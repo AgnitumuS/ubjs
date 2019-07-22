@@ -1,12 +1,14 @@
-﻿{
-    "caption": "Alamat",
-    "description": "direktori alamat",
-    "attributes": {
-        "addressType": {
-            "caption": "Tipe alamat"
-        },
-        "value": {
-            "caption": "Alamat"
-        }
+{
+  "caption": "Alamat",
+  "description": "direktori alamat",
+  "attributes": [
+    {
+      "name": "addressType",
+      "caption": "Tipe alamat"
+    },
+    {
+      "name": "value",
+      "caption": "Alamat"
     }
+  ]
 }

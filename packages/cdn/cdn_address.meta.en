@@ -1,15 +1,18 @@
-﻿{
-    "caption": "Addresses",
-    "description": "Addresses directory",
-    "attributes": {
-        "addressType": {
-            "caption": "Address type"
-        },
-        "value": {
-            "caption": "Address"
-        },
-        "subjectID": {
-            "caption": "Subject"
-        }
+{
+  "caption": "Addresses",
+  "description": "Addresses directory",
+  "attributes": [
+    {
+      "name": "addressType",
+      "caption": "Address type"
+    },
+    {
+      "name": "value",
+      "caption": "Address"
+    },
+    {
+      "name": "subjectID",
+      "caption": "Subject"
     }
+  ]
 }

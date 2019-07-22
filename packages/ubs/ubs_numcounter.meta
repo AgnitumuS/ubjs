@@ -7,21 +7,21 @@
   "cacheType": "None",
   "attributes": [
     {
+      "name": "regKey",
       "dataType": "String",
       "size": 255,
       "caption": "Registration key",
       "description": "Registration key",
       "allowNull": false,
       "isMultiLang": false,
-      "isUnique": true,
-      "name": "regKey"
+      "isUnique": true
     },
     {
+      "name": "counter",
       "dataType": "ID",
       "caption": "Counter",
       "description": "Counter",
-      "allowNull": false,
-      "name": "counter"
+      "allowNull": false
     }
   ],
   "mixins": {

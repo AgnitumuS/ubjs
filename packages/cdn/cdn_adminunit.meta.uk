@@ -1,28 +1,34 @@
-﻿{
-    "caption": "Адміністративні одиниці",
-    "description": "Адміністративні одиниці (країна, регіон, населений пункт)",
-    "documentation": "Загальний предок для країн, регіонів та населених пунктів",
-    "attributes": {
-        "parentAdminUnitID": {
-            "caption": "Підпорядкування",
-            "description": "Підпорядкування"
-        },
-        "code": {
-            "caption": "Код",
-            "description": "Внутрішній код"
-        },
-        "name": {
-            "caption": "Назва"
-        },
-        "fullName": {
-            "caption": "Повна назва"
-        },
-        "adminUnitType": {
-            "caption": "Тип адм-ної одиниці",
-            "documentation": "Строкове представлення типа одиниці для швидких вибірок"
-        },
-        "caption": {
-            "caption": "Заголовок"
-        }
+{
+  "caption": "Адміністративні одиниці",
+  "description": "Адміністративні одиниці (країна, регіон, населений пункт)",
+  "documentation": "Загальний предок для країн, регіонів та населених пунктів",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Підпорядкування",
+      "description": "Підпорядкування"
+    },
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Внутрішній код"
+    },
+    {
+      "name": "name",
+      "caption": "Назва"
+    },
+    {
+      "name": "fullName",
+      "caption": "Повна назва"
+    },
+    {
+      "name": "adminUnitType",
+      "caption": "Тип адм-ної одиниці",
+      "documentation": "Строкове представлення типа одиниці для швидких вибірок"
+    },
+    {
+      "name": "caption",
+      "caption": "Заголовок"
     }
+  ]
 }

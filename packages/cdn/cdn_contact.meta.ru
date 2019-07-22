@@ -1,12 +1,14 @@
-﻿{
-    "caption": "Контакты",
-    "description": "Справочник контактов",
-    "attributes": {
-        "contactTypeID": {
-            "caption": "Тип контакта"
-        },
-        "value": {
-            "caption": "Контакт"
-        }
+{
+  "caption": "Контакты",
+  "description": "Справочник контактов",
+  "attributes": [
+    {
+      "name": "contactTypeID",
+      "caption": "Тип контакта"
+    },
+    {
+      "name": "value",
+      "caption": "Контакт"
     }
+  ]
 }

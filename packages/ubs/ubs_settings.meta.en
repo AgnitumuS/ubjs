@@ -1,30 +1,36 @@
-﻿{
-    "caption": "Settings",
-    "description": "Entity with information about system settings",
-    "attributes": {
-        "settingKey": {
-            "caption": "Key",
-            "description": "Setting key"
-        },
-        "name": {
-            "caption": "Name",
-            "description": "Setting name"
-        },
-        "description": {
-            "caption": "Description",
-            "description": "Description"
-        },
-        "type": {
-            "caption": "Type",
-            "description": "Value type"
-        },
-        "settingValue": {
-            "caption": "Value",
-            "description": "Value"
-        },
-        "defaultValue": {
-            "caption": "Default value",
-            "description": "Default value"
-        }
+{
+  "caption": "Settings",
+  "description": "Entity with information about system settings",
+  "attributes": [
+    {
+      "name": "settingKey",
+      "caption": "Key",
+      "description": "Setting key"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Setting name"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "Description"
+    },
+    {
+      "name": "type",
+      "caption": "Type",
+      "description": "Value type"
+    },
+    {
+      "name": "settingValue",
+      "caption": "Value",
+      "description": "Value"
+    },
+    {
+      "name": "defaultValue",
+      "caption": "Default value",
+      "description": "Default value"
     }
+  ]
 }

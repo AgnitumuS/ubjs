@@ -1,41 +1,51 @@
-﻿{
-    "caption": "Аудит",
-    "description": "Аудит изменений",
-    "attributes": {
-        "entity": {
-            "caption": "Сущность",
-            "description": "Сущность"
-        },
-        "entityinfo_id": {
-            "caption": "ID записи сущности",
-            "description": "ID записи сущности"
-        },
-        "actionType": {
-            "caption": "Действие",
-            "description": "Действие"
-        },
-        "actionUser": {
-            "caption": "Пользователь",
-            "description": "Пользователь"
-        },
-        "actionTime": {
-            "caption": "Время действия",
-            "description": "Время действия"
-        },
-        "remoteIP": {
-            "caption": "IP адрес"
-        },
-        "fromValue": {
-            "caption": "Было значение"
-        },
-        "toValue": {
-            "caption": "Стало значение"
-        },
-        "parentEntity": {
-            "caption": "Родительская сущность"
-        },
-        "parentEntityInfo_id": {
-            "caption": "ID записи родительской сущности"
-        }
+{
+  "caption": "Аудит",
+  "description": "Аудит изменений",
+  "attributes": [
+    {
+      "name": "entity",
+      "caption": "Сущность",
+      "description": "Сущность"
+    },
+    {
+      "name": "entityinfo_id",
+      "caption": "ID записи сущности",
+      "description": "ID записи сущности"
+    },
+    {
+      "name": "actionType",
+      "caption": "Действие",
+      "description": "Действие"
+    },
+    {
+      "name": "actionUser",
+      "caption": "Пользователь",
+      "description": "Пользователь"
+    },
+    {
+      "name": "actionTime",
+      "caption": "Время действия",
+      "description": "Время действия"
+    },
+    {
+      "name": "remoteIP",
+      "caption": "IP адрес"
+    },
+    {
+      "name": "fromValue",
+      "caption": "Было значение"
+    },
+    {
+      "name": "toValue",
+      "caption": "Стало значение"
+    },
+    {
+      "name": "parentEntity",
+      "caption": "Родительская сущность"
+    },
+    {
+      "name": "parentEntityInfo_id",
+      "caption": "ID записи родительской сущности"
     }
+  ]
 }

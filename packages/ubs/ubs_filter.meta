@@ -8,43 +8,43 @@
   "documentation": "doCmd.showList.autoFilter use this entity to store user filters definition",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 100,
       "caption": "Code",
       "description": "Code of filter group",
-      "allowNull": false,
-      "name": "code"
+      "allowNull": false
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 250,
       "caption": "Name",
       "description": "Filter name",
-      "allowNull": false,
-      "name": "name"
+      "allowNull": false
     },
     {
+      "name": "filter",
       "dataType": "Text",
       "caption": "Filter definition",
       "description": "filter",
-      "allowNull": false,
-      "name": "filter"
+      "allowNull": false
     },
     {
+      "name": "isGlobal",
       "dataType": "Boolean",
       "caption": "Is global?",
       "description": "Is global?",
       "documentation": "Is this filter accessible for all users",
-      "allowNull": false,
-      "name": "isGlobal"
+      "allowNull": false
     },
     {
+      "name": "owner",
       "dataType": "Entity",
       "associatedEntity": "uba_user",
       "caption": "Filter owner",
       "description": "Filter owner",
-      "allowNull": false,
-      "name": "owner"
+      "allowNull": false
     }
   ],
   "dbKeys": {

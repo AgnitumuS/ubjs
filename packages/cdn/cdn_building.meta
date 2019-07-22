@@ -7,42 +7,42 @@
   "cacheType": "SessionEntity",
   "attributes": [
     {
+      "name": "streetID",
       "dataType": "Entity",
       "associatedEntity": "cdn_street",
       "caption": "Street",
-      "allowNull": false,
-      "name": "streetID"
+      "allowNull": false
     },
     {
+      "name": "postIndexID",
       "dataType": "Entity",
       "associatedEntity": "cdn_postindex",
       "caption": "Zip",
-      "allowNull": false,
-      "name": "postIndexID"
+      "allowNull": false
     },
     {
+      "name": "code",
       "dataType": "String",
       "size": 20,
       "caption": "#",
       "description": "Код",
-      "allowNull": false,
-      "name": "code"
+      "allowNull": false
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "buildingType",
       "dataType": "Enum",
       "enumGroup": "BUILDING_TYPE",
       "caption": "Type",
       "allowNull": false,
-      "defaultValue": "HOUSE",
-      "name": "buildingType"
+      "defaultValue": "HOUSE"
     }
   ],
   "mixins": {

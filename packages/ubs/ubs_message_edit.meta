@@ -8,37 +8,37 @@
   "documentation": "System messages",
   "attributes": [
     {
+      "name": "messageBody",
       "dataType": "Text",
       "caption": "Message",
-      "allowNull": true,
-      "name": "messageBody"
+      "allowNull": true
     },
     {
+      "name": "complete",
       "dataType": "Boolean",
-      "caption": "Redy to send",
+      "caption": "Ready to send",
       "defaultValue": "0",
-      "allowNull": false,
-      "name": "complete"
+      "allowNull": false
     },
     {
+      "name": "messageType",
       "dataType": "Enum",
       "enumGroup": "UBS_MESSAGE_TYPE",
       "defaultValue": "",
       "caption": "Type",
-      "allowNull": false,
-      "name": "messageType"
+      "allowNull": false
     },
     {
+      "name": "startDate",
       "dataType": "DateTime",
       "caption": "Start date",
-      "allowNull": false,
-      "name": "startDate"
+      "allowNull": false
     },
     {
+      "name": "expireDate",
       "dataType": "DateTime",
       "caption": "Expire date",
-      "allowNull": false,
-      "name": "expireDate"
+      "allowNull": false
     }
   ],
   "mixins": {

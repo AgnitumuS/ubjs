@@ -8,91 +8,91 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 16,
       "caption": "Code",
       "description": "Code of the department",
-      "allowNull": true,
-      "name": "code"
+      "allowNull": true
     },
     {
+      "name": "name",
       "dataType": "String",
       "size": 128,
       "caption": "Name",
       "description": "Name of the department",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "name"
+      "isMultiLang": true
     },
     {
+      "name": "fullName",
       "dataType": "String",
       "size": 255,
       "caption": "Full name",
       "description": "Full official name of the department",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullName"
+      "isMultiLang": true
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Description of the department",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     },
     {
+      "name": "nameGen",
       "dataType": "String",
       "size": 128,
       "caption": "Name in genitive case",
       "description": "Department name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameGen"
+      "isMultiLang": true
     },
     {
+      "name": "nameDat",
       "dataType": "String",
       "size": 128,
       "caption": "Name in dative case",
       "description": "Department name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "nameDat"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameGen",
       "dataType": "String",
       "size": 255,
       "caption": "Full name in genitive case",
       "description": "Department full official name in genitive case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameGen"
+      "isMultiLang": true
     },
     {
+      "name": "fullNameDat",
       "dataType": "String",
       "size": 255,
       "caption": "Full name in dative case",
       "description": "Department full official name in dative case",
       "allowNull": true,
-      "isMultiLang": true,
-      "name": "fullNameDat"
+      "isMultiLang": true
     },
     {
+      "name": "depTypeID",
       "dataType": "Entity",
       "associatedEntity": "cdn_deptype",
       "caption": "Type",
       "description": "Type of the department",
-      "allowNull": true,
-      "name": "depTypeID"
+      "allowNull": true
     },
     {
+      "name": "organizationID",
       "dataType": "Entity",
       "associatedEntity": "cdn_organization",
       "caption": "Organization",
       "description": "Parent external organization",
-      "allowNull": true,
-      "name": "organizationID"
+      "allowNull": true
     }
   ],
   "mixins": {

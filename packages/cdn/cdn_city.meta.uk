@@ -1,36 +1,44 @@
-﻿{
-    "caption": "Населені пункти",
-    "description": "Довідник населених пунктів",
-    "attributes": {
-        "parentAdminUnitID": {
-            "caption": "Предок"
-        },
-        "code": {
-            "caption": "Код",
-            "description": "Код населеного пункту"
-        },
-        "name": {
-            "caption": "Назва",
-            "description": "Назва населеного пункту"
-        },
-        "caption": {
-            "caption": "Заголовок"
-        },
-        "description": {
-            "caption": "Опис",
-            "description": "Опис населеного пункту"
-        },
-        "postalCode": {
-            "caption": "Поштовий код",
-            "description": "Поштовий код населеного пункту"
-        },
-        "phoneCode": {
-            "caption": "Телефонний код",
-            "description": "Телефонний код населеного пункту"
-        },
-        "cityTypeID": {
-            "caption": "Тип населеного пункту",
-            "description": "Тип населеного пункту"
-        }
+{
+  "caption": "Населені пункти",
+  "description": "Довідник населених пунктів",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Предок"
+    },
+    {
+      "name": "code",
+      "caption": "Код",
+      "description": "Код населеного пункту"
+    },
+    {
+      "name": "name",
+      "caption": "Назва",
+      "description": "Назва населеного пункту"
+    },
+    {
+      "name": "caption",
+      "caption": "Заголовок"
+    },
+    {
+      "name": "description",
+      "caption": "Опис",
+      "description": "Опис населеного пункту"
+    },
+    {
+      "name": "postalCode",
+      "caption": "Поштовий код",
+      "description": "Поштовий код населеного пункту"
+    },
+    {
+      "name": "phoneCode",
+      "caption": "Телефонний код",
+      "description": "Телефонний код населеного пункту"
+    },
+    {
+      "name": "cityTypeID",
+      "caption": "Тип населеного пункту",
+      "description": "Тип населеного пункту"
     }
+  ]
 }

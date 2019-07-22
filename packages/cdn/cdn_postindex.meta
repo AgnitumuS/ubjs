@@ -8,29 +8,29 @@
   "documentation": "",
   "attributes": [
     {
+      "name": "code",
       "dataType": "String",
       "size": 6,
       "caption": "Index",
       "description": "Index",
       "allowNull": false,
-      "isUnique": false,
-      "name": "code"
+      "isUnique": false
     },
     {
+      "name": "streetID",
       "dataType": "Entity",
       "associatedEntity": "cdn_street",
       "caption": "Street",
-      "allowNull": false,
-      "name": "streetID"
+      "allowNull": false
     },
     {
+      "name": "description",
       "dataType": "String",
       "size": 255,
       "caption": "Description",
       "description": "Description",
       "allowNull": false,
-      "isMultiLang": true,
-      "name": "description"
+      "isMultiLang": true
     }
   ],
   "mixins": {
