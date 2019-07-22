@@ -37,7 +37,7 @@ adminUiVue.dialogInfo('Hello')
 
 ## [1.6.10]
 ### Fixed
- - moment usage fix: now `const momemnt = require('moment')` in underline models works as expected and 
+ - moment usage fix: now `const moment = require('moment')` in underline models works as expected and 
  use `moment` instance already injected by adminui-vue
  - fix `can not read property style of undefined` in `Vue.prototype.$zIndex`  
 
