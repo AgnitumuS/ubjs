@@ -188,18 +188,18 @@ function establishConnectionFromCmdLineAttributes (config) {
   }
 
   if (config.timeout) {
-    http.setGlobalConnectionDefaults({receiveTimeout: parseInt(config.timeout, 10)})
+    http.setGlobalConnectionDefaults({ receiveTimeout: parseInt(config.timeout, 10) })
   }
   let conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
   let appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
   if (serverSession.__serverStartedByMe && config.user === 'root') {
     conn.onRequestAuthParams = function () {
-      return {authSchema: 'ROOT'}
+      return { authSchema: 'ROOT' }
     }
   } else if (appInfo.authMethods.indexOf('UB') !== -1) {
     conn.onRequestAuthParams = function () {
-      return {login: serverSession.USER, password: serverSession.PWD}
+      return { login: serverSession.USER, password: serverSession.PWD }
     }
   }
   serverSession.appInfo = appInfo
@@ -215,11 +215,11 @@ function establishConnectionFromCmdLineAttributes (config) {
  * @type {Array<Object>}
  */
 establishConnectionFromCmdLineAttributes._cmdLineParams = [
-  {short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL'},
-  {short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name'},
-  {short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password'},
-  {short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'},
-  {short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms'}
+  { short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL' },
+  { short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name' },
+  { short: 'p', long: 'pwd', param: 'password', searchInEnv: true, help: 'User password' },
+  { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' },
+  { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' }
 ]
 
 /**
@@ -231,7 +231,7 @@ function checkServerStarted (URL) {
   const http = require('http')
   if (verboseMode) console.info('Check server is running...')
   try {
-    let resp = http.get({URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000}) // dummy
+    let resp = http.get({ URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000 }) // dummy
     if (verboseMode) console.info('STATUS', resp.statusCode)
     return resp.statusCode === 200
   } catch (e) {}
@@ -322,7 +322,7 @@ function getServerConfiguration (forFutureSave = false) {
     result.application.defaultLang = 'en'
   }
   if (!result.application.domain) {
-    result.application.domain = {models: []}
+    result.application.domain = { models: [] }
   }
   // for models without name - read it from package.json
   // read "browser" section of package.json to check model is require initialization in the browser
@@ -351,7 +351,7 @@ function getServerConfiguration (forFutureSave = false) {
       if (packageData.browser) {
         let dev = checkPackageBrowserPath(packageData, model, 'dev')
         let prod = checkPackageBrowserPath(packageData, model, 'prod')
-        if (!forFutureSave) model.browser = {dev, prod}
+        if (!forFutureSave) model.browser = { dev, prod }
       }
       if (!forFutureSave) model.version = packageData.version
     }
@@ -384,7 +384,7 @@ function getServerConfiguration (forFutureSave = false) {
     result.uiSettings = {}
   }
   if (!result.security) result.security = {}
-  if (!result.httpServer) result.httpServer = {serverType: 'None'}
+  if (!result.httpServer) result.httpServer = { serverType: 'None' }
   if (result.httpServer.serverType !== 'None') {
     if (!result.httpServer.externalURL) result.httpServer.externalURL = serverURLFromConfig(result)
     if (!result.httpServer.reverseProxy) result.httpServer.reverseProxy = {}

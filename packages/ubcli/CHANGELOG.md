@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [5.3.30]
+### Added
+ - new command `ubcli checkStoreIntegrity` for validate blobStore consistency by checking equality of the
+ md5 checksum stored in the database with actual file MD5
+```bash
+npx ubcli checkStgoreIntegrity -u ... -p ... -entity tst_document -attribute fileStoreSimple
+``` 
+see `npx ubcli checkStoreIntegrity --help` for details
+   
+
 ## [5.3.29]
 ### Fixed
  - in case executed for folder `ubcli meta-tr` will skip files what contains meta in name but not a metafile itself (bla-bla.metadata for example)

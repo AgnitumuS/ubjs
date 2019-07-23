@@ -38,13 +38,13 @@ module.exports = function generateDDL (cfg) {
       'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it\nShould be executed from application folder',
       'ubcli'
     )
-      .add({short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL'})
-      .add({short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config'})
-      .add({short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored'})
-      .add({short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation'})
-      .add({short: 'out', long: 'out', param: 'outputPath', defaultValue: process.cwd(), help: 'Folder to output generated DDLs (one file per connection)'})
-      .add({short: 'autorun', long: 'autorun', defaultValue: false, help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION'})
-      .add({short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION'})
+      .add({ short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'http://localhost:8881', searchInEnv: true, help: 'Full server URL' })
+      .add({ short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' })
+      .add({ short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored' })
+      .add({ short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation' })
+      .add({ short: 'out', long: 'out', param: 'outputPath', defaultValue: process.cwd(), help: 'Folder to output generated DDLs (one file per connection)' })
+      .add({ short: 'autorun', long: 'autorun', defaultValue: false, help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION' })
+      .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
@@ -53,7 +53,7 @@ module.exports = function generateDDL (cfg) {
   cfg.forceStartServer = true
   cfg.user = 'root'
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
-  http.setGlobalConnectionDefaults({receiveTimeout: 120000})
+  http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
   let session = argv.establishConnectionFromCmdLineAttributes(cfg)
   let conn = session.connection
   try {
@@ -126,7 +126,7 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
           for (let stmt of part.statements) {
             try {
               if (stmt) {
-                conn.xhr({endpoint: 'runSQL', data: stmt, URLParams: {CONNECTION: connectionName}})
+                conn.xhr({ endpoint: 'runSQL', data: stmt, URLParams: { CONNECTION: connectionName } })
               }
             } catch (e) {
               if (!optimistic) {
