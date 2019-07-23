@@ -47,6 +47,9 @@
     "mStorage": {
       "simpleAudit": true,
       "safeDelete": false
+    },
+    "audit": {
+      "enabled": false
     }
   },
   "dbExtensions": {
