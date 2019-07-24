@@ -126,5 +126,8 @@ UB.i18nExtend({
   recordWasDeleted: 'Record was deleted',
   validationError: 'Unable to save, error in fields - {0}',
   formCrashTitle: 'Form was crashed',
-  formCrashBody: 'Something going wrong please reload form or contact system administrator'
+  formCrashBody: 'Something going wrong please reload form or contact system administrator',
+
+  selectDate: 'Select date',
+  selectDateAndTime: 'Select date and time'
 })

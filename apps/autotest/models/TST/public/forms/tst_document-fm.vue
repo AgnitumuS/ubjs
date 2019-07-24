@@ -26,12 +26,13 @@
 
       <el-row :gutter="20">
         <el-col :lg="8">
-          <u-form-row :label="getLabel('docDate')">
+          <u-auto-field attribute-name="docDate" />
+          <!--u-form-row :label="getLabel('docDate')">
             <el-date-picker
               v-model="docDate"
               type="date"
             />
-          </u-form-row>
+          </u-form-row-->
         </el-col>
 
         <el-col :lg="8">

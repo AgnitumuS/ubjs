@@ -15,7 +15,8 @@
     {
       "name": "docDate",
       "dataType": "Date",
-      "caption": "Document date"
+      "caption": "Document date",
+      "allowNull": false
     },
     {
       "name": "incomeDate",

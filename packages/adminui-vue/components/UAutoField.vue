@@ -10,10 +10,10 @@
       :disabled="disabled"
     />
     <el-date-picker
-      v-else-if="isDate"
+      v-else-if="(dataType === 'Date') || (dataType === 'DateTime')"
       v-model="model"
       :type="dataType.toLowerCase()"
-      placeholder="Select date and time"
+      :placeholder="$ut(dataType === 'Date' ? 'selectDate' : 'selectDateAndTime')"
       :disabled="disabled"
     />
     <u-select-enum
@@ -85,12 +85,6 @@ export default {
     disabled: Boolean
   },
 
-  data () {
-    return {
-      dateTypes: ['Date', 'DateTime']
-    }
-  },
-
   computed: {
     model: {
       get () {
@@ -103,8 +97,7 @@ export default {
         }
         this.$store.commit(`SET_DATA`, { key: this.attributeName, value })
       }
-    }
-    ,
+    },
 
     dataType () {
       return this.entitySchema.attributes[this.attributeName].dataType
@@ -116,10 +109,6 @@ export default {
 
     label () {
       return this.entitySchema.attributes[this.attributeName].caption
-    },
-
-    isDate () {
-      return this.dateTypes.includes(this.dataType)
     }
   }
 }
