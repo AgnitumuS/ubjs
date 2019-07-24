@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.4]
+### Changed
+ - new method `getEntityName` added to `UB.ux.UBOrgChart`, returns `org_unit` by default;
+ Can be overrated by other model in case org structure uses some other unity entity (`hr_staffUnit` for example)
+  
 ## [5.10.2]
 ### Changed
  - rename `pokazatPrevu` -> `showPreview`, `neNaidenShablon` -> `nodeTemplateNotFound` in i18n

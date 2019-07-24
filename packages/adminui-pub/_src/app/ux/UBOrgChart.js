@@ -12,6 +12,10 @@ Ext.define('UB.ux.UBOrgChart', {
   height: '100%',
   layout: 'fit',
 
+  getEntityName: function () {
+    return 'org_unit'
+  },
+
   loadData: function () {
     let me = this
     return this.xmInitPromise.then(() => {
@@ -25,7 +29,7 @@ Ext.define('UB.ux.UBOrgChart', {
           .then((diagramData) => {
             if (diagramData) me.rootElementID = diagramData.orgunitID
             return me.rootElementID
-              ? UB.Repository('org_unit').attrs(['ID', 'mi_treePath']).selectById(me.rootElementID)
+              ? UB.Repository(this.getEntityName()).attrs(['ID', 'mi_treePath']).selectById(me.rootElementID)
                 .then((orgUnitData) => {
                   if (orgUnitData) me.rootTreePath = orgUnitData.mi_treePath
                   return true
@@ -38,7 +42,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
   doLoadData: function () {
     let me = this
-    return UB.Repository('org_unit')
+    return UB.Repository(this.getEntityName())
       .attrs(['ID', 'parentID', 'code', 'caption', 'unitType', 'mi_treePath'])
       .orderBy('mi_treePath')
       .whereIf(me.rootTreePath, '[mi_treePath]', 'startWith', me.rootTreePath)
@@ -59,7 +63,7 @@ Ext.define('UB.ux.UBOrgChart', {
       let parentID = row.parentID
       let idEl = data[id]
       if (!idEl) {
-        idEl = data[id] = {child: []}
+        idEl = data[id] = { child: [] }
       }
       Object.assign(idEl, row)
       if (me.rootElementID && me.rootElementID === id) {
@@ -70,7 +74,7 @@ Ext.define('UB.ux.UBOrgChart', {
       if (parentID) {
         let parentEl = data[parentID]
         if (!parentEl) {
-          parentEl = data[parentID] = {child: []}
+          parentEl = data[parentID] = { child: [] }
         }
         parentEl.child.push(idEl)
       } else {
@@ -580,8 +584,8 @@ Ext.define('UB.ux.UBOrgChart', {
     Ext.define('SelectPrinterFmt', {
       extend: 'Ext.data.Model',
       fields: [
-        {name: 'ID', type: 'object'},
-        {name: 'Caption', type: 'string'}
+        { name: 'ID', type: 'object' },
+        { name: 'Caption', type: 'string' }
       ]
     })
 
@@ -632,10 +636,10 @@ Ext.define('UB.ux.UBOrgChart', {
         store: Ext.create('Ext.data.Store', {
           model: 'SelectPrinterFmt',
           data: [
-            {ID: 'A4P', Caption: UB.i18n('A4 portrait')},
-            {ID: 'A4L', Caption: UB.i18n('A4 landscape')},
-            {ID: 'A5P', Caption: UB.i18n('A5 portrait')},
-            {ID: 'A5L', Caption: UB.i18n('A5 landscape')}
+            { ID: 'A4P', Caption: UB.i18n('A4 portrait') },
+            { ID: 'A4L', Caption: UB.i18n('A4 landscape') },
+            { ID: 'A5P', Caption: UB.i18n('A5 portrait') },
+            { ID: 'A5L', Caption: UB.i18n('A5 landscape') }
           ]
         }),
         forceSelection: true,
@@ -920,7 +924,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   getAddOvelay: function (cell) {
-    var me = this, result = null
+    var me = this; var result = null
     if (!cell.overlays || !cell.overlays.length) {
       return null
     }
@@ -948,13 +952,13 @@ Ext.define('UB.ux.UBOrgChart', {
    * @param overlay
    */
   addChildElement: function (cell, overlay) {
-    var me = this,
-      ID = cell.getAttribute('ID'),
-      element = me.allData[ID],
-      model = me.graph.getModel(),
-      expandOverlay,
-      existsCell, eID, pt,
-      existIDs = {}, existIDCount = 0, cellToAdd = []
+    var me = this
+    var ID = cell.getAttribute('ID')
+    var element = me.allData[ID]
+    var model = me.graph.getModel()
+    var expandOverlay
+    var existsCell; var eID; var pt
+    var existIDs = {}; var existIDCount = 0; var cellToAdd = []
 
     existsCell = me.findChildCell(cell)
     Ext.Array.each(existsCell, function (ecell) {
@@ -966,7 +970,7 @@ Ext.define('UB.ux.UBOrgChart', {
     if (element && element.child.length > 0) {
       model.beginUpdate()
       try {
-        pt = {x: cell.geometry.x, y: cell.geometry.y + 120}
+        pt = { x: cell.geometry.x, y: cell.geometry.y + 120 }
         element.child.forEach(function (childElm) {
           if (!existIDs[childElm.ID]) {
             me.showElement(cell, childElm, pt)
@@ -1000,10 +1004,10 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   expandORCollapse: function (cell, overlay) {
-    var me = this,
-      ID = cell.getAttribute('ID'),
-      element = me.allData[ID],
-      child
+    var me = this
+    var ID = cell.getAttribute('ID')
+    var element = me.allData[ID]
+    var child
 
     if (element) {
       child = element.child
@@ -1023,7 +1027,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   hideOrShowCells: function (graph, cell, show) {
-    var me = this, cells = [], overlay
+    var me = this; var cells = []; var overlay
     var hasInvisible = false
     graph.traverse(cell, true, function (vertex) {
       if (cell !== vertex) {
@@ -1050,7 +1054,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   changeElementParent: function (cell, newParent, item) {
-    var me = this, model = me.graph.getModel(), edgeCount, e, src
+    var me = this; var model = me.graph.getModel(); var edgeCount; var e; var src
     edgeCount = model.getEdgeCount(cell)
     // remove old link
     if (edgeCount > 0) {
@@ -1077,7 +1081,7 @@ Ext.define('UB.ux.UBOrgChart', {
    */
   addChild: function (graph, cell, item, inUpdateMode, pt) {
     var doc, node, x, y
-    var me = this, model = graph.getModel()
+    var me = this; var model = graph.getModel()
     var parent = graph.getDefaultParent()
     var vertex
 
@@ -1134,8 +1138,8 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   addElementEdge: function (cell, parentCell, item) {
-    var graph = this.graph,
-      parent = graph.getDefaultParent()
+    var graph = this.graph
+    var parent = graph.getDefaultParent()
     // Adds the edge between the existing cell
     // and the new vertex and executes the
     // automatic layout on the parent
@@ -1327,9 +1331,9 @@ Ext.define('UB.ux.UBOrgChart', {
    */
   setSrc: function (cfg) {
     var
-      me = this,
-      data = cfg.url,
-      blobData = cfg.blobData, result
+      me = this
+    var data = cfg.url
+    var blobData = cfg.blobData; var result
 
     if (cfg.rawValue) {
       throw new Error('The UBOrgChart component does not support rawValue')
@@ -1355,7 +1359,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   startLoadData: function () {
-    var me = this, dec, xml, err, defer = Q.defer()
+    var me = this; var dec; var xml; var err; var defer = Q.defer()
     if (!me.dataUrl || !me.graph) {
       return
     }
@@ -1415,7 +1419,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   findParentCell: function (cell) {
-    var me = this, model = me.graph.getModel(), edgeCount, e, dest
+    var me = this; var model = me.graph.getModel(); var edgeCount; var e; var dest
     edgeCount = model.getEdgeCount(cell)
     if (edgeCount > 0) {
       for (var i = 0; i < edgeCount; i++) {
@@ -1430,7 +1434,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   findChildCell: function (cell) {
-    var me = this, model = me.graph.getModel(), edgeCount, e, dest, result = []
+    var me = this; var model = me.graph.getModel(); var edgeCount; var e; var dest; var result = []
     edgeCount = model.getEdgeCount(cell)
     if (edgeCount > 0) {
       for (var i = 0; i < edgeCount; i++) {
@@ -1450,9 +1454,9 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   validateDiagram: function (isUpdateMode) {
-    var me = this, model = me.graph.getModel(), ID, hasItem = false,
-      cellToDel = [], isRoot, parentCell, parentID, elmTree, cellChParent = [],
-      dCells = {}, elm
+    var me = this; var model = me.graph.getModel(); var ID; var hasItem = false
+    var cellToDel = []; var isRoot; var parentCell; var parentID; var elmTree; var cellChParent = []
+    var dCells = {}; var elm
 
     me.rootVarex = null
 
@@ -1497,13 +1501,13 @@ Ext.define('UB.ux.UBOrgChart', {
           // заносим все в древовидную стрктуру для дальнейшей проверки
           elm = dCells[ID]
           if (!elm) {
-            dCells[ID] = elm = {cell: cell, child: []}
+            dCells[ID] = elm = { cell: cell, child: [] }
           } else {
             elm.cell = cell
           }
           elm = dCells[elmTree.parentID || 'root']
           if (!elm) {
-            dCells[elmTree.parentID || 'root'] = elm = {child: [cell]}
+            dCells[elmTree.parentID || 'root'] = elm = { child: [cell] }
           } else {
             elm.child.push(cell)
           }
@@ -1551,7 +1555,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   updateCellOverlay: function (cell, childCell, newCount, isUpdateMode) {
-    var me = this, hasInvisible = false, overlay
+    var me = this; var hasInvisible = false; var overlay
     Ext.Array.each(childCell, function (elm) {
       if (elm.isVisible()) {
         hasInvisible = true
@@ -1585,7 +1589,7 @@ Ext.define('UB.ux.UBOrgChart', {
     return $App.connection.insert({
       fieldList: ['ID', 'orgunitID', 'caption'],
       entity: 'org_diagram',
-      execParams: {orgunitID: parentID, caption: caption}
+      execParams: { orgunitID: parentID, caption: caption }
     }).then(function (result) {
       if (result.serverFailure) {
         return null
@@ -1596,7 +1600,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   openDiagram: function (cell) {
-    var me = this, ID, caption
+    var me = this; var ID; var caption
     ID = cell.getAttribute('ID') * 1
     caption = cell.getAttribute('label')
 
@@ -1628,7 +1632,7 @@ Ext.define('UB.ux.UBOrgChart', {
     let ID = cell.getAttribute('ID')
     ID = ID ? ID * 1 : null
     if (entity) {
-      me.openForm(entity, null, {parentID: ID}, function (sender) {
+      me.openForm(entity, null, { parentID: ID }, function (sender) {
         let panel = sender.down('basepanel')
         if (panel && panel.record) {
           me.checkElementId(panel.record.get('ID'), cell)
@@ -1644,7 +1648,7 @@ Ext.define('UB.ux.UBOrgChart', {
    */
   checkElementId: function (ID, parentCell) {
     let me = this
-    UB.Repository('org_unit').attrs(['ID', 'parentID', 'code', 'caption', 'unitType'])
+    UB.Repository(this.getEntityName()).attrs(['ID', 'parentID', 'code', 'caption', 'unitType'])
       .selectById(ID)
       .then((orgUnit) => {
         if (!orgUnit) return
@@ -1656,7 +1660,7 @@ Ext.define('UB.ux.UBOrgChart', {
           let overlay = me.getAddOvelay(parentCell)
           if (parentItem.child.length === childCells.length + 1) {
             // var pt = mxUtils.convertPoint( me.graph.container, x, y);
-            let pt = {x: parentCell.geometry.x, y: parentCell.geometry.y + 120}
+            let pt = { x: parentCell.geometry.x, y: parentCell.geometry.y + 120 }
             let model = me.graph.getModel()
             model.beginUpdate()
             try {
@@ -1677,12 +1681,13 @@ Ext.define('UB.ux.UBOrgChart', {
     let unity, orgUnity
 
     me.orgUnity = {}
+    let eName = this.getEntityName()
     $App.domainInfo.eachEntity(function (metaObj, metaObjName) {
       if (metaObj.mixins && (unity = metaObj.mixins.unity) && unity.enabled &&
-        unity.entity && (unity.entity.toLowerCase() === 'org_unit') &&
+        unity.entity && (unity.entity.toLowerCase() === eName) &&
         unity.defaults) {
         let unitType = unity.defaults.unitType
-        me.orgUnity[unitType] = orgUnity = {code: metaObjName, unitType: unitType, caption: metaObj.caption}
+        me.orgUnity[unitType] = orgUnity = { code: metaObjName, unitType: unitType, caption: metaObj.caption }
         switch (unitType) {
           case 'ORG':
             orgUnity.image = $App.getImagePath('office.png')

@@ -15,7 +15,7 @@ if (ubaAuditPresent) {
 }
 
 /**
- * Checking of user IP and device fingerpriont based on settings from `uba_advSecurity`
+ * Checking of user IP and device fingerprint based on settings from `uba_advSecurity`
  * @private
  * @param {THTTPRequest} req
  * @return {{enabled: false}|{enabled: true, kmn: string, fpa: string}}

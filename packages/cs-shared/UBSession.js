@@ -34,7 +34,7 @@ function UBSession (authResponse, secretWord, authSchema) {
    * @protected
    * @readonly
    */
-  Object.defineProperty(this, 'sessionID', {enumerable: true, writable: false, value: hexa8ID})
+  Object.defineProperty(this, 'sessionID', { enumerable: true, writable: false, value: hexa8ID })
   /**
    * User logon name. Better to access this value using {@link SyncConnection#userLogin SyncConnection.userLogin()} method.
    * @type {String}
