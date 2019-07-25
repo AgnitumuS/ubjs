@@ -8,7 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
  - new method `getEntityName` added to `UB.ux.UBOrgChart`, returns `org_unit` by default;
  Can be overrated by other model in case org structure uses some other unity entity (`hr_staffUnit` for example)
-  
+
+### Fixed
+ - prevent open second tab for forms what not a BasePanel descendant;
+ Implemented by using selector `panel[tabID=${cfg.tabId}]` instead of `basepanel[...]` to find what form is already opened
+    
 ## [5.10.2]
 ### Changed
  - rename `pokazatPrevu` -> `showPreview`, `neNaidenShablon` -> `nodeTemplateNotFound` in i18n
