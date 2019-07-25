@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.16]
 ### Fixed
- - fix #63 - placeholder translation for u-auto-field of Date/DateTime type
+ - placeholder translation for u-auto-field of Date/DateTime type ( #63 )
+ - put moment in global even in case user language is `en`
  
 ## [1.6.14]
 ### Added
