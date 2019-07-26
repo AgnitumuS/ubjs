@@ -30,7 +30,8 @@ Ext.define('UB.ux.UBOrgChart', {
    */
   getAttrCode (attr) {
     const map = {
-      defaultUnitType: 'ORG'
+      defaultUnitType: 'ORG',
+      label: 'caption'
     }
     return map[attr] ? map[attr] : attr
   },
