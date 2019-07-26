@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.10.4]
 ### Changed
- - new method `getEntityName` added to `UB.ux.UBOrgChart`, returns `org_unit` by default;
+ - added new methods `getRepository` and `getAttrCode` to `UB.ux.UBOrgChart`
  Can be overrated by other model in case org structure uses some other unity entity (`hr_staffUnit` for example)
 
 ### Fixed

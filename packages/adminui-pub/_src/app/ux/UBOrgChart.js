@@ -1,5 +1,5 @@
 /* eslint-disable new-cap */
-/* global $App, Ext, mxPrintPreview, mxCellOverlay, mxImage, mxPoint, mxGeometry mxConstants, mxEvent, mxDivResizer, mxGraph, mxRubberband, mxOutline, mxUndoManager, mxClient, mxCompactTreeLayout, mxKeyHandler, mxEdgeStyle, mxUtils, mxCodec, mxRectangle */
+/* global $App, Ext, mxPrintPreview, mxCellOverlay, mxImage, mxPoint, mxGeometry mxConstants, mxEvent, mxDivResizer, mxGraph, mxRubberband, mxOutline, mxUndoManager, mxClient, mxCompactTreeLayout, mxKeyHandler, mxEdgeStyle, mxUtils, mxCodec, mxRectangle, mxLabel */
 const mxLoader = require('../../ux/form/mxGraph.js')
 const UB = require('@unitybase/ub-pub')
 /**
@@ -12,8 +12,27 @@ Ext.define('UB.ux.UBOrgChart', {
   height: '100%',
   layout: 'fit',
 
-  getEntityName: function () {
-    return 'org_unit'
+  /**
+   *
+   * @return {ClientRepository}
+   */
+  getRepository () {
+    return UB.Repository('org_unit')
+      .attrs(['ID', 'parentID', 'code', 'caption', 'unitType', 'mi_treePath'])
+      .orderBy('mi_treePath')
+      .whereIf(this.rootTreePath, '[mi_treePath]', 'startWith', this.rootTreePath)
+  },
+
+  /**
+   * Can be overrated to enable another entity with different attributes to be displayed
+   * @param {string} attr
+   * @return {string}
+   */
+  getAttrCode (attr) {
+    const map = {
+      defaultUnitType: 'ORG'
+    }
+    return map[attr] ? map[attr] : attr
   },
 
   loadData: function () {
@@ -29,9 +48,13 @@ Ext.define('UB.ux.UBOrgChart', {
           .then((diagramData) => {
             if (diagramData) me.rootElementID = diagramData.orgunitID
             return me.rootElementID
-              ? UB.Repository(this.getEntityName()).attrs(['ID', 'mi_treePath']).selectById(me.rootElementID)
-                .then((orgUnitData) => {
-                  if (orgUnitData) me.rootTreePath = orgUnitData.mi_treePath
+              ? UB.Repository(this.getRepository().entityName).attrs(['ID', 'mi_treePath'])
+                .where(this.getAttrCode('ID'), '=', me.rootElementID)
+                .selectSingle()
+                .then((response) => {
+                  if (response) {
+                    me.rootTreePath = response.mi_treePath
+                  }
                   return true
                 })
               : true
@@ -42,10 +65,7 @@ Ext.define('UB.ux.UBOrgChart', {
 
   doLoadData: function () {
     let me = this
-    return UB.Repository(this.getEntityName())
-      .attrs(['ID', 'parentID', 'code', 'caption', 'unitType', 'mi_treePath'])
-      .orderBy('mi_treePath')
-      .whereIf(me.rootTreePath, '[mi_treePath]', 'startWith', me.rootTreePath)
+    return me.getRepository()
       .selectAsObject()
       .then(me.makeTree.bind(me))
   },
@@ -59,8 +79,8 @@ Ext.define('UB.ux.UBOrgChart', {
     me.treeData = []
 
     store.forEach(function (row) {
-      let id = row.ID
-      let parentID = row.parentID
+      let id = row[me.getAttrCode('ID')]
+      let parentID = row[me.getAttrCode('parentID')]
       let idEl = data[id]
       if (!idEl) {
         idEl = data[id] = { child: [] }
@@ -68,7 +88,7 @@ Ext.define('UB.ux.UBOrgChart', {
       Object.assign(idEl, row)
       if (me.rootElementID && me.rootElementID === id) {
         parentID = null
-        idEl.parentID = null
+        idEl[me.getAttrCode('parentID')] = null
       }
 
       if (parentID) {
@@ -257,7 +277,9 @@ Ext.define('UB.ux.UBOrgChart', {
 
     mxEvent.disableContextMenu(container)
 
+    // eslint-disable-next-line no-new
     new mxDivResizer(container)
+    // eslint-disable-next-line no-new
     new mxDivResizer(outline)
 
     // Creates the graph inside the given container
@@ -276,7 +298,7 @@ Ext.define('UB.ux.UBOrgChart', {
     // graph.ignoreScrollbars = true;
     graph.panningHandler.useLeftButtonForPanning = true
 
-    // Displays a popupmenu when the user clicks
+    // Displays a popup menu when the user clicks
     // on a cell (using the left mouse button) but
     // do not select the cell when the popup menu
     // is displayed
@@ -484,7 +506,7 @@ Ext.define('UB.ux.UBOrgChart', {
       let doc = mxUtils.createXmlDocument()
       let node = doc.createElement('ubOrgChart')
       node.setAttribute('label', UB.i18n('Organization'))
-      node.setAttribute('unitType', 'ORG')
+      node.setAttribute('unitType', me.getAttrCode('defaultUnitType'))
       node.setAttribute('isRoot', true)
 
       let w = graph.container.offsetWidth
@@ -1091,11 +1113,11 @@ Ext.define('UB.ux.UBOrgChart', {
     try {
       doc = mxUtils.createXmlDocument()
       node = doc.createElement('ubOrgChart')
-      node.setAttribute('label', item.caption) // item.ID + ': ' +
-      node.setAttribute('ID', item.ID)
-      node.setAttribute('parentID', item.parentID)
+      node.setAttribute('label', item[me.getAttrCode('label')]) // item.ID + ': ' +
+      node.setAttribute('ID', item[me.getAttrCode('ID')])
+      node.setAttribute('parentID', item[me.getAttrCode('parentID')])
       node.setAttribute('code', item.code)
-      node.setAttribute('unitType', item.unitType)
+      node.setAttribute('unitType', item[me.getAttrCode('unitType')])
       if (!cell) {
         node.setAttribute('isRoot', true)
       }
@@ -1106,7 +1128,7 @@ Ext.define('UB.ux.UBOrgChart', {
       }
 
       vertex = graph.insertVertex(parent, null, node, x, y)
-      vertex.setStyle(me.getEntityByUnitType(item.unitType))
+      vertex.setStyle(me.getEntityByUnitType(item[me.getAttrCode('unitType')]))
       // vertex.item = item;
       var geometry = model.getGeometry(vertex)
 
@@ -1145,8 +1167,8 @@ Ext.define('UB.ux.UBOrgChart', {
     // automatic layout on the parent
     var edge = graph.insertEdge(parent, null, '', parentCell, cell)
 
-    edge.setAttribute('fromID', item.ID)
-    edge.fromID = item.ID
+    edge.setAttribute('fromID', item[this.getAttrCode('ID')])
+    edge.fromID = item[this.getAttrCode('ID')]
     edge.setGeometry(new mxGeometry(0, 0, 0, 0))
     edge.geometry.relative = true
 
@@ -1454,7 +1476,7 @@ Ext.define('UB.ux.UBOrgChart', {
   },
 
   validateDiagram: function (isUpdateMode) {
-    var me = this; var model = me.graph.getModel(); var ID; var hasItem = false
+    var me = this; var model = me.graph.getModel(); var ID
     var cellToDel = []; var isRoot; var parentCell; var parentID; var elmTree; var cellChParent = []
     var dCells = {}; var elm
 
@@ -1478,23 +1500,22 @@ Ext.define('UB.ux.UBOrgChart', {
         parentID = parentCell ? (parentCell.getAttribute('ID') || null) : null
         if (parentID) { parentID = parentID * 1 }
 
-        hasItem = true
         elmTree = me.allData[ID]
         if (!elmTree) { // в базе видно удалили такой элемент
           cellToDel.push(cell)
         } else {
           // освежим параметры
-          if (cell.getAttribute('label') !== elmTree.caption) {
-            cell.setAttribute('label', elmTree.caption)
+          if (cell.getAttribute('label') !== elmTree[me.getAttrCode('label')]) {
+            cell.setAttribute('label', elmTree[me.getAttrCode('label')])
           }
           if (cell.getAttribute('code') !== elmTree.code) {
             cell.setAttribute('code', elmTree.code)
           }
-          if (cell.getAttribute('unitType') !== elmTree.unitType) {
-            cell.setAttribute('unitType', elmTree.unitType)
+          if (cell.getAttribute('unitType') !== elmTree[me.getAttrCode('unitType')]) {
+            cell.setAttribute('unitType', elmTree[me.getAttrCode('unitType')])
           }
 
-          if (elmTree.parentID !== parentID) { // у узла сменлся родитель
+          if (elmTree[me.getAttrCode('parentID')] !== parentID) { // у узла сменлся родитель
             cellChParent.push(cell)
           }
 
@@ -1505,9 +1526,9 @@ Ext.define('UB.ux.UBOrgChart', {
           } else {
             elm.cell = cell
           }
-          elm = dCells[elmTree.parentID || 'root']
+          elm = dCells[elmTree[me.getAttrCode('parentID')] || 'root']
           if (!elm) {
-            dCells[elmTree.parentID || 'root'] = elm = { child: [cell] }
+            dCells[elmTree[me.getAttrCode('parentID')] || 'root'] = elm = { child: [cell] }
           } else {
             elm.child.push(cell)
           }
@@ -1520,7 +1541,7 @@ Ext.define('UB.ux.UBOrgChart', {
       ID = cell.getAttribute('ID')
       if (ID) { ID = ID * 1 }
       elmTree = me.allData[ID]
-      elm = dCells[elmTree.parentID]
+      elm = dCells[elmTree[me.getAttrCode('parentID')]]
       if (elm) { // всеже новый родитель есть на схеме
         me.changeElementParent(cell, elm.cell, elmTree)
       } else {
@@ -1632,7 +1653,7 @@ Ext.define('UB.ux.UBOrgChart', {
     let ID = cell.getAttribute('ID')
     ID = ID ? ID * 1 : null
     if (entity) {
-      me.openForm(entity, null, { parentID: ID }, function (sender) {
+      me.openForm(entity, null, { [me.getAttrCode('parentID')]: ID }, function (sender) {
         let panel = sender.down('basepanel')
         if (panel && panel.record) {
           me.checkElementId(panel.record.get('ID'), cell)
@@ -1648,8 +1669,9 @@ Ext.define('UB.ux.UBOrgChart', {
    */
   checkElementId: function (ID, parentCell) {
     let me = this
-    UB.Repository(this.getEntityName()).attrs(['ID', 'parentID', 'code', 'caption', 'unitType'])
-      .selectById(ID)
+    me.getRepository()
+      .where(me.getAttrCode('ID'), '=', ID)
+      .selectSingle()
       .then((orgUnit) => {
         if (!orgUnit) return
         me.refreshDiagram().then(() => {
@@ -1681,10 +1703,10 @@ Ext.define('UB.ux.UBOrgChart', {
     let unity, orgUnity
 
     me.orgUnity = {}
-    let eName = this.getEntityName()
+    let eName = this.getRepository().entityName
     $App.domainInfo.eachEntity(function (metaObj, metaObjName) {
       if (metaObj.mixins && (unity = metaObj.mixins.unity) && unity.enabled &&
-        unity.entity && (unity.entity.toLowerCase() === eName) &&
+        unity.entity && (unity.entity.toLowerCase() === eName.toLowerCase()) &&
         unity.defaults) {
         let unitType = unity.defaults.unitType
         me.orgUnity[unitType] = orgUnity = { code: metaObjName, unitType: unitType, caption: metaObj.caption }
