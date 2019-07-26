@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.5]
+### Fixed
+  - enable Action ('del') after add first row in grid
+
 ## [5.10.4]
 ### Changed
  - added new methods `getRepository` and `getAttrCode` to `UB.ux.UBOrgChart`
