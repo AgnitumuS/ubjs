@@ -264,7 +264,7 @@ UB.Repository('my_entity').attrs('id')
         throw new Error('Condition ' + wrongCondition + 'is passed to CustomRepository.where but value is null')
       }
     }
-    if (condition === 'in' && (value.length === 1)) {
+    if ((condition === 'in') && value && (value.length === 1)) {
       // console.warn('Condition "in" is passed to CustomRepository.where but value is an array on ONE item -> condition transformed to "equal". Check your logic')
       condition = WhereCondition.equal
       value = value[0]
