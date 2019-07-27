@@ -393,36 +393,25 @@ Ext.define('UB.ux.UBOrgChart', {
     // Stops editing on enter or escape keypress
     me.keyHandler = new mxKeyHandler(graph)
 
-    // Enables automatic layout on the graph and installs
-    // a tree layout for all groups who's children are
-    // being changed, added or removed.
-    let layout = new mxCompactTreeLayout(graph, false)
-    layout.useBoundingBox = false
-    layout.edgeRouting = false
-    layout.levelDistance = 60
-    layout.nodeDistance = 16
+    function addLayout (isHorisontal) {
+      // Enables automatic layout on the graph and installs
+      // a tree layout for all groups who's children are
+      // being changed, added or removed.
+      let layout = new mxCompactTreeLayout(graph, isHorisontal)
+      layout.useBoundingBox = false
+      layout.edgeRouting = false
+      layout.levelDistance = 60
+      layout.nodeDistance = 16
 
-    // Allows the layout to move cells even though cells
-    // aren't movable in the graph
-    layout.isVertexMovable = function (cell) {
-      return true
+      // Allows the layout to move cells even though cells
+      // aren't movable in the graph
+      layout.isVertexMovable = function (cell) {
+        return true
+      }
+      return layout
     }
-
-    me.verticalLayout = layout
-
-    layout = new mxCompactTreeLayout(graph, true)
-    layout.useBoundingBox = false
-    layout.edgeRouting = false
-    layout.levelDistance = 60
-    layout.nodeDistance = 16
-
-    // Allows the layout to move cells even though cells
-    // aren't movable in the graph
-    layout.isVertexMovable = function (cell) {
-      return true
-    }
-
-    me.horisontalLayout = layout
+    me.verticalLayout = addLayout(false)
+    me.horisontalLayout = addLayout(true)
 
     // Installs a popup menu handler using local function (see below).
     graph.popupMenuHandler.factoryMethod = function (menu, cell, evt) {
