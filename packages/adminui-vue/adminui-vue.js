@@ -108,11 +108,16 @@ if (isExt) {
   $App.on('applicationReady', replaceExtJSDialogs)
   $App.on('applicationReady', replaceExtJSNavbar)
   $App.on('applicationReady', replaceExtJSMessageBarDialog)
+  $App.on('applicationReady', function () {
+    let v = UB.connection.appConfig.serverVersion.split('.')
+    if ((v[0] >= 'v5') && (v[1] < 14)) throw new Error('This version of adminui-vue require UB server to be >= 5.14')
+  })
 }
 
 const Sidebar = require('./components/sidebar/USidebar.vue').default
 function addVueSidebar () {
   const SidebarConstructor = Vue.extend(Sidebar)
+  // eslint-disable-next-line no-new
   new SidebarConstructor({
     el: `#sidebar-placeholder`
   })
