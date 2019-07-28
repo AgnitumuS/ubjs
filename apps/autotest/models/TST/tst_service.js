@@ -252,7 +252,9 @@ me.entity.addMethod('datesTest')
  * @param {ubMethodParams} ctx
  */
 me.datesTest = function (ctx) {
-  let multilyneString = `
+  // verify debugger stops correctly on multiline strings
+  // eslint-disable-next-line no-unused-vars
+  let multilineString = `
    cx: PJSContext;
     Exp: PJSRootedObject;^
     Req: PJSRootedObject;^

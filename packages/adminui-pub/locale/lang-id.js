@@ -428,7 +428,7 @@ UB.i18nExtend({
   'readPKCanceled': 'Canceled by user',
   'invalidPrivateKeyCertificate': 'Choose wrong private key sertificate(s). For key after 2014 you nedd to have 2 sertificates.',
   'menu': 'Menu',
-  'ubErrLockedbyanotheruser': 'Record locked by another user. All changes cannot be saved. Try again later.',
+  'ubErrLockedbyanotheruser': 'Record is locked by another user. Changes cannot be saved. Try again later.',
   'showFilterPanel': 'Filter',
   'mi_dateFrom': 'Date from',
   'mi_dateTo': 'Date to',
