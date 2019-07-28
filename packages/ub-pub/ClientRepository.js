@@ -45,6 +45,21 @@ class ClientRepository extends CustomRepository {
      * @private
      */
     Object.defineProperty(this, 'connection', { enumerable: false, writable: false, value: connection })
+    /**
+     * Raw result of method execution. Available after Promise of select* method execution is resolved.
+     * Can be used to get additional response parameters such as `resultLock` or `resultAls`.
+     * ** Client repository only **
+     *
+     * @example
+     *
+     *      // get lock information together with `select` execution
+     *      let repo = UB.Repository('tst_document').attrs('ID').misc({lockType: 'None'}).where('ID', '=', 332729226657819)
+     *      let data = await repo.selectSingle()
+     *      let lockInfo = repo.rawResult.resultLock
+     *
+     * @type {Object|undefined}
+     */
+    this.rawResult = undefined
   }
 
   /**
@@ -75,8 +90,9 @@ class ClientRepository extends CustomRepository {
    * @return {Promise}
    */
   selectAsObject (fieldAliases) {
-    return this.connection.select(this.ubql()).then(function (res) {
-      return LocalDataStore.selectResultToArrayOfObjects(res, fieldAliases)
+    return this.connection.select(this.ubql()).then(resp => {
+      this.rawResult = resp
+      return LocalDataStore.selectResultToArrayOfObjects(resp, fieldAliases)
     })
   }
 
@@ -108,7 +124,10 @@ class ClientRepository extends CustomRepository {
    * @return {Promise}
    */
   selectAsArray () {
-    return this.connection.select(this.ubql())
+    return this.connection.select(this.ubql()).then(resp => {
+      this.rawResult = resp
+      return resp
+    })
   }
 
   /**

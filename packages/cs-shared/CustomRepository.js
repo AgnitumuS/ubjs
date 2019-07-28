@@ -738,6 +738,10 @@ inst.run('select', repo.ubql())
    * @param {Boolean} [flags.__skipSelectAfterInsert=false] **Server-side only.**
    * @param {Boolean} [flags.__skipRls=false] **Server-side only.**
    * @param {Boolean} [flags.__skipAclRls=false] **Server-side only.**
+   * @param {string} [flags.lockType] For entities with `softLock` mixin retrieve/set a lock during method execution.
+   *   Possible values:
+   *   - 'None': get a lock info during select* execution (for a results with a single row)
+   *   - `Temp` or `Persist`: set a lock (temp or persistent) together with select* execution (for a results with a single row)
    * @return {CustomRepository}
    */
   misc (flags) {

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.5]
+### Added
+ - documentation for 'lockType' flag of `CustomRepository.misc` method
+
 ## [5.1.3]
 ### Fixed
  - `UBEntity.asPlainJSON` will exclude `hasCatalogueIndex` computed property

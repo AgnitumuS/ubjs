@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.9]
+### Added
+ - `ClientRepository.rawResult` property. Contains a server response in raw format. Can be used to
+ get additional response parameters for `select*` methods. For example get lock information together with `select` execution:
+```javascript
+let repo = UB.Repository('tst_document').attrs('ID', 'reg_date').misc({lockType: 'None'}).where('ID', '=', 332729226657819)
+let data = await repo.selectSingle() // {ID: 332729226657819, regDate: Date}
+let lockInfo = repo.rawResult.resultLock // {success: true, ownLock: ....}
+```
+In general any parameters added on the server side to the `ctxt.mParams` is accessible 
+
 ## [5.3.6]
 ### Changed
  - error message is added into detailed exception information with h2 HTML tag to be shown in "Details for developer"
