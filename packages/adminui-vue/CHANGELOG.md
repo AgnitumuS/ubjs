@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - placeholder translation for u-auto-field of Date/DateTime type ( #63 )
  - put moment in global even in case user language is `en`
  
+### Changed
+ - method `showValidationErrors` in `UB.view.BasePanel`. Now returns `entityCode.fieldCode` when fieldLabel is empty.  
+ 
 ## [1.6.14]
 ### Added
  - exports `dialog`, `dialogError`, `dialogInfo`, `dialogYesNo` functions from `adminui-vue`. To be used outside Vue instance:

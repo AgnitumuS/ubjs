@@ -52,7 +52,8 @@ function replaceExtJSDialogs () {
       })
       if (errors.length) {
         const fieldLinks = errors.map(f => {
-          return `<a href="#" data-cmd-type="setFocus" data-elm-id="${f.id}">${f.fieldLabel}</a>`
+          const text = f.fieldLabel || UB.i18n(`${f.entityName}.${f.name}`)
+          return `<a href="#" data-cmd-type="setFocus" data-elm-id="${f.id}">${text}</a>`
         }).join(', ')
 
         Notification.error({
