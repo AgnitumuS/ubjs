@@ -358,6 +358,7 @@ UB.i18nExtend({
   totalRowCount: 'Sətirlərin ümumi sayı',
   persistLockInfo: 'Blok edilmişdir {1}',
   softLockInfo: '{1}də istifadəçi {0} tərəfindən blok edilmişdir',
+  'Record locked by another user': 'Yazı başqa bir istifadəçi tərəfindən kilidləndi',
   lockBtn: 'Yazını blok et',
   unLockBtn: 'Yazını blokdan çıxar',
   tempSoftLockInfo: 'Yazı hazırda istifadəçi {0} tərəfindən redaktə edilir',

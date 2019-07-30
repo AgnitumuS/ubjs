@@ -56,12 +56,20 @@ export default {
   margin-left: 0.5em;
 }
 
-.ub-toolbar__button.blue{
+.ub-toolbar__button.blue {
   color: rgb(var(--primary));
 }
 
-.ub-toolbar__button.green{
+.ub-toolbar__button.green {
   color: rgb(var(--success));
+}
+
+.ub-toolbar__button.info {
+  color: rgb(var(--info));
+}
+
+.ub-toolbar__button.danger {
+  color: rgb(var(--danger));
 }
 
 .ub-toolbar__button:disabled{

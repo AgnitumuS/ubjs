@@ -101,8 +101,9 @@ UB.i18nExtend({
   'export': 'Експорт',
 
   persistLockInfo: 'Заблоковано {1}',
-  softLockInfo: 'Заблоковано користувачем {0} {1}',
-  tempSoftLockInfo: 'Запис зараз редагується користувачем {0}',
+  softLockInfo: 'Заблоковано користувачем "{0}" {1}',
+  'Record locked by another user': 'Запис заблокирано іншим користувачем',
+  tempSoftLockInfo: 'Запис зараз редагується користувачем "{0}"',
   lockBtn: 'Заблокувати запис',
   unLockBtn: 'Розблокувати запис',
   recordLockedOtherUser: 'Запис заблоковано іншим користувачем',

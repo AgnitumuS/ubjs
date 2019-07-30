@@ -101,6 +101,7 @@ UB.i18nExtend({
   currentPageNumber: 'მიმდინარე გვერდი',
   persistLockInfo: 'თქვენ დააყენეთ მუდმივი დაბლოკვა {1}',
   softLockInfo: 'ჩანაწერი ჩაკეტილია მომხმარებლის მიერ{0} at {1}',
+  'Record locked by another user': 'ჩანაწერი ჩაკეტილია სხვა მომხმარებლის მიერ',
   lockBtn: 'ჩანაწერის ჩაკეტვა',
   unLockBtn: 'ჩანაწერის გახსნა',
   tempSoftLockInfo: 'ჩანაწერი ახლა რედაქტირებულია მომხმარებლის მიერ {0}',

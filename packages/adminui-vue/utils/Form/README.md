@@ -116,7 +116,7 @@ module.exports.default ={
  - `ASSIGN_DATA` - тоже что и `SET_DATA` только для нескольких значений сразу
  - `SET` - вносит изменения в остальные опции стора (не `data`), не влияет на отслеживание изменений
  - `LOAD_DATA` - принимает в себя объект с данными формы и записывает в `data`, мутация очищает `originalData`
- по этому форма будет `isDirty === false`
+ поэтому форма будет `isDirty === false`
  - `LOAD_DATA_PARTIAL` - догружает данные в `data`, чистит из `originalData` только те поля которые были переданы
  - `LOAD_COLLECTION` - тоже что и `LOAD_DATA` только для коллекции
  - `LOAD_COLLECTION_PARTIAL` - тоже что и `LOAD_DATA_PARTIAL` только для коллекции

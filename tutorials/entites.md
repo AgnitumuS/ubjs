@@ -118,7 +118,7 @@ so we implement it as a mixin and add a client-side features for edit ACL.
 
 ### fts - полнотекстовое индексирование данных сущности
 
-### softLock - Оптимистические блокировки (Optimistic Lock)
+### softLock - Пессимистические блокировки (Pessimistic locks)
 
 ### clobTruncate - Обрезает большие текстовые поля 
    

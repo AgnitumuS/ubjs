@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.17]
+### Added
+ - support for `softLock` (Pessimistic locks) mixin
+ - new icon-color classes for UToolbarButton: `info`, `danger`. Example:
+ ```vue
+<u-toolbar-button
+  v-if="entitySchema.hasMixin('softLock')"
+  :icon-cls="isLocked ? 'fa fa-lock' : 'fa fa-unlock'"
+  :icon-color="isLocked ? (isLockedByMe ? 'green' : 'danger') : 'info'"
+  :tooltip="lockInfoMessage"
+/>
+```
+ 
 ## [1.6.16]
 ### Fixed
  - placeholder translation for u-auto-field of Date/DateTime type ( #63 )

@@ -19,7 +19,7 @@ const { dialog: $dialog } = require('../../components/dialog/UDialog')
  * @param {object} cfg
  * @param {VueComponent} cfg.component Form component
  * @param {object} cfg.props Form component props
- * @param {VuexStore} cfg.store Store
+ * @param {Vuex} cfg.store Store
  * @param {object} cfg.validator Vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} cfg.modalClass Modal class

@@ -206,10 +206,11 @@ const audit = {
  */
 const softLock = {
   /**
-   * Lock entity row. In case entity row not locked `update` & `delete` operation are not permitted
+   * Lock entity row. If entity row is not locked then `update` & `delete` operation are not permitted
    * @published
    * @param {ubMethodParams} ctx
    * @param {number} ctx.mParams.ID
+   * @param {string} ctx.mParams.lockType Either 'Temp' or 'Persist'
    */
   lock: function (ctx) {},
   /**
