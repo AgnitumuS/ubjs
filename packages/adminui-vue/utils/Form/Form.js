@@ -36,9 +36,9 @@ class UForm {
    * @param {VueComponent} cfg.component Form component
    * @param {object} [cfg.props] Form component props
    * @param {string} [cfg.title] Form title
-   * @param {string} cfg.entity Entity name of master record
+   * @param {string} cfg.entity Entity name for master record
    * @param {number} [cfg.instanceID] Instance ID
-   * @param {boolean} [cfg.isModal] Switch mount to modal or tab
+   * @param {boolean} [cfg.isModal=false] If true form will be displayed inside modal dialog. Otherwise - in tab (default)
    * @param {string} [cfg.modalClass] Modal class
    * @param {string} [cfg.modalWidth] Modal width
    * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
@@ -201,6 +201,12 @@ class UForm {
   mount () {
     if (this.storeConfig) {
       this.$store = new Vuex.Store(this.storeConfig)
+      if (this.entitySchema.hasMixin('softLock')) {
+        this.$store.watch(
+          (state, getters) => getters.isDirty,
+          (dirty) => this.lockUnlockOnDirtyChanged(dirty)
+        )
+      }
     }
     if (this.isValidationUsed) {
       this.validator = createValidator(this.$store, this.entitySchema, this.fieldList)
@@ -245,6 +251,25 @@ class UForm {
           fieldList: this.fieldList
         }
       })
+    }
+  }
+
+  /**
+   * Applicable for entities with softLock mixin.
+   * - if dirty === true and entity is not already locked try to get a Temp lock
+   * - if dirty === false and entity is locked by current user using Temp lock - unlock it
+   * @param {boolean} dirty
+   */
+  lockUnlockOnDirtyChanged (dirty) {
+    console.log('DIRTY', dirty)
+    if (dirty) {
+      if (!this.$store.getters.isLockedByMe) {
+        this.$store.dispatch('lockEntity')
+      }
+    } else {
+      if ((this.$store.getters.isLockedByMe) && (this.$store.state.lockInfo.lockType === 'Temp')) {
+        this.$store.dispatch('unlockEntity')
+      }
     }
   }
 }

@@ -36,6 +36,9 @@
       "mixin_rls": {
         "title": "Row level security"
       },
+      "mixins_softlock": {
+        "title": "Pessimistic locks"
+      },
       "mixins_fts": {
         "title": "Full text search"
       },

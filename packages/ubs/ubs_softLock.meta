@@ -1,6 +1,6 @@
 {
-  "caption": "Soft lock",
-  "description": "Instance-level soft lock list",
+  "caption": "Pessimistic locks",
+  "description": "Pessimistic locks",
   "connectionName": "",
   "sqlAlias": "slock",
   "cacheType": "None",
