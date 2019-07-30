@@ -8,10 +8,14 @@ in combination with UnityBase application server is MUST HAVE for Socket type UB
 but strongly recommended for HTTPSys base http server under Windows.
     
 Reverse proxy can be used to:
- - https termination
+ - HTTP protocol verification and prevention of protocol level attacks
+ - TLS termination
  - handling static files (with gziping, streaming, partial downloads, cache)
- - load balancing
- - etc
+ - load balancing (with sticky sessions `ip_hash` for example)
+ - request body size limitation
+ - geo-ip filtering
+ - rate limit (limit the amount of HTTP requests a user can make in a given period of time) 
+ - etc.
  
 Below we describe how to configure nginx as a reverse proxy for ub 
 
