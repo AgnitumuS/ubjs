@@ -224,7 +224,7 @@ function createProcessingModule ({
         })
 
         try {
-          let repo = UB.connection
+          const repo = UB.connection
             .Repository(masterEntityName)
             .attrs(fieldList)
             .miscIf(isLockable, { lockType: 'None' }) // get lock info
