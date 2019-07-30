@@ -127,8 +127,6 @@
       "safeDelete": false
     },
     "softLock": {
-      "lockIdentifier": "ID",
-      "lockEntity": "tst_document"
     },
     "fts": {
       "scope": "Connection",

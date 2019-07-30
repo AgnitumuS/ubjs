@@ -1,6 +1,6 @@
-{
-  "caption": "Soft lock",
-  "description": "Soft lock",
+﻿{
+  "caption": "Песимістичні блокування",
+  "description": "Песимістичні блокування",
   "attributes": [
     {
       "name": "entity",

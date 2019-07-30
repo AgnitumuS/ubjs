@@ -2,13 +2,15 @@
 module.exports = createProcessingModule
 
 const UB = require('@unitybase/ub-pub')
+const dialogs = require('../../components/dialog/UDialog')
+const moment = require('moment')
 const { Notification: $notify } = require('element-ui')
 const { buildExecParams, buildCollectionRequests, isExistAttr } = require('./helpers')
 
 /**
  * Creates Vuex store object with basic processing actions:
  *  - isNew status for master record
- *  - loading pendings
+ *  - list of pending loadings
  *  - master record entity information (name, fieldList, schema etc.)
  *  - canDelete, canSave, canRefresh getters
  *  - CRUD actions
@@ -49,9 +51,15 @@ function createProcessingModule ({
     .filter(([coll, collData]) => !collData.lazy)
     .map(([coll]) => coll)
 
+  const isLockable = function () { return entitySchema.hasMixin('softLock') }
+
   return {
     state: {
       isNew: undefined,
+      /**
+       * result of previous lock() operation (in case softLock mixin assigned to entity)
+       */
+      lockInfo: {},
 
       pendings: [],
 
@@ -77,6 +85,32 @@ function createProcessingModule ({
 
       canRefresh (state, getters) {
         return !state.isNew && getters.isDirty
+      },
+
+      isLocked (state, getters) {
+        return !!state.lockInfo.lockExists
+      },
+
+      isLockedByMe (state, getters) {
+        return state.lockInfo.lockExists && (state.lockInfo.lockUser === UB.connection.userLogin())
+      },
+
+      lockInfoMessage (state, getters) {
+        if (!state.lockInfo.lockExists) {
+          return UB.i18n('recordNotLocked')
+        } else if ((state.lockInfo.lockUser === UB.connection.userLogin())) {
+          if (state.lockInfo.lockType === 'Temp') {
+            return UB.i18n('recordLockedThisUserByTempLock')
+          } else {
+            return UB.i18n('entityLockedOwn')
+          }
+        } else { // locked by another user
+          if (state.lockInfo.lockType === 'Temp') {
+            return UB.i18n('tempSoftLockInfo', state.lockInfo.lockUser)
+          } else {
+            return UB.i18n('softLockInfo', state.lockInfo.lockUser, moment(state.lockInfo.lockTime).format('lll'))
+          }
+        }
       }
     },
 
@@ -101,9 +135,10 @@ function createProcessingModule ({
 
       /**
        * add or delete loading pending for some action
-       * @param {VuexState} state
-       * @param {Boolean}   options.isLoading  add/remove action from pending
-       * @param {String}    options.target     name of pending action
+       * @param {object} state
+       * @param {object}  payload
+       * @param {Boolean} payload.isLoading  add/remove action from pending
+       * @param {String}  payload.target     name of pending action
        */
       LOADING (state, { isLoading, target }) {
         const index = state.pendings.indexOf(target)
@@ -121,9 +156,10 @@ function createProcessingModule ({
 
     actions: {
       /**
-       * Set is new,
-       * creates empty collections which passed on init processing module
-       * dispatch create or load action
+       * Initialize store:
+       *  - sets isNew
+       *  - creates empty collections which passed on init processing module
+       *  - dispatch `create` or `load` action
        */
       async init ({ state, commit, dispatch }) {
         if (beforeInit) {
@@ -178,7 +214,7 @@ function createProcessingModule ({
       /**
        * Load instance data by record ID
        */
-      async load ({ commit }) {
+      async load ({ commit, dispatch }) {
         if (beforeLoad) {
           await beforeLoad()
         }
@@ -188,12 +224,30 @@ function createProcessingModule ({
         })
 
         try {
-          const data = await UB.connection
+          let repo = UB.connection
             .Repository(masterEntityName)
             .attrs(fieldList)
-            .selectById(instanceID)
+            .miscIf(isLockable, { lockType: 'None' }) // get lock info
+          const data = await repo.selectById(instanceID)
 
           commit('LOAD_DATA', data)
+
+          if (isLockable) {
+            let rl = repo.rawResult.resultLock
+            commit('SET', { // TODO - create mutation SET_LOCK_RESULT
+              key: 'lockInfo',
+              value: rl.success
+                ? rl.lockInfo
+                : { // normalize response - ub api is ugly here
+                  lockExists: true,
+                  lockType: rl.lockType,
+                  lockUser: rl.lockUser,
+                  lockTime: rl.lockTime,
+                  lockValue: rl.lockInfo.lockValue
+                }
+            })
+          }
+
           if (loaded) {
             await loaded()
           }
@@ -386,8 +440,7 @@ function createProcessingModule ({
       },
 
       /**
-       * Ask if user is sure
-       * then sends delete request for master record
+       * Asks for user confirmation and sends delete request for master record
        * @param  {Function} closeForm Close form without confirmation
        */
       async deleteInstance ({ state, getters, commit }, closeForm = () => {}) {
@@ -433,8 +486,10 @@ function createProcessingModule ({
       },
 
       /**
-       * Write new data to collections records
-       * clear all deleted arrays
+       * Write new data to collections records clear all deleted arrays
+       * @param {object} context
+       * @param {object} context.state
+       * @param {function} context.commit
        * @param  {Array<Object>} collectionsResponse
        */
       updateCollectionsRecords ({ state, commit }, collectionsResponse) {
@@ -456,11 +511,12 @@ function createProcessingModule ({
       },
 
       /**
-       * Sends addNew request then fetch default params
-       * and push it in collection
-       * @param commit
-       * @param {String} collection Collection name
-       * @param {Object} execParams if we need to create new item with specified params
+       * Sends addNew request then fetch default params and push it in collection
+       * @param {object} context
+       * @param {function} context.commit
+       * @param {object} payload
+       * @param {String} payload.collection Collection name
+       * @param {Object} payload.execParams if we need to create new item with specified params
        */
       async addCollectionItem ({ commit }, { collection, execParams }) {
         const repo = initCollectionsRequests[collection].repository
@@ -473,6 +529,90 @@ function createProcessingModule ({
         })
 
         commit('ADD_COLLECTION_ITEM', { collection, item })
+      },
+
+      /**
+       * Lock entity. Applicable for entities with "softLock" mixin
+       * @param {object} context
+       * @param {object} context.state
+       * @param {function} context.commit
+       * @param {boolean} [persistentLock=false] Lock with persistent locking type
+       * @return {Promise<void>}
+       */
+      lockEntity ({ state, commit }, persistentLock = false) {
+        return UB.connection.query({
+          entity: masterEntityName,
+          method: 'lock',
+          lockType: persistentLock ? 'Persist' : 'Temp',
+          ID: state.data.ID
+        }).then(resp => {
+          let resultLock = resp.resultLock
+          if (resultLock.success) {
+            commit('SET', { // TODO - create mutation SET_LOCK_RESULT
+              key: 'lockInfo',
+              value: { ...resultLock.lockInfo, ownLock: resultLock.ownLock }
+            })
+            $notify({
+              type: 'success',
+              message: UB.i18n('lockSuccessCreated')
+            })
+          } else {
+            return dialogs.dialogError(UB.i18n('softLockInfo', resultLock.lockUser, moment(resultLock.lockTime).format('lll')))
+          }
+        }).catch(e => {
+          UB.showErrorWindow(e)
+        })
+      },
+
+      /**
+       * Unlock entity. Applicable for entities with "softLock" mixin
+       * @param {object} context
+       * @param {object} context.state
+       * @param {function} context.commit
+       * @return {Promise<void>}
+       */
+      unlockEntity ({ state, commit }) {
+        return UB.connection.query({
+          entity: masterEntityName,
+          method: 'unlock',
+          lockType: state.lockInfo.lockType,
+          lockID: state.lockInfo.lockValue // MPV - why not lockID ?
+        }).then(resp => {
+          if (resp.resultLock.success) {
+            commit('SET', { // TODO - create mutation SET_LOCK_RESULT
+              key: 'lockInfo',
+              value: {}
+            })
+            $notify({
+              type: 'success',
+              message: UB.i18n('lockSuccessDeleted')
+            })
+          }
+        }).catch(e => {
+          UB.showErrorWindow(e)
+        })
+      },
+
+      /**
+       * Get lock information. Applicable for entities with "softLock" mixin
+       * @param {object} context
+       * @param {object} context.state
+       * @param {function} context.commit
+       * @return {Promise<void>}
+       */
+      retrieveLockInfo ({ state, commit }) {
+        return UB.connection.query({
+          entity: masterEntityName,
+          method: 'isLocked',
+          ID: state.data.ID
+        }).then(resp => {
+          commit('SET', { // TODO - create mutation SET_LOCK_RESULT
+            key: 'lockInfo',
+            value: resp.lockInfo.isLocked ? resp.lockInfo : {}
+          })
+        }).catch(e => {
+          UB.showErrorWindow(e)
+        })
       }
     }
   }

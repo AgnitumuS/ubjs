@@ -4,7 +4,7 @@ const Vue = require('vue')
 const moment = require('moment')
 /**
  * @typedef {object} VuexTrackedInstance
- * @property {boolean} isNew        Indicator of whether master instance was loaded or it is newly created
+ * @property {boolean} isNew        Whether master instance was loaded or it is newly created
  * @property {object}  data         Master record instance, current values, as shall be shown on UI
  * @property {object}  originalData Shadow copy of modified attributes
  * @property {object<string, VuexTrackedCollection>} collections   List of tracked detain collections
@@ -12,6 +12,8 @@ const moment = require('moment')
 
 /**
  * @typedef {object} VuexTrackedCollection
+ * @property {string} entity                     Entity code
+ * @property {string} key                        Unique collection identifier
  * @property {Array<VuexTrackedObject>} items    Current items, as it shall be shown on UI
  * @property {Array<VuexTrackedObject>} deleted  Deleted items, except items which are added
  *   (not originally loaded)
@@ -60,7 +62,7 @@ function isDate (date) {
 
 /**
  * Check obj is empty
- * @param  {Any}     obj
+ * @param  {*} obj
  * @return {Boolean}
  */
 function isEmpty (obj) {
@@ -74,7 +76,6 @@ function isEmpty (obj) {
  * @param {string} key
  * @param {*} value
  */
-
 function change (state, key, value) {
   if (!isEqual(state.data[key], value)) {
     if (!(key in state.originalData)) {
@@ -118,6 +119,10 @@ function createInstanceModule () {
      */
     state: {
       /**
+       * Whether master instance was loaded or it is newly created
+       */
+      isNew: false,
+      /**
        * Properties as they are in DB.
        */
       data: {},
@@ -160,8 +165,9 @@ function createInstanceModule () {
       /**
        * Set base state values
        * @param {VuexTrackedInstance} state
-       * @param {String} options.key   state key
-       * @param {Any} options.value value
+       * @param {object} payload
+       * @param {String} payload.key state key
+       * @param {*} payload.value value
        */
       SET (state, { key, value }) {
         state[key] = value
@@ -190,14 +196,15 @@ function createInstanceModule () {
       },
 
       /**
-       * Update value of attribute for master record, or for a record of a detail collection item.
+       * Update value of attribute for master record or a record of a details collection item.
        * The mutation uses "data" and "originalData" object to correctly track object state.
        *
        * @param {VuexTrackedInstance} state
-       * @param {string} collection  Name of collection, optional
-       * @param {number} index       Index of item, optional, shall only be specified, if collection is specified.
-       * @param {string} key         Key of changed attribute
-       * @param {*}      value       Value attribute is changed to.
+       * @param {object} payload
+       * @param {string} [payload.collection]  Name of collection, optional
+       * @param {number} [payload.index]       Index of item, optional, shall only be specified, if collection is specified.
+       * @param {string} payload.key         Key of changed attribute
+       * @param {*}      payload.value       Value attribute is changed to.
        */
       SET_DATA (state, { collection, index, key, value }) {
         if (typeof collection !== 'string') {
@@ -248,9 +255,10 @@ function createInstanceModule () {
       /**
        * Set original state of collection items
        * @param {VuexTrackedInstance} state
-       * @param {String} collection
-       * @param {Array} items
-       * @param {String} entity
+       * @param {object} payload
+       * @param {String} payload.collection
+       * @param {Array} payload.items
+       * @param {String} payload.entity
        */
       LOAD_COLLECTION (state, { collection, items: itemStates, entity }) {
         const items = itemStates.map(item => ({
@@ -266,9 +274,10 @@ function createInstanceModule () {
        * Removed originalData for props which updated
        * Remove isNew status.
        * @param {VuexTrackedInstance} state
-       * @param {String} options.collection  collection
-       * @param {Number} options.index       index in collection
-       * @param {Object} options.loadedState loaded state
+       * @param {object} payload
+       * @param {String} payload.collection  collection
+       * @param {Number} payload.index       index in collection
+       * @param {Object} payload.loadedState loaded state
        */
       LOAD_COLLECTION_PARTIAL (state, { collection, index, loadedState }) {
         const collectionInstance = state.collections[collection]
@@ -283,8 +292,9 @@ function createInstanceModule () {
       /**
        * Add a new item to a collection.  Added item will be marked as "isNew".
        * @param {VuexTrackedInstance} state
-       * @param {string} collection  Collection name.
-       * @param {object} itemState   Item state (a regular JS object).
+       * @param {object} payload
+       * @param {string} payload.collection Collection name
+       * @param {object} payload.item       Item state (a regular JS object)
        */
       ADD_COLLECTION_ITEM (state, { collection, item: itemState }) {
         if (!(collection in state.collections)) {
@@ -300,8 +310,9 @@ function createInstanceModule () {
        * If remove originally loaded record, remember the
        * deletion to track it as a change.
        * @param {VuexTrackedInstance} state
-       * @param {string} collection  Collection name.
-       * @param {number} index       Index of item inside collection to remove.
+       * @param {object} payload
+       * @param {string} payload.collection  Collection name
+       * @param {number} payload.index       Index of item inside a collection to remove
        */
       DELETE_COLLECTION_ITEM (state, { collection, index }) {
         if (collection in state.collections) {

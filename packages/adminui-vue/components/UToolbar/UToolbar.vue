@@ -15,6 +15,13 @@
     <!-- @slot right side toolbar (before setting button) -->
     <slot name="right" />
 
+    <u-toolbar-button
+      v-if="entitySchema.hasMixin('softLock')"
+      :icon-cls="isLocked ? 'fa fa-lock' : 'fa fa-unlock'"
+      :icon-color="isLocked ? (isLockedByMe ? 'green' : 'danger') : 'info'"
+      :tooltip="lockInfoMessage"
+    />
+
     <el-dropdown
       ref="dropdown"
       size="big"
@@ -74,9 +81,9 @@ export default {
   inject: ['$formServices', 'formCode', 'entitySchema', 'fieldList', 'entity'],
 
   computed: {
-    ...mapGetters(['canSave', 'canRefresh', 'canDelete']),
+    ...mapGetters(['canSave', 'canRefresh', 'canDelete', 'isLocked', 'isLockedByMe', 'lockInfoMessage']),
 
-    ...mapState(['isNew']),
+    ...mapState(['isNew', 'lockInfo']),
 
     ...mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
 
@@ -160,15 +167,15 @@ export default {
         buttons.push({
           iconCls: 'fa fa-lock',
           caption: this.$ut('lockBtn'),
-          handler: () => { debugger },
+          handler: () => { this.lockEntity(true) },
           disabled: this.isNew,
           divided: true
         })
         buttons.push({
           iconCls: 'fa fa-unlock',
           caption: this.$ut('unLockBtn'),
-          handler: () => { debugger },
-          disabled: this.isNew
+          handler: () => { this.unlockEntity() },
+          disabled: !this.isLockedByMe
         })
       }
 
@@ -194,7 +201,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['save', 'refresh', 'deleteInstance']),
+    ...mapActions(['save', 'refresh', 'deleteInstance', 'lockEntity', 'unlockEntity']),
 
     async saveAndClose () {
       await this.save()
@@ -224,9 +231,9 @@ export default {
       const result = await this.$UB.Repository('ubm_form')
         .attrs(['ID', 'code'])
         .where('code', '=', this.formCode)
-        .select()
+        .selectSingle()
 
-      if (!result || result.length < 1) {
+      if (!result) {
         this.$notify({
           title: this.$ut('formNotFound'),
           duration: 3000
@@ -238,10 +245,10 @@ export default {
         cmdType: 'showForm',
         description: '',
         entity: 'ubm_form',
-        instanceID: result[0].ID,
+        instanceID: result.ID,
         sender: this,
         target: $App.getViewport().centralPanel,
-        tabId: 'ubm_form' + result[0].ID
+        tabId: 'ubm_form' + result.ID
       })
     },
 

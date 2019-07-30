@@ -1,5 +1,4 @@
-const { dataLoader, csv } = require('@unitybase/base')
-const fs = require('fs')
+const dataLoader = require('@unitybase/base').dataLoader
 const path = require('path')
 
 /**

@@ -411,7 +411,7 @@
                 },
                 "fts": {
                     "type": "object",
-                    "description": "Full Text Search mixin. See [FTS tutorial](/api/server/#!/guide/fts) for details",
+                    "description": "Full Text Search mixin. See [FTS tutorial](/api/server-v5/tutorial-mixins_fts.html) for details",
                     "properties": {
                         "dataProvider": {
                             "enum": ["Mixin", "Entity"],
@@ -451,14 +451,16 @@
                 },
                 "softLock": {
                     "type": "object",
-                    "description": "Soft lock mixin. Server blocks record for entity by 'lockEntity' param and 'lockIdentifier' identifier. TODO - explain",
+                    "description": "Soft (pessimistic) locking mixin. See [FTS tutorial](/api/server-v5/tutorial-mixins_softlock.html) for details",
                     "properties": {
                         "lockIdentifier": {
                             "type": "string",
+                            "default": "ID",
                             "description": "Attribute, that identifies entity record (for example `ID` for main entity or `docID` for detail entity)"
                         },
                         "lockEntity": {
                             "type": "string",
+                            "default": "<this entity code>",
                             "description": "Entity, that will be locked (for detail entity can be differ with the current entity)"
                         }
                     }

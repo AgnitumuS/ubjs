@@ -32,7 +32,8 @@ So, if `.js` file not exists yet created one.  For example, for `msg_Message.met
 Add a function inside the `.js` file created, which would return SQL expression to filter the rows as required by RLS rules for this entity.
 Code example of what the function should look like:
 ```javascript
-const uba_common = require('@unitybase/uba/modules/uba_common');
+const uba_common = require('@unitybase/uba/modules/uba_common')
+const Session = require('@unitybase/ub').Session
 
 function getAdmSubjIDs() {
  return [
@@ -52,7 +53,7 @@ function rlsSql() {
   `AND msgAdm.subjectID IN (${getAdmSubjIDs().join(',')})` +
   '))';
 }
-msg_Message.rlsSql = rlsSql;
+msg_Message.rlsSql = rlsSql
 ```
 
 Here are some points worth mentioning about the code sample above:
@@ -118,12 +119,13 @@ Example of ACL entity:
 
 ## Using `Session` object
 
-There is a globally available object `Session`.  The following properties are useful for developing functions, which build RLS expression:
+There is an object `Session`.  The following properties are useful for developing functions, which build RLS expression:
 * `userID`
 * `userRoleNames` - a string - comma-separated role names.  Not very usable "as is", but role membership may be checked without any query to DB by role name using the following code snippet:
 
 ```javascript
-Session.userRoleNames.split(',').find(r => r === 'roleName') != null
+const Session = require('@unitybase/ub').Session
+Session.uData.roles.split(',').find(r => r === 'roleName') != null
 ```
 * `uData` - a structure with other usefule properties like:
   * `uData.roleIDs` - array of numbers - IDs of roles assigned to the current user

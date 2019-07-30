@@ -54,38 +54,38 @@
         </el-col>
       </el-row>
 
-      <u-form-row
-        required
-        :label="getLabel('category')"
-        :error="$v.category.$error"
-      >
-        <u-select-entity
-          v-model="category"
-          :entity-name="getEntity('category')"
-        />
-      </u-form-row>
+<!--      <u-form-row-->
+<!--        required-->
+<!--        :label="getLabel('category')"-->
+<!--        :error="$v.category.$error"-->
+<!--      >-->
+<!--        <u-select-entity-->
+<!--          v-model="category"-->
+<!--          :entity-name="getEntity('category')"-->
+<!--        />-->
+<!--      </u-form-row>-->
 
-      <u-form-row
-        required
-        :label="getLabel('favorites')"
-        :error="$v.favorites.$error"
-      >
-        <u-select-entity
-          v-model="favorites"
-          :entity-name="getEntity('favorites')"
-        />
-      </u-form-row>
+<!--      <u-form-row-->
+<!--        required-->
+<!--        :label="getLabel('favorites')"-->
+<!--        :error="$v.favorites.$error"-->
+<!--      >-->
+<!--        <u-select-entity-->
+<!--          v-model="favorites"-->
+<!--          :entity-name="getEntity('favorites')"-->
+<!--        />-->
+<!--      </u-form-row>-->
 
-      <u-form-row
-        required
-        :label="getLabel('favorites2')"
-        :error="$v.favorites2.$error"
-      >
-        <u-select-entity
-          v-model="favorites2"
-          :entity-name="getEntity('favorites2')"
-        />
-      </u-form-row>
+<!--      <u-form-row-->
+<!--        required-->
+<!--        :label="getLabel('favorites2')"-->
+<!--        :error="$v.favorites2.$error"-->
+<!--      >-->
+<!--        <u-select-entity-->
+<!--          v-model="favorites2"-->
+<!--          :entity-name="getEntity('favorites2')"-->
+<!--        />-->
+<!--      </u-form-row>-->
 
       <u-form-row :label="getLabel('description')">
         <el-input

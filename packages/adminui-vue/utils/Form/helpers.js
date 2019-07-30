@@ -35,7 +35,7 @@ const SYSTEM_FIELDS = new Set([
  *
  * @param {VuexTrackedObject} trackedObj
  * @param {string} entity
- * @return {object|null} execParams
+ * @return {object|null}
  */
 function buildExecParams (trackedObj, entity) {
   const execParams = {}
@@ -78,8 +78,8 @@ function buildDeleteRequest (entity, ID) {
 
 /**
  * @param {VuexTrackedCollection} collection
- * @param {array} fieldList
- * @return {Array}
+ * @param {array<string>} fieldList
+ * @return {Array<object>}
  */
 function buildCollectionRequests (collection, fieldList) {
   const requests = []
@@ -266,7 +266,7 @@ function isRepository (obj) {
 /**
  * create wrap for store hooks for passing store as param
  * @param {function} hook
- * @param {VuexStore} store
+ * @param {Vuex} store
  */
 async function hookWrap (hook = () => {}, store) {
   const result = hook(store)

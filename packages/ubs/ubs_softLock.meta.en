@@ -1,6 +1,6 @@
-{
-  "caption": "Soft lock",
-  "description": "Soft lock",
+﻿{
+  "caption": "Pessimistic locks",
+  "description": "Pessimistic locks",
   "attributes": [
     {
       "name": "entity",
