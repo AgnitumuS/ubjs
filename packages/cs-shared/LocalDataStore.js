@@ -145,10 +145,8 @@ module.exports.doSorting = function (filteredArray, cachedData, ubRequest) {
           if (v1[colNum] !== v2[colNum]) {
             if (v1[colNum] === null && v2[colNum] !== null) {
               res = 1
-            } else if (v2[colNum] === null && v1[colNum] !== null) {
+            } else if (v1[colNum] !== null && v2[colNum] === null) {
               res = -1
-            } else if (v2[colNum] === null && v1[colNum] === null) {
-              res = 0
             } else if (v1[colNum] > v2[colNum]) {
               res = 1
             } else {
