@@ -390,22 +390,21 @@ const _ = require('lodash')
    * @returns {Array}
    */
   jsPDFAPI.getCharWidthsArrayEx = function (text, fontId) {
-    var font = this.innerFonts[fontId]
-    var widths = font.metadata.Unicode.widthsEx
-    var kerning = font.metadata.Unicode.kerningEx
+    const font = this.innerFonts[fontId]
+    const widths = font.metadata.Unicode.widthsEx
+    const kerning = font.metadata.Unicode.kerningEx
 
-    var i; var l; var char_code; var char_width
-    var prior_char_code = 0 // for kerning
-    var default_char_width = widths[0]
-    var output = []
+    let priorChCode = 0 // for kerning
+    const defaultChCode = widths[0]
+    let output = []
 
-    for (i = 0, l = text.length; i < l; i++) {
-      char_code = text.charCodeAt(i)
+    for (let i = 0, l = text.length; i < l; i++) {
+      let chCode = text.charCodeAt(i)
       output.push(
-        (widths[char_code] || default_char_width) +
-        ((kerning[char_code] && kerning[char_code][prior_char_code]) || 0)
+        (widths[chCode] || defaultChCode) +
+        ((kerning[chCode] && kerning[chCode][priorChCode]) || 0)
       )
-      prior_char_code = char_code
+      priorChCode = chCode
     }
 
     return output
@@ -414,13 +413,13 @@ const _ = require('lodash')
   /**
    returns array of lines
    */
-  var splitLongWord = function (word, widths_array, firstLineMaxLen, maxLen, details, options) {
+  var splitLongWord = function (word, widthsArray, firstLineMaxLen, maxLen, details, options) {
     var answer = []; var rWord
     var lineDetail = details ? details[details.length - 1] : null
     var i = 0; var l = word.length; var workingLen = 0; var ch
 
     // 1st, chop off the piece that can fit on the hanging line.
-    while (i !== l && workingLen + (ch = fontPointToUnit(widths_array[i], options.fsize, options.scaleFactor)) < firstLineMaxLen) {
+    while (i !== l && workingLen + (ch = fontPointToUnit(widthsArray[i], options.fsize, options.scaleFactor)) < firstLineMaxLen) {
       workingLen += ch
       i++
     }
@@ -435,7 +434,7 @@ const _ = require('lodash')
     var startOfLine = i
     workingLen = 0
     while (i !== l) {
-      ch = fontPointToUnit(widths_array[i], options.fsize, options.scaleFactor)
+      ch = fontPointToUnit(widthsArray[i], options.fsize, options.scaleFactor)
       if (workingLen + ch > maxLen) {
         answer.push(rWord = word.slice(startOfLine, i))
         if (lineDetail) {
@@ -536,11 +535,11 @@ const _ = require('lodash')
       line.words.push(word)
       line.wordLen.push(wordLen)
       // xmax not used line.wordChars.push(wChars || []);
-      lineLen += lineLen = 0 ? 0 : separatorLen + wordLen
+      lineLen += separatorLen + wordLen
       line.length = lineLen
     }
 
-    var p, b, pNum, blockNum, item, w, index,
+    var p, b, pNum, blockNum, w, index,
       wordChars, lastW, currW, startP, tmp
     for (pNum = 0; pNum < textInfo.paragraphs.length; pNum++) {
       p = textInfo.paragraphs[pNum]
@@ -805,7 +804,7 @@ const _ = require('lodash')
     62: 'gt'
   }
 
-  var RE_entity = /[\u0022-\u003E\u00A0-\u00FF\u0152-\u0153\u0160-\u0161\u0178\u0192\u02C6\u02DC\u0391-\u03D2<>\&]/g // \u00A0-\u2666
+  const RE_ENTRIES = /[\u0022-\u003E\u00A0-\u00FF\u0152-\u0153\u0160-\u0161\u0178\u0192\u02C6\u02DC\u0391-\u03D2<>&]/g // \u00A0-\u2666
 
   function escapeXmlEntities (text) {
     // U+0022 - U+003E,  U+00A0 - U+00FF,
@@ -813,7 +812,7 @@ const _ = require('lodash')
     // .....
     /// [\u00A0-\u2666<>\&]/g
 
-    return text.replace(RE_entity, function (c) {
+    return text.replace(RE_ENTRIES, function (c) {
       return '&' +
         (entityTable[c.charCodeAt(0)] || '#' + c.charCodeAt(0)) + ';'
     })
@@ -983,7 +982,6 @@ const _ = require('lodash')
    * @returns {Number}
    */
   jsPDFAPI.convertToMeasure = function (value, measure, measureTo) {
-    var k
     if (!value) {
       return value
     }
@@ -1009,7 +1007,6 @@ const _ = require('lodash')
           default:
             throw new Error('Unknown measure ' + measureTo)
         }
-        break
       case 'cm':
       case 'mm':
         switch (measureTo) {
@@ -1023,7 +1020,6 @@ const _ = require('lodash')
           default:
             throw new Error('Unknown measure ' + measureTo)
         }
-        break
       default:
         throw new Error('Unknown measure ' + measure)
     }
@@ -1584,7 +1580,7 @@ const _ = require('lodash')
       firstLineWidth = textInfo.paragraphs[0].blocks[0].lines[0].length
     }
 
-    var p, b, line, pNum, blockNum, lineNum, item, cHeidht, i, keyArr
+    var p, b, pNum, blockNum, lineNum, cHeidht, i, keyArr
 
     for (pNum = 0; pNum < textInfo.paragraphs.length; pNum++) {
       p = textInfo.paragraphs[pNum]
@@ -1632,7 +1628,6 @@ const _ = require('lodash')
    * @returns {number}
    */
   jsPDFAPI.getLineHeigh = function (font) {
-    var txtOut; var result
     var k = this.internal.scaleFactor
     var ffont = font ? this.internal.getFont(font.name, font.type) : this.internal.getFont()
     var activeFontSize = font && font.size ? font.size : this.internal.getFontSize()
@@ -1762,7 +1757,7 @@ const _ = require('lodash')
 
     function outputLine (lineScope, ctx, textIndent, forceIsNotEndParagraph) {
       var justifyArray = []; var lineAlign = flags.align
-      var i; var item; var cHeight; var maxSize = 0; var cSize; var maxBlock; var lTL
+      var i; var item; var cHeight; var maxSize = 0; var maxBlock;
 
       textLength = lineScope.textLength
       /*
@@ -1838,7 +1833,7 @@ const _ = require('lodash')
       }
 
       if (lineAlign === 'justify') {
-        var n; var isEndParagraph; var allWordLen; var lastItem; var allWn; var wn; var notEmptyCnt = 0; var realWidth; var wSpace
+        var isEndParagraph; var allWordLen; var lastItem; var allWn; var wn; var notEmptyCnt = 0; var realWidth; var wSpace
         var blockEndSpace; var cntWord
 
         lastItem = lineScope.items[lineScope.items.length - 1]
@@ -2255,7 +2250,7 @@ const _ = require('lodash')
    * @returns {Object|null} RGB format
    */
   jsPDFAPI.formatColor = function (color) {
-    var me = this; var result = color; var bColor
+    var result = color; var bColor
 
     if (!color) {
       return null

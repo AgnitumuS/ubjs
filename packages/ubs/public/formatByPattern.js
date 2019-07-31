@@ -90,9 +90,9 @@ function formatDate (value, patternName, lang) {
  * @return {string}
  */
 function formatNumber (value, patternName, lang) {
-  if (!value && value !== 0) return
-  if (!(typeof value === 'number')) throw new Error('Value must be Number')
   if (Number.isNaN(value)) return 'NaN'
+  if (!value && value !== 0) return ''
+  if (typeof value !== 'number') throw new Error('Value must be Number')
   const pattern = numberPatterns[patternName]
   if (!pattern) throw new Error('Unknown number pattern ' + patternName)
   // lazy create Intl object

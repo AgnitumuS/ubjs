@@ -174,48 +174,48 @@ function testORG () {
 
   //MPV - TEMPORARY return here
   //TODO - rewrite using HARDCODED expected values!!!!!!
-  return
-
-  checkCaption('org_staffunit', staffUnitID)
-  checkCaption('org_employeeonstaff', empOnStaffID)
-
-  empID = conn.lookup('org_employee', 'ID', {expression: 'code', condition: 'equal', values: {code: '888888'}})
-  var
-    empl = conn.Repository('org_employee')
-      .attrs(['shortFIO_uk^'])
-      .selectById(empID),
-    updParams = {ID: empID}
-  if (empl['shortFIO_uk^'] === 'Приблудкин П.П.') {
-    updParams['lastName_uk^'] = 'Чувырленко'
-    updParams['firstName_uk^'] = 'Чезаре'
-    updParams['middleName_uk^'] = 'Чезаревич'
-    updParams['shortFIO_uk^'] = 'Чувырленко Ч.Ч.'
-
-    updParams['lastName_en^'] = 'Chuvirlenko'
-    updParams['firstName_en^'] = 'Chezare'
-    updParams['middleName_en^'] = 'Chezarevich'
-    updParams['shortFIO_en^'] = 'Chuvirlenko Ch.Ch.'
-  } else {
-    updParams['lastName_uk^'] = 'Приблудкин'
-    updParams['firstName_uk^'] = 'Петро'
-    updParams['middleName_uk^'] = 'Петрович'
-    updParams['shortFIO_uk^'] = 'Приблудкин П.П.'
-
-    updParams['middleName_en^'] = 'Pedrovich'
-    updParams['firstName_en^'] = 'Pedro'
-    updParams['lastName_en^'] = 'Pribludkin'
-    updParams['shortFIO_en^'] = 'Pribludkin P.P.'
-  }
-  conn.update({
-    entity: 'org_employee',
-    fieldList: [],
-    execParams: updParams,
-    __skipOptimisticLock: true
-  })
-  checkCaption('org_staffunit', staffUnitID)
-  checkCaption('org_employeeonstaff', empOnStaffID)
-
-  console.debug('****************** End of ORG model test ************************')
+  // return
+  //
+  // checkCaption('org_staffunit', staffUnitID)
+  // checkCaption('org_employeeonstaff', empOnStaffID)
+  //
+  // empID = conn.lookup('org_employee', 'ID', {expression: 'code', condition: 'equal', values: {code: '888888'}})
+  // var
+  //   empl = conn.Repository('org_employee')
+  //     .attrs(['shortFIO_uk^'])
+  //     .selectById(empID),
+  //   updParams = {ID: empID}
+  // if (empl['shortFIO_uk^'] === 'Приблудкин П.П.') {
+  //   updParams['lastName_uk^'] = 'Чувырленко'
+  //   updParams['firstName_uk^'] = 'Чезаре'
+  //   updParams['middleName_uk^'] = 'Чезаревич'
+  //   updParams['shortFIO_uk^'] = 'Чувырленко Ч.Ч.'
+  //
+  //   updParams['lastName_en^'] = 'Chuvirlenko'
+  //   updParams['firstName_en^'] = 'Chezare'
+  //   updParams['middleName_en^'] = 'Chezarevich'
+  //   updParams['shortFIO_en^'] = 'Chuvirlenko Ch.Ch.'
+  // } else {
+  //   updParams['lastName_uk^'] = 'Приблудкин'
+  //   updParams['firstName_uk^'] = 'Петро'
+  //   updParams['middleName_uk^'] = 'Петрович'
+  //   updParams['shortFIO_uk^'] = 'Приблудкин П.П.'
+  //
+  //   updParams['middleName_en^'] = 'Pedrovich'
+  //   updParams['firstName_en^'] = 'Pedro'
+  //   updParams['lastName_en^'] = 'Pribludkin'
+  //   updParams['shortFIO_en^'] = 'Pribludkin P.P.'
+  // }
+  // conn.update({
+  //   entity: 'org_employee',
+  //   fieldList: [],
+  //   execParams: updParams,
+  //   __skipOptimisticLock: true
+  // })
+  // checkCaption('org_staffunit', staffUnitID)
+  // checkCaption('org_employeeonstaff', empOnStaffID)
+  //
+  // console.debug('****************** End of ORG model test ************************')
 }
 
 function i18n (str, lang) {

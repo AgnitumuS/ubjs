@@ -74,11 +74,6 @@ module.exports = function runELSTest (options) {
       grantRoleToUser(UBA_COMMON.ROLES.ADMIN.ID, admin2ID)
     }
 
-    if (testUserID) {
-      console.warn('\t\tSkip ELS test - uba_user "testelsuser" already exists. Test can be run only once after app initialization')
-      return
-    }
-
     const TEST_ENTITY = 'uba_role'
 
     assert.deepStrictEqual(

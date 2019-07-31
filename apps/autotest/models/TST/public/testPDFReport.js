@@ -118,11 +118,11 @@ Ext.define('PDF.cstestReport', {
           }
         }
       })
-    var grid
-    var text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ullamcorper varius quam quis dapibus. Donec congue velit in mi auctor sagittis. Maecenas auctor sapien sapien, et pulvinar dolor hendrerit sit amet. Ut vestibulum feugiat nibh ut lobortis. Vestibulum vel rutrum nibh. Sed at velit varius, elementum lacus vel, rutrum nibh. Nulla in imperdiet urna, at dignissim nunc. Nulla auctor nibh vitae elit facilisis, non malesuada nibh ultricies. Praesent tincidunt, lectus sed porta rutrum, risus felis suscipit turpis, eu luctus elit nisl ut purus. Donec sit amet sapien ac nulla vestibulum commodo. In hac habitasse platea dictumst.'
-    var configs = [{ width: 50 }, { width: 130, border: { left: 1, top: 1, bottom: 1, right: 1 } }]
-    var rows = []
-    var i
+    // var grid
+    // var text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ullamcorper varius quam quis dapibus. Donec congue velit in mi auctor sagittis. Maecenas auctor sapien sapien, et pulvinar dolor hendrerit sit amet. Ut vestibulum feugiat nibh ut lobortis. Vestibulum vel rutrum nibh. Sed at velit varius, elementum lacus vel, rutrum nibh. Nulla in imperdiet urna, at dignissim nunc. Nulla auctor nibh vitae elit facilisis, non malesuada nibh ultricies. Praesent tincidunt, lectus sed porta rutrum, risus felis suscipit turpis, eu luctus elit nisl ut purus. Donec sit amet sapien ac nulla vestibulum commodo. In hac habitasse platea dictumst.'
+    // var configs = [{ width: 50 }, { width: 130, border: { left: 1, top: 1, bottom: 1, right: 1 } }]
+    // var rows = []
+    // var i
 
     doc.writeSimpleText({ text: 'Тест' })
 

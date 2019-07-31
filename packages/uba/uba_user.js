@@ -73,7 +73,7 @@ function fillFullNameIfMissing (ctxt) {
  * @public
  */
 me.changePassword = function (userID, userName, password, needChangePassword, oldPwd) {
-  if ((!userID && !userName) || !password) throw new Error('Invalid parameters')
+  if (!(userID || userName) || !password) throw new Error('Invalid parameters')
 
   let store = UB.DataStore('uba_user')
   if (userID && (!userName || !oldPwd)) {

@@ -196,11 +196,9 @@ UBServerReport.prototype.makeReport = function (params) {
 * @returns {string}
 */
 UBServerReport.prototype.buildHTML = function (reportData) {
-  if (!reportData || typeof (reportData) !== 'object' || reportData instanceof Array) {
+  if (!reportData || (typeof reportData !== 'object') || reportData instanceof Array) {
     throw new Error('reportData must be a Object')
   }
-  reportData = reportData || {}
-
   formatFunctions.addBaseMustacheSysFunction(reportData, this.lang)
   formatFunctions.addMustacheSysFunction(reportData, this.lang)
   return Mustache.render(this.reportRW.templateData, reportData)

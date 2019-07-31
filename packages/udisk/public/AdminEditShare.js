@@ -375,7 +375,7 @@ Ext.define('UDISK.AdminEditShare', {
                     entityName: me.entityName,
                     store: store,
                     parentContext: {cardID: me.itemId},
-                    instanceID: eOpts ? eOpts.instanceID : null, // record ? record.get('ID'): null,
+                    instanceID: eOpts.instanceID, // record ? record.get('ID'): null,
                     dfm: {
                         items: [
                             {
