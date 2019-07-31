@@ -227,12 +227,12 @@ function createProcessingModule ({
           const repo = UB.connection
             .Repository(masterEntityName)
             .attrs(fieldList)
-            .miscIf(isLockable, { lockType: 'None' }) // get lock info
+            .miscIf(isLockable(), { lockType: 'None' }) // get lock info
           const data = await repo.selectById(instanceID)
 
           commit('LOAD_DATA', data)
 
-          if (isLockable) {
+          if (isLockable()) {
             let rl = repo.rawResult.resultLock
             commit('SET', { // TODO - create mutation SET_LOCK_RESULT
               key: 'lockInfo',

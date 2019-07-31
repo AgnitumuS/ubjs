@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.18]
+### Fixed
+ - VueJS based form now accept `tabId` in UForm constructor.
+ If passed it will be used to identity tab and prevent opening tab with the same tabId twice. 
+ If omitted will be calculated based on entity and instanceID.
+ ```js
+module.exports.mount = function ({ ..., tabId }) {
+    Form({
+      ...,
+      tabId
+    }).store()
+      .instance()
+      .processing()
+      .validation()
+      .mount()
+  }
+```
+ - locking for Vue forms based on entity without softLock mixin is remove (fix)
+
 ## [1.6.17]
 ### Added
  - support for `softLock` (Pessimistic locks) mixin
