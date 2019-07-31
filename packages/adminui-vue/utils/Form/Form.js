@@ -42,6 +42,7 @@ class UForm {
    * @param {string} [cfg.modalClass] Modal class
    * @param {string} [cfg.modalWidth] Modal width
    * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
+   * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
    */
   constructor ({
     component = required('component'),
@@ -52,7 +53,8 @@ class UForm {
     isModal,
     modalClass,
     modalWidth,
-    formCode
+    formCode,
+    tabId
   }) {
     this.component = component
     this.props = props
@@ -66,6 +68,7 @@ class UForm {
     this.formCode = formCode
     this.collections = {}
 
+    this.tabId = tabId
     this.isModal = isModal
     this.modalClass = modalClass
     this.modalWidth = modalWidth
@@ -234,16 +237,18 @@ class UForm {
         }
       })
     } else {
-      let tabId = this.entity
-        ? this.entity + (this.instanceID ? this.instanceID : 'ext' + Ext.id(null, 'addNew')) // TODO portal: Ext.id -> portal.getId
-        : undefined
+      if (!this.tabId) {
+        this.tabId = this.entity
+          ? this.entity + (this.instanceID ? this.instanceID : 'ext' + Ext.id(null, 'addNew')) // TODO portal: Ext.id -> portal.getId
+          : undefined
+      }
       mountTab({
         component: this.component,
         props: this.props,
         store: this.$store,
         validator: this.validator,
         title: this.title,
-        tabId,
+        tabId: this.tabId,
         provide: {
           formCode: this.formCode,
           entity: this.entity,
