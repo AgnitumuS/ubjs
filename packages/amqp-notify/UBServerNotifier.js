@@ -1,14 +1,14 @@
 const amqp = require('@unitybase/amqp')
 const qs = require('querystring')
-//const UB = require('@unitybase/ub')
-//const App = UB.App
+// const UB = require('@unitybase/ub')
+// const App = UB.App
 
 const AMQP_EXCHANGE_NAME = 'ub-amqp-notify'
 const USERNAME_PATTERN = /U(\d+)/
 
 // = UB auth for RabbitMQ implementation ===========================================
 
-function parseParams(req) {
+function parseParams (req) {
   switch (req.method) {
     case 'POST':
       return Object.assign({}, qs.parse(req.read()))
@@ -20,7 +20,7 @@ function parseParams(req) {
 }
 
 function handleAuthUser (req, resp) {
-  let { username, password} = parseParams(req)
+  let { username, password } = parseParams(req)
   console.log(`parameters: ${username}`)
 
   if (typeof username === 'string' && typeof password === 'string' && USERNAME_PATTERN.test(username)) {
@@ -31,7 +31,7 @@ function handleAuthUser (req, resp) {
       resp.writeHead('Content-Type: text/plain')
       resp.writeEnd('allow')
       return
-    }  
+    }
   }
   resp.statusCode = 400
   resp.writeEnd()
@@ -42,22 +42,22 @@ function handleAuthVHost (req, resp) {
   console.log(`parameters: ${username}, ${vhost}, ${ip}`)
 
   if (typeof username === 'string' && USERNAME_PATTERN.test(username)) {
-    if (1 === 1) { //TODO: Check vhost  - it should be the same as in server connection string
-      resp.statusCode = 200
-      resp.writeHead('Content-Type: text/plain')
-      resp.writeEnd('allow')
-      return
-    }
+    // if (1 === 1) { //TODO: Check vhost  - it should be the same as in server connection string
+    resp.statusCode = 200
+    resp.writeHead('Content-Type: text/plain')
+    resp.writeEnd('allow')
+    return
+    // }
   }
   resp.statusCode = 400
-  resp.writeEnd()
+  resp.writeEnd('')
 }
 
 function handleAuthResource (req, resp) {
   let { username, vhost, resource, name, permission } = parseParams(req)
   console.log(`parameters: ${username}, ${vhost}, ${resource}, ${name}, ${permission}`)
 
-  if (typeof username === 'string' && USERNAME_PATTERN.test(username) && typeof resource == 'string') {
+  if (typeof username === 'string' && USERNAME_PATTERN.test(username) && typeof resource === 'string') {
     let ok = false
     switch (resource) {
       case 'queue': ok = true; break
@@ -118,7 +118,7 @@ function getChannel () {
         _conn = conn
         _channel = ch
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e.toString())
       console.error(e)
     }
@@ -129,7 +129,7 @@ function getChannel () {
 /**
  * Server part of server to client notification implementation
  * Uses amqp protocol internally to send messages
- * 
+ *
  * The url to connect to must be provided in ubConfig.json to work
  * otherwise will silently ignore everything
  * The url should be specified in application.customSettings.amqpNotificationUrl
@@ -167,7 +167,7 @@ class UBServerNotifier {
    *   this should be unique name to be able for client to distinguish the source of notification message
    * @param {number} userID
    *   ID of the user the message to be sent to
-   * 
+   *
    *   Session.uData.userID could be used to sent a message to the current user.
    *   It is worth to mention that all non-authenticatied sessions have 'anonimous' login and there is no way
    *   to distinguish such a users

@@ -2797,8 +2797,8 @@ Ext.define('UB.view.EntityGridPanel', {
     this.setMainPanel(stateId)
     let config = {
       cmdType: 'showForm',
-      formCode: formParam ? formParam.formCode : formParam,
-      description: formParam ? formParam.description : formParam,
+      formCode: formParam.formCode,
+      description: formParam.description,
       entity: this.entityName,
       instanceID: eOpts && eOpts.instanceID,
       store: this.getStore(),

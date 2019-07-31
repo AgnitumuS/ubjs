@@ -1556,14 +1556,13 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     return me
   },
 
-    /**
-     * Track height change to fire {@link #event-autosize} event, when applicable.
-     */
+  /**
+   * Track height change to fire {@link #event-autosize} event, when applicable.
+   */
   afterComponentLayout: function () {
-    var me = this
-
+    const me = this
     if (me.autoSizing) {
-      height = me.getHeight()
+      let height = me.getHeight()
       if (height !== me.lastInputHeight) {
         if (me.isExpanded) {
           me.alignPicker()

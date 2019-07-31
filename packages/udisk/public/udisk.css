@@ -3,7 +3,6 @@
 }
 
 .udisk-icon{
-    //font-size: 18px;
     font-size: 1.5em;
 }
 
@@ -11,15 +10,10 @@
     border: solid 2px #6e44a4;
 }
 
-.udisk-down-over .x-mask-msg-text{
-//background-size: 0;
-}
-
 .udisk-drop-zone{
     background-image: none;
     border: #6D6BAB solid 6px;
     background-color: rgba(255, 255, 255, 0.21);
-    //opacity: 0.85;
 }
 
 .udisk-drop-zone-msg {
@@ -70,9 +64,6 @@
 
 .x-tree-lines .x-grid-tree-node-expanded .udisk-tree-elbow-plus{
 }
-
-
-
 
 .udisk_tree_inner-col{
     padding: 0 0 0 4px;

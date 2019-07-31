@@ -158,8 +158,7 @@ me.entity.addMethod('usualExceptionTest')
  */
 me.outOfMemExceptionTest = function (ctx) {
   let s = '1234567890'
-
-  while (true) {
+  for (let i = 0; i < 10000000; i++) {
     s += s
   }
 }

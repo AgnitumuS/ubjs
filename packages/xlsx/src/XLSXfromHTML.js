@@ -147,7 +147,7 @@ function wrapIterator (sourceObj, tempObj, templates, templatesData, path, minLe
     .map(key => typeof sourceObj[key] === 'function' ? sourceObj[key] : null)
     .filter(F => F)
   Object.assign(ctxt, currCtxt)
-  Object.keys(sourceObj).map(key => {
+  Object.keys(sourceObj).forEach(key => {
     let item = sourceObj[key]
     let newPath = path ? path + '.' + key : key
     if (typeof item === 'object' && Array.isArray(item) && item.length >= minLenOptimization) {

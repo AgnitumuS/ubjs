@@ -16,12 +16,12 @@ div.mxRubberband {
 	border-width: 0;
 	min-width: 1px;
 	resize: none;
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 }
 .mxPlainTextEditor * {
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 }
 div.mxWindow {
 	-webkit-box-shadow: 3px 3px 12px #C0C0C0;
@@ -36,7 +36,6 @@ div.mxWindow {
 table.mxWindow {
 	border-collapse: collapse;
 	table-layout: fixed;
-  	font-family: Arial;
 	font-size: 8pt;
 }
 td.mxWindowTitle {
@@ -54,27 +53,24 @@ td.mxWindowTitle {
 }
 td.mxWindowPane {
 	vertical-align: top;
-	padding: 0px;
+	padding: 0;
 }
 div.mxWindowPane {
 	overflow: hidden;
 	position: relative;
 }
 td.mxWindowPane td {
-  	font-family: Arial;
 	font-size: 8pt;
 }
-td.mxWindowPane input, td.mxWindowPane select, td.mxWindowPane textarea, td.mxWindowPane radio {
+td.mxWindowPane input, td.mxWindowPane select, td.mxWindowPane textarea, td.mxWindowPane {
   	border-color: #8C8C8C;
   	border-style: solid;
   	border-width: 1px;
-  	font-family: Arial;
 	font-size: 8pt;
  	padding: 1px;
 }
 td.mxWindowPane button {
 	background: url('../images/button.gif') repeat-x;
-  	font-family: Arial;
   	font-size: 8pt;
   	padding: 2px;
 	float: left;
@@ -96,10 +92,10 @@ img.mxToolbarMode {
 	margin: 2px;
 	margin-right: 4px;
 	margin-bottom: 4px;
-	border-width: 0px;
+	border-width: 0;
 }
 img.mxToolbarModeSelected {
-	margin: 0px;
+	margin: 0;
 	margin-right: 2px;
 	margin-bottom: 2px;
 	border-width: 2px;
@@ -113,7 +109,6 @@ div.mxTooltip {
 	border-style: solid;
 	border-width: 1px;
 	border-color: black;
-	font-family: Arial;
 	font-size: 8pt;
 	position: absolute;
 	cursor: default;
@@ -147,7 +142,6 @@ tr.mxPopupMenuItemHover {
 td.mxPopupMenuItem {
 	padding: 2px 30px 2px 10px;
 	white-space: nowrap;
-	font-family: Arial;
 	font-size: 8pt;
 }
 td.mxPopupMenuIcon {

@@ -231,10 +231,22 @@ class XLSXWorkbook {
       if (this.customProperties.hasOwnProperty(p)) {
         let v = this.customProperties[p]
         switch (typeof v) {
-          case 'string': return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:lpwstr>${v}</vt:lpwstr></property>`
-          case 'number': if (Number.isSafeInteger(v)) { return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:r8>${v}</vt:r8></property>` }
-          case 'object': if (v instanceof Date) { return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:filetime>${v.toUTCString()}</vt:filetime></property>` }
-          case 'boolean': return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:bool>${v}</vt:bool></property></Properties>`
+          case 'string':
+            return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:lpwstr>${v}</vt:lpwstr></property>`
+          case 'number':
+            if (Number.isSafeInteger(v)) {
+              return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:r8>${v}</vt:r8></property>`
+            }
+            break
+          case 'object':
+            if (v instanceof Date) {
+              return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:filetime>${v.toUTCString()}</vt:filetime></property>`
+            }
+            break
+          case 'boolean':
+            return `<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="${++pId}" name="${p}"><vt:bool>${v}</vt:bool></property></Properties>`
+          default:
+            return ''
         }
       }
     }).join('')

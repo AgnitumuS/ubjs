@@ -1244,25 +1244,19 @@ Ext.define('UB.view.BasePanel', {
   },
 
   getGrids: function () {
-    var me = this,
-      panelsCnt,
-      tabPanels,
-      result,
-      i
-    result = me.query('ubdetailgrid') || []
-    tabPanels = me.query('tabpanel')
+    let result = this.query('ubdetailgrid') || []
+    let tabPanels = this.query('tabpanel')
     if (tabPanels) {
-      for (i = 0, panelsCnt = tabPanels.length; i < panelsCnt; ++i) {
-        result.concat(tabPanels[i].query('ubdetailgrid'))
+      for (let i = 0, panelsCnt = tabPanels.length; i < panelsCnt; ++i) {
+        result = result.concat(tabPanels[i].query('ubdetailgrid'))
       }
     }
     return result
   },
 
   onControlFocused: function (ctrl) {
-    var me = this
     if (!ctrl.enableKeyEvents) {
-      ctrl.addListener('keydown', me.preventDefaultKeys, me)
+      ctrl.addListener('keydown', this.preventDefaultKeys, this)
       ctrl.enableKeyEvents = true
     }
   },
@@ -1377,7 +1371,7 @@ Ext.define('UB.view.BasePanel', {
           }
         } while (++i < len)
         if (ctrl === (shift ? first : last)) {
-          if (ctrl.ownerCt.gridOwner) {
+          if (ctrl && ctrl.ownerCt.gridOwner) {
             cmp = ctrl.ownerCt.gridOwner.down('gridview')
             if (cmp) {
               me.focusControl(cmp, 500)
@@ -2584,10 +2578,10 @@ Ext.define('UB.view.BasePanel', {
    * @param {Boolean} isMainForm
    */
   prepareDfmItems: function (items, isMainForm) {
-    var me = this,
-      entity = me.domainEntity,
-      ubCommand = UB.core.UBCommand,
-      item, currentIsMainForm = false
+    let me = this
+    let entity = me.domainEntity
+    let ubCommand = UB.core.UBCommand
+    let currentIsMainForm = false
 
     function isForm (xtype) {
       var comp,
@@ -2608,16 +2602,14 @@ Ext.define('UB.view.BasePanel', {
       return isFormResult
     }
 
-    if (!Ext.isArray(items)) {
-      return
-    }
+    if (!Array.isArray(items)) return
 
     for (let i = 0, len = items.length; i < len; ++i) {
-      item = items[i]
+      let item = items[i]
       if (isMainForm) {
         currentIsMainForm = !isForm(item.xtype)
       }
-      if (Ext.isString(item.attributeName)) {
+      if (typeof item.attributeName === 'string') {
         // here we check, that attribute exists in entity. works only for simple attributes
         if (entity.attr(item.attributeName)) {
           me.baseFieldList.push(item.isMultilang

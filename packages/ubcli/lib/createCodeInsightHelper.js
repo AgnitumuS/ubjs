@@ -197,7 +197,7 @@ module.exports = function createCodeInsightHelper (cfg) {
           meta: entityDef})
       }
     })
-    processEntities(entities, currentPath, modelCfg.name, modelCfg.moduleName)
+    processEntities(entities, currentPath, modelCfg.name)
   })
 }
 

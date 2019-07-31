@@ -4872,7 +4872,7 @@ div.x-editor {
 }
 
 /* line 55, ../../../../ext/packages/ext-theme-base/sass/src/draw/Component.scss */
-svg, vml {
+svg {
   overflow: hidden;
 }
 
@@ -10369,10 +10369,6 @@ a.x-tab {
   border-top-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
-  _border-top-color: pink;
-  _border-left-color: pink;
-  _border-right-color: pink;
-  _filter: chroma(color=pink);
 }
 
 /* line 214, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
@@ -10380,10 +10376,6 @@ a.x-tab {
   border-bottom-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
-  _border-bottom-color: pink;
-  _border-left-color: pink;
-  _border-right-color: pink;
-  _filter: chroma(color=pink);
 }
 
 /* line 227, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
@@ -10391,10 +10383,6 @@ a.x-tab {
   border-top-color: transparent;
   border-bottom-color: transparent;
   border-left-color: transparent;
-  _border-top-color: pink;
-  _border-bottom-color: pink;
-  _border-left-color: pink;
-  _filter: chroma(color=pink);
 }
 
 /* line 240, ../../../../ext/packages/ext-theme-neutral/sass/src/tip/Tip.scss */
@@ -10402,10 +10390,6 @@ a.x-tab {
   border-top-color: transparent;
   border-bottom-color: transparent;
   border-right-color: transparent;
-  _border-top-color: pink;
-  _border-bottom-color: pink;
-  _border-right-color: pink;
-  _filter: chroma(color=pink);
 }
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */

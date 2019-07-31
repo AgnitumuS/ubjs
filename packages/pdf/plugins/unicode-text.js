@@ -1506,12 +1506,11 @@ const _ = require('lodash')
     convert_to_bytes(lead)
     convert_to_bytes(trail)
     return result
-
   }
 
   jsPDFAPI.pdfEscapeExt = function (text, flags) {
     var ffont = this.internal.getFont(),
-      lCMAP = ffont.extFont.cMap,  //UnicodeFonts[0].cMap
+      lCMAP = ffont.extFont.cMap,  // UnicodeFonts[0].cMap
       l = text.length,
       nc
     /*

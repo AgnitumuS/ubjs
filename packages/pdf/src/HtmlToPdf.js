@@ -1060,8 +1060,8 @@ HtmlToPdf.prototype.createSpanTableMap = function (tbody, rowSpan, colSpan) {
       cellLast = cell
       cCntR++
 
-      cSpan = getAttributeInt(cell, 'colspan', 0)
-      rSpan = getAttributeInt(cell, 'rowspan', 0)
+      cSpan = getAttributeInt(cell, 'colspan')
+      rSpan = getAttributeInt(cell, 'rowspan')
       // check valid rowSpan
       if (rSpan > 1) {
         if (rSpan - 1 + p >= rowCount) {

@@ -11,7 +11,6 @@ require('./xlsxFormatter/XlsxFormatter')
 Ext.define('Ext.ux.exporter.Exporter', {
   uses: [
     'Ext.ux.exporter.Base64',
-    'Ext.ux.exporter.Button',
     'Ext.ux.exporter.csvFormatter.CsvFormatter',
     'Ext.ux.exporter.wikiFormatter.WikiFormatter',
     'Ext.ux.exporter.excelFormatter.ExcelFormatter',
@@ -50,7 +49,7 @@ Ext.define('Ext.ux.exporter.Exporter', {
       var columns = Ext.Array.filter(grid.columns, function (col) {
         return !col.hidden && !col.disableExport // && (!col.xtype || col.xtype != "actioncolumn");
       })
-      columns = columns.sort(function (a, b) {
+      columns.sort(function (a, b) {
         return (a.getIndex() < b.getIndex()) ? -1 : 1
       })
 

@@ -38,7 +38,7 @@ Ext.define('UB.ux.UBReportEditor', {
 
     filter_node: function (node) {
       let resStyle = []
-      let i, y, attr, style, styleElm, stylePair, detail, subDetail, isInline, newNode
+      let i, y, attr, style, detail, subDetail, isInline, newNode
 
       if (node.nodeName.toLowerCase() === 'table') {
         this.filter_table(node)
@@ -54,14 +54,14 @@ Ext.define('UB.ux.UBReportEditor', {
         if (style && style.value) {
           style = style.value.split(';')
           for (i = 0; i < style.length; i++) {
-            styleElm = style[i]
+            let styleElm = style[i]
             if (styleElm) {
-              stylePair = styleElm.split(':')
-            }
-            if (stylePair.length === 2 && (typeof (stylePair[0]) === 'string') &&
-              (this.possibleElement.style.indexOf(stylePair[0].toLowerCase()) >= 0)
-            ) {
-              resStyle.push(styleElm)
+              let stylePair = styleElm.split(':')
+              if (stylePair.length === 2 && (typeof (stylePair[0]) === 'string') &&
+                (this.possibleElement.style.indexOf(stylePair[0].toLowerCase()) >= 0)
+              ) {
+                resStyle.push(styleElm)
+              }
             }
           }
           style.value = resStyle.join(';')
@@ -233,8 +233,8 @@ Ext.define('UB.ux.UBReportEditor', {
           cellLast = cell
           cCntR++
 
-          cSpan = getAttributeInt(cell, 'colspan', 0)
-          rSpan = getAttributeInt(cell, 'rowspan', 0)
+          cSpan = getAttributeInt(cell, 'colspan')
+          rSpan = getAttributeInt(cell, 'rowspan')
           // check valid rowSpan
           if (rSpan > 1) {
             if (rSpan - 1 + p >= rowCount) {
@@ -349,7 +349,7 @@ Ext.define('UB.ux.UBReportEditor', {
 
   onStartSetup: function (ed) {
     let me = this
-    ed.on('change', function (e) {
+    ed.on('change', function () {
       me.updateSize()
     }, me)
     this.callParent(arguments)

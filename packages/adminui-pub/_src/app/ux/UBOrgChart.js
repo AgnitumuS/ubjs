@@ -1028,7 +1028,7 @@ Ext.define('UB.ux.UBOrgChart', {
       child = me.treeData
     }
 
-    if (child.length > 0) {
+    if (child && child.length) {
       me.hideOrShowCells(me.graph, cell, overlay.expanded)
       overlay.expanded = !overlay.expanded
       overlay.image.src = !overlay.expanded ? me.collapseImage : me.expandImage

@@ -90,7 +90,7 @@ ok(v === '', 'zero length string must be empty string')
 
 zipR.freeNative()
 
-zipW = new TubZipWriter(TEST_PATH + '_testZip.zip')
+const zipW = new TubZipWriter(TEST_PATH + '_testZip.zip')
 zipW.addFile(UNZIP_PATH + files[0])
 zipW.addFile(UNZIP_PATH + files[1])
 zipW.addFile(UNZIP_PATH + files[2])

@@ -165,7 +165,7 @@ function doSelect (ctxt) {
 
   let cachedData = loadAll()
 
-  if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity || cType === UBDomain.EntityCacheTypes.Entity) && (!mP.skipCache)) {
+  if (!(aID && (aID > -1)) && (cType === UBDomain.EntityCacheTypes.Entity) && (!mP.skipCache)) {
     let reqVersion = mP.version
     mP.version = resultDataCache.version
     if (reqVersion === resultDataCache.version) {

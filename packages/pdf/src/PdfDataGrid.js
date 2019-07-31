@@ -135,18 +135,19 @@ PdfDataGrid.border = function (val, dimension) {
  * @param {String} val
  */
 PdfDataGrid.range = function (val) {
+  const E_MSG = 'Incorrect format range settings'
   if (!val || (typeof val !== 'string')) {
-    throw new Error('Incorrect format range settings', 'rangeFormatError')
+    throw new Error(E_MSG)
   }
   let parts = val.split(',')
   let isX = false
   let isY = false
-  let result = {x1: 0, x2: 0, y1: 0, y2: 0}
-  _.forEach(parts, function (st) {
+  let result = { x1: 0, x2: 0, y1: 0, y2: 0 }
+  parts.forEach(function (st) {
     isX = !isX && (st[0] === 'x')
     isY = !isY && (st[0] === 'y')
-    if ((!isX && !isY) || (!isX && !isY) || (st.length <= 1)) {
-      throw new Error('Incorrect format range settings', 'rangeFormatError')
+    if ((!isX && !isY) || (st.length <= 1)) {
+      throw new Error(E_MSG)
     }
     let vst = st.substr(1).split(':')
     if (isX) {
@@ -160,7 +161,7 @@ PdfDataGrid.range = function (val) {
           result.x2 = vst[1] * 1
           break
         default:
-          throw new Error('Incorrect format range settings', 'rangeFormatError')
+          throw new Error(E_MSG)
       }
     }
     if (isY) {
@@ -174,7 +175,7 @@ PdfDataGrid.range = function (val) {
           result.y2 = vst[1] * 1
           break
         default:
-          throw new Error('Incorrect format range settings', 'rangeFormatError')
+          throw new Error(E_MSG)
       }
     }
   })
@@ -410,7 +411,7 @@ PdfDataGrid.prototype.addRow = function (cellValues, columnConfigs, config) {
   return row
 }
 
-    /**
+/**
      * Return top position of page
      * @returns {Number}
      */

@@ -493,7 +493,7 @@ PdfTextBox.prototype.calcMetrics = function () {
         }
         currentHeight = 0
         hasText = false
-                       // currentText = '';
+        // currentText = '';
         stline = line
         requreDetail = true
       }

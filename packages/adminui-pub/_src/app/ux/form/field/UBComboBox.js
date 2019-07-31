@@ -506,7 +506,7 @@ Ext.define('UB.ux.form.field.UBComboBox', {
    */
   getEntity: function () {
     let request = this.ubRequest || (this.store ? this.store.ubRequest : null)
-    return request.entity
+    return request ? request.entity : ''
   },
 
   getSubTplData: function () {
