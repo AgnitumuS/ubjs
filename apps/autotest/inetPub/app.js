@@ -8,14 +8,13 @@ UB.connect({
   onCredentialRequired: function (conn, isRepeat) {
     return isRepeat
       ? Promise.reject(new UB.UBAbortError('invalid password for user admin'))
-      : Promise.resolve({authSchema: 'UB', login: 'admin', password: 'admin'})
+      : Promise.resolve({ authSchema: 'UB', login: 'admin', password: 'admin' })
   },
   onAuthorizationFail: function (reason) {
     window.alert(reason)
   }
 }).then(function (conn) {
   window.$conn = conn
-  var entity
   conn.get('stat').then(function (statResp) {
     document.getElementById('ubstat').innerText = JSON.stringify(statResp.data, null, '\t')
   }).catch(function (reason) {
@@ -23,10 +22,10 @@ UB.connect({
   })
 
   if (conn.domain.has('ubm_enum')) {
-    entity = conn.domain.get('ubm_enum')
+    let entity = conn.domain.get('ubm_enum')
     conn.Repository('ubm_enum')
       .attrs(
-        entity.filterAttribute({defaultView: true}).map(function (attr) {
+        entity.filterAttribute({ defaultView: true }).map(function (attr) {
           return attr.code
         })
       )
@@ -38,17 +37,17 @@ UB.connect({
       })
   }
 
-  var b = document.getElementById('getODSFile')
+  let b = document.getElementById('getODSFile')
   b.addEventListener('click', function () {
-    var entity = conn.domain.get('ubm_enum')
-    var query = conn.Repository('ubm_enum')
+    let entity = conn.domain.get('ubm_enum')
+    let query = conn.Repository('ubm_enum')
       .attrs(
         // entity.filterAttribute({defaultView: true}).map(function(attr){
         //     return attr.code;
         // })
         Object.keys(entity.attributes)
       ).ubql()
-    conn.xhr({method: 'POST', url: 'ubql', data: [query], responseType: 'blob', headers: {'Content-Type': 'application/vnd.oasis.opendocument.spreadsheet'}})
+    conn.xhr({ method: 'POST', url: 'ubql', data: [query], responseType: 'blob', headers: { 'Content-Type': 'application/vnd.oasis.opendocument.spreadsheet' } })
       .then(function (res) {
         saveBlob(res.data, 'result.ods')
       })
@@ -56,11 +55,11 @@ UB.connect({
 })
 
 var saveBlob = (function () {
-  var a = document.createElement('a')
+  let a = document.createElement('a')
   document.body.appendChild(a)
   a.style = 'display: none'
   return function (blob, fileName) {
-    var url = window.URL.createObjectURL(blob)
+    let url = window.URL.createObjectURL(blob)
     a.href = url
     a.download = fileName
     a.click()

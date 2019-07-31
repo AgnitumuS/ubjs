@@ -218,6 +218,11 @@ function UBNativeMessage (featureConfig) {
    * @type {string}
    */
   me.targetOrign = '*'
+  /**
+   * reference to the window.parent in case we are in iFrame
+   * @type {undefined}
+   */
+  me.targetPage = undefined
 }
 
 /**
@@ -298,7 +303,7 @@ UBNativeMessage.prototype.invoke = function (methodName, methodParams, timeout) 
     //     }
     // } else
     if (me.iFarmeMode) {
-      window.parent.postMessage({ detail: messageToSend, messageType: 'UBPageMsg' }, me.targetOrign)
+      me.targetPage.postMessage({ detail: messageToSend, messageType: 'UBPageMsg' }, me.targetOrign)
     } else {
       // eslint-disable-next-line no-undef
       me.eventElm.dispatchEvent(new CustomEvent('UBPageMsg', { detail: messageToSend }))
@@ -358,6 +363,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
     } else {
       if (window.parent && (window.parent !== window)) { // in iframe
         me.targetOrign = new URL(document.referrer).origin
+        me.targetPage = window.parent
         promise = new Promise((resolve, reject) => {
           let timeId
           let onMessage = function (event) {
@@ -375,7 +381,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
             resolve(true)
           }
           window.addEventListener('message', onMessage, false)
-          window.parent.postMessage({ messageType: 'initUbExtension' }, me.targetOrign)
+          me.targetPage.postMessage({ messageType: 'initUbExtension' }, me.targetOrign)
           timeId = setTimeout(function () {
             reject(new ubUtils.UBError(createFeatureUpdateMsg(NM_EXTENSION_FEATURE, '-', false)))
           }, 1500)

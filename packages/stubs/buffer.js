@@ -26,12 +26,12 @@ function getBufferLength(size) {
 }
 
 class FastBuffer extends Uint8Array {
-  constructor(...args){
+  constructor(a1, a2, a3) {
     //Orel. Fixes for Spidermonkey
-    if ((args.length === 1) && (typeof(args[0])==='number')) {
-        super(getBufferLength(args[0]))
+    if ((a2 === undefined) && (a3 === undefined) && (typeof a1 === 'number')) {
+        super(getBufferLength(a1))
     } else {
-        super(...args);
+        super(a1, a2, a3);
     }
   }
 }

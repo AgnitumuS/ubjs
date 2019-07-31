@@ -6,13 +6,13 @@ const _ = require('lodash')
   var
     f2 = function (number) {
       return number.toFixed(2)
-    }, // simplified (speedier) replacement for sprintf's %.3f conversion
-    outPage = function (data, pageNumber, context) {
-      if (context.pages.length < pageNumber) {
-        throw new Error('pageNumber out or range pages. Page = ' + pageNumber + ' Pages=' + context.pages.length)
-      }
-      context.pages[pageNumber].push(data)
+    } // simplified (speedier) replacement for sprintf's %.3f conversion
+  var outPage = function (data, pageNumber, context) {
+    if (context.pages.length < pageNumber) {
+      throw new Error('pageNumber out or range pages. Page = ' + pageNumber + ' Pages=' + context.pages.length)
     }
+    context.pages[pageNumber].push(data)
+  }
 
   jsPDF.UnicodeFonts = []
 
@@ -24,8 +24,8 @@ const _ = require('lodash')
    * @constructor
    */
   jsPDFAPI.UnicodeFontExists = function (fontName, fontStyle) {
-    var f,
-      l = jsPDF.UnicodeFonts.length
+    var f
+    var l = jsPDF.UnicodeFonts.length
 
     for (var i = 0; i < l; i++) {
       f = jsPDF.UnicodeFonts[i]
@@ -62,7 +62,7 @@ const _ = require('lodash')
     if (!htmlName) {
       return htmlName
     }
-    var res = null, me = this
+    var res = null; var me = this
     htmlName.toLowerCase().split(',').every(function (name) {
       let xName = name.trim()
       if (xName[0] === '"') {
@@ -90,7 +90,6 @@ const _ = require('lodash')
     data.fontMetric.ascent = 0
     data.fontMetric.descent = 0
     if (data.descriptor) {
-
       res = /\/Ascent [0-9]+/.exec(data.descriptor)
       if (res && res.length > 0) {
         data.fontMetric.ascent = parseInt(res[0].substr(8), 10)
@@ -120,14 +119,14 @@ const _ = require('lodash')
       }
     }
 
-    //descriptor : "<</Type/FontDescriptor/Ascent 750/CapHeight 631/Descent -250/FontBBox
+    // descriptor : "<</Type/FontDescriptor/Ascent 750/CapHeight 631/Descent -250/FontBBox
 
-    var widths = data.width,
-      widthsEx = data.widthsEx = {},
-      widthsFractionOf = widths.fof ? widths.fof : 1,
-      kerning = data.kerning || {},
-      kerningEx = data.kerningEx = {},
-      kerningFractionOf = kerning.fof ? kerning.fof : 1
+    var widths = data.width
+    var widthsEx = data.widthsEx = {}
+    var widthsFractionOf = widths.fof ? widths.fof : 1
+    var kerning = data.kerning || {}
+    var kerningEx = data.kerningEx = {}
+    var kerningFractionOf = kerning.fof ? kerning.fof : 1
 
     _.forEach(widths, function (width, charCode) {
       widthsEx[charCode] = width / widthsFractionOf
@@ -138,8 +137,8 @@ const _ = require('lodash')
         kc[prevCharCode] = value / kerningFractionOf
       })
     })
-    data.width = {fof: widths.fof || 1}
-    data.kerning = {fof: kerning.fof || 1}
+    data.width = { fof: widths.fof || 1 }
+    data.kerning = { fof: kerning.fof || 1 }
   }
 
   jsPDFAPI.addRawFontData = function (data) {
@@ -172,7 +171,7 @@ const _ = require('lodash')
 
   jsPDFAPI.WriteStream = function (data, pLen) {
     var
-      out = this.internal.write, streamH
+      out = this.internal.write; var streamH
     if (pLen !== data.length) {
       streamH = '<</Filter/FlateDecode/Length ' + data.length.toString() + '/Length1 ' + pLen.toString() + '>>stream'
     } else {
@@ -185,14 +184,14 @@ const _ = require('lodash')
 
   jsPDFAPI.WriteStreamFlate = function (data) {
     var
-      out = this.internal.write, compressed
+      out = this.internal.write; var compressed
     compressed = data
-    //var zpipe = require("zpipe");
-    //var ss = zpipe.deflate("a")
-    //var ssr = zpipe.inflate(ss)
-    //var compressed = zpipe.deflate(data)
-    //var  ssss = zpipe.inflate(compressed)
-    //z =  null;
+    // var zpipe = require("zpipe");
+    // var ss = zpipe.deflate("a")
+    // var ssr = zpipe.inflate(ss)
+    // var compressed = zpipe.deflate(data)
+    // var  ssss = zpipe.inflate(compressed)
+    // z =  null;
 
     var streamH = '<</Filter/FlateDecode/Length ' + data.length.toString() + '/Length1 ' + compressed.length.toString() + '>>stream'
     out(streamH)
@@ -210,8 +209,8 @@ const _ = require('lodash')
       fontmap = fontManagementObjects.dictionary
 
       function AddFontToMap (fontmap, fontName, fontStyle, fontKey) {
-        var fname = fontName.toLowerCase(),
-          fstyle = fontStyle
+        var fname = fontName.toLowerCase()
+        var fstyle = fontStyle
         if (_.isUndefined(fontmap[fname])) {
           fontmap[fname] = {} // fontStyle is a var interpreted and converted to appropriate string. don't wrap in quotes.
         }
@@ -246,34 +245,32 @@ const _ = require('lodash')
         cFont.Key = fontKey
         cFont.fontObj = font
 
-        //delete this.innerFonts[fontKey]
+        // delete this.innerFonts[fontKey]
 
-        //fontManagementObjects.fonts[fontKey].
+        // fontManagementObjects.fonts[fontKey].
         AddFontToMap(fontmap, cFont.fontName, cFont.fontStyle, fontKey)
         if (cFont.fontName.toLowerCase() === 'arial') {
           // обход идиотско логиги в jsPdf
           AddFontToMap(fontmap, 'helvetica', cFont.fontStyle, fontKey)
         }
-
       }
     }
   ])
 
   jsPDFAPI.events.push([
     'putResources', function (prm) {
-      var out = this.internal.write, //ffont = this.internal.getFont(), //, activeFontKey = ffont.id
-        usedUnicodeFonts = this.internal.usedUnicodeFonts,
-        scripts = this.internal.JavaScripts,
-        cFont,
-        l = jsPDF.UnicodeFonts.length,
-        streamobj, descriptorobj, initobj, toUnicodeCMapDataobj, allScript
+      var out = this.internal.write // ffont = this.internal.getFont(), //, activeFontKey = ffont.id
+      var usedUnicodeFonts = this.internal.usedUnicodeFonts
+      var scripts = this.internal.JavaScripts
+      var cFont
+      var l = jsPDF.UnicodeFonts.length
+      var streamobj; var descriptorobj; var initobj; var toUnicodeCMapDataobj; var allScript
 
       usedUnicodeFonts = !usedUnicodeFonts ? [] : usedUnicodeFonts
 
       for (var i = 0; i < l; i++) {
         cFont = jsPDF.UnicodeFonts[i]
         if (usedUnicodeFonts.indexOf(cFont.Key) >= 0) {
-
           this.innerFonts[cFont.Key] = cFont.fontObj
 
           // write font data
@@ -301,7 +298,7 @@ const _ = require('lodash')
           cFont.isDeleted = false
         } else {
           delete this.innerFonts[cFont.Key]
-          //this.innerFonts[cFont.Key] = null;
+          // this.innerFonts[cFont.Key] = null;
           cFont.isDeleted = true
         }
       }
@@ -326,7 +323,7 @@ const _ = require('lodash')
 
   jsPDFAPI.events.push([
     'OnOpenAction', function () {
-      var out = this.internal.write, scriptsObj = this.internal.scriptsObj
+      var out = this.internal.write; var scriptsObj = this.internal.scriptsObj
 
       if (!scriptsObj || (scriptsObj.length === 0)) {
         out('[3 0 R /FitH null]')
@@ -338,30 +335,30 @@ const _ = require('lodash')
 
   jsPDFAPI.events.push([
     'putXobjectDict', function () {
-      var i, l = jsPDF.UnicodeFonts.length, cFont
+      var i; var l = jsPDF.UnicodeFonts.length; var cFont
       for (i = 0; i < l; i++) {
         cFont = jsPDF.UnicodeFonts[i]
         if (cFont.isDeleted) {
           this.innerFonts[cFont.Key] = cFont.fontObj
           cFont.isDeleted = false
         }
-        //delete innerFonts[cFont.Key]
+        // delete innerFonts[cFont.Key]
       }
     }
   ])
 
   jsPDFAPI.addExtFonts = function () {
-//        var out = this.internal.write;
+    //        var out = this.internal.write;
 
-    //this.setTextColor(1,1,1);
+    // this.setTextColor(1,1,1);
     return this
   }
 
   // moved from split_text_to_size
-  //*******************
+  //* ******************
 
   var getArraySum = function (array) {
-    var i = array.length, output = 0
+    var i = array.length; var output = 0
     while (i--) {
       output += array[i] || 0
     }
@@ -393,14 +390,14 @@ const _ = require('lodash')
    * @returns {Array}
    */
   jsPDFAPI.getCharWidthsArrayEx = function (text, fontId) {
-    var font = this.innerFonts[fontId],
-      widths = font.metadata.Unicode.widthsEx,
-      kerning = font.metadata.Unicode.kerningEx
+    var font = this.innerFonts[fontId]
+    var widths = font.metadata.Unicode.widthsEx
+    var kerning = font.metadata.Unicode.kerningEx
 
-    var i, l, char_code, char_width,
-      prior_char_code = 0, // for kerning
-      default_char_width = widths[0],
-      output = []
+    var i; var l; var char_code; var char_width
+    var prior_char_code = 0 // for kerning
+    var default_char_width = widths[0]
+    var output = []
 
     for (i = 0, l = text.length; i < l; i++) {
       char_code = text.charCodeAt(i)
@@ -418,9 +415,9 @@ const _ = require('lodash')
    returns array of lines
    */
   var splitLongWord = function (word, widths_array, firstLineMaxLen, maxLen, details, options) {
-    var answer = [], rWord,
-      lineDetail = details ? details[details.length - 1] : null,
-      i = 0, l = word.length, workingLen = 0, ch
+    var answer = []; var rWord
+    var lineDetail = details ? details[details.length - 1] : null
+    var i = 0; var l = word.length; var workingLen = 0; var ch
 
     // 1st, chop off the piece that can fit on the hanging line.
     while (i !== l && workingLen + (ch = fontPointToUnit(widths_array[i], options.fsize, options.scaleFactor)) < firstLineMaxLen) {
@@ -442,7 +439,7 @@ const _ = require('lodash')
       if (workingLen + ch > maxLen) {
         answer.push(rWord = word.slice(startOfLine, i))
         if (lineDetail) {
-          lineDetail = {words: [rWord], wordLen: [workingLen]}
+          lineDetail = { words: [rWord], wordLen: [workingLen] }
           details.push(lineDetail)
         }
 
@@ -455,7 +452,7 @@ const _ = require('lodash')
     if (startOfLine !== i) {
       answer.push(rWord = word.slice(startOfLine, i))
       if (lineDetail) {
-        lineDetail = {words: [rWord], wordLen: [workingLen]}
+        lineDetail = { words: [rWord], wordLen: [workingLen] }
         details.push(lineDetail)
       }
     }
@@ -478,17 +475,17 @@ const _ = require('lodash')
    */
   jsPDFAPI.prepareLines = function (textInfo, maxTextLen) {
     var
-      lineLen, separatorLen, currentWordLen, block, lineNum = 0, line, maxlen, pLine
+      lineLen; var separatorLen; var currentWordLen; var block; var lineNum = 0; var line; var maxlen; var pLine
 
     if ((textInfo === undefined) || (textInfo === null) || textInfo.isTextInfo !== true) {
       throw new Error('Invalid parameter textInfo')
     }
 
-    //maxlen = 1.0 * this.internal.scaleFactor * maxTextLen / fsize
-    //Convert to "point" measure
+    // maxlen = 1.0 * this.internal.scaleFactor * maxTextLen / fsize
+    // Convert to "point" measure
     maxlen = (maxTextLen || 0) * this.internal.scaleFactor
     textInfo.lineCount = 0
-    //textInfo.lines = [];
+    // textInfo.lines = [];
     textInfo.textIndent = []
     textInfo.details = []
 
@@ -523,7 +520,7 @@ const _ = require('lodash')
       }
       block.endLineNum = lineNum
       textInfo.textIndent[lineNum] = textIndent || 0
-      //textInfo.lines[lineNum] = (textInfo.lines[lineNum] ? textInfo.lines[lineNum] + ' ' : '') + line.words.join(' ');
+      // textInfo.lines[lineNum] = (textInfo.lines[lineNum] ? textInfo.lines[lineNum] + ' ' : '') + line.words.join(' ');
     }
 
     function appendLine (textIndent) {
@@ -535,7 +532,7 @@ const _ = require('lodash')
     }
 
     function pushLine (word, wChars, wLen) {
-      var wordLen = wLen ? wLen : (wChars ? fontPointToUnit(getArraySum(wChars), block.font.size) : 0)
+      var wordLen = wLen || (wChars ? fontPointToUnit(getArraySum(wChars), block.font.size) : 0)
       line.words.push(word)
       line.wordLen.push(wordLen)
       // xmax not used line.wordChars.push(wChars || []);
@@ -554,7 +551,7 @@ const _ = require('lodash')
 
       for (blockNum = 0; blockNum < p.blocks.length; blockNum++) {
         b = p.blocks[blockNum]
-        //block = paragraph.newBlock('', b.font.font.fontName, b.font.font.fontStyle, b.font.size, b.font.color);
+        // block = paragraph.newBlock('', b.font.font.fontName, b.font.font.fontStyle, b.font.size, b.font.color);
         resetLine()
         block = b
         p.lineCount = lineNum
@@ -673,14 +670,14 @@ const _ = require('lodash')
     }
 
     function getOptions (forFont) {
-      var //widths = {0: 1, fof: 1000 }, kerning = {},
+      var // widths = {0: 1, fof: 1000 }, kerning = {},
         font = forFont || defaultFont
 
       if (font.metadata.Unicode) {
         return {
-          widths: {fof: font.metadata.Unicode.widths.fof},
-          //widths: font.metadata.Unicode.widths || widths,
-          //kerning: font.metadata.Unicode.kerning || kerning,
+          widths: { fof: font.metadata.Unicode.widths.fof },
+          // widths: font.metadata.Unicode.widths || widths,
+          // kerning: font.metadata.Unicode.kerning || kerning,
           fsize: size || defaultFontSize,
           scaleFactor: ctx.internal.scaleFactor
         }
@@ -688,8 +685,8 @@ const _ = require('lodash')
 
       // then use default values
       return {
-        //widths: widths,
-        //kerning: kerning,
+        // widths: widths,
+        // kerning: kerning,
         fsize: font.size,
         scaleFactor: ctx.internal.scaleFactor
       }
@@ -697,20 +694,20 @@ const _ = require('lodash')
 
     this.text = text || ''
     this.font = {
-      //font: font || defaultFont,
+      // font: font || defaultFont,
       fontName: font.fontName,
       fontStyle: font.fontStyle,
       id: font.id,
       size: size || defaultFontSize,
       color: color || defaultColor
     }
-    //this.bigAss = new Array(1000000).join('lalala');
+    // this.bigAss = new Array(1000000).join('lalala');
     this.align = align
     this.words = []
     this.wordChars = []
     this.wordLen = []
     this.options = getOptions(font)
-    //this.spaceCharWidth = fontPointToUnit(jsPDFAPI.getCharWidthsArray(' ', this.options)[0], this.font.size);
+    // this.spaceCharWidth = fontPointToUnit(jsPDFAPI.getCharWidthsArray(' ', this.options)[0], this.font.size);
     this.spaceCharWidth = fontPointToUnit(jsPDFAPI.getCharWidthsArrayEx.call(ctx, ' ', font.id)[0], this.font.size)
   }
 
@@ -722,7 +719,7 @@ const _ = require('lodash')
   }
 
   PdfTextInfoBlock.prototype.fontToTag = function () {
-    //return '<font name="' + this.font.fontName + '" style="' + this.font.fontStyle + '"  size="' + this.font.size +
+    // return '<font name="' + this.font.fontName + '" style="' + this.font.fontStyle + '"  size="' + this.font.size +
     //    '" color="' + rgbColorToHex(this.font.color) + '">';
     return '<span style="font-family:' + this.font.fontName +
       ((this.font.fontStyle.toLowerCase() === 'italic') ? ';font-style:' : ';font-weight:') + this.font.fontStyle +
@@ -808,13 +805,13 @@ const _ = require('lodash')
     62: 'gt'
   }
 
-  var RE_entity = /[\u0022-\u003E\u00A0-\u00FF\u0152-\u0153\u0160-\u0161\u0178\u0192\u02C6\u02DC\u0391-\u03D2<>\&]/g //\u00A0-\u2666
+  var RE_entity = /[\u0022-\u003E\u00A0-\u00FF\u0152-\u0153\u0160-\u0161\u0178\u0192\u02C6\u02DC\u0391-\u03D2<>\&]/g // \u00A0-\u2666
 
   function escapeXmlEntities (text) {
     // U+0022 - U+003E,  U+00A0 - U+00FF,
     // U+0152 - U+0153, U+0160 - U+0161, U+0178, U+0192, U+02C6, U+02DC, U+0391 - U+03D2, U+03D6
     // .....
-    ///[\u00A0-\u2666<>\&]/g
+    /// [\u00A0-\u2666<>\&]/g
 
     return text.replace(RE_entity, function (c) {
       return '&' +
@@ -831,8 +828,8 @@ const _ = require('lodash')
    * @returns {string}
    */
   PdfTextInfo.prototype.getLineSource = function (lineFrom, lineTo, isXml, isNotFirst) {
-    var p, b, pN, bN, lKey, lN, styleText = '',
-      lNum, result = [], lText = [], pText = [], lastFont, wasIndent = 0, align
+    var p; var b; var pN; var bN; var lKey; var lN; var styleText = ''
+    var lNum; var result = []; var lText = []; var pText = []; var lastFont; var wasIndent = 0; var align
 
     for (pN = 0; pN < this.paragraphs.length; pN++) {
       p = this.paragraphs[pN]
@@ -844,7 +841,7 @@ const _ = require('lodash')
       align = null
       for (bN = 0; bN < p.blocks.length; bN++) {
         b = p.blocks[bN]
-        if (b.text === '') { //&& (p.blocks.length > 1 || bN > 0)
+        if (b.text === '') { // && (p.blocks.length > 1 || bN > 0)
           continue
         }
         if (b.align) {
@@ -887,9 +884,9 @@ const _ = require('lodash')
              (result.length > 0 ? '\r\n' + pText: pText)
         );
         */
-        result.push(isXml ?
-          ((styleText ? '<p style="' + styleText + '">' : '<p>') + pText + '</p>') :
-          (result.length > 0 ? '\r\n' + pText : pText)
+        result.push(isXml
+          ? ((styleText ? '<p style="' + styleText + '">' : '<p>') + pText + '</p>')
+          : (result.length > 0 ? '\r\n' + pText : pText)
         )
 
         wasIndent = -1 // для отступа снизу
@@ -1004,10 +1001,10 @@ const _ = require('lodash')
           case 'pt':
             return value
           case 'mm':
-            //k = 72 / 25.4;
+            // k = 72 / 25.4;
             return value * 25.4 / 72
           case 'cm':
-            //k = 72 / 2.54;
+            // k = 72 / 2.54;
             return value * 2.54 / 72
           default:
             throw new Error('Unknown measure ' + measureTo)
@@ -1018,7 +1015,7 @@ const _ = require('lodash')
         switch (measureTo) {
           case 'px':
           case 'pt':
-            //k = 72 / 25.4;
+            // k = 72 / 25.4;
             return value * 72 / (measureTo === 'cm' ? 2.54 : 25.4)
           case 'mm':
           case 'cm':
@@ -1060,8 +1057,8 @@ const _ = require('lodash')
  * }
    */
   jsPDFAPI.createTextInfo = function (text, options) {
-    var me = this, defaultFont, defaultFontSize, defaultColor, block, paragraph, paragraphs, textInfo, // = { paragraphs: [], isTextInfo: true},
-      root, parser
+    var me = this; var defaultFont; var defaultFontSize; var defaultColor; var block; var paragraph; var paragraphs; var textInfo // = { paragraphs: [], isTextInfo: true},
+    var root; var parser
 
     defaultFont = me.internal.getFont()
     defaultFontSize = me.internal.getFontSize()
@@ -1093,13 +1090,13 @@ const _ = require('lodash')
     }
 
     function parseStyle (node) {
-      var styleStr, result = {}, res = {}, tmp
+      var styleStr; var result = {}; var res = {}; var tmp
       if (!node || !node.attributes) {
-        return {font: {}}
+        return { font: {} }
       }
       styleStr = node.attributes.getNamedItem('style')
       if (!styleStr || !styleStr.value) {
-        return {font: {}}
+        return { font: {} }
       }
       _.forEach(styleStr.value.split(';'), function (elementStr) {
         if (!elementStr) {
@@ -1229,9 +1226,9 @@ const _ = require('lodash')
             parseNodes(node)
             block = paragraph.newBlock(me, '', pBlock.font.fontName, pBlock.font.fontStyle, pBlock.font.size, pBlock.font.color, pBlock.align)
             break
-          //<font name="" style=""  size="3" color="red">
+          // <font name="" style=""  size="3" color="red">
           case 'FONT':
-            var v, cfg = {}
+            var v; var cfg = {}
             v = node.attributes.getNamedItem('name')
             if (v) {
               cfg.name = me.getFontNameByHtmlName(v.value) || v.value
@@ -1332,7 +1329,7 @@ const _ = require('lodash')
      * @returns {*}
      */
     function removeEntities (htmlText) {
-      var matches, re = /&([A-Za-z]{2,20})?;/g, rRe
+      var matches; var re = /&([A-Za-z]{2,20})?;/g; var rRe
       matches = htmlText.match(re)
       if (!matches) {
         return htmlText
@@ -1346,7 +1343,7 @@ const _ = require('lodash')
     if (options.isXml) {
       parser = new DOMParser() // do not use window.DOMParser here because of server-side (fallback to xmldom)
 
-      if (typeof(text) === 'string') {
+      if (typeof (text) === 'string') {
         var htmlText = removeEntities(text)
         htmlText = htmlText.replace(/(\r|\n)/g, '')
 
@@ -1366,7 +1363,6 @@ const _ = require('lodash')
         textInfo.updateParagraphFormat(me)
       }
     } else {
-
       if (text.match(/\r\n|\r|\n/)) {
         paragraphs = text.split(/\r\n|\r|\n/g)
       } else {
@@ -1391,7 +1387,7 @@ const _ = require('lodash')
         b.words = b.text.split(' ')
         if (index === 0) { // for start paragraph
           // if string start from spaces we must add it to the first word
-          var startSpaceCnt = 0, startingSpaces = ''
+          var startSpaceCnt = 0; var startingSpaces = ''
           while (b.words[startSpaceCnt] === '') {
             startingSpaces += ' '
             startSpaceCnt++
@@ -1402,12 +1398,12 @@ const _ = require('lodash')
           }
         }
 
-        //var font = this.innerFonts[b.font.id];
+        // var font = this.innerFonts[b.font.id];
         /*,
         fontOpt = {
             widths: font.metadata.Unicode.widths,
             kerning: font.metadata.Unicode.kerning
-        }*/
+        } */
 
         for (wIndex = 0; wIndex < b.words.length; wIndex++) {
           w = b.words[wIndex]
@@ -1415,7 +1411,7 @@ const _ = require('lodash')
             b.wordLen[wIndex] = 0
             continue
           }
-          //b.wordChars[wIndex] = wordChars = jsPDFAPI.getCharWidthsArray(w, font.metadata.Unicode /*b.options*/);
+          // b.wordChars[wIndex] = wordChars = jsPDFAPI.getCharWidthsArray(w, font.metadata.Unicode /*b.options*/);
           b.wordChars[wIndex] = wordChars = jsPDFAPI.getCharWidthsArrayEx.call(me, w, b.font.id)
           b.wordLen[wIndex] = fontPointToUnit(getArraySum(wordChars), b.font.size, b.options.scaleFactor)
         }
@@ -1429,7 +1425,6 @@ const _ = require('lodash')
         }
         bIndex--
       }
-
     }
 
     return textInfo
@@ -1438,7 +1433,7 @@ const _ = require('lodash')
   function fixedCharCodeAt (str, idx) {
     var hi, low, code
     code = str.charCodeAt(idx)
-    if (0xD800 <= code && code <= 0xDBFF) {
+    if (code >= 0xD800 && code <= 0xDBFF) {
       // Верхний вспомогательный символ
       hi = code
       low = str.charCodeAt(idx + 1)
@@ -1482,50 +1477,50 @@ const _ = require('lodash')
     }
   }
 
-  function To16BEText (ch) {
-    /*jshint bitwise: false*/
+  function to16BEText (ch) {
+    /* jshint bitwise: false */
     var result = ''
-    var convert_to_bytes = function () {
-      var byte1 = ch >> 8
-      var byte2 = ch & 0x00FF
+    var convert2bytes = function (twoByteCode) {
+      var byte1 = twoByteCode >> 8
+      var byte2 = twoByteCode & 0x00FF
       result += GetCharCodeEscaped(byte1)
       result += GetCharCodeEscaped(byte2)
     }
-    /*jshint bitwise: true*/
+    /* jshint bitwise: true */
 
-    if (0xD800 <= ch && ch <= 0xDFFF) {
+    if (ch >= 0xD800 && ch <= 0xDFFF) {
       throw new Error('incorrect char ' + ch)
     }
     if (ch <= 0xFFFF) {
-      convert_to_bytes()
+      convert2bytes(ch)
       return result
     }
 
     var lead = Math.floor((ch - 0x10000) / 0x400) + 0xD800
     var trail = ((ch - 0x10000) % 0x400) + 0xDC00
-    convert_to_bytes(lead)
-    convert_to_bytes(trail)
+    convert2bytes(lead)
+    convert2bytes(trail)
     return result
   }
 
   jsPDFAPI.pdfEscapeExt = function (text, flags) {
-    var ffont = this.internal.getFont(),
-      lCMAP = ffont.extFont.cMap,  // UnicodeFonts[0].cMap
-      l = text.length,
-      nc
+    var ffont = this.internal.getFont()
+    var lCMAP = ffont.extFont.cMap // UnicodeFonts[0].cMap
+    var l = text.length
+    var nc
     /*
      For text strings encoded in Unicode, the first two bytes must be 254 followed by 255.
      These two bytes represent the Unicode byte order marker, U+FEFF,
      indicating that the string is encoded in the UTF-16BE (big-endian) encoding scheme specified in the Unicode standard.
      */
-    //var res = String.fromCharCode(255) + String.fromCharCode(254)
+    // var res = String.fromCharCode(255) + String.fromCharCode(254)
 
     var res = ''
     for (var i = 0, chr; i < l; i++) {
       chr = fixedCharCodeAt(text, i)
       nc = lCMAP[chr]
-      //res += String.fromCharCode(nc) ;
-      res += To16BEText(nc)
+      // res += String.fromCharCode(nc) ;
+      res += to16BEText(nc)
     }
     return res
   }
@@ -1549,7 +1544,7 @@ const _ = require('lodash')
    * @returns {Number}
    */
   jsPDFAPI.getTextWidth = function (text, font) {
-    var me = this, ffont, wordChars
+    var me = this; var ffont; var wordChars
     ffont = font ? me.internal.getFont(font.name, font.type) : me.internal.getFont()
 
     wordChars = jsPDFAPI.getCharWidthsArrayEx.call(me, text, ffont.id)
@@ -1563,7 +1558,7 @@ const _ = require('lodash')
    * @returns {{lines: number, width: number, height: number}}
    */
   jsPDFAPI.textCalcMetrics = function (text, flags) {
-    return this.textCalcMetricsByInfo(this.createTextInfo(text, {isXml: flags.isXml, font: flags.font}), flags)
+    return this.textCalcMetricsByInfo(this.createTextInfo(text, { isXml: flags.isXml, font: flags.font }), flags)
   }
 
   /**
@@ -1573,7 +1568,7 @@ const _ = require('lodash')
    * @returns {{lines: number, width: number, height: number}}
    */
   jsPDFAPI.textCalcMetricsByInfo = function (textInfo, flags) {
-    var me = this, result, ffont, firstLineWidth, lineHeight = []
+    var me = this; var result; var ffont; var firstLineWidth; var lineHeight = []
     ffont = this.internal.getFont()
 
     if (!ffont.extFont) {
@@ -1596,7 +1591,7 @@ const _ = require('lodash')
       for (blockNum = 0; blockNum < p.blocks.length; blockNum++) {
         b = p.blocks[blockNum]
         cHeidht = me.getLineHeigh(b.font)
-        //for( lineNum in b.lines ){
+        // for( lineNum in b.lines ){
         keyArr = Object.keys(b.lines)
         for (i = 0; i < keyArr.length; i++) {
           lineNum = keyArr[i]
@@ -1609,10 +1604,10 @@ const _ = require('lodash')
       }
     }
 
-    result = {lines: textInfo.lineCount, width: flags.width || firstLineWidth, height: 0}
+    result = { lines: textInfo.lineCount, width: flags.width || firstLineWidth, height: 0 }
     result.lineHeights = lineHeight
     result.lineHeight = this.getLineHeigh()
-    result.height = getArraySum(lineHeight)  //result.lines *  result.lineHeight;
+    result.height = getArraySum(lineHeight) // result.lines *  result.lineHeight;
     result.textInfo = textInfo
     return result
   }
@@ -1637,17 +1632,17 @@ const _ = require('lodash')
    * @returns {number}
    */
   jsPDFAPI.getLineHeigh = function (font) {
-    var txtOut, result,
-      k = this.internal.scaleFactor,
-      ffont = font ? this.internal.getFont(font.name, font.type) : this.internal.getFont(),
-      activeFontSize = font && font.size ? font.size : this.internal.getFontSize()
+    var txtOut; var result
+    var k = this.internal.scaleFactor
+    var ffont = font ? this.internal.getFont(font.name, font.type) : this.internal.getFont()
+    var activeFontSize = font && font.size ? font.size : this.internal.getFontSize()
 
-    //return ((ffont.extFont.fontMetric.ascent )  / 1000) * (activeFontSize * 1.0)/ k;
+    // return ((ffont.extFont.fontMetric.ascent )  / 1000) * (activeFontSize * 1.0)/ k;
     return ((ffont.extFont.fontMetric.ascent + (ffont.extFont.fontMetric.ascentDelta || 0) -
       ffont.extFont.fontMetric.descent) / 1000) * (activeFontSize * this.lineHeightProportion) / k
 
-    //(ffont.extFont.fontBBox.UpperRightY / 1000) * (activeFontSize * 1.0)/ k
-    //return (750 / 1000) * (activeFontSize * 1.0)/ k;
+    // (ffont.extFont.fontBBox.UpperRightY / 1000) * (activeFontSize * 1.0)/ k
+    // return (750 / 1000) * (activeFontSize * 1.0)/ k;
   }
 
   jsPDFAPI.setFontDeflate = function (compressFont) {
@@ -1678,14 +1673,14 @@ const _ = require('lodash')
    * @returns {*}
    */
   jsPDFAPI.textExt = function (x, y, text, flags) {
-    var me = this,
-      API = me.internal,
-      ffont = API.getFont(),
-      activeFontSize = API.getFontSize(), activeFontKey = ffont.id, // "F13"
-      k = API.scaleFactor,
-      page = API.pageSize, result, usedUnicodeFonts, textInfo,
-      textY,
-      lineHeightProportion = me.getLineLeading(), pageNumber
+    var me = this
+    var API = me.internal
+    var ffont = API.getFont()
+    var activeFontSize = API.getFontSize(); var activeFontKey = ffont.id // "F13"
+    var k = API.scaleFactor
+    var page = API.pageSize; var result; var usedUnicodeFonts; var textInfo
+    var textY
+    var lineHeightProportion = me.getLineLeading(); var pageNumber
 
     if (!ffont.extFont) {
       return
@@ -1720,11 +1715,11 @@ const _ = require('lodash')
     }
 
     var
-      lineScope, textLength, lastDeltaX = 0, currentDeltaX = 0,
-      firstLineWidth, rawString = '', rawStringArr = [], lastTLSize,
-      lineCount = 0, lastBlocInfo = {}, textHeight = 0,
-      isFirstLine = true, pageNM, metrics,
-      maxWidth = flags.width ? Math.round(flags.width * k * 100) / 100 : flags.width //MPV (flags.width * k).toFixed(2)
+      lineScope; var textLength; var lastDeltaX = 0; var currentDeltaX = 0
+    var firstLineWidth; var rawString = ''; var rawStringArr = []; var lastTLSize
+    var lineCount = 0; var lastBlocInfo = {}; var textHeight = 0
+    var isFirstLine = true; var pageNM; var metrics
+    var maxWidth = flags.width ? Math.round(flags.width * k * 100) / 100 : flags.width // MPV (flags.width * k).toFixed(2)
 
     pageNM = flags.pageNumber
     if (!pageNM) {
@@ -1753,7 +1748,7 @@ const _ = require('lodash')
         lastBlocInfo.lineHeightProportion = lineHeightProportion
       }
 
-      if (ctx.isNewTextColor(pageNumber, block.font.color)) { //lastBlocInfo.color
+      if (ctx.isNewTextColor(pageNumber, block.font.color)) { // lastBlocInfo.color
         rawStringArr.push(' ', block.font.color)
       }
       rawStringArr.push('\n')
@@ -1766,8 +1761,8 @@ const _ = require('lodash')
     }
 
     function outputLine (lineScope, ctx, textIndent, forceIsNotEndParagraph) {
-      var justifyArray = [], lineAlign = flags.align,
-        i, item, cHeight, maxSize = 0, cSize, maxBlock, lTL
+      var justifyArray = []; var lineAlign = flags.align
+      var i; var item; var cHeight; var maxSize = 0; var cSize; var maxBlock; var lTL
 
       textLength = lineScope.textLength
       /*
@@ -1804,30 +1799,30 @@ const _ = require('lodash')
         // Перед переводом строки T* должен быть TL с максмальной величиной шрифта в этой строке, если конечно в строке несколько фонтов
         if (maxSize > 0 && maxBlock) {
           lastTLSize = maxBlock.font.size * lineHeightProportion
-          //if (!this.pagesLastTL){
+          // if (!this.pagesLastTL){
           //    this.pagesLastTL = [];
-          //}
-          //this.pagesLastTL[pageNM] = lastTLSize;
+          // }
+          // this.pagesLastTL[pageNM] = lastTLSize;
 
           rawStringArr.push('\n', lastTLSize, ' TL\n')
         }
 
         rawStringArr.push(lineCount !== 0 ? 'T* ' : '')
-      } //else {
+      } // else {
       // Для первой строки надо скорректировать отступ в случае если в предыдущем блоке указан большой или маленький отступ.
       // В рамках одной страницы.
-      //rawStringArr.push('\n0 ',  12 - (maxSize * k), ' Td\n'); // 10 - фонт по умолчанию
+      // rawStringArr.push('\n0 ',  12 - (maxSize * k), ' Td\n'); // 10 - фонт по умолчанию
 
-      //if (this.pagesLastTL && this.pagesLastTL[pageNM]){
+      // if (this.pagesLastTL && this.pagesLastTL[pageNM]){
       //    lTL = maxBlock.font.size * lineHeightProportion;
       //    if (lTL !== this.pagesLastTL[pageNM]){
       //       rawStringArr.push('\n0 ', this.pagesLastTL[pageNM] - lTL,' Td\n');
       //    }
-      //}
-      //}
+      // }
+      // }
       isFirstLine = false
 
-      //rawStringArr.push( lineCount !== 0 ? 'T* ' : '');
+      // rawStringArr.push( lineCount !== 0 ? 'T* ' : '');
 
       if (textIndent > 0) {
         rawStringArr.push('\n', textIndent, ' 0 Td\n')
@@ -1843,8 +1838,8 @@ const _ = require('lodash')
       }
 
       if (lineAlign === 'justify') {
-        var n, isEndParagraph, allWordLen, lastItem, allWn, wn, notEmptyCnt = 0, realWidth, wSpace,
-          blockEndSpace, cntWord
+        var n; var isEndParagraph; var allWordLen; var lastItem; var allWn; var wn; var notEmptyCnt = 0; var realWidth; var wSpace
+        var blockEndSpace; var cntWord
 
         lastItem = lineScope.items[lineScope.items.length - 1]
         isEndParagraph = (lastItem.paragraph.blocks.length - 1 === parseInt(lastItem.blockNum, 10)) && (lastItem.block.endLineNum === parseInt(lineScope.lineNum, 10))
@@ -1873,7 +1868,7 @@ const _ = require('lodash')
             blockEndSpace = item.line.words.length > 0 && cntWord > 0 && (item.line.words[item.line.words.length - 1] === '')
           }
 
-          wSpace = realWidth / (notEmptyCnt - 1) //lineScope.wordCount
+          wSpace = realWidth / (notEmptyCnt - 1) // lineScope.wordCount
           allWn = 0
           blockEndSpace = false
           for (i = 0; i < lineScope.items.length; i++) {
@@ -1881,7 +1876,7 @@ const _ = require('lodash')
             justifyArray = []
             cntWord = 0
             if (blockEndSpace) { // previous block has space
-              justifyArray.push(wSpace * -1 * (item.block.options.widths.fof || 1) /    //item.block.font.font.metadata.Unicode.widths.fof
+              justifyArray.push(wSpace * -1 * (item.block.options.widths.fof || 1) / // item.block.font.font.metadata.Unicode.widths.fof
                 item.block.font.size)
             }
             var lastNotEmptyWord = item.line.words.length - 1
@@ -1899,7 +1894,7 @@ const _ = require('lodash')
                 justifyArray.push('(', ctx.pdfEscapeExt(item.line.words[wn], flags), ')')
                 // set space if it is not end word in block
                 if ((wn < lastNotEmptyWord) && (item.line.words[wn] !== '')) {
-                  justifyArray.push(wSpace * -1 * (item.block.options.widths.fof || 1) /    //item.block.font.font.metadata.Unicode.widths.fof
+                  justifyArray.push(wSpace * -1 * (item.block.options.widths.fof || 1) / // item.block.font.font.metadata.Unicode.widths.fof
                     item.block.font.size)
                   allWn++
                 }
@@ -1919,7 +1914,7 @@ const _ = require('lodash')
         switch (lineAlign) {
           case 'right':
             if (textLength + textIndent < maxWidth) {
-              lastDeltaX = Math.round((maxWidth - textLength - currentDeltaX - textIndent) * 100) / 100 //toFixed(2)
+              lastDeltaX = Math.round((maxWidth - textLength - currentDeltaX - textIndent) * 100) / 100 // toFixed(2)
               if (lastDeltaX !== 0) {
                 currentDeltaX = currentDeltaX + lastDeltaX
                 rawStringArr.push(lastDeltaX.toString(), ' 0 Td\n')
@@ -1928,7 +1923,7 @@ const _ = require('lodash')
             break
           case 'center':
             if (textLength + textIndent < maxWidth) {
-              lastDeltaX = Math.round((((maxWidth - textLength) / 2) - currentDeltaX - textIndent) * 100) / 100 //toFixed(2)
+              lastDeltaX = Math.round((((maxWidth - textLength) / 2) - currentDeltaX - textIndent) * 100) / 100 // toFixed(2)
               if (lastDeltaX !== 0) {
                 currentDeltaX = currentDeltaX + lastDeltaX
                 rawStringArr.push(lastDeltaX.toString(), ' 0 Td\n')
@@ -1956,11 +1951,10 @@ const _ = require('lodash')
       if (textIndent > 0) {
         rawStringArr.push('\n', -textIndent, ' 0 Td\n')
       }
-
     }
 
     if (!flags.textInfo) {
-      textInfo = this.createTextInfo(text, {isXml: flags.isXml})
+      textInfo = this.createTextInfo(text, { isXml: flags.isXml })
       this.prepareLines(textInfo, flags.wordWrap ? flags.width : 0)
     } else {
       textInfo = flags.textInfo
@@ -1977,10 +1971,10 @@ const _ = require('lodash')
       metrics = flags.metrics
     }
 
-    //textY = y + me.getLineHeigh() - ( Math.abs(ffont.extFont.fontMetric.descent || 0) / 2000) * activeFontSize, //((ffont.extFont.fontMetric.ascentDelta || 0) / 1000) * activeFontSize,
-    textY = y + (metrics.lineHeights.length > 0 ?
-      (!metrics.lineHeights[0] && metrics.lineHeights.length > 1 ? metrics.lineHeights[1] : metrics.lineHeights[0]) :
-      (metrics.lineHeight || 0)) * 0.8
+    // textY = y + me.getLineHeigh() - ( Math.abs(ffont.extFont.fontMetric.descent || 0) / 2000) * activeFontSize, //((ffont.extFont.fontMetric.ascentDelta || 0) / 1000) * activeFontSize,
+    textY = y + (metrics.lineHeights.length > 0
+      ? (!metrics.lineHeights[0] && metrics.lineHeights.length > 1 ? metrics.lineHeights[1] : metrics.lineHeights[0])
+      : (metrics.lineHeight || 0)) * 0.8
 
     // todo - extract max base line from line fonts for offset y
 
@@ -1995,23 +1989,23 @@ const _ = require('lodash')
       lineScope.textLength = (lineScope.textLength || 0) + wordsLength + (item.line.wordLen.length - 1) * item.block.spaceCharWidth
     }
 
-    //rawString = 'BT\n' + (x * k).toFixed(2) + ' ' + ((page.height - textY) * k).toFixed(2) + ' Td\n';
+    // rawString = 'BT\n' + (x * k).toFixed(2) + ' ' + ((page.height - textY) * k).toFixed(2) + ' Td\n';
     rawStringArr.push('BT\n', (x * k).toFixed(2), ' ', ((page.height - textY) * k).toFixed(2), ' Td\n')
 
-    lineScope = {lineNum: -1}
+    lineScope = { lineNum: -1 }
 
     var p, b, line, pNum, blockNum, lineNum, item, keyArr, i
     for (pNum = 0; pNum < textInfo.paragraphs.length; pNum++) {
       p = textInfo.paragraphs[pNum]
       for (blockNum = 0; blockNum < p.blocks.length; blockNum++) {
         b = p.blocks[blockNum]
-        //for( lineNum in b.lines ){
+        // for( lineNum in b.lines ){
         keyArr = Object.keys(b.lines)
         for (i = 0; i < keyArr.length; i++) {
           lineNum = keyArr[i]
           if (lineNum && b.lines.hasOwnProperty(lineNum)) {
             line = b.lines[lineNum]
-            item = {paragraph: p, block: b, blockNum: blockNum, line: line /*, lineNum: lineNum*/}
+            item = { paragraph: p, block: b, blockNum: blockNum, line: line /*, lineNum: lineNum */}
             if (lineScope.lineNum === lineNum) { // продолжение вывода текста
               addLineScope(item)
               continue
@@ -2019,7 +2013,7 @@ const _ = require('lodash')
             if ((lineScope.lineNum >= 0) && lineScope.items) {
               outputLine(lineScope, me, textInfo.textIndent[lineScope.lineNum] || 0)
             }
-            lineScope = {lineNum: lineNum}
+            lineScope = { lineNum: lineNum }
             addLineScope(item)
           }
         }
@@ -2068,10 +2062,10 @@ const _ = require('lodash')
     if (!flags.width && textInfo.paragraphs.length > 0 && textInfo.paragraphs[0].blocks.length > 0) {
       firstLineWidth = textInfo.paragraphs[0].blocks[0].lines[0].length
     }
-    result = {lines: textInfo.lineCount, width: flags.width || firstLineWidth, height: 0}
+    result = { lines: textInfo.lineCount, width: flags.width || firstLineWidth, height: 0 }
     result.lineHeight = this.getLineHeigh()
     result.height = textHeight // result.lines *  result.lineHeight;
-    //result.textInfo = textInfo;
+    // result.textInfo = textInfo;
     return result
   }
 
@@ -2099,7 +2093,7 @@ const _ = require('lodash')
     if (!value && !isRequired) {
       return
     }
-    if (typeof(value) !== 'number' || isNaN(value)) {
+    if (typeof (value) !== 'number' || isNaN(value)) {
       throw new Error(contextName + ': Value is not number.')
     }
   }
@@ -2261,14 +2255,14 @@ const _ = require('lodash')
    * @returns {Object|null} RGB format
    */
   jsPDFAPI.formatColor = function (color) {
-    var me = this, result = color, bColor
+    var me = this; var result = color; var bColor
 
     if (!color) {
       return null
     }
 
     function parseHexColor (val) {
-      var r = parseInt(val.substr(1, 2), 16), g = parseInt(val.substr(3, 2), 16), b = parseInt(val.substr(5, 2), 16)
+      var r = parseInt(val.substr(1, 2), 16); var g = parseInt(val.substr(3, 2), 16); var b = parseInt(val.substr(5, 2), 16)
       return jsPDFAPI.formatColorRGB(r, g, b)
     }
 
@@ -2305,7 +2299,7 @@ const _ = require('lodash')
   }
 
   jsPDFAPI.lineOnPage = function (x1, y1, x2, y2, pageNumber) {
-    var k = this.internal.scaleFactor, page = this.internal.pageSize
+    var k = this.internal.scaleFactor; var page = this.internal.pageSize
 
     outPage(f2(x1 * k) + ' ' + f2((page.height - y1) * k) + ' m ' + f2(x2 * k) + ' ' + f2((page.height - y2) * k) + ' l S', pageNumber, this.internal)
     return this
@@ -2336,8 +2330,8 @@ const _ = require('lodash')
    @name rect
    */
   jsPDFAPI.rectOnPage = function (x, y, w, h, style, pageNumber) {
-    var op = this.internal.getStyle(style),
-      k = this.internal.scaleFactor, page = this.internal.pageSize
+    var op = this.internal.getStyle(style)
+    var k = this.internal.scaleFactor; var page = this.internal.pageSize
     outPage([
       f2(x * k),
       f2((page.height - y) * k),
@@ -2420,7 +2414,7 @@ const _ = require('lodash')
     if (!this.isNewDrawColor(pageNumber, color)) {
       return this
     }
-    //this.lastDrawColor[pageNumber] = color;
+    // this.lastDrawColor[pageNumber] = color;
     outPage(color, pageNumber, this.internal)
     return this
   }
@@ -2473,11 +2467,11 @@ const _ = require('lodash')
    */
   jsPDFAPI.setDrawColorOnPageRaw = function (pageNumber, color) {
     checkNumber(pageNumber, 'setDrawColorOnPageRaw.pageNumber', true)
-    //if (!this.isNewDrawColor(pageNumber, color)) {
+    // if (!this.isNewDrawColor(pageNumber, color)) {
     //    return this;
-    //}
+    // }
     outPage(color, pageNumber, this.internal)
-    //this.lastDrawColor[pageNumber] = color;
+    // this.lastDrawColor[pageNumber] = color;
     return this
   }
 
@@ -2526,7 +2520,7 @@ const _ = require('lodash')
     if (!this.isNewFillColor(pageNumber, color)) {
       return this
     }
-    //this.lastFillColor[pageNumber] = color;
+    // this.lastFillColor[pageNumber] = color;
     outPage(color, pageNumber, this.internal)
     this.resetTextColor(pageNumber)
     return this
@@ -2554,11 +2548,11 @@ const _ = require('lodash')
    */
   jsPDFAPI.setFillColorOnPageRaw = function (pageNumber, color) {
     checkNumber(pageNumber, 'setFillColorOnPageRaw.pageNumber', true)
-    //if (!this.isNewFillColor(pageNumber, color)) {
+    // if (!this.isNewFillColor(pageNumber, color)) {
     //    return this;
-    //}
+    // }
     outPage(color, pageNumber, this.internal)
-    //this.lastFillColor[pageNumber] = color;
+    // this.lastFillColor[pageNumber] = color;
 
     this.resetTextColor(pageNumber)
     return this
@@ -2567,5 +2561,4 @@ const _ = require('lodash')
   jsPDFAPI.getCurrentPageInfo = function () {
     return this.internal.getCurrentPageInfo()
   }
-
 })(jsPDF.API)
