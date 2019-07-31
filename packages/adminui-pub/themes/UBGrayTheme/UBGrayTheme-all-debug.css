@@ -4862,15 +4862,6 @@ div.x-editor {
   display: inline-block;
 }
 
-/* line 47, ../../../../ext/packages/ext-theme-base/sass/src/draw/Component.scss */
-.x-vml-base {
-  position: relative;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  display: inline-block;
-}
-
 /* line 55, ../../../../ext/packages/ext-theme-base/sass/src/draw/Component.scss */
 svg {
   overflow: hidden;
@@ -5688,17 +5679,6 @@ a.x-tab {
   overflow: hidden;
 }
 
-/* line 32, ../../../../ext/packages/ext-theme-base/sass/src/tab/Panel.scss */
-.x-btn-icon-el {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  background-repeat: no-repeat;
-  text-align: center;
-}
-
 /* line 42, ../../../../ext/packages/ext-theme-base/sass/src/tab/Panel.scss */
 .x-tab-bar {
   z-index: 1;
@@ -5987,1272 +5967,6 @@ a.x-tab {
   content: "x-slicer:stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/**
- * Creates a visual theme for a Button.  This mixin is not {@link #scale} aware, and therefore
- * does not provide defaults for most parameters, so it is advisable to use one of the
- * following mixins instead when creating a custom buttonUI:
- *
- * #extjs-button-small-ui - creates a button UI for a small button
- * #extjs-button-medium-ui - creates a button UI for a medium button
- * #extjs-button-large-ui - creates a button UI for a large button
- * #extjs-button-toolbar-small-ui - creates a button UI for a small toolbar button
- * #extjs-button-toolbar-medium-ui - creates a button UI for a medium toolbar button
- * #extjs-button-toolbar-large-ui - creates a button UI for a large toolbar button
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$border-radius=0px]
- * The border-radius of the button
- *
- * @param {number} [$border-width=0px]
- * The border-width of the button
- *
- * @param {color} $border-color
- * The border-color of the button
- *
- * @param {color} $border-color-over
- * The border-color of the button when the cursor is over the button
- *
- * @param {color} $border-color-focus
- * The border-color of the button when focused
- *
- * @param {color} $border-color-pressed
- * The border-color of the button when pressed
- *
- * @param {color} $border-color-disabled
- * The border-color of the button when disabled
- *
- * @param {number} $padding
- * The amount of padding inside the border of the button on all sides
- *
- * @param {number} $text-padding
- * The amount of horizontal space to add to the left and right of the button text
- *
- * @param {color} $background-color
- * The background-color of the button
- *
- * @param {color} $background-color-over
- * The background-color of the button when the cursor is over the button
- *
- * @param {color} $background-color-focus
- * The background-color of the button when focused
- *
- * @param {color} $background-color-pressed
- * The background-color of the button when pressed
- *
- * @param {color} $background-color-disabled
- * The background-color of the button when disabled
- *
- * @param {string/list} $background-gradient
- * The background-gradient for the button.  Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for {@link Global_CSS#background-gradient}.
- *
- * @param {string} $background-gradient-over
- * The background-gradient to use when the cursor is over the button. Can be either the
- * name of a predefined gradient or a list of color stops. Used as the `$type` parameter
- * for {@link Global_CSS#background-gradient}.
- *
- * @param {string} $background-gradient-focus
- * The background-gradient to use when the the button is focused. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string} $background-gradient-pressed
- * The background-gradient to use when the the button is pressed. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string} $background-gradient-disabled
- * The background-gradient to use when the the button is disabled. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} $color
- * The text color of the button
- *
- * @param {color} $color-over
- * The text color of the button when the cursor is over the button
- *
- * @param {color} $color-focus
- * The text color of the button when the button is focused
- *
- * @param {color} $color-pressed
- * The text color of the button when the button is pressed
- *
- * @param {color} $color-disabled
- * The text color of the button when the button is disabled
- *
- * @param {number} $font-size
- * The font-size of the button
- *
- * @param {number} $font-size-over
- * The font-size of the button when the cursor is over the button
- *
- * @param {number} $font-size-focus
- * The font-size of the button when the button is focused
- *
- * @param {number} $font-size-pressed
- * The font-size of the button when the button is pressed
- *
- * @param {number} $font-size-disabled
- * The font-size of the button when the button is disabled
- *
- * @param {string} $font-weight
- * The font-weight of the button
- *
- * @param {string} $font-weight-over
- * The font-weight of the button when the cursor is over the button
- *
- * @param {string} $font-weight-focus
- * The font-weight of the button when the button is focused
- *
- * @param {string} $font-weight-pressed
- * The font-weight of the button when the button is pressed
- *
- * @param {string} $font-weight-disabled
- * The font-weight of the button when the button is disabled
- *
- * @param {string} $font-family
- * The font-family of the button
- *
- * @param {string} $font-family-over
- * The font-family of the button when the cursor is over the button
- *
- * @param {string} $font-family-focus
- * The font-family of the button when the button is focused
- *
- * @param {string} $font-family-pressed
- * The font-family of the button when the button is pressed
- *
- * @param {string} $font-family-disabled
- * The font-family of the button when the button is disabled
- *
- * @param {number} $icon-size
- * The size of the button icon
- *
- * @param {color} $glyph-color
- * The color of the button's {@link #glyph} icon
- *
- * @param {number} [$glyph-opacity=1]
- * The opacity of the button's {@link #glyph} icon
- *
- * @param {number} $arrow-width
- * The width of the button's {@link #cfg-menu} arrow
- *
- * @param {number} $arrow-height
- * The height of the button's {@link #cfg-menu} arrow
- *
- * @param {number} $split-width
- * The width of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {number} $split-height
- * The height of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {boolean} [$include-ui-menu-arrows=$button-include-ui-menu-arrows]
- * True to include the UI name in the file name of the {@link #cfg-menu}
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-ui-split-arrows=$button-include-ui-split-arrows]
- * True to include the UI name in the file name of the {@link Ext.button.Split Split Button}'s
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-split-noline-arrows=$button-include-split-noline-arrows]
- * True to add a "-noline" suffix to the file name of the {@link Ext.button.Split Split Button}'s 
- * arrow icon.  Used for hiding the split line when toolbar buttons are in their default
- * state.
- *
- * @param {boolean} [$include-split-over-arrows=$button-include-split-over-arrows]
- * True to use a separate icon for {@link Ext.button.Split Split Button}s when the cursor
- * is over the button.  The over icon file name will have a "-o" suffix
- *
- * @param {number} [$opacity-disabled=1]
- * The opacity of the button when it is disabled
- *
- * @param {number} [$inner-opacity-disabled=1]
- * The opacity of the button's text and icon elements when when the button is disabled
- * 
- * @member Ext.button.Button
- */
-/**
- * Creates a visual theme for a {@link #scale small} Button.
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$border-radius=$button-small-border-radius]
- * The border-radius of the button
- *
- * @param {number} [$border-width=$button-small-border-width]
- * The border-width of the button
- *
- * @param {color} [$border-color=$button-default-border-color]
- * The border-color of the button
- *
- * @param {color} [$border-color-over=$button-default-border-color-over]
- * The border-color of the button when the cursor is over the button
- *
- * @param {color} [$border-color-focus=$button-default-border-color-focus]
- * The border-color of the button when focused
- *
- * @param {color} [$border-color-pressed=$button-default-border-color-pressed]
- * The border-color of the button when pressed
- *
- * @param {color} [$border-color-disabled=$button-default-border-color-disabled]
- * The border-color of the button when disabled
- *
- * @param {number} [$padding=$button-small-padding]
- * The amount of padding inside the border of the button on all sides
- *
- * @param {number} [$text-padding=$button-small-text-padding]
- * The amount of horizontal space to add to the left and right of the button text
- *
- * @param {color} [$background-color=$button-default-background-color]
- * The background-color of the button
- *
- * @param {color} [$background-color-over=$button-default-background-color-over]
- * The background-color of the button when the cursor is over the button
- *
- * @param {color} [$background-color-focus=$button-default-background-color-focus]
- * The background-color of the button when focused
- *
- * @param {color} [$background-color-pressed=$button-default-background-color-pressed]
- * The background-color of the button when pressed
- *
- * @param {color} [$background-color-disabled=$button-default-background-color-disabled]
- * The background-color of the button when disabled
- *
- * @param {string/list} [$background-gradient=$button-default-background-gradient]
- * The background-gradient for the button.  Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-over=$button-default-background-gradient-over]
- * The background-gradient to use when the cursor is over the button. Can be either the
- * name of a predefined gradient or a list of color stops. Used as the `$type` parameter
- * for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-focus=$button-default-background-gradient-focus]
- * The background-gradient to use when the the button is focused. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-pressed=$button-default-background-gradient-pressed]
- * The background-gradient to use when the the button is pressed. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-disabled=$button-default-background-gradient-disabled]
- * The background-gradient to use when the the button is disabled. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} [$color=$button-default-color]
- * The text color of the button
- *
- * @param {color} [$color-over=$button-default-color-over]
- * The text color of the button when the cursor is over the button
- *
- * @param {color} [$color-focus=$button-default-color-focus]
- * The text color of the button when the button is focused
- *
- * @param {color} [$color-pressed=$button-default-color-pressed]
- * The text color of the button when the button is pressed
- *
- * @param {color} [$color-disabled=$button-default-color-disabled]
- * The text color of the button when the button is disabled
- *
- * @param {number} [$font-size=$button-small-font-size]
- * The font-size of the button
- *
- * @param {number} [$font-size-over=$button-small-font-size-over]
- * The font-size of the button when the cursor is over the button
- *
- * @param {number} [$font-size-focus=$button-small-font-size-focus]
- * The font-size of the button when the button is focused
- *
- * @param {number} [$font-size-pressed=$button-small-font-size-pressed]
- * The font-size of the button when the button is pressed
- *
- * @param {number} [$font-size-disabled=$button-small-font-size-disabled]
- * The font-size of the button when the button is disabled
- *
- * @param {string} [$font-weight=$button-small-font-weight]
- * The font-weight of the button
- *
- * @param {string} [$font-weight-over=$button-small-font-weight-over]
- * The font-weight of the button when the cursor is over the button
- *
- * @param {string} [$font-weight-focus=$button-small-font-weight-focus]
- * The font-weight of the button when the button is focused
- *
- * @param {string} [$font-weight-pressed=$button-small-font-weight-pressed]
- * The font-weight of the button when the button is pressed
- *
- * @param {string} [$font-weight-disabled=$button-small-font-weight-disabled]
- * The font-weight of the button when the button is disabled
- *
- * @param {string} [$font-family=$button-small-font-family]
- * The font-family of the button
- *
- * @param {string} [$font-family-over=$button-small-font-family-over]
- * The font-family of the button when the cursor is over the button
- *
- * @param {string} [$font-family-focus=$button-small-font-family-focus]
- * The font-family of the button when the button is focused
- *
- * @param {string} [$font-family-pressed=$button-small-font-family-pressed]
- * The font-family of the button when the button is pressed
- *
- * @param {string} [$font-family-disabled=$button-small-font-family-disabled]
- * The font-family of the button when the button is disabled
- *
- * @param {number} [$icon-size=$button-small-icon-size]
- * The size of the button icon
- *
- * @param {color} [$glyph-color=$button-default-glyph-color]
- * The color of the button's {@link #glyph} icon
- *
- * @param {number} [$glyph-opacity=$button-default-glyph-opacity]
- * The opacity of the button's {@link #glyph} icon
- *
- * @param {number} [$arrow-width=$button-small-arrow-width]
- * The width of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$arrow-height=$button-small-arrow-height]
- * The height of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$split-width=$button-small-split-width]
- * The width of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {number} [$split-height=$button-small-split-height]
- * The height of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {boolean} [$include-ui-menu-arrows=$button-include-ui-menu-arrows]
- * True to include the UI name in the file name of the {@link #cfg-menu}
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-ui-split-arrows=$button-include-ui-split-arrows]
- * True to include the UI name in the file name of the {@link Ext.button.Split Split Button}'s
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-split-noline-arrows=$button-include-split-noline-arrows]
- * True to add a "-noline" suffix to the file name of the {@link Ext.button.Split Split Button}'s 
- * arrow icon.  Used for hiding the split line when toolbar buttons are in their default
- * state.
- *
- * @param {boolean} [$include-split-over-arrows=$button-include-split-over-arrows]
- * True to use a separate icon for {@link Ext.button.Split Split Button}s when the cursor
- * is over the button.  The over icon file name will have a "-o" suffix
- *
- * @param {number} [$opacity-disabled=$button-opacity-disabled]
- * The opacity of the button when it is disabled
- *
- * @param {number} [$inner-opacity-disabled=$button-inner-opacity-disabled]
- * The opacity of the button's text and icon elements when when the button is disabled
- * 
- * @member Ext.button.Button
- */
-/**
- * Creates a visual theme for a {@link #scale small} toolbar Button.
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$border-radius=$button-small-border-radius]
- * The border-radius of the button
- *
- * @param {number} [$border-width=$button-small-border-width]
- * The border-width of the button
- *
- * @param {color} [$border-color=$button-toolbar-border-color]
- * The border-color of the button
- *
- * @param {color} [$border-color-over=$button-toolbar-border-color-over]
- * The border-color of the button when the cursor is over the button
- *
- * @param {color} [$border-color-focus=$button-toolbar-border-color-focus]
- * The border-color of the button when focused
- *
- * @param {color} [$border-color-pressed=$button-toolbar-border-color-pressed]
- * The border-color of the button when pressed
- *
- * @param {color} [$border-color-disabled=$button-toolbar-border-color-disabled]
- * The border-color of the button when disabled
- *
- * @param {number} [$padding=$button-small-padding]
- * The amount of padding inside the border of the button on all sides
- *
- * @param {number} [$text-padding=$button-small-text-padding]
- * The amount of horizontal space to add to the left and right of the button text
- *
- * @param {color} [$background-color=$button-toolbar-background-color]
- * The background-color of the button
- *
- * @param {color} [$background-color-over=$button-toolbar-background-color-over]
- * The background-color of the button when the cursor is over the button
- *
- * @param {color} [$background-color-focus=$button-toolbar-background-color-focus]
- * The background-color of the button when focused
- *
- * @param {color} [$background-color-pressed=$button-toolbar-background-color-pressed]
- * The background-color of the button when pressed
- *
- * @param {color} [$background-color-disabled=$button-toolbar-background-color-disabled]
- * The background-color of the button when disabled
- *
- * @param {string/list} [$background-gradient=$button-toolbar-background-gradient]
- * The background-gradient for the button.  Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-over=$button-toolbar-background-gradient-over]
- * The background-gradient to use when the cursor is over the button. Can be either the
- * name of a predefined gradient or a list of color stops. Used as the `$type` parameter
- * for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-focus=$button-toolbar-background-gradient-focus]
- * The background-gradient to use when the the button is focused. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-pressed=$button-toolbar-background-gradient-pressed]
- * The background-gradient to use when the the button is pressed. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-disabled=$button-toolbar-background-gradient-disabled]
- * The background-gradient to use when the the button is disabled. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} [$color=$button-toolbar-color]
- * The text color of the button
- *
- * @param {color} [$color-over=$button-toolbar-color-over]
- * The text color of the button when the cursor is over the button
- *
- * @param {color} [$color-focus=$button-toolbar-color-focus]
- * The text color of the button when the button is focused
- *
- * @param {color} [$color-pressed=$button-toolbar-color-pressed]
- * The text color of the button when the button is pressed
- *
- * @param {color} [$color-disabled=$button-toolbar-color-disabled]
- * The text color of the button when the button is disabled
- *
- * @param {number} [$font-size=$button-small-font-size]
- * The font-size of the button
- *
- * @param {number} [$font-size-over=$button-small-font-size-over]
- * The font-size of the button when the cursor is over the button
- *
- * @param {number} [$font-size-focus=$button-small-font-size-focus]
- * The font-size of the button when the button is focused
- *
- * @param {number} [$font-size-pressed=$button-small-font-size-pressed]
- * The font-size of the button when the button is pressed
- *
- * @param {number} [$font-size-disabled=$button-small-font-size-disabled]
- * The font-size of the button when the button is disabled
- *
- * @param {string} [$font-weight=$button-small-font-weight]
- * The font-weight of the button
- *
- * @param {string} [$font-weight-over=$button-small-font-weight-over]
- * The font-weight of the button when the cursor is over the button
- *
- * @param {string} [$font-weight-focus=$button-small-font-weight-focus]
- * The font-weight of the button when the button is focused
- *
- * @param {string} [$font-weight-pressed=$button-small-font-weight-pressed]
- * The font-weight of the button when the button is pressed
- *
- * @param {string} [$font-weight-disabled=$button-small-font-weight-disabled]
- * The font-weight of the button when the button is disabled
- *
- * @param {string} [$font-family=$button-small-font-family]
- * The font-family of the button
- *
- * @param {string} [$font-family-over=$button-small-font-family-over]
- * The font-family of the button when the cursor is over the button
- *
- * @param {string} [$font-family-focus=$button-small-font-family-focus]
- * The font-family of the button when the button is focused
- *
- * @param {string} [$font-family-pressed=$button-small-font-family-pressed]
- * The font-family of the button when the button is pressed
- *
- * @param {string} [$font-family-disabled=$button-small-font-family-disabled]
- * The font-family of the button when the button is disabled
- *
- * @param {number} [$icon-size=$button-small-icon-size]
- * The size of the button icon
- *
- * @param {color} [$glyph-color=$button-toolbar-glyph-color]
- * The color of the button's {@link #glyph} icon
- *
- * @param {number} [$glyph-opacity=$button-toolbar-glyph-opacity]
- * The opacity of the button's {@link #glyph} icon
- *
- * @param {number} [$arrow-width=$button-small-arrow-width]
- * The width of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$arrow-height=$button-small-arrow-height]
- * The height of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$split-width=$button-small-split-width]
- * The width of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {number} [$split-height=$button-small-split-height]
- * The height of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {boolean} [$include-ui-menu-arrows=$button-include-ui-menu-arrows]
- * True to include the UI name in the file name of the {@link #cfg-menu}
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-ui-split-arrows=$button-include-ui-split-arrows]
- * True to include the UI name in the file name of the {@link Ext.button.Split Split Button}'s
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-split-noline-arrows=$button-toolbar-include-split-noline-arrows]
- * True to add a "-noline" suffix to the file name of the {@link Ext.button.Split Split Button}'s 
- * arrow icon.  Used for hiding the split line when toolbar buttons are in their default
- * state.
- *
- * @param {boolean} [$include-split-over-arrows=$button-include-split-over-arrows]
- * True to use a separate icon for {@link Ext.button.Split Split Button}s when the cursor
- * is over the button.  The over icon file name will have a "-o" suffix
- *
- * @param {number} [$opacity-disabled=$button-toolbar-opacity-disabled]
- * The opacity of the button when it is disabled
- *
- * @param {number} [$inner-opacity-disabled=$button-toolbar-inner-opacity-disabled]
- * The opacity of the button's text and icon elements when when the button is disabled
- * 
- * @member Ext.button.Button
- */
-/**
- * Creates a visual theme for a {@link #scale medium} Button.
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$border-radius=$button-medium-border-radius]
- * The border-radius of the button
- *
- * @param {number} [$border-width=$button-medium-border-width]
- * The border-width of the button
- *
- * @param {color} [$border-color=$button-default-border-color]
- * The border-color of the button
- *
- * @param {color} [$border-color-over=$button-default-border-color-over]
- * The border-color of the button when the cursor is over the button
- *
- * @param {color} [$border-color-focus=$button-default-border-color-focus]
- * The border-color of the button when focused
- *
- * @param {color} [$border-color-pressed=$button-default-border-color-pressed]
- * The border-color of the button when pressed
- *
- * @param {color} [$border-color-disabled=$button-default-border-color-disabled]
- * The border-color of the button when disabled
- *
- * @param {number} [$padding=$button-medium-padding]
- * The amount of padding inside the border of the button on all sides
- *
- * @param {number} [$text-padding=$button-medium-text-padding]
- * The amount of horizontal space to add to the left and right of the button text
- *
- * @param {color} [$background-color=$button-default-background-color]
- * The background-color of the button
- *
- * @param {color} [$background-color-over=$button-default-background-color-over]
- * The background-color of the button when the cursor is over the button
- *
- * @param {color} [$background-color-focus=$button-default-background-color-focus]
- * The background-color of the button when focused
- *
- * @param {color} [$background-color-pressed=$button-default-background-color-pressed]
- * The background-color of the button when pressed
- *
- * @param {color} [$background-color-disabled=$button-default-background-color-disabled]
- * The background-color of the button when disabled
- *
- * @param {string/list} [$background-gradient=$button-default-background-gradient]
- * The background-gradient for the button.  Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-over=$button-default-background-gradient-over]
- * The background-gradient to use when the cursor is over the button. Can be either the
- * name of a predefined gradient or a list of color stops. Used as the `$type` parameter
- * for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-focus=$button-default-background-gradient-focus]
- * The background-gradient to use when the the button is focused. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-pressed=$button-default-background-gradient-pressed]
- * The background-gradient to use when the the button is pressed. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-disabled=$button-default-background-gradient-disabled]
- * The background-gradient to use when the the button is disabled. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} [$color=$button-default-color]
- * The text color of the button
- *
- * @param {color} [$color-over=$button-default-color-over]
- * The text color of the button when the cursor is over the button
- *
- * @param {color} [$color-focus=$button-default-color-focus]
- * The text color of the button when the button is focused
- *
- * @param {color} [$color-pressed=$button-default-color-pressed]
- * The text color of the button when the button is pressed
- *
- * @param {color} [$color-disabled=$button-default-color-disabled]
- * The text color of the button when the button is disabled
- *
- * @param {number} [$font-size=$button-medium-font-size]
- * The font-size of the button
- *
- * @param {number} [$font-size-over=$button-medium-font-size-over]
- * The font-size of the button when the cursor is over the button
- *
- * @param {number} [$font-size-focus=$button-medium-font-size-focus]
- * The font-size of the button when the button is focused
- *
- * @param {number} [$font-size-pressed=$button-medium-font-size-pressed]
- * The font-size of the button when the button is pressed
- *
- * @param {number} [$font-size-disabled=$button-medium-font-size-disabled]
- * The font-size of the button when the button is disabled
- *
- * @param {string} [$font-weight=$button-medium-font-weight]
- * The font-weight of the button
- *
- * @param {string} [$font-weight-over=$button-medium-font-weight-over]
- * The font-weight of the button when the cursor is over the button
- *
- * @param {string} [$font-weight-focus=$button-medium-font-weight-focus]
- * The font-weight of the button when the button is focused
- *
- * @param {string} [$font-weight-pressed=$button-medium-font-weight-pressed]
- * The font-weight of the button when the button is pressed
- *
- * @param {string} [$font-weight-disabled=$button-medium-font-weight-disabled]
- * The font-weight of the button when the button is disabled
- *
- * @param {string} [$font-family=$button-medium-font-family]
- * The font-family of the button
- *
- * @param {string} [$font-family-over=$button-medium-font-family-over]
- * The font-family of the button when the cursor is over the button
- *
- * @param {string} [$font-family-focus=$button-medium-font-family-focus]
- * The font-family of the button when the button is focused
- *
- * @param {string} [$font-family-pressed=$button-medium-font-family-pressed]
- * The font-family of the button when the button is pressed
- *
- * @param {string} [$font-family-disabled=$button-medium-font-family-disabled]
- * The font-family of the button when the button is disabled
- *
- * @param {number} [$icon-size=$button-medium-icon-size]
- * The size of the button icon
- *
- * @param {color} [$glyph-color=$button-default-glyph-color]
- * The color of the button's {@link #glyph} icon
- *
- * @param {number} [$glyph-opacity=$button-default-glyph-opacity]
- * The opacity of the button's {@link #glyph} icon
- *
- * @param {number} [$arrow-width=$button-medium-arrow-width]
- * The width of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$arrow-height=$button-medium-arrow-height]
- * The height of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$split-width=$button-medium-split-width]
- * The width of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {number} [$split-height=$button-medium-split-height]
- * The height of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {boolean} [$include-ui-menu-arrows=$button-include-ui-menu-arrows]
- * True to include the UI name in the file name of the {@link #cfg-menu}
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-ui-split-arrows=$button-include-ui-split-arrows]
- * True to include the UI name in the file name of the {@link Ext.button.Split Split Button}'s
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-split-noline-arrows=$button-include-split-noline-arrows]
- * True to add a "-noline" suffix to the file name of the {@link Ext.button.Split Split Button}'s 
- * arrow icon.  Used for hiding the split line when toolbar buttons are in their default
- * state.
- *
- * @param {boolean} [$include-split-over-arrows=$button-include-split-over-arrows]
- * True to use a separate icon for {@link Ext.button.Split Split Button}s when the cursor
- * is over the button.  The over icon file name will have a "-o" suffix
- *
- * @param {number} [$opacity-disabled=$button-opacity-disabled]
- * The opacity of the button when it is disabled
- *
- * @param {number} [$inner-opacity-disabled=$button-inner-opacity-disabled]
- * The opacity of the button's text and icon elements when when the button is disabled
- * 
- * @member Ext.button.Button
- */
-/**
- * Creates a visual theme for a {@link #scale medium} toolbar Button.
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$border-radius=$button-medium-border-radius]
- * The border-radius of the button
- *
- * @param {number} [$border-width=$button-medium-border-width]
- * The border-width of the button
- *
- * @param {color} [$border-color=$button-toolbar-border-color]
- * The border-color of the button
- *
- * @param {color} [$border-color-over=$button-toolbar-border-color-over]
- * The border-color of the button when the cursor is over the button
- *
- * @param {color} [$border-color-focus=$button-toolbar-border-color-focus]
- * The border-color of the button when focused
- *
- * @param {color} [$border-color-pressed=$button-toolbar-border-color-pressed]
- * The border-color of the button when pressed
- *
- * @param {color} [$border-color-disabled=$button-toolbar-border-color-disabled]
- * The border-color of the button when disabled
- *
- * @param {number} [$padding=$button-medium-padding]
- * The amount of padding inside the border of the button on all sides
- *
- * @param {number} [$text-padding=$button-medium-text-padding]
- * The amount of horizontal space to add to the left and right of the button text
- *
- * @param {color} [$background-color=$button-toolbar-background-color]
- * The background-color of the button
- *
- * @param {color} [$background-color-over=$button-toolbar-background-color-over]
- * The background-color of the button when the cursor is over the button
- *
- * @param {color} [$background-color-focus=$button-toolbar-background-color-focus]
- * The background-color of the button when focused
- *
- * @param {color} [$background-color-pressed=$button-toolbar-background-color-pressed]
- * The background-color of the button when pressed
- *
- * @param {color} [$background-color-disabled=$button-toolbar-background-color-disabled]
- * The background-color of the button when disabled
- *
- * @param {string/list} [$background-gradient=$button-toolbar-background-gradient]
- * The background-gradient for the button.  Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-over=$button-toolbar-background-gradient-over]
- * The background-gradient to use when the cursor is over the button. Can be either the
- * name of a predefined gradient or a list of color stops. Used as the `$type` parameter
- * for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-focus=$button-toolbar-background-gradient-focus]
- * The background-gradient to use when the the button is focused. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-pressed=$button-toolbar-background-gradient-pressed]
- * The background-gradient to use when the the button is pressed. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-disabled=$button-toolbar-background-gradient-disabled]
- * The background-gradient to use when the the button is disabled. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} [$color=$button-toolbar-color]
- * The text color of the button
- *
- * @param {color} [$color-over=$button-toolbar-color-over]
- * The text color of the button when the cursor is over the button
- *
- * @param {color} [$color-focus=$button-toolbar-color-focus]
- * The text color of the button when the button is focused
- *
- * @param {color} [$color-pressed=$button-toolbar-color-pressed]
- * The text color of the button when the button is pressed
- *
- * @param {color} [$color-disabled=$button-toolbar-color-disabled]
- * The text color of the button when the button is disabled
- *
- * @param {number} [$font-size=$button-medium-font-size]
- * The font-size of the button
- *
- * @param {number} [$font-size-over=$button-medium-font-size-over]
- * The font-size of the button when the cursor is over the button
- *
- * @param {number} [$font-size-focus=$button-medium-font-size-focus]
- * The font-size of the button when the button is focused
- *
- * @param {number} [$font-size-pressed=$button-medium-font-size-pressed]
- * The font-size of the button when the button is pressed
- *
- * @param {number} [$font-size-disabled=$button-medium-font-size-disabled]
- * The font-size of the button when the button is disabled
- *
- * @param {string} [$font-weight=$button-medium-font-weight]
- * The font-weight of the button
- *
- * @param {string} [$font-weight-over=$button-medium-font-weight-over]
- * The font-weight of the button when the cursor is over the button
- *
- * @param {string} [$font-weight-focus=$button-medium-font-weight-focus]
- * The font-weight of the button when the button is focused
- *
- * @param {string} [$font-weight-pressed=$button-medium-font-weight-pressed]
- * The font-weight of the button when the button is pressed
- *
- * @param {string} [$font-weight-disabled=$button-medium-font-weight-disabled]
- * The font-weight of the button when the button is disabled
- *
- * @param {string} [$font-family=$button-medium-font-family]
- * The font-family of the button
- *
- * @param {string} [$font-family-over=$button-medium-font-family-over]
- * The font-family of the button when the cursor is over the button
- *
- * @param {string} [$font-family-focus=$button-medium-font-family-focus]
- * The font-family of the button when the button is focused
- *
- * @param {string} [$font-family-pressed=$button-medium-font-family-pressed]
- * The font-family of the button when the button is pressed
- *
- * @param {string} [$font-family-disabled=$button-medium-font-family-disabled]
- * The font-family of the button when the button is disabled
- *
- * @param {number} [$icon-size=$button-medium-icon-size]
- * The size of the button icon
- *
- * @param {color} [$glyph-color=$button-toolbar-glyph-color]
- * The color of the button's {@link #glyph} icon
- *
- * @param {number} [$glyph-opacity=$button-toolbar-glyph-opacity]
- * The opacity of the button's {@link #glyph} icon
- *
- * @param {number} [$arrow-width=$button-medium-arrow-width]
- * The width of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$arrow-height=$button-medium-arrow-height]
- * The height of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$split-width=$button-medium-split-width]
- * The width of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {number} [$split-height=$button-medium-split-height]
- * The height of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {boolean} [$include-ui-menu-arrows=$button-include-ui-menu-arrows]
- * True to include the UI name in the file name of the {@link #cfg-menu}
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-ui-split-arrows=$button-include-ui-split-arrows]
- * True to include the UI name in the file name of the {@link Ext.button.Split Split Button}'s
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-split-noline-arrows=$button-toolbar-include-split-noline-arrows]
- * True to add a "-noline" suffix to the file name of the {@link Ext.button.Split Split Button}'s 
- * arrow icon.  Used for hiding the split line when toolbar buttons are in their default
- * state.
- *
- * @param {boolean} [$include-split-over-arrows=$button-include-split-over-arrows]
- * True to use a separate icon for {@link Ext.button.Split Split Button}s when the cursor
- * is over the button.  The over icon file name will have a "-o" suffix
- *
- * @param {number} [$opacity-disabled=$button-toolbar-opacity-disabled]
- * The opacity of the button when it is disabled
- *
- * @param {number} [$inner-opacity-disabled=$button-toolbar-inner-opacity-disabled]
- * The opacity of the button's text and icon elements when when the button is disabled
- * 
- * @member Ext.button.Button
- */
-/**
- * Creates a visual theme for a {@link #scale large} Button.
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$border-radius=$button-large-border-radius]
- * The border-radius of the button
- *
- * @param {number} [$border-width=$button-large-border-width]
- * The border-width of the button
- *
- * @param {color} [$border-color=$button-default-border-color]
- * The border-color of the button
- *
- * @param {color} [$border-color-over=$button-default-border-color-over]
- * The border-color of the button when the cursor is over the button
- *
- * @param {color} [$border-color-focus=$button-default-border-color-focus]
- * The border-color of the button when focused
- *
- * @param {color} [$border-color-pressed=$button-default-border-color-pressed]
- * The border-color of the button when pressed
- *
- * @param {color} [$border-color-disabled=$button-default-border-color-disabled]
- * The border-color of the button when disabled
- *
- * @param {number} [$padding=$button-large-padding]
- * The amount of padding inside the border of the button on all sides
- *
- * @param {number} [$text-padding=$button-large-text-padding]
- * The amount of horizontal space to add to the left and right of the button text
- *
- * @param {color} [$background-color=$button-default-background-color]
- * The background-color of the button
- *
- * @param {color} [$background-color-over=$button-default-background-color-over]
- * The background-color of the button when the cursor is over the button
- *
- * @param {color} [$background-color-focus=$button-default-background-color-focus]
- * The background-color of the button when focused
- *
- * @param {color} [$background-color-pressed=$button-default-background-color-pressed]
- * The background-color of the button when pressed
- *
- * @param {color} [$background-color-disabled=$button-default-background-color-disabled]
- * The background-color of the button when disabled
- *
- * @param {string/list} [$background-gradient=$button-default-background-gradient]
- * The background-gradient for the button.  Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-over=$button-default-background-gradient-over]
- * The background-gradient to use when the cursor is over the button. Can be either the
- * name of a predefined gradient or a list of color stops. Used as the `$type` parameter
- * for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-focus=$button-default-background-gradient-focus]
- * The background-gradient to use when the the button is focused. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-pressed=$button-default-background-gradient-pressed]
- * The background-gradient to use when the the button is pressed. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-disabled=$button-default-background-gradient-disabled]
- * The background-gradient to use when the the button is disabled. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} [$color=$button-default-color]
- * The text color of the button
- *
- * @param {color} [$color-over=$button-default-color-over]
- * The text color of the button when the cursor is over the button
- *
- * @param {color} [$color-focus=$button-default-color-focus]
- * The text color of the button when the button is focused
- *
- * @param {color} [$color-pressed=$button-default-color-pressed]
- * The text color of the button when the button is pressed
- *
- * @param {color} [$color-disabled=$button-default-color-disabled]
- * The text color of the button when the button is disabled
- *
- * @param {number} [$font-size=$button-large-font-size]
- * The font-size of the button
- *
- * @param {number} [$font-size-over=$button-large-font-size-over]
- * The font-size of the button when the cursor is over the button
- *
- * @param {number} [$font-size-focus=$button-large-font-size-focus]
- * The font-size of the button when the button is focused
- *
- * @param {number} [$font-size-pressed=$button-large-font-size-pressed]
- * The font-size of the button when the button is pressed
- *
- * @param {number} [$font-size-disabled=$button-large-font-size-disabled]
- * The font-size of the button when the button is disabled
- *
- * @param {string} [$font-weight=$button-large-font-weight]
- * The font-weight of the button
- *
- * @param {string} [$font-weight-over=$button-large-font-weight-over]
- * The font-weight of the button when the cursor is over the button
- *
- * @param {string} [$font-weight-focus=$button-large-font-weight-focus]
- * The font-weight of the button when the button is focused
- *
- * @param {string} [$font-weight-pressed=$button-large-font-weight-pressed]
- * The font-weight of the button when the button is pressed
- *
- * @param {string} [$font-weight-disabled=$button-large-font-weight-disabled]
- * The font-weight of the button when the button is disabled
- *
- * @param {string} [$font-family=$button-large-font-family]
- * The font-family of the button
- *
- * @param {string} [$font-family-over=$button-large-font-family-over]
- * The font-family of the button when the cursor is over the button
- *
- * @param {string} [$font-family-focus=$button-large-font-family-focus]
- * The font-family of the button when the button is focused
- *
- * @param {string} [$font-family-pressed=$button-large-font-family-pressed]
- * The font-family of the button when the button is pressed
- *
- * @param {string} [$font-family-disabled=$button-large-font-family-disabled]
- * The font-family of the button when the button is disabled
- *
- * @param {number} [$icon-size=$button-large-icon-size]
- * The size of the button icon
- *
- * @param {color} [$glyph-color=$button-default-glyph-color]
- * The color of the button's {@link #glyph} icon
- *
- * @param {number} [$glyph-opacity=$button-default-glyph-opacity]
- * The opacity of the button's {@link #glyph} icon
- *
- * @param {number} [$arrow-width=$button-large-arrow-width]
- * The width of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$arrow-height=$button-large-arrow-height]
- * The height of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$split-width=$button-large-split-width]
- * The width of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {number} [$split-height=$button-large-split-height]
- * The height of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {boolean} [$include-ui-menu-arrows=$button-include-ui-menu-arrows]
- * True to include the UI name in the file name of the {@link #cfg-menu}
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-ui-split-arrows=$button-include-ui-split-arrows]
- * True to include the UI name in the file name of the {@link Ext.button.Split Split Button}'s
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-split-noline-arrows=$button-include-split-noline-arrows]
- * True to add a "-noline" suffix to the file name of the {@link Ext.button.Split Split Button}'s 
- * arrow icon.  Used for hiding the split line when toolbar buttons are in their default
- * state.
- *
- * @param {boolean} [$include-split-over-arrows=$button-include-split-over-arrows]
- * True to use a separate icon for {@link Ext.button.Split Split Button}s when the cursor
- * is over the button.  The over icon file name will have a "-o" suffix
- *
- * @param {number} [$opacity-disabled=$button-opacity-disabled]
- * The opacity of the button when it is disabled
- *
- * @param {number} [$inner-opacity-disabled=$button-inner-opacity-disabled]
- * The opacity of the button's text and icon elements when when the button is disabled
- * 
- * @member Ext.button.Button
- */
-/**
- * Creates a visual theme for a {@link #scale large} toolbar Button.
- *
- * @param {string} $ui
- * The name of the UI being created. Can not included spaces or special punctuation
- * (used in CSS class names).
- *
- * @param {number} [$border-radius=$button-large-border-radius]
- * The border-radius of the button
- *
- * @param {number} [$border-width=$button-large-border-width]
- * The border-width of the button
- *
- * @param {color} [$border-color=$button-toolbar-border-color]
- * The border-color of the button
- *
- * @param {color} [$border-color-over=$button-toolbar-border-color-over]
- * The border-color of the button when the cursor is over the button
- *
- * @param {color} [$border-color-focus=$button-toolbar-border-color-focus]
- * The border-color of the button when focused
- *
- * @param {color} [$border-color-pressed=$button-toolbar-border-color-pressed]
- * The border-color of the button when pressed
- *
- * @param {color} [$border-color-disabled=$button-toolbar-border-color-disabled]
- * The border-color of the button when disabled
- *
- * @param {number} [$padding=$button-large-padding]
- * The amount of padding inside the border of the button on all sides
- *
- * @param {number} [$text-padding=$button-large-text-padding]
- * The amount of horizontal space to add to the left and right of the button text
- *
- * @param {color} [$background-color=$button-toolbar-background-color]
- * The background-color of the button
- *
- * @param {color} [$background-color-over=$button-toolbar-background-color-over]
- * The background-color of the button when the cursor is over the button
- *
- * @param {color} [$background-color-focus=$button-toolbar-background-color-focus]
- * The background-color of the button when focused
- *
- * @param {color} [$background-color-pressed=$button-toolbar-background-color-pressed]
- * The background-color of the button when pressed
- *
- * @param {color} [$background-color-disabled=$button-toolbar-background-color-disabled]
- * The background-color of the button when disabled
- *
- * @param {string/list} [$background-gradient=$button-toolbar-background-gradient]
- * The background-gradient for the button.  Can be either the name of a predefined gradient
- * or a list of color stops. Used as the `$type` parameter for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-over=$button-toolbar-background-gradient-over]
- * The background-gradient to use when the cursor is over the button. Can be either the
- * name of a predefined gradient or a list of color stops. Used as the `$type` parameter
- * for {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-focus=$button-toolbar-background-gradient-focus]
- * The background-gradient to use when the the button is focused. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-pressed=$button-toolbar-background-gradient-pressed]
- * The background-gradient to use when the the button is pressed. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {string/list} [$background-gradient-disabled=$button-toolbar-background-gradient-disabled]
- * The background-gradient to use when the the button is disabled. Can be either the name
- * of a predefined gradient or a list of color stops. Used as the `$type` parameter for
- * {@link Global_CSS#background-gradient}.
- *
- * @param {color} [$color=$button-toolbar-color]
- * The text color of the button
- *
- * @param {color} [$color-over=$button-toolbar-color-over]
- * The text color of the button when the cursor is over the button
- *
- * @param {color} [$color-focus=$button-toolbar-color-focus]
- * The text color of the button when the button is focused
- *
- * @param {color} [$color-pressed=$button-toolbar-color-pressed]
- * The text color of the button when the button is pressed
- *
- * @param {color} [$color-disabled=$button-toolbar-color-disabled]
- * The text color of the button when the button is disabled
- *
- * @param {number} [$font-size=$button-large-font-size]
- * The font-size of the button
- *
- * @param {number} [$font-size-over=$button-large-font-size-over]
- * The font-size of the button when the cursor is over the button
- *
- * @param {number} [$font-size-focus=$button-large-font-size-focus]
- * The font-size of the button when the button is focused
- *
- * @param {number} [$font-size-pressed=$button-large-font-size-pressed]
- * The font-size of the button when the button is pressed
- *
- * @param {number} [$font-size-disabled=$button-large-font-size-disabled]
- * The font-size of the button when the button is disabled
- *
- * @param {string} [$font-weight=$button-large-font-weight]
- * The font-weight of the button
- *
- * @param {string} [$font-weight-over=$button-large-font-weight-over]
- * The font-weight of the button when the cursor is over the button
- *
- * @param {string} [$font-weight-focus=$button-large-font-weight-focus]
- * The font-weight of the button when the button is focused
- *
- * @param {string} [$font-weight-pressed=$button-large-font-weight-pressed]
- * The font-weight of the button when the button is pressed
- *
- * @param {string} [$font-weight-disabled=$button-large-font-weight-disabled]
- * The font-weight of the button when the button is disabled
- *
- * @param {string} [$font-family=$button-large-font-family]
- * The font-family of the button
- *
- * @param {string} [$font-family-over=$button-large-font-family-over]
- * The font-family of the button when the cursor is over the button
- *
- * @param {string} [$font-family-focus=$button-large-font-family-focus]
- * The font-family of the button when the button is focused
- *
- * @param {string} [$font-family-pressed=$button-large-font-family-pressed]
- * The font-family of the button when the button is pressed
- *
- * @param {string} [$font-family-disabled=$button-large-font-family-disabled]
- * The font-family of the button when the button is disabled
- *
- * @param {number} [$icon-size=$button-large-icon-size]
- * The size of the button icon
- *
- * @param {color} [$glyph-color=$button-toolbar-glyph-color]
- * The color of the button's {@link #glyph} icon
- *
- * @param {number} [$glyph-opacity=$button-toolbar-glyph-opacity]
- * The opacity of the button's {@link #glyph} icon
- *
- * @param {number} [$arrow-width=$button-large-arrow-width]
- * The width of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$arrow-height=$button-large-arrow-height]
- * The height of the button's {@link #cfg-menu} arrow
- *
- * @param {number} [$split-width=$button-large-split-width]
- * The width of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {number} [$split-height=$button-large-split-height]
- * The height of a {@link Ext.button.Split Split Button}'s arrow
- *
- * @param {boolean} [$include-ui-menu-arrows=$button-include-ui-menu-arrows]
- * True to include the UI name in the file name of the {@link #cfg-menu}
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-ui-split-arrows=$button-include-ui-split-arrows]
- * True to include the UI name in the file name of the {@link Ext.button.Split Split Button}'s
- * arrow icon. Set this to false to share the same arrow bewteen multiple UIs.
- *
- * @param {boolean} [$include-split-noline-arrows=$button-toolbar-include-split-noline-arrows]
- * True to add a "-noline" suffix to the file name of the {@link Ext.button.Split Split Button}'s 
- * arrow icon.  Used for hiding the split line when toolbar buttons are in their default
- * state.
- *
- * @param {boolean} [$include-split-over-arrows=$button-include-split-over-arrows]
- * True to use a separate icon for {@link Ext.button.Split Split Button}s when the cursor
- * is over the button.  The over icon file name will have a "-o" suffix
- *
- * @param {number} [$opacity-disabled=$button-toolbar-opacity-disabled]
- * The opacity of the button when it is disabled
- *
- * @param {number} [$inner-opacity-disabled=$button-toolbar-inner-opacity-disabled]
- * The opacity of the button's text and icon elements when when the button is disabled
- * 
- * @member Ext.button.Button
- */
-/* line 255, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-default-small {
   padding: 6px 6px 6px 8px;
@@ -7269,11 +5983,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-small-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -7596,27 +6305,18 @@ a.x-tab {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-small-focus-corners.gif), sides:url(images/btn/btn-default-small-focus-sides.gif), frame-bg:url(images/btn/btn-default-small-focus-fbg.gif), bg:url(images/btn/btn-default-small-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-small-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-small-over-corners.gif), sides:url(images/btn/btn-default-small-over-sides.gif), frame-bg:url(images/btn/btn-default-small-over-fbg.gif), bg:url(images/btn/btn-default-small-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-small-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-small-pressed-corners.gif), sides:url(images/btn/btn-default-small-pressed-sides.gif), frame-bg:url(images/btn/btn-default-small-pressed-fbg.gif), bg:url(images/btn/btn-default-small-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-small-disabled:after {
   display: none;
@@ -7650,11 +6350,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-medium-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -7983,27 +6678,18 @@ a.x-tab {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-medium-focus-corners.gif), sides:url(images/btn/btn-default-medium-focus-sides.gif), frame-bg:url(images/btn/btn-default-medium-focus-fbg.gif), bg:url(images/btn/btn-default-medium-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-medium-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-medium-over-corners.gif), sides:url(images/btn/btn-default-medium-over-sides.gif), frame-bg:url(images/btn/btn-default-medium-over-fbg.gif), bg:url(images/btn/btn-default-medium-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-medium-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-medium-pressed-corners.gif), sides:url(images/btn/btn-default-medium-pressed-sides.gif), frame-bg:url(images/btn/btn-default-medium-pressed-fbg.gif), bg:url(images/btn/btn-default-medium-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-medium-disabled:after {
   display: none;
@@ -8037,11 +6723,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-large-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -8370,27 +7051,18 @@ a.x-tab {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-large-focus-corners.gif), sides:url(images/btn/btn-default-large-focus-sides.gif), frame-bg:url(images/btn/btn-default-large-focus-fbg.gif), bg:url(images/btn/btn-default-large-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-large-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-large-over-corners.gif), sides:url(images/btn/btn-default-large-over-sides.gif), frame-bg:url(images/btn/btn-default-large-over-fbg.gif), bg:url(images/btn/btn-default-large-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-large-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-large-pressed-corners.gif), sides:url(images/btn/btn-default-large-pressed-sides.gif), frame-bg:url(images/btn/btn-default-large-pressed-fbg.gif), bg:url(images/btn/btn-default-large-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-large-disabled:after {
   display: none;
@@ -8417,11 +7089,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-small-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -8738,27 +7405,18 @@ a.x-tab {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-small-focus-corners.gif), sides:url(images/btn/btn-default-toolbar-small-focus-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-small-focus-fbg.gif), bg:url(images/btn/btn-default-toolbar-small-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-small-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-small-over-corners.gif), sides:url(images/btn/btn-default-toolbar-small-over-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-small-over-fbg.gif), bg:url(images/btn/btn-default-toolbar-small-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-small-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-small-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-small-pressed-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-small-pressed-fbg.gif), bg:url(images/btn/btn-default-toolbar-small-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-small-disabled:after {
   display: none;
@@ -8785,11 +7443,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-medium-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -9105,27 +7758,18 @@ a.x-tab {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-medium-focus-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-focus-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-medium-focus-fbg.gif), bg:url(images/btn/btn-default-toolbar-medium-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-medium-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-medium-over-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-over-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-medium-over-fbg.gif), bg:url(images/btn/btn-default-toolbar-medium-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-medium-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-medium-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-pressed-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-medium-pressed-fbg.gif), bg:url(images/btn/btn-default-toolbar-medium-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-medium-disabled:after {
   display: none;
@@ -9159,11 +7803,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-default-toolbar-large-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -9478,27 +8117,18 @@ a.x-tab {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-large-focus-corners.gif), sides:url(images/btn/btn-default-toolbar-large-focus-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-large-focus-fbg.gif), bg:url(images/btn/btn-default-toolbar-large-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-large-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-large-over-corners.gif), sides:url(images/btn/btn-default-toolbar-large-over-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-large-over-fbg.gif), bg:url(images/btn/btn-default-toolbar-large-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-large-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-default-toolbar-large-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-large-pressed-sides.gif), frame-bg:url(images/btn/btn-default-toolbar-large-pressed-fbg.gif), bg:url(images/btn/btn-default-toolbar-large-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-default-toolbar-large-disabled:after {
   display: none;
@@ -9988,27 +8618,18 @@ a.x-tab {
   content: "x-slicer:bg:url(images/panel-header/panel-header-default-top-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-default-bottom:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-default-bottom-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-default-left:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-default-left-bg.gif), stretch:left";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-default-right:after {
   display: none;
@@ -10183,27 +8804,18 @@ a.x-tab {
   content: "x-slicer:bg:url(images/panel-header/panel-header-default-framed-top-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-default-framed-bottom:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-default-framed-bottom-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-default-framed-left:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-default-framed-left-bg.gif), stretch:left";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-default-framed-right:after {
   display: none;
@@ -10414,11 +9026,6 @@ a.x-tab {
   background-color: transparent;
 }
 
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tip-default-frameInfo {
-  font-family: th-3-3-3-3-0-0-0-0-3-3-3-3;
-}
-
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tip-default-tl {
   background-position: 0 -6px;
@@ -10569,11 +9176,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tip-form-invalid-frameInfo {
-  font-family: th-3-3-3-3-0-0-0-0-3-3-3-3;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -10823,11 +9425,6 @@ a.x-tab {
   background-color: transparent;
 }
 
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-group-default-framed-frameInfo {
-  font-family: dh-3-3-3-3-3-3-3-3-0-1-0-1;
-}
-
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-group-default-framed-tl {
   background-position: 0 -6px;
@@ -10937,11 +9534,6 @@ a.x-tab {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-group-default-framed-notitle-frameInfo {
-  font-family: dh-3-3-3-3-3-3-3-3-0-1-0-1;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -12379,9 +10971,6 @@ a.x-monthpicker-yearnav-button:hover {
   content: "x-slicer:stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-datepicker-footer:after {
   display: none;
@@ -12893,9 +11482,6 @@ a.x-color-picker-item:hover {
   content: "x-slicer:bg:url(images/grid/column-header-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-column-header-over:after {
   display: none;
@@ -13174,11 +11760,6 @@ a.x-color-picker-item:hover {
   background-color: transparent;
 }
 
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-grid-row-editor-buttons-default-bottom-frameInfo {
-  font-family: th-0-0-5-5-0-1-1-1-5-5-5-5;
-}
-
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-grid-row-editor-buttons-default-bottom-tl {
   background-position: 0 -10px;
@@ -13291,11 +11872,6 @@ a.x-color-picker-item:hover {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-grid-row-editor-buttons-default-top-frameInfo {
-  font-family: th-5-5-0-0-1-1-0-1-5-5-5-5;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -14756,11 +13332,6 @@ a.x-color-picker-item:hover {
   background-image: none;
 }
 
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-top-frameInfo {
-  font-family: th-3-3-0-0-0-0-0-0-7-12-7-12;
-}
-
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-top-tl {
   background-position: 0 -6px;
@@ -14879,11 +13450,6 @@ a.x-color-picker-item:hover {
   border-radius: 0;
   background-color: transparent;
   background-image: none;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-bottom-frameInfo {
-  font-family: th-0-0-3-3-0-0-0-0-7-12-7-12;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -15008,11 +13574,6 @@ a.x-color-picker-item:hover {
   background-image: none;
 }
 
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-left-frameInfo {
-  font-family: th-3-3-0-0-0-0-0-0-7-12-7-12;
-}
-
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-tab-default-left-tl {
   background-position: 0 -6px;
@@ -15133,11 +13694,6 @@ a.x-color-picker-item:hover {
   border-radius: 0;
   background-color: transparent;
   background-image: none;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-tab-default-right-frameInfo {
-  font-family: th-3-3-0-0-0-0-0-0-7-12-7-12;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -15557,45 +14113,30 @@ a.x-color-picker-item:hover {
   content: "x-slicer:bg:url(images/tab/tab-default-top-over-bg.gif), corners:url(images/tab/tab-default-top-over-corners.gif), sides:url(images/tab/tab-default-top-over-sides.gif), frame-bg:url(images/tab/tab-default-top-over-fbg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-default-bottom-over:after {
   display: none;
   content: "x-slicer:bg:url(images/tab/tab-default-bottom-over-bg.gif), corners:url(images/tab/tab-default-bottom-over-corners.gif), sides:url(images/tab/tab-default-bottom-over-sides.gif), frame-bg:url(images/tab/tab-default-bottom-over-fbg.gif), stretch:top";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-default-top-active:after {
   display: none;
   content: "x-slicer:bg:url(images/tab/tab-default-top-active-bg.gif), corners:url(images/tab/tab-default-top-active-corners.gif), sides:url(images/tab/tab-default-top-active-sides.gif), frame-bg:url(images/tab/tab-default-top-active-fbg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-default-bottom-active:after {
   display: none;
   content: "x-slicer:bg:url(images/tab/tab-default-bottom-active-bg.gif), corners:url(images/tab/tab-default-bottom-active-corners.gif), sides:url(images/tab/tab-default-bottom-active-sides.gif), frame-bg:url(images/tab/tab-default-bottom-active-fbg.gif), stretch:top";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-default-top-disabled:after {
   display: none;
   content: "x-slicer:bg:url(images/tab/tab-default-top-disabled-bg.gif), corners:url(images/tab/tab-default-top-disabled-corners.gif), sides:url(images/tab/tab-default-top-disabled-sides.gif), frame-bg:url(images/tab/tab-default-top-disabled-fbg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-default-bottom-disabled:after {
   display: none;
@@ -15779,27 +14320,18 @@ a.x-color-picker-item:hover {
   content: "x-slicer:stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-bar-default-bottom:after {
   display: none;
   content: "x-slicer:stretch:top";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-bar-default-left:after {
   display: none;
   content: "x-slicer:stretch:right";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-tab-bar-default-right:after {
   display: none;
@@ -16027,11 +14559,6 @@ a.x-color-picker-item:hover {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-small-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -16339,27 +14866,18 @@ a.x-color-picker-item:hover {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-small-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-focus-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-focus-fbg.gif), bg:url(images/btn/btn-plain-toolbar-small-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-small-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-small-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-over-fbg.gif), bg:url(images/btn/btn-plain-toolbar-small-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-small-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-small-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-small-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-small-pressed-fbg.gif), bg:url(images/btn/btn-plain-toolbar-small-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-small-disabled:after {
   display: none;
@@ -16393,11 +14911,6 @@ a.x-color-picker-item:hover {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-medium-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -16715,27 +15228,18 @@ a.x-color-picker-item:hover {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-medium-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-focus-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-focus-fbg.gif), bg:url(images/btn/btn-plain-toolbar-medium-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-medium-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-medium-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-over-fbg.gif), bg:url(images/btn/btn-plain-toolbar-medium-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-medium-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-medium-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-medium-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-medium-pressed-fbg.gif), bg:url(images/btn/btn-plain-toolbar-medium-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-medium-disabled:after {
   display: none;
@@ -16769,11 +15273,6 @@ a.x-color-picker-item:hover {
   border-width: 0 !important;
   border-radius: 0;
   background-color: transparent;
-}
-
-/* line 249, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-btn-plain-toolbar-large-frameInfo {
-  font-family: th-5-5-5-5-1-1-1-1-6-6-6-8;
 }
 
 /* line 315, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -17087,27 +15586,18 @@ a.x-color-picker-item:hover {
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-large-focus-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-focus-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-focus-fbg.gif), bg:url(images/btn/btn-plain-toolbar-large-focus-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-large-over:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-large-over-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-over-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-over-fbg.gif), bg:url(images/btn/btn-plain-toolbar-large-over-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-large-pressed:after {
   display: none;
   content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-plain-toolbar-large-pressed-corners.gif), sides:url(images/btn/btn-plain-toolbar-large-pressed-sides.gif), frame-bg:url(images/btn/btn-plain-toolbar-large-pressed-fbg.gif), bg:url(images/btn/btn-plain-toolbar-large-pressed-bg.gif)";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-plain-toolbar-large-disabled:after {
   display: none;
@@ -17268,27 +15758,18 @@ a.x-color-picker-item:hover {
   content: "x-slicer:bg:url(images/panel-header/panel-header-light-top-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-light-bottom:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-light-bottom-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-light-left:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-light-left-bg.gif), stretch:left";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-light-right:after {
   display: none;
@@ -17470,27 +15951,18 @@ a.x-color-picker-item:hover {
   content: "x-slicer:bg:url(images/panel-header/panel-header-light-framed-top-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-light-framed-bottom:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-light-framed-bottom-bg.gif), stretch:bottom";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-light-framed-left:after {
   display: none;
   content: "x-slicer:bg:url(images/panel-header/panel-header-light-framed-left-bg.gif), stretch:left";
 }
 
-/*</if slicer>*/
-/* */
-/*<if slicer>*/
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-panel-header-light-framed-right:after {
   display: none;

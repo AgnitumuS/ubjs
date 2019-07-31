@@ -711,12 +711,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {
 .x-panel-ghost {
     z-index: 1;
 }
-/*
-.x-border-layout-ct {
-    background: #ffffff;
-}
-*/
-/* #DFE8F6; */
 
 .x-dashboard-body {
     padding: 0 0 0 8px;
