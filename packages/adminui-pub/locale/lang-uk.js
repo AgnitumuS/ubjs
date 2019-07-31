@@ -179,6 +179,19 @@ UB.i18nExtend({
   fetchAllRows: 'Завантажити всі',
   rowCounts: 'Записів',
   doNotGetLock: 'Запис заблоковано користувачем {0} {1} сек. тому назад. Всі внесені зміни не можна буде зберегти. Спробуйте пізніше.',
+  persistLockInfo: 'Заблоковано {1}',
+  softLockInfo: 'Заблоковано користувачем {0} {1}',
+  lockBtn: 'Заблокувати запис',
+  unLockBtn: 'Розблокувати запис',
+  tempSoftLockInfo: 'Запис зараз редагується користувачем {0}',
+  recordLockedOtherUser: 'Запис заблоковано іншим користувачем',
+  recordLockedThisUser: 'Запис вже заблоковано',
+  lockSuccessCreated: 'Запис успішно заблоковано',
+  recordLockedByTempLock: 'Запис зараз редагується іншим користувачем',
+  recordLockedThisUserByTempLock: 'Запис зараз редагується поточним користувачем',
+  lockSuccessDeleted: 'Запис успішно розблоковано',
+  recordNotLocked: 'Запис не заблоковано',
+  tempLockExistForThisUser: 'Поточний користувач зараз редагує цей запис в іншому вікні, іншій вкладці або на іншому комп\'ютері',
 
   resolutionSignReason: 'Підписана резолюція',
   noStaffEmployeeShortFIO: 'Не призначено',
@@ -206,9 +219,9 @@ UB.i18nExtend({
   this_year: 'За цей рік',
   date: 'За дату',
   period: 'За період',
+  attachments: 'Додатки',
   from_date: 'З',
   to_date: 'По',
-  attachments: 'Додатки',
   areYouSure: 'Ви впевнені?',
   formWasChanged: 'Дані форм було відредаговано. Ви впевнені, що бажаєте скасувати зміни та оновити дані?',
   addresses: 'Адресати',
@@ -673,7 +686,6 @@ if (typeof Ext !== 'undefined') {
         refreshText: 'Оновити',
         displayMsg: 'Відображення записів з {0} по {1}, всього {2}',
         emptyMsg: 'Дані для відображення відсутні'
-
       })
     }
 
