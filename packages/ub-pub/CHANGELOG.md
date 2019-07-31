@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.10]
+### Fixed
+ - in case UBNativeMessage instantiated inside iFrame `window.parent.postMessage` will be called with 
+ `targetOrign` calculated during UBNativeMessage.connect. This prevent possible XSS attack to the NativeMessages app 
+
 ## [5.3.9]
 ### Added
  - `ClientRepository.rawResult` property. Contains a server response in raw format. Can be used to

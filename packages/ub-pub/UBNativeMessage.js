@@ -211,6 +211,13 @@ function UBNativeMessage (featureConfig) {
    * @property {Function} onMessage
    */
   me.onMessage = null
+
+  /**
+   * In case instantiated inside iFrame targetOrign initialized to  parent document Origin
+   * and used as targetOrign parameter for postMessage to prevent XSS attack
+   * @type {string}
+   */
+  me.targetOrign = '*'
 }
 
 /**
@@ -247,11 +254,11 @@ UBNativeMessage.prototype.invoke = function (methodName, methodParams, timeout) 
   // methodParams = methodParams || null;
   timeout = timeout || me.callTimeOut
   let msgID = me.getMessageId()
-  let messageToSend = {clientID: me.id, messageID: msgID, method: methodName, params: methodParams}
+  let messageToSend = { clientID: me.id, messageID: msgID, method: methodName, params: methodParams }
   return new Promise((resolve, reject) => {
     me.pendingMessages[msgID] = {
       request: null, // MPV - do not store - we do not need it!  messageToSend,
-      deffer: {resolve, reject},
+      deffer: { resolve, reject },
       timerID: setTimeout(function () { me.onMsgTimeOut(msgID) }, timeout),
       partials: null,
       timeoutValue: timeout || me.callTimeOut,
@@ -291,10 +298,10 @@ UBNativeMessage.prototype.invoke = function (methodName, methodParams, timeout) 
     //     }
     // } else
     if (me.iFarmeMode) {
-      window.parent.postMessage({detail: messageToSend, messageType: 'UBPageMsg'}, '*')
+      window.parent.postMessage({ detail: messageToSend, messageType: 'UBPageMsg' }, me.targetOrign)
     } else {
       // eslint-disable-next-line no-undef
-      me.eventElm.dispatchEvent(new CustomEvent('UBPageMsg', {detail: messageToSend}))
+      me.eventElm.dispatchEvent(new CustomEvent('UBPageMsg', { detail: messageToSend }))
     }
   })
 }
@@ -350,6 +357,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
       return Promise.reject(new ubUtils.UBError(createFeatureUpdateMsg(NM_EXTENSION_FEATURE, '-', false)))
     } else {
       if (window.parent && (window.parent !== window)) { // in iframe
+        me.targetOrign = new URL(document.referrer).origin
         promise = new Promise((resolve, reject) => {
           let timeId
           let onMessage = function (event) {
@@ -367,7 +375,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
             resolve(true)
           }
           window.addEventListener('message', onMessage, false)
-          window.parent.postMessage({messageType: 'initUbExtension'}, '*')
+          window.parent.postMessage({ messageType: 'initUbExtension' }, me.targetOrign)
           timeId = setTimeout(function () {
             reject(new ubUtils.UBError(createFeatureUpdateMsg(NM_EXTENSION_FEATURE, '-', false)))
           }, 1500)
@@ -389,7 +397,7 @@ UBNativeMessage.prototype.connect = function (timeOut) {
           return true
         }
       }).then(function () {
-        return me.invoke('__connect', {hostAppName: me._cfg.host}, timeOut).then(function (featureVersion) {
+        return me.invoke('__connect', { hostAppName: me._cfg.host }, timeOut).then(function (featureVersion) {
           let requiredVersion = me._cfg.minVersion
           me.connected = true
           me.featureVersion = featureVersion
@@ -451,4 +459,3 @@ function createFeatureUpdateMsg (featureConfig, currentVersion, isUpdate) {
   let msg = 'NM' + (isUpdate ? 'Update' : 'Install') + ((featureConfig.host === 'none') ? 'Extension' + (ubUtils.isOpera ? 'Opera' : 'Chrome') : 'Feature')
   return ubUtils.format(i18n(msg), i18n(featureConfig.UIName), featureConfig.minVersion, currentVersion, installer)
 }
-
