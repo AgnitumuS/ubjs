@@ -2800,7 +2800,7 @@ Ext.define('UB.view.EntityGridPanel', {
       formCode: formParam.formCode,
       description: formParam.description,
       entity: this.entityName,
-      instanceID: eOpts && eOpts.instanceID,
+      instanceID: eOpts.instanceID,
       store: this.getStore(),
       addByCurrent: false,
       __mip_ondate: false, // eOpts && eOpts.__mip_ondate,

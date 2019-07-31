@@ -149,7 +149,7 @@ class JoinDS extends DataSource {
     if (!App.domainInfo.has(associatedEntityName)) {
       throw new Error(`Association entity in attribute "${attribute.name}" of object "${attribute.entity.name}" is empty`)
     }
-    super(associatedEntityName, parent)
+    super(associatedEntityName, parent, null)
     /**
      * @class JoinDS
      * @public

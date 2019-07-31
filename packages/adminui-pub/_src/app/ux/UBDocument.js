@@ -213,36 +213,34 @@ Ext.define('UB.ux.UBDocument', {
       return
     }
 
-    switch (me.ubCmp.xtype) {
-      case 'UBOnlyOffice':
-        // we can't get value from onlyOffice document server in easy way
-        // cause it's returns in async and don't have CORS headers
-        // so believe component in that question
-        if (me.ubCmp.checkDirty()) {
-          me.fireEvent('change', me, '', '')
-          me.onChange('', '')
-        }
-        break
-      default:
-        const newVal = me.ubCmp.getValue()
-        const oldVal = me.lastCmpValue
-        const cValue = me.getValue()
-        const isContentChanged = !me.isDestroyed && (me.ubCmp.isDirty ? me.ubCmp.isDirty() : !me.isEqual(newVal, oldVal))
+    if (me.ubCmp.xtype === 'UBOnlyOffice') {
+      // we can't get value from onlyOffice document server in easy way
+      // cause it's returns in async and don't have CORS headers
+      // so believe component in that question
+      if (me.ubCmp.checkDirty()) {
+        me.fireEvent('change', me, '', '')
+        me.onChange('', '')
+      }
+    } else {
+      const newVal = me.ubCmp.getValue()
+      const oldVal = me.lastCmpValue
+      const cValue = me.getValue()
+      const isContentChanged = !me.isDestroyed && (me.ubCmp.isDirty ? me.ubCmp.isDirty() : !me.isEqual(newVal, oldVal))
 
-        if (isContentChanged) {
-          me.lastCmpValue = newVal
-          let nValue = cValue ? JSON.parse(cValue) : {}
-          nValue.md5 = 'changedAt' + (new Date()).getTime()
-          me.value = nValue = JSON.stringify(nValue)
-          me.fireEvent('change', me, nValue, cValue)
-          me.onChange(newVal, oldVal)
-        } else {
-          let nValue
-          me.lastCmpValue = newVal
-          me.value = nValue = me.originalValue
-          me.fireEvent('change', me, nValue, cValue)
-          me.onChange(newVal, oldVal)
-        }
+      if (isContentChanged) {
+        me.lastCmpValue = newVal
+        let nValue = cValue ? JSON.parse(cValue) : {}
+        nValue.md5 = 'changedAt' + (new Date()).getTime()
+        me.value = nValue = JSON.stringify(nValue)
+        me.fireEvent('change', me, nValue, cValue)
+        me.onChange(newVal, oldVal)
+      } else {
+        let nValue
+        me.lastCmpValue = newVal
+        me.value = nValue = me.originalValue
+        me.fireEvent('change', me, nValue, cValue)
+        me.onChange(newVal, oldVal)
+      }
     }
   },
 
@@ -350,7 +348,7 @@ Ext.define('UB.ux.UBDocument', {
     if (me.bypassCache) {
       url += '&_dc=' + (new Date()).getTime()
     }
-    return $App.connection.get(url, {responseType: 'arraybuffer'})
+    return $App.connection.get(url, { responseType: 'arraybuffer' })
       .then(function (response) {
         if (asArrayBuffer) {
           return {
@@ -360,7 +358,7 @@ Ext.define('UB.ux.UBDocument', {
         } else {
           return new Blob(
             [response.data],
-            {type: me.documentMIME || response.headers('content-type') || defaultContentType}
+            { type: me.documentMIME || response.headers('content-type') || defaultContentType }
           )
         }
       }, function (reason) {
@@ -513,9 +511,9 @@ Ext.define('UB.ux.UBDocument', {
     }
 
     if (xtype === 'application/word' || xtype === 'application/excel') {
-        // <-- onlyOffice
-        // to prevent double loading of document from store
-        // onlyOffice has it's own block
+      // <-- onlyOffice
+      // to prevent double loading of document from store
+      // onlyOffice has it's own block
       me.createComponent(xtype)
       me.ubCmp.setSrc({
         url: url,
@@ -543,7 +541,7 @@ Ext.define('UB.ux.UBDocument', {
       onContentLoad(null, url, xtype)
     } else if (Ext.Object.getSize(val) === 0) {
       me.createComponent(xtype)
-        // xmax событие для инициализации нового документа где такое необходимо
+      // xmax событие для инициализации нового документа где такое необходимо
       if (me.ubCmp.initNewSrc) {
         me.value = me.ubCmp.initNewSrc()
       }
@@ -577,7 +575,7 @@ Ext.define('UB.ux.UBDocument', {
     return defer.promise
   },
 
-    /**
+  /**
      * Sets value for complex 'Document' attribute (for example: recStageID.docID.document)
      * @param {Object} record
      * @returns {Promise|null}
@@ -588,7 +586,7 @@ Ext.define('UB.ux.UBDocument', {
     let associationFieldName = oldFieldName.substring(0, lastSeparatorIndex) // before the last '.'.
     // ex: recStageID.docID.document -> recStageID.docID
     let documentAttrName = oldFieldName.substring(lastSeparatorIndex + 1, oldFieldName.length) // after the last '.'.
-      // ex: recStageID.docID.document -> document
+    // ex: recStageID.docID.document -> document
     let documentInstanceID = record.get(associationFieldName)
     let oldEntityName = this.entityName
     // change entityName to associatedEntity name, where we store the document
@@ -699,9 +697,9 @@ Ext.define('UB.ux.UBDocument', {
           ID: me.instanceID,
           filename: me.documentFileName || (val && val.origName ? val.origName
             : (me.documentMIME && (me.documentMIME.indexOf('/') < me.documentMIME.length - 1)
-            ? 'newfile.' + me.documentMIME.substr(me.documentMIME.indexOf('/') + 1) : ''))
+              ? 'newfile.' + me.documentMIME.substr(me.documentMIME.indexOf('/') + 1) : ''))
         },
-        headers: {'Content-Type': 'application/octet-stream'}
+        headers: { 'Content-Type': 'application/octet-stream' }
       })
     }).then(function (response) {
       const resultValue = response.data

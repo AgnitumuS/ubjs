@@ -34,12 +34,12 @@ function testUbmForm (conn) {
   let tstClobFormRow = conn.Repository(ENTITY).attrs(['ID', 'code', 'formDef', 'formCode']).where('code', '=', 'tst_clob').selectSingle()
   if (!tstClobFormRow) throw new Error('Form with code `tst_clob` not found')
   let defJson = JSON.parse(tstClobFormRow.formDef)
-  let defContent = conn.getDocument({entity: ENTITY, attribute: 'formDef', ID: tstClobFormRow.ID}, {resultIsBinary: true})
-  assert.equal(defContent.byteLength, defJson.size, `Size of actual 'tst_clob' form def content (${defContent.byteLength} should be the same as stored in metadata (${defJson.size})`)
+  let defContent = conn.getDocument({ entity: ENTITY, attribute: 'formDef', ID: tstClobFormRow.ID }, { resultIsBinary: true })
+  assert.strictEqual(defContent.byteLength, defJson.size, `Size of actual 'tst_clob' form def content (${defContent.byteLength} should be the same as stored in metadata (${defJson.size})`)
 
   let codeJson = JSON.parse(tstClobFormRow.formCode)
-  let codeContent = conn.getDocument({entity: ENTITY, attribute: 'formCode', ID: tstClobFormRow.ID}, {resultIsBinary: true})
-  assert.equal(codeContent.byteLength, codeJson.size, `Size of actual 'tst_clob' form code content (${defContent.byteLength} should be the same as stored in metadata (${codeJson.size})`)
+  let codeContent = conn.getDocument({ entity: ENTITY, attribute: 'formCode', ID: tstClobFormRow.ID }, { resultIsBinary: true })
+  assert.strictEqual(codeContent.byteLength, codeJson.size, `Size of actual 'tst_clob' form code content (${defContent.byteLength} should be the same as stored in metadata (${codeJson.size})`)
 }
 
 /**
@@ -50,12 +50,12 @@ function testUbsReport (conn) {
   let reportRow = conn.Repository(ENTITY).attrs(['ID', 'report_code', 'code', 'template']).where('report_code', '=', 'tst_html_to_pdf').selectSingle()
   if (!reportRow) throw new Error('Report with code `tst_html_to_pdf` not found')
   let codeJson = JSON.parse(reportRow.code)
-  let codeContent = conn.getDocument({entity: ENTITY, attribute: 'code', ID: reportRow.ID}, {resultIsBinary: true})
-  assert.equal(codeContent.byteLength, codeJson.size, `Size of actual report code content should be the same as stored in metadata`)
+  let codeContent = conn.getDocument({ entity: ENTITY, attribute: 'code', ID: reportRow.ID }, { resultIsBinary: true })
+  assert.strictEqual(codeContent.byteLength, codeJson.size, `Size of actual report code content should be the same as stored in metadata`)
 
   let templateJson = JSON.parse(reportRow.template)
-  let templateContent = conn.getDocument({entity: ENTITY, attribute: 'template', ID: reportRow.ID}, {resultIsBinary: true})
-  assert.equal(templateContent.byteLength, templateJson.size, `Size of actual report template content should be the same as stored in metadata`)
+  let templateContent = conn.getDocument({ entity: ENTITY, attribute: 'template', ID: reportRow.ID }, { resultIsBinary: true })
+  assert.strictEqual(templateContent.byteLength, templateJson.size, `Size of actual report template content should be the same as stored in metadata`)
 }
 
 /**
@@ -67,6 +67,6 @@ function testUbmDiagram (conn) {
   let diagramRow = conn.Repository(ENTITY).attrs(['ID', 'name', 'document']).where('name', '=', 'tst_entities').selectSingle()
   if (!diagramRow) throw new Error('Diagram with name `tst_html_to_pdf` tst_entities not found')
   let templateJson = JSON.parse(diagramRow.document)
-  let templateContent = conn.getDocument({entity: ENTITY, attribute: 'document', ID: diagramRow.ID}, {resultIsBinary: true})
-  assert.equal(templateContent.byteLength, templateJson.size, `Size of actual diagram content should be the same as stored in metadata`)
+  let templateContent = conn.getDocument({ entity: ENTITY, attribute: 'document', ID: diagramRow.ID }, { resultIsBinary: true })
+  assert.strictEqual(templateContent.byteLength, templateJson.size, `Size of actual diagram content should be the same as stored in metadata`)
 }

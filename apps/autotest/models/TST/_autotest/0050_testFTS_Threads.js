@@ -28,23 +28,23 @@ try {
   let writerPath = require.resolve('./_FTS_workerWriter.js')
   writerPath = writerPath.replace(/\\/g, '/')
   for (i = 0; i < numThreads; i++) {
-    let name = 'ftsWriter' + i
+    let writerName = 'ftsWriter' + i
     workers.push(new Worker({
-      name: name,
+      name: writerName,
       moduleName: writerPath
     }))
-    console.log('Create worker', name)
+    console.log('Create worker', writerName)
   }
 
   // add reader thread
   let readerPath = require.resolve('./_FTS_workerReader.js')
   readerPath = readerPath.replace(/\\/g, '/')
-  let name = 'ftsReader' + i
+  let readerName = 'ftsReader' + i
   workers.push(new Worker({
-    name: name,
+    name: readerName,
     moduleName: readerPath
   }))
-  console.log('Create worker', name)
+  console.log('Create worker', readerName)
 
   i = 0
   workers.forEach(function (worker) {

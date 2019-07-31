@@ -11,7 +11,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
   contentType: 'data:application/vnd.ms-excel;base64,',
   extension: 'xls',
 
-  sharedStrings: {item: [], count: 0},
+  sharedStrings: { item: [], count: 0 },
 
   /**
    * Make export
@@ -20,8 +20,8 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
    */
   format: function (store, config) {
     if (window && !window.isserver && !Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded) {
-      SystemJS.import('@unitybase/xlsx/dist/xlsx-all.min.js').then((XLSX) => {
-        window.XLSX = XLSX
+      SystemJS.import('@unitybase/xlsx/dist/xlsx-all.min.js').then((injectedXLSX) => {
+        window.XLSX = injectedXLSX
         Ext.ux.exporter.xlsxFormatter.XlsxFormatter.libsLoaded = true
         this.format(store, config)
       })
@@ -46,7 +46,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     defFont = stl.fonts.add({ code: 'def', name: 'Calibri', fontSize: 11, scheme: 'minor' })
     stl.fonts.add({ code: 'defBold', name: 'Calibri', fontSize: 11, scheme: 'minor', bold: true })
 
-    borderFull = stl.borders.add({ left: {style: 'thin'}, right: {style: 'thin'}, top: {style: 'thin'}, bottom: {style: 'thin'} })
+    borderFull = stl.borders.add({ left: { style: 'thin' }, right: { style: 'thin' }, top: { style: 'thin' }, bottom: { style: 'thin' } })
     stl.alignments.add({ code: 'Hright', horizontal: 'right' })
     stl.alignments.add({ code: 'Hcenter', horizontal: 'center', wrapText: '1' })
     stl.alignments.add({ code: 'HVcenter', horizontal: 'center', vertical: 'center', wrapText: '1' })
@@ -62,7 +62,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     intstyleCol = stl.getStyle({ font: defFont, border: borderFull, alignment: stl.alignments.named.Hright, format: stl.formats.named.intFormat })
 
     styleCol = stl.getStyle({ font: defFont, border: borderFull })
-    styleWrapCol = stl.getStyle({font: defFont, border: borderFull, alignment: stl.alignments.named.wrapText})
+    styleWrapCol = stl.getStyle({ font: defFont, border: borderFull, alignment: stl.alignments.named.wrapText })
     headerStyle = stl.getStyle({ font: stl.fonts.named.defBold, alignment: stl.alignments.named.HVcenter })
     rowHeaderStyle = stl.getStyle({ font: stl.fonts.named.defBold, fill: 'EBEDED', border: borderFull, alignment: stl.alignments.named.HVcenter })
 
@@ -74,7 +74,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
     function getTypeStyle (fld) {
       let attribute = eAttributes[fld.name]
       if (attribute) {
-        switch (attribute.dataType) {  //   entity.attributes[fld.name].
+        switch (attribute.dataType) { //   entity.attributes[fld.name].
           case UBDomain.ubDataTypes.Date: return datestyleCol
           case UBDomain.ubDataTypes.DateTime: return datestyleCol
           case UBDomain.ubDataTypes.Float: return floatstyleCol
@@ -98,7 +98,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       let attribute = eAttributes[fld.name]
       let ubDataTypes = UBDomain.ubDataTypes
       if (attribute) {
-        switch (attribute.dataType) {  //   entity.attributes[fld.name].
+        switch (attribute.dataType) { //   entity.attributes[fld.name].
           case ubDataTypes.Date: return 12
           case ubDataTypes.DateTime: return 12
           case ubDataTypes.Float: return 13
@@ -118,7 +118,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       }
     }
 
-    ws = wb.addWorkSheet({caption: config.title, name: config.title})
+    ws = wb.addWorkSheet({ caption: config.title, name: config.title })
 
     stmodel = Ext.ModelManager.getModel(store.model)
     fields = stmodel.getFields()
@@ -127,14 +127,14 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
 
     modelFields = {}
     function getModelField (fieldCode) {
-      let result
+      let modelFld
       Ext.each(fields, function (fld) {
         if (fld.name === fieldCode) {
-          result = fld
+          modelFld = fld
           return 0
         }
       }, this)
-      return result
+      return modelFld
     }
     Ext.each(config.columns, function (field, index) {
       modelFields[field.dataIndex] = getModelField(field.dataIndex)
@@ -152,7 +152,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
       colParam.push({ column: index + 1, width: getWide(fld) })
       columnTemplate.push({ column: index + 1, style: getTypeStyle(fld) })
       fldtitle = Ext.String.capitalize(field.text || fld.name || '').replace(/_/g, ' ')
-      nrowData.push({column: index + 1, value: fldtitle, style: rowHeaderStyle})
+      nrowData.push({ column: index + 1, value: fldtitle, style: rowHeaderStyle })
     }, this)
     ws.setColsProperties(colParam)
     // Header
@@ -177,7 +177,7 @@ Ext.define('Ext.ux.exporter.xlsxFormatter.XlsxFormatter', {
           value = fvalue
         }
       }
-      dataRow.push({value: value})
+      dataRow.push({ value: value })
     }
 
     // data row  ##################################################

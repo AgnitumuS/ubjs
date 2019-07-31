@@ -38,17 +38,17 @@ function onProcessReaderWorker (message) {
 
   function testReadFTS (connection) {
     for (let i = command.beginFrom; i < command.beginFrom + command.insertCount; i++) {
-      let res = connection.run({
+      let readRes = connection.run({
         entity: 'fts_ftsDefault',
         method: 'fts',
         fieldList: ['ID', 'entity', 'entitydescr', 'snippet'],
         whereList: { match: { condition: 'match', value: 'Україна' } },
         options: { limit: 100, start: 0 }
       })
-      if (!res.resultData || !res.resultData.data || !res.resultData.data.length) {
+      if (!readRes.resultData || !readRes.resultData.data || !readRes.resultData.data.length) {
         throw new Error('invalidReadSearch')
       } else {
-        console.log(`Read ${res.resultData.data.length} rows from FTS`)
+        console.log(`Read ${readRes.resultData.data.length} rows from FTS`)
       }
     }
     return 'done'

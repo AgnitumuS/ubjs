@@ -30,7 +30,6 @@ module.exports = function runFTSSpeedTest (options) {
 
 function testFTSSpeed (connection, options) {
   let trans = []
-  let curTrLen
   let iterationCnt = parseInt(options.iterationCnt, 10)
   let transLen = parseInt(options.transLen, 10)
 
@@ -39,10 +38,10 @@ function testFTSSpeed (connection, options) {
 
   let descrMaxLen = 2000
   let d = new Date(2015, 1, 1)
-  let n, descr
+  let descr
 
   console.time('FTSSpeed')
-  curTrLen = 0
+  let curTrLen = 0
   for (let i = 0; i < iterationCnt; i++) {
     d.setDate(i % 30 + 1); d.setMonth(i % 11 + 1)
     descr = bibleArr[i].slice(0, descrMaxLen)
@@ -56,7 +55,7 @@ function testFTSSpeed (connection, options) {
       }
     })
     curTrLen++
-    if (curTrLen = transLen || i === iterationCnt - 1) {
+    if (curTrLen === transLen || i === iterationCnt - 1) {
       connection.query(trans)
       trans = []
       curTrLen = 0

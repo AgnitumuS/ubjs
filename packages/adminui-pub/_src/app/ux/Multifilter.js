@@ -127,7 +127,7 @@ Ext.define('UB.ux.Multifilter', {
       attrChain = column.dataIndex.split('.')
       if (attrChain.length > 1 && !column.simpleFilter) {
         fieldList = me.gridOwner.store.ubRequest.fieldList
-        if (fieldList.indexOf(attrChain[0]) > 0) {
+        if (fieldList.indexOf(attrChain[0]) >= 0) {
           if (!filterGroups[attrChain[0]]) {
             menuItems.push({
               text: $App.domainInfo.get(me.gridOwner.entityName)
@@ -408,7 +408,7 @@ Ext.define('UB.ux.Multifilter', {
     attrChain = attrName.split('.')
     if (attrChain.length > 1 && !gridColumn.simpleFilter) {
       fieldList = grid.store.ubRequest.fieldList
-      if (fieldList.indexOf(attrChain[0]) > 0) {
+      if (fieldList.indexOf(attrChain[0]) >= 0) {
         attrName = attrChain[0]
         isDictFilter = true
       }
@@ -1344,7 +1344,7 @@ Ext.define('UB.ux.Multifilter', {
         if (newValue === 'no_filter' || newValue === 'isNull') {
           control.reset()
           multiControl.reset()
-        } if (newValue === 'by_several_value') {
+        } else if (newValue === 'by_several_value') {
           multiControl.allowBlank = !required
           multiControl.show()
         } else {
@@ -1568,7 +1568,7 @@ Ext.define('UB.ux.Multifilter', {
         if (newValue === 'no_filter' || newValue === 'isNull') {
           control.reset()
           multiControl.reset()
-        } if (newValue === 'by_several_value') {
+        } else if (newValue === 'by_several_value') {
           multiControl.allowBlank = !required
           multiControl.show()
         } else {

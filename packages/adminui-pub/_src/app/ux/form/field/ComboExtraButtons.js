@@ -22,8 +22,8 @@ Ext.define('UB.ux.form.field.ComboExtraButtons', {
     me.ownerCt = combo
     combo.on({
       afterrender: me.onParentAfterRenderer,
-      added: function (combo) {
-        me.ownerCt = combo.up('[floating]')
+      added: function (cb) {
+        me.ownerCt = cb.up('[floating]')
         me.registerWithOwnerCt()
       },
       refresh: function () {

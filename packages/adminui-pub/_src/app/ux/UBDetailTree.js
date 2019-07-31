@@ -122,9 +122,9 @@ Ext.define('UB.ux.UBDetailTree', {
 
   addBaseActions: function () {
     var
-      me = this,
-      actions = UB.ux.UBDetailTree.actionId,
-      events = UB.ux.UBDetailTree.eventId
+      me = this
+    var actions = UB.ux.UBDetailTree.actionId
+    var events = UB.ux.UBDetailTree.eventId
     // hotKeys = UB.ux.UBDetailTree.hotKeys;
 
     me.actions[actions.addNew] = new Ext.Action({
@@ -192,16 +192,16 @@ Ext.define('UB.ux.UBDetailTree', {
 
   addBaseDockedItems: function () {
     var
-      me = this,
-      actions = UB.ux.UBDetailTree.actionId,
-      menuAllActions = [
-        me.actions[actions.refresh],
-        me.actions[actions.addNew],
-        me.actions[actions.edit],
-        me.actions[actions.deleteItem],
-        me.actions[actions.up],
-        me.actions[actions.down]
-      ]
+      me = this
+    var actions = UB.ux.UBDetailTree.actionId
+    var menuAllActions = [
+      me.actions[actions.refresh],
+      me.actions[actions.addNew],
+      me.actions[actions.edit],
+      me.actions[actions.deleteItem],
+      me.actions[actions.up],
+      me.actions[actions.down]
+    ]
 
     me.dockedItems = [{
       xtype: 'toolbar',
@@ -212,8 +212,8 @@ Ext.define('UB.ux.UBDetailTree', {
 
   addBaseListeners: function () {
     var
-      me = this,
-      events = UB.ux.UBDetailTree.eventId
+      me = this
+    var events = UB.ux.UBDetailTree.eventId
     me.on('itemdblclick', me.onEditItem, me)
     me.on(events.addnew, me.onAddItem, me)
     me.on(events.edit, me.onEditItem, me)
@@ -233,7 +233,7 @@ Ext.define('UB.ux.UBDetailTree', {
    * @param {String} actionName
    */
   hideAction: function (actionName) {
-    var me = this, action
+    var me = this; var action
     action = me.actions[actionName]
     if (action) {
       action.blocked = true
@@ -247,7 +247,7 @@ Ext.define('UB.ux.UBDetailTree', {
    * @param {String} actionName
    */
   showAction: function (actionName) {
-    var me = this, action
+    var me = this; var action
     action = me.actions[actionName]
     if (action) {
       action.blocked = true
@@ -284,10 +284,10 @@ Ext.define('UB.ux.UBDetailTree', {
 
   onBeforeSelect: function (sender, selection) {
     var
-      me = this,
-      actions = UB.ux.UBDetailTree.actionId,
-      nodeType = selection.raw.nodeType,
-      behavior = me.behaviors[nodeType]
+      me = this
+    var actions = UB.ux.UBDetailTree.actionId
+    var nodeType = selection.raw.nodeType
+    var behavior = me.behaviors[nodeType]
     if (me.editing) {
       return
     }
@@ -335,13 +335,12 @@ Ext.define('UB.ux.UBDetailTree', {
   },
 
   applyData: function (root, templates, behaviors) {
-    var
-      me = this,
-      // toolBar = me.getDockedItems('toolbar[dock="top"]')[0],
-      actions = UB.ux.UBDetailTree.actionId,
-      hasMoveableNodes = behaviors.some(function (behavior) {
-        return behavior.allowedMove
-      })
+    var me = this
+    // toolBar = me.getDockedItems('toolbar[dock="top"]')[0],
+    var actions = UB.ux.UBDetailTree.actionId
+    var hasMoveableNodes = behaviors.some(function (behavior) {
+      return behavior.allowedMove
+    })
 
     me.actions[actions.up].setHidden(!hasMoveableNodes)
     me.actions[actions.down].setHidden(!hasMoveableNodes)
@@ -388,22 +387,22 @@ Ext.define('UB.ux.UBDetailTree', {
   },
   expandNode: function (node) {
     var
-      me = this,
-      expandedNodes = me.expandedNodes || {},
-      newNodes = {},
-      recursiveFn = function (node) {
-        var i, len, arr
-        if (expandedNodes[node.ID]) {
-          node.expanded = true
-        }
-        newNodes[node.ID] = true
-        if (node.children) {
-          arr = node.children
-          for (i = 0, len = arr.length; i < len; ++i) {
-            recursiveFn(arr[i])
-          }
+      me = this
+    var expandedNodes = me.expandedNodes || {}
+    var newNodes = {}
+    var recursiveFn = function (node) {
+      var i, len, arr
+      if (expandedNodes[node.ID]) {
+        node.expanded = true
+      }
+      newNodes[node.ID] = true
+      if (node.children) {
+        arr = node.children
+        for (i = 0, len = arr.length; i < len; ++i) {
+          recursiveFn(arr[i])
         }
       }
+    }
     recursiveFn(node)
     Ext.Object.each(expandedNodes, function (key) {
       if (!newNodes[key]) {
@@ -434,8 +433,7 @@ Ext.define('UB.ux.UBDetailTree', {
   },
 
   afterDelete: function (response, request, entity) {
-    var
-      me = this
+    var me = this
     // result = response ? UB.core.UBUtil.getByPropertyValue(response, 'entity', entity) : null;
     if (!response.serverFailure) {
       me.lastSelectionId = null
@@ -447,15 +445,14 @@ Ext.define('UB.ux.UBDetailTree', {
   },
 
   onEditItem: function () {
-    var
-      me = this,
-      basepanel = me.up('basepanel'),
-      selection = me.getSelectionModel().getSelection()[0],
-      parentNode = selection ? selection.parentNode : null,
-      root = me.getRootNode(),
-      editPanel = me.editPanel,
-      toolBar = me.getDockedItems('toolbar[dock="top"]')[0],
-      instanceID, behavior = {}, promise
+    var me = this
+    var basepanel = me.up('basepanel')
+    var selection = me.getSelectionModel().getSelection()[0]
+    var parentNode = selection ? selection.parentNode : null
+    var root = me.getRootNode()
+    var editPanel = me.editPanel
+    var toolBar = me.getDockedItems('toolbar[dock="top"]')[0]
+    var instanceID; var behavior = {}; var promise
     if (basepanel) {
       promise = basepanel.saveForm()
     } else {
@@ -474,67 +471,64 @@ Ext.define('UB.ux.UBDetailTree', {
       instanceID = selection.raw.ID
 
       var config = {}
-      switch (me.formViewType) {
-        case 'window':
-          config = {
-            instanceID: instanceID,
-            entity: behavior.entity,
-            formCode: behavior.onEdit,
-            method: 'select',
-            cmdType: UB.core.UBCommand.commandType.showForm,
-            isModal: true,
-            sender: me,
-            eventHandler: Ext.Function.bind(me.eventHandler, me, [], true),
-            customParams: {
-              parentNode: parentNode
-            }
+      if (me.formViewType === 'window') {
+        config = {
+          instanceID: instanceID,
+          entity: behavior.entity,
+          formCode: behavior.onEdit,
+          method: 'select',
+          cmdType: UB.core.UBCommand.commandType.showForm,
+          isModal: true,
+          sender: me,
+          eventHandler: Ext.Function.bind(me.eventHandler, me, [], true),
+          customParams: {
+            parentNode: parentNode
           }
-          if (behavior.onEditTitle) {
-            config.description = behavior.onEditTitle
+        }
+        if (behavior.onEditTitle) {
+          config.description = behavior.onEditTitle
+        }
+        UB.core.UBApp.doCommand(config)
+      } else {
+        editPanel.show().expand()
+        config = {
+          instanceID: instanceID,
+          entity: behavior.entity,
+          formCode: behavior.onEdit,
+          method: 'select',
+          cmdType: UB.core.UBCommand.commandType.showForm,
+          isModal: true,
+          sender: me,
+          cmpInitConfig: {
+            closable: true
+          },
+          eventHandler: Ext.Function.bind(me.eventHandler, me, [], true),
+          target: editPanel,
+          customParams: {
+            parentNode: parentNode
           }
-          UB.core.UBApp.doCommand(config)
-          break
-        default:
-          editPanel.show().expand()
-          config = {
-            instanceID: instanceID,
-            entity: behavior.entity,
-            formCode: behavior.onEdit,
-            method: 'select',
-            cmdType: UB.core.UBCommand.commandType.showForm,
-            isModal: true,
-            sender: me,
-            cmpInitConfig: {
-              closable: true
-            },
-            eventHandler: Ext.Function.bind(me.eventHandler, me, [], true),
-            target: editPanel,
-            customParams: {
-              parentNode: parentNode
-            }
-          }
-          if (behavior.onEditTitle) {
-            config.description = behavior.onEditTitle
-          }
-          UB.core.UBApp.doCommand(config)
-          toolBar.disable()
-          me.editing = true
-          break
+        }
+        if (behavior.onEditTitle) {
+          config.description = behavior.onEditTitle
+        }
+        UB.core.UBApp.doCommand(config)
+        toolBar.disable()
+        me.editing = true
       }
     })
   },
 
   onAddItem: function (action, nodeType) {
     var
-      me = this,
-      basepanel = me.up('basepanel'),
-      editPanel = me.editPanel,
-      parentNode = me.getSelectionModel().getSelection()[0],
-      rootNode = me.getRootNode(),
-      toolBar = me.getDockedItems('toolbar[dock="top"]')[0],
-      behavior = me.behaviors[nodeType],
-      initValue = {},
-      promise
+      me = this
+    var basepanel = me.up('basepanel')
+    var editPanel = me.editPanel
+    var parentNode = me.getSelectionModel().getSelection()[0]
+    var rootNode = me.getRootNode()
+    var toolBar = me.getDockedItems('toolbar[dock="top"]')[0]
+    var behavior = me.behaviors[nodeType]
+    var initValue = {}
+    var promise
 
     if (basepanel) {
       promise = basepanel.saveForm()
@@ -621,20 +615,20 @@ Ext.define('UB.ux.UBDetailTree', {
 
   reloadTree: function () {
     var
-      me = this,
-      nodes = {},
-      root = me.getRootNode(),
+      me = this
+    var nodes = {}
+    var root = me.getRootNode()
 
-      recursiveFn = function (node) {
-        var i, len, arr
-        nodes[node.raw.ID] = node.isExpanded()
-        if (node.childNodes) {
-          arr = node.childNodes
-          for (i = 0, len = arr.length; i < len; ++i) {
-            recursiveFn(arr[i])
-          }
+    var recursiveFn = function (node) {
+      var i, len, arr
+      nodes[node.raw.ID] = node.isExpanded()
+      if (node.childNodes) {
+        arr = node.childNodes
+        for (i = 0, len = arr.length; i < len; ++i) {
+          recursiveFn(arr[i])
         }
       }
+    }
 
     me.maskTree()
     if (root) {
@@ -695,7 +689,7 @@ Ext.define('UB.ux.UBDetailTree', {
    * @param orderEntity - entity name with orderIndex field
    */
   doExchange: function (fst, snd, orderEntity) {
-    var me = this, isEntityLockable, entity
+    var me = this; var isEntityLockable; var entity
     if (!orderEntity) {
       return
     }

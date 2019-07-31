@@ -25,7 +25,7 @@ Ext.define('PDF.cstestReport', {
     'PDF.csPrintToPdf',
     'PDF.csPdfDataGrid'
   ],
-  pdfObject: null,  // UB.ux.UBObject
+  pdfObject: null, // UB.ux.UBObject
 
   doTest: function () {
     this.pdfForm()
@@ -69,23 +69,22 @@ Ext.define('PDF.cstestReport', {
   },
 
   pdfDoc2: function () {
-    var me = this
     if (!this.requireChecked) {
       this.requireChecked = true
       PDF.init().done(function () {
         PDF.csPrintToPdf.requireFonts(
-          {fonts: [
-                        { fontName: 'CalibriImp', fontStyle: 'Normal'},
-                        { fontName: 'CalibriImp', fontStyle: 'Bold'},
-                        { fontName: 'CalibriImp', fontStyle: 'Italic'},
-                        { fontName: 'CourierImp', fontStyle: 'Normal'},
-                        { fontName: 'FixSys', fontStyle: 'Normal'},
-                        { fontName: 'TimesNewRoman', fontStyle: 'Normal'},
-                        { fontName: 'TimesNewRoman', fontStyle: 'Bold'},
-                        { fontName: 'TimesNewRoman', fontStyle: 'Italic'}
+          { fonts: [
+            { fontName: 'CalibriImp', fontStyle: 'Normal' },
+            { fontName: 'CalibriImp', fontStyle: 'Bold' },
+            { fontName: 'CalibriImp', fontStyle: 'Italic' },
+            { fontName: 'CourierImp', fontStyle: 'Normal' },
+            { fontName: 'FixSys', fontStyle: 'Normal' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Normal' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Italic' }
           ],
-            onLoad: this.pdfDoc2,
-            scope: this
+          onLoad: this.pdfDoc2,
+          scope: this
           })
       }.bind(this))
       return
@@ -115,24 +114,25 @@ Ext.define('PDF.cstestReport', {
         listeners: {
           initColontitle: function (doc, res) {
             res.align = 'center'
-                        // res.text = "стор. "+ doc.getPageNumber() +" з "+ res.totalPages;
+            // res.text = "стор. "+ doc.getPageNumber() +" з "+ res.totalPages;
           }
         }
-      }), grid,
-      text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ullamcorper varius quam quis dapibus. Donec congue velit in mi auctor sagittis. Maecenas auctor sapien sapien, et pulvinar dolor hendrerit sit amet. Ut vestibulum feugiat nibh ut lobortis. Vestibulum vel rutrum nibh. Sed at velit varius, elementum lacus vel, rutrum nibh. Nulla in imperdiet urna, at dignissim nunc. Nulla auctor nibh vitae elit facilisis, non malesuada nibh ultricies. Praesent tincidunt, lectus sed porta rutrum, risus felis suscipit turpis, eu luctus elit nisl ut purus. Donec sit amet sapien ac nulla vestibulum commodo. In hac habitasse platea dictumst.',
-      configs = [{ width: 50 }, { width: 130, border: {left: 1, top: 1, bottom: 1, right: 1} }],
-      rows = [],
-      i
+      })
+    var grid
+    var text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ullamcorper varius quam quis dapibus. Donec congue velit in mi auctor sagittis. Maecenas auctor sapien sapien, et pulvinar dolor hendrerit sit amet. Ut vestibulum feugiat nibh ut lobortis. Vestibulum vel rutrum nibh. Sed at velit varius, elementum lacus vel, rutrum nibh. Nulla in imperdiet urna, at dignissim nunc. Nulla auctor nibh vitae elit facilisis, non malesuada nibh ultricies. Praesent tincidunt, lectus sed porta rutrum, risus felis suscipit turpis, eu luctus elit nisl ut purus. Donec sit amet sapien ac nulla vestibulum commodo. In hac habitasse platea dictumst.'
+    var configs = [{ width: 50 }, { width: 130, border: { left: 1, top: 1, bottom: 1, right: 1 } }]
+    var rows = []
+    var i
 
-    doc.writeSimpleText({text: 'Тест'})
+    doc.writeSimpleText({ text: 'Тест' })
 
     doc.setPosition(170)
     doc.setlineHeight(1.5)
 
-    doc.writeSimpleText({text: 'İqtisadi İnkişaf Nazirliyinin Xarici investisiyalar və yardımların əlaqələndirilməsi şöbəsinin müdir müavini Tural İsaq oğlu Bağırzadə, Xarici investisiya siyasəti sektorunun müdiri Orxan Akif oğlu Qayıbov, məsləhətçisi Xəqani Yaşar oğlu İsayev, Xarici investisiya layihələri sektorunun baş məsləhətçisi Könül İsmət qızı Alıyeva, Yardımların əlaqələndirilməsi sektorunun aparıcı məsləhətçisi Aytən Rəfail qızı Əfəndiyeva, Xarici iqtisadi əlaqələr şöbəsinin Dövlətlərarası iqtisadi əməkdaşlıq sektorunun baş məsləhətçisi Sevinc Tərlan qızı Əliyeva, Beynəlxalq maliyyə institutları ilə əməkdaşlıq sektorunun baş məsləhətçisi Hüseyn Qənbər oğlu Quliyev, Regionların inkişafı və dövlət proqramları şöbəsinin Regionlarla iş sektorunun məsləhətçisi Elvin Elman oğlu Bağırov, Korporativ idarəetmə sektorunun məsləhətçisi Nicat İmran oğlu Eyvazzadə və Hüquq şöbəsinin Hüquqi təhlil və ekspertiza sektorunun məsləhətçisi İlqar İlham oğlu Poladov 2010-cu il 27 avqust tarixindən 14 sentyabr tarixinədək 18 təqvim günü müddətinə Koreya Respublikasının paytaxtı Seul şəhərinə ezam edilsinlər.\r\n            İqtisadi İnkişaf Nazirliyinin Xarici investisiyalar və yardımların əlaqələndirilməsi şöbəsinin müdir müavini Tural İsaq oğlu Bağırzadə, Xarici investisiya siyasəti sektorunun müdiri Orxan Akif oğlu Qayıbov, məsləhətçisi Xəqani Yaşar oğlu İsayev, Xarici investisiya layihələri sektorunun baş məsləhətçisi Könül İsmət qızı Alıyeva GH ghgj nbm.\r\n            Diacritical markss cath be used in combination with alphnumeric characters is, produce a charavcters that is nots present in the character set (encoding) used in the page. Diacritical markss catn is be used in combination with alphanimeric characters, produce a charavcters.\r\n            Diacritical markss cath be used in combination with alphnumeric characters, produce a charavcters that is nots been present in the character set (encoding) used in the page. Diacritical markss catn be used in combination with alphanimeric characters, produce SDdsadaa.'}
-        )
+    doc.writeSimpleText({ text: 'İqtisadi İnkişaf Nazirliyinin Xarici investisiyalar və yardımların əlaqələndirilməsi şöbəsinin müdir müavini Tural İsaq oğlu Bağırzadə, Xarici investisiya siyasəti sektorunun müdiri Orxan Akif oğlu Qayıbov, məsləhətçisi Xəqani Yaşar oğlu İsayev, Xarici investisiya layihələri sektorunun baş məsləhətçisi Könül İsmət qızı Alıyeva, Yardımların əlaqələndirilməsi sektorunun aparıcı məsləhətçisi Aytən Rəfail qızı Əfəndiyeva, Xarici iqtisadi əlaqələr şöbəsinin Dövlətlərarası iqtisadi əməkdaşlıq sektorunun baş məsləhətçisi Sevinc Tərlan qızı Əliyeva, Beynəlxalq maliyyə institutları ilə əməkdaşlıq sektorunun baş məsləhətçisi Hüseyn Qənbər oğlu Quliyev, Regionların inkişafı və dövlət proqramları şöbəsinin Regionlarla iş sektorunun məsləhətçisi Elvin Elman oğlu Bağırov, Korporativ idarəetmə sektorunun məsləhətçisi Nicat İmran oğlu Eyvazzadə və Hüquq şöbəsinin Hüquqi təhlil və ekspertiza sektorunun məsləhətçisi İlqar İlham oğlu Poladov 2010-cu il 27 avqust tarixindən 14 sentyabr tarixinədək 18 təqvim günü müddətinə Koreya Respublikasının paytaxtı Seul şəhərinə ezam edilsinlər.\r\n            İqtisadi İnkişaf Nazirliyinin Xarici investisiyalar və yardımların əlaqələndirilməsi şöbəsinin müdir müavini Tural İsaq oğlu Bağırzadə, Xarici investisiya siyasəti sektorunun müdiri Orxan Akif oğlu Qayıbov, məsləhətçisi Xəqani Yaşar oğlu İsayev, Xarici investisiya layihələri sektorunun baş məsləhətçisi Könül İsmət qızı Alıyeva GH ghgj nbm.\r\n            Diacritical markss cath be used in combination with alphnumeric characters is, produce a charavcters that is nots present in the character set (encoding) used in the page. Diacritical markss catn is be used in combination with alphanimeric characters, produce a charavcters.\r\n            Diacritical markss cath be used in combination with alphnumeric characters, produce a charavcters that is nots been present in the character set (encoding) used in the page. Diacritical markss catn be used in combination with alphanimeric characters, produce SDdsadaa.' }
+    )
 
-        /*
+    /*
         doc.writeSimpleText({
             //text: 'İqtisadi İnkişaf Nazirliyinin Xarici investisiyalar və yardımların əlaqələndirilməsi şöbəsinin müdir müavini Tural İsaq oğlu Bağırzadə, Xarici investisiya siyasəti sektorunun müdiri Orxan Akif oğlu Qayıbov, məsləhətçisi Xəqani Yaşar oğlu İsayev, Xarici investisiya layihələri sektorunun baş məsləhətçisi Könül İsmət qızı Alıyeva, Yardımların əlaqələndirilməsi sektorunun aparıcı məsləhətçisi Aytən Rəfail qızı Əfəndiyeva, Xarici iqtisadi əlaqələr şöbəsinin Dövlətlərarası iqtisadi əməkdaşlıq sektorunun baş məsləhətçisi Sevinc Tərlan qızı Əliyeva, Beynəlxalq maliyyə institutları ilə əməkdaşlıq sektorunun baş məsləhətçisi Hüseyn Qənbər oğlu Quliyev, Regionların inkişafı və dövlət proqramları şöbəsinin Regionlarla iş sektorunun məsləhətçisi Elvin Elman oğlu Bağırov, Korporativ idarəetmə sektorunun məsləhətçisi Nicat İmran oğlu Eyvazzadə və Hüquq şöbəsinin Hüquqi təhlil və ekspertiza sektorunun məsləhətçisi İlqar İlham oğlu Poladov 2010-cu il 27 avqust tarixindən 14 sentyabr tarixinədək 18 təqvim günü müddətinə Koreya Respublikasının paytaxtı Seul şəhərinə ezam edilsinlər.\r\nİqtisadi İnkişaf Nazirliyinin Xarici investisiyalar və yardımların əlaqələndirilməsi şöbəsinin müdir müavini Tural İsaq oğlu Bağırzadə, Xarici investisiya siyasəti sektorunun müdiri Orxan Akif oğlu Qayıbov, məsləhətçisi Xəqani Yaşar oğlu İsayev, Xarici investisiya layihələri sektorunun baş məsləhətçisi Könül İsmət qızı Alıyeva GH ghgj nbm.\r\n            Diacritical markss cath be used in combination with alphnumeric characters is, produce a charavcters that is nots present in the character set (encoding) used in the page. Diacritical markss catn is be used in combination with alphanimeric characters, produce a charavcters.\r\n            Diacritical markss cath be used in combination with alphnumeric characters, produce a charavcters that is nots been present in the character set (encoding) used in the page. Diacritical markss catn be used in combination with alphanimeric characters, produce SDdsadaa.',
             text: 'Some diacritical marks, like grave (  ̀) and acute (  ́) are called accents.\
@@ -217,13 +217,13 @@ Ext.define('PDF.cstestReport', {
 
   pdfDoc: function () {
     var
-      me = this, i,
-      creationDate = Ext.Date.format(new Date(), 'd.m.Y H:i(worry)'),
-      stat = PDF.csPdfDataGrid,
-      center = { align: 'center' },
-      right = { align: 'right' },
-      letters = 'Тест документа Тест апостроф ‘ и ‘\'',
-      pdf, grid, text, testText, testText2, largeText, testText3, testText4, tesrText5
+      me = this; var i
+    var creationDate = Ext.Date.format(new Date(), 'd.m.Y H:i(worry)')
+    var stat = PDF.csPdfDataGrid
+    var center = { align: 'center' }
+    var right = { align: 'right' }
+    var letters = 'Тест документа Тест апостроф ‘ и ‘\''
+    var pdf; var grid; var text; var testText; var testText2; var largeText; var testText3; var testText4; var tesrText5
 
     testText3 = 'Житомирська обл., м. Новоград-Волинський, вул. Гайдара Аркадія, буд. 10\r\n11111111111111111111111111111111111111111111111111111111 11111111111111111111111111111111122222222222222222222222222222222222222222222222222222222222222222222222222222222222333333333333333333333333333333333333333333333333333333333333333333333333333333333333344444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444445555555555555555555555555555555555555555555555555555555555555555555555555555 55555556666666666666666666666666666666666666666666666666666666666666666666666666666666666666666777777777777777777777777777777777777777777777777777777777777777777777777777777777777771010101010101010111111111111111111111111111111111111111111111111111111111111111111111111111111111112121212121212121212121212121212121212121212121 212121212121212121212121212121212131313131313131313131313131313131313131313131313131313131313131313131313131313131313131414141414141414141414141414141414141414141414141414141414141414141414141414141414141414151515151515151515151515151515151515151515151515151515151515151515151515151516161616161616161616161616161616161616161616161616161616161616161616161616161616161617171717171717171717171717171717171717171717171717171717171717171717171717171717171717181818181818181818181818181818181818181818181818181818181818181818181818181818191919191919191919191919191919191919191919191919191919191919191919191919191919191919202020202020202020202020202020202020202020202020202020202020202020202020202020202020\r\n21\r\n22\r\n23\r\n24\r\n25\r\n26\r\n27\r\n28\r\n29\r\n30\r\n31\r\n32\r\n33\r\n34\r\n35\r\n36\r\n37\r\n38\r\n39\r\n40\r\n41\r\n42\r\n43\r\n44\r\n45\r\n46\r\n47\r\n48\r\n49\r\n50\r\n51\r\n52\r\n53\r\n54\r\n55\r\n56\r\n57\r\n58\r\n59\r\n60\r\n61\r\n62\r\n63\r\n64\r\n65\r\n66\r\n67\r\n68\r\n69\r\n70\r\n71\r\n72\r\n73\r\n74\r\n75\r\n76\r\n77\r\n78\r\n79\r\n80\r\n81\r\n82\r\n83\r\n84\r\n85\r\n86\r\n87\r\n88\r\n89\r\n90\r\n91\r\n92\r\n93\r\n94\r\n95\r\n96\r\n97\r\n98\r\n99\r\n100\r\n\r\n'
     testText = 'Законопроект уже доступен по адресу http://sips.gov.ua/ua/pr121313. Викимедиа Украина уже официально заявила о своей глубокой взволнованности, однако протестного настроения более пока не заметно.' +
@@ -251,18 +251,18 @@ Ext.define('PDF.cstestReport', {
       this.requireChecked = true
       PDF.init().done(function () {
         PDF.csPrintToPdf.requireFonts(
-          {fonts: [
-                      { fontName: 'CalibriImp', fontStyle: 'Normal'},
-                      { fontName: 'CalibriImp', fontStyle: 'Bold'},
-                      { fontName: 'CalibriImp', fontStyle: 'Italic'},
-                      { fontName: 'CourierImp', fontStyle: 'Normal'},
-                      { fontName: 'FixSys', fontStyle: 'Normal'},
-                      { fontName: 'TimesNewRoman', fontStyle: 'Normal'},
-                      { fontName: 'TimesNewRoman', fontStyle: 'Bold'},
-                      { fontName: 'TimesNewRoman', fontStyle: 'Italic'}
+          { fonts: [
+            { fontName: 'CalibriImp', fontStyle: 'Normal' },
+            { fontName: 'CalibriImp', fontStyle: 'Bold' },
+            { fontName: 'CalibriImp', fontStyle: 'Italic' },
+            { fontName: 'CourierImp', fontStyle: 'Normal' },
+            { fontName: 'FixSys', fontStyle: 'Normal' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Normal' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Bold' },
+            { fontName: 'TimesNewRoman', fontStyle: 'Italic' }
           ],
-            onLoad: this.pdfDoc,
-            scope: this
+          onLoad: this.pdfDoc,
+          scope: this
           })
       }.bind(this))
       return
@@ -271,9 +271,9 @@ Ext.define('PDF.cstestReport', {
     var stTime = (new Date()).getTime()
 
     pdf = Ext.create('PDF.csPrintToPdf', {
-      font: {name: 'TimesNewRoman', size: 14, type: 'Normal'},
-      margin: {top: 10, right: 8, bottom: 8, left: 20},
-        // font: { name: 'CalibriImp',  type: 'Normal',   size: 13 },
+      font: { name: 'TimesNewRoman', size: 14, type: 'Normal' },
+      margin: { top: 10, right: 8, bottom: 8, left: 20 },
+      // font: { name: 'CalibriImp',  type: 'Normal',   size: 13 },
       // margin: {left: 50, right: 80},
       topColontitle: {
         height: 8,
@@ -294,7 +294,7 @@ Ext.define('PDF.cstestReport', {
           }
         },
         initPage: function (doc) {
-                /*
+          /*
                 doc.pdf.setTextColorExt(180,180,180);
                 for (var c = doc.page.innerSize.topColon; c < doc.page.innerSize.bottomColon; c += 30){
                     doc.createTextBox({
@@ -311,60 +311,60 @@ Ext.define('PDF.cstestReport', {
     })
 
     pdf.setFontColor('green')
-    pdf.writeSimpleText({text: 'Test wordWrap ssssssssssssssssss 11111111111111111111111111111 5555555555555555555555 777777' +
+    pdf.writeSimpleText({ text: 'Test wordWrap ssssssssssssssssss 11111111111111111111111111111 5555555555555555555555 777777' +
           testText4,
-      wordWrap: false,
-      splitOnPage: false,
-      align: 'left',
-      width: 150})
+    wordWrap: false,
+    splitOnPage: false,
+    align: 'left',
+    width: 150 })
 
     pdf.setFontColor('pink')
 
     grid = pdf.createGrid({
       splitOnPage: true,
       columns: [
-              { width: 30, border: {top: '1pt', bottom: '1pt', left: '1pt', right: '1pt', color: 'red' }, align: 'center', hAlign: 'center'},
-              { width: 30, border: '1pt', borderColor: 'red', align: 'center', hAlign: 'center'},
-              { width: 20, border: '1pt', borderColor: 'red', align: 'right', hAlign: 'bottom'},
-              { width: 10, border: '1pt', borderColor: 'red', hAlign: 'bottom'}
+        { width: 30, border: { top: '1pt', bottom: '1pt', left: '1pt', right: '1pt', color: 'red' }, align: 'center', hAlign: 'center' },
+        { width: 30, border: '1pt', borderColor: 'red', align: 'center', hAlign: 'center' },
+        { width: 20, border: '1pt', borderColor: 'red', align: 'right', hAlign: 'bottom' },
+        { width: 10, border: '1pt', borderColor: 'red', hAlign: 'bottom' }
       ]
     })
 
-    grid.addRow(['cellNum 1  rowSpan: 2, colSpan: 2 ', 'cellNum 2 colSpan: 2 '], [{rowSpan: 2, colSpan: 2}, { colSpan: 2}])
+    grid.addRow(['cellNum 1  rowSpan: 2, colSpan: 2 ', 'cellNum 2 colSpan: 2 '], [{ rowSpan: 2, colSpan: 2 }, { colSpan: 2 }])
     grid.addRow(['cellNum 3', 'cellNum 4'])
-    grid.addRow(['cellNum 5', 'cellNum 6 colSpan: 2 ', 'cellNum 7'], [{}, {colSpan: 2}, {rowSpan: 2}])
+    grid.addRow(['cellNum 5', 'cellNum 6 colSpan: 2 ', 'cellNum 7'], [{}, { colSpan: 2 }, { rowSpan: 2 }])
     grid.addRow(['cellNum 8', 'cellNum 9', 'cellNum 10'])
 
-      // var textw =  pdf.getTextWidth(testText3);
-      // textw =  pdf.getTextWidth('test');
+    // var textw =  pdf.getTextWidth(testText3);
+    // textw =  pdf.getTextWidth('test');
 
-    pdf.writeSimpleText({text: 'Test wordWrap ssssssssssssssssss 11111111111111111111111111111 5555555555555555555555 777777' +
+    pdf.writeSimpleText({ text: 'Test wordWrap ssssssssssssssssss 11111111111111111111111111111 5555555555555555555555 777777' +
           testText4,
-      wordWrap: false,
-      splitOnPage: false,
-      align: 'left',
-      width: 150})
+    wordWrap: false,
+    splitOnPage: false,
+    align: 'left',
+    width: 150 })
 
-    pdf.writeSimpleText({text: 'This is <b>bold text</b>and this is <i>italic</i><br/>on new line. Colors: ' +
+    pdf.writeSimpleText({ text: 'This is <b>bold text</b>and this is <i>italic</i><br/>on new line. Colors: ' +
           '<font color="red">R</font><font color="orange">A</font><font color="yellow">I</font>' +
           '<font color="green">N</font><font color="#6495ed">B</font><font color="blue">O</font>' +
           '<font color="#9370db">W</font>',
-      isXml: true})
+    isXml: true })
 
     for (var x = 7; x < 42; x++) {
-      pdf.writeSimpleText({text: tesrText5, align: 'left', font: {size: x } })
+      pdf.writeSimpleText({ text: tesrText5, align: 'left', font: { size: x } })
     }
 
-    pdf.writeSimpleText({text: testText4, splitOnPage: false, align: 'justify', width: 150})
-    pdf.writeSimpleText({text: testText3, splitOnPage: true, align: 'justify', width: 150})
+    pdf.writeSimpleText({ text: testText4, splitOnPage: false, align: 'justify', width: 150 })
+    pdf.writeSimpleText({ text: testText3, splitOnPage: true, align: 'justify', width: 150 })
     pdf.movePosition(10)
-    pdf.writeSimpleText({text: testText4 + '\r\n\r\n' + testText, splitOnPage: true, align: 'justify'})
+    pdf.writeSimpleText({ text: testText4 + '\r\n\r\n' + testText, splitOnPage: true, align: 'justify' })
     pdf.movePosition(10)
 
-      // pdf.pdf.setLineLeading(2);
-     // console.log(JSON.stringify(pdf.page));
+    // pdf.pdf.setLineLeading(2);
+    // console.log(JSON.stringify(pdf.page));
 
-     /*
+    /*
      for(i = 0; i < 50000; i++){
          var top = 0;
          pdf.pdf.textExt(
@@ -381,21 +381,21 @@ Ext.define('PDF.cstestReport', {
       alert((new Date()).getTime() - stTime );
      */
 
-      // pdf.writeSimpleText({text:"1Загальна площа (кв.м): 75, Матеріали стін: дерево, Площа земельної ділянки (кв.м): 175, Відсоток зносу aaaaaaaaa", splitOnPage:true});
-      // pdf.movePosition(10);
+    // pdf.writeSimpleText({text:"1Загальна площа (кв.м): 75, Матеріали стін: дерево, Площа земельної ділянки (кв.м): 175, Відсоток зносу aaaaaaaaa", splitOnPage:true});
+    // pdf.movePosition(10);
 
     grid = pdf.createGrid({
       splitOnPage: true,
       columns: [
-              { width: 50, border: {top: 1, bottom: 1, left: 1, right: 1, color: [200, 200, 160]}},
-              { width: 130, border: {top: 1, bottom: 1, left: 1, right: 1, color: [255, 90, 0]}}
+        { width: 50, border: { top: 1, bottom: 1, left: 1, right: 1, color: [200, 200, 160] } },
+        { width: 130, border: { top: 1, bottom: 1, left: 1, right: 1, color: [255, 90, 0] } }
       ]
     })
     grid.addRow(['Тип майна', 'домоволодіння, Сарай літ Б\r\nПогріб  літ В\r\nОгорожа 1-2 \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n \r\nліт В'])
     grid.addRow(['Тип майна', 'домоволодіння, Сарай літ Б\r\nПогріб  літ В\r\nОгорожа 1-2 \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n \r\nліт В'])
     pdf.movePosition(10)
 
-      /*
+    /*
       grid = pdf.createGrid({
           columns:[
               {width: 50,  border: 1},
@@ -423,7 +423,7 @@ Ext.define('PDF.cstestReport', {
       pdf.movePosition(10);
       */
 
-      /*
+    /*
       pdf.writeSimpleText({text:"Загальна площа (кв.м): 75, Матеріали стін: дерево, Площа земельної ділянки (кв.м): 175, Відсоток зносу aaaaaaaaa"});
 
       var testText0 = "";

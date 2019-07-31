@@ -37,7 +37,7 @@ $(function () {
       },
       select: attributes4Select.map(function (col) { return _.isObject(col) ? col.dataField : col })
     })
-    var dataGrid = $('#gridContainer').dxDataGrid({
+    $('#gridContainer').dxDataGrid({
       dataSource: dataSource,
       columns: attributes4Select,
 

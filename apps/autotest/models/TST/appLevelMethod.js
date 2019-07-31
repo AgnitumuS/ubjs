@@ -29,10 +29,9 @@ const FIXTURES = path.join(GS_PATH, '_autotest', 'fixtures')
  * @param {THTTPResponse} resp
  */
 function echoToFile (req, resp) {
-  var fs = require('fs')
   fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
   resp.statusCode = 200
-  resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), {encoding: 'bin'}))
+  resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), { encoding: 'bin' }))
 }
 
 /**
@@ -41,8 +40,7 @@ function echoToFile (req, resp) {
  * @param {THTTPResponse} resp
  */
 function echoFromFile (req, resp) {
-  var fs = require('fs')
-  var str = fs.readFileSync(path.join(FIXTURES, 'respD.txt'), 'utf8')
+  let str = fs.readFileSync(path.join(FIXTURES, 'respD.txt'), 'utf8')
   resp.statusCode = 200
   resp.writeEnd(str)
 }
@@ -68,8 +66,8 @@ tst_service.on('multiply:after', function () {
  * @param {THTTPResponse} resp
  */
 function getDocumentLog (req, resp) {
-  var querystring = require('querystring'),
-    params = querystring.parse(req.parameters)
+  var querystring = require('querystring')
+  var params = querystring.parse(req.parameters)
   if (resp.statusCode === 200) {
     console.log('User with ID', Session.userID, 'obtain document using params', params)
   }
@@ -91,8 +89,8 @@ App.on('timeStamp:before',
 App.on('timeStamp:after', function (req, resp) { console.log('timeStamp after!') })
 
 // require('http').setGlobalProxyConfiguration('proxy3.softline.main:3249', 'localhost');
-var oID = require('@unitybase/openid-connect'),
-  oIdEndPoint = oID.registerEndpoint('openIDConnect')
+var oID = require('@unitybase/openid-connect')
+var oIdEndPoint = oID.registerEndpoint('openIDConnect')
 
 oIdEndPoint.registerProvider('IdentityServer', {
   authUrl: 'https://biztech-prototype.dev.softengi.com:4450/connect/authorize',
@@ -176,30 +174,30 @@ function testServerSideBLOB (req, resp) {
       .limit(1).selectSingle()
     assert.ok(firstDoc, `${DOC_ENTITY} with code "${DOC_CODE}" not found`)
 
-    let content = fs.readFileSync(__filename, {encoding: 'bin'})
+    let content = fs.readFileSync(__filename, { encoding: 'bin' })
     let fn = path.basename(__filename)
     let blobItem = App.blobStores.putContent(
-      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, fileName: fn},
+      { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, fileName: fn },
       content
     )
-    assert.equal(blobItem.store, 'simple')
-    assert.equal(blobItem.origName, fn)
-    assert.equal(blobItem.ct, 'application/javascript; charset=utf-8')
+    assert.strictEqual(blobItem.store, 'simple')
+    assert.strictEqual(blobItem.origName, fn)
+    assert.strictEqual(blobItem.ct, 'application/javascript; charset=utf-8')
     let fStat = fs.statSync(__filename)
-    assert.equal(blobItem.size, fStat.size)
-    assert.equal(blobItem.isDirty, true, 'BLOB should be dirty after putContent')
+    assert.strictEqual(blobItem.size, fStat.size)
+    assert.strictEqual(blobItem.isDirty, true, 'BLOB should be dirty after putContent')
     let tmpContent = App.blobStores.getContent(
-      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true},
-      {encoding: 'bin'}
+      { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true },
+      { encoding: 'bin' }
     )
-    assert.equal(tmpContent.byteLength, fStat.size, `temp content size ${tmpContent.byteLength} not match real ${fStat.size}`)
+    assert.strictEqual(tmpContent.byteLength, fStat.size, `temp content size ${tmpContent.byteLength} not match real ${fStat.size}`)
 
     let tmpStrContent = App.blobStores.getContent(
-      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true},
-      {encoding: 'utf-8'}
+      { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE, isDirty: true },
+      { encoding: 'utf-8' }
     )
     let realStrContent = fs.readFileSync(__filename, 'utf8')
-    assert.equal(tmpStrContent, realStrContent, 'BLOB store content obtained as string must match')
+    assert.strictEqual(tmpStrContent, realStrContent, 'BLOB store content obtained as string must match')
 
     let dataStore = UB.DataStore(DOC_ENTITY)
     dataStore.run('lock', {
@@ -221,23 +219,23 @@ function testServerSideBLOB (req, resp) {
     })
     assert.ok(newBlobItem, 'updated blobItem content should be non empty')
     let i = JSON.parse(newBlobItem)
-    assert.equal(i.v, 1, 'blobstore v1 implementation')
-    assert.equal(i.store, 'simple')
-    assert.equal(i.origName, fn)
+    assert.strictEqual(i.v, 1, 'blobstore v1 implementation')
+    assert.strictEqual(i.store, 'simple')
+    assert.strictEqual(i.origName, fn)
     // assert.equal(i.relPath, '')
 
     let binContent = App.blobStores.getContent(
-      {ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE},
-      {encoding: 'bin'}
+      { ID: firstDoc.ID, entity: DOC_ENTITY, attribute: DOC_ATTRIBUTE },
+      { encoding: 'bin' }
     )
-    assert.equal(binContent.byteLength, fStat.size, `content size ${binContent.byteLength} not match real ${fStat.size}`)
+    assert.strictEqual(binContent.byteLength, fStat.size, `content size ${binContent.byteLength} not match real ${fStat.size}`)
   } catch (e) {
     err = e.message + 'Server-side all stack: ' + e.stack
   }
   if (err) {
-    resp.writeEnd({success: false, reason: err})
+    resp.writeEnd({ success: false, reason: err })
   } else {
-    resp.writeEnd({success: true})
+    resp.writeEnd({ success: true })
   }
 }
 App.registerEndpoint('testServerSideBLOB', testServerSideBLOB, false)
@@ -287,7 +285,7 @@ function dbRaw (req, resp) {
   dataStore.runSQL(SQL, {})
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({id: dataStore.get(0), name: dataStore.get(1)})
+  resp.writeEnd({ id: dataStore.get(0), name: dataStore.get(1) })
 }
 App.registerEndpoint('dbRaw', dbRaw, false)
 
@@ -317,7 +315,6 @@ function dbLong (req, resp) {
 }
 App.registerEndpoint('dbLong', dbLong, false)
 
-
 /**
  * Single database query (ORM)  for performance test
  * @param {THTTPRequest} req
@@ -325,9 +322,9 @@ App.registerEndpoint('dbLong', dbLong, false)
  */
 function arrayBind (req, resp) {
   let s = UB.DataStore('uba_user')
-  s.execSQL('insert into uba_user (ID, name) values (?,?)', {ids: [1, 2], names: ['aa', 'bb']})
+  s.execSQL('insert into uba_user (ID, name) values (?,?)', { ids: [1, 2], names: ['aa', 'bb'] })
   resp.statusCode = 200
   resp.writeHead('Content-Type: application/json; charset=UTF-8')
-  resp.writeEnd({ok: true})
+  resp.writeEnd({ ok: true })
 }
 App.registerEndpoint('arrayBind', arrayBind, false)

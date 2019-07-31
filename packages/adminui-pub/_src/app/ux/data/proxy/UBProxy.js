@@ -171,8 +171,8 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
       start, limit,
       operationFilterWhereList, operationOrderList,
       resultSet, fnFilters = [],
-      successFn = function (resultSet) {
-        operation.resultSet = resultSet
+      successFn = function (res) {
+        operation.resultSet = res
         operation.setCompleted()
         operation.setSuccessful()
         scope = scope || {}
@@ -266,13 +266,13 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
    * @return {Object}
    */
   operationFilter2WhereList: function (operation, entityName, fnFilters) {
-    var filterItem, start = 100, filter
+    let start = 100
     if (!operation.filters) return
     let L = operation.filters.length
-    if (!(L > 0)) return
+    if (!L) return
     let result = {}
     for (let i = 0; i < L; ++i) {
-      filterItem = operation.filters[i]
+      let filterItem = operation.filters[i]
       if (filterItem.disabled) continue
       if (fnFilters && filterItem.initialConfig.filterFn && !filterItem.initialConfig.property) {
         fnFilters.push(filterItem.initialConfig.filterFn)
@@ -280,7 +280,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
       }
       if (!filterItem.property) throw new Error('invalid filter: "filterItem.property" must have a value')
 
-      filter = UB.ux.data.proxy.UBProxy.ubFiltersItemToUBWhereListItem(
+      let filter = UB.ux.data.proxy.UBProxy.ubFiltersItemToUBWhereListItem(
         filterItem,
         $App.domainInfo.get(entityName).attr(filterItem.property).dataType
       )

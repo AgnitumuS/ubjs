@@ -550,7 +550,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       // добавляем отсутствующие элементы в схеме
       if (!hasInheritage && metaObj.mixins && metaObj.mixins.unity &&
       /** metaObj.mixins.unity.enabled &&**/ graphObject[metaObj.mixins.unity.entity]) {
-        var val = { linkType: 'inheritance', srcObj: objCode, srcProp: 'ID', destObj: metaObj.mixins.unity.entity, destProp: 'ID' }
+        let val = { linkType: 'inheritance', srcObj: objCode, srcProp: 'ID', destObj: metaObj.mixins.unity.entity, destProp: 'ID' }
         me.editor.graph.addEdge(me.createEdge(val), null, cell, graphObject[metaObj.mixins.unity.entity])
       }
 
@@ -559,8 +559,8 @@ Ext.define('UB.ux.UBMetaDiagram', {
           return true
         }
         if (attr.dataType === 'Entity' && (attrCode.toUpperCase() !== 'ID') && graphObject[attr.associatedEntity.toLowerCase()] &&
-                    !existProps[attrCode]) {
-          var val = { linkType: 'association', srcObj: objCode, srcProp: attrCode, destObj: attr.associatedEntity, destProp: 'ID' }
+          !existProps[attrCode]) {
+          let val = { linkType: 'association', srcObj: objCode, srcProp: attrCode, destObj: attr.associatedEntity, destProp: 'ID' }
           me.editor.graph.addEdge(me.createEdge(val), null, cell, graphObject[attr.associatedEntity.toLowerCase()])
         }
       })
@@ -1091,7 +1091,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
 
   showTasks: function () {
     var me = this, taskWnd, graph = me.editor.graph,
-      taskPnl, taskEl
+      taskPnl
     if (me.editor.tasks === null) {
       var div = document.createElement('div')
       div.style.padding = '4px'
@@ -1120,7 +1120,7 @@ Ext.define('UB.ux.UBMetaDiagram', {
       taskWnd.registerWithOwnerCt()
       var tdom = taskPnl.getEl().dom
       document.getElementById(tdom.id + '-innerCt').appendChild(div)
-      me.taskEl = taskEl = div
+      me.taskEl = div
 
       // Installs a function to update the contents
       // of the tasks window on every change of the

@@ -44,31 +44,31 @@ function runTest () {
   res = JSON.parse(db.run('select id from uba_user where :name2: = :(\'testinline\'): and name = ?', { 0: 'anonymous', name2: 'testinline' }))
   assert.strictEqual(res.length, 1, `Mix un-named named and inlined parameters v2. Expect 1 row, got ${res.length}`)
 
-  return
+  // return
   // tests below are failed
-  if (App.domainInfo.connections[0].dialect !== 'SQLite3') {
-    res = JSON.parse(db.run(`select id from uba_user where id in (select id from :(${JSON.stringify([UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID])}):)`, {}))
-    assert.strictEqual(res.length, 2, `Named array binding. Expect 2 row, got ${res.length}`)
-  }
-
-  res = JSON.parse(db.run('select id from uba_user where :name2: = \'testinline\' and name = ?', { name2: 'testinline', 0: 'anonymous' }))
-  assert.strictEqual(res.length, 1, `Mix un-named and named parameters - param order not the same. Expect 1 row, got ${res.length}`)
-
-  res = JSON.parse(db.run('select id from uba_user where :name2: = :(\'testinline\'): and name = ?', { name2: 'testinline', 0: 'anonymous' }))
-  assert.strictEqual(res.length, 1, `Mix un-named named and inlined parameters - param order not the same. Expect 1 row, got ${res.length}`)
-
-  const id = db.genID('tst_blob')
-  const buf = Buffer.from('qwerty')
-  ok(db.exec('insert into tst_blob(id, description, blb) values(:ID:, :description:, :blb:)', {
-    ID: id,
-    description: 'testAsSetter',
-    blb: buf
-  }))
-
-  res = JSON.parse(db.run('select id, description, blb from tst_blob where id = ?', { 0: id }))
-  const buf1 = Buffer.from(res[0].blb.substr(1), 'base64')
-  assert.strictEqual(res.length, 1, ``)
-  assert.strictEqual(buf1.compare(buf), 0, '')
+  // if (App.domainInfo.connections[0].dialect !== 'SQLite3') {
+  //   res = JSON.parse(db.run(`select id from uba_user where id in (select id from :(${JSON.stringify([UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID])}):)`, {}))
+  //   assert.strictEqual(res.length, 2, `Named array binding. Expect 2 row, got ${res.length}`)
+  // }
+  //
+  // res = JSON.parse(db.run('select id from uba_user where :name2: = \'testinline\' and name = ?', { name2: 'testinline', 0: 'anonymous' }))
+  // assert.strictEqual(res.length, 1, `Mix un-named and named parameters - param order not the same. Expect 1 row, got ${res.length}`)
+  //
+  // res = JSON.parse(db.run('select id from uba_user where :name2: = :(\'testinline\'): and name = ?', { name2: 'testinline', 0: 'anonymous' }))
+  // assert.strictEqual(res.length, 1, `Mix un-named named and inlined parameters - param order not the same. Expect 1 row, got ${res.length}`)
+  //
+  // const id = db.genID('tst_blob')
+  // const buf = Buffer.from('qwerty')
+  // ok(db.exec('insert into tst_blob(id, description, blb) values(:ID:, :description:, :blb:)', {
+  //   ID: id,
+  //   description: 'testAsSetter',
+  //   blb: buf
+  // }))
+  //
+  // res = JSON.parse(db.run('select id, description, blb from tst_blob where id = ?', { 0: id }))
+  // const buf1 = Buffer.from(res[0].blb.substr(1), 'base64')
+  // assert.strictEqual(res.length, 1, ``)
+  // assert.strictEqual(buf1.compare(buf), 0, '')
 /*
 // this fail for SQLite3 (no array binding) - TB tested for other DB
   st.runSQL('select id from uba_user where id in (:ids:)', {ids: [UBA.USERS.ADMIN.ID, UBA.USERS.ANONYMOUS.ID]})

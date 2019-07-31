@@ -44,7 +44,7 @@ Ext.define('UB.core.UBDataLoader', {
     })
 
     return store.load()
-      .then(function (store) {
+      .then(function () {
         var record
         if (store.getCount() > 0) {
           record = store.getAt(0)

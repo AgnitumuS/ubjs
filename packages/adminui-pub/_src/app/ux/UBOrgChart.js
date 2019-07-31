@@ -1054,11 +1054,11 @@ Ext.define('UB.ux.UBOrgChart', {
 
     graph.toggleCells(show, cells, true)
     if (show) {
-      Ext.Array.each(cells, function (cell) {
-        overlay = me.getExpandOvelay(cell)
+      Ext.Array.each(cells, function (c) {
+        overlay = me.getExpandOvelay(c)
         if (overlay && overlay.expanded) {
           overlay.image.src = me.collapseImage
-          me.updateCell(cell)
+          me.updateCell(c)
         }
       })
     }
@@ -1407,10 +1407,10 @@ Ext.define('UB.ux.UBOrgChart', {
             me.getEl().unmask()
           }
         })
-      } catch (err) {
+      } catch (e) {
         me.getEl().unmask()
-        defer.reject(err)
-        throw err
+        defer.reject(e)
+        throw e
       }
     }, function (reason) {
       defer.reject(reason)
