@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - in case UBNativeMessage instantiated inside iFrame `window.parent.postMessage` will be called with 
  `targetOrign` calculated during UBNativeMessage.connect. This prevent possible XSS attack to the NativeMessages app 
-
+ - UBNativeMessage will show extension setup instruction ASAP in case `__connect` to native messages host is failed
+  Technical details: for unknown reason in chrome 75 response for message to not existing host is a valid message instead of timeout
+   
 ## [5.3.9]
 ### Added
  - `ClientRepository.rawResult` property. Contains a server response in raw format. Can be used to

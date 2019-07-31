@@ -122,6 +122,16 @@ function UBNativeMessage (featureConfig) {
     if (!msg || !msg.hasOwnProperty('msgType') || !msg.hasOwnProperty('messageID') || !msg.hasOwnProperty('clientID')) {
       console.error('Empty or invalid content message')
     }
+    if ((msg.clientID === '') && (msg.messageID === -1) && (msg.msgType = 'reject')) {
+      // native host connection error. For unknown reason clientID & messageId is lost in such type of message
+      // there is slight chance what message not for this Client (in case of several UBNativeMessages instances),
+      // but I (MPV) do not know how to solve this
+      let messageID = Object.keys(me.pendingMessages)[0]
+      if (!messageID) return // this instance do not have any pending messages - try another UBNativeMessage instance
+      clearTimeout(me.pendingMessages[messageID].timerID)
+      me.onMsgTimeOut(messageID)
+      return
+    }
     if (msg.clientID !== me.id) { // this is message to another UBNativeMessage instance
       return
     }
