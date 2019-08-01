@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.9]
+### Fixed
+  - loading the `ubDetailGrid`, which refers to the empty "masterField" value. (For example, when opening a form to create a new record)
+  
 ## [5.10.5]
 ### Fixed
   - enable Action ('del') after add first row in grid
