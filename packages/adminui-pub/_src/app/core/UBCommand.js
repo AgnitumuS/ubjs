@@ -204,7 +204,7 @@ Ext.define('UB.core.UBCommand', {
             expression: detailField,
             condition: 'equal'
           }
-          let masterID = record ? record.get(masterFields[i]) : 0
+          let masterID = record && record.get(masterFields[i]) ? record.get(masterFields[i]) : 0
           if (UB.connection.UBQLv2) {
             item.value = masterID
           } else {
