@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/uba",
-  "version": "5.2.3",
+  "version": "5.2.4",
   "description": "UnityBase Administrative model. Define users, roles and permissions",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/uba",
   "config": {
