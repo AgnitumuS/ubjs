@@ -4,6 +4,7 @@ const __i18n = {
   monkeyRequestsDetected: 'Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?'
 }
 const FORMAT_RE = /{([0-9a-zA-Z_]+)}/g
+const DOMAIN_RE = /^(\w+)(\.(\w+))?(#(documentation|description))?$/
 
 function domainBasedLocalization (localeString) {
   // $App is accessible only inside adminUI
@@ -15,27 +16,27 @@ function domainBasedLocalization (localeString) {
   }
 
   // Try to resolve string as entity name or entity attribute name
-  let parts = localeString.split('.')
-
-  if (parts.length > 2) {
-    // String contain more than one dots, that is not what can be resolved to entity or entity attribute name
+  const domainMatch = DOMAIN_RE.exec(localeString)
+  if (!domainMatch) {
+    // No match
     return localeString
   }
 
-  let entity = $App.domainInfo.entities[parts[0]]
+  const [, entityName, , attributeName, , hash = 'caption'] = domainMatch
+  const entity = $App.domainInfo.entities[entityName]
   if (!entity) {
     // First part shall be a valid entity name
     return localeString
   }
 
-  if (parts.length === 1) {
+  if (attributeName === undefined) {
     // A valid entity name, resolve to the entity's caption
     // Remember in __i18n for performance
-    __i18n[localeString] = entity.caption
-    return entity.caption
+    __i18n[localeString] = entity[hash]
+    return entity[hash]
   }
 
-  let attr = entity.attributes[parts[1]]
+  let attr = entity.attributes[attributeName]
   if (!attr) {
     // Expecting the second part to be a valid entity attribute name
     return localeString
@@ -43,8 +44,8 @@ function domainBasedLocalization (localeString) {
 
   // A valid entity attribute name, resolve to the entity attribute's caption
   // Remember in __i18n for performance
-  __i18n[localeString] = attr.caption
-  return attr.caption
+  __i18n[localeString] = attr[hash]
+  return attr[hash]
 }
 
 /**
