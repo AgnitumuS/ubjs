@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.4]
+### Fixed
+ - added ELS rule for Supervisor to allow reading roles (uba_role;select;A)
+
 ## [5.2.2]
 ### Changed
  - save certificates grid state in the User form (uba_user) 
