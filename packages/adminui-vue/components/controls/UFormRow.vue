@@ -139,7 +139,7 @@ export default {
   overflow: hidden;
 }
 
-.ub-form-row__label:after{
+.ub-form-row__label[title]:after {
   content: ':';
 }
 
