@@ -43,12 +43,23 @@ Ext.define('UB.ux.UBDetailTree', {
     }
   },
 
+  /**
+   *  @cfg {Boolean} force If set to true will force tree to create and load underline store even if tree is placed onto inactive tab
+   *  Be carefully - by default only first data page if loading. Set `pageSize to 0 to load lo all data (not recommended)
+   */
+  forceDataLoad: false,
+
   listeners: {
     resize: function () {
       if (this.editPanel.resizer) {
         this.editPanel.resizer.resizeTracker.maxHeight = this.getHeight()
       }
       this.editPanel.setHeight(Math.min(this.getHeight(), this.editPanel.getHeight()))
+    },
+    boxready: function () {
+      if (!this.forceDataLoad) {
+        this.reloadTree()
+      }
     }
   },
 
@@ -734,5 +745,24 @@ Ext.define('UB.ux.UBDetailTree', {
       }
     }, me
     )
+  },
+
+  /**
+   * Wrapper for load tree data that is called by parent form BasePanel when starts
+   * @param {Ext.data.Model} record
+   * @param {String} parentEntityName
+   */
+  setValue: function (record, parentEntityName) {
+    this.onRefreshDetail(record)
+  },
+
+  /**
+   * Wrapper for reload tree data that is called by parent form BasePanel when refreshes
+   * @param {Ext.data.Model} record
+   */
+  onRefreshDetail: function (record) {
+    if (this.rendered || this.forceDataLoad) {
+      this.reloadTree()
+    }
   }
 })
