@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.6.18]
+## [1.6.19]
 ### Fixed
  - disable sidebar shortcut "Edit" popup menu item in case user don't have access to `ubm_navshortcut.update`. Fix UBDF-9664
 
