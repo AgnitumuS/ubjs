@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.10]
+### Changed
+  - introduced lazy data loading for `UBDetailTree` in case it is placed onto inactive tab (as `UBDetailGrid`).
+  `UBDetailTree.forceDataLoad` must be set to ** true ** to load data immediately. 
+
 ## [5.10.9]
 ### Fixed
   - loading the `ubDetailGrid`, which refers to the empty "masterField" value. (For example, when opening a form to create a new record)

@@ -1602,7 +1602,7 @@ Ext.define('UB.view.BasePanel', {
 
     for (var i = 0, len = items.length; i < len; ++i) {
       item = items.items[i]
-      if (item instanceof UB.ux.UBDetailGrid || item.isDetail) {
+      if (item instanceof UB.ux.UBDetailGrid || item instanceof UB.ux.UBDetailTree || item.isDetail) {
         result.push(item)
       } else if (item.isContainer || item.isPanel) {
         result = result.concat(this.getDetails(item.items))
