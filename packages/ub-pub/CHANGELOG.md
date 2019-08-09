@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.11]
+### Changed
+ - Domain-based localization logic allows get localized entity or entity attribute not just caption, but also description and documentation.
+   In order to do so, use hash tag suffix and `description` or `documentation`, for example:
+   - `UB.i18n('uba_user.name#description')`
+   - `UB.i18n('uba_audit#documentation')`
+   
 ## [5.3.10]
 ### Fixed
  - in case UBNativeMessage instantiated inside iFrame `window.parent.postMessage` will be called with 

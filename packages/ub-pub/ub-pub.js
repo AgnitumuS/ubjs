@@ -26,6 +26,7 @@ let UB = module.exports = {
    * - either previously defined dy call to {@link i18nExtend i18nExtend}
    * - or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
    *  or `UB.i18n('uba_role.description')` would be resolved to  localized entity caption or entity attribute caption
+   * - description/documentation of entity/attribute can be localized using hash tag #description / #documentation. See sample below
    *
    * @example
 
@@ -51,6 +52,9 @@ let UB = module.exports = {
 
  UB.i18n('uba_user') // -> "Users" (caption from uba_use.meta)
  UB.i18n('uba_user.firstName') // -> "First Name" (caption of uba_user.firstName attribute)
+
+ UB.i18n('uba_user.name#description') // "User login in lower case" (description for uba_user.name attribute)
+ UB.i18n('uba_audit#documentation') // "All changes to UBA..." ( documentation for uba_audit entity )
 
    *
    * @param {String} localeString
