@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.19]
 ### Fixed
- - disable sidebar shortcut "Edit" popup menu item in case user don't have access to `ubm_navshortcut.update`. Fix UBDF-9664
+ - disable sidebar shortcut "Edit" popup menu item in case user don't have access to `ubm_navshortcut.update` [UBDF-9664]
+ - sidebar item deletion fixed [UBDF-9652]
 
 ## [1.6.18]
 ### Fixed

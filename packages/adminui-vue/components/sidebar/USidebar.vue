@@ -259,15 +259,11 @@ export default {
         if (confirm) {
           await $App.connection.doDelete({
             entity: 'ubm_navshortcut',
-            target: $App.viewport.centralPanel,
             execParams: {
               ID
             }
           })
-          const index = this.shortcuts.findIndex(s => s.ID === ID)
-          if (index !== -1) {
-            this.shortcuts.splice(index, 1)
-          }
+          this.initMenu() // reload after delete
         }
         return
       }
