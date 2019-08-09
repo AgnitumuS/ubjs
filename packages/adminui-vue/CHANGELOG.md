@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.6.18]
 ### Fixed
+ - disable sidebar shortcut "Edit" popup menu item in case user don't have access to `ubm_navshortcut.update`. Fix UBDF-9664
+
+## [1.6.18]
+### Fixed
  - VueJS based form now accept `tabId` in UForm constructor.
  If passed it will be used to identity tab and prevent opening tab with the same tabId twice. 
  If omitted will be calculated based on entity and instanceID.

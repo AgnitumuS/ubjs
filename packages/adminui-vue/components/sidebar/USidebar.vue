@@ -98,11 +98,14 @@ export default {
     },
 
     contextItems () {
-      let canAdd = this.$UB.connection.domain.entities['ubm_navshortcut'].haveAccessToMethod('insert')
-      let canDelete = this.$UB.connection.domain.entities['ubm_navshortcut'].haveAccessToMethod('delete')
+      let shortcutEntity = this.$UB.connection.domain.entities['ubm_navshortcut']
+      let canAdd = shortcutEntity && shortcutEntity.haveAccessToMethod('insert')
+      let canDelete = shortcutEntity && shortcutEntity.haveAccessToMethod('delete')
+      let canEdit = shortcutEntity && shortcutEntity.haveAccessToMethod('update')
       return [{
         label: 'Edit',
         action: 'edit',
+        disabled: !canEdit,
         iconCls: 'el-icon-edit'
       }, {
         label: 'addShortcut',
