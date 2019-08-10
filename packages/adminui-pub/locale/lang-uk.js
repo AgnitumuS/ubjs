@@ -79,7 +79,7 @@ UB.i18nExtend({
   deleteConfirmationWithCaption: "Буде видалено запис {1} з '{0}'. Ви впевнені?",
   deleteFormConfirmCaption: "Буде видалено '{0}'. Ви впевнені?",
   rowEditing: 'Необхідно завершити редагування даних',
-  notValidForColumns: "Неприпустимі значення в колонках {0}",
+  notValidForColumns: 'Неприпустимі значення в колонках {0}',
   vyUvereny: 'Ви впевнені?',
   formDefinition: 'Опис інтерфейсу',
   formModule: 'Опис методів',
@@ -100,6 +100,7 @@ UB.i18nExtend({
   currentPageNumber: 'Поточна сторінка',
   'export': 'Експорт',
 
+  doNotGetLock: 'Запис заблоковано користувачем {0} {1} сек. тому назад. Всі внесені зміни не можна буде зберегти. Спробуйте пізніше',
   persistLockInfo: 'Заблоковано {1}',
   softLockInfo: 'Заблоковано користувачем "{0}" {1}',
   'Record locked by another user': 'Запис заблокирано іншим користувачем',
@@ -135,7 +136,7 @@ UB.i18nExtend({
   NMFeaturePDFSigner: 'Модуль підписання PDF',
   singOperationInProcess: 'Виконується підписання іншого документу. Спробуйте пізніше',
 
-    // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
   NMInstallExtensionChrome: '<p>Для продовження роботи необхідно встановити розширення <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Натисніть на посилання <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">ВСТАНОВИТИ РОЗШИРЕННЯ</a> ' +
         ' для переходу до магазину Google</p>' +
@@ -178,21 +179,6 @@ UB.i18nExtend({
   tooManyItems: 'Забагато записів. Будь ласка, спробуйте змінити параметри пошуку.',
   fetchAllRows: 'Завантажити всі',
   rowCounts: 'Записів',
-  doNotGetLock: 'Запис заблоковано користувачем {0} {1} сек. тому назад. Всі внесені зміни не можна буде зберегти. Спробуйте пізніше.',
-  persistLockInfo: 'Заблоковано {1}',
-  softLockInfo: 'Заблоковано користувачем {0} {1}',
-  lockBtn: 'Заблокувати запис',
-  unLockBtn: 'Розблокувати запис',
-  tempSoftLockInfo: 'Запис зараз редагується користувачем {0}',
-  recordLockedOtherUser: 'Запис заблоковано іншим користувачем',
-  recordLockedThisUser: 'Запис вже заблоковано',
-  lockSuccessCreated: 'Запис успішно заблоковано',
-  recordLockedByTempLock: 'Запис зараз редагується іншим користувачем',
-  recordLockedThisUserByTempLock: 'Запис зараз редагується поточним користувачем',
-  lockSuccessDeleted: 'Запис успішно розблоковано',
-  recordNotLocked: 'Запис не заблоковано',
-  tempLockExistForThisUser: 'Поточний користувач зараз редагує цей запис в іншому вікні, іншій вкладці або на іншому комп\'ютері',
-
   resolutionSignReason: 'Підписана резолюція',
   noStaffEmployeeShortFIO: 'Не призначено',
   made: 'Підготовлено',
@@ -311,6 +297,7 @@ UB.i18nExtend({
   doNotSelectedConfigName: 'Не вибрано конфігурацію',
   load: 'Завантажити',
   save: 'Зберегти',
+  apply: 'Застосувати',
   doNotSave: 'Не зберігати',
   fDelete: 'Видалити',
   configurationName: 'Конфігурація',
@@ -344,7 +331,7 @@ UB.i18nExtend({
   readPKCanceled: 'Припинено користувачем',
   invalidPrivateKeyCertificate: 'Обрано не вірний сертифікат(и) особистого ключа. Для ключа, виданого після 2014 року, потрібно мати два сертифікати.',
   serverIsBusy: 'Сервер тимчасово недоступний',
-// !!!
+  // !!!
   navShortcutCode: 'Код ярлика',
   navShortcutRights: 'Права на ярлик',
   cases: 'Відмінки',
@@ -525,14 +512,14 @@ UB.i18nExtend({
   'enabled': 'enabled',
 
   dateIsTooEarly: 'Дата має бути більше {0}',
-  
+
   quickAccessButtons: 'Кнопки швидкого виклику',
 
   showFullScreen: 'Показати на весь екран',
 
-    // !!!
-    // Do not change this last item.
-    // Put your new items before EOF for SVN auto merge reason.
+  // !!!
+  // Do not change this last item.
+  // Put your new items before EOF for SVN auto merge reason.
   EOF: 'EOF'
 })
 

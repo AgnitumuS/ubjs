@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.11]
+### Added
+ - new localization key `apply`
+ 
 ## [5.10.10]
 ### Changed
   - introduced lazy data loading for `UBDetailTree` in case it is placed onto inactive tab (as `UBDetailGrid`).

@@ -291,6 +291,7 @@ UB.i18nExtend({
   doNotSelectedConfigName: 'Konfiqurasiya seçilməyib',
   load: 'Yüklə',
   save: 'Bəli',
+  apply: 'Tətbiq edin',
   doNotSave: 'Xeyr',
   fDelete: 'Sil',
   configurationName: 'Konfiqurasiya',

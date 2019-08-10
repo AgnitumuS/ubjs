@@ -293,6 +293,7 @@ UB.i18nExtend({
   doNotSelectedConfigName: 'No configuration is selected',
   load: 'Load',
   save: 'Save',
+  apply: 'Apply',
   doNotSave: "Don't Save",
   fDelete: 'Delete',
   configurationName: 'Configuration',

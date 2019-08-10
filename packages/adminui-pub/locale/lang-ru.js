@@ -297,6 +297,7 @@ UB.i18nExtend({
   doNotSelectedConfigName: 'Не выбрана конфигурация',
   load: 'Загрузить',
   save: 'Сохранить',
+  apply: 'Применить',
   doNotSave: 'Не сохранять',
   fDelete: 'Удалить',
   configurationName: 'Конфигурация',

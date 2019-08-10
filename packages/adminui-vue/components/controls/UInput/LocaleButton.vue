@@ -31,7 +31,7 @@
         type="primary"
         @click="save"
       >
-        Save
+        {{ $ut('apply') }}
       </el-button>
     </el-dialog>
   </div>
@@ -46,7 +46,10 @@ export default {
   inject: ['entity', 'entitySchema'],
 
   props: {
-    attributeName: String
+    attributeName: {
+      type: String,
+      default: undefined
+    }
   },
 
   data () {
@@ -132,9 +135,10 @@ export default {
       if (!this.isLoaded) {
         if (!this.isNew) {
           // fetch localized fields
-          let repo = this.$UB.Repository(this.entity)
+          let repo = this.$UB.Repository(this.entity).attrs('ID')
           this.localeAttrs.forEach(a => repo.attrs(a.attr))
           const data = await repo.selectById(this.$store.state.data.ID)
+          delete data.ID
           this.$store.commit('LOAD_DATA_PARTIAL', data)
         }
       }

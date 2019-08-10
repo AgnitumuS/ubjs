@@ -124,7 +124,7 @@ UB.i18nExtend({
   NMFeaturePDFSigner: 'Модуль подписания PDF',
   singOperationInProcess: 'Выполняется подписание другого документа. Повторите действие позже',
 
-    // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
+  // all messages below are formatted with 4 params [0=UB.i18n(featureInfo.UIName), 1=featureInfo.minVersion, 2=currentVersion, 3=installerDownloadPath]
   NMInstallExtensionChrome: '<p>Для продолжения работы необходима установка расширения <b>"UBExtension"</b> для браузера Google Chrome.</p> ' +
         '<p>Нажмите на ссылку <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">УСТАНОВИТЬ РАСШИРЕНИЕ</a> ' +
         ' для перехода в магазин Google</p>' +
@@ -298,6 +298,7 @@ UB.i18nExtend({
   doNotSelectedConfigName: 'Не выбрана конфигурация',
   load: 'Загрузить',
   save: 'Сохранить',
+  apply: 'Применить',
   doNotSave: 'Не сохранять',
   fDelete: 'Удалить',
   configurationName: 'Конфигурация',
