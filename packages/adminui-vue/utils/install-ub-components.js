@@ -32,5 +32,9 @@ module.exports = {
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)
+
+    // dirty hack to retrieve a Clicoutside directive not exposed by Elements
+    const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clickoutside
+    Vue.directive('Clickoutside', Clickoutside)
   }
 }

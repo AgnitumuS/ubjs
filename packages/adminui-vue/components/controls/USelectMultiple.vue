@@ -72,6 +72,7 @@
       <div
         v-if="options.length > 0"
         ref="options"
+        v-clickoutside="hideDropdown"
         class="ub-select__list-options"
       >
         <div
@@ -83,7 +84,7 @@
             'active': option[valueAttribute] === value,
             'selected': option[valueAttribute] === selectedOption
           }"
-          @click="chooseOption"
+          @click.prevent="chooseOption"
           @mouseenter="selectedOption = option[valueAttribute]"
         >
           <el-checkbox :value="value.includes(option[valueAttribute])" />
@@ -153,7 +154,6 @@ export default {
       type: Array,
       required: true
     },
-
     /**
      * attribute which is the value for v-model
      */
@@ -161,27 +161,31 @@ export default {
       type: String,
       default: 'ID'
     },
-
     /**
      * attribute which is display value of options
      */
-    displayAttribute: String,
-
+    displayAttribute: {
+      type: String,
+      default: undefined
+    },
     /**
      * Name of entity. If repository is set entityName will be ignored
      */
-    entityName: String,
-
+    entityName: {
+      type: String,
+      default: ''
+    },
     /**
      * Function which return UBRepository
      */
-    repository: Function,
-
+    repository: {
+      type: Function,
+      default: undefined
+    },
     /**
      * Set disable status
      */
     disabled: Boolean,
-
     /**
      * Add clear icon
      */
@@ -412,29 +416,14 @@ export default {
 
     onShowDropdown () {
       this.popperWidth = this.$refs.input.offsetWidth
-      this.addClickOutsideListener()
     },
 
     afterHide () {
-      this.removeClickOutsideListener()
       this.query = ''
     },
 
-    addClickOutsideListener () {
-      document.body.addEventListener('click', this.clickOutside)
-    },
-
-    removeClickOutsideListener () {
-      document.body.removeEventListener('click', this.clickOutside)
-    },
-
-    clickOutside ({ target }) {
-      const isInput = this.$refs.input.contains(target)
-
-      if (!isInput) {
-        this.selectedOption = this.value
-        this.dropdownVisible = false
-      }
+    hideDropdown () {
+      this.dropdownVisible = false
     },
 
     // emits when user click on option or click enter when option is focused

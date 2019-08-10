@@ -13,7 +13,6 @@
       :tabindex="-1"
       :disabled="disabled"
       @show="onShowDropdown"
-      @hide="removeClickOutsideListener"
       @keydown.native.exact.down="changeSelected(1)"
       @keydown.native.exact.up="changeSelected(-1)"
       @keydown.native.enter="chooseOption"
@@ -90,6 +89,7 @@
       <div
         v-if="options.length > 0"
         ref="options"
+        v-clickoutside="hideDropdown"
         class="ub-select__list-options"
       >
         <div
@@ -162,15 +162,24 @@ export default {
     /**
      * attribute which is display value of options
      */
-    displayAttribute: String,
+    displayAttribute: {
+      type: String,
+      default: undefined
+    },
     /**
      * Name of entity. If repository is set entityName will be ignored
      */
-    entityName: String,
+    entityName: {
+      type: String,
+      default: ''
+    },
     /**
      * Function which return UBRepository
      */
-    repository: Function,
+    repository: {
+      type: Function,
+      default: undefined
+    },
     // repeat it here and pass down to ElEdit because we need to disable toggle & actions
     /**
      * Set disable status
@@ -439,25 +448,10 @@ export default {
 
     onShowDropdown () {
       this.popperWidth = this.$refs.input.$el.offsetWidth
-      this.addClickOutsideListener()
     },
 
-    addClickOutsideListener () {
-      document.body.addEventListener('click', this.clickOutside)
-    },
-
-    removeClickOutsideListener () {
-      document.body.removeEventListener('click', this.clickOutside)
-    },
-
-    clickOutside ({ target }) {
-      const isInput = this.$refs.input.$el.contains(target)
-
-      if (!isInput) {
-        this.selectedOption = this.value
-        this.dropdownVisible = false
-        this.setQueryByValue(this.value)
-      }
+    hideDropdown () {
+      this.dropdownVisible = false
     },
 
     cancelInput (e) {
