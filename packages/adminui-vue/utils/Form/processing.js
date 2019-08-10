@@ -18,7 +18,7 @@ const { buildExecParams, buildCollectionRequests, isExistAttr } = require('./hel
  * @param {string} masterEntityName Name of entity for master record
  * @param {array<string>} masterFieldList Master request fieldList. If unset will set all fields in an entity
  * @param {object<string, ClientRepository>} initCollectionsRequests Collections requests map
- * @param {object} validator Vuelidate validation object
+ * @param {function} validator Function what returns Vuelidate validation object
  * @param {number} instanceID instanceID
  * @param {UBEntity} entitySchema Entity schema
  * @param {function} [beforeInit] Callback which will be emit before init
@@ -87,15 +87,15 @@ function createProcessingModule ({
         return !state.isNew && getters.isDirty
       },
 
-      isLocked (state, getters) {
+      isLocked (state) {
         return !!state.lockInfo.lockExists
       },
 
-      isLockedByMe (state, getters) {
+      isLockedByMe (state) {
         return state.lockInfo.lockExists && (state.lockInfo.lockUser === UB.connection.userLogin())
       },
 
-      lockInfoMessage (state, getters) {
+      lockInfoMessage (state) {
         if (!state.lockInfo.lockExists) {
           return UB.i18n('recordNotLocked')
         } else if ((state.lockInfo.lockUser === UB.connection.userLogin())) {
@@ -266,7 +266,7 @@ function createProcessingModule ({
        * Check if record not new
        * then check if collections inited when processing module is created
        * then fetch data from server for each collection
-       * @param {Array} collections Сollections keys
+       * @param {Array} collections Collections keys
        */
       async loadCollections ({ state, commit }, collections) {
         if (state.isNew) {
@@ -375,7 +375,7 @@ function createProcessingModule ({
             const [masterResponse, ...collectionsResponse] = await UB.connection
               .runTransAsObject([masterRequest, ...collectionsRequests])
 
-            commit('LOAD_DATA_PARTIAL', masterResponse.resultData)
+            commit('LOAD_DATA', masterResponse.resultData)
             await dispatch('updateCollectionsRecords', collectionsResponse)
           } else {
             const collectionsResponse = await UB.connection
