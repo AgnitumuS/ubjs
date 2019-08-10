@@ -30,10 +30,6 @@
 </template>
 
 <script>
-const Vue = require('vue')
-// dirty hack to retrieve a Clicoutside directive not exposed by Elements
-const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clickoutside
-
 /**
  * Show popup on mouse position
  *
@@ -49,7 +45,6 @@ const Clickoutside = Vue.options.components.ElDropdown.options.directives.Clicko
  */
 export default {
   name: 'UContextMenu',
-  directives: { Clickoutside },
   props: {
     /**
      * Popup menu items

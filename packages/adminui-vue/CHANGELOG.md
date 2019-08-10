@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.20]
+### Added
+ - expose `clickoutside` directive from ElementUI. `hideDropdown` in code below will be called
+ in case user click outside the div: 
+```vue
+<div v-clickoutside="hideDropdown"></div>
+```
+### Fixed
+ - prevent adding `document.body.onclick` handle for every `u-select-entity`/`u-select-multiple` by using `clickoutside` directive instead. Fix #65 as side effect
+ - `USelectMultiple` allow to select option by clicking not only on item caption but also on checkbox
+
 ## [1.6.19]
 ### Fixed
  - disable sidebar shortcut "Edit" popup menu item in case user don't have access to `ubm_navshortcut.update` [UBDF-9664]
