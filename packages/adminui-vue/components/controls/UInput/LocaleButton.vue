@@ -132,17 +132,9 @@ export default {
       if (!this.isLoaded) {
         if (!this.isNew) {
           // fetch localized fields
-          const fieldList = ['ID']
-          fieldList.push(
-            ...this.localeAttrs.map(item => item.attr)
-          )
-          const data = await this.$UB.connection.query({
-            entity: this.entity,
-            ID: this.$store.state.data.ID,
-            fieldList,
-            method: 'select'
-          }).then(r => this.$UB.LocalDataStore.selectResultToArrayOfObjects(r)[0])
-          delete data.ID
+          let repo = this.$UB.Repository(this.entity)
+          this.localeAttrs.forEach(a => repo.attrs(a.attr))
+          const data = await repo.selectById(this.$store.state.data.ID)
           this.$store.commit('LOAD_DATA_PARTIAL', data)
         }
       }
