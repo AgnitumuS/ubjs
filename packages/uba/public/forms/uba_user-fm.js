@@ -7,12 +7,12 @@ function showPasswordChangeDialog () {
     customParams: 'admin'
   }).done(function (result) {
     if (result.action === 'ok') {
-      $App.connection.xhr({
-        url: 'changePassword',
-        method: 'POST',
-        data: {
+      $App.connection.query({
+        fieldList: [],
+        entity: 'uba_user',
+        method: 'changeOtherUserPassword',
+        execParams: {
           newPwd: result.newPwd,
-          pwd: result.pwd,
           needChangePassword: result.needChangePassword,
           forUser: form.getField('name').getValue()
         }
@@ -39,7 +39,8 @@ exports.formCode = {
     this.actions.ActionChangePasswordID = new Ext.Action({
       actionId: 'ActionChangePasswordID',
       actionText: UB.i18n('changePassword'),
-      handler: showPasswordChangeDialog.bind(this)
+      handler: showPasswordChangeDialog.bind(this),
+      disabled: !$App.domainInfo.isEntityMethodsAccessible('uba_user', 'changeOtherUserPassword')
     })
   }
 }

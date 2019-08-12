@@ -4,6 +4,7 @@ UBA_USER_UDATACH_USERS;uba_user;setUDataKey;A;User;Allow set uData key for user
 UBA_USER_READ_USERS;uba_user;select;A;User;Allow read users for registered user
 UBA_USER_READ_GROUPS;uba_group;select;A;User;Allow read groups for registered user
 UBA_USER_EDIT_SUPERVISOR;uba_user;[iuda]*;A;Supervisor;Allow CUD operations on users for supervisor
+UBA_USER_CHPWD_SUPERVISOR;uba_user;changeOtherUserPassword;A;Supervisor;Allow change password for any user for supervisor
 UBA_GROUP_EDIT_SUPERVISOR;uba_group;[iuda]*;A;Supervisor;Allow CUD operations on security groups for supervisor
 UBA_ROLE_READ_SUPERVISOR;uba_role;select;A;Supervisor;Allow supervisor to read roles
 UBA_USER_ROLE_EDIT_SUPERVISOR;uba_userrole;[iuda]*;A;Supervisor;Allow grant a role to user for supervisor
