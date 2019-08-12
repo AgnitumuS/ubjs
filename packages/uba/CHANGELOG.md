@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.5]
+### Fixed
+  - removes the hardcoded check for "accountAdmins" group inside changePassword endpoint.
+  To change password for other used new method `uba_user.changeOtherUserPassword` is added. 
+  Supervisor role is allowed to call it. 
+
 ## [5.2.4]
 ### Fixed
  - added ELS rule for Supervisor to allow reading roles (uba_role;select;A)

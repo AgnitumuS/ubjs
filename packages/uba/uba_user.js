@@ -12,6 +12,7 @@ App.registerEndpoint('changePassword', changePasswordEp)
 me.entity.addMethod('changeLanguage')
 me.entity.addMethod('setUDataKey')
 me.entity.addMethod('publicRegistration')
+me.entity.addMethod('changeOtherUserPassword')
 
 me.on('insert:before', checkDuplicateUser)
 me.on('update:before', checkDuplicateUser)
@@ -33,7 +34,7 @@ function checkDuplicateUser (ctxt) {
   if (newName) {
     let store = UB.Repository('uba_user').attrs('ID')
       .where('name', '=', newName.toLowerCase())
-      .whereIf(ID,'ID', '<>', ID)
+      .whereIf(ID, 'ID', '<>', ID)
       .select()
 
     if (!store.eof) {
@@ -227,8 +228,8 @@ function changePasswordEp (req, resp) {
         remoteIP: Session.callerIP,
         targetUser: forUser.toLowerCase(),
         toValue: failException
-          ? JSON.stringify({action: 'changePassword', reason: failException.message})
-          : JSON.stringify({action: 'changePassword'})
+          ? JSON.stringify({ action: 'changePassword', reason: failException.message })
+          : JSON.stringify({ action: 'changePassword' })
       }
     })
     App.dbCommit()
@@ -236,6 +237,55 @@ function changePasswordEp (req, resp) {
   if (failException) throw failException
   resp.statusCode = 200
 }
+
+/**
+ * Change (or set) user password for any user.
+ * Call of this method should be restricted to a small number of roles/groups. By default can be called by supervisor role
+ * @private
+ * @param {ubMethodParams} ctxt
+ */
+function changeOtherUserPassword (ctxt) {
+  let { newPwd, needChangePassword, forUser } = ctxt.mParams.execParams
+  let store = UB.DataStore('uba_user')
+
+  if (!newPwd) throw new Error('newPwd parameter is required')
+
+  let failException = null
+  let userID = UBA_COMMON.USERS.ANONYMOUS.ID
+  try {
+    UB.Repository('uba_user').attrs('ID', 'uPasswordHashHexa').where('[name]', '=', '' + forUser.toLowerCase()).select(store)
+    if (store.eof) throw new Error('User not found')
+
+    let userID = store.get('ID')
+    let oldPwd = store.get('uPasswordHashHexa')
+
+    me.changePassword(userID, forUser, newPwd, needChangePassword || false, oldPwd)
+  } catch (e) {
+    failException = e
+  }
+
+  // make uba_audit record
+  if (App.domainInfo.has('uba_audit')) {
+    store.run('insert', {
+      entity: 'uba_audit',
+      execParams: {
+        entity: 'uba_user',
+        entityinfo_id: userID,
+        actionType: failException ? 'SECURITY_VIOLATION' : 'UPDATE',
+        actionUser: Session.uData.login,
+        actionTime: new Date(),
+        remoteIP: Session.callerIP,
+        targetUser: forUser.toLowerCase(),
+        toValue: failException
+          ? JSON.stringify({ action: 'changePassword', reason: failException.message })
+          : JSON.stringify({ action: 'changePassword' })
+      }
+    })
+    App.dbCommit()
+  }
+  if (failException) throw failException
+}
+me.changeOtherUserPassword = changeOtherUserPassword
 
 /**
  * Change uba_user.uData JSON key to value
@@ -472,8 +522,8 @@ function validateEmail (email) {
 
 const RECAPTCHA_SECRET_KEY = App.serverConfig.application.customSettings &&
   App.serverConfig.application.customSettings.reCAPTCHA
-    ? App.serverConfig.application.customSettings.reCAPTCHA.secretKey
-    : ''
+  ? App.serverConfig.application.customSettings.reCAPTCHA.secretKey
+  : ''
 /**
  * Validate a reCAPTCHA from client request. See <a href="https://developers.google.com/recaptcha/docs/verify"reCAPTCHA doc</a>
  * App.serverConfig.application.customSettings.reCAPTCHA.secretKey must be defined
@@ -610,14 +660,14 @@ me.publicRegistration = function (fake, req, resp) {
   const publicRegistrationSubject = ubs_settings.loadKey('uba.user.publicRegistrationSubject')
   const publicRegistrationReportCode = ubs_settings.loadKey('uba.user.publicRegistrationReportCode')
 
-  const {otp, login} = QueryString.parse(req.parameters, null, null, {maxKeys: 3})
+  const { otp, login } = QueryString.parse(req.parameters, null, null, { maxKeys: 3 })
   let store = UB.DataStore(me.entity.name)
 
   if (otp && login) {
     processRegistrationStep2(resp, otp, login)
   } else {
     let body = req.read('utf-8')
-    let {email, phone, utmSource, utmCampaign, recaptcha} = JSON.parse(body)
+    let { email, phone, utmSource, utmCampaign, recaptcha } = JSON.parse(body)
     if (!validateEmail(email)) {
       throw new UB.UBAbort('Provided email address is invalid')
     }
@@ -627,7 +677,7 @@ me.publicRegistration = function (fake, req, resp) {
     Session.emit('registrationStart', {
       authType: 'UB',
       publicRegistration: true,
-      params: {email, phone, utmSource, utmCampaign, recaptcha}
+      params: { email, phone, utmSource, utmCampaign, recaptcha }
     })
     Session.runAsAdmin(function () {
       store.run('insert', {
@@ -643,7 +693,7 @@ me.publicRegistration = function (fake, req, resp) {
       const userID = store.get(0)
       const password = (Math.random() * 100000000000 >>> 0).toString(24)
       me.changePassword(userID, email, password)
-      const userOtp = uba_otp.generateOtp('EMail', userID, {utmSource, utmCampaign})
+      const userOtp = uba_otp.generateOtp('EMail', userID, { utmSource, utmCampaign })
 
       const registrationAddress = `${App.externalURL}rest/uba_user/publicRegistration?otp=${encodeURIComponent(userOtp)}&login=${encodeURIComponent(email)}`
 
@@ -662,6 +712,6 @@ me.publicRegistration = function (fake, req, resp) {
       })
     })
     resp.statusCode = 200
-    resp.writeEnd({success: true, message: '<strong>Thank you for your request!</strong> We have sent your access credentials via email. You should receive them very soon.'})
+    resp.writeEnd({ success: true, message: '<strong>Thank you for your request!</strong> We have sent your access credentials via email. You should receive them very soon.' })
   }
 }
