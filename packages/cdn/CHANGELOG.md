@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.5]
+### Changed
+ - initial data locale for cdn_citytype & cdn_country entities changed to english
+ - initial data for cdn_region loaded only for `uk` locale  
+
 ## [5.2.0]
 ### Changed
  - all meta files and they localization transformed to array-of-attributes format
