@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.21]
+### Added
+ - default authentication form (ub-auth.html) handle a `uiSettings.adminUI.registrationURL` parameter from config.
+ In case parameter is empty or not exists (default) then registration link do not displayed on the authentication form. 
+ Otherwise a link to the specified URL is displayed 
+ 
 ## [1.6.20]
 ### Added
  - expose `clickoutside` directive from ElementUI. `hideDropdown` in code below will be called

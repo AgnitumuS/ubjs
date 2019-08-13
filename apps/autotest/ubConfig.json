@@ -53,6 +53,7 @@
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
 			"loginWindowTopLogoURL": "/models/ub-pub/img/ub-login-logo.png",
+			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",
 			"vueAutoForms": true,
 			"messenger": {

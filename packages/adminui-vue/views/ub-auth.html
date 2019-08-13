@@ -256,7 +256,7 @@
                 </el-form-item>
                 <div v-if="!hasNegotiate">
                   <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
-                  <div><a href="#">{{ $ut('UBAuthRegistration') }}</a></div>
+                  <div v-if="registrationURL"><a :href="registrationURL">{{ $ut('UBAuthRegistration') }}</a></div>
                 </div>
               </div>
             </div>
@@ -278,6 +278,7 @@
         loading: true,
         appName: 'UnityBase',
         topLogoURL: '/models/ub-pub/img/ub-login-logo.png',
+        registrationURL: '',
         silenceKerberosLogin: window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true',
         authMethods: null,
         ubAuthVisible: true,
@@ -388,6 +389,7 @@
       let adminUICfg = conn.appConfig.uiSettings.adminUI
       if (adminUICfg.applicationTitle) document.title = adminUICfg.applicationTitle
       if (adminUICfg.loginWindowTopLogoURL) vm.topLogoURL = adminUICfg.loginWindowTopLogoURL
+      if (adminUICfg.registrationURL) vm.registrationURL = adminUICfg.registrationURL
       if (adminUICfg.defaultPasswordForDebugOnly) vm.authData.pwd = adminUICfg.defaultPasswordForDebugOnly
       let lastLogin = localStorage.getItem(UB.LDS_KEYS.LAST_LOGIN)
       if (lastLogin) vm.authData.user = lastLogin
