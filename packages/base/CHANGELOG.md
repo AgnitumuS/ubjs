@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.1.23]
+### Changed
+ - `csv` module: reformatting & fix ESLint warnings  
+ 
 ## [5.1.18]
 ### Changed
  - added support of UBQLv2 for `DataLoader.localizeEntity`
