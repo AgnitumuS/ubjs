@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.2.29]
+### Added
+ - `uiSettings.adminUI.registrationURL` parameter.
+ In case parameter is empty or not exists (default) then registration link do not displayed on the default
+ authentication form (@unitybase/adminui-vue/views/ub-auth.html). Otherwise a link to the specified URL is displayed
+ 
 ## [5.2.24]
 ### Fixed
  - `Session.runAsUser` & `Session.runAsAdmin` should restore original session even if one of `login` handler fails for passed user
