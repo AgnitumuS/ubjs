@@ -36,14 +36,14 @@
       "dataType": "String",
       "size": 100,
       "caption": "Serial number",
-      "description": "Serial number of cerificate",
+      "description": "Certificate serial number",
       "allowNull": false
     },
     {
       "name": "certificate",
       "dataType": "BLOB",
       "caption": "Certificate",
-      "description": "Binary data of certificate",
+      "description": "Certificate binary data",
       "allowNull": false,
       "isUnique": false
     },
