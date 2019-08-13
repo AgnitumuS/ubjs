@@ -35,8 +35,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.0.7]
 ### Added
-- `ubmodel` section adedd to `package.json`, so @unitybase/pdf model now
- can be added to the application congig in one line
+- `ubmodel` section added to `package.json`, so @unitybase/pdf model now
+ can be added to the application config in one line
  ```
   "domain": {
       "models": [
