@@ -1158,17 +1158,17 @@ UBConnection.prototype.invalidateCache = function (serverResponse) {
 function stringifyExecParamsValues (execParams) {
   let keys = Object.keys(execParams)
   let L = keys.length
-  let needTransform = false
+  let firstObjIdx = -1
   for (let i = 0; i < L; i++) {
     let v = execParams[keys[i]]
     if (v && (typeof v === 'object') && !(v instanceof Date)) {
-      needTransform = true
+      firstObjIdx = i
       break
     }
   }
-  if (!needTransform) return false
+  if (firstObjIdx === -1) return false
   let newParams = {}
-  for (let i = 0; i < L; i++) {
+  for (let i = firstObjIdx; i < L; i++) {
     let v = execParams[keys[i]]
     newParams[keys[i]] = ((typeof v === 'object') && !(v instanceof Date))
       ? JSON.stringify(v)
@@ -1539,6 +1539,12 @@ UBConnection.selectResultToArrayOfObjects = LocalDataStore.selectResultToArrayOf
  * @returns {Promise} Resolved to response.data
  */
 UBConnection.prototype.runTrans = function (ubRequestArray) {
+  for (const serverRequest of ubRequestArray) {
+    if (serverRequest.execParams && ((serverRequest.method === 'insert') || ((serverRequest.method === 'update')))) {
+      let newEp = stringifyExecParamsValues(serverRequest.execParams)
+      if (newEp) serverRequest.execParams = newEp
+    }
+  }
   return this.post('ubql', ubRequestArray).then((response) => response.data)
 }
 
@@ -1583,6 +1589,12 @@ UBConnection.prototype.runTrans = function (ubRequestArray) {
  * @return {Promise<Array<Object>>}
  */
 UBConnection.prototype.runTransAsObject = function (ubRequestArray, fieldAliasesArray = []) {
+  for (const serverRequest of ubRequestArray) {
+    if (serverRequest.execParams && ((serverRequest.method === 'insert') || ((serverRequest.method === 'update')))) {
+      let newEp = stringifyExecParamsValues(serverRequest.execParams)
+      if (newEp) serverRequest.execParams = newEp
+    }
+  }
   let me = this
   return this.post('ubql', ubRequestArray).then((response) => {
     let mutatedEntitiesNames = {}

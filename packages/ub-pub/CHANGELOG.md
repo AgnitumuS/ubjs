@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.12]
+### Fixed
+ - AsyncConnection methods `runTrans` and `runTransAsObject` now stringify execParams for `insert` and `update` methods,
+ just like single `insert`, `update`. This fixes problems with saving JSON attributes and overall,
+ make connection object methods more consistent
+
 ## [5.3.11]
 ### Changed
  - Domain-based localization logic allows get localized entity or entity attribute not just caption, but also description and documentation.
