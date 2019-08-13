@@ -1158,17 +1158,17 @@ UBConnection.prototype.invalidateCache = function (serverResponse) {
 function stringifyExecParamsValues (execParams) {
   let keys = Object.keys(execParams)
   let L = keys.length
-  let firstObjIdx = -1
+  let needTransform = false
   for (let i = 0; i < L; i++) {
     let v = execParams[keys[i]]
     if (v && (typeof v === 'object') && !(v instanceof Date)) {
-      firstObjIdx = i
+      needTransform = true
       break
     }
   }
-  if (firstObjIdx === -1) return false
+  if (!needTransform) return false
   let newParams = {}
-  for (let i = firstObjIdx; i < L; i++) {
+  for (let i = 0; i < L; i++) {
     let v = execParams[keys[i]]
     newParams[keys[i]] = ((typeof v === 'object') && !(v instanceof Date))
       ? JSON.stringify(v)

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.13]
+### Fixed
+ - do not lost params in AsyncConnection.stringifyExecParamsValues (introduced by premature optimization in 5.3.12) 
+
 ## [5.3.12]
 ### Fixed
  - AsyncConnection methods `runTrans` and `runTransAsObject` now stringify execParams for `insert` and `update` methods,
