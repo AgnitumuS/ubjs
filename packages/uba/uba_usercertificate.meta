@@ -5,7 +5,7 @@
   "sqlAlias": "usrcer",
   "cacheType": "None",
   "descriptionAttribute": "description",
-  "documentation": "used for Certificate authentification ",
+  "documentation": "used for Certificate authentication ",
   "attributes": [
     {
       "name": "userID",
@@ -20,7 +20,7 @@
       "dataType": "String",
       "size": 512,
       "caption": "Issuer",
-      "description": "Issuer tag of cerificate",
+      "description": "Issuer tag of certificate",
       "allowNull": false
     },
     {
@@ -37,7 +37,8 @@
       "size": 100,
       "caption": "Serial number",
       "description": "Certificate serial number",
-      "allowNull": false
+      "allowNull": false,
+      "isUnique": true
     },
     {
       "name": "certificate",

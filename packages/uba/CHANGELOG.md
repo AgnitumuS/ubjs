@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
   - removes the hardcoded check for "accountAdmins" group inside changePassword endpoint.
   To change password for other used new method `uba_user.changeOtherUserPassword` is added. 
-  Supervisor role is allowed to call it. 
+  Supervisor role is allowed to call it.
+  
+### Changed
+ - `uba_usercertificates.serial` attribute is marked as unique    
 
 ## [5.2.4]
 ### Fixed
