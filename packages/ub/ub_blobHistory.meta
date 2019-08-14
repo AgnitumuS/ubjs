@@ -41,9 +41,12 @@
 		}
 	],
 	"mixins": {
-		"mStorage":	{
+		"mStorage": {
 			"simpleAudit": false,
 			"safeDelete" : false
+		},
+		"audit": {
+		      "enabled": false
 		}
 	},
   "dbKeys": {
