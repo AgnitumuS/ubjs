@@ -1743,30 +1743,19 @@ Ext.define('UB.view.BasePanel', {
   },
 
   /**
-   * load data for exist instance
+   * load data for existing instance
    */
   initEditOrByCurrentFormData: function () {
-    var me = this,
-      requests = []
+    let me = this
 
-    requests.push($App.connection.select(me.formRequestConfig('select', {
+    let request = me.formRequestConfig('select', {
       entity: me.entityName,
       fieldList: me.fieldList,
       ID: me.instanceID,
-      alsNeed: me.hasEntityALS
-    })))
-
-    if (me.isEntityLockable) {
-      requests.push(
-        $App.connection.query({
-          method: 'isLocked',
-          entity: me.entityName,
-          ID: me.getInstanceID()
-        })
-      )
-    }
-
-    Promise.all(requests).then(function ([result, lockInfo]) {
+      lockType: me.isEntityLockable ? 'None' : undefined, // undefined will be removed during JSON.stringify
+      alsNeed: me.hasEntityALS ? true : undefined
+    })
+    $App.connection.select(request).then(function (result) {
       if (me.isDestroyed) return
       if (result && result.resultData.data.length) {
         if (me.addByCurrent) {
@@ -1786,8 +1775,11 @@ Ext.define('UB.view.BasePanel', {
           me.record.resultData = result.resultData
           me.record.resultAls = result.resultAls
           UB.ux.data.UBStore.resetRecord(me.record)
-          if (me.isEntityLockable && lockInfo && lockInfo.lockInfo) {
-            me.onGetLockInfo(lockInfo)
+          if (me.isEntityLockable) {
+            let lockInfo = result.resultLock
+            if (lockInfo && lockInfo.lockInfo) {
+              me.onGetLockInfo(lockInfo)
+            }
           }
           me.enableBinder()
           me.isNewInstance = false
@@ -2918,30 +2910,24 @@ Ext.define('UB.view.BasePanel', {
   loadInstance: function () {
     let me = this
 
-    let request = [$App.connection.select(me.formRequestConfig('select', {
+    let request = me.formRequestConfig('select', {
       entity: me.entityName,
       fieldList: me.fieldList,
       ID: me.instanceID,
-      alsNeed: me.hasEntityALS
-    }))]
-
-    if (me.isEntityLockable) {
-      request.push($App.connection.query({
-        method: 'isLocked',
-        entity: me.entityName,
-        ID: me.getInstanceID()
-      }))
-    }
+      alsNeed: me.hasEntityALS ? true : undefined,
+      lockType: me.isEntityLockable ? 'None' : undefined
+    })
 
     me.formDataReady = false
-    Promise.all(request).then(function ([result, lockInfo]) {
+    $App.connection.select(request).then(function (result) {
       me.disableBinder()
       UB.ux.data.UBStore.resultDataRow2Record(result, me.record)
       me.record.resultData = result.resultData
       me.record.resultAls = result.resultAls
       UB.ux.data.UBStore.resetRecord(me.record)
-      if (me.isEntityLockable && lockInfo && lockInfo.lockInfo) {
-        me.onGetLockInfo(lockInfo)
+      if (me.isEntityLockable) {
+        let lockInfo = result.resultLock
+        if (lockInfo && lockInfo.lockInfo) me.onGetLockInfo(lockInfo)
       }
       me.enableBinder()
 

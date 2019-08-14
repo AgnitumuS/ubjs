@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.14]
+### Changed
+ - for entities with `softLock` mixin BasePanel will send a single select request with `lockType: 'None'` instead of
+ two request - one for select and one for `isLocked`. UB server >= 5.14.0 correctly handle `lockType: 'None'` requests.  
+
 ## [5.10.11]
 ### Added
  - new localization key `apply`
