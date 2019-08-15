@@ -116,10 +116,14 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
  `https://localhost/ubstatic-unitybase-info/app/node_modules/@unitybase/ub/public/schemas/` with 404 and
  expose to caller our internal folders structure. 
 
+## [5.2.30]
+### Changed
+ - explicitly disable audit for system entity ub_blobHistory 
+
 ## [5.0.44]
 ### Changed
  - `$.currentUserOrUserGroupInAdmSubtable` RLS macros will add all user roles including pseudo-roles `Everyone` `User` & `Anonymous`
- Previous implementation did not check pseudo-roles.    
+ Previous implementation did not check pseudo-roles
 
 ## [5.0.43]
 ### Changed
