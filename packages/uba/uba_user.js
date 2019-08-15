@@ -56,7 +56,7 @@ function fillFullNameIfMissing (ctxt) {
     params.fullName = params.name
   }
   if (params.name && params.name.indexOf('\\') !== -1) {
-    // domaim/ldap user password never expire on UB level
+    // domain/ldap user password never expire on UB level
     params.lastPasswordChangeDate = new Date(2099, 12, 31)
   }
 }
@@ -509,7 +509,7 @@ function denyBuildInUserDeletion (ctx) {
 }
 
 // eslint-disable-next-line no-useless-escape
-const EMAIL_VALIDATION_RE = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_VALIDATION_RE = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 /**
  * Check provided Email is look like Email address
  * @private
