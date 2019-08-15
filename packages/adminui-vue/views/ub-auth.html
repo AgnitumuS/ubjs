@@ -254,11 +254,11 @@
                   <el-button type="primary" plain style="min-width: 8rem" @click="doUBLogin">{{ $ut('Enter') }}
                   </el-button>
                 </el-form-item>
-                <div v-if="!hasNegotiate">
-                  <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
-                  <div v-if="registrationURL"><a :href="registrationURL">{{ $ut('UBAuthRegistration') }}</a></div>
-                </div>
               </div>
+            </div>
+            <div v-if="!hasNegotiate">
+              <div><a href="#">{{ $ut('UBAuthForgotPassword') }}</a></div>
+              <div v-if="registrationURL"><a :href="registrationURL">{{ $ut('UBAuthRegistration') }}</a></div>
             </div>
           </el-form>
         </div>
