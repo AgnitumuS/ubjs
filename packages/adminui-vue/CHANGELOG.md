@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.23]
 ### Changed
  - element-ui & element-theme-chalk versions are frozen to 2.8.2 because of bugs (again) in element theme builder
+ - **BREAKING** one-line function helpers.isExistAttr() is removed. Use `const schema = UB.connection.domain.get(entity); schema.attributes[attr]` instead 
  
 ### Fixed
  - show Registration URL on the login page independent of available auth methods 

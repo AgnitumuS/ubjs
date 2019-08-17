@@ -10,7 +10,6 @@ const createInstanceModule = require('./instance')
 const { mountTab, mountModal } = require('./mount')
 const createProcessingModule = require('./processing')
 const {
-  isExistAttr,
   mergeStore,
   required,
   transformCollections,
@@ -153,13 +152,10 @@ class UForm {
     if (masterFieldList) {
       const fieldList = new Set(masterFieldList)
       fieldList.add('ID')
-      const isExistModifyDate = isExistAttr(this.entity, 'mi_modifyDate')
-      if (isExistModifyDate) {
+      if (this.entitySchema.attributes['mi_modifyDate']) {
         fieldList.add('mi_modifyDate')
       }
-
-      const isExistCreateDate = isExistAttr(this.entity, 'mi_createDate')
-      if (isExistCreateDate) {
+      if (this.entitySchema.attributes['mi_createDate']) {
         fieldList.add('mi_createDate')
       }
       this.fieldList = [...fieldList]

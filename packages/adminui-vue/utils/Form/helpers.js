@@ -1,7 +1,6 @@
 module.exports = {
   buildExecParams,
   buildCollectionRequests,
-  isExistAttr,
   mapInstanceFields,
   computedVuex,
   mergeStore,
@@ -39,6 +38,7 @@ const SYSTEM_FIELDS = new Set([
  */
 function buildExecParams (trackedObj, entity) {
   const execParams = {}
+  const schema = UB.connection.domain.get(entity)
   if (trackedObj.isNew) {
     for (const [key, value] of Object.entries(trackedObj.data)) {
       if (!SYSTEM_FIELDS.has(key) && !key.includes('.')) {
@@ -53,8 +53,7 @@ function buildExecParams (trackedObj, entity) {
   }
 
   execParams.ID = trackedObj.data.ID
-  const isExistModifyDate = isExistAttr(entity, 'mi_modifyDate')
-  if (isExistModifyDate) {
+  if (schema.attributes['mi_modifyDate']) {
     execParams.mi_modifyDate = trackedObj.data.mi_modifyDate
   }
 
@@ -105,17 +104,6 @@ function buildCollectionRequests (collection, fieldList) {
     }
   }
   return requests
-}
-
-/**
- * Check is attribute includes in entity
- * @param  {String}  attr   Attribute name
- * @param  {String}  entity Entity name
- * @return {Boolean}
- * @private
- */
-function isExistAttr (entity, attr) {
-  return !!UB.connection.domain.get(entity).getEntityAttributeInfo(attr)
 }
 
 /**

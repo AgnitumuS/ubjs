@@ -5,7 +5,7 @@ const UB = require('@unitybase/ub-pub')
 const dialogs = require('../../components/dialog/UDialog')
 const moment = require('moment')
 const { Notification: $notify } = require('element-ui')
-const { buildExecParams, buildCollectionRequests, isExistAttr } = require('./helpers')
+const { buildExecParams, buildCollectionRequests } = require('./helpers')
 
 /**
  * Creates Vuex store object with basic processing actions:
@@ -291,13 +291,11 @@ function createProcessingModule ({
 
               req.fieldList.push('ID')
 
-              const isExistModifyDate = isExistAttr(req.entityName, 'mi_modifyDate')
-              if (isExistModifyDate) {
+              const schema = UB.connection.domain.get(req.entityName)
+              if (schema.attributes['mi_modifyDate']) {
                 req.fieldList.push('mi_modifyDate')
               }
-
-              const isExistCreateDate = isExistAttr(req.entityName, 'mi_modifyDate')
-              if (isExistCreateDate) {
+              if (schema.attributes['mi_createDate']) {
                 req.fieldList.push('mi_createDate')
               }
 
