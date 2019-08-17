@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **BREAKING** one-line function helpers.isExistAttr() is removed. Use `const schema = UB.connection.domain.get(entity); schema.attributes[attr]` instead 
  
 ### Fixed
- - show Registration URL on the login page independent of available auth methods 
+ - show Registration URL on the login page independent of available auth methods
+ - turn off silence kerberos login on the auth page works correctly - fix #64 
 
 ## [1.6.21]
 ### Added
