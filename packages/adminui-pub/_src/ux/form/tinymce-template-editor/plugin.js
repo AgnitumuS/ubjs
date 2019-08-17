@@ -1,7 +1,6 @@
 /* global tinymce */
 
 tinymce.PluginManager.add('templateEditor', function (editor, url) {
-
   function templateProps () {
     let dom = editor.dom
     let data = {}
@@ -39,8 +38,8 @@ tinymce.PluginManager.add('templateEditor', function (editor, url) {
             layout: 'grid',
             columns: 2,
             items: [
-              {type: 'textbox', label: 'Key', name: 'templateType'},
-              {type: 'checkbox', label: 'Remove section', name: 'removeSection'}
+              { type: 'textbox', label: 'Key', name: 'templateType' },
+              { type: 'checkbox', label: 'Remove section', name: 'removeSection' }
             ]
           }
         ]
@@ -127,10 +126,10 @@ tinymce.PluginManager.add('templateEditor', function (editor, url) {
     const alignElements = 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img'
     editor.formatter.register({
       // Change alignment formats to use the deprecated align attribute
-      alignleftTe: {selector: alignElements, styles: {align: 'left'}},
-      aligncenterTe: {selector: alignElements, styles: {align: 'center'}},
-      alignrightTe: {selector: alignElements, styles: {align: 'right'}},
-      alignjustifyTe: {selector: alignElements, styles: {align: 'justify'}}
+      alignleftTe: { selector: alignElements, styles: { align: 'left' } },
+      aligncenterTe: { selector: alignElements, styles: { align: 'center' } },
+      alignrightTe: { selector: alignElements, styles: { align: 'right' } },
+      alignjustifyTe: { selector: alignElements, styles: { align: 'justify' } }
     })
   })
   editor.on('dblclick', templateProps)
