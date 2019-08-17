@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - element-ui & element-theme-chalk versions are frozen to 2.8.2 because of bugs (again) in element theme builder
  
 ### Fixed
- - show Registration URL on the login page independent of available auth methods 
+ - show Registration URL on the login page independent of available auth methods
+ - turn off silence kerberos login on the auth page works correctly - fix #64 
 
 ## [1.6.21]
 ### Added
