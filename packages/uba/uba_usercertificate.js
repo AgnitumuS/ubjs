@@ -45,5 +45,5 @@ me.getCertificate = function (ctxt) {
   let certificate = store.getAsBuffer('certificate')
   certificate = Buffer.from(certificate)
   certificate = certificate.toString('base64')
-  ctxt.dataStore.initFromJSON({fieldCount: 1, values: ['certificate', certificate], rowCount: 1})
+  ctxt.dataStore.initFromJSON({ fieldCount: 1, values: ['certificate', certificate], rowCount: 1 })
 }

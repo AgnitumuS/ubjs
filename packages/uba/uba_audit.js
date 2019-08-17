@@ -11,7 +11,7 @@ let __supervisorUserID = 0
 
 function getSupervisorID () {
   if (__supervisorUserID === 0) {
-    let supervisorUserName = ubs_settings.getSettingValue('UBA.securityDashboard.supervisorUser')
+    let supervisorUserName = ubs_settings.loadKey('UBA.securityDashboard.supervisorUser')
     if (supervisorUserName) {
       __supervisorUserID = UB.Repository('uba_user').attrs('ID').where('name', '=', supervisorUserName).selectAsObject()[0].ID
     }

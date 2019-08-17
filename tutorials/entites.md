@@ -120,6 +120,8 @@ so we implement it as a mixin and add a client-side features for edit ACL.
 
 ### softLock - Пессимистические блокировки (Pessimistic locks)
 
+See detailed [pessimistic locking guide](#!/guide/mixins_softlock)
+
 ### clobTruncate - Обрезает большие текстовые поля 
    
 [JSON]:http://www.json.org/

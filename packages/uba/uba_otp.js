@@ -77,7 +77,7 @@ me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
   if (inst.eof) return false
 
   let res = inst.run('delete', {
-    execParams: {ID: inst.get('ID')}
+    execParams: { ID: inst.get('ID') }
   })
   if (!res) throw inst.lastError
 
@@ -127,7 +127,7 @@ me.authAndExecute = function (otp, otpKind, callBack) {
     .select()
   if (store.eof) return false
 
-  if (!store.run('delete', {execParams: {ID: store.get('ID')}})) {
+  if (!store.run('delete', { execParams: { ID: store.get('ID') } })) {
     throw store.lastError
   }
   Session.runAsUser(store.get('userID'), callBack.bind(null, store.get('uData')))
