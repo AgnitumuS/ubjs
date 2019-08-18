@@ -1,4 +1,4 @@
-const path = require('path)')
+const path = require('path')
 /**
  * Fill TST model enums
  * Used by `ubcli initialize` command
