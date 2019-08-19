@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.14]
+### Added
+ - new localStorage key **UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD** added to prevent logout in case user open document
+ using Document URI Schema (WebDav). Before call to document.location.href = 'ms-word....' developer must set this key value
+ to `"true"` to prevent ub-pub to call $App.logout inside `document.onbeforeunload` handler 
+ 
 ## [5.3.13]
 ### Fixed
  - do not lost params in AsyncConnection.stringifyExecParamsValues (introduced by premature optimization in 5.3.12) 

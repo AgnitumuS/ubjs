@@ -339,6 +339,12 @@ module.exports.LDS_KEYS = {
    */
   USER_DID_LOGOUT: 'userDidLogout',
   /**
+   * In case document url is set using URI Schema, for example `document.location.href="ms-word:ofv|u|http://...."`
+   * window.onbeforeunload should skip call og App.logout(). Since we do not have access to the target URL inside onbeforeunload event
+   * caller must set this flar in localstorage to `true` to prevent log out of current user
+   */
+  PREVENT_CALL_LOGOUT_ON_UNLOAD: 'preventLogoutOnUnload',
+  /**
    * locale, preferred by user. Empty in case of first login
    */
   PREFERRED_LOCALE: 'preferredLocale'

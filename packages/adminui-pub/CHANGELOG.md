@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - for entities with `softLock` mixin BasePanel will send a single select request with `lockType: 'None'` instead of
  two request - one for select and one for `isLocked`. UB server >= 5.14.0 correctly handle `lockType: 'None'` requests.  
 
+### Added
+ - in case localStorage key UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD is set to `"true"` `document.onbeforeunload` handler
+ don't call `$App.logout`. This solve unexpected logout in case document opened using WebDav
+   
 ## [5.10.11]
 ### Added
  - new localization key `apply`

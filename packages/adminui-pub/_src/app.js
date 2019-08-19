@@ -401,7 +401,7 @@ function launchApp () {
           resXY = this.callParent(arguments),
           constr = Ext.getBody().getViewSize()
         if (me.targetXY) {
-          if (resXY[1] + me.getHeight() > constr.height ) {
+          if (resXY[1] + me.getHeight() > constr.height) {
             resXY[1] = me.targetXY[1] - 15 - me.getHeight()
           }
         }
@@ -550,6 +550,12 @@ function launchApp () {
     UB.view.UBDropZone.init()
 
     window.onbeforeunload = function () {
+      const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.localStorage : false
+      if (LDS && LDS.getItem(UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD) === 'true') {
+        // prevent call logout in case document.location.href is set to WebDaw URI Schema (ms-word....)
+        LDS.setItem(UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD, 'false')
+        return
+      }
       window.onbeforeunload = null
       window.toLog = null
       window.onerror = null
