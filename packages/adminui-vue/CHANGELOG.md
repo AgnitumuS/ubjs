@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - show Registration URL on the login page independent of available auth methods
  - turn off silence kerberos login on the auth page works correctly - fix #64 
 
+### Added 
+ - VueJS based form now accept `target` in UForm constructor, and render form directly into this target. 
+Target can be either id of html element or Ext component
+
 ## [1.6.21]
 ### Added
  - default authentication form (ub-auth.html) handle a `uiSettings.adminUI.registrationURL` parameter from config.

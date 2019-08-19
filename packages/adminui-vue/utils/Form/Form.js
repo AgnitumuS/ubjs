@@ -7,7 +7,7 @@ module.exports = Form
 
 const Vuex = require('vuex')
 const createInstanceModule = require('./instance')
-const { mountTab, mountModal } = require('./mount')
+const { mountTab, mountModal, mountContainer } = require('./mount')
 const createProcessingModule = require('./processing')
 const {
   mergeStore,
@@ -42,6 +42,7 @@ class UForm {
    * @param {string} [cfg.modalWidth] Modal width
    * @param {string} [cfg.formCode] Required to provide form code for form constructor button in toolbar
    * @param {string} [cfg.tabId] Optional tabId. If omitted will be calculated using entity code and instanceID
+   * @param {object} [cfg.target] Optional target. Used for render form into form
    */
   constructor ({
     component = required('component'),
@@ -53,7 +54,8 @@ class UForm {
     modalClass,
     modalWidth,
     formCode,
-    tabId
+    tabId,
+    target
   }) {
     this.component = component
     this.props = props
@@ -67,6 +69,7 @@ class UForm {
     this.formCode = formCode
     this.collections = {}
 
+    this.target = target
     this.tabId = tabId
     this.isModal = isModal
     this.modalClass = modalClass
@@ -232,7 +235,7 @@ class UForm {
           fieldList: this.fieldList
         }
       })
-    } else {
+    } else if (this.target === undefined || this.target.getId() === 'ubCenterViewport') {
       if (!this.tabId) {
         this.tabId = this.entity
           ? this.entity + (this.instanceID ? this.instanceID : 'ext' + Ext.id(null, 'addNew')) // TODO portal: Ext.id -> portal.getId
@@ -245,6 +248,21 @@ class UForm {
         validator: this.validator,
         title: this.title,
         tabId: this.tabId,
+        provide: {
+          formCode: this.formCode,
+          entity: this.entity,
+          entitySchema: this.entitySchema,
+          fieldList: this.fieldList
+        }
+      })
+    } else {
+      mountContainer({
+        component: this.component,
+        props: this.props,
+        store: this.$store,
+        validator: this.validator,
+        title: this.title,
+        target: this.target,
         provide: {
           formCode: this.formCode,
           entity: this.entity,
