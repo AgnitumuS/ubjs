@@ -13,6 +13,8 @@ UBA_GROUPROLE_EDIT_SUPERVISOR;uba_grouprole;[iuda]*;A;Supervisor;Allow grant a r
 UBA_GROUPROLE_READ_SUPERVISOR;uba_grouprole;select;A;Supervisor;Allow supervisor to read groups roles
 UBA_USERROLE_READ_SUPERVISOR;uba_userrole;select;A;Supervisor;Allow supervisor to read user roles
 UBA_USERGROUP_READ_SUPERVISOR;uba_usergroup;select;A;Supervisor;Allow supervisor to read user groups
+UBA_AUDIT_READ_SUPERVISOR;uba_audit;select;A;Supervisor;Allow supervisor to read security audit
+UBA_AUDITTRAIL_READ_SUPERVISOR;uba_auditTrail;select;A;Supervisor;Allow supervisor to read audit trail
 UBA_AUDIT_SELECT_ONLY;uba_audit;[^s]*;D;Everyone;Deny direct security audit operation even for all roles
 UBA_AUDIT_SECURE_EVENT;uba_audit;secureBrowserEvent;A;User;Allow insert secureBrowserEvent for authorized user
 UBA_SUBJECT_DENY;uba_subject;[iuda]*;D;Everyone;Deny direct modification of UNITY uba_subject
