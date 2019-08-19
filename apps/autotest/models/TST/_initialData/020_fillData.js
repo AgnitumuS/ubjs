@@ -1,14 +1,12 @@
 const path = require('path')
+const csvLoader = require('@unitybase/base').dataLoader
 /**
  * Fill TST model enums
  * Used by `ubcli initialize` command
  * @param {ServerSession} session
  */
 module.exports = function (session) {
-  'use strict'
-  var
-    csvLoader = require('@unitybase/base').dataLoader,
-    conn = session.connection
+  const conn = session.connection
 
   console.info('\tFill enumeration for TST model')
   csvLoader.loadSimpleCSVData(conn, path.join(__dirname, 'ubm_enum-TST.csv'), 'ubm_enum', 'eGroup;code;name;sortOrder'.split(';'), [0, 1, 2, 3], 1)
