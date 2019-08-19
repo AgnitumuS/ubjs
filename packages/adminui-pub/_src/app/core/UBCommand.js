@@ -525,9 +525,12 @@ Ext.define('UB.core.UBCommand', {
       isDetail: me.isDetail,
       customActions: me.customActions,
       selectedRecordID: me.selectedInstanceID,
-      focusOnUpdate: me.focusOnUpdate,
-      hideActions: me.hideActions
+      focusOnUpdate: me.focusOnUpdate
     })
+    if (me.hideActions && !config.hideActions) {
+      // do not put undefined info config - it overrides default [] value in EntityGrindPanel
+      config.hideActions = me.hideActions
+    }
     if (me.isDetail) {
       config.height = UB.appConfig.gridDefaultDetailViewHeight
     }

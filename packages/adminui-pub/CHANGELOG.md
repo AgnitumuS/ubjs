@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.10.15]
+### Changed
+ - set default value [] for EntityGridPanel.hideActions; prevent override it by `undefined` in UBCommand
+  
 ## [5.10.14]
 ### Changed
  - for entities with `softLock` mixin BasePanel will send a single select request with `lockType: 'None'` instead of

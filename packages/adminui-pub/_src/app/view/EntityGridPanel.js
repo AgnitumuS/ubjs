@@ -611,8 +611,8 @@ Ext.define('UB.view.EntityGridPanel', {
 
   /**
    * @cfg {String[]} hideActions List of action names to make them hidden.
-   *
    */
+  hideActions: [],
 
   onEntityChangedListener: null,
 
@@ -1229,10 +1229,8 @@ Ext.define('UB.view.EntityGridPanel', {
 
     me.preprocessPanel()
 
-    if (me.hideActions && me.hideActions.length) {
-      if (me.hideActions.includes('showDetail')) {
-        me.disableMenuItemDetails = true
-      }
+    if (me.hideActions.includes('showDetail')) {
+      me.disableMenuItemDetails = true
     }
 
     me.createPopupMenu()
@@ -1775,7 +1773,7 @@ Ext.define('UB.view.EntityGridPanel', {
         menuAllActions.push(new Ext.Action(arr[i]))
       }
     }
-    if (!me.hideActions || !me.hideActions.includes(actions.exportXls) ||
+    if (!me.hideActions.includes(actions.exportXls) ||
       !me.hideActions.includes(actions.exportCsv) || !me.hideActions.includes(actions.exportCsv)) {
       menuAllActions.push('-')
       menuAllActions.push(me.createMenuExport())
@@ -3021,18 +3019,17 @@ Ext.define('UB.view.EntityGridPanel', {
       me.actions[UB.view.EntityGridPanel.actionId.addNewByCurrent].setDisabled(true)
       me.actions[UB.view.EntityGridPanel.actionId.del].setDisabled(true)
     }
-    if (me.hideActions && me.hideActions.length) {
-      me.hideActions.forEach(function (actionName) {
-        me.hideAction(actionName, true)
-        if (actionName === 'showDetail') {
-          me.disableMenuItemDetails = true
-          if (me.menuItemDetails) {
-            me.menuItemDetails.disable()
-            me.menuItemDetails.hide()
-          }
+
+    me.hideActions.forEach(function (actionName) {
+      me.hideAction(actionName, true)
+      if (actionName === 'showDetail') {
+        me.disableMenuItemDetails = true
+        if (me.menuItemDetails) {
+          me.menuItemDetails.disable()
+          me.menuItemDetails.hide()
         }
-      })
-    }
+      }
+    })
     if (me.readOnly) {
       me.setReadOnly(me.readOnly)
     }
