@@ -4,7 +4,8 @@
  */
 module.exports = {
   mountTab,
-  mountModal
+  mountModal,
+  mountContainer
 }
 
 /* global $App */
@@ -24,7 +25,7 @@ const { dialog: $dialog } = require('../../components/dialog/UDialog')
  * @param {string} cfg.title Title
  * @param {string} cfg.modalClass Modal class
  * @param {string} cfg.modalWidth Modal width
- * @param {object} cfg.provide Regular object which provide all props what which passed in it
+ * @param {object} cfg.provide Regular object which provide all props what passed in it
  */
 function mountModal ({
   component,
@@ -145,7 +146,7 @@ function mountModal ({
  * @param {object} cfg.validator Vuelidate validation object
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
- * @param {object} cfg.provide Regular object which provide all props what which passed in it
+ * @param {object} cfg.provide Regular object which provide all props what passed in it
  */
 function mountTab ({
   component,
@@ -277,5 +278,69 @@ function beforeClose ({ store, close }) {
     }
   } else {
     close()
+  }
+}
+
+/**
+ * Mount form directly into html container
+ * @param {object} cfg
+ * @param {VueComponent} cfg.component Form component
+ * @param {object} cfg.props Form component props
+ * @param {Vuex} cfg.store Store
+ * @param {object} cfg.validator Vuelidate validation object
+ * @param {string} cfg.title Title
+ * @param {object} cfg.provide Regular object which provide all props what passed in it
+ * @param {Ext.component|String} cfg.target Either id of html element or Ext component
+ */
+function mountContainer ({
+  component,
+  props,
+  store,
+  validator,
+  title: titleText,
+  provide,
+  target
+}) {
+  const instance = new Vue({
+    store,
+    data () {
+      return {
+        dialogVisible: false,
+        titleText
+      }
+    },
+
+    provide () {
+      return {
+        $v: validator,
+        $formServices: {
+          setTitle: this.setTitle,
+          close: () => {
+            beforeClose({
+              close: () => {
+                this.dialogVisible = false
+              },
+              store
+            })
+          },
+          forceClose: () => {
+            this.dialogVisible = false
+          }
+        },
+        ...provide
+      }
+    },
+    render: (h) => h(component, { props })
+  })
+
+  if (typeof target === 'string') {
+    instance.$mount(`#${target}`)
+  } else { // Ext component
+    instance.$mount(`#${target.getId()}-outerCt`)
+
+    // adding vue instance to basepanel
+    const basePanel = target.up('basepanel')
+    if (!basePanel.vueChilds) basePanel.vueChilds = []
+    basePanel.vueChilds.push(instance)
   }
 }
