@@ -573,7 +573,11 @@ Ext.define('UB.core.UBCommand', {
       // check form is already instantiated for passed entity + instanceId
       let cfg = me.commandConfig
       if (!cfg.tabId) {
-        cfg.tabId = cfg.entity + (cfg.instanceID ? cfg.instanceID : 'ext' + Ext.id(null, 'addNew'))
+        cfg.tabId = $App.generateTabId({
+          entity: cfg.entity,
+          instanceID: cfg.instanceID,
+          formCode: me.formCode
+        })
       }
       let existedTab = Ext.getCmp(cfg.tabId) // Vue forms sets id for Tab
       if (!existedTab) {

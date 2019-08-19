@@ -2057,7 +2057,11 @@ Ext.define('UB.view.EntityGridPanel', {
       // open form in modal mode only if grid is in modal mode
       if (!config.isModal && !modal) {
         config.target = $App.viewport.centralPanel
-        config.tabId = ((formParam ? formParam.entityName : null) || me.entityName) + (config.instanceID || ('ext' + Ext.id(null, 'addNew')))
+        config.tabId = $App.generateTabId({
+          entity: ((formParam ? formParam.entityName : null) || me.entityName),
+          instanceID: config.instanceID,
+          formCode: config.formCode
+        })
       }
 
       if (formParam && formParam.cmpInitConfig) {

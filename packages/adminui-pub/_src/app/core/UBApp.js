@@ -1078,6 +1078,20 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 
   hideLogo: function () {
     document.getElementById('UBLogo').style.display = 'none'
+  },
+
+  /**
+   * Generate tabId from showForm command parameters
+   * @param {Object} cfg
+   * @param {string} cfg.entity
+   * @param {number} [cfg.instanceID]
+   * @param {string} [cfg.formCode]
+   * @return {string}
+   */
+  generateTabId: function (cfg) {
+    return cfg.entity +
+      (cfg.formCode ? cfg.formCode : '-') +
+      (cfg.instanceID ? cfg.instanceID : 'ext' + Ext.id(null, 'addNew'))
   }
 })
 

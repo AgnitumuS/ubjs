@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.10.15]
 ### Changed
  - set default value [] for EntityGridPanel.hideActions; prevent override it by `undefined` in UBCommand
-  
+
+### Added
+ - new method `$App.generateTabId()` for tabId generation
+ - $App.generateTabId() will include a formCode into tabId - this allow to open several different forms for the same instance
+    
 ## [5.10.14]
 ### Changed
  - for entities with `softLock` mixin BasePanel will send a single select request with `lockType: 'None'` instead of

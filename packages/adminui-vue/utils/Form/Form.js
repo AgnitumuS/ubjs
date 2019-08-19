@@ -238,7 +238,11 @@ class UForm {
     } else if (this.target === undefined || this.target.getId() === 'ubCenterViewport') {
       if (!this.tabId) {
         this.tabId = this.entity
-          ? this.entity + (this.instanceID ? this.instanceID : 'ext' + Ext.id(null, 'addNew')) // TODO portal: Ext.id -> portal.getId
+          ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId
+            entity: this.entity,
+            instanceID: this.instanceID,
+            formCode: this.formCode
+          })
           : undefined
       }
       mountTab({
