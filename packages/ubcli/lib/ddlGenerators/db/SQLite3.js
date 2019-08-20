@@ -3,13 +3,14 @@
  */
 
 const DBAbstract = require('./DBAbstract')
-const {TableDefinition} = require('../AbstractSchema')
+const { TableDefinition } = require('../AbstractSchema')
 
 const _ = require('lodash')
 
 class DBSQLite3 extends DBAbstract {
   loadDatabaseMetadata () {
     let mTables = this.refTableDefs
+    if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     /** @type {Array<Object>} */
     let dbTables = this.conn.xhr({
@@ -101,7 +102,7 @@ class DBSQLite3 extends DBAbstract {
       // primary keys
       // there is only one primary key (but possible several fields on(sourceID, destID). SQL return field in right order?
       if (primaryKeyFields.length) {
-        let mustBeTab = _.find(mTables, {_upperName: asIsTable._upperName})
+        let mustBeTab = _.find(mTables, { _upperName: asIsTable._upperName })
         let pkNamePart = mustBeTab
           ? mustBeTab.__entity.sqlAlias ? mustBeTab.__entity.sqlAlias : asIsTable._upperName
           : asIsTable._upperName

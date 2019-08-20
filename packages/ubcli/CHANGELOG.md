@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.35]
+### Fixed
+ - DDL generator: in case database connection does not contains entities for DDL generation (all entities is marked as External for example)
+ ubcli generateDDL will skip loading of DB metadata for such connections.
+ This fix issue for read-only Oracle connections in which DDL generator try to create a stored procedure and speed up generation for other RDBMS    
+
 
 ## [5.3.30]
 ### Added

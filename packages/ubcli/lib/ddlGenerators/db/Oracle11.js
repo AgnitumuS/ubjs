@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {TableDefinition} = require('../AbstractSchema')
+const { TableDefinition } = require('../AbstractSchema')
 const DBAbstract = require('./DBAbstract')
 
 /**
@@ -12,6 +12,7 @@ class DBOracle extends DBAbstract {
    */
   loadDatabaseMetadata () {
     let mTables = this.refTableDefs
+    if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     // old code  // UPPER(t.table_name)
     let tablesSQL = `select
@@ -24,7 +25,7 @@ class DBOracle extends DBAbstract {
     let dbTables = this.conn.xhr({
       endpoint: 'runSQL',
       data: tablesSQL,
-      URLParams: {CONNECTION: this.dbConnectionConfig.name}
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
 
     // create a function to extract index column name from Long (LOB)
@@ -40,25 +41,25 @@ begin
  select column_expression into l_data from user_ind_expressions e where e.index_name = iName and e.table_name = tName and e.column_position=cPos;
  return substr( l_data, 1, 64 );
 end;`,
-      URLParams: {CONNECTION: this.dbConnectionConfig.name}
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
-// to be called as F_ColumnDefault(tc.table_name, tc.column_name)
-//     this.conn.xhr({
-//       endpoint: 'runSQL',
-//       data: `create or replace function F_ColumnDefault( tName in varchar2, cName in varchar2)
-// return varchar2
-// as
-//   l_data long;
-//   res varchar2(64);
-// begin
-//  select tc.data_default into l_data from user_tab_columns tc where tc.table_name=tName and tc.column_name=cName;
-//  return substr( l_data, 1, 64 );
-// end;`,
-//       URLParams: {CONNECTION: this.dbConnectionConfig.name}
-//     })
+    // to be called as F_ColumnDefault(tc.table_name, tc.column_name)
+    //     this.conn.xhr({
+    //       endpoint: 'runSQL',
+    //       data: `create or replace function F_ColumnDefault( tName in varchar2, cName in varchar2)
+    // return varchar2
+    // as
+    //   l_data long;
+    //   res varchar2(64);
+    // begin
+    //  select tc.data_default into l_data from user_tab_columns tc where tc.table_name=tName and tc.column_name=cName;
+    //  return substr( l_data, 1, 64 );
+    // end;`,
+    //       URLParams: {CONNECTION: this.dbConnectionConfig.name}
+    //     })
     // filter tables from a metadata if any
     if (mTables.length) {
-      dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, {_upperName: dbTab.NAME.toUpperCase()}) !== -1)
+      dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { _upperName: dbTab.NAME.toUpperCase() }) !== -1)
     }
     for (let tabDef of dbTables) {
       let asIsTable = new TableDefinition({
@@ -86,7 +87,7 @@ order by tc.column_id`
       let columnsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: columnSQL,
-        URLParams: {CONNECTION: this.dbConnectionConfig.name}
+        URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('columnsFromDb', columnsFromDb)
       for (let colDef of columnsFromDb) {
@@ -128,7 +129,7 @@ where uc.constraint_type ='R'
       let fkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: foreignKeysSQL,
-        URLParams: {CONNECTION: this.dbConnectionConfig.name}
+        URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       const C_ACTIONS = {
         'NO ACTION': 'NO_ACTION',
@@ -160,7 +161,7 @@ and uc.constraint_type='P'`
       let pkFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: primaryKeySQL,
-        URLParams: {CONNECTION: this.dbConnectionConfig.name}
+        URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       if (pkFromDb.length) {
         asIsTable.primaryKey = {
@@ -198,7 +199,7 @@ order
       let indexesFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: indexesSQL,
-        URLParams: {CONNECTION: this.dbConnectionConfig.name}
+        URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       let i = 0
       let idxCnt = indexesFromDb.length
@@ -242,7 +243,7 @@ where
       let constraintsFromDb = this.conn.xhr({
         endpoint: 'runSQL',
         data: checkConstraintsSQL,
-        URLParams: {CONNECTION: this.dbConnectionConfig.name}
+        URLParams: { CONNECTION: this.dbConnectionConfig.name }
       })
       // console.log('constraintsFromDb', constraintsFromDb)
       for (let constraintDef of constraintsFromDb) {
@@ -261,7 +262,7 @@ where
     let dbSequences = this.conn.xhr({
       endpoint: 'runSQL',
       data: sequencesSQL,
-      URLParams: {CONNECTION: this.dbConnectionConfig.name}
+      URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
     for (let seqDef of dbSequences) {
       this.sequencesDefs.push(seqDef['SEQUENCE_NAME'])
@@ -460,7 +461,7 @@ where
   genCodeCreateFK (table, constraintFK) {
     if (!constraintFK.generateFK) return
 
-    let refTo = _.find(this.refTableDefs, {_nameUpper: constraintFK.references.toUpperCase()})
+    let refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
     let refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
 
     this.DDL.createFK.statements.push(

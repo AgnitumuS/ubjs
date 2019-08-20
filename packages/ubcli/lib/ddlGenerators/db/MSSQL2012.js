@@ -1,6 +1,6 @@
 
 const _ = require('lodash')
-const {TableDefinition} = require('../AbstractSchema')
+const { TableDefinition } = require('../AbstractSchema')
 const DBAbstract = require('./DBAbstract')
 
 // MPV: prior to UB 4 we use a `Caption` extended property - this is mistake
@@ -16,6 +16,7 @@ class DBSQL2012 extends DBAbstract {
    */
   loadDatabaseMetadata () {
     let mTables = this.refTableDefs
+    if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     let tablesSQL = `select o.name, cast( eprop.value as nvarchar(2000) ) as caption 
       from  sys.tables o
@@ -403,7 +404,7 @@ class DBSQL2012 extends DBAbstract {
   genCodeCreateFK (table, constraintFK) {
     if (!constraintFK.generateFK) return
 
-    let refTo = _.find(this.refTableDefs, {_nameUpper: constraintFK.references.toUpperCase()})
+    let refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
     let refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
 
     this.DDL.createFK.statements.push(

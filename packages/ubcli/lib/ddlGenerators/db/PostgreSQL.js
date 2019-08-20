@@ -8,7 +8,7 @@
  */
 
 const _ = require('lodash')
-const {TableDefinition} = require('../AbstractSchema')
+const { TableDefinition } = require('../AbstractSchema')
 const DBAbstract = require('./DBAbstract')
 
 /**
@@ -21,6 +21,7 @@ class DBPostgreSQL extends DBAbstract {
    */
   loadDatabaseMetadata () {
     let mTables = this.refTableDefs
+    if (!mTables.length) return // all entities in this connection are external or no entities at all - skip loading DB metadata
 
     // old code  // UPPER(t.table_name)
     let tablesSQL = `select t.table_name as name, 
@@ -40,7 +41,7 @@ class DBPostgreSQL extends DBAbstract {
 
     // filter tables from a metadata if any
     if (mTables.length) {
-      dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, {_upperName: dbTab.name.toUpperCase()}) !== -1)
+      dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { _upperName: dbTab.name.toUpperCase() }) !== -1)
     }
     for (let tabDef of dbTables) {
       let asIsTable = new TableDefinition({
@@ -443,7 +444,7 @@ ORDER BY index_id, column_position`
   genCodeCreateFK (table, constraintFK) {
     if (!constraintFK.generateFK) return
 
-    let refTo = _.find(this.refTableDefs, {_nameUpper: constraintFK.references.toUpperCase()})
+    let refTo = _.find(this.refTableDefs, { _nameUpper: constraintFK.references.toUpperCase() })
     let refKeys = refTo ? refTo.primaryKey.keys.join(',') : 'ID'
 
     this.DDL.createFK.statements.push(
