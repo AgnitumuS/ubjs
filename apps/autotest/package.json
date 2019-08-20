@@ -1,6 +1,6 @@
 {
   "name": "autotest",
-  "version": "5.0.143",
+  "version": "5.0.144",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -69,7 +69,7 @@
   "devDependencies": {
     "@unitybase/hmr": "^1.0.57",
     "@unitybase/stubs": "^5.0.24",
-    "@unitybase/ubcli": "^5.3.34"
+    "@unitybase/ubcli": "^5.3.35"
   },
   "peerDependencies": {
     "testcafe": "^0.19.1"
