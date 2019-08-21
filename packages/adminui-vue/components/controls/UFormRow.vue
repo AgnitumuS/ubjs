@@ -1,5 +1,5 @@
 <template>
-  <div class="ub-form-row">
+  <label class="ub-form-row">
     <div
       class="ub-form-row__label"
       :class="{
@@ -29,7 +29,7 @@
         </transition>
       </div>
     </div>
-  </div>
+  </label>
 </template>
 
 <script>
