@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.15]
+### Changed
+ - silenceKerberosLogin support is removed from AsyncConnection and moved into @unitybase/adminui-pub;
+  This is responsibility of UI to analyse localStorage key and resolve requestAuthParams promise to Negotiate algorithm  
+
 ## [5.3.14]
 ### Added
  - new localStorage key **UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD** added to prevent logout in case user open document
@@ -278,7 +283,7 @@ Vue.use(UB)
 - for a browser environment package will add a browser-level unhandled rejection handlers
   and redirect unhandled errors to the error reported ( see new `setErrorReporter` method)
 - for a browser environment `UB.connect` will automatically resolve "silence kerberos login" - situation
- when localStorage.silenceKerberosLogin jey is set to "true". In this case `onCredentialRequired` callback is not
+ when localStorage.silenceKerberosLogin key is set to "true". In this case `onCredentialRequired` callback is not
  called and Kerberos/NTLM auth method will be used (if Negotiate is in the application auth list)
 
 ## [5.0.15]
