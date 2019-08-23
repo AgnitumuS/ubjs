@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [5.10.16]
 ### Fixed
 - silenceKerberosLogin now handled by adminui-pub instead of AsyncConnection. This fix [UBDF-9903] && #64
+- allow to call `EntityGridPanel.doShowDetail` for instances of EntityGridPanel with stateId and title `undefined` 
   
 ## [5.10.15]
 ### Changed
