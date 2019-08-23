@@ -2925,7 +2925,7 @@ Ext.define('UB.view.EntityGridPanel', {
     let cmd = UB.core.UBCommand.getCommandByEntityAndType(config.entityName, showListCommand, true)
 
     let regEx = new RegExp('(.*?)(_grid_UI)')
-    let stateId = me.stateId.replace(regEx, UB.format('$1_{0}_{1}$2', config.entityName, config.attribute))
+    let stateId = me.stateId ? me.stateId.replace(regEx, `$1_${config.entityName}_${config.attribute}$2`) : undefined
 
     me.setMainPanel(stateId)
 
@@ -2949,7 +2949,7 @@ Ext.define('UB.view.EntityGridPanel', {
       isDetail: true,
       filters: coll,
       tabId: Ext.id(),
-      title: (wnd || me).title + '->' + $App.domainInfo.get(config.entityName).caption
+      title: ((wnd || me).title ? (wnd || me).title + '->' : '') + $App.domainInfo.get(config.entityName).caption
     }, (config.command || {})))
     if (wnd) {
       wnd.doLayout()
