@@ -222,7 +222,8 @@ function assignCaptions (ctxt) {
       .limit(1).selectSingle()
   }
 
-  let depInfo = UB.Repository('org_staffunit').attrs(depFieldList).selectById(staffUnitID)
+  let depInfo = UB.Repository('org_staffunit').attrs(depFieldList)
+    .misc({ __mip_recordhistory_all: true }).selectById(staffUnitID)
   let employeeInfo = UB.Repository('org_employee').attrs(empFieldList).selectById(employeeID)
   if (!employeeInfo) return // employee can be deleted - issue unitybase/ubjs#46
   supportedLangs.forEach(function (lang) {
