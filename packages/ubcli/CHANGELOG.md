@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.36]
+### Fixed
+ - DDL generator will correctly add a JSON columns with `allowNull: false` and without default value;
+ For such case estimated value for updating existed rows is set to `{}`
+ 
 ## [5.3.35]
 ### Fixed
  - DDL generator: in case database connection does not contains entities for DDL generation (all entities is marked as External for example)

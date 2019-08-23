@@ -612,6 +612,7 @@ class DBAbstract {
   }
 
   /**
+   * Return columns value used to update column with allowNull === false and no default set
    * @param {TableDefinition} table
    * @param {FieldDefinition} column
    * @return {*}
@@ -641,6 +642,7 @@ class DBAbstract {
       case 'TEXT': res = 'ID'; break
       case 'BOOLEAN': res = '0'; break
       case 'DATETIME': res = this.getExpression('currentDate'); break
+      case 'JSON': res = `'{}'`
     }
     return res
   }
