@@ -235,7 +235,7 @@ class UForm {
           fieldList: this.fieldList
         }
       })
-    } else if (this.target === undefined || this.target.getId() === 'ubCenterViewport') {
+    } else if (this.target === undefined || (this.target.getId && this.target.getId() === 'ubCenterViewport')) {
       if (!this.tabId) {
         this.tabId = this.entity
           ? $App.generateTabId({ // TODO portal: $App.generateTabId -> portal.generateTabId

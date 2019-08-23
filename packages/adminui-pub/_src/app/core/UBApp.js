@@ -1106,8 +1106,16 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
    * @return {string}
    */
   generateTabId: function (cfg) {
+    let formCode
+    if (cfg.formCode === undefined) {
+      formCode = '-'
+    } else if (typeof cfg.formCode === 'function') {
+      formCode = 'func'
+    } else {
+      formCode = cfg.formCode
+    }
     return cfg.entity +
-      (cfg.formCode ? cfg.formCode : '-') +
+      formCode +
       (cfg.instanceID ? cfg.instanceID : 'ext' + Ext.id(null, 'addNew'))
   }
 })
