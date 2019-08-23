@@ -297,36 +297,17 @@ function mountContainer ({
   props,
   store,
   validator,
-  title: titleText,
   provide,
   target
 }) {
   const instance = new Vue({
     store,
     data () {
-      return {
-        dialogVisible: false,
-        titleText
-      }
+      return {}
     },
-
     provide () {
       return {
         $v: validator,
-        $formServices: {
-          setTitle: this.setTitle,
-          close: () => {
-            beforeClose({
-              close: () => {
-                this.dialogVisible = false
-              },
-              store
-            })
-          },
-          forceClose: () => {
-            this.dialogVisible = false
-          }
-        },
         ...provide
       }
     },
@@ -334,6 +315,21 @@ function mountContainer ({
   })
 
   if (typeof target === 'string') {
+    const el = document.querySelector(`#${target}`)
+    if (!el) {
+      instance.$notify({
+        type: 'error',
+        message: `Can't find html element with ${target} id`,
+        duration: 3000
+      })
+      return
+    }
+    // on destroy parent vue component child form must be destroyed
+    const vueOptions = el.parentNode.__vue__.$options
+    if (!vueOptions.destroyed) vueOptions.destroyed = []
+    vueOptions.destroyed.push(function () {
+      instance.$destroy()
+    })
     instance.$mount(`#${target}`)
   } else { // Ext component
     instance.$mount(`#${target.getId()}-outerCt`)
@@ -342,5 +338,9 @@ function mountContainer ({
     const basePanel = target.up('basepanel')
     if (!basePanel.vueChilds) basePanel.vueChilds = []
     basePanel.vueChilds.push(instance)
+
+    target.on('destroy', () => {
+      instance.$destroy()
+    })
   }
 }

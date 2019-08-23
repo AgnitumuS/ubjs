@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - silenceKerberosLogin now handled by adminui-pub instead of AsyncConnection. This fix [UBDF-9903] && #64
 - allow to call `EntityGridPanel.doShowDetail` for instances of EntityGridPanel with stateId and title `undefined` 
+- if `formCode` passed to `$App.doCommand` is a function then tabId algorithm will use word 'func', instead of function source code
   
 ## [5.10.15]
 ### Changed
