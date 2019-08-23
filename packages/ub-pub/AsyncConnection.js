@@ -160,9 +160,6 @@ function UBConnection (connectionParams) {
    * @returns {*}
    */
   function doOnCredentialsRequired (conn, isRepeat) {
-    let silenceKerberosLogin = LDS && LDS.getItem(ubUtils.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
-    let userDidLogout = LDS && LDS.getItem(ubUtils.LDS_KEYS.USER_DID_LOGOUT) === 'true'
-
     // only anonymous authentication or requestAuthParams not passe in config
     if (!conn.authMethods.length || !requestAuthParams) {
       if (isRepeat) {
@@ -170,15 +167,6 @@ function UBConnection (connectionParams) {
       } else {
         return Promise.resolve({ authSchema: AUTH_SCHEMA_FOR_ANONYMOUS, login: ANONYMOUS_USER })
       }
-    }
-
-    if (silenceKerberosLogin && !isRepeat && !userDidLogout && (conn.authMethods.indexOf('Negotiate') >= 0)) {
-      return Promise.resolve({
-        authSchema: 'Negotiate',
-        login: '',
-        password: '',
-        registration: 0
-      })
     }
     return requestAuthParams(conn, isRepeat)
   }

@@ -307,7 +307,24 @@ Ext.define('UB.core.UBApp', {
     return UB.connect({
       host: window.location.origin,
       path: window.UB_API_PATH || window.location.pathname,
-      onCredentialRequired: () => { alert('UB.connection.setRequestAuthParamsFunction() not called') },
+      onCredentialRequired: (conn, isRepeat) => {
+        if (isRepeat) {
+          window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
+          throw new UB.UBAbortError('Invalid credential (isRepeat === true)')
+        }
+        let silenceKerberos = (window.localStorage.getItem(UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true')
+        if (silenceKerberos && (conn.authMethods.indexOf('Negotiate') >= 0)) {
+          return Promise.resolve({
+            authSchema: 'Negotiate',
+            login: '',
+            password: '',
+            registration: 0
+          })
+        } else {
+          window.localStorage.setItem(UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
+          throw new UB.UBAbortError('UB.connection.setRequestAuthParamsFunction() not called')
+        }
+      },
       allowSessionPersistent: isExternalLogin, // see uiSettings.adminUI.loginURL
       onAuthorized: function (conn) {
         if (isExternalLogin) { // external login page

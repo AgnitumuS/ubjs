@@ -14,20 +14,24 @@
         <script type="text/javascript" nonce="{{cspNonce}}">
             window.UB_API_PATH = '{{{UB_API_PATH}}}';
             {{#uiSettings.adminUI.loginURL}}
-                window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
-                window.redirectToLogin = function(reason) {
-                    var url = UB_LOGIN_URL;
-                    if (reason) {
-                      url += (url.indexOf('?') === -1 ? '?' : '&') + 'reason=' + encodeURIComponent(reason);
-                    }
-                    url += (url.indexOf('?') === -1 ? '?' : '&') + 'returnUrl=' + encodeURIComponent(window.location.href);
-                    window.location.href = url;
-                }
-                if ((window.localStorage.getItem('silenceKerberosLogin') !== 'true')
-                  && window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null)
-                {
-                    redirectToLogin();
-                }
+              window.UB_LOGIN_URL = '{{{uiSettings.adminUI.loginURL}}}';
+              window.redirectToLogin = function(reason) {
+                  var url = UB_LOGIN_URL;
+                  window.localStorage.removeItem('userDidLogout')
+                  if (reason) {
+                    url += (url.indexOf('?') === -1 ? '?' : '&') + 'reason=' + encodeURIComponent(reason);
+                  }
+                  url += (url.indexOf('?') === -1 ? '?' : '&') + 'returnUrl=' + encodeURIComponent(window.location.href);
+                  window.location.href = url;
+              }
+              if (
+                (window.localStorage.getItem('userDidLogout') === 'true') ||
+                  ((window.localStorage.getItem('silenceKerberosLogin') !== 'true') &&
+                   (window.localStorage.getItem(window.location.origin + window.UB_API_PATH + ':storedSession') == null)
+                  )
+              ) {
+                  redirectToLogin();
+              }
             {{/uiSettings.adminUI.loginURL}}
             window.__ubVersion = {
                 _web: '{{staticVersion}}'
