@@ -48,12 +48,16 @@ function updateStaffUnitCaption (ctxt) {
   }
   let staffUnitStore = UB.DataStore('org_staffunit')
   while (!myStaffs.eof) {
-    updParams.ID = myStaffs.get(0)
-    staffUnitStore.run('update', {
-      caller: me.entity.name,
-      execParams: updParams,
-      __skipOptimisticLock: true
-    })
+    const staffID = myStaffs.get(0)
+    const currentRow = UB.Repository('org_staffunit').attrs(['ID']).selectById(staffID)
+    if (currentRow) {
+      updParams.ID = staffID
+      staffUnitStore.run('update', {
+        caller: me.entity.name,
+        execParams: updParams,
+        __skipOptimisticLock: true
+      })
+    }
     myStaffs.next()
   }
 }
