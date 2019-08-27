@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [5.3.37]
+### Added
+ - `ubcli generateDoc` will add's API methods available for entities; HTML output is formatted using bootstrap  
+
 ## [5.3.36]
 ### Fixed
  - DDL generator will correctly add a JSON columns with `allowNull: false` and without default value;

@@ -41,7 +41,7 @@ module.exports = function generateDoc (cfg) {
     if (!cfg) return
   }
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
-  http.setGlobalConnectionDefaults({receiveTimeout: 120000})
+  http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
   session = argv.establishConnectionFromCmdLineAttributes(cfg)
 
   // must be required for translation
@@ -53,7 +53,8 @@ module.exports = function generateDoc (cfg) {
   outputFileName = cfg.out
 
   try {
-    domainI18n = conn.getDomainInfo().entities
+    let domain = conn.getDomainInfo(true)
+    domainI18n = domain.entities
 
     // add entityCode for each entity in domain
     _.each(domainI18n, function (entity, entityCode) {
@@ -65,6 +66,7 @@ module.exports = function generateDoc (cfg) {
     _.each(domainI18n, function (value, key) {
       value.modelCode = key
       value.entities = []
+      value.modelPackage = domain.models[key].packageJSON
     })
     // transform domain to array of entity
     let domainAsArray = _.values(domainI18n)
@@ -86,13 +88,20 @@ module.exports = function generateDoc (cfg) {
           value.mixinCode = key
         })
         domainAsArray[i].entities[j].mixins = _.values(domainAsArray[i].entities[j].mixins)
+        domainAsArray[i].entities[j].methodsArray = _.keys(domainAsArray[i].entities[j].entityMethods).sort()
       }
     }
 
     let tpl = fs.readFileSync(path.join(__dirname, 'templates', 'generateDoc_template.mustache'), 'utf8')
-
+    let appInfo = conn.getAppInfo()
+    let appName = appInfo.uiSettings.adminUI.applicationName
+    if (typeof appName === 'object') {
+      appName = appName[Object.keys(appName)[0]]
+      appInfo.uiSettings.adminUI.applicationName = appName
+    }
     let rendered = mustache.render(tpl, {
       domain: domainAsArray,
+      appInfo: conn.getAppInfo(),
       i18n: function () {
         return function (word) {
           // console.log('translate for ', word, 'to', userLang);

@@ -74,7 +74,7 @@ module.exports = function createCodeInsightHelper (cfg) {
     let result = []
     let item
     _.forEach(namedCollection, function (value, key) {
-      item = {name: key}
+      item = { name: key }
       item = _.defaults(item, value)
       result.push(item)
     })
@@ -194,7 +194,7 @@ module.exports = function createCodeInsightHelper (cfg) {
         entities.push({
           name: entityName,
           description: doc,
-          meta: entityDef})
+          meta: entityDef })
       }
     })
     processEntities(entities, currentPath, modelCfg.name)

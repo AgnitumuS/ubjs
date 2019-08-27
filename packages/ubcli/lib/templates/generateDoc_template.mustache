@@ -3,72 +3,50 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>&laquo;UB domain documentation&raquo;</title>
+    <title>{{appInfo.uiSettings.adminUI.applicationName}} documentation</title>
 
     <link rel="shortcut icon" href="images/UBLogo16.ico" />
     <link rel="icon" href="images/UBLogo32.png" type="image/png" sizes="32x32" />
     <link rel="icon" href="images/UBLogo48.png" type="image/png" sizes="48x48" />
     <link rel="icon" href="images/UBLogo128.png" type="image/png" sizes="128x128" />
-	<style type="text/css">
-        .entity-header{
-            color: black;
-            /*background-color: #eff4ff;*/
-            border: 0 solid #bcd3ff;
-            width: 50%;
-            font-size: 120%;
-            text-align: center;
-            /* height: 38px; */
-        }
-        .entity-header  span{
-            display: block;
-        }
-        .attribute-table{
-            color: black;
-            background-color: #205081;
-            border: 1px solid #eff4ff;
-            width: 50%;
-
-            /* height: 38px; */
-        }
-        .attribute-table-header{
-            color: black;
-            font-size: 120%;
-            background-color: #eff4ff;
-            border: 1px solid black;
-            /* height: 38px; */
-        }
-
-        .attribute-table-row{
-            border-bottom: 2px solid #bcd3ff;
-            background-color: #ffffff;
-        }
-	</style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
-<body>
-
-<h2>Available models:</h2>
+<body class="py-4">
+<div class="container">
+<h1>{{appInfo.uiSettings.adminUI.applicationName}} {{appInfo.appVersion}} documentation</h1>
+<h2>Available models</h2>
 <ul>
 {{#domain}}
-<li><a href=#model-{{modelCode}}>{{modelCode}}</a></li>
+<li><a href=#model-{{modelCode}}>{{modelCode}}&nbsp;(v{{modelPackage.version}})</a> - {{modelPackage.description}}</li>
 {{/domain}}
 </ul>
 
 {{#domain}}
-<a name="model-{{modelCode}}"><h2>{{#i18n}}Model{{/i18n}} {{modelCode}}</h2></a>
-
+<hr>
+<h2><a name="model-{{modelCode}}">{{#i18n}}Model{{/i18n}} {{modelCode}}&nbsp(v{{modelPackage.version}})</a></h2>
+<p>{{modelPackage.description}}</p>
+<p>
+  Entities
+  <ul>
+    {{#entities}}
+      <li><a href=#{{entityCode}}>{{entityCode}}</a>&nbsp;-&nbsp;{{description}}</li>
+    {{/entities}}
+  </ul>
+</p>
 {{#entities}}
-<div class = "entity-header">
-  <a name={{entityCode}}> <h3>{{caption}} ({{entityCode}})</h3></a> {{description}}
-</div>
-<br> 
-{{documentation}}
-<table class = "attribute-table">
-    <thead class = "attribute-table-header">
-	    <td>{{#i18n}}Attribute{{/i18n}}</td> <td>{{#i18n}}Type{{/i18n}}</td> <td>{{#i18n}}Caption{{/i18n}}</td> <td>{{#i18n}}Description{{/i18n}}</td>
+<h4>
+  <mark><a name={{entityCode}}>{{caption}} ({{entityCode}})</a></mark>
+</h4>
+<p>{{documentation}}</p>
+<table class="table table-striped">
+    <thead class="thead-light">
+      <tr>
+        <td>{{#i18n}}Attribute{{/i18n}}</td> <td>{{#i18n}}Type{{/i18n}}</td> <td>{{#i18n}}Caption{{/i18n}}</td> <td>{{#i18n}}Description{{/i18n}}</td>
+      </tr>
     </thead>
     <tbody>
     {{#attributes}}
-    <tr class = "attribute-table-row">
+    <tr >
         <td>{{attrCode}}{{^allowNull}}<sup>*</sup>{{/allowNull}}</td> 
 	{{#associatedEntity}}<td><a href=#{{associatedEntity}}>{{associatedEntity}}</a></td>{{/associatedEntity}}
 	{{^associatedEntity}}<td>{{dataType}}</td>{{/associatedEntity}}
@@ -78,12 +56,16 @@
     {{/attributes}}
     </tbody>
 </table>
-<br>Mixins:{{#mixins}} {{mixinCode}} {{/mixins}}
-<br>
+<h5>API Methods</h5>
+{{#methodsArray}} {{.}}; {{/methodsArray}}
+<h5>Mixins</h5>
+{{#mixins}} {{mixinCode}}; {{/mixins}}
+<br><br>
 {{/entities}}
 {{/domain}}
 
 
-
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>
