@@ -8,8 +8,8 @@
 // @ID "3000000004904"
 exports.formDef = 'TST.IITSign'
 
-const nmDstu = require('@ub-d/nm-dstu')
-nmDstu.addEncryptionToConnection($App.connection)
+const pkiImplementation = require('@ub-d/iit-sign-web') //require('@ub-d/nm-dstu')
+pkiImplementation.addEncryptionToConnection($App.connection)
 
 Ext.define('TST.IITSign', {
   extend: 'Ext.form.Panel',
@@ -137,14 +137,15 @@ Ext.define('TST.IITSign', {
     // debugger;
 
     me.down('component[ubID="doSign"]').handler = function () {
-      me.mask('Signing')
       me.initPKIAndLoadFile().then(function (data) {
         return data.pki.signData(data.data)
       }).then(function (signature) {
         me.down('component[ubID="signature"]').setValue(signature)
       }).fin(function () {
         me.unmask()
-      }).done()
+      }).finally(() => {
+        me.unmask('Signing')
+      })
     }
 
     me.down('component[ubID="doClearSign"]').handler = function () {

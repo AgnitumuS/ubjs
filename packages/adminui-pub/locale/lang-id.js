@@ -154,7 +154,7 @@ UB.i18nExtend({
         'Read <a href="models/adminui-pub/ub-extension/extensionUpdateInstructionOpera.html" target="_blank">update instruction</a> ' +
         ' and follow <a href="https://chrome.google.com/webstore/detail/ubextension/{3}" target="_blank">UPDATE</a>. <p>After update is complete - restart your browser.</p>',
   NMInstallFeature: '<p>To use this feature <b>{0}</b> must be installed.</p> ' +
-        '<p>Follow <a href="{3}" target="_blank">DOWNLOAD SETUP</a>. After the download is complete, run the install and follow the prompts.</p>' +
+        '<p>Follow <a href="{3}" target="_blank">DOWNLOAD SETUP</a>. After download is complete, run the install and follow the prompts.</p>' +
         '<p>After the installation is complete, restart your browser.</p>',
   NMUpdateFeature: '<p>The new version <i>{1}</i> of the application <b>{0}</b> is available and should be installed.</p> ' +
         '<p>Follow <a href="{3}" target="_blank">DOWNLOAD UPDATE SETUP</a>. After the download is complete, run the install and follow the prompts.</p>' +
