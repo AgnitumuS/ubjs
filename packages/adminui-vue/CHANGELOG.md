@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
  
+### Added
+ - `UDetailGrid` component - shows data collection as a table view 
+
 ### Changed
  - update package `element-ui` **2.8.2 -> 2.11.1**
 
