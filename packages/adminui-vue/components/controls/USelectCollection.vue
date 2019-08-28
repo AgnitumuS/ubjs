@@ -69,10 +69,6 @@ export default {
       return this.$UB.connection.domain.get(this.entityName)
     },
 
-    isLazyCollection () {
-      return this.collectionData.lazy
-    },
-
     selectedRecords () {
       return this.collectionData.items
         .map(i => i.data[this.subjectAttr])
@@ -84,12 +80,6 @@ export default {
 
     subjectEntityName () {
       return this.entitySchema.attributes[this.subjectAttr].associatedEntity
-    }
-  },
-
-  created () {
-    if (this.isLazyCollection) {
-      this.$store.dispatch('loadCollections', [this.collectionName])
     }
   },
 

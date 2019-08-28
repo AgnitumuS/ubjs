@@ -15,6 +15,7 @@ module.exports = {
     const USelectMultiple = require('../components/controls/USelectMultiple.vue').default
     const USelectCollection = require('../components/controls/USelectCollection.vue').default
     const UBaseInput = require('../components/controls/UBaseInput.vue').default
+    const UDetailGrid = require('../components/controls/UDetailGrid/UDetailGrid.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -29,6 +30,7 @@ module.exports = {
     Vue.component(USelectMultiple.name, USelectMultiple)
     Vue.component(USelectCollection.name, USelectCollection)
     Vue.component(UBaseInput.name, UBaseInput)
+    Vue.component(UDetailGrid.name, UDetailGrid)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)

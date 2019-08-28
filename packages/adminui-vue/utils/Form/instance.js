@@ -256,9 +256,9 @@ function createInstanceModule () {
        * Set original state of collection items
        * @param {VuexTrackedInstance} state
        * @param {object} payload
-       * @param {String} payload.collection
-       * @param {Array} payload.items
-       * @param {String} payload.entity
+       * @param {string} payload.collection
+       * @param {array} payload.items
+       * @param {string} payload.entity
        */
       LOAD_COLLECTION (state, { collection, items: itemStates, entity }) {
         const items = itemStates.map(item => ({
@@ -275,9 +275,9 @@ function createInstanceModule () {
        * Remove isNew status.
        * @param {VuexTrackedInstance} state
        * @param {object} payload
-       * @param {String} payload.collection  collection
-       * @param {Number} payload.index       index in collection
-       * @param {Object} payload.loadedState loaded state
+       * @param {string} payload.collection  collection
+       * @param {number} payload.index       index in collection
+       * @param {object} payload.loadedState loaded state
        */
       LOAD_COLLECTION_PARTIAL (state, { collection, index, loadedState }) {
         const collectionInstance = state.collections[collection]
