@@ -18,10 +18,10 @@
         <el-tab-pane label="Main">
           <el-row :gutter="20">
             <el-col :lg="12">
-              <u-auto-field attribute-name="code"/>
+              <u-auto-field attribute-name="code" />
 
               <u-form-row :label="`${entity}.caption`">
-                <u-input attribute-name="caption"/>
+                <u-input attribute-name="caption" />
               </u-form-row>
 
               <u-form-row
@@ -29,21 +29,21 @@
                 :label="`${entity}.filterValue`"
                 :error="$v.filterValue.$error"
               >
-                <u-input attribute-name="filterValue"/>
+                <u-input attribute-name="filterValue" />
               </u-form-row>
 
               <u-form-row :label="`${entity}.currencyValue`">
-                <u-input attribute-name="currencyValue"/>
+                <u-input attribute-name="currencyValue" />
               </u-form-row>
             </el-col>
 
             <el-col :lg="12">
               <u-form-row :label="`${entity}.floatValue`">
-                <u-input attribute-name="floatValue"/>
+                <u-input attribute-name="floatValue" />
               </u-form-row>
 
               <u-form-row :label="`${entity}.intValue`">
-                <u-input attribute-name="intValue"/>
+                <u-input attribute-name="intValue" />
               </u-form-row>
 
               <u-form-row :label="`${entity}.calculated`">
@@ -70,6 +70,7 @@
           <u-form-row :label="`${entity}.jsonColumn`">
             <u-code-mirror v-model="jsonColumn" />
           </u-form-row>
+
         </el-tab-pane>
         <el-tab-pane
           label="Lazy collection example"
