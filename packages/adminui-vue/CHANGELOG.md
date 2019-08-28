@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.6.25]
 ### Fixed
  - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
+ 
+### Changed
+ - update package `element-ui` **2.8.2 -> 2.11.1**
 
 ## [1.6.24]
 ### Changed
