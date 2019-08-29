@@ -239,7 +239,7 @@ class XLSXWorksheet {
       template = [template] // undefined;
     }
 
-    if (template && Array.isArray(template) && template[0] !== undefined && template[0].width !== undefined) {
+    if (template && template[0] !== undefined && template[0].width !== undefined) {
       if (this.numberColumnsWidth !== undefined) {
         if (template.length > this.numberColumnsWidth) {
           this.numberColumnsWidth = template.length
@@ -271,8 +271,7 @@ class XLSXWorksheet {
     this.dataRows.push('> ') // + '" x14ac:dyDescent="0.25">';
 
     // let cellCount = 0
-    const hasTemplate = typeof template !== 'undefined' && Array.isArray(template) &&
-      template.length === config.length
+    const hasTemplate = (typeof template !== 'undefined') && (template.length === config.length)
     const hasCellTemplate = (typeof rowConfig.cellTemplate !== 'undefined' && Array.isArray(rowConfig.cellTemplate) &&
       rowConfig.cellTemplate.length === config.length)
     const existCell = {}
@@ -289,7 +288,7 @@ class XLSXWorksheet {
       valAsTagIs = false
       let cellType = typeof cell
       if (cellType !== 'object' || (cell instanceof Date)) {
-        cell = {value: cell}
+        cell = { value: cell }
       }
       if (hasTemplate && typeof template[index] === 'object') {
         cell = Object.assign(cell, template[index])
@@ -429,7 +428,7 @@ class XLSXWorksheet {
     let res = []
     // this.columnProperties
     res.push('<cols>')
-    config = config.sort((a, b) => a.column > b.column ? 1 : (a.column === b.column ? 0 : -1))
+    config.sort((a, b) => a.column > b.column ? 1 : (a.column === b.column ? 0 : -1))
     config.forEach((column) => {
       if (typeof column.column !== 'number' || typeof column.width !== 'number') {
         throw new Error('Invalid parameters for XLSXWorksheet.setColsProperties')
