@@ -8,7 +8,7 @@
       >
         <template slot-scope="{row}" >
           <template v-if="row.data[col.code] instanceof Date">
-            {{ $moment(row.data[col.code]).format('DD.MM.YYYY') }}
+            {{ $moment(row.data[col.code]).format('l') }}
           </template>
           <template v-else>
             {{ row.data[col.code] }}
