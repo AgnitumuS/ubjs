@@ -60,7 +60,7 @@
             class="el-input__icon"
             style="cursor: pointer;"
             :class="inputIconCls"
-            @click.stop="toggleDropdown"
+            @click.stop.prevent="toggleDropdown"
           />
           <el-dropdown
             v-if="actions.length > 0"
@@ -89,7 +89,6 @@
       <div
         v-if="options.length > 0"
         ref="options"
-        v-clickoutside="hideDropdown"
         class="ub-select__list-options"
       >
         <div
@@ -138,6 +137,7 @@
 
 <script>
 const { debounce } = require('throttle-debounce')
+const clickOutsideDropdown = require('../../utils/mixins/clickOutsideDropdown')
 
 export default {
   name: 'USelectEntity',
@@ -216,6 +216,8 @@ export default {
       default: true
     }
   },
+
+  mixins: [clickOutsideDropdown],
 
   data () {
     return {
@@ -448,10 +450,6 @@ export default {
 
     onShowDropdown () {
       this.popperWidth = this.$refs.input.$el.offsetWidth
-    },
-
-    hideDropdown () {
-      this.dropdownVisible = false
     },
 
     cancelInput (e) {
