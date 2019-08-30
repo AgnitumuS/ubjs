@@ -4,16 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.6.25]
+## [1.6.27]
 ### Fixed
- - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
- 
+ - `USelectEntity`, `USelectMultiple` click outside dropdown 
+
+## [1.6.26]
 ### Added
  - `UDetailGrid` component - shows data collection as a table view 
 
 ### Changed
  - update package `element-ui` **2.8.2 -> 2.11.1**
-
+ 
+## [1.6.25]
+### Fixed
+ - In case vue form is mounted directly into another component it will be destroyed during destroying parent Ext or Vue component
+ 
 ## [1.6.24]
 ### Changed
  - use new method `$App.generateTabId()` for tabId generation instead of hardcoded expression
