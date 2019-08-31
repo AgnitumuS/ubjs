@@ -138,6 +138,7 @@ process.on('exit', function () {
     knownGlobals.push(ncrc32)
     knownGlobals.push(nsha256)
     knownGlobals.push(nhashFile)
+    knownGlobals.push(nhmac_sha1)
     knownGlobals.push(startServer)
     knownGlobals.push(stopServer)
   }

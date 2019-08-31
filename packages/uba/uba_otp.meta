@@ -54,7 +54,7 @@
   },
   "mixins": {
     "mStorage": {
-      "safeDelete": true,
+      "safeDelete": false,
       "simpleAudit": true
     }
   }
