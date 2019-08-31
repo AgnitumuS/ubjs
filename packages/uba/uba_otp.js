@@ -3,41 +3,41 @@
  */
 const UB = require('@unitybase/ub')
 const Session = UB.Session
+const totp = require('./modules/totp')
 /* global uba_otp createGuid */
 // eslint-disable-next-line camelcase
 let me = uba_otp
 /**
- * Generate one-time-password (OTP), insert record into table and returns new OTP
+ * Generate one-time-password (OTP) and store it into uba_otp
  *
- * @param {string} otpKind Must be one of 'EMail' or 'SMS'
- * @param {Number} userID
- * @param {Object} [uData]
- * @param {Number} [lifeTime] life time of otp in seconds
+ * @param {string} otpKind Must be one of 'EMail', 'SMS', 'TOTP'
+ * @param {Number} [userID=Session.userID]
+ * @param {Object} [uData='']
+ * @param {Number} [lifeTime] life time of otp in seconds; Default 30 day for email, 30 min for SMS and 10 years for TOTP
  * @return {string}
  * @memberOf uba_otp_ns.prototype
  * @memberOfModule @unitybase/uba
  * @public
  */
 me.generateOtp = function (otpKind, userID, uData, lifeTime) {
-  const lifeTimeOfEMail = 30 * 24 * 60 * 60 // 30 days
-  const lifeTimeOfSMS = 20 * 60 // 30 minutes
-  let expiredDate = new Date()
   let otp
+  userID = userID || Session.userID
   if (otpKind === 'EMail') {
     otp = createGuid()
-    if (!lifeTime) lifeTime = lifeTimeOfEMail
+    if (!lifeTime) lifeTime = 30 * 24 * 60 * 60 // 30 days
   } else if (otpKind === 'SMS') {
     otp = createGuid()
-    if (!lifeTime) lifeTime = lifeTimeOfSMS
+    if (!lifeTime) lifeTime = 20 * 60 // 30 minutes
+  } else if (otpKind === 'TOTP') {
+    return doGenerateTOTPSecret(userID)
   } else {
     throw new Error('invalid otpKind')
   }
+  let expiredDate = new Date()
   expiredDate.setTime(expiredDate.getTime() + lifeTime * 1000)
   let uDataStr = uData ? JSON.stringify(uData) : ''
-  let inst = UB.Repository('uba_otp').attrs(['ID', 'otp'])
-    .where('[otp]', '=', otp)
-    .select()
-  let res = inst.run('insert', {
+  let store = UB.DataStore('uba_otp')
+  let res = store.run('insert', {
     execParams: {
       otp: otp,
       userID: userID,
@@ -47,13 +47,14 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
     }
   })
   if (!res) {
-    throw inst.lastError
+    throw store.lastError
   }
   return otp
 }
 
 /**
- * Switch session to user from OTP or execute callback in session of user from OTP
+ * Switch session to user from OTP (SMS or EMail) or execute callback in session of user from OTP.
+ * For TOTP use verifyTotp function.
  *
  * @param {string} otp
  * @param {string} otpKind
@@ -70,16 +71,17 @@ me.generateOtp = function (otpKind, userID, uData, lifeTime) {
 me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
   let repo = UB.Repository('uba_otp').attrs(['userID', 'ID', 'uData'])
     .where('[otp]', '=', otp).where('[expiredDate]', '>=', new Date())
-  if (otpKind) {
-    repo = repo.where('[otpKind]', '=', otpKind)
-  }
+    .whereIf(otpKind, '[otpKind]', '=', otpKind)
+
   let inst = repo.select()
   if (inst.eof) return false
 
-  let res = inst.run('delete', {
-    execParams: { ID: inst.get('ID') }
-  })
-  if (!res) throw inst.lastError
+  if (otpKind !== 'TOTP') {
+    let res = inst.run('delete', {
+      execParams: { ID: inst.get('ID') }
+    })
+    if (!res) throw inst.lastError
+  }
 
   if ((!fCheckUData) || (fCheckUData(inst.get('uData'), checkData))) {
     if (call) {
@@ -91,6 +93,25 @@ me.auth = function (otp, otpKind, fCheckUData, checkData, call) {
   } else {
     return false
   }
+}
+
+/**
+ * Verify TOTP for currently logged in user
+ *
+ * @param {string} totp TOTP value entered by user (6 digits string)
+ * @method verifyTotp
+ * @memberOf uba_otp_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @return {boolean}
+ */
+me.verifyTotp = function (totpValue) {
+  let secret = UB.Repository('uba_otp').attrs('otp')
+    .where('userID', '=', Session.userID)
+    .where('[expiredDate]', '>=', new Date())
+    .where('[otpKind]', '=', 'TOTP')
+    .selectScalar()
+  if (!secret) return false
+  return totp.verifyTotp(secret, totpValue)
 }
 
 /**
@@ -132,4 +153,35 @@ me.authAndExecute = function (otp, otpKind, callBack) {
   }
   Session.runAsUser(store.get('userID'), callBack.bind(null, store.get('uData')))
   return true
+}
+
+/**
+ * Generate TOTP secret for user and store it into uba_otp
+ * In case secret already generated return existed secret
+ * @param {number} userID
+ * @return {string}
+ * @private
+ */
+function doGenerateTOTPSecret (userID) {
+  let secret = UB.Repository('uba_otp').attrs('otp')
+    .where('userID', '=', userID)
+    .where('otpKind', '=', 'TOTP')
+    .selectScalar()
+  if (secret) return secret
+
+  let store = UB.DataStore('uba_otp')
+  secret = totp.generateTotpSecret()
+  let lifeTime = 365 * 10 * 24 * 60 * 60 // 10 years
+  let expiredDate = new Date()
+  expiredDate.setTime(expiredDate.getTime() + lifeTime * 1000)
+  store.run('insert', {
+    execParams: {
+      otp: secret,
+      userID: userID,
+      otpKind: 'TOTP',
+      expiredDate: expiredDate,
+      uData: ''
+    }
+  })
+  return secret
 }
